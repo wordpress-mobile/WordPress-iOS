@@ -65,6 +65,19 @@ struct ReaderFeedTests {
         #expect(feed.iconURL?.absoluteString == "https://veselinblogblog.wordpress.com/wp-content/uploads/2024/04/cropped-avatar-18.jpg?w=96")
     }
 
+    @Test func decodesWpComSiteFeedv2() throws {
+        // GIVEN: Search response for a WordPress.com site (veselin.blog)
+        let jsonData = try loadMockJSON(filename: "reader-post-list-01")
+
+        // WHEN: Decoding the envelope
+        let deserialized = try JSONSerialization.jsonObject(with: jsonData)
+        let posts = try #require(deserialized as? [String: Any])?["posts"] as? [[AnyHashable: Any]] ?? []
+
+        for post in posts {
+            #expect(RemoteReaderPost(dictionary: post) != nil)
+        }
+    }
+
     // MARK: - External RSS Feeds
 
     /// Tests decoding an external RSS feed (not a WordPress site) where blogID is "0"

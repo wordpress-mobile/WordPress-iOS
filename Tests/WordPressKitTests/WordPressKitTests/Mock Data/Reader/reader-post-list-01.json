@@ -1,0 +1,1134 @@
+{
+    "date_range": {
+        "before": "2025-12-18T18:47:08-08:00",
+        "after": "2025-12-09T19:13:28-08:00"
+    },
+    "number": 10,
+    "posts": [
+        {
+            "ID": 150898,
+            "site_ID": 1047865,
+            "author": {
+                "ID": 1,
+                "login": "matt",
+                "email": false,
+                "name": "Matt",
+                "first_name": "",
+                "last_name": "",
+                "nice_name": "saxmatt",
+                "URL": "http://ma.tt/",
+                "avatar_URL": "https://0.gravatar.com/avatar/33252cd1f33526af53580fcb1736172f06e6716f32afdd1be19ec3096d15dea5?s=96&d=retro&r=G",
+                "profile_URL": "https://gravatar.com/767fc9c115a1b989744c755db47feb60",
+                "site_ID": -1,
+                "has_avatar": true,
+                "wpcom_id": 5,
+                "wpcom_login": "matt"
+            },
+            "date": "2025-12-18T18:47:08-08:00",
+            "modified": "2025-12-19T01:22:43-08:00",
+            "title": "Wolfram Automattica",
+            "URL": "https://ma.tt/2025/12/wolfram-automattica/",
+            "short_URL": "https://wp.me/p4oB3-DfQ",
+            "content": "<div class=\"is-reader\">\n<figure class=\"wp-block-image size-large\" style=\"margin: 0 0 1em;\"><img data-attachment-id=\"150900\" data-permalink=\"https://ma.tt/2025/12/wolfram-automattica/gemini_generated_image_pzhu6zpzhu6zpzhu/\" data-orig-file=\"https://ma.tt/files/2025/12/Gemini_Generated_Image_pzhu6zpzhu6zpzhu.png\" data-orig-size=\"2560,1429\" data-comments-opened=\"1\" data-image-meta='{\"aperture\":\"0\",\"credit\":\"\",\"camera\":\"\",\"caption\":\"\",\"created_timestamp\":\"0\",\"copyright\":\"\",\"focal_length\":\"0\",\"iso\":\"0\",\"shutter_speed\":\"0\",\"title\":\"\",\"orientation\":\"0\"}' data-image-title=\"Gemini_Generated_Image_pzhu6zpzhu6zpzhu\" data-image-description=\"\" data-image-caption=\"\" data-medium-file=\"https://ma.tt/files/2025/12/Gemini_Generated_Image_pzhu6zpzhu6zpzhu.png?w=840\" data-large-file=\"https://ma.tt/files/2025/12/Gemini_Generated_Image_pzhu6zpzhu6zpzhu.png?w=1024\" loading=\"lazy\" width=\"1024\" height=\"572\" src=\"https://ma.tt/files/2025/12/Gemini_Generated_Image_pzhu6zpzhu6zpzhu-1024x572.png\" alt=\"\" class=\"wp-image-150900\" style=\"box-sizing: border-box; height: auto; max-width: 100%; vertical-align: bottom;\"></figure>\n\n\n\n<p>It’s exciting to announce that <a href=\"https://www.wolframalpha.com/input/?i=stephen+wolfram\">Stephen Wolfram</a> has joined as a special advisor to <a href=\"https://automattic.com/\">Automattic</a>.</p>\n\n\n\n<p>I promise this is not just because he is such <a href=\"https://writings.stephenwolfram.com/\">an incredible blogger</a>, using WordPress, natch.</p>\n\n\n\n<p>If you don’t know about Stephen Wolfram, <a href=\"https://www.stephenwolfram.com/about/\">his about page is not a bad place to start</a>, but far more interesting is his <a href=\"https://writings.stephenwolfram.com/2019/02/seeking-the-productive-life-some-details-of-my-personal-infrastructure/\">2019 essay on Seeking the Productive Life</a>, which includes a setup for hiking outdoors while typing on a laptop.</p>\n\n\n\n<p>Stephen was doing the remote CEO thing decades before I imagined Automattic. He spoke at Automattic’s Grand Meetup in 2019 and one of my favorite memories was seeing him at the silent disco after-party. We also did <a href=\"https://distributed.blog/2019/10/03/turning-ideas-into-real-things/\">an episode of the Distributed podcast together</a>.</p>\n\n\n\n<p>Since he started engaging more deeply earlier this year, I’ve gotten a lot of joy from seeing him interact with teams across the company, asking questions in an incisive, inquisitive way that helps break down problems. We just finished up several hours of a deep dive into our board topics with several hundred Automatticans participating.</p>\n\n\n\n<p>Automattic has been blessed with amazing directors over the years. Currently, our board is <a href=\"https://en.wikipedia.org/wiki/Susan_Decker\">Susan Decker</a>, <a href=\"https://en.wikipedia.org/wiki/Ann_E._Dunwoody\">General Ann Dunwoody</a>, <a href=\"https://toni.org/\">Toni Schneider</a>, and me.</p>\n </div>",
+            "excerpt": "<p>It’s exciting to announce that Stephen Wolfram has joined as a special advisor to Automattic. I promise this is not just because he is such an incredible blogger, using WordPress, natch. If you don’t know about Stephen Wolfram, his about page is not a bad place to start, but far more interesting is his 2019 [&hellip;]</p>\n",
+            "slug": "wolfram-automattica",
+            "guid": "https://ma.tt/?p=150898",
+            "status": "publish",
+            "discussion": {
+                "comments_open": true,
+                "comment_status": "open",
+                "pings_open": true,
+                "ping_status": "open",
+                "comment_count": 0
+            },
+            "likes_enabled": true,
+            "sharing_enabled": true,
+            "like_count": 5,
+            "i_like": false,
+            "is_reblogged": false,
+            "is_following": true,
+            "global_ID": "900b57aed004f10d1071e84eaa4ea5a6",
+            "featured_image": "",
+            "post_thumbnail": null,
+            "format": "standard",
+            "tags": {},
+            "categories": {
+                "Automattic": {
+                    "ID": 120,
+                    "name": "Automattic",
+                    "slug": "automattic",
+                    "description": "",
+                    "post_count": 74,
+                    "parent": 0,
+                    "meta": {
+                        "links": {
+                            "self": "https://public-api.wordpress.com/rest/v1.1/sites/1047865/categories/slug:automattic",
+                            "help": "https://public-api.wordpress.com/rest/v1.2/sites/1047865/categories/slug:automattic/help",
+                            "site": "https://public-api.wordpress.com/rest/v1.2/sites/1047865"
+                        }
+                    }
+                }
+            },
+            "attachments": {
+                "150900": {
+                    "ID": 150900,
+                    "URL": "https://ma.tt/files/2025/12/Gemini_Generated_Image_pzhu6zpzhu6zpzhu.png",
+                    "guid": "http://ma.tt/files/2025/12/Gemini_Generated_Image_pzhu6zpzhu6zpzhu.png",
+                    "date": "2025-12-18T17:11:11-08:00",
+                    "post_ID": 150898,
+                    "author_ID": 5,
+                    "file": "Gemini_Generated_Image_pzhu6zpzhu6zpzhu.png",
+                    "mime_type": "image/png",
+                    "extension": "png",
+                    "title": "Gemini_Generated_Image_pzhu6zpzhu6zpzhu",
+                    "caption": "",
+                    "description": "",
+                    "alt": "",
+                    "thumbnails": {
+                        "thumbnail": "https://ma.tt/files/2025/12/Gemini_Generated_Image_pzhu6zpzhu6zpzhu.png?w=195",
+                        "medium": "https://ma.tt/files/2025/12/Gemini_Generated_Image_pzhu6zpzhu6zpzhu.png?w=840",
+                        "large": "https://ma.tt/files/2025/12/Gemini_Generated_Image_pzhu6zpzhu6zpzhu.png?w=1024",
+                        "newspack-article-block-landscape-large": "https://ma.tt/files/2025/12/Gemini_Generated_Image_pzhu6zpzhu6zpzhu.png?w=1200&h=900&crop=1",
+                        "newspack-article-block-portrait-large": "https://ma.tt/files/2025/12/Gemini_Generated_Image_pzhu6zpzhu6zpzhu.png?w=900&h=1200&crop=1",
+                        "newspack-article-block-square-large": "https://ma.tt/files/2025/12/Gemini_Generated_Image_pzhu6zpzhu6zpzhu.png?w=1200&h=1200&crop=1",
+                        "newspack-article-block-landscape-medium": "https://ma.tt/files/2025/12/Gemini_Generated_Image_pzhu6zpzhu6zpzhu.png?w=800&h=600&crop=1",
+                        "newspack-article-block-portrait-medium": "https://ma.tt/files/2025/12/Gemini_Generated_Image_pzhu6zpzhu6zpzhu.png?w=600&h=800&crop=1",
+                        "newspack-article-block-square-medium": "https://ma.tt/files/2025/12/Gemini_Generated_Image_pzhu6zpzhu6zpzhu.png?w=800&h=800&crop=1",
+                        "newspack-article-block-landscape-intermediate": "https://ma.tt/files/2025/12/Gemini_Generated_Image_pzhu6zpzhu6zpzhu.png?w=600&h=450&crop=1",
+                        "newspack-article-block-portrait-intermediate": "https://ma.tt/files/2025/12/Gemini_Generated_Image_pzhu6zpzhu6zpzhu.png?w=450&h=600&crop=1",
+                        "newspack-article-block-square-intermediate": "https://ma.tt/files/2025/12/Gemini_Generated_Image_pzhu6zpzhu6zpzhu.png?w=600&h=600&crop=1",
+                        "newspack-article-block-landscape-small": "https://ma.tt/files/2025/12/Gemini_Generated_Image_pzhu6zpzhu6zpzhu.png?w=400&h=300&crop=1",
+                        "newspack-article-block-portrait-small": "https://ma.tt/files/2025/12/Gemini_Generated_Image_pzhu6zpzhu6zpzhu.png?w=300&h=400&crop=1",
+                        "newspack-article-block-square-small": "https://ma.tt/files/2025/12/Gemini_Generated_Image_pzhu6zpzhu6zpzhu.png?w=400&h=400&crop=1",
+                        "newspack-article-block-landscape-tiny": "https://ma.tt/files/2025/12/Gemini_Generated_Image_pzhu6zpzhu6zpzhu.png?w=200&h=150&crop=1",
+                        "newspack-article-block-portrait-tiny": "https://ma.tt/files/2025/12/Gemini_Generated_Image_pzhu6zpzhu6zpzhu.png?w=150&h=200&crop=1",
+                        "newspack-article-block-square-tiny": "https://ma.tt/files/2025/12/Gemini_Generated_Image_pzhu6zpzhu6zpzhu.png?w=200&h=200&crop=1",
+                        "newspack-article-block-uncropped": "https://ma.tt/files/2025/12/Gemini_Generated_Image_pzhu6zpzhu6zpzhu.png?w=1200"
+                    },
+                    "height": 1429,
+                    "width": 2560,
+                    "exif": {
+                        "aperture": "0",
+                        "credit": "",
+                        "camera": "",
+                        "caption": "",
+                        "created_timestamp": "0",
+                        "copyright": "",
+                        "focal_length": "0",
+                        "iso": "0",
+                        "shutter_speed": "0",
+                        "title": "",
+                        "orientation": "0",
+                        "keywords": []
+                    },
+                    "meta": {
+                        "links": {
+                            "self": "https://public-api.wordpress.com/rest/v1.2/sites/1047865/media/150900",
+                            "help": "https://public-api.wordpress.com/rest/v1.2/sites/1047865/media/150900/help",
+                            "site": "https://public-api.wordpress.com/rest/v1.2/sites/1047865",
+                            "parent": "https://public-api.wordpress.com/rest/v1.1/sites/1047865/posts/150898"
+                        }
+                    }
+                }
+            },
+            "attachment_count": 1,
+            "metadata": [],
+            "meta": {
+                "links": {
+                    "self": "https://public-api.wordpress.com/rest/v1.1/read/sites/1047865/posts/150898",
+                    "help": "https://public-api.wordpress.com/rest/v1.2/sites/1047865/posts/150898/help",
+                    "site": "https://public-api.wordpress.com/rest/v1.2/sites/1047865",
+                    "replies": "https://public-api.wordpress.com/rest/v1.1/sites/1047865/posts/150898/replies/",
+                    "likes": "https://public-api.wordpress.com/rest/v1.2/sites/1047865/posts/150898/likes/"
+                }
+            },
+            "feed_ID": 188407,
+            "feed_URL": "http://ma.tt/feed",
+            "pseudo_ID": "900b57aed004f10d1071e84eaa4ea5a6",
+            "is_external": false,
+            "site_name": "Matt Mullenweg",
+            "site_URL": "http://ma.tt",
+            "site_is_private": false,
+            "site_icon": {
+                "img": "https://ma.tt/files/2024/01/cropped-matt-favicon.png?w=96",
+                "ico": "https://ma.tt/files/2024/01/cropped-matt-favicon.png?w=96"
+            },
+            "featured_media": {
+                "uri": "https://ma.tt/files/2025/12/Gemini_Generated_Image_pzhu6zpzhu6zpzhu.png",
+                "width": 2560,
+                "height": 1429,
+                "type": "image"
+            },
+            "is_subscribed_comments": false,
+            "can_subscribe_comments": true,
+            "subscribed_comments_notifications": false,
+            "publish_date_changed": false,
+            "use_excerpt": false,
+            "capabilities": {
+                "publish_post": false,
+                "delete_post": false,
+                "edit_post": false
+            }
+        },
+        {
+            "ID": 150883,
+            "site_ID": 1047865,
+            "author": {
+                "ID": 1,
+                "login": "matt",
+                "email": false,
+                "name": "Matt",
+                "first_name": "",
+                "last_name": "",
+                "nice_name": "saxmatt",
+                "URL": "http://ma.tt/",
+                "avatar_URL": "https://0.gravatar.com/avatar/33252cd1f33526af53580fcb1736172f06e6716f32afdd1be19ec3096d15dea5?s=96&d=retro&r=G",
+                "profile_URL": "https://gravatar.com/767fc9c115a1b989744c755db47feb60",
+                "site_ID": -1,
+                "has_avatar": true,
+                "wpcom_id": 5,
+                "wpcom_login": "matt"
+            },
+            "date": "2025-12-17T21:29:42-08:00",
+            "modified": "2025-12-17T21:29:42-08:00",
+            "title": "The Thinking Game",
+            "URL": "https://ma.tt/2025/12/the-thinking-game/",
+            "short_URL": "https://wp.me/p4oB3-DfB",
+            "content": "<div class=\"is-reader\">\n<p>If you haven’t seen it, The Thinking Game documentary is excellent, and available for free on YouTube.</p>\n\n\n\n<figure class=\"wp-block-embed alignfull is-type-video is-provider-youtube wp-block-embed-youtube wp-embed-aspect-16-9 wp-has-aspect-ratio\" style=\"overflow-wrap: break-word; margin: 0 0 1em;\"><div class=\"wp-block-embed__wrapper\" style=\"position: relative;\">\n<span class=\"embed-youtube\" style=\"text-align: center; display: block;\"><iframe data-wpcom-embed-url=\"https://www.youtube.com/watch?v=d95J8yzvjbQ\" class=\"youtube-player\" width=\"640\" height=\"360\" src=\"https://www.youtube.com/embed/d95J8yzvjbQ?version=3&amp;rel=1&amp;showsearch=0&amp;showinfo=1&amp;iv_load_policy=1&amp;fs=1&amp;hl=en&amp;autohide=2&amp;wmode=transparent\" allowfullscreen=\"true\" sandbox=\"allow-scripts allow-same-origin allow-popups allow-presentation allow-popups-to-escape-sandbox\" style=\"max-width: 100%; border: 0;\"></iframe></span>\n</div></figure>\n\n\n\n<p>You have to buy it, but the Kanye documentary <a href=\"https://www.inwhosenamemovie.com/\">In Whose Name</a> is also pretty fascinating. (I first blogged about Kanye in 2007, <a href=\"https://ma.tt/2007/07/on-php/\">discussing PHP’s botched version 4 to 5 upgrade</a>.)</p>\n </div>",
+            "excerpt": "<p>If you haven’t seen it, The Thinking Game documentary is excellent, and available for free on YouTube. You have to buy it, but the Kanye documentary In Whose Name is also pretty fascinating. (I first blogged about Kanye in 2007, discussing PHP’s botched version 4 to 5 upgrade.)</p>\n",
+            "slug": "the-thinking-game",
+            "guid": "https://ma.tt/?p=150883",
+            "status": "publish",
+            "discussion": {
+                "comments_open": true,
+                "comment_status": "open",
+                "pings_open": true,
+                "ping_status": "open",
+                "comment_count": 0
+            },
+            "likes_enabled": true,
+            "sharing_enabled": true,
+            "like_count": 4,
+            "i_like": false,
+            "is_reblogged": false,
+            "is_following": true,
+            "global_ID": "498753bd8a11719c9d7b102572935858",
+            "featured_image": "",
+            "post_thumbnail": null,
+            "format": "video",
+            "tags": {},
+            "categories": {
+                "Google": {
+                    "ID": 54,
+                    "name": "Google",
+                    "slug": "google",
+                    "description": "",
+                    "post_count": 20,
+                    "parent": 0,
+                    "meta": {
+                        "links": {
+                            "self": "https://public-api.wordpress.com/rest/v1.1/sites/1047865/categories/slug:google",
+                            "help": "https://public-api.wordpress.com/rest/v1.2/sites/1047865/categories/slug:google/help",
+                            "site": "https://public-api.wordpress.com/rest/v1.2/sites/1047865"
+                        }
+                    }
+                }
+            },
+            "attachments": {},
+            "attachment_count": 0,
+            "metadata": [],
+            "meta": {
+                "links": {
+                    "self": "https://public-api.wordpress.com/rest/v1.1/read/sites/1047865/posts/150883",
+                    "help": "https://public-api.wordpress.com/rest/v1.2/sites/1047865/posts/150883/help",
+                    "site": "https://public-api.wordpress.com/rest/v1.2/sites/1047865",
+                    "replies": "https://public-api.wordpress.com/rest/v1.1/sites/1047865/posts/150883/replies/",
+                    "likes": "https://public-api.wordpress.com/rest/v1.2/sites/1047865/posts/150883/likes/"
+                }
+            },
+            "feed_ID": 188407,
+            "feed_URL": "http://ma.tt/feed",
+            "pseudo_ID": "498753bd8a11719c9d7b102572935858",
+            "is_external": false,
+            "site_name": "Matt Mullenweg",
+            "site_URL": "http://ma.tt",
+            "site_is_private": false,
+            "site_icon": {
+                "img": "https://ma.tt/files/2024/01/cropped-matt-favicon.png?w=96",
+                "ico": "https://ma.tt/files/2024/01/cropped-matt-favicon.png?w=96"
+            },
+            "featured_media": {
+                "uri": "https://www.youtube.com/embed/d95J8yzvjbQ?version=3&rel=1&showsearch=0&showinfo=1&iv_load_policy=1&fs=1&hl=en&autohide=2&wmode=transparent",
+                "type": "video"
+            },
+            "is_subscribed_comments": false,
+            "can_subscribe_comments": true,
+            "subscribed_comments_notifications": false,
+            "publish_date_changed": false,
+            "use_excerpt": false,
+            "capabilities": {
+                "publish_post": false,
+                "delete_post": false,
+                "edit_post": false
+            }
+        },
+        {
+            "ID": 150856,
+            "site_ID": 1047865,
+            "author": {
+                "ID": 1,
+                "login": "matt",
+                "email": false,
+                "name": "Matt",
+                "first_name": "",
+                "last_name": "",
+                "nice_name": "saxmatt",
+                "URL": "http://ma.tt/",
+                "avatar_URL": "https://0.gravatar.com/avatar/33252cd1f33526af53580fcb1736172f06e6716f32afdd1be19ec3096d15dea5?s=96&d=retro&r=G",
+                "profile_URL": "https://gravatar.com/767fc9c115a1b989744c755db47feb60",
+                "site_ID": -1,
+                "has_avatar": true,
+                "wpcom_id": 5,
+                "wpcom_login": "matt"
+            },
+            "date": "2025-12-16T20:21:08-08:00",
+            "modified": "2025-12-16T20:21:08-08:00",
+            "title": "Beware Unearned Wisdom",
+            "URL": "https://ma.tt/2025/12/beware-unearned-wisdom/",
+            "short_URL": "https://wp.me/p4oB3-Dfa",
+            "content": "<div class=\"is-reader\">\n<p>One of Carl Jung’s famous quotes is to “Beware unearned wisdom.” Sometimes it’s brought up in the context of psychedelics. From <em><a href=\"https://www.amazon.com/LSD-Mind-Universe-Diamonds-Heaven/dp/1620559706?tag=photomatt08-20\">LSD and the Mind of the Universe by Christopher Bache</a></em>:</p>\n\n\n\n<blockquote class=\"wp-block-quote is-layout-flow wp-block-quote-is-layout-flow\" style=\"box-sizing: border-box; overflow-wrap: break-word; border-left: .25em solid; margin: 0 0 1.75em; padding-left: 1em;\">\n<p id=\"1d2d\">Psychedelics give us temporary access to realities beyond our pay grade, allowing us to experience things beyond our normal capacity.</p>\n\n\n\n<p id=\"b3a6\">It’s all too easy to think that because we have had a deep and profound experience, we have become a deep and profound person, but this is a fool’s delusion.</p>\n\n\n\n<p id=\"7186\">Even when psychedelics allow us to experience the person we are in the process of becoming, we have to face the fact that we have not become this person yet, nor have we fully internalised the wonderful qualities we may have temporarily touched.</p>\n</blockquote>\n\n\n\n<p>I’m starting to see some of the same things happening with vibe coding and LLM writing.</p>\n\n\n\n<p>Sam Kriss at the New York Times took on the inevitably meta task of writing <a href=\"https://www.nytimes.com/2025/12/03/magazine/chatbot-writing-style.html?unlocked_article_code=1.508.ClUh.Sb1fCpBAo94F&amp;smid=url-share&amp;ref=platformer.news\">Why Does A.I. Write Like … That?</a> It’s a good read that will tickle your mind, as the mimetic effects of model training data overfit and influence society, even in how we speak and write when not using AI.</p>\n\n\n\n<p>I’m starting to get that “feel” now, sometimes when using software. The demo or functionality seems amazing, but when you begin to poke around the edges, it all crumbles. We think we have something amazing because a chatbot one-shot an application, but there may be a hidden technical debt there.</p>\n\n\n\n<p>A big focus for me in this coming year is “back to basics”: ensuring the core functionality is robust. You can’t build a house on a foundation of sand. It’s very exciting and tempting to go to the new shiny thing, but you only earn that right when the fundamentals are solid. </p>\n\n\n\n<p>It’s been funny <a href=\"https://www.wsj.com/tech/ai/openais-altman-declares-code-red-to-improve-chatgpt-as-google-threatens-ai-lead-7faf5ea6\">hearing about OpenAI’s Code Red</a>, because about 18 months ago, I declared Code Blue on WordPress.com. In a hospital, Code Red means a fire, which I don’t think is the analogy OpenAI was going for, but I unfortunately learned <a href=\"https://ma.tt/2016/04/in-memoriam-chuck-mullenweg/\">when my father passed</a> that Code Blue means all hands on deck because a patient has a cardiac or respiratory arrest; it signals a critical, life-threatening medical emergency. All the best specialists swarm in and, hopefully, save the patient. (BTW, on <a href=\"https://wordpress.com/\">WordPress.com</a>, the team has done a fantastic job of shipping literally thousands of bug fixes and quality improvements, and keeping focus on that despite the pull to new initiatives. There’s much left to do, but it’s headed in the right direction.)</p>\n\n\n\n<p>The <a href=\"https://en.wikipedia.org/wiki/Cambrian_explosion\">Cambrian explosion</a> of new stuff built by AI is just a phase, and AI-assisted coding can actually be incredible for maintenance and bug fixes. But the tools are only as good as the <a href=\"https://en.wikipedia.org/wiki/The_Hitchhiker%27s_Guide_to_the_Galaxy\">questions we ask them</a>, so it will have to battle with human nature’s addiction to novelty.</p>\n </div>",
+            "excerpt": "<p>One of Carl Jung’s famous quotes is to “Beware unearned wisdom.” Sometimes it’s brought up in the context of psychedelics. From LSD and the Mind of the Universe by Christopher Bache: Psychedelics give us temporary access to realities beyond our pay grade, allowing us to experience things beyond our normal capacity. It’s all too easy [&hellip;]</p>\n",
+            "slug": "beware-unearned-wisdom",
+            "guid": "https://ma.tt/?p=150856",
+            "status": "publish",
+            "discussion": {
+                "comments_open": true,
+                "comment_status": "open",
+                "pings_open": true,
+                "ping_status": "open",
+                "comment_count": 4
+            },
+            "likes_enabled": true,
+            "sharing_enabled": true,
+            "like_count": 6,
+            "i_like": false,
+            "is_reblogged": false,
+            "is_following": true,
+            "global_ID": "d3b7a39e3f9e0ad09f04821b291a2e19",
+            "featured_image": "",
+            "post_thumbnail": null,
+            "format": "standard",
+            "tags": {},
+            "categories": {
+                "Essays": {
+                    "ID": 15,
+                    "name": "Essays",
+                    "slug": "essays",
+                    "description": "",
+                    "post_count": 49,
+                    "parent": 0,
+                    "meta": {
+                        "links": {
+                            "self": "https://public-api.wordpress.com/rest/v1.1/sites/1047865/categories/slug:essays",
+                            "help": "https://public-api.wordpress.com/rest/v1.2/sites/1047865/categories/slug:essays/help",
+                            "site": "https://public-api.wordpress.com/rest/v1.2/sites/1047865"
+                        }
+                    }
+                }
+            },
+            "attachments": {},
+            "attachment_count": 0,
+            "metadata": [],
+            "meta": {
+                "links": {
+                    "self": "https://public-api.wordpress.com/rest/v1.1/read/sites/1047865/posts/150856",
+                    "help": "https://public-api.wordpress.com/rest/v1.2/sites/1047865/posts/150856/help",
+                    "site": "https://public-api.wordpress.com/rest/v1.2/sites/1047865",
+                    "replies": "https://public-api.wordpress.com/rest/v1.1/sites/1047865/posts/150856/replies/",
+                    "likes": "https://public-api.wordpress.com/rest/v1.2/sites/1047865/posts/150856/likes/"
+                }
+            },
+            "feed_ID": 188407,
+            "feed_URL": "http://ma.tt/feed",
+            "pseudo_ID": "d3b7a39e3f9e0ad09f04821b291a2e19",
+            "is_external": false,
+            "site_name": "Matt Mullenweg",
+            "site_URL": "http://ma.tt",
+            "site_is_private": false,
+            "site_icon": {
+                "img": "https://ma.tt/files/2024/01/cropped-matt-favicon.png?w=96",
+                "ico": "https://ma.tt/files/2024/01/cropped-matt-favicon.png?w=96"
+            },
+            "featured_media": {},
+            "is_subscribed_comments": false,
+            "can_subscribe_comments": true,
+            "subscribed_comments_notifications": false,
+            "publish_date_changed": false,
+            "use_excerpt": false,
+            "capabilities": {
+                "publish_post": false,
+                "delete_post": false,
+                "edit_post": false
+            }
+        },
+        {
+            "ID": 150858,
+            "site_ID": 1047865,
+            "author": {
+                "ID": 1,
+                "login": "matt",
+                "email": false,
+                "name": "Matt",
+                "first_name": "",
+                "last_name": "",
+                "nice_name": "saxmatt",
+                "URL": "http://ma.tt/",
+                "avatar_URL": "https://0.gravatar.com/avatar/33252cd1f33526af53580fcb1736172f06e6716f32afdd1be19ec3096d15dea5?s=96&d=retro&r=G",
+                "profile_URL": "https://gravatar.com/767fc9c115a1b989744c755db47feb60",
+                "site_ID": -1,
+                "has_avatar": true,
+                "wpcom_id": 5,
+                "wpcom_login": "matt"
+            },
+            "date": "2025-12-15T16:41:56-08:00",
+            "modified": "2025-12-15T16:41:56-08:00",
+            "title": "Cloudflare CMS Stats",
+            "URL": "https://ma.tt/2025/12/cloudflare-cms-stats/",
+            "short_URL": "https://wp.me/p4oB3-Dfc",
+            "content": "<div class=\"is-reader\">\n<p>Cloudflare released their Radar report for 2025, one fun stat was they analyzed the top 5,000 domains, and it had some interesting results <a href=\"https://radar.cloudflare.com/year-in-review/2025#website-technologies\">for website technologies</a>. Open Source tech came in at 47% for WordPress and 4.7% for Drupal, <em>which wins the majority</em>! Then in proprietary there was Adobe at 16%, Contentful at 8%, Shopify at 1.9%…</p>\n\n\n\n<figure class=\"wp-block-image size-large\" style=\"margin: 0 0 1em;\"><img data-attachment-id=\"150859\" data-permalink=\"https://ma.tt/2025/12/cloudflare-cms-stats/cloudflare-website-tech/\" data-orig-file=\"https://ma.tt/files/2025/12/cloudflare-website-tech.png\" data-orig-size=\"1948,1234\" data-comments-opened=\"1\" data-image-meta='{\"aperture\":\"0\",\"credit\":\"\",\"camera\":\"\",\"caption\":\"\",\"created_timestamp\":\"0\",\"copyright\":\"\",\"focal_length\":\"0\",\"iso\":\"0\",\"shutter_speed\":\"0\",\"title\":\"\",\"orientation\":\"0\"}' data-image-title=\"cloudflare-website-tech\" data-image-description=\"\" data-image-caption=\"\" data-medium-file=\"https://ma.tt/files/2025/12/cloudflare-website-tech.png?w=840\" data-large-file=\"https://ma.tt/files/2025/12/cloudflare-website-tech.png?w=1024\" src=\"https://ma.tt/files/2025/12/cloudflare-website-tech-1024x649.png\" alt=\"\" class=\"wp-image-150859\" style=\"box-sizing: border-box; height: auto; max-width: 100%; vertical-align: bottom;\"></figure>\n </div>",
+            "excerpt": "<p>Cloudflare released their Radar report for 2025, one fun stat was they analyzed the top 5,000 domains, and it had some interesting results for website technologies. Open Source tech came in at 47% for WordPress and 4.7% for Drupal, which wins the majority! Then in proprietary there was Adobe at 16%, Contentful at 8%, Shopify [&hellip;]</p>\n",
+            "slug": "cloudflare-cms-stats",
+            "guid": "https://ma.tt/?p=150858",
+            "status": "publish",
+            "discussion": {
+                "comments_open": true,
+                "comment_status": "open",
+                "pings_open": true,
+                "ping_status": "open",
+                "comment_count": 2
+            },
+            "likes_enabled": true,
+            "sharing_enabled": true,
+            "like_count": 3,
+            "i_like": false,
+            "is_reblogged": false,
+            "is_following": true,
+            "global_ID": "0b6352904afb2d85e6d43ed4ee41bf48",
+            "featured_image": "",
+            "post_thumbnail": null,
+            "format": "standard",
+            "tags": {},
+            "categories": {
+                "Asides": {
+                    "ID": 33,
+                    "name": "Asides",
+                    "slug": "asides",
+                    "description": "Interesting links.",
+                    "post_count": 3012,
+                    "parent": 0,
+                    "meta": {
+                        "links": {
+                            "self": "https://public-api.wordpress.com/rest/v1.1/sites/1047865/categories/slug:asides",
+                            "help": "https://public-api.wordpress.com/rest/v1.2/sites/1047865/categories/slug:asides/help",
+                            "site": "https://public-api.wordpress.com/rest/v1.2/sites/1047865"
+                        }
+                    }
+                }
+            },
+            "attachments": {
+                "150859": {
+                    "ID": 150859,
+                    "URL": "https://ma.tt/files/2025/12/cloudflare-website-tech.png",
+                    "guid": "http://ma.tt/files/2025/12/cloudflare-website-tech.png",
+                    "date": "2025-12-15T15:38:52-08:00",
+                    "post_ID": 150858,
+                    "author_ID": 5,
+                    "file": "cloudflare-website-tech.png",
+                    "mime_type": "image/png",
+                    "extension": "png",
+                    "title": "cloudflare-website-tech",
+                    "caption": "",
+                    "description": "",
+                    "alt": "",
+                    "thumbnails": {
+                        "thumbnail": "https://ma.tt/files/2025/12/cloudflare-website-tech.png?w=195",
+                        "medium": "https://ma.tt/files/2025/12/cloudflare-website-tech.png?w=840",
+                        "large": "https://ma.tt/files/2025/12/cloudflare-website-tech.png?w=1024",
+                        "newspack-article-block-landscape-large": "https://ma.tt/files/2025/12/cloudflare-website-tech.png?w=1200&h=900&crop=1",
+                        "newspack-article-block-portrait-large": "https://ma.tt/files/2025/12/cloudflare-website-tech.png?w=900&h=1200&crop=1",
+                        "newspack-article-block-square-large": "https://ma.tt/files/2025/12/cloudflare-website-tech.png?w=1200&h=1200&crop=1",
+                        "newspack-article-block-landscape-medium": "https://ma.tt/files/2025/12/cloudflare-website-tech.png?w=800&h=600&crop=1",
+                        "newspack-article-block-portrait-medium": "https://ma.tt/files/2025/12/cloudflare-website-tech.png?w=600&h=800&crop=1",
+                        "newspack-article-block-square-medium": "https://ma.tt/files/2025/12/cloudflare-website-tech.png?w=800&h=800&crop=1",
+                        "newspack-article-block-landscape-intermediate": "https://ma.tt/files/2025/12/cloudflare-website-tech.png?w=600&h=450&crop=1",
+                        "newspack-article-block-portrait-intermediate": "https://ma.tt/files/2025/12/cloudflare-website-tech.png?w=450&h=600&crop=1",
+                        "newspack-article-block-square-intermediate": "https://ma.tt/files/2025/12/cloudflare-website-tech.png?w=600&h=600&crop=1",
+                        "newspack-article-block-landscape-small": "https://ma.tt/files/2025/12/cloudflare-website-tech.png?w=400&h=300&crop=1",
+                        "newspack-article-block-portrait-small": "https://ma.tt/files/2025/12/cloudflare-website-tech.png?w=300&h=400&crop=1",
+                        "newspack-article-block-square-small": "https://ma.tt/files/2025/12/cloudflare-website-tech.png?w=400&h=400&crop=1",
+                        "newspack-article-block-landscape-tiny": "https://ma.tt/files/2025/12/cloudflare-website-tech.png?w=200&h=150&crop=1",
+                        "newspack-article-block-portrait-tiny": "https://ma.tt/files/2025/12/cloudflare-website-tech.png?w=150&h=200&crop=1",
+                        "newspack-article-block-square-tiny": "https://ma.tt/files/2025/12/cloudflare-website-tech.png?w=200&h=200&crop=1",
+                        "newspack-article-block-uncropped": "https://ma.tt/files/2025/12/cloudflare-website-tech.png?w=1200"
+                    },
+                    "height": 1234,
+                    "width": 1948,
+                    "exif": {
+                        "aperture": "0",
+                        "credit": "",
+                        "camera": "",
+                        "caption": "",
+                        "created_timestamp": "0",
+                        "copyright": "",
+                        "focal_length": "0",
+                        "iso": "0",
+                        "shutter_speed": "0",
+                        "title": "",
+                        "orientation": "0",
+                        "keywords": []
+                    },
+                    "meta": {
+                        "links": {
+                            "self": "https://public-api.wordpress.com/rest/v1.2/sites/1047865/media/150859",
+                            "help": "https://public-api.wordpress.com/rest/v1.2/sites/1047865/media/150859/help",
+                            "site": "https://public-api.wordpress.com/rest/v1.2/sites/1047865",
+                            "parent": "https://public-api.wordpress.com/rest/v1.1/sites/1047865/posts/150858"
+                        }
+                    }
+                }
+            },
+            "attachment_count": 1,
+            "metadata": [],
+            "meta": {
+                "links": {
+                    "self": "https://public-api.wordpress.com/rest/v1.1/read/sites/1047865/posts/150858",
+                    "help": "https://public-api.wordpress.com/rest/v1.2/sites/1047865/posts/150858/help",
+                    "site": "https://public-api.wordpress.com/rest/v1.2/sites/1047865",
+                    "replies": "https://public-api.wordpress.com/rest/v1.1/sites/1047865/posts/150858/replies/",
+                    "likes": "https://public-api.wordpress.com/rest/v1.2/sites/1047865/posts/150858/likes/"
+                }
+            },
+            "feed_ID": 188407,
+            "feed_URL": "http://ma.tt/feed",
+            "pseudo_ID": "0b6352904afb2d85e6d43ed4ee41bf48",
+            "is_external": false,
+            "site_name": "Matt Mullenweg",
+            "site_URL": "http://ma.tt",
+            "site_is_private": false,
+            "site_icon": {
+                "img": "https://ma.tt/files/2024/01/cropped-matt-favicon.png?w=96",
+                "ico": "https://ma.tt/files/2024/01/cropped-matt-favicon.png?w=96"
+            },
+            "featured_media": {
+                "uri": "https://ma.tt/files/2025/12/cloudflare-website-tech.png",
+                "width": 1948,
+                "height": 1234,
+                "type": "image"
+            },
+            "is_subscribed_comments": false,
+            "can_subscribe_comments": true,
+            "subscribed_comments_notifications": false,
+            "publish_date_changed": false,
+            "use_excerpt": false,
+            "capabilities": {
+                "publish_post": false,
+                "delete_post": false,
+                "edit_post": false
+            }
+        },
+        {
+            "ID": 150848,
+            "site_ID": 1047865,
+            "author": {
+                "ID": 1,
+                "login": "matt",
+                "email": false,
+                "name": "Matt",
+                "first_name": "",
+                "last_name": "",
+                "nice_name": "saxmatt",
+                "URL": "http://ma.tt/",
+                "avatar_URL": "https://0.gravatar.com/avatar/33252cd1f33526af53580fcb1736172f06e6716f32afdd1be19ec3096d15dea5?s=96&d=retro&r=G",
+                "profile_URL": "https://gravatar.com/767fc9c115a1b989744c755db47feb60",
+                "site_ID": -1,
+                "has_avatar": true,
+                "wpcom_id": 5,
+                "wpcom_login": "matt"
+            },
+            "date": "2025-12-14T21:59:27-08:00",
+            "modified": "2025-12-18T20:47:13-08:00",
+            "title": "Nex Playground",
+            "URL": "https://ma.tt/2025/12/nex-playground/",
+            "short_URL": "https://wp.me/p4oB3-Df2",
+            "content": "<div class=\"is-reader\">\n<p>The Wall Street Journal has a fun article about the Nex Playground, <a href=\"https://www.wsj.com/business/entrepreneurship/nex-playground-toy-game-console-holiday-shopping-af47125f\">The Hottest Toy of the Year Is Made by a Tech Startup You’ve Never Heard Of</a>. It’s a very fun way to game with friends and stay active, so afterward you have that same great feeling like after playing a sport. I think this is the first time one of <a href=\"https://audrey.co/\">Audrey Capital’s companies</a> (we invested when it was <a href=\"https://www.homecourt.ai/\">the Homecourt app</a>) is the hot Christmas item. <a href=\"https://www.amazon.com/Playground-AI-Powered-Transforms-Not-Machine-Specific/dp/B0D2JGYX3F?tag=photomatt08-20&amp;th=1\">Here’s it on Amazon</a>, though it looks like it doesn’t ship before Christmas right now.</p>\n </div>",
+            "excerpt": "<p>The Wall Street Journal has a fun article about the Nex Playground, The Hottest Toy of the Year Is Made by a Tech Startup You’ve Never Heard Of. It’s a very fun way to game with friends and stay active, so afterward you have that same great feeling like after playing a sport. I think [&hellip;]</p>\n",
+            "slug": "nex-playground",
+            "guid": "https://ma.tt/?p=150848",
+            "status": "publish",
+            "discussion": {
+                "comments_open": true,
+                "comment_status": "open",
+                "pings_open": true,
+                "ping_status": "open",
+                "comment_count": 0
+            },
+            "likes_enabled": true,
+            "sharing_enabled": true,
+            "like_count": 4,
+            "i_like": false,
+            "is_reblogged": false,
+            "is_following": true,
+            "global_ID": "4fa4c7925d637a26828f6c8b461f8e89",
+            "featured_image": "",
+            "post_thumbnail": null,
+            "format": "aside",
+            "tags": {},
+            "categories": {
+                "Asides": {
+                    "ID": 33,
+                    "name": "Asides",
+                    "slug": "asides",
+                    "description": "Interesting links.",
+                    "post_count": 3012,
+                    "parent": 0,
+                    "meta": {
+                        "links": {
+                            "self": "https://public-api.wordpress.com/rest/v1.1/sites/1047865/categories/slug:asides",
+                            "help": "https://public-api.wordpress.com/rest/v1.2/sites/1047865/categories/slug:asides/help",
+                            "site": "https://public-api.wordpress.com/rest/v1.2/sites/1047865"
+                        }
+                    }
+                }
+            },
+            "attachments": {},
+            "attachment_count": 0,
+            "metadata": [],
+            "meta": {
+                "links": {
+                    "self": "https://public-api.wordpress.com/rest/v1.1/read/sites/1047865/posts/150848",
+                    "help": "https://public-api.wordpress.com/rest/v1.2/sites/1047865/posts/150848/help",
+                    "site": "https://public-api.wordpress.com/rest/v1.2/sites/1047865",
+                    "replies": "https://public-api.wordpress.com/rest/v1.1/sites/1047865/posts/150848/replies/",
+                    "likes": "https://public-api.wordpress.com/rest/v1.2/sites/1047865/posts/150848/likes/"
+                }
+            },
+            "feed_ID": 188407,
+            "feed_URL": "http://ma.tt/feed",
+            "pseudo_ID": "4fa4c7925d637a26828f6c8b461f8e89",
+            "is_external": false,
+            "site_name": "Matt Mullenweg",
+            "site_URL": "http://ma.tt",
+            "site_is_private": false,
+            "site_icon": {
+                "img": "https://ma.tt/files/2024/01/cropped-matt-favicon.png?w=96",
+                "ico": "https://ma.tt/files/2024/01/cropped-matt-favicon.png?w=96"
+            },
+            "featured_media": {},
+            "is_subscribed_comments": false,
+            "can_subscribe_comments": true,
+            "subscribed_comments_notifications": false,
+            "publish_date_changed": false,
+            "use_excerpt": false,
+            "capabilities": {
+                "publish_post": false,
+                "delete_post": false,
+                "edit_post": false
+            }
+        },
+        {
+            "ID": 150841,
+            "site_ID": 1047865,
+            "author": {
+                "ID": 1,
+                "login": "matt",
+                "email": false,
+                "name": "Matt",
+                "first_name": "",
+                "last_name": "",
+                "nice_name": "saxmatt",
+                "URL": "http://ma.tt/",
+                "avatar_URL": "https://0.gravatar.com/avatar/33252cd1f33526af53580fcb1736172f06e6716f32afdd1be19ec3096d15dea5?s=96&d=retro&r=G",
+                "profile_URL": "https://gravatar.com/767fc9c115a1b989744c755db47feb60",
+                "site_ID": -1,
+                "has_avatar": true,
+                "wpcom_id": 5,
+                "wpcom_login": "matt"
+            },
+            "date": "2025-12-13T21:57:55-08:00",
+            "modified": "2025-12-13T21:57:55-08:00",
+            "title": "Apple iWeb",
+            "URL": "https://ma.tt/2025/12/apple-iweb/",
+            "short_URL": "https://wp.me/p4oB3-DeV",
+            "content": "<div class=\"is-reader\">\n<p>The new X/Twitter algorithim is hard to predict, but I’ve had <a href=\"https://x.com/photomatt/status/1999769782279938531\">one go viral with over a million views now</a>, a quote-tweet of a cool demo video of Apple’s website builder from 2009, with themes and blog support and everything. Interesting to compare its interface to Gutenberg and WordPress today.</p>\n\n\n\n<figure class=\"wp-block-embed is-type-rich is-provider-twitter wp-block-embed-twitter\" style=\"overflow-wrap: break-word; margin: 0 0 1em;\"><div class=\"wp-block-embed__wrapper\" style=\"position: relative;\">\n<div class=\"embed-twitter\">\n<blockquote class=\"twitter-tweet\" data-width=\"500\" data-dnt=\"true\">\n<p lang=\"en\" dir=\"ltr\">We don’t even know how to build this anymore. <a href=\"https://t.co/Y21FIwVIft\">https://t.co/Y21FIwVIft</a></p>— Matt Mullenweg (@photomatt) <a href=\"https://twitter.com/photomatt/status/1999769782279938531?ref_src=twsrc%5Etfw\">December 13, 2025</a>\n</blockquote>\n<script async src=\"https://platform.twitter.com/widgets.js\" charset=\"utf-8\"></script>\n</div>\n</div></figure>\n\n\n\n<p>For <a href=\"https://www.apple.com/welcomescreen/ilife/iweb-3/\">the video to play on the webpage</a>, you have to visit in Safari.</p>\n </div>",
+            "excerpt": "<p>The new X/Twitter algorithim is hard to predict, but I’ve had one go viral with over a million views now, a quote-tweet of a cool demo video of Apple’s website builder from 2009, with themes and blog support and everything. Interesting to compare its interface to Gutenberg and WordPress today. For the video to play [&hellip;]</p>\n",
+            "slug": "apple-iweb",
+            "guid": "https://ma.tt/?p=150841",
+            "status": "publish",
+            "discussion": {
+                "comments_open": true,
+                "comment_status": "open",
+                "pings_open": true,
+                "ping_status": "open",
+                "comment_count": 0
+            },
+            "likes_enabled": true,
+            "sharing_enabled": true,
+            "like_count": 4,
+            "i_like": false,
+            "is_reblogged": false,
+            "is_following": true,
+            "global_ID": "93a82132a409b8f07df374e3a4eaa441",
+            "featured_image": "",
+            "post_thumbnail": null,
+            "format": "standard",
+            "tags": {},
+            "categories": {
+                "Asides": {
+                    "ID": 33,
+                    "name": "Asides",
+                    "slug": "asides",
+                    "description": "Interesting links.",
+                    "post_count": 3012,
+                    "parent": 0,
+                    "meta": {
+                        "links": {
+                            "self": "https://public-api.wordpress.com/rest/v1.1/sites/1047865/categories/slug:asides",
+                            "help": "https://public-api.wordpress.com/rest/v1.2/sites/1047865/categories/slug:asides/help",
+                            "site": "https://public-api.wordpress.com/rest/v1.2/sites/1047865"
+                        }
+                    }
+                }
+            },
+            "attachments": {},
+            "attachment_count": 0,
+            "metadata": [],
+            "meta": {
+                "links": {
+                    "self": "https://public-api.wordpress.com/rest/v1.1/read/sites/1047865/posts/150841",
+                    "help": "https://public-api.wordpress.com/rest/v1.2/sites/1047865/posts/150841/help",
+                    "site": "https://public-api.wordpress.com/rest/v1.2/sites/1047865",
+                    "replies": "https://public-api.wordpress.com/rest/v1.1/sites/1047865/posts/150841/replies/",
+                    "likes": "https://public-api.wordpress.com/rest/v1.2/sites/1047865/posts/150841/likes/"
+                }
+            },
+            "feed_ID": 188407,
+            "feed_URL": "http://ma.tt/feed",
+            "pseudo_ID": "93a82132a409b8f07df374e3a4eaa441",
+            "is_external": false,
+            "site_name": "Matt Mullenweg",
+            "site_URL": "http://ma.tt",
+            "site_is_private": false,
+            "site_icon": {
+                "img": "https://ma.tt/files/2024/01/cropped-matt-favicon.png?w=96",
+                "ico": "https://ma.tt/files/2024/01/cropped-matt-favicon.png?w=96"
+            },
+            "featured_media": {},
+            "is_subscribed_comments": false,
+            "can_subscribe_comments": true,
+            "subscribed_comments_notifications": false,
+            "publish_date_changed": false,
+            "use_excerpt": false,
+            "capabilities": {
+                "publish_post": false,
+                "delete_post": false,
+                "edit_post": false
+            }
+        },
+        {
+            "ID": 150836,
+            "site_ID": 1047865,
+            "author": {
+                "ID": 1,
+                "login": "matt",
+                "email": false,
+                "name": "Matt",
+                "first_name": "",
+                "last_name": "",
+                "nice_name": "saxmatt",
+                "URL": "http://ma.tt/",
+                "avatar_URL": "https://0.gravatar.com/avatar/33252cd1f33526af53580fcb1736172f06e6716f32afdd1be19ec3096d15dea5?s=96&d=retro&r=G",
+                "profile_URL": "https://gravatar.com/767fc9c115a1b989744c755db47feb60",
+                "site_ID": -1,
+                "has_avatar": true,
+                "wpcom_id": 5,
+                "wpcom_login": "matt"
+            },
+            "date": "2025-12-12T20:43:27-08:00",
+            "modified": "2025-12-12T20:43:27-08:00",
+            "title": "Winter Fun",
+            "URL": "https://ma.tt/2025/12/winter-fun/",
+            "short_URL": "https://wp.me/p4oB3-DeQ",
+            "content": "<div class=\"is-reader\">\n<p>The colors here have now gone blue for winter, and snow has started, <a href=\"https://wordpress.org/plugins/snow-fall/\">thanks to the excellent Snow Fall plugin</a>. I also wanted to congratulate <a href=\"https://www.wealthfront.com/blog/wealthfront-ipo-public-company/\">Wealthfront on their IPO</a>. Many on their team have been friends or advisors over the years, from David Fortunato responding to my email about their WordPress blog being on an old version when they launched, to the amazing <a href=\"https://adamnash.blog/\">Adam Nash</a> who teaches <a href=\"https://cs007.blog/\">CS 007 Personal Finance for Engineers at Stanford</a>, and he now runs the awesome <a href=\"https://www.daffy.org/\">Daffy donor-advised tax fund startup</a>. I was an early customer, and even on their homepage as a testimonial in 2011, <a href=\"https://audrey.co/\">Audrey Capital</a> has been an investor since 2013 and if you <a href=\"https://wlth.fr/XArG0h\">sign up with this link we both get 5k extra managed for free</a>.</p>\n </div>",
+            "excerpt": "<p>The colors here have now gone blue for winter, and snow has started, thanks to the excellent Snow Fall plugin. I also wanted to congratulate Wealthfront on their IPO. Many on their team have been friends or advisors over the years, from David Fortunato responding to my email about their WordPress blog being on an [&hellip;]</p>\n",
+            "slug": "winter-fun",
+            "guid": "https://ma.tt/?p=150836",
+            "status": "publish",
+            "discussion": {
+                "comments_open": true,
+                "comment_status": "open",
+                "pings_open": true,
+                "ping_status": "open",
+                "comment_count": 0
+            },
+            "likes_enabled": true,
+            "sharing_enabled": true,
+            "like_count": 3,
+            "i_like": false,
+            "is_reblogged": false,
+            "is_following": true,
+            "global_ID": "a2d5bf47f7063b0cf94643fb94a8df18",
+            "featured_image": "",
+            "post_thumbnail": null,
+            "format": "aside",
+            "tags": {},
+            "categories": {
+                "Asides": {
+                    "ID": 33,
+                    "name": "Asides",
+                    "slug": "asides",
+                    "description": "Interesting links.",
+                    "post_count": 3012,
+                    "parent": 0,
+                    "meta": {
+                        "links": {
+                            "self": "https://public-api.wordpress.com/rest/v1.1/sites/1047865/categories/slug:asides",
+                            "help": "https://public-api.wordpress.com/rest/v1.2/sites/1047865/categories/slug:asides/help",
+                            "site": "https://public-api.wordpress.com/rest/v1.2/sites/1047865"
+                        }
+                    }
+                }
+            },
+            "attachments": {},
+            "attachment_count": 0,
+            "metadata": [],
+            "meta": {
+                "links": {
+                    "self": "https://public-api.wordpress.com/rest/v1.1/read/sites/1047865/posts/150836",
+                    "help": "https://public-api.wordpress.com/rest/v1.2/sites/1047865/posts/150836/help",
+                    "site": "https://public-api.wordpress.com/rest/v1.2/sites/1047865",
+                    "replies": "https://public-api.wordpress.com/rest/v1.1/sites/1047865/posts/150836/replies/",
+                    "likes": "https://public-api.wordpress.com/rest/v1.2/sites/1047865/posts/150836/likes/"
+                }
+            },
+            "feed_ID": 188407,
+            "feed_URL": "http://ma.tt/feed",
+            "pseudo_ID": "a2d5bf47f7063b0cf94643fb94a8df18",
+            "is_external": false,
+            "site_name": "Matt Mullenweg",
+            "site_URL": "http://ma.tt",
+            "site_is_private": false,
+            "site_icon": {
+                "img": "https://ma.tt/files/2024/01/cropped-matt-favicon.png?w=96",
+                "ico": "https://ma.tt/files/2024/01/cropped-matt-favicon.png?w=96"
+            },
+            "featured_media": {},
+            "is_subscribed_comments": false,
+            "can_subscribe_comments": true,
+            "subscribed_comments_notifications": false,
+            "publish_date_changed": false,
+            "use_excerpt": false,
+            "capabilities": {
+                "publish_post": false,
+                "delete_post": false,
+                "edit_post": false
+            }
+        },
+        {
+            "ID": 150817,
+            "site_ID": 1047865,
+            "author": {
+                "ID": 1,
+                "login": "matt",
+                "email": false,
+                "name": "Matt",
+                "first_name": "",
+                "last_name": "",
+                "nice_name": "saxmatt",
+                "URL": "http://ma.tt/",
+                "avatar_URL": "https://0.gravatar.com/avatar/33252cd1f33526af53580fcb1736172f06e6716f32afdd1be19ec3096d15dea5?s=96&d=retro&r=G",
+                "profile_URL": "https://gravatar.com/767fc9c115a1b989744c755db47feb60",
+                "site_ID": -1,
+                "has_avatar": true,
+                "wpcom_id": 5,
+                "wpcom_login": "matt"
+            },
+            "date": "2025-12-11T21:45:00-08:00",
+            "modified": "2025-12-12T00:09:27-08:00",
+            "title": "Aldeas",
+            "URL": "https://ma.tt/2025/12/aldeas/",
+            "short_URL": "https://wp.me/s4oB3-aldeas",
+            "content": "<div class=\"is-reader\">\n<p>Tonight was a lot of threads connecting for me. At <a href=\"https://automattic.space/\">Automattic’s Noho Space</a> we hosted an event for <a href=\"https://www.nytimes.com/2025/05/01/movies/martin-scorsese-pope-francis-documentary.html\">Martin Scorsese’s new documentary about Pope Francis, called Aldeas</a>. There was a point in my life when I wanted to become a priest, and I had been inspired by meeting a Franciscan seminary student. I took it very seriously and considered that as a path for my life, but some combination of jazz and girls made me realize that the priesthood was not my destiny.</p>\n\n\n\n<p>The jazz led to building websites for Houston jazz musicians, which led to coding, which led to WordPress, which after a lot of twists and turns led to <a href=\"https://ma.tt/2019/08/tumblr-the-day-after/\">Automattic acquiring Tumblr</a>. One of Tumblr’s <a href=\"https://en.wikipedia.org/wiki/Goncharov_(meme)\">greatest memes was Goncharov</a>, directed by Martin Scorsese. The only reason Automattic, as a distributed company, has an office in NYC is because of the Tumblr acquisition. The office is filled with art from Tumblr artists so I had the very surreal experience of talking after Martin Scorsese, who at 83 is sharp as a tack and a gifted speaker, a few feet away from a <a href=\"https://en.wikipedia.org/wiki/Goncharov_(meme)#/media/File:Goncharov-poster.png\">Goncharov poster</a> about how my Catholic upbringing led me down the path of starting WordPress, and how Pope Francis’ life inspired the <a href=\"https://wordpress.org/news/2025/04/jubilee/\">WordPress Jubilee</a> and <a href=\"https://ma.tt/2025/04/reflecting/\">reflection</a>. Full circle.</p>\n </div>",
+            "excerpt": "<p>Tonight was a lot of threads connecting for me. At Automattic’s Noho Space we hosted an event for Martin Scorsese’s new documentary about Pope Francis, called Aldeas. There was a point in my life when I wanted to become a priest, and I had been inspired by meeting a Franciscan seminary student. I took it [&hellip;]</p>\n",
+            "slug": "aldeas",
+            "guid": "https://ma.tt/?p=150817",
+            "status": "publish",
+            "discussion": {
+                "comments_open": true,
+                "comment_status": "open",
+                "pings_open": true,
+                "ping_status": "open",
+                "comment_count": 3
+            },
+            "likes_enabled": true,
+            "sharing_enabled": true,
+            "like_count": 7,
+            "i_like": false,
+            "is_reblogged": false,
+            "is_following": true,
+            "global_ID": "c767d70f619f6fdb43d8f0eab3fc081c",
+            "featured_image": "",
+            "post_thumbnail": null,
+            "format": "standard",
+            "tags": {},
+            "categories": {
+                "Asides": {
+                    "ID": 33,
+                    "name": "Asides",
+                    "slug": "asides",
+                    "description": "Interesting links.",
+                    "post_count": 3012,
+                    "parent": 0,
+                    "meta": {
+                        "links": {
+                            "self": "https://public-api.wordpress.com/rest/v1.1/sites/1047865/categories/slug:asides",
+                            "help": "https://public-api.wordpress.com/rest/v1.2/sites/1047865/categories/slug:asides/help",
+                            "site": "https://public-api.wordpress.com/rest/v1.2/sites/1047865"
+                        }
+                    }
+                }
+            },
+            "attachments": {},
+            "attachment_count": 0,
+            "metadata": [],
+            "meta": {
+                "links": {
+                    "self": "https://public-api.wordpress.com/rest/v1.1/read/sites/1047865/posts/150817",
+                    "help": "https://public-api.wordpress.com/rest/v1.2/sites/1047865/posts/150817/help",
+                    "site": "https://public-api.wordpress.com/rest/v1.2/sites/1047865",
+                    "replies": "https://public-api.wordpress.com/rest/v1.1/sites/1047865/posts/150817/replies/",
+                    "likes": "https://public-api.wordpress.com/rest/v1.2/sites/1047865/posts/150817/likes/"
+                }
+            },
+            "feed_ID": 188407,
+            "feed_URL": "http://ma.tt/feed",
+            "pseudo_ID": "c767d70f619f6fdb43d8f0eab3fc081c",
+            "is_external": false,
+            "site_name": "Matt Mullenweg",
+            "site_URL": "http://ma.tt",
+            "site_is_private": false,
+            "site_icon": {
+                "img": "https://ma.tt/files/2024/01/cropped-matt-favicon.png?w=96",
+                "ico": "https://ma.tt/files/2024/01/cropped-matt-favicon.png?w=96"
+            },
+            "featured_media": {},
+            "is_subscribed_comments": false,
+            "can_subscribe_comments": true,
+            "subscribed_comments_notifications": false,
+            "publish_date_changed": false,
+            "use_excerpt": false,
+            "capabilities": {
+                "publish_post": false,
+                "delete_post": false,
+                "edit_post": false
+            }
+        },
+        {
+            "ID": 150805,
+            "site_ID": 1047865,
+            "author": {
+                "ID": 1,
+                "login": "matt",
+                "email": false,
+                "name": "Matt",
+                "first_name": "",
+                "last_name": "",
+                "nice_name": "saxmatt",
+                "URL": "http://ma.tt/",
+                "avatar_URL": "https://0.gravatar.com/avatar/33252cd1f33526af53580fcb1736172f06e6716f32afdd1be19ec3096d15dea5?s=96&d=retro&r=G",
+                "profile_URL": "https://gravatar.com/767fc9c115a1b989744c755db47feb60",
+                "site_ID": -1,
+                "has_avatar": true,
+                "wpcom_id": 5,
+                "wpcom_login": "matt"
+            },
+            "date": "2025-12-10T19:40:56-08:00",
+            "modified": "2025-12-10T19:40:56-08:00",
+            "title": "Year-end",
+            "URL": "https://ma.tt/2025/12/year-end/",
+            "short_URL": "https://wp.me/p4oB3-Del",
+            "content": "<div class=\"is-reader\">\n<p><a href=\"https://2025inreview.tumblr.com/\">Tumblr has a fun 2025 in review</a>, and if you’re a <a href=\"https://pocketcasts.com/\">Pocket Casts</a> user open the app to see all your stats for your listening this year.</p>\n </div>",
+            "excerpt": "<p>Tumblr has a fun 2025 in review, and if you’re a Pocket Casts user open the app to see all your stats for your listening this year.</p>\n",
+            "slug": "year-end",
+            "guid": "https://ma.tt/?p=150805",
+            "status": "publish",
+            "discussion": {
+                "comments_open": true,
+                "comment_status": "open",
+                "pings_open": true,
+                "ping_status": "open",
+                "comment_count": 0
+            },
+            "likes_enabled": true,
+            "sharing_enabled": true,
+            "like_count": 4,
+            "i_like": false,
+            "is_reblogged": false,
+            "is_following": true,
+            "global_ID": "c94f14ffb29ba2119e2bf30fce713d48",
+            "featured_image": "",
+            "post_thumbnail": null,
+            "format": "link",
+            "tags": {},
+            "categories": {
+                "Asides": {
+                    "ID": 33,
+                    "name": "Asides",
+                    "slug": "asides",
+                    "description": "Interesting links.",
+                    "post_count": 3012,
+                    "parent": 0,
+                    "meta": {
+                        "links": {
+                            "self": "https://public-api.wordpress.com/rest/v1.1/sites/1047865/categories/slug:asides",
+                            "help": "https://public-api.wordpress.com/rest/v1.2/sites/1047865/categories/slug:asides/help",
+                            "site": "https://public-api.wordpress.com/rest/v1.2/sites/1047865"
+                        }
+                    }
+                }
+            },
+            "attachments": {},
+            "attachment_count": 0,
+            "metadata": [],
+            "meta": {
+                "links": {
+                    "self": "https://public-api.wordpress.com/rest/v1.1/read/sites/1047865/posts/150805",
+                    "help": "https://public-api.wordpress.com/rest/v1.2/sites/1047865/posts/150805/help",
+                    "site": "https://public-api.wordpress.com/rest/v1.2/sites/1047865",
+                    "replies": "https://public-api.wordpress.com/rest/v1.1/sites/1047865/posts/150805/replies/",
+                    "likes": "https://public-api.wordpress.com/rest/v1.2/sites/1047865/posts/150805/likes/"
+                }
+            },
+            "feed_ID": 188407,
+            "feed_URL": "http://ma.tt/feed",
+            "pseudo_ID": "c94f14ffb29ba2119e2bf30fce713d48",
+            "is_external": false,
+            "site_name": "Matt Mullenweg",
+            "site_URL": "http://ma.tt",
+            "site_is_private": false,
+            "site_icon": {
+                "img": "https://ma.tt/files/2024/01/cropped-matt-favicon.png?w=96",
+                "ico": "https://ma.tt/files/2024/01/cropped-matt-favicon.png?w=96"
+            },
+            "featured_media": {},
+            "is_subscribed_comments": false,
+            "can_subscribe_comments": true,
+            "subscribed_comments_notifications": false,
+            "publish_date_changed": false,
+            "use_excerpt": false,
+            "capabilities": {
+                "publish_post": false,
+                "delete_post": false,
+                "edit_post": false
+            }
+        },
+        {
+            "ID": 150795,
+            "site_ID": 1047865,
+            "author": {
+                "ID": 1,
+                "login": "matt",
+                "email": false,
+                "name": "Matt",
+                "first_name": "",
+                "last_name": "",
+                "nice_name": "saxmatt",
+                "URL": "http://ma.tt/",
+                "avatar_URL": "https://0.gravatar.com/avatar/33252cd1f33526af53580fcb1736172f06e6716f32afdd1be19ec3096d15dea5?s=96&d=retro&r=G",
+                "profile_URL": "https://gravatar.com/767fc9c115a1b989744c755db47feb60",
+                "site_ID": -1,
+                "has_avatar": true,
+                "wpcom_id": 5,
+                "wpcom_login": "matt"
+            },
+            "date": "2025-12-09T19:13:28-08:00",
+            "modified": "2025-12-09T19:13:28-08:00",
+            "title": "Dries OSS",
+            "URL": "https://ma.tt/2025/12/dries-oss/",
+            "short_URL": "https://wp.me/p4oB3-Deb",
+            "content": "<div class=\"is-reader\">\n<blockquote class=\"wp-block-quote is-layout-flow wp-block-quote-is-layout-flow\" style=\"box-sizing: border-box; overflow-wrap: break-word; border-left: .25em solid; margin: 0 0 1.75em; padding-left: 1em;\">\n<p>A more accurate framing would be that Fizzy is <a href=\"https://en.wikipedia.org/wiki/Source-available_software\">source available</a>. You can read it, run it, and modify it. But DHH’s company is keeping the SaaS rights because they want to be able to build a sustainable business. That is defensible and generous, but it is <em>not</em> open source.</p>\n</blockquote>\n\n\n\n<p>Dries Buytaert follows up <a href=\"https://ma.tt/2025/12/dhh-open-source/\">on my response to DHH</a> with <a href=\"https://dri.es/source-available-is-not-open-source-and-that-is-okay\">‘Source available’ is not open source (and that’s okay)</a>.</p>\n </div>",
+            "excerpt": "<p>A more accurate framing would be that Fizzy is source available. You can read it, run it, and modify it. But DHH’s company is keeping the SaaS rights because they want to be able to build a sustainable business. That is defensible and generous, but it is not open source. Dries Buytaert follows up on my response to [&hellip;]</p>\n",
+            "slug": "dries-oss",
+            "guid": "https://ma.tt/?p=150795",
+            "status": "publish",
+            "discussion": {
+                "comments_open": true,
+                "comment_status": "open",
+                "pings_open": true,
+                "ping_status": "open",
+                "comment_count": 0
+            },
+            "likes_enabled": true,
+            "sharing_enabled": true,
+            "like_count": 3,
+            "i_like": false,
+            "is_reblogged": false,
+            "is_following": true,
+            "global_ID": "f8331a491ff29dfb3e871c4d1dc78c9d",
+            "featured_image": "",
+            "post_thumbnail": null,
+            "format": "quote",
+            "tags": {},
+            "categories": {
+                "Asides": {
+                    "ID": 33,
+                    "name": "Asides",
+                    "slug": "asides",
+                    "description": "Interesting links.",
+                    "post_count": 3012,
+                    "parent": 0,
+                    "meta": {
+                        "links": {
+                            "self": "https://public-api.wordpress.com/rest/v1.1/sites/1047865/categories/slug:asides",
+                            "help": "https://public-api.wordpress.com/rest/v1.2/sites/1047865/categories/slug:asides/help",
+                            "site": "https://public-api.wordpress.com/rest/v1.2/sites/1047865"
+                        }
+                    }
+                }
+            },
+            "attachments": {},
+            "attachment_count": 0,
+            "metadata": [],
+            "meta": {
+                "links": {
+                    "self": "https://public-api.wordpress.com/rest/v1.1/read/sites/1047865/posts/150795",
+                    "help": "https://public-api.wordpress.com/rest/v1.2/sites/1047865/posts/150795/help",
+                    "site": "https://public-api.wordpress.com/rest/v1.2/sites/1047865",
+                    "replies": "https://public-api.wordpress.com/rest/v1.1/sites/1047865/posts/150795/replies/",
+                    "likes": "https://public-api.wordpress.com/rest/v1.2/sites/1047865/posts/150795/likes/"
+                }
+            },
+            "feed_ID": 188407,
+            "feed_URL": "http://ma.tt/feed",
+            "pseudo_ID": "f8331a491ff29dfb3e871c4d1dc78c9d",
+            "is_external": false,
+            "site_name": "Matt Mullenweg",
+            "site_URL": "http://ma.tt",
+            "site_is_private": false,
+            "site_icon": {
+                "img": "https://ma.tt/files/2024/01/cropped-matt-favicon.png?w=96",
+                "ico": "https://ma.tt/files/2024/01/cropped-matt-favicon.png?w=96"
+            },
+            "featured_media": {},
+            "is_subscribed_comments": false,
+            "can_subscribe_comments": true,
+            "subscribed_comments_notifications": false,
+            "publish_date_changed": false,
+            "use_excerpt": false,
+            "capabilities": {
+                "publish_post": false,
+                "delete_post": false,
+                "edit_post": false
+            }
+        }
+    ]
+}
