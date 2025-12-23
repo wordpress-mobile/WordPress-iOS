@@ -23,7 +23,7 @@ extension DateInterval {
         if totalDays <= 1 {
             return .hour
         }
-        // For ranges 2-31 days: show daily data (2-90 points)
+        // For ranges 2-31 days: show daily data (2-31 points)
         else if totalDays <= 31 {
             return .day
         }

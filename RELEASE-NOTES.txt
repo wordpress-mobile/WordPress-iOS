@@ -19,6 +19,8 @@
 * [*] Techical: Remove obsolete Core Data models to slightly reduce the app size (-6.4 MB) [#25124]
 
 
+* [*] Stats: Add days/weeks/months/years picker for bar and line charts [#25093]
+* [*] Stats: Fix an issue with weekly data for the comparison period sometimes not being shown correctly [#25093]
 
 26.5
 -----
