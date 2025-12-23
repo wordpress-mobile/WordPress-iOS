@@ -180,14 +180,20 @@ struct ChartCard: View {
 
     @ViewBuilder
     private var moreMenuContent: some View {
+        chartTypeSection
+        granularitySection
+        dataSection
+        EditCardMenuContent(cardViewModel: viewModel)
+    }
+
+    private var chartTypeSection: some View {
         Section {
             ControlGroup {
-                ForEach(ChartType.allCases, id: \.self) { type in
+                ForEach(ChartType.allCases) { type in
                     Button {
                         let previousType = viewModel.selectedChartType
                         viewModel.selectedChartType = type
 
-                        // Track chart type change
                         viewModel.tracker?.send(.chartTypeChanged, properties: [
                             "from_type": previousType.rawValue,
                             "to_type": type.rawValue
@@ -198,6 +204,39 @@ struct ChartCard: View {
                 }
             }
         }
+    }
+
+    private var granularitySection: some View {
+        Section {
+            Menu {
+                granularityButton(for: nil)
+                let options: [DateRangeGranularity] = [.day, .week, .month, .year]
+                ForEach(options) { granularity in
+                    granularityButton(for: granularity)
+                }
+            } label: {
+                Label(viewModel.effectiveGranularity.localizedTitle, systemImage: "calendar")
+            }
+        }
+    }
+
+    private func granularityButton(for granularity: DateRangeGranularity?) -> some View {
+        Button {
+            let previousGranularity = viewModel.selectedGranularity
+            viewModel.selectedGranularity = granularity
+            viewModel.tracker?.send(.chartGranularityChanged, properties: [
+                "from": previousGranularity?.analyticsName ?? "automatic",
+                "to": granularity?.analyticsName ?? "automatic"
+            ])
+        } label: {
+            Label(
+                granularity?.localizedTitle ?? Strings.Granularity.automatic,
+                systemImage: viewModel.selectedGranularity == granularity ? "checkmark" : ""
+            )
+        }
+    }
+
+    private var dataSection: some View {
         Section {
             Button {
                 isShowingRawData = true
@@ -208,7 +247,6 @@ struct ChartCard: View {
                 Label(Strings.Buttons.learnMore, systemImage: "info.circle")
             }
         }
-        EditCardMenuContent(cardViewModel: viewModel)
     }
 
     // MARK: - Chart View
@@ -276,9 +314,11 @@ private struct CardGradientBackground: View {
     }
 }
 
-public enum ChartType: String, CaseIterable, Codable {
+public enum ChartType: String, CaseIterable, Identifiable, Codable {
     case line
     case columns
+
+    public var id: String { rawValue }
 
     var localizedTitle: String {
         switch self {

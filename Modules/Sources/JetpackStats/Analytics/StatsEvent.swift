@@ -83,6 +83,12 @@ public enum StatsEvent {
     ///   - "to_type": New chart type
     case chartTypeChanged
 
+    /// Chart granularity changed
+    /// - Parameters:
+    ///   - "from": Previous granularity (e.g., "day", "week", "automatic")
+    ///   - "to": New granularity
+    case chartGranularityChanged
+
     /// Chart metric selected
     /// - Parameters:
     ///   - "metric": The metric selected (e.g., "visitors", "views", "likes")
@@ -197,6 +203,19 @@ extension SiteMetric {
         case .timeOnSite: "time_on_site"
         case .bounceRate: "bounce_rate"
         case .downloads: "downloads"
+        }
+    }
+}
+
+extension DateRangeGranularity {
+    /// Analytics tracking name for the granularity
+    var analyticsName: String {
+        switch self {
+        case .hour: "hour"
+        case .day: "day"
+        case .week: "week"
+        case .month: "month"
+        case .year: "year"
         }
     }
 }

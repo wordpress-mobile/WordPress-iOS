@@ -31,6 +31,15 @@ enum Strings {
         static let year = AppLocalizedString("jetpackStats.calendar.year", value: "Year", comment: "Year time period")
     }
 
+    enum Granularity {
+        static let automatic = AppLocalizedString("jetpackStats.granularity.automatic", value: "Automatic", comment: "Automatic granularity option")
+        static let hour = AppLocalizedString("jetpackStats.granularity.hours", value: "Hours", comment: "Hours granularity option")
+        static let day = AppLocalizedString("jetpackStats.granularity.days", value: "Days", comment: "Days granularity option")
+        static let week = AppLocalizedString("jetpackStats.granularity.weeks", value: "Weeks", comment: "Weeks granularity option")
+        static let month = AppLocalizedString("jetpackStats.granularity.months", value: "Months", comment: "Months granularity option")
+        static let year = AppLocalizedString("jetpackStats.granularity.years", value: "Years", comment: "Years granularity option")
+    }
+
     enum SiteMetrics {
         static let views = AppLocalizedString("jetpackStats.siteMetrics.views", value: "Views", comment: "Site views metric")
         static let visitors = AppLocalizedString("jetpackStats.siteMetrics.visitors", value: "Visitors", comment: "Site visitors metric")
@@ -113,6 +122,7 @@ enum Strings {
         static let incompleteData = AppLocalizedString("jetpackStats.chart.incompleteData", value: "Might show incomplete data", comment: "Shown when current period data might be incomplete")
         static let hourlyDataUnavailable = AppLocalizedString("jetpackStats.chart.hourlyDataNotAvailable", value: "Hourly data not available", comment: "Shown for metrics that don't support hourly data")
         static let empty = AppLocalizedString("jetpackStats.chart.dataEmpty", value: "No data for period", comment: "Shown for empty states")
+        static let granularity = AppLocalizedString("jetpackStats.chart.granularity", value: "Granularity", comment: "Granularity picker label")
     }
 
     enum TopListTitles {

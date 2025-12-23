@@ -657,6 +657,7 @@ import WordPressShared
     case jetpackStatsChartTypeChanged
     case jetpackStatsChartMetricSelected
     case jetpackStatsChartBarSelected
+    case jetpackStatsChartGranularityChanged
 
     // Today
     case jetpackStatsTodayCardTapped
@@ -1805,6 +1806,8 @@ import WordPressShared
             return "jetpack_stats_chart_metric_selected"
         case .jetpackStatsChartBarSelected:
             return "jetpack_stats_chart_bar_selected"
+        case .jetpackStatsChartGranularityChanged:
+            return "jetpack_stats_chart_granularity_changed"
 
         // Today
         case .jetpackStatsTodayCardTapped:
