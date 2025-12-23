@@ -183,11 +183,8 @@ final class ChartCardViewModel: ObservableObject, TrafficCardViewModel {
             // Map previous data to align with current period dates so they
             // are displayed on the same timeline on the charts.
             let mappedPreviousDataPoints = DataPoint.mapDataPoints(
-                previousDataPoints,
-                from: dateRange.effectiveComparisonInterval,
-                to: dateRange.dateInterval,
-                component: dateRange.component,
-                calendar: dateRange.calendar
+                currentData: dataPoints,
+                previousData: previousDataPoints
             )
 
             output[metric] = ChartData(

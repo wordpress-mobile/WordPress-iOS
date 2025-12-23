@@ -12,27 +12,20 @@ struct DataPoint: Identifiable, Sendable {
 
 extension DataPoint {
     /// Maps previous period data points to align with current period dates.
+    /// Takes the dates from current data and replaces values with corresponding previous data values.
+    /// Arrays are aligned from the end - if lengths differ, the beginning of the longer array is skipped.
     /// - Parameters:
-    ///   - previousData: The data points from the previous period
-    ///   - from: The date interval of the previous period
-    ///   - to: The date interval of the current period
-    ///   - component: The calendar component to use for date calculations
-    ///   - calendar: The calendar to use for date calculations
-    /// - Returns: An array of data points with dates shifted to align with the current period
+    ///   - currentData: The data points from the current period (provides dates)
+    ///   - previousData: The data points from the previous period (provides values)
+    /// - Returns: An array of data points with current dates and previous values
     static func mapDataPoints(
-        _ dataPoits: [DataPoint],
-        from: DateInterval,
-        to: DateInterval,
-        component: Calendar.Component,
-        calendar: Calendar
+        currentData: [DataPoint],
+        previousData: [DataPoint]
     ) -> [DataPoint] {
-        let offset = calendar.dateComponents([component], from: from.start, to: to.start).value(for: component) ?? 0
-        return dataPoits.map { dataPoint in
-            DataPoint(
-                date: calendar.date(byAdding: component, value: offset, to: dataPoint.date) ?? dataPoint.date,
-                value: dataPoint.value
-            )
-        }
+        // reversing to align by the last item in case there is a mismatch in the number of items
+        zip(currentData.reversed(), previousData.reversed()).map { current, previous in
+            DataPoint(date: current.date, value: previous.value)
+        }.reversed()
     }
 
     static func getTotalValue(for dataPoints: [DataPoint], metric: SiteMetric) -> Int? {
