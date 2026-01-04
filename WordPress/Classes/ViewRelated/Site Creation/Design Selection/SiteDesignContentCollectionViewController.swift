@@ -182,6 +182,24 @@ class SiteDesignContentCollectionViewController: CollapsableHeaderViewController
         fetchSiteDesigns()
 
         // Disable the button temporarily during the transition animation.
+        //
+        // Relates to https://linear.app/a8c/issue/CMM-1059
+        //
+        // The first couple of steps of the site creation process have a "Skip" button, which is
+        // placed at the same position as `rightBarButtonItem`.
+        // When users double-tap the "Skip" button, the first tap event is passed to the displaying
+        // view controller which pushes another view controller as the next step, and the second
+        // event is passed to the new step which executes the "skip" code again.
+        // This means double-tapping "Skip" skips two steps at the same time, which is not handled
+        // correctly by `WizardNavigation.nextStep` and causes a crash.
+        //
+        // Here we disable the skip button during transition to prevent the new step from receiving
+        // the second tap event.
+        //
+        // An alternative is to fix the `WizardNavigation.nextStep` function to allow skipping
+        // multiple steps at the same time. But I don't think that's a UX we want, because when
+        // double-tapping the "Skip" button on screen, the user does not know what the next steps
+        // are, and it does not make sense to skip them all together.
         navigationItem.rightBarButtonItem?.isEnabled = false
     }
 
