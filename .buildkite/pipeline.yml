@@ -37,6 +37,7 @@ steps:
         depends_on: ~
 
       - label: ":eyeglasses: Reader one-off TestFlight Upload"
+        key: testflight_upload_reader
         depends_on: [build_asc_reader, testflight_triggered_reader]
         command: |
           if .buildkite/commands/should-skip-job.sh --job-type build; then
@@ -208,6 +209,9 @@ steps:
   - wait: ~
     continue_on_failure: true
     allow_dependency_failure: true
+    depends_on:
+      - step: testflight_upload_reader
+        allow_failure: true
 
   - label: ":claude: 🕵️ Check for Build Failures and Run Claude Analysis"
     command: |
