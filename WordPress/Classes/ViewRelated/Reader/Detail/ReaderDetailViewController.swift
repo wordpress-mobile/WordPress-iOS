@@ -782,8 +782,10 @@ class ReaderDetailViewController: UIViewController, ReaderDetailView {
                 try await actuallyTranslatePost()
             } catch {
                 isTranslationAvailable = true
-                Notice(error: error).post()
-                UINotificationFeedbackGenerator().notificationOccurred(.error)
+                if !(error is CancellationError) {
+                    Notice(error: error).post()
+                    UINotificationFeedbackGenerator().notificationOccurred(.error)
+                }
                 DDLogError("Translation failed: \(error)")
             }
         }

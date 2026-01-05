@@ -66,7 +66,11 @@ public final class TranslationViewModel: ObservableObject {
             }
             finish(with: .success(output))
         } catch {
-            finish(with: .failure(error))
+            if (error as NSError).domain == NSCocoaErrorDomain && (error as NSError).code == NSUserCancelledError {
+                finish(with: .failure(CancellationError()))
+            } else {
+                finish(with: .failure(error))
+            }
         }
     }
 
