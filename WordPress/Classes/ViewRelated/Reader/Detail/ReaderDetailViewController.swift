@@ -814,19 +814,17 @@ class ReaderDetailViewController: UIViewController, ReaderDetailView {
         // Create blur effect
         let blurEffect = UIBlurEffect(style: .light)
         let blurView = UIVisualEffectView(effect: nil)
-        blurView.frame = webView.bounds
+        blurView.frame = view.bounds
         blurView.autoresizingMask = [.flexibleWidth, .flexibleHeight]
-        webView.addSubview(blurView)
+        view.addSubview(blurView)
 
-        UIView.animate(withDuration: 0.33, delay: 0, options: .curveEaseIn) {
+        UIView.animate(withDuration: 0.25, delay: 0, options: .curveEaseIn) {
             blurView.effect = blurEffect
-            self.webView.alpha = 1.0
+        }
+        UIView.animate(withDuration: 0.25, delay: 0.15, options: .curveEaseOut) {
+            blurView.effect = nil
         } completion: { _ in
-            UIView.animate(withDuration: 0.33, delay: 0.33, options: .curveEaseOut) {
-                blurView.effect = nil
-            } completion: { _ in
-                blurView.removeFromSuperview()
-            }
+            blurView.removeFromSuperview()
         }
 
         header.configure(for: post, title: translationResults[0])
