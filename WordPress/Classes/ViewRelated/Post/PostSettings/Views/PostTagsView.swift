@@ -144,7 +144,10 @@ struct PostTagsView: View {
             let tagToAdd = components[index].trim()
             if !tagToAdd.isEmpty {
                 withAnimation(.easeInOut(duration: 0.2)) {
-                    viewModel.addNewTag(named: tagToAdd)
+                    // Create a new tag in the background, which is consistent with the web editor.
+                    _ = Task {
+                        await viewModel.addNewTag(named: tagToAdd)
+                    }
                 }
             }
         }
@@ -158,7 +161,10 @@ struct PostTagsView: View {
         let trimmedText = viewModel.searchText.trim()
         if !trimmedText.isEmpty {
             withAnimation(.easeInOut(duration: 0.2)) {
-                viewModel.addNewTag(named: trimmedText)
+                // Create a new tag in the background, which is consistent with the web editor.
+                _ = Task {
+                    await viewModel.addNewTag(named: trimmedText)
+                }
             }
             viewModel.searchText = ""
         }
