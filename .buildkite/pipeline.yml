@@ -207,6 +207,7 @@ steps:
   #################
   - wait: ~
     continue_on_failure: true
+    allow_dependency_failure: true
 
   - label: ":claude: 🕵️ Check for Build Failures and Run Claude Analysis"
     command: |
