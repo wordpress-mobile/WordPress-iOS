@@ -4,10 +4,11 @@ import WebKit
 import Translation
 import NaturalLanguage
 import Combine
+import WordPressShared
 
 @available(iOS 26, *)
 @MainActor
-public class TranslationViewModel: ObservableObject {
+public final class TranslationViewModel: ObservableObject {
     @Published var configuration: TranslationSession.Configuration?
 
     private var content: [String] = []
@@ -28,10 +29,9 @@ public class TranslationViewModel: ObservableObject {
     /// This method detects the source language automatically and translates each string
     /// in the content array independently.
     public func translate(_ content: [String], to targetLanguage: Locale.Language = Locale.current.language) async throws -> [String] {
-        // Store content for translation session
-        self.content = content
+        wpAssert(continuation == nil, "Translation in progress")
 
-        // Use continuation to wait for translation result
+        self.content = content
         return try await withCheckedThrowingContinuation { continuation in
             self.continuation = continuation
 
