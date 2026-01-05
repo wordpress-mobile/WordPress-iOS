@@ -28,7 +28,11 @@ public final class TranslationViewModel: ObservableObject {
     ///
     /// This method detects the source language automatically and translates each string
     /// in the content array independently.
-    public func translate(_ content: [String], to targetLanguage: Locale.Language = Locale.current.language) async throws -> [String] {
+    public func translate(
+        _ content: [String],
+        from source: Locale.Language? = nil,
+        to target: Locale.Language = Locale.current.language
+    ) async throws -> [String] {
         wpAssert(continuation == nil, "Translation in progress")
 
         self.content = content
@@ -41,25 +45,30 @@ public final class TranslationViewModel: ObservableObject {
                 // in the Translation framework.
                 self.configuration?.invalidate()
             } else {
-                self.configuration = TranslationSession.Configuration(source: nil, target: targetLanguage)
+                self.configuration = TranslationSession.Configuration(source: source, target: target)
             }
         }
     }
 
     /// Check if translation is available for the given content.
-    public func isTranslationAvailable(for content: String, to targetLanguage: Locale.Language = Locale.current.language) async -> Bool {
+    public func checkAvailability(for content: String, to targetLanguage: Locale.Language = Locale.current.language) async -> TranslationAvailability {
         // Important. The `Translation` framework is effective at translating
         // HTML, but the `status(...)` method and `NLLanguageRecognizer`
         // incorrectly identify dominant langauge as English if a post has a
         // signifcant amount of HTML tags and/or CSS styles.
         let content = (try? ContentExtractor.extractRelevantText(from: content)) ?? content
-        do {
-            let availability = LanguageAvailability()
-            let status = try await availability.status(for: content, to: targetLanguage)
-            return status == .installed || status == .supported
-        } catch {
-            return false
+
+        guard let identifier = IntelligenceService.detectLanguage(from: content) else {
+            return .unavailable
         }
+        let sourceLanguage = Locale.Language(identifier: identifier)
+
+        let availability = LanguageAvailability()
+        let status = await availability.status(from: sourceLanguage, to: targetLanguage)
+        guard status == .installed || status == .supported else {
+            return .unavailable
+        }
+        return .available(sourceLanguage: sourceLanguage, targetLanguage: targetLanguage)
     }
 
     fileprivate func performTranslation(session: TranslationSession) async {
@@ -87,6 +96,11 @@ public final class TranslationViewModel: ObservableObject {
             continuation.resume(with: result)
         }
     }
+}
+
+public enum TranslationAvailability {
+    case unavailable
+    case available(sourceLanguage: Locale.Language, targetLanguage: Locale.Language)
 }
 
 // MARK: - TranslationHostView (SwiftUI)

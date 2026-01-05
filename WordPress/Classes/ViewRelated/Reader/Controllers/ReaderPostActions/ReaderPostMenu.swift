@@ -136,7 +136,7 @@ struct ReaderPostMenu {
     private var translate: UIAction? {
         guard #available(iOS 26, *),
               let detailVC = viewController as? ReaderDetailViewController,
-              detailVC.isTranslationAvailable else {
+              case .available = detailVC.translationAvailability else {
             return nil
         }
 

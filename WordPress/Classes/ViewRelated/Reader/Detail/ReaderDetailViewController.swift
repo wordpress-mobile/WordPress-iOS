@@ -184,7 +184,8 @@ class ReaderDetailViewController: UIViewController, ReaderDetailView {
     }()
 
     private var translationAvailabilityTask: Task<Void, Never>?
-    var isTranslationAvailable = false
+    private var isTranslating = false
+    var translationAvailability: TranslationAvailability = .unavailable
 
     private lazy var translationSpinner: UIBarButtonItem = {
         let activityIndicator = UIActivityIndicatorView(style: .medium)
@@ -761,27 +762,24 @@ class ReaderDetailViewController: UIViewController, ReaderDetailView {
             return
         }
         translationAvailabilityTask?.cancel()
-        translationAvailabilityTask = Task { @MainActor in
-            self.isTranslationAvailable = await self.checkIsTranslationAvailable()
+        translationAvailabilityTask = Task { @MainActor [weak self] in
+            await self?.updateTranslationAvailability()
         }
     }
 
     @available(iOS 26, *)
-    private func checkIsTranslationAvailable() async -> Bool {
-        guard let post, let content = post.contentForDisplay() else {
-            return false
+    private func updateTranslationAvailability() async {
+        if let post, let content = post.contentForDisplay() {
+            translationAvailability = await translationViewModel.checkAvailability(for: content)
         }
-        return await translationViewModel.isTranslationAvailable(for: content)
     }
 
     @available(iOS 26, *)
     func translatePost() {
         Task { @MainActor in
             do {
-                isTranslationAvailable = false
                 try await actuallyTranslatePost()
             } catch {
-                isTranslationAvailable = true
                 if !(error is CancellationError) {
                     Notice(error: error).post()
                     UINotificationFeedbackGenerator().notificationOccurred(.error)
@@ -794,15 +792,23 @@ class ReaderDetailViewController: UIViewController, ReaderDetailView {
     @available(iOS 26, *)
     @MainActor
     private func actuallyTranslatePost() async throws {
-        guard let post else { return }
-
+        guard let post, case let .available(source, target) = translationAvailability else {
+            return
+        }
+        guard !isTranslating else {
+            return
+        }
+        isTranslating = true
         showTranslationSpinner()
         defer {
+            isTranslating = false
             hideTranslationSpinner()
         }
 
         let translationResults = try await translationViewModel.translate(
             [post.postTitle ?? "", post.content ?? ""],
+            from: source,
+            to: target
         )
 
         // Create blur effect
