@@ -44,20 +44,19 @@ class TagsViewModel: ObservableObject {
         return false
     }
 
-    init(blog: Blog, selectedTags: String? = nil, mode: TagsViewMode) {
-        self.taxonomy = nil
-        self.tagsService = TagsService(blog: blog)
-        self.mode = mode
-        self.labels = TaxonomyLocalizedLabels.tag
-        self.selectedTags = AbstractPost.makeTags(from: selectedTags ?? "")
-        self.selectedTagsSet = Set(self.selectedTags.map { $0.lowercased() })
+    convenience init(blog: Blog, selectedTags: String? = nil, mode: TagsViewMode) {
+        self.init(taxonomy: nil, service: TagsService(blog: blog), selectedTerms: selectedTags, mode: mode)
     }
 
-    init(blog: Blog, client: WordPressClient, taxonomy: SiteTaxonomy, selectedTerms: String? = nil, mode: TagsViewMode) {
+    convenience init(blog: Blog, client: WordPressClient, taxonomy: SiteTaxonomy, selectedTerms: String? = nil, mode: TagsViewMode) {
+        self.init(taxonomy: taxonomy, service: AnyTermService(client: client, endpoint: taxonomy.endpoint), selectedTerms: selectedTerms, mode: mode)
+    }
+
+    init(taxonomy: SiteTaxonomy?, service: TaxonomyServiceProtocol, selectedTerms: String? = nil, mode: TagsViewMode) {
         self.taxonomy = taxonomy
-        self.tagsService = AnyTermService(client: client, endpoint: taxonomy.endpoint)
+        self.tagsService = service
         self.mode = mode
-        self.labels = TaxonomyLocalizedLabels.from(taxonomy: taxonomy)
+        self.labels = taxonomy.flatMap(TaxonomyLocalizedLabels.from(taxonomy:)) ?? TaxonomyLocalizedLabels.tag
         self.selectedTags = AbstractPost.makeTags(from: selectedTerms ?? "")
         self.selectedTagsSet = Set(self.selectedTags.map { $0.lowercased() })
     }
