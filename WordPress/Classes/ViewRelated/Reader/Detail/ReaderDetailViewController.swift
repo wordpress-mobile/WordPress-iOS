@@ -796,8 +796,10 @@ class ReaderDetailViewController: UIViewController, ReaderDetailView {
     private func actuallyTranslatePost() async throws {
         guard let post else { return }
 
-        // Show spinner in navigation bar
         showTranslationSpinner()
+        defer {
+            hideTranslationSpinner()
+        }
 
         let translationResults = try await translationViewModel.translate(
             [post.postTitle ?? "", post.content ?? ""],
@@ -810,25 +812,23 @@ class ReaderDetailViewController: UIViewController, ReaderDetailView {
         blurView.autoresizingMask = [.flexibleWidth, .flexibleHeight]
         webView.addSubview(blurView)
 
-        // Fast blur in
         UIView.animate(withDuration: 0.33, delay: 0, options: .curveEaseIn) {
             blurView.effect = blurEffect
             self.webView.alpha = 1.0
-        }
-
-        // Update the UI with translated content
-        header.configure(for: post, title: translationResults[0])
-        try await webView.setBodyHTML(translationResults[1])
-
-        // Blur out
-        UIView.animate(withDuration: 0.33, delay: 0, options: .curveEaseOut) {
-            blurView.effect = nil
         } completion: { _ in
-            blurView.removeFromSuperview()
+            UIView.animate(withDuration: 0.33, delay: 0.33, options: .curveEaseOut) {
+                blurView.effect = nil
+            } completion: { _ in
+                blurView.removeFromSuperview()
+            }
         }
 
-        // Hide spinner in navigation bar
-        hideTranslationSpinner()
+        header.configure(for: post, title: translationResults[0])
+        do {
+            try await webView.setBodyHTML(translationResults[1])
+        } catch {
+            DDLogError("Failed to set HTML: \(error)")
+        }
     }
 
     private func configureRelatedPosts() {

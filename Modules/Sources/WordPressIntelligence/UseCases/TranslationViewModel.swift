@@ -36,7 +36,13 @@ public final class TranslationViewModel: ObservableObject {
             self.continuation = continuation
 
             // This will trigger the .translationTask in TranslationHostView
-            self.configuration = TranslationSession.Configuration(source: nil, target: targetLanguage)
+            if self.configuration != nil {
+                // Yes, this is how you restart translation with the existing configuration
+                // in the Translation framework.
+                self.configuration?.invalidate()
+            } else {
+                self.configuration = TranslationSession.Configuration(source: nil, target: targetLanguage)
+            }
         }
     }
 
@@ -75,7 +81,6 @@ public final class TranslationViewModel: ObservableObject {
     }
 
     private func finish(with result: Result<[String], Error>) {
-        configuration = nil
         content = []
         if let continuation {
             self.continuation = nil
