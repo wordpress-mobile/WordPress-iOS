@@ -33,8 +33,8 @@ class PostRepositoryPostsListTests: CoreDataTestCase {
         stubGetPostsList(type: "post", total: 15)
 
         // When fetching all of the posts
-        let firstPage = try await repository.paginate(type: Post.self, statuses: [.publish], offset: 0, number: 10, in: blogID)
-        let secondPage = try await repository.paginate(type: Post.self, statuses: [.publish], offset: 10, number: 10, in: blogID)
+        let firstPage = try await repository.paginate(type: Post.self, statuses: [.publish], orderBy: .byDate, descending: true, offset: 0, number: 10, in: blogID)
+        let secondPage = try await repository.paginate(type: Post.self, statuses: [.publish], orderBy: .byDate, descending: true, offset: 10, number: 10, in: blogID)
 
         XCTAssertEqual(firstPage.count, 10)
         XCTAssertEqual(secondPage.count, 5)
@@ -49,7 +49,7 @@ class PostRepositoryPostsListTests: CoreDataTestCase {
         stubGetPostsList(type: "post", total: 15)
 
         // When fetching all of the posts
-        let _ = try await repository.paginate(type: Post.self, statuses: [.publish], offset: 0, number: 15, in: blogID)
+        let _ = try await repository.paginate(type: Post.self, statuses: [.publish], orderBy: .byDate, descending: true, offset: 0, number: 15, in: blogID)
 
         // There should 15 posts saved locally before performing search
         var total = await contextManager.performQuery { $0.countObjects(ofType: Post.self) }
