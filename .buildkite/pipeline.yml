@@ -201,3 +201,16 @@ steps:
       - label: ":sleuth_or_spy: Lint Localized Strings Format"
         command: .buildkite/commands/lint-localized-strings-format.sh
         plugins: [$CI_TOOLKIT_PLUGIN]
+
+  #################
+  # Claude Build Analysis - dynamically uploaded so Build result conditions evaluate at runtime after the wait
+  #################
+  - wait: ~
+    continue_on_failure: true
+
+  - label: ":claude: 🕵️ Check for Build Failures and Run Claude Analysis"
+    command: |
+      source .buildkite/shared-pipeline-vars
+      buildkite-agent pipeline upload .buildkite/claude-analysis.yml
+    agents:
+      queue: upload
