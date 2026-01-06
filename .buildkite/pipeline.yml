@@ -54,6 +54,7 @@ steps:
   # Create Prototype Builds for WP and JP
   #################
   - group: "🛠 Prototype Builds"
+    key: prototype_builds_group
     steps:
       - label: "🛠 WordPress Prototype Build"
         command: ".buildkite/commands/prototype-build-wordpress.sh"
@@ -96,6 +97,7 @@ steps:
   # Run Unit Tests
   #################
   - group: "🔬 Unit Tests"
+    key: unit_tests_group
     steps:
       - label: "🔬 :wordpress: Unit Tests"
         command: ".buildkite/commands/run-unit-tests.sh"
@@ -140,6 +142,7 @@ steps:
   # UI Tests
   #################
   - group: "🔬 UI Tests"
+    key: ui_tests_group
     steps:
       - label: "🔬 :jetpack: UI Tests (iPhone)"
         command: .buildkite/commands/run-ui-tests.sh 'iPhone 17'
@@ -169,6 +172,7 @@ steps:
   # Linters
   #################
   - group: "Linters"
+    key: linters_group
     steps:
       - label: "☢️ Danger - PR Check"
         command: danger
@@ -206,16 +210,18 @@ steps:
   #################
   # Claude Build Analysis - dynamically uploaded so Build result conditions evaluate at runtime after the wait
   #################
-  - wait: ~
-    continue_on_failure: true
-    allow_dependency_failure: true
-    depends_on:
-      - step: testflight_upload_reader
-        allow_failure: true
-
   - label: ":claude: 🕵️ Check for Build Failures and Run Claude Analysis"
     command: |
       source .buildkite/shared-pipeline-vars
       buildkite-agent pipeline upload .buildkite/claude-analysis.yml
+    # Add specific group dependencies. Using a `wait` step wouldn't work as it would never start given the prompt block
+    depends_on:
+      - build_asc_reader
+      - linters_group
+      - prototype_builds_group
+      - unit_tests_group
+      - ui_tests_group
+    allow_dependency_failure: true
     agents:
       queue: upload
+
