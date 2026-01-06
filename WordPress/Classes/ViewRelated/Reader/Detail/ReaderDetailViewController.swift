@@ -746,6 +746,7 @@ class ReaderDetailViewController: UIViewController, ReaderDetailView {
                                    forCellReuseIdentifier: ReaderDetailNoCommentCell.defaultReuseID)
     }
 
+    // Translation framework doesn't support UIKit, so we have to jump through the hoops.
     private func configureTranslationIfAvailable() {
         guard #available(iOS 26, *) else {
             return
