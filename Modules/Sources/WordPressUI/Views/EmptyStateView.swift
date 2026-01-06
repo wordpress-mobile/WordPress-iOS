@@ -62,6 +62,32 @@ extension EmptyStateView where Label == SwiftUI.Label<Text, Image>, Description 
     }
 }
 
+extension EmptyStateView where Label == EmptyStateScaledImageLabel, Description == Text?, Actions == EmptyView {
+    public init(_ title: String, scaledImage: String, description: String? = nil) {
+        self.init {
+            EmptyStateScaledImageLabel(title: title, imageName: scaledImage)
+        } description: {
+            description.map { Text($0) }
+        } actions: {
+            EmptyView()
+        }
+    }
+}
+
+/// A label designed to work with vector graphics from the assets catalog.
+public struct EmptyStateScaledImageLabel: View {
+    let title: String
+    let imageName: String
+
+    public var body: some View {
+        VStack(alignment: .center, spacing: 0) {
+            ScaledImage(imageName, height: largeImageHeight)
+                .foregroundColor(.secondary)
+            Text(title)
+        }
+    }
+}
+
 private struct EmptyStateViewLabelStyle: LabelStyle {
     @ScaledMetric(relativeTo: .title) var iconSize = largeImageHeight
 
