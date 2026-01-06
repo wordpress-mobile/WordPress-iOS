@@ -63,7 +63,7 @@ extension EmptyStateView where Label == SwiftUI.Label<Text, Image>, Description 
 }
 
 private struct EmptyStateViewLabelStyle: LabelStyle {
-    @ScaledMetric(relativeTo: .title) var iconSize = 50
+    @ScaledMetric(relativeTo: .title) var iconSize = largeImageHeight
 
     func makeBody(configuration: Configuration) -> some View {
         VStack(alignment: .center, spacing: 16) {
@@ -74,6 +74,8 @@ private struct EmptyStateViewLabelStyle: LabelStyle {
         }
     }
 }
+
+private let largeImageHeight: CGFloat = 50
 
 extension EmptyStateView where Label == SwiftUI.Label<Text, Image>, Description == Text?, Actions == EmptyView {
     public static func search() -> Self {
