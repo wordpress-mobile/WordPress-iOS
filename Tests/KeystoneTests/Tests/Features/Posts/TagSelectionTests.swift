@@ -13,7 +13,7 @@ struct TagSelectionTests {
         #expect(await mock.tags.count == 2)
 
         let viewModel = TagsViewModel(taxonomy: nil, service: mock, selectedTerms: nil, mode: .selection(onSelectedTagsChanged: nil))
-        await viewModel.addNewTag(named: "Baz")
+        await viewModel.addNewTag(named: "Baz")?.value
         await #expect(mock.tags.count == 3)
     }
 
@@ -23,7 +23,7 @@ struct TagSelectionTests {
         #expect(await mock.tags.count == 2)
 
         let viewModel = TagsViewModel(taxonomy: nil, service: mock, selectedTerms: nil, mode: .selection(onSelectedTagsChanged: nil))
-        await viewModel.addNewTag(named: "Foo")
+        await viewModel.addNewTag(named: "Foo")?.value
         #expect(await mock.tags.count == 2)
     }
 
@@ -31,7 +31,7 @@ struct TagSelectionTests {
     func newTagIsSelected() async {
         let mock = MockService(tags: ["Foo", "Bar"])
         let viewModel = TagsViewModel(taxonomy: nil, service: mock, selectedTerms: nil, mode: .selection(onSelectedTagsChanged: nil))
-        await viewModel.addNewTag(named: "Baz")
+        await viewModel.addNewTag(named: "Baz")?.value
 
         #expect(await viewModel.selectedTags == ["Baz"])
     }
@@ -40,7 +40,7 @@ struct TagSelectionTests {
     func serverTagIsSelected() async {
         let mock = MockService(tags: ["Foo", "Bar"])
         let viewModel = TagsViewModel(taxonomy: nil, service: mock, selectedTerms: nil, mode: .selection(onSelectedTagsChanged: nil))
-        await viewModel.addNewTag(named: "foo")
+        await viewModel.addNewTag(named: "foo")?.value
 
         #expect(await viewModel.selectedTags == ["Foo"])
     }

@@ -148,31 +148,36 @@ class TagsViewModel: ObservableObject {
         searchText = ""
     }
 
-    func addNewTag(named name: String) async {
+    /// The return value `Task` instance is for creating the new tag in the background.
+    @discardableResult
+    func addNewTag(named name: String) -> Task<Void, Never>? {
         let lowercasedName = name.lowercased()
-        guard !selectedTagsSet.contains(lowercasedName) else { return }
+        guard !selectedTagsSet.contains(lowercasedName) else { return nil }
 
         selectedTagsSet.insert(lowercasedName)
         selectedTags.append(name)
 
-        do {
-            let newTag: AnyTermWithViewContext
-            if let existing = try await tagsService.searchTags(with: name)
-                .first(where: { $0.name.compare(name, options: .caseInsensitive) == .orderedSame }) {
-                newTag = existing
-            } else {
-                newTag = try await tagsService.createTag(name: name, description: "")
-            }
+        // Create a new tag in the background, which is consistent with the web editor.
+        return Task {
+            do {
+                let newTag: AnyTermWithViewContext
+                if let existing = try await tagsService.searchTags(with: name)
+                    .first(where: { $0.name.compare(name, options: .caseInsensitive) == .orderedSame }) {
+                    newTag = existing
+                } else {
+                    newTag = try await tagsService.createTag(name: name, description: "")
+                }
 
-            // The original input `name` was used as a temporary tag before sending the API request.
-            // Replace it with the actual tag returned by the API.
-            if newTag.name != name, let index = selectedTags.firstIndex(of: name) {
-                selectedTagsSet.remove(lowercasedName)
-                selectedTagsSet.insert(newTag.name.lowercased())
-                selectedTags[index] = newTag.name
+                // The original input `name` was used as a temporary tag before sending the API request.
+                // Replace it with the actual tag returned by the API.
+                if newTag.name != name, let index = selectedTags.firstIndex(of: name) {
+                    selectedTagsSet.remove(lowercasedName)
+                    selectedTagsSet.insert(newTag.name.lowercased())
+                    selectedTags[index] = newTag.name
+                }
+            } catch {
+                removeSelectedTag(name)
             }
-        } catch {
-            removeSelectedTag(name)
         }
     }
 
