@@ -124,9 +124,7 @@ public struct TranslationHostView: View {
         Color.clear
             .frame(width: 0, height: 0)
             .translationTask(viewModel.configuration) { session in
-                Task { @MainActor in
-                    await viewModel.performTranslation(session: session)
-                }
+                await viewModel.performTranslation(session: session)
             }
     }
 }
