@@ -2,6 +2,7 @@
 -----
 * [**] Reader: Add "Freshly Pressed" to Discover [#24828]
 * [*] Reader: Fix Send button design in Comments [#25092]
+* [*] Readedr: Fix article view ignoring `use_excerpt` [#25108]
 * [**] Intelligence: Expand AI-based features to more locales [#25034]
 * [*] Fix previewing posts on WordPress.com atomic sites [#25045]
 * [*] Stats: Rename "External Links" to "Clicks" to be consistent with the web [#25090]

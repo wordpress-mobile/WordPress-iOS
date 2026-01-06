@@ -154,5 +154,4 @@ extension ReaderPost {
 
         return try? JSONSerialization.jsonObject(with: jsonData) as? [String: Any]
     }
-
 }
