@@ -12,6 +12,9 @@ steps:
     if: build.state == "failing"
     soft_fail: true
     command: "exit 1"
+    artifact_paths:
+      - "/tmp/claude_debug_${BUILDKITE_BUILD_ID}.txt"
+      - "/tmp/claude_response_${BUILDKITE_BUILD_ID}.json"
     plugins:
       - $CLAUDE_PLUGIN:
           api_key: "$ANTHROPIC_API_KEY"
