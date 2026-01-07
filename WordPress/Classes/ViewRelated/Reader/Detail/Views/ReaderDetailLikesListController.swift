@@ -30,7 +30,6 @@ final class ReaderDetailLikesListController: UIViewController {
         configureTableView()
         WPAnalytics.track(.likeListOpened, properties: ["list_type": "post", "source": "like_reader_list"])
     }
-
 }
 
 private extension ReaderDetailLikesListController {
