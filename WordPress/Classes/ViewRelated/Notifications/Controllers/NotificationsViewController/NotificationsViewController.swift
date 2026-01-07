@@ -47,7 +47,7 @@ class NotificationsViewController: UIViewController, UITableViewDataSource, UITa
 
     /// NoResults View
     ///
-    private let noResultsViewController = NoResultsViewController.controller()
+    private let noResultsViewController = UIHostingController<AnyView>(rootView: AnyView(EmptyView()))
 
     /// All of the data will be fetched during the FetchedResultsController init. Prevent overfetching
     ///
@@ -148,7 +148,6 @@ class NotificationsViewController: UIViewController, UITableViewDataSource, UITa
         setupTableView()
         setupTableFooterView()
         setupRefreshControl()
-        setupNoResultsView()
         setupFilterBar()
 
         tableView.tableHeaderView = tableHeaderView
@@ -579,10 +578,6 @@ private extension NotificationsViewController {
         let control = UIRefreshControl()
         control.addTarget(self, action: #selector(refresh), for: .valueChanged)
         tableView.refreshControl = control
-    }
-
-    func setupNoResultsView() {
-        noResultsViewController.delegate = self
     }
 
     func setupFilterBar() {
@@ -1350,7 +1345,7 @@ extension NotificationsViewController: WPTableViewHandlerDelegate {
     }
 
     @objc func predicateForFetchRequest() -> NSPredicate {
-        let deletedIdsPredicate = NSPredicate(format: "NOT (SELF IN %@)", Array(notificationIdsBeingDeleted))
+        let deletedIdsPredicate = NSPredicate(format: "(SELF IN %@)", Array(notificationIdsBeingDeleted))
         let selectedFilterPredicate = predicateForSelectedFilters()
         return NSCompoundPredicate(andPredicateWithSubpredicates: [deletedIdsPredicate, selectedFilterPredicate])
     }
@@ -1508,7 +1503,7 @@ private extension NotificationsViewController {
 //
 private extension NotificationsViewController {
     func showNoResultsViewIfNeeded() {
-        noResultsViewController.removeFromView()
+        noResultsViewController.remove()
         updateNavigationItems()
 
         // Hide the filter header if we're showing the Jetpack prompt
@@ -1526,12 +1521,38 @@ private extension NotificationsViewController {
         }
 
         // Refresh its properties: The user may have signed into WordPress.com
-        noResultsViewController.configure(title: noResultsTitleText, buttonTitle: noResultsButtonText, subtitle: noResultsMessageText, image: "wp-illustration-notifications")
+        noResultsViewController.rootView = AnyView(makeEmptyStateView(for: filter))
         addNoResultsToView()
     }
 
+    private func makeEmptyStateView(for filter: Filter) -> some View {
+        EmptyStateView {
+            EmptyStateScaledImageLabel(filter.noResultsTitle, imageName: "wpl-bell")
+        } description: {
+            Text(filter.noResultsMessage)
+        } actions: {
+            Group {
+                switch filter {
+                case .none, .comment, .follow, .like:
+                    Button(Strings.openReader) {
+                        WPAnalytics.track(.notificationsTappedViewReader, withProperties: [Stats.sourceKey: Stats.sourceValue])
+                        RootViewCoordinator.sharedPresenter.showReader()
+                    }
+                case .unread:
+                    Button(Strings.createPost) {
+                        WPAnalytics.track(.notificationsTappedNewPost, withProperties: [Stats.sourceKey: Stats.sourceValue])
+                        RootViewCoordinator.sharedPresenter.showPostEditor()
+                    }
+                }
+            }
+            .font(.headline)
+            .buttonStyle(.borderedProminent)
+            .controlSize(.extraLarge)
+        }
+    }
+
     func showNoConnectionView() {
-        noResultsViewController.configure(title: noConnectionTitleText, subtitle: noConnectionMessage())
+        noResultsViewController.rootView = AnyView(EmptyStateView(noConnectionTitleText, systemImage: "network.slash", description: noConnectionMessage()))
         addNoResultsToView()
     }
 
@@ -1547,29 +1568,13 @@ private extension NotificationsViewController {
         guard let nrv = noResultsViewController.view else {
             return
         }
-
         tableHeaderView.translatesAutoresizingMaskIntoConstraints = false
-        nrv.translatesAutoresizingMaskIntoConstraints = false
-        nrv.setContentHuggingPriority(.defaultLow, for: .horizontal)
-
-        NSLayoutConstraint.activate([
-            nrv.widthAnchor.constraint(equalTo: view.widthAnchor),
-            nrv.centerXAnchor.constraint(equalTo: view.centerXAnchor),
-            nrv.topAnchor.constraint(equalTo: tableHeaderView.bottomAnchor),
-            nrv.bottomAnchor.constraint(equalTo: view.safeBottomAnchor)
-        ])
+        nrv.pinEdges(relation: .lessThanOrEqual)
+        nrv.pinCenter(offset: UIOffset(horizontal: 0, vertical: -32))
     }
 
     var noConnectionTitleText: String {
         return NSLocalizedString("Unable to Sync", comment: "Title of error prompt shown when a sync the user initiated fails.")
-    }
-
-    var noResultsTitleText: String {
-        return filter.noResultsTitle
-    }
-
-    var noResultsMessageText: String? {
-        return filter.noResultsMessage
     }
 
     var noResultsButtonText: String? {
@@ -1590,25 +1595,6 @@ private extension NotificationsViewController {
 
     var shouldDisplayFullscreenNoResultsView: Bool {
         return shouldDisplayNoResultsView && filter == .none
-    }
-}
-
-// MARK: - NoResultsViewControllerDelegate
-
-extension NotificationsViewController: NoResultsViewControllerDelegate {
-    func actionButtonPressed() {
-        let properties = [Stats.sourceKey: Stats.sourceValue]
-        switch filter {
-        case .none,
-             .comment,
-             .follow,
-             .like:
-            WPAnalytics.track(.notificationsTappedViewReader, withProperties: properties)
-            RootViewCoordinator.sharedPresenter.showReader()
-        case .unread:
-            WPAnalytics.track(.notificationsTappedNewPost, withProperties: properties)
-            RootViewCoordinator.sharedPresenter.showPostEditor()
-        }
     }
 }
 
@@ -1995,5 +1981,28 @@ extension NotificationsViewController: JPScrollViewDelegate {
 extension NotificationsViewController: StoryboardLoadable {
     static var defaultStoryboardName: String {
         return "Notifications"
+    }
+}
+
+private enum Strings {
+    static let openReader = NSLocalizedString("notifications.emptyState.buttonOpenReader", value: "Open Reader", comment: "Displayed in the Notifications Tab as a button title, when there are no notifications")
+    static let createPost = NSLocalizedString("notifications.emptyState.buttonCreatePost", value: "Create Post", comment: "Displayed in the Notifications Tab as a button title, when the Unread Filter shows no notifications")
+
+    enum NavigationBar {
+        static let notificationSettingsActionTitle = NSLocalizedString(
+            "notificationsViewController.navigationBar.action.settings",
+            value: "Notification Settings",
+            comment: "Link to Notification Settings section"
+        )
+        static let markAllAsReadActionTitle = NSLocalizedString(
+            "notificationsViewController.navigationBar.action.markAllAsRead",
+            value: "Mark All As Read",
+            comment: "Marks all notifications under the filter as read"
+        )
+        static let menuButtonAccessibilityLabel = NSLocalizedString(
+            "notificationsViewController.navigationBar.menu.accessibilityLabel",
+            value: "Navigation Bar Menu Button",
+            comment: "Accessibility label for the navigation bar menu button"
+        )
     }
 }

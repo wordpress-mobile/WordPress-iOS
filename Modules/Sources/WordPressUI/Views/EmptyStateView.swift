@@ -65,7 +65,7 @@ extension EmptyStateView where Label == SwiftUI.Label<Text, Image>, Description 
 extension EmptyStateView where Label == EmptyStateScaledImageLabel, Description == Text?, Actions == EmptyView {
     public init(_ title: String, scaledImage: String, description: String? = nil) {
         self.init {
-            EmptyStateScaledImageLabel(title: title, imageName: scaledImage)
+            EmptyStateScaledImageLabel(title, imageName: scaledImage)
         } description: {
             description.map { Text($0) }
         } actions: {
@@ -79,8 +79,13 @@ public struct EmptyStateScaledImageLabel: View {
     let title: String
     let imageName: String
 
+    public init(_ title: String, imageName: String) {
+        self.title = title
+        self.imageName = imageName
+    }
+
     public var body: some View {
-        VStack(alignment: .center, spacing: 0) {
+        VStack(alignment: .center, spacing: 8) {
             ScaledImage(imageName, height: largeImageHeight)
                 .foregroundColor(.secondary)
             Text(title)
@@ -101,7 +106,7 @@ private struct EmptyStateViewLabelStyle: LabelStyle {
     }
 }
 
-private let largeImageHeight: CGFloat = 50
+private let largeImageHeight: CGFloat = 56
 
 extension EmptyStateView where Label == SwiftUI.Label<Text, Image>, Description == Text?, Actions == EmptyView {
     public static func search() -> Self {
