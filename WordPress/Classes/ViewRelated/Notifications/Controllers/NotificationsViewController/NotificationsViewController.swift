@@ -1878,65 +1878,53 @@ private extension NotificationsViewController {
 }
 
 // MARK: - Push Notifications Permission Alert
-extension NotificationsViewController: UIViewControllerTransitioningDelegate {
-
-    func presentationController(forPresented presented: UIViewController, presenting: UIViewController?, source: UIViewController) -> UIPresentationController? {
-        guard let fancyAlertController = presented as? FancyAlertViewController else {
-            return nil
-        }
-        return FancyAlertPresentationController(presentedViewController: fancyAlertController, presenting: presenting)
-    }
-
+extension NotificationsViewController {
     private func showNotificationPrimerAlertIfNeeded() {
         guard shouldShowPrimeForPush, !userDefaults.notificationPrimerAlertWasDisplayed else {
             return
         }
-
         DispatchQueue.main.asyncAfter(deadline: .now() + Constants.displayAlertDelay) {
             self.showNotificationPrimerAlert()
         }
     }
 
-    private func notificationAlertApproveAction(_ controller: FancyAlertViewController) {
+    private func didApproveNotificationAuthorization() {
         InteractiveNotificationsManager.shared.requestAuthorization { allowed in
             if allowed {
                 // User has allowed notifications so we don't need to show the inline prompt
                 UserPersistentStoreFactory.instance().notificationPrimerInlineWasAcknowledged = true
             }
-
             DispatchQueue.main.async {
-                controller.dismiss(animated: true)
+                self.dismiss(animated: true)
             }
         }
     }
 
     private func showNotificationPrimerAlert() {
-        let alertController = FancyAlertViewController.makeNotificationPrimerAlertController(approveAction: notificationAlertApproveAction(_:))
+        let alertController = NotificationsViewController.makeNotificationPrimerAlertController { [weak self] in
+            self?.didApproveNotificationAuthorization()
+        }
         showNotificationAlert(alertController)
     }
 
     private func showSecondNotificationAlert() {
-        let alertController = FancyAlertViewController.makeNotificationSecondAlertController(approveAction: notificationAlertApproveAction(_:))
+        let alertController = NotificationsViewController.makeNotificationSecondAlertController { [weak self] in
+            self?.didApproveNotificationAuthorization()
+        }
         showNotificationAlert(alertController)
     }
 
-    private func showNotificationAlert(_ alertController: FancyAlertViewController) {
+    private func showNotificationAlert(_ alertController: UIViewController) {
         let mainContext = ContextManager.shared.mainContext
         guard (try? WPAccount.lookupDefaultWordPressComAccount(in: mainContext)) != nil else {
             return
         }
-
         PushNotificationsManager.shared.loadAuthorizationStatus { [weak self] (enabled) in
             guard enabled == .notDetermined else {
                 return
             }
-
             UserPersistentStoreFactory.instance().notificationPrimerAlertWasDisplayed = true
-
-            let alert = alertController
-            alert.modalPresentationStyle = .custom
-            alert.transitioningDelegate = self
-            self?.tabBarController?.present(alert, animated: true)
+            self?.tabBarController?.present(alertController, animated: true)
         }
     }
 

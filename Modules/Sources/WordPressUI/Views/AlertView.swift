@@ -23,7 +23,9 @@ public struct AlertView<Header: View, Content: View, Actions: View>: View {
             header()
                 .padding(.horizontal, 8)
                 .padding(.bottom, 32)
-            actions()
+            VStack(spacing: 16) {
+                actions()
+            }
         }
         .padding(24)
     }
