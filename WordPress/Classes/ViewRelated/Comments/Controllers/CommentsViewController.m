@@ -711,8 +711,7 @@ static NSString *RestorableFilterIndexKey = @"restorableFilterIndexKey";
 - (NSString *)noResultsTitle
 {
     if (self.syncHelper.isSyncing) {
-        return NSLocalizedString(@"Fetching comments...",
-                                 @"A brief prompt shown when the comment list is empty, letting the user know the app is currently fetching new comments.");
+        return @"";
     }
 
     return NSLocalizedString(@"No comments yet", @"Displayed when there are no comments in the Comments views.");
