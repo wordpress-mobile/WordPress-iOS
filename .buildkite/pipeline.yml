@@ -147,6 +147,7 @@ steps:
         artifact_paths:
           - "build/results/*"
           - "build/results/crashes/*"
+          - "build/logs/wiremock.txt"
         notify:
           - github_commit_status:
               context: "UI Tests (iPhone)"
@@ -158,6 +159,7 @@ steps:
         artifact_paths:
           - "build/results/*"
           - "build/results/crashes/*"
+          - "build/logs/wiremock.txt"
         notify:
           - github_commit_status:
               context: "UI Tests (iPad)"
