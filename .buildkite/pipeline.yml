@@ -116,19 +116,15 @@ steps:
         notify:
           - github_commit_status:
               context: "Reader Unit Tests"
-      - label: "🔬 Keystone Unit Tests"
-        command: .buildkite/commands/run-unit-tests-for-scheme.sh Keystone
-        # Disabled till https://github.com/wordpress-mobile/WordPress-iOS/pull/24537 is completed
-        #
-        # The boolean value has to be a string explicitly.
-        # See validation error against schema.
-        if: "false"
-        plugins: [$CI_TOOLKIT_PLUGIN]
-        artifact_paths:
-          - "build/results/*"
-        notify:
-          - github_commit_status:
-              context: "Unit Tests Keystone"
+      # Disabled till https://github.com/wordpress-mobile/WordPress-iOS/pull/24537 is completed
+      # - label: "🔬 Keystone Unit Tests"
+      #   command: .buildkite/commands/run-unit-tests-for-scheme.sh Keystone
+      #   plugins: [$CI_TOOLKIT_PLUGIN]
+      #   artifact_paths:
+      #     - "build/results/*"
+      #   notify:
+      #     - github_commit_status:
+      #         context: "Unit Tests Keystone"
       - label: "🔬 WordPressData Unit Tests"
         command: .buildkite/commands/run-unit-tests-for-scheme.sh WordPressData
         plugins: [$CI_TOOLKIT_PLUGIN]
