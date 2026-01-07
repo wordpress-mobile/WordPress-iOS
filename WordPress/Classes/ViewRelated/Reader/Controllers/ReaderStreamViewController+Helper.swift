@@ -155,7 +155,7 @@ extension ReaderStreamViewController {
         case .discover:
             EmptyStateView(
                 ReaderStreamViewController.defaultResponse.title,
-                image: "wp-illustration-reader-empty",
+                scaledImage: "wpl-glasses",
                 description: ReaderStreamViewController.defaultResponse.message
             )
         case .noConnection:
