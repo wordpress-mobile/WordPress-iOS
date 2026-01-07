@@ -540,26 +540,6 @@ struct ReaderNotificationKeys {
                 """
         )
     }
-
-    static func presentReaderSavedPostsAlertControllerIfNecessary(from origin: UIViewController) {
-        guard !UserPersistentStoreFactory.instance().savedPostsPromoWasDisplayed else {
-            return
-        }
-        UserPersistentStoreFactory.instance().savedPostsPromoWasDisplayed = true
-
-        let alert = AlertView {
-            AlertHeaderView(
-                title: NSLocalizedString("reader.saveForLaterAlert.title", value: "Save Posts for Later", comment: "Title of alert informing users about the Reader Save for Later feature."),
-                description: NSLocalizedString("reader.saveForLaterAlert.description", value: "Save this post, and come back to read it whenever you'd like. It will only be available on this device — saved posts don't sync to other devices.", comment: "Body text of alert informing users about the Reader Save for Later feature.")
-            )
-        } content: {
-            ScaledImage("wpl-bookmark", height: 78)
-                .foregroundStyle(.secondary)
-        } actions: {
-            AlertDismissButton()
-        }
-        alert.present(in: origin)
-    }
 }
 
 /// Typed topic type
