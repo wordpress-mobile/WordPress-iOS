@@ -195,7 +195,7 @@ class ReaderDetailToolbar {
         }
 
         if !readerPost.isSavedForLater {
-            FancyAlertViewController.presentReaderSavedPostsAlertControllerIfNecessary(from: viewController)
+            ReaderHelpers.presentReaderSavedPostsAlertControllerIfNecessary(from: viewController)
         }
 
         ReaderSaveForLaterAction().execute(with: readerPost, context: context, origin: .postDetail, viewController: viewController) { [weak self] in

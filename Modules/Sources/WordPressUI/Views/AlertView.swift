@@ -30,7 +30,7 @@ public struct AlertView<Header: View, Content: View, Actions: View>: View {
 }
 
 extension AlertView {
-    func present(in presentingViewController: UIViewController) {
+    public func present(in presentingViewController: UIViewController) {
         let hostVC = UIHostingController(rootView: self)
         hostVC.sheetPresentationController?.detents = [.medium()]
         presentingViewController.present(hostVC, animated: true)
@@ -80,6 +80,8 @@ public struct AlertHeaderView: View {
 
 public struct AlertDismissButton: View {
     @Environment(\.dismiss) var dismiss
+
+    public init() {}
 
     public var body: some View {
         Button {

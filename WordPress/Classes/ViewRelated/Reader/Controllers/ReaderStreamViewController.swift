@@ -743,7 +743,7 @@ import AutomatticTracks
         let origin: ReaderSaveForLaterOrigin = contentType == .saved ? .savedStream : .otherStream
 
         if !post.isSavedForLater {
-            FancyAlertViewController.presentReaderSavedPostsAlertControllerIfNecessary(from: self)
+            ReaderHelpers.presentReaderSavedPostsAlertControllerIfNecessary(from: self)
         }
 
         let saveAction = ReaderSaveForLaterAction(visibleConfirmation: showConfirmation)
