@@ -15,6 +15,7 @@ steps:
     artifact_paths:
       - "/tmp/claude_debug_${BUILDKITE_BUILD_ID}.txt"
       - "/tmp/claude_response_${BUILDKITE_BUILD_ID}.json"
+      - "/tmp/buildkite_logs_${BUILDKITE_BUILD_ID}.txt"
     plugins:
       - $CLAUDE_PLUGIN:
           api_key: "$ANTHROPIC_API_KEY"
