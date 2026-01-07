@@ -1,6 +1,7 @@
 26.6
 -----
 * [**] Reader: Add "Freshly Pressed" to Discover [#24828]
+* [*] Reader: Keep only one "Search" option in the main sidebar [#25116]
 * [*] Reader: Fix Send button design in Comments [#25092]
 * [**] Intelligence: Expand AI-based features to more locales [#25034]
 * [*] Fix previewing posts on WordPress.com atomic sites [#25045]
