@@ -120,22 +120,6 @@ final class ReaderCommentsViewController: UIViewController, WPContentSyncHelperD
         activityIndicator.pinCenter()
     }
 
-    private func makeEmptyStateView(title: String, imageName: String?, description: String?) -> UIView {
-        UIHostingView(view: EmptyStateView(label: {
-            if let imageName {
-                Label(title, image: imageName)
-            } else {
-                Text(title)
-            }
-        }, description: {
-            if let description {
-                Text(description)
-            }
-        }, actions: {
-            EmptyView()
-        }))
-    }
-
     func getHeaderView() -> UIView? {
         guard allowsPushingPostDetails, let post else {
             return nil
@@ -225,7 +209,7 @@ final class ReaderCommentsViewController: UIViewController, WPContentSyncHelperD
             if let error = fetchCommentsError, error.domain == WordPressComRestApiErrorDomain && error.code == WordPressComRestApiErrorCode.authorizationRequired.rawValue {
                 subtitle = Strings.noPermission
             }
-            let emptyStateView = makeEmptyStateView(title: title, imageName: "wp-illustration-reader-empty", description: subtitle)
+            let emptyStateView = UIHostingView(view: EmptyStateView(title, scaledImage: "wpl-comment", description: subtitle))
             view.insertSubview(emptyStateView, belowSubview: buttonAddComment)
             emptyStateView.pinEdges()
             self.emptyStateView = emptyStateView
