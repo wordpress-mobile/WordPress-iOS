@@ -35,7 +35,13 @@ final class CommentGutenbergEditorViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
 
-        let configuration = EditorConfigurationBuilder(content: initialContent ?? "")
+        // Using placeholder values since comments don't need site context
+        let configuration = EditorConfigurationBuilder(
+            postType: "comment",
+            siteURL: URL(string: "https://placeholder.wordpress.com")!,
+            siteApiRoot: URL(string: "https://placeholder.wordpress.com/wp-json")!
+        )
+            .setContent(initialContent ?? "")
             .setShouldHideTitle(true)
             .build()
 
@@ -89,7 +95,7 @@ extension CommentGutenbergEditorViewController: GutenbergKit.EditorViewControlle
         // Do nothing
     }
 
-    func editor(_ viewController: GutenbergKit.EditorViewController, didLogMessage message: String, level: GutenbergKit.LogLevel) {
+    func editor(_ viewController: GutenbergKit.EditorViewController, didLogMessage message: String, level: GutenbergKit.EditorLogLevel) {
         // Do nothing
     }
 
