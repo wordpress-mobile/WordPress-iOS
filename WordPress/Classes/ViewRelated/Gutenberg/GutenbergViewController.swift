@@ -84,8 +84,6 @@ class GutenbergViewController: UIViewController, PostEditor, PublishingEditor {
         return PostEditorStateContext(post: post, delegate: self)
     }()
 
-    var verificationPromptHelper: VerificationPromptHelper?
-
     var analyticsEditorSource: String {
         return Analytics.editorSource
     }
@@ -300,7 +298,6 @@ class GutenbergViewController: UIViewController, PostEditor, PublishingEditor {
         self.post = post
 
         self.replaceEditor = replaceEditor
-        verificationPromptHelper = AztecVerificationPromptHelper(account: self.post.blog.account)
         self.editorSession = PostEditorAnalyticsSession(editor: .gutenberg, post: post)
         self.navigationBarManager = navigationBarManager ?? PostEditorNavigationBarManager()
 
@@ -346,7 +343,7 @@ class GutenbergViewController: UIViewController, PostEditor, PublishingEditor {
 
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        verificationPromptHelper?.updateVerificationStatus()
+
         ghostView.startAnimation()
     }
 

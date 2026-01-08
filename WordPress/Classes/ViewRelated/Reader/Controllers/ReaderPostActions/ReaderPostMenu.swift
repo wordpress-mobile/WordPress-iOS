@@ -27,7 +27,8 @@ struct ReaderPostMenu {
             copyPostLink,
             viewPostInBrowser,
             post.isSeenSupported ? toggleSeen : nil,
-            summarize
+            summarize,
+            translate
         ].compactMap { $0 })
     }
 
@@ -132,6 +133,19 @@ struct ReaderPostMenu {
         }
     }
 
+    private var translate: UIAction? {
+        guard #available(iOS 26, *),
+              let detailVC = viewController as? ReaderDetailViewController,
+              case .available = detailVC.translationAvailability else {
+            return nil
+        }
+
+        return UIAction(Strings.translate, systemImage: "translate") {
+            detailVC.translatePost()
+            track(.translate)
+        }
+    }
+
     private func manageNotifications(for siteID: Int) -> UIAction {
         UIAction(Strings.manageNotifications, systemImage: "bell") {
             guard let viewController else { return }
@@ -233,6 +247,7 @@ private enum ReaderPostMenuAnalyticsButton: String {
     case markRead = "mark_read"
     case markUnread = "mark_unread"
     case summarize = "summarize"
+    case translate = "translate"
 }
 
 private enum Strings {
@@ -248,4 +263,5 @@ private enum Strings {
     static let markRead = NSLocalizedString("reader.postContextMenu.markRead", value: "Mark as Read", comment: "Context menu action")
     static let markUnread = NSLocalizedString("reader.postContextMenu.markUnread", value: "Mark as Unread", comment: "Context menu action")
     static let summarize = NSLocalizedString("reader.postContextMenu.summarize", value: "Summarize", comment: "Context menu action")
+    static let translate = NSLocalizedString("reader.postContextMenu.translate", value: "Translate", comment: "Context menu action to translate post content")
 }

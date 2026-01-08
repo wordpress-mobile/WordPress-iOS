@@ -35,7 +35,7 @@ class StatsRemoteV2Tests: RemoteTestCase, RESTTestable {
     var siteSearchDataEndpoint: String { return "sites/\(siteID)/stats/search-terms/" }
     var siteAuthorsDataEndpoint: String { return "sites/\(siteID)/stats/top-authors/" }
     var siteVideosDataEndpoint: String { return "sites/\(siteID)/stats/video-plays/" }
-    var siteCountriesDataEndpoint: String { return "sites/\(siteID)/stats/country-views/" }
+    var siteCountriesDataEndpoint: String { return "sites/\(siteID)/stats/location-views/country/" }
     var siteClicksDataEndpoint: String { return "sites/\(siteID)/stats/clicks/" }
     var siteReferrerDataEndpoint: String { return "sites/\(siteID)/stats/referrers/" }
     var siteVisitsDataEndpoint: String { return "sites/\(siteID)/stats/visits/" }

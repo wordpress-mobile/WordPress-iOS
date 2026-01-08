@@ -49,7 +49,7 @@ enum Strings {
         static let authors = AppLocalizedString("jetpackStats.siteDataTypes.authors", value: "Authors", comment: "Authors data type")
         static let referrers = AppLocalizedString("jetpackStats.siteDataTypes.referrers", value: "Referrers", comment: "Referrers data type")
         static let locations = AppLocalizedString("jetpackStats.siteDataTypes.locations", value: "Locations", comment: "Locations data type")
-        static let externalLinks = AppLocalizedString("jetpackStats.siteDataTypes.externalLinks", value: "External Links", comment: "External links data type")
+        static let clicks = AppLocalizedString("jetpackStats.siteDataTypes.clicks", value: "Clicks", comment: "Clicks data type (external links)")
         static let fileDownloads = AppLocalizedString("jetpackStats.siteDataTypes.fileDownloads", value: "File Downloads", comment: "File downloads data type")
         static let searchTerms = AppLocalizedString("jetpackStats.siteDataTypes.searchTerms", value: "Search Terms", comment: "Search terms data type")
         static let videos = AppLocalizedString("jetpackStats.siteDataTypes.videos", value: "Videos", comment: "Videos data type")

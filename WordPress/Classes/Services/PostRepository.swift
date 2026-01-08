@@ -488,6 +488,8 @@ extension PostRepository {
     func paginate<P: AbstractPost>(
         type: P.Type = P.self,
         statuses: [BasePost.Status],
+        orderBy: PostServiceResultsOrdering,
+        descending: Bool,
         authorUserID: NSNumber? = nil,
         offset: Int,
         number: Int,
@@ -498,8 +500,8 @@ extension PostRepository {
             statuses: statuses,
             authorUserID: authorUserID,
             range: offset..<(offset + max(number, 0)),
-            orderBy: .byDate,
-            descending: true,
+            orderBy: orderBy,
+            descending: descending,
             // Only delete other local posts if the current call is the first pagination request.
             deleteOtherLocalPosts: offset == 0,
             in: blogID

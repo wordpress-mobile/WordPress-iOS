@@ -19,7 +19,7 @@ enum TopListItemType: String, Identifiable, CaseIterable, Sendable, Codable {
         case .authors: Strings.SiteDataTypes.authors
         case .referrers: Strings.SiteDataTypes.referrers
         case .locations: Strings.SiteDataTypes.locations
-        case .externalLinks: Strings.SiteDataTypes.externalLinks
+        case .externalLinks: Strings.SiteDataTypes.clicks
         case .fileDownloads: Strings.SiteDataTypes.fileDownloads
         case .searchTerms: Strings.SiteDataTypes.searchTerms
         case .videos: Strings.SiteDataTypes.videos

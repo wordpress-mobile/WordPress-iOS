@@ -237,8 +237,8 @@ class PostRepositoryTests: CoreDataTestCase {
 
         remoteMock.remotePostsToReturnOnSyncPostsOfType = [posts]
 
-        let _ = try await repository.paginate(type: Post.self, statuses: [.publish], offset: 0, number: 100, in: blogID)
-        let numberOfPosts = try await contextManager.performQuery { $0.countObjects(ofType: Post.self) }
+        let _ = try await repository.paginate(type: Post.self, statuses: [.publish], orderBy: .byDate, descending: true, offset: 0, number: 100, in: blogID)
+        let numberOfPosts = await contextManager.performQuery { $0.countObjects(ofType: Post.self) }
         XCTAssertEqual(numberOfPosts, 10)
     }
 }
