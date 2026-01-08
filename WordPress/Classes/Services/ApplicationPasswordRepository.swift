@@ -63,7 +63,12 @@ actor ApplicationPasswordRepository {
         guard !alreadyStored else { return }
 
         // No need to propagate the API request error.
-        let api = WordPressAPI(urlSession: URLSession(configuration: .ephemeral), apiRootUrl: apiRootURL, authentication: .init(username: username, password: authToken))
+        let api = WordPressAPI(
+            urlSession: URLSession(configuration: .ephemeral),
+            notifyingDelegate: PulseNetworkLogger(),
+            apiRootUrl: apiRootURL,
+            authentication: .init(username: username, password: authToken)
+        )
         guard let uuid = try? await api.applicationPasswords.retrieveCurrentWithViewContext().data.uuid.uuid else { return }
 
         try await storage.save(.init(password: .init(uuid: uuid, password: authToken), owners: owners))
@@ -155,7 +160,12 @@ private extension ApplicationPasswordRepository {
         var validPasswords = [ApplicationPassword]()
         var invalidPasswords = [ApplicationPassword]()
         for password in passwords {
-            let api = WordPressAPI(urlSession: session, apiRootUrl: apiRootURL, authentication: .init(username: siteUsername, password: password.password))
+            let api = WordPressAPI(
+                urlSession: session,
+                notifyingDelegate: PulseNetworkLogger(),
+                apiRootUrl: apiRootURL,
+                authentication: .init(username: siteUsername, password: password.password)
+            )
             do {
                 _ = try await api.applicationPasswords.retrieveCurrentWithViewContext()
                 validPasswords.append(password)

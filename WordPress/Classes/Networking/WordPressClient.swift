@@ -38,6 +38,7 @@ extension WordPressClient {
         }
         let api = WordPressAPI(
             urlSession: session,
+            notifyingDelegate: PulseNetworkLogger(),
             apiUrlResolver: resolver,
             authenticationProvider: provider,
             appNotifier: notifier,
