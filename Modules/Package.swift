@@ -58,7 +58,7 @@ let package = Package(
         // To test https://github.com/wordpress-mobile/GutenbergKit/pull/271
         .package(
             url: "https://github.com/wordpress-mobile/GutenbergKit",
-            revision: "d3d89624e3b365ccc3cfac5ce06f2033531ec682"
+            revision: "b3e463427bc470d4915b7749197fafe608b5587e"
         ),
         // We can't use wordpress-rs branches nor commits here. Only tags work.
         .package(url: "https://github.com/Automattic/wordpress-rs", revision: "alpha-20251101"),
