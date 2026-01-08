@@ -21,9 +21,9 @@ final class ReaderPostTests: CoreDataTestCase {
         XCTAssertEqual(queryItems.first(where: { $0.name == "d" })?.value, "404")
     }
 
-    func testBlogNameorDisplay() {
+    func testBlogNameForDisplay() {
         let post = NSEntityDescription.insertNewObject(forEntityName: ReaderPost.entityName(), into: mainContext) as! ReaderPost
         post.blogName = "t          r          e          f          o          l          o          g          y"
-        XCTAssertEqual(post.blogName, "t r e f o l o g y")
+        XCTAssertEqual(post.blogNameForDisplay(), "t r e f o l o g y")
     }
 }
