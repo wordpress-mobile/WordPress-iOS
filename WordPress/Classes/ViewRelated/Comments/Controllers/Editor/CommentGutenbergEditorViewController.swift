@@ -112,7 +112,7 @@ extension CommentGutenbergEditorViewController: GutenbergKit.EditorViewControlle
     }
 
     func editor(_ viewController: GutenbergKit.EditorViewController, didLogNetworkRequest request: GutenbergKit.RecordedNetworkRequest) {
-        
+        // Do nothing
     }
 
 }
