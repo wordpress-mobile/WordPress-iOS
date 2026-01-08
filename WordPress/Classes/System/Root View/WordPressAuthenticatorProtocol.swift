@@ -40,7 +40,7 @@ extension WordPressAuthenticator: WordPressAuthenticatorProtocol {
         guard FeatureFlag.allowApplicationPasswords.enabled else { return false }
         guard let navigationController = viewController.navigationController else { return false }
 
-        let view = LoginWithUrlView(presenter: viewController) { [weak viewController] blogID in
+        let loginCompleted: (TaggedManagedObjectID<Blog>) -> Void = { [weak viewController] blogID in
             viewController?.dismiss(animated: true)
 
             guard let blog = try? ContextManager.shared.mainContext.existingObject(with: blogID) else {
@@ -48,13 +48,25 @@ extension WordPressAuthenticator: WordPressAuthenticatorProtocol {
             }
 
             WordPressAppDelegate.shared?.present(selfHostedSite: blog, from: navigationController)
-        }.toolbar {
-            ToolbarItem(placement: .cancellationAction) {
-                Button(SharedStrings.Button.cancel) { [weak viewController] in
-                    viewController?.dismiss(animated: true)
+        }
+
+        let presentDotComLogin = { [weak viewController] in
+            guard let viewController else { return }
+            _ = Self.continueWithDotCom(viewController)
+        }
+
+        let view = LoginWithUrlView(
+                presenter: viewController,
+                loginCompleted: loginCompleted,
+                presentDotComLogin: presentDotComLogin
+            )
+            .toolbar {
+                ToolbarItem(placement: .cancellationAction) {
+                    Button(SharedStrings.Button.cancel) { [weak viewController] in
+                        viewController?.dismiss(animated: true)
+                    }
                 }
             }
-        }
         let hostVC = UIHostingController(rootView: view)
         let navigationVC = UINavigationController(rootViewController: hostVC)
         navigationVC.modalPresentationStyle = .formSheet

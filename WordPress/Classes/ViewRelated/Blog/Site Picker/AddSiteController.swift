@@ -41,17 +41,30 @@ struct AddSiteController {
     }
 
     private func showApplicationPasswordAuthenticationForSelfHostedSite() {
-        let view = LoginWithUrlView(presenter: viewController) { [weak viewController] _ in
+        let loginCompleted: (TaggedManagedObjectID<Blog>) -> Void = { [weak viewController] _ in
             // The `LoginWithUrlView` view is dismissed when this closure is called.
             // We also need to dismiss the `viewController` if it's presented as a modal.
             viewController?.presentingViewController?.dismiss(animated: true)
-        }.toolbar {
-            ToolbarItem(placement: .cancellationAction) {
-                Button(SharedStrings.Button.cancel) { [weak viewController] in
-                    viewController?.dismiss(animated: true)
-                }
+        }
+        let presentDotComLogin = { [weak viewController] in
+            guard let viewController else { return }
+            Task {
+                _ = await WordPressDotComAuthenticator().signIn(from: viewController, context: .default)
             }
         }
+
+        let view = LoginWithUrlView(
+                presenter: viewController,
+                loginCompleted: loginCompleted,
+                presentDotComLogin: presentDotComLogin
+            )
+            .toolbar {
+                ToolbarItem(placement: .cancellationAction) {
+                    Button(SharedStrings.Button.cancel) { [weak viewController] in
+                        viewController?.dismiss(animated: true)
+                    }
+                }
+            }
         let hostVC = UIHostingController(rootView: view)
         let navigationVC = UINavigationController(rootViewController: hostVC)
         navigationVC.modalPresentationStyle = .formSheet

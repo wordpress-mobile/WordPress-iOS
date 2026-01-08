@@ -10,6 +10,7 @@ struct LoginWithUrlView: View {
 
     weak var presenter: UIViewController?
     let loginCompleted: (TaggedManagedObjectID<Blog>) -> Void
+    let presentDotComLogin: () -> Void
 
     @State fileprivate var errorMessage: String?
     @State private var urlField: String = ""
@@ -89,7 +90,15 @@ struct LoginWithUrlView: View {
                 dismiss()
                 self.loginCompleted(blog)
             } catch {
-                errorMessage = error.localizedDescription
+                if await shouldRedirectToDotComLogin(error: error) {
+                    // We need to chain the dismissing and presenting,
+                    // which is not supported by SwiftUI's `dismiss` variable.
+                    presenter.dismiss(animated: true) {
+                        presentDotComLogin()
+                    }
+                } else {
+                    errorMessage = error.localizedDescription
+                }
             }
 
             isLoading = false
@@ -98,6 +107,37 @@ struct LoginWithUrlView: View {
         Task { @MainActor in
             await login()
         }
+    }
+
+    // If the error is "API root (wp-json) not found", it's possible that the user typed
+    // a WP.com simple site address. We should redirect to WP.com login if that's
+    // the case.
+    private func shouldRedirectToDotComLogin(
+        error: SelfHostedSiteAuthenticator.SignInError
+    ) async -> Bool {
+        guard case let .authentication(error) = error,
+              let error = error as? AutoDiscoveryAttemptFailure,
+              case .FindApiRoot = error else { return false}
+
+        let client = WPComApiClient(
+            delegate: .init(
+                authProvider: .none(),
+                requestExecutor: WpRequestExecutor(urlSession: .shared),
+                middlewarePipeline: .default,
+                appNotifier: EmptyAppNotifier()
+            )
+        )
+
+        let siteInfo: SiteInfoResponse
+        do {
+            let url = WordPressAuthenticator.baseSiteURL(string: urlField)
+            siteInfo = try await client.siteInfo.fetch(params: .init(url: url)).data
+        } catch {
+            DDLogError("Failed to fetch site info: \(error)")
+            return false
+        }
+
+        return siteInfo.isWordPressDotCom
     }
 }
 
@@ -109,5 +149,9 @@ private extension LoginWithUrlView {
 // MARK: - SwiftUI Preview
 
 #Preview {
-    LoginWithUrlView(presenter: nil) { _ in }
+    LoginWithUrlView(
+        presenter: nil,
+        loginCompleted: { _ in },
+        presentDotComLogin: { }
+    )
 }
