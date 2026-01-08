@@ -472,6 +472,11 @@ data model as well as any custom migrations.
 - Add a new `UserSuggestion` entity
 - Add a one-to-many relationship between `Blog` and `UserSuggestion`
 
+
+# Decommissioned
+
+The models below were removed from the app on Jan 8th 2026 to reduce the app size and improve compile time.
+
 ## WordPress 99
 
 @chipsnyder 2020-10-05

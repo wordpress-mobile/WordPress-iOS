@@ -8,6 +8,7 @@
 * [*] Fix previewing posts on WordPress.com atomic sites [#25045]
 * [*] Stats: Rename "External Links" to "Clicks" to be consistent with the web [#25090]
 * [*] Stats: Fix locations data discrepancy with the web [#25105]
+* [*] Techical: Remove obsolete Core Data models to slightly reduce the app size (-6.4 MB) [#25124]
 
 
 26.5
