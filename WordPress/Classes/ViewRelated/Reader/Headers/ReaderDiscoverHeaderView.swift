@@ -213,7 +213,7 @@ enum ReaderDiscoverChannel: Hashable {
         case .freshlyPresed:
             NSLocalizedString("reader.discover.channel.freshlyPresed", value: "Freshly Pressed", comment: "Header view channel (filter)")
         case .recommended:
-            NSLocalizedString("reader.discover.channel.recommended", value: "Recommended", comment: "Header view channel (filter)")
+            NSLocalizedString("reader.discover.channel.forYou", value: "For You", comment: "Header view channel (filter)")
         case .firstPosts:
             NSLocalizedString("reader.discover.channel.firstPost", value: "First Posts", comment: "Header view channel (filter)")
         case .latest:

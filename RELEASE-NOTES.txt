@@ -4,6 +4,7 @@
 * [**] Reader: Add "Freshly Pressed" to Discover [#24828]
 * [*] Reader: Keep only one "Search" option in the main sidebar [#25116]
 * [*] Reader: Fix Send button design in Comments [#25092]
+* [*] Rename "Recommended" to "For You" [#25123]
 * [*] Reader: Add translation support for posts [#25089]
 * [*] Fix previewing posts on WordPress.com atomic sites [#25045]
 * [*] Stats: Rename "External Links" to "Clicks" to be consistent with the web [#25090]
