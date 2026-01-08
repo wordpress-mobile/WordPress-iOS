@@ -17,9 +17,6 @@ protocol PublishingEditor where Self: UIViewController {
     /// Editor Session information for analytics reporting
     var editorSession: PostEditorAnalyticsSession { get set }
 
-    /// Verification prompt helper
-    var verificationPromptHelper: VerificationPromptHelper? { get }
-
     /// Describes the editor type to be used in analytics reporting
     var analyticsEditorSource: String { get }
 
