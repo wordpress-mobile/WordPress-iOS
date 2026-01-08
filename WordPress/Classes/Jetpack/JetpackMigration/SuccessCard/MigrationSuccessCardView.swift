@@ -103,22 +103,5 @@ extension MigrationSuccessCardView {
 
     private static var cachedShouldShowMigrationSuccessCard = false
 
-    @objc static var shouldShowMigrationSuccessCard: Bool {
-        guard AppConfiguration.isJetpack else {
-            return false
-        }
-
-        let isWordPressInstalled = MigrationAppDetection.getWordPressInstallationState().isWordPressInstalled
-        let isMigrationCompleted = UserPersistentStoreFactory.instance().jetpackContentMigrationState == .completed
-        let newValue = isWordPressInstalled && isMigrationCompleted
-
-        if newValue != Self.cachedShouldShowMigrationSuccessCard {
-            let tracker = MigrationAnalyticsTracker()
-            let event: MigrationEvent = newValue ? .pleaseDeleteWordPressCardShown : .pleaseDeleteWordPressCardHidden
-            tracker.track(event)
-            Self.cachedShouldShowMigrationSuccessCard = newValue
-        }
-
-        return newValue
-    }
+    @objc static let shouldShowMigrationSuccessCard: Bool = false
 }
