@@ -37,9 +37,6 @@ protocol PostEditor: PublishingEditor, UIViewControllerTransitioningDelegate {
 
     var isUploadingMedia: Bool { get }
 
-    /// Verification prompt helper
-    var verificationPromptHelper: VerificationPromptHelper? { get }
-
     /// Post editor state context
     var postEditorStateContext: PostEditorStateContext { get }
 

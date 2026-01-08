@@ -507,7 +507,14 @@ static const NSUInteger ReaderPostTitleLength = 30;
 }
 
 - (NSString *)editorialImageFromPostDictionary:(NSDictionary *)dict {
-    return [dict stringForKeyPath:@"editorial.image"];
+    NSString *imageURL = [dict stringForKeyPath:@"editorial.image"];
+    // A workaround for https://linear.app/a8c/issue/CMM-994/reader-invalid-featured-images-for-posts-in-freshly-pressed-feed
+    // The app does not support `mshots` images. We also never want to show
+    // screenshots of posts as featured images, so it's safe to skip these.
+    if ([imageURL containsString:@"wp.com/mshots/"]) {
+        return nil;
+    }
+    return imageURL;
 }
 
 - (NSString *)userSpecifiedFeaturedImageFromPostDictionary:(NSDictionary *)dict {

@@ -7,7 +7,7 @@ import WordPressShared
 
 class ReaderDiscoverViewController: UIViewController, ReaderDiscoverHeaderViewDelegate {
     private let headerView = ReaderDiscoverHeaderView()
-    private var selectedChannel: ReaderDiscoverChannel = .recommended
+    private var selectedChannel: ReaderDiscoverChannel = .freshlyPresed
     private let topic: ReaderAbstractTopic
     private var streamVC: ReaderStreamViewController?
     private weak var selectInterestsVC: ReaderSelectInterestsViewController?
@@ -83,7 +83,7 @@ class ReaderDiscoverViewController: UIViewController, ReaderDiscoverHeaderViewDe
             .filter { $0.slug != ReaderTagTopic.dailyPromptTag }
             .map(ReaderDiscoverChannel.tag)
 
-        headerView.configure(channels: [.recommended, .firstPosts, .latest, .dailyPrompts] + channels)
+        headerView.configure(channels: [.freshlyPresed, .recommended, .firstPosts, .latest, .dailyPrompts] + channels)
         headerView.setSelectedChannel(selectedChannel)
     }
 
@@ -95,6 +95,8 @@ class ReaderDiscoverViewController: UIViewController, ReaderDiscoverHeaderViewDe
 
     private func makeViewController(for channel: ReaderDiscoverChannel) -> ReaderStreamViewController {
         switch channel {
+        case .freshlyPresed:
+            ReaderStreamViewController.controllerWithTopic(ReaderHelpers.getFreshlyPressedTopic())
         case .recommended:
             ReaderDiscoverStreamViewController(topic: topic)
         case .firstPosts:

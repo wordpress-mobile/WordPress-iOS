@@ -2,15 +2,6 @@ import UIKit
 import WordPressUI
 
 final class CommentCreateViewController: UIViewController {
-    private let buttonSend = UIButton(configuration: {
-        var configuration = UIButton.Configuration.borderedProminent()
-        configuration.title = Strings.send
-        configuration.cornerStyle = .capsule
-        configuration.baseBackgroundColor = UIColor.label
-        configuration.baseForegroundColor = UIColor.systemBackground
-        return configuration
-    }())
-
     private let contentView = UIStackView(axis: .vertical, [])
     private let editorVC = CommentEditorViewController()
     private let viewModel: CommentCreateViewModel
@@ -32,7 +23,6 @@ final class CommentCreateViewController: UIViewController {
 
         setupView()
         setupNavigationBar()
-        setupAccessibility()
 
         didChangeText(editorVC.initialContent ?? "")
     }
@@ -62,10 +52,6 @@ final class CommentCreateViewController: UIViewController {
         editorVC.didMove(toParent: self)
     }
 
-    private func setupAccessibility() {
-        navigationItem.rightBarButtonItem?.accessibilityIdentifier = "button_send_comment"
-    }
-
     // MARK: - Actions
 
     @objc private func buttonSendTapped() {
@@ -86,7 +72,7 @@ final class CommentCreateViewController: UIViewController {
     }
 
     private func setLoading(_ isLoading: Bool) {
-        navigationItem.rightBarButtonItem = isLoading ? .activityIndicator : UIBarButtonItem(customView: buttonSend)
+        navigationItem.rightBarButtonItem = isLoading ? .activityIndicator : makeSendButton()
         navigationItem.leftBarButtonItem?.isEnabled = !isLoading
         editorVC.isEnabled = !isLoading
     }
@@ -128,14 +114,21 @@ final class CommentCreateViewController: UIViewController {
 
         navigationItem.leftBarButtonItem = UIBarButtonItem(title: SharedStrings.Button.cancel, style: .plain, target: self, action: #selector(buttonCancelTapped))
 
-        navigationItem.rightBarButtonItem = UIBarButtonItem(customView: buttonSend)
-        buttonSend.addTarget(self, action: #selector(buttonSendTapped), for: .primaryActionTriggered)
+        navigationItem.rightBarButtonItem = makeSendButton()
+        navigationItem.rightBarButtonItem?.isEnabled = false
+    }
+
+    private func makeSendButton() -> UIBarButtonItem {
+        let button = UIBarButtonItem(title: Strings.send, style: .done, target: self, action: #selector(buttonSendTapped))
+        button.accessibilityIdentifier = "button_send_comment"
+        button.tintColor = UIAppColor.tint
+        return button
     }
 
     private func didChangeText(_ text: String) {
         let text = text.trimmingCharacters(in: .whitespacesAndNewlines)
         let isEnabled = !text.isEmpty
-        buttonSend.isEnabled = isEnabled
+        navigationItem.rightBarButtonItem?.isEnabled = isEnabled
         isModalInPresentation = isEnabled
     }
 }

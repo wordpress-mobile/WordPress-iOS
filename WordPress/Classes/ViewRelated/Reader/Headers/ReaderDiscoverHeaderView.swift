@@ -191,6 +191,9 @@ private final class ReaderDiscoverChannelView: UIView {
 }
 
 enum ReaderDiscoverChannel: Hashable {
+    /// Curated posts.
+    case freshlyPresed
+
     /// The default channel showing your selected tags.
     case recommended
 
@@ -207,6 +210,8 @@ enum ReaderDiscoverChannel: Hashable {
 
     var localizedTitle: String {
         switch self {
+        case .freshlyPresed:
+            NSLocalizedString("reader.discover.channel.freshlyPresed", value: "Freshly Pressed", comment: "Header view channel (filter)")
         case .recommended:
             NSLocalizedString("reader.discover.channel.recommended", value: "Recommended", comment: "Header view channel (filter)")
         case .firstPosts:
@@ -230,6 +235,7 @@ enum ReaderDiscoverChannel: Hashable {
 
     private var analyticsID: String {
         switch self {
+        case .freshlyPresed: "freshly_presed"
         case .recommended: "recommended"
         case .firstPosts: "first_posts"
         case .latest: "latest"

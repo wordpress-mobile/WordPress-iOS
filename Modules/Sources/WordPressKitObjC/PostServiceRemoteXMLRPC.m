@@ -240,38 +240,35 @@ static NSString * const RemoteOptionValueOrderByPostID = @"ID";
     if (options.statuses.count) {
         statusesStr = [options.statuses componentsJoinedByString:@","];
     }
-    if (options.order) {
-        NSString *orderStr = nil;
-        switch (options.order) {
-            case PostServiceResultsOrderDescending:
-                orderStr = RemoteOptionValueOrderDescending;
-                break;
-            case PostServiceResultsOrderAscending:
-                orderStr = RemoteOptionValueOrderAscending;
-                break;
-        }
-        [remoteParams setObject:orderStr forKey:RemoteOptionKeyOrder];
+
+    NSString *orderStr = nil;
+    switch (options.order) {
+        case PostServiceResultsOrderDescending:
+            orderStr = RemoteOptionValueOrderDescending;
+            break;
+        case PostServiceResultsOrderAscending:
+            orderStr = RemoteOptionValueOrderAscending;
+            break;
     }
+    [remoteParams setObject:orderStr forKey:RemoteOptionKeyOrder];
 
     NSString *orderByStr = nil;
-    if (options.orderBy) {
-        switch (options.orderBy) {
-            case PostServiceResultsOrderingByDate:
-                orderByStr = RemoteOptionValueOrderByDate;
-                break;
-            case PostServiceResultsOrderingByModified:
-                orderByStr = RemoteOptionValueOrderByModified;
-                break;
-            case PostServiceResultsOrderingByTitle:
-                orderByStr = RemoteOptionValueOrderByTitle;
-                break;
-            case PostServiceResultsOrderingByCommentCount:
-                orderByStr = RemoteOptionValueOrderByCommentCount;
-                break;
-            case PostServiceResultsOrderingByPostID:
-                orderByStr = RemoteOptionValueOrderByPostID;
-                break;
-        }
+    switch (options.orderBy) {
+        case PostServiceResultsOrderingByDate:
+            orderByStr = RemoteOptionValueOrderByDate;
+            break;
+        case PostServiceResultsOrderingByModified:
+            orderByStr = RemoteOptionValueOrderByModified;
+            break;
+        case PostServiceResultsOrderingByTitle:
+            orderByStr = RemoteOptionValueOrderByTitle;
+            break;
+        case PostServiceResultsOrderingByCommentCount:
+            orderByStr = RemoteOptionValueOrderByCommentCount;
+            break;
+        case PostServiceResultsOrderingByPostID:
+            orderByStr = RemoteOptionValueOrderByPostID;
+            break;
     }
 
     if (statusesStr.length) {
