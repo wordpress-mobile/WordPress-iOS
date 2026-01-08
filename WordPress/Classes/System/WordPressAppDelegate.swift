@@ -84,6 +84,7 @@ public class WordPressAppDelegate: UIResponder, UIApplicationDelegate {
         AssertionLoggerDependencyContainer.logger = AssertionLogger()
         UITestConfigurator.prepareApplicationForUITests(in: application, window: window)
         if FeatureFlag.pulse.enabled {
+            wpkURLSessionNotifyingDelegate = PulseNetworkLogger()
             LoggingSystem.bootstrap(PersistentLogHandler.init)
         }
 
