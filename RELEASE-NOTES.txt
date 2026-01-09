@@ -9,7 +9,9 @@
 * [*] Reader: Collapse multiple spaces in site titles into one [#25094]
 * [*] Fix previewing posts on WordPress.com atomic sites [#25045]
 * [*] Stats: Rename "External Links" to "Clicks" to be consistent with the web [#25090]
+* [*] Stats: Fix an issue with External Links (Clicks) sometimes displayed incorrectly [#25128]
 * [*] Stats: Fix locations data discrepancy with the web [#25105]
+
 
 26.5
 -----
