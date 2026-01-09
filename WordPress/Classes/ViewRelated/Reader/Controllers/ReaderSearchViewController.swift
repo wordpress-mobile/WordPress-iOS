@@ -13,7 +13,7 @@ final class ReaderSearchViewController: UIViewController {
         var title: String {
             switch self {
             case .posts: Strings.posts
-            case .sites: Strings.blogs
+            case .sites: Strings.sites
             }
         }
 
@@ -250,5 +250,5 @@ extension ReaderSearchViewController: UISearchBarDelegate {
 private enum Strings {
     static let title = NSLocalizedString("reader.search.title", value: "Search", comment: "Title of the Reader's search feature")
     static let posts = NSLocalizedString("reader.search.tab.posts", value: "Posts", comment: "Title of a Reader tab showing Posts matching a user's search query")
-    static let blogs = NSLocalizedString("reader.search.tab.blogs", value: "Blogs", comment: "Title of a Reader tab showing Sites matching a user's search query")
+    static let sites = NSLocalizedString("reader.search.tab.sites", value: "Sites", comment: "Title of a Reader tab showing Sites matching a user's search query")
 }

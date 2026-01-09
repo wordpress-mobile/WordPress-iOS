@@ -52,7 +52,7 @@ extension ReaderPost {
 
     public func blogNameForDisplay() -> String? {
         if let blogName, !blogName.isEmpty {
-            return blogName
+            return blogName.replacing(/\s+/, with: " ")
         }
         return URL(string: blogURL ?? "")?.host
     }
@@ -154,5 +154,4 @@ extension ReaderPost {
 
         return try? JSONSerialization.jsonObject(with: jsonData) as? [String: Any]
     }
-
 }

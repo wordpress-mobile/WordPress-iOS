@@ -1,14 +1,15 @@
 26.6
 -----
+* [**] Intelligence: Expand AI-based features to more locales [#25034]
 * [**] Reader: Add "Freshly Pressed" to Discover [#24828]
 * [*] Reader: Keep only one "Search" option in the main sidebar [#25116]
 * [*] Reader: Fix Send button design in Comments [#25092]
-* [**] Intelligence: Expand AI-based features to more locales [#25034]
+* [*] Reader: Fix article view ignoring `use_excerpt` [#25108]
+* [*] Reader: Add translation support for posts [#25089]
+* [*] Reader: Collapse multiple spaces in site titles into one [#25094]
 * [*] Fix previewing posts on WordPress.com atomic sites [#25045]
 * [*] Stats: Rename "External Links" to "Clicks" to be consistent with the web [#25090]
 * [*] Stats: Fix locations data discrepancy with the web [#25105]
-
-
 
 26.5
 -----

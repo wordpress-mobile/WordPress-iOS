@@ -5,24 +5,21 @@ import WordPressData
 // […]
 final class ReaderReadMoreView: UIView, UIAdaptivePresentationControllerDelegate, UIPopoverPresentationControllerDelegate {
     private let textView = UITextView.makeLabel()
-    private let infoIconView = UIImageView(image: UIImage(systemName: "info.circle"))
+    private let infoIconView = UIImageView(image: UIImage(systemName: "info.circle.fill"))
     private var postURL: URL?
 
     init(post: ReaderPost) {
         super.init(frame: .zero)
-
-        let gradientMaskView = GradientAlphaMaskView()
-        addSubview(gradientMaskView)
-        gradientMaskView.pinEdges()
 
         let visualEffectView = UIVisualEffectView(effect: UIBlurEffect(style: .prominent))
         visualEffectView.layer.cornerRadius = 8
         visualEffectView.layer.masksToBounds = true
 
         addSubview(visualEffectView)
-        visualEffectView.pinEdges(insets: UIEdgeInsets(top: 80, left: 0, bottom: 16, right: 0))
+        visualEffectView.pinEdges(insets: UIEdgeInsets(top: 4, left: 16, bottom: 16, right: 16))
 
         textView.adjustsFontForContentSizeCategory = true
+        textView.isUserInteractionEnabled = false // Ignore taps on a link and disable selection
 
         let string = NSMutableAttributedString(string: Strings.viewFullPost, attributes: [
             .font: UIFont.preferredFont(forTextStyle: .body)
@@ -87,43 +84,6 @@ final class ReaderReadMoreView: UIView, UIAdaptivePresentationControllerDelegate
 
     func adaptivePresentationStyle(for controller: UIPresentationController) -> UIModalPresentationStyle {
         .none // Force popover on iPhone
-    }
-}
-
-private final class GradientAlphaMaskView: UIView {
-    private let gradientLayer = CAGradientLayer()
-
-    override init(frame: CGRect) {
-        super.init(frame: frame)
-
-        gradientLayer.frame = bounds
-        gradientLayer.locations = [0.0, 1.0]
-        refreshColors()
-
-        gradientLayer.startPoint = CGPoint(x: 0.5, y: 0.0)
-        gradientLayer.endPoint = CGPoint(x: 0.5, y: 0.5)
-
-        self.layer.addSublayer(gradientLayer)
-    }
-
-    override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
-        super.traitCollectionDidChange(previousTraitCollection)
-
-        refreshColors()
-    }
-
-    private func refreshColors() {
-        gradientLayer.colors = [UIColor.systemBackground.withAlphaComponent(0).cgColor, UIColor.systemBackground.cgColor]
-    }
-
-    required init?(coder: NSCoder) {
-        fatalError("init(coder:) has not been implemented")
-    }
-
-    override func layoutSubviews() {
-        super.layoutSubviews()
-
-        gradientLayer.frame = bounds
     }
 }
 

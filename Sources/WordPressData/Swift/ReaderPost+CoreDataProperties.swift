@@ -37,6 +37,7 @@ extension ReaderPost {
     @NSManaged public var tags: String?
     @NSManaged public var isLikesEnabled: Bool
     @NSManaged public var isSharingEnabled: Bool
+    @NSManaged public var useExcerpt: Bool
     @NSManaged public var isSiteBlocked: Bool
     @NSManaged public var isSubscribedComments: Bool
     @NSManaged public var canSubscribeComments: Bool

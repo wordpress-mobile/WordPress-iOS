@@ -304,6 +304,7 @@ static NSString * const SourceAttributionStandardTaxonomy = @"standard-pick";
     post.isFollowing = remotePost.isFollowing;
     post.isLiked = remotePost.isLiked;
     post.isReblogged = remotePost.isReblogged;
+    post.useExcerpt = remotePost.useExcerpt;
     post.isWPCom = remotePost.isWPCom;
     post.organizationID = remotePost.organizationID;
     post.likeCount = remotePost.likeCount;

@@ -1,9 +1,11 @@
 import UIKit
+import SwiftUI
 import WordPressUI
 import AutomatticTracks
 import WordPressReader
 import WordPressData
 import WordPressKit
+import WordPressIntelligence
 import Combine
 @preconcurrency import WebKit
 
@@ -36,6 +38,8 @@ class ReaderDetailViewController: UIViewController, ReaderDetailView {
 
     /// WebView height constraint
     @IBOutlet weak var webViewHeight: NSLayoutConstraint!
+
+    @IBOutlet weak var accessoriesStackView: UIStackView!
 
     /// The table view that displays Comments
     @IBOutlet weak var commentsTableView: IntrinsicTableView!
@@ -160,6 +164,37 @@ class ReaderDetailViewController: UIViewController, ReaderDetailView {
         displaySettingStore.setting
     }
 
+    // Translation support
+    @available(iOS 26, *)
+    private var translationViewModel: TranslationViewModel {
+        _translationViewModel as! TranslationViewModel
+    }
+
+    private lazy var _translationViewModel: Any = {
+        guard #available(iOS 26, *) else { return {} }
+        return TranslationViewModel()
+    }()
+
+    @available(iOS 26, *)
+    private var translationHostView: TranslationHostView {
+        _translationHostView as! TranslationHostView
+    }
+
+    private lazy var _translationHostView: Any = {
+        guard #available(iOS 26, *) else { return () }
+        return TranslationHostView(viewModel: translationViewModel)
+    }()
+
+    private var translationAvailabilityTask: Task<Void, Never>?
+    private var isTranslating = false
+    var translationAvailability: TranslationAvailability = .unavailable
+
+    private lazy var translationSpinner: UIBarButtonItem = {
+        let activityIndicator = UIActivityIndicatorView(style: .medium)
+        activityIndicator.startAnimating()
+        return UIBarButtonItem(customView: activityIndicator)
+    }()
+
     override func viewDidLoad() {
         super.viewDidLoad()
 
@@ -174,6 +209,7 @@ class ReaderDetailViewController: UIViewController, ReaderDetailView {
         observeWebViewHeight()
         configureNotifications()
         configureCommentsTable()
+        configureTranslationIfAvailable()
 
         coordinator?.start()
 
@@ -273,6 +309,7 @@ class ReaderDetailViewController: UIViewController, ReaderDetailView {
         header.configure(for: post)
         fetchLikes()
         fetchComments()
+        checkTranslationAvailability()
 
         if let postURLString = post.permaLink,
            let postURL = URL(string: postURLString) {
@@ -281,30 +318,30 @@ class ReaderDetailViewController: UIViewController, ReaderDetailView {
 
         webView.isP2 = post.isP2Type
 
-        if post.content?.hasSuffix("[…]") == true {
-            let viewMoreView = ReaderReadMoreView(post: post)
-            // Add to the scroll view's parent view instead of directly to webView
-            if let containerView = webView.superview {
-                containerView.addSubview(viewMoreView)
-                viewMoreView.translatesAutoresizingMaskIntoConstraints = false
-                NSLayoutConstraint.activate([
-                    viewMoreView.leadingAnchor.constraint(equalTo: webView.leadingAnchor),
-                    viewMoreView.trailingAnchor.constraint(equalTo: webView.trailingAnchor),
-                    viewMoreView.bottomAnchor.constraint(equalTo: webView.bottomAnchor)
-                ])
-            }
-        }
-
         coordinator?.storeAuthenticationCookies(in: webView) { [weak self] in
-            if let content = post.contentForDisplay() {
-                self?.webView.loadHTMLString(content)
-            }
+            self?.showPostContent(post)
         }
 
         navigateToCommentIfNecessary()
 
         if !isNewFeaturedImageEnabled && !featuredImageView.isLoaded {
             featuredImageView.load()
+        }
+    }
+
+    private func showPostContent(_ post: ReaderPost) {
+        if post.useExcerpt {
+            webView.loadHTMLString(post.makeExceptHTML())
+        } else if let content = post.contentForDisplay() {
+            webView.loadHTMLString(content)
+        }
+
+        if post.useExcerpt || post.content?.hasSuffix("[…]") == true {
+            let viewMoreView = ReaderReadMoreView(post: post)
+            if let subview = accessoriesStackView.subviews.first(where: { $0 is ReaderReadMoreView }) {
+                subview.removeFromSuperview()
+            }
+            accessoriesStackView.addArrangedSubview(viewMoreView)
         }
     }
 
@@ -470,6 +507,7 @@ class ReaderDetailViewController: UIViewController, ReaderDetailView {
     deinit {
         scrollObserver?.invalidate()
         toolbarUpdateTimer?.invalidate()
+        translationAvailabilityTask?.cancel()
         NotificationCenter.default.removeObserver(self)
     }
 
@@ -708,6 +746,96 @@ class ReaderDetailViewController: UIViewController, ReaderDetailView {
                                    forCellReuseIdentifier: CommentContentTableViewCell.defaultReuseID)
         commentsTableView.register(ReaderDetailNoCommentCell.defaultNib,
                                    forCellReuseIdentifier: ReaderDetailNoCommentCell.defaultReuseID)
+    }
+
+    // Translation framework doesn't support UIKit, so we have to jump through the hoops.
+    private func configureTranslationIfAvailable() {
+        guard #available(iOS 26, *) else {
+            return
+        }
+        let hostingController = UIHostingController(rootView: translationHostView)
+        hostingController.view.isHidden = true
+        addChild(hostingController)
+        view.addSubview(hostingController.view)
+        hostingController.didMove(toParent: self)
+    }
+
+    private func checkTranslationAvailability() {
+        guard #available(iOS 26, *) else {
+            return
+        }
+        translationAvailabilityTask?.cancel()
+        translationAvailabilityTask = Task { @MainActor [weak self] in
+            await self?.updateTranslationAvailability()
+        }
+    }
+
+    @available(iOS 26, *)
+    private func updateTranslationAvailability() async {
+        if let post, let content = post.contentForDisplay() {
+            translationAvailability = await translationViewModel.checkAvailability(for: content)
+        }
+    }
+
+    @available(iOS 26, *)
+    func translatePost() {
+        Task { @MainActor in
+            do {
+                try await actuallyTranslatePost()
+            } catch {
+                if !(error is CancellationError) {
+                    Notice(error: error).post()
+                    UINotificationFeedbackGenerator().notificationOccurred(.error)
+                }
+                DDLogError("Translation failed: \(error)")
+            }
+        }
+    }
+
+    @available(iOS 26, *)
+    @MainActor
+    private func actuallyTranslatePost() async throws {
+        guard let post, case let .available(source, target) = translationAvailability else {
+            return
+        }
+        guard !isTranslating else {
+            return
+        }
+        isTranslating = true
+        showTranslationSpinner()
+        defer {
+            isTranslating = false
+            hideTranslationSpinner()
+        }
+
+        let translationResults = try await translationViewModel.translate(
+            [post.postTitle ?? "", post.content ?? ""],
+            from: source,
+            to: target
+        )
+
+        // Create blur effect
+        let blurEffect = UIBlurEffect(style: .light)
+        let blurView = UIVisualEffectView(effect: nil)
+        blurView.frame = view.bounds
+        blurView.autoresizingMask = [.flexibleWidth, .flexibleHeight]
+        view.addSubview(blurView)
+
+        UIView.animate(withDuration: 0.25, delay: 0, options: .curveEaseIn) {
+            blurView.effect = blurEffect
+        }
+        UIView.animate(withDuration: 0.25, delay: 0.15, options: .curveEaseOut) {
+            blurView.effect = nil
+        } completion: { _ in
+            blurView.removeFromSuperview()
+        }
+
+        header.configure(for: post, title: translationResults[0])
+        do {
+            try await webView.setBodyHTML(translationResults[1])
+        } catch {
+            DDLogError("Failed to set HTML: \(error)")
+        }
     }
 
     private func configureRelatedPosts() {
@@ -1171,6 +1299,20 @@ private extension ReaderDetailViewController {
         navigationItem.rightBarButtonItems = rightItems.compactMap({ $0 })
     }
 
+    func showTranslationSpinner() {
+        guard var items = navigationItem.rightBarButtonItems,
+              !items.contains(translationSpinner) else { return }
+        items.append(translationSpinner)
+        navigationItem.setRightBarButtonItems(items, animated: true)
+    }
+
+    func hideTranslationSpinner() {
+        guard var items = navigationItem.rightBarButtonItems,
+              let index = items.firstIndex(of: translationSpinner) else { return }
+        items.remove(at: index)
+        navigationItem.setRightBarButtonItems(items, animated: true)
+    }
+
     /// Updates the left bar button item based on the current view controller's context in the navigation stack.
     /// If the view controller is presented modally and does not have a left bar button item, a dismiss button is set.
     /// If the view controller is not the root of the navigation stack, a back button is set.
@@ -1334,5 +1476,38 @@ extension ReaderDetailViewController: ContentIdentifiable {
         }
 
         return nil
+    }
+}
+
+// MARK: - WKWebView Helpers
+
+/// Helper methods for working with WKWebView and translation.
+private extension WKWebView {
+
+    /// Get the body HTML content from the web view.
+    ///
+    /// This method extracts the innerHTML of the document body.
+    ///
+    /// - Returns: The HTML content as a String.
+    /// - Throws: An error if JavaScript evaluation fails.
+    func getBodyHTML() async throws -> String {
+        let script = "document.body.innerHTML || ''"
+        let html = try await evaluateJavaScript(script) as? String
+        return html ?? ""
+    }
+
+    /// Set the body HTML content in the web view.
+    ///
+    /// This method replaces the innerHTML of the document body with the provided HTML.
+    ///
+    /// - Parameter html: The HTML content to set.
+    /// - Throws: An error if JavaScript evaluation fails.
+    func setBodyHTML(_ html: String) async throws {
+        _ = try await callAsyncJavaScript(
+            "document.body.innerHTML = html",
+            arguments: ["html": html],
+            in: nil,
+            contentWorld: .page
+        )
     }
 }
