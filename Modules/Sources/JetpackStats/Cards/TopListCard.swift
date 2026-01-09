@@ -88,7 +88,7 @@ struct TopListCard: View {
 
     private var mapView: some View {
         CountriesMapView(
-            data: viewModel.cachedCountriesMapData ?? .init(metric: viewModel.selection.metric, locations: []),
+            data: viewModel.countriesMapData ?? .init(metric: viewModel.selection.metric, locations: []),
             primaryColor: Constants.Colors.uiColorBlue
         )
     }

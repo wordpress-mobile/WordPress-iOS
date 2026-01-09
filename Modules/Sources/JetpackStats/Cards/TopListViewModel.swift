@@ -27,7 +27,7 @@ final class TopListViewModel: ObservableObject, TrafficCardViewModel {
     @Published private(set) var isLoading = true
     @Published private(set) var loadingError: Error?
     @Published private(set) var isStale = false
-    @Published private(set) var cachedCountriesMapData: CountriesMapData?
+    @Published private(set) var countriesMapData: CountriesMapData?
 
     @Published var isEditing = false
 
@@ -106,22 +106,12 @@ final class TopListViewModel: ObservableObject, TrafficCardViewModel {
         isFirstAppear = false
 
         // Track card shown event
-        var properties: [String: String] = [
+        tracker?.send(.cardShown, properties: [
             "card_type": CardType.topList.rawValue,
+            "configuration": "\(selection.item.analyticsName)_\(selection.metric.analyticsName)",
             "item_type": selection.item.analyticsName,
             "metric": selection.metric.analyticsName
-        ]
-
-        // Add location level if applicable
-        if selection.item == .locations {
-            let level = selection.locationLevel
-            properties["location_level"] = level.analyticsName
-            properties["configuration"] = "\(selection.item.analyticsName)_\(level.analyticsName)_\(selection.metric.analyticsName)"
-        } else {
-            properties["configuration"] = "\(selection.item.analyticsName)_\(selection.metric.analyticsName)"
-        }
-
-        tracker?.send(.cardShown, properties: properties)
+        ])
 
         loadData()
     }
@@ -171,22 +161,35 @@ final class TopListViewModel: ObservableObject, TrafficCardViewModel {
             // Check for cancellation before updating the state
             try Task.checkCancellation()
 
+            // Fetch country-level data for map if viewing regions or cities
+            var mapData: CountriesMapData?
+            if selection.item == .locations {
+                if selection.locationLevel == .countries {
+                    // Use the main data for countries
+                    mapData = createCountriesMapData(from: data)
+                } else {
+                    // Fetch separate country-level data for regions/cities
+                    var countriesSelection = selection
+                    countriesSelection.locationLevel = .countries
+                    let countriesData = try await getTopListData(for: countriesSelection, dateRange: dateRange)
+                    mapData = createCountriesMapData(from: countriesData)
+                }
+            }
+
+            // Check for cancellation before updating the state
+            try Task.checkCancellation()
+
             // Cancel stale timer and reset stale flag when data is successfully loaded
             staleTimer?.cancel()
             isStale = false
             self.data = data
-
-            // Update cached CountriesMapData if locations are selected
-            if selection.item == .locations {
-                updateCountriesMapDataCache(from: data)
-            } else {
-                cachedCountriesMapData = nil
-            }
+            self.countriesMapData = mapData
         } catch is CancellationError {
             return
         } catch {
             loadingError = error
             data = nil
+            countriesMapData = nil
             tracker?.trackError(error, screen: "top_list_card")
         }
 
@@ -266,11 +269,11 @@ final class TopListViewModel: ObservableObject, TrafficCardViewModel {
         }
     }
 
-    private func updateCountriesMapDataCache(from data: TopListData) {
+    private func createCountriesMapData(from data: TopListData) -> CountriesMapData {
         let locations = data.items.compactMap { $0 as? TopListItem.Location }
         let previousLocations = data.previousItems.compactMapValues { $0 as? TopListItem.Location }
 
-        cachedCountriesMapData = CountriesMapData(
+        return CountriesMapData(
             metric: selection.metric,
             locations: locations,
             previousLocations: previousLocations
