@@ -189,9 +189,9 @@ struct StandaloneChartCard: View {
             }
         } label: {
             Image(systemName: "ellipsis")
-                .font(.body)
+                .font(.system(size: 15))
                 .foregroundColor(.secondary)
-                .frame(width: 56, height: 50)
+                .frame(width: 50, height: 50)
         }
         .tint(Color.primary)
     }

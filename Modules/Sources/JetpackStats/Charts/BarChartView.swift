@@ -74,7 +74,7 @@ struct BarChartView: View {
 
     private func lighten(_ color: Color) -> Color {
         if #available(iOS 18, *) {
-            color.mix(with: Color(.systemBackground), by: colorScheme == .light ? 0.5 : 0.25)
+            color.mix(with: Color(.systemBackground), by: colorScheme == .light ? 0.4 : 0.15)
         } else {
             color.opacity(0.5)
         }
