@@ -8,7 +8,7 @@ final class TopListViewModel: ObservableObject, TrafficCardViewModel {
     let groupedItems: [[TopListItemType]]
 
     var title: String {
-        selection.item.getTitle(for: selection.metric)
+        selection.item.localizedTitle
     }
 
     @Published private(set) var configuration: TopListCardConfiguration {
@@ -50,6 +50,7 @@ final class TopListViewModel: ObservableObject, TrafficCardViewModel {
     struct Selection: Equatable, Sendable {
         var item: TopListItemType
         var metric: SiteMetric
+        var locationLevel: LocationLevel = .countries
     }
 
     enum Filter: Equatable {
@@ -105,12 +106,22 @@ final class TopListViewModel: ObservableObject, TrafficCardViewModel {
         isFirstAppear = false
 
         // Track card shown event
-        tracker?.send(.cardShown, properties: [
+        var properties: [String: String] = [
             "card_type": CardType.topList.rawValue,
-            "configuration": "\(selection.item.analyticsName)_\(selection.metric.analyticsName)",
             "item_type": selection.item.analyticsName,
             "metric": selection.metric.analyticsName
-        ])
+        ]
+
+        // Add location level if applicable
+        if selection.item == .locations {
+            let level = selection.locationLevel
+            properties["location_level"] = level.analyticsName
+            properties["configuration"] = "\(selection.item.analyticsName)_\(level.analyticsName)_\(selection.metric.analyticsName)"
+        } else {
+            properties["configuration"] = "\(selection.item.analyticsName)_\(selection.metric.analyticsName)"
+        }
+
+        tracker?.send(.cardShown, properties: properties)
 
         loadData()
     }
@@ -201,7 +212,8 @@ final class TopListViewModel: ObservableObject, TrafficCardViewModel {
             metric: selection.metric,
             interval: dateRange.dateInterval,
             granularity: granularity,
-            limit: fetchLimit
+            limit: fetchLimit,
+            locationLevel: selection.locationLevel
         )
 
         // Fetch previous data only for items that support it
@@ -212,7 +224,8 @@ final class TopListViewModel: ObservableObject, TrafficCardViewModel {
                 metric: selection.metric,
                 interval: dateRange.effectiveComparisonInterval,
                 granularity: granularity,
-                limit: fetchLimit
+                limit: fetchLimit,
+                locationLevel: selection.locationLevel
             )
         }()
 

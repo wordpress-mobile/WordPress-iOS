@@ -75,11 +75,15 @@ struct TopListCard: View {
 
     private var cardHeaderView: some View {
         HStack {
-            StatsCardTitleView(title: viewModel.selection.item == .locations ? "Countries" : viewModel.title)
+            Menu {
+                itemTypePicker
+            } label: {
+                StatsCardTitleView(title: viewModel.selection.item.localizedTitle, showChevron: true)
+            }
             Spacer(minLength: 44)
         }
         .accessibilityElement(children: .combine)
-        .accessibilityLabel(Strings.Accessibility.cardTitle(viewModel.selection.item == .locations ? "Countries" : viewModel.title))
+        .accessibilityLabel(Strings.Accessibility.cardTitle(viewModel.title))
     }
 
     private var mapView: some View {
@@ -91,43 +95,35 @@ struct TopListCard: View {
 
     private var listHeaderView: some View {
         HStack {
-            if viewModel.items.count > 1 {
+            // Left side: Location level for locations, otherwise item type
+            if viewModel.selection.item == .locations {
                 Menu {
-                    itemTypePicker
+                    locationLevelPicker
                 } label: {
-                    InlineValuePickerTitle(title: viewModel.selection.item.localizedTitle)
-                        .padding(.top, 6)
-                        .padding(.vertical, Constants.step0_5) // Increase tap area
-                }
-                .fixedSize()
-            } else {
-                Text(viewModel.selection.item.localizedTitle)
-                    .padding(.top, 6)
-                    .padding(.vertical, Constants.step0_5)
-                    .font(.subheadline)
-                    .fontWeight(.medium)
-            }
-
-            Spacer()
-
-            let metrics = getSupportedMetrics(for: viewModel.selection.item)
-            if metrics.count > 1 {
-                Menu {
-                    makeMetricPicker(with: metrics)
-                } label: {
-                    InlineValuePickerTitle(title: viewModel.selection.metric.localizedTitle)
+                    InlineValuePickerTitle(title: viewModel.selection.locationLevel.localizedTitle)
+                        .foregroundStyle(Color.secondary)
                         .padding(.top, 6)
                         .padding(.vertical, Constants.step0_5)
                 }
                 .fixedSize()
             } else {
-                Text(viewModel.selection.metric.localizedTitle)
-                    .padding(.top, 6)
-                    .padding(.vertical, Constants.step0_5)
-                    .font(.subheadline)
-                    .fontWeight(.medium)
+                makeColumnTitle(viewModel.selection.item.localizedColumnName)
             }
+
+            Spacer()
+
+            // Right side: selected metric
+            makeColumnTitle(viewModel.selection.metric.localizedTitle)
         }
+    }
+
+    private func makeColumnTitle(_ title: String) -> some View {
+        Text(title)
+            .foregroundStyle(Color.secondary)
+            .padding(.top, 6)
+            .padding(.vertical, Constants.step0_5)
+            .font(.subheadline)
+            .fontWeight(.medium)
     }
 
     private func navigateToTopListScreen() {
@@ -205,6 +201,17 @@ struct TopListCard: View {
             }
         }
         EditCardMenuContent(cardViewModel: viewModel)
+    }
+
+    private var locationLevelPicker: some View {
+        ForEach(LocationLevel.allCases) { level in
+            Button {
+                viewModel.selection.locationLevel = level
+            } label: {
+                Label(level.localizedTitle, systemImage: level.systemImage)
+            }
+        }
+        .tint(Color.primary)
     }
 
     @ViewBuilder
@@ -310,7 +317,15 @@ struct TopListCard: View {
 }
 
 #Preview {
-    TopListCardPreview(item: .authors)
+    ScrollView {
+        VStack {
+            TopListCardPreview(item: .authors)
+            TopListCardPreview(item: .locations)
+        }
+        .padding(.horizontal, 8)
+    }
+    .scrollContentBackground(.hidden)
+    .background(Constants.Colors.background)
 }
 
 private struct TopListCardPreview: View {

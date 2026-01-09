@@ -37,6 +37,28 @@ extension TopListItem.Location {
         )
     }
 
+    init(_ region: WordPressKit.StatsRegion) {
+        self.init(
+            name: region.name,
+            code: region.code,
+            flag: nil,
+            parentName: nil,
+            parentCode: region.countryCode,
+            metrics: SiteMetricsSet(views: region.viewsCount)
+        )
+    }
+
+    init(_ city: WordPressKit.StatsCity) {
+        self.init(
+            name: city.name,
+            code: city.code,
+            flag: nil,
+            parentName: city.regionName,
+            parentCode: city.countryCode,
+            metrics: SiteMetricsSet(views: city.viewsCount)
+        )
+    }
+
     private static func countryCodeToEmoji(_ code: String) -> String? {
         let base: UInt32 = 127397
         var scalarView = String.UnicodeScalarView()
