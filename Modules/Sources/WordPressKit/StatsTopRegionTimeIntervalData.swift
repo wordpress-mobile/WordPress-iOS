@@ -7,11 +7,11 @@ public struct StatsTopRegionTimeIntervalData {
     public let totalViewsCount: Int
     public let otherViewsCount: Int
 
-    public let regions: [StatsRegion]
+    public let regions: [Region]
 
     public init(period: StatsPeriodUnit,
                 periodEndDate: Date,
-                regions: [StatsRegion],
+                regions: [Region],
                 totalViewsCount: Int,
                 otherViewsCount: Int) {
         self.period = period
@@ -20,22 +20,19 @@ public struct StatsTopRegionTimeIntervalData {
         self.totalViewsCount = totalViewsCount
         self.otherViewsCount = otherViewsCount
     }
-}
 
-public struct StatsRegion {
-    public let name: String
-    public let code: String
-    public let countryCode: String
-    public let viewsCount: Int
+    public struct Region {
+        public let name: String
+        public let countryCode: String
+        public let viewsCount: Int
 
-    public init(name: String,
-                code: String,
-                countryCode: String,
-                viewsCount: Int) {
-        self.name = name
-        self.code = code
-        self.countryCode = countryCode
-        self.viewsCount = viewsCount
+        public init(name: String,
+                    countryCode: String,
+                    viewsCount: Int) {
+            self.name = name
+            self.countryCode = countryCode
+            self.viewsCount = viewsCount
+        }
     }
 }
 
@@ -46,47 +43,36 @@ extension StatsTopRegionTimeIntervalData: StatsTimeIntervalData {
 
     public init?(date: Date, period: StatsPeriodUnit, jsonDictionary: [String: AnyObject]) {
         guard
-            let unwrappedDays = type(of: self).unwrapDaysDictionary(jsonDictionary: jsonDictionary),
-            let regionsViews = Bamboozled.parseArray(unwrappedDays["views"])
+            let summary = jsonDictionary["summary"] as? [String: AnyObject],
+            let regionsViews = Bamboozled.parseArray(summary["views"])
         else {
             return nil
         }
 
-        let regionInfo = jsonDictionary["region-info"] as? [String: AnyObject] ?? [:]
-        let totalViews = unwrappedDays["total_views"] as? Int ?? 0
-        let otherViews = unwrappedDays["other_views"] as? Int ?? 0
+        let totalViews = summary["total_views"] as? Int ?? 0
+        let otherViews = summary["other_views"] as? Int ?? 0
 
         self.periodEndDate = date
         self.period = period
 
         self.totalViewsCount = totalViews
         self.otherViewsCount = otherViews
-        self.regions = regionsViews.compactMap { StatsRegion(jsonDictionary: $0, regionInfo: regionInfo) }
+        self.regions = regionsViews.compactMap { Region(jsonDictionary: $0) }
     }
 }
 
-extension StatsRegion {
-    init?(jsonDictionary: [String: AnyObject], regionInfo: [String: AnyObject]) {
+extension StatsTopRegionTimeIntervalData.Region {
+    init?(jsonDictionary: [String: AnyObject]) {
         guard
+            let location = jsonDictionary["location"] as? String,
             let viewsCount = jsonDictionary["views"] as? Int,
-            let regionCode = jsonDictionary["region_code"] as? String,
             let countryCode = jsonDictionary["country_code"] as? String
         else {
             return nil
         }
 
-        let name: String
-
-        if let regionDict = regionInfo[regionCode] as? [String: AnyObject],
-           let regionName = regionDict["region_full"] as? String {
-            name = regionName
-        } else {
-            name = regionCode
-        }
-
-        self.viewsCount = viewsCount
-        self.code = regionCode
+        self.name = location
         self.countryCode = countryCode
-        self.name = name
+        self.viewsCount = viewsCount
     }
 }

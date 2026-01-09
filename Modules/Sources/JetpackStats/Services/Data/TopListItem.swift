@@ -51,47 +51,12 @@ extension TopListItem {
 
     struct Location: Codable, TopListItemProtocol {
         let name: String
-        let code: String?
         let flag: String?
-        let parentName: String?
-        let parentCode: String?
+        let countryCode: String?
         var metrics: SiteMetricsSet
 
         var id: TopListItemID {
-            TopListItemID(type: .locations, id: code ?? name)
-        }
-
-        // Backwards compatibility
-        var country: String { name }
-        var countryCode: String? { code }
-
-        // Custom coding keys for backwards compatibility with JSON files
-        enum CodingKeys: String, CodingKey {
-            case name = "country"
-            case code = "countryCode"
-            case flag
-            case parentName
-            case parentCode
-            case metrics
-        }
-
-        init(name: String, code: String?, flag: String?, parentName: String? = nil, parentCode: String? = nil, metrics: SiteMetricsSet) {
-            self.name = name
-            self.code = code
-            self.flag = flag
-            self.parentName = parentName
-            self.parentCode = parentCode
-            self.metrics = metrics
-        }
-
-        // Backwards compatibility initializer
-        init(country: String, flag: String?, countryCode: String?, metrics: SiteMetricsSet) {
-            self.name = country
-            self.code = countryCode
-            self.flag = flag
-            self.parentName = nil
-            self.parentCode = nil
-            self.metrics = metrics
+            TopListItemID(type: .locations, id: name)
         }
     }
 

@@ -30,31 +30,27 @@ extension TopListItem.Referrer {
 extension TopListItem.Location {
     init(_ country: WordPressKit.StatsCountry) {
         self.init(
-            country: country.name,
+            name: country.name,
             flag: Self.countryCodeToEmoji(country.code),
             countryCode: country.code,
             metrics: SiteMetricsSet(views: country.viewsCount)
         )
     }
 
-    init(_ region: WordPressKit.StatsRegion) {
+    init(_ region: WordPressKit.StatsTopRegionTimeIntervalData.Region) {
         self.init(
             name: region.name,
-            code: region.code,
-            flag: nil,
-            parentName: nil,
-            parentCode: region.countryCode,
+            flag: Self.countryCodeToEmoji(region.countryCode),
+            countryCode: region.countryCode,
             metrics: SiteMetricsSet(views: region.viewsCount)
         )
     }
 
-    init(_ city: WordPressKit.StatsCity) {
+    init(_ city: WordPressKit.StatsTopCityTimeIntervalData.City) {
         self.init(
             name: city.name,
-            code: city.code,
-            flag: nil,
-            parentName: city.regionName,
-            parentCode: city.countryCode,
+            flag: Self.countryCodeToEmoji(city.countryCode),
+            countryCode: city.countryCode,
             metrics: SiteMetricsSet(views: city.viewsCount)
         )
     }

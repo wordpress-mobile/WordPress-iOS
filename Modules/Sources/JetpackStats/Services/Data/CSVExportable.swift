@@ -51,7 +51,7 @@ extension TopListItem.Location: CSVExportable {
 
     var csvValues: [String] {
         [
-            country,
+            name,
             countryCode ?? ""
         ]
     }

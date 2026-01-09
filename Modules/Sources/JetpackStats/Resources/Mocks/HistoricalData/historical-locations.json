@@ -1,6 +1,6 @@
 [
   {
-    "country": "United States",
+    "name": "United States",
     "countryCode": "US",
     "flag": "🇺🇸",
     "metrics": {
@@ -13,7 +13,7 @@
     }
   },
   {
-    "country": "United Kingdom",
+    "name": "United Kingdom",
     "countryCode": "GB",
     "flag": "🇬🇧",
     "metrics": {
@@ -26,7 +26,7 @@
     }
   },
   {
-    "country": "Canada",
+    "name": "Canada",
     "countryCode": "CA",
     "flag": "🇨🇦",
     "metrics": {
@@ -39,7 +39,7 @@
     }
   },
   {
-    "country": "Germany",
+    "name": "Germany",
     "countryCode": "DE",
     "flag": "🇩🇪",
     "metrics": {
@@ -52,7 +52,7 @@
     }
   },
   {
-    "country": "Japan",
+    "name": "Japan",
     "countryCode": "JP",
     "flag": "🇯🇵",
     "metrics": {
@@ -65,7 +65,7 @@
     }
   },
   {
-    "country": "Australia",
+    "name": "Australia",
     "countryCode": "AU",
     "flag": "🇦🇺",
     "metrics": {
@@ -78,7 +78,7 @@
     }
   },
   {
-    "country": "France",
+    "name": "France",
     "countryCode": "FR",
     "flag": "🇫🇷",
     "metrics": {
@@ -91,7 +91,7 @@
     }
   },
   {
-    "country": "India",
+    "name": "India",
     "countryCode": "IN",
     "flag": "🇮🇳",
     "metrics": {
@@ -104,7 +104,7 @@
     }
   },
   {
-    "country": "Netherlands",
+    "name": "Netherlands",
     "countryCode": "NL",
     "flag": "🇳🇱",
     "metrics": {
@@ -117,7 +117,7 @@
     }
   },
   {
-    "country": "Sweden",
+    "name": "Sweden",
     "countryCode": "SE",
     "flag": "🇸🇪",
     "metrics": {
@@ -130,7 +130,7 @@
     }
   },
   {
-    "country": "Italy",
+    "name": "Italy",
     "countryCode": "IT",
     "flag": "🇮🇹",
     "metrics": {
@@ -143,7 +143,7 @@
     }
   },
   {
-    "country": "South Korea",
+    "name": "South Korea",
     "countryCode": "KR",
     "flag": "🇰🇷",
     "metrics": {
@@ -156,7 +156,7 @@
     }
   },
   {
-    "country": "Spain",
+    "name": "Spain",
     "countryCode": "ES",
     "flag": "🇪🇸",
     "metrics": {
@@ -169,7 +169,7 @@
     }
   },
   {
-    "country": "Brazil",
+    "name": "Brazil",
     "countryCode": "BR",
     "flag": "🇧🇷",
     "metrics": {
@@ -182,7 +182,7 @@
     }
   },
   {
-    "country": "Switzerland",
+    "name": "Switzerland",
     "countryCode": "CH",
     "flag": "🇨🇭",
     "metrics": {
@@ -195,7 +195,7 @@
     }
   },
   {
-    "country": "Norway",
+    "name": "Norway",
     "countryCode": "NO",
     "flag": "🇳🇴",
     "metrics": {
@@ -208,7 +208,7 @@
     }
   },
   {
-    "country": "Denmark",
+    "name": "Denmark",
     "countryCode": "DK",
     "flag": "🇩🇰",
     "metrics": {
@@ -221,7 +221,7 @@
     }
   },
   {
-    "country": "Belgium",
+    "name": "Belgium",
     "countryCode": "BE",
     "flag": "🇧🇪",
     "metrics": {
@@ -234,7 +234,7 @@
     }
   },
   {
-    "country": "Poland",
+    "name": "Poland",
     "countryCode": "PL",
     "flag": "🇵🇱",
     "metrics": {
@@ -247,7 +247,7 @@
     }
   },
   {
-    "country": "Finland",
+    "name": "Finland",
     "countryCode": "FI",
     "flag": "🇫🇮",
     "metrics": {
@@ -260,7 +260,7 @@
     }
   },
   {
-    "country": "Austria",
+    "name": "Austria",
     "countryCode": "AT",
     "flag": "🇦🇹",
     "metrics": {
@@ -273,7 +273,7 @@
     }
   },
   {
-    "country": "Singapore",
+    "name": "Singapore",
     "countryCode": "SG",
     "flag": "🇸🇬",
     "metrics": {
@@ -286,7 +286,7 @@
     }
   },
   {
-    "country": "Ireland",
+    "name": "Ireland",
     "countryCode": "IE",
     "flag": "🇮🇪",
     "metrics": {
@@ -299,7 +299,7 @@
     }
   },
   {
-    "country": "New Zealand",
+    "name": "New Zealand",
     "countryCode": "NZ",
     "flag": "🇳🇿",
     "metrics": {
@@ -312,7 +312,7 @@
     }
   },
   {
-    "country": "Hong Kong",
+    "name": "Hong Kong",
     "countryCode": "HK",
     "flag": "🇭🇰",
     "metrics": {
@@ -325,7 +325,7 @@
     }
   },
   {
-    "country": "Israel",
+    "name": "Israel",
     "countryCode": "IL",
     "flag": "🇮🇱",
     "metrics": {
@@ -338,7 +338,7 @@
     }
   },
   {
-    "country": "Mexico",
+    "name": "Mexico",
     "countryCode": "MX",
     "flag": "🇲🇽",
     "metrics": {
@@ -351,7 +351,7 @@
     }
   },
   {
-    "country": "Czech Republic",
+    "name": "Czech Republic",
     "countryCode": "CZ",
     "flag": "🇨🇿",
     "metrics": {
@@ -364,7 +364,7 @@
     }
   },
   {
-    "country": "Portugal",
+    "name": "Portugal",
     "countryCode": "PT",
     "flag": "🇵🇹",
     "metrics": {
@@ -377,7 +377,7 @@
     }
   },
   {
-    "country": "Taiwan",
+    "name": "Taiwan",
     "countryCode": "TW",
     "flag": "🇹🇼",
     "metrics": {

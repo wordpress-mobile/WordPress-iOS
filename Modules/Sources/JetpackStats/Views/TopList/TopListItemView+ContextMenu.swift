@@ -97,7 +97,7 @@ extension TopListItemView {
     @ViewBuilder
     func locationActions(_ location: TopListItem.Location) -> some View {
         Button {
-            UIPasteboard.general.string = location.country
+            UIPasteboard.general.string = location.name
         } label: {
             Label(Strings.ContextMenuActions.copyCountryName, systemImage: "doc.on.doc")
         }

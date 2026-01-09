@@ -197,7 +197,7 @@ extension TopListData {
             let baseValue = data.3
             let metrics = createMetrics(baseValue: baseValue, metric: metric)
             return TopListItem.Location(
-                country: data.0,
+                name: data.0,
                 flag: data.2,
                 countryCode: data.1,
                 metrics: metrics
