@@ -23,7 +23,7 @@ PORT="${1:-8282}"
 OUTPUT_REDIRECT="/dev/stdout"
 if [ -n "${BUILDKITE:-}" ]; then
     OUTPUT_REDIRECT="${BUILD_ARTIFACTS_DIR}/wiremock.txt"
-    mkdir -p "$(dirname "$OUTPUT_REDIRECT")"
+    mkdir -p "$BUILD_ARTIFACTS_DIR"
 fi
 java -jar "${WIREMOCK_JAR}" --root-dir "${SCRIPT_DIR}/../WordPressMocks/src/main/assets/mocks" \
                             --port "$PORT" \
