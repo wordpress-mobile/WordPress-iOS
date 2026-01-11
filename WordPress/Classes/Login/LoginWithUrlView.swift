@@ -15,6 +15,8 @@ struct LoginWithUrlView: View {
     @State fileprivate var errorMessage: String?
     @State private var urlField: String = ""
     @State private var isLoading = false
+    // 0 or negative values cancels the login attempt. Positive values kick off a new login attempt.
+    @State private var loginTrigger = 0
 
     @Environment(\.dismiss) var dismiss
 
@@ -46,11 +48,26 @@ struct LoginWithUrlView: View {
                 title: SharedStrings.Button.continue,
                 style: DSButtonStyle(emphasis: .primary, size: .large),
                 isLoading: .constant(isLoading),
-                action: startLogin
+                action: { self.loginTrigger += 1 }
             )
             .disabled(isContinueButtonDisabled)
         }
         .padding()
+        .toolbar {
+            ToolbarItem(placement: .cancellationAction) {
+                Button(SharedStrings.Button.cancel) {
+                    // Updating `loginTrigger` to explicitly cancel the login task.
+                    // `dismiss` is not sufficient, probably because the `LoginWithUrlView`
+                    // is presented as a UIKit view.
+                    loginTrigger = 0
+                    dismiss()
+                }
+            }
+        }
+        .task(id: loginTrigger) {
+            guard loginTrigger > 0 else { return }
+            await startLogin()
+        }
         .navigationTitle(Strings.title)
         .navigationBarTitleDisplayMode(.inline)
     }
@@ -67,46 +84,37 @@ struct LoginWithUrlView: View {
         .textContentType(.URL)
         .keyboardType(.URL)
         .textInputAutocapitalization(.never)
-        .onSubmit(startLogin)
+        .onSubmit { self.loginTrigger += 1 }
         .disabled(isLoading)
     }
 
-    private func startLogin() {
-        errorMessage = nil
-        isLoading = true
-
-        // The Swift compiler isn't happy about placing this do-catch function body inside a Task.
-        // https://github.com/swiftlang/swift/issues/76807
-        func login() async {
-            guard let presenter else {
-                wpAssertionFailure("No presenter assigned")
-                return
-            }
-
-            do {
-                let blog = try await SelfHostedSiteAuthenticator()
-                    .signIn(site: urlField, from: presenter, context: .default)
-
-                dismiss()
-                self.loginCompleted(blog)
-            } catch {
-                if await shouldRedirectToDotComLogin(error: error) {
-                    // We need to chain the dismissing and presenting,
-                    // which is not supported by SwiftUI's `dismiss` variable.
-                    presenter.dismiss(animated: true) {
-                        Notice(title: Strings.wpcomSiteRedirect).post()
-                        presentDotComLogin()
-                    }
-                } else {
-                    errorMessage = error.localizedDescription
-                }
-            }
-
-            isLoading = false
+    private func startLogin() async {
+        guard let presenter else {
+            wpAssertionFailure("No presenter assigned")
+            return
         }
 
-        Task { @MainActor in
-            await login()
+        errorMessage = nil
+        isLoading = true
+        defer { isLoading = false }
+
+        do {
+            let blog = try await SelfHostedSiteAuthenticator()
+                .signIn(site: urlField, from: presenter, context: .default)
+
+            dismiss()
+            self.loginCompleted(blog)
+        } catch {
+            if await shouldRedirectToDotComLogin(error: error) {
+                // We need to chain the dismissing and presenting,
+                // which is not supported by SwiftUI's `dismiss` variable.
+                presenter.dismiss(animated: true) {
+                    Notice(title: Strings.wpcomSiteRedirect).post()
+                    presentDotComLogin()
+                }
+            } else {
+                errorMessage = error.localizedDescription
+            }
         }
     }
 

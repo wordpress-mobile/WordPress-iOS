@@ -55,22 +55,16 @@ extension WordPressAuthenticator: WordPressAuthenticatorProtocol {
             _ = Self.continueWithDotCom(viewController)
         }
 
-        let view = LoginWithUrlView(
+        let view = NavigationStack {
+            LoginWithUrlView(
                 presenter: viewController,
                 loginCompleted: loginCompleted,
                 presentDotComLogin: presentDotComLogin
             )
-            .toolbar {
-                ToolbarItem(placement: .cancellationAction) {
-                    Button(SharedStrings.Button.cancel) { [weak viewController] in
-                        viewController?.dismiss(animated: true)
-                    }
-                }
-            }
+        }
         let hostVC = UIHostingController(rootView: view)
-        let navigationVC = UINavigationController(rootViewController: hostVC)
-        navigationVC.modalPresentationStyle = .formSheet
-        viewController.present(navigationVC, animated: true)
+        hostVC.modalPresentationStyle = .formSheet
+        viewController.present(hostVC, animated: true)
         return true
     }
 }

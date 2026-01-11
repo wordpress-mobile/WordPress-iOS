@@ -126,6 +126,11 @@ struct SelfHostedSiteAuthenticator {
             throw .authentication(error)
         }
 
+        // We need to manually check for cancellation, because `WordPressLoginClient` does not support Swift cancellation.
+        if Task.isCancelled {
+            throw .cancelled
+        }
+
         return try await signIn(details: details, from: viewController, context: context)
     }
 
