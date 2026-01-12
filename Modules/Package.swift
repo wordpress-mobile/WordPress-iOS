@@ -56,9 +56,11 @@ let package = Package(
         .package(url: "https://github.com/wordpress-mobile/NSURL-IDN", revision: "b34794c9a3f32312e1593d4a3d120572afa0d010"),
         .package(url: "https://github.com/zendesk/support_sdk_ios", from: "8.0.3"),
         // To test https://github.com/wordpress-mobile/GutenbergKit/pull/271
+        //
+        // Notice that the version of GutenbergKit we use is based off 0.10.1
         .package(
             url: "https://github.com/wordpress-mobile/GutenbergKit",
-            revision: "9ee0c61f9be6a0d5d0e0d022a4f9b7378b3ef429"
+            revision: "b1e527471b27ec733633b74f9b71ad91f53095fb"
         ),
         // We can't use wordpress-rs branches nor commits here. Only tags work.
         .package(url: "https://github.com/Automattic/wordpress-rs", revision: "alpha-20251101"),
