@@ -115,7 +115,7 @@ private final class PreviewAlertViewController: UIViewController {
         let alert = AlertView {
             AlertHeaderView(title: "Post Saved", description: "Save this post, and come back to read it whenever you'd like. It will only be available on this device — saved posts don't sync to other devices.")
         } content: {
-            ScaledImage("example-icon-bookmark", bundle: .module, height: 78)
+            ScaledImage("icon-bookmark", bundle: .module, height: 78)
                 .foregroundStyle(.secondary)
         } actions: {
             AlertDismissButton()
