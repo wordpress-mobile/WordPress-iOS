@@ -117,33 +117,36 @@ struct LoginWithUrlView: View {
     ) async -> Bool {
         guard case let .authentication(error) = error,
               let error = error as? AutoDiscoveryAttemptFailure,
-              case .FindApiRoot = error else { return false}
+              error.shouldAttemptDotComLogin else { return false}
 
-        let client = WPComApiClient(
-            delegate: .init(
-                authProvider: .none(),
-                requestExecutor: WpRequestExecutor(urlSession: .shared),
-                middlewarePipeline: .default,
-                appNotifier: EmptyAppNotifier()
-            )
-        )
-
-        let siteInfo: SiteInfoResponse
-        do {
-            let url = WordPressAuthenticator.baseSiteURL(string: urlField)
-            siteInfo = try await client.siteInfo.fetch(params: .init(url: url)).data
-        } catch {
-            DDLogError("Failed to fetch site info: \(error)")
-            return false
+        let api = WordPressComRestApi.anonymousApi(userAgent: WPUserAgent.defaultUserAgent())
+        let remote = BlogServiceRemoteREST(wordPressComRestApi: api, siteID: 0)
+        let url = WordPressAuthenticator.baseSiteURL(string: urlField)
+        let response: [AnyHashable: Any]? = await withCheckedContinuation { continuation in
+            remote.fetchUnauthenticatedSiteInfo(forAddress: url) {
+                continuation.resume(returning: $0)
+            } failure: { _ in
+                continuation.resume(returning: nil)
+            }
         }
-
-        return siteInfo.isWordPressDotCom
+        return (response?["isWordPressDotCom"] as? Bool) == true
     }
 }
 
 private extension LoginWithUrlView {
     static var title: String { NSLocalizedString("addSite.selfHosted.title", value: "Add Self-Hosted Site", comment: "Title of the page to add a self-hosted site") }
     static var enterSiteAddress: String { NSLocalizedString("addSite.selfHosted.enterSiteAddress", value: "Enter the address of the WordPress site you'd like to connect.", comment: "A message to inform users to type the site address in the text field.") }
+}
+
+private extension AutoDiscoveryAttemptFailure {
+    var shouldAttemptDotComLogin: Bool {
+        switch self {
+        case .ParseSiteUrl:
+            false
+        case .FindApiRoot, .FetchAndParseApiRoot:
+            true
+        }
+    }
 }
 
 // MARK: - SwiftUI Preview
