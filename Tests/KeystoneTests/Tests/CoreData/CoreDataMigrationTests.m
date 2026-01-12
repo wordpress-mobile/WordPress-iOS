@@ -26,7 +26,7 @@
 }
 
 - (void)testModelUrl {
-    NSURL *url = [self urlForModelName:@"WordPress 20" inDirectory:nil];
+    NSURL *url = [self urlForModelName:@"WordPress 102" inDirectory:nil];
     
     XCTAssertNotNil(url);
 }
