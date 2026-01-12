@@ -43,7 +43,7 @@ struct ReaderFeedCell: View {
 
     var title: String {
         if let title = feed.title?.stringByDecodingXMLCharacters(), !title.isEmpty {
-            return title
+            return title.replacing(/\s+/) { _ in " " }
         }
         return feed.urlForDisplay ?? "–"
     }

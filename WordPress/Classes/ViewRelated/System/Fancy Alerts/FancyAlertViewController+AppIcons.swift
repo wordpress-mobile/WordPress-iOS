@@ -3,6 +3,8 @@ import WordPressShared
 import WordPressUI
 
 extension FancyAlertViewController {
+    typealias ButtonConfig = FancyAlertViewController.Config.ButtonConfig
+
     private struct Strings {
         static let titleText = NSLocalizedString("New Custom App Icons", comment: "Title of alert informing users about the Reader Save for Later feature.")
         static let bodyText = NSLocalizedString("We’ve updated our custom app icons with a fresh new look. There are 10 new styles to choose from, or you can simply keep your existing icon if you prefer.", comment: "Body text of alert informing users about the Reader Save for Later feature.")

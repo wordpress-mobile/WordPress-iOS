@@ -37,6 +37,7 @@ steps:
         depends_on: ~
 
       - label: ":eyeglasses: Reader one-off TestFlight Upload"
+        key: testflight_upload_reader
         depends_on: [build_asc_reader, testflight_triggered_reader]
         command: |
           if .buildkite/commands/should-skip-job.sh --job-type build; then
@@ -53,6 +54,7 @@ steps:
   # Create Prototype Builds for WP and JP
   #################
   - group: "🛠 Prototype Builds"
+    key: prototype_builds_group
     steps:
       - label: "🛠 WordPress Prototype Build"
         command: ".buildkite/commands/prototype-build-wordpress.sh"
@@ -95,6 +97,7 @@ steps:
   # Run Unit Tests
   #################
   - group: "🔬 Unit Tests"
+    key: unit_tests_group
     steps:
       - label: "🔬 :wordpress: Unit Tests"
         command: ".buildkite/commands/run-unit-tests.sh"
@@ -113,19 +116,15 @@ steps:
         notify:
           - github_commit_status:
               context: "Reader Unit Tests"
-      - label: "🔬 Keystone Unit Tests"
-        command: .buildkite/commands/run-unit-tests-for-scheme.sh Keystone
-        # Disabled till https://github.com/wordpress-mobile/WordPress-iOS/pull/24537 is completed
-        #
-        # The boolean value has to be a string explicitly.
-        # See validation error against schema.
-        if: "false"
-        plugins: [$CI_TOOLKIT_PLUGIN]
-        artifact_paths:
-          - "build/results/*"
-        notify:
-          - github_commit_status:
-              context: "Unit Tests Keystone"
+      # Disabled till https://github.com/wordpress-mobile/WordPress-iOS/pull/24537 is completed
+      # - label: "🔬 Keystone Unit Tests"
+      #   command: .buildkite/commands/run-unit-tests-for-scheme.sh Keystone
+      #   plugins: [$CI_TOOLKIT_PLUGIN]
+      #   artifact_paths:
+      #     - "build/results/*"
+      #   notify:
+      #     - github_commit_status:
+      #         context: "Unit Tests Keystone"
       - label: "🔬 WordPressData Unit Tests"
         command: .buildkite/commands/run-unit-tests-for-scheme.sh WordPressData
         plugins: [$CI_TOOLKIT_PLUGIN]
@@ -139,6 +138,7 @@ steps:
   # UI Tests
   #################
   - group: "🔬 UI Tests"
+    key: ui_tests_group
     steps:
       - label: "🔬 :jetpack: UI Tests (iPhone)"
         command: .buildkite/commands/run-ui-tests.sh 'iPhone 17'
@@ -147,6 +147,7 @@ steps:
         artifact_paths:
           - "build/results/*"
           - "build/results/crashes/*"
+          - "build/logs/wiremock.txt"
         notify:
           - github_commit_status:
               context: "UI Tests (iPhone)"
@@ -158,6 +159,7 @@ steps:
         artifact_paths:
           - "build/results/*"
           - "build/results/crashes/*"
+          - "build/logs/wiremock.txt"
         notify:
           - github_commit_status:
               context: "UI Tests (iPad)"
@@ -166,6 +168,7 @@ steps:
   # Linters
   #################
   - group: "Linters"
+    key: linters_group
     steps:
       - label: "☢️ Danger - PR Check"
         command: danger
@@ -199,3 +202,21 @@ steps:
       - label: ":sleuth_or_spy: Lint Localized Strings Format"
         command: .buildkite/commands/lint-localized-strings-format.sh
         plugins: [$CI_TOOLKIT_PLUGIN]
+
+  #################
+  # Claude Build Analysis - dynamically uploaded so Build result conditions evaluate at runtime after the wait
+  #################
+  - label: ":claude: 🕵️ Check for Build Failures and Run Claude Analysis"
+    command: |
+      source .buildkite/shared-pipeline-vars
+      buildkite-agent pipeline upload .buildkite/claude-analysis.yml
+    # Add specific group dependencies. Using a `wait` step wouldn't work as it would never start given the prompt block
+    depends_on:
+      - build_asc_reader
+      - linters_group
+      - prototype_builds_group
+      - unit_tests_group
+      - ui_tests_group
+    allow_dependency_failure: true
+    agents:
+      queue: upload

@@ -188,9 +188,9 @@ struct TopListCard: View {
             moreMenuContent
         } label: {
             Image(systemName: "ellipsis")
-                .font(.system(size: 17))
+                .font(.system(size: 15))
                 .foregroundColor(.secondary)
-                .frame(width: 56, height: 50)
+                .frame(width: 50, height: 50)
         }
         .tint(Color.primary)
     }

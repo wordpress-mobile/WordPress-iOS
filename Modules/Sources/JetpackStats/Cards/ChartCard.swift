@@ -21,7 +21,7 @@ struct ChartCard: View {
 
     var body: some View {
         VStack(spacing: 0) {
-            VStack(spacing: Constants.step0_5) {
+            VStack(spacing: Constants.step1) {
                 headerView(for: selectedMetric)
                     .unredacted()
                 contentView
@@ -78,7 +78,7 @@ struct ChartCard: View {
 
     @ViewBuilder
     private var contentView: some View {
-        VStack(spacing: 4) {
+        VStack(spacing: Constants.step1) {
             chartHeaderView
                 .padding(.trailing, -Constants.step0_5)
             chartContentView
@@ -171,9 +171,9 @@ struct ChartCard: View {
             moreMenuContent
         } label: {
             Image(systemName: "ellipsis")
-                .font(.system(size: 17))
+                .font(.system(size: 15))
                 .foregroundColor(.secondary)
-                .frame(width: 56, height: 50)
+                .frame(width: 50, height: 50)
         }
         .tint(Color.primary)
     }

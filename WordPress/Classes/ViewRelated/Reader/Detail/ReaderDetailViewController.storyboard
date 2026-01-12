@@ -1,9 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="24123.1" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="24412" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
     <device id="retina6_1" orientation="portrait" appearance="light"/>
     <dependencies>
-        <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="24062"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="24405"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="System colors in document resources" minToolsVersion="11.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
@@ -20,11 +19,11 @@
                             <scrollView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" layoutMarginsFollowReadableWidth="YES" alwaysBounceVertical="YES" translatesAutoresizingMaskIntoConstraints="NO" id="9JA-VQ-zzw">
                                 <rect key="frame" x="0.0" y="96" width="414" height="800"/>
                                 <subviews>
-                                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Xyq-y6-zPR">
+                                    <view contentMode="scaleToFill" ambiguous="YES" translatesAutoresizingMaskIntoConstraints="NO" id="Xyq-y6-zPR">
                                         <rect key="frame" x="0.0" y="0.0" width="446" height="254.5"/>
                                         <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                     </view>
-                                    <wkWebView contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="iSu-TI-yew" customClass="ReaderWebView" customModule="WordPress" customModuleProvider="target">
+                                    <wkWebView contentMode="scaleToFill" ambiguous="YES" translatesAutoresizingMaskIntoConstraints="NO" id="iSu-TI-yew" customClass="ReaderWebView" customModule="WordPress" customModuleProvider="target">
                                         <rect key="frame" x="16" y="270.5" width="414" height="0.0"/>
                                         <color key="backgroundColor" red="0.36078431370000003" green="0.38823529410000002" blue="0.4039215686" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                         <constraints>
@@ -37,6 +36,9 @@
                                             <wkPreferences key="preferences"/>
                                         </wkWebViewConfiguration>
                                     </wkWebView>
+                                    <stackView opaque="NO" contentMode="scaleToFill" ambiguous="YES" axis="vertical" translatesAutoresizingMaskIntoConstraints="NO" id="ybg-ZD-3Ou">
+                                        <rect key="frame" x="16" y="270.5" width="414" height="0.0"/>
+                                    </stackView>
                                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="qXQ-id-Ffz" userLabel="Likes Container View">
                                         <rect key="frame" x="16" y="270.5" width="414" height="0.0"/>
                                         <constraints>
@@ -101,7 +103,6 @@
                                     <constraint firstItem="CpT-U7-bfv" firstAttribute="bottom" secondItem="O4e-BA-8jp" secondAttribute="top" id="167-j2-IYs"/>
                                     <constraint firstItem="qXQ-id-Ffz" firstAttribute="width" secondItem="iSu-TI-yew" secondAttribute="width" id="2pM-dV-doK"/>
                                     <constraint firstItem="O4e-BA-8jp" firstAttribute="centerX" secondItem="iSu-TI-yew" secondAttribute="centerX" id="5DL-7x-ujm"/>
-                                    <constraint firstItem="qXQ-id-Ffz" firstAttribute="top" secondItem="iSu-TI-yew" secondAttribute="bottom" id="5ig-aY-DHW"/>
                                     <constraint firstItem="CpT-U7-bfv" firstAttribute="centerX" secondItem="iSu-TI-yew" secondAttribute="centerX" id="6NH-H7-oE8"/>
                                     <constraint firstItem="O4e-BA-8jp" firstAttribute="width" secondItem="iSu-TI-yew" secondAttribute="width" id="8SP-Rw-zUY"/>
                                     <constraint firstItem="iSu-TI-yew" firstAttribute="leading" secondItem="9JA-VQ-zzw" secondAttribute="leading" constant="16" placeholder="YES" id="9Vy-Wt-ZIb"/>
@@ -110,6 +111,8 @@
                                     <constraint firstItem="iSu-TI-yew" firstAttribute="top" secondItem="Xyq-y6-zPR" secondAttribute="bottom" constant="16" id="IET-mv-Ieo"/>
                                     <constraint firstItem="Xyq-y6-zPR" firstAttribute="top" secondItem="9JA-VQ-zzw" secondAttribute="top" id="JZU-vN-GKO"/>
                                     <constraint firstItem="6yS-ZE-nbR" firstAttribute="width" secondItem="iSu-TI-yew" secondAttribute="width" id="LmZ-4g-gFE"/>
+                                    <constraint firstItem="ybg-ZD-3Ou" firstAttribute="top" secondItem="iSu-TI-yew" secondAttribute="bottom" id="QH3-gd-a9s"/>
+                                    <constraint firstItem="ybg-ZD-3Ou" firstAttribute="centerX" secondItem="iSu-TI-yew" secondAttribute="centerX" id="Qdu-HT-uZx"/>
                                     <constraint firstItem="Xyq-y6-zPR" firstAttribute="centerX" secondItem="iSu-TI-yew" secondAttribute="centerX" id="RTC-cI-v2j"/>
                                     <constraint firstAttribute="bottom" secondItem="O4e-BA-8jp" secondAttribute="bottom" id="eFL-lL-cEF"/>
                                     <constraint firstItem="qXQ-id-Ffz" firstAttribute="centerX" secondItem="iSu-TI-yew" secondAttribute="centerX" id="hjJ-VB-Pf0"/>
@@ -118,6 +121,7 @@
                                     <constraint firstItem="CpT-U7-bfv" firstAttribute="top" secondItem="6yS-ZE-nbR" secondAttribute="bottom" id="sQt-BP-vDY"/>
                                     <constraint firstItem="CpT-U7-bfv" firstAttribute="width" secondItem="iSu-TI-yew" secondAttribute="width" id="wUK-AO-ZOc"/>
                                     <constraint firstItem="Xyq-y6-zPR" firstAttribute="width" secondItem="iSu-TI-yew" secondAttribute="width" constant="32" id="xfj-7c-Lke"/>
+                                    <constraint firstItem="ybg-ZD-3Ou" firstAttribute="bottom" secondItem="qXQ-id-Ffz" secondAttribute="top" id="yVj-JV-rBF"/>
                                 </constraints>
                                 <viewLayoutGuide key="contentLayoutGuide" id="QF8-fp-xzq"/>
                                 <viewLayoutGuide key="frameLayoutGuide" id="eXr-4k-Adq"/>
@@ -129,6 +133,7 @@
                         <viewLayoutGuide key="safeArea" id="Tqp-x3-yXv"/>
                         <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                         <constraints>
+                            <constraint firstItem="ybg-ZD-3Ou" firstAttribute="width" secondItem="HkO-UB-8qv" secondAttribute="width" id="Flu-a4-g3F"/>
                             <constraint firstItem="9JA-VQ-zzw" firstAttribute="top" secondItem="Tqp-x3-yXv" secondAttribute="top" id="JMy-49-ddC"/>
                             <constraint firstItem="9JA-VQ-zzw" firstAttribute="leading" secondItem="Tqp-x3-yXv" secondAttribute="leading" id="KOc-Yv-UWy"/>
                             <constraint firstItem="Tqp-x3-yXv" firstAttribute="trailing" secondItem="9JA-VQ-zzw" secondAttribute="trailing" id="u3i-rm-kZv"/>
@@ -136,6 +141,7 @@
                         </constraints>
                     </view>
                     <connections>
+                        <outlet property="accessoriesStackView" destination="ybg-ZD-3Ou" id="Jv2-VV-0qZ"/>
                         <outlet property="actionStackView" destination="O4e-BA-8jp" id="Ro3-aL-ekY"/>
                         <outlet property="attributionView" destination="Ewc-f7-89P" id="Pwq-Hm-VfQ"/>
                         <outlet property="commentsTableView" destination="6yS-ZE-nbR" id="Va9-bB-B8V"/>

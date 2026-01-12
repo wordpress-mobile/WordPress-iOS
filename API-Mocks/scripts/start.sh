@@ -4,8 +4,9 @@ set -eu
 
 SCRIPT_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" >/dev/null 2>&1 && pwd )"
 VENDOR_DIR="$(pwd)/vendor/wiremock"
+BUILD_ARTIFACTS_DIR="$(pwd)/build/logs"
 
-WIREMOCK_VERSION="2.35.0"
+WIREMOCK_VERSION="2.35.2"
 WIREMOCK_JAR="${VENDOR_DIR}/wiremock-jre8-standalone-${WIREMOCK_VERSION}.jar"
 
 if [ ! -f "$WIREMOCK_JAR" ]; then
@@ -18,6 +19,12 @@ fi
 PORT="${1:-8282}"
 
 # Start WireMock server. See http://wiremock.org/docs/running-standalone/
+# Redirect output to a log file on CI to reduce log noise
+OUTPUT_REDIRECT="/dev/stdout"
+if [ -n "${BUILDKITE:-}" ]; then
+    OUTPUT_REDIRECT="${BUILD_ARTIFACTS_DIR}/wiremock.txt"
+    mkdir -p "$BUILD_ARTIFACTS_DIR"
+fi
 java -jar "${WIREMOCK_JAR}" --root-dir "${SCRIPT_DIR}/../WordPressMocks/src/main/assets/mocks" \
                             --port "$PORT" \
-                            --global-response-templating
+                            --global-response-templating > "$OUTPUT_REDIRECT" 2>&1

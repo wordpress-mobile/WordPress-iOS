@@ -203,9 +203,9 @@ struct TodayCard: View {
             moreMenuContent
         } label: {
             Image(systemName: "ellipsis")
-                .font(.system(size: 16))
+                .font(.system(size: 15))
                 .foregroundColor(.secondary)
-                .frame(width: 44, height: 44)
+                .frame(width: 50, height: 50)
         }
         .tint(Color.primary)
     }

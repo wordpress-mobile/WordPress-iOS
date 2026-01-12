@@ -80,7 +80,7 @@ extension TopListItem {
         var metrics: SiteMetricsSet
 
         var id: TopListItemID {
-            TopListItemID(type: .externalLinks, id: url)
+            TopListItemID(type: .externalLinks, id: url + (title ?? ""))
         }
     }
 

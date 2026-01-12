@@ -290,7 +290,7 @@ struct PostSettingsFormContentView: View {
         NavigationLink {
             PostStatusView(settings: $viewModel.settings, timeZone: viewModel.timeZone)
         } label: {
-            SettingsRow(Strings.status) {
+            SettingsRow(Strings.statusAndVisibility) {
                 HStack(alignment: .center, spacing: 2) {
                     ScaledImage(viewModel.settings.status.image, height: 23)
                     VStack(alignment: .leading, spacing: 2) {
@@ -712,9 +712,9 @@ private enum Strings {
         comment: "The title of the top section that shows the site your are publishing to. Default is 'Ready to Publish?'"
     )
 
-    static let status = NSLocalizedString(
-        "postSettings.status.label",
-        value: "Status",
+    static let statusAndVisibility = NSLocalizedString(
+        "postSettings.statusAndVisibility.label",
+        value: "Status & Visibility",
         comment: "Label for the status field in Post Settings"
     )
 }

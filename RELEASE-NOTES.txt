@@ -5,9 +5,13 @@
 * [*] Reader: Keep only one "Search" option in the main sidebar [#25116]
 * [*] Reader: Fix Send button design in Comments [#25092]
 * [*] Rename "Recommended" to "For You" [#25123]
+* [*] Reader: Fix article view ignoring `use_excerpt` [#25108]
 * [*] Reader: Add translation support for posts [#25089]
+* [*] Reader: Collapse multiple spaces in site titles into one [#25094]
+* [*] Fix Post Visibility discoverability [#25127]
 * [*] Fix previewing posts on WordPress.com atomic sites [#25045]
 * [*] Stats: Rename "External Links" to "Clicks" to be consistent with the web [#25090]
+* [*] Stats: Fix an issue with External Links (Clicks) sometimes displayed incorrectly [#25128]
 * [*] Stats: Fix locations data discrepancy with the web [#25105]
 
 

@@ -39,6 +39,8 @@ class ReaderDetailViewController: UIViewController, ReaderDetailView {
     /// WebView height constraint
     @IBOutlet weak var webViewHeight: NSLayoutConstraint!
 
+    @IBOutlet weak var accessoriesStackView: UIStackView!
+
     /// The table view that displays Comments
     @IBOutlet weak var commentsTableView: IntrinsicTableView!
 
@@ -316,30 +318,30 @@ class ReaderDetailViewController: UIViewController, ReaderDetailView {
 
         webView.isP2 = post.isP2Type
 
-        if post.content?.hasSuffix("[…]") == true {
-            let viewMoreView = ReaderReadMoreView(post: post)
-            // Add to the scroll view's parent view instead of directly to webView
-            if let containerView = webView.superview {
-                containerView.addSubview(viewMoreView)
-                viewMoreView.translatesAutoresizingMaskIntoConstraints = false
-                NSLayoutConstraint.activate([
-                    viewMoreView.leadingAnchor.constraint(equalTo: webView.leadingAnchor),
-                    viewMoreView.trailingAnchor.constraint(equalTo: webView.trailingAnchor),
-                    viewMoreView.bottomAnchor.constraint(equalTo: webView.bottomAnchor)
-                ])
-            }
-        }
-
         coordinator?.storeAuthenticationCookies(in: webView) { [weak self] in
-            if let content = post.contentForDisplay() {
-                self?.webView.loadHTMLString(content)
-            }
+            self?.showPostContent(post)
         }
 
         navigateToCommentIfNecessary()
 
         if !isNewFeaturedImageEnabled && !featuredImageView.isLoaded {
             featuredImageView.load()
+        }
+    }
+
+    private func showPostContent(_ post: ReaderPost) {
+        if post.useExcerpt {
+            webView.loadHTMLString(post.makeExceptHTML())
+        } else if let content = post.contentForDisplay() {
+            webView.loadHTMLString(content)
+        }
+
+        if post.useExcerpt || post.content?.hasSuffix("[…]") == true {
+            let viewMoreView = ReaderReadMoreView(post: post)
+            if let subview = accessoriesStackView.subviews.first(where: { $0 is ReaderReadMoreView }) {
+                subview.removeFromSuperview()
+            }
+            accessoriesStackView.addArrangedSubview(viewMoreView)
         }
     }
 
