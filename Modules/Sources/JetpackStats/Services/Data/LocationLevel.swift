@@ -26,12 +26,4 @@ enum LocationLevel: String, Identifiable, CaseIterable, Sendable, Codable {
     var analyticsName: String {
         rawValue
     }
-
-    var pathComponent: String {
-        switch self {
-        case .countries: "stats/location-views/country"
-        case .regions: "stats/location-views/region"
-        case .cities: "stats/location-views/city"
-        }
-    }
 }
