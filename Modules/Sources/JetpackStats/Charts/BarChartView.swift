@@ -247,24 +247,20 @@ struct BarChartView: View {
 
     private func makeGesturesOverlayView(proxy: ChartProxy) -> some View {
         GeometryReader { geometry in
-            Rectangle()
-                .fill(.clear)
-                .contentShape(Rectangle())
-                .onTapGesture { location in
+            ChartGestureOverlay(
+                onTap: { location in
                     handleTapGesture(at: location, proxy: proxy, geometry: geometry)
+                },
+                onInteractionUpdate: { location in
+                    isDragging = true
+                    selectedDataPoints = getSelectedDataPoints(at: location, proxy: proxy, geometry: geometry)
+                },
+                onInteractionEnd: {
+                    isDragging = false
+                    selectedDataPoints = nil
+                    tappedDataPoint = nil
                 }
-                .simultaneousGesture(
-                    DragGesture(minimumDistance: 16)
-                        .onChanged { value in
-                            isDragging = true
-                            selectedDataPoints = getSelectedDataPoints(at: value.location, proxy: proxy, geometry: geometry)
-                        }
-                        .onEnded { _ in
-                            isDragging = false
-                            selectedDataPoints = nil
-                            tappedDataPoint = nil
-                        }
-                )
+            )
         }
     }
 
@@ -287,7 +283,6 @@ struct BarChartView: View {
     }
 
     private func getSelectedDataPoints(at location: CGPoint, proxy: ChartProxy, geometry: GeometryProxy) -> SelectedDataPoints? {
-
         guard let frame = proxy.plotFrame else {
             return nil
         }
