@@ -195,7 +195,6 @@ struct BarChartView: View {
             if let date = value.as(Date.self) {
                 AxisValueLabel {
                     ChartAxisDateLabel(date: date, granularity: data.granularity)
-                        .offset(x: -2) // Align it better with bars
                 }
             }
         }
