@@ -344,13 +344,9 @@ struct PostSettingsFormContentView: View {
 
     private var visibilityRow: some View {
         NavigationLink {
-            PostVisibilityPicker(
-                selection: PostVisibilityPicker.Selection(post: viewModel.post),
-                dismissOnSelection: true,
-                onSubmit: { selection in
-                    viewModel.updateVisibility(selection)
-                }
-            )
+            PostVisibilityPicker(selection: PostVisibilityPicker.Selection(settings: viewModel.settings)) {
+                viewModel.updateVisibility($0)
+            }
         } label: {
             SettingsRow(Strings.visibilityLabel, value: viewModel.visibilityText)
         }
