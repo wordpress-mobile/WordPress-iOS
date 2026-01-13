@@ -60,7 +60,7 @@ let package = Package(
         // Notice that the version of GutenbergKit we use is based off 0.10.1
         .package(
             url: "https://github.com/wordpress-mobile/GutenbergKit",
-            revision: "eb23e681911b2bd59b4ef6369b8b0a5bea9b4078"
+            revision: "503eb5a9451b79bcedc907d3304441e43efbfd25"
         ),
         // We can't use wordpress-rs branches nor commits here. Only tags work.
         .package(url: "https://github.com/Automattic/wordpress-rs", revision: "alpha-20251101"),
