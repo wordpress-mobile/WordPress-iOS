@@ -55,7 +55,7 @@ struct BarChartView: View {
             BarMark(
                 x: .value("Date", point.date, unit: data.granularity.component, calendar: context.calendar),
                 y: .value("Value", point.value),
-                width: .automatic
+                width: barWidth
             )
             .foregroundStyle(
                 LinearGradient(
@@ -70,6 +70,10 @@ struct BarChartView: View {
             .cornerRadius(6)
             .opacity(getOpacityForCurrentPeriodBar(for: point))
         }
+    }
+
+    private var barWidth: MarkDimension {
+        data.currentData.count <= 3 ? .fixed(32) : .automatic
     }
 
     private func lighten(_ color: Color) -> Color {
@@ -102,7 +106,7 @@ struct BarChartView: View {
             BarMark(
                 x: .value("Date", point.date, unit: data.granularity.component, calendar: context.calendar),
                 y: .value("Value", point.value),
-                width: .automatic,
+                width: barWidth,
                 stacking: .unstacked
             )
             .foregroundStyle(Color.secondary)
