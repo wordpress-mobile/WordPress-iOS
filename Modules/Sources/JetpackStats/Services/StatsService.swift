@@ -137,7 +137,7 @@ actor StatsService: StatsServiceProtocol {
             return try await service.getData(interval: interval, unit: .day, summarize: true, limit: limit ?? 0, parameters: parameters)
         }
 
-        // Helper function to sort items by metric value (descending) and then by itemID for stable ordering
+        // Helper function to sort items by metric value (descending), then by displayName, and then by itemID for stable ordering
         func sortItems(_ items: [any TopListItemProtocol]) -> [any TopListItemProtocol] {
             items.sorted { lhs, rhs in
                 let lhsValue = lhs.metrics[metric] ?? 0
@@ -148,7 +148,13 @@ actor StatsService: StatsServiceProtocol {
                     return lhsValue > rhsValue
                 }
 
-                // If values are equal, sort by itemID for stable ordering
+                // If values are equal, sort by displayName (ascending)
+                let displayNameComparison = lhs.displayName.localizedStandardCompare(rhs.displayName)
+                if displayNameComparison != .orderedSame {
+                    return displayNameComparison == .orderedAscending
+                }
+
+                // If displayNames are equal, sort by itemID for stable ordering
                 return lhs.id.id < rhs.id.id
             }
         }
