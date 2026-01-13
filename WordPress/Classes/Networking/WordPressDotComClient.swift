@@ -151,12 +151,6 @@ final class WpComNotifier: WpAppNotifier {
     }
 }
 
-final class EmptyAppNotifier: WpAppNotifier {
-    func requestedWithInvalidAuthentication(requestUrl: String) async {
-        // Do nothing
-    }
-}
-
 final class WpComTrafficDebugger: Middleware {
     func process(
         requestExecutor: any WordPressAPIInternal.RequestExecutor,
