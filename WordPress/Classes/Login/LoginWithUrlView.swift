@@ -31,7 +31,7 @@ struct LoginWithUrlView: View {
                 .padding(24)
                 .frame(maxWidth: .infinity, alignment: .center)
 
-            Text(Self.enterSiteAddress)
+            Text(Strings.enterSiteAddress)
 
             siteAdddressTextField()
 
@@ -51,7 +51,7 @@ struct LoginWithUrlView: View {
             .disabled(isContinueButtonDisabled)
         }
         .padding()
-        .navigationTitle(Self.title)
+        .navigationTitle(Strings.title)
         .navigationBarTitleDisplayMode(.inline)
     }
 
@@ -94,6 +94,7 @@ struct LoginWithUrlView: View {
                     // We need to chain the dismissing and presenting,
                     // which is not supported by SwiftUI's `dismiss` variable.
                     presenter.dismiss(animated: true) {
+                        Notice(title: Strings.wpcomSiteRedirect).post()
                         presentDotComLogin()
                     }
                 } else {
@@ -133,9 +134,24 @@ struct LoginWithUrlView: View {
     }
 }
 
-private extension LoginWithUrlView {
-    static var title: String { NSLocalizedString("addSite.selfHosted.title", value: "Add Self-Hosted Site", comment: "Title of the page to add a self-hosted site") }
-    static var enterSiteAddress: String { NSLocalizedString("addSite.selfHosted.enterSiteAddress", value: "Enter the address of the WordPress site you'd like to connect.", comment: "A message to inform users to type the site address in the text field.") }
+private enum Strings {
+    static let title = NSLocalizedString(
+        "addSite.selfHosted.title",
+        value: "Add Self-Hosted Site",
+        comment: "Title of the page to add a self-hosted site"
+    )
+
+    static let enterSiteAddress = NSLocalizedString(
+        "addSite.selfHosted.enterSiteAddress",
+        value: "Enter the address of the WordPress site you'd like to connect.",
+        comment: "A message to inform users to type the site address in the text field."
+    )
+
+    static let wpcomSiteRedirect = NSLocalizedString(
+        "addSite.selfHosted.wpcomSiteRedirect",
+        value: "This site is hosted on WordPress.com. Please log in with your WordPress.com account.",
+        comment: "Notice message shown when a user tries to add a WordPress.com site as self-hosted"
+    )
 }
 
 private extension AutoDiscoveryAttemptFailure {
