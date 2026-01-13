@@ -29,7 +29,8 @@ steps:
             Only add the "Best Practices" section if the changes in this PR are directly relevant to it.
             Only add a "Root Cause" section when you're sure about the issues' causes.
             Avoid h1 and h2 for titles, to save vertical space in the report.
-            Do not add sections with information that would already be in the Buildkite build view, such as pipeline name, build number, outcome, commit, etc; we don't need "Summary" or "Build Information" sections.
+            Do not add sections with information that would already be in the Buildkite build view, such as pipeline name, build number, outcome, commit, etc.
+            In particular, do not add the "Summary" and "Build Information" sections.
             To keep the analysis annotation from being too long in the webpase, use the HTML details element to hide in depth information by default; only keep details about the cause of the failure expanded.
           model: "claude-sonnet-4-5"
 
