@@ -34,15 +34,6 @@ extension UserPersistentRepositoryUtility {
         }
     }
 
-    var hasShownCustomAppIconUpgradeAlert: Bool {
-        get {
-            UserPersistentStoreFactory.instance().bool(forKey: UPRUConstants.hasShownCustomAppIconUpgradeAlert)
-        }
-        set {
-            UserPersistentStoreFactory.instance().set(newValue, forKey: UPRUConstants.hasShownCustomAppIconUpgradeAlert)
-        }
-    }
-
     var savedPostsPromoWasDisplayed: Bool {
         get {
             return UserPersistentStoreFactory.instance().bool(forKey: UPRUConstants.savedPostsPromoWasDisplayed)

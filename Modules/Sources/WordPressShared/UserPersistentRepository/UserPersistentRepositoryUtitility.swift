@@ -10,7 +10,6 @@ public enum UPRUConstants {
     public static let notificationsTabAccessCount = "NotificationsTabAccessCount"
     public static let notificationPrimerInlineWasAcknowledged = "notificationPrimerInlineWasAcknowledged"
     public static let secondNotificationsAlertCount = "secondNotificationsAlertCount"
-    public static let hasShownCustomAppIconUpgradeAlert = "custom-app-icon-upgrade-alert-shown"
     public static let savedPostsPromoWasDisplayed = "SavedPostsV1PromoWasDisplayed"
     public static let currentAnnouncementsKey = "currentAnnouncements"
     public static let currentAnnouncementsDateKey = "currentAnnouncementsDate"
@@ -22,6 +21,11 @@ public enum UPRUConstants {
     public static let isReaderSelectedKey = "isReaderSelectedKey"
     public static let readerSearchHistoryKey = "readerSearchHistoryKey"
     public static let readerDidSelectInterestsKey = "readerDidSelectInterestsKey"
+
+    // MARK: Deprecated
+
+    @available(*, deprecated, message: "The constant is longer used. It used to indicate the custom app icon upgrade alert was shown.")
+    public static let hasShownCustomAppIconUpgradeAlert = "custom-app-icon-upgrade-alert-shown"
 }
 
 public extension UserPersistentRepositoryUtility {

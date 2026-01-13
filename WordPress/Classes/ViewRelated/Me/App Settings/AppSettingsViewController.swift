@@ -576,7 +576,7 @@ private extension AppSettingsViewController {
 
         var rows: [ImmuTableRow] = [experimentalFeaturesRow, settingsRow]
 
-        if FeatureFlag.customAppIcons.enabled && UIApplication.shared.supportsAlternateIcons {
+        if UIApplication.shared.supportsAlternateIcons {
             // We don't show custom icons for Jetpack
             rows.insert(iconRow, at: 0)
         }

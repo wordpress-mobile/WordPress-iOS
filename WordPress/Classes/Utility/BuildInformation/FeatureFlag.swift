@@ -7,7 +7,6 @@ import FoundationModels
 @objc
 public enum FeatureFlag: Int, CaseIterable {
     case signUp
-    case customAppIcons
     case domainRegistration
     case selfHostedSites
     case whatsNew
@@ -43,8 +42,6 @@ public enum FeatureFlag: Int, CaseIterable {
 
         switch self {
         case .signUp:
-            return true
-        case .customAppIcons:
             return true
         case .domainRegistration:
             return app == .jetpack || app == .reader
@@ -112,7 +109,6 @@ extension FeatureFlag {
     public var description: String {
         return switch self {
         case .signUp: "Sign Up"
-        case .customAppIcons: "Custom App Icons"
         case .domainRegistration: "Domain Registration"
         case .selfHostedSites: "Self-Hosted Sites"
         case .whatsNew: "What's New"

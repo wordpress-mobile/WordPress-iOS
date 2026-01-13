@@ -202,8 +202,6 @@ final class MySiteViewController: UIViewController, UIScrollViewDelegate, NoSite
             RootViewCoordinator.shared.presentWhatIsNew(on: self)
         }
 
-        FancyAlertViewController.presentCustomAppIconUpgradeAlertIfNecessary(from: self)
-
         trackNoSitesVisibleIfNeeded()
 
         if !isReaderAppModeEnabled {
