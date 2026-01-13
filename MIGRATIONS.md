@@ -9,6 +9,7 @@ data model as well as any custom migrations.
 
 - Add `useExcerpt` field to `ReaderPost`
 - Remove deprecated `ReaderSearchSuggestion`
+- Remove deprecated `QuickStartTourState`
 
 ## WordPress 156
 
