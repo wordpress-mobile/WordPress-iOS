@@ -8,7 +8,7 @@
 * [*] Reader: Fix article view ignoring `use_excerpt` [#25108]
 * [*] Reader: Add translation support for posts [#25089]
 * [*] Reader: Collapse multiple spaces in site titles into one [#25094]
-* [*] Fix Post Visibility discoverability [#25127]
+* [*] Post Settings: Fix post Visibility discoverability [#25127]
 * [*] Fix previewing posts on WordPress.com atomic sites [#25045]
 * [**] Stats: Add Country/Region/City picker to the Locations card [#25125]
 * [*] Stats: Rename "External Links" to "Clicks" to be consistent with the web [#25090]

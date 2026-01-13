@@ -334,7 +334,7 @@ struct PostSettingsFormContentView: View {
                     )
                     .navigationTitle(Strings.accessHeader)
                 } label: {
-                    SettingsRow(Strings.accessHeader, value: viewModel.settings.metadata.accessLevel?.localizedTitle ?? "—")
+                    SettingsRow(Strings.accessHeader, value: (viewModel.settings.metadata.accessLevel ?? .everybody).localizedTitle)
                 }
             } header: {
                 SectionHeader(Strings.accessHeader)
