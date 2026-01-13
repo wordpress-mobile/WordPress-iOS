@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
-<model type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="24411" systemVersion="25C56" minimumToolsVersion="Xcode 9.0" sourceLanguage="Swift" userDefinedModelVersionIdentifier="">
+<model type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="24512" systemVersion="25C56" minimumToolsVersion="Xcode 9.0" sourceLanguage="Swift" userDefinedModelVersionIdentifier="">
     <entity name="AbstractPost" representedClassName="AbstractPost" isAbstract="YES" parentEntity="BasePost">
         <attribute name="autosaveContent" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="autosaveExcerpt" optional="YES" attributeType="String" syncable="YES"/>
@@ -743,16 +743,6 @@
         </fetchIndex>
         <fetchIndex name="bySortRankIndex">
             <fetchIndexElement property="sortRank" type="Binary" order="ascending"/>
-        </fetchIndex>
-    </entity>
-    <entity name="ReaderSearchSuggestion" representedClassName="ReaderSearchSuggestion" syncable="YES">
-        <attribute name="date" attributeType="Date" usesScalarValueType="NO" syncable="YES"/>
-        <attribute name="searchPhrase" attributeType="String" syncable="YES"/>
-        <fetchIndex name="byDateIndex">
-            <fetchIndexElement property="date" type="Binary" order="ascending"/>
-        </fetchIndex>
-        <fetchIndex name="bySearchPhraseIndex">
-            <fetchIndexElement property="searchPhrase" type="Binary" order="ascending"/>
         </fetchIndex>
     </entity>
     <entity name="ReaderSearchTopic" representedClassName="ReaderSearchTopic" parentEntity="ReaderAbstractTopic" syncable="YES"/>

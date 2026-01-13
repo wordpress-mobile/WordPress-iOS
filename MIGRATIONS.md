@@ -8,6 +8,7 @@ data model as well as any custom migrations.
 @kean 2026-01-06
 
 - Add `useExcerpt` field to `ReaderPost`
+- Remove deprecated `ReaderSearchSuggestion`
 
 ## WordPress 156
 
