@@ -99,11 +99,11 @@ struct PostStatusView: View {
                     }
                 }
             }
-            if !(settings.password ?? "").isEmpty {
+            if let password = settings.password, !password.isEmpty {
                 Button {
                     isShowingPasswordEntry = true
                 } label: {
-                    PostSettingsPasswordRow(password: settings.password ?? "")
+                    PostSettingsPasswordRow(password: password)
                 }
                 .buttonStyle(.plain)
             }
@@ -212,14 +212,9 @@ struct PostSettingsPasswordRow: View {
         HStack {
             Text(Strings.passwordLabel)
             Spacer()
-            if !password.isEmpty {
-                Text("••••••••••••")
-                    .font(.footnote.monospaced())
-                    .foregroundStyle(.secondary)
-            } else {
-                Text(Strings.passwordPlaceholder)
-                    .foregroundStyle(.tertiary)
-            }
+            Text("••••••••••••")
+                .font(.footnote.monospaced())
+                .foregroundStyle(.secondary)
             Image(systemName: "chevron.forward")
                 .font(.subheadline.weight(.medium))
                 .foregroundStyle(.secondary.opacity(0.5))
@@ -238,7 +233,6 @@ private enum Strings {
     static let stickySubtitle = NSLocalizedString("postSettings.statusPicker.stickySubtitle", value: "Pin this post to the top of the blog", comment: "Subtitle for sticky toggle")
 
     static let passwordLabel = NSLocalizedString("postSettings.statusPicker.passwordLabel", value: "Password", comment: "Label showing the current password")
-    static let passwordPlaceholder = NSLocalizedString("postSettings.statusPicker.passwordPlaceholder", value: "Not set", comment: "Placeholder text when password is not set")
 
     static let scheduleDate = NSLocalizedString("postSettings.statusPicker.scheduleDate", value: "Date", comment: "Label for schedule date row")
 }
