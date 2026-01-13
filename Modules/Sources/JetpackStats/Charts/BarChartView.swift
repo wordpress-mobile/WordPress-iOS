@@ -195,10 +195,21 @@ struct BarChartView: View {
     // MARK: - Axis Configuration
 
     private var xAxis: some AxisContent {
-        AxisMarks { value in
-            if let date = value.as(Date.self) {
-                AxisValueLabel {
-                    ChartAxisDateLabel(date: date, granularity: data.granularity)
+        if data.currentData.count == 1 {
+            // A quick workaround to make this look more acceptible
+            AxisMarks(values: .stride(by: data.granularity.component, count: 1, calendar: context.calendar)) { value in
+                if let date = value.as(Date.self) {
+                    AxisValueLabel {
+                        ChartAxisDateLabel(date: date, granularity: data.granularity)
+                    }
+                }
+            }
+        } else {
+            AxisMarks(values: .automatic) { value in
+                if let date = value.as(Date.self) {
+                    AxisValueLabel {
+                        ChartAxisDateLabel(date: date, granularity: data.granularity)
+                    }
                 }
             }
         }
