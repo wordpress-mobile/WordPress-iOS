@@ -128,7 +128,7 @@ class NewGutenbergViewController: UIViewController, PostEditor, PublishingEditor
 
         EditorLocalization.localize = getLocalizedString
 
-        // Create configuration with post content - GutenbergKit handles loading internally
+        // Create configuration with post content
         let postType = post is Page ? "page" : "post"
         let editorConfiguration = EditorConfiguration(blog: post.blog, postType: postType)
             .toBuilder()
@@ -137,10 +137,13 @@ class NewGutenbergViewController: UIViewController, PostEditor, PublishingEditor
             .setNativeInserterEnabled(FeatureFlag.nativeBlockInserter.enabled)
             .build()
 
-        // Pass nil for dependencies - GutenbergKit shows built-in progress bar and fetches them
+        // Use prefetched dependencies if available (fast path with spinner),
+        // otherwise pass nil and GutenbergKit will fetch them (shows progress bar)
+        let cachedDependencies = EditorDependencyManager.shared.dependencies(for: post.blog)
+
         self.editorViewController = GutenbergKit.EditorViewController(
             configuration: editorConfiguration,
-            dependencies: nil,
+            dependencies: cachedDependencies,
             mediaPicker: MediaPickerController(blog: post.blog)
         )
 
