@@ -271,6 +271,14 @@ final class StatsViewModel: ObservableObject, CardConfigurationDelegate {
             return
         }
 
+        // Track card movement
+        context.tracker?.send(.cardMoved, properties: [
+            "card_type": card.cardType.rawValue,
+            "action": direction.analyticsName,
+            "from_index": String(currentIndex),
+            "to_index": String(newIndex)
+        ])
+
         // Move in cards array
         let movedCard = cards.remove(at: currentIndex)
         cards.insert(movedCard, at: newIndex)

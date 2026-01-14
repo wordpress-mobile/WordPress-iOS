@@ -206,7 +206,14 @@ struct TopListCard: View {
     private var locationLevelPicker: some View {
         ForEach(LocationLevel.allCases) { level in
             Button {
+                let previousLevel = viewModel.selection.locationLevel
                 viewModel.selection.locationLevel = level
+
+                // Track location level change
+                viewModel.tracker?.send(.locationLevelChanged, properties: [
+                    "from_level": previousLevel.analyticsName,
+                    "to_level": level.analyticsName
+                ])
             } label: {
                 Label(level.localizedTitle, systemImage: level.systemImage)
             }

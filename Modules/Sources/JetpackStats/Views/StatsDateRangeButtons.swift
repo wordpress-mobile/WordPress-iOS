@@ -53,10 +53,19 @@ struct StatsNavigationButton: View {
     @Binding var dateRange: StatsDateRange
     let direction: Calendar.NavigationDirection
 
+    @Environment(\.context) var context
+
     var body: some View {
         let isDisabled = !dateRange.canNavigate(in: direction)
 
         Button {
+            // Track navigation
+            let periodType = dateRange.preset?.analyticsName ?? "custom"
+            context.tracker?.send(.dateNavigationButtonTapped, properties: [
+                "direction": direction == .forward ? "next" : "previous",
+                "current_period_type": periodType
+            ])
+
             dateRange = dateRange.navigate(direction)
         } label: {
             Image(systemName: direction.systemImage)

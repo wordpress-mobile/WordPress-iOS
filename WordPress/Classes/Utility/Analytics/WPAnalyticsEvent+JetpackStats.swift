@@ -16,15 +16,20 @@ extension StatsEvent {
         case .referrerStatsScreenShown: .jetpackStatsReferrerStatsScreenShown
         case .dateRangePresetSelected: .jetpackStatsDateRangePresetSelected
         case .customDateRangeSelected: .jetpackStatsCustomDateRangeSelected
+        case .dateNavigationButtonTapped: .jetpackStatsDateNavigationButtonTapped
+        case .comparisonPeriodChanged: .jetpackStatsComparisonPeriodChanged
         case .cardShown: .jetpackStatsCardShown
         case .cardAdded: .jetpackStatsCardAdded
         case .cardRemoved: .jetpackStatsCardRemoved
+        case .cardMoved: .jetpackStatsCardMoved
         case .chartTypeChanged: .jetpackStatsChartTypeChanged
         case .chartMetricSelected: .jetpackStatsChartMetricSelected
         case .chartBarSelected: .jetpackStatsChartBarSelected
         case .chartGranularityChanged: .jetpackStatsChartGranularityChanged
+        case .rawDataViewed: .jetpackStatsRawDataViewed
         case .todayCardTapped: .jetpackStatsTodayCardTapped
         case .topListItemTapped: .jetpackStatsTopListItemTapped
+        case .locationLevelChanged: .jetpackStatsLocationLevelChanged
         case .statsTabSelected: .jetpackStatsTabSelected
         case .errorEncountered: .jetpackStatsErrorEncountered
         }

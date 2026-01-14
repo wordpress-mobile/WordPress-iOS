@@ -239,6 +239,11 @@ struct ChartCard: View {
     private var dataSection: some View {
         Section {
             Button {
+                // Track raw data view
+                viewModel.tracker?.send(.rawDataViewed, properties: [
+                    "card_type": "chart",
+                    "metric": viewModel.selectedMetric.analyticsName
+                ])
                 isShowingRawData = true
             } label: {
                 Label(Strings.Chart.showData, systemImage: "tablecells")

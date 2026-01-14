@@ -63,8 +63,15 @@ struct StatsDateRangePickerMenu: View {
         Menu {
             ForEach(DateRangeComparisonPeriod.allCases) { period in
                 Button(action: {
+                    let previousPeriod = selection.comparison
                     selection.update(comparisonPeriod: period)
                     UIImpactFeedbackGenerator(style: .light).impactOccurred()
+
+                    // Track comparison period change
+                    context.tracker?.send(.comparisonPeriodChanged, properties: [
+                        "from_period": previousPeriod.analyticsName,
+                        "to_period": period.analyticsName
+                    ])
                 }) {
                     Text(period.localizedTitle)
                     Text(formattedComparisonRange(for: period))
