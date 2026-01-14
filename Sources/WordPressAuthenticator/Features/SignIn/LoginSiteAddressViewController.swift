@@ -321,7 +321,7 @@ class LoginSiteAddressViewController: LoginViewController, NUXKeyboardResponder 
     }
 
     @IBAction func handleSiteAddressHelpButtonTapped(_ sender: UIButton) {
-        SiteAddressHelper.showSiteAddressHelpAlert(from: self, sourceTag: sourceTag)
+        SiteAddressViewController.showSiteAddressHelpAlert(from: self, sourceTag: sourceTag)
         WordPressAuthenticator.track(.loginURLHelpScreenViewed)
     }
 

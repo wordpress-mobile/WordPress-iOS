@@ -26,8 +26,10 @@ public struct AlertView<Header: View, Content: View, Actions: View>: View {
             VStack(spacing: 16) {
                 actions()
             }
+            .dynamicTypeSize(...DynamicTypeSize.xLarge)
         }
         .padding(24)
+        .dynamicTypeSize(...DynamicTypeSize.xxLarge)
     }
 }
 
