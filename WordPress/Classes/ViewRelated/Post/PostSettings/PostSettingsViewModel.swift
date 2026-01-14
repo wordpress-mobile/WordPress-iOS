@@ -537,6 +537,15 @@ final class PostSettingsViewModel: NSObject, ObservableObject {
         if old.isStickyPost != new.isStickyPost {
             track(.editorPostStickyChanged)
         }
+        if old.parentPageID != new.parentPageID {
+            track(.editorPostParentPageChanged)
+        }
+        if old.otherTerms != new.otherTerms {
+            track(.editorPostCustomTaxonomyChanged)
+        }
+        if old.metadata.isJetpackNewsletterEmailDisabled != new.metadata.isJetpackNewsletterEmailDisabled {
+            track(.editorPostNewsletterEmailToggled)
+        }
     }
 
     private func track(_ event: WPAnalyticsEvent, properties: [AnyHashable: Any] = [:]) {

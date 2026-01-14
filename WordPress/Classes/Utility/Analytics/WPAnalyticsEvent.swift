@@ -45,6 +45,9 @@ import WordPressShared
     case editorPostSlugChanged
     case editorPostExcerptChanged
     case editorPostSiteChanged
+    case editorPostParentPageChanged
+    case editorPostCustomTaxonomyChanged
+    case editorPostNewsletterEmailToggled
 
     // Resolve post version conflict
     case resolveConflictScreenShown
@@ -764,6 +767,12 @@ import WordPressShared
             return "editor_post_excerpt_changed"
         case .editorPostSiteChanged:
             return "editor_post_site_changed"
+        case .editorPostParentPageChanged:
+            return "editor_post_parent_page_changed"
+        case .editorPostCustomTaxonomyChanged:
+            return "editor_post_custom_taxonomy_changed"
+        case .editorPostNewsletterEmailToggled:
+            return "editor_post_newsletter_email_toggled"
         case .resolveConflictScreenShown:
             return "resolve_conflict_screen_shown"
         case .resolveConflictSaveTapped:
