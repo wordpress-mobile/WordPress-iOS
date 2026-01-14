@@ -35,8 +35,16 @@ final class CommentGutenbergEditorViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
 
-        let configuration = EditorConfigurationBuilder(content: initialContent ?? "")
+        // Use dummy URLs for offline comment editing - the comment editor
+        // doesn't need network access
+        let configuration = EditorConfigurationBuilder(
+            content: initialContent ?? "",
+            postType: "comment",
+            siteURL: URL(string: "https://offline.local")!,
+            siteApiRoot: URL(string: "https://offline.local/wp-json")!
+        )
             .setShouldHideTitle(true)
+            .setIsOfflineModeEnabled(true)
             .build()
 
         let editorVC = GutenbergKit.EditorViewController(configuration: configuration)
@@ -89,7 +97,7 @@ extension CommentGutenbergEditorViewController: GutenbergKit.EditorViewControlle
         // Do nothing
     }
 
-    func editor(_ viewController: GutenbergKit.EditorViewController, didLogMessage message: String, level: GutenbergKit.LogLevel) {
+    func editor(_ viewController: GutenbergKit.EditorViewController, didLogNetworkRequest request: GutenbergKit.RecordedNetworkRequest) {
         // Do nothing
     }
 

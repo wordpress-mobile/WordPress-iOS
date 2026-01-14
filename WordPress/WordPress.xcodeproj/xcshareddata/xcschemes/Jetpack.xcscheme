@@ -125,7 +125,7 @@
          <EnvironmentVariable
             key = "GUTENBERG_EDITOR_URL"
             value = "http://localhost:5173/"
-            isEnabled = "NO">
+            isEnabled = "YES">
          </EnvironmentVariable>
       </EnvironmentVariables>
       <AdditionalOptions>

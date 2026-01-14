@@ -343,6 +343,8 @@ final class MySiteViewController: UIViewController, UIScrollViewDelegate, NoSite
 
     // MARK: - Editor Warmup
 
+    private static var prepareTask: Task<Void, Never>?
+
     /// Warms up the editor for the given blog if it hasn't been warmed up already.
     /// This avoids duplicative warmups when the site hasn't changed.
     private func warmUpEditorIfNeeded(for blog: Blog) {
@@ -354,9 +356,16 @@ final class MySiteViewController: UIViewController, UIScrollViewDelegate, NoSite
         Self.lastWarmedUpBlogID = blog.objectID
 
         let configuration = EditorConfiguration(blog: blog)
+
+        // 1. WebKit warmup - pre-compile HTML/JS (shaves ~100-200ms)
         GutenbergKit.EditorViewController.warmup(configuration: configuration)
 
-        RawBlockEditorSettingsService(blog: blog).prefetchSettings()
+        // 2. Data prefetch - pre-fetch settings, assets, preload list
+        Self.prepareTask?.cancel()
+        Self.prepareTask = Task {
+            let service = EditorService(configuration: configuration)
+            _ = try? await service.prepare { _ in }
+        }
     }
 
     // MARK: - Main Blog
