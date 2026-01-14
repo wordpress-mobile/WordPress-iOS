@@ -181,7 +181,6 @@
         <relationship name="posts" optional="YES" toMany="YES" deletionRule="Cascade" destinationEntity="AbstractPost" inverseName="blog" inverseEntity="AbstractPost"/>
         <relationship name="postTypes" optional="YES" toMany="YES" deletionRule="Cascade" destinationEntity="PostType" inverseName="blog" inverseEntity="PostType" syncable="YES"/>
         <relationship name="publicizeInfo" optional="YES" maxCount="1" deletionRule="Cascade" destinationEntity="PublicizeInfo" inverseName="blog" inverseEntity="PublicizeInfo"/>
-        <relationship name="quickStartTours" optional="YES" toMany="YES" deletionRule="Cascade" syncable="YES"/>
         <relationship name="roles" optional="YES" toMany="YES" deletionRule="Cascade" destinationEntity="Role" inverseName="blog" inverseEntity="Role" syncable="YES"/>
         <relationship name="settings" optional="YES" maxCount="1" deletionRule="Cascade" destinationEntity="BlogSettings" inverseName="blog" inverseEntity="BlogSettings" syncable="YES"/>
         <relationship name="sharingButtons" optional="YES" toMany="YES" deletionRule="Cascade" destinationEntity="SharingButton" inverseName="blog" inverseEntity="SharingButton" syncable="YES"/>
