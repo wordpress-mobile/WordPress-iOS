@@ -348,12 +348,12 @@ private extension SiteAddressViewController {
 
             self.tracker.track(click: .showHelp)
 
-            let alert = FancyAlertViewController.siteAddressHelpController(
-                loginFields: self.loginFields,
+            SiteAddressViewController.showSiteAddressHelpAlert(
+                from: self,
                 sourceTag: self.sourceTag,
                 moreHelpTapped: {
                     self.tracker.track(click: .helpFindingSiteAddress)
-            },
+                },
                 onDismiss: {
                     self.tracker.track(click: .dismiss)
 
@@ -361,12 +361,9 @@ private extension SiteAddressViewController {
                     // once the alert is dismissed (which is where the step would be reset automagically),
                     // so we need to manually reset the step here.
                     self.tracker.set(step: .start)
-            })
-            alert.modalPresentationStyle = .custom
-            alert.transitioningDelegate = self
-            self.present(alert, animated: true, completion: { [weak self] in
-                self?.tracker.track(step: .help)
-            })
+                })
+
+            self.tracker.track(step: .help)
         }
     }
 
