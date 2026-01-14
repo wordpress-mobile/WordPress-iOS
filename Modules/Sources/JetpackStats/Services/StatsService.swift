@@ -139,24 +139,11 @@ actor StatsService: StatsServiceProtocol {
 
         // Helper function to sort items by metric value (descending), then by displayName, and then by itemID for stable ordering
         func sortItems(_ items: [any TopListItemProtocol]) -> [any TopListItemProtocol] {
-            items.sorted { lhs, rhs in
-                let lhsValue = lhs.metrics[metric] ?? 0
-                let rhsValue = rhs.metrics[metric] ?? 0
-
-                // First sort by metric value (descending)
-                if lhsValue != rhsValue {
-                    return lhsValue > rhsValue
-                }
-
-                // If values are equal, sort by displayName (ascending)
-                let displayNameComparison = lhs.displayName.localizedStandardCompare(rhs.displayName)
-                if displayNameComparison != .orderedSame {
-                    return displayNameComparison == .orderedAscending
-                }
-
-                // If displayNames are equal, sort by itemID for stable ordering
-                return lhs.id.id < rhs.id.id
-            }
+            items.sorted(using: [
+                KeyPathComparator(\.metrics[metric], order: .reverse),
+                KeyPathComparator(\.displayName, comparator: .localizedStandard),
+                KeyPathComparator(\.id.id)
+            ])
         }
 
         switch item {
