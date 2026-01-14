@@ -42,8 +42,7 @@ extension WordPressAuthenticator {
             ),
             unifiedStyle: .none,
             displayImages: WordPressAuthenticatorDisplayImages(
-                magicLink: UIImage(),
-                siteAddressModalPlaceholder: UIImage()
+                magicLink: UIImage()
             ),
             displayStrings: WordPressAuthenticatorDisplayStrings()
         )
