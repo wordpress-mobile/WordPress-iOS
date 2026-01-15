@@ -75,6 +75,10 @@ public final class SupportDataProvider: ObservableObject, Sendable {
         try self.botConversationDataProvider.loadBotConversation(id: id)
     }
 
+    public func loadUnifiedConversation(id: UInt64) async throws -> any CachedAndFetchedResult<Conversation> {
+        try self.supportConversationDataProvider.loadUnifiedSupportConversation(id: id)
+    }
+
     public func delete(conversationIds: [UInt64]) async throws {
         try await self.botConversationDataProvider.delete(conversationIds: conversationIds)
     }
@@ -270,6 +274,8 @@ public protocol SupportConversationDataProvider: Actor {
 
     nonisolated func loadSupportConversations() throws -> any CachedAndFetchedResult<[ConversationSummary]>
     nonisolated func loadSupportConversation(id: UInt64) throws -> any CachedAndFetchedResult<Conversation>
+
+    nonisolated func loadUnifiedSupportConversation(id: UInt64) throws -> any CachedAndFetchedResult<Conversation>
 
     func replyToSupportConversation(
         id: UInt64,

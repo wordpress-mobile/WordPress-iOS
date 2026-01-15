@@ -255,9 +255,8 @@ extension SupportDataProvider {
                 authorIsUser: true,
                 attachments: []
             )
-        ]
+        ].map { .humanMessage($0) }
     )
-
 }
 
 actor InternalLogDataProvider: ApplicationLogDataProvider {
@@ -362,6 +361,24 @@ actor InternalSupportConversationDataProvider: SupportConversationDataProvider {
         }
     }
 
+    nonisolated func loadUnifiedSupportConversation(id: UInt64) throws -> any CachedAndFetchedResult<Conversation> {
+        UncachedResult {
+
+            let messages = await SupportDataProvider.botConversation.messages.map { .botMessage($0) }
+            + [SupportMessage.transferredToSupport]
+            + SupportDataProvider.supportConversation.messages
+
+            return Conversation(
+                id: id,
+                title: "Test Conversation",
+                description: messages.last?.messageText ?? "",
+                lastMessageSentAt: messages.last?.createdAt ?? Date(),
+                status: .waitingForSupport,
+                messages: messages
+            )
+        }
+    }
+
     func replyToSupportConversation(
         id: UInt64,
         message: String,
@@ -385,7 +402,7 @@ actor InternalSupportConversationDataProvider: SupportConversationDataProvider {
         )
 
         try await Task.sleep(for: .seconds(3))
-        return conversation.addingMessage(newMessage)
+        return conversation.addingMessage(.humanMessage(newMessage))
     }
 
     func createSupportConversation(
@@ -407,7 +424,7 @@ actor InternalSupportConversationDataProvider: SupportConversationDataProvider {
                 authorName: user.username,
                 authorIsUser: true,
                 attachments: []
-            )]
+            )].map { .humanMessage($0) }
         )
     }
 

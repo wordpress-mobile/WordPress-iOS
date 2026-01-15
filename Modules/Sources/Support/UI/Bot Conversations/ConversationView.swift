@@ -263,9 +263,7 @@ public struct ConversationView: View {
         ZStack {
             ScrollViewReader { proxy in
                 List() {
-                    Section {
-                        ConversationBotIntro(currentUser: currentUser)
-                    }
+                    ConversationBotIntro(currentUser: currentUser)
 
                     loadingMessagesError
 
@@ -281,8 +279,6 @@ public struct ConversationView: View {
                     .listRowBackground(Color.clear)
 
                     sendingMessageError
-
-                    switchToHumanSupport
 
                     Text("").padding(.bottom, 4)
                         .listRowInsets(.zero)
@@ -372,38 +368,6 @@ public struct ConversationView: View {
                     removal: .opacity
                 ))
             }
-        }
-    }
-
-    @ViewBuilder
-    var switchToHumanSupport: some View {
-
-        if state.userWantsHumanSupport {
-            Section {
-                // Deliberately left empty
-            } footer: {
-                if #available(iOS 26.0, *) {
-                    openSupportTicketButton
-                    .buttonStyle(.glassProminent)
-                } else {
-                    openSupportTicketButton
-                    .buttonStyle(.borderedProminent)
-                }
-            }
-        }
-    }
-
-    @ViewBuilder
-    var openSupportTicketButton: some View {
-        NavigationLink {
-            SupportForm(
-                supportIdentity: self.currentUser
-            ).environmentObject(self.dataProvider) // Required until SwiftUI owns the nav controller
-        } label: {
-            Text(Localization.openSupportTicket)
-                .font(.headline)
-                .padding(.vertical)
-                .frame(maxWidth: .infinity)
         }
     }
 

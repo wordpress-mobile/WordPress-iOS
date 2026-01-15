@@ -64,7 +64,7 @@ public struct Conversation: Identifiable, Sendable, Codable, Equatable {
     public let description: String
     public let lastMessageSentAt: Date
     public let status: ConversationStatus
-    public let messages: [Message]
+    public let messages: [SupportMessage]
 
     public init(
         id: UInt64,
@@ -72,7 +72,7 @@ public struct Conversation: Identifiable, Sendable, Codable, Equatable {
         description: String,
         lastMessageSentAt: Date,
         status: ConversationStatus,
-        messages: [Message]
+        messages: [SupportMessage]
     ) {
         self.id = id
         self.title = title
@@ -82,12 +82,12 @@ public struct Conversation: Identifiable, Sendable, Codable, Equatable {
         self.messages = messages
     }
 
-    func addingMessage(_ message: Message) -> Conversation {
+    func addingMessage(_ message: SupportMessage) -> Conversation {
         return Conversation(
             id: self.id,
             title: self.title,
             description: self.description,
-            lastMessageSentAt: message.createdAt,
+            lastMessageSentAt: message.createdAt ?? Date(),
             status: self.status,
             messages: self.messages + [message]
         )
