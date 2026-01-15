@@ -68,7 +68,6 @@ final class EditorDependencyManager: Sendable {
     /// using `dependencies(for:)`.
     ///
     /// - Parameter blog: The blog to prefetch dependencies for.
-
     @MainActor
     func prefetchDependencies(for blog: Blog) {
         _prefetchDependencies(for: blog)
@@ -93,7 +92,7 @@ final class EditorDependencyManager: Sendable {
 
         let task = Task {
             do {
-                let dependencies = try await service.prepare { _ in }
+                let dependencies = try await service.prepare(progress: { _ in })
                 self.cache[key] = dependencies
             } catch {
                 // Prefetch failed - editor will fall back to async loading
