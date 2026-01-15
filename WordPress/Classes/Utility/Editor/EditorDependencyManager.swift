@@ -21,18 +21,18 @@ import WordPressData
 /// let editor = EditorViewController(configuration: config, dependencies: dependencies)
 /// ```
 ///
-final class EditorDependencyManager: @unchecked Sendable {
+final class EditorDependencyManager: Sendable {
 
     static let shared = EditorDependencyManager()
 
-    /// Lock for thread-safe cache access.
-    private let lock = NSLock()
-
     /// Cached dependencies keyed by blog's ObjectID string representation.
-    private var cache: [String: EditorDependencies] = [:]
+    private let cache = LockingHashMap<EditorDependencies>()
 
     /// Currently running prefetch tasks, keyed by blog's ObjectID string.
-    private var prefetchTasks: [String: Task<Void, Never>] = [:]
+    private let prefetchTasks = LockingHashMap<Task<Void, Never>>()
+
+    /// Currently-running cache-clearing tasks
+    private let invalidationTasks = LockingHashMap<Task<Void, Never>>()
 
     private init() {}
 
@@ -45,8 +45,6 @@ final class EditorDependencyManager: @unchecked Sendable {
     /// - Returns: Cached `EditorDependencies` if available, otherwise `nil`.
     func dependencies(for blog: Blog) -> EditorDependencies? {
         let key = cacheKey(for: blog)
-        lock.lock()
-        defer { lock.unlock() }
         return cache[key]
     }
 
@@ -59,21 +57,36 @@ final class EditorDependencyManager: @unchecked Sendable {
     /// - Parameter blog: The blog to prefetch dependencies for.
     @MainActor
     func prefetchDependencies(for blog: Blog) async {
+        await _prefetchDependencies(for: blog)?.value
+    }
+
+    /// Schdule prefetching editor dependencies for the given blog in the background.
+    ///
+    /// Prefer the `async` version of this method where possible.
+    ///
+    /// This method returns immediately – any results  can be retrieved later
+    /// using `dependencies(for:)`.
+    ///
+    /// - Parameter blog: The blog to prefetch dependencies for.
+
+    @MainActor
+    func prefetchDependencies(for blog: Blog) {
+        _prefetchDependencies(for: blog)
+    }
+
+    @discardableResult
+    private func _prefetchDependencies(for blog: Blog) -> Task<Void, Never>? {
         let key = cacheKey(for: blog)
 
         // Don't start a new prefetch if one is already running
-        lock.lock()
         if prefetchTasks[key] != nil {
-            lock.unlock()
-            return
+            return nil
         }
 
         // Don't prefetch if we already have cached dependencies
         if cache[key] != nil {
-            lock.unlock()
-            return
+            return nil
         }
-        lock.unlock()
 
         let configuration = EditorConfiguration(blog: blog)
         let service = EditorService(configuration: configuration)
@@ -81,49 +94,101 @@ final class EditorDependencyManager: @unchecked Sendable {
         let task = Task {
             do {
                 let dependencies = try await service.prepare { _ in }
-                self.lock.lock()
                 self.cache[key] = dependencies
-                self.lock.unlock()
             } catch {
                 // Prefetch failed - editor will fall back to async loading
                 DDLogError("EditorDependencyManager: Failed to prefetch dependencies: \(error)")
             }
-            self.lock.lock()
+
             self.prefetchTasks.removeValue(forKey: key)
-            self.lock.unlock()
         }
 
-        lock.lock()
         prefetchTasks[key] = task
-        lock.unlock()
 
-        await task.value
+        return task
     }
 
     /// Invalidates cached dependencies for the given blog.
     ///
     /// Call this when blog settings change or when you want to force a fresh fetch.
     ///
+    /// `completion` is guaranteed to run on the main actor.
+    ///
     /// - Parameter blog: The blog to invalidate cache for.
-    func invalidate(for blog: Blog) {
+    @MainActor
+    func invalidate(for blog: Blog, completion: @escaping () -> Void) {
         let key = cacheKey(for: blog)
-        lock.lock()
-        cache.removeValue(forKey: key)
-        prefetchTasks[key]?.cancel()
-        prefetchTasks.removeValue(forKey: key)
-        lock.unlock()
+
+        // Don't allow more than one concurrent invalidation
+        if self.invalidationTasks[key] != nil {
+            return
+        }
+
+        let configuration = EditorConfiguration(blog: blog)
+
+        self.invalidationTasks[key] = Task {
+
+            cache.removeValue(forKey: key)
+            prefetchTasks[key]?.cancel()
+            prefetchTasks.removeValue(forKey: key)
+
+            do {
+                try await EditorService(configuration: configuration).purge()
+            } catch {
+                DDLogError("EditorDependencyManager: Failed to clear cache: \(error)")
+            }
+
+            completion()
+            self.invalidationTasks[key] = nil
+        }
     }
 
     /// Clears all cached dependencies.
     func invalidateAll() {
-        lock.lock()
         cache.removeAll()
         prefetchTasks.values.forEach { $0.cancel() }
         prefetchTasks.removeAll()
-        lock.unlock()
     }
 
     private func cacheKey(for blog: Blog) -> String {
         blog.objectID.uriRepresentation().absoluteString
+    }
+}
+
+class LockingHashMap<Value>: @unchecked Sendable {
+    private let lock = NSLock()
+
+    private var list: [AnyHashable: Value] = [:]
+
+    subscript(_ key: AnyHashable) -> Value? {
+        get {
+            lock.withLock {
+                list[key]
+            }
+        }
+        set {
+            lock.withLock {
+                list[key] = newValue
+            }
+        }
+    }
+
+    var values: Dictionary<AnyHashable, Value>.Values {
+        lock.withLock {
+            self.list.values
+        }
+    }
+
+    @discardableResult
+    func removeValue(forKey key: AnyHashable) -> Value? {
+        lock.withLock {
+            self.list.removeValue(forKey: key)
+        }
+    }
+
+    func removeAll() {
+        lock.withLock {
+            self.list.removeAll()
+        }
     }
 }

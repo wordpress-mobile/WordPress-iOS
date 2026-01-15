@@ -39,6 +39,10 @@ final class PostListViewController: AbstractPostListViewController, InteractiveP
         refreshNoResultsViewController = { [weak self] in
             self?.handleRefreshNoResultsViewController($0)
         }
+
+        if let blog = self.blog {
+            EditorDependencyManager.shared.prefetchDependencies(for: blog)
+        }
     }
 
     private lazy var createButtonCoordinator: CreateButtonCoordinator = {
