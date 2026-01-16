@@ -26,7 +26,9 @@ struct ChartValuesSummaryView: View {
                 .foregroundColor(.primary)
                 .contentTransition(.numericText())
 
-            BadgeTrendIndicator(trend: trend)
+            if trend.previousValue != 0 {
+                BadgeTrendIndicator(trend: trend)
+            }
         }
     }
 
@@ -37,17 +39,13 @@ struct ChartValuesSummaryView: View {
                     .font(.system(.headline, design: .rounded, weight: .semibold))
                     .foregroundColor(.primary)
                     .contentTransition(.numericText())
-
-                Text(trend.formattedPreviousValue)
-                    .font(.system(.footnote, design: .rounded))
-                    .foregroundColor(.secondary.opacity(0.75)).tracking(-0.2)
-                    .contentTransition(.numericText())
             }
-
-            Text(trend.formattedTrend)
-                .contentTransition(.numericText())
-                .font(.system(.footnote, design: .rounded, weight: .medium)).tracking(-0.33)
-                .foregroundColor(trend.sentiment.foregroundColor)
+            if trend.previousValue != 0 {
+                Text(trend.formattedTrend)
+                    .contentTransition(.numericText())
+                    .font(.system(.footnote, design: .rounded, weight: .medium)).tracking(-0.33)
+                    .foregroundColor(trend.sentiment.foregroundColor)
+            }
         }
     }
 }

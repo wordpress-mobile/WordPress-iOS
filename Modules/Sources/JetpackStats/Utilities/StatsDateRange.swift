@@ -9,7 +9,7 @@ struct StatsDateRange: Equatable, Sendable {
     /// date period. If nil, uses duration-based navigation.
     var component: Calendar.Component
 
-    /// The comparison period type. Defaults to `.precedingPeriod` if nil.
+    /// The comparison period type.
     var comparison: DateRangeComparisonPeriod
 
     /// The calculated comparison date range.
@@ -56,7 +56,11 @@ struct StatsDateRange: Equatable, Sendable {
     }
 
     private mutating func refreshEffectiveComparisonPeriodInterval() {
-        effectiveComparisonInterval = calendar.comparisonRange(for: dateInterval, period: comparison, component: component)
+        effectiveComparisonInterval = calendar.comparisonRange(
+            for: dateInterval,
+            period: comparison == .off ? .precedingPeriod : comparison,
+            component: component
+        )
     }
 
     // MARK: - Navigation

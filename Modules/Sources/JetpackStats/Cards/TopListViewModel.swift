@@ -210,7 +210,7 @@ final class TopListViewModel: ObservableObject, TrafficCardViewModel {
         }
 
         // Fetch current data
-        async let currentTask = service.getTopListData(
+        let current = try await service.getTopListData(
             fetchItem,
             metric: selection.metric,
             interval: dateRange.dateInterval,
@@ -219,10 +219,10 @@ final class TopListViewModel: ObservableObject, TrafficCardViewModel {
             locationLevel: selection.locationLevel
         )
 
-        // Fetch previous data only for items that support it
-        async let previousTask: TopListResponse? = {
-            guard selection.item != .archive else { return nil }
-            return try await service.getTopListData(
+        // Fetch previous data only for items that support it and if comparison is enabled
+        let previous: TopListResponse?
+        if dateRange.comparison != .off && selection.item != .archive {
+            previous = try await service.getTopListData(
                 fetchItem,
                 metric: selection.metric,
                 interval: dateRange.effectiveComparisonInterval,
@@ -230,9 +230,9 @@ final class TopListViewModel: ObservableObject, TrafficCardViewModel {
                 limit: fetchLimit,
                 locationLevel: selection.locationLevel
             )
-        }()
-
-        let (current, previous) = try await (currentTask, previousTask)
+        } else {
+            previous = nil
+        }
 
         let currentItems = filteredItems(current.items)
         let previousItems = filteredItems(previous?.items ?? [])

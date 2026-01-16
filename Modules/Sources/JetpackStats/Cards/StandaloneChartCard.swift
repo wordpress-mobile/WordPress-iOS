@@ -98,7 +98,7 @@ struct StandaloneChartCard: View {
             ChartLegendView(
                 metric: metric,
                 currentPeriod: dateRange.dateInterval,
-                previousPeriod: dateRange.effectiveComparisonInterval
+                previousPeriod: dateRange.comparison != .off ? dateRange.effectiveComparisonInterval : nil
             )
         }
     }
@@ -127,9 +127,9 @@ struct StandaloneChartCard: View {
     private func chartContent(chartData: ChartData) -> some View {
         switch chartType {
         case .line:
-            LineChartView(data: chartData)
+            LineChartView(data: chartData, showComparison: dateRange.comparison != .off)
         case .columns:
-            BarChartView(data: chartData)
+            BarChartView(data: chartData, showComparison: dateRange.comparison != .off)
         }
     }
 

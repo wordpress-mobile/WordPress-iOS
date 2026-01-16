@@ -165,17 +165,14 @@ final class ChartCardViewModel: ObservableObject, TrafficCardViewModel {
 
         let granularity = selectedGranularity ?? dateRange.dateInterval.preferredGranularity
 
-        // Fetch both current and previous period data concurrently
-        async let currentResponseTask = service.getSiteStats(
+        let currentResponse = try await service.getSiteStats(
             interval: dateRange.dateInterval,
             granularity: granularity
         )
-        async let previousResponseTask = service.getSiteStats(
+        let previousResponse = try await service.getSiteStats(
             interval: dateRange.effectiveComparisonInterval,
             granularity: granularity
         )
-
-        let (currentResponse, previousResponse) = try await (currentResponseTask, previousResponseTask)
 
         for (metric, dataPoints) in currentResponse.metrics {
             let previousDataPoints = previousResponse.metrics[metric] ?? []

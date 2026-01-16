@@ -79,8 +79,10 @@ struct ChartCard: View {
     @ViewBuilder
     private var contentView: some View {
         VStack(spacing: Constants.step1) {
-            chartHeaderView
-                .padding(.trailing, -Constants.step0_5)
+            if dateRange.comparison != .off {
+                chartHeaderView
+                    .padding(.trailing, -Constants.step0_5)
+            }
             chartContentView
         }
         .animation(.spring, value: selectedMetric)
@@ -90,7 +92,7 @@ struct ChartCard: View {
 
     private var chartHeaderView: some View {
         // Showing currently selected (not loaded period) by design
-        HStack(alignment: .center, spacing: 0) {
+        HStack(alignment: .top, spacing: 0) {
             if let data = viewModel.chartData[selectedMetric] {
                 ChartValuesSummaryView(
                     trend: .make(data, context: .regular),
@@ -270,9 +272,9 @@ struct ChartCard: View {
     private func chartContentView(data: ChartData) -> some View {
         switch selectedChartType {
         case .line:
-            LineChartView(data: data)
+            LineChartView(data: data, showComparison: dateRange.comparison != .off)
         case .columns:
-            BarChartView(data: data) { selection in
+            BarChartView(data: data, showComparison: dateRange.comparison != .off) { selection in
                 handleDateSelection(selection, data: data)
             }
         }

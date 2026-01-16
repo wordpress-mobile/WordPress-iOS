@@ -74,7 +74,9 @@ struct StatsDateRangePickerMenu: View {
                     ])
                 }) {
                     Text(period.localizedTitle)
-                    Text(formattedComparisonRange(for: period))
+                    if period != .off {
+                        Text(formattedComparisonRange(for: period))
+                    }
                     if selection.comparison == period {
                         Image(systemName: "checkmark")
                     }
@@ -82,7 +84,13 @@ struct StatsDateRangePickerMenu: View {
                 .lineLimit(1)
             }
         } label: {
-            Label(Strings.DatePicker.compareWith, systemImage: "arrow.left.arrow.right")
+            Button(action: {}) {
+                Image(systemName: "arrow.up.right")
+                Text(Strings.DatePicker.compareWith)
+                if selection.comparison != .off {
+                    Text(selection.comparison.localizedTitle)
+                }
+            }
         }
     }
 

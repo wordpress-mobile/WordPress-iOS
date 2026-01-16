@@ -3,6 +3,7 @@ import Charts
 
 struct BarChartView: View {
     let data: ChartData
+    var showComparison: Bool = true
     var onDateSelected: ((Date) -> Void)? = nil
 
     @State private var selectedDataPoints: SelectedDataPoints?
@@ -23,7 +24,9 @@ struct BarChartView: View {
 
     var body: some View {
         Chart {
-            previousPeriodBars
+            if showComparison {
+                previousPeriodBars
+            }
             currentPeriodBars
             averageLine
             significantPointAnnotations
