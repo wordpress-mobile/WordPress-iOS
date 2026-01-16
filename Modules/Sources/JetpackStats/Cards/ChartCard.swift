@@ -85,6 +85,7 @@ struct ChartCard: View {
             }
             chartContentView
         }
+        .environment(\.showComparison, dateRange.comparison != .off)
         .animation(.spring, value: selectedMetric)
         .animation(.spring, value: selectedChartType)
         .animation(.easeInOut, value: viewModel.isFirstLoad)
@@ -272,9 +273,9 @@ struct ChartCard: View {
     private func chartContentView(data: ChartData) -> some View {
         switch selectedChartType {
         case .line:
-            LineChartView(data: data, showComparison: dateRange.comparison != .off)
+            LineChartView(data: data)
         case .columns:
-            BarChartView(data: data, showComparison: dateRange.comparison != .off) { selection in
+            BarChartView(data: data) { selection in
                 handleDateSelection(selection, data: data)
             }
         }

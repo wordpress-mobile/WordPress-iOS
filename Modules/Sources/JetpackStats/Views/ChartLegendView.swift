@@ -3,7 +3,7 @@ import SwiftUI
 struct ChartLegendView: View {
     let metric: SiteMetric
     let currentPeriod: DateInterval
-    let previousPeriod: DateInterval?
+    let previousPeriod: DateInterval
 
     @Environment(\.context) var context
     @ScaledMetric(relativeTo: .footnote) private var circleSize: CGFloat = 6
@@ -19,16 +19,14 @@ struct ChartLegendView: View {
                     .frame(width: circleSize, height: circleSize)
             }
 
-            // Previous period (only show if comparison is enabled)
-            if let previousPeriod {
-                HStack(spacing: 6) {
-                    Text(context.formatters.dateRange.string(from: previousPeriod))
-                        .foregroundColor(.secondary.opacity(0.75))
-                        .font(.footnote)
-                    Circle()
-                        .fill(Color.secondary.opacity(0.75))
-                        .frame(width: circleSize, height: circleSize)
-                }
+            // Previous period
+            HStack(spacing: 6) {
+                Text(context.formatters.dateRange.string(from: previousPeriod))
+                    .foregroundColor(.secondary.opacity(0.75))
+                    .font(.footnote)
+                Circle()
+                    .fill(Color.secondary.opacity(0.75))
+                    .frame(width: circleSize, height: circleSize)
             }
         }
         .font(.footnote.weight(.medium))

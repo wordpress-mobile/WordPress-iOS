@@ -3,13 +3,13 @@ import Charts
 
 struct LineChartView: View {
     let data: ChartData
-    var showComparison: Bool = true
 
     @State private var selectedDate: Date?
     @State private var selectedDataPoints: SelectedDataPoints?
 
     @Environment(\.colorScheme) var colorScheme
     @Environment(\.context) var context
+    @Environment(\.showComparison) private var showComparison
 
     private var valueFormatter: StatsValueFormatter {
         StatsValueFormatter(metric: data.metric)

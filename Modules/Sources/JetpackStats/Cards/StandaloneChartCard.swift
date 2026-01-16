@@ -63,6 +63,7 @@ struct StandaloneChartCard: View {
             dateRangeControls
                 .dynamicTypeSize(...DynamicTypeSize.xLarge)
         }
+        .environment(\.showComparison, dateRange.comparison != .off)
         .padding(.vertical, Constants.step2)
         .padding(.horizontal, Constants.step3)
         .dynamicTypeSize(...DynamicTypeSize.xxLarge)
@@ -127,9 +128,9 @@ struct StandaloneChartCard: View {
     private func chartContent(chartData: ChartData) -> some View {
         switch chartType {
         case .line:
-            LineChartView(data: chartData, showComparison: dateRange.comparison != .off)
+            LineChartView(data: chartData)
         case .columns:
-            BarChartView(data: chartData, showComparison: dateRange.comparison != .off)
+            BarChartView(data: chartData)
         }
     }
 

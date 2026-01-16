@@ -51,7 +51,6 @@ struct StatsDateRangePickerMenu: View {
                 selection.update(preset: preset)
                 UIImpactFeedbackGenerator(style: .light).impactOccurred()
 
-                // Track preset selection
                 context.tracker?.send(.dateRangePresetSelected, properties: [
                     "selected_preset": preset.analyticsName
                 ])
@@ -64,10 +63,11 @@ struct StatsDateRangePickerMenu: View {
             ForEach(DateRangeComparisonPeriod.allCases) { period in
                 Button(action: {
                     let previousPeriod = selection.comparison
-                    selection.update(comparisonPeriod: period)
+                    withAnimation {
+                        selection.update(comparisonPeriod: period)
+                    }
                     UIImpactFeedbackGenerator(style: .light).impactOccurred()
 
-                    // Track comparison period change
                     context.tracker?.send(.comparisonPeriodChanged, properties: [
                         "from_period": previousPeriod.analyticsName,
                         "to_period": period.analyticsName

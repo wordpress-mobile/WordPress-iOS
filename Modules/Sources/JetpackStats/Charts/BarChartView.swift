@@ -3,7 +3,6 @@ import Charts
 
 struct BarChartView: View {
     let data: ChartData
-    var showComparison: Bool = true
     var onDateSelected: ((Date) -> Void)? = nil
 
     @State private var selectedDataPoints: SelectedDataPoints?
@@ -12,6 +11,7 @@ struct BarChartView: View {
 
     @Environment(\.context) var context
     @Environment(\.colorScheme) var colorScheme
+    @Environment(\.showComparison) private var showComparison
 
     private var valueFormatter: StatsValueFormatter {
         StatsValueFormatter(metric: data.metric)
