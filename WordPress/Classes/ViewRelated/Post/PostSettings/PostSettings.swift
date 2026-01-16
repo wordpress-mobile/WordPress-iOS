@@ -28,7 +28,6 @@ struct PostSettings: Hashable {
     var postFormat: String?
     var isStickyPost = false
     var sharing: PostSocialSharingSettings?
-    var accessLevel: JetpackPostAccessLevel?
     var allowComments = true
     var allowPings = true
 
@@ -67,7 +66,6 @@ struct PostSettings: Hashable {
                 $0.categoryID.intValue
             })
             sharing = PostSocialSharingSettings.make(for: post)
-            accessLevel = metadata.accessLevel ?? .everybody
             allowComments = post.allowComments
             allowPings = post.allowPings
         case let page as Page:
