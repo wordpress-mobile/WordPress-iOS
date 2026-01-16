@@ -58,6 +58,11 @@ final class PostSettingsViewModel: NSObject, ObservableObject {
         set { settings.metadata.isJetpackNewsletterEmailDisabled = !newValue }
     }
 
+    var accessLevel: JetpackPostAccessLevel {
+        get { settings.metadata.accessLevel ?? .everybody }
+        set { settings.metadata.accessLevel = newValue }
+    }
+
     var publishDateText: String? {
         guard let date = settings.publishDate else {
             return nil

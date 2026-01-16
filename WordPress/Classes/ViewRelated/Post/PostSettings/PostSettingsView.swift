@@ -323,7 +323,7 @@ struct PostSettingsFormContentView: View {
             Section {
                 NavigationLink {
                     SettingsPickerListView(
-                        selection: $viewModel.settings.metadata.accessLevel,
+                        selection: $viewModel.accessLevel,
                         values: JetpackPostAccessLevel.allCases.map { level in
                             SettingsPickerValue(
                                 title: level.localizedTitle,
@@ -334,7 +334,7 @@ struct PostSettingsFormContentView: View {
                     )
                     .navigationTitle(Strings.accessHeader)
                 } label: {
-                    SettingsRow(Strings.accessHeader, value: (viewModel.settings.metadata.accessLevel ?? .everybody).localizedTitle)
+                    SettingsRow(Strings.accessHeader, value: (viewModel.accessLevel).localizedTitle)
                 }
             } header: {
                 SectionHeader(Strings.accessHeader)
