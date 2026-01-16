@@ -14,6 +14,7 @@
 * [*] Fix previewing posts on WordPress.com atomic sites [#25045]
 * [**] Stats: Add Country/Region/City picker to the Locations card [#25125]
 * [*] Stats: Rename "External Links" to "Clicks" to be consistent with the web [#25090]
+* [*] Stats: Add an option to disable automatic comparisons and remember the selection across launches [#25143]
 * [*] Stats: Add long-press support for bars in a "Bar Chart" view [#25133]
 * [*] Stats: Fix an issue where bar chart would prevent vertical scroll [#25133]
 * [*] Stats: Fix an issue with External Links (Clicks) sometimes displayed incorrectly [#25128]
