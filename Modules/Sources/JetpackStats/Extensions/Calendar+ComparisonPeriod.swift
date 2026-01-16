@@ -1,6 +1,6 @@
 import Foundation
 
-enum DateRangeComparisonPeriod: Equatable, Sendable, CaseIterable, Identifiable {
+enum DateRangeComparisonPeriod: String, Equatable, Sendable, CaseIterable, Identifiable {
     case precedingPeriod
     case samePeriodLastYear
     case off
