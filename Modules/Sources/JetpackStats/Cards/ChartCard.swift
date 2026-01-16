@@ -79,7 +79,7 @@ struct ChartCard: View {
     @ViewBuilder
     private var contentView: some View {
         VStack(spacing: Constants.step1) {
-            if dateRange.comparison != .off {
+            if dateRange.comparison != .off || metrics.count == 1 {
                 chartHeaderView
                     .padding(.trailing, -Constants.step0_5)
             }
@@ -92,7 +92,7 @@ struct ChartCard: View {
 
     private var chartHeaderView: some View {
         // Showing currently selected (not loaded period) by design
-        HStack(alignment: .top, spacing: 0) {
+        HStack(alignment: .center, spacing: 0) {
             if let data = viewModel.chartData[selectedMetric] {
                 ChartValuesSummaryView(
                     trend: .make(data, context: .regular),

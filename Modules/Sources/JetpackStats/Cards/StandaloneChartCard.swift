@@ -98,7 +98,7 @@ struct StandaloneChartCard: View {
             ChartLegendView(
                 metric: metric,
                 currentPeriod: dateRange.dateInterval,
-                previousPeriod: dateRange.comparison != .off ? dateRange.effectiveComparisonInterval : nil
+                previousPeriod: dateRange.effectiveComparisonInterval
             )
         }
     }
