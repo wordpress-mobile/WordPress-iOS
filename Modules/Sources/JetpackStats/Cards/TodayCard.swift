@@ -28,6 +28,8 @@ struct TodayCard: View {
             .frame(height: sparklineHeight)
 
             metricsView
+                .fixedSize()
+                .dynamicTypeSize(...DynamicTypeSize.xLarge)
         }
         .padding(.vertical, Constants.step2)
         .padding(.horizontal, Constants.step3)
@@ -37,6 +39,11 @@ struct TodayCard: View {
         }
         .overlay(alignment: .topTrailing) {
             moreMenu
+        }
+        .overlay(alignment: .bottomTrailing) {
+            if !isChevronHidden {
+                chevron
+            }
         }
         .cardStyle()
         .animation(.spring, value: viewModel.data?.id)
@@ -80,6 +87,15 @@ struct TodayCard: View {
         return copy
     }
 
+    private var chevron: some View {
+        Image(systemName: "chevron.down")
+            .font(.system(size: 14, weight: .bold))
+            .foregroundStyle(Color.secondary.opacity(0.4))
+            .padding(.bottom, 22)
+            .padding(.trailing, 18)
+            .layoutPriority(1)
+    }
+
     // MARK: - Content Views
 
     @ViewBuilder
@@ -108,16 +124,6 @@ struct TodayCard: View {
                 }
             }
             .layoutPriority(2)
-
-            if !isChevronHidden {
-                Image(systemName: "chevron.down")
-                    .font(.system(size: 14, weight: .bold))
-                    .foregroundStyle(Color.secondary.opacity(0.4))
-                    .frame(maxWidth: .infinity, alignment: .trailing)
-                    .offset(x: 8, y: -3)
-                    .unredacted()
-                    .layoutPriority(1)
-            }
         }
         .lineLimit(1)
     }
