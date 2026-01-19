@@ -461,7 +461,6 @@ private extension SiteStatsDashboardViewController {
             if oldSelectedTab != .ads || containerIsEmpty {
                 showChildViewController(adsViewController)
             }
-            // No refresh method needed yet - it's a static placeholder
         }
     }
 
