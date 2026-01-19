@@ -53,8 +53,7 @@ extension StatsContext {
         self.init(
             timeZone: blog.timeZone ?? .current,
             siteID: siteID,
-            api: api,
-            isWordAdsEnabled: blog.isWordAdsActive()
+            api: api
         )
 
         // Configure avatar preprocessing using Gravatar
