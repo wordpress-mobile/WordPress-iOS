@@ -27,6 +27,7 @@ public enum FeatureFlag: Int, CaseIterable {
     case intelligence
     case newSupport
     case nativeBlockInserter
+    case statsAds
 
     /// Returns a boolean indicating if the feature is enabled.
     ///
@@ -86,6 +87,8 @@ public enum FeatureFlag: Int, CaseIterable {
             return false
         case .nativeBlockInserter:
             return true
+        case .statsAds:
+            return BuildConfiguration.current == .debug
         }
     }
 
@@ -129,6 +132,7 @@ extension FeatureFlag {
         case .intelligence: "Intelligence"
         case .newSupport: "New Support"
         case .nativeBlockInserter: "Native Block Inserter"
+        case .statsAds: "Stats Ads Tab"
         }
     }
 }
