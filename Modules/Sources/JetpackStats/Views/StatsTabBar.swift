@@ -2,25 +2,25 @@ import SwiftUI
 
 enum StatsTab: CaseIterable {
     case traffic
-    case realtime
     case insights
     case subscribers
+    case ads
 
     var localizedTitle: String {
         switch self {
         case .traffic: return Strings.Tabs.traffic
-        case .realtime: return Strings.Tabs.realtime
         case .insights: return Strings.Tabs.insights
         case .subscribers: return Strings.Tabs.subscribers
+        case .ads: return Strings.Tabs.ads
         }
     }
 
     var analyticsName: String {
         switch self {
         case .traffic: return "traffic"
-        case .realtime: return "realtime"
         case .insights: return "insights"
         case .subscribers: return "subscribers"
+        case .ads: return "ads"
         }
     }
 }

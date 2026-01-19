@@ -9,6 +9,7 @@ enum Strings {
         static let realtime = AppLocalizedString("jetpackStats.tabs.realtime", value: "Realtime", comment: "Realtime tab")
         static let insights = AppLocalizedString("jetpackStats.tabs.insights", value: "Insights", comment: "Insights tab")
         static let subscribers = AppLocalizedString("jetpackStats.tabs.subscribers", value: "Subscribers", comment: "Subscribers tab")
+        static let ads = AppLocalizedString("jetpackStats.tabs.ads", value: "Ads", comment: "Ads tab")
     }
 
     enum Calendar {
