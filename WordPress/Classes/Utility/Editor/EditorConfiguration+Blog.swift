@@ -2,6 +2,7 @@ import Foundation
 import GutenbergKit
 import WordPressData
 import WordPressShared
+import Support
 
 extension EditorConfiguration {
     init(blog: Blog, keychain: KeychainAccessible = KeychainUtils()) {
@@ -46,7 +47,7 @@ extension EditorConfiguration {
             // Limited to Jetpack-connected sites until editor assets endpoint is available in WordPress core
             .setShouldUsePlugins(Self.shouldEnablePlugins(for: blog, appPassword: applicationPassword))
             .setLocale(WordPressComLanguageDatabase.shared.deviceLanguage.slug)
-            .setEnableNetworkLogging(FeatureFlag.pulse.enabled)
+            .setEnableNetworkLogging(FeatureFlag.pulse.enabled || ExtensiveLogging.enabled)
 
         if let blogUrl = blog.url {
             builder = builder.setSiteUrl(blogUrl)

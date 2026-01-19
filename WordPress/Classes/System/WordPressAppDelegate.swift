@@ -20,6 +20,7 @@ import WordPressData
 import WordPressShared
 import WordPressUI
 import ZendeskCoreSDK
+import Support
 
 public class WordPressAppDelegate: UIResponder, UIApplicationDelegate {
 
@@ -83,7 +84,7 @@ public class WordPressAppDelegate: UIResponder, UIApplicationDelegate {
         DesignSystem.FontManager.registerCustomFonts()
         AssertionLoggerDependencyContainer.logger = AssertionLogger()
         UITestConfigurator.prepareApplicationForUITests(in: application, window: window)
-        if FeatureFlag.pulse.enabled {
+        if FeatureFlag.pulse.enabled || ExtensiveLogging.enabled {
             wpkURLSessionNotifyingDelegate = PulseNetworkLogger()
             LoggingSystem.bootstrap(PersistentLogHandler.init)
         }

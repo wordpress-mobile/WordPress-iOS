@@ -1,10 +1,11 @@
 import Foundation
 import Pulse
+import Support
 
 public final class PulseNetworkLogger: NSObject, URLSessionTaskDelegate, URLSessionDataDelegate {
 
     private var logger: NetworkLogger? {
-        FeatureFlag.pulse.enabled ? NetworkLogger.shared : nil
+        (FeatureFlag.pulse.enabled || ExtensiveLogging.enabled) ? NetworkLogger.shared : nil
     }
 
     public func urlSession(_ session: URLSession, didCreateTask task: URLSessionTask) {

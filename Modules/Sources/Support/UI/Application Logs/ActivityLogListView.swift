@@ -1,4 +1,5 @@
 import SwiftUI
+import PulseUI
 
 /// A view that displays a list of application log files in reverse chronological order.
 public struct ActivityLogListView: View {
@@ -24,6 +25,15 @@ public struct ActivityLogListView: View {
 
     @State
     var isConfirmingDeletion: Bool = false
+
+    @State
+    private var showExtensiveLoggingAlert = false
+
+    @State
+    private var extensiveLoggingEnabled = ExtensiveLogging.enabled
+
+    @State
+    private var showExtensiveLogs = false
 
     public init() {}
 
@@ -68,6 +78,18 @@ public struct ActivityLogListView: View {
         }, message: {
             Text(Localization.cannotRecoverLogs)
         })
+        .alert(Localization.extensiveLoggingAlertTitle, isPresented: $showExtensiveLoggingAlert) {
+            Button(Localization.cancel, role: .cancel) {}
+            Button(Localization.enableTemporarily) {
+                ExtensiveLogging.enabled = true
+                extensiveLoggingEnabled = true
+            }
+        } message: {
+            Text(Localization.extensiveLoggingAlertMessage)
+        }
+        .sheet(isPresented: $showExtensiveLogs) {
+            PulseMainView()
+        }
         .onAppear {
             self.dataProvider.userDid(.viewApplicationLogList)
         }
@@ -103,6 +125,38 @@ public struct ActivityLogListView: View {
 
                 Button(Localization.clearAllActivityLogs) {
                     self.isConfirmingDeletion = true
+                }
+
+                Section {
+                    Toggle(isOn: Binding(
+                        get: { extensiveLoggingEnabled },
+                        set: { newValue in
+                            if newValue {
+                                showExtensiveLoggingAlert = true
+                            } else {
+                                ExtensiveLogging.enabled = false
+                                extensiveLoggingEnabled = false
+                            }
+                        }
+                    )) {
+                        Text(Localization.extensiveLogging)
+                    }
+
+                    if extensiveLoggingEnabled {
+                        Button {
+                            showExtensiveLogs = true
+                        } label: {
+                            HStack {
+                                Text(Localization.extensiveLogs)
+                                Spacer()
+                                Image(systemName: "chevron.right")
+                                    .foregroundColor(.secondary)
+                                    .font(.caption.weight(.semibold))
+                            }
+                            .contentShape(Rectangle())
+                        }
+                        .buttonStyle(.plain)
+                    }
                 }
             }
         } else {

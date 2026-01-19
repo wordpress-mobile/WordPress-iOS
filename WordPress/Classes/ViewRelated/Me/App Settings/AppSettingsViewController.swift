@@ -11,6 +11,7 @@ import PulseUI
 import WordPressFlux
 import DesignSystem
 import WordPressUI
+import Support
 
 class AppSettingsViewController: UITableViewController {
     fileprivate var handler: ImmuTableViewHandler!
@@ -594,7 +595,7 @@ private extension AppSettingsViewController {
             rows.append(designSystem)
         }
 
-        if FeatureFlag.pulse.enabled {
+        if FeatureFlag.pulse.enabled || ExtensiveLogging.enabled {
             rows.append(loggerRow)
         }
 

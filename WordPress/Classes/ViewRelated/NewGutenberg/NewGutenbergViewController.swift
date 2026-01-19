@@ -11,6 +11,7 @@ import WebKit
 import CocoaLumberjackSwift
 import Photos
 import Pulse
+import Support
 
 class NewGutenbergViewController: UIViewController, PostEditor, PublishingEditor {
 
@@ -685,7 +686,7 @@ extension NewGutenbergViewController: GutenbergKit.EditorViewControllerDelegate 
     }
 
     func editor(_ viewController: GutenbergKit.EditorViewController, didLogNetworkRequest request: RecordedNetworkRequest) {
-        guard FeatureFlag.pulse.enabled, let url = URL(string: request.url) else {
+        guard FeatureFlag.pulse.enabled || ExtensiveLogging.enabled, let url = URL(string: request.url) else {
             return
         }
 
