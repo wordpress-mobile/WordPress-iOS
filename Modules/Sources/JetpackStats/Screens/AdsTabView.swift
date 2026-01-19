@@ -1,8 +1,10 @@
 import SwiftUI
 
-struct AdsTabView: View {
+public struct AdsTabView: View {
 
-    var body: some View {
+    public init() {}
+
+    public var body: some View {
         ScrollView {
             VStack(spacing: 16) {
                 Text("Ads")

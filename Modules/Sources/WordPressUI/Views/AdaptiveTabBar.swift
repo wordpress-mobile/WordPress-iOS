@@ -132,7 +132,7 @@ public class AdaptiveTabBar: UIControl {
         config.title = item.localizedTitle
         config.contentInsets = NSDirectionalEdgeInsets(
             top: 8,
-            leading: index == 0 ? 20 : 6,
+            leading: 6,
             bottom: 8,
             trailing: 6
         )
@@ -178,8 +178,7 @@ public class AdaptiveTabBar: UIControl {
         let totalPreferredWidth = maxWidth * CGFloat(buttons.count)
 
         // If the items don't fit, enable scrolling
-        // Adding 2 just in case if there is some rounding error somewhere
-        let shouldFillWidth = (totalPreferredWidth + 2) <= safeAreaLayoutGuide.layoutFrame.width
+        let shouldFillWidth = totalPreferredWidth <= safeAreaLayoutGuide.layoutFrame.width
         if shouldFillWidth {
             stackView.distribution = .fillEqually
             widthConstraint.isActive = true

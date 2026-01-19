@@ -9,6 +9,7 @@ public struct StatsMainView: View {
     private let context: StatsContext
     private let router: StatsRouter
     private let showTabs: Bool
+    private let availableTabs: [StatsTab]
 
     public init(context: StatsContext, router: StatsRouter, showTabs: Bool = true) {
         self.context = context
@@ -17,6 +18,14 @@ public struct StatsMainView: View {
 
         let viewModel = StatsViewModel(context: context)
         self._viewModel = StateObject(wrappedValue: viewModel)
+
+        // Filter tabs based on site capabilities
+        self.availableTabs = StatsTab.allCases.filter { tab in
+            if tab == .ads {
+                return context.isWordAdsEnabled
+            }
+            return true
+        }
     }
 
     public var body: some View {
@@ -26,7 +35,7 @@ public struct StatsMainView: View {
                 .trackScrollOffset(isScrolled: $isTabBarBackgroundShown)
                 .toolbarBackground(.hidden, for: .navigationBar)
                 .safeAreaInset(edge: .top) {
-                    StatsTabBar(selectedTab: $selectedTab, showBackground: isTabBarBackgroundShown)
+                    StatsTabBar(selectedTab: $selectedTab, tabs: availableTabs, showBackground: isTabBarBackgroundShown)
                 }
                 .background(Constants.Colors.background)
                 .navigationTitle(Strings.stats)

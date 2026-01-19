@@ -13,12 +13,14 @@ public struct StatsContext: Sendable {
     public var preprocessAvatar: (@Sendable (URL, CGFloat) -> URL)?
     /// Analytics tracker for monitoring user interactions
     public var tracker: (any StatsTracker)?
+    /// Whether WordAds is enabled for this site
+    public let isWordAdsEnabled: Bool
 
-    public init(timeZone: TimeZone, siteID: Int, api: WordPressComRestApi) {
-        self.init(timeZone: timeZone, siteID: siteID, service: StatsService(siteID: siteID, api: api, timeZone: timeZone))
+    public init(timeZone: TimeZone, siteID: Int, api: WordPressComRestApi, isWordAdsEnabled: Bool = false) {
+        self.init(timeZone: timeZone, siteID: siteID, service: StatsService(siteID: siteID, api: api, timeZone: timeZone), isWordAdsEnabled: isWordAdsEnabled)
     }
 
-    init(timeZone: TimeZone, siteID: Int, service: (any StatsServiceProtocol)) {
+    init(timeZone: TimeZone, siteID: Int, service: (any StatsServiceProtocol), isWordAdsEnabled: Bool = false) {
         self.siteID = siteID
         self.timeZone = timeZone
         self.calendar = {
@@ -31,6 +33,7 @@ public struct StatsContext: Sendable {
         self.formatters = StatsFormatters(timeZone: timeZone)
         self.preprocessAvatar = nil
         self.tracker = nil
+        self.isWordAdsEnabled = isWordAdsEnabled
     }
 
     public static let demo: StatsContext = {

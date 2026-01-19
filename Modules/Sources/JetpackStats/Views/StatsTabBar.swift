@@ -27,13 +27,14 @@ enum StatsTab: CaseIterable {
 
 struct StatsTabBar: View {
     @Binding var selectedTab: StatsTab
+    var tabs: [StatsTab] = StatsTab.allCases
     var showBackground: Bool = true
 
     var body: some View {
         VStack(spacing: 0) {
             ScrollView(.horizontal, showsIndicators: false) {
                 HStack(spacing: 18) {
-                    ForEach(StatsTab.allCases, id: \.self) { tab in
+                    ForEach(tabs, id: \.self) { tab in
                         tabButton(for: tab)
                     }
                 }
