@@ -54,7 +54,7 @@ extension StatsContext {
             timeZone: blog.timeZone ?? .current,
             siteID: siteID,
             api: api,
-            isWordAdsEnabled: blog.isWordAdsAllowed()
+            isWordAdsEnabled: blog.isWordAdsActive()
         )
 
         // Configure avatar preprocessing using Gravatar

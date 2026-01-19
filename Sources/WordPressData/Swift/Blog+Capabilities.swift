@@ -78,6 +78,12 @@ extension Blog {
         return isUserCapableOf(.ActivateWordAds)
     }
 
+    /// Returns true if WordAds is actually active on the site
+    ///
+    @objc public func isWordAdsActive() -> Bool {
+        return getOption(name: "wordads") ?? false
+    }
+
     private func isUserCapableOf(_ capability: String) -> Bool {
         return capabilities?[capability] as? Bool ?? false
     }

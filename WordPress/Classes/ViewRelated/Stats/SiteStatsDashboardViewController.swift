@@ -72,8 +72,8 @@ public class SiteStatsDashboardViewController: UIViewController {
     private lazy var displayedTabs: [StatsTabType] = {
         var tabs: [StatsTabType] = [.traffic, .insights, .subscribers]
 
-        // Add Ads tab if the site has WordAds capability
-        if let blog = Self.currentBlog(), blog.isWordAdsAllowed() {
+        // Add Ads tab if WordAds is active on the site
+        if let blog = Self.currentBlog(), blog.isWordAdsActive() {
             tabs.append(.ads)
         }
 
