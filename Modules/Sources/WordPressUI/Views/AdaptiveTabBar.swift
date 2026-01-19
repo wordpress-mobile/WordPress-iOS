@@ -42,7 +42,7 @@ public class AdaptiveTabBar: UIControl {
         didSet { refreshTabs() }
     }
 
-    private var buttons: [UIButton] = []
+    private var buttons: [TabButton] = []
 
     private(set) var selectedIndex: Int = 0 {
         didSet {
@@ -95,6 +95,10 @@ public class AdaptiveTabBar: UIControl {
             selectionIndicator.heightAnchor.constraint(equalToConstant: 2),
             selectionIndicator.bottomAnchor.constraint(equalTo: bottomAnchor)
         ])
+
+        // Accessibility
+        shouldGroupAccessibilityChildren = true
+        accessibilityContainerType = .semanticGroup
     }
 
     private var separatorHeight: CGFloat {
@@ -124,50 +128,30 @@ public class AdaptiveTabBar: UIControl {
         setNeedsLayout()
     }
 
-    private func createTab(at index: Int) -> UIButton {
+    private func createTab(at index: Int) -> TabButton {
         let item = items[index]
-        let font = preferredFont
         let isFirstItem = index == 0
         let isLastItem = index == items.count - 1
 
-        var config = UIButton.Configuration.plain()
-        config.title = item.localizedTitle
-        config.contentInsets = NSDirectionalEdgeInsets(
+        let button = TabButton()
+        button.title = item.localizedTitle
+        button.font = preferredFont
+        button.contentInsets = NSDirectionalEdgeInsets(
             top: 8,
-            leading: isFirstItem ? 20 : 10,
+            leading: isFirstItem ? 20 : 12,
             bottom: 8,
-            trailing: isLastItem ? 20 : 10
+            trailing: isLastItem ? 20 : 12
         )
-
-        let button = UIButton(configuration: config, primaryAction: .init { [weak self] _ in
-            self?.tabButtonTapped(at: index)
-        })
-
-        button.configurationUpdateHandler = { button in
-            let isSelected = button.state.contains(.selected)
-
-            var config = button.configuration ?? .plain()
-            config.baseBackgroundColor = .clear
-            config.baseForegroundColor = isSelected ? .label : .secondaryLabel
-            config.titleTextAttributesTransformer = UIConfigurationTextAttributesTransformer { incoming in
-                var outgoing = incoming
-                outgoing.font = font.withWeight(isSelected ? .medium : .regular)
-                return outgoing
-            }
-            button.configuration = config
-        }
-
         button.accessibilityIdentifier = "\(item)"
-        button.maximumContentSizeCategory = .extraLarge
-        button.titleLabel?.numberOfLines = 1
-
-        // Measure button width when selected to prevent size changes
-        button.isSelected = true
-        let width = button.systemLayoutSizeFitting(CGSize(width: UIView.noIntrinsicMetric, height: tabBarHeight)).width
-        button.widthAnchor.constraint(greaterThanOrEqualToConstant: width + 2).isActive = true
-        button.isSelected = false
+        button.addTarget(self, action: #selector(tabButtonTapped(_:)), for: .touchUpInside)
 
         return button
+    }
+
+    @objc private func tabButtonTapped(_ sender: TabButton) {
+        guard let index = buttons.firstIndex(of: sender) else { return }
+        setSelectedIndex(index)
+        sendActions(for: .valueChanged)
     }
 
     private func updateDistribution() {
@@ -203,11 +187,6 @@ public class AdaptiveTabBar: UIControl {
     }
 
     // MARK: - Selection
-
-    private func tabButtonTapped(at index: Int) {
-        setSelectedIndex(index)
-        sendActions(for: .valueChanged)
-    }
 
     func setSelectedIndex(_ index: Int, animated: Bool = true) {
         guard items.indices.contains(index) else { return }
@@ -279,6 +258,100 @@ public class AdaptiveTabBar: UIControl {
 
     var currentlySelectedItem: (any AdaptiveTabBarItem)? {
         return items[safe: selectedIndex]
+    }
+}
+
+// MARK: - TabButton
+
+private class TabButton: UIControl {
+    private let label = UILabel()
+
+    var title: String = "" {
+        didSet {
+            label.text = title
+            accessibilityLabel = title
+            invalidateIntrinsicContentSize()
+        }
+    }
+
+    var font: UIFont = .preferredFont(forTextStyle: .body) {
+        didSet {
+            updateAppearance()
+            invalidateIntrinsicContentSize()
+        }
+    }
+
+    var contentInsets: NSDirectionalEdgeInsets = .zero {
+        didSet {
+            invalidateIntrinsicContentSize()
+        }
+    }
+
+    override var isSelected: Bool {
+        didSet {
+            updateAppearance()
+            updateAccessibility()
+        }
+    }
+
+    override init(frame: CGRect) {
+        super.init(frame: frame)
+        setup()
+    }
+
+    required init?(coder: NSCoder) {
+        super.init(coder: coder)
+        setup()
+    }
+
+    private func setup() {
+        addSubview(label)
+        label.textAlignment = .center
+        label.numberOfLines = 1
+        label.adjustsFontForContentSizeCategory = true
+        label.maximumContentSizeCategory = .extraLarge
+        label.isAccessibilityElement = false
+
+        isAccessibilityElement = true
+        accessibilityTraits = .button
+
+        updateAppearance()
+        updateAccessibility()
+    }
+
+    private func updateAppearance() {
+        label.font = font.withWeight(isSelected ? .medium : .regular)
+        label.textColor = isSelected ? .label : .secondaryLabel
+    }
+
+    private func updateAccessibility() {
+        if isSelected {
+            accessibilityTraits = [.button, .selected]
+        } else {
+            accessibilityTraits = .button
+        }
+    }
+
+    override func layoutSubviews() {
+        super.layoutSubviews()
+        label.frame = bounds.inset(by: UIEdgeInsets(
+            top: contentInsets.top,
+            left: contentInsets.leading,
+            bottom: contentInsets.bottom,
+            right: contentInsets.trailing
+        ))
+    }
+
+    override var intrinsicContentSize: CGSize {
+        // Always calculate based on medium weight (selected state)
+        let mediumFont = font.withWeight(.medium)
+        let size = title.size(withAttributes: [.font: mediumFont])
+
+        // Add small padding to prevent clipping due to rounding
+        return CGSize(
+            width: ceil(size.width) + contentInsets.leading + contentInsets.trailing + 2,
+            height: ceil(size.height) + contentInsets.top + contentInsets.bottom
+        )
     }
 }
 
