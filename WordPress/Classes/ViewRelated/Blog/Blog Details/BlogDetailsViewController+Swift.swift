@@ -86,6 +86,31 @@ extension BlogDetailsViewController {
         presentationDelegate?.presentBlogDetailsViewController(controller)
     }
 
+    public func showCustomPostTypes() {
+        Task {
+            guard let client = try? WordPressClientFactory.shared.instance(for: .init(blog: blog)),
+                    let service = await client.service
+            else {
+                return
+            }
+
+            let feature = NSLocalizedString(
+                "applicationPasswordRequired.feature.customPosts",
+                value: "Custom Post Types",
+                comment: "Feature name for managing custom post types in the app"
+            )
+            let rootView = ApplicationPasswordRequiredView(
+                blog: blog,
+                localizedFeatureName: feature,
+                presentingViewController: self) { [blog] client in
+                    CustomPostTypesView(client: client, service: service, blog: blog)
+                }
+            let controller = UIHostingController(rootView: rootView)
+            controller.navigationItem.largeTitleDisplayMode = .never
+            presentationDelegate?.presentBlogDetailsViewController(controller)
+        }
+    }
+
     public func showMediaLibrary(from source: BlogDetailsNavigationSource) {
         showMediaLibrary(from: source, showPicker: false)
     }
