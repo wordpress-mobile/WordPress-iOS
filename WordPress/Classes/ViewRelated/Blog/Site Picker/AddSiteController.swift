@@ -33,14 +33,6 @@ struct AddSiteController {
     }
 
     func showSelfHostedSiteLoginScreen() {
-        guard FeatureFlag.allowApplicationPasswords.enabled else {
-            WordPressAuthenticator.showLoginForSelfHostedSite(viewController)
-            return
-        }
-        showApplicationPasswordAuthenticationForSelfHostedSite()
-    }
-
-    private func showApplicationPasswordAuthenticationForSelfHostedSite() {
         let loginCompleted: (TaggedManagedObjectID<Blog>) -> Void = { [weak viewController] _ in
             // The `LoginWithUrlView` view is dismissed when this closure is called.
             // We also need to dismiss the `viewController` if it's presented as a modal.
