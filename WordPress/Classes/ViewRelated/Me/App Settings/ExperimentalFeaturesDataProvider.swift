@@ -11,7 +11,6 @@ class ExperimentalFeaturesDataProvider: ExperimentalFeaturesViewModel.DataProvid
         FeatureFlag.allowApplicationPasswords,
         RemoteFeatureFlag.newGutenberg,
         FeatureFlag.newSupport,
-        FeatureFlag.pulse,
     ]
 
     private let flagStore = FeatureFlagOverrideStore()
@@ -24,8 +23,7 @@ class ExperimentalFeaturesDataProvider: ExperimentalFeaturesViewModel.DataProvid
         flags.map { flag in
             WordPressUI.Feature(
                 name: flag.description,
-                key: flag.key,
-                isSuperExperimental: flag.key == FeatureFlag.pulse.key
+                key: flag.key
             )
         }
     }
@@ -56,19 +54,6 @@ class ExperimentalFeaturesDataProvider: ExperimentalFeaturesViewModel.DataProvid
                 ApplicationPasswordsInfoView()
             }
             self.presentViewController(UIHostingController(rootView: view))
-            return
-        }
-
-        if feature.key == FeatureFlag.pulse.key && newValue {
-            let alert = UIAlertController(title: Strings.pulseAlertTitle, message: Strings.pulseAlertMessage, preferredStyle: .alert)
-            alert.addAction(UIAlertAction(title: SharedStrings.Button.cancel, style: .cancel, handler: { _ in
-                self.flagStore.override(self.flag(for: feature), withValue: false)
-            }))
-            alert.addAction(UIAlertAction(title: Strings.pulseAlertConfirm, style: .default, handler: { _ in
-                fatalError("Restarting")
-            }))
-
-            self.presentViewController(alert)
             return
         }
     }

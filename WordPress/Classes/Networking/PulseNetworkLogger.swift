@@ -5,7 +5,7 @@ import Support
 public final class PulseNetworkLogger: NSObject, URLSessionTaskDelegate, URLSessionDataDelegate {
 
     private var logger: NetworkLogger? {
-        (FeatureFlag.pulse.enabled || ExtensiveLogging.enabled) ? NetworkLogger.shared : nil
+        ExtensiveLogging.enabled ? NetworkLogger.shared : nil
     }
 
     public func urlSession(_ session: URLSession, didCreateTask task: URLSessionTask) {

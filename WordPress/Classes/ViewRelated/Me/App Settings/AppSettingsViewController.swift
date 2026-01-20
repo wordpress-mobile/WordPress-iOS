@@ -595,7 +595,7 @@ private extension AppSettingsViewController {
             rows.append(designSystem)
         }
 
-        if FeatureFlag.pulse.enabled || ExtensiveLogging.enabled {
+        if ExtensiveLogging.enabled {
             rows.append(loggerRow)
         }
 
