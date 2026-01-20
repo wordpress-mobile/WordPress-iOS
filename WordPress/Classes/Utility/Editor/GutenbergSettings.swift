@@ -2,6 +2,8 @@ import Foundation
 import WordPressData
 import WordPressShared
 
+import WordPressCore
+
 /// Takes care of storing and accessing Gutenberg settings.
 ///
 class GutenbergSettings {
@@ -226,15 +228,7 @@ class GutenbergSettings {
     /// - Parameter blog: The blog to check theme styles setting for
     /// - Returns: true if theme styles are enabled (default: true), false if explicitly disabled
     func isThemeStylesEnabled(for blog: Blog) -> Bool {
-        let key = Key.themeStylesEnabled(forBlogURL: blog.url)
-
-        // If the preference has been explicitly set, return its value
-        if database.object(forKey: key) != nil {
-            return database.bool(forKey: key)
-        }
-
-        // Default to enabled for sites that haven't set a preference
-        return true
+        return getSupports(.blockEditorSettings, for: blog)
     }
 
     /// Sets whether theme styles should be enabled for the given blog.
@@ -244,6 +238,32 @@ class GutenbergSettings {
     ///   - blog: The blog to set theme styles setting for
     func setThemeStylesEnabled(_ isEnabled: Bool, for blog: Blog) {
         database.set(isEnabled, forKey: Key.themeStylesEnabled(forBlogURL: blog.url))
+    }
+
+    /// Sets whether the given API feature is available for the given blog
+    ///
+    /// - Parameters:
+    ///   - isEnabled: Whether to enable theme styles
+    ///   - blog: The blog to set theme styles setting for
+    @discardableResult
+    func setSupports(_ feature: WordPressClient.Feature, _ newValue: Bool, for blog: Blog) -> Self {
+        let key = "org.wordpress.gutenberg-supports-" + feature.stringValue + "-" + blog.locallyUniqueId
+        database.set(newValue, forKey: key)
+        return self
+    }
+
+    /// Returns whether the given API feature is available for the given blog.
+    ///
+    /// - Parameter blog: The blog to check the given API feature for
+    /// - Returns: true if the feature is available, false if the server hasn't been queried for support yet, or if the server doesn't support it.
+    func getSupports(_ feature: WordPressClient.Feature, for blog: Blog) -> Bool {
+        let key = "org.wordpress.gutenberg-supports-" + feature.stringValue + "-" + blog.locallyUniqueId
+
+        if database.object(forKey: key) != nil {
+            return database.bool(forKey: key)
+        }
+
+        return false
     }
 }
 
@@ -272,6 +292,12 @@ public class GutenbergSettingsBridge: NSObject {
     @objc(setThemeStylesEnabled:forBlog:)
     public static func setThemeStylesEnabled(_ isEnabled: Bool, for blog: Blog) {
         GutenbergSettings().setThemeStylesEnabled(isEnabled, for: blog)
+    }
+
+    @objc(isThemeStylesSupportedForBlog:)
+    public static func canEnableThemeStyleSetting(for blog: Blog) -> Bool {
+        let settings = GutenbergSettings()
+        return settings.getSupports(.blockEditorSettings, for: blog) && settings.getSupports(.blockTheme, for: blog)
     }
 }
 

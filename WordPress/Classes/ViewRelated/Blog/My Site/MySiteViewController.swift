@@ -379,6 +379,12 @@ final class MySiteViewController: UIViewController, UIScrollViewDelegate, NoSite
             showDashboard(for: blog)
         }
 
+        if RemoteFeatureFlag.newGutenberg.enabled() {
+            warmUpEditorIfNeeded(for: blog)
+
+            // Refresh editor capabilities
+            EditorDependencyManager.shared.fetchEditorCapabilities(for: blog)
+        }
     }
 
     @objc
@@ -403,6 +409,10 @@ final class MySiteViewController: UIViewController, UIScrollViewDelegate, NoSite
         guard let blog else {
             return
         }
+
+        // Refresh editor capabilities
+        EditorDependencyManager.shared.fetchEditorCapabilities(for: blog)
+
         switch currentSection {
         case .siteMenu:
 

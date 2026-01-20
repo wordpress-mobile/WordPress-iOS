@@ -1,3 +1,4 @@
+import WordPressCore
 import WordPressShared
 import XCTest
 @testable import WordPress
@@ -291,6 +292,68 @@ class GutenbergSettingsTests: CoreDataTestCase {
             let perSiteEnabledKey = GutenbergSettings.Key.enabledOnce(forBlogURL: blog.url)
             database.set(true, forKey: perSiteEnabledKey)
         }
+    }
+
+    // MARK: - Feature Support Tests
+
+    func testGetSupportsFalseByDefault() {
+        XCTAssertFalse(settings.getSupports(.blockTheme, for: blog))
+        XCTAssertFalse(settings.getSupports(.blockEditorSettings, for: blog))
+        XCTAssertFalse(settings.getSupports(.plugins, for: blog))
+    }
+
+    func testSetAndGetSupports() {
+        settings.setSupports(.blockTheme, true, for: blog)
+        XCTAssertTrue(settings.getSupports(.blockTheme, for: blog))
+
+        settings.setSupports(.blockTheme, false, for: blog)
+        XCTAssertFalse(settings.getSupports(.blockTheme, for: blog))
+    }
+
+    func testSupportsFeaturesStoredSeparately() {
+        settings.setSupports(.blockTheme, true, for: blog)
+        settings.setSupports(.blockEditorSettings, false, for: blog)
+
+        XCTAssertTrue(settings.getSupports(.blockTheme, for: blog))
+        XCTAssertFalse(settings.getSupports(.blockEditorSettings, for: blog))
+    }
+
+    func testSupportsSeparatePerBlog() {
+        let blog2 = newTestBlog()
+
+        settings.setSupports(.blockTheme, true, for: blog)
+        settings.setSupports(.blockTheme, false, for: blog2)
+
+        XCTAssertTrue(settings.getSupports(.blockTheme, for: blog))
+        XCTAssertFalse(settings.getSupports(.blockTheme, for: blog2))
+    }
+
+    func testCanEnableThemeStyleSettingRequiresBothFeatures() {
+        // Helper that mirrors GutenbergSettingsBridge.canEnableThemeStyleSetting logic
+        func canEnableThemeStyleSetting() -> Bool {
+            settings.getSupports(.blockEditorSettings, for: blog) && settings.getSupports(.blockTheme, for: blog)
+        }
+
+        // Neither supported
+        XCTAssertFalse(canEnableThemeStyleSetting())
+
+        // Only blockTheme
+        settings.setSupports(.blockTheme, true, for: blog)
+        XCTAssertFalse(canEnableThemeStyleSetting())
+
+        // Both supported
+        settings.setSupports(.blockEditorSettings, true, for: blog)
+        XCTAssertTrue(canEnableThemeStyleSetting())
+    }
+
+    func testIsThemeStylesEnabledDefaultsToFalse() {
+        // Before capabilities are fetched, should return false
+        XCTAssertFalse(settings.isThemeStylesEnabled(for: blog))
+    }
+
+    func testIsThemeStylesEnabledReflectsBlockEditorSettingsSupport() {
+        settings.setSupports(.blockEditorSettings, true, for: blog)
+        XCTAssertTrue(settings.isThemeStylesEnabled(for: blog))
     }
 
     // mark - Phase 2
