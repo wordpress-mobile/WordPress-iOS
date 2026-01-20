@@ -390,8 +390,8 @@ enum Localization {
     )
     static let extensiveLoggingAlertMessage = NSLocalizedString(
         "com.jetpack.support.extensiveLoggingAlertMessage",
-        value: "Extensive logging will be enabled until you turn it off manually.",
-        comment: "Alert message explaining extensive logging will be enabled until manually disabled"
+        value: "This helps with troubleshooting but may impact performance. You can turn it off anytime.",
+        comment: "Alert message explaining extensive logging helps with troubleshooting but may impact performance"
     )
     static let enable = NSLocalizedString(
         "com.jetpack.support.extensiveLogging.enable",

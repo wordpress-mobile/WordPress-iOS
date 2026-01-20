@@ -7,7 +7,6 @@ import CocoaLumberjackSwift
 import DesignSystem
 import Logging
 import Pulse
-import PulseLogHandler
 import Reachability
 import SFHFKeychainUtils
 import SVProgressHUD
@@ -84,10 +83,10 @@ public class WordPressAppDelegate: UIResponder, UIApplicationDelegate {
         DesignSystem.FontManager.registerCustomFonts()
         AssertionLoggerDependencyContainer.logger = AssertionLogger()
         UITestConfigurator.prepareApplicationForUITests(in: application, window: window)
-        if ExtensiveLogging.enabled {
-            wpkURLSessionNotifyingDelegate = PulseNetworkLogger()
-            LoggingSystem.bootstrap(PersistentLogHandler.init)
-        }
+
+        // The following extensive logging configuration detects if extensive logging is enabled internally.
+        wpkURLSessionNotifyingDelegate = PulseNetworkLogger()
+        LoggingSystem.bootstrap(ExtensiveLogger.init)
 
         AppAppearance.overrideAppearance()
         MemoryCache.shared.register()

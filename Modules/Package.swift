@@ -64,7 +64,6 @@ let package = Package(
         ),
         .package(url: "https://github.com/wordpress-mobile/AztecEditor-iOS", from: "1.20.0"),
         .package(url: "https://github.com/kean/Pulse", from: "5.0.0"),
-        .package(url: "https://github.com/kean/PulseLogHandler", from: "5.0.0"),
     ],
     targets: XcodeSupport.targets + [
         .target(name: "AsyncImageKit", dependencies: [
@@ -376,7 +375,6 @@ enum XcodeSupport {
             .product(name: "NSURL-IDN", package: "NSURL-IDN"),
             .product(name: "Pulse", package: "Pulse"),
             .product(name: "PulseUI", package: "Pulse"),
-            .product(name: "PulseLogHandler", package: "PulseLogHandler"),
             .product(name: "Reachability", package: "Reachability"),
             .product(name: "Starscream", package: "Starscream"),
             .product(name: "SVProgressHUD", package: "SVProgressHUD"),

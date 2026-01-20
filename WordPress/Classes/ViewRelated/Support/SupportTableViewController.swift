@@ -392,7 +392,7 @@ private extension SupportTableViewController {
                 alert.addAction(UIAlertAction(title: SharedStrings.Button.cancel, style: .cancel) { _ in
                     self.reloadViewModel()
                 })
-                alert.addAction(UIAlertAction(title: LocalizedText.enableTemporarily, style: .default) { _ in
+                alert.addAction(UIAlertAction(title: LocalizedText.enable, style: .default) { _ in
                     ExtensiveLogging.enabled = true
                     self.reloadViewModel()
                 })
@@ -576,7 +576,7 @@ private extension SupportTableViewController {
         static let extensiveLogging = NSLocalizedString("support.row.extensiveLogging.title", value: "Extensive Logging", comment: "Option in Support view to enable extensive logging.")
         static let extensiveLogs = NSLocalizedString("support.row.extensiveLogs.title", value: "Extensive Logs", comment: "Option in Support view to access extensive logs.")
         static let extensiveLoggingAlertTitle = NSLocalizedString("support.alert.extensiveLogging.title", value: "Enable Extensive Logging?", comment: "Alert title when confirming extensive logging activation.")
-        static let extensiveLoggingAlertMessage = NSLocalizedString("support.alert.extensiveLogging.message", value: "Extensive logging will be enabled until you turn it off manually.", comment: "Alert message explaining extensive logging will be enabled until manually disabled.")
+        static let extensiveLoggingAlertMessage = NSLocalizedString("support.alert.extensiveLogging.message", value: "This helps with troubleshooting but may impact performance. You can turn it off anytime.", comment: "Alert message explaining extensive logging helps with troubleshooting but may impact performance.")
         static let enable = NSLocalizedString("support.alert.enable", value: "Enable", comment: "Button title to enable extensive logging.")
     }
 

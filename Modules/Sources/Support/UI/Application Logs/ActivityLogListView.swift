@@ -80,7 +80,7 @@ public struct ActivityLogListView: View {
         })
         .alert(Localization.extensiveLoggingAlertTitle, isPresented: $showExtensiveLoggingAlert) {
             Button(Localization.cancel, role: .cancel) {}
-            Button(Localization.enableTemporarily) {
+            Button(Localization.enable) {
                 ExtensiveLogging.enabled = true
                 extensiveLoggingEnabled = true
             }
