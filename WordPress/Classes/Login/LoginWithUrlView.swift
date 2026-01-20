@@ -73,8 +73,19 @@ struct LoginWithUrlView: View {
     }
 
     private func siteAdddressTextField() -> some View {
-        TextField(text: $urlField) {
-            Text("example.com")
+        HStack {
+            TextField(text: $urlField) {
+                Text("example.com")
+            }
+
+            if !urlField.isEmpty {
+                Button {
+                    urlField = ""
+                } label: {
+                    Image(systemName: "xmark.circle.fill")
+                        .foregroundStyle(.gray)
+                }
+            }
         }
         .padding(.top)
         .padding(.bottom, 8)
@@ -84,6 +95,7 @@ struct LoginWithUrlView: View {
         .textContentType(.URL)
         .keyboardType(.URL)
         .textInputAutocapitalization(.never)
+        .autocorrectionDisabled()
         .onSubmit { self.loginTrigger += 1 }
         .disabled(isLoading)
     }
