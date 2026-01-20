@@ -23,9 +23,9 @@ struct AppStyleGuide {
     )
 
     static let jetpack = AppStyleGuide(
-        navigationBarStandardFont: WPStyleGuide.fontForTextStyle(.headline, fontWeight: .semibold),
-        navigationBarLargeFont: WPStyleGuide.fontForTextStyle(.largeTitle, fontWeight: .bold),
-        epilogueTitleFont: WPStyleGuide.fontForTextStyle(.largeTitle, fontWeight: .semibold)
+        navigationBarStandardFont: UIFont.preferredFont(forTextStyle: .headline).withWeight(.semibold),
+        navigationBarLargeFont: UIFont.make(.recoleta, textStyle: .largeTitle, weight: .medium),
+        epilogueTitleFont: UIFont.make(.recoleta, textStyle: .largeTitle, weight: .semibold)
     )
 
     static let reader = AppStyleGuide(
