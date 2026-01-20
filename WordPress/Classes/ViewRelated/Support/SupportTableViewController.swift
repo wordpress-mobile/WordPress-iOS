@@ -576,8 +576,8 @@ private extension SupportTableViewController {
         static let extensiveLogging = NSLocalizedString("support.row.extensiveLogging.title", value: "Extensive Logging", comment: "Option in Support view to enable extensive logging.")
         static let extensiveLogs = NSLocalizedString("support.row.extensiveLogs.title", value: "Extensive Logs", comment: "Option in Support view to access extensive logs.")
         static let extensiveLoggingAlertTitle = NSLocalizedString("support.alert.extensiveLogging.title", value: "Enable Extensive Logging?", comment: "Alert title when confirming extensive logging activation.")
-        static let extensiveLoggingAlertMessage = NSLocalizedString("support.alert.extensiveLogging.message", value: "Extensive logging will be enabled for 24 hours and then automatically turn off.", comment: "Alert message explaining extensive logging will be enabled for 24 hours.")
-        static let enableTemporarily = NSLocalizedString("support.alert.enableTemporarily", value: "Enable Temporarily", comment: "Button title to enable extensive logging temporarily.")
+        static let extensiveLoggingAlertMessage = NSLocalizedString("support.alert.extensiveLogging.message", value: "Extensive logging will be enabled until you turn it off manually.", comment: "Alert message explaining extensive logging will be enabled until manually disabled.")
+        static let enable = NSLocalizedString("support.alert.enable", value: "Enable", comment: "Button title to enable extensive logging.")
     }
 
     // MARK: - User Defaults Keys

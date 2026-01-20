@@ -390,13 +390,13 @@ enum Localization {
     )
     static let extensiveLoggingAlertMessage = NSLocalizedString(
         "com.jetpack.support.extensiveLoggingAlertMessage",
-        value: "Extensive logging will be enabled for 24 hours and then automatically turn off.",
-        comment: "Alert message explaining extensive logging will be enabled for 24 hours"
+        value: "Extensive logging will be enabled until you turn it off manually.",
+        comment: "Alert message explaining extensive logging will be enabled until manually disabled"
     )
-    static let enableTemporarily = NSLocalizedString(
-        "com.jetpack.support.enableTemporarily",
-        value: "Enable Temporarily",
-        comment: "Button title to enable extensive logging temporarily"
+    static let enable = NSLocalizedString(
+        "com.jetpack.support.extensiveLogging.enable",
+        value: "Enable",
+        comment: "Button title to enable extensive logging"
     )
 
     // MARK: - ActivityLogSharingView.swift

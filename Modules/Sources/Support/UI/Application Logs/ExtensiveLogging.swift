@@ -2,22 +2,18 @@ import SwiftUI
 import PulseUI
 
 public enum ExtensiveLogging {
-    private static let expiryDateKey = "extensive_logging_expiry_date"
+    private static let enabledKey = "extensive_logging_enabled"
 
     public static var enabled: Bool {
         get {
-            guard let expiryDate = UserDefaults.standard.object(forKey: expiryDateKey) as? Date else {
-                return false
-            }
-            return expiryDate > Date()
+            UserDefaults.standard.bool(forKey: enabledKey)
         }
         set {
             if newValue {
                 UserDefaults.standard.set(false, forKey: "pulse-disable-support-prompts")
-                let expiryDate = Date().addingTimeInterval(24 * 60 * 60)
-                UserDefaults.standard.set(expiryDate, forKey: expiryDateKey)
+                UserDefaults.standard.set(true, forKey: enabledKey)
             } else {
-                UserDefaults.standard.removeObject(forKey: expiryDateKey)
+                UserDefaults.standard.removeObject(forKey: enabledKey)
             }
         }
     }
