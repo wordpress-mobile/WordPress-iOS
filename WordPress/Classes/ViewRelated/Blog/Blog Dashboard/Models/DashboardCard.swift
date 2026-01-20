@@ -1,5 +1,6 @@
 import Foundation
 import WordPressData
+import Support
 
 /// Describes all the available cards.
 ///
@@ -9,6 +10,7 @@ import WordPressData
 /// Remote cards should be separately added to RemoteDashboardCard
 enum DashboardCard: String, CaseIterable, Sendable {
     case dynamic
+    case extensionLogging
     case jetpackInstall
     case bloganuaryNudge = "bloganuary_nudge"
     case prompts
@@ -35,6 +37,8 @@ enum DashboardCard: String, CaseIterable, Sendable {
         switch self {
         case .dynamic:
             return BlogDashboardDynamicCardCell.self
+        case .extensionLogging:
+            return DashboardExtensionLoggingCardCell.self
         case .jetpackInstall:
             return DashboardJetpackInstallCardCell.self
         case .draftPosts:
@@ -110,6 +114,8 @@ enum DashboardCard: String, CaseIterable, Sendable {
             return DashboardBloganuaryCardCell.shouldShowCard(for: blog)
         case .prompts:
             return DashboardPromptsCardCell.shouldShowCard(for: blog)
+        case .extensionLogging:
+            return ExtensiveLogging.enabled
         case .ghost:
             return blog.dashboardState.isFirstLoad
         case .failure:

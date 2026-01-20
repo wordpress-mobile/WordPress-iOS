@@ -164,8 +164,12 @@ final class BlogDashboardViewModel {
     }
 
     @objc func loadCardsFromCache() {
+        loadCardsFromCacheWithAnimation(animated: false)
+    }
+
+    @nonobjc func loadCardsFromCacheWithAnimation(animated: Bool) {
         let cards = service.fetchLocal(blog: blog)
-        updateCurrentCards(cards: cards)
+        updateCurrentCards(cards: cards, animated: animated)
     }
 }
 
@@ -180,10 +184,10 @@ private extension BlogDashboardViewModel {
         NotificationCenter.default.addObserver(self, selector: #selector(loadCardsFromCache), name: .domainsServiceDomainsRefreshed, object: nil)
     }
 
-    func updateCurrentCards(cards: [DashboardCardModel]) {
+    func updateCurrentCards(cards: [DashboardCardModel], animated: Bool = false) {
         currentCards = cards
         syncPosts(for: cards)
-        applySnapshot(for: cards)
+        applySnapshot(for: cards, animated: animated)
     }
 
     func syncPosts(for cards: [DashboardCardModel]) {
@@ -198,9 +202,9 @@ private extension BlogDashboardViewModel {
         }
     }
 
-    func applySnapshot(for cards: [DashboardCardModel]) {
+    func applySnapshot(for cards: [DashboardCardModel], animated: Bool = false) {
         let snapshot = createSnapshot(from: cards)
-        dataSource?.apply(snapshot, animatingDifferences: false)
+        dataSource?.apply(snapshot, animatingDifferences: animated)
     }
 
     func createSnapshot(from cards: [DashboardCardModel]) -> DashboardSnapshot {
