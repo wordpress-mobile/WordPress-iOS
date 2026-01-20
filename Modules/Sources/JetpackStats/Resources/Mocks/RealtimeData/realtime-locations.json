@@ -1,6 +1,6 @@
 [
   {
-    "country": "United States",
+    "name": "United States",
     "countryCode": "US",
     "flag": "🇺🇸",
     "metrics": {
@@ -8,7 +8,7 @@
     }
   },
   {
-    "country": "United Kingdom",
+    "name": "United Kingdom",
     "countryCode": "GB",
     "flag": "🇬🇧",
     "metrics": {
@@ -16,7 +16,7 @@
     }
   },
   {
-    "country": "Canada",
+    "name": "Canada",
     "countryCode": "CA",
     "flag": "🇨🇦",
     "metrics": {
@@ -24,7 +24,7 @@
     }
   },
   {
-    "country": "Germany",
+    "name": "Germany",
     "countryCode": "DE",
     "flag": "🇩🇪",
     "metrics": {
@@ -32,7 +32,7 @@
     }
   },
   {
-    "country": "Australia",
+    "name": "Australia",
     "countryCode": "AU",
     "flag": "🇦🇺",
     "metrics": {
@@ -40,7 +40,7 @@
     }
   },
   {
-    "country": "France",
+    "name": "France",
     "countryCode": "FR",
     "flag": "🇫🇷",
     "metrics": {
@@ -48,7 +48,7 @@
     }
   },
   {
-    "country": "Japan",
+    "name": "Japan",
     "countryCode": "JP",
     "flag": "🇯🇵",
     "metrics": {
@@ -56,7 +56,7 @@
     }
   },
   {
-    "country": "Netherlands",
+    "name": "Netherlands",
     "countryCode": "NL",
     "flag": "🇳🇱",
     "metrics": {

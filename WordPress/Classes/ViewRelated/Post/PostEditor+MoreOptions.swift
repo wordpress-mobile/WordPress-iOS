@@ -31,7 +31,7 @@ extension PostEditor {
     }
 
     private func savePostBeforePreview(completion: @escaping ((String?, Error?) -> Void)) {
-        guard !post.changes.isEmpty || post.original().isNewDraft else {
+        guard !post.changes.isEmpty || post.getOriginal().isNewDraft else {
             completion(nil, nil)
             return
         }
@@ -43,7 +43,7 @@ extension PostEditor {
                     SVProgressHUD.setDefaultMaskType(.clear)
                     SVProgressHUD.show(withStatus: Strings.savingDraft)
 
-                    let original = post.original()
+                    let original = post.getOriginal()
                     try await coordinator.save(original)
                     self.post = original
                     self.createRevisionOfPost()

@@ -14,7 +14,7 @@ final class ReaderCellConfiguration {
             return
         }
         let post = posts[indexPath.row]
-        cell.setSiteName(post.blogName)
+        cell.setSiteName(post.blogName ?? "-")
     }
 
     func configureGapMarker(_ cell: ReaderGapMarkerCell, filling: Bool) {

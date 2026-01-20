@@ -70,16 +70,6 @@ public class JetpackRemoteInstallTableViewCell: UITableViewCell {
 
 extension BlogDetailsViewController: JetpackRemoteInstallDelegate {
 
-    @objc public func jetpackInstallSectionViewModel() -> BlogDetailsSection {
-        let row = BlogDetailsRow()
-        row.callback = {}
-        let section = BlogDetailsSection(title: nil,
-                                         rows: [row],
-                                         footerTitle: nil,
-                                         category: .jetpackInstallCard)
-        return section
-    }
-
     func jetpackRemoteInstallCompleted() {
         dismiss(animated: true)
     }

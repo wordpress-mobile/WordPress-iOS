@@ -10,7 +10,6 @@ class ReaderSiteSearchServiceRemoteTests: RemoteTestCase, RESTTestable {
     let performSearchSuccessNoIconFilename = "reader-site-search-success-no-icon.json"
     let performSearchSuccessNoDataFilename = "reader-site-search-success-no-data.json"
     let performSearchSuccessHasMoreFilename = "reader-site-search-success-hasmore.json"
-    let performSearchFailureFilename = "reader-site-search-failure.json"
     let performSearchBlogIDFallbackFilename = "reader-site-search-blog-id-fallback.json"
     let performSearchFailsWithNoBlogOrFeedIDFilename = "reader-site-search-no-blog-or-feed-id.json"
 
@@ -72,8 +71,8 @@ class ReaderSiteSearchServiceRemoteTests: RemoteTestCase, RESTTestable {
                                 XCTAssertEqual(feed.title, "The Daily Post")
                                 XCTAssertEqual(feed.feedID, "27030")
                                 XCTAssertEqual(feed.url, URL(string: "https://dailypost.wordpress.com")!)
-                                XCTAssertEqual(feed.feedDescription, "The Art and Craft of Blogging")
-                                XCTAssertNil(feed.blavatarURL)
+                                XCTAssertEqual(feed.description, "The Art and Craft of Blogging")
+                                XCTAssertNil(feed.iconURL)
 
                                 expect.fulfill()
         }, failure: { _ in
@@ -102,8 +101,8 @@ class ReaderSiteSearchServiceRemoteTests: RemoteTestCase, RESTTestable {
                                 XCTAssertEqual(feed.title, "The Daily Post")
                                 XCTAssertEqual(feed.feedID, "27030")
                                 XCTAssertEqual(feed.url, URL(string: "https://dailypost.wordpress.com")!)
-                                XCTAssertNil(feed.blavatarURL)
-                                XCTAssertNil(feed.feedDescription)
+                                XCTAssertNil(feed.iconURL)
+                                XCTAssertNil(feed.description)
 
                                 expect.fulfill()
 
@@ -148,27 +147,6 @@ class ReaderSiteSearchServiceRemoteTests: RemoteTestCase, RESTTestable {
         waitForExpectations(timeout: timeout, handler: nil)
     }
 
-    func testPerformSearchFailure() {
-        let expect = expectation(description: "Perform Reader site search fails if no URL is present")
-
-        stubRemoteResponse(performSearchEndpoint, filename: performSearchFailureFilename, contentType: .ApplicationJSON)
-        remote.performSearch("discover",
-                             count: 10, success: { (_, _, _) in
-                                XCTFail("This callback shouldn't get called")
-                                expect.fulfill()
-        }, failure: { error in
-            typealias ResponseError = ReaderSiteSearchServiceRemote.ResponseError
-            guard case ResponseError.decodingFailure? = error as? ResponseError else {
-                XCTFail("Expected a decodingFailure error")
-                expect.fulfill()
-                return
-            }
-
-            expect.fulfill()
-        })
-        waitForExpectations(timeout: timeout, handler: nil)
-    }
-
     func testPerformSearchBlogIDFallback() {
         let expect = expectation(description: "Perform Reader site search falls back to parsing blog ID if no feed ID is present")
 
@@ -186,10 +164,10 @@ class ReaderSiteSearchServiceRemoteTests: RemoteTestCase, RESTTestable {
                                 }
 
                                 XCTAssertEqual(feed.title, "The Daily Post")
-                                XCTAssertNil(feed.feedID)
+                                XCTAssertEqual(feed.feedID, "27030")
                                 XCTAssertEqual(feed.blogID, "489937")
                                 XCTAssertEqual(feed.url, URL(string: "https://dailypost.wordpress.com")!)
-                                XCTAssertEqual(feed.feedDescription, "The Art and Craft of Blogging")
+                                XCTAssertEqual(feed.description, "The Art and Craft of Blogging")
 
                                 expect.fulfill()
         }, failure: { _ in
@@ -218,7 +196,7 @@ class ReaderSiteSearchServiceRemoteTests: RemoteTestCase, RESTTestable {
                                 XCTAssertEqual(feed.title, "Discover")
                                 XCTAssertEqual(feed.feedID, "41325786")
                                 XCTAssertEqual(feed.url, URL(string: "https://discover.wordpress.com")!)
-                                XCTAssertEqual(feed.feedDescription, "A daily selection of the best content published on WordPress, collected for you by humans who love to read.")
+                                XCTAssertEqual(feed.description, "A daily selection of the best content published on WordPress, collected for you by humans who love to read.")
 
                                 expect.fulfill()
         }, failure: { _ in

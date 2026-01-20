@@ -8,7 +8,7 @@ struct CountryTooltip: View {
 
     private var countryName: String {
         if let location {
-            return location.country
+            return location.name
         } else {
             // Use native API to get country name from code
             let locale = Locale.current
@@ -125,13 +125,13 @@ private struct CountryTooltipRow: View {
         CountryTooltip(
             countryCode: "US",
             location: TopListItem.Location(
-                country: "United States",
+                name: "United States",
                 flag: "🇺🇸",
                 countryCode: "US",
                 metrics: SiteMetricsSet(views: 15000)
             ),
             previousLocation: TopListItem.Location(
-                country: "United States",
+                name: "United States",
                 flag: "🇺🇸",
                 countryCode: "US",
                 metrics: SiteMetricsSet(views: 12000)

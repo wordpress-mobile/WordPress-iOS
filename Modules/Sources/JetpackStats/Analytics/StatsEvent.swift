@@ -57,6 +57,18 @@ public enum StatsEvent {
     ///   - "end_date": End date in ISO format
     case customDateRangeSelected
 
+    /// Date navigation button tapped (next/previous period)
+    /// - Parameters:
+    ///   - "direction": Direction of navigation ("next" or "previous")
+    ///   - "current_period_type": Type of current period (preset name or "custom")
+    case dateNavigationButtonTapped
+
+    /// Comparison period changed
+    /// - Parameters:
+    ///   - "from_period": Previous comparison period ("previous_period" or "previous_year")
+    ///   - "to_period": New comparison period
+    case comparisonPeriodChanged
+
     // MARK: - Card Events
 
     /// Card shown on screen
@@ -75,6 +87,14 @@ public enum StatsEvent {
     ///   - "card_type": Type of card
     case cardRemoved
 
+    /// Card moved to a new position
+    /// - Parameters:
+    ///   - "card_type": Type of card
+    ///   - "action": Move action ("move_up", "move_down", "move_to_top", "move_to_bottom")
+    ///   - "from_index": Original position index
+    ///   - "to_index": New position index
+    case cardMoved
+
     // MARK: - Chart Events
 
     /// Chart type changed
@@ -82,6 +102,12 @@ public enum StatsEvent {
     ///   - "from_type": Previous chart type (e.g., "line", "bar")
     ///   - "to_type": New chart type
     case chartTypeChanged
+
+    /// Chart granularity changed
+    /// - Parameters:
+    ///   - "from": Previous granularity (e.g., "day", "week", "automatic")
+    ///   - "to": New granularity
+    case chartGranularityChanged
 
     /// Chart metric selected
     /// - Parameters:
@@ -95,6 +121,12 @@ public enum StatsEvent {
     ///   - "value": The value of the selected bar
     case chartBarSelected
 
+    /// Raw data view opened for a chart
+    /// - Parameters:
+    ///   - "card_type": Type of card showing the data
+    ///   - "metric": The metric being viewed
+    case rawDataViewed
+
     // MARK: - Today
 
     case todayCardTapped
@@ -106,6 +138,12 @@ public enum StatsEvent {
     ///   - "item_type": Type of item (e.g., "posts_and_pages", "authors", "locations", "referrers")
     ///   - "metric": The metric being sorted by
     case topListItemTapped
+
+    /// Location level changed in location drill-down
+    /// - Parameters:
+    ///   - "from_level": Previous level ("country", "region", or "city")
+    ///   - "to_level": New level
+    case locationLevelChanged
 
     // MARK: - Navigation Events
 
@@ -197,6 +235,42 @@ extension SiteMetric {
         case .timeOnSite: "time_on_site"
         case .bounceRate: "bounce_rate"
         case .downloads: "downloads"
+        }
+    }
+}
+
+extension DateRangeGranularity {
+    /// Analytics tracking name for the granularity
+    var analyticsName: String {
+        switch self {
+        case .hour: "hour"
+        case .day: "day"
+        case .week: "week"
+        case .month: "month"
+        case .year: "year"
+        }
+    }
+}
+
+extension DateRangeComparisonPeriod {
+    /// Analytics tracking name for the comparison period
+    var analyticsName: String {
+        switch self {
+        case .precedingPeriod: "previous_period"
+        case .samePeriodLastYear: "previous_year"
+        case .off: "off"
+        }
+    }
+}
+
+extension MoveDirection {
+    /// Analytics tracking name for the move direction
+    var analyticsName: String {
+        switch self {
+        case .up: "move_up"
+        case .down: "move_down"
+        case .top: "move_to_top"
+        case .bottom: "move_to_bottom"
         }
     }
 }

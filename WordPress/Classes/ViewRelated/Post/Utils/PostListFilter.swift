@@ -13,7 +13,6 @@ import WordPressData
 
     @objc var hasMore: Bool
     var filterType: Status
-    @objc var oldestPostDate: Date?
     @objc var predicateForFetchRequest: NSPredicate
     /// The statuses used when synchronizing the tab
     var statuses: [BasePost.Status]

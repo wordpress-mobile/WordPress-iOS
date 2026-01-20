@@ -1,6 +1,7 @@
 import Foundation
 import WordPressData
 import WordPressUI
+import SwiftSoup
 
 extension ReaderPost {
 
@@ -28,7 +29,7 @@ extension ReaderPost {
     /// - Parameter id: The comment id
     /// - Returns: The `Comment` object associated with the given id, or `nil` if none is found.
     @objc
-    public func comment(withID id: NSNumber) -> Comment? {
+    public func comment(withID id: NSNumber) -> WordPressData.Comment? {
         comment(withID: id.int32Value)
     }
 
@@ -36,8 +37,8 @@ extension ReaderPost {
     ///
     /// - Parameter id: The comment id
     /// - Returns: The `Comment` object associated with the given id, or `nil` if none is found.
-    func comment(withID id: Int32) -> Comment? {
-        return (comments as? Set<Comment>)?.first { $0.commentID == id }
+    func comment(withID id: Int32) -> WordPressData.Comment? {
+        comments?.first { $0.commentID == id }
     }
 
     /// Get a cached site's ReaderPost with the specified ID.
@@ -62,4 +63,13 @@ extension ReaderPost {
         try? lookup(withID: postID, forSiteWithID: siteID, in: context)
     }
 
+    func makeExceptHTML() -> String {
+        """
+        <html>
+        <body>
+        <p>\(SwiftSoup.Entities.escape(summary ?? ""))</p>
+        </body>
+        </html>
+        """
+    }
 }

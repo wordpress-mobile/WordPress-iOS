@@ -26,17 +26,6 @@ class AztecPostViewController: UIViewController, PostEditor {
     ///
     var onClose: (() -> ())?
 
-    /// Verification Prompt Helper
-    ///
-    /// - Returns: `nil` when there's no need for showing the verification prompt.
-    var verificationPromptHelper: VerificationPromptHelper? {
-        return aztecVerificationPromptHelper
-    }
-
-    fileprivate lazy var aztecVerificationPromptHelper: AztecVerificationPromptHelper? = {
-        return AztecVerificationPromptHelper(account: self.post.blog.account)
-    }()
-
     var postTitle: String {
         get {
             return titleTextField.text
@@ -553,7 +542,6 @@ class AztecPostViewController: UIViewController, PostEditor {
         super.viewWillAppear(animated)
 
         startListeningToNotifications()
-        verificationPromptHelper?.updateVerificationStatus()
     }
 
     override func viewDidAppear(_ animated: Bool) {
@@ -1143,7 +1131,7 @@ private extension AztecPostViewController {
             alert.title = textCounterTitle
         }
 
-        if post.original().isStatus(in: [.draft, .pending]) && editorHasChanges {
+        if post.getOriginal().isStatus(in: [.draft, .pending]) && editorHasChanges {
             alert.addDefaultActionWithTitle(MoreSheetAlert.saveDraft) { _ in
                 self.buttonSaveDraftTapped()
             }

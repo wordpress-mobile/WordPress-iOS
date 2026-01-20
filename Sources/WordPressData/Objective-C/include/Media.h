@@ -1,25 +1,7 @@
 #import <CoreData/CoreData.h>
 #import <WordPressData/Blog.h>
-#import <WordPressData/AbstractPost.h>
 
 NS_ASSUME_NONNULL_BEGIN
-
-typedef NS_ENUM(NSUInteger, MediaRemoteStatus) {
-    MediaRemoteStatusSync,          /* Post synced. */
-    MediaRemoteStatusFailed,        /* Upload failed. */
-    MediaRemoteStatusLocal,         /* Only local version. */
-    MediaRemoteStatusPushing,       /* Uploading post. */
-    MediaRemoteStatusProcessing,    /* Intermediate status before uploading. */
-    MediaRemoteStatusStub,          /* We only have the mediaID information from the server */
-};
-
-typedef NS_ENUM(NSUInteger, MediaType) {
-    MediaTypeImage,
-    MediaTypeVideo,
-    MediaTypeDocument,
-    MediaTypePowerpoint,
-    MediaTypeAudio
-};
 
 @interface Media :  NSManagedObject
 
@@ -60,9 +42,6 @@ typedef NS_ENUM(NSUInteger, MediaType) {
 
 // Helper properties
 
-@property (nonatomic, assign) MediaType mediaType;
-@property (nonatomic, assign) MediaRemoteStatus remoteStatus;
-
 /**
  Local file URL for the Media's asset. e.g. an image, video, gif or other file.
  */
@@ -80,8 +59,6 @@ typedef NS_ENUM(NSUInteger, MediaType) {
 @property (nonatomic, readonly) BOOL hasRemote;
 
 // Helper methods
-
-+ (NSString *)stringFromMediaType:(MediaType)mediaType;
 
 - (nullable NSString *)fileExtension;
 

@@ -1,6 +1,6 @@
 /* Translation-Revision-Date: 2024-06-13 21:04:23+0000 */
 /* Plural-Forms: nplurals=2; plural=n != 1; */
-/* Generator: GlotPress/4.0.1 */
+/* Generator: GlotPress/4.0.3 */
 /* Language: en_AU */
 
 /* Message to ask the user to send us an email to clear their content. */
@@ -578,8 +578,7 @@ translators: %s: Block name e.g. \"Image block\" */
 /* Instructions for users with two-factor authentication enabled. */
 "Almost there! Please enter the verification code from your authenticator app." = "Almost there! Please enter the verification code from your authenticator app.";
 
-/* Image alt attribute option title.
-   Label for the alt for a media asset (image) */
+/* Image alt attribute option title. */
 "Alt Text" = "Alt Text";
 
 /* No comment provided by engineer. */
@@ -719,9 +718,6 @@ translators: %s: Block name e.g. \"Image block\" */
 
 /* Message prompting the user to confirm that they want to disconnect Jetpack from the site. */
 "Are you sure you want to disconnect Jetpack from the site?" = "Are you sure you want to disconnect Jetpack from the site?";
-
-/* Message prompting the user to confirm that they want to permanently delete a media item. Should match Calypso. */
-"Are you sure you want to permanently delete this item?" = "Are you sure you want to permanently delete this item?";
 
 /* Text for the alert to confirm a plugin removal. %1$@ is the plugin name, %2$@ is the site title. */
 "Are you sure you want to remove %1$@ from %2$@?" = "Are you sure you want to remove %1$@ from %2$@?";
@@ -1067,7 +1063,6 @@ translators: %s: Block name e.g. \"Image block\" */
    Title. Title of a cancel button. Tapping disnisses an alert.
    Verb. A button title.
    Verb. A button title. Tapping cancels an action.
-   Verb. Button title. Tapping cancels an action.
    Verb. Tapping cancels the publicize account selection.
    Verb. Title for Jetpack Restore cancel button. */
 "Cancel" = "Cancel";
@@ -1095,8 +1090,7 @@ translators: %s: Block name e.g. \"Image block\" */
 /* Helper text that appears at the bottom of the design screen. */
 "Can’t decide? You can change the theme at any time." = "Can’t decide? You can change the theme at any time.";
 
-/* Image caption field label (for editing)
-   Noun. Label for the caption for a media asset (image / video) */
+/* Image caption field label (for editing) */
 "Caption" = "Caption";
 
 /* Alert title. */
@@ -1750,8 +1744,7 @@ translators: %s: Block name e.g. \"Image block\" */
    Placeholder text displayed in the share extension's summary view. It lets the user know the default category will be used on their post. */
 "Default" = "Default";
 
-/* Label for selecting the default category of a post
-   Title for selecting a default category for a post */
+/* Label for selecting the default category of a post */
 "Default Category" = "Default Category";
 
 /* Label for selecting the default post format
@@ -1760,9 +1753,6 @@ translators: %s: Block name e.g. \"Image block\" */
 
 /* Discussion Settings: Posts Section */
 "Defaults for New Posts" = "Defaults for New Posts";
-
-/* Title for button that permanently deletes a media item (photo / video) */
-"Delete" = "Delete";
 
 /* Menus confirmation button for deleting a menu. */
 "Delete Menu" = "Delete Menu";
@@ -1781,14 +1771,8 @@ translators: %s: Block name e.g. \"Image block\" */
 /* Screen Reader: Button that deletes a menu. */
 "Delete menu" = "Delete menu";
 
-/* Text displayed in HUD after successfully deleting a media item */
-"Deleted!" = "Deleted!";
-
 /* Overlay message displayed while deleting site */
 "Deleting site…" = "Deleting site…";
-
-/* Text displayed in HUD while a media item is being deleted. */
-"Deleting..." = "Deleting...";
 
 /* Verb. Denies a 2fa authentication challenge. */
 "Deny" = "Deny";
@@ -1796,8 +1780,7 @@ translators: %s: Block name e.g. \"Image block\" */
 /* No comment provided by engineer. */
 "Describe the purpose of the image. Leave empty if decorative." = "Describe the purpose of the image. Leave empty if decorative.";
 
-/* Label for the description for a media asset (image / video)
-   Title of section that contains plugins' description */
+/* Title of section that contains plugins' description */
 "Description" = "Description";
 
 /* Shortened version of the main title to be used in back navigation. */
@@ -1815,9 +1798,6 @@ translators: %s: Block name e.g. \"Image block\" */
 
 /* Instructions after a Magic Link was sent, but email is incorrect. */
 "Didn't mean to create a new account? Go back to re-enter your email address." = "Didn't mean to create a new account? Go back to re-enter your email address.";
-
-/* Label for the dimensions in pixels for a media asset (image / video) */
-"Dimensions" = "Dimensions";
 
 /* Title. Title of a button that will disable group invite links when tapped. */
 "Disable" = "Disable";
@@ -2094,7 +2074,7 @@ translators: %s: Block name e.g. \"Image block\" */
 /* Editing GIF alert message. */
 "Editing this GIF will remove its animation." = "Editing this GIF will remove its animation.";
 
-/* Title for the editor settings section */
+/* Title for the editor section in site settings screen */
 "Editor" = "Editor";
 
 /* VoiceOver accessibility hint, informing the user the button can be used to Edit the Comment. */
@@ -2430,11 +2410,8 @@ translators: %s: Block name e.g. \"Image block\" */
 /* No comment provided by engineer. */
 "File block settings" = "File block settings";
 
-/* Label for the file name for a media asset (image / video) */
+/* No comment provided by engineer. */
 "File name" = "File name";
-
-/* Label for the file type (.JPG, .PNG, etc) for a media asset (image / video) */
-"File type" = "File type";
 
 /* No comment provided by engineer. */
 "File type not supported as a media file." = "File type not supported as a media file.";
@@ -2793,9 +2770,6 @@ translators: %s: Block name e.g. \"Image block\" */
 /* Hint for image caption on image settings. */
 "Image Caption" = "Image Caption";
 
-/* Hint for image description on image settings. */
-"Image Description" = "Image Description";
-
 /* Hint for image link on image settings. */
 "Image Link" = "Image Link";
 
@@ -2807,9 +2781,6 @@ translators: %s: Block name e.g. \"Image block\" */
 
 /* No comment provided by engineer. */
 "Image file not found." = "Image file not found.";
-
-/* Hint for image title on image settings. */
-"Image title" = "Image title";
 
 /* Explain what is the purpose of the tagline */
 "In a few words, explain what this site is about." = "In a few words, explain what this site is about.";
@@ -3709,9 +3680,6 @@ translators: %s: Select control button label e.g. \"Button width\" */
 /* Title of an error message. There were no third-party service accounts found to setup sharing. */
 "No Accounts Found" = "No Accounts Found";
 
-/* Text shown (to select no-category) in the parent-category-selection screen when creating a new category. */
-"No Category" = "No Category";
-
 /* Title of error prompt when no internet connection is available. */
 "No Connection" = "No Connection";
 
@@ -4152,9 +4120,6 @@ translators: %s: Select control button label e.g. \"Button width\" */
    Settings: Comments Paging preferences */
 "Paging" = "Paging";
 
-/* Title for selecting parent category of a category */
-"Parent Category" = "Parent Category";
-
 /* Parenting site intent topic */
 "Parenting" = "Parenting";
 
@@ -4369,9 +4334,6 @@ translators: %s: Select control button label e.g. \"Button width\" */
 /* Noun. Type of content being selected is a blog post
    Title shown when selecting a post type of Post from the Share Extension. */
 "Post" = "Post";
-
-/* Title for selecting categories for a post */
-"Post Categories" = "Post Categories";
 
 /* Name of the button to open the post settings */
 "Post Settings" = "Post Settings";
@@ -4680,9 +4642,6 @@ translators: %s: Select control button label e.g. \"Button width\" */
 
 /* Explanatory text for removing the location from uploaded media. */
 "Removes location metadata from photos before uploading them to your site." = "Removes location metadata from photos before uploading them to your site.";
-
-/* First line of remove follower warning in confirmation dialog. */
-"Removing followers makes them stop receiving updates from your site. If they choose to, they can still visit your site, and follow it again." = "Removing followers makes them stop receiving updates from your site. If they choose to, they can still visit your site, and follow it again.";
 
 /* No comment provided by engineer. */
 "Replace Current Block" = "Replace Current Block";
@@ -5513,6 +5472,7 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 "Tagline" = "Tagline";
 
 /* Label for selecting the blogs tags
+   Post tags.
    Tags menu item in share extension. */
 "Tags" = "Tags";
 
@@ -5886,9 +5846,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Error message shown when the user scanned an expired log in code. */
 "This log in code has expired. Please tap the Scan Again button to rescan the code." = "This log in code has expired. Please tap the Scan Again button to rescan the code.";
 
-/* Message displayed in Media Library if the user attempts to edit a media asset (image / video) after it has been deleted. */
-"This media item has been deleted." = "This media item has been deleted.";
-
 /* Error message displayed when unable to close user account due to unresolved chargebacks. */
 "This user account cannot be closed if there are unresolved chargebacks." = "This user account cannot be closed if there are unresolved chargebacks.";
 
@@ -5957,7 +5914,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Accessibility label for web page preview title
    Label for list of stats by content title.
-   Noun. Label for the title of a media asset (image / video)
    Placeholder for the post title.
    Post title */
 "Title" = "Title";
@@ -6051,8 +6007,7 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* No comment provided by engineer. */
 "Transform block…" = "Transform block…";
 
-/* Accessibility label for trash buttons in nav bars
-   Trashes a comment
+/* Trashes a comment
    Trashes the comment */
 "Trash" = "Trash";
 
@@ -6149,9 +6104,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* An error message shown when there is an issue creating new invite links. */
 "Unable to create new invite links." = "Unable to create new invite links.";
 
-/* Text displayed in HUD if there was an error attempting to delete a media item. */
-"Unable to delete media item." = "Unable to delete media item.";
-
 /* An error message shown when there is an issue creating new invite links. */
 "Unable to disable invite links." = "Unable to disable invite links.";
 
@@ -6182,9 +6134,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
    Informing the user that a network request failed becuase the device wasn't able to establish a network connection. */
 "Unable to load this content right now." = "Unable to load this page right now.";
 
-/* Error shown when the app fails to load a video from the user's media library. */
-"Unable to load video." = "Unable to load video.";
-
 /* Dialog box title for when the user is canceling an upload. */
 "Unable to play video" = "Unable to play video";
 
@@ -6193,9 +6142,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Title for the Jetpack Restore Failed message. */
 "Unable to restore your site" = "Unable to restore your site";
-
-/* Text displayed in HUD when a media item's metadata (title, etc) couldn't be saved. */
-"Unable to save media item." = "Unable to save media item.";
 
 /* Message displayed when sharing a link to the downloadable backup fails. */
 "Unable to share link" = "Unable to share link";
@@ -6345,9 +6291,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* System notification displayed to the user when media files have failed to upload. */
 "Upload failed" = "Upload failed";
-
-/* Label for the date a media asset (image / video) was uploaded */
-"Uploaded" = "Uploaded";
 
 /* Local notification displayed to the user when a single draft post and multiple files have uploaded successfully. */
 "Uploaded 1 draft post, %ld files" = "Uploaded 1 draft post, %ld files";
@@ -6834,7 +6777,7 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Accessibility label for the Stats' world map. */
 "World map showing views by country." = "World map showing views by country.";
 
-/* Second line of Remove user/follower/viewer warning in confirmation dialog. */
+/* Second line of Remove user/viewer warning in confirmation dialog. */
 "Would you still like to remove this person?" = "Would you still like to remove this person?";
 
 /* Button title. Opens the editor to write a new post.
@@ -8537,8 +8480,7 @@ Example: 27 social shares remaining in the next 30 days */
 /* a VoiceOver description for the warning icon to hint that the remaining shares are low. */
 "prepublishing.socialAccounts.footer.warningIcon.accessibilityHint" = "Warning";
 
-/* The label displayed for a table row that displays the sharing message for the post.
-Tapping on this row allows the user to edit the sharing message. */
+/* Table section title */
 "prepublishing.socialAccounts.message.label" = "Message";
 
 /* The navigation title for the pre-publishing social accounts screen. */

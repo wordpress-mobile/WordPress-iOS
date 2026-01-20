@@ -1,16 +1,22 @@
-Ahora puedes crear un extracto, un resumen de la entrada y etiquetas generadas automáticamente para tus entradas con Apple Intelligence. También es más fácil elegir tus etiquetas en los ajustes de entradas. Eso sí que es inteligente.
-En cuanto a las estadísticas, hay varias mejoras nuevas en esta área de la aplicación.
-- Hemos añadido una tarjeta Hoy a la pantalla de nuevas estadísticas.
-- Tu página de inicio aparece ahora en la lista de páginas principales.
-- Tus 10 y 50 elementos principales ahora tienen su propia sección especial. Un sitio para cada cosa y cada cosa en su sitio.
-- Tus páginas principales se muestran correctamente cuando tienes un gran número de elementos.
-- El diseño de las nuevas estadísticas cambia para adaptarse a diferentes tamaños de pantalla. Incluso a las que son muy, muy grandes.
-- La pantalla recordará tus ajustes preferidos cuando elijas un intervalo de fechas personalizado.
-- La pestaña Tráfico te permite deslizar hacia abajo para actualizar la pantalla.
-También hemos hecho algunas correcciones visuales para iOS en áreas como el flujo de creación del sitio, la pantalla de selección de medios y la pantalla de estadísticas. Y mientras tanto, también hemos solucionado algunos errores.
-- Hemos corregido un fallo poco frecuente que a veces aparecía en Estadísticas y Suscriptores (pero ya no).
-- Las vistas de artículos se ven como deberían en el Lector cuando ciertos temas están activados.
-- Los artículos del Lector se muestran correctamente en los dispositivos con el zoom de pantalla activado.
-- El botón «Añadir medios» permanece visible en la biblioteca de medios. Ya no volverá a desaparecer.
-- Puedes buscar en Suscripciones del Lector sin que la aplicación se quede bloqueada.
-- La barra de herramientas de los artículos del Lector ya no desaparece y reaparece de vez en cuando. Ahora lo ves, ahora... aún lo ves.
+¡Atención, creadores de contenido! Hemos trabajado duro para implementar algunos cambios importantes en la pantalla Ajustes de entrada.
+
+- Hemos añadido el campo «Estado» que te ayuda a configurar rápidamente las entradas como «Borrador», «Pendiente», «Privada», «Programada» y «Publicada».
+- Hemos recuperado la sección «Fecha de publicación» para las entradas en borrador y pendientes. De esta manera, puedes elegir una fecha de publicación con antelación sin programar oficialmente la entrada.
+- El campo Contraseña utiliza una fuente diferente (Menlo, por si tenías curiosidad) para que sea más fácil leer caracteres que se parezcan.
+- Dale a tus seguidores un tratamiento VIP definiendo niveles de acceso a las entradas para todos los suscriptores, los suscriptores de pago y el público en general.
+- Activa o desactiva los comentarios y pingbacks de las entradas con los ajustes de «Debate».
+
+Mientras hacíamos todo esto, llevamos a cabo otras actualizaciones útiles en varias áreas de la aplicación.
+
+- En la pantalla «Publicar», puedes activar «Enviar correo electrónico a los suscriptores» para avisar automáticamente a tus suscriptores cuando se publique una entrada. ¡Paren las rotativas!
+- El editor de slug dispone de una vista previa de los enlaces permanentes que muestra cómo se verá la URL final de una entrada.
+- Hemos añadido «Taxonomías» a Ajustes del sitio para que puedas gestionar los grupos de contenido a nivel de sitio.
+- Gracias a algunas correcciones de diseño en el selector de «Categorías», es más obvio que puedes elegir varias categorías para una entrada.
+- Los tamaños de archivo ahora se pueden ver en el área Detalles de medios del sitio. Ya no tendrás que hacer conjeturas.
+
+¿Prefieres leer a publicar? No te preocupes, también hemos realizado cambios en el Lector.
+
+- Cuando los títulos de las entradas relacionadas sean demasiado largos, verás una versión más corta y truncada en su lugar.
+- Los títulos de las entradas ahora pueden tener tres líneas de texto en lugar de solo dos, lo que te da un 50 % más de contenido de calidad.
+- Los artículos tienen márgenes horizontales ligeramente más anchos.
+- Hemos solucionado varios errores que afectaban a la forma en la que se cargaban los artículos.

@@ -2,6 +2,8 @@ import SwiftUI
 import WordPressUI
 import DesignSystem
 import FoundationModels
+import WordPressShared
+import WordPressIntelligence
 
 @available(iOS 26, *)
 struct PostSettingsGenerateExcerptView: View {
@@ -11,10 +13,10 @@ struct PostSettingsGenerateExcerptView: View {
     @Environment(\.dismiss) private var dismiss
 
     @AppStorage("jetpack_ai_generated_excerpt_style")
-    private var style: GenerationStyle = .engaging
+    private var style: WritingStyle = .engaging
 
     @AppStorage("jetpack_ai_generated_excerpt_length")
-    private var length: GeneratedContentLength = .medium
+    private var length: ContentLength = .medium
 
     @State private var results: [ExcerptGenerationResult.PartiallyGenerated] = []
     @State private var isGenerating = false
@@ -162,9 +164,9 @@ struct PostSettingsGenerateExcerptView: View {
             Slider(
                 value: Binding(
                     get: { Double(length.rawValue) },
-                    set: { length = GeneratedContentLength(rawValue: Int($0)) ?? .medium }
+                    set: { length = ContentLength(rawValue: Int($0)) ?? .medium }
                 ),
-                in: 0...Double(GeneratedContentLength.allCases.count - 1),
+                in: 0...Double(ContentLength.allCases.count - 1),
                 step: 1
             ) {
                 Text(Strings.lengthSliderAccessibilityLabel)
@@ -199,7 +201,7 @@ struct PostSettingsGenerateExcerptView: View {
             Spacer(minLength: 8)
 
             Picker(Strings.stylePickerAccessibilityLabel, selection: $style) {
-                ForEach(GenerationStyle.allCases, id: \.self) { style in
+                ForEach(WritingStyle.allCases, id: \.self) { style in
                     Text(style.displayName)
                         .tag(style)
                 }
@@ -230,10 +232,8 @@ struct PostSettingsGenerateExcerptView: View {
 
         generationTask = Task {
             do {
-                let session = LanguageModelSession(
-                    model: .init(guardrails: .permissiveContentTransformations),
-                    instructions: LanguageModelHelper.generateExcerptInstructions
-                )
+                let generator = PostExcerptGenerator(length: length, style: style)
+                let session = generator.makeSession()
                 self.session = session
                 try await actuallyGenerateExcerpts(in: session)
             } catch {
@@ -273,8 +273,8 @@ struct PostSettingsGenerateExcerptView: View {
             isGenerating = false
         }
 
-        let content = IntelligenceService().extractRelevantText(from: postContent)
-        let prompt = isLoadMore ? LanguageModelHelper.generateMoreOptionsPrompt : LanguageModelHelper.makeGenerateExcerptPrompt(content: content, length: length, style: style)
+        let generator = PostExcerptGenerator(length: length, style: style)
+        let prompt = isLoadMore ? PostExcerptGenerator.loadMorePrompt : await generator.makePrompt(content: postContent)
         let stream = session.streamResponse(to: prompt, generating: ExcerptGenerationResult.self)
 
         for try await result in stream {
@@ -299,7 +299,7 @@ struct PostSettingsGenerateExcerptView: View {
         WPAnalytics.track(.intelligenceExcerptOptionsGenerated, properties: [
             "length": length.trackingName,
             "style": style.rawValue,
-            "load_more": isLoadMore ? 1 : 0
+            "load_more": isLoadMore
         ])
     }
 }

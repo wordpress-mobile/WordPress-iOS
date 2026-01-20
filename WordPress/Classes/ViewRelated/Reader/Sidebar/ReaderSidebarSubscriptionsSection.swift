@@ -36,7 +36,7 @@ struct ReaderSidebarSubscriptionCell: View {
     var body: some View {
         HStack {
             Label {
-                Text(site.title)
+                Text(site.preferredDisplayTitle)
             } icon: {
                 ReaderSiteIconView(site: site, size: .small)
             }

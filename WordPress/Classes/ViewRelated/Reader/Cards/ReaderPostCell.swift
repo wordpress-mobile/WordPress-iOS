@@ -199,7 +199,7 @@ private final class ReaderPostCellView: UIView {
     }
 
     private func configureLayout(isCompact: Bool) {
-        titleLabel.numberOfLines = 2
+        titleLabel.numberOfLines = 3
         detailsLabel.numberOfLines = isCompact ? 3 : 5
 
         postPreview.axis = isCompact ? .vertical : .horizontal

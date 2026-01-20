@@ -130,7 +130,7 @@ class ReaderDetailToolbar {
     private func makeCommentButton() -> UIBarButtonItem? {
         guard shouldShowCommentActionButton else { return nil }
 
-        let count = post?.commentCount.intValue ?? 0
+        let count = post?.commentCount?.intValue ?? 0
 
         let customButton = makeCustomButton(
             image: WPStyleGuide.ReaderDetail.commentToolbarIcon,
@@ -193,11 +193,6 @@ class ReaderDetailToolbar {
               let viewController = viewController as? UIViewController & UIViewControllerTransitioningDelegate else {
             return
         }
-
-        if !readerPost.isSavedForLater {
-            FancyAlertViewController.presentReaderSavedPostsAlertControllerIfNecessary(from: viewController)
-        }
-
         ReaderSaveForLaterAction().execute(with: readerPost, context: context, origin: .postDetail, viewController: viewController) { [weak self] in
             self?.updateToolbarItems()
         }

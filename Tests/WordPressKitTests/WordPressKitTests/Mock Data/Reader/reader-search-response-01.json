@@ -1,0 +1,133 @@
+{
+  "feeds": [
+    {
+      "subscribe_URL": "https://ma.tt/feed/",
+      "feed_ID": "188407",
+      "meta": {
+        "links": {
+          "feed": "https://public-api.wordpress.com/rest/v1.1/read/feed/188407",
+          "site": "https://public-api.wordpress.com/rest/v1.1/read/sites/1047865"
+        },
+        "data": {
+          "feed": {
+            "blog_ID": "1047865",
+            "feed_ID": "188407",
+            "blog_owner": {
+              "ID": 5,
+              "name": "Matt"
+            },
+            "name": "Matt Mullenweg",
+            "URL": "https://ma.tt/",
+            "feed_URL": "http://ma.tt/feed",
+            "subscribers_count": 4520,
+            "is_following": false,
+            "last_update": "2025-11-27T07:18:10+00:00",
+            "last_checked": "2025-11-27T19:04:42+00:00",
+            "marked_for_refresh": false,
+            "next_refresh_time": null,
+            "organization_id": 0,
+            "subscription_id": null,
+            "unseen_count": 0,
+            "meta": {
+              "links": {
+                "self": "https://public-api.wordpress.com/rest/v1.1/read/feed/188407",
+                "site": "https://public-api.wordpress.com/rest/v1.1/read/sites/1047865"
+              }
+            },
+            "resolved_feed_url": "https://ma.tt/feed/",
+            "image": "https://i0.wp.com/ma.tt/files/2024/01/cropped-matt-favicon.png?fit=32%2C32&amp;quality=80&amp;ssl=1",
+            "description": "Unlucky in Cards"
+          },
+          "site": {
+            "ID": 1047865,
+            "name": "Matt Mullenweg",
+            "description": "Unlucky in Cards",
+            "URL": "https://ma.tt",
+            "jetpack": true,
+            "jetpack_connection": true,
+            "post_count": 5600,
+            "subscribers_count": 4520,
+            "lang": "en-US",
+            "icon": {
+              "img": "https://ma.tt/files/2024/01/cropped-matt-favicon.png",
+              "ico": "https://ma.tt/files/2024/01/cropped-matt-favicon.png?w=16"
+            },
+            "logo": {
+              "id": 0,
+              "sizes": [],
+              "url": ""
+            },
+            "visible": true,
+            "is_private": false,
+            "is_coming_soon": false,
+            "is_following": false,
+            "organization_id": 0,
+            "meta": {
+              "links": {
+                "self": "https://public-api.wordpress.com/rest/v1.1/read/sites/1047865",
+                "help": "https://public-api.wordpress.com/rest/v1.1/read/sites/1047865/help",
+                "posts": "https://public-api.wordpress.com/rest/v1.1/read/sites/1047865/posts/",
+                "comments": "https://public-api.wordpress.com/rest/v1.1/sites/1047865/comments/",
+                "xmlrpc": "https://ma.tt/blog/xmlrpc.php"
+              }
+            },
+            "launch_status": false,
+            "site_migration": {
+              "is_complete": false,
+              "in_progress": false
+            },
+            "is_fse_active": false,
+            "is_fse_eligible": false,
+            "is_core_site_editor_enabled": false,
+            "is_wpcom_atomic": false,
+            "is_wpcom_staging_site": false,
+            "is_deleted": false,
+            "is_a4a_client": false,
+            "is_a4a_dev_site": false,
+            "is_wpcom_flex": false,
+            "capabilities": {
+              "edit_pages": false,
+              "edit_posts": false,
+              "edit_others_posts": false,
+              "edit_theme_options": false,
+              "list_users": false,
+              "manage_categories": false,
+              "manage_options": false,
+              "publish_posts": false,
+              "upload_files": false,
+              "view_stats": false
+            },
+            "is_multi_author": true,
+            "feed_ID": 188407,
+            "feed_URL": "http://ma.tt/feed",
+            "header_image": false,
+            "owner": {
+              "ID": 5,
+              "login": "matt",
+              "name": "Matt",
+              "first_name": "Matt",
+              "last_name": "Mullenweg",
+              "nice_name": "matt",
+              "URL": "https://matt.blog/",
+              "avatar_URL": "https://0.gravatar.com/avatar/33252cd1f33526af53580fcb1736172f06e6716f32afdd1be19ec3096d15dea5?s=96&d=retro&r=G",
+              "profile_URL": "https://gravatar.com/matt",
+              "ip_address": false,
+              "site_visible": true,
+              "has_avatar": true
+            },
+            "subscription": {
+              "delivery_methods": {
+                "email": null,
+                "notification": {
+                  "send_posts": false
+                }
+              }
+            },
+            "is_blocked": false,
+            "unseen_count": 0
+          }
+        }
+      }
+    }
+  ]
+}

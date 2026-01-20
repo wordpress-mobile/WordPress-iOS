@@ -1,16 +1,22 @@
-Sekarang, Anda bisa membuat kutipan untuk pos dan mendapatkan tag yang dibuat secara otomatis dengan Apple Intelligence. Memilih tag di Pengaturan Pos juga lebih mudah. Ini baru cerdas.
-Ada beberapa perbaikan baru di Statistik dalam aplikasi.
-- Kami menambahkan kartu Hari Ini ke layar Statistik Baru.
-- Beranda kini muncul di daftar halaman teratas.
-- 10 dan 50 item teratas kini punya bagian khusus sendiri. Satu tempat untuk semuanya, dan semua punya tempatnya masing-masing.
-- Halaman teratas ditampilkan dengan benar meski ada sejumlah besar item.
-- Tata letak Statistik Baru berubah sesuai ukuran layar, termasuk layar yang benar-benar besar.
-- Layar akan mengingat preferensi pengaturan Anda saat memilih rentang tanggal kustom.
-- Tab Lalu Lintas dapat ditarik ke bawah untuk menyegarkan layar.
-Kami juga memperbaiki sejumlah aspek visual di iOS di area-area seperti alur pembuatan situs, layar pemilihan media, dan layar Statistik. Kami juga sekalian membasmi beberapa bug.
-- Kami memperbaiki crash langka yang kadang terjadi pada Statistik dan Pelanggan. (Yang tadinya langka, kini punah.)
-- Tampilan artikel di Pembaca saat tema tertentu diaktifkan kini sudah benar.
-- Artikel Pembaca kini ditampilkan dengan benar di perangkat yang mengaktifkan Zoom Tampilan.
-- Tombol “Tambah Media” terus terlihat di pustaka media. Tiada lagi yang tiba-tiba lenyap.
-- Aplikasi tidak lagi macet saat Anda mencari di Langganan Pembaca.
-- Bilah peralatan dalam artikel Pembaca tidak lagi hilang timbul secara tiba-tiba. Anda bisa terus melihatnya.
+Harap ketahui, para pembuat konten—kami telah bekerja keras untuk melakukan beberapa perubahan besar pada layar Pengaturan Pos.
+
+- Kami menambahkan kolom "Status" yang membantu Anda memindahkan pos dengan cepat antara status konsep, tertunda, privat, terjadwal, dan dipublikasikan.
+- Kami mengembalikan area "Tanggal Publikasi" untuk konsep dan pos tertunda. Dengan cara tersebut, Anda dapat memilih tanggal publikasi sebelumnya tanpa menjadwalkan pos secara resmi.
+- Kolom kata sandi menggunakan font berbeda (Menlo, jika Anda tertarik) sehingga lebih mudah untuk membaca karakter yang tampak mirip.
+- Berikan perlakuan VIP kepada pengikut Anda dengan mengatur tingkat akses pos untuk semua pelanggan, pelanggan berbayar, dan masyarakat umum.
+- Aktifkan atau nonaktifkan komentar dan pingback pos menggunakan pengaturan "Diskusi".
+
+Selama bekerja, kami telah membuat beberapa pembaruan penting lainnya di berbagai area aplikasi.
+
+- Pada layar "Penerbitan", Anda dapat mengaktifkan "Email ke Pelanggan" untuk memberi tahu pelanggan secara otomatis saat ada pos yang dipublikasikan. Mulai terbitkan.
+- Editor slug memiliki pratinjau permalink untuk menunjukkan tampilan akhir URL sebuah pos.
+- Kami menambahkan "Taksonomi" ke Pengaturan Situs agar Anda dapat mengelola grup konten di tingkat situs.
+- Berkat beberapa perbaikan desain di pemilih "Kategori", lebih jelas bahwa Anda dapat memilih beberapa kategori untuk sebuah pos.
+- Ukuran berkas sekarang dapat dilihat di area Detail Media Situs. Tidak perlu lagi menebak.
+
+Lebih ke pembaca daripada penerbit? Jangan khawatir, kami juga membuat perubahan di Pembaca.
+
+- Jika judul pos terkait terlalu panjang, Anda akan melihat versi yang lebih pendek dan ringkas.
+- Petak pos kini dapat terdiri dari tiga baris teks alih-alih dua baris, sehingga lebih dari 50% sisi bagus konten Anda ditampilkan.
+- Artikel memiliki margin horizontal yang sedikit lebih lebar.
+- Kami membasmi beberapa bug yang memengaruhi cara memuat artikel.

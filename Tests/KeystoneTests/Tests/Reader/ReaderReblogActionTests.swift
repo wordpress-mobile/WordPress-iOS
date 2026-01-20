@@ -12,16 +12,13 @@ class MockReblogPresenter: ReaderReblogPresenter {
 
 class ReblogTestCase: CoreDataTestCase {
     var readerPost: ReaderPost?
-    var postService: PostService?
 
     override func setUp() {
         readerPost = ReaderPost(context: self.mainContext)
-        postService = PostService(managedObjectContext: self.mainContext)
     }
 
     override func tearDown() {
         readerPost = nil
-        postService = nil
     }
 }
 
@@ -29,7 +26,7 @@ class ReaderReblogActionTests: ReblogTestCase {
 
     func testExecuteAction() {
         // Given
-        let presenter = MockReblogPresenter(postService: postService!)
+        let presenter = MockReblogPresenter()
         presenter.presentReblogExpectation = expectation(description: "presentBlog was called")
         let action = ReaderReblogAction(coreDataStack: contextManager, presenter: presenter)
         let controller = UIViewController()
@@ -53,7 +50,7 @@ class ReblogPresenterTests: ReblogTestCase {
         let draftPosts = NSFetchRequest<Post>(entityName: "Post")
         draftPosts.predicate = NSPredicate(format: "status = %@", Post.Status.draft.rawValue)
         try XCTAssertEqual(mainContext.count(for: draftPosts), 0)
-        let presenter = ReaderReblogPresenter(postService: postService!)
+        let presenter = ReaderReblogPresenter()
         // When
         presenter.presentReblog(coreDataStack: contextManager, readerPost: readerPost!, origin: UIViewController())
         // Then
@@ -65,7 +62,7 @@ class ReblogPresenterTests: ReblogTestCase {
         for _ in 1...2 {
             BlogBuilder(contextManager.mainContext).isHostedAtWPcom().withAnAccount().build()
         }
-        let presenter = ReaderReblogPresenter(postService: postService!)
+        let presenter = ReaderReblogPresenter()
         let origin = MockViewController()
         origin.presentExpectation = expectation(description: "blog selector is presented")
         // When

@@ -12,7 +12,7 @@ extension WPTabBarController: RootViewPresenter {
         return self
     }
 
-    func showBlogDetails(for blog: Blog, then subsection: BlogDetailsSubsection?, userInfo: [AnyHashable: Any]) {
+    func showBlogDetails(for blog: Blog, then subsection: BlogDetailsRowKind?, userInfo: [String: Any]) {
         mySitesCoordinator.showBlogDetails(for: blog, then: subsection, userInfo: userInfo)
     }
 

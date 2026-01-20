@@ -1,5 +1,6 @@
 #import "MenuItemAbstractPostsViewController.h"
-@import WordPressData;
+#import "MenuPostService.h"
+#import "MenuPostServiceOptions.h"
 @import WordPressKit;
 
 @interface MenuItemAbstractPostsViewController () <MenuItemSourcePostAbstractViewSubclass>
@@ -54,8 +55,8 @@
     [self showLoadingSourcesIndicatorIfEmpty];
     self.additionalPostsAvailableForSync = YES;
 
-    PostService *service = [[PostService alloc] initWithManagedObjectContext:[self managedObjectContext]];
-    PostServiceSyncOptions *options = [self syncOptions];
+    MenuPostService *service = [[MenuPostService alloc] initWithManagedObjectContext:[self managedObjectContext]];
+    MenuPostServiceSyncOptions *options = [self syncOptions];
     [service syncPostsOfType:[self sourceItemType]
                  withOptions:options
                      forBlog:[self blog]
@@ -110,15 +111,15 @@
     return nil;
 }
 
-- (PostServiceSyncOptions *)syncOptions
+- (MenuPostServiceSyncOptions *)syncOptions
 {
-    PostServiceSyncOptions *options = [[PostServiceSyncOptions alloc] init];
+    MenuPostServiceSyncOptions *options = [[MenuPostServiceSyncOptions alloc] init];
     options.statuses = @[PostStatusPublish, PostStatusPrivate];
     options.number = @(PostServiceDefaultNumberToSync);
     return options;
 }
 
-- (void)didFinishSyncingPosts:(NSArray *)posts options:(PostServiceSyncOptions *)options
+- (void)didFinishSyncingPosts:(NSArray *)posts options:(MenuPostServiceSyncOptions *)options
 {
     self.isSyncing = NO;
     if (posts) {
@@ -143,8 +144,8 @@
     self.isSyncingAdditionalPosts = YES;
     [self showLoadingSourcesIndicator];
 
-    PostService *service = [[PostService alloc] initWithManagedObjectContext:[self managedObjectContext]];
-    PostServiceSyncOptions *options = [self syncOptions];
+    MenuPostService *service = [[MenuPostService alloc] initWithManagedObjectContext:[self managedObjectContext]];
+    MenuPostServiceSyncOptions *options = [self syncOptions];
     options.offset = @(self.resultsController.fetchedObjects.count);
     [service syncPostsOfType:[self sourceItemType]
                  withOptions:options
@@ -202,8 +203,8 @@
     };
 
     DDLogDebug(@"MenuItemSourcePostView: Searching posts via PostService");
-    PostService *service = [[PostService alloc] initWithManagedObjectContext:[self managedObjectContext]];
-    PostServiceSyncOptions *options = [self syncOptions];
+    MenuPostService *service = [[MenuPostService alloc] initWithManagedObjectContext:[self managedObjectContext]];
+    MenuPostServiceSyncOptions *options = [self syncOptions];
     options.search = searchText;
     [service syncPostsOfType:[self sourceItemType]
                  withOptions:options

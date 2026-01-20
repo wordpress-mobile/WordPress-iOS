@@ -23,7 +23,7 @@ final class PostSyncStateViewModel {
         if PostCoordinator.shared.isUpdating(post) {
             return .uploading
         }
-        if let error = PostCoordinator.shared.syncError(for: post.original()) {
+        if let error = PostCoordinator.shared.syncError(for: post.getOriginal()) {
             if let urlError = (error as NSError).underlyingErrors.first as? URLError,
                urlError.code == .notConnectedToInternet || urlError.code == .networkConnectionLost {
                 return .offlineChanges // A better indicator on what's going on

@@ -9,6 +9,7 @@ import WordPressCore
 import WordPressCoreProtocols
 import WordPressData
 import WordPressShared
+import WordPressIntelligence
 import CocoaLumberjack
 
 extension SupportDataProvider {
@@ -510,7 +511,7 @@ extension SupportAttachment {
 fileprivate func summarize(_ text: String) async -> String {
     if #available(iOS 26.0, *) {
         do {
-            return try await IntelligenceService().summarizeSupportTicket(content: text)
+            return try await SupportTicketSummaryGenerator.execute(content: text)
         } catch {
             return text
         }

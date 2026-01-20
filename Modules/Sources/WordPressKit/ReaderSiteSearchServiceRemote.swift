@@ -20,7 +20,7 @@ public class ReaderSiteSearchServiceRemote: ServiceRemoteWordPressComREST {
     public func performSearch(_ query: String,
                               offset: Int = 0,
                               count: Int,
-                              success: @escaping (_ results: [ReaderFeed], _ hasMore: Bool, _ feedCount: Int) -> Void,
+                              success: @escaping (_ results: [ReaderFeed], _ hasMore: Bool, _ total: Int?) -> Void,
                               failure: @escaping (Error) -> Void) {
         let endpoint = "read/feed"
         let path = self.path(forEndpoint: endpoint, withVersion: ._1_1)
@@ -29,7 +29,7 @@ public class ReaderSiteSearchServiceRemote: ServiceRemoteWordPressComREST {
             "offset": offset as AnyObject,
             "exclude_followed": false as AnyObject,
             "sort": "relevance" as AnyObject,
-            "meta": "site" as AnyObject,
+            "meta": "site,feed" as AnyObject,
             "q": query as AnyObject
         ]
 
@@ -38,7 +38,7 @@ public class ReaderSiteSearchServiceRemote: ServiceRemoteWordPressComREST {
                                 success: { response, _ in
                                     do {
                                         let (results, total) = try self.mapSearchResponse(response)
-                                        let hasMore = total > (offset + count)
+                                        let hasMore = (total ?? 0) > (offset + count)
                                         success(results, hasMore, total)
                                     } catch {
                                         failure(error)
@@ -52,7 +52,7 @@ public class ReaderSiteSearchServiceRemote: ServiceRemoteWordPressComREST {
 
 private extension ReaderSiteSearchServiceRemote {
 
-    func mapSearchResponse(_ response: Any) throws -> ([ReaderFeed], Int) {
+    func mapSearchResponse(_ response: Any) throws -> ([ReaderFeed], Int?) {
         do {
             let decoder = JSONDecoder()
             let data = try JSONSerialization.data(withJSONObject: response, options: [])
@@ -73,9 +73,9 @@ private extension ReaderSiteSearchServiceRemote {
 /// The Reader feed search endpoint returns feeds in a key named `feeds` key.
 /// This entity allows us to do parse that and the total feed count using JSONDecoder.
 ///
-private struct ReaderFeedEnvelope: Decodable {
+struct ReaderFeedEnvelope: Decodable {
     let feeds: [ReaderFeed]
-    let total: Int
+    let total: Int?
 
     private enum CodingKeys: String, CodingKey {
         case feeds = "feeds"

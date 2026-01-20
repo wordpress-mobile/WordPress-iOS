@@ -2,11 +2,54 @@ import Foundation
 import WordPressKit
 import WordPressShared
 
+public enum AbstractPostRemoteStatus: UInt {
+    case pushing
+    case failed
+    case local
+    case sync
+    case pushingMedia
+    case autoSaved
+    case localRevision
+    case syncNeeded
+}
+
+@objc(AbstractPost)
+public class AbstractPost: BasePost {
+
+    public var voiceContent: String?
+
+    @objc public var revision: AbstractPost? {
+        willAccessValue(forKey: "revision")
+        let revision = primitiveValue(forKey: "revision") as? AbstractPost
+        didAccessValue(forKey: "revision")
+        return revision
+    }
+
+    public var original: AbstractPost? {
+        willAccessValue(forKey: "original")
+        let original = primitiveValue(forKey: "original") as? AbstractPost
+        didAccessValue(forKey: "original")
+        return original
+    }
+
+    public func hasCategories() -> Bool {
+        return false
+    }
+
+    public func hasTags() -> Bool {
+        return false
+    }
+
+    public func contentPreviewForDisplay() -> String? {
+        mt_excerpt
+    }
+}
+
 public extension AbstractPost {
     /// Returns the original post by navigating the entire list of revisions
     /// until it reaches the head.
-    func original() -> AbstractPost {
-        original?.original() ?? self
+    func getOriginal() -> AbstractPost {
+        original?.getOriginal() ?? self
     }
 
     /// Returns `true` if the post was never uploaded to the remote and has
@@ -44,7 +87,6 @@ public extension AbstractPost {
         statuses.contains(status ?? .draft)
     }
 
-    @objc
     var remoteStatus: AbstractPostRemoteStatus {
         get {
             guard let remoteStatusNumber = remoteStatusNumber?.uintValue,
@@ -72,7 +114,6 @@ public extension AbstractPost {
     ///
     /// - returns: The localized title for the specified status, or the status if a title was not found.
     ///
-    @objc
     static func title(forStatus status: String) -> String {
         switch status {
         case PostStatusDraft:
@@ -119,7 +160,7 @@ public extension AbstractPost {
         }
     }
 
-    @objc func containsGutenbergBlocks() -> Bool {
+    func containsGutenbergBlocks() -> Bool {
         return content?.contains("<!-- wp:") ?? false
     }
 
@@ -127,7 +168,7 @@ public extension AbstractPost {
         [
             "post_type": analyticsPostType ?? "",
             "status": status?.rawValue ?? "",
-            "original_status": original().status?.rawValue ?? "unknown",
+            "original_status": getOriginal().status?.rawValue ?? "unknown",
             "password_protected": PostVisibility(post: self) == .protected
         ]
     }
@@ -153,7 +194,7 @@ public extension AbstractPost {
         }
     }
 
-    @objc func featuredImageURLForDisplay() -> URL? {
+    func featuredImageURLForDisplay() -> URL? {
         return featuredImageURL
     }
 
@@ -226,7 +267,7 @@ public extension AbstractPost {
         guard let previous = revision.original else {
             return wpAssertionFailure("missing original")
         }
-        let original = revision.original()
+        let original = revision.getOriginal()
         previous.deleteRevision()
         if previous == original, !previous.hasRemote() {
             context.delete(original)
@@ -243,7 +284,7 @@ public extension AbstractPost {
     func dateStringForDisplay() -> String? {
         if self.originalIsDraft() || self.status == .pending {
             return dateModified?.toMediumString()
-        } else if self.isScheduled() {
+        } else if self.status == .scheduled {
             return self.dateCreated?.mediumStringWithTime()
         } else if self.shouldPublishImmediately() {
             return NSLocalizedString("Publish Immediately", comment: "A short phrase indicating a post is due to be immedately published.")
@@ -251,7 +292,136 @@ public extension AbstractPost {
         return self.dateCreated?.toMediumString()
     }
 
-    override func contentPreviewForDisplay() -> String? {
-        mt_excerpt
+    func clone(from source: AbstractPost) {
+        for key in source.entity.attributesByName.keys {
+            if key != "permalink" {
+                setValue(source.value(forKey: key), forKey: key)
+            }
+        }
+
+        for key in source.entity.relationshipsByName.keys {
+            if key == "original" || key == "revision" {
+                continue
+            } else if key == "comments" {
+                comments = source.comments
+            } else {
+                setValue(source.value(forKey: key), forKey: key)
+            }
+        }
+    }
+
+    func createRevision() -> AbstractPost {
+        precondition(managedObjectContext != nil)
+        precondition(revision == nil, "This post must not already have a revision")
+
+        let post = Self(context: managedObjectContext!)
+        post.clone(from: self)
+        post.remoteStatus = .localRevision
+        post.setValue(self, forKey: "original")
+        post.setValue(nil, forKey: "revision")
+        return post
+    }
+
+    func deleteRevision() {
+        guard let revision, let context = managedObjectContext else {
+            return
+        }
+
+        context.performAndWait {
+            context.delete(revision)
+            willChangeValue(forKey: "revision")
+            setPrimitiveValue(nil, forKey: "revision")
+            didChangeValue(forKey: "revision")
+        }
+    }
+
+    func applyRevision() {
+        guard isOriginal(), let revision else {
+            return
+        }
+        clone(from: revision)
+    }
+
+    func isRevision() -> Bool {
+        !isOriginal()
+    }
+
+    func isOriginal() -> Bool {
+        original == nil
+    }
+
+    func latest() -> AbstractPost {
+        revision?.latest() ?? self
+    }
+
+    func hasRevision() -> Bool {
+        revision != nil
+    }
+
+    /// Returns YES if the original post is a draft
+    func originalIsDraft() -> Bool {
+        if status == .draft {
+            return true
+        } else if isRevision(), original?.status == .draft {
+            return true
+        }
+        return false
+    }
+
+    func shouldPublishImmediately() -> Bool {
+        // - warning: Yes, this is WordPress logic and it matches the behavior on
+        // the web. If `dateCreated` is the same as `dateModified`, the system
+        // uses it to represent a "no publish date selected" scenario.
+        originalIsDraft() && (date_created_gmt == nil || date_created_gmt == dateModified)
+    }
+
+    /// Does the post exist on the blog?
+    func hasRemote() -> Bool {
+        (postID?.int64Value ?? 0) > 0
+    }
+
+    @objc
+    var parsedOtherTerms: [String: [String]] {
+        get {
+            guard let rawOtherTerms else {
+                return [:]
+            }
+
+            return (try? JSONSerialization.jsonObject(with: rawOtherTerms) as? [String: [String]]) ?? [:]
+        }
+        set {
+            rawOtherTerms = try? JSONSerialization.data(withJSONObject: newValue)
+        }
+    }
+
+    /// Updates the path for the display image by looking at the post content and trying to find an good image to use.
+    /// If no appropiated image is found the path is set to nil.
+    @objc
+    func updatePathForDisplayImageBasedOnContent() {
+        guard let content else {
+            return
+        }
+
+        if let result = DisplayableImageHelper.searchPostContentForImage(toDisplay: content), !result.isEmpty {
+            pathForDisplayImage = result
+            return
+        }
+
+        guard let allMedia = blog.media, !allMedia.isEmpty else { return }
+
+        let mediaIDs = DisplayableImageHelper.searchPostContentForAttachmentIds(inGalleries: content) as? Set<NSNumber> ?? []
+        for media in allMedia {
+            guard let media = media as? Media else { continue }
+
+            guard let mediaID = media.mediaID,
+                  mediaIDs.contains(mediaID) else {
+                continue
+            }
+
+            if let remoteURL = media.remoteURL {
+                pathForDisplayImage = remoteURL
+                break
+            }
+        }
     }
 }

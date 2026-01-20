@@ -3,7 +3,6 @@
 #import "AccountService.h"
 #import "BlogService.h"
 
-#import "BlogDetailsViewController.h"
 #import "WPAppAnalytics.h"
 #import "WordPress-Swift.h"
 @import WordPressData;

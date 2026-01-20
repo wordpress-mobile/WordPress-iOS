@@ -59,11 +59,6 @@ public struct StatsMainView: View {
                 .onAppear {
                     context.tracker?.send(.trafficTabShown)
                 }
-        case .realtime:
-            RealtimeTabView()
-                .onAppear {
-                    context.tracker?.send(.realtimeTabShown)
-                }
         case .insights:
             InsightsTabView()
         case .subscribers:
@@ -71,6 +66,8 @@ public struct StatsMainView: View {
                 .onAppear {
                     context.tracker?.send(.subscribersTabShown)
                 }
+        case .ads:
+            AdsTabView()
         }
     }
 

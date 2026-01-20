@@ -11,8 +11,15 @@ final class ReaderBlockSiteAction {
     }
 
     func execute(with post: ReaderPost, context: NSManagedObjectContext, completion: (() -> Void)? = nil, failure: ((Error?) -> Void)? = nil) {
+        guard let siteID = post.siteID else {
+            DispatchQueue.main.async {
+                failure?(nil)
+            }
+            return
+        }
+
         let service = ReaderSiteService(coreDataStack: ContextManager.shared)
-        service.flagSite(withID: post.siteID,
+        service.flagSite(withID: siteID,
                          asBlocked: asBlocked,
                          success: {
                             WPAnalytics.trackReader(.readerBlogBlocked, properties: ["blogId": post.siteID as Any])

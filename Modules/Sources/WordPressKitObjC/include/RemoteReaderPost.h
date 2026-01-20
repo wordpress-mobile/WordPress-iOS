@@ -40,6 +40,7 @@
 @property (nonatomic, strong) NSString *tags;
 @property (nonatomic) BOOL isLikesEnabled;
 @property (nonatomic) BOOL isSharingEnabled;
+@property (nonatomic) BOOL useExcerpt;
 @property (nonatomic, strong) RemoteSourcePostAttribution *sourceAttribution;
 @property (nonatomic, strong) RemoteReaderCrossPostMeta *crossPostMeta;
 

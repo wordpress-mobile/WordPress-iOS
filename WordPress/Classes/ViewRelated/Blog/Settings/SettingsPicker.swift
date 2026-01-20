@@ -51,7 +51,12 @@ struct SettingsPickerListView<T: Hashable>: View {
             guard selection != value.id else { return }
             selection = value.id
         }) {
-            HStack {
+            HStack(spacing: 10) {
+                Image(systemName: "checkmark")
+                    .font(.headline)
+                    .foregroundColor(.accentColor)
+                    .opacity(value.id == selection ? 1 : 0)
+
                 VStack(alignment: .leading, spacing: 2) {
                     Text(value.title)
                     if let details = value.details {
@@ -61,12 +66,6 @@ struct SettingsPickerListView<T: Hashable>: View {
                     }
                 }
                 Spacer()
-                if value.id == selection {
-                    Image(systemName: "checkmark")
-                        .font(.headline)
-                        .foregroundColor(.accentColor)
-
-                }
             }
             .contentShape(Rectangle())
         }

@@ -45,16 +45,13 @@ extension ReaderStreamViewController {
 extension ReaderStreamViewController {
     func makeEmptyStateView(for topic: ReaderAbstractTopic) -> UIView {
         let response = ReaderStreamViewController.responseForNoResults(topic)
-        return UIHostingView(view: EmptyStateView(
-            response.title,
-            image: "wp-illustration-reader-empty",
-            description: response.message
-        ))
+        return UIHostingView(view: EmptyStateView(response.title, scaledImage: response.scaledImageName, description: response.message))
     }
 
     private struct NoResultsResponse {
         var title: String
         var message: String
+        var scaledImageName = "wpl-glasses"
     }
 
     private class func responseForNoResults(_ topic: ReaderAbstractTopic) -> NoResultsResponse {
@@ -71,7 +68,8 @@ extension ReaderStreamViewController {
         if ReaderHelpers.topicIsLiked(topic) {
             return NoResultsResponse(
                 title: NSLocalizedString("Nothing liked yet", comment: "A message title"),
-                message: NSLocalizedString("Posts that you like will appear here.", comment: "A message explaining the Posts I Like feature in the reader")
+                message: NSLocalizedString("Posts that you like will appear here.", comment: "A message explaining the Posts I Like feature in the reader"),
+                scaledImageName: "wpl-star"
             )
         }
         if ReaderHelpers.isTopicTag(topic) {
@@ -142,7 +140,11 @@ extension ReaderStreamViewController {
             )
         case .noSavedPosts:
             EmptyStateView(label: {
-                Label(NSLocalizedString("No saved posts", comment: "Message displayed in Reader Saved Posts view if a user hasn't yet saved any posts."), image: "wp-illustration-reader-empty")
+                VStack(alignment: .center, spacing: 0) {
+                    ScaledImage("wpl-bookmark", height: 50)
+                        .foregroundColor(.secondary)
+                    Text(NSLocalizedString("No saved posts", comment: "Message displayed in Reader Saved Posts view if a user hasn't yet saved any posts."))
+                }
             }, description: {
                 // Had to use UIKit because Text(AttributedString()) won't render the attachment
                 HostedAttributedLabel(text: self.makeSavedPostsEmptyViewDescription())
@@ -153,7 +155,7 @@ extension ReaderStreamViewController {
         case .discover:
             EmptyStateView(
                 ReaderStreamViewController.defaultResponse.title,
-                image: "wp-illustration-reader-empty",
+                scaledImage: "wpl-glasses",
                 description: ReaderStreamViewController.defaultResponse.message
             )
         case .noConnection:

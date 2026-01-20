@@ -1,6 +1,15 @@
-Sekarang, Anda bisa membuat kutipan untuk pos dan mendapatkan saran tag secara otomatis dengan Apple Intelligence. Memilih tag di Pengaturan Pos juga lebih mudah. Ini baru cerdas.
-Kami memperbaiki sejumlah aspek visual di iOS di area-area seperti alur pembuatan situs, layar pemilihan media, dan layar Statistik.
-Kami juga membasmi beberapa bug.
-- Artikel Pembaca kini ditampilkan dengan benar di perangkat yang mengaktifkan Zoom Tampilan.
-- Tombol “Tambah Media” terus terlihat di pustaka media. Tiada lagi yang tiba-tiba lenyap.
-- Aplikasi tidak lagi macet saat Anda mencari di Langganan Pembaca.
+Harap ketahui, para pembuat konten—kami telah bekerja keras untuk melakukan beberapa perubahan besar pada layar Pengaturan Pos.
+
+- Kami menambahkan kolom "Status" yang membantu Anda memindahkan pos dengan cepat antara status konsep, tertunda, privat, terjadwal, dan dipublikasikan.
+- Kami mengembalikan area "Tanggal Publikasi" untuk konsep dan pos tertunda. Dengan cara tersebut, Anda dapat memilih tanggal publikasi sebelumnya tanpa menjadwalkan pos secara resmi.
+- Kolom kata sandi menggunakan font berbeda (Menlo, jika Anda tertarik) sehingga lebih mudah untuk membaca karakter yang tampak mirip.
+- Berikan perlakuan VIP kepada pengikut Anda dengan mengatur tingkat akses pos untuk semua pelanggan, pelanggan berbayar, dan masyarakat umum.
+- Aktifkan atau nonaktifkan komentar dan pingback pos menggunakan pengaturan "Diskusi".
+
+Selama bekerja, kami telah membuat beberapa pembaruan penting lainnya di berbagai area aplikasi.
+
+- Pada layar "Penerbitan", Anda dapat mengaktifkan "Email ke Pelanggan" untuk memberi tahu pelanggan secara otomatis saat ada pos yang dipublikasikan. Mulai terbitkan.
+- Editor slug memiliki pratinjau permalink untuk menunjukkan tampilan akhir URL sebuah pos.
+- Kami menambahkan "Taksonomi" ke Pengaturan Situs agar Anda dapat mengelola grup konten Anda di tingkat situs.
+- Berkat beberapa perbaikan desain di pemilih "Kategori", lebih jelas bahwa Anda dapat memilih beberapa kategori untuk sebuah pos.
+- Ukuran berkas sekarang dapat dilihat di area Detail Media Situs. Tidak perlu lagi menebak.

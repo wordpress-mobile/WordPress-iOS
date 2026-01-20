@@ -539,7 +539,7 @@ private extension NotificationSyncMediator {
                 fetchRequest.predicate = NSCompoundPredicate(andPredicateWithSubpredicates: [commentIDPredicate, siteIDPredicate])
                 if let post = try context.fetch(fetchRequest).first {
                     post.isLiked = isLike
-                    post.likeCount = NSNumber(value: post.likeCount.intValue + (post.isLiked ? 1 : -1))
+                    post.likeCount = NSNumber(value: max((post.likeCount?.intValue ?? 0) + (post.isLiked ? 1 : -1), 0))
                 }
             }
             catch {

@@ -1,0 +1,37 @@
+# yaml-language-server: $schema=https://raw.githubusercontent.com/buildkite/pipeline-schema/main/schema.json
+---
+
+# This pipeline is dynamically uploaded at the end of the build after a wait step
+
+agents:
+  queue: default
+
+steps:
+  - label: ":claude: Claude Build Analysis"
+    key: claude-analysis
+    if: build.state == "failing"
+    soft_fail: true
+    command: "exit 1"
+    artifact_paths:
+      - "/tmp/claude_debug_${BUILDKITE_BUILD_ID}.txt"
+      - "/tmp/claude_response_${BUILDKITE_BUILD_ID}.json"
+      - "/tmp/buildkite_logs_${BUILDKITE_BUILD_ID}.txt"
+    plugins:
+      - $CLAUDE_PLUGIN:
+          api_key: "$ANTHROPIC_API_KEY"
+          buildkite_api_token: "$BUILDKITE_TOKEN_FOR_CLAUDE"
+          analysis_level: "build"
+          build_log_mode: "failed"
+          trigger: "on-failure"
+          max_log_lines: 1500
+          custom_prompt: "Do not mention successful points, focus on failures and recovery to keep the analysis succinct. Only add the `Best Practices` section if the changes in this PR are directly relevant to it. Only add a `Root Cause` section when you're sure about the issues' causes."
+          model: "claude-sonnet-4-5"
+
+  - label: ":claude: 💬 Comment Claude Analysis"
+    command: .buildkite/commands/comment-claude-analysis.sh
+    depends_on: claude-analysis
+    allow_dependency_failure: true
+    if: build.pull_request.id != null
+    plugins:
+      - $CI_TOOLKIT_PLUGIN
+

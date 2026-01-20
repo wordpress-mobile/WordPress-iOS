@@ -24,7 +24,6 @@ public enum RemoteFeatureFlag: Int, CaseIterable {
     case dynamicDashboardCards
     case plansInSiteCreation
     case bloganuaryDashboardNudge // pcdRpT-4FE-p2
-    case wordPressSotWCard
     case inAppRating
     case siteMonitoring
     case inAppUpdates
@@ -32,6 +31,7 @@ public enum RemoteFeatureFlag: Int, CaseIterable {
     case dotComWebLogin
     case newGutenberg
     case newGutenbergPlugins
+    case statsAds
 
     var defaultValue: Bool {
         let app = BuildSettings.current.brand
@@ -79,8 +79,6 @@ public enum RemoteFeatureFlag: Int, CaseIterable {
             return false
         case .bloganuaryDashboardNudge:
             return AppConfiguration.isJetpack
-        case .wordPressSotWCard:
-            return true
         case .inAppRating:
             return false
         case .siteMonitoring:
@@ -94,6 +92,8 @@ public enum RemoteFeatureFlag: Int, CaseIterable {
         case .newGutenberg:
             return app == .reader
         case .newGutenbergPlugins:
+            return false
+        case .statsAds:
             return false
         }
     }
@@ -143,8 +143,6 @@ public enum RemoteFeatureFlag: Int, CaseIterable {
             return "plans_in_site_creation"
         case .bloganuaryDashboardNudge:
             return "bloganuary_dashboard_nudge"
-        case .wordPressSotWCard:
-            return "wp_sotw_2023_nudge"
         case .inAppRating:
             return "in_app_rating_and_feedback"
         case .siteMonitoring:
@@ -159,6 +157,8 @@ public enum RemoteFeatureFlag: Int, CaseIterable {
             return "gutenberg_kit"
         case .newGutenbergPlugins:
             return "gutenberg_kit_plugins"
+        case .statsAds:
+            return "stats_ads"
         }
     }
 
@@ -206,8 +206,6 @@ public enum RemoteFeatureFlag: Int, CaseIterable {
             return "Plans in Site Creation"
         case .bloganuaryDashboardNudge:
             return "Bloganuary Dashboard Nudge"
-        case .wordPressSotWCard:
-            return "SoTW Nudge Card for WordPress App"
         case .inAppRating:
             return "In-App Rating and Feedback"
         case .siteMonitoring:
@@ -222,6 +220,8 @@ public enum RemoteFeatureFlag: Int, CaseIterable {
             return "Experimental Block Editor"
         case .newGutenbergPlugins:
             return "Experimental Block Editor Plugins"
+        case .statsAds:
+            return "Stats Ads Tab"
         }
     }
 

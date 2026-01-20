@@ -51,7 +51,7 @@ extension CommentService {
     func updateRepliesVisibility(for ancestorComment: Comment, completion: (() -> Void)? = nil) {
         guard let context = ancestorComment.managedObjectContext,
               let post = ancestorComment.post as? ReaderPost,
-              let comments = post.comments as? Set<Comment> else {
+              let comments = post.comments else {
                   completion?()
                   return
               }

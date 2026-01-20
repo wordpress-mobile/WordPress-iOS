@@ -79,7 +79,7 @@ actor MockStatsService: ObservableObject, StatsServiceProtocol {
         return SiteMetricsResponse(total: total, metrics: output)
     }
 
-    func getTopListData(_ item: TopListItemType, metric: SiteMetric, interval: DateInterval, granularity: DateRangeGranularity, limit: Int?) async throws -> TopListResponse {
+    func getTopListData(_ item: TopListItemType, metric: SiteMetric, interval: DateInterval, granularity: DateRangeGranularity, limit: Int?, locationLevel: LocationLevel?) async throws -> TopListResponse {
         await generateDataIfNeeded()
 
         guard let typeData = dailyTopListData[item] else {

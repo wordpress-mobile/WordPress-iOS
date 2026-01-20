@@ -9,6 +9,7 @@ enum Strings {
         static let realtime = AppLocalizedString("jetpackStats.tabs.realtime", value: "Realtime", comment: "Realtime tab")
         static let insights = AppLocalizedString("jetpackStats.tabs.insights", value: "Insights", comment: "Insights tab")
         static let subscribers = AppLocalizedString("jetpackStats.tabs.subscribers", value: "Subscribers", comment: "Subscribers tab")
+        static let ads = AppLocalizedString("jetpackStats.tabs.ads", value: "Ads", comment: "Ads tab")
     }
 
     enum Calendar {
@@ -31,6 +32,15 @@ enum Strings {
         static let year = AppLocalizedString("jetpackStats.calendar.year", value: "Year", comment: "Year time period")
     }
 
+    enum Granularity {
+        static let automatic = AppLocalizedString("jetpackStats.granularity.automatic", value: "Automatic", comment: "Automatic granularity option")
+        static let hour = AppLocalizedString("jetpackStats.granularity.hours", value: "Hours", comment: "Hours granularity option")
+        static let day = AppLocalizedString("jetpackStats.granularity.days", value: "Days", comment: "Days granularity option")
+        static let week = AppLocalizedString("jetpackStats.granularity.weeks", value: "Weeks", comment: "Weeks granularity option")
+        static let month = AppLocalizedString("jetpackStats.granularity.months", value: "Months", comment: "Months granularity option")
+        static let year = AppLocalizedString("jetpackStats.granularity.years", value: "Years", comment: "Years granularity option")
+    }
+
     enum SiteMetrics {
         static let views = AppLocalizedString("jetpackStats.siteMetrics.views", value: "Views", comment: "Site views metric")
         static let visitors = AppLocalizedString("jetpackStats.siteMetrics.visitors", value: "Visitors", comment: "Site visitors metric")
@@ -49,18 +59,20 @@ enum Strings {
         static let authors = AppLocalizedString("jetpackStats.siteDataTypes.authors", value: "Authors", comment: "Authors data type")
         static let referrers = AppLocalizedString("jetpackStats.siteDataTypes.referrers", value: "Referrers", comment: "Referrers data type")
         static let locations = AppLocalizedString("jetpackStats.siteDataTypes.locations", value: "Locations", comment: "Locations data type")
-        static let externalLinks = AppLocalizedString("jetpackStats.siteDataTypes.externalLinks", value: "External Links", comment: "External links data type")
+        static let clicks = AppLocalizedString("jetpackStats.siteDataTypes.clicks", value: "Clicks", comment: "Clicks data type (external links)")
         static let fileDownloads = AppLocalizedString("jetpackStats.siteDataTypes.fileDownloads", value: "File Downloads", comment: "File downloads data type")
         static let searchTerms = AppLocalizedString("jetpackStats.siteDataTypes.searchTerms", value: "Search Terms", comment: "Search terms data type")
         static let videos = AppLocalizedString("jetpackStats.siteDataTypes.videos", value: "Videos", comment: "Videos data type")
     }
 
     enum Countries {
-        static let noViews = AppLocalizedString(
-            "jetpackStats.countries.noViews",
-            value: "No views",
-            comment: "Message shown when a country has no views"
-        )
+        static let noViews = AppLocalizedString("jetpackStats.countries.noViews", value: "No views", comment: "Message shown when a country has no views")
+    }
+
+    enum LocationLevels {
+        static let countries = AppLocalizedString("jetpackStats.locationLevels.countries", value: "Countries", comment: "Location level selector for countries")
+        static let regions = AppLocalizedString("jetpackStats.locationLevels.regions", value: "Regions", comment: "Location level selector for regions")
+        static let cities = AppLocalizedString("jetpackStats.locationLevels.cities", value: "Cities", comment: "Location level selector for cities")
     }
 
     enum Buttons {
@@ -97,6 +109,7 @@ enum Strings {
         static let compareWith = AppLocalizedString("jetpackStats.datePicker.compareWith", value: "Compare With…", comment: "Title for comparison menu")
         static let precedingPeriod = AppLocalizedString("jetpackStats.datePicker.precedingPeriod", value: "Preceding Period", comment: "Compare with preceding period option")
         static let samePeriodLastYear = AppLocalizedString("jetpackStats.datePicker.lastYear", value: "Last Year", comment: "Compare with same period last year option")
+        static let comparisonOff = AppLocalizedString("jetpackStats.datePicker.comparisonOff", value: "No Comparison", comment: "Option to turn off period comparison")
     }
 
     enum DateRangeTips {
@@ -111,17 +124,19 @@ enum Strings {
         static let incompleteData = AppLocalizedString("jetpackStats.chart.incompleteData", value: "Might show incomplete data", comment: "Shown when current period data might be incomplete")
         static let hourlyDataUnavailable = AppLocalizedString("jetpackStats.chart.hourlyDataNotAvailable", value: "Hourly data not available", comment: "Shown for metrics that don't support hourly data")
         static let empty = AppLocalizedString("jetpackStats.chart.dataEmpty", value: "No data for period", comment: "Shown for empty states")
+        static let granularity = AppLocalizedString("jetpackStats.chart.granularity", value: "Granularity", comment: "Granularity picker label")
     }
 
     enum TopListTitles {
-        static let mostViewed = AppLocalizedString("jetpackStats.topList.mostViewed", value: "Most Viewed", comment: "Title for most viewed items")
-        static let mostVisitors = AppLocalizedString("jetpackStats.topList.mostVisitors", value: "Most Visitors", comment: "Title for items with most visitors")
-        static let mostCommented = AppLocalizedString("jetpackStats.topList.mostCommented", value: "Most Commented", comment: "Title for most commented items")
-        static let mostLiked = AppLocalizedString("jetpackStats.topList.mostLiked", value: "Most Liked", comment: "Title for most liked items")
-        static let mostPosts = AppLocalizedString("jetpackStats.topList.mostPosts", value: "Most Posts", comment: "Title for most posts (per author)")
-        static let highestBounceRate = AppLocalizedString("jetpackStats.topList.highestBounceRate", value: "Highest Bounce Rate", comment: "Title for items with highest bounce rate")
-        static let longestTimeOnSite = AppLocalizedString("jetpackStats.topList.longestTimeOnSite", value: "Longest Time on Site", comment: "Title for items with longest time on site")
-        static let mostDownloadeded = AppLocalizedString("jetpackStats.topList.mostDownloads", value: "Most Downloaded", comment: "Title for chart")
+        static let postsAndPages = AppLocalizedString("jetpackStats.topListColumnTitle.postsAndPages", value: "Title", comment: "Table column title for Top List card")
+        static let archive = AppLocalizedString("jetpackStats.topListColumnTitle.archive", value: "Title", comment: "Table column title for Top List card")
+        static let authors = AppLocalizedString("jetpackStats.topListColumnTitle.authors", value: "Author", comment: "Table column title for Top List card")
+        static let referrers = AppLocalizedString("jetpackStats.topListColumnTitle.referrers", value: "Referrer", comment: "Table column title for Top List card")
+        static let locations = AppLocalizedString("jetpackStats.topListColumnTitle.locations", value: "Location", comment: "Table column title for Top List card")
+        static let clicks = AppLocalizedString("jetpackStats.topListColumnTitle.clicks", value: "External Link", comment: "Table column title for Top List card")
+        static let fileDownloads = AppLocalizedString("jetpackStats.topListColumnTitle.fileDownloads", value: "File", comment: "Table column title for Top List card")
+        static let searchTerms = AppLocalizedString("jetpackStats.topListColumnTitle.searchTerms", value: "Term", comment: "Table column title for Top List card")
+        static let videos = AppLocalizedString("jetpackStats.topListColumnTitle.videos", value: "Video", comment: "Table column title for Top List card")
         static let top10 = AppLocalizedString("jetpackStats.postDetails.top10", value: "Top 10", comment: "Section title")
         static let top50 = AppLocalizedString("jetpackStats.postDetails.top50", value: "Top 50", comment: "Section title")
     }

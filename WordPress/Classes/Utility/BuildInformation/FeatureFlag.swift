@@ -1,12 +1,12 @@
 import BuildSettingsKit
 import Foundation
+import FoundationModels
 
 /// FeatureFlag exposes a series of features to be conditionally enabled on
 /// different builds.
 @objc
 public enum FeatureFlag: Int, CaseIterable {
     case signUp
-    case customAppIcons
     case domainRegistration
     case selfHostedSites
     case whatsNew
@@ -27,6 +27,7 @@ public enum FeatureFlag: Int, CaseIterable {
     case intelligence
     case newSupport
     case nativeBlockInserter
+    case statsAds
 
     /// Returns a boolean indicating if the feature is enabled.
     ///
@@ -42,8 +43,6 @@ public enum FeatureFlag: Int, CaseIterable {
 
         switch self {
         case .signUp:
-            return true
-        case .customAppIcons:
             return true
         case .domainRegistration:
             return app == .jetpack || app == .reader
@@ -80,12 +79,16 @@ public enum FeatureFlag: Int, CaseIterable {
         case .newStats:
             return false
         case .intelligence:
-            let languageCode = Locale.current.language.languageCode?.identifier
-            return (languageCode ?? "en").hasPrefix("en")
+            guard #available(iOS 26, *) else {
+                return false
+            }
+            return SystemLanguageModel.default.supportsLocale()
         case .newSupport:
             return false
         case .nativeBlockInserter:
             return true
+        case .statsAds:
+            return BuildConfiguration.current == .debug
         }
     }
 
@@ -109,7 +112,6 @@ extension FeatureFlag {
     public var description: String {
         return switch self {
         case .signUp: "Sign Up"
-        case .customAppIcons: "Custom App Icons"
         case .domainRegistration: "Domain Registration"
         case .selfHostedSites: "Self-Hosted Sites"
         case .whatsNew: "What's New"
@@ -130,6 +132,7 @@ extension FeatureFlag {
         case .intelligence: "Intelligence"
         case .newSupport: "New Support"
         case .nativeBlockInserter: "Native Block Inserter"
+        case .statsAds: "Stats Ads Tab"
         }
     }
 }

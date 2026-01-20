@@ -97,16 +97,16 @@ actor StatsService: StatsServiceProtocol {
         }
     }
 
-    func getTopListData(_ item: TopListItemType, metric: SiteMetric, interval: DateInterval, granularity: DateRangeGranularity, limit: Int?) async throws -> TopListResponse {
+    func getTopListData(_ item: TopListItemType, metric: SiteMetric, interval: DateInterval, granularity: DateRangeGranularity, limit: Int?, locationLevel: LocationLevel?) async throws -> TopListResponse {
         // Check cache first
-        let cacheKey = TopListCacheKey(item: item, metric: metric, interval: interval, granularity: granularity, limit: limit)
+        let cacheKey = TopListCacheKey(item: item, metric: metric, locationLevel: locationLevel, interval: interval, granularity: granularity, limit: limit)
         if let cached = topListCache[cacheKey], !cached.isExpired {
             return cached.data
         }
 
         // Fetch fresh data
         do {
-            let data = try await _getTopListData(item, metric: metric, interval: interval, granularity: granularity, limit: limit)
+            let data = try await _getTopListData(item, metric: metric, interval: interval, granularity: granularity, limit: limit, locationLevel: locationLevel)
 
             // Cache the result
             // Historical data never expires (ttl = nil), current period data expires after 30 seconds
@@ -126,7 +126,7 @@ actor StatsService: StatsServiceProtocol {
         }
     }
 
-    private func _getTopListData(_ item: TopListItemType, metric: SiteMetric, interval: DateInterval, granularity: DateRangeGranularity, limit: Int?) async throws -> TopListResponse {
+    private func _getTopListData(_ item: TopListItemType, metric: SiteMetric, interval: DateInterval, granularity: DateRangeGranularity, limit: Int?, locationLevel: LocationLevel?) async throws -> TopListResponse {
 
         func getData<T: WordPressKit.StatsTimeIntervalData>(
             _ type: T.Type,
@@ -137,20 +137,13 @@ actor StatsService: StatsServiceProtocol {
             return try await service.getData(interval: interval, unit: .day, summarize: true, limit: limit ?? 0, parameters: parameters)
         }
 
-        // Helper function to sort items by metric value (descending) and then by itemID for stable ordering
+        // Helper function to sort items by metric value (descending), then by displayName, and then by itemID for stable ordering
         func sortItems(_ items: [any TopListItemProtocol]) -> [any TopListItemProtocol] {
-            items.sorted { lhs, rhs in
-                let lhsValue = lhs.metrics[metric] ?? 0
-                let rhsValue = rhs.metrics[metric] ?? 0
-
-                // First sort by metric value (descending)
-                if lhsValue != rhsValue {
-                    return lhsValue > rhsValue
-                }
-
-                // If values are equal, sort by itemID for stable ordering
-                return lhs.id.id < rhs.id.id
-            }
+            items.sorted(using: [
+                KeyPathComparator(\.metrics[metric], order: .reverse),
+                KeyPathComparator(\.displayName, comparator: .localizedStandard),
+                KeyPathComparator(\.id.id)
+            ])
         }
 
         switch item {
@@ -173,9 +166,21 @@ actor StatsService: StatsServiceProtocol {
             return TopListResponse(items: sortItems(items))
 
         case .locations:
-            let data = try await getData(StatsTopCountryTimeIntervalData.self)
-            let items = data.countries.map(TopListItem.Location.init)
-            return TopListResponse(items: sortItems(items))
+            let level = locationLevel ?? .cities
+            switch level {
+            case .countries:
+                let data = try await getData(StatsTopCountryTimeIntervalData.self)
+                let items = data.countries.map(TopListItem.Location.init)
+                return TopListResponse(items: sortItems(items))
+            case .regions:
+                let data = try await getData(StatsTopRegionTimeIntervalData.self)
+                let items = data.regions.map(TopListItem.Location.init)
+                return TopListResponse(items: sortItems(items))
+            case .cities:
+                let data = try await getData(StatsTopCityTimeIntervalData.self)
+                let items = data.cities.map(TopListItem.Location.init)
+                return TopListResponse(items: sortItems(items))
+            }
 
         case .authors:
             let data = try await getData(StatsTopAuthorsTimeIntervalData.self)
@@ -415,6 +420,7 @@ private struct CachedEntity<T> {
 private struct TopListCacheKey: Hashable {
     let item: TopListItemType
     let metric: SiteMetric
+    let locationLevel: LocationLevel?
     let interval: DateInterval
     let granularity: DateRangeGranularity
     let limit: Int?

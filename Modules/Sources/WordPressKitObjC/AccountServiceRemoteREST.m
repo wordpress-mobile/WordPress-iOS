@@ -376,6 +376,19 @@ MagicLinkFlow const MagicLinkFlowSignup = @"signup";
 {
     NSString *requestUrl = [self pathForEndpoint:@"me/sites"
                                      withVersion:WordPressComRESTAPIVersion_1_2];
+    // site_activity=active filters out many sites that are not longer available.
+    //
+    // For example, if you have a self-hosted site that's connected to a WP.com account, and later the site domain expires
+    // and couldn't be accessed, we don't want to show this site in the app. These sites are filtered out by the
+    // `site_activity=active` parameter.
+    //
+    // For reference, this paramter is hard-coded in "My Sites" in calypso:
+    // https://github.com/Automattic/wp-calypso/blob/64806d21520e5489b30fbabf04e2f427a3ad392c/packages/api-core/src/me-sites/fetchers.ts#L30
+    if (parameters[@"site_activity"] == nil) {
+        NSMutableDictionary *updated = [NSMutableDictionary dictionaryWithDictionary:parameters];
+        updated[@"site_activity"] = @"active";
+        parameters = updated;
+    }
     [self.wordPressComRESTAPI get:requestUrl
                        parameters:parameters
                           success:^(id responseObject, NSHTTPURLResponse *httpResponse) {
@@ -414,11 +427,6 @@ MagicLinkFlow const MagicLinkFlowSignup = @"signup";
         // I tried to use query arguments `site_visibility=visible` and `site_activity=active`, but neither excludes
         // deleted sites.
         if (blog.isDeleted) {
-            return false;
-        }
-
-        // Exclude sites that are connected via Jetpack, but without an active Jetpack connection.
-        if (blog.jetpackConnection && !blog.jetpack) {
             return false;
         }
 

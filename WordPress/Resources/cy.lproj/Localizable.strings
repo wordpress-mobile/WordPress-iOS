@@ -1,6 +1,6 @@
 /* Translation-Revision-Date: 2022-05-03 21:53:03+0000 */
 /* Plural-Forms: nplurals=4; plural=(n==1) ? 0 : (n==2) ? 1 : (n != 8 && n != 11) ? 2 : 3; */
-/* Generator: GlotPress/4.0.1 */
+/* Generator: GlotPress/4.0.3 */
 /* Language: cy_GB */
 
 /* Title of a list of buttons used for sharing content to other services. These buttons appear when the user taps a `More` button. */
@@ -134,8 +134,7 @@
 /* No comment provided by engineer. */
 "Allow this connection to be used by all admins and users of your site." = "Caniatáu i'r cysylltiad hwn gael ei ddefnyddio gan holl weinyddwyr a defnyddwyr eich gwefan.";
 
-/* Image alt attribute option title.
-   Label for the alt for a media asset (image) */
+/* Image alt attribute option title. */
 "Alt Text" = "Testun Amgen";
 
 /* An error description explaining that a Menu could not be created. */
@@ -294,7 +293,6 @@
    Title. Title of a cancel button. Tapping disnisses an alert.
    Verb. A button title.
    Verb. A button title. Tapping cancels an action.
-   Verb. Button title. Tapping cancels an action.
    Verb. Tapping cancels the publicize account selection.
    Verb. Title for Jetpack Restore cancel button. */
 "Cancel" = "Diddymu";
@@ -307,8 +305,7 @@
 /* Dialog box title for when the user is canceling an upload. */
 "Cancel media uploads" = "Diddymu llwytho cyfryngau";
 
-/* Image caption field label (for editing)
-   Noun. Label for the caption for a media asset (image / video) */
+/* Image caption field label (for editing) */
 "Caption" = "Egluryn";
 
 /* Alert title. */
@@ -505,8 +502,7 @@
 /* Action title. Noun. Opens the user's WordPress.com dashboard in an external browser. */
 "Dashboard" = "Bwrdd Rheoli";
 
-/* Label for selecting the default category of a post
-   Title for selecting a default category for a post */
+/* Label for selecting the default category of a post */
 "Default Category" = "Categori Rhagosodedig";
 
 /* Label for selecting the default post format
@@ -515,9 +511,6 @@
 
 /* Discussion Settings: Posts Section */
 "Defaults for New Posts" = "Rhagosodiadau Gwefannau Newydd";
-
-/* Title for button that permanently deletes a media item (photo / video) */
-"Delete" = "Dileu";
 
 /* Menus confirmation button for deleting a menu. */
 "Delete Menu" = "Dileu Dewislen";
@@ -622,7 +615,7 @@
 /* Title for the edit sharing buttons section */
 "Edit sharing buttons" = "Golygu'r botymau rhannu";
 
-/* Title for the editor settings section */
+/* Title for the editor section in site settings screen */
 "Editor" = "Golygydd";
 
 /* Accessibility label for the Email text field.
@@ -763,9 +756,6 @@
 
 /* Title of the screen for choosing an image's size. */
 "Image Size" = "Maint Delwedd";
-
-/* Hint for image title on image settings. */
-"Image title" = "Teitl delwedd";
 
 /* Explain what is the purpose of the tagline */
 "In a few words, explain what this site is about." = "Esboniwch, mewn ychydig eiriau, bwrpas y wefan.";
@@ -1015,9 +1005,6 @@
    Title of a button. The text should be capitalized. */
 "Next" = "Nesaf";
 
-/* Text shown (to select no-category) in the parent-category-selection screen when creating a new category. */
-"No Category" = "Dim Categori";
-
 /* Title of error prompt when no internet connection is available. */
 "No Connection" = "Dim Cysylltiad";
 
@@ -1202,9 +1189,6 @@
    Settings: Comments Paging preferences */
 "Paging" = "Tudalennu";
 
-/* Title for selecting parent category of a category */
-"Parent Category" = "Categori Rhiant";
-
 /* Accessibility label for the password text field in the self-hosted login page.
    Label for entering password in password field
    Login dialog password placeholder
@@ -1258,9 +1242,6 @@
 /* Noun. Type of content being selected is a blog post
    Title shown when selecting a post type of Post from the Share Extension. */
 "Post" = "Cofnod";
-
-/* Title for selecting categories for a post */
-"Post Categories" = "Categoriau Cofnodion";
 
 /* Insights 'Posting Activity' header
    Title for stats Posting Activity view. */
@@ -1644,6 +1625,7 @@
 "Tagline" = "Llinell Tag";
 
 /* Label for selecting the blogs tags
+   Post tags.
    Tags menu item in share extension. */
 "Tags" = "Tagiau";
 
@@ -1748,9 +1730,6 @@
 /* An error message display if the users device does not have a camera input available */
 "This app needs permission to access the Camera to capture new media, please change the privacy settings if you wish to allow this." = "Mae'r ap angen caniatâd i gael mynediad at y Camera i gipio cyfryngau newydd, newidiwch y gosodiadau preifatrwydd os ydych yn dymuno caniatáu hyn.";
 
-/* Message displayed in Media Library if the user attempts to edit a media asset (image / video) after it has been deleted. */
-"This media item has been deleted." = "Mae'r eitem cyfrwng hwn wedi ei ddileu.";
-
 /* A description of the twitter sharing setting.
    Information about the twitter sharing feature. */
 "This will be included in tweets when people share using the Twitter button." = "Bydd hyn cael ei gynnwys mewn trydar pan fydd pobl yn rhannu gan ddefnyddio'r botwm Twitter.";
@@ -1767,7 +1746,6 @@
 
 /* Accessibility label for web page preview title
    Label for list of stats by content title.
-   Noun. Label for the title of a media asset (image / video)
    Placeholder for the post title.
    Post title */
 "Title" = "Teitl";
@@ -1786,8 +1764,7 @@
 /* Shortened version of the main title to be used in back navigation */
 "Topic" = "Pwnc";
 
-/* Accessibility label for trash buttons in nav bars
-   Trashes a comment
+/* Trashes a comment
    Trashes the comment */
 "Trash" = "Dileu";
 
@@ -1826,9 +1803,6 @@
 
 /* Title of error prompt shown when a sync the user initiated fails. */
 "Unable to Sync" = "Methu Cydweddu";
-
-/* Error shown when the app fails to load a video from the user's media library. */
-"Unable to load video." = "Methu llwytho fideo";
 
 /* Error reason to display when the writing of a image to a file fails */
 "Unable to write image to file" = "Methu ysgrifennu'r ddelwedd i ffeil";
@@ -1881,9 +1855,6 @@
 
 /* Label action for updating a link on the editor */
 "Update Link" = "Diweddaru Dolen";
-
-/* Label for the date a media asset (image / video) was uploaded */
-"Uploaded" = "Wedi ei lwytho";
 
 /* \"Uploading\" Status text */
 "Uploading" = "Llwytho i fyny";

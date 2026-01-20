@@ -1,16 +1,22 @@
-Du kan nu skapa ett utdrag, en inläggssammanfattning och automatiskt genererade etiketter för dina inlägg med hjälp av Apple Intelligence. Det är också enklare att välja dina etiketter i inläggsinställningarna. Det är smart.
-På tal om statistik så har vi gjort flera nya förbättringar inom detta område av appen.
-- Vi har lagt till ett Idag-kort på skärmen Ny statistik.
-- Din startsida visas nu i listan över de populäraste sidorna.
-- Dina topp 10- och topp 50-objekt har nu sin egen specialsektion. En plats för allt och allt på sin plats.
-- Dina toppsidor visas korrekt när du har ett stort antal objekt.
-- Ny statistik-layouten ändras för att passa olika skärmstorlekar. Till och med riktigt, riktigt stora.
-- Skärmen kommer ihåg dina föredragna inställningar när du väljer ett anpassat datumintervall.
-- Fliken Trafik kan dras nedåt för att uppdatera skärmen.
-Vi har också gjort några visuella korrigeringar för iOS i områden som flödet för webbplatsskapande, skärmen för mediaval och statistikskärmen. Och medan vi ändå höll på åtgärdade vi även ett flertal buggar.
-- Vi har åtgärdat en sällsynt krasch som ibland kunde uppstå i Statistik och Prenumeranter. (Nu gör den inte det längre.)
-- Artikelvisningar ser ut som de ska i Läsaren när vissa teman är aktiverade.
-- Läsarartiklar återges korrekt på enheter med Visningszoom aktiverat.
-- Knappen ”Lägg till media” förblir synlig i mediebiblioteket. Inget mer försvinnande.
-- Du kan söka i läsarprenumerationer utan att appen hänger sig.
-- Verktygsfältet i läsarartiklar försvinner inte längre för att sedan komma tillbaka igen då och då. Nu ser du det, nu ser du det… fortfarande, hoppas vi.
+Lystring alla innehållsskapare! Vi har arbetat hårt med att göra några stora förändringar på skärmen för Inläggsinställningar.
+
+- Vi har lagt till ett Status-fält som hjälper dig att snabbt ändra status för inlägg mellan utkast, inväntar granskning, privat, tidsinställd och publicerat.
+- Vi har återinfört området "Publiceringsdatum" för utkast och inlägg som inväntar granskning. På så sätt kan du välja ett publiceringsdatum på förhand utan att ha någon officiell tidsinställning för inlägget.
+- Lösenordsfältet använder ett annat typsnitt (Menlo, om du är nyfiken) så att det blir lättare att läsa snarlika tecken.
+- Ge dina följare VIP-behandling genom att ställa in åtkomstnivåer för inlägg för samtliga prenumeranter, betalande prenumeranter och allmänheten.
+- Slå på/av inläggskommentarer och pingback med hjälp av inställningarna för "Diskussion".
+
+Medan vi ändå var igång gjorde vi flera andra användbara uppdateringar i olika delar av appen.
+
+- På skärmen "Publicering" kan du slå på/av ”E-post till prenumeranter” för att automatiskt meddela dina prenumeranter när ett inlägg publiceras. Starta tryckpressarna.
+- Slug-redigeraren har en förhandsgranskning av permalänken som visar hur inläggets slutgiltiga URL kommer att se ut.
+Vi har lagt till "Taxonomier" till webbplatsinställningarna så att du kan hantera innehållsgrupper på webbplatsnivå.
+- Tack vare några designåtgärder i "Kategori"-väljaren är det nu tydligare att du kan välja flera kategorier för ett inlägg.
+- Filstorlekarna visas nu i området Mediedetaljer för webbplatsen. Inget mer gissande.
+
+Är du mer av en läsare än en utgivare? Oroa dig inte, vi gjorde ändringar i Läsaren också.
+
+- När rubriker för relaterade inlägg är för långa ser du en förkortad version istället.
+- Inläggsrutor kan nu ha tre rader med text istället för bara två, och det ger dig 50 % mer innehåll.
+- Artiklarna har något bredare horisontella marginaler.
+- Vi åtgärdade flera buggar som påverkade hur artiklar hämtas.

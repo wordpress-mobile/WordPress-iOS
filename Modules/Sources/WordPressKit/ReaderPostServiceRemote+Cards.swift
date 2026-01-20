@@ -14,6 +14,7 @@ public enum ReaderSortingOption: String, CaseIterable {
 
 public enum ReaderStream: String {
     case discover = "discover"
+    case freshlyPressed = "freshly-pressed"
     case firstPosts = "first-posts"
 }
 

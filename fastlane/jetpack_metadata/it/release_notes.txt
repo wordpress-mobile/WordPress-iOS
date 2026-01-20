@@ -1,16 +1,22 @@
-Ora puoi creare un estratto, un riepilogo dell'articolo e tag generati automaticamente per gli articoli usando Apple Intelligence. È anche più facile scegliere i tag nelle Impostazioni articolo. Questo sì che è intelligente.
-Parlando di Statistiche, ci sono diversi nuovi miglioramenti in questa sezione dell'app.
-- Abbiamo aggiunto una scheda Oggi alla schermata Nuove statistiche.
-- La tua home page ora appare nell'elenco delle prime pagine.
-- I primi 10 e 50 elementi ora hanno la loro sezione speciale. Il posto giusto per tutto e tutto al posto giusto.
-- Le tue prime pagine appaiono correttamente quando hai un gran numero di elementi.
-- Il layout delle nuove statistiche viene modificato per adattarsi alle diverse dimensioni dello schermo. Anche quelli veramente grandi.
-- La schermata ricorderà le impostazioni preferite quando scegli un intervallo di date personalizzato.
-- La scheda Traffico ti permette di aggiornare lo schermo.
-Abbiamo anche apportato alcune correzioni visive per iOS in aree come il flusso di creazione del sito, la schermata di selezione dei media e la schermata Statistiche. E già che c'eravamo, abbiamo anche risolto diversi bug.
-- Abbiamo risolto un raro arresto anomalo che si verificava in Statistiche e Abbonati. (Ma non più.)
-- Le visualizzazioni degli articoli hanno l'aspetto che dovrebbero avere nel Reader quando alcuni temi sono attivati.
-- Gli articoli del lettore vengono visualizzati correttamente sui dispositivi con Display Zoom abilitato.
-- Il pulsante "Aggiungi media" rimane visibile nella libreria multimediale. Niente più sparizioni.
-- Puoi cercare in Iscrizioni Reader senza che l'app si blocchi.
-- La barra degli strumenti negli articoli del Reader non scompare più e riappare di tanto in tanto. Ora la vedi, ora la... vedi ancora, a quanto pare.
+Attenzione, creatori di contenuti: abbiamo lavorato sodo per apportare alcune grandi modifiche alla schermata delle impostazioni dell'articolo.
+
+- Abbiamo aggiunto un campo "Stato" che ti aiuta a spostare rapidamente gli articoli tra gli stati bozza, in attesa, privato, programmato e pubblicato.
+- Abbiamo ripristinato l'area "Data di pubblicazione" per le bozze e gli articoli in sospeso. In questo modo puoi scegliere una data di pubblicazione in anticipo senza programmare ufficialmente l'articolo.
+- Il campo della password utilizza un font diverso (Menlo, se ti interessa), così è più facile leggere caratteri simili.
+- Offri ai tuoi follower un trattamento da VIP impostando livelli di accesso agli articoli per tutti gli abbonati, gli abbonati a pagamento e il pubblico in generale.
+- Attiva o disattiva i commenti agli articoli e i pingback usando le impostazioni "Discussione".
+
+Già che c'eravamo, abbiamo fatto diversi altri aggiornamenti utili in varie aree dell'app.
+
+- Nella schermata "Pubblicazione", puoi attivare o disattivare "Invia e-mail agli abbonati" per avvisare automaticamente i tuoi abbonati quando un articolo viene pubblicato. Comincia a scrivere.
+- L'editor degli slug ha un'anteprima permalink per mostrare come sarà l'URL finale di un articolo.
+- Abbiamo aggiunto "Tassonomie" alle impostazioni del sito in modo che tu possa gestire i gruppi di contenuti a livello di sito.
+- Grazie ad alcune correzioni di design nel selettore "Categorie", ora è più intuitivo poter scegliere più categorie per un articolo.
+- Le dimensioni dei file sono ora visibili nell'area dei dettagli degli elementi multimediali del sito. Niente più congetture.
+
+Più un lettore che un editore? Non preoccuparti, abbiamo apportato modifiche anche al Reader.
+
+- Quando i titoli degli articoli correlati sono troppo lunghi, vedrai una versione più breve.
+- I riquadri degli articoli ora possono avere tre righe di testo invece di sole due, offrendoti il 50% in più di qualità dei contenuti.
+- Gli articoli hanno margini orizzontali leggermente più ampi.
+- Abbiamo risolto diversi bug che influenzavano il modo in cui gli articoli si caricano.

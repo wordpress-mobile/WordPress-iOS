@@ -2,7 +2,6 @@
 #import <CoreData/CoreData.h>
 #import <XCTest/XCTest.h>
 #import "Blog.h"
-#import "AbstractPost.h"
 
 @interface CoreDataMigrationTests : XCTestCase
 
@@ -27,7 +26,7 @@
 }
 
 - (void)testModelUrl {
-    NSURL *url = [self urlForModelName:@"WordPress 20" inDirectory:nil];
+    NSURL *url = [self urlForModelName:@"WordPress 102" inDirectory:nil];
     
     XCTAssertNotNil(url);
 }

@@ -39,6 +39,7 @@ NSString * const PostRESTKeyIsReblogged = @"is_reblogged";
 NSString * const PostRESTKeyIsSeen = @"is_seen";
 NSString * const PostRESTKeyLikeCount = @"like_count";
 NSString * const PostRESTKeyLikesEnabled = @"likes_enabled";
+NSString * const PostRESTKeyUseExcerpt = @"use_excerpt";
 NSString * const PostRESTKeyName = @"name";
 NSString * const PostRESTKeyNiceName = @"nice_name";
 NSString * const PostRESTKeyPermalink = @"permalink";
@@ -138,6 +139,7 @@ static const NSUInteger ReaderPostTitleLength = 30;
     self.tags = [self tagsFromPostDictionary:dict];
     self.isSharingEnabled = [[dict numberForKey:PostRESTKeySharingEnabled] boolValue];
     self.isLikesEnabled = [[dict numberForKey:PostRESTKeyLikesEnabled] boolValue];
+    self.useExcerpt = [[dict numberForKey:PostRESTKeyUseExcerpt] boolValue];
     self.organizationID = [dict numberForKeyPath:PostRESTKeyOrganizationID] ?: @0;
     self.canSubscribeComments = [[dict numberForKey:PostRESTKeyCanSubscribeComments] boolValue];
     self.isSubscribedComments = [[dict numberForKey:PostRESTKeyIsSubscribedComments] boolValue];
@@ -507,7 +509,14 @@ static const NSUInteger ReaderPostTitleLength = 30;
 }
 
 - (NSString *)editorialImageFromPostDictionary:(NSDictionary *)dict {
-    return [dict stringForKeyPath:@"editorial.image"];
+    NSString *imageURL = [dict stringForKeyPath:@"editorial.image"];
+    // A workaround for https://linear.app/a8c/issue/CMM-994/reader-invalid-featured-images-for-posts-in-freshly-pressed-feed
+    // The app does not support `mshots` images. We also never want to show
+    // screenshots of posts as featured images, so it's safe to skip these.
+    if ([imageURL containsString:@"wp.com/mshots/"]) {
+        return nil;
+    }
+    return imageURL;
 }
 
 - (NSString *)userSpecifiedFeaturedImageFromPostDictionary:(NSDictionary *)dict {

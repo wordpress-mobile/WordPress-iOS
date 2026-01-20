@@ -17,9 +17,6 @@ protocol PublishingEditor where Self: UIViewController {
     /// Editor Session information for analytics reporting
     var editorSession: PostEditorAnalyticsSession { get set }
 
-    /// Verification prompt helper
-    var verificationPromptHelper: VerificationPromptHelper? { get }
-
     /// Describes the editor type to be used in analytics reporting
     var analyticsEditorSource: String { get }
 
@@ -196,7 +193,7 @@ extension PublishingEditor {
             return discardAndDismiss()
         }
 
-        if post.original().isStatus(in: [.draft, .pending]) {
+        if post.getOriginal().isStatus(in: [.draft, .pending]) {
             // The "Discard Changes" behavior is problematic due to the way
             // the editor and `PostCoordinator` often update the content
             // in the background without the user interaction.
@@ -246,7 +243,7 @@ extension PublishingEditor {
         let alert = UIAlertController(title: nil, message: nil, preferredStyle: .actionSheet)
         alert.view.accessibilityIdentifier = "post-has-changes-alert"
         alert.addCancelActionWithTitle(Strings.closeConfirmationAlertCancel)
-        let discardTitle = post.original().isNewDraft ? Strings.closeConfirmationAlertDelete : Strings.closeConfirmationAlertDiscardChanges
+        let discardTitle = post.getOriginal().isNewDraft ? Strings.closeConfirmationAlertDelete : Strings.closeConfirmationAlertDiscardChanges
         alert.addDestructiveActionWithTitle(discardTitle) { _ in
             self.discardAndDismiss()
         }
@@ -367,4 +364,26 @@ private enum Strings {
 private struct MediaUploadingAlert {
     static let title = NSLocalizedString("Uploading media", comment: "Title for alert when trying to save/exit a post before media upload process is complete.")
     static let message = NSLocalizedString("You are currently uploading media. Please wait until this completes.", comment: "This is a notification the user receives if they are trying to save a post (or exit) before the media upload process is complete.")
+}
+
+private extension AbstractPost {
+    func hasPhoto() -> Bool {
+        if media.isEmpty {
+            return false
+        }
+
+        if featuredImage != nil {
+            return true
+        }
+
+        return media.contains { $0.mediaType == .image }
+    }
+
+    func hasVideo() -> Bool {
+        if media.isEmpty {
+            return false
+        }
+
+        return media.contains { $0.mediaType == .video }
+    }
 }

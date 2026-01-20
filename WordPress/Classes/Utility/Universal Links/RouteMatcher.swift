@@ -24,41 +24,33 @@ class RouteMatcher {
     ///
     func routesMatching(_ url: URL) -> [MatchedRoute] {
         let pathComponents = url.pathComponents
+        let values = valuesDictionary(forURL: url)
 
-        return routes.compactMap({ route in
-            let values = valuesDictionary(forURL: url)
+        return routes.compactMap { route -> MatchedRoute? in
+            route.allPaths.compactMap { candidate in
+                // If the paths are the same, we definitely have a match
+                if candidate == url.path {
+                    return route.matched(with: values)
+                }
 
-            // If the paths are the same, we definitely have a match
-            if route.path == url.path {
-                return route.matched(with: values)
-            }
+                let candidateComponents = candidate.components
 
-            let routeComponents = route.components
+                // Ensure the paths have the same number of components
+                guard candidateComponents.count == pathComponents.count else {
+                    return nil
+                }
 
-            // Ensure the paths have the same number of components
-            guard routeComponents.count == pathComponents.count else {
-                return nil
-            }
+                guard let placeholderValues = placeholderDictionary(
+                    forKeyComponents: candidateComponents,
+                    valueComponents: pathComponents
+                ) else {
+                    return nil
+                }
 
-            guard let placeholderValues = placeholderDictionary(forKeyComponents: routeComponents,
-                                                                valueComponents: pathComponents) else {
-                                                                    return nil
-            }
-
-            let allValues = values.merging(placeholderValues,
-                                           uniquingKeysWith: { (current, _) in current })
-
-            // If it's a wpcomPost reader route, then check if it's a valid wpcom url.
-            // Need to check since we have no guarantee that it's a valid wpcom url,
-            // other than the path having 4 components.
-            if let readerRoute = route as? ReaderRoute,
-               readerRoute == .wpcomPost,
-               !readerRoute.isValidWpcomUrl(allValues) {
-                return nil
-            }
-
-            return route.matched(with: allValues)
-        })
+                let allValues = values.merging(placeholderValues, uniquingKeysWith: { (current, _) in current })
+                return route.matched(with: allValues)
+            }.first
+        }
     }
 
     private func valuesDictionary(forURL url: URL) -> [String: String] {

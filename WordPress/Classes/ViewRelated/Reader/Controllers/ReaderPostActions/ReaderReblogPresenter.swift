@@ -4,7 +4,6 @@ import WordPressUI
 
 /// Presents the appropriate reblog scene, depending on the number of available sites
 class ReaderReblogPresenter {
-    private let postService: PostService
 
     private struct NoSitesConfiguration {
         static let noSitesTitle = NSLocalizedString(
@@ -24,16 +23,6 @@ class ReaderReblogPresenter {
         )
         static let backButtonTitle = NSLocalizedString("Back",
                                                        comment: "Back button title.")
-    }
-
-    init(postService: PostService? = nil) {
-
-        // fallback for self.postService
-        func makePostService() -> PostService {
-            let context = ContextManager.shared.mainContext
-            return PostService(managedObjectContext: context)
-        }
-        self.postService = postService ?? makePostService()
     }
 
     /// Presents the reblog screen(s)

@@ -20,7 +20,7 @@ extension RemotePostCreateParameters {
         excerpt = post.mt_excerpt
         slug = post.wp_slug
         featuredImageID = post.featuredImage?.mediaID?.intValue
-        otherTerms = post.parseOtherTerms()
+        otherTerms = post.parsedOtherTerms
         switch post {
         case let page as Page:
             parentPageID = page.parentID?.intValue

@@ -12,10 +12,11 @@ struct SupportActivityDetailsView: View {
 
     var body: some View {
         ScrollView {
-            Text(viewModel.logText)
-                .font(.subheadline)
-                .frame(maxWidth: .infinity, alignment: .leading)
-                .padding()
+            LazyVStack(alignment: .leading, spacing: 0) {
+                logLinesContent
+            }
+            .font(.subheadline)
+            .padding()
         }
         .navigationTitle(viewModel.logDate)
         .navigationBarTitleDisplayMode(.inline)
@@ -29,10 +30,18 @@ struct SupportActivityDetailsView: View {
             }
         }
     }
+
+    @ViewBuilder
+    private var logLinesContent: some View {
+        ForEach(Array(viewModel.logLines.enumerated()), id: \.offset) { _, line in
+            Text(line)
+                .frame(maxWidth: .infinity, alignment: .leading)
+        }
+    }
 }
 
 private final class SupportActivityDetailsViewModel: ObservableObject {
-    let logText: String
+    let logLines: [String]
     let logDate: String
 
     init(logFile: DDLogFileInfo) {
@@ -45,15 +54,17 @@ private final class SupportActivityDetailsViewModel: ObservableObject {
 
         guard let logData = try? Data(contentsOf: URL(fileURLWithPath: logFile.filePath)),
               let logText = String(data: logData, encoding: .utf8) else {
-            self.logText = ""
+            self.logLines = []
             return
         }
-        self.logText = logText
+        self.logLines = logText
+            .split(separator: "\n", omittingEmptySubsequences: false)
+            .map(String.init)
     }
 
     func buttonShareTapped() {
         let activityVC = UIActivityViewController(
-            activityItems: [logText],
+            activityItems: [logLines.joined(separator: "\n")],
             applicationActivities: nil
         )
 

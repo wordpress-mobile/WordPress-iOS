@@ -28,7 +28,6 @@ struct PostSettings: Hashable {
     var postFormat: String?
     var isStickyPost = false
     var sharing: PostSocialSharingSettings?
-    var accessLevel: JetpackPostAccessLevel?
     var allowComments = true
     var allowPings = true
 
@@ -54,7 +53,7 @@ struct PostSettings: Hashable {
         }
 
         featuredImageID = post.featuredImage?.mediaID?.intValue
-        otherTerms = post.parseOtherTerms()
+        otherTerms = post.parsedOtherTerms
 
         metadata = PostMetadata(post)
 
@@ -67,7 +66,6 @@ struct PostSettings: Hashable {
                 $0.categoryID.intValue
             })
             sharing = PostSocialSharingSettings.make(for: post)
-            accessLevel = metadata.accessLevel ?? .everybody
             allowComments = post.allowComments
             allowPings = post.allowPings
         case let page as Page:
@@ -112,8 +110,8 @@ struct PostSettings: Hashable {
             post.featuredImage = nil
         }
 
-        if !RemotePost.compare(otherTerms: post.parseOtherTerms(), withAnother: otherTerms) {
-            post.setParsedOtherTerms(otherTerms)
+        if !RemotePost.compare(otherTerms: post.parsedOtherTerms, withAnother: otherTerms) {
+            post.parsedOtherTerms = otherTerms
         }
 
         var postMetadataContainer = PostMetadataContainer(post)

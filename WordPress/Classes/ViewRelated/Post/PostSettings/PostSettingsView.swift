@@ -290,7 +290,7 @@ struct PostSettingsFormContentView: View {
         NavigationLink {
             PostStatusView(settings: $viewModel.settings, timeZone: viewModel.timeZone)
         } label: {
-            SettingsRow(Strings.status) {
+            SettingsRow(Strings.statusAndVisibility) {
                 HStack(alignment: .center, spacing: 2) {
                     ScaledImage(viewModel.settings.status.image, height: 23)
                     VStack(alignment: .leading, spacing: 2) {
@@ -321,17 +321,21 @@ struct PostSettingsFormContentView: View {
     private var accessSection: some View {
         if viewModel.shouldShow(.jetpackAccessLevel) {
             Section {
-                SettingsPicker(
-                    title: Strings.accessHeader,
-                    selection: $viewModel.settings.metadata.accessLevel,
-                    values: JetpackPostAccessLevel.allCases.map { level in
-                        SettingsPickerValue(
-                            title: level.localizedTitle,
-                            details: level.localizedDescription,
-                            id: level
-                        )
-                    }
-                )
+                NavigationLink {
+                    SettingsPickerListView(
+                        selection: $viewModel.accessLevel,
+                        values: JetpackPostAccessLevel.allCases.map { level in
+                            SettingsPickerValue(
+                                title: level.localizedTitle,
+                                details: level.localizedDescription,
+                                id: level
+                            )
+                        }
+                    )
+                    .navigationTitle(Strings.accessHeader)
+                } label: {
+                    SettingsRow(Strings.accessHeader, value: (viewModel.accessLevel).localizedTitle)
+                }
             } header: {
                 SectionHeader(Strings.accessHeader)
             }
@@ -340,13 +344,9 @@ struct PostSettingsFormContentView: View {
 
     private var visibilityRow: some View {
         NavigationLink {
-            PostVisibilityPicker(
-                selection: PostVisibilityPicker.Selection(post: viewModel.post),
-                dismissOnSelection: true,
-                onSubmit: { selection in
-                    viewModel.updateVisibility(selection)
-                }
-            )
+            PostVisibilityPicker(selection: PostVisibilityPicker.Selection(settings: viewModel.settings)) {
+                viewModel.updateVisibility($0)
+            }
         } label: {
             SettingsRow(Strings.visibilityLabel, value: viewModel.visibilityText)
         }
@@ -712,9 +712,9 @@ private enum Strings {
         comment: "The title of the top section that shows the site your are publishing to. Default is 'Ready to Publish?'"
     )
 
-    static let status = NSLocalizedString(
-        "postSettings.status.label",
-        value: "Status",
+    static let statusAndVisibility = NSLocalizedString(
+        "postSettings.statusAndVisibility.label",
+        value: "Status & Visibility",
         comment: "Label for the status field in Post Settings"
     )
 }

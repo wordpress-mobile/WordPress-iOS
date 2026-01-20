@@ -248,7 +248,7 @@ struct JetpackScanStatusViewModel {
 
         struct fixing {
             static let title = NSLocalizedString("Fixing Threats", comment: "Subtitle displayed while the server is fixing threats")
-            static let details = NSLocalizedString("We're hard at work fixing these threats in the background. In the meantime feel free to continue to use your site as normal, you can check back on progress at any time.", comment: "Detail text display informing the user that we're fixing threats")
+            static let details = NSLocalizedString("We're hard at work in the background fixing these threats. In the meantime feel free to continue to use your site as normal, you can check back on progress at any time.", comment: "Detail text display informing the user that we're fixing threats")
         }
 
         // Buttons

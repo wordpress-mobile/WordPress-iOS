@@ -742,10 +742,6 @@ import AutomatticTracks
     func togglePostSave(_ post: ReaderPost) {
         let origin: ReaderSaveForLaterOrigin = contentType == .saved ? .savedStream : .otherStream
 
-        if !post.isSavedForLater {
-            FancyAlertViewController.presentReaderSavedPostsAlertControllerIfNecessary(from: self)
-        }
-
         let saveAction = ReaderSaveForLaterAction(visibleConfirmation: showConfirmation)
         saveAction.execute(with: post, context: viewContext, origin: origin, viewController: self)
     }
@@ -1634,6 +1630,24 @@ extension ReaderStreamViewController: UITableViewDelegate, JPScrollViewDelegate 
         layoutEmptyStateView()
         processJetpackBannerVisibility(scrollView)
         titleView.updateAlpha(in: scrollView)
+    }
+}
+
+extension ReaderStreamViewController: ContentIdentifiable {
+    var contentIdentifier: String? {
+        if let siteId = self.siteID {
+            return "https://wordpress.com/reader/feeds/\(siteId)/"
+        }
+
+        if let tagSlug = self.tagSlug {
+            return "https://wordpress.com/tag/\(tagSlug)"
+        }
+
+        if let readerTopic {
+            return readerTopic.path
+        }
+
+        return nil
     }
 }
 

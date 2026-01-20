@@ -121,8 +121,8 @@ struct UniversalLinkRouter: LinkRouter {
         }
 
         // If there's a hostname, check if it's WordPress.com or jetpack.com/app.
-        return scheme == "https"
-        && (host == "wordpress.com" || host == "jetpack.com")
+        return (scheme == "https" || scheme == "http")
+        && (host == "wordpress.com" || host == "jetpack.com" || host.hasSuffix(".wordpress.com") || host.hasSuffix(".jetpack.com"))
         && matcherCanHandle
     }
 

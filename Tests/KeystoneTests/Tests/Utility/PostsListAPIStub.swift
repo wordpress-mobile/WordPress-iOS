@@ -115,10 +115,10 @@ class PostsListAPIStubTests: CoreDataTestCase {
 
         let all = try await repository.search(type: Post.self, input: nil, statuses: [], tag: nil, offset: 0, limit: 30, orderBy: .byDate, descending: true, in: blogID)
 
-        var result = try await repository.paginate(type: Post.self, statuses: [], offset: 0, number: 5, in: blogID)
+        var result = try await repository.paginate(type: Post.self, statuses: [], orderBy: .byDate, descending: true, offset: 0, number: 5, in: blogID)
         XCTAssertEqual(result, Array(all[0..<5]))
 
-        result = try await repository.paginate(type: Post.self, statuses: [], offset: 3, number: 2, in: blogID)
+        result = try await repository.paginate(type: Post.self, statuses: [], orderBy: .byDate, descending: true, offset: 3, number: 2, in: blogID)
         XCTAssertEqual(result, [all[3], all[4]])
     }
 

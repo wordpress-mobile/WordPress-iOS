@@ -1,5 +1,15 @@
 import Foundation
 
+public struct ResolvedReaderPost: Decodable {
+    public let postId: UInt64
+    public let siteId: UInt64
+
+    enum CodingKeys: String, CodingKey {
+        case postId = "post_id"
+        case siteId = "site_id"
+    }
+}
+
 extension ReaderPostServiceRemote {
     /// Returns a collection of RemoteReaderPost
     /// This method returns the best available content for the given topics.
@@ -29,6 +39,23 @@ extension ReaderPostServiceRemote {
             WPKitLogError("Error fetching reader posts: \(error)")
             failure(error)
         })
+    }
+
+    public func resolveUrl(
+        _ url: URL,
+        success: @escaping (ResolvedReaderPost) -> Void,
+        failure: @escaping (Error) -> Void
+    ) {
+        let path = "/wpcom/v2/mobile/resolve-reader-url"
+
+        Task { @MainActor [wordPressComRestApi] in
+            await wordPressComRestApi.perform(.get, URLString: path, parameters: [
+                "url": url.absoluteString,
+            ], type: ResolvedReaderPost.self)
+                .map { $0.body }
+                .eraseToError()
+                .execute(onSuccess: success, onFailure: failure)
+        }
     }
 
     private func postsEndpoint(for topics: [String], page: String? = nil) -> String? {

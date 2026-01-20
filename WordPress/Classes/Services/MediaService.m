@@ -458,15 +458,6 @@ NSErrorDomain const MediaServiceErrorDomain = @"MediaServiceErrorDomain";
     }];
 }
 
-#pragma mark - Private helpers
-
-- (NSString *)mimeTypeForMediaType:(NSNumber *)mediaType
-{
-    MediaType filter = (MediaType)[mediaType intValue];
-    NSString *mimeType = [Media stringFromMediaType:filter];
-    return mimeType;
-}
-
 #pragma mark - Media helpers
 
 - (id<MediaServiceRemote>)remoteForBlog:(Blog *)blog

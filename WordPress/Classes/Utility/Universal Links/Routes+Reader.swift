@@ -20,35 +20,41 @@ enum ReaderRoute {
 
 extension ReaderRoute: Route {
     var path: String {
+        // Guaranteed to be safe force-unwrap if `alternatePaths` is exhaustive and returns at least one value
+        // for every variant
+        alternatePaths.first!
+    }
+
+    var alternatePaths: [RoutePath] {
         switch self {
         case .root:
-            return "/read"
+            return ["/read", "/reader"]
         case .discover:
-            return "/discover"
+            return ["/discover"]
         case .search:
-            return "/read/search"
+            return ["/read/search", "/reader/search"]
         case .a8c:
-            return "/read/a8c"
+            return ["/read/a8c", "/reader/a8c"]
         case .p2:
-            return "/read/p2"
+            return ["/read/p2", "/reader/p2"]
         case .likes:
-            return "/activities/likes"
+            return ["/activities/likes"]
         case .manageFollowing:
-            return "/following/manage"
+            return ["/following/manage"]
         case .list:
-            return "/read/list/:username/:list_name"
+            return ["/read/list/:username/:list_name", "/reader/list/:username/:list_name"]
         case .tag:
-            return "/tag/:tag_name"
+            return ["/tag/:tag_name"]
         case .feed:
-            return "/read/feeds/:feed_id"
+            return ["/read/feeds/:feed_id", "/reader/feeds/:feed_id"]
         case .blog:
-            return "/read/blogs/:blog_id"
+            return ["/read/blogs/:blog_id", "/reader/blogs/:blog_id"]
         case .feedsPost:
-            return "/read/feeds/:feed_id/posts/:post_id"
+            return ["/read/feeds/:feed_id/posts/:post_id", "/reader/feeds/:feed_id/posts/:post_id"]
         case .blogsPost:
-            return "/read/blogs/:blog_id/posts/:post_id"
+            return ["/read/blogs/:blog_id/posts/:post_id", "/reader/blogs/:blog_id/posts/:post_id"]
         case .wpcomPost:
-            return "/:post_year/:post_month/:post_day/:post_name"
+            return ["/:post_year/:post_month/:post_day/:post_name"]
         }
     }
 
@@ -98,11 +104,11 @@ extension ReaderRoute: NavigationAction {
             }
         case .feed:
             if let feedIDValue = values["feed_id"], let feedID = Int(feedIDValue) {
-                presenter.showReaderStream(with: feedID, isFeed: true)
+                presenter.showReader(path: .site(siteID: feedID, isFeed: true))
             }
         case .blog:
             if let blogIDValue = values["blog_id"], let blogID = Int(blogIDValue) {
-                presenter.showReaderStream(with: blogID, isFeed: false)
+                presenter.showReader(path: .site(siteID: blogID, isFeed: false))
             }
         case .feedsPost:
             if let (feedID, postID) = feedAndPostID(from: values) {
@@ -113,9 +119,7 @@ extension ReaderRoute: NavigationAction {
                 presenter.showReader(path: .post(postID: postID, siteID: blogID))
             }
         case .wpcomPost:
-            if let urlString = values[MatchedRouteURLComponentKey.url.rawValue],
-               let url = URL(string: urlString),
-               isValidWpcomUrl(values) {
+            if let urlString = values[MatchedRouteURLComponentKey.url.rawValue], let url = URL(string: urlString) {
                 presenter.showReader(path: .postURL(url))
             }
         }
@@ -142,27 +146,6 @@ extension ReaderRoute: NavigationAction {
 
         return (blogID, postID)
     }
-
-    func isValidWpcomUrl(_ values: [String: String]) -> Bool {
-        let year = Int(values["post_year"] ?? "") ?? 0
-        let month = Int(values["post_month"] ?? "") ?? 0
-        let day = Int(values["post_day"] ?? "") ?? 0
-
-        // we assume no posts were made in the 1800's or earlier
-        func isYear(_ year: Int) -> Bool {
-            year > 1900
-        }
-
-        func isMonth(_ month: Int) ->  Bool {
-            (1...12).contains(month)
-        }
-
-        func isDay(_ day: Int) -> Bool {
-            (1...31).contains(day)
-        }
-
-        return isYear(year) && isMonth(month) && isDay(day)
-    }
 }
 
 // MARK: - RootViewPresenter (Extensions)
@@ -183,30 +166,5 @@ private extension RootViewPresenter {
         if let topic = ReaderListTopic.named(listName, forUser: user, in: context) {
             showReader(path: .topic(topic))
         }
-    }
-
-    /// - warning: This method performs the navigation asyncronously after
-    /// fetching the information about the stream from the backend.
-    func showReaderStream(with siteID: Int, isFeed: Bool) {
-        getSiteTopic(siteID: NSNumber(value: siteID), isFeed: isFeed) { [weak self] topic in
-            guard let topic else { return }
-            self?.showReader(path: .topic(topic))
-        }
-    }
-
-    private func getSiteTopic(siteID: NSNumber, isFeed: Bool, completion: @escaping (ReaderSiteTopic?) -> Void) {
-        let service = ReaderTopicService(coreDataStack: ContextManager.shared)
-        service.siteTopicForSite(withID: siteID, isFeed: isFeed, success: { objectID, isFollowing in
-            guard let objectID,
-                  let topic = try? ContextManager.shared.mainContext.existingObject(with: objectID) as? ReaderSiteTopic else {
-                DDLogError("Reader: Error retriving site topic - invalid Site Id")
-                completion(nil)
-                return
-            }
-            completion(topic)
-        }, failure: { error in
-            DDLogError("Reader: Error retriving site topic - \(error?.localizedDescription ?? "unknown failure reason")")
-            completion(nil)
-        })
     }
 }

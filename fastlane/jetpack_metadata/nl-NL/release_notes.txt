@@ -1,16 +1,22 @@
-Je kan nu een samenvatting, een berichtsamenvatting en automatisch gegenereerde tags voor je berichten maken met behulp van Apple Intelligence. Het is ook eenvoudiger om je tags te kiezen in berichtinstellingen. Dat is pas slim.
-Over statistieken gesproken, er zijn verschillende nieuwe verbeteringen op dit gebied van de app.
-- We hebben een Vandaag-kaart toegevoegd aan het scherm Nieuwe statistieken.
-- Je homepage verschijnt nu in de lijst met toppagina's.
-- Je top 10 en 50 artikelen hebben nu hun eigen speciale sectie. Een plek voor elk bericht en elk bericht op de juiste plek.
-- Je toppagina's worden goed weergegeven wanneer je een groot aantal items hebt.
-- De lay-out van de nieuwe statistieken wordt aangepast aan verschillende schermformaten. Zelfs echt, echt grote.
-- Het scherm onthoudt je voorkeursinstellingen wanneer je een aangepast datumbereik kiest.
-- Je kan het tabblad Verkeer omlaag trekken om het scherm te vernieuwen.
-We hebben ook een paar visuele fixes voor iOS gemaakt op gebieden zoals de site-aanmaakflow, het mediaselectiescherm en het Stats-scherm. En terwijl we bezig waren, hebben we ook verschillende bugs geplet.
-- We hebben een zeldzame crash opgelost die soms voorkomt in statistieken en abonnees. (Maar niet meer.)
-- Artikelweergaven zien er in de Reader uit zoals het hoort wanneer bepaalde thema's zijn ingeschakeld.
-- Lezerartikelen worden correct weergegeven op apparaten met Display Zoom ingeschakeld.
-- De knop 'Media toevoegen' blijft zichtbaar in de mediabibliotheek. Geen verdwijntrucs meer.
-- Je kan zoeken in Reader-abonnementen zonder de app te bevriezen.
-- De werkbalk in Reader-artikelen verdwijnt niet meer en verschijnt van tijd tot tijd opnieuw. Nu zie je het, nu zie je het … nog steeds, gokken we.
+Let op, contentmakers: we hebben hard gewerkt om een aantal grote wijzigingen aan te brengen in het scherm Berichtinstellingen.
+
+- We hebben een veld 'Status' toegevoegd waarmee je berichten snel kunt verplaatsen tussen de volgende statussen: concept, in afwachting, privé, ingepland en gepubliceerd.
+- We hebben het gedeelte 'Publicatiedatum' teruggezet voor conceptberichten en berichten in afwachting. Op die manier kun je van tevoren een publicatiedatum kiezen zonder het bericht officieel in te plannen.
+- Het wachtwoordveld gebruikt een ander lettertype (Menlo, als je geïnteresseerd bent), zodat het gemakkelijker is om gelijkaardige karakters te lezen.
+- Geef je volgers de VIP-behandeling door het instellen van toegang tot berichten voor alle abonnees, betaalde abonnees en het grote publiek.
+- Schakel berichtreacties en pingbacks in of uit met behulp van de instellingen 'Discussie'.
+
+Terwijl we bezig waren, hebben we verschillende andere nuttige updates gemaakt op verschillende gebieden van de app.
+
+- Op het scherm 'Publiceren' kun je 'E-mail aan abonnees' inschakelen om je abonnees automatisch op de hoogte te stellen wanneer een bericht is gepubliceerd. Start de persen.
+- De slugeditor heeft een permalinkvoorbeeld om te laten zien hoe de uiteindelijke URL van een bericht eruit zal zien.
+- We hebben 'Taxonomieën' toegevoegd aan Site-instellingen, zodat je contentgroepen op site-niveau kunt beheren.
+- Dankzij enkele ontwerpfixes in de 'Categorieën' kiezer, is het duidelijker dat je meerdere categorieën voor een bericht kunt kiezen.
+- Bestandsgroottes zijn nu zichtbaar in het gebied Mediagegevens van de site. Geen giswerk meer.
+
+Meer een lezer dan een uitgever? Geen zorgen, we hebben ook wijzigingen aangebracht in de Reader.
+
+- Wanneer gerelateerde berichttitels te lang zijn, zie je in plaats daarvan een kortere, afgekorte versie.
+- Berichttegels kunnen nu drie regels tekst bevatten in plaats van slechts twee, waardoor je 50% meer content hebt.
+- Artikelen hebben iets bredere horizontale marges.
+- We hebben verschillende bugs aangepakt die de manier waarop artikelen worden geladen hebben beïnvloed.

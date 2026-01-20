@@ -100,7 +100,7 @@ public class PostEditorStateContext {
                      action: PostEditorAction? = nil) {
         var originalPostStatus: BasePost.Status? = nil
 
-        let originalPost = post.original()
+        let originalPost = post.getOriginal()
         if let postStatus = originalPost.status, originalPost.hasRemote() {
             originalPostStatus = postStatus
         }

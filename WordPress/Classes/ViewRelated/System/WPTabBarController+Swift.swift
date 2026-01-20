@@ -40,6 +40,8 @@ extension WPTabBarController {
         showReaderTab()
         if let path {
             self.readerPresenter?.navigate(to: path)
+        } else { // navigate back to the reader root
+            self.readerPresenter?.navigate(to: .discover)
         }
     }
 

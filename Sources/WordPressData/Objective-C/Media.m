@@ -35,29 +35,6 @@
 
 #pragma mark -
 
-+ (NSString *)stringFromMediaType:(MediaType)mediaType
-{
-    switch (mediaType) {
-        case MediaTypeImage:
-            return @"image";
-            break;
-        case MediaTypeVideo:
-            return @"video";
-            break;
-        case MediaTypePowerpoint:
-            return @"powerpoint";
-            break;
-        case MediaTypeDocument:
-            return @"document";
-            break;
-        case MediaTypeAudio:
-            return @"audio";
-            break;
-    }
-}
-
-#pragma mark -
-
 - (NSString *)fileExtension
 {
     NSString *extension = [self.filename pathExtension];
@@ -70,60 +47,6 @@
     }
     extension = [self.remoteURL pathExtension];
     return extension;
-}
-
-#pragma mark - Media Types
-
-- (MediaType)mediaType
-{
-    if ([self.mediaTypeString isEqualToString:[Media stringFromMediaType:MediaTypeImage]]) {
-        return MediaTypeImage;
-    } else if ([self.mediaTypeString isEqualToString:[Media stringFromMediaType:MediaTypeVideo]]) {
-        return MediaTypeVideo;
-    } else if ([self.mediaTypeString isEqualToString:[Media stringFromMediaType:MediaTypePowerpoint]]) {
-        return MediaTypePowerpoint;
-    } else if ([self.mediaTypeString isEqualToString:[Media stringFromMediaType:MediaTypeDocument]]) {
-        return MediaTypeDocument;
-    } else if ([self.mediaTypeString isEqualToString:[Media stringFromMediaType:MediaTypeAudio]]) {
-        return MediaTypeAudio;
-    }
-
-    return MediaTypeDocument;
-}
-
-- (void)setMediaType:(MediaType)mediaType
-{
-    self.mediaTypeString = [[self class] stringFromMediaType:mediaType];    
-}
-
-#pragma mark - Remote Status
-
-- (MediaRemoteStatus)remoteStatus
-{
-    return (MediaRemoteStatus)[[self remoteStatusNumber] intValue];
-}
-
-- (void)setRemoteStatus:(MediaRemoteStatus)aStatus
-{
-    [self setRemoteStatusNumber:@(aStatus)];
-}
-
-- (NSString *)remoteStatusText
-{
-    switch (self.remoteStatus) {
-        case MediaRemoteStatusPushing:
-            return NSLocalizedString(@"Uploading", @"Status for Media object that is being uploaded.");
-        case MediaRemoteStatusFailed:
-            return NSLocalizedString(@"Failed", @"Status for Media object that is failed upload or export.");
-        case MediaRemoteStatusSync:
-            return NSLocalizedString(@"Uploaded", @"Status for Media object that is uploaded and sync with server.");
-        case MediaRemoteStatusProcessing:
-            return NSLocalizedString(@"Pending", @"Status for Media object that is being processed locally.");
-        case MediaRemoteStatusLocal:
-            return NSLocalizedString(@"Local", @"Status for Media object that is only exists locally.");
-        case MediaRemoteStatusStub:
-            return NSLocalizedString(@"Stub", @"Status for Media object that is only has the mediaID locally.");
-    }
 }
 
 #pragma mark - Absolute URLs

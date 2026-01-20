@@ -26,17 +26,9 @@ struct AppIcon {
         return "\(lowered)-\(Constants.imageBaseName)"
     }
 
-    static var isUsingCustomIcon: Bool {
-        return UIApplication.shared.alternateIconName != nil
-    }
-
     /// The image file name of the current icon used by the app, whether custom or default.
     static var currentOrDefaultIconName: String {
-        guard FeatureFlag.customAppIcons.enabled else {
-            return iconNameFromBundle()
-        }
-
-        return currentOrDefaultIcon.imageName
+        currentOrDefaultIcon.imageName
     }
 
     /// An `AppIcon` instance representing the current icon used by the app, whether custom or default.

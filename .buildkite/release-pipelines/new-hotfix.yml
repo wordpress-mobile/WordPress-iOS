@@ -26,5 +26,6 @@ steps:
       bundle exec fastlane new_hotfix_release skip_confirm:true version:"$VERSION"
     retry:
       manual:
-        # If those jobs fail, one should always prefer re-triggering a new build from ReleaseV2 rather than retrying the individual job from Buildkite
+        # If those jobs fail, one should always prefer re-triggering a new build from Releases V2 rather than retrying the individual job from Buildkite
+        reason: If release jobs fail, you should always re-trigger the task from Releases V2 rather than retrying the individual job from Buildkite
         allowed: false

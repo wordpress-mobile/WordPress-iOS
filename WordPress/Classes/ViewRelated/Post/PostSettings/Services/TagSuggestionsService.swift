@@ -1,6 +1,7 @@
 import Foundation
 import WordPressData
 import WordPressShared
+import WordPressIntelligence
 
 @MainActor
 final class TagSuggestionsService {
@@ -31,7 +32,7 @@ final class TagSuggestionsService {
 
         try Task.checkCancellation()
 
-        return try await IntelligenceService().suggestTags(
+        return try await TagSuggestionGenerator().generate(
             post: postContent,
             siteTags: siteTags,
             postTags: postTags

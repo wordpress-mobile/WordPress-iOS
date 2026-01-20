@@ -162,11 +162,11 @@ class ReaderDetailCoordinator {
     }
 
     func fetchLikes(for post: ReaderPost) {
-        guard let postID = post.postID else { return }
+        guard let postID = post.postID, let siteID = post.siteID else { return }
 
         // Fetch a full page of Likes but only return the `maxAvatarsDisplayed` number.
         // That way the first page will already be cached if the user displays the full Likes list.
-        postService.getLikesFor(postID: postID, siteID: post.siteID, success: { [weak self] users, totalLikes, _ in
+        postService.getLikesFor(postID: postID, siteID: siteID, success: { [weak self] users, totalLikes, _ in
             guard let self else { return }
 
             var filteredUsers = users
@@ -201,7 +201,7 @@ class ReaderDetailCoordinator {
         guard let post, let likesAvatarURLs else { return }
 
         let viewModel = ReaderDetailLikesViewModel(
-            likeCount: post.likeCount.intValue,
+            likeCount: post.likeCount?.intValue ?? 0,
             avatarURLs: likesAvatarURLs,
             selfLikeAvatarURL: post.isLiked ? try? WPAccount.lookupDefaultWordPressComAccount(in: ContextManager.shared.mainContext)?.avatarURL : nil
         )
@@ -261,21 +261,21 @@ class ReaderDetailCoordinator {
     /// Show more about a specific site in Discovery
     ///
     func showMore() {
-        guard let post, post.sourceAttribution != nil else {
+        guard let post, let sourceAttribution = post.sourceAttribution else {
             return
         }
 
-        if let blogID = post.sourceAttribution.blogID {
+        if let blogID = sourceAttribution.blogID {
             let controller = ReaderStreamViewController.controllerWithSiteID(blogID, isFeed: false)
             viewController?.navigationController?.pushViewController(controller, animated: true)
             return
         }
 
-        var path: String?
-        if post.sourceAttribution.attributionType == SourcePostAttribution.post {
-            path = post.sourceAttribution.permalink
+        let path: String?
+        if sourceAttribution.attributionType == SourcePostAttribution.post {
+            path = sourceAttribution.permalink
         } else {
-            path = post.sourceAttribution.blogURL
+            path = sourceAttribution.blogURL
         }
 
         if let path, let linkURL = URL(string: path) {
@@ -347,7 +347,7 @@ class ReaderDetailCoordinator {
                                         self?.post = post
                                         self?.renderPostAndBumpStats()
                                     }, failure: { [weak self] error in
-                                        self?.postURL == nil ? self?.showError(error: error) : self?.view?.showErrorWithWebAction()
+                                        self?.postURL == nil ? self?.showError(error: error) : self?.view?.showErrorWithWebAction(error: error)
                                         self?.reportPostLoadFailure()
                                     })
     }
@@ -357,15 +357,17 @@ class ReaderDetailCoordinator {
     /// Use this method to fetch a ReaderPost from a URL.
     /// - Parameter url: a post URL
     private func fetch(_ url: URL) {
-        readerPostService.fetchPost(at: url,
-                                    success: { [weak self] post in
-                                        self?.post = post
-                                        self?.renderPostAndBumpStats()
-                                    }, failure: { [weak self] error in
-                                        DDLogError("Error fetching post for detail: \(String(describing: error?.localizedDescription))")
-                                        self?.postURL == nil ? self?.showError(error: error) : self?.view?.showErrorWithWebAction()
-                                        self?.reportPostLoadFailure()
-                                    })
+        readerPostService.resolvePostUrl(url) { [weak self] resolvedPost in
+            self?.fetch(
+                postID: NSNumber(value: resolvedPost.postId),
+                siteID: NSNumber(value: resolvedPost.siteId),
+                isFeed: false
+            )
+        } failure: { [weak self] error in
+            DDLogError("Error fetching post for detail: \(String(describing: error.localizedDescription))")
+            self?.showError(error: error)
+            self?.reportPostLoadFailure()
+        }
     }
 
     private func showError(error: Error?) {
@@ -421,11 +423,11 @@ class ReaderDetailCoordinator {
     /// Shows the current post site posts in a new screen
     ///
     private func previewSite() {
-        guard let post else {
+        guard let post, let siteID = post.siteID else {
             return
         }
 
-        let controller = ReaderStreamViewController.controllerWithSiteID(post.siteID, isFeed: post.isExternal)
+        let controller = ReaderStreamViewController.controllerWithSiteID(siteID, isFeed: post.isExternal)
         viewController?.navigationController?.pushViewController(controller, animated: true)
 
         let properties = ReaderHelpers.statsPropertiesForPost(post, andValue: post.blogURL as AnyObject?, forKey: "URL")
@@ -441,10 +443,15 @@ class ReaderDetailCoordinator {
     ///
     private func showTag() {
         guard let post else {
+            wpAssertionFailure("post is nil")
+            return
+        }
+        guard let primaryTagSlug = post.primaryTagSlug else {
+            wpAssertionFailure("post.primaryTagSlug is nil")
             return
         }
 
-        let controller = ReaderStreamViewController.controllerWithTagSlug(post.primaryTagSlug)
+        let controller = ReaderStreamViewController.controllerWithTagSlug(primaryTagSlug)
         viewController?.navigationController?.pushViewController(controller, animated: true)
 
         let properties = ReaderHelpers.statsPropertiesForPost(post, andValue: post.primaryTagSlug as AnyObject?, forKey: "tag")
@@ -476,8 +483,6 @@ class ReaderDetailCoordinator {
             presentWebViewController(url)
         } else if readerLinkRouter.canHandle(url: url) {
             readerLinkRouter.handle(url: url, shouldTrack: false, source: .inApp(presenter: viewController))
-        } else if url.isWordPressDotComPost {
-            presentReaderDetail(url)
         } else if url.isLinkProtocol {
             readerLinkRouter.handle(url: url, shouldTrack: false, source: .inApp(presenter: viewController))
         } else {
@@ -523,30 +528,6 @@ class ReaderDetailCoordinator {
                                         self?.view?.updateHeader()
                                         completion()
                                      })
-    }
-
-    /// Given a URL presents it in a new Reader detail screen
-    ///
-    private func presentReaderDetail(_ url: URL) {
-
-        // In cross post Notifications, if the user tapped the link to the original post in the Notification body,
-        // use the original post's info to display reader detail.
-        // The API endpoint used by controllerWithPostID returns subscription flags for the post.
-        // The API endpoint used by controllerWithPostURL does not return this information.
-        // These flags are needed to display the `Follow conversation by email` option.
-        // So if we can call controllerWithPostID, do so. Otherwise, fallback to controllerWithPostURL.
-        // Ref: https://github.com/wordpress-mobile/WordPress-iOS/issues/17158
-
-        let readerDetail: ReaderDetailViewController = {
-            if let post,
-               selectedUrlIsCrossPost(url) {
-                return ReaderDetailViewController.controllerWithPostID(post.crossPostMeta.postID, siteID: post.crossPostMeta.siteID)
-            }
-
-            return ReaderDetailViewController.controllerWithPostURL(url)
-        }()
-
-        viewController?.navigationController?.pushViewController(readerDetail, animated: true)
     }
 
     private func selectedUrlIsCrossPost(_ url: URL) -> Bool {
@@ -604,7 +585,7 @@ class ReaderDetailCoordinator {
         guard let post else {
             return
         }
-        let controller = ReaderDetailLikesListController(post: post, totalLikes: post.likeCount.intValue)
+        let controller = ReaderDetailLikesListController(post: post, totalLikes: post.likeCount?.intValue ?? 0)
         viewController?.navigationController?.pushViewController(controller, animated: true)
     }
 

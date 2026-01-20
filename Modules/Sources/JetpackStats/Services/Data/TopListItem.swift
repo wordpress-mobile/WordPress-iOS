@@ -20,6 +20,7 @@ struct TopListItemID: Hashable {
 protocol TopListItemProtocol: Codable, Sendable, Identifiable {
     var metrics: SiteMetricsSet { get set }
     var id: TopListItemID { get }
+    var displayName: String { get }
 }
 
 extension TopListItem {
@@ -35,6 +36,10 @@ extension TopListItem {
         var id: TopListItemID {
             TopListItemID(type: .postsAndPages, id: postID ?? title)
         }
+
+        var displayName: String {
+            title
+        }
     }
 
     struct Referrer: Codable, TopListItemProtocol {
@@ -47,16 +52,24 @@ extension TopListItem {
         var id: TopListItemID {
             TopListItemID(type: .referrers, id: (domain ?? "–") + name)
         }
+
+        var displayName: String {
+            name
+        }
     }
 
     struct Location: Codable, TopListItemProtocol {
-        let country: String
+        let name: String
         let flag: String?
         let countryCode: String?
         var metrics: SiteMetricsSet
 
         var id: TopListItemID {
-            TopListItemID(type: .locations, id: countryCode ?? country)
+            TopListItemID(type: .locations, id: name)
+        }
+
+        var displayName: String {
+            name
         }
     }
 
@@ -71,6 +84,10 @@ extension TopListItem {
         var id: TopListItemID {
             TopListItemID(type: .authors, id: userId)
         }
+
+        var displayName: String {
+            name
+        }
     }
 
     struct ExternalLink: Codable, TopListItemProtocol {
@@ -80,7 +97,11 @@ extension TopListItem {
         var metrics: SiteMetricsSet
 
         var id: TopListItemID {
-            TopListItemID(type: .externalLinks, id: url)
+            TopListItemID(type: .externalLinks, id: url + (title ?? ""))
+        }
+
+        var displayName: String {
+            title ?? url
         }
     }
 
@@ -92,6 +113,10 @@ extension TopListItem {
         var id: TopListItemID {
             TopListItemID(type: .fileDownloads, id: filePath ?? fileName)
         }
+
+        var displayName: String {
+            fileName
+        }
     }
 
     struct SearchTerm: Codable, TopListItemProtocol {
@@ -100,6 +125,10 @@ extension TopListItem {
 
         var id: TopListItemID {
             TopListItemID(type: .searchTerms, id: term)
+        }
+
+        var displayName: String {
+            term
         }
     }
 
@@ -112,6 +141,10 @@ extension TopListItem {
         var id: TopListItemID {
             TopListItemID(type: .videos, id: postId)
         }
+
+        var displayName: String {
+            title
+        }
     }
 
     struct ArchiveItem: Codable, TopListItemProtocol {
@@ -121,6 +154,10 @@ extension TopListItem {
 
         var id: TopListItemID {
             TopListItemID(type: .archive, id: href)
+        }
+
+        var displayName: String {
+            value
         }
     }
 

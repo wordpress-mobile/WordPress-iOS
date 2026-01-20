@@ -1,16 +1,22 @@
-Vous pouvez désormais créer un extrait, un résumé de l’article et des étiquettes générées automatiquement pour vos articles à l’aide d’Apple Intelligence. Il est également plus facile de choisir vos étiquettes dans les réglages de l’article. Et maintenant, le tout est plus intelligent.
-En parlant de Statistiques, il y a plusieurs nouvelles améliorations à cet endroit de l’application.
-- Nous avons ajouté une carte Aujourd’hui à l’écran Nouvelles statistiques.
-- Votre page d’accueil apparaît désormais dans la liste des meilleures pages.
-- Vos 10 et 50 meilleurs éléments ont désormais leur propre section spéciale. Une place pour tout, et tout à sa place.
-- Vos meilleures pages s’affichent correctement lorsque vous avez un grand nombre d’éléments.
-- La mise en page de Nouvelles statistiques change pour s’adapter à différentes tailles d’écran. Même les plus grands.
-- L’écran mémorisera vos réglages préférés lorsque vous choisirez une plage de dates personnalisée.
-- L’onglet Trafic vous permet de descendre pour rafraîchir l’écran.
-Nous avons également apporté quelques correctifs visuels pour iOS comme sur le flux de création de site, l’écran de sélection de médias et l’écran Statistiques. Et pendant que nous y étions, nous avons aussi éliminé plusieurs bugs.
-- Nous avons réparé un plantage rare apparaissant parfois dans Statistiques et Abonnés (mais plus maintenant).
-- Les vues d’article ont l’aspect attendu dans le Lecteur lorsque certains thèmes sont activés.
-- Les articles du Lecteur s’affichent correctement sur les appareils où l’agrandissement d’écran est activé.
-- Le bouton « Ajouter un média » reste visible dans la médiathèque. Fini les « on me voit, on me voit plus ».
-- Vous pouvez effectuer une recherche dans Abonnements au Lecteur sans figer l’application.
-- La barre d’outils dans les articles du Lecteur ne disparaît plus de temps à autre avant de réapparaître. Désormais, vous la voyez… et vous la voyez toujours, on suppose.
+Oyez, oyez, créateurs de contenu, nous avons travaillé dur pour apporter d’importantes modifications à l’écran Réglages de l’article.
+
+- Nous avons ajouté un champ « État » qui vous permet de déplacer rapidement les articles entre les états brouillon, en attente, privé, planifié et publié.
+- Nous avons rétabli la zone « Date de publication » pour les brouillons et les articles en attente. De cette manière, vous pouvez choisir une date de publication à l’avance sans planifier officiellement la publication.
+- Le champ du mot de passe utilise une police différente (Menlo, si cela vous intéresse) pour lire plus facilement des caractères similaires.
+- Offrez à vos abonnés le traitement VIP en définissant des niveaux d’accès aux publications pour tous les abonnés, les abonnés payants et le grand public.
+- Activez ou désactivez les commentaires et pings d’articles à l’aide des réglages « Discussion ».
+
+Pendant que nous y étions, nous avons fait plusieurs autres mises à jour utiles dans divers domaines de l’application.
+
+- Sur l’écran « Publication », vous pouvez activer « Envoyer un e-mail aux abonnés » pour avertir automatiquement vos abonnés lorsqu’un article est publié. Démarrer les presses.
+- L’éditeur de slug dispose d’un aperçu de permalien pour afficher l’URL finale d’un article.
+- Nous avons ajouté « Taxonomies » aux réglages du site afin que vous puissiez gérer les groupes de contenu au niveau du site.
+- Grâce à quelques correctifs de design dans le sélecteur de « Catégories », il est plus évident que vous pouvez choisir plusieurs catégories pour un article.
+- Les tailles de fichiers sont désormais visibles dans la zone Détails du média du site. Fini les conjectures.
+
+Vous êtes plus lecteur qu’éditeur ? Ne vous inquiétez pas, nous avons également apporté des modifications au Lecteur.
+
+- Lorsque les titres des articles similaires sont trop longs, vous verrez une version plus courte et tronquée à la place.
+- Les mosaïques d’articles peuvent désormais contenir trois lignes de texte au lieu de deux, ce qui vous permet d’améliorer votre contenu de 50 %.
+- Les articles ont des marges horizontales légèrement plus larges.
+- Nous avons éliminé plusieurs bugs qui affectaient la façon dont les articles se chargent.

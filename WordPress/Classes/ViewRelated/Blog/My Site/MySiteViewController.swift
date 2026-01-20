@@ -202,8 +202,6 @@ final class MySiteViewController: UIViewController, UIScrollViewDelegate, NoSite
             RootViewCoordinator.shared.presentWhatIsNew(on: self)
         }
 
-        FancyAlertViewController.presentCustomAppIconUpgradeAlertIfNecessary(from: self)
-
         trackNoSitesVisibleIfNeeded()
 
         if !isReaderAppModeEnabled {
@@ -673,10 +671,7 @@ final class MySiteViewController: UIViewController, UIScrollViewDelegate, NoSite
     }
 
     private func makeBlogDetailsViewController(for blog: Blog) -> BlogDetailsViewController {
-        let blogDetailsViewController = BlogDetailsViewController()
-        blogDetailsViewController.blog = blog
-
-        return blogDetailsViewController
+        BlogDetailsViewController(blog: blog)
     }
 
     private func showSitePicker(for blog: Blog) {
@@ -726,7 +721,7 @@ final class MySiteViewController: UIViewController, UIScrollViewDelegate, NoSite
         case .siteMenu:
             blogDetailsViewController?.blog = blog
             blogDetailsViewController?.configureTableViewData()
-            blogDetailsViewController?.tableView.reloadData()
+            blogDetailsViewController?.tableView?.reloadData()
             blogDetailsViewController?.preloadMetadata()
             blogDetailsViewController?.showInitialDetailsForBlog()
         case .dashboard:
@@ -900,12 +895,12 @@ extension MySiteViewController: BlogDetailsPresentationDelegate {
     /// - Parameters:
     ///         - subsection: The specific subsection to show.
     ///
-    func showBlogDetailsSubsection(_ subsection: BlogDetailsSubsection, userInfo: [AnyHashable: Any] = [:]) {
+    func showBlogDetailsSubsection(_ subsection: BlogDetailsRowKind, userInfo: [String: Any] = [:]) {
         blogDetailsViewController?.showDetailView(for: subsection, userInfo: userInfo)
     }
 
     func showBlogDetailsMeSubsection() -> MeViewController? {
-        blogDetailsViewController?.showDetailViewForMeSubsection(userInfo: [:])
+        blogDetailsViewController?.showDetailViewForMe(userInfo: [:])
     }
 
     // TODO: Refactor presentation from routes

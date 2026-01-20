@@ -277,7 +277,20 @@ platform :ios do
 
     # Parse the provided version into an AppVersion object
     parsed_version = VERSION_FORMATTER.parse(new_version)
+    # Validate that this is a hotfix version (must have a patch component > 0)
+    UI.user_error!("Invalid hotfix version '#{new_version}'. Must include a patch number.") unless parsed_version.patch.to_i.positive?
     previous_version = VERSION_FORMATTER.release_version(VERSION_CALCULATOR.previous_patch_version(version: parsed_version))
+    previous_release_branch = compute_release_branch_name(options: options, version: previous_version)
+
+    # Determine the base for the hotfix branch: either a tag or a release branch
+    base_ref_for_hotfix = if git_tag_exists(tag: previous_version, remote: true)
+                            previous_version
+                          elsif Fastlane::Helper::GitHelper.branch_exists_on_remote?(branch_name: previous_release_branch)
+                            UI.message("ℹ️  Tag '#{previous_version}' not found on the remote. Using release branch '#{previous_release_branch}' as the base for hotfix instead.")
+                            previous_release_branch
+                          else
+                            UI.user_error!("Neither tag '#{previous_version}' nor branch '#{previous_release_branch}' exists on the remote! A hotfix branch cannot be created.")
+                          end
 
     # Check versions
     message = <<~MESSAGE
@@ -286,28 +299,33 @@ platform :ios do
       • Current release version and build code: #{release_version_current} (#{build_code_current}).
       • New release version and build code: #{new_version} (#{build_code_hotfix}).
 
-      Branching from tag: #{previous_version}
+      Branching from #{base_ref_for_hotfix}
     MESSAGE
 
     UI.important(message)
     UI.user_error!('Aborted by user request') unless options[:skip_confirm] || UI.confirm('Do you want to continue?')
 
     # Check tags
-    UI.user_error!("Version #{new_version} already exists! Abort!") if git_tag_exists(tag: new_version)
-    UI.user_error!("Version #{previous_version} is not tagged! A hotfix branch cannot be created.") unless git_tag_exists(tag: previous_version)
+    UI.user_error!("Version '#{new_version}' already exists on the remote! Abort!") if git_tag_exists(tag: new_version, remote: true)
+
+    # Fetch the base ref to ensure it's available locally
+    sh('git', 'fetch', 'origin', base_ref_for_hotfix)
+
+    hotfix_branch = compute_release_branch_name(options: options, version: new_version)
+    ensure_branch_does_not_exist!(hotfix_branch)
 
     # Create the hotfix branch
-    UI.message 'Creating hotfix branch...'
-    Fastlane::Helper::GitHelper.create_branch(compute_release_branch_name(options: options, version: new_version), from: previous_version)
-    UI.success "Done! New hotfix branch is: #{git_branch}"
+    UI.message("Creating hotfix branch from '#{base_ref_for_hotfix}'...")
+    Fastlane::Helper::GitHelper.create_branch(hotfix_branch, from: base_ref_for_hotfix)
+    UI.success("Done! New hotfix branch is: '#{git_branch}'")
 
     # Bump the hotfix version and build code and write it to the `xcconfig` file
-    UI.message 'Bumping hotfix version and build code...'
+    UI.message('Bumping hotfix version and build code...')
     PUBLIC_VERSION_FILE.write(
       version_short: new_version,
       version_long: build_code_hotfix
     )
-    UI.success "Done! New Release Version: #{release_version_current}. New Build Code: #{build_code_current}"
+    UI.success("Done! New Release Version: '#{release_version_current}'. New Build Code: '#{build_code_current}'")
 
     commit_version_and_build_files
 
@@ -499,6 +517,7 @@ end
 lane :lint_localizations do |options|
   ios_lint_localizations(
     input_dir: 'WordPress/Resources',
+    fail_on_strings_not_in_base_language: false,
     allow_retry: options.fetch(:allow_retry, true)
   )
 end

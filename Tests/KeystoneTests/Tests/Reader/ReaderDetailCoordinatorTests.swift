@@ -21,19 +21,6 @@ class ReaderDetailCoordinatorTests: CoreDataTestCase {
         expect(serviceMock.didCallFetchPostWithIsFeed).to(beTrue())
     }
 
-    /// Given a URL, retrieves the post
-    ///
-    func testRetrieveAReaderPostWhenURLIsGiven() {
-        let serviceMock = ReaderPostServiceMock()
-        let viewMock = ReaderDetailViewMock()
-        let coordinator = ReaderDetailCoordinator(readerPostService: serviceMock, view: viewMock)
-        coordinator.postURL = URL(string: "https://wpmobilep2.wordpress.com/post/")
-
-        coordinator.start()
-
-        expect(serviceMock.didCallFetchWithURL).to(equal(URL(string: "https://wpmobilep2.wordpress.com/post/")))
-    }
-
     /// Inform the view to render a post after it is fetched
     ///
     func testUpdateViewWithRetrievedPost() {
@@ -61,39 +48,6 @@ class ReaderDetailCoordinatorTests: CoreDataTestCase {
         coordinator.start()
 
         expect(viewMock.didCallShowError).to(beTrue())
-    }
-
-    /// When an error happens, tell the view to show an error
-    ///
-    func testShowErrorWithWebActionInView() {
-        let serviceMock = ReaderPostServiceMock()
-        serviceMock.forceError = true
-        let viewMock = ReaderDetailViewMock()
-        let coordinator = ReaderDetailCoordinator(readerPostService: serviceMock, view: viewMock)
-        coordinator.postURL = URL(string: "https://wordpress.com/")
-
-        coordinator.start()
-
-        expect(viewMock.didCallShowErrorWithWebAction).to(beTrue())
-    }
-
-    /// When an error happens, call the callback
-    ///
-    func testCallCallbackWhenAnErrorHappens() {
-        var didCallPostLoadFailureBlock = false
-        let serviceMock = ReaderPostServiceMock()
-        serviceMock.forceError = true
-        let viewMock = ReaderDetailViewMock()
-        let coordinator = ReaderDetailCoordinator(readerPostService: serviceMock, view: viewMock)
-        coordinator.postURL = URL(string: "https://wordpress.com/")
-        coordinator.postLoadFailureBlock = {
-            didCallPostLoadFailureBlock = true
-        }
-
-        coordinator.start()
-
-        expect(didCallPostLoadFailureBlock).to(beTrue())
-        expect(coordinator.postLoadFailureBlock).to(beNil())
     }
 
     /// If a post is given, do not call the servce and render the content right away
@@ -198,22 +152,6 @@ class ReaderDetailCoordinatorTests: CoreDataTestCase {
         expect(viewMock.didCallPresentWith).to(beAKindOf(LightboxViewController.self))
     }
 
-    /// Present an URL in a new Reader Detail screen
-    ///
-    func testShowPresentURL() {
-        let post = makeReaderPost()
-        let serviceMock = ReaderPostServiceMock()
-        let viewMock = ReaderDetailViewMock()
-        let coordinator = ReaderDetailCoordinator(readerPostService: serviceMock, view: viewMock)
-        coordinator.post = post
-        let navigationControllerMock = UINavigationControllerMock()
-        viewMock.navigationController = navigationControllerMock
-
-        coordinator.handle(URL(string: "https://wpmobilep2.wordpress.com/2020/06/01/hello-test/")!)
-
-        expect(navigationControllerMock.didCallPushViewControllerWith).to(beAKindOf(ReaderDetailViewController.self))
-    }
-
     /// Present an URL in a webview controller
     ///
     func testShowPresentURLInWebViewController() {
@@ -264,7 +202,6 @@ private class ReaderPostServiceMock: ReaderPostService {
     var didCallFetchPostWithPostID: UInt?
     var didCallFetchPostWithSiteID: UInt?
     var didCallFetchPostWithIsFeed: Bool?
-    var didCallFetchWithURL: URL?
 
     /// The post that should be returned by the mock
     var returnPost: ReaderPost?
@@ -291,15 +228,6 @@ private class ReaderPostServiceMock: ReaderPostService {
         }
 
         success(returnPost)
-    }
-
-    override func fetchPost(at postURL: URL!, success: ((ReaderPost?) -> Void)!, failure: ((Error?) -> Void)!) {
-        didCallFetchWithURL = postURL
-
-        guard !forceError else {
-            failure(nil)
-            return
-        }
     }
 }
 
@@ -330,7 +258,7 @@ private class ReaderDetailViewMock: UIViewController, ReaderDetailView {
         didCallShowError = true
     }
 
-    func showErrorWithWebAction() {
+    func showErrorWithWebAction(error: (any Error)?) {
         didCallShowErrorWithWebAction = true
     }
 

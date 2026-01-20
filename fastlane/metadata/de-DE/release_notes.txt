@@ -1,6 +1,15 @@
-Du kannst jetzt mit Apple Intelligence eine Kurzfassung deiner Beiträge erstellen und automatisch vorgeschlagene Schlagwörter erhalten. Es ist auch einfacher, deine Schlagwörter in den Beitragseinstellungen auszuwählen. Das ist wirklich schlau.
-Wir haben ein paar visuelle Korrekturen für iOS in Bereichen wie der Website-Erstellung, dem Bildschirm für die Medienauswahl und dem Bildschirm für Statistiken vorgenommen.
-Während wir dabei waren, haben wir auch ein paar Fehler behoben.
-- Reader-Artikel werden auf Geräten mit aktiviertem Anzeigezoom richtig wiedergegeben.
-- Der Button „Medien hinzufügen“ bleibt in der Mediathek sichtbar. Kein Verschwinden mehr.
-- Du kannst in Reader-Abonnements suchen, ohne dass die App einfriert.
+Content Creator aufgepasst – wir haben einige wichtige Änderungen am Bildschirm „Beitragseinstellungen“ vorgenommen.
+
+- Wir haben ein „Status“-Feld hinzugefügt, mit dem du Beiträge schnell zwischen dem Status „Entwurf“, „Ausstehend“, „Privat“, „Geplant“ und „Veröffentlicht“ verschieben kannst.
+- Wir haben den Bereich „Veröffentlichungsdatum“ für Entwürfe und ausstehende Beiträge wieder hinzugefügt. Auf diese Weise kannst du ein Veröffentlichungsdatum im Voraus auswählen, ohne den Beitrag offiziell zu planen.
+- Das Passwort-Feld verwendet eine andere Schriftart (Menlo, falls es dich interessiert), sodass ähnlich aussehende Zeichen leichter zu lesen sind.
+- Gewähre deinen Followern VIP-Behandlung, indem du für alle Abonnenten, zahlende Abonnenten und die allgemeine Öffentlichkeit Zugriffsebenen für Beiträge festlegst.
+- Aktiviere oder deaktiviere in den Diskussionseinstellungen Beitragskommentare und Pingbacks.
+
+Außerdem haben wir weitere hilfreiche Updates in verschiedenen Bereichen der App vorgenommen.
+
+- Im Bildschirm zu Veröffentlichungen kannst du „E-Mail an Abonnenten“ umschalten, um deine Abonnenten automatisch zu benachrichtigen, wenn ein Beitrag veröffentlicht wird. Weitere wichtige Neuerungen.
+- Der Titelform-Editor verfügt über eine Permalink-Vorschau, um anzuzeigen, wie die endgültige URL eines Beitrags aussieht.
+- Wir haben „Taxonomien“ zu den Website-Einstellungen hinzugefügt, damit du deine Inhaltsgruppen auf Website-Ebene verwalten kannst.
+- Dank einiger Design-Korrekturen in der Auswahl „Kategorien“ ist es jetzt einfacher zu erkennen, dass du mehrere Kategorien für einen Beitrag auswählen kannst.
+- Dateigrößen werden jetzt im Bereich „Website-Mediendetails“ angezeigt. Kein Rätselraten mehr.

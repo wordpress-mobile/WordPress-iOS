@@ -134,7 +134,7 @@ final class PostRepository {
         overwrite: Bool = false
     ) async throws {
         wpAssert(post.isOriginal())
-        let post = post.original() // Defensive code
+        let post = post.getOriginal() // Defensive code
         let context = coreDataStack.mainContext
 
         let remotePost: RemotePost
@@ -231,7 +231,7 @@ final class PostRepository {
     private func _patch(_ post: AbstractPost, postID: Int, changes: RemotePostUpdateParameters, overwrite: Bool) async throws -> RemotePost {
         WPAnalytics.track(.postRepositoryPatchStarted)
         let service = try getRemoteService(for: post.blog)
-        let original = post.original()
+        let original = post.getOriginal()
         var changes = changes
 
         // Make sure the app never overwrites the content without the user approval.
@@ -488,6 +488,8 @@ extension PostRepository {
     func paginate<P: AbstractPost>(
         type: P.Type = P.self,
         statuses: [BasePost.Status],
+        orderBy: PostServiceResultsOrdering,
+        descending: Bool,
         authorUserID: NSNumber? = nil,
         offset: Int,
         number: Int,
@@ -498,8 +500,8 @@ extension PostRepository {
             statuses: statuses,
             authorUserID: authorUserID,
             range: offset..<(offset + max(number, 0)),
-            orderBy: .byDate,
-            descending: true,
+            orderBy: orderBy,
+            descending: descending,
             // Only delete other local posts if the current call is the first pagination request.
             deleteOtherLocalPosts: offset == 0,
             in: blogID

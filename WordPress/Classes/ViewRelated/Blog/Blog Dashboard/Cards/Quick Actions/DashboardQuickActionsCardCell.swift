@@ -112,10 +112,9 @@ final class DashboardQuickActionsCardCell: UICollectionViewCell, Reusable, UITab
             let statsVC = StatsHostingViewController.makeStatsViewController(for: blog)
             parentViewController.show(statsVC, sender: nil)
         case .more:
-            let viewController = BlogDetailsViewController()
+            let viewController = BlogDetailsViewController(blog: blog)
             viewController.isScrollEnabled = true
-            viewController.tableView.isScrollEnabled = true
-            viewController.blog = blog
+            viewController.tableView?.isScrollEnabled = true
             viewController.presentationDelegate = self
             self.blogDetailsViewController = viewController
             self.parentViewController?.show(viewController, sender: nil)
@@ -137,7 +136,7 @@ final class DashboardQuickActionsCardCell: UICollectionViewCell, Reusable, UITab
 // MARK: - DashboardQuickActionsCardCell (BlogDetailsPresentationDelegate)
 
 extension DashboardQuickActionsCardCell: BlogDetailsPresentationDelegate {
-    func showBlogDetailsSubsection(_ subsection: BlogDetailsSubsection) {
+    func showBlogDetailsSubsection(_ subsection: BlogDetailsRowKind) {
         self.blogDetailsViewController?.showDetailView(for: subsection)
     }
 

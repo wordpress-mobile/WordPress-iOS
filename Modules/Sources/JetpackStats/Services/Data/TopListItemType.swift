@@ -19,7 +19,7 @@ enum TopListItemType: String, Identifiable, CaseIterable, Sendable, Codable {
         case .authors: Strings.SiteDataTypes.authors
         case .referrers: Strings.SiteDataTypes.referrers
         case .locations: Strings.SiteDataTypes.locations
-        case .externalLinks: Strings.SiteDataTypes.externalLinks
+        case .externalLinks: Strings.SiteDataTypes.clicks
         case .fileDownloads: Strings.SiteDataTypes.fileDownloads
         case .searchTerms: Strings.SiteDataTypes.searchTerms
         case .videos: Strings.SiteDataTypes.videos
@@ -41,16 +41,17 @@ enum TopListItemType: String, Identifiable, CaseIterable, Sendable, Codable {
         }
     }
 
-    func getTitle(for metric: SiteMetric) -> String {
-        switch metric {
-        case .views: Strings.TopListTitles.mostViewed
-        case .visitors: Strings.TopListTitles.mostVisitors
-        case .comments: Strings.TopListTitles.mostCommented
-        case .likes: Strings.TopListTitles.mostLiked
-        case .posts: Strings.TopListTitles.mostPosts
-        case .bounceRate: Strings.TopListTitles.highestBounceRate
-        case .timeOnSite: Strings.TopListTitles.longestTimeOnSite
-        case .downloads: Strings.TopListTitles.mostDownloadeded
+    var localizedColumnName: String {
+        switch self {
+        case .postsAndPages: Strings.TopListTitles.postsAndPages
+        case .authors: Strings.TopListTitles.authors
+        case .referrers: Strings.TopListTitles.referrers
+        case .locations: Strings.TopListTitles.locations
+        case .externalLinks: Strings.TopListTitles.clicks
+        case .fileDownloads: Strings.TopListTitles.fileDownloads
+        case .searchTerms: Strings.TopListTitles.searchTerms
+        case .videos: Strings.TopListTitles.videos
+        case .archive: Strings.TopListTitles.archive
         }
     }
 

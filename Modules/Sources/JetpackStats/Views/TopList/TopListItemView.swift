@@ -284,7 +284,7 @@ private func makePreviewItems() -> some View {
     VStack(spacing: 8) {
         makePreviewItem(
             TopListItem.Location(
-                country: "United States",
+                name: "United States",
                 flag: "🇺🇸",
                 countryCode: "US",
                 metrics: SiteMetricsSet(views: 50000)
@@ -294,7 +294,7 @@ private func makePreviewItems() -> some View {
 
         makePreviewItem(
             TopListItem.Location(
-                country: "United Kingdom",
+                name: "United Kingdom",
                 flag: "🇬🇧",
                 countryCode: "GB",
                 metrics: SiteMetricsSet(views: 15600)

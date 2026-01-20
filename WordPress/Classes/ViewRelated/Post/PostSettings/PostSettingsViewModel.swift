@@ -58,6 +58,11 @@ final class PostSettingsViewModel: NSObject, ObservableObject {
         set { settings.metadata.isJetpackNewsletterEmailDisabled = !newValue }
     }
 
+    var accessLevel: JetpackPostAccessLevel {
+        get { settings.metadata.accessLevel ?? .everybody }
+        set { settings.metadata.accessLevel = newValue }
+    }
+
     var publishDateText: String? {
         guard let date = settings.publishDate else {
             return nil
@@ -92,7 +97,7 @@ final class PostSettingsViewModel: NSObject, ObservableObject {
     }
 
     var isDraftOrPending: Bool {
-        post.original().isStatus(in: [.draft, .pending])
+        post.getOriginal().isStatus(in: [.draft, .pending])
     }
 
     var isPost: Bool {
@@ -352,7 +357,7 @@ final class PostSettingsViewModel: NSObject, ObservableObject {
             do {
                 let coordinator = PostCoordinator.shared
                 let changes = settings.makeUpdateParameters(from: post)
-                try await coordinator.publish(post.original(), parameters: changes)
+                try await coordinator.publish(post.getOriginal(), parameters: changes)
                 onPostPublished?()
             } catch {
                 isSaving = false
@@ -370,7 +375,7 @@ final class PostSettingsViewModel: NSObject, ObservableObject {
 
         switch selection.type {
         case .public, .protected:
-            if post.original().status == .scheduled {
+            if post.getOriginal().status == .scheduled {
                 // Keep it scheduled
             } else {
                 settings.status = .publish
@@ -536,6 +541,15 @@ final class PostSettingsViewModel: NSObject, ObservableObject {
         }
         if old.isStickyPost != new.isStickyPost {
             track(.editorPostStickyChanged)
+        }
+        if old.parentPageID != new.parentPageID {
+            track(.editorPostParentPageChanged)
+        }
+        if old.otherTerms != new.otherTerms {
+            track(.editorPostCustomTaxonomyChanged)
+        }
+        if old.metadata.isJetpackNewsletterEmailDisabled != new.metadata.isJetpackNewsletterEmailDisabled {
+            track(.editorPostNewsletterEmailToggled)
         }
     }
 

@@ -21,7 +21,7 @@ struct ChartCard: View {
 
     var body: some View {
         VStack(spacing: 0) {
-            VStack(spacing: Constants.step0_5) {
+            VStack(spacing: Constants.step1) {
                 headerView(for: selectedMetric)
                     .unredacted()
                 contentView
@@ -78,11 +78,14 @@ struct ChartCard: View {
 
     @ViewBuilder
     private var contentView: some View {
-        VStack(spacing: 4) {
-            chartHeaderView
-                .padding(.trailing, -Constants.step0_5)
+        VStack(spacing: Constants.step1) {
+            if dateRange.comparison != .off || metrics.count == 1 {
+                chartHeaderView
+                    .padding(.trailing, -Constants.step0_5)
+            }
             chartContentView
         }
+        .environment(\.showComparison, dateRange.comparison != .off)
         .animation(.spring, value: selectedMetric)
         .animation(.spring, value: selectedChartType)
         .animation(.easeInOut, value: viewModel.isFirstLoad)
@@ -171,23 +174,29 @@ struct ChartCard: View {
             moreMenuContent
         } label: {
             Image(systemName: "ellipsis")
-                .font(.system(size: 17))
+                .font(.system(size: 15))
                 .foregroundColor(.secondary)
-                .frame(width: 56, height: 50)
+                .frame(width: 50, height: 50)
         }
         .tint(Color.primary)
     }
 
     @ViewBuilder
     private var moreMenuContent: some View {
+        chartTypeSection
+        granularitySection
+        dataSection
+        EditCardMenuContent(cardViewModel: viewModel)
+    }
+
+    private var chartTypeSection: some View {
         Section {
             ControlGroup {
-                ForEach(ChartType.allCases, id: \.self) { type in
+                ForEach(ChartType.allCases) { type in
                     Button {
                         let previousType = viewModel.selectedChartType
                         viewModel.selectedChartType = type
 
-                        // Track chart type change
                         viewModel.tracker?.send(.chartTypeChanged, properties: [
                             "from_type": previousType.rawValue,
                             "to_type": type.rawValue
@@ -198,8 +207,46 @@ struct ChartCard: View {
                 }
             }
         }
+    }
+
+    private var granularitySection: some View {
+        Section {
+            Menu {
+                granularityButton(for: nil)
+                let options: [DateRangeGranularity] = [.day, .week, .month, .year]
+                ForEach(options) { granularity in
+                    granularityButton(for: granularity)
+                }
+            } label: {
+                Label(viewModel.effectiveGranularity.localizedTitle, systemImage: "calendar")
+            }
+        }
+    }
+
+    private func granularityButton(for granularity: DateRangeGranularity?) -> some View {
+        Button {
+            let previousGranularity = viewModel.selectedGranularity
+            viewModel.selectedGranularity = granularity
+            viewModel.tracker?.send(.chartGranularityChanged, properties: [
+                "from": previousGranularity?.analyticsName ?? "automatic",
+                "to": granularity?.analyticsName ?? "automatic"
+            ])
+        } label: {
+            Label(
+                granularity?.localizedTitle ?? Strings.Granularity.automatic,
+                systemImage: viewModel.selectedGranularity == granularity ? "checkmark" : ""
+            )
+        }
+    }
+
+    private var dataSection: some View {
         Section {
             Button {
+                // Track raw data view
+                viewModel.tracker?.send(.rawDataViewed, properties: [
+                    "card_type": "chart",
+                    "metric": viewModel.selectedMetric.analyticsName
+                ])
                 isShowingRawData = true
             } label: {
                 Label(Strings.Chart.showData, systemImage: "tablecells")
@@ -208,7 +255,6 @@ struct ChartCard: View {
                 Label(Strings.Buttons.learnMore, systemImage: "info.circle")
             }
         }
-        EditCardMenuContent(cardViewModel: viewModel)
     }
 
     // MARK: - Chart View
@@ -276,9 +322,11 @@ private struct CardGradientBackground: View {
     }
 }
 
-public enum ChartType: String, CaseIterable, Codable {
+public enum ChartType: String, CaseIterable, Identifiable, Codable {
     case line
     case columns
+
+    public var id: String { rawValue }
 
     var localizedTitle: String {
         switch self {

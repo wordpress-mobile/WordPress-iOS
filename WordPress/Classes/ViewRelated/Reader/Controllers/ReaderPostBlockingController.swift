@@ -115,27 +115,27 @@ final class ReaderPostBlockingController {
     }
 
     @objc private func handleSiteBlockingWillBeginNotification(_ notification: Foundation.Notification) {
-        guard let post = notification.userInfo?[ReaderNotificationKeys.post] as? ReaderPost else {
+        guard let post = notification.userInfo?[ReaderNotificationKeys.post] as? ReaderPost, let siteID = post.siteID else {
             return
         }
-        self.ongoingSitesBlocking.insert(post.siteID)
+        self.ongoingSitesBlocking.insert(siteID)
         self.delegate?.readerSiteBlockingController(self, willBeginBlockingSiteOfPost: post)
     }
 
     @objc private func handleBlockSiteNotification(_ notification: Foundation.Notification) {
-        guard let post = notification.userInfo?[ReaderNotificationKeys.post] as? ReaderPost else {
+        guard let post = notification.userInfo?[ReaderNotificationKeys.post] as? ReaderPost, let siteID = post.siteID else {
             return
         }
-        self.ongoingSitesBlocking.remove(post.siteID)
+        self.ongoingSitesBlocking.remove(siteID)
         self.delegate?.readerSiteBlockingController(self, didBlockSiteOfPost: post, result: .success(()))
     }
 
     @objc private func handleSiteBlockingFailed(_ notification: Foundation.Notification) {
-        guard let post = notification.userInfo?[ReaderNotificationKeys.post] as? ReaderPost else {
+        guard let post = notification.userInfo?[ReaderNotificationKeys.post] as? ReaderPost, let siteID = post.siteID else {
             return
         }
         let error = (notification.userInfo?[ReaderNotificationKeys.error] as? Error) ?? UnknownError()
-        self.ongoingSitesBlocking.remove(post.siteID)
+        self.ongoingSitesBlocking.remove(siteID)
         self.delegate?.readerSiteBlockingController(self, didBlockSiteOfPost: post, result: .failure(error))
     }
 

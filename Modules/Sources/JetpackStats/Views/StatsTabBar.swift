@@ -2,38 +2,39 @@ import SwiftUI
 
 enum StatsTab: CaseIterable {
     case traffic
-    case realtime
     case insights
     case subscribers
+    case ads
 
     var localizedTitle: String {
         switch self {
         case .traffic: return Strings.Tabs.traffic
-        case .realtime: return Strings.Tabs.realtime
         case .insights: return Strings.Tabs.insights
         case .subscribers: return Strings.Tabs.subscribers
+        case .ads: return Strings.Tabs.ads
         }
     }
 
     var analyticsName: String {
         switch self {
         case .traffic: return "traffic"
-        case .realtime: return "realtime"
         case .insights: return "insights"
         case .subscribers: return "subscribers"
+        case .ads: return "ads"
         }
     }
 }
 
 struct StatsTabBar: View {
     @Binding var selectedTab: StatsTab
+    var tabs: [StatsTab] = StatsTab.allCases
     var showBackground: Bool = true
 
     var body: some View {
         VStack(spacing: 0) {
             ScrollView(.horizontal, showsIndicators: false) {
                 HStack(spacing: 18) {
-                    ForEach(StatsTab.allCases, id: \.self) { tab in
+                    ForEach(tabs, id: \.self) { tab in
                         tabButton(for: tab)
                     }
                 }

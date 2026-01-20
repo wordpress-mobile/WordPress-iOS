@@ -364,7 +364,7 @@ final class SiteMediaCollectionViewController: UIViewController, NSFetchedResult
     private func makePredicate(searchTerm: String) -> NSPredicate {
         var predicates = [NSPredicate(format: "blog == %@", blog)]
         if let filter {
-            let mediaTypes = filter.map(Media.string(from:))
+            let mediaTypes = filter.map(\.stringValue)
             predicates.append(NSPredicate(format: "mediaTypeString IN %@", mediaTypes))
         }
         if !isShowingPendingUploads {

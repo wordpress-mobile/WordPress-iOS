@@ -89,7 +89,7 @@ class MediaCoordinator: NSObject {
         }
 
         // Use the original post so we don't create new coordinators for post revisions
-        let original = post.original()
+        let original = post.getOriginal()
 
         let coordinator = MediaProgressCoordinator()
         coordinator.delegate = self
@@ -105,7 +105,7 @@ class MediaCoordinator: NSObject {
     ///            if one does not exist.
     private func cachedCoordinator(for post: AbstractPost) -> MediaProgressCoordinator? {
         // Use the original post so we don't create new coordinators for post revisions
-        let original = post.original()
+        let original = post.getOriginal()
 
         return progressCoordinatorQueue.sync {
             return postMediaProgressCoordinators[original]
@@ -557,7 +557,7 @@ class MediaCoordinator: NSObject {
     func addObserver(_ onUpdate: @escaping ObserverBlock, forMediaFor post: AbstractPost) -> UUID {
         let uuid = UUID()
 
-        let original = post.original()
+        let original = post.getOriginal()
         let observer = MediaObserver(subject: .post(id: original.objectID), onUpdate: onUpdate)
 
         queue.async {
@@ -692,7 +692,7 @@ class MediaCoordinator: NSObject {
                 guard let post = object as? AbstractPost else {
                     return nil
                 }
-                return post.original().objectID
+                return post.getOriginal().objectID
             } ?? []
         }
 

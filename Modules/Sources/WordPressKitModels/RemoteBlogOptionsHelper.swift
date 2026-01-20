@@ -38,7 +38,8 @@ import Foundation
                 "page_for_posts",
                 "blogging_prompts_settings",
                 "jetpack_connection_active_plugins",
-                "can_blaze"
+                "can_blaze",
+                "wordads"
             ]
             for key in optionsDirectMapKeys {
                 if let value = response.value(forKeyPath: "options.\(key)") {

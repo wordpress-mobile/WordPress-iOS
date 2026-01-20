@@ -249,6 +249,8 @@ public struct ReaderDisplaySettings: Codable, Equatable, Hashable, Sendable {
         case normal
         case large
         case extraLarge
+        case extraExtraLarge
+        case extraExtraExtraLarge
 
         public var scale: Double {
             switch self {
@@ -262,6 +264,10 @@ public struct ReaderDisplaySettings: Codable, Equatable, Hashable, Sendable {
                 return 1.15
             case .extraLarge:
                 return 1.25
+            case .extraExtraLarge:
+                return 1.4
+            case .extraExtraExtraLarge:
+                return 1.6
             }
         }
 
@@ -297,6 +303,18 @@ public struct ReaderDisplaySettings: Codable, Equatable, Hashable, Sendable {
                     value: "Extra Large",
                     comment: "Accessibility label for the Extra Large size option, used in the Reader's reading preferences."
                 )
+            case .extraExtraLarge:
+                return NSLocalizedString(
+                    "reader.preferences.size.extraExtraLarge",
+                    value: "Extra Extra Large",
+                    comment: "Accessibility label for the Extra Extra Large size option, used in the Reader's reading preferences."
+                )
+            case .extraExtraExtraLarge:
+                return NSLocalizedString(
+                    "reader.preferences.size.extraExtraExtraLarge",
+                    value: "Extra Extra Extra Large",
+                    comment: "Accessibility label for the Extra Extra Extra Large size option, used in the Reader's reading preferences."
+                )
             }
         }
 
@@ -312,6 +330,10 @@ public struct ReaderDisplaySettings: Codable, Equatable, Hashable, Sendable {
                 return "large"
             case .extraLarge:
                 return "extra_large"
+            case .extraExtraLarge:
+                return "extra_extra_large"
+            case .extraExtraExtraLarge:
+                return "extra_extra_extra_large"
             }
         }
     }

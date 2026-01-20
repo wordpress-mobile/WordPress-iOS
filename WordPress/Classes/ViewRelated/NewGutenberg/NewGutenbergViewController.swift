@@ -137,7 +137,6 @@ class NewGutenbergViewController: UIViewController, PostEditor, PublishingEditor
     func prepopulateMediaItems(_ media: [Media]) {}
     var debouncer = WordPressShared.Debouncer(delay: 10)
     var replaceEditor: (EditorViewController, EditorViewController) -> ()
-    var verificationPromptHelper: (any VerificationPromptHelper)?
     var isUploadingMedia: Bool { false }
     var wordCount: UInt { 0 }
     var postIsReblogged: Bool = false
@@ -1022,7 +1021,7 @@ extension NewGutenbergViewController {
 
     private func makeMoreMenuSecondaryActions() -> [UIAction] {
         var actions: [UIAction] = []
-        if post.original().isStatus(in: [.draft, .pending]) {
+        if post.getOriginal().isStatus(in: [.draft, .pending]) {
             actions.append(UIAction(title: Strings.saveDraft, image: UIImage(systemName: "doc"), attributes: (editorHasChanges && editorHasContent) ? [] : [.disabled]) { [weak self] _ in
                 self?.buttonSaveDraftTapped()
             })

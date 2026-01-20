@@ -1,9 +1,11 @@
 import UIKit
+import SwiftUI
 import WordPressUI
 import AutomatticTracks
 import WordPressReader
 import WordPressData
 import WordPressKit
+import WordPressIntelligence
 import Combine
 @preconcurrency import WebKit
 
@@ -14,7 +16,7 @@ protocol ReaderDetailView: AnyObject {
     func renderRelatedPosts(_ posts: [RemoteReaderSimplePost])
     func showLoading()
     func showError(subtitle: String?)
-    func showErrorWithWebAction()
+    func showErrorWithWebAction(error: Error?)
     func scroll(to: String)
     func updateHeader()
     func updateLikesView(with viewModel: ReaderDetailLikesViewModel)
@@ -36,6 +38,8 @@ class ReaderDetailViewController: UIViewController, ReaderDetailView {
 
     /// WebView height constraint
     @IBOutlet weak var webViewHeight: NSLayoutConstraint!
+
+    @IBOutlet weak var accessoriesStackView: UIStackView!
 
     /// The table view that displays Comments
     @IBOutlet weak var commentsTableView: IntrinsicTableView!
@@ -109,6 +113,11 @@ class ReaderDetailViewController: UIViewController, ReaderDetailView {
         return coordinator?.post
     }
 
+    /// The URL to a post can change – we might set it when we instantiate the controller, but then when we fetch the details from the server, we know
+    /// that `https://wordpress.com/reader/{site_id}/posts/{post_id}` is actually `https://example.com/foo/bar`. We need to keep
+    /// an unchanging reference to the URL so that we can identify the content this view is presenting before we fetch the post from the server.
+    private var originalUrl: URL? = nil
+
     /// The related posts for the post being shown
     var relatedPosts: [RelatedPostsSection] = []
 
@@ -155,6 +164,37 @@ class ReaderDetailViewController: UIViewController, ReaderDetailView {
         displaySettingStore.setting
     }
 
+    // Translation support
+    @available(iOS 26, *)
+    private var translationViewModel: TranslationViewModel {
+        _translationViewModel as! TranslationViewModel
+    }
+
+    private lazy var _translationViewModel: Any = {
+        guard #available(iOS 26, *) else { return {} }
+        return TranslationViewModel()
+    }()
+
+    @available(iOS 26, *)
+    private var translationHostView: TranslationHostView {
+        _translationHostView as! TranslationHostView
+    }
+
+    private lazy var _translationHostView: Any = {
+        guard #available(iOS 26, *) else { return () }
+        return TranslationHostView(viewModel: translationViewModel)
+    }()
+
+    private var translationAvailabilityTask: Task<Void, Never>?
+    private var isTranslating = false
+    var translationAvailability: TranslationAvailability = .unavailable
+
+    private lazy var translationSpinner: UIBarButtonItem = {
+        let activityIndicator = UIActivityIndicatorView(style: .medium)
+        activityIndicator.startAnimating()
+        return UIBarButtonItem(customView: activityIndicator)
+    }()
+
     override func viewDidLoad() {
         super.viewDidLoad()
 
@@ -169,6 +209,7 @@ class ReaderDetailViewController: UIViewController, ReaderDetailView {
         observeWebViewHeight()
         configureNotifications()
         configureCommentsTable()
+        configureTranslationIfAvailable()
 
         coordinator?.start()
 
@@ -268,6 +309,7 @@ class ReaderDetailViewController: UIViewController, ReaderDetailView {
         header.configure(for: post)
         fetchLikes()
         fetchComments()
+        checkTranslationAvailability()
 
         if let postURLString = post.permaLink,
            let postURL = URL(string: postURLString) {
@@ -276,30 +318,30 @@ class ReaderDetailViewController: UIViewController, ReaderDetailView {
 
         webView.isP2 = post.isP2Type
 
-        if post.content?.hasSuffix("[…]") == true {
-            let viewMoreView = ReaderReadMoreView(post: post)
-            // Add to the scroll view's parent view instead of directly to webView
-            if let containerView = webView.superview {
-                containerView.addSubview(viewMoreView)
-                viewMoreView.translatesAutoresizingMaskIntoConstraints = false
-                NSLayoutConstraint.activate([
-                    viewMoreView.leadingAnchor.constraint(equalTo: webView.leadingAnchor),
-                    viewMoreView.trailingAnchor.constraint(equalTo: webView.trailingAnchor),
-                    viewMoreView.bottomAnchor.constraint(equalTo: webView.bottomAnchor)
-                ])
-            }
-        }
-
         coordinator?.storeAuthenticationCookies(in: webView) { [weak self] in
-            if let content = post.contentForDisplay() {
-                self?.webView.loadHTMLString(content)
-            }
+            self?.showPostContent(post)
         }
 
         navigateToCommentIfNecessary()
 
         if !isNewFeaturedImageEnabled && !featuredImageView.isLoaded {
             featuredImageView.load()
+        }
+    }
+
+    private func showPostContent(_ post: ReaderPost) {
+        if post.useExcerpt {
+            webView.loadHTMLString(post.makeExceptHTML())
+        } else if let content = post.contentForDisplay() {
+            webView.loadHTMLString(content)
+        }
+
+        if post.useExcerpt || post.content?.hasSuffix("[…]") == true {
+            let viewMoreView = ReaderReadMoreView(post: post)
+            if let subview = accessoriesStackView.subviews.first(where: { $0 is ReaderReadMoreView }) {
+                subview.removeFromSuperview()
+            }
+            accessoriesStackView.addArrangedSubview(viewMoreView)
         }
     }
 
@@ -399,8 +441,8 @@ class ReaderDetailViewController: UIViewController, ReaderDetailView {
     }
 
     /// Shown an error with a button to open the post on the browser
-    func showErrorWithWebAction() {
-        displayLoadingViewWithWebAction(title: LoadingText.errorLoadingTitle)
+    func showErrorWithWebAction(error: Error?) {
+        displayLoadingViewWithWebAction(title: LoadingText.errorLoadingTitle, error: error)
     }
 
     /// Scroll the content to a given #hash
@@ -465,14 +507,15 @@ class ReaderDetailViewController: UIViewController, ReaderDetailView {
     deinit {
         scrollObserver?.invalidate()
         toolbarUpdateTimer?.invalidate()
+        translationAvailabilityTask?.cancel()
         NotificationCenter.default.removeObserver(self)
     }
 
     /// Apply view styles
     @MainActor private func applyStyles() {
         NSLayoutConstraint.activate([
-            webView.rightAnchor.constraint(equalTo: view.readableContentGuide.rightAnchor, constant: -Constants.margin),
-            webView.leftAnchor.constraint(equalTo: view.readableContentGuide.leftAnchor, constant: Constants.margin)
+            webView.rightAnchor.constraint(equalTo: view.readableContentGuide.rightAnchor, constant: 0),
+            webView.leftAnchor.constraint(equalTo: view.readableContentGuide.leftAnchor, constant: 0)
         ])
 
         webView.translatesAutoresizingMaskIntoConstraints = false
@@ -577,7 +620,7 @@ class ReaderDetailViewController: UIViewController, ReaderDetailView {
         guard isNewFeaturedImageEnabled else {
             return
         }
-        guard let post, let imageURL = URL(string: post.featuredImage),
+        guard let post, let imageURL = post.featuredImageURL,
               !post.contentIncludesFeaturedImage() else {
             return
         }
@@ -703,6 +746,96 @@ class ReaderDetailViewController: UIViewController, ReaderDetailView {
                                    forCellReuseIdentifier: CommentContentTableViewCell.defaultReuseID)
         commentsTableView.register(ReaderDetailNoCommentCell.defaultNib,
                                    forCellReuseIdentifier: ReaderDetailNoCommentCell.defaultReuseID)
+    }
+
+    // Translation framework doesn't support UIKit, so we have to jump through the hoops.
+    private func configureTranslationIfAvailable() {
+        guard #available(iOS 26, *) else {
+            return
+        }
+        let hostingController = UIHostingController(rootView: translationHostView)
+        hostingController.view.isHidden = true
+        addChild(hostingController)
+        view.addSubview(hostingController.view)
+        hostingController.didMove(toParent: self)
+    }
+
+    private func checkTranslationAvailability() {
+        guard #available(iOS 26, *) else {
+            return
+        }
+        translationAvailabilityTask?.cancel()
+        translationAvailabilityTask = Task { @MainActor [weak self] in
+            await self?.updateTranslationAvailability()
+        }
+    }
+
+    @available(iOS 26, *)
+    private func updateTranslationAvailability() async {
+        if let post, let content = post.contentForDisplay() {
+            translationAvailability = await translationViewModel.checkAvailability(for: content)
+        }
+    }
+
+    @available(iOS 26, *)
+    func translatePost() {
+        Task { @MainActor in
+            do {
+                try await actuallyTranslatePost()
+            } catch {
+                if !(error is CancellationError) {
+                    Notice(error: error).post()
+                    UINotificationFeedbackGenerator().notificationOccurred(.error)
+                }
+                DDLogError("Translation failed: \(error)")
+            }
+        }
+    }
+
+    @available(iOS 26, *)
+    @MainActor
+    private func actuallyTranslatePost() async throws {
+        guard let post, case let .available(source, target) = translationAvailability else {
+            return
+        }
+        guard !isTranslating else {
+            return
+        }
+        isTranslating = true
+        showTranslationSpinner()
+        defer {
+            isTranslating = false
+            hideTranslationSpinner()
+        }
+
+        let translationResults = try await translationViewModel.translate(
+            [post.postTitle ?? "", post.content ?? ""],
+            from: source,
+            to: target
+        )
+
+        // Create blur effect
+        let blurEffect = UIBlurEffect(style: .light)
+        let blurView = UIVisualEffectView(effect: nil)
+        blurView.frame = view.bounds
+        blurView.autoresizingMask = [.flexibleWidth, .flexibleHeight]
+        view.addSubview(blurView)
+
+        UIView.animate(withDuration: 0.25, delay: 0, options: .curveEaseIn) {
+            blurView.effect = blurEffect
+        }
+        UIView.animate(withDuration: 0.25, delay: 0.15, options: .curveEaseOut) {
+            blurView.effect = nil
+        } completion: { _ in
+            blurView.removeFromSuperview()
+        }
+
+        header.configure(for: post, title: translationResults[0])
+        do {
+            try await webView.setBodyHTML(translationResults[1])
+        } catch {
+            DDLogError("Failed to set HTML: \(error)")
+        }
     }
 
     private func configureRelatedPosts() {
@@ -832,7 +965,7 @@ class ReaderDetailViewController: UIViewController, ReaderDetailView {
         let coordinator = ReaderDetailCoordinator(view: controller)
         coordinator.postURL = url
         controller.coordinator = coordinator
-
+        controller.originalUrl = url
         return controller
     }
 
@@ -867,12 +1000,13 @@ class ReaderDetailViewController: UIViewController, ReaderDetailView {
     /// - Parameter post: a Reader Post
     /// - Returns: A `ReaderDetailViewController` instance
     @objc class func controllerWithPost(_ post: ReaderPost) -> ReaderDetailViewController {
-        if post.sourceAttributionStyle() == .post &&
-            post.sourceAttribution.postID != nil &&
-            post.sourceAttribution.blogID != nil {
-            return ReaderDetailViewController.controllerWithPostID(post.sourceAttribution.postID!, siteID: post.sourceAttribution.blogID!)
-        } else if post.isCrossPost {
-            return ReaderDetailViewController.controllerWithPostID(post.crossPostMeta.postID, siteID: post.crossPostMeta.siteID)
+        if post.sourceAttributionStyle() == .post,
+           let sourceAttribution = post.sourceAttribution,
+           let postID = sourceAttribution.postID,
+           let blogID = sourceAttribution.blogID {
+            return ReaderDetailViewController.controllerWithPostID(postID, siteID: blogID)
+        } else if post.isCrossPost, let crossPostMeta = post.crossPostMeta {
+            return ReaderDetailViewController.controllerWithPostID(crossPostMeta.postID, siteID: crossPostMeta.siteID)
         } else {
             let controller = ReaderDetailViewController.loadFromStoryboard()
             let coordinator = ReaderDetailCoordinator(view: controller)
@@ -884,7 +1018,6 @@ class ReaderDetailViewController: UIViewController, ReaderDetailView {
 
     private enum Constants {
         static let preferredArticleWidth: CGFloat = 680
-        static let margin: CGFloat = UIDevice.isPad() ? 0 : 8
     }
 
     // MARK: - Managed object observer
@@ -1122,10 +1255,13 @@ private extension ReaderDetailViewController {
         showLoadingView()
     }
 
-    func displayLoadingViewWithWebAction(title: String, accessoryView: UIView? = nil) {
-        noResultsViewController.configure(title: title,
-                                          buttonTitle: LoadingText.errorLoadingPostURLButtonTitle,
-                                          accessoryView: accessoryView)
+    func displayLoadingViewWithWebAction(title: String, error: Error? = nil, accessoryView: UIView? = nil) {
+        noResultsViewController.configure(
+            title: title,
+            buttonTitle: LoadingText.errorLoadingPostURLButtonTitle,
+            subtitle: error?.localizedDescription,
+            accessoryView: accessoryView
+        )
         showLoadingView()
     }
 
@@ -1161,6 +1297,20 @@ private extension ReaderDetailViewController {
         ]
         navigationItem.largeTitleDisplayMode = .never
         navigationItem.rightBarButtonItems = rightItems.compactMap({ $0 })
+    }
+
+    func showTranslationSpinner() {
+        guard var items = navigationItem.rightBarButtonItems,
+              !items.contains(translationSpinner) else { return }
+        items.append(translationSpinner)
+        navigationItem.setRightBarButtonItems(items, animated: true)
+    }
+
+    func hideTranslationSpinner() {
+        guard var items = navigationItem.rightBarButtonItems,
+              let index = items.firstIndex(of: translationSpinner) else { return }
+        items.remove(at: index)
+        navigationItem.setRightBarButtonItems(items, animated: true)
     }
 
     /// Updates the left bar button item based on the current view controller's context in the navigation stack.
@@ -1310,6 +1460,54 @@ extension ReaderDetailViewController: BorderedButtonTableViewCellDelegate {
             post: post,
             origin: self,
             source: .postDetailsComments
+        )
+    }
+}
+
+extension ReaderDetailViewController: ContentIdentifiable {
+    var contentIdentifier: String? {
+        // Only ever try to resolve this based on the site ID and post ID – the post object is fetched later
+        if let siteId = self.coordinator?.siteID?.intValue, let postId = self.coordinator?.postID?.intValue {
+            return "https://wordpress.com/reader/feeds/\(siteId)/posts/\(postId)"
+        }
+
+        if let originalUrl {
+            return originalUrl.absoluteString
+        }
+
+        return nil
+    }
+}
+
+// MARK: - WKWebView Helpers
+
+/// Helper methods for working with WKWebView and translation.
+private extension WKWebView {
+
+    /// Get the body HTML content from the web view.
+    ///
+    /// This method extracts the innerHTML of the document body.
+    ///
+    /// - Returns: The HTML content as a String.
+    /// - Throws: An error if JavaScript evaluation fails.
+    func getBodyHTML() async throws -> String {
+        let script = "document.body.innerHTML || ''"
+        let html = try await evaluateJavaScript(script) as? String
+        return html ?? ""
+    }
+
+    /// Set the body HTML content in the web view.
+    ///
+    /// This method replaces the innerHTML of the document body with the provided HTML.
+    ///
+    /// - Parameter html: The HTML content to set.
+    /// - Throws: An error if JavaScript evaluation fails.
+    func setBodyHTML(_ html: String) async throws {
+        _ = try await callAsyncJavaScript(
+            "document.body.innerHTML = html",
+            arguments: ["html": html],
+            in: nil,
+            contentWorld: .page
         )
     }
 }

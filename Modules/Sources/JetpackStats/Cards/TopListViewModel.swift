@@ -8,7 +8,7 @@ final class TopListViewModel: ObservableObject, TrafficCardViewModel {
     let groupedItems: [[TopListItemType]]
 
     var title: String {
-        selection.item.getTitle(for: selection.metric)
+        selection.item.localizedTitle
     }
 
     @Published private(set) var configuration: TopListCardConfiguration {
@@ -27,7 +27,7 @@ final class TopListViewModel: ObservableObject, TrafficCardViewModel {
     @Published private(set) var isLoading = true
     @Published private(set) var loadingError: Error?
     @Published private(set) var isStale = false
-    @Published private(set) var cachedCountriesMapData: CountriesMapData?
+    @Published private(set) var countriesMapData: CountriesMapData?
 
     @Published var isEditing = false
 
@@ -50,6 +50,7 @@ final class TopListViewModel: ObservableObject, TrafficCardViewModel {
     struct Selection: Equatable, Sendable {
         var item: TopListItemType
         var metric: SiteMetric
+        var locationLevel: LocationLevel = .countries
     }
 
     enum Filter: Equatable {
@@ -160,22 +161,35 @@ final class TopListViewModel: ObservableObject, TrafficCardViewModel {
             // Check for cancellation before updating the state
             try Task.checkCancellation()
 
+            // Fetch country-level data for map if viewing regions or cities
+            var mapData: CountriesMapData?
+            if selection.item == .locations {
+                if selection.locationLevel == .countries {
+                    // Use the main data for countries
+                    mapData = createCountriesMapData(from: data)
+                } else {
+                    // Fetch separate country-level data for regions/cities
+                    var countriesSelection = selection
+                    countriesSelection.locationLevel = .countries
+                    let countriesData = try await getTopListData(for: countriesSelection, dateRange: dateRange)
+                    mapData = createCountriesMapData(from: countriesData)
+                }
+            }
+
+            // Check for cancellation before updating the state
+            try Task.checkCancellation()
+
             // Cancel stale timer and reset stale flag when data is successfully loaded
             staleTimer?.cancel()
             isStale = false
             self.data = data
-
-            // Update cached CountriesMapData if locations are selected
-            if selection.item == .locations {
-                updateCountriesMapDataCache(from: data)
-            } else {
-                cachedCountriesMapData = nil
-            }
+            self.countriesMapData = mapData
         } catch is CancellationError {
             return
         } catch {
             loadingError = error
             data = nil
+            countriesMapData = nil
             tracker?.trackError(error, screen: "top_list_card")
         }
 
@@ -201,18 +215,22 @@ final class TopListViewModel: ObservableObject, TrafficCardViewModel {
             metric: selection.metric,
             interval: dateRange.dateInterval,
             granularity: granularity,
-            limit: fetchLimit
+            limit: fetchLimit,
+            locationLevel: selection.locationLevel
         )
 
         // Fetch previous data only for items that support it
         async let previousTask: TopListResponse? = {
-            guard selection.item != .archive else { return nil }
+            guard selection.item != .archive && dateRange.comparison != .off else {
+                return nil
+            }
             return try await service.getTopListData(
                 fetchItem,
                 metric: selection.metric,
                 interval: dateRange.effectiveComparisonInterval,
                 granularity: granularity,
-                limit: fetchLimit
+                limit: fetchLimit,
+                locationLevel: selection.locationLevel
             )
         }()
 
@@ -253,11 +271,11 @@ final class TopListViewModel: ObservableObject, TrafficCardViewModel {
         }
     }
 
-    private func updateCountriesMapDataCache(from data: TopListData) {
+    private func createCountriesMapData(from data: TopListData) -> CountriesMapData {
         let locations = data.items.compactMap { $0 as? TopListItem.Location }
         let previousLocations = data.previousItems.compactMapValues { $0 as? TopListItem.Location }
 
-        cachedCountriesMapData = CountriesMapData(
+        return CountriesMapData(
             metric: selection.metric,
             locations: locations,
             previousLocations: previousLocations

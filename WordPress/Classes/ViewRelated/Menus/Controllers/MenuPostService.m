@@ -1,0 +1,128 @@
+#import "Blog.h"
+#import "MenuPostService.h"
+#import "MenuPostServiceOptions.h"
+#import "PostHelper.h"
+@import WordPressKit;
+@import WordPressShared;
+@import WordPressData;
+
+NSString * const PostServiceErrorDomain = @"PostServiceErrorDomain";
+
+const NSUInteger PostServiceDefaultNumberToSync = 40;
+
+@implementation MenuPostService
+
+- (instancetype)initWithManagedObjectContext:(NSManagedObjectContext *)context {
+    return [self initWithManagedObjectContext:context
+                     postServiceRemoteFactory:[[PostServiceRemoteFactory alloc] init]];
+}
+
+- (instancetype)initWithManagedObjectContext:(NSManagedObjectContext *)context
+                    postServiceRemoteFactory:(PostServiceRemoteFactory *)postServiceRemoteFactory {
+    if (self = [super initWithManagedObjectContext:context]) {
+        self.postServiceRemoteFactory = postServiceRemoteFactory;
+    }
+    return self;
+}
+
+- (void)syncPostsOfType:(PostServiceType)postType
+                forBlog:(Blog *)blog
+                success:(PostServiceSyncSuccess)success
+                failure:(PostServiceSyncFailure)failure
+{
+    [self syncPostsOfType:postType
+              withOptions:nil
+                  forBlog:blog
+                  success:success
+                  failure:failure];
+}
+
+- (void)syncPostsOfType:(PostServiceType)postType
+            withOptions:(MenuPostServiceSyncOptions *)options
+                forBlog:(Blog *)blog
+                success:(PostServiceSyncSuccess)success
+                failure:(PostServiceSyncFailure)failure
+{
+    [self syncPostsOfType:postType
+              withOptions:options
+                  forBlog:blog
+              loadedPosts:[NSMutableArray new]
+                  syncAll:(postType == PostServiceTypePage)
+                  success:success
+                  failure:failure];
+}
+
+- (void)syncPostsOfType:(PostServiceType)postType
+            withOptions:(MenuPostServiceSyncOptions *)options
+                forBlog:(Blog *)blog
+            loadedPosts:(NSMutableArray <RemotePost *>*)loadedPosts
+                syncAll:(BOOL)syncAll
+                success:(PostServiceSyncSuccess)success
+                failure:(PostServiceSyncFailure)failure
+{
+    NSManagedObjectID *blogObjectID = blog.objectID;
+    id<PostServiceRemote> remote = [self.postServiceRemoteFactory forBlog:blog];
+
+    if (loadedPosts.count > 0) {
+        options.offset = @(loadedPosts.count);
+    }
+
+    NSDictionary *remoteOptions = options ? [self remoteSyncParametersDictionaryForRemote:remote withOptions:options] : nil;
+    [remote getPostsOfType:postType
+                   options:remoteOptions
+                   success:^(NSArray <RemotePost *> *remotePosts) {
+        [loadedPosts addObjectsFromArray:remotePosts];
+
+        if (syncAll && remotePosts.count >= options.number.integerValue) {
+            [self syncPostsOfType:postType
+                      withOptions:options
+                          forBlog:blog
+                      loadedPosts:loadedPosts
+                          syncAll:syncAll
+                          success:success
+                          failure:failure];
+        } else {
+            [self.managedObjectContext performBlock:^{
+                NSError *error;
+                Blog *blogInContext = (Blog *)[self.managedObjectContext existingObjectWithID:blogObjectID error:&error];
+                if (!blogInContext || error) {
+                    DDLogError(@"Could not retrieve blog in context %@", (error ? [NSString stringWithFormat:@"with error: %@", error] : @""));
+                    return;
+                }
+                NSArray *posts = [PostHelper mergePosts:[loadedPosts copy]
+                                                 ofType:postType
+                                           withStatuses:options.statuses
+                                               byAuthor:options.authorID
+                                                forBlog:blogInContext
+                                          purgeExisting:options.purgesLocalSync
+                                              inContext:self.managedObjectContext];
+
+                [[ContextManager sharedInstance] saveContext:self.managedObjectContext withCompletionBlock:^{
+                    // Call the completion block after context is saved. The callback is called on the context queue because `posts`
+                    // contains models that are bound to the `self.managedObjectContext` object.
+                    if (success) {
+                        [self.managedObjectContext performBlock:^{
+                            success(posts);
+                        }];
+                    }
+                } onQueue:dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0)];
+            }];
+        }
+    } failure:^(NSError *error) {
+        if (failure) {
+            [self.managedObjectContext performBlock:^{
+                failure(error);
+            }];
+        }
+    }];
+}
+
+#pragma mark - Helpers
+
+- (NSDictionary *)remoteSyncParametersDictionaryForRemote:(nonnull id <PostServiceRemote>)remote
+                                              withOptions:(nonnull MenuPostServiceSyncOptions *)options
+{
+    return [remote dictionaryWithRemoteOptions:options];
+}
+
+@end

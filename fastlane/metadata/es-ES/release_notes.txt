@@ -1,6 +1,15 @@
-Ahora puedes crear un extracto de tus publicaciones y obtener etiquetas sugeridas automáticamente con Apple Intelligence. También es más fácil seleccionar tus etiquetas en la configuración de publicaciones. Eso sí que es inteligente.
-Hemos realizado algunas correcciones visuales para iOS en áreas como el flujo de creación de sitios, la pantalla de selección de medios y la pantalla de estadísticas.
-Y ya que estábamos, también hemos solucionado algunos errores.
-- Los artículos del lector se muestran correctamente en dispositivos con el zoom de pantalla activado.
-- El botón «Añadir medios» permanece visible en la biblioteca multimedia. Se acabaron las desapariciones.
-- Puedes buscar en las suscripciones del lector sin que se cuelgue la aplicación.
+¡Atención, creadores de contenido! Hemos trabajado duro para implementar algunos cambios importantes en la pantalla Ajustes de entrada.
+
+- Hemos añadido el campo «Estado» que te ayuda a configurar rápidamente las entradas como «Borrador», «Pendiente», «Privada», «Programada» y «Publicada».
+- Hemos recuperado la sección «Fecha de publicación» para las entradas en borrador y pendientes. De esta manera, puedes elegir una fecha de publicación con antelación sin programar oficialmente la entrada.
+- El campo Contraseña utiliza una fuente diferente (Menlo, por si tenías curiosidad) para que sea más fácil leer caracteres que se parezcan.
+- Dale a tus seguidores un tratamiento VIP definiendo niveles de acceso a las entradas para todos los suscriptores, los suscriptores de pago y el público en general.
+- Activa o desactiva los comentarios y pingbacks de las entradas con los ajustes de «Debate».
+
+Mientras hacíamos todo esto, llevamos a cabo otras actualizaciones útiles en varias áreas de la aplicación.
+
+- En la pantalla «Publicar», puedes activar «Enviar correo electrónico a los suscriptores» para avisar automáticamente a tus suscriptores cuando se publique una entrada. ¡Paren las rotativas!
+- El editor de slug dispone de una vista previa de los enlaces permanentes que muestra cómo se verá la URL final de una entrada.
+- Hemos añadido «Taxonomías» a Ajustes del sitio para que puedas gestionar tus grupos de contenido a nivel de sitio.
+- Gracias a algunas correcciones de diseño en el selector de «Categorías», es más obvio que puedes elegir varias categorías para una entrada.
+- Los tamaños de archivo ahora se pueden ver en el área Detalles de medios del sitio. No tendrás que hacer conjeturas.

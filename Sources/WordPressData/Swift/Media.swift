@@ -1,6 +1,55 @@
 import Foundation
 import UniformTypeIdentifiers
 
+@objc
+public enum MediaType: UInt {
+    case image
+    case video
+    case document
+    case powerpoint
+    case audio
+
+    public var stringValue: String {
+        switch self {
+        case .image:
+            return "image"
+        case .video:
+            return "video"
+        case .powerpoint:
+            return "powerpoint"
+        case .document:
+            return "document"
+        case .audio:
+            return "audio"
+        }
+    }
+
+    public init(string: String) {
+        switch string {
+        case "image":
+            self = .image
+        case "video":
+            self = .video
+        case "powerpoint":
+            self = .powerpoint
+        case "audio":
+            self = .audio
+        default:
+            self = .document
+        }
+    }
+}
+
+@objc
+public enum MediaRemoteStatus: UInt {
+    case sync
+    case failed
+    case local
+    case pushing
+    case processing
+    case stub
+}
+
 public extension Media {
     // MARK: - AutoUpload Failure Count
 
@@ -43,6 +92,16 @@ public extension Media {
 
     // MARK: - Media Type
 
+    @objc
+    var mediaType: MediaType {
+        get {
+            mediaTypeString.flatMap(MediaType.init) ?? .document
+        }
+        set {
+            mediaTypeString = newValue.stringValue
+        }
+    }
+
     /// Returns the MIME type, e.g. "image/png".
     @objc var mimeType: String? {
         guard let fileExtension = self.fileExtension(),
@@ -73,6 +132,18 @@ public extension Media {
 
     private func getMediaType(for type: UTType?) -> MediaType {
         type.map(MediaType.init) ?? .document
+    }
+
+    // MARK: - Remote Status
+
+    @objc
+    var remoteStatus: MediaRemoteStatus {
+        get {
+            (remoteStatusNumber?.uintValue).flatMap(MediaRemoteStatus.init(rawValue:)) ?? .local
+        }
+        set {
+            remoteStatusNumber = NSNumber(value: newValue.rawValue)
+        }
     }
 
     // MARK: - Media Link

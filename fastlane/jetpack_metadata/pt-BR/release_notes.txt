@@ -1,16 +1,22 @@
-Agora você pode criar um resumo e tags geradas automaticamente para seus posts usando a Apple Intelligence. Também ficou mais fácil escolher suas tags nas configurações do post. Isso, sim, é inteligente.
-Falando em estatísticas, há várias novas melhorias nesta área do aplicativo.
-- Adicionamos um cartão "Hoje" à tela "Novas estatísticas".
-- Sua página inicial agora aparece na lista de páginas principais.
-- Seus 10 e 50 itens mais populares agora têm uma seção especial. Um lugar para tudo, e tudo em seu lugar.
-- Suas páginas principais aparecem corretamente quando você tem muitos itens.
-- O layout de "Novas estatísticas" é alterado para se ajustar a diferentes tamanhos de tela. Até mesmo àquelas incrivelmente grandes.
-- A tela lembrará suas configurações preferidas quando você escolher um intervalo de datas personalizado.
-- A aba "Tráfego" permite que você puxe a tela para baixo para atualizar.
-Também fizemos algumas correções visuais para iOS em áreas como o fluxo de criação do site, a tela de seleção de mídia e a tela de estatísticas. E enquanto isso, eliminamos vários bugs.
-- Corrigimos uma falha rara que às vezes aparecia em "Estatísticas" e "Assinantes". (Mas não mais!)
-- As visualizações de artigo ficam como deveriam no Leitor quando certos temas estão ativados.
-- Os artigos do Leitor são renderizados corretamente em dispositivos com a opção "Exibir zoom" ativada.
-- O botão "Adicionar mídia" permanece visível na biblioteca de mídia. Chega de chá de sumiço.
-- Você pode pesquisar em "Assinaturas do Leitor" sem travar o aplicativo.
-- A barra de ferramentas nos artigos do Leitor não desaparece e reaparece de tempos em tempos. Chega de pique-esconde.
+Atenção, criadores de conteúdo: trabalhamos duro para fazer algumas grandes alterações na tela de configurações do post.
+
+- Adicionamos um campo "Status" que ajuda você a mover rapidamente os posts entre estados de rascunho, pendente, privado, agendado e publicado.
+- Retornamos a área "Data de publicação" para rascunhos e posts pendentes. Dessa forma, você pode escolher uma data de publicação com antecedência sem agendar oficialmente o post.
+- O campo de senha usa uma fonte diferente (Menlo, se você tiver interesse) para que seja mais fácil ler caracteres com aparência semelhante.
+- Dê aos seus seguidores o tratamento VIP, definindo níveis de acesso aos posts para todos os assinantes, assinantes pagos e para o público em geral.
+- Ative ou desative os comentários e pingbacks dos posts usando as configurações de "Discussão".
+
+Enquanto estávamos lá, fizemos várias outras atualizações úteis em várias áreas do aplicativo.
+
+- Na tela "Publicação", você pode alternar "E-mail para assinantes" para notificar seus assinantes automaticamente quando um post for publicado. Vamos começar.
+- O editor de slug tem uma visualização de link permanente para mostrar como a URL final de um post será exibida.
+- Adicionamos "Taxonomias" às Configurações do site para que você possa gerenciar grupos de conteúdo no nível do site.
+- Graças a algumas correções de design no seletor "Categorias", ficou mais fácil escolher várias categorias para um post.
+- Os tamanhos dos arquivos agora estão visíveis na área Detalhes da mídia do site. Chega de suposições.
+
+Está mais para leitor do que para editor? Não se preocupe, também fizemos alterações no Leitor.
+
+- Quando os títulos dos posts relacionados forem muito longos, você verá uma versão mais curta e resumida.
+- Os blocos de post agora podem ter três linhas de texto em vez de apenas duas, oferecendo 50% mais conteúdo de qualidade.
+- Os artigos têm margens horizontais ligeiramente mais amplas.
+- Corrigimos vários bugs que afetavam o carregamento dos artigos.
