@@ -52,12 +52,12 @@ class ReaderDetailCommentsTableViewDelegate: NSObject, UITableViewDataSource, UI
             items.append(.addCommentButton)
         }
         if comments.isEmpty {
-            let title = post.commentsOpen ? Constants.noComments : Constants.closedComments
+            let title = post.commentsOpen ? Constants.emptyStateTitle : Constants.closedComments
             items.append(.emptyState(title: title))
         } else {
             items.append(contentsOf: comments.map { .comment($0) })
         }
-        if !comments.isEmpty || post.commentsOpen {
+        if !comments.isEmpty {
             items.append(.viewAllButton)
         }
         self.items = items
@@ -203,7 +203,7 @@ private extension ReaderDetailCommentsTableViewDelegate {
         cell.backgroundColor = .clear
 
         var configuration = UIButton.Configuration.bordered()
-        configuration.buttonSize = .large
+//        configuration.buttonSize = .large
         configuration.title = Constants.viewAllButtonTitle.localizedCapitalized + "   \(totalComments)"
         configuration.image = UIImage(systemName: "chevron.right")
         configuration.imagePlacement = .trailing
@@ -222,7 +222,7 @@ private extension ReaderDetailCommentsTableViewDelegate {
 
         cell.contentView.addSubview(button)
 
-        button.pinEdges([.leading, .vertical], insets: UIEdgeInsets(horizontal: 0, vertical: 12))
+        button.pinEdges([.leading, .vertical], insets: UIEdgeInsets(horizontal: 0, vertical: 16))
         button.pinEdges(.trailing, relation: .lessThanOrEqual)
 
         return cell
@@ -241,11 +241,9 @@ private extension ReaderDetailCommentsTableViewDelegate {
     }
 
     struct Constants {
-        static let noComments = NSLocalizedString("No comments yet", comment: "Displayed on the post details page when there are no post comments.")
         static let closedComments = NSLocalizedString("Comments are closed", comment: "Displayed on the post details page when there are no post comments and commenting is closed.")
         static let viewAllButtonTitle = NSLocalizedString("View all comments", comment: "Title for button on the post details page to show all comments when tapped.")
-        // TODO: use as emty title?
-        static let leaveCommentButtonTitle = NSLocalizedString("Be the first to comment", comment: "Title for button on the post details page when there are no comments.")
+        static let emptyStateTitle = NSLocalizedString("Be the first to comment", comment: "Title for button on the post details page when there are no comments.")
         static let jetpackBadgeBottomPadding: CGFloat = 10
     }
 }
