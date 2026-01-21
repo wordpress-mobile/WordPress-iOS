@@ -61,11 +61,11 @@ final class EditorDependencyManager: Sendable {
         await _prefetchDependencies(for: blog)?.value
     }
 
-    /// Schdule prefetching editor dependencies for the given blog in the background.
+    /// Schedule prefetching editor dependencies for the given blog in the background.
     ///
     /// Prefer the `async` version of this method where possible.
     ///
-    /// This method returns immediately – any results  can be retrieved later
+    /// This method returns immediately — any results can be retrieved later
     /// using `dependencies(for:)`.
     ///
     /// - Parameter blog: The blog to prefetch dependencies for.
