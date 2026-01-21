@@ -132,10 +132,12 @@ class NewGutenbergViewController: UIViewController, PostEditor, PublishingEditor
 
         // Create configuration with post content
         let postType = post is Page ? "page" : "post"
+        let postStatus = post.status?.rawValue ?? "draft"
         let editorConfiguration = EditorConfiguration(blog: post.blog, postType: postType)
             .toBuilder()
             .setTitle(post.postTitle ?? "")
             .setContent(post.content ?? "")
+            .setStatus(postStatus)
             .setNativeInserterEnabled(FeatureFlag.nativeBlockInserter.enabled)
             .build()
 
