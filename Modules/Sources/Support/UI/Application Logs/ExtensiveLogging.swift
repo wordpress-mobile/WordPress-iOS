@@ -1,5 +1,4 @@
-import SwiftUI
-import PulseUI
+import Foundation
 
 public enum ExtensiveLogging {
     private static let enabledKey = "extensive_logging_enabled"
@@ -17,14 +16,4 @@ public enum ExtensiveLogging {
             }
         }
     }
-}
-
-public struct PulseMainView: UIViewControllerRepresentable {
-    public init() {}
-
-    public func makeUIViewController(context: Context) -> PulseUI.MainViewController {
-        PulseUI.MainViewController()
-    }
-
-    public func updateUIViewController(_ uiViewController: PulseUI.MainViewController, context: Context) {}
 }

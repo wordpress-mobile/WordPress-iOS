@@ -220,6 +220,17 @@ public struct ActivityLogListView: View {
     }
 }
 
+private struct PulseMainView: UIViewControllerRepresentable {
+    public init() {}
+
+    public func makeUIViewController(context: Context) -> PulseUI.MainViewController {
+        PulseUI.MainViewController()
+    }
+
+    public func updateUIViewController(_ uiViewController: PulseUI.MainViewController, context: Context) {}
+}
+
+
 #Preview {
     NavigationStack {
         ActivityLogListView().environmentObject(SupportDataProvider.testing)
