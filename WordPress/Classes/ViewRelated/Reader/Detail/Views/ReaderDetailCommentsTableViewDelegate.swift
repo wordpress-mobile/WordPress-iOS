@@ -83,9 +83,9 @@ class ReaderDetailCommentsTableViewDelegate: NSObject, UITableViewDataSource, UI
         case .addCommentButton:
             return makeAddCommentButtonCell()
         case .comment(let comment):
-            return makeCommentCell(for: comment, tableView: tableView)
+            return makeCommentCell(for: comment, in: tableView)
         case .emptyState(let title):
-            return makeEmptyStateCell(title: title)
+            return makeEmptyStateCell(title: title, in: tableView)
         case .viewAllButton:
             return makeViewAllButtonCell()
         }
@@ -155,12 +155,12 @@ private extension ReaderDetailCommentsTableViewDelegate {
         leaveCommentView.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(leaveCommentCellTapped)))
 
         cell.contentView.addSubview(leaveCommentView)
-        leaveCommentView.pinEdges(insets: UIEdgeInsets(.vertical, 8))
+        leaveCommentView.pinEdges(insets: UIEdgeInset(top: 16, left: 0, bottom: 8, right: 0))
 
         return cell
     }
 
-    func makeCommentCell(for comment: Comment, tableView: UITableView) -> UITableViewCell {
+    func makeCommentCell(for comment: Comment, in tableView: UITableView) -> UITableViewCell {
         guard let cell = tableView.dequeueReusableCell(withIdentifier: CommentContentTableViewCell.defaultReuseID) as? CommentContentTableViewCell else {
             return UITableViewCell()
         }
@@ -182,8 +182,10 @@ private extension ReaderDetailCommentsTableViewDelegate {
         return cell
     }
 
-    func makeEmptyStateCell(title: String) -> UITableViewCell {
-        let cell = ReaderDetailNoCommentCell()
+    func makeEmptyStateCell(title: String, in tableView: UITableView) -> UITableViewCell {
+        guard let cell = tableView.dequeueReusableCell(withIdentifier: ReaderDetailNoCommentCell.defaultReuseID) as? ReaderDetailNoCommentCell else {
+            return UITableViewCell()
+        }
 
         cell.titleLabel.text = title
         cell.backgroundColor = .clear
@@ -193,7 +195,6 @@ private extension ReaderDetailCommentsTableViewDelegate {
             cell.titleLabel.font = displaySetting.font(with: .body)
             cell.titleLabel.textColor = displaySetting.color.secondaryForeground
         }
-
         return cell
     }
 

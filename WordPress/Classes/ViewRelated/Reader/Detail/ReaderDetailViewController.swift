@@ -1470,14 +1470,12 @@ extension ReaderDetailViewController: BorderedButtonTableViewCellDelegate {
 
     func handleAddCommentButtonTapped() {
         guard let post else {
-            return
+            return wpAssertionFailure("post missing")
         }
-
-        ReaderCommentAction().execute(
-            post: post,
-            origin: self,
-            source: .postDetails
-        )
+        let viewModel = CommentCreateViewModel(post: post)
+        let composerVC = CommentCreateViewController(viewModel: viewModel)
+        let navigationVC = UINavigationController(rootViewController: composerVC)
+        present(navigationVC, animated: true)
     }
 }
 
