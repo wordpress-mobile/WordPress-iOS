@@ -84,29 +84,41 @@ private enum ListItem: Identifiable, Equatable {
 
 private struct PostList: View {
     let items: [ListItem]
-    let showSyncingState: Bool
-    let onLoadNextPage: () async -> Void
+    let onLoadNextPage: () async throws -> Void
     let onSelectPost: (AnyPostWithEditContext) -> Void
+
+    @State var isLoadingMore = false
+    @State var loadMoreError: Error?
 
     var body: some View {
         List {
-            Section {
-                ForEach(items) { item in
-                    listRow(item)
-                }
-            } footer: {
-                if showSyncingState {
-                    ProgressView()
-                        .progressViewStyle(.circular)
-                        .frame(maxWidth: .infinity, minHeight: 44, alignment: .center)
-                        .task {
-                            await onLoadNextPage()
+            ForEach(items) { item in
+                listRow(item)
+                    .task {
+                        if !isLoadingMore, items.suffix(5).contains(where: { $0.id == item.id }) {
+                            await loadNextPage()
                         }
-                }
+                    }
             }
 
+            makeFooterView()
         }
         .listStyle(.plain)
+    }
+
+    private func loadNextPage() async {
+        guard !isLoadingMore else { return }
+
+        isLoadingMore = true
+        defer { isLoadingMore = false }
+
+        self.loadMoreError = nil
+
+        do {
+            try await onLoadNextPage()
+        } catch {
+            self.loadMoreError = error
+        }
     }
 
     @ViewBuilder
@@ -141,6 +153,25 @@ private struct PostList: View {
 
         case .stale(_, let post):
             PostRowView(post: post)
+        }
+    }
+
+    @ViewBuilder
+    private func makeFooterView() -> some View {
+        if isLoadingMore {
+            ProgressView()
+                .progressViewStyle(.circular)
+                .frame(maxWidth: .infinity, minHeight: 44, alignment: .center)
+                .id(UUID()) // A hack to show the ProgressView after cell reusing.
+        } else if loadMoreError != nil {
+            Button {
+                Task { await loadNextPage() }
+            } label: {
+                HStack {
+                    Image(systemName: "exclamationmark.circle")
+                    Text(SharedStrings.Button.retry)
+                }
+            }
         }
     }
 }
@@ -285,8 +316,7 @@ struct CustomPostCollectionView: View {
     var body: some View {
         PostList(
             items: items,
-            showSyncingState: isLoadingMore,
-            onLoadNextPage: { await loadNextPage() },
+            onLoadNextPage: { try await loadNextPage() },
             onSelectPost: onSelectPost
         )
         .overlay {
@@ -331,41 +361,15 @@ struct CustomPostCollectionView: View {
         }
     }
 
-    var isLoadingMore: Bool {
-        guard let listInfo else { return false }
-
-        switch listInfo.state {
-        case .idle:
-            // If the list is displaying data, and there are more pages to be loaded,
-            // we need to show a loading indicator to indicate that there are more items.
-            if let currentPage = listInfo.currentPage,
-               let totalPages = listInfo.totalPages,
-               currentPage > 0,
-               currentPage < totalPages {
-                return true
-            } else {
-                return false
-            }
-        case .fetchingNextPage:
-            return true
-        case .fetchingFirstPage, .error:
-            return false
-        }
-    }
-
-    private func loadNextPage() async {
+    private func loadNextPage() async throws {
         if let listInfo, listInfo.isSyncing || !listInfo.hasMorePages {
             return
         }
 
-        do {
-            if listInfo?.currentPage == nil {
-                _ = try await collection?.refresh()
-            } else {
-                _ = try await collection?.loadNextPage()
-            }
-        } catch {
-            DDLogError("Failed to fetch items: \(error)")
+        if listInfo?.currentPage == nil {
+            _ = try await collection?.refresh()
+        } else {
+            _ = try await collection?.loadNextPage()
         }
     }
 
@@ -532,7 +536,6 @@ private struct FilterMenuItem: View {
             .fetching(id: 2),
             .fetching(id: 3)
         ],
-        showSyncingState: false,
         onLoadNextPage: {},
         onSelectPost: { _ in }
     )
@@ -544,7 +547,6 @@ private struct FilterMenuItem: View {
             .error(id: 1, message: "Failed to load post"),
             .error(id: 2, message: "Network connection lost")
         ],
-        showSyncingState: false,
         onLoadNextPage: {},
         onSelectPost: { _ in }
     )
@@ -578,7 +580,6 @@ private struct FilterMenuItem: View {
                 )
             )
         ],
-        showSyncingState: false,
         onLoadNextPage: {},
         onSelectPost: { _ in }
     )
@@ -615,7 +616,6 @@ private struct FilterMenuItem: View {
                 )
             ),
         ],
-        showSyncingState: true,
         onLoadNextPage: {},
         onSelectPost: { _ in }
     )
