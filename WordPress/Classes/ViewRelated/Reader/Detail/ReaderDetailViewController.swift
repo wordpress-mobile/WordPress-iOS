@@ -487,6 +487,9 @@ class ReaderDetailViewController: UIViewController, ReaderDetailView {
         // Set the delegate here so the table isn't shown until fetching is complete.
         commentsTableView.delegate = commentsTableViewDelegate
         commentsTableView.dataSource = commentsTableViewDelegate
+        commentsTableViewDelegate.addCommentButtonTappedClosure = { [weak self] in
+            self?.handleAddCommentButtonTapped()
+        }
         commentsTableViewDelegate.updateWith(post: post,
                                              comments: approvedComments,
                                              totalComments: totalComments,
@@ -1460,6 +1463,18 @@ extension ReaderDetailViewController: BorderedButtonTableViewCellDelegate {
             post: post,
             origin: self,
             source: .postDetailsComments
+        )
+    }
+
+    func handleAddCommentButtonTapped() {
+        guard let post else {
+            return
+        }
+
+        ReaderCommentAction().execute(
+            post: post,
+            origin: self,
+            source: .postDetails
         )
     }
 }

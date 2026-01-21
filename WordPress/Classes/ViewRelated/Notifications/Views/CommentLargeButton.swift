@@ -3,16 +3,13 @@ import WordPressUI
 import WordPressShared
 
 final class CommentLargeButton: UIView {
-    private let iconView = MyProfileIconView(hidesWhenEmpty: true)
-    private var containerView = CommentLargeButtonContainerView()
-    private let placeholderLabel = UILabel()
+    private let leaveCommentView = LeaveCommentView()
     private let button = UIButton()
     private let commentsClosedView = makeCommentsClosedView()
-    private var contentStackView: UIStackView?
 
     @objc var isCommentingClosed = false {
         didSet {
-            contentStackView?.isHidden = isCommentingClosed
+            leaveCommentView.isHidden = isCommentingClosed
             commentsClosedView.isHidden = !isCommentingClosed
             isUserInteractionEnabled = !isCommentingClosed
         }
@@ -31,8 +28,8 @@ final class CommentLargeButton: UIView {
     }
 
     var placeholder: String? {
-        set { placeholderLabel.text = newValue }
-        get { placeholderLabel.text }
+        set { leaveCommentView.placeholder = newValue }
+        get { leaveCommentView.placeholder }
     }
 
     private func setupView() {
@@ -41,17 +38,8 @@ final class CommentLargeButton: UIView {
 
         backgroundColor = .systemBackground
 
-        placeholderLabel.textColor = .tertiaryLabel
-
-        placeholderLabel.text = CommentCreateViewModel.leaveCommentLocalizedPlaceholder
-
-        containerView.addSubview(placeholderLabel)
-        placeholderLabel.pinEdges(insets: UIEdgeInsets(horizontal: 14, vertical: 10))
-
-        let stackView = UIStackView(alignment: .center, spacing: 8, [iconView, containerView])
-        addSubview(stackView)
-        stackView.pinEdges(to: safeAreaLayoutGuide, insets: UIEdgeInsets.init(top: 14, left: 20, bottom: 8, right: 20))
-        self.contentStackView = stackView
+        addSubview(leaveCommentView)
+        leaveCommentView.pinEdges(to: safeAreaLayoutGuide, insets: UIEdgeInsets.init(top: 14, left: 20, bottom: 8, right: 20))
 
         let divider = SeparatorView.horizontal()
         addSubview(divider)
@@ -62,12 +50,45 @@ final class CommentLargeButton: UIView {
         button.pinEdges() // Make sure it covers everything
 
         addSubview(commentsClosedView)
-        commentsClosedView.pinCenter(to: stackView)
+        commentsClosedView.pinCenter(to: leaveCommentView)
         commentsClosedView.isHidden = true
     }
 
     @objc private func buttonTapped() {
         onTap?()
+    }
+}
+
+final class LeaveCommentView: UIView {
+    private let iconView = MyProfileIconView(hidesWhenEmpty: true)
+    private let containerView = CommentLargeButtonContainerView()
+    private let placeholderLabel = UILabel()
+
+    var placeholder: String? {
+        set { placeholderLabel.text = newValue }
+        get { placeholderLabel.text }
+    }
+
+    override init(frame: CGRect) {
+        super.init(frame: frame)
+        setupView()
+    }
+
+    required init?(coder: NSCoder) {
+        super.init(coder: coder)
+        setupView()
+    }
+
+    private func setupView() {
+        placeholderLabel.textColor = .tertiaryLabel
+        placeholderLabel.text = CommentCreateViewModel.leaveCommentLocalizedPlaceholder
+
+        containerView.addSubview(placeholderLabel)
+        placeholderLabel.pinEdges(insets: UIEdgeInsets(horizontal: 14, vertical: 10))
+
+        let stackView = UIStackView(alignment: .center, spacing: 8, [iconView, containerView])
+        addSubview(stackView)
+        stackView.pinEdges()
     }
 }
 

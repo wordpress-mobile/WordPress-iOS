@@ -16,27 +16,36 @@ class ReaderDetailCommentsTableViewDelegate: NSObject, UITableViewDataSource, UI
     private(set) var headerView: ReaderDetailCommentsHeader?
     private let helper = ReaderCommentsHelper()
     var followButtonTappedClosure: (() ->Void)?
+    var addCommentButtonTappedClosure: (() -> Void)?
 
     private var totalRows = 0
     private var hideButton = true
+    private var showAddCommentButton = false
 
     var displaySetting: ReaderDisplaySettings
 
     private var comments: [Comment] = [] {
         didSet {
             totalRows = {
+                var rows = 0
+
+                // Add row for CommentLargeButton if comments are enabled
+                if showAddCommentButton {
+                    rows += 1
+                }
+
                 // If there are no comments and commenting is closed, 1 empty cell.
                 if hideButton {
-                    return 1
+                    return rows + 1
                 }
 
                 // If there are no comments, 1 empty cell + 1 button.
                 if comments.count == 0 {
-                    return 2
+                    return rows + 2
                 }
 
                 // Otherwise add 1 for the button.
-                return comments.count + 1
+                return rows + comments.count + 1
             }()
         }
     }
@@ -58,6 +67,7 @@ class ReaderDetailCommentsTableViewDelegate: NSObject, UITableViewDataSource, UI
                     buttonDelegate: BorderedButtonTableViewCellDelegate? = nil) {
         self.post = post
         hideButton = (comments.count == 0 && !commentsEnabled)
+        showAddCommentButton = commentsEnabled
         self.comments = comments
         self.totalComments = totalComments
         self.presentingViewController = presentingViewController
@@ -80,11 +90,20 @@ class ReaderDetailCommentsTableViewDelegate: NSObject, UITableViewDataSource, UI
     }
 
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        // Show CommentLargeButton as first cell if comments are enabled
+        if showAddCommentButton && indexPath.row == 0 {
+            return commentLargeButtonCell()
+        }
+
+        // Show "View all comments" button at the last row
         if indexPath.row == (totalRows - 1) && !hideButton {
             return showCommentsButtonCell()
         }
 
-        if let comment = comments[safe: indexPath.row] {
+        // Adjust index for accessing comments array
+        let commentIndex = showAddCommentButton ? indexPath.row - 1 : indexPath.row
+
+        if let comment = comments[safe: commentIndex] {
             guard let cell = tableView.dequeueReusableCell(withIdentifier: CommentContentTableViewCell.defaultReuseID) as? CommentContentTableViewCell else {
                 return UITableViewCell()
             }
@@ -175,6 +194,25 @@ class ReaderDetailCommentsTableViewDelegate: NSObject, UITableViewDataSource, UI
 }
 
 private extension ReaderDetailCommentsTableViewDelegate {
+
+    func commentLargeButtonCell() -> UITableViewCell {
+        let cell = UITableViewCell(style: .default, reuseIdentifier: nil)
+        cell.selectionStyle = .none
+        cell.backgroundColor = .clear
+        cell.contentView.backgroundColor = .clear
+
+        let leaveCommentView = LeaveCommentView()
+        leaveCommentView.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(leaveCommentCellTapped)))
+
+        cell.contentView.addSubview(leaveCommentView)
+        leaveCommentView.pinEdges(insets: UIEdgeInsets(.vertical, 8))
+
+        return cell
+    }
+
+    @objc private func leaveCommentCellTapped() {
+        addCommentButtonTappedClosure?()
+    }
 
     func showCommentsButtonCell() -> BorderedButtonTableViewCell {
         let cell = BorderedButtonTableViewCell()

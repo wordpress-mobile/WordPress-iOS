@@ -75,7 +75,7 @@ class ReaderDetailCoordinator {
 
     /// Comment Service
     private let commentService: CommentService
-    private let commentsDisplayed: UInt = 1
+    private let commentsDisplayed: UInt = 2
 
     /// Post Sharing Controller
     private let sharingController: PostSharingController
