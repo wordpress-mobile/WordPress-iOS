@@ -103,6 +103,7 @@ import WordPressShared
     case readerPostReported
     case readerPostAuthorReported
     case readerArticleDetailMoreTapped
+    case readerArticleLeaveCommentTapped
     case readerSharedItem
     case readerSuggestedSiteVisited
     case readerSuggestedSiteToggleFollow
@@ -870,6 +871,8 @@ import WordPressShared
             return "reader_post_author_reported"
         case .readerArticleDetailMoreTapped:
             return "reader_article_detail_more_tapped"
+        case .readerArticleLeaveCommentTapped:
+            return "reader_article_leave_comment_tapped"
         case .readerSharedItem:
             return "reader_shared_item"
         case .readerSuggestedSiteVisited:

@@ -249,6 +249,7 @@ private extension ReaderDetailCommentsTableViewDelegate {
     }
 
     @objc private func leaveCommentCellTapped() {
+        WPAnalytics.track(.readerArticleLeaveCommentTapped)
         buttonLeaveCommentTapped?(nil)
     }
 
