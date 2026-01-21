@@ -136,7 +136,7 @@ private final class ReaderPostCellView: UIView {
         titleLabel.maximumContentSizeCategory = .accessibilityExtraLarge
 
         detailsLabel.font = .preferredFont(forTextStyle: .subheadline)
-        detailsLabel.textColor = .secondaryLabel
+        detailsLabel.textColor = UIAppColor.secondary
         detailsLabel.adjustsFontForContentSizeCategory = true
         detailsLabel.maximumContentSizeCategory = .accessibilityExtraLarge
 
