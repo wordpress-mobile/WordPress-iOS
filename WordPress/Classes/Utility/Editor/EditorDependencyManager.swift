@@ -93,7 +93,7 @@ final class EditorDependencyManager: Sendable {
 
         let task = Task {
             do {
-                let dependencies = try await service.prepare(progress: { _ in })
+                let dependencies = try await service.prepare()
                 self.cache[key] = dependencies
             } catch {
                 // Prefetch failed - editor will fall back to async loading
