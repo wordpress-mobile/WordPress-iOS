@@ -8,6 +8,8 @@
 * [*] Reader: Fix article view ignoring `use_excerpt` [#25108]
 * [*] Reader: Add translation support for posts [#25089]
 * [*] Reader: Collapse multiple spaces in site titles into one [#25094]
+* [*] Reader: Add a "Leave Comment" button to directly to the "Comments" under the article (one less tap to leave a comment) [#25155]
+* [*] Reader: You can now reply and like the comments directly under the artile and see more of them [#25155]
 * [*] Post Settings: Fix post Visibility discoverability [#25127]
 * [*] Post Settings: Fix an issue with button "Done" sometimes disappearing when you entering password for post when publishing [#25138]
 * [*] Post Settings: Show the selected value for the "Access" field [#25138]
