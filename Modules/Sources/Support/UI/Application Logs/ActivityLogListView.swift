@@ -230,7 +230,6 @@ private struct PulseMainView: UIViewControllerRepresentable {
     public func updateUIViewController(_ uiViewController: PulseUI.MainViewController, context: Context) {}
 }
 
-
 #Preview {
     NavigationStack {
         ActivityLogListView().environmentObject(SupportDataProvider.testing)
