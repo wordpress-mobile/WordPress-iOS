@@ -1,5 +1,4 @@
 import SwiftUI
-import PulseUI
 
 /// A view that displays a list of application log files in reverse chronological order.
 public struct ActivityLogListView: View {
@@ -88,7 +87,7 @@ public struct ActivityLogListView: View {
             Text(Localization.extensiveLoggingAlertMessage)
         }
         .sheet(isPresented: $showExtensiveLogs) {
-            PulseMainView()
+            ExtensiveLogsView(dataProvider: dataProvider)
         }
         .onAppear {
             self.dataProvider.userDid(.viewApplicationLogList)
@@ -220,14 +219,14 @@ public struct ActivityLogListView: View {
     }
 }
 
-private struct PulseMainView: UIViewControllerRepresentable {
-    public init() {}
+private struct ExtensiveLogsView: UIViewControllerRepresentable {
+    var dataProvider: SupportDataProvider
 
-    public func makeUIViewController(context: Context) -> PulseUI.MainViewController {
-        PulseUI.MainViewController()
+    public func makeUIViewController(context: Context) -> UIViewController {
+        dataProvider.extensiveLogsViewController()
     }
 
-    public func updateUIViewController(_ uiViewController: PulseUI.MainViewController, context: Context) {}
+    public func updateUIViewController(_ uiViewController: UIViewController, context: Context) {}
 }
 
 #Preview {

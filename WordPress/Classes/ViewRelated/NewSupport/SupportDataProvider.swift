@@ -11,6 +11,7 @@ import WordPressData
 import WordPressShared
 import WordPressIntelligence
 import CocoaLumberjack
+import PulseUI
 
 extension SupportDataProvider {
     @MainActor
@@ -141,6 +142,10 @@ class WpSupportDelegate: NSObject, SupportDelegate {
                 "bytes-saved": bytesSaved
             ])
         }
+    }
+
+    func extensionLogsViewController() -> UIViewController {
+        PulseUI.MainViewController()
     }
 }
 
