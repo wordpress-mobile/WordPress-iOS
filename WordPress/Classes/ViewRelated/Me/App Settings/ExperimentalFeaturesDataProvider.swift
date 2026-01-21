@@ -81,9 +81,5 @@ class ExperimentalFeaturesDataProvider: ExperimentalFeaturesViewModel.DataProvid
         static let editorFeedbackDecline = NSLocalizedString("experimentalFeatures.editorFeedbackDecline", value: "Not now", comment: "Dismiss button title for the alert asking for feedback")
         static let editorFeedbackAccept = NSLocalizedString("experimentalFeatures.editorFeedbackAccept", value: "Send feedback", comment: "Accept button title for the alert asking for feedback")
         static let editorNote = NSLocalizedString("experimentalFeatures.editorNote", value: "Experimental Block Editor will become the default in a future release and the ability to disable it will be removed.", comment: "Communicates the future removal of the option to disable the experimental editor, displayed beneath the experimental features list")
-
-        static let pulseAlertTitle = NSLocalizedString("experimentalFeatures.extensiveLogging.alert.title", value: "Enable Extensive Logging?", comment: "Alert title when enabling Pulse logging feature")
-        static let pulseAlertMessage = NSLocalizedString("experimentalFeatures.extensiveLogging.alert.message", value: "This will enable extensive local logging for debugging purposes and add a new Logger row in App Settings. This is not recommended unless you know what you're doing. The app will restart to apply changes.", comment: "Alert message explaining Pulse logging feature and warning users")
-        static let pulseAlertConfirm = NSLocalizedString("experimentalFeatures.extensiveLogging.alert.confirm", value: "Apply & Restart", comment: "Button to confirm enabling Pulse logging and restart the app")
     }
 }

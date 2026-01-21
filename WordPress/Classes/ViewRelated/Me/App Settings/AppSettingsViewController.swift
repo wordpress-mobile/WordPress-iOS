@@ -552,13 +552,6 @@ private extension AppSettingsViewController {
             action: pushDebugMenu()
         )
 
-        let loggerRow = NavigationItemRow(title: Strings.logger, icon: UIImage(systemName: "record.circle")) { [weak self] _ in
-            UserDefaults.standard.set(false, forKey: "pulse-disable-support-prompts")
-            self?.tableView.deselectSelectedRowWithAnimation(true)
-            let mainVC = PulseUI.MainViewController()
-            self?.present(mainVC, animated: true)
-        }
-
         let designSystem = NavigationItemRow(
             title: NSLocalizedString("Design System", comment: "Navigates to design system gallery only available in development builds"),
             icon: UIImage(systemName: "paintpalette"),
@@ -596,6 +589,11 @@ private extension AppSettingsViewController {
         }
 
         if ExtensiveLogging.enabled {
+            let loggerRow = NavigationItemRow(title: Strings.logger, icon: UIImage(systemName: "record.circle")) { [weak self] _ in
+                self?.tableView.deselectSelectedRowWithAnimation(true)
+                let mainVC = PulseUI.MainViewController()
+                self?.present(mainVC, animated: true)
+            }
             rows.append(loggerRow)
         }
 
@@ -652,8 +650,8 @@ extension AppSettingsViewController {
 
         static let logger = NSLocalizedString(
             "applicationSettings.logger",
-            value: "Logger",
-            comment: "A item in the menu"
+            value: "Extensive Logs",
+            comment: "The menu item to view extensive logs"
         )
     }
 }
