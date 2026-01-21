@@ -490,11 +490,13 @@ class ReaderDetailViewController: UIViewController, ReaderDetailView {
         commentsTableViewDelegate.addCommentButtonTappedClosure = { [weak self] in
             self?.handleAddCommentButtonTapped()
         }
-        commentsTableViewDelegate.updateWith(post: post,
-                                             comments: approvedComments,
-                                             totalComments: totalComments,
-                                             presentingViewController: self,
-                                             buttonDelegate: self)
+        commentsTableViewDelegate.configure(
+            post: post,
+            comments: approvedComments,
+            totalComments: totalComments,
+            presentingViewController: self,
+            buttonDelegate: self
+        )
 
         commentsTableView.reloadData()
     }

@@ -18,40 +18,15 @@ class ReaderDetailCommentsTableViewDelegate: NSObject, UITableViewDataSource, UI
     var followButtonTappedClosure: (() ->Void)?
     var addCommentButtonTappedClosure: (() -> Void)?
 
-    private var totalRows = 0
-    private var hideButton = true
-    private var showAddCommentButton = false
-
     var displaySetting: ReaderDisplaySettings
 
-    private var comments: [Comment] = [] {
-        didSet {
-            totalRows = {
-                var rows = 0
+    private var items: [Item] = []
 
-                // Add row for CommentLargeButton if comments are enabled
-                if showAddCommentButton {
-                    rows += 1
-                }
-
-                // If there are no comments and commenting is closed, 1 empty cell.
-                if hideButton {
-                    return rows + 1
-                }
-
-                // If there are no comments, 1 empty cell + 1 button.
-                if comments.count == 0 {
-                    return rows + 2
-                }
-
-                // Otherwise add 1 for the button.
-                return rows + comments.count + 1
-            }()
-        }
-    }
-
-    private var commentsEnabled: Bool {
-        return post?.commentsOpen ?? false
+    private enum Item {
+        case addCommentButton
+        case comment(Comment)
+        case emptyState(title: String)
+        case viewAllButton
     }
 
     // MARK: - Public Methods
@@ -60,18 +35,32 @@ class ReaderDetailCommentsTableViewDelegate: NSObject, UITableViewDataSource, UI
         self.displaySetting = displaySetting
     }
 
-    func updateWith(post: ReaderPost,
-                    comments: [Comment] = [],
-                    totalComments: Int = 0,
-                    presentingViewController: UIViewController,
-                    buttonDelegate: BorderedButtonTableViewCellDelegate? = nil) {
+    func configure(
+        post: ReaderPost,
+        comments: [Comment] = [],
+        totalComments: Int = 0,
+        presentingViewController: UIViewController,
+        buttonDelegate: BorderedButtonTableViewCellDelegate? = nil
+    ) {
         self.post = post
-        hideButton = (comments.count == 0 && !commentsEnabled)
-        showAddCommentButton = commentsEnabled
-        self.comments = comments
         self.totalComments = totalComments
         self.presentingViewController = presentingViewController
         self.buttonDelegate = buttonDelegate
+
+        var items: [Item] = []
+        if post.commentsOpen {
+            items.append(.addCommentButton)
+        }
+        if comments.isEmpty {
+            let title = post.commentsOpen ? Constants.noComments : Constants.closedComments
+            items.append(.emptyState(title: title))
+        } else {
+            items.append(contentsOf: comments.map { .comment($0) })
+        }
+        if !comments.isEmpty || post.commentsOpen {
+            items.append(.viewAllButton)
+        }
+        self.items = items
     }
 
     func updateFollowButtonState(post: ReaderPost) {
@@ -86,59 +75,20 @@ class ReaderDetailCommentsTableViewDelegate: NSObject, UITableViewDataSource, UI
     }
 
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return totalRows
+        return items.count
     }
 
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        // Show CommentLargeButton as first cell if comments are enabled
-        if showAddCommentButton && indexPath.row == 0 {
-            return commentLargeButtonCell()
+        switch items[indexPath.row] {
+        case .addCommentButton:
+            return makeAddCommentButtonCell()
+        case .comment(let comment):
+            return makeCommentCell(for: comment, tableView: tableView)
+        case .emptyState(let title):
+            return makeEmptyStateCell(title: title)
+        case .viewAllButton:
+            return makeViewAllButtonCell()
         }
-
-        // Show "View all comments" button at the last row
-        if indexPath.row == (totalRows - 1) && !hideButton {
-            return showCommentsButtonCell()
-        }
-
-        // Adjust index for accessing comments array
-        let commentIndex = showAddCommentButton ? indexPath.row - 1 : indexPath.row
-
-        if let comment = comments[safe: commentIndex] {
-            guard let cell = tableView.dequeueReusableCell(withIdentifier: CommentContentTableViewCell.defaultReuseID) as? CommentContentTableViewCell else {
-                return UITableViewCell()
-            }
-
-            cell.displaySetting = displaySetting
-            cell.configureForPostDetails(with: comment, helper: helper) { _ in
-                do {
-                    try WPException.objcTry {
-                        tableView.performBatchUpdates({})
-                    }
-                } catch {
-                    WordPressAppDelegate.crashLogging?.logError(error)
-                }
-            }
-
-            cell.backgroundColor = .clear
-            cell.contentView.backgroundColor = .clear
-
-            return cell
-        }
-
-        guard let cell = tableView.dequeueReusableCell(withIdentifier: ReaderDetailNoCommentCell.defaultReuseID) as? ReaderDetailNoCommentCell else {
-            return UITableViewCell()
-        }
-
-        cell.titleLabel.text = commentsEnabled ? Constants.noComments : Constants.closedComments
-        cell.backgroundColor = .clear
-        cell.contentView.backgroundColor = .clear
-
-        if ReaderDisplaySettings.customizationEnabled {
-            cell.titleLabel.font = displaySetting.font(with: .body)
-            cell.titleLabel.textColor = displaySetting.color.secondaryForeground
-        }
-
-        return cell
     }
 
     func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
@@ -195,7 +145,7 @@ class ReaderDetailCommentsTableViewDelegate: NSObject, UITableViewDataSource, UI
 
 private extension ReaderDetailCommentsTableViewDelegate {
 
-    func commentLargeButtonCell() -> UITableViewCell {
+    func makeAddCommentButtonCell() -> UITableViewCell {
         let cell = UITableViewCell(style: .default, reuseIdentifier: nil)
         cell.selectionStyle = .none
         cell.backgroundColor = .clear
@@ -210,11 +160,44 @@ private extension ReaderDetailCommentsTableViewDelegate {
         return cell
     }
 
-    @objc private func leaveCommentCellTapped() {
-        addCommentButtonTappedClosure?()
+    func makeCommentCell(for comment: Comment, tableView: UITableView) -> UITableViewCell {
+        guard let cell = tableView.dequeueReusableCell(withIdentifier: CommentContentTableViewCell.defaultReuseID) as? CommentContentTableViewCell else {
+            return UITableViewCell()
+        }
+
+        cell.displaySetting = displaySetting
+        cell.configureForPostDetails(with: comment, helper: helper) { _ in
+            do {
+                try WPException.objcTry {
+                    tableView.performBatchUpdates({})
+                }
+            } catch {
+                WordPressAppDelegate.crashLogging?.logError(error)
+            }
+        }
+
+        cell.backgroundColor = .clear
+        cell.contentView.backgroundColor = .clear
+
+        return cell
     }
 
-    func showCommentsButtonCell() -> BorderedButtonTableViewCell {
+    func makeEmptyStateCell(title: String) -> UITableViewCell {
+        let cell = ReaderDetailNoCommentCell()
+
+        cell.titleLabel.text = title
+        cell.backgroundColor = .clear
+        cell.contentView.backgroundColor = .clear
+
+        if ReaderDisplaySettings.customizationEnabled {
+            cell.titleLabel.font = displaySetting.font(with: .body)
+            cell.titleLabel.textColor = displaySetting.color.secondaryForeground
+        }
+
+        return cell
+    }
+
+    func makeViewAllButtonCell() -> BorderedButtonTableViewCell {
         let cell = BorderedButtonTableViewCell()
         let title = totalComments == 0 ? Constants.leaveCommentButtonTitle : Constants.viewAllButtonTitle
 
@@ -232,6 +215,10 @@ private extension ReaderDetailCommentsTableViewDelegate {
         cell.backgroundColor = .clear
         cell.contentView.backgroundColor = .clear
         return cell
+    }
+
+    @objc private func leaveCommentCellTapped() {
+        addCommentButtonTappedClosure?()
     }
 
     @objc func jetpackButtonTapped() {
