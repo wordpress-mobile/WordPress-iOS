@@ -16,10 +16,10 @@ class DashboardExtensiveLoggingCardView: UIView {
     private lazy var containerStackView: UIStackView = {
         let stackView = UIStackView()
         stackView.axis = .vertical
-        stackView.alignment = .center
+        stackView.alignment = .leading
         stackView.translatesAutoresizingMaskIntoConstraints = false
         stackView.spacing = 8
-        stackView.layoutMargins = UIEdgeInsets(horizontal: 12, vertical: 4)
+        stackView.layoutMargins = UIEdgeInsets(horizontal: 14, vertical: 4)
         stackView.isLayoutMarginsRelativeArrangement = true
         return stackView
     }()
@@ -28,7 +28,6 @@ class DashboardExtensiveLoggingCardView: UIView {
         let label = UILabel()
         label.translatesAutoresizingMaskIntoConstraints = false
         label.font = .preferredFont(forTextStyle: .subheadline)
-        label.textAlignment = .center
         label.numberOfLines = 0
         label.adjustsFontForContentSizeCategory = true
         label.text = Strings.message
