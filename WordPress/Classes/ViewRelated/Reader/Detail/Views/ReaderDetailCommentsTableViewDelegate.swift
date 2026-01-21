@@ -221,7 +221,7 @@ private extension ReaderDetailCommentsTableViewDelegate {
         configuration.preferredSymbolConfigurationForImage = UIImage.SymbolConfiguration(paletteColors: [.tertiaryLabel])
             .applying(UIImage.SymbolConfiguration(font: UIFont.preferredFont(forTextStyle: .caption2).withWeight(.bold)))
         configuration.imagePadding = 4
-        configuration.contentInsets = .init(top: 8, leading: 8, bottom: 8, trailing: 8)
+        configuration.contentInsets = .init(top: 9, leading: 12, bottom: 9, trailing: 12)
 
         let button = UIButton(configuration: configuration, primaryAction: .init { [weak self] _ in
             self?.buttonDelegate?.buttonTapped()
@@ -249,7 +249,7 @@ private extension ReaderDetailCommentsTableViewDelegate {
     }
 
     @objc private func leaveCommentCellTapped() {
-        buttonLeaveCommentTapped?()
+        buttonLeaveCommentTapped?(nil)
     }
 
     @objc func jetpackButtonTapped() {
