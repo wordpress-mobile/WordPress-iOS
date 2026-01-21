@@ -588,15 +588,6 @@ private extension AppSettingsViewController {
             rows.append(designSystem)
         }
 
-        if ExtensiveLogging.enabled {
-            let loggerRow = NavigationItemRow(title: Strings.logger, icon: UIImage(systemName: "record.circle")) { [weak self] _ in
-                self?.tableView.deselectSelectedRowWithAnimation(true)
-                let mainVC = PulseUI.MainViewController()
-                self?.present(mainVC, animated: true)
-            }
-            rows.append(loggerRow)
-        }
-
         if let presenter = RootViewCoordinator.shared.whatIsNewScenePresenter as? WhatIsNewScenePresenter,
             presenter.versionHasAnnouncements,
             FeatureFlag.whatsNew.enabled {
@@ -646,12 +637,6 @@ extension AppSettingsViewController {
             "application-settings.experimental-features",
             value: "Experimental Features",
             comment: "The list item of experimental features that users can choose to enable"
-        )
-
-        static let logger = NSLocalizedString(
-            "applicationSettings.logger",
-            value: "Extensive Logs",
-            comment: "The menu item to view extensive logs"
         )
     }
 }
