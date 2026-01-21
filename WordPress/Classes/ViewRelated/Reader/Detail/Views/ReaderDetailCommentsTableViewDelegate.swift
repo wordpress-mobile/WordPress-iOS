@@ -149,13 +149,12 @@ private extension ReaderDetailCommentsTableViewDelegate {
         let cell = UITableViewCell(style: .default, reuseIdentifier: nil)
         cell.selectionStyle = .none
         cell.backgroundColor = .clear
-        cell.contentView.backgroundColor = .clear
 
         let leaveCommentView = LeaveCommentView()
         leaveCommentView.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(leaveCommentCellTapped)))
 
         cell.contentView.addSubview(leaveCommentView)
-        leaveCommentView.pinEdges(insets: UIEdgeInset(top: 16, left: 0, bottom: 8, right: 0))
+        leaveCommentView.pinEdges(insets: UIEdgeInsets(top: 16, left: 0, bottom: 8, right: 0))
 
         return cell
     }
@@ -198,23 +197,34 @@ private extension ReaderDetailCommentsTableViewDelegate {
         return cell
     }
 
-    func makeViewAllButtonCell() -> BorderedButtonTableViewCell {
-        let cell = BorderedButtonTableViewCell()
-        let title = totalComments == 0 ? Constants.leaveCommentButtonTitle : Constants.viewAllButtonTitle
-
-        cell.configure(
-            buttonTitle: title,
-            titleFont: displaySetting.font(with: .body, weight: .semibold),
-            normalColor: displaySetting.color.foreground,
-            highlightedColor: displaySetting.color.background,
-            borderColor: displaySetting.color.border,
-            buttonInsets: UIEdgeInsets(.vertical, 16),
-            backgroundColor: .clear
-        )
-
-        cell.delegate = buttonDelegate
+    func makeViewAllButtonCell() -> UITableViewCell {
+        let cell = UITableViewCell()
+        cell.selectionStyle = .none
         cell.backgroundColor = .clear
-        cell.contentView.backgroundColor = .clear
+
+        var configuration = UIButton.Configuration.bordered()
+        configuration.buttonSize = .large
+        configuration.title = Constants.viewAllButtonTitle.localizedCapitalized + "   \(totalComments)"
+        configuration.image = UIImage(systemName: "chevron.right")
+        configuration.imagePlacement = .trailing
+        configuration.titleTextAttributesTransformer = .init {
+            var container = $0
+            container.font = UIFont.preferredFont(forTextStyle: .headline)
+            return container
+        }
+        configuration.preferredSymbolConfigurationForImage = UIImage.SymbolConfiguration(paletteColors: [.tertiaryLabel])
+            .applying(UIImage.SymbolConfiguration(font: UIFont.preferredFont(forTextStyle: .caption2).withWeight(.bold)))
+        configuration.imagePadding = 4
+
+        let button = UIButton(configuration: configuration, primaryAction: .init { [weak self] _ in
+            self?.buttonDelegate?.buttonTapped()
+        })
+
+        cell.contentView.addSubview(button)
+
+        button.pinEdges([.leading, .vertical], insets: UIEdgeInsets(horizontal: 0, vertical: 12))
+        button.pinEdges(.trailing, relation: .lessThanOrEqual)
+
         return cell
     }
 
@@ -234,6 +244,7 @@ private extension ReaderDetailCommentsTableViewDelegate {
         static let noComments = NSLocalizedString("No comments yet", comment: "Displayed on the post details page when there are no post comments.")
         static let closedComments = NSLocalizedString("Comments are closed", comment: "Displayed on the post details page when there are no post comments and commenting is closed.")
         static let viewAllButtonTitle = NSLocalizedString("View all comments", comment: "Title for button on the post details page to show all comments when tapped.")
+        // TODO: use as emty title?
         static let leaveCommentButtonTitle = NSLocalizedString("Be the first to comment", comment: "Title for button on the post details page when there are no comments.")
         static let jetpackBadgeBottomPadding: CGFloat = 10
     }
