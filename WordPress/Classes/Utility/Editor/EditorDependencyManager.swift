@@ -1,5 +1,6 @@
 import Foundation
 import GutenbergKit
+import WordPressCore
 import WordPressData
 
 /// Manages prefetched editor dependencies to enable fast editor loading.
@@ -29,10 +30,10 @@ final class EditorDependencyManager: Sendable {
     private let cache = LockingHashMap<EditorDependencies>()
 
     /// Currently running prefetch tasks, keyed by blog's ObjectID string.
-    private let prefetchTasks = LockingHashMap<Task<Void, Never>>()
+    private let prefetchTasks = LockingTaskHashMap<Void, Never>()
 
     /// Currently-running cache-clearing tasks
-    private let invalidationTasks = LockingHashMap<Task<Void, Never>>()
+    private let invalidationTasks = LockingTaskHashMap<Void, Never>()
 
     private init() {}
 
@@ -128,7 +129,6 @@ final class EditorDependencyManager: Sendable {
         self.invalidationTasks[key] = Task {
 
             cache.removeValue(forKey: key)
-            prefetchTasks[key]?.cancel()
             prefetchTasks.removeValue(forKey: key)
 
             do {
@@ -145,49 +145,11 @@ final class EditorDependencyManager: Sendable {
     /// Clears all cached dependencies.
     func invalidateAll() {
         cache.removeAll()
-        prefetchTasks.values.forEach { $0.cancel() }
         prefetchTasks.removeAll()
+        // No need to use `removeAll` for the `invalidationTasks`
     }
 
     private func cacheKey(for blog: Blog) -> String {
         blog.objectID.uriRepresentation().absoluteString
-    }
-}
-
-class LockingHashMap<Value>: @unchecked Sendable {
-    private let lock = NSLock()
-
-    private var list: [AnyHashable: Value] = [:]
-
-    subscript(_ key: AnyHashable) -> Value? {
-        get {
-            lock.withLock {
-                list[key]
-            }
-        }
-        set {
-            lock.withLock {
-                list[key] = newValue
-            }
-        }
-    }
-
-    var values: Dictionary<AnyHashable, Value>.Values {
-        lock.withLock {
-            self.list.values
-        }
-    }
-
-    @discardableResult
-    func removeValue(forKey key: AnyHashable) -> Value? {
-        lock.withLock {
-            self.list.removeValue(forKey: key)
-        }
-    }
-
-    func removeAll() {
-        lock.withLock {
-            self.list.removeAll()
-        }
     }
 }

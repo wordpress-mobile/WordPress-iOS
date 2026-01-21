@@ -7,4 +7,7 @@
    <FileRef
       location = "group:Modules/Tests/WordPressSharedTests/WordPressShared.xctestplan">
    </FileRef>
+   <FileRef
+      location = "group:Modules/Tests/WordPressCoreTests/WordPressCore.xctestplan">
+   </FileRef>
 </Workspace>
