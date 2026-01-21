@@ -190,8 +190,6 @@ final class CommentContentTableViewCell: UITableViewCell, NibReusable {
     func configureForPostDetails(with comment: Comment, helper: ReaderCommentsHelper, onContentLoaded: ((CGFloat) -> Void)?) {
         configure(viewModel: CommentCellViewModel(comment: comment), helper: helper, onContentLoaded: onContentLoaded)
 
-        hideActions()
-
         containerStackLeadingConstraint.constant = 0
         containerStackTrailingConstraint.constant = 0
     }

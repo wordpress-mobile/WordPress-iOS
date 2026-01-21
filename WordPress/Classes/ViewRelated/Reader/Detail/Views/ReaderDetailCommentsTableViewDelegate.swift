@@ -16,7 +16,7 @@ class ReaderDetailCommentsTableViewDelegate: NSObject, UITableViewDataSource, UI
     private(set) var headerView: ReaderDetailCommentsHeader?
     private let helper = ReaderCommentsHelper()
     var followButtonTappedClosure: (() ->Void)?
-    var addCommentButtonTappedClosure: (() -> Void)?
+    var buttonLeaveCommentTapped: ((Comment?) -> Void)?
 
     var displaySetting: ReaderDisplaySettings
 
@@ -175,6 +175,13 @@ private extension ReaderDetailCommentsTableViewDelegate {
             }
         }
 
+        cell.accessoryButtonAction = { [weak self] sourceView in
+            self?.shareComment(comment, sourceView: sourceView)
+        }
+        cell.replyButtonAction = { [weak self] in
+            self?.buttonLeaveCommentTapped?(comment)
+        }
+
         cell.backgroundColor = .clear
         cell.contentView.backgroundColor = .clear
 
@@ -203,18 +210,18 @@ private extension ReaderDetailCommentsTableViewDelegate {
         cell.backgroundColor = .clear
 
         var configuration = UIButton.Configuration.bordered()
-//        configuration.buttonSize = .large
         configuration.title = Constants.viewAllButtonTitle.localizedCapitalized + "   \(totalComments)"
         configuration.image = UIImage(systemName: "chevron.right")
         configuration.imagePlacement = .trailing
         configuration.titleTextAttributesTransformer = .init {
             var container = $0
-            container.font = UIFont.preferredFont(forTextStyle: .headline)
+            container.font = UIFont.preferredFont(forTextStyle: .headline).withWeight(.medium)
             return container
         }
         configuration.preferredSymbolConfigurationForImage = UIImage.SymbolConfiguration(paletteColors: [.tertiaryLabel])
             .applying(UIImage.SymbolConfiguration(font: UIFont.preferredFont(forTextStyle: .caption2).withWeight(.bold)))
         configuration.imagePadding = 4
+        configuration.contentInsets = .init(top: 8, leading: 8, bottom: 8, trailing: 8)
 
         let button = UIButton(configuration: configuration, primaryAction: .init { [weak self] _ in
             self?.buttonDelegate?.buttonTapped()
@@ -228,8 +235,21 @@ private extension ReaderDetailCommentsTableViewDelegate {
         return cell
     }
 
+    // MARK: - Actions
+
+    private func shareComment(_ comment: Comment, sourceView: UIView?) {
+        guard let commentURL = comment.commentURL() else {
+            return
+        }
+        WPAnalytics.track(.readerArticleCommentShared)
+
+        let activityViewController = UIActivityViewController(activityItems: [commentURL as Any], applicationActivities: nil)
+        activityViewController.popoverPresentationController?.sourceView = sourceView
+        UIViewController.topViewController?.present(activityViewController, animated: true, completion: nil)
+    }
+
     @objc private func leaveCommentCellTapped() {
-        addCommentButtonTappedClosure?()
+        buttonLeaveCommentTapped?()
     }
 
     @objc func jetpackButtonTapped() {
