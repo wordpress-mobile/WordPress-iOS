@@ -10,7 +10,7 @@ import Support
 /// Remote cards should be separately added to RemoteDashboardCard
 enum DashboardCard: String, CaseIterable, Sendable {
     case dynamic
-    case extensionLogging
+    case extensiveLogging
     case jetpackInstall
     case bloganuaryNudge = "bloganuary_nudge"
     case prompts
@@ -37,8 +37,8 @@ enum DashboardCard: String, CaseIterable, Sendable {
         switch self {
         case .dynamic:
             return BlogDashboardDynamicCardCell.self
-        case .extensionLogging:
-            return DashboardExtensionLoggingCardCell.self
+        case .extensiveLogging:
+            return DashboardExtensiveLoggingCardCell.self
         case .jetpackInstall:
             return DashboardJetpackInstallCardCell.self
         case .draftPosts:
@@ -114,7 +114,7 @@ enum DashboardCard: String, CaseIterable, Sendable {
             return DashboardBloganuaryCardCell.shouldShowCard(for: blog)
         case .prompts:
             return DashboardPromptsCardCell.shouldShowCard(for: blog)
-        case .extensionLogging:
+        case .extensiveLogging:
             return ExtensiveLogging.enabled
         case .ghost:
             return blog.dashboardState.isFirstLoad

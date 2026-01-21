@@ -1,10 +1,10 @@
 import UIKit
 import WordPressData
 
-class DashboardExtensionLoggingCardCell: UICollectionViewCell, Reusable {
+class DashboardExtensiveLoggingCardCell: UICollectionViewCell, Reusable {
 
-    private lazy var cardView: DashboardExtensionLoggingCardView = {
-        let view = DashboardExtensionLoggingCardView()
+    private lazy var cardView: DashboardExtensiveLoggingCardView = {
+        let view = DashboardExtensiveLoggingCardView()
         view.translatesAutoresizingMaskIntoConstraints = false
         return view
     }()
@@ -37,7 +37,7 @@ class DashboardExtensionLoggingCardCell: UICollectionViewCell, Reusable {
     }
 }
 
-extension DashboardExtensionLoggingCardCell: BlogDashboardCardConfigurable {
+extension DashboardExtensiveLoggingCardCell: BlogDashboardCardConfigurable {
     func configure(blog: Blog, viewController: BlogDashboardViewController?, apiResponse: BlogDashboardRemoteEntity?) {
         self.presenterViewController = viewController
     }

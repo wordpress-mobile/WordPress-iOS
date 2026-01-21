@@ -2,7 +2,7 @@ import UIKit
 import DesignSystem
 import Support
 
-class DashboardExtensionLoggingCardView: UIView {
+class DashboardExtensiveLoggingCardView: UIView {
 
     var onTurnOffTapped: (() -> Void)?
 
@@ -75,24 +75,24 @@ class DashboardExtensionLoggingCardView: UIView {
 
 private enum Strings {
     static let cardTitle = NSLocalizedString(
-        "dashboard.extensionLogging.title",
+        "dashboard.extensiveLogging.title",
         value: "Extension Logging",
         comment: "Title for the extension logging card on dashboard"
     )
 
     static let message = NSLocalizedString(
-        "dashboard.extensionLogging.message",
+        "dashboard.extensiveLogging.message",
         value: "Extension logging is currently enabled. This helps with troubleshooting but may impact performance. Turn it off if you don't need it.",
         comment: "Message explaining that extension logging is enabled and should be turned off if not needed"
     )
 
     static let turnOffButtonTitle = NSLocalizedString(
-        "dashboard.extensionLogging.turnOff",
+        "dashboard.extensiveLogging.turnOff",
         value: "Turn Off",
         comment: "Button to turn off extension logging"
     )
     static let noticeTitle = NSLocalizedString(
-        "dashboard.extensionLogging.disabled",
+        "dashboard.extensiveLogging.disabled",
         value: "Extension logging disabled",
         comment: "Notice shown when extension logging is successfully disabled"
     )
