@@ -137,6 +137,7 @@ class NewGutenbergViewController: UIViewController, PostEditor, PublishingEditor
             .toBuilder()
             .setTitle(post.postTitle ?? "")
             .setContent(post.content ?? "")
+            .setPostID(post.postID?.intValue)
             .setStatus(postStatus)
             .setNativeInserterEnabled(FeatureFlag.nativeBlockInserter.enabled)
             .build()
