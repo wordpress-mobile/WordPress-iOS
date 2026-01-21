@@ -7,7 +7,7 @@ import WordPressApiCache
 import WordPressUI
 import WordPressData
 
-private struct DisplayPost {
+private struct DisplayPost: Equatable {
     let date: Date
     let title: String?
     let excerpt: String?
@@ -32,7 +32,7 @@ private struct DisplayPost {
     )
 }
 
-private enum ListItem: Identifiable {
+private enum ListItem: Identifiable, Equatable {
     case ready(id: Int64, post: DisplayPost, fullPost: AnyPostWithEditContext)
     case stale(id: Int64, post: DisplayPost)
     case refreshing(id: Int64, post: DisplayPost)
@@ -184,8 +184,9 @@ struct CustomPostList: View {
     let blog: Blog
 
     @State var filter: WordPressAPIInternal.PostListFilter = .default
-    @State private var items: [ListItem] = []
     @State private var listInfo: ListInfo?
+
+    @State var searchText = ""
 
     @State private var selectedPost: AnyPostWithEditContext?
 
@@ -194,14 +195,31 @@ struct CustomPostList: View {
     }
 
     var body: some View {
-        CustomPostCollectionView(
-            client: client,
-            service: service,
-            endpoint: endpoint,
-            details: details,
-            filter: $filter,
-            onSelectPost: { selectedPost = $0 }
-        )
+        ZStack {
+            if searchText.isEmpty {
+                CustomPostCollectionView(
+                    client: client,
+                    service: service,
+                    endpoint: endpoint,
+                    details: details,
+                    listInfo: $listInfo,
+                    filter: filter,
+                    showInitialLoading: false,
+                    onSelectPost: { selectedPost = $0 }
+                )
+            } else {
+                CustomPostSearchResultView(
+                    client: client,
+                    service: service,
+                    endpoint: endpoint,
+                    details: details,
+                    baseFilter: .default,
+                    searchText: $searchText,
+                    onSelectPost: { selectedPost = $0 }
+                )
+            }
+        }
+        .searchable(text: $searchText)
         .fullScreenCover(item: $selectedPost) { post in
             // TODO: Check if the post supports Gutenberg first?
             CustomPostEditor(client: client, post: post, details: details, blog: blog) {
@@ -256,13 +274,13 @@ struct CustomPostCollectionView: View {
     let service: WpSelfHostedService
     let endpoint: PostEndpointType
     let details: PostTypeDetailsWithEditContext
-    @Binding var filter: WordPressAPIInternal.PostListFilter
-
+    @Binding var listInfo: ListInfo?
+    let filter: WordPressAPIInternal.PostListFilter
+    let showInitialLoading: Bool
     let onSelectPost: (AnyPostWithEditContext) -> Void
 
     @State private var collection: PostMetadataCollectionWithEditContext?
     @State private var items: [ListItem] = []
-    @State private var listInfo: ListInfo?
 
     var body: some View {
         PostList(
@@ -277,6 +295,8 @@ struct CustomPostCollectionView: View {
                     ? "No \(details.name)"
                     : details.labels.notFound
                 EmptyStateView(emptyText, systemImage: "doc.text")
+            } else if showInitialLoading, items.isEmpty, listInfo?.isSyncing == true {
+                ProgressView()
             }
         }
         .refreshable {
@@ -367,13 +387,48 @@ struct CustomPostCollectionView: View {
             do {
                 let items = try await collection.loadItems().map(ListItem.init)
                 withAnimation {
-                    self.listInfo = listInfo
-                    self.items = items
+                    if self.listInfo != listInfo {
+                        self.listInfo = listInfo
+                    }
+                    if self.items != items {
+                        self.items = items
+                    }
                 }
             } catch {
                 DDLogError("Failed to get collection items: \(error)")
             }
         }
+    }
+}
+
+struct CustomPostSearchResultView: View {
+    let client: WordPressClient
+    let service: WpSelfHostedService
+    let endpoint: PostEndpointType
+    let details: PostTypeDetailsWithEditContext
+    let baseFilter: WordPressAPIInternal.PostListFilter
+    @Binding var searchText: String
+    let onSelectPost: (AnyPostWithEditContext) -> Void
+
+    @State var listInfo: ListInfo? = nil
+
+    var body: some View {
+        CustomPostCollectionView(
+            client: client,
+            service: service,
+            endpoint: endpoint,
+            details: details,
+            listInfo: $listInfo,
+            filter: {
+                var search = baseFilter
+                // TODO: Support author?
+                search.searchColumns = [.postTitle, .postContent, .postExcerpt]
+                search.search = searchText
+                return search
+            }(),
+            showInitialLoading: true,
+            onSelectPost: onSelectPost
+        )
     }
 }
 
