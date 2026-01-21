@@ -184,50 +184,29 @@ struct CustomPostList: View {
     let blog: Blog
 
     @State var filter: WordPressAPIInternal.PostListFilter = .default
-    @State var collection: PostMetadataCollectionWithEditContext
     @State private var items: [ListItem] = []
     @State private var listInfo: ListInfo?
+
     @State private var selectedPost: AnyPostWithEditContext?
 
     private var isFiltered: Bool {
         filter.status != [.custom("any")]
     }
 
-    init(client: WordPressClient, service: WpSelfHostedService, endpoint: PostEndpointType, details: PostTypeDetailsWithEditContext, blog: Blog) {
-        self.client = client
-        self.service = service
-        self.endpoint = endpoint
-        self.details = details
-        self.blog = blog
-        self.collection = self.service.posts().createPostMetadataCollectionWithEditContext(endpointType: endpoint, filter: .default, perPage: 20)
-    }
-
     var body: some View {
-        PostList(
-            items: items,
-            showSyncingState: loadingIndicatorPosition == .footer,
-            onLoadNextPage: { await loadNextPage() },
+        CustomPostCollectionView(
+            client: client,
+            service: service,
+            endpoint: endpoint,
+            details: details,
+            filter: $filter,
             onSelectPost: { selectedPost = $0 }
         )
-        .overlay {
-            if items.isEmpty, listInfo?.isSyncing == false {
-                let emptyText = details.labels.notFound.isEmpty
-                    ? "No \(details.name)"
-                    : details.labels.notFound
-                EmptyStateView(emptyText, systemImage: "doc.text")
-            }
-        }
-        .refreshable {
-            do {
-                _ = try await collection.refresh()
-            } catch {
-                DDLogError("Pull to refresh failed: \(error)")
-            }
-        }
         .fullScreenCover(item: $selectedPost) { post in
+            // TODO: Check if the post supports Gutenberg first?
             CustomPostEditor(client: client, post: post, details: details, blog: blog) {
                 Task {
-                    _ = try await collection.refreshPost(postId: post.id)
+                    _ = try await service.posts().refreshPost(postId: post.id, endpointType: endpoint)
                 }
             }
         }
@@ -239,60 +218,13 @@ struct CustomPostList: View {
                 makeFilterMenu()
             }
         }
-        .task(id: filter) {
-            // Reset when filter changes.
-            if self.collection.filter() != filter {
-                self.collection = service
-                    .posts()
-                    .createPostMetadataCollectionWithEditContext(
-                        endpointType: endpoint,
-                        filter: filter,
-                        perPage: 20
-                    )
-                self.listInfo = nil
-                self.items = []
-            }
-
-            do {
-                _ = try await collection.refresh()
-            } catch {
-                DDLogError("Failed to refresh: \(error)")
-            }
-        }
-        .task(id: filter) {
-            await handleDataChanges()
-        }
-    }
-
-    private var loadingIndicatorPosition: LoadingIndicatorPosition {
-        guard let listInfo else { return .none }
-
-        switch listInfo.state {
-        case .idle:
-            // If the list is displaying data, and there are more pages to be loaded,
-            // we need to show a loading indicator to indicate that there are more items.
-            if let currentPage = listInfo.currentPage,
-               let totalPages = listInfo.totalPages,
-               currentPage > 0,
-               currentPage < totalPages {
-                return .footer
-            } else {
-                return .none
-            }
-        case .fetchingFirstPage:
-            return .title
-        case .fetchingNextPage:
-            return .footer
-        case .error:
-            return .none
-        }
     }
 
     @ViewBuilder
     private func makeTitleView() -> some View {
         Text(details.labels.itemsList)
             .overlay(alignment: .leading) {
-                if loadingIndicatorPosition == .title {
+                if listInfo?.state == .fetchingFirstPage {
                     ProgressView()
                         .offset(x: -24)
                 }
@@ -317,17 +249,100 @@ struct CustomPostList: View {
             }
         }
     }
+}
 
-    func loadNextPage() async {
+struct CustomPostCollectionView: View {
+    let client: WordPressClient
+    let service: WpSelfHostedService
+    let endpoint: PostEndpointType
+    let details: PostTypeDetailsWithEditContext
+    @Binding var filter: WordPressAPIInternal.PostListFilter
+
+    let onSelectPost: (AnyPostWithEditContext) -> Void
+
+    @State private var collection: PostMetadataCollectionWithEditContext?
+    @State private var items: [ListItem] = []
+    @State private var listInfo: ListInfo?
+
+    var body: some View {
+        PostList(
+            items: items,
+            showSyncingState: isLoadingMore,
+            onLoadNextPage: { await loadNextPage() },
+            onSelectPost: onSelectPost
+        )
+        .overlay {
+            if items.isEmpty, listInfo?.isSyncing == false {
+                let emptyText = details.labels.notFound.isEmpty
+                    ? "No \(details.name)"
+                    : details.labels.notFound
+                EmptyStateView(emptyText, systemImage: "doc.text")
+            }
+        }
+        .refreshable {
+            do {
+                _ = try await collection?.refresh()
+            } catch {
+                DDLogError("Pull to refresh failed: \(error)")
+            }
+        }
+        .task(id: filter) {
+            // Reset when filter changes.
+            if collection == nil || collection?.filter() != filter {
+                self.collection = service
+                    .posts()
+                    .createPostMetadataCollectionWithEditContext(
+                        endpointType: endpoint,
+                        filter: filter,
+                        perPage: 20
+                    )
+                self.listInfo = nil
+                self.items = []
+            }
+
+            do {
+                _ = try await collection?.refresh()
+            } catch {
+                DDLogError("Failed to refresh: \(error)")
+            }
+        }
+        .task(id: filter) {
+            await handleDataChanges()
+        }
+    }
+
+    var isLoadingMore: Bool {
+        guard let listInfo else { return false }
+
+        switch listInfo.state {
+        case .idle:
+            // If the list is displaying data, and there are more pages to be loaded,
+            // we need to show a loading indicator to indicate that there are more items.
+            if let currentPage = listInfo.currentPage,
+               let totalPages = listInfo.totalPages,
+               currentPage > 0,
+               currentPage < totalPages {
+                return true
+            } else {
+                return false
+            }
+        case .fetchingNextPage:
+            return true
+        case .fetchingFirstPage, .error:
+            return false
+        }
+    }
+
+    private func loadNextPage() async {
         if let listInfo, listInfo.isSyncing || !listInfo.hasMorePages {
             return
         }
 
         do {
             if listInfo?.currentPage == nil {
-                _ = try await collection.refresh()
+                _ = try await collection?.refresh()
             } else {
-                _ = try await collection.loadNextPage()
+                _ = try await collection?.loadNextPage()
             }
         } catch {
             DDLogError("Failed to fetch items: \(error)")
@@ -341,7 +356,7 @@ struct CustomPostList: View {
             .debounce(for: .milliseconds(50), scheduler: DispatchQueue.main)
             .values
         for await hook in updates {
-            guard collection.isRelevantUpdate(hook: hook) else { continue }
+            guard let collection, collection.isRelevantUpdate(hook: hook) else { continue }
 
             DDLogInfo("WpApiCache update: \(hook.action) to \(hook.table) at row \(hook.rowId)")
 
@@ -376,12 +391,6 @@ private struct ErrorRow: View {
         .foregroundStyle(.red)
         .padding(.vertical, 4)
     }
-}
-
-private enum LoadingIndicatorPosition: Equatable {
-    case none
-    case title
-    case footer
 }
 
 private extension ListInfo {
