@@ -471,7 +471,7 @@ extension NewGutenbergViewController: GutenbergKit.EditorViewControllerDelegate 
         setNavigationItemsEnabled(true)
     }
 
-    func editorRequestsLatestContent(_ controller: GutenbergKit.EditorViewController) -> (title: String, content: String)? {
+    func editorDidRequestLatestContent(_ controller: GutenbergKit.EditorViewController) -> (title: String, content: String)? {
         // Return the current post title and content from Core Data.
         // This is the authoritative source, updated via autosave.
         return (post.postTitle ?? "", post.content ?? "")
