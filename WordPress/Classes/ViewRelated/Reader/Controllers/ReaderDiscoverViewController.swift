@@ -83,7 +83,7 @@ class ReaderDiscoverViewController: UIViewController, ReaderDiscoverHeaderViewDe
             .filter { $0.slug != ReaderTagTopic.dailyPromptTag }
             .map(ReaderDiscoverChannel.tag)
 
-        headerView.configure(channels: [.freshlyPresed, .recommended, .firstPosts, .latest, .dailyPrompts] + channels)
+        headerView.configure(channels: [.freshlyPresed, .recommended, .latest, .firstPosts, .dailyPrompts] + channels)
         headerView.setSelectedChannel(selectedChannel)
     }
 
