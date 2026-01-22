@@ -214,15 +214,15 @@ struct CustomPostList: View {
     let details: PostTypeDetailsWithEditContext
     let blog: Blog
 
-    @State var filter: WordPressAPIInternal.PostListFilter = .default
+    @State private var filter = Filter.default
     @State private var listInfo: ListInfo?
 
-    @State var searchText = ""
+    @State private var searchText = ""
 
     @State private var selectedPost: AnyPostWithEditContext?
 
     private var isFiltered: Bool {
-        filter.status != [.custom("any")]
+        filter.status != .custom("any")
     }
 
     var body: some View {
@@ -300,13 +300,13 @@ struct CustomPostList: View {
     }
 }
 
-struct CustomPostCollectionView: View {
+private struct CustomPostCollectionView: View {
     let client: WordPressClient
     let service: WpSelfHostedService
     let endpoint: PostEndpointType
     let details: PostTypeDetailsWithEditContext
     @Binding var listInfo: ListInfo?
-    let filter: WordPressAPIInternal.PostListFilter
+    let filter: Filter
     let showInitialLoading: Bool
     let onSelectPost: (AnyPostWithEditContext) -> Void
 
@@ -338,12 +338,12 @@ struct CustomPostCollectionView: View {
         }
         .task(id: filter) {
             // Reset when filter changes.
-            if collection == nil || collection?.filter() != filter {
+            if collection == nil || collection?.filter() != filter.asPostListFilter() {
                 self.collection = service
                     .posts()
                     .createPostMetadataCollectionWithEditContext(
                         endpointType: endpoint,
-                        filter: filter,
+                        filter: filter.asPostListFilter(),
                         perPage: 20
                     )
                 self.listInfo = nil
@@ -405,12 +405,12 @@ struct CustomPostCollectionView: View {
     }
 }
 
-struct CustomPostSearchResultView: View {
+private struct CustomPostSearchResultView: View {
     let client: WordPressClient
     let service: WpSelfHostedService
     let endpoint: PostEndpointType
     let details: PostTypeDetailsWithEditContext
-    let baseFilter: WordPressAPIInternal.PostListFilter
+    let baseFilter: Filter
     @Binding var searchText: String
     let onSelectPost: (AnyPostWithEditContext) -> Void
 
@@ -425,13 +425,31 @@ struct CustomPostSearchResultView: View {
             listInfo: $listInfo,
             filter: {
                 var search = baseFilter
-                // TODO: Support author?
-                search.searchColumns = [.postTitle, .postContent, .postExcerpt]
                 search.search = searchText
                 return search
             }(),
             showInitialLoading: true,
             onSelectPost: onSelectPost
+        )
+    }
+}
+
+private struct Filter: Equatable {
+    var status: PostStatus
+    var search: String?
+
+    static var `default`: Self {
+        get {
+            .init(status: .custom("any"))
+        }
+    }
+
+    func asPostListFilter() -> WordPressAPIInternal.PostListFilter {
+        .init(
+            search: search,
+            // TODO: Support author?
+            searchColumns: search == nil ? [] : [.postTitle, .postContent, .postExcerpt],
+            status: [status],
         )
     }
 }
@@ -460,12 +478,6 @@ private extension ListInfo {
     var hasMorePages: Bool {
         guard let currentPage, let totalPages else { return true }
         return currentPage < totalPages
-    }
-}
-
-private extension WordPressAPIInternal.PostListFilter {
-    static var `default`: Self {
-        Self(status: [.custom("any")])
     }
 }
 
@@ -508,18 +520,18 @@ private enum Strings {
 }
 
 private struct FilterMenuItem: View {
-    @Binding var filter: WordPressAPIInternal.PostListFilter
+    @Binding var filter: Filter
     let status: PostStatus
     let title: String
 
     var body: some View {
         Button {
-            filter.status = [status]
+            filter.status = status
         } label: {
             Label {
                 Text(title)
             } icon: {
-                if filter.status == [status] {
+                if filter.status == status {
                     Image(systemName: "checkmark")
                 }
             }
