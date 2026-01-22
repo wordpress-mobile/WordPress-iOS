@@ -268,7 +268,7 @@ extension BlogDetailsTableViewModel: UITableViewDataSource {
         case .jetpackBrandingCard:
             cell = configureJetpackBrandingCell(tableView: tableView)
         case .extensiveLogging:
-            cell = configureExtensionLoggingCell(tableView: tableView)
+            cell = configureExtensiveLoggingCell(tableView: tableView)
         default:
             if indexPath.row < section.rows.count {
                 let row = section.rows[indexPath.row]
@@ -485,7 +485,7 @@ private extension BlogDetailsTableViewModel {
         return cell
     }
 
-    func configureExtensionLoggingCell(tableView: UITableView) -> UITableViewCell {
+    func configureExtensiveLoggingCell(tableView: UITableView) -> UITableViewCell {
         guard let cell = tableView.dequeueReusableCell(
             withIdentifier: CellIdentifiers.extensiveLogging
         ) as? ExtensiveLoggingCell,
@@ -1492,5 +1492,5 @@ private enum CellIdentifiers {
     static let migrationSuccess = "BlogDetailsMigrationSuccessCellIdentifier"
     static let jetpackBrandingCard = "BlogDetailsJetpackBrandingCardCellIdentifier"
     static let jetpackInstall = "BlogDetailsJetpackInstallCardCellIdentifier"
-    static let extensiveLogging = "BlogDetailsExtensionLoggingCellIdentifier"
+    static let extensiveLogging = "BlogDetailsExtensiveLoggingCellIdentifier"
 }
