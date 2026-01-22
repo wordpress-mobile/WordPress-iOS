@@ -74,7 +74,8 @@ private struct CardContent: View {
             Image(systemName: "info.circle.fill")
                 .foregroundStyle(.tertiary)
         }
-        .padding(10)
+        .padding(.horizontal, 12)
+        .padding(.vertical, 10)
     }
 }
 
