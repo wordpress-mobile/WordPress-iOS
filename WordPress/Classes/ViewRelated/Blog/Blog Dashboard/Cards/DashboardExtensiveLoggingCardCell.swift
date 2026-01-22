@@ -40,5 +40,6 @@ class DashboardExtensiveLoggingCardCell: UICollectionViewCell, Reusable {
 extension DashboardExtensiveLoggingCardCell: BlogDashboardCardConfigurable {
     func configure(blog: Blog, viewController: BlogDashboardViewController?, apiResponse: BlogDashboardRemoteEntity?) {
         self.presenterViewController = viewController
+        self.cardView.presenterViewController = viewController
     }
 }

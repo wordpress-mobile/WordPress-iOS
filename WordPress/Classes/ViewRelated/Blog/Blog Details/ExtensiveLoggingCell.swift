@@ -23,6 +23,7 @@ class ExtensiveLoggingCell: UITableViewCell {
     }
 
     func configure(with viewController: BlogDetailsViewController) {
+        cardView.presenterViewController = viewController
         cardView.onTurnOffTapped = { [weak viewController] in
             viewController?.reloadTableView()
         }
