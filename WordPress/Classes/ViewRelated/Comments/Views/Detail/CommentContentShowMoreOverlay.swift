@@ -37,7 +37,7 @@ final class CommentContentShowMoreOverlay: UIView {
         configuration.preferredSymbolConfigurationForImage = UIImage.SymbolConfiguration(font: UIFont.preferredFont(forTextStyle: .caption2).withWeight(.medium))
         configuration.imagePlacement = .leading
         configuration.imagePadding = 6
-        configuration.contentInsets = NSDirectionalEdgeInsets(top: 8, leading: 12, bottom: 8, trailing: 12)
+        configuration.contentInsets = NSDirectionalEdgeInsets(top: 20, leading: 12, bottom: 9, trailing: 12)
 
         button.configuration = configuration
         button.translatesAutoresizingMaskIntoConstraints = false

@@ -10,6 +10,8 @@
 * [*] Reader: Collapse multiple spaces in site titles into one [#25094]
 * [*] Reader: Add a "Leave Comment" button to directly to the "Comments" under the article (one less tap to leave a comment) [#25155]
 * [*] Reader: You can now reply and like the comments directly under the artile and see more of them [#25155]
+* [*] Reader: Collapse very long comments so it's easier to navigate large comment threads [#25155]
+* [*] Reader: Fix an issue where in rare scenarios comments would be displayed with a wrong height [#25156]
 * [*] Post Settings: Fix post Visibility discoverability [#25127]
 * [*] Post Settings: Fix an issue with button "Done" sometimes disappearing when you entering password for post when publishing [#25138]
 * [*] Post Settings: Show the selected value for the "Access" field [#25138]

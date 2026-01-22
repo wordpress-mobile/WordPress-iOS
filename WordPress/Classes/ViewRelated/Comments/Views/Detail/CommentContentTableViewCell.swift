@@ -103,7 +103,7 @@ final class CommentContentTableViewCell: UITableViewCell, NibReusable {
     private var viewModel: CommentCellViewModel?
     private var cancellables: [AnyCancellable] = []
 
-    private static let maxCollapsedHeight: CGFloat = 400
+    private static let maxCollapsedHeight: CGFloat = 300
     private var fullContentHeight: CGFloat?
     private var isContentExpanded: Bool = false
 
@@ -494,6 +494,11 @@ private extension CommentContentTableViewCell {
         // calculating content size (it will never decrease it).
         let minContentHeight: CGFloat = 20
         let effectiveContentHeight = contentHeight ?? minContentHeight
+        if let contentHeight, contentHeight < Self.maxCollapsedHeight + 120 {
+            // Expand automatically if the margin it too close, so there is no
+            // point hiding a few pixels
+            isContentExpanded = true
+        }
         let displayHeight = isContentExpanded ? effectiveContentHeight : min(effectiveContentHeight, Self.maxCollapsedHeight)
 
         contentContainerHeightConstraint?.constant = displayHeight
