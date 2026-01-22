@@ -11,6 +11,7 @@ struct BarChartView: View {
 
     @Environment(\.context) var context
     @Environment(\.colorScheme) var colorScheme
+    @Environment(\.showComparison) private var showComparison
 
     private var valueFormatter: StatsValueFormatter {
         StatsValueFormatter(metric: data.metric)
@@ -23,7 +24,9 @@ struct BarChartView: View {
 
     var body: some View {
         Chart {
-            previousPeriodBars
+            if showComparison {
+                previousPeriodBars
+            }
             currentPeriodBars
             averageLine
             significantPointAnnotations

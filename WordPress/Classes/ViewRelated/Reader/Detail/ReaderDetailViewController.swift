@@ -487,11 +487,16 @@ class ReaderDetailViewController: UIViewController, ReaderDetailView {
         // Set the delegate here so the table isn't shown until fetching is complete.
         commentsTableView.delegate = commentsTableViewDelegate
         commentsTableView.dataSource = commentsTableViewDelegate
-        commentsTableViewDelegate.updateWith(post: post,
-                                             comments: approvedComments,
-                                             totalComments: totalComments,
-                                             presentingViewController: self,
-                                             buttonDelegate: self)
+        commentsTableViewDelegate.buttonLeaveCommentTapped = { [weak self] in
+            self?.buttonLeaveCommentTapped(replyingTo: $0)
+        }
+        commentsTableViewDelegate.configure(
+            post: post,
+            comments: approvedComments,
+            totalComments: totalComments,
+            presentingViewController: self,
+            buttonDelegate: self
+        )
 
         commentsTableView.reloadData()
     }
@@ -1461,6 +1466,16 @@ extension ReaderDetailViewController: BorderedButtonTableViewCellDelegate {
             origin: self,
             source: .postDetailsComments
         )
+    }
+
+    func buttonLeaveCommentTapped(replyingTo comment: Comment?) {
+        guard let post else {
+            return wpAssertionFailure("post missing")
+        }
+        let viewModel = CommentCreateViewModel(post: post, replyingTo: comment)
+        let composerVC = CommentCreateViewController(viewModel: viewModel)
+        let navigationVC = UINavigationController(rootViewController: composerVC)
+        present(navigationVC, animated: true)
     }
 }
 

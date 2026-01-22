@@ -354,9 +354,14 @@ final class MySiteViewController: UIViewController, UIScrollViewDelegate, NoSite
         Self.lastWarmedUpBlogID = blog.objectID
 
         let configuration = EditorConfiguration(blog: blog)
+
+        // 1. WebKit warmup - pre-compile HTML/JS (shaves ~100-200ms)
         GutenbergKit.EditorViewController.warmup(configuration: configuration)
 
-        RawBlockEditorSettingsService(blog: blog).prefetchSettings()
+        // 2. Data prefetch - pre-fetch settings, assets, preload list via EditorDependencyManager
+        Task {
+            await EditorDependencyManager.shared.prefetchDependencies(for: blog)
+        }
     }
 
     // MARK: - Main Blog

@@ -63,6 +63,7 @@ struct StandaloneChartCard: View {
             dateRangeControls
                 .dynamicTypeSize(...DynamicTypeSize.xLarge)
         }
+        .environment(\.showComparison, dateRange.comparison != .off)
         .padding(.vertical, Constants.step2)
         .padding(.horizontal, Constants.step3)
         .dynamicTypeSize(...DynamicTypeSize.xxLarge)

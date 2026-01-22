@@ -9,6 +9,7 @@ enum Strings {
         static let realtime = AppLocalizedString("jetpackStats.tabs.realtime", value: "Realtime", comment: "Realtime tab")
         static let insights = AppLocalizedString("jetpackStats.tabs.insights", value: "Insights", comment: "Insights tab")
         static let subscribers = AppLocalizedString("jetpackStats.tabs.subscribers", value: "Subscribers", comment: "Subscribers tab")
+        static let ads = AppLocalizedString("jetpackStats.tabs.ads", value: "Ads", comment: "Ads tab")
     }
 
     enum Calendar {
@@ -108,6 +109,7 @@ enum Strings {
         static let compareWith = AppLocalizedString("jetpackStats.datePicker.compareWith", value: "Compare With…", comment: "Title for comparison menu")
         static let precedingPeriod = AppLocalizedString("jetpackStats.datePicker.precedingPeriod", value: "Preceding Period", comment: "Compare with preceding period option")
         static let samePeriodLastYear = AppLocalizedString("jetpackStats.datePicker.lastYear", value: "Last Year", comment: "Compare with same period last year option")
+        static let comparisonOff = AppLocalizedString("jetpackStats.datePicker.comparisonOff", value: "No Comparison", comment: "Option to turn off period comparison")
     }
 
     enum DateRangeTips {

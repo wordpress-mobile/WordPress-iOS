@@ -79,10 +79,13 @@ struct ChartCard: View {
     @ViewBuilder
     private var contentView: some View {
         VStack(spacing: Constants.step1) {
-            chartHeaderView
-                .padding(.trailing, -Constants.step0_5)
+            if dateRange.comparison != .off || metrics.count == 1 {
+                chartHeaderView
+                    .padding(.trailing, -Constants.step0_5)
+            }
             chartContentView
         }
+        .environment(\.showComparison, dateRange.comparison != .off)
         .animation(.spring, value: selectedMetric)
         .animation(.spring, value: selectedChartType)
         .animation(.easeInOut, value: viewModel.isFirstLoad)

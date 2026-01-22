@@ -37,11 +37,6 @@ struct ChartValuesSummaryView: View {
                     .font(.system(.headline, design: .rounded, weight: .semibold))
                     .foregroundColor(.primary)
                     .contentTransition(.numericText())
-
-                Text(trend.formattedPreviousValue)
-                    .font(.system(.footnote, design: .rounded))
-                    .foregroundColor(.secondary.opacity(0.75)).tracking(-0.2)
-                    .contentTransition(.numericText())
             }
 
             Text(trend.formattedTrend)

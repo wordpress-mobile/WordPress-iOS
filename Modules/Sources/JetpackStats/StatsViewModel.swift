@@ -11,6 +11,7 @@ final class StatsViewModel: ObservableObject, CardConfigurationDelegate {
             updateViewModelsDateRange()
             if !isNavigationStackLocked {
                 saveSelectedDateRangePreset()
+                saveSelectedComparisonPeriod()
             }
             if !dateRange.isAdjacent(to: oldValue) {
                 clearNavigationStack()
@@ -30,6 +31,7 @@ final class StatsViewModel: ObservableObject, CardConfigurationDelegate {
     private let userDefaults: UserDefaults
     private static let configurationKey = "JetpackStatsTrafficConfiguration"
     private static let dateRangePresetKey = "JetpackStatsSelectedDateRangePreset"
+    private static let comparisonPeriodKey = "JetpackStatsComparisonPeriod"
     private static let versionKey = "JetpackStatsVersionKey"
 
     init(context: StatsContext, userDefaults: UserDefaults = .standard) {
@@ -39,7 +41,11 @@ final class StatsViewModel: ObservableObject, CardConfigurationDelegate {
         Self.performMigrations(userDefaults: userDefaults, context: context)
 
         let preset = Self.loadDateRangePreset(from: userDefaults)
-        self.dateRange = context.calendar.makeDateRange(for: preset ?? .last7Days)
+        let comparison = Self.loadComparisonPeriod(from: userDefaults)
+        self.dateRange = context.calendar.makeDateRange(
+            for: preset ?? .last7Days,
+            comparison: comparison ?? .precedingPeriod
+        )
 
         let configuraiton = Self.getConfiguration(from: userDefaults)
         self.trafficCardConfiguration = configuraiton ?? Self.makeDefaultConfiguration(context: context)
@@ -314,6 +320,18 @@ final class StatsViewModel: ObservableObject, CardConfigurationDelegate {
         return preset
     }
 
+    private func saveSelectedComparisonPeriod() {
+        userDefaults.set(dateRange.comparison.rawValue, forKey: Self.comparisonPeriodKey)
+    }
+
+    private static func loadComparisonPeriod(from userDefaults: UserDefaults) -> DateRangeComparisonPeriod? {
+        guard let rawValue = userDefaults.string(forKey: Self.comparisonPeriodKey),
+              let comparisonPeriod = DateRangeComparisonPeriod(rawValue: rawValue) else {
+            return nil
+        }
+        return comparisonPeriod
+    }
+
     // MARK: - Reset Settings
 
     /// Resets all persistently stored settings including card configuration and date range preset
@@ -323,6 +341,9 @@ final class StatsViewModel: ObservableObject, CardConfigurationDelegate {
 
         // Reset date range preset
         userDefaults.removeObject(forKey: Self.dateRangePresetKey)
+
+        // Reset comparison period
+        userDefaults.removeObject(forKey: Self.comparisonPeriodKey)
 
         // Reset date range to default
         dateRange = context.calendar.makeDateRange(for: .last7Days)

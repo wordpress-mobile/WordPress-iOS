@@ -31,6 +31,7 @@ public enum RemoteFeatureFlag: Int, CaseIterable {
     case dotComWebLogin
     case newGutenberg
     case newGutenbergPlugins
+    case statsAds
 
     var defaultValue: Bool {
         let app = BuildSettings.current.brand
@@ -91,6 +92,8 @@ public enum RemoteFeatureFlag: Int, CaseIterable {
         case .newGutenberg:
             return app == .reader
         case .newGutenbergPlugins:
+            return false
+        case .statsAds:
             return false
         }
     }
@@ -154,6 +157,8 @@ public enum RemoteFeatureFlag: Int, CaseIterable {
             return "gutenberg_kit"
         case .newGutenbergPlugins:
             return "gutenberg_kit_plugins"
+        case .statsAds:
+            return "stats_ads"
         }
     }
 
@@ -215,6 +220,8 @@ public enum RemoteFeatureFlag: Int, CaseIterable {
             return "Experimental Block Editor"
         case .newGutenbergPlugins:
             return "Experimental Block Editor Plugins"
+        case .statsAds:
+            return "Stats Ads Tab"
         }
     }
 

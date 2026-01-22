@@ -6,11 +6,13 @@ import WordPressUI
 import Combine
 import TipKit
 import BuildSettingsKit
+import JetpackStats
 
 enum StatsTabType: Int, AdaptiveTabBarItem, CaseIterable {
     case insights = 0
     case traffic
     case subscribers
+    case ads
 
     var id: StatsTabType { self }
 
@@ -19,6 +21,7 @@ enum StatsTabType: Int, AdaptiveTabBarItem, CaseIterable {
         case .insights: return NSLocalizedString("Insights", comment: "Title of Insights stats filter.")
         case .traffic: return NSLocalizedString("stats.dashboard.tab.traffic", value: "Traffic", comment: "Title of Traffic stats tab.")
         case .subscribers: return NSLocalizedString("stats.dashboard.tab.subscribers", value: "Subscribers", comment: "Title of Subscribers stats tab.")
+        case .ads: return NSLocalizedString("stats.dashboard.tab.ads", value: "Ads", comment: "Title of Ads stats tab.")
         }
     }
 
@@ -30,22 +33,19 @@ enum StatsTabType: Int, AdaptiveTabBarItem, CaseIterable {
             self = .traffic
         case "subscribers":
             self = .subscribers
+        case "ads":
+            self = .ads
         default:
             return nil
         }
-    }
-}
-
-fileprivate extension StatsTabType {
-    static var displayedTabs: [StatsTabType] {
-        return [.traffic, .insights, .subscribers]
     }
 
     var analyticsAccessEvent: WPAnalyticsStat? {
         switch self {
         case .insights: return .statsInsightsAccessed
-        case .traffic:  return nil
+        case .traffic: return nil
         case .subscribers: return .statsSubscribersAccessed
+        case .ads: return nil
         }
     }
 }
@@ -53,12 +53,34 @@ fileprivate extension StatsTabType {
 public class SiteStatsDashboardViewController: UIViewController {
     static let lastSelectedStatsDateKey = "LastSelectedStatsDate"
 
+    // MARK: - Helpers
+
+    /// Returns the current blog from SiteStatsInformation if available
+    private static func currentBlog() -> Blog? {
+        guard let siteID = SiteStatsInformation.sharedInstance.siteID,
+              let blog = Blog.lookup(withID: siteID, in: ContextManager.shared.mainContext) else {
+            return nil
+        }
+        return blog
+    }
+
     // MARK: - Properties
 
     private let containerView = UIView()
 
     private var currentChildViewController: UIViewController?
-    private lazy var displayedTabs: [StatsTabType] = StatsTabType.displayedTabs
+    private lazy var displayedTabs: [StatsTabType] = {
+        var tabs: [StatsTabType] = [.traffic, .insights, .subscribers]
+
+        // Add Ads tab if feature flag is enabled and WordAds is active on the site
+        if FeatureFlag.statsAds.enabled,
+           let blog = Self.currentBlog(),
+           blog.isWordAdsActive() {
+            tabs.append(.ads)
+        }
+
+        return tabs
+    }()
     private var tipObserver: TipObserver?
     private var isUsingMockData = UITestConfigurator.isEnabled(.useMockData)
     private var navigationItemObserver: NSKeyValueObservation?
@@ -100,8 +122,7 @@ public class SiteStatsDashboardViewController: UIViewController {
             // Create with demo context for mock data
             return StatsHostingViewController.makeNewTrafficViewController(blog: nil, parentViewController: self, isDemo: true)
         } else {
-            guard let siteID = SiteStatsInformation.sharedInstance.siteID,
-                  let blog = Blog.lookup(withID: siteID, in: ContextManager.shared.mainContext) else {
+            guard let blog = Self.currentBlog() else {
                 return nil
             }
             return StatsHostingViewController.makeNewTrafficViewController(blog: blog, parentViewController: self, isDemo: false)
@@ -124,6 +145,13 @@ public class SiteStatsDashboardViewController: UIViewController {
     private lazy var subscribersViewController = {
         let viewModel = StatsSubscribersViewModel()
         return StatsSubscribersViewController(viewModel: viewModel)
+    }()
+
+    private lazy var adsViewController: UIViewController = {
+        let adsView = AdsTabView()
+        let hostingController = UIHostingController(rootView: adsView)
+        hostingController.view.backgroundColor = .systemBackground
+        return hostingController
     }()
 
     // MARK: - View
@@ -183,6 +211,8 @@ public class SiteStatsDashboardViewController: UIViewController {
                     self.showNewStatsTip()
                 }
             }
+        case .ads:
+            parent?.navigationItem.rightBarButtonItem = nil
         default:
             parent?.navigationItem.rightBarButtonItem = nil
         }
@@ -358,7 +388,7 @@ private extension SiteStatsDashboardViewController {
     func setupFilterBar() {
         wpAssert(parent != nil)
         filterBarController.navigationItem = parent?.navigationItem
-        filterBarController.configure(StatsTabType.displayedTabs, in: self) { [weak self] in
+        filterBarController.configure(displayedTabs, in: self) { [weak self] in
             self?.selectedFilterDidChange($0)
         }
         filterBarController.accessibilityIdentifier = "site-stats-dashboard-filter-bar"
@@ -428,6 +458,10 @@ private extension SiteStatsDashboardViewController {
                 showChildViewController(subscribersViewController)
             } else {
                 subscribersViewController.refreshData()
+            }
+        case .ads:
+            if oldSelectedTab != .ads || containerIsEmpty {
+                showChildViewController(adsViewController)
             }
         }
     }

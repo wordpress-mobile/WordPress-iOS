@@ -13,50 +13,6 @@ import Photos
 
 class NewGutenbergViewController: UIViewController, PostEditor, PublishingEditor {
 
-    enum EditorLoadingState {
-        /// We haven't done anything with the editor yet
-        ///
-        /// Valid states to transition to:
-        /// - .loadingDependencies
-        case uninitialized
-
-        /// We're loading the editor's dependencies
-        ///
-        /// Valid states to transition to:
-        /// - .loadingCancelled
-        /// - .dependencyError
-        /// - .dependenciesReady
-        case loadingDependencies(_ task: Task<Void, Error>)
-
-        /// We cancelled loading the editor's dependencies
-        ///
-        /// Valid states to transition to:
-        /// - .loadingDependencies
-        case loadingCancelled
-
-        /// An error occured while fetching dependencies
-        ///
-        /// Valid states to transition to:
-        /// - .loadingDependencies
-        case dependencyError(Error)
-
-        /// All dependencies have been loaded, so we're ready to start the editor
-        ///
-        /// Valid states to transition to:
-        /// - .ready
-        case dependenciesReady(EditorDependencies)
-
-        /// The editor is fully loaded and we've passed all required configuration and data to it
-        ///
-        /// There are no valid transition states from `.started`
-        case started
-    }
-
-    struct EditorDependencies {
-        let settings: String?
-        let didLoadCookies: Bool
-    }
-
     let errorDomain: String = "GutenbergViewController.errorDomain"
 
     private lazy var service: BlogJetpackSettingsService? = {
@@ -104,15 +60,10 @@ class NewGutenbergViewController: UIViewController, PostEditor, PublishingEditor
 
     // TODO: reimplemet
 //    internal private(set) var contentInfo: ContentInfo?
-    lazy var editorSettingsService: BlockEditorSettingsService? = {
-        BlockEditorSettingsService(blog: post.blog, coreDataStack: ContextManager.shared)
-    }()
 
     // MARK: - GutenbergKit
 
     private var editorViewController: GutenbergKit.EditorViewController
-    private var activityIndicator: UIActivityIndicatorView?
-    private var hasEditorStarted = false
     private var isModalDialogOpen = false
 
     lazy var autosaver = Autosaver() { [weak self] in
@@ -126,10 +77,6 @@ class NewGutenbergViewController: UIViewController, PostEditor, PublishingEditor
     private var keyboardFrame = CGRect.zero
     private var suggestionViewBottomConstraint: NSLayoutConstraint?
     private var currentSuggestionsController: GutenbergSuggestionsViewController?
-
-    private var editorState: EditorLoadingState = .uninitialized
-    private var dependencyLoadingError: Error?
-    private var editorLoadingTask: Task<Void, Error>?
 
     // TODO: remove (none of these APIs are needed for the new editor)
     func prepopulateMediaItems(_ media: [Media]) {}
@@ -145,8 +92,6 @@ class NewGutenbergViewController: UIViewController, PostEditor, PublishingEditor
     }
     func setHTML(_ html: String) {}
     func getHTML() -> String { post.content ?? "" }
-
-    private let blockEditorSettingsService: RawBlockEditorSettingsService
 
     // MARK: - Initializers
     required convenience init(
@@ -183,13 +128,24 @@ class NewGutenbergViewController: UIViewController, PostEditor, PublishingEditor
 
         EditorLocalization.localize = getLocalizedString
 
-        let editorConfiguration = EditorConfiguration(blog: post.blog)
+        // Create configuration with post content
+        let postType = post is Page ? "page" : "post"
+        let editorConfiguration = EditorConfiguration(blog: post.blog, postType: postType)
+            .toBuilder()
+            .setTitle(post.postTitle ?? "")
+            .setContent(post.content ?? "")
+            .setNativeInserterEnabled(FeatureFlag.nativeBlockInserter.enabled)
+            .build()
+
+        // Use prefetched dependencies if available (fast path with spinner),
+        // otherwise pass nil and GutenbergKit will fetch them (shows progress bar)
+        let cachedDependencies = EditorDependencyManager.shared.dependencies(for: post.blog)
+
         self.editorViewController = GutenbergKit.EditorViewController(
             configuration: editorConfiguration,
+            dependencies: cachedDependencies,
             mediaPicker: MediaPickerController(blog: post.blog)
         )
-
-        self.blockEditorSettingsService = RawBlockEditorSettingsService(blog: post.blog)
 
         super.init(nibName: nil, bundle: nil)
 
@@ -203,9 +159,6 @@ class NewGutenbergViewController: UIViewController, PostEditor, PublishingEditor
 
     deinit {
         tearDownKeyboardObservers()
-
-        // Cancel any pending tasks
-        editorLoadingTask?.cancel()
     }
 
     // MARK: - Lifecycle methods
@@ -221,7 +174,10 @@ class NewGutenbergViewController: UIViewController, PostEditor, PublishingEditor
         configureNavigationBar()
         refreshInterface()
 
-        startLoadingDependencies()
+        // Load auth cookies if needed (for private sites)
+        Task {
+            await loadAuthenticationCookiesAsync()
+        }
 
         SiteSuggestionService.shared.prefetchSuggestionsIfNeeded(for: post.blog) {
             // Do nothing
@@ -235,55 +191,6 @@ class NewGutenbergViewController: UIViewController, PostEditor, PublishingEditor
 //        })
 
         onViewDidLoad()
-    }
-
-    override func viewWillAppear(_ animated: Bool) {
-        super.viewWillAppear(animated)
-
-        if case .loadingDependencies = self.editorState {
-            self.showActivityIndicator()
-        }
-
-        if case .loadingCancelled = self.editorState {
-            startLoadingDependencies()
-        }
-    }
-
-    override func viewDidAppear(_ animated: Bool) {
-        super.viewDidAppear(animated)
-
-        if case .loadingCancelled = self.editorState {
-            preconditionFailure("Dependency loading should not be cancelled")
-        }
-
-        self.editorLoadingTask = Task { [weak self] in
-            guard let self else { return }
-            do {
-                while case .loadingDependencies = self.editorState {
-                    try await Task.sleep(nanoseconds: 1000)
-                }
-
-                switch self.editorState {
-                    case .uninitialized: preconditionFailure("Dependencies must be initialized")
-                    case .loadingDependencies: preconditionFailure("Dependencies should not still be loading")
-                    case .loadingCancelled: preconditionFailure("Dependency loading should not be cancelled")
-                    case .dependencyError(let error): self.showEditorError(error)
-                    case .dependenciesReady(let dependencies): try await self.startEditor(settings: dependencies.settings)
-                    case .started: preconditionFailure("The editor should not already be started")
-                }
-            } catch {
-                self.showEditorError(error)
-            }
-        }
-    }
-
-    override func viewWillDisappear(_ animated: Bool) {
-        super.viewWillDisappear(animated)
-        if case .loadingDependencies(let task) = self.editorState {
-            task.cancel()
-        }
-
-        self.editorLoadingTask?.cancel()
     }
 
     private func setupEditorView() {
@@ -367,52 +274,6 @@ class NewGutenbergViewController: UIViewController, PostEditor, PublishingEditor
         }
     }
 
-    func startLoadingDependencies() {
-        switch self.editorState {
-        case .uninitialized:
-            break // This is fine – we're loading for the first time
-        case .loadingDependencies:
-            preconditionFailure("`startLoadingDependencies` should not be called while in the `.loadingDependencies` state")
-        case .loadingCancelled:
-            break // This is fine – we're loading after quickly switching posts
-        case .dependencyError:
-            break // We're retrying after an error
-        case .dependenciesReady:
-            preconditionFailure("`startLoadingDependencies` should not be called while in the `.dependenciesReady` state")
-        case .started:
-            preconditionFailure("`startLoadingDependencies` should not be called while in the `.started` state")
-        }
-
-        self.editorState = .loadingDependencies(Task {
-            do {
-                let dependencies = try await fetchEditorDependencies()
-                self.editorState = .dependenciesReady(dependencies)
-            } catch {
-                self.editorState = .dependencyError(error)
-            }
-        })
-    }
-
-    @MainActor
-    func startEditor(settings: String?) async throws {
-        guard case .dependenciesReady = self.editorState else {
-            preconditionFailure("`startEditor` should only be called when the editor is in the `.dependenciesReady` state.")
-        }
-
-        let updatedConfiguration = self.editorViewController.configuration.toBuilder()
-            .apply(settings) { $0.setEditorSettings($1) }
-            .setTitle(post.postTitle ?? "")
-            .setContent(post.content ?? "")
-            .setNativeInserterEnabled(FeatureFlag.nativeBlockInserter.enabled)
-            .build()
-
-        self.editorViewController.updateConfiguration(updatedConfiguration)
-        self.editorViewController.startEditorSetup()
-
-        // Handles refreshing controls with state context after options screen is dismissed
-        editorContentWasUpdated()
-    }
-
     // MARK: - Keyboard Observers
 
     private func setupKeyboardObservers() {
@@ -456,44 +317,6 @@ class NewGutenbergViewController: UIViewController, PostEditor, PublishingEditor
         }
     }
 
-    // MARK: - Activity Indicator
-
-    private func showActivityIndicator() {
-        let indicator = UIActivityIndicatorView()
-        indicator.color = .gray
-        indicator.translatesAutoresizingMaskIntoConstraints = false
-        view.addSubview(indicator)
-
-        NSLayoutConstraint.activate([
-            indicator.centerXAnchor.constraint(equalTo: view.centerXAnchor),
-            indicator.centerYAnchor.constraint(equalTo: view.centerYAnchor)
-        ])
-
-        indicator.startAnimating()
-        self.activityIndicator = indicator
-    }
-
-    private func hideActivityIndicator() {
-        activityIndicator?.stopAnimating()
-        activityIndicator?.removeFromSuperview()
-        activityIndicator = nil
-    }
-
-    // MARK: - Editor Setup
-    private func fetchEditorDependencies() async throws -> EditorDependencies {
-        let settings: String?
-        do {
-            settings = try await blockEditorSettingsService.getSettingsString(allowingCachedResponse: true)
-        } catch {
-            DDLogError("Failed to fetch editor settings: \(error)")
-            settings = nil
-        }
-
-        let loaded = await loadAuthenticationCookiesAsync()
-
-        return EditorDependencies(settings: settings, didLoadCookies: loaded)
-    }
-
     private func loadAuthenticationCookiesAsync() async -> Bool {
         guard post.blog.isPrivate() else {
             return true
@@ -534,7 +357,6 @@ extension NewGutenbergViewController: GutenbergKit.EditorViewControllerDelegate 
             // is still reflecting the actual startup time of the editor
             editorSession.start()
         }
-        self.hideActivityIndicator()
     }
 
     func editor(_ viewContoller: GutenbergKit.EditorViewController, didDisplayInitialContent content: String) {
@@ -572,7 +394,7 @@ extension NewGutenbergViewController: GutenbergKit.EditorViewControllerDelegate 
         }
     }
 
-    func editor(_ viewController: GutenbergKit.EditorViewController, didLogMessage message: String, level: GutenbergKit.LogLevel) {
+    func editor(_ viewController: GutenbergKit.EditorViewController, didLogNetworkRequest request: GutenbergKit.RecordedNetworkRequest) {
         // Do nothing
     }
 
@@ -1121,5 +943,7 @@ private func getLocalizedString(for value: GutenbergKit.EditorLocalizableString)
     case .insertPattern: NSLocalizedString("editor.patterns.insertPattern", value: "Insert Pattern", comment: "Context menu action to insert a pattern")
     case .patternsCategoryUncategorized: NSLocalizedString("editor.patterns.uncategorized", value: "Uncategorized", comment: "Category name for patterns without a category")
     case .patternsCategoryAll: NSLocalizedString("editor.patterns.all", value: "All", comment: "Category name for section showing all patterns")
+    case .loadingEditor: NSLocalizedString("editor.loading.title", value: "Loading Editor", comment: "Text shown while the editor is loading")
+    case .editorError: NSLocalizedString("editor.error.title", value: "Editor Error", comment: "Title shown when the editor encounters an error")
     }
 }

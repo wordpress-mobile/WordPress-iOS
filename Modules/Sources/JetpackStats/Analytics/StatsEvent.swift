@@ -258,6 +258,7 @@ extension DateRangeComparisonPeriod {
         switch self {
         case .precedingPeriod: "previous_period"
         case .samePeriodLastYear: "previous_year"
+        case .off: "off"
         }
     }
 }

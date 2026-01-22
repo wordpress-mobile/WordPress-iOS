@@ -22,6 +22,7 @@ enum DashboardItem: Hashable, Sendable {
 typealias DashboardSnapshot = NSDiffableDataSourceSnapshot<DashboardSection, DashboardItem>
 typealias DashboardDataSource = UICollectionViewDiffableDataSource<DashboardSection, DashboardItem>
 
+@MainActor
 final class BlogDashboardViewModel {
     private weak var viewController: BlogDashboardViewController?
 
@@ -127,6 +128,7 @@ final class BlogDashboardViewModel {
     }
 
     func viewWillAppear() {
+        EditorDependencyManager.shared.prefetchDependencies(for: self.blog)
         quickActionsViewModel.viewWillAppear()
     }
 
@@ -143,6 +145,12 @@ final class BlogDashboardViewModel {
         self.quickActionsViewModel = DashboardQuickActionsViewModel(blog: blog, personalizationService: personalizationService)
         self.loadCardsFromCache()
         self.loadCards()
+
+        EditorDependencyManager.shared.prefetchDependencies(for: blog)
+    }
+
+    func clearEditorCache(_ completion: @escaping () -> Void) {
+        EditorDependencyManager.shared.invalidate(for: self.blog, completion: completion)
     }
 
     /// Call the API to return cards for the current blog

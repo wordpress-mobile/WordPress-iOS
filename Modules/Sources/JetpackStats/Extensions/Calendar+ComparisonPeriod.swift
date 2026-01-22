@@ -1,8 +1,9 @@
 import Foundation
 
-enum DateRangeComparisonPeriod: Equatable, Sendable, CaseIterable, Identifiable {
+enum DateRangeComparisonPeriod: String, Equatable, Sendable, CaseIterable, Identifiable {
     case precedingPeriod
     case samePeriodLastYear
+    case off
 
     var id: DateRangeComparisonPeriod { self }
 
@@ -10,6 +11,7 @@ enum DateRangeComparisonPeriod: Equatable, Sendable, CaseIterable, Identifiable 
         switch self {
         case .precedingPeriod: Strings.DatePicker.precedingPeriod
         case .samePeriodLastYear: Strings.DatePicker.samePeriodLastYear
+        case .off: Strings.DatePicker.comparisonOff
         }
     }
 }
@@ -26,6 +28,8 @@ extension Calendar {
                 return dateInterval
             }
             return DateInterval(start: newStart, end: newEnd)
+        case .off:
+            return dateInterval
         }
     }
 
