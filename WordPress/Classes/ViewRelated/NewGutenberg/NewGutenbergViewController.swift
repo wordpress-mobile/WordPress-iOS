@@ -397,31 +397,6 @@ extension NewGutenbergViewController: GutenbergKit.EditorViewControllerDelegate 
         }
     }
 
-    func editor(_ viewController: GutenbergKit.EditorViewController, didLogNetworkRequest request: GutenbergKit.RecordedNetworkRequest) {
-        guard ExtensiveLogging.enabled, let url = URL(string: request.url) else {
-            return
-        }
-
-        var urlRequest = URLRequest(url: url)
-        urlRequest.httpMethod = request.method
-        urlRequest.allHTTPHeaderFields = request.requestHeaders
-        urlRequest.httpBody = request.requestBody?.data(using: .utf8)
-
-        let httpResponse = HTTPURLResponse(
-            url: url,
-            statusCode: request.status,
-            httpVersion: nil,
-            headerFields: request.responseHeaders
-        )
-
-        LoggerStore.shared.storeRequest(
-            urlRequest,
-            response: httpResponse,
-            error: nil,
-            data: request.responseBody?.data(using: .utf8)
-        )
-    }
-
     // MARK: - Media Picker Helpers
 
     func editor(_ viewController: GutenbergKit.EditorViewController, didRequestMediaFromSiteMediaLibrary config: OpenMediaLibraryAction) {
@@ -525,6 +500,33 @@ extension NewGutenbergViewController: GutenbergKit.EditorViewControllerDelegate 
         }
 
         return WPMediaType(rawValue: mediaType)
+    }
+}
+
+extension GutenbergKit.EditorViewControllerDelegate {
+    func editor(_ viewController: GutenbergKit.EditorViewController, didLogNetworkRequest request: GutenbergKit.RecordedNetworkRequest) {
+        guard ExtensiveLogging.enabled, let url = URL(string: request.url) else {
+            return
+        }
+
+        var urlRequest = URLRequest(url: url)
+        urlRequest.httpMethod = request.method
+        urlRequest.allHTTPHeaderFields = request.requestHeaders
+        urlRequest.httpBody = request.requestBody?.data(using: .utf8)
+
+        let httpResponse = HTTPURLResponse(
+            url: url,
+            statusCode: request.status,
+            httpVersion: nil,
+            headerFields: request.responseHeaders
+        )
+
+        LoggerStore.shared.storeRequest(
+            urlRequest,
+            response: httpResponse,
+            error: nil,
+            data: request.responseBody?.data(using: .utf8)
+        )
     }
 }
 
