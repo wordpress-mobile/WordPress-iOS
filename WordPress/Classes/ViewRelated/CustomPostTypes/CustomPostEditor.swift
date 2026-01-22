@@ -39,16 +39,12 @@ struct CustomPostEditor: View {
     private func save() {
         Task {
             SVProgressHUD.show()
-            defer { SVProgressHUD.dismiss(withDelay: 0.3) }
 
             do {
                 guard let (title, content) = try await coordinator.getContent() else { return }
 
-                try await update(post: post, title: title, content: content)
-
-                if let image = UIImage(systemName: "checkmark") {
-                    SVProgressHUD.show(image, status: nil)
-                }
+                try await update(title: title, content: content)
+                SVProgressHUD.showSuccess(withStatus: nil)
 
                 dismiss()
                 success()
@@ -58,7 +54,25 @@ struct CustomPostEditor: View {
         }
     }
 
-    private func update(post: AnyPostWithEditContext, title: String, content: String) async throws {
+    private func hasBeenModified() async throws -> Bool {
+        let endpoint = postTypeDetailsToPostEndpointType(postTypeDetails: details)
+        let lastModified = try await client.api.posts
+            .filterRetrieveWithEditContext(
+                postEndpointType: endpoint,
+                postId: post.id,
+                params: .init(),
+                fields: [.modified]
+            )
+            .data
+            .modified
+        return lastModified != post.modified
+    }
+
+    private func update(title: String, content: String) async throws {
+        // This is a simple way to avoid overwriting others' changes. We can further improve it
+        // to align with the implementation in `PostRepository`.
+        guard try await !hasBeenModified() else { throw PostUpdateError.conflicts }
+
         let hasTitle = details.supports.map[.title] == .bool(true)
         let params = PostUpdateParams(
             title: hasTitle ? title : nil,
@@ -107,3 +121,20 @@ private struct SimpleGBKEditor: UIViewControllerRepresentable {
     func updateUIViewController(_ uiViewController: UIViewController, context: Context) {
     }
 }
+
+private enum PostUpdateError: LocalizedError {
+    case conflicts
+
+    var errorDescription: String? {
+        Strings.conflictErrorMessage
+    }
+}
+
+private enum Strings {
+    static let conflictErrorMessage = NSLocalizedString(
+        "customPostEditor.error.conflict.message",
+        value: "The post you are trying to save has been changed in the meantime.",
+        comment: "Error message shown when the post was modified by another user while editing"
+    )
+}
+
