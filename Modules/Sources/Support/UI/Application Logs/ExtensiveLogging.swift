@@ -9,7 +9,9 @@ public enum ExtensiveLogging {
         }
         set {
             if newValue {
-                UserDefaults.standard.set(false, forKey: "pulse-disable-support-prompts")
+                UserDefaults.standard.set(true, forKey: "pulse-disable-settings-prompts")
+                UserDefaults.standard.set(true, forKey: "pulse-disable-support-prompts")
+                UserDefaults.standard.set(true, forKey: "pulse-disable-report-issue-prompts")
                 UserDefaults.standard.set(true, forKey: enabledKey)
             } else {
                 UserDefaults.standard.removeObject(forKey: enabledKey)
