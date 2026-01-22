@@ -1,18 +1,12 @@
 import UIKit
 import DesignSystem
 import Support
+import SwiftUI
+import WordPressUI
 
 class DashboardExtensiveLoggingCardView: UIView {
-
     var onTurnOffTapped: (() -> Void)?
     weak var presenterViewController: UIViewController?
-
-    private lazy var cardFrameView: BlogDashboardCardFrameView = {
-        let frameView = BlogDashboardCardFrameView()
-        frameView.translatesAutoresizingMaskIntoConstraints = false
-        frameView.setTitle(Strings.cardTitle)
-        return frameView
-    }()
 
     override init(frame: CGRect) {
         super.init(frame: frame)
@@ -25,15 +19,20 @@ class DashboardExtensiveLoggingCardView: UIView {
     }
 
     private func setupViews() {
-        addSubview(cardFrameView)
-        pinSubviewToAllEdges(cardFrameView)
+        // Same as `BlogDashboardCardFrameView`
+        self.backgroundColor = .secondarySystemGroupedBackground
+        self.layer.masksToBounds = true
+        self.layer.cornerRadius = DesignConstants.radius(.large)
 
-        cardFrameView.onViewTap = { [weak self] in
-            self?.showAlert()
-        }
+        let content = UIHostingView(view: CardContent())
+        content.translatesAutoresizingMaskIntoConstraints = false
+        addSubview(content)
+        pinSubviewToAllEdges(content)
+
+        addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(showAlert)))
     }
 
-    private func showAlert() {
+    @objc private func showAlert() {
         let alert = UIAlertController(
             title: Strings.alertTitle,
             message: Strings.alertMessage,
@@ -54,11 +53,41 @@ class DashboardExtensiveLoggingCardView: UIView {
     }
 }
 
+private struct CardContent: View {
+    var body: some View {
+        HStack(spacing: 8) {
+            Circle()
+                .fill(.orange)
+                .frame(width: 8, height: 8)
+
+            VStack(alignment: .leading) {
+                Text(Strings.cardTitle)
+                    .font(.subheadline)
+                    .fontWeight(.medium)
+                Text(Strings.cardSubtitle)
+                    .font(.caption)
+                    .foregroundStyle(.secondary)
+            }
+
+            Spacer()
+
+            Image(systemName: "info.circle.fill")
+                .foregroundStyle(.tertiary)
+        }
+        .padding(10)
+    }
+}
+
 private enum Strings {
     static let cardTitle = NSLocalizedString(
         "dashboard.extensiveLogging.title",
-        value: "Extensive logging is turned on",
+        value: "Extensive Logging Enabled",
         comment: "Title for the extensive logging card on dashboard"
+    )
+    static let cardSubtitle = NSLocalizedString(
+        "dashboard.extensiveLogging.subtitle",
+        value: "This feature may impact performance",
+        comment: "Subtitle for the extensive logging card on dashboard"
     )
 
     static let alertTitle = NSLocalizedString(

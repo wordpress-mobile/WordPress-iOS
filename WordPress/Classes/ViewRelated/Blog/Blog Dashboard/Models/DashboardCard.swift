@@ -10,10 +10,10 @@ import Support
 /// Remote cards should be separately added to RemoteDashboardCard
 enum DashboardCard: String, CaseIterable, Sendable {
     case dynamic
-    case extensiveLogging
     case jetpackInstall
     case bloganuaryNudge = "bloganuary_nudge"
     case prompts
+    case extensiveLogging
     case googleDomains
     case blaze
     case freeToPaidPlansDashboardCard
