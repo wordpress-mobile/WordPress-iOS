@@ -103,7 +103,7 @@ final class CommentContentTableViewCell: UITableViewCell, NibReusable {
     private var viewModel: CommentCellViewModel?
     private var cancellables: [AnyCancellable] = []
 
-    private static let maxCollapsedHeight: CGFloat = 300
+    private static let maxCollapsedHeight: CGFloat = 280
     private var fullContentHeight: CGFloat?
     private var isContentExpanded: Bool = false
 
