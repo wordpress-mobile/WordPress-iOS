@@ -2,6 +2,30 @@ import Foundation
 import WordPressAPI
 import WordPressAPIInternal
 
+/// Protocol defining the WordPress API methods that WordPressClient needs.
+/// This abstraction allows for mocking in tests using the `NoHandle` constructors
+/// available on the executor classes.
+public protocol WordPressClientAPI: Sendable {
+    var apiRoot: ApiRootRequestExecutor { get }
+    var users: UsersRequestExecutor { get }
+    var themes: ThemesRequestExecutor { get }
+    var plugins: PluginsRequestExecutor { get }
+    var comments: CommentsRequestExecutor { get }
+    var media: MediaRequestExecutor { get }
+    var taxonomies: TaxonomiesRequestExecutor { get }
+    var terms: TermsRequestExecutor { get }
+    var applicationPasswords: ApplicationPasswordsRequestExecutor { get }
+
+    func uploadMedia(
+        params: MediaCreateParams,
+        fulfilling progress: Progress
+    ) async throws -> MediaRequestCreateResponse
+}
+
+/// WordPressAPI already has these properties with the correct types,
+/// so conformance is automatic.
+extension WordPressAPI: WordPressClientAPI {}
+
 public actor WordPressClient {
 
     public enum Feature {
@@ -27,12 +51,12 @@ public actor WordPressClient {
         }
     }
 
-    public let api: WordPressAPI
+    public let api: any WordPressClientAPI
     public let rootUrl: String
 
     private var loadSiteInfoTask: Task<(WpApiDetails, UserWithEditContext, ThemeWithEditContext?), Error>
 
-    public init(api: WordPressAPI, rootUrl: ParsedUrl) {
+    public init(api: any WordPressClientAPI, rootUrl: ParsedUrl) {
         self.api = api
         self.rootUrl = rootUrl.url()
 

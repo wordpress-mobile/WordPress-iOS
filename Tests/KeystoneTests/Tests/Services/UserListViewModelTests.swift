@@ -16,7 +16,8 @@ class UserListViewModelTests: XCTestCase {
     override func setUp() async throws {
         try await super.setUp()
 
-        let client = try WordPressClient(api: .init(urlSession: .shared, apiRootUrl: .parse(input: "https://example.com/wp-json"), authentication: .none), rootUrl: .parse(input: "https://example.com"))
+        let api = try WordPressAPI(urlSession: .shared, apiRootUrl: .parse(input: "https://example.com/wp-json"), authentication: .none)
+        let client = try WordPressClient(api: api, rootUrl: .parse(input: "https://example.com"))
         service = UserService(client: client)
         viewModel = await UserListViewModel(userService: service, currentUserId: 0)
     }
