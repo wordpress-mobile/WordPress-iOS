@@ -201,16 +201,6 @@ final class ReaderCommentsTableViewController: UIViewController, UITableViewData
         return viewModel
     }
 
-    // MARK: - UITableViewDataDelegate
-
-    func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
-        containerViewController?.getHeaderView()
-    }
-
-    func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
-        containerViewController?.getHeaderView() == nil ? 0 : UITableView.automaticDimension
-    }
-
     // MARK: - UIScrollViewDelegate
 
     func scrollViewDidScroll(_ scrollView: UIScrollView) {

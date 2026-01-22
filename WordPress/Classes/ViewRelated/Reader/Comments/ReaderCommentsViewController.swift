@@ -105,8 +105,69 @@ final class ReaderCommentsViewController: UIViewController, WPContentSyncHelperD
 
     private func setupNavigationBar() {
         navigationItem.backButtonTitle = ""
-        title = Strings.title
         navigationItem.largeTitleDisplayMode = .never
+        updateNavigationTitle()
+    }
+
+    private func updateNavigationTitle() {
+        guard allowsPushingPostDetails, let post else {
+            title = Strings.title
+            navigationItem.titleView = nil
+            return
+        }
+
+        let titleButton = UIButton(type: .system)
+        titleButton.addTarget(self, action: #selector(navigationTitleTapped), for: .touchUpInside)
+
+        // Container stack view
+        let stackView = UIStackView()
+        stackView.axis = .vertical
+        stackView.alignment = .center
+        stackView.spacing = 2
+        stackView.isUserInteractionEnabled = false
+
+        // Main title label
+        let titleLabel = UILabel()
+        titleLabel.text = Strings.title
+        titleLabel.font = .preferredFont(forTextStyle: .headline)
+        titleLabel.textColor = .label
+        titleLabel.textAlignment = .center
+        titleLabel.maximumContentSizeCategory = .extraLarge
+
+        // Subtitle with post name and indicator
+        let subtitleContainer = UIStackView()
+        subtitleContainer.axis = .horizontal
+        subtitleContainer.alignment = .center
+        subtitleContainer.spacing = 4
+
+        let subtitleLabel = UILabel()
+        subtitleLabel.text = post.titleForDisplay()
+        subtitleLabel.font = .preferredFont(forTextStyle: .caption1)
+        subtitleLabel.textColor = .secondaryLabel
+        subtitleLabel.textAlignment = .center
+        subtitleLabel.maximumContentSizeCategory = .extraLarge
+
+        let chevronImageView = UIImageView()
+        let chevronImage = UIImage(systemName: "chevron.right.circle")?
+            .withConfiguration(UIImage.SymbolConfiguration(pointSize: 12, weight: .regular))
+        chevronImageView.image = chevronImage
+        chevronImageView.tintColor = UIAppColor.primary
+        chevronImageView.contentMode = .scaleAspectFit
+
+        subtitleContainer.addArrangedSubview(subtitleLabel)
+        subtitleContainer.addArrangedSubview(chevronImageView)
+
+        stackView.addArrangedSubview(titleLabel)
+        stackView.addArrangedSubview(subtitleContainer)
+
+        titleButton.addSubview(stackView)
+        stackView.pinEdges()
+
+        navigationItem.titleView = titleButton
+    }
+
+    @objc private func navigationTitleTapped() {
+        handleHeaderTapped()
     }
 
     private func setupView() {
@@ -118,19 +179,6 @@ final class ReaderCommentsViewController: UIViewController, WPContentSyncHelperD
 
         view.addSubview(activityIndicator)
         activityIndicator.pinCenter()
-    }
-
-    func getHeaderView() -> UIView? {
-        guard allowsPushingPostDetails, let post else {
-            return nil
-        }
-        return CommentTableHeaderView(
-            title: post.titleForDisplay(),
-            subtitle: .commentThread,
-            showsDisclosureIndicator: allowsPushingPostDetails
-        ) { [weak self] in
-            self?.handleHeaderTapped()
-        }
     }
 
     // MARK: - Fetch Post
@@ -157,6 +205,7 @@ final class ReaderCommentsViewController: UIViewController, WPContentSyncHelperD
 
     private func configure(with post: ReaderPost) {
         self.post = post
+        updateNavigationTitle()
 
         if post.isWPCom || post.isJetpack {
             let tableVC = ReaderCommentsTableViewController(post: post)
