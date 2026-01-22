@@ -9,6 +9,8 @@ import WordPressUI
     private var contentHeights: [String: CGFloat] = [:]
     private var expandedComments: Set<NSManagedObjectID> = []
 
+    var isP2Site: Bool = false
+
     func makeWebRenderer() -> WebCommentContentRenderer {
         let renderer = WebCommentContentRenderer()
         renderer.tintColor = UIAppColor.primary

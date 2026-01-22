@@ -46,6 +46,7 @@ class ReaderDetailCommentsTableViewDelegate: NSObject, UITableViewDataSource, UI
         self.totalComments = totalComments
         self.presentingViewController = presentingViewController
         self.buttonDelegate = buttonDelegate
+        helper.isP2Site = post.isP2Type
 
         var items: [Item] = []
         if post.commentsOpen {

@@ -494,7 +494,11 @@ private extension CommentContentTableViewCell {
         // calculating content size (it will never decrease it).
         let minContentHeight: CGFloat = 20
         let effectiveContentHeight = contentHeight ?? minContentHeight
-        if let contentHeight, contentHeight < Self.maxCollapsedHeight + 120 {
+
+        // P2 sites have a much higher percentage of long comments, so we can't
+        // collapse them as much as for regular posts
+        let threshold: CGFloat = (helper?.isP2Site ?? false) ? 280 : 120
+        if let contentHeight, contentHeight < Self.maxCollapsedHeight + threshold {
             // Expand automatically if the margin it too close, so there is no
             // point hiding a few pixels
             isContentExpanded = true

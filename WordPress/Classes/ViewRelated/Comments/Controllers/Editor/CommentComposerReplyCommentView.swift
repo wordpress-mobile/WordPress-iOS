@@ -13,6 +13,10 @@ final class CommentComposerReplyCommentView: UIView, UITableViewDataSource {
 
         super.init(frame: .zero)
 
+        if let post = comment.post as? ReaderPost {
+            helper.isP2Site = post.isP2Type
+        }
+
         addSubview(tableView)
         tableView.pinEdges()
 

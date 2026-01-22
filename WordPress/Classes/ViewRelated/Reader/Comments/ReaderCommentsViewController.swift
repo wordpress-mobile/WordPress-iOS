@@ -52,6 +52,7 @@ final class ReaderCommentsViewController: UIViewController, WPContentSyncHelperD
     init(post: ReaderPost) {
         self.post = post
         super.init(nibName: nil, bundle: nil)
+        helper.isP2Site = post.isP2Type
     }
 
     init(postID: NSNumber, siteID: NSNumber) {
@@ -157,6 +158,7 @@ final class ReaderCommentsViewController: UIViewController, WPContentSyncHelperD
 
     private func configure(with post: ReaderPost) {
         self.post = post
+        helper.isP2Site = post.isP2Type
 
         if post.isWPCom || post.isJetpack {
             let tableVC = ReaderCommentsTableViewController(post: post)
