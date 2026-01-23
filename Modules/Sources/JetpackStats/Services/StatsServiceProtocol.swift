@@ -8,6 +8,7 @@ protocol StatsServiceProtocol: AnyObject, Sendable {
     func getSupportedMetrics(for item: TopListItemType) -> [SiteMetric]
 
     func getSiteStats(interval: DateInterval, granularity: DateRangeGranularity) async throws -> SiteMetricsResponse
+    func getWordAdsStats(date: Date, granularity: DateRangeGranularity) async throws -> WordAdsMetricsResponse
     func getTopListData(_ item: TopListItemType, metric: SiteMetric, interval: DateInterval, granularity: DateRangeGranularity, limit: Int?, locationLevel: LocationLevel?) async throws -> TopListResponse
     func getRealtimeTopListData(_ item: TopListItemType) async throws -> TopListResponse
     func getPostDetails(for postID: Int) async throws -> StatsPostDetails

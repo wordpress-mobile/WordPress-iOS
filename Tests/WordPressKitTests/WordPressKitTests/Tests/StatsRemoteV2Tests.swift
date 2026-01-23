@@ -28,6 +28,7 @@ class StatsRemoteV2Tests: RemoteTestCase, RESTTestable {
     let getStatsSummaryFilename = "stats-summary.json"
     let getArchivesDataFilename = "stats-archives-data.json"
     let getEmailOpensFilename = "stats-email-opens.json"
+    let getWordAdsMonthMockFilename = "stats-wordads-month.json"
 
     // MARK: - Properties
 
@@ -46,6 +47,7 @@ class StatsRemoteV2Tests: RemoteTestCase, RESTTestable {
     var siteStatsSummaryEndpoint: String { return "sites/\(siteID)/stats/summary/" }
     var siteArchivesDataEndpoint: String { return "sites/\(siteID)/stats/archives" }
     var siteEmailOpensEndpoint: String { return "sites/\(siteID)/stats/opens/emails/231/rate" }
+    var siteWordAdsEndpoint: String { return "sites/\(siteID)/wordads/stats" }
 
     func toggleSpamStateEndpoint(for referrerDomain: String, markAsSpam: Bool) -> String {
         let action = markAsSpam ? "new" : "delete"
@@ -853,5 +855,59 @@ class StatsRemoteV2Tests: RemoteTestCase, RESTTestable {
         }
 
         waitForExpectations(timeout: timeout, handler: nil)
+    }
+
+    func testWordAdsMonthlyData() throws {
+        let expect = expectation(description: "It should return WordAds data for months")
+
+        stubRemoteResponse(siteWordAdsEndpoint, filename: getWordAdsMonthMockFilename, contentType: .ApplicationJSON)
+
+        let jan31 = DateComponents(year: 2026, month: 1, day: 31)
+        let date = Calendar.autoupdatingCurrent.date(from: jan31)!
+
+        var currentResponse: StatsWordAdsResponse?
+        remote.getData(for: .month, endingOn: date) { (response: StatsWordAdsResponse?, error: Error?) in
+            XCTAssertNil(error)
+            XCTAssertNotNil(response)
+
+            currentResponse = response
+            expect.fulfill()
+        }
+        waitForExpectations(timeout: timeout, handler: nil)
+
+        let response = try XCTUnwrap(currentResponse)
+
+        let data = response.data
+        guard data.count == 4 else {
+            XCTFail("Data should have 4 elements")
+            return
+        }
+
+        // First data point
+        XCTAssertEqual(data[0].impressions, 14)
+        XCTAssertEqual(data[0].revenue, 0)
+        XCTAssertEqual(data[0].cpm, 0)
+
+        // Second data point
+        XCTAssertEqual(data[1].impressions, 72)
+        XCTAssertEqual(data[1].revenue, 0)
+        XCTAssertEqual(data[1].cpm, 0)
+
+        // Third data point (has non-zero revenue and CPM)
+        XCTAssertEqual(data[2].impressions, 174)
+        XCTAssertEqual(data[2].revenue, 0.01)
+        XCTAssertEqual(data[2].cpm, 0.06)
+
+        // Fourth data point
+        XCTAssertEqual(data[3].impressions, 92)
+        XCTAssertEqual(data[3].revenue, 0)
+        XCTAssertEqual(data[3].cpm, 0)
+
+        // Test subscript access
+        XCTAssertEqual(data[2][.impressions], 174.0)
+        XCTAssertEqual(data[2][.revenue], 0.01)
+        XCTAssertEqual(data[2][.cpm], 0.06)
+
+
     }
 }

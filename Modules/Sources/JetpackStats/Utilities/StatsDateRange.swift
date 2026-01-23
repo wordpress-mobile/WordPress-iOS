@@ -74,21 +74,22 @@ struct StatsDateRange: Equatable, Sendable {
     }
 
     /// Returns true if can navigate in the specified direction.
-    func canNavigate(in direction: Calendar.NavigationDirection) -> Bool {
-        calendar.canNavigate(dateInterval, direction: direction)
+    func canNavigate(in direction: Calendar.NavigationDirection, now: Date = .now) -> Bool {
+        calendar.canNavigate(dateInterval, direction: direction, now: now)
     }
 
     /// Generates a list of available adjacent periods in the specified direction.
     /// - Parameters:
     ///   - direction: The navigation direction (previous or next)
     ///   - maxCount: Maximum number of periods to generate (default: 10)
+    ///   - now: The reference date for determining navigation bounds (default: .now)
     /// - Returns: Array of AdjacentPeriod structs
-    func availableAdjacentPeriods(in direction: Calendar.NavigationDirection, maxCount: Int = 10) -> [AdjacentPeriod] {
+    func availableAdjacentPeriods(in direction: Calendar.NavigationDirection, maxCount: Int = 10, now: Date = .now) -> [AdjacentPeriod] {
         var periods: [AdjacentPeriod] = []
         var currentRange = self
-        let formatter = StatsDateRangeFormatter(timeZone: calendar.timeZone)
+        let formatter = StatsDateRangeFormatter(timeZone: calendar.timeZone, now: { now })
         for _ in 0..<maxCount {
-            if currentRange.canNavigate(in: direction) {
+            if currentRange.canNavigate(in: direction, now: now) {
                 currentRange = currentRange.navigate(direction)
                 let displayText = formatter.string(from: currentRange.dateInterval)
                 periods.append(AdjacentPeriod(range: currentRange, displayText: displayText))

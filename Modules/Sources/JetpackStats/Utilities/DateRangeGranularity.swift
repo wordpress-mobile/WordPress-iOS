@@ -73,4 +73,16 @@ extension DateRangeGranularity {
         case .year: .year
         }
     }
+
+    /// Preferred quantity of data points to fetch for this granularity.
+    /// Used by legacy APIs that accept a date and quantity instead of date periods.
+    var preferredQuantity: Int {
+        switch self {
+        case .hour: 48
+        case .day: 30
+        case .week: 12
+        case .month: 12
+        case .year: 10
+        }
+    }
 }

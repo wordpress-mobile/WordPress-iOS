@@ -53,6 +53,12 @@ enum Strings {
         static let downloads = AppLocalizedString("jetpackStats.siteMetrics.downloads", value: "Downloads", comment: "Download count")
     }
 
+    enum WordAdsMetrics {
+        static let adsServed = AppLocalizedString("jetpackStats.wordAdsMetrics.adsServed", value: "Ads Served", comment: "Number of ads served")
+        static let averageCPM = AppLocalizedString("jetpackStats.wordAdsMetrics.averageCPM", value: "Average CPM", comment: "Average cost per mille (thousand impressions)")
+        static let revenue = AppLocalizedString("jetpackStats.wordAdsMetrics.revenue", value: "Revenue", comment: "Revenue from ads")
+    }
+
     enum SiteDataTypes {
         static let postsAndPages = AppLocalizedString("jetpackStats.siteDataTypes.postsAndPages", value: "Posts & Pages", comment: "Posts and pages data type")
         static let archive = AppLocalizedString("jetpackStats.siteDataTypes.archive", value: "Archive", comment: "Archive data type")

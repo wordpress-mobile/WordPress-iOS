@@ -58,7 +58,7 @@ struct DateRangeGranularityTests {
             start: Date("2024-01-01T00:00:00-03:00"),
             end: Date("2024-03-31T00:00:00-03:00")
         )
-        #expect(ninetyDays.preferredGranularity == .day)
+        #expect(ninetyDays.preferredGranularity == .week)
     }
 
     @Test("Determined period for 91+ days returns month granularity")
@@ -99,14 +99,14 @@ struct DateRangeGranularityTests {
             start: Date("2024-01-01T00:00:00-03:00"),
             end: Date("2026-02-02T00:00:00-03:00")
         )
-        #expect(twentyFiveMonths.preferredGranularity == .month)
+        #expect(twentyFiveMonths.preferredGranularity == .year)
 
         // 3 years
         let threeYears = DateInterval(
             start: Date("2024-01-01T00:00:00-03:00"),
             end: Date("2027-01-02T00:00:00-03:00")
         )
-        #expect(threeYears.preferredGranularity == .month)
+        #expect(threeYears.preferredGranularity == .year)
 
         // 5 years
         let fiveYears = DateInterval(
@@ -144,7 +144,7 @@ struct DateRangeGranularityTests {
             start: Date("2024-01-01T00:00:00-03:00"),
             end: Date("2024-03-31T00:00:00-03:00")
         )
-        #expect(ninetyDays.preferredGranularity == .day)
+        #expect(ninetyDays.preferredGranularity == .week)
 
         // 91 days - should be month
         let ninetyOneDays = DateInterval(

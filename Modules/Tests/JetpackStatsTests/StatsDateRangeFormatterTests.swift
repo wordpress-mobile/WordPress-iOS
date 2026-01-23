@@ -7,6 +7,11 @@ struct StatsDateRangeFormatterTests {
     let calendar = Calendar.mock(timeZone: .eastern)
     let locale = Locale(identifier: "en_US")
     let now = Date("2025-07-15T10:00:00-03:00")
+    let formatter = StatsDateRangeFormatter(
+        locale: Locale(identifier: "en_US"),
+        timeZone: .eastern,
+        now: { Date("2025-07-15T10:00:00-03:00") }
+    )
 
     // MARK: - Date Range Formatting
 
@@ -25,7 +30,6 @@ struct StatsDateRangeFormatterTests {
     ])
     func dateRangeFormatting(startDate: Date, endDate: Date, expected: String) {
         let interval = DateInterval(start: startDate, end: endDate)
-        let formatter = StatsDateRangeFormatter(locale: locale, timeZone: calendar.timeZone)
         #expect(formatter.string(from: interval) == expected)
     }
 
@@ -39,7 +43,6 @@ struct StatsDateRangeFormatterTests {
     ])
     func entireMonthFormatting(startDate: Date, endDate: Date, expected: String) {
         let interval = DateInterval(start: startDate, end: endDate)
-        let formatter = StatsDateRangeFormatter(locale: locale, timeZone: calendar.timeZone)
         #expect(formatter.string(from: interval) == expected)
     }
 
@@ -59,7 +62,6 @@ struct StatsDateRangeFormatterTests {
     ])
     func multipleFullMonthsFormatting(startDate: Date, endDate: Date, expected: String) {
         let interval = DateInterval(start: startDate, end: endDate)
-        let formatter = StatsDateRangeFormatter(locale: locale, timeZone: calendar.timeZone)
         #expect(formatter.string(from: interval) == expected)
     }
 
@@ -75,7 +77,6 @@ struct StatsDateRangeFormatterTests {
     ])
     func entireWeekFormatting(startDate: Date, endDate: Date, expected: String) {
         let interval = DateInterval(start: startDate, end: endDate)
-        let formatter = StatsDateRangeFormatter(locale: locale, timeZone: calendar.timeZone)
         #expect(formatter.string(from: interval) == expected)
     }
 
@@ -86,7 +87,6 @@ struct StatsDateRangeFormatterTests {
     ])
     func entireYearFormatting(startDate: Date, endDate: Date, expected: String) {
         let interval = DateInterval(start: startDate, end: endDate)
-        let formatter = StatsDateRangeFormatter(locale: locale, timeZone: calendar.timeZone)
         #expect(formatter.string(from: interval) == expected)
     }
 
@@ -104,7 +104,6 @@ struct StatsDateRangeFormatterTests {
     ])
     func multipleFullYearsFormatting(startDate: Date, endDate: Date, expected: String) {
         let interval = DateInterval(start: startDate, end: endDate)
-        let formatter = StatsDateRangeFormatter(locale: locale, timeZone: calendar.timeZone)
         #expect(formatter.string(from: interval) == expected)
     }
 
@@ -112,48 +111,45 @@ struct StatsDateRangeFormatterTests {
 
     @Test("Same year as current year formatting")
     func sameYearAsCurrentFormatting() {
-        let formatter = StatsDateRangeFormatter(locale: locale, timeZone: calendar.timeZone)
-        let now = Date("2025-07-15T10:00:00-03:00") // Fixed date in 2025
+        let testNow = Date("2025-07-15T10:00:00-03:00") // Fixed date in 2025
 
         // Single day in current year - no year shown
         let singleDay = DateInterval(start: Date("2025-03-15T00:00:00-03:00"), end: Date("2025-03-16T00:00:00-03:00"))
-        #expect(formatter.string(from: singleDay, now: now) == "Mar 15")
+        #expect(formatter.string(from: singleDay, now: testNow) == "Mar 15")
 
         // Range within current year - no year shown
         let rangeInYear = DateInterval(start: Date("2025-05-01T00:00:00-03:00"), end: Date("2025-05-08T00:00:00-03:00"))
-        #expect(formatter.string(from: rangeInYear, now: now) == "May 1 – 7")
+        #expect(formatter.string(from: rangeInYear, now: testNow) == "May 1 – 7")
 
         // Cross month range in current year - no year shown
         let crossMonth = DateInterval(start: Date("2025-06-28T00:00:00-03:00"), end: Date("2025-07-03T00:00:00-03:00"))
-        #expect(formatter.string(from: crossMonth, now: now) == "Jun 28 – Jul 2")
+        #expect(formatter.string(from: crossMonth, now: testNow) == "Jun 28 – Jul 2")
     }
 
     @Test("Previous year formatting")
     func previousYearFormatting() {
-        let formatter = StatsDateRangeFormatter(locale: locale, timeZone: calendar.timeZone)
-        let now = Date("2025-07-15T10:00:00-03:00") // Fixed date in 2025
+        let testNow = Date("2025-07-15T10:00:00-03:00") // Fixed date in 2025
 
         // Single day in previous year - year shown
         let singleDay = DateInterval(start: Date("2024-03-15T00:00:00-03:00"), end: Date("2024-03-16T00:00:00-03:00"))
-        #expect(formatter.string(from: singleDay, now: now) == "Mar 15, 2024")
+        #expect(formatter.string(from: singleDay, now: testNow) == "Mar 15, 2024")
 
         // Range within previous year - year shown at end
         let rangeInYear = DateInterval(start: Date("2024-05-01T00:00:00-03:00"), end: Date("2024-05-08T00:00:00-03:00"))
-        #expect(formatter.string(from: rangeInYear, now: now) == "May 1 – 7, 2024")
+        #expect(formatter.string(from: rangeInYear, now: testNow) == "May 1 – 7, 2024")
 
         // Cross month range in previous year - year shown at end
         let crossMonth = DateInterval(start: Date("2024-06-28T00:00:00-03:00"), end: Date("2024-07-03T00:00:00-03:00"))
-        #expect(formatter.string(from: crossMonth, now: now) == "Jun 28 – Jul 2, 2024")
+        #expect(formatter.string(from: crossMonth, now: testNow) == "Jun 28 – Jul 2, 2024")
     }
 
     @Test("Cross year formatting with current year")
     func crossYearWithCurrentFormatting() {
-        let formatter = StatsDateRangeFormatter(locale: locale, timeZone: calendar.timeZone)
-        let now = Date("2025-07-15T10:00:00-03:00") // Fixed date in 2025
+        let testNow = Date("2025-07-15T10:00:00-03:00") // Fixed date in 2025
 
         // Range from previous to current year - both years shown
         let crossYear = DateInterval(start: Date("2024-12-28T00:00:00-03:00"), end: Date("2025-01-03T00:00:00-03:00"))
-        #expect(formatter.string(from: crossYear, now: now) == "Dec 28, 2024 – Jan 2, 2025")
+        #expect(formatter.string(from: crossYear, now: testNow) == "Dec 28, 2024 – Jan 2, 2025")
     }
 
     // MARK: - DateRangePreset Integration Tests
@@ -168,28 +164,24 @@ struct StatsDateRangeFormatterTests {
     ])
     func dateRangePresetFormattingCurrentYear(preset: DateIntervalPreset, expected: String) {
         // Set up a specific date in 2025
-        let now = Date("2025-03-15T14:30:00-03:00")
-        let formatter = StatsDateRangeFormatter(locale: locale, timeZone: calendar.timeZone)
+        let testNow = Date("2025-03-15T14:30:00-03:00")
 
-        let interval = calendar.makeDateInterval(for: preset, now: now)
-        #expect(formatter.string(from: interval, now: now) == expected)
+        let interval = calendar.makeDateInterval(for: preset, now: testNow)
+        #expect(formatter.string(from: interval, now: testNow) == expected)
     }
 
     @Test("DateRangePreset formatting - year boundaries")
     func dateRangePresetFormattingYearBoundaries() {
         // Test date near year boundary - January 5, 2025
-        let now = Date("2025-01-05T10:00:00-03:00")
-        let formatter = StatsDateRangeFormatter(locale: locale, timeZone: calendar.timeZone)
+        let testNow = Date("2025-01-05T10:00:00-03:00")
 
         // Last 30 days crosses year boundary
-        let last30Days = calendar.makeDateInterval(for: .last30Days, now: now)
-        #expect(formatter.string(from: last30Days, now: now) == "Dec 6, 2024 – Jan 4, 2025")
+        let last30Days = calendar.makeDateInterval(for: .last30Days, now: testNow)
+        #expect(formatter.string(from: last30Days, now: testNow) == "Dec 6, 2024 – Jan 4, 2025")
     }
 
     @Test("DateRangePreset formatting - custom ranges")
     func dateRangePresetFormattingCustomRanges() {
-        let formatter = StatsDateRangeFormatter(locale: locale, timeZone: calendar.timeZone)
-
         // Custom single day
         let customDay = DateInterval(
             start: Date("2025-06-10T00:00:00-03:00"),
@@ -223,7 +215,11 @@ struct StatsDateRangeFormatterTests {
     func differentLocales(localeId: String, startDate: Date, endDate: Date, expected: String) {
         let locale = Locale(identifier: localeId)
         let interval = DateInterval(start: startDate, end: endDate)
-        let formatter = StatsDateRangeFormatter(locale: locale, timeZone: calendar.timeZone)
+        let formatter = StatsDateRangeFormatter(
+            locale: locale,
+            timeZone: calendar.timeZone,
+            now: { Date("2025-07-15T10:00:00-03:00") }
+        )
         #expect(formatter.string(from: interval) == expected)
     }
 }

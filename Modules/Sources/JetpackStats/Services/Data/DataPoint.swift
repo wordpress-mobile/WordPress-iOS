@@ -28,7 +28,7 @@ extension DataPoint {
         }.reversed()
     }
 
-    static func getTotalValue(for dataPoints: [DataPoint], metric: SiteMetric) -> Int? {
+    static func getTotalValue(for dataPoints: [DataPoint], metric: some MetricType) -> Int? {
         guard !dataPoints.isEmpty else {
             return nil
         }

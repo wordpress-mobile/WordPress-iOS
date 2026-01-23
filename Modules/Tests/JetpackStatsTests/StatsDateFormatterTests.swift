@@ -6,7 +6,8 @@ import Foundation
 struct StatsDateFormatterTests {
     let formatter = StatsDateFormatter(
         locale: Locale(identifier: "en_us"),
-        timeZone: .eastern
+        timeZone: .eastern,
+        now: { Date("2025-03-15T14:00:00-03:00") }
     )
 
     @Test func hourFormattingCompact() {

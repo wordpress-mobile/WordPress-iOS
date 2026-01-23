@@ -4,6 +4,7 @@ import SwiftUI
 
 actor MockStatsService: ObservableObject, StatsServiceProtocol {
     private var hourlyData: [SiteMetric: [DataPoint]] = [:]
+    private var wordAdsHourlyData: [WordAdsMetric: [DataPoint]] = [:]
     private var dailyTopListData: [TopListItemType: [Date: [any TopListItemProtocol]]] = [:]
     private let calendar: Calendar
 
@@ -40,6 +41,7 @@ actor MockStatsService: ObservableObject, StatsServiceProtocol {
             return
         }
         await generateChartMockData()
+        await generateWordAdsMockData()
         await generateTopListMockData()
     }
 
@@ -77,6 +79,58 @@ actor MockStatsService: ObservableObject, StatsServiceProtocol {
         }
 
         return SiteMetricsResponse(total: total, metrics: output)
+    }
+
+    func getWordAdsStats(date: Date, granularity: DateRangeGranularity) async throws -> WordAdsMetricsResponse {
+        await generateDataIfNeeded()
+
+        // Calculate interval: from (date - quantity*units) to date
+        guard let startDate = calendar.date(byAdding: granularity.component, value: -granularity.preferredQuantity, to: date) else {
+            throw URLError(.unknown)
+        }
+        let interval = DateInterval(start: startDate, end: date)
+
+        var output: [WordAdsMetric: [DataPoint]] = [:]
+
+        let aggregator = StatsDataAggregator(calendar: calendar)
+
+        let wordAdsMetrics: [WordAdsMetric] = [.impressions, .cpm, .revenue]
+
+        for metric in wordAdsMetrics {
+            guard let allDataPoints = wordAdsHourlyData[metric] else { continue }
+
+            // Filter data points for the period
+            let filteredDataPoints = allDataPoints.filter {
+                interval.start <= $0.date && $0.date < interval.end
+            }
+
+            // Use processPeriod to aggregate and normalize the data
+            let periodData = aggregator.processPeriod(
+                dataPoints: filteredDataPoints,
+                dateInterval: interval,
+                granularity: granularity,
+                metric: metric
+            )
+            output[metric] = periodData.dataPoints
+        }
+
+        // Calculate totals as Int (values already stored in cents)
+        let totalAdsServed = output[.impressions]?.reduce(0) { $0 + $1.value } ?? 0
+        let totalRevenue = output[.revenue]?.reduce(0) { $0 + $1.value } ?? 0
+        let cpmValues = output[.cpm]?.filter { $0.value > 0 }.map { $0.value } ?? []
+        let averageCPM = cpmValues.isEmpty ? 0 : cpmValues.reduce(0, +) / cpmValues.count
+
+        let total = WordAdsMetricsSet(
+            impressions: totalAdsServed,
+            cpm: averageCPM,
+            revenue: totalRevenue
+        )
+
+        if !delaysDisabled {
+            try? await Task.sleep(for: .milliseconds(Int.random(in: 200...500)))
+        }
+
+        return WordAdsMetricsResponse(total: total, metrics: output)
     }
 
     func getTopListData(_ item: TopListItemType, metric: SiteMetric, interval: DateInterval, granularity: DateRangeGranularity, limit: Int?, locationLevel: LocationLevel?) async throws -> TopListResponse {
@@ -489,6 +543,73 @@ actor MockStatsService: ObservableObject, StatsServiceProtocol {
 
             hourlyData[dataType] = dataPoints
         }
+    }
+
+    private func generateWordAdsMockData() async {
+        let endDate = Date()
+
+        // Create a date for Nov 1, 2011
+        var dateComponents = DateComponents()
+        dateComponents.year = 2011
+        dateComponents.month = 11
+        dateComponents.day = 1
+
+        let startDate = calendar.date(from: dateComponents)!
+
+        var adsServedPoints: [DataPoint] = []
+        var revenuePoints: [DataPoint] = []
+        var cpmPoints: [DataPoint] = []
+
+        var currentDate = startDate
+        let nowDate = Date()
+        while currentDate <= endDate && currentDate <= nowDate {
+            let components = calendar.dateComponents([.year, .month, .weekday, .hour], from: currentDate)
+            let hour = components.hour!
+            let dayOfWeek = components.weekday!
+            let month = components.month!
+            let year = components.year!
+
+            // Base values and growth factors
+            let yearsSince2011 = year - 2011
+            let growthFactor = 1.0 + (Double(yearsSince2011) * 0.15)
+
+            // Recent period boost
+            let recentBoost = calculateRecentBoost(for: currentDate)
+
+            // Seasonal factor
+            let seasonalFactor = 1.0 + 0.2 * sin(2.0 * .pi * (Double(month - 3) / 12.0))
+
+            // Day of week factor
+            let weekendFactor = (dayOfWeek == 1 || dayOfWeek == 7) ? 0.7 : 1.0
+
+            // Hour of day factor
+            let hourFactor = 0.5 + 0.5 * sin(2.0 * .pi * (Double(hour - 9) / 24.0))
+
+            // Random variation
+            let randomFactor = Double.random(in: 0.8...1.2)
+
+            let combinedFactor = growthFactor * recentBoost * seasonalFactor * weekendFactor * randomFactor * hourFactor
+
+            // Ads Served (impressions)
+            let adsServed = Int(200 * combinedFactor)
+            adsServedPoints.append(DataPoint(date: currentDate, value: adsServed))
+
+            // CPM (stored in cents)
+            let baseCPM = 2.5 // $2.50
+            let cpmVariation = Double.random(in: 0.7...1.3)
+            let cpm = Int((baseCPM * growthFactor * cpmVariation) * 100)
+            cpmPoints.append(DataPoint(date: currentDate, value: cpm))
+
+            // Revenue (stored in cents, calculated from impressions and CPM)
+            let revenue = Int(Double(adsServed) * (Double(cpm) / 100.0) / 1000.0 * 100)
+            revenuePoints.append(DataPoint(date: currentDate, value: revenue))
+
+            currentDate = calendar.date(byAdding: .hour, value: 1, to: currentDate)!
+        }
+
+        wordAdsHourlyData[WordAdsMetric.impressions] = adsServedPoints
+        wordAdsHourlyData[WordAdsMetric.revenue] = revenuePoints
+        wordAdsHourlyData[WordAdsMetric.cpm] = cpmPoints
     }
 
     private var memoizedDateComponents: [Date: DateComponents] = [:]

@@ -1,6 +1,6 @@
 import SwiftUI
 
-enum SiteMetric: String, CaseIterable, Identifiable, Sendable, Codable {
+enum SiteMetric: String, CaseIterable, Identifiable, Sendable, Codable, MetricType {
     case views
     case visitors
     case likes
@@ -75,10 +75,7 @@ extension SiteMetric {
         }
     }
 
-    enum AggregationStrategy {
-        /// Simply sum the values for the given period.
-        case sum
-        /// Calculate the avarege value for the given period.
-        case average
+    func makeValueFormatter() -> any ValueFormatterProtocol {
+        StatsValueFormatter(metric: self)
     }
 }
