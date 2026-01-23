@@ -139,4 +139,8 @@ extension SimpleGBKViewController: GutenbergKit.EditorViewControllerDelegate {
 
     func editor(_ viewController: GutenbergKit.EditorViewController, didCloseModalDialog dialogType: String) {
     }
+
+    func editorDidRequestLatestContent(_ controller: GutenbergKit.EditorViewController) -> (title: String, content: String)? {
+        return nil
+    }
 }
