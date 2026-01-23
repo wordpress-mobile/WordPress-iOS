@@ -1,3 +1,7 @@
+26.7
+-----
+
+
 26.6
 -----
 * [**] Intelligence: Expand AI-based features to more locales [#25034]
