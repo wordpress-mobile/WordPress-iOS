@@ -1,22 +1,29 @@
-Heads up, content creators—we’ve been hard at work making some big changes to the Post Settings screen.
-
-- We added a “Status” field that helps you quickly move posts between draft, pending, private, scheduled, and published states.
-- We brought back the “Publish Date” area for draft and pending posts. That way you can pick a publish date ahead of time without officially scheduling the post.
-- The password field uses a different font (Menlo, if you’re interested) so it’s easier to read similar-looking characters.
-- Give your followers the VIP treatment by setting post access levels for all subscribers, paid subscribers, and the general public.
-- Toggle post comments and pingbacks on or off using the “Discussion” settings.
-
-While we were at it, we made several other helpful updates in various areas of the app.
-
-- On the “Publishing” screen, you can toggle “Email to Subscribers” to automatically notify your subscribers when a post is published. Start the presses.
-- The slug editor has a permalink preview to show what a post’s final URL will look like.
-- We added “Taxonomies” to Site Settings so you can manage content groups at the site level.
-- Thanks to some design fixes in the “Categories” picker, it’s more obvious that you can pick multiple categories for a post.
-- File sizes are now visible in the Site Media Details area. No more guesswork.
-
-More of a reader than a publisher? Don’t worry, we made changes in the Reader, too.
-
-- When related post titles are overly long, you’ll see a shorter, truncated version instead.
-- Post tiles can now have three lines of text instead of just two, giving you 50% more content goodness.
-- Articles have slightly wider horizontal margins.
-- We squashed several bugs that affected the way articles load.
+* [**] Intelligence: Expand AI-based features to more locales [#25034]
+* [**] Reader: Add "Freshly Pressed" to Discover [#24828]
+* [*] Reader: Keep only one "Search" option in the main sidebar [#25116]
+* [*] Reader: Fix Send button design in Comments [#25092]
+* [*] Rename "Recommended" to "For You" [#25123]
+* [*] Reader: Fix article view ignoring `use_excerpt` [#25108]
+* [*] Reader: Add translation support for posts [#25089]
+* [*] Reader: Collapse multiple spaces in site titles into one [#25094]
+* [*] Reader: Add a "Leave Comment" button to directly to the "Comments" under the article (one less tap to leave a comment) [#25155]
+* [*] Reader: You can now reply and like the comments directly under the artile and see more of them [#25155]
+* [*] Reader: Collapse very long comments so it's easier to navigate large comment threads [#25155]
+* [*] Reader: Fix an issue where in rare scenarios comments would be displayed with a wrong height [#25156]
+* [*] Post Settings: Fix post Visibility discoverability [#25127]
+* [*] Post Settings: Fix an issue with button "Done" sometimes disappearing when you entering password for post when publishing [#25138]
+* [*] Post Settings: Show the selected value for the "Access" field [#25138]
+* [*] Fix previewing posts on WordPress.com atomic sites [#25045]
+* [**] Stats: Add Country/Region/City picker to the Locations card [#25125]
+* [*] Stats: Rename "External Links" to "Clicks" to be consistent with the web [#25090]
+* [*] Stats: Add an option to disable automatic comparisons and remember the selection across launches [#25143]
+* [*] Stats: Add long-press support for bars in a "Bar Chart" view [#25133]
+* [*] Stats: Fix an issue where bar chart would prevent vertical scroll [#25133]
+* [*] Stats: Fix an issue with External Links (Clicks) sometimes displayed incorrectly [#25128]
+* [*] Stats: Fix locations data discrepancy with the web [#25105]
+* [*] Stats: Add days/weeks/months/years picker for bar and line charts [#25093]
+* [*] Stats: Fix an issue with weekly data for the comparison period sometimes not being shown correctly [#25093]
+* [*] Stats: Fix ordering of Top List items with the same metrics – sort by name [#25135]
+* [*] Techical: Remove obsolete Core Data models to slightly reduce the app size (-6.4 MB) [#25124]
+* [*] Update some illustrations, app shortcut icons, and more to better match the system [#25141], [#25115], [#25140], [#25122]
+* [*] Site Picker -> Add self-hosted sites now uses Application Password authentication [#25148]
