@@ -51,7 +51,7 @@ struct StatsDatePickerToolbarItem: View {
 
 struct StatsNavigationButton: View {
     @Binding var dateRange: StatsDateRange
-    let direction: Calendar.NavigationDirection
+    let direction: NavigationDirection
 
     @Environment(\.context) var context
 

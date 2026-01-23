@@ -1,28 +1,36 @@
 import SwiftUI
 
 public struct AdsTabView: View {
+    @StateObject private var viewModel: WordAdsChartCardViewModel
 
-    public init() {}
+    public init(context: StatsContext, router: StatsRouter) {
+        _viewModel = StateObject(
+            wrappedValue: WordAdsChartCardViewModel(service: context.service)
+        )
+    }
 
     public var body: some View {
         ScrollView {
-            VStack(spacing: 16) {
-                Text("Ads")
-                    .font(.largeTitle)
-                    .fontWeight(.bold)
-                    .padding(.top, 20)
-
-                Text("Coming Soon")
-                    .font(.headline)
-                    .foregroundColor(.secondary)
-
-                Spacer(minLength: 100)
+            VStack(spacing: Constants.step3) {
+                WordAdsChartCard(viewModel: viewModel)
             }
-            .padding()
+            .padding(.vertical, Constants.step2)
+            .padding(.horizontal, Constants.step1)
+            .padding(.top, Constants.step0_5)
         }
+        .background(Constants.Colors.background)
     }
 }
 
 #Preview {
-    AdsTabView()
+    NavigationStack {
+        AdsTabView(
+            context: .demo,
+            router: StatsRouter(
+                viewController: UINavigationController(),
+                factory: MockStatsRouterScreenFactory()
+            )
+        )
+        .environment(\.context, .demo)
+    }
 }

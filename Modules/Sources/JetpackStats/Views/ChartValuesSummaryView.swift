@@ -50,11 +50,11 @@ struct ChartValuesSummaryView: View {
 #Preview {
     VStack(spacing: 20) {
         ForEach(ChartValuesSummaryView.SummaryStyle.allCases, id: \.self) { style in
-            ChartValuesSummaryView(trend: .init(currentValue: 1000, previousValue: 500, metric: .views), style: style)
-            ChartValuesSummaryView(trend: .init(currentValue: 500, previousValue: 1000, metric: .views), style: style)
-            ChartValuesSummaryView(trend: .init(currentValue: 100, previousValue: 100, metric: .views), style: style)
-            ChartValuesSummaryView(trend: .init(currentValue: 56, previousValue: 60, metric: .bounceRate), style: style)
-            ChartValuesSummaryView(trend: .init(currentValue: 42, previousValue: 0, metric: .views), style: style)
+            ChartValuesSummaryView(trend: .init(currentValue: 1000, previousValue: 500, metric: SiteMetric.views), style: style)
+            ChartValuesSummaryView(trend: .init(currentValue: 500, previousValue: 1000, metric: SiteMetric.views), style: style)
+            ChartValuesSummaryView(trend: .init(currentValue: 100, previousValue: 100, metric: SiteMetric.views), style: style)
+            ChartValuesSummaryView(trend: .init(currentValue: 56, previousValue: 60, metric: SiteMetric.bounceRate), style: style)
+            ChartValuesSummaryView(trend: .init(currentValue: 42, previousValue: 0, metric: SiteMetric.views), style: style)
             Divider()
         }
     }

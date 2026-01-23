@@ -138,7 +138,7 @@ struct AuthorStatsView: View {
                     let trend = TrendViewModel(
                         currentValue: current,
                         previousValue: previous,
-                        metric: .views
+                        metric: SiteMetric.views
                     )
 
                     HStack(spacing: 4) {

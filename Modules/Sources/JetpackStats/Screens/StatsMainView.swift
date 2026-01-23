@@ -67,7 +67,7 @@ public struct StatsMainView: View {
                     context.tracker?.send(.subscribersTabShown)
                 }
         case .ads:
-            AdsTabView()
+            AdsTabView(context: context, router: router)
         }
     }
 

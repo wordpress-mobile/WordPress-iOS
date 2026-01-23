@@ -2,7 +2,7 @@ import SwiftUI
 
 struct ChartAverageAnnotation: View {
     let value: Int
-    let formatter: StatsValueFormatter
+    let formatter: any ValueFormatterProtocol
 
     @Environment(\.colorScheme) private var colorScheme
 

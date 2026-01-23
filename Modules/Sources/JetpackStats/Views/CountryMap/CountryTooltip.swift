@@ -39,7 +39,7 @@ struct CountryTooltip: View {
         return TrendViewModel(
             currentValue: currentViews,
             previousValue: previousViews,
-            metric: .views
+            metric: SiteMetric.views
         )
     }
 

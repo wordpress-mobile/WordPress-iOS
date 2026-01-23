@@ -201,7 +201,7 @@ final class ChartCardViewModel: ObservableObject, TrafficCardViewModel {
         return output
     }
 
-    var tabViewData: [MetricsOverviewTabView.MetricData] {
+    var tabViewData: [MetricsOverviewTabView<SiteMetric>.MetricData] {
         metrics.map { metric in
             if let chartData = chartData[metric] {
                 return .init(
@@ -215,7 +215,7 @@ final class ChartCardViewModel: ObservableObject, TrafficCardViewModel {
         }
     }
 
-    var placeholderTabViewData: [MetricsOverviewTabView.MetricData] {
+    var placeholderTabViewData: [MetricsOverviewTabView<SiteMetric>.MetricData] {
         metrics.map { metric in
             .init(metric: metric, value: 12345, previousValue: 11234)
         }

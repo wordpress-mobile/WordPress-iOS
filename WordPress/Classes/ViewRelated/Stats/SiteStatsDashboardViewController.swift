@@ -147,11 +147,11 @@ public class SiteStatsDashboardViewController: UIViewController {
         return StatsSubscribersViewController(viewModel: viewModel)
     }()
 
-    private lazy var adsViewController: UIViewController = {
-        let adsView = AdsTabView()
-        let hostingController = UIHostingController(rootView: adsView)
-        hostingController.view.backgroundColor = .systemBackground
-        return hostingController
+    private lazy var adsViewController: UIViewController? = {
+        guard let blog = Self.currentBlog() else {
+            return nil
+        }
+        return StatsHostingViewController.makeAdsViewController(blog: blog, parentViewController: self)
     }()
 
     // MARK: - View
@@ -461,7 +461,9 @@ private extension SiteStatsDashboardViewController {
             }
         case .ads:
             if oldSelectedTab != .ads || containerIsEmpty {
-                showChildViewController(adsViewController)
+                if let adsViewController {
+                    showChildViewController(adsViewController)
+                }
             }
         }
     }
