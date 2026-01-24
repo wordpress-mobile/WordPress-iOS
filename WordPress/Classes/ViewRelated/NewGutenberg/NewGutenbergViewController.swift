@@ -82,6 +82,7 @@ class PostGBKEditorViewController: UIViewController, GutenbergKit.EditorViewCont
         view.backgroundColor = .systemBackground
 
         setupKeyboardObservers()
+        setupEditorView()
     }
 
     // MARK: - GutenbergKit.EditorViewControllerDelegate
@@ -232,6 +233,22 @@ private extension PostGBKEditorViewController {
         navigationBarManager.publishButton.isEnabled = enabled
         navigationBarManager.undoButton.isEnabled = enabled
         navigationBarManager.redoButton.isEnabled = enabled
+    }
+
+    func setupEditorView() {
+        view.tintColor = UIAppColor.editorPrimary
+
+        addChild(editorViewController)
+        view.addSubview(editorViewController.view)
+        view.pinSubviewToAllEdges(editorViewController.view)
+        editorViewController.didMove(toParent: self)
+
+#if DEBUG
+        editorViewController.webView.isInspectable = true
+#endif
+
+        // Doesn't seem to do anything
+        setContentScrollView(editorViewController.webView.scrollView)
     }
 
     // MARK: - Keyboard Observers
@@ -453,7 +470,6 @@ class NewGutenbergViewController: PostGBKEditorViewController, PostEditor, Publi
         super.viewDidLoad()
 
         createRevisionOfPost(loadAutosaveRevision: false)
-        setupEditorView()
         configureNavigationBar()
         refreshInterface()
 
@@ -474,22 +490,6 @@ class NewGutenbergViewController: PostGBKEditorViewController, PostEditor, Publi
 //        })
 
         onViewDidLoad()
-    }
-
-    private func setupEditorView() {
-        view.tintColor = UIAppColor.editorPrimary
-
-        addChild(editorViewController)
-        view.addSubview(editorViewController.view)
-        view.pinSubviewToAllEdges(editorViewController.view)
-        editorViewController.didMove(toParent: self)
-
-#if DEBUG
-        editorViewController.webView.isInspectable = true
-#endif
-
-        // Doesn't seem to do anything
-        setContentScrollView(editorViewController.webView.scrollView)
     }
 
     // MARK: - Functions
