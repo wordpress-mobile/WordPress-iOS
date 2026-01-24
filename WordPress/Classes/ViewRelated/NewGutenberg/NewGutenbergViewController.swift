@@ -620,41 +620,41 @@ extension NewGutenbergViewController: GutenbergKit.EditorViewControllerDelegate 
 
     // MARK: - PostEditorNavigationBarManagerDelegate
 
-    var publishButtonText: String {
+    override var publishButtonText: String {
         return postEditorStateContext.publishButtonText
     }
 
-    var isPublishButtonEnabled: Bool {
+    override var isPublishButtonEnabled: Bool {
          return postEditorStateContext.isPublishButtonEnabled
     }
 
-    var uploadingButtonSize: CGSize {
+    override var uploadingButtonSize: CGSize {
         return AztecPostViewController.Constants.uploadingButtonSize
     }
 
-    func navigationBarManager(_ manager: PostEditorNavigationBarManager, closeWasPressed sender: UIButton) {
+    override func navigationBarManager(_ manager: PostEditorNavigationBarManager, closeWasPressed sender: UIButton) {
         performAfterUpdatingContent { [self] in
             cancelEditing()
         }
     }
 
-    func navigationBarManager(_ manager: PostEditorNavigationBarManager, undoWasPressed sender: UIButton) {
+    override func navigationBarManager(_ manager: PostEditorNavigationBarManager, undoWasPressed sender: UIButton) {
         editorViewController.undo()
     }
 
-    func navigationBarManager(_ manager: PostEditorNavigationBarManager, redoWasPressed sender: UIButton) {
+    override func navigationBarManager(_ manager: PostEditorNavigationBarManager, redoWasPressed sender: UIButton) {
         editorViewController.redo()
     }
 
-    func navigationBarManager(_ manager: PostEditorNavigationBarManager, moreWasPressed sender: UIButton) {
+    override func navigationBarManager(_ manager: PostEditorNavigationBarManager, moreWasPressed sender: UIButton) {
         // Currently unsupported, do nothing.
     }
 
-    func navigationBarManager(_ manager: PostEditorNavigationBarManager, displayCancelMediaUploads sender: UIButton) {
+    override func navigationBarManager(_ manager: PostEditorNavigationBarManager, displayCancelMediaUploads sender: UIButton) {
         // Currently unsupported, do nothing.
     }
 
-    func navigationBarManager(_ manager: PostEditorNavigationBarManager, publishButtonWasPressed sender: UIButton) {
+    override func navigationBarManager(_ manager: PostEditorNavigationBarManager, publishButtonWasPressed sender: UIButton) {
         performAfterUpdatingContent { [self] in
             if editorHasContent {
                 handlePrimaryActionButtonTap()
@@ -893,7 +893,7 @@ extension NewGutenbergViewController: PostEditorStateContextDelegate {
 
 // MARK: - PostEditorNavigationBarManagerDelegate
 
-extension NewGutenbergViewController: PostEditorNavigationBarManagerDelegate {
+extension NewGutenbergViewController {
 
     func gutenbergDidRequestToggleUndoButton(_ isDisabled: Bool) {
         DispatchQueue.main.async {
