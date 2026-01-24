@@ -101,24 +101,6 @@ class NewGutenbergViewController: PostGBKEditorViewController, PostEditor, Publi
     func getHTML() -> String { post.content ?? "" }
 
     // MARK: - Initializers
-    required convenience init(
-        post: AbstractPost,
-        replaceEditor: @escaping ReplaceEditorCallback,
-        editorSession: PostEditorAnalyticsSession?
-    ) {
-        self.init(
-            post: post,
-            replaceEditor: replaceEditor,
-            editorSession: editorSession,
-            // Notice this parameter.
-            // The value is the default set in the required init but we need to set it explicitly,
-            // otherwise we'd trigger and infinite loop on this init.
-            //
-            // The reason we need this init at all even though the other one does the same job is
-            // to conform to the PostEditor protocol.
-            navigationBarManager: nil
-        )
-    }
 
     required init(
         post: AbstractPost,
