@@ -89,8 +89,12 @@ class PostGBKEditorViewController: UIViewController, GutenbergKit.EditorViewCont
         // Do nothing
     }
 
-    func editor(_ viewController: GutenbergKit.EditorViewController, didLogException error: GutenbergKit.GutenbergJSException) {
-        // Do nothing
+    func editor(_ viewController: GutenbergKit.EditorViewController, didLogException exception: GutenbergKit.GutenbergJSException) {
+        DispatchQueue.main.async {
+            WordPressAppDelegate.crashLogging?.logJavaScriptException(exception) {
+                // Do nothing
+            }
+        }
     }
 
     func editor(_ viewController: GutenbergKit.EditorViewController, didRequestMediaFromSiteMediaLibrary config: OpenMediaLibraryAction) {
@@ -395,12 +399,6 @@ class NewGutenbergViewController: PostGBKEditorViewController, PostEditor, Publi
         self.present(SubmitFeedbackViewController(source: "gutenberg_kit", feedbackPrefix: "Editor"), animated: true)
     }
 
-    func logException(_ exception: GutenbergJSException, with callback: @escaping () -> Void) {
-        DispatchQueue.main.async {
-            WordPressAppDelegate.crashLogging?.logJavaScriptException(exception, callback: callback)
-        }
-    }
-
     // MARK: - Keyboard Observers
 
     private func setupKeyboardObservers() {
@@ -511,12 +509,6 @@ extension NewGutenbergViewController: GutenbergKit.EditorViewControllerDelegate 
         }
 
         self.featuredImageHelper.setFeaturedImage(mediaID: mediaID)
-    }
-
-    override func editor(_ viewController: GutenbergKit.EditorViewController, didLogException error: GutenbergKit.GutenbergJSException) {
-        logException(error) {
-            // Do nothing
-        }
     }
 
     // MARK: - Media Picker Helpers
