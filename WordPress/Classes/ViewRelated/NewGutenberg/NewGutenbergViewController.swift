@@ -617,6 +617,61 @@ extension NewGutenbergViewController: GutenbergKit.EditorViewControllerDelegate 
 
         return WPMediaType(rawValue: mediaType)
     }
+
+    // MARK: - PostEditorNavigationBarManagerDelegate
+
+    var publishButtonText: String {
+        return postEditorStateContext.publishButtonText
+    }
+
+    var isPublishButtonEnabled: Bool {
+         return postEditorStateContext.isPublishButtonEnabled
+    }
+
+    var uploadingButtonSize: CGSize {
+        return AztecPostViewController.Constants.uploadingButtonSize
+    }
+
+    func navigationBarManager(_ manager: PostEditorNavigationBarManager, closeWasPressed sender: UIButton) {
+        performAfterUpdatingContent { [self] in
+            cancelEditing()
+        }
+    }
+
+    func navigationBarManager(_ manager: PostEditorNavigationBarManager, undoWasPressed sender: UIButton) {
+        editorViewController.undo()
+    }
+
+    func navigationBarManager(_ manager: PostEditorNavigationBarManager, redoWasPressed sender: UIButton) {
+        editorViewController.redo()
+    }
+
+    func navigationBarManager(_ manager: PostEditorNavigationBarManager, moreWasPressed sender: UIButton) {
+        // Currently unsupported, do nothing.
+    }
+
+    func navigationBarManager(_ manager: PostEditorNavigationBarManager, displayCancelMediaUploads sender: UIButton) {
+        // Currently unsupported, do nothing.
+    }
+
+    func navigationBarManager(_ manager: PostEditorNavigationBarManager, publishButtonWasPressed sender: UIButton) {
+        performAfterUpdatingContent { [self] in
+            if editorHasContent {
+                handlePrimaryActionButtonTap()
+            } else {
+                showAlertForEmptyPostPublish()
+            }
+        }
+    }
+
+    private func performAfterUpdatingContent(_ closure: @MainActor @escaping () -> Void) {
+        navigationController?.view.isUserInteractionEnabled = false
+        Task { @MainActor in
+            await getLatestContent()
+            navigationController?.view.isUserInteractionEnabled = true
+            closure()
+        }
+    }
 }
 
 extension GutenbergKit.EditorViewControllerDelegate {
@@ -840,18 +895,6 @@ extension NewGutenbergViewController: PostEditorStateContextDelegate {
 
 extension NewGutenbergViewController: PostEditorNavigationBarManagerDelegate {
 
-    var publishButtonText: String {
-        return postEditorStateContext.publishButtonText
-    }
-
-    var isPublishButtonEnabled: Bool {
-         return postEditorStateContext.isPublishButtonEnabled
-    }
-
-    var uploadingButtonSize: CGSize {
-        return AztecPostViewController.Constants.uploadingButtonSize
-    }
-
     func gutenbergDidRequestToggleUndoButton(_ isDisabled: Bool) {
         DispatchQueue.main.async {
             UIView.animate(withDuration: 0.2) {
@@ -870,46 +913,6 @@ extension NewGutenbergViewController: PostEditorNavigationBarManagerDelegate {
         }
     }
 
-    func navigationBarManager(_ manager: PostEditorNavigationBarManager, closeWasPressed sender: UIButton) {
-        performAfterUpdatingContent { [self] in
-            cancelEditing()
-        }
-    }
-
-    func navigationBarManager(_ manager: PostEditorNavigationBarManager, undoWasPressed sender: UIButton) {
-        editorViewController.undo()
-    }
-
-    func navigationBarManager(_ manager: PostEditorNavigationBarManager, redoWasPressed sender: UIButton) {
-        editorViewController.redo()
-    }
-
-    func navigationBarManager(_ manager: PostEditorNavigationBarManager, moreWasPressed sender: UIButton) {
-        // Currently unsupported, do nothing.
-    }
-
-    func navigationBarManager(_ manager: PostEditorNavigationBarManager, displayCancelMediaUploads sender: UIButton) {
-        // Currently unsupported, do nothing.
-    }
-
-    func navigationBarManager(_ manager: PostEditorNavigationBarManager, publishButtonWasPressed sender: UIButton) {
-        performAfterUpdatingContent { [self] in
-            if editorHasContent {
-                handlePrimaryActionButtonTap()
-            } else {
-                showAlertForEmptyPostPublish()
-            }
-        }
-    }
-
-    private func performAfterUpdatingContent(_ closure: @MainActor @escaping () -> Void) {
-        navigationController?.view.isUserInteractionEnabled = false
-        Task { @MainActor in
-            await getLatestContent()
-            navigationController?.view.isUserInteractionEnabled = true
-            closure()
-        }
-    }
 }
 
 /// This extension handles the "more" actions triggered by the top right
