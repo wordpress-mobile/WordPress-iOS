@@ -46,3 +46,9 @@ private func getLocalizedString(for value: GutenbergKit.EditorLocalizableString)
     case .editorError: NSLocalizedString("editor.error.title", value: "Editor Error", comment: "Title shown when the editor encounters an error")
     }
 }
+
+extension EditorLocalizableString {
+    var localized: String {
+        getLocalizedString(for: self)
+    }
+}

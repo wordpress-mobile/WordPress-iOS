@@ -34,7 +34,7 @@ class PostGBKEditorViewController: UIViewController, GutenbergKit.EditorViewCont
         self.blog = blog
         self.navigationBarManager = PostEditorNavigationBarManager()
 
-        EditorLocalization.localize = getLocalizedString
+        EditorLocalization.localize = { $0.localized }
 
         // Create configuration with post content
         let editorConfiguration = EditorConfiguration(blog: blog, postType: postType)
