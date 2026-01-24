@@ -68,6 +68,11 @@ class PostGBKEditorViewController: UIViewController, GutenbergKit.EditorViewCont
         fatalError()
     }
 
+    override func viewDidLoad() {
+        super.viewDidLoad()
+        setupKeyboardObservers()
+    }
+
     // MARK: - GutenbergKit.EditorViewControllerDelegate
 
     func editorDidLoad(_ viewContoller: GutenbergKit.EditorViewController) {
@@ -350,7 +355,6 @@ class NewGutenbergViewController: PostGBKEditorViewController, PostEditor, Publi
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        setupKeyboardObservers()
 
         view.backgroundColor = .systemBackground
 
