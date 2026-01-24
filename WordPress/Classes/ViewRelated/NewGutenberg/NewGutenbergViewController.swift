@@ -75,6 +75,8 @@ class PostGBKEditorViewController: UIViewController, GutenbergKit.EditorViewCont
 
     override func viewDidLoad() {
         super.viewDidLoad()
+        view.backgroundColor = .systemBackground
+
         setupKeyboardObservers()
     }
 
@@ -449,8 +451,6 @@ class NewGutenbergViewController: PostGBKEditorViewController, PostEditor, Publi
 
     override func viewDidLoad() {
         super.viewDidLoad()
-
-        view.backgroundColor = .systemBackground
 
         createRevisionOfPost(loadAutosaveRevision: false)
         setupEditorView()
