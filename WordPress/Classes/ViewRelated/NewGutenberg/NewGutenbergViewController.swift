@@ -89,6 +89,10 @@ class PostGBKEditorViewController: UIViewController, GutenbergKit.EditorViewCont
         Task {
             await loadAuthenticationCookiesAsync()
         }
+
+        SiteSuggestionService.shared.prefetchSuggestionsIfNeeded(for: blog) {
+            // Do nothing
+        }
     }
 
     func makeMoreMenu() -> UIMenu {
@@ -515,10 +519,6 @@ class NewGutenbergViewController: PostGBKEditorViewController, PostEditor, Publi
 
         createRevisionOfPost(loadAutosaveRevision: false)
         refreshInterface()
-
-        SiteSuggestionService.shared.prefetchSuggestionsIfNeeded(for: post.blog) {
-            // Do nothing
-        }
 
         // TODO: reimplement
 //        service?.syncJetpackSettingsForBlog(post.blog, success: { [weak self] in
