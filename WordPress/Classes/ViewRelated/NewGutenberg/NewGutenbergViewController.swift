@@ -144,11 +144,11 @@ class PostGBKEditorViewController: UIViewController, GutenbergKit.EditorViewCont
     }
 
     func navigationBarManager(_ manager: PostEditorNavigationBarManager, undoWasPressed sender: UIButton) {
-        // Do nothing
+        editorViewController.undo()
     }
 
     func navigationBarManager(_ manager: PostEditorNavigationBarManager, redoWasPressed sender: UIButton) {
-        // Do nothing
+        editorViewController.redo()
     }
 
     func navigationBarManager(_ manager: PostEditorNavigationBarManager, moreWasPressed sender: UIButton) {
@@ -632,14 +632,6 @@ extension NewGutenbergViewController: GutenbergKit.EditorViewControllerDelegate 
         performAfterUpdatingContent { [self] in
             cancelEditing()
         }
-    }
-
-    override func navigationBarManager(_ manager: PostEditorNavigationBarManager, undoWasPressed sender: UIButton) {
-        editorViewController.undo()
-    }
-
-    override func navigationBarManager(_ manager: PostEditorNavigationBarManager, redoWasPressed sender: UIButton) {
-        editorViewController.redo()
     }
 
     override func navigationBarManager(_ manager: PostEditorNavigationBarManager, publishButtonWasPressed sender: UIButton) {
