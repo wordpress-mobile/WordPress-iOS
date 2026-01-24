@@ -20,6 +20,7 @@ class PostGBKEditorViewController: UIViewController, GutenbergKit.EditorViewCont
     let navigationBarManager: PostEditorNavigationBarManager
 
     /* private */ let editorViewController: GutenbergKit.EditorViewController
+    private let status: String // TODO: Can be deleted?
 
     private var isModalDialogOpen = false
 
@@ -38,6 +39,7 @@ class PostGBKEditorViewController: UIViewController, GutenbergKit.EditorViewCont
         status: String?,
         blog: Blog
     ) {
+        self.status = status ?? "draft"
         self.blog = blog
         self.navigationBarManager = PostEditorNavigationBarManager()
 
@@ -49,7 +51,7 @@ class PostGBKEditorViewController: UIViewController, GutenbergKit.EditorViewCont
             .setTitle(title ?? "")
             .setContent(content ?? "")
             .setPostID(postId)
-            .setPostStatus(status ?? "draft")
+            .setPostStatus(self.status)
             .setNativeInserterEnabled(FeatureFlag.nativeBlockInserter.enabled)
             .build()
 
@@ -84,6 +86,7 @@ class PostGBKEditorViewController: UIViewController, GutenbergKit.EditorViewCont
         setupKeyboardObservers()
         setupEditorView()
         configureNavigationBar()
+        refreshInterface()
 
         // Load auth cookies if needed (for private sites)
         Task {
@@ -93,6 +96,11 @@ class PostGBKEditorViewController: UIViewController, GutenbergKit.EditorViewCont
         SiteSuggestionService.shared.prefetchSuggestionsIfNeeded(for: blog) {
             // Do nothing
         }
+    }
+
+    func refreshInterface() {
+        navigationBarManager.reloadPublishButton()
+        navigationItem.rightBarButtonItems = self.status == "trash" ? [] : navigationBarManager.rightBarButtonItems
     }
 
     func makeMoreMenu() -> UIMenu {
@@ -518,7 +526,6 @@ class NewGutenbergViewController: PostGBKEditorViewController, PostEditor, Publi
         super.viewDidLoad()
 
         createRevisionOfPost(loadAutosaveRevision: false)
-        refreshInterface()
 
         // TODO: reimplement
 //        service?.syncJetpackSettingsForBlog(post.blog, success: { [weak self] in
@@ -531,11 +538,6 @@ class NewGutenbergViewController: PostGBKEditorViewController, PostEditor, Publi
     }
 
     // MARK: - Functions
-
-    private func refreshInterface() {
-        reloadPublishButton()
-        navigationItem.rightBarButtonItems = post.status == .trash ? [] : navigationBarManager.rightBarButtonItems
-    }
 
     func toggleEditingMode() {
         editorViewController.isCodeEditorEnabled.toggle()
