@@ -13,7 +13,12 @@ import Photos
 import Pulse
 import Support
 
-class NewGutenbergViewController: UIViewController, PostEditor, PublishingEditor {
+// To support editing `AbstractPost` from Core Data and `AnyPostWithEditContext` from the Rust library
+class PostGBKEditorViewController: UIViewController {
+
+}
+
+class NewGutenbergViewController: PostGBKEditorViewController, PostEditor, PublishingEditor {
 
     let errorDomain: String = "GutenbergViewController.errorDomain"
 
