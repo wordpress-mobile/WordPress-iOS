@@ -105,15 +105,13 @@ class NewGutenbergViewController: PostGBKEditorViewController, PostEditor, Publi
     required init(
         post: AbstractPost,
         replaceEditor: @escaping ReplaceEditorCallback,
-        editorSession: PostEditorAnalyticsSession? = nil,
-        navigationBarManager: PostEditorNavigationBarManager? = nil
     ) {
 
         self.post = post
 
         self.replaceEditor = replaceEditor
         self.editorSession = PostEditorAnalyticsSession(editor: .gutenbergKit, post: post)
-        self.navigationBarManager = navigationBarManager ?? PostEditorNavigationBarManager()
+        self.navigationBarManager = PostEditorNavigationBarManager()
 
         EditorLocalization.localize = getLocalizedString
 
