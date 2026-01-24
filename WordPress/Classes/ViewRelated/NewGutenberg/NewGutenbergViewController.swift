@@ -118,7 +118,30 @@ class PostGBKEditorViewController: UIViewController, GutenbergKit.EditorViewCont
     }
 
     func editor(_ viewController: GutenbergKit.EditorViewController, didTriggerAutocompleter type: String) {
-        // Do nothing
+        switch type {
+        case "at-symbol":
+            showSuggestions(type: .mention) { [weak self] result in
+                switch result {
+                case .success(let suggestion):
+                    // Appended space completes the autocomplete session
+                    self?.editorViewController.appendTextAtCursor(suggestion + " ")
+                case .failure(let error):
+                    DDLogError("Mention selection cancelled or failed: \(error)")
+                }
+            }
+        case "plus-symbol":
+            showSuggestions(type: .xpost) { [weak self] result in
+                switch result {
+                case .success(let suggestion):
+                    // Appended space completes the autocomplete session
+                    self?.editorViewController.appendTextAtCursor(suggestion + " ")
+                case .failure(let error):
+                    DDLogError("Xpost selection cancelled or failed: \(error)")
+                }
+            }
+        default:
+            DDLogError("Unknown autocompleter type: \(type)")
+        }
     }
 
     func editor(_ viewController: GutenbergKit.EditorViewController, didOpenModalDialog dialogType: String) {
@@ -620,33 +643,6 @@ extension NewGutenbergViewController: GutenbergKit.EditorViewControllerDelegate 
                 let escapedJsonString = jsonString.replacingOccurrences(of: "'", with: "\\'")
                 editorViewController.setMediaUploadAttachment(escapedJsonString)
             }
-        }
-    }
-
-    override func editor(_ viewController: GutenbergKit.EditorViewController, didTriggerAutocompleter type: String) {
-        switch type {
-        case "at-symbol":
-            showSuggestions(type: .mention) { [weak self] result in
-                switch result {
-                case .success(let suggestion):
-                    // Appended space completes the autocomplete session
-                    self?.editorViewController.appendTextAtCursor(suggestion + " ")
-                case .failure(let error):
-                    DDLogError("Mention selection cancelled or failed: \(error)")
-                }
-            }
-        case "plus-symbol":
-            showSuggestions(type: .xpost) { [weak self] result in
-                switch result {
-                case .success(let suggestion):
-                    // Appended space completes the autocomplete session
-                    self?.editorViewController.appendTextAtCursor(suggestion + " ")
-                case .failure(let error):
-                    DDLogError("Xpost selection cancelled or failed: \(error)")
-                }
-            }
-        default:
-            DDLogError("Unknown autocompleter type: \(type)")
         }
     }
 
