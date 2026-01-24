@@ -472,10 +472,6 @@ extension NewGutenbergViewController: GutenbergKit.EditorViewControllerDelegate 
         }
     }
 
-    override func editor(_ viewContoller: GutenbergKit.EditorViewController, didDisplayInitialContent content: String) {
-        // Do nothing
-    }
-
     override func editor(_ viewContoller: GutenbergKit.EditorViewController, didEncounterCriticalError error: any Error) {
         onClose?()
     }
@@ -644,14 +640,6 @@ extension NewGutenbergViewController: GutenbergKit.EditorViewControllerDelegate 
 
     override func navigationBarManager(_ manager: PostEditorNavigationBarManager, redoWasPressed sender: UIButton) {
         editorViewController.redo()
-    }
-
-    override func navigationBarManager(_ manager: PostEditorNavigationBarManager, moreWasPressed sender: UIButton) {
-        // Currently unsupported, do nothing.
-    }
-
-    override func navigationBarManager(_ manager: PostEditorNavigationBarManager, displayCancelMediaUploads sender: UIButton) {
-        // Currently unsupported, do nothing.
     }
 
     override func navigationBarManager(_ manager: PostEditorNavigationBarManager, publishButtonWasPressed sender: UIButton) {
