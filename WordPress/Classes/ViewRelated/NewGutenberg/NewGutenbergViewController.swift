@@ -22,6 +22,10 @@ class PostGBKEditorViewController: UIViewController, GutenbergKit.EditorViewCont
 
     private var isModalDialogOpen = false
 
+    private var keyboardShowObserver: Any?
+    private var keyboardHideObserver: Any?
+    private var keyboardFrame = CGRect.zero
+
     init(
         postId: Int?,
         postType: String,
@@ -190,6 +194,49 @@ private extension PostGBKEditorViewController {
         navigationBarManager.undoButton.isEnabled = enabled
         navigationBarManager.redoButton.isEnabled = enabled
     }
+
+    // MARK: - Keyboard Observers
+
+    func setupKeyboardObservers() {
+        keyboardShowObserver = NotificationCenter.default.addObserver(forName: UIResponder.keyboardDidShowNotification, object: nil, queue: .main) { [weak self] (notification) in
+            if let self, let keyboardRect = notification.userInfo?[UIResponder.keyboardFrameEndUserInfoKey] as? CGRect {
+                self.keyboardFrame = keyboardRect
+                self.updateConstraintsToAvoidKeyboard(frame: keyboardRect)
+            }
+        }
+        keyboardHideObserver = NotificationCenter.default.addObserver(forName: UIResponder.keyboardDidHideNotification, object: nil, queue: .main) { [weak self] (notification) in
+            if let self, let keyboardRect = notification.userInfo?[UIResponder.keyboardFrameEndUserInfoKey] as? CGRect {
+                self.keyboardFrame = keyboardRect
+                self.updateConstraintsToAvoidKeyboard(frame: keyboardRect)
+            }
+        }
+    }
+
+    func tearDownKeyboardObservers() {
+        if let keyboardShowObserver {
+            NotificationCenter.default.removeObserver(keyboardShowObserver)
+        }
+        if let keyboardHideObserver {
+            NotificationCenter.default.removeObserver(keyboardHideObserver)
+        }
+    }
+
+    func updateConstraintsToAvoidKeyboard(frame: CGRect) {
+        keyboardFrame = frame
+        let minimumKeyboardHeight = CGFloat(50)
+        guard let suggestionViewBottomConstraint else {
+            return
+        }
+
+        // There are cases where the keyboard is not visible, but the system instead of returning zero, returns a low number, for example: 0, 3, 69.
+        // So in those scenarios, we just need to take in account the safe area and ignore the keyboard all together.
+        if keyboardFrame.height < minimumKeyboardHeight {
+            suggestionViewBottomConstraint.constant = -self.view.safeAreaInsets.bottom
+        }
+        else {
+            suggestionViewBottomConstraint.constant = -self.keyboardFrame.height
+        }
+    }
 }
 
 class NewGutenbergViewController: PostGBKEditorViewController, PostEditor, PublishingEditor {
@@ -248,9 +295,6 @@ class NewGutenbergViewController: PostGBKEditorViewController, PostEditor, Publi
 
     // MARK: - Private Properties
 
-    private var keyboardShowObserver: Any?
-    private var keyboardHideObserver: Any?
-    private var keyboardFrame = CGRect.zero
     private var suggestionViewBottomConstraint: NSLayoutConstraint?
     private var currentSuggestionsController: GutenbergSuggestionsViewController?
 
@@ -407,49 +451,6 @@ class NewGutenbergViewController: PostGBKEditorViewController, PostEditor, Publi
 
     func showFeedbackView() {
         self.present(SubmitFeedbackViewController(source: "gutenberg_kit", feedbackPrefix: "Editor"), animated: true)
-    }
-
-    // MARK: - Keyboard Observers
-
-    private func setupKeyboardObservers() {
-        keyboardShowObserver = NotificationCenter.default.addObserver(forName: UIResponder.keyboardDidShowNotification, object: nil, queue: .main) { [weak self] (notification) in
-            if let self, let keyboardRect = notification.userInfo?[UIResponder.keyboardFrameEndUserInfoKey] as? CGRect {
-                self.keyboardFrame = keyboardRect
-                self.updateConstraintsToAvoidKeyboard(frame: keyboardRect)
-            }
-        }
-        keyboardHideObserver = NotificationCenter.default.addObserver(forName: UIResponder.keyboardDidHideNotification, object: nil, queue: .main) { [weak self] (notification) in
-            if let self, let keyboardRect = notification.userInfo?[UIResponder.keyboardFrameEndUserInfoKey] as? CGRect {
-                self.keyboardFrame = keyboardRect
-                self.updateConstraintsToAvoidKeyboard(frame: keyboardRect)
-            }
-        }
-    }
-
-    private func tearDownKeyboardObservers() {
-        if let keyboardShowObserver {
-            NotificationCenter.default.removeObserver(keyboardShowObserver)
-        }
-        if let keyboardHideObserver {
-            NotificationCenter.default.removeObserver(keyboardHideObserver)
-        }
-    }
-
-    private func updateConstraintsToAvoidKeyboard(frame: CGRect) {
-        keyboardFrame = frame
-        let minimumKeyboardHeight = CGFloat(50)
-        guard let suggestionViewBottomConstraint else {
-            return
-        }
-
-        // There are cases where the keyboard is not visible, but the system instead of returning zero, returns a low number, for example: 0, 3, 69.
-        // So in those scenarios, we just need to take in account the safe area and ignore the keyboard all together.
-        if keyboardFrame.height < minimumKeyboardHeight {
-            suggestionViewBottomConstraint.constant = -self.view.safeAreaInsets.bottom
-        }
-        else {
-            suggestionViewBottomConstraint.constant = -self.keyboardFrame.height
-        }
     }
 
     private func loadAuthenticationCookiesAsync() async -> Bool {
