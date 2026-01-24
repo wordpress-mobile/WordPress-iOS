@@ -10,8 +10,6 @@ import WordPressShared
 import WebKit
 import CocoaLumberjackSwift
 import Photos
-import Pulse
-import Support
 
 class NewGutenbergViewController: PostGBKEditorViewController, PostEditor, PublishingEditor {
 

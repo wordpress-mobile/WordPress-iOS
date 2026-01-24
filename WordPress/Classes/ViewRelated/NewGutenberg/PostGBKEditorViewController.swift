@@ -1,5 +1,9 @@
 import Foundation
 import UIKit
+import WebKit
+import GutenbergKit
+import WordPressShared
+import WordPressUI
 
 class PostGBKEditorViewController: UIViewController, GutenbergKit.EditorViewControllerDelegate, PostEditorNavigationBarManagerDelegate {
 
