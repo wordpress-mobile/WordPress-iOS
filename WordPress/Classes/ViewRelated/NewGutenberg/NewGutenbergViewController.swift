@@ -452,11 +452,17 @@ class NewGutenbergViewController: PostGBKEditorViewController, PostEditor, Publi
         navigationBarManager.undoButton.isEnabled = enabled
         navigationBarManager.redoButton.isEnabled = enabled
     }
+
+/*
+ Fix issue: Non-'@objc' instance method 'editorDidLoad' declared in 'PostGBKEditorViewController' cannot be overridden from extension
+
+ Add the extension back if needed.
 }
 
 extension NewGutenbergViewController: GutenbergKit.EditorViewControllerDelegate {
+ */
 
-    func editorDidLoad(_ viewContoller: GutenbergKit.EditorViewController) {
+    override func editorDidLoad(_ viewContoller: GutenbergKit.EditorViewController) {
         if !editorSession.started {
             // Note that this method is also used to track startup performance
             // It assumes this is being called when the editor has finished loading
@@ -466,25 +472,25 @@ extension NewGutenbergViewController: GutenbergKit.EditorViewControllerDelegate 
         }
     }
 
-    func editor(_ viewContoller: GutenbergKit.EditorViewController, didDisplayInitialContent content: String) {
+    override func editor(_ viewContoller: GutenbergKit.EditorViewController, didDisplayInitialContent content: String) {
         // Do nothing
     }
 
-    func editor(_ viewContoller: GutenbergKit.EditorViewController, didEncounterCriticalError error: any Error) {
+    override func editor(_ viewContoller: GutenbergKit.EditorViewController, didEncounterCriticalError error: any Error) {
         onClose?()
     }
 
-    func editor(_ viewController: GutenbergKit.EditorViewController, didUpdateContentWithState state: GutenbergKit.EditorState) {
+    override func editor(_ viewController: GutenbergKit.EditorViewController, didUpdateContentWithState state: GutenbergKit.EditorState) {
         editorContentWasUpdated()
         autosaver.contentDidChange()
     }
 
-    func editor(_ viewController: GutenbergKit.EditorViewController, didUpdateHistoryState state: GutenbergKit.EditorState) {
+    override func editor(_ viewController: GutenbergKit.EditorViewController, didUpdateHistoryState state: GutenbergKit.EditorState) {
         gutenbergDidRequestToggleRedoButton(!state.hasRedo)
         gutenbergDidRequestToggleUndoButton(!state.hasUndo)
     }
 
-    func editor(_ viewController: GutenbergKit.EditorViewController, didUpdateFeaturedImage mediaID: Int) {
+    override func editor(_ viewController: GutenbergKit.EditorViewController, didUpdateFeaturedImage mediaID: Int) {
         let featuredImageID = post.featuredImage?.mediaID?.intValue
 
         guard featuredImageID != mediaID else {
@@ -495,7 +501,7 @@ extension NewGutenbergViewController: GutenbergKit.EditorViewControllerDelegate 
         self.featuredImageHelper.setFeaturedImage(mediaID: mediaID)
     }
 
-    func editor(_ viewController: GutenbergKit.EditorViewController, didLogException error: GutenbergKit.GutenbergJSException) {
+    override func editor(_ viewController: GutenbergKit.EditorViewController, didLogException error: GutenbergKit.GutenbergJSException) {
         logException(error) {
             // Do nothing
         }
@@ -503,7 +509,7 @@ extension NewGutenbergViewController: GutenbergKit.EditorViewControllerDelegate 
 
     // MARK: - Media Picker Helpers
 
-    func editor(_ viewController: GutenbergKit.EditorViewController, didRequestMediaFromSiteMediaLibrary config: OpenMediaLibraryAction) {
+    override func editor(_ viewController: GutenbergKit.EditorViewController, didRequestMediaFromSiteMediaLibrary config: OpenMediaLibraryAction) {
         let flags = mediaFilterFlags(using: config.allowedTypes ?? [])
 
         let initialSelectionArray: [Int]
@@ -535,7 +541,7 @@ extension NewGutenbergViewController: GutenbergKit.EditorViewControllerDelegate 
         }
     }
 
-    func editor(_ viewController: GutenbergKit.EditorViewController, didTriggerAutocompleter type: String) {
+    override func editor(_ viewController: GutenbergKit.EditorViewController, didTriggerAutocompleter type: String) {
         switch type {
         case "at-symbol":
             showSuggestions(type: .mention) { [weak self] result in
@@ -562,17 +568,17 @@ extension NewGutenbergViewController: GutenbergKit.EditorViewControllerDelegate 
         }
     }
 
-    func editor(_ viewController: GutenbergKit.EditorViewController, didOpenModalDialog dialogType: String) {
+    override func editor(_ viewController: GutenbergKit.EditorViewController, didOpenModalDialog dialogType: String) {
         isModalDialogOpen = true
         setNavigationItemsEnabled(false)
     }
 
-    func editor(_ viewController: GutenbergKit.EditorViewController, didCloseModalDialog dialogType: String) {
+    override func editor(_ viewController: GutenbergKit.EditorViewController, didCloseModalDialog dialogType: String) {
         isModalDialogOpen = false
         setNavigationItemsEnabled(true)
     }
 
-    func editorDidRequestLatestContent(_ controller: GutenbergKit.EditorViewController) -> (title: String, content: String)? {
+    override func editorDidRequestLatestContent(_ controller: GutenbergKit.EditorViewController) -> (title: String, content: String)? {
         // Return the current post title and content from Core Data.
         // This is the authoritative source, updated via autosave.
         return (post.postTitle ?? "", post.content ?? "")
