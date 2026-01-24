@@ -73,6 +73,10 @@ class PostGBKEditorViewController: UIViewController, GutenbergKit.EditorViewCont
         fatalError()
     }
 
+    deinit {
+        tearDownKeyboardObservers()
+    }
+
     override func viewDidLoad() {
         super.viewDidLoad()
         view.backgroundColor = .systemBackground
@@ -441,10 +445,6 @@ class NewGutenbergViewController: PostGBKEditorViewController, PostEditor, Publi
 
     required init?(coder aDecoder: NSCoder) {
         fatalError()
-    }
-
-    deinit {
-        tearDownKeyboardObservers()
     }
 
     // MARK: - Lifecycle methods
