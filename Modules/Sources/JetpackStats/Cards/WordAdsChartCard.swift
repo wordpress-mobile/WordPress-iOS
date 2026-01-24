@@ -133,7 +133,7 @@ struct WordAdsChartCard: View {
             onMetricSelected: { metric in
                 viewModel.onMetricSelected(metric)
             },
-            showTrends: false
+            showTrend: false
         )
         .background(
             CardGradientBackground(metric: viewModel.selectedMetric)

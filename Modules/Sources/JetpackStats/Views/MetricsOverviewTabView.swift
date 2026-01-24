@@ -15,7 +15,7 @@ struct MetricsOverviewTabView<Metric: MetricType>: View {
     let data: [MetricData]
     @Binding var selectedMetric: Metric
     var onMetricSelected: ((Metric) -> Void)?
-    var showTrends: Bool = true
+    var showTrend: Bool = true
 
     @ScaledMetric(relativeTo: .title) private var minTabWidth: CGFloat = 100
 
@@ -36,7 +36,7 @@ struct MetricsOverviewTabView<Metric: MetricType>: View {
     }
 
     private func makeItemView(for item: MetricData, onTap: @escaping () -> Void) -> some View {
-        MetricItemView(data: item, isSelected: selectedMetric == item.metric, showTrend: showTrends, onTap: onTap)
+        MetricItemView(data: item, isSelected: selectedMetric == item.metric, showTrend: showTrend, onTap: onTap)
             .frame(minWidth: minTabWidth)
             .id(item.metric)
     }
@@ -99,9 +99,11 @@ private struct MetricItemView<Metric: MetricType>: View {
 
     private var headerView: some View {
         HStack(spacing: 2) {
-            Image(systemName: data.metric.systemImage)
-                .font(.caption2.weight(.medium))
-                .scaleEffect(x: 0.9, y: 0.9)
+            if showTrend {
+                Image(systemName: data.metric.systemImage)
+                    .font(.caption2.weight(.medium))
+                    .scaleEffect(x: 0.9, y: 0.9)
+            }
             Text(data.metric.localizedTitle.uppercased())
                 .font(.caption.weight(.medium))
         }
