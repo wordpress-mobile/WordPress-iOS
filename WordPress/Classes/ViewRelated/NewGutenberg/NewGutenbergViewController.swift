@@ -84,6 +84,11 @@ class PostGBKEditorViewController: UIViewController, GutenbergKit.EditorViewCont
         setupKeyboardObservers()
         setupEditorView()
         configureNavigationBar()
+
+        // Load auth cookies if needed (for private sites)
+        Task {
+            await loadAuthenticationCookiesAsync()
+        }
     }
 
     func makeMoreMenu() -> UIMenu {
@@ -266,6 +271,28 @@ private extension PostGBKEditorViewController {
 
         navigationBarManager.moreButton.menu = makeMoreMenu()
         navigationBarManager.moreButton.showsMenuAsPrimaryAction = true
+    }
+
+    func loadAuthenticationCookiesAsync() async -> Bool {
+        guard blog.isPrivate() else {
+            return true
+        }
+
+        guard let authenticator = RequestAuthenticator(blog: blog),
+            let blogURL = blog.url,
+            let authURL = URL(string: blogURL) else {
+            return false
+        }
+
+        let cookieJar = WKWebsiteDataStore.default().httpCookieStore
+
+        return await withCheckedContinuation { continuation in
+            // Always call authenticator.request() to ensure cookies are properly loaded into WKWebView
+            authenticator.request(url: authURL, cookieJar: cookieJar) { _ in
+                DDLogInfo("Authentication cookies loaded into shared cookie store for GutenbergKit")
+                continuation.resume(returning: true)
+            }
+        }
     }
 
     // MARK: - Keyboard Observers
@@ -489,11 +516,6 @@ class NewGutenbergViewController: PostGBKEditorViewController, PostEditor, Publi
         createRevisionOfPost(loadAutosaveRevision: false)
         refreshInterface()
 
-        // Load auth cookies if needed (for private sites)
-        Task {
-            await loadAuthenticationCookiesAsync()
-        }
-
         SiteSuggestionService.shared.prefetchSuggestionsIfNeeded(for: post.blog) {
             // Do nothing
         }
@@ -553,28 +575,6 @@ class NewGutenbergViewController: PostGBKEditorViewController, PostEditor, Publi
 
     func showFeedbackView() {
         self.present(SubmitFeedbackViewController(source: "gutenberg_kit", feedbackPrefix: "Editor"), animated: true)
-    }
-
-    private func loadAuthenticationCookiesAsync() async -> Bool {
-        guard post.blog.isPrivate() else {
-            return true
-        }
-
-        guard let authenticator = RequestAuthenticator(blog: post.blog),
-            let blogURL = post.blog.url,
-            let authURL = URL(string: blogURL) else {
-            return false
-        }
-
-        let cookieJar = WKWebsiteDataStore.default().httpCookieStore
-
-        return await withCheckedContinuation { continuation in
-            // Always call authenticator.request() to ensure cookies are properly loaded into WKWebView
-            authenticator.request(url: authURL, cookieJar: cookieJar) { _ in
-                DDLogInfo("Authentication cookies loaded into shared cookie store for GutenbergKit")
-                continuation.resume(returning: true)
-            }
-        }
     }
 
 /*
