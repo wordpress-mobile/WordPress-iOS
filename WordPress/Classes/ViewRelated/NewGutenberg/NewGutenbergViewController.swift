@@ -14,7 +14,7 @@ import Pulse
 import Support
 
 // To support editing `AbstractPost` from Core Data and `AnyPostWithEditContext` from the Rust library
-class PostGBKEditorViewController: UIViewController, GutenbergKit.EditorViewControllerDelegate {
+class PostGBKEditorViewController: UIViewController, GutenbergKit.EditorViewControllerDelegate, PostEditorNavigationBarManagerDelegate {
 
     let navigationBarManager: PostEditorNavigationBarManager
 
@@ -113,6 +113,46 @@ class PostGBKEditorViewController: UIViewController, GutenbergKit.EditorViewCont
         return nil
     }
 
+    // MARK: - PostEditorNavigationBarManagerDelegate
+
+    var publishButtonText: String {
+        wpAssertionFailure("To be implemented by subclasses")
+        return ""
+    }
+
+    var isPublishButtonEnabled: Bool {
+        wpAssertionFailure("To be implemented by subclasses")
+        return false
+    }
+
+    var uploadingButtonSize: CGSize {
+        wpAssertionFailure("To be implemented by subclasses")
+        return .zero
+    }
+
+    func navigationBarManager(_ manager: PostEditorNavigationBarManager, closeWasPressed sender: UIButton) {
+        // Do nothing
+    }
+
+    func navigationBarManager(_ manager: PostEditorNavigationBarManager, undoWasPressed sender: UIButton) {
+        // Do nothing
+    }
+
+    func navigationBarManager(_ manager: PostEditorNavigationBarManager, redoWasPressed sender: UIButton) {
+        // Do nothing
+    }
+
+    func navigationBarManager(_ manager: PostEditorNavigationBarManager, moreWasPressed sender: UIButton) {
+        // Do nothing
+    }
+
+    func navigationBarManager(_ manager: PostEditorNavigationBarManager, publishButtonWasPressed sender: UIButton) {
+        // Do nothing
+    }
+
+    func navigationBarManager(_ manager: PostEditorNavigationBarManager, displayCancelMediaUploads sender: UIButton) {
+        // Do nothing
+    }
 }
 
 class NewGutenbergViewController: PostGBKEditorViewController, PostEditor, PublishingEditor {
