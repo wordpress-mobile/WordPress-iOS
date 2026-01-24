@@ -14,7 +14,7 @@ import Pulse
 import Support
 
 // To support editing `AbstractPost` from Core Data and `AnyPostWithEditContext` from the Rust library
-class PostGBKEditorViewController: UIViewController {
+class PostGBKEditorViewController: UIViewController, GutenbergKit.EditorViewControllerDelegate {
 
     let navigationBarManager: PostEditorNavigationBarManager
 
@@ -60,6 +60,57 @@ class PostGBKEditorViewController: UIViewController {
 
     required init?(coder aDecoder: NSCoder) {
         fatalError()
+    }
+
+    // MARK: - GutenbergKit.EditorViewControllerDelegate
+
+    func editorDidLoad(_ viewContoller: GutenbergKit.EditorViewController) {
+        // Do nothing
+    }
+
+    func editor(_ viewContoller: GutenbergKit.EditorViewController, didDisplayInitialContent content: String) {
+        // Do nothing
+    }
+
+    func editor(_ viewContoller: GutenbergKit.EditorViewController, didEncounterCriticalError error: any Error) {
+        // Do nothing
+    }
+
+    func editor(_ viewController: GutenbergKit.EditorViewController, didUpdateContentWithState state: GutenbergKit.EditorState) {
+        // Do nothing
+    }
+
+    func editor(_ viewController: GutenbergKit.EditorViewController, didUpdateHistoryState state: GutenbergKit.EditorState) {
+        // Do nothing
+    }
+
+    func editor(_ viewController: GutenbergKit.EditorViewController, didUpdateFeaturedImage mediaID: Int) {
+        // Do nothing
+    }
+
+    func editor(_ viewController: GutenbergKit.EditorViewController, didLogException error: GutenbergKit.GutenbergJSException) {
+        // Do nothing
+    }
+
+    func editor(_ viewController: GutenbergKit.EditorViewController, didRequestMediaFromSiteMediaLibrary config: OpenMediaLibraryAction) {
+        // Do nothing
+    }
+
+    func editor(_ viewController: GutenbergKit.EditorViewController, didTriggerAutocompleter type: String) {
+        // Do nothing
+    }
+
+    func editor(_ viewController: GutenbergKit.EditorViewController, didOpenModalDialog dialogType: String) {
+        // Do nothing
+    }
+
+    func editor(_ viewController: GutenbergKit.EditorViewController, didCloseModalDialog dialogType: String) {
+        // Do nothing
+    }
+
+    func editorDidRequestLatestContent(_ controller: GutenbergKit.EditorViewController) -> (title: String, content: String)? {
+        // Do nothing
+        return nil
     }
 
 }
