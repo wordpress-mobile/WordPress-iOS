@@ -20,6 +20,8 @@ class PostGBKEditorViewController: UIViewController, GutenbergKit.EditorViewCont
 
     /* private */ let editorViewController: GutenbergKit.EditorViewController
 
+    private var isModalDialogOpen = false
+
     init(
         postId: Int?,
         postType: String,
@@ -106,11 +108,13 @@ class PostGBKEditorViewController: UIViewController, GutenbergKit.EditorViewCont
     }
 
     func editor(_ viewController: GutenbergKit.EditorViewController, didOpenModalDialog dialogType: String) {
-        // Do nothing
+        isModalDialogOpen = true
+        setNavigationItemsEnabled(false)
     }
 
     func editor(_ viewController: GutenbergKit.EditorViewController, didCloseModalDialog dialogType: String) {
-        // Do nothing
+        isModalDialogOpen = false
+        setNavigationItemsEnabled(true)
     }
 
     func editorDidRequestLatestContent(_ controller: GutenbergKit.EditorViewController) -> (title: String, content: String)? {
@@ -178,6 +182,14 @@ private extension PostGBKEditorViewController {
             }
         }
     }
+
+    func setNavigationItemsEnabled(_ enabled: Bool) {
+        navigationBarManager.closeButton.isEnabled = enabled
+        navigationBarManager.moreButton.isEnabled = enabled
+        navigationBarManager.publishButton.isEnabled = enabled
+        navigationBarManager.undoButton.isEnabled = enabled
+        navigationBarManager.redoButton.isEnabled = enabled
+    }
 }
 
 class NewGutenbergViewController: PostGBKEditorViewController, PostEditor, PublishingEditor {
@@ -229,8 +241,6 @@ class NewGutenbergViewController: PostGBKEditorViewController, PostEditor, Publi
 //    internal private(set) var contentInfo: ContentInfo?
 
     // MARK: - GutenbergKit
-
-    private var isModalDialogOpen = false
 
     lazy var autosaver = Autosaver() { [weak self] in
         self?.performAutoSave()
@@ -464,14 +474,6 @@ class NewGutenbergViewController: PostGBKEditorViewController, PostEditor, Publi
         }
     }
 
-    private func setNavigationItemsEnabled(_ enabled: Bool) {
-        navigationBarManager.closeButton.isEnabled = enabled
-        navigationBarManager.moreButton.isEnabled = enabled
-        navigationBarManager.publishButton.isEnabled = enabled
-        navigationBarManager.undoButton.isEnabled = enabled
-        navigationBarManager.redoButton.isEnabled = enabled
-    }
-
 /*
  Fix issue: Non-'@objc' instance method 'editorDidLoad' declared in 'PostGBKEditorViewController' cannot be overridden from extension
 
@@ -570,16 +572,6 @@ extension NewGutenbergViewController: GutenbergKit.EditorViewControllerDelegate 
         default:
             DDLogError("Unknown autocompleter type: \(type)")
         }
-    }
-
-    override func editor(_ viewController: GutenbergKit.EditorViewController, didOpenModalDialog dialogType: String) {
-        isModalDialogOpen = true
-        setNavigationItemsEnabled(false)
-    }
-
-    override func editor(_ viewController: GutenbergKit.EditorViewController, didCloseModalDialog dialogType: String) {
-        isModalDialogOpen = false
-        setNavigationItemsEnabled(true)
     }
 
     override func editorDidRequestLatestContent(_ controller: GutenbergKit.EditorViewController) -> (title: String, content: String)? {
