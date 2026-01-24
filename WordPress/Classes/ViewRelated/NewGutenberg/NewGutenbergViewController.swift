@@ -16,6 +16,52 @@ import Support
 // To support editing `AbstractPost` from Core Data and `AnyPostWithEditContext` from the Rust library
 class PostGBKEditorViewController: UIViewController {
 
+    let navigationBarManager: PostEditorNavigationBarManager
+
+    private let editorViewController: GutenbergKit.EditorViewController
+
+    init(
+        postId: Int?,
+        postType: String,
+        title: String?,
+        content: String?,
+        status: String?,
+        blog: Blog
+    ) {
+        self.navigationBarManager = PostEditorNavigationBarManager()
+
+        EditorLocalization.localize = getLocalizedString
+
+        // Create configuration with post content
+        let editorConfiguration = EditorConfiguration(blog: blog, postType: postType)
+            .toBuilder()
+            .setTitle(title ?? "")
+            .setContent(content ?? "")
+            .setPostID(postId)
+            .setPostStatus(status ?? "draft")
+            .setNativeInserterEnabled(FeatureFlag.nativeBlockInserter.enabled)
+            .build()
+
+        // Use prefetched dependencies if available (fast path with spinner),
+        // otherwise pass nil and GutenbergKit will fetch them (shows progress bar)
+        let cachedDependencies = EditorDependencyManager.shared.dependencies(for: blog)
+
+        self.editorViewController = GutenbergKit.EditorViewController(
+            configuration: editorConfiguration,
+            dependencies: cachedDependencies,
+            mediaPicker: MediaPickerController(blog: blog)
+        )
+
+        super.init(nibName: nil, bundle: nil)
+
+        self.editorViewController.delegate = self
+        self.navigationBarManager.delegate = self
+    }
+
+    required init?(coder aDecoder: NSCoder) {
+        fatalError()
+    }
+
 }
 
 class NewGutenbergViewController: PostGBKEditorViewController, PostEditor, PublishingEditor {
@@ -61,8 +107,6 @@ class NewGutenbergViewController: PostGBKEditorViewController, PostEditor, Publi
         }
     }
 
-    let navigationBarManager: PostEditorNavigationBarManager
-
     // MARK: - Private variables
 
     // TODO: reimplemet
@@ -70,7 +114,6 @@ class NewGutenbergViewController: PostGBKEditorViewController, PostEditor, Publi
 
     // MARK: - GutenbergKit
 
-    private var editorViewController: GutenbergKit.EditorViewController
     private var isModalDialogOpen = false
 
     lazy var autosaver = Autosaver() { [weak self] in
@@ -106,41 +149,23 @@ class NewGutenbergViewController: PostGBKEditorViewController, PostEditor, Publi
         post: AbstractPost,
         replaceEditor: @escaping ReplaceEditorCallback,
     ) {
-
         self.post = post
 
         self.replaceEditor = replaceEditor
         self.editorSession = PostEditorAnalyticsSession(editor: .gutenbergKit, post: post)
-        self.navigationBarManager = PostEditorNavigationBarManager()
-
-        EditorLocalization.localize = getLocalizedString
 
         // Create configuration with post content
         let postType = post is Page ? "page" : "post"
         let postStatus = post.status?.rawValue ?? "draft"
-        let editorConfiguration = EditorConfiguration(blog: post.blog, postType: postType)
-            .toBuilder()
-            .setTitle(post.postTitle ?? "")
-            .setContent(post.content ?? "")
-            .setPostID(post.postID?.intValue)
-            .setPostStatus(postStatus)
-            .setNativeInserterEnabled(FeatureFlag.nativeBlockInserter.enabled)
-            .build()
 
-        // Use prefetched dependencies if available (fast path with spinner),
-        // otherwise pass nil and GutenbergKit will fetch them (shows progress bar)
-        let cachedDependencies = EditorDependencyManager.shared.dependencies(for: post.blog)
-
-        self.editorViewController = GutenbergKit.EditorViewController(
-            configuration: editorConfiguration,
-            dependencies: cachedDependencies,
-            mediaPicker: MediaPickerController(blog: post.blog)
+        super.init(
+            postId: post.postID?.intValue,
+            postType: postType,
+            title: post.postTitle ?? "",
+            content: post.content ?? "",
+            status: postStatus,
+            blog: post.blog
         )
-
-        super.init(nibName: nil, bundle: nil)
-
-        self.editorViewController.delegate = self
-        self.navigationBarManager.delegate = self
     }
 
     required init?(coder aDecoder: NSCoder) {
