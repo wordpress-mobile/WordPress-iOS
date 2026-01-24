@@ -16,6 +16,7 @@ import Support
 // To support editing `AbstractPost` from Core Data and `AnyPostWithEditContext` from the Rust library
 class PostGBKEditorViewController: UIViewController, GutenbergKit.EditorViewControllerDelegate, PostEditorNavigationBarManagerDelegate {
 
+    let blog: Blog
     let navigationBarManager: PostEditorNavigationBarManager
 
     /* private */ let editorViewController: GutenbergKit.EditorViewController
@@ -26,6 +27,9 @@ class PostGBKEditorViewController: UIViewController, GutenbergKit.EditorViewCont
     private var keyboardHideObserver: Any?
     private var keyboardFrame = CGRect.zero
 
+    private var suggestionViewBottomConstraint: NSLayoutConstraint?
+    private var currentSuggestionsController: GutenbergSuggestionsViewController?
+
     init(
         postId: Int?,
         postType: String,
@@ -34,6 +38,7 @@ class PostGBKEditorViewController: UIViewController, GutenbergKit.EditorViewCont
         status: String?,
         blog: Blog
     ) {
+        self.blog = blog
         self.navigationBarManager = PostEditorNavigationBarManager()
 
         EditorLocalization.localize = getLocalizedString
@@ -242,6 +247,77 @@ private extension PostGBKEditorViewController {
             suggestionViewBottomConstraint.constant = -self.keyboardFrame.height
         }
     }
+
+    // MARK: - Suggestions implementation
+
+    func showSuggestions(type: SuggestionType, callback: @escaping (Swift.Result<String, NSError>) -> Void) {
+        // Prevent multiple suggestions UI instances - simply ignore if already showing
+        guard currentSuggestionsController == nil else {
+            return
+        }
+        guard let siteID = blog.dotComID else {
+            callback(.failure(GutenbergSuggestionsViewController.SuggestionError.notAvailable as NSError))
+            return
+        }
+
+        switch type {
+        case .mention:
+            guard SuggestionService.shared.shouldShowSuggestions(for: blog) else { return }
+        case .xpost:
+            guard SiteSuggestionService.shared.shouldShowSuggestions(for: blog) else { return }
+        }
+
+        let previousFirstResponder = view.findFirstResponder()
+        let suggestionsController = GutenbergSuggestionsViewController(siteID: siteID, suggestionType: type)
+        currentSuggestionsController = suggestionsController
+        suggestionsController.onCompletion = { [weak self] (result) in
+            callback(result)
+
+            if let self {
+                // Clear the current controller reference
+                self.currentSuggestionsController = nil
+                self.suggestionViewBottomConstraint = nil
+
+                // Clean up the UI (should only happen if parent still exists)
+                suggestionsController.view.removeFromSuperview()
+                suggestionsController.removeFromParent()
+
+                previousFirstResponder?.becomeFirstResponder()
+            }
+
+            var analyticsName: String
+            switch type {
+            case .mention:
+                analyticsName = "user"
+            case .xpost:
+                analyticsName = "xpost"
+            }
+
+            var didSelectSuggestion = false
+            if case let .success(text) = result, !text.isEmpty {
+                didSelectSuggestion = true
+            }
+
+            let analyticsProperties: [String: Any] = [
+                "suggestion_type": analyticsName,
+                "did_select_suggestion": didSelectSuggestion
+            ]
+
+            WPAnalytics.track(.gutenbergSuggestionSessionFinished, properties: analyticsProperties)
+        }
+        addChild(suggestionsController)
+        view.addSubview(suggestionsController.view)
+        let suggestionsBottomConstraint = suggestionsController.view.bottomAnchor.constraint(equalTo: view.bottomAnchor, constant: 0)
+        NSLayoutConstraint.activate([
+            suggestionsController.view.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor, constant: 0),
+            suggestionsController.view.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor, constant: 0),
+            suggestionsBottomConstraint,
+            suggestionsController.view.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor)
+        ])
+        self.suggestionViewBottomConstraint = suggestionsBottomConstraint
+        updateConstraintsToAvoidKeyboard(frame: keyboardFrame)
+        suggestionsController.didMove(toParent: self)
+    }
 }
 
 class NewGutenbergViewController: PostGBKEditorViewController, PostEditor, PublishingEditor {
@@ -297,11 +373,6 @@ class NewGutenbergViewController: PostGBKEditorViewController, PostEditor, Publi
     lazy var autosaver = Autosaver() { [weak self] in
         self?.performAutoSave()
     }
-
-    // MARK: - Private Properties
-
-    private var suggestionViewBottomConstraint: NSLayoutConstraint?
-    private var currentSuggestionsController: GutenbergSuggestionsViewController?
 
     // TODO: remove (none of these APIs are needed for the new editor)
     func prepopulateMediaItems(_ media: [Media]) {}
@@ -713,80 +784,6 @@ extension NewGutenbergViewController {
         present(lightboxVC, animated: true)
     }
 
-}
-
-// MARK: - Suggestions implementation
-
-extension NewGutenbergViewController {
-
-    private func showSuggestions(type: SuggestionType, callback: @escaping (Swift.Result<String, NSError>) -> Void) {
-        // Prevent multiple suggestions UI instances - simply ignore if already showing
-        guard currentSuggestionsController == nil else {
-            return
-        }
-        guard let siteID = post.blog.dotComID else {
-            callback(.failure(GutenbergSuggestionsViewController.SuggestionError.notAvailable as NSError))
-            return
-        }
-
-        switch type {
-        case .mention:
-            guard SuggestionService.shared.shouldShowSuggestions(for: post.blog) else { return }
-        case .xpost:
-            guard SiteSuggestionService.shared.shouldShowSuggestions(for: post.blog) else { return }
-        }
-
-        let previousFirstResponder = view.findFirstResponder()
-        let suggestionsController = GutenbergSuggestionsViewController(siteID: siteID, suggestionType: type)
-        currentSuggestionsController = suggestionsController
-        suggestionsController.onCompletion = { [weak self] (result) in
-            callback(result)
-
-            if let self {
-                // Clear the current controller reference
-                self.currentSuggestionsController = nil
-                self.suggestionViewBottomConstraint = nil
-
-                // Clean up the UI (should only happen if parent still exists)
-                suggestionsController.view.removeFromSuperview()
-                suggestionsController.removeFromParent()
-
-                previousFirstResponder?.becomeFirstResponder()
-            }
-
-            var analyticsName: String
-            switch type {
-            case .mention:
-                analyticsName = "user"
-            case .xpost:
-                analyticsName = "xpost"
-            }
-
-            var didSelectSuggestion = false
-            if case let .success(text) = result, !text.isEmpty {
-                didSelectSuggestion = true
-            }
-
-            let analyticsProperties: [String: Any] = [
-                "suggestion_type": analyticsName,
-                "did_select_suggestion": didSelectSuggestion
-            ]
-
-            WPAnalytics.track(.gutenbergSuggestionSessionFinished, properties: analyticsProperties)
-        }
-        addChild(suggestionsController)
-        view.addSubview(suggestionsController.view)
-        let suggestionsBottomConstraint = suggestionsController.view.bottomAnchor.constraint(equalTo: view.bottomAnchor, constant: 0)
-        NSLayoutConstraint.activate([
-            suggestionsController.view.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor, constant: 0),
-            suggestionsController.view.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor, constant: 0),
-            suggestionsBottomConstraint,
-            suggestionsController.view.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor)
-        ])
-        self.suggestionViewBottomConstraint = suggestionsBottomConstraint
-        updateConstraintsToAvoidKeyboard(frame: keyboardFrame)
-        suggestionsController.didMove(toParent: self)
-    }
 }
 
 // MARK: - GutenbergBridgeDataSource
