@@ -18,7 +18,7 @@ class PostGBKEditorViewController: UIViewController, GutenbergKit.EditorViewCont
 
     let navigationBarManager: PostEditorNavigationBarManager
 
-    private let editorViewController: GutenbergKit.EditorViewController
+    /* private */ let editorViewController: GutenbergKit.EditorViewController
 
     init(
         postId: Int?,
