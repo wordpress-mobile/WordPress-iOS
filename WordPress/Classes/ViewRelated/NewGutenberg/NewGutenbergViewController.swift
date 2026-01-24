@@ -86,6 +86,10 @@ class PostGBKEditorViewController: UIViewController, GutenbergKit.EditorViewCont
         configureNavigationBar()
     }
 
+    func makeMoreMenu() -> UIMenu {
+        fatalError("To be implemented by subclasses")
+    }
+
     // MARK: - GutenbergKit.EditorViewControllerDelegate
 
     func editorDidLoad(_ viewContoller: GutenbergKit.EditorViewController) {
@@ -724,6 +728,24 @@ extension NewGutenbergViewController: GutenbergKit.EditorViewControllerDelegate 
             closure()
         }
     }
+
+    override func makeMoreMenu() -> UIMenu {
+        UIMenu(title: "", image: nil, identifier: nil, options: [], children: [
+            UIDeferredMenuElement.uncached { [weak self] callback in
+                // Common actions at the top so they are always in the same
+                // relative place.
+                callback(self?.makeMoreMenuMainSections() ?? [])
+            },
+            UIDeferredMenuElement.uncached { [weak self] callback in
+                // Dynamic actions at the bottom. The actions are loaded asynchronously
+                // because they need the latest post content from the editor
+                // to display the correct state.
+                self?.performAfterUpdatingContent {
+                    callback(self?.makeMoreMenuAsyncSections() ?? [])
+                }
+            }
+        ])
+    }
 }
 
 extension GutenbergKit.EditorViewControllerDelegate {
@@ -875,24 +897,6 @@ extension NewGutenbergViewController {
 
     enum ErrorCode: Int {
         case managedObjectContextMissing = 2
-    }
-
-    func makeMoreMenu() -> UIMenu {
-        UIMenu(title: "", image: nil, identifier: nil, options: [], children: [
-            UIDeferredMenuElement.uncached { [weak self] callback in
-                // Common actions at the top so they are always in the same
-                // relative place.
-                callback(self?.makeMoreMenuMainSections() ?? [])
-            },
-            UIDeferredMenuElement.uncached { [weak self] callback in
-                // Dynamic actions at the bottom. The actions are loaded asynchronously
-                // because they need the latest post content from the editor
-                // to display the correct state.
-                self?.performAfterUpdatingContent {
-                    callback(self?.makeMoreMenuAsyncSections() ?? [])
-                }
-            }
-        ])
     }
 
     private func makeMoreMenuMainSections() -> [UIMenuElement] {
