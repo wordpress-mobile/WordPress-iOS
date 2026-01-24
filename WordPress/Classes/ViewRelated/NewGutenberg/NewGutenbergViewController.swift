@@ -83,6 +83,7 @@ class PostGBKEditorViewController: UIViewController, GutenbergKit.EditorViewCont
 
         setupKeyboardObservers()
         setupEditorView()
+        configureNavigationBar()
     }
 
     // MARK: - GutenbergKit.EditorViewControllerDelegate
@@ -249,6 +250,18 @@ private extension PostGBKEditorViewController {
 
         // Doesn't seem to do anything
         setContentScrollView(editorViewController.webView.scrollView)
+    }
+
+    func configureNavigationBar() {
+        navigationController?.navigationBar.accessibilityIdentifier = "Gutenberg Editor Navigation Bar"
+        navigationItem.leftBarButtonItems = navigationBarManager.leftBarButtonItems
+
+        edgesForExtendedLayout = []
+        // TODO: make it work
+//        configureDefaultNavigationBarAppearance()
+
+        navigationBarManager.moreButton.menu = makeMoreMenu()
+        navigationBarManager.moreButton.showsMenuAsPrimaryAction = true
     }
 
     // MARK: - Keyboard Observers
@@ -470,7 +483,6 @@ class NewGutenbergViewController: PostGBKEditorViewController, PostEditor, Publi
         super.viewDidLoad()
 
         createRevisionOfPost(loadAutosaveRevision: false)
-        configureNavigationBar()
         refreshInterface()
 
         // Load auth cookies if needed (for private sites)
@@ -493,18 +505,6 @@ class NewGutenbergViewController: PostGBKEditorViewController, PostEditor, Publi
     }
 
     // MARK: - Functions
-
-    private func configureNavigationBar() {
-        navigationController?.navigationBar.accessibilityIdentifier = "Gutenberg Editor Navigation Bar"
-        navigationItem.leftBarButtonItems = navigationBarManager.leftBarButtonItems
-
-        edgesForExtendedLayout = []
-        // TODO: make it work
-//        configureDefaultNavigationBarAppearance()
-
-        navigationBarManager.moreButton.menu = makeMoreMenu()
-        navigationBarManager.moreButton.showsMenuAsPrimaryAction = true
-    }
 
     private func refreshInterface() {
         reloadPublishButton()
