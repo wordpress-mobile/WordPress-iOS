@@ -81,7 +81,8 @@ class PostGBKEditorViewController: UIViewController, GutenbergKit.EditorViewCont
     }
 
     func editor(_ viewController: GutenbergKit.EditorViewController, didUpdateHistoryState state: GutenbergKit.EditorState) {
-        // Do nothing
+        gutenbergDidRequestToggleRedoButton(!state.hasRedo)
+        gutenbergDidRequestToggleUndoButton(!state.hasUndo)
     }
 
     func editor(_ viewController: GutenbergKit.EditorViewController, didUpdateFeaturedImage mediaID: Int) {
@@ -152,6 +153,26 @@ class PostGBKEditorViewController: UIViewController, GutenbergKit.EditorViewCont
 
     func navigationBarManager(_ manager: PostEditorNavigationBarManager, displayCancelMediaUploads sender: UIButton) {
         // Do nothing
+    }
+}
+
+private extension PostGBKEditorViewController {
+    func gutenbergDidRequestToggleRedoButton(_ isDisabled: Bool) {
+        DispatchQueue.main.async {
+            UIView.animate(withDuration: 0.2) {
+                self.navigationBarManager.redoButton.isUserInteractionEnabled = isDisabled ? false : true
+                self.navigationBarManager.redoButton.alpha = isDisabled ? 0.3 : 1.0
+            }
+        }
+    }
+
+    func gutenbergDidRequestToggleUndoButton(_ isDisabled: Bool) {
+        DispatchQueue.main.async {
+            UIView.animate(withDuration: 0.2) {
+                self.navigationBarManager.undoButton.isUserInteractionEnabled = isDisabled ? false : true
+                self.navigationBarManager.undoButton.alpha = isDisabled ? 0.3 : 1.0
+            }
+        }
     }
 }
 
@@ -479,11 +500,6 @@ extension NewGutenbergViewController: GutenbergKit.EditorViewControllerDelegate 
     override func editor(_ viewController: GutenbergKit.EditorViewController, didUpdateContentWithState state: GutenbergKit.EditorState) {
         editorContentWasUpdated()
         autosaver.contentDidChange()
-    }
-
-    override func editor(_ viewController: GutenbergKit.EditorViewController, didUpdateHistoryState state: GutenbergKit.EditorState) {
-        gutenbergDidRequestToggleRedoButton(!state.hasRedo)
-        gutenbergDidRequestToggleUndoButton(!state.hasUndo)
     }
 
     override func editor(_ viewController: GutenbergKit.EditorViewController, didUpdateFeaturedImage mediaID: Int) {
@@ -877,30 +893,6 @@ extension NewGutenbergViewController: PostEditorStateContextDelegate {
     func reloadPublishButton() {
         navigationBarManager.reloadPublishButton()
     }
-}
-
-// MARK: - PostEditorNavigationBarManagerDelegate
-
-extension NewGutenbergViewController {
-
-    func gutenbergDidRequestToggleUndoButton(_ isDisabled: Bool) {
-        DispatchQueue.main.async {
-            UIView.animate(withDuration: 0.2) {
-                self.navigationBarManager.undoButton.isUserInteractionEnabled = isDisabled ? false : true
-                self.navigationBarManager.undoButton.alpha = isDisabled ? 0.3 : 1.0
-            }
-        }
-    }
-
-    func gutenbergDidRequestToggleRedoButton(_ isDisabled: Bool) {
-        DispatchQueue.main.async {
-            UIView.animate(withDuration: 0.2) {
-                self.navigationBarManager.redoButton.isUserInteractionEnabled = isDisabled ? false : true
-                self.navigationBarManager.redoButton.alpha = isDisabled ? 0.3 : 1.0
-            }
-        }
-    }
-
 }
 
 /// This extension handles the "more" actions triggered by the top right
