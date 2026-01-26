@@ -1,0 +1,38 @@
+{
+    "ID": 456123789,
+    "name": "Example",
+    "URL": "https://example.wordpress.com",
+    "earnings": {
+        "total_earnings": "42.67",
+        "total_amount_owed": "38.40",
+        "wordads": {
+            "2025-12": {
+                "amount": 15.25,
+                "status": "0",
+                "pageviews": "3420"
+            },
+            "2025-11": {
+                "amount": 12.80,
+                "status": "0",
+                "pageviews": "2890"
+            },
+            "2025-10": {
+                "amount": 8.45,
+                "status": "0",
+                "pageviews": "1950"
+            },
+            "2025-09": {
+                "amount": 6.17,
+                "status": "0",
+                "pageviews": "1420"
+            },
+            "2025-08": {
+                "amount": 5.50,
+                "status": "1",
+                "pageviews": "1200"
+            }
+        },
+        "sponsored": [],
+        "adjustment": []
+    }
+}

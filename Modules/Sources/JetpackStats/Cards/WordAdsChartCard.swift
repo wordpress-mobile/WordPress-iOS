@@ -10,7 +10,7 @@ struct WordAdsChartCard: View {
         VStack(spacing: 0) {
             header
                 .padding(.horizontal, Constants.step3)
-                .padding(.top, Constants.step3)
+                .padding(.top, Constants.step2)
                 .padding(.bottom, Constants.step1)
 
             chartArea
@@ -18,7 +18,7 @@ struct WordAdsChartCard: View {
                 .padding(.horizontal, Constants.step2)
                 .padding(.vertical, Constants.step2)
                 .animation(.spring, value: viewModel.selectedMetric)
-                .animation(.easeInOut, value: viewModel.isFirstLoad)
+                .animation(.easeInOut, value: viewModel.isLoading)
 
             Divider()
 
@@ -74,6 +74,7 @@ struct WordAdsChartCard: View {
                 loadingErrorView(with: Strings.Chart.empty)
             } else {
                 chartView(data: data)
+                    .opacity(viewModel.isLoading ? 0.3 : 1.0)
                     .transition(.opacity.combined(with: .scale(scale: 0.97)))
             }
         } else {
@@ -82,21 +83,21 @@ struct WordAdsChartCard: View {
     }
 
     private var loadingView: some View {
-        SimpleBarChartView(
-            data: SimpleChartData.mock(
-                metric: viewModel.selectedMetric,
-                granularity: viewModel.selectedGranularity,
-                dataPointCount: viewModel.selectedGranularity.preferredQuantity
-            ),
-            selectedDate: nil,
-            onBarTapped: { _ in }
-        )
-        .redacted(reason: .placeholder)
-        .opacity(0.2)
-        .pulsating()
+        mockChartView
+            .opacity(0.2)
+            .pulsating()
     }
 
     private func loadingErrorView(with message: String) -> some View {
+        mockChartView
+            .grayscale(1)
+            .opacity(0.1)
+            .overlay {
+                SimpleErrorView(message: message)
+            }
+    }
+
+    private var mockChartView: some View {
         SimpleBarChartView(
             data: SimpleChartData.mock(
                 metric: viewModel.selectedMetric,
@@ -107,11 +108,6 @@ struct WordAdsChartCard: View {
             onBarTapped: { _ in }
         )
         .redacted(reason: .placeholder)
-        .grayscale(1)
-        .opacity(0.1)
-        .overlay {
-            SimpleErrorView(message: message)
-        }
     }
 
     private func chartView(data: SimpleChartData) -> some View {
@@ -128,13 +124,15 @@ struct WordAdsChartCard: View {
 
     private var footer: some View {
         MetricsOverviewTabView(
-            data: viewModel.tabViewData,
+            data: viewModel.isFirstLoad ? viewModel.placeholderTabViewData : viewModel.tabViewData,
             selectedMetric: $viewModel.selectedMetric,
             onMetricSelected: { metric in
                 viewModel.onMetricSelected(metric)
             },
             showTrend: false
         )
+        .redacted(reason: viewModel.isLoading ? .placeholder : [])
+        .pulsating(viewModel.isLoading)
         .background(
             CardGradientBackground(metric: viewModel.selectedMetric)
         )

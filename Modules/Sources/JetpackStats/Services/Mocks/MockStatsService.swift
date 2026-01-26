@@ -399,6 +399,67 @@ actor MockStatsService: ObservableObject, StatsServiceProtocol {
         )
     }
 
+    func getWordAdsEarnings() async throws -> WordPressKit.StatsWordAdsEarningsResponse {
+        // Simulate network delay
+        if !delaysDisabled {
+            try? await Task.sleep(for: .milliseconds(Int.random(in: 200...500)))
+        }
+
+        // Generate mock earnings data for the last 12 months
+        let now = Date()
+        let dateFormatter = DateFormatter()
+        dateFormatter.dateFormat = "yyyy-MM"
+        dateFormatter.locale = Locale(identifier: "en_US_POSIX")
+
+        var wordadsDict: [String: [String: Any]] = [:]
+        var totalEarnings: Double = 0
+
+        // Generate earnings for last 12 months
+        for monthsAgo in 0..<12 {
+            guard let monthDate = calendar.date(byAdding: .month, value: -monthsAgo, to: now) else {
+                continue
+            }
+
+            let period = dateFormatter.string(from: monthDate)
+
+            // Generate realistic earnings that increase over time
+            let baseAmount = Double.random(in: 0.01...2.0)
+            let growthFactor = 1.0 + (Double(12 - monthsAgo) * 0.05) // More recent months earn more
+            let amount = baseAmount * growthFactor
+
+            totalEarnings += amount
+
+            // Generate realistic pageviews
+            let basePageviews = Int.random(in: 50...500)
+            let pageviewsGrowth = 1.0 + (Double(12 - monthsAgo) * 0.1)
+            let pageviews = Int(Double(basePageviews) * pageviewsGrowth)
+
+            wordadsDict[period] = [
+                "amount": amount,
+                "status": "0",
+                "pageviews": String(pageviews)
+            ]
+        }
+
+        let jsonDictionary: [String: Any] = [
+            "ID": 238291108,
+            "name": "Mock Site",
+            "URL": "https://mocksite.wordpress.com",
+            "earnings": [
+                "total_earnings": String(format: "%.2f", totalEarnings),
+                "total_amount_owed": String(format: "%.2f", totalEarnings * 0.9), // 90% of total
+                "wordads": wordadsDict,
+                "sponsored": [],
+                "adjustment": []
+            ]
+        ]
+
+        let jsonData = try JSONSerialization.data(withJSONObject: jsonDictionary)
+        let response = try JSONDecoder().decode(WordPressKit.StatsWordAdsEarningsResponse.self, from: jsonData)
+
+        return response
+    }
+
     // MARK: - Data Loading
 
     /// Loads historical items from JSON files based on the data type

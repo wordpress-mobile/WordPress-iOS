@@ -395,6 +395,16 @@ public extension StatsServiceRemoteV2 {
     }
 }
 
+// MARK: - WordAds Earnings
+
+public extension StatsServiceRemoteV2 {
+    func getWordAdsEarnings() async throws -> StatsWordAdsEarningsResponse {
+        let path = self.path(forEndpoint: "sites/\(siteID)/wordads/earnings", withVersion: ._1_1)
+        let result = await wordPressComRestApi.perform(.get, URLString: path, parameters: [:], type: StatsWordAdsEarningsResponse.self)
+        return try result.get().body
+    }
+}
+
 // This serves both as a way to get the query properties in a "nice" way,
 // but also as a way to narrow down the generic type in `getInsight(completion:)` method.
 public protocol StatsInsightData {
