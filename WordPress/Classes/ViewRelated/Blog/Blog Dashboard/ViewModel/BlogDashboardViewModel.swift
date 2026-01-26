@@ -128,7 +128,9 @@ final class BlogDashboardViewModel {
     }
 
     func viewWillAppear() {
-        EditorDependencyManager.shared.prefetchDependencies(for: self.blog)
+        if RemoteFeatureFlag.newGutenberg.enabled() {
+            EditorDependencyManager.shared.prefetchDependencies(for: self.blog)
+        }
         quickActionsViewModel.viewWillAppear()
     }
 
@@ -146,7 +148,9 @@ final class BlogDashboardViewModel {
         self.loadCardsFromCache()
         self.loadCards()
 
-        EditorDependencyManager.shared.prefetchDependencies(for: blog)
+        if RemoteFeatureFlag.newGutenberg.enabled() {
+            EditorDependencyManager.shared.prefetchDependencies(for: blog)
+        }
     }
 
     func clearEditorCache(_ completion: @escaping () -> Void) {
