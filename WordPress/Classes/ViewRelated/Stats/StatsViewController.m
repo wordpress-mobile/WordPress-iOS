@@ -30,7 +30,7 @@
     [super viewDidLoad];
 
     self.view.backgroundColor = [UIColor systemGroupedBackgroundColor];
-    self.navigationItem.title = NSLocalizedString(@"Stats", @"Stats window title");
+    [self updateNavigationTitle];
 
     self.siteStatsDashboardVC = [[SiteStatsDashboardViewController alloc] init];
 
@@ -54,6 +54,8 @@
 
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(reachabilityChanged:) name:kTMReachabilityChangedNotification object:ReachabilityUtils.internetReachability];
 
+    [self registerForTraitChanges:@[UITraitHorizontalSizeClass.class] withAction:@selector(updateNavigationTitle)];
+
     [self initStats];
 }
 
@@ -62,6 +64,15 @@
     [super viewDidAppear:animated];
 
     [ObjCBridge incrementSignificantEvent];
+}
+
+- (void)updateNavigationTitle
+{
+    if (self.traitCollection.horizontalSizeClass == UIUserInterfaceSizeClassCompact) {
+        self.navigationItem.title = NSLocalizedString(@"Stats", @"Stats window title");
+    } else {
+        self.navigationItem.title = nil;
+    }
 }
 
 - (void)setBlog:(Blog *)blog
