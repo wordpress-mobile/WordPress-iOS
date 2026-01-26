@@ -243,14 +243,12 @@
 		EA14532C29AD874C001F3143 /* EditorGutenbergTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = CC2BB0CF228ACF710034F9AB /* EditorGutenbergTests.swift */; };
 		EA14532D29AD874C001F3143 /* LoginTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = FF2716911CAAC87B0006E2D4 /* LoginTests.swift */; };
 		EA14532E29AD874C001F3143 /* BaseScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE2B4E9E1FD664F5007AE3E4 /* BaseScreen.swift */; };
-		EA14533029AD874C001F3143 /* StatsTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = EAD2BF4127594DAB00A847BB /* StatsTests.swift */; };
 		EA14533129AD874C001F3143 /* WPUITestCredentials.swift in Sources */ = {isa = PBXBuildFile; fileRef = CC8A5EAA22159FA6001B7874 /* WPUITestCredentials.swift */; };
 		EA14533229AD874C001F3143 /* SignupTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = CC7CB97222B1510900642EE9 /* SignupTests.swift */; };
 		EA14533329AD874C001F3143 /* EditorFlow.swift in Sources */ = {isa = PBXBuildFile; fileRef = CC52188B2278C622008998CE /* EditorFlow.swift */; };
 		EA14533529AD874C001F3143 /* LoginFlow.swift in Sources */ = {isa = PBXBuildFile; fileRef = BED4D8321FF11E3800A11345 /* LoginFlow.swift */; };
 		EA14533629AD874C001F3143 /* XCTest+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = FF2716A01CABC7D40006E2D4 /* XCTest+Extensions.swift */; };
 		EAB10E4027487F5D000DA4C1 /* ReaderTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = EAB10E3F27487F5D000DA4C1 /* ReaderTests.swift */; };
-		EAD2BF4227594DAB00A847BB /* StatsTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = EAD2BF4127594DAB00A847BB /* StatsTests.swift */; };
 		F111B88D2658103C00057942 /* Combine.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F111B88B2658102700057942 /* Combine.framework */; };
 		F515E9662654312200848251 /* Noticons.ttf in Resources */ = {isa = PBXBuildFile; fileRef = F5A34D0C25DF2F7700C9654B /* Noticons.ttf */; };
 		F5A34D1225DF2F7F00C9654B /* Noticons.ttf in Resources */ = {isa = PBXBuildFile; fileRef = F5A34D0C25DF2F7700C9654B /* Noticons.ttf */; };
@@ -1017,7 +1015,6 @@
 		EA14534229AD874C001F3143 /* JetpackUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = JetpackUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		EA14534629AEF479001F3143 /* JetpackUITests.xctestplan */ = {isa = PBXFileReference; lastKnownFileType = text; path = JetpackUITests.xctestplan; sourceTree = "<group>"; };
 		EAB10E3F27487F5D000DA4C1 /* ReaderTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReaderTests.swift; sourceTree = "<group>"; };
-		EAD2BF4127594DAB00A847BB /* StatsTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = StatsTests.swift; sourceTree = "<group>"; };
 		F111B88B2658102700057942 /* Combine.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Combine.framework; path = System/Library/Frameworks/Combine.framework; sourceTree = SDKROOT; };
 		F13E7FDD2566B0AB007D420A /* Intents.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Intents.framework; path = System/Library/Frameworks/Intents.framework; sourceTree = SDKROOT; };
 		F1482CDF2575BDA4007E4DD6 /* SitesDataProvider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SitesDataProvider.swift; sourceTree = "<group>"; };
@@ -2048,7 +2045,6 @@
 				80379C6D2A5C0D8F00D924AC /* PostTests.swift */,
 				EAB10E3F27487F5D000DA4C1 /* ReaderTests.swift */,
 				CC7CB97222B1510900642EE9 /* SignupTests.swift */,
-				EAD2BF4127594DAB00A847BB /* StatsTests.swift */,
 				0C38581F2CA74DC7004880ED /* AppSettingsTests.swift */,
 			);
 			path = Tests;
@@ -3771,7 +3767,6 @@
 				80B42AC02AB2CB1400377607 /* PagesTests.swift in Sources */,
 				EA14532E29AD874C001F3143 /* BaseScreen.swift in Sources */,
 				0C3858202CA74DC7004880ED /* AppSettingsTests.swift in Sources */,
-				EA14533029AD874C001F3143 /* StatsTests.swift in Sources */,
 				EA14533129AD874C001F3143 /* WPUITestCredentials.swift in Sources */,
 				EA14533229AD874C001F3143 /* SignupTests.swift in Sources */,
 				EA14533329AD874C001F3143 /* EditorFlow.swift in Sources */,
@@ -3818,7 +3813,6 @@
 				80B42ABF2AB2CB1300377607 /* PagesTests.swift in Sources */,
 				BE2B4E9F1FD664F5007AE3E4 /* BaseScreen.swift in Sources */,
 				0C3858212CA74DC7004880ED /* AppSettingsTests.swift in Sources */,
-				EAD2BF4227594DAB00A847BB /* StatsTests.swift in Sources */,
 				CC8A5EAB22159FA6001B7874 /* WPUITestCredentials.swift in Sources */,
 				CC7CB97322B1510900642EE9 /* SignupTests.swift in Sources */,
 				CC52188C2278C622008998CE /* EditorFlow.swift in Sources */,
