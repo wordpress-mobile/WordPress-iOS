@@ -189,26 +189,27 @@ final class BlogDashboardViewModel {
 
 private extension BlogDashboardViewModel {
 
-    /// Warms up the editor for the given blog if it hasn't been warmed up already.
-    /// This avoids duplicative warmups when the site hasn't changed.
+    /// Warms up the editor for the given blog.
+    ///
+    /// This performs two operations:
+    /// 1. WebKit warmup (once per blog) - pre-compiles HTML/JS
+    /// 2. Data prefetch (always called) - fetches settings, assets, preload list
+    ///
+    /// The prefetch is always called because `EditorDependencyManager` handles its own
+    /// caching and needs to detect when the plugins feature flag changes.
     func warmUpEditorIfNeeded(for blog: Blog) {
         guard RemoteFeatureFlag.newGutenberg.enabled() else {
             return
         }
 
-        guard blog.objectID != Self.lastWarmedUpBlogID else {
-            // Editor already warmed up for this blog
-            return
+        // WebKit warmup - only needed once per blog (shaves ~100-200ms)
+        if blog.objectID != Self.lastWarmedUpBlogID {
+            Self.lastWarmedUpBlogID = blog.objectID
+            let configuration = EditorConfiguration(blog: blog)
+            GutenbergKit.EditorViewController.warmup(configuration: configuration)
         }
 
-        Self.lastWarmedUpBlogID = blog.objectID
-
-        let configuration = EditorConfiguration(blog: blog)
-
-        // WebKit warmup - pre-compile HTML/JS (shaves ~100-200ms)
-        GutenbergKit.EditorViewController.warmup(configuration: configuration)
-
-        // Data prefetch - pre-fetch settings, assets, preload list
+        // Data prefetch - always call to allow EditorDependencyManager to detect flag changes
         EditorDependencyManager.shared.prefetchDependencies(for: blog)
     }
 
