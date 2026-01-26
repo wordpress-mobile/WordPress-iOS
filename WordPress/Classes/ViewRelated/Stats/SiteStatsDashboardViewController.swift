@@ -192,7 +192,9 @@ public class SiteStatsDashboardViewController: UIViewController {
 
         switch currentSelectedTab {
         case .insights:
-            parent?.navigationItem.rightBarButtonItem = manageInsightsButton
+            parent?.navigationItem.trailingItemGroups = [
+                UIBarButtonItemGroup.fixedGroup(items: [manageInsightsButton])
+            ]
         case .traffic:
             // Always show the menu for switching between stats experiences
             statsMenuButton.menu = createStatsMenu()
@@ -212,9 +214,9 @@ public class SiteStatsDashboardViewController: UIViewController {
                 }
             }
         case .ads:
-            parent?.navigationItem.rightBarButtonItem = nil
+            parent?.navigationItem.trailingItemGroups = []
         default:
-            parent?.navigationItem.rightBarButtonItem = nil
+            parent?.navigationItem.trailingItemGroups = []
         }
     }
 
