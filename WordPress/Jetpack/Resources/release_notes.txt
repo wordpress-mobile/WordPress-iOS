@@ -1,29 +1,31 @@
-* [**] Intelligence: Expand AI-based features to more locales [#25034]
-* [**] Reader: Add "Freshly Pressed" to Discover [#24828]
-* [*] Reader: Keep only one "Search" option in the main sidebar [#25116]
-* [*] Reader: Fix Send button design in Comments [#25092]
-* [*] Rename "Recommended" to "For You" [#25123]
-* [*] Reader: Fix article view ignoring `use_excerpt` [#25108]
-* [*] Reader: Add translation support for posts [#25089]
-* [*] Reader: Collapse multiple spaces in site titles into one [#25094]
-* [*] Reader: Add a "Leave Comment" button to directly to the "Comments" under the article (one less tap to leave a comment) [#25155]
-* [*] Reader: You can now reply and like the comments directly under the artile and see more of them [#25155]
-* [*] Reader: Collapse very long comments so it's easier to navigate large comment threads [#25155]
-* [*] Reader: Fix an issue where in rare scenarios comments would be displayed with a wrong height [#25156]
-* [*] Post Settings: Fix post Visibility discoverability [#25127]
-* [*] Post Settings: Fix an issue with button "Done" sometimes disappearing when you entering password for post when publishing [#25138]
-* [*] Post Settings: Show the selected value for the "Access" field [#25138]
-* [*] Fix previewing posts on WordPress.com atomic sites [#25045]
-* [**] Stats: Add Country/Region/City picker to the Locations card [#25125]
-* [*] Stats: Rename "External Links" to "Clicks" to be consistent with the web [#25090]
-* [*] Stats: Add an option to disable automatic comparisons and remember the selection across launches [#25143]
-* [*] Stats: Add long-press support for bars in a "Bar Chart" view [#25133]
-* [*] Stats: Fix an issue where bar chart would prevent vertical scroll [#25133]
-* [*] Stats: Fix an issue with External Links (Clicks) sometimes displayed incorrectly [#25128]
-* [*] Stats: Fix locations data discrepancy with the web [#25105]
-* [*] Stats: Add days/weeks/months/years picker for bar and line charts [#25093]
-* [*] Stats: Fix an issue with weekly data for the comparison period sometimes not being shown correctly [#25093]
-* [*] Stats: Fix ordering of Top List items with the same metrics – sort by name [#25135]
-* [*] Techical: Remove obsolete Core Data models to slightly reduce the app size (-6.4 MB) [#25124]
-* [*] Update some illustrations, app shortcut icons, and more to better match the system [#25141], [#25115], [#25140], [#25122]
-* [*] Site Picker -> Add self-hosted sites now uses Application Password authentication [#25148]
+Our AI support feature, WordPress Intelligence, is now available in more locales and languages. Everyone’s favorite helper just got a whole lot handier.
+
+We improved the Stats section by roughly 83%.
+
+- The Locations card lets you filter data by country, region, and city. This data is consistent with Jetpack’s web version.
+- “External Links” is now “Clicks,” making it consistent with the web version. We fixed a bug where this area sometimes displayed incorrectly.
+- You can turn off automatic data comparison and save that setting for future app usage. We fixed an issue where weekly data for the comparison period didn’t always display correctly.
+- Long-pressing on a bar chart will show you more details. Vertical scrolling is also fixed.
+- You can view bar graph and line chart data grouped by days, weeks, months, and years.
+- Top List items are sorted by name and ordered properly.
+
+We made lots of changes to the Reader, too.
+
+- There’s a new “Freshly Pressed” tab on the Discover screen. We also changed the “Recommended” tab to “For You.”
+- There’s only one Search option in the main sidebar.
+- The “Read More” view works the same, no matter where you tap it, and you can now see the whole excerpt. So much more to explore.
+- The Comments section lets you reply and like comments directly below the article. There’s a new “Leave Comment” button under articles for faster commenting.
+- You can see two comments by default instead of just one, and very long comments can be collapsed for easier reading.
+- We made a few visual issues with the Comments section, too. Comments now have the correct height, the “View All Comments” button stands out more, and the “Send” button is styled properly.
+- You can read posts in your preferred language with in-app translation support.
+- Multiple spaces in site titles are collapsed into one for easier reading and display.
+
+We made a technical update that reduces the size of your app by about 6 MB. What will you do with all that newfound space?
+
+It’s easier to find, see, and change the visibility settings of existing posts. The “Done” button also won’t disappear when you set the password while publishing a password-protected post.
+
+Looking good: we updated shortcut icons and illustrations to better match the rest of the app, as well as fit better with your device.
+
+We fixed an issue so post previews now work properly for certain sites using Business and Commerce plans.
+
+When you add a new self-hosted site, you’ll be asked for your app password to authenticate. Keep it secret. Keep it safe.
