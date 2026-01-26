@@ -86,7 +86,13 @@ public final class AdaptiveTabBarController<Item: AdaptiveTabBarItem> {
 
         if viewController.traitCollection.horizontalSizeClass == .regular {
             filterBarContainer.removeFromSuperview()
-            (navigationItem ?? viewController.navigationItem).leftBarButtonItem = UIBarButtonItem(customView: segmentedControl)
+            (navigationItem ?? viewController.navigationItem).leftBarButtonItem = {
+                let button = UIBarButtonItem(customView: segmentedControl)
+                if #available(iOS 26.0, *) {
+                    button.hidesSharedBackground = true
+                }
+                return button
+            }()
             viewController.additionalSafeAreaInsets = .zero
         } else {
             viewController.navigationItem.titleView = nil
