@@ -29,6 +29,11 @@ final class EditorDependencyManager: Sendable {
     /// Cached dependencies keyed by blog's ObjectID string representation.
     private let cache = LockingHashMap<EditorDependencies>()
 
+    /// Tracks the `newGutenbergPlugins` flag value at the time the cache was last populated.
+    /// Used to detect when the flag changes and invalidate all stale entries.
+    private let pluginsFlagLock = NSLock()
+    private var _lastPluginsFlagValue: Bool?
+
     /// Currently running prefetch tasks, keyed by blog's ObjectID string.
     private let prefetchTasks = LockingTaskHashMap<Void, Never>()
 
@@ -83,6 +88,16 @@ final class EditorDependencyManager: Sendable {
             return nil
         }
 
+        // Check if the plugins flag changed since we last cached
+        let currentPluginsFlagValue = RemoteFeatureFlag.newGutenbergPlugins.enabled()
+        let lastFlagValue = pluginsFlagLock.withLock { _lastPluginsFlagValue }
+        if let lastFlagValue, lastFlagValue != currentPluginsFlagValue {
+            // Flag changed - invalidate all cached entries
+            DDLogInfo("EditorDependencyManager: Plugins flag changed (\(lastFlagValue) -> \(currentPluginsFlagValue)), invalidating all cached dependencies")
+            cache.removeAll()
+            prefetchTasks.removeAll()
+        }
+
         // Don't prefetch if we already have cached dependencies
         if cache[key] != nil {
             return nil
@@ -95,6 +110,7 @@ final class EditorDependencyManager: Sendable {
             do {
                 let dependencies = try await service.prepare()
                 self.cache[key] = dependencies
+                self.pluginsFlagLock.withLock { self._lastPluginsFlagValue = currentPluginsFlagValue }
             } catch {
                 // Prefetch failed - editor will fall back to async loading
                 DDLogError("EditorDependencyManager: Failed to prefetch dependencies: \(error)")
@@ -145,6 +161,7 @@ final class EditorDependencyManager: Sendable {
     /// Clears all cached dependencies.
     func invalidateAll() {
         cache.removeAll()
+        pluginsFlagLock.withLock { _lastPluginsFlagValue = nil }
         prefetchTasks.removeAll()
         // No need to use `removeAll` for the `invalidationTasks`
     }
