@@ -1,6 +1,7 @@
 import Foundation
 import UIKit
 import CoreData
+import GutenbergKit
 import WordPressData
 import WordPressKit
 import WordPressCore
@@ -29,6 +30,9 @@ final class BlogDashboardViewModel {
     private let managedObjectContext: NSManagedObjectContext
 
     private var blog: Blog
+
+    /// Tracks the last blog for which the editor was warmed up to avoid redundant warmups.
+    private static var lastWarmedUpBlogID: NSManagedObjectID?
 
     private var error: Error?
 
@@ -128,9 +132,7 @@ final class BlogDashboardViewModel {
     }
 
     func viewWillAppear() {
-        if RemoteFeatureFlag.newGutenberg.enabled() {
-            EditorDependencyManager.shared.prefetchDependencies(for: self.blog)
-        }
+        warmUpEditorIfNeeded(for: self.blog)
         quickActionsViewModel.viewWillAppear()
     }
 
@@ -148,9 +150,7 @@ final class BlogDashboardViewModel {
         self.loadCardsFromCache()
         self.loadCards()
 
-        if RemoteFeatureFlag.newGutenberg.enabled() {
-            EditorDependencyManager.shared.prefetchDependencies(for: blog)
-        }
+        warmUpEditorIfNeeded(for: blog)
     }
 
     func clearEditorCache(_ completion: @escaping () -> Void) {
@@ -188,6 +188,29 @@ final class BlogDashboardViewModel {
 // MARK: - Private methods
 
 private extension BlogDashboardViewModel {
+
+    /// Warms up the editor for the given blog if it hasn't been warmed up already.
+    /// This avoids duplicative warmups when the site hasn't changed.
+    func warmUpEditorIfNeeded(for blog: Blog) {
+        guard RemoteFeatureFlag.newGutenberg.enabled() else {
+            return
+        }
+
+        guard blog.objectID != Self.lastWarmedUpBlogID else {
+            // Editor already warmed up for this blog
+            return
+        }
+
+        Self.lastWarmedUpBlogID = blog.objectID
+
+        let configuration = EditorConfiguration(blog: blog)
+
+        // WebKit warmup - pre-compile HTML/JS (shaves ~100-200ms)
+        GutenbergKit.EditorViewController.warmup(configuration: configuration)
+
+        // Data prefetch - pre-fetch settings, assets, preload list
+        EditorDependencyManager.shared.prefetchDependencies(for: blog)
+    }
 
     func registerNotifications() {
         NotificationCenter.default.addObserver(self, selector: #selector(showDraftsCardIfNeeded), name: .newPostCreated, object: nil)
