@@ -1,7 +1,9 @@
-* [*] Post Settings: Fix post Visibility discoverability [#25127]
-* [*] Post Settings: Fix an issue with button "Done" sometimes disappearing when you entering password for post when publishing [#25138]
-* [*] Post Settings: Show the selected value for the "Access" field [#25138]
-* [*] Fix previewing posts on WordPress.com atomic sites [#25045]
-* [*] Techical: Remove obsolete Core Data models to slightly reduce the app size (-6.4 MB) [#25124]
-* [*] Update some illustrations, app shortcut icons, and more to better match the system [#25141], [#25115], [#25140], [#25122]
-* [*] Site Picker -> Add self-hosted sites now uses Application Password authentication [#25148]
+We made a technical update that reduces the size of your app by about 6 MB. What will you do with all that newfound space?
+
+It’s easier to find, see, and change the visibility settings of existing posts. The “Done” button also won’t disappear when you set the password while publishing a password-protected post.
+
+Looking good: we updated shortcut icons and illustrations to better match the rest of the app, as well as fit better with your device.
+
+We fixed an issue so post previews now work properly for certain sites using Business and Commerce plans.
+
+When you add a new self-hosted site, you’ll be asked for your app password to authenticate. Keep it secret. Keep it safe.
