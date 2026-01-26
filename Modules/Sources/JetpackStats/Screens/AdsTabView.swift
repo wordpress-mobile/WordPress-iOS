@@ -2,6 +2,7 @@ import SwiftUI
 
 public struct AdsTabView: View {
     @StateObject private var viewModel: WordAdsChartCardViewModel
+    @Environment(\.horizontalSizeClass) var horizontalSizeClass
 
     public init(context: StatsContext, router: StatsRouter) {
         _viewModel = StateObject(
@@ -15,7 +16,7 @@ public struct AdsTabView: View {
                 WordAdsChartCard(viewModel: viewModel)
             }
             .padding(.vertical, Constants.step2)
-            .padding(.horizontal, Constants.step1)
+            .padding(.horizontal, Constants.cardHorizontalInset(for: horizontalSizeClass))
             .padding(.top, Constants.step0_5)
         }
         .background(Constants.Colors.background)
