@@ -22,7 +22,16 @@ private struct DisplayPost: Equatable {
         self.date = entity.dateGmt
         self.title = entity.title?.raw
         self.excerpt = entity.excerpt?.raw
-            ?? String((entity.content.raw ?? entity.content.rendered).prefix(excerptLimit))
+            ?? GutenbergExcerptGenerator
+                .firstParagraph(
+                    from: entity.content.rendered,
+                    maxLength: excerptLimit
+                )
+                .replacingOccurrences(
+                    of: "[\n]{2,}",
+                    with: "\n",
+                    options: .regularExpression
+                )
     }
 
     static let placeholder = DisplayPost(
