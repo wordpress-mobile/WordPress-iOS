@@ -274,7 +274,7 @@ struct CustomPostList: View {
                 makeTitleView()
             }
             ToolbarItem(placement: .topBarTrailing) {
-                makeFilterMenu()
+                filterMenu
             }
         }
     }
@@ -290,13 +290,15 @@ struct CustomPostList: View {
             }
     }
 
-    @ViewBuilder
-    private func makeFilterMenu() -> some View {
+    private var filterMenu: some View {
         Menu {
-            FilterMenuItem(filter: $filter, status: .custom("any"), title: Strings.filterAll)
-            FilterMenuItem(filter: $filter, status: .publish, title: Strings.filterPublished)
-            FilterMenuItem(filter: $filter, status: .draft, title: Strings.filterDraft)
-            FilterMenuItem(filter: $filter, status: .future, title: Strings.filterScheduled)
+            Picker("", selection: $filter.status) {
+                Text(Strings.filterAll).tag(PostStatus.custom("any"))
+                Text(Strings.filterPublished).tag(PostStatus.publish)
+                Text(Strings.filterDraft).tag(PostStatus.draft)
+                Text(Strings.filterScheduled).tag(PostStatus.future)
+            }
+            .pickerStyle(.inline)
         } label: {
             Image(systemName: "line.3.horizontal.decrease")
         }
@@ -527,26 +529,6 @@ private enum Strings {
         value: "Scheduled",
         comment: "Filter option to show only scheduled posts"
     )
-}
-
-private struct FilterMenuItem: View {
-    @Binding var filter: Filter
-    let status: PostStatus
-    let title: String
-
-    var body: some View {
-        Button {
-            filter.status = status
-        } label: {
-            Label {
-                Text(title)
-            } icon: {
-                if filter.status == status {
-                    Image(systemName: "checkmark")
-                }
-            }
-        }
-    }
 }
 
 // MARK: - Previews
