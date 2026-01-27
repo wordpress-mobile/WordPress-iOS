@@ -36,6 +36,9 @@ public struct AdsTabView: View {
         .background(Constants.Colors.background)
         .environment(\.context, context)
         .environment(\.router, router)
+        .onAppear {
+            context.tracker?.send(.adsTabShown)
+        }
         .task {
             await earningsViewModel.refresh()
         }

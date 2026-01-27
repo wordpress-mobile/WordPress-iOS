@@ -641,6 +641,7 @@ import WordPressShared
     case jetpackStatsTrafficTabShown
     case jetpackStatsRealtimeTabShown
     case jetpackStatsSubscribersTabShown
+    case jetpackStatsAdsTabShown
     case jetpackStatsPostDetailsScreenShown
     case jetpackStatsAuthorStatsScreenShown
     case jetpackStatsArchiveStatsScreenShown
@@ -1789,6 +1790,8 @@ import WordPressShared
             return "jetpack_stats_realtime_tab_shown"
         case .jetpackStatsSubscribersTabShown:
             return "jetpack_stats_subscribers_tab_shown"
+        case .jetpackStatsAdsTabShown:
+            return "jetpack_stats_ads_tab_shown"
         case .jetpackStatsPostDetailsScreenShown:
             return "jetpack_stats_post_details_screen_shown"
         case .jetpackStatsAuthorStatsScreenShown:

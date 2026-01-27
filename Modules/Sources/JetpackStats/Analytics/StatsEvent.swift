@@ -29,6 +29,9 @@ public enum StatsEvent {
     /// Subscribers tab shown
     case subscribersTabShown
 
+    /// Ads tab shown
+    case adsTabShown
+
     /// Post details screen shown
     case postDetailsScreenShown
 

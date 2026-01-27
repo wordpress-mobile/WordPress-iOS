@@ -9,6 +9,7 @@ extension StatsEvent {
         case .trafficTabShown: .jetpackStatsTrafficTabShown
         case .realtimeTabShown: .jetpackStatsRealtimeTabShown
         case .subscribersTabShown: .jetpackStatsSubscribersTabShown
+        case .adsTabShown: .jetpackStatsAdsTabShown
         case .postDetailsScreenShown: .jetpackStatsPostDetailsScreenShown
         case .authorStatsScreenShown: .jetpackStatsAuthorStatsScreenShown
         case .archiveStatsScreenShown: .jetpackStatsArchiveStatsScreenShown
