@@ -9,6 +9,16 @@ env:
 
 # This is the default pipeline – it will build and test the app
 steps:
+  #################
+  # Xcode 26.2 Image Validation (temporary - remove after validation)
+  #################
+  - label: "🔍 Validate Xcode 26.2 Image"
+    command: .buildkite/commands/validate-xcode-26.2-image.sh
+    plugins: [$CI_TOOLKIT_PLUGIN]
+    notify:
+      - github_commit_status:
+          context: "Xcode 26.2 Image Validation"
+
   - group: ":eyeglasses: Reader Builds"
     steps:
       - label: ":eyeglasses: Reader ASC Demo Build"
