@@ -55,11 +55,7 @@ struct WordAdsEarningsTotalsCard: View {
 
     private var totalEarningsValue: String {
         guard let value = metricsData?.totalEarnings else { return "–" }
-        let formatter = NumberFormatter()
-        formatter.numberStyle = .currency
-        formatter.currencyCode = "USD"
-        formatter.maximumFractionDigits = 2
-        return formatter.string(from: value as NSDecimalNumber) ?? "$0.00"
+        return value.formatted(.currency(code: "USD"))
     }
 
     private var metricsData: EarningsMetricsData? {
@@ -100,11 +96,7 @@ private struct SecondaryMetricView: View {
 
     private var displayValue: String {
         guard let value else { return "–" }
-        let formatter = NumberFormatter()
-        formatter.numberStyle = .currency
-        formatter.currencyCode = "USD"
-        formatter.maximumFractionDigits = 2
-        return formatter.string(from: value as NSDecimalNumber) ?? "$0.00"
+        return value.formatted(.currency(code: "USD"))
     }
 }
 
