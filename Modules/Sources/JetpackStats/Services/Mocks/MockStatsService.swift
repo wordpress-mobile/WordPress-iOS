@@ -413,6 +413,7 @@ actor MockStatsService: ObservableObject, StatsServiceProtocol {
 
         var wordadsDict: [String: [String: Any]] = [:]
         var totalEarnings: Double = 0
+        var totalAmountOwed: Double = 0
 
         // Generate earnings for last 12 months
         for monthsAgo in 0..<12 {
@@ -429,6 +430,14 @@ actor MockStatsService: ObservableObject, StatsServiceProtocol {
 
             totalEarnings += amount
 
+            // Months older than 2 months are paid, recent months are outstanding
+            let isPaid = monthsAgo > 2
+            let status = isPaid ? "1" : "0"
+
+            if !isPaid {
+                totalAmountOwed += amount
+            }
+
             // Generate realistic pageviews
             let basePageviews = Int.random(in: 50...500)
             let pageviewsGrowth = 1.0 + (Double(12 - monthsAgo) * 0.1)
@@ -436,7 +445,7 @@ actor MockStatsService: ObservableObject, StatsServiceProtocol {
 
             wordadsDict[period] = [
                 "amount": amount,
-                "status": "0",
+                "status": status,
                 "pageviews": String(pageviews)
             ]
         }
@@ -447,7 +456,7 @@ actor MockStatsService: ObservableObject, StatsServiceProtocol {
             "URL": "https://mocksite.wordpress.com",
             "earnings": [
                 "total_earnings": String(format: "%.2f", totalEarnings),
-                "total_amount_owed": String(format: "%.2f", totalEarnings * 0.1), // 10% of total
+                "total_amount_owed": String(format: "%.2f", totalAmountOwed),
                 "wordads": wordadsDict,
                 "sponsored": [],
                 "adjustment": []

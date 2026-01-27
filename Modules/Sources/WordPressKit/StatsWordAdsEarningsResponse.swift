@@ -104,10 +104,7 @@ public struct StatsWordAdsEarningsResponse: Decodable {
         }
 
         public static func < (lhs: Period, rhs: Period) -> Bool {
-            if lhs.year != rhs.year {
-                return lhs.year < rhs.year
-            }
-            return lhs.month < rhs.month
+            (lhs.year, lhs.month) < (rhs.year, rhs.month)
         }
     }
 }
