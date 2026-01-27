@@ -76,7 +76,7 @@ struct WordAdsPaymentHistoryCard: View {
             ForEach(Array(viewModels.enumerated()), id: \.offset) { index, viewModel in
                 WordAdsPaymentHistoryRowView(viewModel: viewModel)
                     .padding(.horizontal, Constants.step3)
-                    .padding(.vertical, 8)
+                    .padding(.vertical, 9)
 
                 if index < viewModels.count - 1 {
                     Divider()

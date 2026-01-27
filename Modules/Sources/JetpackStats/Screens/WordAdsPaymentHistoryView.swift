@@ -12,7 +12,7 @@ struct WordAdsPaymentHistoryView: View {
                 Section(header: Text(String(group.year))) {
                     ForEach(group.earnings, id: \.period) { earning in
                         WordAdsPaymentHistoryRowView(viewModel: WordAdsPaymentHistoryRowViewModel(earning: earning))
-                            .listRowInsets(EdgeInsets(top: 4, leading: 16, bottom: 4, trailing: 16))
+                            .listRowInsets(EdgeInsets(top: 8, leading: 16, bottom: 8, trailing: 16))
                     }
                 }
             }
