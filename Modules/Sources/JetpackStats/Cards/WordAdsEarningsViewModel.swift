@@ -21,29 +21,17 @@ final class WordAdsEarningsViewModel: ObservableObject {
         self.service = service
     }
 
-    // MARK: - Public Methods
-
-    func onAppear() {
-        guard earnings == nil && loadingError == nil else { return }
-        loadData()
-    }
-
-    // MARK: - Private Methods
-
-    private func loadData() {
-        loadTask?.cancel()
-        loadTask = Task {
-            do {
-                let response = try await service.getWordAdsEarnings()
-                guard !Task.isCancelled else { return }
-                self.earnings = response
-                self.loadingError = nil
-                self.isFirstLoad = false
-            } catch {
-                guard !Task.isCancelled else { return }
-                self.loadingError = error
-                self.isFirstLoad = false
-            }
+    func refresh() async {
+        do {
+            let response = try await service.getWordAdsEarnings()
+            guard !Task.isCancelled else { return }
+            self.earnings = response
+            self.loadingError = nil
+            self.isFirstLoad = false
+        } catch {
+            guard !Task.isCancelled else { return }
+            self.loadingError = error
+            self.isFirstLoad = false
         }
     }
 }
