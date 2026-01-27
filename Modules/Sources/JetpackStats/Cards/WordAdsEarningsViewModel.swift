@@ -13,7 +13,6 @@ final class WordAdsEarningsViewModel: ObservableObject {
     // MARK: - Dependencies
 
     private let service: any StatsServiceProtocol
-    private var loadTask: Task<Void, Never>?
 
     // MARK: - Initialization
 
