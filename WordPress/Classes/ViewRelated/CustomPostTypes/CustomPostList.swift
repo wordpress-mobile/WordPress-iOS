@@ -398,7 +398,7 @@ private struct CustomPostCollectionView: View {
 
             let listInfo = collection.listInfo()
 
-            NSLog("List info: \(String(describing: listInfo))")
+            DDLogInfo("List info: \(String(describing: listInfo))")
 
             do {
                 let items = try await collection.loadItems().map(ListItem.init)
