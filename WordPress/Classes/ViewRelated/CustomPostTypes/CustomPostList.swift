@@ -41,6 +41,7 @@ private struct DisplayPost: Equatable {
     )
 }
 
+// TODO: Decouple the "display item" from the internall states of the `PostMetadataCollectionItem`
 private enum ListItem: Identifiable, Equatable {
     case ready(id: Int64, post: DisplayPost, fullPost: AnyPostWithEditContext)
     case stale(id: Int64, post: DisplayPost)
