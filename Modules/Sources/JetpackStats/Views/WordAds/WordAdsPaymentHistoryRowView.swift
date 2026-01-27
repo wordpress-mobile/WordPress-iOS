@@ -20,7 +20,7 @@ struct WordAdsPaymentHistoryRowView: View {
             // Metrics
             VStack(alignment: .trailing, spacing: 2) {
                 Text(viewModel.formattedAmount)
-                    .font(.subheadline.weight(.semibold))
+                    .font(.subheadline.weight(.medium))
                     .foregroundColor(.primary)
 
                 Text(viewModel.formattedAdsServed)

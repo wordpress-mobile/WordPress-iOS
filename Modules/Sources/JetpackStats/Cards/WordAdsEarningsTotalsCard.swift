@@ -7,12 +7,31 @@ struct WordAdsEarningsTotalsCard: View {
     @Environment(\.openURL) private var openURL
 
     var body: some View {
-        VStack(alignment: .leading, spacing: Constants.step2) {
+        VStack(alignment: .leading, spacing: 0) {
             StatsCardTitleView(title: Strings.WordAds.totalEarnings)
 
-            EarningsMetricsStrip(data: metricsData)
-                .redacted(reason: viewModel.isFirstLoad ? .placeholder : [])
+            VStack(alignment: .leading, spacing: Constants.step1) {
+                Text(totalEarningsValue)
+                    .contentTransition(.numericText())
+                    .font(Font.make(.recoleta, textStyle: .largeTitle, weight: .medium))
+                    .foregroundColor(.primary)
+                    .animation(.spring, value: totalEarningsValue)
+
+                HStack(spacing: Constants.step4) {
+                    SecondaryMetricView(
+                        title: Strings.WordAds.paid,
+                        value: metricsData?.paid
+                    )
+
+                    SecondaryMetricView(
+                        title: Strings.WordAds.outstanding,
+                        value: metricsData?.outstanding
+                    )
+                }
+            }
+            .redacted(reason: viewModel.isFirstLoad ? .placeholder : [])
         }
+        .frame(maxWidth: .infinity, alignment: .leading)
         .padding(Constants.step2)
         .cardStyle()
         .overlay(alignment: .topTrailing) {
@@ -34,6 +53,15 @@ struct WordAdsEarningsTotalsCard: View {
         .tint(Color.primary)
     }
 
+    private var totalEarningsValue: String {
+        guard let value = metricsData?.totalEarnings else { return "–" }
+        let formatter = NumberFormatter()
+        formatter.numberStyle = .currency
+        formatter.currencyCode = "USD"
+        formatter.maximumFractionDigits = 2
+        return formatter.string(from: value as NSDecimalNumber) ?? "$0.00"
+    }
+
     private var metricsData: EarningsMetricsData? {
         if let earnings = viewModel.earnings {
             return EarningsMetricsData(
@@ -49,58 +77,34 @@ struct WordAdsEarningsTotalsCard: View {
     }
 }
 
-// MARK: - Earnings Metrics Strip
+// MARK: - Secondary Metric View
 
-private struct EarningsMetricsStrip: View {
-    let data: EarningsMetricsData?
+private struct SecondaryMetricView: View {
+    let title: String
+    let value: Decimal?
 
     var body: some View {
-        ScrollView(.horizontal, showsIndicators: false) {
-            HStack(spacing: Constants.step3) {
-                MetricView(
-                    title: Strings.WordAds.earnings,
-                    value: data?.totalEarnings
-                )
-                MetricView(
-                    title: Strings.WordAds.paid,
-                    value: data?.paid
-                )
-                MetricView(
-                    title: Strings.WordAds.outstanding,
-                    value: data?.outstanding
-                )
-            }
+        VStack(alignment: .leading, spacing: 2) {
+            Text(title)
+                .font(.subheadline)
+                .foregroundColor(.secondary)
+
+            Text(displayValue)
+                .contentTransition(.numericText())
+                .font(.subheadline.weight(.medium))
+                .foregroundColor(.primary)
+                .animation(.spring, value: displayValue)
         }
+        .lineLimit(1)
     }
 
-    struct MetricView: View {
-        let title: String
-        let value: Decimal?
-
-        var body: some View {
-            VStack(alignment: .leading, spacing: 0) {
-                Text(title.uppercased())
-                    .font(.caption.weight(.medium))
-                    .foregroundColor(.secondary)
-
-                Text(displayValue)
-                    .contentTransition(.numericText())
-                    .font(Font.make(.recoleta, textStyle: .title, weight: .medium))
-                    .foregroundColor(.primary)
-                    .animation(.spring, value: displayValue)
-            }
-            .lineLimit(1)
-            .frame(minWidth: 78, alignment: .leading)
-        }
-
-        private var displayValue: String {
-            guard let value else { return "–" }
-            let formatter = NumberFormatter()
-            formatter.numberStyle = .currency
-            formatter.currencyCode = "USD"
-            formatter.maximumFractionDigits = 2
-            return formatter.string(from: value as NSDecimalNumber) ?? "$0.00"
-        }
+    private var displayValue: String {
+        guard let value else { return "–" }
+        let formatter = NumberFormatter()
+        formatter.numberStyle = .currency
+        formatter.currencyCode = "USD"
+        formatter.maximumFractionDigits = 2
+        return formatter.string(from: value as NSDecimalNumber) ?? "$0.00"
     }
 }
 

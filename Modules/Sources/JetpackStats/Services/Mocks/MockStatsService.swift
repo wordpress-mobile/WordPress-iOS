@@ -423,8 +423,8 @@ actor MockStatsService: ObservableObject, StatsServiceProtocol {
             let period = dateFormatter.string(from: monthDate)
 
             // Generate realistic earnings that increase over time
-            let baseAmount = Double.random(in: 0.01...2.0)
-            let growthFactor = 1.0 + (Double(12 - monthsAgo) * 0.05) // More recent months earn more
+            let baseAmount = Double.random(in: 2000...5000)
+            let growthFactor = 1.0 + (Double(12 - monthsAgo) * 0.08) // More recent months earn more
             let amount = baseAmount * growthFactor
 
             totalEarnings += amount
@@ -447,7 +447,7 @@ actor MockStatsService: ObservableObject, StatsServiceProtocol {
             "URL": "https://mocksite.wordpress.com",
             "earnings": [
                 "total_earnings": String(format: "%.2f", totalEarnings),
-                "total_amount_owed": String(format: "%.2f", totalEarnings * 0.9), // 90% of total
+                "total_amount_owed": String(format: "%.2f", totalEarnings * 0.1), // 10% of total
                 "wordads": wordadsDict,
                 "sponsored": [],
                 "adjustment": []
