@@ -7,9 +7,13 @@ public struct AdsTabView: View {
     @StateObject private var earningsViewModel: WordAdsEarningsViewModel
 
     @Environment(\.horizontalSizeClass) var horizontalSizeClass
-    @Environment(\.context) private var context
+
+    private let context: StatsContext
+    private let router: StatsRouter
 
     public init(context: StatsContext, router: StatsRouter) {
+        self.context = context
+        self.router = router
         _chartViewModel = StateObject(
             wrappedValue: WordAdsChartCardViewModel(service: context.service)
         )
@@ -30,6 +34,8 @@ public struct AdsTabView: View {
             .padding(.top, Constants.step0_5)
         }
         .background(Constants.Colors.background)
+        .environment(\.context, context)
+        .environment(\.router, router)
         .onAppear {
             earningsViewModel.onAppear()
         }
@@ -45,6 +51,5 @@ public struct AdsTabView: View {
                 factory: MockStatsRouterScreenFactory()
             )
         )
-        .environment(\.context, .demo)
     }
 }
