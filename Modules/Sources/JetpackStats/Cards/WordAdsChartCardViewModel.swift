@@ -7,6 +7,7 @@ final class WordAdsChartCardViewModel: ObservableObject {
 
     @Published private(set) var chartData: [WordAdsMetric: SimpleChartData] = [:]
     @Published private(set) var isFirstLoad = true
+    @Published private(set) var isLoading = false
     @Published private(set) var loadingError: Error?
 
     @Published var selectedMetric: WordAdsMetric = .impressions
@@ -56,6 +57,12 @@ final class WordAdsChartCardViewModel: ObservableObject {
         chartData[selectedMetric]
     }
 
+    var placeholderTabViewData: [MetricsOverviewTabView<WordAdsMetric>.MetricData] {
+        WordAdsMetric.allMetrics.map { metric in
+            .init(metric: metric, value: 12345, previousValue: nil)
+        }
+    }
+
     // MARK: - Initialization
 
     init(service: any StatsServiceProtocol) {
@@ -95,10 +102,13 @@ final class WordAdsChartCardViewModel: ObservableObject {
         // Cancel any existing load task
         loadTask?.cancel()
 
+        withAnimation {
+            isLoading = true
+            loadingError = nil
+        }
+
         loadTask = Task { [weak self] in
             guard let self else { return }
-
-            self.loadingError = nil
 
             do {
                 let response = try await service.getWordAdsStats(
@@ -126,8 +136,11 @@ final class WordAdsChartCardViewModel: ObservableObject {
                     }
                 }
 
-                self.chartData = newChartData
-                self.isFirstLoad = false
+                withAnimation {
+                    self.chartData = newChartData
+                    self.isFirstLoad = false
+                    self.isLoading = false
+                }
 
                 // Automatically select the latest period if no selection exists
                 if self.selectedBarDate == nil, let latestDate = newChartData[self.selectedMetric]?.currentData.last?.date {
@@ -135,8 +148,11 @@ final class WordAdsChartCardViewModel: ObservableObject {
                 }
             } catch {
                 guard !Task.isCancelled else { return }
-                self.loadingError = error
-                self.isFirstLoad = false
+                withAnimation {
+                    self.loadingError = error
+                    self.isFirstLoad = false
+                    self.isLoading = false
+                }
             }
         }
     }

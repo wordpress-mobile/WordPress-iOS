@@ -59,6 +59,22 @@ enum Strings {
         static let revenue = AppLocalizedString("jetpackStats.wordAdsMetrics.revenue", value: "Revenue", comment: "Revenue from ads")
     }
 
+    enum WordAds {
+        static let totalEarnings = AppLocalizedString("jetpackStats.wordAds.totalEarnings", value: "Total Earnings", comment: "Title for WordAds total earnings card")
+        static let earnings = AppLocalizedString("jetpackStats.wordAds.earnings", value: "Earnings", comment: "Total earnings from WordAds")
+        static let paid = AppLocalizedString("jetpackStats.wordAds.paid", value: "Paid", comment: "Amount paid out from WordAds earnings")
+        static let outstanding = AppLocalizedString("jetpackStats.wordAds.outstanding", value: "Outstanding", comment: "Outstanding amount owed from WordAds")
+        static let learnMore = AppLocalizedString("jetpackStats.wordAds.learnMore", value: "Learn More", comment: "Button to learn more about WordAds earnings")
+        static let paymentsHistory = AppLocalizedString("jetpackStats.wordAds.paymentsHistory", value: "Payments History", comment: "Title for payment history card and screen")
+        static let noPaymentsYet = AppLocalizedString("jetpackStats.wordAds.noPaymentsYet", value: "No payments yet", comment: "Message shown when there are no payment records")
+        static func adsServed(_ count: String) -> String {
+            String.localizedStringWithFormat(
+                AppLocalizedString("jetpackStats.wordAds.adsServed.count", value: "%@ ads served", comment: "Number of ads served. %@ is the ads count."),
+                count
+            )
+        }
+    }
+
     enum SiteDataTypes {
         static let postsAndPages = AppLocalizedString("jetpackStats.siteDataTypes.postsAndPages", value: "Posts & Pages", comment: "Posts and pages data type")
         static let archive = AppLocalizedString("jetpackStats.siteDataTypes.archive", value: "Archive", comment: "Archive data type")

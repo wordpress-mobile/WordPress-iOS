@@ -118,6 +118,10 @@ actor StatsService: StatsServiceProtocol {
         return data
     }
 
+    func getWordAdsEarnings() async throws -> WordPressKit.StatsWordAdsEarningsResponse {
+        try await service.getWordAdsEarnings()
+    }
+
     private func fetchWordAdsStats(date: Date, granularity: DateRangeGranularity) async throws -> WordAdsMetricsResponse {
         let localDate = convertDateSiteToLocal(date)
 
