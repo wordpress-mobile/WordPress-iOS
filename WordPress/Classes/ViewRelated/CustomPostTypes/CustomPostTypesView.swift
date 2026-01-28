@@ -28,7 +28,7 @@ struct CustomPostTypesView: View {
         List {
             ForEach(types, id: \.1.slug) { (type, details) in
                 NavigationLink {
-                    CustomPostList(client: client, service: service, endpoint: type, details: details, blog: blog)
+                    CustomPostMainView(client: client, service: service, endpoint: type, details: details, blog: blog)
                 } label: {
                     VStack(alignment: .leading, spacing: 4) {
                         Text(details.name)
