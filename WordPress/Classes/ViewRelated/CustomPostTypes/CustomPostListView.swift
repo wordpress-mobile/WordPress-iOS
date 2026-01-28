@@ -22,7 +22,7 @@ struct CustomPostListView: View {
         .overlay {
             if viewModel.shouldDisplayEmptyView {
                 let emptyText = details.labels.notFound.isEmpty
-                    ? "No \(details.name)"
+                    ? String.localizedStringWithFormat(Strings.emptyStateMessage, details.name)
                     : details.labels.notFound
                 EmptyStateView(emptyText, systemImage: "doc.text")
             } else if viewModel.shouldDisplayInitialLoading {
@@ -188,6 +188,14 @@ private struct ErrorRow: View {
         .foregroundStyle(.red)
         .padding(.vertical, 4)
     }
+}
+
+private enum Strings {
+    static let emptyStateMessage = NSLocalizedString(
+        "customPostList.emptyState.message",
+        value: "No %1$@",
+        comment: "Empty state message when no custom posts exist. %1$@ is the post type name (e.g., 'Podcasts', 'Products')."
+    )
 }
 
 // MARK: - Previews
