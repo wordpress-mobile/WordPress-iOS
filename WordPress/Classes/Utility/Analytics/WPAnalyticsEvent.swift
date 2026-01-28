@@ -675,8 +675,10 @@ import WordPressShared
     case jetpackStatsTopListItemTapped
     case jetpackStatsLocationLevelChanged
     case jetpackStatsDeviceBreakdownChanged
+    case jetpackStatsUtmParamGroupingChanged
 
     // Navigation Events
+    case jetpackStatsUtmMetricStatsScreenShown
     case jetpackStatsTabSelected
 
     // Error Events
@@ -1849,8 +1851,12 @@ import WordPressShared
             return "jetpack_stats_location_level_changed"
         case .jetpackStatsDeviceBreakdownChanged:
             return "jetpack_stats_device_breakdown_changed"
+        case .jetpackStatsUtmParamGroupingChanged:
+            return "jetpack_stats_utm_param_grouping_changed"
 
         // Navigation Events
+        case .jetpackStatsUtmMetricStatsScreenShown:
+            return "jetpack_stats_utm_metric_stats_screen_shown"
         case .jetpackStatsTabSelected:
             return "jetpack_stats_tab_selected"
 

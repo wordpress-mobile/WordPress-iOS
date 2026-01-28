@@ -89,6 +89,17 @@ extension TopListItem.Author {
     }
 }
 
+extension TopListItem.UTMMetric {
+    init(_ utmMetric: WordPressKit.StatsUTMMetric, dateFormatter: DateFormatter) {
+        self.init(
+            label: utmMetric.label,
+            values: utmMetric.values,
+            metrics: SiteMetricsSet(views: utmMetric.viewsCount),
+            posts: utmMetric.posts.map { TopListItem.Post($0, dateFormatter: dateFormatter) }
+        )
+    }
+}
+
 extension TopListItem.ExternalLink {
     init(_ click: WordPressKit.StatsClick) {
         self.init(

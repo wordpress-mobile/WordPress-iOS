@@ -2,6 +2,7 @@
 -----
 * [**] Stats: Add new "Adds" tab to show WordAdds earnings and stats [#25165]
 * [**] Stats: Add "Devices" view to the "Traffic" tab [#25176]
+* [**] Stats: Add "UTM" view to the "Traffic" tab [#25178]
 
 26.6
 -----

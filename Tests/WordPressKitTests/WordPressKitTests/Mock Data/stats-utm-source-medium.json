@@ -1,0 +1,75 @@
+{
+  "top_utm_values": {
+    "[\"google\",\"cpc\"]": 152,
+    "[\"facebook\",\"social\"]": 120,
+    "[\"linkedin\",\"social\"]": 85,
+    "[\"google\",\"organic\"]": 67,
+    "[\"newsletter\",\"email\"]": 45,
+    "[\"twitter\",\"social\"]": 32,
+    "[\"reddit\",\"social\"]": 28
+  },
+  "top_posts": {
+    "[\"google\",\"cpc\"]": [
+      {
+        "id": 12345,
+        "title": "How to Build a Mobile App",
+        "views": 75,
+        "href": "https://example.com/how-to-build-mobile-app"
+      },
+      {
+        "id": 12346,
+        "title": "Swift Development Guide",
+        "views": 50,
+        "href": "https://example.com/swift-guide"
+      }
+    ],
+    "[\"facebook\",\"social\"]": [
+      {
+        "id": 12347,
+        "title": "Social Media Tips",
+        "views": 60,
+        "href": "https://example.com/social-media-tips"
+      }
+    ],
+    "[\"linkedin\",\"social\"]": [
+      {
+        "id": 12348,
+        "title": "Professional Networking Guide",
+        "views": 45,
+        "href": "https://example.com/networking-guide"
+      }
+    ],
+    "[\"google\",\"organic\"]": [
+      {
+        "id": 12349,
+        "title": "SEO Best Practices",
+        "views": 40,
+        "href": "https://example.com/seo-best-practices"
+      }
+    ],
+    "[\"newsletter\",\"email\"]": [
+      {
+        "id": 12350,
+        "title": "Email Marketing Strategies",
+        "views": 30,
+        "href": "https://example.com/email-marketing"
+      }
+    ],
+    "[\"twitter\",\"social\"]": [
+      {
+        "id": 12351,
+        "title": "Twitter Marketing Tips",
+        "views": 20,
+        "href": "https://example.com/twitter-marketing"
+      }
+    ],
+    "[\"reddit\",\"social\"]": [
+      {
+        "id": 12352,
+        "title": "Reddit Community Building",
+        "views": 15,
+        "href": "https://example.com/reddit-community"
+      }
+    ]
+  }
+}

@@ -141,3 +141,15 @@ extension WordPressKit.StatsSiteMetricsResponse.Metric {
         }
     }
 }
+
+extension WordPressKit.StatsServiceRemoteV2.UTMParam {
+    init(_ grouping: UTMParamGrouping) {
+        switch grouping {
+        case .sourceMedium: self = .sourceMedium
+        case .campaignSourceMedium: self = .campaignSourceMedium
+        case .source: self = .source
+        case .medium: self = .medium
+        case .campaign: self = .campaign
+        }
+    }
+}

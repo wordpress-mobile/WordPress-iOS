@@ -15,6 +15,7 @@ extension StatsEvent {
         case .archiveStatsScreenShown: .jetpackStatsArchiveStatsScreenShown
         case .externalLinkStatsScreenShown: .jetpackStatsExternalLinkStatsScreenShown
         case .referrerStatsScreenShown: .jetpackStatsReferrerStatsScreenShown
+        case .utmMetricStatsScreenShown: .jetpackStatsUtmMetricStatsScreenShown
         case .dateRangePresetSelected: .jetpackStatsDateRangePresetSelected
         case .customDateRangeSelected: .jetpackStatsCustomDateRangeSelected
         case .dateNavigationButtonTapped: .jetpackStatsDateNavigationButtonTapped
@@ -32,6 +33,7 @@ extension StatsEvent {
         case .topListItemTapped: .jetpackStatsTopListItemTapped
         case .locationLevelChanged: .jetpackStatsLocationLevelChanged
         case .deviceBreakdownChanged: .jetpackStatsDeviceBreakdownChanged
+        case .utmParamGroupingChanged: .jetpackStatsUtmParamGroupingChanged
         case .statsTabSelected: .jetpackStatsTabSelected
         case .errorEncountered: .jetpackStatsErrorEncountered
         }

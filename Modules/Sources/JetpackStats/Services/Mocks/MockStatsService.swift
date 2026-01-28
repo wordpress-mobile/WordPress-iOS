@@ -32,6 +32,7 @@ actor MockStatsService: ObservableObject, StatsServiceProtocol {
         case .fileDownloads: [.downloads]
         case .searchTerms: [.views, .visitors]
         case .videos: [.views, .likes]
+        case .utm: [.views]
         }
     }
 
@@ -258,84 +259,7 @@ actor MockStatsService: ObservableObject, StatsServiceProtocol {
     }
 
     private func loadRealtimeBaseItems(for dataType: TopListItemType) -> [any TopListItemProtocol] {
-        let fileName: String
-        switch dataType {
-        case .postsAndPages:
-            fileName = "postsAndPages"
-        case .archive:
-            fileName = "archive"
-        case .referrers:
-            fileName = "referrers"
-        case .locations:
-            fileName = "locations"
-        case .devices:
-            fileName = "devices"
-        case .authors:
-            fileName = "authors"
-        case .externalLinks:
-            fileName = "external-links"
-        case .fileDownloads:
-            fileName = "file-downloads"
-        case .searchTerms:
-            fileName = "search-terms"
-        case .videos:
-            fileName = "videos"
-        }
-
-        // Load from JSON file
-        guard let url = Bundle.module.url(forResource: "realtime-\(fileName)", withExtension: "json") else {
-            print("Failed to find \(fileName).json")
-            return []
-        }
-
-        do {
-            let data = try Data(contentsOf: url)
-            let decoder = JSONDecoder()
-            decoder.dateDecodingStrategy = .iso8601
-
-            // Decode based on data type
-            switch dataType {
-            case .referrers:
-                let referrers = try decoder.decode([TopListItem.Referrer].self, from: data)
-                return referrers
-            case .locations:
-                let locations = try decoder.decode([TopListItem.Location].self, from: data)
-                return locations
-            case .devices:
-                let devices = try decoder.decode([TopListItem.Device].self, from: data)
-                return devices
-            case .authors:
-                let authors = try decoder.decode([TopListItem.Author].self, from: data)
-                return authors.map {
-                    var copy = $0
-                    copy.avatarURL = Bundle.module.path(forResource: "author\($0.userId)", ofType: "jpg").map {
-                        URL(filePath: $0)
-                    }
-                    return copy
-                }
-            case .externalLinks:
-                let links = try decoder.decode([TopListItem.ExternalLink].self, from: data)
-                return links
-            case .fileDownloads:
-                let downloads = try decoder.decode([TopListItem.FileDownload].self, from: data)
-                return downloads
-            case .searchTerms:
-                let terms = try decoder.decode([TopListItem.SearchTerm].self, from: data)
-                return terms
-            case .videos:
-                let videos = try decoder.decode([TopListItem.Video].self, from: data)
-                return videos
-            case .postsAndPages:
-                let posts = try decoder.decode([TopListItem.Post].self, from: data)
-                return posts
-            case .archive:
-                let sections = try decoder.decode([TopListItem.ArchiveSection].self, from: data)
-                return sections
-            }
-        } catch {
-            print("Failed to load \(fileName).json: \(error)")
-            return []
-        }
+        return [] // No longer needed (will remove soon)
     }
 
     func getPostDetails(for postID: Int) async throws -> StatsPostDetails {
@@ -505,6 +429,11 @@ actor MockStatsService: ObservableObject, StatsServiceProtocol {
             return DeviceBreakdown.allCases.map { breakdown in
                 TopListItemOptions(locationLevel: .countries, deviceBreakdown: breakdown)
             }
+        case .utm:
+            // Generate options for all UTM parameter groupings
+            return UTMParamGrouping.allCases.map { grouping in
+                TopListItemOptions(locationLevel: .countries, deviceBreakdown: .screensize, utmParamGrouping: grouping)
+            }
         default:
             // For other types, use default options
             return [TopListItemOptions()]
@@ -534,6 +463,8 @@ actor MockStatsService: ObservableObject, StatsServiceProtocol {
             fileName = "historical-search-terms"
         case .videos:
             fileName = "historical-videos"
+        case .utm:
+            fileName = "historical-utm"
         }
 
         // Load from JSON file
@@ -587,6 +518,19 @@ actor MockStatsService: ObservableObject, StatsServiceProtocol {
             case .archive:
                 let sections = try decoder.decode([TopListItem.ArchiveSection].self, from: data)
                 return sections
+            case .utm:
+                let metrics = try decoder.decode([TopListItem.UTMMetric].self, from: data)
+                // Filter based on UTM parameter grouping
+                let expectedValueCount: Int
+                switch options.utmParamGrouping {
+                case .sourceMedium:
+                    expectedValueCount = 2
+                case .campaignSourceMedium:
+                    expectedValueCount = 3
+                case .source, .medium, .campaign:
+                    expectedValueCount = 1
+                }
+                return metrics.filter { $0.values.count == expectedValueCount }
             }
         } catch {
             print("Failed to load \(fileName).json: \(error)")

@@ -11,6 +11,7 @@ enum TopListItemType: String, Identifiable, CaseIterable, Sendable, Codable {
     case searchTerms
     case fileDownloads
     case archive
+    case utm
 
     var id: TopListItemType { self }
 
@@ -26,6 +27,7 @@ enum TopListItemType: String, Identifiable, CaseIterable, Sendable, Codable {
         case .searchTerms: Strings.SiteDataTypes.searchTerms
         case .videos: Strings.SiteDataTypes.videos
         case .archive: Strings.SiteDataTypes.archive
+        case .utm: Strings.SiteDataTypes.utm
         }
     }
 
@@ -41,6 +43,7 @@ enum TopListItemType: String, Identifiable, CaseIterable, Sendable, Codable {
         case .searchTerms: "magnifyingglass"
         case .videos: "play.rectangle"
         case .archive: "folder"
+        case .utm: "tag"
         }
     }
 
@@ -56,11 +59,25 @@ enum TopListItemType: String, Identifiable, CaseIterable, Sendable, Codable {
         case .searchTerms: Strings.TopListTitles.searchTerms
         case .videos: Strings.TopListTitles.videos
         case .archive: Strings.TopListTitles.archive
+        case .utm: Strings.TopListTitles.utm
         }
     }
 
-    static let secondaryItems: Set<TopListItemType> = [
-        .externalLinks, .videos, .fileDownloads, .searchTerms, .archive
+    // MARK: - Item Grouping
+
+    /// Content - What you published
+    static let contentItems: [TopListItemType] = [
+        .postsAndPages, .authors, .videos, .archive
+    ]
+
+    /// Traffic Sources - How they found you
+    static let trafficSourceItems: [TopListItemType] = [
+        .referrers, .searchTerms, .utm
+    ]
+
+    /// Audience & Engagement - Who visited & what they did
+    static let audienceEngagementItems: [TopListItemType] = [
+        .locations, .devices, .externalLinks, .fileDownloads
     ]
 
     var documentationURL: URL? {
@@ -85,6 +102,8 @@ enum TopListItemType: String, Identifiable, CaseIterable, Sendable, Codable {
             "https://wordpress.com/support/stats/audience-insights/"
         case .videos:
             "https://wordpress.com/support/stats/analyze-content-performance/#see-video-traffic"
+        case .utm:
+            "https://wordpress.com/support/stats/understand-traffic-sources/#use-utm-parameters"
         }
     }
 }

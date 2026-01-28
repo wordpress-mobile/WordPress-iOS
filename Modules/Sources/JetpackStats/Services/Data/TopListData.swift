@@ -105,6 +105,7 @@ extension TopListData {
         case .searchTerms: mockSearchTerms(metric: metric)
         case .videos: mockVideos(metric: metric)
         case .archive: mockArchive(metric: metric)
+        case .utm: mockUTMMetrics(metric: metric)
         }
     }
 
@@ -419,6 +420,54 @@ extension TopListData {
                 sectionName: sectionName,
                 items: items,
                 metrics: SiteMetricsSet(views: totalViews)
+            )
+        }
+    }
+
+    private static func mockUTMMetrics(metric: SiteMetric) -> [TopListItem.UTMMetric] {
+        let utmCampaigns = [
+            (["google", "cpc"], 1520),
+            (["facebook", "social"], 1200),
+            (["linkedin", "social"], 850),
+            (["google", "organic"], 670),
+            (["newsletter", "email"], 450),
+            (["twitter", "social"], 320),
+            (["reddit", "social"], 280)
+        ]
+
+        return utmCampaigns.map { data in
+            let values = data.0
+            let baseValue = data.1
+            let label = values.joined(separator: " / ")
+            let metrics = createMetrics(baseValue: baseValue, metric: metric)
+
+            // Create mock posts for this UTM campaign
+            let posts = [
+                TopListItem.Post(
+                    title: "How to Build a Mobile App",
+                    postID: "12345",
+                    postURL: URL(string: "https://example.com/mobile-app"),
+                    date: Date(),
+                    type: "post",
+                    author: nil,
+                    metrics: createMetrics(baseValue: baseValue / 2, metric: metric)
+                ),
+                TopListItem.Post(
+                    title: "Swift Development Guide",
+                    postID: "12346",
+                    postURL: URL(string: "https://example.com/swift-guide"),
+                    date: Date(),
+                    type: "post",
+                    author: nil,
+                    metrics: createMetrics(baseValue: baseValue / 3, metric: metric)
+                )
+            ]
+
+            return TopListItem.UTMMetric(
+                label: label,
+                values: values,
+                metrics: metrics,
+                posts: posts
             )
         }
     }
