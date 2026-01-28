@@ -66,6 +66,16 @@ extension TopListItem.Location {
     }
 }
 
+extension TopListItem.Device {
+    init(_ item: WordPressKit.StatsDeviceItem, breakdown: DeviceBreakdown) {
+        self.init(
+            name: item.name,
+            breakdown: breakdown,
+            metrics: SiteMetricsSet(views: Int(item.value))
+        )
+    }
+}
+
 extension TopListItem.Author {
     init(_ author: WordPressKit.StatsTopAuthor, dateFormatter: DateFormatter) {
         self.init(

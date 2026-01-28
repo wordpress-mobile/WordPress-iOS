@@ -35,6 +35,12 @@ struct TopListCard: View {
                     .padding(.horizontal, Constants.step2)
             }
 
+            if viewModel.selection.item == .devices {
+                pieChartView
+                    .padding(.vertical, Constants.step1)
+                    .padding(.horizontal, Constants.step3)
+            }
+
             listHeaderView
                 .padding(.horizontal, Constants.step3)
                 .dynamicTypeSize(...DynamicTypeSize.xxLarge)
@@ -93,14 +99,37 @@ struct TopListCard: View {
         )
     }
 
+    private var pieChartView: some View {
+        let mockPieData = PieChartData(items: mockData.items, metric: viewModel.selection.metric)
+        let isShowingMockData = viewModel.isFirstLoad || viewModel.pieChartData == nil
+        let data = viewModel.pieChartData ?? mockPieData
+
+        return PieChartView(data: data)
+            .frame(height: 200)
+            .allowsHitTesting(!isShowingMockData)
+            .redacted(reason: isShowingMockData ? .placeholder : [])
+            .opacity(isShowingMockData ? 0.2 : 1.0)
+            .pulsating(isShowingMockData && viewModel.isFirstLoad)
+    }
+
     private var listHeaderView: some View {
         HStack {
-            // Left side: Location level for locations, otherwise item type
+            // Left side: Location level for locations, device breakdown for devices, otherwise item type
             if viewModel.selection.item == .locations {
                 Menu {
                     locationLevelPicker
                 } label: {
-                    InlineValuePickerTitle(title: viewModel.selection.locationLevel.localizedTitle)
+                    InlineValuePickerTitle(title: viewModel.selection.options.locationLevel.localizedTitle)
+                        .foregroundStyle(Color.secondary)
+                        .padding(.top, 6)
+                        .padding(.vertical, Constants.step0_5)
+                }
+                .fixedSize()
+            } else if viewModel.selection.item == .devices {
+                Menu {
+                    deviceBreakdownPicker
+                } label: {
+                    InlineValuePickerTitle(title: viewModel.selection.options.deviceBreakdown.localizedTitle)
                         .foregroundStyle(Color.secondary)
                         .padding(.top, 6)
                         .padding(.vertical, Constants.step0_5)
@@ -148,7 +177,6 @@ struct TopListCard: View {
                     Button {
                         var selection = viewModel.selection
                         selection.item = item
-
                         let supportedMetric = getSupportedMetrics(for: item)
                         if !supportedMetric.contains(selection.metric),
                            let metric = supportedMetric.first {
@@ -206,8 +234,8 @@ struct TopListCard: View {
     private var locationLevelPicker: some View {
         ForEach(LocationLevel.allCases) { level in
             Button {
-                let previousLevel = viewModel.selection.locationLevel
-                viewModel.selection.locationLevel = level
+                let previousLevel = viewModel.selection.options.locationLevel
+                viewModel.selection.options.locationLevel = level
 
                 // Track location level change
                 viewModel.tracker?.send(.locationLevelChanged, properties: [
@@ -216,6 +244,24 @@ struct TopListCard: View {
                 ])
             } label: {
                 Label(level.localizedTitle, systemImage: level.systemImage)
+            }
+        }
+        .tint(Color.primary)
+    }
+
+    private var deviceBreakdownPicker: some View {
+        ForEach(DeviceBreakdown.allCases) { breakdown in
+            Button {
+                let previousBreakdown = viewModel.selection.options.deviceBreakdown
+                viewModel.selection.options.deviceBreakdown = breakdown
+
+                // Track device breakdown change
+                viewModel.tracker?.send(.deviceBreakdownChanged, properties: [
+                    "from_breakdown": previousBreakdown.analyticsName,
+                    "to_breakdown": breakdown.analyticsName
+                ])
+            } label: {
+                Label(breakdown.localizedTitle, systemImage: breakdown.systemImage)
             }
         }
         .tint(Color.primary)
@@ -326,6 +372,7 @@ struct TopListCard: View {
 #Preview {
     ScrollView {
         VStack {
+            TopListCardPreview(item: .devices)
             TopListCardPreview(item: .authors)
             TopListCardPreview(item: .locations)
         }

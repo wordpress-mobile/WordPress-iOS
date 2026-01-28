@@ -547,3 +547,37 @@ public extension StatsInsightData where Self: Codable {
         }
     }
 }
+
+// MARK: - Device Stats
+
+extension StatsServiceRemoteV2 {
+    public enum DeviceBreakdown: String {
+        case screensize
+        case platform
+        case browser
+    }
+
+    /// Fetches device stats for a specific breakdown type
+    /// - Parameters:
+    ///   - breakdown: The type of device breakdown (screensize, platform, or browser)
+    ///   - startDate: The start date for the stats query
+    ///   - endDate: The end date for the stats query
+    /// - Returns: Device stats data
+    public func getDeviceStats(
+        breakdown: DeviceBreakdown,
+        startDate: Date,
+        endDate: Date
+    ) async throws -> StatsDeviceTimeIntervalData {
+        let pathComponent = "stats/devices/\(breakdown.rawValue)"
+        let path = self.path(forEndpoint: "sites/\(siteID)/\(pathComponent)/", withVersion: ._1_1)
+
+        let dateFormatter = periodDataQueryDateFormatter
+        let parameters: [String: String] = [
+            "start_date": dateFormatter.string(from: startDate),
+            "date": dateFormatter.string(from: endDate)
+        ]
+
+        let result = await wordPressComRestApi.perform(.get, URLString: path, parameters: parameters, type: StatsDeviceTimeIntervalData.self)
+        return try result.get().body
+    }
+}

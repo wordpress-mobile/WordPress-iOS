@@ -30,6 +30,9 @@ class StatsRemoteV2Tests: RemoteTestCase, RESTTestable {
     let getEmailOpensFilename = "stats-email-opens.json"
     let getWordAdsMonthMockFilename = "stats-wordads-month.json"
     let getWordAdsEarningsFilename = "stats-wordads-earnings.json"
+    let getDeviceScreensizeFilename = "stats-devices-screensize.json"
+    let getDevicePlatformFilename = "stats-devices-platform.json"
+    let getDeviceBrowserFilename = "stats-devices-browser.json"
 
     // MARK: - Properties
 
@@ -50,6 +53,9 @@ class StatsRemoteV2Tests: RemoteTestCase, RESTTestable {
     var siteEmailOpensEndpoint: String { return "sites/\(siteID)/stats/opens/emails/231/rate" }
     var siteWordAdsEndpoint: String { return "sites/\(siteID)/wordads/stats" }
     var siteWordAdsEarningsEndpoint: String { return "sites/\(siteID)/wordads/earnings" }
+    var siteDeviceScreensizeEndpoint: String { return "sites/\(siteID)/stats/devices/screensize/" }
+    var siteDevicePlatformEndpoint: String { return "sites/\(siteID)/stats/devices/platform/" }
+    var siteDeviceBrowserEndpoint: String { return "sites/\(siteID)/stats/devices/browser/" }
 
     func toggleSpamStateEndpoint(for referrerDomain: String, markAsSpam: Bool) -> String {
         let action = markAsSpam ? "new" : "delete"
@@ -971,5 +977,35 @@ class StatsRemoteV2Tests: RemoteTestCase, RESTTestable {
 
         // Test Period string conversion
         XCTAssertEqual(decEarnings.period.string, "2025-12")
+    }
+
+    func testFetchDeviceScreensize() async throws {
+        stubRemoteResponse(siteDeviceScreensizeEndpoint, filename: getDeviceScreensizeFilename, contentType: .ApplicationJSON)
+
+        let devicesData = try await remote.getDeviceStats(breakdown: .screensize, startDate: Date(), endDate: Date())
+
+        XCTAssertEqual(devicesData.items.count, 3)
+        XCTAssertEqual(devicesData.items.first?.name, "mobile")
+        XCTAssertEqual(devicesData.items.first?.value, 73.8)
+    }
+
+    func testFetchDevicePlatform() async throws {
+        stubRemoteResponse(siteDevicePlatformEndpoint, filename: getDevicePlatformFilename, contentType: .ApplicationJSON)
+
+        let platformData = try await remote.getDeviceStats(breakdown: .platform, startDate: Date(), endDate: Date())
+
+        XCTAssertEqual(platformData.items.count, 8)
+        XCTAssertEqual(platformData.items.first?.name, "android")
+        XCTAssertEqual(platformData.items.first?.value, 805.0)
+    }
+
+    func testFetchDeviceBrowser() async throws {
+        stubRemoteResponse(siteDeviceBrowserEndpoint, filename: getDeviceBrowserFilename, contentType: .ApplicationJSON)
+
+        let browserData = try await remote.getDeviceStats(breakdown: .browser, startDate: Date(), endDate: Date())
+
+        XCTAssertEqual(browserData.items.count, 7)
+        XCTAssertEqual(browserData.items.first?.name, "chrome")
+        XCTAssertEqual(browserData.items.first?.value, 1063.0)
     }
 }

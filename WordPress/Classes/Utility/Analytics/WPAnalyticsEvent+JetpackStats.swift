@@ -31,6 +31,7 @@ extension StatsEvent {
         case .todayCardTapped: .jetpackStatsTodayCardTapped
         case .topListItemTapped: .jetpackStatsTopListItemTapped
         case .locationLevelChanged: .jetpackStatsLocationLevelChanged
+        case .deviceBreakdownChanged: .jetpackStatsDeviceBreakdownChanged
         case .statsTabSelected: .jetpackStatsTabSelected
         case .errorEncountered: .jetpackStatsErrorEncountered
         }

@@ -674,6 +674,7 @@ import WordPressShared
     // List Events
     case jetpackStatsTopListItemTapped
     case jetpackStatsLocationLevelChanged
+    case jetpackStatsDeviceBreakdownChanged
 
     // Navigation Events
     case jetpackStatsTabSelected
@@ -1846,6 +1847,8 @@ import WordPressShared
             return "jetpack_stats_top_list_item_tapped"
         case .jetpackStatsLocationLevelChanged:
             return "jetpack_stats_location_level_changed"
+        case .jetpackStatsDeviceBreakdownChanged:
+            return "jetpack_stats_device_breakdown_changed"
 
         // Navigation Events
         case .jetpackStatsTabSelected:

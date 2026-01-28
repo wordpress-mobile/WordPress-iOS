@@ -148,6 +148,12 @@ public enum StatsEvent {
     ///   - "to_level": New level
     case locationLevelChanged
 
+    /// Device breakdown changed in device drill-down
+    /// - Parameters:
+    ///   - "from_breakdown": Previous breakdown ("screensize", "platform", or "browser")
+    ///   - "to_breakdown": New breakdown
+    case deviceBreakdownChanged
+
     // MARK: - Navigation Events
 
     /// Stats tab selected
@@ -217,6 +223,7 @@ extension TopListItemType {
         case .authors: "authors"
         case .referrers: "referrers"
         case .locations: "locations"
+        case .devices: "devices"
         case .videos: "videos"
         case .externalLinks: "external_links"
         case .searchTerms: "search_terms"
