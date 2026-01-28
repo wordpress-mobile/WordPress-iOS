@@ -88,7 +88,7 @@ struct StandaloneChartCard: View {
                 )
             } else {
                 ChartValuesSummaryView(
-                    trend: .init(currentValue: 100, previousValue: 10, metric: .views),
+                    trend: .init(currentValue: 100, previousValue: 10, metric: SiteMetric.views),
                     style: .compact
                 )
                 .redacted(reason: .placeholder)
@@ -229,7 +229,7 @@ struct StandaloneChartCard: View {
     }
 
     @ViewBuilder
-    private func navigationButton(direction: Calendar.NavigationDirection) -> some View {
+    private func navigationButton(direction: NavigationDirection) -> some View {
         Button {
             dateRange = dateRange.navigate(direction)
         } label: {

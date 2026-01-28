@@ -1,6 +1,6 @@
 26.7
 -----
-
+* [**] Stats: Add new "Adds" tab to show WordAdds earnings and stats [#25165]
 
 26.6
 -----

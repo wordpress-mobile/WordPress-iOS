@@ -1,7 +1,7 @@
 import SwiftUI
 
 /// Protocol defining the requirements for a metric type that can be displayed in stats views.
-protocol MetricType: Identifiable, Hashable, Equatable {
+protocol MetricType: Identifiable, Hashable, Equatable, Sendable {
     var localizedTitle: String { get }
     var systemImage: String { get }
     var primaryColor: Color { get }

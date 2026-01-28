@@ -1,18 +1,25 @@
 import Foundation
 
-extension Calendar {
-    enum NavigationDirection {
-        case backward
-        case forward
+enum NavigationDirection {
+    case backward
+    case forward
 
-        var systemImage: String {
-            switch self {
-            case .backward: "chevron.backward"
-            case .forward: "chevron.forward"
-            }
+    var systemImage: String {
+        switch self {
+        case .backward: "chevron.backward"
+        case .forward: "chevron.forward"
         }
     }
 
+    var accessibilityLabel: String {
+        switch self {
+        case .forward: Strings.Accessibility.nextPeriod
+        case .backward: Strings.Accessibility.previousPeriod
+        }
+    }
+}
+
+extension Calendar {
     /// Navigates to the next or previous period from the given date interval.
     ///
     /// This method navigates by the length of the period for the given component.

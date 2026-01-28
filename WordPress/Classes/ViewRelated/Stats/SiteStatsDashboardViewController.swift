@@ -147,11 +147,11 @@ public class SiteStatsDashboardViewController: UIViewController {
         return StatsSubscribersViewController(viewModel: viewModel)
     }()
 
-    private lazy var adsViewController: UIViewController = {
-        let adsView = AdsTabView()
-        let hostingController = UIHostingController(rootView: adsView)
-        hostingController.view.backgroundColor = .systemBackground
-        return hostingController
+    private lazy var adsViewController: UIViewController? = {
+        guard let blog = Self.currentBlog() else {
+            return nil
+        }
+        return StatsHostingViewController.makeAdsViewController(blog: blog, parentViewController: self)
     }()
 
     // MARK: - View
@@ -192,7 +192,9 @@ public class SiteStatsDashboardViewController: UIViewController {
 
         switch currentSelectedTab {
         case .insights:
-            parent?.navigationItem.rightBarButtonItem = manageInsightsButton
+            parent?.navigationItem.trailingItemGroups = [
+                UIBarButtonItemGroup.fixedGroup(items: [manageInsightsButton])
+            ]
         case .traffic:
             // Always show the menu for switching between stats experiences
             statsMenuButton.menu = createStatsMenu()
@@ -212,9 +214,9 @@ public class SiteStatsDashboardViewController: UIViewController {
                 }
             }
         case .ads:
-            parent?.navigationItem.rightBarButtonItem = nil
+            parent?.navigationItem.trailingItemGroups = []
         default:
-            parent?.navigationItem.rightBarButtonItem = nil
+            parent?.navigationItem.trailingItemGroups = []
         }
     }
 
@@ -461,7 +463,9 @@ private extension SiteStatsDashboardViewController {
             }
         case .ads:
             if oldSelectedTab != .ads || containerIsEmpty {
-                showChildViewController(adsViewController)
+                if let adsViewController {
+                    showChildViewController(adsViewController)
+                }
             }
         }
     }

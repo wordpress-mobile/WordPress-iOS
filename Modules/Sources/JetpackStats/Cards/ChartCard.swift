@@ -69,7 +69,7 @@ struct ChartCard: View {
 
     private func headerView(for metric: SiteMetric) -> some View {
         HStack(alignment: .center) {
-            StatsCardTitleView(title: metric.localizedTitle, showChevron: false)
+            StatsCardTitleView(title: metric.localizedTitle)
             Spacer(minLength: 0)
         }
         .accessibilityElement(children: .combine)
@@ -101,7 +101,7 @@ struct ChartCard: View {
                 )
             } else if viewModel.isFirstLoad {
                 ChartValuesSummaryView(
-                    trend: .init(currentValue: 100, previousValue: 10, metric: .views),
+                    trend: .init(currentValue: 100, previousValue: 10, metric: SiteMetric.views),
                     style: .compact
                 )
                 .redacted(reason: .placeholder)

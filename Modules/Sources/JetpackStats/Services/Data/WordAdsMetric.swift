@@ -54,7 +54,7 @@ struct WordAdsMetric: Identifiable, Sendable, Hashable, MetricType {
         id: "cpm",
         localizedTitle: Strings.WordAdsMetrics.averageCPM,
         systemImage: "chart.bar",
-        primaryColor: Constants.Colors.green,
+        primaryColor: Constants.Colors.celadon,
         aggregationStrategy: .average
     )
 

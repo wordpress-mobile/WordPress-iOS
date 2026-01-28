@@ -66,7 +66,7 @@ struct StatsDateRange: Equatable, Sendable {
     // MARK: - Navigation
 
     /// Navigates to the specified direction (previous or next period).
-    func navigate(_ direction: Calendar.NavigationDirection) -> StatsDateRange {
+    func navigate(_ direction: NavigationDirection) -> StatsDateRange {
         // Use the component if available, otherwise determine it from the interval
         let newInterval = calendar.navigate(dateInterval, direction: direction, component: component)
         // When navigating, we lose the preset since it's no longer a standard preset
@@ -74,7 +74,7 @@ struct StatsDateRange: Equatable, Sendable {
     }
 
     /// Returns true if can navigate in the specified direction.
-    func canNavigate(in direction: Calendar.NavigationDirection, now: Date = .now) -> Bool {
+    func canNavigate(in direction: NavigationDirection, now: Date = .now) -> Bool {
         calendar.canNavigate(dateInterval, direction: direction, now: now)
     }
 
@@ -84,7 +84,7 @@ struct StatsDateRange: Equatable, Sendable {
     ///   - maxCount: Maximum number of periods to generate (default: 10)
     ///   - now: The reference date for determining navigation bounds (default: .now)
     /// - Returns: Array of AdjacentPeriod structs
-    func availableAdjacentPeriods(in direction: Calendar.NavigationDirection, maxCount: Int = 10, now: Date = .now) -> [AdjacentPeriod] {
+    func availableAdjacentPeriods(in direction: NavigationDirection, maxCount: Int = 10, now: Date = .now) -> [AdjacentPeriod] {
         var periods: [AdjacentPeriod] = []
         var currentRange = self
         let formatter = StatsDateRangeFormatter(timeZone: calendar.timeZone, now: { now })

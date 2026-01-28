@@ -4,17 +4,18 @@ import WordPressUI
 /// A horizontal scrollable tab view displaying metric summaries with values and trends.
 ///
 /// Each tab shows a metric's current value, percentage change, and visual selection indicator.
-struct MetricsOverviewTabView: View {
+struct MetricsOverviewTabView<Metric: MetricType>: View {
     /// Data for a single metric tab
     struct MetricData {
-        let metric: SiteMetric
+        let metric: Metric
         let value: Int?
         let previousValue: Int?
     }
 
     let data: [MetricData]
-    @Binding var selectedMetric: SiteMetric
-    var onMetricSelected: ((SiteMetric) -> Void)?
+    @Binding var selectedMetric: Metric
+    var onMetricSelected: ((Metric) -> Void)?
+    var showTrend: Bool = true
 
     @ScaledMetric(relativeTo: .title) private var minTabWidth: CGFloat = 100
 
@@ -35,12 +36,12 @@ struct MetricsOverviewTabView: View {
     }
 
     private func makeItemView(for item: MetricData, onTap: @escaping () -> Void) -> some View {
-        MetricItemView(data: item, isSelected: selectedMetric == item.metric, onTap: onTap)
+        MetricItemView(data: item, isSelected: selectedMetric == item.metric, showTrend: showTrend, onTap: onTap)
             .frame(minWidth: minTabWidth)
             .id(item.metric)
     }
 
-    private func selectDataType(_ type: SiteMetric, proxy: ScrollViewProxy) {
+    private func selectDataType(_ type: Metric, proxy: ScrollViewProxy) {
         withAnimation(.spring) {
             selectedMetric = type
             proxy.scrollTo(type, anchor: .center)
@@ -50,13 +51,14 @@ struct MetricsOverviewTabView: View {
     }
 }
 
-private struct MetricItemView: View {
-    let data: MetricsOverviewTabView.MetricData
+private struct MetricItemView<Metric: MetricType>: View {
+    let data: MetricsOverviewTabView<Metric>.MetricData
     let isSelected: Bool
+    let showTrend: Bool
     let onTap: () -> Void
 
-    private var valueFormatter: StatsValueFormatter {
-        StatsValueFormatter(metric: data.metric)
+    private var valueFormatter: any ValueFormatterProtocol {
+        data.metric.makeValueFormatter()
     }
 
     private var formattedValue: String {
@@ -97,9 +99,11 @@ private struct MetricItemView: View {
 
     private var headerView: some View {
         HStack(spacing: 2) {
-            Image(systemName: data.metric.systemImage)
-                .font(.caption2.weight(.medium))
-                .scaleEffect(x: 0.9, y: 0.9)
+            if showTrend {
+                Image(systemName: data.metric.systemImage)
+                    .font(.caption2.weight(.medium))
+                    .scaleEffect(x: 0.9, y: 0.9)
+            }
             Text(data.metric.localizedTitle.uppercased())
                 .font(.caption.weight(.medium))
         }
@@ -117,15 +121,17 @@ private struct MetricItemView: View {
                 .lineLimit(1)
                 .animation(.spring, value: formattedValue)
 
-            if let trend {
-                BadgeTrendIndicator(trend: trend)
-            } else {
-                // Placeholder for loading state
-                BadgeTrendIndicator(
-                    trend: TrendViewModel(currentValue: 125, previousValue: 100, metric: data.metric)
-                )
-                .grayscale(1)
-                .redacted(reason: .placeholder)
+            if showTrend {
+                if let trend {
+                    BadgeTrendIndicator(trend: trend)
+                } else {
+                    // Placeholder for loading state
+                    BadgeTrendIndicator(
+                        trend: TrendViewModel(currentValue: 125, previousValue: 100, metric: data.metric)
+                    )
+                    .grayscale(1)
+                    .redacted(reason: .placeholder)
+                }
             }
         }
         .padding(.trailing, 8)
@@ -147,7 +153,7 @@ private struct MetricItemView: View {
 #if DEBUG
 
 #Preview {
-    let mockData: [MetricsOverviewTabView.MetricData] = [
+    let mockData: [MetricsOverviewTabView<SiteMetric>.MetricData] = [
         .init(metric: .views, value: 128400, previousValue: 142600),
         .init(metric: .visitors, value: 49800, previousValue: 54200),
         .init(metric: .likes, value: nil, previousValue: nil),

@@ -78,11 +78,11 @@ extension DateRangeGranularity {
     /// Used by legacy APIs that accept a date and quantity instead of date periods.
     var preferredQuantity: Int {
         switch self {
-        case .hour: 48
-        case .day: 30
+        case .hour: 24
+        case .day: 14
         case .week: 12
         case .month: 12
-        case .year: 10
+        case .year: 6
         }
     }
 }

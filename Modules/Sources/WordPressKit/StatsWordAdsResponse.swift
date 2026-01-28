@@ -107,8 +107,7 @@ private func makeDateFormatter(for unit: StatsPeriodUnit) -> DateFormatter {
     formatter.dateFormat = {
         switch unit {
         case .hour: "yyyy-MM-dd HH:mm:ss"
-        case .week: "yyyy'W'MM'W'dd"
-        case .day, .month, .year: "yyyy-MM-dd"
+        case .day, .week, .month, .year: "yyyy-MM-dd"
         }
     }()
     return formatter
