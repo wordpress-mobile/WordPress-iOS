@@ -15,6 +15,12 @@ gem 'fastlane-plugin-sentry'
 #
 # gem 'fastlane-plugin-wpmreleasetoolkit', git: 'https://github.com/wordpress-mobile/release-toolkit', ref: ''
 gem 'fastlane-plugin-wpmreleasetoolkit', '~> 13.8'
+# To avoid errors like:
+#
+# SSL_connect returned=1 errno=0 peeraddr=3.5.132.155:443 state=error: certificate verify failed (unable to get certificate CRL)
+#
+# See https://github.com/ruby/openssl/issues/949
+gem 'openssl', '~> 4.0'
 gem 'rake'
 gem 'rubocop', '~> 1.82'
 gem 'rubocop-rake', '~> 0.7'
