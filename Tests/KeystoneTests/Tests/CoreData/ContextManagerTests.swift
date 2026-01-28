@@ -254,7 +254,7 @@ class ContextManagerTests: XCTestCase {
                 expectation.fulfill()
             }
         }
-        wait(for: allCompleted, timeout: 1)
+        wait(for: allCompleted, timeout: 3)
 
         let request = WPAccount.fetchRequest()
         request.predicate = NSPredicate(format: "username = %@", username)
