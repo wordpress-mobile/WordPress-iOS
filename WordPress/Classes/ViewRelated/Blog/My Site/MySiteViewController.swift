@@ -33,7 +33,6 @@ final class MySiteViewController: UIViewController, UIScrollViewDelegate, NoSite
     }
 
     private var currentSection: Section = .dashboard
-    private static var lastWarmedUpBlogID: NSManagedObjectID?
 
     @objc
     private(set) lazy var scrollView: UIScrollView = {
@@ -341,29 +340,6 @@ final class MySiteViewController: UIViewController, UIScrollViewDelegate, NoSite
         configureNavBarAppearance(animated: true)
     }
 
-    // MARK: - Editor Warmup
-
-    /// Warms up the editor for the given blog if it hasn't been warmed up already.
-    /// This avoids duplicative warmups when the site hasn't changed.
-    private func warmUpEditorIfNeeded(for blog: Blog) {
-        guard blog.objectID != Self.lastWarmedUpBlogID else {
-            // Editor already warmed up for this blog
-            return
-        }
-
-        Self.lastWarmedUpBlogID = blog.objectID
-
-        let configuration = EditorConfiguration(blog: blog)
-
-        // 1. WebKit warmup - pre-compile HTML/JS (shaves ~100-200ms)
-        GutenbergKit.EditorViewController.warmup(configuration: configuration)
-
-        // 2. Data prefetch - pre-fetch settings, assets, preload list via EditorDependencyManager
-        Task {
-            await EditorDependencyManager.shared.prefetchDependencies(for: blog)
-        }
-    }
-
     // MARK: - Main Blog
 
     /// This VC is prepared to either show the details for a blog, or show a no-results VC configured to let the user know they have no blogs.
@@ -403,9 +379,6 @@ final class MySiteViewController: UIViewController, UIScrollViewDelegate, NoSite
             showDashboard(for: blog)
         }
 
-        if RemoteFeatureFlag.newGutenberg.enabled() {
-            warmUpEditorIfNeeded(for: blog)
-        }
     }
 
     @objc
