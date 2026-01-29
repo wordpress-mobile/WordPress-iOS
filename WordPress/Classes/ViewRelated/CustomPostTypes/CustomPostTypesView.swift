@@ -63,7 +63,12 @@ struct CustomPostTypesView: View {
                 _ = try await self.collection.fetch()
                 await refresh()
             } catch {
-                self.error = error
+                DDLogError("Failed to query stored post types: \(error)")
+                if types.isEmpty {
+                    self.error = error
+                } else {
+                    Notice(error: error).post()
+                }
             }
         }
     }
@@ -83,6 +88,7 @@ struct CustomPostTypesView: View {
                     $0.1.slug < $1.1.slug
                 }
         } catch {
+            DDLogError("Failed to fetch post types: \(error)")
             self.error = error
         }
     }
