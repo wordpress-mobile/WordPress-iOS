@@ -16,6 +16,7 @@ final class CustomPostListViewModel: ObservableObject {
 
     @Published private(set) var items: [CustomPostCollectionItem] = []
     @Published private(set) var listInfo: ListInfo?
+    @Published private var error: Error?
 
     var shouldDisplayEmptyView: Bool {
         items.isEmpty && listInfo?.isSyncing == false
@@ -23,6 +24,10 @@ final class CustomPostListViewModel: ObservableObject {
 
     var shouldDisplayInitialLoading: Bool {
         items.isEmpty && listInfo?.isSyncing == true
+    }
+
+    func errorToDisplay() -> Error? {
+        items.isEmpty ? error : nil
     }
 
     init(
@@ -49,7 +54,8 @@ final class CustomPostListViewModel: ObservableObject {
         do {
             _ = try await collection?.refresh()
         } catch {
-            DDLogError("Pull to refresh failed: \(error)")
+            DDLogError("Failed to refresh posts: \(error)")
+            self.show(error: error)
         }
     }
 
@@ -93,6 +99,15 @@ final class CustomPostListViewModel: ObservableObject {
             } catch {
                 DDLogError("Failed to get collection items: \(error)")
             }
+        }
+    }
+
+    private func show(error: Error) {
+        self.error = error
+
+        if !items.isEmpty {
+            // Show an error notice, on top of the list content.
+            Notice(error: error).post()
         }
     }
 }

@@ -27,6 +27,8 @@ struct CustomPostListView: View {
                 EmptyStateView(emptyText, systemImage: "doc.text")
             } else if viewModel.shouldDisplayInitialLoading {
                 ProgressView()
+            } else if let error = viewModel.errorToDisplay() {
+                EmptyStateView.failure(error: error)
             }
         }
         .refreshable {
@@ -58,7 +60,10 @@ private struct PaginatedList: View {
                     }
             }
 
-            makeFooterView()
+            Section {
+                makeFooterView()
+            }
+            .listSectionSeparator(.hidden)
         }
         .listStyle(.plain)
     }
@@ -80,6 +85,7 @@ private struct PaginatedList: View {
         do {
             try await onLoadNextPage()
         } catch {
+            DDLogError("Failed to load next page: \(error)")
             self.loadMoreError = error
         }
     }
@@ -91,15 +97,16 @@ private struct PaginatedList: View {
                 .progressViewStyle(.circular)
                 .frame(maxWidth: .infinity, minHeight: 44, alignment: .center)
                 .id(UUID()) // A hack to show the ProgressView after cell reusing.
-        } else if loadMoreError != nil {
-            Button {
-                Task { await loadNextPage() }
-            } label: {
-                HStack {
-                    Image(systemName: "exclamationmark.circle")
-                    Text(SharedStrings.Button.retry)
+        } else if let loadMoreError {
+            VStack {
+                Text(verbatim: loadMoreError.localizedDescription)
+                Button {
+                    Task { await loadNextPage() }
+                } label: {
+                    Text(verbatim: SharedStrings.Button.retry)
                 }
-            }
+                .buttonStyle(.borderedProminent)
+            }.frame(maxWidth: .infinity, alignment: .center)
         }
     }
 }
@@ -289,5 +296,22 @@ private enum Strings {
         ],
         onLoadNextPage: {},
         onSelectPost: { _ in }
+    )
+}
+
+#Preview("Load Next Page Error") {
+    PaginatedList(
+        items: [
+            .stale(
+                id: 1,
+                post: CustomPostCollectionDisplayPost(
+                    date: .now,
+                    title: "Published Post",
+                    excerpt: "This post has stale data and is being refreshed."
+                )
+            ),
+        ],
+        onLoadNextPage: { throw CollectionError.DatabaseError(errMessage: "SQL error") },
+        onSelectPost: { _ in },
     )
 }
