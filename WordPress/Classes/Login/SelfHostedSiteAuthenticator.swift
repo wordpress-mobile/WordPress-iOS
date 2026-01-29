@@ -192,6 +192,23 @@ struct SelfHostedSiteAuthenticator {
             throw .mismatchedUser(expectedUsername: username)
         }
 
+        let blog = try await fetchSiteDataUsingXMLRPC(credentials: credentials, apiRootURL: apiRootURL, context: context)
+
+        switch context {
+        case .default:
+            NotificationCenter.default.post(name: Foundation.Notification.Name(rawValue: WordPressAuthenticator.WPSigninDidFinishNotification), object: nil)
+        case .reauthentication:
+            NotificationCenter.default.post(name: Self.applicationPasswordUpdated, object: nil)
+        }
+
+        return blog
+    }
+
+    private func fetchSiteDataUsingXMLRPC(
+        credentials: WpApiApplicationPasswordDetails,
+        apiRootURL: URL,
+        context: SignInContext
+    ) async throws(SignInError) -> TaggedManagedObjectID<Blog> {
         let xmlrpc: URL = try await discoverXMLRPCEndpoint(site: credentials.siteUrl)
         let blogOptions: [AnyHashable: Any]
         do {
@@ -233,13 +250,6 @@ struct SelfHostedSiteAuthenticator {
             WordPressAuthenticator.shared.delegate!.sync(credentials: .init(wporg: wporg)) {
                 continuation.resume()
             }
-        }
-
-        switch context {
-        case .default:
-            NotificationCenter.default.post(name: Foundation.Notification.Name(rawValue: WordPressAuthenticator.WPSigninDidFinishNotification), object: nil)
-        case .reauthentication:
-            NotificationCenter.default.post(name: Self.applicationPasswordUpdated, object: nil)
         }
 
         return blog
