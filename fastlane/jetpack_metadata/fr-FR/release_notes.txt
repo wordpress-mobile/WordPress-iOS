@@ -1,22 +1,31 @@
-Oyez, oyez, créateurs de contenu, nous avons travaillé dur pour apporter d’importantes modifications à l’écran Réglages de l’article.
+Notre fonctionnalité d’assistance IA, WordPress Intelligence, est désormais disponible dans de nouvelles langues et variantes linguistiques. Votre assistant préféré devient encore plus pratique.
 
-- Nous avons ajouté un champ « État » qui vous permet de déplacer rapidement les articles entre les états brouillon, en attente, privé, planifié et publié.
-- Nous avons rétabli la zone « Date de publication » pour les brouillons et les articles en attente. De cette manière, vous pouvez choisir une date de publication à l’avance sans planifier officiellement la publication.
-- Le champ du mot de passe utilise une police différente (Menlo, si cela vous intéresse) pour lire plus facilement des caractères similaires.
-- Offrez à vos abonnés le traitement VIP en définissant des niveaux d’accès aux publications pour tous les abonnés, les abonnés payants et le grand public.
-- Activez ou désactivez les commentaires et pings d’articles à l’aide des réglages « Discussion ».
+Nous avons amélioré la section Statistiques d’environ 83 %.
 
-Pendant que nous y étions, nous avons fait plusieurs autres mises à jour utiles dans divers domaines de l’application.
+- La carte Emplacements vous permet de filtrer les données par pays, par région et par ville. Ces données sont similaires à celles de la version Web de Jetpack.
+- La section « Liens externes » s’appelle désormais « Clics », comme dans la version Web. Nous avons corrigé un bug qui entraînait parfois un mauvais affichage de cette zone.
+- Vous pouvez désactiver la comparaison automatique des données et enregistrer ce réglage pour les prochaines fois où vous utiliserez l’application. Nous avons résolu le problème qui entraînait parfois un mauvais affichage des données hebdomadaires pour la période de comparaison.
+- Un appui prolongé sur un graphique à barres affichera plus de détails. Le défilement vertical est également corrigé.
+- Vous pouvez afficher les données des graphiques à barres et en courbes en les regroupant par jour, semaine, mois et année.
+- Les éléments de la Liste des premiers sont triés par nom et classés correctement.
 
-- Sur l’écran « Publication », vous pouvez activer « Envoyer un e-mail aux abonnés » pour avertir automatiquement vos abonnés lorsqu’un article est publié. Démarrer les presses.
-- L’éditeur de slug dispose d’un aperçu de permalien pour afficher l’URL finale d’un article.
-- Nous avons ajouté « Taxonomies » aux réglages du site afin que vous puissiez gérer les groupes de contenu au niveau du site.
-- Grâce à quelques correctifs de design dans le sélecteur de « Catégories », il est plus évident que vous pouvez choisir plusieurs catégories pour un article.
-- Les tailles de fichiers sont désormais visibles dans la zone Détails du média du site. Fini les conjectures.
+Nous avons également apporté de nombreuses modifications au Lecteur.
 
-Vous êtes plus lecteur qu’éditeur ? Ne vous inquiétez pas, nous avons également apporté des modifications au Lecteur.
+- Un nouvel onglet « Fraîchement Pressé » est désormais disponible sur l’écran Découvrir. Nous avons également modifié le nom de l’onglet « Recommandé » en « Pour vous ».
+- Il n’y a qu’une seule option de recherche dans la colonne latérale principale.
+- La vue « Lire la suite » fonctionne de la même manière, quel que soit l’endroit où vous touchez, et vous pouvez désormais voir l’intégralité de l’extrait. Bien plus de contenu à explorer.
+- La section Commentaires vous permet de répondre aux commentaires et de les aimer directement sous l’article. Un nouveau bouton « Laisser un commentaire » a été ajouté sous les articles pour des commentaires plus rapides.
+- Vous pouvez voir deux commentaires par défaut au lieu d’un seul, et les commentaires très longs peuvent être réduits pour une lecture plus facile.
+- La section Commentaires présentait aussi quelques problèmes visuels. Les commentaires ont désormais la bonne hauteur, le bouton « Voir tous les commentaires » se distingue davantage des autres et le style du bouton « Envoyer » est désormais correct.
+- Vous pouvez lire les articles dans la langue de votre choix grâce à la prise en charge de la traduction dans l’application.
+- Les espaces multiples des titres de sites sont regroupés en un seul pour faciliter la lecture et l’affichage.
 
-- Lorsque les titres des articles similaires sont trop longs, vous verrez une version plus courte et tronquée à la place.
-- Les mosaïques d’articles peuvent désormais contenir trois lignes de texte au lieu de deux, ce qui vous permet d’améliorer votre contenu de 50 %.
-- Les articles ont des marges horizontales légèrement plus larges.
-- Nous avons éliminé plusieurs bugs qui affectaient la façon dont les articles se chargent.
+Nous avons effectué une mise à jour technique qui réduit la taille de votre application d’environ 6 Mo. Qu'allez-vous faire de tout cet espace ?
+
+Il est plus facile de trouver, voir et modifier les réglages de visibilité des articles existants. Le bouton « Terminé » ne disparaît plus lorsque vous définissez le mot de passe lors de la publication d’un article protégé par mot de passe.
+
+Parfait : nous avons mis à jour les icônes de raccourcis et les illustrations afin qu’elles correspondent davantage au reste de l’application et s’adaptent mieux à votre appareil.
+
+Nous avons corrigé un problème et l’aperçu des articles fonctionne désormais correctement pour certains sites qui utilisent les plans Business et Commerce.
+
+Lorsque vous ajouterez un nouveau site auto-hébergé, vous devrez saisir le mot de passe de votre application pour vous authentifier. Ne le communiquez à personne. Conservez-le en lieu sûr.

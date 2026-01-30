@@ -1,22 +1,31 @@
-Atenção, criadores de conteúdo: trabalhamos duro para fazer algumas grandes alterações na tela de configurações do post.
+Nossa funcionalidade de suporte com IA, a WordPress Intelligence, agora está disponível em mais locais e idiomas. O assistente mais amado ficou ainda melhor.
 
-- Adicionamos um campo "Status" que ajuda você a mover rapidamente os posts entre estados de rascunho, pendente, privado, agendado e publicado.
-- Retornamos a área "Data de publicação" para rascunhos e posts pendentes. Dessa forma, você pode escolher uma data de publicação com antecedência sem agendar oficialmente o post.
-- O campo de senha usa uma fonte diferente (Menlo, se você tiver interesse) para que seja mais fácil ler caracteres com aparência semelhante.
-- Dê aos seus seguidores o tratamento VIP, definindo níveis de acesso aos posts para todos os assinantes, assinantes pagos e para o público em geral.
-- Ative ou desative os comentários e pingbacks dos posts usando as configurações de "Discussão".
+Melhoramos a seção de estatísticas em cerca de 83%.
 
-Enquanto estávamos lá, fizemos várias outras atualizações úteis em várias áreas do aplicativo.
+- O cartão Locais permite que você filtre dados por país, região e cidade. Esses dados são consistentes com a versão para web do Jetpack.
+- "Links externos" agora é "Cliques", mantendo a consistência com a versão web. Corrigimos um bug em que essa área era exibida incorretamente algumas vezes.
+- Você pode desativar a comparação automática de dados e salvar essa configuração para uso futuro do aplicativo. Corrigimos um problema em que os dados semanais do período de comparação nem sempre eram exibidos corretamente.
+- Pressionar por muito tempo um gráfico de barras mostrará mais detalhes. A rolagem vertical também é fixa.
+- Você pode visualizar dados de gráficos de linhas e barras agrupados por dias, semanas, meses e anos.
+- Os itens da lista principal são ordenados por nome corretamente.
 
-- Na tela "Publicação", você pode alternar "E-mail para assinantes" para notificar seus assinantes automaticamente quando um post for publicado. Vamos começar.
-- O editor de slug tem uma visualização de link permanente para mostrar como a URL final de um post será exibida.
-- Adicionamos "Taxonomias" às Configurações do site para que você possa gerenciar grupos de conteúdo no nível do site.
-- Graças a algumas correções de design no seletor "Categorias", ficou mais fácil escolher várias categorias para um post.
-- Os tamanhos dos arquivos agora estão visíveis na área Detalhes da mídia do site. Chega de suposições.
+Também fizemos muitas alterações no Leitor.
 
-Está mais para leitor do que para editor? Não se preocupe, também fizemos alterações no Leitor.
+- Há uma nova guia na tela Explorar: Recém-publicados. E a guia "Recomendado" agora é "Para você".
+- Há apenas uma opção de busca na barra lateral principal.
+- A visualização "Leia mais" funciona da mesma forma, não importa onde você toca, e agora você pode ver o resumo completo. Muito mais para explorar.
+- A seção Comentários permite que você responda e curta comentários diretamente abaixo do artigo. Há um novo botão "Comentar" em artigos para agilizar os comentários.
+- Você pode ver dois comentários por padrão em vez de apenas um, e comentários muito longos podem ser recolhidos para facilitar a leitura.
+- Também corrigimos alguns problemas visuais na seção Comentários. Agora os comentários têm a altura correta, o botão "Ver todos os comentários" está mais em destaque, e o botão "Enviar" tem o estilo adequado.
+- Você pode ler posts no seu idioma preferido com a tradução no aplicativo.
+- Vários espaços em títulos de sites são recolhidos em um para facilitar a leitura e exibição.
 
-- Quando os títulos dos posts relacionados forem muito longos, você verá uma versão mais curta e resumida.
-- Os blocos de post agora podem ter três linhas de texto em vez de apenas duas, oferecendo 50% mais conteúdo de qualidade.
-- Os artigos têm margens horizontais ligeiramente mais amplas.
-- Corrigimos vários bugs que afetavam o carregamento dos artigos.
+Fizemos uma atualização técnica que reduz o tamanho do seu aplicativo em cerca de 6 MB. O que você fará com todo esse espaço a mais?
+
+É mais fácil encontrar, ver e alterar as configurações de visibilidade de posts existentes. O botão "Concluído" também não desaparecerá quando você definir a senha ao publicar um post protegido por senha.
+
+Atualizamos ícones de atalho e ilustrações para combinar mais com o restante do aplicativo e se ajustar melhor ao seu dispositivo. Ficou muito bom.
+
+Corrigimos um problema, então as visualizações de posts agora funcionam corretamente para determinados sites usando os planos Negócios e Commerce.
+
+Quando você adicionar um novo site auto-hospedado, será solicitado que você forneça a senha do seu aplicativo para autenticar. Senha secreta, site seguro.
