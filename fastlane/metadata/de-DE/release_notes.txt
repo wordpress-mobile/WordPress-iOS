@@ -1,15 +1,9 @@
-Content Creator aufgepasst – wir haben einige wichtige Änderungen am Bildschirm „Beitragseinstellungen“ vorgenommen.
+Wir haben ein technisches Update vorgenommen, durch das die Größe deiner App um etwa 6 MB reduziert wird. Wie möchtest du den neu gewonnenen Speicherplatz nutzen?
 
-- Wir haben ein „Status“-Feld hinzugefügt, mit dem du Beiträge schnell zwischen dem Status „Entwurf“, „Ausstehend“, „Privat“, „Geplant“ und „Veröffentlicht“ verschieben kannst.
-- Wir haben den Bereich „Veröffentlichungsdatum“ für Entwürfe und ausstehende Beiträge wieder hinzugefügt. Auf diese Weise kannst du ein Veröffentlichungsdatum im Voraus auswählen, ohne den Beitrag offiziell zu planen.
-- Das Passwort-Feld verwendet eine andere Schriftart (Menlo, falls es dich interessiert), sodass ähnlich aussehende Zeichen leichter zu lesen sind.
-- Gewähre deinen Followern VIP-Behandlung, indem du für alle Abonnenten, zahlende Abonnenten und die allgemeine Öffentlichkeit Zugriffsebenen für Beiträge festlegst.
-- Aktiviere oder deaktiviere in den Diskussionseinstellungen Beitragskommentare und Pingbacks.
+Es ist jetzt einfacher, die Sichtbarkeitseinstellungen vorhandener Beiträge zu finden, anzuzeigen und zu ändern. Der Button „Fertig“ verschwindet auch nicht mehr, wenn du beim Veröffentlichen eines passwortgeschützten Beitrags das Passwort festlegst.
 
-Außerdem haben wir weitere hilfreiche Updates in verschiedenen Bereichen der App vorgenommen.
+Das sieht gut aus: Wir haben die Icons für Tastaturkürzel und die Abbildungen aktualisiert, damit sie besser zum Rest der App und zu deinem Gerät passen.
 
-- Im Bildschirm zu Veröffentlichungen kannst du „E-Mail an Abonnenten“ umschalten, um deine Abonnenten automatisch zu benachrichtigen, wenn ein Beitrag veröffentlicht wird. Weitere wichtige Neuerungen.
-- Der Titelform-Editor verfügt über eine Permalink-Vorschau, um anzuzeigen, wie die endgültige URL eines Beitrags aussieht.
-- Wir haben „Taxonomien“ zu den Website-Einstellungen hinzugefügt, damit du deine Inhaltsgruppen auf Website-Ebene verwalten kannst.
-- Dank einiger Design-Korrekturen in der Auswahl „Kategorien“ ist es jetzt einfacher zu erkennen, dass du mehrere Kategorien für einen Beitrag auswählen kannst.
-- Dateigrößen werden jetzt im Bereich „Website-Mediendetails“ angezeigt. Kein Rätselraten mehr.
+Problem behoben: Die Beitragsvorschau funktioniert jetzt ordnungsgemäß für bestimmte Websites mit Business- und Commerce-Tarif.
+
+Wenn du eine neue selbst gehostete Website hinzufügst, wird du gebeten, dich mit deinem App-Passwort zu authentifizieren. Halte es geheim. Bewahre es sicher auf.

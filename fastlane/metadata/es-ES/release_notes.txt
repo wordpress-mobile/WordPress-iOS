@@ -1,15 +1,9 @@
-¡Atención, creadores de contenido! Hemos trabajado duro para implementar algunos cambios importantes en la pantalla Ajustes de entrada.
+Hemos realizado una actualización técnica que reduce el tamaño de la aplicación en unos 6 MB. ¿Qué harás con todo ese espacio que has ganado? 
 
-- Hemos añadido el campo «Estado» que te ayuda a configurar rápidamente las entradas como «Borrador», «Pendiente», «Privada», «Programada» y «Publicada».
-- Hemos recuperado la sección «Fecha de publicación» para las entradas en borrador y pendientes. De esta manera, puedes elegir una fecha de publicación con antelación sin programar oficialmente la entrada.
-- El campo Contraseña utiliza una fuente diferente (Menlo, por si tenías curiosidad) para que sea más fácil leer caracteres que se parezcan.
-- Dale a tus seguidores un tratamiento VIP definiendo niveles de acceso a las entradas para todos los suscriptores, los suscriptores de pago y el público en general.
-- Activa o desactiva los comentarios y pingbacks de las entradas con los ajustes de «Debate».
+Ahora es más fácil encontrar, ver y cambiar los ajustes de visibilidad de las entradas existentes. Además, el botón «Hecho» no desaparecerá cuando establezcas la contraseña al publicar una entrada protegida con contraseña.
 
-Mientras hacíamos todo esto, llevamos a cabo otras actualizaciones útiles en varias áreas de la aplicación.
+Mejora estética: hemos actualizado los iconos de acceso directo y las ilustraciones para que se adapten mejor al resto de la aplicación, así como a tu dispositivo. 
 
-- En la pantalla «Publicar», puedes activar «Enviar correo electrónico a los suscriptores» para avisar automáticamente a tus suscriptores cuando se publique una entrada. ¡Paren las rotativas!
-- El editor de slug dispone de una vista previa de los enlaces permanentes que muestra cómo se verá la URL final de una entrada.
-- Hemos añadido «Taxonomías» a Ajustes del sitio para que puedas gestionar tus grupos de contenido a nivel de sitio.
-- Gracias a algunas correcciones de diseño en el selector de «Categorías», es más obvio que puedes elegir varias categorías para una entrada.
-- Los tamaños de archivo ahora se pueden ver en el área Detalles de medios del sitio. No tendrás que hacer conjeturas.
+Hemos solucionado un problema para que las vistas previas de las publicaciones funcionen correctamente en determinados sitios que utilizan planes Business y Commerce. 
+
+Cuando añadas un nuevo sitio autohospedado, se te pedirá la contraseña de la aplicación para identificarte. Manténla en secreto. Manténla a salvo.
