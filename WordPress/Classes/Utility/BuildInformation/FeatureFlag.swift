@@ -71,7 +71,7 @@ public enum FeatureFlag: Int, CaseIterable {
         case .allowApplicationPasswords:
             return false
         case .selfHostedSiteUserManagement:
-            return false
+            return true
         case .readerGutenbergCommentComposer:
             return false
         case .pluginManagementOverhaul:
