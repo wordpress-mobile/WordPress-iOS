@@ -233,7 +233,6 @@
    Insights 'Comments' header
    Label for number of comments.
    Label for Period Overview comments
-   Noun. Title. Links to the blog's Comments screen.
    Settings: Comment Sections
    Text for the 'comment' button when there are multiple comments
    Title for the Blog's Comments Section View
@@ -254,9 +253,6 @@
 
 /* Setting: WordPress.com Community */
 "Community" = "ชุมชน";
-
-/* Section title for the configure table section in the blog details screen */
-"Configure" = "ปรับแต่ง";
 
 /* Verb. Title for Jetpack Restore confirm button. */
 "Confirm" = "ยืนยัน";
@@ -303,9 +299,6 @@
 
 /* Notification Settings for your own blogs */
 "Customize your site settings for Likes, Comments, Follows, and more." = "ปรับแต่งการตั้งค่าเว็บสำหรับการชื่นชอบ ความเห็น ติดตามและมากกว่าเดิม";
-
-/* Action title. Noun. Opens the user's WordPress.com dashboard in an external browser. */
-"Dashboard" = "หน้าควบคุม";
 
 /* Label for selecting the default category of a post */
 "Default Category" = "หมวดหมู่ค่าเริ่มต้น";
@@ -427,9 +420,6 @@
 /* Text displayed while fetching themes */
 "Fetching Themes..." = "กำลังดึงธีม...";
 
-/* A brief prompt shown when the comment list is empty, letting the user know the app is currently fetching new comments. */
-"Fetching comments..." = "กำลังดึงความเห็น...";
-
 /* Register Domain - Domain contact information field First name
    User's First Name */
 "First Name" = "ชื่อ";
@@ -517,9 +507,6 @@
 /* Accessibility label for italic button on formatting toolbar.
    Discoverability title for italic formatting keyboard shortcut. */
 "Italic" = "ตัวเอียง";
-
-/* Noun. Title. Links to the blog's Settings screen. */
-"Jetpack Settings" = "การตั้งค่า Jetpack";
 
 /* Button shown if there are unsaved changes and the author cancelled editing a Comment.
    Goes back to editing the post. */
@@ -624,13 +611,11 @@
 
 /* Accessibility label for the Me button in My Site.
    Me page title
-   Noun. Title. Links to the Me screen.
    The accessibility value of the me tab.
    Title of the 'Me' tab - used for spotlight indexing on iOS. */
 "Me" = "ฉัน";
 
-/* Noun. Title. Links to the blog's Media library.
-   Title for the media section in site settings screen
+/* Title for the media section in site settings screen
    Title label for the media settings section in the app settings */
 "Media" = "ไฟล์สื่อ";
 
@@ -695,7 +680,6 @@
 "No comments" = "ไม่มีความเห็น";
 
 /* Displayed in the Notifications Tab as a title, when the Comments Filter shows no notifications
-   Displayed on the post details page when there are no post comments.
    Displayed when there are no comments in the Comments views. */
 "No comments yet" = "ยังไม่มีความเห็น";
 
@@ -746,8 +730,7 @@
    Button title. An acknowledgement of the message displayed in a prompt.
    Dismisses the alert
    Menus: button title for finishing editing of a menu item.
-   Ok button for dismissing alert helping users understand their site address
-   OK Button title shown in alert informing users about the Reader Save for Later feature. */
+   Ok button for dismissing alert helping users understand their site address */
 "OK" = "ตกลง";
 
 /* Disabled */
@@ -805,8 +788,7 @@
    Other Sites Notification Settings Title */
 "Other Sites" = "เว็บอื่น";
 
-/* Noun. Title. Links to the blog's Pages screen.
-   This is the section title
+/* This is the section title
    Title of the screen showing the list of pages for a blog. */
 "Pages" = "หน้า";
 
@@ -827,15 +809,11 @@
    Title of pending Comments filter. */
 "Pending" = "รอตรวจสอบ";
 
-/* Noun. Title. Links to the people management feature.
-   People site intent topic */
+/* People site intent topic */
 "People" = "ผู้คน";
 
 /* Label for date periods. */
 "Period" = "ช่วงเวลา";
-
-/* Section title for the personalize table section in the blog details screen. */
-"Personalize" = "ความเป็นส่วนตัว";
 
 /* Politely asks the user to check their internet connection before trying again. */
 "Please check your internet connection and try again." = "โปรดตรวจสอบการเชื่อมต่ออินเตอร์เนทของคุณแล้วลองอีกครั้ง";
@@ -868,7 +846,6 @@
 
 /* All Time Stats 'Posts' label
    Insights 'Posts' header
-   Noun. Title. Links to the blog's Posts screen.
    Title of the screen showing the list of posts for a blog. */
 "Posts" = "เรื่อง";
 
@@ -895,8 +872,7 @@
 "Privacy Policy" = "นโยบายความเป็นส่วนตัว";
 
 /* Label for the publish (verb) button. Tapping publishes a draft post.
-   Publish post action on share extension site picker screen.
-   Section title for the publish table section in the blog details screen */
+   Publish post action on share extension site picker screen. */
 "Publish" = "เผยแพร่";
 
 /* Period Stats 'Published' header
@@ -1122,7 +1098,6 @@
 "Standard" = "มาตรฐาน";
 
 /* Noun. Abbreviation of Statistics. Name of the Stats feature
-   Noun. Abbv. of Statistics. Links to a blog's Stats screen.
    Stats 3D Touch Shortcut
    Stats window title */
 "Stats" = "สถิติ";
@@ -1202,7 +1177,6 @@
 "Theme Activated" = "เปิดใช้งานธีมแล้ว";
 
 /* Noun. Name of the Themes feature
-   Themes option in the blog details
    Title of Themes browser page */
 "Themes" = "Themes";
 
@@ -1362,9 +1336,6 @@
    Verb. The screen title shown when viewing a post inside the app. */
 "View" = "ดู";
 
-/* Action title. Opens the user's site in an in-app browser */
-"View Site" = "ดูเว็บไซต์";
-
 /* Displays More Rows */
 "View all…" = "ดูทั้งหมด...";
 
@@ -1393,9 +1364,6 @@
    Title for Visitors count in the legend of the Stats Insights views and visitors line chart
    Today's Stats 'Visitors' label */
 "Visitors" = "ผู้เยี่ยมชม";
-
-/* Action title. Noun. Opens the user's WordPress Admin in an external browser. */
-"WP Admin" = "ผู้ควบคุมเวิร์ดเพรส";
 
 /* The title of the option group for editing an image's size, alignment, etc. on the image details screen. */
 "Web Display Settings" = "การตั้งค่าการแสดงผลเว็บ";

@@ -269,12 +269,8 @@ translators: %s: Block name e.g. \"Image block\" */
 /* The plugin is active on the site and has enabled automatic updates */
 "Active, Autoupdates on" = "Aktiv, autooppdatering på";
 
-/* Noun. Links to a blog's Activity screen.
-   Noun. Name of the Activity Log feature */
+/* Noun. Name of the Activity Log feature */
 "Activity" = "Aktivitet";
-
-/* Noun. Links to a blog's Activity screen. */
-"Activity Log" = "Aktivitetslogg";
 
 /* No comment provided by engineer. */
 "Add Block After" = "Legg til blokk etter";
@@ -387,12 +383,10 @@ translators: %s: Block name e.g. \"Image block\" */
 /* A short description of the comment like sharing setting. */
 "Allow all comments to be Liked by you and your readers" = "Tillat alle kommentarer å likes av deg og dine lesere";
 
-/* Allow button title shown in alert preparing users to grant permission for us to send them push notifications.
-   Button label for approving our request to allow push notifications */
+/* Button label for approving our request to allow push notifications */
 "Allow notifications" = "Tillat varslinger";
 
-/* Allow button title shown in alert preparing users to grant permission for us to send them push notifications.
-   Shown to the user in settings when they haven't yet allowed or denied push notifications */
+/* Shown to the user in settings when they haven't yet allowed or denied push notifications */
 "Allow push notifications" = "Tillat push-varslinger";
 
 /* No comment provided by engineer. */
@@ -581,8 +575,7 @@ translators: %s: Block name e.g. \"Image block\" */
 /* Title for the Background Color section */
 "Background Color" = "Bakgrunnsfarge";
 
-/* Noun. Links to a blog's Jetpack Backups screen.
-   Noun. Name of the Backup feature
+/* Noun. Name of the Backup feature
    Title for Jetpack Backup Complete screen
    Title for Jetpack Backup Status screen
    Title for Jetpack Backup Update Status Failed screen */
@@ -919,7 +912,6 @@ translators: %s: Block name e.g. \"Image block\" */
    Insights 'Comments' header
    Label for number of comments.
    Label for Period Overview comments
-   Noun. Title. Links to the blog's Comments screen.
    Settings: Comment Sections
    Text for the 'comment' button when there are multiple comments
    Title for the Blog's Comments Section View
@@ -941,9 +933,6 @@ translators: %s: Block name e.g. \"Image block\" */
 /* Setting: WordPress.com Community */
 "Community" = "Samfunn";
 
-/* Section title for the configure table section in the blog details screen */
-"Configure" = "Konfigurer";
-
 /* Verb. Title for Jetpack Restore confirm button. */
 "Confirm" = "Bekreft";
 
@@ -955,9 +944,6 @@ translators: %s: Block name e.g. \"Image block\" */
 
 /* Alert text field placeholder. */
 "Confirm username" = "Bekreft brukernavn";
-
-/* Title of alert prompting users to verify their accounts while attempting to publish */
-"Confirm your email first" = "Bekreft E-postadressen din først";
 
 /* Verb. Tapping connects an account to Publicize.
    Verb. Text label. Allows the user to connect to a third-party sharing service like Facebook or Twitter. */
@@ -1156,9 +1142,6 @@ translators: %s: Block name e.g. \"Image block\" */
 /* Title for the app appearance setting for dark mode */
 "Dark" = "Mørk";
 
-/* Action title. Noun. Opens the user's WordPress.com dashboard in an external browser. */
-"Dashboard" = "Kontrollpanel";
-
 /* Blog Writing Settings: Date Format
    Writing Date Format Settings Title */
 "Date Format" = "Datoformat";
@@ -1277,9 +1260,6 @@ translators: %s: Block name e.g. \"Image block\" */
 
 /* Register Domain - Privacy Protection section header description */
 "Domain owners have to share contact information in a public database of all domains. With Privacy Protection, we publish our own information instead of yours and privately forward any communication to you." = "Domene-eiere må dele kontaktinfo i en offentlig database med alle domener. Med Personvernbeskyttelsen, publiserer vi vår egen kontaktinfo i stedet for din, og videresender all kommunikasjon til deg.";
-
-/* Noun. Title. Links to the Domains screen. */
-"Domains" = "Domener";
 
 /* Label for button to log in using your site address. The underscores _..._ denote underline */
 "Don't have an account? _Sign up_" = "Har du ikke en konto? _Registrer deg_";
@@ -1533,12 +1513,6 @@ translators: %s: Block name e.g. \"Image block\" */
 /* There was an error removing a plugin, placeholder is the plugin name */
 "Error removing %@." = "Feil under fjerning av %@.";
 
-/* Message shown when there was an error trying to re-send email verification and we suspect the user has already verified in the meantime */
-"Error sending verification email. Are you already verified?" = "Feil under sending av verifiserings-E-post. Er du kanskje allerede verifisert?";
-
-/* Generic message shown when there was an error trying to re-send email verification. */
-"Error sending verification email. Check your connection and try again." = "Feil under sending av verifiserings-E-post. Sjekk internettilkoblingen din og prøv igjen.";
-
 /* There was an error updating a plugin, placeholder is the plugin name */
 "Error updating %@." = "Feil under oppdatering av %@.";
 
@@ -1582,9 +1556,6 @@ translators: %s: Block name e.g. \"Image block\" */
 /* Overlay message displayed while starting content export */
 "Exporting content…" = "Eksporterer innhold...";
 
-/* Section title for the external table section in the blog details screen */
-"External" = "Eksterne";
-
 /* Error message to show to use when media insertion on a post fails */
 "Failed to insert media.\n Please tap for options." = "Kunne ikke sette inn medie.\nTrykk for flere valg.";
 
@@ -1599,9 +1570,6 @@ translators: %s: Block name e.g. \"Image block\" */
 
 /* Text displayed while fetching themes */
 "Fetching Themes..." = "Henter temaer...";
-
-/* A brief prompt shown when the comment list is empty, letting the user know the app is currently fetching new comments. */
-"Fetching comments..." = "Henter kommentarer...";
 
 /* Title displayed whilst fetching media from the user's media library */
 "Fetching media..." = "Henter medier...";
@@ -1944,8 +1912,7 @@ translators: %s: Block name e.g. \"Image block\" */
    Discoverability title for italic formatting keyboard shortcut. */
 "Italic" = "Kursiv";
 
-/* Section title for the publish table section in the blog details screen
-   Title for the Jetpack Installation
+/* Title for the Jetpack Installation
    Title for the Jetpack section in site settings screen */
 "Jetpack" = "Jetpack";
 
@@ -1954,9 +1921,6 @@ translators: %s: Block name e.g. \"Image block\" */
 
 /* Title of the button which opens the Jetpack FAQ page. */
 "Jetpack FAQ" = "Jetpack FAQ";
-
-/* Noun. Title. Links to the blog's Settings screen. */
-"Jetpack Settings" = "Jetpack-innstillinger";
 
 /* The default Jetpack view message used when an error occurred */
 "Jetpack could not be installed at this time." = "Jetpack kunne ikke installeres på dette tidspunktet.";
@@ -2213,13 +2177,11 @@ translators: %s: Block name e.g. \"Image block\" */
 
 /* Accessibility label for the Me button in My Site.
    Me page title
-   Noun. Title. Links to the Me screen.
    The accessibility value of the me tab.
    Title of the 'Me' tab - used for spotlight indexing on iOS. */
 "Me" = "Meg";
 
-/* Noun. Title. Links to the blog's Media library.
-   Title for the media section in site settings screen
+/* Title for the media section in site settings screen
    Title label for the media settings section in the app settings */
 "Media" = "Media";
 
@@ -2264,8 +2226,7 @@ translators: %s: Block name e.g. \"Image block\" */
 /* Menus placeholder text for the name field of a menu with no name. */
 "Menu Name" = "Menynavn";
 
-/* Menus option in the blog details
-   Noun. Name of the Menus feature
+/* Noun. Name of the Menus feature
    Title for screen that allows configuration of your site's menus */
 "Menus" = "Menyer";
 
@@ -2447,7 +2408,6 @@ translators: %s: Block name e.g. \"Image block\" */
 "No comments" = "Ingen kommentarer";
 
 /* Displayed in the Notifications Tab as a title, when the Comments Filter shows no notifications
-   Displayed on the post details page when there are no post comments.
    Displayed when there are no comments in the Comments views. */
 "No comments yet" = "Ingen kommentarer ennå";
 
@@ -2551,8 +2511,7 @@ translators: %s: Block name e.g. \"Image block\" */
 /* Error message to show to users when trying to upload a media object with file size is larger than the available site disk quota */
 "Not enough space to upload" = "Ikke nok lagringsplass for å laste opp";
 
-/* Button label for denying our request to allow push notifications
-   Not now button title shown in alert preparing users to grant permission for us to send them push notifications. */
+/* Button label for denying our request to allow push notifications */
 "Not now" = "Ikke nå";
 
 /* Shown when user is loading Menu item options and no items are available, such as posts, pages, etc. */
@@ -2601,8 +2560,7 @@ translators: %s: Block name e.g. \"Image block\" */
    Button title. An acknowledgement of the message displayed in a prompt.
    Dismisses the alert
    Menus: button title for finishing editing of a menu item.
-   Ok button for dismissing alert helping users understand their site address
-   OK Button title shown in alert informing users about the Reader Save for Later feature. */
+   Ok button for dismissing alert helping users understand their site address */
 "OK" = "OK";
 
 /* No comment provided by engineer. */
@@ -2735,8 +2693,7 @@ translators: %s: Block name e.g. \"Image block\" */
 /* translators: accessibility text. %s: Page break text. */
 "Page break block. %s" = "Sideskilleblokk. %s";
 
-/* Noun. Title. Links to the blog's Pages screen.
-   This is the section title
+/* This is the section title
    Title of the screen showing the list of pages for a blog. */
 "Pages" = "Sider";
 
@@ -2766,8 +2723,7 @@ translators: %s: Block name e.g. \"Image block\" */
    Title of pending Comments filter. */
 "Pending" = "Venter";
 
-/* Noun. Title. Links to the people management feature.
-   People site intent topic */
+/* People site intent topic */
 "People" = "Folk";
 
 /* Label for date periods. */
@@ -2775,9 +2731,6 @@ translators: %s: Block name e.g. \"Image block\" */
 
 /* Delete Site confirmation action title */
 "Permanently Delete Site" = "Slette nettsted permanent";
-
-/* Section title for the personalize table section in the blog details screen. */
-"Personalize" = "Personaliser";
 
 /* Accessibility label for selecting an image or video from the device's photo library on formatting toolbar. */
 "Photo Library" = "Bildebibliotek";
@@ -2899,8 +2852,7 @@ translators: %s: Block name e.g. \"Image block\" */
 /* Version of an installed plugin */
 "Plugin version" = "Utvidelsens versjon";
 
-/* Noun. Title. Links to the plugin management feature.
-   Title for the plugin directory */
+/* Title for the plugin directory */
 "Plugins" = "Utvidelser";
 
 /* An example tag used in the login prologue screens.
@@ -2948,7 +2900,6 @@ translators: %s: Block name e.g. \"Image block\" */
 
 /* All Time Stats 'Posts' label
    Insights 'Posts' header
-   Noun. Title. Links to the blog's Posts screen.
    Title of the screen showing the list of posts for a blog. */
 "Posts" = "Innlegg";
 
@@ -3029,8 +2980,7 @@ translators: %s: Block name e.g. \"Image block\" */
 "Problem purchasing your domain. Please try again." = "Problemer med å kjøpe ditt domene. Vennligst prøv igjen.";
 
 /* Label for the publish (verb) button. Tapping publishes a draft post.
-   Publish post action on share extension site picker screen.
-   Section title for the publish table section in the blog details screen */
+   Publish post action on share extension site picker screen. */
 "Publish" = "Publiser";
 
 /* Text displayed in the share extension's summary view. It describes the publish post action. */
@@ -3210,9 +3160,6 @@ translators: %s: Block name e.g. \"Image block\" */
 /* Setting: WordPress.com Surveys */
 "Research" = "Forskning";
 
-/* Title of secondary button on alert prompting verify their accounts while attempting to publish */
-"Resend" = "Send på nytt";
-
 /* The button title for a secondary call-to-action button. When the user can't remember their password. */
 "Reset your password" = "Tilbakestill passordet ditt";
 
@@ -3290,14 +3237,8 @@ translators: %s: Block name e.g. \"Image block\" */
 /* Text displayed in the share extension's summary view that describes the action of saving a single photo in a draft post. */
 "Save 1 photo as a draft post on:" = "Lagre 1 bilde som kladd på:";
 
-/* Title of alert informing users about the Reader Save for Later feature. */
-"Save Posts for Later" = "Lagre innlegg for senere";
-
 /* Text displayed in the share extension's summary view that describes the save draft post action. */
 "Save draft post on:" = "Lagre innleggskladd på:";
-
-/* Body text of alert informing users about the Reader Save for Later feature. */
-"Save this post, and come back to read it whenever you'd like. It will only be available on this device — saved posts don't sync to other devices." = "Lagre dette innlegget og kom tilbake for å lese det når det passer. Det vil bare være tilgjengelig på denne enheten — lagrede innlegg synkroniseres ikke til andre enheter.";
 
 /* Title of action button for a Reader post that has been saved to read later. */
 "Saved" = "Lagret";
@@ -3464,7 +3405,6 @@ translators: %s: Block name e.g. \"Image block\" */
 "Share your story here..." = "Del din historie her...";
 
 /* Noun. Name of the Social Sharing feature
-   Noun. Title. Links to a blog's sharing options.
    Title for blog detail sharing screen. */
 "Sharing" = "Deling";
 
@@ -3550,9 +3490,6 @@ translators: %s: Block name e.g. \"Image block\" */
 
 /* Describes a site redirect domain */
 "Site Redirect" = "Sideomdirigering";
-
-/* Noun. Title. Links to the blog's Settings screen. */
-"Site Settings" = "Nettstedsinnstillinger";
 
 /* Default title for a site
    Label for site title blog setting
@@ -3703,16 +3640,12 @@ translators: %s: Block name e.g. \"Image block\" */
 "State" = "Delstat";
 
 /* Noun. Abbreviation of Statistics. Name of the Stats feature
-   Noun. Abbv. of Statistics. Links to a blog's Stats screen.
    Stats 3D Touch Shortcut
    Stats window title */
 "Stats" = "Statistikk";
 
 /* The loading view title displayed when an error occurred */
 "Stats not loaded" = "Statistikk ikke lastet inn";
-
-/* Title of the first alert preparing users to grant permission for us to send them push notifications. */
-"Stay in the loop" = "Hold deg oppdatert";
 
 /* Label text that defines a post marked as sticky */
 "Sticky" = "Klebrig";
@@ -3959,7 +3892,6 @@ translators: %s: Block name e.g. \"Image block\" */
 "Theme Activated" = "Tema aktivert";
 
 /* Noun. Name of the Themes feature
-   Themes option in the blog details
    Title of Themes browser page */
 "Themes" = "Temaer";
 
@@ -4396,15 +4328,11 @@ translators: %s: Block name e.g. \"Image block\" */
 /* No comment provided by engineer. */
 "Username must be at least 4 characters." = "Brukernavn må være minst 4 tegn.";
 
-/* Blog Users
-   Noun. Title. Links to the user management feature. */
+/* Blog Users */
 "Users" = "Brukere";
 
 /* two factor code placeholder */
 "Verification code" = "Bekreftelseskode";
-
-/* Message shown when a verification email was re-sent succesfully */
-"Verification email sent, check your inbox." = "Verifiserings-E-posten ble sendt, sjekk innboksen din";
 
 /* Push Authentication Alert Title */
 "Verify Log In" = "Bekreft innlogging";
@@ -4438,9 +4366,6 @@ translators: %s: Block name e.g. \"Image block\" */
    Theme View action title
    Verb. The screen title shown when viewing a post inside the app. */
 "View" = "Se";
-
-/* Action title. Opens the user's site in an in-app browser */
-"View Site" = "Vis nettsted";
 
 /* Displays More Rows */
 "View all…" = "Vis alle…";
@@ -4486,9 +4411,6 @@ translators: %s: Block name e.g. \"Image block\" */
    Today's Stats 'Visitors' label */
 "Visitors" = "Besøkere";
 
-/* Action title. Noun. Opens the user's WordPress Admin in an external browser. */
-"WP Admin" = "WP Admin";
-
 /* Message shown on screen while waiting for Google to finish its signup process. */
 "Waiting for Google to complete…" = "Venter på at Google skal fullføre...";
 
@@ -4520,9 +4442,6 @@ translators: %s: Block name e.g. \"Image block\" */
 
 /* This is the string we display when asking the user to approve push notifications */
 "We'll notify you when you get followers, comments, and likes." = "Vi vil varsle deg når du får følgere, kommentarer og likes.";
-
-/* Body text of the first alert preparing users to grant permission for us to send them push notifications. */
-"We'll notify you when you get new followers, comments, and likes. Would you like to allow push notifications?" = "Vi vil varsle deg når du får følgere, kommentarer og likes. Vil du tillate push-varslinger?";
 
 /* Text confirming email address to be used for new account. */
 "We'll use this email address to create your new WordPress.com account." = "Vi bruker denne epostadressen for å opprette din nye WordPress.com-konto.";
@@ -4560,9 +4479,6 @@ translators: %s: Block name e.g. \"Image block\" */
 
 /* Title of section that contains plugins' change log */
 "What's New" = "Hva er nytt";
-
-/* Title of alert helping users understand their site address */
-"What's my site address?" = "Hva er sideadressen min?";
 
 /* Text rendered at the bottom of the Discussion Moderation Keys editor */
 "When a comment contains any of these words in its content, name, URL, e-mail or IP, it will be held in the moderation queue. You can enter partial words, so \"press\" will match \"WordPress\"." = "Når en kommentar inneholder noen av disse ordene i innholdet, navnet, URLen, eposten eller IPen vil det bli hold i modereringskøen. Du kan skrive inn deler av ord, så \"press\" vil matche \"WordPress\".";
@@ -4710,9 +4626,6 @@ translators: %s: Block name e.g. \"Image block\" */
 /* Error message informing the user that being logged into a WordPress.com account is required. */
 "You must be signed in to a WordPress.com account to perform this action." = "Du må være logget inn i en WordPress.com-konto for å gjøre dette.";
 
-/* Body of alert prompting users to verify their accounts while attempting to publish */
-"You need to verify your account before you can publish a post.\nDon’t worry, your post is safe and will be saved as a draft." = "Du må verifisere kontoen din før du kan publisere et innlegg.\nIkke vær redd, innlegget ditt har det trygt og godt, og vil bli lagret som en kladd.";
-
 /* Informs that the user has replied to this comment.
    Notification text - below a comment notification detail
    Text to look for */
@@ -4744,9 +4657,6 @@ translators: %s: Block name e.g. \"Image block\" */
 
 /* Message of Export Content confirmation alert; substitution is user's email address */
 "Your posts, pages, and settings will be mailed to you at %@." = "Dine innlegg, sider og innstillinger vil bli sent til deg på epostadressen %@.";
-
-/* Body text of alert helping users understand their site address */
-"Your site address appears in the bar at the top of the screen when you visit your site in Safari." = "Sideadressen din vises i adresselinja øverst på skjermen når du besøker siden i Safari.";
 
 /* User-facing string, presented to reflect that site assembly completed successfully. */
 "Your site has been created!" = "Dit nettsted er opprettet!";

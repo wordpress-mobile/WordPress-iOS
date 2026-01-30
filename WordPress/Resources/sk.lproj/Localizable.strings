@@ -167,8 +167,7 @@
 /* The plugin is active on the site and has enabled automatic updates */
 "Active, Autoupdates on" = "Aktívne, automatické aktualizácie zapnuté";
 
-/* Noun. Links to a blog's Activity screen.
-   Noun. Name of the Activity Log feature */
+/* Noun. Name of the Activity Log feature */
 "Activity" = "Aktivita";
 
 /* Alert option to add document contents into a blog post. */
@@ -227,12 +226,10 @@
 /* Jetpack Settings: Allow WordPress.com login */
 "Allow WordPress.com login" = "Povoliť prihlásenie WordPress.com";
 
-/* Allow button title shown in alert preparing users to grant permission for us to send them push notifications.
-   Button label for approving our request to allow push notifications */
+/* Button label for approving our request to allow push notifications */
 "Allow notifications" = "Povoliť upozornenia";
 
-/* Allow button title shown in alert preparing users to grant permission for us to send them push notifications.
-   Shown to the user in settings when they haven't yet allowed or denied push notifications */
+/* Shown to the user in settings when they haven't yet allowed or denied push notifications */
 "Allow push notifications" = "Povoliť push upozornenia";
 
 /* No comment provided by engineer. */
@@ -585,7 +582,6 @@
    Insights 'Comments' header
    Label for number of comments.
    Label for Period Overview comments
-   Noun. Title. Links to the blog's Comments screen.
    Settings: Comment Sections
    Text for the 'comment' button when there are multiple comments
    Title for the Blog's Comments Section View
@@ -607,9 +603,6 @@
 /* Setting: WordPress.com Community */
 "Community" = "Komunita";
 
-/* Section title for the configure table section in the blog details screen */
-"Configure" = "Konfigurovať";
-
 /* Verb. Title for Jetpack Restore confirm button. */
 "Confirm" = "Potvrdiť";
 
@@ -618,9 +611,6 @@
 
 /* Instructional text about the Sharing feature. */
 "Confirm this is the account you would like to authorize. Note that your posts will be automatically shared to this account." = "Potvrďte, že ide o účet, ktorý chcete autorizovať. Upozorňujeme, že vaše príspevky sa automaticky zdieľajú s týmto účtom.";
-
-/* Title of alert prompting users to verify their accounts while attempting to publish */
-"Confirm your email first" = "Najskôr potvrďte svoj e-mail";
 
 /* Verb. Tapping connects an account to Publicize.
    Verb. Text label. Allows the user to connect to a third-party sharing service like Facebook or Twitter. */
@@ -773,9 +763,6 @@
 /* Notification Settings for your own blogs */
 "Customize your site settings for Likes, Comments, Follows, and more." = "Prispôsobte nastavenia vašej webovej stránky pre označenia Páči sa mi to, Komentáre, Sledujúci a iné.";
 
-/* Action title. Noun. Opens the user's WordPress.com dashboard in an external browser. */
-"Dashboard" = "Nástenka";
-
 /* Blog Writing Settings: Date Format
    Writing Date Format Settings Title */
 "Date Format" = "Formát dátumu";
@@ -869,9 +856,6 @@
 /* Display Name label text.
    User's Display Name */
 "Display Name" = "Zobraziť meno";
-
-/* Noun. Title. Links to the Domains screen. */
-"Domains" = "Domény";
 
 /* Label for button to log in using your site address. The underscores _..._ denote underline */
 "Don't have an account? _Sign up_" = "Ešte nemáš účet? _Zaregistruj sa_";
@@ -1034,12 +1018,6 @@
 /* There was an error removing a plugin, placeholder is the plugin name */
 "Error removing %@." = "Chyba odstraňuje %@.";
 
-/* Message shown when there was an error trying to re-send email verification and we suspect the user has already verified in the meantime */
-"Error sending verification email. Are you already verified?" = "Chyba odoslala overovací e-mail. Ste už overený?";
-
-/* Generic message shown when there was an error trying to re-send email verification. */
-"Error sending verification email. Check your connection and try again." = "Chyba odoslala overovací e-mail. Skontrolujte svoje pripojenie a skúste ešte raz.";
-
 /* There was an error updating a plugin, placeholder is the plugin name */
 "Error updating %@." = "Chyba aktualizácie %@.";
 
@@ -1065,9 +1043,6 @@
 /* Overlay message displayed while starting content export */
 "Exporting content…" = "Exportuje sa obsah...";
 
-/* Section title for the external table section in the blog details screen */
-"External" = "Externý";
-
 /* Error message to show to use when media insertion on a post fails */
 "Failed to insert media.\n Please tap for options." = "Chyba pri nahrávaní súboru.\nKliknutím otvoríte nastavenia.";
 
@@ -1079,9 +1054,6 @@
 
 /* Text displayed while fetching themes */
 "Fetching Themes..." = "Načítavanie tém...";
-
-/* A brief prompt shown when the comment list is empty, letting the user know the app is currently fetching new comments. */
-"Fetching comments..." = "Načítavajú sa komentáre...";
 
 /* Title displayed whilst fetching media from the user's media library */
 "Fetching media..." = "Načítavanie médií...";
@@ -1360,8 +1332,7 @@
    Discoverability title for italic formatting keyboard shortcut. */
 "Italic" = "Kurzíva";
 
-/* Section title for the publish table section in the blog details screen
-   Title for the Jetpack Installation
+/* Title for the Jetpack Installation
    Title for the Jetpack section in site settings screen */
 "Jetpack" = "Jetpack";
 
@@ -1578,13 +1549,11 @@
 
 /* Accessibility label for the Me button in My Site.
    Me page title
-   Noun. Title. Links to the Me screen.
    The accessibility value of the me tab.
    Title of the 'Me' tab - used for spotlight indexing on iOS. */
 "Me" = "Ja";
 
-/* Noun. Title. Links to the blog's Media library.
-   Title for the media section in site settings screen
+/* Title for the media section in site settings screen
    Title label for the media settings section in the app settings */
 "Media" = "Súbory";
 
@@ -1623,8 +1592,7 @@
 /* Menus placeholder text for the name field of a menu with no name. */
 "Menu Name" = "Názov menu";
 
-/* Menus option in the blog details
-   Noun. Name of the Menus feature
+/* Noun. Name of the Menus feature
    Title for screen that allows configuration of your site's menus */
 "Menus" = "Menu";
 
@@ -1742,7 +1710,6 @@
 "No comments" = "Žiadne komentáre";
 
 /* Displayed in the Notifications Tab as a title, when the Comments Filter shows no notifications
-   Displayed on the post details page when there are no post comments.
    Displayed when there are no comments in the Comments views. */
 "No comments yet" = "Žiadne komentáre";
 
@@ -1817,8 +1784,7 @@
 /* Error message to show to users when trying to upload a media object with file size is larger than the available site disk quota */
 "Not enough space to upload" = "Nedostatok miesta na nahranie";
 
-/* Button label for denying our request to allow push notifications
-   Not now button title shown in alert preparing users to grant permission for us to send them push notifications. */
+/* Button label for denying our request to allow push notifications */
 "Not now" = "Teraz nie";
 
 /* Shown when user is loading Menu item options and no items are available, such as posts, pages, etc. */
@@ -1855,8 +1821,7 @@
    Button title. An acknowledgement of the message displayed in a prompt.
    Dismisses the alert
    Menus: button title for finishing editing of a menu item.
-   Ok button for dismissing alert helping users understand their site address
-   OK Button title shown in alert informing users about the Reader Save for Later feature. */
+   Ok button for dismissing alert helping users understand their site address */
 "OK" = "OK";
 
 /* Disabled */
@@ -1950,8 +1915,7 @@
    Title shown when selecting a post type of Page from the Share Extension. */
 "Page" = "Stránka";
 
-/* Noun. Title. Links to the blog's Pages screen.
-   This is the section title
+/* This is the section title
    Title of the screen showing the list of pages for a blog. */
 "Pages" = "Stránky";
 
@@ -1972,8 +1936,7 @@
    Title of pending Comments filter. */
 "Pending" = "Čakajúce";
 
-/* Noun. Title. Links to the people management feature.
-   People site intent topic */
+/* People site intent topic */
 "People" = "Ľudia";
 
 /* Label for date periods. */
@@ -1981,9 +1944,6 @@
 
 /* Delete Site confirmation action title */
 "Permanently Delete Site" = "Trvale zmazať webovú stránku";
-
-/* Section title for the personalize table section in the blog details screen. */
-"Personalize" = "Prispôsobiť";
 
 /* Accessibility label for selecting an image or video from the device's photo library on formatting toolbar. */
 "Photo Library" = "Knižnica fotografií";
@@ -2048,8 +2008,7 @@
 /* Version of an installed plugin */
 "Plugin version" = "Verzia pluginu";
 
-/* Noun. Title. Links to the plugin management feature.
-   Title for the plugin directory */
+/* Title for the plugin directory */
 "Plugins" = "Pluginy";
 
 /* Header of section in Plugin Directory showing popular plugins
@@ -2081,7 +2040,6 @@
 
 /* All Time Stats 'Posts' label
    Insights 'Posts' header
-   Noun. Title. Links to the blog's Posts screen.
    Title of the screen showing the list of posts for a blog. */
 "Posts" = "Články";
 
@@ -2132,8 +2090,7 @@
 "Privacy Settings" = "Nastavenia súkromia";
 
 /* Label for the publish (verb) button. Tapping publishes a draft post.
-   Publish post action on share extension site picker screen.
-   Section title for the publish table section in the blog details screen */
+   Publish post action on share extension site picker screen. */
 "Publish" = "Zverejniť";
 
 /* Text displayed in the share extension's summary view. It describes the publish post action. */
@@ -2269,9 +2226,6 @@
 /* Setting: WordPress.com Surveys */
 "Research" = "Prieskum";
 
-/* Title of secondary button on alert prompting verify their accounts while attempting to publish */
-"Resend" = "Znovu odoslať";
-
 /* Screen title. Resize and crop an image. */
 "Resize & Crop" = "Upraviť veľkosť a orezať";
 
@@ -2334,14 +2288,8 @@
 /* Text displayed in the share extension's summary view that describes the action of saving a single photo in a draft post. */
 "Save 1 photo as a draft post on:" = "Uložiť 1 fotografiu ako koncept článku na:";
 
-/* Title of alert informing users about the Reader Save for Later feature. */
-"Save Posts for Later" = "Uložiť príspevky na neskôr";
-
 /* Text displayed in the share extension's summary view that describes the save draft post action. */
 "Save draft post on:" = "Uložiť koncept článku na:";
-
-/* Body text of alert informing users about the Reader Save for Later feature. */
-"Save this post, and come back to read it whenever you'd like. It will only be available on this device — saved posts don't sync to other devices." = "Uložte tento článok a vráťte sa k jeho prečítaniu, kedykoľvek budete chcieť. Bude k dispozícii na tomto zariadení - uložené články sa nesynchronizujú s vašimi ďalšími zariadeniami.";
 
 /* Title of action button for a Reader post that has been saved to read later. */
 "Saved" = "Uložený";
@@ -2454,7 +2402,6 @@
 "Share your story here..." = "Podeľte sa o svoj príbeh...";
 
 /* Noun. Name of the Social Sharing feature
-   Noun. Title. Links to a blog's sharing options.
    Title for blog detail sharing screen. */
 "Sharing" = "Zdieľanie";
 
@@ -2629,13 +2576,9 @@
 "Start Over" = "Začať znova";
 
 /* Noun. Abbreviation of Statistics. Name of the Stats feature
-   Noun. Abbv. of Statistics. Links to a blog's Stats screen.
    Stats 3D Touch Shortcut
    Stats window title */
 "Stats" = "Štatistika";
-
-/* Title of the first alert preparing users to grant permission for us to send them push notifications. */
-"Stay in the loop" = "Zostraňte v cykle";
 
 /* Label text that defines a post marked as sticky */
 "Sticky" = "Rýchly";
@@ -2808,7 +2751,6 @@
 "Theme Activated" = "Téma aktivovaná";
 
 /* Noun. Name of the Themes feature
-   Themes option in the blog details
    Title of Themes browser page */
 "Themes" = "Témy";
 
@@ -3137,15 +3079,11 @@
 /* No comment provided by engineer. */
 "Username must be at least 4 characters." = "Používateľské meno musí obsahovať najmenej 4 znaky.";
 
-/* Blog Users
-   Noun. Title. Links to the user management feature. */
+/* Blog Users */
 "Users" = "Používatelia";
 
 /* two factor code placeholder */
 "Verification code" = "Overovací kód";
-
-/* Message shown when a verification email was re-sent succesfully */
-"Verification email sent, check your inbox." = "Odoslali sme overovací e-mail, prosím skontrolujte si doručenú poštu.";
 
 /* Push Authentication Alert Title */
 "Verify Log In" = "Overte prihlásenie";
@@ -3173,9 +3111,6 @@
    Theme View action title
    Verb. The screen title shown when viewing a post inside the app. */
 "View" = "Zobraziť";
-
-/* Action title. Opens the user's site in an in-app browser */
-"View Site" = "Zobraziť webovú stránku";
 
 /* Displays More Rows */
 "View all…" = "Zobraziť všetko...";
@@ -3221,9 +3156,6 @@
    Today's Stats 'Visitors' label */
 "Visitors" = "Návštevníci";
 
-/* Action title. Noun. Opens the user's WordPress Admin in an external browser. */
-"WP Admin" = "WP Admin";
-
 /* Message shown on screen while waiting for Google to finish its signup process. */
 "Waiting for Google to complete…" = "Čaká sa na Google, kým dokončí...";
 
@@ -3253,9 +3185,6 @@
 /* This is the string we display when asking the user to approve push notifications */
 "We'll notify you when you get followers, comments, and likes." = "Upozorníme vás, keď získate nových odberateľov, komentáre a lajky.";
 
-/* Body text of the first alert preparing users to grant permission for us to send them push notifications. */
-"We'll notify you when you get new followers, comments, and likes. Would you like to allow push notifications?" = "Budeme vás informovať, keď získate sledovateľov, komentáre a lajky. Chcete povoliť push notifikácie?";
-
 /* Title of progress label displayed when a first plugin on a site is almost done installing. */
 "We're doing the final setup—almost done…" = "Vykonávame posledné nastavenia - sme skoro hotoví ... ";
 
@@ -3283,9 +3212,6 @@
 
 /* Title of section that contains plugins' change log */
 "What's New" = "Čo je nové";
-
-/* Title of alert helping users understand their site address */
-"What's my site address?" = "Aká je adresa mojej webovej stránky?";
 
 /* Text rendered at the bottom of the Discussion Moderation Keys editor */
 "When a comment contains any of these words in its content, name, URL, e-mail or IP, it will be held in the moderation queue. You can enter partial words, so \"press\" will match \"WordPress\"." = "Pokiaľ komentár obsahuje akékoľvek z týchto slov vo svojom obsahu, mene, URL, e-mailu, alebo IP, tento komentár bude pozdržaný a skontrolovaný moderátorom. Môžete taktiež zadať časti slov, takže napríklad podmienke \"press\" bude odpovedať \"WordPress\".";
@@ -3418,9 +3344,6 @@
 /* Error message informing the user that being logged into a WordPress.com account is required. */
 "You must be signed in to a WordPress.com account to perform this action." = "Na to, aby ste mohli vykonať túto akciu musíte byť prihlásený cez účet WordPress.com.";
 
-/* Body of alert prompting users to verify their accounts while attempting to publish */
-"You need to verify your account before you can publish a post.\nDon’t worry, your post is safe and will be saved as a draft." = "Potrebujete overiť účet skôr ako zverejníte článok. \nNemajte obavy, článok sa uloží ako koncept.";
-
 /* Informs that the user has replied to this comment.
    Notification text - below a comment notification detail
    Text to look for */
@@ -3449,9 +3372,6 @@
 
 /* Message of Export Content confirmation alert; substitution is user's email address */
 "Your posts, pages, and settings will be mailed to you at %@." = "Vaše články, stránky a nastavenia vám budú odoslané na %@.";
-
-/* Body text of alert helping users understand their site address */
-"Your site address appears in the bar at the top of the screen when you visit your site in Safari." = "Adresa webovej stránky sa zobrazí na hornom paneli obrazovky, keď navštívite webovú stránku cez Safari.";
 
 /* Message to show to user when media upload failed because user doesn't have enough space on quota/disk */
 "Your site is out of storage space for media uploads." = "Na vašej stránke nieje dostatok miesta pre nahratie nových súborov.";
