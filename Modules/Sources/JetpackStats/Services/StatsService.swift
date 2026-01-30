@@ -492,10 +492,11 @@ actor StatsService: StatsServiceProtocol {
             guard let value = data[metric] else {
                 return nil
             }
-            let date = convertDateToSiteTimezone(data.date, using: calendar)
-            guard date <= now else {
-                return nil // Filter out future dates
+            guard data.date <= now else {
+                // Filter out future dates (the presentation layer doesn't exect them)
+                return nil
             }
+            let date = convertDateToSiteTimezone(data.date, using: calendar)
             return DataPoint(date: date, value: value)
         }
 

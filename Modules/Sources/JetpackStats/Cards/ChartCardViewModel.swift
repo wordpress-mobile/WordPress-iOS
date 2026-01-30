@@ -190,6 +190,7 @@ final class ChartCardViewModel: ObservableObject, TrafficCardViewModel {
             output[metric] = ChartData(
                 metric: metric,
                 granularity: granularity,
+                dateInterval: dateRange.dateInterval,
                 currentTotal: currentResponse.total[metric] ?? 0,
                 currentData: dataPoints,
                 previousTotal: previousResponse.total[metric] ?? 0,

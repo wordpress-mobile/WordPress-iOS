@@ -120,7 +120,7 @@ struct PieChartDataTests {
         #expect(data.segments[5].percentage == 2.0) // Firefox + Edge
     }
 
-    @Test("Never shows more than 6 total segments")
+    @Test("Shows up to 6 individual segments plus Other")
     func testMaximumSegmentLimit() {
         // Create 10 items where first 6 are above 2% threshold
         // Total = 1000, so 2% threshold = 20
@@ -139,11 +139,13 @@ struct PieChartDataTests {
 
         let data = PieChartData(items: items, metric: .views)
 
-        // Should show top 5 + "Other" (max 6 total)
-        // Items 1-5 are always shown, Item6 is shown (10% > 2%), Items 7-10 aggregated
-        #expect(data.segments.count == 6)
-        #expect(data.segments[5].isOther == true)
-        #expect(data.segments[5].value == 100) // Items 7-10
+        // Shows all items 1-6 (all above 2% threshold) + "Other" = 7 total
+        // Items 1-6 are individually shown, Items 7-10 aggregated into "Other"
+        #expect(data.segments.count == 7)
+        #expect(data.segments[5].isOther == false)
+        #expect(data.segments[5].name == "Item6")
+        #expect(data.segments[6].isOther == true)
+        #expect(data.segments[6].value == 100) // Items 7-10
     }
 
     @Test("Does not create 'Other' when all items fit within limits")

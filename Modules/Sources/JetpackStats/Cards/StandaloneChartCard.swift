@@ -290,6 +290,7 @@ private func generateChartData(
     return ChartData(
         metric: metric,
         granularity: granularity,
+        dateInterval: dateRange.dateInterval,
         currentTotal: currentPeriod.total,
         currentData: currentPeriod.dataPoints,
         previousTotal: previousPeriod.total,

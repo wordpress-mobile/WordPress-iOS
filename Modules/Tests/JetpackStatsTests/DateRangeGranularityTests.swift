@@ -171,4 +171,13 @@ struct DateRangeGranularityTests {
         // Last 12 months - should be month
         #expect(calendar.makeDateInterval(for: .last12Months).preferredGranularity == .month)
     }
+
+    @Test("Approximate duration returns correct values")
+    func approximateDuration() {
+        #expect(DateRangeGranularity.hour.approximateDuration == 3600)         // 1 hour
+        #expect(DateRangeGranularity.day.approximateDuration == 86400)         // 1 day
+        #expect(DateRangeGranularity.week.approximateDuration == 604800)       // 7 days
+        #expect(DateRangeGranularity.month.approximateDuration == 2_592_000)   // 30 days
+        #expect(DateRangeGranularity.year.approximateDuration == 31_536_000)   // 365 days
+    }
 }
