@@ -1,15 +1,9 @@
-Harap ketahui, para pembuat konten—kami telah bekerja keras untuk melakukan beberapa perubahan besar pada layar Pengaturan Pos.
+Pembaruan teknis dari kami sukses mengurangi ukuran aplikasi sekitar 6 MB. Silakan pakai ruang kosongnya sesuka hati.
 
-- Kami menambahkan kolom "Status" yang membantu Anda memindahkan pos dengan cepat antara status konsep, tertunda, privat, terjadwal, dan dipublikasikan.
-- Kami mengembalikan area "Tanggal Publikasi" untuk konsep dan pos tertunda. Dengan cara tersebut, Anda dapat memilih tanggal publikasi sebelumnya tanpa menjadwalkan pos secara resmi.
-- Kolom kata sandi menggunakan font berbeda (Menlo, jika Anda tertarik) sehingga lebih mudah untuk membaca karakter yang tampak mirip.
-- Berikan perlakuan VIP kepada pengikut Anda dengan mengatur tingkat akses pos untuk semua pelanggan, pelanggan berbayar, dan masyarakat umum.
-- Aktifkan atau nonaktifkan komentar dan pingback pos menggunakan pengaturan "Diskusi".
+Pengaturan visibilitas untuk pos yang sudah ada kini lebih mudah dicari, dilihat, dan diubah. Tombol “Selesai” juga terus ditampilkan saat Anda mengatur kata sandi dalam penerbitan pos yang dilindungi kata sandi.
 
-Selama bekerja, kami telah membuat beberapa pembaruan penting lainnya di berbagai area aplikasi.
+Tampilan serasi: pembaruan ikon pintasan dan ilustrasi agar lebih cocok dengan keseluruhan nuansa aplikasi dan perangkat Anda.
 
-- Pada layar "Penerbitan", Anda dapat mengaktifkan "Email ke Pelanggan" untuk memberi tahu pelanggan secara otomatis saat ada pos yang dipublikasikan. Mulai terbitkan.
-- Editor slug memiliki pratinjau permalink untuk menunjukkan tampilan akhir URL sebuah pos.
-- Kami menambahkan "Taksonomi" ke Pengaturan Situs agar Anda dapat mengelola grup konten Anda di tingkat situs.
-- Berkat beberapa perbaikan desain di pemilih "Kategori", lebih jelas bahwa Anda dapat memilih beberapa kategori untuk sebuah pos.
-- Ukuran berkas sekarang dapat dilihat di area Detail Media Situs. Tidak perlu lagi menebak.
+Perbaikan masalah sehingga kini pratinjau pos berfungsi dengan benar untuk situs tertentu yang menggunakan paket Bisnis dan eCommerce.
+
+Saat menambahkan situs baru yang di-hosting sendiri, Anda akan dimintai kata sandi aplikasi untuk autentikasi. Jaga kerahasiannya. Jaga keamanannya.

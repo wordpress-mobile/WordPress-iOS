@@ -1,15 +1,9 @@
-İçerik üreticilerinin dikkatine; Gönderi Ayarları ekranında bazı büyük değişiklikler yapmak için sıkı bir şekilde çalıştık.
+Uygulamanızın boyutunu yaklaşık 6 MB azaltan teknik bir güncelleme yapıldı. Açılan alanla ne yapacaksınız?
 
-- Gönderileri taslak, beklemede, özel, zamanlanmış ve yayımlanmış durumlar arasında hızla taşımanıza yardımcı olan bir "Durum" alanı ekledik.
-- Taslak ve beklemede gönderiler için "Yayımlama Tarihi" alanını geri getirdik. Bu şekilde, gönderiyi resmen zamanlamadan önceden bir yayımlama tarihi seçebilirsiniz.
-- Şifre alanında farklı bir yazı tipi (eğer ilgileniyorsanız Menlo) kullanıldığından, benzer görünümlü karakterleri okumak daha kolaydır.
-- Tüm aboneler, ücretli aboneler ve genel kamuoyu için gönderi erişim düzeyleri belirleyerek takipçilerinize VIP muamelesi yapın.
-- "Tartışma" ayarlarını kullanarak gönderi yorumlarını ve geri bildirimleri açın/kapatın
+Mevcut gönderilerin görünürlük ayarlarını bulmak, görmek ve değiştirmek daha kolay. Ayrıca artık şifreyle korunan bir gönderi yayınlarken şifre belirlerken "Tamamlandı" düğmesi kaybolmaz.
 
-Bu esnada uygulamanın çeşitli alanlarında birkaç faydalı güncelleme daha yaptık.
+İyi görünüyor: Kısaltma simgelerini ve illüstrasyonlarını uygulamanın geri kalanıyla uyumlu olacak ve cihazınıza da daha iyi uyacak şekilde güncelledik.
 
-- "Yayımlama" ekranında, bir gönderi yayımlandığında abonelerinizi otomatik olarak bilgilendirmek için "Abonelere e-posta gönder" seçeneğini açabilirsiniz. Baskıları başlatın.
-- Kısaltma düzenleyicide, bir gönderinin son URL'sinin nasıl görüneceğini gösteren bir kalıcı bağlantı önizlemesi vardır.
-- Site düzeyinde içerik gruplarınızı yönetebilmeniz için Site Ayarları'na "Sınıflandırmalar" eklendik.
-- "Kategoriler" seçicisindeki bazı tasarım düzeltmeleri sayesinde, bir gönderi için birden fazla kategori seçebileceğiniz daha açıktır.
-- Dosya boyutları artık Site Ortam Ayrıntıları alanında görünür. Artık tahmin yürütmek yok.
+We fixed an issue so post previews now work properly for certain sites using Business and Commerce plans.
+
+When you add a new self-hosted site, you’ll be asked for your app password to authenticate. Keep it secret. Güvenliği Sağlayın

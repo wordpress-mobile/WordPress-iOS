@@ -1,15 +1,9 @@
-Oyez, oyez, créateurs de contenu, nous avons travaillé dur pour apporter d’importantes modifications à l’écran Réglages de l’article.
+Nous avons effectué une mise à jour technique qui réduit la taille de votre application d’environ 6 Mo. Qu'allez-vous faire de tout cet espace ?
 
-- Nous avons ajouté un champ « État » qui vous permet de déplacer rapidement les articles entre les états brouillon, en attente, privé, planifié et publié.
-- Nous avons rétabli la zone « Date de publication » pour les brouillons et les articles en attente. De cette manière, vous pouvez choisir une date de publication à l’avance sans planifier officiellement la publication.
-- Le champ du mot de passe utilise une police différente (Menlo, si cela vous intéresse) pour lire plus facilement des caractères similaires.
-- Offrez à vos abonnés le traitement VIP en définissant des niveaux d’accès aux publications pour tous les abonnés, les abonnés payants et le grand public.
-- Activez ou désactivez les commentaires et pings d’articles à l’aide des réglages « Discussion ».
+Il est plus facile de trouver, voir et modifier les réglages de visibilité des articles existants. Le bouton « Terminé » ne disparaît plus lorsque vous définissez le mot de passe lors de la publication d’un article protégé par mot de passe.
 
-Pendant que nous y étions, nous avons fait plusieurs autres mises à jour utiles dans divers domaines de l’application.
+Parfait : nous avons mis à jour les icônes de raccourcis et les illustrations afin qu’elles correspondent davantage au reste de l’application et s’adaptent mieux à votre appareil.
 
-- Sur l’écran « Publication », vous pouvez activer « Envoyer un e-mail aux abonnés » pour avertir automatiquement vos abonnés lorsqu’un article est publié. Démarrez les presses.
-- L’éditeur de slug dispose d’un aperçu de permalien pour afficher l’URL finale d’un article.
-- Nous avons ajouté « Taxonomies » aux réglages du site afin que vous puissiez gérer vos groupes de contenu au niveau du site.
-- Grâce à quelques correctifs de design dans le sélecteur de « Catégories », il est plus évident que vous pouvez choisir plusieurs catégories pour un article.
-- Les tailles de fichiers sont désormais visibles dans la zone Détails du média du site. Fini les conjectures.
+Nous avons corrigé un problème et l’aperçu des articles fonctionne désormais correctement pour certains sites qui utilisent les plans Business et Commerce.
+
+Lorsque vous ajouterez un nouveau site auto-hébergé, vous devrez saisir le mot de passe de votre application pour vous authentifier. Ne le communiquez à personne. Conservez-le en lieu sûr.

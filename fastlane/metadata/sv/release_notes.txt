@@ -6,4 +6,4 @@ Looking good: we updated shortcut icons and illustrations to better match the re
 
 We fixed an issue so post previews now work properly for certain sites using Business and Commerce plans.
 
-When you add a new self-hosted site, you’ll be asked for your app password to authenticate. Keep it secret. Keep it safe.
+When you add a new self-hosted site, you’ll be asked for your app password to authenticate. Keep it secret. Håll den säker

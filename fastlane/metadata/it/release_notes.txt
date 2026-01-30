@@ -1,15 +1,9 @@
-Attenzione, creatori di contenuti: abbiamo lavorato sodo per apportare alcune grandi modifiche alla schermata delle impostazioni dell'articolo.
+Abbiamo effettuato un aggiornamento tecnico che riduce le dimensioni dell'app di circa 6 MB. Cosa farai con tutto quello spazio appena guadagnato?
 
-- Abbiamo aggiunto un campo "Stato" che ti aiuta a spostare rapidamente gli articoli tra gli stati bozza, in attesa, privato, programmato e pubblicato.
-- Abbiamo ripristinato l'area "Data di pubblicazione" per le bozze e gli articoli in sospeso. In questo modo puoi scegliere una data di pubblicazione in anticipo senza programmare ufficialmente l'articolo.
-- Il campo della password utilizza un font diverso (Menlo, se ti interessa), così è più facile leggere caratteri simili.
-- Offri ai tuoi follower un trattamento da VIP impostando livelli di accesso agli articoli per tutti gli abbonati, gli abbonati a pagamento e il pubblico in generale.
-- Attiva o disattiva i commenti agli articoli e i pingback usando le impostazioni "Discussione".
+È più facile trovare, visualizzare e modificare le impostazioni di visibilità dei post esistenti. Il pulsante "Fatto" non scomparirà nemmeno quando imposti la password durante la pubblicazione di un articolo protetto da password.
 
-Già che c'eravamo, abbiamo fatto diversi altri aggiornamenti utili in varie aree dell'app.
+Aspetto gradevole: abbiamo aggiornato le icone dei collegamenti e le illustrazioni per adattarle meglio al resto dell'app e al tuo dispositivo.
 
-- Nella schermata "Pubblicazione", puoi attivare o disattivare "Invia e-mail agli abbonati" per avvisare automaticamente i tuoi abbonati quando un articolo viene pubblicato. Comincia a scrivere.
-- L'editor degli slug ha un'anteprima permalink per mostrare come sarà l'URL finale di un articolo.
-- Abbiamo aggiunto "Tassonomie" alle impostazioni del sito in modo che tu possa gestire i gruppi di contenuti a livello di sito.
-- Grazie ad alcune correzioni di design nel selettore "Categorie", ora è più intuitivo poter scegliere più categorie per un articolo.
-- Le dimensioni dei file sono ora visibili nell'area dei dettagli degli elementi multimediali del sito. Niente più congetture.
+Abbiamo risolto un problema, quindi ora le anteprime degli articoli funzionano correttamente per alcuni siti che utilizzano i piani Business e Commerce.
+
+Quando aggiungi un nuovo sito ospitato personalmente, ti verrà richiesta la password dell'app per l'autenticazione. Tienilo segreto. Tienilo al sicuro.
