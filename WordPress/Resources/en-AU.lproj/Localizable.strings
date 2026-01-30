@@ -383,12 +383,8 @@ translators: %s: Block name e.g. \"Image block\" */
 /* The plugin is active on the site and has enabled automatic updates */
 "Active, Autoupdates on" = "Active, Autoupdates on";
 
-/* Noun. Links to a blog's Activity screen.
-   Noun. Name of the Activity Log feature */
+/* Noun. Name of the Activity Log feature */
 "Activity" = "Activity";
-
-/* Noun. Links to a blog's Activity screen. */
-"Activity Log" = "Activity Log";
 
 /* No comment provided by engineer. */
 "Add Block After" = "Add Block After";
@@ -558,12 +554,10 @@ translators: %s: Block name e.g. \"Image block\" */
 /* A short description of the comment like sharing setting. */
 "Allow all comments to be Liked by you and your readers" = "Allow all comments to be Liked by you and your readers";
 
-/* Allow button title shown in alert preparing users to grant permission for us to send them push notifications.
-   Button label for approving our request to allow push notifications */
+/* Button label for approving our request to allow push notifications */
 "Allow notifications" = "Allow notifications";
 
-/* Allow button title shown in alert preparing users to grant permission for us to send them push notifications.
-   Shown to the user in settings when they haven't yet allowed or denied push notifications */
+/* Shown to the user in settings when they haven't yet allowed or denied push notifications */
 "Allow push notifications" = "Allow push notifications";
 
 /* No comment provided by engineer. */
@@ -838,8 +832,7 @@ translators: %s: Block name e.g. \"Image block\" */
 /* Title for the Background Color section */
 "Background Color" = "Background Colour";
 
-/* Noun. Links to a blog's Jetpack Backups screen.
-   Noun. Name of the Backup feature
+/* Noun. Name of the Backup feature
    Title for Jetpack Backup Complete screen
    Title for Jetpack Backup Status screen
    Title for Jetpack Backup Update Status Failed screen */
@@ -886,9 +879,6 @@ translators: %s: Block name e.g. \"Image block\" */
 
 /* All Time Stats 'Best views ever' label */
 "Best views ever" = "Best views ever";
-
-/* Noun. Links to a blog's Blaze screen. */
-"Blaze" = "Blaze";
 
 /* Accessibility label for block quote button on formatting toolbar.
    Discoverability title for block quote keyboard shortcut. */
@@ -1205,9 +1195,6 @@ translators: %s: Block name e.g. \"Image block\" */
 /* No comment provided by engineer. */
 "Choose a file" = "Choose a file";
 
-/* OK Button title shown in alert informing users about the Reader Save for Later feature. */
-"Choose a new app icon" = "Choose a new app icon";
-
 /* Title for the screen to pick a theme and homepage for a site. */
 "Choose a theme" = "Choose a theme";
 
@@ -1357,7 +1344,6 @@ translators: %s: Block name e.g. \"Image block\" */
    Insights 'Comments' header
    Label for number of comments.
    Label for Period Overview comments
-   Noun. Title. Links to the blog's Comments screen.
    Settings: Comment Sections
    Text for the 'comment' button when there are multiple comments
    Title for the Blog's Comments Section View
@@ -1385,9 +1371,6 @@ translators: %s: Block name e.g. \"Image block\" */
 /* Community & Non-Profit site intent topic */
 "Community & Non-Profit" = "Community & Non-Profit";
 
-/* Section title for the configure table section in the blog details screen */
-"Configure" = "Configure";
-
 /* Verb. Title for Jetpack Restore confirm button. */
 "Confirm" = "Confirm";
 
@@ -1402,9 +1385,6 @@ translators: %s: Block name e.g. \"Image block\" */
 
 /* Alert text field placeholder. */
 "Confirm username" = "Confirm username";
-
-/* Title of alert prompting users to verify their accounts while attempting to publish */
-"Confirm your email first" = "Confirm your email first";
 
 /* Title of domain name purchase success screen */
 "Congratulations on your purchase!" = "Congratulations on your purchase!";
@@ -1714,9 +1694,6 @@ translators: %s: Block name e.g. \"Image block\" */
 /* Title for the app appearance setting for dark mode */
 "Dark" = "Dark";
 
-/* Action title. Noun. Opens the user's WordPress.com dashboard in an external browser. */
-"Dashboard" = "Dashboard";
-
 /* Title for a threat that includes the number of database rows affected */
 "Database %1$d threats" = "Database %1$d threats";
 
@@ -1862,9 +1839,6 @@ translators: %s: Block name e.g. \"Image block\" */
 
 /* Register Domain - Privacy Protection section header description */
 "Domain owners have to share contact information in a public database of all domains. With Privacy Protection, we publish our own information instead of yours and privately forward any communication to you." = "Domain owners have to share contact information in a public database of all domains. With Privacy Protection, we publish our own information instead of yours and privately forward any communication to you.";
-
-/* Noun. Title. Links to the Domains screen. */
-"Domains" = "Domains";
 
 /* Label for button to log in using your site address. The underscores _..._ denote underline */
 "Don't have an account? _Sign up_" = "Don't have an account? _Sign up_";
@@ -2280,12 +2254,6 @@ translators: %s: Block name e.g. \"Image block\" */
 /* There was an error removing a plugin, placeholder is the plugin name */
 "Error removing %@." = "Error removing %@.";
 
-/* Message shown when there was an error trying to re-send email verification and we suspect the user has already verified in the meantime */
-"Error sending verification email. Are you already verified?" = "Error sending verification email. Are you already verified?";
-
-/* Generic message shown when there was an error trying to re-send email verification. */
-"Error sending verification email. Check your connection and try again." = "Error sending verification email. Check your connection and try again.";
-
 /* Message displayed when approving a comment fails. */
 "Error setting comment to approved." = "Error setting comment to approved.";
 
@@ -2350,9 +2318,6 @@ translators: %s: Block name e.g. \"Image block\" */
 /* Overlay message displayed while starting content export */
 "Exporting content…" = "Exporting content…";
 
-/* Section title for the external table section in the blog details screen */
-"External" = "External";
-
 /* Message for mark all as read success notice */
 "Failed marking Notifications as read" = "Failed marking Notifications as read";
 
@@ -2388,9 +2353,6 @@ translators: %s: Block name e.g. \"Image block\" */
 
 /* Text displayed while fetching themes */
 "Fetching Themes..." = "Fetching Themes...";
-
-/* A brief prompt shown when the comment list is empty, letting the user know the app is currently fetching new comments. */
-"Fetching comments..." = "Fetching comments...";
 
 /* Title displayed whilst fetching media from the user's media library */
 "Fetching media..." = "Fetching media...";
@@ -2564,9 +2526,6 @@ translators: %s: Block name e.g. \"Image block\" */
 /* No comment provided by engineer. */
 "Get support" = "Get support";
 
-/* Title of the second alert preparing users to grant permission for us to send them push notifications. */
-"Get your notifications faster" = "Get your notifications faster";
-
 /* Example post title used in the login prologue screens. */
 "Getting Inspired" = "Getting Inspired";
 
@@ -2691,8 +2650,7 @@ translators: %s: Block name e.g. \"Image block\" */
    Settings: Comments Moderation */
 "Hold for Moderation" = "Hold for Moderation";
 
-/* Noun. Links to a blog's dashboard screen.
-   Title for dashboard view on the My Site screen
+/* Title for dashboard view on the My Site screen
    Title for the dashboard screen. */
 "Home" = "Home";
 
@@ -2976,8 +2934,7 @@ translators: %s: Block name e.g. \"Image block\" */
    Discoverability title for italic formatting keyboard shortcut. */
 "Italic" = "Italic";
 
-/* Section title for the publish table section in the blog details screen
-   Title for the Jetpack Installation
+/* Title for the Jetpack Installation
    Title for the Jetpack section in site settings screen */
 "Jetpack" = "Jetpack";
 
@@ -3020,9 +2977,6 @@ translators: %s: Block name e.g. \"Image block\" */
 
 /* Description that explains how we will fix the threat */
 "Jetpack Scan will update to a newer version." = "Jetpack Scan will update to a newer version.";
-
-/* Noun. Title. Links to the blog's Settings screen. */
-"Jetpack Settings" = "Jetpack Settings";
 
 /* Insights 'Jetpack Social Connections' header
    Section title for Publicize services in Sharing screen */
@@ -3106,9 +3060,6 @@ translators: %s: Block name e.g. \"Image block\" */
 
 /* Title of a button. Tapping allows the user to learn more about the specific error. */
 "Learn More" = "Learn More";
-
-/* Body text of the first alert preparing users to grant permission for us to send them push notifications. */
-"Learn about new comments, likes, and follows in seconds." = "Learn about new comments, likes, and follows in seconds.";
 
 /* A button title.
    Link to cookie policy
@@ -3402,13 +3353,11 @@ translators: %s: Block name e.g. \"Image block\" */
 
 /* Accessibility label for the Me button in My Site.
    Me page title
-   Noun. Title. Links to the Me screen.
    The accessibility value of the me tab.
    Title of the 'Me' tab - used for spotlight indexing on iOS. */
 "Me" = "Me";
 
-/* Noun. Title. Links to the blog's Media library.
-   Title for the media section in site settings screen
+/* Title for the media section in site settings screen
    Title label for the media settings section in the app settings */
 "Media" = "Media";
 
@@ -3469,8 +3418,7 @@ translators: %s: Block name e.g. \"Image block\" */
 /* Screen Reader: Description for text field that edits the menu name. */
 "Menu name" = "Menu name";
 
-/* Menus option in the blog details
-   Noun. Name of the Menus feature
+/* Noun. Name of the Menus feature
    Title for screen that allows configuration of your site's menus */
 "Menus" = "Menus";
 
@@ -3634,9 +3582,6 @@ translators: %s: Select control button label e.g. \"Button width\" */
 /* Blocklist Keyword Insertion Title */
 "New Blocklist Word" = "New Blocklist Word";
 
-/* Title of alert informing users about the Reader Save for Later feature. */
-"New Custom App Icons" = "New Custom App Icons";
-
 /* IP Address or Range Insertion Title */
 "New IP or IP Range" = "New IP or IP Range";
 
@@ -3714,7 +3659,6 @@ translators: %s: Select control button label e.g. \"Button width\" */
 "No comments" = "No comments";
 
 /* Displayed in the Notifications Tab as a title, when the Comments Filter shows no notifications
-   Displayed on the post details page when there are no post comments.
    Displayed when there are no comments in the Comments views. */
 "No comments yet" = "No comments yet";
 
@@ -3854,8 +3798,7 @@ translators: %s: Select control button label e.g. \"Button width\" */
 /* Error message to show to users when trying to upload a media object with file size is larger than the available site disk quota */
 "Not enough space to upload" = "Not enough space to upload";
 
-/* Button label for denying our request to allow push notifications
-   Not now button title shown in alert preparing users to grant permission for us to send them push notifications. */
+/* Button label for denying our request to allow push notifications */
 "Not now" = "Not now";
 
 /* Instructions after a Magic Link was sent, but the email can't be found in their inbox. */
@@ -3928,8 +3871,7 @@ translators: %s: Select control button label e.g. \"Button width\" */
    Button title. An acknowledgement of the message displayed in a prompt.
    Dismisses the alert
    Menus: button title for finishing editing of a menu item.
-   Ok button for dismissing alert helping users understand their site address
-   OK Button title shown in alert informing users about the Reader Save for Later feature. */
+   Ok button for dismissing alert helping users understand their site address */
 "OK" = "OK";
 
 /* No comment provided by engineer. */
@@ -4110,8 +4052,7 @@ translators: %s: Select control button label e.g. \"Button width\" */
 /* translators: accessibility text. empty page title. */
 "Page title. Empty" = "Page title. Empty";
 
-/* Noun. Title. Links to the blog's Pages screen.
-   This is the section title
+/* This is the section title
    Title of the screen showing the list of pages for a blog. */
 "Pages" = "Pages";
 
@@ -4147,8 +4088,7 @@ translators: %s: Select control button label e.g. \"Button width\" */
    Title of pending Comments filter. */
 "Pending" = "Pending";
 
-/* Noun. Title. Links to the people management feature.
-   People site intent topic */
+/* People site intent topic */
 "People" = "People";
 
 /* Label for date periods. */
@@ -4162,9 +4102,6 @@ translators: %s: Select control button label e.g. \"Button width\" */
 
 /* Personal site intent topic */
 "Personal" = "Personal";
-
-/* Section title for the personalize table section in the blog details screen. */
-"Personalize" = "Personalise";
 
 /* Accessibility label for selecting an image or video from the device's photo library on formatting toolbar. */
 "Photo Library" = "Photo Library";
@@ -4316,8 +4253,7 @@ translators: %s: Select control button label e.g. \"Button width\" */
 /* Version of an installed plugin */
 "Plugin version" = "Plugin version";
 
-/* Noun. Title. Links to the plugin management feature.
-   Title for the plugin directory */
+/* Title for the plugin directory */
 "Plugins" = "Plugins";
 
 /* An example tag used in the login prologue screens.
@@ -4365,7 +4301,6 @@ translators: %s: Select control button label e.g. \"Button width\" */
 
 /* All Time Stats 'Posts' label
    Insights 'Posts' header
-   Noun. Title. Links to the blog's Posts screen.
    Title of the screen showing the list of posts for a blog. */
 "Posts" = "Posts";
 
@@ -4469,8 +4404,7 @@ translators: %s: Select control button label e.g. \"Button width\" */
 "Prompts" = "Prompts";
 
 /* Label for the publish (verb) button. Tapping publishes a draft post.
-   Publish post action on share extension site picker screen.
-   Section title for the publish table section in the blog details screen */
+   Publish post action on share extension site picker screen. */
 "Publish" = "Publish";
 
 /* Text displayed in the share extension's summary view. It describes the publish page action. */
@@ -4696,9 +4630,6 @@ translators: %s: Select control button label e.g. \"Button width\" */
 /* Setting: WordPress.com Surveys */
 "Research" = "Research";
 
-/* Title of secondary button on alert prompting verify their accounts while attempting to publish */
-"Resend" = "Resend";
-
 /* The button title for a secondary call-to-action button. When the user can't remember their password. */
 "Reset your password" = "Reset your password";
 
@@ -4809,17 +4740,11 @@ translators: %s: Select control button label e.g. \"Button width\" */
 /* Text displayed in the share extension's summary view that describes the action of saving a single photo in a draft post. */
 "Save 1 photo as a draft post on:" = "Save 1 photo as a draft post on:";
 
-/* Title of alert informing users about the Reader Save for Later feature. */
-"Save Posts for Later" = "Save Posts for Later";
-
 /* Text displayed in the share extension's summary view that describes the save draft page action. */
 "Save draft page on:" = "Save draft page on:";
 
 /* Text displayed in the share extension's summary view that describes the save draft post action. */
 "Save draft post on:" = "Save draft post on:";
-
-/* Body text of alert informing users about the Reader Save for Later feature. */
-"Save this post, and come back to read it whenever you'd like. It will only be available on this device — saved posts don't sync to other devices." = "Save this post, and come back to read it whenever you'd like. It will only be available on this device — saved posts don't sync to other devices (Yet! We're working on it).";
 
 /* Title of action button for a Reader post that has been saved to read later. */
 "Saved" = "Saved";
@@ -4833,8 +4758,7 @@ translators: %s: Select control button label e.g. \"Button width\" */
 /* Menus save button title while it is saving a Menu. */
 "Saving..." = "Saving...";
 
-/* Noun. Links to a blog's Jetpack Scan screen.
-   Noun. Name of the Scan feature
+/* Noun. Name of the Scan feature
    Title of the view */
 "Scan" = "Scan";
 
@@ -5083,7 +5007,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 "Share your story here..." = "Share your story here...";
 
 /* Noun. Name of the Social Sharing feature
-   Noun. Title. Links to a blog's sharing options.
    Title for blog detail sharing screen. */
 "Sharing" = "Sharing";
 
@@ -5175,9 +5098,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Describes a site redirect domain */
 "Site Redirect" = "Site Redirect";
-
-/* Noun. Title. Links to the blog's Settings screen. */
-"Site Settings" = "Site Settings";
 
 /* Default title for a site
    Label for site title blog setting
@@ -5355,16 +5275,12 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 "State" = "State";
 
 /* Noun. Abbreviation of Statistics. Name of the Stats feature
-   Noun. Abbv. of Statistics. Links to a blog's Stats screen.
    Stats 3D Touch Shortcut
    Stats window title */
 "Stats" = "Stats";
 
 /* The loading view title displayed when an error occurred */
 "Stats not loaded" = "Stats not loaded";
-
-/* Title of the first alert preparing users to grant permission for us to send them push notifications. */
-"Stay in the loop" = "Stay in the loop";
 
 /* Subtitle giving the user more context about why to enable notifications. */
 "Stay in touch with like and comment notifications." = "Stay in touch with like and comment notifications.";
@@ -5725,7 +5641,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 "Theme Activated" = "Theme Activated";
 
 /* Noun. Name of the Themes feature
-   Themes option in the blog details
    Title of Themes browser page */
 "Themes" = "Themes";
 
@@ -6354,15 +6269,11 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* No comment provided by engineer. */
 "Username must be at least 4 characters." = "Username must be at least 4 characters.";
 
-/* Blog Users
-   Noun. Title. Links to the user management feature. */
+/* Blog Users */
 "Users" = "Users";
 
 /* two factor code placeholder */
 "Verification code" = "Verification code";
-
-/* Message shown when a verification email was re-sent succesfully */
-"Verification email sent, check your inbox." = "Verification email sent, check your inbox.";
 
 /* Push Authentication Alert Title */
 "Verify Log In" = "Verify Log In";
@@ -6402,9 +6313,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
    Theme View action title
    Verb. The screen title shown when viewing a post inside the app. */
 "View" = "View";
-
-/* Action title. Opens the user's site in an in-app browser */
-"View Site" = "View Site";
 
 /* Title for button on the post details page to show all comments when tapped. */
 "View all comments" = "View all comments";
@@ -6482,9 +6390,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Title for a threat that includes the file name of the theme and the affected version */
 "Vulnerable Theme %1$@ (version %2$@)" = "Vulnerable Theme %1$@ (version %2$@)";
-
-/* Action title. Noun. Opens the user's WordPress Admin in an external browser. */
-"WP Admin" = "WP Admin";
 
 /* Downloadable/Restorable items: WP-content directory */
 "WP-content directory" = "WP-content directory";
@@ -6567,9 +6472,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* This is the string we display when asking the user to approve push notifications */
 "We'll notify you when you get followers, comments, and likes." = "We'll notify you when you get followers, comments, and likes.";
 
-/* Body text of the first alert preparing users to grant permission for us to send them push notifications. */
-"We'll notify you when you get new followers, comments, and likes. Would you like to allow push notifications?" = "We’ll notify you when you get followers, comments and likes. Would you like to allow push notifications?";
-
 /* Text confirming email address to be used for new account. */
 "We'll use this email address to create your new WordPress.com account." = "We'll use this email address to create your new WordPress.com account.";
 
@@ -6578,9 +6480,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Title of progress label displayed when a first plugin on a site is almost done installing. */
 "We're doing the final setup—almost done…" = "We're doing the final setup—almost done…";
-
-/* Detail text display informing the user that we're fixing threats */
-"We're hard at work fixing these threats in the background. In the meantime feel free to continue to use your site as normal, you can check back on progress at any time." = "We're hard at work fixing these threats in the background. In the meantime feel free to continue to use your site as normal, you can check back on progress at any time.";
 
 /* Error message shown when having trouble connecting to a Jetpack site. */
 "We're not able to connect to the Jetpack site at that URL.  Contact us for assistance." = "We're not able to connect to the Jetpack site at that URL.  Contact us for assistance.";
@@ -6657,9 +6556,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* translators: %s: embed block variant's label e.g: \"Twitter\". */
 "We’re working hard on adding support for %s previews. In the meantime, you can preview the embedded content on the post." = "We’re working hard on adding support for %s previews. In the meantime, you can preview the embedded content on the post.";
 
-/* Body text of alert informing users about the Reader Save for Later feature. */
-"We’ve updated our custom app icons with a fresh new look. There are 10 new styles to choose from, or you can simply keep your existing icon if you prefer." = "We’ve updated our custom app icons with a fresh new look. There are 10 new styles to choose from, or you can simply keep your existing icon if you prefer.";
-
 /* Title displayed via UIAlertController when a user inserts a document into a post. */
 "What do you want to do with this file: upload it and add a link to the file into your post, or add the contents of the file directly to the post?" = "What do you want to do with this file: upload it and add a link to the file into your post, or add the contents of the file directly to the post?";
 
@@ -6683,9 +6579,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Opens the What's New / Feature Announcement modal */
 "What's New in WordPress" = "What's New in WordPress";
-
-/* Title of alert helping users understand their site address */
-"What's my site address?" = "What's my site address?";
 
 /* Select the site's intent. Title */
 "What's your website about?" = "What's your website about?";
@@ -6911,9 +6804,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Error message informing the user that being logged into a WordPress.com account is required. */
 "You must be signed in to a WordPress.com account to perform this action." = "You must be signed in to a WordPress.com account to perform this action.";
 
-/* Body of alert prompting users to verify their accounts while attempting to publish */
-"You need to verify your account before you can publish a post.\nDon’t worry, your post is safe and will be saved as a draft." = "You need to verify your account before you can publish a post.\nDon’t worry, your post is safe and will be saved as a draft.";
-
 /* Example Likes notification displayed in the prologue carousel of the app. Number of likes should marked with * characters and will be displayed as bold text. */
 "You received *50 likes* on your site today" = "You received *50 likes* on your site today";
 
@@ -6973,9 +6863,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* This is shown to the user when their domain search query contains invalid characters. */
 "Your search includes characters not supported in WordPress.com domains. The following characters are allowed: A–Z, a–z, 0–9." = "Your search includes characters not supported in WordPress.com domains. The following characters are allowed: A–Z, a–z, 0–9.";
-
-/* Body text of alert helping users understand their site address */
-"Your site address appears in the bar at the top of the screen when you visit your site in Safari." = "Your site address appears in the bar at the top of the screen when you visit your site in Safari.";
 
 /* Description for label when the user has a site with VaultPress. */
 "Your site already is protected by VaultPress. You can find a link to your VaultPress dashboard below." = "Your site already is protected by VaultPress. You can find a link to your VaultPress dashboard below.";
@@ -8209,18 +8096,6 @@ Example: Reply to Pamela Nguyen */
 
 /* Title for the static screen displayed in the Stats screen prompting users to switch to the Jetpack app. */
 "movedToJetpack.stats.title" = "Use WordPress with Stats in the Jetpack app.";
-
-/* Section title for the content table section in the blog details screen */
-"my-site.menu.content.section.title" = "Content";
-
-/* Section title for the maintenance table section in the blog details screen */
-"my-site.menu.maintenance.section.title" = "Maintenance";
-
-/* Title for the social row in the blog details screen */
-"my-site.menu.social.row.title" = "Social";
-
-/* Section title for the traffic table section in the blog details screen */
-"my-site.menu.traffic.section.title" = "Traffic";
 
 /* Title for the card displaying draft posts. */
 "my-sites.drafts.card.title" = "Work on a draft post";
