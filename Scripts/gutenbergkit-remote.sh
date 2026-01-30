@@ -52,7 +52,7 @@ sed -i '' '
 
 echo "Switched to remote GutenbergKit ($VERSION)"
 echo "Disabled GUTENBERG_EDITOR_URL in Jetpack scheme"
-echo "Resolving package dependencies..."
+echo "Resolving package dependencies (this may take a while)..."
 
 xcodebuild -resolvePackageDependencies -project "$REPO_ROOT/WordPress/WordPress.xcodeproj" -quiet
 
