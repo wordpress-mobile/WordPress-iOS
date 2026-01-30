@@ -452,8 +452,9 @@ class AbstractPostListViewController: UIViewController,
             return
         }
 
-        // Update in the background
-        syncItemsWithUserInteraction(false)
+        // If it's in the middle of pushing this controller, we'll treat it as "syncing with user interaction".
+        let userInteraction = isMovingToParent
+        syncItemsWithUserInteraction(userInteraction)
     }
 
     @objc func syncItemsWithUserInteraction(_ userInteraction: Bool) {
@@ -608,6 +609,7 @@ class AbstractPostListViewController: UIViewController,
 
         hideRefreshingIndicator()
         dismissAllNetworkErrorNotices()
+        refreshResults()
 
         // If there is no internet connection, we'll show the specific error message defined in
         // `noConnectionMessage()` (overridden by subclasses). For everything else, we let
