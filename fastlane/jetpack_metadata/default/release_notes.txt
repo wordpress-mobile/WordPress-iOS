@@ -1,22 +1,31 @@
-Heads up, content creators—we’ve been hard at work making some big changes to the Post Settings screen.
+Our AI support feature, WordPress Intelligence, is now available in more locales and languages. Everyone’s favorite helper just got a whole lot handier.
 
-- We added a “Status” field that helps you quickly move posts between draft, pending, private, scheduled, and published states.
-- We brought back the “Publish Date” area for draft and pending posts. That way you can pick a publish date ahead of time without officially scheduling the post.
-- The password field uses a different font (Menlo, if you’re interested) so it’s easier to read similar-looking characters.
-- Give your followers the VIP treatment by setting post access levels for all subscribers, paid subscribers, and the general public.
-- Toggle post comments and pingbacks on or off using the “Discussion” settings.
+We improved the Stats section by roughly 83%.
 
-While we were at it, we made several other helpful updates in various areas of the app.
+- The Locations card lets you filter data by country, region, and city. This data is consistent with Jetpack’s web version.
+- “External Links” is now “Clicks,” making it consistent with the web version. We fixed a bug where this area sometimes displayed incorrectly.
+- You can turn off automatic data comparison and save that setting for future app usage. We fixed an issue where weekly data for the comparison period didn’t always display correctly.
+- Long-pressing on a bar chart will show you more details. Vertical scrolling is also fixed.
+- You can view bar graph and line chart data grouped by days, weeks, months, and years.
+- Top List items are sorted by name and ordered properly.
 
-- On the “Publishing” screen, you can toggle “Email to Subscribers” to automatically notify your subscribers when a post is published. Start the presses.
-- The slug editor has a permalink preview to show what a post’s final URL will look like.
-- We added “Taxonomies” to Site Settings so you can manage content groups at the site level.
-- Thanks to some design fixes in the “Categories” picker, it’s more obvious that you can pick multiple categories for a post.
-- File sizes are now visible in the Site Media Details area. No more guesswork.
+We made lots of changes to the Reader, too.
 
-More of a reader than a publisher? Don’t worry, we made changes in the Reader, too.
+- There’s a new “Freshly Pressed” tab on the Discover screen. We also changed the “Recommended” tab to “For You.”
+- There’s only one Search option in the main sidebar.
+- The “Read More” view works the same, no matter where you tap it, and you can now see the whole excerpt. So much more to explore.
+- The Comments section lets you reply and like comments directly below the article. There’s a new “Leave Comment” button under articles for faster commenting.
+- You can see two comments by default instead of just one, and very long comments can be collapsed for easier reading.
+- We made a few visual issues with the Comments section, too. Comments now have the correct height, the “View All Comments” button stands out more, and the “Send” button is styled properly.
+- You can read posts in your preferred language with in-app translation support.
+- Multiple spaces in site titles are collapsed into one for easier reading and display.
 
-- When related post titles are overly long, you’ll see a shorter, truncated version instead.
-- Post tiles can now have three lines of text instead of just two, giving you 50% more content goodness.
-- Articles have slightly wider horizontal margins.
-- We squashed several bugs that affected the way articles load.
+We made a technical update that reduces the size of your app by about 6 MB. What will you do with all that newfound space?
+
+It’s easier to find, see, and change the visibility settings of existing posts. The “Done” button also won’t disappear when you set the password while publishing a password-protected post.
+
+Looking good: we updated shortcut icons and illustrations to better match the rest of the app, as well as fit better with your device.
+
+We fixed an issue so post previews now work properly for certain sites using Business and Commerce plans.
+
+When you add a new self-hosted site, you’ll be asked for your app password to authenticate. Keep it secret. Keep it safe.

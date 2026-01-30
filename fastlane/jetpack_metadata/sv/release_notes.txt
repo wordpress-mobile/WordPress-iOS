@@ -1,22 +1,31 @@
-Lystring alla innehållsskapare! Vi har arbetat hårt med att göra några stora förändringar på skärmen för Inläggsinställningar.
+Vår AI-supportfunktion, WordPress Intelligence, är nu tillgänglig på fler språk och språkversioner. Allas favorithjälpare blev bara mycket mer händig.
 
-- Vi har lagt till ett Status-fält som hjälper dig att snabbt ändra status för inlägg mellan utkast, inväntar granskning, privat, tidsinställd och publicerat.
-- Vi har återinfört området "Publiceringsdatum" för utkast och inlägg som inväntar granskning. På så sätt kan du välja ett publiceringsdatum på förhand utan att ha någon officiell tidsinställning för inlägget.
-- Lösenordsfältet använder ett annat typsnitt (Menlo, om du är nyfiken) så att det blir lättare att läsa snarlika tecken.
-- Ge dina följare VIP-behandling genom att ställa in åtkomstnivåer för inlägg för samtliga prenumeranter, betalande prenumeranter och allmänheten.
-- Slå på/av inläggskommentarer och pingback med hjälp av inställningarna för "Diskussion".
+Vi förbättrade Stats-sektionen med ungefär 83 %.
 
-Medan vi ändå var igång gjorde vi flera andra användbara uppdateringar i olika delar av appen.
+Med platskortet kan du filtrera data efter land, region och ort. Denna data är konsekvent med Jetpacks webbversion.
+- ”Externa länkar” är nu ”Klick”, vilket gör det konsekvent med webbversionen. Vi har åtgärdat en bugg där detta område ibland visas felaktigt.
+- Du kan stänga av automatisk datajämförelse och spara den inställningen för framtida appanvändning. Vi åtgärdade ett problem där veckodata för jämförelseperioden inte alltid visades korrekt.
+Om du trycker länge på ett stapeldiagram visas fler detaljer. Vertikal bläddring är också fixerad.
+- Du kan visa stapeldiagram och linjediagramdata grupperade efter dagar, veckor, månader och år.
+- Populäraste listobjekten sorteras efter namn och sorteras korrekt.
 
-- På skärmen "Publicering" kan du slå på/av ”E-post till prenumeranter” för att automatiskt meddela dina prenumeranter när ett inlägg publiceras. Starta tryckpressarna.
-- Slug-redigeraren har en förhandsgranskning av permalänken som visar hur inläggets slutgiltiga URL kommer att se ut.
-Vi har lagt till "Taxonomier" till webbplatsinställningarna så att du kan hantera innehållsgrupper på webbplatsnivå.
-- Tack vare några designåtgärder i "Kategori"-väljaren är det nu tydligare att du kan välja flera kategorier för ett inlägg.
-- Filstorlekarna visas nu i området Mediedetaljer för webbplatsen. Inget mer gissande.
+Vi gjorde också många ändringar i Läsaren.
 
-Är du mer av en läsare än en utgivare? Oroa dig inte, vi gjorde ändringar i Läsaren också.
+- Det finns en ny flik ”Freshly Pressed” på skärmen Upptäck. Vi ändrade också fliken ”Rekommenderas” till ”För dig”.
+Det finns bara ett sökalternativ i huvudsidopanelen.
+Vyn ”Läs mer” fungerar på samma sätt, oavsett var du trycker på den, och du kan nu se hela utdraget. Så mycket mer att utforska.
+- Sektionen Kommentarer låter dig svara och gilla kommentarer direkt under artikeln. Det finns en ny knapp ”Lämna kommentar” under artiklar för snabbare kommentering.
+- Du kan se två kommentarer som standard istället för bara en, och mycket långa kommentarer kan döljas för enklare läsning.
+- Vi gjorde några visuella problem med kommentarssektionen också. Kommentarer har nu rätt höjd, knappen ”Visa alla kommentarer” sticker ut mer och knappen ”Skicka” är korrekt utformad.
+- Du kan läsa inlägg på det språk du föredrar med översättningsstöd i appen.
+Flera mellanslag i webbplatsrubriker minimeras till ett för enklare läsning och visning.
 
-- När rubriker för relaterade inlägg är för långa ser du en förkortad version istället.
-- Inläggsrutor kan nu ha tre rader med text istället för bara två, och det ger dig 50 % mer innehåll.
-- Artiklarna har något bredare horisontella marginaler.
-- Vi åtgärdade flera buggar som påverkade hur artiklar hämtas.
+Vi gjorde en teknisk uppdatering som minskar storleken på din app med cirka 6 MB. Vad ska du göra med allt det nyfunna utrymmet?
+
+Det är lättare att hitta, se och ändra synlighetsinställningarna för befintliga inlägg. Knappen ”Klar” försvinner inte heller när du ställer in lösenordet när du publicerar ett lösenordsskyddat inlägg.
+
+Ser bra ut: vi uppdaterade genvägsikoner och illustrationer för att bättre matcha resten av appen, samt passa bättre med din enhet.
+
+Vi har åtgärdat ett problem så förhandsgranskningar av inlägg fungerar nu korrekt för vissa webbplatser som använder Business- och Commerce-paket.
+
+När du lägger till en ny webbplats på egen server kommer du att bli ombedd att ange ditt applösenord för att autentisera. Håll det hemligt. Håll den säker

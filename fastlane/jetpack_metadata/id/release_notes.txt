@@ -1,22 +1,31 @@
-Harap ketahui, para pembuat konten—kami telah bekerja keras untuk melakukan beberapa perubahan besar pada layar Pengaturan Pos.
+Fitur dukungan AI kami, WordPress Intelligence, kini tersedia dengan lebih banyak pengaturan wilayah dan bahasa. Bantuan favorit semua orang kini makin ramah pengguna.
 
-- Kami menambahkan kolom "Status" yang membantu Anda memindahkan pos dengan cepat antara status konsep, tertunda, privat, terjadwal, dan dipublikasikan.
-- Kami mengembalikan area "Tanggal Publikasi" untuk konsep dan pos tertunda. Dengan cara tersebut, Anda dapat memilih tanggal publikasi sebelumnya tanpa menjadwalkan pos secara resmi.
-- Kolom kata sandi menggunakan font berbeda (Menlo, jika Anda tertarik) sehingga lebih mudah untuk membaca karakter yang tampak mirip.
-- Berikan perlakuan VIP kepada pengikut Anda dengan mengatur tingkat akses pos untuk semua pelanggan, pelanggan berbayar, dan masyarakat umum.
-- Aktifkan atau nonaktifkan komentar dan pingback pos menggunakan pengaturan "Diskusi".
+Peningkatan bagian Statistik sekitar 83%.
 
-Selama bekerja, kami telah membuat beberapa pembaruan penting lainnya di berbagai area aplikasi.
+- Kartu Lokasi memungkinkan penyaringan data menurut negara, wilayah, dan kota. Data ini konsisten dengan versi web Jetpack.
+· "Tautan Eksternal" kini menjadi "Klik" agar sesuai dengan versi web. Kami memperbaiki bug yang menyebabkan area ini kadang tidak ditampilkan dengan benar.
+- Anda bisa menonaktifkan perbandingan data otomatis dan menyimpan pengaturan tersebut untuk penggunaan aplikasi mendatang. Kami memperbaiki masalah yang menyebabkan data mingguan untuk periode perbandingan tidak selalu ditampilkan dengan benar.
+- Menekan lama pada batang dalam diagram akan membuka detail lebih lanjut. Perguliran vertikal juga diperbaiki.
+- Data pada diagram batang dan diagram garis dapat dikelompokkan berdasarkan hari, minggu, bulan, dan tahun.
+- Item-item Daftar Teratas diurutkan berdasarkan nama dengan urutan yang benar.
 
-- Pada layar "Penerbitan", Anda dapat mengaktifkan "Email ke Pelanggan" untuk memberi tahu pelanggan secara otomatis saat ada pos yang dipublikasikan. Mulai terbitkan.
-- Editor slug memiliki pratinjau permalink untuk menunjukkan tampilan akhir URL sebuah pos.
-- Kami menambahkan "Taksonomi" ke Pengaturan Situs agar Anda dapat mengelola grup konten di tingkat situs.
-- Berkat beberapa perbaikan desain di pemilih "Kategori", lebih jelas bahwa Anda dapat memilih beberapa kategori untuk sebuah pos.
-- Ukuran berkas sekarang dapat dilihat di area Detail Media Situs. Tidak perlu lagi menebak.
+Kami juga membuat banyak perubahan pada Pembaca.
 
-Lebih ke pembaca daripada penerbit? Jangan khawatir, kami juga membuat perubahan di Pembaca.
+- Ada tab "Freshly Pressed" baru di layar Jelajahi. Kami juga mengubah tab "Direkomendasikan" menjadi "Untuk Anda."
+- Hanya ada satu pilihan Pencarian di bilah sisi utama.
+· Tampilan "Baca Selengkapnya" berfungsi sama, di mana pun Anda mengetuk, dan kini menampilkan seluruh kutipan. Masih banyak yang bisa dijelajahi.
+- Di Bagian Komentar, Anda bisa membalas dan menyukai komentar langsung di bawah artikel. Ada tombol "Tinggalkan Komentar" di bawah artikel agar lebih cepat.
+- Anda bisa melihat dua komentar secara default, bukan hanya satu. Komentar panjang juga bisa diciutkan agar lebih mudah dibaca.
+- Kami juga memperbaiki beberapa masalah visual pada bagian Komentar. Tinggi komentar kini sudah tepat, tombol "Lihat Semua Komentar" lebih terlihat, dan gaya tombol "Kirim" lebih sesuai.
+- Anda bisa membaca pos dalam bahasa pilihan dengan dukungan terjemahan dalam aplikasi.
+- Beberapa spasi di judul situs diciutkan menjadi satu agar lebih rapi dan mudah dibaca.
 
-- Jika judul pos terkait terlalu panjang, Anda akan melihat versi yang lebih pendek dan ringkas.
-- Petak pos kini dapat terdiri dari tiga baris teks alih-alih dua baris, sehingga lebih dari 50% sisi bagus konten Anda ditampilkan.
-- Artikel memiliki margin horizontal yang sedikit lebih lebar.
-- Kami membasmi beberapa bug yang memengaruhi cara memuat artikel.
+Pembaruan teknis dari kami sukses mengurangi ukuran aplikasi sekitar 6 MB. Silakan pakai ruang kosongnya sesuka hati.
+
+Pengaturan visibilitas untuk pos yang sudah ada kini lebih mudah dicari, dilihat, dan diubah. Tombol “Selesai” juga terus ditampilkan saat Anda mengatur kata sandi dalam penerbitan pos yang dilindungi kata sandi.
+
+Tampilan serasi: pembaruan ikon pintasan dan ilustrasi agar lebih cocok dengan keseluruhan nuansa aplikasi dan perangkat Anda.
+
+Perbaikan masalah agar pratinjau pos berfungsi dengan benar untuk situs tertentu yang menggunakan paket Bisnis dan eCommerce.
+
+Saat menambahkan situs baru yang di-hosting sendiri, Anda akan dimintai kata sandi aplikasi untuk autentikasi. Jaga kerahasiannya. Jaga keamanannya
