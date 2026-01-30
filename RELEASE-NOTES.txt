@@ -1,6 +1,7 @@
 26.7
 -----
 * [**] Stats: Add new "Adds" tab to show WordAdds earnings and stats [#25165]
+* [*] For sites that are authenticated with application passwords, the app no longer requires xml-rpc to be enabled. But in that scenario, only limited features are available: XML-RPC needs to be enabled to use all features. [#25183]
 
 26.6
 -----
