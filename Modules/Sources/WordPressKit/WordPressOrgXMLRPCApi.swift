@@ -114,6 +114,16 @@ open class WordPressOrgXMLRPCApi: NSObject, WordPressOrgXMLRPCApiInterfacing {
         let parameters: [AnyObject] = [0 as AnyObject, username as AnyObject, password as AnyObject]
         callMethod("wp.getOptions", parameters: parameters, success: success, failure: failure)
     }
+
+    public func isEnabled(username: String, password: String) async -> Bool {
+        let parameters: [AnyObject] = [0 as AnyObject, username as AnyObject, password as AnyObject]
+        let result = await call(method: "wp.getOptions", parameters: parameters)
+        guard case let .failure(error) = result, case let .endpointError(fault) = error else {
+            return true
+        }
+        return fault.code != 405
+    }
+
     /**
      Executes a XMLRPC call for the method specificied with the arguments provided.
 

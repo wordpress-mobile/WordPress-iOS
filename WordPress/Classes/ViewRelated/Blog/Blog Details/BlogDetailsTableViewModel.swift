@@ -78,6 +78,7 @@ private struct Section {
         tableView.register(JetpackBrandingMenuCardCell.self, forCellReuseIdentifier: CellIdentifiers.jetpackBrandingCard)
         tableView.register(JetpackRemoteInstallTableViewCell.self, forCellReuseIdentifier: CellIdentifiers.jetpackInstall)
         tableView.register(ExtensiveLoggingCell.self, forCellReuseIdentifier: CellIdentifiers.extensiveLogging)
+        tableView.register(XMLRPCDisabledCell.self, forCellReuseIdentifier: CellIdentifiers.xmlrpcDisabled)
 
         tableView.delegate = self
         tableView.dataSource = self
@@ -104,6 +105,10 @@ private struct Section {
 
         if blog.isSelfHosted, ExtensiveLogging.enabled {
             newSections.append(Section(rows: [], category: .extensiveLogging))
+        }
+
+        if viewController.showXMLRPCDisabled {
+            newSections.append(Section(rows: [], category: .xmlrpcDisabled))
         }
 
         if viewController.isDashboardEnabled() && isSplitViewDisplayed {
@@ -243,7 +248,7 @@ extension BlogDetailsTableViewModel: UITableViewDataSource {
         guard section < sections.count else { return 0 }
 
         switch sections[section].category {
-        case .jetpackInstallCard, .migrationSuccess, .jetpackBrandingCard, .extensiveLogging:
+        case .jetpackInstallCard, .migrationSuccess, .jetpackBrandingCard, .extensiveLogging, .xmlrpcDisabled:
             // The "card" sections do not set the `rows` property. It's hard-coded to show specific types of cards.
             wpAssert(sections[section].rows.count == 0)
             return 1
@@ -269,6 +274,8 @@ extension BlogDetailsTableViewModel: UITableViewDataSource {
             cell = configureJetpackBrandingCell(tableView: tableView)
         case .extensiveLogging:
             cell = configureExtensiveLoggingCell(tableView: tableView)
+        case .xmlrpcDisabled:
+            cell = configureXMLRPCDisabledCell(tableView: tableView)
         default:
             if indexPath.row < section.rows.count {
                 let row = section.rows[indexPath.row]
@@ -489,6 +496,18 @@ private extension BlogDetailsTableViewModel {
         guard let cell = tableView.dequeueReusableCell(
             withIdentifier: CellIdentifiers.extensiveLogging
         ) as? ExtensiveLoggingCell,
+              let viewController else {
+            return UITableViewCell()
+        }
+
+        cell.configure(with: viewController)
+        return cell
+    }
+
+    func configureXMLRPCDisabledCell(tableView: UITableView) -> UITableViewCell {
+        guard let cell = tableView.dequeueReusableCell(
+            withIdentifier: CellIdentifiers.xmlrpcDisabled
+        ) as? XMLRPCDisabledCell,
               let viewController else {
             return UITableViewCell()
         }
@@ -827,6 +846,7 @@ private enum SectionCategory {
     case reminders
     case domainCredit
     case extensiveLogging
+    case xmlrpcDisabled
     case home
     case general
     case jetpack
@@ -1493,4 +1513,5 @@ private enum CellIdentifiers {
     static let jetpackBrandingCard = "BlogDetailsJetpackBrandingCardCellIdentifier"
     static let jetpackInstall = "BlogDetailsJetpackInstallCardCellIdentifier"
     static let extensiveLogging = "BlogDetailsExtensiveLoggingCellIdentifier"
+    static let xmlrpcDisabled = "BlogDetailsXMLRPCDisabledCellIdentifier"
 }
