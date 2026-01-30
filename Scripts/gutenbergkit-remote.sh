@@ -20,8 +20,26 @@ if [ -z "$VERSION" ]; then
     exit 1
 fi
 
+# Check if already using remote URL
+if grep -q 'github.com/wordpress-mobile/GutenbergKit' "$PACKAGE_SWIFT"; then
+    echo "Already using remote GutenbergKit"
+    exit 0
+fi
+
+# Verify local path exists before replacing
+if ! grep -q '\.package(path: "../../GutenbergKit")' "$PACKAGE_SWIFT"; then
+    echo "Error: Could not find local GutenbergKit dependency in Package.swift" >&2
+    exit 1
+fi
+
 # Replace local path with remote URL
 sed -i '' "s|\.package(path: \"../../GutenbergKit\")|.package(url: \"https://github.com/wordpress-mobile/GutenbergKit\", from: \"$VERSION\")|" "$PACKAGE_SWIFT"
+
+# Verify the change was applied
+if ! grep -q 'github.com/wordpress-mobile/GutenbergKit' "$PACKAGE_SWIFT"; then
+    echo "Error: Failed to update Package.swift" >&2
+    exit 1
+fi
 
 # Disable GUTENBERG_EDITOR_URL environment variable in Jetpack scheme
 sed -i '' '

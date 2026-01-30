@@ -10,8 +10,26 @@ REPO_ROOT="$(dirname "$SCRIPT_DIR")"
 PACKAGE_SWIFT="$REPO_ROOT/Modules/Package.swift"
 JETPACK_SCHEME="$REPO_ROOT/WordPress/WordPress.xcodeproj/xcshareddata/xcschemes/Jetpack.xcscheme"
 
+# Check if already using local path
+if grep -q '\.package(path: "../../GutenbergKit")' "$PACKAGE_SWIFT"; then
+    echo "Already using local GutenbergKit path"
+    exit 0
+fi
+
+# Verify remote URL exists before replacing
+if ! grep -q 'github.com/wordpress-mobile/GutenbergKit' "$PACKAGE_SWIFT"; then
+    echo "Error: Could not find GutenbergKit dependency in Package.swift" >&2
+    exit 1
+fi
+
 # Replace GutenbergKit dependency with local path
 sed -i '' 's|\.package(url: "https://github.com/wordpress-mobile/GutenbergKit",[^)]*)|.package(path: "../../GutenbergKit")|' "$PACKAGE_SWIFT"
+
+# Verify the change was applied
+if ! grep -q '\.package(path: "../../GutenbergKit")' "$PACKAGE_SWIFT"; then
+    echo "Error: Failed to update Package.swift" >&2
+    exit 1
+fi
 
 # Enable GUTENBERG_EDITOR_URL environment variable in Jetpack scheme
 sed -i '' '
