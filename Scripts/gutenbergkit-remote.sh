@@ -16,7 +16,7 @@ VERSION=$(git show trunk:Modules/Package.swift \
     | sed -n 's/.*from: "\([^"]*\)".*/\1/p')
 
 if [ -z "$VERSION" ]; then
-    echo "Error: Could not find GutenbergKit version in git history" >&2
+    echo "Error: Could not find GutenbergKit version in trunk" >&2
     exit 1
 fi
 
