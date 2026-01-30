@@ -684,6 +684,9 @@ import WordPressShared
     // Error Events
     case jetpackStatsErrorEncountered
 
+    // Feature Gate Events
+    case jetpackStatsFeatureGateExplorePlansTapped
+
     // Jetpack Connection Flow
     case jetpackConnectStarted
     case jetpackConnectLogin
@@ -1863,6 +1866,10 @@ import WordPressShared
         // Error Events
         case .jetpackStatsErrorEncountered:
             return "jetpack_stats_error_encountered"
+
+        // Feature Gate Events
+        case .jetpackStatsFeatureGateExplorePlansTapped:
+            return "jetpack_stats_feature_gate_explore_plans_tapped"
 
         // Jetpack Connection Flow
         case .jetpackConnectStarted:

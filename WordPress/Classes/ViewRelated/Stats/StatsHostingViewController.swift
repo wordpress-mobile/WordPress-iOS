@@ -80,8 +80,17 @@ extension StatsContext {
             return avatarURL.replacing(options: options)?.url ?? url
         }
 
-        // Configure analytics tracker
         self.tracker = WPAnalyticsStatsTracker()
+
+        self.upgradeURL = Self.makeUpgradeURL(for: blog)
+    }
+
+    private static func makeUpgradeURL(for blog: Blog) -> URL {
+        if blog.isHostedAtWPcom {
+            return URL(string: "https://wordpress.com/pricing/")!
+        } else {
+            return URL(string: "https://cloud.jetpack.com/pricing")!
+        }
     }
 }
 

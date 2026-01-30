@@ -320,7 +320,10 @@ struct TopListCard: View {
                 } else {
                     topListItemsView(data: data)
                 }
+            } else if let error = viewModel.loadingError as? StatsFeatureGateError {
+                makeFeatureGateView(error: error)
             } else {
+                // Show generic error view for other errors
                 makeEmptyStateView(message: viewModel.loadingError?.localizedDescription ?? Strings.Errors.generic)
             }
         }
@@ -396,6 +399,16 @@ struct TopListCard: View {
             .overlay {
                 SimpleErrorView(message: message)
                     .offset(y: -18)
+            }
+    }
+
+    private func makeFeatureGateView(error: StatsFeatureGateError) -> some View {
+        topListItemsView(data: mockData)
+            .allowsHitTesting(false)
+            .redacted(reason: .placeholder)
+            .opacity(0.2)
+            .overlay {
+                FeatureGateBannerView(error: error)
             }
     }
 

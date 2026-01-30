@@ -179,6 +179,14 @@ public enum StatsEvent {
     ///   - "error_code": Specific error code if available
     ///   - "screen": Where the error occurred
     case errorEncountered
+
+    // MARK: - Feature Gate Events
+
+    /// Feature gate "Explore Plans" button tapped
+    /// - Parameters:
+    ///   - "feature": The gated feature (e.g., "utm_stats", "device_stats", "location_regions")
+    ///   - "source": Where the button was tapped (e.g., "card", "detail_view")
+    case featureGateExplorePlansTapped
 }
 
 // MARK: - StatsTracker Protocol

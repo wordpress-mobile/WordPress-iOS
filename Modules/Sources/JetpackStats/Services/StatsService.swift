@@ -195,6 +195,9 @@ actor StatsService: StatsServiceProtocol {
 
             return data
         } catch {
+            if let error = StatsFeatureGateError.from(apiError: error, itemType: item) {
+                throw error
+            }
             // A workaround for an issue where `/stats` return `"summary": null`
             // when there are no recoreded periods (happens when the entire requested
             // period is _before_ the site creation).

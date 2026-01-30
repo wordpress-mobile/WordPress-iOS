@@ -410,4 +410,9 @@ enum Strings {
         static let date = AppLocalizedString("jetpackStats.chartData.date", value: "DATE", comment: "Column header for date")
         static let value = AppLocalizedString("jetpackStats.chartData.value", value: "VALUE", comment: "Column header for value")
     }
+
+    enum FeatureGate {
+        static let message = AppLocalizedString("jetpackStats.featureGate.message", value: "Upgrade your plan to get access to advanced analytics", comment: "Message shown when a stats feature is gated behind a paid plan")
+        static let explorePlans = AppLocalizedString("jetpackStats.featureGate.explorePlans", value: "Explore Plans", comment: "Button to explore plans when a feature is gated")
+    }
 }

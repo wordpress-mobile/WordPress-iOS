@@ -201,6 +201,7 @@ final class TopListViewModel: ObservableObject, TrafficCardViewModel {
             loadingError = error
             data = nil
             countriesMapData = nil
+            staleTimer?.cancel()
             tracker?.trackError(error, screen: "top_list_card")
         }
 

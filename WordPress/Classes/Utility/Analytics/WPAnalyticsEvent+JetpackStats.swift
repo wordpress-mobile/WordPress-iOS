@@ -36,6 +36,7 @@ extension StatsEvent {
         case .utmParamGroupingChanged: .jetpackStatsUtmParamGroupingChanged
         case .statsTabSelected: .jetpackStatsTabSelected
         case .errorEncountered: .jetpackStatsErrorEncountered
+        case .featureGateExplorePlansTapped: .jetpackStatsFeatureGateExplorePlansTapped
         }
     }
 }
