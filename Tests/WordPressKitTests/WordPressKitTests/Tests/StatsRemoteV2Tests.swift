@@ -1032,6 +1032,14 @@ class StatsRemoteV2Tests: RemoteTestCase, RESTTestable {
         XCTAssertEqual(firstPost?.title, "How to Build a Mobile App")
         XCTAssertEqual(firstPost?.postID, 12345)
         XCTAssertEqual(firstPost?.viewsCount, 75)
+        XCTAssertEqual(firstPost?.postURL, URL(string: "https://example.com/how-to-build-mobile-app"))
+
+        // Check second post of first metric
+        let secondPost = firstMetric?.posts[1]
+        XCTAssertEqual(secondPost?.title, "Swift Development Guide")
+        XCTAssertEqual(secondPost?.postID, 12346)
+        XCTAssertEqual(secondPost?.viewsCount, 50)
+        XCTAssertEqual(secondPost?.postURL, URL(string: "https://example.com/swift-guide"))
 
         // Check second UTM metric
         let secondMetric = utmData.utmMetrics[1]
@@ -1039,6 +1047,13 @@ class StatsRemoteV2Tests: RemoteTestCase, RESTTestable {
         XCTAssertEqual(secondMetric.values, ["facebook", "social"])
         XCTAssertEqual(secondMetric.viewsCount, 120)
         XCTAssertEqual(secondMetric.posts.count, 1)
+
+        // Check post of second metric
+        let secondMetricPost = secondMetric.posts.first
+        XCTAssertEqual(secondMetricPost?.title, "Social Media Tips")
+        XCTAssertEqual(secondMetricPost?.postID, 12347)
+        XCTAssertEqual(secondMetricPost?.viewsCount, 60)
+        XCTAssertEqual(secondMetricPost?.postURL, URL(string: "https://example.com/social-media-tips"))
 
         // Check that metrics are sorted by views descending
         for i in 0..<(utmData.utmMetrics.count - 1) {

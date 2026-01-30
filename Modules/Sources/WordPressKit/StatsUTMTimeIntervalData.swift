@@ -114,16 +114,16 @@ extension StatsUTMTimeIntervalData {
     ///   - `["google","cpc"]` -> `["google", "cpc"]`
     ///   - `["spring-sale","google","cpc"]` -> `["spring-sale", "google", "cpc"]`
     private static func parseUTMKey(_ key: String) -> [String] {
-        // Try to parse as JSON array first
-        if key.hasPrefix("["),
-           let data = key.data(using: .utf8),
-           let values = try? JSONDecoder().decode([String].self, from: data) {
+        let decoder = JSONDecoder()
+        guard let data = key.data(using: .utf8) else {
+            return [] // Should never happen
+        }
+        if let values = try? decoder.decode([String].self, from: data) {
             return values
         }
-
-        // If it's a single value, return it in an array
-        // Remove surrounding quotes if present
-        let trimmed = key.trimmingCharacters(in: CharacterSet(charactersIn: "\""))
-        return [trimmed]
+        if let string = try? decoder.decode(String.self, from: data) {
+            return [string] // Defensive code, should never happen
+        }
+        return []
     }
 }
