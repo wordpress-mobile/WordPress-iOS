@@ -1,5 +1,10 @@
 import Foundation
 
+/// Protocol for value formatters that can format metric values.
+protocol ValueFormatterProtocol {
+    func format(value: Int, context: StatsValueFormatter.Context) -> String
+}
+
 /// Formats site metric values for display based on the metric type and context.
 ///
 /// Example usage:
@@ -12,7 +17,7 @@ import Foundation
 /// viewsFormatter.format(value: 15789) // "15,789"
 /// viewsFormatter.format(value: 15789, context: .compact) // "16K"
 /// ```
-struct StatsValueFormatter {
+struct StatsValueFormatter: ValueFormatterProtocol {
     enum Context {
         case regular
         case compact
@@ -79,6 +84,35 @@ struct StatsValueFormatter {
     /// formatter.percentageChange(current: 150, previous: 100) // 0.5 (50% increase)
     /// formatter.percentageChange(current: 50, previous: 100) // -0.5 (50% decrease)
     /// ```
+    func percentageChange(current: Int, previous: Int) -> Double {
+        guard previous > 0 else { return 0 }
+        return Double(current - previous) / Double(previous)
+    }
+}
+
+/// Formats WordAds metric values for display based on the metric type and context.
+struct WordAdsValueFormatter: ValueFormatterProtocol {
+    let metric: WordAdsMetric
+
+    init(metric: WordAdsMetric) {
+        self.metric = metric
+    }
+
+    func format(value: Int, context: StatsValueFormatter.Context = .regular) -> String {
+        switch metric.id {
+        case "revenue":
+            let dollars = Double(value) / 100.0
+            return dollars.formatted(.currency(code: "USD"))
+        case "cpm":
+            let cpm = Double(value) / 100.0
+            return String(format: "$%.2f", cpm)
+        case "impressions":
+            return StatsValueFormatter.formatNumber(value, onlyLarge: context == .regular)
+        default:
+            return StatsValueFormatter.formatNumber(value, onlyLarge: context == .regular)
+        }
+    }
+
     func percentageChange(current: Int, previous: Int) -> Double {
         guard previous > 0 else { return 0 }
         return Double(current - previous) / Double(previous)

@@ -91,8 +91,8 @@ final class BlogDashboardViewController: UIViewController {
         viewModel.viewWillDisappear()
     }
 
-    func reloadCardsLocally() {
-        viewModel.loadCardsFromCache()
+    func reloadCardsLocally(animated: Bool = false) {
+        viewModel.loadCardsFromCacheWithAnimation(animated: animated)
     }
 
     /// If you want to give any feedback when the dashboard
@@ -122,8 +122,10 @@ final class BlogDashboardViewController: UIViewController {
     }
 
     func pulledToRefresh(completion: (() -> Void)? = nil) {
-        viewModel.loadCards { _ in
-            completion?()
+        viewModel.loadCards { [weak self] _ in
+            self?.viewModel.clearEditorCache {
+                completion?()
+            }
         }
     }
 

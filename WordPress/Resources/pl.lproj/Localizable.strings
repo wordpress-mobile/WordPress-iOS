@@ -116,8 +116,7 @@
 /* Title of alert when theme activation fails */
 "Activation Error" = "Błąd aktywacji";
 
-/* Noun. Links to a blog's Activity screen.
-   Noun. Name of the Activity Log feature */
+/* Noun. Name of the Activity Log feature */
 "Activity" = "Aktywność";
 
 /* No comment provided by engineer. */
@@ -427,9 +426,6 @@
 /* No comment provided by engineer. */
 "Choose a file" = "Wybierz plik";
 
-/* OK Button title shown in alert informing users about the Reader Save for Later feature. */
-"Choose a new app icon" = "Wybierz nową ikonkę aplikacji";
-
 /* Title for the screen to pick a theme and homepage for a site. */
 "Choose a theme" = "Wybierz motyw";
 
@@ -479,7 +475,6 @@
    Insights 'Comments' header
    Label for number of comments.
    Label for Period Overview comments
-   Noun. Title. Links to the blog's Comments screen.
    Settings: Comment Sections
    Text for the 'comment' button when there are multiple comments
    Title for the Blog's Comments Section View
@@ -494,9 +489,6 @@
 
 /* Setting: WordPress.com Community */
 "Community" = "Społeczność";
-
-/* Section title for the configure table section in the blog details screen */
-"Configure" = "Konfiguruj";
 
 /* Verb. Title for Jetpack Restore confirm button. */
 "Confirm" = "Potwierdź";
@@ -659,9 +651,6 @@
 /* Title for the app appearance setting for dark mode */
 "Dark" = "Ciemny";
 
-/* Action title. Noun. Opens the user's WordPress.com dashboard in an external browser. */
-"Dashboard" = "Kokplt";
-
 /* Menus confirmation button for deleting a menu. */
 "Delete Menu" = "Usuń menu";
 
@@ -710,9 +699,6 @@
 /* Display Name label text.
    User's Display Name */
 "Display Name" = "Wyświetlana nazwa";
-
-/* Noun. Title. Links to the Domains screen. */
-"Domains" = "Domeny";
 
 /* A done button
    Button text on site creation epilogue page to proceed to My Sites.
@@ -894,9 +880,6 @@
 /* Text displayed while fetching themes */
 "Fetching Themes..." = "Pobieranie motywów…";
 
-/* A brief prompt shown when the comment list is empty, letting the user know the app is currently fetching new comments. */
-"Fetching comments..." = "Pobieranie komentarzy…";
-
 /* A short message to inform the user data for their sites are being fetched. */
 "Fetching sites..." = "Pobieranie witryn…";
 
@@ -963,9 +946,6 @@
 
 /* No comment provided by engineer. */
 "Get support" = "Uzyskaj pomoc";
-
-/* Title of the second alert preparing users to grant permission for us to send them push notifications. */
-"Get your notifications faster" = "Szybciej otrzymuj powiadomienia";
 
 /* Alerts the user that wpcom account information is being retrieved. */
 "Getting account information" = "Pobieranie informacji o koncie";
@@ -1151,16 +1131,12 @@
    Discoverability title for italic formatting keyboard shortcut. */
 "Italic" = "Kursywa";
 
-/* Section title for the publish table section in the blog details screen
-   Title for the Jetpack Installation
+/* Title for the Jetpack Installation
    Title for the Jetpack section in site settings screen */
 "Jetpack" = "Jetpack";
 
 /* Message stating the minimum required version for Jetpack and asks the user if they want to upgrade */
 "Jetpack %@ or later is required. Do you want to update Jetpack?" = "Wymagany jest Jetpack w wersji %@ lub nowszej. Czy zaktualizować Jetpacka?";
-
-/* Noun. Title. Links to the blog's Settings screen. */
-"Jetpack Settings" = "Ustawienia Jetpack";
 
 /* Insights 'Jetpack Social Connections' header
    Section title for Publicize services in Sharing screen */
@@ -1214,9 +1190,6 @@
 
 /* Title of a button. Tapping allows the user to learn more about the specific error. */
 "Learn More" = "Dowiedz się więcej";
-
-/* Body text of the first alert preparing users to grant permission for us to send them push notifications. */
-"Learn about new comments, likes, and follows in seconds." = "Bezzwłocznie dowiaduj się o nowych komentarzach, polubieniach, czy śledzeniach.";
 
 /* A button title.
    Link to cookie policy
@@ -1335,13 +1308,11 @@
 
 /* Accessibility label for the Me button in My Site.
    Me page title
-   Noun. Title. Links to the Me screen.
    The accessibility value of the me tab.
    Title of the 'Me' tab - used for spotlight indexing on iOS. */
 "Me" = "Ja";
 
-/* Noun. Title. Links to the blog's Media library.
-   Title for the media section in site settings screen
+/* Title for the media section in site settings screen
    Title label for the media settings section in the app settings */
 "Media" = "Media";
 
@@ -1453,7 +1424,6 @@
 "No comments" = "Brak komentarzy";
 
 /* Displayed in the Notifications Tab as a title, when the Comments Filter shows no notifications
-   Displayed on the post details page when there are no post comments.
    Displayed when there are no comments in the Comments views. */
 "No comments yet" = "Brak komentarzy";
 
@@ -1514,8 +1484,7 @@
    Button title. An acknowledgement of the message displayed in a prompt.
    Dismisses the alert
    Menus: button title for finishing editing of a menu item.
-   Ok button for dismissing alert helping users understand their site address
-   OK Button title shown in alert informing users about the Reader Save for Later feature. */
+   Ok button for dismissing alert helping users understand their site address */
 "OK" = "OK";
 
 /* Disabled */
@@ -1595,8 +1564,7 @@
 /* translators: accessibility text. empty page title. */
 "Page title. Empty" = "Tytuł strony. Pusty";
 
-/* Noun. Title. Links to the blog's Pages screen.
-   This is the section title
+/* This is the section title
    Title of the screen showing the list of pages for a blog. */
 "Pages" = "Strony";
 
@@ -1618,15 +1586,11 @@
    Title of pending Comments filter. */
 "Pending" = "Oczekujące";
 
-/* Noun. Title. Links to the people management feature.
-   People site intent topic */
+/* People site intent topic */
 "People" = "Ludzie";
 
 /* Label for date periods. */
 "Period" = "Okres";
-
-/* Section title for the personalize table section in the blog details screen. */
-"Personalize" = "Personalizuj";
 
 /* Photography site intent topic */
 "Photography" = "Fotografia";
@@ -1673,8 +1637,7 @@
 /* Version of an installed plugin */
 "Plugin version" = "Wersja wtyczki";
 
-/* Noun. Title. Links to the plugin management feature.
-   Title for the plugin directory */
+/* Title for the plugin directory */
 "Plugins" = "Wtyczki";
 
 /* Header of section in Plugin Directory showing popular plugins
@@ -1693,7 +1656,6 @@
 
 /* All Time Stats 'Posts' label
    Insights 'Posts' header
-   Noun. Title. Links to the blog's Posts screen.
    Title of the screen showing the list of posts for a blog. */
 "Posts" = "Wpisy";
 
@@ -1750,8 +1712,7 @@
 "Problem loading content" = "Wystąpił problem z wczytywaniem treści";
 
 /* Label for the publish (verb) button. Tapping publishes a draft post.
-   Publish post action on share extension site picker screen.
-   Section title for the publish table section in the blog details screen */
+   Publish post action on share extension site picker screen. */
 "Publish" = "Opublikuj";
 
 /* Period Stats 'Published' header
@@ -1899,9 +1860,6 @@
    Title of action button to save a Reader post to read later. */
 "Save" = "Zapisz";
 
-/* Title of alert informing users about the Reader Save for Later feature. */
-"Save Posts for Later" = "Zapisz wpis na później";
-
 /* A short message that informs the user a draft page is being saved to the server from the share extension. */
 "Saving page…" = "Zapisywanie strony...";
 
@@ -1971,7 +1929,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 "Share your story here..." = "Podziel się swoją historią…";
 
 /* Noun. Name of the Social Sharing feature
-   Noun. Title. Links to a blog's sharing options.
    Title for blog detail sharing screen. */
 "Sharing" = "Udostępnianie ";
 
@@ -2120,7 +2077,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 "Start writing…" = "Rozpocznij pisanie...";
 
 /* Noun. Abbreviation of Statistics. Name of the Stats feature
-   Noun. Abbv. of Statistics. Links to a blog's Stats screen.
    Stats 3D Touch Shortcut
    Stats window title */
 "Stats" = "Statystyki";
@@ -2238,7 +2194,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 "Theme Activated" = "Motyw został włączony";
 
 /* Noun. Name of the Themes feature
-   Themes option in the blog details
    Title of Themes browser page */
 "Themes" = "Motywy";
 
@@ -2428,8 +2383,7 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* No comment provided by engineer. */
 "Username must be at least 4 characters." = "Nazwa użytkownika musi zawierać minimum 4 znaki.";
 
-/* Blog Users
-   Noun. Title. Links to the user management feature. */
+/* Blog Users */
 "Users" = "Użytkownicy";
 
 /* two factor code placeholder */
@@ -2452,9 +2406,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
    Theme View action title
    Verb. The screen title shown when viewing a post inside the app. */
 "View" = "Zobacz";
-
-/* Action title. Opens the user's site in an in-app browser */
-"View Site" = "Zobacz witrynę";
 
 /* Title for button on the post details page to show all comments when tapped. */
 "View all comments" = "Zobacz wszystkie komentarze";
@@ -2502,9 +2453,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
    Title for Visitors count in the legend of the Stats Insights views and visitors line chart
    Today's Stats 'Visitors' label */
 "Visitors" = "Odwiedzający";
-
-/* Action title. Noun. Opens the user's WordPress Admin in an external browser. */
-"WP Admin" = "WP Admin";
 
 /* View title during the Google auth process. */
 "Waiting..." = "Oczekuję…";

@@ -27,7 +27,7 @@ struct StatsCardTitleView: View {
             // Note: had to do that to fix the animation issuse with Menu
             // hiding the image.
             title + Text(" ") + Text(Image(systemName: "chevron.up.chevron.down"))
-                .font(.footnote.weight(.semibold))
+                .font(.caption2.weight(.semibold))
                 .foregroundColor(.secondary)
                 .baselineOffset(1)
         } else {
@@ -60,7 +60,7 @@ struct InlineValuePickerTitle: View {
         // Note: had to do that to fix the animation issuse with Menu
         // hiding the image.
         title + Text(" ") + Text(Image(systemName: "chevron.up.chevron.down"))
-            .font(.footnote.weight(.semibold))
+            .font(.caption2.weight(.semibold))
             .foregroundColor(.secondary)
             .baselineOffset(1)
     }

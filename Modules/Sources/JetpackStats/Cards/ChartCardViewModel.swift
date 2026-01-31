@@ -14,6 +14,7 @@ final class ChartCardViewModel: ObservableObject, TrafficCardViewModel {
 
     @Published var isEditing = false
     @Published var selectedMetric: SiteMetric
+
     @Published var selectedChartType: ChartType {
         didSet {
             // Update configuration when chart type changes
@@ -22,12 +23,27 @@ final class ChartCardViewModel: ObservableObject, TrafficCardViewModel {
         }
     }
 
+    @Published var selectedGranularity: DateRangeGranularity? {
+        didSet {
+            // Reload data with new granularity
+            loadData(for: dateRange)
+        }
+    }
+
     weak var configurationDelegate: CardConfigurationDelegate?
 
     var dateRange: StatsDateRange {
         didSet {
+            // Reset granularity to automatic when date period changes (but not for adjacent navigation)
+            if !dateRange.isAdjacent(to: oldValue) {
+                selectedGranularity = nil
+            }
             loadData(for: dateRange)
         }
+    }
+
+    var effectiveGranularity: DateRangeGranularity {
+        selectedGranularity ?? dateRange.dateInterval.preferredGranularity
     }
 
     private let service: any StatsServiceProtocol
@@ -147,7 +163,7 @@ final class ChartCardViewModel: ObservableObject, TrafficCardViewModel {
     private func getSiteStats(dateRange: StatsDateRange) async throws -> [SiteMetric: ChartData] {
         var output: [SiteMetric: ChartData] = [:]
 
-        let granularity = dateRange.dateInterval.preferredGranularity
+        let granularity = selectedGranularity ?? dateRange.dateInterval.preferredGranularity
 
         // Fetch both current and previous period data concurrently
         async let currentResponseTask = service.getSiteStats(
@@ -167,11 +183,8 @@ final class ChartCardViewModel: ObservableObject, TrafficCardViewModel {
             // Map previous data to align with current period dates so they
             // are displayed on the same timeline on the charts.
             let mappedPreviousDataPoints = DataPoint.mapDataPoints(
-                previousDataPoints,
-                from: dateRange.effectiveComparisonInterval,
-                to: dateRange.dateInterval,
-                component: dateRange.component,
-                calendar: dateRange.calendar
+                currentData: dataPoints,
+                previousData: previousDataPoints
             )
 
             output[metric] = ChartData(
@@ -188,7 +201,7 @@ final class ChartCardViewModel: ObservableObject, TrafficCardViewModel {
         return output
     }
 
-    var tabViewData: [MetricsOverviewTabView.MetricData] {
+    var tabViewData: [MetricsOverviewTabView<SiteMetric>.MetricData] {
         metrics.map { metric in
             if let chartData = chartData[metric] {
                 return .init(
@@ -202,7 +215,7 @@ final class ChartCardViewModel: ObservableObject, TrafficCardViewModel {
         }
     }
 
-    var placeholderTabViewData: [MetricsOverviewTabView.MetricData] {
+    var placeholderTabViewData: [MetricsOverviewTabView<SiteMetric>.MetricData] {
         metrics.map { metric in
             .init(metric: metric, value: 12345, previousValue: 11234)
         }

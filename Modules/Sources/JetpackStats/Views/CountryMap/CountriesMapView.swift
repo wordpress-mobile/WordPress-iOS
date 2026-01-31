@@ -67,49 +67,49 @@ struct CountriesMapView: View {
     CountriesMapView(
         data: CountriesMapData(metric: .views, locations: [
             TopListItem.Location(
-                country: "United States",
+                name: "United States",
                 flag: "🇺🇸",
                 countryCode: "US",
                 metrics: SiteMetricsSet(views: 10000)
             ),
             TopListItem.Location(
-                country: "United Kingdom",
+                name: "United Kingdom",
                 flag: "🇬🇧",
                 countryCode: "GB",
                 metrics: SiteMetricsSet(views: 4000)
             ),
             TopListItem.Location(
-                country: "Canada",
+                name: "Canada",
                 flag: "🇨🇦",
                 countryCode: "CA",
                 metrics: SiteMetricsSet(views: 2800)
             ),
             TopListItem.Location(
-                country: "Germany",
+                name: "Germany",
                 flag: "🇩🇪",
                 countryCode: "DE",
                 metrics: SiteMetricsSet(views: 2000)
             ),
             TopListItem.Location(
-                country: "Australia",
+                name: "Australia",
                 flag: "🇦🇺",
                 countryCode: "AU",
                 metrics: SiteMetricsSet(views: 1600)
             ),
             TopListItem.Location(
-                country: "France",
+                name: "France",
                 flag: "🇫🇷",
                 countryCode: "FR",
                 metrics: SiteMetricsSet(views: 1400)
             ),
             TopListItem.Location(
-                country: "Japan",
+                name: "Japan",
                 flag: "🇯🇵",
                 countryCode: "JP",
                 metrics: SiteMetricsSet(views: 1100)
             ),
             TopListItem.Location(
-                country: "Netherlands",
+                name: "Netherlands",
                 flag: "🇳🇱",
                 countryCode: "NL",
                 metrics: SiteMetricsSet(views: 800)

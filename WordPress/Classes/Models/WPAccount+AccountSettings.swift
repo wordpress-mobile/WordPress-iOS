@@ -32,8 +32,4 @@ extension WPAccount {
         let coreDataID = objectID.uriRepresentation().absoluteString
         return "<Account username: \(username) ID: \(userID?.stringValue ?? "-"), Email: \(verificationStatus.rawValue) ObjectID: \(coreDataID)>"
     }
-
-    var needsEmailVerification: Bool {
-        return verificationStatus == .unverified
-    }
 }

@@ -3,6 +3,8 @@ import SwiftUI
 import WordPressAuthenticator
 import WordPressShared
 import WordPressUI
+import Support
+import PulseUI
 
 class SupportTableViewController: UITableViewController {
 
@@ -213,13 +215,38 @@ private extension SupportTableViewController {
         var informationSection: ImmuTableSection?
         if configuration.showsLogsSection {
             let versionRow = TextRow(title: LocalizedText.version, value: Bundle.main.shortVersionString())
-            let switchRow = SwitchRow(title: LocalizedText.debug,
-                                      value: userDefaults.bool(forKey: UserDefaultsKeys.extraDebug),
-                                      onChange: extraDebugToggled())
-            let logsRow = NavigationItemRow(title: LocalizedText.logs, action: activityLogsSelected(), accessibilityIdentifier: "activity-logs-button")
+            let logsRow = NavigationItemRow(
+                title: LocalizedText.logs,
+                action: activityLogsSelected(),
+                accessibilityIdentifier: "activity-logs-button"
+            )
+            let debugSwitchRow = SwitchRow(
+                title: LocalizedText.debug,
+                value: userDefaults.bool(forKey: UserDefaultsKeys.extraDebug),
+                onChange: extraDebugToggled()
+            )
+
+            var rows: [ImmuTableRow] = [versionRow, logsRow, debugSwitchRow]
+
+            let extensiveLoggingSwitchRow = SwitchRow(
+                title: LocalizedText.extensiveLogging,
+                value: ExtensiveLogging.enabled,
+                onChange: extensiveLoggingToggled()
+            )
+            rows.append(extensiveLoggingSwitchRow)
+
+            if ExtensiveLogging.enabled {
+                let extensiveLogsRow = NavigationItemRow(
+                    title: LocalizedText.extensiveLogs,
+                    action: extensiveLogsSelected(),
+                    accessibilityIdentifier: "extensive-logs-button"
+                )
+                rows.append(extensiveLogsRow)
+            }
+
             informationSection = ImmuTableSection(
                 headerText: LocalizedText.advancedSectionHeader,
-                rows: [versionRow, logsRow, switchRow],
+                rows: rows,
                 footerText: LocalizedText.informationFooter
             )
         }
@@ -349,6 +376,40 @@ private extension SupportTableViewController {
         return { [unowned self] newValue in
             self.userDefaults.set(newValue, forKey: UserDefaultsKeys.extraDebug)
             WPLogger.configureLoggerLevelWithExtraDebug()
+        }
+    }
+
+    func extensiveLoggingToggled() -> (_ newValue: Bool) -> Void {
+        return { [weak self] newValue in
+            guard let self else { return }
+
+            if newValue {
+                let alert = UIAlertController(
+                    title: LocalizedText.extensiveLoggingAlertTitle,
+                    message: LocalizedText.extensiveLoggingAlertMessage,
+                    preferredStyle: .alert
+                )
+                alert.addAction(UIAlertAction(title: SharedStrings.Button.cancel, style: .cancel) { _ in
+                    self.reloadViewModel()
+                })
+                alert.addAction(UIAlertAction(title: LocalizedText.enable, style: .default) { _ in
+                    ExtensiveLogging.enabled = true
+                    self.reloadViewModel()
+                })
+                self.present(alert, animated: true)
+            } else {
+                ExtensiveLogging.enabled = false
+                self.reloadViewModel()
+            }
+        }
+    }
+
+    func extensiveLogsSelected() -> ImmuTableAction {
+        return { [weak self] _ in
+            guard let self else { return }
+            self.tableView.deselectSelectedRowWithAnimation(true)
+            let mainVC = PulseUI.MainViewController()
+            self.present(mainVC, animated: true)
         }
     }
 
@@ -511,6 +572,12 @@ private extension SupportTableViewController {
         static let jetpackMigrationDescription = NSLocalizedString("support.row.jetpackMigration.description", value: "Our FAQ provides answers to common questions you may have.", comment: "An informational card description in Support view explaining what tapping the link on card does")
         static let jetpackMigrationButton = NSLocalizedString("support.button.jetpackMigration.title", value: "Visit our FAQ", comment: "Option in Support view to visit the Jetpack migration FAQ website.")
         static let jetpackMigrationButtonAccessibilityHint = NSLocalizedString("support.button.jetpackMigation.accessibilityHint", value: "Tap to visit the Jetpack app FAQ in an external browser", comment: "Accessibility hint, informing user the button can be used to visit the Jetpack migration FAQ website.")
+
+        static let extensiveLogging = NSLocalizedString("support.row.extensiveLogging.title", value: "Extensive Logging", comment: "Option in Support view to enable extensive logging.")
+        static let extensiveLogs = NSLocalizedString("support.row.extensiveLogs.title", value: "Extensive Logs", comment: "Option in Support view to access extensive logs.")
+        static let extensiveLoggingAlertTitle = NSLocalizedString("support.alert.extensiveLogging.title", value: "Enable Extensive Logging?", comment: "Alert title when confirming extensive logging activation.")
+        static let extensiveLoggingAlertMessage = NSLocalizedString("support.alert.extensiveLogging.message", value: "This helps with troubleshooting but may impact performance. You can turn it off anytime.", comment: "Alert message explaining extensive logging helps with troubleshooting but may impact performance.")
+        static let enable = NSLocalizedString("support.alert.enable", value: "Enable", comment: "Button title to enable extensive logging.")
     }
 
     // MARK: - User Defaults Keys

@@ -2,21 +2,18 @@
 //
 public struct WordPressAuthenticatorDisplayImages {
     public let magicLink: UIImage
-    public let siteAddressModalPlaceholder: UIImage
 
     /// Designated initializer.
     ///
-    public init(magicLink: UIImage, siteAddressModalPlaceholder: UIImage) {
+    public init(magicLink: UIImage) {
         self.magicLink = magicLink
-        self.siteAddressModalPlaceholder = siteAddressModalPlaceholder
     }
 }
 
 public extension WordPressAuthenticatorDisplayImages {
     static var defaultImages: WordPressAuthenticatorDisplayImages {
         return WordPressAuthenticatorDisplayImages(
-            magicLink: .magicLinkImage,
-            siteAddressModalPlaceholder: .siteAddressModalPlaceholder
+            magicLink: .magicLinkImage
         )
     }
 }

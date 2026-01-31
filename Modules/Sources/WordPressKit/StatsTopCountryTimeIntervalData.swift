@@ -37,7 +37,7 @@ public struct StatsCountry {
 
 extension StatsTopCountryTimeIntervalData: StatsTimeIntervalData {
     public static var pathComponent: String {
-        return "stats/country-views"
+        "stats/location-views/country"
     }
 
     public init?(date: Date, period: StatsPeriodUnit, jsonDictionary: [String: AnyObject]) {

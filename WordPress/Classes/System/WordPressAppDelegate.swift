@@ -5,6 +5,8 @@ import AutomatticTracks
 import BuildSettingsKit
 import CocoaLumberjackSwift
 import DesignSystem
+import Logging
+import Pulse
 import Reachability
 import SFHFKeychainUtils
 import SVProgressHUD
@@ -17,6 +19,7 @@ import WordPressData
 import WordPressShared
 import WordPressUI
 import ZendeskCoreSDK
+import Support
 
 public class WordPressAppDelegate: UIResponder, UIApplicationDelegate {
 
@@ -81,6 +84,10 @@ public class WordPressAppDelegate: UIResponder, UIApplicationDelegate {
         AssertionLoggerDependencyContainer.logger = AssertionLogger()
         UITestConfigurator.prepareApplicationForUITests(in: application, window: window)
 
+        // The following extensive logging configuration detects if extensive logging is enabled internally.
+        wpkURLSessionNotifyingDelegate = PulseNetworkLogger()
+        LoggingSystem.bootstrap(ExtensiveLogger.init)
+
         AppAppearance.overrideAppearance()
         MemoryCache.shared.register()
         MediaImageService.migrateCacheIfNeeded()
@@ -115,6 +122,8 @@ public class WordPressAppDelegate: UIResponder, UIApplicationDelegate {
 
     public func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]? = nil) -> Bool {
         DDLogInfo("didFinishLaunchingWithOptions state: \(application.applicationState)")
+        Logger(label: "App")
+            .info("didFinishLaunchingWithOptions state: \(application.applicationState)")
 
         ABTest.start()
 

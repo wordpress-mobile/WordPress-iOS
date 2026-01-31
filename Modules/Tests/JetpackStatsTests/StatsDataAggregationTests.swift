@@ -23,7 +23,7 @@ struct StatsDataAggregationTests {
             DataPoint(date: date4, value: 300)
         ]
 
-        let aggregated = aggregator.aggregate(testData, granularity: .hour, metric: .views)
+        let aggregated = aggregator.aggregate(testData, granularity: .hour, metric: SiteMetric.views)
 
         // Should have 2 hours worth of data
         #expect(aggregated.count == 2)
@@ -49,7 +49,7 @@ struct StatsDataAggregationTests {
             DataPoint(date: Date("2025-01-16T10:00:00Z"), value: 300)
         ]
 
-        let aggregated = aggregator.aggregate(testData, granularity: .day, metric: .views)
+        let aggregated = aggregator.aggregate(testData, granularity: .day, metric: SiteMetric.views)
 
         #expect(aggregated.count == 2)
 
@@ -70,7 +70,7 @@ struct StatsDataAggregationTests {
             DataPoint(date: Date("2025-02-10T10:00:00Z"), value: 300)
         ]
 
-        let aggregated = aggregator.aggregate(testData, granularity: .month, metric: .views)
+        let aggregated = aggregator.aggregate(testData, granularity: .month, metric: SiteMetric.views)
 
         #expect(aggregated.count == 2)
 
@@ -91,7 +91,7 @@ struct StatsDataAggregationTests {
             DataPoint(date: Date("2025-05-10T10:00:00Z"), value: 300)
         ]
 
-        let aggregated = aggregator.aggregate(testData, granularity: .year, metric: .views)
+        let aggregated = aggregator.aggregate(testData, granularity: .year, metric: SiteMetric.views)
 
         // Year granularity aggregates by month
         #expect(aggregated.count == 1)
@@ -204,7 +204,7 @@ struct StatsDataAggregationTests {
         ]
 
         // Test with timeOnSite metric which uses average strategy
-        let aggregated = aggregator.aggregate(testData, granularity: .day, metric: .timeOnSite)
+        let aggregated = aggregator.aggregate(testData, granularity: .day, metric: SiteMetric.timeOnSite)
 
         #expect(aggregated.count == 2)
 
@@ -249,7 +249,7 @@ struct StatsDataAggregationTests {
             dataPoints: filteredDataPoints,
             dateInterval: dateInterval,
             granularity: .day,
-            metric: .views
+            metric: SiteMetric.views
         )
 
         // Should have 3 days of data
@@ -297,7 +297,7 @@ struct StatsDataAggregationTests {
             dataPoints: filteredDataPoints,
             dateInterval: dateInterval,
             granularity: .hour,
-            metric: .views
+            metric: SiteMetric.views
         )
 
         // Should have 3 hours of data
@@ -338,7 +338,7 @@ struct StatsDataAggregationTests {
             dataPoints: filteredDataPoints,
             dateInterval: dateInterval,
             granularity: .day,
-            metric: .timeOnSite
+            metric: SiteMetric.timeOnSite
         )
 
         // Values should be averaged per day
@@ -373,7 +373,7 @@ struct StatsDataAggregationTests {
             dataPoints: filteredDataPoints,
             dateInterval: dateInterval,
             granularity: .day,
-            metric: .views
+            metric: SiteMetric.views
         )
 
         // Should still have dates but with zero values
@@ -409,7 +409,7 @@ struct StatsDataAggregationTests {
             dataPoints: filteredDataPoints,
             dateInterval: dateInterval,
             granularity: .month,
-            metric: .views
+            metric: SiteMetric.views
         )
 
         // Should have 2 months (Jan and Feb)

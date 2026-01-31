@@ -15,13 +15,6 @@ extension UIImage {
         return UIImage(named: "login-magic-link", in: bundle, compatibleWith: nil) ?? UIImage()
     }
 
-    /// Returns the Default Site Icon Placeholder Image.
-    ///
-    @objc
-    public static var siteAddressModalPlaceholder: UIImage {
-        return UIImage(named: "site-address", in: bundle, compatibleWith: nil) ?? UIImage()
-    }
-
     /// Returns the Link Image.
     ///
     @objc

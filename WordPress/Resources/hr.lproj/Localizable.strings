@@ -122,15 +122,11 @@
    Insights 'Comments' header
    Label for number of comments.
    Label for Period Overview comments
-   Noun. Title. Links to the blog's Comments screen.
    Settings: Comment Sections
    Text for the 'comment' button when there are multiple comments
    Title for the Blog's Comments Section View
    Today's Stats 'Comments' label */
 "Comments" = "Komentari";
-
-/* Section title for the configure table section in the blog details screen */
-"Configure" = "Konfiguriraj";
 
 /* Verb. Title for Jetpack Restore confirm button. */
 "Confirm" = "Potvrdi";
@@ -154,9 +150,6 @@
 
 /* Current Theme text that appears in Theme Browser Header */
 "Current Theme" = "Trenutna tema";
-
-/* Action title. Noun. Opens the user's WordPress.com dashboard in an external browser. */
-"Dashboard" = "Nadzorna ploča";
 
 /* Title of section that contains plugins' description */
 "Description" = "Opis";
@@ -268,9 +261,6 @@
    Discoverability title for italic formatting keyboard shortcut. */
 "Italic" = "Ukošeno";
 
-/* Noun. Title. Links to the blog's Settings screen. */
-"Jetpack Settings" = "Jetpack Postavke";
-
 /* Large image size. Should be the same as in core WP. */
 "Large" = "Veliko";
 
@@ -324,13 +314,11 @@
 
 /* Accessibility label for the Me button in My Site.
    Me page title
-   Noun. Title. Links to the Me screen.
    The accessibility value of the me tab.
    Title of the 'Me' tab - used for spotlight indexing on iOS. */
 "Me" = "Ja";
 
-/* Noun. Title. Links to the blog's Media library.
-   Title for the media section in site settings screen
+/* Title for the media section in site settings screen
    Title label for the media settings section in the app settings */
 "Media" = "Media";
 
@@ -385,8 +373,7 @@
    Button title. An acknowledgement of the message displayed in a prompt.
    Dismisses the alert
    Menus: button title for finishing editing of a menu item.
-   Ok button for dismissing alert helping users understand their site address
-   OK Button title shown in alert informing users about the Reader Save for Later feature. */
+   Ok button for dismissing alert helping users understand their site address */
 "OK" = "OK";
 
 /* Disabled */
@@ -402,8 +389,7 @@
 /* No comment provided by engineer. */
 "Outside" = "Izvana";
 
-/* Noun. Title. Links to the blog's Pages screen.
-   This is the section title
+/* This is the section title
    Title of the screen showing the list of pages for a blog. */
 "Pages" = "Stranice";
 
@@ -434,7 +420,6 @@
 
 /* All Time Stats 'Posts' label
    Insights 'Posts' header
-   Noun. Title. Links to the blog's Posts screen.
    Title of the screen showing the list of posts for a blog. */
 "Posts" = "Postovi";
 
@@ -448,8 +433,7 @@
 "Privacy Policy" = "Pravila privatnosti";
 
 /* Label for the publish (verb) button. Tapping publishes a draft post.
-   Publish post action on share extension site picker screen.
-   Section title for the publish table section in the blog details screen */
+   Publish post action on share extension site picker screen. */
 "Publish" = "Objavi";
 
 /* Period Stats 'Published' header
@@ -544,7 +528,6 @@
 "Spam" = "Spam";
 
 /* Noun. Abbreviation of Statistics. Name of the Stats feature
-   Noun. Abbv. of Statistics. Links to a blog's Stats screen.
    Stats 3D Touch Shortcut
    Stats window title */
 "Stats" = "Statistika";
@@ -574,7 +557,6 @@
 "The site at %@ uses WordPress %@. We recommend to update to the latest version, or at least %@" = "Web stranica na %1$@ koristi WordPress %2$@. Preporučamo da ažurirate na najnoviju inačicu, ili barem %3$@";
 
 /* Noun. Name of the Themes feature
-   Themes option in the blog details
    Title of Themes browser page */
 "Themes" = "Teme";
 
@@ -659,9 +641,6 @@
    Theme View action title
    Verb. The screen title shown when viewing a post inside the app. */
 "View" = "Pregled";
-
-/* Action title. Opens the user's site in an in-app browser */
-"View Site" = "Pogledaj Web stranicu";
 
 /* Accessibility label used for distinguishing Views and Visitors in the Stats → Views bar chart.
    All Time Stats 'Views' label

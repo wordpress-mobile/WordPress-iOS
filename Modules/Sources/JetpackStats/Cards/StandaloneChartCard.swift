@@ -63,6 +63,7 @@ struct StandaloneChartCard: View {
             dateRangeControls
                 .dynamicTypeSize(...DynamicTypeSize.xLarge)
         }
+        .environment(\.showComparison, dateRange.comparison != .off)
         .padding(.vertical, Constants.step2)
         .padding(.horizontal, Constants.step3)
         .dynamicTypeSize(...DynamicTypeSize.xxLarge)
@@ -87,7 +88,7 @@ struct StandaloneChartCard: View {
                 )
             } else {
                 ChartValuesSummaryView(
-                    trend: .init(currentValue: 100, previousValue: 10, metric: .views),
+                    trend: .init(currentValue: 100, previousValue: 10, metric: SiteMetric.views),
                     style: .compact
                 )
                 .redacted(reason: .placeholder)
@@ -189,9 +190,9 @@ struct StandaloneChartCard: View {
             }
         } label: {
             Image(systemName: "ellipsis")
-                .font(.body)
+                .font(.system(size: 15))
                 .foregroundColor(.secondary)
-                .frame(width: 56, height: 50)
+                .frame(width: 50, height: 50)
         }
         .tint(Color.primary)
     }
@@ -228,7 +229,7 @@ struct StandaloneChartCard: View {
     }
 
     @ViewBuilder
-    private func navigationButton(direction: Calendar.NavigationDirection) -> some View {
+    private func navigationButton(direction: NavigationDirection) -> some View {
         Button {
             dateRange = dateRange.navigate(direction)
         } label: {
@@ -282,11 +283,8 @@ private func generateChartData(
 
     // Map previous data points to current period dates for overlay
     let mappedPreviousData = DataPoint.mapDataPoints(
-        previousPeriod.dataPoints,
-        from: previousDateInterval,
-        to: dateRange.dateInterval,
-        component: dateRange.component,
-        calendar: calendar
+        currentData: currentPeriod.dataPoints,
+        previousData: previousPeriod.dataPoints
     )
 
     return ChartData(

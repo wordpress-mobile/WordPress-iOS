@@ -41,6 +41,20 @@ class StatsHostingViewController: UIViewController {
         statsVC.navigationItem.largeTitleDisplayMode = .never
         return statsVC
     }
+
+    static func makeAdsViewController(blog: Blog, parentViewController: UIViewController) -> UIViewController? {
+        guard let context = StatsContext(blog: blog) else {
+            return nil
+        }
+
+        let adsView = AdsTabView(
+            context: context,
+            router: StatsRouter(viewController: parentViewController)
+        )
+        let hostingController = UIHostingController(rootView: adsView)
+        hostingController.view.backgroundColor = .systemBackground
+        return hostingController
+    }
 }
 
 extension StatsContext {

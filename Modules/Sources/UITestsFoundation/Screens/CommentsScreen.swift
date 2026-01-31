@@ -12,7 +12,7 @@ public class CommentsScreen: ScreenObject {
     }
 
     private let emptyImageGetter: (XCUIApplication) -> XCUIElement = {
-        $0.images["wp-illustration-reader-empty"]
+        $0.images["wpl-comment"]
     }
 
     private let navigationBarTitleGetter: (XCUIApplication) -> XCUIElement = {

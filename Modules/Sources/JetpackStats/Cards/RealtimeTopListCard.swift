@@ -27,7 +27,7 @@ struct RealtimeTopListCard: View {
     var body: some View {
         VStack(alignment: .leading, spacing: 16) {
             HStack {
-                StatsCardTitleView(title: selectedItem.getTitle(for: .views))
+                StatsCardTitleView(title: selectedItem.localizedTitle)
                     .unredacted()
                 Spacer()
             }

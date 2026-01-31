@@ -479,7 +479,7 @@ import WordPressKit
     ///
     /// - Returns: The base URL or an empty string.
     ///
-    class func baseSiteURL(string: String) -> String {
+    public class func baseSiteURL(string: String) -> String {
 
         guard !string.isEmpty,
               let siteURL = NSURL(string: NSURL.idnEncodedURL(string)),

@@ -6,7 +6,7 @@ protocol ReaderDiscoverHeaderViewDelegate: AnyObject {
     func readerDiscoverHeaderView(_ view: ReaderDiscoverHeaderView, didChangeSelection selection: ReaderDiscoverChannel)
 }
 
-final class ReaderDiscoverHeaderView: ReaderBaseHeaderView, UITextViewDelegate {
+final class ReaderDiscoverHeaderView: ReaderBaseHeaderView {
     private let titleView = ReaderTitleView()
     private let channelsStackView = UIStackView(spacing: 8, [])
     private let scrollView = UIScrollView()
@@ -33,24 +33,14 @@ final class ReaderDiscoverHeaderView: ReaderBaseHeaderView, UITextViewDelegate {
 
         NSLayoutConstraint.activate([
             titleView.topAnchor.constraint(equalTo: contentView.topAnchor),
-            scrollView.topAnchor.constraint(equalTo: titleView.bottomAnchor, constant: 8),
+            scrollView.topAnchor.constraint(equalTo: titleView.bottomAnchor),
             scrollView.bottomAnchor.constraint(equalTo: contentView.bottomAnchor),
         ])
         titleView.pinEdges(.horizontal)
         scrollView.pinEdges(.horizontal)
 
         titleView.titleLabel.text = SharedStrings.Reader.discover
-        titleView.detailsTextView.attributedText = {
-            guard let details = try? NSMutableAttributedString(markdown: Strings.details) else {
-                return nil
-            }
-            details.addAttributes([
-                .font: UIFont.preferredFont(forTextStyle: .subheadline),
-                .foregroundColor: UIColor.secondaryLabel,
-            ], range: NSRange(location: 0, length: details.length))
-            return details
-        }()
-        titleView.detailsTextView.delegate = self
+        titleView.detailsTextView.isHidden = true
     }
 
     required init?(coder: NSCoder) {
@@ -116,21 +106,6 @@ final class ReaderDiscoverHeaderView: ReaderBaseHeaderView, UITextViewDelegate {
             view.isSelected = view.channel == selectedChannel
         }
     }
-
-    // MARK: UITextViewDelegate
-
-    func textView(_ textView: UITextView, shouldInteractWith URL: URL, in characterRange: NSRange) -> Bool {
-        WPAnalytics.track(.readerDiscoverEditInterestsTapped)
-
-        let tagsVC = ReaderTagsTableViewController(style: .plain)
-        tagsVC.title = Strings.editInterests
-        tagsVC.navigationItem.rightBarButtonItem = UIBarButtonItem(title: SharedStrings.Button.done, primaryAction: UIAction { [weak tagsVC] _ in
-            tagsVC?.presentingViewController?.dismiss(animated: true)
-        })
-        let navVC = UINavigationController(rootViewController: tagsVC)
-        UIViewController.topViewController?.present(navVC, animated: true)
-        return false
-    }
 }
 
 private final class ReaderDiscoverChannelView: UIView {
@@ -191,6 +166,9 @@ private final class ReaderDiscoverChannelView: UIView {
 }
 
 enum ReaderDiscoverChannel: Hashable {
+    /// Curated posts.
+    case freshlyPresed
+
     /// The default channel showing your selected tags.
     case recommended
 
@@ -207,8 +185,10 @@ enum ReaderDiscoverChannel: Hashable {
 
     var localizedTitle: String {
         switch self {
+        case .freshlyPresed:
+            NSLocalizedString("reader.discover.channel.freshlyPresed", value: "Freshly Pressed", comment: "Header view channel (filter)")
         case .recommended:
-            NSLocalizedString("reader.discover.channel.recommended", value: "Recommended", comment: "Header view channel (filter)")
+            NSLocalizedString("reader.discover.channel.forYou", value: "For You", comment: "Header view channel (filter)")
         case .firstPosts:
             NSLocalizedString("reader.discover.channel.firstPost", value: "First Posts", comment: "Header view channel (filter)")
         case .latest:
@@ -230,6 +210,7 @@ enum ReaderDiscoverChannel: Hashable {
 
     private var analyticsID: String {
         switch self {
+        case .freshlyPresed: "freshly_presed"
         case .recommended: "recommended"
         case .firstPosts: "first_posts"
         case .latest: "latest"
@@ -237,11 +218,6 @@ enum ReaderDiscoverChannel: Hashable {
         case .tag: "tag"
         }
     }
-}
-
-private enum Strings {
-    static let details = NSLocalizedString("reader.discover.header.title", value: "Explore popular blogs that inspire, educate, and entertain based on your [interests](/interests).", comment: "Reader Discover header view details label. The text has a Markdown URL: [interests](/interests). Only the text in the square brackets needs to be translated: [<translate_this>](/interests).")
-    static let editInterests = NSLocalizedString("reader.editInterests.title", value: "Edit Interests", comment: "Screen title")
 }
 
 #Preview {

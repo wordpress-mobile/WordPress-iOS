@@ -1,22 +1,31 @@
-Content Creator aufgepasst – wir haben einige wichtige Änderungen am Bildschirm „Beitragseinstellungen“ vorgenommen.
+Unsere KI-Supportfunktion, WordPress Intelligence, ist jetzt in mehr Ländern und Sprachen verfügbar. Der allseits beliebte Helfer ist viel handlicher geworden.
 
-- Wir haben ein „Status“-Feld hinzugefügt, mit dem du Beiträge schnell zwischen dem Status „Entwurf“, „Ausstehend“, „Privat“, „Geplant“ und „Veröffentlicht“ verschieben kannst.
-- Wir haben den Bereich „Veröffentlichungsdatum“ für Entwürfe und ausstehende Beiträge wieder hinzugefügt. Auf diese Weise kannst du ein Veröffentlichungsdatum im Voraus auswählen, ohne den Beitrag offiziell zu planen.
-- Das Passwort-Feld verwendet eine andere Schriftart (Menlo, falls es dich interessiert), sodass ähnlich aussehende Zeichen leichter zu lesen sind.
-- Gewähre deinen Followern VIP-Behandlung, indem du für alle Abonnenten, zahlende Abonnenten und die allgemeine Öffentlichkeit Zugriffsebenen für Beiträge festlegst.
-- Aktiviere oder deaktiviere in den Diskussionseinstellungen Beitragskommentare und Pingbacks.
+Wir haben etwa 83 % des Abschnitts „Statistiken“ verbessert.
 
-Außerdem haben wir weitere hilfreiche Updates in verschiedenen Bereichen der App vorgenommen.
+- Mit der Standortkarte kannst du Daten nach Land, Region und Stadt filtern. Diese Daten stimmen mit der Jetpack-Webversion überein.
+- „Externe Links“ heißen jetzt „Klicks“ und sind damit konsistent mit der Web-Version. Wir haben einen Fehler behoben, durch den dieser Bereich manchmal falsch angezeigt wurde.
+- Du kannst den automatischen Datenvergleich deaktivieren und diese Einstellung für die zukünftige Nutzung der App speichern. Wir haben ein Problem behoben, durch das wöchentliche Daten für den Vergleichszeitraum nicht immer korrekt angezeigt wurden.
+- Wenn du lange auf ein Balkendiagramm drückst, siehst du weitere Details. Das vertikale Scrollen wurde ebenfalls behoben.
+- Du kannst dir Daten in Balken- und Liniendiagrammen nach Tagen, Wochen, Monaten und Jahren gruppiert anzeigen lassen
+- Top-Listenelemente werden nach Namen sortiert und richtig angeordnet.
 
-- Im Bildschirm zu Veröffentlichungen kannst du „E-Mail an Abonnenten“ umschalten, um deine Abonnenten automatisch zu benachrichtigen, wenn ein Beitrag veröffentlicht wird. Weitere wichtige Neuerungen.
-- Der Titelform-Editor verfügt über eine Permalink-Vorschau, um anzuzeigen, wie die endgültige URL eines Beitrags aussieht.
-- Wir haben „Taxonomien“ zu den Website-Einstellungen hinzugefügt, damit du Inhaltsgruppen auf Website-Ebene verwalten kannst.
-- Dank einiger Design-Korrekturen in der Auswahl „Kategorien“ ist es jetzt einfacher zu erkennen, dass du mehrere Kategorien für einen Beitrag auswählen kannst.
-- Dateigrößen werden jetzt im Bereich „Website-Mediendetails“ angezeigt. Kein Rätselraten mehr.
+Wir haben auch viele Änderungen am Reader vorgenommen.
 
-Liest du lieber, als Beiträge zu veröffentlichen? Keine Sorge, wir haben auch im Reader Änderungen vorgenommen.
+- Es gibt einen neuen „Druckfrisch“-Tab auf dem „Entdecken“-Bildschirm. Wir haben auch den Tab „Empfohlen“ in „Für dich“ geändert.
+- Es gibt nur noch eine Suchoption in der Haupt-Seitenleiste.
+- Die Ansicht „Weiterlesen“ funktioniert gleich, egal wo du darauf tippst, und du kannst jetzt den gesamten Textauszug sehen. Es gibt so viel mehr zu entdecken.
+- Im Kommentarbereich kannst du direkt unter dem Artikel antworten und Kommentare mit einem „Like“ markieren. Unter Artikeln gibt es einen neuen „Leave Comment“ (Kommentar verfassen)-Button, damit du sie schneller kommentieren kannst.
+- Du kannst standardmäßig zwei Kommentare sehen, anstatt nur einen, und sehr lange Kommentare können ausgeblendet werden, um das Lesen zu erleichtern.
+- Wir haben auch ein paar visuelle Probleme im Kommentarbereich behoben. Kommentare haben jetzt die richtige Höhe, der Button „Alle Kommentare anzeigen“ sticht mehr heraus und der Button „Senden“ ist richtig gestaltet.
+- Mit der In-App-Unterstützung für Übersetzungen kannst du Beiträge in deiner bevorzugten Sprache lesen.
+- Mehrere Leerzeichen in Website-Titeln werden zu einem zusammengefasst, um das Lesen und Anzeigen zu erleichtern.
 
-- Wenn ähnliche Beitragstitel zu lang sind, wird stattdessen eine kürzere, abgeschnittene Version angezeigt.
-- Beitrags-Kacheln können jetzt drei statt nur zwei Textzeilen enthalten. Das bedeutet 50 % mehr Inhalt.
-- Die Artikel haben einen etwas größeren horizontalen Außenabstand.
-- Wir haben mehrere Fehler bezüglich des Ladens von Artikeln behoben.
+Wir haben ein technisches Update vorgenommen, durch das die Größe deiner App um etwa 6 MB reduziert wird. Wie möchtest du den neu gewonnenen Speicherplatz nutzen?
+
+Es ist jetzt einfacher, die Sichtbarkeitseinstellungen vorhandener Beiträge zu finden, anzuzeigen und zu ändern. Der Button „Fertig“ verschwindet auch nicht mehr, wenn du beim Veröffentlichen eines passwortgeschützten Beitrags das Passwort festlegst.
+
+Das sieht gut aus: Wir haben die Icons für Tastaturkürzel und die Abbildungen aktualisiert, damit sie besser zum Rest der App und zu deinem Gerät passen.
+
+Problem behoben: Die Beitragsvorschau funktioniert jetzt ordnungsgemäß für bestimmte Websites mit Business- und Commerce-Tarif.
+
+Wenn du eine neue selbst gehostete Website hinzufügst, wird du gebeten, dich mit deinem App-Passwort zu authentifizieren. Halte es geheim. Bewahre es sicher auf.

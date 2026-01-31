@@ -3,8 +3,14 @@ import SwiftUI
 @preconcurrency import WordPressKit
 
 actor MockStatsService: ObservableObject, StatsServiceProtocol {
+    private struct TopListCacheKey: Hashable {
+        let itemType: TopListItemType
+        let options: TopListItemOptions
+    }
+
     private var hourlyData: [SiteMetric: [DataPoint]] = [:]
-    private var dailyTopListData: [TopListItemType: [Date: [any TopListItemProtocol]]] = [:]
+    private var wordAdsHourlyData: [WordAdsMetric: [DataPoint]] = [:]
+    private var dailyTopListData: [TopListCacheKey: [Date: [any TopListItemProtocol]]] = [:]
     private let calendar: Calendar
 
     let supportedMetrics = SiteMetric.allCases.filter {
@@ -20,11 +26,13 @@ actor MockStatsService: ObservableObject, StatsServiceProtocol {
         case .archive: [.views]
         case .referrers: [.views, .visitors]
         case .locations: [.views, .visitors]
+        case .devices: [.views]
         case .authors: [.views, .comments, .likes]
         case .externalLinks: [.views, .visitors]
         case .fileDownloads: [.downloads]
         case .searchTerms: [.views, .visitors]
         case .videos: [.views, .likes]
+        case .utm: [.views]
         }
     }
 
@@ -40,6 +48,7 @@ actor MockStatsService: ObservableObject, StatsServiceProtocol {
             return
         }
         await generateChartMockData()
+        await generateWordAdsMockData()
         await generateTopListMockData()
     }
 
@@ -79,11 +88,72 @@ actor MockStatsService: ObservableObject, StatsServiceProtocol {
         return SiteMetricsResponse(total: total, metrics: output)
     }
 
-    func getTopListData(_ item: TopListItemType, metric: SiteMetric, interval: DateInterval, granularity: DateRangeGranularity, limit: Int?) async throws -> TopListResponse {
+    func getWordAdsStats(date: Date, granularity: DateRangeGranularity) async throws -> WordAdsMetricsResponse {
         await generateDataIfNeeded()
 
-        guard let typeData = dailyTopListData[item] else {
-            fatalError("data not configured for data type: \(item)")
+        // Calculate interval: from (date - quantity*units) to date
+        guard let startDate = calendar.date(byAdding: granularity.component, value: -granularity.preferredQuantity, to: date) else {
+            throw URLError(.unknown)
+        }
+        let interval = DateInterval(start: startDate, end: date)
+
+        var output: [WordAdsMetric: [DataPoint]] = [:]
+
+        let aggregator = StatsDataAggregator(calendar: calendar)
+
+        let wordAdsMetrics: [WordAdsMetric] = [.impressions, .cpm, .revenue]
+
+        for metric in wordAdsMetrics {
+            guard let allDataPoints = wordAdsHourlyData[metric] else { continue }
+
+            // Filter data points for the period
+            let filteredDataPoints = allDataPoints.filter {
+                interval.start <= $0.date && $0.date < interval.end
+            }
+
+            // Use processPeriod to aggregate and normalize the data
+            let periodData = aggregator.processPeriod(
+                dataPoints: filteredDataPoints,
+                dateInterval: interval,
+                granularity: granularity,
+                metric: metric
+            )
+            output[metric] = periodData.dataPoints
+        }
+
+        // Calculate totals as Int (values already stored in cents)
+        let totalAdsServed = output[.impressions]?.reduce(0) { $0 + $1.value } ?? 0
+        let totalRevenue = output[.revenue]?.reduce(0) { $0 + $1.value } ?? 0
+        let cpmValues = output[.cpm]?.filter { $0.value > 0 }.map { $0.value } ?? []
+        let averageCPM = cpmValues.isEmpty ? 0 : cpmValues.reduce(0, +) / cpmValues.count
+
+        let total = WordAdsMetricsSet(
+            impressions: totalAdsServed,
+            cpm: averageCPM,
+            revenue: totalRevenue
+        )
+
+        if !delaysDisabled {
+            try? await Task.sleep(for: .milliseconds(Int.random(in: 200...500)))
+        }
+
+        return WordAdsMetricsResponse(total: total, metrics: output)
+    }
+
+    func getTopListData(_ item: TopListItemType, metric: SiteMetric, interval: DateInterval, granularity: DateRangeGranularity, limit: Int?, options: TopListItemOptions) async throws -> TopListResponse {
+        await generateDataIfNeeded()
+
+        if item == .devices && options.deviceBreakdown == .screensize {
+            return TopListResponse(items: [
+                TopListItem.Device(name: "mobile", breakdown: .screensize, metrics: .init(views: 6980)),
+                TopListItem.Device(name: "desktop", breakdown: .screensize, metrics: .init(views: 2580)),
+                TopListItem.Device(name: "tablet", breakdown: .screensize, metrics: .init(views: 440))
+            ])
+        }
+
+        let cacheKey = TopListCacheKey(itemType: item, options: options)
+        guard let typeData = dailyTopListData[cacheKey] else {
+            return TopListResponse(items: [])
         }
 
         // Filter data within the date range
@@ -189,79 +259,7 @@ actor MockStatsService: ObservableObject, StatsServiceProtocol {
     }
 
     private func loadRealtimeBaseItems(for dataType: TopListItemType) -> [any TopListItemProtocol] {
-        let fileName: String
-        switch dataType {
-        case .postsAndPages:
-            fileName = "postsAndPages"
-        case .archive:
-            fileName = "archive"
-        case .referrers:
-            fileName = "referrers"
-        case .locations:
-            fileName = "locations"
-        case .authors:
-            fileName = "authors"
-        case .externalLinks:
-            fileName = "external-links"
-        case .fileDownloads:
-            fileName = "file-downloads"
-        case .searchTerms:
-            fileName = "search-terms"
-        case .videos:
-            fileName = "videos"
-        }
-
-        // Load from JSON file
-        guard let url = Bundle.module.url(forResource: "realtime-\(fileName)", withExtension: "json") else {
-            print("Failed to find \(fileName).json")
-            return []
-        }
-
-        do {
-            let data = try Data(contentsOf: url)
-            let decoder = JSONDecoder()
-            decoder.dateDecodingStrategy = .iso8601
-
-            // Decode based on data type
-            switch dataType {
-            case .referrers:
-                let referrers = try decoder.decode([TopListItem.Referrer].self, from: data)
-                return referrers
-            case .locations:
-                let locations = try decoder.decode([TopListItem.Location].self, from: data)
-                return locations
-            case .authors:
-                let authors = try decoder.decode([TopListItem.Author].self, from: data)
-                return authors.map {
-                    var copy = $0
-                    copy.avatarURL = Bundle.module.path(forResource: "author\($0.userId)", ofType: "jpg").map {
-                        URL(filePath: $0)
-                    }
-                    return copy
-                }
-            case .externalLinks:
-                let links = try decoder.decode([TopListItem.ExternalLink].self, from: data)
-                return links
-            case .fileDownloads:
-                let downloads = try decoder.decode([TopListItem.FileDownload].self, from: data)
-                return downloads
-            case .searchTerms:
-                let terms = try decoder.decode([TopListItem.SearchTerm].self, from: data)
-                return terms
-            case .videos:
-                let videos = try decoder.decode([TopListItem.Video].self, from: data)
-                return videos
-            case .postsAndPages:
-                let posts = try decoder.decode([TopListItem.Post].self, from: data)
-                return posts
-            case .archive:
-                let sections = try decoder.decode([TopListItem.ArchiveSection].self, from: data)
-                return sections
-            }
-        } catch {
-            print("Failed to load \(fileName).json: \(error)")
-            return []
-        }
+        return [] // No longer needed (will remove soon)
     }
 
     func getPostDetails(for postID: Int) async throws -> StatsPostDetails {
@@ -345,10 +343,104 @@ actor MockStatsService: ObservableObject, StatsServiceProtocol {
         )
     }
 
+    func getWordAdsEarnings() async throws -> WordPressKit.StatsWordAdsEarningsResponse {
+        // Simulate network delay
+        if !delaysDisabled {
+            try? await Task.sleep(for: .milliseconds(Int.random(in: 200...500)))
+        }
+
+        // Generate mock earnings data for the last 12 months
+        let now = Date()
+        let dateFormatter = DateFormatter()
+        dateFormatter.dateFormat = "yyyy-MM"
+        dateFormatter.locale = Locale(identifier: "en_US_POSIX")
+
+        var wordadsDict: [String: [String: Any]] = [:]
+        var totalEarnings: Double = 0
+        var totalAmountOwed: Double = 0
+
+        // Generate earnings for last 12 months
+        for monthsAgo in 0..<12 {
+            guard let monthDate = calendar.date(byAdding: .month, value: -monthsAgo, to: now) else {
+                continue
+            }
+
+            let period = dateFormatter.string(from: monthDate)
+
+            // Generate realistic earnings that increase over time
+            let baseAmount = Double.random(in: 2000...5000)
+            let growthFactor = 1.0 + (Double(12 - monthsAgo) * 0.08) // More recent months earn more
+            let amount = baseAmount * growthFactor
+
+            totalEarnings += amount
+
+            // Months older than 2 months are paid, recent months are outstanding
+            let isPaid = monthsAgo > 2
+            let status = isPaid ? "1" : "0"
+
+            if !isPaid {
+                totalAmountOwed += amount
+            }
+
+            // Generate realistic pageviews
+            let basePageviews = Int.random(in: 50...500)
+            let pageviewsGrowth = 1.0 + (Double(12 - monthsAgo) * 0.1)
+            let pageviews = Int(Double(basePageviews) * pageviewsGrowth)
+
+            wordadsDict[period] = [
+                "amount": amount,
+                "status": status,
+                "pageviews": String(pageviews)
+            ]
+        }
+
+        let jsonDictionary: [String: Any] = [
+            "ID": 238291108,
+            "name": "Mock Site",
+            "URL": "https://mocksite.wordpress.com",
+            "earnings": [
+                "total_earnings": String(format: "%.2f", totalEarnings),
+                "total_amount_owed": String(format: "%.2f", totalAmountOwed),
+                "wordads": wordadsDict,
+                "sponsored": [],
+                "adjustment": []
+            ]
+        ]
+
+        let jsonData = try JSONSerialization.data(withJSONObject: jsonDictionary)
+        let response = try JSONDecoder().decode(WordPressKit.StatsWordAdsEarningsResponse.self, from: jsonData)
+
+        return response
+    }
+
     // MARK: - Data Loading
 
     /// Loads historical items from JSON files based on the data type
-    private func loadHistoricalItems(for dataType: TopListItemType) -> [any TopListItemProtocol] {
+    /// Returns all relevant option combinations for a given item type
+    private func getOptionSets(for itemType: TopListItemType) -> [TopListItemOptions] {
+        switch itemType {
+        case .locations:
+            // Generate options for all location levels
+            return LocationLevel.allCases.map { level in
+                TopListItemOptions(locationLevel: level, deviceBreakdown: .screensize)
+            }
+        case .devices:
+            // Generate options for all device breakdowns
+            return DeviceBreakdown.allCases.map { breakdown in
+                TopListItemOptions(locationLevel: .countries, deviceBreakdown: breakdown)
+            }
+        case .utm:
+            // Generate options for all UTM parameter groupings
+            return UTMParamGrouping.allCases.map { grouping in
+                TopListItemOptions(locationLevel: .countries, deviceBreakdown: .screensize, utmParamGrouping: grouping)
+            }
+        default:
+            // For other types, use default options
+            return [TopListItemOptions()]
+        }
+    }
+
+    private func loadHistoricalItems(for dataType: TopListItemType, options: TopListItemOptions) -> [any TopListItemProtocol] {
         let fileName: String
         switch dataType {
         case .postsAndPages:
@@ -359,6 +451,8 @@ actor MockStatsService: ObservableObject, StatsServiceProtocol {
             fileName = "historical-referrers"
         case .locations:
             fileName = "historical-locations"
+        case .devices:
+            fileName = "historical-devices"
         case .authors:
             fileName = "historical-authors"
         case .externalLinks:
@@ -369,6 +463,8 @@ actor MockStatsService: ObservableObject, StatsServiceProtocol {
             fileName = "historical-search-terms"
         case .videos:
             fileName = "historical-videos"
+        case .utm:
+            fileName = "historical-utm"
         }
 
         // Load from JSON file
@@ -389,7 +485,12 @@ actor MockStatsService: ObservableObject, StatsServiceProtocol {
                 return referrers
             case .locations:
                 let locations = try decoder.decode([TopListItem.Location].self, from: data)
+                // For now, use same data for all location levels
+                // Could be extended to generate synthetic regions/cities data
                 return locations
+            case .devices:
+                let devices = try decoder.decode([TopListItem.Device].self, from: data)
+                return devices.filter { $0.breakdown == options.deviceBreakdown }
             case .authors:
                 let authors = try decoder.decode([TopListItem.Author].self, from: data)
                 return authors.map {
@@ -417,6 +518,19 @@ actor MockStatsService: ObservableObject, StatsServiceProtocol {
             case .archive:
                 let sections = try decoder.decode([TopListItem.ArchiveSection].self, from: data)
                 return sections
+            case .utm:
+                let metrics = try decoder.decode([TopListItem.UTMMetric].self, from: data)
+                // Filter based on UTM parameter grouping
+                let expectedValueCount: Int
+                switch options.utmParamGrouping {
+                case .sourceMedium:
+                    expectedValueCount = 2
+                case .campaignSourceMedium:
+                    expectedValueCount = 3
+                case .source, .medium, .campaign:
+                    expectedValueCount = 1
+                }
+                return metrics.filter { $0.values.count == expectedValueCount }
             }
         } catch {
             print("Failed to load \(fileName).json: \(error)")
@@ -489,6 +603,73 @@ actor MockStatsService: ObservableObject, StatsServiceProtocol {
 
             hourlyData[dataType] = dataPoints
         }
+    }
+
+    private func generateWordAdsMockData() async {
+        let endDate = Date()
+
+        // Create a date for Nov 1, 2011
+        var dateComponents = DateComponents()
+        dateComponents.year = 2011
+        dateComponents.month = 11
+        dateComponents.day = 1
+
+        let startDate = calendar.date(from: dateComponents)!
+
+        var adsServedPoints: [DataPoint] = []
+        var revenuePoints: [DataPoint] = []
+        var cpmPoints: [DataPoint] = []
+
+        var currentDate = startDate
+        let nowDate = Date()
+        while currentDate <= endDate && currentDate <= nowDate {
+            let components = calendar.dateComponents([.year, .month, .weekday, .hour], from: currentDate)
+            let hour = components.hour!
+            let dayOfWeek = components.weekday!
+            let month = components.month!
+            let year = components.year!
+
+            // Base values and growth factors
+            let yearsSince2011 = year - 2011
+            let growthFactor = 1.0 + (Double(yearsSince2011) * 0.15)
+
+            // Recent period boost
+            let recentBoost = calculateRecentBoost(for: currentDate)
+
+            // Seasonal factor
+            let seasonalFactor = 1.0 + 0.2 * sin(2.0 * .pi * (Double(month - 3) / 12.0))
+
+            // Day of week factor
+            let weekendFactor = (dayOfWeek == 1 || dayOfWeek == 7) ? 0.7 : 1.0
+
+            // Hour of day factor
+            let hourFactor = 0.5 + 0.5 * sin(2.0 * .pi * (Double(hour - 9) / 24.0))
+
+            // Random variation
+            let randomFactor = Double.random(in: 0.8...1.2)
+
+            let combinedFactor = growthFactor * recentBoost * seasonalFactor * weekendFactor * randomFactor * hourFactor
+
+            // Ads Served (impressions)
+            let adsServed = Int(200 * combinedFactor)
+            adsServedPoints.append(DataPoint(date: currentDate, value: adsServed))
+
+            // CPM (stored in cents)
+            let baseCPM = 2.5 // $2.50
+            let cpmVariation = Double.random(in: 0.7...1.3)
+            let cpm = Int((baseCPM * growthFactor * cpmVariation) * 100)
+            cpmPoints.append(DataPoint(date: currentDate, value: cpm))
+
+            // Revenue (stored in cents, calculated from impressions and CPM)
+            let revenue = Int(Double(adsServed) * (Double(cpm) / 100.0) / 1000.0 * 100)
+            revenuePoints.append(DataPoint(date: currentDate, value: revenue))
+
+            currentDate = calendar.date(byAdding: .hour, value: 1, to: currentDate)!
+        }
+
+        wordAdsHourlyData[WordAdsMetric.impressions] = adsServedPoints
+        wordAdsHourlyData[WordAdsMetric.revenue] = revenuePoints
+        wordAdsHourlyData[WordAdsMetric.cpm] = cpmPoints
     }
 
     private var memoizedDateComponents: [Date: DateComponents] = [:]
@@ -568,18 +749,23 @@ actor MockStatsService: ObservableObject, StatsServiceProtocol {
 
         let startDate = calendar.date(from: dateComponents)!
 
-        // Generate daily data for each type
+        // Generate daily data for each type and option combination
         for dataType in TopListItemType.allCases {
-            var typeData: [Date: [any TopListItemProtocol]] = [:]
+            // Generate data for all relevant option combinations
+            let optionSets = getOptionSets(for: dataType)
 
-            // Load base items from JSON files
-            let baseItems = loadHistoricalItems(for: dataType)
+            for options in optionSets {
+                var typeData: [Date: [any TopListItemProtocol]] = [:]
 
-            // Skip if no items to process
-            if baseItems.isEmpty {
-                dailyTopListData[dataType] = typeData
-                continue
-            }
+                // Load base items from JSON files, filtered by options
+                let baseItems = loadHistoricalItems(for: dataType, options: options)
+
+                // Skip if no items to process
+                if baseItems.isEmpty {
+                    let cacheKey = TopListCacheKey(itemType: dataType, options: options)
+                    dailyTopListData[cacheKey] = typeData
+                    continue
+                }
 
             var currentDate = startDate
             let nowDate = Date()
@@ -637,7 +823,9 @@ actor MockStatsService: ObservableObject, StatsServiceProtocol {
                 currentDate = calendar.date(byAdding: .day, value: 1, to: currentDate)!
             }
 
-            dailyTopListData[dataType] = typeData
+                let cacheKey = TopListCacheKey(itemType: dataType, options: options)
+                dailyTopListData[cacheKey] = typeData
+            }
         }
     }
 

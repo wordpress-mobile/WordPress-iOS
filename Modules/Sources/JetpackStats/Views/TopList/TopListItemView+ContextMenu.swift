@@ -17,6 +17,8 @@ extension TopListItemView {
                 referrerActions(referrer)
             case let location as TopListItem.Location:
                 locationActions(location)
+            case let device as TopListItem.Device:
+                deviceActions(device)
             case let link as TopListItem.ExternalLink:
                 externalLinkActions(link)
             case let download as TopListItem.FileDownload:
@@ -97,9 +99,20 @@ extension TopListItemView {
     @ViewBuilder
     func locationActions(_ location: TopListItem.Location) -> some View {
         Button {
-            UIPasteboard.general.string = location.country
+            UIPasteboard.general.string = location.name
         } label: {
             Label(Strings.ContextMenuActions.copyCountryName, systemImage: "doc.on.doc")
+        }
+    }
+
+    // MARK: - Device Actions
+
+    @ViewBuilder
+    func deviceActions(_ device: TopListItem.Device) -> some View {
+        Button {
+            UIPasteboard.general.string = device.name
+        } label: {
+            Label(Strings.ContextMenuActions.copyName, systemImage: "doc.on.doc")
         }
     }
 

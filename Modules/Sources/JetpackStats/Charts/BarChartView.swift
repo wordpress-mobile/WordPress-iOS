@@ -11,6 +11,7 @@ struct BarChartView: View {
 
     @Environment(\.context) var context
     @Environment(\.colorScheme) var colorScheme
+    @Environment(\.showComparison) private var showComparison
 
     private var valueFormatter: StatsValueFormatter {
         StatsValueFormatter(metric: data.metric)
@@ -23,7 +24,9 @@ struct BarChartView: View {
 
     var body: some View {
         Chart {
-            previousPeriodBars
+            if showComparison {
+                previousPeriodBars
+            }
             currentPeriodBars
             averageLine
             significantPointAnnotations
@@ -55,7 +58,7 @@ struct BarChartView: View {
             BarMark(
                 x: .value("Date", point.date, unit: data.granularity.component, calendar: context.calendar),
                 y: .value("Value", point.value),
-                width: .automatic
+                width: barWidth
             )
             .foregroundStyle(
                 LinearGradient(
@@ -72,9 +75,13 @@ struct BarChartView: View {
         }
     }
 
+    private var barWidth: MarkDimension {
+        data.currentData.count <= 3 ? .fixed(32) : .automatic
+    }
+
     private func lighten(_ color: Color) -> Color {
         if #available(iOS 18, *) {
-            color.mix(with: Color(.systemBackground), by: colorScheme == .light ? 0.5 : 0.25)
+            color.mix(with: Color(.systemBackground), by: colorScheme == .light ? 0.4 : 0.15)
         } else {
             color.opacity(0.5)
         }
@@ -102,7 +109,7 @@ struct BarChartView: View {
             BarMark(
                 x: .value("Date", point.date, unit: data.granularity.component, calendar: context.calendar),
                 y: .value("Value", point.value),
-                width: .automatic,
+                width: barWidth,
                 stacking: .unstacked
             )
             .foregroundStyle(Color.secondary)
@@ -191,11 +198,21 @@ struct BarChartView: View {
     // MARK: - Axis Configuration
 
     private var xAxis: some AxisContent {
-        AxisMarks { value in
-            if let date = value.as(Date.self) {
-                AxisValueLabel {
-                    ChartAxisDateLabel(date: date, granularity: data.granularity)
-                        .offset(x: -2) // Align it better with bars
+        if data.currentData.count == 1 {
+            // A quick workaround to make this look more acceptible
+            AxisMarks(values: .stride(by: data.granularity.component, count: 1, calendar: context.calendar)) { value in
+                if let date = value.as(Date.self) {
+                    AxisValueLabel {
+                        ChartAxisDateLabel(date: date, granularity: data.granularity)
+                    }
+                }
+            }
+        } else {
+            AxisMarks(values: .automatic) { value in
+                if let date = value.as(Date.self) {
+                    AxisValueLabel {
+                        ChartAxisDateLabel(date: date, granularity: data.granularity)
+                    }
                 }
             }
         }
@@ -247,24 +264,20 @@ struct BarChartView: View {
 
     private func makeGesturesOverlayView(proxy: ChartProxy) -> some View {
         GeometryReader { geometry in
-            Rectangle()
-                .fill(.clear)
-                .contentShape(Rectangle())
-                .onTapGesture { location in
+            ChartGestureOverlay(
+                onTap: { location in
                     handleTapGesture(at: location, proxy: proxy, geometry: geometry)
+                },
+                onInteractionUpdate: { location in
+                    isDragging = true
+                    selectedDataPoints = getSelectedDataPoints(at: location, proxy: proxy, geometry: geometry)
+                },
+                onInteractionEnd: {
+                    isDragging = false
+                    selectedDataPoints = nil
+                    tappedDataPoint = nil
                 }
-                .simultaneousGesture(
-                    DragGesture(minimumDistance: 16)
-                        .onChanged { value in
-                            isDragging = true
-                            selectedDataPoints = getSelectedDataPoints(at: value.location, proxy: proxy, geometry: geometry)
-                        }
-                        .onEnded { _ in
-                            isDragging = false
-                            selectedDataPoints = nil
-                            tappedDataPoint = nil
-                        }
-                )
+            )
         }
     }
 
@@ -287,7 +300,6 @@ struct BarChartView: View {
     }
 
     private func getSelectedDataPoints(at location: CGPoint, proxy: ChartProxy, geometry: GeometryProxy) -> SelectedDataPoints? {
-
         guard let frame = proxy.plotFrame else {
             return nil
         }

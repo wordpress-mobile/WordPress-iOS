@@ -1,22 +1,31 @@
-İçerik üreticilerinin dikkatine; Gönderi Ayarları ekranında bazı büyük değişiklikler yapmak için sıkı bir şekilde çalıştık.
+Yapay Zeka destek özelliğimiz olan WordPress Intelligence artık daha fazla yerel dilde ve dilde kullanılabilir. Herkesin en sevdiği yardımcı biraz daha inceldi.
 
-- Gönderileri taslak, beklemede, özel, zamanlanmış ve yayımlanmış durumlar arasında hızla taşımanıza yardımcı olan bir "Durum" alanı ekledik.
-- Taslak ve beklemede gönderiler için "Yayımlama Tarihi" alanını geri getirdik. Bu şekilde, gönderiyi resmen zamanlamadan önceden bir yayımlama tarihi seçebilirsiniz.
-- Şifre alanında farklı bir yazı tipi (eğer ilgileniyorsanız Menlo) kullanıldığından, benzer görünümlü karakterleri okumak daha kolaydır.
-- Tüm aboneler, ücretli aboneler ve genel kamuoyu için gönderi erişim düzeyleri belirleyerek takipçilerinize VIP muamelesi yapın.
-- "Tartışma" ayarlarını kullanarak gönderi yorumlarını ve geri bildirimleri açın/kapatın
+İstatistikler bölümünü kabaca %83 geliştirdik.
 
-Bu esnada uygulamanın çeşitli alanlarında birkaç faydalı güncelleme daha yaptık.
+- Konum kartı verileri ülkeye, bölgeye ve şehre göre filtrelemenizi sağlar. Bu veri Jetpack'in web sürümüyle tutarlıdır.
+- "Harici Bağlantılar" artık "Tıklamalar" olduğundan web sürümüyle tutarlıdır. Bu alanın bazen yanlış görüntülendiği bir hatayı düzelttik.
+- Otomatik veri karşılaştırmasını kapatabilir ve bu ayarı gelecekteki uygulama kullanımı için kaydedebilirsiniz. Karşılaştırma dönemi için haftalık verilerin her zaman doğru görüntülenmemesine neden olan bir sorunu düzelttik.
+- Uzun süre basılı tutarsa size daha fazla ayrıntı gösterilir. Dikey kaydırma da sabitlenmiştir.
+- Gün, hafta, ay ve yıllara göre gruplandırılmış çubuk grafik ve çizgi grafik verilerini görüntüleyebilirsiniz.
+- En iyi Liste öğeleri ada göre sıralanır ve düzgün şekilde sıralanır.
 
-- "Yayımlama" ekranında, bir gönderi yayımlandığında abonelerinizi otomatik olarak bilgilendirmek için "Abonelere e-posta gönder" seçeneğini açabilirsiniz. Baskıları başlatın.
-- Kısaltma düzenleyicide, bir gönderinin son URL'sinin nasıl görüneceğini gösteren bir kalıcı bağlantı önizlemesi vardır.
-- Site düzeyinde içerik gruplarını yönetebilmeniz için Site Ayarları'na "Sınıflandırmalar" eklendik.
-- "Kategoriler" seçicisindeki bazı tasarım düzeltmeleri sayesinde, bir gönderi için birden fazla kategori seçebileceğiniz daha açıktır.
-- Dosya boyutları artık Site Ortam Ayrıntıları alanında görünür. Artık tahmin yürütmek yok.
+Okuyucu'da da birçok değişiklik yaptık.
 
-Yayımlayandan çok okuyucu musunuz? Endişelenmeyin, Okuyucuda da değişiklikler yaptık.
+- Keşfet ekranında yeni bir "Yeni Basılmış" sekmesi var. Ayrıca "Önerilir" sekmesini "Sizin için" olarak değiştirdik.
+- Ana kenar çubuğunda yalnızca bir Arama seçeneği vardır.
+- "Daha Fazla Oku" görünümü, dokunduğunuz yer fark etmeksizin aynı şekilde çalışır ve artık tüm alıntıyı görebilirsiniz. Keşfedilecek çok daha fazla şey var.
+- Yorumlar bölümü doğrudan makalenin altında yorumları yanıtlamanızı ve beğenmenizi sağlar. Daha hızlı yorum için makalelerin altında yeni bir "Yorum Bırak" düğmesi vardır.
+- Varsayılan olarak bir yerine iki yorum görebilirsiniz ve çok uzun yorumlar daha kolay okunması için daraltılabilir.
+- Yorumlar bölümünde de birkaç görsel sorun yaşadık. Yorumlar artık doğru yüksekliğe sahip, "Tüm Yorumları Görüntüle" düğmesi daha çok dikkat çekiyor ve "Gönder" düğmesi de düzgün şekilde biçimlendirilmiş.
+- Uygulama içi çeviri desteğiyle gönderileri tercih ettiğiniz dilde okuyabilirsiniz.
+- Site başlıklarındaki birden fazla boşluk, daha kolay okunması ve görüntülenmesi için daraltıldı.
 
-- Benzer gönderi başlıkları çok uzun olduğunda, bunun yerine daha kısa bir sürüm görürsünüz.
-- Gönderi başlıkları artık yalnızca iki yerine üç satırdan oluşabilir ve size %50 daha fazla içerik iyiliği sağlar.
-- Makaleler biraz daha geniş yatay kenar boşluklarına sahiptir.
-- Makalelerin yüklenme şeklini etkileyen birkaç sorunu giderdik.
+Uygulamanızın boyutunu yaklaşık 6 MB düşüren bir teknik güncelleme yaptık. Tüm bu yeni bulunan alanla ne yapacaksınız?
+
+Mevcut yazıların görünürlük ayarlarını bulmak, görmek ve değiştirmek daha kolaydır. Şifre korumalı bir yazı yayımlanırken şifre belirlendiğinde "Bitti" düğmesi de kaybolmaz.
+
+İyi görünüyor: Kısayol simgelerini ve illüstrasyonları, uygulamanın geri kalanıyla daha iyi uyum sağlayacak şekilde ve cihazınızla daha iyi uyum sağlayacak şekilde güncelledik.
+
+Bir sorunu düzelttik, bu nedenle gönderi önizlemeleri artık Kurumsal paketler ve Ticaret paketleri kullanılarak belirli siteler için düzgün çalışıyor.
+
+Kullanıcı tarafından barındırılan yeni bir site eklediğinizde, doğrulama için uygulama şifrenizi sorulacaktır. Onu gizli tut. Güvenliği Sağlayın

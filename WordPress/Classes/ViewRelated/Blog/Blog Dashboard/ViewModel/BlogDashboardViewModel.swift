@@ -1,6 +1,7 @@
 import Foundation
 import UIKit
 import CoreData
+import GutenbergKit
 import WordPressData
 import WordPressKit
 import WordPressCore
@@ -22,12 +23,16 @@ enum DashboardItem: Hashable, Sendable {
 typealias DashboardSnapshot = NSDiffableDataSourceSnapshot<DashboardSection, DashboardItem>
 typealias DashboardDataSource = UICollectionViewDiffableDataSource<DashboardSection, DashboardItem>
 
+@MainActor
 final class BlogDashboardViewModel {
     private weak var viewController: BlogDashboardViewController?
 
     private let managedObjectContext: NSManagedObjectContext
 
     private var blog: Blog
+
+    /// Tracks the last blog for which the editor was warmed up to avoid redundant warmups.
+    private static var lastWarmedUpBlogID: NSManagedObjectID?
 
     private var error: Error?
 
@@ -127,6 +132,7 @@ final class BlogDashboardViewModel {
     }
 
     func viewWillAppear() {
+        warmUpEditorIfNeeded(for: self.blog)
         quickActionsViewModel.viewWillAppear()
     }
 
@@ -143,6 +149,12 @@ final class BlogDashboardViewModel {
         self.quickActionsViewModel = DashboardQuickActionsViewModel(blog: blog, personalizationService: personalizationService)
         self.loadCardsFromCache()
         self.loadCards()
+
+        warmUpEditorIfNeeded(for: blog)
+    }
+
+    func clearEditorCache(_ completion: @escaping () -> Void) {
+        EditorDependencyManager.shared.invalidate(for: self.blog, completion: completion)
     }
 
     /// Call the API to return cards for the current blog
@@ -164,14 +176,42 @@ final class BlogDashboardViewModel {
     }
 
     @objc func loadCardsFromCache() {
+        loadCardsFromCacheWithAnimation(animated: false)
+    }
+
+    @nonobjc func loadCardsFromCacheWithAnimation(animated: Bool) {
         let cards = service.fetchLocal(blog: blog)
-        updateCurrentCards(cards: cards)
+        updateCurrentCards(cards: cards, animated: animated)
     }
 }
 
 // MARK: - Private methods
 
 private extension BlogDashboardViewModel {
+
+    /// Warms up the editor for the given blog.
+    ///
+    /// This performs two operations:
+    /// 1. WebKit warmup (once per blog) - pre-compiles HTML/JS
+    /// 2. Data prefetch (always called) - fetches settings, assets, preload list
+    ///
+    /// The prefetch is always called because `EditorDependencyManager` handles its own
+    /// caching and needs to detect when the plugins feature flag changes.
+    func warmUpEditorIfNeeded(for blog: Blog) {
+        guard RemoteFeatureFlag.newGutenberg.enabled() else {
+            return
+        }
+
+        // WebKit warmup - only needed once per blog (shaves ~100-200ms)
+        if blog.objectID != Self.lastWarmedUpBlogID {
+            Self.lastWarmedUpBlogID = blog.objectID
+            let configuration = EditorConfiguration(blog: blog)
+            GutenbergKit.EditorViewController.warmup(configuration: configuration)
+        }
+
+        // Data prefetch - always call to allow EditorDependencyManager to detect flag changes
+        EditorDependencyManager.shared.prefetchDependencies(for: blog)
+    }
 
     func registerNotifications() {
         NotificationCenter.default.addObserver(self, selector: #selector(showDraftsCardIfNeeded), name: .newPostCreated, object: nil)
@@ -180,10 +220,10 @@ private extension BlogDashboardViewModel {
         NotificationCenter.default.addObserver(self, selector: #selector(loadCardsFromCache), name: .domainsServiceDomainsRefreshed, object: nil)
     }
 
-    func updateCurrentCards(cards: [DashboardCardModel]) {
+    func updateCurrentCards(cards: [DashboardCardModel], animated: Bool = false) {
         currentCards = cards
         syncPosts(for: cards)
-        applySnapshot(for: cards)
+        applySnapshot(for: cards, animated: animated)
     }
 
     func syncPosts(for cards: [DashboardCardModel]) {
@@ -198,9 +238,9 @@ private extension BlogDashboardViewModel {
         }
     }
 
-    func applySnapshot(for cards: [DashboardCardModel]) {
+    func applySnapshot(for cards: [DashboardCardModel], animated: Bool = false) {
         let snapshot = createSnapshot(from: cards)
-        dataSource?.apply(snapshot, animatingDifferences: false)
+        dataSource?.apply(snapshot, animatingDifferences: animated)
     }
 
     func createSnapshot(from cards: [DashboardCardModel]) -> DashboardSnapshot {

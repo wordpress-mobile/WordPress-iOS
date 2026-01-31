@@ -1,10 +1,12 @@
 import Foundation
 import WordPressData
 import WordPressUI
+import SwiftUI
 
-class ReaderDetailLikesListController: UITableViewController, NoResultsViewHost {
+final class ReaderDetailLikesListController: UIViewController {
 
     // MARK: - Properties
+    private let tableView = UITableView(frame: .zero, style: .plain)
     private let post: ReaderPost
     private var likesListController: LikesListController?
     private var totalLikes = 0
@@ -25,10 +27,9 @@ class ReaderDetailLikesListController: UITableViewController, NoResultsViewHost 
         super.viewDidLoad()
 
         configureViewTitle()
-        configureTable()
+        configureTableView()
         WPAnalytics.track(.likeListOpened, properties: ["list_type": "post", "source": "like_reader_list"])
     }
-
 }
 
 private extension ReaderDetailLikesListController {
@@ -38,7 +39,10 @@ private extension ReaderDetailLikesListController {
         navigationItem.title = String(format: titleFormat, totalLikes)
     }
 
-    func configureTable() {
+    func configureTableView() {
+        view.addSubview(tableView)
+        tableView.pinEdges()
+
         tableView.register(LikeUserTableViewCell.defaultNib,
                            forCellReuseIdentifier: LikeUserTableViewCell.defaultReuseID)
 
@@ -83,10 +87,9 @@ extension ReaderDetailLikesListController: LikesListControllerDelegate {
     }
 
     func showErrorView(title: String, subtitle: String?) {
-        configureAndDisplayNoResults(on: tableView,
-                                     title: title,
-                                     subtitle: subtitle,
-                                     image: "wp-illustration-reader-empty")
+        let stateView = UIHostingView(view: EmptyStateView.init(title, systemImage: "exclamationmark.circle", description: subtitle))
+        view.addSubview(stateView)
+        stateView.pinEdges()
     }
 
     func updatedTotalLikes(_ totalLikes: Int) {

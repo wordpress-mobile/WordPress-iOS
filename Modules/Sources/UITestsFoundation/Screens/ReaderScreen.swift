@@ -161,9 +161,8 @@ public class ReaderScreen: ScreenObject {
         cell.buttons["reader-bookmark-button"].firstMatch.tap()
 
         // An alert about saved post is displayed the first time a post is saved
-        if let alert = try? FancyAlertComponent() {
-            alert.acceptAlert()
-        }
+        // Tap the navigation bar (any region outside the alert popup) to dismiss the alert.
+        app.navigationBars.firstMatch.tap()
 
         return (self, postLabel)
     }

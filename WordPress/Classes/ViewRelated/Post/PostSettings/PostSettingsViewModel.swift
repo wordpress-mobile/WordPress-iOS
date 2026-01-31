@@ -58,6 +58,11 @@ final class PostSettingsViewModel: NSObject, ObservableObject {
         set { settings.metadata.isJetpackNewsletterEmailDisabled = !newValue }
     }
 
+    var accessLevel: JetpackPostAccessLevel {
+        get { settings.metadata.accessLevel ?? .everybody }
+        set { settings.metadata.accessLevel = newValue }
+    }
+
     var publishDateText: String? {
         guard let date = settings.publishDate else {
             return nil
@@ -536,6 +541,15 @@ final class PostSettingsViewModel: NSObject, ObservableObject {
         }
         if old.isStickyPost != new.isStickyPost {
             track(.editorPostStickyChanged)
+        }
+        if old.parentPageID != new.parentPageID {
+            track(.editorPostParentPageChanged)
+        }
+        if old.otherTerms != new.otherTerms {
+            track(.editorPostCustomTaxonomyChanged)
+        }
+        if old.metadata.isJetpackNewsletterEmailDisabled != new.metadata.isJetpackNewsletterEmailDisabled {
+            track(.editorPostNewsletterEmailToggled)
         }
     }
 

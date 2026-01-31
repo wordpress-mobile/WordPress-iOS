@@ -9,3 +9,4 @@ CI_TOOLKIT_PLUGIN_VERSION="5.3.1"
 
 export IMAGE_ID="xcode-$XCODE_VERSION"
 export CI_TOOLKIT_PLUGIN="automattic/a8c-ci-toolkit#$CI_TOOLKIT_PLUGIN_VERSION"
+export CLAUDE_PLUGIN="iangmaia/claude-summarize#iangmaia/add-build-log-mode"

@@ -28,6 +28,13 @@ class StatsRemoteV2Tests: RemoteTestCase, RESTTestable {
     let getStatsSummaryFilename = "stats-summary.json"
     let getArchivesDataFilename = "stats-archives-data.json"
     let getEmailOpensFilename = "stats-email-opens.json"
+    let getWordAdsMonthMockFilename = "stats-wordads-month.json"
+    let getWordAdsEarningsFilename = "stats-wordads-earnings.json"
+    let getDeviceScreensizeFilename = "stats-devices-screensize.json"
+    let getDevicePlatformFilename = "stats-devices-platform.json"
+    let getDeviceBrowserFilename = "stats-devices-browser.json"
+    let getUTMStatsFilename = "stats-utm-source-medium.json"
+    let getUTMStatsEmptyFilename = "stats-utm-empty.json"
 
     // MARK: - Properties
 
@@ -35,7 +42,7 @@ class StatsRemoteV2Tests: RemoteTestCase, RESTTestable {
     var siteSearchDataEndpoint: String { return "sites/\(siteID)/stats/search-terms/" }
     var siteAuthorsDataEndpoint: String { return "sites/\(siteID)/stats/top-authors/" }
     var siteVideosDataEndpoint: String { return "sites/\(siteID)/stats/video-plays/" }
-    var siteCountriesDataEndpoint: String { return "sites/\(siteID)/stats/country-views/" }
+    var siteCountriesDataEndpoint: String { return "sites/\(siteID)/stats/location-views/country/" }
     var siteClicksDataEndpoint: String { return "sites/\(siteID)/stats/clicks/" }
     var siteReferrerDataEndpoint: String { return "sites/\(siteID)/stats/referrers/" }
     var siteVisitsDataEndpoint: String { return "sites/\(siteID)/stats/visits/" }
@@ -46,6 +53,12 @@ class StatsRemoteV2Tests: RemoteTestCase, RESTTestable {
     var siteStatsSummaryEndpoint: String { return "sites/\(siteID)/stats/summary/" }
     var siteArchivesDataEndpoint: String { return "sites/\(siteID)/stats/archives" }
     var siteEmailOpensEndpoint: String { return "sites/\(siteID)/stats/opens/emails/231/rate" }
+    var siteWordAdsEndpoint: String { return "sites/\(siteID)/wordads/stats" }
+    var siteWordAdsEarningsEndpoint: String { return "sites/\(siteID)/wordads/earnings" }
+    var siteDeviceScreensizeEndpoint: String { return "sites/\(siteID)/stats/devices/screensize/" }
+    var siteDevicePlatformEndpoint: String { return "sites/\(siteID)/stats/devices/platform/" }
+    var siteDeviceBrowserEndpoint: String { return "sites/\(siteID)/stats/devices/browser/" }
+    var siteUTMStatsEndpoint: String { return "sites/\(siteID)/stats/utm/utm_source,utm_medium" }
 
     func toggleSpamStateEndpoint(for referrerDomain: String, markAsSpam: Bool) -> String {
         let action = markAsSpam ? "new" : "delete"
@@ -853,5 +866,208 @@ class StatsRemoteV2Tests: RemoteTestCase, RESTTestable {
         }
 
         waitForExpectations(timeout: timeout, handler: nil)
+    }
+
+    func testWordAdsMonthlyData() throws {
+        let expect = expectation(description: "It should return WordAds data for months")
+
+        stubRemoteResponse(siteWordAdsEndpoint, filename: getWordAdsMonthMockFilename, contentType: .ApplicationJSON)
+
+        let jan31 = DateComponents(year: 2026, month: 1, day: 31)
+        let date = Calendar.autoupdatingCurrent.date(from: jan31)!
+
+        var currentResponse: StatsWordAdsResponse?
+        remote.getData(for: .month, endingOn: date) { (response: StatsWordAdsResponse?, error: Error?) in
+            XCTAssertNil(error)
+            XCTAssertNotNil(response)
+
+            currentResponse = response
+            expect.fulfill()
+        }
+        waitForExpectations(timeout: timeout, handler: nil)
+
+        let response = try XCTUnwrap(currentResponse)
+
+        let data = response.data
+        guard data.count == 4 else {
+            XCTFail("Data should have 4 elements")
+            return
+        }
+
+        // First data point
+        XCTAssertEqual(data[0].impressions, 14)
+        XCTAssertEqual(data[0].revenue, 0)
+        XCTAssertEqual(data[0].cpm, 0)
+
+        // Second data point
+        XCTAssertEqual(data[1].impressions, 72)
+        XCTAssertEqual(data[1].revenue, 0)
+        XCTAssertEqual(data[1].cpm, 0)
+
+        // Third data point (has non-zero revenue and CPM)
+        XCTAssertEqual(data[2].impressions, 174)
+        XCTAssertEqual(data[2].revenue, 0.01)
+        XCTAssertEqual(data[2].cpm, 0.06)
+
+        // Fourth data point
+        XCTAssertEqual(data[3].impressions, 92)
+        XCTAssertEqual(data[3].revenue, 0)
+        XCTAssertEqual(data[3].cpm, 0)
+
+        // Test subscript access
+        XCTAssertEqual(data[2][.impressions], 174.0)
+        XCTAssertEqual(data[2][.revenue], 0.01)
+        XCTAssertEqual(data[2][.cpm], 0.06)
+    }
+
+    func testWordAdsEarnings() async throws {
+        stubRemoteResponse(siteWordAdsEarningsEndpoint, filename: getWordAdsEarningsFilename, contentType: .ApplicationJSON)
+
+        let response = try await remote.getWordAdsEarnings()
+
+        // Test total earnings
+        XCTAssertEqual(response.totalEarnings, Decimal(string: "42.67"))
+        XCTAssertEqual(response.totalAmountOwed, Decimal(string: "38.40"))
+
+        // Test monthly earnings count
+        XCTAssertEqual(response.wordAdsEarnings.count, 5)
+
+        // Test monthly earnings are sorted by period descending (most recent first)
+        XCTAssertEqual(response.wordAdsEarnings[0].period, StatsWordAdsEarningsResponse.Period(year: 2025, month: 12))
+        XCTAssertEqual(response.wordAdsEarnings[1].period, StatsWordAdsEarningsResponse.Period(year: 2025, month: 11))
+        XCTAssertEqual(response.wordAdsEarnings[2].period, StatsWordAdsEarningsResponse.Period(year: 2025, month: 10))
+        XCTAssertEqual(response.wordAdsEarnings[3].period, StatsWordAdsEarningsResponse.Period(year: 2025, month: 9))
+
+        // Test first month (December 2025)
+        let decEarnings = response.wordAdsEarnings[0]
+        XCTAssertEqual(decEarnings.period.year, 2025)
+        XCTAssertEqual(decEarnings.period.month, 12)
+        XCTAssertEqual(decEarnings.amount, Decimal(string: "15.25"))
+        XCTAssertEqual(decEarnings.status, .outstanding)
+        XCTAssertEqual(decEarnings.pageviews, "3420")
+
+        // Test second month (November 2025)
+        let novEarnings = response.wordAdsEarnings[1]
+        XCTAssertEqual(novEarnings.period.year, 2025)
+        XCTAssertEqual(novEarnings.period.month, 11)
+        XCTAssertEqual(novEarnings.amount, Decimal(string: "12.80"))
+        XCTAssertEqual(novEarnings.status, .outstanding)
+        XCTAssertEqual(novEarnings.pageviews, "2890")
+
+        // Test third month (October 2025)
+        let octEarnings = response.wordAdsEarnings[2]
+        XCTAssertEqual(octEarnings.period.year, 2025)
+        XCTAssertEqual(octEarnings.period.month, 10)
+        XCTAssertEqual(octEarnings.amount, Decimal(string: "8.45"))
+        XCTAssertEqual(octEarnings.status, .outstanding)
+        XCTAssertEqual(octEarnings.pageviews, "1950")
+
+        // Test fourth month (September 2025)
+        let sepEarnings = response.wordAdsEarnings[3]
+        XCTAssertEqual(sepEarnings.period.year, 2025)
+        XCTAssertEqual(sepEarnings.period.month, 9)
+        XCTAssertEqual(sepEarnings.amount, Decimal(string: "6.17"))
+        XCTAssertEqual(sepEarnings.status, .outstanding)
+        XCTAssertEqual(sepEarnings.pageviews, "1420")
+
+        // Test fifth month (August 2025) - with paid status
+        let augEarnings = response.wordAdsEarnings[4]
+        XCTAssertEqual(augEarnings.period.year, 2025)
+        XCTAssertEqual(augEarnings.period.month, 8)
+        XCTAssertEqual(augEarnings.amount, Decimal(string: "5.50"))
+        XCTAssertEqual(augEarnings.status, .paid)
+        XCTAssertEqual(augEarnings.pageviews, "1200")
+
+        // Test Period string conversion
+        XCTAssertEqual(decEarnings.period.string, "2025-12")
+    }
+
+    func testFetchDeviceScreensize() async throws {
+        stubRemoteResponse(siteDeviceScreensizeEndpoint, filename: getDeviceScreensizeFilename, contentType: .ApplicationJSON)
+
+        let devicesData = try await remote.getDeviceStats(breakdown: .screensize, startDate: Date(), endDate: Date())
+
+        XCTAssertEqual(devicesData.items.count, 3)
+        XCTAssertEqual(devicesData.items.first?.name, "mobile")
+        XCTAssertEqual(devicesData.items.first?.value, 73.8)
+    }
+
+    func testFetchDevicePlatform() async throws {
+        stubRemoteResponse(siteDevicePlatformEndpoint, filename: getDevicePlatformFilename, contentType: .ApplicationJSON)
+
+        let platformData = try await remote.getDeviceStats(breakdown: .platform, startDate: Date(), endDate: Date())
+
+        XCTAssertEqual(platformData.items.count, 8)
+        XCTAssertEqual(platformData.items.first?.name, "android")
+        XCTAssertEqual(platformData.items.first?.value, 805.0)
+    }
+
+    func testFetchDeviceBrowser() async throws {
+        stubRemoteResponse(siteDeviceBrowserEndpoint, filename: getDeviceBrowserFilename, contentType: .ApplicationJSON)
+
+        let browserData = try await remote.getDeviceStats(breakdown: .browser, startDate: Date(), endDate: Date())
+
+        XCTAssertEqual(browserData.items.count, 7)
+        XCTAssertEqual(browserData.items.first?.name, "chrome")
+        XCTAssertEqual(browserData.items.first?.value, 1063.0)
+    }
+
+    func testFetchUTMStats() async throws {
+        stubRemoteResponse(siteUTMStatsEndpoint, filename: getUTMStatsFilename, contentType: .ApplicationJSON)
+
+        let utmData = try await remote.getUTMStats(utmParam: .sourceMedium, startDate: Date(), endDate: Date(), maxResults: 10)
+
+        // Check we have the expected number of UTM metrics
+        XCTAssertEqual(utmData.utmMetrics.count, 7)
+
+        // Check first UTM metric (highest views)
+        let firstMetric = utmData.utmMetrics.first
+        XCTAssertEqual(firstMetric?.label, "google / cpc")
+        XCTAssertEqual(firstMetric?.values, ["google", "cpc"])
+        XCTAssertEqual(firstMetric?.viewsCount, 152)
+        XCTAssertEqual(firstMetric?.posts.count, 2)
+
+        // Check first post of first metric
+        let firstPost = firstMetric?.posts.first
+        XCTAssertEqual(firstPost?.title, "How to Build a Mobile App")
+        XCTAssertEqual(firstPost?.postID, 12345)
+        XCTAssertEqual(firstPost?.viewsCount, 75)
+        XCTAssertEqual(firstPost?.postURL, URL(string: "https://example.com/how-to-build-mobile-app"))
+
+        // Check second post of first metric
+        let secondPost = firstMetric?.posts[1]
+        XCTAssertEqual(secondPost?.title, "Swift Development Guide")
+        XCTAssertEqual(secondPost?.postID, 12346)
+        XCTAssertEqual(secondPost?.viewsCount, 50)
+        XCTAssertEqual(secondPost?.postURL, URL(string: "https://example.com/swift-guide"))
+
+        // Check second UTM metric
+        let secondMetric = utmData.utmMetrics[1]
+        XCTAssertEqual(secondMetric.label, "facebook / social")
+        XCTAssertEqual(secondMetric.values, ["facebook", "social"])
+        XCTAssertEqual(secondMetric.viewsCount, 120)
+        XCTAssertEqual(secondMetric.posts.count, 1)
+
+        // Check post of second metric
+        let secondMetricPost = secondMetric.posts.first
+        XCTAssertEqual(secondMetricPost?.title, "Social Media Tips")
+        XCTAssertEqual(secondMetricPost?.postID, 12347)
+        XCTAssertEqual(secondMetricPost?.viewsCount, 60)
+        XCTAssertEqual(secondMetricPost?.postURL, URL(string: "https://example.com/social-media-tips"))
+
+        // Check that metrics are sorted by views descending
+        for i in 0..<(utmData.utmMetrics.count - 1) {
+            XCTAssertGreaterThanOrEqual(utmData.utmMetrics[i].viewsCount, utmData.utmMetrics[i + 1].viewsCount)
+        }
+    }
+
+    func testFetchUTMStatsWithEmptyArrays() async throws {
+        // Test that backend returning empty arrays instead of empty dicts is handled gracefully
+        stubRemoteResponse(siteUTMStatsEndpoint, filename: getUTMStatsEmptyFilename, contentType: .ApplicationJSON)
+
+        let utmData = try await remote.getUTMStats(utmParam: .sourceMedium, startDate: Date(), endDate: Date(), maxResults: 10)
+
+        // Should return empty metrics array without crashing
+        XCTAssertEqual(utmData.utmMetrics.count, 0)
     }
 }

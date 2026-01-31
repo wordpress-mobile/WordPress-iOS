@@ -20,6 +20,11 @@ extension HTTPAPIResponse where Body == Data {
     }
 }
 
+/// This global variable is used to log HTTP requests to Pulse. An more ideal solution is using Pulse directly from
+/// WordPressKit. However, including Pulse dependencies in the library targets in the `Modules` package causes the app
+/// to crash.
+public var wpkURLSessionNotifyingDelegate: URLSessionTaskDelegate?
+
 extension URLSession {
 
     /// Create a background URLSession instance that can be used in the `perform(request:...)` async function.
@@ -74,6 +79,15 @@ extension URLSession {
         return await withTaskCancellationHandler {
             await withCheckedContinuation { continuation in
                 let completion: @Sendable (Data?, URLResponse?, Error?) -> Void = { data, response, error in
+                    Task {
+                        guard let task = await taskHolder.task as? URLSessionDataTask else { return }
+
+                        if let data {
+                            (wpkURLSessionNotifyingDelegate as? URLSessionDataDelegate)?.urlSession?(self, dataTask: task, didReceive: data)
+                        }
+                        wpkURLSessionNotifyingDelegate?.urlSession?(self, task: task, didCompleteWithError: error)
+                    }
+
                     let result: WordPressAPIResult<HTTPAPIResponse<Data>, E> = Self.parseResponse(
                         data: data,
                         response: response,
@@ -93,6 +107,7 @@ extension URLSession {
                     return
                 }
 
+                task.delegate = wpkURLSessionNotifyingDelegate
                 task.resume()
                 taskCreated?(task.taskIdentifier)
                 Task { await taskHolder.assign(task) }

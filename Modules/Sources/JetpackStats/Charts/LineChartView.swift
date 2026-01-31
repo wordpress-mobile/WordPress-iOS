@@ -9,6 +9,7 @@ struct LineChartView: View {
 
     @Environment(\.colorScheme) var colorScheme
     @Environment(\.context) var context
+    @Environment(\.showComparison) private var showComparison
 
     private var valueFormatter: StatsValueFormatter {
         StatsValueFormatter(metric: data.metric)
@@ -22,7 +23,9 @@ struct LineChartView: View {
     var body: some View {
         Chart {
             currentPeriodMarks
-            previousPeriodMarks
+            if showComparison {
+                previousPeriodMarks
+            }
             averageLine
             significantPointAnnotations
             selectionIndicatorMarks

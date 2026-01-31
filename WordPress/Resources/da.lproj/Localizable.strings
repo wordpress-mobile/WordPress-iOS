@@ -151,7 +151,6 @@
    Insights 'Comments' header
    Label for number of comments.
    Label for Period Overview comments
-   Noun. Title. Links to the blog's Comments screen.
    Settings: Comment Sections
    Text for the 'comment' button when there are multiple comments
    Title for the Blog's Comments Section View
@@ -160,9 +159,6 @@
 
 /* Sentence fragment. The full phrase is 'Comments on' followed by the title of a post on a separate line. */
 "Comments on" = "Kommentarer til";
-
-/* Section title for the configure table section in the blog details screen */
-"Configure" = "Konfigurer";
 
 /* Verb. Title for Jetpack Restore confirm button. */
 "Confirm" = "Bekræft";
@@ -205,9 +201,6 @@
 
 /* Notification Settings for your own blogs */
 "Customize your site settings for Likes, Comments, Follows, and more." = "Tilpas dit websteds indstillinger for Likes, kommentarer, følgere med mere.";
-
-/* Action title. Noun. Opens the user's WordPress.com dashboard in an external browser. */
-"Dashboard" = "Kontrolpanel";
 
 /* Label for selecting the default category of a post */
 "Default Category" = "Standardkategori";
@@ -321,9 +314,6 @@
 /* Title of error dialog when removing a site owner fails. */
 "Error removing %@" = "Fejl ved fjernelse af %@";
 
-/* A brief prompt shown when the comment list is empty, letting the user know the app is currently fetching new comments. */
-"Fetching comments..." = "Henter kommentarer...";
-
 /* No comment provided by engineer. */
 "File name" = "Filnavn";
 
@@ -410,9 +400,6 @@
 /* Message stating the minimum required version for Jetpack and asks the user if they want to upgrade */
 "Jetpack %@ or later is required. Do you want to update Jetpack?" = "Jetpack %@ eller nyere kræves. Vil du opdatere Jetpack?";
 
-/* Noun. Title. Links to the blog's Settings screen. */
-"Jetpack Settings" = "Jetpack indstillinger";
-
 /* Button shown if there are unsaved changes and the author cancelled editing a Comment.
    Goes back to editing the post. */
 "Keep Editing" = "Fortsæt redigering";
@@ -494,13 +481,11 @@
 
 /* Accessibility label for the Me button in My Site.
    Me page title
-   Noun. Title. Links to the Me screen.
    The accessibility value of the me tab.
    Title of the 'Me' tab - used for spotlight indexing on iOS. */
 "Me" = "Mig";
 
-/* Noun. Title. Links to the blog's Media library.
-   Title for the media section in site settings screen
+/* Title for the media section in site settings screen
    Title label for the media settings section in the app settings */
 "Media" = "Medier";
 
@@ -555,7 +540,6 @@
 "No blocks found" = "Ingen blokke fundet.";
 
 /* Displayed in the Notifications Tab as a title, when the Comments Filter shows no notifications
-   Displayed on the post details page when there are no post comments.
    Displayed when there are no comments in the Comments views. */
 "No comments yet" = "Ingen kommentarer endnu";
 
@@ -596,8 +580,7 @@
    Button title. An acknowledgement of the message displayed in a prompt.
    Dismisses the alert
    Menus: button title for finishing editing of a menu item.
-   Ok button for dismissing alert helping users understand their site address
-   OK Button title shown in alert informing users about the Reader Save for Later feature. */
+   Ok button for dismissing alert helping users understand their site address */
 "OK" = "OK";
 
 /* Disabled */
@@ -645,8 +628,7 @@
    Other Sites Notification Settings Title */
 "Other Sites" = "Andre websteder";
 
-/* Noun. Title. Links to the blog's Pages screen.
-   This is the section title
+/* This is the section title
    Title of the screen showing the list of pages for a blog. */
 "Pages" = "Sider";
 
@@ -696,7 +678,6 @@
 
 /* All Time Stats 'Posts' label
    Insights 'Posts' header
-   Noun. Title. Links to the blog's Posts screen.
    Title of the screen showing the list of posts for a blog. */
 "Posts" = "Indlæg";
 
@@ -717,8 +698,7 @@
 "Privacy Policy" = "Privatlivspolitik";
 
 /* Label for the publish (verb) button. Tapping publishes a draft post.
-   Publish post action on share extension site picker screen.
-   Section title for the publish table section in the blog details screen */
+   Publish post action on share extension site picker screen. */
 "Publish" = "Udgiv";
 
 /* Period Stats 'Published' header
@@ -904,7 +884,6 @@
 "Standard" = "Standard";
 
 /* Noun. Abbreviation of Statistics. Name of the Stats feature
-   Noun. Abbv. of Statistics. Links to a blog's Stats screen.
    Stats 3D Touch Shortcut
    Stats window title */
 "Stats" = "Statistik";
@@ -958,7 +937,6 @@
 "The site at %@ uses WordPress %@. We recommend to update to the latest version, or at least %@" = "Webstedet på %1$@ benytter WordPress %2$@. Vi anbefaler, at du opdaterer til seneste version, eller mindst %3$@";
 
 /* Noun. Name of the Themes feature
-   Themes option in the blog details
    Title of Themes browser page */
 "Themes" = "Temaer";
 
@@ -1060,9 +1038,6 @@
    Theme View action title
    Verb. The screen title shown when viewing a post inside the app. */
 "View" = "Vis";
-
-/* Action title. Opens the user's site in an in-app browser */
-"View Site" = "Vis websted";
 
 /* Displays More Rows */
 "View all…" = "Vis alle...";

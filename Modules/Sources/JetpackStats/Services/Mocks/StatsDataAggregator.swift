@@ -40,7 +40,7 @@ struct StatsDataAggregator {
 
     /// Aggregates data points based on the given granularity and normalizes for the specified metric.
     /// This combines the previous aggregate and normalizeForMetric functions for efficiency.
-    func aggregate(_ dataPoints: [DataPoint], granularity: DateRangeGranularity, metric: SiteMetric) -> [Date: Int] {
+    func aggregate(_ dataPoints: [DataPoint], granularity: DateRangeGranularity, metric: some MetricType) -> [Date: Int] {
         var aggregatedData: [Date: AggregatedDataPoint] = [:]
 
         // First pass: aggregate data
@@ -54,7 +54,7 @@ struct StatsDataAggregator {
             }
         }
 
-        // Second pass: normalize based on metric strategy
+        // Second pass: normalize based on aggregation strategy
         var normalizedData: [Date: Int] = [:]
         for (date, dataPoint) in aggregatedData {
             switch metric.aggregationStrategy {
@@ -99,7 +99,7 @@ struct StatsDataAggregator {
         dataPoints: [DataPoint],
         dateInterval: DateInterval,
         granularity: DateRangeGranularity,
-        metric: SiteMetric
+        metric: some MetricType
     ) -> PeriodData {
         // Aggregate and normalize data in one pass
         let normalizedData = aggregate(dataPoints, granularity: granularity, metric: metric)

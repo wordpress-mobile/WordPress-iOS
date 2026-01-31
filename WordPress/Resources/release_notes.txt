@@ -1,15 +1,9 @@
-Heads up, content creators—we’ve been hard at work making some big changes to the Post Settings screen.
+We made a technical update that reduces the size of your app by about 6 MB. What will you do with all that newfound space?
 
-- We added a “Status” field that helps you quickly move posts between draft, pending, private, scheduled, and published states.
-- We brought back the “Publish Date” area for draft and pending posts. That way you can pick a publish date ahead of time without officially scheduling the post.
-- The password field uses a different font (Menlo, if you’re interested) so it’s easier to read similar-looking characters.
-- Give your followers the VIP treatment by setting post access levels for all subscribers, paid subscribers, and the general public.
-- Toggle post comments and pingbacks on or off using the “Discussion” settings.
+It’s easier to find, see, and change the visibility settings of existing posts. The “Done” button also won’t disappear when you set the password while publishing a password-protected post.
 
-While we were at it, we made several other helpful updates in various areas of the app.
+Looking good: we updated shortcut icons and illustrations to better match the rest of the app, as well as fit better with your device.
 
-- On the “Publishing” screen, you can toggle “Email to Subscribers” to automatically notify your subscribers when a post is published. Start the presses.
-- The slug editor has a permalink preview to show what a post’s final URL will look like.
-- We added “Taxonomies” to Site Settings so you can manage your content groups at the site level.
-- Thanks to some design fixes in the “Categories” picker, it’s more obvious that you can pick multiple categories for a post.
-- File sizes are now visible in the Site Media Details area. No more guesswork.
+We fixed an issue so post previews now work properly for certain sites using Business and Commerce plans.
+
+When you add a new self-hosted site, you’ll be asked for your app password to authenticate. Keep it secret. Keep it safe.

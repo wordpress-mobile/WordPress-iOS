@@ -2,6 +2,7 @@ import Foundation
 import WordPressData
 import WordPressShared
 import WordPressFlux
+import WordPressUI
 import AutomatticTracks
 
 // MARK: - Reader Notifications
@@ -116,6 +117,18 @@ struct ReaderNotificationKeys {
     ///
     @objc open class func topicIsFreshlyPressed(_ topic: ReaderAbstractTopic) -> Bool {
         return topic.path.hasSuffix("/freshly-pressed")
+    }
+
+    public static func getFreshlyPressedTopic(in context: NSManagedObjectContext = ContextManager.shared.mainContext) -> ReaderSiteTopic {
+        let path = "/rest/v1.2/freshly-pressed"
+        if let topic = try? ReaderSiteTopic.lookup(withFeedURL: path, in: context) {
+            return topic
+        }
+        let topic = context.insertNewObject(ofType: ReaderSiteTopic.self)
+        topic.feedURL = path
+        topic.path = path
+        try? context.save()
+        return topic
     }
 
     /// Check if the specified topic is for Discover

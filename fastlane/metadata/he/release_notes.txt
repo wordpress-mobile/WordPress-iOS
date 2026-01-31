@@ -1,15 +1,9 @@
-יוצרי תוכן, שימו לב – אנחנו פועלים במרץ כדי לבצע שינויים נרחבים במסך 'הגדרות פוסט'.
+We made a technical update that reduces the size of your app by about 6 MB. What will you do with all that newfound space?
 
-- הוספנו שדה 'סטטוס' שיעזור להעביר במהירות פוסטים בין מצב 'טיוטה', 'בהמתנה', 'פרטי', 'מתוזמן' ו'פורסם'.
-- החזרנו את האזור 'תאריך פרסום' לטיוטה ולפוסטים בהמתנה. כך אפשר לבחור תאריך פרסום מראש, ללא תזמון רשמי של הפוסט.
-- שדה הסיסמאות משתמש בגופן אחר (Menlo, אם זה מעניין אותך) כדי שיהיה קל יותר לקרוא תווים עם מראה דומה.
-- אפשר לפנק את העוקבים עם טיפול VIP על ידי הגדרת רמות גישה לפוסט בשביל כל המנויים, מנויים משלמים או בשביל הציבור הרחב.
-- ניתן להפעיל או להשבית את תגובות הפוסט והפינגבק באמצעות הגדרות 'דיון'.
+It’s easier to find, see, and change the visibility settings of existing posts. The “Done” button also won’t disappear when you set the password while publishing a password-protected post.
 
-וניצלנו את ההזדמנות גם כדי להוסיף עוד כמה עדכונים מועילים באזורים שונים של האפליקציה.
+Looking good: we updated shortcut icons and illustrations to better match the rest of the app, as well as fit better with your device.
 
-- במסך 'פרסום' ניתן לשנות את ההגדרה 'אימייל למנויים' כדי להודיע באופן אוטומטי למנויים כאשר הפוסט מתפרסם. קדימה, ההודעה לציבור (המנויים) מחכה.
-- לעורך של מזהה הכתובת יש תצוגה מקדימה של הקישור הקבוע כדי להראות איך תיראה כתובת ה-URL הסופית של הפוסט.
-- הוספנו 'טקסונומיות' להגדרות האתר כדי לאפשר לך לנהל קבוצות תוכן ברמת האתר.
-- הודות למספר תיקונים בעיצוב הבוחר של 'קטגוריות', האפשרות לבחור מספר קטגוריות לפוסט מופיעה בצורה ברורה יותר.
-- הקבצים מוצגים כעת באזור 'פרטים' ב'המדיה של האתר'. כבר לא צריך לנחש את המיקום.
+We fixed an issue so post previews now work properly for certain sites using Business and Commerce plans.
+
+When you add a new self-hosted site, you’ll be asked for your app password to authenticate. Keep it secret. לאבטח אותו

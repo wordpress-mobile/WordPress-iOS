@@ -99,21 +99,11 @@ struct PostStatusView: View {
                     }
                 }
             }
-            if !(settings.password ?? "").isEmpty {
+            if let password = settings.password, !password.isEmpty {
                 Button {
                     isShowingPasswordEntry = true
                 } label: {
-                    HStack {
-                        Text(Strings.passwordLabel)
-                        Spacer()
-                        Text("••••••••••••")
-                            .font(.footnote.monospaced())
-                            .foregroundStyle(.secondary)
-                        Image(systemName: "chevron.forward")
-                            .font(.subheadline.weight(.medium))
-                            .foregroundStyle(.secondary.opacity(0.5))
-                    }
-                    .contentShape(Rectangle())
+                    PostSettingsPasswordRow(password: password)
                 }
                 .buttonStyle(.plain)
             }
@@ -210,6 +200,24 @@ private struct PostStatusRow: View {
             }
             Spacer(minLength: 0)
             SettingsCheckmark(isSelected: isSelected)
+        }
+        .contentShape(Rectangle())
+    }
+}
+
+struct PostSettingsPasswordRow: View {
+    let password: String
+
+    var body: some View {
+        HStack {
+            Text(Strings.passwordLabel)
+            Spacer()
+            Text("••••••••••••")
+                .font(.footnote.monospaced())
+                .foregroundStyle(.secondary)
+            Image(systemName: "chevron.forward")
+                .font(.subheadline.weight(.medium))
+                .foregroundStyle(.secondary.opacity(0.5))
         }
         .contentShape(Rectangle())
     }

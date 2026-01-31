@@ -193,11 +193,6 @@ class ReaderDetailToolbar {
               let viewController = viewController as? UIViewController & UIViewControllerTransitioningDelegate else {
             return
         }
-
-        if !readerPost.isSavedForLater {
-            FancyAlertViewController.presentReaderSavedPostsAlertControllerIfNecessary(from: viewController)
-        }
-
         ReaderSaveForLaterAction().execute(with: readerPost, context: context, origin: .postDetail, viewController: viewController) { [weak self] in
             self?.updateToolbarItems()
         }

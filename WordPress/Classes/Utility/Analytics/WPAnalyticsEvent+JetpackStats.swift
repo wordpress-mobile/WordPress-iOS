@@ -9,21 +9,31 @@ extension StatsEvent {
         case .trafficTabShown: .jetpackStatsTrafficTabShown
         case .realtimeTabShown: .jetpackStatsRealtimeTabShown
         case .subscribersTabShown: .jetpackStatsSubscribersTabShown
+        case .adsTabShown: .jetpackStatsAdsTabShown
         case .postDetailsScreenShown: .jetpackStatsPostDetailsScreenShown
         case .authorStatsScreenShown: .jetpackStatsAuthorStatsScreenShown
         case .archiveStatsScreenShown: .jetpackStatsArchiveStatsScreenShown
         case .externalLinkStatsScreenShown: .jetpackStatsExternalLinkStatsScreenShown
         case .referrerStatsScreenShown: .jetpackStatsReferrerStatsScreenShown
+        case .utmMetricStatsScreenShown: .jetpackStatsUtmMetricStatsScreenShown
         case .dateRangePresetSelected: .jetpackStatsDateRangePresetSelected
         case .customDateRangeSelected: .jetpackStatsCustomDateRangeSelected
+        case .dateNavigationButtonTapped: .jetpackStatsDateNavigationButtonTapped
+        case .comparisonPeriodChanged: .jetpackStatsComparisonPeriodChanged
         case .cardShown: .jetpackStatsCardShown
         case .cardAdded: .jetpackStatsCardAdded
         case .cardRemoved: .jetpackStatsCardRemoved
+        case .cardMoved: .jetpackStatsCardMoved
         case .chartTypeChanged: .jetpackStatsChartTypeChanged
         case .chartMetricSelected: .jetpackStatsChartMetricSelected
         case .chartBarSelected: .jetpackStatsChartBarSelected
+        case .chartGranularityChanged: .jetpackStatsChartGranularityChanged
+        case .rawDataViewed: .jetpackStatsRawDataViewed
         case .todayCardTapped: .jetpackStatsTodayCardTapped
         case .topListItemTapped: .jetpackStatsTopListItemTapped
+        case .locationLevelChanged: .jetpackStatsLocationLevelChanged
+        case .deviceBreakdownChanged: .jetpackStatsDeviceBreakdownChanged
+        case .utmParamGroupingChanged: .jetpackStatsUtmParamGroupingChanged
         case .statsTabSelected: .jetpackStatsTabSelected
         case .errorEncountered: .jetpackStatsErrorEncountered
         }

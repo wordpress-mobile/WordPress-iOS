@@ -44,7 +44,8 @@ struct AuthorStatsView: View {
                     viewModel: viewModel,
                     itemLimit: 6,
                     reserveSpace: false,
-                    showMoreInline: true
+                    showMoreInline: true,
+                    showItemTypePicker: false
                 )
             }
             .padding(.vertical, Constants.step1)
@@ -138,7 +139,7 @@ struct AuthorStatsView: View {
                     let trend = TrendViewModel(
                         currentValue: current,
                         previousValue: previous,
-                        metric: .views
+                        metric: SiteMetric.views
                     )
 
                     HStack(spacing: 4) {

@@ -19,7 +19,8 @@ struct MockStatsServiceTests {
             metric: .views,
             interval: dateInterval,
             granularity: dateInterval.preferredGranularity,
-            limit: nil
+            limit: nil,
+            options: TopListItemOptions()
         )
         print("elapsed: \((CFAbsoluteTimeGetCurrent() - startTime) * 1000) ms")
 

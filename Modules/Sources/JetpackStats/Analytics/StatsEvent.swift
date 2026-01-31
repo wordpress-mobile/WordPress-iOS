@@ -29,6 +29,9 @@ public enum StatsEvent {
     /// Subscribers tab shown
     case subscribersTabShown
 
+    /// Ads tab shown
+    case adsTabShown
+
     /// Post details screen shown
     case postDetailsScreenShown
 
@@ -44,6 +47,9 @@ public enum StatsEvent {
     /// Referrer stats screen shown
     case referrerStatsScreenShown
 
+    /// UTM metric stats screen shown
+    case utmMetricStatsScreenShown
+
     // MARK: - Date Range Events
 
     /// Date range preset selected
@@ -56,6 +62,18 @@ public enum StatsEvent {
     ///   - "start_date": Start date in ISO format
     ///   - "end_date": End date in ISO format
     case customDateRangeSelected
+
+    /// Date navigation button tapped (next/previous period)
+    /// - Parameters:
+    ///   - "direction": Direction of navigation ("next" or "previous")
+    ///   - "current_period_type": Type of current period (preset name or "custom")
+    case dateNavigationButtonTapped
+
+    /// Comparison period changed
+    /// - Parameters:
+    ///   - "from_period": Previous comparison period ("previous_period" or "previous_year")
+    ///   - "to_period": New comparison period
+    case comparisonPeriodChanged
 
     // MARK: - Card Events
 
@@ -75,6 +93,14 @@ public enum StatsEvent {
     ///   - "card_type": Type of card
     case cardRemoved
 
+    /// Card moved to a new position
+    /// - Parameters:
+    ///   - "card_type": Type of card
+    ///   - "action": Move action ("move_up", "move_down", "move_to_top", "move_to_bottom")
+    ///   - "from_index": Original position index
+    ///   - "to_index": New position index
+    case cardMoved
+
     // MARK: - Chart Events
 
     /// Chart type changed
@@ -82,6 +108,12 @@ public enum StatsEvent {
     ///   - "from_type": Previous chart type (e.g., "line", "bar")
     ///   - "to_type": New chart type
     case chartTypeChanged
+
+    /// Chart granularity changed
+    /// - Parameters:
+    ///   - "from": Previous granularity (e.g., "day", "week", "automatic")
+    ///   - "to": New granularity
+    case chartGranularityChanged
 
     /// Chart metric selected
     /// - Parameters:
@@ -95,6 +127,12 @@ public enum StatsEvent {
     ///   - "value": The value of the selected bar
     case chartBarSelected
 
+    /// Raw data view opened for a chart
+    /// - Parameters:
+    ///   - "card_type": Type of card showing the data
+    ///   - "metric": The metric being viewed
+    case rawDataViewed
+
     // MARK: - Today
 
     case todayCardTapped
@@ -106,6 +144,24 @@ public enum StatsEvent {
     ///   - "item_type": Type of item (e.g., "posts_and_pages", "authors", "locations", "referrers")
     ///   - "metric": The metric being sorted by
     case topListItemTapped
+
+    /// Location level changed in location drill-down
+    /// - Parameters:
+    ///   - "from_level": Previous level ("country", "region", or "city")
+    ///   - "to_level": New level
+    case locationLevelChanged
+
+    /// Device breakdown changed in device drill-down
+    /// - Parameters:
+    ///   - "from_breakdown": Previous breakdown ("screensize", "platform", or "browser")
+    ///   - "to_breakdown": New breakdown
+    case deviceBreakdownChanged
+
+    /// UTM parameter grouping changed
+    /// - Parameters:
+    ///   - "from_grouping": Previous grouping ("sourceMedium", "campaignSourceMedium", etc.)
+    ///   - "to_grouping": New grouping
+    case utmParamGroupingChanged
 
     // MARK: - Navigation Events
 
@@ -176,11 +232,13 @@ extension TopListItemType {
         case .authors: "authors"
         case .referrers: "referrers"
         case .locations: "locations"
+        case .devices: "devices"
         case .videos: "videos"
         case .externalLinks: "external_links"
         case .searchTerms: "search_terms"
         case .fileDownloads: "file_downloads"
         case .archive: "archive"
+        case .utm: "utm"
         }
     }
 }
@@ -197,6 +255,42 @@ extension SiteMetric {
         case .timeOnSite: "time_on_site"
         case .bounceRate: "bounce_rate"
         case .downloads: "downloads"
+        }
+    }
+}
+
+extension DateRangeGranularity {
+    /// Analytics tracking name for the granularity
+    var analyticsName: String {
+        switch self {
+        case .hour: "hour"
+        case .day: "day"
+        case .week: "week"
+        case .month: "month"
+        case .year: "year"
+        }
+    }
+}
+
+extension DateRangeComparisonPeriod {
+    /// Analytics tracking name for the comparison period
+    var analyticsName: String {
+        switch self {
+        case .precedingPeriod: "previous_period"
+        case .samePeriodLastYear: "previous_year"
+        case .off: "off"
+        }
+    }
+}
+
+extension MoveDirection {
+    /// Analytics tracking name for the move direction
+    var analyticsName: String {
+        switch self {
+        case .up: "move_up"
+        case .down: "move_down"
+        case .top: "move_to_top"
+        case .bottom: "move_to_bottom"
         }
     }
 }

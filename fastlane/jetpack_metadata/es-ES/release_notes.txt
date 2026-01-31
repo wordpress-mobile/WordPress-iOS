@@ -1,22 +1,31 @@
-¡Atención, creadores de contenido! Hemos trabajado duro para implementar algunos cambios importantes en la pantalla Ajustes de entrada.
+Nuestra función de soporte con IA, WordPress Intelligence, ahora está disponible en más idiomas y configuraciones regionales. El ayudante favorito de todos se ha vuelto mucho más práctico.
 
-- Hemos añadido el campo «Estado» que te ayuda a configurar rápidamente las entradas como «Borrador», «Pendiente», «Privada», «Programada» y «Publicada».
-- Hemos recuperado la sección «Fecha de publicación» para las entradas en borrador y pendientes. De esta manera, puedes elegir una fecha de publicación con antelación sin programar oficialmente la entrada.
-- El campo Contraseña utiliza una fuente diferente (Menlo, por si tenías curiosidad) para que sea más fácil leer caracteres que se parezcan.
-- Dale a tus seguidores un tratamiento VIP definiendo niveles de acceso a las entradas para todos los suscriptores, los suscriptores de pago y el público en general.
-- Activa o desactiva los comentarios y pingbacks de las entradas con los ajustes de «Debate».
+Hemos mejorado la sección de estadísticas aproximadamente un 83 %.
 
-Mientras hacíamos todo esto, llevamos a cabo otras actualizaciones útiles en varias áreas de la aplicación.
+- La tarjeta de ubicaciones te permite filtrar datos por país, región y ciudad. Estos datos coinciden con los de la versión web de Jetpack.
+- "Enlaces externos" ahora se llama "Clics", por coherencia con la versión web. Hemos corregido un error por el que esta área a veces se mostrara incorrectamente.
+- Puedes desactivar la comparación automática de datos y guardar ese ajuste para el uso de la aplicación a partir de ahora. Hemos corregido un problema por el que los datos semanales del periodo de comparación no siempre se mostraban correctamente.
+- Si mantienes pulsado un gráfico de barras, verás más detalles. El desplazamiento vertical también se ha corregido.
+- Puedes ver los datos de los gráficos de barras y de los gráficos de líneas agrupados por días, semanas, meses y años.
+- Los elementos superiores de la lista se ordenan por nombre y correctamente.
 
-- En la pantalla «Publicar», puedes activar «Enviar correo electrónico a los suscriptores» para avisar automáticamente a tus suscriptores cuando se publique una entrada. ¡Paren las rotativas!
-- El editor de slug dispone de una vista previa de los enlaces permanentes que muestra cómo se verá la URL final de una entrada.
-- Hemos añadido «Taxonomías» a Ajustes del sitio para que puedas gestionar los grupos de contenido a nivel de sitio.
-- Gracias a algunas correcciones de diseño en el selector de «Categorías», es más obvio que puedes elegir varias categorías para una entrada.
-- Los tamaños de archivo ahora se pueden ver en el área Detalles de medios del sitio. Ya no tendrás que hacer conjeturas.
+También hemos hecho muchos cambios en el Lector.
 
-¿Prefieres leer a publicar? No te preocupes, también hemos realizado cambios en el Lector.
+- Hay una nueva pestaña "Recién publicado" en la pantalla de Descubrir. También hemos sustituido la pestaña «Recomendado» por «Para ti».
+- Solo hay una opción de búsqueda en la barra lateral principal.
+- La vista «Leer más» funciona igual, independientemente del punto en el que la toques, y ahora puedes ver todo el extracto. Mucho más que explorar.
+- La sección de comentarios te permite responder y dar Me gusta a los comentarios directamente debajo del artículo. Hay un nuevo botón «Dejar comentario» debajo de los artículos para que sea más rápido hacer comentarios.
+- Puedes ver dos comentarios por defecto en lugar de solo uno, y los comentarios muy largos se pueden contraer para facilitar la lectura.
+- También hemos arreglado algunos problemas visuales de la sección de comentarios. Los comentarios ahora tienen la altura correcta, el botón «Ver todos los comentarios» destaca más y el botón «Enviar» tiene el estilo adecuado.
+- Puedes leer las entradas en tu idioma preferido gracias a la compatibilidad con la traducción en la aplicación.
+- Los espacios múltiples en los títulos de los sitios se convierten en uno solo para facilitar la lectura y la visualización.
 
-- Cuando los títulos de las entradas relacionadas sean demasiado largos, verás una versión más corta y truncada en su lugar.
-- Los títulos de las entradas ahora pueden tener tres líneas de texto en lugar de solo dos, lo que te da un 50 % más de contenido de calidad.
-- Los artículos tienen márgenes horizontales ligeramente más anchos.
-- Hemos solucionado varios errores que afectaban a la forma en la que se cargaban los artículos.
+Hemos realizado una actualización técnica que reduce el tamaño de tu aplicación en unos 6 MB. ¿Qué harás con todo este nuevo espacio?
+
+Es más fácil encontrar, ver y cambiar los ajustes de visibilidad de las entradas existentes. El botón «Listo» tampoco desaparecerá cuando establezcas la contraseña al publicar una entrada protegida con contraseña.
+
+Mejoras en el diseño: hemos actualizado los iconos de atajos y las ilustraciones para adaptarlos mejor al resto de la aplicación, así como a tu dispositivo.
+
+Hemos corregido un problema de modo que ahora las vistas previas de las entradas funcionan correctamente en determinados sitios que usan los planes Business y Commerce.
+
+Cuando añadas un nuevo sitio autoalojado, se te pedirá la contraseña de tu aplicación para autenticarte. Mantenla en secreto. Mantenla segura.

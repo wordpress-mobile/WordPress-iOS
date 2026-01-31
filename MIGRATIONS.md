@@ -3,6 +3,15 @@
 This file documents changes in the data model. Please explain any changes to the
 data model as well as any custom migrations.
 
+## WordPress 157
+
+@kean 2026-01-06
+
+- Add `useExcerpt` field to `ReaderPost`
+- Remove deprecated `ReaderSearchSuggestion`
+- Remove deprecated `QuickStartTourState`
+- Remove `quickStartTours` reference from `Blog` entity
+
 ## WordPress 156
 
 @kean 2025-10-08
@@ -471,6 +480,11 @@ data model as well as any custom migrations.
 
 - Add a new `UserSuggestion` entity
 - Add a one-to-many relationship between `Blog` and `UserSuggestion`
+
+
+# Decommissioned
+
+The models below were removed from the app on Jan 8th 2026 to reduce the app size and improve compile time.
 
 ## WordPress 99
 

@@ -84,15 +84,11 @@
    Insights 'Comments' header
    Label for number of comments.
    Label for Period Overview comments
-   Noun. Title. Links to the blog's Comments screen.
    Settings: Comment Sections
    Text for the 'comment' button when there are multiple comments
    Title for the Blog's Comments Section View
    Today's Stats 'Comments' label */
 "Comments" = "Hozzászólások";
-
-/* Section title for the configure table section in the blog details screen */
-"Configure" = "Beállítás";
 
 /* Verb. Title for Jetpack Restore confirm button. */
 "Confirm" = "Megerősítés";
@@ -106,9 +102,6 @@
 
 /* The button title text for creating a new account. */
 "Create Account" = "Fiók létrehozása";
-
-/* Action title. Noun. Opens the user's WordPress.com dashboard in an external browser. */
-"Dashboard" = "Vezérlőpult";
 
 /* Adjective. Comment threading is disabled. */
 "Disabled" = "Kikapcsolva";
@@ -221,9 +214,6 @@
 /* Message stating the minimum required version for Jetpack and asks the user if they want to upgrade */
 "Jetpack %@ or later is required. Do you want to update Jetpack?" = "Jetpack %@ vagy későbbi verzió szükséges. Frissítsük a Jetpack-et?";
 
-/* Noun. Title. Links to the blog's Settings screen. */
-"Jetpack Settings" = "Jetpack beállítások";
-
 /* Button shown if there are unsaved changes and the author cancelled editing a Comment.
    Goes back to editing the post. */
 "Keep Editing" = "Szerkesztés folytatása";
@@ -266,13 +256,11 @@
 
 /* Accessibility label for the Me button in My Site.
    Me page title
-   Noun. Title. Links to the Me screen.
    The accessibility value of the me tab.
    Title of the 'Me' tab - used for spotlight indexing on iOS. */
 "Me" = "Én";
 
-/* Noun. Title. Links to the blog's Media library.
-   Title for the media section in site settings screen
+/* Title for the media section in site settings screen
    Title label for the media settings section in the app settings */
 "Media" = "Média";
 
@@ -306,7 +294,6 @@
 "No Connection" = "Nincs kapcsolat";
 
 /* Displayed in the Notifications Tab as a title, when the Comments Filter shows no notifications
-   Displayed on the post details page when there are no post comments.
    Displayed when there are no comments in the Comments views. */
 "No comments yet" = "Nincsenek hozzászólások";
 
@@ -332,8 +319,7 @@
    Button title. An acknowledgement of the message displayed in a prompt.
    Dismisses the alert
    Menus: button title for finishing editing of a menu item.
-   Ok button for dismissing alert helping users understand their site address
-   OK Button title shown in alert informing users about the Reader Save for Later feature. */
+   Ok button for dismissing alert helping users understand their site address */
 "OK" = "OK";
 
 /* Disabled */
@@ -349,8 +335,7 @@
    Indicates an image will use its original size when uploaded. */
 "Original" = "Eredeti";
 
-/* Noun. Title. Links to the blog's Pages screen.
-   This is the section title
+/* This is the section title
    Title of the screen showing the list of pages for a blog. */
 "Pages" = "Oldalak";
 
@@ -389,7 +374,6 @@
 
 /* All Time Stats 'Posts' label
    Insights 'Posts' header
-   Noun. Title. Links to the blog's Posts screen.
    Title of the screen showing the list of posts for a blog. */
 "Posts" = "Bejegyzések";
 
@@ -406,8 +390,7 @@
 "Privacy Policy" = "Adatvédelmi irányelvek";
 
 /* Label for the publish (verb) button. Tapping publishes a draft post.
-   Publish post action on share extension site picker screen.
-   Section title for the publish table section in the blog details screen */
+   Publish post action on share extension site picker screen. */
 "Publish" = "Közzététel";
 
 /* Period Stats 'Published' header
@@ -539,7 +522,6 @@
 "Spam" = "Spam";
 
 /* Noun. Abbreviation of Statistics. Name of the Stats feature
-   Noun. Abbv. of Statistics. Links to a blog's Stats screen.
    Stats 3D Touch Shortcut
    Stats window title */
 "Stats" = "Statisztika";
@@ -643,9 +625,6 @@
    Theme View action title
    Verb. The screen title shown when viewing a post inside the app. */
 "View" = "Megtekintés";
-
-/* Action title. Opens the user's site in an in-app browser */
-"View Site" = "Honlap megtekintése";
 
 /* Accessibility label used for distinguishing Views and Visitors in the Stats → Views bar chart.
    All Time Stats 'Views' label

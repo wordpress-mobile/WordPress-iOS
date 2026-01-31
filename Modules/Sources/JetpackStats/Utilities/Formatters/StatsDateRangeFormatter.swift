@@ -31,10 +31,16 @@ struct StatsDateRangeFormatter {
     private let timeZone: TimeZone
     private let dateFormatter = DateFormatter()
     private let dateIntervalFormatter = DateIntervalFormatter()
+    private let now: @Sendable () -> Date
 
-    init(locale: Locale = .current, timeZone: TimeZone = .current) {
+    init(
+        locale: Locale = .current,
+        timeZone: TimeZone = .current,
+        now: @Sendable @escaping () -> Date = { Date() }
+    ) {
         self.locale = locale
         self.timeZone = timeZone
+        self.now = now
 
         dateFormatter.locale = locale
         dateFormatter.timeZone = timeZone
@@ -54,13 +60,14 @@ struct StatsDateRangeFormatter {
         return string(from: dateRange.dateInterval)
     }
 
-    func string(from interval: DateInterval, now: Date = Date()) -> String {
+    func string(from interval: DateInterval, now: Date? = nil) -> String {
         var calendar = Calendar.current
         calendar.timeZone = timeZone
 
         let startDate = interval.start
         let endDate = interval.end
-        let currentYear = calendar.component(.year, from: now)
+        let currentDate = now ?? self.now()
+        let currentYear = calendar.component(.year, from: currentDate)
 
         // Check if it's an entire year
         if let yearInterval = calendar.dateInterval(of: .year, for: startDate),

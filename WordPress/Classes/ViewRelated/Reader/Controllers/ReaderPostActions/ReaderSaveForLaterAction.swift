@@ -1,6 +1,7 @@
 import UIKit
 import WordPressData
 import WordPressFlux
+import WordPressUI
 
 /// Encapsulates saving a post for later
 final class ReaderSaveForLaterAction {
@@ -22,6 +23,10 @@ final class ReaderSaveForLaterAction {
         if let viewController, !post.isSavedForLater {
             let offlineReaderWebView = OfflineReaderWebView()
             offlineReaderWebView.saveForLater(post, viewController: viewController)
+        }
+
+        if let viewController, !post.isSavedForLater {
+            presentReaderSavedPostsAlertControllerIfNecessary(from: viewController)
         }
 
         trackSaveAction(for: post, origin: origin)
@@ -91,4 +96,23 @@ final class ReaderSaveForLaterAction {
         ActionDispatcher.dispatch(NoticeAction.post(notice))
     }
 
+    private func presentReaderSavedPostsAlertControllerIfNecessary(from origin: UIViewController) {
+        guard !UserPersistentStoreFactory.instance().savedPostsPromoWasDisplayed else {
+            return
+        }
+        UserPersistentStoreFactory.instance().savedPostsPromoWasDisplayed = true
+
+        let alert = AlertView {
+            AlertHeaderView(
+                title: NSLocalizedString("reader.saveForLaterAlert.title", value: "Save Posts for Later", comment: "Title of alert informing users about the Reader Save for Later feature."),
+                description: NSLocalizedString("reader.saveForLaterAlert.description", value: "Save this post, and come back to read it whenever you'd like. It will only be available on this device — saved posts don't sync to other devices.", comment: "Body text of alert informing users about the Reader Save for Later feature.")
+            )
+        } content: {
+            ScaledImage("wpl-bookmark", height: 78)
+                .foregroundStyle(.secondary)
+        } actions: {
+            AlertDismissButton()
+        }
+        alert.present(in: origin)
+    }
 }

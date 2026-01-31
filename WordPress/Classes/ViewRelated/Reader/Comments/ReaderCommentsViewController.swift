@@ -52,6 +52,7 @@ final class ReaderCommentsViewController: UIViewController, WPContentSyncHelperD
     init(post: ReaderPost) {
         self.post = post
         super.init(nibName: nil, bundle: nil)
+        helper.isP2Site = post.isP2Type
     }
 
     init(postID: NSNumber, siteID: NSNumber) {
@@ -120,22 +121,6 @@ final class ReaderCommentsViewController: UIViewController, WPContentSyncHelperD
         activityIndicator.pinCenter()
     }
 
-    private func makeEmptyStateView(title: String, imageName: String?, description: String?) -> UIView {
-        UIHostingView(view: EmptyStateView(label: {
-            if let imageName {
-                Label(title, image: imageName)
-            } else {
-                Text(title)
-            }
-        }, description: {
-            if let description {
-                Text(description)
-            }
-        }, actions: {
-            EmptyView()
-        }))
-    }
-
     func getHeaderView() -> UIView? {
         guard allowsPushingPostDetails, let post else {
             return nil
@@ -173,6 +158,7 @@ final class ReaderCommentsViewController: UIViewController, WPContentSyncHelperD
 
     private func configure(with post: ReaderPost) {
         self.post = post
+        helper.isP2Site = post.isP2Type
 
         if post.isWPCom || post.isJetpack {
             let tableVC = ReaderCommentsTableViewController(post: post)
@@ -225,7 +211,7 @@ final class ReaderCommentsViewController: UIViewController, WPContentSyncHelperD
             if let error = fetchCommentsError, error.domain == WordPressComRestApiErrorDomain && error.code == WordPressComRestApiErrorCode.authorizationRequired.rawValue {
                 subtitle = Strings.noPermission
             }
-            let emptyStateView = makeEmptyStateView(title: title, imageName: "wp-illustration-reader-empty", description: subtitle)
+            let emptyStateView = UIHostingView(view: EmptyStateView(title, scaledImage: "wpl-comment", description: subtitle))
             view.insertSubview(emptyStateView, belowSubview: buttonAddComment)
             emptyStateView.pinEdges()
             self.emptyStateView = emptyStateView
@@ -303,16 +289,15 @@ final class ReaderCommentsViewController: UIViewController, WPContentSyncHelperD
         guard let post else {
             return wpAssertionFailure("post missing")
         }
-        let viewModel = CommentCreateViewModel(post: post) { [weak self] in
-            try await self?.sendComment($0)
-        }
+        let viewModel = CommentCreateViewModel(post: post)
         showCommentComposer(viewModel: viewModel)
     }
 
     func didTapReply(comment: Comment) {
-        let viewModel = CommentCreateViewModel(replyingTo: comment) { [weak self] in
-            try await self?.sendComment($0, comment: comment)
+        guard let post else {
+            return wpAssertionFailure("post missing")
         }
+        let viewModel = CommentCreateViewModel(post: post, replyingTo: comment)
         showCommentComposer(viewModel: viewModel)
     }
 
@@ -467,24 +452,6 @@ final class ReaderCommentsViewController: UIViewController, WPContentSyncHelperD
         }
         WPAnalytics.trackReader(.readerArticleCommentsOpened, properties: properties)
     }
-
-    private func trackReply(isReplyingToComment: Bool) {
-        guard let post else { return }
-
-        var properties: [String: Any] = [
-            WPAppAnalyticsKeyBlogID: post.siteID ?? 0,
-            WPAppAnalyticsKeyPostID: post.postID ?? 0,
-            WPAppAnalyticsKeyIsJetpack: post.isJetpack,
-            WPAppAnalyticsKeyReplyingTo: isReplyingToComment ? "comment" : "post"
-        ]
-
-        if let feedID = post.feedID, let feedItemID = post.feedItemID {
-            properties[WPAppAnalyticsKeyFeedID] = feedID
-            properties[WPAppAnalyticsKeyFeedItemID] = feedItemID
-        }
-
-        WPAnalytics.trackReaderStat(.readerArticleCommentedOn, properties: properties)
-    }
 }
 
 extension ReaderCommentsViewController {
@@ -492,31 +459,6 @@ extension ReaderCommentsViewController {
         let composerVC = CommentCreateViewController(viewModel: viewModel)
         let navigationVC = UINavigationController(rootViewController: composerVC)
         present(navigationVC, animated: true)
-    }
-
-    @MainActor
-    func sendComment(_ content: String, comment: Comment? = nil) async throws {
-        guard let post = self.post else {
-            throw URLError(.unknown)
-        }
-        return try await withUnsafeThrowingContinuation { [weak self] continuation in
-            let service = CommentService(coreDataStack: ContextManager.shared)
-            if let comment {
-                service.replyToHierarchicalComment(withID: comment.commentID as NSNumber, post: post, content: content) {
-                    self?.trackReply(isReplyingToComment: true)
-                    continuation.resume()
-                } failure: {
-                    continuation.resume(throwing: $0 ?? URLError(.unknown))
-                }
-            } else {
-                service.reply(to: post, content: content) {
-                    self?.trackReply(isReplyingToComment: false)
-                    continuation.resume()
-                } failure: {
-                    continuation.resume(throwing: $0 ?? URLError(.unknown))
-                }
-            }
-        }
     }
 }
 

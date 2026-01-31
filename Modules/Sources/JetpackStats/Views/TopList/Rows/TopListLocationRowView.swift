@@ -13,7 +13,7 @@ struct TopListLocationRowView: View {
                     .font(.body)
                     .foregroundStyle(.secondary)
             }
-            Text(item.country)
+            Text(item.name)
                 .font(.body)
                 .foregroundColor(.primary)
         }

@@ -2,18 +2,19 @@ import Foundation
 import GutenbergKit
 import WordPressData
 import WordPressShared
+import Support
 
 extension EditorConfiguration {
-    init(blog: Blog, keychain: KeychainAccessible = KeychainUtils()) {
+    init(blog: Blog, postType: String = "post", keychain: KeychainAccessible = KeychainUtils()) {
         let selfHostedApiUrl = blog.restApiRootURL ?? blog.url(withPath: "wp-json/")
         let applicationPassword = try? blog.getApplicationToken(using: keychain)
         let shouldUseWPComRestApi = applicationPassword == nil && blog.isAccessibleThroughWPCom()
 
-        let siteApiRoot: String?
+        let siteApiRootString: String?
         if applicationPassword != nil {
-            siteApiRoot = selfHostedApiUrl
+            siteApiRootString = selfHostedApiUrl
         } else {
-            siteApiRoot = shouldUseWPComRestApi ? blog.wordPressComRestApi?.baseURL.absoluteString : selfHostedApiUrl
+            siteApiRootString = shouldUseWPComRestApi ? blog.wordPressComRestApi?.baseURL.absoluteString : selfHostedApiUrl
         }
 
         let siteId = blog.dotComID?.stringValue
@@ -38,7 +39,15 @@ extension EditorConfiguration {
             siteApiNamespace.append("sites/\(siteDomain)/")
         }
 
-        var builder = EditorConfigurationBuilder()
+        // Convert to URL types (required by new GutenbergKit API)
+        let siteURL = blog.url.flatMap { URL(string: $0) } ?? URL(string: "https://example.com")!
+        let siteApiRoot = siteApiRootString.flatMap { URL(string: $0) } ?? URL(string: "https://example.com/wp-json")!
+
+        var builder = EditorConfigurationBuilder(
+            postType: postType,
+            siteURL: siteURL,
+            siteApiRoot: siteApiRoot
+        )
             .setSiteApiNamespace(siteApiNamespace)
             .setNamespaceExcludedPaths(["/wpcom/v2/following/recommendations", "/wpcom/v2/following/mine"])
             .setAuthHeader(authHeader)
@@ -46,24 +55,16 @@ extension EditorConfiguration {
             // Limited to Jetpack-connected sites until editor assets endpoint is available in WordPress core
             .setShouldUsePlugins(Self.shouldEnablePlugins(for: blog, appPassword: applicationPassword))
             .setLocale(WordPressComLanguageDatabase.shared.deviceLanguage.slug)
+            .setEnableNetworkLogging(ExtensiveLogging.enabled)
 
-        if let blogUrl = blog.url {
-            builder = builder.setSiteUrl(blogUrl)
+        // Build editor assets endpoint
+        var editorAssetsEndpoint = siteApiRoot
+        editorAssetsEndpoint.appendPathComponent("wpcom/v2/")
+        if let namespace = siteApiNamespace.first {
+            editorAssetsEndpoint.appendPathComponent(namespace)
         }
-
-        if let siteApiRoot {
-            builder = builder.setSiteApiRoot(siteApiRoot)
-
-            if var editorAssetsEndpoint = URL(string: siteApiRoot) {
-                editorAssetsEndpoint.appendPathComponent("wpcom/v2/")
-                if let namespace = siteApiNamespace.first {
-                    editorAssetsEndpoint.appendPathComponent(namespace)
-                }
-
-                editorAssetsEndpoint.appendPathComponent("editor-assets")
-                builder = builder.setEditorAssetsEndpoint(editorAssetsEndpoint)
-            }
-        }
+        editorAssetsEndpoint.appendPathComponent("editor-assets")
+        builder = builder.setEditorAssetsEndpoint(editorAssetsEndpoint)
 
         self = builder.build()
     }

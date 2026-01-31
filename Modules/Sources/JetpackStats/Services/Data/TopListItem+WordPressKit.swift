@@ -30,10 +30,28 @@ extension TopListItem.Referrer {
 extension TopListItem.Location {
     init(_ country: WordPressKit.StatsCountry) {
         self.init(
-            country: country.name,
+            name: country.name,
             flag: Self.countryCodeToEmoji(country.code),
             countryCode: country.code,
             metrics: SiteMetricsSet(views: country.viewsCount)
+        )
+    }
+
+    init(_ region: WordPressKit.StatsTopRegionTimeIntervalData.Region) {
+        self.init(
+            name: region.name,
+            flag: Self.countryCodeToEmoji(region.countryCode),
+            countryCode: region.countryCode,
+            metrics: SiteMetricsSet(views: region.viewsCount)
+        )
+    }
+
+    init(_ city: WordPressKit.StatsTopCityTimeIntervalData.City) {
+        self.init(
+            name: city.name,
+            flag: Self.countryCodeToEmoji(city.countryCode),
+            countryCode: city.countryCode,
+            metrics: SiteMetricsSet(views: city.viewsCount)
         )
     }
 
@@ -48,6 +66,16 @@ extension TopListItem.Location {
     }
 }
 
+extension TopListItem.Device {
+    init(_ item: WordPressKit.StatsDeviceItem, breakdown: DeviceBreakdown) {
+        self.init(
+            name: item.name,
+            breakdown: breakdown,
+            metrics: SiteMetricsSet(views: Int(item.value))
+        )
+    }
+}
+
 extension TopListItem.Author {
     init(_ author: WordPressKit.StatsTopAuthor, dateFormatter: DateFormatter) {
         self.init(
@@ -57,6 +85,17 @@ extension TopListItem.Author {
             metrics: SiteMetricsSet(views: author.viewsCount),
             avatarURL: author.iconURL,
             posts: author.posts.map { TopListItem.Post($0, dateFormatter: dateFormatter) }
+        )
+    }
+}
+
+extension TopListItem.UTMMetric {
+    init(_ utmMetric: WordPressKit.StatsUTMMetric, dateFormatter: DateFormatter) {
+        self.init(
+            label: utmMetric.label,
+            values: utmMetric.values,
+            metrics: SiteMetricsSet(views: utmMetric.viewsCount),
+            posts: utmMetric.posts.map { TopListItem.Post($0, dateFormatter: dateFormatter) }
         )
     }
 }

@@ -1,11 +1,13 @@
 import Foundation
 
-enum DateRangeGranularity: Comparable {
+enum DateRangeGranularity: Comparable, CaseIterable, Identifiable {
     case hour
     case day
     case week
     case month
     case year
+
+    var id: Self { self }
 }
 
 extension DateInterval {
@@ -21,7 +23,7 @@ extension DateInterval {
         if totalDays <= 1 {
             return .hour
         }
-        // For ranges 2-90 days: show daily data (2-90 points)
+        // For ranges 2-31 days: show daily data (2-31 points)
         else if totalDays <= 31 {
             return .day
         }
@@ -40,6 +42,16 @@ extension DateInterval {
 }
 
 extension DateRangeGranularity {
+    var localizedTitle: String {
+        switch self {
+        case .hour: Strings.Granularity.hour
+        case .day: Strings.Granularity.day
+        case .week: Strings.Granularity.week
+        case .month: Strings.Granularity.month
+        case .year: Strings.Granularity.year
+        }
+    }
+
     /// Components needed to aggregate data at this granularity
     var calendarComponents: Set<Calendar.Component> {
         switch self {
@@ -59,6 +71,18 @@ extension DateRangeGranularity {
         case .week: .weekOfYear
         case .month: .month
         case .year: .year
+        }
+    }
+
+    /// Preferred quantity of data points to fetch for this granularity.
+    /// Used by legacy APIs that accept a date and quantity instead of date periods.
+    var preferredQuantity: Int {
+        switch self {
+        case .hour: 24
+        case .day: 14
+        case .week: 12
+        case .month: 12
+        case .year: 6
         }
     }
 }

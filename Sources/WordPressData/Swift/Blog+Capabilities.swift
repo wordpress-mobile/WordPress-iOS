@@ -6,6 +6,7 @@ extension Blog {
     /// Enumeration that contains all of the Blog's available capabilities.
     ///
     public enum Capability: String {
+        case ActivateWordAds = "activate_wordads"
         case DeleteOthersPosts = "delete_others_posts"
         case DeletePosts = "delete_posts"
         case EditOthersPages = "edit_others_pages"
@@ -69,6 +70,18 @@ extension Blog {
     ///
     @objc public func isViewingStatsAllowed() -> Bool {
         return isAdmin || isUserCapableOf(.ViewStats)
+    }
+
+    /// Returns true if the current user is allowed to use WordAds
+    ///
+    @objc public func isWordAdsAllowed() -> Bool {
+        return isUserCapableOf(.ActivateWordAds)
+    }
+
+    /// Returns true if WordAds is actually active on the site
+    ///
+    @objc public func isWordAdsActive() -> Bool {
+        return getOption(name: "wordads") ?? false
     }
 
     private func isUserCapableOf(_ capability: String) -> Bool {

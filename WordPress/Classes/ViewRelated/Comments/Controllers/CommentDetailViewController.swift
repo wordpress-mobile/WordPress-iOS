@@ -216,6 +216,10 @@ public class CommentDetailViewController: UIViewController, NoResultsViewHost {
         self.managedObjectContext = managedObjectContext
 
         super.init(nibName: nil, bundle: nil)
+
+        if let post = comment.post as? ReaderPost {
+            helper.isP2Site = post.isP2Type
+        }
     }
 
     init(comment: Comment,
@@ -229,6 +233,10 @@ public class CommentDetailViewController: UIViewController, NoResultsViewHost {
         self.managedObjectContext = managedObjectContext
 
         super.init(nibName: nil, bundle: nil)
+
+        if let post = comment.post as? ReaderPost {
+            helper.isP2Site = post.isP2Type
+        }
     }
 
     public required init?(coder: NSCoder) {

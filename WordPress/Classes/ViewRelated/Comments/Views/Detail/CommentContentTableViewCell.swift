@@ -82,6 +82,8 @@ final class CommentContentTableViewCell: UITableViewCell, NibReusable {
     @IBOutlet private weak var contentContainerView: UIView!
     @IBOutlet private weak var contentContainerHeightConstraint: NSLayoutConstraint!
 
+    private var showMoreOverlay: CommentContentShowMoreOverlay?
+
     @IBOutlet private weak var replyButton: UIButton!
     @IBOutlet private weak var likeButton: UIButton!
 
@@ -100,6 +102,10 @@ final class CommentContentTableViewCell: UITableViewCell, NibReusable {
     private var helper: ReaderCommentsHelper?
     private var viewModel: CommentCellViewModel?
     private var cancellables: [AnyCancellable] = []
+
+    private static let maxCollapsedHeight: CGFloat = 280
+    private var fullContentHeight: CGFloat?
+    private var isContentExpanded: Bool = false
 
     // MARK: Like Button State
 
@@ -140,6 +146,10 @@ final class CommentContentTableViewCell: UITableViewCell, NibReusable {
         contentLinkTapAction = nil
 
         onContentLoaded = nil
+
+        fullContentHeight = nil
+        isContentExpanded = false
+        showMoreOverlay?.isHidden = true
     }
 
     override func awakeFromNib() {
@@ -164,6 +174,7 @@ final class CommentContentTableViewCell: UITableViewCell, NibReusable {
         self.comment = comment
         self.viewModel = viewModel
         self.helper = helper
+        self.isContentExpanded = helper.isCommentExpanded(comment.objectID)
         self.onContentLoaded = onContentLoaded
 
         viewModel.$state.sink { [weak self] in
@@ -189,8 +200,6 @@ final class CommentContentTableViewCell: UITableViewCell, NibReusable {
     ///   - onContentLoaded: Callback to be called once the content has been loaded. Provides the new content height as parameter.
     func configureForPostDetails(with comment: Comment, helper: ReaderCommentsHelper, onContentLoaded: ((CGFloat) -> Void)?) {
         configure(viewModel: CommentCellViewModel(comment: comment), helper: helper, onContentLoaded: onContentLoaded)
-
-        hideActions()
 
         containerStackLeadingConstraint.constant = 0
         containerStackTrailingConstraint.constant = 0
@@ -258,14 +267,10 @@ final class CommentContentTableViewCell: UITableViewCell, NibReusable {
 
 extension CommentContentTableViewCell: CommentContentRendererDelegate {
     func renderer(_ renderer: CommentContentRenderer, asyncRenderCompletedWithHeight height: CGFloat, comment: String) {
-        if let constraint = contentContainerHeightConstraint {
-            if height != constraint.constant {
-                constraint.constant = height
-                helper?.setCachedContentHeight(height, for: comment)
-                onContentLoaded?(height) // We had the right size from the get-go
-            }
-        } else {
-            wpAssertionFailure("constraint missing")
+        if height != fullContentHeight {
+            helper?.setCachedContentHeight(height, for: comment)
+            configureContentView(contentHeight: height)
+            onContentLoaded?(height)
         }
     }
 
@@ -401,6 +406,24 @@ private extension CommentContentTableViewCell {
         dateLabel?.textColor = style.dateTextColor
     }
 
+    private func getShowMoreOverlay() -> UIView {
+        if let showMoreOverlay {
+            return showMoreOverlay
+        }
+
+        let overlay = CommentContentShowMoreOverlay()
+        overlay.onTap = { [weak self] in
+            self?.showMoreButtonTapped()
+        }
+        contentView.addSubview(overlay)
+        overlay.pinEdges([.horizontal, .bottom], to: contentContainerView)
+        NSLayoutConstraint.activate([
+            overlay.heightAnchor.constraint(equalToConstant: 70)
+        ])
+        showMoreOverlay = overlay
+        return overlay
+    }
+
     private func configureAvatar(with avatar: CommentCellViewModel.Avatar?) {
         guard let avatar else {
             avatarImageView.wp.prepareForReuse()
@@ -448,12 +471,7 @@ private extension CommentContentTableViewCell {
             return renderer
         }()
 
-        // reset height constraint to handle cases where the new content requires the webview to shrink.
-        contentContainerHeightConstraint?.isActive = true
-        // - warning: It's important to set height to the minimum supported
-        // value because `WKWebView` can only increase the content height and
-        // never decreases it when the content changes.
-        contentContainerHeightConstraint?.constant = helper.getCachedContentHeight(for: content) ?? 20
+        configureContentView(contentHeight: helper.getCachedContentHeight(for: content))
 
         let contentView = renderer.view
         if contentContainerView.subviews.first != contentView {
@@ -462,7 +480,43 @@ private extension CommentContentTableViewCell {
             contentContainerView?.addSubview(contentView)
             contentView.pinEdges()
         }
+
         renderer.render(comment: content)
+    }
+
+    /// Updates the height of the content view according to the content
+    /// height (if known).
+    private func configureContentView(contentHeight: CGFloat?) {
+        fullContentHeight = contentHeight
+
+        // - warning: It's important to set height to the minimum supported
+        // value because `WKWebView` can only increase the content height whe
+        // calculating content size (it will never decrease it).
+        let minContentHeight: CGFloat = 20
+        let effectiveContentHeight = contentHeight ?? minContentHeight
+
+        // P2 sites have a much higher percentage of long comments, so we can't
+        // collapse them as much as for regular posts
+        let threshold: CGFloat = (helper?.isP2Site ?? false) ? 280 : 120
+        if let contentHeight, contentHeight < Self.maxCollapsedHeight + threshold {
+            // Expand automatically if the margin it too close, so there is no
+            // point hiding a few pixels
+            isContentExpanded = true
+        }
+        let displayHeight = isContentExpanded ? effectiveContentHeight : min(effectiveContentHeight, Self.maxCollapsedHeight)
+
+        contentContainerHeightConstraint?.constant = displayHeight
+
+        let isActuallyExpanded = displayHeight >= effectiveContentHeight
+        setShowMoreOverlayHidden(isActuallyExpanded)
+    }
+
+    private func setShowMoreOverlayHidden(_ isHidden: Bool) {
+        if isHidden {
+            showMoreOverlay?.isHidden = true
+        } else {
+            getShowMoreOverlay().isHidden = false
+        }
     }
 
     // MARK: Button Actions
@@ -502,6 +556,19 @@ private extension CommentContentTableViewCell {
         } else {
             viewModel.buttonLikeTapped()
         }
+    }
+
+    @objc func showMoreButtonTapped() {
+        guard let fullContentHeight else {
+            return wpAssertionFailure("Invalid state")
+        }
+        isContentExpanded = true
+        if let commentID = viewModel?.comment.objectID {
+            helper?.setCommentExpanded(commentID, isExpanded: true)
+        }
+        contentContainerHeightConstraint?.constant = fullContentHeight
+        setShowMoreOverlayHidden(true)
+        onContentLoaded?(fullContentHeight)
     }
 }
 

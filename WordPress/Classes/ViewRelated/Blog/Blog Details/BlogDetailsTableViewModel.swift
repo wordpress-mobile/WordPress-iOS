@@ -4,6 +4,7 @@ import WordPressLegacy
 import WordPressShared
 import WordPressSharedObjC
 import WordPressUI
+import Support
 
 private struct Section {
     let title: String?
@@ -76,6 +77,7 @@ private struct Section {
         tableView.register(MigrationSuccessCell.self, forCellReuseIdentifier: CellIdentifiers.migrationSuccess)
         tableView.register(JetpackBrandingMenuCardCell.self, forCellReuseIdentifier: CellIdentifiers.jetpackBrandingCard)
         tableView.register(JetpackRemoteInstallTableViewCell.self, forCellReuseIdentifier: CellIdentifiers.jetpackInstall)
+        tableView.register(ExtensiveLoggingCell.self, forCellReuseIdentifier: CellIdentifiers.extensiveLogging)
 
         tableView.delegate = self
         tableView.dataSource = self
@@ -98,6 +100,10 @@ private struct Section {
 
         if viewController.shouldShowTopJetpackBrandingMenuCard {
             newSections.append(Section(rows: [], category: .jetpackBrandingCard))
+        }
+
+        if blog.isSelfHosted, ExtensiveLogging.enabled {
+            newSections.append(Section(rows: [], category: .extensiveLogging))
         }
 
         if viewController.isDashboardEnabled() && isSplitViewDisplayed {
@@ -237,7 +243,7 @@ extension BlogDetailsTableViewModel: UITableViewDataSource {
         guard section < sections.count else { return 0 }
 
         switch sections[section].category {
-        case .jetpackInstallCard, .migrationSuccess, .jetpackBrandingCard:
+        case .jetpackInstallCard, .migrationSuccess, .jetpackBrandingCard, .extensiveLogging:
             // The "card" sections do not set the `rows` property. It's hard-coded to show specific types of cards.
             wpAssert(sections[section].rows.count == 0)
             return 1
@@ -261,6 +267,8 @@ extension BlogDetailsTableViewModel: UITableViewDataSource {
             cell = configureMigrationSuccessCell(tableView: tableView)
         case .jetpackBrandingCard:
             cell = configureJetpackBrandingCell(tableView: tableView)
+        case .extensiveLogging:
+            cell = configureExtensiveLoggingCell(tableView: tableView)
         default:
             if indexPath.row < section.rows.count {
                 let row = section.rows[indexPath.row]
@@ -469,6 +477,18 @@ private extension BlogDetailsTableViewModel {
         guard let cell = tableView.dequeueReusableCell(
             withIdentifier: CellIdentifiers.jetpackBrandingCard
         ) as? JetpackBrandingMenuCardCell,
+              let viewController else {
+            return UITableViewCell()
+        }
+
+        cell.configure(with: viewController)
+        return cell
+    }
+
+    func configureExtensiveLoggingCell(tableView: UITableView) -> UITableViewCell {
+        guard let cell = tableView.dequeueReusableCell(
+            withIdentifier: CellIdentifiers.extensiveLogging
+        ) as? ExtensiveLoggingCell,
               let viewController else {
             return UITableViewCell()
         }
@@ -806,6 +826,7 @@ enum BlogDetailsUserInfoKeys {
 private enum SectionCategory {
     case reminders
     case domainCredit
+    case extensiveLogging
     case home
     case general
     case jetpack
@@ -1471,4 +1492,5 @@ private enum CellIdentifiers {
     static let migrationSuccess = "BlogDetailsMigrationSuccessCellIdentifier"
     static let jetpackBrandingCard = "BlogDetailsJetpackBrandingCardCellIdentifier"
     static let jetpackInstall = "BlogDetailsJetpackInstallCardCellIdentifier"
+    static let extensiveLogging = "BlogDetailsExtensiveLoggingCellIdentifier"
 }

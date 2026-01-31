@@ -78,6 +78,12 @@ extension ReaderDetailHeaderHostingView {
                             completion: refreshContainerLayout)
     }
 
+    func configure(for post: ReaderPost, title: String?) {
+        viewModel.configure(with: TaggedManagedObjectID(post),
+                            customTitle: title,
+                            completion: refreshContainerLayout)
+    }
+
     func refreshFollowButton() {
         viewModel.refreshFollowState()
     }
@@ -142,6 +148,10 @@ class ReaderDetailHeaderViewModel: ObservableObject {
     }
 
     func configure(with objectID: TaggedManagedObjectID<ReaderPost>, completion: (() -> Void)?) {
+        configure(with: objectID, customTitle: nil, completion: completion)
+    }
+
+    func configure(with objectID: TaggedManagedObjectID<ReaderPost>, customTitle: String?, completion: (() -> Void)?) {
         postObjectID = objectID
         coreDataStack.performQuery { [weak self] context -> Void in
             guard let self,
@@ -170,7 +180,7 @@ class ReaderDetailHeaderViewModel: ObservableObject {
             // context: https://github.com/wordpress-mobile/WordPress-iOS/pull/21674#issuecomment-1747202728
             self.showsAuthorName = self.authorName != self.siteName && !self.authorName.isEmpty
 
-            self.postTitle = post.titleForDisplay()
+            self.postTitle = customTitle ?? post.titleForDisplay()
             self.likeCount = post.likeCount?.intValue
             self.commentCount = post.commentCount?.intValue
             self.tags = post.tagsForDisplay() ?? []

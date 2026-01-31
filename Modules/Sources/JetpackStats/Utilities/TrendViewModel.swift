@@ -3,11 +3,18 @@ import SwiftUI
 
 /// Represents a change from the current to the previous value and determines
 /// a trend: is it a positive change, what's the percentage, etc.
-struct TrendViewModel: Hashable {
+struct TrendViewModel: Equatable {
     let currentValue: Int
     let previousValue: Int
-    let metric: SiteMetric
+    let metric: any MetricType
     var context: StatsValueFormatter.Context = .compact
+
+    static func == (lhs: TrendViewModel, rhs: TrendViewModel) -> Bool {
+        lhs.currentValue == rhs.currentValue &&
+        lhs.previousValue == rhs.previousValue &&
+        lhs.context == rhs.context &&
+        String(describing: type(of: lhs.metric)) == String(describing: type(of: rhs.metric))
+    }
 
     /// The sign prefix for the change value.
     var sign: String {
@@ -75,7 +82,7 @@ struct TrendViewModel: Hashable {
     }
 
     private func formattedValue(_ value: Int) -> String {
-        StatsValueFormatter(metric: metric)
+        metric.makeValueFormatter()
             .format(value: value, context: context)
     }
 

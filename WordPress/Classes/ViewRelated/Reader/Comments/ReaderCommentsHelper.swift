@@ -1,4 +1,5 @@
 import Foundation
+import CoreData
 import WordPressReader
 import WordPressUI
 
@@ -6,6 +7,9 @@ import WordPressUI
 @MainActor
 @objc class ReaderCommentsHelper: NSObject {
     private var contentHeights: [String: CGFloat] = [:]
+    private var expandedComments: Set<NSManagedObjectID> = []
+
+    var isP2Site: Bool = false
 
     func makeWebRenderer() -> WebCommentContentRenderer {
         let renderer = WebCommentContentRenderer()
@@ -23,5 +27,17 @@ import WordPressUI
 
     func resetCachedContentHeights() {
         contentHeights.removeAll()
+    }
+
+    func isCommentExpanded(_ commentID: NSManagedObjectID) -> Bool {
+        expandedComments.contains(commentID)
+    }
+
+    func setCommentExpanded(_ commentID: NSManagedObjectID, isExpanded: Bool) {
+        if isExpanded {
+            expandedComments.insert(commentID)
+        } else {
+            expandedComments.remove(commentID)
+        }
     }
 }

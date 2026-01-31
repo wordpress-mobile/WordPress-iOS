@@ -1,4 +1,5 @@
 import Foundation
+import UIKit
 import AsyncImageKit
 import WordPressCoreProtocols
 
@@ -59,6 +60,10 @@ public final class SupportDataProvider: ObservableObject, Sendable {
     // Delegate Methods
     public func userDid(_ action: SupportFormAction) {
         self.supportDelegate?.userDid(action)
+    }
+
+    public func extensiveLogsViewController() -> UIViewController {
+        self.supportDelegate?.extensionLogsViewController() ?? UIViewController()
     }
 
     // Support Bots Data Source
@@ -222,6 +227,8 @@ extension SupportFormDataProvider {
 
 public protocol SupportDelegate: NSObject {
     func userDid(_ action: SupportFormAction)
+
+    func extensionLogsViewController() -> UIViewController
 }
 
 public enum SupportUserPermission: Sendable, Codable {

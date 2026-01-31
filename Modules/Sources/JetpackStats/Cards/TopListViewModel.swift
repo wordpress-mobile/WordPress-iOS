@@ -8,7 +8,7 @@ final class TopListViewModel: ObservableObject, TrafficCardViewModel {
     let groupedItems: [[TopListItemType]]
 
     var title: String {
-        selection.item.getTitle(for: selection.metric)
+        selection.item.localizedTitle
     }
 
     @Published private(set) var configuration: TopListCardConfiguration {
@@ -27,7 +27,8 @@ final class TopListViewModel: ObservableObject, TrafficCardViewModel {
     @Published private(set) var isLoading = true
     @Published private(set) var loadingError: Error?
     @Published private(set) var isStale = false
-    @Published private(set) var cachedCountriesMapData: CountriesMapData?
+    @Published private(set) var countriesMapData: CountriesMapData?
+    @Published private(set) var pieChartData: PieChartData?
 
     @Published var isEditing = false
 
@@ -50,10 +51,12 @@ final class TopListViewModel: ObservableObject, TrafficCardViewModel {
     struct Selection: Equatable, Sendable {
         var item: TopListItemType
         var metric: SiteMetric
+        var options = TopListItemOptions()
     }
 
     enum Filter: Equatable {
         case author(userId: String)
+        case utmMetric(values: [String])
     }
 
     var isFirstLoad: Bool { isLoading && data == nil }
@@ -81,15 +84,16 @@ final class TopListViewModel: ObservableObject, TrafficCardViewModel {
         self.data = initialData
         self.isLoading = initialData == nil
 
-        self.groupedItems = {
-            let primary = service.supportedItems.filter {
-                !TopListItemType.secondaryItems.contains($0)
-            }
-            let secondary = service.supportedItems.filter {
-                TopListItemType.secondaryItems.contains($0)
-            }
-            return [primary, secondary]
-        }()
+        let supportedItems = Set(service.supportedItems)
+        self.groupedItems = [
+            TopListItemType.contentItems,
+            TopListItemType.trafficSourceItems,
+            TopListItemType.audienceEngagementItems
+        ].map {
+            $0.filter(supportedItems.contains)
+        }.filter {
+            !$0.isEmpty
+        }
     }
 
     func updateConfiguration(_ newConfiguration: TopListCardConfiguration) {
@@ -160,22 +164,43 @@ final class TopListViewModel: ObservableObject, TrafficCardViewModel {
             // Check for cancellation before updating the state
             try Task.checkCancellation()
 
+            // Fetch country-level data for map if viewing regions or cities
+            var mapData: CountriesMapData?
+            if selection.item == .locations {
+                if selection.options.locationLevel == .countries {
+                    // Use the main data for countries
+                    mapData = createCountriesMapData(from: data)
+                } else {
+                    // Fetch separate country-level data for regions/cities
+                    var countriesSelection = selection
+                    countriesSelection.options.locationLevel = .countries
+                    let countriesData = try await getTopListData(for: countriesSelection, dateRange: dateRange)
+                    mapData = createCountriesMapData(from: countriesData)
+                }
+            }
+
+            // Create pie chart data for devices
+            var pieData: PieChartData?
+            if selection.item == .devices {
+                pieData = PieChartData(items: data.items, metric: selection.metric)
+            }
+
+            // Check for cancellation before updating the state
+            try Task.checkCancellation()
+
             // Cancel stale timer and reset stale flag when data is successfully loaded
             staleTimer?.cancel()
             isStale = false
-            self.data = data
 
-            // Update cached CountriesMapData if locations are selected
-            if selection.item == .locations {
-                updateCountriesMapDataCache(from: data)
-            } else {
-                cachedCountriesMapData = nil
-            }
+            self.data = data
+            self.countriesMapData = mapData
+            self.pieChartData = pieData
         } catch is CancellationError {
             return
         } catch {
             loadingError = error
             data = nil
+            countriesMapData = nil
             tracker?.trackError(error, screen: "top_list_card")
         }
 
@@ -186,11 +211,17 @@ final class TopListViewModel: ObservableObject, TrafficCardViewModel {
     private func getTopListData(for selection: Selection, dateRange: StatsDateRange) async throws -> TopListData {
         let granularity = dateRange.dateInterval.preferredGranularity
 
-        // When filter is set for author, we need to fetch authors data
+        // When filter is set, we need to fetch the appropriate data type
         let fetchItem: TopListItemType
-        if let filter, case .author = filter {
-            // We have to fake it as "Posts & Pages" does not support filtering
-            fetchItem = .authors
+        if let filter {
+            switch filter {
+            case .author:
+                // We have to fake it as "Posts & Pages" does not support filtering
+                fetchItem = .authors
+            case .utmMetric:
+                // Fetch UTM data to get posts for specific campaign
+                fetchItem = .utm
+            }
         } else {
             fetchItem = selection.item
         }
@@ -201,18 +232,22 @@ final class TopListViewModel: ObservableObject, TrafficCardViewModel {
             metric: selection.metric,
             interval: dateRange.dateInterval,
             granularity: granularity,
-            limit: fetchLimit
+            limit: fetchLimit,
+            options: selection.options
         )
 
         // Fetch previous data only for items that support it
         async let previousTask: TopListResponse? = {
-            guard selection.item != .archive else { return nil }
+            guard selection.item != .archive && dateRange.comparison != .off else {
+                return nil
+            }
             return try await service.getTopListData(
                 fetchItem,
                 metric: selection.metric,
                 interval: dateRange.effectiveComparisonInterval,
                 granularity: granularity,
-                limit: fetchLimit
+                limit: fetchLimit,
+                options: selection.options
             )
         }()
 
@@ -250,14 +285,21 @@ final class TopListViewModel: ObservableObject, TrafficCardViewModel {
                 return posts
             }
             return []
+        case .utmMetric(let values):
+            let utmMetrics = items.lazy.compactMap { $0 as? TopListItem.UTMMetric }
+            if let metric = utmMetrics.first(where: { $0.values == values }),
+               let posts = metric.posts {
+                return posts
+            }
+            return []
         }
     }
 
-    private func updateCountriesMapDataCache(from data: TopListData) {
+    private func createCountriesMapData(from data: TopListData) -> CountriesMapData {
         let locations = data.items.compactMap { $0 as? TopListItem.Location }
         let previousLocations = data.previousItems.compactMapValues { $0 as? TopListItem.Location }
 
-        cachedCountriesMapData = CountriesMapData(
+        return CountriesMapData(
             metric: selection.metric,
             locations: locations,
             previousLocations: previousLocations

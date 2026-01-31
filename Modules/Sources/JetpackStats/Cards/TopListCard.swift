@@ -6,6 +6,7 @@ struct TopListCard: View {
     private let itemLimit: Int
     private let reserveSpace: Bool
     private let showMoreInline: Bool
+    private let showItemTypePicker: Bool
 
     @State private var isExpanded = false
 
@@ -16,12 +17,14 @@ struct TopListCard: View {
         viewModel: TopListViewModel,
         itemLimit: Int = 5,
         reserveSpace: Bool = true,
-        showMoreInline: Bool = false
+        showMoreInline: Bool = false,
+        showItemTypePicker: Bool = true
     ) {
         self.viewModel = viewModel
         self.itemLimit = itemLimit
         self.reserveSpace = reserveSpace
         self.showMoreInline = showMoreInline
+        self.showItemTypePicker = showItemTypePicker
     }
 
     var body: some View {
@@ -33,6 +36,12 @@ struct TopListCard: View {
                 mapView
                     .padding(.vertical, Constants.step2)
                     .padding(.horizontal, Constants.step2)
+            }
+
+            if viewModel.selection.item == .devices {
+                pieChartView
+                    .padding(.vertical, Constants.step1)
+                    .padding(.horizontal, Constants.step3)
             }
 
             listHeaderView
@@ -75,59 +84,92 @@ struct TopListCard: View {
 
     private var cardHeaderView: some View {
         HStack {
-            StatsCardTitleView(title: viewModel.selection.item == .locations ? "Countries" : viewModel.title)
+            if showItemTypePicker {
+                Menu {
+                    itemTypePicker
+                } label: {
+                    StatsCardTitleView(title: viewModel.selection.item.localizedTitle, showChevron: true)
+                }
+            } else {
+                StatsCardTitleView(title: viewModel.selection.item.localizedTitle, showChevron: false)
+            }
             Spacer(minLength: 44)
         }
         .accessibilityElement(children: .combine)
-        .accessibilityLabel(Strings.Accessibility.cardTitle(viewModel.selection.item == .locations ? "Countries" : viewModel.title))
+        .accessibilityLabel(Strings.Accessibility.cardTitle(viewModel.title))
     }
 
     private var mapView: some View {
         CountriesMapView(
-            data: viewModel.cachedCountriesMapData ?? .init(metric: viewModel.selection.metric, locations: []),
+            data: viewModel.countriesMapData ?? .init(metric: viewModel.selection.metric, locations: []),
             primaryColor: Constants.Colors.uiColorBlue
         )
     }
 
+    private var pieChartView: some View {
+        let mockPieData = PieChartData(items: mockData.items, metric: viewModel.selection.metric)
+        let isShowingMockData = viewModel.isFirstLoad || viewModel.pieChartData == nil
+        let data = viewModel.pieChartData ?? mockPieData
+
+        return PieChartView(data: data)
+            .frame(height: 200)
+            .allowsHitTesting(!isShowingMockData)
+            .redacted(reason: isShowingMockData ? .placeholder : [])
+            .opacity(isShowingMockData ? 0.2 : 1.0)
+            .pulsating(isShowingMockData && viewModel.isFirstLoad)
+    }
+
     private var listHeaderView: some View {
         HStack {
-            if viewModel.items.count > 1 {
+            // Left side: Location level for locations, device breakdown for devices, UTM parameter for UTM, otherwise item type
+            if viewModel.selection.item == .locations {
                 Menu {
-                    itemTypePicker
+                    locationLevelPicker
                 } label: {
-                    InlineValuePickerTitle(title: viewModel.selection.item.localizedTitle)
+                    InlineValuePickerTitle(title: viewModel.selection.options.locationLevel.localizedTitle)
+                        .foregroundStyle(Color.secondary)
                         .padding(.top, 6)
-                        .padding(.vertical, Constants.step0_5) // Increase tap area
+                        .padding(.vertical, Constants.step0_5)
                 }
                 .fixedSize()
-            } else {
-                Text(viewModel.selection.item.localizedTitle)
-                    .padding(.top, 6)
-                    .padding(.vertical, Constants.step0_5)
-                    .font(.subheadline)
-                    .fontWeight(.medium)
-            }
-
-            Spacer()
-
-            let metrics = getSupportedMetrics(for: viewModel.selection.item)
-            if metrics.count > 1 {
+            } else if viewModel.selection.item == .devices {
                 Menu {
-                    makeMetricPicker(with: metrics)
+                    deviceBreakdownPicker
                 } label: {
-                    InlineValuePickerTitle(title: viewModel.selection.metric.localizedTitle)
+                    InlineValuePickerTitle(title: viewModel.selection.options.deviceBreakdown.localizedTitle)
+                        .foregroundStyle(Color.secondary)
+                        .padding(.top, 6)
+                        .padding(.vertical, Constants.step0_5)
+                }
+                .fixedSize()
+            } else if viewModel.selection.item == .utm {
+                Menu {
+                    utmParamGroupingPicker
+                } label: {
+                    InlineValuePickerTitle(title: viewModel.selection.options.utmParamGrouping.localizedTitle)
+                        .foregroundStyle(Color.secondary)
                         .padding(.top, 6)
                         .padding(.vertical, Constants.step0_5)
                 }
                 .fixedSize()
             } else {
-                Text(viewModel.selection.metric.localizedTitle)
-                    .padding(.top, 6)
-                    .padding(.vertical, Constants.step0_5)
-                    .font(.subheadline)
-                    .fontWeight(.medium)
+                makeColumnTitle(viewModel.selection.item.localizedColumnName)
             }
+
+            Spacer()
+
+            // Right side: selected metric
+            makeColumnTitle(viewModel.selection.metric.localizedTitle)
         }
+    }
+
+    private func makeColumnTitle(_ title: String) -> some View {
+        Text(title)
+            .foregroundStyle(Color.secondary)
+            .padding(.top, 6)
+            .padding(.vertical, Constants.step0_5)
+            .font(.subheadline)
+            .fontWeight(.medium)
     }
 
     private func navigateToTopListScreen() {
@@ -152,7 +194,6 @@ struct TopListCard: View {
                     Button {
                         var selection = viewModel.selection
                         selection.item = item
-
                         let supportedMetric = getSupportedMetrics(for: item)
                         if !supportedMetric.contains(selection.metric),
                            let metric = supportedMetric.first {
@@ -188,9 +229,9 @@ struct TopListCard: View {
             moreMenuContent
         } label: {
             Image(systemName: "ellipsis")
-                .font(.system(size: 17))
+                .font(.system(size: 15))
                 .foregroundColor(.secondary)
-                .frame(width: 56, height: 50)
+                .frame(width: 50, height: 50)
         }
         .tint(Color.primary)
     }
@@ -205,6 +246,64 @@ struct TopListCard: View {
             }
         }
         EditCardMenuContent(cardViewModel: viewModel)
+    }
+
+    private var locationLevelPicker: some View {
+        ForEach(LocationLevel.allCases) { level in
+            Button {
+                let previousLevel = viewModel.selection.options.locationLevel
+                viewModel.selection.options.locationLevel = level
+
+                // Track location level change
+                viewModel.tracker?.send(.locationLevelChanged, properties: [
+                    "from_level": previousLevel.analyticsName,
+                    "to_level": level.analyticsName
+                ])
+            } label: {
+                Label(level.localizedTitle, systemImage: level.systemImage)
+            }
+        }
+        .tint(Color.primary)
+    }
+
+    private var deviceBreakdownPicker: some View {
+        ForEach(DeviceBreakdown.allCases) { breakdown in
+            Button {
+                let previousBreakdown = viewModel.selection.options.deviceBreakdown
+                viewModel.selection.options.deviceBreakdown = breakdown
+
+                // Track device breakdown change
+                viewModel.tracker?.send(.deviceBreakdownChanged, properties: [
+                    "from_breakdown": previousBreakdown.analyticsName,
+                    "to_breakdown": breakdown.analyticsName
+                ])
+            } label: {
+                Label(breakdown.localizedTitle, systemImage: breakdown.systemImage)
+            }
+        }
+        .tint(Color.primary)
+    }
+
+    private var utmParamGroupingPicker: some View {
+        ForEach(Array(UTMParamGrouping.grouped.enumerated()), id: \.offset) { _, groupings in
+            Section {
+                ForEach(groupings) { grouping in
+                    Button {
+                        let previousGrouping = viewModel.selection.options.utmParamGrouping
+                        viewModel.selection.options.utmParamGrouping = grouping
+
+                        // Track UTM parameter grouping change
+                        viewModel.tracker?.send(.utmParamGroupingChanged, properties: [
+                            "from_grouping": previousGrouping.analyticsName,
+                            "to_grouping": grouping.analyticsName
+                        ])
+                    } label: {
+                        Text(grouping.localizedTitle)
+                    }
+                }
+            }
+        }
+        .tint(Color.primary)
     }
 
     @ViewBuilder
@@ -310,7 +409,16 @@ struct TopListCard: View {
 }
 
 #Preview {
-    TopListCardPreview(item: .authors)
+    ScrollView {
+        VStack(spacing: 16) {
+            TopListCardPreview(item: .utm)
+            TopListCardPreview(item: .authors)
+            TopListCardPreview(item: .locations)
+        }
+        .padding(.horizontal, 8)
+    }
+    .scrollContentBackground(.hidden)
+    .background(Constants.Colors.background)
 }
 
 private struct TopListCardPreview: View {

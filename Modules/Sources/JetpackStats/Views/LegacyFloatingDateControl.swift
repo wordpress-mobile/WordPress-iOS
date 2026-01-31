@@ -91,7 +91,7 @@ struct LegacyFloatingDateControl: View {
         .floatingStyle()
     }
 
-    private func makeNavigationButton(direction: Calendar.NavigationDirection) -> some View {
+    private func makeNavigationButton(direction: NavigationDirection) -> some View {
         let isDisabled = !dateRange.canNavigate(in: direction)
         return Menu {
             ForEach(dateRange.availableAdjacentPeriods(in: direction)) { period in

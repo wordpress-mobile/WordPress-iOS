@@ -4,9 +4,10 @@ import WordPressData
 import WordPressUI
 
 /// A view controller that displays the list of users who liked a post from the Stats screen.
-class StatsLikesListViewController: UITableViewController, NoResultsViewHost {
+class StatsLikesListViewController: UIViewController {
 
     // MARK: - Properties
+    private let tableView = UITableView(frame: .zero, style: .plain)
     private let siteID: NSNumber
     private let postID: NSNumber
     private var likesListController: LikesListController?
@@ -29,7 +30,7 @@ class StatsLikesListViewController: UITableViewController, NoResultsViewHost {
         super.viewDidLoad()
 
         configureViewTitle()
-        configureTable()
+        configureTableView()
         WPAnalytics.track(.likeListOpened, properties: ["list_type": "post", "source": "stats_post_details"])
     }
 
@@ -42,7 +43,10 @@ private extension StatsLikesListViewController {
         navigationItem.title = String(format: titleFormat, totalLikes)
     }
 
-    func configureTable() {
+    func configureTableView() {
+        view.addSubview(tableView)
+        tableView.pinEdges()
+
         tableView.register(LikeUserTableViewCell.defaultNib,
                            forCellReuseIdentifier: LikeUserTableViewCell.defaultReuseID)
 
@@ -92,10 +96,9 @@ extension StatsLikesListViewController: LikesListControllerDelegate {
     }
 
     func showErrorView(title: String, subtitle: String?) {
-        configureAndDisplayNoResults(on: tableView,
-                                     title: title,
-                                     subtitle: subtitle,
-                                     image: "wp-illustration-reader-empty")
+        let stateView = UIHostingView(view: EmptyStateView.init(title, systemImage: "exclamationmark.circle", description: subtitle))
+        view.addSubview(stateView)
+        stateView.pinEdges()
     }
 
     func updatedTotalLikes(_ totalLikes: Int) {

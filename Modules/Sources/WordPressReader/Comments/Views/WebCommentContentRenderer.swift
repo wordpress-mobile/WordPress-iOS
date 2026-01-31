@@ -33,6 +33,7 @@ public final class WebCommentContentRenderer: NSObject, CommentContentRenderer {
 
     private var cachedHead: String?
     private var comment: String?
+    private var currentNavigation: WKNavigation?
     private var lastReloadDate: Date?
     private var isReloadNeeded = false
 
@@ -48,6 +49,7 @@ public final class WebCommentContentRenderer: NSObject, CommentContentRenderer {
         webView.scrollView.bounces = false
         webView.scrollView.showsVerticalScrollIndicator = false
         webView.scrollView.backgroundColor = .clear
+        webView.scrollView.isScrollEnabled = false
 
         NotificationCenter.default.addObserver(self, selector: #selector(applicationWillEnterForeground), name: UIApplication.willEnterForegroundNotification, object: nil)
     }
@@ -58,11 +60,12 @@ public final class WebCommentContentRenderer: NSObject, CommentContentRenderer {
     }
 
     private func actuallyRender(comment: String) {
-        webView.loadHTMLString(formattedHTMLString(for: comment), baseURL: nil)
+        currentNavigation = webView.loadHTMLString(formattedHTMLString(for: comment), baseURL: nil)
     }
 
     public func prepareForReuse() {
         comment = nil
+        currentNavigation = nil
         webView.stopLoading()
     }
 
@@ -84,20 +87,22 @@ public final class WebCommentContentRenderer: NSObject, CommentContentRenderer {
 
 extension WebCommentContentRenderer: WKNavigationDelegate {
     public func webView(_ webView: WKWebView, didFinish navigation: WKNavigation!) {
-        guard let comment else {
+        guard let comment, navigation === currentNavigation else {
             return
         }
         // Wait until the HTML document finished loading.
         // This also waits for all of resources within the HTML (images, video thumbnail images) to be fully loaded.
         webView.evaluateJavaScript("document.readyState") { complete, _ in
-            guard complete != nil, self.comment == comment else {
+            guard complete != nil, navigation === self.currentNavigation else {
                 return
             }
 
             // To capture the content height, the methods to use is either `document.body.scrollHeight` or `document.documentElement.scrollHeight`.
             // `document.body` does not capture margins on <body> tag, so we'll use `document.documentElement` instead.
             webView.evaluateJavaScript("document.documentElement.scrollHeight") { [weak self] height, _ in
-                guard let self, let height = height as? CGFloat else {
+                guard let self,
+                      let height = height as? CGFloat,
+                      navigation === self.currentNavigation else {
                     return
                 }
 

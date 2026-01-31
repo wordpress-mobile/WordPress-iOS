@@ -116,8 +116,7 @@
 /* The plugin is active on the site and has enabled automatic updates */
 "Active, Autoupdates on" = "Activo, com actualizações automáticas";
 
-/* Noun. Links to a blog's Activity screen.
-   Noun. Name of the Activity Log feature */
+/* Noun. Name of the Activity Log feature */
 "Activity" = "Actividade";
 
 /* No comment provided by engineer. */
@@ -436,7 +435,6 @@
    Insights 'Comments' header
    Label for number of comments.
    Label for Period Overview comments
-   Noun. Title. Links to the blog's Comments screen.
    Settings: Comment Sections
    Text for the 'comment' button when there are multiple comments
    Title for the Blog's Comments Section View
@@ -458,17 +456,11 @@
 /* Setting: WordPress.com Community */
 "Community" = "Comunidade";
 
-/* Section title for the configure table section in the blog details screen */
-"Configure" = "Configurar";
-
 /* Verb. Title for Jetpack Restore confirm button. */
 "Confirm" = "Confirmar";
 
 /* Title of Delete Site confirmation alert */
 "Confirm Delete Site" = "Confirmar eliminação de site";
-
-/* Title of alert prompting users to verify their accounts while attempting to publish */
-"Confirm your email first" = "Confirme primeiro o seu email";
 
 /* Verb. Tapping connects an account to Publicize.
    Verb. Text label. Allows the user to connect to a third-party sharing service like Facebook or Twitter. */
@@ -585,9 +577,6 @@
    Theme Customize action title */
 "Customize" = "Personalizar";
 
-/* Action title. Noun. Opens the user's WordPress.com dashboard in an external browser. */
-"Dashboard" = "Painel";
-
 /* Label for selecting the date and time settings section
    Title for the Date and Time Format Settings Screen */
 "Date and Time Format" = "Formato de data e hora";
@@ -671,9 +660,6 @@
 /* Display Name label text.
    User's Display Name */
 "Display Name" = "Nome a mostrar";
-
-/* Noun. Title. Links to the Domains screen. */
-"Domains" = "Domínios";
 
 /* A done button
    Button text on site creation epilogue page to proceed to My Sites.
@@ -796,9 +782,6 @@
 
 /* Text displayed while fetching themes */
 "Fetching Themes..." = "A obter temas...";
-
-/* A brief prompt shown when the comment list is empty, letting the user know the app is currently fetching new comments. */
-"Fetching comments..." = "A obter comentários...";
 
 /* Title displayed whilst fetching media from the user's media library */
 "Fetching media..." = "A obter multimédia...";
@@ -992,16 +975,12 @@
    Discoverability title for italic formatting keyboard shortcut. */
 "Italic" = "Itálico";
 
-/* Section title for the publish table section in the blog details screen
-   Title for the Jetpack Installation
+/* Title for the Jetpack Installation
    Title for the Jetpack section in site settings screen */
 "Jetpack" = "Jetpack";
 
 /* Message stating the minimum required version for Jetpack and asks the user if they want to upgrade */
 "Jetpack %@ or later is required. Do you want to update Jetpack?" = "É necessário o Jetpack %@ ou superior. Quer actualizar o Jetpack?";
-
-/* Noun. Title. Links to the blog's Settings screen. */
-"Jetpack Settings" = "Definições Jetpack";
 
 /* Button shown if there are unsaved changes and the author cancelled editing a Comment.
    Goes back to editing the post. */
@@ -1171,13 +1150,11 @@
 
 /* Accessibility label for the Me button in My Site.
    Me page title
-   Noun. Title. Links to the Me screen.
    The accessibility value of the me tab.
    Title of the 'Me' tab - used for spotlight indexing on iOS. */
 "Me" = "Eu";
 
-/* Noun. Title. Links to the blog's Media library.
-   Title for the media section in site settings screen
+/* Title for the media section in site settings screen
    Title label for the media settings section in the app settings */
 "Media" = "Multimédia";
 
@@ -1204,8 +1181,7 @@
 /* Menus placeholder text for the name field of a menu with no name. */
 "Menu Name" = "Nome do menu";
 
-/* Menus option in the blog details
-   Noun. Name of the Menus feature
+/* Noun. Name of the Menus feature
    Title for screen that allows configuration of your site's menus */
 "Menus" = "Menus";
 
@@ -1278,7 +1254,6 @@
 "No comments" = "Sem comentários";
 
 /* Displayed in the Notifications Tab as a title, when the Comments Filter shows no notifications
-   Displayed on the post details page when there are no post comments.
    Displayed when there are no comments in the Comments views. */
 "No comments yet" = "Sem comentários";
 
@@ -1357,8 +1332,7 @@
    Button title. An acknowledgement of the message displayed in a prompt.
    Dismisses the alert
    Menus: button title for finishing editing of a menu item.
-   Ok button for dismissing alert helping users understand their site address
-   OK Button title shown in alert informing users about the Reader Save for Later feature. */
+   Ok button for dismissing alert helping users understand their site address */
 "OK" = "OK";
 
 /* Disabled */
@@ -1455,8 +1429,7 @@
    Title shown when selecting a post type of Page from the Share Extension. */
 "Page" = "Página";
 
-/* Noun. Title. Links to the blog's Pages screen.
-   This is the section title
+/* This is the section title
    Title of the screen showing the list of pages for a blog. */
 "Pages" = "Páginas";
 
@@ -1477,15 +1450,11 @@
    Title of pending Comments filter. */
 "Pending" = "Pendente";
 
-/* Noun. Title. Links to the people management feature.
-   People site intent topic */
+/* People site intent topic */
 "People" = "Pessoas";
 
 /* Label for date periods. */
 "Period" = "Período";
-
-/* Section title for the personalize table section in the blog details screen. */
-"Personalize" = "Personalizar";
 
 /* Accessibility label for selecting an image or video from the device's photo library on formatting toolbar. */
 "Photo Library" = "Biblioteca de fotografias";
@@ -1529,8 +1498,7 @@
 /* Version of an installed plugin */
 "Plugin version" = "Versão do plugin";
 
-/* Noun. Title. Links to the plugin management feature.
-   Title for the plugin directory */
+/* Title for the plugin directory */
 "Plugins" = "Plugins";
 
 /* Header of section in Plugin Directory showing popular plugins
@@ -1555,7 +1523,6 @@
 
 /* All Time Stats 'Posts' label
    Insights 'Posts' header
-   Noun. Title. Links to the blog's Posts screen.
    Title of the screen showing the list of posts for a blog. */
 "Posts" = "Conteúdos";
 
@@ -1605,8 +1572,7 @@
 "Privacy Settings" = "Definições de privacidade";
 
 /* Label for the publish (verb) button. Tapping publishes a draft post.
-   Publish post action on share extension site picker screen.
-   Section title for the publish table section in the blog details screen */
+   Publish post action on share extension site picker screen. */
 "Publish" = "Publicar";
 
 /* Period Stats 'Published' header
@@ -1707,9 +1673,6 @@
 /* Settings: Comments Approval settings */
 "Require users to log in" = "É necessário ter sessão iniciada";
 
-/* Title of secondary button on alert prompting verify their accounts while attempting to publish */
-"Resend" = "Reenviar";
-
 /* Screen title. Resize and crop an image. */
 "Resize & Crop" = "Redimensionar e cortar";
 
@@ -1807,7 +1770,6 @@
 "Share your story here..." = "Partilhe aqui a sua história...";
 
 /* Noun. Name of the Social Sharing feature
-   Noun. Title. Links to a blog's sharing options.
    Title for blog detail sharing screen. */
 "Sharing" = "Partilha";
 
@@ -1936,7 +1898,6 @@
 "Start Over" = "Começar de novo";
 
 /* Noun. Abbreviation of Statistics. Name of the Stats feature
-   Noun. Abbv. of Statistics. Links to a blog's Stats screen.
    Stats 3D Touch Shortcut
    Stats window title */
 "Stats" = "Estatísticas";
@@ -2049,7 +2010,6 @@
 "Theme Activated" = "Tema activado";
 
 /* Noun. Name of the Themes feature
-   Themes option in the blog details
    Title of Themes browser page */
 "Themes" = "Temas";
 
@@ -2273,8 +2233,7 @@
 /* No comment provided by engineer. */
 "Username must be at least 4 characters." = "O nome de utilizador deve ter pelo menos 4 caracteres.";
 
-/* Blog Users
-   Noun. Title. Links to the user management feature. */
+/* Blog Users */
 "Users" = "Utilizadores";
 
 /* two factor code placeholder */
@@ -2297,9 +2256,6 @@
    Theme View action title
    Verb. The screen title shown when viewing a post inside the app. */
 "View" = "Ver";
-
-/* Action title. Opens the user's site in an in-app browser */
-"View Site" = "Ver site";
 
 /* Displays More Rows */
 "View all…" = "Ver tudo...";
@@ -2342,9 +2298,6 @@
    Today's Stats 'Visitors' label */
 "Visitors" = "Visitantes";
 
-/* Action title. Noun. Opens the user's WordPress Admin in an external browser. */
-"WP Admin" = "WP Admin";
-
 /* Error message displayed when a refresh is taking longer than usual. The refresh hasn't failed and it might still succeed */
 "We are having trouble loading data" = "Problemas ao carregar dados";
 
@@ -2363,9 +2316,6 @@
 
 /* A message title */
 "Welcome to the Reader" = "Bem-vindo ao Leitor";
-
-/* Title of alert helping users understand their site address */
-"What's my site address?" = "Qual é o endereço do meu site?";
 
 /* Help text when editing email address */
 "Will not be publicly displayed." = "Não será mostrado ao público.";

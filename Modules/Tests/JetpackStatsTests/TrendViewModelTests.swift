@@ -12,7 +12,7 @@ struct TrendViewModelTests {
     ])
     func testSign(current: Int, previous: Int, expectedSign: String) {
         // GIVEN
-        let viewModel = TrendViewModel(currentValue: current, previousValue: previous, metric: .views)
+        let viewModel = TrendViewModel(currentValue: current, previousValue: previous, metric: SiteMetric.views)
 
         // WHEN
         let sign = viewModel.sign
@@ -64,7 +64,7 @@ struct TrendViewModelTests {
     ])
     func testPercentageCalculation(current: Int, previous: Int, expected: Decimal) {
         // GIVEN
-        let viewModel = TrendViewModel(currentValue: current, previousValue: previous, metric: .views)
+        let viewModel = TrendViewModel(currentValue: current, previousValue: previous, metric: SiteMetric.views)
 
         // WHEN
         let percentage = viewModel.percentage
@@ -79,7 +79,7 @@ struct TrendViewModelTests {
     ])
     func testPercentageCalculationWithZeroDivisor(current: Int, previous: Int) {
         // GIVEN
-        let viewModel = TrendViewModel(currentValue: current, previousValue: previous, metric: .views)
+        let viewModel = TrendViewModel(currentValue: current, previousValue: previous, metric: SiteMetric.views)
 
         // WHEN
         let percentage = viewModel.percentage
@@ -91,7 +91,7 @@ struct TrendViewModelTests {
     @Test("Percentage with negative values")
     func testPercentageWithNegativeValues() {
         // GIVEN/WHEN
-        let viewModel = TrendViewModel(currentValue: -50, previousValue: -100, metric: .views)
+        let viewModel = TrendViewModel(currentValue: -50, previousValue: -100, metric: SiteMetric.views)
 
         // THEN
         #expect(viewModel.percentage == 0.5)
@@ -128,7 +128,7 @@ struct TrendViewModelTests {
     ])
     func testFormattedPercentage(current: Int, previous: Int, expected: String) {
         // GIVEN
-        let viewModel = TrendViewModel(currentValue: current, previousValue: previous, metric: .views)
+        let viewModel = TrendViewModel(currentValue: current, previousValue: previous, metric: SiteMetric.views)
 
         // WHEN
         let formatted = viewModel.formattedPercentage
@@ -144,9 +144,9 @@ struct TrendViewModelTests {
         let minInt = Int.min
 
         // WHEN
-        let viewModel1 = TrendViewModel(currentValue: maxInt, previousValue: 0, metric: .views)
-        let viewModel2 = TrendViewModel(currentValue: 0, previousValue: minInt, metric: .views)
-        let viewModel3 = TrendViewModel(currentValue: maxInt, previousValue: maxInt, metric: .views)
+        let viewModel1 = TrendViewModel(currentValue: maxInt, previousValue: 0, metric: SiteMetric.views)
+        let viewModel2 = TrendViewModel(currentValue: 0, previousValue: minInt, metric: SiteMetric.views)
+        let viewModel3 = TrendViewModel(currentValue: maxInt, previousValue: maxInt, metric: SiteMetric.views)
 
         // THEN
         #expect(viewModel1.sign == "+")

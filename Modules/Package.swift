@@ -20,6 +20,7 @@ let package = Package(
         .library(name: "WordPressFlux", targets: ["WordPressFlux"]),
         .library(name: "WordPressShared", targets: ["WordPressShared"]),
         .library(name: "WordPressUI", targets: ["WordPressUI"]),
+        .library(name: "WordPressIntelligence", targets: ["WordPressIntelligence"]),
         .library(name: "WordPressReader", targets: ["WordPressReader"]),
         .library(name: "WordPressCore", targets: ["WordPressCore"]),
         .library(name: "WordPressCoreProtocols", targets: ["WordPressCoreProtocols"]),
@@ -29,6 +30,7 @@ let package = Package(
         .package(url: "https://github.com/Alamofire/Alamofire", from: "5.9.1"),
         .package(url: "https://github.com/AliSoftware/OHHTTPStubs", from: "9.1.0"),
         .package(url: "https://github.com/apple/swift-collections", from: "1.0.0"),
+        .package(url: "https://github.com/apple/swift-log.git", from: "1.5.2"),
         .package(url: "https://github.com/Automattic/Automattic-Tracks-iOS", from: "3.5.2"),
         .package(url: "https://github.com/Automattic/AutomatticAbout-swift", from: "1.1.5"),
         .package(url: "https://github.com/Automattic/Gravatar-SDK-iOS", from: "3.4.0"),
@@ -54,14 +56,15 @@ let package = Package(
         .package(url: "https://github.com/wordpress-mobile/wpxmlrpc", from: "0.9.0"),
         .package(url: "https://github.com/wordpress-mobile/NSURL-IDN", revision: "b34794c9a3f32312e1593d4a3d120572afa0d010"),
         .package(url: "https://github.com/zendesk/support_sdk_ios", from: "8.0.3"),
-        .package(url: "https://github.com/wordpress-mobile/GutenbergKit", from: "0.10.1"),
+        .package(url: "https://github.com/wordpress-mobile/GutenbergKit", from: "0.13.1"),
         // We can't use wordpress-rs branches nor commits here. Only tags work.
-        .package(url: "https://github.com/Automattic/wordpress-rs", revision: "alpha-20251101"),
+        .package(url: "https://github.com/Automattic/wordpress-rs", revision: "alpha-20260114"),
         .package(
             url: "https://github.com/Automattic/color-studio",
             revision: "bf141adc75e2769eb469a3e095bdc93dc30be8de"
         ),
         .package(url: "https://github.com/wordpress-mobile/AztecEditor-iOS", from: "1.20.0"),
+        .package(url: "https://github.com/kean/Pulse", from: "5.0.0"),
     ],
     targets: XcodeSupport.targets + [
         .target(name: "AsyncImageKit", dependencies: [
@@ -163,6 +166,10 @@ let package = Package(
             // This package should never have dependencies – it exists to expose protocols implemented in WordPressCore
             // to UI code, because `wordpress-rs` doesn't work nicely with previews.
         ]),
+        .target(name: "WordPressIntelligence", dependencies: [
+            "WordPressShared",
+            .product(name: "SwiftSoup", package: "SwiftSoup"),
+        ]),
         .target(name: "WordPressLegacy", dependencies: ["DesignSystem", "WordPressShared"]),
         .target(name: "WordPressSharedObjC", resources: [.process("Resources")], swiftSettings: [.swiftLanguageMode(.v5)]),
         .target(
@@ -251,6 +258,7 @@ let package = Package(
         .testTarget(name: "WordPressSharedObjCTests", dependencies: [.target(name: "WordPressShared"), .target(name: "WordPressTesting")], swiftSettings: [.swiftLanguageMode(.v5)]),
         .testTarget(name: "WordPressUIUnitTests", dependencies: [.target(name: "WordPressUI")], swiftSettings: [.swiftLanguageMode(.v5)]),
         .testTarget(name: "WordPressCoreTests", dependencies: [.target(name: "WordPressCore")]),
+        .testTarget(name: "WordPressIntelligenceTests", dependencies: [.target(name: "WordPressIntelligence")])
     ]
 )
 
@@ -348,6 +356,7 @@ enum XcodeSupport {
             "ShareExtensionCore",
             "Support",
             "WordPressFlux",
+            "WordPressIntelligence",
             "WordPressShared",
             "WordPressLegacy",
             "WordPressReader",
@@ -371,6 +380,8 @@ enum XcodeSupport {
             .product(name: "MediaEditor", package: "MediaEditor-iOS"),
             .product(name: "NSObject-SafeExpectations", package: "NSObject-SafeExpectations"),
             .product(name: "NSURL-IDN", package: "NSURL-IDN"),
+            .product(name: "Pulse", package: "Pulse"),
+            .product(name: "PulseUI", package: "Pulse"),
             .product(name: "Reachability", package: "Reachability"),
             .product(name: "Starscream", package: "Starscream"),
             .product(name: "SVProgressHUD", package: "SVProgressHUD"),
@@ -382,6 +393,7 @@ enum XcodeSupport {
             .product(name: "ColorStudio", package: "color-studio"),
             .product(name: "Aztec", package: "AztecEditor-iOS"),
             .product(name: "WordPressEditor", package: "AztecEditor-iOS"),
+            .product(name: "Logging", package: "swift-log"),
         ]
 
         return [

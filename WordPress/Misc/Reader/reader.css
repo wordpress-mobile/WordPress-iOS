@@ -43,6 +43,9 @@ div.feedflare { display: none; }
 
 .sharedaddy, .jp-relatedposts, .mc4wp-form, .wpcnt, .OUTBRAIN, .adsbygoogle { display: none; }
 
+/* Hide Gutenberg image lightbox expand button - iOS has its own image zoom handling */
+button.lightbox-trigger { display: none; }
+
 img {
     opacity: 0;
 }

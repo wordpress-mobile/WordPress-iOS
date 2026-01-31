@@ -42,7 +42,7 @@ public class AdaptiveTabBar: UIControl {
         didSet { refreshTabs() }
     }
 
-    private var buttons: [UIButton] = []
+    private var buttons: [TabButton] = []
 
     private(set) var selectedIndex: Int = 0 {
         didSet {
@@ -95,6 +95,10 @@ public class AdaptiveTabBar: UIControl {
             selectionIndicator.heightAnchor.constraint(equalToConstant: 2),
             selectionIndicator.bottomAnchor.constraint(equalTo: bottomAnchor)
         ])
+
+        // Accessibility
+        shouldGroupAccessibilityChildren = true
+        accessibilityContainerType = .semanticGroup
     }
 
     private var separatorHeight: CGFloat {
@@ -114,7 +118,7 @@ public class AdaptiveTabBar: UIControl {
 
     private func refreshTabs() {
         buttons.forEach { $0.removeFromSuperview() }
-        buttons = items.indices.map(createTab)
+        buttons = items.indices.map { createTab(at: $0) }
         buttons.forEach(stackView.addArrangedSubview)
 
         if !items.isEmpty {
@@ -124,79 +128,65 @@ public class AdaptiveTabBar: UIControl {
         setNeedsLayout()
     }
 
-    private func createTab(at index: Int) -> UIButton {
+    private func createTab(at index: Int) -> TabButton {
         let item = items[index]
-        let font = preferredFont
+        let isFirstItem = index == 0
+        let isLastItem = index == items.count - 1
 
-        var config = UIButton.Configuration.plain()
-        config.title = item.localizedTitle
-        config.contentInsets = NSDirectionalEdgeInsets(
+        let button = TabButton()
+        button.title = item.localizedTitle
+        button.font = preferredFont
+        button.contentInsets = NSDirectionalEdgeInsets(
             top: 8,
-            leading: index == 0 ? 20 : 6,
+            leading: isFirstItem ? 20 : 12,
             bottom: 8,
-            trailing: 6
+            trailing: isLastItem ? 20 : 12
         )
-
-        let button = UIButton(configuration: config, primaryAction: .init { [weak self] _ in
-            self?.tabButtonTapped(at: index)
-        })
-
-        button.configurationUpdateHandler = { button in
-            let isSelected = button.state.contains(.selected)
-
-            var config = button.configuration ?? .plain()
-            config.baseBackgroundColor = .clear
-            config.baseForegroundColor = isSelected ? .label : .secondaryLabel
-            config.titleTextAttributesTransformer = UIConfigurationTextAttributesTransformer { incoming in
-                var outgoing = incoming
-                outgoing.font = font.withWeight(isSelected ? .medium : .regular)
-                return outgoing
-            }
-            button.configuration = config
-        }
-
         button.accessibilityIdentifier = "\(item)"
-        button.maximumContentSizeCategory = .extraLarge
-
-        button.titleLabel?.numberOfLines = 1
-
-        button.isSelected = true
-        let width = button.systemLayoutSizeFitting(CGSize(width: UIView.noIntrinsicMetric, height: tabBarHeight)).width
-        button.widthAnchor.constraint(greaterThanOrEqualToConstant: width + 2).isActive = true // just in case add more space
-        button.isSelected = false
+        button.addTarget(self, action: #selector(tabButtonTapped(_:)), for: .touchUpInside)
 
         return button
+    }
+
+    @objc private func tabButtonTapped(_ sender: TabButton) {
+        guard let index = buttons.firstIndex(of: sender) else { return }
+        setSelectedIndex(index)
+        sendActions(for: .valueChanged)
     }
 
     private func updateDistribution() {
         guard !buttons.isEmpty else { return }
 
-        let maxWidth = buttons.map {
+        let availableWidth = safeAreaLayoutGuide.layoutFrame.width
+
+        // Calculate preferred width for each button
+        let preferredWidths = buttons.map {
             $0.systemLayoutSizeFitting(CGSize(width: UIView.noIntrinsicMetric, height: tabBarHeight)).width
-        }.max() ?? 0
+        }
 
-        let totalPreferredWidth = maxWidth * CGFloat(buttons.count)
+        let maxWidth = preferredWidths.max() ?? 0
+        let totalWidth = preferredWidths.reduce(0, +)
 
-        // If the items don't fit, enable scrolling
-        // Adding 2 just in case if there is some rounding error somewhere
-        let shouldFillWidth = (totalPreferredWidth + 2) <= safeAreaLayoutGuide.layoutFrame.width
-        if shouldFillWidth {
+        // Adding 2 for potential rounding errors
+        if (maxWidth * CGFloat(buttons.count) + 2) <= availableWidth {
+            // Use fill equally - all buttons same width
             stackView.distribution = .fillEqually
             widthConstraint.isActive = true
             scrollView.isScrollEnabled = false
+        } else if (totalWidth + 2) <= availableWidth {
+            // Use fill proportionally - buttons sized by content
+            stackView.distribution = .fillProportionally
+            widthConstraint.isActive = true
+            scrollView.isScrollEnabled = false
         } else {
-            stackView.distribution = .fill
+            // Enable scrolling
+            stackView.distribution = .fillProportionally
             widthConstraint.isActive = false
             scrollView.isScrollEnabled = true
         }
     }
 
     // MARK: - Selection
-
-    private func tabButtonTapped(at index: Int) {
-        setSelectedIndex(index)
-        sendActions(for: .valueChanged)
-    }
 
     func setSelectedIndex(_ index: Int, animated: Bool = true) {
         guard items.indices.contains(index) else { return }
@@ -270,3 +260,180 @@ public class AdaptiveTabBar: UIControl {
         return items[safe: selectedIndex]
     }
 }
+
+// MARK: - TabButton
+
+private class TabButton: UIControl {
+    private let label = UILabel()
+
+    var title: String = "" {
+        didSet {
+            label.text = title
+            accessibilityLabel = title
+            invalidateIntrinsicContentSize()
+        }
+    }
+
+    var font: UIFont = .preferredFont(forTextStyle: .body) {
+        didSet {
+            updateAppearance()
+            invalidateIntrinsicContentSize()
+        }
+    }
+
+    var contentInsets: NSDirectionalEdgeInsets = .zero {
+        didSet {
+            invalidateIntrinsicContentSize()
+        }
+    }
+
+    override var isSelected: Bool {
+        didSet {
+            updateAppearance()
+            updateAccessibility()
+        }
+    }
+
+    override init(frame: CGRect) {
+        super.init(frame: frame)
+        setup()
+    }
+
+    required init?(coder: NSCoder) {
+        super.init(coder: coder)
+        setup()
+    }
+
+    private func setup() {
+        addSubview(label)
+        label.textAlignment = .center
+        label.numberOfLines = 1
+        label.adjustsFontForContentSizeCategory = true
+        label.maximumContentSizeCategory = .extraLarge
+        label.isAccessibilityElement = false
+
+        isAccessibilityElement = true
+        accessibilityTraits = .button
+
+        updateAppearance()
+        updateAccessibility()
+    }
+
+    private func updateAppearance() {
+        label.font = font.withWeight(isSelected ? .medium : .regular)
+        label.textColor = isSelected ? .label : .secondaryLabel
+    }
+
+    private func updateAccessibility() {
+        if isSelected {
+            accessibilityTraits = [.button, .selected]
+        } else {
+            accessibilityTraits = .button
+        }
+    }
+
+    override func layoutSubviews() {
+        super.layoutSubviews()
+        label.frame = bounds.inset(by: UIEdgeInsets(
+            top: contentInsets.top,
+            left: contentInsets.leading,
+            bottom: contentInsets.bottom,
+            right: contentInsets.trailing
+        ))
+    }
+
+    override var intrinsicContentSize: CGSize {
+        // Always calculate based on medium weight (selected state)
+        let mediumFont = font.withWeight(.medium)
+        let size = title.size(withAttributes: [.font: mediumFont])
+
+        // Add small padding to prevent clipping due to rounding
+        return CGSize(
+            width: ceil(size.width) + contentInsets.leading + contentInsets.trailing + 2,
+            height: ceil(size.height) + contentInsets.top + contentInsets.bottom
+        )
+    }
+}
+
+// MARK: - Preview
+
+#if DEBUG
+import SwiftUI
+
+private struct PreviewTabItem: AdaptiveTabBarItem {
+    let id: String
+    let localizedTitle: String
+}
+
+private class AdaptiveTabBarPreviewViewController: UIViewController {
+    override func viewDidLoad() {
+        super.viewDidLoad()
+        view.backgroundColor = .systemBackground
+
+        let stackView = UIStackView()
+        stackView.axis = .vertical
+        stackView.spacing = 40
+        view.addSubview(stackView)
+        stackView.pinEdges([.top, .leading, .trailing], to: view.safeAreaLayoutGuide, insets: UIEdgeInsets(top: 16, left: 0, bottom: 0, right: 0))
+
+        // Auto: Fill mode (fits with equal distribution)
+        let autoFill = createSection(
+            title: "Auto: Fill Mode (Equal Width)",
+            items: [
+                PreviewTabItem(id: "1", localizedTitle: "Tab 1"),
+                PreviewTabItem(id: "2", localizedTitle: "Tab 2"),
+                PreviewTabItem(id: "3", localizedTitle: "Tab 3")
+            ]
+        )
+        stackView.addArrangedSubview(autoFill)
+
+        // Auto: Proportional mode (fill doesn't fit, but proportional does)
+        let autoProportional = createSection(
+            title: "Auto: Proportional Mode (Varying Widths)",
+            items: [
+                PreviewTabItem(id: "1", localizedTitle: "Traffic"),
+                PreviewTabItem(id: "2", localizedTitle: "Insights"),
+                PreviewTabItem(id: "3", localizedTitle: "Subscribers"),
+                PreviewTabItem(id: "4", localizedTitle: "Ads")
+            ]
+        )
+        stackView.addArrangedSubview(autoProportional)
+
+        // Auto: Scrollable (neither fits)
+        let autoScrollable = createSection(
+            title: "Auto: Scrollable (Overflows)",
+            items: [
+                PreviewTabItem(id: "1", localizedTitle: "Traffic"),
+                PreviewTabItem(id: "2", localizedTitle: "Insights"),
+                PreviewTabItem(id: "3", localizedTitle: "Subscribers"),
+                PreviewTabItem(id: "4", localizedTitle: "Ads"),
+                PreviewTabItem(id: "5", localizedTitle: "Performance"),
+                PreviewTabItem(id: "6", localizedTitle: "Blaze"),
+            ]
+        )
+        stackView.addArrangedSubview(autoScrollable)
+    }
+
+    private func createSection(title: String, items: [PreviewTabItem]) -> UIView {
+        let container = UIStackView()
+        container.axis = .vertical
+        container.spacing = 8
+
+        let label = UILabel()
+        label.text = title
+        label.font = .preferredFont(forTextStyle: .caption1)
+        label.textColor = .secondaryLabel
+        container.addArrangedSubview(label)
+
+        let tabBar = AdaptiveTabBar()
+        tabBar.items = items
+        container.addArrangedSubview(tabBar)
+
+        return container
+    }
+}
+
+#Preview("AdaptiveTabBar Configurations") {
+    AdaptiveTabBarPreviewViewController()
+}
+#endif

@@ -7,9 +7,11 @@ import WordPressData
 import WordPressShared
 import ShareExtensionCore
 import SVProgressHUD
+import PulseUI
 import WordPressFlux
 import DesignSystem
 import WordPressUI
+import Support
 
 class AppSettingsViewController: UITableViewController {
     fileprivate var handler: ImmuTableViewHandler!
@@ -576,7 +578,7 @@ private extension AppSettingsViewController {
 
         var rows: [ImmuTableRow] = [experimentalFeaturesRow, settingsRow]
 
-        if FeatureFlag.customAppIcons.enabled && UIApplication.shared.supportsAlternateIcons {
+        if UIApplication.shared.supportsAlternateIcons {
             // We don't show custom icons for Jetpack
             rows.insert(iconRow, at: 0)
         }

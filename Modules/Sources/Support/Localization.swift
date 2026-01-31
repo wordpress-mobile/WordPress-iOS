@@ -373,6 +373,31 @@ enum Localization {
         value: "Loading logs...",
         comment: "Progress message while loading log files"
     )
+    static let extensiveLogging = NSLocalizedString(
+        "com.jetpack.support.extensiveLogging",
+        value: "Extensive Logging",
+        comment: "Toggle title for enabling extensive logging"
+    )
+    static let extensiveLogs = NSLocalizedString(
+        "com.jetpack.support.extensiveLogs",
+        value: "Extensive Logs",
+        comment: "Link title to view extensive logs"
+    )
+    static let extensiveLoggingAlertTitle = NSLocalizedString(
+        "com.jetpack.support.extensiveLoggingAlertTitle",
+        value: "Enable Extensive Logging?",
+        comment: "Alert title when confirming extensive logging activation"
+    )
+    static let extensiveLoggingAlertMessage = NSLocalizedString(
+        "com.jetpack.support.extensiveLoggingAlertMessage",
+        value: "This helps with troubleshooting but may impact performance. You can turn it off anytime.",
+        comment: "Alert message explaining extensive logging helps with troubleshooting but may impact performance"
+    )
+    static let enable = NSLocalizedString(
+        "com.jetpack.support.extensiveLogging.enable",
+        value: "Enable",
+        comment: "Button title to enable extensive logging"
+    )
 
     // MARK: - ActivityLogSharingView.swift
 

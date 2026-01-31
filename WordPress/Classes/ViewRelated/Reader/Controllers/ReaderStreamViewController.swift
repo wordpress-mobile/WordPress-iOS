@@ -742,10 +742,6 @@ import AutomatticTracks
     func togglePostSave(_ post: ReaderPost) {
         let origin: ReaderSaveForLaterOrigin = contentType == .saved ? .savedStream : .otherStream
 
-        if !post.isSavedForLater {
-            FancyAlertViewController.presentReaderSavedPostsAlertControllerIfNecessary(from: self)
-        }
-
         let saveAction = ReaderSaveForLaterAction(visibleConfirmation: showConfirmation)
         saveAction.execute(with: post, context: viewContext, origin: origin, viewController: self)
     }

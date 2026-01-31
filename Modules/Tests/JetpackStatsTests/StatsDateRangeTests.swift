@@ -75,6 +75,7 @@ struct StatsDateRangeTests {
     @Test
     func testAvailableAdjacentPeriods() {
         // GIVEN
+        let now = Date("2025-12-31T23:59:59Z") // Fixed date in 2025 for consistent test results
         let initialRange = StatsDateRange(
             interval: DateInterval(
                 start: Date("2020-01-01T00:00:00Z"),
@@ -85,7 +86,7 @@ struct StatsDateRangeTests {
         )
 
         // WHEN - Test backward navigation
-        let backwardPeriods = initialRange.availableAdjacentPeriods(in: .backward, maxCount: 10)
+        let backwardPeriods = initialRange.availableAdjacentPeriods(in: .backward, maxCount: 10, now: now)
 
         // THEN
         #expect(backwardPeriods.count == 10)
@@ -99,7 +100,7 @@ struct StatsDateRangeTests {
         #expect(backwardPeriods[0].range.dateInterval.end == Date("2020-01-01T00:00:00Z"))
 
         // WHEN - Test forward navigation (should be limited by current date)
-        let forwardPeriods = initialRange.availableAdjacentPeriods(in: .forward, maxCount: 10)
+        let forwardPeriods = initialRange.availableAdjacentPeriods(in: .forward, maxCount: 10, now: now)
 
         // THEN - Should have 5 periods available (2021, 2022, 2023, 2024, 2025)
         #expect(forwardPeriods.count == 5)

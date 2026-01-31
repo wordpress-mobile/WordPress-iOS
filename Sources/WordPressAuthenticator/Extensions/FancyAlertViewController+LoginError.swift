@@ -5,8 +5,6 @@ import WordPressKit
 
 extension FancyAlertViewController {
     private struct Strings {
-        static let titleText = NSLocalizedString("What's my site address?", comment: "Title of alert helping users understand their site address")
-        static let bodyText = NSLocalizedString("Your site address appears in the bar at the top of the screen when you visit your site in Safari.", comment: "Body text of alert helping users understand their site address")
         static let OK = NSLocalizedString("OK", comment: "Ok button for dismissing alert helping users understand their site address")
         static let moreHelp = NSLocalizedString("Need more help?", comment: "Title of the more help button on alert helping users understand their site address")
     }
@@ -19,47 +17,6 @@ extension FancyAlertViewController {
                 onTap?()
             })
         }
-    }
-
-    static func siteAddressHelpController(
-        loginFields: LoginFields,
-        sourceTag: WordPressSupportSourceTag,
-        moreHelpTapped: (() -> Void)? = nil,
-        onDismiss: (() -> Void)? = nil) -> FancyAlertViewController {
-
-        let moreHelpButton = ButtonConfig(Strings.moreHelp) { controller, _ in
-            controller.dismiss(animated: true) {
-                // Find the topmost view controller that we can present from
-                guard WordPressAuthenticator.shared.delegate?.supportEnabled == true,
-                    let viewController = UIApplication.shared.delegate?.window??.topmostPresentedViewController
-                else {
-                    return
-                }
-
-                moreHelpTapped?()
-                WordPressAuthenticator.shared.delegate?.presentSupportRequest(from: viewController, sourceTag: sourceTag)
-            }
-        }
-
-        let image = WordPressAuthenticator.shared.displayImages.siteAddressModalPlaceholder
-
-        let okButton = ButtonConfig(Strings.OK) { controller, _ in
-            onDismiss?()
-            controller.dismiss(animated: true, completion: nil)
-        }
-
-        let config = FancyAlertViewController.Config(titleText: Strings.titleText,
-                                                     bodyText: Strings.bodyText,
-                                                     headerImage: image,
-                                                     dividerPosition: .top,
-                                                     defaultButton: okButton,
-                                                     cancelButton: nil,
-                                                     moreInfoButton: moreHelpButton,
-                                                     titleAccessoryButton: nil,
-                                                     dismissAction: onDismiss)
-
-        let controller = FancyAlertViewController.controllerWithConfiguration(configuration: config)
-        return controller
     }
 
     // MARK: - Error Handling

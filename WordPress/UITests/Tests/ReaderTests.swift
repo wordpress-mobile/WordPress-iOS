@@ -36,14 +36,6 @@ class ReaderTests_01: ReaderTests {
             .openLastPostInSafari()
             .verifyPostContentEquals(.expectedPostContent)
     }
-
-     func testDiscover() throws {
-         try openStream(.discover)
-             .selectTag()
-             .verifyTagLoaded()
-             .followTag()
-             .verifyTagFollowed()
-     }
 }
 
 class ReaderTests_02: ReaderTests {

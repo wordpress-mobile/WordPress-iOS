@@ -34,7 +34,7 @@ class ReaderSiteHeaderView: ReaderBaseHeaderView, ReaderStreamHeader {
             return
         }
         headerViewModel.site = siteTopic
-        headerViewModel.title = siteTopic.title
+        headerViewModel.title = siteTopic.title.replacing(/\s+/) { _ in " " }
         headerViewModel.siteUrl = URL(string: siteTopic.siteURL)?.host ?? ""
         headerViewModel.siteDetails = siteTopic.siteDescription
         headerViewModel.postCount = siteTopic.postCount.doubleValue.abbreviatedString()
