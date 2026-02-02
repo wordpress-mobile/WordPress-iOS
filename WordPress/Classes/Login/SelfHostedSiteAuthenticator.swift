@@ -331,8 +331,6 @@ struct SelfHostedSiteAuthenticator {
             try await ContextManager.shared.performAndSave { context in
                 let blog = try context.existingObject(with: blog)
 
-                // Here we'll use the "application password" as the "account password".
-                blog.password = credentials.password
                 blog.isAdmin = isAdmin
                 blog.addSettingsIfNecessary()
                 blog.settings?.name = siteTitle

@@ -55,6 +55,11 @@ public extension Blog {
         BlogQuery().apiKey(is: id).count(in: context) != 0
     }
 
+    @objc(getApplicationTokenWithError:)
+    func objc_getApplicationToken() throws -> String {
+        try getApplicationToken()
+    }
+
     // MARK: Type-safe wrappers
     // The underlying `Blog` object has lots of field nullability that doesn't provide guarantees about
     // which fields are present. These wrappers will `throw` if the `Blog` is invalid, allowing any dependent
