@@ -118,10 +118,21 @@ open class WordPressOrgXMLRPCApi: NSObject, WordPressOrgXMLRPCApiInterfacing {
     public func isEnabled(username: String, password: String) async -> Bool {
         let parameters: [AnyObject] = [0 as AnyObject, username as AnyObject, password as AnyObject]
         let result = await call(method: "wp.getOptions", parameters: parameters)
-        guard case let .failure(error) = result, case let .endpointError(fault) = error else {
-            return true
+        guard case let .failure(error) = result else { return true }
+        // 405 is a proper fault code that indicates XML-RPC is disabled.
+        if case let .endpointError(fault) = error, fault.code == 405 {
+            return false
         }
-        return fault.code != 405
+        // Some plugins send HTTP 403 Forbidden response.
+        if error.response?.statusCode == 403 {
+            return false
+        }
+        // Some plugins send HTTP 200 with html or no content at all.
+        if case let .unparsableResponse(response, _, _) = error,
+           response?.value(forHTTPHeaderField: "Content-Type")?.hasPrefix("text/xml") == false {
+            return false
+        }
+        return true
     }
 
     /**
