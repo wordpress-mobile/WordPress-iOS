@@ -516,6 +516,7 @@ extension WordPressAppDelegate {
         /// - warning: must be called before the `update(using:then:)`.
         if remoteFeatureFlagStore.isFreshInstall {
             FeatureFlagOverrideStore().override(FeatureFlag.newStats, withValue: true)
+            FeatureFlagOverrideStore().override(FeatureFlag.allowApplicationPasswords, withValue: true)
         }
 
         var api: WordPressComRestApi
