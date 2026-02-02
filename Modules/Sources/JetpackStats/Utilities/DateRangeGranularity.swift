@@ -85,16 +85,4 @@ extension DateRangeGranularity {
         case .year: 6
         }
     }
-
-    /// Approximate duration in seconds for one unit of this granularity.
-    /// Used to detect when the granularity period is larger than the requested date range.
-    var approximateDuration: TimeInterval {
-        switch self {
-        case .hour: 3600                    // 1 hour
-        case .day: 86400                    // 1 day
-        case .week: 604800                  // 7 days
-        case .month: 2_592_000              // 30 days
-        case .year: 31_536_000              // 365 days
-        }
-    }
 }
