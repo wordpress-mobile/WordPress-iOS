@@ -107,7 +107,7 @@ private struct Section {
             newSections.append(Section(rows: [], category: .extensiveLogging))
         }
 
-        if viewController.showXMLRPCDisabled {
+        if blog.isSelfHosted, viewController.showXMLRPCDisabled {
             newSections.append(Section(rows: [], category: .xmlrpcDisabled))
         }
 

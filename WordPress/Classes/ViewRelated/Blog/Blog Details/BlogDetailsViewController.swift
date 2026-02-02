@@ -196,7 +196,8 @@ public class BlogDetailsViewController: UIViewController {
     }
 
     private func checkXMLRPCStatus() {
-        guard let xmlrpcApi = blog.xmlrpcApi, let username = blog.username, let password = blog.password else {
+        guard blog.isSelfHosted, let xmlrpcApi = blog.xmlrpcApi,
+                let username = blog.username, let password = blog.password else {
             showXMLRPCDisabled = false
             return
         }
