@@ -87,6 +87,8 @@ struct TopListItemView: View {
                 TopListArchiveItemRowView(item: archiveItem)
             case let archiveSection as TopListItem.ArchiveSection:
                 TopListArchiveSectionRowView(item: archiveSection)
+            case let utmMetric as TopListItem.UTMMetric:
+                TopListUTMMetricRowView(item: utmMetric)
             default:
                 let _ = assertionFailure("unsupported item: \(item)")
                 EmptyView()
@@ -141,6 +143,8 @@ private extension TopListItemView {
             return true
         case is TopListItem.ExternalLink:
             return true
+        case is TopListItem.UTMMetric:
+            return true
         default:
             return false
         }
@@ -184,6 +188,11 @@ private extension TopListItemView {
                 .environment(\.context, context)
                 .environment(\.router, router)
             router.navigate(to: detailsView, title: Strings.ExternalLinkDetails.title)
+        case let utmMetric as TopListItem.UTMMetric:
+            let detailsView = UTMMetricStatsView(utmMetric: utmMetric, initialDateRange: dateRange, context: context)
+                .environment(\.context, context)
+                .environment(\.router, router)
+            router.navigate(to: detailsView, title: Strings.UTMMetricDetails.title)
         default:
             break
         }

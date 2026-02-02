@@ -6,6 +6,7 @@ struct TopListCard: View {
     private let itemLimit: Int
     private let reserveSpace: Bool
     private let showMoreInline: Bool
+    private let showItemTypePicker: Bool
 
     @State private var isExpanded = false
 
@@ -16,12 +17,14 @@ struct TopListCard: View {
         viewModel: TopListViewModel,
         itemLimit: Int = 5,
         reserveSpace: Bool = true,
-        showMoreInline: Bool = false
+        showMoreInline: Bool = false,
+        showItemTypePicker: Bool = true
     ) {
         self.viewModel = viewModel
         self.itemLimit = itemLimit
         self.reserveSpace = reserveSpace
         self.showMoreInline = showMoreInline
+        self.showItemTypePicker = showItemTypePicker
     }
 
     var body: some View {
@@ -81,10 +84,14 @@ struct TopListCard: View {
 
     private var cardHeaderView: some View {
         HStack {
-            Menu {
-                itemTypePicker
-            } label: {
-                StatsCardTitleView(title: viewModel.selection.item.localizedTitle, showChevron: true)
+            if showItemTypePicker {
+                Menu {
+                    itemTypePicker
+                } label: {
+                    StatsCardTitleView(title: viewModel.selection.item.localizedTitle, showChevron: true)
+                }
+            } else {
+                StatsCardTitleView(title: viewModel.selection.item.localizedTitle, showChevron: false)
             }
             Spacer(minLength: 44)
         }
@@ -114,7 +121,7 @@ struct TopListCard: View {
 
     private var listHeaderView: some View {
         HStack {
-            // Left side: Location level for locations, device breakdown for devices, otherwise item type
+            // Left side: Location level for locations, device breakdown for devices, UTM parameter for UTM, otherwise item type
             if viewModel.selection.item == .locations {
                 Menu {
                     locationLevelPicker
@@ -130,6 +137,16 @@ struct TopListCard: View {
                     deviceBreakdownPicker
                 } label: {
                     InlineValuePickerTitle(title: viewModel.selection.options.deviceBreakdown.localizedTitle)
+                        .foregroundStyle(Color.secondary)
+                        .padding(.top, 6)
+                        .padding(.vertical, Constants.step0_5)
+                }
+                .fixedSize()
+            } else if viewModel.selection.item == .utm {
+                Menu {
+                    utmParamGroupingPicker
+                } label: {
+                    InlineValuePickerTitle(title: viewModel.selection.options.utmParamGrouping.localizedTitle)
                         .foregroundStyle(Color.secondary)
                         .padding(.top, 6)
                         .padding(.vertical, Constants.step0_5)
@@ -267,6 +284,28 @@ struct TopListCard: View {
         .tint(Color.primary)
     }
 
+    private var utmParamGroupingPicker: some View {
+        ForEach(Array(UTMParamGrouping.grouped.enumerated()), id: \.offset) { _, groupings in
+            Section {
+                ForEach(groupings) { grouping in
+                    Button {
+                        let previousGrouping = viewModel.selection.options.utmParamGrouping
+                        viewModel.selection.options.utmParamGrouping = grouping
+
+                        // Track UTM parameter grouping change
+                        viewModel.tracker?.send(.utmParamGroupingChanged, properties: [
+                            "from_grouping": previousGrouping.analyticsName,
+                            "to_grouping": grouping.analyticsName
+                        ])
+                    } label: {
+                        Text(grouping.localizedTitle)
+                    }
+                }
+            }
+        }
+        .tint(Color.primary)
+    }
+
     @ViewBuilder
     private var listContentView: some View {
         Group {
@@ -371,8 +410,8 @@ struct TopListCard: View {
 
 #Preview {
     ScrollView {
-        VStack {
-            TopListCardPreview(item: .devices)
+        VStack(spacing: 16) {
+            TopListCardPreview(item: .utm)
             TopListCardPreview(item: .authors)
             TopListCardPreview(item: .locations)
         }

@@ -27,7 +27,7 @@ actor StatsService: StatsServiceProtocol {
 
     let supportedItems: [TopListItemType] = [
         .postsAndPages, .authors, .referrers, .locations, .devices,
-        .externalLinks, .fileDownloads, .searchTerms, .videos, .archive
+        .externalLinks, .fileDownloads, .searchTerms, .videos, .archive, .utm
     ]
 
     nonisolated func getSupportedMetrics(for item: TopListItemType) -> [SiteMetric] {
@@ -42,6 +42,7 @@ actor StatsService: StatsServiceProtocol {
         case .fileDownloads: [.downloads]
         case .searchTerms: [.views]
         case .videos: [.views]
+        case .utm: [.views]
         }
     }
 
@@ -353,6 +354,26 @@ actor StatsService: StatsServiceProtocol {
                 // Sort sections by total views
                 let sortedSections = sections.sorted { ($0.metrics.views ?? 0) > ($1.metrics.views ?? 0) }
                 return TopListResponse(items: sortedSections)
+            default:
+                throw StatsServiceError.unavailable
+            }
+
+        case .utm:
+            switch metric {
+            case .views:
+                let convertedInterval = convertDateIntervalSiteToLocal(interval)
+                let utmParam = WordPressKit.StatsServiceRemoteV2.UTMParam(options.utmParamGrouping)
+                let data = try await service.getUTMStats(
+                    utmParam: utmParam,
+                    startDate: convertedInterval.start,
+                    endDate: convertedInterval.end,
+                    maxResults: limit ?? 0
+                )
+                let dateFormatter = makeHourlyDateFormatter()
+                let items = data.utmMetrics.map {
+                    TopListItem.UTMMetric($0, dateFormatter: dateFormatter)
+                }
+                return TopListResponse(items: sortItems(items))
             default:
                 throw StatsServiceError.unavailable
             }

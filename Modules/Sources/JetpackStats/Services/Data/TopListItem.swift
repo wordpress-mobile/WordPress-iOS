@@ -188,4 +188,19 @@ extension TopListItem {
             sectionName.capitalized
         }
     }
+
+    struct UTMMetric: Codable, TopListItemProtocol {
+        let label: String
+        let values: [String]
+        var metrics: SiteMetricsSet
+        var posts: [Post]?
+
+        var id: TopListItemID {
+            TopListItemID(type: .utm, id: label)
+        }
+
+        var displayName: String {
+            label
+        }
+    }
 }

@@ -47,6 +47,9 @@ public enum StatsEvent {
     /// Referrer stats screen shown
     case referrerStatsScreenShown
 
+    /// UTM metric stats screen shown
+    case utmMetricStatsScreenShown
+
     // MARK: - Date Range Events
 
     /// Date range preset selected
@@ -154,6 +157,12 @@ public enum StatsEvent {
     ///   - "to_breakdown": New breakdown
     case deviceBreakdownChanged
 
+    /// UTM parameter grouping changed
+    /// - Parameters:
+    ///   - "from_grouping": Previous grouping ("sourceMedium", "campaignSourceMedium", etc.)
+    ///   - "to_grouping": New grouping
+    case utmParamGroupingChanged
+
     // MARK: - Navigation Events
 
     /// Stats tab selected
@@ -229,6 +238,7 @@ extension TopListItemType {
         case .searchTerms: "search_terms"
         case .fileDownloads: "file_downloads"
         case .archive: "archive"
+        case .utm: "utm"
         }
     }
 }

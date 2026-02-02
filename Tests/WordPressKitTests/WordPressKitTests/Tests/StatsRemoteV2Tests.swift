@@ -33,6 +33,8 @@ class StatsRemoteV2Tests: RemoteTestCase, RESTTestable {
     let getDeviceScreensizeFilename = "stats-devices-screensize.json"
     let getDevicePlatformFilename = "stats-devices-platform.json"
     let getDeviceBrowserFilename = "stats-devices-browser.json"
+    let getUTMStatsFilename = "stats-utm-source-medium.json"
+    let getUTMStatsEmptyFilename = "stats-utm-empty.json"
 
     // MARK: - Properties
 
@@ -56,6 +58,7 @@ class StatsRemoteV2Tests: RemoteTestCase, RESTTestable {
     var siteDeviceScreensizeEndpoint: String { return "sites/\(siteID)/stats/devices/screensize/" }
     var siteDevicePlatformEndpoint: String { return "sites/\(siteID)/stats/devices/platform/" }
     var siteDeviceBrowserEndpoint: String { return "sites/\(siteID)/stats/devices/browser/" }
+    var siteUTMStatsEndpoint: String { return "sites/\(siteID)/stats/utm/utm_source,utm_medium" }
 
     func toggleSpamStateEndpoint(for referrerDomain: String, markAsSpam: Bool) -> String {
         let action = markAsSpam ? "new" : "delete"
@@ -1007,5 +1010,64 @@ class StatsRemoteV2Tests: RemoteTestCase, RESTTestable {
         XCTAssertEqual(browserData.items.count, 7)
         XCTAssertEqual(browserData.items.first?.name, "chrome")
         XCTAssertEqual(browserData.items.first?.value, 1063.0)
+    }
+
+    func testFetchUTMStats() async throws {
+        stubRemoteResponse(siteUTMStatsEndpoint, filename: getUTMStatsFilename, contentType: .ApplicationJSON)
+
+        let utmData = try await remote.getUTMStats(utmParam: .sourceMedium, startDate: Date(), endDate: Date(), maxResults: 10)
+
+        // Check we have the expected number of UTM metrics
+        XCTAssertEqual(utmData.utmMetrics.count, 7)
+
+        // Check first UTM metric (highest views)
+        let firstMetric = utmData.utmMetrics.first
+        XCTAssertEqual(firstMetric?.label, "google / cpc")
+        XCTAssertEqual(firstMetric?.values, ["google", "cpc"])
+        XCTAssertEqual(firstMetric?.viewsCount, 152)
+        XCTAssertEqual(firstMetric?.posts.count, 2)
+
+        // Check first post of first metric
+        let firstPost = firstMetric?.posts.first
+        XCTAssertEqual(firstPost?.title, "How to Build a Mobile App")
+        XCTAssertEqual(firstPost?.postID, 12345)
+        XCTAssertEqual(firstPost?.viewsCount, 75)
+        XCTAssertEqual(firstPost?.postURL, URL(string: "https://example.com/how-to-build-mobile-app"))
+
+        // Check second post of first metric
+        let secondPost = firstMetric?.posts[1]
+        XCTAssertEqual(secondPost?.title, "Swift Development Guide")
+        XCTAssertEqual(secondPost?.postID, 12346)
+        XCTAssertEqual(secondPost?.viewsCount, 50)
+        XCTAssertEqual(secondPost?.postURL, URL(string: "https://example.com/swift-guide"))
+
+        // Check second UTM metric
+        let secondMetric = utmData.utmMetrics[1]
+        XCTAssertEqual(secondMetric.label, "facebook / social")
+        XCTAssertEqual(secondMetric.values, ["facebook", "social"])
+        XCTAssertEqual(secondMetric.viewsCount, 120)
+        XCTAssertEqual(secondMetric.posts.count, 1)
+
+        // Check post of second metric
+        let secondMetricPost = secondMetric.posts.first
+        XCTAssertEqual(secondMetricPost?.title, "Social Media Tips")
+        XCTAssertEqual(secondMetricPost?.postID, 12347)
+        XCTAssertEqual(secondMetricPost?.viewsCount, 60)
+        XCTAssertEqual(secondMetricPost?.postURL, URL(string: "https://example.com/social-media-tips"))
+
+        // Check that metrics are sorted by views descending
+        for i in 0..<(utmData.utmMetrics.count - 1) {
+            XCTAssertGreaterThanOrEqual(utmData.utmMetrics[i].viewsCount, utmData.utmMetrics[i + 1].viewsCount)
+        }
+    }
+
+    func testFetchUTMStatsWithEmptyArrays() async throws {
+        // Test that backend returning empty arrays instead of empty dicts is handled gracefully
+        stubRemoteResponse(siteUTMStatsEndpoint, filename: getUTMStatsEmptyFilename, contentType: .ApplicationJSON)
+
+        let utmData = try await remote.getUTMStats(utmParam: .sourceMedium, startDate: Date(), endDate: Date(), maxResults: 10)
+
+        // Should return empty metrics array without crashing
+        XCTAssertEqual(utmData.utmMetrics.count, 0)
     }
 }

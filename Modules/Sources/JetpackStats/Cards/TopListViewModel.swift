@@ -56,6 +56,7 @@ final class TopListViewModel: ObservableObject, TrafficCardViewModel {
 
     enum Filter: Equatable {
         case author(userId: String)
+        case utmMetric(values: [String])
     }
 
     var isFirstLoad: Bool { isLoading && data == nil }
@@ -83,15 +84,16 @@ final class TopListViewModel: ObservableObject, TrafficCardViewModel {
         self.data = initialData
         self.isLoading = initialData == nil
 
-        self.groupedItems = {
-            let primary = service.supportedItems.filter {
-                !TopListItemType.secondaryItems.contains($0)
-            }
-            let secondary = service.supportedItems.filter {
-                TopListItemType.secondaryItems.contains($0)
-            }
-            return [primary, secondary]
-        }()
+        let supportedItems = Set(service.supportedItems)
+        self.groupedItems = [
+            TopListItemType.contentItems,
+            TopListItemType.trafficSourceItems,
+            TopListItemType.audienceEngagementItems
+        ].map {
+            $0.filter(supportedItems.contains)
+        }.filter {
+            !$0.isEmpty
+        }
     }
 
     func updateConfiguration(_ newConfiguration: TopListCardConfiguration) {
@@ -209,11 +211,17 @@ final class TopListViewModel: ObservableObject, TrafficCardViewModel {
     private func getTopListData(for selection: Selection, dateRange: StatsDateRange) async throws -> TopListData {
         let granularity = dateRange.dateInterval.preferredGranularity
 
-        // When filter is set for author, we need to fetch authors data
+        // When filter is set, we need to fetch the appropriate data type
         let fetchItem: TopListItemType
-        if let filter, case .author = filter {
-            // We have to fake it as "Posts & Pages" does not support filtering
-            fetchItem = .authors
+        if let filter {
+            switch filter {
+            case .author:
+                // We have to fake it as "Posts & Pages" does not support filtering
+                fetchItem = .authors
+            case .utmMetric:
+                // Fetch UTM data to get posts for specific campaign
+                fetchItem = .utm
+            }
         } else {
             fetchItem = selection.item
         }
@@ -274,6 +282,13 @@ final class TopListViewModel: ObservableObject, TrafficCardViewModel {
             let authors = items.lazy.compactMap { $0 as? TopListItem.Author }
             if let author = authors.first(where: { $0.userId == userId }),
                let posts = author.posts {
+                return posts
+            }
+            return []
+        case .utmMetric(let values):
+            let utmMetrics = items.lazy.compactMap { $0 as? TopListItem.UTMMetric }
+            if let metric = utmMetrics.first(where: { $0.values == values }),
+               let posts = metric.posts {
                 return posts
             }
             return []
