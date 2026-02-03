@@ -228,7 +228,11 @@ class GutenbergSettings {
     /// - Parameter blog: The blog to check theme styles setting for
     /// - Returns: true if theme styles are enabled (default: true), false if explicitly disabled
     func isThemeStylesEnabled(for blog: Blog) -> Bool {
-        return getSupports(.blockEditorSettings, for: blog)
+        if !getSupports(.blockEditorSettings, for: blog) {
+            return false
+        }
+
+        return database.bool(forKey: Key.themeStylesEnabled(forBlogURL: blog.url))
     }
 
     /// Sets whether theme styles should be enabled for the given blog.
@@ -240,7 +244,7 @@ class GutenbergSettings {
         database.set(isEnabled, forKey: Key.themeStylesEnabled(forBlogURL: blog.url))
     }
 
-    /// Sets whether the given API feature is available for the given blog
+    /// Sets whether the given API feature is available for the given blog. This is unrelated to whether it's *enabled* for that blog.
     ///
     /// - Parameters:
     ///   - isEnabled: Whether to enable theme styles
@@ -252,7 +256,7 @@ class GutenbergSettings {
         return self
     }
 
-    /// Returns whether the given API feature is available for the given blog.
+    /// Returns whether the given API feature is available for the given blog. This is unrelated to whether it's *enabled* for that blog.
     ///
     /// - Parameter blog: The blog to check the given API feature for
     /// - Returns: true if the feature is available, false if the server hasn't been queried for support yet, or if the server doesn't support it.
@@ -297,7 +301,17 @@ public class GutenbergSettingsBridge: NSObject {
     @objc(isThemeStylesSupportedForBlog:)
     public static func canEnableThemeStyleSetting(for blog: Blog) -> Bool {
         let settings = GutenbergSettings()
-        return settings.getSupports(.blockEditorSettings, for: blog) && settings.getSupports(.blockTheme, for: blog)
+
+        // It's possible for a theme to publish editor styles while not being a block theme.
+        // We'll leave it up to the user to decide if they want to use styles or not, and will enable them by default.
+        return settings.getSupports(.blockEditorSettings, for: blog)
+    }
+
+    @objc(siteIsUsingBlockTheme:)
+    public static func siteIsUsingBlockTheme(for blog: Blog) -> Bool {
+        let settings = GutenbergSettings()
+
+        return settings.getSupports(.blockTheme, for: blog)
     }
 }
 
