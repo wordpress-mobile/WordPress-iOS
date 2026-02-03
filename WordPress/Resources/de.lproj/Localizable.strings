@@ -1,4 +1,4 @@
-/* Translation-Revision-Date: 2026-01-26 21:29:40+0000 */
+/* Translation-Revision-Date: 2026-02-03 00:09:00+0000 */
 /* Plural-Forms: nplurals=2; plural=n != 1; */
 /* Generator: GlotPress/4.0.3 */
 /* Language: de */
@@ -5355,7 +5355,7 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 "Strikethrough" = "Durchstreichen";
 
 /* Submit for review button label (saving content, ex: Post, Page, Comment). */
-"Submit for Review" = "Zur Überprüfung vorlegen";
+"Submit for Review" = "Zur Überprüfung einreichen";
 
 /* Notice displayed to the user after clearing the spotlight index in app settings. */
 "Successfully cleared spotlight index" = "Spotlight-Index erfolgreich gelöscht";
@@ -9910,7 +9910,7 @@ Example: Reply to Pamela Nguyen */
 "mySite.menu.removeSite" = "Website entfernen";
 
 /* Noun. Links to a blog's Jetpack Scan screen. */
-"mySite.menu.scan" = "Scannen";
+"mySite.menu.scan" = "Scan";
 
 /* Noun. Title. Links to a blog's sharing options. */
 "mySite.menu.sharing" = "Teilen";
