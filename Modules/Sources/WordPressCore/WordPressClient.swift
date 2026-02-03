@@ -54,21 +54,25 @@ public actor WordPressClient {
     public let api: any WordPressClientAPI
     public let rootUrl: String
 
-    private var loadSiteInfoTask: Task<(WpApiDetails, UserWithEditContext, ThemeWithEditContext?), Error>
+    private var loadSiteInfoTask: Task<WpApiDetails, Error>
+    private var loadCurrentUserTask: Task<UserWithEditContext, Error>
+    private var loadActiveThemeTask: Task<ThemeWithEditContext?, Error>
 
     public init(api: any WordPressClientAPI, rootUrl: ParsedUrl) {
         self.api = api
         self.rootUrl = rootUrl.url()
 
-        self.loadSiteInfoTask = Task { [api] in
-            async let apiRootTask = try await api.apiRoot.get().data
-            async let currentUserTask = try await api.users.retrieveMeWithEditContext().data
-            async let activeThemeTask = try await api.themes.listWithEditContext(
-                params: ThemeListParams(status: .active)
-            ).data.first(where: { $0.status == .active })
+        // These tasks need to be manually restated here because we can't use the task constructors
+        self.loadSiteInfoTask = Task { try await api.apiRoot.get().data }
+        self.loadCurrentUserTask = Task { try await api.users.retrieveMeWithEditContext().data }
+        self.loadActiveThemeTask = Task { try await api.themes.listWithEditContext(params: ThemeListParams(status: .active)).data.first }
+    }
 
-            return try await (apiRootTask, currentUserTask, activeThemeTask)
-        }
+    /// Invalidates all cached data and triggers a fresh fetch from the server.
+    public func refresh() {
+        loadSiteInfoTask = self.newSiteInfoTask()
+        loadCurrentUserTask = self.newCurrentUserTask()
+        loadActiveThemeTask = self.newActiveThemeTask()
     }
 
     public func supports(_ feature: Feature, forSiteId siteId: Int? = nil) async throws -> Bool {
@@ -101,12 +105,47 @@ public actor WordPressClient {
     }
 
     private func fetchApiRoot() async throws -> WpApiDetails {
-        // Wait for the `loadSiteInfoTask` to finish the initial load then use that value
-        return try await loadSiteInfoTask.value.0
+        switch await self.loadSiteInfoTask.result {
+        case .success(let details): return details
+        case .failure(let error):
+            self.loadSiteInfoTask = newSiteInfoTask()
+            throw error
+        }
     }
 
     private func fetchActiveTheme() async throws -> ThemeWithEditContext? {
-        // Wait for the `loadSiteInfoTask` to finish the initial load then use that value
-        return try await loadSiteInfoTask.value.2
+        switch await self.loadActiveThemeTask.result {
+        case .success(let theme): return theme
+        case .failure(let error):
+            self.loadActiveThemeTask = newActiveThemeTask()
+            throw error
+        }
+    }
+
+    private func fetchCurrentUser() async throws -> UserWithEditContext {
+        switch await self.loadCurrentUserTask.result {
+        case .success(let user): return user
+        case .failure(let error):
+            self.loadCurrentUserTask = newCurrentUserTask()
+            throw error
+        }
+    }
+
+    private nonisolated func newSiteInfoTask() -> Task<WpApiDetails, Error> {
+        Task {
+            try await api.apiRoot.get().data
+        }
+    }
+
+    private nonisolated func newCurrentUserTask() -> Task<UserWithEditContext, Error> {
+        Task {
+            try await api.users.retrieveMeWithEditContext().data
+        }
+    }
+
+    private nonisolated func newActiveThemeTask() -> Task<ThemeWithEditContext?, Error> {
+        Task {
+            try await api.themes.listWithEditContext(params: ThemeListParams(status: .active)).data.first
+        }
     }
 }
