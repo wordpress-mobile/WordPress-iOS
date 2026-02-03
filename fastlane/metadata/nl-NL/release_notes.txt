@@ -1,9 +1,9 @@
-We made a technical update that reduces the size of your app by about 6 MB. What will you do with all that newfound space?
+We hebben een technische update uitgevoerd die de grootte van je app met ongeveer 6 MB vermindert. Wat ga je doen met al die nieuwe ruimte?
 
-It’s easier to find, see, and change the visibility settings of existing posts. The “Done” button also won’t disappear when you set the password while publishing a password-protected post.
+Het is eenvoudiger om de zichtbaarheidsinstellingen van bestaande berichten te vinden, te zien en te wijzigen. De knop 'Klaar' verdwijnt ook niet wanneer je het wachtwoord instelt tijdens het publiceren van een bericht dat met een wachtwoord is beveiligd.
 
-Looking good: we updated shortcut icons and illustrations to better match the rest of the app, as well as fit better with your device.
+Ziet er goed uit: we hebben pictogrammen van snelkoppelingen en illustraties bijgewerkt om beter overeen te komen met de rest van de app en beter te passen op je apparaat.
 
-We fixed an issue so post previews now work properly for certain sites using Business and Commerce plans.
+We hebben een probleem opgelost, zodat berichtvoorbeelden nu goed werken voor bepaalde sites die Business- en Commerce-abonnementen gebruiken.
 
-When you add a new self-hosted site, you’ll be asked for your app password to authenticate. Keep it secret. Beveilig hem
+Wanneer je een nieuwe zelf-gehoste site toevoegt, wordt er om je appwachtwoord gevraagd om te verifiëren. Houd het geheim. Beveilig het.
