@@ -81,10 +81,12 @@ enum Strings {
         static let authors = AppLocalizedString("jetpackStats.siteDataTypes.authors", value: "Authors", comment: "Authors data type")
         static let referrers = AppLocalizedString("jetpackStats.siteDataTypes.referrers", value: "Referrers", comment: "Referrers data type")
         static let locations = AppLocalizedString("jetpackStats.siteDataTypes.locations", value: "Locations", comment: "Locations data type")
+        static let devices = AppLocalizedString("jetpackStats.siteDataTypes.devices", value: "Devices", comment: "Devices data type")
         static let clicks = AppLocalizedString("jetpackStats.siteDataTypes.clicks", value: "Clicks", comment: "Clicks data type (external links)")
         static let fileDownloads = AppLocalizedString("jetpackStats.siteDataTypes.fileDownloads", value: "File Downloads", comment: "File downloads data type")
         static let searchTerms = AppLocalizedString("jetpackStats.siteDataTypes.searchTerms", value: "Search Terms", comment: "Search terms data type")
         static let videos = AppLocalizedString("jetpackStats.siteDataTypes.videos", value: "Videos", comment: "Videos data type")
+        static let utm = AppLocalizedString("jetpackStats.siteDataTypes.utm", value: "UTM", comment: "UTM campaign tracking data type")
     }
 
     enum Countries {
@@ -95,6 +97,20 @@ enum Strings {
         static let countries = AppLocalizedString("jetpackStats.locationLevels.countries", value: "Countries", comment: "Location level selector for countries")
         static let regions = AppLocalizedString("jetpackStats.locationLevels.regions", value: "Regions", comment: "Location level selector for regions")
         static let cities = AppLocalizedString("jetpackStats.locationLevels.cities", value: "Cities", comment: "Location level selector for cities")
+    }
+
+    enum DeviceBreakdowns {
+        static let screensize = AppLocalizedString("jetpackStats.deviceBreakdowns.screensize", value: "Screen Size", comment: "Device breakdown by screen size")
+        static let platform = AppLocalizedString("jetpackStats.deviceBreakdowns.operatingSystem", value: "Operating System", comment: "Device breakdown by platform/OS")
+        static let browser = AppLocalizedString("jetpackStats.deviceBreakdowns.browser", value: "Browser", comment: "Device breakdown by browser")
+    }
+
+    enum UTMParamGroupings {
+        static let source = AppLocalizedString("jetpackStats.utmParamGroupings.source", value: "Source", comment: "UTM parameter for source only")
+        static let medium = AppLocalizedString("jetpackStats.utmParamGroupings.medium", value: "Medium", comment: "UTM parameter for medium only")
+        static let campaign = AppLocalizedString("jetpackStats.utmParamGroupings.campaign", value: "Campaign", comment: "UTM parameter for campaign only")
+        static var sourceMedium: String { "\(source) / \(medium)" }
+        static var campaignSourceMedium: String { "\(campaign) / \(source) / \(medium)" }
     }
 
     enum Buttons {
@@ -147,6 +163,7 @@ enum Strings {
         static let hourlyDataUnavailable = AppLocalizedString("jetpackStats.chart.hourlyDataNotAvailable", value: "Hourly data not available", comment: "Shown for metrics that don't support hourly data")
         static let empty = AppLocalizedString("jetpackStats.chart.dataEmpty", value: "No data for period", comment: "Shown for empty states")
         static let granularity = AppLocalizedString("jetpackStats.chart.granularity", value: "Granularity", comment: "Granularity picker label")
+        static let other = AppLocalizedString("jetpackStats.chart.other", value: "Other", comment: "Label for aggregated 'Other' segment in pie charts")
     }
 
     enum TopListTitles {
@@ -155,10 +172,12 @@ enum Strings {
         static let authors = AppLocalizedString("jetpackStats.topListColumnTitle.authors", value: "Author", comment: "Table column title for Top List card")
         static let referrers = AppLocalizedString("jetpackStats.topListColumnTitle.referrers", value: "Referrer", comment: "Table column title for Top List card")
         static let locations = AppLocalizedString("jetpackStats.topListColumnTitle.locations", value: "Location", comment: "Table column title for Top List card")
+        static let devices = AppLocalizedString("jetpackStats.topListColumnTitle.devices", value: "Device", comment: "Table column title for Devices Top List card")
         static let clicks = AppLocalizedString("jetpackStats.topListColumnTitle.clicks", value: "External Link", comment: "Table column title for Top List card")
         static let fileDownloads = AppLocalizedString("jetpackStats.topListColumnTitle.fileDownloads", value: "File", comment: "Table column title for Top List card")
         static let searchTerms = AppLocalizedString("jetpackStats.topListColumnTitle.searchTerms", value: "Term", comment: "Table column title for Top List card")
         static let videos = AppLocalizedString("jetpackStats.topListColumnTitle.videos", value: "Video", comment: "Table column title for Top List card")
+        static let utm = AppLocalizedString("jetpackStats.topListColumnTitle.utm", value: "Campaign", comment: "Table column title for UTM Top List card")
         static let top10 = AppLocalizedString("jetpackStats.postDetails.top10", value: "Top 10", comment: "Section title")
         static let top50 = AppLocalizedString("jetpackStats.postDetails.top50", value: "Top 50", comment: "Section title")
     }
@@ -233,6 +252,18 @@ enum Strings {
         static let title = AppLocalizedString("jetpackStats.externalLinkDetails.title", value: "External Link", comment: "Title for the external link details screen")
         static let openLink = AppLocalizedString("jetpackStats.externalLinkDetails.openLink", value: "Open Link", comment: "Button to open the external link in browser")
         static let childLinks = AppLocalizedString("jetpackStats.externalLinkDetails.childLinks", value: "Sub-links", comment: "Section title for the list of child links")
+    }
+
+    enum UTMMetricDetails {
+        static let title = AppLocalizedString("jetpackStats.utmMetricDetails.title", value: "UTM Campaign", comment: "Title for the UTM campaign details screen")
+        static let topPosts = AppLocalizedString("jetpackStats.utmMetricDetails.topPosts", value: "Top Posts", comment: "Section title for top posts from this UTM campaign")
+
+        static func postCount(_ count: Int) -> String {
+            let format = count == 1
+                ? AppLocalizedString("jetpackStats.utmMetricDetails.postCount.singular", value: "%1$d post", comment: "Singular post count for UTM metrics. %1$d is the number.")
+                : AppLocalizedString("jetpackStats.utmMetricDetails.postCount.plural", value: "%1$d posts", comment: "Plural post count for UTM metrics. %1$d is the number.")
+            return String.localizedStringWithFormat(format, count)
+        }
     }
 
     enum ContextMenuActions {
@@ -378,5 +409,10 @@ enum Strings {
         static let detailedData = AppLocalizedString("jetpackStats.chartData.detailedData", value: "Detailed Data", comment: "Section title for detailed data")
         static let date = AppLocalizedString("jetpackStats.chartData.date", value: "DATE", comment: "Column header for date")
         static let value = AppLocalizedString("jetpackStats.chartData.value", value: "VALUE", comment: "Column header for value")
+    }
+
+    enum FeatureGate {
+        static let message = AppLocalizedString("jetpackStats.featureGate.message", value: "Upgrade your plan to get access to advanced analytics", comment: "Message shown when a stats feature is gated behind a paid plan")
+        static let explorePlans = AppLocalizedString("jetpackStats.featureGate.explorePlans", value: "Explore Plans", comment: "Button to explore plans when a feature is gated")
     }
 }

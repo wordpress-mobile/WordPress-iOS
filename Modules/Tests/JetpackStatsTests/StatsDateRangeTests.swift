@@ -112,4 +112,179 @@ struct StatsDateRangeTests {
         let ids = backwardPeriods.map(\.id) + forwardPeriods.map(\.id)
         #expect(Set(ids).count == ids.count)
     }
+
+    // MARK: - X-Axis Domain Tests
+
+    @Test
+    func testXAxisDomainWithDataWithinRequestedPeriod() {
+        // GIVEN - "This week" with daily granularity, all data points within the week
+        let weekStart = Date("2026-01-27T00:00:00Z")
+        let weekEnd = Date("2026-02-03T00:00:00Z")
+        let dateInterval = DateInterval(start: weekStart, end: weekEnd)
+
+        let dataPoints = [
+            DataPoint(date: Date("2026-01-27T00:00:00Z"), value: 100),
+            DataPoint(date: Date("2026-01-28T00:00:00Z"), value: 150),
+            DataPoint(date: Date("2026-01-29T00:00:00Z"), value: 200)
+        ]
+
+        // WHEN
+        let domain = ChartHelper.xAxisDomain(
+            for: dateInterval,
+            dataPoints: dataPoints,
+            granularity: .day,
+            calendar: calendar
+        )
+
+        // THEN - Standard case: use requested interval as-is
+        #expect(domain.lowerBound == weekStart)
+        #expect(domain.upperBound == weekEnd)
+    }
+
+    @Test
+    func testXAxisDomainWithYearGranularityForWeekPeriod() {
+        // GIVEN - "This week" with year granularity (edge case!)
+        // The year data point falls on Jan 1, which is before the week starts on Jan 27
+        let weekStart = Date("2026-01-27T00:00:00Z")
+        let weekEnd = Date("2026-02-03T00:00:00Z")
+        let dateInterval = DateInterval(start: weekStart, end: weekEnd)
+
+        let dataPoints = [
+            DataPoint(date: Date("2026-01-01T00:00:00Z"), value: 5000) // Year data point
+        ]
+
+        // WHEN
+        let domain = ChartHelper.xAxisDomain(
+            for: dateInterval,
+            dataPoints: dataPoints,
+            granularity: .year,
+            calendar: calendar
+        )
+
+        // THEN - 1 data point: show 7 periods centered (like web version)
+        #expect(domain.lowerBound == Date("2023-01-01T00:00:00Z")) // 2026 - 3 years
+        #expect(domain.upperBound == Date("2030-01-01T00:00:00Z"))  // 2026 + 4 years
+    }
+
+    @Test
+    func testXAxisDomainWithMonthGranularityForWeekPeriod() {
+        // GIVEN - "This week" with month granularity
+        let weekStart = Date("2026-01-27T00:00:00Z")
+        let weekEnd = Date("2026-02-03T00:00:00Z")
+        let dateInterval = DateInterval(start: weekStart, end: weekEnd)
+
+        let dataPoints = [
+            DataPoint(date: Date("2026-02-01T00:00:00Z"), value: 1000) // Month data point
+        ]
+
+        // WHEN
+        let domain = ChartHelper.xAxisDomain(
+            for: dateInterval,
+            dataPoints: dataPoints,
+            granularity: .month,
+            calendar: calendar
+        )
+
+        // THEN - 1 data point: show 7 periods centered (like web version)
+        #expect(domain.lowerBound == Date("2025-11-01T00:00:00Z")) // Feb - 3 months = Nov 2025
+        #expect(domain.upperBound == Date("2026-06-01T00:00:00Z"))  // Feb + 4 months = Jun
+    }
+
+    @Test
+    func testXAxisDomainWithEmptyDataPoints() {
+        // GIVEN - No data points
+        let weekStart = Date("2026-01-27T00:00:00Z")
+        let weekEnd = Date("2026-02-03T00:00:00Z")
+        let dateInterval = DateInterval(start: weekStart, end: weekEnd)
+
+        let dataPoints: [DataPoint] = []
+
+        // WHEN
+        let domain = ChartHelper.xAxisDomain(
+            for: dateInterval,
+            dataPoints: dataPoints,
+            granularity: .day,
+            calendar: calendar
+        )
+
+        // THEN - With no data, use the requested interval as-is
+        #expect(domain.lowerBound == weekStart)
+        #expect(domain.upperBound == weekEnd)
+    }
+
+    @Test
+    func testXAxisDomainWithSingleDataPoint() {
+        // GIVEN - Single data point
+        let monthStart = Date("2026-01-01T00:00:00Z")
+        let monthEnd = Date("2026-02-01T00:00:00Z")
+        let dateInterval = DateInterval(start: monthStart, end: monthEnd)
+
+        let dataPoints = [
+            DataPoint(date: Date("2026-01-15T00:00:00Z"), value: 100)
+        ]
+
+        // WHEN
+        let domain = ChartHelper.xAxisDomain(
+            for: dateInterval,
+            dataPoints: dataPoints,
+            granularity: .day,
+            calendar: calendar
+        )
+
+        // THEN - Standard case: use requested interval as-is
+        #expect(domain.lowerBound == monthStart)
+        #expect(domain.upperBound == monthEnd)
+    }
+
+    @Test
+    func testXAxisDomainWithSparseData() {
+        // GIVEN - Sparse data with gaps
+        let monthStart = Date("2026-01-01T00:00:00Z")
+        let monthEnd = Date("2026-02-01T00:00:00Z")
+        let dateInterval = DateInterval(start: monthStart, end: monthEnd)
+
+        let dataPoints = [
+            DataPoint(date: Date("2026-01-01T00:00:00Z"), value: 100),
+            DataPoint(date: Date("2026-01-15T00:00:00Z"), value: 150),
+            DataPoint(date: Date("2026-01-31T00:00:00Z"), value: 200)
+        ]
+
+        // WHEN
+        let domain = ChartHelper.xAxisDomain(
+            for: dateInterval,
+            dataPoints: dataPoints,
+            granularity: .day,
+            calendar: calendar
+        )
+
+        // THEN - Standard case: use requested interval as-is
+        #expect(domain.lowerBound == monthStart)
+        #expect(domain.upperBound == monthEnd)
+    }
+
+    @Test
+    func testXAxisDomainWithDataPointsExtendingBeyondRequestedPeriod() {
+        // GIVEN - Data points that extend beyond the requested interval on both ends
+        let weekStart = Date("2026-01-13T00:00:00Z")
+        let weekEnd = Date("2026-01-20T00:00:00Z")
+        let dateInterval = DateInterval(start: weekStart, end: weekEnd)
+
+        let dataPoints = [
+            DataPoint(date: Date("2026-01-10T00:00:00Z"), value: 100), // Before range
+            DataPoint(date: Date("2026-01-15T00:00:00Z"), value: 150), // Within range
+            DataPoint(date: Date("2026-01-25T00:00:00Z"), value: 200)  // After range
+        ]
+
+        // WHEN
+        let domain = ChartHelper.xAxisDomain(
+            for: dateInterval,
+            dataPoints: dataPoints,
+            granularity: .day,
+            calendar: calendar
+        )
+
+        // THEN - Standard case: use requested interval (data will be clipped)
+        #expect(domain.lowerBound == weekStart)
+        #expect(domain.upperBound == weekEnd)
+    }
 }

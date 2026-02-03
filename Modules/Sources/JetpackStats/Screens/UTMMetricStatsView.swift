@@ -2,8 +2,8 @@ import SwiftUI
 import DesignSystem
 @preconcurrency import WordPressKit
 
-struct AuthorStatsView: View {
-    let author: TopListItem.Author
+struct UTMMetricStatsView: View {
+    let utmMetric: TopListItem.UTMMetric
 
     @State private var dateRange: StatsDateRange
 
@@ -12,10 +12,8 @@ struct AuthorStatsView: View {
     @Environment(\.context) private var context
     @Environment(\.horizontalSizeClass) var horizontalSizeClass
 
-    @ScaledMetric private var avatarSize = 60
-
-    init(author: TopListItem.Author, initialDateRange: StatsDateRange? = nil, context: StatsContext) {
-        self.author = author
+    init(utmMetric: TopListItem.UTMMetric, initialDateRange: StatsDateRange? = nil, context: StatsContext) {
+        self.utmMetric = utmMetric
 
         let range = initialDateRange ?? context.calendar.makeDateRange(for: .last30Days)
         self._dateRange = State(initialValue: range)
@@ -30,7 +28,7 @@ struct AuthorStatsView: View {
             service: context.service,
             tracker: context.tracker,
             items: [.postsAndPages],
-            filter: .author(userId: author.userId)
+            filter: .utmMetric(values: utmMetric.values)
         ))
     }
 
@@ -60,9 +58,11 @@ struct AuthorStatsView: View {
             viewModel.dateRange = newValue
         }
         .onAppear {
-            context.tracker?.send(.authorStatsScreenShown)
+            context.tracker?.send(.utmMetricStatsScreenShown, properties: [
+                "utm_label": utmMetric.label
+            ])
         }
-        .navigationTitle(Strings.AuthorDetails.title)
+        .navigationTitle(Strings.UTMMetricDetails.title)
         .navigationBarTitleDisplayMode(.inline)
         .toolbar {
             if horizontalSizeClass == .regular {
@@ -81,20 +81,17 @@ struct AuthorStatsView: View {
     private var headerView: some View {
         VStack(spacing: Constants.step3) {
             HStack(spacing: Constants.step3) {
-                // Avatar
-                AvatarView(
-                    name: author.name,
-                    imageURL: author.avatarURL,
-                    size: avatarSize
-                )
-                .overlay(
-                    Circle()
-                        .stroke(Color(.opaqueSeparator), lineWidth: 1)
-                )
+                // UTM Icon
+                Image(systemName: "chart.line.uptrend.xyaxis")
+                    .font(.system(size: 40))
+                    .foregroundColor(.secondary)
+                    .frame(width: 60, height: 60)
+                    .background(Color.secondary.opacity(0.1))
+                    .clipShape(Circle())
 
-                // Name and metrics
+                // Label and metrics
                 VStack(alignment: .leading, spacing: Constants.step1) {
-                    Text(author.name)
+                    Text(utmMetric.label)
                         .font(.title3)
                         .fontWeight(.semibold)
                         .foregroundColor(.primary)
@@ -181,15 +178,11 @@ struct AuthorStatsView: View {
 
 #Preview {
     NavigationStack {
-        AuthorStatsView(
-            author: TopListItem.Author(
-                name: "Alex Johnson",
-                userId: "1",
-                role: nil,
-                metrics: SiteMetricsSet(
-                    views: 5000
-                ),
-                avatarURL: nil,
+        UTMMetricStatsView(
+            utmMetric: TopListItem.UTMMetric(
+                label: "google / cpc",
+                values: ["google", "cpc"],
+                metrics: SiteMetricsSet(views: 5000),
                 posts: [
                     TopListItem.Post(
                         title: "The Future of Technology: AI and Machine Learning",
@@ -197,7 +190,7 @@ struct AuthorStatsView: View {
                         postURL: URL(string: "https://example.com/post1"),
                         date: Date(),
                         type: "post",
-                        author: "Alex Johnson",
+                        author: nil,
                         metrics: SiteMetricsSet(views: 1250)
                     ),
                     TopListItem.Post(
@@ -206,7 +199,7 @@ struct AuthorStatsView: View {
                         postURL: URL(string: "https://example.com/post2"),
                         date: Date(),
                         type: "post",
-                        author: "Alex Johnson",
+                        author: nil,
                         metrics: SiteMetricsSet(views: 980)
                     )
                 ]

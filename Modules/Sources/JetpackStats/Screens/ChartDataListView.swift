@@ -239,11 +239,13 @@ struct RoundedCorner: Shape {
 }
 
 #Preview {
+    let dateRange = Calendar.demo.makeDateRange(for: .last7Days)
     NavigationStack {
         ChartDataListView(
             data: ChartData(
                 metric: .views,
                 granularity: .day,
+                dateInterval: dateRange.dateInterval,
                 currentTotal: 3000,
                 currentData: [
                     DataPoint(date: Date(), value: 1000),
@@ -262,7 +264,7 @@ struct RoundedCorner: Shape {
                     DataPoint(date: Date().addingTimeInterval(-172800), value: 750)
                 ]
             ),
-            dateRange: Calendar.demo.makeDateRange(for: .last7Days)
+            dateRange: dateRange
         )
     }
 }

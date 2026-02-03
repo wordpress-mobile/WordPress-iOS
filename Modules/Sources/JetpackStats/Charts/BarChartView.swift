@@ -34,6 +34,7 @@ struct BarChartView: View {
         }
         .chartXAxis { xAxis }
         .chartYAxis { yAxis }
+        .chartXScale(domain: xAxisDomain)
         .chartYScale(domain: yAxisDomain)
         .chartLegend(.hidden)
         .environment(\.timeZone, context.timeZone)
@@ -58,7 +59,7 @@ struct BarChartView: View {
             BarMark(
                 x: .value("Date", point.date, unit: data.granularity.component, calendar: context.calendar),
                 y: .value("Value", point.value),
-                width: barWidth
+                width: .automatic
             )
             .foregroundStyle(
                 LinearGradient(
@@ -70,18 +71,14 @@ struct BarChartView: View {
                     endPoint: .bottom
                 )
             )
-            .cornerRadius(6)
+            .cornerRadius(4)
             .opacity(getOpacityForCurrentPeriodBar(for: point))
         }
     }
 
-    private var barWidth: MarkDimension {
-        data.currentData.count <= 3 ? .fixed(32) : .automatic
-    }
-
     private func lighten(_ color: Color) -> Color {
         if #available(iOS 18, *) {
-            color.mix(with: Color(.systemBackground), by: colorScheme == .light ? 0.4 : 0.15)
+            color.mix(with: Color(.systemBackground), by: colorScheme == .light ? 0.2 : 0.1)
         } else {
             color.opacity(0.5)
         }
@@ -109,11 +106,11 @@ struct BarChartView: View {
             BarMark(
                 x: .value("Date", point.date, unit: data.granularity.component, calendar: context.calendar),
                 y: .value("Value", point.value),
-                width: barWidth,
+                width: .automatic,
                 stacking: .unstacked
             )
             .foregroundStyle(Color.secondary)
-            .cornerRadius(6)
+            .cornerRadius(4)
             .opacity(shouldHighlightPreviousDataPoint(point) ? 0.5 : 0.2)
         }
     }
@@ -163,7 +160,7 @@ struct BarChartView: View {
                 RuleMark(x: .value("Selected", currentPoint.date))
                     .foregroundStyle(Color.clear)
                     .lineStyle(StrokeStyle(lineWidth: 1))
-                    .offset(yStart: 32)
+                    .offset(yStart: 48)
                     .zIndex(3)
                     .annotation(
                         position: .top,
@@ -179,7 +176,7 @@ struct BarChartView: View {
                 RuleMark(x: .value("Selected", previousPoint.date))
                     .foregroundStyle(Color.clear)
                     .lineStyle(StrokeStyle(lineWidth: 1))
-                    .offset(yStart: 32)
+                    .offset(yStart: 48)
                     .zIndex(3)
                     .annotation(
                         position: .top,
@@ -198,24 +195,11 @@ struct BarChartView: View {
     // MARK: - Axis Configuration
 
     private var xAxis: some AxisContent {
-        if data.currentData.count == 1 {
-            // A quick workaround to make this look more acceptible
-            AxisMarks(values: .stride(by: data.granularity.component, count: 1, calendar: context.calendar)) { value in
-                if let date = value.as(Date.self) {
-                    AxisValueLabel {
-                        ChartAxisDateLabel(date: date, granularity: data.granularity)
-                    }
-                }
-            }
-        } else {
-            AxisMarks(values: .automatic) { value in
-                if let date = value.as(Date.self) {
-                    AxisValueLabel {
-                        ChartAxisDateLabel(date: date, granularity: data.granularity)
-                    }
-                }
-            }
-        }
+        ChartHelper.makeXAxis(
+            domain: xAxisDomain,
+            granularity: data.granularity,
+            calendar: context.calendar
+        )
     }
 
     private var yAxis: some AxisContent {
@@ -232,6 +216,10 @@ struct BarChartView: View {
                 }
             }
         }
+    }
+
+    private var xAxisDomain: ClosedRange<Date> {
+        ChartHelper.xAxisDomain(for: data, calendar: context.calendar)
     }
 
     private var yAxisDomain: ClosedRange<Int> {
@@ -330,26 +318,42 @@ struct BarChartView: View {
 // MARK: - Preview
 
 #Preview {
-    VStack(spacing: 20) {
-        BarChartView(
-            data: ChartData.mock(
-                metric: .visitors,
-                granularity: .day,
-                range: Calendar.demo.makeDateRange(for: .last7Days)
-            )
-        )
-        .frame(height: 250)
-        .padding()
-
-        BarChartView(
-            data: ChartData.mock(
-                metric: .likes,
-                granularity: .month,
-                range: Calendar.demo.makeDateRange(for: .thisYear)
-            )
-        )
-        .frame(height: 250)
+    ScrollView {
+        LazyVGrid(
+            columns: [
+                GridItem(.adaptive(minimum: 350, maximum: 450), spacing: 16)
+            ],
+            spacing: 16
+        ) {
+            ForEach(ChartData.previewExamples) { example in
+                previewCard(example.title) {
+                    BarChartView(data: example.data)
+                        .environment(\.showComparison, example.showComparison)
+                }
+            }
+        }
         .padding()
     }
-    .background(Color(.systemGroupedBackground))
+    .background(Constants.Colors.background)
+}
+
+private func previewCard<Content: View>(
+    _ title: String,
+    @ViewBuilder content: () -> Content
+) -> some View {
+    VStack(alignment: .leading, spacing: 8) {
+        Text(title)
+            .font(.caption.weight(.medium))
+            .foregroundStyle(.secondary)
+        content()
+            .padding(.horizontal)
+            .frame(height: 220)
+    }
+    .padding()
+    .background(Color(.systemBackground))
+    .clipShape(RoundedRectangle(cornerRadius: 6))
+    .overlay(
+        RoundedRectangle(cornerRadius: 6)
+            .stroke(Color(.separator), lineWidth: 0.5)
+    )
 }

@@ -547,3 +547,89 @@ public extension StatsInsightData where Self: Codable {
         }
     }
 }
+
+// MARK: - Device Stats
+
+extension StatsServiceRemoteV2 {
+    public enum DeviceBreakdown: String {
+        case screensize
+        case platform
+        case browser
+    }
+
+    /// Fetches device stats for a specific breakdown type
+    /// - Parameters:
+    ///   - breakdown: The type of device breakdown (screensize, platform, or browser)
+    ///   - startDate: The start date for the stats query
+    ///   - endDate: The end date for the stats query
+    /// - Returns: Device stats data
+    public func getDeviceStats(
+        breakdown: DeviceBreakdown,
+        startDate: Date,
+        endDate: Date
+    ) async throws -> StatsDeviceTimeIntervalData {
+        let pathComponent = "stats/devices/\(breakdown.rawValue)"
+        let path = self.path(forEndpoint: "sites/\(siteID)/\(pathComponent)/", withVersion: ._1_1)
+
+        let dateFormatter = periodDataQueryDateFormatter
+        let parameters: [String: String] = [
+            "start_date": dateFormatter.string(from: startDate),
+            "date": dateFormatter.string(from: endDate)
+        ]
+
+        let result = await wordPressComRestApi.perform(.get, URLString: path, parameters: parameters, type: StatsDeviceTimeIntervalData.self)
+        return try result.get().body
+    }
+}
+
+// MARK: - UTM Stats
+
+extension StatsServiceRemoteV2 {
+    /// Represents the UTM parameter grouping options
+    public enum UTMParam: String {
+        case sourceMedium = "utm_source,utm_medium"
+        case campaignSourceMedium = "utm_campaign,utm_source,utm_medium"
+        case source = "utm_source"
+        case medium = "utm_medium"
+        case campaign = "utm_campaign"
+    }
+
+    /// Fetches UTM metrics for a specific UTM parameter grouping
+    /// - Parameters:
+    ///   - utmParam: The UTM parameter grouping (e.g., source/medium, campaign)
+    ///   - startDate: The start date for the stats query
+    ///   - endDate: The end date for the stats query
+    ///   - maxResults: Maximum number of results to return (default: 10)
+    ///   - postId: Optional post ID to filter results for a specific post
+    /// - Returns: UTM metrics data
+    public func getUTMStats(
+        utmParam: UTMParam,
+        startDate: Date,
+        endDate: Date,
+        maxResults: Int = 10,
+        postId: Int? = nil
+    ) async throws -> StatsUTMTimeIntervalData {
+        let pathComponent = "stats/utm/\(utmParam.rawValue)"
+        let path = self.path(forEndpoint: "sites/\(siteID)/\(pathComponent)", withVersion: ._1_1)
+
+        let dateFormatter = periodDataQueryDateFormatter
+        var parameters: [String: String] = [
+            "start_date": dateFormatter.string(from: startDate),
+            "date": dateFormatter.string(from: endDate),
+            "max": String(maxResults),
+            "query_top_posts": "true"
+        ]
+
+        if let postId {
+            parameters["post_id"] = String(postId)
+        }
+
+        let result = await wordPressComRestApi.perform(
+            .get,
+            URLString: path,
+            parameters: parameters,
+            type: StatsUTMTimeIntervalData.self
+        )
+        return try result.get().body
+    }
+}

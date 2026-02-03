@@ -26,8 +26,8 @@ actor StatsService: StatsServiceProtocol {
     ]
 
     let supportedItems: [TopListItemType] = [
-        .postsAndPages, .authors, .referrers, .locations,
-        .externalLinks, .fileDownloads, .searchTerms, .videos, .archive
+        .postsAndPages, .authors, .referrers, .locations, .devices,
+        .externalLinks, .fileDownloads, .searchTerms, .videos, .archive, .utm
     ]
 
     nonisolated func getSupportedMetrics(for item: TopListItemType) -> [SiteMetric] {
@@ -36,11 +36,13 @@ actor StatsService: StatsServiceProtocol {
         case .archive: [.views]
         case .referrers: [.views]
         case .locations: [.views]
+        case .devices: [.views]
         case .authors: [.views]
         case .externalLinks: [.views]
         case .fileDownloads: [.downloads]
         case .searchTerms: [.views]
         case .videos: [.views]
+        case .utm: [.views]
         }
     }
 
@@ -175,16 +177,16 @@ actor StatsService: StatsServiceProtocol {
         return WordAdsMetricsResponse(total: total, metrics: metrics)
     }
 
-    func getTopListData(_ item: TopListItemType, metric: SiteMetric, interval: DateInterval, granularity: DateRangeGranularity, limit: Int?, locationLevel: LocationLevel?) async throws -> TopListResponse {
+    func getTopListData(_ item: TopListItemType, metric: SiteMetric, interval: DateInterval, granularity: DateRangeGranularity, limit: Int?, options: TopListItemOptions) async throws -> TopListResponse {
         // Check cache first
-        let cacheKey = TopListCacheKey(item: item, metric: metric, locationLevel: locationLevel, interval: interval, granularity: granularity, limit: limit)
+        let cacheKey = TopListCacheKey(item: item, metric: metric, options: options, interval: interval, granularity: granularity, limit: limit)
         if let cached = topListCache[cacheKey], !cached.isExpired {
             return cached.data
         }
 
         // Fetch fresh data
         do {
-            let data = try await _getTopListData(item, metric: metric, interval: interval, granularity: granularity, limit: limit, locationLevel: locationLevel)
+            let data = try await _getTopListData(item, metric: metric, interval: interval, granularity: granularity, limit: limit, options: options)
 
             // Cache the result
             // Historical data never expires (ttl = nil), current period data expires after 30 seconds
@@ -193,6 +195,9 @@ actor StatsService: StatsServiceProtocol {
 
             return data
         } catch {
+            if let error = StatsFeatureGateError.from(apiError: error, itemType: item) {
+                throw error
+            }
             // A workaround for an issue where `/stats` return `"summary": null`
             // when there are no recoreded periods (happens when the entire requested
             // period is _before_ the site creation).
@@ -204,7 +209,7 @@ actor StatsService: StatsServiceProtocol {
         }
     }
 
-    private func _getTopListData(_ item: TopListItemType, metric: SiteMetric, interval: DateInterval, granularity: DateRangeGranularity, limit: Int?, locationLevel: LocationLevel?) async throws -> TopListResponse {
+    private func _getTopListData(_ item: TopListItemType, metric: SiteMetric, interval: DateInterval, granularity: DateRangeGranularity, limit: Int?, options: TopListItemOptions) async throws -> TopListResponse {
 
         func getData<T: WordPressKit.StatsTimeIntervalData>(
             _ type: T.Type,
@@ -244,8 +249,7 @@ actor StatsService: StatsServiceProtocol {
             return TopListResponse(items: sortItems(items))
 
         case .locations:
-            let level = locationLevel ?? .cities
-            switch level {
+            switch options.locationLevel {
             case .countries:
                 let data = try await getData(StatsTopCountryTimeIntervalData.self)
                 let items = data.countries.map(TopListItem.Location.init)
@@ -259,6 +263,40 @@ actor StatsService: StatsServiceProtocol {
                 let items = data.cities.map(TopListItem.Location.init)
                 return TopListResponse(items: sortItems(items))
             }
+
+        case .devices:
+            let breakdown: WordPressKit.StatsServiceRemoteV2.DeviceBreakdown
+            let deviceBreakdown = options.deviceBreakdown
+            switch deviceBreakdown {
+            case .screensize: breakdown = .screensize
+            case .platform: breakdown = .platform
+            case .browser: breakdown = .browser
+            }
+
+            let convertedInterval = convertDateIntervalSiteToLocal(interval)
+            let data = try await service.getDeviceStats(breakdown: breakdown, startDate: convertedInterval.start, endDate: convertedInterval.end)
+
+            // TEMPORARY WORKAROUND (CMM-1168):
+            // The screensize breakdown returns percentages (e.g., 73.8 for 73.8%), but SiteMetricsSet
+            // only supports Int values. We multiply by 100 to convert percentages to integers (73.8 → 7380)
+            // while preserving precision. This allows us to display the data correctly until proper
+            // percentage metric support is implemented.
+            let items = data.items.map { item in
+                let value: Int
+                if deviceBreakdown == .screensize {
+                    // Convert percentage to integer by multiplying by 100
+                    value = Int(item.value * 100)
+                } else {
+                    // Platform and browser breakdowns return counts, not percentages
+                    value = Int(item.value)
+                }
+                return TopListItem.Device(
+                    name: item.name,
+                    breakdown: deviceBreakdown,
+                    metrics: SiteMetricsSet(views: value)
+                )
+            }
+            return TopListResponse(items: sortItems(items))
 
         case .authors:
             let data = try await getData(StatsTopAuthorsTimeIntervalData.self)
@@ -319,6 +357,26 @@ actor StatsService: StatsServiceProtocol {
                 // Sort sections by total views
                 let sortedSections = sections.sorted { ($0.metrics.views ?? 0) > ($1.metrics.views ?? 0) }
                 return TopListResponse(items: sortedSections)
+            default:
+                throw StatsServiceError.unavailable
+            }
+
+        case .utm:
+            switch metric {
+            case .views:
+                let convertedInterval = convertDateIntervalSiteToLocal(interval)
+                let utmParam = WordPressKit.StatsServiceRemoteV2.UTMParam(options.utmParamGrouping)
+                let data = try await service.getUTMStats(
+                    utmParam: utmParam,
+                    startDate: convertedInterval.start,
+                    endDate: convertedInterval.end,
+                    maxResults: limit ?? 0
+                )
+                let dateFormatter = makeHourlyDateFormatter()
+                let items = data.utmMetrics.map {
+                    TopListItem.UTMMetric($0, dateFormatter: dateFormatter)
+                }
+                return TopListResponse(items: sortItems(items))
             default:
                 throw StatsServiceError.unavailable
             }
@@ -458,10 +516,11 @@ actor StatsService: StatsServiceProtocol {
             guard let value = data[metric] else {
                 return nil
             }
-            let date = convertDateToSiteTimezone(data.date, using: calendar)
-            guard date <= now else {
-                return nil // Filter out future dates
+            guard data.date <= now else {
+                // Filter out future dates (the presentation layer doesn't exect them)
+                return nil
             }
+            let date = convertDateToSiteTimezone(data.date, using: calendar)
             return DataPoint(date: date, value: value)
         }
 
@@ -483,6 +542,7 @@ actor StatsService: StatsServiceProtocol {
 enum StatsServiceError: LocalizedError {
     case unknown
     case unavailable
+    case invalidServiceType
 
     var errorDescription: String? {
         Strings.Errors.generic
@@ -517,7 +577,7 @@ private struct CachedEntity<T> {
 private struct TopListCacheKey: Hashable {
     let item: TopListItemType
     let metric: SiteMetric
-    let locationLevel: LocationLevel?
+    let options: TopListItemOptions
     let interval: DateInterval
     let granularity: DateRangeGranularity
     let limit: Int?

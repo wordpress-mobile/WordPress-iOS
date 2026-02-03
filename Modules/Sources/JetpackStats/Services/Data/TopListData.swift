@@ -98,12 +98,14 @@ extension TopListData {
         case .postsAndPages: mockPosts(metric: metric)
         case .referrers: mockReferrers(metric: metric)
         case .locations: mockLocations(metric: metric)
+        case .devices: mockDevices(metric: metric)
         case .authors: mockAuthors(metric: metric)
         case .externalLinks: mockExternalLinks(metric: metric)
         case .fileDownloads: mockFileDownloads(metric: metric)
         case .searchTerms: mockSearchTerms(metric: metric)
         case .videos: mockVideos(metric: metric)
         case .archive: mockArchive(metric: metric)
+        case .utm: mockUTMMetrics(metric: metric)
         }
     }
 
@@ -203,6 +205,53 @@ extension TopListData {
                 metrics: metrics
             )
         }
+    }
+
+    private static func mockDevices(metric: SiteMetric) -> [TopListItem.Device] {
+        let devices = [
+            ("mobile", 7380),
+            ("desktop", 2580),
+            ("tablet", 400),
+            ("android", 8050),
+            ("ios", 1200),
+            ("windows", 4100),
+            ("mac", 3500),
+            ("linux", 2170),
+            ("chrome", 10630),
+            ("safari", 2150),
+            ("firefox", 1100),
+            ("edge", 450)
+        ]
+
+        return devices
+            .sorted { $0.1 > $1.1 } // Sort by value descending
+            .map { data in
+                let baseValue = data.1
+                let metrics = createMetrics(baseValue: baseValue, metric: metric)
+                let breakdown = inferDeviceBreakdown(from: data.0)
+                return TopListItem.Device(
+                    name: data.0,
+                    breakdown: breakdown,
+                    metrics: metrics
+                )
+            }
+    }
+
+    private static func inferDeviceBreakdown(from deviceName: String) -> DeviceBreakdown {
+        let lowercasedName = deviceName.lowercased()
+
+        // Screen size devices
+        if ["mobile", "desktop", "tablet"].contains(lowercasedName) {
+            return .screensize
+        }
+
+        // Browser devices
+        if ["chrome", "safari", "firefox", "edge", "opera", "miui"].contains(lowercasedName) {
+            return .browser
+        }
+
+        // Platform devices (default)
+        return .platform
     }
 
     private static func mockAuthors(metric: SiteMetric) -> [TopListItem.Author] {
@@ -371,6 +420,54 @@ extension TopListData {
                 sectionName: sectionName,
                 items: items,
                 metrics: SiteMetricsSet(views: totalViews)
+            )
+        }
+    }
+
+    private static func mockUTMMetrics(metric: SiteMetric) -> [TopListItem.UTMMetric] {
+        let utmCampaigns = [
+            (["google", "cpc"], 1520),
+            (["facebook", "social"], 1200),
+            (["linkedin", "social"], 850),
+            (["google", "organic"], 670),
+            (["newsletter", "email"], 450),
+            (["twitter", "social"], 320),
+            (["reddit", "social"], 280)
+        ]
+
+        return utmCampaigns.map { data in
+            let values = data.0
+            let baseValue = data.1
+            let label = values.joined(separator: " / ")
+            let metrics = createMetrics(baseValue: baseValue, metric: metric)
+
+            // Create mock posts for this UTM campaign
+            let posts = [
+                TopListItem.Post(
+                    title: "How to Build a Mobile App",
+                    postID: "12345",
+                    postURL: URL(string: "https://example.com/mobile-app"),
+                    date: Date(),
+                    type: "post",
+                    author: nil,
+                    metrics: createMetrics(baseValue: baseValue / 2, metric: metric)
+                ),
+                TopListItem.Post(
+                    title: "Swift Development Guide",
+                    postID: "12346",
+                    postURL: URL(string: "https://example.com/swift-guide"),
+                    date: Date(),
+                    type: "post",
+                    author: nil,
+                    metrics: createMetrics(baseValue: baseValue / 3, metric: metric)
+                )
+            ]
+
+            return TopListItem.UTMMetric(
+                label: label,
+                values: values,
+                metrics: metrics,
+                posts: posts
             )
         }
     }

@@ -32,6 +32,7 @@ struct LineChartView: View {
         }
         .chartXAxis { xAxis }
         .chartYAxis { yAxis }
+        .chartXScale(domain: xAxisDomain)
         .chartYScale(domain: yAxisDomain)
         .chartLegend(.hidden)
         .environment(\.timeZone, context.timeZone)
@@ -44,6 +45,7 @@ struct LineChartView: View {
         .accessibilityElement()
         .accessibilityLabel(Strings.Accessibility.chartContainer)
         .accessibilityHint(Strings.Accessibility.viewChartData)
+        .padding(.horizontal, -8)
     }
 
     // MARK: - Chart Marks
@@ -52,7 +54,7 @@ struct LineChartView: View {
     private var currentPeriodMarks: some ChartContent {
         ForEach(data.currentData) { point in
             AreaMark(
-                x: .value("Date", point.date),
+                x: .value("Date", point.date, unit: data.granularity.component, calendar: context.calendar),
                 y: .value("Value", point.value),
                 series: .value("Period", "Current")
             )
@@ -69,7 +71,7 @@ struct LineChartView: View {
             .interpolationMethod(.linear)
 
             LineMark(
-                x: .value("Date", point.date),
+                x: .value("Date", point.date, unit: data.granularity.component, calendar: context.calendar),
                 y: .value("Value", point.value),
                 series: .value("Period", "Current")
             )
@@ -88,7 +90,7 @@ struct LineChartView: View {
         ForEach(data.mappedPreviousData) { point in
             // Important: AreaMark is needed for smooth animation
             AreaMark(
-                x: .value("Date", point.date),
+                x: .value("Date", point.date, unit: data.granularity.component, calendar: context.calendar),
                 y: .value("Value", point.value),
                 series: .value("Period", "Previous")
             )
@@ -96,7 +98,7 @@ struct LineChartView: View {
             .interpolationMethod(.linear)
 
             LineMark(
-                x: .value("Date", point.date),
+                x: .value("Date", point.date, unit: data.granularity.component, calendar: context.calendar),
                 y: .value("Value", point.value),
                 series: .value("Period", "Previous")
             )
@@ -127,7 +129,7 @@ struct LineChartView: View {
     private var significantPointAnnotations: some ChartContent {
         if let maxPoint = data.significantPoints.currentMax, data.currentData.count > 0 {
             PointMark(
-                x: .value("Date", maxPoint.date),
+                x: .value("Date", maxPoint.date, unit: data.granularity.component, calendar: context.calendar),
                 y: .value("Value", maxPoint.value)
             )
             .foregroundStyle(data.metric.primaryColor)
@@ -144,7 +146,7 @@ struct LineChartView: View {
     private var selectionIndicatorMarks: some ChartContent {
         if let selectedDataPoints {
             if let currentPoint = selectedDataPoints.current {
-                RuleMark(x: .value("Selected", currentPoint.date))
+                RuleMark(x: .value("Selected", currentPoint.date, unit: data.granularity.component, calendar: context.calendar))
                     .foregroundStyle(Color.secondary.opacity(0.33))
                     .lineStyle(StrokeStyle(lineWidth: 1))
                     .offset(yStart: 28)
@@ -158,13 +160,13 @@ struct LineChartView: View {
                     }
 
                 PointMark(
-                    x: .value("Date", currentPoint.date),
+                    x: .value("Date", currentPoint.date, unit: data.granularity.component, calendar: context.calendar),
                     y: .value("Value", currentPoint.value)
                 )
                 .foregroundStyle(data.metric.primaryColor)
                 .symbolSize(80)
             } else if let previousPoint = selectedDataPoints.previous {
-                RuleMark(x: .value("Selected", previousPoint.date))
+                RuleMark(x: .value("Selected", previousPoint.date, unit: data.granularity.component, calendar: context.calendar))
                     .foregroundStyle(Color.secondary.opacity(0.33))
                     .lineStyle(StrokeStyle(lineWidth: 1))
                     .offset(yStart: 28)
@@ -178,7 +180,7 @@ struct LineChartView: View {
                     }
 
                 PointMark(
-                    x: .value("Date", previousPoint.date),
+                    x: .value("Date", previousPoint.date, unit: data.granularity.component, calendar: context.calendar),
                     y: .value("Value", previousPoint.value)
                 )
                 .foregroundStyle(Color.secondary)
@@ -190,13 +192,11 @@ struct LineChartView: View {
     // MARK: - Axis Configuration
 
     private var xAxis: some AxisContent {
-        AxisMarks { value in
-            if let date = value.as(Date.self) {
-                AxisValueLabel {
-                    ChartAxisDateLabel(date: date, granularity: data.granularity)
-                }
-            }
-        }
+        ChartHelper.makeXAxis(
+            domain: xAxisDomain,
+            granularity: data.granularity,
+            calendar: context.calendar
+        )
     }
 
     private var yAxis: some AxisContent {
@@ -212,6 +212,10 @@ struct LineChartView: View {
                 }
             }
         }
+    }
+
+    private var xAxisDomain: ClosedRange<Date> {
+        ChartHelper.xAxisDomain(for: data, calendar: context.calendar)
     }
 
     private var yAxisDomain: ClosedRange<Int> {
@@ -244,26 +248,42 @@ struct LineChartView: View {
 // MARK: - Preview
 
 #Preview {
-    VStack(spacing: 20) {
-        LineChartView(
-            data: ChartData.mock(
-                metric: .views,
-                granularity: .day,
-                range: Calendar.demo.makeDateRange(for: .last7Days)
-            )
-        )
-        .frame(height: 250)
-        .padding()
-
-        LineChartView(
-            data: ChartData.mock(
-                metric: .timeOnSite,
-                granularity: .month,
-                range: Calendar.demo.makeDateRange(for: .thisYear)
-            )
-        )
-        .frame(height: 250)
+    ScrollView {
+        LazyVGrid(
+            columns: [
+                GridItem(.adaptive(minimum: 350, maximum: 450), spacing: 16)
+            ],
+            spacing: 16
+        ) {
+            ForEach(ChartData.previewExamples) { example in
+                previewCard(example.title) {
+                    LineChartView(data: example.data)
+                        .environment(\.showComparison, example.showComparison)
+                }
+            }
+        }
         .padding()
     }
-    .background(Color(.systemGroupedBackground))
+    .background(Constants.Colors.background)
+}
+
+private func previewCard<Content: View>(
+    _ title: String,
+    @ViewBuilder content: () -> Content
+) -> some View {
+    VStack(alignment: .leading, spacing: 8) {
+        Text(title)
+            .font(.caption.weight(.medium))
+            .foregroundStyle(.secondary)
+        content()
+            .padding(.horizontal)
+            .frame(height: 220)
+    }
+    .padding()
+    .background(Color(.systemBackground))
+    .clipShape(RoundedRectangle(cornerRadius: 6))
+    .overlay(
+        RoundedRectangle(cornerRadius: 6)
+            .stroke(Color(.separator), lineWidth: 0.5)
+    )
 }

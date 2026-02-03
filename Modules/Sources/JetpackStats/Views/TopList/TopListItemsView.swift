@@ -33,7 +33,8 @@ struct TopListItemsView: View {
             previousValue: data.previousItem(for: item)?.metrics[data.metric],
             metric: data.metric,
             maxValue: data.metrics.maxValue,
-            dateRange: dateRange
+            dateRange: dateRange,
+            totalValue: data.metrics.total
         )
         .frame(height: cellHeight)
     }

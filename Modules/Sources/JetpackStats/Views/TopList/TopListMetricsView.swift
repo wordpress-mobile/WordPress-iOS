@@ -5,11 +5,12 @@ struct TopListMetricsView: View {
     let previousValue: Int?
     let metric: SiteMetric
     var showChevron = false
+    var device: TopListItem.Device?
 
     var body: some View {
         VStack(alignment: .trailing, spacing: 2) {
             HStack(spacing: 3) {
-                Text(StatsValueFormatter.formatNumber(currentValue, onlyLarge: true))
+                Text(formattedValue)
                     .font(.system(.subheadline, design: .rounded, weight: .medium)).tracking(-0.1)
                     .foregroundColor(.primary)
                     .contentTransition(.numericText())
@@ -29,6 +30,18 @@ struct TopListMetricsView: View {
             }
         }
         .animation(.spring, value: trend)
+    }
+
+    // TEMPORARY WORKAROUND (CMM-1168):
+    // For screensize breakdown, display as percentage since the values are percentages * 100
+    // (e.g., 7380 represents 73.8%). For other breakdowns, display as regular numbers.
+    private var formattedValue: String {
+        if let device, device.breakdown == .screensize {
+            let percentage = Double(currentValue) / 100.0
+            return (percentage / 100).formatted(.percent.precision(.fractionLength(1)))
+        } else {
+            return StatsValueFormatter.formatNumber(currentValue, onlyLarge: true)
+        }
     }
 
     private var trend: TrendViewModel? {

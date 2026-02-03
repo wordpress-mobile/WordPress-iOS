@@ -10,6 +10,7 @@ struct TopListItemView: View {
     let metric: SiteMetric
     let maxValue: Int
     let dateRange: StatsDateRange
+    var totalValue: Int?
 
     @State private var isTapped = false
 
@@ -72,6 +73,8 @@ struct TopListItemView: View {
                 TopListReferrerRowView(item: referrer)
             case let location as TopListItem.Location:
                 TopListLocationRowView(item: location)
+            case let device as TopListItem.Device:
+                TopListDeviceRowView(item: device, totalValue: totalValue ?? 0)
             case let link as TopListItem.ExternalLink:
                 TopListExternalLinkRowView(item: link)
             case let download as TopListItem.FileDownload:
@@ -84,6 +87,8 @@ struct TopListItemView: View {
                 TopListArchiveItemRowView(item: archiveItem)
             case let archiveSection as TopListItem.ArchiveSection:
                 TopListArchiveSectionRowView(item: archiveSection)
+            case let utmMetric as TopListItem.UTMMetric:
+                TopListUTMMetricRowView(item: utmMetric)
             default:
                 let _ = assertionFailure("unsupported item: \(item)")
                 EmptyView()
@@ -96,7 +101,8 @@ struct TopListItemView: View {
                 currentValue: item.metrics[metric] ?? 0,
                 previousValue: previousValue,
                 metric: metric,
-                showChevron: hasDetails
+                showChevron: hasDetails,
+                device: item as? TopListItem.Device
             )
             .frame(minWidth: previousValue == nil ? 20 : minTrailingWidth, alignment: .trailing)
             .padding(.trailing, -3)
@@ -136,6 +142,8 @@ private extension TopListItemView {
         case is TopListItem.Referrer:
             return true
         case is TopListItem.ExternalLink:
+            return true
+        case is TopListItem.UTMMetric:
             return true
         default:
             return false
@@ -180,6 +188,11 @@ private extension TopListItemView {
                 .environment(\.context, context)
                 .environment(\.router, router)
             router.navigate(to: detailsView, title: Strings.ExternalLinkDetails.title)
+        case let utmMetric as TopListItem.UTMMetric:
+            let detailsView = UTMMetricStatsView(utmMetric: utmMetric, initialDateRange: dateRange, context: context)
+                .environment(\.context, context)
+                .environment(\.router, router)
+            router.navigate(to: detailsView, title: Strings.UTMMetricDetails.title)
         default:
             break
         }
@@ -298,6 +311,48 @@ private func makePreviewItems() -> some View {
                 flag: "🇬🇧",
                 countryCode: "GB",
                 metrics: SiteMetricsSet(views: 15600)
+            ),
+            previousValue: nil
+        )
+    }
+
+    // Devices (screensize - shows percentage)
+    VStack(spacing: 8) {
+        makePreviewItem(
+            TopListItem.Device(
+                name: "mobile",
+                breakdown: .screensize,
+                metrics: SiteMetricsSet(views: 7380) // 73.8%
+            ),
+            previousValue: 7500
+        )
+
+        makePreviewItem(
+            TopListItem.Device(
+                name: "desktop",
+                breakdown: .screensize,
+                metrics: SiteMetricsSet(views: 2580) // 25.8%
+            ),
+            previousValue: nil
+        )
+    }
+
+    // Devices (platform - shows count)
+    VStack(spacing: 8) {
+        makePreviewItem(
+            TopListItem.Device(
+                name: "android",
+                breakdown: .platform,
+                metrics: SiteMetricsSet(views: 805)
+            ),
+            previousValue: 750
+        )
+
+        makePreviewItem(
+            TopListItem.Device(
+                name: "linux",
+                breakdown: .platform,
+                metrics: SiteMetricsSet(views: 217)
             ),
             previousValue: nil
         )

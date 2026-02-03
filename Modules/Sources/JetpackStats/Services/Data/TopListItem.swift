@@ -73,6 +73,20 @@ extension TopListItem {
         }
     }
 
+    struct Device: Codable, TopListItemProtocol {
+        let name: String
+        let breakdown: DeviceBreakdown
+        var metrics: SiteMetricsSet
+
+        var id: TopListItemID {
+            TopListItemID(type: .devices, id: name)
+        }
+
+        var displayName: String {
+            name.capitalized
+        }
+    }
+
     struct Author: Codable, TopListItemProtocol {
         let name: String
         let userId: String
@@ -172,6 +186,21 @@ extension TopListItem {
 
         var displayName: String {
             sectionName.capitalized
+        }
+    }
+
+    struct UTMMetric: Codable, TopListItemProtocol {
+        let label: String
+        let values: [String]
+        var metrics: SiteMetricsSet
+        var posts: [Post]?
+
+        var id: TopListItemID {
+            TopListItemID(type: .utm, id: label)
+        }
+
+        var displayName: String {
+            label
         }
     }
 }

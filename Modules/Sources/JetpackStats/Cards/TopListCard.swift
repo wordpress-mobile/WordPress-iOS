@@ -6,6 +6,7 @@ struct TopListCard: View {
     private let itemLimit: Int
     private let reserveSpace: Bool
     private let showMoreInline: Bool
+    private let showItemTypePicker: Bool
 
     @State private var isExpanded = false
 
@@ -16,12 +17,14 @@ struct TopListCard: View {
         viewModel: TopListViewModel,
         itemLimit: Int = 5,
         reserveSpace: Bool = true,
-        showMoreInline: Bool = false
+        showMoreInline: Bool = false,
+        showItemTypePicker: Bool = true
     ) {
         self.viewModel = viewModel
         self.itemLimit = itemLimit
         self.reserveSpace = reserveSpace
         self.showMoreInline = showMoreInline
+        self.showItemTypePicker = showItemTypePicker
     }
 
     var body: some View {
@@ -33,6 +36,12 @@ struct TopListCard: View {
                 mapView
                     .padding(.vertical, Constants.step2)
                     .padding(.horizontal, Constants.step2)
+            }
+
+            if viewModel.selection.item == .devices {
+                pieChartView
+                    .padding(.vertical, Constants.step1)
+                    .padding(.horizontal, Constants.step3)
             }
 
             listHeaderView
@@ -75,10 +84,14 @@ struct TopListCard: View {
 
     private var cardHeaderView: some View {
         HStack {
-            Menu {
-                itemTypePicker
-            } label: {
-                StatsCardTitleView(title: viewModel.selection.item.localizedTitle, showChevron: true)
+            if showItemTypePicker {
+                Menu {
+                    itemTypePicker
+                } label: {
+                    StatsCardTitleView(title: viewModel.selection.item.localizedTitle, showChevron: true)
+                }
+            } else {
+                StatsCardTitleView(title: viewModel.selection.item.localizedTitle, showChevron: false)
             }
             Spacer(minLength: 44)
         }
@@ -93,14 +106,47 @@ struct TopListCard: View {
         )
     }
 
+    private var pieChartView: some View {
+        let mockPieData = PieChartData(items: mockData.items, metric: viewModel.selection.metric)
+        let isShowingMockData = viewModel.isFirstLoad || viewModel.pieChartData == nil
+        let data = viewModel.pieChartData ?? mockPieData
+
+        return PieChartView(data: data)
+            .frame(height: 200)
+            .allowsHitTesting(!isShowingMockData)
+            .redacted(reason: isShowingMockData ? .placeholder : [])
+            .opacity(isShowingMockData ? 0.2 : 1.0)
+            .pulsating(isShowingMockData && viewModel.isFirstLoad)
+    }
+
     private var listHeaderView: some View {
         HStack {
-            // Left side: Location level for locations, otherwise item type
+            // Left side: Location level for locations, device breakdown for devices, UTM parameter for UTM, otherwise item type
             if viewModel.selection.item == .locations {
                 Menu {
                     locationLevelPicker
                 } label: {
-                    InlineValuePickerTitle(title: viewModel.selection.locationLevel.localizedTitle)
+                    InlineValuePickerTitle(title: viewModel.selection.options.locationLevel.localizedTitle)
+                        .foregroundStyle(Color.secondary)
+                        .padding(.top, 6)
+                        .padding(.vertical, Constants.step0_5)
+                }
+                .fixedSize()
+            } else if viewModel.selection.item == .devices {
+                Menu {
+                    deviceBreakdownPicker
+                } label: {
+                    InlineValuePickerTitle(title: viewModel.selection.options.deviceBreakdown.localizedTitle)
+                        .foregroundStyle(Color.secondary)
+                        .padding(.top, 6)
+                        .padding(.vertical, Constants.step0_5)
+                }
+                .fixedSize()
+            } else if viewModel.selection.item == .utm {
+                Menu {
+                    utmParamGroupingPicker
+                } label: {
+                    InlineValuePickerTitle(title: viewModel.selection.options.utmParamGrouping.localizedTitle)
                         .foregroundStyle(Color.secondary)
                         .padding(.top, 6)
                         .padding(.vertical, Constants.step0_5)
@@ -148,7 +194,6 @@ struct TopListCard: View {
                     Button {
                         var selection = viewModel.selection
                         selection.item = item
-
                         let supportedMetric = getSupportedMetrics(for: item)
                         if !supportedMetric.contains(selection.metric),
                            let metric = supportedMetric.first {
@@ -206,8 +251,8 @@ struct TopListCard: View {
     private var locationLevelPicker: some View {
         ForEach(LocationLevel.allCases) { level in
             Button {
-                let previousLevel = viewModel.selection.locationLevel
-                viewModel.selection.locationLevel = level
+                let previousLevel = viewModel.selection.options.locationLevel
+                viewModel.selection.options.locationLevel = level
 
                 // Track location level change
                 viewModel.tracker?.send(.locationLevelChanged, properties: [
@@ -216,6 +261,46 @@ struct TopListCard: View {
                 ])
             } label: {
                 Label(level.localizedTitle, systemImage: level.systemImage)
+            }
+        }
+        .tint(Color.primary)
+    }
+
+    private var deviceBreakdownPicker: some View {
+        ForEach(DeviceBreakdown.allCases) { breakdown in
+            Button {
+                let previousBreakdown = viewModel.selection.options.deviceBreakdown
+                viewModel.selection.options.deviceBreakdown = breakdown
+
+                // Track device breakdown change
+                viewModel.tracker?.send(.deviceBreakdownChanged, properties: [
+                    "from_breakdown": previousBreakdown.analyticsName,
+                    "to_breakdown": breakdown.analyticsName
+                ])
+            } label: {
+                Label(breakdown.localizedTitle, systemImage: breakdown.systemImage)
+            }
+        }
+        .tint(Color.primary)
+    }
+
+    private var utmParamGroupingPicker: some View {
+        ForEach(Array(UTMParamGrouping.grouped.enumerated()), id: \.offset) { _, groupings in
+            Section {
+                ForEach(groupings) { grouping in
+                    Button {
+                        let previousGrouping = viewModel.selection.options.utmParamGrouping
+                        viewModel.selection.options.utmParamGrouping = grouping
+
+                        // Track UTM parameter grouping change
+                        viewModel.tracker?.send(.utmParamGroupingChanged, properties: [
+                            "from_grouping": previousGrouping.analyticsName,
+                            "to_grouping": grouping.analyticsName
+                        ])
+                    } label: {
+                        Text(grouping.localizedTitle)
+                    }
+                }
             }
         }
         .tint(Color.primary)
@@ -235,7 +320,10 @@ struct TopListCard: View {
                 } else {
                     topListItemsView(data: data)
                 }
+            } else if let error = viewModel.loadingError as? StatsFeatureGateError {
+                makeFeatureGateView(error: error)
             } else {
+                // Show generic error view for other errors
                 makeEmptyStateView(message: viewModel.loadingError?.localizedDescription ?? Strings.Errors.generic)
             }
         }
@@ -314,6 +402,16 @@ struct TopListCard: View {
             }
     }
 
+    private func makeFeatureGateView(error: StatsFeatureGateError) -> some View {
+        topListItemsView(data: mockData)
+            .allowsHitTesting(false)
+            .redacted(reason: .placeholder)
+            .opacity(0.2)
+            .overlay {
+                FeatureGateBannerView(error: error)
+            }
+    }
+
     private var mockData: TopListData {
         TopListData.mock(
             for: viewModel.selection.item,
@@ -325,7 +423,8 @@ struct TopListCard: View {
 
 #Preview {
     ScrollView {
-        VStack {
+        VStack(spacing: 16) {
+            TopListCardPreview(item: .utm)
             TopListCardPreview(item: .authors)
             TopListCardPreview(item: .locations)
         }

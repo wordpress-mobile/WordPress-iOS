@@ -3,9 +3,14 @@ import SwiftUI
 @preconcurrency import WordPressKit
 
 actor MockStatsService: ObservableObject, StatsServiceProtocol {
+    private struct TopListCacheKey: Hashable {
+        let itemType: TopListItemType
+        let options: TopListItemOptions
+    }
+
     private var hourlyData: [SiteMetric: [DataPoint]] = [:]
     private var wordAdsHourlyData: [WordAdsMetric: [DataPoint]] = [:]
-    private var dailyTopListData: [TopListItemType: [Date: [any TopListItemProtocol]]] = [:]
+    private var dailyTopListData: [TopListCacheKey: [Date: [any TopListItemProtocol]]] = [:]
     private let calendar: Calendar
 
     let supportedMetrics = SiteMetric.allCases.filter {
@@ -21,11 +26,13 @@ actor MockStatsService: ObservableObject, StatsServiceProtocol {
         case .archive: [.views]
         case .referrers: [.views, .visitors]
         case .locations: [.views, .visitors]
+        case .devices: [.views]
         case .authors: [.views, .comments, .likes]
         case .externalLinks: [.views, .visitors]
         case .fileDownloads: [.downloads]
         case .searchTerms: [.views, .visitors]
         case .videos: [.views, .likes]
+        case .utm: [.views]
         }
     }
 
@@ -133,11 +140,20 @@ actor MockStatsService: ObservableObject, StatsServiceProtocol {
         return WordAdsMetricsResponse(total: total, metrics: output)
     }
 
-    func getTopListData(_ item: TopListItemType, metric: SiteMetric, interval: DateInterval, granularity: DateRangeGranularity, limit: Int?, locationLevel: LocationLevel?) async throws -> TopListResponse {
+    func getTopListData(_ item: TopListItemType, metric: SiteMetric, interval: DateInterval, granularity: DateRangeGranularity, limit: Int?, options: TopListItemOptions) async throws -> TopListResponse {
         await generateDataIfNeeded()
 
-        guard let typeData = dailyTopListData[item] else {
-            fatalError("data not configured for data type: \(item)")
+        if item == .devices && options.deviceBreakdown == .screensize {
+            return TopListResponse(items: [
+                TopListItem.Device(name: "mobile", breakdown: .screensize, metrics: .init(views: 6980)),
+                TopListItem.Device(name: "desktop", breakdown: .screensize, metrics: .init(views: 2580)),
+                TopListItem.Device(name: "tablet", breakdown: .screensize, metrics: .init(views: 440))
+            ])
+        }
+
+        let cacheKey = TopListCacheKey(itemType: item, options: options)
+        guard let typeData = dailyTopListData[cacheKey] else {
+            return TopListResponse(items: [])
         }
 
         // Filter data within the date range
@@ -243,79 +259,7 @@ actor MockStatsService: ObservableObject, StatsServiceProtocol {
     }
 
     private func loadRealtimeBaseItems(for dataType: TopListItemType) -> [any TopListItemProtocol] {
-        let fileName: String
-        switch dataType {
-        case .postsAndPages:
-            fileName = "postsAndPages"
-        case .archive:
-            fileName = "archive"
-        case .referrers:
-            fileName = "referrers"
-        case .locations:
-            fileName = "locations"
-        case .authors:
-            fileName = "authors"
-        case .externalLinks:
-            fileName = "external-links"
-        case .fileDownloads:
-            fileName = "file-downloads"
-        case .searchTerms:
-            fileName = "search-terms"
-        case .videos:
-            fileName = "videos"
-        }
-
-        // Load from JSON file
-        guard let url = Bundle.module.url(forResource: "realtime-\(fileName)", withExtension: "json") else {
-            print("Failed to find \(fileName).json")
-            return []
-        }
-
-        do {
-            let data = try Data(contentsOf: url)
-            let decoder = JSONDecoder()
-            decoder.dateDecodingStrategy = .iso8601
-
-            // Decode based on data type
-            switch dataType {
-            case .referrers:
-                let referrers = try decoder.decode([TopListItem.Referrer].self, from: data)
-                return referrers
-            case .locations:
-                let locations = try decoder.decode([TopListItem.Location].self, from: data)
-                return locations
-            case .authors:
-                let authors = try decoder.decode([TopListItem.Author].self, from: data)
-                return authors.map {
-                    var copy = $0
-                    copy.avatarURL = Bundle.module.path(forResource: "author\($0.userId)", ofType: "jpg").map {
-                        URL(filePath: $0)
-                    }
-                    return copy
-                }
-            case .externalLinks:
-                let links = try decoder.decode([TopListItem.ExternalLink].self, from: data)
-                return links
-            case .fileDownloads:
-                let downloads = try decoder.decode([TopListItem.FileDownload].self, from: data)
-                return downloads
-            case .searchTerms:
-                let terms = try decoder.decode([TopListItem.SearchTerm].self, from: data)
-                return terms
-            case .videos:
-                let videos = try decoder.decode([TopListItem.Video].self, from: data)
-                return videos
-            case .postsAndPages:
-                let posts = try decoder.decode([TopListItem.Post].self, from: data)
-                return posts
-            case .archive:
-                let sections = try decoder.decode([TopListItem.ArchiveSection].self, from: data)
-                return sections
-            }
-        } catch {
-            print("Failed to load \(fileName).json: \(error)")
-            return []
-        }
+        return [] // No longer needed (will remove soon)
     }
 
     func getPostDetails(for postID: Int) async throws -> StatsPostDetails {
@@ -472,7 +416,31 @@ actor MockStatsService: ObservableObject, StatsServiceProtocol {
     // MARK: - Data Loading
 
     /// Loads historical items from JSON files based on the data type
-    private func loadHistoricalItems(for dataType: TopListItemType) -> [any TopListItemProtocol] {
+    /// Returns all relevant option combinations for a given item type
+    private func getOptionSets(for itemType: TopListItemType) -> [TopListItemOptions] {
+        switch itemType {
+        case .locations:
+            // Generate options for all location levels
+            return LocationLevel.allCases.map { level in
+                TopListItemOptions(locationLevel: level, deviceBreakdown: .screensize)
+            }
+        case .devices:
+            // Generate options for all device breakdowns
+            return DeviceBreakdown.allCases.map { breakdown in
+                TopListItemOptions(locationLevel: .countries, deviceBreakdown: breakdown)
+            }
+        case .utm:
+            // Generate options for all UTM parameter groupings
+            return UTMParamGrouping.allCases.map { grouping in
+                TopListItemOptions(locationLevel: .countries, deviceBreakdown: .screensize, utmParamGrouping: grouping)
+            }
+        default:
+            // For other types, use default options
+            return [TopListItemOptions()]
+        }
+    }
+
+    private func loadHistoricalItems(for dataType: TopListItemType, options: TopListItemOptions) -> [any TopListItemProtocol] {
         let fileName: String
         switch dataType {
         case .postsAndPages:
@@ -483,6 +451,8 @@ actor MockStatsService: ObservableObject, StatsServiceProtocol {
             fileName = "historical-referrers"
         case .locations:
             fileName = "historical-locations"
+        case .devices:
+            fileName = "historical-devices"
         case .authors:
             fileName = "historical-authors"
         case .externalLinks:
@@ -493,6 +463,8 @@ actor MockStatsService: ObservableObject, StatsServiceProtocol {
             fileName = "historical-search-terms"
         case .videos:
             fileName = "historical-videos"
+        case .utm:
+            fileName = "historical-utm"
         }
 
         // Load from JSON file
@@ -513,7 +485,12 @@ actor MockStatsService: ObservableObject, StatsServiceProtocol {
                 return referrers
             case .locations:
                 let locations = try decoder.decode([TopListItem.Location].self, from: data)
+                // For now, use same data for all location levels
+                // Could be extended to generate synthetic regions/cities data
                 return locations
+            case .devices:
+                let devices = try decoder.decode([TopListItem.Device].self, from: data)
+                return devices.filter { $0.breakdown == options.deviceBreakdown }
             case .authors:
                 let authors = try decoder.decode([TopListItem.Author].self, from: data)
                 return authors.map {
@@ -541,6 +518,19 @@ actor MockStatsService: ObservableObject, StatsServiceProtocol {
             case .archive:
                 let sections = try decoder.decode([TopListItem.ArchiveSection].self, from: data)
                 return sections
+            case .utm:
+                let metrics = try decoder.decode([TopListItem.UTMMetric].self, from: data)
+                // Filter based on UTM parameter grouping
+                let expectedValueCount: Int
+                switch options.utmParamGrouping {
+                case .sourceMedium:
+                    expectedValueCount = 2
+                case .campaignSourceMedium:
+                    expectedValueCount = 3
+                case .source, .medium, .campaign:
+                    expectedValueCount = 1
+                }
+                return metrics.filter { $0.values.count == expectedValueCount }
             }
         } catch {
             print("Failed to load \(fileName).json: \(error)")
@@ -759,18 +749,23 @@ actor MockStatsService: ObservableObject, StatsServiceProtocol {
 
         let startDate = calendar.date(from: dateComponents)!
 
-        // Generate daily data for each type
+        // Generate daily data for each type and option combination
         for dataType in TopListItemType.allCases {
-            var typeData: [Date: [any TopListItemProtocol]] = [:]
+            // Generate data for all relevant option combinations
+            let optionSets = getOptionSets(for: dataType)
 
-            // Load base items from JSON files
-            let baseItems = loadHistoricalItems(for: dataType)
+            for options in optionSets {
+                var typeData: [Date: [any TopListItemProtocol]] = [:]
 
-            // Skip if no items to process
-            if baseItems.isEmpty {
-                dailyTopListData[dataType] = typeData
-                continue
-            }
+                // Load base items from JSON files, filtered by options
+                let baseItems = loadHistoricalItems(for: dataType, options: options)
+
+                // Skip if no items to process
+                if baseItems.isEmpty {
+                    let cacheKey = TopListCacheKey(itemType: dataType, options: options)
+                    dailyTopListData[cacheKey] = typeData
+                    continue
+                }
 
             var currentDate = startDate
             let nowDate = Date()
@@ -828,7 +823,9 @@ actor MockStatsService: ObservableObject, StatsServiceProtocol {
                 currentDate = calendar.date(byAdding: .day, value: 1, to: currentDate)!
             }
 
-            dailyTopListData[dataType] = typeData
+                let cacheKey = TopListCacheKey(itemType: dataType, options: options)
+                dailyTopListData[cacheKey] = typeData
+            }
         }
     }
 

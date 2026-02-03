@@ -1,8 +1,24 @@
 import SwiftUI
 
+/// Chart data for a specific metric over a time period.
+///
+/// ## Timezone Consistency
+/// All date-related properties use the site's timezone:
+/// - `dateInterval`: The requested time period in the site's timezone
+/// - `currentData`/`previousData`: Data points with dates in the site's timezone
+/// - When rendering charts, the x-axis domain uses `dateInterval.start...dateInterval.end`
+///   and the chart's environment timezone is set to the site's timezone via
+///   `.environment(\.timeZone, context.timeZone)`
 final class ChartData: Sendable {
     let metric: SiteMetric
     let granularity: DateRangeGranularity
+
+    /// The requested date interval for this chart data, in the site's timezone.
+    /// This defines the base time period for the chart's x-axis. The actual x-axis domain
+    /// may be expanded to include all data points, especially when custom granularity
+    /// (e.g., "year" for "this week") returns points outside this interval.
+    let dateInterval: DateInterval
+
     let currentTotal: Int
     let currentData: [DataPoint]
     let previousTotal: Int
@@ -23,9 +39,10 @@ final class ChartData: Sendable {
         let previousMin: DataPoint?
     }
 
-    init(metric: SiteMetric, granularity: DateRangeGranularity, currentTotal: Int, currentData: [DataPoint], previousTotal: Int, previousData: [DataPoint], mappedPreviousData: [DataPoint]) {
+    init(metric: SiteMetric, granularity: DateRangeGranularity, dateInterval: DateInterval, currentTotal: Int, currentData: [DataPoint], previousTotal: Int, previousData: [DataPoint], mappedPreviousData: [DataPoint]) {
         self.metric = metric
         self.granularity = granularity
+        self.dateInterval = dateInterval
         self.currentTotal = currentTotal
         self.currentData = currentData
         self.previousTotal = previousTotal
@@ -91,6 +108,7 @@ extension ChartData {
         return ChartData(
             metric: metric,
             granularity: granularity,
+            dateInterval: range.dateInterval,
             currentTotal: DataPoint.getTotalValue(for: dataPoints, metric: metric) ?? 0,
             currentData: dataPoints,
             previousTotal: DataPoint.getTotalValue(for: previousData, metric: metric) ?? 0,

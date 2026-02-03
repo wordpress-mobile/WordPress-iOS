@@ -1,0 +1,114 @@
+[
+  {
+    "name": "mobile",
+    "breakdown": "screensize",
+    "metrics": {
+      "views": 6980
+    }
+  },
+  {
+    "name": "desktop",
+    "breakdown": "screensize",
+    "metrics": {
+      "views": 2580
+    }
+  },
+  {
+    "name": "tablet",
+    "breakdown": "screensize",
+    "metrics": {
+      "views": 4400
+    }
+  },
+  {
+    "name": "android",
+    "breakdown": "platform",
+    "metrics": {
+      "views": 805
+    }
+  },
+  {
+    "name": "linux",
+    "breakdown": "platform",
+    "metrics": {
+      "views": 217
+    }
+  },
+  {
+    "name": "windows",
+    "breakdown": "platform",
+    "metrics": {
+      "views": 41
+    }
+  },
+  {
+    "name": "mac",
+    "breakdown": "platform",
+    "metrics": {
+      "views": 25
+    }
+  },
+  {
+    "name": "iphone",
+    "breakdown": "platform",
+    "metrics": {
+      "views": 10
+    }
+  },
+  {
+    "name": "android_tablet",
+    "breakdown": "platform",
+    "metrics": {
+      "views": 3
+    }
+  },
+  {
+    "name": "ipad",
+    "breakdown": "platform",
+    "metrics": {
+      "views": 1
+    }
+  },
+  {
+    "name": "chrome",
+    "breakdown": "browser",
+    "metrics": {
+      "views": 1063
+    }
+  },
+  {
+    "name": "safari",
+    "breakdown": "browser",
+    "metrics": {
+      "views": 15
+    }
+  },
+  {
+    "name": "miui",
+    "breakdown": "browser",
+    "metrics": {
+      "views": 10
+    }
+  },
+  {
+    "name": "edge",
+    "breakdown": "browser",
+    "metrics": {
+      "views": 9
+    }
+  },
+  {
+    "name": "firefox",
+    "breakdown": "browser",
+    "metrics": {
+      "views": 1
+    }
+  },
+  {
+    "name": "opera",
+    "breakdown": "browser",
+    "metrics": {
+      "views": 1
+    }
+  }
+]

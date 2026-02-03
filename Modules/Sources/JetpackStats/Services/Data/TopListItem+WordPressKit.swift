@@ -66,6 +66,16 @@ extension TopListItem.Location {
     }
 }
 
+extension TopListItem.Device {
+    init(_ item: WordPressKit.StatsDeviceItem, breakdown: DeviceBreakdown) {
+        self.init(
+            name: item.name,
+            breakdown: breakdown,
+            metrics: SiteMetricsSet(views: Int(item.value))
+        )
+    }
+}
+
 extension TopListItem.Author {
     init(_ author: WordPressKit.StatsTopAuthor, dateFormatter: DateFormatter) {
         self.init(
@@ -75,6 +85,17 @@ extension TopListItem.Author {
             metrics: SiteMetricsSet(views: author.viewsCount),
             avatarURL: author.iconURL,
             posts: author.posts.map { TopListItem.Post($0, dateFormatter: dateFormatter) }
+        )
+    }
+}
+
+extension TopListItem.UTMMetric {
+    init(_ utmMetric: WordPressKit.StatsUTMMetric, dateFormatter: DateFormatter) {
+        self.init(
+            label: utmMetric.label,
+            values: utmMetric.values,
+            metrics: SiteMetricsSet(views: utmMetric.viewsCount),
+            posts: utmMetric.posts.map { TopListItem.Post($0, dateFormatter: dateFormatter) }
         )
     }
 }

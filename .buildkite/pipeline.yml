@@ -9,47 +9,6 @@ env:
 
 # This is the default pipeline – it will build and test the app
 steps:
-  - group: ":eyeglasses: Reader Builds"
-    steps:
-      - label: ":eyeglasses: Reader ASC Demo Build"
-        key: build_asc_reader
-        command: |
-          if .buildkite/commands/should-skip-job.sh --job-type build; then
-            exit 0
-          fi
-
-          .buildkite/commands/release-build-reader.sh
-        plugins: [$CI_TOOLKIT_PLUGIN]
-        artifact_paths:
-          - Artifacts/*.zip
-          - Artifacts/*.ipa
-        notify:
-          - github_commit_status:
-              context: "Reader ASC Demo Build"
-
-      - block: Distribute Reader via TestFlight
-        prompt: Distribute the Reader build via TestFlight?
-        key: testflight_triggered_reader
-        # Block steps have implicit dependency on the steps that come before them.
-        # See https://buildkite.com/docs/pipelines/trigger-step
-        #
-        # Make it depend on nothing so we don't have to wait for previous steps to finish before the deployment can start.
-        depends_on: ~
-
-      - label: ":eyeglasses: Reader one-off TestFlight Upload"
-        key: testflight_upload_reader
-        depends_on: [build_asc_reader, testflight_triggered_reader]
-        command: |
-          if .buildkite/commands/should-skip-job.sh --job-type build; then
-            exit 0
-          fi
-
-          .buildkite/commands/release-upload-reader.sh
-        plugins: [$CI_TOOLKIT_PLUGIN]
-        notify:
-          - github_commit_status:
-              context: "Reader one-off TestFlight Upload"
-
   #################
   # Create Prototype Builds for WP and JP
   #################
@@ -212,7 +171,6 @@ steps:
       buildkite-agent pipeline upload .buildkite/claude-analysis.yml
     # Add specific group dependencies. Using a `wait` step wouldn't work as it would never start given the prompt block
     depends_on:
-      - build_asc_reader
       - linters_group
       - prototype_builds_group
       - unit_tests_group
