@@ -184,7 +184,8 @@ final class ChartCardViewModel: ObservableObject, TrafficCardViewModel {
             // are displayed on the same timeline on the charts.
             let mappedPreviousDataPoints = DataPoint.mapDataPoints(
                 currentData: dataPoints,
-                previousData: previousDataPoints
+                previousData: previousDataPoints,
+                dateRange: dateRange
             )
 
             output[metric] = ChartData(

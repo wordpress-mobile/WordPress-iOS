@@ -284,7 +284,8 @@ private func generateChartData(
     // Map previous data points to current period dates for overlay
     let mappedPreviousData = DataPoint.mapDataPoints(
         currentData: currentPeriod.dataPoints,
-        previousData: previousPeriod.dataPoints
+        previousData: previousPeriod.dataPoints,
+        dateRange: dateRange
     )
 
     return ChartData(
