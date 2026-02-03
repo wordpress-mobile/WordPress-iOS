@@ -1,9 +1,9 @@
-We made a technical update that reduces the size of your app by about 6 MB. What will you do with all that newfound space?
+Vi gjorde en teknisk uppdatering som minskar storleken på din app med cirka 6 MB. Vad ska du göra med allt det nyfunna utrymmet?
 
-It’s easier to find, see, and change the visibility settings of existing posts. The “Done” button also won’t disappear when you set the password while publishing a password-protected post.
+Det är lättare att hitta, se och ändra synlighetsinställningarna för befintliga inlägg. Knappen ”Klar” försvinner inte heller när du ställer in lösenordet medan du publicerar ett lösenordsskyddat inlägg.
 
-Looking good: we updated shortcut icons and illustrations to better match the rest of the app, as well as fit better with your device.
+Ser bra ut: vi uppdaterade genvägsikoner och illustrationer för att bättre matcha resten av appen, samt passa bättre med din enhet.
 
-We fixed an issue so post previews now work properly for certain sites using Business and Commerce plans.
+Vi har åtgärdat ett problem så att förhandsgranskningar av inlägg nu fungerar korrekt för vissa webbplatser som använder Business- och Commerce-paket.
 
-When you add a new self-hosted site, you’ll be asked for your app password to authenticate. Keep it secret. Håll den säker
+När du lägger till en ny webbplats som drivs på en egen server blir du ombedd att ange ditt applösenord för att autentisera. Håll det hemligt. Håll det säkert.
