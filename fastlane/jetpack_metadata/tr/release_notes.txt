@@ -1,31 +1,31 @@
-Yapay Zeka destek özelliğimiz olan WordPress Intelligence artık daha fazla yerel dilde ve dilde kullanılabilir. Herkesin en sevdiği yardımcı biraz daha inceldi.
+Yapay Zeka destek özelliğimiz olan WordPress Intelligence artık daha fazla yerel dilde ve dilde kullanılabilir. Herkesin en sevdiği yardımcı artık daha da kullanışlı.
 
-İstatistikler bölümünü kabaca %83 geliştirdik.
+İstatistikler bölümünü yaklaşık %83 geliştirdik.
 
 - Konum kartı verileri ülkeye, bölgeye ve şehre göre filtrelemenizi sağlar. Bu veri Jetpack'in web sürümüyle tutarlıdır.
 - "Harici Bağlantılar" artık "Tıklamalar" olduğundan web sürümüyle tutarlıdır. Bu alanın bazen yanlış görüntülendiği bir hatayı düzelttik.
 - Otomatik veri karşılaştırmasını kapatabilir ve bu ayarı gelecekteki uygulama kullanımı için kaydedebilirsiniz. Karşılaştırma dönemi için haftalık verilerin her zaman doğru görüntülenmemesine neden olan bir sorunu düzelttik.
-- Uzun süre basılı tutarsa size daha fazla ayrıntı gösterilir. Dikey kaydırma da sabitlenmiştir.
+- Uzun süre basılı tutulduğunda size daha fazla ayrıntı gösterilir. Dikey kaydırma da düzeltildi.
 - Gün, hafta, ay ve yıllara göre gruplandırılmış çubuk grafik ve çizgi grafik verilerini görüntüleyebilirsiniz.
 - En iyi Liste öğeleri ada göre sıralanır ve düzgün şekilde sıralanır.
 
 Okuyucu'da da birçok değişiklik yaptık.
 
-- Keşfet ekranında yeni bir "Yeni Basılmış" sekmesi var. Ayrıca "Önerilir" sekmesini "Sizin için" olarak değiştirdik.
-- Ana kenar çubuğunda yalnızca bir Arama seçeneği vardır.
-- "Daha Fazla Oku" görünümü, dokunduğunuz yer fark etmeksizin aynı şekilde çalışır ve artık tüm alıntıyı görebilirsiniz. Keşfedilecek çok daha fazla şey var.
+- Keşfet ekranında yeni bir "Yeni Çıktı" sekmesi var. Ayrıca "Önerilir" sekmesini "Sizin İçin" olarak değiştirdik.
+- Ana kenar çubuğunda yalnızca bir Arama seçeneği var.
+- "Devamını Oku" görünümü, dokunduğunuz yer fark etmeksizin aynı şekilde çalışır ve artık tüm alıntıyı görebilirsiniz. Keşfedilecek çok daha fazla şey var.
 - Yorumlar bölümü doğrudan makalenin altında yorumları yanıtlamanızı ve beğenmenizi sağlar. Daha hızlı yorum için makalelerin altında yeni bir "Yorum Bırak" düğmesi vardır.
 - Varsayılan olarak bir yerine iki yorum görebilirsiniz ve çok uzun yorumlar daha kolay okunması için daraltılabilir.
-- Yorumlar bölümünde de birkaç görsel sorun yaşadık. Yorumlar artık doğru yüksekliğe sahip, "Tüm Yorumları Görüntüle" düğmesi daha çok dikkat çekiyor ve "Gönder" düğmesi de düzgün şekilde biçimlendirilmiş.
+- Yorumlar bölümünde de birkaç görsel değişiklik yapıldı. Yorumlar artık doğru yüksekliğe sahip, "Tüm Yorumları Görüntüle" düğmesi daha çok dikkat çekiyor ve "Gönder" düğmesi de düzgün şekilde biçimlendirilmiş.
 - Uygulama içi çeviri desteğiyle gönderileri tercih ettiğiniz dilde okuyabilirsiniz.
 - Site başlıklarındaki birden fazla boşluk, daha kolay okunması ve görüntülenmesi için daraltıldı.
 
-Uygulamanızın boyutunu yaklaşık 6 MB düşüren bir teknik güncelleme yaptık. Tüm bu yeni bulunan alanla ne yapacaksınız?
+Uygulamanızın boyutunu yaklaşık 6 MB azaltan teknik bir güncelleme yapıldı. Açılan alanla ne yapacaksınız?
 
-Mevcut yazıların görünürlük ayarlarını bulmak, görmek ve değiştirmek daha kolaydır. Şifre korumalı bir yazı yayımlanırken şifre belirlendiğinde "Bitti" düğmesi de kaybolmaz.
+Mevcut gönderilerin görünürlük ayarlarını bulmak, görmek ve değiştirmek daha kolay. Ayrıca artık şifreyle korunan bir gönderi yayınlarken şifre belirlerken "Tamamlandı" düğmesi kaybolmaz.
 
-İyi görünüyor: Kısayol simgelerini ve illüstrasyonları, uygulamanın geri kalanıyla daha iyi uyum sağlayacak şekilde ve cihazınızla daha iyi uyum sağlayacak şekilde güncelledik.
+İyi görünüyor: Kısaltma simgelerini ve illüstrasyonlarını uygulamanın geri kalanıyla uyumlu olacak ve cihazınıza da daha iyi uyacak şekilde güncelledik.
 
-Bir sorunu düzelttik, bu nedenle gönderi önizlemeleri artık Kurumsal paketler ve Ticaret paketleri kullanılarak belirli siteler için düzgün çalışıyor.
+Bir sorun çözüldü, artık gönderi önizlemeleri Business ve Commerce paketlerini kullanan belirli sitelerde düzgün çalışır.
 
-Kullanıcı tarafından barındırılan yeni bir site eklediğinizde, doğrulama için uygulama şifrenizi sorulacaktır. Onu gizli tut. Güvenliği Sağlayın
+Kendi barındırdığınız yeni bir site eklediğinizde doğrulamak için uygulama şifrenizi girmeniz istenir. Gizli tutun. Güvende tutun.
