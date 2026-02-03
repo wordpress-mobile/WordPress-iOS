@@ -412,7 +412,8 @@ private struct PostStatsMetricsStripView: View {
                     Text(formattedValue)
                         .contentTransition(.numericText())
                         .animation(.spring, value: value)
-                        .font(Font.make(.recoleta, textStyle: .title, weight: .medium))
+                        .font(Constants.Typography.mediumDisplayFont)
+                        .kerning(Constants.Typography.largeDisplayKerning)
                         .foregroundColor(.primary)
                 }
             }
@@ -516,7 +517,8 @@ private struct PostStatsEmailMetricsView: View {
                 HStack {
                     Text(formattedValue)
                         .contentTransition(.numericText())
-                        .font(Font.make(.recoleta, textStyle: .title, weight: .medium))
+                        .font(Constants.Typography.mediumDisplayFont)
+                        .kerning(Constants.Typography.largeDisplayKerning)
                         .foregroundColor(.primary)
                 }
             }
