@@ -126,6 +126,8 @@ class PostGBKEditorViewController: UIViewController, GutenbergKit.EditorViewCont
     }
 
     func editor(_ viewController: GutenbergKit.EditorViewController, didLogException exception: GutenbergKit.GutenbergJSException) {
+        DDLogError("GBK editor exception:\n\(exception)")
+
         DispatchQueue.main.async {
             WordPressAppDelegate.crashLogging?.logJavaScriptException(exception) {
                 // Do nothing
