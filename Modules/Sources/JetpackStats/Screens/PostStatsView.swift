@@ -238,7 +238,16 @@ public struct PostStatsView: View {
     // MARK: - Data
 
     private var dateRange: StatsDateRange {
-        initialDateRange ?? context.calendar.makeDateRange(for: .last30Days)
+        guard let initialDateRange else {
+            return context.calendar.makeDateRange(for: .last7Days)
+        }
+
+        // Default to "Last 7 days" for hourly granularity periods (e.g., "Today")
+        if initialDateRange.dateInterval.preferredGranularity == .hour {
+            return context.calendar.makeDateRange(for: .last7Days)
+        }
+
+        return initialDateRange
     }
 
     private var metrics: SiteMetricsSet? {
