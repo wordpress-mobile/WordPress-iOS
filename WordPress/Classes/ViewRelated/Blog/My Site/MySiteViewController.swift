@@ -380,8 +380,6 @@ final class MySiteViewController: UIViewController, UIScrollViewDelegate, NoSite
         }
 
         if RemoteFeatureFlag.newGutenberg.enabled() {
-            warmUpEditorIfNeeded(for: blog)
-
             // Refresh editor capabilities
             EditorDependencyManager.shared.fetchEditorCapabilities(for: blog)
         }
