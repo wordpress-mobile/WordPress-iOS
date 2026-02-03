@@ -41,14 +41,21 @@ class XMLRPCDisabledCell: UITableViewCell {
     }
 
     @objc private func showAlert() {
-        // TODO: Change to a modal, with more information (i.e. show related plugins)
-        let alert = UIAlertController(
-            title: Strings.alertTitle,
-            message: Strings.alertMessage,
-            preferredStyle: .alert
-        )
-        alert.addAction(UIAlertAction(title: SharedStrings.Button.ok, style: .default))
-        presenterViewController?.present(alert, animated: true)
+        guard let presenter = presenterViewController else {
+            return
+        }
+
+        let alert = AlertView {
+            AlertHeaderView(title: Strings.alertTitle, description: Strings.alertMessage)
+        } content: {
+            Image(systemName: "exclamationmark.triangle")
+                .font(.system(size: 50))
+                .foregroundStyle(.orange)
+        } actions: {
+            AlertDismissButton()
+        }
+
+        alert.present(in: presenter)
     }
 }
 
