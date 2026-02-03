@@ -26,12 +26,17 @@ class CustomPostEditorViewController: PostGBKEditorViewController {
         self.details = details
         self.success = success
 
+        let postTypeDetails = PostTypeDetails(
+            postType: details.slug,
+            restBase: details.restBase,
+            restNamespace: details.restNamespace
+        )
         super.init(
             postId: Int(post.id),
-            postType: post.postType,
+            postType: postTypeDetails,
             title: post.title?.raw,
             content: post.content.raw,
-            status: post.status.stringValue(),
+            status: post.status.description,
             blog: blog
         )
     }
@@ -144,10 +149,9 @@ class CustomPostEditorViewController: PostGBKEditorViewController {
     }
 
     private func hasBeenModified() async throws -> Bool {
-        let endpoint = postTypeDetailsToPostEndpointType(postTypeDetails: details)
         let lastModified = try await client.api.posts
             .filterRetrieveWithEditContext(
-                postEndpointType: endpoint,
+                postEndpointType: details.toPostEndpointType(),
                 postId: post.id,
                 params: .init(),
                 fields: [.modified]
@@ -171,7 +175,7 @@ class CustomPostEditorViewController: PostGBKEditorViewController {
         _ = try await client.api
             .posts
             .update(
-                postEndpointType: postTypeDetailsToPostEndpointType(postTypeDetails: details),
+                postEndpointType: details.toPostEndpointType(),
                 postId: post.id,
                 params: params
             )

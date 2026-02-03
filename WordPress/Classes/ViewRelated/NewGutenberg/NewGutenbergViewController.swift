@@ -92,7 +92,7 @@ class NewGutenbergViewController: PostGBKEditorViewController, PostEditor, Publi
         self.editorSession = PostEditorAnalyticsSession(editor: .gutenbergKit, post: post)
 
         // Create configuration with post content
-        let postType = post is Page ? "page" : "post"
+        let postType: PostTypeDetails = post is Page ? .page : .post
         let postStatus = post.status?.rawValue ?? "draft"
 
         super.init(

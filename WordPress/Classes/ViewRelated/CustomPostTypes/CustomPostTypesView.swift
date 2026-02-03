@@ -73,7 +73,7 @@ struct CustomPostTypesView: View {
             self.types = try await self.collection.loadData()
                 .compactMap {
                     let details = $0.data
-                    let endpoint = postTypeDetailsToPostEndpointType(postTypeDetails: details)
+                    let endpoint = details.toPostEndpointType()
                     if case .custom = endpoint, details.slug != "attachment" {
                         return (endpoint, details)
                     }
