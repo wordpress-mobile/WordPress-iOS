@@ -4,6 +4,7 @@
 * [**] Stats: Add "Devices" view to the "Traffic" tab [#25176]
 * [**] Stats: Add "UTM" view to the "Traffic" tab [#25178]
 * [*] Stats: Fix a few issues with charts (x axis labels alignment, occasionally incorrect displayed date period, and more) [#25185]
+* [*] Stats: Minor design improvements and simplifcations [#25215], [#25214]
 
 26.6
 -----
