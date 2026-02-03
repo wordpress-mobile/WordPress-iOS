@@ -203,9 +203,9 @@ public class BlogDetailsViewController: UIViewController {
         }
 
         Task { @MainActor in
-            let isEnabled = await xmlrpcApi.isEnabled(username: username, password: password)
+            let availability = await xmlrpcApi.isXMLRPCAvailable(username: username, password: password)
             let wasDisabled = self.showXMLRPCDisabled
-            self.showXMLRPCDisabled = !isEnabled
+            self.showXMLRPCDisabled = availability == .unavailable
 
             if wasDisabled != self.showXMLRPCDisabled {
                 self.configureTableViewData()
