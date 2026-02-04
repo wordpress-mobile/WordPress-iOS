@@ -8,28 +8,37 @@ struct TopListMetricsView: View {
     var device: TopListItem.Device?
 
     var body: some View {
-        VStack(alignment: .trailing, spacing: 2) {
+        VStack(alignment: .trailing, spacing: 1) {
             HStack(spacing: 3) {
                 Text(formattedValue)
-                    .font(.system(.subheadline, design: .rounded, weight: .medium)).tracking(-0.1)
+                    .font(.system(.callout, design: .rounded, weight: .medium)).tracking(-0.1)
                     .foregroundColor(.primary)
                     .contentTransition(.numericText())
-
                 if showChevron {
-                    Image(systemName: "chevron.forward")
-                        .font(.caption2.weight(.bold))
-                        .foregroundStyle(Color(.tertiaryLabel))
-                        .padding(.trailing, -2)
+                    chevron
                 }
             }
             if let trend {
-                Text(trend.formattedTrendShort)
-                    .foregroundColor(trend.sentiment.foregroundColor)
-                    .contentTransition(.numericText())
-                    .font(.system(.caption, design: .rounded, weight: .medium)).tracking(-0.33)
+                HStack(spacing: 3) {
+                    Text("\(trend.iconSign) \(trend.formattedPercentage)")
+                        .font(.system(.caption2, design: .rounded, weight: .semibold)).tracking(-0.25)
+                        .foregroundColor(trend.sentiment.foregroundColor)
+                        .contentTransition(.numericText())
+                        .font(.system(.caption, design: .rounded, weight: .medium)).tracking(-0.33)
+                    if showChevron {
+                        chevron.opacity(0) // Just to allocate space
+                    }
+                }
             }
         }
         .animation(.spring, value: trend)
+    }
+
+    private var chevron: some View {
+        Image(systemName: "chevron.forward")
+            .font(.caption2.weight(.bold))
+            .foregroundStyle(Color(.tertiaryLabel))
+            .padding(.trailing, -2)
     }
 
     // TEMPORARY WORKAROUND (CMM-1168):
