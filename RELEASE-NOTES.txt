@@ -6,6 +6,7 @@
 * [*] Stats: Fix a few issues with charts (x axis labels alignment, occasionally incorrect displayed date period, and more) [#25185]
 * [*] Stats: the "Post Stats" screen will now automatically show "Last 7 days" instead of attempting to show unavailable hourly data when "Today" or other "day" period is selected [#25210]
 * [*] Stats: Minor design improvements and simplifcations [#25215], [#25214]
+* [*] Activity Logs: Minor visual improvements [#25220]
 
 26.6
 -----
