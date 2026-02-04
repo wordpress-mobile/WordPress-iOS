@@ -46,7 +46,7 @@ struct ChartHelper {
         // Align to granularity boundaries
         let periodStart = calendar.dateInterval(of: granularity.component, for: rawStart)?.start ?? rawStart
         let periodEnd = calendar.dateInterval(of: granularity.component, for: rawEnd)?.end ?? rawEnd
-        return periodStart...perbiodEnd
+        return periodStart...periodEnd
     }
 
     /// Creates an x-axis with marks at unit boundaries aligned with the chart granularity.
