@@ -232,6 +232,11 @@ class GutenbergSettings {
             return false
         }
 
+        // Default to `true` if the user hasn't specifically set a preference
+        guard database.hasEntry(forKey: Key.themeStylesEnabled(forBlogURL: blog.url)) else {
+            return true
+        }
+
         return database.bool(forKey: Key.themeStylesEnabled(forBlogURL: blog.url))
     }
 
