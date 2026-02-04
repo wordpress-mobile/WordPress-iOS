@@ -45,10 +45,7 @@ class PostGBKEditorViewController: UIViewController, GutenbergKit.EditorViewCont
 
         // Use prefetched dependencies if available (fast path with spinner),
         // otherwise pass nil and GutenbergKit will fetch them (shows progress bar)
-        var cachedDependencies: EditorDependencies? = nil
-        if postType == .post || postType == .page {
-            cachedDependencies = EditorDependencyManager.shared.dependencies(for: blog)
-        }
+        let cachedDependencies = EditorDependencyManager.shared.dependencies(for: blog)
 
         self.editorViewController = GutenbergKit.EditorViewController(
             configuration: editorConfiguration,
