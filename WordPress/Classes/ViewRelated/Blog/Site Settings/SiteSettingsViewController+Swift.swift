@@ -77,6 +77,10 @@ extension SiteSettingsViewController {
 
     @objc public func swiftRefreshSettings() {
         // Refresh editor capabilities
+        guard RemoteFeatureFlag.newGutenberg.enabled() else {
+            return
+        }
+
         EditorDependencyManager.shared.fetchEditorCapabilities(for: self.blog)
     }
 

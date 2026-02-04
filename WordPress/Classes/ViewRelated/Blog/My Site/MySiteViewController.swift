@@ -409,7 +409,9 @@ final class MySiteViewController: UIViewController, UIScrollViewDelegate, NoSite
         }
 
         // Refresh editor capabilities
-        EditorDependencyManager.shared.fetchEditorCapabilities(for: blog)
+        if RemoteFeatureFlag.newGutenberg.enabled() {
+            EditorDependencyManager.shared.fetchEditorCapabilities(for: blog)
+        }
 
         switch currentSection {
         case .siteMenu:
