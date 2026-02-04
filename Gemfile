@@ -24,4 +24,4 @@ group :screenshots, optional: true do
   gem 'rmagick', '~> 6.1.5'
 end
 
-gem "openssl", "~> 4.0"
+gem 'openssl', '~> 4.0'
