@@ -26,8 +26,17 @@ public protocol WordPressClientAPI: Sendable {
 /// so conformance is automatic.
 extension WordPressAPI: WordPressClientAPI {}
 
+/// A client for interacting with the WordPress REST API.
+///
+/// `WordPressClient` provides a high-level interface for making WordPress API requests with
+/// built-in caching of commonly-accessed data like site info, current user, and active theme.
+/// It is implemented as an actor to ensure thread-safe access to its internal cache state.
 public actor WordPressClient {
 
+    /// Features that a WordPress site may or may not support.
+    ///
+    /// Use these values with ``supports(_:forSiteId:)`` to check if a site
+    /// has the necessary capabilities for specific functionality.
     public enum Feature {
         /// A block theme is required to style the editor.
         case blockTheme
@@ -41,6 +50,7 @@ public actor WordPressClient {
         /// WordPress.com sites don't all support plugins.
         case plugins
 
+        /// A string representation of the feature for use in API queries or logging.
         public var stringValue: String {
             switch self {
             case .blockTheme: "is-block-theme"
@@ -51,13 +61,39 @@ public actor WordPressClient {
         }
     }
 
+    /// Errors that can occur when accessing cached client data.
+    public enum ClientCacheError: Swift.Error {
+        /// No active theme was found for the site.
+        ///
+        /// This typically indicates an unexpected server state, as WordPress sites
+        /// should always have exactly one active theme.
+        case noActiveTheme
+    }
+
+    /// The underlying API executor used for making network requests.
     public let api: any WordPressClientAPI
+
+    /// The root URL of the WordPress site this client is connected to.
     public let rootUrl: String
 
+    /// The cached task for fetching site API details.
     private var loadSiteInfoTask: Task<WpApiDetails, Error>
-    private var loadCurrentUserTask: Task<UserWithEditContext, Error>
-    private var loadActiveThemeTask: Task<ThemeWithEditContext?, Error>
 
+    /// The cached task for fetching the current authenticated user.
+    private var loadCurrentUserTask: Task<UserWithEditContext, Error>
+
+    /// The cached task for fetching the site's active theme.
+    private var loadActiveThemeTask: Task<ThemeWithEditContext, Error>
+
+    /// Creates a new WordPress client for the specified site.
+    ///
+    /// Upon initialization, the client automatically begins fetching and caching site info,
+    /// the current user, and the active theme in parallel. These cached values are used
+    /// by subsequent API calls to avoid redundant network requests.
+    ///
+    /// - Parameters:
+    ///   - api: The API executor to use for network requests.
+    ///   - rootUrl: The parsed root URL of the WordPress site.
     public init(api: any WordPressClientAPI, rootUrl: ParsedUrl) {
         self.api = api
         self.rootUrl = rootUrl.url()
@@ -65,19 +101,43 @@ public actor WordPressClient {
         // These tasks need to be manually restated here because we can't use the task constructors
         self.loadSiteInfoTask = Task { try await api.apiRoot.get().data }
         self.loadCurrentUserTask = Task { try await api.users.retrieveMeWithEditContext().data }
-        self.loadActiveThemeTask = Task { try await api.themes.listWithEditContext(params: ThemeListParams(status: .active)).data.first }
+        self.loadActiveThemeTask = Task {
+            let query = ThemeListParams(status: .active)
+
+            guard let activeTheme = try await api.themes.listWithEditContext(params: query).data.first else {
+                throw ClientCacheError.noActiveTheme
+            }
+
+            return activeTheme
+        }
     }
 
     /// Invalidates all cached data and triggers a fresh fetch from the server.
+    ///
+    /// Call this method when you need to ensure the client has the latest data from the server,
+    /// such as after the user makes changes that affect site settings, theme, or user profile.
+    /// This clears the cached site info, current user, and active theme, then initiates new
+    /// background fetches for each.
     public func refresh() {
         loadSiteInfoTask = self.newSiteInfoTask()
         loadCurrentUserTask = self.newCurrentUserTask()
         loadActiveThemeTask = self.newActiveThemeTask()
     }
 
+    /// Checks whether the WordPress site supports a given feature.
+    ///
+    /// This method queries the site's API root to determine if specific REST API routes
+    /// are available, and checks theme capabilities where relevant.
+    ///
+    /// - Parameters:
+    ///   - feature: The feature to check support for.
+    ///   - siteId: An optional site ID for WordPress.com multi-site configurations.
+    ///             When provided, uses site-specific API routes for feature detection.
+    /// - Returns: `true` if the feature is supported, `false` otherwise.
+    /// - Throws: An error if the API root or active theme cannot be fetched.
     public func supports(_ feature: Feature, forSiteId siteId: Int? = nil) async throws -> Bool {
         let apiRoot = try await fetchApiRoot()
-        let isBlockTheme: Bool = try await fetchActiveTheme()?.isBlockTheme ?? false
+        let isBlockTheme = try await fetchActiveTheme().isBlockTheme
 
         if let siteId {
             return switch feature {
@@ -96,56 +156,81 @@ public actor WordPressClient {
         }
     }
 
-    /// Asynchronously read the site's API details. This value is cached internally.
+    /// Fetches the site's API root details, using the cached value if available.
     ///
-    private var apiRoot: WpApiDetails {
-        get async throws {
-            try await self.fetchApiRoot()
-        }
-    }
-
+    /// If the cached task has failed, creates a new task and retries the fetch.
+    /// This ensures transient network failures don't permanently block API access.
+    ///
+    /// - Returns: The site's API details including available routes and namespaces.
     private func fetchApiRoot() async throws -> WpApiDetails {
         switch await self.loadSiteInfoTask.result {
         case .success(let details): return details
-        case .failure(let error):
+        case .failure:
             self.loadSiteInfoTask = newSiteInfoTask()
-            throw error
+            return try await self.loadSiteInfoTask.value
         }
     }
 
-    private func fetchActiveTheme() async throws -> ThemeWithEditContext? {
+    /// Fetches the site's active theme, using the cached value if available.
+    ///
+    /// If the cached task has failed, creates a new task and retries the fetch.
+    ///
+    /// - Returns: The currently active theme with edit context.
+    private func fetchActiveTheme() async throws -> ThemeWithEditContext {
         switch await self.loadActiveThemeTask.result {
         case .success(let theme): return theme
-        case .failure(let error):
+        case .failure:
             self.loadActiveThemeTask = newActiveThemeTask()
-            throw error
+            return try await self.loadActiveThemeTask.value
         }
     }
 
+    /// Fetches the current authenticated user, using the cached value if available.
+    ///
+    /// If the cached task has failed, creates a new task and retries the fetch.
+    ///
+    /// - Returns: The current user with edit context.
     private func fetchCurrentUser() async throws -> UserWithEditContext {
         switch await self.loadCurrentUserTask.result {
         case .success(let user): return user
-        case .failure(let error):
+        case .failure:
             self.loadCurrentUserTask = newCurrentUserTask()
-            throw error
+            return try await self.loadCurrentUserTask.value
         }
     }
 
-    private nonisolated func newSiteInfoTask() -> Task<WpApiDetails, Error> {
+    /// Creates a new task to fetch the site's API root details from the server.
+    ///
+    /// - Returns: A task that resolves to the site's API details.
+    private func newSiteInfoTask() -> Task<WpApiDetails, Error> {
         Task {
             try await api.apiRoot.get().data
         }
     }
 
-    private nonisolated func newCurrentUserTask() -> Task<UserWithEditContext, Error> {
+    /// Creates a new task to fetch the current authenticated user from the server.
+    ///
+    /// - Returns: A task that resolves to the current user with edit context.
+    private func newCurrentUserTask() -> Task<UserWithEditContext, Error> {
         Task {
             try await api.users.retrieveMeWithEditContext().data
         }
     }
 
-    private nonisolated func newActiveThemeTask() -> Task<ThemeWithEditContext?, Error> {
+    /// Creates a new task to fetch the site's active theme from the server.
+    ///
+    /// - Returns: A task that resolves to the active theme with edit context.
+    /// - Throws: ``ClientCacheError/noActiveTheme`` if no active theme is found.
+    private func newActiveThemeTask() -> Task<ThemeWithEditContext, Error> {
         Task {
-            try await api.themes.listWithEditContext(params: ThemeListParams(status: .active)).data.first
+            let params = ThemeListParams(status: .active)
+
+            // There should only ever be one active theme for a site
+            guard let theme = try await api.themes.listWithEditContext(params: params).data.first else {
+                throw ClientCacheError.noActiveTheme
+            }
+
+            return theme
         }
     }
 }
