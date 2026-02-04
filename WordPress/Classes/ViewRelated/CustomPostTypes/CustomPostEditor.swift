@@ -10,7 +10,6 @@ struct CustomPostEditor: UIViewControllerRepresentable {
     let post: AnyPostWithEditContext
     let details: PostTypeDetailsWithEditContext
     let blog: Blog
-    let success: () -> Void
 
     @Environment(\.dismiss)
     var dismiss: DismissAction
@@ -18,7 +17,6 @@ struct CustomPostEditor: UIViewControllerRepresentable {
     func makeUIViewController(context: Context) -> UIViewController {
         let viewController = CustomPostEditorViewController(blog: blog, client: client, post: post, details: details) {
             dismiss()
-            success()
         }
         return UINavigationController(rootViewController: viewController)
     }

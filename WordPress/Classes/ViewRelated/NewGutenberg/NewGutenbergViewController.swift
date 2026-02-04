@@ -29,6 +29,8 @@ class NewGutenbergViewController: PostGBKEditorViewController, PostEditor, Publi
         SupportCoordinator(controllerToShowFrom: topmostPresentedViewController, tag: .editorHelp)
     }()
 
+    let navigationBarManager: PostEditorNavigationBarManager
+
     lazy var mediaPickerHelper: GutenbergMediaPickerHelper = {
         return GutenbergMediaPickerHelper(context: self, post: post)
     }()
@@ -87,6 +89,7 @@ class NewGutenbergViewController: PostGBKEditorViewController, PostEditor, Publi
         replaceEditor: @escaping ReplaceEditorCallback,
     ) {
         self.post = post
+        self.navigationBarManager = PostEditorNavigationBarManager()
 
         self.replaceEditor = replaceEditor
         self.editorSession = PostEditorAnalyticsSession(editor: .gutenbergKit, post: post)
@@ -103,6 +106,8 @@ class NewGutenbergViewController: PostGBKEditorViewController, PostEditor, Publi
             status: postStatus,
             blog: post.blog
         )
+
+        self.navigationBarManager.delegate = self
     }
 
     required init?(coder aDecoder: NSCoder) {
@@ -114,6 +119,8 @@ class NewGutenbergViewController: PostGBKEditorViewController, PostEditor, Publi
     override func viewDidLoad() {
         super.viewDidLoad()
 
+        configureNavigationBar()
+        refreshInterface()
         createRevisionOfPost(loadAutosaveRevision: false)
 
         // TODO: reimplement
@@ -128,8 +135,47 @@ class NewGutenbergViewController: PostGBKEditorViewController, PostEditor, Publi
 
     // MARK: - Functions
 
-    func toggleEditingMode() {
-        editorViewController.isCodeEditorEnabled.toggle()
+    private func refreshInterface() {
+        navigationBarManager.reloadPublishButton()
+        navigationItem.rightBarButtonItems = self.post.status == .trash ? [] : navigationBarManager.rightBarButtonItems
+    }
+
+    private func configureNavigationBar() {
+        navigationController?.navigationBar.accessibilityIdentifier = "Gutenberg Editor Navigation Bar"
+        navigationItem.leftBarButtonItems = navigationBarManager.leftBarButtonItems
+
+        edgesForExtendedLayout = []
+        // TODO: make it work
+//        configureDefaultNavigationBarAppearance()
+
+        navigationBarManager.moreButton.menu = makeMoreMenu()
+        navigationBarManager.moreButton.showsMenuAsPrimaryAction = true
+    }
+
+    private func gutenbergDidRequestToggleRedoButton(_ isDisabled: Bool) {
+        DispatchQueue.main.async {
+            UIView.animate(withDuration: 0.2) {
+                self.navigationBarManager.redoButton.isUserInteractionEnabled = isDisabled ? false : true
+                self.navigationBarManager.redoButton.alpha = isDisabled ? 0.3 : 1.0
+            }
+        }
+    }
+
+    private func gutenbergDidRequestToggleUndoButton(_ isDisabled: Bool) {
+        DispatchQueue.main.async {
+            UIView.animate(withDuration: 0.2) {
+                self.navigationBarManager.undoButton.isUserInteractionEnabled = isDisabled ? false : true
+                self.navigationBarManager.undoButton.alpha = isDisabled ? 0.3 : 1.0
+            }
+        }
+    }
+
+    private func setNavigationItemsEnabled(_ enabled: Bool) {
+        navigationBarManager.closeButton.isEnabled = enabled
+        navigationBarManager.moreButton.isEnabled = enabled
+        navigationBarManager.publishButton.isEnabled = enabled
+        navigationBarManager.undoButton.isEnabled = enabled
+        navigationBarManager.redoButton.isEnabled = enabled
     }
 
     private func performAutoSave() {
@@ -155,17 +201,8 @@ class NewGutenbergViewController: PostGBKEditorViewController, PostEditor, Publi
         }
     }
 
-    func showEditorHelp() {
-        guard let url = URL(string: "https://wordpress.com/support/wordpress-editor/") else { return }
-        present(SFSafariViewController(url: url), animated: true)
-    }
-
     func showEditorError(_ error: Error) {
         // TODO: We should have a unified way to do this
-    }
-
-    func showFeedbackView() {
-        self.present(SubmitFeedbackViewController(source: "gutenberg_kit", feedbackPrefix: "Editor"), animated: true)
     }
 
 /*
@@ -185,6 +222,19 @@ extension NewGutenbergViewController: GutenbergKit.EditorViewControllerDelegate 
             // is still reflecting the actual startup time of the editor
             editorSession.start()
         }
+    }
+
+    override func editor(_ viewController: GutenbergKit.EditorViewController, didUpdateHistoryState state: GutenbergKit.EditorState) {
+        gutenbergDidRequestToggleRedoButton(!state.hasRedo)
+        gutenbergDidRequestToggleUndoButton(!state.hasUndo)
+    }
+
+    override func editor(_ viewController: GutenbergKit.EditorViewController, didOpenModalDialog dialogType: String) {
+        setNavigationItemsEnabled(false)
+    }
+
+    override func editor(_ viewController: GutenbergKit.EditorViewController, didCloseModalDialog dialogType: String) {
+        setNavigationItemsEnabled(true)
     }
 
     override func editor(_ viewContoller: GutenbergKit.EditorViewController, didEncounterCriticalError error: any Error) {
@@ -280,28 +330,43 @@ extension NewGutenbergViewController: GutenbergKit.EditorViewControllerDelegate 
 
         return WPMediaType(rawValue: mediaType)
     }
+}
 
-    // MARK: - PostEditorNavigationBarManagerDelegate
+// MARK: - PostEditorNavigationBarManagerDelegate
 
-    override var publishButtonText: String {
+extension NewGutenbergViewController: PostEditorNavigationBarManagerDelegate {
+
+    var publishButtonText: String {
         return postEditorStateContext.publishButtonText
     }
 
-    override var isPublishButtonEnabled: Bool {
+    var isPublishButtonEnabled: Bool {
          return postEditorStateContext.isPublishButtonEnabled
     }
 
-    override var uploadingButtonSize: CGSize {
+    var uploadingButtonSize: CGSize {
         return AztecPostViewController.Constants.uploadingButtonSize
     }
 
-    override func navigationBarManager(_ manager: PostEditorNavigationBarManager, closeWasPressed sender: UIButton) {
+    func navigationBarManager(_ manager: PostEditorNavigationBarManager, closeWasPressed sender: UIButton) {
         performAfterUpdatingContent { [self] in
             cancelEditing()
         }
     }
 
-    override func navigationBarManager(_ manager: PostEditorNavigationBarManager, publishButtonWasPressed sender: UIButton) {
+    func navigationBarManager(_ manager: PostEditorNavigationBarManager, undoWasPressed sender: UIButton) {
+        editorViewController.undo()
+    }
+
+    func navigationBarManager(_ manager: PostEditorNavigationBarManager, redoWasPressed sender: UIButton) {
+        editorViewController.redo()
+    }
+
+    func navigationBarManager(_ manager: PostEditorNavigationBarManager, moreWasPressed sender: UIButton) {
+        // Do nothing
+    }
+
+    func navigationBarManager(_ manager: PostEditorNavigationBarManager, publishButtonWasPressed sender: UIButton) {
         performAfterUpdatingContent { [self] in
             if editorHasContent {
                 handlePrimaryActionButtonTap()
@@ -309,6 +374,10 @@ extension NewGutenbergViewController: GutenbergKit.EditorViewControllerDelegate 
                 showAlertForEmptyPostPublish()
             }
         }
+    }
+
+    func navigationBarManager(_ manager: PostEditorNavigationBarManager, displayCancelMediaUploads sender: UIButton) {
+        // Do nothing
     }
 
     private func performAfterUpdatingContent(_ closure: @MainActor @escaping () -> Void) {
@@ -320,7 +389,7 @@ extension NewGutenbergViewController: GutenbergKit.EditorViewControllerDelegate 
         }
     }
 
-    override func makeMoreMenu() -> UIMenu {
+    func makeMoreMenu() -> UIMenu {
         UIMenu(title: "", image: nil, identifier: nil, options: [], children: [
             UIDeferredMenuElement.uncached { [weak self] callback in
                 // Common actions at the top so they are always in the same
@@ -493,11 +562,7 @@ extension NewGutenbergViewController {
     private func makeMoreMenuActions() -> [UIAction] {
         var actions: [UIAction] = []
 
-        let toggleModeTitle = editorViewController.isCodeEditorEnabled ? Strings.visualEditor : Strings.codeEditor
-        let toggleModeIconName = editorViewController.isCodeEditorEnabled ? "doc.richtext" : "curlybraces"
-        actions.append(UIAction(title: toggleModeTitle, image: UIImage(systemName: toggleModeIconName)) { [weak self] _ in
-            self?.toggleEditingMode()
-        })
+        actions.append(editorModeToggle())
 
         actions.append(UIAction(title: Strings.preview, image: UIImage(systemName: "safari")) { [weak self] _ in
             self?.displayPreview()
@@ -514,13 +579,9 @@ extension NewGutenbergViewController {
         actions.append(UIAction(title: settingsTitle, image: UIImage(systemName: "gearshape")) { [weak self] _ in
             self?.displayPostSettings()
         })
-        let helpTitle = JetpackFeaturesRemovalCoordinator.jetpackFeaturesEnabled() ? Strings.helpAndSupport : Strings.help
-        actions.append(UIAction(title: helpTitle, image: UIImage(systemName: "questionmark.circle")) { [weak self] _ in
-            self?.showEditorHelp()
-        })
-        actions.append(UIAction(title: Strings.sendFeedback, image: UIImage(systemName: "envelope")) { [weak self] _ in
-            self?.showFeedbackView()
-        })
+
+        actions.append(helpAction())
+        actions.append(feedbackAction())
         return actions
     }
 
@@ -552,15 +613,10 @@ extension NewGutenbergViewController {
 }
 
 private enum Strings {
-    static let codeEditor = NSLocalizedString("postEditor.moreMenu.codeEditor", value: "Code Editor", comment: "Post Editor / Button in the 'More' menu")
-    static let visualEditor = NSLocalizedString("postEditor.moreMenu.visualEditor", value: "Visual Editor", comment: "Post Editor / Button in the 'More' menu")
     static let preview = NSLocalizedString("postEditor.moreMenu.preview", value: "Preview", comment: "Post Editor / Button in the 'More' menu")
     static let revisions = NSLocalizedString("postEditor.moreMenu.revisions", value: "Revisions", comment: "Post Editor / Button in the 'More' menu")
     static let pageSettings = NSLocalizedString("postEditor.moreMenu.pageSettings", value: "Page Settings", comment: "Post Editor / Button in the 'More' menu")
     static let postSettings = NSLocalizedString("postEditor.moreMenu.postSettings", value: "Post Settings", comment: "Post Editor / Button in the 'More' menu")
-    static let helpAndSupport = NSLocalizedString("postEditor.moreMenu.helpAndSupport", value: "Help & Support", comment: "Post Editor / Button in the 'More' menu")
-    static let help = NSLocalizedString("postEditor.moreMenu.help", value: "Help", comment: "Post Editor / Button in the 'More' menu")
-    static let sendFeedback = NSLocalizedString("postEditor.moreMenu.sendFeedback", value: "Send Feedback", comment: "Post Editor / Button in the 'More' menu")
     static let saveDraft = NSLocalizedString("postEditor.moreMenu.saveDraft", value: "Save Draft", comment: "Post Editor / Button in the 'More' menu")
     static let contentStructure = NSLocalizedString("postEditor.moreMenu.contentStructure", value: "Blocks: %li, Words: %li, Characters: %li", comment: "Post Editor / 'More' menu details labels with 'Blocks', 'Words' and 'Characters' counts as parameters (in that order)")
 }

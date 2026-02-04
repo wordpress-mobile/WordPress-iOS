@@ -77,11 +77,7 @@ struct CustomPostMainView: View {
         .searchable(text: $searchText)
         .fullScreenCover(item: $selectedPost) { post in
             // TODO: Check if the post supports Gutenberg first?
-            CustomPostEditor(client: client, post: post, details: details, blog: blog) {
-                Task {
-                    _ = try await service.posts().refreshPost(postId: post.id, endpointType: endpoint)
-                }
-            }
+            CustomPostEditor(client: client, post: post, details: details, blog: blog)
         }
         .navigationTitle(details.labels.itemsList)
         .toolbar {

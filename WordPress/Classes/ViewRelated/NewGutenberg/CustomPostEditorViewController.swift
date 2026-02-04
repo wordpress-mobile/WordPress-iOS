@@ -10,21 +10,31 @@ import GutenbergKit
 
 class CustomPostEditorViewController: PostGBKEditorViewController {
     let client: WordPressClient
-    let post: AnyPostWithEditContext
+    var post: AnyPostWithEditContext
     let details: PostTypeDetailsWithEditContext
-    let success: () -> Void
+    let completion: () -> Void
+
+    private lazy var primarySaveButton = UIBarButtonItem(primaryAction: savePostAction())
+    private lazy var redoButton = UIBarButtonItem(systemItem: .redo, primaryAction: UIAction {
+        [weak editorViewController] _ in editorViewController?.redo() }
+    )
+    private lazy var undoButton = UIBarButtonItem(systemItem: .undo, primaryAction: UIAction {
+        [weak editorViewController] _ in editorViewController?.undo() }
+    )
 
     init(
         blog: Blog,
         client: WordPressClient,
         post: AnyPostWithEditContext,
         details: PostTypeDetailsWithEditContext,
-        success: @escaping () -> Void
+        completion: @escaping () -> Void
     ) {
+        precondition(post.id > 0, "No new post support yet")
+
         self.client = client
         self.post = post
         self.details = details
-        self.success = success
+        self.completion = completion
 
         let postTypeDetails = PostTypeDetails(
             postType: details.slug,
@@ -45,104 +55,138 @@ class CustomPostEditorViewController: PostGBKEditorViewController {
         fatalError("init(coder:) has not been implemented")
     }
 
-    override var publishButtonText: String {
-        return "Save"
+    override func viewDidLoad() {
+        super.viewDidLoad()
+
+        navigationItem.leftBarButtonItem = UIBarButtonItem(barButtonSystemItem: .close, target: self, action: #selector(closeButtonAction))
+        navigationItem.rightBarButtonItems = rightBarButtonItems()
+        redoButton.isEnabled = false
+        undoButton.isEnabled = false
     }
 
-    override var isPublishButtonEnabled: Bool {
-         return true
+    override func editor(_ viewController: GutenbergKit.EditorViewController, didUpdateHistoryState state: EditorState) {
+        redoButton.isEnabled = state.hasRedo
+        undoButton.isEnabled = state.hasUndo
     }
 
-    override var uploadingButtonSize: CGSize {
-        return AztecPostViewController.Constants.uploadingButtonSize
+    private func hasUnsavedChanges() async throws -> Bool {
+        let content = try await self.editorViewController.getTitleAndContent()
+        // We can't use `content.changed` here, because it means whether the content has changed since last `getTitleAndContent` call.
+        return content.title != post.title?.raw || content.content != post.content.raw
     }
+}
 
-    override func navigationBarManager(_ manager: PostEditorNavigationBarManager, closeWasPressed sender: UIButton) {
-        // TODO: Show alert
-        dismiss(animated: true)
-    }
+// MARK: - Navigation bar buttons
 
-    override func navigationBarManager(_ manager: PostEditorNavigationBarManager, publishButtonWasPressed sender: UIButton) {
+private extension CustomPostEditorViewController {
+    @objc func closeButtonAction() {
         Task {
-            await self.save()
+            await dismiss()
         }
     }
 
-    override func makeMoreMenu() -> UIMenu {
-        UIMenu(title: "", image: nil, identifier: nil, options: [], children: [
-            UIDeferredMenuElement.uncached { [weak self] callback in
-                // Common actions at the top so they are always in the same
-                // relative place.
-                callback(self?.makeMoreMenuMainSections() ?? [])
-            },
-            UIDeferredMenuElement.uncached { [weak self] callback in
-                // Dynamic actions at the bottom. The actions are loaded asynchronously
-                // because they need the latest post content from the editor
-                // to display the correct state.
-                Task {
-                    let data = try await self?.getTitleAndContent()
-                    if let self, let data {
-                        callback(self.makeMoreMenuAsyncSections(data: data))
+    func dismiss() async {
+        navigationController?.view.isUserInteractionEnabled = false
+        defer {
+            navigationController?.view.isUserInteractionEnabled = true
+        }
+
+        let changed: Bool
+        do {
+            changed = try await hasUnsavedChanges()
+        } catch {
+            DDLogError("Failed to get editor content: \(error)")
+            return
+        }
+
+        if changed {
+            let alert = UIAlertController(title: nil, message: nil, preferredStyle: .actionSheet)
+            alert.addCancelActionWithTitle(Strings.keepEditing)
+            alert.addDestructiveActionWithTitle(Strings.discardChanges) { [weak self] _ in
+                self?.navigationController?.dismiss(animated: true)
+            }
+            if post.status == .draft {
+                alert.addAction(UIAlertAction(title: Strings.saveDraft, style: .default, handler: { _ in
+                    Task {
+                        await self.save(publish: false)
                     }
+                }))
+            }
+
+            alert.popoverPresentationController?.barButtonItem = self.navigationItem.leftBarButtonItem
+            self.present(alert, animated: true)
+        } else {
+            self.navigationController?.dismiss(animated: true)
+        }
+    }
+
+    func rightBarButtonItems() -> [UIBarButtonItem] {
+        var children: [UIMenuElement] = [editorModeToggle(), helpAction(), feedbackAction()]
+        if post.status == .draft {
+            let menu = UIDeferredMenuElement.uncached { [weak self] resolve in
+                Task {
+                    let enabled = (try? await self?.hasUnsavedChanges()) == true
+                    let saveDraft = UIAction(
+                        title: Strings.saveDraft,
+                        image: UIImage(systemName: "doc"),
+                        attributes: enabled ? [] : [.disabled]) { [weak self] _ in
+                            Task {
+                                await self?.save(publish: false)
+                            }
+                        }
+                    resolve([saveDraft])
                 }
             }
-        ])
-    }
-
-    private func makeMoreMenuMainSections() -> [UIMenuElement] {
-        return  [
-            UIMenu(title: "", subtitle: "", options: .displayInline, children: makeMoreMenuActions()),
-        ]
-    }
-
-    private func makeMoreMenuAsyncSections(data: GutenbergKit.EditorViewController.EditorTitleAndContent) -> [UIMenuElement] {
-        [
-            // Dynamic actions at the bottom
-            UIMenu(title: "", subtitle: "", options: .displayInline, children: makeMoreMenuSecondaryActions(data: data))
-        ]
-    }
-
-    private func makeMoreMenuSecondaryActions(data: GutenbergKit.EditorViewController.EditorTitleAndContent) -> [UIAction] {
-        var actions: [UIAction] = []
-        if post.status == .draft {
-            actions.append(UIAction(title: Strings.saveDraft, image: UIImage(systemName: "doc"), attributes: (data.changed && data.title != "" && data.content != "") ? [] : [.disabled]) { [weak self] _ in
-                Task {
-                    await self?.save()
-                }
-            })
+            children.append(UIMenu(options: .displayInline, children: [menu]))
         }
-        return actions
+        let moreMenu = UIBarButtonItem(image: UIImage(systemName: "ellipsis"), menu: UIMenu(children: children))
+
+        if #available(iOS 26, *) {
+            return [primarySaveButton, separator(), moreMenu, redoButton, undoButton]
+        } else {
+            return [primarySaveButton, separator(), moreMenu, separator(), redoButton, separator(), undoButton]
+        }
     }
 
-    private func makeMoreMenuActions() -> [UIAction] {
-        var actions: [UIAction] = []
+    private func savePostAction() -> UIAction {
+        precondition(post.id > 0, "No new post support yet")
 
-        let toggleModeTitle = editorViewController.isCodeEditorEnabled ? Strings.visualEditor : Strings.codeEditor
-        let toggleModeIconName = editorViewController.isCodeEditorEnabled ? "doc.richtext" : "curlybraces"
-        actions.append(UIAction(title: toggleModeTitle, image: UIImage(systemName: toggleModeIconName)) { [weak self] _ in
-            self?.toggleEditingMode()
-        })
-
-        let helpTitle = JetpackFeaturesRemovalCoordinator.jetpackFeaturesEnabled() ? Strings.helpAndSupport : Strings.help
-        actions.append(UIAction(title: helpTitle, image: UIImage(systemName: "questionmark.circle")) { [weak self] _ in
-            self?.showEditorHelp()
-        })
-        actions.append(UIAction(title: Strings.sendFeedback, image: UIImage(systemName: "envelope")) { [weak self] _ in
-            self?.showFeedbackView()
-        })
-        return actions
+        if post.status == .draft {
+            return UIAction(title: "Publish") { [weak self] _ in
+                Task {
+                    await self?.save(publish: true)
+                }
+            }
+        } else {
+            return UIAction(title: "Update") { [weak self] _ in
+                Task {
+                    await self?.save(publish: false)
+                }
+            }
+        }
     }
 
-    private func save() async {
+    private func separator() -> UIBarButtonItem {
+        UIBarButtonItem(systemItem: .fixedSpace)
+    }
+}
+
+// MARK: - Update post
+
+private extension CustomPostEditorViewController {
+
+    func save(publish: Bool) async {
         SVProgressHUD.show()
 
         do {
             let data = try await editorViewController.getTitleAndContent()
 
-            try await update(title: data.title, content: data.content)
-            SVProgressHUD.showSuccess(withStatus: nil)
+            try await update(title: data.title, content: data.content, publish: publish)
+            dismissHUDWithSuccess()
 
-            success()
+            if publish {
+                completion()
+            }
         } catch {
             SVProgressHUD.showError(withStatus: error.localizedDescription)
         }
@@ -161,49 +205,38 @@ class CustomPostEditorViewController: PostGBKEditorViewController {
         return lastModified != post.modified
     }
 
-    private func update(title: String, content: String) async throws {
+    private func update(title: String, content: String, publish: Bool) async throws {
         // This is a simple way to avoid overwriting others' changes. We can further improve it
         // to align with the implementation in `PostRepository`.
         guard try await !hasBeenModified() else { throw PostUpdateError.conflicts }
 
+        let endpoint = details.toPostEndpointType()
         let hasTitle = details.supports.map[.title] == .bool(true)
         let params = PostUpdateParams(
+            status: publish ? .publish : nil,
             title: hasTitle ? title : nil,
             content: content,
             meta: nil
         )
-        _ = try await client.api
+        let post = try await client.api
             .posts
             .update(
-                postEndpointType: details.toPostEndpointType(),
+                postEndpointType: endpoint,
                 postId: post.id,
                 params: params
             )
-    }
+            .data
+        self.post = post
 
-    func getTitleAndContent() async throws -> GutenbergKit.EditorViewController.EditorTitleAndContent {
-        navigationController?.view.isUserInteractionEnabled = false
-        defer {
-            navigationController?.view.isUserInteractionEnabled = true
+        // Refresh post in the background. This ensures the post list is up-to-date with the new changes.
+        Task {
+            try await client.service?.posts().refreshPost(postId: post.id, endpointType: endpoint)
         }
-
-        return try await editorViewController.getTitleAndContent()
-    }
-}
-
-// TODO: Copied
-private extension CustomPostEditorViewController {
-    func showEditorHelp() {
-        guard let url = URL(string: "https://wordpress.com/support/wordpress-editor/") else { return }
-        present(SFSafariViewController(url: url), animated: true)
     }
 
-    func showFeedbackView() {
-        self.present(SubmitFeedbackViewController(source: "gutenberg_kit", feedbackPrefix: "Editor"), animated: true)
-    }
-
-    func toggleEditingMode() {
-        editorViewController.isCodeEditorEnabled.toggle()
+    private func dismissHUDWithSuccess() {
+        SVProgressHUD.showSuccess(withStatus: nil)
+        SVProgressHUD.dismiss(withDelay: 1)
     }
 }
 
@@ -222,16 +255,7 @@ private enum Strings {
         comment: "Error message shown when the post was modified by another user while editing"
     )
 
-    // TODO: Copied
-    static let codeEditor = NSLocalizedString("postEditor.moreMenu.codeEditor", value: "Code Editor", comment: "Post Editor / Button in the 'More' menu")
-    static let visualEditor = NSLocalizedString("postEditor.moreMenu.visualEditor", value: "Visual Editor", comment: "Post Editor / Button in the 'More' menu")
-    static let preview = NSLocalizedString("postEditor.moreMenu.preview", value: "Preview", comment: "Post Editor / Button in the 'More' menu")
-    static let revisions = NSLocalizedString("postEditor.moreMenu.revisions", value: "Revisions", comment: "Post Editor / Button in the 'More' menu")
-    static let pageSettings = NSLocalizedString("postEditor.moreMenu.pageSettings", value: "Page Settings", comment: "Post Editor / Button in the 'More' menu")
-    static let postSettings = NSLocalizedString("postEditor.moreMenu.postSettings", value: "Post Settings", comment: "Post Editor / Button in the 'More' menu")
-    static let helpAndSupport = NSLocalizedString("postEditor.moreMenu.helpAndSupport", value: "Help & Support", comment: "Post Editor / Button in the 'More' menu")
-    static let help = NSLocalizedString("postEditor.moreMenu.help", value: "Help", comment: "Post Editor / Button in the 'More' menu")
-    static let sendFeedback = NSLocalizedString("postEditor.moreMenu.sendFeedback", value: "Send Feedback", comment: "Post Editor / Button in the 'More' menu")
     static let saveDraft = NSLocalizedString("postEditor.moreMenu.saveDraft", value: "Save Draft", comment: "Post Editor / Button in the 'More' menu")
-    static let contentStructure = NSLocalizedString("postEditor.moreMenu.contentStructure", value: "Blocks: %li, Words: %li, Characters: %li", comment: "Post Editor / 'More' menu details labels with 'Blocks', 'Words' and 'Characters' counts as parameters (in that order)")
+    static let keepEditing = NSLocalizedString("postEditor.closeConfirmationAlert.keepEditing", value: "Keep Editing", comment: "Button to keep the changes in an alert confirming discaring changes")
+    static let discardChanges = NSLocalizedString("postEditor.closeConfirmationAlert.discardChanges", value: "Discard Changes", comment: "Button in an alert confirming discaring changes")
 }
