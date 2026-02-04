@@ -106,9 +106,7 @@ struct StandaloneChartCard: View {
 
     private var chartContentView: some View {
         Group {
-            if dateRange.dateInterval.preferredGranularity < configuration.minimumGranularity {
-                loadingErrorView(with: Strings.Chart.hourlyDataUnavailable)
-            } else if let chartData {
+            if let chartData {
                 if chartData.isEmptyOrZero {
                     loadingErrorView(with: Strings.Chart.empty)
                 } else {
@@ -206,7 +204,7 @@ struct StandaloneChartCard: View {
                 HStack(spacing: 6) {
                     Image(systemName: "calendar")
                         .font(.subheadline)
-                    Text(context.formatters.dateRange.string(from: dateRange.dateInterval))
+                    Text(context.formatters.dateRange.string(from: dateRange))
                         .font(.subheadline.weight(.medium))
                 }
                 .foregroundColor(.primary)

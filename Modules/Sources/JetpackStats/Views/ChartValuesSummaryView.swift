@@ -22,7 +22,8 @@ struct ChartValuesSummaryView: View {
     private var standard: some View {
         HStack(alignment: .center, spacing: 16) {
             Text(trend.formattedCurrentValue)
-                .font(Font.make(.recoleta, textStyle: .title, weight: .medium))
+                .font(Constants.Typography.mediumDisplayFont)
+                .kerning(Constants.Typography.largeDisplayKerning)
                 .foregroundColor(.primary)
                 .contentTransition(.numericText())
 

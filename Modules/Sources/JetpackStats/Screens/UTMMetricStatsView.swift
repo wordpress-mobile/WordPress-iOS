@@ -81,14 +81,6 @@ struct UTMMetricStatsView: View {
     private var headerView: some View {
         VStack(spacing: Constants.step3) {
             HStack(spacing: Constants.step3) {
-                // UTM Icon
-                Image(systemName: "chart.line.uptrend.xyaxis")
-                    .font(.system(size: 40))
-                    .foregroundColor(.secondary)
-                    .frame(width: 60, height: 60)
-                    .background(Color.secondary.opacity(0.1))
-                    .clipShape(Circle())
-
                 // Label and metrics
                 VStack(alignment: .leading, spacing: Constants.step1) {
                     Text(utmMetric.label)
@@ -127,7 +119,7 @@ struct UTMMetricStatsView: View {
 
             HStack(spacing: Constants.step2) {
                 Text(StatsValueFormatter.formatNumber(current, onlyLarge: true))
-                    .font(Font.make(.recoleta, textStyle: .title2, weight: .medium))
+                    .font(Constants.Typography.smallDisplayFont)
                     .foregroundColor(.primary)
                     .contentTransition(.numericText())
 
