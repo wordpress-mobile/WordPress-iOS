@@ -534,7 +534,7 @@ NS_ENUM(NSInteger, SiteSettingsJetpack) {
 
 - (void)configureThemeStylesSelectorCell
 {
-    if([GutenbergSettings isThemeStylesSupportedForBlog: self.blog]){
+    if ([GutenbergSettings isThemeStylesSupportedForBlog: self.blog]){
         _themeStylesSelectorCell.flipSwitch.enabled = true;
         _themeStylesSelectorCell.textLabel.textColor = UIColor.labelColor;
         [self.themeStylesSelectorCell setOn:[GutenbergSettings isThemeStylesEnabledForBlog:self.blog]];
