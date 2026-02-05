@@ -245,7 +245,7 @@ platform :ios do
 
     # Translator comments for App Store metadata
     screenshot_comment = <<~COMMENT.chomp
-      translators: This is a promo message that will be attached on top of a screenshot in the App Store.
+      translators: This is a promo text that will be drawn on the promotional screenshots we use in the App Store.
       No specified characters limit here, but try to keep as short as the source one.
     COMMENT
 
@@ -311,7 +311,7 @@ platform :ios do
     custom_metadata_folder = File.join(PROJECT_ROOT_FOLDER, 'fastlane', 'appstoreres', 'jetpack_metadata', 'source')
     
     screenshot_comment = <<~COMMENT.chomp
-      translators: This is a promo message that will be attached on top of a screenshot in the App Store.
+      translators: This is a promo text that will be drawn on the promotional screenshots we use in the App Store.
       No specified characters limit here, but try to keep as short as the source one.
     COMMENT
 
