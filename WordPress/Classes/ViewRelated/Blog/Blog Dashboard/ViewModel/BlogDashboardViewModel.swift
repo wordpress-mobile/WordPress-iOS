@@ -146,10 +146,6 @@ final class BlogDashboardViewModel {
         self.loadCards()
     }
 
-    func clearEditorCache() async {
-        await EditorDependencyManager.shared.invalidate(for: TaggedManagedObjectID(self.blog))
-    }
-
     /// Call the API to return cards for the current blog
     func loadCards(completion: (([DashboardCardModel]) -> Void)? = nil) {
         viewController?.showLoading()

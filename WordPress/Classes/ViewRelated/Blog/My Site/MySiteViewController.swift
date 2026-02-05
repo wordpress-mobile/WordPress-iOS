@@ -410,9 +410,10 @@ final class MySiteViewController: UIViewController, UIScrollViewDelegate, NoSite
             return
         }
 
-        // Refresh editor capabilities
+        // Refresh editor capabilities and invalidate editor cache
         if RemoteFeatureFlag.newGutenberg.enabled() {
             EditorDependencyManager.shared.fetchEditorCapabilities(for: blog)
+            EditorDependencyManager.shared.invalidate(for: blog) {}
         }
 
         switch currentSection {

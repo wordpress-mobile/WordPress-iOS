@@ -122,11 +122,8 @@ final class BlogDashboardViewController: UIViewController {
     }
 
     func pulledToRefresh(completion: (() -> Void)? = nil) {
-        viewModel.loadCards { [weak self] _ in
-            Task { @MainActor in
-                await self?.viewModel.clearEditorCache()
-                completion?()
-            }
+        viewModel.loadCards { _ in
+            completion?()
         }
     }
 
