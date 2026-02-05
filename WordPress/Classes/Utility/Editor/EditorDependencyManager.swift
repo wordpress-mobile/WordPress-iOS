@@ -1,3 +1,4 @@
+import CoreData
 import Foundation
 import GutenbergKit
 import os
@@ -37,6 +38,9 @@ final class EditorDependencyManager: Sendable {
         var capabilityTasks: [TaggedManagedObjectID<Blog>: Task<Void, Never>] = [:]
         var featureFlagObserver: AnyCancellable?
     }
+
+    /// Tracks the last blog for which WebKit warmup was performed.
+    private let lastWarmedUpBlogID = LockingValue<NSManagedObjectID?>(nil)
 
     private struct CacheKey: Hashable, Sendable {
         let blogID: TaggedManagedObjectID<Blog>
@@ -218,6 +222,39 @@ final class EditorDependencyManager: Sendable {
         for blogID in blogIDs {
             await invalidate(for: blogID)
         }
+    }
+
+    /// Performs complete editor warmup for the given blog.
+    ///
+    /// This method:
+    /// 1. Performs WebKit warmup (once per blog) - pre-compiles HTML/JS (~100-200ms savings)
+    /// 2. Prefetches editor dependencies - fetches settings, assets, preload list
+    ///
+    /// Safe to call multiple times - internally handles deduplication.
+    @MainActor
+    func warmUpEditor(for blog: Blog) {
+        guard RemoteFeatureFlag.newGutenberg.enabled() else {
+            return
+        }
+
+        // WebKit warmup - only needed once per blog
+        let blogID = blog.objectID
+        let needsWarmup = lastWarmedUpBlogID.withLock { currentID in
+            if blogID != currentID {
+                currentID = blogID
+                return true
+            }
+            return false
+        }
+
+        if needsWarmup {
+            DDLogInfo("EditorDependencyManager: Warming up editor for blog \(blog.logDescription())")
+            let configuration = EditorConfiguration(blog: blog, postType: .post)
+            GutenbergKit.EditorViewController.warmup(configuration: configuration)
+        }
+
+        // Data prefetch - always call to detect flag changes
+        prefetchDependencies(for: blog, postType: .post)
     }
 
     /// Query the server for its editor capabilities, and update the local editor settings store with the result.
