@@ -5,6 +5,7 @@ import WordPressShared
 import WordPressSharedObjC
 import WordPressUI
 import Support
+import SwiftUI
 
 private struct Section {
     let title: String?
@@ -507,13 +508,49 @@ private extension BlogDetailsTableViewModel {
     func configureXMLRPCDisabledCell(tableView: UITableView) -> UITableViewCell {
         guard let cell = tableView.dequeueReusableCell(
             withIdentifier: CellIdentifiers.xmlrpcDisabled
-        ) as? XMLRPCDisabledCell,
-              let viewController else {
+        ) as? XMLRPCDisabledCell else {
             return UITableViewCell()
         }
 
-        cell.configure(with: viewController)
+        cell.onTapped = { [weak self] in
+            self?.presentXMLRPCDisabledModal()
+        }
         return cell
+    }
+
+    private func presentXMLRPCDisabledModal() {
+        let content = XMLRPCDisabledModalView(
+            onConnectJetpack: { [weak self] in
+                self?.viewController?.dismiss(animated: true) {
+                    self?.presentJetpackConnection()
+                }
+            },
+            onGoToWPAdmin: { [weak viewController] in
+                viewController?.dismiss(animated: true) {
+                    viewController?.showViewAdmin()
+                }
+            }
+        )
+
+        viewController?.present(UIHostingController(rootView: content), animated: true)
+    }
+
+    private func presentJetpackConnection() {
+        let controller = UIViewController.jetpackConnection(blog: blog)
+        controller.promptType = .bypassXMLRPC
+        controller.completionBlock = { [weak controller, weak self] in
+            controller?.dismiss(animated: true) {
+                self?.viewController?.refresh()
+            }
+        }
+        controller.navigationItem.leftBarButtonItem = UIBarButtonItem(
+            systemItem: .close,
+            primaryAction: UIAction { [weak controller] _ in
+                controller?.dismiss(animated: true)
+            }
+        )
+        let nav = UINavigationController(rootViewController: controller)
+        viewController?.present(nav, animated: true)
     }
 }
 

@@ -4,7 +4,7 @@ import SwiftUI
 import WordPressUI
 
 class XMLRPCDisabledCell: UITableViewCell {
-    private weak var presenterViewController: UIViewController?
+    var onTapped: (() -> Void)?
 
     private lazy var cardView: UIView = {
         let view = UIView()
@@ -18,7 +18,7 @@ class XMLRPCDisabledCell: UITableViewCell {
         view.addSubview(content)
         view.pinSubviewToAllEdges(content)
 
-        view.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(showAlert)))
+        view.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(cardTapped)))
         return view
     }()
 
@@ -36,26 +36,8 @@ class XMLRPCDisabledCell: UITableViewCell {
         contentView.pinSubviewToAllEdges(cardView)
     }
 
-    func configure(with viewController: BlogDetailsViewController) {
-        presenterViewController = viewController
-    }
-
-    @objc private func showAlert() {
-        guard let presenter = presenterViewController else {
-            return
-        }
-
-        let alert = AlertView {
-            AlertHeaderView(title: Strings.alertTitle, description: Strings.alertMessage)
-        } content: {
-            Image(systemName: "exclamationmark.triangle")
-                .font(.system(size: 50))
-                .foregroundStyle(.orange)
-        } actions: {
-            AlertDismissButton()
-        }
-
-        alert.present(in: presenter)
+    @objc private func cardTapped() {
+        onTapped?()
     }
 }
 
@@ -95,17 +77,5 @@ private enum Strings {
         "blogDetails.xmlrpcDisabled.card.subtitle",
         value: "Some features may be limited",
         comment: "Subtitle for the XML-RPC disabled card on blog details"
-    )
-
-    static let alertTitle = NSLocalizedString(
-        "blogDetails.xmlrpcDisabled.alert.title",
-        value: "XML-RPC Disabled",
-        comment: "Alert title for XML-RPC disabled"
-    )
-
-    static let alertMessage = NSLocalizedString(
-        "blogDetails.xmlrpcDisabled.alert.message",
-        value: "XML-RPC is currently unavailable on your site. The app is transitioning to WordPress REST API, but some features still require XML-RPC. You may experience limited functionality until this transition is complete.",
-        comment: "Alert message explaining that XML-RPC is disabled on the site and some features may be limited"
     )
 }

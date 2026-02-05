@@ -153,12 +153,22 @@ public class BlogDetailsViewController: UIViewController {
 
     public func pulledToRefresh(with refreshControl: UIRefreshControl, onCompletion completion: (() -> Void)?) {
         let completionBlock = completion ?? {}
+        checkXMLRPCStatus()
         updateTableView { [weak refreshControl] in
             DispatchQueue.main.async {
                 refreshControl?.endRefreshing()
                 completionBlock()
             }
         }
+    }
+
+    public func refresh() {
+        guard let refreshControl = tableView?.refreshControl else {
+            wpAssertionFailure("Can't get the UIRefreshControl instance")
+            return
+        }
+        refreshControl.beginRefreshing()
+        pulledToRefreshTriggered(refreshControl)
     }
 
     private func preloadBlogData() {
