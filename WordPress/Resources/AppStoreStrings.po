@@ -1,6 +1,6 @@
 msgid ""
 msgstr ""
-"PO-Revision-Date: 2026-02-04 21:23+0100\n"
+"PO-Revision-Date: 2026-02-05 15:07+0100\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -45,7 +45,7 @@ msgctxt "app_store_name"
 msgid "WordPress – Website Builder"
 msgstr ""
 
-#. translators: This is a promo message that will be attached on top of a screenshot in the App Store.
+#. translators: This is a promo text that will be drawn on the promotional screenshots we use in the App Store.
 #. No specified characters limit here, but try to keep as short as the source one.
 msgctxt "app_store_screenshot-1"
 msgid ""
@@ -54,7 +54,7 @@ msgid ""
 "builder"
 msgstr ""
 
-#. translators: This is a promo message that will be attached on top of a screenshot in the App Store.
+#. translators: This is a promo text that will be drawn on the promotional screenshots we use in the App Store.
 #. No specified characters limit here, but try to keep as short as the source one.
 msgctxt "app_store_screenshot-2"
 msgid ""
@@ -62,7 +62,7 @@ msgid ""
 "start a blog"
 msgstr ""
 
-#. translators: This is a promo message that will be attached on top of a screenshot in the App Store.
+#. translators: This is a promo text that will be drawn on the promotional screenshots we use in the App Store.
 #. No specified characters limit here, but try to keep as short as the source one.
 msgctxt "app_store_screenshot-3"
 msgid ""
@@ -70,7 +70,7 @@ msgid ""
 "new reads"
 msgstr ""
 
-#. translators: This is a promo message that will be attached on top of a screenshot in the App Store.
+#. translators: This is a promo text that will be drawn on the promotional screenshots we use in the App Store.
 #. No specified characters limit here, but try to keep as short as the source one.
 msgctxt "app_store_screenshot-4"
 msgid ""
@@ -78,7 +78,7 @@ msgid ""
 "audience"
 msgstr ""
 
-#. translators: This is a promo message that will be attached on top of a screenshot in the App Store.
+#. translators: This is a promo text that will be drawn on the promotional screenshots we use in the App Store.
 #. No specified characters limit here, but try to keep as short as the source one.
 msgctxt "app_store_screenshot-5"
 msgid ""
@@ -86,7 +86,7 @@ msgid ""
 "your site"
 msgstr ""
 
-#. translators: This is a promo message that will be attached on top of a screenshot in the App Store.
+#. translators: This is a promo text that will be drawn on the promotional screenshots we use in the App Store.
 #. No specified characters limit here, but try to keep as short as the source one.
 msgctxt "app_store_screenshot-6"
 msgid ""
@@ -94,7 +94,7 @@ msgid ""
 "real time"
 msgstr ""
 
-#. translators: This is a promo message that will be attached on top of a screenshot in the App Store.
+#. translators: This is a promo text that will be drawn on the promotional screenshots we use in the App Store.
 #. No specified characters limit here, but try to keep as short as the source one.
 msgctxt "app_store_screenshot-7"
 msgid ""
