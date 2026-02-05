@@ -1,9 +1,9 @@
-We made a technical update that reduces the size of your app by about 6 MB. What will you do with all that newfound space?
+ביצענו עדכון טכני שמפחית את גודל האפליקציה שלך בכ-6 מגה-בייט. מה תעשה עם כל השטח החדש שנמצא?
 
-It’s easier to find, see, and change the visibility settings of existing posts. The “Done” button also won’t disappear when you set the password while publishing a password-protected post.
+קל יותר למצוא, לראות ולשנות את הגדרות הנראות של פוסטים קיימים. כפתור "סיום" גם לא ייעלם כשאתה מגדיר את הסיסמה בעת פרסום פוסט המוגן בסיסמה.
 
-Looking good: we updated shortcut icons and illustrations to better match the rest of the app, as well as fit better with your device.
+נראה טוב: עדכנו את סמלי הקיצור והאיורים כדי שיתאימו טוב יותר לשאר האפליקציה, וגם למכשיר שלך.
 
-We fixed an issue so post previews now work properly for certain sites using Business and Commerce plans.
+תיקנו בעיה כך שתצוגות מקדימות של פוסטים פועלות כעת כראוי עבור אתרים מסוימים המשתמשים בתוכניות Business ו-Commerce.
 
-When you add a new self-hosted site, you’ll be asked for your app password to authenticate. Keep it secret. לאבטח אותו
+כשאתה מוסיף אתר חדש המאוחסן בעצמך, תתבקש להזין את סיסמת האפליקציה שלך לצורך אימות. שמור את זה בסוד. לאבטח אותו.

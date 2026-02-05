@@ -2,25 +2,17 @@ import SwiftUI
 
 struct CustomDateRangePicker: View {
     @Binding var dateRange: StatsDateRange
-
-    @State private var startDate: Date
-    @State private var endDate: Date
+    @StateObject private var viewModel: CustomDateRangePickerViewModel
 
     @Environment(\.dismiss) private var dismiss
     @Environment(\.context) private var context
 
     init(dateRange: Binding<StatsDateRange>) {
         self._dateRange = dateRange
-        let interval = dateRange.wrappedValue.dateInterval
-        self._startDate = State(initialValue: interval.start)
-        // The app uses inclusive date periods (e.g., Jan 1 00:00 to Jan 2 00:00 represents all of Jan 1).
-        // For DatePicker, we subtract 1 second to ensure the end date shows as the last day of the range
-        // (e.g., Jan 1 instead of Jan 2). The time component is irrelevant since we only pick dates.
-        self._endDate = State(initialValue: interval.end.addingTimeInterval(-1))
-    }
-
-    private var calendar: Calendar {
-        context.calendar
+        self._viewModel = StateObject(wrappedValue: CustomDateRangePickerViewModel(
+            dateRange: dateRange.wrappedValue,
+            calendar: dateRange.wrappedValue.calendar
+        ))
     }
 
     var body: some View {
@@ -72,20 +64,15 @@ struct CustomDateRangePicker: View {
     // MARK: - Actions
 
     private func buttonApplyTapped() {
-        let interval = DateInterval(start: startDate, end: {
-            let date = calendar.startOfDay(for: endDate)
-            return calendar.date(byAdding: .day, value: 1, to: date) ?? date
-        }())
-        let component = calendar.determineNavigationComponent(for: interval) ?? .day
-        dateRange = StatsDateRange(interval: interval, component: component, comparison: dateRange.comparison, calendar: calendar)
+        dateRange = viewModel.createStatsDateRange()
         UIImpactFeedbackGenerator(style: .light).impactOccurred()
 
         // Track custom date range selection
         let dateFormatter = ISO8601DateFormatter()
         dateFormatter.formatOptions = [.withFullDate]
         context.tracker?.send(.customDateRangeSelected, properties: [
-            "start_date": dateFormatter.string(from: startDate),
-            "end_date": dateFormatter.string(from: endDate)
+            "start_date": dateFormatter.string(from: viewModel.startDate),
+            "end_date": dateFormatter.string(from: viewModel.endDate)
         ])
 
         dismiss()
@@ -95,43 +82,22 @@ struct CustomDateRangePicker: View {
 
     private var currentSelectionHeader: some View {
         VStack(spacing: 5) {
-            Text(formattedDateCount)
+            Text(viewModel.formattedDateCount)
                 .font(.subheadline.weight(.medium))
                 .foregroundStyle(.secondary)
                 .contentTransition(.numericText())
-                .animation(.spring, value: formattedDateCount)
+                .animation(.spring, value: viewModel.formattedDateCount)
             TimezoneInfoView()
         }
     }
 
-    private var formattedDateCount: String {
-        let formatter = DateComponentsFormatter()
-        formatter.allowedUnits = [.day]
-        formatter.unitsStyle = .full
-        formatter.calendar = calendar
-        formatter.maximumUnitCount = 1
-        return formatter.string(from: startDate, to: endDate.addingTimeInterval(1)) ?? ""
-    }
-
     private var dateSelectionSection: some View {
         HStack(alignment: .bottom, spacing: 0) {
-            datePickerColumn(label: Strings.DatePicker.from.uppercased(), selection: $startDate, alignment: .leading)
-                .onChange(of: startDate) { oldValue, newValue in
-                    // If start date is after end date, adjust end date to be one day after start
-                    if newValue > endDate {
-                        endDate = calendar.date(byAdding: .day, value: 1, to: newValue) ?? newValue
-                    }
-                }
+            datePickerColumn(label: Strings.DatePicker.from.uppercased(), selection: $viewModel.startDate, alignment: .leading)
 
             Spacer(minLength: 32)
 
-            datePickerColumn(label: Strings.DatePicker.to.uppercased(), selection: $endDate, alignment: .trailing)
-                .onChange(of: endDate) { oldValue, newValue in
-                    // If end date is before start date, adjust start date to be one day before end
-                    if newValue < startDate {
-                        startDate = calendar.date(byAdding: .day, value: -1, to: newValue) ?? newValue
-                    }
-                }
+            datePickerColumn(label: Strings.DatePicker.to.uppercased(), selection: $viewModel.endDate, alignment: .trailing)
         }
         .overlay(alignment: .bottom) {
             Image(systemName: "arrow.forward")
@@ -176,12 +142,12 @@ struct CustomDateRangePicker: View {
     }
 
     private func makeQuickPeriod(named name: String, component: Calendar.Component) -> QuickPeriod? {
-        guard let interval = calendar.dateInterval(of: component, for: startDate) else {
+        guard let interval = context.calendar.dateInterval(of: component, for: viewModel.startDate) else {
             return nil
         }
         return QuickPeriod(
             name: name,
-            action: { selectQuickPeriod(component) },
+            action: { viewModel.selectQuickPeriod(component) },
             datePreview: context.formatters.dateRange.string(from: interval)
         )
     }
@@ -203,15 +169,6 @@ struct CustomDateRangePicker: View {
         }
     }
 
-    private func selectQuickPeriod(_ component: Calendar.Component) {
-        guard let interval = calendar.dateInterval(of: component, for: startDate) else {
-            assertionFailure("invalid interval")
-            return
-        }
-        startDate = interval.start
-        // Same adjustment as in init: subtract 1 second for DatePicker display
-        endDate = interval.end.addingTimeInterval(-1)
-    }
 }
 
 private struct QuickPeriodButtonView: View {

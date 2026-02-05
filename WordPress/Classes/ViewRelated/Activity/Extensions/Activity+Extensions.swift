@@ -26,7 +26,7 @@ extension Activity {
         case ActivityStatus.error:
             return UIAppColor.error
         case ActivityStatus.success:
-            return UIAppColor.success
+            return UIAppColor.neutral(.shade20)
         case ActivityStatus.warning:
             return UIAppColor.warning
         default:

@@ -161,9 +161,9 @@ struct StatsDateRangeTests {
             calendar: calendar
         )
 
-        // THEN - 1 data point: show 7 periods centered (like web version)
-        #expect(domain.lowerBound == Date("2023-01-01T00:00:00Z")) // 2026 - 3 years
-        #expect(domain.upperBound == Date("2030-01-01T00:00:00Z"))  // 2026 + 4 years
+        // THEN - Domain extended to include the entire year containing the data point
+        #expect(domain.lowerBound == Date("2026-01-01T00:00:00Z")) // Start of 2026
+        #expect(domain.upperBound == Date("2027-01-01T00:00:00Z"))  // Start of 2027
     }
 
     @Test
@@ -185,9 +185,9 @@ struct StatsDateRangeTests {
             calendar: calendar
         )
 
-        // THEN - 1 data point: show 7 periods centered (like web version)
-        #expect(domain.lowerBound == Date("2025-11-01T00:00:00Z")) // Feb - 3 months = Nov 2025
-        #expect(domain.upperBound == Date("2026-06-01T00:00:00Z"))  // Feb + 4 months = Jun
+        // THEN - Data point within interval, domain unchanged
+        #expect(domain.lowerBound == Date("2026-01-27T00:00:00Z"))
+        #expect(domain.upperBound == Date("2026-02-03T00:00:00Z"))
     }
 
     @Test
@@ -283,8 +283,8 @@ struct StatsDateRangeTests {
             calendar: calendar
         )
 
-        // THEN - Standard case: use requested interval (data will be clipped)
-        #expect(domain.lowerBound == weekStart)
-        #expect(domain.upperBound == weekEnd)
+        // THEN - Domain extended to include all data points, aligned to day boundaries
+        #expect(domain.lowerBound == Date("2026-01-10T00:00:00Z")) // Start of Jan 10
+        #expect(domain.upperBound == Date("2026-01-26T00:00:00Z"))  // Start of Jan 26 (day after Jan 25)
     }
 }

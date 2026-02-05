@@ -136,7 +136,7 @@ enum Strings {
     }
 
     enum DatePicker {
-        static let customRange = AppLocalizedString("jetpackStats.datePicker.customRange", value: "Custom Range", comment: "Title for custom date range picker")
+        static let customRange = AppLocalizedString("jetpackStats.datePicker.selectRange", value: "Select Range", comment: "Title for custom date range picker")
         static let customRangeMenu = AppLocalizedString("jetpackStats.datePicker.customRangeMenu", value: "Custom Range…", comment: "Menu item for custom date range picker")
         static let morePeriods = AppLocalizedString("jetpackStats.datePicker.more", value: "More…", comment: "Menu item for more date period options")
         static let from = AppLocalizedString("jetpackStats.datePicker.from", value: "From", comment: "From date label")
