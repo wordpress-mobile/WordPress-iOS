@@ -362,6 +362,11 @@ NS_ENUM(NSInteger, SiteSettingsJetpack) {
         _themeStylesSelectorCell.onChange = ^(BOOL value){
             [GutenbergSettings setThemeStylesEnabled:value forBlog:blog];
         };
+
+        // Default to greyed-out, only make the control interactive if theme styles are supported
+        _themeStylesSelectorCell.flipSwitch.enabled = false;
+        _themeStylesSelectorCell.textLabel.textColor = UIColor.lightGrayColor;
+        [self.themeStylesSelectorCell setOn:false];
     }
     return _themeStylesSelectorCell;
 }
@@ -529,7 +534,11 @@ NS_ENUM(NSInteger, SiteSettingsJetpack) {
 
 - (void)configureThemeStylesSelectorCell
 {
-    [self.themeStylesSelectorCell setOn:[GutenbergSettings isThemeStylesEnabledForBlog:self.blog]];
+    if ([GutenbergSettings isThemeStylesSupportedForBlog: self.blog]){
+        _themeStylesSelectorCell.flipSwitch.enabled = true;
+        _themeStylesSelectorCell.textLabel.textColor = UIColor.labelColor;
+        [self.themeStylesSelectorCell setOn:[GutenbergSettings isThemeStylesEnabledForBlog:self.blog]];
+    }
 }
 
 - (void)configureDefaultCategoryCell
@@ -1025,6 +1034,7 @@ NS_ENUM(NSInteger, SiteSettingsJetpack) {
         [weakSelf.refreshControl endRefreshing];
     }];
 
+    [self swiftRefreshSettings];
 }
 
 #pragma mark - Authentication methods
@@ -1224,3 +1234,4 @@ NS_ENUM(NSInteger, SiteSettingsJetpack) {
 }
 
 @end
+
