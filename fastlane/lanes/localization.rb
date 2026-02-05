@@ -309,7 +309,7 @@ platform :ios do
   lane :update_jetpack_appstore_strings do |version: release_version_current, skip_commit: false|
     source_metadata_folder = File.join(PROJECT_ROOT_FOLDER, 'fastlane', 'jetpack_metadata', 'default')
     custom_metadata_folder = File.join(PROJECT_ROOT_FOLDER, 'fastlane', 'appstoreres', 'jetpack_metadata', 'source')
-    
+
     screenshot_comment = <<~COMMENT.chomp
       translators: This is a promo text that will be drawn on the promotional screenshots we use in the App Store.
       No specified characters limit here, but try to keep as short as the source one.
