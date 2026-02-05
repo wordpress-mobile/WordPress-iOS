@@ -307,47 +307,41 @@ platform :ios do
   # @param [Boolean] skip_commit If true, skips committing changes to git.
   #
   lane :update_jetpack_appstore_strings do |version: release_version_current, skip_commit: false|
-    # Commented out to silence RuboCop about unused vars.
-    # See details below for why that was done and why we should keep the definition in the codebase for future use.
-    # source_metadata_folder = File.join(PROJECT_ROOT_FOLDER, 'fastlane', 'jetpack_metadata', 'default')
-    # custom_metadata_folder = File.join(PROJECT_ROOT_FOLDER, 'fastlane', 'appstoreres', 'jetpack_metadata', 'source')
-    #
-    # screenshot_comment = <<~COMMENT.chomp
-    #   translators: This is a promo message that will be attached on top of a screenshot in the App Store.
-    #   No specified characters limit here, but try to keep as short as the source one.
-    # COMMENT
+    source_metadata_folder = File.join(PROJECT_ROOT_FOLDER, 'fastlane', 'jetpack_metadata', 'default')
+    custom_metadata_folder = File.join(PROJECT_ROOT_FOLDER, 'fastlane', 'appstoreres', 'jetpack_metadata', 'source')
+    
+    screenshot_comment = <<~COMMENT.chomp
+      translators: This is a promo message that will be attached on top of a screenshot in the App Store.
+      No specified characters limit here, but try to keep as short as the source one.
+    COMMENT
 
     files = {
-      whats_new: JETPACK_RELEASE_NOTES_PATH
-      # We are currently iterating on the App Store copy for Jetpack.
-      # It's therefore easier to update the English US metadata without triggering a translation.
-      # Once we'll settle on a new copy, we'll re-enable reading these sources for the GlotPress po file.
-      #
-      # app_store_name: {
-      #   path: File.join(source_metadata_folder, 'name.txt'),
-      #   comment: "translators: The application name in the Apple App Store. Please keep the brand names ('Jetpack' and WordPress') verbatim. Limit to 30 characters including spaces and punctuation!"
-      # },
-      # app_store_subtitle: {
-      #   path: File.join(source_metadata_folder, 'subtitle.txt'),
-      #   comment: 'translators: Subtitle to be displayed below the application name in the Apple App Store. Limit to 30 characters including spaces and commas!'
-      # },
-      # app_store_desc: {
-      #   path: File.join(source_metadata_folder, 'description.txt'),
-      #   comment: 'translators: Multi-paragraph text used to display in the Apple App Store.'
-      # },
-      # app_store_keywords: {
-      #   path: File.join(source_metadata_folder, 'keywords.txt'),
-      #   comment: <<~COMMENT.chomp
-      #     translators: Keywords used in the App Store search engine to find the app.
-      #     Delimit with a comma between each keyword. Limit to 100 characters including spaces and commas.
-      #   COMMENT
-      # },
-      # **(1..6).to_h do |i|
-      #   [
-      #     "screenshot-text-#{i}",
-      #     { path: File.join(custom_metadata_folder, "promo_screenshot_#{i}.txt"), comment: screenshot_comment }
-      #   ]
-      # end
+      whats_new: JETPACK_RELEASE_NOTES_PATH,
+      app_store_name: {
+        path: File.join(source_metadata_folder, 'name.txt'),
+        comment: "translators: The application name in the Apple App Store. Please keep the brand names ('Jetpack' and 'WordPress') verbatim. Limit to 30 characters including spaces and punctuation!"
+      },
+      app_store_subtitle: {
+        path: File.join(source_metadata_folder, 'subtitle.txt'),
+        comment: 'translators: Subtitle to be displayed below the application name in the Apple App Store. Limit to 30 characters including spaces and commas!'
+      },
+      app_store_desc: {
+        path: File.join(source_metadata_folder, 'description.txt'),
+        comment: 'translators: Multi-paragraph text used to display in the Apple App Store.'
+      },
+      app_store_keywords: {
+        path: File.join(source_metadata_folder, 'keywords.txt'),
+        comment: <<~COMMENT.chomp
+          translators: Keywords used in the App Store search engine to find the app.
+          Delimit with a comma between each keyword. Limit to 100 characters including spaces and commas.
+        COMMENT
+      },
+      **(1..6).to_h do |i|
+        [
+          "screenshot-text-#{i}",
+          { path: File.join(custom_metadata_folder, "promo_screenshot_#{i}.txt"), comment: screenshot_comment }
+        ]
+      end
     }
 
     gp_update_metadata_source(
