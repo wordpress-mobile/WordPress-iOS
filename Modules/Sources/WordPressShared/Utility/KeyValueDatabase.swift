@@ -9,6 +9,7 @@ public protocol KeyValueDatabase {
     func object(forKey defaultName: String) -> Any?
     func set(_ value: Any?, forKey defaultName: String)
     func removeObject(forKey defaultName: String)
+    func hasEntry(forKey key: String) -> Bool
 }
 
 public extension KeyValueDatabase {
@@ -28,7 +29,11 @@ public extension KeyValueDatabase {
 
 // MARK: - Storage implementations
 
-extension UserDefaults: KeyValueDatabase {}
+extension UserDefaults: KeyValueDatabase {
+    public func hasEntry(forKey key: String) -> Bool {
+        self.object(forKey: key) == nil
+    }
+}
 
 /// `EphemeralKeyValueDatabase` stores values in a dictionary in memory, and is
 /// never persisted between app launches.
@@ -47,5 +52,9 @@ open class EphemeralKeyValueDatabase: KeyValueDatabase {
 
     open func removeObject(forKey defaultName: String) {
         memory[defaultName] = nil
+    }
+
+    open func hasEntry(forKey key: String) -> Bool {
+        self.memory.keys.contains(key)
     }
 }
