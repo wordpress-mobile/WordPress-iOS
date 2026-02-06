@@ -3334,9 +3334,6 @@ translators: %s: Block name e.g. \"Image block\" */
 /* No comment provided by engineer. */
 "Main Navigation" = "التنقل الرئيسي";
 
-/* Explanation for the option to enable theme styles */
-"Make the block editor look like your theme." = "أجعل محرر المكونات يعكس مظهر قالبك.";
-
 /* No comment provided by engineer. */
 "Make your content stand out by adding images, gifs, videos, and embedded media to your pages." = "اجعل محتواك مميزًا عن طريق إضافة صور وصورgif ومقاطع فيديو ووسائط مضمنة إلى صفحاتك.";
 

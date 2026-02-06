@@ -3334,9 +3334,6 @@ translators: %s: Block name e.g. \"Image block\" */
 /* No comment provided by engineer. */
 "Main Navigation" = "Navigasi Utama";
 
-/* Explanation for the option to enable theme styles */
-"Make the block editor look like your theme." = "Jadikan editor blok terlihat seperti tema Anda.";
-
 /* No comment provided by engineer. */
 "Make your content stand out by adding images, gifs, videos, and embedded media to your pages." = "Buat konten Anda menonjol dengan menambahkan gambar, gif, video, dan media tersemat ke halaman Anda.";
 
