@@ -3334,9 +3334,6 @@ translators: %s: Block name e.g. \"Image block\" */
 /* No comment provided by engineer. */
 "Main Navigation" = "메인 내비게이션";
 
-/* Explanation for the option to enable theme styles */
-"Make the block editor look like your theme." = "블록 편집기를 테마와 비슷한 모양으로 만드세요.";
-
 /* No comment provided by engineer. */
 "Make your content stand out by adding images, gifs, videos, and embedded media to your pages." = "이미지, gif 파일, 비디오 또는 임베드된 미디어를 페이지에 추가하여 콘텐츠를 돋보이게 만드세요.";
 

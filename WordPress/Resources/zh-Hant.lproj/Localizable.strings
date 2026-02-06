@@ -3331,9 +3331,6 @@ translators: %s: Block name e.g. \"Image block\" */
 /* No comment provided by engineer. */
 "Main Navigation" = "主導覽";
 
-/* Explanation for the option to enable theme styles */
-"Make the block editor look like your theme." = "讓區塊編輯器看起來像你的佈景主題。";
-
 /* No comment provided by engineer. */
 "Make your content stand out by adding images, gifs, videos, and embedded media to your pages." = "為頁面新增圖片、GIF、影片和嵌入式媒體，讓你的內容脫穎而出。";
 
