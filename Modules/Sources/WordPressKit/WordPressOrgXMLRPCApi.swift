@@ -114,6 +114,46 @@ open class WordPressOrgXMLRPCApi: NSObject, WordPressOrgXMLRPCApiInterfacing {
         let parameters: [AnyObject] = [0 as AnyObject, username as AnyObject, password as AnyObject]
         callMethod("wp.getOptions", parameters: parameters, success: success, failure: failure)
     }
+
+    public func isXMLRPCAvailable(username: String, password: String) async -> XMLRPCAvailability {
+        let parameters: [AnyObject] = [0 as AnyObject, username as AnyObject, password as AnyObject]
+        let result = await call(method: "wp.getOptions", parameters: parameters)
+        guard case let .failure(error) = result else { return .available }
+
+        switch error {
+        // This is the most ideal error case, where the site sent an HTTP 200 response with an "fault" XML.
+        case let .endpointError(fault):
+            // 405 is a proper fault code that indicates XML-RPC is disabled.
+            return fault.code == 405 ? .unavailable : .available
+
+        // This error means the site sends an non-200 status code, which can mean anything.
+        case let .unacceptableStatusCode(response, _):
+            if response.statusCode == 404 {
+                return .unavailable
+            }
+
+            // If the response is not an XML, we'll treat it as disabled. Some plugin does this.
+            if response.value(forHTTPHeaderField: "Content-Type")?.hasPrefix("text/xml") == false {
+                return .unavailable
+            }
+
+            return .unknown
+
+        // The site returned an HTTP 200 with an response that we can't parse (which is likely not xml).
+        case let .unparsableResponse(response, _, _):
+            if response?.value(forHTTPHeaderField: "Content-Type")?.hasPrefix("text/xml") == false {
+                return .unavailable
+            }
+            return .unknown
+
+        // Treat the following errors as unknown, because we don't know for certain in these cases.
+        // The `connection` error (failing to send the request or receive the response) is mostly likely
+        // to be the only possible case here.
+        case .connection, .requestEncodingFailure, .unknown:
+            return .unknown
+        }
+    }
+
     /**
      Executes a XMLRPC call for the method specificied with the arguments provided.
 
@@ -436,4 +476,10 @@ private extension WordPressAPIError where EndpointError == WordPressOrgXMLRPCApi
         return WordPressOrgXMLRPCApi.convertError(error, data: data, statusCode: statusCode)
     }
 
+}
+
+public enum XMLRPCAvailability: Equatable {
+    case available
+    case unavailable
+    case unknown
 }

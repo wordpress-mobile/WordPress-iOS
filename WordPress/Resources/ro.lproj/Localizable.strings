@@ -1,4 +1,4 @@
-/* Translation-Revision-Date: 2026-01-23 10:24:34+0000 */
+/* Translation-Revision-Date: 2026-02-05 10:34:24+0000 */
 /* Plural-Forms: nplurals=3; plural=(n == 1) ? 0 : ((n == 0 || n % 100 >= 2 && n % 100 <= 19) ? 1 : 2); */
 /* Generator: GlotPress/4.0.3 */
 /* Language: ro */
@@ -3333,9 +3333,6 @@ translators: %s: Block name e.g. \"Image block\" */
 
 /* No comment provided by engineer. */
 "Main Navigation" = "Navigare principală";
-
-/* Explanation for the option to enable theme styles */
-"Make the block editor look like your theme." = "Îți faci editorul de blocuri să arate ca tema ta.";
 
 /* No comment provided by engineer. */
 "Make your content stand out by adding images, gifs, videos, and embedded media to your pages." = "Îți scoți conținutul în evidență prin adăugarea de imagini, imagini GIF, videouri și elemente media înglobate în paginile tale.";
@@ -12169,6 +12166,15 @@ Feel free to replace it with other bracket types that you think looks better for
 
 /* Title for screen to select the privacy options for a blog */
 "siteSettings.privacy.title" = "Confidențialitate";
+
+/* Explanation for why the 'Use theme styles' toggle is disabled when the site doesn't have a block theme */
+"siteSettings.themeStyles.footer.blockThemeSuggested" = "Site-ul tău nu folosește o temă cu blocuri, deci este posibil ca editorul să nu se potrivească corect cu conținutul tău. Dacă lucrurile nu arată bine, poți să dezactivezi stilurile pentru editor.";
+
+/* Explanation for the option to enable theme styles when the feature is available */
+"siteSettings.themeStyles.footer.enabled" = "Îți faci editorul de blocuri să arate ca tema ta.";
+
+/* Explanation for why the 'Use theme styles' toggle is disabled when the site doesn't have the Gutenberg plugin */
+"siteSettings.themeStyles.footer.gutenbergRequired" = "Instalează modulul Gutenberg pe site-ul tău pentru a activa suportul pentru stiluri temă.";
 
 /* Format string for adding a new taxonomy term. %1$@ is the taxonomy name. */
 "siteTaxonomy.addNew.format" = "Adaugă %1$@";

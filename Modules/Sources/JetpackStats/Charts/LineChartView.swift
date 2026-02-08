@@ -246,6 +246,7 @@ struct LineChartView: View {
 }
 
 // MARK: - Preview
+#if DEBUG
 
 #Preview {
     ScrollView {
@@ -287,3 +288,5 @@ private func previewCard<Content: View>(
             .stroke(Color(.separator), lineWidth: 0.5)
     )
 }
+
+#endif

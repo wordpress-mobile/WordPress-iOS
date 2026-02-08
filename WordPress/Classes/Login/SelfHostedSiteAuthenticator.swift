@@ -192,6 +192,23 @@ struct SelfHostedSiteAuthenticator {
             throw .mismatchedUser(expectedUsername: username)
         }
 
+        let blog = try await fetchSiteDataUsingCoreRESTAPI(credentials: credentials, apiRootURL: apiRootURL, context: context)
+
+        switch context {
+        case .default:
+            NotificationCenter.default.post(name: Foundation.Notification.Name(rawValue: WordPressAuthenticator.WPSigninDidFinishNotification), object: nil)
+        case .reauthentication:
+            NotificationCenter.default.post(name: Self.applicationPasswordUpdated, object: nil)
+        }
+
+        return blog
+    }
+
+    private func fetchSiteDataUsingXMLRPC(
+        credentials: WpApiApplicationPasswordDetails,
+        apiRootURL: URL,
+        context: SignInContext
+    ) async throws(SignInError) -> TaggedManagedObjectID<Blog> {
         let xmlrpc: URL = try await discoverXMLRPCEndpoint(site: credentials.siteUrl)
         let blogOptions: [AnyHashable: Any]
         do {
@@ -235,13 +252,6 @@ struct SelfHostedSiteAuthenticator {
             }
         }
 
-        switch context {
-        case .default:
-            NotificationCenter.default.post(name: Foundation.Notification.Name(rawValue: WordPressAuthenticator.WPSigninDidFinishNotification), object: nil)
-        case .reauthentication:
-            NotificationCenter.default.post(name: Self.applicationPasswordUpdated, object: nil)
-        }
-
         return blog
     }
 
@@ -272,4 +282,65 @@ struct SelfHostedSiteAuthenticator {
         }
     }
 
+    // This is an alternative to `fetchSiteDataUsingXMLRPC`, without requiring the site's XML-RPC to be enabled.
+    private func fetchSiteDataUsingCoreRESTAPI(
+        credentials: WpApiApplicationPasswordDetails,
+        apiRootURL: URL,
+        context: SignInContext
+    ) async throws(SignInError) -> TaggedManagedObjectID<Blog> {
+        let api = WordPressAPI(
+            urlSession: URLSession(configuration: .ephemeral),
+            apiRootUrl: try! ParsedUrl.parse(input: apiRootURL.absoluteString),
+            authentication: WpAuthentication(username: credentials.userLogin, password: credentials.password)
+        )
+
+        let siteTitle: String
+        let isAdmin: Bool
+        do {
+            async let settingsResponse = api.siteSettings.retrieveWithViewContext()
+            async let userResponse = api.users.retrieveMeWithEditContext()
+            let (settings, user) = try await (settingsResponse.data, userResponse.data)
+
+            isAdmin = user.roles.contains(.administrator)
+            siteTitle = settings.title
+        } catch {
+            throw .loadingSiteInfoFailure
+        }
+
+        // If the XMLRPC is disabled, we'll use the default endpoint.
+        let xmlrpc = (try? await discoverXMLRPCEndpoint(site: credentials.siteUrl))
+            ?? URL(string: credentials.siteUrl)?.appending(component: "xmlrpc.php")
+        guard let xmlrpc else {
+            throw .loadingSiteInfoFailure
+        }
+
+        // FIXME: The XML-RPC version stores `wp.getOptions` result in `Blog.options`, which is used in a few places
+        // in the app. We can't get the same "options" via REST API. We'll need to investigate the impact of missing
+        // "options".
+
+        let blog: TaggedManagedObjectID<Blog>
+        do {
+            blog = try await Blog.createRestApiBlog(
+                with: credentials,
+                restApiRootURL: apiRootURL,
+                xmlrpcEndpointURL: xmlrpc,
+                blogID: context.blogID,
+                in: ContextManager.shared
+            )
+
+            try await ContextManager.shared.performAndSave { context in
+                let blog = try context.existingObject(with: blog)
+
+                blog.isAdmin = isAdmin
+                blog.addSettingsIfNecessary()
+                blog.settings?.name = siteTitle
+            }
+
+            try await ApplicationPasswordRepository.shared.saveApplicationPassword(of: blog)
+        } catch {
+            throw .savingSiteFailure
+        }
+
+        return blog
+    }
 }

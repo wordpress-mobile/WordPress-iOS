@@ -444,7 +444,13 @@ NSString * const OptionsKeyIsWPForTeams = @"is_wpforteams_site";
 
 - (NSString *)password
 {
-    return [SFHFKeychainUtils getPasswordForUsername:self.username andServiceName:self.xmlrpc accessGroup:nil error:nil];
+    NSString *accountPassword = [SFHFKeychainUtils getPasswordForUsername:self.username andServiceName:self.xmlrpc accessGroup:nil error:nil];
+    if (accountPassword != nil) {
+        return accountPassword;
+    }
+
+    // Application password can also be used to authenticate XML-RPC.
+    return [self getApplicationTokenWithError:nil];
 }
 
 - (void)setPassword:(NSString *)password

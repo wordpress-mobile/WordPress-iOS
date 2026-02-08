@@ -31,7 +31,7 @@ public extension KeyValueDatabase {
 
 extension UserDefaults: KeyValueDatabase {
     public func hasEntry(forKey key: String) -> Bool {
-        self.object(forKey: key) == nil
+        self.object(forKey: key) != nil
     }
 }
 

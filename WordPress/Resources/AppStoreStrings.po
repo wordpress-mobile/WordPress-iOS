@@ -1,21 +1,105 @@
-# Translation of Release Notes & Apple Store Description in English (US)
-# This file is distributed under the same license as the Release Notes & Apple Store Description package.
 msgid ""
 msgstr ""
-"PO-Revision-Date: 2018-01-29 17:30-0000\n"
+"PO-Revision-Date: 2026-02-05 15:07+0100\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=n != 1;\n"
-"X-Generator: Poedit 2.0.1\n"
-"Project-Id-Version: Release Notes & Apple Store Description\n"
-"POT-Creation-Date: \n"
-"Last-Translator: \n"
-"Language-Team: \n"
+"X-Generator: fastlane-plugin-wpmreleasetoolkit 14.0.0\n"
+
+#. translators: Multi-paragraph text used to display in the Apple App Store.
+msgctxt "app_store_desc"
+msgid ""
+"Manage or create your WordPress blog or website right from your iOS device: cr"
+"eate and edit posts and pages, upload your favorite photos and videos, view st"
+"ats and reply to comments.\n"
+"\n"
+"With WordPress for iOS, you have the power to publish in the palm of your hand"
+". Draft a spontaneous haiku from the couch. Snap and post a photo on your lunc"
+"h break. Respond to your latest comments, or check your stats to see what new "
+"countries today’s visitors are coming from.\n"
+"\n"
+"WordPress for iOS is an Open Source project, which means you too can contribut"
+"e to its development. Learn more at https://apps.wordpress.com/contribute/.\n"
+"\n"
+"WordPress for iOS supports WordPress.com and self-hosted WordPress.org sites r"
+"unning WordPress 4.0 or higher.\n"
+"\n"
+"Need help with the app? Visit the forums at https://wordpress.org/support/foru"
+"m/mobile/ or tweet us @WordPressiOS.\n"
+"\n"
+"View the Privacy Notice for California Users at https://automattic.com/privacy"
+"/#california-consumer-privacy-act-ccpa."
+msgstr ""
+
+#. translators: Keywords used in the App Store search engine to find the app.
+#. Delimit with a comma between each keyword. Limit to 100 characters including spaces and commas.
+msgctxt "app_store_keywords"
+msgid ""
+"blogger,writing,blogging,web,maker,online,store,business,make,create,write,blo"
+"gs"
+msgstr ""
 
 #. translators: The application name in the Apple App Store. Please keep the brand name ('WordPress') verbatim. Limit to 30 characters including spaces and punctuation!
 msgctxt "app_store_name"
 msgid "WordPress – Website Builder"
+msgstr ""
+
+#. translators: This is a promo text that will be drawn on the promotional screenshots we use in the App Store.
+#. No specified characters limit here, but try to keep as short as the source one.
+msgctxt "app_store_screenshot-1"
+msgid ""
+"The world’s most\n"
+"popular website\n"
+"builder"
+msgstr ""
+
+#. translators: This is a promo text that will be drawn on the promotional screenshots we use in the App Store.
+#. No specified characters limit here, but try to keep as short as the source one.
+msgctxt "app_store_screenshot-2"
+msgid ""
+"Create a site or\n"
+"start a blog"
+msgstr ""
+
+#. translators: This is a promo text that will be drawn on the promotional screenshots we use in the App Store.
+#. No specified characters limit here, but try to keep as short as the source one.
+msgctxt "app_store_screenshot-3"
+msgid ""
+"Discover\n"
+"new reads"
+msgstr ""
+
+#. translators: This is a promo text that will be drawn on the promotional screenshots we use in the App Store.
+#. No specified characters limit here, but try to keep as short as the source one.
+msgctxt "app_store_screenshot-4"
+msgid ""
+"Build an\n"
+"audience"
+msgstr ""
+
+#. translators: This is a promo text that will be drawn on the promotional screenshots we use in the App Store.
+#. No specified characters limit here, but try to keep as short as the source one.
+msgctxt "app_store_screenshot-5"
+msgid ""
+"Keep tabs on\n"
+"your site"
+msgstr ""
+
+#. translators: This is a promo text that will be drawn on the promotional screenshots we use in the App Store.
+#. No specified characters limit here, but try to keep as short as the source one.
+msgctxt "app_store_screenshot-6"
+msgid ""
+"Reply in\n"
+"real time"
+msgstr ""
+
+#. translators: This is a promo text that will be drawn on the promotional screenshots we use in the App Store.
+#. No specified characters limit here, but try to keep as short as the source one.
+msgctxt "app_store_screenshot-7"
+msgid ""
+"Upload\n"
+"on the go"
 msgstr ""
 
 #. translators: Subtitle to be displayed below the application name in the Apple App Store. Limit to 30 characters including spaces and commas!
@@ -23,54 +107,26 @@ msgctxt "app_store_subtitle"
 msgid "Design a site, build a blog"
 msgstr ""
 
-#. translators: Multi-paragraph text used to display in the Apple App Store.
-msgctxt "app_store_desc"
-msgid ""
-"Manage or create your WordPress blog or website right from your iOS device: create and edit posts and pages, upload your favorite photos and videos, view stats and reply to comments.\n"
-"\n"
-"With WordPress for iOS, you have the power to publish in the palm of your hand. Draft a spontaneous haiku from the couch. Snap and post a photo on your lunch break. Respond to your latest comments, or check your stats to see what new countries today’s visitors are coming from.\n"
-"\n"
-"WordPress for iOS is an Open Source project, which means you too can contribute to its development. Learn more at https://apps.wordpress.com/contribute/.\n"
-"\n"
-"WordPress for iOS supports WordPress.com and self-hosted WordPress.org sites running WordPress 4.0 or higher.\n"
-"\n"
-"Need help with the app? Visit the forums at https://wordpress.org/support/forum/mobile/ or tweet us @WordPressiOS.\n"
-"\n"
-"View the Privacy Notice for California Users at https://automattic.com/privacy/#california-consumer-privacy-act-ccpa.\n"
-msgstr ""
-
-#. translators: Keywords used in the App Store search engine to find the app.
-#. Delimit with a comma between each keyword. Limit to 100 characters including spaces and commas.
-msgctxt "app_store_keywords"
-msgid "blogger,writing,blogging,web,maker,online,store,business,make,create,write,blogs"
-msgstr ""
-
-msgctxt "v26.6-whats-new"
-msgid ""
-"We made a technical update that reduces the size of your app by about 6 MB. What will you do with all that newfound space?\n"
-"\n"
-"It’s easier to find, see, and change the visibility settings of existing posts. The “Done” button also won’t disappear when you set the password while publishing a password-protected post.\n"
-"\n"
-"Looking good: we updated shortcut icons and illustrations to better match the rest of the app, as well as fit better with your device.\n"
-"\n"
-"We fixed an issue so post previews now work properly for certain sites using Business and Commerce plans.\n"
-"\n"
-"When you add a new self-hosted site, you’ll be asked for your app password to authenticate. Keep it secret. Keep it safe.\n"
-msgstr ""
-
 #. translators: This is a standard chunk of text used to tell a user what's new with a release when nothing major has changed.
 msgctxt "standard-whats-new-1"
-msgid "You may not notice anything obviously different about this release, but expect a faster, more stable app. The proof is in the using!"
+msgid ""
+"You may not notice anything obviously different about this release, but expect"
+" a faster, more stable app. The proof is in the using!"
 msgstr ""
 
 #. translators: This is a standard chunk of text used to tell a user what's new with a release when nothing major has changed.
 msgctxt "standard-whats-new-2"
-msgid "For this release, we polished some pixels, waved a few bugs goodbye, and worked behind the scenes to make the WordPress experience smoother for our app users."
+msgid ""
+"For this release, we polished some pixels, waved a few bugs goodbye, and worke"
+"d behind the scenes to make the WordPress experience smoother for our app user"
+"s."
 msgstr ""
 
 #. translators: This is a standard chunk of text used to tell a user what's new with a release when nothing major has changed.
 msgctxt "standard-whats-new-3"
-msgid "No new bells and whistles, just incremental improvements to bring you a faster, more stable app. All that glitters is not gold — sometimes it's code!"
+msgid ""
+"No new bells and whistles, just incremental improvements to bring you a faster"
+", more stable app. All that glitters is not gold — sometimes it's code!"
 msgstr ""
 
 #. translators: This is a standard chunk of text used to tell a user what's new with a release when nothing major has changed.
@@ -79,114 +135,25 @@ msgctxt "standard-whats-new-4"
 msgid ""
 "It may look the same,\n"
 "but we shined and buffed the code.\n"
-"Small changes add up!\n"
+"Small changes add up!"
 msgstr ""
 
-#. translators: This is a promo message that will be attached on top of the first screenshot in the App Store.
-#. No specified characters limit here, but try to keep as short as the source one.
-msgctxt "app_store_screenshot-1"
+msgctxt "v26.6-whats-new"
 msgid ""
-"The world’s most\n"
-"popular website\n"
-"builder\n"
+"We made a technical update that reduces the size of your app by about 6 MB. Wh"
+"at will you do with all that newfound space?\n"
+"\n"
+"It’s easier to find, see, and change the visibility settings of existing posts"
+". The “Done” button also won’t disappear when you set the password while publi"
+"shing a password-protected post.\n"
+"\n"
+"Looking good: we updated shortcut icons and illustrations to better match the "
+"rest of the app, as well as fit better with your device.\n"
+"\n"
+"We fixed an issue so post previews now work properly for certain sites using B"
+"usiness and Commerce plans.\n"
+"\n"
+"When you add a new self-hosted site, you’ll be asked for your app password to "
+"authenticate. Keep it secret. Keep it safe.\n"
 msgstr ""
 
-#. translators: This is a promo message that will be attached on top of the second screenshot in the App Store.
-#. No specified characters limit here, but try to keep as short as the source one.
-msgctxt "app_store_screenshot-2"
-msgid ""
-"Create a site or\n"
-"start a blog\n"
-msgstr ""
-
-#. translators: This is a promo message that will be attached on top of the third screenshot in the App Store.
-#. No specified characters limit here, but try to keep as short as the source one.
-msgctxt "app_store_screenshot-3"
-msgid ""
-"Discover\n"
-"new reads\n"
-msgstr ""
-
-#. translators: This is a promo message that will be attached on top of the fourth screenshot in the App Store.
-#. No specified characters limit here, but try to keep as short as the source one.
-msgctxt "app_store_screenshot-4"
-msgid ""
-"Build an\n"
-"audience\n"
-msgstr ""
-
-#. translators: This is a promo message that will be attached on top of the fifth screenshot in the App Store.
-#. No specified characters limit here, but try to keep as short as the source one.
-msgctxt "app_store_screenshot-5"
-msgid ""
-"Keep tabs on\n"
-"your site\n"
-msgstr ""
-
-#. translators: This is a promo message that will be attached on top of the fifth screenshot in the App Store.
-#. No specified characters limit here, but try to keep as short as the source one.
-msgctxt "app_store_screenshot-6"
-msgid ""
-"Reply in\n"
-"real time\n"
-msgstr ""
-
-#. translators: This is a promo message that will be attached on top of the fifth screenshot in the App Store.
-#. No specified characters limit here, but try to keep as short as the source one.
-msgctxt "app_store_screenshot-7"
-msgid ""
-"Upload\n"
-"on the go\n"
-msgstr ""
-
-#. translators: This is a promo message that will be attached on top of the fifth screenshot in the App Store.
-#. No specified characters limit here, but try to keep as short as the source one.
-msgctxt "app_store_screenshot-8"
-msgid "Write without compromises"
-msgstr ""
-
-#. translators: This is a promo message that will be attached on top of an enhanced screenshot in the App Store.
-#. No specified character limit here, but try to keep it as short as the source one. Please leave emphasis and line break tags in place, unless they don't make sense in the target language.
-msgctxt "enhanced_app_store_screenshot-1"
-msgid ""
-"<strong>Create</strong> beautiful\n"
-"posts and pages"
-msgstr ""
-
-#. translators: This is a promo message that will be attached on top of an enhanced screenshot in the App Store.
-#. No specified character limit here, but try to keep it as short as the source one. Please leave emphasis and line break tags in place, unless they don't make sense in the target language.
-msgctxt "enhanced_app_store_screenshot-2"
-msgid ""
-"<strong>Track</strong> what your\n"
-"visitors love"
-msgstr ""
-
-#. translators: This is a promo message that will be attached on top of an enhanced screenshot in the App Store.
-#. No specified character limit here, but try to keep it as short as the source one. Please leave emphasis and line break tags in place, unless they don't make sense in the target language.
-msgctxt "enhanced_app_store_screenshot-3"
-msgid ""
-"<strong>Check</strong> what's\n"
-"happening in real time"
-msgstr ""
-
-#. translators: This is a promo message that will be attached on top of an enhanced screenshot in the App Store.
-#. No specified character limit here, but try to keep it as short as the source one. Please leave emphasis and line break tags in place, unless they don't make sense in the target language.
-msgctxt "enhanced_app_store_screenshot-4"
-msgid ""
-"<strong>Share</strong> from\n"
-"anywhere"
-msgstr ""
-
-#. translators: This is a promo message that will be attached on top of an enhanced screenshot in the App Store.
-#. No specified character limit here, but try to keep it as short as the source one. Please leave emphasis and line break tags in place, unless they don't make sense in the target language.
-msgctxt "enhanced_app_store_screenshot-5"
-msgid "<strong>Capture</strong> ideas\n"
-"on the go"
-msgstr ""
-
-#. translators: This is a promo message that will be attached on top of an enhanced screenshot in the App Store.
-#. No specified character limit here, but try to keep it as short as the source one. Please leave emphasis and line break tags in place, unless they don't make sense in the target language.
-msgctxt "enhanced_app_store_screenshot-6"
-msgid ""
-"<strong>Write</strong> without compromises"
-msgstr ""

@@ -44,6 +44,7 @@
             blog.url = url;
         }
         if (blogName) {
+            [blog addSettingsIfNecessary];
             blog.settings.name = [blogName stringByDecodingXMLCharacters];
         }
     }
