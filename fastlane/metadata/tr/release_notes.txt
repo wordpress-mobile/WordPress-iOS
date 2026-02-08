@@ -4,6 +4,6 @@ Mevcut gönderilerin görünürlük ayarlarını bulmak, görmek ve değiştirme
 
 İyi görünüyor: Kısaltma simgelerini ve illüstrasyonlarını uygulamanın geri kalanıyla uyumlu olacak ve cihazınıza da daha iyi uyacak şekilde güncelledik.
 
-We fixed an issue so post previews now work properly for certain sites using Business and Commerce plans.
+Bir sorun çözüldü, artık gönderi önizlemeleri Business ve Commerce paketlerini kullanan belirli sitelerde düzgün çalışır.
 
-When you add a new self-hosted site, you’ll be asked for your app password to authenticate. Keep it secret. Güvenliği Sağlayın
+Kendi barındırdığınız yeni bir site eklediğinizde doğrulamak için uygulama şifrenizi girmeniz istenir. Gizli tutun. Güvende tutun.

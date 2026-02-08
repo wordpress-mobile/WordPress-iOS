@@ -5787,9 +5787,6 @@ Please install the %3$@ to use the app with this site.";
 /* No comment provided by engineer. */
 "Main Navigation" = "Main Navigation";
 
-/* Explanation for the option to enable theme styles */
-"Make the block editor look like your theme." = "Make the block editor look like your theme.";
-
 /* No comment provided by engineer. */
 "Make your content stand out by adding images, gifs, videos, and embedded media to your pages." = "Make your content stand out by adding images, gifs, videos, and embedded media to your pages.";
 
@@ -10317,6 +10314,15 @@ Feel free to replace it with other bracket types that you think looks better for
 
 /* Label for the blogging reminders setting */
 "sitesettings.reminders.title" = "Reminders";
+
+/* Explanation for why the 'Use theme styles' toggle is disabled when the site doesn't have a block theme */
+"siteSettings.themeStyles.footer.blockThemeSuggested" = "Your site isn't using a Block Theme, so the editor might not match your content correctly. If things aren't looking right, you can disable editor styles.";
+
+/* Explanation for the option to enable theme styles when the feature is available */
+"siteSettings.themeStyles.footer.enabled" = "Make the block editor look like your theme.";
+
+/* Explanation for why the 'Use theme styles' toggle is disabled when the site doesn't have the Gutenberg plugin */
+"siteSettings.themeStyles.footer.gutenbergRequired" = "Install the Gutenberg Plugin on your site to activate theme style support.";
 
 /* Format string for adding a new taxonomy term. %1$@ is the taxonomy name. */
 "siteTaxonomy.addNew.format" = "Add %1$@";

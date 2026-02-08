@@ -30,20 +30,33 @@ struct DataPoint: Identifiable, Sendable {
 
 extension DataPoint {
     /// Maps previous period data points to align with current period dates.
-    /// Takes the dates from current data and replaces values with corresponding previous data values.
-    /// Arrays are aligned from the end - if lengths differ, the beginning of the longer array is skipped.
+    /// Applies the time offset between the previous and current period to all previous data points,
+    /// ensuring all previous data is preserved even when current data is partial or empty.
+    /// Filters out any mapped points that fall outside the current period's date range.
     /// - Parameters:
-    ///   - currentData: The data points from the current period (provides dates)
+    ///   - currentData: The data points from the current period (used for reference, may be partial or empty)
     ///   - previousData: The data points from the previous period (provides values)
-    /// - Returns: An array of data points with current dates and previous values
+    ///   - dateRange: The date range information containing both current and previous period boundaries
+    /// - Returns: An array of data points with dates shifted to the current period and previous values, filtered to current period
     static func mapDataPoints(
         currentData: [DataPoint],
-        previousData: [DataPoint]
+        previousData: [DataPoint],
+        dateRange: StatsDateRange
     ) -> [DataPoint] {
-        // reversing to align by the last item in case there is a mismatch in the number of items
-        zip(currentData.reversed(), previousData.reversed()).map { current, previous in
-            DataPoint(date: current.date, value: previous.value)
-        }.reversed()
+        guard !previousData.isEmpty else { return [] }
+
+        // Calculate offset from start of previous period to start of current period
+        let dateOffset = dateRange.dateInterval.start.timeIntervalSince(dateRange.effectiveComparisonInterval.start)
+
+        // Apply offset to all previous data points and filter to current period
+        return previousData.compactMap { previous in
+            let mappedDate = previous.date.addingTimeInterval(dateOffset)
+            // Only include points that fall within the current period
+            guard dateRange.dateInterval.contains(mappedDate) else {
+                return nil
+            }
+            return DataPoint(date: mappedDate, value: previous.value)
+        }
     }
 
     static func getTotalValue(for dataPoints: [DataPoint], metric: some MetricType) -> Int? {

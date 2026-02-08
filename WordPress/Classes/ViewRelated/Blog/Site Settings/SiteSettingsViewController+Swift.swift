@@ -75,6 +75,15 @@ extension SiteSettingsViewController {
         self.navigationController?.pushViewController(viewController, animated: true)
     }
 
+    @objc public func swiftRefreshSettings() {
+        // Refresh editor capabilities
+        guard RemoteFeatureFlag.newGutenberg.enabled() else {
+            return
+        }
+
+        EditorDependencyManager.shared.fetchEditorCapabilities(for: self.blog)
+    }
+
     // MARK: - Timezone
 
     func formattedTimezoneValue() -> String? {
@@ -200,7 +209,15 @@ extension SiteSettingsViewController {
     @objc(getThemeStylesSectionFooterView)
     public func themeStylesSectionFooterView() -> UIView {
         let footer = makeFooterView()
-        footer.textLabel?.text = NSLocalizedString("Make the block editor look like your theme.", comment: "Explanation for the option to enable theme styles")
+        let settings = GutenbergSettings()
+        if !settings.getSupports(.blockTheme, for: self.blog) {
+            footer.textLabel?.text = Strings.themeStylesFooterBlockThemeSuggested
+        } else if !settings.getSupports(.blockEditorSettings, for: self.blog) {
+            footer.textLabel?.text = Strings.themeStylesFooterGutenbergRequired
+        } else {
+            footer.textLabel?.text = Strings.themeStylesFooterEnabled
+        }
+
         return footer
     }
 
@@ -445,6 +462,24 @@ extension SiteSettingsViewController {
 private extension SiteSettingsViewController {
     enum Strings {
         static let privacyTitle = NSLocalizedString("siteSettings.privacy.title", value: "Privacy", comment: "Title for screen to select the privacy options for a blog")
+
+        static let themeStylesFooterBlockThemeSuggested = NSLocalizedString(
+            "siteSettings.themeStyles.footer.blockThemeSuggested",
+            value: "Your site isn't using a Block Theme, so the editor might not match your content correctly. If things aren't looking right, you can disable editor styles.",
+            comment: "Explanation for why the 'Use theme styles' toggle is disabled when the site doesn't have a block theme"
+        )
+
+        static let themeStylesFooterGutenbergRequired = NSLocalizedString(
+            "siteSettings.themeStyles.footer.gutenbergRequired",
+            value: "Install the Gutenberg Plugin on your site to activate theme style support.",
+            comment: "Explanation for why the 'Use theme styles' toggle is disabled when the site doesn't have the Gutenberg plugin"
+        )
+
+        static let themeStylesFooterEnabled = NSLocalizedString(
+            "siteSettings.themeStyles.footer.enabled",
+            value: "Make the block editor look like your theme.",
+            comment: "Explanation for the option to enable theme styles when the feature is available"
+        )
     }
 }
 

@@ -16,56 +16,37 @@ struct ChartHelper {
         )
     }
 
-    /// Calculates the x-axis domain, expanding the date interval to include all data points.
+    /// Calculates the x-axis domain, expanding the date interval to include all data points if needed.
     ///
-    /// Handles edge cases where granularity selections return data points outside the requested
-    /// date range (e.g., "year" granularity for "this week" returns YYYY-01-01).
+    /// If any data points fall outside the requested interval, extends the domain to show
+    /// complete granularity periods (e.g., for year granularity, show the entire year).
     static func xAxisDomain(
         for dateInterval: DateInterval,
         dataPoints: [DataPoint],
         granularity: DateRangeGranularity,
         calendar: Calendar
     ) -> ClosedRange<Date> {
-        if granularity > dateInterval.preferredGranularity {
-            return extendedDomain(
-                for: dateInterval,
-                dataPoints: dataPoints,
-                granularity: granularity,
-                calendar: calendar
-            )
-        }
-        return dateInterval.start...dateInterval.end
-    }
-
-    /// Extends the domain when granularity is larger than appropriate for the date range.
-    private static func extendedDomain(
-        for dateInterval: DateInterval,
-        dataPoints: [DataPoint],
-        granularity: DateRangeGranularity,
-        calendar: Calendar
-    ) -> ClosedRange<Date> {
-        guard let firstDataPoint = dataPoints.first?.date else {
+        guard let firstDataPoint = dataPoints.first?.date,
+              let lastDataPoint = dataPoints.last?.date else {
             return dateInterval.start...dateInterval.end
         }
 
-        let periodStart = calendar.dateInterval(of: granularity.component, for: firstDataPoint)?.start ?? firstDataPoint
+        // Check if any data points fall outside the interval
+        let needsExpansion = firstDataPoint < dateInterval.start || lastDataPoint >= dateInterval.end
 
-        // For 1-2 data points: show 3 periods centered (like web version)
-        if dataPoints.count <= 2 {
-            let start = calendar.date(byAdding: granularity.component, value: -2, to: periodStart) ?? periodStart
-            let end = calendar.date(byAdding: granularity.component, value: 3, to: periodStart) ?? periodStart
-            return start...end
+        // If all points are within the interval, use it as-is
+        guard needsExpansion else {
+            return dateInterval.start...dateInterval.end
         }
 
-        // For more data points: show enough periods to include all data
-        guard let lastDataPoint = dataPoints.last?.date else {
-            return periodStart...periodStart
-        }
+        // Expand to include all data points
+        let rawStart = min(dateInterval.start, firstDataPoint)
+        let rawEnd = max(dateInterval.end, lastDataPoint)
 
-        let lastPeriodStart = calendar.dateInterval(of: granularity.component, for: lastDataPoint)?.start ?? lastDataPoint
-        let end = calendar.date(byAdding: granularity.component, value: 1, to: lastPeriodStart) ?? lastPeriodStart
-
-        return periodStart...end
+        // Align to granularity boundaries
+        let periodStart = calendar.dateInterval(of: granularity.component, for: rawStart)?.start ?? rawStart
+        let periodEnd = calendar.dateInterval(of: granularity.component, for: rawEnd)?.end ?? rawEnd
+        return periodStart...periodEnd
     }
 
     /// Creates an x-axis with marks at unit boundaries aligned with the chart granularity.

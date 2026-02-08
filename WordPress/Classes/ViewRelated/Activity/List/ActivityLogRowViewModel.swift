@@ -26,8 +26,8 @@ struct ActivityLogRowViewModel: Identifiable {
         }
         self.date = activity.published
         self.time = activity.published.formatted(date: .omitted, time: .shortened)
-        self.title = activity.text
-        self.subtitle = activity.summary.localizedCapitalized
+        self.title = activity.summary.localizedCapitalized
+        self.subtitle = activity.text
 
         self.icon = activity.icon
         self.tintColor = Color(activity.statusColor)

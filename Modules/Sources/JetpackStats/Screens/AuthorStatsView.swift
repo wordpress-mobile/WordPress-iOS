@@ -128,9 +128,9 @@ struct AuthorStatsView: View {
                     .textCase(.uppercase)
             }
 
-            HStack(spacing: Constants.step2) {
+            HStack(alignment: .center, spacing: Constants.step1) {
                 Text(StatsValueFormatter.formatNumber(current, onlyLarge: true))
-                    .font(Font.make(.recoleta, textStyle: .title2, weight: .medium))
+                    .font(Constants.Typography.smallDisplayFont)
                     .foregroundColor(.primary)
                     .contentTransition(.numericText())
 

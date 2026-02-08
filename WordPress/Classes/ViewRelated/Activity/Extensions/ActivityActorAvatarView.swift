@@ -49,12 +49,26 @@ struct ActivityActorAvatarView: View {
             )
     }
 
+    @ViewBuilder
     private var applicationAvatar: some View {
-        ZStack {
-            Circle()
-                .fill(AppColor.primary)
-            Image(uiImage: .gridicon(.plugins, size: CGSize(width: iconSize, height: iconSize)))
-                .foregroundColor(.white)
+        switch actor?.displayName {
+        case "Jetpack":
+            Image("jetpack-install-logo")
+                .resizable()
+                .aspectRatio(contentMode: .fit)
+        case "WordPress":
+            Image("social-wordpress")
+                .renderingMode(.template)
+                .resizable()
+                .aspectRatio(contentMode: .fit)
+                .foregroundStyle(Color.primary)
+        default:
+            ZStack {
+                Circle()
+                    .fill(AppColor.primary)
+                Image(uiImage: .gridicon(.plugins, size: CGSize(width: iconSize, height: iconSize)))
+                    .foregroundColor(.white)
+            }
         }
     }
 
