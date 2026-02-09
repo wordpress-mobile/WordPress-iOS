@@ -80,6 +80,7 @@ public class BlogDetailsViewController: UIViewController {
         observeManagedObjectContextObjectsDidChangeNotification()
         observeGravatarImageUpdate()
         downloadGravatarImage()
+        syncPostTypes()
 
         registerForTraitChanges([UITraitHorizontalSizeClass.self], action: #selector(handleTraitChanges))
     }

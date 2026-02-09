@@ -589,12 +589,16 @@ private extension BlogDetailsTableViewModel {
             rows.append(Row.pages(viewController: viewController))
         }
 
-        if FeatureFlag.customPostTypes.enabled && blog.supportsCoreRESTAPI {
-            rows.append(Row.customPostTypes(viewController: viewController))
-        }
-
         rows.append(Row.media(viewController: viewController))
         rows.append(Row.comments(viewController: viewController))
+
+        if FeatureFlag.customPostTypes.enabled && blog.supportsCoreRESTAPI {
+            let pinned = SiteStorageReader.pinnedPostTypes(for: blog)
+            for type in pinned {
+                rows.append(Row.pinnedPostType(type, viewController: viewController))
+            }
+            rows.append(Row.customPostTypes(viewController: viewController))
+        }
 
         let title = isSplitViewDisplayed ? nil : Strings.contentSectionTitle
         return Section(title: title, rows: rows, category: .content)
@@ -668,11 +672,15 @@ private extension BlogDetailsTableViewModel {
             rows.append(Row.pages(viewController: viewController))
         }
 
-        if blog.isSelfHosted {
+        rows.append(Row.comments(viewController: viewController))
+
+        if FeatureFlag.customPostTypes.enabled && blog.supportsCoreRESTAPI {
+            let pinned = SiteStorageReader.pinnedPostTypes(for: blog)
+            for type in pinned {
+                rows.append(Row.pinnedPostType(type, viewController: viewController))
+            }
             rows.append(Row.customPostTypes(viewController: viewController))
         }
-
-        rows.append(Row.comments(viewController: viewController))
 
         let title = Strings.publishSection
         return Section(title: title, rows: rows, category: .content)
@@ -958,6 +966,7 @@ enum BlogDetailsRowKind {
     case viewSite
     case admin
     case siteSettings
+    case pinnedPostType
     case removeSite
 }
 
@@ -1047,10 +1056,21 @@ extension Row {
     static func customPostTypes(viewController: BlogDetailsViewController?) -> Row {
         Row(
             kind: .customPostTypes,
-            title: "Custom Post Types",
-            image: UIImage(systemName: "square.3.layers.3d"),
+            title: CustomPostTypesView.title,
+            image: UIImage(systemName: "ellipsis"),
             action: { [weak viewController] _ in
                 viewController?.showCustomPostTypes()
+            }
+        )
+    }
+
+    static func pinnedPostType(_ type: PinnedPostType, viewController: BlogDetailsViewController?) -> Row {
+        Row(
+            kind: .pinnedPostType,
+            title: type.name,
+            image: UIImage(dashicon: type.icon),
+            action: { [weak viewController] _ in
+                viewController?.showPinnedPostType(type)
             }
         )
     }

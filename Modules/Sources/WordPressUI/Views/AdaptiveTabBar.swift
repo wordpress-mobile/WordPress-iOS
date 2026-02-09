@@ -38,13 +38,13 @@ public class AdaptiveTabBar: UIControl {
 
     // MARK: - Properties
 
-    var items: [any AdaptiveTabBarItem] = [] {
+    public var items: [any AdaptiveTabBarItem] = [] {
         didSet { refreshTabs() }
     }
 
     private var buttons: [TabButton] = []
 
-    private(set) var selectedIndex: Int = 0 {
+    public private(set) var selectedIndex: Int = 0 {
         didSet {
             buttons[oldValue].isSelected = false
             buttons[selectedIndex].isSelected = true
@@ -58,7 +58,7 @@ public class AdaptiveTabBar: UIControl {
     private var indicatorCenterXConstraint: NSLayoutConstraint?
     private var previousWidth: CGFloat?
 
-    public let tabBarHeight: CGFloat = 40
+    public static let tabBarHeight: CGFloat = 40
 
     // MARK: - Initialization
 
@@ -80,7 +80,7 @@ public class AdaptiveTabBar: UIControl {
         stackView.pinEdges()
 
         NSLayoutConstraint.activate([
-            heightAnchor.constraint(equalToConstant: tabBarHeight),
+            heightAnchor.constraint(equalToConstant: AdaptiveTabBar.tabBarHeight),
             stackView.heightAnchor.constraint(equalTo: heightAnchor)
         ])
 
@@ -161,7 +161,7 @@ public class AdaptiveTabBar: UIControl {
 
         // Calculate preferred width for each button
         let preferredWidths = buttons.map {
-            $0.systemLayoutSizeFitting(CGSize(width: UIView.noIntrinsicMetric, height: tabBarHeight)).width
+            $0.systemLayoutSizeFitting(CGSize(width: UIView.noIntrinsicMetric, height: AdaptiveTabBar.tabBarHeight)).width
         }
 
         let maxWidth = preferredWidths.max() ?? 0
@@ -188,7 +188,7 @@ public class AdaptiveTabBar: UIControl {
 
     // MARK: - Selection
 
-    func setSelectedIndex(_ index: Int, animated: Bool = true) {
+    public func setSelectedIndex(_ index: Int, animated: Bool = true) {
         guard items.indices.contains(index) else { return }
 
         UIView.performWithoutAnimation {

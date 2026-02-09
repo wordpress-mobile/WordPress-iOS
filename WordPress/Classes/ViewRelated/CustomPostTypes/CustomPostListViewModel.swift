@@ -7,7 +7,6 @@ import WordPressShared
 
 @MainActor
 final class CustomPostListViewModel: ObservableObject {
-    private let service: WpSelfHostedService
     private let client: WordPressClient
     private let endpoint: PostEndpointType
     let filter: CustomPostListFilter
@@ -37,7 +36,6 @@ final class CustomPostListViewModel: ObservableObject {
         filter: CustomPostListFilter
     ) {
         self.client = client
-        self.service = service
         self.endpoint = endpoint
         self.filter = filter
 
@@ -72,9 +70,7 @@ final class CustomPostListViewModel: ObservableObject {
     }
 
     func handleDataChanges() async {
-        guard let cache = await client.cache else { return }
-
-        let updates = cache.databaseUpdatesPublisher()
+        let updates = await client.cache.databaseUpdatesPublisher()
             .debounce(for: .milliseconds(50), scheduler: DispatchQueue.main)
             .values
         for await hook in updates {

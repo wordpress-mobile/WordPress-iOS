@@ -80,26 +80,26 @@ public actor WordPressClient {
     public let api: any WordPressClientAPI
 
     private var _cache: WordPressApiCache?
-    public var cache: WordPressApiCache? {
+    public var cache: WordPressApiCache {
         get {
-            if _cache == nil {
-                _cache = WordPressApiCache.bootstrap()
+            if let _cache {
+                return _cache
             }
-            return _cache
+            let cache = WordPressApiCache.bootstrap()
+            _cache = cache
+            return cache
         }
     }
 
     private var _service: WpSelfHostedService?
-    public var service: WpSelfHostedService? {
-        get {
-            if _service == nil, let cache {
-                do {
-                    _service = try api.createSelfHostedService(cache: cache)
-                } catch {
-                    NSLog("Failed to create service: \(error)")
-                }
+    public var service: WpSelfHostedService {
+        get throws {
+            if let _service {
+                return _service
             }
-            return _service
+            let service = try api.createSelfHostedService(cache: cache)
+            _service = service
+            return service
         }
     }
 

@@ -230,7 +230,7 @@ private extension CustomPostEditorViewController {
 
         // Refresh post in the background. This ensures the post list is up-to-date with the new changes.
         Task {
-            try await client.service?.posts().refreshPost(postId: post.id, endpointType: endpoint)
+            try await client.service.posts().refreshPost(postId: post.id, endpointType: endpoint)
         }
     }
 

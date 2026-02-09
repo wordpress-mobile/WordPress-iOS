@@ -4,9 +4,9 @@ import WordPressAPIInternal
 import WordPressApiCache
 
 extension WordPressApiCache {
-    static func bootstrap() -> WordPressApiCache? {
-        let instance: WordPressApiCache? = .onDiskCache() ?? .memoryCache()
-        instance?.startListeningForUpdates()
+    static func bootstrap() -> WordPressApiCache {
+        let instance: WordPressApiCache = .onDiskCache() ?? .memoryCache()
+        instance.startListeningForUpdates()
         return instance
     }
 
@@ -59,14 +59,10 @@ extension WordPressApiCache {
         return cache
     }
 
-    private static func memoryCache() -> WordPressApiCache? {
-        do {
-            let cache = try WordPressApiCache()
-            _ = try cache.performMigrations()
-            return cache
-        } catch {
-            NSLog("Failed to create memory cache: \(error)")
-            return nil
-        }
+    private static func memoryCache() -> WordPressApiCache {
+        // Creating an in-memory database should always succeed.
+        let cache = try! WordPressApiCache()
+        _ = try! cache.performMigrations()
+        return cache
     }
 }
