@@ -153,8 +153,8 @@ final class BlogDashboardViewModel {
         warmUpEditorIfNeeded(for: blog)
     }
 
-    func clearEditorCache(_ completion: @escaping () -> Void) {
-        EditorDependencyManager.shared.invalidate(for: self.blog, completion: completion)
+    func clearEditorCache() async {
+        await EditorDependencyManager.shared.invalidate(for: TaggedManagedObjectID(self.blog))
     }
 
     /// Call the API to return cards for the current blog
@@ -205,12 +205,12 @@ private extension BlogDashboardViewModel {
         // WebKit warmup - only needed once per blog (shaves ~100-200ms)
         if blog.objectID != Self.lastWarmedUpBlogID {
             Self.lastWarmedUpBlogID = blog.objectID
-            let configuration = EditorConfiguration(blog: blog)
+            let configuration = EditorConfiguration(blog: blog, postType: .post)
             GutenbergKit.EditorViewController.warmup(configuration: configuration)
         }
 
         // Data prefetch - always call to allow EditorDependencyManager to detect flag changes
-        EditorDependencyManager.shared.prefetchDependencies(for: blog)
+        EditorDependencyManager.shared.prefetchDependencies(for: blog, postType: .post)
     }
 
     func registerNotifications() {

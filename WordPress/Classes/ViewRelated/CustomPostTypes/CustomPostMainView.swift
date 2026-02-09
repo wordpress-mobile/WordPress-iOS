@@ -85,6 +85,17 @@ struct CustomPostMainView: View {
                 filterMenu
             }
         }
+        .task {
+            EditorDependencyManager.shared
+                .prefetchDependencies(
+                    for: blog,
+                    postType: .init(
+                        postType: details.slug,
+                        restBase: details.restBase,
+                        restNamespace: details.restNamespace
+                    )
+                )
+        }
     }
 
     private var filterMenu: some View {

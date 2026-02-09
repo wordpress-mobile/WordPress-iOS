@@ -5,7 +5,7 @@ import WordPressShared
 import Support
 
 extension EditorConfiguration {
-    init(blog: Blog, postType: PostTypeDetails = .post, keychain: KeychainAccessible = KeychainUtils()) {
+    init(blog: Blog, postType: PostTypeDetails, keychain: KeychainAccessible = KeychainUtils()) {
         let selfHostedApiUrl = blog.restApiRootURL ?? blog.url(withPath: "wp-json/")
         let applicationPassword = try? blog.getApplicationToken(using: keychain)
         let shouldUseWPComRestApi = applicationPassword == nil && blog.isAccessibleThroughWPCom()

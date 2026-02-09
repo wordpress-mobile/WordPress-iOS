@@ -1,7 +1,9 @@
 import Foundation
 import GutenbergKit
+import os
 import WordPressCore
 import WordPressData
+@preconcurrency import Combine
 
 /// Manages prefetched editor dependencies to enable fast editor loading.
 ///
@@ -26,19 +28,25 @@ final class EditorDependencyManager: Sendable {
 
     static let shared = EditorDependencyManager()
 
-    /// Cached dependencies keyed by blog's ObjectID string representation.
-    private let cache = LockingHashMap<EditorDependencies>()
+    private let state = OSAllocatedUnfairLock(initialState: State())
 
-    /// Tracks the `newGutenbergPlugins` flag value at the time the cache was last populated.
-    /// Used to detect when the flag changes and invalidate all stale entries.
-    private let pluginsFlagLock = NSLock()
-    private var _lastPluginsFlagValue: Bool?
+    private struct State: Sendable {
+        var cache: [CacheKey: EditorDependencies] = [:]
+        var prefetchTasks: [CacheKey: Task<Void, Never>] = [:]
+        var invalidationTasks: [TaggedManagedObjectID<Blog>: Task<Void, Never>] = [:]
+        var capabilityTasks: [TaggedManagedObjectID<Blog>: Task<Void, Never>] = [:]
+        var featureFlagObserver: AnyCancellable?
+    }
 
-    /// Currently running prefetch tasks, keyed by blog's ObjectID string.
-    private let prefetchTasks = LockingTaskHashMap<Void, Never>()
+    private struct CacheKey: Hashable, Sendable {
+        let blogID: TaggedManagedObjectID<Blog>
+        let postType: PostTypeDetails
 
-    /// Currently-running cache-clearing tasks
-    private let invalidationTasks = LockingTaskHashMap<Void, Never>()
+        init(blog: Blog, postType: PostTypeDetails) {
+            self.blogID = TaggedManagedObjectID(blog)
+            self.postType = postType
+        }
+    }
 
     private init() {}
 
@@ -49,9 +57,9 @@ final class EditorDependencyManager: Sendable {
     ///
     /// - Parameter blog: The blog to get dependencies for.
     /// - Returns: Cached `EditorDependencies` if available, otherwise `nil`.
-    func dependencies(for blog: Blog) -> EditorDependencies? {
-        let key = cacheKey(for: blog)
-        return cache[key]
+    func dependencies(for blog: Blog, postType: PostTypeDetails) -> EditorDependencies? {
+        let key = CacheKey(blog: blog, postType: postType)
+        return state.withLock { $0.cache[key] }
     }
 
     /// Prefetches editor dependencies for the given blog in the background.
@@ -62,8 +70,8 @@ final class EditorDependencyManager: Sendable {
     ///
     /// - Parameter blog: The blog to prefetch dependencies for.
     @MainActor
-    func prefetchDependencies(for blog: Blog) async {
-        await _prefetchDependencies(for: blog)?.value
+    func prefetchDependencies(for blog: Blog, postType: PostTypeDetails) async {
+        await _prefetchDependencies(for: blog, postType: postType)?.value
     }
 
     /// Schedule prefetching editor dependencies for the given blog in the background.
@@ -75,51 +83,53 @@ final class EditorDependencyManager: Sendable {
     ///
     /// - Parameter blog: The blog to prefetch dependencies for.
     @MainActor
-    func prefetchDependencies(for blog: Blog) {
-        _prefetchDependencies(for: blog)
+    func prefetchDependencies(for blog: Blog, postType: PostTypeDetails) {
+        _prefetchDependencies(for: blog, postType: postType)
     }
 
     @discardableResult
-    private func _prefetchDependencies(for blog: Blog) -> Task<Void, Never>? {
-        let key = cacheKey(for: blog)
+    private func _prefetchDependencies(for blog: Blog, postType: PostTypeDetails) -> Task<Void, Never>? {
+        let key = CacheKey(blog: blog, postType: postType)
 
-        // Don't start a new prefetch if one is already running
-        if prefetchTasks[key] != nil {
+        let shouldStartPrefetch = state.withLock { state -> Bool in
+            observeFeatureFlagChanges(state: &state)
+
+            if state.prefetchTasks[key] != nil {
+                return false
+            }
+
+            if state.cache[key] != nil {
+                return false
+            }
+
+            return true
+        }
+
+        guard shouldStartPrefetch else {
             return nil
         }
 
-        // Check if the plugins flag changed since we last cached
-        let currentPluginsFlagValue = RemoteFeatureFlag.newGutenbergPlugins.enabled()
-        let lastFlagValue = pluginsFlagLock.withLock { _lastPluginsFlagValue }
-        if let lastFlagValue, lastFlagValue != currentPluginsFlagValue {
-            // Flag changed - invalidate all cached entries
-            DDLogInfo("EditorDependencyManager: Plugins flag changed (\(lastFlagValue) -> \(currentPluginsFlagValue)), invalidating all cached dependencies")
-            cache.removeAll()
-            prefetchTasks.removeAll()
-        }
-
-        // Don't prefetch if we already have cached dependencies
-        if cache[key] != nil {
-            return nil
-        }
-
-        let configuration = EditorConfiguration(blog: blog)
+        let configuration = EditorConfiguration(blog: blog, postType: postType)
         let service = EditorService(configuration: configuration)
 
         let task = Task {
             do {
                 let dependencies = try await service.prepare()
-                self.cache[key] = dependencies
-                self.pluginsFlagLock.withLock { self._lastPluginsFlagValue = currentPluginsFlagValue }
+                self.state.withLock { state in
+                    state.cache[key] = dependencies
+                }
             } catch {
-                // Prefetch failed - editor will fall back to async loading
                 DDLogError("EditorDependencyManager: Failed to prefetch dependencies: \(error)")
             }
 
-            self.prefetchTasks.removeValue(forKey: key)
+            _ = self.state.withLock { state in
+                state.prefetchTasks.removeValue(forKey: key)
+            }
         }
 
-        prefetchTasks[key] = task
+        state.withLock { state in
+            state.prefetchTasks[key] = task
+        }
 
         return task
     }
@@ -131,39 +141,72 @@ final class EditorDependencyManager: Sendable {
     /// `completion` is guaranteed to run on the main actor.
     ///
     /// - Parameter blog: The blog to invalidate cache for.
-    @MainActor
-    func invalidate(for blog: Blog, completion: @escaping () -> Void) {
-        let key = cacheKey(for: blog)
+    func invalidate(for blogID: TaggedManagedObjectID<Blog>) async {
+        let shouldStart = state.withLock {
+            $0.invalidationTasks[blogID] == nil
+        }
 
-        // Don't allow more than one concurrent invalidation
-        if self.invalidationTasks[key] != nil {
+        guard shouldStart else {
             return
         }
 
-        let configuration = EditorConfiguration(blog: blog)
+        let task = Task {
+            await _invalidate(for: blogID)
 
-        self.invalidationTasks[key] = Task {
+            self.state.withLock { state in
+                _ = state.invalidationTasks.removeValue(forKey: blogID)
+            }
+        }
 
-            cache.removeValue(forKey: key)
-            prefetchTasks.removeValue(forKey: key)
+        state.withLock { state in
+            state.invalidationTasks[blogID] = task
+        }
 
+        await task.value
+    }
+
+    private func _invalidate(for blogID: TaggedManagedObjectID<Blog>) async {
+        let keysToInvalidate = self.state.withLock { state in
+            let keys = state.cache.keys.filter { $0.blogID == blogID }
+
+            for key in keys {
+                state.prefetchTasks[key]?.cancel()
+                state.cache.removeValue(forKey: key)
+                state.prefetchTasks.removeValue(forKey: key)
+            }
+
+            return keys
+        }
+
+        let configurations: [EditorConfiguration]
+        do {
+            configurations = try await ContextManager.shared.performQuery { context in
+                let blog = try context.existingObject(with: blogID)
+                return keysToInvalidate.map { EditorConfiguration(blog: blog, postType: $0.postType) }
+            }
+        } catch {
+            DDLogError("Failed to find blog for \(blogID): \(error)")
+            return
+        }
+
+        for configuration in configurations {
             do {
                 try await EditorService(configuration: configuration).purge()
             } catch {
-                DDLogError("EditorDependencyManager: Failed to clear cache: \(error)")
+                DDLogError("EditorDependencyManager: Failed to clear cache for \(configuration.postType.postType): \(error)")
             }
-
-            completion()
-            self.invalidationTasks[key] = nil
         }
     }
 
     /// Clears all cached dependencies.
-    func invalidateAll() {
-        cache.removeAll()
-        pluginsFlagLock.withLock { _lastPluginsFlagValue = nil }
-        prefetchTasks.removeAll()
-        // No need to use `removeAll` for the `invalidationTasks`
+    func invalidateAll() async {
+        let blogIDs = state.withLock { state in
+            Set(state.cache.keys.map(\.blogID))
+        }
+
+        for blogID in blogIDs {
+            await invalidate(for: blogID)
+        }
     }
 
     /// Query the server for its editor capabilities, and update the local editor settings store with the result.
@@ -194,25 +237,42 @@ final class EditorDependencyManager: Sendable {
     /// Returns immediately and ignores errors – prefer the `async` version of this method.
     ///
     public func fetchEditorCapabilities(for blog: Blog) {
-        let key = blog.locallyUniqueId + "-capabilities"
+        let blogID = TaggedManagedObjectID(blog)
 
-        // Don't allow more than one concurrent invalidation
-        if self.prefetchTasks[key] != nil {
+        let isAlreadyRunning = state.withLock { state in
+            state.capabilityTasks[blogID] != nil
+        }
+
+        guard !isAlreadyRunning else {
             return
         }
 
-        self.prefetchTasks[key] = Task {
+        let task = Task {
             do {
                 try await self.fetchEditorCapabilities(for: blog)
             } catch {
                 DDLogError("EditorDependencyManager: Failed to fetch editor capabilities: \(error)")
             }
 
-            self.prefetchTasks[key] = nil
+            self.state.withLock { state in
+                _ = state.capabilityTasks.removeValue(forKey: blogID)
+            }
+        }
+
+        state.withLock { state in
+            state.capabilityTasks[blogID] = task
         }
     }
 
-    private func cacheKey(for blog: Blog) -> String {
-        blog.objectID.uriRepresentation().absoluteString
+    private func observeFeatureFlagChanges(state: inout State) {
+        guard state.featureFlagObserver == nil else { return }
+        state.featureFlagObserver = NotificationCenter.default
+            .publisher(for: FeatureFlagOverrideStore.didChangeNotification)
+            .filter { ($0.userInfo?[FeatureFlagOverrideStore.notificationFeatureFlagKey] as? String) == RemoteFeatureFlag.newGutenberg.key }
+            .sink { [weak self] _ in
+                Task {
+                    await self?.invalidateAll()
+                }
+            }
     }
 }
