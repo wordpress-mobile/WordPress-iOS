@@ -9,6 +9,7 @@
 * [*] Stats: Minor design improvements and simplifcations [#25215], [#25214]
 * [*] Insights: Fix empty posting activity [#25219]
 * [*] Activity Logs: Minor visual improvements [#25220]
+* [*] Reader: The post tags are now displayed in the original order [#25229]
 
 
 26.6
