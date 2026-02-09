@@ -5,6 +5,8 @@ import SwiftUI
 import WordPressData
 import WordPressFlux
 import TipKit
+import PulseUI
+import Support
 
 struct DebugMenuView: View {
     @StateObject private var viewModel = DebugMenuViewModel()
@@ -50,6 +52,14 @@ struct DebugMenuView: View {
             DebugFeatureFlagsView()
         } label: {
             DebugMenuRow(systemImage: "flag.fill", color: .pink, title: Strings.featureFlags)
+        }
+        if ExtensiveLogging.enabled {
+            NavigationLink {
+                PulseUI.ConsoleView()
+                    .closeButtonHidden()
+            } label: {
+                DebugMenuRow(systemImage: "message.fill", color: .green, title: Strings.logs)
+            }
         }
         NavigationLink() {
             BooleanUserDefaultsDebugView()
@@ -131,12 +141,10 @@ struct DebugMenuView: View {
     private func presentAuthenticatedWebView() {
         guard let url = URL(string: webViewURL) else {
             preconditionFailure("Invalid URL")
-            return
         }
 
         guard let currentBlog = Blog.lastUsed(in: ContextManager.shared.mainContext) else {
             preconditionFailure("Can't get current blog")
-            return
         }
 
         let webViewController = WebViewControllerFactory.controller(
@@ -150,7 +158,6 @@ struct DebugMenuView: View {
     private func presentUnauthenticatedWebView() {
         guard let url = URL(string: webViewURL) else {
             preconditionFailure("Invalid URL")
-            return
         }
 
         let webViewController = WebViewControllerFactory.controller(url: url, source: "debug_menu")
@@ -280,6 +287,7 @@ private enum Strings {
     static let webViewRow = NSLocalizedString("debugMenu.webView.row", value: "Browse as loggedin account", comment: "Debug menu item to present an authenticated web view for the currently displayed site")
     static let unauthenticatedWebViewRow = NSLocalizedString("debugMenu.webView.unauthenticatedRow", value: "Open a web browser", comment: "Debug menu item to present an unauthenticated web view")
     static let webViewDialogTitle = NSLocalizedString("debugMenu.webView.dialogTitle", value: "Enter URL", comment: "Title for web view URL input dialog")
+    static let logs = NSLocalizedString("debugMenu.item.logs", value: "Logs", comment: "Debug Menu item title")
 
     static let showAllTips = NSLocalizedString("debugMenu.showAllTips", value: "Show All Tips", comment: "Debug Menu action for TipKit")
     static let hideAllTips = NSLocalizedString("debugMenu.hideAllTips", value: "Hide All Tips", comment: "Debug Menu action for TipKit")
