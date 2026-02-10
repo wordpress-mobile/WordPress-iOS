@@ -38,6 +38,59 @@ WordPress-iOS uses a modular architecture with the main app and separate Swift p
 - **Accessibility**: Use proper accessibility labels and traits
 - **Localization**: follow best practices from @docs/localization.md
 
+## Build & Test
+
+### Prerequisites
+
+- Xcode version in `.xcode-version`, Ruby version in `.ruby-version`
+- Run `rake dependencies` once after cloning to install gems and download Gutenberg xcframeworks
+
+### Rake Commands
+
+| Task | Command |
+|------|---------|
+| Install dependencies | `rake dependencies` |
+| Build (compile check) | `rake build` |
+| Run all unit tests | `rake test` |
+| Lint | `rake lint` |
+| Auto-fix lint issues | `rake lintfix` |
+
+`rake build` and `rake test` build the `WordPress` scheme for iPhone 16 simulator.
+The full build is slow — prefer targeted checks when possible.
+
+### Targeted Testing
+
+Run a single test class or method without rebuilding everything:
+
+```bash
+xcodebuild test \
+  -workspace WordPress.xcworkspace \
+  -scheme WordPress \
+  -destination 'platform=iOS Simulator,name=iPhone 16' \
+  -only-testing:'WordPressUnitTests/YourTestClass/testMethod' \
+  | bundle exec xcpretty
+```
+
+### Modules
+
+Modules under `Modules/` are an SPM package but target **iOS only** — `swift test` does **not** work from the command line.
+Test targets are defined in `Modules/Package.swift` and run via the app's test plans through `xcodebuild`.
+
+### SwiftLint
+
+Config: `.swiftlint.yml` (opt-in rules only).
+Run via `rake lint`.
+
+## Verifying Changes
+
+After making changes, close the feedback loop:
+
+1. **Lint** — `rake lint` (fast, catches style and localization errors)
+2. **Build** — `rake build` (catches type errors without running tests)
+3. **Test** — pick the narrowest scope:
+   - Know the test? → `xcodebuild test ... -only-testing:'Target/Class/method'`
+   - Full suite → `rake test`
+
 ## Coding Standards
 - Follow Swift API Design Guidelines
 - Use strict access control modifiers where possible
