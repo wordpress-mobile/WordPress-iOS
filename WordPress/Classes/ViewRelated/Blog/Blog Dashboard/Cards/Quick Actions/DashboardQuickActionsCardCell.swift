@@ -137,7 +137,7 @@ final class DashboardQuickActionsCardCell: UICollectionViewCell, Reusable, UITab
             localizedFeatureName: feature,
             presentingViewController: parentViewController
         ) { client in
-            PinnedPostTypeView(client: client, blog: blog, postType: postType)
+            PinnedPostTypeView(blog: blog, service: CustomPostTypeService(client: client, blog: blog), postType: postType)
         }
         let controller = UIHostingController(rootView: rootView)
         controller.navigationItem.largeTitleDisplayMode = .never

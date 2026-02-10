@@ -11,33 +11,29 @@ struct CustomPostTypesView: View {
         Strings.title
     }
 
-    let client: WordPressClient
     let blog: Blog
+    let service: CustomPostTypeService
 
-    // The following state should only be initiated once.
-    @State private var service: WpSelfHostedService?
-    @State private var collection: PostTypeCollectionWithEditContext?
-
-    @State private var types: [(PostEndpointType, PostTypeDetailsWithEditContext)] = []
+    @State private var types: [PostTypeDetailsWithEditContext] = []
     @State private var isLoading: Bool = true
     @State private var error: Error?
     @State private var isEditing = false
 
     @SiteStorage private var pinnedTypes: [PinnedPostType]
 
-    init(client: WordPressClient, blog: Blog) {
-        self.client = client
+    init(blog: Blog, service: CustomPostTypeService) {
         self.blog = blog
-        _pinnedTypes = .pinnedPostTypes(for: blog)
+        self.service = service
+        _pinnedTypes = .pinnedPostTypes(for: service.blog)
     }
 
     var body: some View {
         List {
-            ForEach(types, id: \.1.slug) { (type, details) in
+            ForEach(types, id: \.slug) { details in
                 if isEditing {
                     editingRow(for: details)
                 } else {
-                    navigationRow(for: type, details: details)
+                    navigationRow(for: details)
                 }
             }
         }
@@ -66,21 +62,19 @@ struct CustomPostTypesView: View {
             }
         }
         .task {
-            await setUp()
-        }
-        .task(id: collection.flatMap(ObjectIdentifier.init)) {
-            guard let collection else { return }
+            do {
+                types = try await service.customTypes()
+            } catch {
+                DDLogError("Failed to load cached post types: \(error)")
+            }
 
-            await refresh()
-
-            isLoading = self.types.isEmpty
+            isLoading = types.isEmpty
             defer { isLoading = false }
 
             do {
-                _ = try await collection.fetch()
-                await refresh()
+                try await service.refresh()
+                types = try await service.customTypes()
             } catch {
-                DDLogError("Failed to query stored post types: \(error)")
                 if types.isEmpty {
                     self.error = error
                 } else {
@@ -107,11 +101,11 @@ struct CustomPostTypesView: View {
         }
     }
 
-    private func navigationRow(for type: PostEndpointType, details: PostTypeDetailsWithEditContext) -> some View {
+    private func navigationRow(for details: PostTypeDetailsWithEditContext) -> some View {
         let isPinned = pinnedTypes.contains { $0.slug == details.slug }
         return NavigationLink {
-            if let service {
-                CustomPostTabView(client: client, service: service, endpoint: type, details: details, blog: blog)
+            if let wpService = service.wpService {
+                CustomPostTabView(client: service.client, service: wpService, endpoint: details.toPostEndpointType(), details: details, blog: blog)
             }
         } label: {
             HStack {
@@ -132,43 +126,6 @@ struct CustomPostTypesView: View {
             pinnedTypes.remove(at: index)
         } else {
             pinnedTypes.append(PinnedPostType(slug: details.slug, name: details.name, icon: details.icon))
-        }
-    }
-
-    private func setUp() async {
-        if service == nil {
-            do {
-                service = try await client.service
-            } catch {
-                self.isLoading = false
-                self.error = error
-            }
-        }
-
-        if let service, collection == nil {
-            collection = service.postTypes().createPostTypeCollectionWithEditContext()
-        }
-    }
-
-    private func refresh() async {
-        guard let collection else { return }
-
-        do {
-            self.types = try await collection.loadData()
-                .compactMap {
-                    let details = $0.data
-                    let endpoint = details.toPostEndpointType()
-                    if case .custom = endpoint, details.slug != "attachment" {
-                        return (endpoint, details)
-                    }
-                    return nil
-                }
-                .sorted {
-                    $0.1.slug < $1.1.slug
-                }
-        } catch {
-            DDLogError("Failed to fetch post types: \(error)")
-            self.error = error
         }
     }
 }

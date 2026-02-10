@@ -87,8 +87,6 @@ extension BlogDetailsViewController {
     }
 
     public func showCustomPostTypes() {
-        guard let site = try? WordPressSite(blog: blog), case .selfHosted = site else { return }
-
         let feature = NSLocalizedString(
             "applicationPasswordRequired.feature.customPosts",
             value: "Custom Post Types",
@@ -98,7 +96,7 @@ extension BlogDetailsViewController {
             blog: blog,
             localizedFeatureName: feature,
             presentingViewController: self) { [blog] client in
-                CustomPostTypesView(client: client, blog: blog)
+                CustomPostTypesView(blog: blog, service: CustomPostTypeService(client: client, blog: blog))
             }
         let controller = UIHostingController(rootView: rootView)
         controller.navigationItem.largeTitleDisplayMode = .never
@@ -106,13 +104,17 @@ extension BlogDetailsViewController {
     }
 
     func syncPostTypes() {
-        guard FeatureFlag.customPostTypes.enabled, let site = try? WordPressSite(blog: blog), case .selfHosted = site else { return }
-
-        let client = WordPressClientFactory.shared.instance(for: site)
-        Task {
+        guard let service = CustomPostTypeService(blog: blog) else { return }
+        Task { @MainActor [weak self] in
             do {
-                let service = try await client.service
-                _ = try await service.postTypes().syncPostTypes()
+                try await service.refresh()
+
+                if let self {
+                    let pinnedCount = SiteStorageAccess.pinnedPostTypes(for: TaggedManagedObjectID(blog)).count
+                    tableViewModel?.showMorePostTypes = try await service.customTypes().count > pinnedCount
+                    configureTableViewData()
+                    reloadTableViewPreservingSelection()
+                }
             } catch {
                 DDLogError("Failed to sync post types: \(error)")
             }
@@ -131,7 +133,7 @@ extension BlogDetailsViewController {
             blog: blog,
             localizedFeatureName: feature,
             presentingViewController: self) { [blog] client in
-                PinnedPostTypeView(client: client, blog: blog, postType: postType)
+                PinnedPostTypeView(blog: blog, service: CustomPostTypeService(client: client, blog: blog), postType: postType)
             }
         let controller = UIHostingController(rootView: rootView)
         controller.navigationItem.largeTitleDisplayMode = .never

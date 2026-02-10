@@ -54,6 +54,8 @@ private struct Section {
         }
     }
 
+    var showMorePostTypes = false
+
     var useSiteMenuStyle = false
 
     @objc public init(blog: Blog, viewController: BlogDetailsViewController) {
@@ -593,11 +595,13 @@ private extension BlogDetailsTableViewModel {
         rows.append(Row.comments(viewController: viewController))
 
         if FeatureFlag.customPostTypes.enabled && blog.supportsCoreRESTAPI {
-            let pinned = SiteStorageReader.pinnedPostTypes(for: blog)
+            let pinned = SiteStorageAccess.pinnedPostTypes(for: TaggedManagedObjectID(blog))
             for type in pinned {
                 rows.append(Row.pinnedPostType(type, viewController: viewController))
             }
-            rows.append(Row.customPostTypes(viewController: viewController))
+            if showMorePostTypes {
+                rows.append(Row.customPostTypes(viewController: viewController))
+            }
         }
 
         let title = isSplitViewDisplayed ? nil : Strings.contentSectionTitle
@@ -675,11 +679,13 @@ private extension BlogDetailsTableViewModel {
         rows.append(Row.comments(viewController: viewController))
 
         if FeatureFlag.customPostTypes.enabled && blog.supportsCoreRESTAPI {
-            let pinned = SiteStorageReader.pinnedPostTypes(for: blog)
+            let pinned = SiteStorageAccess.pinnedPostTypes(for: TaggedManagedObjectID(blog))
             for type in pinned {
                 rows.append(Row.pinnedPostType(type, viewController: viewController))
             }
-            rows.append(Row.customPostTypes(viewController: viewController))
+            if showMorePostTypes {
+                rows.append(Row.customPostTypes(viewController: viewController))
+            }
         }
 
         let title = Strings.publishSection

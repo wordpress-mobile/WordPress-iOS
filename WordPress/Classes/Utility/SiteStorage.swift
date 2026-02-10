@@ -22,16 +22,27 @@ struct SiteStorage<Value: Codable>: DynamicProperty {
     init(wrappedValue: Value, _ key: String, blog: TaggedManagedObjectID<Blog>,
          store: UserDefaults? = nil) {
         self.defaultValue = wrappedValue
-        let scopedKey = SiteStorageReader.scopedKey(key, blog: blog)
+        let scopedKey = SiteStorageAccess.scopedKey(key, blog: blog)
         _data = AppStorage(wrappedValue: Data(), scopedKey, store: store)
     }
 }
 
-enum SiteStorageReader {
-    static func read<T: Decodable>(_ type: T.Type, key: String, blog: Blog) -> T? {
-        let scopedKey = scopedKey(key, blog: TaggedManagedObjectID(blog))
+enum SiteStorageAccess {
+    static func read<T: Decodable>(_ type: T.Type, key: String, blog: TaggedManagedObjectID<Blog>) -> T? {
+        let scopedKey = scopedKey(key, blog: blog)
         guard let data = UserDefaults.standard.data(forKey: scopedKey) else { return nil }
         return try? JSONDecoder().decode(T.self, from: data)
+    }
+
+    static func write<T: Encodable>(_ value: T, key: String, blog: TaggedManagedObjectID<Blog>) {
+        let scopedKey = scopedKey(key, blog: blog)
+        let data = (try? JSONEncoder().encode(value)) ?? Data()
+        UserDefaults.standard.set(data, forKey: scopedKey)
+    }
+
+    static func exists(key: String, blog: TaggedManagedObjectID<Blog>) -> Bool {
+        let scopedKey = scopedKey(key, blog: blog)
+        return UserDefaults.standard.object(forKey: scopedKey) != nil
     }
 
     fileprivate static var prefix: String { "site-storage" }

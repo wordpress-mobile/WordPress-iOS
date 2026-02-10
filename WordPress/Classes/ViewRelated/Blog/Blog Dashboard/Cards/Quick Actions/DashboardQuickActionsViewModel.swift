@@ -29,7 +29,7 @@ final class DashboardQuickActionsViewModel {
             }
 
         if FeatureFlag.customPostTypes.enabled && blog.supportsCoreRESTAPI {
-            let pinned = SiteStorageReader.pinnedPostTypes(for: blog)
+            let pinned = SiteStorageAccess.pinnedPostTypes(for: TaggedManagedObjectID(blog))
                 .map { DashboardQuickAction.postType($0) }
             if let moreIndex = actions.firstIndex(of: .more) {
                 actions.insert(contentsOf: pinned, at: moreIndex)
@@ -48,6 +48,19 @@ final class DashboardQuickActionsViewModel {
 
         if self.items != items {
             self.items = items
+        }
+    }
+
+    func syncCustomPostTypes() {
+        guard let service = CustomPostTypeService(blog: blog) else { return }
+        Task { @MainActor [weak self] in
+            do {
+                try await service.refresh()
+
+                self?.refresh()
+            } catch {
+                DDLogError("Failed to refresh custom post types: \(error)")
+            }
         }
     }
 

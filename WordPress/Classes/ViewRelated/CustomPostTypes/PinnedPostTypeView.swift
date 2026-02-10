@@ -7,27 +7,28 @@ import WordPressAPIInternal
 import WordPressUI
 
 struct PinnedPostTypeView: View {
-    let client: WordPressClient
     let blog: Blog
+    let customPostTypeService: CustomPostTypeService
     let postType: PinnedPostType
 
     @SiteStorage private var pinnedTypes: [PinnedPostType]
 
-    @State private var resolved: (WpSelfHostedService, PostTypeDetailsWithEditContext)?
+    @State private var service: WpSelfHostedService?
+    @State private var details: PostTypeDetailsWithEditContext?
     @State private var isLoading = true
     @State private var error: Error?
 
-    init(client: WordPressClient, blog: Blog, postType: PinnedPostType) {
-        self.client = client
+    init(blog: Blog, service: CustomPostTypeService, postType: PinnedPostType) {
         self.blog = blog
+        self.customPostTypeService = service
         self.postType = postType
-        _pinnedTypes = .pinnedPostTypes(for: blog)
+        _pinnedTypes = .pinnedPostTypes(for: TaggedManagedObjectID(blog))
     }
 
     var body: some View {
         Group {
-            if let (service, details) = resolved {
-                CustomPostTabView(client: client, service: service, endpoint: details.toPostEndpointType(), details: details, blog: blog)
+            if let details, let wpService = customPostTypeService.wpService {
+                CustomPostTabView(client: customPostTypeService.client, service: wpService, endpoint: details.toPostEndpointType(), details: details, blog: blog)
             } else if isLoading {
                 ProgressView()
                     .progressViewStyle(.circular)
@@ -50,28 +51,17 @@ struct PinnedPostTypeView: View {
 
     private func resolve() async {
         defer { isLoading = false }
-
-        let slug = postType.slug
-
         do {
-            let service = try await client.service
-            let postTypes = service.postTypes()
+            service = try await customPostTypeService.client.service
 
-            if let details = postTypes.getBySlug(slug: slug) {
-                resolved = (service, details)
-                return
-            }
-
-            _ = try await postTypes.syncPostTypes()
-
-            if let details = postTypes.getBySlug(slug: slug) {
-                resolved = (service, details)
+            if let details = try await customPostTypeService.resolvePostType(slug: postType.slug) {
+                self.details = details
             } else {
-                pinnedTypes.removeAll { $0.slug == slug }
+                pinnedTypes.removeAll { $0.slug == postType.slug }
                 self.error = PostTypeNotFoundError(name: postType.name)
             }
         } catch {
-            DDLogError("Failed to resolve post type '\(slug)': \(error)")
+            DDLogError("Failed to resolve post type '\(postType.slug)': \(error)")
             self.error = error
         }
     }
@@ -84,14 +74,22 @@ struct PinnedPostType: Codable, Hashable {
 }
 
 extension SiteStorage where Value == [PinnedPostType] {
-    static func pinnedPostTypes(for blog: Blog) -> Self {
-        SiteStorage(wrappedValue: [], "pinned-post-types", blog: TaggedManagedObjectID(blog))
+    static func pinnedPostTypes(for blog: TaggedManagedObjectID<Blog>) -> Self {
+        SiteStorage(wrappedValue: [], "pinned-post-types", blog: blog)
     }
 }
 
-extension SiteStorageReader {
-    static func pinnedPostTypes(for blog: Blog) -> [PinnedPostType] {
+extension SiteStorageAccess {
+    static func pinnedPostTypes(for blog: TaggedManagedObjectID<Blog>) -> [PinnedPostType] {
         read([PinnedPostType].self, key: "pinned-post-types", blog: blog) ?? []
+    }
+
+    static func writePinnedPostTypes(_ value: [PinnedPostType], for blog: TaggedManagedObjectID<Blog>) {
+        write(value, key: "pinned-post-types", blog: blog)
+    }
+
+    static func pinnedPostTypesUpdated(for blog: TaggedManagedObjectID<Blog>) -> Bool {
+        exists(key: "pinned-post-types", blog: blog)
     }
 }
 
