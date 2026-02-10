@@ -133,7 +133,7 @@ struct CustomPostTypesView: View {
 private enum Strings {
     static let title = NSLocalizedString(
         "customPostTypes.title",
-        value: "More Content",
+        value: "More",
         comment: "Title for the Custom Post Types screen"
     )
 
