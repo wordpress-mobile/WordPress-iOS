@@ -106,9 +106,9 @@ private extension CustomPostEditorViewController {
                 self?.navigationController?.dismiss(animated: true)
             }
             if post.status == .draft {
-                alert.addAction(UIAlertAction(title: Strings.saveDraft, style: .default, handler: { _ in
+                alert.addAction(UIAlertAction(title: Strings.saveDraft, style: .default, handler: { [weak self] _ in
                     Task {
-                        await self.save(publish: false)
+                        await self?.save(publish: false)
                     }
                 }))
             }
