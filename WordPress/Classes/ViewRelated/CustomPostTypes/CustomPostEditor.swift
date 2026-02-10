@@ -5,7 +5,19 @@ import WordPressData
 import WordPressAPI
 import WordPressAPIInternal
 
-struct CustomPostEditor: UIViewControllerRepresentable {
+struct CustomPostEditor: View {
+    let client: WordPressClient
+    let post: AnyPostWithEditContext
+    let details: PostTypeDetailsWithEditContext
+    let blog: Blog
+
+    var body: some View {
+        ViewControllerWrapper(client: client, post: post, details: details, blog: blog)
+            .ignoresSafeArea()
+    }
+}
+
+private struct ViewControllerWrapper: UIViewControllerRepresentable {
     let client: WordPressClient
     let post: AnyPostWithEditContext
     let details: PostTypeDetailsWithEditContext
