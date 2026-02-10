@@ -152,13 +152,13 @@ private extension CustomPostEditorViewController {
         precondition(post.id > 0, "No new post support yet")
 
         if post.status == .draft {
-            return UIAction(title: "Publish") { [weak self] _ in
+            return UIAction(title: Strings.publish) { [weak self] _ in
                 Task {
                     await self?.save(publish: true)
                 }
             }
         } else {
-            return UIAction(title: "Update") { [weak self] _ in
+            return UIAction(title: Strings.update) { [weak self] _ in
                 Task {
                     await self?.save(publish: false)
                 }
@@ -258,4 +258,6 @@ private enum Strings {
     static let saveDraft = NSLocalizedString("postEditor.moreMenu.saveDraft", value: "Save Draft", comment: "Post Editor / Button in the 'More' menu")
     static let keepEditing = NSLocalizedString("postEditor.closeConfirmationAlert.keepEditing", value: "Keep Editing", comment: "Button to keep the changes in an alert confirming discaring changes")
     static let discardChanges = NSLocalizedString("postEditor.closeConfirmationAlert.discardChanges", value: "Discard Changes", comment: "Button in an alert confirming discaring changes")
+    static let publish = NSLocalizedString("customPostEditor.publishButton.title", value: "Publish", comment: "Title for the publish button in the custom post editor navigation bar")
+    static let update = NSLocalizedString("customPostEditor.updateButton.title", value: "Update", comment: "Title for the update button in the custom post editor navigation bar")
 }
