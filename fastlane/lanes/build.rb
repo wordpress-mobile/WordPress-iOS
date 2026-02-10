@@ -49,6 +49,36 @@ TEST_ANALYTICS_ENVIRONMENT = %w[
 # Lanes related to Building and Testing the code
 #
 platform :ios do
+  # Runs tests locally without CI prerequisites (env files, signing, etc.)
+  #
+  # @option [String] scheme The scheme to test (default: WordPress)
+  # @option [String] device The Simulator device name (default: iPhone 16)
+  # @option [String] ios_version The deployment target version
+  # @option [String] only_testing Specific test target/class/method (e.g. WordPressUnitTests/MyClass/testFoo)
+  # @option [Boolean] clean Whether to clean before building (default: false for incremental builds)
+  #
+  # @example Run all WordPress tests:
+  #   bundle exec fastlane test
+  # @example Run a single test class:
+  #   bundle exec fastlane test only_testing:WordPressUnitTests/MyClass
+  # @example Test the Jetpack scheme:
+  #   bundle exec fastlane test scheme:Jetpack
+  # @example Clean build before testing:
+  #   bundle exec fastlane test clean:true
+  #
+  desc 'Run tests locally'
+  lane :test do |scheme: 'WordPress', device: 'iPhone 16', ios_version: nil, only_testing: nil, clean: false|
+    run_tests(
+      workspace: WORKSPACE_PATH,
+      scheme: scheme,
+      device: device,
+      derived_data_path: DERIVED_DATA_PATH,
+      deployment_target_version: ios_version,
+      only_testing: only_testing,
+      clean: clean
+    )
+  end
+
   # Builds the WordPress app for Testing
   #
   # @option [String] device the name of the Simulator device to run the tests on

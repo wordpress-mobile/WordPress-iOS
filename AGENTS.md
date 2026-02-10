@@ -43,31 +43,54 @@ WordPress-iOS uses a modular architecture with the main app and separate Swift p
 - Xcode version in `.xcode-version`, Ruby version in `.ruby-version`
 - Run `rake dependencies` once after cloning to install gems and download Gutenberg xcframeworks
 
-### Rake Commands
+### Commands
 
 | Task | Command |
 |------|---------|
-stall dependencies | `rake dependencies` |
-| Build (compile check) | `rake build` |
-| Run all unit tests | `rake test` |
+| Install dependencies | `rake dependencies` |
 | Lint | `rake lint` |
 | Auto-fix lint issues | `rake lintfix` |
 
-`rake build` and `rake test` build the `WordPress` scheme for iPhone 16 simulator.
-The full build is slow — prefer targeted checks when possible.
+### Building and Testing
 
-### Targeted Testing
-
-Run a single test class or method without rebuilding everything:
+Use the `test` Fastlane lane for local testing.
+It skips CI prerequisites and reuses `DerivedData/` for incremental builds.
 
 ```bash
-xcodebuild test \
- -workspace WordPress.xcworkspace \
- -scheme WordPress \
- -destination 'platform=iOS Simulator,name=iPhone 16' \
- -only-testing:'WordPressUnitTests/YourTestClass/testMethod' \
- | bundle exec xcpretty
+# Run all tests
+bundle exec fastlane test
+
+# Run a specific test target/class/method (fastest option)
+bundle exec fastlane test only_testing:WordPressCoreTests/LockingHashMapTests
+bundle exec fastlane test only_testing:WordPressTest/SomeClass/testMethod
+
+# Test a different scheme
+bundle exec fastlane test scheme:Jetpack
+
+# Clean build before testing
+bundle exec fastlane test clean:true
 ```
+
+Test targets (use with `only_testing`):
+
+- `WordPressTest` — main app unit tests
+- `WordPressCoreTests` — core module tests
+- `WordPressSharedTests` / `WordPressSharedObjCTests`
+- `WordPressKitTests` / `WordPressAuthenticatorTests`
+- `WordPressUIUnitTests` / `AsyncImageKitTests`
+- `JetpackStatsWidgetsCoreTests` / `WordPressFluxTests`
+
+For a compile-only check without running tests:
+
+```bash
+xcodebuild build \
+  -workspace WordPress.xcworkspace \
+  -scheme WordPress \
+  -destination 'platform=iOS Simulator,name=<device>' \
+  2>&1 | xcbeautify
+```
+
+Pick an available simulator with `xcrun simctl list devices available`.
 
 ### Modules
 
@@ -84,10 +107,8 @@ Run via `rake lint`.
 After making changes, close the feedback loop:
 
 1. **Lint** — `rake lint` (fast, catches style and localization errors)
-2. **Build** — `rake build` (catches type errors without running tests)
-3. **Test** — pick the narrowest scope:
-  - Know the test? → `xcodebuild test ... -only-testing:'Target/Class/method'`
-  - Full suite → `rake test`
+2. **Build** — `xcodebuild build ...` (catches type errors without running tests)
+3. **Test** — `bundle exec fastlane test only_testing:TargetName/Class/method`
 
 ## Coding Standards
 - Follow Swift API Design Guidelines
