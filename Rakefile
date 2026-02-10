@@ -12,15 +12,11 @@ require 'zlib'
 
 RUBY_REPO_VERSION = File.read('./.ruby-version').rstrip
 XCODE_WORKSPACE = 'WordPress.xcworkspace'
-XCODE_SCHEME = 'WordPress'
-XCODE_CONFIGURATION = 'Debug'
 EXPECTED_XCODE_VERSION = File.read('.xcode-version').rstrip
 GUTENBERG_VERSION = 'v1.121.0'
 
 PROJECT_DIR = __dir__
 abort('Project directory contains one or more spaces – unable to continue.') if PROJECT_DIR.include?(' ')
-
-task default: %w[test]
 
 desc 'Install required dependencies'
 task dependencies: %w[dependencies:check assets:check dependencies:gutenberg_xcframeworks]
@@ -175,36 +171,6 @@ CLOBBER << 'vendor'
 desc 'Mocks'
 task :mocks do
   sh "#{File.join(PROJECT_DIR, 'API-Mocks', 'scripts', 'start.sh')} 8282"
-end
-
-desc "Build #{XCODE_SCHEME}"
-task build: [:dependencies] do
-  xcodebuild(:build)
-end
-
-desc "Profile build #{XCODE_SCHEME}"
-task buildprofile: [:dependencies] do
-  ENV['verbose'] = '1'
-  xcodebuild(:build, "OTHER_SWIFT_FLAGS='-Xfrontend -debug-time-compilation -Xfrontend -debug-time-expression-type-checking'")
-end
-
-task timed_build: [:clean] do
-  require 'benchmark'
-  time = Benchmark.measure do
-    Rake::Task['build'].invoke
-  end
-  puts "CPU Time: #{time.total}"
-  puts "Wall Time: #{time.real}"
-end
-
-desc 'Run test suite'
-task test: [:dependencies] do
-  xcodebuild(:build, :test)
-end
-
-desc 'Remove any temporary products'
-task :clean do
-  xcodebuild(:clean)
 end
 
 desc 'Checks the source for style errors'
@@ -639,23 +605,6 @@ end
 # FIXME: This used to add Travis folding formatting, but we no longer use Travis. I'm leaving it here for the moment, but I think we should remove it.
 def fold(_)
   yield
-end
-
-def xcodebuild(*build_cmds)
-  cmd = 'xcodebuild'
-  cmd += " -destination 'platform=iOS Simulator,name=iPhone 16'"
-  cmd += ' -sdk iphonesimulator'
-  cmd += " -workspace #{XCODE_WORKSPACE}"
-  cmd += " -scheme #{XCODE_SCHEME}"
-  cmd += " -configuration #{xcode_configuration}"
-  cmd += ' '
-  cmd += build_cmds.map(&:to_s).join(' ')
-  cmd += ' | bundle exec xcpretty -f `bundle exec xcpretty-travis-formatter` && exit ${PIPESTATUS[0]}' unless ENV['verbose']
-  sh(cmd)
-end
-
-def xcode_configuration
-  ENV.fetch('XCODE_CONFIGURATION') { XCODE_CONFIGURATION }
 end
 
 def command?(command)
