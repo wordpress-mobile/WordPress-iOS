@@ -48,7 +48,20 @@ final class EditorDependencyManager: Sendable {
         }
     }
 
-    private init() {}
+    private init() {
+        state.withLock {
+            $0.featureFlagObserver = NotificationCenter.default
+                .publisher(for: FeatureFlagOverrideStore.didChangeNotification)
+                .filter {
+                    ($0.userInfo?[FeatureFlagOverrideStore.notificationFeatureFlagKey] as? RemoteFeatureFlag) == .newGutenberg
+                }
+                .sink { [weak self] _ in
+                    Task {
+                        await self?.invalidateAll()
+                    }
+                }
+        }
+    }
 
     /// Returns cached dependencies for the given blog, if available.
     ///
@@ -92,8 +105,6 @@ final class EditorDependencyManager: Sendable {
         let key = CacheKey(blog: blog, postType: postType)
 
         let shouldStartPrefetch = state.withLock { state -> Bool in
-            observeFeatureFlagChanges(state: &state)
-
             if state.prefetchTasks[key] != nil {
                 return false
             }
@@ -262,17 +273,5 @@ final class EditorDependencyManager: Sendable {
         state.withLock { state in
             state.capabilityTasks[blogID] = task
         }
-    }
-
-    private func observeFeatureFlagChanges(state: inout State) {
-        guard state.featureFlagObserver == nil else { return }
-        state.featureFlagObserver = NotificationCenter.default
-            .publisher(for: FeatureFlagOverrideStore.didChangeNotification)
-            .filter { ($0.userInfo?[FeatureFlagOverrideStore.notificationFeatureFlagKey] as? String) == RemoteFeatureFlag.newGutenberg.key }
-            .sink { [weak self] _ in
-                Task {
-                    await self?.invalidateAll()
-                }
-            }
     }
 }
