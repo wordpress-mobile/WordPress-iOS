@@ -513,26 +513,47 @@ private extension BlogDetailsTableViewModel {
         }
 
         cell.onTapped = { [weak self] in
-            self?.presentXMLRPCDisabledModal()
+            self?.presentXMLRPCDisabledAlert()
         }
         return cell
     }
 
-    private func presentXMLRPCDisabledModal() {
-        let content = XMLRPCDisabledModalView(
-            onConnectJetpack: { [weak self] in
-                self?.viewController?.dismiss(animated: true) {
+    private func presentXMLRPCDisabledAlert() {
+        guard let viewController else { return }
+
+        let alert = AlertView {
+            AlertHeaderView(
+                title: XMLRPCDisabledAlertStrings.title,
+                description: XMLRPCDisabledAlertStrings.description
+            )
+        } content: {
+            Image(systemName: "exclamationmark.triangle")
+                .font(.system(size: 50))
+                .foregroundStyle(.orange)
+        } actions: {
+            Button { [weak self, weak viewController] in
+                viewController?.dismiss(animated: true) {
                     self?.presentJetpackConnection()
                 }
-            },
-            onGoToWPAdmin: { [weak viewController] in
-                viewController?.dismiss(animated: true) {
-                    viewController?.showViewAdmin()
-                }
+            } label: {
+                Text(XMLRPCDisabledAlertStrings.connectJetpack)
+                    .font(.headline)
+                    .frame(maxWidth: .infinity)
             }
-        )
+            .buttonStyle(.borderedProminent)
+            .controlSize(.extraLarge)
 
-        viewController?.present(UIHostingController(rootView: content), animated: true)
+            Button { [weak viewController] in
+                let url = URL(string: "https://apps.wordpress.com/support/mobile/login-signup/inaccessible-xml-rpc-connection-error/")!
+                viewController?.dismiss(animated: true) {
+                    UIApplication.shared.open(url)
+                }
+            } label: {
+                Text(XMLRPCDisabledAlertStrings.learnMore)
+            }
+        }
+
+        alert.present(in: viewController)
     }
 
     private func presentJetpackConnection() {
@@ -1551,4 +1572,27 @@ private enum CellIdentifiers {
     static let jetpackInstall = "BlogDetailsJetpackInstallCardCellIdentifier"
     static let extensiveLogging = "BlogDetailsExtensiveLoggingCellIdentifier"
     static let xmlrpcDisabled = "BlogDetailsXMLRPCDisabledCellIdentifier"
+}
+
+private enum XMLRPCDisabledAlertStrings {
+    static let title = NSLocalizedString(
+        "blogDetails.xmlrpcDisabled.alert.title",
+        value: "XML-RPC Disabled",
+        comment: "Title for the XML-RPC disabled alert"
+    )
+    static let description = NSLocalizedString(
+        "blogDetails.xmlrpcDisabled.alert.description",
+        value: "XML-RPC is disabled on your site. Some features in the app currently require XML-RPC. Connect Jetpack or enable XML-RPC to access all features.",
+        comment: "Description explaining options to restore functionality when XML-RPC is disabled"
+    )
+    static let connectJetpack = NSLocalizedString(
+        "blogDetails.xmlrpcDisabled.alert.connectJetpack",
+        value: "Connect Jetpack",
+        comment: "Button title to connect Jetpack in XML-RPC disabled alert"
+    )
+    static let learnMore = NSLocalizedString(
+        "blogDetails.xmlrpcDisabled.alert.learnMore",
+        value: "Learn more",
+        comment: "Button title to learn more about XML-RPC being disabled"
+    )
 }
