@@ -189,57 +189,68 @@ public extension WpApiApplicationPasswordDetails {
     }
 }
 
-public enum WordPressSite {
-    case dotCom(siteId: Int, authToken: String)
-    case selfHosted(blogId: TaggedManagedObjectID<Blog>, apiRootURL: ParsedUrl, username: String, authToken: String)
+public enum WordPressSite: Hashable {
+    case dotCom(siteURL: URL, siteId: Int, authToken: String)
+    case selfHosted(blogId: TaggedManagedObjectID<Blog>, siteURL: URL, apiRootURL: ParsedUrl, username: String, authToken: String)
 
     public init(blog: Blog) throws {
+        let siteURL = try blog.getUrl()
         // Directly access the site content when available.
         if let restApiRootURL = blog.restApiRootURL,
            let restApiRootURL = try? ParsedUrl.parse(input: restApiRootURL),
            let username = blog.username,
            let authToken = try? blog.getApplicationToken() {
-            self = .selfHosted(blogId: TaggedManagedObjectID(blog), apiRootURL: restApiRootURL, username: username, authToken: authToken)
+            self = .selfHosted(blogId: TaggedManagedObjectID(blog), siteURL: siteURL, apiRootURL: restApiRootURL, username: username, authToken: authToken)
         } else if let account = blog.account, let siteId = blog.dotComID?.intValue {
             // When the site is added via a WP.com account, access the site via WP.com
             let authToken = try account.authToken ?? WPAccount.token(forUsername: account.username)
-            self = .dotCom(siteId: siteId, authToken: authToken)
+            self = .dotCom(siteURL: siteURL, siteId: siteId, authToken: authToken)
         } else {
             // In theory, this branch should never run, because the two if statements above should have covered all paths.
             // But we'll keep it here as the fallback.
-            let url = try blog.restApiRootURL ?? blog.getUrl().appending(path: "wp-json").absoluteString
-            let apiRootURL = try ParsedUrl.parse(input: url)
-            self = .selfHosted(blogId: TaggedManagedObjectID(blog), apiRootURL: apiRootURL, username: try blog.getUsername(), authToken: try blog.getApplicationToken())
+            let url = try blog.getUrl()
+            let apiRootURL = try ParsedUrl.parse(input: blog.restApiRootURL ?? blog.getUrl().appending(path: "wp-json").absoluteString)
+            self = .selfHosted(blogId: TaggedManagedObjectID(blog), siteURL: url, apiRootURL: apiRootURL, username: try blog.getUsername(), authToken: try blog.getApplicationToken())
+        }
+    }
+
+    public var siteURL: URL {
+        switch self {
+        case let .dotCom(siteURL, _, _):
+            return siteURL
+        case let .selfHosted(_, siteURL, _, _, _):
+            return siteURL
         }
     }
 
     public static func throughDotCom(blog: Blog) -> Self? {
         guard
+            let siteURL = try? blog.getUrl(),
             let account = blog.account,
             let siteId = blog.dotComID?.intValue,
             let authToken = try? account.authToken ?? WPAccount.token(forUsername: account.username)
         else { return nil }
 
-        return .dotCom(siteId: siteId, authToken: authToken)
+        return .dotCom(siteURL: siteURL, siteId: siteId, authToken: authToken)
     }
 
     public func blog(in context: NSManagedObjectContext) throws -> Blog? {
         switch self {
-        case let .dotCom(siteId, _):
+        case let .dotCom(_, siteId, _):
             return try Blog.lookup(withID: siteId, in: context)
-        case let .selfHosted(blogId, _, _, _):
+        case let .selfHosted(blogId, _, _, _, _):
             return try context.existingObject(with: blogId)
         }
     }
 
     public func blogId(in coreDataStack: CoreDataStack) -> TaggedManagedObjectID<Blog>? {
         switch self {
-        case let .dotCom(siteId, _):
+        case let .dotCom(_, siteId, _):
             return coreDataStack.performQuery { context in
                 guard let blog = try? Blog.lookup(withID: siteId, in: context) else { return nil }
                 return TaggedManagedObjectID(blog)
             }
-        case let .selfHosted(id, _, _, _):
+        case let .selfHosted(id, _, _, _, _):
             return id
         }
     }

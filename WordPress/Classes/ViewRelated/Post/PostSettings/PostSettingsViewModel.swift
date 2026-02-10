@@ -164,7 +164,7 @@ final class PostSettingsViewModel: NSObject, ObservableObject {
         self.isStandalone = isStandalone
         self.context = context
         self.preferences = preferences
-        self.client = try? WordPressClient(site: .init(blog: post.blog))
+        self.client = try? WordPressClientFactory.shared.instance(for: .init(blog: post.blog))
 
         // Initialize settings from the post
         let initialSettings = PostSettings(from: post)

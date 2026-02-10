@@ -94,7 +94,7 @@ private struct JetpackConnectionView: View {
                     viewModel.connect()
                 }
                 .buttonStyle(.borderedProminent)
-                .controlSize(.small)
+                .controlSize(.regular)
                 .padding(.bottom, 12)
             } else if viewModel.isCompleted {
                 CompletedAnimationView {

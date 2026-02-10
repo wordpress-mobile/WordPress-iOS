@@ -78,7 +78,7 @@ extension BlogService {
     public func syncTaxnomies(for blogId: TaggedManagedObjectID<Blog>) async throws {
         let client = try await self.coreDataStack.performQuery { context in
             let blog = try context.existingObject(with: blogId)
-            return try WordPressClient(site: .init(blog: blog))
+            return try WordPressClientFactory.shared.instance(for: .init(blog: blog))
         }
 
         let result = try await client.api.taxonomies.listWithEditContext(params: .init()).data.taxonomyTypes.values

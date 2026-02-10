@@ -1,6 +1,7 @@
 import Foundation
 import WordPressAPI
 import WordPressAPIInternal
+import WordPressApiCache
 @testable import WordPressCore
 
 /// Tracks call counts for API methods to verify caching behavior.
@@ -60,6 +61,11 @@ final class MockWordPressClientAPI: WordPressClientAPI, @unchecked Sendable {
     var taxonomies: TaxonomiesRequestExecutor { fatalError("Not implemented") }
     var terms: TermsRequestExecutor { fatalError("Not implemented") }
     var applicationPasswords: ApplicationPasswordsRequestExecutor { fatalError("Not implemented") }
+    var posts: PostsRequestExecutor { fatalError("Not implemented") }
+
+    func createSelfHostedService(cache: WordPressApiCache) throws -> WpSelfHostedService {
+        fatalError("Not implemented")
+    }
 
     func uploadMedia(params: MediaCreateParams, fulfilling progress: Progress) async throws -> MediaRequestCreateResponse {
         fatalError("Not implemented")

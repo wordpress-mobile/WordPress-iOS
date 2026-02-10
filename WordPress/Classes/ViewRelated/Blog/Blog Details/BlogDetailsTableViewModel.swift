@@ -5,6 +5,7 @@ import WordPressShared
 import WordPressSharedObjC
 import WordPressUI
 import Support
+import SwiftUI
 
 private struct Section {
     let title: String?
@@ -507,13 +508,70 @@ private extension BlogDetailsTableViewModel {
     func configureXMLRPCDisabledCell(tableView: UITableView) -> UITableViewCell {
         guard let cell = tableView.dequeueReusableCell(
             withIdentifier: CellIdentifiers.xmlrpcDisabled
-        ) as? XMLRPCDisabledCell,
-              let viewController else {
+        ) as? XMLRPCDisabledCell else {
             return UITableViewCell()
         }
 
-        cell.configure(with: viewController)
+        cell.onTapped = { [weak self] in
+            self?.presentXMLRPCDisabledAlert()
+        }
         return cell
+    }
+
+    private func presentXMLRPCDisabledAlert() {
+        guard let viewController else { return }
+
+        let alert = AlertView {
+            AlertHeaderView(
+                title: XMLRPCDisabledAlertStrings.title,
+                description: XMLRPCDisabledAlertStrings.description
+            )
+        } content: {
+            Image(systemName: "exclamationmark.triangle")
+                .font(.system(size: 50))
+                .foregroundStyle(.orange)
+        } actions: {
+            Button { [weak self, weak viewController] in
+                viewController?.dismiss(animated: true) {
+                    self?.presentJetpackConnection()
+                }
+            } label: {
+                Text(XMLRPCDisabledAlertStrings.connectJetpack)
+                    .font(.headline)
+                    .frame(maxWidth: .infinity)
+            }
+            .buttonStyle(.borderedProminent)
+            .controlSize(.extraLarge)
+
+            Button { [weak viewController] in
+                let url = URL(string: "https://apps.wordpress.com/support/mobile/login-signup/inaccessible-xml-rpc-connection-error/")!
+                viewController?.dismiss(animated: true) {
+                    UIApplication.shared.open(url)
+                }
+            } label: {
+                Text(XMLRPCDisabledAlertStrings.learnMore)
+            }
+        }
+
+        alert.present(in: viewController)
+    }
+
+    private func presentJetpackConnection() {
+        let controller = UIViewController.jetpackConnection(blog: blog)
+        controller.promptType = .bypassXMLRPC
+        controller.completionBlock = { [weak controller, weak self] in
+            controller?.dismiss(animated: true) {
+                self?.viewController?.refresh()
+            }
+        }
+        controller.navigationItem.leftBarButtonItem = UIBarButtonItem(
+            systemItem: .close,
+            primaryAction: UIAction { [weak controller] _ in
+                controller?.dismiss(animated: true)
+            }
+        )
+        let nav = UINavigationController(rootViewController: controller)
+        viewController?.present(nav, animated: true)
     }
 }
 
@@ -529,6 +587,10 @@ private extension BlogDetailsTableViewModel {
 
         if blog.supports(.pages) {
             rows.append(Row.pages(viewController: viewController))
+        }
+
+        if FeatureFlag.customPostTypes.enabled && blog.supportsCoreRESTAPI {
+            rows.append(Row.customPostTypes(viewController: viewController))
         }
 
         rows.append(Row.media(viewController: viewController))
@@ -604,6 +666,10 @@ private extension BlogDetailsTableViewModel {
 
         if blog.supports(.pages) {
             rows.append(Row.pages(viewController: viewController))
+        }
+
+        if blog.isSelfHosted {
+            rows.append(Row.customPostTypes(viewController: viewController))
         }
 
         rows.append(Row.comments(viewController: viewController))
@@ -871,6 +937,7 @@ enum BlogDetailsRowKind {
     case themes
     case media
     case pages
+    case customPostTypes
     case activity
     case backup
     case scan
@@ -973,6 +1040,17 @@ extension Row {
                 // When called from direct tap, use .row (default behavior)
                 let source: BlogDetailsNavigationSource = userInfo.isEmpty ? .row : .link
                 viewController?.showPageList(from: source)
+            }
+        )
+    }
+
+    static func customPostTypes(viewController: BlogDetailsViewController?) -> Row {
+        Row(
+            kind: .customPostTypes,
+            title: "Custom Post Types",
+            image: UIImage(systemName: "square.3.layers.3d"),
+            action: { [weak viewController] _ in
+                viewController?.showCustomPostTypes()
             }
         )
     }
@@ -1514,4 +1592,27 @@ private enum CellIdentifiers {
     static let jetpackInstall = "BlogDetailsJetpackInstallCardCellIdentifier"
     static let extensiveLogging = "BlogDetailsExtensiveLoggingCellIdentifier"
     static let xmlrpcDisabled = "BlogDetailsXMLRPCDisabledCellIdentifier"
+}
+
+private enum XMLRPCDisabledAlertStrings {
+    static let title = NSLocalizedString(
+        "blogDetails.xmlrpcDisabled.alert.title",
+        value: "XML-RPC Disabled",
+        comment: "Title for the XML-RPC disabled alert"
+    )
+    static let description = NSLocalizedString(
+        "blogDetails.xmlrpcDisabled.alert.description",
+        value: "XML-RPC is disabled on your site. Some features in the app currently require XML-RPC. Connect Jetpack or enable XML-RPC to access all features.",
+        comment: "Description explaining options to restore functionality when XML-RPC is disabled"
+    )
+    static let connectJetpack = NSLocalizedString(
+        "blogDetails.xmlrpcDisabled.alert.connectJetpack",
+        value: "Connect Jetpack",
+        comment: "Button title to connect Jetpack in XML-RPC disabled alert"
+    )
+    static let learnMore = NSLocalizedString(
+        "blogDetails.xmlrpcDisabled.alert.learnMore",
+        value: "Learn more",
+        comment: "Button title to learn more about XML-RPC being disabled"
+    )
 }

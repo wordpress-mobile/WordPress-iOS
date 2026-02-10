@@ -20,6 +20,7 @@ import WordPressShared
 import WordPressUI
 import ZendeskCoreSDK
 import Support
+import WordPressAPIInternal
 
 public class WordPressAppDelegate: UIResponder, UIApplicationDelegate {
 
@@ -80,6 +81,7 @@ public class WordPressAppDelegate: UIResponder, UIApplicationDelegate {
         let window = UIWindow(frame: UIScreen.main.bounds)
         self.window = window
 
+        WordPressAPIInternal.setupLogger(appId: Bundle.main.bundleIdentifier!)
         DesignSystem.FontManager.registerCustomFonts()
         AssertionLoggerDependencyContainer.logger = AssertionLogger()
         UITestConfigurator.prepareApplicationForUITests(in: application, window: window)

@@ -115,7 +115,7 @@ final class BlogDashboardViewModel {
         var _error: Error?
 
         do {
-            self.wordpressClient = try WordPressClient(site: .init(blog: self.blog))
+            self.wordpressClient = try WordPressClientFactory.shared.instance(for: .init(blog: self.blog))
         } catch {
             _error = error
             self.wordpressClient = nil
