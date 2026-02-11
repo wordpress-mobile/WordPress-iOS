@@ -341,5 +341,3 @@ private extension PostGBKEditorViewController {
         suggestionsController.didMove(toParent: self)
     }
 }
-
-
