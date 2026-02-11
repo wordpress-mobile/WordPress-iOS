@@ -101,12 +101,12 @@ private extension CustomPostEditorViewController {
 
         if changed {
             let alert = UIAlertController(title: nil, message: nil, preferredStyle: .actionSheet)
-            alert.addCancelActionWithTitle(Strings.keepEditing)
-            alert.addDestructiveActionWithTitle(Strings.discardChanges) { [weak self] _ in
+            alert.addCancelActionWithTitle(PostEditorStrings.keepEditing)
+            alert.addDestructiveActionWithTitle(PostEditorStrings.discardChanges) { [weak self] _ in
                 self?.navigationController?.dismiss(animated: true)
             }
             if post.status == .draft {
-                alert.addAction(UIAlertAction(title: Strings.saveDraft, style: .default, handler: { [weak self] _ in
+                alert.addAction(UIAlertAction(title: PostEditorStrings.saveDraft, style: .default, handler: { [weak self] _ in
                     Task {
                         await self?.save(publish: false)
                     }
@@ -127,7 +127,7 @@ private extension CustomPostEditorViewController {
                 Task {
                     let enabled = (try? await self?.hasUnsavedChanges()) == true
                     let saveDraft = UIAction(
-                        title: Strings.saveDraft,
+                        title: PostEditorStrings.saveDraft,
                         image: UIImage(systemName: "doc"),
                         attributes: enabled ? [] : [.disabled]) { [weak self] _ in
                             Task {
@@ -152,13 +152,13 @@ private extension CustomPostEditorViewController {
         precondition(post.id > 0, "No new post support yet")
 
         if post.status == .draft {
-            return UIAction(title: Strings.publish) { [weak self] _ in
+            return UIAction(title: PostEditorStrings.publish) { [weak self] _ in
                 Task {
                     await self?.save(publish: true)
                 }
             }
         } else {
-            return UIAction(title: Strings.update) { [weak self] _ in
+            return UIAction(title: PostEditorStrings.update) { [weak self] _ in
                 Task {
                     await self?.save(publish: false)
                 }
@@ -254,10 +254,4 @@ private enum Strings {
         value: "The post you are trying to save has been changed in the meantime.",
         comment: "Error message shown when the post was modified by another user while editing"
     )
-
-    static let saveDraft = NSLocalizedString("postEditor.moreMenu.saveDraft", value: "Save Draft", comment: "Post Editor / Button in the 'More' menu")
-    static let keepEditing = NSLocalizedString("postEditor.closeConfirmationAlert.keepEditing", value: "Keep Editing", comment: "Button to keep the changes in an alert confirming discaring changes")
-    static let discardChanges = NSLocalizedString("postEditor.closeConfirmationAlert.discardChanges", value: "Discard Changes", comment: "Button in an alert confirming discaring changes")
-    static let publish = NSLocalizedString("customPostEditor.publishButton.title", value: "Publish", comment: "Title for the publish button in the custom post editor navigation bar")
-    static let update = NSLocalizedString("customPostEditor.updateButton.title", value: "Update", comment: "Title for the update button in the custom post editor navigation bar")
 }

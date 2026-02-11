@@ -85,7 +85,7 @@ class PostGBKEditorViewController: UIViewController, GutenbergKit.EditorViewCont
     }
 
     func editorModeToggle() -> UIAction {
-        let title = editorViewController.isCodeEditorEnabled ? Strings.visualEditor : Strings.codeEditor
+        let title = editorViewController.isCodeEditorEnabled ? PostEditorStrings.visualEditor : PostEditorStrings.codeEditor
         let icon = editorViewController.isCodeEditorEnabled ? "doc.richtext" : "curlybraces"
         return UIAction(title: title, image: UIImage(systemName: icon)) { [weak editorViewController] _ in
             editorViewController?.isCodeEditorEnabled.toggle()
@@ -93,7 +93,7 @@ class PostGBKEditorViewController: UIViewController, GutenbergKit.EditorViewCont
     }
 
     func helpAction() -> UIAction {
-        let helpTitle = JetpackFeaturesRemovalCoordinator.jetpackFeaturesEnabled() ? Strings.helpAndSupport : Strings.help
+        let helpTitle = JetpackFeaturesRemovalCoordinator.jetpackFeaturesEnabled() ? PostEditorStrings.helpAndSupport : PostEditorStrings.help
         return UIAction(title: helpTitle, image: UIImage(systemName: "questionmark.circle")) { [weak self] _ in
             guard let url = URL(string: "https://wordpress.com/support/wordpress-editor/") else { return }
             self?.present(SFSafariViewController(url: url), animated: true)
@@ -101,7 +101,7 @@ class PostGBKEditorViewController: UIViewController, GutenbergKit.EditorViewCont
     }
 
     func feedbackAction() -> UIAction {
-        UIAction(title: Strings.sendFeedback, image: UIImage(systemName: "envelope")) { [weak self] _ in
+        UIAction(title: PostEditorStrings.sendFeedback, image: UIImage(systemName: "envelope")) { [weak self] _ in
             self?.present(SubmitFeedbackViewController(source: "gutenberg_kit", feedbackPrefix: "Editor"), animated: true)
         }
     }
@@ -342,10 +342,4 @@ private extension PostGBKEditorViewController {
     }
 }
 
-private enum Strings {
-    static let codeEditor = NSLocalizedString("postEditor.moreMenu.codeEditor", value: "Code Editor", comment: "Post Editor / Button in the 'More' menu")
-    static let visualEditor = NSLocalizedString("postEditor.moreMenu.visualEditor", value: "Visual Editor", comment: "Post Editor / Button in the 'More' menu")
-    static let helpAndSupport = NSLocalizedString("postEditor.moreMenu.helpAndSupport", value: "Help & Support", comment: "Post Editor / Button in the 'More' menu")
-    static let help = NSLocalizedString("postEditor.moreMenu.help", value: "Help", comment: "Post Editor / Button in the 'More' menu")
-    static let sendFeedback = NSLocalizedString("postEditor.moreMenu.sendFeedback", value: "Send Feedback", comment: "Post Editor / Button in the 'More' menu")
-}
+
