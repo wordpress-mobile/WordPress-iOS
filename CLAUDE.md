@@ -121,3 +121,7 @@ Document any process refinements discovered during execution.
 - **Exclude**: CI changes, code refactoring, dependency updates, internal technical changes
 - **Language**: Positive sentiment, avoid "fix" terminology, focus on improvements and enhancements
 - **Priority Order**: New features → Improvements → Performance → Other user-facing changes
+
+## Opening Pull Requests
+
+Before opening a PR, read the `Dangerfile` and proactively satisfy its checks.
