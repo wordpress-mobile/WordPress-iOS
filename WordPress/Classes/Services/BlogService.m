@@ -81,19 +81,6 @@ NSString *const WPBlogSettingsUpdatedNotification = @"WPBlogSettingsUpdatedNotif
     NSManagedObjectID *blogObjectID = blog.objectID;
     id<BlogServiceRemote> remote = [self remoteForBlog:blog];
 
-    if ([remote isKindOfClass:[BlogServiceRemoteXMLRPC class]]) {
-        dispatch_group_enter(syncGroup);
-        BlogServiceRemoteXMLRPC *xmlrpcRemote = remote;
-        [xmlrpcRemote syncBlogOptionsWithSuccess:[self optionsHandlerWithBlogObjectID:blogObjectID
-                                                                    completionHandler:^{
-                                                                        dispatch_group_leave(syncGroup);
-                                                                    }]
-                                         failure:^(NSError *error) {
-                                             DDLogError(@"Failed syncing options for blog %@: %@", blog.url, error);
-                                             dispatch_group_leave(syncGroup);
-                                         }];
-    }
-
     if ([remote isKindOfClass:[BlogServiceRemoteREST class]]) {
         dispatch_group_enter(syncGroup);
         BlogServiceRemoteREST *restRemote = remote;
@@ -120,6 +107,13 @@ NSString *const WPBlogSettingsUpdatedNotification = @"WPBlogSettingsUpdatedNotif
             DDLogError(@"Failed syncing settings for blog %@: %@", blog.url, error);
             dispatch_group_leave(syncGroup);
         }];
+    } else {
+        dispatch_group_enter(syncGroup);
+        OptionsHandler handler = [self optionsHandlerWithBlogObjectID:blogObjectID
+                                                    completionHandler:^{ dispatch_group_leave(syncGroup); }];
+        [self syncXMLRPCOptionsIfApplicableFor:blog
+                                optionsHandler:handler
+                                        failure:^{ dispatch_group_leave(syncGroup); }];
     }
 
     dispatch_group_enter(syncGroup);
@@ -677,6 +671,7 @@ NSString *const WPBlogSettingsUpdatedNotification = @"WPBlogSettingsUpdatedNotif
             }
 
             blog.options = [NSDictionary dictionaryWithDictionary:options];
+            blog.isXMLRPCDisabled = NO;
 
             RemoteBlogSettings *remoteSettings = [RemoteBlogOptionsHelper remoteBlogSettingsFromXMLRPCDictionaryOptions:options];
             [self updateSettings:blog.settings withRemoteSettings:remoteSettings];
