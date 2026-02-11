@@ -193,64 +193,13 @@ struct SelfHostedSiteAuthenticator {
             throw .mismatchedUser(expectedUsername: username)
         }
 
-        let blog = try await fetchSiteDataUsingCoreRESTAPI(credentials: credentials, apiRootURL: apiRootURL, apiDetails: apiDetails, context: context)
+        let blog = try await createSite(credentials: credentials, apiRootURL: apiRootURL, apiDetails: apiDetails, context: context)
 
         switch context {
         case .default:
             NotificationCenter.default.post(name: Foundation.Notification.Name(rawValue: WordPressAuthenticator.WPSigninDidFinishNotification), object: nil)
         case .reauthentication:
             NotificationCenter.default.post(name: Self.applicationPasswordUpdated, object: nil)
-        }
-
-        return blog
-    }
-
-    private func fetchSiteDataUsingXMLRPC(
-        credentials: WpApiApplicationPasswordDetails,
-        apiRootURL: URL,
-        context: SignInContext
-    ) async throws(SignInError) -> TaggedManagedObjectID<Blog> {
-        let xmlrpc: URL = try await discoverXMLRPCEndpoint(site: credentials.siteUrl)
-        let blogOptions: [AnyHashable: Any]
-        do {
-            blogOptions = try await loadSiteOptions(xmlrpc: xmlrpc, details: credentials)
-        } catch {
-            throw .loadingSiteInfoFailure
-        }
-
-        // Only store the new site after credentials are validated.
-        let blog: TaggedManagedObjectID<Blog>
-        do {
-            blog = try await Blog.createRestApiBlog(
-                with: credentials,
-                restApiRootURL: apiRootURL,
-                xmlrpcEndpointURL: xmlrpc,
-                blogID: context.blogID,
-                in: ContextManager.shared
-            )
-
-            try await ApplicationPasswordRepository.shared.saveApplicationPassword(of: blog)
-        } catch {
-            throw .savingSiteFailure
-        }
-
-        let accountPassword = try? await ContextManager.shared.performQuery {
-            try $0.existingObject(with: blog).password
-        }
-        let wporg = WordPressOrgCredentials(
-            username: credentials.userLogin,
-            // The `sync` call below updates `Blog.password` with the password value here.
-            // In order to separate `Blog.password` and `Blog.applicationPassword`, we pass the account password here
-            // if it exists.
-            password: accountPassword ?? credentials.password,
-            xmlrpc: xmlrpc.absoluteString,
-            options: blogOptions
-        )
-
-        await withCheckedContinuation { continuation in
-            WordPressAuthenticator.shared.delegate!.sync(credentials: .init(wporg: wporg)) {
-                continuation.resume()
-            }
         }
 
         return blog
@@ -283,8 +232,7 @@ struct SelfHostedSiteAuthenticator {
         }
     }
 
-    // This is an alternative to `fetchSiteDataUsingXMLRPC`, without requiring the site's XML-RPC to be enabled.
-    private func fetchSiteDataUsingCoreRESTAPI(
+    private func createSite(
         credentials: WpApiApplicationPasswordDetails,
         apiRootURL: URL,
         apiDetails: WpApiDetails,
