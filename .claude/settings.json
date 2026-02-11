@@ -10,7 +10,12 @@
       "Bash(tail:*)",
       "Bash(wc:*)",
       "Bash(tree:*)",
-      "Bash(git:log,status,diff,branch)"
+      "Bash(git:log,status,diff,branch)",
+      "Bash(rake *)",
+      "Bash(xcodebuild *)",
+      "Bash(xcrun simctl *)",
+      "Bash(bundle exec *)",
+      "Bash(swift package:*)"
     ],
     "deny": []
   }
