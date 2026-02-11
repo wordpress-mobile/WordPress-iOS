@@ -132,7 +132,7 @@ import Reachability
     /// to set the view values before presenting the No Results View.
     ///
     @objc public class func controller() -> NoResultsViewController {
-        let storyBoard = UIStoryboard(name: "NoResults", bundle: Bundle.module)
+        let storyBoard = UIStoryboard(name: "NoResults", bundle: Bundle.wordPressUIBundle)
         let controller = storyBoard.instantiateViewController(withIdentifier: "NoResults") as! NoResultsViewController
         return controller
     }
