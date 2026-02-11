@@ -78,7 +78,9 @@ Test targets (use with `only_testing`):
 - `WordPressSharedTests` / `WordPressSharedObjCTests`
 - `WordPressKitTests` / `WordPressAuthenticatorTests`
 - `WordPressUIUnitTests` / `AsyncImageKitTests`
-- `JetpackStatsWidgetsCoreTests` / `WordPressFluxTests`
+- `JetpackStatsWidgetsCoreTests` / `JetpackStatsTests`
+- `WordPressFluxTests` / `WordPressIntelligenceTests`
+- `DesignSystemTests`
 
 For a compile-only check without running tests:
 
@@ -96,6 +98,9 @@ Pick an available simulator with `xcrun simctl list devices available`.
 
 Modules under `Modules/` are an SPM package but target **iOS only** — `swift test` does **not** work from the command line.
 Test targets are defined in `Modules/Package.swift` and run via the app's test plans through `xcodebuild`.
+
+When adding a new test target in `Modules/Package.swift`, also add it to the default test plan at `Tests/KeystoneTests/WordPressUnitTests.xctestplan`.
+Use `container:../Modules` as the `containerPath` and the SPM target name as the `identifier`.
 
 ### SwiftLint
 
