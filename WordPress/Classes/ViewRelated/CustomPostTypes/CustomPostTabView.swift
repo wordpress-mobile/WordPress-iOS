@@ -21,6 +21,7 @@ struct CustomPostTabView: View {
     @State private var scheduledViewModel: CustomPostListViewModel
     @State private var trashViewModel: CustomPostListViewModel
     @State private var selectedPost: AnyPostWithEditContext?
+    @State private var isShowingFeedback = false
 
     private var activeViewModel: CustomPostListViewModel {
         switch selectedTab {
@@ -96,6 +97,20 @@ struct CustomPostTabView: View {
         }
         .searchable(text: $searchText)
         .navigationTitle(details.name)
+        .toolbar {
+            ToolbarItem(placement: .topBarTrailing) {
+                Menu {
+                    Button(action: { isShowingFeedback = true }) {
+                        Label(Strings.sendFeedback, systemImage: "envelope")
+                    }
+                } label: {
+                    Image(systemName: "ellipsis")
+                }
+            }
+        }
+        .sheet(isPresented: $isShowingFeedback) {
+            SubmitFeedbackViewRepresentable()
+        }
         .fullScreenCover(item: $selectedPost) { post in
             CustomPostEditor(client: client, post: post, details: details, blog: blog)
         }
@@ -186,6 +201,14 @@ private struct AdaptiveTabBarRepresentable: UIViewRepresentable {
     }
 }
 
+private struct SubmitFeedbackViewRepresentable: UIViewControllerRepresentable {
+    func makeUIViewController(context: Context) -> SubmitFeedbackViewController {
+        SubmitFeedbackViewController(source: "custom_post_types", feedbackPrefix: "CustomPostTypes")
+    }
+
+    func updateUIViewController(_ uiViewController: SubmitFeedbackViewController, context: Context) {}
+}
+
 private enum Strings {
     static let published = NSLocalizedString(
         "customPostTab.published",
@@ -206,5 +229,10 @@ private enum Strings {
         "customPostTab.trash",
         value: "Trash",
         comment: "Tab title for trashed posts"
+    )
+    static let sendFeedback = NSLocalizedString(
+        "customPostTab.sendFeedback",
+        value: "Send Feedback",
+        comment: "Menu item title for sending feedback on the custom post types screen"
     )
 }
