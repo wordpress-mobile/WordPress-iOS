@@ -34,18 +34,6 @@ CONCURRENT_SIMULATORS = 2
 #   use the build number we set!
 COMMON_EXPORT_OPTIONS = { manageAppVersionAndBuildNumber: false }.freeze
 
-# https://buildkite.com/docs/test-analytics/ci-environments
-TEST_ANALYTICS_ENVIRONMENT = %w[
-  BUILDKITE_ANALYTICS_TOKEN
-  BUILDKITE_BUILD_ID
-  BUILDKITE_BUILD_NUMBER
-  BUILDKITE_JOB_ID
-  BUILDKITE_BRANCH
-  BUILDKITE_COMMIT
-  BUILDKITE_MESSAGE
-  BUILDKITE_BUILD_URL
-].freeze
-
 # Lanes related to Building and Testing the code
 #
 platform :ios do
@@ -138,7 +126,6 @@ platform :ios do
 
     UI.user_error!("Unable to find .xctestrun file at #{build_products_path}.") if xctestrun_path.nil? || !File.exist?(xctestrun_path)
 
-    inject_buildkite_analytics_environment(xctestrun_path: xctestrun_path) if buildkite_ci?
     # Our current configuration allows for either running the Jetpack UI tests or the WordPress unit tests.
     #
     # Their scheme and xctestrun name pairing are:
@@ -439,28 +426,6 @@ platform :ios do
       build_version: build_number,
       app_identifier: app_identifier
     )
-  end
-
-  def inject_buildkite_analytics_environment(xctestrun_path:)
-    require 'plist'
-
-    xctestrun = Plist.parse_xml(xctestrun_path)
-    xctestrun['TestConfigurations'].each do |configuration|
-      configuration['TestTargets'].each do |target|
-        TEST_ANALYTICS_ENVIRONMENT.each do |key|
-          value = ENV.fetch(key)
-          next if value.nil?
-
-          target['EnvironmentVariables'][key] = value
-        end
-      end
-    end
-
-    File.write(xctestrun_path, Plist::Emit.dump(xctestrun))
-  end
-
-  def buildkite_ci?
-    ENV.fetch('BUILDKITE', false)
   end
 
   def upload_build_to_testflight(ipa_path:, whats_new_path:, distribution_groups:, beta_app_description_path:)
