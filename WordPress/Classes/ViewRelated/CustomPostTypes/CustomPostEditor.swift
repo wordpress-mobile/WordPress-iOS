@@ -55,7 +55,7 @@ struct CustomPostEditor: View {
     }
 
     private func hasBeenModified() async throws -> Bool {
-        let endpoint = postTypeDetailsToPostEndpointType(postTypeDetails: details)
+        let endpoint = details.toPostEndpointType()
         let lastModified = try await client.api.posts
             .filterRetrieveWithEditContext(
                 postEndpointType: endpoint,
@@ -82,7 +82,7 @@ struct CustomPostEditor: View {
         _ = try await client.api
             .posts
             .update(
-                postEndpointType: postTypeDetailsToPostEndpointType(postTypeDetails: details),
+                postEndpointType: details.toPostEndpointType(),
                 postId: post.id,
                 params: params
             )
