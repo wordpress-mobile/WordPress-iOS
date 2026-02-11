@@ -61,6 +61,9 @@ WordPress-iOS uses a modular architecture with the main app and separate Swift p
 Use the `test` Fastlane lane for local testing.
 It skips CI prerequisites and reuses `DerivedData/` for incremental builds.
 
+**Do not run multiple `fastlane test` invocations in parallel.**
+They share `DerivedData/` and the build database will lock, causing failures.
+
 ```bash
 # Run all tests
 bundle exec fastlane test
