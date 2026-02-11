@@ -122,6 +122,11 @@ Document any process refinements discovered during execution.
 - **Language**: Positive sentiment, avoid "fix" terminology, focus on improvements and enhancements
 - **Priority Order**: New features → Improvements → Performance → Other user-facing changes
 
+## Slow commands
+
+`swift`, `xcodebuild`, and `fastlane` commands can take several minutes.
+Account for this when setting `max_turns` on parallel subagents — 40 or higher is a safe default.
+
 ## Opening Pull Requests
 
 Before opening a PR, read the `Dangerfile` and proactively satisfy its checks.
