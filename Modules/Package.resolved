@@ -359,15 +359,6 @@
       }
     },
     {
-      "identity" : "test-collector-swift",
-      "kind" : "remoteSourceControl",
-      "location" : "https://github.com/buildkite/test-collector-swift",
-      "state" : {
-        "revision" : "631a2400dbe876141a3ef8c7400885907fec7f89",
-        "version" : "0.4.1"
-      }
-    },
-    {
       "identity" : "tocropviewcontroller",
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/TimOliver/TOCropViewController",
