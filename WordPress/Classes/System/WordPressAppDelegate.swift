@@ -4,6 +4,7 @@ import AutomatticEncryptedLogs
 import AutomatticTracks
 import BuildSettingsKit
 import CocoaLumberjackSwift
+import CocoaLumberjackSwiftLogBackend
 import DesignSystem
 import Logging
 import Pulse
@@ -77,6 +78,16 @@ public class WordPressAppDelegate: UIResponder, UIApplicationDelegate {
     // MARK: - Application lifecycle
 
     public func application(_ application: UIApplication, willFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]? = nil) -> Bool {
+        // We need to set up the swift-log logging system right after app launch, so that logs can be written
+        // into the log handlers configured below.
+        LoggingSystem.bootstrap { label in
+            let ddLogHandlerFactory: (String) -> LogHandler = DDLogHandler.handlerFactory()
+            return MultiplexLogHandler([
+                ddLogHandlerFactory(label),
+                ExtensiveLogger(label: label),
+            ])
+        }
+
         let window = UIWindow(frame: UIScreen.main.bounds)
         self.window = window
 
@@ -86,7 +97,6 @@ public class WordPressAppDelegate: UIResponder, UIApplicationDelegate {
 
         // The following extensive logging configuration detects if extensive logging is enabled internally.
         wpkURLSessionNotifyingDelegate = PulseNetworkLogger()
-        LoggingSystem.bootstrap(ExtensiveLogger.init)
 
         AppAppearance.overrideAppearance()
         MemoryCache.shared.register()
