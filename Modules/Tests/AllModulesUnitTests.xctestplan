@@ -1,0 +1,80 @@
+{
+  "configurations" : [
+    {
+      "id" : "8B8ADE5F-2752-428D-8281-36E85069404F",
+      "name" : "Configuration 1",
+      "options" : {
+
+      }
+    }
+  ],
+  "defaultOptions" : {
+
+  },
+  "testTargets" : [
+    {
+      "target" : {
+        "containerPath" : "container:..\/Modules",
+        "identifier" : "WordPressIntelligenceTests",
+        "name" : "WordPressIntelligenceTests"
+      }
+    },
+    {
+      "target" : {
+        "containerPath" : "container:..\/Modules",
+        "identifier" : "JetpackStatsTests",
+        "name" : "JetpackStatsTests"
+      }
+    },
+    {
+      "target" : {
+        "containerPath" : "container:..\/Modules",
+        "identifier" : "WordPressUIUnitTests",
+        "name" : "WordPressUIUnitTests"
+      }
+    },
+    {
+      "target" : {
+        "containerPath" : "container:..\/Modules",
+        "identifier" : "WordPressFluxTests",
+        "name" : "WordPressFluxTests"
+      }
+    },
+    {
+      "target" : {
+        "containerPath" : "container:..\/Modules",
+        "identifier" : "JetpackStatsWidgetsCoreTests",
+        "name" : "JetpackStatsWidgetsCoreTests"
+      }
+    },
+    {
+      "target" : {
+        "containerPath" : "container:..\/Modules",
+        "identifier" : "AsyncImageKitTests",
+        "name" : "AsyncImageKitTests"
+      }
+    },
+    {
+      "target" : {
+        "containerPath" : "container:..\/Modules",
+        "identifier" : "WordPressCoreTests",
+        "name" : "WordPressCoreTests"
+      }
+    },
+    {
+      "target" : {
+        "containerPath" : "container:..\/Modules",
+        "identifier" : "WordPressSharedTests",
+        "name" : "WordPressSharedTests"
+      }
+    },
+    {
+      "target" : {
+        "containerPath" : "container:..\/Modules",
+        "identifier" : "DesignSystemTests",
+        "name" : "DesignSystemTests"
+      }
+    }
+  ],
+  "version" : 1
+}
