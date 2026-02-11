@@ -108,6 +108,7 @@ Modules under `Modules/` are an SPM package but target **iOS only** — `swift t
 Test targets are defined in `Modules/Package.swift` and run via the app's test plans through `xcodebuild`.
 
 Source → test target mapping follows `{ModuleName}Tests` (e.g., `WordPressCore` → `WordPressCoreTests`).
+Exception: `WordPressUI` → `WordPressUIUnitTests` because `WordPressUITests` is taken by the Xcode UI test target.
 Not all modules have tests.
 Check `Modules/Tests/` to confirm a test target exists before running.
 
