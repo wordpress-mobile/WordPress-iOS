@@ -11,12 +11,14 @@
   ],
   "defaultOptions" : {
     "codeCoverage" : false,
+    "defaultTestExecutionTimeAllowance" : 60,
     "targetForVariableExpansion" : {
       "containerPath" : "container:WordPress.xcodeproj",
       "identifier" : "FABB1F8F2602FC2C00C8785C",
       "name" : "Jetpack"
     },
     "testRepetitionMode" : "retryOnFailure",
+    "testTimeoutsEnabled" : true
   },
   "testTargets" : [
     {
