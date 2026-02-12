@@ -580,16 +580,22 @@ NSString *const WPBlogSettingsUpdatedNotification = @"WPBlogSettingsUpdatedNotif
 
 - (id<BlogServiceRemote>)remoteForBlog:(Blog *)blog
 {
-    id<BlogServiceRemote> remote;
     if ([blog supports:BlogFeatureWPComRESTAPI]) {
         if (blog.wordPressComRestApi) {
-            remote = [[BlogServiceRemoteREST alloc] initWithWordPressComRestApi:blog.wordPressComRestApi siteID:blog.dotComID];
+            return [[BlogServiceRemoteREST alloc] initWithWordPressComRestApi:blog.wordPressComRestApi siteID:blog.dotComID];
         }
-    } else if (blog.xmlrpcApi) {
-        remote = [[BlogServiceRemoteXMLRPC alloc] initWithApi:blog.xmlrpcApi username:blog.username password:blog.password];
     }
 
-    return remote;
+    BlogServiceRemoteCoreREST *restApi = [[BlogServiceRemoteCoreREST alloc] initWithBlog:blog];
+    if (restApi != nil) {
+        return restApi;
+    }
+
+    if (blog.xmlrpcApi) {
+        return [[BlogServiceRemoteXMLRPC alloc] initWithApi:blog.xmlrpcApi username:blog.username password:blog.password];
+    }
+
+    return nil;
 }
 
 - (id<AccountServiceRemote>)remoteForAccount:(WPAccount *)account
