@@ -88,6 +88,7 @@ Test targets (use with `only_testing`):
 - `WordPressUIUnitTests` / `AsyncImageKitTests`
 - `JetpackStatsWidgetsCoreTests` / `JetpackStatsTests`
 - `WordPressFluxTests` / `WordPressIntelligenceTests`
+- `DesignSystemTests`
 
 For a compile-only check without running tests:
 

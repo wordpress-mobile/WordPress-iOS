@@ -22,7 +22,7 @@ public enum IconName: String, CaseIterable {
 public extension UIImage {
     enum DS {
         public static func icon(named name: IconName, with configuration: UIImage.Configuration? = nil) -> UIImage? {
-            return UIImage(named: name.rawValue, in: .module, with: configuration)
+            return UIImage(named: name.rawValue, in: .designSystemBundle, with: configuration)
         }
     }
 }
@@ -30,7 +30,7 @@ public extension UIImage {
 public extension Image {
     enum DS {
         public static func icon(named name: IconName) -> Image {
-            return Image(name.rawValue, bundle: .module)
+            return Image(name.rawValue, bundle: .designSystemBundle)
         }
     }
 }
