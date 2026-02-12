@@ -25,6 +25,13 @@ struct SiteStorage<Value: Codable>: DynamicProperty {
         let scopedKey = SiteStorageAccess.scopedKey(key, blog: blog)
         _data = AppStorage(wrappedValue: Data(), scopedKey, store: store)
     }
+
+    fileprivate init(wrappedValue: Value, _ key: String, scope: String,
+         store: UserDefaults? = nil) {
+        self.defaultValue = wrappedValue
+        let scopedKey = SiteStorageAccess.scopedKey(key, scope: scope)
+        _data = AppStorage(wrappedValue: Data(), scopedKey, store: store)
+    }
 }
 
 enum SiteStorageAccess {
@@ -55,4 +62,38 @@ enum SiteStorageAccess {
         [prefix, blog.objectID.uriRepresentation().absoluteString, key]
             .joined(separator: separator)
     }
+
+    fileprivate static func scopedKey(
+        _ key: String,
+        scope: String
+    ) -> String {
+        [prefix, scope, key]
+            .joined(separator: separator)
+    }
 }
+
+#if DEBUG
+
+private struct SiteStoragePreviewContent: View {
+    @SiteStorage("counter", scope: "tests") private var counter = 0
+
+    var body: some View {
+        VStack(spacing: 20) {
+            Text("Counter: \(counter)")
+                .font(.headline)
+            Button("Increment") {
+                let key = SiteStorageAccess.scopedKey("counter", scope: "tests")
+
+                let newValue = counter + 1
+                let encoded = (try? JSONEncoder().encode(newValue)) ?? Data()
+                UserDefaults.standard.set(encoded, forKey: key)
+            }
+        }
+    }
+}
+
+#Preview {
+    SiteStoragePreviewContent()
+}
+
+#endif
