@@ -183,7 +183,7 @@ class ReaderDetailHeaderViewModel: ObservableObject {
             self.postTitle = customTitle ?? post.titleForDisplay()
             self.likeCount = post.likeCount?.intValue
             self.commentCount = post.commentCount?.intValue
-            self.tags = post.tagsForDisplay() ?? []
+            self.tags = post.tagsForDisplay()
         }
 
         DispatchQueue.main.async {

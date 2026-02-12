@@ -171,11 +171,11 @@ final class EditorDependencyManager: Sendable {
     @MainActor
     public func fetchEditorCapabilities(for blog: Blog) async throws {
         let site = try WordPressSite(blog: blog)
-        let client = WordPressClient(site: site)
+        let client = WordPressClientFactory.shared.instance(for: site)
 
         var siteId: Int? = nil
 
-        if case .dotCom(let _siteId, _) = site {
+        if case .dotCom(_, let _siteId, _) = site {
             siteId = _siteId
         }
 

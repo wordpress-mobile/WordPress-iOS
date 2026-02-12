@@ -17,4 +17,11 @@
                 1031] // 2y Ecommerce Plan
         .contains(planID?.intValue)
     }
+
+    public var supportsCoreRESTAPI: Bool {
+        if isHostedAtWPcom {
+            return isAtomic()
+        }
+        return true
+    }
 }

@@ -99,7 +99,7 @@ private extension MediaRepository {
         // compatibility with WordPress.com-specific features such as video upload restrictions
         // and storage limits based on the site's plan.
         if let site = try? WordPressSite(blog: blog) {
-            return MediaServiceRemoteCoreREST(client: .init(site: site))
+            return MediaServiceRemoteCoreREST(client: WordPressClientFactory.shared.instance(for: site))
         }
 
         if let username = blog.username, let password = blog.password, let api = blog.xmlrpcApi {

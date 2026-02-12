@@ -158,6 +158,15 @@ public class BlogDetailsViewController: UIViewController {
         }
     }
 
+    public func refresh() {
+        guard let refreshControl = tableView?.refreshControl else {
+            wpAssertionFailure("Can't get the UIRefreshControl instance")
+            return
+        }
+        refreshControl.beginRefreshing()
+        pulledToRefreshTriggered(refreshControl)
+    }
+
     private func preloadBlogData() {
         // only preload on wifi
         guard ReachabilityUtils.internetReachability?.isReachableViaWiFi() == true else {

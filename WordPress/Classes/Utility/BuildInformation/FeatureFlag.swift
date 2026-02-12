@@ -28,6 +28,7 @@ public enum FeatureFlag: Int, CaseIterable {
     case newSupport
     case nativeBlockInserter
     case statsAds
+    case customPostTypes
 
     /// Returns a boolean indicating if the feature is enabled.
     ///
@@ -71,7 +72,7 @@ public enum FeatureFlag: Int, CaseIterable {
         case .allowApplicationPasswords:
             return false
         case .selfHostedSiteUserManagement:
-            return false
+            return true
         case .readerGutenbergCommentComposer:
             return false
         case .pluginManagementOverhaul:
@@ -88,6 +89,8 @@ public enum FeatureFlag: Int, CaseIterable {
         case .nativeBlockInserter:
             return true
         case .statsAds:
+            return BuildConfiguration.current == .debug
+        case .customPostTypes:
             return BuildConfiguration.current == .debug
         }
     }
@@ -133,6 +136,7 @@ extension FeatureFlag {
         case .newSupport: "New Support"
         case .nativeBlockInserter: "Native Block Inserter"
         case .statsAds: "Stats Ads Tab"
+        case .customPostTypes: "Custom Post Types"
         }
     }
 }

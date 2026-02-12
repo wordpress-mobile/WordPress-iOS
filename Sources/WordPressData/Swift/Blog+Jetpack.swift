@@ -80,4 +80,9 @@ public extension Blog {
 
         return !(activeJetpackPlugins.isEmpty || activeJetpackPlugins.contains("jetpack"))
     }
+
+    @objc var isXMLRPCDisabled: Bool {
+        get { getOption(name: "__app_xmlrpc_disabled") ?? false }
+        set { setValue(NSNumber(value: newValue), forOption: "__app_xmlrpc_disabled") }
+    }
 }

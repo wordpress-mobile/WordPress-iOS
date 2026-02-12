@@ -53,7 +53,7 @@ actor ApplicationPasswordRepository {
             return (blog.asApplicationPasswordOwners(), try? WordPressSite(blog: blog))
         }
 
-        guard case let .selfHosted(_, apiRootURL, username, authToken) = site else {
+        guard case let .selfHosted(_, _, apiRootURL, username, authToken) = site else {
             return
         }
 
@@ -330,12 +330,13 @@ private extension ApplicationPasswordRepository {
     }
 
     func updateSiteUsernameIfNeeded(_ blogId: TaggedManagedObjectID<Blog>) async throws -> String {
-        let (username, dotComId, dotComAuthToken) = try await coreDataStack.performQuery { context in
+        let (username, dotComId, dotComAuthToken, siteURL) = try await coreDataStack.performQuery { context in
             let blog = try context.existingObject(with: blogId)
             return (
                 blog.username,
                 blog.dotComID,
                 blog.account?.authToken,
+                try blog.getUrl(),
             )
         }
 
@@ -343,8 +344,8 @@ private extension ApplicationPasswordRepository {
         if let username {
             siteUsername = username
         } else if let dotComId, let dotComAuthToken {
-            let site = WordPressSite.dotCom(siteId: dotComId.intValue, authToken: dotComAuthToken)
-            let client = WordPressClient(site: site)
+            let site = WordPressSite.dotCom(siteURL: siteURL, siteId: dotComId.intValue, authToken: dotComAuthToken)
+            let client = WordPressClientFactory.shared.instance(for: site)
             siteUsername = try await client.api.users.retrieveMeWithEditContext().data.username
             try await coreDataStack.performAndSave { context in
                 let blog = try context.existingObject(with: blogId)

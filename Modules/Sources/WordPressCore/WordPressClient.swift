@@ -1,6 +1,7 @@
 import Foundation
 import WordPressAPI
 import WordPressAPIInternal
+import WordPressApiCache
 
 /// Protocol defining the WordPress API methods that WordPressClient needs.
 /// This abstraction allows for mocking in tests using the `NoHandle` constructors
@@ -15,6 +16,9 @@ public protocol WordPressClientAPI: Sendable {
     var taxonomies: TaxonomiesRequestExecutor { get }
     var terms: TermsRequestExecutor { get }
     var applicationPasswords: ApplicationPasswordsRequestExecutor { get }
+    var posts: PostsRequestExecutor { get }
+
+    func createSelfHostedService(cache: WordPressApiCache) throws -> WpSelfHostedService
 
     func uploadMedia(
         params: MediaCreateParams,
@@ -70,11 +74,34 @@ public actor WordPressClient {
         case noActiveTheme
     }
 
+    public let siteURL: URL
+
     /// The underlying API executor used for making network requests.
     public let api: any WordPressClientAPI
 
-    /// The root URL of the WordPress site this client is connected to.
-    public let rootUrl: String
+    private var _cache: WordPressApiCache?
+    public var cache: WordPressApiCache? {
+        get {
+            if _cache == nil {
+                _cache = WordPressApiCache.bootstrap()
+            }
+            return _cache
+        }
+    }
+
+    private var _service: WpSelfHostedService?
+    public var service: WpSelfHostedService? {
+        get {
+            if _service == nil, let cache {
+                do {
+                    _service = try api.createSelfHostedService(cache: cache)
+                } catch {
+                    NSLog("Failed to create service: \(error)")
+                }
+            }
+            return _service
+        }
+    }
 
     /// The cached task for fetching site API details.
     private var loadSiteInfoTask: Task<WpApiDetails, Error>
@@ -93,10 +120,10 @@ public actor WordPressClient {
     ///
     /// - Parameters:
     ///   - api: The API executor to use for network requests.
-    ///   - rootUrl: The parsed root URL of the WordPress site.
-    public init(api: any WordPressClientAPI, rootUrl: ParsedUrl) {
+    ///   - siteURL: The parsed root URL of the WordPress site.
+    public init(api: WordPressClientAPI, siteURL: URL) {
         self.api = api
-        self.rootUrl = rootUrl.url()
+        self.siteURL = siteURL
 
         // These tasks need to be manually restated here because we can't use the task constructors
         self.loadSiteInfoTask = Task { try await api.apiRoot.get().data }

@@ -26,7 +26,7 @@ struct WordPressClientCachingTests {
         mockAPI.mockRoutes = ["/wp-block-editor/v1/settings"]
         mockAPI.mockIsBlockTheme = true
 
-        let client = try WordPressClient(api: mockAPI, rootUrl: .parse(input: "https://example.com"))
+        let client = try WordPressClient(api: mockAPI, siteURL: URL(string: "https://example.com")!)
 
         // First call - should trigger API fetches
         let result1 = try await client.supports(.blockEditorSettings)
@@ -61,7 +61,7 @@ struct WordPressClientCachingTests {
         let mockAPI = MockWordPressClientAPI()
         mockAPI.mockRoutes = ["/wp-block-editor/v1/sites/12345/settings"]
 
-        let client = try WordPressClient(api: mockAPI, rootUrl: .parse(input: "https://example.com"))
+        let client = try WordPressClient(api: mockAPI, siteURL: URL(string: "https://example.com")!)
 
         // Call with siteId
         let result = try await client.supports(.blockEditorSettings, forSiteId: 12345)
@@ -81,7 +81,7 @@ struct WordPressClientCachingTests {
         mockAPI.mockRoutes = ["/wp-block-editor/v1/settings", "/wp/v2/plugins"]
         mockAPI.mockIsBlockTheme = true
 
-        let client = try WordPressClient(api: mockAPI, rootUrl: .parse(input: "https://example.com"))
+        let client = try WordPressClient(api: mockAPI, siteURL: URL(string: "https://example.com")!)
 
         // Make multiple concurrent calls
         async let result1 = client.supports(.blockEditorSettings)

@@ -1,6 +1,7 @@
 26.7
 -----
 * [**] Stats: Add new "Adds" tab to show WordAdds earnings and stats [#25165]
+* [*] For sites that are authenticated with application passwords, the app no longer requires xml-rpc to be enabled. But in that scenario, only limited features are available: XML-RPC needs to be enabled to use all features. [#25183]
 * [**] Stats: Add "Devices" view to the "Traffic" tab [#25176]
 * [**] Stats: Add "UTM" view to the "Traffic" tab [#25178]
 * [*] Stats: Fix a few issues with charts (x axis labels alignment, occasionally incorrect displayed date period, and more) [#25185]
@@ -8,6 +9,7 @@
 * [*] Stats: Minor design improvements and simplifcations [#25215], [#25214]
 * [*] Insights: Fix empty posting activity [#25219]
 * [*] Activity Logs: Minor visual improvements [#25220]
+* [*] Reader: The post tags are now displayed in the original order [#25229]
 
 
 26.6

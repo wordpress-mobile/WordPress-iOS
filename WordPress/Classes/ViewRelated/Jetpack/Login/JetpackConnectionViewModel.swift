@@ -188,13 +188,13 @@ class JetpackConnectionService {
         }
 
         guard let site = try? WordPressSite(blog: blog),
-              case let .selfHosted(_, apiRootURL, username, password) = site
+              case let .selfHosted(_, _, apiRootURL, username, password) = site
         else {
             return nil
         }
 
         self.blogId = TaggedManagedObjectID(blog)
-        self.client = .init(site: site)
+        self.client = WordPressClientFactory.shared.instance(for: site)
         self.jetpackConnectionClient = .init(
             apiRootUrl: apiRootURL,
             urlSession: .init(configuration: .ephemeral),

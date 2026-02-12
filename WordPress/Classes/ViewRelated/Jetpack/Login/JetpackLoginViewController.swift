@@ -201,6 +201,8 @@ public class JetpackLoginViewController: UIViewController {
             properties["source"] = "stats"
         case .notifications:
             properties["source"] = "notifications"
+        case .bypassXMLRPC:
+            properties["source"] = "bypass_xmlrpc"
         }
 
         if let blog {
@@ -292,10 +294,11 @@ extension JetpackLoginViewController: JetpackRemoteInstallDelegate {
 public enum JetpackLoginPromptType {
     case stats
     case notifications
+    case bypassXMLRPC
 
     var image: UIImage? {
         switch self {
-        case .stats:
+        case .stats, .bypassXMLRPC:
             return UIImage(named: "wp-illustration-stats")
         case .notifications:
             return UIImage(named: "wp-illustration-notifications")
@@ -304,7 +307,7 @@ public enum JetpackLoginPromptType {
 
     var imageName: String {
         switch self {
-        case .stats:
+        case .stats, .bypassXMLRPC:
             return "wp-illustration-stats"
         case .notifications:
             return "wp-illustration-notifications"
@@ -319,6 +322,12 @@ public enum JetpackLoginPromptType {
         case .notifications:
             return NSLocalizedString("To get helpful notifications on your phone from your WordPress site, you'll need to install the Jetpack plugin.",
                                         comment: "Message asking the user if they want to set up Jetpack from notifications")
+        case .bypassXMLRPC:
+            return NSLocalizedString(
+                "jetpack.install.allFeatures.description",
+                value: "To unlock all app features, you'll need to install the Jetpack plugin.",
+                comment: "Message asking the user to install Jetpack to access all app features"
+            )
         }
     }
 
@@ -332,6 +341,12 @@ public enum JetpackLoginPromptType {
             return NSLocalizedString("jetpack.install.connectUser.notifications.description",
                                      value: "To get helpful notifications on your phone from your WordPress site, you'll need to connect to your user account.",
                                      comment: "Message asking the user if they want to set up Jetpack from notifications")
+        case .bypassXMLRPC:
+            return NSLocalizedString(
+                "jetpack.install.connectUser.bypassXMLRPC.description",
+                value: "To unlock all app features, you'll need to connect the Jetpack plugin to your user account.",
+                comment: "Message asking the user to connect Jetpack to access all app features"
+            )
         }
     }
 }
