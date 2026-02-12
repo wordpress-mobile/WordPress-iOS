@@ -9,7 +9,7 @@ struct MockStatsServiceTests {
     @Test("getTopListData returns valid data for posts")
     func testGetTopListDataPosts() async throws {
         // GIVEN
-        let service = MockStatsService(timeZone: .current)
+        let service = MockStatsService(timeZone: .eastern)
         let dateInterval = calendar.makeDateInterval(for: .today)
 
         // WHEN
@@ -43,7 +43,7 @@ struct MockStatsServiceTests {
     @Test("Verify getChartData returns valid data for views metric with today range")
     func testGetChartDataViewsToday() async throws {
         // GIVEN
-        let service = MockStatsService(timeZone: .current)
+        let service = MockStatsService(timeZone: .eastern)
         let dateInterval = calendar.makeDateInterval(for: .today)
         let granularity = dateInterval.preferredGranularity
 
