@@ -41,13 +41,6 @@
     {
       "target" : {
         "containerPath" : "container:..\/Modules",
-        "identifier" : "DesignSystemTests",
-        "name" : "DesignSystemTests"
-      }
-    },
-    {
-      "target" : {
-        "containerPath" : "container:..\/Modules",
         "identifier" : "WordPressSharedTests",
         "name" : "WordPressSharedTests"
       }
