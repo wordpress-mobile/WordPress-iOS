@@ -26,7 +26,7 @@ import WordPressAPI
 
     init(client: WordPressClient, xmlrpc: BlogServiceRemoteXMLRPC?) {
         self.client = client
-        self.xmlrpc = nil
+        self.xmlrpc = xmlrpc
     }
 
     public func getAllAuthors(success: UsersHandler?, failure: (((any Error)?) -> Void)?) {
