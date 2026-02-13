@@ -1,5 +1,5 @@
 {
-  "originHash" : "a4bb4eeeafdac8f1de8c6594484158bd7c58df998d8d72d75cd71fd171eaa503",
+  "originHash" : "0f1937e599fa6126f2ab4f1a1a953bcacb1282168108f6bfe6704536af6fe897",
   "pins" : [
     {
       "identity" : "alamofire",
@@ -15,8 +15,8 @@
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/Automattic/Automattic-Tracks-iOS",
       "state" : {
-        "revision" : "048f3c469f4c82d636da380a5766a8b1c5982238",
-        "version" : "3.5.4"
+        "revision" : "7442def327dbbc9158c0d780382843e0b7a2e6c9",
+        "version" : "4.1.0"
       }
     },
     {
@@ -273,8 +273,8 @@
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/getsentry/sentry-cocoa",
       "state" : {
-        "revision" : "f45e9c62d7a4d9258ac3cf35a3acf9dbab4481d1",
-        "version" : "8.43.0"
+        "revision" : "f1eefffd88cd6dfe5751159a3b32ff3c8e5b3b32",
+        "version" : "9.4.0"
       }
     },
     {
