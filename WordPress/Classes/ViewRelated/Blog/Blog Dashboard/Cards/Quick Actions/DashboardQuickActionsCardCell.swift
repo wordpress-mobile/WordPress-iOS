@@ -4,7 +4,6 @@ import WordPressData
 import WordPressShared
 import SwiftUI
 import WordPressAPI
-import WordPressCore
 import WordPressUI
 
 final class DashboardQuickActionsCardCell: UICollectionViewCell, Reusable, UITableViewDataSource, UITableViewDelegate {
@@ -119,29 +118,7 @@ final class DashboardQuickActionsCardCell: UICollectionViewCell, Reusable, UITab
             viewController.presentationDelegate = self
             self.blogDetailsViewController = viewController
             self.parentViewController?.show(viewController, sender: nil)
-        case .postType(let postType):
-            showPinnedPostType(postType, blog: blog)
         }
-    }
-
-    private func showPinnedPostType(_ postType: PinnedPostType, blog: Blog) {
-        guard let parentViewController else { return }
-
-        let feature = NSLocalizedString(
-            "applicationPasswordRequired.feature.customPosts",
-            value: "Custom Post Types",
-            comment: "Feature name for managing custom post types in the app"
-        )
-        let rootView = ApplicationPasswordRequiredView(
-            blog: blog,
-            localizedFeatureName: feature,
-            presentingViewController: parentViewController
-        ) { client in
-            PinnedPostTypeView(blog: blog, service: CustomPostTypeService(client: client, blog: blog), postType: postType)
-        }
-        let controller = UIHostingController(rootView: rootView)
-        controller.navigationItem.largeTitleDisplayMode = .never
-        parentViewController.show(controller, sender: nil)
     }
 
     private func trackQuickActionsEvent(_ event: WPAnalyticsStat, blog: Blog) {

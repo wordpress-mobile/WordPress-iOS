@@ -28,8 +28,6 @@ final class DashboardQuickActionCell: UITableViewCell {
         titleLabel.adjustsFontForContentSizeCategory = true
 
         iconView.tintColor = .label
-        iconView.contentMode = .center
-        iconView.widthAnchor.constraint(equalToConstant: 24).isActive = true
 
         let spacer = UIView()
         spacer.translatesAutoresizingMaskIntoConstraints = false

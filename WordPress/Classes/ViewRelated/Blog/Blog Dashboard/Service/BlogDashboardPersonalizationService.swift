@@ -136,7 +136,7 @@ struct BlogDashboardPersonalizationService {
 }
 
 private func makeKey(for action: DashboardQuickAction) -> String {
-    "quick-action-\(action.settingsKey)-hidden"
+    "quick-action-\(action.rawValue)-hidden"
 }
 
 extension NSNotification.Name {

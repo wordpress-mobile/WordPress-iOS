@@ -173,7 +173,6 @@ final class BlogDashboardViewModel {
         })
 
         blazeViewModel.refresh()
-        quickActionsViewModel.syncCustomPostTypes()
     }
 
     @objc func loadCardsFromCache() {
