@@ -1,5 +1,6 @@
 import Foundation
 import WordPressData
+import WordPressKit
 import WordPressShared
 import WordPressCore
 import WordPressAPI
@@ -96,6 +97,58 @@ extension BlogService {
                 completion()
             }
             try await self.syncTaxnomies(for: blogId)
+        }
+    }
+
+    // This is a re-implementation of `-[BlogServiceRemoteXMLRPC syncBlogOptionsWithSuccess:failure:]`, but with
+    // additional check of whether the site's XMLRPC is disabled. We need to implement this in Swift, because we
+    // need the native Swift error.
+    @objc func syncXMLRPCOptionsIfApplicable(
+        for blog: Blog,
+        optionsHandler: @escaping (_ options: NSDictionary) -> Void,
+        failure: @escaping () -> Void
+    ) {
+        let blogObjectID = blog.objectID
+
+        guard blog.isSelfHosted,
+            let xmlrpcApi = blog.xmlrpcApi,
+              let username = blog.username,
+              let password = blog.password else {
+
+            // Set isXMLRPCDisabled to false if the site is not a self-hosted site.
+            self.coreDataStack.performAndSave({ context in
+                guard let blog = try? context.existingObject(with: blogObjectID) as? Blog else { return }
+                blog.isXMLRPCDisabled = false
+            }, completion: failure, on: .main)
+
+            return
+        }
+
+        let parameters: [AnyObject] = [0 as AnyObject, username as AnyObject, password as AnyObject]
+
+        Task { @MainActor in
+            let result = await xmlrpcApi.call(method: "wp.getOptions", parameters: parameters)
+
+            await self.coreDataStack.performAndSave { context in
+                guard let blog = try? context.existingObject(with: blogObjectID) as? Blog else { return }
+                if case let .failure(error) = result {
+                    blog.isXMLRPCDisabled = error.xmlrpcAvailability == .unavailable
+                } else {
+                    blog.isXMLRPCDisabled = false
+                }
+            }
+
+            switch result {
+            case .success(let response):
+                if let options = response.body as? NSDictionary {
+                    optionsHandler(options)
+                } else {
+                    failure()
+                }
+            case .failure(let error):
+                DDLogError("Failed syncing XML-RPC options for blog: \(error)")
+                failure()
+            }
         }
     }
 
