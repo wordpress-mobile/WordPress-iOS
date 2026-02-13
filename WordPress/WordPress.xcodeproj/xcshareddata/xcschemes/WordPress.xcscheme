@@ -45,9 +45,6 @@
             reference = "container:../Tests/KeystoneTests/WordPressUnitTests.xctestplan"
             default = "YES">
          </TestPlanReference>
-         <TestPlanReference
-            reference = "container:../Modules/Tests/AllModulesUnitTests.xctestplan">
-         </TestPlanReference>
       </TestPlans>
       <Testables>
          <TestableReference
