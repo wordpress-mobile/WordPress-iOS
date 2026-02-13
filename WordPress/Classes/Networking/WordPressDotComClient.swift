@@ -4,7 +4,6 @@ import AVFoundation
 import WordPressAPI
 import WordPressAPIInternal
 import Combine
-import OSLog
 
 actor WordPressDotComClient: MediaHostProtocol {
 
@@ -158,7 +157,7 @@ final class WpComTrafficDebugger: Middleware {
         request: WordPressAPIInternal.WpNetworkRequest,
         context: WordPressAPIInternal.RequestContext?
     ) async throws -> WordPressAPIInternal.WpNetworkResponse {
-        Logger.networking.debug("[\(request.method())] \(request.url())")
+        Loggers.networking.debug("[\(request.method())] \(request.url())")
         return response
     }
 }

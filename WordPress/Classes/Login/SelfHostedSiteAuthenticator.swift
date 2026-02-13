@@ -1,5 +1,6 @@
 import Foundation
 import WordPressAPI
+import WordPressAPIInternal
 import AutomatticTracks
 import SwiftUI
 import AuthenticationServices
@@ -138,7 +139,7 @@ struct SelfHostedSiteAuthenticator {
     func signIn(details: AutoDiscoveryAttemptSuccess, from viewController: UIViewController, context: SignInContext) async throws(SignInError) -> TaggedManagedObjectID<Blog> {
         do {
             let (apiRootURL, credentials) = try await authenticate(details: details, from: viewController)
-            let result = try await handle(credentials: credentials, apiRootURL: apiRootURL, context: context)
+            let result = try await handle(credentials: credentials, apiRootURL: apiRootURL, apiDetails: details.apiDetails, context: context)
             trackSuccess(url: details.parsedSiteUrl.url())
             return result
         } catch {
@@ -182,7 +183,7 @@ struct SelfHostedSiteAuthenticator {
     }
 
     @MainActor
-    private func handle(credentials: WpApiApplicationPasswordDetails, apiRootURL: URL, context: SignInContext) async throws(SignInError) -> TaggedManagedObjectID<Blog> {
+    private func handle(credentials: WpApiApplicationPasswordDetails, apiRootURL: URL, apiDetails: WpApiDetails, context: SignInContext) async throws(SignInError) -> TaggedManagedObjectID<Blog> {
         SVProgressHUD.show()
         defer {
             SVProgressHUD.dismiss()
@@ -192,64 +193,13 @@ struct SelfHostedSiteAuthenticator {
             throw .mismatchedUser(expectedUsername: username)
         }
 
-        let blog = try await fetchSiteDataUsingCoreRESTAPI(credentials: credentials, apiRootURL: apiRootURL, context: context)
+        let blog = try await createSite(credentials: credentials, apiRootURL: apiRootURL, apiDetails: apiDetails, context: context)
 
         switch context {
         case .default:
             NotificationCenter.default.post(name: Foundation.Notification.Name(rawValue: WordPressAuthenticator.WPSigninDidFinishNotification), object: nil)
         case .reauthentication:
             NotificationCenter.default.post(name: Self.applicationPasswordUpdated, object: nil)
-        }
-
-        return blog
-    }
-
-    private func fetchSiteDataUsingXMLRPC(
-        credentials: WpApiApplicationPasswordDetails,
-        apiRootURL: URL,
-        context: SignInContext
-    ) async throws(SignInError) -> TaggedManagedObjectID<Blog> {
-        let xmlrpc: URL = try await discoverXMLRPCEndpoint(site: credentials.siteUrl)
-        let blogOptions: [AnyHashable: Any]
-        do {
-            blogOptions = try await loadSiteOptions(xmlrpc: xmlrpc, details: credentials)
-        } catch {
-            throw .loadingSiteInfoFailure
-        }
-
-        // Only store the new site after credentials are validated.
-        let blog: TaggedManagedObjectID<Blog>
-        do {
-            blog = try await Blog.createRestApiBlog(
-                with: credentials,
-                restApiRootURL: apiRootURL,
-                xmlrpcEndpointURL: xmlrpc,
-                blogID: context.blogID,
-                in: ContextManager.shared
-            )
-
-            try await ApplicationPasswordRepository.shared.saveApplicationPassword(of: blog)
-        } catch {
-            throw .savingSiteFailure
-        }
-
-        let accountPassword = try? await ContextManager.shared.performQuery {
-            try $0.existingObject(with: blog).password
-        }
-        let wporg = WordPressOrgCredentials(
-            username: credentials.userLogin,
-            // The `sync` call below updates `Blog.password` with the password value here.
-            // In order to separate `Blog.password` and `Blog.applicationPassword`, we pass the account password here
-            // if it exists.
-            password: accountPassword ?? credentials.password,
-            xmlrpc: xmlrpc.absoluteString,
-            options: blogOptions
-        )
-
-        await withCheckedContinuation { continuation in
-            WordPressAuthenticator.shared.delegate!.sync(credentials: .init(wporg: wporg)) {
-                continuation.resume()
-            }
         }
 
         return blog
@@ -282,41 +232,42 @@ struct SelfHostedSiteAuthenticator {
         }
     }
 
-    // This is an alternative to `fetchSiteDataUsingXMLRPC`, without requiring the site's XML-RPC to be enabled.
-    private func fetchSiteDataUsingCoreRESTAPI(
+    private func createSite(
         credentials: WpApiApplicationPasswordDetails,
         apiRootURL: URL,
+        apiDetails: WpApiDetails,
         context: SignInContext
     ) async throws(SignInError) -> TaggedManagedObjectID<Blog> {
-        let api = WordPressAPI(
-            urlSession: URLSession(configuration: .ephemeral),
-            apiRootUrl: try! ParsedUrl.parse(input: apiRootURL.absoluteString),
-            authentication: WpAuthentication(username: credentials.userLogin, password: credentials.password)
-        )
-
-        let siteTitle: String
-        let isAdmin: Bool
-        do {
-            async let settingsResponse = api.siteSettings.retrieveWithViewContext()
-            async let userResponse = api.users.retrieveMeWithEditContext()
-            let (settings, user) = try await (settingsResponse.data, userResponse.data)
-
-            isAdmin = user.roles.contains(.administrator)
-            siteTitle = settings.title
-        } catch {
-            throw .loadingSiteInfoFailure
-        }
-
-        // If the XMLRPC is disabled, we'll use the default endpoint.
+        // We still need to set the `Blog.xmlrpc`, because it's used all across the app.
         let xmlrpc = (try? await discoverXMLRPCEndpoint(site: credentials.siteUrl))
             ?? URL(string: credentials.siteUrl)?.appending(component: "xmlrpc.php")
         guard let xmlrpc else {
             throw .loadingSiteInfoFailure
         }
 
-        // FIXME: The XML-RPC version stores `wp.getOptions` result in `Blog.options`, which is used in a few places
-        // in the app. We can't get the same "options" via REST API. We'll need to investigate the impact of missing
-        // "options".
+        let api = WordPressAPI(
+            urlSession: URLSession(configuration: .ephemeral),
+            apiRootUrl: try! ParsedUrl.parse(input: apiRootURL.absoluteString),
+            authentication: WpAuthentication(username: credentials.userLogin, password: credentials.password)
+        )
+
+        let siteSettings: SiteSettingsWithViewContext
+        let isAdmin: Bool
+        let jetpackSite: RemoteBlog?
+        let jetpackConnection: JetpackConnectionData?
+        let xmlrpcOptions: [AnyHashable: Any]?
+        do {
+            async let siteSettings_ = api.siteSettings.retrieveWithViewContext().data
+            async let isAdmin_ = api.users.retrieveMeWithEditContext().data.roles.contains(.administrator)
+            async let jetpackSite_ = fetchJetpackSite(apiRootURL: apiRootURL, credentials: credentials)
+            async let jetpackConnection_ = fetchJetpackConnectionData(apiRootURL: apiRootURL, credentials: credentials)
+            async let xmlrpcOptions_ = try? loadSiteOptions(xmlrpc: xmlrpc, details: credentials)
+
+            (siteSettings, isAdmin, jetpackSite, jetpackConnection, xmlrpcOptions) =
+                try await (siteSettings_, isAdmin_, jetpackSite_, jetpackConnection_, xmlrpcOptions_)
+        } catch {
+            throw .loadingSiteInfoFailure
+        }
 
         let blog: TaggedManagedObjectID<Blog>
         do {
@@ -333,7 +284,42 @@ struct SelfHostedSiteAuthenticator {
 
                 blog.isAdmin = isAdmin
                 blog.addSettingsIfNecessary()
-                blog.settings?.name = siteTitle
+                blog.settings?.name = siteSettings.title
+
+                blog.options = (xmlrpcOptions ?? [:])
+                    .merging(
+                        (jetpackSite?.options as? [AnyHashable: Any] ?? [:]),
+                        uniquingKeysWith: { _, jp in jp }
+                    )
+
+                // Set additional options if the site is fully connected to WP.com
+                if let jetpackConnection, let dotComUser = jetpackConnection.currentUser.wpcomUser {
+                    blog.setValue(dotComUser.login, forOption: "jetpack_user_login")
+                    blog.setValue(dotComUser.email, forOption: "jetpack_user_email")
+                    if let siteId = jetpackConnection.currentUser.blogId {
+                        blog.setValue(siteId, forOption: "jetpack_client_id")
+                    }
+
+                    if let account = try? WPAccount.lookup(withUsername: dotComUser.login, in: context) {
+                        blog.account = account
+                    }
+                }
+
+                if blog.getOptionString(name: "blog_title") == nil {
+                    blog.setValue(siteSettings.title, forOption: "blog_title")
+                }
+
+                if blog.getOptionString(name: "timezone") == nil {
+                    blog.setValue(siteSettings.timezone, forOption: "timezone")
+                }
+
+                if blog.getOptionString(name: "gmt_offset") == nil, let offset = apiDetails.gmtOffset() {
+                    blog.setValue(offset, forOption: "gmt_offset")
+                }
+
+                if blog.getOptionString(name: "home_url") == nil {
+                    blog.setValue(apiDetails.homeUrlString(), forOption: "home_url")
+                }
             }
 
             try await ApplicationPasswordRepository.shared.saveApplicationPassword(of: blog)
@@ -342,5 +328,55 @@ struct SelfHostedSiteAuthenticator {
         }
 
         return blog
+    }
+
+    private func fetchJetpackSite(apiRootURL: URL, credentials: WpApiApplicationPasswordDetails) async -> RemoteBlog? {
+        // This endpoint proxies to WP.com public api `site/<site-id>` endpoint. When the site is connected to WP.com,
+        // we can use this endpoint to get a full response of `RemoteBlog`, including the "options".
+        guard let auth = "\(credentials.userLogin):\(credentials.password)".data(using: .utf8)?.base64EncodedString()
+            else { return nil }
+
+        struct SiteRequestResponse: Decodable {
+            var code: String
+            var data: String
+        }
+
+        var siteRequest = URLRequest(url: apiRootURL.appending(path: "/jetpack/v4/site"))
+        siteRequest.setValue("Basic \(auth)", forHTTPHeaderField: "Authorization")
+
+        // Ignoring the error cases, because the site may not connected to WP.com.
+        guard let (data, response) = try? await URLSession.shared.data(for: siteRequest),
+              (response as? HTTPURLResponse)?.statusCode == 200
+        else { return nil }
+
+        do {
+            let result = try JSONDecoder().decode(SiteRequestResponse.self, from: data)
+            let site = try JSONSerialization.jsonObject(with: Data(result.data.utf8))
+            if result.code == "success", let site = site as? NSDictionary {
+                return RemoteBlog(jsonDictionary: site)
+            } else {
+                return nil
+            }
+        } catch {
+            DDLogError("Failed to parse jetpack site response: \(error)")
+            return nil
+        }
+    }
+
+    private func fetchJetpackConnectionData(apiRootURL: URL, credentials: WpApiApplicationPasswordDetails) async -> JetpackConnectionData? {
+        let delegate = WpApiClientDelegate(
+            authProvider: .staticWithAuth(auth: .init(username: credentials.userLogin, password: credentials.password)),
+            requestExecutor: WpRequestExecutor(urlSession: .init(configuration: .ephemeral)),
+            middlewarePipeline: .default,
+            appNotifier: EmptyAppNotifier()
+        )
+        let client = UniffiJetpackApiClient(apiUrlResolver: WpOrgSiteApiUrlResolver(apiRootUrl: try! ParsedUrl.from(url: apiRootURL)), delegate: delegate)
+        return try? await client.connection().connectionData().data
+    }
+}
+
+private final class EmptyAppNotifier: WpAppNotifier {
+    func requestedWithInvalidAuthentication(requestUrl: String) async {
+        // Do nothing.
     }
 }

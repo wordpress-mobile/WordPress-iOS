@@ -65,13 +65,11 @@ extension ReaderPost {
         return title
     }
 
-    public func tagsForDisplay() -> [String]? {
+    public func tagsForDisplay() -> [String] {
         guard let tags, !tags.isEmpty else {
             return []
         }
-
-        let tagArray = tags.components(separatedBy: ", ")
-        return tagArray.sorted { $0.localizedCaseInsensitiveCompare($1) == .orderedAscending }
+        return tags.components(separatedBy: ", ")
     }
 
     public func authorForDisplay() -> String? {

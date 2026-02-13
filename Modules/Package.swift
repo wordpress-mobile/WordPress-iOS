@@ -31,7 +31,7 @@ let package = Package(
         .package(url: "https://github.com/AliSoftware/OHHTTPStubs", from: "9.1.0"),
         .package(url: "https://github.com/apple/swift-collections", from: "1.0.0"),
         .package(url: "https://github.com/apple/swift-log.git", from: "1.5.2"),
-        .package(url: "https://github.com/Automattic/Automattic-Tracks-iOS", from: "3.5.2"),
+        .package(url: "https://github.com/Automattic/Automattic-Tracks-iOS", from: "4.1.0"),
         .package(url: "https://github.com/Automattic/AutomatticAbout-swift", from: "1.1.5"),
         .package(url: "https://github.com/Automattic/Gravatar-SDK-iOS", from: "3.4.0"),
         .package(url: "https://github.com/Automattic/Gridicons-iOS", branch: "develop"),
@@ -58,7 +58,7 @@ let package = Package(
         .package(url: "https://github.com/zendesk/support_sdk_ios", from: "8.0.3"),
         .package(url: "https://github.com/wordpress-mobile/GutenbergKit", revision: "7a48d8756f33e3d25daa1fff5843d5cd6fdda887"),
         // We can't use wordpress-rs branches nor commits here. Only tags work.
-        .package(url: "https://github.com/Automattic/wordpress-rs", revision: "alpha-20260203"),
+        .package(url: "https://github.com/Automattic/wordpress-rs", revision: "alpha-20260210"),
         .package(
             url: "https://github.com/Automattic/color-studio",
             revision: "bf141adc75e2769eb469a3e095bdc93dc30be8de"
@@ -368,6 +368,7 @@ enum XcodeSupport {
             .product(name: "AutomatticTracks", package: "Automattic-Tracks-iOS"),
             .product(name: "CocoaLumberjack", package: "CocoaLumberjack"),
             .product(name: "CocoaLumberjackSwift", package: "CocoaLumberjack"),
+            .product(name: "CocoaLumberjackSwiftLogBackend", package: "CocoaLumberjack"),
             .product(name: "DGCharts", package: "Charts"),
             .product(name: "Down", package: "Down"),
             .product(name: "FSInteractiveMap", package: "FSInteractiveMap"),
@@ -413,6 +414,8 @@ enum XcodeSupport {
                 "WordPressKit",
                 .product(name: "CocoaLumberjack", package: "CocoaLumberjack"),
                 .product(name: "CocoaLumberjackSwift", package: "CocoaLumberjack"),
+                .product(name: "CocoaLumberjackSwiftLogBackend", package: "CocoaLumberjack"),
+                .product(name: "Logging", package: "swift-log"),
                 .product(name: "NSObject-SafeExpectations", package: "NSObject-SafeExpectations"),
                 .product(name: "NSURL-IDN", package: "NSURL-IDN"),
                 .product(name: "WordPressAPI", package: "wordpress-rs"),

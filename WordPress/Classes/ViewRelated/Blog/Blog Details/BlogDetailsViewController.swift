@@ -1,6 +1,5 @@
 import UIKit
 import WordPressData
-import WordPressKit
 import WordPressShared
 import WordPressUI
 import Reachability
@@ -22,7 +21,6 @@ public class BlogDetailsViewController: UIViewController {
 
     private lazy var blogService = BlogService(coreDataStack: ContextManager.shared)
     private var hasLoggedDomainCreditPromptShownEvent = false
-    private(set) var showXMLRPCDisabled: Bool = false
 
     init(blog: Blog) {
         self.blog = blog
@@ -82,7 +80,6 @@ public class BlogDetailsViewController: UIViewController {
         observeManagedObjectContextObjectsDidChangeNotification()
         observeGravatarImageUpdate()
         downloadGravatarImage()
-        checkXMLRPCStatus()
 
         registerForTraitChanges([UITraitHorizontalSizeClass.self], action: #selector(handleTraitChanges))
     }
@@ -153,7 +150,6 @@ public class BlogDetailsViewController: UIViewController {
 
     public func pulledToRefresh(with refreshControl: UIRefreshControl, onCompletion completion: (() -> Void)?) {
         let completionBlock = completion ?? {}
-        checkXMLRPCStatus()
         updateTableView { [weak refreshControl] in
             DispatchQueue.main.async {
                 refreshControl?.endRefreshing()
@@ -203,25 +199,6 @@ public class BlogDetailsViewController: UIViewController {
         }
 
         blogService.refreshDomains(for: blog, success: nil, failure: nil)
-    }
-
-    private func checkXMLRPCStatus() {
-        guard blog.isSelfHosted, let xmlrpcApi = blog.xmlrpcApi,
-                let username = blog.username, let password = blog.password else {
-            showXMLRPCDisabled = false
-            return
-        }
-
-        Task { @MainActor in
-            let availability = await xmlrpcApi.isXMLRPCAvailable(username: username, password: password)
-            let wasDisabled = self.showXMLRPCDisabled
-            self.showXMLRPCDisabled = availability == .unavailable
-
-            if wasDisabled != self.showXMLRPCDisabled {
-                self.configureTableViewData()
-                self.reloadTableViewPreservingSelection()
-            }
-        }
     }
 
     public func showRemoveSiteAlert() {
@@ -275,7 +252,6 @@ public class BlogDetailsViewController: UIViewController {
     @objc private func handleWillEnterForeground(_ notification: NSNotification) {
         configureTableViewData()
         reloadTableViewPreservingSelection()
-        checkXMLRPCStatus()
     }
 
     private func observeManagedObjectContextObjectsDidChangeNotification() {
