@@ -36,7 +36,6 @@ let package = Package(
         .package(url: "https://github.com/Automattic/Gravatar-SDK-iOS", from: "3.4.0"),
         .package(url: "https://github.com/Automattic/Gridicons-iOS", branch: "develop"),
         .package(url: "https://github.com/Automattic/ScreenObject", from: "0.3.0"),
-        .package(url: "https://github.com/buildkite/test-collector-swift", from: "0.3.0"),
         .package(url: "https://github.com/ChartsOrg/Charts", from: "5.0.0"),
         .package(url: "https://github.com/CocoaLumberjack/CocoaLumberjack", from: "3.8.5"),
         .package(url: "https://github.com/daltoniam/Starscream", from: "4.0.8"),
@@ -405,7 +404,6 @@ enum XcodeSupport {
                 "WordPressUI",
                 .product(name: "Gravatar", package: "Gravatar-SDK-iOS"),
                 .product(name: "Nimble", package: "Nimble"),
-                .product(name: "BuildkiteTestCollector", package: "test-collector-swift"),
                 // Needed by WordPressData because of how linkage works...
                 //
                 "BuildSettingsKit",
@@ -486,7 +484,6 @@ enum XcodeSupport {
             ]),
             .xcodeTarget("XcodeTarget_UITests", dependencies: [
                 "UITestsFoundation",
-                .product(name: "BuildkiteTestCollector", package: "test-collector-swift"),
             ]),
             .xcodeTarget(
                 "XcodeTarget_WordPressData",
