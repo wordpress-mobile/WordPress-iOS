@@ -294,7 +294,7 @@ struct SelfHostedSiteAuthenticator {
 
                 // Set additional options if he site is fully connected to WP.com
                 if let jetpackConnection, let dotComUser = jetpackConnection.currentUser.wpcomUser {
-                    blog.setValue(dotComUser.login, forOption: "jetpack_client_id")
+                    blog.setValue(dotComUser.login, forOption: "jetpack_user_login")
                     blog.setValue(dotComUser.email, forOption: "jetpack_user_email")
                     if let siteId = jetpackConnection.currentUser.blogId {
                         blog.setValue(siteId, forOption: "jetpack_client_id")
