@@ -110,8 +110,6 @@ extension BlogDetailsViewController {
                 try await service.refresh()
 
                 if let self {
-                    let pinnedCount = SiteStorageAccess.pinnedPostTypes(for: TaggedManagedObjectID(blog)).count
-                    tableViewModel?.showMorePostTypes = try await service.customTypes().count > pinnedCount
                     configureTableViewData()
                     reloadTableViewPreservingSelection()
                 }

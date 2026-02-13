@@ -54,8 +54,6 @@ private struct Section {
         }
     }
 
-    var showMorePostTypes = false
-
     var useSiteMenuStyle = false
 
     @objc public init(blog: Blog, viewController: BlogDetailsViewController) {
@@ -599,9 +597,7 @@ private extension BlogDetailsTableViewModel {
             for type in pinned {
                 rows.append(Row.pinnedPostType(type, viewController: viewController))
             }
-            if showMorePostTypes {
-                rows.append(Row.customPostTypes(viewController: viewController))
-            }
+            rows.append(Row.customPostTypes(viewController: viewController))
         }
 
         let title = isSplitViewDisplayed ? nil : Strings.contentSectionTitle
@@ -683,9 +679,7 @@ private extension BlogDetailsTableViewModel {
             for type in pinned {
                 rows.append(Row.pinnedPostType(type, viewController: viewController))
             }
-            if showMorePostTypes {
-                rows.append(Row.customPostTypes(viewController: viewController))
-            }
+            rows.append(Row.customPostTypes(viewController: viewController))
         }
 
         let title = Strings.publishSection
