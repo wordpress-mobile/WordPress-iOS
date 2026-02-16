@@ -18,7 +18,10 @@ public class SidebarSiteMenuScreen: ScreenObject {
     }
 
     func openSidebar() throws -> SidebarScreen {
-        navigationBar.buttons.element(boundBy: 0).tap()
+        let sidebarMeButton = app.buttons["sidebar_me"].firstMatch
+        if !sidebarMeButton.isHittable {
+            navigationBar.buttons.element(boundBy: 0).tap()
+        }
         return try SidebarScreen()
     }
 

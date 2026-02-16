@@ -127,13 +127,22 @@ public class MySiteScreen: ScreenObject {
     var duration: TimeInterval = 10.0
 
     public init(app: XCUIApplication = XCUIApplication()) throws {
-        try super.init(
-            expectedElementGetters: [
-                switchSiteButtonGetter,
-                createButtonGetter
-            ],
-            app: app
-        )
+        if XCTestCase.isPad {
+            try super.init(
+                expectedElementGetters: [
+                    createButtonGetter
+                ],
+                app: app
+            )
+        } else {
+            try super.init(
+                expectedElementGetters: [
+                    switchSiteButtonGetter,
+                    createButtonGetter
+                ],
+                app: app
+            )
+        }
     }
 
     public func showSiteSwitcher() throws -> MySitesScreen {

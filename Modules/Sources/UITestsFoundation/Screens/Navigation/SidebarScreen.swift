@@ -5,7 +5,7 @@ import XCTest
 public class SidebarScreen: ScreenObject {
     public init(app: XCUIApplication = XCUIApplication()) throws {
         try super.init {
-            $0.collectionViews["sidebar_list"].firstMatch
+            $0.buttons["sidebar_me"].firstMatch
         }
     }
 

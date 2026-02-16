@@ -318,10 +318,11 @@ public class BlockEditorScreen: ScreenObject {
     }
 
     private func dismissBlockEditorPopovers() {
-        // TODO: Find a better way to reliably dismiss a UIMenu without interacting with it
-        waitAndTap(postSettingsButton)
-        _ = try? EditorPostSettings().closePostSettings()
-
+        if dismissPopoverRegion.exists {
+            dismissPopoverRegion.tap()
+        } else {
+            app.coordinate(withNormalizedOffset: CGVector(dx: 0.5, dy: 0.5)).tap()
+        }
         dismissImageViewIfNeeded()
     }
 
@@ -467,7 +468,7 @@ public class BlockEditorScreen: ScreenObject {
         // Safety check
         XCTAssertTrue(element.waitForExistence(timeout: 1))
 
-        element.doubleTap()
+        doubleTapElement(element)
 
         let pasteButton = app.menuItems["Paste"]
 
@@ -477,7 +478,7 @@ public class BlockEditorScreen: ScreenObject {
             element.descendants(matching: .any).enumerated().forEach { e in
                 guard found == false else { return }
 
-                e.element.firstMatch.doubleTap()
+                doubleTapElement(e.element.firstMatch)
 
                 if pasteButton.waitForExistence(timeout: 1) {
                     found = true
@@ -488,5 +489,13 @@ public class BlockEditorScreen: ScreenObject {
         XCTAssertTrue(pasteButton.exists, "Could not find menu item paste button.")
 
         pasteButton.tap()
+    }
+
+    private func doubleTapElement(_ element: XCUIElement) {
+        if element.isHittable {
+            element.doubleTap()
+        } else {
+            element.coordinate(withNormalizedOffset: CGVector(dx: 0.5, dy: 0.5)).doubleTap()
+        }
     }
 }
