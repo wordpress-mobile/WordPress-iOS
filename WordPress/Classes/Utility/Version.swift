@@ -114,11 +114,11 @@ extension Version: Comparable {
             return lhsComparators.lexicographicallyPrecedes(rhsComparators)
         }
 
-        guard lhs.prereleaseIdentifiers.count > 0 else {
+        guard !lhs.prereleaseIdentifiers.isEmpty else {
             return false // Non-prerelease lhs >= potentially prerelease rhs
         }
 
-        guard rhs.prereleaseIdentifiers.count > 0 else {
+        guard !rhs.prereleaseIdentifiers.isEmpty else {
             return true // Prerelease lhs < non-prerelease rhs
         }
 

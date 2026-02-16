@@ -274,6 +274,6 @@ struct PostSettingsTests {
         let tagsText = settings.tags
 
         // Then
-        #expect(tagsText == "")
+        #expect(tagsText.isEmpty)
     }
 }

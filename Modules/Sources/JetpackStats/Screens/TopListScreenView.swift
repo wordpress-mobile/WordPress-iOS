@@ -181,7 +181,7 @@ struct TopListScreenView: View {
 
     @ViewBuilder
     private func listContent(data: TopListData) -> some View {
-        if data.items.count > 0 {
+        if !data.items.isEmpty {
             listSection(.top10, data: data)
         }
         if data.items.count > 10 {

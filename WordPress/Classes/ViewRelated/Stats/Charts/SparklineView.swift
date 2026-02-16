@@ -70,7 +70,7 @@ class SparklineView: UIView {
     }
 
     private func interpolateData(_ inputData: [CGFloat]) -> [CGFloat] {
-        guard inputData.count > 0,
+        guard !inputData.isEmpty,
               let first = inputData.first else {
             return []
         }

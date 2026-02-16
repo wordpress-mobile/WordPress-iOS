@@ -105,7 +105,7 @@ class CoreDataHelperTests: XCTestCase {
         context.deleteAllObjects(ofType: DummyEntity.self)
 
         XCTAssert(context.countObjects(ofType: DummyEntity.self) == 0)
-        XCTAssert(context.allObjects(ofType: DummyEntity.self).count == 0)
+        XCTAssert(context.allObjects(ofType: DummyEntity.self).isEmpty)
     }
 
     /// Verifies that firstObject effectively retrieves a single instance, when applicable

@@ -173,7 +173,7 @@ open class SettingsListEditorViewController: UITableViewController {
     }
 
     fileprivate func isEmpty() -> Bool {
-        return rows.count == 0
+        return rows.isEmpty
     }
 
     // MARK: - Constants

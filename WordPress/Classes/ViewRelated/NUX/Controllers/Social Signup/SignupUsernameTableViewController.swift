@@ -115,7 +115,7 @@ class SignupUsernameTableViewController: UITableViewController, SearchTableViewC
     // MARK: - SearchTableViewCellDelegate
 
     func startSearch(for searchTerm: String) {
-        guard searchTerm.count > 0 else {
+        guard !searchTerm.isEmpty else {
             return
         }
 
@@ -260,7 +260,7 @@ extension SignupUsernameTableViewController {
 
         let service = AccountSettingsService(userID: userID.intValue, api: api)
         service.suggestUsernames(base: searchTerm) { [weak self] (newSuggestions) in
-            if newSuggestions.count == 0 {
+            if newSuggestions.isEmpty {
                 WordPressAuthenticator.track(.signupEpilogueUsernameSuggestionsFailed)
             }
             self?.isSearching = false

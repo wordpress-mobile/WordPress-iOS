@@ -376,7 +376,7 @@ class ActivityServiceRemoteTests: RemoteTestCase, RESTTestable {
                                    XCTAssertEqual(rewindStatus.restore!.status, .fail)
                                    XCTAssertEqual(rewindStatus.restore!.progress, 0)
                                    XCTAssertNotNil(rewindStatus.restore!.failureReason)
-                                   XCTAssert(rewindStatus.restore!.failureReason!.count > 0)
+                                   XCTAssert(!rewindStatus.restore!.failureReason!.isEmpty)
                                    expect.fulfill()
                                 }, failure: { _ in
                                    expect.fulfill()

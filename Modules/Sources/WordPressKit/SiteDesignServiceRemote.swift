@@ -16,7 +16,7 @@ public struct SiteDesignRequest {
             "preview_height": "\(thumbnailSize.height)" as AnyObject,
             "scale": UIScreen.main.nativeScale as AnyObject
         ]
-        if 0 < groups.count {
+        if !groups.isEmpty {
             let groups = groups.map { $0.rawValue }
             parameters["group"] = groups.joined(separator: ",") as AnyObject
         }

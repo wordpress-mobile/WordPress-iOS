@@ -114,7 +114,7 @@ struct UniversalLinkRouter: LinkRouter {
     ///            but does not perform any actions or tracking.
     ///
     func canHandle(url: URL) -> Bool {
-        let matcherCanHandle = matcher.routesMatching(url).count > 0
+        let matcherCanHandle = !matcher.routesMatching(url).isEmpty
 
         guard let host = url.host, let scheme = url.scheme else {
             return matcherCanHandle

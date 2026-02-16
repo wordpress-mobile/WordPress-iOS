@@ -168,7 +168,7 @@ private struct TagRowContent: View {
 
             Spacer()
 
-            if showPostCount, tag.count > 0 {
+            if showPostCount, !tag.isEmpty {
                 Text("\(tag.count)")
                     .font(.callout)
                     .foregroundColor(.secondary)

@@ -61,7 +61,7 @@ struct StatsDataAggregator {
             case .sum:
                 normalizedData[date] = dataPoint.sum
             case .average:
-                if dataPoint.count > 0 {
+                if !dataPoint.isEmpty {
                     normalizedData[date] = dataPoint.sum / dataPoint.count
                 }
             }

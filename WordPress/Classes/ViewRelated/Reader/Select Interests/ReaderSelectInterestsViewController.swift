@@ -253,7 +253,7 @@ class ReaderSelectInterestsViewController: UIViewController {
 
     // MARK: - Private: UI Helpers
     private func updateNextButtonState() {
-        nextButton.isEnabled = dataSource.selectedInterests.count > 0
+        nextButton.isEnabled = !dataSource.selectedInterests.isEmpty
     }
 
     private func startLoading(hideLabel: Bool = false) {
@@ -354,7 +354,7 @@ extension ReaderSelectInterestsViewController: UICollectionViewDelegateFlowLayou
 // MARK: - ReaderInterestsDataDelegate
 extension ReaderSelectInterestsViewController: ReaderInterestsDataDelegate {
     func readerInterestsDidUpdate(_ dataSource: ReaderInterestsDataSource) {
-        if dataSource.count > 0 {
+        if !dataSource.isEmpty {
             hideLoadingView()
             reloadData()
         } else if !topics.isEmpty {

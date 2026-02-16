@@ -21,7 +21,7 @@ struct WPAdminConvertibleRouter: LinkRouter {
     }
 
     func canHandle(url: URL) -> Bool {
-        return matcher.routesMatching(url).count > 0
+        return !matcher.routesMatching(url).isEmpty
     }
 
     func handle(url: URL, shouldTrack track: Bool = false, source: DeepLinkSource? = nil) {

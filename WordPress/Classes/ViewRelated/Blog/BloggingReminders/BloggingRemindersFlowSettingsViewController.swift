@@ -341,7 +341,7 @@ final class BloggingRemindersFlowSettingsViewController: UIViewController {
     private func scheduleReminders(showPushPrompt: Bool = true) {
         let schedule: BloggingRemindersScheduler.Schedule
 
-        if weekdays.count > 0 {
+        if !weekdays.isEmpty {
             schedule = .weekdays(weekdays)
         } else {
             schedule = .none
@@ -475,7 +475,7 @@ private extension BloggingRemindersFlowSettingsViewController {
 
     /// Updates the label that contains the number of scheduled days as users change them
     func refreshFrequencyLabel() {
-        guard weekdays.count > 0 else {
+        guard !weekdays.isEmpty else {
             frequencyLabel.isHidden = true
             timeSelectionStackView.isHidden = true
             return

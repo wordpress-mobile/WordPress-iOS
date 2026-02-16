@@ -295,7 +295,7 @@ class SharingButtonsViewController: UITableViewController {
             cell.textLabel?.text = self.twitterUsernameTitle
 
             var name = self.blog.settings!.sharingTwitterName
-            if name.count > 0 {
+            if !name.isEmpty {
                 name = "@\(name)"
             }
             cell.detailTextLabel?.text = name

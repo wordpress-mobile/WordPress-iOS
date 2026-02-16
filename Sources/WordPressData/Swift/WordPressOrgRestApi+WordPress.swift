@@ -32,7 +32,7 @@ extension WordPressOrgRestApi {
     ) {
         if let dotComID = blog.dotComID?.uint64Value,
            let token = blog.account?.authToken,
-           token.count > 0 {
+           !token.isEmpty {
             self.init(
                 dotComSiteID: dotComID,
                 bearerToken: token,

@@ -157,7 +157,7 @@ class JetpackScanCoordinator {
 
     private func fixThreats(threats: [JetpackScanThreat]) {
         // If there are no fixable threats just reload the state since it may be out of date
-        guard threats.count > 0 else {
+        guard !threats.isEmpty else {
             refreshData()
             return
         }

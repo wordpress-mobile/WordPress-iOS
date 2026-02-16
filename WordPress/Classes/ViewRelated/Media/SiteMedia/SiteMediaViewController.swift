@@ -188,8 +188,8 @@ final class SiteMediaViewController: UIViewController, SiteMediaCollectionViewCo
     }
 
     private func updateToolbarItemsState(for selection: [Media]) {
-        toolbarItemDelete.isEnabled = selection.count > 0
-        toolbarItemShare.isEnabled = selection.count > 0
+        toolbarItemDelete.isEnabled = !selection.isEmpty
+        toolbarItemShare.isEnabled = !selection.isEmpty
 
         toolbarItemTitle.setSelection(selection)
     }

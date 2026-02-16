@@ -113,8 +113,7 @@ public extension Blog {
         }
 
         return Blog.selfHosted(in: context)
-            .filter { $0.jetpack?.isConnected == true }
-            .count > 0
+            .contains { $0.jetpack?.isConnected == true }
     }
 
     @objc(selfHostedInContext:)

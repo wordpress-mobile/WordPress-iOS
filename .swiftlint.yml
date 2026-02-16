@@ -19,6 +19,8 @@ only_rules:
   # if,for,while,do statements shouldn't wrap their conditionals in parentheses.
   - control_statement
 
+  - contains_over_filter_is_empty
+
   # Allow custom rules. See the end of the config for our custom rules
   - custom_rules
 
@@ -28,7 +30,10 @@ only_rules:
 
   # Arguments can be omitted when matching enums with associated types if they
   # are not used.
+  - empty_count
   - empty_enum_arguments
+
+  - empty_string
 
   # Prefer `() -> ` over `Void -> `.
   - empty_parameters

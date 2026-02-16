@@ -56,7 +56,7 @@ struct TagSelectionTests {
         #expect(viewModel.selectedTags.count == 1)
 
         viewModel.toggleSelection(for: tags[0])
-        #expect(viewModel.selectedTags.count == 0)
+        #expect(viewModel.selectedTags.isEmpty)
     }
 
 }

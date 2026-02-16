@@ -237,7 +237,7 @@ public struct JetpackThreatContext {
             }
         }
 
-        return (highlights.count > 0) ? highlights : nil
+        return (!highlights.isEmpty) ? highlights : nil
     }
 
     /// Generates an NSRange from an array
