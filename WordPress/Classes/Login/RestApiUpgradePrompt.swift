@@ -7,6 +7,8 @@ public struct RestApiUpgradePrompt: View {
     private let localizedFeatureName: String
     private var didTapGetStarted: () -> Void
 
+    @State private var showInfo = false
+
     public init(localizedFeatureName: String, didTapGetStarted: @escaping () -> Void) {
         self.localizedFeatureName = localizedFeatureName
         self.didTapGetStarted = didTapGetStarted
@@ -21,10 +23,21 @@ public struct RestApiUpgradePrompt: View {
                 Text(Strings.description(localizedFeatureName: localizedFeatureName))
             },
             actions: {
-                Button(Strings.getStarted, action: didTapGetStarted)
-                    .buttonStyle(.borderedProminent)
+                VStack(spacing: 16) {
+                    Button(Strings.getStarted, action: didTapGetStarted)
+                        .buttonStyle(.borderedProminent)
+                        .controlSize(.large)
+
+                    Button("Learn More") { showInfo = true }
+                        .buttonStyle(.borderless)
+                }
             }
         )
+        .sheet(isPresented: $showInfo) {
+            NavigationStack {
+                ApplicationPasswordsInfoView()
+            }
+        }
     }
 
     private enum Strings {
@@ -40,5 +53,11 @@ public struct RestApiUpgradePrompt: View {
         static var getStarted: String {
             NSLocalizedString("applicationPasswordRequired.getStartedButton", value: "Get Started", comment: "Title for the button to authenticate with Application Passwords")
         }
+    }
+}
+
+#Preview {
+    NavigationStack {
+        RestApiUpgradePrompt(localizedFeatureName: "User Management") {}
     }
 }
