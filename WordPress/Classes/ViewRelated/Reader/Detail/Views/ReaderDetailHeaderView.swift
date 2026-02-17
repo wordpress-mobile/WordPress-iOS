@@ -260,7 +260,6 @@ struct ReaderDetailHeaderView: View {
 
     var body: some View {
         VStack(alignment: .leading, spacing: 16.0) {
-            headerRow
             if let postTitle = viewModel.postTitle {
                 Text(postTitle)
                     .font(Font(viewModel.displaySetting.font(with: .title1, weight: .bold)))
@@ -269,6 +268,7 @@ struct ReaderDetailHeaderView: View {
                     .textSelection(.enabled)
                     .fixedSize(horizontal: false, vertical: true) // prevents the title from being truncated.
             }
+            headerRow
             if viewModel.likeCountString != nil || viewModel.commentCountString != nil {
                 postCounts
             }
