@@ -117,7 +117,7 @@ class WordPressOrgRestApiTests: XCTestCase {
         XCTAssertEqual(request?.url?.absoluteString, "http://localhost:8000/wp/v2/sites/1001/hello")
     }
 
-    func testSelfHostedWithAuthorizationHeaderSendsHeader() async throws {
+    func testSelfHostedWithApplicationPasswordSendsAuthorizationHeader() async throws {
         var request: URLRequest?
         stub(condition: isHost("wordpress.org")) {
             request = $0
@@ -126,16 +126,16 @@ class WordPressOrgRestApiTests: XCTestCase {
 
         let api = WordPressOrgRestApi(
             selfHostedSiteWPJSONURL: apiBase,
-            credential: .init(loginURL: URL(string: "https://not-used.com")!, username: "user", password: "pass", adminURL: URL(string: "https://not-used.com")!),
-            authorizationHeader: "Basic fake-token-for-testing"
+            credential: .applicationPassword(username: "user", password: .init("app-pass"))
         )
         let _ = await api.get(path: "/wp/v2/posts", type: AnyResponse.self)
 
         let captured = try XCTUnwrap(request)
-        XCTAssertEqual(captured.value(forHTTPHeaderField: "Authorization"), "Basic fake-token-for-testing")
+        let expectedData = "user:app-pass".data(using: .utf8)!
+        XCTAssertEqual(captured.value(forHTTPHeaderField: "Authorization"), "Basic \(expectedData.base64EncodedString())")
     }
 
-    func testSelfHostedWithoutAuthorizationHeaderSendsNoHeader() async throws {
+    func testSelfHostedWithAccountPasswordSendsNoAuthorizationHeader() async throws {
         var request: URLRequest?
         stub(condition: isHost("wordpress.org")) {
             request = $0
@@ -178,7 +178,7 @@ extension WordPressOrgRestApi {
     convenience init(apiBase: URL) {
         self.init(
             selfHostedSiteWPJSONURL: apiBase,
-            credential: .init(loginURL: URL(string: "https://not-used.com")!, username: "user", password: "pass", adminURL: URL(string: "https://not-used.com")!)
+            credential: .accountPassword(loginURL: URL(string: "https://not-used.com")!, username: "user", password: .init("pass"), adminURL: URL(string: "https://not-used.com")!)
         )
     }
 }

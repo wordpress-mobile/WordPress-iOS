@@ -25,18 +25,11 @@ public struct WordPressOrgRestApiError: LocalizedError, Decodable, HTTPURLRespon
 
 @objc
 public final class WordPressOrgRestApi: NSObject {
-    public struct SelfHostedSiteCredential {
-        public let loginURL: URL
-        public let username: String
-        public let password: Secret<String>
-        public let adminURL: URL
-
-        public init(loginURL: URL, username: String, password: String, adminURL: URL) {
-            self.loginURL = loginURL
-            self.username = username
-            self.password = .init(password)
-            self.adminURL = adminURL
-        }
+    public enum SelfHostedSiteCredential {
+        /// Cookie + nonce authentication via wp-admin login.
+        case accountPassword(loginURL: URL, username: String, password: Secret<String>, adminURL: URL)
+        /// Application password authentication via Basic auth header.
+        case applicationPassword(username: String, password: Secret<String>)
     }
 
     enum Site {
@@ -53,15 +46,15 @@ public final class WordPressOrgRestApi: NSObject {
         self.init(site: .dotCom(siteID: dotComSiteID, bearerToken: bearerToken, apiURL: apiURL), userAgent: userAgent)
     }
 
-    public convenience init(selfHostedSiteWPJSONURL apiURL: URL, credential: SelfHostedSiteCredential, userAgent: String? = nil, authorizationHeader: String? = nil) {
+    public convenience init(selfHostedSiteWPJSONURL apiURL: URL, credential: SelfHostedSiteCredential, userAgent: String? = nil) {
         assert(apiURL.host != "public-api.wordpress.com", "Not a self-hosted site: \(apiURL)")
         // Potential improvement(?): discover API URL instead. See https://developer.wordpress.org/rest-api/using-the-rest-api/discovery/
         assert(apiURL.lastPathComponent == "wp-json", "Not a REST API URL: \(apiURL)")
 
-        self.init(site: .selfHosted(apiURL: apiURL, credential: credential), userAgent: userAgent, authorizationHeader: authorizationHeader)
+        self.init(site: .selfHosted(apiURL: apiURL, credential: credential), userAgent: userAgent)
     }
 
-    init(site: Site, userAgent: String? = nil, authorizationHeader: String? = nil) {
+    init(site: Site, userAgent: String? = nil) {
         self.site = site
 
         var additionalHeaders = [String: String]()
@@ -70,8 +63,10 @@ public final class WordPressOrgRestApi: NSObject {
         }
         if case let Site.dotCom(_, token, _) = site {
             additionalHeaders["Authorization"] = "Bearer \(token)"
-        } else if let authorizationHeader {
-            additionalHeaders["Authorization"] = authorizationHeader
+        } else if case let .selfHosted(_, credential) = site,
+                  case let .applicationPassword(username, password) = credential {
+            let data = "\(username):\(password.secretValue)".data(using: .utf8)!
+            additionalHeaders["Authorization"] = "Basic \(data.base64EncodedString())"
         }
 
         let configuration = URLSessionConfiguration.default
@@ -174,14 +169,17 @@ public final class WordPressOrgRestApi: NSObject {
     func perform(builder originalBuilder: HTTPRequestBuilder) async -> WordPressAPIResult<HTTPAPIResponse<Data>, WordPressOrgRestApiError> {
         var builder = originalBuilder
 
-        if case .selfHosted = site, let nonce = selfHostedSiteNonce {
+        if case let .selfHosted(_, credential) = site,
+           case .accountPassword = credential,
+           let nonce = selfHostedSiteNonce {
             builder = originalBuilder.header(name: "X-WP-Nonce", value: nonce)
         }
 
         var result = await urlSession.perform(request: builder, errorType: WordPressOrgRestApiError.self)
 
-        // When a self hosted site request fails with 401, authenticate and retry the request.
-        if case .selfHosted = site,
+        // When a self hosted site using account password auth fails with 401, refresh the nonce and retry.
+        if case let .selfHosted(_, credential) = site,
+            case .accountPassword = credential,
             case let .failure(.unacceptableStatusCode(response, _)) = result,
             response.statusCode == 401,
             await refreshNonce(),
@@ -223,7 +221,8 @@ private extension WordPressOrgRestApi {
     ///
     /// - Returns true if the nonce is fetched and it's different than the cached one.
     func refreshNonce() async -> Bool {
-        guard case let .selfHosted(_, credential) = site else {
+        guard case let .selfHosted(_, credential) = site,
+              case let .accountPassword(loginURL, username, password, adminURL) = credential else {
             return false
         }
 
@@ -232,10 +231,10 @@ private extension WordPressOrgRestApi {
         let methods: [NonceRetrievalMethod] = [.ajaxNonceRequest, .newPostScrap]
         for method in methods {
             guard let nonce = await method.retrieveNonce(
-                username: credential.username,
-                password: credential.password,
-                loginURL: credential.loginURL,
-                adminURL: credential.adminURL,
+                username: username,
+                password: password,
+                loginURL: loginURL,
+                adminURL: adminURL,
                 using: urlSession
             ) else {
                 continue
