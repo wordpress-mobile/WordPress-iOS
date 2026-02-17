@@ -3,6 +3,7 @@ import WordPressKit
 import WordPressCore
 import WordPressData
 import WordPressAPI
+import WordPressAPIInternal
 
 @objc public class BlogServiceRemoteCoreREST: NSObject, BlogServiceRemote {
     let client: WordPressClient
@@ -58,29 +59,67 @@ import WordPressAPI
                     return postType
                 }
                 success?(postTypes)
-            } catch {
+        } catch {
                 failure?(error)
             }
         }
     }
 
     public func syncPostFormats(success: PostFormatsHandler?, failure: (((any Error)?) -> Void)?) {
-        // There is no REST API to get post formats. We'll try to get them using XMLRPC.
-        if let xmlrpc {
-            xmlrpc.syncPostFormats(success: success, failure: failure)
-            return
-        }
+        Task { @MainActor in
+            let activeTheme: ThemeWithViewContext?
+            do {
+                let response = try await client.api.themes.listWithViewContext(
+                    params: ThemeListParams(status: .active)
+                )
+                activeTheme = response.data.first
+            } catch {
+                failure?(error)
+                return
+            }
 
-        failure?(PostFormatsUnavailableError())
+            guard let activeTheme else {
+                failure?(ActiveThemeNotFoundError())
+                return
+            }
+
+//            taxonomy-post_format-post-format-[id]
+//            │        │           │
+//            │        │           └─ term slug: "post-format-aside"
+//            │        │              (WP prefixes format terms with "post-format-")
+//            │        │
+//            │        └─ taxonomy name: "post_format"
+//            │
+//            └─ template type: taxonomy archive
+            let slugPrefix = "taxonomy-post_format-post-format-"
+
+            var labelsBySlugs: [String: String] = [:]
+            if let templateTypes = activeTheme.defaultTemplateTypes {
+                for templateType in templateTypes where templateType.slug.hasPrefix(slugPrefix) {
+                    let formatSlug = String(templateType.slug.dropFirst(slugPrefix.count))
+                    // This title value is different from XMLRPC: "Post Format: Standard" instead of just "Standard".
+                    // Considering the title value is localized, I don't think we can extract the "Standard" part out.
+                    labelsBySlugs[formatSlug] = templateType.title
+                }
+            }
+
+            var formats: [String: String] = [:]
+            if let data = activeTheme.themeSupports?[.formats], case let .vecString(slugs) = data {
+                for slug in slugs {
+                    formats[slug] = labelsBySlugs[slug] ?? slug.capitalized
+                }
+            }
+            success?(formats)
+        }
     }
 }
 
-struct PostFormatsUnavailableError: LocalizedError {
+struct ActiveThemeNotFoundError: LocalizedError {
     var errorDescription: String? {
         NSLocalizedString(
-            "blogDetails.postFormatsUnavailable.errorDescription",
-            value: "Post formats are not available for this site.",
-            comment: "Error message shown when post formats cannot be fetched for a site."
+            "blogDetails.activeThemeNotFound.errorDescription",
+            value: "The active theme could not be found for this site.",
+            comment: "Error message shown when the active theme cannot be found for a site."
         )
     }
 }
