@@ -271,17 +271,7 @@ extension BlogDetailsViewController {
     public func showPlugins() {
         WPAppAnalytics.track(.openedPluginDirectory, blog: blog)
 
-        if Feature.enabled(.pluginManagementOverhaul) {
-            showManagePluginsScreen()
-            return
-        }
-
-        guard let site = JetpackSiteRef(blog: blog) else {
-            return wpAssertionFailure("unexpected blog")
-        }
-        let controller = PluginDirectoryViewController(site: site)
-        controller.navigationItem.largeTitleDisplayMode = .never
-        presentationDelegate?.presentBlogDetailsViewController(controller)
+        showManagePluginsScreen()
     }
 
     public func showStats(from source: BlogDetailsNavigationSource) {

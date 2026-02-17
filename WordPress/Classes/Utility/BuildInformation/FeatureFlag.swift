@@ -19,10 +19,7 @@ public enum FeatureFlag: Int, CaseIterable {
     case compliancePopover
     case googleDomainsCard
     case voiceToContent
-    case allowApplicationPasswords
-    case selfHostedSiteUserManagement
     case readerGutenbergCommentComposer
-    case pluginManagementOverhaul
     case newStats
     case intelligence
     case newSupport
@@ -69,13 +66,7 @@ public enum FeatureFlag: Int, CaseIterable {
             return false
         case .voiceToContent:
             return app == .jetpack && BuildConfiguration.current.isInternal
-        case .allowApplicationPasswords:
-            return false
-        case .selfHostedSiteUserManagement:
-            return true
         case .readerGutenbergCommentComposer:
-            return false
-        case .pluginManagementOverhaul:
             return false
         case .newStats:
             return false
@@ -127,9 +118,6 @@ extension FeatureFlag {
         case .compliancePopover: "Compliance Popover"
         case .googleDomainsCard: "Google Domains Promotional Card"
         case .voiceToContent: "Voice to Content"
-        case .allowApplicationPasswords: "Allow creating Application Passwords"
-        case .selfHostedSiteUserManagement: "Self-hosted Site User Management"
-        case .pluginManagementOverhaul: "Plugin Management Overhaul"
         case .readerGutenbergCommentComposer: "Gutenberg Comment Composer"
         case .newStats: "New Stats"
         case .intelligence: "Intelligence"
@@ -148,15 +136,7 @@ extension FeatureFlag: OverridableFlag {
     }
 
     var key: String {
-        let key: String
-        switch self {
-        case .allowApplicationPasswords:
-            // This feature toggle description is already shipped and used in the production.
-            // We want to keep using the same key, but change the description.
-            key = "Application Passwords for self-hosted sites"
-        default:
-            key = String(describing: self)
-        }
+        let key = String(describing: self)
         return "ff-override-\(key)"
     }
 }

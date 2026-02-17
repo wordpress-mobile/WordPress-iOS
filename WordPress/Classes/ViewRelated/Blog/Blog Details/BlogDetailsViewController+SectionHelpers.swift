@@ -48,7 +48,7 @@ extension BlogDetailsViewController {
 
     public func shouldAddUsersRow() -> Bool {
         // Only admin users can list users.
-        return FeatureFlag.selfHostedSiteUserManagement.enabled && blog.isSelfHosted && blog.isAdmin
+        return blog.isSelfHosted && blog.isAdmin
     }
 
     public func shouldAddPluginsRow() -> Bool {
@@ -74,25 +74,19 @@ extension BlogDetailsViewController {
     }
 
     public func showManagePluginsScreen() {
-        guard blog.supports(.pluginManagement),
-              let site = JetpackSiteRef(blog: blog) else {
+        guard blog.supports(.pluginManagement)else {
             return
         }
 
         let wordpressCoreVersion = blog.version as? String
 
         let viewController: UIViewController
-        if Feature.enabled(.pluginManagementOverhaul) {
-            let feature = NSLocalizedString("applicationPasswordRequired.feature.plugins", value: "Plugin Management", comment: "Feature name for managing plugins in the app")
-            let rootView = ApplicationPasswordRequiredView(blog: blog, localizedFeatureName: feature, presentingViewController: self) { client in
-                let service = PluginService(client: client, wordpressCoreVersion: wordpressCoreVersion)
-                InstalledPluginsListView(service: service)
-            }
-            viewController = UIHostingController(rootView: rootView)
-        } else {
-            let query = PluginQuery.all(site: site)
-            viewController = PluginListViewController(site: site, query: query)
+        let feature = NSLocalizedString("applicationPasswordRequired.feature.plugins", value: "Plugin Management", comment: "Feature name for managing plugins in the app")
+        let rootView = ApplicationPasswordRequiredView(blog: blog, localizedFeatureName: feature, presentingViewController: self) { client in
+            let service = PluginService(client: client, wordpressCoreVersion: wordpressCoreVersion)
+            InstalledPluginsListView(service: service)
         }
+        viewController = UIHostingController(rootView: rootView)
 
         presentationDelegate?.presentBlogDetailsViewController(viewController)
     }
