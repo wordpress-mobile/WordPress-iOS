@@ -11,8 +11,6 @@ extension WordPressApiCache {
         return instance
     }
 
-    // TODO:
-    // - Log errors to sentry: https://github.com/wordpress-mobile/WordPress-iOS/pull/25157#discussion_r2785458461
     private static func onDiskCache() -> WordPressApiCache? {
         let cacheURL = URL.libraryDirectory.appending(path: "app.sqlite")
 
