@@ -44,6 +44,11 @@ extension WordPressOrgRestApi {
                   let adminURL = URL(string: blog.adminUrl(withPath: "")),
                   let username = blog.username,
                   let password = blog.password {
+            var authorizationHeader: String?
+            if let appPassword = try? blog.getApplicationToken(),
+               let credentialsData = "\(username):\(appPassword)".data(using: .utf8) {
+                authorizationHeader = "Basic \(credentialsData.base64EncodedString())"
+            }
             self.init(
                 selfHostedSiteWPJSONURL: apiBase,
                 credential: .init(
@@ -52,7 +57,8 @@ extension WordPressOrgRestApi {
                     password: password,
                     adminURL: adminURL
                 ),
-                userAgent: userAgent
+                userAgent: userAgent,
+                authorizationHeader: authorizationHeader
             )
         } else {
             return nil

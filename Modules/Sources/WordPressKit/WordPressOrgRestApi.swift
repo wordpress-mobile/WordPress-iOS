@@ -53,15 +53,15 @@ public final class WordPressOrgRestApi: NSObject {
         self.init(site: .dotCom(siteID: dotComSiteID, bearerToken: bearerToken, apiURL: apiURL), userAgent: userAgent)
     }
 
-    public convenience init(selfHostedSiteWPJSONURL apiURL: URL, credential: SelfHostedSiteCredential, userAgent: String? = nil) {
+    public convenience init(selfHostedSiteWPJSONURL apiURL: URL, credential: SelfHostedSiteCredential, userAgent: String? = nil, authorizationHeader: String? = nil) {
         assert(apiURL.host != "public-api.wordpress.com", "Not a self-hosted site: \(apiURL)")
         // Potential improvement(?): discover API URL instead. See https://developer.wordpress.org/rest-api/using-the-rest-api/discovery/
         assert(apiURL.lastPathComponent == "wp-json", "Not a REST API URL: \(apiURL)")
 
-        self.init(site: .selfHosted(apiURL: apiURL, credential: credential), userAgent: userAgent)
+        self.init(site: .selfHosted(apiURL: apiURL, credential: credential), userAgent: userAgent, authorizationHeader: authorizationHeader)
     }
 
-    init(site: Site, userAgent: String? = nil) {
+    init(site: Site, userAgent: String? = nil, authorizationHeader: String? = nil) {
         self.site = site
 
         var additionalHeaders = [String: String]()
@@ -70,6 +70,8 @@ public final class WordPressOrgRestApi: NSObject {
         }
         if case let Site.dotCom(_, token, _) = site {
             additionalHeaders["Authorization"] = "Bearer \(token)"
+        } else if let authorizationHeader {
+            additionalHeaders["Authorization"] = authorizationHeader
         }
 
         let configuration = URLSessionConfiguration.default

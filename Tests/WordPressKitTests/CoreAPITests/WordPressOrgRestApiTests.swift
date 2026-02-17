@@ -117,6 +117,38 @@ class WordPressOrgRestApiTests: XCTestCase {
         XCTAssertEqual(request?.url?.absoluteString, "http://localhost:8000/wp/v2/sites/1001/hello")
     }
 
+    func testSelfHostedWithAuthorizationHeaderSendsHeader() async throws {
+        var request: URLRequest?
+        stub(condition: isHost("wordpress.org")) {
+            request = $0
+            return HTTPStubsResponse(error: URLError(.notConnectedToInternet))
+        }
+
+        let api = WordPressOrgRestApi(
+            selfHostedSiteWPJSONURL: apiBase,
+            credential: .init(loginURL: URL(string: "https://not-used.com")!, username: "user", password: "pass", adminURL: URL(string: "https://not-used.com")!),
+            authorizationHeader: "Basic fake-token-for-testing"
+        )
+        let _ = await api.get(path: "/wp/v2/posts", type: AnyResponse.self)
+
+        let captured = try XCTUnwrap(request)
+        XCTAssertEqual(captured.value(forHTTPHeaderField: "Authorization"), "Basic fake-token-for-testing")
+    }
+
+    func testSelfHostedWithoutAuthorizationHeaderSendsNoHeader() async throws {
+        var request: URLRequest?
+        stub(condition: isHost("wordpress.org")) {
+            request = $0
+            return HTTPStubsResponse(error: URLError(.notConnectedToInternet))
+        }
+
+        let api = WordPressOrgRestApi(apiBase: apiBase)
+        let _ = await api.get(path: "/wp/v2/posts", type: AnyResponse.self)
+
+        let captured = try XCTUnwrap(request)
+        XCTAssertNil(captured.value(forHTTPHeaderField: "Authorization"))
+    }
+
     // Gutenberg Editor in the WordPress app may call `WordPressOrgRestApi` with a 'path' parameter that contain path
     // and query. This unit test ensures WordPressKit doesn't break that feature.
     func testPathWithQuery() async {
