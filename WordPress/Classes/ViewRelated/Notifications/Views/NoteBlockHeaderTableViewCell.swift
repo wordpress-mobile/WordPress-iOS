@@ -91,6 +91,14 @@ class NoteBlockHeaderTableViewCell: NoteBlockTableViewCell {
     }
 
     // MARK: - Overriden Methods
+
+    override func prepareForReuse() {
+        super.prepareForReuse()
+        authorAvatarURL = nil
+        authorAvatarImageView.cancelImageDownload()
+        authorAvatarImageView.image = nil
+    }
+
     override func refreshSeparators() {
         separatorsView.bottomVisible = true
         separatorsView.bottomInsets = UIEdgeInsets.zero
