@@ -2,6 +2,7 @@ import Foundation
 import WordPressAPI
 import WordPressAPIInternal
 import WordPressApiCache
+import WordPressShared
 
 extension WordPressApiCache {
     static func bootstrap() -> WordPressApiCache {
@@ -27,7 +28,7 @@ extension WordPressApiCache {
                     return cache
                 }
             } catch {
-                NSLog("Failed to delete sqlite database: \(error)")
+                wpAssertionFailure("Failed to delete sqlite database")
             }
         }
 
@@ -39,14 +40,14 @@ extension WordPressApiCache {
         do {
             cache = try WordPressApiCache(url: file)
         } catch {
-            NSLog("Failed to create an instance: \(error)")
+            wpAssertionFailure("Failed to create an instance")
             return nil
         }
 
         do {
             _ = try cache.performMigrations()
         } catch {
-            NSLog("Failed to migrate database: \(error)")
+            wpAssertionFailure("Failed to migrate database")
             return nil
         }
 
@@ -56,7 +57,7 @@ extension WordPressApiCache {
             values.isExcludedFromBackup = true
             try url.setResourceValues(values)
         } catch {
-            NSLog("Failed exclude the database file from iCloud backup: \(error)")
+            wpAssertionFailure("Failed exclude the database file from iCloud backup")
         }
 
         return cache
