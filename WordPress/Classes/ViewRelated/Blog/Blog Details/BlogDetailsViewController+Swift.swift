@@ -103,22 +103,6 @@ extension BlogDetailsViewController {
         presentationDelegate?.presentBlogDetailsViewController(controller)
     }
 
-    func syncPostTypes() {
-        guard let service = CustomPostTypeService(blog: blog) else { return }
-        Task { @MainActor [weak self] in
-            do {
-                try await service.refresh()
-
-                if let self {
-                    configureTableViewData()
-                    reloadTableViewPreservingSelection()
-                }
-            } catch {
-                DDLogError("Failed to sync post types: \(error)")
-            }
-        }
-    }
-
     func showPinnedPostType(_ postType: PinnedPostType) {
         guard let site = try? WordPressSite(blog: blog), case .selfHosted = site else { return }
 

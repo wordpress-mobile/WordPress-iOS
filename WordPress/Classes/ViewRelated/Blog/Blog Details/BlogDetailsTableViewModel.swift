@@ -54,6 +54,7 @@ private struct Section {
         }
     }
 
+    var hasCustomPostTypes = false
     var useSiteMenuStyle = false
 
     @objc public init(blog: Blog, viewController: BlogDetailsViewController) {
@@ -592,7 +593,7 @@ private extension BlogDetailsTableViewModel {
         rows.append(Row.media(viewController: viewController))
         rows.append(Row.comments(viewController: viewController))
 
-        if FeatureFlag.customPostTypes.enabled && blog.supportsCoreRESTAPI {
+        if FeatureFlag.customPostTypes.enabled && blog.supportsCoreRESTAPI && hasCustomPostTypes {
             let pinned = SiteStorageAccess.pinnedPostTypes(for: TaggedManagedObjectID(blog))
             for type in pinned {
                 rows.append(Row.pinnedPostType(type, viewController: viewController))
@@ -674,7 +675,7 @@ private extension BlogDetailsTableViewModel {
 
         rows.append(Row.comments(viewController: viewController))
 
-        if FeatureFlag.customPostTypes.enabled && blog.supportsCoreRESTAPI {
+        if FeatureFlag.customPostTypes.enabled && blog.supportsCoreRESTAPI && hasCustomPostTypes {
             let pinned = SiteStorageAccess.pinnedPostTypes(for: TaggedManagedObjectID(blog))
             for type in pinned {
                 rows.append(Row.pinnedPostType(type, viewController: viewController))

@@ -100,6 +100,24 @@ extension BlogService {
         }
     }
 
+    public func syncPostTypes(for blogId: TaggedManagedObjectID<Blog>) async throws {
+        let service = try await self.coreDataStack.performQuery { context in
+            let blog = try context.existingObject(with: blogId)
+            return CustomPostTypeService(blog: blog)
+        }
+        guard let service else { return }
+        try await service.refresh()
+    }
+
+    @objc
+    public func syncPostTypes(for blog: Blog, completion: @escaping () -> Void) {
+        let blogId = TaggedManagedObjectID(blog)
+        Task { @MainActor in
+            defer { completion() }
+            try await self.syncPostTypes(for: blogId)
+        }
+    }
+
     // This is a re-implementation of `-[BlogServiceRemoteXMLRPC syncBlogOptionsWithSuccess:failure:]`, but with
     // additional check of whether the site's XMLRPC is disabled. We need to implement this in Swift, because we
     // need the native Swift error.

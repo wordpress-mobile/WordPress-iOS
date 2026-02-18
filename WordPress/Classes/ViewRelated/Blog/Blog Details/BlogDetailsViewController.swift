@@ -80,7 +80,6 @@ public class BlogDetailsViewController: UIViewController {
         observeManagedObjectContextObjectsDidChangeNotification()
         observeGravatarImageUpdate()
         downloadGravatarImage()
-        syncPostTypes()
 
         registerForTraitChanges([UITraitHorizontalSizeClass.self], action: #selector(handleTraitChanges))
     }
@@ -140,22 +139,29 @@ public class BlogDetailsViewController: UIViewController {
         tableViewModel?.showInitialDetailsForBlog()
     }
 
-    public func updateTableView(completion: (() -> Void)?) {
-        let completionBlock = completion ?? {}
-        blogService.syncBlogAndAllMetadata(blog) { [weak self] in
-            self?.configureTableViewData()
-            self?.reloadTableViewPreservingSelection()
-            completionBlock()
+    @MainActor
+    private func updateTableView() async {
+        await withCheckedContinuation { continuation in
+            blogService.syncBlogAndAllMetadata(blog) {
+                continuation.resume()
+            }
         }
+
+        if let service = CustomPostTypeService(blog: blog) {
+            tableViewModel?.hasCustomPostTypes = (try? await service.customTypes())?.isEmpty == false
+        } else {
+            tableViewModel?.hasCustomPostTypes = false
+        }
+
+        configureTableViewData()
+        reloadTableViewPreservingSelection()
     }
 
     public func pulledToRefresh(with refreshControl: UIRefreshControl, onCompletion completion: (() -> Void)?) {
-        let completionBlock = completion ?? {}
-        updateTableView { [weak refreshControl] in
-            DispatchQueue.main.async {
-                refreshControl?.endRefreshing()
-                completionBlock()
-            }
+        Task { @MainActor [weak refreshControl] in
+            await updateTableView()
+            refreshControl?.endRefreshing()
+            completion?()
         }
     }
 
@@ -188,9 +194,8 @@ public class BlogDetailsViewController: UIViewController {
     }
 
     public func preloadMetadata() {
-        blogService.syncBlogAndAllMetadata(blog) { [weak self] in
-            self?.configureTableViewData()
-            self?.reloadTableViewPreservingSelection()
+        Task {
+            await updateTableView()
         }
     }
 

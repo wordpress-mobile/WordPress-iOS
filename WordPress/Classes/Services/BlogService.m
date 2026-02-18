@@ -220,6 +220,11 @@ NSString *const WPBlogSettingsUpdatedNotification = @"WPBlogSettingsUpdatedNotif
         dispatch_group_leave(syncGroup);
     }];
 
+    dispatch_group_enter(syncGroup);
+    [self syncPostTypesFor:blog completion:^{
+        dispatch_group_leave(syncGroup);
+    }];
+
     // When everything has left the syncGroup (all calls have ended with success
     // or failure) perform the completionHandler
     dispatch_group_notify(syncGroup, dispatch_get_main_queue(),^{
