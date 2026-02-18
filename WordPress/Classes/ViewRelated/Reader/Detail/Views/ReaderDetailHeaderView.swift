@@ -9,8 +9,6 @@ protocol ReaderDetailHeaderViewDelegate: AnyObject {
     func didTapHeaderAvatar()
     func didTapFollowButton(completion: @escaping () -> Void)
     func didSelectTopic(_ topic: String)
-    func didTapLikes()
-    func didTapComments()
 }
 
 final class ReaderDetailHeaderHostingView: UIView {
@@ -114,33 +112,14 @@ class ReaderDetailHeaderViewModel: ObservableObject {
     @Published var isFollowingSite = false
     @Published var isFollowButtonInteractive = true
 
-    @Published var siteIconURL: URL? = nil
     @Published var authorAvatarURL: URL? = nil
     @Published var authorName = String()
     @Published var relativePostTime = String()
     @Published var siteName = String()
     @Published var postTitle: String? = nil // post title can be empty.
-    @Published var likeCount: Int? = nil
-    @Published var commentCount: Int? = nil
     @Published var tags: [String] = []
 
-    @Published var showsAuthorName: Bool = true
-
     @Published var displaySetting: ReaderDisplaySettings
-
-    var likeCountString: String? {
-        guard let count = likeCount, count > 0 else {
-            return nil
-        }
-        return WPStyleGuide.likeCountForDisplay(count)
-    }
-
-    var commentCountString: String? {
-        guard let count = commentCount, count > 0 else {
-            return nil
-        }
-        return WPStyleGuide.commentCountForDisplay(count)
-    }
 
     init(displaySetting: ReaderDisplaySettings, coreDataStack: CoreDataStackSwift = ContextManager.shared) {
         self.displaySetting = displaySetting
@@ -161,7 +140,6 @@ class ReaderDetailHeaderViewModel: ObservableObject {
 
             self.isFollowingSite = post.isFollowing
 
-            self.siteIconURL = post.getSiteIconURL(size: Int(ReaderDetailHeaderView.Constants.siteIconLength))
             self.authorAvatarURL = post.avatarURLForDisplay() ?? nil
 
             if let authorName = post.authorForDisplay(), !authorName.isEmpty {
@@ -176,13 +154,7 @@ class ReaderDetailHeaderViewModel: ObservableObject {
                 self.siteName = siteName
             }
 
-            // hide the author name if it exactly matches the site name.
-            // context: https://github.com/wordpress-mobile/WordPress-iOS/pull/21674#issuecomment-1747202728
-            self.showsAuthorName = self.authorName != self.siteName && !self.authorName.isEmpty
-
             self.postTitle = customTitle ?? post.titleForDisplay()
-            self.likeCount = post.likeCount?.intValue
-            self.commentCount = post.commentCount?.intValue
             self.tags = post.tagsForDisplay()
         }
 
@@ -221,13 +193,6 @@ class ReaderDetailHeaderViewModel: ObservableObject {
         }
     }
 
-    func didTapLikes() {
-        headerDelegate?.didTapLikes()
-    }
-
-    func didTapComments() {
-        headerDelegate?.didTapComments()
-    }
 }
 
 // MARK: - SwiftUI
@@ -259,58 +224,78 @@ struct ReaderDetailHeaderView: View {
     }
 
     var body: some View {
-        VStack(alignment: .leading, spacing: 16.0) {
-            headerRow
-            if let postTitle = viewModel.postTitle {
-                Text(postTitle)
-                    .font(Font(viewModel.displaySetting.font(with: .title1, weight: .bold)))
-                    .foregroundStyle(Color(primaryTextColor))
-                    .lineLimit(nil)
-                    .textSelection(.enabled)
-                    .fixedSize(horizontal: false, vertical: true) // prevents the title from being truncated.
+        VStack(spacing: 0) {
+            VStack(alignment: .leading, spacing: 16.0) {
+                if let postTitle = viewModel.postTitle {
+                    Text(postTitle)
+                        .font(Font(viewModel.displaySetting.font(with: .title1, weight: .bold)))
+                        .foregroundStyle(Color(primaryTextColor))
+                        .lineLimit(nil)
+                        .textSelection(.enabled)
+                        .fixedSize(horizontal: false, vertical: true) // prevents the title from being truncated.
+                }
+                headerRow
+                if !viewModel.tags.isEmpty {
+                    tagsView
+                }
             }
-            if viewModel.likeCountString != nil || viewModel.commentCountString != nil {
-                postCounts
+            // Added an extra 4.0 to top padding to account for a legacy layout issue with featured image.
+            .padding(EdgeInsets(top: 20.0, leading: 16.0, bottom: 16.0, trailing: 16.0))
+            .background {
+                GeometryReader { proxy in
+                    Color.clear
+                        .onAppear {
+                            onContentSizeChanged?()
+                        }
+                        .onChange(of: proxy.size) {
+                            onContentSizeChanged?()
+                        }
+                }
             }
-            if !viewModel.tags.isEmpty {
-                tagsView
-            }
-        }
-        // Added an extra 4.0 to top padding to account for a legacy layout issue with featured image.
-        // Bottom padding is 0 as there's already padding between the header container and the webView in the storyboard.
-        .padding(EdgeInsets(top: 20.0, leading: 16.0, bottom: 0.0, trailing: 16.0))
-        .background {
-            GeometryReader { proxy in
-                Color.clear
-                    .onAppear {
-                        onContentSizeChanged?()
-                    }
-                    .onChange(of: proxy.size) {
-                        onContentSizeChanged?()
-                    }
-            }
+
+            Divider()
+                .padding(.horizontal, 16)
         }
     }
 
     var headerRow: some View {
-        HStack(alignment: .top, spacing: 12) {
-            if let siteIconURL = viewModel.siteIconURL,
-               let avatarURL = viewModel.authorAvatarURL {
-                avatarView(with: siteIconURL, avatarURL: avatarURL)
-            }
-            VStack(alignment: .leading, spacing: 4.0) {
-                Text(viewModel.siteName)
-                    .font(Font(viewModel.displaySetting.font(with: .callout, weight: .semibold)))
-                    .foregroundStyle(Color(primaryTextColor))
-                    .lineLimit(1)
-                authorAndTimestampView
-                if !viewModel.isFollowingSite || !viewModel.isFollowButtonInteractive {
-                    Button(WPStyleGuide.FollowButton.Text.followStringForDisplay) {
-                        viewModel.didTapFollowButton()
+        HStack(alignment: .center, spacing: 12) {
+            authorAvatarView
+            VStack(alignment: .leading, spacing: 4) {
+                HStack(alignment: .firstTextBaseline, spacing: 0) {
+                    Text(viewModel.authorName)
+                        .font(Font(viewModel.displaySetting.font(with: .footnote, weight: .semibold)))
+                        .foregroundStyle(Color(primaryTextColor))
+                    if !viewModel.authorName.isEmpty {
+                        Text(" • ")
+                            .font(Font(viewModel.displaySetting.font(with: .footnote)))
+                            .foregroundColor(Color(viewModel.displaySetting.color.secondaryForeground))
+                            .layoutPriority(1)
                     }
-                    .font(.footnote)
-                    .disabled(!viewModel.isFollowButtonInteractive)
+                    timestampText
+                        .layoutPriority(1)
+                    Spacer()
                 }
+                .lineLimit(1)
+
+                HStack(alignment: .firstTextBaseline, spacing: 0) {
+                    Text(viewModel.siteName)
+                        .font(Font(viewModel.displaySetting.font(with: .footnote)))
+                        .foregroundStyle(Color(primaryTextColor))
+                    if !viewModel.isFollowingSite || !viewModel.isFollowButtonInteractive {
+                        Text(" • ")
+                            .font(Font(viewModel.displaySetting.font(with: .footnote)))
+                            .foregroundColor(Color(viewModel.displaySetting.color.secondaryForeground))
+                            .layoutPriority(1)
+                        Button(WPStyleGuide.FollowButton.Text.followStringForDisplay) {
+                            viewModel.didTapFollowButton()
+                        }
+                        .font(Font(viewModel.displaySetting.font(with: .footnote)))
+                        .disabled(!viewModel.isFollowButtonInteractive)
+                    }
+                    Spacer()
+                }
+                .lineLimit(1)
             }
         }
         .accessibilityElement(children: .combine)
@@ -321,65 +306,19 @@ struct ReaderDetailHeaderView: View {
         }
     }
 
-    @ViewBuilder
-    func avatarView(with siteIconURL: URL, avatarURL: URL) -> some View {
-        ZStack(alignment: .bottomTrailing) {
-            CachedAsyncImage(url: siteIconURL) { image in
-                image.resizable()
-            } placeholder: {
-                Image("post-blavatar-default").resizable()
-            }
-            .frame(width: Constants.siteIconLength, height: Constants.siteIconLength)
-            .clipShape(Circle())
-            .overlay {
-                // adds an inward border with low opacity to preserve the avatar's shape.
-                Circle()
-                    .strokeBorder(Color(uiColor: avatarInnerBorderColor), lineWidth: 0.5)
-                    .opacity(innerBorderOpacity)
-            }
-
-            CachedAsyncImage(url: avatarURL) { image in
-                image.resizable()
-            } placeholder: {
-                Image("blavatar-default").resizable()
-            }
-            .frame(width: Constants.authorImageLength, height: Constants.authorImageLength)
-            .clipShape(Circle())
-            .overlay {
-                // adds an inward border with low opacity to preserve the avatar's shape.
-                Circle()
-                    .strokeBorder(Color(uiColor: avatarInnerBorderColor), lineWidth: 0.5)
-                    .opacity(innerBorderOpacity)
-            }
-            .background {
-                // adds a border between the the author avatar and the site icon.
-                Circle()
-                    .stroke(Color(uiColor: viewModel.displaySetting.color.background), lineWidth: 1.0)
-            }
-            .offset(x: 2.0, y: 2.0)
+    var authorAvatarView: some View {
+        CachedAsyncImage(url: viewModel.authorAvatarURL) { image in
+            image.resizable()
+        } placeholder: {
+            Image("blavatar-default").resizable()
         }
-    }
-
-    var postCounts: some View {
-        HStack(spacing: 0) {
-            if let likeCount = viewModel.likeCountString {
-                Group {
-                    Button(action: viewModel.didTapLikes) {
-                        Text(likeCount)
-                    }
-                    if viewModel.commentCountString != nil {
-                        Text(" • ")
-                    }
-                }
-            }
-            if let commentCount = viewModel.commentCountString {
-                Button(action: viewModel.didTapComments) {
-                    Text(commentCount)
-                }
-            }
+        .frame(width: Constants.siteIconLength, height: Constants.siteIconLength)
+        .clipShape(Circle())
+        .overlay {
+            Circle()
+                .strokeBorder(Color(uiColor: avatarInnerBorderColor), lineWidth: 0.5)
+                .opacity(innerBorderOpacity)
         }
-        .font(Font(viewModel.displaySetting.font(with: .footnote)))
-        .foregroundStyle(Color(viewModel.displaySetting.color.secondaryForeground))
     }
 
     var tagsView: some View {
@@ -392,31 +331,6 @@ struct ReaderDetailHeaderView: View {
                         onContentSizeChanged?()
                     }
             })
-    }
-
-    var authorAndTimestampView: some View {
-        HStack(spacing: 0) {
-            if viewModel.showsAuthorName {
-                Text(viewModel.authorName)
-                    .font(Font(viewModel.displaySetting.font(with: .footnote)))
-                    .foregroundStyle(Color(primaryTextColor))
-                    .lineLimit(1)
-
-                Text(" • ")
-                    .font(Font(viewModel.displaySetting.font(with: .footnote)))
-                    .foregroundColor(Color(viewModel.displaySetting.color.secondaryForeground))
-                    .lineLimit(1)
-                    .layoutPriority(1)
-            }
-
-            timestampText
-                .lineLimit(1)
-                .layoutPriority(1)
-
-            Spacer()
-        }
-        .accessibilityElement()
-        .accessibilityLabel(authorAccessibilityLabel)
     }
 
     var timestampText: Text {
@@ -432,7 +346,6 @@ fileprivate extension ReaderDetailHeaderView {
 
     struct Constants {
         static let siteIconLength: CGFloat = 40.0
-        static let authorImageLength: CGFloat = 20.0
 
         static let authorStackAccessibilityHint = NSLocalizedString(
             "reader.detail.header.authorInfo.a11y.hint",
@@ -441,15 +354,6 @@ fileprivate extension ReaderDetailHeaderView {
         )
     }
 
-    var authorAccessibilityLabel: String {
-        var labels = [viewModel.relativePostTime]
-
-        if viewModel.showsAuthorName {
-            labels.insert(viewModel.authorName, at: .zero)
-        }
-
-        return labels.joined(separator: ", ")
-    }
 }
 
 // MARK: - TopicCollectionView UIViewRepresentable Wrapper

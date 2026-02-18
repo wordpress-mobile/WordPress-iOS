@@ -74,12 +74,18 @@ private struct ReaderSidebarView: View {
     )
     private var favorites: FetchedResults<ReaderSiteTopic>
 
+    @State private var searchText = ""
+
     @Environment(\.editMode) var editMode
 
     var isEditing: Bool { editMode?.wrappedValue.isEditing == true }
 
     var body: some View {
         list
+            .searchable(
+                text: $searchText,
+                placement: (viewModel.isReaderAppModeEnabled && viewModel.isCompact) ? .navigationBarDrawer(displayMode: .always) : .automatic
+            )
             .toolbar {
                 EditButton()
             }
@@ -107,6 +113,15 @@ private struct ReaderSidebarView: View {
 
     @ViewBuilder
     private var content: some View {
+        if !searchText.isEmpty {
+            ReaderSidebarSearchResultsView(searchText: searchText)
+        } else {
+            regularContent
+        }
+    }
+
+    @ViewBuilder
+    private var regularContent: some View {
         Section {
             makeForEach(for: viewModel.menu)
         }

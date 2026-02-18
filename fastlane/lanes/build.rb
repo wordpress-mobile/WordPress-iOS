@@ -182,11 +182,11 @@ platform :ios do
       beta_app_description_path: WORDPRESS_BETA_APP_DESCRIPTION_PATH
     )
 
-    sentry_upload_dsym(
+    sentry_debug_files_upload(
       auth_token: get_required_env('SENTRY_AUTH_TOKEN'),
       org_slug: SENTRY_ORG_SLUG,
       project_slug: SENTRY_PROJECT_SLUG_WORDPRESS,
-      dsym_path: lane_context[SharedValues::DSYM_OUTPUT_PATH]
+      path: lane_context[SharedValues::DSYM_OUTPUT_PATH]
     )
 
     upload_gutenberg_sourcemaps(
@@ -251,11 +251,11 @@ platform :ios do
       beta_app_description_path: JETPACK_BETA_APP_DESCRIPTION_PATH
     )
 
-    sentry_upload_dsym(
+    sentry_debug_files_upload(
       auth_token: get_required_env('SENTRY_AUTH_TOKEN'),
       org_slug: SENTRY_ORG_SLUG,
       project_slug: SENTRY_PROJECT_SLUG_JETPACK,
-      dsym_path: lane_context[SharedValues::DSYM_OUTPUT_PATH]
+      path: lane_context[SharedValues::DSYM_OUTPUT_PATH]
     )
 
     release_version = release_version_current
@@ -396,11 +396,11 @@ platform :ios do
     )
 
     # Upload dSYMs to Sentry
-    sentry_upload_dsym(
+    sentry_debug_files_upload(
       auth_token: get_required_env('SENTRY_AUTH_TOKEN'),
       org_slug: SENTRY_ORG_SLUG,
       project_slug: sentry_project_slug,
-      dsym_path: lane_context[SharedValues::DSYM_OUTPUT_PATH]
+      path: lane_context[SharedValues::DSYM_OUTPUT_PATH]
     )
 
     upload_gutenberg_sourcemaps(
