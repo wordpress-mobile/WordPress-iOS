@@ -11,6 +11,7 @@
 * [*] Activity Logs: Minor visual improvements [#25220]
 * [*] Reader: The post tags are now displayed in the original order [#25229]
 * [*] Notifications: Fix notifications sometimes displaying wrong avatars [#25265]
+* [*] A new experimental feature: Custom Post Types. [#25267]
 
 
 26.6
