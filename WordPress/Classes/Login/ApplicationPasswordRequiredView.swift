@@ -10,6 +10,7 @@ struct ApplicationPasswordRequiredView<Content: View>: View {
     private let localizedFeatureName: String
     @State private var site: WordPressSite?
     @State private var showLoading: Bool = true
+    @State private var isLoaded: Bool = false
     private let builder: (WordPressClient) -> Content
 
     weak var presentingViewController: UIViewController?
@@ -38,6 +39,11 @@ struct ApplicationPasswordRequiredView<Content: View>: View {
             }
         }
         .task {
+            // This code block should only execute once, like `viewDidLoad`.
+
+            guard !isLoaded else { return }
+            isLoaded = true
+
             showLoading = true
             defer { showLoading = false }
 
