@@ -276,4 +276,283 @@ struct PostSettingsTests {
         // Then
         #expect(tagsText == "")
     }
+
+    // MARK: - init(from:) Roundtrip Tests
+
+    @Test("Initializes all fields from a Post")
+    func testInitFromPostRoundtrip() throws {
+        // Given
+        let context = ContextManager.forTesting().mainContext
+        let blog = BlogBuilder(context).build()
+        let post = PostBuilder(context, blog: blog).is(sticked: true).build()
+
+        post.mt_excerpt = "Test excerpt"
+        post.wp_slug = "test-slug"
+        post.status = .publish
+        post.dateCreated = Date(timeIntervalSince1970: 5000)
+        post.password = "pass123"
+        post.authorID = NSNumber(value: 42)
+        post.author = "Jane"
+        post.postFormat = "aside"
+        post.tags = "tag1, tag2"
+        post.commentsStatus = "closed"
+        post.pingsStatus = "closed"
+
+        let category1 = PostCategory(context: context)
+        category1.categoryID = NSNumber(value: 10)
+        category1.categoryName = "Cat A"
+        category1.blog = blog
+        let category2 = PostCategory(context: context)
+        category2.categoryID = NSNumber(value: 20)
+        category2.categoryName = "Cat B"
+        category2.blog = blog
+        blog.categories = Set([category1, category2])
+        post.categories = Set([category1, category2])
+
+        // When
+        let settings = PostSettings(from: post)
+
+        // Then
+        #expect(settings.excerpt == "Test excerpt")
+        #expect(settings.slug == "test-slug")
+        #expect(settings.status == .publish)
+        // publishDate is non-nil because status is .publish, so shouldPublishImmediately() returns false
+        #expect(settings.publishDate == Date(timeIntervalSince1970: 5000))
+        #expect(settings.password == "pass123")
+        #expect(settings.author?.id == 42)
+        #expect(settings.author?.displayName == "Jane")
+        #expect(settings.postFormat == "aside")
+        #expect(settings.isStickyPost == true)
+        #expect(settings.tags == "tag1, tag2")
+        #expect(settings.categoryIDs == Set([10, 20]))
+        #expect(settings.allowComments == false)
+        #expect(settings.allowPings == false)
+    }
+
+    @Test("Initializes fields from a Page with page-specific defaults")
+    func testInitFromPageRoundtrip() throws {
+        // Given
+        let context = ContextManager.forTesting().mainContext
+        let page = PageBuilder(context).build()
+
+        page.parentID = NSNumber(value: 42)
+        page.mt_excerpt = "Page excerpt"
+        page.wp_slug = "page-slug"
+
+        // When
+        let settings = PostSettings(from: page)
+
+        // Then
+        #expect(settings.excerpt == "Page excerpt")
+        #expect(settings.slug == "page-slug")
+        #expect(settings.parentPageID == 42)
+        #expect(settings.postFormat == nil)
+        #expect(settings.isStickyPost == false)
+        #expect(settings.tags == "")
+        #expect(settings.categoryIDs == Set<Int>())
+    }
+
+    // MARK: - Individual Property apply(to:) Tests
+
+    @Test("Applies excerpt change to post")
+    func testApplyExcerpt() throws {
+        // Given
+        let context = ContextManager.forTesting().mainContext
+        let blog = BlogBuilder(context).build()
+        let post = PostBuilder(context, blog: blog).build()
+
+        var settings = PostSettings(from: post)
+        settings.excerpt = "New excerpt"
+
+        // When
+        settings.apply(to: post)
+
+        // Then
+        #expect(post.mt_excerpt == "New excerpt")
+    }
+
+    @Test("Applies post format change to post")
+    func testApplyPostFormat() throws {
+        // Given
+        let context = ContextManager.forTesting().mainContext
+        let blog = BlogBuilder(context).build()
+        let post = PostBuilder(context, blog: blog).build()
+        post.postFormat = "aside"
+
+        var settings = PostSettings(from: post)
+        settings.postFormat = "video"
+
+        // When
+        settings.apply(to: post)
+
+        // Then
+        #expect(post.postFormat == "video")
+    }
+
+    @Test("Applies sticky post change to post")
+    func testApplyStickyPost() throws {
+        // Given
+        let context = ContextManager.forTesting().mainContext
+        let blog = BlogBuilder(context).build()
+        let post = PostBuilder(context, blog: blog).is(sticked: false).build()
+
+        var settings = PostSettings(from: post)
+        settings.isStickyPost = true
+
+        // When
+        settings.apply(to: post)
+
+        // Then
+        #expect(post.isStickyPost == true)
+    }
+
+    @Test("Applies discussion settings to post")
+    func testApplyDiscussionSettings() {
+        // Given
+        let context = ContextManager.forTesting().mainContext
+        let blog = BlogBuilder(context).build()
+        let post = PostBuilder(context, blog: blog).build()
+
+        var settings = PostSettings(from: post)
+
+        // Verify initial state
+        #expect(post.allowComments == true)
+        #expect(post.allowPings == true)
+
+        // Apply closed
+        settings.allowComments = false
+        settings.allowPings = false
+        settings.apply(to: post)
+        #expect(post.allowComments == false)
+        #expect(post.allowPings == false)
+
+        // Apply open again
+        settings.allowComments = true
+        settings.allowPings = true
+        settings.apply(to: post)
+        #expect(post.allowComments == true)
+        #expect(post.allowPings == true)
+    }
+
+    @Test("Applies parent page ID to page")
+    func testApplyParentPageID() throws {
+        // Given
+        let context = ContextManager.forTesting().mainContext
+        let page = PageBuilder(context).build()
+
+        var settings = PostSettings(from: page)
+        settings.parentPageID = 99
+
+        // When
+        settings.apply(to: page)
+
+        // Then
+        #expect(page.parentID == NSNumber(value: 99))
+    }
+
+    @Test("Clears parent page ID when set to nil")
+    func testApplyParentPageIDNil() throws {
+        // Given
+        let context = ContextManager.forTesting().mainContext
+        let page = PageBuilder(context).build()
+        page.parentID = NSNumber(value: 50)
+
+        var settings = PostSettings(from: page)
+        settings.parentPageID = nil
+
+        // When
+        settings.apply(to: page)
+
+        // Then
+        #expect(page.parentID == nil)
+    }
+
+    @Test("Applies other terms to post")
+    func testApplyOtherTerms() throws {
+        // Given
+        let context = ContextManager.forTesting().mainContext
+        let blog = BlogBuilder(context).build()
+        let post = PostBuilder(context, blog: blog).build()
+        post.parsedOtherTerms = ["genre": ["fiction", "drama"]]
+
+        var settings = PostSettings(from: post)
+        settings.otherTerms = ["genre": ["scifi"]]
+
+        // When
+        settings.apply(to: post)
+
+        // Then
+        #expect(post.parsedOtherTerms == ["genre": ["scifi"]])
+    }
+
+    // MARK: - Computed Property Tests
+
+    @Test("isPendingReview reflects status correctly")
+    func testIsPendingReview() {
+        // Given
+        let context = ContextManager.forTesting().mainContext
+        let blog = BlogBuilder(context).build()
+        let post = PostBuilder(context, blog: blog).drafted().build()
+
+        var settings = PostSettings(from: post)
+
+        // Then — draft is not pending
+        #expect(settings.isPendingReview == false)
+
+        // When — set to pending
+        settings.isPendingReview = true
+        #expect(settings.status == .pending)
+
+        // When — set back to not pending
+        settings.isPendingReview = false
+        #expect(settings.status == .draft)
+
+        // Starting from .publish: isPendingReview = false always reverts to .draft
+        settings.status = .publish
+        settings.isPendingReview = true
+        #expect(settings.status == .pending)
+        settings.isPendingReview = false
+        #expect(settings.status == .draft) // Note: always reverts to .draft, not the original status
+    }
+
+    // MARK: - setTerms / getTerms Tests
+
+    @Test("setTerms and getTerms work for custom taxonomy")
+    func testSetAndGetTerms() {
+        // Given
+        let context = ContextManager.forTesting().mainContext
+        let blog = BlogBuilder(context).build()
+        let post = PostBuilder(context, blog: blog).build()
+
+        var settings = PostSettings(from: post)
+
+        // When
+        settings.setTerms("tag1, tag2", forTaxonomySlug: "genre")
+
+        // Then
+        #expect(settings.getTerms(forTaxonomySlug: "genre") == ["tag1", "tag2"])
+        #expect(settings.getTerms(forTaxonomySlug: "nonexistent") == [])
+
+        // Verify apply persists the terms to the post
+        settings.apply(to: post)
+        #expect(post.parsedOtherTerms["genre"] == ["tag1", "tag2"])
+    }
+
+    // MARK: - makeUpdateParameters Tests (Page)
+
+    @Test("Creates update parameters for page slug change")
+    func testMakeUpdateParametersForPage() throws {
+        // Given
+        let context = ContextManager.forTesting().mainContext
+        let page = PageBuilder(context).build()
+
+        var settings = PostSettings(from: page)
+        settings.slug = "new-page-slug"
+
+        // When
+        let parameters = settings.makeUpdateParameters(from: page)
+
+        // Then
+        #expect(parameters.slug == "new-page-slug")
+    }
 }
