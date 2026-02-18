@@ -866,11 +866,8 @@ NSString * const OptionsKeyIsWPForTeams = @"is_wpforteams_site";
 - (void)setValue:(id)value forOption:(NSString *)name
 {
     [self.managedObjectContext performBlockAndWait:^{
-        if ( self.options == nil || (self.options.count == 0) ) {
-            return;
-        }
-
-        NSMutableDictionary *mutableOptions = [self.options mutableCopy];
+        NSDictionary *options = self.options == nil ? [NSDictionary dictionary] : self.options;
+        NSMutableDictionary *mutableOptions = [options mutableCopy];
 
         NSDictionary *valueDict = @{ @"value": value };
         mutableOptions[name] = valueDict;
