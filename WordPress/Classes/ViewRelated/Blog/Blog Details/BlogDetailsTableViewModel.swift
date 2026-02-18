@@ -27,7 +27,7 @@ private struct Section {
 }
 
 @objc public final class BlogDetailsTableViewModel: NSObject {
-    private var blog: Blog
+    var blog: Blog
     private weak var tableView: UITableView?
     private weak var viewController: BlogDetailsViewController?
     private var sections: [Section] = []
@@ -593,12 +593,14 @@ private extension BlogDetailsTableViewModel {
         rows.append(Row.media(viewController: viewController))
         rows.append(Row.comments(viewController: viewController))
 
-        if FeatureFlag.customPostTypes.enabled && blog.supportsCoreRESTAPI && hasCustomPostTypes {
+        if FeatureFlag.customPostTypes.enabled && blog.supportsCoreRESTAPI {
             let pinned = SiteStorageAccess.pinnedPostTypes(for: TaggedManagedObjectID(blog))
             for type in pinned {
                 rows.append(Row.pinnedPostType(type, viewController: viewController))
             }
-            rows.append(Row.customPostTypes(viewController: viewController))
+            if !pinned.isEmpty || hasCustomPostTypes {
+                rows.append(Row.customPostTypes(viewController: viewController))
+            }
         }
 
         let title = isSplitViewDisplayed ? nil : Strings.contentSectionTitle

@@ -11,7 +11,11 @@ public protocol BlogDetailsPresentationDelegate: AnyObject {
 
 public class BlogDetailsViewController: UIViewController {
 
-    public var blog: Blog
+    public var blog: Blog {
+        didSet {
+            tableViewModel?.blog = blog
+        }
+    }
     public private(set) var tableView: UITableView?
     public private(set) var tableViewModel: BlogDetailsTableViewModel?
     public var isScrollEnabled = false
