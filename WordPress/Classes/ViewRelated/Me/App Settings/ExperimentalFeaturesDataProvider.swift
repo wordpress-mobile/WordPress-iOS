@@ -10,6 +10,7 @@ class ExperimentalFeaturesDataProvider: ExperimentalFeaturesViewModel.DataProvid
         FeatureFlag.newStats,
         FeatureFlag.allowApplicationPasswords,
         RemoteFeatureFlag.newGutenberg,
+        FeatureFlag.customPostTypes,
         FeatureFlag.newSupport,
     ]
 
