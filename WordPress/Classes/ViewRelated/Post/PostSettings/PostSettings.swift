@@ -244,6 +244,98 @@ struct PostSettings: Hashable {
         context.delete(temporaryPost)
         return parameters
     }
+
+    /// Creates `PostUpdateParams` representing the diff between the post and
+    /// the current settings, for use with the WordPress REST API.
+    func makeUpdateParameters(from post: AnyPostWithEditContext) -> PostUpdateParams {
+        var slug: String?
+        if post.slug != self.slug {
+            slug = self.slug
+        }
+
+        var status: PostStatus?
+        if BasePost.Status(post.status) != self.status {
+            status = PostStatus(self.status)
+        }
+
+        var password: String?
+        if post.password != self.password {
+            password = self.password ?? ""
+        }
+
+        var author: UserId?
+        if post.author.map({ Int($0) }) != self.author?.id, let authorId = self.author?.id {
+            author = UserId(Int64(authorId))
+        }
+
+        var excerpt: String?
+        if (post.excerpt?.raw ?? "") != self.excerpt {
+            excerpt = self.excerpt
+        }
+
+        var featuredMedia: MediaId?
+        if post.featuredMedia.map({ Int($0) }) != self.featuredImageID {
+            featuredMedia = self.featuredImageID.map { MediaId(Int64($0)) } ?? MediaId(0)
+        }
+
+        var commentStatus: PostCommentStatus?
+        let postAllowsComments = post.commentStatus == .open
+        if postAllowsComments != self.allowComments {
+            commentStatus = self.allowComments ? .open : .closed
+        }
+
+        var pingStatus: PostPingStatus?
+        let postAllowsPings = post.pingStatus == .open
+        if postAllowsPings != self.allowPings {
+            pingStatus = self.allowPings ? .open : .closed
+        }
+
+        var format: PostFormat?
+        let postFormatSlug = post.format.map { $0.id }
+        if postFormatSlug != self.postFormat {
+            format = self.postFormat.flatMap { PostFormat.from(slug: $0) }
+        }
+
+        var sticky: Bool?
+        if (post.sticky ?? false) != self.isStickyPost {
+            sticky = self.isStickyPost
+        }
+
+        var categories: [TermId] = []
+        let postCategoryIDs = Set((post.categories ?? []).map { Int($0) })
+        if postCategoryIDs != self.categoryIDs {
+            categories = self.categoryIDs.map { TermId(Int64($0)) }
+        }
+
+        // FIXME: Not implemented yet.
+        // Tags are stored as comma-separated names for AbstractPost, but as IDs for remote posts.
+        // For remote posts, tag changes would need ID resolution. Skip for now.
+        // var tags: [TermId] = []
+
+        // TODO: The Post Settings UI currently only supports Pages
+//        var parent: PostId?
+//        let postParentPageID = post.parent.map { Int($0) }
+//        if postParentPageID != self.parentPageID {
+//            parent = self.parentPageID.map { PostId(Int64($0)) } ?? PostId(0)
+//        }
+
+        return PostUpdateParams(
+            slug: slug,
+            status: status,
+            password: password,
+            author: author,
+            excerpt: excerpt,
+            featuredMedia: featuredMedia,
+            commentStatus: commentStatus,
+            pingStatus: pingStatus,
+            format: format,
+            meta: nil,
+            sticky: sticky,
+            categories: categories,
+            tags: [],
+            parent: nil
+        )
+    }
 }
 
 extension PostSettings {

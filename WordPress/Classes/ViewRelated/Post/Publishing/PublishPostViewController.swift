@@ -1,6 +1,8 @@
 import UIKit
 import Combine
 import SwiftUI
+import WordPressAPI
+import WordPressCore
 import WordPressData
 import WordPressShared
 import WordPressUI
@@ -19,7 +21,7 @@ enum PublishingSheetResult {
 /// the post settings along with some publishing options like the publish date.
 final class PublishPostViewController: UIHostingController<PublishPostView> {
     private let viewModel: PostSettingsViewModel
-    private let uploadsViewModel: PostMediaUploadsViewModel
+    private let uploadsViewModel: PostMediaUploadsViewModel?
 
     var onCompletion: ((PublishingSheetResult) -> Void)?
 
@@ -53,6 +55,49 @@ final class PublishPostViewController: UIHostingController<PublishPostView> {
         presentingViewController.present(navigationVC, animated: true)
     }
 
+    // MARK: - Remote Post
+
+    init(
+        editorService: CustomPostEditorService,
+        blog: Blog,
+        editorContent: PostSettingsViewModel.EditorContent?
+    ) {
+        let viewModel = PostSettingsViewModel(
+            editorService: editorService,
+            blog: blog,
+            context: .publishing,
+            editorContent: editorContent
+        )
+        self.viewModel = viewModel
+        self.uploadsViewModel = nil
+
+        let view = PublishPostView(viewModel: viewModel, uploadsViewModel: nil)
+        super.init(rootView: view)
+    }
+
+    static func show(
+        editorService: CustomPostEditorService,
+        blog: Blog,
+        editorContent: PostSettingsViewModel.EditorContent?,
+        from presentingViewController: UIViewController,
+        completion: @escaping (PublishingSheetResult) -> Void
+    ) {
+        presentingViewController.view.endEditing(true)
+
+        let publishVC = PublishPostViewController(
+            editorService: editorService,
+            blog: blog,
+            editorContent: editorContent
+        )
+        publishVC.onCompletion = completion
+        let navigationVC = UINavigationController(rootViewController: publishVC)
+        navigationVC.sheetPresentationController?.detents = [
+            .custom(identifier: .medium, resolver: { _ in 526 }),
+            .large()
+        ]
+        presentingViewController.present(navigationVC, animated: true)
+    }
+
     required dynamic init?(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
@@ -79,26 +124,14 @@ final class PublishPostViewController: UIHostingController<PublishPostView> {
 
 struct PublishPostView: View {
     @ObservedObject var viewModel: PostSettingsViewModel
-    @ObservedObject var uploadsViewModel: PostMediaUploadsViewModel
+    var uploadsViewModel: PostMediaUploadsViewModel?
 
     @State private var isShowingDiscardChangesAlert = false
 
-    var post: AbstractPost {
-        guard let post = viewModel.post else {
-            wpAssertionFailure("PublishPostView requires an AbstractPost-backed ViewModel")
-            fatalError("PublishPostView requires an AbstractPost-backed ViewModel")
-        }
-        return post
-    }
-
     var body: some View {
         Form {
-            if let state = uploadsViewModel.uploadingSnackbarState {
-                NavigationLink {
-                    PostMediaUploadsView(viewModel: uploadsViewModel)
-                } label: {
-                    PostMediaUploadsSnackbarView(state: state)
-                }
+            if let uploadsViewModel {
+                PublishPostMediaSection(uploadsViewModel: uploadsViewModel)
             }
             PostSettingsFormContentView(viewModel: viewModel)
         }
@@ -163,7 +196,7 @@ struct PublishPostView: View {
         if viewModel.isSaving {
             ProgressView()
         } else {
-            let isDisabled = !uploadsViewModel.isCompleted
+            let isDisabled = uploadsViewModel?.isCompleted == false
 
             Button(viewModel.publishButtonTitle) {
                 viewModel.buttonPublishTapped()
@@ -174,6 +207,20 @@ struct PublishPostView: View {
             .tint(isDisabled ? Color(.opaqueSeparator) : AppColor.primary)
             .disabled(isDisabled)
             .accessibilityIdentifier("publish")
+        }
+    }
+}
+
+private struct PublishPostMediaSection: View {
+    @ObservedObject var uploadsViewModel: PostMediaUploadsViewModel
+
+    var body: some View {
+        if let state = uploadsViewModel.uploadingSnackbarState {
+            NavigationLink {
+                PostMediaUploadsView(viewModel: uploadsViewModel)
+            } label: {
+                PostMediaUploadsSnackbarView(state: state)
+            }
         }
     }
 }

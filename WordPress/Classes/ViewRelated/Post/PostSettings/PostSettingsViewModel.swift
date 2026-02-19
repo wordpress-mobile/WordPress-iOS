@@ -17,6 +17,13 @@ final class PostSettingsViewModel: NSObject, ObservableObject {
     let context: Context
     let featuredImageViewModel: PostSettingsFeaturedImageViewModel?
     let client: WordPressClient?
+    let editorContent: EditorContent?
+    let editorService: CustomPostEditorService?
+
+    struct EditorContent {
+        let title: String
+        let content: String
+    }
 
     private var details: PostDetails
 
@@ -264,6 +271,8 @@ final class PostSettingsViewModel: NSObject, ObservableObject {
         self.context = context
         self.preferences = preferences
         self.client = try? WordPressClientFactory.shared.instance(for: .init(blog: post.blog))
+        self.editorContent = nil
+        self.editorService = nil
 
         // Initialize settings from the post
         let initialSettings = PostSettings(from: post)
@@ -293,19 +302,22 @@ final class PostSettingsViewModel: NSObject, ObservableObject {
     // MARK: - AnyPostWithEditContext Initializer
 
     init(
-        post: AnyPostWithEditContext,
-        details: PostTypeDetailsWithEditContext,
+        editorService: CustomPostEditorService,
         blog: Blog,
-        client: WordPressClient,
-        context: Context = .settings
+        context: Context = .settings,
+        editorContent: EditorContent? = nil
     ) {
+        let post = editorService.post
+        let details = editorService.details
         self.details = .remotePost(post, details)
         self.blog = blog
         self.capabilities = PostSettingsCapabilities(from: details)
         self.isStandalone = false
         self.context = context
         self.preferences = UserDefaults.standard
-        self.client = client
+        self.client = editorService.client
+        self.editorContent = editorContent
+        self.editorService = editorService
 
         // Initialize settings from the remote post
         let initialSettings = PostSettings(from: post)
@@ -515,25 +527,17 @@ final class PostSettingsViewModel: NSObject, ObservableObject {
     }
 
     private func saveRemotePost() async {
-        guard let remotePost, let postTypeDetails, let client else {
+        guard let editorService else {
             wpAssertionFailure("missing remote post context")
             isSaving = false
             return
         }
 
         do {
-            let params = makePostUpdateParams(from: originalSettings, to: settings)
-            let endpoint = postTypeDetails.toPostEndpointType()
-            let updatedPost = try await client.api.posts
-                .update(postEndpointType: endpoint, postId: remotePost.id, params: params)
-                .data
+            let params = settings.makeUpdateParameters(from: editorService.post)
+            try await editorService.update(params: params)
             if case .remotePost(_, let typeDetails) = self.details {
-                self.details = .remotePost(updatedPost, typeDetails)
-            }
-
-            // Refresh post in the background to keep the post list up-to-date
-            Task {
-                try? await client.service.posts().refreshPost(postId: updatedPost.id, endpointType: endpoint)
+                self.details = .remotePost(editorService.post, typeDetails)
             }
 
             didSaveChanges()
@@ -543,90 +547,6 @@ final class PostSettingsViewModel: NSObject, ObservableObject {
             isSaving = false
             Notice(error: error, title: Strings.saveFailedMessage).post()
         }
-    }
-
-    private func makePostUpdateParams(from original: PostSettings, to current: PostSettings) -> PostUpdateParams {
-        var slug: String?
-        if original.slug != current.slug {
-            slug = current.slug
-        }
-
-        var status: PostStatus?
-        if original.status != current.status {
-            status = PostStatus(current.status)
-        }
-
-        var password: String?
-        if original.password != current.password {
-            password = current.password ?? ""
-        }
-
-        var author: UserId?
-        if original.author?.id != current.author?.id, let authorId = current.author?.id {
-            author = UserId(Int64(authorId))
-        }
-
-        var excerpt: String?
-        if original.excerpt != current.excerpt {
-            excerpt = current.excerpt
-        }
-
-        var featuredMedia: MediaId?
-        if original.featuredImageID != current.featuredImageID {
-            featuredMedia = current.featuredImageID.map { MediaId(Int64($0)) } ?? MediaId(0)
-        }
-
-        var commentStatus: PostCommentStatus?
-        if original.allowComments != current.allowComments {
-            commentStatus = current.allowComments ? .open : .closed
-        }
-
-        var pingStatus: PostPingStatus?
-        if original.allowPings != current.allowPings {
-            pingStatus = current.allowPings ? .open : .closed
-        }
-
-        var format: PostFormat?
-        if original.postFormat != current.postFormat {
-            format = current.postFormat.flatMap { PostFormat.from(slug: $0) }
-        }
-
-        var sticky: Bool?
-        if original.isStickyPost != current.isStickyPost {
-            sticky = current.isStickyPost
-        }
-
-        var categories: [TermId] = []
-        if original.categoryIDs != current.categoryIDs {
-            categories = current.categoryIDs.map { TermId(Int64($0)) }
-        }
-
-        // FIXME: Not implemented yet.
-        // Tags are stored as comma-separated names for AbstractPost, but as IDs for remote posts.
-        // For remote posts, tag changes would need ID resolution. Skip for now.
-        // var tags: [TermId] = []
-
-        var parent: PostId?
-        if original.parentPageID != current.parentPageID {
-            parent = current.parentPageID.map { PostId(Int64($0)) }
-        }
-
-        return PostUpdateParams(
-            slug: slug,
-            status: status,
-            password: password,
-            author: author,
-            excerpt: excerpt,
-            featuredMedia: featuredMedia,
-            commentStatus: commentStatus,
-            pingStatus: pingStatus,
-            format: format,
-            meta: nil,
-            sticky: sticky,
-            categories: categories,
-            tags: [],
-            parent: parent
-        )
     }
 
     func getSettingsToSave(for settings: PostSettings) -> PostSettings {
@@ -643,11 +563,17 @@ final class PostSettingsViewModel: NSObject, ObservableObject {
     }
 
     func buttonPublishTapped() {
-        guard let abstractPost else { return }
+        if let abstractPost {
+            publishAbstractPost(abstractPost)
+        } else if remotePost != nil {
+            publishRemotePost()
+        }
+    }
 
+    private func publishAbstractPost(_ post: AbstractPost) {
         // Check if the post still exists
-        guard let context = abstractPost.managedObjectContext,
-              let _ = try? context.existingObject(with: abstractPost.objectID) else {
+        guard let context = post.managedObjectContext,
+              let _ = try? context.existingObject(with: post.objectID) else {
             isShowingDeletedAlert = true
             return
         }
@@ -656,12 +582,58 @@ final class PostSettingsViewModel: NSObject, ObservableObject {
         Task {
             do {
                 let coordinator = PostCoordinator.shared
-                let changes = settings.makeUpdateParameters(from: abstractPost)
-                try await coordinator.publish(abstractPost.getOriginal(), parameters: changes)
+                let changes = settings.makeUpdateParameters(from: post)
+                try await coordinator.publish(post.getOriginal(), parameters: changes)
                 onPostPublished?()
             } catch {
                 isSaving = false
                 // `PostCoordinator` handles errors by showing an alert when needed
+            }
+        }
+    }
+
+    private func publishRemotePost() {
+        guard let editorService else {
+            wpAssertionFailure("missing remote post context")
+            return
+        }
+
+        isSaving = true
+        Task {
+            do {
+                let settingsParams = settings.makeUpdateParameters(from: editorService.post)
+
+                let hasTitle = editorService.details.supports.map[.title] == .bool(true)
+                // TODO: Change `PostUpdateParams` properties to var, so that we don't need to manually copy.
+                let params = PostUpdateParams(
+                    slug: settingsParams.slug,
+                    status: .publish,
+                    password: settingsParams.password,
+                    title: hasTitle ? editorContent?.title : nil,
+                    content: editorContent?.content,
+                    author: settingsParams.author,
+                    excerpt: settingsParams.excerpt,
+                    featuredMedia: settingsParams.featuredMedia,
+                    commentStatus: settingsParams.commentStatus,
+                    pingStatus: settingsParams.pingStatus,
+                    format: settingsParams.format,
+                    meta: settingsParams.meta,
+                    sticky: settingsParams.sticky,
+                    categories: settingsParams.categories,
+                    tags: settingsParams.tags,
+                    parent: settingsParams.parent
+                )
+
+                try await editorService.update(params: params)
+
+                if case .remotePost(_, let typeDetails) = self.details {
+                    self.details = .remotePost(editorService.post, typeDetails)
+                }
+
+                onPostPublished?()
+            } catch {
+                isSaving = false
+                Notice(error: error, title: Strings.saveFailedMessage).post()
             }
         }
     }
