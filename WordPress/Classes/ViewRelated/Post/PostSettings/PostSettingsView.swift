@@ -171,11 +171,13 @@ struct PostSettingsFormContentView: View {
 
     @ViewBuilder
     private var featuredImageSection: some View {
-        Section {
-            PostSettingsFeaturedImageRow(viewModel: viewModel.featuredImageViewModel)
-                .accessibilityIdentifier("post_settings_featured_image_cell")
-        } header: {
-            SectionHeader(Strings.featuredImageHeader)
+        if let featuredImageViewModel = viewModel.featuredImageViewModel {
+            Section {
+                PostSettingsFeaturedImageRow(viewModel: featuredImageViewModel)
+                    .accessibilityIdentifier("post_settings_featured_image_cell")
+            } header: {
+                SectionHeader(Strings.featuredImageHeader)
+            }
         }
     }
 
@@ -255,7 +257,7 @@ struct PostSettingsFormContentView: View {
         Section {
             NavigationLink {
                 PostSettingsExcerptEditor(
-                    postContent: (viewModel.post.content ?? ""),
+                    postContent: viewModel.postContent,
                     text: $viewModel.settings.excerpt
                 )
                 .navigationTitle(Strings.excerptHeader)
@@ -421,7 +423,7 @@ struct PostSettingsFormContentView: View {
 
     private var postFormatRow: some View {
         NavigationLink {
-            PostFormatPicker(post: viewModel.post as! Post) { format in
+            PostFormatPicker(blog: viewModel.blog, currentFormat: viewModel.settings.postFormat) { format in
                 viewModel.settings.postFormat = format
                 viewModel.viewController?.navigationController?.popViewController(animated: true)
             }
@@ -438,9 +440,10 @@ struct PostSettingsFormContentView: View {
         }
     }
 
+    @ViewBuilder
     private var parentPageRow: some View {
-        NavigationLink {
-            if let page = viewModel.post as? Page {
+        if let page = viewModel.page {
+            NavigationLink {
                 ParentPagePicker(
                     blog: viewModel.blog,
                     currentPage: page,
@@ -449,15 +452,21 @@ struct PostSettingsFormContentView: View {
                         viewModel.viewController?.navigationController?.popViewController(animated: true)
                     }
                 )
+            } label: {
+                SettingsRow(Strings.parentPageLabel, value: viewModel.parentPageText ?? Strings.topLevelPage)
             }
-        } label: {
-            SettingsRow(Strings.parentPageLabel, value: viewModel.parentPageText ?? Strings.topLevelPage)
         }
     }
 
     private var slugRow: some View {
         NavigationLink {
-            PostSlugEditorView(slug: $viewModel.settings.slug, post: viewModel.post)
+            PostSlugEditorView(
+                slug: $viewModel.settings.slug,
+                suggestedSlug: viewModel.suggestedSlug,
+                permalinkTemplate: viewModel.permalinkTemplate,
+                hasRemote: viewModel.hasRemote,
+                hasDotComID: viewModel.blog.dotComID != nil
+            )
         } label: {
             SettingsRow(Strings.slugLabel, value: viewModel.slugText)
         }

@@ -47,18 +47,20 @@ struct PostSettingsCapabilitiesTests {
         )
         let caps = PostSettingsCapabilities(from: details)
 
-        #expect(caps.supportsCategories == true)
-        #expect(caps.supportsTags == true)
+        // Categories, tags, page attributes, custom fields, and custom
+        // taxonomy slugs are not yet supported (see FIXME in implementation).
+        #expect(caps.supportsCategories == false)
+        #expect(caps.supportsTags == false)
         #expect(caps.supportsFeaturedImage == true)
         #expect(caps.supportsExcerpt == true)
         #expect(caps.supportsAuthor == true)
         #expect(caps.supportsPostFormats == true)
         #expect(caps.supportsComments == true)
         #expect(caps.supportsTrackbacks == true)
-        #expect(caps.supportsPageAttributes == true)
+        #expect(caps.supportsPageAttributes == false)
         #expect(caps.supportsSlug == true)
-        #expect(caps.supportsCustomFields == true)
-        #expect(caps.customTaxonomySlugs == ["genre", "topic"])
+        #expect(caps.supportsCustomFields == false)
+        #expect(caps.customTaxonomySlugs == [])
     }
 
     @Test("Capabilities from PostTypeDetailsWithEditContext with minimal supports")
@@ -88,9 +90,10 @@ struct PostSettingsCapabilitiesTests {
         )
         let caps = PostSettingsCapabilities(from: details)
 
-        #expect(caps.supportsCategories == true)
-        #expect(caps.supportsTags == true)
-        #expect(caps.customTaxonomySlugs == ["genre", "mood"])
+        // Categories and tags are not yet derived from taxonomies (see FIXME in implementation).
+        #expect(caps.supportsCategories == false)
+        #expect(caps.supportsTags == false)
+        #expect(caps.customTaxonomySlugs == [])
     }
 }
 

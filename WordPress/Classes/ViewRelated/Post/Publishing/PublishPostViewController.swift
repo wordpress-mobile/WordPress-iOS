@@ -83,7 +83,13 @@ struct PublishPostView: View {
 
     @State private var isShowingDiscardChangesAlert = false
 
-    var post: AbstractPost { viewModel.post }
+    var post: AbstractPost {
+        guard let post = viewModel.post else {
+            wpAssertionFailure("PublishPostView requires an AbstractPost-backed ViewModel")
+            fatalError("PublishPostView requires an AbstractPost-backed ViewModel")
+        }
+        return post
+    }
 
     var body: some View {
         Form {

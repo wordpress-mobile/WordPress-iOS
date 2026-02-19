@@ -5,8 +5,7 @@ import WordPressUI
 
 @MainActor
 struct PostFormatPicker: View {
-    @ObservedObject private var post: Post
-    @State private var selction: String
+    @State private var selection: String
     @State private var formats: [String]
     @State private var isLoading = false
     @State private var error: Error?
@@ -16,12 +15,11 @@ struct PostFormatPicker: View {
 
     static var title: String { Strings.title }
 
-    init(post: Post, onSubmit: @escaping (String) -> Void) {
-        self.post = post
-        self.blog = post.blog
-        let formats = post.blog.sortedPostFormatNames
+    init(blog: Blog, currentFormat: String?, onSubmit: @escaping (String) -> Void) {
+        self.blog = blog
+        let formats = blog.sortedPostFormatNames
         self._formats = State(initialValue: formats)
-        self._selction = State(initialValue: post.postFormatText() ?? "")
+        self._selection = State(initialValue: blog.postFormatText(fromSlug: currentFormat) ?? "")
         self.onSubmit = onSubmit
     }
 
@@ -66,7 +64,7 @@ struct PostFormatPicker: View {
                     HStack {
                         Text(format)
                         Spacer()
-                        if selction == format {
+                        if selection == format {
                             Image(systemName: "checkmark")
                                 .fontWeight(.medium)
                                 .foregroundColor(Color(UIAppColor.primary))
@@ -87,7 +85,7 @@ struct PostFormatPicker: View {
     }
 
     private func selectFormat(_ format: String) {
-        selction = format
+        selection = format
         onSubmit(format)
     }
 
@@ -97,8 +95,8 @@ struct PostFormatPicker: View {
 
         let blogService = BlogService(coreDataStack: ContextManager.shared)
         do {
-            try await blogService.syncPostFormats(for: post.blog)
-            self.formats = post.blog.sortedPostFormatNames
+            try await blogService.syncPostFormats(for: blog)
+            self.formats = blog.sortedPostFormatNames
         } catch {
             self.error = error
             if !formats.isEmpty {

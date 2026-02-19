@@ -4,14 +4,17 @@ import WordPressUI
 @MainActor
 struct PostSlugEditorView: View {
     @Binding var slug: String
-    let post: AbstractPost
+    let suggestedSlug: String?
+    let permalinkTemplate: String?
+    let hasRemote: Bool
+    let hasDotComID: Bool
 
     @FocusState private var isFocused: Bool
 
     private var effectiveSlug: String {
         if !slug.isEmpty {
             return slug
-        } else if let suggestedSlug = post.suggested_slug, !suggestedSlug.isEmpty {
+        } else if let suggestedSlug, !suggestedSlug.isEmpty {
             return suggestedSlug
         } else {
             return ""
@@ -19,7 +22,7 @@ struct PostSlugEditorView: View {
     }
 
     private var placeholderText: String {
-        if let suggestedSlug = post.suggested_slug, !suggestedSlug.isEmpty {
+        if let suggestedSlug, !suggestedSlug.isEmpty {
             return suggestedSlug
         }
         return Strings.slugPlaceholder
@@ -110,7 +113,7 @@ struct PostSlugEditorView: View {
                     }
                 }
             }
-        } else if !post.hasRemote() && post.blog.dotComID != nil {
+        } else if !hasRemote && hasDotComID {
             Section(Strings.permalinkSectionTitle) {
                 Text(Strings.permalinkDraftNotice)
                     .font(.callout)
@@ -122,7 +125,7 @@ struct PostSlugEditorView: View {
     private let permalinkSlugPlaceholder = "%postname%"
 
     private func makePermalinkURL() -> URL? {
-        guard let templateURL = post.permalinkTemplateURL,
+        guard let templateURL = permalinkTemplate,
               !templateURL.isEmpty,
               templateURL.firstRange(of: permalinkSlugPlaceholder) != nil else {
             return nil
@@ -132,7 +135,7 @@ struct PostSlugEditorView: View {
     }
 
     private func makeFormattedPermalinkString() -> AttributedString {
-        guard let templateURL = post.permalinkTemplateURL,
+        guard let templateURL = permalinkTemplate,
               !templateURL.isEmpty else {
             return AttributedString(effectiveSlug)
         }

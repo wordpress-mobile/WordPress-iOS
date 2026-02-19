@@ -59,17 +59,18 @@ extension PostSettingsCapabilities {
 
     /// Capabilities derived from REST API post type details.
     init(from details: PostTypeDetailsWithEditContext) {
-        supportsCategories = details.taxonomies.contains("category")
-        supportsTags = details.taxonomies.contains("post_tag")
+        // FIXME: Add taxonomy support
+        supportsCategories = false // details.taxonomies.contains("category")
+        supportsTags = false // details.taxonomies.contains("post_tag")
         supportsFeaturedImage = details.supports.supports(feature: .thumbnail)
         supportsExcerpt = details.supports.supports(feature: .excerpt)
         supportsAuthor = details.supports.supports(feature: .author)
         supportsPostFormats = details.supports.supports(feature: .postFormats)
         supportsComments = details.supports.supports(feature: .comments)
         supportsTrackbacks = details.supports.supports(feature: .trackbacks)
-        supportsPageAttributes = details.supports.supports(feature: .pageAttributes)
+        supportsPageAttributes = false // details.supports.supports(feature: .pageAttributes)
         supportsSlug = details.supports.supports(feature: .slug)
-        supportsCustomFields = details.supports.supports(feature: .customFields)
-        customTaxonomySlugs = details.taxonomies.filter { $0 != "category" && $0 != "post_tag" }
+        supportsCustomFields = false // details.supports.supports(feature: .customFields)
+        customTaxonomySlugs = [] // details.taxonomies.filter { $0 != "category" && $0 != "post_tag" }
     }
 }

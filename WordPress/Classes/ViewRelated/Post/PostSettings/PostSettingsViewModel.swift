@@ -1,6 +1,7 @@
 import Foundation
 import BuildSettingsKit
 import SwiftUI
+import WordPressAPI
 import WordPressData
 import WordPressKit
 import WordPressCore
@@ -10,13 +11,29 @@ import Combine
 
 @MainActor
 final class PostSettingsViewModel: NSObject, ObservableObject {
-    let post: AbstractPost
     let blog: Blog
     let capabilities: PostSettingsCapabilities
     let isStandalone: Bool
     let context: Context
-    let featuredImageViewModel: PostSettingsFeaturedImageViewModel
+    let featuredImageViewModel: PostSettingsFeaturedImageViewModel?
     let client: WordPressClient?
+
+    private var details: PostDetails
+
+    private var abstractPost: AbstractPost? {
+        if case .abstractPost(let post) = details { return post }
+        return nil
+    }
+
+    var remotePost: AnyPostWithEditContext? {
+        if case .remotePost(let post, _) = details { return post }
+        return nil
+    }
+
+    private var postTypeDetails: PostTypeDetailsWithEditContext? {
+        if case .remotePost(_, let details) = details { return details }
+        return nil
+    }
 
     @Published var settings: PostSettings {
         didSet {
@@ -35,8 +52,24 @@ final class PostSettingsViewModel: NSObject, ObservableObject {
 
     @Published var isShowingDeletedAlert = false
 
+    /// The content of the post, used for AI excerpt generation.
+    var postContent: String {
+        switch details {
+        case .abstractPost(let post):
+            return post.content ?? ""
+        case .remotePost(let post, _):
+            return post.content.raw ?? ""
+        }
+    }
+
     var navigationTitle: String {
-        isPost ? Strings.postSettingsTitle : Strings.pageSettingsTitle
+        if let postTypeDetails {
+            return String.localizedStringWithFormat(
+                Strings.customPostSettingsTitle,
+                postTypeDetails.name
+            )
+        }
+        return isPost ? Strings.postSettingsTitle : Strings.pageSettingsTitle
     }
 
     var deletedAlertTitle: String {
@@ -48,7 +81,10 @@ final class PostSettingsViewModel: NSObject, ObservableObject {
     }
 
     var authorDisplayName: String {
-        settings.author?.displayName ?? post.author?.makePlainText() ?? ""
+        if let displayName = settings.author?.displayName, displayName != "–" {
+            return displayName
+        }
+        return abstractPost?.author?.makePlainText() ?? settings.author?.displayName ?? ""
     }
 
     var authorAvatarURL: URL? {
@@ -86,11 +122,28 @@ final class PostSettingsViewModel: NSObject, ObservableObject {
     }
 
     var slugText: String {
-        settings.slug.isEmpty ? (post.suggested_slug ?? "") : settings.slug
+        if !settings.slug.isEmpty {
+            return settings.slug
+        }
+        if let abstractPost {
+            return abstractPost.suggested_slug ?? ""
+        }
+        if let remotePost {
+            return remotePost.generatedSlug ?? ""
+        }
+        return ""
+    }
+
+    var suggestedSlug: String? {
+        abstractPost?.suggested_slug ?? remotePost?.generatedSlug
+    }
+
+    var permalinkTemplate: String? {
+        abstractPost?.permalinkTemplateURL ?? remotePost?.permalinkTemplate
     }
 
     var postFormatText: String {
-        guard let post = post as? Post else { return "" }
+        guard capabilities.supportsPostFormats else { return "" }
         return blog.postFormatText(fromSlug: settings.postFormat) ?? NSLocalizedString("Standard", comment: "Default post format")
     }
 
@@ -99,31 +152,71 @@ final class PostSettingsViewModel: NSObject, ObservableObject {
     }
 
     var isDraftOrPending: Bool {
-        post.getOriginal().isStatus(in: [.draft, .pending])
+        if let abstractPost {
+            return abstractPost.getOriginal().isStatus(in: [.draft, .pending])
+        }
+        if let remotePost {
+            return remotePost.status == .draft || remotePost.status == .pending
+        }
+        return false
     }
 
     var isPost: Bool {
-        post is Post
+        if let abstractPost {
+            return abstractPost is Post
+        }
+        return postTypeDetails?.slug == "post"
     }
 
     var shouldShowStickyOption: Bool {
+        // Sticky is exclusively a WordPress "post" type feature
         guard isPost else { return false }
-        // Show sticky option if blog supports WPComRESTAPI OR user is admin
         return blog.supports(.wpComRESTAPI) || blog.isAdmin
     }
 
     var lastEditedText: String? {
-        guard let date = post.dateModified ?? post.dateCreated else {
-            return nil
+        if let abstractPost {
+            guard let date = abstractPost.dateModified ?? abstractPost.dateCreated else {
+                return nil
+            }
+            return date.toMediumString()
         }
-        return date.toMediumString()
+        if let remotePost {
+            return remotePost.modifiedGmt.toMediumString()
+        }
+        return nil
     }
 
     var postID: Int? {
-        guard let postID = post.postID?.intValue, postID > 0 else {
-            return nil
+        if let abstractPost {
+            guard let postID = abstractPost.postID?.intValue, postID > 0 else {
+                return nil
+            }
+            return postID
         }
-        return postID
+        if let remotePost {
+            let id = Int(remotePost.id)
+            return id > 0 ? id : nil
+        }
+        return nil
+    }
+
+    /// Whether the post is backed by a remote (non-Core Data) post.
+    var isRemotePost: Bool {
+        remotePost != nil
+    }
+
+    /// The underlying Page, if this is a Core Data-backed page.
+    var page: Page? {
+        abstractPost as? Page
+    }
+
+    /// Whether the post has a remote representation (used for permalink preview).
+    var hasRemote: Bool {
+        if let abstractPost {
+            return abstractPost.hasRemote()
+        }
+        return remotePost != nil
     }
 
     enum SocialSharingSectionState {
@@ -156,19 +249,21 @@ final class PostSettingsViewModel: NSObject, ObservableObject {
         case publishing
     }
 
+    // MARK: - AbstractPost Initializer
+
     init(
         post: AbstractPost,
         isStandalone: Bool = false,
         context: Context = .settings,
         preferences: UserPersistentRepository = UserDefaults.standard
     ) {
-        self.post = post
+        self.details = .abstractPost(post)
         self.blog = post.blog
         self.capabilities = post is Post ? .post() : .page()
         self.isStandalone = isStandalone
         self.context = context
         self.preferences = preferences
-        self.client = try? WordPressClientFactory.shared.instance(for: .init(blog: blog))
+        self.client = try? WordPressClientFactory.shared.instance(for: .init(blog: post.blog))
 
         // Initialize settings from the post
         let initialSettings = PostSettings(from: post)
@@ -181,7 +276,7 @@ final class PostSettingsViewModel: NSObject, ObservableObject {
         super.init()
 
         // Observe selection changes from featured image view model
-        featuredImageViewModel.$selection.dropFirst().sink { [weak self] media in
+        featuredImageViewModel?.$selection.dropFirst().sink { [weak self] media in
             self?.settings.featuredImageID = media?.mediaID?.intValue
         }.store(in: &cancellables)
 
@@ -195,28 +290,81 @@ final class PostSettingsViewModel: NSObject, ObservableObject {
         WPAnalytics.track(.postSettingsShown)
     }
 
+    // MARK: - AnyPostWithEditContext Initializer
+
+    init(
+        post: AnyPostWithEditContext,
+        details: PostTypeDetailsWithEditContext,
+        blog: Blog,
+        client: WordPressClient,
+        context: Context = .settings
+    ) {
+        self.details = .remotePost(post, details)
+        self.blog = blog
+        self.capabilities = PostSettingsCapabilities(from: details)
+        self.isStandalone = false
+        self.context = context
+        self.preferences = UserDefaults.standard
+        self.client = client
+
+        // Initialize settings from the remote post
+        let initialSettings = PostSettings(from: post)
+        self.settings = initialSettings
+        self.originalSettings = initialSettings
+
+        // Featured image is not supported for custom post types yet
+        self.featuredImageViewModel = nil
+
+        super.init()
+
+        // Resolve author display name from Blog's cached authors
+        resolveAuthorDisplayName()
+
+        // Initialize cached properties
+        refreshDisplayedCategories()
+        refreshDisplayedTags()
+        refreshCustomTaxonomiesForRemotePost(details: details)
+
+        WPAnalytics.track(.postSettingsShown)
+    }
+
     func onAppear() {
-        refreshSuggestedTags()
+        if abstractPost != nil {
+            refreshSuggestedTags()
+        }
     }
 
     func shouldShow(_ row: Row) -> Bool {
         switch row {
         case .jetpackAccessLevel:
-            blog.supports(.wpComRESTAPI)
+            blog.supports(.wpComRESTAPI) && !isRemotePost
         case .jetpackNewsletterEmailOptions:
-            blog.supports(.wpComRESTAPI) && context == .publishing
+            blog.supports(.wpComRESTAPI) && context == .publishing && !isRemotePost
+        }
+    }
+
+    private func resolveAuthorDisplayName() {
+        guard let authorId = settings.author?.id else { return }
+        // Try to resolve from Blog's cached authors
+        if let authors = blog.authors,
+           let author = authors.first(where: { $0.userID.intValue == authorId }) {
+            settings.author = PostSettings.Author(
+                id: authorId,
+                displayName: author.displayName ?? "–",
+                avatarURL: author.avatarURL.flatMap(URL.init)
+            )
         }
     }
 
     private func refreshSuggestedTags() {
-        guard isSuggestedTagsRefreshNeeded else {
+        guard let abstractPost, isSuggestedTagsRefreshNeeded else {
             return
         }
         isSuggestedTagsRefreshNeeded = false
 
-        let task = Task { @MainActor [weak self, post] in
+        let task = Task { @MainActor [weak self] in
             do {
-                let tags = try await TagSuggestionsService().getSuggestedTags(for: post)
+                let tags = try await TagSuggestionsService().getSuggestedTags(for: abstractPost)
                 guard let self else { return }
                 if !tags.isEmpty {
                     withAnimation {
@@ -235,17 +383,29 @@ final class PostSettingsViewModel: NSObject, ObservableObject {
     }
 
     private func refreshCustomTaxonomies() {
-        let postType: String? = switch post {
-            case is Post: "post"
-            case is Page: "page"
-            default: nil
-            }
+        guard let abstractPost else { return }
+
+        let postType: String? = switch abstractPost {
+        case is Post: "post"
+        case is Page: "page"
+        default: nil
+        }
         guard let postType else { return }
 
         let customTaxonomies = try? blog.taxonomies
             .filter {
                 $0.slug != "post_tag" && $0.slug != "category" && $0.supportedPostTypes.contains(postType)
             }
+            .sorted(using: KeyPathComparator(\.name))
+        self.customTaxonomies = customTaxonomies ?? []
+    }
+
+    private func refreshCustomTaxonomiesForRemotePost(details: PostTypeDetailsWithEditContext) {
+        let customSlugs = capabilities.customTaxonomySlugs
+        guard !customSlugs.isEmpty else { return }
+
+        let customTaxonomies = try? blog.taxonomies
+            .filter { customSlugs.contains($0.slug) }
             .sorted(using: KeyPathComparator(\.name))
         self.customTaxonomies = customTaxonomies ?? []
     }
@@ -267,7 +427,11 @@ final class PostSettingsViewModel: NSObject, ObservableObject {
     }
 
     private func refreshDisplayedCategories() {
-        displayedCategories = settings.getCategoryNames(for: post)
+        if let abstractPost {
+            displayedCategories = settings.getCategoryNames(for: abstractPost)
+        } else {
+            displayedCategories = settings.getCategoryNames(for: blog)
+        }
     }
 
     private func refreshDisplayedTags() {
@@ -275,7 +439,7 @@ final class PostSettingsViewModel: NSObject, ObservableObject {
     }
 
     private func refreshParentPageText() {
-        if let page = post as? Page,
+        if let page = abstractPost as? Page,
            let context = page.managedObjectContext,
            let parentPageID = settings.parentPageID {
             parentPageText = Page.parentPageText(in: context, parentID: NSNumber(value: parentPageID))
@@ -291,6 +455,14 @@ final class PostSettingsViewModel: NSObject, ObservableObject {
     }
 
     func buttonSaveTapped() {
+        if let abstractPost {
+            buttonSaveTappedForAbstractPost(abstractPost)
+        } else if remotePost != nil {
+            buttonSaveTappedForRemotePost()
+        }
+    }
+
+    private func buttonSaveTappedForAbstractPost(_ post: AbstractPost) {
         // Check if the post still exists
         guard let context = post.managedObjectContext,
               let _ = try? context.existingObject(with: post.objectID) else {
@@ -310,11 +482,18 @@ final class PostSettingsViewModel: NSObject, ObservableObject {
 
         isSaving = true
         Task {
-            await actuallySave()
+            await actuallySaveAbstractPost(post)
         }
     }
 
-    private func actuallySave() async {
+    private func buttonSaveTappedForRemotePost() {
+        isSaving = true
+        Task {
+            await saveRemotePost()
+        }
+    }
+
+    private func actuallySaveAbstractPost(_ post: AbstractPost) async {
         do {
             let settings = getSettingsToSave(for: self.settings)
             let coordinator = PostCoordinator.shared
@@ -335,6 +514,121 @@ final class PostSettingsViewModel: NSObject, ObservableObject {
         }
     }
 
+    private func saveRemotePost() async {
+        guard let remotePost, let postTypeDetails, let client else {
+            wpAssertionFailure("missing remote post context")
+            isSaving = false
+            return
+        }
+
+        do {
+            let params = makePostUpdateParams(from: originalSettings, to: settings)
+            let endpoint = postTypeDetails.toPostEndpointType()
+            let updatedPost = try await client.api.posts
+                .update(postEndpointType: endpoint, postId: remotePost.id, params: params)
+                .data
+            if case .remotePost(_, let typeDetails) = self.details {
+                self.details = .remotePost(updatedPost, typeDetails)
+            }
+
+            // Refresh post in the background to keep the post list up-to-date
+            Task {
+                try? await client.service.posts().refreshPost(postId: updatedPost.id, endpointType: endpoint)
+            }
+
+            didSaveChanges()
+            onEditorPostSaved?()
+            onDismiss?()
+        } catch {
+            isSaving = false
+            Notice(error: error, title: Strings.saveFailedMessage).post()
+        }
+    }
+
+    private func makePostUpdateParams(from original: PostSettings, to current: PostSettings) -> PostUpdateParams {
+        var slug: String?
+        if original.slug != current.slug {
+            slug = current.slug
+        }
+
+        var status: PostStatus?
+        if original.status != current.status {
+            status = PostStatus(current.status)
+        }
+
+        var password: String?
+        if original.password != current.password {
+            password = current.password ?? ""
+        }
+
+        var author: UserId?
+        if original.author?.id != current.author?.id, let authorId = current.author?.id {
+            author = UserId(Int64(authorId))
+        }
+
+        var excerpt: String?
+        if original.excerpt != current.excerpt {
+            excerpt = current.excerpt
+        }
+
+        var featuredMedia: MediaId?
+        if original.featuredImageID != current.featuredImageID {
+            featuredMedia = current.featuredImageID.map { MediaId(Int64($0)) } ?? MediaId(0)
+        }
+
+        var commentStatus: PostCommentStatus?
+        if original.allowComments != current.allowComments {
+            commentStatus = current.allowComments ? .open : .closed
+        }
+
+        var pingStatus: PostPingStatus?
+        if original.allowPings != current.allowPings {
+            pingStatus = current.allowPings ? .open : .closed
+        }
+
+        var format: PostFormat?
+        if original.postFormat != current.postFormat {
+            format = current.postFormat.flatMap { PostFormat.from(slug: $0) }
+        }
+
+        var sticky: Bool?
+        if original.isStickyPost != current.isStickyPost {
+            sticky = current.isStickyPost
+        }
+
+        var categories: [TermId] = []
+        if original.categoryIDs != current.categoryIDs {
+            categories = current.categoryIDs.map { TermId(Int64($0)) }
+        }
+
+        // FIXME: Not implemented yet.
+        // Tags are stored as comma-separated names for AbstractPost, but as IDs for remote posts.
+        // For remote posts, tag changes would need ID resolution. Skip for now.
+        // var tags: [TermId] = []
+
+        var parent: PostId?
+        if original.parentPageID != current.parentPageID {
+            parent = current.parentPageID.map { PostId(Int64($0)) }
+        }
+
+        return PostUpdateParams(
+            slug: slug,
+            status: status,
+            password: password,
+            author: author,
+            excerpt: excerpt,
+            featuredMedia: featuredMedia,
+            commentStatus: commentStatus,
+            pingStatus: pingStatus,
+            format: format,
+            meta: nil,
+            sticky: sticky,
+            categories: categories,
+            tags: [],
+            parent: parent
+        )
+    }
+
     func getSettingsToSave(for settings: PostSettings) -> PostSettings {
         var settings = settings
         if context == .publishing {
@@ -349,9 +643,11 @@ final class PostSettingsViewModel: NSObject, ObservableObject {
     }
 
     func buttonPublishTapped() {
+        guard let abstractPost else { return }
+
         // Check if the post still exists
-        guard let context = post.managedObjectContext,
-              let _ = try? context.existingObject(with: post.objectID) else {
+        guard let context = abstractPost.managedObjectContext,
+              let _ = try? context.existingObject(with: abstractPost.objectID) else {
             isShowingDeletedAlert = true
             return
         }
@@ -360,8 +656,8 @@ final class PostSettingsViewModel: NSObject, ObservableObject {
         Task {
             do {
                 let coordinator = PostCoordinator.shared
-                let changes = settings.makeUpdateParameters(from: post)
-                try await coordinator.publish(post.getOriginal(), parameters: changes)
+                let changes = settings.makeUpdateParameters(from: abstractPost)
+                try await coordinator.publish(abstractPost.getOriginal(), parameters: changes)
                 onPostPublished?()
             } catch {
                 isSaving = false
@@ -379,8 +675,10 @@ final class PostSettingsViewModel: NSObject, ObservableObject {
 
         switch selection.type {
         case .public, .protected:
-            if post.getOriginal().status == .scheduled {
+            if let abstractPost, abstractPost.getOriginal().status == .scheduled {
                 // Keep it scheduled
+            } else if settings.status == .scheduled {
+                // Keep it scheduled for remote posts too
             } else {
                 settings.status = .publish
             }
@@ -409,7 +707,7 @@ final class PostSettingsViewModel: NSObject, ObservableObject {
     // MARK: - Social Sharing
 
     private func refreshSocialSharingState() {
-        guard let post = post as? Post, isPostEligibleForSocialSharing(post) else {
+        guard let post = abstractPost as? Post, isPostEligibleForSocialSharing(post) else {
             socialSharingState = nil
             return
         }
@@ -602,6 +900,31 @@ extension PostSettingsViewModel: @MainActor PrepublishingSocialAccountsDelegate 
     }
 }
 
+// MARK: - PostFormat Helpers
+
+extension PostFormat {
+    static func from(slug: String) -> PostFormat {
+        switch slug {
+        case "standard": return .standard
+        case "aside": return .aside
+        case "chat": return .chat
+        case "gallery": return .gallery
+        case "link": return .link
+        case "image": return .image
+        case "quote": return .quote
+        case "status": return .status
+        case "video": return .video
+        case "audio": return .audio
+        default: return .custom(slug)
+        }
+    }
+}
+
+private enum PostDetails {
+    case abstractPost(AbstractPost)
+    case remotePost(AnyPostWithEditContext, PostTypeDetailsWithEditContext)
+}
+
 // MARK: - Localized Strings
 
 private enum Strings {
@@ -615,6 +938,18 @@ private enum Strings {
         "postSettings.navigationTitle.page",
         value: "Page Settings",
         comment: "The title of the Page Settings screen."
+    )
+
+    static let customPostSettingsTitle = NSLocalizedString(
+        "postSettings.navigationTitle.customPostType",
+        value: "%1$@ Settings",
+        comment: "The title of the Post Settings screen for custom post types. %1$@ is the post type name."
+    )
+
+    static let saveFailedMessage = NSLocalizedString(
+        "postSettings.saveFailed.message",
+        value: "Failed to save changes",
+        comment: "Error message shown when saving post settings via REST API fails"
     )
 
     static let postDeletedTitle = NSLocalizedString(

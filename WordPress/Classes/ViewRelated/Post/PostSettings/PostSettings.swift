@@ -264,8 +264,12 @@ extension PostSettings {
         guard let post = post as? Post else {
             return []
         }
+        return getCategoryNames(for: post.blog)
+    }
+
+    func getCategoryNames(for blog: Blog) -> [String] {
         var categories: [Int: String] = [:]
-        for category in post.blog.categories ?? [] {
+        for category in blog.categories ?? [] {
             categories[category.categoryID.intValue] = category.categoryName
         }
         return categoryIDs.compactMap { categories[$0] }
