@@ -37,6 +37,9 @@ extension PostSettingsCapabilities {
     }
 
     /// Capabilities for the built-in "page" type.
+    ///
+    /// Note: Pages support comments at the platform level, but the app's
+    /// Post Settings screen has never shown discussion settings for pages.
     static func page() -> PostSettingsCapabilities {
         PostSettingsCapabilities(
             supportsCategories: false,
@@ -45,7 +48,7 @@ extension PostSettingsCapabilities {
             supportsExcerpt: true,
             supportsAuthor: true,
             supportsPostFormats: false,
-            supportsComments: true,
+            supportsComments: false,
             supportsTrackbacks: false,
             supportsPageAttributes: true,
             supportsSlug: true,

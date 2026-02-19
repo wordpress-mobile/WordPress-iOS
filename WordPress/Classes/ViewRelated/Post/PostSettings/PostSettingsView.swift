@@ -137,11 +137,17 @@ struct PostSettingsFormContentView: View {
         if viewModel.context == .publishing {
             publishingOptionsSection
         }
-        featuredImageSection
-        if viewModel.isPost {
+        if viewModel.capabilities.supportsFeaturedImage {
+            featuredImageSection
+        }
+        if viewModel.capabilities.supportsCategories
+            || viewModel.capabilities.supportsTags
+            || !viewModel.capabilities.customTaxonomySlugs.isEmpty {
             organizationSection
         }
-        excerptSection
+        if viewModel.capabilities.supportsExcerpt {
+            excerptSection
+        }
         generalSection
         socialSharingSection
         accessSection
@@ -153,7 +159,7 @@ struct PostSettingsFormContentView: View {
     @ViewBuilder
     private var publishingOptionsSection: some View {
         Section {
-            BlogListSiteView(site: .init(blog: viewModel.post.blog))
+            BlogListSiteView(site: .init(blog: viewModel.blog))
             publishDateRow
             visibilityRow
         } header: {
@@ -178,9 +184,13 @@ struct PostSettingsFormContentView: View {
     @ViewBuilder
     private var organizationSection: some View {
         Section {
-            categoriesRow
-            tagsRow
-            suggestedTagsRow
+            if viewModel.capabilities.supportsCategories {
+                categoriesRow
+            }
+            if viewModel.capabilities.supportsTags {
+                tagsRow
+                suggestedTagsRow
+            }
             customTaxonomyRow
         } header: {
             SectionHeader(Strings.taxonomyHeader)
@@ -196,7 +206,7 @@ struct PostSettingsFormContentView: View {
 
     private var tagsRow: some View {
         NavigationLink {
-            PostTagsView(blog: viewModel.post.blog, selectedTags: viewModel.settings.tags) { tags in
+            PostTagsView(blog: viewModel.blog, selectedTags: viewModel.settings.tags) { tags in
                 viewModel.didSelectTags(tags)
             }
         } label: {
@@ -224,7 +234,7 @@ struct PostSettingsFormContentView: View {
             ForEach(viewModel.customTaxonomies, id: \.slug) { taxonomy in
                 NavigationLink {
                     PostTagsView(
-                        blog: viewModel.post.blog,
+                        blog: viewModel.blog,
                         client: client,
                         taxonomy: taxonomy,
                         selectedTerms: viewModel.settings.getTerms(forTaxonomySlug: taxonomy.slug).joined(separator: ",")
@@ -265,9 +275,13 @@ struct PostSettingsFormContentView: View {
             if viewModel.context == .settings && viewModel.isStandalone {
                 statusRow
             }
-            authorRow
+            if viewModel.capabilities.supportsAuthor {
+                authorRow
+            }
             publishDateRow
-            slugRow
+            if viewModel.capabilities.supportsSlug {
+                slugRow
+            }
         } header: {
             SectionHeader(Strings.generalHeader)
         }
@@ -276,7 +290,7 @@ struct PostSettingsFormContentView: View {
     private var authorRow: some View {
         NavigationLink {
             PostAuthorPicker(
-                blog: viewModel.post.blog,
+                blog: viewModel.blog,
                 currentAuthorID: viewModel.settings.author?.id
             ) { selection in
                 viewModel.settings.updateAuthor(with: selection)
@@ -391,11 +405,13 @@ struct PostSettingsFormContentView: View {
             if viewModel.isDraftOrPending {
                 pendingReviewRow
             }
-            if viewModel.isPost {
+            if viewModel.capabilities.supportsComments {
                 discussionRow
+            }
+            if viewModel.capabilities.supportsPostFormats {
                 postFormatRow
             }
-            if !viewModel.isPost {
+            if viewModel.capabilities.supportsPageAttributes {
                 parentPageRow
             }
         } header: {
@@ -426,7 +442,7 @@ struct PostSettingsFormContentView: View {
         NavigationLink {
             if let page = viewModel.post as? Page {
                 ParentPagePicker(
-                    blog: viewModel.post.blog,
+                    blog: viewModel.blog,
                     currentPage: page,
                     onSelection: { selectedParentPage in
                         viewModel.settings.parentPageID = selectedParentPage?.postID?.intValue

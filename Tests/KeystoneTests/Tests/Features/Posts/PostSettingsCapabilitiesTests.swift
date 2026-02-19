@@ -31,7 +31,7 @@ struct PostSettingsCapabilitiesTests {
         #expect(caps.supportsExcerpt == true)
         #expect(caps.supportsAuthor == true)
         #expect(caps.supportsPostFormats == false)
-        #expect(caps.supportsComments == true)
+        #expect(caps.supportsComments == false)
         #expect(caps.supportsTrackbacks == false)
         #expect(caps.supportsPageAttributes == true)
         #expect(caps.supportsSlug == true)

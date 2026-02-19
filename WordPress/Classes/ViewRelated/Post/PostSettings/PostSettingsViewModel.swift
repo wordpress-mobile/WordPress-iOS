@@ -11,6 +11,8 @@ import Combine
 @MainActor
 final class PostSettingsViewModel: NSObject, ObservableObject {
     let post: AbstractPost
+    let blog: Blog
+    let capabilities: PostSettingsCapabilities
     let isStandalone: Bool
     let context: Context
     let featuredImageViewModel: PostSettingsFeaturedImageViewModel
@@ -89,11 +91,11 @@ final class PostSettingsViewModel: NSObject, ObservableObject {
 
     var postFormatText: String {
         guard let post = post as? Post else { return "" }
-        return post.blog.postFormatText(fromSlug: settings.postFormat) ?? NSLocalizedString("Standard", comment: "Default post format")
+        return blog.postFormatText(fromSlug: settings.postFormat) ?? NSLocalizedString("Standard", comment: "Default post format")
     }
 
     var timeZone: TimeZone {
-        post.blog.timeZone ?? TimeZone.current
+        blog.timeZone ?? TimeZone.current
     }
 
     var isDraftOrPending: Bool {
@@ -107,7 +109,7 @@ final class PostSettingsViewModel: NSObject, ObservableObject {
     var shouldShowStickyOption: Bool {
         guard isPost else { return false }
         // Show sticky option if blog supports WPComRESTAPI OR user is admin
-        return post.blog.supports(.wpComRESTAPI) || post.blog.isAdmin
+        return blog.supports(.wpComRESTAPI) || blog.isAdmin
     }
 
     var lastEditedText: String? {
@@ -161,10 +163,12 @@ final class PostSettingsViewModel: NSObject, ObservableObject {
         preferences: UserPersistentRepository = UserDefaults.standard
     ) {
         self.post = post
+        self.blog = post.blog
+        self.capabilities = post is Post ? .post() : .page()
         self.isStandalone = isStandalone
         self.context = context
         self.preferences = preferences
-        self.client = try? WordPressClientFactory.shared.instance(for: .init(blog: post.blog))
+        self.client = try? WordPressClientFactory.shared.instance(for: .init(blog: blog))
 
         // Initialize settings from the post
         let initialSettings = PostSettings(from: post)
@@ -198,9 +202,9 @@ final class PostSettingsViewModel: NSObject, ObservableObject {
     func shouldShow(_ row: Row) -> Bool {
         switch row {
         case .jetpackAccessLevel:
-            post.blog.supports(.wpComRESTAPI)
+            blog.supports(.wpComRESTAPI)
         case .jetpackNewsletterEmailOptions:
-            post.blog.supports(.wpComRESTAPI) && context == .publishing
+            blog.supports(.wpComRESTAPI) && context == .publishing
         }
     }
 
@@ -238,7 +242,7 @@ final class PostSettingsViewModel: NSObject, ObservableObject {
             }
         guard let postType else { return }
 
-        let customTaxonomies = try? post.blog.taxonomies
+        let customTaxonomies = try? blog.taxonomies
             .filter {
                 $0.slug != "post_tag" && $0.slug != "category" && $0.supportedPostTypes.contains(postType)
             }
@@ -409,7 +413,7 @@ final class PostSettingsViewModel: NSObject, ObservableObject {
             socialSharingState = nil
             return
         }
-        if (post.blog.connections ?? []).isEmpty {
+        if (blog.connections ?? []).isEmpty {
             if isSocialConnectionSetupDismissed {
                 socialSharingState = nil
             } else {
@@ -425,7 +429,7 @@ final class PostSettingsViewModel: NSObject, ObservableObject {
         RemoteFeatureFlag.jetpackSocialImprovements.enabled() &&
         post.status != .publishPrivate &&
         !getPublicizeServices().isEmpty &&
-        post.blog.supportsPublicize()
+        blog.supportsPublicize()
     }
 
     private func getPublicizeServices() -> [PublicizeService] {
@@ -437,7 +441,7 @@ final class PostSettingsViewModel: NSObject, ObservableObject {
     /// Note: the value is stored per site.
     private var isSocialConnectionSetupDismissed: Bool {
         get {
-            guard let blogID = post.blog.dotComID?.intValue,
+            guard let blogID = blog.dotComID?.intValue,
                   let dictionary = preferences.dictionary(forKey: Constants.noConnectionKey) as? [String: Bool],
                   let value = dictionary["\(blogID)"] else {
                 return false
@@ -445,7 +449,7 @@ final class PostSettingsViewModel: NSObject, ObservableObject {
             return value
         }
         set {
-            guard let blogID = post.blog.dotComID?.intValue else {
+            guard let blogID = blog.dotComID?.intValue else {
                 return wpAssertionFailure("blogID missing")
             }
             var dictionary = (preferences.dictionary(forKey: Constants.noConnectionKey) as? [String: Bool]) ?? .init()
@@ -464,7 +468,7 @@ final class PostSettingsViewModel: NSObject, ObservableObject {
     }
 
     private func showSocialSharingSetupScreen() {
-        guard let sharingVC = SharingViewController(blog: post.blog, delegate: self) else {
+        guard let sharingVC = SharingViewController(blog: blog, delegate: self) else {
             return wpAssertionFailure("failed to instantiate SharingVC")
         }
         track(.jetpackSocialNoConnectionCTATapped)
@@ -481,7 +485,7 @@ final class PostSettingsViewModel: NSObject, ObservableObject {
     }
 
     func showSocialSharingOptions() {
-        guard let blogID = post.blog.dotComID?.intValue,
+        guard let blogID = blog.dotComID?.intValue,
               let settigns = settings.sharing else {
             return wpAssertionFailure("invalid context")
         }
@@ -498,7 +502,7 @@ final class PostSettingsViewModel: NSObject, ObservableObject {
 
     func showCategoriesPicker() {
         let categoriesVC = PostSettingsCategoriesPickerViewController(
-            blog: post.blog,
+            blog: blog,
             selectedCategoryIDs: settings.categoryIDs
         ) { [weak self] newSelectedIDs in
             self?.settings.categoryIDs = newSelectedIDs
