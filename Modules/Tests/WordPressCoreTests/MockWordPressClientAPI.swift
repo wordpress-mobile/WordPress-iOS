@@ -161,7 +161,8 @@ final class MockThemesRequestExecutor: ThemesRequestExecutor {
             isBlockTheme: isBlockTheme,
             stylesheetUri: "",
             templateUri: "",
-            themeSupports: nil
+            themeSupports: nil,
+            defaultTemplateTypes: nil
         )
         let mockHeaderMap = WpNetworkHeaderMap(noHandle: WpNetworkHeaderMap.NoHandle())
         return ThemesRequestListWithEditContextResponse(data: [mockTheme], headerMap: mockHeaderMap)

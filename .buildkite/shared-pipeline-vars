@@ -6,7 +6,9 @@
 # The ~> modifier is not currently used, but we check for it just in case
 XCODE_VERSION=$(sed -E 's/^~> ?//' .xcode-version)
 CI_TOOLKIT_PLUGIN_VERSION="5.3.1"
+TEST_COLLECTOR_PLUGIN_VERSION="1.11.0"
 
 export IMAGE_ID="xcode-$XCODE_VERSION"
 export CI_TOOLKIT_PLUGIN="automattic/a8c-ci-toolkit#$CI_TOOLKIT_PLUGIN_VERSION"
+export TEST_COLLECTOR="test-collector#v$TEST_COLLECTOR_PLUGIN_VERSION"
 export CLAUDE_PLUGIN="iangmaia/claude-summarize#iangmaia/add-build-log-mode"

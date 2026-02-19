@@ -4,11 +4,6 @@ if "$(dirname "${BASH_SOURCE[0]}")/should-skip-job.sh" --job-type validation; th
   exit 0
 fi
 
-# Run this at the start to fail early if value not available
-# TODO: We'll need to create a token for Reader
-# echo '--- :test-analytics: Configuring Test Analytics'
-# export BUILDKITE_ANALYTICS_TOKEN=$BUILDKITE_ANALYTICS_TOKEN_UNIT_TESTS
-
 "$(dirname "${BASH_SOURCE[0]}")/shared-set-up.sh"
 
 # For the moment, run code signing here just to show it works

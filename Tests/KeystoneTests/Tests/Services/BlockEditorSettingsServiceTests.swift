@@ -270,7 +270,7 @@ class BlockEditorSettingsServiceTests: CoreDataTestCase {
             return HTTPStubsResponse(jsonObject: mockedResponse, statusCode: 200, headers: nil)
         }
 
-        let remoteAPI = WordPressOrgRestApi(selfHostedSiteWPJSONURL: URL(string: "https://w.org/wp-json")!, credential: .init(loginURL: URL(string: "https://not-used.org")!, username: "user", password: "pass", adminURL: URL(string: "https://not-used.org")!))
+        let remoteAPI = WordPressOrgRestApi(selfHostedSiteWPJSONURL: URL(string: "https://w.org/wp-json")!, credential: .accountPassword(loginURL: URL(string: "https://not-used.org")!, username: "user", password: .init("pass"), adminURL: URL(string: "https://not-used.org")!))
         service = BlockEditorSettingsService(blog: blog, remoteAPI: remoteAPI, coreDataStack: contextManager)
 
         let waitExpectation = expectation(description: "Theme should be successfully fetched")
@@ -287,7 +287,7 @@ class BlockEditorSettingsServiceTests: CoreDataTestCase {
             HTTPStubsResponse(jsonObject: mockedResponse, statusCode: 200, headers: nil)
         }
 
-        let remoteAPI = WordPressOrgRestApi(selfHostedSiteWPJSONURL: URL(string: "https://w.org/wp-json")!, credential: .init(loginURL: URL(string: "https://not-used.org")!, username: "user", password: "pass", adminURL: URL(string: "https://not-used.org")!))
+        let remoteAPI = WordPressOrgRestApi(selfHostedSiteWPJSONURL: URL(string: "https://w.org/wp-json")!, credential: .accountPassword(loginURL: URL(string: "https://not-used.org")!, username: "user", password: .init("pass"), adminURL: URL(string: "https://not-used.org")!))
         service = BlockEditorSettingsService(blog: blog, remoteAPI: remoteAPI, coreDataStack: contextManager)
 
         let waitExpectation = expectation(description: "Theme should be successfully fetched")

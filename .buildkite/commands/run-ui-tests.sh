@@ -10,14 +10,6 @@ echo "Running UI tests on $DEVICE. The iOS version will be the latest available 
 
 xcrun simctl list --json devices available
 
-# Run this at the start to fail early if value not available
-echo '--- :test-analytics: Configuring Test Analytics'
-if [[ $DEVICE =~ ^iPhone ]]; then
-  export BUILDKITE_ANALYTICS_TOKEN=$BUILDKITE_ANALYTICS_TOKEN_UI_TESTS_IPHONE
-else
-  export BUILDKITE_ANALYTICS_TOKEN=$BUILDKITE_ANALYTICS_TOKEN_UI_TESTS_IPAD
-fi
-
 echo "--- 📦 Downloading Build Artifacts"
 download_artifact build-products-jetpack.tar
 tar -xf build-products-jetpack.tar
@@ -56,9 +48,9 @@ else
 fi
 
 if [[ $BUILDKITE_BRANCH == trunk ]] || [[ $BUILDKITE_BRANCH == release/* ]]; then
-    annotate_test_failures "build/results/JetpackUITests.xml" --slack "build-and-ship"
+    annotate_test_failures "build/results/report.junit" --slack "build-and-ship"
 else
-    annotate_test_failures "build/results/JetpackUITests.xml"
+    annotate_test_failures "build/results/report.junit"
 fi
 
 exit $TESTS_EXIT_STATUS

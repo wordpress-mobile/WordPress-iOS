@@ -40,18 +40,20 @@ extension WordPressOrgRestApi {
                 apiURL: wordPressComApiURL
             )
         } else if let apiBase = apiBase(blog: blog),
-                  let loginURL = URL(string: blog.loginUrl()),
-                  let adminURL = URL(string: blog.adminUrl(withPath: "")),
-                  let username = blog.username,
-                  let password = blog.password {
+                  let username = blog.username {
+            let credential: WordPressOrgRestApi.SelfHostedSiteCredential
+            if let appPassword = try? blog.getApplicationToken() {
+                credential = .applicationPassword(username: username, password: .init(appPassword))
+            } else if let loginURL = URL(string: blog.loginUrl()),
+                      let adminURL = URL(string: blog.adminUrl(withPath: "")),
+                      let password = blog.password {
+                credential = .accountPassword(loginURL: loginURL, username: username, password: .init(password), adminURL: adminURL)
+            } else {
+                return nil
+            }
             self.init(
                 selfHostedSiteWPJSONURL: apiBase,
-                credential: .init(
-                    loginURL: loginURL,
-                    username: username,
-                    password: password,
-                    adminURL: adminURL
-                ),
+                credential: credential,
                 userAgent: userAgent
             )
         } else {

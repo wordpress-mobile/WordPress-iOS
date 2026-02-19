@@ -10,13 +10,13 @@
 * [*] Insights: Fix empty posting activity [#25219]
 * [*] Activity Logs: Minor visual improvements [#25220]
 * [*] Reader: The post tags are now displayed in the original order [#25229]
+* [*] Notifications: Fix notifications sometimes displaying wrong avatars [#25265]
 
 
 26.6
 -----
 * [**] Intelligence: Expand AI-based features to more locales [#25034]
 * [**] Reader: Add "Freshly Pressed" to Discover [#24828]
-* [*] Reader: Keep only one "Search" option in the main sidebar [#25116]
 * [*] Reader: Fix Send button design in Comments [#25092]
 * [*] Rename "Recommended" to "For You" [#25123]
 * [*] Reader: Fix article view ignoring `use_excerpt` [#25108]
