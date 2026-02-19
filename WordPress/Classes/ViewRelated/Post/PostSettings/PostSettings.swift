@@ -11,6 +11,16 @@ struct PostSettings: Hashable {
         let id: Int
         let displayName: String
         let avatarURL: URL?
+
+        static func == (lhs: Author, rhs: Author) -> Bool {
+            // The displayName may be fetched locally.
+            // Only id is sent to the API for updating author.
+            lhs.id == rhs.id
+        }
+
+        func hash(into hasher: inout Hasher) {
+            hasher.combine(id)
+        }
     }
 
     var excerpt: String
