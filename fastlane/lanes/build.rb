@@ -126,7 +126,6 @@ platform :ios do
       concurrent_workers: CONCURRENT_SIMULATORS,
       max_concurrent_simulators: CONCURRENT_SIMULATORS
     )
-
   end
 
   # Builds the WordPress app and uploads it to TestFlight, for beta-testing or final release
