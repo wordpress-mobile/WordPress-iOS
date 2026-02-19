@@ -7,27 +7,17 @@ import WordPressAPIInternal
 
 @objc public class BlogServiceRemoteCoreREST: NSObject, BlogServiceRemote {
     let client: WordPressClient
-    let xmlrpc: BlogServiceRemoteXMLRPC?
 
     @objc public convenience init?(blog: Blog) {
         guard let site = try? WordPressSite(blog: blog) else { return nil }
 
-        let xmlrpc: BlogServiceRemoteXMLRPC?
-        if let api = blog.xmlrpcApi, case let .selfHosted(_, _, _, username, password) = site {
-            xmlrpc = BlogServiceRemoteXMLRPC(api: api, username: username, password: password)
-        } else {
-            xmlrpc = nil
-        }
-
         self.init(
-            client: WordPressClientFactory.shared.instance(for: site),
-            xmlrpc: xmlrpc
+            client: WordPressClientFactory.shared.instance(for: site)
         )
     }
 
-    init(client: WordPressClient, xmlrpc: BlogServiceRemoteXMLRPC?) {
+    init(client: WordPressClient) {
         self.client = client
-        self.xmlrpc = xmlrpc
     }
 
     public func getAllAuthors(success: UsersHandler?, failure: (((any Error)?) -> Void)?) {
@@ -59,7 +49,7 @@ import WordPressAPIInternal
                     return postType
                 }
                 success?(postTypes)
-        } catch {
+            } catch {
                 failure?(error)
             }
         }
