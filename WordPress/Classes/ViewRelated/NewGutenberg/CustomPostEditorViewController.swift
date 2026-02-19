@@ -124,7 +124,12 @@ private extension CustomPostEditorViewController {
     }
 
     func rightBarButtonItems() -> [UIBarButtonItem] {
-        var children: [UIMenuElement] = [editorModeToggle(), settingsAction(), helpAction(), feedbackAction()]
+        var children: [UIMenuElement] = [editorModeToggle()]
+        if FeatureFlag.cptPostSettings.enabled {
+            children.append(settingsAction())
+        }
+        children.append(contentsOf: [helpAction(), feedbackAction()])
+
         if post.status == .draft {
             let menu = UIDeferredMenuElement.uncached { [weak self] resolve in
                 Task {
@@ -157,7 +162,11 @@ private extension CustomPostEditorViewController {
         if post.status == .draft {
             return UIAction(title: PostEditorStrings.publish) { [weak self] _ in
                 Task {
-                    await self?.showPublishingSheet()
+                    if FeatureFlag.cptPostSettings.enabled {
+                        await self?.showPublishingSheet()
+                    } else {
+                        await self?.save(publish: true)
+                    }
                 }
             }
         } else {
