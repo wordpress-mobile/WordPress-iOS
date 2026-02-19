@@ -1,58 +1,65 @@
-import XCTest
+import Testing
 @testable import WordPressData
 
-final class BlogTests: CoreDataTestCase {
+@MainActor
+@Suite("Blog Tests")
+struct BlogTests {
+    private let contextManager = ContextManager.forTesting()
+    private var mainContext: NSManagedObjectContext { contextManager.mainContext }
 
     // MARK: - Atomic Tests
-    func testIsAtomic() {
+
+    @Test func isAtomic() {
         let blog = BlogBuilder(mainContext)
             .with(atomic: true)
             .build()
 
-        XCTAssertTrue(blog.isAtomic())
+        #expect(blog.isAtomic())
     }
 
-    func testIsNotAtomic() {
+    @Test func isNotAtomic() {
         let blog = BlogBuilder(mainContext)
             .with(atomic: false)
             .build()
 
-        XCTAssertFalse(blog.isAtomic())
+        #expect(!blog.isAtomic())
     }
 
     // MARK: - Blog Lookup
-    func testThatLookupByBlogIDWorks() throws {
+
+    @Test func lookupByBlogIDWorks() throws {
         let blog = BlogBuilder(mainContext).build()
-        XCTAssertNotNil(blog.dotComID)
-        XCTAssertNotNil(Blog.lookup(withID: blog.dotComID!, in: mainContext))
+        #expect(blog.dotComID != nil)
+        #expect(Blog.lookup(withID: blog.dotComID!, in: mainContext) != nil)
     }
 
-    func testThatLookupByBlogIDFailsForInvalidBlogID() throws {
-        XCTAssertNil(Blog.lookup(withID: NSNumber(integerLiteral: 1), in: mainContext))
+    @Test func lookupByBlogIDFailsForInvalidBlogID() {
+        #expect(Blog.lookup(withID: NSNumber(integerLiteral: 1), in: mainContext) == nil)
     }
 
-    func testThatLookupByBlogIDWorksForIntegerBlogID() throws {
+    @Test func lookupByBlogIDWorksForIntegerBlogID() throws {
         let blog = BlogBuilder(mainContext).build()
-        XCTAssertNotNil(blog.dotComID)
-        XCTAssertNotNil(try Blog.lookup(withID: blog.dotComID!.intValue, in: mainContext))
+        #expect(blog.dotComID != nil)
+        #expect(try Blog.lookup(withID: blog.dotComID!.intValue, in: mainContext) != nil)
     }
 
-    func testThatLookupByBlogIDFailsForInvalidIntegerBlogID() throws {
-        XCTAssertNil(try Blog.lookup(withID: 1, in: mainContext))
+    @Test func lookupByBlogIDFailsForInvalidIntegerBlogID() throws {
+        #expect(try Blog.lookup(withID: 1, in: mainContext) == nil)
     }
 
-    func testThatLookupBlogIDWorksForInt64BlogID() throws {
+    @Test func lookupBlogIDWorksForInt64BlogID() throws {
         let blog = BlogBuilder(mainContext).build()
-        XCTAssertNotNil(blog.dotComID)
-        XCTAssertNotNil(try Blog.lookup(withID: blog.dotComID!.int64Value, in: mainContext))
+        #expect(blog.dotComID != nil)
+        #expect(try Blog.lookup(withID: blog.dotComID!.int64Value, in: mainContext) != nil)
     }
 
-    func testThatLookupByBlogIDFailsForInvalidInt64BlogID() throws {
-        XCTAssertNil(try Blog.lookup(withID: Int64(1), in: mainContext))
+    @Test func lookupByBlogIDFailsForInvalidInt64BlogID() throws {
+        #expect(try Blog.lookup(withID: Int64(1), in: mainContext) == nil)
     }
 
-    // MARK: - Post lookup
-    func testThatLookupPostWorks() {
+    // MARK: - Post Lookup
+
+    @Test func lookupPostWorks() {
         let context = contextManager.newDerivedContext()
         let blog = BlogBuilder(context)
             .set(blogOption: "foo", value: "bar")
@@ -61,30 +68,31 @@ final class BlogTests: CoreDataTestCase {
         post.postID = NSNumber(value: Int64.max)
         contextManager.saveContextAndWait(context)
 
-        XCTAssertIdentical(blog.lookupPost(withID: post.postID!, in: mainContext)?.managedObjectContext, mainContext)
-        XCTAssertIdentical(blog.lookupPost(withID: post.postID!, in: context)?.managedObjectContext, context)
+        #expect(blog.lookupPost(withID: post.postID!, in: mainContext)?.managedObjectContext === mainContext)
+        #expect(blog.lookupPost(withID: post.postID!, in: context)?.managedObjectContext === context)
     }
 
     // MARK: - Plugin Management
-    func testThatPluginManagementIsDisabledForSimpleSites() {
+
+    @Test func pluginManagementIsDisabledForSimpleSites() {
         let blog = BlogBuilder(mainContext)
             .with(atomic: true)
             .build()
 
-        XCTAssertFalse(blog.supports(.pluginManagement))
+        #expect(!blog.supports(.pluginManagement))
     }
 
-    func testThatPluginManagementIsEnabledForBusinessPlans() {
+    @Test func pluginManagementIsEnabledForBusinessPlans() {
         let blog = BlogBuilder(mainContext)
             .with(isHostedAtWPCom: true)
             .with(planID: 1008) // Business plan
             .with(isAdmin: true)
             .build()
 
-        XCTAssertTrue(blog.supports(.pluginManagement))
+        #expect(blog.supports(.pluginManagement))
     }
 
-    func testThatPluginManagementIsDisabledForPrivateSites() {
+    @Test func pluginManagementIsDisabledForPrivateSites() {
         let blog = BlogBuilder(mainContext)
             .with(isHostedAtWPCom: true)
             .with(planID: 1008) // Business plan
@@ -92,11 +100,11 @@ final class BlogTests: CoreDataTestCase {
             .with(siteVisibility: .private)
             .build()
 
-        XCTAssertTrue(blog.supports(.pluginManagement))
+        #expect(blog.supports(.pluginManagement))
     }
 
     // FIXME: Crashes because WPAccount fixture sets username and triggers BuildSettings access
-//    func testThatPluginManagementIsEnabledForJetpack() {
+//    @Test func pluginManagementIsEnabledForJetpack() {
 //        let blog = BlogBuilder(mainContext)
 //            .withAnAccount()
 //            .withJetpack(version: "5.6", username: "test_user", email: "user@example.com")
@@ -104,10 +112,10 @@ final class BlogTests: CoreDataTestCase {
 //            .with(isAdmin: true)
 //            .build()
 //
-//        XCTAssertTrue(blog.supports(.pluginManagement))
+//        #expect(blog.supports(.pluginManagement))
 //    }
 
-    func testThatPluginManagementIsDisabledForWordPress54AndBelow() {
+    @Test func pluginManagementIsDisabledForWordPress54AndBelow() {
         let blog = BlogBuilder(mainContext)
             .with(wordPressVersion: "5.4")
             .with(username: "test_username")
@@ -115,10 +123,10 @@ final class BlogTests: CoreDataTestCase {
             .with(isAdmin: true)
             .build()
 
-        XCTAssertFalse(blog.supports(.pluginManagement))
+        #expect(!blog.supports(.pluginManagement))
     }
 
-    func testThatPluginManagementIsEnabledForWordPress55AndAbove() {
+    @Test func pluginManagementIsEnabledForWordPress55AndAbove() {
         let blog = BlogBuilder(mainContext)
             .with(wordPressVersion: "5.5")
             .with(username: "test_username")
@@ -126,11 +134,12 @@ final class BlogTests: CoreDataTestCase {
             .with(isAdmin: true)
             .build()
 
-        XCTExpectFailure("Fails because it gets a nil WordPressOrgRestApi instance", strict: true)
-        XCTAssertTrue(blog.supports(.pluginManagement))
+        withKnownIssue("Fails because it gets a nil WordPressOrgRestApi instance") {
+            #expect(blog.supports(.pluginManagement))
+        }
     }
 
-    func testThatPluginManagementIsDisabledForNonAdmins() {
+    @Test func pluginManagementIsDisabledForNonAdmins() {
         let blog = BlogBuilder(mainContext)
             .with(wordPressVersion: "5.5")
             .with(username: "test_username")
@@ -138,67 +147,69 @@ final class BlogTests: CoreDataTestCase {
             .with(isAdmin: false)
             .build()
 
-        XCTAssertFalse(blog.supports(.pluginManagement))
+        #expect(!blog.supports(.pluginManagement))
     }
 
-    func testStatsActiveForSitesHostedAtWPCom() {
+    // MARK: - Stats
+
+    @Test func statsActiveForSitesHostedAtWPCom() {
         let blog = BlogBuilder(mainContext)
             .isHostedAtWPcom()
             .with(modules: [""])
             .build()
 
-        XCTAssertTrue(blog.isStatsActive())
+        #expect(blog.isStatsActive())
     }
 
-    func testStatsActiveForSitesNotHotedAtWPCom() {
+    @Test func statsActiveForSitesNotHostedAtWPCom() {
         let blog = BlogBuilder(mainContext)
             .isNotHostedAtWPcom()
             .with(modules: ["stats"])
             .build()
 
-        XCTAssertTrue(blog.isStatsActive())
+        #expect(blog.isStatsActive())
     }
 
-    func testStatsNotActiveForSitesNotHotedAtWPCom() {
+    @Test func statsNotActiveForSitesNotHostedAtWPCom() {
         let blog = BlogBuilder(mainContext)
             .isNotHostedAtWPcom()
             .with(modules: [""])
             .build()
 
-        XCTAssertFalse(blog.isStatsActive())
+        #expect(!blog.isStatsActive())
     }
 
-    // MARK: - Blog.version string conversion testing
-    func testTheVersionIsAStringWhenGivenANumber() {
+    // MARK: - Blog.version String Conversion
+
+    @Test func versionIsAStringWhenGivenANumber() {
         let blog = BlogBuilder(mainContext)
             .set(blogOption: "software_version", value: 13.37)
             .build()
 
-        XCTAssertTrue((blog.version as Any) is String)
-        XCTAssertEqual(blog.version, "13.37")
+        #expect((blog.version as Any) is String)
+        #expect(blog.version == "13.37")
     }
 
-    func testTheVersionIsAStringWhenGivenAString() {
+    @Test func versionIsAStringWhenGivenAString() {
         let blog = BlogBuilder(mainContext)
             .set(blogOption: "software_version", value: "5.5")
             .build()
 
-        XCTAssertTrue((blog.version as Any) is String)
-        XCTAssertEqual(blog.version, "5.5")
+        #expect((blog.version as Any) is String)
+        #expect(blog.version == "5.5")
     }
 
-    func testTheVersionDefaultsToAnEmptyStringWhenTheValueIsNotConvertible() {
+    @Test func versionDefaultsToEmptyStringWhenValueIsNotConvertible() {
         let blog = BlogBuilder(mainContext)
             .set(blogOption: "software_version", value: NSObject())
             .build()
 
-        XCTAssertTrue((blog.version as Any) is String)
-        XCTAssertEqual(blog.version, "")
+        #expect((blog.version as Any) is String)
+        #expect(blog.version == "")
     }
 
     // FIXME: Crashes because WPAccount fixture sets username and triggers BuildSettings access
-//    func testRemoveDuplicates() async throws {
-//        // Create an account with duplicated blogs
+//    @Test func removeDuplicates() async throws {
 //        let xmlrpc = "https://xmlrpc.test.wordpress.com"
 //        let account = try await contextManager.performAndSave { context in
 //            let account = WPAccount.fixture(context: context)
@@ -211,56 +222,50 @@ final class BlogTests: CoreDataTestCase {
 //            )
 //            return account
 //        }
-//        try XCTAssertEqual(mainContext.count(for: Blog.fetchRequest()), 10)
+//        #expect(try mainContext.count(for: Blog.fetchRequest()) == 10)
 //
 //        try await contextManager.performAndSave { context in
-//            let accountInContext = try XCTUnwrap(context.existingObject(with: account.objectID) as? WPAccount)
+//            let accountInContext = try #require(context.existingObject(with: account.objectID) as? WPAccount)
 //            let blog = Blog.lookup(xmlrpc: xmlrpc, andRemoveDuplicateBlogsOf: accountInContext, in: context)
-//            XCTAssertNotNil(blog)
+//            #expect(blog != nil)
 //        }
 //
-//        try XCTAssertEqual(mainContext.count(for: Blog.fetchRequest()), 1)
+//        #expect(try mainContext.count(for: Blog.fetchRequest()) == 1)
 //    }
 
-    // MARK: - Blog Feature Domains
+    // MARK: - Blog Feature: Domains
 
-    func testBlogSupportsDomainsHostedAtWPcom() {
+    @Test func blogSupportsDomainsHostedAtWPcom() {
         let blog = BlogBuilder(mainContext)
             .isHostedAtWPcom()
             .with(atomic: false)
             .with(isAdmin: true)
             .build()
 
-        let result = blog.supports(.domains)
-
-        XCTAssertTrue(result, "Domains should be supported for WPcom hosted blogs")
+        #expect(blog.supports(.domains), "Domains should be supported for WPcom hosted blogs")
     }
 
-    func testBlogSupportsDomainsAtomic() {
+    @Test func blogSupportsDomainsAtomic() {
         let blog = BlogBuilder(mainContext)
             .isNotHostedAtWPcom()
             .with(atomic: true)
             .with(isAdmin: true)
             .build()
 
-        let result = blog.supports(.domains)
-
-        XCTAssertTrue(result, "Domains should be supported for Atomic blogs")
+        #expect(blog.supports(.domains), "Domains should be supported for Atomic blogs")
     }
 
-    func testShouldNotSupportDomainsNotAdmin() {
+    @Test func domainsNotSupportedForNonAdmin() {
         let blog = BlogBuilder(mainContext)
             .isHostedAtWPcom()
             .with(atomic: false)
             .with(isAdmin: false)
             .build()
 
-        let result = blog.supports(.domains)
-
-        XCTAssertFalse(result, "Domains should not be supported for non-admin users")
+        #expect(!blog.supports(.domains), "Domains should not be supported for non-admin users")
     }
 
-    func testShouldNotSupportDomainsForP2s() {
+    @Test func domainsNotSupportedForP2Sites() {
         let blog = BlogBuilder(mainContext)
             .isHostedAtWPcom()
             .with(atomic: false)
@@ -268,43 +273,42 @@ final class BlogTests: CoreDataTestCase {
             .with(isWPForTeamsSite: true)
             .build()
 
-        let result = blog.supports(.domains)
-
-        XCTAssertFalse(result, "Domains should not be supported when the site is P2 site")
+        #expect(!blog.supports(.domains), "Domains should not be supported when the site is P2 site")
     }
 
-    // Blog URL Parsing Tests
-    func testBlogUrlShouldBeParseableForBlogWithSimpleUrl() throws {
+    // MARK: - Blog URL Parsing
+
+    @Test func blogUrlParseableForSimpleUrl() throws {
         let blog = BlogBuilder(mainContext)
             .isHostedAtWPcom()
             .with(url: "http://example.com")
             .build()
 
-        XCTAssertEqual(try blog.wordPressClientParsedUrl().url(), "http://example.com/")
+        #expect(try blog.wordPressClientParsedUrl().url() == "http://example.com/")
     }
 
-    func testBlogUrlShouldBeParseableForBlogWithMappedDomain() throws {
+    @Test func blogUrlParseableForMappedDomain() throws {
         let blog = BlogBuilder(mainContext)
             .with(url: "http://example.com")
             .withMappedDomain(mappedDomainUrl: "http://example2.com")
             .build()
 
-        XCTAssertEqual(try blog.wordPressClientParsedUrl().url(), "http://example.com/")
+        #expect(try blog.wordPressClientParsedUrl().url() == "http://example.com/")
     }
 
-    func testDotComIdShouldBeJetpackSiteID() throws {
+    @Test func dotComIdShouldBeJetpackSiteID() throws {
         let blog = BlogBuilder(mainContext, dotComID: nil)
             .set(blogOption: "jetpack_client_id", value: "123")
             .build()
-        XCTAssertEqual(blog.jetpack?.siteID?.int64Value, 123)
+        #expect(blog.jetpack?.siteID?.int64Value == 123)
 
-        try XCTAssertNil(Blog.lookup(withID: 123, in: mainContext))
+        #expect(try Blog.lookup(withID: 123, in: mainContext) == nil)
         try mainContext.save()
 
-        try XCTAssertNotNil(Blog.lookup(withID: 123, in: mainContext))
+        #expect(try Blog.lookup(withID: 123, in: mainContext) != nil)
 
         contextManager.performAndSave { context in
-            try? XCTAssertNotNil(Blog.lookup(withID: 123, in: context))
+            #expect((try? Blog.lookup(withID: 123, in: context)) != nil)
         }
     }
 }
