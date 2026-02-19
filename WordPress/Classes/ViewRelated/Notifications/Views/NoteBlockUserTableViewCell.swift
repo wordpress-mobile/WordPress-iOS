@@ -62,6 +62,14 @@ class NoteBlockUserTableViewCell: NoteBlockTableViewCell {
     }
 
     // MARK: - View Methods
+
+    override func prepareForReuse() {
+        super.prepareForReuse()
+        gravatarURL = nil
+        gravatarImageView.cancelImageDownload()
+        gravatarImageView.image = nil
+    }
+
     override func awakeFromNib() {
         super.awakeFromNib()
 

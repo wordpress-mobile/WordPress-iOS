@@ -4,6 +4,7 @@ import WordPressCore
 import WordPressData
 import WordPressAPI
 import WordPressAPIInternal
+import WordPressShared
 import WordPressUI
 
 struct CustomPostTypesView: View {
@@ -106,6 +107,8 @@ struct CustomPostTypesView: View {
         return NavigationLink {
             if let wpService = service.wpService {
                 CustomPostTabView(client: service.client, service: wpService, endpoint: details.toPostEndpointType(), details: details, blog: blog)
+            } else {
+                let _ = wpAssertionFailure("Expected wpService to be available")
             }
         } label: {
             HStack {

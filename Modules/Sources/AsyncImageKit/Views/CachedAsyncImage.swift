@@ -137,6 +137,7 @@ public struct CachedAsyncImage<Content>: View where Content: View {
             if let image = imageDownloader.cachedImage(for: url) {
                 phase = .success(Image(uiImage: image))
             } else {
+                phase = .empty
                 let image = try await imageDownloader.image(for: request)
                 phase = .success(Image(uiImage: image))
             }

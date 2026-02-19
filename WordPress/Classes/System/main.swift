@@ -5,7 +5,7 @@ import UIKit
 let isRunningTests = NSClassFromString("XCTestCase") != nil
 let appDelegateClass = isRunningTests ? NSStringFromClass(TestingAppDelegate.self) : NSStringFromClass(WordPressAppDelegate.self)
 
-// The secrets _must_ be configured before the app launches.
+// The secrets MUST be configured before the app launches.
 //
 // This is because `BuildSettings` are not propagated through the app via chain injection but accessed via a `static` `current` property for convenience.
 // Also for convenience, we assume the secrets not to be nil at runtime, to avoid unwrapping values that we know must be there.

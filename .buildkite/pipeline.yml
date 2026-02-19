@@ -61,7 +61,13 @@ steps:
       - label: "🔬 :wordpress: Unit Tests"
         command: ".buildkite/commands/run-unit-tests.sh"
         depends_on: "build_wordpress"
-        plugins: [$CI_TOOLKIT_PLUGIN]
+        plugins:
+          - $CI_TOOLKIT_PLUGIN
+          - ${TEST_COLLECTOR}:
+              files: build/results/report.junit
+              format: junit
+              missing-error: 0
+              api-token-env-name: BUILDKITE_ANALYTICS_TOKEN_UNIT_TESTS
         artifact_paths:
           - "build/results/*"
         notify:
@@ -102,7 +108,13 @@ steps:
       - label: "🔬 :jetpack: UI Tests (iPhone)"
         command: .buildkite/commands/run-ui-tests.sh 'iPhone 17'
         depends_on: "build_jetpack"
-        plugins: [$CI_TOOLKIT_PLUGIN]
+        plugins:
+          - $CI_TOOLKIT_PLUGIN
+          - ${TEST_COLLECTOR}:
+              files: build/results/report.junit
+              format: junit
+              missing-error: 0
+              api-token-env-name: BUILDKITE_ANALYTICS_TOKEN_UI_TESTS_IPHONE
         artifact_paths:
           - "build/results/*"
           - "build/results/crashes/*"
@@ -114,7 +126,13 @@ steps:
       - label: "🔬 :jetpack: UI Tests (iPad)"
         command: .buildkite/commands/run-ui-tests.sh 'iPad (A16)'
         depends_on: "build_jetpack"
-        plugins: [$CI_TOOLKIT_PLUGIN]
+        plugins:
+          - $CI_TOOLKIT_PLUGIN
+          - ${TEST_COLLECTOR}:
+              files: build/results/report.junit
+              format: junit
+              missing-error: 0
+              api-token-env-name: BUILDKITE_ANALYTICS_TOKEN_UI_TESTS_IPAD
         artifact_paths:
           - "build/results/*"
           - "build/results/crashes/*"
