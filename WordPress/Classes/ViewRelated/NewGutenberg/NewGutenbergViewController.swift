@@ -575,7 +575,7 @@ extension NewGutenbergViewController {
             })
         }
 
-        let settingsTitle = self.post is Page ? Strings.pageSettings : Strings.postSettings
+        let settingsTitle = self.post is Page ? Strings.pageSettings : PostEditorStrings.postSettings
         actions.append(UIAction(title: settingsTitle, image: UIImage(systemName: "gearshape")) { [weak self] _ in
             self?.displayPostSettings()
         })
@@ -603,7 +603,6 @@ extension NewGutenbergViewController {
         static let richTitle = NSLocalizedString("Switch to Visual Mode", comment: "Switches the Editor to Rich Text Mode")
         static let previewTitle = NSLocalizedString("Preview", comment: "Displays the Post Preview Interface")
         static let historyTitle = NSLocalizedString("History", comment: "Displays the History screen from the editor's alert sheet")
-        static let postSettingsTitle = NSLocalizedString("Post Settings", comment: "Name of the button to open the post settings")
         static let pageSettingsTitle = NSLocalizedString("Page Settings", comment: "Name of the button to open the page settings")
         static let keepEditingTitle = NSLocalizedString("Keep Editing", comment: "Goes back to editing the post.")
         static let accessibilityIdentifier = "MoreSheetAccessibilityIdentifier"
@@ -616,7 +615,6 @@ private enum Strings {
     static let preview = NSLocalizedString("postEditor.moreMenu.preview", value: "Preview", comment: "Post Editor / Button in the 'More' menu")
     static let revisions = NSLocalizedString("postEditor.moreMenu.revisions", value: "Revisions", comment: "Post Editor / Button in the 'More' menu")
     static let pageSettings = NSLocalizedString("postEditor.moreMenu.pageSettings", value: "Page Settings", comment: "Post Editor / Button in the 'More' menu")
-    static let postSettings = NSLocalizedString("postEditor.moreMenu.postSettings", value: "Post Settings", comment: "Post Editor / Button in the 'More' menu")
     static let saveDraft = NSLocalizedString("postEditor.moreMenu.saveDraft", value: "Save Draft", comment: "Post Editor / Button in the 'More' menu")
     static let contentStructure = NSLocalizedString("postEditor.moreMenu.contentStructure", value: "Blocks: %li, Words: %li, Characters: %li", comment: "Post Editor / 'More' menu details labels with 'Blocks', 'Words' and 'Characters' counts as parameters (in that order)")
 }

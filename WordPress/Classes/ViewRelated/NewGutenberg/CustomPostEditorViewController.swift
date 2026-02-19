@@ -121,7 +121,7 @@ private extension CustomPostEditorViewController {
     }
 
     func rightBarButtonItems() -> [UIBarButtonItem] {
-        var children: [UIMenuElement] = [editorModeToggle(), helpAction(), feedbackAction()]
+        var children: [UIMenuElement] = [editorModeToggle(), settingsAction(), helpAction(), feedbackAction()]
         if post.status == .draft {
             let menu = UIDeferredMenuElement.uncached { [weak self] resolve in
                 Task {
@@ -164,6 +164,31 @@ private extension CustomPostEditorViewController {
                 }
             }
         }
+    }
+
+    func settingsAction() -> UIAction {
+        UIAction(
+            title: PostEditorStrings.postSettings,
+            image: UIImage(systemName: "gearshape")
+        ) { [weak self] _ in
+            self?.showPostSettings()
+        }
+    }
+
+    func showPostSettings() {
+        let viewModel = PostSettingsViewModel(
+            post: post,
+            details: details,
+            blog: blog,
+            client: client
+        )
+        viewModel.onEditorPostSaved = { [weak self, weak viewModel] in
+            guard let self, let updatedPost = viewModel?.remotePost else { return }
+            self.post = updatedPost
+        }
+        let settingsVC = PostSettingsViewController(viewModel: viewModel)
+        let navigation = UINavigationController(rootViewController: settingsVC)
+        present(navigation, animated: true)
     }
 
     private func separator() -> UIBarButtonItem {
