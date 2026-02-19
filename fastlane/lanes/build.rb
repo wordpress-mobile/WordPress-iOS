@@ -52,7 +52,7 @@ platform :ios do
   # Runs tests locally without CI prerequisites (env files, signing, etc.)
   #
   # @option [String] scheme The scheme to test (default: WordPress)
-  # @option [String] device The Simulator device name (default: iPhone 16)
+  # @option [String] device The Simulator device name
   # @option [String] ios_version The deployment target version
   # @option [String] only_testing Specific test target/class/method (e.g. WordPressUnitTests/MyClass/testFoo)
   # @option [Boolean] clean Whether to clean before building (default: false for incremental builds)
@@ -67,7 +67,7 @@ platform :ios do
   #   bundle exec fastlane test clean:true
   #
   desc 'Run tests locally'
-  lane :test do |scheme: 'WordPress', device: 'iPhone 16', ios_version: nil, only_testing: nil, clean: false|
+  lane :test do |scheme: 'WordPress', device: 'iPhone 17', ios_version: nil, only_testing: nil, clean: false|
     run_tests(
       workspace: WORKSPACE_PATH,
       scheme: scheme,
