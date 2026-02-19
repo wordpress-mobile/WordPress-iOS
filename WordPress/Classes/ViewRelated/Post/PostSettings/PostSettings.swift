@@ -1,4 +1,5 @@
 import Foundation
+import WordPressAPIInternal
 import WordPressData
 import WordPressKit
 import WordPressShared
@@ -73,6 +74,48 @@ struct PostSettings: Hashable {
         default:
             wpAssertionFailure("unsupported post type", userInfo: ["post_type": String(describing: type(of: post))])
         }
+    }
+
+    /// Creates PostSettings from an AnyPostWithEditContext (REST API) instance.
+    init(from post: AnyPostWithEditContext) {
+        excerpt = post.excerpt?.raw ?? ""
+        slug = post.slug
+        status = BasePost.Status(post.status)
+        // For drafts that haven't been explicitly scheduled, treat as "publish immediately"
+        if status == .draft || status == .pending {
+            publishDate = nil
+        } else {
+            publishDate = post.dateGmt
+        }
+        password = post.password
+
+        if let authorId = post.author {
+            // FIXME: author name is not returned in the REST API.
+            // But We should be able to fetch the author name before showing the Post Settings.
+            author = Author(id: Int(authorId), displayName: "–", avatarURL: nil)
+        }
+
+        featuredImageID = post.featuredMedia.map { Int($0) }
+        // FIXME: Resolve custom taxonomy term names from term IDs returned by the REST API
+        otherTerms = [:]
+
+        // FIXME: Post metadata is not supported yet. Require wordpress-rs changes.
+        metadata = PostMetadata(from: .init())
+
+        postFormat = post.format.map { $0.id }
+        isStickyPost = post.sticky ?? false
+        // FIXME: Resolve tag names from term IDs returned by the REST API
+        tags = ""
+        categoryIDs = Set((post.categories ?? []).map { Int($0) })
+        allowComments = post.commentStatus == .open
+        allowPings = post.pingStatus == .open
+
+        // TODO: The Post Settings UI currently only supports Pages
+        // The parent post is available in `post.parent`
+        parentPageID = nil //
+
+        // Social sharing (Publicize) is not available for REST API posts
+        sharing = nil
     }
 
     // MARK: - Applying Changes
@@ -236,6 +279,59 @@ extension PostSettings {
 
     mutating func setTerms(_ terms: String, forTaxonomySlug taxonomySlug: String) {
         otherTerms[taxonomySlug] = AbstractPost.makeTags(from: terms)
+    }
+}
+
+// MARK: - PostFormat Slug
+
+extension PostFormat {
+    // TODO: Export from wordpress-rs
+    var id: String {
+        switch self {
+        case .standard: return "standard"
+        case .aside: return "aside"
+        case .chat: return "chat"
+        case .gallery: return "gallery"
+        case .link: return "link"
+        case .image: return "image"
+        case .quote: return "quote"
+        case .status: return "status"
+        case .video: return "video"
+        case .audio: return "audio"
+        case .custom(let value): return value
+        }
+    }
+}
+
+// MARK: - Status Mapping
+
+extension BasePost.Status {
+    init(_ status: PostStatus) {
+        switch status {
+        case .publish: self = .publish
+        case .draft: self = .draft
+        case .pending: self = .pending
+        case .private: self = .publishPrivate
+        case .future: self = .scheduled
+        case .trash: self = .trash
+        case .custom:
+            wpAssertionFailure("unexpected custom post status")
+            self = .draft
+        }
+    }
+}
+
+extension PostStatus {
+    init(_ status: BasePost.Status) {
+        switch status {
+        case .publish: self = .publish
+        case .draft: self = .draft
+        case .pending: self = .pending
+        case .publishPrivate: self = .private
+        case .scheduled: self = .future
+        case .trash: self = .trash
+        case .deleted: self = .trash
+        }
     }
 }
 
