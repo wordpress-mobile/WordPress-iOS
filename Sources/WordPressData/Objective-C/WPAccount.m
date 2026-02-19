@@ -1,13 +1,6 @@
-@import SFHFKeychainUtils;
 #import "WPAccount.h"
 #import "WordPressData-Swift.h"
 @import WordPressKit;
-
-@interface WPAccount ()
-
-@property (nonatomic, strong, readwrite) NSString *cachedToken;
-
-@end
 
 @implementation WPAccount
 
@@ -75,49 +68,6 @@
     }
 }
 
-- (NSString *)authToken
-{
-    if (self.cachedToken != nil) {
-        return self.cachedToken;
-    }
-
-    NSString *token = [WPAccount tokenForUsername:self.username];
-    self.cachedToken = token;
-    return token;
-}
-
-- (void)setAuthToken:(NSString *)authToken
-{
-    self.cachedToken = nil;
-
-    if (authToken) {
-        NSError *error = nil;
-        [SFHFKeychainUtils storeUsername:self.username
-                             andPassword:authToken
-                          forServiceName:[WPAccount authKeychainServiceName]
-                             accessGroup:nil
-                          updateExisting:YES
-                                   error:&error];
-
-        if (error) {
-            DDLogError(@"Error while updating WordPressComOAuthKeychainServiceName token: %@", error);
-        }
-
-    } else {
-        NSError *error = nil;
-        [SFHFKeychainUtils deleteItemForUsername:self.username
-                                  andServiceName:[WPAccount authKeychainServiceName]
-                                     accessGroup:nil
-                                           error:&error];
-        if (error) {
-            DDLogError(@"Error while deleting WordPressComOAuthKeychainServiceName token: %@", error);
-        }
-    }
-
-    // Make sure to release any RestAPI alloc'ed, since it might have an invalid token
-    _private_wordPressComRestApi = nil;
-}
-
 - (BOOL)hasAtomicSite {
     for (Blog *blog in self.blogs) {
         if ([blog isAtomic]) {
@@ -125,40 +75,6 @@
         }
     }
     return NO;
-}
-
-#pragma mark - Static methods
-
-+ (NSString *)tokenForUsername:(NSString *)username isJetpack:(BOOL)isJetpack error:(NSError **)outError
-{
-    if (isJetpack) {
-        [WPAccount migrateAuthKeyForUsername:username];
-    }
-
-    NSError *error = nil;
-    NSString *authToken = [SFHFKeychainUtils getPasswordForUsername:username
-                                                     andServiceName:[WPAccount authKeychainServiceName]
-                                                        accessGroup:nil
-                                                              error:&error];
-    if (error) {
-        DDLogError(@"Error while retrieving WordPressComOAuthKeychainServiceName token: %@", error);
-
-        if (outError) {
-            *outError = error;
-        }
-        return nil;
-    }
-
-    return authToken;
-}
-
-+ (void)migrateAuthKeyForUsername:(NSString *)username
-{
-    static dispatch_once_t onceToken;
-    dispatch_once(&onceToken, ^{
-        SharedDataIssueSolver *sharedDataIssueSolver = [SharedDataIssueSolver instance];
-        [sharedDataIssueSolver migrateAuthKeyFor:username];
-    });
 }
 
 @end

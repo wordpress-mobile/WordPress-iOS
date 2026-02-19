@@ -34,11 +34,6 @@ NS_ASSUME_NONNULL_BEGIN
 @property (nonatomic, strong, nullable)   Blog        *defaultBlog;
 @property (nonatomic, strong, nullable)   ManagedAccountSettings *settings;
 
-/**
- The OAuth2 auth token for WordPress.com accounts
- */
-@property (nonatomic, copy, nullable) NSString *authToken;
-
 ///------------------
 /// @name API Helpers
 ///------------------
@@ -50,6 +45,8 @@ NS_ASSUME_NONNULL_BEGIN
 /// It's reserved for Objective-C to Swift interoperability in the context of separating this model from the app target and will be removed at some point.
 @property (nonatomic, strong, nullable) WordPressComRestApi *_private_wordPressComRestApi;
 
+@property (nonatomic, copy, nullable) NSString *cachedToken;
+
 @end
 
 @interface WPAccount (CoreDataGeneratedAccessors)
@@ -58,7 +55,6 @@ NS_ASSUME_NONNULL_BEGIN
 - (void)removeBlogsObject:(Blog *)value;
 - (void)addBlogs:(NSSet *)values;
 - (void)removeBlogs:(NSSet *)values;
-+ (NSString * _Nullable)tokenForUsername:(NSString *)username isJetpack:(BOOL)isJetpack error:(NSError ** _Nullable)error;
 - (BOOL)hasAtomicSite;
 
 @end
