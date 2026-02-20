@@ -208,26 +208,18 @@ typedef NS_ENUM(NSInteger, SiteVisibility) {
 // Readonly Properties
 @property (nonatomic, strong, readonly, nullable) WordPressOrgXMLRPCApi *xmlrpcApi;
 @property (nonatomic, strong, readonly, nullable) WordPressOrgRestApi *selfHostedSiteRestApi;
-@property (nonatomic, weak, readonly, nullable) NSString *version;
-@property (nonatomic, strong, readonly, nullable) NSString *authToken;
-@property (nonatomic, strong, readonly, nullable) NSSet *allowedFileTypes;
 
 // http://wp.koke.me/sub
 @property (nonatomic, strong, nullable) NSString *url;
 
-// Used to check if the blog has an icon set up
-@property (readonly) BOOL hasIcon;
-
 #pragma mark - Blog information
 
-- (nullable NSArray *)sortedCategories;
 - (nullable id)getOptionValue:(NSString *) name;
 - (void)setValue:(id)value forOption:(NSString *)name;
 - (BOOL)supports:(BlogFeature)feature;
 - (BOOL)supportsPublicize;
 - (BOOL)supportsShareButtons;
 - (BOOL)isStatsActive;
-- (BOOL)hasMappedDomain;
 
 /**
  Returns a human readable description for logging

@@ -37,7 +37,7 @@ extension HomeSiteHeaderViewController {
                 handler: { [weak self] _ in self?.showEmojiPicker() }
             ))
         }
-        if blog.hasIcon {
+        if blog.iconURL != nil {
             actions.append(UIAction(
                 title: SiteIconAlertStrings.Actions.removeSiteIcon,
                 image: UIImage(systemName: "trash"),

@@ -19,7 +19,7 @@ extension EditorConfiguration {
 
         let siteId = blog.dotComID?.stringValue
         let siteDomain = blog.primaryDomainAddress
-        let authToken = blog.authToken ?? ""
+        let authToken = blog.account?.authToken ?? ""
         var authHeader = "Bearer \(authToken)"
 
         if let appPassword = applicationPassword, let username = blog.username {

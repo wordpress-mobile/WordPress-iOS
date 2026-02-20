@@ -745,7 +745,7 @@ class AbstractPostListViewController: UIViewController,
         } else {
             // Use legacy stats view
             SiteStatsInformation.sharedInstance.siteTimeZone = blog.timeZone
-            SiteStatsInformation.sharedInstance.oauth2Token = blog.authToken
+            SiteStatsInformation.sharedInstance.oauth2Token = blog.account?.authToken
             SiteStatsInformation.sharedInstance.siteID = blog.dotComID
 
             guard let postURL = post.permaLink.flatMap(URL.init) else {

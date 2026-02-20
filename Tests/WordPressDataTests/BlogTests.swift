@@ -617,6 +617,110 @@ struct BlogTests {
         #expect(!blog.isPrivate)
     }
 
+    // MARK: - hasMappedDomain
+
+    @Test func hasMappedDomainReturnsFalseForNonWPCom() {
+        let blog = BlogBuilder(mainContext)
+            .isNotHostedAtWPcom()
+            .withMappedDomain()
+            .build()
+
+        #expect(!blog.hasMappedDomain)
+    }
+
+    @Test func hasMappedDomainReturnsTrueWhenHostsDiffer() {
+        let blog = BlogBuilder(mainContext)
+            .isHostedAtWPcom()
+            .withMappedDomain(originalUrl: "http://original.wordpress.com", mappedDomainUrl: "http://custom.example.com")
+            .build()
+
+        #expect(blog.hasMappedDomain)
+    }
+
+    @Test func hasMappedDomainReturnsFalseWhenHostsMatch() {
+        let blog = BlogBuilder(mainContext)
+            .isHostedAtWPcom()
+            .withoutMappedDomain(url: "http://example.wordpress.com")
+            .build()
+
+        #expect(!blog.hasMappedDomain)
+    }
+
+    // MARK: - iconURL
+
+    @Test func iconURLReturnsNilForNilIcon() {
+        let blog = BlogBuilder(mainContext).build()
+        blog.icon = nil
+
+        #expect(blog.iconURL == nil)
+    }
+
+    @Test func iconURLReturnsNilForEmptyIcon() {
+        let blog = BlogBuilder(mainContext).build()
+        blog.icon = ""
+
+        #expect(blog.iconURL == nil)
+    }
+
+    @Test func iconURLReturnsURLForValidIcon() {
+        let blog = BlogBuilder(mainContext).build()
+        blog.icon = "http://example.com/icon.png"
+
+        #expect(blog.iconURL == URL(string: "http://example.com/icon.png"))
+    }
+
+    // MARK: - sortedCategories
+
+    @Test func sortedCategoriesReturnsSortedByCategoryName() {
+        let blog = BlogBuilder(mainContext).build()
+
+        let catC = NSEntityDescription.insertNewObject(forEntityName: "Category", into: mainContext) as! PostCategory
+        catC.categoryName = "Cooking"
+        catC.blog = blog
+
+        let catA = NSEntityDescription.insertNewObject(forEntityName: "Category", into: mainContext) as! PostCategory
+        catA.categoryName = "Apple"
+        catA.blog = blog
+
+        let catB = NSEntityDescription.insertNewObject(forEntityName: "Category", into: mainContext) as! PostCategory
+        catB.categoryName = "banana"
+        catB.blog = blog
+
+        blog.categories = Set([catC, catA, catB])
+
+        #expect(blog.sortedCategories.map(\.categoryName) == ["Apple", "banana", "Cooking"])
+    }
+
+    @Test func sortedCategoriesReturnsEmptyForNoCategories() {
+        let blog = BlogBuilder(mainContext).build()
+
+        #expect(blog.sortedCategories.isEmpty)
+    }
+
+    // MARK: - allowedFileTypes
+
+    @Test func allowedFileTypesReturnsSetFromOptions() {
+        let blog = BlogBuilder(mainContext)
+            .set(blogOption: "allowed_file_types", value: ["jpg", "png", "gif"])
+            .build()
+
+        #expect(blog.allowedFileTypes == Set(["jpg", "png", "gif"]))
+    }
+
+    @Test func allowedFileTypesReturnsEmptyWhenMissing() {
+        let blog = BlogBuilder(mainContext).build()
+
+        #expect(blog.allowedFileTypes.isEmpty)
+    }
+
+    @Test func allowedFileTypesReturnsEmptyForEmptyArray() {
+        let blog = BlogBuilder(mainContext)
+            .set(blogOption: "allowed_file_types", value: [String]())
+            .build()
+
+        #expect(blog.allowedFileTypes.isEmpty)
+    }
+
     // MARK: - Blog URL Parsing
 
     @Test func blogUrlParseableForSimpleUrl() throws {
