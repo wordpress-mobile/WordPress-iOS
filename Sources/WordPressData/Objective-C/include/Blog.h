@@ -165,7 +165,6 @@ typedef NS_ENUM(NSInteger, SiteVisibility) {
 @property (nonatomic, assign, readwrite) BOOL isHostedAtWPcom;
 @property (nonatomic, assign, readwrite) BOOL hasDomainCredit;
 @property (nonatomic, strong, readwrite, nullable) NSString *icon;
-@property (nonatomic, assign, readwrite) SiteVisibility siteVisibility;
 @property (nonatomic, strong, readwrite, nullable) NSNumber *planID;
 @property (nonatomic, strong, readwrite, nullable) NSString *planTitle;
 @property (nonatomic, strong, readwrite, nullable) NSArray<NSString *> *planActiveFeatures;
@@ -219,31 +218,17 @@ typedef NS_ENUM(NSInteger, SiteVisibility) {
 // Used to check if the blog has an icon set up
 @property (readonly) BOOL hasIcon;
 
-/** Determine timezone for blog from blog options.  If no timezone information is stored on the device, then assume GMT+0 is the default. */
-@property (readonly, nullable) NSTimeZone *timeZone;
-
 #pragma mark - Blog information
 
-- (BOOL)isPrivate;
-- (BOOL)isPrivateAtWPCom;
 - (nullable NSArray *)sortedCategories;
 - (nullable id)getOptionValue:(NSString *) name;
 - (void)setValue:(id)value forOption:(NSString *)name;
-- (NSDictionary *) getImageResizeDimensions;
 - (BOOL)supports:(BlogFeature)feature;
 - (BOOL)supportsPublicize;
 - (BOOL)supportsShareButtons;
 - (BOOL)isStatsActive;
 - (BOOL)hasMappedDomain;
 
-/**
- *  Returnst the text description for a post format code
- *
- *  @param postFormatCode of the post format you want to display
- *
- *  @return a string with the post format description and if no description was found the postFormatCode sent.
- */
-- (nullable NSString *)postFormatTextFromSlug:(nullable NSString *)postFormatSlug;
 /**
  Returns a human readable description for logging
  

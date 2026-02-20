@@ -91,4 +91,66 @@ extension Blog {
         }
         return URL(string: base + (path ?? ""))
     }
+
+    // MARK: - Time Zone
+
+    /// The blog's time zone derived from blog options.
+    ///
+    /// Resolution order: `timezone` (name) → `gmt_offset` → `time_zone` (XML-RPC offset) → GMT.
+    @objc public var timeZone: TimeZone? {
+        let oneHourInSeconds: Double = 3600
+        if let name = getOptionString(name: "timezone"), !name.isEmpty,
+           let timeZone = TimeZone(identifier: name) {
+            return timeZone
+        }
+        if let gmtOffset = getOptionValue("gmt_offset") as? NSNumber,
+           let timeZone = TimeZone(secondsFromGMT: Int(gmtOffset.doubleValue * oneHourInSeconds)) {
+            return timeZone
+        }
+        if let value = getOptionValue("time_zone") {
+            let seconds = Int((value as AnyObject).doubleValue * oneHourInSeconds)
+            if let timeZone = TimeZone(secondsFromGMT: seconds) {
+                return timeZone
+            }
+        }
+        return .gmt
+    }
+
+    // MARK: - Post Formats
+
+    /// Returns the display name for a post format slug.
+    ///
+    /// Falls back to the "standard" format name when the slug is nil, empty,
+    /// or not found in the blog's post formats.
+    public func postFormatText(fromSlug slug: String?) -> String? {
+        let allFormats = postFormats as? [String: String]
+        var result = slug
+        if let slug, let name = allFormats?[slug] {
+            result = name
+        }
+        if (result ?? "").isEmpty, let standard = allFormats?[PostFormatStandard] {
+            result = standard
+        }
+        return result
+    }
+
+    // MARK: - Privacy / Visibility
+
+    /// Whether the blog is private.
+    @objc public var isPrivate: Bool {
+        siteVisibility == .private
+    }
+
+    @objc public var siteVisibility: SiteVisibility {
+        get {
+            guard let rawValue = settings?.privacy?.intValue,
+                  let visibility = SiteVisibility(rawValue: rawValue) else {
+                return .unknown
+            }
+            return visibility
+        }
+        set {
+            settings?.privacy = NSNumber(value: newValue.rawValue)
+        }
+    }
 }

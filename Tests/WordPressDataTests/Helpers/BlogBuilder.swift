@@ -86,6 +86,9 @@ class BlogBuilder {
     }
 
     func with(siteVisibility: SiteVisibility) -> Self {
+        if blog.settings == nil {
+            blog.settings = BlogSettings.newSettings(in: context)
+        }
         blog.siteVisibility = siteVisibility
 
         return self

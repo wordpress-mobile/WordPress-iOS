@@ -459,7 +459,7 @@ extension NewGutenbergViewController/*: GutenbergBridgeDataSource*/ {
 //                .canEnableUnsupportedBlockEditor: false,
 //                .isAudioBlockMediaUploadEnabled: !isFreeWPCom,
 //                .reusableBlock: false,
-//                .shouldUseFastImage: !post.blog.isPrivate(),
+//                .shouldUseFastImage: !post.blog.isPrivate,
 //                .facebookEmbed: false,
 //                .instagramEmbed: false,
 //                .loomEmbed: false,
@@ -484,7 +484,7 @@ extension NewGutenbergViewController/*: GutenbergBridgeDataSource*/ {
 //            // Only enable reusable block in WP.com sites until the issue
 //            // (https://github.com/wordpress-mobile/gutenberg-mobile/issues/3457) in self-hosted sites is fixed
 //            .reusableBlock: isWPComSite,
-//            .shouldUseFastImage: !post.blog.isPrivate(),
+//            .shouldUseFastImage: !post.blog.isPrivate,
 //            // Jetpack embeds
 //            .facebookEmbed: post.blog.supports(.facebookEmbed),
 //            .instagramEmbed: post.blog.supports(.instagramEmbed),

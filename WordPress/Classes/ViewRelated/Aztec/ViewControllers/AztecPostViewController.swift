@@ -2534,7 +2534,7 @@ extension AztecPostViewController {
            let videoPressID = videoSrcURL.host {
             // It's videoPress video so let's fetch the information for the video
             let remote = try? MediaServiceRemoteFactory().remote(for: self.post.blog)
-            remote?.getMetadataFromVideoPressID(videoPressID, isSitePrivate: self.post.blog.isPrivate(), success: { metadata in
+            remote?.getMetadataFromVideoPressID(videoPressID, isSitePrivate: self.post.blog.isPrivate, success: { metadata in
                 if let metadata, let originalURL = metadata.originalURL {
                     videoAttachment.updateURL(metadata.getURLWithToken(url: originalURL) ?? originalURL)
                 }
@@ -2720,7 +2720,7 @@ extension AztecPostViewController {
             return
         }
 
-        remote.getMetadataFromVideoPressID(videoPressID, isSitePrivate: self.post.blog.isPrivate(), success: { [weak self] (metadata) in
+        remote.getMetadataFromVideoPressID(videoPressID, isSitePrivate: self.post.blog.isPrivate, success: { [weak self] (metadata) in
             guard let `self` = self else {
                 return
             }

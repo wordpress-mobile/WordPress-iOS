@@ -39,6 +39,8 @@ extension Blog {
         (getOption(name: name) as NSString?).map(String.init)
     }
 
+    /// - warning: DO NOT USE. This doesn't work for negative values, e.g. "-11"
+    /// and potentially other scenarios.
     func getOptionNumeric(name: String) -> NSNumber? {
         switch getOptionValue(name) {
         case let numericValue as NSNumber:

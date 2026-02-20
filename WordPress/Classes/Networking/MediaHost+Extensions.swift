@@ -14,7 +14,7 @@ extension MediaHost {
     init(_ blog: Blog) {
         self.init(
             isAccessibleThroughWPCom: blog.isAccessibleThroughWPCom(),
-            isPrivate: blog.isPrivate(),
+            isPrivate: blog.isPrivate,
             isAtomic: blog.isAtomic,
             siteID: blog.dotComID?.intValue,
             username: blog.effectiveUsername,

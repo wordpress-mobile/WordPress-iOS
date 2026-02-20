@@ -139,7 +139,7 @@ class EditorMediaUtility {
         let requestURL: URL
         if url.isFileURL {
             requestURL = url
-        } else if post.blog.isPrivateAtWPCom() && url.isHostedAtWPCom {
+        } else if post.blog.isHostedAtWPcom && post.blog.isPrivate && url.isHostedAtWPCom {
             // private wpcom image needs special handling.
             // the size that WPImageHelper expects is pixel size
             size.width = size.width * scale
@@ -195,7 +195,7 @@ class EditorMediaUtility {
         }
 
         let remote = try? MediaServiceRemoteFactory().remote(for: post.blog)
-        remote?.getMetadataFromVideoPressID(videoPressID, isSitePrivate: post.blog.isPrivate(), success: { metadata in
+        remote?.getMetadataFromVideoPressID(videoPressID, isSitePrivate: post.blog.isPrivate, success: { metadata in
             completion(.success(metadata!))
         }, failure: { error in
             DDLogError("Unable to find metadata for VideoPress video with ID = \(videoPressID). Details: \(error!.localizedDescription)")

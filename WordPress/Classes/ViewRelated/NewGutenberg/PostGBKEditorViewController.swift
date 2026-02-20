@@ -206,7 +206,7 @@ private extension PostGBKEditorViewController {
     }
 
     func loadAuthenticationCookiesAsync() async -> Bool {
-        guard blog.isPrivate() else {
+        guard blog.isPrivate else {
             return true
         }
 
