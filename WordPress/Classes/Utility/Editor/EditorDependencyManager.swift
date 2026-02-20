@@ -181,6 +181,13 @@ final class EditorDependencyManager: Sendable {
     }
 
     private func _invalidate(for blogID: TaggedManagedObjectID<Blog>) async {
+        // Reset warmup tracking so the next warmUpEditor call re-runs WebKit warmup
+        lastWarmedUpBlogID.withLock { currentID in
+            if currentID == blogID.rawValue {
+                currentID = nil
+            }
+        }
+
         let keysToInvalidate = self.state.withLock { state in
             let keys = state.cache.keys.filter { $0.blogID == blogID }
 
