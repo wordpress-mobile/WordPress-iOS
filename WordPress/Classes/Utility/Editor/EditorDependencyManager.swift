@@ -1,4 +1,3 @@
-import CoreData
 import Foundation
 import GutenbergKit
 import os
@@ -37,10 +36,9 @@ final class EditorDependencyManager: Sendable {
         var invalidationTasks: [TaggedManagedObjectID<Blog>: Task<Void, Never>] = [:]
         var capabilityTasks: [TaggedManagedObjectID<Blog>: Task<Void, Never>] = [:]
         var featureFlagObserver: AnyCancellable?
+        /// Tracks the last blog for which WebKit warmup was performed.
+        var lastWarmedUpBlogID: TaggedManagedObjectID<Blog>?
     }
-
-    /// Tracks the last blog for which WebKit warmup was performed.
-    private let lastWarmedUpBlogID = LockingValue<NSManagedObjectID?>(nil)
 
     private struct CacheKey: Hashable, Sendable {
         let blogID: TaggedManagedObjectID<Blog>
@@ -181,14 +179,12 @@ final class EditorDependencyManager: Sendable {
     }
 
     private func _invalidate(for blogID: TaggedManagedObjectID<Blog>) async {
-        // Reset warmup tracking so the next warmUpEditor call re-runs WebKit warmup
-        lastWarmedUpBlogID.withLock { currentID in
-            if currentID == blogID.rawValue {
-                currentID = nil
-            }
-        }
-
         let keysToInvalidate = self.state.withLock { state in
+            // Reset warmup tracking so the next warmUpEditor call re-runs WebKit warmup
+            if state.lastWarmedUpBlogID == blogID {
+                state.lastWarmedUpBlogID = nil
+            }
+
             let keys = state.cache.keys.filter { $0.blogID == blogID }
 
             for key in keys {
@@ -245,10 +241,10 @@ final class EditorDependencyManager: Sendable {
         }
 
         // WebKit warmup - only needed once per blog
-        let blogID = blog.objectID
-        let needsWarmup = lastWarmedUpBlogID.withLock { currentID in
-            if blogID != currentID {
-                currentID = blogID
+        let blogID = TaggedManagedObjectID(blog)
+        let needsWarmup = state.withLock { state in
+            if blogID != state.lastWarmedUpBlogID {
+                state.lastWarmedUpBlogID = blogID
                 return true
             }
             return false
