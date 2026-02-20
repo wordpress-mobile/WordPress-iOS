@@ -69,6 +69,24 @@ final class CustomPostListViewModel: ObservableObject {
         }
     }
 
+    func loadCachedItems() async {
+        guard let collection else { return }
+
+        let listInfo = collection.listInfo()
+
+        do {
+            let items = try await collection.loadItems().map(CustomPostCollectionItem.init)
+            if self.listInfo != listInfo {
+                self.listInfo = listInfo
+            }
+            if self.items != items {
+                self.items = items
+            }
+        } catch {
+            DDLogError("Failed to load cached items: \(error)")
+        }
+    }
+
     func handleDataChanges() async {
         let updates = await client.cache.databaseUpdatesPublisher()
             .debounce(for: .milliseconds(50), scheduler: DispatchQueue.main)
