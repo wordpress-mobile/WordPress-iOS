@@ -425,7 +425,7 @@ final class PostSettingsViewModel: NSObject, ObservableObject {
         RemoteFeatureFlag.jetpackSocialImprovements.enabled() &&
         post.status != .publishPrivate &&
         !getPublicizeServices().isEmpty &&
-        post.blog.supportsPublicize()
+        post.blog.supports(.publicize)
     }
 
     private func getPublicizeServices() -> [PublicizeService] {

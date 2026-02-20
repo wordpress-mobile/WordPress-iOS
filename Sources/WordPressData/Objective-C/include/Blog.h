@@ -115,6 +115,10 @@ typedef NS_ENUM(NSUInteger, BlogFeature) {
     BlogFeaturePages,
     /// Does the blog support Site Monitoring?
     BlogFeatureSiteMonitoring,
+    /// Does the blog support Publicize?
+    BlogFeaturePublicize,
+    /// Does the blog support share buttons?
+    BlogFeatureShareButtons,
 };
 
 typedef NS_ENUM(NSInteger, SiteVisibility) {
@@ -217,8 +221,6 @@ typedef NS_ENUM(NSInteger, SiteVisibility) {
 - (nullable id)getOptionValue:(NSString *) name;
 - (void)setValue:(id)value forOption:(NSString *)name;
 - (BOOL)supports:(BlogFeature)feature;
-- (BOOL)supportsPublicize;
-- (BOOL)supportsShareButtons;
 - (BOOL)isStatsActive;
 
 /**

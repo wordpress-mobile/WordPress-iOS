@@ -287,12 +287,16 @@ NSString * const OptionsKeyPublicizeDisabled = @"publicize_permanently_disabled"
             return [self isListingPagesAllowed];
         case BlogFeatureSiteMonitoring:
             return [self isAdmin] && [self isAtomic];
+        case BlogFeaturePublicize:
+            return [self supportsPublicize];
+        case BlogFeatureShareButtons:
+            return [self supportsShareButtons];
     }
 }
 
 -(BOOL)supportsSharing
 {
-    return [self supportsPublicize] || [self supportsShareButtons];
+    return [self supports:BlogFeaturePublicize] || [self supports:BlogFeatureShareButtons];
 }
 
 - (BOOL)supportsPublicize

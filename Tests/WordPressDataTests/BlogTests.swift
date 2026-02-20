@@ -233,6 +233,126 @@ struct BlogTests {
 //        #expect(try mainContext.count(for: Blog.fetchRequest()) == 1)
 //    }
 
+    // MARK: - Blog Feature: Publicize
+
+    @Test func publicizeNotSupportedWithoutRestAPI() {
+        let blog = BlogBuilder(mainContext).build()
+
+        #expect(!blog.supports(.publicize))
+    }
+
+    @Test func publicizeNotSupportedForNonWPComWithoutAccount() {
+        let blog = BlogBuilder(mainContext)
+            .isNotHostedAtWPcom()
+            .build()
+
+        #expect(!blog.supports(.publicize))
+    }
+
+    // FIXME: Crashes because WPAccount fixture sets username and triggers BuildSettings access
+//    @Test func publicizeNotSupportedWithoutPublishCapability() {
+//        let blog = BlogBuilder(mainContext)
+//            .withAnAccount()
+//            .isHostedAtWPcom()
+//            .build()
+//
+//        #expect(!blog.supports(.publicize))
+//    }
+//
+//    @Test func publicizeSupportedForWPCom() {
+//        let blog = BlogBuilder(mainContext)
+//            .withAnAccount()
+//            .isHostedAtWPcom()
+//            .with(capabilities: [.PublishPosts])
+//            .build()
+//
+//        #expect(blog.supports(.publicize))
+//    }
+//
+//    @Test func publicizeDisabledWhenPermanentlyDisabledForWPCom() {
+//        let blog = BlogBuilder(mainContext)
+//            .withAnAccount()
+//            .isHostedAtWPcom()
+//            .with(capabilities: [.PublishPosts])
+//            .set(blogOption: "publicize_permanently_disabled", value: true)
+//            .build()
+//
+//        #expect(!blog.supports(.publicize))
+//    }
+//
+//    @Test func publicizeSupportedForJetpackWithModule() {
+//        let blog = BlogBuilder(mainContext)
+//            .withAnAccount()
+//            .isNotHostedAtWPcom()
+//            .with(capabilities: [.PublishPosts])
+//            .with(modules: ["publicize"])
+//            .build()
+//
+//        #expect(blog.supports(.publicize))
+//    }
+//
+//    @Test func publicizeNotSupportedForJetpackWithoutModule() {
+//        let blog = BlogBuilder(mainContext)
+//            .withAnAccount()
+//            .isNotHostedAtWPcom()
+//            .with(capabilities: [.PublishPosts])
+//            .with(modules: ["stats"])
+//            .build()
+//
+//        #expect(!blog.supports(.publicize))
+//    }
+
+    // MARK: - Blog Feature: Share Buttons
+
+    @Test func shareButtonsNotSupportedWithoutRestAPI() {
+        let blog = BlogBuilder(mainContext)
+            .with(isAdmin: true)
+            .build()
+
+        #expect(!blog.supports(.shareButtons))
+    }
+
+    @Test func shareButtonsNotSupportedForNonAdmin() {
+        let blog = BlogBuilder(mainContext)
+            .with(isAdmin: false)
+            .build()
+
+        #expect(!blog.supports(.shareButtons))
+    }
+
+    // FIXME: Crashes because WPAccount fixture sets username and triggers BuildSettings access
+//    @Test func shareButtonsSupportedForWPComAdmin() {
+//        let blog = BlogBuilder(mainContext)
+//            .withAnAccount()
+//            .isHostedAtWPcom()
+//            .with(isAdmin: true)
+//            .build()
+//
+//        #expect(blog.supports(.shareButtons))
+//    }
+//
+//    @Test func shareButtonsSupportedForJetpackWithModule() {
+//        let blog = BlogBuilder(mainContext)
+//            .withAnAccount()
+//            .isNotHostedAtWPcom()
+//            .with(isAdmin: true)
+//            .with(modules: ["sharedaddy"])
+//            .build()
+//
+//        #expect(blog.supports(.shareButtons))
+//    }
+//
+//    @Test func shareButtonsNotSupportedForJetpackWithoutModule() {
+//        let blog = BlogBuilder(mainContext)
+//            .withAnAccount()
+//            .isNotHostedAtWPcom()
+//            .with(isAdmin: true)
+//            .with(modules: ["stats"])
+//            .build()
+//
+//        #expect(!blog.supports(.shareButtons))
+//    }
+
     // MARK: - Blog Feature: Domains
 
     @Test func blogSupportsDomainsHostedAtWPcom() {
