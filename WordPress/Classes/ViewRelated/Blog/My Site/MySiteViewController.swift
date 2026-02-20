@@ -413,7 +413,9 @@ final class MySiteViewController: UIViewController, UIScrollViewDelegate, NoSite
         // Refresh editor capabilities and invalidate editor cache
         if RemoteFeatureFlag.newGutenberg.enabled() {
             EditorDependencyManager.shared.fetchEditorCapabilities(for: blog)
-            EditorDependencyManager.shared.invalidate(for: blog) {}
+            Task {
+                await EditorDependencyManager.shared.invalidate(for: TaggedManagedObjectID(blog))
+            }
         }
 
         switch currentSection {
