@@ -480,20 +480,28 @@ struct BlogTests {
         #expect(blog.timeZone == TimeZone(identifier: "America/Chicago"))
     }
 
-    @Test func timeZoneUsesGMTOffsetOption() {
+    @Test(arguments: [
+        (-5, -5 * 3600),
+        (5.5, 5 * 3600 + 1800),
+    ] as [(Double, Int)])
+    func timeZoneUsesGMTOffsetOption(offset: Double, expectedSeconds: Int) {
         let blog = BlogBuilder(mainContext)
-            .set(blogOption: "gmt_offset", value: -5)
+            .set(blogOption: "gmt_offset", value: offset)
             .build()
 
-        #expect(blog.timeZone == TimeZone(secondsFromGMT: -5 * 3600))
+        #expect(blog.timeZone == TimeZone(secondsFromGMT: expectedSeconds))
     }
 
-    @Test func timeZoneUsesXMLRPCTimeZoneOption() {
+    @Test(arguments: [
+        ("-11", -11 * 3600),
+        ("5.5", 5 * 3600 + 1800),
+    ] as [(String, Int)])
+    func timeZoneUsesXMLRPCTimeZoneOption(value: String, expectedSeconds: Int) {
         let blog = BlogBuilder(mainContext)
-            .set(blogOption: "time_zone", value: "-11")
+            .set(blogOption: "time_zone", value: value)
             .build()
 
-        #expect(blog.timeZone == TimeZone(secondsFromGMT: -11 * 3600))
+        #expect(blog.timeZone == TimeZone(secondsFromGMT: expectedSeconds))
     }
 
     @Test func timeZonePrefersNameOverGMTOffset() {
