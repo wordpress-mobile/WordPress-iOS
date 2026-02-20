@@ -27,9 +27,6 @@ NSString * const ActiveModulesKeyPublicize = @"publicize";
 NSString * const ActiveModulesKeySharingButtons = @"sharedaddy";
 NSString * const OptionsKeyActiveModules = @"active_modules";
 NSString * const OptionsKeyPublicizeDisabled = @"publicize_permanently_disabled";
-NSString * const OptionsKeyIsAutomatedTransfer = @"is_automated_transfer";
-NSString * const OptionsKeyIsAtomic = @"is_wpcom_atomic";
-NSString * const OptionsKeyIsWPForTeams = @"is_wpforteams_site";
 
 @interface Blog ()
 
@@ -159,24 +156,6 @@ NSString * const OptionsKeyIsWPForTeams = @"is_wpforteams_site";
     } else {
         return organizationID;
     }
-}
-
-- (BOOL)isAtomic
-{
-    NSNumber *value = (NSNumber *)[self getOptionValue:OptionsKeyIsAtomic];
-    return [value boolValue];
-}
-
-- (BOOL)isWPForTeams
-{
-    NSNumber *value = (NSNumber *)[self getOptionValue:OptionsKeyIsWPForTeams];
-    return [value boolValue];
-}
-
-- (BOOL)isAutomatedTransfer
-{
-    NSNumber *value = (NSNumber *)[self getOptionValue:OptionsKeyIsAutomatedTransfer];
-    return [value boolValue];
 }
 
 // Used as a key to store passwords, if you change the algorithm, logins will break
@@ -475,33 +454,6 @@ NSString * const OptionsKeyIsWPForTeams = @"is_wpforteams_site";
 - (NSString *)authToken
 {
     return self.account.authToken;
-}
-
-- (NSString *)usernameForSite
-{
-    if (self.username) {
-        return self.username;
-    } else if (self.account && self.isAccessibleThroughWPCom) {
-        return self.account.username;
-    } else {
-        // FIXME: Figure out how to get the self hosted username when using Jetpack REST (@koke 2015-06-15)
-        return nil;
-    }
-}
-
-- (BOOL)canBlaze
-{
-    return [[self getOptionValue:@"can_blaze"] boolValue] && self.isAdmin;
-}
-
-- (BOOL)supportsFeaturedImages
-{
-    id hasSupport = [self getOptionValue:@"post_thumbnail"];
-    if (hasSupport) {
-        return [hasSupport boolValue];
-    }
-
-    return NO;
 }
 
 - (BOOL)supports:(BlogFeature)feature

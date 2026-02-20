@@ -15,9 +15,9 @@ extension MediaHost {
         self.init(
             isAccessibleThroughWPCom: blog.isAccessibleThroughWPCom(),
             isPrivate: blog.isPrivate(),
-            isAtomic: blog.isAtomic(),
+            isAtomic: blog.isAtomic,
             siteID: blog.dotComID?.intValue,
-            username: blog.usernameForSite,
+            username: blog.effectiveUsername,
             authToken: blog.authToken,
             failure: { error in
                 WordPressAppDelegate.crashLogging?.logError(error)

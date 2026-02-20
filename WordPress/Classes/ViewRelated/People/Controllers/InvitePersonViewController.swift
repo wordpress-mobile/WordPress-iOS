@@ -182,7 +182,7 @@ class InvitePersonViewController: UITableViewController {
         // Use the system separator color rather than the one defined by WPStyleGuide
         // so cell separators stand out in darkmode.
         tableView.separatorColor = .separator
-        if blog.isWPForTeams() {
+        if blog.isWPForTeams {
             syncInviteLinks()
         }
     }
@@ -197,12 +197,12 @@ class InvitePersonViewController: UITableViewController {
     override func numberOfSections(in tableView: UITableView) -> Int {
         // Hide the last section if the site is not a p2.
         let count = super.numberOfSections(in: tableView)
-        return blog.isWPForTeams() ? count : count - 1
+        return blog.isWPForTeams ? count : count - 1
     }
 
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         guard
-            blog.isWPForTeams(),
+            blog.isWPForTeams,
             section == numberOfSections(in: tableView) - 1
         else {
             // If not a P2 or not the last section, just call super.

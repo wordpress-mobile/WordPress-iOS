@@ -20,7 +20,7 @@
 
     public var supportsCoreRESTAPI: Bool {
         if isHostedAtWPcom {
-            return isAtomic()
+            return isAtomic
         }
         return true
     }

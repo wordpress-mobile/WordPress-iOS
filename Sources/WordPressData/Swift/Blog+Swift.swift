@@ -12,4 +12,18 @@ extension Blog {
     public func supportsBlockEditorSettings() -> Bool {
         return hasRequiredWordPressVersion("5.8")
     }
+
+    /// Returns the username to use for this site.
+    ///
+    /// For self-hosted sites, returns the stored `username`. For WordPress.com
+    /// or Jetpack-connected sites, returns the account's username.
+    @objc public var effectiveUsername: String? {
+        if let username {
+            return username
+        } else if let account, isAccessibleThroughWPCom() {
+            return account.username
+        } else {
+            return nil
+        }
+    }
 }

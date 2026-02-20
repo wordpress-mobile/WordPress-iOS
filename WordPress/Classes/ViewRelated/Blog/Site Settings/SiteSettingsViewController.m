@@ -98,7 +98,7 @@ NS_ENUM(NSInteger, SiteSettingsJetpack) {
     self = [super initWithStyle:UITableViewStyleInsetGrouped];
     if (self) {
         _blog = blog;
-        _username = blog.usernameForSite;
+        _username = blog.effectiveUsername;
         _password = blog.password;
         [WPStyleGuide configureAutomaticHeightRowsFor:self.tableView];
     }
@@ -318,8 +318,8 @@ NS_ENUM(NSInteger, SiteSettingsJetpack) {
 {
     switch (row) {
         case SiteSettingsAccountUsername:
-            if (self.blog.usernameForSite) {
-                [self.usernameTextCell setTextValue:self.blog.usernameForSite];
+            if (self.blog.effectiveUsername) {
+                [self.usernameTextCell setTextValue:self.blog.effectiveUsername];
             } else {
                 [self.usernameTextCell setTextValue:NSLocalizedString(@"Enter username", @"(placeholder) Help enter WordPress username")];
             }

@@ -200,7 +200,7 @@ typedef NS_ENUM(NSInteger, SiteVisibility) {
 /**
  *  @details    Stores the username for self hosted sites
  *
- *  @warn       For WordPress.com or Jetpack Managed sites this will be nil. Use usernameForSite instead
+ *  @warn       For WordPress.com or Jetpack Managed sites this will be nil. Use effectiveUsername instead
  */
 @property (nonatomic, strong, readwrite, nullable) NSString *username;
 @property (nonatomic, strong, readwrite, nullable) NSString *password;
@@ -212,8 +212,6 @@ typedef NS_ENUM(NSInteger, SiteVisibility) {
 @property (nonatomic, weak, readonly, nullable) NSString *version;
 @property (nonatomic, strong, readonly, nullable) NSString *authToken;
 @property (nonatomic, strong, readonly, nullable) NSSet *allowedFileTypes;
-@property (nonatomic, copy, readonly, nullable) NSString *usernameForSite;
-@property (nonatomic, assign, readonly) BOOL canBlaze;
 
 /**
  *  @details    URL properties (example: http://wp.koke.me/sub/xmlrpc.php)
@@ -240,9 +238,6 @@ typedef NS_ENUM(NSInteger, SiteVisibility) {
 
 #pragma mark - Blog information
 
-- (BOOL)isAtomic;
-- (BOOL)isWPForTeams;
-- (BOOL)isAutomatedTransfer;
 - (BOOL)isPrivate;
 - (BOOL)isPrivateAtWPCom;
 - (nullable NSArray *)sortedCategories;
@@ -252,7 +247,6 @@ typedef NS_ENUM(NSInteger, SiteVisibility) {
 - (nullable NSString *)urlWithPath:(NSString *)path;
 - (NSString *)adminUrlWithPath:(NSString *)path;
 - (NSDictionary *) getImageResizeDimensions;
-- (BOOL)supportsFeaturedImages;
 - (BOOL)supports:(BlogFeature)feature;
 - (BOOL)supportsPublicize;
 - (BOOL)supportsShareButtons;

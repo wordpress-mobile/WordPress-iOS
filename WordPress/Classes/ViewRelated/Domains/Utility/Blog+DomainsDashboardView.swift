@@ -25,7 +25,7 @@ extension Blog {
     }
 
     var canRegisterDomainWithPaidPlan: Bool {
-        (isHostedAtWPcom || isAtomic()) && hasDomainCredit
+        (isHostedAtWPcom || isAtomic) && hasDomainCredit
     }
 
     var freeDomain: Domain? {

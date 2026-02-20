@@ -618,7 +618,7 @@ private extension BlogDetailsTableViewModel {
             rows.append(Row.stats(viewController: viewController))
         }
 
-        if blog.supports(.activity) && !blog.isWPForTeams() {
+        if blog.supports(.activity) && !blog.isWPForTeams {
             rows.append(Row.activityLog(viewController: viewController))
         }
 
@@ -654,7 +654,7 @@ private extension BlogDetailsTableViewModel {
             rows.append(Row.stats(viewController: viewController))
         }
 
-        if blog.supports(.activity) && !blog.isWPForTeams() {
+        if blog.supports(.activity) && !blog.isWPForTeams {
             rows.append(Row.activity(viewController: viewController))
         }
 
@@ -692,7 +692,7 @@ private extension BlogDetailsTableViewModel {
     func buildPersonalizeSection() -> Section {
         var rows: [Row] = []
 
-        if blog.supports(.themeBrowsing) && !blog.isWPForTeams() {
+        if blog.supports(.themeBrowsing) && !blog.isWPForTeams {
             rows.append(Row.themes(viewController: viewController))
         }
 
@@ -804,7 +804,7 @@ private extension BlogDetailsTableViewModel {
         var thirdSectionRows: [Row] = []
 
         // First section: Activity, Backup, Scan, Site Monitoring
-        if blog.supports(.activity) && !blog.isWPForTeams() {
+        if blog.supports(.activity) && !blog.isWPForTeams {
             firstSectionRows.append(Row.activityLog(viewController: viewController))
         }
 
@@ -833,7 +833,7 @@ private extension BlogDetailsTableViewModel {
             secondSectionRows.append(Row.plugins(viewController: viewController))
         }
 
-        if blog.supports(.themeBrowsing) && !blog.isWPForTeams() {
+        if blog.supports(.themeBrowsing) && !blog.isWPForTeams {
             secondSectionRows.append(Row.themes(viewController: viewController))
         }
 

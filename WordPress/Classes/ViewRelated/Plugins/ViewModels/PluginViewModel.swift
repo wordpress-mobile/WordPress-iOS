@@ -312,7 +312,7 @@ class PluginViewModel: Observable {
 
         guard let autoUpdatePlugin = plugin,
             let siteCapabilities = capabilities,
-            BlogService.blog(with: site)?.isAutomatedTransfer() == false,
+            BlogService.blog(with: site)?.isAutomatedTransfer == false,
             siteCapabilities.autoupdate,
             !autoUpdatePlugin.state.automanaged else { return nil }
 

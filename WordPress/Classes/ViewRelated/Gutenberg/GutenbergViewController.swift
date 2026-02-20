@@ -1123,7 +1123,7 @@ extension GutenbergViewController: GutenbergBridgeDataSource {
 
     func gutenbergCapabilities() -> [Capabilities: Bool] {
         let isFreeWPCom = post.blog.isHostedAtWPcom && !post.blog.hasPaidPlan
-        let isWPComSite = post.blog.isHostedAtWPcom || post.blog.isAtomic()
+        let isWPComSite = post.blog.isHostedAtWPcom || post.blog.isAtomic
 
         // Disable Jetpack-powered editor features in WordPress app based on Features Removal coordination
         if !JetpackFeaturesRemovalCoordinator.jetpackFeaturesEnabled() {

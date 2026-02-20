@@ -11,7 +11,7 @@ final class BlogTests: CoreDataTestCase {
             .with(atomic: true)
             .build()
 
-        XCTAssertTrue(blog.isAtomic())
+        XCTAssertTrue(blog.isAtomic)
     }
 
     func testIsNotAtomic() {
@@ -19,7 +19,7 @@ final class BlogTests: CoreDataTestCase {
             .with(atomic: false)
             .build()
 
-        XCTAssertFalse(blog.isAtomic())
+        XCTAssertFalse(blog.isAtomic)
     }
 
     // MARK: - Blog Lookup

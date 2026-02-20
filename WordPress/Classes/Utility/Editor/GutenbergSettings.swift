@@ -196,7 +196,7 @@ class GutenbergSettings {
     // MARK: - Gutenberg Choice Logic
 
     func isSimpleWPComSite(_ blog: Blog) -> Bool {
-        return !blog.isAtomic() && blog.isHostedAtWPcom
+        return !blog.isAtomic && blog.isHostedAtWPcom
     }
 
     /// Call this method to know if Gutenberg must be used for the specified post.

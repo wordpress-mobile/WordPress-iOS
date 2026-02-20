@@ -64,7 +64,7 @@ extension WPAppAnalytics {
     }
 
     private static func siteType(for blog: Blog) -> String {
-        blog.isWPForTeams() ? WPAppAnalyticsValueSiteTypeP2 : WPAppAnalyticsValueSiteTypeBlog
+        blog.isWPForTeams ? WPAppAnalyticsValueSiteTypeP2 : WPAppAnalyticsValueSiteTypeBlog
     }
 
     // MARK: WPAppAnalytics (AbstractPost)

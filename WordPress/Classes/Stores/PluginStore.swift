@@ -659,7 +659,7 @@ private extension PluginStore {
                 return plugin
             })
         }
-        if BlogService.blog(with: site)?.isAutomatedTransfer() == true {
+        if BlogService.blog(with: site)?.isAutomatedTransfer == true {
             plugins.plugins = plugins.plugins.map({ (plugin) in
                 var plugin = plugin
                 if ["akismet", "jetpack", "vaultpress"].contains(plugin.slug) {

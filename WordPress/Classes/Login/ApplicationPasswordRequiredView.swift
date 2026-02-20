@@ -24,7 +24,7 @@ struct ApplicationPasswordRequiredView<Content: View>: View {
 
     var body: some View {
         VStack {
-            if blog.isHostedAtWPcom && !blog.isAtomic() {
+            if blog.isHostedAtWPcom && !blog.isAtomic {
                 EmptyStateView(Strings.unsupported, systemImage: "exclamationmark.triangle.fill")
             } else if showLoading {
                 ProgressView()

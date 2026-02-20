@@ -14,7 +14,7 @@ struct BlogTests {
             .with(atomic: true)
             .build()
 
-        #expect(blog.isAtomic())
+        #expect(blog.isAtomic)
     }
 
     @Test func isNotAtomic() {
@@ -22,7 +22,7 @@ struct BlogTests {
             .with(atomic: false)
             .build()
 
-        #expect(!blog.isAtomic())
+        #expect(!blog.isAtomic)
     }
 
     // MARK: - Blog Lookup
@@ -311,4 +311,29 @@ struct BlogTests {
             #expect((try? Blog.lookup(withID: 123, in: context)) != nil)
         }
     }
+
+    // MARK: - Username For Site
+
+    @Test func effectiveUsernameReturnsBlogUsername() {
+        let blog = BlogBuilder(mainContext)
+            .with(username: "self_hosted_user")
+            .build()
+
+        #expect(blog.effectiveUsername == "self_hosted_user")
+    }
+
+    @Test func effectiveUsernameReturnsNilWithoutUsernameOrAccount() {
+        let blog = BlogBuilder(mainContext).build()
+
+        #expect(blog.effectiveUsername == nil)
+    }
+
+    // FIXME: Crashes because WPAccount fixture sets username and triggers BuildSettings access
+//    @Test func effectiveUsernameReturnsAccountUsername() {
+//        let blog = BlogBuilder(mainContext)
+//            .withAnAccount(username: "wpcom_user")
+//            .build()
+//
+//        #expect(blog.effectiveUsername == "wpcom_user")
+//    }
 }

@@ -50,7 +50,7 @@ class RequestAuthenticator: NSObject {
 
         if let blog, let dotComID = blog.dotComID as? Int {
 
-            if blog.isAtomic() {
+            if blog.isAtomic {
                 authenticationType = blog.isPrivate() ? .privateAtomic(blogID: dotComID) : .atomic(loginURL: blog.loginUrl())
             } else if blog.hasMappedDomain() {
                 authenticationType = .regularMapped(siteID: dotComID)
@@ -63,7 +63,7 @@ class RequestAuthenticator: NSObject {
     @objc convenience init?(blog: Blog) {
         if let account = blog.account {
             self.init(account: account, blog: blog)
-        } else if let username = blog.usernameForSite,
+        } else if let username = blog.effectiveUsername,
             let password = blog.password,
             let loginURL = URL(string: blog.loginUrl()) {
             self.init(credentials: .siteLogin(loginURL: loginURL, username: username, password: password))

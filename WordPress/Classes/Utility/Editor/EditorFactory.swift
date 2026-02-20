@@ -62,7 +62,7 @@ class EditorFactory {
         }
 
         // Application passwords do not support private Atomic sites currently
-        if blog.isAtomic() && blog.isPrivate() {
+        if blog.isAtomic && blog.isPrivate() {
             return false
         }
 
