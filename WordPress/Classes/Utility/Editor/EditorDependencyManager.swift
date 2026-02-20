@@ -196,11 +196,22 @@ final class EditorDependencyManager: Sendable {
             return keys
         }
 
+        // GutenbergKit's on-disk cache is site-scoped (keyed by hostname), so a
+        // single purge clears all cached assets regardless of post type. When
+        // keysToInvalidate is populated, we use those configurations. Otherwise,
+        // we still need to purge because opening the editor without an existing
+        // dependencies cache (the "slow path") creates on-disk caches that
+        // EditorDependencyManager doesn't track. We should consider exposing
+        // GutenbergKit's cache to access and/or track these slow-path caches.
+        let postTypes = keysToInvalidate.isEmpty
+            ? [PostTypeDetails.post]
+            : keysToInvalidate.map(\.postType)
+
         let configurations: [EditorConfiguration]
         do {
             configurations = try await ContextManager.shared.performQuery { context in
                 let blog = try context.existingObject(with: blogID)
-                return keysToInvalidate.map { EditorConfiguration(blog: blog, postType: $0.postType) }
+                return postTypes.map { EditorConfiguration(blog: blog, postType: $0) }
             }
         } catch {
             DDLogError("Failed to find blog for \(blogID): \(error)")
