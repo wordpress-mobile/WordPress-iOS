@@ -8,7 +8,7 @@ extension Blog {
     /// The title of the blog
     public var title: String? {
         guard let blogName = settings?.name, !blogName.isEmpty else {
-            return displayURL as String?
+            return displayURL
         }
         return blogName
     }

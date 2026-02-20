@@ -44,8 +44,8 @@ extension WordPressOrgRestApi {
             let credential: WordPressOrgRestApi.SelfHostedSiteCredential
             if let appPassword = try? blog.getApplicationToken() {
                 credential = .applicationPassword(username: username, password: .init(appPassword))
-            } else if let loginURL = URL(string: blog.loginUrl()),
-                      let adminURL = URL(string: blog.adminUrl(withPath: "")),
+            } else if let loginURL = blog.loginURL,
+                      let adminURL = blog.makeAdminURL(),
                       let password = blog.password {
                 credential = .accountPassword(loginURL: loginURL, username: username, password: .init(password), adminURL: adminURL)
             } else {

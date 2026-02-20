@@ -49,9 +49,8 @@ class RequestAuthenticator: NSObject {
         var authenticationType: DotComAuthenticationType = .regular
 
         if let blog, let dotComID = blog.dotComID as? Int {
-
             if blog.isAtomic {
-                authenticationType = blog.isPrivate() ? .privateAtomic(blogID: dotComID) : .atomic(loginURL: blog.loginUrl())
+                authenticationType = blog.isPrivate() ? .privateAtomic(blogID: dotComID) : .atomic(loginURL: blog.loginURL?.absoluteString ?? "")
             } else if blog.hasMappedDomain() {
                 authenticationType = .regularMapped(siteID: dotComID)
             }
@@ -65,7 +64,7 @@ class RequestAuthenticator: NSObject {
             self.init(account: account, blog: blog)
         } else if let username = blog.effectiveUsername,
             let password = blog.password,
-            let loginURL = URL(string: blog.loginUrl()) {
+            let loginURL = blog.loginURL {
             self.init(credentials: .siteLogin(loginURL: loginURL, username: username, password: password))
         } else {
             DDLogError("Can't authenticate blog \(String(describing: blog.displayURL)) yet")

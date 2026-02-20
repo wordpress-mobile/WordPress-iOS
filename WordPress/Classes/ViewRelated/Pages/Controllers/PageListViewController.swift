@@ -294,7 +294,7 @@ final class PageListViewController: AbstractPostListViewController {
         switch Section(rawValue: indexPath.section)! {
         case .templates:
             WPAnalytics.track(.pageListEditHomepageTapped)
-            guard let editorUrl = URL(string: blog.adminUrl(withPath: Constant.editorUrl)) else {
+            guard let editorUrl = blog.makeAdminURL(path: Constant.editorUrl) else {
                 return
             }
 

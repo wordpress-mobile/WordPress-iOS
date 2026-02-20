@@ -349,7 +349,7 @@ extension BlogDetailsViewController {
         if blog.isHostedAtWPcom, let hostname = blog.hostname {
             dashboardPath = "\(Constants.calypsoDashboardPath)\(hostname)"
         } else {
-            dashboardPath = blog.adminUrl(withPath: "")
+            dashboardPath = blog.makeAdminURL()?.absoluteString ?? ""
         }
 
         guard let url = URL(string: dashboardPath) else { return }

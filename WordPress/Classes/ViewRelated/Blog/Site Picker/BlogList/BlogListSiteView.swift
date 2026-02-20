@@ -73,7 +73,7 @@ final class BlogListSiteViewModel: Identifiable {
     init(blog: Blog) {
         self.blog = blog
         self.title = blog.title ?? "–"
-        self.domain = blog.displayURL as String? ?? ""
+        self.domain = blog.displayURL ?? ""
         self.icon = SiteIconViewModel(blog: blog)
 
         // By adding displayURL _after_ the title, it loweres its weight in search

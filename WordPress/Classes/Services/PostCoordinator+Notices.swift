@@ -9,7 +9,7 @@ extension PostCoordinator {
             if !title.isEmpty {
                 return title
             }
-            return post.blog.displayURL as String? ?? ""
+            return post.blog.displayURL ?? ""
         }
         let isPublished = post.status == .publish
         let isUpdated = post.status == previousStatus
@@ -33,7 +33,7 @@ extension PostCoordinator {
             return "“\(title)” \(status)"
         }
         var body: String {
-            post.blog.displayURL as String? ?? ""
+            post.blog.displayURL ?? ""
         }
         return NoticeNotificationInfo(
             identifier: UUID().uuidString,

@@ -6,7 +6,6 @@
 @import SFHFKeychainUtils;
 @import WordPressShared;
 @import NSObject_SafeExpectations;
-@import NSURL_IDN;
 @import WordPressKit;
 
 @class Comment;
@@ -156,99 +155,6 @@ NSString * const OptionsKeyPublicizeDisabled = @"publicize_permanently_disabled"
     } else {
         return organizationID;
     }
-}
-
-// Used as a key to store passwords, if you change the algorithm, logins will break
-- (NSString *)displayURL
-{
-    if (self.url == nil) {
-        DDLogInfo(@"Blog display URL is nil");
-        return nil;
-    }
-
-    NSError *error = nil;
-    NSRegularExpression *protocol = [NSRegularExpression regularExpressionWithPattern:@"http(s?)://" options:NSRegularExpressionCaseInsensitive error:&error];
-    NSString *result = [NSString stringWithFormat:@"%@", [protocol stringByReplacingMatchesInString:self.url options:0 range:NSMakeRange(0, [self.url length]) withTemplate:@""]];
-
-    if ([result hasSuffix:@"/"]) {
-        result = [result substringToIndex:[result length] - 1];
-    }
-
-    NSString *decodedResult = [NSURL IDNDecodedHostname:result];
-    NSAssert(decodedResult != nil, @"Decoded url shouldn't be nil");
-    if (decodedResult == nil) {
-        DDLogInfo(@"displayURL: decoded url is nil: %@", self.url);
-        return result;
-    }
-
-    return decodedResult;
-}
-
-- (NSString *)hostURL
-{
-    return [self displayURL];
-}
-
-- (NSString *)homeURL
-{
-    NSString *homeURL = [self getOptionValue:@"home_url"];
-    if (!homeURL) {
-        homeURL = self.url;
-    }
-    return homeURL;
-}
-
-- (NSString *)hostname
-{
-    NSString *hostname = [[NSURL URLWithString:self.xmlrpc] host];
-    if (hostname == nil) {
-        NSError *error = nil;
-        NSRegularExpression *protocol = [NSRegularExpression regularExpressionWithPattern:@"^.*://" options:NSRegularExpressionCaseInsensitive error:&error];
-        hostname = [protocol stringByReplacingMatchesInString:self.url options:0 range:NSMakeRange(0, [self.url length]) withTemplate:@""];
-    }
-
-    // NSURL seems to not recongnize some TLDs like .me and .it, which results in hostname returning a full path.
-    // This can break reachibility (among other things) for the blog.
-    // As a saftey net, make sure we drop any path component before returning the hostname.
-    NSArray *parts = [hostname componentsSeparatedByString:@"/"];
-    if (parts.count) {
-        hostname = [parts firstObject];
-    }
-
-    return hostname;
-}
-
-- (NSString *)loginUrl
-{
-    NSString *loginUrl = [self getOptionValue:@"login_url"];
-    if (!loginUrl) {
-        loginUrl = [self urlWithPath:@"wp-login.php"];
-    }
-    return loginUrl;
-}
-
-- (NSString *)urlWithPath:(NSString *)path
-{
-    if (!path || !self.xmlrpc) {
-        DDLogError(@"Blog: Error creating urlWithPath.");
-        return nil;
-    }
-
-    NSError *error = nil;
-    NSRegularExpression *xmlrpc = [NSRegularExpression regularExpressionWithPattern:@"xmlrpc.php$" options:NSRegularExpressionCaseInsensitive error:&error];
-    return [xmlrpc stringByReplacingMatchesInString:self.xmlrpc options:0 range:NSMakeRange(0, [self.xmlrpc length]) withTemplate:path];
-}
-
-- (NSString *)adminUrlWithPath:(NSString *)path
-{
-    NSString *adminBaseUrl = [self getOptionValue:@"admin_url"];
-    if (!adminBaseUrl) {
-        adminBaseUrl = [self urlWithPath:@"wp-admin/"];
-    }
-    if (![adminBaseUrl hasSuffix:@"/"]) {
-        adminBaseUrl = [adminBaseUrl stringByAppendingString:@"/"];
-    }
-    return [NSString stringWithFormat:@"%@%@", adminBaseUrl, path];
 }
 
 - (NSArray *)sortedCategories

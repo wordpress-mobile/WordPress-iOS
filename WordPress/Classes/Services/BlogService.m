@@ -388,7 +388,7 @@ NSString *const WPBlogSettingsUpdatedNotification = @"WPBlogSettingsUpdatedNotif
 
 - (void)removeBlog:(Blog *)blog
 {
-    DDLogInfo(@"<Blog:%@> remove", blog.hostURL);
+    DDLogInfo(@"<Blog:%@> remove", blog.displayURL);
     [blog.xmlrpcApi invalidateAndCancelTasks];
     [self unscheduleBloggingRemindersFor:blog];
 
@@ -576,7 +576,7 @@ NSString *const WPBlogSettingsUpdatedNotification = @"WPBlogSettingsUpdatedNotif
     }] firstObject];
 
     if (jetpackBlog) {
-        DDLogInfo(@"Migrating %@ to wp.com account %@", [jetpackBlog hostURL], account.username);
+        DDLogInfo(@"Migrating %@ to wp.com account %@", [jetpackBlog displayURL], account.username);
         jetpackBlog.account = account;
     }
 

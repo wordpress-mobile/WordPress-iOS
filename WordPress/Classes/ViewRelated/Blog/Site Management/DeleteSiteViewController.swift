@@ -76,7 +76,7 @@ open class DeleteSiteViewController: UITableViewController {
         warningImage.tintColor = UIAppColor.warning
         siteTitleLabel.textColor = UIAppColor.neutral(.shade70)
         siteTitleLabel.font = WPStyleGuide.fontForTextStyle(.footnote, fontWeight: .semibold)
-        siteTitleLabel.text = blog.displayURL as String?
+        siteTitleLabel.text = blog.displayURL
         siteTitleSubText.textColor = UIAppColor.neutral(.shade70)
         siteTitleSubText.text = NSLocalizedString("will be unavailable in the future.",
                                                   comment: "Second part of delete screen title stating [the site] will be unavailable in the future.")
@@ -191,7 +191,7 @@ open class DeleteSiteViewController: UITableViewController {
     /// - Returns: UIAlertController
     ///
     fileprivate func confirmDeleteController() -> UIAlertController? {
-        guard let value = blog.displayURL as String? else {
+        guard let value = blog.displayURL else {
             return nil
         }
 

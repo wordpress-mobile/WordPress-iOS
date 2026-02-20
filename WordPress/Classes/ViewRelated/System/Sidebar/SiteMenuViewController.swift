@@ -42,7 +42,7 @@ final class SiteMenuViewController: UIViewController {
 
         blogDetailsVC.showInitialDetailsForBlog()
 
-        navigationItem.title = blog.settings?.name ?? (blog.displayURL as String?) ?? ""
+        navigationItem.title = blog.settings?.name ?? (blog.displayURL) ?? ""
 
     }
 

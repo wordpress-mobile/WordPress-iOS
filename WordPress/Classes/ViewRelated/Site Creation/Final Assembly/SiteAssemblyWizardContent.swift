@@ -119,7 +119,7 @@ final class SiteAssemblyWizardContent: UIViewController {
                 }
 
                 self.contentView.siteURLString = blog?.url as String?
-                self.contentView.siteName = blog?.displayURL as String?
+                self.contentView.siteName = blog?.displayURL
                 self.createdBlog = blog
 
                 // This stat is part of a funnel that provides critical information.  Before

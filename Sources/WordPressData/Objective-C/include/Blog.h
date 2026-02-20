@@ -213,22 +213,8 @@ typedef NS_ENUM(NSInteger, SiteVisibility) {
 @property (nonatomic, strong, readonly, nullable) NSString *authToken;
 @property (nonatomic, strong, readonly, nullable) NSSet *allowedFileTypes;
 
-/**
- *  @details    URL properties (example: http://wp.koke.me/sub/xmlrpc.php)
- */
-
-// User to display the blog url to the user (IDN decoded, no http:)
-// wp.koke.me/sub
-@property (weak, readonly, nullable) NSString *displayURL;
-// alias of displayURL
-// kept for compatibilty, used as a key to store passwords
-@property (weak, readonly, nullable) NSString *hostURL;
-@property (weak, readonly, nullable) NSString *homeURL;
 // http://wp.koke.me/sub
 @property (nonatomic, strong, nullable) NSString *url;
-// Used for reachability checks (IDN encoded)
-// wp.koke.me
-@property (weak, readonly, nullable) NSString *hostname;
 
 // Used to check if the blog has an icon set up
 @property (readonly) BOOL hasIcon;
@@ -243,9 +229,6 @@ typedef NS_ENUM(NSInteger, SiteVisibility) {
 - (nullable NSArray *)sortedCategories;
 - (nullable id)getOptionValue:(NSString *) name;
 - (void)setValue:(id)value forOption:(NSString *)name;
-- (NSString *)loginUrl;
-- (nullable NSString *)urlWithPath:(NSString *)path;
-- (NSString *)adminUrlWithPath:(NSString *)path;
 - (NSDictionary *) getImageResizeDimensions;
 - (BOOL)supports:(BlogFeature)feature;
 - (BOOL)supportsPublicize;

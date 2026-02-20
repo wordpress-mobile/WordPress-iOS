@@ -4,7 +4,7 @@ extension Theme {
         guard let themePathForCustomization else { return nil }
 
         let path = "customize.php?theme=\(themePathForCustomization)&hide_close=true"
-        return blog?.adminUrl(withPath: path)
+        return blog?.makeAdminURL(path: path)?.absoluteString
     }
 
     private var themePathForCustomization: String? {
