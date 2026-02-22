@@ -94,7 +94,7 @@ public enum FeatureFlag: Int, CaseIterable {
         case .customPostTypes:
             return BuildConfiguration.current == .debug
         case .cptPostSettings:
-            return false
+            return BuildConfiguration.current == .debug
         }
     }
 
