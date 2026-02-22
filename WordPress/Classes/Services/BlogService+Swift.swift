@@ -147,7 +147,7 @@ extension BlogService {
         Task { @MainActor in
             let result = await xmlrpcApi.call(method: "wp.getOptions", parameters: parameters)
 
-            await self.coreDataStack.performAndSave { context in
+            self.coreDataStack.performAndSave { context in
                 guard let blog = try? context.existingObject(with: blogObjectID) as? Blog else { return }
                 if case let .failure(error) = result {
                     blog.isXMLRPCDisabled = error.xmlrpcAvailability == .unavailable
