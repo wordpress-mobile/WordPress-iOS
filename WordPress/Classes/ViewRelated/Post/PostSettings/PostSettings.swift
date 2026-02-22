@@ -122,7 +122,7 @@ struct PostSettings: Hashable {
 
         // TODO: The Post Settings UI currently only supports Pages
         // The parent post is available in `post.parent`
-        parentPageID = nil //
+        parentPageID = nil
 
         // Social sharing (Publicize) is not available for REST API posts
         sharing = nil
