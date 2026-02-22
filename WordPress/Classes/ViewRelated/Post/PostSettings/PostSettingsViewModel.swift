@@ -88,10 +88,12 @@ final class PostSettingsViewModel: NSObject, ObservableObject {
     }
 
     var authorDisplayName: String {
-        if let displayName = settings.author?.displayName, displayName != "–" {
-            return displayName
+        switch details {
+        case .abstractPost(let post):
+            return settings.author?.displayName ?? post.author?.makePlainText() ?? ""
+        case .remotePost:
+            return settings.author?.displayName ?? ""
         }
-        return abstractPost?.author?.makePlainText() ?? settings.author?.displayName ?? ""
     }
 
     var authorAvatarURL: URL? {
@@ -129,24 +131,25 @@ final class PostSettingsViewModel: NSObject, ObservableObject {
     }
 
     var slugText: String {
-        if !settings.slug.isEmpty {
-            return settings.slug
-        }
-        if let abstractPost {
-            return abstractPost.suggested_slug ?? ""
-        }
-        if let remotePost {
-            return remotePost.generatedSlug ?? ""
-        }
-        return ""
+        settings.slug.isEmpty ? (suggestedSlug ?? "") : settings.slug
     }
 
     var suggestedSlug: String? {
-        abstractPost?.suggested_slug ?? remotePost?.generatedSlug
+        switch details {
+        case .abstractPost(let post):
+            return post.suggested_slug
+        case .remotePost(let post, _):
+            return post.generatedSlug
+        }
     }
 
     var permalinkTemplate: String? {
-        abstractPost?.permalinkTemplateURL ?? remotePost?.permalinkTemplate
+        switch details {
+        case .abstractPost(let post):
+            return post.permalinkTemplateURL
+        case .remotePost(let post, _):
+            return post.permalinkTemplate
+        }
     }
 
     var postFormatText: String {
@@ -159,58 +162,53 @@ final class PostSettingsViewModel: NSObject, ObservableObject {
     }
 
     var isDraftOrPending: Bool {
-        if let abstractPost {
-            return abstractPost.getOriginal().isStatus(in: [.draft, .pending])
+        switch details {
+        case .abstractPost(let post):
+            return post.getOriginal().isStatus(in: [.draft, .pending])
+        case .remotePost(let post, _):
+            return post.status == .draft || post.status == .pending
         }
-        if let remotePost {
-            return remotePost.status == .draft || remotePost.status == .pending
-        }
-        return false
     }
 
     var isPost: Bool {
-        if let abstractPost {
-            return abstractPost is Post
+        switch details {
+        case .abstractPost(let post):
+            return post is Post
+        case .remotePost(_, let typeDetails):
+            return typeDetails.slug == "post"
         }
-        return postTypeDetails?.slug == "post"
     }
 
     var shouldShowStickyOption: Bool {
         // Sticky is exclusively a WordPress "post" type feature
         guard isPost else { return false }
+        // Show sticky option if blog supports WPComRESTAPI OR user is admin
         return blog.supports(.wpComRESTAPI) || blog.isAdmin
     }
 
     var lastEditedText: String? {
-        if let abstractPost {
-            guard let date = abstractPost.dateModified ?? abstractPost.dateCreated else {
+        switch details {
+        case .abstractPost(let post):
+            guard let date = post.dateModified ?? post.dateCreated else {
                 return nil
             }
             return date.toMediumString()
+        case .remotePost(let post, _):
+            return post.modifiedGmt.toMediumString()
         }
-        if let remotePost {
-            return remotePost.modifiedGmt.toMediumString()
-        }
-        return nil
     }
 
     var postID: Int? {
-        if let abstractPost {
-            guard let postID = abstractPost.postID?.intValue, postID > 0 else {
+        switch details {
+        case .abstractPost(let post):
+            guard let postID = post.postID?.intValue, postID > 0 else {
                 return nil
             }
             return postID
-        }
-        if let remotePost {
-            let id = Int(remotePost.id)
+        case .remotePost(let post, _):
+            let id = Int(post.id)
             return id > 0 ? id : nil
         }
-        return nil
-    }
-
-    /// Whether the post is backed by a remote (non-Core Data) post.
-    var isRemotePost: Bool {
-        remotePost != nil
     }
 
     /// The underlying Page, if this is a Core Data-backed page.
@@ -220,10 +218,12 @@ final class PostSettingsViewModel: NSObject, ObservableObject {
 
     /// Whether the post has a remote representation (used for permalink preview).
     var hasRemote: Bool {
-        if let abstractPost {
-            return abstractPost.hasRemote()
+        switch details {
+        case .abstractPost(let post):
+            return post.hasRemote()
+        case .remotePost:
+            return true
         }
-        return remotePost != nil
     }
 
     enum SocialSharingSectionState {
@@ -341,17 +341,17 @@ final class PostSettingsViewModel: NSObject, ObservableObject {
     }
 
     func onAppear() {
-        if abstractPost != nil {
-            refreshSuggestedTags()
-        }
+        refreshSuggestedTags()
     }
 
     func shouldShow(_ row: Row) -> Bool {
+        // FIXME: meta support missing in AnyPostWithEditContext
+        guard case .abstractPost = details else { return false }
         switch row {
         case .jetpackAccessLevel:
-            blog.supports(.wpComRESTAPI) && !isRemotePost
+            return blog.supports(.wpComRESTAPI)
         case .jetpackNewsletterEmailOptions:
-            blog.supports(.wpComRESTAPI) && context == .publishing && !isRemotePost
+            return blog.supports(.wpComRESTAPI) && context == .publishing
         }
     }
 
@@ -439,9 +439,10 @@ final class PostSettingsViewModel: NSObject, ObservableObject {
     }
 
     private func refreshDisplayedCategories() {
-        if let abstractPost {
-            displayedCategories = settings.getCategoryNames(for: abstractPost)
-        } else {
+        switch details {
+        case .abstractPost(let post):
+            displayedCategories = settings.getCategoryNames(for: post)
+        case .remotePost:
             displayedCategories = settings.getCategoryNames(for: blog)
         }
     }
@@ -451,7 +452,7 @@ final class PostSettingsViewModel: NSObject, ObservableObject {
     }
 
     private func refreshParentPageText() {
-        if let page = abstractPost as? Page,
+        if let page,
            let context = page.managedObjectContext,
            let parentPageID = settings.parentPageID {
             parentPageText = Page.parentPageText(in: context, parentID: NSNumber(value: parentPageID))
@@ -467,9 +468,10 @@ final class PostSettingsViewModel: NSObject, ObservableObject {
     }
 
     func buttonSaveTapped() {
-        if let abstractPost {
-            buttonSaveTappedForAbstractPost(abstractPost)
-        } else if remotePost != nil {
+        switch details {
+        case .abstractPost(let post):
+            buttonSaveTappedForAbstractPost(post)
+        case .remotePost:
             buttonSaveTappedForRemotePost()
         }
     }
@@ -563,9 +565,10 @@ final class PostSettingsViewModel: NSObject, ObservableObject {
     }
 
     func buttonPublishTapped() {
-        if let abstractPost {
-            publishAbstractPost(abstractPost)
-        } else if remotePost != nil {
+        switch details {
+        case .abstractPost(let post):
+            publishAbstractPost(post)
+        case .remotePost:
             publishRemotePost()
         }
     }
@@ -647,11 +650,12 @@ final class PostSettingsViewModel: NSObject, ObservableObject {
 
         switch selection.type {
         case .public, .protected:
-            if let abstractPost, abstractPost.getOriginal().status == .scheduled {
-                // Keep it scheduled
-            } else if settings.status == .scheduled {
-                // Keep it scheduled for remote posts too
-            } else {
+            switch details {
+            case .abstractPost(let post) where post.getOriginal().status == .scheduled:
+                break // Keep it scheduled
+            case .remotePost where settings.status == .scheduled:
+                break // Keep it scheduled
+            default:
                 settings.status = .publish
             }
         case .private:
