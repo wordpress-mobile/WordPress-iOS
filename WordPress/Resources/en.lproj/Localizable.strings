@@ -861,6 +861,9 @@
 /* Feature name for the block editor in application password required prompt */
 "applicationPasswordRequired.feature.blockEditor" = "Block Editor";
 
+/* Feature name for managing custom post types in the app */
+"applicationPasswordRequired.feature.customPosts" = "Custom Post Types";
+
 /* Feature name for managing terms and taxonomies in the app */
 "applicationPasswordRequired.feature.customTaxonomies" = "Taxonomies Management";
 
@@ -1371,6 +1374,27 @@ Note that the word 'go' here should have a closer meaning to 'start' rather than
 
 /* Action shown in a bottom notice to dismiss it. */
 "blogDashboard.dismiss" = "Dismiss";
+
+/* Error message shown when the active theme cannot be found for a site. */
+"blogDetails.activeThemeNotFound.errorDescription" = "The active theme could not be found for this site.";
+
+/* Button title to connect Jetpack in XML-RPC disabled alert */
+"blogDetails.xmlrpcDisabled.alert.connectJetpack" = "Connect Jetpack";
+
+/* Description explaining options to restore functionality when XML-RPC is disabled */
+"blogDetails.xmlrpcDisabled.alert.description" = "XML-RPC is disabled on your site. Some features in the app currently require XML-RPC. Connect Jetpack or enable XML-RPC to access all features.";
+
+/* Button title to learn more about XML-RPC being disabled */
+"blogDetails.xmlrpcDisabled.alert.learnMore" = "Learn more";
+
+/* Title for the XML-RPC disabled alert */
+"blogDetails.xmlrpcDisabled.alert.title" = "XML-RPC Disabled";
+
+/* Subtitle for the XML-RPC disabled card on blog details */
+"blogDetails.xmlrpcDisabled.card.subtitle" = "Some features may be limited";
+
+/* Title for the XML-RPC disabled card on blog details */
+"blogDetails.xmlrpcDisabled.card.title" = "XML-RPC Disabled";
 
 /* Title for the blogging section in site settings screen */
 "Blogging" = "Blogging";
@@ -2583,6 +2607,39 @@ Example: Reply to Pamela Nguyen */
 /* Customize Insights button title */
 "customizeInsightsCell.tryItButton.title" = "Try it now";
 
+/* Error message shown when the post was modified by another user while editing */
+"customPostEditor.error.conflict.message" = "The post you are trying to save has been changed in the meantime.";
+
+/* Empty state message when no custom posts exist. %1$@ is the post type name (e.g., 'Podcasts', 'Products'). */
+"customPostList.emptyState.message" = "No %1$@";
+
+/* Tab title for draft posts */
+"customPostTab.drafts" = "Drafts";
+
+/* Tab title for published posts */
+"customPostTab.published" = "Published";
+
+/* Tab title for scheduled posts */
+"customPostTab.scheduled" = "Scheduled";
+
+/* Menu item title for sending feedback on the custom post types screen */
+"customPostTab.sendFeedback" = "Send Feedback";
+
+/* Tab title for trashed posts */
+"customPostTab.trash" = "Trash";
+
+/* Empty state message when there are no custom post types to display */
+"customPostTypes.emptyState.message" = "No Custom Post Types";
+
+/* Accessibility label for the button to pin a custom post type */
+"customPostTypes.pin.accessibilityLabel" = "Pin";
+
+/* Title for the Custom Post Types screen */
+"customPostTypes.title" = "More";
+
+/* Accessibility label for the button to unpin a custom post type */
+"customPostTypes.unpin.accessibilityLabel" = "Unpin";
+
 /* No comment provided by engineer. */
 "Cut block" = "Cut block";
 
@@ -2728,6 +2785,9 @@ Example: Reply to Pamela Nguyen */
 
 /* Debug Menu action for TipKit */
 "debugMenu.hideAllTips" = "Hide All Tips";
+
+/* Debug Menu item title */
+"debugMenu.item.logs" = "Logs";
 
 /* Title of the screen that allows the user to change the Reader CSS URL for debug builds */
 "debugMenu.readerCellTitle" = "Reader CSS URL";
@@ -4725,8 +4785,14 @@ Example: Reply to Pamela Nguyen */
 /* Title of the primary button shown after the Jetpack plugin has been installed. Tapping on the button dismisses the installation screen. */
 "jetpack.install-flow.success.primaryButtonText" = "Done";
 
+/* Message asking the user to install Jetpack to access all app features */
+"jetpack.install.allFeatures.description" = "To unlock all app features, you'll need to install the Jetpack plugin.";
+
 /* Title of a button for connecting user account to Jetpack. */
 "jetpack.install.connectUser.button.title" = "Connect your user account";
+
+/* Message asking the user to connect Jetpack to access all app features */
+"jetpack.install.connectUser.bypassXMLRPC.description" = "To unlock all app features, you'll need to connect the Jetpack plugin to your user account.";
 
 /* Message asking the user if they want to set up Jetpack from notifications */
 "jetpack.install.connectUser.notifications.description" = "To get helpful notifications on your phone from your WordPress site, you'll need to connect to your user account.";
@@ -5096,6 +5162,9 @@ Please install the %3$@ to use the app with this site.";
 /* Line chart type */
 "jetpackStats.chart.lineChart" = "Lines";
 
+/* Label for aggregated 'Other' segment in pie charts */
+"jetpackStats.chart.other" = "Other";
+
 /* Show chart data menu item */
 "jetpackStats.chart.showData" = "Show Data";
 
@@ -5204,9 +5273,6 @@ Please install the %3$@ to use the app with this site.";
 /* Option to turn off period comparison */
 "jetpackStats.datePicker.comparisonOff" = "No Comparison";
 
-/* Title for custom date range picker */
-"jetpackStats.datePicker.customRange" = "Custom Range";
-
 /* Menu item for custom date range picker */
 "jetpackStats.datePicker.customRangeMenu" = "Custom Range…";
 
@@ -5225,6 +5291,9 @@ Please install the %3$@ to use the app with this site.";
 /* Label for quick period selection */
 "jetpackStats.datePicker.quickPeriodsForStartDate" = "Quick periods for start date";
 
+/* Title for custom date range picker */
+"jetpackStats.datePicker.selectRange" = "Select Range";
+
 /* Site time zone header */
 "jetpackStats.datePicker.siteTimeZone" = "Site Time Zone";
 
@@ -5240,6 +5309,15 @@ Please install the %3$@ to use the app with this site.";
 /* Title for stats date range control tip */
 "jetpackStats.dateRangeTip.title" = "Navigate Through Time";
 
+/* Device breakdown by browser */
+"jetpackStats.deviceBreakdowns.browser" = "Browser";
+
+/* Device breakdown by platform/OS */
+"jetpackStats.deviceBreakdowns.operatingSystem" = "Operating System";
+
+/* Device breakdown by screen size */
+"jetpackStats.deviceBreakdowns.screensize" = "Screen Size";
+
 /* Section title for the list of child links */
 "jetpackStats.externalLinkDetails.childLinks" = "Sub-links";
 
@@ -5248,6 +5326,12 @@ Please install the %3$@ to use the app with this site.";
 
 /* Title for the external link details screen */
 "jetpackStats.externalLinkDetails.title" = "External Link";
+
+/* Button to explore plans when a feature is gated */
+"jetpackStats.featureGate.explorePlans" = "Explore Plans";
+
+/* Message shown when a stats feature is gated behind a paid plan */
+"jetpackStats.featureGate.message" = "Upgrade your plan to get access to advanced analytics";
 
 /* Automatic granularity option */
 "jetpackStats.granularity.automatic" = "Automatic";
@@ -5363,6 +5447,9 @@ Please install the %3$@ to use the app with this site.";
 /* Clicks data type (external links) */
 "jetpackStats.siteDataTypes.clicks" = "Clicks";
 
+/* Devices data type */
+"jetpackStats.siteDataTypes.devices" = "Devices";
+
 /* File downloads data type */
 "jetpackStats.siteDataTypes.fileDownloads" = "File Downloads";
 
@@ -5377,6 +5464,9 @@ Please install the %3$@ to use the app with this site.";
 
 /* Search terms data type */
 "jetpackStats.siteDataTypes.searchTerms" = "Search Terms";
+
+/* UTM campaign tracking data type */
+"jetpackStats.siteDataTypes.utm" = "UTM";
 
 /* Videos data type */
 "jetpackStats.siteDataTypes.videos" = "Videos";
@@ -5438,6 +5528,9 @@ Please install the %3$@ to use the app with this site.";
 /* Table column title for Top List card */
 "jetpackStats.topListColumnTitle.clicks" = "External Link";
 
+/* Table column title for Devices Top List card */
+"jetpackStats.topListColumnTitle.devices" = "Device";
+
 /* Table column title for Top List card */
 "jetpackStats.topListColumnTitle.fileDownloads" = "File";
 
@@ -5453,8 +5546,65 @@ Please install the %3$@ to use the app with this site.";
 /* Table column title for Top List card */
 "jetpackStats.topListColumnTitle.searchTerms" = "Term";
 
+/* Table column title for UTM Top List card */
+"jetpackStats.topListColumnTitle.utm" = "Campaign";
+
 /* Table column title for Top List card */
 "jetpackStats.topListColumnTitle.videos" = "Video";
+
+/* Plural post count for UTM metrics. %1$d is the number. */
+"jetpackStats.utmMetricDetails.postCount.plural" = "%1$d posts";
+
+/* Singular post count for UTM metrics. %1$d is the number. */
+"jetpackStats.utmMetricDetails.postCount.singular" = "%1$d post";
+
+/* Title for the UTM campaign details screen */
+"jetpackStats.utmMetricDetails.title" = "UTM Campaign";
+
+/* Section title for top posts from this UTM campaign */
+"jetpackStats.utmMetricDetails.topPosts" = "Top Posts";
+
+/* UTM parameter for campaign only */
+"jetpackStats.utmParamGroupings.campaign" = "Campaign";
+
+/* UTM parameter for medium only */
+"jetpackStats.utmParamGroupings.medium" = "Medium";
+
+/* UTM parameter for source only */
+"jetpackStats.utmParamGroupings.source" = "Source";
+
+/* Number of ads served. %@ is the ads count. */
+"jetpackStats.wordAds.adsServed.count" = "%@ ads served";
+
+/* Total earnings from WordAds */
+"jetpackStats.wordAds.earnings" = "Earnings";
+
+/* Button to learn more about WordAds earnings */
+"jetpackStats.wordAds.learnMore" = "Learn More";
+
+/* Message shown when there are no payment records */
+"jetpackStats.wordAds.noPaymentsYet" = "No payments yet";
+
+/* Outstanding amount owed from WordAds */
+"jetpackStats.wordAds.outstanding" = "Outstanding";
+
+/* Amount paid out from WordAds earnings */
+"jetpackStats.wordAds.paid" = "Paid";
+
+/* Title for payment history card and screen */
+"jetpackStats.wordAds.paymentsHistory" = "Payments History";
+
+/* Title for WordAds total earnings card */
+"jetpackStats.wordAds.totalEarnings" = "Total Earnings";
+
+/* Number of ads served */
+"jetpackStats.wordAdsMetrics.adsServed" = "Ads Served";
+
+/* Average cost per mille (thousand impressions) */
+"jetpackStats.wordAdsMetrics.averageCPM" = "Average CPM";
+
+/* Revenue from ads */
+"jetpackStats.wordAdsMetrics.revenue" = "Revenue";
 
 /* Displayed in the Notifications Tab as a message, when the Comments Filter shows no notifications */
 "Join a conversation: comment on posts from blogs you follow." = "Join a conversation: comment on posts from blogs you follow.";
@@ -7320,6 +7470,9 @@ Please install the %3$@ to use the app with this site.";
 /* Caption for the recommended sections in site designs. */
 "PICKED FOR YOU" = "PICKED FOR YOU";
 
+/* Error message when a pinned custom post type cannot be found. %1$@ is the post type name. */
+"pinnedPostType.error.notFound" = "\"%1$@\" is not available on this site.";
+
 /* Title for the plan selection view */
 "planSelection.title" = "Plans";
 
@@ -7620,13 +7773,15 @@ Please install the %3$@ to use the app with this site.";
 /* Navigation title for post discussion settings */
 "postDiscussion.title" = "Discussion";
 
-/* Button in an alert confirming discaring changes */
+/* Button in an alert confirming discarding changes
+   Button in an alert confirming discaring changes */
 "postEditor.closeConfirmationAlert.discardChanges" = "Discard Changes";
 
 /* Button in an alert confirming discaring a new draft */
 "postEditor.closeConfirmationAlert.discardDraft" = "Discard Draft";
 
-/* Button to keep the changes in an alert confirming discaring changes */
+/* Button to keep the changes in an alert confirming discarding changes
+   Button to keep the changes in an alert confirming discaring changes */
 "postEditor.closeConfirmationAlert.keepEditing" = "Keep Editing";
 
 /* Button in an alert confirming saving a new draft */
@@ -7674,6 +7829,9 @@ Please install the %3$@ to use the app with this site.";
 /* A message for a snackbar informing the user that some media files requires their attention */
 "postEditor.postHasFailingMediaUploadsSnackbar.message" = "Some media items failed to upload";
 
+/* Title for the publish button in the post editor navigation bar */
+"postEditor.publishButton.title" = "Publish";
+
 /* Editor, notice for successful recovery a trashed post */
 "postEditor.recoverTrashedPost.postRecoveredNoticeTitle" = "Post restored as a draft";
 
@@ -7694,6 +7852,9 @@ Please install the %3$@ to use the app with this site.";
 
 /* Saving draft to generate a preview (status message */
 "postEditor.savingDraftForPreview" = "Saving draft...";
+
+/* Title for the update button in the post editor navigation bar */
+"postEditor.updateButton.title" = "Update";
 
 /* Empty state description when no post formats are available */
 "postFormatPicker.emptyState.description" = "Post formats haven't been configured for this site.";
