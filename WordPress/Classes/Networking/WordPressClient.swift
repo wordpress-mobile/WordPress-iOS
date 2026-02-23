@@ -175,7 +175,7 @@ private extension WordPressSite {
         switch self {
         case let .dotCom(_, siteId, _):
             guard let blog = try? Blog.lookup(withID: siteId, in: context),
-                  let token = blog.authToken else {
+                  let token = blog.account?.authToken else {
                 return WpAuthentication.none
             }
             return WpAuthentication.bearer(token: token)

@@ -189,7 +189,7 @@ class MediaImportService: NSObject {
         assert(media.managedObjectContext == coreDataStack.mainContext)
         assert(blog.managedObjectContext == coreDataStack.mainContext)
 
-        var allowedFileTypes = blog.allowedFileTypes as? Set<String> ?? []
+        var allowedFileTypes = blog.allowedFileTypes
         // HEIC isn't supported when uploading an image, so we filter it out (http://git.io/JJAae)
         allowedFileTypes.remove("heic")
 

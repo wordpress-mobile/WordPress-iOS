@@ -5,7 +5,6 @@
 
 @import SFHFKeychainUtils;
 @import WordPressShared;
-@import NSObject_SafeExpectations;
 @import WordPressKit;
 
 @class Comment;
@@ -138,9 +137,6 @@ NSString * const OptionsKeyPublicizeDisabled = @"publicize_permanently_disabled"
     [[NSNotificationCenter defaultCenter] removeObserver:self];
 }
 
-#pragma mark -
-#pragma mark Custom methods
-
 - (NSNumber *)organizationID {
     NSNumber *organizationID = [self primitiveValueForKey:@"organizationID"];
 
@@ -151,35 +147,6 @@ NSString * const OptionsKeyPublicizeDisabled = @"publicize_permanently_disabled"
     }
 }
 
-- (NSArray *)sortedCategories
-{
-    NSSortDescriptor *sortNameDescriptor = [[NSSortDescriptor alloc] initWithKey:@"categoryName"
-                                                                        ascending:YES
-                                                                         selector:@selector(caseInsensitiveCompare:)];
-    NSArray *sortDescriptors = [[NSArray alloc] initWithObjects:sortNameDescriptor, nil];
-
-    return [[self.categories allObjects] sortedArrayUsingDescriptors:sortDescriptors];
-}
-
-- (BOOL)hasMappedDomain {
-    if (![self isHostedAtWPcom]) {
-        return NO;
-    }
-
-    NSURL *unmappedURL = [NSURL URLWithString:[self getOptionValue:@"unmapped_url"]];
-    NSURL *homeURL = [NSURL URLWithString:[self homeURL]];
-
-    return ![[unmappedURL host] isEqualToString:[homeURL host]];
-}
-
-- (BOOL)hasIcon
-{
-    // A blog without an icon has the blog url in icon, so we can't directly check its
-    // length to determine if we have an icon or not
-    return self.icon.length > 0 ? [NSURL URLWithString:self.icon].pathComponents.count > 1 : NO;
-}
-
-
 - (void)setXmlrpc:(NSString *)xmlrpc
 {
     [self willChangeValueForKey:@"xmlrpc"];
@@ -188,25 +155,6 @@ NSString * const OptionsKeyPublicizeDisabled = @"publicize_permanently_disabled"
 
     // Reset the api client so next time we use the new XML-RPC URL
     self.xmlrpcApi = nil;
-}
-
-- (NSString *)version
-{
-    // Ensure the value being returned is a string to prevent a crash when using this value in Swift
-    id value = [self getOptionValue:@"software_version"];
-
-    // If its a string, then return its value 🎉
-    if([value isKindOfClass:NSString.class]) {
-        return value;
-    }
-
-    // If its not a string, but can become a string, then convert it
-    if([value respondsToSelector:@selector(stringValue)]) {
-        return [value stringValue];
-    }
-
-    // If the value is an unknown type, and can not become a string, then default to a blank string.
-    return @"";
 }
 
 - (NSString *)password
@@ -237,11 +185,6 @@ NSString * const OptionsKeyPublicizeDisabled = @"publicize_permanently_disabled"
                                      accessGroup:nil
                                            error:nil];
     }
-}
-
-- (NSString *)authToken
-{
-    return self.account.authToken;
 }
 
 - (BOOL)supports:(BlogFeature)feature
@@ -344,12 +287,16 @@ NSString * const OptionsKeyPublicizeDisabled = @"publicize_permanently_disabled"
             return [self isListingPagesAllowed];
         case BlogFeatureSiteMonitoring:
             return [self isAdmin] && [self isAtomic];
+        case BlogFeaturePublicize:
+            return [self supportsPublicize];
+        case BlogFeatureShareButtons:
+            return [self supportsShareButtons];
     }
 }
 
 -(BOOL)supportsSharing
 {
-    return [self supportsPublicize] || [self supportsShareButtons];
+    return [self supports:BlogFeaturePublicize] || [self supports:BlogFeatureShareButtons];
 }
 
 - (BOOL)supportsPublicize
@@ -480,16 +427,6 @@ NSString * const OptionsKeyPublicizeDisabled = @"publicize_permanently_disabled"
     [self willChangeValueForKey:@"blogID"];
     [self setPrimitiveValue:dotComID forKey:@"blogID"];
     [self didChangeValueForKey:@"blogID"];
-}
-
-- (NSSet *)allowedFileTypes
-{
-    NSArray *allowedFileTypes = [self.options arrayForKeyPath:@"allowed_file_types.value"];
-    if (!allowedFileTypes || allowedFileTypes.count == 0) {
-        return nil;
-    }
-
-    return [NSSet setWithArray:allowedFileTypes];
 }
 
 + (NSSet *)keyPathsForValuesAffectingJetpack

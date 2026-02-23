@@ -71,7 +71,7 @@ static NSString *const CellIdentifier = @"CellIdentifier";
 
     self.navigationController.presentationController.delegate = self;
 
-    if ([self.blog supportsPublicize]) {
+    if ([self.blog supports:BlogFeaturePublicize]) {
         [self syncServices];
     } else {
         self.jetpackModuleHelper = [[JetpackModuleHelper alloc] initWithViewController:self moduleName:@"publicize" blog:self.blog];
@@ -145,7 +145,7 @@ static NSString *const CellIdentifier = @"CellIdentifier";
         [sections addObject:@(SharingSectionUnsupported)];
     }
 
-    if ([self.blog supportsShareButtons]) {
+    if ([self.blog supports:BlogFeatureShareButtons]) {
         [sections addObject:@(SharingSectionSharingButtons)];
     }
 

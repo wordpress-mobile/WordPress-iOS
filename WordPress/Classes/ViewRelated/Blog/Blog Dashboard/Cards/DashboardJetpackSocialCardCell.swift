@@ -186,7 +186,7 @@ private extension DashboardJetpackSocialCardCell {
         let hiddenSites = (repository.dictionary(forKey: hideNoConnectionViewKey) as? [String: Bool]) ?? [:]
         let isNoConnectionViewHidden = hiddenSites[dotComID] ?? false
 
-        return blog.supportsPublicize()
+        return blog.supports(.publicize)
         && services.count > 0
         && connections.count == 0
         && !isNoConnectionViewHidden
@@ -277,7 +277,7 @@ private extension DashboardJetpackSocialCardCell {
         let hiddenSites = (repository.dictionary(forKey: hideNoSharesViewKey) as? [String: Bool]) ?? [:]
         let isNoSharesViewHidden = hiddenSites[dotComID] ?? false
 
-        return blog.supportsPublicize()
+        return blog.supports(.publicize)
         && connections.filter { !$0.requiresUserAction() }.count > 0
         && !isNoSharesViewHidden
         && sharingLimit.remaining == 0

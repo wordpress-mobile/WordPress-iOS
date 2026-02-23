@@ -73,6 +73,13 @@ extension Blog {
         return string.flatMap(URL.init)
     }
 
+    @objc public var iconURL: URL? {
+        guard let icon, !icon.isEmpty else {
+            return nil
+        }
+        return URL(string: icon)
+    }
+
     /// Builds a URL by replacing `xmlrpc.php` in the XML-RPC endpoint with the given path.
     public func url(withPath path: String) -> String? {
         guard let xmlrpc else { return nil }
@@ -116,7 +123,7 @@ extension Blog {
         return .gmt
     }
 
-    // MARK: - Post Formats
+    // MARK: - Misc
 
     /// Returns the display name for a post format slug.
     ///
@@ -132,6 +139,38 @@ extension Blog {
             result = standard
         }
         return result
+    }
+
+    /// The WordPress version string derived from the `software_version` blog option.
+    @objc public var version: String {
+        let value = getOptionValue("software_version")
+        if let string = value as? String {
+            return string
+        }
+        if let number = value as? NSNumber {
+            return number.stringValue
+        }
+        return ""
+    }
+
+    /// Whether the blog has a mapped domain (different from the default WordPress.com URL).
+    @objc public var hasMappedDomain: Bool {
+        guard isHostedAtWPcom else { return false }
+        let unmappedURL = getOptionString(name: "unmapped_url").flatMap(URL.init)
+        let homeURL = homeURL.flatMap(URL.init)
+        return unmappedURL?.host != homeURL?.host
+    }
+
+    /// The blog's categories sorted alphabetically by name (case-insensitive).
+    @objc public var sortedCategories: [PostCategory] {
+        (categories ?? []).sorted {
+            $0.categoryName.caseInsensitiveCompare($1.categoryName) == .orderedAscending
+        }
+    }
+
+    /// The set of allowed file types for uploads, derived from blog options.
+    public var allowedFileTypes: Set<String> {
+        Set(getOptionValue("allowed_file_types") as? [String] ?? [])
     }
 
     // MARK: - Privacy / Visibility

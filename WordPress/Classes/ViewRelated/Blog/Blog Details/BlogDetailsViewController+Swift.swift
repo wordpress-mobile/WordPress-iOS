@@ -308,7 +308,7 @@ extension BlogDetailsViewController {
     public func showSharing(from source: BlogDetailsNavigationSource) {
         let sharingVC: UIViewController
 
-        if !blog.supportsPublicize() {
+        if !blog.supports(.publicize) {
             // if publicize is disabled, show the sharing buttons settings.
             sharingVC = SharingButtonsViewController(blog: blog)
         } else {

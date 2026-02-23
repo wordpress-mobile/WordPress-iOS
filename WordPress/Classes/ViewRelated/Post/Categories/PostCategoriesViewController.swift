@@ -126,7 +126,7 @@ import WordPressUI
 
         // Sort categories by parent/child relationship
         let tree = WPCategoryTree(parent: nil)
-        tree.getChildrenFromObjects(blog.sortedCategories() ?? [])
+        tree.getChildrenFromObjects(blog.sortedCategories)
         categories = tree.getAllObjects()
 
         var categoryDict = [Int: PostCategory]()
@@ -144,11 +144,7 @@ import WordPressUI
         // Remove any previously selected category objects that are no longer available.
         let selectedCategories = self.selectedCategories
         self.selectedCategories = selectedCategories.filter { category in
-            if let sortedCategories = blog.sortedCategories() as? [PostCategory], sortedCategories.contains(category), !category.isDeleted {
-                return true
-            }
-
-            return false
+            (blog.categories ?? []).contains(category) && !category.isDeleted
         }
 
         // Notify the delegate of any changes for selectedCategories.
