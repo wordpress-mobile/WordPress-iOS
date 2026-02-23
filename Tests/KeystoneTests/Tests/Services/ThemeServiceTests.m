@@ -1,7 +1,6 @@
 #import <XCTest/XCTest.h>
 #import "Blog.h"
 #import "ThemeService.h"
-#import "WPAccount.h"
 #import "WordPressTest-Swift.h"
 
 @import WordPressKit;

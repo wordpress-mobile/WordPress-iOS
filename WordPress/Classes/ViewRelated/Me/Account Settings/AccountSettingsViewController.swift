@@ -259,7 +259,7 @@ private class AccountSettingsController: SettingsController {
 
     private var hasAtomicSite: Bool {
         let account = try? WPAccount.lookupDefaultWordPressComAccount(in: ContextManager.shared.mainContext)
-        return account?.hasAtomicSite() ?? false
+        return (account?.blogs ?? []).contains(where: \.isAtomic)
     }
 
     private func showCloseAccountAlert() {

@@ -1,7 +1,6 @@
 
 #import <XCTest/XCTest.h>
 
-#import "WPAccount.h"
 #import "ReaderTopicService.h"
 #import "ReaderPostService.h"
 #import "WordPressTest-Swift.h"

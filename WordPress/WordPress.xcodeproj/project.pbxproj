@@ -1172,7 +1172,6 @@
 				"Objective-C/include/LocalCoreDataService.h",
 				"Objective-C/include/Media.h",
 				"Objective-C/include/PostHelper.h",
-				"Objective-C/include/WPAccount.h",
 				WordPressData.h,
 			);
 			target = 3F7AE0B42D9B30A100AB4892 /* WordPressData */;
