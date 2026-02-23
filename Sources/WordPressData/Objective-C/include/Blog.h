@@ -154,8 +154,6 @@ typedef NS_ENUM(NSInteger, SiteVisibility) {
 @property (nonatomic, strong, readwrite, nullable) NSOrderedSet *menuLocations;
 @property (nonatomic, strong, readwrite, nullable) NSSet<Role *> *roles;
 @property (nonatomic, strong, readwrite, nullable) NSString *currentThemeId;
-@property (nonatomic, strong, readwrite, nullable) NSDate *lastPostsSync;
-@property (nonatomic, strong, readwrite, nullable) NSDate *lastPagesSync;
 @property (nonatomic, strong, readwrite, nullable) NSDate *lastCommentsSync;
 @property (nonatomic, strong, readwrite, nullable) NSString *lastUpdateWarning;
 @property (nonatomic, weak, readwrite, nullable) NSNumber *isActivated;

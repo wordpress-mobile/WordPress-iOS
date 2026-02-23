@@ -3,6 +3,12 @@
 This file documents changes in the data model. Please explain any changes to the
 data model as well as any custom migrations.
 
+## WordPress 158
+
+@kean 2026-02-23
+
+- Remove unused fields from `Blog`: `lastPostsSync`, `lastPagesSync`.
+
 ## WordPress 157
 
 @kean 2026-01-06
