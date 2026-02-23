@@ -40,7 +40,7 @@
 
 - (void) testLookupAccountByUsernameReturnsNilIfNotFound {
     [[[AccountBuilder alloc] initWithContext:self.contextManager.mainContext] build];
-    XCTAssertNil([WPAccount lookupWithUsername:@"" context:self.contextManager.mainContext]);
+    XCTAssertNil([WPAccount lookupWithUsername:@"invalid" context:self.contextManager.mainContext]);
 }
 
 - (void) testLookupAccountByUsernameReturnsAccountForUsername {
