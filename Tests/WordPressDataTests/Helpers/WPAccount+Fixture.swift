@@ -15,6 +15,8 @@ extension WPAccount {
         authToken: String = "authToken"
     ) -> WPAccount {
         let account = WPAccount(context: context)
+        account.keychain = MockKeychainService()
+        account.authKeyMigration = MockAuthKeyMigration()
         account.userID = NSNumber(value: userID)
         account.username = username
         account.authToken = authToken
