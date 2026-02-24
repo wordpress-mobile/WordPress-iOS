@@ -30,12 +30,6 @@ extension Blog {
         return isUserCapableOf(capability.rawValue)
     }
 
-    /// Returns true if the current user is allowed to list a Blog's Users
-    ///
-    @objc public func isListingUsersAllowed() -> Bool {
-        return isUserCapableOf(.ListUsers)
-    }
-
     /// Returns true if the current user is allowed to publish to the Blog
     ///
     @objc public func isPublishingPostsAllowed() -> Bool {
@@ -60,16 +54,10 @@ extension Blog {
         return !hasBusinessPlan && isUserCapableOf("scan")
     }
 
-    /// Returns true if the current user is allowed to list and edit the blog's Pages
-    ///
-    @objc public func isListingPagesAllowed() -> Bool {
-        return isAdmin || isUserCapableOf(.EditPages)
-    }
-
     /// Returns true if the current user is allowed to view Stats
     ///
-    @objc public func isViewingStatsAllowed() -> Bool {
-        return isAdmin || isUserCapableOf(.ViewStats)
+    public var isViewingStatsAllowed: Bool {
+        isAdmin || isUserCapableOf(.ViewStats)
     }
 
     /// Returns true if the current user is allowed to use WordAds
@@ -91,13 +79,5 @@ extension Blog {
     public var userCanUploadMedia: Bool {
         // Self-hosted non-Jetpack blogs have no capabilities, so we'll just assume that users can post media
         capabilities != nil ? isUploadingFilesAllowed() : true
-    }
-
-    /// Only WordPress.com hosted sites we administer may be managed
-    ///
-    /// - Returns: Whether site management is permitted
-    ///
-    @objc public func supportsSiteManagementServices() -> Bool {
-        return isHostedAtWPcom && isAdmin
     }
 }

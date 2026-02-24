@@ -34,7 +34,7 @@ extension SiteSettingsViewController {
 
     @objc(showStartOverForBlog:)
     public func showStartOver(for blog: Blog) {
-       wpAssert(blog.supportsSiteManagementServices())
+       wpAssert(blog.supports(.siteManagement))
 
        WPAppAnalytics.track(.siteSettingsStartOverAccessed, blog: blog)
 
@@ -270,7 +270,7 @@ extension SiteSettingsViewController {
     var generalSettingsRows: [GeneralSettingsRow] {
         var rows: [GeneralSettingsRow] = [.title, .tagline, .url]
 
-        if blog.supportsSiteManagementServices() {
+        if blog.supports(.siteManagement) {
             rows.append(contentsOf: [.privacy, .language])
         }
 

@@ -9,11 +9,6 @@ extension Blog {
     ///
     @NSManaged public var blockEditorSettings: BlockEditorSettings?
 
-    @objc
-    public func supportsBlockEditorSettings() -> Bool {
-        return hasRequiredWordPressVersion("5.8")
-    }
-
     /// Returns the username to use for this site.
     ///
     /// For self-hosted sites, returns the stored `username`. For WordPress.com

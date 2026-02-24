@@ -585,7 +585,7 @@ NSString *const WPBlogSettingsUpdatedNotification = @"WPBlogSettingsUpdatedNotif
 
 - (id<BlogServiceRemote>)remoteForBlog:(Blog *)blog
 {
-    if ([blog supports:BlogFeatureWPComRESTAPI]) {
+    if ([blog supports:BlogFeatureWpComRESTAPI]) {
         if (blog.wordPressComRestApi) {
             return [[BlogServiceRemoteREST alloc] initWithWordPressComRestApi:blog.wordPressComRestApi siteID:blog.dotComID];
         }
