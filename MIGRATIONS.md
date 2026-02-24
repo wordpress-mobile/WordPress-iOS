@@ -7,7 +7,7 @@ data model as well as any custom migrations.
 
 @kean 2026-02-23
 
-- Remove unused fields from `lastPostsSync`, `lastPagesSync`, `Blog`
+- Remove unused fields from `lastPostsSync`, `lastPagesSync`, `quickStartTypeValue`, `pinnedDate`, `isActivated`, `hasOlderPosts`, `hasOlderPages` from `Blog`
 - Remove unused field `geolocationEnabled` from `BlogSettings`
 - Remove unused field `localThumbnailIdentifier` from `Media`
 

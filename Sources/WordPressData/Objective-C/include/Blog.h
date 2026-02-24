@@ -137,8 +137,6 @@ typedef NS_ENUM(NSInteger, SiteVisibility) {
 @property (nonatomic, strong, readwrite, nullable) NSString *restApiRootURL;
 @property (nonatomic, strong, readwrite, nullable) NSString *apiKey;
 @property (nonatomic, strong, readwrite, nonnull) NSNumber *organizationID;
-@property (nonatomic, strong, readwrite, nullable) NSNumber *hasOlderPosts;
-@property (nonatomic, strong, readwrite, nullable) NSNumber *hasOlderPages;
 @property (nonatomic, strong, readwrite, nullable) NSSet<AbstractPost *> *posts;
 @property (nonatomic, strong, readwrite, nullable) NSSet<PostCategory *> *categories;
 @property (nonatomic, strong, readwrite, nullable) NSSet<PostTag *> *tags;
@@ -156,7 +154,6 @@ typedef NS_ENUM(NSInteger, SiteVisibility) {
 @property (nonatomic, strong, readwrite, nullable) NSString *currentThemeId;
 @property (nonatomic, strong, readwrite, nullable) NSDate *lastCommentsSync;
 @property (nonatomic, strong, readwrite, nullable) NSString *lastUpdateWarning;
-@property (nonatomic, weak, readwrite, nullable) NSNumber *isActivated;
 @property (nonatomic, strong, readwrite, nullable) NSDictionary *options;
 @property (nonatomic, strong, readwrite, nullable) NSSet *postTypes;
 @property (nonatomic, strong, readwrite, nullable) NSDictionary *postFormats;
