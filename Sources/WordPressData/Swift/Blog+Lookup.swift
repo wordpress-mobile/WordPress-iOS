@@ -136,7 +136,7 @@ public extension Blog {
     /// - Parameter id: The comment id
     /// - Returns: The `Comment` object associated with the given id, or `nil` if none is found.
     func comment(withID id: Int32) -> Comment? {
-        (comments as? Set<Comment>)?.first { $0.commentID == id }
+        comments?.first { $0.commentID == id }
     }
 
 }

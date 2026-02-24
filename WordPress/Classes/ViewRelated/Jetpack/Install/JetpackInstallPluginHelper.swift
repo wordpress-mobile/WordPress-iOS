@@ -58,7 +58,7 @@ class JetpackInstallPluginHelper: NSObject {
                                        delegate: JetpackRemoteInstallDelegate?,
                                        force: Bool = false) {
         guard let blog,
-              let siteURLString = blog.displayURL as? String, // just the host URL without the scheme.
+              let siteURLString = blog.displayURL, // just the host URL without the scheme.
               let plugin = JetpackPlugin(from: blog.jetpackConnectionActivePlugins),
               let helper = JetpackInstallPluginHelper(blog),
               helper.shouldShowOverlay || force else {
