@@ -37,7 +37,6 @@ NS_ASSUME_NONNULL_BEGIN
 
 @property (nonatomic, strong) Blog *blog;
 @property (nonatomic, strong, nullable) NSSet *posts;
-@property (nonatomic, strong, nullable) NSSet *featuredOnPosts;
 
 // Helper properties
 
@@ -71,11 +70,6 @@ NS_ASSUME_NONNULL_BEGIN
 - (void)removePostsObject:(AbstractPost *)value;
 - (void)addPosts:(NSSet *)values;
 - (void)removePosts:(NSSet *)values;
-
-- (void)addFeaturedOnPostsObject:(AbstractPost *)value;
-- (void)removeFeaturedOnPostsObject:(AbstractPost *)value;
-- (void)addFeaturedOnPosts:(NSSet *)values;
-- (void)removeFeaturedOnPosts:(NSSet *)values;
 
 @end
 
