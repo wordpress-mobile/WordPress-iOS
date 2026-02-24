@@ -10,6 +10,7 @@ data model as well as any custom migrations.
 - Remove unused fields from `Blog`: `lastPostsSync`, `lastPagesSync`, `quickStartTypeValue`, `pinnedDate`, `isActivated`, `hasOlderPosts`, `hasOlderPages`
 - Remove unused fields from `BlogSettings`: `geolocationEnabled` 
 - Remove unused fields from `Media`: `localThumbnailIdentifier`, `featuredOnPosts` 
+- Remove unused fields from `BlogSettings`: `jetpackLazyLoadImages`
 
 ## WordPress 157
 

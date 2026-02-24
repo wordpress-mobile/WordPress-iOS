@@ -70,11 +70,6 @@ open class BlogSettings: NSManagedObject {
     ///
     @NSManaged public var jetpackServeImagesFromOurServers: Bool
 
-    /// Jetpack Setting: lazy load images.
-    ///
-    @available(*, deprecated)
-    @NSManaged var jetpackLazyLoadImages: Bool
-
     // MARK: - Discussion
 
     /// Represents whether comments are allowed, or not.
