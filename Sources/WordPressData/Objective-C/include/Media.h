@@ -37,7 +37,6 @@ NS_ASSUME_NONNULL_BEGIN
 
 @property (nonatomic, strong) Blog *blog;
 @property (nonatomic, strong, nullable) NSSet *posts;
-@property (nonatomic, strong, nullable) NSSet *featuredOnPosts;
 
 // Helper properties
 
@@ -72,20 +71,6 @@ NS_ASSUME_NONNULL_BEGIN
 - (void)addPosts:(NSSet *)values;
 - (void)removePosts:(NSSet *)values;
 
-- (void)addFeaturedOnPostsObject:(AbstractPost *)value;
-- (void)removeFeaturedOnPostsObject:(AbstractPost *)value;
-- (void)addFeaturedOnPosts:(NSSet *)values;
-- (void)removeFeaturedOnPosts:(NSSet *)values;
-
 @end
-
-// TODO: Remove it; it was added for compatibility during the WPMediaPicker removal
-typedef NS_OPTIONS(NSInteger, WPMediaType){
-    WPMediaTypeImage = 1,
-    WPMediaTypeVideo = 1 << 1,
-    WPMediaTypeAudio = 1 << 2,
-    WPMediaTypeOther = 1 << 3,
-    WPMediaTypeAll= 0XFF
-};
 
 NS_ASSUME_NONNULL_END

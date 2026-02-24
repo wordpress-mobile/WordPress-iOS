@@ -38,7 +38,7 @@ struct MediaPickerMenu {
 }
 
 extension MediaPickerMenu.MediaFilter {
-    init?(_ mediaType: WPMediaType) {
+    init?(_ mediaType: GutenbergMediaType) {
         switch mediaType {
         case .image: self = .images
         case .video: self = .videos

@@ -4,7 +4,7 @@ import UniformTypeIdentifiers
 import WordPressData
 
 extension PHPickerFilter {
-    init?(_ type: WPMediaType) {
+    init?(_ type: GutenbergMediaType) {
         switch type {
         case .image:
             self = .images

@@ -16,7 +16,7 @@
         <attribute name="rawOtherTerms" optional="YES" attributeType="Binary" syncable="YES"/>
         <attribute name="revisions" optional="YES" attributeType="Transformable" valueTransformerName="NSSecureUnarchiveFromData" syncable="YES"/>
         <relationship name="blog" minCount="1" maxCount="1" deletionRule="Nullify" destinationEntity="Blog" inverseName="posts" inverseEntity="Blog" syncable="YES"/>
-        <relationship name="featuredImage" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="Media" inverseName="featuredOnPosts" inverseEntity="Media" syncable="YES"/>
+        <relationship name="featuredImage" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="Media" syncable="YES"/>
         <relationship name="media" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="Media" inverseName="posts" inverseEntity="Media" syncable="YES"/>
         <relationship name="original" optional="YES" minCount="1" maxCount="1" deletionRule="Nullify" destinationEntity="AbstractPost" inverseName="revision" inverseEntity="AbstractPost" syncable="YES"/>
         <relationship name="revision" optional="YES" minCount="1" maxCount="1" deletionRule="Cascade" destinationEntity="AbstractPost" inverseName="original" inverseEntity="AbstractPost" syncable="YES"/>
@@ -420,7 +420,6 @@
         <attribute name="videopressGUID" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="width" optional="YES" attributeType="Integer 32" defaultValueString="0" usesScalarValueType="NO"/>
         <relationship name="blog" minCount="1" maxCount="1" deletionRule="Nullify" destinationEntity="Blog" inverseName="media" inverseEntity="Blog"/>
-        <relationship name="featuredOnPosts" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="AbstractPost" inverseName="featuredImage" inverseEntity="AbstractPost" syncable="YES"/>
         <relationship name="posts" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="AbstractPost" inverseName="media" inverseEntity="AbstractPost"/>
         <fetchIndex name="byBlogIndex">
             <fetchIndexElement property="blog" type="Binary" order="ascending"/>

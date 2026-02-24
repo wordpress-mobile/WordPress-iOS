@@ -10,6 +10,16 @@ import UniformTypeIdentifiers
 
 public typealias GutenbergMediaPickerHelperCallback = ([Any]?) -> Void
 
+struct GutenbergMediaType: OptionSet {
+    let rawValue: Int
+
+    static let image = GutenbergMediaType(rawValue: 1)
+    static let video = GutenbergMediaType(rawValue: 1 << 1)
+    static let audio = GutenbergMediaType(rawValue: 1 << 2)
+    static let other = GutenbergMediaType(rawValue: 1 << 3)
+    static let all = GutenbergMediaType(rawValue: 0xFF)
+}
+
 final class GutenbergMediaPickerHelper: NSObject {
     private let post: AbstractPost
     private unowned let context: UIViewController
@@ -23,7 +33,7 @@ final class GutenbergMediaPickerHelper: NSObject {
         self.post = post
     }
 
-    func presetDevicePhotosPicker(filter: WPMediaType, allowMultipleSelection: Bool, completion: @escaping GutenbergMediaPickerHelperCallback) {
+    func presetDevicePhotosPicker(filter: GutenbergMediaType, allowMultipleSelection: Bool, completion: @escaping GutenbergMediaPickerHelperCallback) {
         didPickMediaCallback = completion
 
         var configuration = PHPickerConfiguration()
@@ -39,7 +49,7 @@ final class GutenbergMediaPickerHelper: NSObject {
         context.present(picker, animated: true)
     }
 
-    func presentSiteMediaPicker(filter: WPMediaType, allowMultipleSelection: Bool, initialSelection: [Int] = [], completion: @escaping GutenbergMediaPickerHelperCallback) {
+    func presentSiteMediaPicker(filter: GutenbergMediaType, allowMultipleSelection: Bool, initialSelection: [Int] = [], completion: @escaping GutenbergMediaPickerHelperCallback) {
         didPickMediaCallback = completion
         let initialMediaSelection = mapMediaIdsToMedia(initialSelection)
         MediaPickerMenu(viewController: context, filter: .init(filter), isMultipleSelectionEnabled: allowMultipleSelection, initialSelection: initialMediaSelection)
@@ -71,7 +81,7 @@ final class GutenbergMediaPickerHelper: NSObject {
     }
 
     func presentCameraCaptureFullScreen(animated: Bool,
-                                        filter: WPMediaType,
+                                        filter: GutenbergMediaType,
                                         callback: @escaping GutenbergMediaPickerHelperCallback) {
         didPickMediaCallback = callback
         MediaPickerMenu(viewController: context, filter: .init(filter))
