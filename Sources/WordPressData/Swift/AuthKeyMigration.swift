@@ -17,6 +17,6 @@ public struct AuthKeyMigration: AuthKeyMigrationProtocol {
             return true
         }
         guard shouldMigrate else { return }
-        SharedDataIssueSolver.instance().migrateAuthKey(for: username)
+        SharedDataIssueSolver().migrateAuthKey(for: username)
     }
 }

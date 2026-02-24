@@ -1,8 +1,7 @@
 import WordPressShared
 import BuildSettingsKit
 
-@objcMembers
-public final class SharedDataIssueSolver: NSObject {
+public final class SharedDataIssueSolver {
 
     private let contextManager: CoreDataStack
     private let keychainUtils: KeychainUtils
@@ -20,13 +19,6 @@ public final class SharedDataIssueSolver: NSObject {
         self.sharedDefaults = sharedDefaults
         self.localFileStore = localFileStore
         self.appGroupName = appGroupName
-    }
-
-    /// Helper method for creating an instance in Obj-C
-    ///
-    @objc
-    public class func instance() -> SharedDataIssueSolver {
-        return SharedDataIssueSolver()
     }
 
     public func migrateAuthKey() {
