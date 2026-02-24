@@ -9,6 +9,7 @@ data model as well as any custom migrations.
 
 - Remove unused fields from `lastPostsSync`, `lastPagesSync`, `Blog`
 - Remove unused field `geolocationEnabled` from `BlogSettings`
+- Remove unused field `localThumbnailIdentifier` from `Media`
 
 ## WordPress 157
 

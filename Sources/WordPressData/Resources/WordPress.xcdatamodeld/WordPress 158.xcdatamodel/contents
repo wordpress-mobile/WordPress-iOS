@@ -410,7 +410,6 @@
         <attribute name="formattedSize" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="height" optional="YES" attributeType="Integer 32" defaultValueString="0" usesScalarValueType="NO"/>
         <attribute name="length" optional="YES" attributeType="Integer 32" defaultValueString="0" usesScalarValueType="NO"/>
-        <attribute name="localThumbnailIdentifier" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="localThumbnailURL" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="localURL" optional="YES" attributeType="String"/>
         <attribute name="mediaID" optional="YES" attributeType="Integer 32" usesScalarValueType="NO"/>

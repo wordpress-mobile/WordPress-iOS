@@ -25,7 +25,6 @@
 @dynamic desc;
 @dynamic mediaTypeString;
 @dynamic videopressGUID;
-@dynamic localThumbnailIdentifier;
 @dynamic localThumbnailURL;
 @dynamic remoteThumbnailURL;
 @dynamic postID;
