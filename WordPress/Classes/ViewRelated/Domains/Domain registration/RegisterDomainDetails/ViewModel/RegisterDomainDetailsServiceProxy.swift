@@ -210,10 +210,9 @@ class RegisterDomainDetailsServiceProxy: RegisterDomainDetailsServiceProxyProtoc
                           failure: @escaping (Error) -> Void) {
 
         if let blog = try? Blog.lookup(withID: siteID, in: context),
-           let domains = blog.domains as? Set<ManagedDomain>,
-           let newPrimaryDomain = domains.first(where: { $0.domainName == domain }) {
+           let newPrimaryDomain = blog.domains?.first(where: { $0.domainName == domain }) {
 
-            for existingPrimaryDomain in domains.filter({ $0.isPrimary }) {
+            for existingPrimaryDomain in (blog.domains ?? []).filter({ $0.isPrimary }) {
                 existingPrimaryDomain.isPrimary = false
             }
 

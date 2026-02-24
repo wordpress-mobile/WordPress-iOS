@@ -13,11 +13,7 @@ extension Blog {
     }
 
     var domainsList: [DomainRepresentation] {
-        guard let domainsSet = domains as? Set<ManagedDomain> else {
-            return []
-        }
-
-        return domainsSet
+        (self.domains ?? [])
             .filter { $0.domainType != .wpCom }
             .sorted(by: { $0.domainName > $1.domainName })
             .map { DomainRepresentation(domain: Domain(managedDomain: $0)) }
@@ -29,8 +25,7 @@ extension Blog {
     }
 
     var freeDomain: Domain? {
-        guard let domainsSet = domains as? Set<ManagedDomain>,
-              let freeDomain = (domainsSet.first { $0.domainType == .wpCom }) else {
+        guard let freeDomain = self.domains?.first(where: { $0.domainType == .wpCom }) else {
             return nil
         }
         return Domain(managedDomain: freeDomain)
@@ -45,8 +40,7 @@ extension Blog {
     }
 
     var primaryDomain: Domain? {
-        guard let domainsSet = domains as? Set<ManagedDomain>,
-              let freeDomain = (domainsSet.first { $0.isPrimary == true }) else {
+        guard let freeDomain = self.domains?.first(where: { $0.isPrimary }) else {
             return nil
         }
         return Domain(managedDomain: freeDomain)

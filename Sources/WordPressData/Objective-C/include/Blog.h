@@ -22,6 +22,7 @@ NS_ASSUME_NONNULL_BEGIN
 @class PublicizeConnection;
 @class Comment;
 @class InviteLinks;
+@class ManagedDomain;
 
 extern NSString * const BlogEntityName;
 extern NSString * const PostFormatStandard;
@@ -145,7 +146,7 @@ typedef NS_ENUM(NSInteger, SiteVisibility) {
 @property (nonatomic, strong, readwrite, nullable) NSSet<Comment *> *comments;
 @property (nonatomic, strong, readwrite, nullable) NSSet<PublicizeConnection *> *connections;
 @property (nonatomic, strong, readwrite, nullable) NSSet<InviteLinks *> *inviteLinks;
-@property (nonatomic, strong, readwrite, nullable) NSSet *domains;
+@property (nonatomic, strong, readwrite, nullable) NSSet<ManagedDomain *> *domains;
 @property (nonatomic, strong, readwrite, nullable) NSSet *themes;
 @property (nonatomic, strong, readwrite, nullable) NSSet *media;
 @property (nonatomic, strong, readwrite, nullable) NSSet<UserSuggestion *> *userSuggestions;
