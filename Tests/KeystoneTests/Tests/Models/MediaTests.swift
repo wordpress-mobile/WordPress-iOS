@@ -90,6 +90,108 @@ class MediaTests: CoreDataTestCase {
         XCTAssertEqual(media.autoUploadFailureCount, 0)
     }
 
+    // MARK: - File Extension
+
+    func testFileExtensionFromFilename() {
+        let media = newTestMedia()
+        media.filename = "photo.jpeg"
+
+        XCTAssertEqual(media.fileExtension(), "jpeg")
+    }
+
+    func testFileExtensionFallsBackToLocalURL() {
+        let media = newTestMedia()
+        media.filename = nil
+        media.localURL = "photo.png"
+
+        XCTAssertEqual(media.fileExtension(), "png")
+    }
+
+    func testFileExtensionFallsBackToRemoteURL() {
+        let media = newTestMedia()
+        media.filename = nil
+        media.localURL = nil
+        media.remoteURL = "https://example.com/photo.gif"
+
+        XCTAssertEqual(media.fileExtension(), "gif")
+    }
+
+    func testFileExtensionReturnsEmptyStringWhenNothingIsSet() {
+        let media = newTestMedia()
+
+        XCTAssertEqual(media.fileExtension(), "")
+    }
+
+    // MARK: - Has Remote
+
+    func testHasRemoteWhenMediaIDIsSet() {
+        let media = newTestMedia()
+        media.mediaID = 123
+
+        XCTAssertTrue(media.hasRemote)
+    }
+
+    // MARK: - Prepare for Deletion
+
+    func testPrepareForDeletionRemovesLocalFiles() throws {
+        let media = newTestMedia()
+
+        // Create a temporary file in the uploads directory
+        let uploadsDirectory = try MediaFileManager.uploadsDirectoryURL()
+        let localFileURL = uploadsDirectory.appendingPathComponent("test-delete-\(UUID().uuidString).jpeg")
+        try Data("test".utf8).write(to: localFileURL)
+        media.absoluteLocalURL = localFileURL
+
+        // Create a temporary file in the cache directory
+        let cacheDirectory = try MediaFileManager.cache.directoryURL()
+        let thumbnailFileURL = cacheDirectory.appendingPathComponent("test-thumb-\(UUID().uuidString).jpeg")
+        try Data("test".utf8).write(to: thumbnailFileURL)
+        media.absoluteThumbnailLocalURL = thumbnailFileURL
+
+        XCTAssertTrue(FileManager.default.fileExists(atPath: localFileURL.path))
+        XCTAssertTrue(FileManager.default.fileExists(atPath: thumbnailFileURL.path))
+
+        // When
+        mainContext.delete(media)
+        try mainContext.save()
+
+        // Then
+        XCTAssertFalse(FileManager.default.fileExists(atPath: localFileURL.path))
+        XCTAssertFalse(FileManager.default.fileExists(atPath: thumbnailFileURL.path))
+    }
+
+    // MARK: - Set Error (Secure Coding)
+
+    func testSetErrorSanitizesUserInfo() {
+        let media = newTestMedia()
+        let originalError = NSError(
+            domain: "TestDomain",
+            code: 42,
+            userInfo: [
+                NSLocalizedDescriptionKey: "Something went wrong",
+                "UnsafeKey": NSObject()
+            ]
+        )
+
+        media.error = originalError
+
+        let storedError = media.error! as NSError
+        XCTAssertEqual(storedError.domain, "TestDomain")
+        XCTAssertEqual(storedError.code, 42)
+        XCTAssertEqual(storedError.localizedDescription, "Something went wrong")
+        XCTAssertEqual(storedError.userInfo.count, 1)
+        XCTAssertNotNil(storedError.userInfo[NSLocalizedDescriptionKey])
+    }
+
+    func testSetErrorWithNil() {
+        let media = newTestMedia()
+        media.error = NSError(domain: "Test", code: 1)
+
+        media.error = nil
+
+        XCTAssertNil(media.error)
+    }
+
     // MARK: - Media Type
 
     func testMimeType() {
