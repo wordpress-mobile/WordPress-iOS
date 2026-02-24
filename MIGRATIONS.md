@@ -7,7 +7,8 @@ data model as well as any custom migrations.
 
 @kean 2026-02-23
 
-- Remove unused fields from `Blog`: `lastPostsSync`, `lastPagesSync`.
+- Remove unused fields from `lastPostsSync`, `lastPagesSync`, `Blog`
+- Remove unused field `geolocationEnabled` from `BlogSettings`
 
 ## WordPress 157
 

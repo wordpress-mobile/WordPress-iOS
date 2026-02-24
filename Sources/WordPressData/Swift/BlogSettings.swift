@@ -140,11 +140,6 @@ open class BlogSettings: NSManagedObject {
     ///
     @NSManaged public var commentsThreadingEnabled: Bool
 
-    /// *LOCAL* flag (non stored remotely) indicating whether post geolocation is enabled or not.
-    /// This can be overriden on a per-post basis.
-    ///
-    @NSManaged public var geolocationEnabled: Bool
-
     /// If set to true, 3rd party sites will be allowed to post pingbacks.
     ///
     @NSManaged public var pingbackInboundEnabled: Bool
