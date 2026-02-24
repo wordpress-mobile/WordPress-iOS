@@ -13,7 +13,7 @@ struct PinnedPostTypeView: View {
 
     @SiteStorage private var pinnedTypes: [PinnedPostType]
 
-    @State private var service: WpSelfHostedService?
+    @State private var service: WpService?
     @State private var details: PostTypeDetailsWithEditContext?
     @State private var isLoading = true
     @State private var error: Error?

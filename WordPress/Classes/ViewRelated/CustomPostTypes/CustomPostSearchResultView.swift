@@ -7,7 +7,7 @@ import WordPressData
 
 struct CustomPostSearchResultView: View {
     let client: WordPressClient
-    let service: WpSelfHostedService
+    let service: WpService
     let endpoint: PostEndpointType
     let details: PostTypeDetailsWithEditContext
     @Binding var searchText: String

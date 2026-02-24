@@ -19,7 +19,7 @@ public protocol WordPressClientAPI: Sendable {
     var posts: PostsRequestExecutor { get }
     var postTypes: PostTypesRequestExecutor { get }
 
-    func createSelfHostedService(cache: WordPressApiCache) throws -> WpSelfHostedService
+    func createSelfHostedService(cache: WordPressApiCache) throws -> WpService
 
     func uploadMedia(
         params: MediaCreateParams,
@@ -92,8 +92,8 @@ public actor WordPressClient {
         }
     }
 
-    private var _service: WpSelfHostedService?
-    public var service: WpSelfHostedService {
+    private var _service: WpService?
+    public var service: WpService {
         get throws {
             if let _service {
                 return _service

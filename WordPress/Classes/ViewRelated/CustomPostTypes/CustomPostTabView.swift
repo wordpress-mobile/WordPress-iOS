@@ -9,7 +9,7 @@ import WordPressData
 
 struct CustomPostTabView: View {
     let client: WordPressClient
-    let service: WpSelfHostedService
+    let service: WpService
     let endpoint: PostEndpointType
     let details: PostTypeDetailsWithEditContext
     let blog: Blog
@@ -41,7 +41,7 @@ struct CustomPostTabView: View {
 
     init(
         client: WordPressClient,
-        service: WpSelfHostedService,
+        service: WpService,
         endpoint: PostEndpointType,
         details: PostTypeDetailsWithEditContext,
         blog: Blog

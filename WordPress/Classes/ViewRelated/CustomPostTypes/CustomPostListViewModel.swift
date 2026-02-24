@@ -13,7 +13,7 @@ final class CustomPostListViewModel: ObservableObject {
     private let blog: Blog
     let filter: CustomPostListFilter
 
-    private var collection: PostMetadataCollectionWithEditContext?
+    private var collection: PostMetadataCollectionWithEditContext
 
     @Published private(set) var items: [CustomPostCollectionItem] = []
     @Published private(set) var listInfo: ListInfo?
@@ -33,7 +33,7 @@ final class CustomPostListViewModel: ObservableObject {
 
     init(
         client: WordPressClient,
-        service: WpSelfHostedService,
+        service: WpService,
         endpoint: PostEndpointType,
         filter: CustomPostListFilter,
         blog: Blog
@@ -54,7 +54,7 @@ final class CustomPostListViewModel: ObservableObject {
 
     func refresh() async {
         do {
-            _ = try await collection?.refresh()
+            _ = try await collection.refresh()
         } catch {
             DDLogError("Failed to refresh posts: \(error)")
             self.show(error: error)
@@ -67,15 +67,13 @@ final class CustomPostListViewModel: ObservableObject {
         }
 
         if listInfo?.currentPage == nil {
-            _ = try await collection?.refresh()
+            _ = try await collection.refresh()
         } else {
-            _ = try await collection?.loadNextPage()
+            _ = try await collection.loadNextPage()
         }
     }
 
     func loadCachedItems() async {
-        guard let collection else { return }
-
         let listInfo = collection.listInfo()
 
         do {
@@ -92,13 +90,18 @@ final class CustomPostListViewModel: ObservableObject {
     }
 
     func handleDataChanges() async {
-        let updates = await client.cache.databaseUpdatesPublisher()
-            .debounce(for: .milliseconds(50), scheduler: DispatchQueue.main)
+        let batches = await client.cache.databaseUpdatesPublisher()
+            .filter { [weak collection] in collection?.isRelevantUpdate(hook: $0) == true }
+            .collect(.byTime(DispatchQueue.main, .milliseconds(100)))
             .values
-        for await hook in updates {
-            guard let collection, collection.isRelevantUpdate(hook: hook) else { continue }
+        for await batch in batches {
+            DDLogInfo("\(batch.count) updates received from WpApiCache")
 
-            DDLogInfo("WpApiCache update: \(hook.action) to \(hook.table) at row \(hook.rowId)")
+            #if DEBUG
+            for hook in batch {
+                DDLogDebug("  |- \(hook.action) to \(hook.table) at row \(hook.rowId)")
+            }
+            #endif
 
             let listInfo = collection.listInfo()
 

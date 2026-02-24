@@ -8,7 +8,7 @@ class CustomPostTypeService {
     let blog: TaggedManagedObjectID<Blog>
     let client: WordPressClient
 
-    private(set) var wpService: WpSelfHostedService?
+    private(set) var wpService: WpService?
     private var collection: PostTypeCollectionWithEditContext?
 
     init(client: WordPressClient, blog: Blog) {
@@ -67,7 +67,7 @@ class CustomPostTypeService {
         return postTypes.getBySlug(slug: slug)
     }
 
-    private func resolveService() async throws -> WpSelfHostedService {
+    private func resolveService() async throws -> WpService {
         if let wpService {
             return wpService
         }
