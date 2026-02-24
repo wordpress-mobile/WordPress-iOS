@@ -309,26 +309,26 @@ extension NewGutenbergViewController: GutenbergKit.EditorViewControllerDelegate 
         return nil
     }
 
-    private func mediaFilterFlags(using filterArray: [OpenMediaLibraryAction.MediaType]) -> WPMediaType {
+    private func mediaFilterFlags(using filterArray: [OpenMediaLibraryAction.MediaType]) -> GutenbergMediaType {
         var mediaType: Int = 0
         for filter in filterArray {
             switch filter {
             case .image:
-                mediaType = mediaType | WPMediaType.image.rawValue
+                mediaType = mediaType | GutenbergMediaType.image.rawValue
             case .video:
-                mediaType = mediaType | WPMediaType.video.rawValue
+                mediaType = mediaType | GutenbergMediaType.video.rawValue
             case .audio:
-                mediaType = mediaType | WPMediaType.audio.rawValue
+                mediaType = mediaType | GutenbergMediaType.audio.rawValue
             case .other:
-                mediaType = mediaType | WPMediaType.other.rawValue
+                mediaType = mediaType | GutenbergMediaType.other.rawValue
             case .any:
-                mediaType = mediaType | WPMediaType.all.rawValue
+                mediaType = mediaType | GutenbergMediaType.all.rawValue
             @unknown default:
                 fatalError()
             }
         }
 
-        return WPMediaType(rawValue: mediaType)
+        return GutenbergMediaType(rawValue: mediaType)
     }
 }
 

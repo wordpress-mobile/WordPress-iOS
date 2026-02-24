@@ -1,6 +1,5 @@
 import BuildSettingsKit
 import CoreData
-import SFHFKeychainUtils
 import WordPressKit
 import WordPressShared
 
@@ -30,6 +29,10 @@ public class WPAccount: NSManagedObject {
     @objc public var _private_wordPressComRestApi: WordPressComRestApi?
 
     private var cachedToken: String?
+
+    lazy var keychain: any KeychainAccessible = KeychainUtils()
+    lazy var keychainServiceName: String = BuildSettings.current.authKeychainServiceName
+    lazy var keychainMigration: any AuthKeyMigrationProtocol = AuthKeyMigration()
 
     // MARK: - Core Data Generated Accessors
 
@@ -107,10 +110,6 @@ public class WPAccount: NSManagedObject {
 
     // MARK: - Auth Token (Keychain)
 
-    private static var authKeychainServiceName: String {
-        BuildSettings.current.authKeychainServiceName
-    }
-
     /// The OAuth2 auth token for WordPress.com accounts
     @objc public var authToken: String? {
         get { _getAuthToken() }
@@ -121,7 +120,12 @@ public class WPAccount: NSManagedObject {
         if let cachedToken {
             return cachedToken
         }
-        let token = try? Self.token(forUsername: username)
+        let token = try? Self.token(
+            forUsername: username,
+            serviceName: keychainServiceName,
+            migration: keychainMigration,
+            keychain: keychain
+        )
         cachedToken = token
         return token
     }
@@ -133,59 +137,34 @@ public class WPAccount: NSManagedObject {
         _private_wordPressComRestApi = nil
 
         do {
-            if let authToken {
-                try SFHFKeychainUtils.storeUsername(
-                    username,
-                    andPassword: authToken,
-                    forServiceName: Self.authKeychainServiceName,
-                    accessGroup: nil,
-                    updateExisting: true
-                )
-            } else {
-                try SFHFKeychainUtils.deleteItem(
-                    forUsername: username,
-                    andServiceName: Self.authKeychainServiceName,
-                    accessGroup: nil
-                )
-            }
+            try keychain.setPassword(for: username, to: authToken, serviceName: keychainServiceName)
         } catch {
             WPLogError("Error while updating or deleting WordPressComOAuthKeychainServiceName token: %@", error.localizedDescription)
         }
     }
 
-    public static func token(
+    public static func token(forUsername username: String) throws -> String {
+        try token(
+            forUsername: username,
+            serviceName: BuildSettings.current.authKeychainServiceName,
+            migration: AuthKeyMigration(),
+            keychain: KeychainUtils()
+        )
+    }
+
+    private static func token(
         forUsername username: String,
-        isJetpack: Bool = BuildSettings.current.brand == .jetpack
+        serviceName: String,
+        migration: any AuthKeyMigrationProtocol,
+        keychain: any KeychainAccessible
     ) throws -> String {
-        if isJetpack {
-            AuthKeyMigration.migrateIfNeeded(username: username)
-        }
+        migration.migrateIfNeeded(username: username)
+
         do {
-            return try SFHFKeychainUtils.getPasswordForUsername(
-                username,
-                andServiceName: WPAccount.authKeychainServiceName,
-                accessGroup: nil
-            )
+            return try keychain.getPassword(for: username, serviceName: serviceName)
         } catch {
             WPLogError("Error while retrieving WordPressComOAuthKeychainServiceName token: %@", error.localizedDescription)
             throw error
         }
-    }
-}
-
-// MARK: - Auth Key Migration
-
-private enum AuthKeyMigration {
-    static let lock = NSLock()
-    static var didMigrate = false
-
-    static func migrateIfNeeded(username: String) {
-        let shouldMigrate = lock.withLock {
-            guard !didMigrate else { return false }
-            didMigrate = true
-            return true
-        }
-        guard shouldMigrate else { return }
-        SharedDataIssueSolver.instance().migrateAuthKey(for: username)
     }
 }

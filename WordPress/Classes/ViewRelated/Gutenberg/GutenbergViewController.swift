@@ -611,29 +611,29 @@ extension GutenbergViewController: GutenbergBridgeDelegate {
         }
     }
 
-    func mediaFilterFlags(using filterArray: [Gutenberg.MediaType]) -> WPMediaType {
+    func mediaFilterFlags(using filterArray: [Gutenberg.MediaType]) -> GutenbergMediaType {
         var mediaType: Int = 0
         for filter in filterArray {
             switch filter {
             case .image:
-                mediaType = mediaType | WPMediaType.image.rawValue
+                mediaType = mediaType | GutenbergMediaType.image.rawValue
             case .video:
-                mediaType = mediaType | WPMediaType.video.rawValue
+                mediaType = mediaType | GutenbergMediaType.video.rawValue
             case .audio:
-                mediaType = mediaType | WPMediaType.audio.rawValue
+                mediaType = mediaType | GutenbergMediaType.audio.rawValue
             case .other:
-                mediaType = mediaType | WPMediaType.other.rawValue
+                mediaType = mediaType | GutenbergMediaType.other.rawValue
             case .any:
-                mediaType = mediaType | WPMediaType.all.rawValue
+                mediaType = mediaType | GutenbergMediaType.all.rawValue
             @unknown default:
                 fatalError()
             }
         }
 
-        return WPMediaType(rawValue: mediaType)
+        return GutenbergMediaType(rawValue: mediaType)
     }
 
-    func gutenbergDidRequestMediaFromSiteMediaLibrary(filter: WPMediaType, allowMultipleSelection: Bool, with callback: @escaping MediaPickerDidPickMediaCallback) {
+    func gutenbergDidRequestMediaFromSiteMediaLibrary(filter: GutenbergMediaType, allowMultipleSelection: Bool, with callback: @escaping MediaPickerDidPickMediaCallback) {
         mediaPickerHelper.presentSiteMediaPicker(filter: filter, allowMultipleSelection: allowMultipleSelection) { [weak self] assets in
             guard let self, let media = assets as? [Media] else {
                 callback(nil)
@@ -643,7 +643,7 @@ extension GutenbergViewController: GutenbergBridgeDelegate {
         }
     }
 
-    func gutenbergDidRequestMediaFromDevicePicker(filter: WPMediaType, allowMultipleSelection: Bool, with callback: @escaping MediaPickerDidPickMediaCallback) {
+    func gutenbergDidRequestMediaFromDevicePicker(filter: GutenbergMediaType, allowMultipleSelection: Bool, with callback: @escaping MediaPickerDidPickMediaCallback) {
         mediaPickerHelper.presetDevicePhotosPicker(filter: filter, allowMultipleSelection: allowMultipleSelection) { [weak self] assets in
             guard let self, let assets, !assets.isEmpty else {
                 return callback(nil)
@@ -652,7 +652,7 @@ extension GutenbergViewController: GutenbergBridgeDelegate {
         }
     }
 
-    func gutenbergDidRequestMediaFromCameraPicker(filter: WPMediaType, with callback: @escaping MediaPickerDidPickMediaCallback) {
+    func gutenbergDidRequestMediaFromCameraPicker(filter: GutenbergMediaType, with callback: @escaping MediaPickerDidPickMediaCallback) {
         mediaPickerHelper.presentCameraCaptureFullScreen(animated: true, filter: filter) { [weak self] assets in
             guard let self, let asset = assets?.first else {
                 return callback(nil)
