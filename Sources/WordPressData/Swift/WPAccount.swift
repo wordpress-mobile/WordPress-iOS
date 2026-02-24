@@ -30,8 +30,9 @@ public class WPAccount: NSManagedObject {
 
     private var cachedToken: String?
 
-    public lazy var keychain: any KeychainServiceProtocol = Self.makeKeychainService()
-    public lazy var authKeyMigration: any AuthKeyMigrationProtocol = AuthKeyMigration()
+    lazy var keychain: any KeychainAccessible = KeychainUtils()
+    lazy var keychainServiceName: String = BuildSettings.current.authKeychainServiceName
+    lazy var keychainMigration: any AuthKeyMigrationProtocol = AuthKeyMigration()
 
     // MARK: - Core Data Generated Accessors
 
@@ -121,7 +122,8 @@ public class WPAccount: NSManagedObject {
         }
         let token = try? Self.token(
             forUsername: username,
-            migration: authKeyMigration,
+            serviceName: keychainServiceName,
+            migration: keychainMigration,
             keychain: keychain
         )
         cachedToken = token
@@ -135,36 +137,34 @@ public class WPAccount: NSManagedObject {
         _private_wordPressComRestApi = nil
 
         do {
-            if let authToken {
-                try keychain.setPassword(authToken, for: username)
-            } else {
-                try keychain.deletePassword(for: username)
-            }
+            try keychain.setPassword(for: username, to: authToken, serviceName: keychainServiceName)
         } catch {
             WPLogError("Error while updating or deleting WordPressComOAuthKeychainServiceName token: %@", error.localizedDescription)
         }
     }
 
     public static func token(forUsername username: String) throws -> String {
-        try token(forUsername: username, migration: AuthKeyMigration(), keychain: makeKeychainService())
+        try token(
+            forUsername: username,
+            serviceName: BuildSettings.current.authKeychainServiceName,
+            migration: AuthKeyMigration(),
+            keychain: KeychainUtils()
+        )
     }
 
     private static func token(
         forUsername username: String,
+        serviceName: String,
         migration: any AuthKeyMigrationProtocol,
-        keychain: any KeychainServiceProtocol
+        keychain: any KeychainAccessible
     ) throws -> String {
         migration.migrateIfNeeded(username: username)
 
         do {
-            return try keychain.password(for: username)
+            return try keychain.getPassword(for: username, serviceName: serviceName)
         } catch {
             WPLogError("Error while retrieving WordPressComOAuthKeychainServiceName token: %@", error.localizedDescription)
             throw error
         }
-    }
-
-    private static func makeKeychainService() -> KeychainServiceProtocol {
-        KeychainService(serviceName: BuildSettings.current.authKeychainServiceName)
     }
 }

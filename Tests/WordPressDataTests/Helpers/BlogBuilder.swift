@@ -1,5 +1,5 @@
 import XCTest
-import WordPressData
+@testable import WordPressData
 
 /// Creates a Blog
 ///
@@ -103,7 +103,8 @@ class BlogBuilder {
         // Add Account
         let account = NSEntityDescription.insertNewObject(forEntityName: WPAccount.entityName(), into: context) as! WPAccount
         account.keychain = MockKeychainService()
-        account.authKeyMigration = MockAuthKeyMigration()
+        account.keychainServiceName = "test-service"
+        account.keychainMigration = MockAuthKeyMigration()
         account.displayName = "displayName"
         account.username = username
         account.authToken = "authtoken"
@@ -230,7 +231,8 @@ extension Blog {
 
         let account = NSEntityDescription.insertNewObject(forEntityName: WPAccount.entityName(), into: context) as! WPAccount
         account.keychain = MockKeychainService()
-        account.authKeyMigration = MockAuthKeyMigration()
+        account.keychainServiceName = "test-service"
+        account.keychainMigration = MockAuthKeyMigration()
         account.username = "foo"
         account.addBlogsObject(self)
     }

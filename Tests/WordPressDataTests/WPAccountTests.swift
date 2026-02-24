@@ -14,6 +14,7 @@ struct WPAccountTests {
 
         let account = makeAccount(username: "user1", keychain: keychain)
         #expect(account.authToken == "token-123")
+        #expect(keychain.receivedServiceNames == ["test-service"])
     }
 
     @Test func getAuthTokenReturnsCachedTokenOnSecondAccess() {
@@ -58,6 +59,7 @@ struct WPAccountTests {
         account.authToken = "new-token"
 
         #expect(keychain.storage["user1"] == "new-token")
+        #expect(keychain.receivedServiceNames == ["test-service"])
     }
 
     @Test func setAuthTokenToNilDeletesFromKeychain() {
@@ -207,7 +209,8 @@ struct WPAccountTests {
     ) -> WPAccount {
         let account = NSEntityDescription.insertNewObject(forEntityName: WPAccount.entityName(), into: mainContext) as! WPAccount
         account.keychain = keychain
-        account.authKeyMigration = migration
+        account.keychainServiceName = "test-service"
+        account.keychainMigration = migration
         account.uuid = UUID().uuidString
         account.userID = NSNumber(value: 1)
 

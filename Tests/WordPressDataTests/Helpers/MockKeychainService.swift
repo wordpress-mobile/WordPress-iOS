@@ -1,14 +1,16 @@
-import WordPressData
+import WordPressShared
 
-final class MockKeychainService: KeychainServiceProtocol {
+final class MockKeychainService: KeychainAccessible {
     var storage: [String: String] = [:]
     var shouldThrow = false
     var passwordCallCount = 0
     var setPasswordCallCount = 0
     var deletedUsernames: [String] = []
+    var receivedServiceNames: [String] = []
 
-    func password(for username: String) throws -> String {
+    func getPassword(for username: String, serviceName: String) throws -> String {
         passwordCallCount += 1
+        receivedServiceNames.append(serviceName)
         if shouldThrow { throw MockKeychainError.mockError }
         guard let password = storage[username] else {
             throw MockKeychainError.notFound
@@ -16,16 +18,16 @@ final class MockKeychainService: KeychainServiceProtocol {
         return password
     }
 
-    func setPassword(_ password: String, for username: String) throws {
+    func setPassword(for username: String, to newValue: String?, serviceName: String) throws {
         setPasswordCallCount += 1
+        receivedServiceNames.append(serviceName)
         if shouldThrow { throw MockKeychainError.mockError }
-        storage[username] = password
-    }
-
-    func deletePassword(for username: String) throws {
-        deletedUsernames.append(username)
-        if shouldThrow { throw MockKeychainError.mockError }
-        storage[username] = nil
+        if let newValue {
+            storage[username] = newValue
+        } else {
+            deletedUsernames.append(username)
+            storage[username] = nil
+        }
     }
 }
 

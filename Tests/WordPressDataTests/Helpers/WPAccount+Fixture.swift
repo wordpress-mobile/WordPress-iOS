@@ -1,4 +1,4 @@
-import WordPressData
+@testable import WordPressData
 
 /// Centralized utility to generate preconfigured WPAccount instances
 ///
@@ -16,7 +16,8 @@ extension WPAccount {
     ) -> WPAccount {
         let account = WPAccount(context: context)
         account.keychain = MockKeychainService()
-        account.authKeyMigration = MockAuthKeyMigration()
+        account.keychainServiceName = "test-service"
+        account.keychainMigration = MockAuthKeyMigration()
         account.userID = NSNumber(value: userID)
         account.username = username
         account.authToken = authToken
