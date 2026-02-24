@@ -411,8 +411,6 @@ public extension AbstractPost {
 
         let mediaIDs = DisplayableImageHelper.searchPostContentForAttachmentIds(inGalleries: content) as? Set<NSNumber> ?? []
         for media in allMedia {
-            guard let media = media as? Media else { continue }
-
             guard let mediaID = media.mediaID,
                   mediaIDs.contains(mediaID) else {
                 continue

@@ -24,6 +24,9 @@ NS_ASSUME_NONNULL_BEGIN
 @class InviteLinks;
 @class ManagedDomain;
 @class Theme;
+@class Media;
+@class Menu;
+@class MenuLocation;
 
 extern NSString * const BlogEntityName;
 extern NSString * const PostFormatStandard;
@@ -149,11 +152,11 @@ typedef NS_ENUM(NSInteger, SiteVisibility) {
 @property (nonatomic, strong, readwrite, nullable) NSSet<InviteLinks *> *inviteLinks;
 @property (nonatomic, strong, readwrite, nullable) NSSet<ManagedDomain *> *domains;
 @property (nonatomic, strong, readwrite, nullable) NSSet<Theme *> *themes;
-@property (nonatomic, strong, readwrite, nullable) NSSet *media;
+@property (nonatomic, strong, readwrite, nullable) NSSet<Media *> *media;
 @property (nonatomic, strong, readwrite, nullable) NSSet<UserSuggestion *> *userSuggestions;
 @property (nonatomic, strong, readwrite, nullable) NSSet<SiteSuggestion *> *siteSuggestions;
-@property (nonatomic, strong, readwrite, nullable) NSOrderedSet *menus;
-@property (nonatomic, strong, readwrite, nullable) NSOrderedSet *menuLocations;
+@property (nonatomic, strong, readwrite, nullable) NSOrderedSet<Menu *> *menus;
+@property (nonatomic, strong, readwrite, nullable) NSOrderedSet<MenuLocation *> *menuLocations;
 @property (nonatomic, strong, readwrite, nullable) NSSet<Role *> *roles;
 @property (nonatomic, strong, readwrite, nullable) NSString *currentThemeId;
 @property (nonatomic, strong, readwrite, nullable) NSDate *lastCommentsSync;
