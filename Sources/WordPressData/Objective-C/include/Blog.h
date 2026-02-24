@@ -27,6 +27,7 @@ NS_ASSUME_NONNULL_BEGIN
 @class Media;
 @class Menu;
 @class MenuLocation;
+@class PostType;
 
 extern NSString * const BlogEntityName;
 extern NSString * const PostFormatStandard;
@@ -162,7 +163,7 @@ typedef NS_ENUM(NSInteger, SiteVisibility) {
 @property (nonatomic, strong, readwrite, nullable) NSDate *lastCommentsSync;
 @property (nonatomic, strong, readwrite, nullable) NSString *lastUpdateWarning;
 @property (nonatomic, strong, readwrite, nullable) NSDictionary *options;
-@property (nonatomic, strong, readwrite, nullable) NSSet *postTypes;
+@property (nonatomic, strong, readwrite, nullable) NSSet<PostType *> *postTypes;
 @property (nonatomic, strong, readwrite, nullable) NSDictionary *postFormats;
 @property (nonatomic, strong, readwrite, nullable) WPAccount *account;
 @property (nonatomic, strong, readwrite, nullable) WPAccount *accountForDefaultBlog;

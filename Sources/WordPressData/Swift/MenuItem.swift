@@ -53,12 +53,7 @@ public class MenuItem: NSManagedObject {
                 comment: "Menu item label for linking a comic page."
             )
         default:
-            for postType in (blog?.postTypes ?? []) {
-                if let postType = postType as? PostType, postType.name == itemType {
-                    return postType.label
-                }
-            }
-            return nil
+            return blog?.postTypes?.first(where: { $0.name == itemType })?.label
         }
     }
 
