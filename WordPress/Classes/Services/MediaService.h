@@ -16,6 +16,8 @@ typedef NS_ERROR_ENUM(MediaServiceErrorDomain, MediaServiceError) {
     MediaServiceErrorUnknownUploadError = 4
 };
 
+NS_ASSUME_NONNULL_BEGIN
+
 @interface MediaService : NSObject
 
 @property (nonatomic, readonly) NSManagedObjectContext *managedObjectContext;
@@ -106,3 +108,5 @@ typedef NS_ERROR_ENUM(MediaServiceErrorDomain, MediaServiceError) {
                         failure:(nullable void (^)(NSError * _Nonnull error))failure;
 
 @end
+
+NS_ASSUME_NONNULL_END

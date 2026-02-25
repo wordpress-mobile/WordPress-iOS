@@ -1,6 +1,7 @@
 #import "MenuItemAbstractPostsViewController.h"
 #import "MenuPostService.h"
 #import "MenuPostServiceOptions.h"
+@import WordPressData;
 @import WordPressKit;
 
 @interface MenuItemAbstractPostsViewController () <MenuItemSourcePostAbstractViewSubclass>
