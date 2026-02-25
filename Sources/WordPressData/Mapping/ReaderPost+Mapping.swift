@@ -8,11 +8,11 @@ extension ReaderPost {
     ///
     /// - Returns: A tuple of the post and whether it already existed.
     static func findOrCreate(
-        globalID: String,
+        globalID: String?,
         topic: ReaderAbstractTopic?,
         in context: NSManagedObjectContext
     ) -> (post: ReaderPost, isExisting: Bool) {
-        if let post = context.firstObject(ofType: ReaderPost.self, matching: NSPredicate(
+        if let globalID, let post = context.firstObject(ofType: ReaderPost.self, matching: NSPredicate(
             format: "globalID = %@ AND (topic = %@ OR topic = NULL)",
             globalID, topic ?? NSNull()
         )) {
@@ -29,7 +29,8 @@ extension ReaderPost {
         topic: ReaderAbstractTopic?,
         context: NSManagedObjectContext
     ) -> ReaderPost {
-        let (post, isExisting) = findOrCreate(globalID: remotePost.globalID, topic: topic, in: context)
+        let globalID: String? = remotePost.globalID
+        let (post, isExisting) = findOrCreate(globalID: globalID, topic: topic, in: context)
         post.update(with: remotePost, isExisting: isExisting, topic: topic, in: context)
         return post
     }
