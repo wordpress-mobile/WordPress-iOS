@@ -1,10 +1,14 @@
-* [**] Stats: Add new "Adds" tab to show WordAdds earnings and stats [#25165]
-* [*] For sites that are authenticated with application passwords, the app no longer requires xml-rpc to be enabled. But in that scenario, only limited features are available: XML-RPC needs to be enabled to use all features. [#25183]
-* [**] Stats: Add "Devices" view to the "Traffic" tab [#25176]
-* [**] Stats: Add "UTM" view to the "Traffic" tab [#25178]
-* [*] Stats: Fix a few issues with charts (x axis labels alignment, occasionally incorrect displayed date period, and more) [#25185]
-* [*] Stats: the "Post Stats" screen will now automatically show "Last 7 days" instead of attempting to show unavailable hourly data when "Today" or other "day" period is selected [#25210]
-* [*] Stats: Minor design improvements and simplifcations [#25215], [#25214]
-* [*] Insights: Fix empty posting activity [#25219]
-* [*] Activity Logs: Minor visual improvements [#25220]
-* [*] A new experimental feature: Custom Post Types. [#25267]
+112% of our team loved the big changes we made to the Stats section. (Some people may have voted twice; we can’t say for sure.)
+
+- There’s a new Ads tab where you can see important WordAds data like the number of ads served and revenue earned.
+- We added a UTM tab so you can see source and medium for your site traffic. There’s also a Devices view that shows you which devices your visitors used.
+- When you select “Today” or another daily period in the Post Stats screen, you’ll see “Last 7 days” instead of hourly data that doesn’t exist. We can’t predict the future just yet.
+- We fixed some visual issues with charts and made design improvements throughout the Stats section.
+
+We solved a caching issue on the Insights screen that would display a blank Posting Activity area. Now you can always see what you’ve been up to.
+
+We made small visual improvements on the Activity Logs screen, like titles, icons, and colors.
+
+We added Custom Post Types as an experimental feature. Test it out and let us know what you think. #science
+
+One last thing: if your site is authenticated with an application password, you don’t need to have XML-RPC enabled. The downside is that only limited features are available. Once enabled, you can get those features back.
