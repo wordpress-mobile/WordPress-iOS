@@ -11,16 +11,14 @@ struct PostTagsView: View {
 
     @State private var isKeyboardPresented = false
 
-    /// - note: The tags are encoded as a comma-separate list.
-    init(blog: Blog, selectedTags: String?, onSelectionChanged: @escaping (String) -> Void) {
+    init(blog: Blog, selectedTags: [TagsViewModel.SelectedTerm], onSelectionChanged: @escaping ([TagsViewModel.SelectedTerm]) -> Void) {
         let viewModel = TagsViewModel(blog: blog, selectedTags: selectedTags, mode: .selection(onSelectedTagsChanged: { tags in
             onSelectionChanged(tags)
         }))
         self._viewModel = StateObject(wrappedValue: viewModel)
     }
 
-    /// - note: The tags are encoded as a comma-separate list.
-    init(blog: Blog, client: WordPressClient, taxonomy: SiteTaxonomy, selectedTerms: String? = nil, onSelectionChanged: @escaping (String) -> Void) {
+    init(blog: Blog, client: WordPressClient, taxonomy: SiteTaxonomy, selectedTerms: [TagsViewModel.SelectedTerm] = [], onSelectionChanged: @escaping ([TagsViewModel.SelectedTerm]) -> Void) {
         let viewModel = TagsViewModel(blog: blog, client: client, taxonomy: taxonomy, selectedTerms: selectedTerms, mode: .selection(onSelectedTagsChanged: { tags in
             onSelectionChanged(tags)
         }))
@@ -232,13 +230,13 @@ private struct SelectedTagsView: View {
         VStack(alignment: .leading, spacing: 4) {
             if !viewModel.selectedTags.isEmpty {
                 FlowLayout(spacing: 8) {
-                    ForEach(viewModel.selectedTags, id: \.self) { tagName in
-                        SelectedTag(tagName: tagName) {
+                    ForEach(viewModel.selectedTags, id: \.self) { tag in
+                        SelectedTag(tag: tag) {
                             withAnimation(.spring) {
-                                viewModel.removeSelectedTag(tagName)
+                                viewModel.removeSelectedTag(tag.name)
                             }
                         }
-                        .tag(tagName)
+                        .id(tag)
                     }
                 }
                 .padding(.horizontal)
@@ -256,12 +254,12 @@ private struct SelectedTagsView: View {
 }
 
 private struct SelectedTag: View {
-    let tagName: String
+    let tag: TagsViewModel.SelectedTerm
     let onRemove: () -> Void
 
     var body: some View {
         HStack(spacing: 4) {
-            Text(tagName)
+            Text(tag.name)
                 .font(.body)
                 .foregroundColor(.primary)
                 .lineLimit(1)
@@ -272,8 +270,16 @@ private struct SelectedTag: View {
         }
         .padding(.horizontal, 8)
         .padding(.vertical, 4)
-        .background(Color(.secondarySystemBackground).opacity(0.75))
-        .clipShape(Capsule())
+        .background {
+            if tag.isPending {
+                Capsule()
+                    .strokeBorder(style: StrokeStyle(lineWidth: 1, dash: [4, 3]))
+                    .foregroundColor(Color(.secondarySystemBackground))
+            } else {
+                Capsule()
+                    .fill(Color(.secondarySystemBackground).opacity(0.75))
+            }
+        }
         .onTapGesture(perform: onRemove)
     }
 }

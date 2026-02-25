@@ -10,7 +10,7 @@ import GutenbergKit
 
 class CustomPostEditorViewController: PostGBKEditorViewController {
     let client: WordPressClient
-    var post: AnyPostWithEditContext {
+    var post: AnyPostWithEditContext? {
         editorService.post
     }
     let details: PostTypeDetailsWithEditContext
@@ -27,17 +27,19 @@ class CustomPostEditorViewController: PostGBKEditorViewController {
 
     init(
         blog: Blog,
+        service: WordPressAPIInternal.PostService,
         client: WordPressClient,
-        post: AnyPostWithEditContext,
+        post: AnyPostWithEditContext?,
         details: PostTypeDetailsWithEditContext,
         completion: @escaping () -> Void
     ) {
-        precondition(post.id > 0, "No new post support yet")
-
         self.client = client
         self.details = details
         self.completion = completion
-        self.editorService = CustomPostEditorService(post: post, details: details, client: client)
+
+        self.editorService = CustomPostEditorService(
+            blog: blog, post: post, details: details, client: client, service: service
+        )
 
         let postTypeDetails = PostTypeDetails(
             postType: details.slug,
@@ -45,11 +47,11 @@ class CustomPostEditorViewController: PostGBKEditorViewController {
             restNamespace: details.restNamespace
         )
         super.init(
-            postId: Int(post.id),
+            postId: post.map { Int($0.id) },
             postType: postTypeDetails,
-            title: post.title?.raw,
-            content: post.content.raw,
-            status: post.status.description,
+            title: post?.title?.raw,
+            content: post?.content.raw,
+            status: (post?.status ?? .draft).description,
             blog: blog
         )
     }
@@ -61,6 +63,7 @@ class CustomPostEditorViewController: PostGBKEditorViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
 
+        editorService.delegate = self
         navigationItem.leftBarButtonItem = UIBarButtonItem(barButtonSystemItem: .close, target: self, action: #selector(closeButtonAction))
         navigationItem.rightBarButtonItems = rightBarButtonItems()
         redoButton.isEnabled = false
@@ -74,8 +77,9 @@ class CustomPostEditorViewController: PostGBKEditorViewController {
 
     private func hasUnsavedChanges() async throws -> Bool {
         let content = try await self.editorViewController.getTitleAndContent()
-        // We can't use `content.changed` here, because it means whether the content has changed since last `getTitleAndContent` call.
-        return content.title != post.title?.raw || content.content != post.content.raw
+        let originalTitle = post?.title?.raw ?? ""
+        let originalContent = post?.content.raw ?? ""
+        return content.title != originalTitle || content.content != originalContent
     }
 }
 
@@ -108,7 +112,7 @@ private extension CustomPostEditorViewController {
             alert.addDestructiveActionWithTitle(PostEditorStrings.discardChanges) { [weak self] _ in
                 self?.navigationController?.dismiss(animated: true)
             }
-            if post.status == .draft {
+            if post?.status ?? .draft == .draft {
                 alert.addAction(UIAlertAction(title: PostEditorStrings.saveDraft, style: .default, handler: { [weak self] _ in
                     Task {
                         await self?.save(publish: false)
@@ -130,7 +134,7 @@ private extension CustomPostEditorViewController {
         }
         children.append(contentsOf: [helpAction(), feedbackAction()])
 
-        if post.status == .draft {
+        if post?.status ?? .draft == .draft {
             let menu = UIDeferredMenuElement.uncached { [weak self] resolve in
                 Task {
                     let enabled = (try? await self?.hasUnsavedChanges()) == true
@@ -157,9 +161,7 @@ private extension CustomPostEditorViewController {
     }
 
     private func savePostAction() -> UIAction {
-        precondition(post.id > 0, "No new post support yet")
-
-        if post.status == .draft {
+        if post?.status ?? .draft == .draft {
             return UIAction(title: PostEditorStrings.publish) { [weak self] _ in
                 Task {
                     if FeatureFlag.cptPostSettings.enabled {
@@ -188,10 +190,7 @@ private extension CustomPostEditorViewController {
     }
 
     func showPostSettings() {
-        let viewModel = PostSettingsViewModel(
-            editorService: editorService,
-            blog: blog
-        )
+        let viewModel = PostSettingsViewModel(editorService: editorService, blog: blog)
         viewModel.onEditorPostSaved = { /* No-op: shared editorService is already up-to-date */ }
         let settingsVC = PostSettingsViewController(viewModel: viewModel)
         let navigation = UINavigationController(rootViewController: settingsVC)
@@ -199,25 +198,11 @@ private extension CustomPostEditorViewController {
     }
 
     func showPublishingSheet() async {
-        let data: (title: String, content: String)
-        do {
-            let result = try await editorViewController.getTitleAndContent()
-            data = (result.title, result.content)
-        } catch {
-            DDLogError("Failed to get editor content: \(error)")
-            return
-        }
-
         view.endEditing(true)
 
-        let editorContent = PostSettingsViewModel.EditorContent(
-            title: data.title,
-            content: data.content
-        )
         PublishPostViewController.show(
             editorService: editorService,
             blog: blog,
-            editorContent: editorContent,
             from: self,
             completion: { [weak self] result in
                 guard let self else { return }
@@ -245,8 +230,11 @@ private extension CustomPostEditorViewController {
 
         do {
             let data = try await editorViewController.getTitleAndContent()
+            try await editorService.save(
+                content: EditorContent(title: data.title, content: data.content),
+                publish: publish
+            )
 
-            try await update(title: data.title, content: data.content, publish: publish)
             dismissHUDWithSuccess()
 
             if publish {
@@ -257,52 +245,15 @@ private extension CustomPostEditorViewController {
         }
     }
 
-    private func hasBeenModified() async throws -> Bool {
-        let lastModified = try await client.api.posts
-            .filterRetrieveWithEditContext(
-                postEndpointType: details.toPostEndpointType(),
-                postId: post.id,
-                params: .init(),
-                fields: [.modified]
-            )
-            .data
-            .modified
-        return lastModified != post.modified
-    }
-
-    private func update(title: String, content: String, publish: Bool) async throws {
-        // This is a simple way to avoid overwriting others' changes. We can further improve it
-        // to align with the implementation in `PostRepository`.
-        guard try await !hasBeenModified() else { throw PostUpdateError.conflicts }
-
-        let hasTitle = details.supports.map[.title] == .bool(true)
-        let params = PostUpdateParams(
-            status: publish ? .publish : nil,
-            title: hasTitle ? title : nil,
-            content: content,
-            meta: nil
-        )
-        try await editorService.update(params: params)
-    }
-
     private func dismissHUDWithSuccess() {
         SVProgressHUD.showSuccess(withStatus: nil)
         SVProgressHUD.dismiss(withDelay: 1)
     }
 }
 
-private enum PostUpdateError: LocalizedError {
-    case conflicts
-
-    var errorDescription: String? {
-        Strings.conflictErrorMessage
+extension CustomPostEditorViewController: CustomPostEditorServiceDelegate {
+    func editorContent(for service: CustomPostEditorService) async throws -> EditorContent {
+        let result = try await editorViewController.getTitleAndContent()
+        return EditorContent(title: result.title, content: result.content)
     }
-}
-
-private enum Strings {
-    static let conflictErrorMessage = NSLocalizedString(
-        "customPostEditor.error.conflict.message",
-        value: "The post you are trying to save has been changed in the meantime.",
-        comment: "Error message shown when the post was modified by another user while editing"
-    )
 }

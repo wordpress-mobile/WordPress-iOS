@@ -12,16 +12,16 @@ struct CustomPostListView<Header: View>: View {
     @ObservedObject var viewModel: CustomPostListViewModel
     let details: PostTypeDetailsWithEditContext
     let client: WordPressClient
-    let onSelectPost: (AnyPostWithEditContext) -> Void
     let mediaHost: MediaHost?
+    let onSelectPost: (AnyPostWithEditContext) -> Void
     @ViewBuilder let header: () -> Header
 
     init(
         viewModel: CustomPostListViewModel,
         details: PostTypeDetailsWithEditContext,
         client: WordPressClient,
-        onSelectPost: @escaping (AnyPostWithEditContext) -> Void,
-        mediaHost: MediaHost? = nil
+        mediaHost: MediaHost? = nil,
+        onSelectPost: @escaping (AnyPostWithEditContext) -> Void
     ) where Header == EmptyView {
         self.viewModel = viewModel
         self.details = details
@@ -35,8 +35,8 @@ struct CustomPostListView<Header: View>: View {
         viewModel: CustomPostListViewModel,
         details: PostTypeDetailsWithEditContext,
         client: WordPressClient,
-        onSelectPost: @escaping (AnyPostWithEditContext) -> Void,
         mediaHost: MediaHost? = nil,
+        onSelectPost: @escaping (AnyPostWithEditContext) -> Void,
         @ViewBuilder header: @escaping () -> Header
     ) {
         self.viewModel = viewModel

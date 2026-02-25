@@ -26,11 +26,7 @@ final class PublishPostViewController: UIHostingController<PublishPostView> {
     var onCompletion: ((PublishingSheetResult) -> Void)?
 
     init(post: AbstractPost, isStandalone: Bool) {
-        let viewModel = PostSettingsViewModel(
-            post: post,
-            isStandalone: isStandalone,
-            context: .publishing
-        )
+        let viewModel = PostSettingsViewModel(post: post, isStandalone: isStandalone, context: .publishing)
         self.viewModel = viewModel
 
         let uploadsViewModel = PostMediaUploadsViewModel(post: post)
@@ -59,15 +55,9 @@ final class PublishPostViewController: UIHostingController<PublishPostView> {
 
     init(
         editorService: CustomPostEditorService,
-        blog: Blog,
-        editorContent: PostSettingsViewModel.EditorContent?
+        blog: Blog
     ) {
-        let viewModel = PostSettingsViewModel(
-            editorService: editorService,
-            blog: blog,
-            context: .publishing,
-            editorContent: editorContent
-        )
+        let viewModel = PostSettingsViewModel(editorService: editorService, blog: blog, context: .publishing)
         self.viewModel = viewModel
         self.uploadsViewModel = nil
 
@@ -78,7 +68,6 @@ final class PublishPostViewController: UIHostingController<PublishPostView> {
     static func show(
         editorService: CustomPostEditorService,
         blog: Blog,
-        editorContent: PostSettingsViewModel.EditorContent?,
         from presentingViewController: UIViewController,
         completion: @escaping (PublishingSheetResult) -> Void
     ) {
@@ -86,8 +75,7 @@ final class PublishPostViewController: UIHostingController<PublishPostView> {
 
         let publishVC = PublishPostViewController(
             editorService: editorService,
-            blog: blog,
-            editorContent: editorContent
+            blog: blog
         )
         publishVC.onCompletion = completion
         let navigationVC = UINavigationController(rootViewController: publishVC)

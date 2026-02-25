@@ -7,6 +7,28 @@ import WordPressShared
 /// A plain data structure representing the subset of post/page settings that can be edited in PostSettingsView.
 /// Used for change tracking and to separate UI state from Core Data objects.
 struct PostSettings: Hashable {
+    struct Term: Hashable {
+        let id: Int
+        var name: String
+
+        // Two terms are the same if they share the same non-zero ID or
+        // the same name. This handles the case where a term with `id == 0`
+        // (unsaved) matches a server-confirmed term by name.
+        static func == (lhs: Term, rhs: Term) -> Bool {
+            let bothExistOnServer = lhs.id != 0 && rhs.id != 0
+            if bothExistOnServer {
+                return lhs.id == rhs.id
+            }
+            return lhs.name == rhs.name
+        }
+
+        func hash(into hasher: inout Hasher) {
+            // Hash only by name so that terms equal by name land in the
+            // same bucket, satisfying the Hashable contract.
+            hasher.combine(name)
+        }
+    }
+
     struct Author: Hashable {
         let id: Int
         let displayName: String
@@ -29,9 +51,13 @@ struct PostSettings: Hashable {
     var publishDate: Date?
     var password: String?
     var author: Author?
+    /// Category IDs are kept as plain integers (not `[Term]`) because categories
+    /// are resolved from `Blog.categories`, which is synced to Core Data and
+    /// available locally. Unlike tags and custom terms, there's no need for
+    /// async ID-to-name resolution.
     var categoryIDs: Set<Int> = []
-    var tags: String = ""
-    var otherTerms: [String: [String]] = [:]
+    var tags: [Term] = []
+    var otherTerms: [String: [Term]] = [:]
     var featuredImageID: Int?
     var metadata: PostMetadata
 
@@ -46,6 +72,55 @@ struct PostSettings: Hashable {
     var parentPageID: Int?
 
     // MARK: - Initialization
+
+    /// Creates settings for a new post from optional stored create parameters.
+    ///
+    /// When `params` is nil (first open), all fields use sensible defaults.
+    /// When non-nil, the stored values from a previous Post Settings session
+    /// are applied on top of the defaults.
+    init(from params: PostCreateParams, taxonomies: [SiteTaxonomy] = []) {
+        excerpt = params.excerpt ?? ""
+        slug = params.slug ?? ""
+        status = .draft
+        publishDate = nil
+        password = params.password
+        metadata = PostMetadata(from: .init())
+
+        if let author = params.author {
+            self.author = Author(id: Int(author), displayName: "–", avatarURL: nil)
+        }
+        if let featuredMedia = params.featuredMedia {
+            featuredImageID = Int(featuredMedia)
+        }
+        if let commentStatus = params.commentStatus {
+            allowComments = commentStatus == .open
+        }
+        if let pingStatus = params.pingStatus {
+            allowPings = pingStatus == .open
+        }
+        if let format = params.format {
+            postFormat = format.id
+        }
+        if let sticky = params.sticky {
+            isStickyPost = sticky
+        }
+        if !params.categories.isEmpty {
+            categoryIDs = Set(params.categories.map { Int($0) })
+        }
+        if !params.tags.isEmpty {
+            tags = params.tags.map { Term(id: Int($0), name: "") }
+        }
+
+        // Custom taxonomy terms
+        var otherTerms: [String: [Term]] = [:]
+        for taxonomy in taxonomies {
+            let termIds = params.additionalFields?.termIdsForKey(key: taxonomy.restBase) ?? []
+            if !termIds.isEmpty {
+                otherTerms[taxonomy.slug] = termIds.map { Term(id: Int($0), name: "") }
+            }
+        }
+        self.otherTerms = otherTerms
+    }
 
     /// Creates PostSettings from an AbstractPost instance.
     init(from post: AbstractPost) {
@@ -64,7 +139,9 @@ struct PostSettings: Hashable {
         }
 
         featuredImageID = post.featuredImage?.mediaID?.intValue
-        otherTerms = post.parsedOtherTerms
+        otherTerms = post.parsedOtherTerms.mapValues { names in
+            names.map { Term(id: 0, name: $0) }
+        }
 
         metadata = PostMetadata(post)
 
@@ -72,7 +149,7 @@ struct PostSettings: Hashable {
         case let post as Post:
             postFormat = post.postFormat
             isStickyPost = post.isStickyPost
-            tags = post.tags ?? ""
+            tags = AbstractPost.makeTags(from: post.tags ?? "").map { Term(id: 0, name: $0) }
             categoryIDs = Set((post.categories ?? []).map {
                 $0.categoryID.intValue
             })
@@ -87,7 +164,7 @@ struct PostSettings: Hashable {
     }
 
     /// Creates PostSettings from an AnyPostWithEditContext (REST API) instance.
-    init(from post: AnyPostWithEditContext) {
+    init(from post: AnyPostWithEditContext, taxonomies: [SiteTaxonomy] = []) {
         excerpt = post.excerpt?.raw ?? ""
         slug = post.slug
         status = BasePost.Status(post.status)
@@ -106,16 +183,24 @@ struct PostSettings: Hashable {
         }
 
         featuredImageID = post.featuredMedia.map { Int($0) }
-        // FIXME: Resolve custom taxonomy term names from term IDs returned by the REST API
-        otherTerms = [:]
+
+        var otherTerms: [String: [Term]] = [:]
+        for taxonomy in taxonomies {
+            let termIds = post.additionalFields?.termIdsForKey(key: taxonomy.restBase) ?? []
+            if !termIds.isEmpty {
+                // Term names will be resolved asynchronously in PostSettingsViewModel
+                otherTerms[taxonomy.slug] = termIds.map { Term(id: Int($0), name: "") }
+            }
+        }
+        self.otherTerms = otherTerms
 
         // FIXME: Post metadata is not supported yet. Require wordpress-rs changes.
         metadata = PostMetadata(from: .init())
 
         postFormat = post.format.map { $0.id }
         isStickyPost = post.sticky ?? false
-        // FIXME: Resolve tag names from term IDs returned by the REST API
-        tags = ""
+        // Tag names will be resolved asynchronously in PostSettingsViewModel
+        tags = (post.tags ?? []).map { Term(id: Int($0), name: "") }
         categoryIDs = Set((post.categories ?? []).map { Int($0) })
         allowComments = post.commentStatus == .open
         allowPings = post.pingStatus == .open
@@ -163,8 +248,9 @@ struct PostSettings: Hashable {
             post.featuredImage = nil
         }
 
-        if !RemotePost.compare(otherTerms: post.parsedOtherTerms, withAnother: otherTerms) {
-            post.parsedOtherTerms = otherTerms
+        let otherTermNames = otherTerms.mapValues { $0.map(\.name) }
+        if !RemotePost.compare(otherTerms: post.parsedOtherTerms, withAnother: otherTermNames) {
+            post.parsedOtherTerms = otherTermNames
         }
 
         var postMetadataContainer = PostMetadataContainer(post)
@@ -180,8 +266,9 @@ struct PostSettings: Hashable {
         switch post {
         case let post as Post:
             // Update tags
-            if post.tags != tags {
-                post.tags = tags
+            let tagsString = tags.map(\.name).joined(separator: ", ")
+            if post.tags != tagsString {
+                post.tags = tagsString
             }
 
             // Update categories
@@ -257,94 +344,129 @@ struct PostSettings: Hashable {
 
     /// Creates `PostUpdateParams` representing the diff between the post and
     /// the current settings, for use with the WordPress REST API.
-    func makeUpdateParameters(from post: AnyPostWithEditContext) -> PostUpdateParams {
-        var slug: String?
+    func makeUpdateParameters(from post: AnyPostWithEditContext, taxonomies: [SiteTaxonomy] = []) -> PostUpdateParams {
+        var params = PostUpdateParams(meta: nil)
+
         if post.slug != self.slug {
-            slug = self.slug
+            params.slug = self.slug
         }
 
-        var status: PostStatus?
         if BasePost.Status(post.status) != self.status {
-            status = PostStatus(self.status)
+            params.status = PostStatus(self.status)
         }
 
-        var password: String?
         if post.password != self.password {
-            password = self.password ?? ""
+            params.password = self.password ?? ""
         }
 
-        var author: UserId?
         if post.author.map({ Int($0) }) != self.author?.id, let authorId = self.author?.id {
-            author = UserId(Int64(authorId))
+            params.author = UserId(Int64(authorId))
         }
 
-        var excerpt: String?
         if (post.excerpt?.raw ?? "") != self.excerpt {
-            excerpt = self.excerpt
+            params.excerpt = self.excerpt
         }
 
-        var featuredMedia: MediaId?
         if post.featuredMedia.map({ Int($0) }) != self.featuredImageID {
-            featuredMedia = self.featuredImageID.map { MediaId(Int64($0)) } ?? MediaId(0)
+            params.featuredMedia = self.featuredImageID.map { MediaId(Int64($0)) } ?? MediaId(0)
         }
 
-        var commentStatus: PostCommentStatus?
         let postAllowsComments = post.commentStatus == .open
         if postAllowsComments != self.allowComments {
-            commentStatus = self.allowComments ? .open : .closed
+            params.commentStatus = self.allowComments ? .open : .closed
         }
 
-        var pingStatus: PostPingStatus?
         let postAllowsPings = post.pingStatus == .open
         if postAllowsPings != self.allowPings {
-            pingStatus = self.allowPings ? .open : .closed
+            params.pingStatus = self.allowPings ? .open : .closed
         }
 
-        var format: PostFormat?
-        let postFormatSlug = post.format.map { $0.id }
-        if postFormatSlug != self.postFormat {
-            format = self.postFormat.flatMap { PostFormat.from(slug: $0) }
+        if post.format.map({ $0.id }) != self.postFormat {
+            params.format = self.postFormat.flatMap { PostFormat.from(slug: $0) }
         }
 
-        var sticky: Bool?
+        // Publish date: nil means "publish immediately" for drafts/pending
+        let originalStatus = BasePost.Status(post.status)
+        let originalPublishDate: Date? = (originalStatus == .draft || originalStatus == .pending) ? nil : post.dateGmt
+        if originalPublishDate != self.publishDate {
+            params.dateGmt = self.publishDate
+        }
+
         if (post.sticky ?? false) != self.isStickyPost {
-            sticky = self.isStickyPost
+            params.sticky = self.isStickyPost
         }
 
-        var categories: [TermId] = []
         let postCategoryIDs = Set((post.categories ?? []).map { Int($0) })
         if postCategoryIDs != self.categoryIDs {
-            categories = self.categoryIDs.map { TermId(Int64($0)) }
+            params.categories = self.categoryIDs.map { TermId(Int64($0)) }
         }
 
-        // FIXME: Not implemented yet.
-        // Tags are stored as comma-separated names for AbstractPost, but as IDs for remote posts.
-        // For remote posts, tag changes would need ID resolution. Skip for now.
-        // var tags: [TermId] = []
+        // `resolveUnknownIDs` now creates new terms on the server, so `id == 0`
+        // terms should not reach this point. Filter defensively as a safety net.
+        let postTagIDs = Set((post.tags ?? []).map { Int($0) })
+        let settingsTagIDs = Set(self.tags.filter { $0.id > 0 }.map(\.id))
+        if postTagIDs != settingsTagIDs {
+            params.tags = self.tags.filter { $0.id > 0 }.map { TermId(Int64($0.id)) }
+        }
+
+        // Custom taxonomy terms
+        var customTermChanges: [String: [TermId]] = [:]
+        for (slug, terms) in self.otherTerms {
+            guard let taxonomy = taxonomies.first(where: { $0.slug == slug }) else { continue }
+            let restBase = taxonomy.restBase
+            let termIds = terms.filter { $0.id > 0 }.map { TermId(Int64($0.id)) }
+            let originalIds = post.additionalFields?.termIdsForKey(key: restBase) ?? []
+            if Set(termIds) != Set(originalIds) {
+                customTermChanges[restBase] = termIds
+            }
+        }
+        if !customTermChanges.isEmpty {
+            params.additionalFields = AnyJson.fromTermIdMap(map: customTermChanges)
+        }
 
         // TODO: The Post Settings UI currently only supports Pages
-//        var parent: PostId?
 //        let postParentPageID = post.parent.map { Int($0) }
 //        if postParentPageID != self.parentPageID {
-//            parent = self.parentPageID.map { PostId(Int64($0)) } ?? PostId(0)
+//            params.parent = self.parentPageID.map { PostId(Int64($0)) } ?? PostId(0)
 //        }
 
-        return PostUpdateParams(
-            slug: slug,
-            status: status,
-            password: password,
-            author: author,
-            excerpt: excerpt,
-            featuredMedia: featuredMedia,
-            commentStatus: commentStatus,
-            pingStatus: pingStatus,
-            format: format,
-            meta: nil,
-            sticky: sticky,
-            categories: categories,
-            tags: [],
-            parent: nil
-        )
+        return params
+    }
+
+    /// Creates `PostCreateParams` from the current settings for a new post.
+    func makeCreateParameters(from existing: PostCreateParams, taxonomies: [SiteTaxonomy] = []) -> PostCreateParams {
+        let tagIds = tags.filter { $0.id > 0 }.map { TermId(Int64($0.id)) }
+        let categoryIds = categoryIDs.map { TermId(Int64($0)) }
+
+        // Custom taxonomy terms
+        var customTerms: [String: [TermId]] = [:]
+        for (slug, terms) in otherTerms {
+            guard let taxonomy = taxonomies.first(where: { $0.slug == slug }) else { continue }
+            let termIds = terms.filter { $0.id > 0 }.map { TermId(Int64($0.id)) }
+            if !termIds.isEmpty {
+                customTerms[taxonomy.restBase] = termIds
+            }
+        }
+        let additionalFields: AnyJson? = customTerms.isEmpty
+            ? nil
+            : AnyJson.fromTermIdMap(map: customTerms)
+
+        var params = existing
+        params.dateGmt = publishDate
+        params.slug = slug.isEmpty ? nil : slug
+        params.status = PostStatus(status)
+        params.password = password
+        params.author = author.map { UserId(Int64($0.id)) }
+        params.excerpt = excerpt.isEmpty ? nil : excerpt
+        params.featuredMedia = featuredImageID.map { MediaId(Int64($0)) }
+        params.commentStatus = allowComments ? .open : .closed
+        params.pingStatus = allowPings ? .open : .closed
+        params.format = postFormat.flatMap { PostFormat.from(slug: $0) }
+        params.sticky = isStickyPost ? true : nil
+        params.categories = categoryIds
+        params.tags = tagIds
+        params.additionalFields = additionalFields
+        return params
     }
 }
 
@@ -379,12 +501,14 @@ extension PostSettings {
             .map { $0.stringByDecodingXMLCharacters() }
     }
 
-    func getTerms(forTaxonomySlug taxonomySlug: String) -> [String] {
+    func getTerms(forTaxonomySlug taxonomySlug: String) -> [Term] {
         otherTerms[taxonomySlug] ?? []
     }
 
     mutating func setTerms(_ terms: String, forTaxonomySlug taxonomySlug: String) {
-        otherTerms[taxonomySlug] = AbstractPost.makeTags(from: terms)
+        otherTerms[taxonomySlug] = AbstractPost.makeTags(from: terms).map {
+            Term(id: 0, name: $0)
+        }
     }
 }
 

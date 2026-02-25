@@ -1,6 +1,7 @@
 import Testing
 import Foundation
 import CoreData
+import WordPressAPIInternal
 @testable import WordPress
 @testable import WordPressData
 
@@ -115,7 +116,7 @@ struct PostSettingsTests {
 
         var settings = PostSettings(from: post)
         settings.categoryIDs = Set([1, 2])
-        settings.tags = "swift, ios, testing"
+        settings.tags = ["swift", "ios", "testing"].map { PostSettings.Term(id: 0, name: $0) }
 
         // When
         settings.apply(to: post)
@@ -251,13 +252,13 @@ struct PostSettingsTests {
         let post = PostBuilder(context, blog: blog).build()
 
         var settings = PostSettings(from: post)
-        settings.tags = "swift, ios, testing"
+        settings.tags = ["swift", "ios", "testing"].map { PostSettings.Term(id: 0, name: $0) }
 
         // When
-        let tagsText = settings.tags
+        let tagNames = settings.tags.map(\.name)
 
         // Then
-        #expect(tagsText == "swift, ios, testing")
+        #expect(tagNames == ["swift", "ios", "testing"])
     }
 
     @Test("Generates empty tags text")
@@ -268,13 +269,13 @@ struct PostSettingsTests {
         let post = PostBuilder(context, blog: blog).build()
 
         var settings = PostSettings(from: post)
-        settings.tags = ""
+        settings.tags = []
 
         // When
-        let tagsText = settings.tags
+        let tagNames = settings.tags.map(\.name)
 
         // Then
-        #expect(tagsText == "")
+        #expect(tagNames == [])
     }
 
     // MARK: - init(from:) Roundtrip Tests
@@ -323,7 +324,7 @@ struct PostSettingsTests {
         #expect(settings.author?.displayName == "Jane")
         #expect(settings.postFormat == "aside")
         #expect(settings.isStickyPost == true)
-        #expect(settings.tags == "tag1, tag2")
+        #expect(settings.tags == [PostSettings.Term(id: 0, name: "tag1"), PostSettings.Term(id: 0, name: "tag2")])
         #expect(settings.categoryIDs == Set([10, 20]))
         #expect(settings.allowComments == false)
         #expect(settings.allowPings == false)
@@ -348,7 +349,7 @@ struct PostSettingsTests {
         #expect(settings.parentPageID == 42)
         #expect(settings.postFormat == nil)
         #expect(settings.isStickyPost == false)
-        #expect(settings.tags == "")
+        #expect(settings.tags == [])
         #expect(settings.categoryIDs == Set<Int>())
     }
 
@@ -476,7 +477,7 @@ struct PostSettingsTests {
         post.parsedOtherTerms = ["genre": ["fiction", "drama"]]
 
         var settings = PostSettings(from: post)
-        settings.otherTerms = ["genre": ["scifi"]]
+        settings.otherTerms = ["genre": [PostSettings.Term(id: 0, name: "scifi")]]
 
         // When
         settings.apply(to: post)
@@ -530,12 +531,86 @@ struct PostSettingsTests {
         settings.setTerms("tag1, tag2", forTaxonomySlug: "genre")
 
         // Then
-        #expect(settings.getTerms(forTaxonomySlug: "genre") == ["tag1", "tag2"])
+        #expect(settings.getTerms(forTaxonomySlug: "genre") == [PostSettings.Term(id: 0, name: "tag1"), PostSettings.Term(id: 0, name: "tag2")])
         #expect(settings.getTerms(forTaxonomySlug: "nonexistent") == [])
 
         // Verify apply persists the terms to the post
         settings.apply(to: post)
         #expect(post.parsedOtherTerms["genre"] == ["tag1", "tag2"])
+    }
+
+    @Test("Round-trip: init(from:) preserves tags through apply(to:)")
+    func testTagsRoundTrip() {
+        // Given
+        let context = ContextManager.forTesting().mainContext
+        let blog = BlogBuilder(context).build()
+        let sourcePost = PostBuilder(context, blog: blog).build()
+        sourcePost.tags = "swift, ios, testing"
+
+        // When
+        let settings = PostSettings(from: sourcePost)
+
+        // Then — init captures the tags
+        #expect(settings.tags == ["swift", "ios", "testing"].map { PostSettings.Term(id: 0, name: $0) })
+
+        // When — apply to a different post
+        let targetPost = PostBuilder(context, blog: blog).build()
+        settings.apply(to: targetPost)
+
+        // Then — tags are written back unchanged
+        #expect(targetPost.tags == "swift, ios, testing")
+    }
+
+    @Test("Round-trip: init(from:) preserves custom terms through apply(to:)")
+    func testCustomTermsRoundTrip() {
+        // Given
+        let context = ContextManager.forTesting().mainContext
+        let blog = BlogBuilder(context).build()
+        let sourcePost = PostBuilder(context, blog: blog).build()
+        sourcePost.parsedOtherTerms = ["genre": ["fiction", "drama"]]
+
+        // When
+        let settings = PostSettings(from: sourcePost)
+
+        // Then — init captures the custom terms
+        #expect(settings.otherTerms == ["genre": [PostSettings.Term(id: 0, name: "fiction"), PostSettings.Term(id: 0, name: "drama")]])
+
+        // When — apply to a different post
+        let targetPost = PostBuilder(context, blog: blog).build()
+        settings.apply(to: targetPost)
+
+        // Then — custom terms are written back unchanged
+        #expect(targetPost.parsedOtherTerms == ["genre": ["fiction", "drama"]])
+    }
+
+    @Test(
+        "makeTags parses comma-separated tag strings",
+        arguments: [
+            ("swift, ios, testing", ["swift", "ios", "testing"]),
+            ("", []),
+            ("  swift , , ios  ", ["swift", "ios"]),
+        ] as [(String, [String])]
+    )
+    func testMakeTags(input: String, expected: [String]) {
+        #expect(AbstractPost.makeTags(from: input) == expected)
+    }
+
+    @Test("makeUpdateParameters reflects tag changes")
+    func testMakeUpdateParametersIncludesTagChanges() {
+        // Given
+        let context = ContextManager.forTesting().mainContext
+        let blog = BlogBuilder(context).build()
+        let post = PostBuilder(context, blog: blog).build()
+        post.tags = "old"
+
+        var settings = PostSettings(from: post)
+        settings.tags = ["new", "tags"].map { PostSettings.Term(id: 0, name: $0) }
+
+        // When
+        let parameters = settings.makeUpdateParameters(from: post)
+
+        // Then — tags is a [String]? containing the new tag names
+        #expect(parameters.tags == ["new", "tags"])
     }
 
     // MARK: - makeUpdateParameters Tests (Page)
@@ -555,4 +630,230 @@ struct PostSettingsTests {
         // Then
         #expect(parameters.slug == "new-page-slug")
     }
+
+    // MARK: - Term Struct Tests
+
+    @Test("init(from: Post) creates terms with id=0")
+    func testInitFromPostCreatesTermsWithZeroId() {
+        // Given
+        let context = ContextManager.forTesting().mainContext
+        let blog = BlogBuilder(context).build()
+        let post = PostBuilder(context, blog: blog).build()
+        post.tags = "swift, ios"
+
+        // When
+        let settings = PostSettings(from: post)
+
+        // Then
+        #expect(settings.tags == [
+            PostSettings.Term(id: 0, name: "swift"),
+            PostSettings.Term(id: 0, name: "ios"),
+        ])
+    }
+
+    @Test("init(from: Post) creates other terms with id=0")
+    func testInitFromPostCreatesOtherTermsWithZeroId() {
+        // Given
+        let context = ContextManager.forTesting().mainContext
+        let blog = BlogBuilder(context).build()
+        let post = PostBuilder(context, blog: blog).build()
+        post.parsedOtherTerms = ["genre": ["fiction", "drama"]]
+
+        // When
+        let settings = PostSettings(from: post)
+
+        // Then
+        #expect(settings.otherTerms["genre"] == [
+            PostSettings.Term(id: 0, name: "fiction"),
+            PostSettings.Term(id: 0, name: "drama"),
+        ])
+    }
+
+    @Test("init(from: AnyPostWithEditContext) stores tag IDs with empty names")
+    func testInitFromRemotePostStoresTagIds() {
+        // Given
+        let post = makeRemotePost(tags: [TermId(5), TermId(8)])
+
+        // When
+        let settings = PostSettings(from: post)
+
+        // Then
+        #expect(settings.tags == [
+            PostSettings.Term(id: 5, name: ""),
+            PostSettings.Term(id: 8, name: ""),
+        ])
+    }
+
+    @Test("apply(to:) converts terms back to name strings")
+    func testApplyConvertsTermsToNameStrings() {
+        // Given
+        let context = ContextManager.forTesting().mainContext
+        let blog = BlogBuilder(context).build()
+        let post = PostBuilder(context, blog: blog).build()
+
+        var settings = PostSettings(from: post)
+        settings.tags = [
+            PostSettings.Term(id: 0, name: "swift"),
+            PostSettings.Term(id: 0, name: "ios"),
+        ]
+
+        // When
+        settings.apply(to: post)
+
+        // Then
+        #expect(post.tags == "swift, ios")
+    }
+
+    @Test("setTerms creates terms with id=0")
+    func testSetTermsCreatesTermsWithZeroId() {
+        // Given
+        let context = ContextManager.forTesting().mainContext
+        let blog = BlogBuilder(context).build()
+        let post = PostBuilder(context, blog: blog).build()
+
+        var settings = PostSettings(from: post)
+
+        // When
+        settings.setTerms("tag1, tag2", forTaxonomySlug: "genre")
+
+        // Then
+        #expect(settings.getTerms(forTaxonomySlug: "genre") == [
+            PostSettings.Term(id: 0, name: "tag1"),
+            PostSettings.Term(id: 0, name: "tag2"),
+        ])
+    }
+
+    @Test("makeUpdateParameters(from: AnyPostWithEditContext) produces TermIds from Term storage")
+    func testMakeRemoteUpdateParametersIncludesTermIds() {
+        // Given
+        let post = makeRemotePost(tags: [TermId(5)])
+
+        var settings = PostSettings(from: post)
+        // Simulate resolved tags with an additional new tag
+        settings.tags = [
+            PostSettings.Term(id: 5, name: "swift"),
+            PostSettings.Term(id: 8, name: "ios"),
+        ]
+
+        // When
+        let params = settings.makeUpdateParameters(from: post)
+
+        // Then — both tags with id > 0 are included
+        #expect(Set(params.tags) == Set([TermId(5), TermId(8)]))
+    }
+
+    @Test("Resolved terms (id > 0) are equal when ids match, regardless of name")
+    func testResolvedTermEquality() {
+        let term1 = PostSettings.Term(id: 5, name: "swift")
+        let term2 = PostSettings.Term(id: 5, name: "swift")
+        let term3 = PostSettings.Term(id: 5, name: "ios")
+        let term4 = PostSettings.Term(id: 6, name: "swift")
+
+        #expect(term1 == term2)
+        #expect(term1 == term3, "Same id, different name — same resolved term")
+        #expect(term1 != term4, "Different id — different term")
+    }
+
+    @Test("Unresolved terms (id == 0) are equal only when names match")
+    func testUnresolvedTermEquality() {
+        let term1 = PostSettings.Term(id: 0, name: "swift")
+        let term2 = PostSettings.Term(id: 0, name: "swift")
+        let term3 = PostSettings.Term(id: 0, name: "ios")
+
+        #expect(term1 == term2)
+        #expect(term1 != term3, "Same id 0, different name — different unresolved term")
+    }
+
+    // MARK: - PostCreateParams Custom Terms Tests
+
+    @Test("makeCreateParameters includes custom taxonomy terms in additionalFields")
+    func testMakeCreateParametersIncludesCustomTerms() {
+        // Given
+        let taxonomies = [
+            SiteTaxonomy.makeTaxonomy(slug: "genre", restBase: "genre"),
+        ]
+        let existing = PostCreateParams(meta: nil)
+
+        var settings = PostSettings(from: existing, taxonomies: taxonomies)
+        settings.otherTerms = [
+            "genre": [
+                PostSettings.Term(id: 10, name: "fiction"),
+                PostSettings.Term(id: 20, name: "drama"),
+            ]
+        ]
+
+        // When
+        let params = settings.makeCreateParameters(from: existing, taxonomies: taxonomies)
+
+        // Then
+        let termIds = params.additionalFields?.termIdsForKey(key: "genre") ?? []
+        #expect(Set(termIds) == Set([TermId(10), TermId(20)]))
+    }
+
+    @Test("init(from: PostCreateParams) populates otherTerms from additionalFields")
+    func testInitFromCreateParamsReadsCustomTerms() {
+        // Given
+        let taxonomies = [
+            SiteTaxonomy.makeTaxonomy(slug: "genre", restBase: "genre"),
+        ]
+        let termMap: [String: [TermId]] = ["genre": [TermId(10), TermId(20)]]
+        let params = PostCreateParams(
+            meta: nil,
+            additionalFields: AnyJson.fromTermIdMap(map: termMap)
+        )
+
+        // When
+        let settings = PostSettings(from: params, taxonomies: taxonomies)
+
+        // Then
+        #expect(settings.otherTerms["genre"] == [
+            PostSettings.Term(id: 10, name: ""),
+            PostSettings.Term(id: 20, name: ""),
+        ])
+    }
+}
+
+// MARK: - Test Helpers
+
+private extension SiteTaxonomy {
+    static func makeTaxonomy(slug: String, restBase: String) -> SiteTaxonomy {
+        SiteTaxonomy(slug: slug, name: slug, restBase: restBase)
+    }
+}
+
+private func makeRemotePost(
+    tags: [TermId]? = nil,
+    categories: [TermId]? = nil
+) -> AnyPostWithEditContext {
+    AnyPostWithEditContext(
+        id: PostId(1),
+        date: "2025-01-01T00:00:00",
+        dateGmt: Date(timeIntervalSince1970: 0),
+        guid: PostGuidWithEditContext(raw: nil, rendered: ""),
+        link: "https://example.com",
+        modified: "2025-01-01T00:00:00",
+        modifiedGmt: Date(timeIntervalSince1970: 0),
+        slug: "test-post",
+        status: .draft,
+        postType: "post",
+        password: nil,
+        permalinkTemplate: nil,
+        generatedSlug: nil,
+        title: nil,
+        content: PostContentWithEditContext(raw: nil, rendered: "", protected: nil, blockVersion: nil),
+        author: nil,
+        excerpt: nil,
+        featuredMedia: nil,
+        commentStatus: .open,
+        pingStatus: .open,
+        format: nil,
+        meta: nil,
+        sticky: nil,
+        template: "",
+        categories: categories,
+        tags: tags,
+        parent: nil,
+        menuOrder: nil,
+        additionalFields: nil
+    )
 }

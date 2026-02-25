@@ -208,11 +208,14 @@ struct PostSettingsFormContentView: View {
 
     private var tagsRow: some View {
         NavigationLink {
-            PostTagsView(blog: viewModel.blog, selectedTags: viewModel.settings.tags) { tags in
+            PostTagsView(
+                blog: viewModel.blog,
+                selectedTags: viewModel.settings.tags.map { TagsViewModel.SelectedTerm(id: $0.id, name: $0.name) }
+            ) { tags in
                 viewModel.didSelectTags(tags)
             }
         } label: {
-            PostSettingsTagsRow(tags: viewModel.displayedTags)
+            PostSettingsTagsRow(tags: viewModel.displayedTags, isLoading: viewModel.isResolvingTags)
         }
         .accessibilityIdentifier("post_settings_tags")
     }
@@ -239,12 +242,17 @@ struct PostSettingsFormContentView: View {
                         blog: viewModel.blog,
                         client: client,
                         taxonomy: taxonomy,
-                        selectedTerms: viewModel.settings.getTerms(forTaxonomySlug: taxonomy.slug).joined(separator: ",")
+                        selectedTerms: viewModel.settings.getTerms(forTaxonomySlug: taxonomy.slug)
+                            .map { TagsViewModel.SelectedTerm(id: $0.id, name: $0.name) }
                     ) { terms in
                         viewModel.didSelectTerms(terms, forTaxonomySlug: taxonomy.slug)
                     }
                 } label: {
-                    PostSettingsCustomTaxonomyRow(taxonomy: taxonomy, terms: viewModel.settings.getTerms(forTaxonomySlug: taxonomy.slug))
+                    PostSettingsCustomTaxonomyRow(
+                        taxonomy: taxonomy,
+                        terms: viewModel.settings.getTerms(forTaxonomySlug: taxonomy.slug).map(\.name),
+                        isLoading: viewModel.isResolvingCustomTerms
+                    )
                 }
             }
         }

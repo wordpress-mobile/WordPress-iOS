@@ -6,6 +6,7 @@ import WordPressAPIInternal
 import WordPressApiCache
 import WordPressUI
 import WordPressData
+import DesignSystem
 
 struct CustomPostTabView: View {
     let client: WordPressClient
@@ -21,7 +22,7 @@ struct CustomPostTabView: View {
     @State private var draftsViewModel: CustomPostListViewModel
     @State private var scheduledViewModel: CustomPostListViewModel
     @State private var trashViewModel: CustomPostListViewModel
-    @State private var selectedPost: AnyPostWithEditContext?
+    @State private var editorPresentation: EditorPresentation?
     @State private var isShowingFeedback = false
 
     private var activeViewModel: CustomPostListViewModel {
@@ -96,19 +97,19 @@ struct CustomPostTabView: View {
                     viewModel: activeViewModel,
                     details: details,
                     client: client,
-                    onSelectPost: { selectedPost = $0 },
                     mediaHost: MediaHost(blog),
+                    onSelectPost: { editorPresentation = .editPost($0) },
                     header: { tabBar }
                 )
             } else {
                 CustomPostSearchResultView(
+                    blog: blog,
                     client: client,
                     service: service,
                     endpoint: endpoint,
                     details: details,
                     searchText: $searchText,
-                    onSelectPost: { selectedPost = $0 },
-                    blog: blog
+                    onSelectPost: { editorPresentation = .editPost($0) }
                 )
             }
         }
@@ -128,8 +129,8 @@ struct CustomPostTabView: View {
         .sheet(isPresented: $isShowingFeedback) {
             SubmitFeedbackViewRepresentable()
         }
-        .fullScreenCover(item: $selectedPost) { post in
-            CustomPostEditor(client: client, post: post, details: details, blog: blog)
+        .fullScreenCover(item: $editorPresentation) { presentation in
+            CustomPostEditor(service: service.posts(), client: client, post: presentation.post, details: details, blog: blog)
         }
         .task {
             EditorDependencyManager.shared
@@ -141,6 +142,12 @@ struct CustomPostTabView: View {
                         restNamespace: details.restNamespace
                     )
                 )
+        }
+        .overlay(alignment: .bottomTrailing) {
+            FAB {
+                editorPresentation = .newPost
+            }
+            .padding()
         }
     }
 
@@ -228,6 +235,25 @@ private struct SubmitFeedbackViewRepresentable: UIViewControllerRepresentable {
     }
 
     func updateUIViewController(_ uiViewController: SubmitFeedbackViewController, context: Context) {}
+}
+
+private enum EditorPresentation: Identifiable {
+    case newPost
+    case editPost(AnyPostWithEditContext)
+
+    var id: String {
+        switch self {
+        case .newPost: return "new"
+        case .editPost(let post): return "post-\(post.id)"
+        }
+    }
+
+    var post: AnyPostWithEditContext? {
+        switch self {
+        case .newPost: return nil
+        case .editPost(let post): return post
+        }
+    }
 }
 
 private enum Strings {

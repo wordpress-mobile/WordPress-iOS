@@ -17,28 +17,12 @@ final class PostSettingsViewModel: NSObject, ObservableObject {
     let context: Context
     let featuredImageViewModel: PostSettingsFeaturedImageViewModel?
     let client: WordPressClient?
-    let editorContent: EditorContent?
-    let editorService: CustomPostEditorService?
 
-    struct EditorContent {
-        let title: String
-        let content: String
-    }
-
-    private var details: PostDetails
+    private let details: PostDetails
+    private let editorService: CustomPostEditorService?
 
     private var abstractPost: AbstractPost? {
         if case .abstractPost(let post) = details { return post }
-        return nil
-    }
-
-    var remotePost: AnyPostWithEditContext? {
-        if case .remotePost(let post, _) = details { return post }
-        return nil
-    }
-
-    private var postTypeDetails: PostTypeDetailsWithEditContext? {
-        if case .remotePost(_, let details) = details { return details }
         return nil
     }
 
@@ -52,6 +36,8 @@ final class PostSettingsViewModel: NSObject, ObservableObject {
     @Published private(set) var hasChanges = false
     @Published private(set) var displayedCategories: [String] = []
     @Published private(set) var displayedTags: [String] = []
+    @Published private(set) var isResolvingTags = false
+    @Published private(set) var isResolvingCustomTerms = false
     @Published private(set) var suggestedTags: [String] = []
     @Published private(set) var customTaxonomies: [SiteTaxonomy] = []
     @Published private(set) var parentPageText: String?
@@ -64,19 +50,21 @@ final class PostSettingsViewModel: NSObject, ObservableObject {
         switch details {
         case .abstractPost(let post):
             return post.content ?? ""
-        case .remotePost(let post, _):
-            return post.content.raw ?? ""
+        case .customPost(let service):
+            return service.post?.content.raw ?? ""
         }
     }
 
     var navigationTitle: String {
-        if let postTypeDetails {
+        switch details {
+        case .abstractPost:
+            return isPost ? Strings.postSettingsTitle : Strings.pageSettingsTitle
+        case .customPost(let service):
             return String.localizedStringWithFormat(
                 Strings.customPostSettingsTitle,
-                postTypeDetails.name
+                service.details.name
             )
         }
-        return isPost ? Strings.postSettingsTitle : Strings.pageSettingsTitle
     }
 
     var deletedAlertTitle: String {
@@ -87,11 +75,18 @@ final class PostSettingsViewModel: NSObject, ObservableObject {
         isPost ? Strings.postDeletedMessage : Strings.pageDeletedMessage
     }
 
+    var isScheduled: Bool {
+        switch details {
+        case .abstractPost(let post): return post.getOriginal().status == .scheduled
+        case .customPost(let service): return service.post?.status == .future
+        }
+    }
+
     var authorDisplayName: String {
         switch details {
         case .abstractPost(let post):
             return settings.author?.displayName ?? post.author?.makePlainText() ?? ""
-        case .remotePost:
+        case .customPost:
             return settings.author?.displayName ?? ""
         }
     }
@@ -138,8 +133,8 @@ final class PostSettingsViewModel: NSObject, ObservableObject {
         switch details {
         case .abstractPost(let post):
             return post.suggested_slug
-        case .remotePost(let post, _):
-            return post.generatedSlug
+        case .customPost(let service):
+            return service.post?.generatedSlug
         }
     }
 
@@ -147,8 +142,8 @@ final class PostSettingsViewModel: NSObject, ObservableObject {
         switch details {
         case .abstractPost(let post):
             return post.permalinkTemplateURL
-        case .remotePost(let post, _):
-            return post.permalinkTemplate
+        case .customPost(let service):
+            return service.post?.permalinkTemplate
         }
     }
 
@@ -165,8 +160,11 @@ final class PostSettingsViewModel: NSObject, ObservableObject {
         switch details {
         case .abstractPost(let post):
             return post.getOriginal().isStatus(in: [.draft, .pending])
-        case .remotePost(let post, _):
-            return post.status == .draft || post.status == .pending
+        case .customPost(let service):
+            if let post = service.post {
+                return post.status == .draft || post.status == .pending
+            }
+            return true
         }
     }
 
@@ -174,8 +172,8 @@ final class PostSettingsViewModel: NSObject, ObservableObject {
         switch details {
         case .abstractPost(let post):
             return post is Post
-        case .remotePost(_, let typeDetails):
-            return typeDetails.slug == "post"
+        case .customPost(let service):
+            return service.details.slug == "post"
         }
     }
 
@@ -193,8 +191,8 @@ final class PostSettingsViewModel: NSObject, ObservableObject {
                 return nil
             }
             return date.toMediumString()
-        case .remotePost(let post, _):
-            return post.modifiedGmt.toMediumString()
+        case .customPost(let service):
+            return service.post?.modifiedGmt.toMediumString()
         }
     }
 
@@ -205,9 +203,9 @@ final class PostSettingsViewModel: NSObject, ObservableObject {
                 return nil
             }
             return postID
-        case .remotePost(let post, _):
-            let id = Int(post.id)
-            return id > 0 ? id : nil
+        case .customPost(let service):
+            guard let id = service.post?.id else { return nil }
+            return id > 0 ? Int(id) : nil
         }
     }
 
@@ -221,8 +219,8 @@ final class PostSettingsViewModel: NSObject, ObservableObject {
         switch details {
         case .abstractPost(let post):
             return post.hasRemote()
-        case .remotePost:
-            return true
+        case .customPost(let service):
+            return service.post != nil
         }
     }
 
@@ -271,7 +269,6 @@ final class PostSettingsViewModel: NSObject, ObservableObject {
         self.context = context
         self.preferences = preferences
         self.client = try? WordPressClientFactory.shared.instance(for: .init(blog: post.blog))
-        self.editorContent = nil
         self.editorService = nil
 
         // Initialize settings from the post
@@ -295,32 +292,39 @@ final class PostSettingsViewModel: NSObject, ObservableObject {
         refreshCustomTaxonomies()
         refreshParentPageText()
         refreshSocialSharingState()
+        resolveAbstractPostTerms()
 
         WPAnalytics.track(.postSettingsShown)
     }
 
-    // MARK: - AnyPostWithEditContext Initializer
+    // MARK: - CustomPostEditorService Initializer
 
     init(
         editorService: CustomPostEditorService,
         blog: Blog,
         context: Context = .settings,
-        editorContent: EditorContent? = nil
+        preferences: UserPersistentRepository = UserDefaults.standard
     ) {
-        let post = editorService.post
-        let details = editorService.details
-        self.details = .remotePost(post, details)
+        self.details = .customPost(editorService)
         self.blog = blog
-        self.capabilities = PostSettingsCapabilities(from: details)
+        self.capabilities = PostSettingsCapabilities(from: editorService.details)
         self.isStandalone = false
         self.context = context
-        self.preferences = UserDefaults.standard
+        self.preferences = preferences
         self.client = editorService.client
-        self.editorContent = editorContent
         self.editorService = editorService
 
-        // Initialize settings from the remote post
-        let initialSettings = PostSettings(from: post)
+        var initialSettings = editorService.settings
+        // Resolve author display name from Blog's cached authors
+        if let authorId = initialSettings.author?.id,
+           let authors = blog.authors,
+           let author = authors.first(where: { $0.userID.intValue == authorId }) {
+            initialSettings.author = PostSettings.Author(
+                id: authorId,
+                displayName: author.displayName ?? "–",
+                avatarURL: author.avatarURL.flatMap(URL.init)
+            )
+        }
         self.settings = initialSettings
         self.originalSettings = initialSettings
 
@@ -329,13 +333,10 @@ final class PostSettingsViewModel: NSObject, ObservableObject {
 
         super.init()
 
-        // Resolve author display name from Blog's cached authors
-        resolveAuthorDisplayName()
-
-        // Initialize cached properties
         refreshDisplayedCategories()
         refreshDisplayedTags()
-        refreshCustomTaxonomiesForRemotePost(details: details)
+        refreshCustomTaxonomies()
+        resolveTermNames()
 
         WPAnalytics.track(.postSettingsShown)
     }
@@ -355,18 +356,7 @@ final class PostSettingsViewModel: NSObject, ObservableObject {
         }
     }
 
-    private func resolveAuthorDisplayName() {
-        guard let authorId = settings.author?.id else { return }
-        // Try to resolve from Blog's cached authors
-        if let authors = blog.authors,
-           let author = authors.first(where: { $0.userID.intValue == authorId }) {
-            settings.author = PostSettings.Author(
-                id: authorId,
-                displayName: author.displayName ?? "–",
-                avatarURL: author.avatarURL.flatMap(URL.init)
-            )
-        }
-    }
+    // MARK: - Suggested Tags
 
     private func refreshSuggestedTags() {
         guard let abstractPost, isSuggestedTagsRefreshNeeded else {
@@ -395,31 +385,79 @@ final class PostSettingsViewModel: NSObject, ObservableObject {
     }
 
     private func refreshCustomTaxonomies() {
-        guard let abstractPost else { return }
-
-        let postType: String? = switch abstractPost {
-        case is Post: "post"
-        case is Page: "page"
-        default: nil
-        }
-        guard let postType else { return }
-
-        let customTaxonomies = try? blog.taxonomies
-            .filter {
-                $0.slug != "post_tag" && $0.slug != "category" && $0.supportedPostTypes.contains(postType)
+        switch details {
+        case .abstractPost(let post):
+            let postType: String? = switch post {
+            case is Post: "post"
+            case is Page: "page"
+            default: nil
             }
-            .sorted(using: KeyPathComparator(\.name))
-        self.customTaxonomies = customTaxonomies ?? []
+            guard let postType else {
+                customTaxonomies = []
+                return
+            }
+            let taxonomies = try? blog.taxonomies
+                .filter {
+                    $0.slug != "post_tag" && $0.slug != "category" && $0.supportedPostTypes.contains(postType)
+                }
+                .sorted(using: KeyPathComparator(\.name))
+            customTaxonomies = taxonomies ?? []
+
+        case .customPost(let service):
+            customTaxonomies = service.taxonomies
+        }
     }
 
-    private func refreshCustomTaxonomiesForRemotePost(details: PostTypeDetailsWithEditContext) {
-        let customSlugs = capabilities.customTaxonomySlugs
-        guard !customSlugs.isEmpty else { return }
+    // MARK: - Term Resolution
 
-        let customTaxonomies = try? blog.taxonomies
-            .filter { customSlugs.contains($0.slug) }
-            .sorted(using: KeyPathComparator(\.name))
-        self.customTaxonomies = customTaxonomies ?? []
+    /// Resolves tags with `id == 0` in AbstractPost by searching the server.
+    /// AbstractPost stores tags as name-only strings, so they all start with
+    /// `id == 0` and need their IDs resolved.
+    private func resolveAbstractPostTerms() {
+        let pendingNames = settings.tags.filter { $0.id == 0 }.map(\.name)
+        guard !pendingNames.isEmpty else { return }
+
+        // No need to set `isResolvingTags`, because the tag name is available to be displayed on screen.
+
+        Task { [weak self] in
+            guard let self else { return }
+
+            let service = TagsService(blog: blog)
+            let resolved = await service.resolveTerms(named: pendingNames)
+            for (name, existing) in resolved {
+                if let index = settings.tags.firstIndex(where: { $0.name == name }) {
+                    settings.tags[index] = PostSettings.Term(id: Int(existing.id), name: existing.name)
+                }
+            }
+            refreshDisplayedTags()
+        }
+    }
+
+    private func resolveTermNames() {
+        guard let editorService else { return }
+
+        isResolvingTags = true
+        isResolvingCustomTerms = !settings.otherTerms.isEmpty
+
+        Task { [weak self] in
+            guard let self else { return }
+
+            do {
+                let resolvedTags = try await editorService.resolveTagNames(for: settings.tags)
+                self.settings.tags = resolvedTags
+                self.refreshDisplayedTags()
+                self.isResolvingTags = false
+
+                let resolvedTerms = try await editorService.resolveCustomTermNames(for: settings.otherTerms)
+                for (slug, terms) in resolvedTerms {
+                    self.settings.otherTerms[slug] = terms
+                }
+                self.isResolvingCustomTerms = false
+            } catch {
+                // TODO: We need better error handling
+                Loggers.app.log(level: .error, "Failed to resolve taxonomy terms: \(error)")
+            }
+        }
     }
 
     // MARK: - Refresh
@@ -442,13 +480,13 @@ final class PostSettingsViewModel: NSObject, ObservableObject {
         switch details {
         case .abstractPost(let post):
             displayedCategories = settings.getCategoryNames(for: post)
-        case .remotePost:
+        case .customPost:
             displayedCategories = settings.getCategoryNames(for: blog)
         }
     }
 
     private func refreshDisplayedTags() {
-        displayedTags = AbstractPost.makeTags(from: settings.tags)
+        displayedTags = settings.tags.map(\.name)
     }
 
     private func refreshParentPageText() {
@@ -471,8 +509,8 @@ final class PostSettingsViewModel: NSObject, ObservableObject {
         switch details {
         case .abstractPost(let post):
             buttonSaveTappedForAbstractPost(post)
-        case .remotePost:
-            buttonSaveTappedForRemotePost()
+        case .customPost:
+            buttonSaveTappedForCustomPost()
         }
     }
 
@@ -496,58 +534,52 @@ final class PostSettingsViewModel: NSObject, ObservableObject {
 
         isSaving = true
         Task {
-            await actuallySaveAbstractPost(post)
-        }
-    }
-
-    private func buttonSaveTappedForRemotePost() {
-        isSaving = true
-        Task {
-            await saveRemotePost()
-        }
-    }
-
-    private func actuallySaveAbstractPost(_ post: AbstractPost) async {
-        do {
-            let settings = getSettingsToSave(for: self.settings)
-            let coordinator = PostCoordinator.shared
-            if coordinator.isSyncAllowed(for: post) && post.status == settings.status {
-                let revision = post.createRevision()
-                settings.apply(to: revision)
-                coordinator.setNeedsSync(for: revision)
-            } else {
-                // When sync is not allowed, use the changes parameter
-                let changes = settings.makeUpdateParameters(from: post)
-                try await coordinator.save(post, changes: changes)
+            do {
+                let settings = getSettingsToSave(for: self.settings)
+                let coordinator = PostCoordinator.shared
+                if coordinator.isSyncAllowed(for: post) && post.status == settings.status {
+                    let revision = post.createRevision()
+                    settings.apply(to: revision)
+                    coordinator.setNeedsSync(for: revision)
+                } else {
+                    let changes = settings.makeUpdateParameters(from: post)
+                    try await coordinator.save(post, changes: changes)
+                }
+                didSaveChanges()
+                onDismiss?()
+            } catch {
+                isSaving = false
             }
-            didSaveChanges()
-            onDismiss?()
-        } catch {
-            isSaving = false
-            // `PostCoordinator` handles errors by showing an alert when needed
         }
     }
 
-    private func saveRemotePost() async {
+    private func buttonSaveTappedForCustomPost() {
         guard let editorService else {
-            wpAssertionFailure("missing remote post context")
-            isSaving = false
+            wpAssertionFailure("missing editor service")
             return
         }
 
-        do {
-            let params = settings.makeUpdateParameters(from: editorService.post)
-            try await editorService.update(params: params)
-            if case .remotePost(_, let typeDetails) = self.details {
-                self.details = .remotePost(editorService.post, typeDetails)
-            }
-
+        guard isStandalone else {
+            let settingsToSave = getSettingsToSave(for: settings)
+            editorService.applyLocally(settings: settingsToSave)
             didSaveChanges()
             onEditorPostSaved?()
             onDismiss?()
-        } catch {
-            isSaving = false
-            Notice(error: error, title: Strings.saveFailedMessage).post()
+            return
+        }
+
+        isSaving = true
+        Task {
+            do {
+                let settingsToSave = getSettingsToSave(for: settings)
+                try await editorService.save(settings: settingsToSave, publish: false)
+                didSaveChanges()
+                onEditorPostSaved?()
+                onDismiss?()
+            } catch {
+                isSaving = false
+                Notice(error: error, title: Strings.saveFailedMessage).post()
+            }
         }
     }
 
@@ -568,8 +600,8 @@ final class PostSettingsViewModel: NSObject, ObservableObject {
         switch details {
         case .abstractPost(let post):
             publishAbstractPost(post)
-        case .remotePost:
-            publishRemotePost()
+        case .customPost:
+            publishCustomPost()
         }
     }
 
@@ -595,44 +627,16 @@ final class PostSettingsViewModel: NSObject, ObservableObject {
         }
     }
 
-    private func publishRemotePost() {
+    private func publishCustomPost() {
         guard let editorService else {
-            wpAssertionFailure("missing remote post context")
+            wpAssertionFailure("missing editor service")
             return
         }
 
         isSaving = true
         Task {
             do {
-                let settingsParams = settings.makeUpdateParameters(from: editorService.post)
-
-                let hasTitle = editorService.details.supports.map[.title] == .bool(true)
-                // TODO: Change `PostUpdateParams` properties to var, so that we don't need to manually copy.
-                let params = PostUpdateParams(
-                    slug: settingsParams.slug,
-                    status: .publish,
-                    password: settingsParams.password,
-                    title: hasTitle ? editorContent?.title : nil,
-                    content: editorContent?.content,
-                    author: settingsParams.author,
-                    excerpt: settingsParams.excerpt,
-                    featuredMedia: settingsParams.featuredMedia,
-                    commentStatus: settingsParams.commentStatus,
-                    pingStatus: settingsParams.pingStatus,
-                    format: settingsParams.format,
-                    meta: settingsParams.meta,
-                    sticky: settingsParams.sticky,
-                    categories: settingsParams.categories,
-                    tags: settingsParams.tags,
-                    parent: settingsParams.parent
-                )
-
-                try await editorService.update(params: params)
-
-                if case .remotePost(_, let typeDetails) = self.details {
-                    self.details = .remotePost(editorService.post, typeDetails)
-                }
-
+                try await editorService.save(settings: settings, publish: true)
                 onPostPublished?()
             } catch {
                 isSaving = false
@@ -650,14 +654,10 @@ final class PostSettingsViewModel: NSObject, ObservableObject {
 
         switch selection.type {
         case .public, .protected:
-            switch details {
-            case .abstractPost(let post) where post.getOriginal().status == .scheduled:
+            if isScheduled {
                 break // Keep it scheduled
-            case .remotePost where settings.status == .scheduled:
-                break // Keep it scheduled
-            default:
-                settings.status = .publish
             }
+            settings.status = .publish
         case .private:
             settings.status = .publishPrivate
         }
@@ -666,18 +666,18 @@ final class PostSettingsViewModel: NSObject, ObservableObject {
 
     func didSelectSuggestedTag(_ tag: String) {
         suggestedTags.removeAll(where: { $0 == tag })
-        settings.tags.append(",\(tag)")
+        settings.tags.append(PostSettings.Term(id: 0, name: tag))
 
         track(.intelligenceSuggestedTagSelected)
     }
 
-    func didSelectTags(_ tags: String) {
-        settings.tags = tags
+    func didSelectTags(_ tags: [TagsViewModel.SelectedTerm]) {
+        settings.tags = tags.map { PostSettings.Term(id: $0.id, name: $0.name) }
         isSuggestedTagsRefreshNeeded = true
     }
 
-    func didSelectTerms(_ terms: String, forTaxonomySlug taxonomySlug: String) {
-        settings.setTerms(terms, forTaxonomySlug: taxonomySlug)
+    func didSelectTerms(_ terms: [TagsViewModel.SelectedTerm], forTaxonomySlug taxonomySlug: String) {
+        settings.otherTerms[taxonomySlug] = terms.map { PostSettings.Term(id: $0.id, name: $0.name) }
     }
 
     // MARK: - Social Sharing
@@ -699,11 +699,11 @@ final class PostSettingsViewModel: NSObject, ObservableObject {
     }
 
     private func isPostEligibleForSocialSharing(_ post: Post) -> Bool {
-        BuildSettings.current.brand == .jetpack &&
-        RemoteFeatureFlag.jetpackSocialImprovements.enabled() &&
-        post.status != .publishPrivate &&
-        !getPublicizeServices().isEmpty &&
-        blog.supports(.publicize)
+        BuildSettings.current.brand == .jetpack
+            && RemoteFeatureFlag.jetpackSocialImprovements.enabled()
+            && post.status != .publishPrivate
+            && !getPublicizeServices().isEmpty
+            && blog.supports(.publicize)
     }
 
     private func getPublicizeServices() -> [PublicizeService] {
@@ -898,7 +898,7 @@ extension PostFormat {
 
 private enum PostDetails {
     case abstractPost(AbstractPost)
-    case remotePost(AnyPostWithEditContext, PostTypeDetailsWithEditContext)
+    case customPost(CustomPostEditorService)
 }
 
 // MARK: - Localized Strings

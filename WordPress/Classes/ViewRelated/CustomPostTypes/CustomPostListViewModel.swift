@@ -92,7 +92,7 @@ final class CustomPostListViewModel: ObservableObject {
     func handleDataChanges() async {
         let batches = await client.cache.databaseUpdatesPublisher()
             .filter { [weak collection] in collection?.isRelevantUpdate(hook: $0) == true }
-            .collect(.byTime(DispatchQueue.main, .milliseconds(100)))
+            .collect(.byTime(DispatchQueue.main, .milliseconds(50)))
             .values
         for await batch in batches {
             DDLogInfo("\(batch.count) updates received from WpApiCache")

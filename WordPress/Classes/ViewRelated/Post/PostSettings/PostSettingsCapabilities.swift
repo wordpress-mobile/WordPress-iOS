@@ -59,9 +59,8 @@ extension PostSettingsCapabilities {
 
     /// Capabilities derived from REST API post type details.
     init(from details: PostTypeDetailsWithEditContext) {
-        // FIXME: Add taxonomy support
-        supportsCategories = false // details.taxonomies.contains("category")
-        supportsTags = false // details.taxonomies.contains("post_tag")
+        supportsCategories = details.taxonomies.contains("category")
+        supportsTags = details.taxonomies.contains("post_tag")
         supportsFeaturedImage = details.supports.supports(feature: .thumbnail)
         supportsExcerpt = details.supports.supports(feature: .excerpt)
         supportsAuthor = details.supports.supports(feature: .author)
@@ -71,6 +70,6 @@ extension PostSettingsCapabilities {
         supportsPageAttributes = false // details.supports.supports(feature: .pageAttributes)
         supportsSlug = details.supports.supports(feature: .slug)
         supportsCustomFields = false // details.supports.supports(feature: .customFields)
-        customTaxonomySlugs = [] // details.taxonomies.filter { $0 != "category" && $0 != "post_tag" }
+        customTaxonomySlugs = details.taxonomies.filter { $0 != "category" && $0 != "post_tag" }
     }
 }

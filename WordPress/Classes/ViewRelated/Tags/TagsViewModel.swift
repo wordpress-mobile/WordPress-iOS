@@ -9,20 +9,28 @@ import WordPressCore
 typealias TagsPaginatedResponse = DataViewPaginatedResponse<AnyTermWithViewContext, Int>
 
 enum TagsViewMode {
-    case selection(onSelectedTagsChanged: ((String) -> Void)?)
+    case selection(onSelectedTagsChanged: (([TagsViewModel.SelectedTerm]) -> Void)?)
     case browse
 }
 
 @MainActor
 class TagsViewModel: ObservableObject {
+    struct SelectedTerm: Hashable {
+        let id: Int
+        var name: String
+
+        /// Tags with `id == 0` have been entered by the user but not yet confirmed
+        /// by the server (search or create is in flight).
+        var isPending: Bool { id == 0 }
+    }
     @Published var searchText = ""
     @Published private(set) var response: TagsPaginatedResponse?
     @Published private(set) var isLoading = false
     @Published private(set) var error: Error?
-    @Published private(set) var selectedTags: [String] {
+    @Published private(set) var selectedTags: [SelectedTerm] {
         didSet {
             if case .selection(let onSelectedTagsChanged) = mode {
-                onSelectedTagsChanged?(selectedTags.joined(separator: ", "))
+                onSelectedTagsChanged?(selectedTags.filter { !$0.isPending })
             }
         }
     }
@@ -44,27 +52,28 @@ class TagsViewModel: ObservableObject {
         return false
     }
 
-    convenience init(blog: Blog, selectedTags: String? = nil, mode: TagsViewMode) {
+    convenience init(blog: Blog, selectedTags: [SelectedTerm] = [], mode: TagsViewMode) {
         self.init(taxonomy: nil, service: TagsService(blog: blog), selectedTerms: selectedTags, mode: mode)
     }
 
-    convenience init(blog: Blog, client: WordPressClient, taxonomy: SiteTaxonomy, selectedTerms: String? = nil, mode: TagsViewMode) {
+    convenience init(blog: Blog, client: WordPressClient, taxonomy: SiteTaxonomy, selectedTerms: [SelectedTerm] = [], mode: TagsViewMode) {
         self.init(taxonomy: taxonomy, service: AnyTermService(client: client, endpoint: taxonomy.endpoint), selectedTerms: selectedTerms, mode: mode)
     }
 
-    init(taxonomy: SiteTaxonomy?, service: TaxonomyServiceProtocol, selectedTerms: String? = nil, mode: TagsViewMode) {
+    init(taxonomy: SiteTaxonomy?, service: TaxonomyServiceProtocol, selectedTerms: [SelectedTerm] = [], mode: TagsViewMode) {
         self.taxonomy = taxonomy
         self.tagsService = service
         self.mode = mode
         self.labels = taxonomy.flatMap(TaxonomyLocalizedLabels.from(taxonomy:)) ?? TaxonomyLocalizedLabels.tag
-        self.selectedTags = AbstractPost.makeTags(from: selectedTerms ?? "")
-        self.selectedTagsSet = Set(self.selectedTags.map { $0.lowercased() })
+        self.selectedTags = selectedTerms
+        self.selectedTagsSet = Set(selectedTerms.map { $0.name.lowercased() })
     }
 
     func onAppear() {
         guard response == nil else { return }
         Task {
-            await loadInitialTags()
+            async let _ = await loadInitialTags()
+            async let _ = await resolvePendingSelectedTerms()
         }
     }
 
@@ -140,10 +149,10 @@ class TagsViewModel: ObservableObject {
         let lowercasedTagName = tagName.lowercased()
         if selectedTagsSet.contains(lowercasedTagName) {
             selectedTagsSet.remove(lowercasedTagName)
-            selectedTags.removeAll { $0.lowercased() == lowercasedTagName }
+            selectedTags.removeAll { $0.name.lowercased() == lowercasedTagName }
         } else {
             selectedTagsSet.insert(lowercasedTagName)
-            selectedTags.append(tagName)
+            selectedTags.append(SelectedTerm(id: Int(term.id), name: term.name))
         }
         searchText = ""
     }
@@ -155,7 +164,7 @@ class TagsViewModel: ObservableObject {
         guard !selectedTagsSet.contains(lowercasedName) else { return nil }
 
         selectedTagsSet.insert(lowercasedName)
-        selectedTags.append(name)
+        selectedTags.append(SelectedTerm(id: 0, name: name))
 
         // Create a new tag in the background, which is consistent with the web editor.
         return Task {
@@ -168,12 +177,11 @@ class TagsViewModel: ObservableObject {
                     newTag = try await tagsService.createTag(name: name, description: "")
                 }
 
-                // The original input `name` was used as a temporary tag before sending the API request.
-                // Replace it with the actual tag returned by the API.
-                if newTag.name != name, let index = selectedTags.firstIndex(of: name) {
+                // Replace the pending item with the confirmed one from the server.
+                if let index = selectedTags.firstIndex(where: { $0.name == name }) {
                     selectedTagsSet.remove(lowercasedName)
                     selectedTagsSet.insert(newTag.name.lowercased())
-                    selectedTags[index] = newTag.name
+                    selectedTags[index] = SelectedTerm(id: Int(newTag.id), name: newTag.name)
                 }
             } catch {
                 removeSelectedTag(name)
@@ -192,7 +200,26 @@ class TagsViewModel: ObservableObject {
     func removeSelectedTag(_ tagName: String) {
         let lowercasedTagName = tagName.lowercased()
         selectedTagsSet.remove(lowercasedTagName)
-        selectedTags.removeAll { $0.lowercased() == lowercasedTagName }
+        selectedTags.removeAll { $0.name.lowercased() == lowercasedTagName }
+    }
+
+    /// Resolves selected tags that have `id == 0` by searching for them on the server.
+    ///
+    /// Unlike `addNewTag`, this only searches — it does not create missing tags,
+    /// because these are already-selected tags that most likely exist on the server.
+    private func resolvePendingSelectedTerms() async {
+        let pendingNames = selectedTags.filter { $0.isPending }.map(\.name)
+        guard !pendingNames.isEmpty else { return }
+
+        let resolved = await tagsService.resolveTerms(named: pendingNames)
+
+        for (name, existing) in resolved {
+            if let index = selectedTags.firstIndex(where: { $0.name == name }) {
+                selectedTagsSet.remove(name.lowercased())
+                selectedTagsSet.insert(existing.name.lowercased())
+                selectedTags[index] = SelectedTerm(id: Int(existing.id), name: existing.name)
+            }
+        }
     }
 }
 

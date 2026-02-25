@@ -154,6 +154,34 @@ extension TagsServiceError: LocalizedError {
     }
 }
 
+extension TaxonomyServiceProtocol {
+
+    /// Resolves term names to server-confirmed terms by searching for exact
+    /// (case-sensitive) matches. Names that are not found or fail to search
+    /// are omitted from the result.
+    func resolveTerms(named names: [String]) async -> [String: AnyTermWithViewContext] {
+        typealias Result = (String, AnyTermWithViewContext?)
+
+        return await withTaskGroup(of: Result.self) { group -> [String: AnyTermWithViewContext] in
+            for name in names {
+                group.addTask { [self] in
+                    let match = try? await self.searchTags(with: name)
+                        .first { $0.name == name }
+                    return (name, match)
+                }
+            }
+
+            var resolved: [String: AnyTermWithViewContext] = [:]
+            for await (name, match) in group {
+                if let match {
+                    resolved[name] = match
+                }
+            }
+            return resolved
+        }
+    }
+}
+
 extension AnyTermWithViewContext: @retroactive Identifiable {}
 
 extension AnyTermWithViewContext {

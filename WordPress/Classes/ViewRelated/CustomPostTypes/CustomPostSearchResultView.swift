@@ -6,13 +6,13 @@ import WordPressCore
 import WordPressData
 
 struct CustomPostSearchResultView: View {
+    let blog: Blog
     let client: WordPressClient
     let service: WpService
     let endpoint: PostEndpointType
     let details: PostTypeDetailsWithEditContext
     @Binding var searchText: String
     let onSelectPost: (AnyPostWithEditContext) -> Void
-    let blog: Blog
 
     @State private var finalSearchText = ""
 
@@ -27,8 +27,8 @@ struct CustomPostSearchResultView: View {
             ),
             details: details,
             client: client,
-            onSelectPost: onSelectPost,
-            mediaHost: MediaHost(blog)
+            mediaHost: MediaHost(blog),
+            onSelectPost: onSelectPost
         )
         .task(id: searchText) {
             do {

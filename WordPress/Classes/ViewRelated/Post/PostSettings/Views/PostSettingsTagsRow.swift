@@ -4,6 +4,7 @@ import WordPressData
 
 struct PostSettingsTagsRow: View {
     let tags: [String]
+    var isLoading = false
 
     var body: some View {
         HStack {
@@ -15,7 +16,10 @@ struct PostSettingsTagsRow: View {
                     .font(.body)
                     .foregroundColor(.primary)
 
-                if tags.isEmpty {
+                if isLoading {
+                    ProgressView()
+                        .controlSize(.small)
+                } else if tags.isEmpty {
                     Text(Strings.addTags)
                         .font(.subheadline)
                         .foregroundColor(Color(.tertiaryLabel))

@@ -7,6 +7,7 @@ import WordPressCore
 struct PostSettingsCustomTaxonomyRow: View {
     let taxonomy: SiteTaxonomy
     let terms: [String]
+    var isLoading = false
 
     var body: some View {
         HStack {
@@ -17,7 +18,10 @@ struct PostSettingsCustomTaxonomyRow: View {
                 Text(taxonomy.localizedName)
                     .font(.body)
                     .foregroundColor(.primary)
-                if terms.isEmpty {
+                if isLoading {
+                    ProgressView()
+                        .controlSize(.small)
+                } else if terms.isEmpty {
                     Text(String.localizedStringWithFormat(Strings.addNewFormat, taxonomy.localizedName))
                         .font(.subheadline)
                         .foregroundColor(Color(.tertiaryLabel))
