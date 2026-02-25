@@ -27,6 +27,12 @@ extern PostServiceType const PostServiceTypeAny;
 
 + (ReaderPost *)createOrReplaceFromRemotePost:(RemoteReaderPost *)remotePost forTopic:(nullable ReaderAbstractTopic *)topic context:(NSManagedObjectContext *) managedObjectContext;
 
+/// Finds an existing `ReaderPost` matching the given `globalID` and `topic`, or creates a new one.
++ (ReaderPost *)findOrCreateReaderPostWithGlobalID:(NSString *)globalID forTopic:(nullable ReaderAbstractTopic *)topic existing:(BOOL *)existing inContext:(NSManagedObjectContext *)context;
+
+/// Updates a `ReaderPost` with values from a `RemoteReaderPost`.
++ (void)updateReaderPost:(ReaderPost *)post withRemotePost:(RemoteReaderPost *)remotePost isExisting:(BOOL)existing forTopic:(nullable ReaderAbstractTopic *)topic inContext:(NSManagedObjectContext *)context;
+
 @end
 
 NS_ASSUME_NONNULL_END

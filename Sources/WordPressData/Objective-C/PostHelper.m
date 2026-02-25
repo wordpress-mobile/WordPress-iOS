@@ -263,24 +263,42 @@ static NSString * const SourceAttributionStandardTaxonomy = @"standard-pick";
                                      forTopic:(ReaderAbstractTopic *)topic
                                       context:(NSManagedObjectContext *) managedObjectContext
 {
+    BOOL existing = NO;
+    ReaderPost *post = [self findOrCreateReaderPostWithGlobalID:remotePost.globalID forTopic:topic existing:&existing inContext:managedObjectContext];
+    [self updateReaderPost:post withRemotePost:remotePost isExisting:existing forTopic:topic inContext:managedObjectContext];
+    return post;
+}
+
++ (ReaderPost *)findOrCreateReaderPostWithGlobalID:(NSString *)globalID
+                                          forTopic:(ReaderAbstractTopic *)topic
+                                          existing:(BOOL *)existing
+                                         inContext:(NSManagedObjectContext *)context
+{
     NSError *error;
     ReaderPost *post;
-    NSString *globalID = remotePost.globalID;
     NSFetchRequest *fetchRequest = [[NSFetchRequest alloc] initWithEntityName:@"ReaderPost"];
     fetchRequest.predicate = [NSPredicate predicateWithFormat:@"globalID = %@ AND (topic = %@ OR topic = NULL)", globalID, topic];
-    NSArray *arr = [managedObjectContext executeFetchRequest:fetchRequest error:&error];
+    NSArray *arr = [context executeFetchRequest:fetchRequest error:&error];
 
-    BOOL existing = false;
+    *existing = NO;
     if (error) {
         DDLogError(@"Error fetching an existing reader post. - %@", error);
     } else if ([arr count] > 0) {
         post = (ReaderPost *)[arr objectAtIndex:0];
-        existing = YES;
+        *existing = YES;
     } else {
         post = [NSEntityDescription insertNewObjectForEntityForName:@"ReaderPost"
-                                             inManagedObjectContext:managedObjectContext];
+                                             inManagedObjectContext:context];
     }
+    return post;
+}
 
++ (void)updateReaderPost:(ReaderPost *)post
+          withRemotePost:(RemoteReaderPost *)remotePost
+              isExisting:(BOOL)existing
+                forTopic:(ReaderAbstractTopic *)topic
+               inContext:(NSManagedObjectContext *)managedObjectContext
+{
     post.authorID = remotePost.authorID;
     post.author = remotePost.author;
     post.authorAvatarURL = remotePost.authorAvatarURL;
@@ -381,8 +399,6 @@ static NSString * const SourceAttributionStandardTaxonomy = @"standard-pick";
 
     // auto-suggested image, but NOT an explcitly specified featured image
     post.pathForDisplayImage = remotePost.autoSuggestedFeaturedImage;
-
-    return post;
 }
 
 + (SourcePostAttribution *)createOrReplaceFromRemoteDiscoverAttribution:(RemoteSourcePostAttribution *)remoteAttribution
