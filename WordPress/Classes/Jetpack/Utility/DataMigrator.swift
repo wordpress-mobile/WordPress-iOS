@@ -22,7 +22,7 @@ protocol ContentDataMigrating {
 final class DataMigrator {
     private let coreDataStack: CoreDataStack
     private let backupLocation: URL?
-    private let keychainUtils: KeychainUtils
+    private let keychainUtils: KeychainAccessible
     private let localDefaults: UserPersistentRepository
     private let sharedDefaults: UserPersistentRepository?
     private let crashLogger: CrashLogging?
@@ -30,7 +30,7 @@ final class DataMigrator {
 
     init(coreDataStack: CoreDataStack = ContextManager.shared,
          backupLocation: URL? = FileManager.default.containerURL(forSecurityApplicationGroupIdentifier: BuildSettings.current.appGroupName)?.appendingPathComponent("WordPress.sqlite"),
-         keychainUtils: KeychainUtils = KeychainUtils(),
+         keychainUtils: KeychainAccessible = KeychainUtils(),
          localDefaults: UserPersistentRepository = UserDefaults.standard,
          sharedDefaults: UserPersistentRepository? = UserDefaults(suiteName: BuildSettings.current.appGroupName),
          crashLogger: CrashLogging? = .main,

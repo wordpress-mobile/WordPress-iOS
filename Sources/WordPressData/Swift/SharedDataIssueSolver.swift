@@ -4,13 +4,13 @@ import BuildSettingsKit
 public final class SharedDataIssueSolver {
 
     private let contextManager: CoreDataStack
-    private let keychainUtils: KeychainUtils
+    private let keychainUtils: KeychainAccessible
     private let sharedDefaults: UserPersistentRepository?
     private let localFileStore: LocalFileStore
     private let appGroupName: String
 
     public init(contextManager: CoreDataStack = ContextManager.shared,
-         keychainUtils: KeychainUtils = KeychainUtils(),
+         keychainUtils: KeychainAccessible = KeychainUtils(),
          sharedDefaults: UserPersistentRepository? = UserDefaults(suiteName: BuildSettings.current.appGroupName),
          localFileStore: LocalFileStore = FileManager.default,
          appGroupName: String = BuildSettings.current.appGroupName) {
@@ -45,11 +45,7 @@ public final class SharedDataIssueSolver {
         }
 
         // if authToken for the account username exists, move it to the authToken location for JP.
-        // FIXME: This should be done via a `KeychainAccessible` method
-        try? keychainUtils.store(username: username,
-                                 password: token,
-                                 serviceName: WPAccountConstants.authToken.valueForJetpack,
-                                 updateExisting: true)
+        try? keychainUtils.setPassword(for: username, to: token, serviceName: WPAccountConstants.authToken.valueForJetpack)
     }
 
     public func migrateExtensionsData() {

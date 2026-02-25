@@ -1,37 +1,25 @@
-@testable import WordPressShared
+import WordPressShared
 
-final class KeychainUtilsMock: KeychainUtils {
-    var sourceAccessGroup: String?
-    var destinationAccessGroup: String?
-    var shouldThrowError = false
-    var passwordToReturn: String? = nil
-    var storeShouldThrow = false
-    var storedPassword: String? = nil
-    var storedUsername: String? = nil
-    var storedServiceName: String? = nil
-    var storedAccessGroup: String? = nil
+final class KeychainUtilsMock: KeychainAccessible {
+    var passwords: [String: [String: String]] = [:]
+    var getPasswordError: Error?
+    var setPasswordError: Error?
 
-    override func copyKeychain(from sourceAccessGroup: String?, to destinationAccessGroup: String?, updateExisting: Bool = true) throws {
-        if shouldThrowError {
-            throw NSError(domain: "", code: 0)
+    func getPassword(for username: String, serviceName: String) throws -> String {
+        if let error = getPasswordError {
+            throw error
         }
-
-        self.sourceAccessGroup = sourceAccessGroup
-        self.destinationAccessGroup = destinationAccessGroup
+        return passwords[serviceName]?[username] ?? ""
     }
 
-    override func password(for username: String, serviceName: String, accessGroup: String? = nil) throws -> String? {
-        return passwordToReturn
-    }
-
-    override func store(username: String, password: String, serviceName: String, accessGroup: String? = nil, updateExisting: Bool) throws {
-        if storeShouldThrow {
-            throw NSError(domain: "", code: 0)
+    func setPassword(for username: String, to newValue: String?, serviceName: String) throws {
+        if let error = setPasswordError {
+            throw error
         }
-
-        storedUsername = username
-        storedPassword = password
-        storedServiceName = serviceName
-        storedAccessGroup = accessGroup
+        if let newValue {
+            passwords[serviceName, default: [:]][username] = newValue
+        } else {
+            passwords[serviceName]?[username] = nil
+        }
     }
 }
