@@ -104,7 +104,10 @@ public class Media: NSManagedObject {
 
     /// Returns `true` if the media object already exists on the server.
     @objc public var hasRemote: Bool {
-        mediaID?.intValue != 0
+        guard let mediaID else {
+            return false
+        }
+        return mediaID != 0
     }
 
     // MARK: - Methods
