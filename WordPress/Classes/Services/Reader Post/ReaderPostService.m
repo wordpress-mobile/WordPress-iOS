@@ -142,7 +142,7 @@ static NSString * const ReaderPostGlobalIDKey = @"globalID";
 
         NSManagedObjectID * __block postObjectID = nil;
         [self.coreDataStack performAndSaveUsingBlock:^(NSManagedObjectContext *context) {
-            ReaderPost *post = [self createOrReplaceFromRemotePost:remotePost forTopic:nil inContext:context];
+            ReaderPost *post = [ReaderPost createOrUpdateWithRemotePost:remotePost topic:nil context:context];
 
             NSError *error;
             BOOL obtainedID = [context obtainPermanentIDsForObjects:@[post] error:&error];
@@ -1109,7 +1109,7 @@ static NSString * const ReaderPostGlobalIDKey = @"globalID";
 {
     NSMutableArray *newPosts = [NSMutableArray array];
     for (RemoteReaderPost *post in posts) {
-        ReaderPost *newPost = [self createOrReplaceFromRemotePost:post forTopic:topic inContext:context];
+        ReaderPost *newPost = [ReaderPost createOrUpdateWithRemotePost:post topic:topic context:context];
         if (newPost != nil) {
             [newPosts addObject:newPost];
         } else {
@@ -1117,20 +1117,6 @@ static NSString * const ReaderPostGlobalIDKey = @"globalID";
         }
     }
     return newPosts;
-}
-
-/**
- Create a `ReaderPost` model object from the specified dictionary.
-
- @param dict A `RemoteReaderPost` object.
- @param topic The `ReaderAbstractTopic` to assign to the created post.
- @return A `ReaderPost` model object whose properties are populated with the values from the passed dictionary.
- */
-- (ReaderPost *)createOrReplaceFromRemotePost:(RemoteReaderPost *)remotePost forTopic:(ReaderAbstractTopic *)topic inContext:(NSManagedObjectContext *)context
-{
-    NSParameterAssert(context != nil);
-    NSParameterAssert(topic == nil || topic.managedObjectContext == context);
-    return [PostHelper createOrReplaceFromRemotePost:remotePost forTopic:topic context:context];
 }
 
 #pragma mark Internal

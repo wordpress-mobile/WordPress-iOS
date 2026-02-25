@@ -1,7 +1,7 @@
 #import <Foundation/Foundation.h>
 #import <CoreData/CoreData.h>
 
-@class AbstractPost, RemotePost, Post, Blog, ReaderPost, ReaderAbstractTopic, RemoteReaderPost;
+@class AbstractPost, RemotePost, Post, Blog, ReaderPost, ReaderAbstractTopic;
 
 NS_ASSUME_NONNULL_BEGIN
 
@@ -24,14 +24,6 @@ extern PostServiceType const PostServiceTypeAny;
                 forBlog:(Blog *)blog
           purgeExisting:(BOOL)purge
               inContext:(NSManagedObjectContext *)context;
-
-+ (ReaderPost *)createOrReplaceFromRemotePost:(RemoteReaderPost *)remotePost forTopic:(nullable ReaderAbstractTopic *)topic context:(NSManagedObjectContext *) managedObjectContext;
-
-/// Finds an existing `ReaderPost` matching the given `globalID` and `topic`, or creates a new one.
-+ (ReaderPost *)findOrCreateReaderPostWithGlobalID:(NSString *)globalID forTopic:(nullable ReaderAbstractTopic *)topic existing:(BOOL *)existing inContext:(NSManagedObjectContext *)context;
-
-/// Updates a `ReaderPost` with values from a `RemoteReaderPost`.
-+ (void)updateReaderPost:(ReaderPost *)post withRemotePost:(RemoteReaderPost *)remotePost isExisting:(BOOL)existing forTopic:(nullable ReaderAbstractTopic *)topic inContext:(NSManagedObjectContext *)context;
 
 @end
 

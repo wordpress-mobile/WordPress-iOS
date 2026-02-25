@@ -52,7 +52,7 @@ public class ReaderCard: NSManagedObject {
         case .post:
             let post: ReaderPost
             if let remotePost = remoteCard.post {
-                post = PostHelper.createOrReplace(fromRemotePost: remotePost, for: nil, context: context)
+                post = ReaderPost.createOrUpdate(with: remotePost, topic: nil, context: context)
             } else {
                 return nil
             }

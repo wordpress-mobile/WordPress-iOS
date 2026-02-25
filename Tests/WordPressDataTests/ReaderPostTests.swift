@@ -8,95 +8,71 @@ struct ReaderPostTests {
     private let contextManager = ContextManager.forTesting()
     private var mainContext: NSManagedObjectContext { contextManager.mainContext }
 
-    @Test func testBlogNameForDisplay() {
+    @Test func blogNameForDisplay() {
         let post = NSEntityDescription.insertNewObject(forEntityName: ReaderPost.entityName(), into: mainContext) as! ReaderPost
         post.blogName = "t          r          e          f          o          l          o          g          y"
         #expect(post.blogNameForDisplay() == "t r e f o l o g y")
     }
 
-    // MARK: - findOrCreateReaderPost
+    // MARK: - findOrCreate
 
     @Test func findOrCreateCreatesNewPostWhenNoneExists() {
-        var existing: ObjCBool = false
-        _ = PostHelper.findOrCreateReaderPost(
-            withGlobalID: "global-123",
-            for: nil,
-            existing: &existing,
+        let (_, isExisting) = ReaderPost.findOrCreate(
+            globalID: "global-123",
+            topic: nil,
             in: mainContext
         )
 
-        #expect(existing.boolValue == false)
+        #expect(isExisting == false)
     }
 
     @Test func findOrCreateFindsExistingPostByGlobalID() {
         // GIVEN an existing post with a known globalID
-        let existingPost = NSEntityDescription.insertNewObject(
-            forEntityName: "ReaderPost",
-            into: mainContext
-        ) as! ReaderPost
+        let existingPost = makeReaderPost()
         existingPost.globalID = "global-456"
         existingPost.sortRank = 0
 
         // WHEN searching for the same globalID
-        var existing: ObjCBool = false
-        let foundPost = PostHelper.findOrCreateReaderPost(
-            withGlobalID: "global-456",
-            for: nil,
-            existing: &existing,
+        let (foundPost, isExisting) = ReaderPost.findOrCreate(
+            globalID: "global-456",
+            topic: nil,
             in: mainContext
         )
 
         // THEN it returns the same post
-        #expect(existing.boolValue == true)
+        #expect(isExisting == true)
         #expect(foundPost.objectID == existingPost.objectID)
     }
 
     @Test func findOrCreateScopesToTopic() {
-        let topic = NSEntityDescription.insertNewObject(
-            forEntityName: ReaderTagTopic.entityName(),
-            into: mainContext
-        ) as! ReaderTagTopic
-        topic.path = "/tags/test"
-        topic.title = "Test"
-        topic.type = ReaderTagTopic.TopicType
+        let topic = makeTopic(ReaderTagTopic.self, path: "/tags/test", title: "Test")
 
         // GIVEN a post with a topic
-        let existingPost = NSEntityDescription.insertNewObject(
-            forEntityName: "ReaderPost",
-            into: mainContext
-        ) as! ReaderPost
+        let existingPost = makeReaderPost()
         existingPost.globalID = "global-789"
         existingPost.topic = topic
         existingPost.sortRank = 0
 
         // WHEN searching without a topic
-        var existing: ObjCBool = false
-        let foundPost = PostHelper.findOrCreateReaderPost(
-            withGlobalID: "global-789",
-            for: nil,
-            existing: &existing,
+        let (foundPost, isExisting) = ReaderPost.findOrCreate(
+            globalID: "global-789",
+            topic: nil,
             in: mainContext
         )
 
         // THEN it doesn't find the existing post (different topic scope)
-        #expect(existing.boolValue == false)
+        #expect(isExisting == false)
         #expect(foundPost.objectID != existingPost.objectID)
     }
 
-    // MARK: - updateReaderPost
+    // MARK: - update(with:)
 
-    @Test func updateReaderPostMapsProperties() throws {
+    @Test func updateMapsProperties() throws {
         let post = makeReaderPost()
         let remotePost = makeRemotePost()
         remotePost.sortRank = 42
 
-        PostHelper.update(
-            post,
-            withRemotePost: remotePost,
-            isExisting: false,
-            for: nil,
-            in: mainContext
-        )
+        post.update(with: remotePost, isExisting: false, topic: nil, in: mainContext)
 
         // Basic
         #expect(post.postTitle == "Test Title")
@@ -123,14 +99,8 @@ struct ReaderPostTests {
         try mainContext.save()
     }
 
-    @Test func updateReaderPostPreservesSortRankForExistingSearchResult() throws {
-        let topic = NSEntityDescription.insertNewObject(
-            forEntityName: ReaderSearchTopic.entityName(),
-            into: mainContext
-        ) as! ReaderSearchTopic
-        topic.path = "/search/test"
-        topic.title = "Search"
-        topic.type = ReaderSearchTopic.TopicType
+    @Test func updatePreservesSortRankForExistingSearchResult() throws {
+        let topic = makeTopic(ReaderSearchTopic.self, path: "/search/test", title: "Search")
 
         let post = makeReaderPost()
         post.sortRank = 99
@@ -138,28 +108,15 @@ struct ReaderPostTests {
         let remotePost = makeRemotePost()
         remotePost.sortRank = 42
 
-        PostHelper.update(
-            post,
-            withRemotePost: remotePost,
-            isExisting: true,
-            for: topic,
-            in: mainContext
-        )
+        post.update(with: remotePost, isExisting: true, topic: topic, in: mainContext)
 
-        // sortRank should be preserved for existing search results
         #expect(post.sortRank == 99)
 
         try mainContext.save()
     }
 
-    @Test func updateReaderPostUpdatesSortRankForExistingNonSearchResult() throws {
-        let topic = NSEntityDescription.insertNewObject(
-            forEntityName: ReaderTagTopic.entityName(),
-            into: mainContext
-        ) as! ReaderTagTopic
-        topic.path = "/tags/test"
-        topic.title = "Test"
-        topic.type = ReaderTagTopic.TopicType
+    @Test func updateOverwritesSortRankForExistingNonSearchResult() throws {
+        let topic = makeTopic(ReaderTagTopic.self, path: "/tags/test", title: "Test")
 
         let post = makeReaderPost()
         post.sortRank = 99
@@ -167,29 +124,16 @@ struct ReaderPostTests {
         let remotePost = makeRemotePost()
         remotePost.sortRank = 42
 
-        PostHelper.update(
-            post,
-            withRemotePost: remotePost,
-            isExisting: true,
-            for: topic,
-            in: mainContext
-        )
+        post.update(with: remotePost, isExisting: true, topic: topic, in: mainContext)
 
-        // sortRank should be updated for non-search topics
         #expect(post.sortRank == 42)
 
         try mainContext.save()
     }
 
-    @Test func updateReaderPostUsesSecondaryTagWhenPrimaryMatchesTopic() throws {
-        let topic = NSEntityDescription.insertNewObject(
-            forEntityName: ReaderTagTopic.entityName(),
-            into: mainContext
-        ) as! ReaderTagTopic
-        topic.path = "/tags/swift"
-        topic.title = "Swift"
-        topic.type = ReaderTagTopic.TopicType
-        topic.slug = "swift"
+    @Test func updateUsesSecondaryTagWhenPrimaryMatchesTopic() throws {
+        let topic = makeTopic(ReaderTagTopic.self, path: "/tags/swift", title: "Swift")
+        (topic as! ReaderTagTopic).slug = "swift"
 
         let post = makeReaderPost()
         let remotePost = makeRemotePost()
@@ -198,22 +142,15 @@ struct ReaderPostTests {
         remotePost.secondaryTag = "iOS"
         remotePost.secondaryTagSlug = "ios"
 
-        PostHelper.update(
-            post,
-            withRemotePost: remotePost,
-            isExisting: false,
-            for: topic,
-            in: mainContext
-        )
+        post.update(with: remotePost, isExisting: false, topic: topic, in: mainContext)
 
-        // When primary tag matches topic slug, secondary tag is used
         #expect(post.primaryTag == "iOS")
         #expect(post.primaryTagSlug == "ios")
 
         try mainContext.save()
     }
 
-    @Test func updateReaderPostUsesPrimaryTagWhenNoTopicMatch() throws {
+    @Test func updateUsesPrimaryTagWhenNoTopicMatch() throws {
         let post = makeReaderPost()
         let remotePost = makeRemotePost()
         remotePost.primaryTag = "Swift"
@@ -221,13 +158,7 @@ struct ReaderPostTests {
         remotePost.secondaryTag = "iOS"
         remotePost.secondaryTagSlug = "ios"
 
-        PostHelper.update(
-            post,
-            withRemotePost: remotePost,
-            isExisting: false,
-            for: nil,
-            in: mainContext
-        )
+        post.update(with: remotePost, isExisting: false, topic: nil, in: mainContext)
 
         #expect(post.primaryTag == "Swift")
         #expect(post.primaryTagSlug == "swift")
@@ -235,7 +166,7 @@ struct ReaderPostTests {
         try mainContext.save()
     }
 
-    @Test func updateReaderPostMapsCrossPostMeta() throws {
+    @Test func updateMapsCrossPostMeta() throws {
         let post = makeReaderPost()
         let remotePost = makeRemotePost()
         let crossPostMeta = RemoteReaderCrossPostMeta()
@@ -246,13 +177,7 @@ struct ReaderPostTests {
         crossPostMeta.postID = 888
         remotePost.setValue(crossPostMeta, forKey: "crossPostMeta")
 
-        PostHelper.update(
-            post,
-            withRemotePost: remotePost,
-            isExisting: false,
-            for: nil,
-            in: mainContext
-        )
+        post.update(with: remotePost, isExisting: false, topic: nil, in: mainContext)
 
         #expect(post.crossPostMeta != nil)
         #expect(post.crossPostMeta?.siteURL == "https://cross.example.com")
@@ -264,87 +189,55 @@ struct ReaderPostTests {
         try mainContext.save()
     }
 
-    @Test func updateReaderPostClearsCrossPostMetaWhenNil() throws {
+    @Test func updateClearsCrossPostMetaWhenNil() throws {
         let post = makeReaderPost()
 
-        // First, set up cross post meta
         let meta = NSEntityDescription.insertNewObject(
             forEntityName: ReaderCrossPostMeta.classNameWithoutNamespaces(),
             into: mainContext
         ) as! ReaderCrossPostMeta
         post.crossPostMeta = meta
 
-        // Then update without cross post meta
         let remotePost = makeRemotePost()
 
-        PostHelper.update(
-            post,
-            withRemotePost: remotePost,
-            isExisting: false,
-            for: nil,
-            in: mainContext
-        )
+        post.update(with: remotePost, isExisting: false, topic: nil, in: mainContext)
 
         #expect(post.crossPostMeta == nil)
 
         try mainContext.save()
     }
 
-    @Test func updateReaderPostAssignsTopic() throws {
-        let topic = NSEntityDescription.insertNewObject(
-            forEntityName: ReaderTagTopic.entityName(),
-            into: mainContext
-        ) as! ReaderTagTopic
-        topic.path = "/tags/test"
-        topic.title = "Test"
-        topic.type = ReaderTagTopic.TopicType
+    @Test func updateAssignsTopic() throws {
+        let topic = makeTopic(ReaderTagTopic.self, path: "/tags/test", title: "Test")
 
         let post = makeReaderPost()
         let remotePost = makeRemotePost()
 
-        PostHelper.update(
-            post,
-            withRemotePost: remotePost,
-            isExisting: false,
-            for: topic,
-            in: mainContext
-        )
+        post.update(with: remotePost, isExisting: false, topic: topic, in: mainContext)
 
         #expect(post.topic === topic)
 
         try mainContext.save()
     }
 
-    @Test func updateReaderPostSetsAutoSuggestedFeaturedImage() throws {
+    @Test func updateSetsAutoSuggestedFeaturedImage() throws {
         let post = makeReaderPost()
         let remotePost = makeRemotePost()
         remotePost.autoSuggestedFeaturedImage = "https://example.com/auto-image.jpg"
 
-        PostHelper.update(
-            post,
-            withRemotePost: remotePost,
-            isExisting: false,
-            for: nil,
-            in: mainContext
-        )
+        post.update(with: remotePost, isExisting: false, topic: nil, in: mainContext)
 
         #expect(post.pathForDisplayImage == "https://example.com/auto-image.jpg")
 
         try mainContext.save()
     }
 
-    @Test func updateReaderPostStripsInlineStylesFromContent() throws {
+    @Test func updateStripsInlineStylesFromContent() throws {
         let post = makeReaderPost()
         let remotePost = makeRemotePost()
         remotePost.content = "<p style=\"color:red\">Styled text</p>"
 
-        PostHelper.update(
-            post,
-            withRemotePost: remotePost,
-            isExisting: false,
-            for: nil,
-            in: mainContext
-        )
+        post.update(with: remotePost, isExisting: false, topic: nil, in: mainContext)
 
         #expect(post.content?.contains("style=") == false)
         #expect(post.content?.contains("Styled text") == true)
@@ -352,7 +245,7 @@ struct ReaderPostTests {
         try mainContext.save()
     }
 
-    @Test func updateReaderPostMapsSourceAttribution() throws {
+    @Test func updateMapsSourceAttribution() throws {
         let post = makeReaderPost()
         let remotePost = makeRemotePost()
         let attribution = RemoteSourcePostAttribution()
@@ -368,13 +261,7 @@ struct ReaderPostTests {
         attribution.taxonomies = ["site-pick"]
         remotePost.sourceAttribution = attribution
 
-        PostHelper.update(
-            post,
-            withRemotePost: remotePost,
-            isExisting: false,
-            for: nil,
-            in: mainContext
-        )
+        post.update(with: remotePost, isExisting: false, topic: nil, in: mainContext)
 
         #expect(post.sourceAttribution != nil)
         #expect(post.sourceAttribution?.authorName == "Jane")
@@ -393,6 +280,17 @@ private extension ReaderPostTests {
             forEntityName: "ReaderPost",
             into: mainContext
         ) as! ReaderPost
+    }
+
+    func makeTopic<T: ReaderAbstractTopic>(_ type: T.Type, path: String, title: String) -> ReaderAbstractTopic {
+        let topic = NSEntityDescription.insertNewObject(
+            forEntityName: T.entityName(),
+            into: mainContext
+        ) as! T
+        topic.path = path
+        topic.title = title
+        topic.type = T.TopicType
+        return topic
     }
 
     func makeRemotePost() -> RemoteReaderPost {
