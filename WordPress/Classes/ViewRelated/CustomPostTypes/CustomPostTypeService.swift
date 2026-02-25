@@ -46,9 +46,12 @@ class CustomPostTypeService {
                 if case .custom = details.toPostEndpointType(), details.slug != "attachment" {
                     return details
                 }
+                if FeatureFlag.cptPostsAndPages.enabled, [.posts, .pages].contains(details.toPostEndpointType()) {
+                    return details
+                }
                 return nil
             }
-            .sorted { $0.slug < $1.slug }
+            .sorted(using: KeyPathComparator(\.name))
     }
 
     func resolvePostType(slug: String) async throws -> PostTypeDetailsWithEditContext? {

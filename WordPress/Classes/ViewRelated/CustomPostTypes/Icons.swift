@@ -8,7 +8,14 @@ extension Image {
 
 extension UIImage {
     convenience init?(dashicon: String?) {
-        self.init(systemName: systemName(forDashicon: dashicon))
+        switch dashicon {
+        case "dashicons-admin-post":
+            self.init(named: "site-menu-posts")
+        case "dashicons-admin-page":
+            self.init(named: "site-menu-pages")
+        default:
+            self.init(systemName: systemName(forDashicon: dashicon))
+        }
     }
 }
 

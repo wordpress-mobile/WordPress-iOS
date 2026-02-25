@@ -30,6 +30,7 @@ public enum FeatureFlag: Int, CaseIterable {
     case statsAds
     case customPostTypes
     case cptPostSettings
+    case cptPostsAndPages
 
     /// Returns a boolean indicating if the feature is enabled.
     ///
@@ -95,6 +96,8 @@ public enum FeatureFlag: Int, CaseIterable {
             return BuildConfiguration.current == .debug
         case .cptPostSettings:
             return BuildConfiguration.current == .debug
+        case .cptPostsAndPages:
+            return BuildConfiguration.current == .debug
         }
     }
 
@@ -141,6 +144,7 @@ extension FeatureFlag {
         case .statsAds: "Stats Ads Tab"
         case .customPostTypes: "Custom Post Types"
         case .cptPostSettings: "Custom Post Types: Post Settings"
+        case .cptPostsAndPages: "Custom Post Types: Posts and Pages"
         }
     }
 }
