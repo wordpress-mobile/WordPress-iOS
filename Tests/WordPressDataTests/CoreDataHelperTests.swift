@@ -1,48 +1,31 @@
 import Foundation
-import XCTest
+import Testing
 import CoreData
 
-@testable import WordPress
+@testable import WordPressData
 
-// MARK: - CoreData Helper Tests
-//
-class CoreDataHelperTests: XCTestCase {
-    var stack: DummyStack!
-    var context: NSManagedObjectContext {
-        return stack.context
-    }
+@Suite @MainActor struct CoreDataHelperTests {
+    private let stack = DummyStack()
+    private var context: NSManagedObjectContext { stack.context }
 
-    override func setUp() {
-        super.setUp()
-        stack = DummyStack()
-    }
-
-    /// Verifies that newFetchRequest effectively returns a new Request associated to the Stack's
-    /// specialized type.
-    ///
-    func testNewFetchRequestReturnsNewRequestWithGenericEntityName() {
+    @Test func newFetchRequestReturnsNewRequestWithGenericEntityName() {
         let request = DummyEntity.safeFetchRequest()
-        XCTAssert(request.entityName! == DummyEntity.entityName())
+        #expect(request.entityName == DummyEntity.entityName())
     }
 
-    /// Verifies that allObjects returns all of the entities of the specialized kind.
-    ///
-    func testAllObjectsReturnsAllOfTheAvableEntitiesSortedByValue() {
+    @Test func allObjectsReturnsAllOfTheAvailableEntitiesSortedByValue() {
         insertDummyEntities(100)
 
         let descriptor = NSSortDescriptor(key: "value", ascending: true)
         let all = context.allObjects(ofType: DummyEntity.self, sortedBy: [descriptor])
-        XCTAssert(all.count == 100)
+        #expect(all.count == 100)
 
         for (index, object) in all.enumerated() {
-            XCTAssert(object.value == index)
+            #expect(object.value == index)
         }
     }
 
-    /// Verifies that allObjects returns all of the entities of the specialized kind that match a given
-    /// predicate.
-    ///
-    func testAllObjectsMatchingPredicateEffectivelyFiltersEntities() {
+    @Test func allObjectsMatchingPredicateEffectivelyFiltersEntities() {
         insertDummyEntities(100)
 
         let minValue = 50
@@ -51,66 +34,56 @@ class CoreDataHelperTests: XCTestCase {
         let descriptor = NSSortDescriptor(key: "value", ascending: true)
 
         let filtered = context.allObjects(ofType: DummyEntity.self, matching: predicate, sortedBy: [descriptor])
-        XCTAssert(filtered.count == 10)
+        #expect(filtered.count == 10)
 
         for (index, object) in filtered.enumerated() {
-            XCTAssert(object.value == minValue + index)
+            #expect(object.value == minValue + index)
         }
     }
 
-    /// Verifies that countObjects returns the expected entity count
-    ///
-    func testCountObjectsReturnsTheRightEntityCount() {
+    @Test func countObjectsReturnsTheRightEntityCount() {
         let expected = 80
         insertDummyEntities(expected)
 
         let count = context.countObjects(ofType: DummyEntity.self)
-        XCTAssert(count == expected)
+        #expect(count == expected)
     }
 
-    /// Verifies that countObjects returns the expected entity count matching a given predicate
-    ///
-    func testCountObjectsReturnsTheRightEntityCountMatchingTheSpecifiedPredicate() {
+    @Test func countObjectsReturnsTheRightEntityCountMatchingTheSpecifiedPredicate() {
         let inserted = 42
         let expected = 3
         insertDummyEntities(inserted)
 
         let predicate = NSPredicate(format: "value BETWEEN %@", [5, 7])
         let retrieved = context.countObjects(ofType: DummyEntity.self, matching: predicate)
-        XCTAssert(retrieved == expected)
+        #expect(retrieved == expected)
     }
 
-    /// Verifies that deleteObject effectively nukes the object from the context
-    ///
-    func testDeleteObjectEffectivelyNukesTheObjectFromContext() {
+    @Test func deleteObjectEffectivelyNukesTheObjectFromContext() {
         let count = 30
 
         insertDummyEntities(count)
-        XCTAssert(context.countObjects(ofType: DummyEntity.self) == count)
+        #expect(context.countObjects(ofType: DummyEntity.self) == count)
 
         let all = context.allObjects(ofType: DummyEntity.self)
 
         context.deleteObject(all.first!)
-        XCTAssert(context.countObjects(ofType: DummyEntity.self) == (count - 1))
+        #expect(context.countObjects(ofType: DummyEntity.self) == (count - 1))
     }
 
-    /// Verifies that deleteAllObjects effectively nukes the entire bucket
-    ///
-    func testDeleteAllObjectsEffectivelyNukesAllOfTheEntities() {
+    @Test func deleteAllObjectsEffectivelyNukesAllOfTheEntities() {
         let count = 50
 
         insertDummyEntities(count)
 
-        XCTAssert(context.countObjects(ofType: DummyEntity.self) == count)
+        #expect(context.countObjects(ofType: DummyEntity.self) == count)
         context.deleteAllObjects(ofType: DummyEntity.self)
 
-        XCTAssert(context.countObjects(ofType: DummyEntity.self) == 0)
-        XCTAssert(context.allObjects(ofType: DummyEntity.self).count == 0)
+        #expect(context.countObjects(ofType: DummyEntity.self) == 0)
+        #expect(context.allObjects(ofType: DummyEntity.self).count == 0)
     }
 
-    /// Verifies that firstObject effectively retrieves a single instance, when applicable
-    ///
-    func testFirstObjectMatchingPredicateReturnsTheExpectedObject() {
+    @Test func firstObjectMatchingPredicateReturnsTheExpectedObject() {
         let count = 50
         let targetKey = "5"
         insertDummyEntities(count)
@@ -118,13 +91,11 @@ class CoreDataHelperTests: XCTestCase {
         let predicate = NSPredicate(format: "key == %@", targetKey)
         let retrieved = context.firstObject(ofType: DummyEntity.self, matching: predicate)
 
-        XCTAssertNotNil(retrieved)
-        XCTAssertEqual(retrieved!.key, targetKey)
+        #expect(retrieved != nil)
+        #expect(retrieved?.key == targetKey)
     }
 
-    /// Verifies that firstObject effectively retrieves nil, when applicable
-    ///
-    func testFirstObjectMatchingPredicateReturnsNilIfNothingWasFound() {
+    @Test func firstObjectMatchingPredicateReturnsNilIfNothingWasFound() {
         let count = 5
         let targetKey = "50"
         insertDummyEntities(count)
@@ -132,37 +103,30 @@ class CoreDataHelperTests: XCTestCase {
         let predicate = NSPredicate(format: "key == %@", targetKey)
         let retrieved = context.firstObject(ofType: DummyEntity.self, matching: predicate)
 
-        XCTAssertNil(retrieved)
+        #expect(retrieved == nil)
     }
 
-    /// Verifies that insertNewObject returns a new entity of the specialized kind
-    ///
-    func testInsertEntityReturnsNewManagedObjectOfTheExpectedKind() {
+    @Test func insertEntityReturnsNewManagedObjectOfTheExpectedKind() {
         let entity = context.insertNewObject(ofType: DummyEntity.self)
 
-        // Upcast to AnyObject to make really sure this works
         let anyObject = entity as AnyObject
-        XCTAssert(anyObject is DummyEntity)
+        #expect(anyObject is DummyEntity)
     }
 
-    /// Verifies that loadObject returns nil whenever the entity was deleted
-    ///
-    func testLoadObjectReturnsNilIfTheObjectWasDeleted() {
+    @Test func loadObjectReturnsNilIfTheObjectWasDeleted() throws {
         let entity = context.insertNewObject(ofType: DummyEntity.self)
         let objectID = entity.objectID
 
         let retrieved = context.loadObject(ofType: DummyEntity.self, with: objectID)
-        XCTAssertNotNil(retrieved)
+        #expect(retrieved != nil)
 
         context.deleteObject(entity)
         _ = try? stack.context.save()
 
-        XCTAssertNil(context.loadObject(ofType: DummyEntity.self, with: objectID))
+        #expect(context.loadObject(ofType: DummyEntity.self, with: objectID) == nil)
     }
 
-    /// Verifies that loadObject retrieves the expected entity
-    ///
-    func testLoadObjectReturnsTheExpectedObject() {
+    @Test func loadObjectReturnsTheExpectedObject() {
         let entity = context.insertNewObject(ofType: DummyEntity.self)
         entity.key = "YEAH!"
         entity.value = 42
@@ -170,33 +134,28 @@ class CoreDataHelperTests: XCTestCase {
         let objectID = entity.objectID
         let retrieved = context.loadObject(ofType: DummyEntity.self, with: objectID)
 
-        XCTAssertNotNil(retrieved)
-        XCTAssertEqual(retrieved!.key, "YEAH!")
-        XCTAssertEqual(retrieved!.value, 42)
+        #expect(retrieved != nil)
+        #expect(retrieved?.key == "YEAH!")
+        #expect(retrieved?.value == 42)
     }
 
-    /// Verifies that safeManagedObjectID never runs into exceptions and always returns nil
-    ///
-    func testSafeManagedObjectIDRetrievalUsingURI() {
+    @Test func safeManagedObjectIDRetrievalUsingURI() throws {
         insertDummyEntities(10)
-        guard let psc = context.persistentStoreCoordinator,
-            let uriGood = URL(string: "x-coredata://ABDASDBASD/a.png"),
-            let uriBad1 = URL(string: "ABDASDBASD/a.png"),
-            let uriBad2 = URL(string: "x-coredata://ABDASDBASD") else {
-                return
-        }
+        let psc = try #require(context.persistentStoreCoordinator)
+        let uriGood = try #require(URL(string: "x-coredata://ABDASDBASD/a.png"))
+        let uriBad1 = try #require(URL(string: "ABDASDBASD/a.png"))
+        let uriBad2 = try #require(URL(string: "x-coredata://ABDASDBASD"))
 
-        XCTAssertNil(psc.safeManagedObjectID(forURIRepresentation: uriGood))
-        XCTAssertNil(psc.safeManagedObjectID(forURIRepresentation: uriBad1))
-        XCTAssertNil(psc.safeManagedObjectID(forURIRepresentation: uriBad2))
+        #expect(psc.safeManagedObjectID(forURIRepresentation: uriGood) == nil)
+        #expect(psc.safeManagedObjectID(forURIRepresentation: uriBad1) == nil)
+        #expect(psc.safeManagedObjectID(forURIRepresentation: uriBad2) == nil)
     }
-}
 
-// MARK: - Testing Helpers
-//
-extension CoreDataHelperTests {
-    func insertDummyEntities(_ count: Int) {
+    // MARK: - Testing Helpers
+
+    private func insertDummyEntities(_ count: Int) {
         for i in 0 ..< count {
+
             let entity = context.insertNewObject(ofType: DummyEntity.self)
             entity.key = "\(i)"
             entity.value = i
@@ -207,17 +166,16 @@ extension CoreDataHelperTests {
 }
 
 // MARK: - Dummy Sample Entity
-//
+
 class DummyEntity: NSManagedObject {
     @NSManaged var key: String
     @NSManaged var value: Int
 }
 
 // MARK: - InMemory Stack with Dynamic Model
-//
+
 class DummyStack {
     lazy var model: NSManagedObjectModel = {
-        // Attributes
         let keyAttribute = NSAttributeDescription()
         keyAttribute.name = "key"
         keyAttribute.attributeType = .stringAttributeType
@@ -226,13 +184,11 @@ class DummyStack {
         valueAttribute.name = "value"
         valueAttribute.attributeType = .integer64AttributeType
 
-        // Entity
         let entity = NSEntityDescription()
         entity.name = DummyEntity.entityName()
         entity.managedObjectClassName = String(reflecting: DummyEntity.self)
         entity.properties = [keyAttribute, valueAttribute]
 
-        // Tadaaaa
         let model = NSManagedObjectModel()
         model.entities = [entity]
 
@@ -248,7 +204,6 @@ class DummyStack {
     lazy var coordinator: NSPersistentStoreCoordinator = {
         let coordinator = NSPersistentStoreCoordinator(managedObjectModel: self.model)
         _ = try? coordinator.addPersistentStore(ofType: NSInMemoryStoreType, configurationName: nil, at: nil, options: nil)
-
         return coordinator
     }()
 }

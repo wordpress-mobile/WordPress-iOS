@@ -15,13 +15,19 @@ extension WPAccount {
         authToken: String = "authToken"
     ) -> WPAccount {
         let account = WPAccount(context: context)
-        account.keychain = MockKeychainService()
-        account.keychainServiceName = "test-service"
-        account.keychainMigration = MockAuthKeyMigration()
+        account.mockKeychain()
         account.userID = NSNumber(value: userID)
         account.username = username
         account.authToken = authToken
         account.uuid = uuid.uuidString
         return account
+    }
+
+    @discardableResult
+    func mockKeychain() -> WPAccount {
+        keychain = MockKeychainService()
+        keychainServiceName = "test-service"
+        keychainMigration = MockAuthKeyMigration()
+        return self
     }
 }

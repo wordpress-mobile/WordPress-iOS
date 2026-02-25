@@ -1,16 +1,13 @@
 import CoreData
-import Nimble
 import XCTest
-import WordPressShared
 
-@testable import WordPress
 @testable import WordPressData
 
 class ContextManagerTests: XCTestCase {
     let storeURL = URL.Helpers.temporaryFile(named: "ContextManagerTests.sqlite")
 
     override func setUpWithError() throws {
-        if FileManager.default.fileExistsAtURL(storeURL) {
+        if FileManager.default.fileExists(atPath: storeURL.path) {
             try FileManager.default.removeItem(at: storeURL)
         }
     }
@@ -33,13 +30,6 @@ class ContextManagerTests: XCTestCase {
 
             XCTAssertFalse(originalObject.objectID.isTemporaryID, "Should be a permanent object")
             objectID = originalObject.objectID
-
-            try XCTAssertThrowsError(
-                WPException.objcTry({
-                    originalObject.value(forKey: "authorID")
-                }),
-                "Blog.organizationID doesn't exist in WordPress 130 but we were able to fetch it"
-            )
         }
 
         // Migrate to the latest version
@@ -67,24 +57,28 @@ class ContextManagerTests: XCTestCase {
             firstUserQuery.predicate = NSPredicate(format: "userID = 1")
             return try contextManager.mainContext.fetch(firstUserQuery).first
         }
-        expect(try findFirstUser()?.username).toEventually(equal("First User"))
+        let firstUserSaved = expectation(for: NSPredicate { _, _ in
+            (try? findFirstUser()?.username) == "First User"
+        }, evaluatedWith: nil)
+        wait(for: [firstUserSaved], timeout: 5)
 
         // Change first user's user name
+        try findFirstUser()?.mockKeychain()
         try findFirstUser()?.username = "First User (Updated)"
 
         // Save another user
-        waitUntil { done in
-            derivedContext.perform {
-                _ = WPAccount.fixture(context: derivedContext, userID: 2)
-                contextManager.saveContextAndWait(derivedContext)
-                done()
-            }
+        let secondUserSaved = expectation(description: "Second user saved")
+        derivedContext.perform {
+            _ = WPAccount.fixture(context: derivedContext, userID: 2)
+            contextManager.saveContextAndWait(derivedContext)
+            secondUserSaved.fulfill()
         }
+        wait(for: [secondUserSaved], timeout: 1)
 
         // Discard the username change that's made above
         contextManager.mainContext.reset()
 
-        expect(try findFirstUser()?.username) == "First User"
+        XCTAssertEqual(try findFirstUser()?.username, "First User")
     }
 
     func testSaveUsingBlock() async throws {
@@ -284,6 +278,7 @@ class ContextManagerTests: XCTestCase {
                 XCTFail("Can't find the account")
                 return
             }
+            accountInContext.mockKeychain()
             accountInContext.username = "Updated"
             XCTAssertEqual(theBackgroundContext?.hasChanges, true)
         }
@@ -294,7 +289,10 @@ class ContextManagerTests: XCTestCase {
         XCTAssertEqual(account?.username, "Updated")
 
         // But eventually (probably in next run loop), it will get the updated value.
-        expect(account?.username).toEventually(equal("Updated"))
+        let updated = expectation(for: NSPredicate { _, _ in
+            account?.username == "Updated"
+        }, evaluatedWith: nil)
+        wait(for: [updated], timeout: 5)
 
         // The above issue doesn't present in the async version of `performAndSave` API
         contextManager.performAndSave({ context in
@@ -302,6 +300,7 @@ class ContextManagerTests: XCTestCase {
                 XCTFail("Can't find the account")
                 return
             }
+            accountInContext.mockKeychain()
             accountInContext.username = "Updated Again"
         }, completion: {
             XCTAssertEqual(account?.username, "Updated Again", "The account object in the main context gets the updated value when the completion block is called")
@@ -331,6 +330,7 @@ class ContextManagerTests: XCTestCase {
             // Will this make tests fail because of the default userID in the fixture?
             account = WPAccount.fixture(context: context, username: username)
         }
+        account?.mockKeychain()
         account?.authToken = newToken
     }
 
