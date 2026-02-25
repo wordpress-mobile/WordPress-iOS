@@ -1,4 +1,3 @@
-@import WordPressData;
 @import CoreData;
 
 NS_ASSUME_NONNULL_BEGIN
@@ -6,7 +5,12 @@ NS_ASSUME_NONNULL_BEGIN
 @class Blog;
 @class PostTag;
 
-@interface PostTagService : LocalCoreDataService
+@interface PostTagService : NSObject
+
+@property (nonatomic, readonly) NSManagedObjectContext *managedObjectContext;
+
+- (instancetype)initWithManagedObjectContext:(NSManagedObjectContext *)context NS_DESIGNATED_INITIALIZER;
+- (instancetype)init NS_UNAVAILABLE;
 
 /**
  Sync an initial batch of tags for blog via default remote parameters and responses.

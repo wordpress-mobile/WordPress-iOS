@@ -13,6 +13,14 @@ static const NSInteger PostTagIdDefaultValue = -1;
 
 @implementation PostTagService
 
+- (instancetype)initWithManagedObjectContext:(NSManagedObjectContext *)context {
+    self = [super init];
+    if (self) {
+        _managedObjectContext = context;
+    }
+    return self;
+}
+
 - (void)syncTagsForBlog:(Blog *)blog
                 success:(nullable void (^)(NSArray <PostTag *> *tags))success
                 failure:(nullable void (^)(NSError *error))failure

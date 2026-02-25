@@ -1,6 +1,6 @@
 #import <Foundation/Foundation.h>
 #import <Photos/Photos.h>
-@import WordPressData;
+#import <CoreData/CoreData.h>
 
 @class Blog;
 @class Media;
@@ -16,7 +16,12 @@ typedef NS_ERROR_ENUM(MediaServiceErrorDomain, MediaServiceError) {
     MediaServiceErrorUnknownUploadError = 4
 };
 
-@interface MediaService : LocalCoreDataService
+@interface MediaService : NSObject
+
+@property (nonatomic, readonly) NSManagedObjectContext *managedObjectContext;
+
+- (instancetype)initWithManagedObjectContext:(NSManagedObjectContext *)context NS_DESIGNATED_INITIALIZER;
+- (instancetype)init NS_UNAVAILABLE;
 
 /**
  Uploads the Media object to the server.

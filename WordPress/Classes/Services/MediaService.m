@@ -10,6 +10,14 @@ NSErrorDomain const MediaServiceErrorDomain = @"MediaServiceErrorDomain";
 
 @implementation MediaService
 
+- (instancetype)initWithManagedObjectContext:(NSManagedObjectContext *)context {
+    self = [super init];
+    if (self) {
+        _managedObjectContext = context;
+    }
+    return self;
+}
+
 #pragma mark - Uploading media
 
 - (BOOL)isValidFileInMedia:(Media *)media error:(NSError **)error {

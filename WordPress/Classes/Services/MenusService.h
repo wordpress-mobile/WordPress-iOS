@@ -1,5 +1,4 @@
 #import <CoreData/CoreData.h>
-@import WordPressData;
 
 @class Blog;
 @class Menu;
@@ -14,7 +13,12 @@ typedef void(^MenusServiceMenusRequestSuccessBlock)(NSArray<Menu *> * _Nullable 
 typedef void(^MenusServiceLocationsRequestSuccessBlock)(NSArray<MenuLocation *> * _Nullable locations);
 typedef void(^MenusServiceFailureBlock)(NSError *error);
 
-@interface MenusService : LocalCoreDataService
+@interface MenusService : NSObject
+
+@property (nonatomic, readonly) NSManagedObjectContext *managedObjectContext;
+
+- (instancetype)initWithManagedObjectContext:(NSManagedObjectContext *)context NS_DESIGNATED_INITIALIZER;
+- (instancetype)init NS_UNAVAILABLE;
 
 #pragma mark - Menus availability
 

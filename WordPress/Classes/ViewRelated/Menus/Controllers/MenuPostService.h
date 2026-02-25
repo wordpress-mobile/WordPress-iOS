@@ -1,6 +1,5 @@
 #import <Foundation/Foundation.h>
-
-@import WordPressData;
+#import <CoreData/CoreData.h>
 
 @class AbstractPost;
 @class Blog;
@@ -18,13 +17,16 @@ typedef void(^PostServiceSyncFailure)(NSError * _Nullable error);
 
 extern const NSUInteger PostServiceDefaultNumberToSync;
 
-@interface MenuPostService : LocalCoreDataService
+@interface MenuPostService : NSObject
+
+@property (nonatomic, readonly) NSManagedObjectContext *managedObjectContext;
 
 // This is public so it can be accessed from Swift extensions.
 @property (nonnull, strong, nonatomic) PostServiceRemoteFactory *postServiceRemoteFactory;
 
 - (instancetype)initWithManagedObjectContext:(NSManagedObjectContext *)context
                     postServiceRemoteFactory:(PostServiceRemoteFactory *)postServiceRemoteFactory NS_DESIGNATED_INITIALIZER;
+- (instancetype)init NS_UNAVAILABLE;
 
 /**
  Sync an initial batch of posts from the specified blog.
