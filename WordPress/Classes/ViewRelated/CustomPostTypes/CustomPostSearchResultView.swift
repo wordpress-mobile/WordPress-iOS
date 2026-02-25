@@ -3,6 +3,7 @@ import SwiftUI
 import WordPressAPI
 import WordPressAPIInternal
 import WordPressCore
+import WordPressData
 
 struct CustomPostSearchResultView: View {
     let client: WordPressClient
@@ -11,6 +12,7 @@ struct CustomPostSearchResultView: View {
     let details: PostTypeDetailsWithEditContext
     @Binding var searchText: String
     let onSelectPost: (AnyPostWithEditContext) -> Void
+    let blog: Blog
 
     @State private var finalSearchText = ""
 
@@ -20,10 +22,13 @@ struct CustomPostSearchResultView: View {
                 client: client,
                 service: service,
                 endpoint: endpoint,
-                filter: CustomPostListFilter.default.with(search: finalSearchText)
+                filter: CustomPostListFilter.default.with(search: finalSearchText),
+                blog: blog
             ),
             details: details,
-            onSelectPost: onSelectPost
+            client: client,
+            onSelectPost: onSelectPost,
+            mediaHost: MediaHost(blog)
         )
         .task(id: searchText) {
             do {

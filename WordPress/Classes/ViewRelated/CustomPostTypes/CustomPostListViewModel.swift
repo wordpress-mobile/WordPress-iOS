@@ -3,12 +3,14 @@ import SwiftUI
 import WordPressAPI
 import WordPressAPIInternal
 import WordPressCore
+import WordPressData
 import WordPressShared
 
 @MainActor
 final class CustomPostListViewModel: ObservableObject {
     private let client: WordPressClient
     private let endpoint: PostEndpointType
+    private let blog: Blog
     let filter: CustomPostListFilter
 
     private var collection: PostMetadataCollectionWithEditContext?
@@ -33,10 +35,12 @@ final class CustomPostListViewModel: ObservableObject {
         client: WordPressClient,
         service: WpSelfHostedService,
         endpoint: PostEndpointType,
-        filter: CustomPostListFilter
+        filter: CustomPostListFilter,
+        blog: Blog
     ) {
         self.client = client
         self.endpoint = endpoint
+        self.blog = blog
         self.filter = filter
 
         collection = service
@@ -75,7 +79,7 @@ final class CustomPostListViewModel: ObservableObject {
         let listInfo = collection.listInfo()
 
         do {
-            let items = try await collection.loadItems().map(CustomPostCollectionItem.init)
+            let items = try await collection.loadItems().map { CustomPostCollectionItem(item: $0, blog: blog) }
             if self.listInfo != listInfo {
                 self.listInfo = listInfo
             }
@@ -101,7 +105,7 @@ final class CustomPostListViewModel: ObservableObject {
             DDLogInfo("List info: \(String(describing: listInfo))")
 
             do {
-                let items = try await collection.loadItems().map(CustomPostCollectionItem.init)
+                let items = try await collection.loadItems().map { CustomPostCollectionItem(item: $0, blog: blog) }
                 withAnimation {
                     if self.listInfo != listInfo {
                         self.listInfo = listInfo
@@ -129,34 +133,131 @@ final class CustomPostListViewModel: ObservableObject {
 struct CustomPostCollectionDisplayPost: Equatable {
     let date: Date
     let title: String?
-    let excerpt: String?
+    let content: String?
+    let authorName: String?
+    let status: PostStatus
+    let sticky: Bool
+    let featuredMedia: MediaId?
 
-    init(date: Date, title: String?, excerpt: String?) {
+    init(
+        date: Date,
+        title: String?,
+        content: String?,
+        authorName: String? = nil,
+        status: PostStatus = .publish,
+        sticky: Bool = false,
+        featuredMedia: MediaId? = nil
+    ) {
         self.date = date
         self.title = title
-        self.excerpt = excerpt
+        self.content = content
+        self.authorName = authorName
+        self.status = status
+        self.sticky = sticky
+        self.featuredMedia = featuredMedia
     }
 
-    init(_ entity: AnyPostWithEditContext, excerptLimit: Int = 100) {
+    init(_ entity: AnyPostWithEditContext, blog: Blog, contentLimit: Int = 100) {
         self.date = entity.dateGmt
         self.title = entity.title?.raw
-        self.excerpt = entity.excerpt?.raw
-            ?? GutenbergExcerptGenerator
-                .firstParagraph(
-                    from: entity.content.rendered,
-                    maxLength: excerptLimit
-                )
-                .replacingOccurrences(
-                    of: "[\n]{2,}",
-                    with: "\n",
-                    options: .regularExpression
-                )
+        let contentPreview = GutenbergExcerptGenerator
+            .firstParagraph(
+                from: entity.content.rendered,
+                maxLength: contentLimit
+            )
+            .replacingOccurrences(
+                of: "[\n]{2,}",
+                with: "\n",
+                options: .regularExpression
+            )
+        self.content = contentPreview.isEmpty ? entity.excerpt?.raw : contentPreview
+        if let authorId = entity.author {
+            self.authorName = blog.getAuthorWith(id: NSNumber(value: authorId))?.displayName
+        } else {
+            self.authorName = nil
+        }
+        self.status = entity.status
+        self.sticky = entity.sticky ?? false
+        self.featuredMedia = entity.featuredMedia
+    }
+
+    /// The title to display, with a placeholder for untitled posts.
+    var titleForDisplay: String {
+        let trimmed = title?.trimmingCharacters(in: .whitespacesAndNewlines) ?? ""
+        if trimmed.isEmpty {
+            return NSLocalizedString(
+                "customPostList.untitled",
+                value: "(no title)",
+                comment: "Placeholder title for posts without a title"
+            )
+        }
+        return trimmed
+    }
+
+    /// The header badges string (e.g. "Jan 15, 2026 · Author Name") matching
+    /// the regular posts list. Combines the formatted date and author name.
+    var headerBadges: String {
+        var badges = [dateForDisplay]
+        if let authorName, !authorName.isEmpty {
+            badges.append(authorName)
+        }
+        return badges.joined(separator: " · ")
+    }
+
+    private var dateForDisplay: String {
+        if status == .future {
+            return date.formatted(date: .abbreviated, time: .shortened)
+        }
+        return date.formatted(date: .abbreviated, time: .omitted)
+    }
+
+    /// Combined status badges (e.g. "Private · Sticky") matching the regular
+    /// posts list. Returns nil when there is nothing to display.
+    var statusBadges: String? {
+        var badges: [String] = []
+
+        if status == .pending {
+            badges.append(Strings.pendingReview)
+        }
+        if status == .private {
+            badges.append(Strings.privatePost)
+        }
+        if sticky {
+            badges.append(Strings.sticky)
+        }
+
+        return badges.isEmpty ? nil : badges.joined(separator: " · ")
+    }
+
+    var statusColor: Color {
+        if status == .trash {
+            return .red
+        }
+        return .secondary
     }
 
     static let placeholder = CustomPostCollectionDisplayPost(
         date: .now,
         title: "Lorem ipsum dolor sit amet",
-        excerpt: "Lorem ipsum dolor sit amet consectetur adipiscing elit"
+        content: "Lorem ipsum dolor sit amet consectetur adipiscing elit"
+    )
+}
+
+private enum Strings {
+    static let pendingReview = NSLocalizedString(
+        "customPostList.badge.pendingReview",
+        value: "Pending review",
+        comment: "Badge shown in the post list for posts pending review"
+    )
+    static let privatePost = NSLocalizedString(
+        "customPostList.badge.private",
+        value: "Private",
+        comment: "Badge shown in the post list for private posts"
+    )
+    static let sticky = NSLocalizedString(
+        "customPostList.badge.sticky",
+        value: "Sticky",
+        comment: "Badge shown in the post list for sticky posts"
     )
 }
 
@@ -183,18 +284,18 @@ enum CustomPostCollectionItem: Identifiable, Equatable {
         }
     }
 
-    init(item: PostMetadataCollectionItem) {
+    init(item: PostMetadataCollectionItem, blog: Blog) {
         let id = item.id
 
         switch item.state {
         case .fresh(let entity):
-            self = .ready(id: id, post: CustomPostCollectionDisplayPost(entity.data), fullPost: entity.data)
+            self = .ready(id: id, post: CustomPostCollectionDisplayPost(entity.data, blog: blog), fullPost: entity.data)
 
         case .stale(let entity):
-            self = .stale(id: id, post: CustomPostCollectionDisplayPost(entity.data))
+            self = .stale(id: id, post: CustomPostCollectionDisplayPost(entity.data, blog: blog))
 
         case .fetchingWithData(let entity):
-            self = .refreshing(id: id, post: CustomPostCollectionDisplayPost(entity.data))
+            self = .refreshing(id: id, post: CustomPostCollectionDisplayPost(entity.data, blog: blog))
 
         case .fetching:
             self = .fetching(id: id)
@@ -206,7 +307,7 @@ enum CustomPostCollectionItem: Identifiable, Equatable {
             self = .error(id: id, message: error)
 
         case .failedWithData(let error, let entity):
-            self = .errorWithData(id: id, message: error, post: CustomPostCollectionDisplayPost(entity.data, excerptLimit: 50))
+            self = .errorWithData(id: id, message: error, post: CustomPostCollectionDisplayPost(entity.data, blog: blog, contentLimit: 50))
         }
     }
 }

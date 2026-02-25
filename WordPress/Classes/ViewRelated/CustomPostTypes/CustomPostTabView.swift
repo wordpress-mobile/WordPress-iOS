@@ -56,31 +56,36 @@ struct CustomPostTabView: View {
             client: client,
             service: service,
             endpoint: endpoint,
-            filter: CustomPostListFilter(status: .custom("any"))
+            filter: CustomPostListFilter(status: .custom("any")),
+            blog: blog
         ))
         _publishedViewModel = State(initialValue: CustomPostListViewModel(
             client: client,
             service: service,
             endpoint: endpoint,
-            filter: CustomPostListFilter(status: .publish)
+            filter: CustomPostListFilter(status: .publish),
+            blog: blog
         ))
         _draftsViewModel = State(initialValue: CustomPostListViewModel(
             client: client,
             service: service,
             endpoint: endpoint,
-            filter: CustomPostListFilter(status: .draft)
+            filter: CustomPostListFilter(status: .draft),
+            blog: blog
         ))
         _scheduledViewModel = State(initialValue: CustomPostListViewModel(
             client: client,
             service: service,
             endpoint: endpoint,
-            filter: CustomPostListFilter(status: .future)
+            filter: CustomPostListFilter(status: .future),
+            blog: blog
         ))
         _trashViewModel = State(initialValue: CustomPostListViewModel(
             client: client,
             service: service,
             endpoint: endpoint,
-            filter: CustomPostListFilter(status: .trash)
+            filter: CustomPostListFilter(status: .trash),
+            blog: blog
         ))
     }
 
@@ -90,7 +95,9 @@ struct CustomPostTabView: View {
                 CustomPostListView(
                     viewModel: activeViewModel,
                     details: details,
+                    client: client,
                     onSelectPost: { selectedPost = $0 },
+                    mediaHost: MediaHost(blog),
                     header: { tabBar }
                 )
             } else {
@@ -100,7 +107,8 @@ struct CustomPostTabView: View {
                     endpoint: endpoint,
                     details: details,
                     searchText: $searchText,
-                    onSelectPost: { selectedPost = $0 }
+                    onSelectPost: { selectedPost = $0 },
+                    blog: blog
                 )
             }
         }
@@ -181,6 +189,7 @@ private struct AdaptiveTabBarRepresentable: UIViewRepresentable {
 
     func makeUIView(context: Context) -> AdaptiveTabBar {
         let tabBar = AdaptiveTabBar()
+        tabBar.preferredFont = UIFont.preferredFont(forTextStyle: .subheadline)
         tabBar.items = items
         tabBar.addTarget(context.coordinator, action: #selector(Coordinator.tabChanged(_:)), for: .valueChanged)
         return tabBar
