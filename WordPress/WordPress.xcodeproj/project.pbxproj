@@ -155,6 +155,7 @@
 		4A690C1F2BA796CD00A8E0C5 /* PrivacyInfo.xcprivacy in Resources */ = {isa = PBXBuildFile; fileRef = 4A690C1D2BA796C500A8E0C5 /* PrivacyInfo.xcprivacy */; };
 		4A690C212BA7975500A8E0C5 /* PrivacyInfo.xcprivacy in Resources */ = {isa = PBXBuildFile; fileRef = 4A690C202BA7974E00A8E0C5 /* PrivacyInfo.xcprivacy */; };
 		4A690C222BA7975800A8E0C5 /* PrivacyInfo.xcprivacy in Resources */ = {isa = PBXBuildFile; fileRef = 4A690C202BA7974E00A8E0C5 /* PrivacyInfo.xcprivacy */; };
+		3F7AE0E12D9B30A200AB4892 /* XcodeTarget_WordPressDataTests in Frameworks */ = {isa = PBXBuildFile; productRef = 3F7AE0E02D9B30A200AB4892 /* XcodeTarget_WordPressDataTests */; };
 		4A8284B02E5FECB00037E180 /* XcodeTarget_WordPressKitTests in Frameworks */ = {isa = PBXBuildFile; productRef = 4A8284AF2E5FECB00037E180 /* XcodeTarget_WordPressKitTests */; };
 		4ABC59742DE52A7D005A6B84 /* Secrets-WordPressDraftActionExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4ABC59732DE52A7D005A6B84 /* Secrets-WordPressDraftActionExtension.swift */; };
 		4ABCAB2A2DE52E80005A6B84 /* Secrets-JetpackDraftActionExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4ABCAB272DE52E6B005A6B84 /* Secrets-JetpackDraftActionExtension.swift */; };
@@ -1498,6 +1499,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				3F7AE0BD2D9B30A200AB4892 /* WordPressData.framework in Frameworks */,
+				3F7AE0E12D9B30A200AB4892 /* XcodeTarget_WordPressDataTests in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -2403,6 +2405,7 @@
 			);
 			name = WordPressDataTests;
 			packageProductDependencies = (
+				3F7AE0E02D9B30A200AB4892 /* XcodeTarget_WordPressDataTests */,
 			);
 			productName = WordPressDataTests;
 			productReference = 3F7AE0BC2D9B30A200AB4892 /* WordPressDataTests.xctest */;
@@ -8073,6 +8076,10 @@
 		4A8284AF2E5FECB00037E180 /* XcodeTarget_WordPressKitTests */ = {
 			isa = XCSwiftPackageProductDependency;
 			productName = XcodeTarget_WordPressKitTests;
+		};
+		3F7AE0E02D9B30A200AB4892 /* XcodeTarget_WordPressDataTests */ = {
+			isa = XCSwiftPackageProductDependency;
+			productName = XcodeTarget_WordPressDataTests;
 		};
 /* End XCSwiftPackageProductDependency section */
 	};
