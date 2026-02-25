@@ -143,7 +143,7 @@ class ReaderDetailToolbar {
     }
 
     private func makeLikeButton() -> UIBarButtonItem? {
-        guard let post else { return nil }
+        guard let post, post.isLikesEnabled else { return nil }
 
         let isLiked = post.isLiked
 
@@ -153,9 +153,6 @@ class ReaderDetailToolbar {
             isSelected: isLiked,
             action: #selector(didTapLike)
         )
-
-        customButton.isEnabled = (ReaderHelpers.isLoggedIn() || likeCount > 0) && !post.isExternal
-        customButton.alpha = customButton.isEnabled ? 1.0 : 0.5
 
         let button = UIBarButtonItem(customView: customButton)
         button.accessibilityHint = isLiked ? Constants.likedButtonHint : Constants.likeButtonHint
