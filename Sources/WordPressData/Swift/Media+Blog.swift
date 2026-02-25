@@ -31,19 +31,13 @@ public extension Media {
     /// Returns an existing Media object that matches the mediaID if it exists, or nil.
     ///
     @objc class func existingMediaWith(mediaID: NSNumber, inBlog blog: Blog) -> Media? {
-        guard let blogMedia = blog.media as? Set<Media> else {
-            return nil
-        }
-        return blogMedia.first(where: ({ $0.mediaID == mediaID }))
+        blog.media?.first { $0.mediaID == mediaID }
     }
 
     /// Returns an existing Media object that matches the remoteURL if it exists, or nil.
     ///
     @objc class func existingMediaWith(remoteURL: String, inBlog blog: Blog) -> Media? {
-        guard let blogMedia = blog.media as? Set<Media> else {
-            return nil
-        }
-        return blogMedia.first(where: ({ $0.remoteURL == remoteURL }))
+        blog.media?.first { $0.remoteURL == remoteURL }
     }
 
     /// Returns an existing Media object that matches the mediaID if it exists, or creates a stub if not.

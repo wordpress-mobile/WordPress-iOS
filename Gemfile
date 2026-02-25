@@ -18,8 +18,6 @@ gem 'fastlane-plugin-wpmreleasetoolkit', '~> 14.0'
 gem 'rake'
 gem 'rubocop', '~> 1.84'
 gem 'rubocop-rake', '~> 0.7'
-gem 'xcpretty-travis-formatter'
-
 group :screenshots, optional: true do
   gem 'rmagick', '~> 6.2.0'
 end

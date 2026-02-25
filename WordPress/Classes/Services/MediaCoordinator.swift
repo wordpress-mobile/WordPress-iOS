@@ -117,7 +117,7 @@ class MediaCoordinator: NSObject {
     ///            returns the general media library coordinator.
     private func coordinator(for media: Media) -> MediaProgressCoordinator {
         // Media which is just being uploaded should only belong to at most one post
-        if let post = media.posts?.first as? AbstractPost {
+        if let post = media.posts?.first {
             return coordinator(for: post)
         }
 

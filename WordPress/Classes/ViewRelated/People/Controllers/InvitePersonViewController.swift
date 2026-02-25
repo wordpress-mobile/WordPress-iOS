@@ -81,11 +81,7 @@ class InvitePersonViewController: UITableViewController {
     }
 
     private var sortedInviteLinks: [InviteLinks] {
-        guard
-            let links = Array(blog.inviteLinks ?? []) as? [InviteLinks]
-        else {
-            return []
-        }
+        let links = Array(blog.inviteLinks ?? [])
         return availableRoles.compactMap { role -> InviteLinks? in
             return links.first { link -> Bool in
                 link.role == role.slug

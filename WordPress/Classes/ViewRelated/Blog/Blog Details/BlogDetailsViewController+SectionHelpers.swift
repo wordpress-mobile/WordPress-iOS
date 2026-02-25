@@ -79,7 +79,7 @@ extension BlogDetailsViewController {
             return
         }
 
-        let wordpressCoreVersion = blog.version as? String
+        let wordpressCoreVersion = blog.version
 
         let viewController: UIViewController
         if Feature.enabled(.pluginManagementOverhaul) {

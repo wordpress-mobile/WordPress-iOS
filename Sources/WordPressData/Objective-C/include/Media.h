@@ -36,7 +36,7 @@ NS_ASSUME_NONNULL_BEGIN
 // Relationships
 
 @property (nonatomic, strong) Blog *blog;
-@property (nonatomic, strong, nullable) NSSet *posts;
+@property (nonatomic, strong, nullable) NSSet<AbstractPost *> *posts;
 
 // Helper properties
 

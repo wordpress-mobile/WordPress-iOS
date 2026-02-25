@@ -408,7 +408,6 @@ DEPENDENCIES
   rmagick (~> 6.2.0)
   rubocop (~> 1.84)
   rubocop-rake (~> 0.7)
-  xcpretty-travis-formatter
 
 BUNDLED WITH
    2.4.22
