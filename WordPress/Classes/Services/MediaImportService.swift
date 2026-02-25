@@ -198,7 +198,7 @@ class MediaImportService: NSObject {
                 let mediaInContext = try context.existingObject(with: media.objectID) as! Media
                 if let error {
                     mediaInContext.remoteStatus = .failed
-                    mediaInContext.error = error
+                    mediaInContext.error = error as NSError
                 } else {
                     mediaInContext.remoteStatus = .local
                     mediaInContext.error = nil

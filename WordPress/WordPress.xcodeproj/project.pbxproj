@@ -1169,7 +1169,6 @@
 			publicHeaders = (
 				"Objective-C/include/Blog.h",
 				"Objective-C/include/CoreDataStack.h",
-				"Objective-C/include/Media.h",
 				"Objective-C/include/PostHelper.h",
 				WordPressData.h,
 			);

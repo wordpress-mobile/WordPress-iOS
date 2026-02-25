@@ -53,14 +53,14 @@ struct MediaTests {
         let media = newTestMedia()
         media.addPostsObject(post)
 
-        #expect(media.hasAssociatedPost())
+        #expect(media.hasAssociatedPost)
     }
 
     @Test("Has no associated post when posts set is empty")
     func hasNoAssociatedPost() {
         let media = newTestMedia()
 
-        #expect(!media.hasAssociatedPost())
+        #expect(!media.hasAssociatedPost)
     }
 
     // MARK: - AutoUpload Failure Count
