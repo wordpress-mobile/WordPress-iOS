@@ -63,7 +63,8 @@ platform :ios do
       derived_data_path: DERIVED_DATA_PATH,
       deployment_target_version: ios_version,
       only_testing: only_testing,
-      clean: clean
+      clean: clean,
+      skip_package_dependencies_resolution: !clean
     )
   end
 
