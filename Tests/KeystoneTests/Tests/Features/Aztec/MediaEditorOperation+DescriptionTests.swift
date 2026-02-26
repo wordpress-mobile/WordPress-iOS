@@ -1,6 +1,5 @@
 import XCTest
 import MediaEditor
-import Nimble
 
 @testable import WordPress
 
@@ -11,7 +10,7 @@ class MediaEditorOperationDescriptionTests: XCTestCase {
 
         let description = array.description
 
-        expect(description).to(equal("crop, rotate"))
+        XCTAssertEqual(description, "crop, rotate")
     }
 
 }

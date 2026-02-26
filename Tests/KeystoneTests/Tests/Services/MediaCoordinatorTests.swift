@@ -1,6 +1,5 @@
 import XCTest
 import Foundation
-import Nimble
 @testable import WordPress
 @testable import WordPressData
 
@@ -28,7 +27,7 @@ class MediaCoordinatorTests: CoreDataTestCase {
 
         let isPushingAllPendingMedia = coordinator.uploadMedia(for: post, automatedRetry: true)
 
-        expect(isPushingAllPendingMedia).to(beTrue())
+        XCTAssertTrue(isPushingAllPendingMedia)
     }
 
     func testUploadMediaReturnsFalseIfNotAllPendingMediaAreQueuedForUpload() {
@@ -41,7 +40,7 @@ class MediaCoordinatorTests: CoreDataTestCase {
 
         let isPushingAllPendingMedia = coordinator.uploadMedia(for: post, automatedRetry: true)
 
-        expect(isPushingAllPendingMedia).to(beFalse())
+        XCTAssertFalse(isPushingAllPendingMedia)
     }
 }
 

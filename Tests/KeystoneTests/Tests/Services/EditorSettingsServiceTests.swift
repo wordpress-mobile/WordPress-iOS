@@ -1,7 +1,6 @@
 import Foundation
 import WordPressShared
 import XCTest
-import Nimble
 @testable import WordPress
 
 private class TestableEditorSettingsService: EditorSettingsService {
@@ -60,7 +59,11 @@ class EditorSettingsServiceTest: CoreDataTestCase {
         // Begin migration from local to remote
 
         // Should call POST local settings to remote (migration)
-        expect(self.remoteApi.postMethodCalled).toEventually(beTrue())
+        let postCalledExpectation = XCTNSPredicateExpectation(
+            predicate: NSPredicate { _, _ in self.remoteApi.postMethodCalled },
+            object: nil
+        )
+        wait(for: [postCalledExpectation], timeout: 1)
         XCTAssertTrue(remoteApi.URLStringPassedIn?.contains("platform=mobile&editor=gutenberg") ?? false)
         // Respond with mobile editor set on the server
         let finalResponse = responseWith(mobileEditor: "gutenberg")
@@ -120,9 +123,14 @@ class EditorSettingsServiceTest: CoreDataTestCase {
         service.migrateGlobalSettingToRemote(isGutenbergEnabled: false)
         remoteApi.successBlockPassedIn?(response as AnyObject, HTTPURLResponse())
 
+        let editorsUpdated = XCTNSPredicateExpectation(
+            predicate: NSPredicate { _, _ in blogs.allSatisfy { $0.editor == .aztec } },
+            object: nil
+        )
+        wait(for: [editorsUpdated], timeout: 1)
         blogs.forEach { blog in
-            expect(blog.isGutenbergEnabled).toEventually(beFalse())
-            expect(blog.editor).toEventually(equal(.aztec))
+            XCTAssertFalse(blog.isGutenbergEnabled)
+            XCTAssertEqual(blog.editor, .aztec)
         }
     }
 }

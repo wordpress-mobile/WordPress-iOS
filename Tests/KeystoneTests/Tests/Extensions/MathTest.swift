@@ -1,33 +1,32 @@
 import XCTest
-import Nimble
 @testable import WordPress
 
 class MathTest: XCTestCase {
 
     func testRound() {
-        expect((-5).round(5)).to(equal(-5))
-        expect((-4).round(5)).to(equal(-5))
-        expect((-3).round(5)).to(equal(-5))
-        expect((-2).round(5)).to(equal(0))
-        expect((-1).round(5)).to(equal(0))
-        expect(0.round(5)).to(equal(0))
-        expect(1.round(5)).to(equal(0))
-        expect(2.round(5)).to(equal(0))
-        expect(3.round(5)).to(equal(5))
-        expect(4.round(5)).to(equal(5))
-        expect(5.round(5)).to(equal(5))
-        expect(6.round(5)).to(equal(5))
-        expect(7.round(5)).to(equal(5))
-        expect(120.round(50)).to(equal(100))
-        expect(245.round(50)).to(equal(250))
+        XCTAssertEqual((-5).round(5), -5)
+        XCTAssertEqual((-4).round(5), -5)
+        XCTAssertEqual((-3).round(5), -5)
+        XCTAssertEqual((-2).round(5), 0)
+        XCTAssertEqual((-1).round(5), 0)
+        XCTAssertEqual(0.round(5), 0)
+        XCTAssertEqual(1.round(5), 0)
+        XCTAssertEqual(2.round(5), 0)
+        XCTAssertEqual(3.round(5), 5)
+        XCTAssertEqual(4.round(5), 5)
+        XCTAssertEqual(5.round(5), 5)
+        XCTAssertEqual(6.round(5), 5)
+        XCTAssertEqual(7.round(5), 5)
+        XCTAssertEqual(120.round(50), 100)
+        XCTAssertEqual(245.round(50), 250)
     }
 
     func testClamp() {
-        expect(5.clamp(min: 10, max: 20)).to(equal(10))
-        expect(10.clamp(min: 10, max: 20)).to(equal(10))
-        expect(15.clamp(min: 10, max: 20)).to(equal(15))
-        expect(20.clamp(min: 10, max: 20)).to(equal(20))
-        expect(30.clamp(min: 10, max: 20)).to(equal(20))
+        XCTAssertEqual(5.clamp(min: 10, max: 20), 10)
+        XCTAssertEqual(10.clamp(min: 10, max: 20), 10)
+        XCTAssertEqual(15.clamp(min: 10, max: 20), 15)
+        XCTAssertEqual(20.clamp(min: 10, max: 20), 20)
+        XCTAssertEqual(30.clamp(min: 10, max: 20), 20)
     }
 
     func testClampCGSizeWithSize() {
@@ -37,25 +36,25 @@ class MathTest: XCTestCase {
         do {
             let clamped = CGSize(width: 3000, height: 4000).clamp(min: minSize, max: maxSize)
             let expected = CGSize(width: 3000, height: 3000)
-            expect(clamped).to(equal(expected))
+            XCTAssertEqual(clamped, expected)
         }
 
         do {
             let clamped = CGSize(width: 6000, height: 4000).clamp(min: minSize, max: maxSize)
             let expected = CGSize(width: 4000, height: 3000)
-            expect(clamped).to(equal(expected))
+            XCTAssertEqual(clamped, expected)
         }
 
         do {
             let clamped = CGSize(width: 100, height: 400).clamp(min: minSize, max: maxSize)
             let expected = CGSize(width: 400, height: 400)
-            expect(clamped).to(equal(expected))
+            XCTAssertEqual(clamped, expected)
         }
 
         do {
             let clamped = CGSize(width: 100, height: 100).clamp(min: minSize, max: maxSize)
             let expected = CGSize(width: 400, height: 300)
-            expect(clamped).to(equal(expected))
+            XCTAssertEqual(clamped, expected)
         }
     }
 

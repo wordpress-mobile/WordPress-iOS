@@ -1,5 +1,4 @@
 import XCTest
-import Nimble
 @testable import WordPress
 @testable import WordPressData
 
@@ -27,21 +26,21 @@ class SiteAddressServiceTests: CoreDataTestCase {
             case .success(let fetchedResults):
                 self.resultsAreSorted(fetchedResults, forQuery: searchTerm, expectMatch: true)
             case .failure:
-                fail("This is using a mocked endpoint so there is a test error")
+                XCTFail("This is using a mocked endpoint so there is a test error")
             }
 
             waitExpectation.fulfill()
         }
 
-        expect(self.remoteApi.getMethodCalled).to(beTrue())
+        XCTAssertTrue(self.remoteApi.getMethodCalled)
 
         // Respond with mobile editor not yet set on the server
         remoteApi.successBlockPassedIn!(mockedResponse as AnyObject, HTTPURLResponse())
-        expect(self.remoteApi.URLStringPassedIn!).to(equal("rest/v1.1/domains/suggestions"))
+        XCTAssertEqual(self.remoteApi.URLStringPassedIn!, "rest/v1.1/domains/suggestions")
         let parameters = remoteApi.parametersPassedIn as! [String: AnyObject]
 
-        expect(parameters["query"] as? String).to(equal(searchTerm))
-        expect(parameters["quantity"] as? Int).toNot(beNil())
+        XCTAssertEqual(parameters["query"] as? String, searchTerm)
+        XCTAssertNotNil(parameters["quantity"] as? Int)
 
         waitForExpectations(timeout: 0.1)
     }
@@ -55,21 +54,21 @@ class SiteAddressServiceTests: CoreDataTestCase {
             case .success(let fetchedResults):
                 self.resultsAreSorted(fetchedResults, forQuery: searchTerm, expectMatch: false)
             case .failure:
-                fail("This is using a mocked endpoint so there is a test error")
+                XCTFail("This is using a mocked endpoint so there is a test error")
             }
 
             waitExpectation.fulfill()
         }
 
-        expect(self.remoteApi.getMethodCalled).to(beTrue())
+        XCTAssertTrue(self.remoteApi.getMethodCalled)
 
         // Respond with mobile editor not yet set on the server
         remoteApi.successBlockPassedIn!(mockedResponse as AnyObject, HTTPURLResponse())
-        expect(self.remoteApi.URLStringPassedIn!).to(equal("rest/v1.1/domains/suggestions"))
+        XCTAssertEqual(self.remoteApi.URLStringPassedIn!, "rest/v1.1/domains/suggestions")
         let parameters = remoteApi.parametersPassedIn as! [String: AnyObject]
 
-        expect(parameters["query"] as? String).to(equal(searchTerm))
-        expect(parameters["quantity"] as? Int).to(equal(20))
+        XCTAssertEqual(parameters["query"] as? String, searchTerm)
+        XCTAssertEqual(parameters["quantity"] as? Int, 20)
 
         waitForExpectations(timeout: 0.1)
     }
@@ -84,6 +83,6 @@ class SiteAddressServiceTests: CoreDataTestCase {
         }
 
         let sortedDomainNames = domainNames.sorted()
-        expect(sortedDomainNames).to(equal(domainNames)) // Expect the results after sorting to be the same as the results before sorting
+        XCTAssertEqual(sortedDomainNames, domainNames) // Expect the results after sorting to be the same as the results before sorting
     }
 }

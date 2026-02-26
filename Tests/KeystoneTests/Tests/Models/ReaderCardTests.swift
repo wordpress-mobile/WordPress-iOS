@@ -1,5 +1,4 @@
 import XCTest
-import Nimble
 
 @testable import WordPress
 @testable import WordPressData
@@ -13,9 +12,9 @@ class ReaderCardTests: CoreDataTestCase {
         remoteCard(ofType: .post) { remoteCard in
             let card = ReaderCard.createOrReuse(context: self.mainContext, from: remoteCard)
 
-            expect(card?.post).toNot(beNil())
-            expect(card?.post?.postTitle).to(equal("Pats, Please"))
-            expect(card?.post?.blogName).to(equal("Grace & Gratitude"))
+            XCTAssertNotNil(card?.post)
+            XCTAssertEqual(card?.post?.postTitle, "Pats, Please")
+            XCTAssertEqual(card?.post?.blogName, "Grace & Gratitude")
             expectation.fulfill()
         }
 
@@ -32,7 +31,7 @@ class ReaderCardTests: CoreDataTestCase {
             let topics = card?.topicsArray
 
             // THEN return 0 as these were disabled in 26.5
-            expect(topics).to(beNil())
+            XCTAssertNil(topics)
             expectation.fulfill()
         }
 
@@ -48,9 +47,9 @@ class ReaderCardTests: CoreDataTestCase {
             let card = ReaderCard.createOrReuse(context: self.mainContext, from: remoteCard)
             let topics = card?.sitesArray
 
-            expect(topics?.count).to(equal(1))
-            expect(topics?.filter { $0.siteDescription == "Lorem Ipsum Sit Dolor Amet" }).toNot(beNil())
-            expect(topics?.filter { $0.siteURL == "http://loremipsum.wordpress.com" }).toNot(beNil())
+            XCTAssertEqual(topics?.count, 1)
+            XCTAssertNotNil(topics?.filter { $0.siteDescription == "Lorem Ipsum Sit Dolor Amet" })
+            XCTAssertNotNil(topics?.filter { $0.siteURL == "http://loremipsum.wordpress.com" })
             expectation.fulfill()
         }
 
@@ -65,7 +64,7 @@ class ReaderCardTests: CoreDataTestCase {
         remoteCard(ofType: .unknown) { remoteCard in
             let card = ReaderCard.createOrReuse(context: self.mainContext, from: remoteCard)
 
-            expect(card).to(beNil())
+            XCTAssertNil(card)
             expectation.fulfill()
         }
 

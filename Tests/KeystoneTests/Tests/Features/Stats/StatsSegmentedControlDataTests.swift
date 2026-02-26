@@ -1,28 +1,18 @@
-import Nimble
 import XCTest
 @testable import WordPress
 
 class StatsSegmentedControlDataTests: XCTestCase {
 
     func testDifferenceLabel() {
-        expect(StatsSegmentedControlData.fixture(difference: -12_345, differencePercent: -1).differenceLabel)
-            == "-12.3K (-1%)"
-        expect(StatsSegmentedControlData.fixture(difference: -12_345, differencePercent: 0).differenceLabel)
-            == "-12.3K"
-        expect(StatsSegmentedControlData.fixture(difference: -12_345, differencePercent: 1).differenceLabel)
-            == "-12.3K (1%)"
-        expect(StatsSegmentedControlData.fixture(difference: 0, differencePercent: -1).differenceLabel)
-            == "0 (-1%)"
-        expect(StatsSegmentedControlData.fixture(difference: 0, differencePercent: 0).differenceLabel)
-            == "0"
-        expect(StatsSegmentedControlData.fixture(difference: 0, differencePercent: 1).differenceLabel)
-            == "0 (1%)"
-        expect(StatsSegmentedControlData.fixture(difference: 12_345, differencePercent: -1).differenceLabel)
-            == "+12.3K (-1%)"
-        expect(StatsSegmentedControlData.fixture(difference: 12_345, differencePercent: 0).differenceLabel)
-            == "+12.3K"
-        expect(StatsSegmentedControlData.fixture(difference: 12_345, differencePercent: 1).differenceLabel)
-            == "+12.3K (1%)"
+        XCTAssertEqual(StatsSegmentedControlData.fixture(difference: -12_345, differencePercent: -1).differenceLabel, "-12.3K (-1%)")
+        XCTAssertEqual(StatsSegmentedControlData.fixture(difference: -12_345, differencePercent: 0).differenceLabel, "-12.3K")
+        XCTAssertEqual(StatsSegmentedControlData.fixture(difference: -12_345, differencePercent: 1).differenceLabel, "-12.3K (1%)")
+        XCTAssertEqual(StatsSegmentedControlData.fixture(difference: 0, differencePercent: -1).differenceLabel, "0 (-1%)")
+        XCTAssertEqual(StatsSegmentedControlData.fixture(difference: 0, differencePercent: 0).differenceLabel, "0")
+        XCTAssertEqual(StatsSegmentedControlData.fixture(difference: 0, differencePercent: 1).differenceLabel, "0 (1%)")
+        XCTAssertEqual(StatsSegmentedControlData.fixture(difference: 12_345, differencePercent: -1).differenceLabel, "+12.3K (-1%)")
+        XCTAssertEqual(StatsSegmentedControlData.fixture(difference: 12_345, differencePercent: 0).differenceLabel, "+12.3K")
+        XCTAssertEqual(StatsSegmentedControlData.fixture(difference: 12_345, differencePercent: 1).differenceLabel, "+12.3K (1%)")
     }
 }
 

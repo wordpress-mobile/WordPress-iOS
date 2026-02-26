@@ -1,5 +1,4 @@
 import Foundation
-import Nimble
 import OHHTTPStubs
 import OHHTTPStubsSwift
 import XCTest
@@ -37,14 +36,14 @@ final class CommentService_LikesTests: CoreDataTestCase {
         }
 
         // Call the toggle like function and wait for it to complete
-        waitUntil { done in
-            commentService.toggleLikeStatus(for: comment, siteID: 1) {
-                done()
-            } failure: { error in
-                XCTFail("Unexpected error: \(String(describing: error))")
-                done()
-            }
+        let exp = expectation(description: "Toggle like should complete")
+        commentService.toggleLikeStatus(for: comment, siteID: 1) {
+            exp.fulfill()
+        } failure: { error in
+            XCTFail("Unexpected error: \(String(describing: error))")
+            exp.fulfill()
         }
+        wait(for: [exp], timeout: 5)
 
         // The comment's like status should be changed
         XCTAssertTrue(comment.isLiked)
@@ -72,14 +71,14 @@ final class CommentService_LikesTests: CoreDataTestCase {
         }
 
         // Call the toggle like function and wait for it to complete
-        waitUntil { done in
-            commentService.toggleLikeStatus(for: comment, siteID: 1) {
-                XCTFail("The failure block should be called instaled")
-                done()
-            } failure: { error in
-                done()
-            }
+        let exp = expectation(description: "Toggle like should complete")
+        commentService.toggleLikeStatus(for: comment, siteID: 1) {
+            XCTFail("The failure block should be called instaled")
+            exp.fulfill()
+        } failure: { error in
+            exp.fulfill()
         }
+        wait(for: [exp], timeout: 5)
 
         // The comment's like status should remain unchanged
         XCTAssertFalse(comment.isLiked)
@@ -109,14 +108,14 @@ final class CommentService_LikesTests: CoreDataTestCase {
         }
 
         // Call the toggle like function and wait for it to complete
-        waitUntil { done in
-            commentService.toggleLikeStatus(for: comment, siteID: 1) {
-                done()
-            } failure: { error in
-                XCTFail("Unexpected error: \(String(describing: error))")
-                done()
-            }
+        let exp = expectation(description: "Toggle unlike should complete")
+        commentService.toggleLikeStatus(for: comment, siteID: 1) {
+            exp.fulfill()
+        } failure: { error in
+            XCTFail("Unexpected error: \(String(describing: error))")
+            exp.fulfill()
         }
+        wait(for: [exp], timeout: 5)
 
         // The comment's like status should be changed
         XCTAssertFalse(comment.isLiked)
@@ -146,14 +145,14 @@ final class CommentService_LikesTests: CoreDataTestCase {
         }
 
         // Call the toggle like function and wait for it to complete
-        waitUntil { done in
-            commentService.toggleLikeStatus(for: comment, siteID: 1) {
-                XCTFail("The failure block should be called instaled")
-                done()
-            } failure: { error in
-                done()
-            }
+        let exp = expectation(description: "Toggle unlike should complete")
+        commentService.toggleLikeStatus(for: comment, siteID: 1) {
+            XCTFail("The failure block should be called instaled")
+            exp.fulfill()
+        } failure: { error in
+            exp.fulfill()
         }
+        wait(for: [exp], timeout: 5)
 
         // The comment's like status should remain unchanged
         XCTAssertTrue(comment.isLiked)

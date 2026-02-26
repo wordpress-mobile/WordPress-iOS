@@ -1,7 +1,6 @@
 import Foundation
 import XCTest
 import Starscream
-import Nimble
 
 @testable import WordPress
 
@@ -20,7 +19,7 @@ class PinghubWebSocketTests: XCTestCase {
 
         delegate.connected = expectation(description: "Connected to pinghub")
         client.connect()
-        wait(for: [delegate.connected!], timeout: 0.1)
+        wait(for: [delegate.connected!], timeout: 2)
     }
 
     func testDisconnect() throws {
@@ -28,14 +27,19 @@ class PinghubWebSocketTests: XCTestCase {
 
         delegate.disconnected = expectation(description: "Disconnected to pinghub")
         client.disconnect()
-        wait(for: [delegate.disconnected!], timeout: 0.1)
+        wait(for: [delegate.disconnected!], timeout: 2)
     }
 
     func testReceiveMessage() throws {
         let (server, client, delegate) = try connect()
 
         server.broadcast(message: likePost)
-        expect(delegate.noteIDs).toEventually(equal([2]))
+
+        let exp = XCTNSPredicateExpectation(
+            predicate: NSPredicate { _, _ in delegate.noteIDs == [2] },
+            object: nil
+        )
+        wait(for: [exp], timeout: 2)
 
         client.disconnect()
     }
@@ -46,7 +50,12 @@ class PinghubWebSocketTests: XCTestCase {
         server.broadcast(message: likePost)
         server.broadcast(message: unlikePost)
         server.broadcast(message: commentOnPost)
-        expect(delegate.noteIDs).toEventually(equal([2, 3, 4]))
+
+        let exp = XCTNSPredicateExpectation(
+            predicate: NSPredicate { _, _ in delegate.noteIDs == [2, 3, 4] },
+            object: nil
+        )
+        wait(for: [exp], timeout: 2)
 
         client.disconnect()
     }
@@ -55,7 +64,12 @@ class PinghubWebSocketTests: XCTestCase {
         let (server, client, delegate) = try connect()
 
         server.broadcast(message: #"{"foo": "bar"}"#)
-        expect(delegate.unexpectedMessages.count).toEventually(equal(1))
+
+        let exp = XCTNSPredicateExpectation(
+            predicate: NSPredicate { _, _ in delegate.unexpectedMessages.count == 1 },
+            object: nil
+        )
+        wait(for: [exp], timeout: 2)
 
         client.disconnect()
     }
@@ -69,7 +83,7 @@ class PinghubWebSocketTests: XCTestCase {
 
         delegate.connected = expectation(description: "Connected to pinghub")
         client.connect()
-        wait(for: [delegate.connected!], timeout: 0.1)
+        wait(for: [delegate.connected!], timeout: 2)
 
         return (server, client, delegate)
     }
