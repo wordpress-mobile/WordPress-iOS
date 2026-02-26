@@ -1,9 +1,0 @@
-Nous avons effectué une mise à jour technique qui réduit la taille de votre application d’environ 6 Mo. Qu'allez-vous faire de tout cet espace ?
-
-Il est plus facile de trouver, voir et modifier les réglages de visibilité des articles existants. Le bouton « Terminé » ne disparaît plus lorsque vous définissez le mot de passe lors de la publication d’un article protégé par mot de passe.
-
-Parfait : nous avons mis à jour les icônes de raccourcis et les illustrations afin qu’elles correspondent davantage au reste de l’application et s’adaptent mieux à votre appareil.
-
-Nous avons corrigé un problème et l’aperçu des articles fonctionne désormais correctement pour certains sites qui utilisent les plans Business et Commerce.
-
-Lorsque vous ajouterez un nouveau site auto-hébergé, vous devrez saisir le mot de passe de votre application pour vous authentifier. Ne le communiquez à personne. Conservez-le en lieu sûr.
