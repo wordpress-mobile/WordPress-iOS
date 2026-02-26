@@ -1,4 +1,4 @@
-/* Translation-Revision-Date: 2026-01-27 09:54:10+0000 */
+/* Translation-Revision-Date: 2026-02-25 10:54:37+0000 */
 /* Plural-Forms: nplurals=2; plural=n > 1; */
 /* Generator: GlotPress/4.0.3 */
 /* Language: id */
@@ -7231,6 +7231,9 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Feature name for the block editor in application password required prompt */
 "applicationPasswordRequired.feature.blockEditor" = "Editor Blok";
 
+/* Feature name for managing custom post types in the app */
+"applicationPasswordRequired.feature.customPosts" = "Tipe Pos Kustom";
+
 /* Feature name for managing terms and taxonomies in the app */
 "applicationPasswordRequired.feature.customTaxonomies" = "Pengelolaan Taksonomi";
 
@@ -7393,6 +7396,27 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Action shown in a bottom notice to dismiss it. */
 "blogDashboard.dismiss" = "Tutup";
+
+/* Error message shown when the active theme cannot be found for a site. */
+"blogDetails.activeThemeNotFound.errorDescription" = "Tema aktif untuk situs ini tidak ditemukan.";
+
+/* Button title to connect Jetpack in XML-RPC disabled alert */
+"blogDetails.xmlrpcDisabled.alert.connectJetpack" = "Hubungkan Jetpack";
+
+/* Description explaining options to restore functionality when XML-RPC is disabled */
+"blogDetails.xmlrpcDisabled.alert.description" = "XML-RPC dinonaktifkan di situs Anda. Beberapa fitur di aplikasi saat ini memerlukan XML-RPC. Hubungkan Jetpack atau aktifkan XML-RPC untuk mengakses semua fitur.";
+
+/* Button title to learn more about XML-RPC being disabled */
+"blogDetails.xmlrpcDisabled.alert.learnMore" = "Baca selengkapnya";
+
+/* Title for the XML-RPC disabled alert */
+"blogDetails.xmlrpcDisabled.alert.title" = "XML-RPC Dinonaktifkan";
+
+/* Subtitle for the XML-RPC disabled card on blog details */
+"blogDetails.xmlrpcDisabled.card.subtitle" = "Beberapa fitur mungkin terbatas";
+
+/* Title for the XML-RPC disabled card on blog details */
+"blogDetails.xmlrpcDisabled.card.title" = "XML-RPC Dinonaktifkan";
 
 /* Context menu button title */
 "blogHeader.actionVisitSite" = "Kunjungi Situs";
@@ -7851,6 +7875,39 @@ Example: Reply to Pamela Nguyen */
 /* Create Sheet button title */
 "createSheet.post" = "Pos";
 
+/* Error message shown when the post was modified by another user while editing */
+"customPostEditor.error.conflict.message" = "Pos yang Anda coba simpan telah diubah.";
+
+/* Empty state message when no custom posts exist. %1$@ is the post type name (e.g., 'Podcasts', 'Products'). */
+"customPostList.emptyState.message" = "Tidak ada %1$@";
+
+/* Tab title for draft posts */
+"customPostTab.drafts" = "Konsep";
+
+/* Tab title for published posts */
+"customPostTab.published" = "Dipublikasikan";
+
+/* Tab title for scheduled posts */
+"customPostTab.scheduled" = "Terjadwal";
+
+/* Menu item title for sending feedback on the custom post types screen */
+"customPostTab.sendFeedback" = "Kirim Feedback";
+
+/* Tab title for trashed posts */
+"customPostTab.trash" = "Buang";
+
+/* Empty state message when there are no custom post types to display */
+"customPostTypes.emptyState.message" = "Tidak Ada Tipe Pos Kustom";
+
+/* Accessibility label for the button to pin a custom post type */
+"customPostTypes.pin.accessibilityLabel" = "Sematkan";
+
+/* Title for the Custom Post Types screen */
+"customPostTypes.title" = "Lainnya";
+
+/* Accessibility label for the button to unpin a custom post type */
+"customPostTypes.unpin.accessibilityLabel" = "Lepas Sematan";
+
 /* Customize Insights description */
 "customizeInsightsCell.content" = "Buat dasbor kustom Anda sendiri dan pilih laporan apa yang ingin dilihat. Fokus pada data yang paling penting bagi Anda.";
 
@@ -7991,6 +8048,9 @@ Example: Reply to Pamela Nguyen */
 
 /* Debug Menu action for TipKit */
 "debugMenu.hideAllTips" = "Sembunyikan Semua Tip";
+
+/* Debug Menu item title */
+"debugMenu.item.logs" = "Log";
 
 /* Title of the screen that allows the user to change the Reader CSS URL for debug builds */
 "debugMenu.readerCellTitle" = "URL CSS Pembaca";
@@ -8501,6 +8561,9 @@ Example: Reply to Pamela Nguyen */
 /* A footer view (small text). The button title is inserted by the app via a parameter. */
 "inviteSubscribers.disclosure" = "Dengan mengklik \"%@,\" Anda menyatakan bahwa Anda telah mendapatkan persetujuan yang sesuai untuk mengirim email kepada setiap orang. Keluhan spam atau tingkat bounce yang tinggi dari pelanggan dapat memicu tindakan terhadap akun Anda.";
 
+/* Field title (not shown, accessibility) */
+"inviteSubscribers.fieldTitleEmail" = "Email";
+
 /* Import success snackbar title */
 "inviteSubscribers.importSuccessMessage" = "Impor dapat memakan waktu beberapa menit hingga selesai";
 
@@ -8720,8 +8783,14 @@ Example: Reply to Pamela Nguyen */
 /* Title of the primary button shown after the Jetpack plugin has been installed. Tapping on the button dismisses the installation screen. */
 "jetpack.install-flow.success.primaryButtonText" = "Selesai";
 
+/* Message asking the user to install Jetpack to access all app features */
+"jetpack.install.allFeatures.description" = "Untuk mengakses semua fitur aplikasi, Anda perlu menginstal plugin Jetpack.";
+
 /* Title of a button for connecting user account to Jetpack. */
 "jetpack.install.connectUser.button.title" = "Hubungkan akun pengguna Anda";
+
+/* Message asking the user to connect Jetpack to access all app features */
+"jetpack.install.connectUser.bypassXMLRPC.description" = "Untuk mengakses semua fitur aplikasi, Anda perlu menghubungkan plugin Jetpack ke akun pengguna Anda.";
 
 /* Message asking the user if they want to set up Jetpack from notifications */
 "jetpack.install.connectUser.notifications.description" = "Untuk mendapatkan pemberitahuan yang informatif dari situs WordPress di ponsel, Anda perlu menghubungkannya ke akun pengguna Anda.";
@@ -9063,6 +9132,9 @@ Example: Reply to Pamela Nguyen */
 /* Line chart type */
 "jetpackStats.chart.lineChart" = "Garis";
 
+/* Label for aggregated 'Other' segment in pie charts */
+"jetpackStats.chart.other" = "Lainnya";
+
 /* Show chart data menu item */
 "jetpackStats.chart.showData" = "Tampilkan Data";
 
@@ -9162,9 +9234,6 @@ Example: Reply to Pamela Nguyen */
 /* Option to turn off period comparison */
 "jetpackStats.datePicker.comparisonOff" = "Tidak Ada Perbandingan";
 
-/* Title for custom date range picker */
-"jetpackStats.datePicker.customRange" = "Rentang Kustom";
-
 /* Menu item for custom date range picker */
 "jetpackStats.datePicker.customRangeMenu" = "Rentang Kustom...";
 
@@ -9183,6 +9252,9 @@ Example: Reply to Pamela Nguyen */
 /* Label for quick period selection */
 "jetpackStats.datePicker.quickPeriodsForStartDate" = "Periode cepat untuk tanggal mulai";
 
+/* Title for custom date range picker */
+"jetpackStats.datePicker.selectRange" = "Pilih Rentang";
+
 /* Site time zone header */
 "jetpackStats.datePicker.siteTimeZone" = "Zona Waktu Situs";
 
@@ -9198,6 +9270,12 @@ Example: Reply to Pamela Nguyen */
 /* Title for stats date range control tip */
 "jetpackStats.dateRangeTip.title" = "Navigasi Melalui Waktu";
 
+/* Device breakdown by platform/OS */
+"jetpackStats.deviceBreakdowns.operatingSystem" = "Sistem Pengoperasian";
+
+/* Device breakdown by screen size */
+"jetpackStats.deviceBreakdowns.screensize" = "Ukuran Layar";
+
 /* Section title for the list of child links */
 "jetpackStats.externalLinkDetails.childLinks" = "Sub-tautan";
 
@@ -9206,6 +9284,12 @@ Example: Reply to Pamela Nguyen */
 
 /* Title for the external link details screen */
 "jetpackStats.externalLinkDetails.title" = "Tautan Eksternal";
+
+/* Button to explore plans when a feature is gated */
+"jetpackStats.featureGate.explorePlans" = "Jelajahi Paket";
+
+/* Message shown when a stats feature is gated behind a paid plan */
+"jetpackStats.featureGate.message" = "Upgrade paket Anda untuk mengakses analitik tingkat lanjut";
 
 /* Automatic granularity option */
 "jetpackStats.granularity.automatic" = "Otomatis";
@@ -9318,6 +9402,9 @@ Example: Reply to Pamela Nguyen */
 /* Clicks data type (external links) */
 "jetpackStats.siteDataTypes.clicks" = "Klik";
 
+/* Devices data type */
+"jetpackStats.siteDataTypes.devices" = "Perangkat";
+
 /* File downloads data type */
 "jetpackStats.siteDataTypes.fileDownloads" = "Unduhan Berkas";
 
@@ -9393,6 +9480,9 @@ Example: Reply to Pamela Nguyen */
 /* Table column title for Top List card */
 "jetpackStats.topListColumnTitle.clicks" = "Tautan Eksternal";
 
+/* Table column title for Devices Top List card */
+"jetpackStats.topListColumnTitle.devices" = "Perangkat";
+
 /* Table column title for Top List card */
 "jetpackStats.topListColumnTitle.fileDownloads" = "Berkas";
 
@@ -9407,6 +9497,63 @@ Example: Reply to Pamela Nguyen */
 
 /* Table column title for Top List card */
 "jetpackStats.topListColumnTitle.searchTerms" = "Istilah";
+
+/* Table column title for UTM Top List card */
+"jetpackStats.topListColumnTitle.utm" = "Kampanye";
+
+/* Plural post count for UTM metrics. %1$d is the number. */
+"jetpackStats.utmMetricDetails.postCount.plural" = "%1$d pos";
+
+/* Singular post count for UTM metrics. %1$d is the number. */
+"jetpackStats.utmMetricDetails.postCount.singular" = "%1$d pos";
+
+/* Title for the UTM campaign details screen */
+"jetpackStats.utmMetricDetails.title" = "Kampanye UTM";
+
+/* Section title for top posts from this UTM campaign */
+"jetpackStats.utmMetricDetails.topPosts" = "Tulisan Teratas";
+
+/* UTM parameter for campaign only */
+"jetpackStats.utmParamGroupings.campaign" = "Kampanye";
+
+/* UTM parameter for medium only */
+"jetpackStats.utmParamGroupings.medium" = "Sedang";
+
+/* UTM parameter for source only */
+"jetpackStats.utmParamGroupings.source" = "Sumber";
+
+/* Number of ads served. %@ is the ads count. */
+"jetpackStats.wordAds.adsServed.count" = "%@ iklan yang ditayangkan";
+
+/* Total earnings from WordAds */
+"jetpackStats.wordAds.earnings" = "Pendapatan";
+
+/* Button to learn more about WordAds earnings */
+"jetpackStats.wordAds.learnMore" = "Baca Selengkapnya";
+
+/* Message shown when there are no payment records */
+"jetpackStats.wordAds.noPaymentsYet" = "Belum ada pembayaran";
+
+/* Outstanding amount owed from WordAds */
+"jetpackStats.wordAds.outstanding" = "Luar Biasa";
+
+/* Amount paid out from WordAds earnings */
+"jetpackStats.wordAds.paid" = "Berbayar";
+
+/* Title for payment history card and screen */
+"jetpackStats.wordAds.paymentsHistory" = "Riwayat Pembayaran";
+
+/* Title for WordAds total earnings card */
+"jetpackStats.wordAds.totalEarnings" = "Jumlah Pendapatan";
+
+/* Number of ads served */
+"jetpackStats.wordAdsMetrics.adsServed" = "Iklan yang Ditayangkan";
+
+/* Average cost per mille (thousand impressions) */
+"jetpackStats.wordAdsMetrics.averageCPM" = "CPM Rata-Rata";
+
+/* Revenue from ads */
+"jetpackStats.wordAdsMetrics.revenue" = "Pendapatan";
 
 /* Title for a call-to-action button on the Jetpack install card. */
 "jetpackinstallcard.button.learn" = "Pelajari lebih lanjut";
@@ -10146,6 +10293,9 @@ Example: Reply to Pamela Nguyen */
 /* A title for the log severity level */
 "phpLogs.severityWarning" = "Peringatan";
 
+/* Error message when a pinned custom post type cannot be found. %1$@ is the post type name. */
+"pinnedPostType.error.notFound" = "\"%1$@\" tidak tersedia di situs ini.";
+
 /* Title for the plan selection view */
 "planSelection.title" = "Paket";
 
@@ -10257,13 +10407,15 @@ Example: Reply to Pamela Nguyen */
 /* Navigation title for post discussion settings */
 "postDiscussion.title" = "Diskusi";
 
-/* Button in an alert confirming discaring changes */
+/* Button in an alert confirming discarding changes
+   Button in an alert confirming discaring changes */
 "postEditor.closeConfirmationAlert.discardChanges" = "Buang Perubahan";
 
 /* Button in an alert confirming discaring a new draft */
 "postEditor.closeConfirmationAlert.discardDraft" = "Buang Draf";
 
-/* Button to keep the changes in an alert confirming discaring changes */
+/* Button to keep the changes in an alert confirming discarding changes
+   Button to keep the changes in an alert confirming discaring changes */
 "postEditor.closeConfirmationAlert.keepEditing" = "Lanjutkan Mengedit";
 
 /* Button in an alert confirming saving a new draft */
@@ -10311,6 +10463,9 @@ Example: Reply to Pamela Nguyen */
 /* A message for a snackbar informing the user that some media files requires their attention */
 "postEditor.postHasFailingMediaUploadsSnackbar.message" = "Beberapa item media gagal diunggah";
 
+/* Title for the publish button in the post editor navigation bar */
+"postEditor.publishButton.title" = "Terbitkan";
+
 /* Editor, notice for successful recovery a trashed post */
 "postEditor.recoverTrashedPost.postRecoveredNoticeTitle" = "Pos dikembalikan sebagai draf";
 
@@ -10331,6 +10486,9 @@ Example: Reply to Pamela Nguyen */
 
 /* Saving draft to generate a preview (status message */
 "postEditor.savingDraftForPreview" = "Menyimpan draf...";
+
+/* Title for the update button in the post editor navigation bar */
+"postEditor.updateButton.title" = "Perbarui";
 
 /* Empty state description when no post formats are available */
 "postFormatPicker.emptyState.description" = "Format pos belum dikonfigurasi untuk situs ini.";
@@ -11740,6 +11898,12 @@ Feel free to replace it with other bracket types that you think looks better for
 /* A generic error message */
 "shared.error.generic" = "Terjadi kesalahan";
 
+/* As in default value */
+"shared.misc.default" = "Default";
+
+/* Default value with a value. Example usage when ordering items: Default (Date Edited). */
+"shared.misc.defaultWithValue" = "Default (%@)";
+
 /* A default filter value */
 "shared.misc.showAll" = "Tampilkan Semua";
 
@@ -12077,6 +12241,15 @@ Feel free to replace it with other bracket types that you think looks better for
 /* Title for screen to select the privacy options for a blog */
 "siteSettings.privacy.title" = "Privasi";
 
+/* Explanation for why the 'Use theme styles' toggle is disabled when the site doesn't have a block theme */
+"siteSettings.themeStyles.footer.blockThemeSuggested" = "Situs Anda tidak menggunakan Tema Blok sehingga editor mungkin kurang pas dengan konten Anda. Jika kurang berkenan, Anda dapat menonaktifkan gaya editor.";
+
+/* Explanation for the option to enable theme styles when the feature is available */
+"siteSettings.themeStyles.footer.enabled" = "Jadikan editor blok terlihat seperti tema Anda.";
+
+/* Explanation for why the 'Use theme styles' toggle is disabled when the site doesn't have the Gutenberg plugin */
+"siteSettings.themeStyles.footer.gutenbergRequired" = "Instal Plugin Gutenberg di situs untuk mengaktifkan dukungan gaya tema.";
+
 /* Format string for adding a new taxonomy term. %1$@ is the taxonomy name. */
 "siteTaxonomy.addNew.format" = "Tambahkan %1$@";
 
@@ -12378,6 +12551,9 @@ Feel free to replace it with other bracket types that you think looks better for
 "subscriberDetails.fieldName.country" = "Negara";
 
 /* Form field name */
+"subscriberDetails.fieldName.email" = "Email";
+
+/* Form field name */
 "subscriberDetails.fieldName.paidUpgrade" = "Upgrade Berbayar";
 
 /* Form field name */
@@ -12469,6 +12645,9 @@ Feel free to replace it with other bracket types that you think looks better for
 
 /* Subscribers sort by field */
 "subscribers.sortField.dateSubscribed" = "Tanggal Berlangganan";
+
+/* Subscribers sort by field */
+"subscribers.sortField.email" = "Email";
 
 /* Subscribers sort by field */
 "subscribers.sortField.name" = "Nama";

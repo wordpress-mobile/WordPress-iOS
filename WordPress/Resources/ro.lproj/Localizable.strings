@@ -1,4 +1,4 @@
-/* Translation-Revision-Date: 2026-02-05 10:34:24+0000 */
+/* Translation-Revision-Date: 2026-02-24 07:05:29+0000 */
 /* Plural-Forms: nplurals=3; plural=(n == 1) ? 0 : ((n == 0 || n % 100 >= 2 && n % 100 <= 19) ? 1 : 2); */
 /* Generator: GlotPress/4.0.3 */
 /* Language: ro */
@@ -7231,6 +7231,9 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Feature name for the block editor in application password required prompt */
 "applicationPasswordRequired.feature.blockEditor" = "Editor de blocuri";
 
+/* Feature name for managing custom post types in the app */
+"applicationPasswordRequired.feature.customPosts" = "Tipuri de articol personalizat";
+
 /* Feature name for managing terms and taxonomies in the app */
 "applicationPasswordRequired.feature.customTaxonomies" = "Administrare taxonomii";
 
@@ -7393,6 +7396,27 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Action shown in a bottom notice to dismiss it. */
 "blogDashboard.dismiss" = "Refuză";
+
+/* Error message shown when the active theme cannot be found for a site. */
+"blogDetails.activeThemeNotFound.errorDescription" = "Nu a putut fi găsită tema activă pentru acest site.";
+
+/* Button title to connect Jetpack in XML-RPC disabled alert */
+"blogDetails.xmlrpcDisabled.alert.connectJetpack" = "Conectează Jetpack";
+
+/* Description explaining options to restore functionality when XML-RPC is disabled */
+"blogDetails.xmlrpcDisabled.alert.description" = "XML-RPC este dezactivat pe site-ul tău. Unele funcționalități din aplicație au nevoie în prezent de XML-RPC. Conectează Jetpack sau activează XML-RPC pentru a accesa toate funcționalitățile.";
+
+/* Button title to learn more about XML-RPC being disabled */
+"blogDetails.xmlrpcDisabled.alert.learnMore" = "Învață mai multe";
+
+/* Title for the XML-RPC disabled alert */
+"blogDetails.xmlrpcDisabled.alert.title" = "XML-RPC este dezactivat";
+
+/* Subtitle for the XML-RPC disabled card on blog details */
+"blogDetails.xmlrpcDisabled.card.subtitle" = "Unele funcționalități pot fi limitate";
+
+/* Title for the XML-RPC disabled card on blog details */
+"blogDetails.xmlrpcDisabled.card.title" = "XML-RPC este dezactivat";
 
 /* Context menu button title */
 "blogHeader.actionVisitSite" = "Vizitează site-ul";
@@ -7860,6 +7884,39 @@ Example: Reply to Pamela Nguyen */
 /* Create Sheet button title */
 "createSheet.postFromAudio" = "Articol din fișier audio";
 
+/* Error message shown when the post was modified by another user while editing */
+"customPostEditor.error.conflict.message" = "Articolul pe care încerci să-l salvezi a fost modificat între timp.";
+
+/* Empty state message when no custom posts exist. %1$@ is the post type name (e.g., 'Podcasts', 'Products'). */
+"customPostList.emptyState.message" = "Niciun %1$@";
+
+/* Tab title for draft posts */
+"customPostTab.drafts" = "Ciorne";
+
+/* Tab title for published posts */
+"customPostTab.published" = "Publicate";
+
+/* Tab title for scheduled posts */
+"customPostTab.scheduled" = "Programate";
+
+/* Menu item title for sending feedback on the custom post types screen */
+"customPostTab.sendFeedback" = "Trimite impresii";
+
+/* Tab title for trashed posts */
+"customPostTab.trash" = "Gunoi";
+
+/* Empty state message when there are no custom post types to display */
+"customPostTypes.emptyState.message" = "Niciun tip de articol personalizat";
+
+/* Accessibility label for the button to pin a custom post type */
+"customPostTypes.pin.accessibilityLabel" = "Fixează";
+
+/* Title for the Custom Post Types screen */
+"customPostTypes.title" = "Mai multe";
+
+/* Accessibility label for the button to unpin a custom post type */
+"customPostTypes.unpin.accessibilityLabel" = "Anulează fixarea";
+
 /* Customize Insights description */
 "customizeInsightsCell.content" = "Creează-ți propriul panou de control personalizat și alege ce rapoarte vrei să vezi. Axează-te pe datele care te interesează cel mai mult.";
 
@@ -8000,6 +8057,9 @@ Example: Reply to Pamela Nguyen */
 
 /* Debug Menu action for TipKit */
 "debugMenu.hideAllTips" = "Ascunde toate sfaturile";
+
+/* Debug Menu item title */
+"debugMenu.item.logs" = "Jurnale";
 
 /* Title of the screen that allows the user to change the Reader CSS URL for debug builds */
 "debugMenu.readerCellTitle" = "URL CSS pentru Cititor";
@@ -8732,8 +8792,14 @@ Example: Reply to Pamela Nguyen */
 /* Title of the primary button shown after the Jetpack plugin has been installed. Tapping on the button dismisses the installation screen. */
 "jetpack.install-flow.success.primaryButtonText" = "Gata";
 
+/* Message asking the user to install Jetpack to access all app features */
+"jetpack.install.allFeatures.description" = "Ca să deblochezi toate funcționalitățile aplicației, va trebui să instalezi modulul Jetpack.";
+
 /* Title of a button for connecting user account to Jetpack. */
 "jetpack.install.connectUser.button.title" = "Conectează-ți contul de utilizator";
+
+/* Message asking the user to connect Jetpack to access all app features */
+"jetpack.install.connectUser.bypassXMLRPC.description" = "Ca să deblochezi toate funcționalitățile aplicației, trebuie să conectezi modulul Jetpack la contul tău de utilizator.";
 
 /* Message asking the user if they want to set up Jetpack from notifications */
 "jetpack.install.connectUser.notifications.description" = "Pentru a primi notificări utile pe telefon de la site-ul tău WordPress, trebuie să-ți conectezi contul de utilizator.";
@@ -9078,6 +9144,9 @@ Example: Reply to Pamela Nguyen */
 /* Line chart type */
 "jetpackStats.chart.lineChart" = "Linii";
 
+/* Label for aggregated 'Other' segment in pie charts */
+"jetpackStats.chart.other" = "Altul";
+
 /* Show chart data menu item */
 "jetpackStats.chart.showData" = "Arată datele";
 
@@ -9186,9 +9255,6 @@ Example: Reply to Pamela Nguyen */
 /* Option to turn off period comparison */
 "jetpackStats.datePicker.comparisonOff" = "Nicio comparație";
 
-/* Title for custom date range picker */
-"jetpackStats.datePicker.customRange" = "Interval personalizat";
-
 /* Menu item for custom date range picker */
 "jetpackStats.datePicker.customRangeMenu" = "Interval personalizat...";
 
@@ -9207,6 +9273,9 @@ Example: Reply to Pamela Nguyen */
 /* Label for quick period selection */
 "jetpackStats.datePicker.quickPeriodsForStartDate" = "Perioade scurte pentru dată de începere";
 
+/* Title for custom date range picker */
+"jetpackStats.datePicker.selectRange" = "Selectează intervalul";
+
 /* Site time zone header */
 "jetpackStats.datePicker.siteTimeZone" = "Fus orar site";
 
@@ -9222,6 +9291,15 @@ Example: Reply to Pamela Nguyen */
 /* Title for stats date range control tip */
 "jetpackStats.dateRangeTip.title" = "Navighează prin timp";
 
+/* Device breakdown by browser */
+"jetpackStats.deviceBreakdowns.browser" = "Navigator";
+
+/* Device breakdown by platform/OS */
+"jetpackStats.deviceBreakdowns.operatingSystem" = "Sistem de operare";
+
+/* Device breakdown by screen size */
+"jetpackStats.deviceBreakdowns.screensize" = "Dimensiune ecran";
+
 /* Section title for the list of child links */
 "jetpackStats.externalLinkDetails.childLinks" = "Sub-legături";
 
@@ -9230,6 +9308,12 @@ Example: Reply to Pamela Nguyen */
 
 /* Title for the external link details screen */
 "jetpackStats.externalLinkDetails.title" = "Legătură externă";
+
+/* Button to explore plans when a feature is gated */
+"jetpackStats.featureGate.explorePlans" = "Explorează planurile";
+
+/* Message shown when a stats feature is gated behind a paid plan */
+"jetpackStats.featureGate.message" = "Actualizează la un plan pentru a avea acces la analize avansate";
 
 /* Automatic granularity option */
 "jetpackStats.granularity.automatic" = "Automat";
@@ -9345,6 +9429,9 @@ Example: Reply to Pamela Nguyen */
 /* Clicks data type (external links) */
 "jetpackStats.siteDataTypes.clicks" = "Clicuri";
 
+/* Devices data type */
+"jetpackStats.siteDataTypes.devices" = "Dispozitive";
+
 /* File downloads data type */
 "jetpackStats.siteDataTypes.fileDownloads" = "Descărcări de fișiere";
 
@@ -9359,6 +9446,9 @@ Example: Reply to Pamela Nguyen */
 
 /* Search terms data type */
 "jetpackStats.siteDataTypes.searchTerms" = "Termeni de căutare";
+
+/* UTM campaign tracking data type */
+"jetpackStats.siteDataTypes.utm" = "UTM";
 
 /* Videos data type */
 "jetpackStats.siteDataTypes.videos" = "Videouri";
@@ -9420,6 +9510,9 @@ Example: Reply to Pamela Nguyen */
 /* Table column title for Top List card */
 "jetpackStats.topListColumnTitle.clicks" = "Legătură externă";
 
+/* Table column title for Devices Top List card */
+"jetpackStats.topListColumnTitle.devices" = "Dispozitiv";
+
 /* Table column title for Top List card */
 "jetpackStats.topListColumnTitle.fileDownloads" = "Fișier";
 
@@ -9435,8 +9528,65 @@ Example: Reply to Pamela Nguyen */
 /* Table column title for Top List card */
 "jetpackStats.topListColumnTitle.searchTerms" = "Termen";
 
+/* Table column title for UTM Top List card */
+"jetpackStats.topListColumnTitle.utm" = "Campanie";
+
 /* Table column title for Top List card */
 "jetpackStats.topListColumnTitle.videos" = "Video";
+
+/* Plural post count for UTM metrics. %1$d is the number. */
+"jetpackStats.utmMetricDetails.postCount.plural" = "%1$d articole";
+
+/* Singular post count for UTM metrics. %1$d is the number. */
+"jetpackStats.utmMetricDetails.postCount.singular" = "%1$d articol";
+
+/* Title for the UTM campaign details screen */
+"jetpackStats.utmMetricDetails.title" = "UTM campanie";
+
+/* Section title for top posts from this UTM campaign */
+"jetpackStats.utmMetricDetails.topPosts" = "Cele mai bune articole";
+
+/* UTM parameter for campaign only */
+"jetpackStats.utmParamGroupings.campaign" = "Campanie";
+
+/* UTM parameter for medium only */
+"jetpackStats.utmParamGroupings.medium" = "Medie";
+
+/* UTM parameter for source only */
+"jetpackStats.utmParamGroupings.source" = "Sursă";
+
+/* Number of ads served. %@ is the ads count. */
+"jetpackStats.wordAds.adsServed.count" = "%@ reclame dufuzate";
+
+/* Total earnings from WordAds */
+"jetpackStats.wordAds.earnings" = "Câștiguri";
+
+/* Button to learn more about WordAds earnings */
+"jetpackStats.wordAds.learnMore" = "Învață mai multe";
+
+/* Message shown when there are no payment records */
+"jetpackStats.wordAds.noPaymentsYet" = "Nicio plată până acum";
+
+/* Outstanding amount owed from WordAds */
+"jetpackStats.wordAds.outstanding" = "Neplătite";
+
+/* Amount paid out from WordAds earnings */
+"jetpackStats.wordAds.paid" = "Plătite";
+
+/* Title for payment history card and screen */
+"jetpackStats.wordAds.paymentsHistory" = "Istoric plăți";
+
+/* Title for WordAds total earnings card */
+"jetpackStats.wordAds.totalEarnings" = "Total câștiguri";
+
+/* Number of ads served */
+"jetpackStats.wordAdsMetrics.adsServed" = "Reclame difuzate";
+
+/* Average cost per mille (thousand impressions) */
+"jetpackStats.wordAdsMetrics.averageCPM" = "CPM mediu";
+
+/* Revenue from ads */
+"jetpackStats.wordAdsMetrics.revenue" = "Venituri";
 
 /* Title for a call-to-action button on the Jetpack install card. */
 "jetpackinstallcard.button.learn" = "Află mai multe";
@@ -10200,6 +10350,9 @@ Example: Reply to Pamela Nguyen */
 /* A title for the log severity level */
 "phpLogs.severityWarning" = "Avertizare";
 
+/* Error message when a pinned custom post type cannot be found. %1$@ is the post type name. */
+"pinnedPostType.error.notFound" = "„%1$@” nu este disponibil pe acest site.";
+
 /* Title for the plan selection view */
 "planSelection.title" = "Planuri";
 
@@ -10314,13 +10467,15 @@ Example: Reply to Pamela Nguyen */
 /* Navigation title for post discussion settings */
 "postDiscussion.title" = "Discuție";
 
-/* Button in an alert confirming discaring changes */
+/* Button in an alert confirming discarding changes
+   Button in an alert confirming discaring changes */
 "postEditor.closeConfirmationAlert.discardChanges" = "Renunță la modificări";
 
 /* Button in an alert confirming discaring a new draft */
 "postEditor.closeConfirmationAlert.discardDraft" = "Renunță la ciornă";
 
-/* Button to keep the changes in an alert confirming discaring changes */
+/* Button to keep the changes in an alert confirming discarding changes
+   Button to keep the changes in an alert confirming discaring changes */
 "postEditor.closeConfirmationAlert.keepEditing" = "Continuă editarea";
 
 /* Button in an alert confirming saving a new draft */
@@ -10368,6 +10523,9 @@ Example: Reply to Pamela Nguyen */
 /* A message for a snackbar informing the user that some media files requires their attention */
 "postEditor.postHasFailingMediaUploadsSnackbar.message" = "Încărcarea unor elemente media a eșuat";
 
+/* Title for the publish button in the post editor navigation bar */
+"postEditor.publishButton.title" = "Publică";
+
 /* Editor, notice for successful recovery a trashed post */
 "postEditor.recoverTrashedPost.postRecoveredNoticeTitle" = "Am restaurat articolul ca o ciornă";
 
@@ -10388,6 +10546,9 @@ Example: Reply to Pamela Nguyen */
 
 /* Saving draft to generate a preview (status message */
 "postEditor.savingDraftForPreview" = "Salvez ciorna...";
+
+/* Title for the update button in the post editor navigation bar */
+"postEditor.updateButton.title" = "Actualizează";
 
 /* Empty state description when no post formats are available */
 "postFormatPicker.emptyState.description" = "Formate pentru articol nu au fost configurate pentru acest site.";

@@ -1,4 +1,4 @@
-/* Translation-Revision-Date: 2026-01-28 10:54:11+0000 */
+/* Translation-Revision-Date: 2026-02-10 10:54:10+0000 */
 /* Plural-Forms: nplurals=1; plural=0; */
 /* Generator: GlotPress/4.0.3 */
 /* Language: zh_TW */
@@ -9165,9 +9165,6 @@ Example: Reply to Pamela Nguyen */
 /* Option to turn off period comparison */
 "jetpackStats.datePicker.comparisonOff" = "無比較值";
 
-/* Title for custom date range picker */
-"jetpackStats.datePicker.customRange" = "自訂範圍";
-
 /* Menu item for custom date range picker */
 "jetpackStats.datePicker.customRangeMenu" = "自訂範圍...";
 
@@ -10278,13 +10275,15 @@ Example: Reply to Pamela Nguyen */
 /* Navigation title for post discussion settings */
 "postDiscussion.title" = "討論";
 
-/* Button in an alert confirming discaring changes */
+/* Button in an alert confirming discarding changes
+   Button in an alert confirming discaring changes */
 "postEditor.closeConfirmationAlert.discardChanges" = "捨棄變更";
 
 /* Button in an alert confirming discaring a new draft */
 "postEditor.closeConfirmationAlert.discardDraft" = "捨棄草稿";
 
-/* Button to keep the changes in an alert confirming discaring changes */
+/* Button to keep the changes in an alert confirming discarding changes
+   Button to keep the changes in an alert confirming discaring changes */
 "postEditor.closeConfirmationAlert.keepEditing" = "繼續編輯";
 
 /* Button in an alert confirming saving a new draft */
@@ -12100,6 +12099,15 @@ Example: given a notice format "Following %@" and empty site name, this will be 
 
 /* Title for screen to select the privacy options for a blog */
 "siteSettings.privacy.title" = "隱私權";
+
+/* Explanation for why the 'Use theme styles' toggle is disabled when the site doesn't have a block theme */
+"siteSettings.themeStyles.footer.blockThemeSuggested" = "網站並未使用區塊佈景主題，因此編輯器可能未與你的內容正確相符。 如果顯示效果不理想，你可以停用編輯器樣式。";
+
+/* Explanation for the option to enable theme styles when the feature is available */
+"siteSettings.themeStyles.footer.enabled" = "讓區塊編輯器的外觀與佈景主題相配。";
+
+/* Explanation for why the 'Use theme styles' toggle is disabled when the site doesn't have the Gutenberg plugin */
+"siteSettings.themeStyles.footer.gutenbergRequired" = "在網站安裝 Gutenberg 外掛程式，以啟用佈景主題樣式支援。";
 
 /* Format string for adding a new taxonomy term. %1$@ is the taxonomy name. */
 "siteTaxonomy.addNew.format" = "新增「%1$@」";

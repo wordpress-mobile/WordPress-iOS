@@ -9120,9 +9120,6 @@ Example: Reply to Pamela Nguyen */
 /* Title for comparison menu */
 "jetpackStats.datePicker.compareWith" = "Сравнение с...";
 
-/* Title for custom date range picker */
-"jetpackStats.datePicker.customRange" = "Избор на период";
-
 /* Menu item for custom date range picker */
 "jetpackStats.datePicker.customRangeMenu" = "Избор на период...";
 
@@ -10047,13 +10044,15 @@ Example: Reply to Pamela Nguyen */
 /* Navigation title for post discussion settings */
 "postDiscussion.title" = "Дискусия";
 
-/* Button in an alert confirming discaring changes */
+/* Button in an alert confirming discarding changes
+   Button in an alert confirming discaring changes */
 "postEditor.closeConfirmationAlert.discardChanges" = "Отмяна на промените";
 
 /* Button in an alert confirming discaring a new draft */
 "postEditor.closeConfirmationAlert.discardDraft" = "Изтриване на черновата";
 
-/* Button to keep the changes in an alert confirming discaring changes */
+/* Button to keep the changes in an alert confirming discarding changes
+   Button to keep the changes in an alert confirming discaring changes */
 "postEditor.closeConfirmationAlert.keepEditing" = "Продължаване на редакцията";
 
 /* Button in an alert confirming saving a new draft */

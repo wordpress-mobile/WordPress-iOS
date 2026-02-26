@@ -1,4 +1,4 @@
-/* Translation-Revision-Date: 2026-01-27 13:54:08+0000 */
+/* Translation-Revision-Date: 2026-02-06 21:53:11+0000 */
 /* Plural-Forms: nplurals=3; plural=(n % 10 == 1 && n % 100 != 11) ? 0 : ((n % 10 >= 2 && n % 10 <= 4 && (n % 100 < 12 || n % 100 > 14)) ? 1 : 2); */
 /* Generator: GlotPress/4.0.3 */
 /* Language: ru */
@@ -9186,9 +9186,6 @@ Example: Reply to Pamela Nguyen */
 /* Option to turn off period comparison */
 "jetpackStats.datePicker.comparisonOff" = "Без сравнения";
 
-/* Title for custom date range picker */
-"jetpackStats.datePicker.customRange" = "Произвольный период";
-
 /* Menu item for custom date range picker */
 "jetpackStats.datePicker.customRangeMenu" = "Произвольный период…";
 
@@ -9843,6 +9840,9 @@ Example: Reply to Pamela Nguyen */
 /* Noun. Links to a blog's Jetpack Backups screen. */
 "mySite.menu.backup" = "Резервное копирование";
 
+/* Noun. Links to a blog's Blaze screen. */
+"mySite.menu.blaze" = "Blaze";
+
 /* Noun. Title. Links to the blog's Comments screen. */
 "mySite.menu.comments" = "Комментарии";
 
@@ -10311,13 +10311,15 @@ Example: Reply to Pamela Nguyen */
 /* Navigation title for post discussion settings */
 "postDiscussion.title" = "Обсуждение";
 
-/* Button in an alert confirming discaring changes */
+/* Button in an alert confirming discarding changes
+   Button in an alert confirming discaring changes */
 "postEditor.closeConfirmationAlert.discardChanges" = "Отменить изменения";
 
 /* Button in an alert confirming discaring a new draft */
 "postEditor.closeConfirmationAlert.discardDraft" = "Удалить черновик";
 
-/* Button to keep the changes in an alert confirming discaring changes */
+/* Button to keep the changes in an alert confirming discarding changes
+   Button to keep the changes in an alert confirming discaring changes */
 "postEditor.closeConfirmationAlert.keepEditing" = "Продолжить редактирование";
 
 /* Button in an alert confirming saving a new draft */
@@ -12163,6 +12165,15 @@ Feel free to replace it with other bracket types that you think looks better for
 
 /* Title for screen to select the privacy options for a blog */
 "siteSettings.privacy.title" = "Конфиденциальность";
+
+/* Explanation for why the 'Use theme styles' toggle is disabled when the site doesn't have a block theme */
+"siteSettings.themeStyles.footer.blockThemeSuggested" = "На сайте не используется тема на блоках, поэтому редактор может неправильно сопоставить содержимое. Если что-то смотрится не так, вы можете отключить стили редактора.";
+
+/* Explanation for the option to enable theme styles when the feature is available */
+"siteSettings.themeStyles.footer.enabled" = "Сделайте редактор блоков похожим на вашу тему.";
+
+/* Explanation for why the 'Use theme styles' toggle is disabled when the site doesn't have the Gutenberg plugin */
+"siteSettings.themeStyles.footer.gutenbergRequired" = "Установите плагин Gutenberg на свой сайт, чтобы активировать поддержку стилей тем.";
 
 /* Format string for adding a new taxonomy term. %1$@ is the taxonomy name. */
 "siteTaxonomy.addNew.format" = "Добавить %1$@";

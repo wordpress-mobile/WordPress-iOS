@@ -1,4 +1,4 @@
-/* Translation-Revision-Date: 2026-02-05 09:07:01+0000 */
+/* Translation-Revision-Date: 2026-02-24 09:26:15+0000 */
 /* Plural-Forms: nplurals=2; plural=n != 1; */
 /* Generator: GlotPress/4.0.3 */
 /* Language: nl */
@@ -7231,6 +7231,9 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Feature name for the block editor in application password required prompt */
 "applicationPasswordRequired.feature.blockEditor" = "Blok-editor";
 
+/* Feature name for managing custom post types in the app */
+"applicationPasswordRequired.feature.customPosts" = "Aangepaste bericht typen";
+
 /* Feature name for managing terms and taxonomies in the app */
 "applicationPasswordRequired.feature.customTaxonomies" = "Beheer van taxonomieën";
 
@@ -7393,6 +7396,27 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Action shown in a bottom notice to dismiss it. */
 "blogDashboard.dismiss" = "Negeren";
+
+/* Error message shown when the active theme cannot be found for a site. */
+"blogDetails.activeThemeNotFound.errorDescription" = "Het actieve thema kon niet worden gevonden voor deze site.";
+
+/* Button title to connect Jetpack in XML-RPC disabled alert */
+"blogDetails.xmlrpcDisabled.alert.connectJetpack" = "Jetpack verbinden";
+
+/* Description explaining options to restore functionality when XML-RPC is disabled */
+"blogDetails.xmlrpcDisabled.alert.description" = "XML-RPC is uitgeschakeld op je site. Voor sommige functies in de app is XML-RPC vereist. Sluit Jetpack aan of schakel XML-RPC in om toegang te krijgen tot alle functies.";
+
+/* Button title to learn more about XML-RPC being disabled */
+"blogDetails.xmlrpcDisabled.alert.learnMore" = "Lees verder";
+
+/* Title for the XML-RPC disabled alert */
+"blogDetails.xmlrpcDisabled.alert.title" = "XML-RPC uitgeschakeld";
+
+/* Subtitle for the XML-RPC disabled card on blog details */
+"blogDetails.xmlrpcDisabled.card.subtitle" = "Sommige functies kunnen beperkt zijn";
+
+/* Title for the XML-RPC disabled card on blog details */
+"blogDetails.xmlrpcDisabled.card.title" = "XML-RPC uitgeschakeld";
 
 /* Context menu button title */
 "blogHeader.actionVisitSite" = "Bezoek site";
@@ -7860,6 +7884,39 @@ Example: Reply to Pamela Nguyen */
 /* Create Sheet button title */
 "createSheet.postFromAudio" = "Bericht van audio";
 
+/* Error message shown when the post was modified by another user while editing */
+"customPostEditor.error.conflict.message" = "Het bericht dat je probeert op te slaan is inmiddels gewijzigd.";
+
+/* Empty state message when no custom posts exist. %1$@ is the post type name (e.g., 'Podcasts', 'Products'). */
+"customPostList.emptyState.message" = "Geen %1$@";
+
+/* Tab title for draft posts */
+"customPostTab.drafts" = "Concepten";
+
+/* Tab title for published posts */
+"customPostTab.published" = "Gepubliceerd";
+
+/* Tab title for scheduled posts */
+"customPostTab.scheduled" = "Gepland";
+
+/* Menu item title for sending feedback on the custom post types screen */
+"customPostTab.sendFeedback" = "Stuur feedback";
+
+/* Tab title for trashed posts */
+"customPostTab.trash" = "Prullenbak";
+
+/* Empty state message when there are no custom post types to display */
+"customPostTypes.emptyState.message" = "Geen extra berichttypen";
+
+/* Accessibility label for the button to pin a custom post type */
+"customPostTypes.pin.accessibilityLabel" = "Vastpinnen";
+
+/* Title for the Custom Post Types screen */
+"customPostTypes.title" = "Meer";
+
+/* Accessibility label for the button to unpin a custom post type */
+"customPostTypes.unpin.accessibilityLabel" = "Losmaken";
+
 /* Customize Insights description */
 "customizeInsightsCell.content" = "Maak je eigen aangepaste dashboard en kies welke rapporten moeten worden weergegeven. Richt je op de gegevens die het meest van belang zijn.";
 
@@ -8000,6 +8057,9 @@ Example: Reply to Pamela Nguyen */
 
 /* Debug Menu action for TipKit */
 "debugMenu.hideAllTips" = "Verberg alle tips";
+
+/* Debug Menu item title */
+"debugMenu.item.logs" = "Logs";
 
 /* Title of the screen that allows the user to change the Reader CSS URL for debug builds */
 "debugMenu.readerCellTitle" = "Reader CSS URL";
@@ -8732,8 +8792,14 @@ Example: Reply to Pamela Nguyen */
 /* Title of the primary button shown after the Jetpack plugin has been installed. Tapping on the button dismisses the installation screen. */
 "jetpack.install-flow.success.primaryButtonText" = "Gereed";
 
+/* Message asking the user to install Jetpack to access all app features */
+"jetpack.install.allFeatures.description" = "Om alle functies van de app te ontgrendelen, moet je de plugin Jetpack installeren.";
+
 /* Title of a button for connecting user account to Jetpack. */
 "jetpack.install.connectUser.button.title" = "Verbind met je gebruikers account";
+
+/* Message asking the user to connect Jetpack to access all app features */
+"jetpack.install.connectUser.bypassXMLRPC.description" = "Om alle functies van de app te ontgrendelen, moet je de Jetpack plugin koppelen aan je gebruikersaccount.";
 
 /* Message asking the user if they want to set up Jetpack from notifications */
 "jetpack.install.connectUser.notifications.description" = "Je moet je gebruikersaccount koppelen om nuttige meldingen van je WordPress-site op je telefoon te kunnen krijgen.";
@@ -9078,6 +9144,9 @@ Example: Reply to Pamela Nguyen */
 /* Line chart type */
 "jetpackStats.chart.lineChart" = "Regels";
 
+/* Label for aggregated 'Other' segment in pie charts */
+"jetpackStats.chart.other" = "Ander";
+
 /* Show chart data menu item */
 "jetpackStats.chart.showData" = "Toon gegevens";
 
@@ -9186,9 +9255,6 @@ Example: Reply to Pamela Nguyen */
 /* Option to turn off period comparison */
 "jetpackStats.datePicker.comparisonOff" = "Geen vergelijking";
 
-/* Title for custom date range picker */
-"jetpackStats.datePicker.customRange" = "Aangepast bereik";
-
 /* Menu item for custom date range picker */
 "jetpackStats.datePicker.customRangeMenu" = "Aangepast bereik…";
 
@@ -9207,6 +9273,9 @@ Example: Reply to Pamela Nguyen */
 /* Label for quick period selection */
 "jetpackStats.datePicker.quickPeriodsForStartDate" = "Korte periodes voor startdatum";
 
+/* Title for custom date range picker */
+"jetpackStats.datePicker.selectRange" = "Bereik selecteren";
+
 /* Site time zone header */
 "jetpackStats.datePicker.siteTimeZone" = "Site tijdzone";
 
@@ -9222,6 +9291,15 @@ Example: Reply to Pamela Nguyen */
 /* Title for stats date range control tip */
 "jetpackStats.dateRangeTip.title" = "Navigeer door de tijd";
 
+/* Device breakdown by browser */
+"jetpackStats.deviceBreakdowns.browser" = "Browser";
+
+/* Device breakdown by platform/OS */
+"jetpackStats.deviceBreakdowns.operatingSystem" = "Besturingssysteem";
+
+/* Device breakdown by screen size */
+"jetpackStats.deviceBreakdowns.screensize" = "Schermgrootte";
+
 /* Section title for the list of child links */
 "jetpackStats.externalLinkDetails.childLinks" = "Sub links";
 
@@ -9230,6 +9308,12 @@ Example: Reply to Pamela Nguyen */
 
 /* Title for the external link details screen */
 "jetpackStats.externalLinkDetails.title" = "Externe link";
+
+/* Button to explore plans when a feature is gated */
+"jetpackStats.featureGate.explorePlans" = "Abonnementen verkennen";
+
+/* Message shown when a stats feature is gated behind a paid plan */
+"jetpackStats.featureGate.message" = "Upgrade je abonnement om toegang te krijgen tot geavanceerde analyses";
 
 /* Automatic granularity option */
 "jetpackStats.granularity.automatic" = "Automatisch";
@@ -9345,6 +9429,9 @@ Example: Reply to Pamela Nguyen */
 /* Clicks data type (external links) */
 "jetpackStats.siteDataTypes.clicks" = "Klikken";
 
+/* Devices data type */
+"jetpackStats.siteDataTypes.devices" = "Apparaten";
+
 /* File downloads data type */
 "jetpackStats.siteDataTypes.fileDownloads" = "Bestand downloads";
 
@@ -9359,6 +9446,9 @@ Example: Reply to Pamela Nguyen */
 
 /* Search terms data type */
 "jetpackStats.siteDataTypes.searchTerms" = "Zoektermen";
+
+/* UTM campaign tracking data type */
+"jetpackStats.siteDataTypes.utm" = "UTM";
 
 /* Videos data type */
 "jetpackStats.siteDataTypes.videos" = "Video's";
@@ -9420,6 +9510,9 @@ Example: Reply to Pamela Nguyen */
 /* Table column title for Top List card */
 "jetpackStats.topListColumnTitle.clicks" = "Externe link";
 
+/* Table column title for Devices Top List card */
+"jetpackStats.topListColumnTitle.devices" = "Apparaat";
+
 /* Table column title for Top List card */
 "jetpackStats.topListColumnTitle.fileDownloads" = "Bestand";
 
@@ -9435,8 +9528,65 @@ Example: Reply to Pamela Nguyen */
 /* Table column title for Top List card */
 "jetpackStats.topListColumnTitle.searchTerms" = "Term";
 
+/* Table column title for UTM Top List card */
+"jetpackStats.topListColumnTitle.utm" = "Campagne";
+
 /* Table column title for Top List card */
 "jetpackStats.topListColumnTitle.videos" = "Video";
+
+/* Plural post count for UTM metrics. %1$d is the number. */
+"jetpackStats.utmMetricDetails.postCount.plural" = "%1$d berichten";
+
+/* Singular post count for UTM metrics. %1$d is the number. */
+"jetpackStats.utmMetricDetails.postCount.singular" = "%1$d bericht";
+
+/* Title for the UTM campaign details screen */
+"jetpackStats.utmMetricDetails.title" = "UTM campagne";
+
+/* Section title for top posts from this UTM campaign */
+"jetpackStats.utmMetricDetails.topPosts" = "Populaire berichten";
+
+/* UTM parameter for campaign only */
+"jetpackStats.utmParamGroupings.campaign" = "Campagne";
+
+/* UTM parameter for medium only */
+"jetpackStats.utmParamGroupings.medium" = "Medium";
+
+/* UTM parameter for source only */
+"jetpackStats.utmParamGroupings.source" = "Bron";
+
+/* Number of ads served. %@ is the ads count. */
+"jetpackStats.wordAds.adsServed.count" = "%@ advertenties geserveerd";
+
+/* Total earnings from WordAds */
+"jetpackStats.wordAds.earnings" = "Verdiensten";
+
+/* Button to learn more about WordAds earnings */
+"jetpackStats.wordAds.learnMore" = "Lees verder";
+
+/* Message shown when there are no payment records */
+"jetpackStats.wordAds.noPaymentsYet" = "Nog geen betalingen";
+
+/* Outstanding amount owed from WordAds */
+"jetpackStats.wordAds.outstanding" = "Uitstaand";
+
+/* Amount paid out from WordAds earnings */
+"jetpackStats.wordAds.paid" = "Betaald";
+
+/* Title for payment history card and screen */
+"jetpackStats.wordAds.paymentsHistory" = "Betaalgeschiedenis";
+
+/* Title for WordAds total earnings card */
+"jetpackStats.wordAds.totalEarnings" = "Totale omzet";
+
+/* Number of ads served */
+"jetpackStats.wordAdsMetrics.adsServed" = "Getoonde advertenties";
+
+/* Average cost per mille (thousand impressions) */
+"jetpackStats.wordAdsMetrics.averageCPM" = "Gemiddelde CPM";
+
+/* Revenue from ads */
+"jetpackStats.wordAdsMetrics.revenue" = "Omzet";
 
 /* Title for a call-to-action button on the Jetpack install card. */
 "jetpackinstallcard.button.learn" = "Meer informatie";
@@ -10200,6 +10350,9 @@ Example: Reply to Pamela Nguyen */
 /* A title for the log severity level */
 "phpLogs.severityWarning" = "Waarschuwing";
 
+/* Error message when a pinned custom post type cannot be found. %1$@ is the post type name. */
+"pinnedPostType.error.notFound" = "\"%1$@\" is niet beschikbaar op deze site.";
+
 /* Title for the plan selection view */
 "planSelection.title" = "Abonnementen";
 
@@ -10314,13 +10467,15 @@ Example: Reply to Pamela Nguyen */
 /* Navigation title for post discussion settings */
 "postDiscussion.title" = "Discussie";
 
-/* Button in an alert confirming discaring changes */
+/* Button in an alert confirming discarding changes
+   Button in an alert confirming discaring changes */
 "postEditor.closeConfirmationAlert.discardChanges" = "Wijzigingen negeren";
 
 /* Button in an alert confirming discaring a new draft */
 "postEditor.closeConfirmationAlert.discardDraft" = "Concept negeren";
 
-/* Button to keep the changes in an alert confirming discaring changes */
+/* Button to keep the changes in an alert confirming discarding changes
+   Button to keep the changes in an alert confirming discaring changes */
 "postEditor.closeConfirmationAlert.keepEditing" = "Blijf bewerken";
 
 /* Button in an alert confirming saving a new draft */
@@ -10368,6 +10523,9 @@ Example: Reply to Pamela Nguyen */
 /* A message for a snackbar informing the user that some media files requires their attention */
 "postEditor.postHasFailingMediaUploadsSnackbar.message" = "Sommige mediabestanden konden niet worden geüpload.";
 
+/* Title for the publish button in the post editor navigation bar */
+"postEditor.publishButton.title" = "Publiceren";
+
 /* Editor, notice for successful recovery a trashed post */
 "postEditor.recoverTrashedPost.postRecoveredNoticeTitle" = "Bericht teruggezet naar concept";
 
@@ -10388,6 +10546,9 @@ Example: Reply to Pamela Nguyen */
 
 /* Saving draft to generate a preview (status message */
 "postEditor.savingDraftForPreview" = "Concept aan het opslaan...";
+
+/* Title for the update button in the post editor navigation bar */
+"postEditor.updateButton.title" = "Updaten";
 
 /* Empty state description when no post formats are available */
 "postFormatPicker.emptyState.description" = "Bericht formats zijn niet geconfigureerd voor deze site.";
