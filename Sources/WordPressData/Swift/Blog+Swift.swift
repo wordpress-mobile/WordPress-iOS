@@ -118,6 +118,35 @@ extension Blog {
         return .gmt
     }
 
+    // MARK: - Auth
+
+    @objc public var isBasicAuthCredentialStored: Bool {
+        let storage = URLCredentialStorage.shared
+        guard let url = self.url.flatMap(URL.init(string:)) else { return false }
+        for protectionSpace in storage.allCredentials.keys {
+            if protectionSpace.host == url.host
+                && protectionSpace.port == (url.port ?? 80)
+                && protectionSpace.authenticationMethod == NSURLAuthenticationMethodHTTPBasic {
+                return true
+            }
+        }
+        return false
+    }
+
+    // MARK: - Logging
+
+    @objc public var logDescription: String {
+        let extra: String
+        if let account {
+            extra = " wp.com account: \(account.username ?? "") blogId: \(dotComID?.intValue ?? 0) plan: \(planTitle ?? "") (\(planID?.intValue ?? 0))"
+        } else if let jetpack {
+            extra = " jetpack: \(jetpack)"
+        } else {
+            extra = ""
+        }
+        return "<Blog Name: \(settings?.name ?? "") URL: \(url ?? "") XML-RPC: \(xmlrpc ?? "")\(extra) ObjectID: \(objectID.uriRepresentation())>"
+    }
+
     // MARK: - Misc
 
     /// Returns the display name for a post format slug.
@@ -130,7 +159,7 @@ extension Blog {
         if let slug, let name = allFormats?[slug] {
             result = name
         }
-        if (result ?? "").isEmpty, let standard = allFormats?[PostFormatStandard] {
+        if (result ?? "").isEmpty, let standard = allFormats?[Self.postFormatStandard] {
             result = standard
         }
         return result

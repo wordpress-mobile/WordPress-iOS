@@ -481,6 +481,6 @@ private func makeCacheKey(for mediaID: TaggedManagedObjectID<Media>, size: Media
 
 private extension Blog {
     var isEligibleForPhoton: Bool {
-        !((isHostedAtWPcom && isPrivate) || (!isHostedAtWPcom && isBasicAuthCredentialStored()))
+        !((isHostedAtWPcom && isPrivate) || (!isHostedAtWPcom && isBasicAuthCredentialStored))
     }
 }

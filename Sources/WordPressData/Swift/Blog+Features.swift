@@ -134,6 +134,14 @@ extension Blog {
             return supportsShareButtons
         }
     }
+
+    @objc public var isStatsActive: Bool {
+        isJetpackModuleActive("stats") || isHostedAtWPcom
+    }
+
+    @objc public func hasRequiredWordPressVersion(_ requiredVersion: String) -> Bool {
+        version.compare(requiredVersion, options: .numeric) != .orderedAscending
+    }
 }
 
 // MARK: - Private

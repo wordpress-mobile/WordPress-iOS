@@ -8,9 +8,6 @@
 
 @class Comment;
 
-NSString * const BlogEntityName = @"Blog";
-NSString * const PostFormatStandard = @"standard";
-NSString * const ActiveModulesKeyStats = @"stats";
 
 @interface Blog ()
 
@@ -174,11 +171,6 @@ NSString * const ActiveModulesKeyStats = @"stats";
     }
 }
 
-- (BOOL)isStatsActive
-{
-    return [self jetpackStatsModuleEnabled] || [self isHostedAtWPcom];
-}
-
 - (NSNumber *)dotComID
 {
     [self willAccessValueForKey:@"blogID"];
@@ -205,16 +197,6 @@ NSString * const ActiveModulesKeyStats = @"stats";
     return [NSSet setWithObject:@"options"];
 }
 
-- (NSString *)logDescription
-{
-    NSString *extra = @"";
-    if (self.account) {
-        extra = [NSString stringWithFormat:@" wp.com account: %@ blogId: %@ plan: %@ (%@)", self.account ? self.account.username : @"NO", self.dotComID, self.planTitle, self.planID];
-    } else {
-        extra = [NSString stringWithFormat:@" jetpack: %@", [self.jetpack description]];
-    }
-    return [NSString stringWithFormat:@"<Blog Name: %@ URL: %@ XML-RPC: %@%@ ObjectID: %@>", self.settings.name, self.url, self.xmlrpc, extra, self.objectID.URIRepresentation];
-}
 
 #pragma mark - api accessor
 
@@ -242,64 +224,6 @@ NSString * const ActiveModulesKeyStats = @"stats";
     // We don't want to check for `restApi` as it can be `nil` when the token
     // is missing from the keychain.
     return self.account != nil;
-}
-
-#pragma mark - Jetpack
-
-- (BOOL)jetpackStatsModuleEnabled
-{
-    NSArray *activeModules = (NSArray *)[self getOptionValue:@"active_modules"];
-    return [activeModules containsObject:ActiveModulesKeyStats] ?: NO;
-}
-
-- (BOOL)isBasicAuthCredentialStored
-{
-    NSURLCredentialStorage *storage = [NSURLCredentialStorage sharedCredentialStorage];
-    NSURL *url = [NSURL URLWithString:self.url];
-    NSDictionary * credentials = storage.allCredentials;
-    for (NSURLProtectionSpace *protectionSpace in credentials.allKeys) {
-        if ( [protectionSpace.host isEqual:url.host]
-           && (protectionSpace.port == ([url.port integerValue] ? : 80))
-           && (protectionSpace.authenticationMethod == NSURLAuthenticationMethodHTTPBasic)) {
-            return YES;
-        }
-    }
-    return NO;
-}
-
-/// Checks the blogs installed WordPress version is more than or equal to the requiredVersion
-/// @param requiredVersion The minimum version to check for
-- (BOOL)hasRequiredWordPressVersion:(NSString *)requiredVersion
-{
-    return [self.version compare:requiredVersion options:NSNumericSearch] != NSOrderedAscending;
-}
-
-#pragma mark - Private Methods
-
-- (id)getOptionValue:(NSString *)name
-{
-    __block id optionValue;
-    [self.managedObjectContext performBlockAndWait:^{
-        if ( self.options == nil || (self.options.count == 0) ) {
-            optionValue = nil;
-        }
-        NSDictionary *currentOption = [self.options objectForKey:name];
-        optionValue = currentOption[@"value"];
-    }];
-    return optionValue;
-}
-
-- (void)setValue:(id)value forOption:(NSString *)name
-{
-    [self.managedObjectContext performBlockAndWait:^{
-        NSDictionary *options = self.options == nil ? [NSDictionary dictionary] : self.options;
-        NSMutableDictionary *mutableOptions = [options mutableCopy];
-
-        NSDictionary *valueDict = @{ @"value": value };
-        mutableOptions[name] = valueDict;
-
-        self.options = [NSDictionary dictionaryWithDictionary:mutableOptions];
-    }];
 }
 
 @end

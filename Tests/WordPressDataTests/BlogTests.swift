@@ -156,7 +156,7 @@ struct BlogTests {
             .with(modules: [""])
             .build()
 
-        #expect(blog.isStatsActive())
+        #expect(blog.isStatsActive)
     }
 
     @Test func statsActiveForSitesNotHostedAtWPCom() {
@@ -165,7 +165,7 @@ struct BlogTests {
             .with(modules: ["stats"])
             .build()
 
-        #expect(blog.isStatsActive())
+        #expect(blog.isStatsActive)
     }
 
     @Test func statsNotActiveForSitesNotHostedAtWPCom() {
@@ -174,7 +174,7 @@ struct BlogTests {
             .with(modules: [""])
             .build()
 
-        #expect(!blog.isStatsActive())
+        #expect(!blog.isStatsActive)
     }
 
     // MARK: - Blog.version String Conversion

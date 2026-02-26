@@ -202,8 +202,8 @@ class PostTests: CoreDataTestCase {
             .with(postFormats: postFormats)
             .build()
 
-        let sortedPostFormats = try XCTUnwrap(blog.sortedPostFormats as? [String])
-        let sortedPostFormatNames = try XCTUnwrap(blog.sortedPostFormatNames as? [String])
+        let sortedPostFormats = try XCTUnwrap(blog.sortedPostFormats)
+        let sortedPostFormatNames = try XCTUnwrap(blog.sortedPostFormatNames)
 
         XCTAssertEqual(expectedPostFormats.map { $0.0 }, sortedPostFormats)
         XCTAssertEqual(expectedPostFormats.map { $0.1 }, sortedPostFormatNames)

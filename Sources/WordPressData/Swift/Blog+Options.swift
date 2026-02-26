@@ -1,6 +1,8 @@
 import Foundation
 
 extension Blog {
+    public static let postFormatStandard = "standard"
+
     @objc public var isAtomic: Bool {
         getOptionBoolean(name: "is_wpcom_atomic")
     }
@@ -25,7 +27,26 @@ extension Blog {
         getOptionBoolean(name: "is_wpcom_staging_site")
     }
 
-    // MARK: - Internal
+    // MARK: - Options Access
+
+    @objc public func getOptionValue(_ name: String) -> Any? {
+        var optionValue: Any?
+        managedObjectContext?.performAndWait {
+            let currentOption = self.options?[name] as? [AnyHashable: Any]
+            optionValue = currentOption?["value"]
+        }
+        return optionValue
+    }
+
+    @objc public func setValue(_ value: Any, forOption name: String) {
+        managedObjectContext?.performAndWait {
+            var mutableOptions: [AnyHashable: Any] = self.options ?? [:]
+            mutableOptions[name] = ["value": value]
+            self.options = mutableOptions
+        }
+    }
+
+    // MARK: - Helpers
 
     func getOptionBoolean(name: String) -> Bool {
         (getOptionValue(name) as? NSNumber)?.boolValue ?? false

@@ -29,9 +29,6 @@ NS_ASSUME_NONNULL_BEGIN
 @class MenuLocation;
 @class PostType;
 
-extern NSString * const BlogEntityName;
-extern NSString * const PostFormatStandard;
-
 typedef NS_ENUM(NSInteger, SiteVisibility) {
     SiteVisibilityPrivate = -1,
     SiteVisibilityHidden = 0,
@@ -121,31 +118,6 @@ typedef NS_ENUM(NSInteger, SiteVisibility) {
 
 // http://wp.koke.me/sub
 @property (nonatomic, strong, nullable) NSString *url;
-
-#pragma mark - Blog information
-
-- (nullable id)getOptionValue:(NSString *) name;
-- (void)setValue:(id)value forOption:(NSString *)name;
-- (BOOL)isStatsActive;
-
-/**
- Returns a human readable description for logging
- 
- Instead of inspecting the core data object, this returns select information, more
- useful for support.
- */
-- (NSString *)logDescription;
-
-/**
- Check if there is already a basic auth credential stored for this blog/site.
-
- @return YES if there is a credential
- */
-- (BOOL)isBasicAuthCredentialStored;
-
-/// Checks the blogs installed WordPress version is more than or equal to the requiredVersion
-/// @param requiredVersion The minimum version to check for
-- (BOOL)hasRequiredWordPressVersion:(NSString *)requiredVersion;
 
 @end
 
