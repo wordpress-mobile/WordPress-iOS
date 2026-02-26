@@ -252,8 +252,7 @@ class ContextManagerTests: XCTestCase {
 
         let request = WPAccount.fetchRequest()
         request.predicate = NSPredicate(format: "username = %@", username)
-        XCTExpectFailure("See the comment in `ContextManager.writerQueue` for details")
-        try XCTAssertEqual(contextManager.mainContext.count(for: request), 1)
+        try XCTAssertNotEqual(contextManager.mainContext.count(for: request), 1, "See the comment in `ContextManager.writerQueue` for details")
     }
 
     /// This test case documents a pitfall in `ContextManager.performAndSave(_:)`, where the
@@ -285,8 +284,7 @@ class ContextManagerTests: XCTestCase {
 
         XCTAssertEqual(theBackgroundContext?.hasChanges, false, "The background context should be saved when `performAndSave` returns")
 
-        XCTExpectFailure("The account object in the main context doesn't get the updated value immediately")
-        XCTAssertEqual(account?.username, "Updated")
+        XCTAssertNotEqual(account?.username, "Updated", "The account object in the main context doesn't get the updated value immediately")
 
         // But eventually (probably in next run loop), it will get the updated value.
         let updated = expectation(for: NSPredicate { _, _ in
