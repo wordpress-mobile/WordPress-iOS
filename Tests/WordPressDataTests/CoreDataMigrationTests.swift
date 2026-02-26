@@ -179,8 +179,7 @@ struct CoreDataMigrationTests {
     }
 
     private func storeURL(named fileName: String) -> URL {
-        let documentsDirectory = NSSearchPathForDirectoriesInDomains(.documentDirectory, .userDomainMask, true).last!
-        let url = URL(fileURLWithPath: documentsDirectory).appendingPathComponent(fileName)
+        let url = FileManager.default.temporaryDirectory.appendingPathComponent(fileName)
         try? FileManager.default.removeItem(at: url)
         return url
     }
