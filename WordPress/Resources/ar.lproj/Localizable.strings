@@ -1,4 +1,4 @@
-/* Translation-Revision-Date: 2026-01-26 19:54:11+0000 */
+/* Translation-Revision-Date: 2026-02-26 09:56:32+0000 */
 /* Plural-Forms: nplurals=6; plural=(n == 0) ? 0 : ((n == 1) ? 1 : ((n == 2) ? 2 : ((n % 100 >= 3 && n % 100 <= 10) ? 3 : ((n % 100 >= 11 && n % 100 <= 99) ? 4 : 5)))); */
 /* Generator: GlotPress/4.0.3 */
 /* Language: ar */
@@ -7231,6 +7231,9 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Feature name for the block editor in application password required prompt */
 "applicationPasswordRequired.feature.blockEditor" = "محرِّر المكوِّنات";
 
+/* Feature name for managing custom post types in the app */
+"applicationPasswordRequired.feature.customPosts" = "أنواع التدوينات المخصصة";
+
 /* Feature name for managing terms and taxonomies in the app */
 "applicationPasswordRequired.feature.customTaxonomies" = "إدارة الفئات";
 
@@ -7393,6 +7396,27 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Action shown in a bottom notice to dismiss it. */
 "blogDashboard.dismiss" = "تجاهُل";
+
+/* Error message shown when the active theme cannot be found for a site. */
+"blogDetails.activeThemeNotFound.errorDescription" = "تعذّر العثور على القالب النشط لهذا الموقع.";
+
+/* Button title to connect Jetpack in XML-RPC disabled alert */
+"blogDetails.xmlrpcDisabled.alert.connectJetpack" = "اتصال بـ Jetpack";
+
+/* Description explaining options to restore functionality when XML-RPC is disabled */
+"blogDetails.xmlrpcDisabled.alert.description" = "تم تعطيل البروتوكول XML-RPC على موقعك. تتطلب بعض ميزات التطبيق حاليًا البروتوكول XML-RPC. توصيل Jetpack أو تمكين البروتوكول XML-RPC للوصول إلى جميع الميزات.";
+
+/* Button title to learn more about XML-RPC being disabled */
+"blogDetails.xmlrpcDisabled.alert.learnMore" = "تعرّف على المزيد";
+
+/* Title for the XML-RPC disabled alert */
+"blogDetails.xmlrpcDisabled.alert.title" = "تم تعطيل البروتوكول XML-RPC";
+
+/* Subtitle for the XML-RPC disabled card on blog details */
+"blogDetails.xmlrpcDisabled.card.subtitle" = "قد تكون بعض الميزات محدودة";
+
+/* Title for the XML-RPC disabled card on blog details */
+"blogDetails.xmlrpcDisabled.card.title" = "تم تعطيل البروتوكول XML-RPC";
 
 /* Badge title in site list */
 "blogList.siteBadge.staging" = "التشغيل المرحلي";
@@ -7851,6 +7875,39 @@ Example: Reply to Pamela Nguyen */
 /* Create Sheet button title */
 "createSheet.post" = "التدوينة";
 
+/* Error message shown when the post was modified by another user while editing */
+"customPostEditor.error.conflict.message" = "تم تغيير التدوينة التي تحاول حفظها في الوقت الحالي.";
+
+/* Empty state message when no custom posts exist. %1$@ is the post type name (e.g., 'Podcasts', 'Products'). */
+"customPostList.emptyState.message" = "%1$@ غير موجود";
+
+/* Tab title for draft posts */
+"customPostTab.drafts" = "المسودات";
+
+/* Tab title for published posts */
+"customPostTab.published" = "المنشور";
+
+/* Tab title for scheduled posts */
+"customPostTab.scheduled" = "المجدوَل";
+
+/* Menu item title for sending feedback on the custom post types screen */
+"customPostTab.sendFeedback" = "إرسال الملاحظات";
+
+/* Tab title for trashed posts */
+"customPostTab.trash" = "سلة المهملات";
+
+/* Empty state message when there are no custom post types to display */
+"customPostTypes.emptyState.message" = "لا توجد أنواع تدوينات مخصصة";
+
+/* Accessibility label for the button to pin a custom post type */
+"customPostTypes.pin.accessibilityLabel" = "تثبيت";
+
+/* Title for the Custom Post Types screen */
+"customPostTypes.title" = "المزيد";
+
+/* Accessibility label for the button to unpin a custom post type */
+"customPostTypes.unpin.accessibilityLabel" = "إلغاء التثبيت";
+
 /* Customize Insights description */
 "customizeInsightsCell.content" = "أنشئ لوحة التحكم المخصصة الخاصة بك واختر التقارير المراد رؤيتها. ركّز على البيانات التي تهتم بها اكثر.";
 
@@ -7991,6 +8048,9 @@ Example: Reply to Pamela Nguyen */
 
 /* Debug Menu action for TipKit */
 "debugMenu.hideAllTips" = "إخفاء كل النصائح";
+
+/* Debug Menu item title */
+"debugMenu.item.logs" = "السجلات";
 
 /* Title of the screen that allows the user to change the Reader CSS URL for debug builds */
 "debugMenu.readerCellTitle" = "عنوان URL لـ CSS في القارئ";
@@ -8717,8 +8777,14 @@ Example: Reply to Pamela Nguyen */
 /* Title of the primary button shown after the Jetpack plugin has been installed. Tapping on the button dismisses the installation screen. */
 "jetpack.install-flow.success.primaryButtonText" = "تم";
 
+/* Message asking the user to install Jetpack to access all app features */
+"jetpack.install.allFeatures.description" = "لتفعيل جميع ميزات التطبيق، سيتعين عليك تثبيت الإضافة Jetpack.";
+
 /* Title of a button for connecting user account to Jetpack. */
 "jetpack.install.connectUser.button.title" = "ربط حساب المستخدم الخاص بك";
+
+/* Message asking the user to connect Jetpack to access all app features */
+"jetpack.install.connectUser.bypassXMLRPC.description" = "لتفعيل جميع ميزات التطبيق، سيتعين عليك ربط الإضافة Jetpack بحساب المستخدم الخاص بك.";
 
 /* Message asking the user if they want to set up Jetpack from notifications */
 "jetpack.install.connectUser.notifications.description" = "للحصول على إشعارات مساعدة على هاتفك من موقع ووردبريس الخاص بك، سيتعين عليك الاتصال بحساب المستخدم الخاص بك.";
@@ -9063,6 +9129,9 @@ Example: Reply to Pamela Nguyen */
 /* Line chart type */
 "jetpackStats.chart.lineChart" = "خطوط";
 
+/* Label for aggregated 'Other' segment in pie charts */
+"jetpackStats.chart.other" = "أخرى";
+
 /* Show chart data menu item */
 "jetpackStats.chart.showData" = "عرض البيانات";
 
@@ -9171,9 +9240,6 @@ Example: Reply to Pamela Nguyen */
 /* Option to turn off period comparison */
 "jetpackStats.datePicker.comparisonOff" = "لا توجد مقارنة";
 
-/* Title for custom date range picker */
-"jetpackStats.datePicker.customRange" = "نطاق مخصص";
-
 /* Menu item for custom date range picker */
 "jetpackStats.datePicker.customRangeMenu" = "نطاق مخصص...";
 
@@ -9185,6 +9251,9 @@ Example: Reply to Pamela Nguyen */
 
 /* Menu item for more date period options */
 "jetpackStats.datePicker.more" = "المزيد…";
+
+/* Title for custom date range picker */
+"jetpackStats.datePicker.selectRange" = "تحديد النطاق";
 
 /* Site time zone header */
 "jetpackStats.datePicker.siteTimeZone" = "المنطقة الزمنية للموقع";
@@ -9201,6 +9270,15 @@ Example: Reply to Pamela Nguyen */
 /* Title for stats date range control tip */
 "jetpackStats.dateRangeTip.title" = "التنقُّل عبر الزمن";
 
+/* Device breakdown by browser */
+"jetpackStats.deviceBreakdowns.browser" = "المتصفح";
+
+/* Device breakdown by platform/OS */
+"jetpackStats.deviceBreakdowns.operatingSystem" = "نظام التشغيل";
+
+/* Device breakdown by screen size */
+"jetpackStats.deviceBreakdowns.screensize" = "حجم الشاشة";
+
 /* Section title for the list of child links */
 "jetpackStats.externalLinkDetails.childLinks" = "روابط فرعية";
 
@@ -9209,6 +9287,12 @@ Example: Reply to Pamela Nguyen */
 
 /* Title for the external link details screen */
 "jetpackStats.externalLinkDetails.title" = "رابط خارجي";
+
+/* Button to explore plans when a feature is gated */
+"jetpackStats.featureGate.explorePlans" = "استكشاف الخطط";
+
+/* Message shown when a stats feature is gated behind a paid plan */
+"jetpackStats.featureGate.message" = "قم بترقية خطتك للحصول على حق الوصول إلى التحليلات المتقدمة";
 
 /* Automatic granularity option */
 "jetpackStats.granularity.automatic" = "تلقائي";
@@ -9324,6 +9408,9 @@ Example: Reply to Pamela Nguyen */
 /* Clicks data type (external links) */
 "jetpackStats.siteDataTypes.clicks" = "مرات النقر";
 
+/* Devices data type */
+"jetpackStats.siteDataTypes.devices" = "الأجهزة";
+
 /* File downloads data type */
 "jetpackStats.siteDataTypes.fileDownloads" = "تنزيلات الملفات";
 
@@ -9399,6 +9486,9 @@ Example: Reply to Pamela Nguyen */
 /* Table column title for Top List card */
 "jetpackStats.topListColumnTitle.clicks" = "رابط خارجي";
 
+/* Table column title for Devices Top List card */
+"jetpackStats.topListColumnTitle.devices" = "الجهاز";
+
 /* Table column title for Top List card */
 "jetpackStats.topListColumnTitle.fileDownloads" = "الملف";
 
@@ -9414,8 +9504,65 @@ Example: Reply to Pamela Nguyen */
 /* Table column title for Top List card */
 "jetpackStats.topListColumnTitle.searchTerms" = "المصطلح";
 
+/* Table column title for UTM Top List card */
+"jetpackStats.topListColumnTitle.utm" = "الحملة";
+
 /* Table column title for Top List card */
 "jetpackStats.topListColumnTitle.videos" = "مقطع الفيديو";
+
+/* Plural post count for UTM metrics. %1$d is the number. */
+"jetpackStats.utmMetricDetails.postCount.plural" = "⁦%1$d⁩ من التدوينات";
+
+/* Singular post count for UTM metrics. %1$d is the number. */
+"jetpackStats.utmMetricDetails.postCount.singular" = "⁦%1$d⁩ من التدوينات";
+
+/* Title for the UTM campaign details screen */
+"jetpackStats.utmMetricDetails.title" = "حملة UTM";
+
+/* Section title for top posts from this UTM campaign */
+"jetpackStats.utmMetricDetails.topPosts" = "أعلى التدوينات";
+
+/* UTM parameter for campaign only */
+"jetpackStats.utmParamGroupings.campaign" = "الحملة";
+
+/* UTM parameter for medium only */
+"jetpackStats.utmParamGroupings.medium" = "وسيط";
+
+/* UTM parameter for source only */
+"jetpackStats.utmParamGroupings.source" = "مصدر";
+
+/* Number of ads served. %@ is the ads count. */
+"jetpackStats.wordAds.adsServed.count" = "تم عرض %@ من الإعلانات";
+
+/* Total earnings from WordAds */
+"jetpackStats.wordAds.earnings" = "الأرباح";
+
+/* Button to learn more about WordAds earnings */
+"jetpackStats.wordAds.learnMore" = "تعرّف على المزيد";
+
+/* Message shown when there are no payment records */
+"jetpackStats.wordAds.noPaymentsYet" = "لا توجد مدفوعات حتى الآن";
+
+/* Outstanding amount owed from WordAds */
+"jetpackStats.wordAds.outstanding" = "مستحق";
+
+/* Amount paid out from WordAds earnings */
+"jetpackStats.wordAds.paid" = "مدفوع";
+
+/* Title for payment history card and screen */
+"jetpackStats.wordAds.paymentsHistory" = "سجل المدفوعات";
+
+/* Title for WordAds total earnings card */
+"jetpackStats.wordAds.totalEarnings" = "إجمالي الأرباح";
+
+/* Number of ads served */
+"jetpackStats.wordAdsMetrics.adsServed" = "الإعلانات المعروضة";
+
+/* Average cost per mille (thousand impressions) */
+"jetpackStats.wordAdsMetrics.averageCPM" = "متوسط التكلفة لكل ألف ظهور (CPM)";
+
+/* Revenue from ads */
+"jetpackStats.wordAdsMetrics.revenue" = "الإيرادات";
 
 /* Title for a call-to-action button on the Jetpack install card. */
 "jetpackinstallcard.button.learn" = "معرفة المزيد";
@@ -10158,6 +10305,9 @@ Example: Reply to Pamela Nguyen */
 /* A title for the log severity level */
 "phpLogs.severityWarning" = "تحذير";
 
+/* Error message when a pinned custom post type cannot be found. %1$@ is the post type name. */
+"pinnedPostType.error.notFound" = "نوع التدوينة \"%1$@\" غير متوفر على هذا الموقع.";
+
 /* Title for the plan selection view */
 "planSelection.title" = "الخطط";
 
@@ -10269,13 +10419,15 @@ Example: Reply to Pamela Nguyen */
 /* Navigation title for post discussion settings */
 "postDiscussion.title" = "المناقشة";
 
-/* Button in an alert confirming discaring changes */
+/* Button in an alert confirming discarding changes
+   Button in an alert confirming discaring changes */
 "postEditor.closeConfirmationAlert.discardChanges" = "تجاهل التغييرات";
 
 /* Button in an alert confirming discaring a new draft */
 "postEditor.closeConfirmationAlert.discardDraft" = "تجاهل المسودة";
 
-/* Button to keep the changes in an alert confirming discaring changes */
+/* Button to keep the changes in an alert confirming discarding changes
+   Button to keep the changes in an alert confirming discaring changes */
 "postEditor.closeConfirmationAlert.keepEditing" = "متابعة التحرير";
 
 /* Button in an alert confirming saving a new draft */
@@ -10323,6 +10475,9 @@ Example: Reply to Pamela Nguyen */
 /* A message for a snackbar informing the user that some media files requires their attention */
 "postEditor.postHasFailingMediaUploadsSnackbar.message" = "فشل رفع بعض عناصر الوسائط";
 
+/* Title for the publish button in the post editor navigation bar */
+"postEditor.publishButton.title" = "نشر";
+
 /* Editor, notice for successful recovery a trashed post */
 "postEditor.recoverTrashedPost.postRecoveredNoticeTitle" = "تمت استعادة التدوينة كمسودة";
 
@@ -10343,6 +10498,9 @@ Example: Reply to Pamela Nguyen */
 
 /* Saving draft to generate a preview (status message */
 "postEditor.savingDraftForPreview" = "جار حفظ المسودة...";
+
+/* Title for the update button in the post editor navigation bar */
+"postEditor.updateButton.title" = "تحديث";
 
 /* Empty state description when no post formats are available */
 "postFormatPicker.emptyState.description" = "لم يتم تكوين تنسيقات التدوينة لهذا الموقع.";
@@ -12106,6 +12264,15 @@ Feel free to replace it with other bracket types that you think looks better for
 
 /* Title for screen to select the privacy options for a blog */
 "siteSettings.privacy.title" = "الخصوصية";
+
+/* Explanation for why the 'Use theme styles' toggle is disabled when the site doesn't have a block theme */
+"siteSettings.themeStyles.footer.blockThemeSuggested" = "لا يستخدم موقعك قالب مكوّن، لذا قد لا يتطابق المحرر مع محتواك بشكل صحيح. إذا لم تسر الأمور على ما يرام، فيمكنك تعطيل أنماط المحرر.";
+
+/* Explanation for the option to enable theme styles when the feature is available */
+"siteSettings.themeStyles.footer.enabled" = "اجعل محرر المكوّن يبدو مثل قالبك.";
+
+/* Explanation for why the 'Use theme styles' toggle is disabled when the site doesn't have the Gutenberg plugin */
+"siteSettings.themeStyles.footer.gutenbergRequired" = "قم بتثبيت إضافة Gutenberg على موقعك لتفعيل دعم نمط القالب.";
 
 /* Format string for adding a new taxonomy term. %1$@ is the taxonomy name. */
 "siteTaxonomy.addNew.format" = "إضافة %1$@";

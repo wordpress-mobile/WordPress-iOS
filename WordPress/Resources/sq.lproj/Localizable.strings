@@ -1,4 +1,4 @@
-/* Translation-Revision-Date: 2026-01-25 16:08:05+0000 */
+/* Translation-Revision-Date: 2026-02-14 18:21:44+0000 */
 /* Plural-Forms: nplurals=2; plural=n != 1; */
 /* Generator: GlotPress/4.0.3 */
 /* Language: sq_AL */
@@ -1324,7 +1324,7 @@ translators: %s: Block name e.g. \"Image block\" */
 "Comment approved." = "Komenti u miratua.";
 
 /* Message displayed when deleting a comment succeeds. */
-"Comment deleted." = "Koment u fshi.";
+"Comment deleted." = "Komenti u fshi.";
 
 /* Displayed when a Comment is deleted */
 "Comment has been deleted" = "Komenti u fshi";
@@ -9156,9 +9156,6 @@ Example: Reply to Pamela Nguyen */
 /* Option to turn off period comparison */
 "jetpackStats.datePicker.comparisonOff" = "Pa Krahasim";
 
-/* Title for custom date range picker */
-"jetpackStats.datePicker.customRange" = "Interval Vetjak";
-
 /* Menu item for custom date range picker */
 "jetpackStats.datePicker.customRangeMenu" = "Interval Vetjak…";
 
@@ -10272,13 +10269,15 @@ Example: Reply to Pamela Nguyen */
 /* Navigation title for post discussion settings */
 "postDiscussion.title" = "Diskutim";
 
-/* Button in an alert confirming discaring changes */
+/* Button in an alert confirming discarding changes
+   Button in an alert confirming discaring changes */
 "postEditor.closeConfirmationAlert.discardChanges" = "Hidhi Tej Ndryshimet";
 
 /* Button in an alert confirming discaring a new draft */
 "postEditor.closeConfirmationAlert.discardDraft" = "Hidhe Tej Skicën";
 
-/* Button to keep the changes in an alert confirming discaring changes */
+/* Button to keep the changes in an alert confirming discarding changes
+   Button to keep the changes in an alert confirming discaring changes */
 "postEditor.closeConfirmationAlert.keepEditing" = "Vazhdoni Përpunimin";
 
 /* Button in an alert confirming saving a new draft */
@@ -12124,6 +12123,15 @@ Feel free to replace it with other bracket types that you think looks better for
 
 /* Title for screen to select the privacy options for a blog */
 "siteSettings.privacy.title" = "Privatësi";
+
+/* Explanation for why the 'Use theme styles' toggle is disabled when the site doesn't have a block theme */
+"siteSettings.themeStyles.footer.blockThemeSuggested" = "Sajti juaj s’po përdor ndonjë Temë Me Blloqe, ndaj përpunuesi s’mund të përkojë saktë me lëndën tuaj. Nëse gjërat s’duken mirë, mund të çaktivizoni stile përpunuesi.";
+
+/* Explanation for the option to enable theme styles when the feature is available */
+"siteSettings.themeStyles.footer.enabled" = "Bëjeni përpunuesin me blloqe të duket si tema juaj.";
+
+/* Explanation for why the 'Use theme styles' toggle is disabled when the site doesn't have the Gutenberg plugin */
+"siteSettings.themeStyles.footer.gutenbergRequired" = "Që të aktivizoni mbulim stilesh temash, instaloni në sajtin tuaj shtojcën Gutenberg.";
 
 /* Format string for adding a new taxonomy term. %1$@ is the taxonomy name. */
 "siteTaxonomy.addNew.format" = "Shtoni %1$@";
