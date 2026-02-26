@@ -40,8 +40,9 @@ WordPress-iOS uses a modular architecture with the main app and separate Swift p
 
 ## Build & Test
 
-If the Xcode MCP server is connected, use it to build and test.
-Otherwise, use the `test` Fastlane lane:
+**Always check for the Xcode MCP server first.**
+If it is connected, use it to build and test — no exceptions.
+Only fall back to the `test` Fastlane lane when the Xcode MCP is unavailable:
 
 ```bash
 bundle exec fastlane test
