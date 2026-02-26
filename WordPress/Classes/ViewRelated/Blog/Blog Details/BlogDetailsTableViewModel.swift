@@ -677,12 +677,14 @@ private extension BlogDetailsTableViewModel {
 
         rows.append(Row.comments(viewController: viewController))
 
-        if FeatureFlag.customPostTypes.enabled && blog.supportsCoreRESTAPI && hasCustomPostTypes {
+        if FeatureFlag.customPostTypes.enabled && blog.supportsCoreRESTAPI {
             let pinned = SiteStorageAccess.pinnedPostTypes(for: TaggedManagedObjectID(blog))
             for type in pinned {
                 rows.append(Row.pinnedPostType(type, viewController: viewController))
             }
-            rows.append(Row.customPostTypes(viewController: viewController))
+            if !pinned.isEmpty || hasCustomPostTypes {
+                rows.append(Row.customPostTypes(viewController: viewController))
+            }
         }
 
         let title = Strings.publishSection
