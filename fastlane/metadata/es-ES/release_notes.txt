@@ -1,9 +1,0 @@
-Hemos realizado una actualización técnica que reduce el tamaño de la aplicación en unos 6 MB. ¿Qué harás con todo ese espacio que has ganado? 
-
-Ahora es más fácil encontrar, ver y cambiar los ajustes de visibilidad de las entradas existentes. Además, el botón «Hecho» no desaparecerá cuando establezcas la contraseña al publicar una entrada protegida con contraseña.
-
-Mejora estética: hemos actualizado los iconos de acceso directo y las ilustraciones para que se adapten mejor al resto de la aplicación, así como a tu dispositivo. 
-
-Hemos solucionado un problema para que las vistas previas de las publicaciones funcionen correctamente en determinados sitios que utilizan planes Business y Commerce. 
-
-Cuando añadas un nuevo sitio autohospedado, se te pedirá la contraseña de la aplicación para identificarte. Manténla en secreto. Manténla a salvo.

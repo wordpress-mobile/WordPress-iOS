@@ -1,9 +1,0 @@
-Vi gjorde en teknisk uppdatering som minskar storleken på din app med cirka 6 MB. Vad ska du göra med allt det nyfunna utrymmet?
-
-Det är lättare att hitta, se och ändra synlighetsinställningarna för befintliga inlägg. Knappen ”Klar” försvinner inte heller när du ställer in lösenordet medan du publicerar ett lösenordsskyddat inlägg.
-
-Ser bra ut: vi uppdaterade genvägsikoner och illustrationer för att bättre matcha resten av appen, samt passa bättre med din enhet.
-
-Vi har åtgärdat ett problem så att förhandsgranskningar av inlägg nu fungerar korrekt för vissa webbplatser som använder Business- och Commerce-paket.
-
-När du lägger till en ny webbplats som drivs på en egen server blir du ombedd att ange ditt applösenord för att autentisera. Håll det hemligt. Håll det säkert.

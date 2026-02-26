@@ -1,9 +1,0 @@
-Abbiamo effettuato un aggiornamento tecnico che riduce le dimensioni dell'app di circa 6 MB. Cosa farai con tutto quello spazio appena guadagnato?
-
-È più facile trovare, visualizzare e modificare le impostazioni di visibilità dei post esistenti. Il pulsante "Fatto" non scomparirà nemmeno quando imposti la password durante la pubblicazione di un articolo protetto da password.
-
-Aspetto gradevole: abbiamo aggiornato le icone dei collegamenti e le illustrazioni per adattarle meglio al resto dell'app e al tuo dispositivo.
-
-Abbiamo risolto un problema, quindi ora le anteprime degli articoli funzionano correttamente per alcuni siti che utilizzano i piani Business e Commerce.
-
-Quando aggiungi un nuovo sito ospitato personalmente, ti verrà richiesta la password dell'app per l'autenticazione. Tienilo segreto. Tienilo al sicuro.
