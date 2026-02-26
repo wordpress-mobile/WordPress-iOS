@@ -1,1 +1,1 @@
-Jetpack - 网站创建者
+适用于 WordPress 的 Jetpack

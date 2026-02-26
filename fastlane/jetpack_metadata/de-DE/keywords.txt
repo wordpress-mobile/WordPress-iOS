@@ -1,1 +1,1 @@
-Social,Notizen,Jetpack,schreiben,Geotagging,Media,Blog,Website,Blogging,Tagebuch
+WordPress,Social,Notizen,Jetpack,Schreiben,Geotagging,Medien,Blog,Website,Bloggen,Tagebuch
