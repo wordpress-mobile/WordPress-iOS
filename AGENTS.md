@@ -38,6 +38,16 @@ WordPress-iOS uses a modular architecture with the main app and separate Swift p
 - **Accessibility**: Use proper accessibility labels and traits
 - **Localization**: follow best practices from @docs/localization.md
 
+## Build & Test
+
+If the Xcode MCP server is connected, use it to build and test.
+Otherwise, use the `test` Fastlane lane:
+
+```bash
+bundle exec fastlane test
+bundle exec fastlane test only_testing:TargetName/Class/method
+```
+
 ## Coding Standards
 - Follow Swift API Design Guidelines
 - Use strict access control modifiers where possible
