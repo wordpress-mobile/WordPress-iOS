@@ -78,7 +78,7 @@ namespace :dependencies do
     end
 
     task :install do
-      sh 'bundle install --jobs=3 --retry=3 --path=${BUNDLE_PATH:-vendor/bundle}'
+      sh 'bundle install'
     end
     CLOBBER << 'vendor/bundle'
     CLOBBER << '.bundle'
