@@ -175,7 +175,8 @@ class DummyEntity: NSManagedObject {
 // MARK: - InMemory Stack with Dynamic Model
 
 class DummyStack {
-    lazy var model: NSManagedObjectModel = {
+    // Only one had to exist at a time
+    static var model: NSManagedObjectModel = {
         let keyAttribute = NSAttributeDescription()
         keyAttribute.name = "key"
         keyAttribute.attributeType = .stringAttributeType
@@ -202,7 +203,7 @@ class DummyStack {
     }()
 
     lazy var coordinator: NSPersistentStoreCoordinator = {
-        let coordinator = NSPersistentStoreCoordinator(managedObjectModel: self.model)
+        let coordinator = NSPersistentStoreCoordinator(managedObjectModel: Self.model)
         _ = try? coordinator.addPersistentStore(ofType: NSInMemoryStoreType, configurationName: nil, at: nil, options: nil)
         return coordinator
     }()
