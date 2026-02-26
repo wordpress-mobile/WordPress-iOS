@@ -2,7 +2,6 @@
 @import WordPressShared;
 #import "WordPressData-Swift.h"
 
-@import SFHFKeychainUtils;
 @import WordPressShared;
 @import WordPressKit;
 
@@ -139,36 +138,6 @@
 
     // Reset the api client so next time we use the new XML-RPC URL
     self.xmlrpcApi = nil;
-}
-
-- (NSString *)password
-{
-    NSString *accountPassword = [SFHFKeychainUtils getPasswordForUsername:self.username andServiceName:self.xmlrpc accessGroup:nil error:nil];
-    if (accountPassword != nil) {
-        return accountPassword;
-    }
-
-    // Application password can also be used to authenticate XML-RPC.
-    return [self getApplicationTokenWithError:nil];
-}
-
-- (void)setPassword:(NSString *)password
-{
-    NSAssert(self.username != nil, @"Can't set password if we don't know the username yet");
-    NSAssert(self.xmlrpc != nil, @"Can't set password if we don't know the XML-RPC endpoint yet");
-    if (password) {
-        [SFHFKeychainUtils storeUsername:self.username
-                             andPassword:password
-                          forServiceName:self.xmlrpc
-                             accessGroup:nil
-                          updateExisting:YES
-                                   error:nil];
-    } else {
-        [SFHFKeychainUtils deleteItemForUsername:self.username
-                                  andServiceName:self.xmlrpc
-                                     accessGroup:nil
-                                           error:nil];
-    }
 }
 
 - (NSNumber *)dotComID

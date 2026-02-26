@@ -109,7 +109,6 @@ typedef NS_ENUM(NSInteger, SiteVisibility) {
  *  @warn       For WordPress.com or Jetpack Managed sites this will be nil. Use effectiveUsername instead
  */
 @property (nonatomic, strong, readwrite, nullable) NSString *username;
-@property (nonatomic, strong, readwrite, nullable) NSString *password;
 
 
 // Readonly Properties

@@ -1,8 +1,44 @@
 import Foundation
 import CoreData
+import ObjectiveC
 import NSURL_IDN
+import WordPressShared
+
+private nonisolated(unsafe) var blogKeychainKey: UInt8 = 0
 
 extension Blog {
+
+    // MARK: - Keychain
+
+    /// Injectable keychain for testability.
+    var keychain: any KeychainAccessible {
+        get {
+            objc_getAssociatedObject(self, &blogKeychainKey) as? (any KeychainAccessible) ?? KeychainUtils()
+        }
+        set {
+            objc_setAssociatedObject(self, &blogKeychainKey, newValue, .OBJC_ASSOCIATION_RETAIN_NONATOMIC)
+        }
+    }
+
+    @objc public var password: String? {
+        get {
+            guard let username, !username.isEmpty,
+                  let xmlrpc, !xmlrpc.isEmpty else {
+                return nil
+            }
+            if let password = try? keychain.getPassword(for: username, serviceName: xmlrpc) {
+                return password
+            }
+            // Application password can also be used to authenticate XML-RPC.
+            return try? getApplicationToken(using: keychain)
+        }
+        set {
+            assert(username != nil, "Can't set password if we don't know the username yet")
+            assert(xmlrpc != nil, "Can't set password if we don't know the XML-RPC endpoint yet")
+            guard let username, let xmlrpc else { return }
+            try? keychain.setPassword(for: username, to: newValue, serviceName: xmlrpc)
+        }
+    }
 
     /// Stores the relationship to the `BlockEditorSettings` which is an optional entity that holds settings realated to the BlockEditor. These are features
     /// such as Global Styles and Full Site Editing settings and capabilities.
