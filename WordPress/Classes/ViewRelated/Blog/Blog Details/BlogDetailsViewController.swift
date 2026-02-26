@@ -52,6 +52,9 @@ public class BlogDetailsViewController: UIViewController {
 
         tableViewModel = BlogDetailsTableViewModel(blog: blog, viewController: self)
         tableViewModel?.configure(tableView: tableView)
+        // - warning: This needs to be populated early because tableViewModel.sections
+        // are what drive programmatical navigation with universal links
+        tableViewModel?.configureTableViewData()
 
         tableView.translatesAutoresizingMaskIntoConstraints = false
 
