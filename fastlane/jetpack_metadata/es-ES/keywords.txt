@@ -1,1 +1,1 @@
-social,notas,jetpack,escritura,geoetiquetado,medios,blog,web,bloguear,diario
+wordpress,social,notas,jetpack,escribir,geoetiquetado,medios,blog,web,bloguear,diario

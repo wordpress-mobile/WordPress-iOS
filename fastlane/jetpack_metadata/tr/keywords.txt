@@ -1,1 +1,1 @@
-sosyal,notlar,jetpack,yazma,coğrafi etiketleme,medya,blog,web sitesi,blog oluşturma,günlük
+wordpress,sosyal,notlar,jetpack,yazma,coğrafi etiketleme,ortam,blog,web sitesi,blog oluşturma,günlük
