@@ -176,7 +176,7 @@ class DummyEntity: NSManagedObject {
 
 class DummyStack {
     // Only one had to exist at a time
-    static var model: NSManagedObjectModel = {
+    static let model: NSManagedObjectModel = {
         let keyAttribute = NSAttributeDescription()
         keyAttribute.name = "key"
         keyAttribute.attributeType = .stringAttributeType
