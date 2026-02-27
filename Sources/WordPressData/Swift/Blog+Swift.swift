@@ -8,6 +8,49 @@ private nonisolated(unsafe) var blogKeychainKey: UInt8 = 0
 
 extension Blog {
 
+    // MARK: - Core Data Accessors
+
+    @objc public var xmlrpc: String? {
+        get {
+            willAccessValue(forKey: "xmlrpc")
+            let value = primitiveValue(forKey: "xmlrpc") as? String
+            didAccessValue(forKey: "xmlrpc")
+            return value
+        }
+        set {
+            willChangeValue(forKey: "xmlrpc")
+            setPrimitiveValue(newValue, forKey: "xmlrpc")
+            didChangeValue(forKey: "xmlrpc")
+            // Reset the API client so next time we use the new XML-RPC URL
+            xmlrpcApi = nil
+        }
+    }
+
+    /// WordPress.com site ID. Backed by the `blogID` Core Data attribute.
+    @objc public var dotComID: NSNumber? {
+        get {
+            willAccessValue(forKey: "blogID")
+            var value = primitiveValue(forKey: "blogID") as? NSNumber
+            if (value?.intValue ?? 0) == 0 {
+                value = jetpack?.siteID
+                if let value, value.intValue > 0 {
+                    self.dotComID = value
+                }
+            }
+            didAccessValue(forKey: "blogID")
+            return value
+        }
+        set {
+            willChangeValue(forKey: "blogID")
+            setPrimitiveValue(newValue, forKey: "blogID")
+            didChangeValue(forKey: "blogID")
+        }
+    }
+
+    @objc class var keyPathsForValuesAffectingJetpack: Set<String> {
+        ["options"]
+    }
+
     // MARK: - Keychain
 
     /// Injectable keychain for testability.
@@ -174,7 +217,7 @@ extension Blog {
     @objc public var logDescription: String {
         let extra: String
         if let account {
-            extra = " wp.com account: \(account.username ?? "") blogId: \(dotComID?.intValue ?? 0) plan: \(planTitle ?? "") (\(planID?.intValue ?? 0))"
+            extra = " wp.com account: \(account.username) blogId: \(dotComID?.intValue ?? 0) plan: \(planTitle ?? "") (\(planID?.intValue ?? 0))"
         } else if let jetpack {
             extra = " jetpack: \(jetpack)"
         } else {

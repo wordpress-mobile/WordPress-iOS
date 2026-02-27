@@ -7,10 +7,8 @@
 
 @class Comment;
 
-
 @interface Blog ()
 
-@property (nonatomic, strong, readwrite) WordPressOrgXMLRPCApi *xmlrpcApi;
 @property (nonatomic, strong, readwrite) WordPressOrgRestApi *selfHostedSiteRestApi;
 
 @end
@@ -20,7 +18,6 @@
 @dynamic accountForDefaultBlog;
 @dynamic blogID;
 @dynamic url;
-@dynamic xmlrpc;
 @dynamic restApiRootURL;
 @dynamic apiKey;
 @dynamic organizationID;
@@ -120,53 +117,6 @@
     [[NSNotificationCenter defaultCenter] removeObserver:self];
 }
 
-- (NSNumber *)organizationID {
-    NSNumber *organizationID = [self primitiveValueForKey:@"organizationID"];
-
-    if (organizationID == nil) {
-        return @0;
-    } else {
-        return organizationID;
-    }
-}
-
-- (void)setXmlrpc:(NSString *)xmlrpc
-{
-    [self willChangeValueForKey:@"xmlrpc"];
-    [self setPrimitiveValue:xmlrpc forKey:@"xmlrpc"];
-    [self didChangeValueForKey:@"xmlrpc"];
-
-    // Reset the api client so next time we use the new XML-RPC URL
-    self.xmlrpcApi = nil;
-}
-
-- (NSNumber *)dotComID
-{
-    [self willAccessValueForKey:@"blogID"];
-    NSNumber *dotComID = [self primitiveValueForKey:@"blogID"];
-    if (dotComID.integerValue == 0) {
-        dotComID = self.jetpack.siteID;
-        if (dotComID.integerValue > 0) {
-            self.dotComID = dotComID;
-        }
-    }
-    [self didAccessValueForKey:@"blogID"];
-    return dotComID;
-}
-
-- (void)setDotComID:(NSNumber *)dotComID
-{
-    [self willChangeValueForKey:@"blogID"];
-    [self setPrimitiveValue:dotComID forKey:@"blogID"];
-    [self didChangeValueForKey:@"blogID"];
-}
-
-+ (NSSet *)keyPathsForValuesAffectingJetpack
-{
-    return [NSSet setWithObject:@"options"];
-}
-
-
 #pragma mark - api accessor
 
 - (WordPressOrgXMLRPCApi *)xmlrpcApi
@@ -187,12 +137,6 @@
         _selfHostedSiteRestApi = self.account == nil ? [[WordPressOrgRestApi alloc] initWithBlog:self] : nil;
     }
     return _selfHostedSiteRestApi;
-}
-
-- (BOOL)supportsRestApi {
-    // We don't want to check for `restApi` as it can be `nil` when the token
-    // is missing from the keychain.
-    return self.account != nil;
 }
 
 @end
