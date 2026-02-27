@@ -59,10 +59,8 @@ class EditorSettingsServiceTest: CoreDataTestCase {
         // Begin migration from local to remote
 
         // Should call POST local settings to remote (migration)
-        let postCalledExpectation = XCTNSPredicateExpectation(
-            predicate: NSPredicate { _, _ in self.remoteApi.postMethodCalled },
-            object: nil
-        )
+        let postCalledExpectation = expectation(description: "POST called")
+        remoteApi.onPost = { postCalledExpectation.fulfill() }
         wait(for: [postCalledExpectation], timeout: 1)
         XCTAssertTrue(remoteApi.URLStringPassedIn?.contains("platform=mobile&editor=gutenberg") ?? false)
         // Respond with mobile editor set on the server
