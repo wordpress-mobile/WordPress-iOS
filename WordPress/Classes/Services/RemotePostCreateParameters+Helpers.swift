@@ -1,10 +1,11 @@
 import Foundation
+import WordPressData
 import WordPressKit
 import WordPressShared
 
 extension RemotePostCreateParameters {
     /// Initializes the parameters required to create the given post.
-    public init(post: AbstractPost) {
+    init(post: AbstractPost) {
         self.init(
             type: post is Post ? "post" : "page",
             status: (post.status ?? .draft).rawValue

@@ -21,6 +21,7 @@
 #import "NSObject+Helpers.h"
 
 #import "PostCategoryService.h"
+#import "PostHelper.h"
 #import "PostTagService.h"
 
 #import "ReaderPostService.h"

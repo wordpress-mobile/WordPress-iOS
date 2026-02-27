@@ -1169,7 +1169,6 @@
 			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
 			publicHeaders = (
 				"Objective-C/include/Blog.h",
-				"Objective-C/include/PostHelper.h",
 				WordPressData.h,
 			);
 			target = 3F7AE0B42D9B30A100AB4892 /* WordPressData */;

@@ -1,6 +1,7 @@
 #import "PostHelper.h"
-#import "WordPressData-Swift.h"
+#import "WordPress-Swift.h"
 
+@import WordPressData;
 @import WordPressKit;
 @import WordPressKitModels;
 @import WordPressShared;

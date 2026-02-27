@@ -1,5 +1,6 @@
 #import <Foundation/Foundation.h>
 #import <CoreData/CoreData.h>
+#import "PostHelper.h"
 @import WordPressData;
 
 @class Blog;
