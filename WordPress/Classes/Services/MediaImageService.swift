@@ -9,12 +9,12 @@ final class MediaImageService {
     static let shared = MediaImageService()
 
     private let cache: MemoryCache
-    private let coreDataStack: CoreDataStackSwift
+    private let coreDataStack: ContextManager
     private let mediaFileManager: MediaFileManager
     private let downloader: ImageDownloader
 
     init(cache: MemoryCache = .shared,
-         coreDataStack: CoreDataStackSwift = ContextManager.shared,
+         coreDataStack: ContextManager = ContextManager.shared,
          mediaFileManager: MediaFileManager = MediaFileManager(directory: .cache),
          downloader: ImageDownloader = .shared) {
         self.cache = cache

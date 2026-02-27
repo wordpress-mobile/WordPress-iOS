@@ -27,7 +27,7 @@ class JetpackBackupOptionsCoordinator {
          restoreTypes: JetpackRestoreTypes,
          view: JetpackBackupOptionsView,
          service: JetpackBackupService? = nil,
-         coreDataStack: CoreDataStack = ContextManager.shared) {
+         coreDataStack: ContextManager = ContextManager.shared) {
         self.service = service ?? JetpackBackupService(coreDataStack: coreDataStack)
         self.site = site
         self.rewindID = rewindID

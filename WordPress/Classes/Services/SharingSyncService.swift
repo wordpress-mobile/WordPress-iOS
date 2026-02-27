@@ -8,9 +8,9 @@ import WordPressKit
 ///
 @objc public class SharingSyncService: NSObject {
 
-    let coreDataStack: CoreDataStack
+    let coreDataStack: ContextManager
 
-    @objc public init(coreDataStack: CoreDataStack) {
+    @objc public init(coreDataStack: ContextManager) {
         self.coreDataStack = coreDataStack
     }
 

@@ -26,7 +26,7 @@ class ReaderReblogPresenter {
     }
 
     /// Presents the reblog screen(s)
-    func presentReblog(coreDataStack: CoreDataStack,
+    func presentReblog(coreDataStack: ContextManager,
                        readerPost: ReaderPost,
                        origin: UIViewController) {
         let context = coreDataStack.mainContext
@@ -52,7 +52,7 @@ class ReaderReblogPresenter {
 private extension ReaderReblogPresenter {
     /// presents the blog picker before the editor, for users with multiple sites
     func presentBlogPicker(from origin: UIViewController,
-                           coreDataStack: CoreDataStack,
+                           coreDataStack: ContextManager,
                            readerPost: ReaderPost) {
 
         let configuration = BlogListConfiguration(shouldHideSelfHostedSites: true)

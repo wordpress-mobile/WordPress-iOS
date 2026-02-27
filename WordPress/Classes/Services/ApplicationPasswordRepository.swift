@@ -32,15 +32,15 @@ import WordPressCore
 actor ApplicationPasswordRepository {
     static let shared: ApplicationPasswordRepository = .init(coreDataStack: ContextManager.shared, keychain: KeychainUtils())
 
-    private let coreDataStack: CoreDataStackSwift
+    private let coreDataStack: ContextManager
     private let storage: ApplicationPasswordStorage
     private var inflightTasks: [TaggedManagedObjectID<Blog>: Task<ApplicationPassword, Error>] = [:]
 
-    static func forTesting(coreDataStack: CoreDataStackSwift, keychain: KeychainAccessible) -> ApplicationPasswordRepository {
+    static func forTesting(coreDataStack: ContextManager, keychain: KeychainAccessible) -> ApplicationPasswordRepository {
         ApplicationPasswordRepository(coreDataStack: coreDataStack, keychain: keychain)
     }
 
-    private init(coreDataStack: CoreDataStackSwift, keychain: KeychainAccessible) {
+    private init(coreDataStack: ContextManager, keychain: KeychainAccessible) {
         self.coreDataStack = coreDataStack
         self.storage = .init(keychain: keychain)
     }

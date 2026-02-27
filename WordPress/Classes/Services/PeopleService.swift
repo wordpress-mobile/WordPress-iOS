@@ -15,7 +15,7 @@ struct PeopleService {
 
     // MARK: - Private Properties
     ///
-    private let coreDataStack: CoreDataStackSwift
+    private let coreDataStack: ContextManager
     fileprivate let remote: PeopleServiceRemote
 
     /// Designated Initializer.
@@ -24,7 +24,7 @@ struct PeopleService {
     ///     - blog: Target Blog Instance
     ///     - context: CoreData context to be used.
     ///
-    init?(blog: Blog, coreDataStack: CoreDataStackSwift) {
+    init?(blog: Blog, coreDataStack: ContextManager) {
         guard let api = blog.wordPressComRestApi, let dotComID = blog.dotComID as? Int else {
             return nil
         }

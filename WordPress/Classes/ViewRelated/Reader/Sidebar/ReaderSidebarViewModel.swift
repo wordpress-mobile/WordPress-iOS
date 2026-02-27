@@ -9,7 +9,7 @@ final class ReaderSidebarViewModel: ObservableObject {
     }
 
     private let tabItemsStore: ReaderMenuStoreProtocol
-    private let contextManager: CoreDataStackSwift
+    private let contextManager: ContextManager
     private var previousReloadTimestamp: Date?
     private var isRestoringSelection = false
 
@@ -19,7 +19,7 @@ final class ReaderSidebarViewModel: ObservableObject {
     let menu: [ReaderStaticScreen]
 
     init(menuStore: ReaderMenuStoreProtocol = ReaderMenuStore(),
-         contextManager: CoreDataStackSwift = ContextManager.shared,
+         contextManager: ContextManager = ContextManager.shared,
          isReaderAppModeEnabled: Bool = false) {
         self.tabItemsStore = menuStore
         self.contextManager = contextManager

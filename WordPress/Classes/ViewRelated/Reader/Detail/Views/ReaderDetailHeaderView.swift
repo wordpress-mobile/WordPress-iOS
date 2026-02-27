@@ -102,7 +102,7 @@ extension ReaderDetailHeaderHostingView: ReaderTopicCollectionViewCoordinatorDel
 // MARK: - SwiftUI View Model
 
 class ReaderDetailHeaderViewModel: ObservableObject {
-    private let coreDataStack: CoreDataStackSwift
+    private let coreDataStack: ContextManager
     private var postObjectID: TaggedManagedObjectID<ReaderPost>? = nil
 
     weak var headerDelegate: ReaderDetailHeaderViewDelegate?
@@ -121,7 +121,7 @@ class ReaderDetailHeaderViewModel: ObservableObject {
 
     @Published var displaySetting: ReaderDisplaySettings
 
-    init(displaySetting: ReaderDisplaySettings, coreDataStack: CoreDataStackSwift = ContextManager.shared) {
+    init(displaySetting: ReaderDisplaySettings, coreDataStack: ContextManager = ContextManager.shared) {
         self.displaySetting = displaySetting
         self.coreDataStack = coreDataStack
     }

@@ -5,7 +5,7 @@ import WordPressKit
 
     let capabilitiesServiceRemote: JetpackCapabilitiesServiceRemote
 
-    init(coreDataStack: CoreDataStack, capabilitiesServiceRemote: JetpackCapabilitiesServiceRemote?) {
+    init(coreDataStack: ContextManager, capabilitiesServiceRemote: JetpackCapabilitiesServiceRemote?) {
         if let capabilitiesServiceRemote {
             self.capabilitiesServiceRemote = capabilitiesServiceRemote
         } else {

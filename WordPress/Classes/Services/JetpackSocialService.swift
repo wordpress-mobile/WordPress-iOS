@@ -6,7 +6,7 @@ import WordPressKit
 
     // MARK: Properties
 
-    private let coreDataStack: CoreDataStackSwift
+    private let coreDataStack: ContextManager
 
     private lazy var remote: JetpackSocialServiceRemote = {
         let api = coreDataStack.performQuery { context in
@@ -23,7 +23,7 @@ import WordPressKit
         self.coreDataStack = contextManager
     }
 
-    init(coreDataStack: CoreDataStackSwift = ContextManager.shared) {
+    init(coreDataStack: ContextManager = ContextManager.shared) {
         self.coreDataStack = coreDataStack
     }
 

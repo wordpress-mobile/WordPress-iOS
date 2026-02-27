@@ -31,17 +31,17 @@ class MediaImportService: NSObject {
     ///
     typealias OnError = (Error) -> Void
 
-    private let coreDataStack: CoreDataStackSwift
+    private let coreDataStack: ContextManager
 
     /// The initialiser for Objective-C code.
     ///
-    /// Using `ContextManager` as the argument becuase `CoreDataStackSwift` is not accessible from Objective-C code.
+    /// Using `ContextManager` as the argument becuase `ContextManager` is not accessible from Objective-C code.
     @objc
     convenience init(contextManager: ContextManager) {
         self.init(coreDataStack: contextManager)
     }
 
-    init(coreDataStack: CoreDataStackSwift) {
+    init(coreDataStack: ContextManager) {
         self.coreDataStack = coreDataStack
     }
 
@@ -239,7 +239,7 @@ class MediaImportService: NSObject {
     ///     - media: the media object to where media will be imported to.
     ///     - onCompletion: Called if the Media was successfully created and the asset's data imported to the
     ///         `absoluteLocalURL`. This closure is called on the main thread. The closure's `media` argument is also
-    ///         bound to the main context (`CoreDataStack.mainContext`).
+    ///         bound to the main context (`ContextManager.mainContext`).
     ///     - onError: Called if an error was encountered during creation, error convertible to `NSError` with a
     ///         localized description. This closure is called on the main thread.
     ///

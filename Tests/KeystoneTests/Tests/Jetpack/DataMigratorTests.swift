@@ -1,11 +1,11 @@
 import XCTest
 @testable import WordPress
+@testable import WordPressData
 
 class DataMigratorTests: XCTestCase {
 
-    private var context: NSManagedObjectContext!
     private var migrator: DataMigrator!
-    private var coreDataStack: CoreDataStackMock!
+    private var coreDataStack: ContextManager!
     private var keychainUtils: KeychainUtilsMock!
     private var sharedUserDefaults: InMemoryUserDefaults!
     private var localUserDefaults: InMemoryUserDefaults!
@@ -14,8 +14,7 @@ class DataMigratorTests: XCTestCase {
     override func setUp() {
         super.setUp()
 
-        context = try! createContext()
-        coreDataStack = CoreDataStackMock(mainContext: context)
+        coreDataStack = ContextManager.forTesting()
         keychainUtils = KeychainUtilsMock()
         sharedUserDefaults = InMemoryUserDefaults()
         localUserDefaults = InMemoryUserDefaults()
@@ -141,12 +140,12 @@ class DataMigratorTests: XCTestCase {
 
         // Set the active database to the current database model
         let currentDatabaseFile = temporaryDatabaseFileURL()
-        context = try! createFileContext(for: currentModel, at: currentDatabaseFile)
-        coreDataStack = CoreDataStackMock(mainContext: context)
+        seedDatabase(model: currentModel, at: currentDatabaseFile)
+        coreDataStack = ContextManager(modelName: ContextManagerModelNameCurrent, store: currentDatabaseFile)
 
         // Create a previous database model at the backup location
         let backupLocation = temporaryDatabaseFileURL()
-        _ = try! createFileContext(for: previousModel, at: backupLocation)
+        seedDatabase(model: previousModel, at: backupLocation)
 
         migrator = DataMigrator(
             coreDataStack: coreDataStack,
@@ -175,7 +174,6 @@ class DataMigratorTests: XCTestCase {
         // Prevents a warning about deleting an open file descriptor
         migrator = nil
         coreDataStack = nil
-        context = nil
     }
 
     func test_importData_databaseDowngradeFromNewerModel_shouldSucceed() {
@@ -191,12 +189,12 @@ class DataMigratorTests: XCTestCase {
 
         // Set the active database to the previous database model
         let currentDatabaseFile = temporaryDatabaseFileURL()
-        context = try! createFileContext(for: previousModel, at: currentDatabaseFile)
-        coreDataStack = CoreDataStackMock(mainContext: context)
+        seedDatabase(model: previousModel, at: currentDatabaseFile)
+        coreDataStack = ContextManager(modelName: ContextManagerModelNameCurrent, store: currentDatabaseFile)
 
         // Create the current database model at the backup location
         let backupLocation = temporaryDatabaseFileURL()
-        _ = try! createFileContext(for: currentModel, at: backupLocation)
+        seedDatabase(model: currentModel, at: backupLocation)
 
         migrator = DataMigrator(
             coreDataStack: coreDataStack,
@@ -225,29 +223,7 @@ class DataMigratorTests: XCTestCase {
         // Prevents a warning about deleting an open file descriptor
         migrator = nil
         coreDataStack = nil
-        context = nil
     }
-}
-
-// MARK: - CoreDataStackMock
-
-private final class CoreDataStackMock: CoreDataStack {
-    var mainContext: NSManagedObjectContext
-
-    init(mainContext: NSManagedObjectContext) {
-        self.mainContext = mainContext
-    }
-
-    func newDerivedContext() -> NSManagedObjectContext {
-        return mainContext
-    }
-
-    func saveContextAndWait(_ context: NSManagedObjectContext) {}
-    func save(_ context: NSManagedObjectContext) {}
-    func save(_ context: NSManagedObjectContext, completion completionBlock: (() -> Void)?, on queue: DispatchQueue) {}
-
-    func performAndSave(_ aBlock: @escaping (NSManagedObjectContext) -> Void) {}
-    func performAndSave(_ aBlock: @escaping (NSManagedObjectContext) -> Void, completion: (() -> Void)?, on queue: DispatchQueue) {}
 }
 
 // MARK: - Helpers
@@ -259,19 +235,11 @@ private extension DataMigratorTests {
         static let defaultsWrapperKey = "defaults_staging_dictionary"
     }
 
-    func createContext(for model: NSManagedObjectModel = NSManagedObjectModel.mergedModel(from: [Bundle.wordPressData])!,
-                       type: String = NSInMemoryStoreType,
-                       at location: URL? = nil) throws -> NSManagedObjectContext {
-        let persistentStoreCoordinator = NSPersistentStoreCoordinator(managedObjectModel: model)
-        try persistentStoreCoordinator.addPersistentStore(ofType: type, configurationName: nil, at: location, options: nil)
-        let managedObjectContext = NSManagedObjectContext(concurrencyType: .mainQueueConcurrencyType)
-        managedObjectContext.persistentStoreCoordinator = persistentStoreCoordinator
-
-        return managedObjectContext
-    }
-
-    func createFileContext(for model: NSManagedObjectModel, at location: URL) throws -> NSManagedObjectContext {
-        return try createContext(for: model, type: NSSQLiteStoreType, at: location)
+    /// Seeds a SQLite database file at the given location using the specified model.
+    func seedDatabase(model: NSManagedObjectModel, at location: URL) {
+        let coordinator = NSPersistentStoreCoordinator(managedObjectModel: model)
+        let store = try! coordinator.addPersistentStore(ofType: NSSQLiteStoreType, configurationName: nil, at: location, options: nil)
+        try! coordinator.remove(store)
     }
 
     func getExportDataMigratorError(_ migrator: DataMigrator) -> DataMigrationError? {

@@ -5,7 +5,7 @@ import XCTest
 class MockReblogPresenter: ReaderReblogPresenter {
     var presentReblogExpectation: XCTestExpectation?
 
-    override func presentReblog(coreDataStack: CoreDataStack, readerPost: ReaderPost, origin: UIViewController) {
+    override func presentReblog(coreDataStack: ContextManager, readerPost: ReaderPost, origin: UIViewController) {
         presentReblogExpectation?.fulfill()
     }
 }

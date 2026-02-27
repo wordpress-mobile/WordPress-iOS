@@ -95,11 +95,11 @@ extension PluginWpOrgDirectorySlug: @retroactive ExpressibleByStringLiteral {
 private final class AutoUpdateAuthenticationProvider: @unchecked Sendable, WpDynamicAuthenticationProvider {
     private let lock = NSLock()
     private let site: WordPressSite
-    private let coreDataStack: CoreDataStack
+    private let coreDataStack: ContextManager
     private var authentication: WpAuthentication
     private var cancellable: AnyCancellable?
 
-    init(site: WordPressSite, coreDataStack: CoreDataStack) {
+    init(site: WordPressSite, coreDataStack: ContextManager) {
         self.site = site
         self.coreDataStack = coreDataStack
         self.authentication = switch site {
@@ -157,9 +157,9 @@ private final class AutoUpdateAuthenticationProvider: @unchecked Sendable, WpDyn
 
 private class AppNotifier: @unchecked Sendable, WpAppNotifier {
     let site: WordPressSite
-    let coreDataStack: CoreDataStack
+    let coreDataStack: ContextManager
 
-    init(site: WordPressSite, coreDataStack: CoreDataStack) {
+    init(site: WordPressSite, coreDataStack: ContextManager) {
         self.site = site
         self.coreDataStack = coreDataStack
     }

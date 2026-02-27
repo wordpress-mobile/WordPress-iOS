@@ -192,7 +192,7 @@ extension ContextManager.ContextManagerError: LocalizedError, CustomDebugStringC
     }
 }
 
-public extension CoreDataStack {
+public extension ContextManager {
     /// Perform a query using the `mainContext` and return the result.
     ///
     /// - Warning: Do not return `NSManagedObject` instances from the closure.

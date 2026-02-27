@@ -15,7 +15,7 @@ class PrepublishingSocialAccountsViewController: UITableViewController {
 
     // MARK: Properties
 
-    private let coreDataStack: CoreDataStackSwift
+    private let coreDataStack: ContextManager
 
     private let service: BlogService
 
@@ -72,7 +72,7 @@ class PrepublishingSocialAccountsViewController: UITableViewController {
     init(blogID: Int,
          model: PostSocialSharingSettings,
          delegate: PrepublishingSocialAccountsDelegate?,
-         coreDataStack: CoreDataStackSwift = ContextManager.shared,
+         coreDataStack: ContextManager = ContextManager.shared,
          blogService: BlogService? = nil) {
         self.blogID = blogID
         self.connections = model.services.flatMap { service in

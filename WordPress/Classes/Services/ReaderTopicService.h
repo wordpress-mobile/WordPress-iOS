@@ -9,13 +9,13 @@ extern NSString * const ReaderTopicFreshlyPressedPathCommponent;
 @class ReaderTagTopic;
 @class ReaderSiteTopic;
 @class ReaderSearchTopic;
-@protocol CoreDataStack;
+@class ContextManager;
 
 @interface ReaderTopicService : NSObject
 
-@property (nonatomic, strong, readonly) id<CoreDataStack> coreDataStack;
+@property (nonatomic, strong, readonly) ContextManager * coreDataStack;
 
-- (instancetype)initWithCoreDataStack:(id<CoreDataStack>)coreDataStack NS_DESIGNATED_INITIALIZER;
+- (instancetype)initWithCoreDataStack:(ContextManager *)coreDataStack NS_DESIGNATED_INITIALIZER;
 
 - (instancetype)init NS_UNAVAILABLE;
 

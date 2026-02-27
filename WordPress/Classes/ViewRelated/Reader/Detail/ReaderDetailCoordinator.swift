@@ -62,7 +62,7 @@ class ReaderDetailCoordinator {
     }()
 
     /// Core Data stack manager
-    private let coreDataStack: CoreDataStack
+    private let coreDataStack: ContextManager
 
     /// Reader Post Service
     private let readerPostService: ReaderPostService
@@ -115,7 +115,7 @@ class ReaderDetailCoordinator {
     /// Initialize the Reader Detail Coordinator
     ///
     /// - Parameter service: a Reader Post Service
-    init(coreDataStack: CoreDataStack = ContextManager.shared,
+    init(coreDataStack: ContextManager = ContextManager.shared,
          readerPostService: ReaderPostService = ReaderPostService(coreDataStack: ContextManager.shared),
          topicService: ReaderTopicService = ReaderTopicService(coreDataStack: ContextManager.shared),
          postService: PostService = PostService(managedObjectContext: ContextManager.shared.mainContext),

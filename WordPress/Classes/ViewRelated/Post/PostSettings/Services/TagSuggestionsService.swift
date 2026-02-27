@@ -5,9 +5,9 @@ import WordPressIntelligence
 
 @MainActor
 final class TagSuggestionsService {
-    let coreData: CoreDataStack
+    let coreData: ContextManager
 
-    init(coreData: CoreDataStack = ContextManager.shared) {
+    init(coreData: ContextManager = ContextManager.shared) {
         self.coreData = coreData
     }
 

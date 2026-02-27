@@ -7,16 +7,16 @@
 @class ReaderPost;
 @class ReaderAbstractTopic;
 @class WordPressComRestApi;
-@protocol CoreDataStack;
+@class ContextManager;
 
 extern NSString * const ReaderPostServiceErrorDomain;
 extern NSString * const ReaderPostServiceToggleSiteFollowingState;
 
 @interface ReaderPostService : NSObject
 
-@property (nonatomic, strong, readonly) id<CoreDataStack> coreDataStack;
+@property (nonatomic, strong, readonly) ContextManager * coreDataStack;
 
-- (nonnull instancetype)initWithCoreDataStack:(id<CoreDataStack>)coreDataStack NS_DESIGNATED_INITIALIZER;
+- (nonnull instancetype)initWithCoreDataStack:(ContextManager *)coreDataStack NS_DESIGNATED_INITIALIZER;
 
 - (instancetype)init NS_UNAVAILABLE;
 

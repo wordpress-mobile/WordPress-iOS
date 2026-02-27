@@ -2,9 +2,9 @@ import WordPressData
 
 class MySiteViewModel {
 
-    let coreDataStack: CoreDataStack
+    let coreDataStack: ContextManager
 
-    init(coreDataStack: CoreDataStack = ContextManager.shared) {
+    init(coreDataStack: ContextManager = ContextManager.shared) {
         self.coreDataStack = coreDataStack
     }
 

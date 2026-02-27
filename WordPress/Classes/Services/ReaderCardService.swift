@@ -22,7 +22,7 @@ class ReaderCardService {
     private let sorting: ReaderSortingOption
     private let service: ReaderCardServiceRemote
 
-    private let coreDataStack: CoreDataStack
+    private let coreDataStack: ContextManager
 
     private let followedInterestsService: ReaderFollowedInterestsService
     private let siteInfoService: ReaderSiteInfoService
@@ -36,7 +36,7 @@ class ReaderCardService {
     init(stream: ReaderStream = .discover,
          sorting: ReaderSortingOption = .noSorting,
          service: ReaderCardServiceRemote = ReaderPostServiceRemote.withDefaultApi(),
-         coreDataStack: CoreDataStack = ContextManager.shared,
+         coreDataStack: ContextManager = ContextManager.shared,
          followedInterestsService: ReaderFollowedInterestsService? = nil,
          siteInfoService: ReaderSiteInfoService? = nil) {
         self.stream = stream
@@ -135,7 +135,7 @@ class ReaderCardService {
         ReaderCardService.removeAllCards(on: coreDataStack)
     }
 
-    static func removeAllCards(on stack: CoreDataStack = ContextManager.shared) {
+    static func removeAllCards(on stack: ContextManager = ContextManager.shared) {
         stack.performAndSave { context in
             removeAllCards(in: context)
         }

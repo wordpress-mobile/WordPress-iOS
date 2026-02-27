@@ -7,11 +7,11 @@ import WordPressKit
 struct RoleService {
     let blogID: NSManagedObjectID
 
-    fileprivate let coreDataStack: CoreDataStack
+    fileprivate let coreDataStack: ContextManager
     fileprivate let remote: PeopleServiceRemote
     fileprivate let siteID: Int
 
-    init?(blog: Blog, coreDataStack: CoreDataStack) {
+    init?(blog: Blog, coreDataStack: ContextManager) {
         guard let api = blog.wordPressComRestApi, let dotComID = blog.dotComID as? Int else {
             return nil
         }

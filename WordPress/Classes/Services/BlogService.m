@@ -20,7 +20,7 @@ NSString *const WPBlogSettingsUpdatedNotification = @"WPBlogSettingsUpdatedNotif
 
 @implementation BlogService
 
-- (instancetype)initWithCoreDataStack:(id<CoreDataStack>)coreDataStack
+- (instancetype)initWithCoreDataStack:(ContextManager *)coreDataStack
 {
     self = [super init];
     if (self) {
@@ -148,7 +148,7 @@ NSString *const WPBlogSettingsUpdatedNotification = @"WPBlogSettingsUpdatedNotif
                                                 dispatch_group_leave(syncGroup);
                                             }];
 
-    SharingService *publicizeService = [[SharingService alloc] initWithContextManager:[ContextManager sharedInstance]];
+    SharingService *publicizeService = [[SharingService alloc] initWithCoreDataStack:[ContextManager sharedInstance]];
     dispatch_group_enter(syncGroup);
     [publicizeService syncPublicizeServicesForBlog:blog success:^{
         dispatch_group_leave(syncGroup);

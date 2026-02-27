@@ -7,9 +7,9 @@ import WordPressKit
 ///
 class WordPressComSyncService {
 
-    private let coreDataStack: CoreDataStackSwift
+    private let coreDataStack: ContextManager
 
-    init(coreDataStack: CoreDataStackSwift = ContextManager.shared) {
+    init(coreDataStack: ContextManager = ContextManager.shared) {
         self.coreDataStack = coreDataStack
     }
 

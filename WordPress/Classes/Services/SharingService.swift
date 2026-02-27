@@ -9,17 +9,10 @@ import WordPressKit
 @objc public class SharingService: NSObject {
     let SharingAPIErrorNotFound = "not_found"
 
-    private let coreDataStack: CoreDataStackSwift
+    private let coreDataStack: ContextManager
 
-    /// The initialiser for Objective-C code.
-    ///
-    /// Using `ContextManager` as the argument becuase `CoreDataStackSwift` is not accessible from Objective-C code.
     @objc
-    public init(contextManager: ContextManager) {
-        self.coreDataStack = contextManager
-    }
-
-    init(coreDataStack: CoreDataStackSwift) {
+    public init(coreDataStack: ContextManager) {
         self.coreDataStack = coreDataStack
     }
 

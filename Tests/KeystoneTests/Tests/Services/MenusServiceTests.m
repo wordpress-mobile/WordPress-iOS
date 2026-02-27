@@ -6,7 +6,7 @@
 @import OCMock;
 
 @interface MenusServiceTests : XCTestCase
-@property (nonatomic, strong) id<CoreDataStack> manager;
+@property (nonatomic, strong) ContextManager * manager;
 @end
 
 @implementation MenusServiceTests

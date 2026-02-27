@@ -49,7 +49,7 @@ class AllDomainsListViewModel {
 
     // MARK: - Init
 
-    init(coreDataStack: CoreDataStackSwift = ContextManager.shared, domains: [DomainsService.AllDomainsListItem] = []) {
+    init(coreDataStack: ContextManager = ContextManager.shared, domains: [DomainsService.AllDomainsListItem] = []) {
         if let account = defaultAccount(with: coreDataStack) {
             self.domainsService = .init(coreDataStack: coreDataStack, wordPressComRestApi: account.wordPressComRestApi)
         }
@@ -59,7 +59,7 @@ class AllDomainsListViewModel {
         }
     }
 
-    private func defaultAccount(with contextManager: CoreDataStackSwift) -> WPAccount? {
+    private func defaultAccount(with contextManager: ContextManager) -> WPAccount? {
         try? WPAccount.lookupDefaultWordPressComAccount(in: contextManager.mainContext)
     }
 

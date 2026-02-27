@@ -26,9 +26,9 @@ struct DomainsService {
     let remote: DomainsServiceRemote
     let productsRemote: ProductServiceRemote
 
-    private let coreDataStack: CoreDataStack
+    private let coreDataStack: ContextManager
 
-    init(coreDataStack: CoreDataStack, remote: DomainsServiceRemote) {
+    init(coreDataStack: ContextManager, remote: DomainsServiceRemote) {
         self.coreDataStack = coreDataStack
         self.remote = remote
         self.productsRemote = ProductServiceRemote(restAPI: remote.wordPressComRestApi)
@@ -226,7 +226,7 @@ struct DomainsService {
 }
 
 extension DomainsService {
-    init?(coreDataStack: CoreDataStack, wordPressComRestApi: WordPressComRestApi?) {
+    init?(coreDataStack: ContextManager, wordPressComRestApi: WordPressComRestApi?) {
         guard let wordPressComRestApi else { return nil }
         self.init(coreDataStack: coreDataStack, remote: DomainsServiceRemote(wordPressComRestApi: wordPressComRestApi))
     }

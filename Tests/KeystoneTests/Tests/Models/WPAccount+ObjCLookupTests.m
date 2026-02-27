@@ -4,7 +4,7 @@
 
 @interface WPAccount_ObjCLookupTests : XCTestCase
 
-@property(strong, nonatomic) id<CoreDataStack> contextManager;
+@property(strong, nonatomic) ContextManager * contextManager;
 
 @end
 

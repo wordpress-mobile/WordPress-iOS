@@ -2,7 +2,7 @@
 #import "WordPressTest-Swift.h"
 
 @interface Blog_ObjcTests : XCTestCase
-@property (strong, nonatomic) id<CoreDataStack> contextManager;
+@property (strong, nonatomic) ContextManager * contextManager;
 @end
 
 @implementation Blog_ObjcTests

@@ -4,9 +4,9 @@ import WordPressKit
 
 open class PlanService: NSObject {
 
-    private let coreDataStack: CoreDataStack
+    private let coreDataStack: ContextManager
 
-    @objc public init(coreDataStack: CoreDataStack) {
+    @objc public init(coreDataStack: ContextManager) {
         self.coreDataStack = coreDataStack
     }
 

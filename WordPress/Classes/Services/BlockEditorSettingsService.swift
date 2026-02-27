@@ -17,13 +17,13 @@ class BlockEditorSettingsService {
 
     let blog: Blog
     let remote: BlockEditorSettingsServiceRemote
-    let coreDataStack: CoreDataStackSwift
+    let coreDataStack: ContextManager
 
     var cachedSettings: BlockEditorSettings? {
         return blog.blockEditorSettings
     }
 
-    convenience init?(blog: Blog, coreDataStack: CoreDataStackSwift) {
+    convenience init?(blog: Blog, coreDataStack: ContextManager) {
         guard let remoteAPI = WordPressOrgRestApi(blog: blog) else {
             // This is should only happen if there is a problem with the blog itsself.
             return nil
@@ -32,7 +32,7 @@ class BlockEditorSettingsService {
         self.init(blog: blog, remoteAPI: remoteAPI, coreDataStack: coreDataStack)
     }
 
-    init(blog: Blog, remoteAPI: WordPressOrgRestApi, coreDataStack: CoreDataStackSwift) {
+    init(blog: Blog, remoteAPI: WordPressOrgRestApi, coreDataStack: ContextManager) {
         assert(blog.objectID.persistentStore != nil, "The blog instance should be saved first")
         self.blog = blog
         self.coreDataStack = coreDataStack

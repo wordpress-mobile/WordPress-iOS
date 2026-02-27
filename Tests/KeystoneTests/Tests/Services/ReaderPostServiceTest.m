@@ -33,7 +33,7 @@
 }
 
 - (void)testDeletePostsWithoutATopic {
-    id<CoreDataStack> coreDataStack = [self coreDataStackForTesting];
+    ContextManager * coreDataStack = [self coreDataStackForTesting];
 
     ReaderPostService *service = [[ReaderPostService alloc] initWithCoreDataStack:coreDataStack];
     [coreDataStack performAndSaveUsingBlock:^(NSManagedObjectContext *context) {

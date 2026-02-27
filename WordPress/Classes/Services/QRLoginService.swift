@@ -5,7 +5,7 @@ import WordPressKit
 class QRLoginService {
     private let service: QRLoginServiceRemote
 
-    init(coreDataStack: CoreDataStack, remoteService: QRLoginServiceRemote? = nil) {
+    init(coreDataStack: ContextManager, remoteService: QRLoginServiceRemote? = nil) {
         self.service = remoteService ??
             coreDataStack.performQuery({ QRLoginServiceRemote(wordPressComRestApi: WordPressComRestApi.defaultApi(in: $0, localeKey: WordPressComRestApi.LocaleKeyV2)) })
     }

@@ -749,7 +749,7 @@ extension NotificationsViewController {
         // here, just for the sake of breaking the recursive calls.
         //
         // The ideal solution would be not updating and saving `Notification.read` property in the main context.
-        // Use `CoreDataStack.performAndSave` to do it in a background context instead. However, based on the comments on
+        // Use `ContextManager.performAndSave` to do it in a background context instead. However, based on the comments on
         // `markAsRead` function call below, it appears we intentionally save the main context to maintain some undocumented
         // but apperently important "side effects". We may need more careful testing around moving the saving operation from
         // the main context to a background context.

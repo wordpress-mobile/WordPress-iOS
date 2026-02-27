@@ -87,12 +87,12 @@ class MockFollowedInterestsService: ReaderFollowedInterestsService {
 
     private let failureError = NSError(domain: "org.wordpress.reader-tests", code: 1, userInfo: nil)
 
-    private var coreDataStack: CoreDataStack
+    private var coreDataStack: ContextManager
     private var context: NSManagedObjectContext {
         coreDataStack.mainContext
     }
 
-    init(populateItems: Bool, coreDataStack: CoreDataStack) {
+    init(populateItems: Bool, coreDataStack: ContextManager) {
         self.coreDataStack = coreDataStack
         self.populateItems = populateItems
     }

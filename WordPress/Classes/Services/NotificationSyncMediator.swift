@@ -24,7 +24,7 @@ let NotificationSyncMediatorDidUpdateNotifications = "NotificationSyncMediatorDi
 final class NotificationSyncMediator: NotificationSyncMediatorProtocol {
     /// Returns the Main Managed Context
     ///
-    private let contextManager: CoreDataStackSwift
+    private let contextManager: ContextManager
 
     /// API object used to make network requests
     /// Used by remote services
@@ -83,7 +83,7 @@ final class NotificationSyncMediator: NotificationSyncMediatorProtocol {
     ///     - manager: ContextManager Instance
     ///     - wordPressComRestApi: The WordPressComRestApi that should be used.
     ///
-    init?(manager: CoreDataStackSwift, dotcomAPI: WordPressComRestApi) {
+    init?(manager: ContextManager, dotcomAPI: WordPressComRestApi) {
         guard dotcomAPI.hasCredentials() else {
             return nil
         }

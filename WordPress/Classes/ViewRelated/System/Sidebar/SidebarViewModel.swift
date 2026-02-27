@@ -28,11 +28,11 @@ final class SidebarViewModel: ObservableObject {
 
     var navigate: (SidebarNavigationStep) -> Void = { _ in }
 
-    private let contextManager: CoreDataStackSwift
+    private let contextManager: ContextManager
     private var previousReloadTimestamp: Date?
     private var cancellables: [AnyCancellable] = []
 
-    init(contextManager: CoreDataStackSwift = ContextManager.shared) {
+    init(contextManager: ContextManager = ContextManager.shared) {
         self.contextManager = contextManager
 
         account = try? WPAccount.lookupDefaultWordPressComAccount(in: contextManager.mainContext)

@@ -6,7 +6,7 @@ import WordPressShared
 final class BooleanUserDefaultsDebugViewModel: ObservableObject {
 
     private let persistentRepository: UserPersistentRepository
-    private let coreDataStack: CoreDataStackSwift
+    private let coreDataStack: ContextManager
     private var allUserDefaultsSections = Sections()
     private var cancellables = Set<AnyCancellable>()
 
@@ -24,7 +24,7 @@ final class BooleanUserDefaultsDebugViewModel: ObservableObject {
 
     // MARK: - Init
 
-    init(coreDataStack: CoreDataStackSwift = ContextManager.shared,
+    init(coreDataStack: ContextManager = ContextManager.shared,
          persistentRepository: UserPersistentRepository = UserPersistentStoreFactory.instance()) {
         self.coreDataStack = coreDataStack
         self.persistentRepository = persistentRepository

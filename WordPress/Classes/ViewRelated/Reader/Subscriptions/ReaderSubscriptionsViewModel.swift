@@ -4,7 +4,7 @@ import WordPressData
 
 @MainActor
 final class ReaderSubscriptionsViewModel: ObservableObject {
-    private let store: CoreDataStackSwift
+    private let store: ContextManager
 
     @Published private(set) var error: Error?
     @Published private(set) var isRefreshing = false
@@ -13,7 +13,7 @@ final class ReaderSubscriptionsViewModel: ObservableObject {
         didSet { isRefreshing = refreshTask != nil }
     }
 
-    init(store: CoreDataStackSwift = ContextManager.shared) {
+    init(store: ContextManager = ContextManager.shared) {
         self.store = store
     }
 

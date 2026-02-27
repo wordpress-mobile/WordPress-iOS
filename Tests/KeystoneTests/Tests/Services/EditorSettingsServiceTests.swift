@@ -6,7 +6,7 @@ import XCTest
 private class TestableEditorSettingsService: EditorSettingsService {
     let mockApi: WordPressComRestApi
 
-    init(coreDataStack: CoreDataStackSwift, wpcomApi: WordPressComRestApi) {
+    init(coreDataStack: ContextManager, wpcomApi: WordPressComRestApi) {
         mockApi = wpcomApi
         super.init(coreDataStack: coreDataStack)
     }

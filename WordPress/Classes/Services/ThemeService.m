@@ -12,7 +12,7 @@ const NSInteger ThemeOrderTrailing = 9999;
 
 @implementation ThemeService
 
-- (instancetype)initWithCoreDataStack:(id<CoreDataStack>)coreDataStack
+- (instancetype)initWithCoreDataStack:(ContextManager *)coreDataStack
 {
     self = [super init];
     if (self) {

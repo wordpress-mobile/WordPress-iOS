@@ -9,13 +9,13 @@ extern NSString *const WPBlogSettingsUpdatedNotification;
 @class Blog;
 @class WPAccount;
 @class SiteInfo;
-@protocol CoreDataStack;
+@class ContextManager;
 
 @interface BlogService : NSObject
 
-@property (nonatomic, strong, readonly) id<CoreDataStack> coreDataStack;
+@property (nonatomic, strong, readonly) ContextManager * coreDataStack;
 
-- (nonnull instancetype)initWithCoreDataStack:(id<CoreDataStack>)coreDataStack NS_DESIGNATED_INITIALIZER;
+- (nonnull instancetype)initWithCoreDataStack:(ContextManager *)coreDataStack NS_DESIGNATED_INITIALIZER;
 
 - (instancetype)init NS_UNAVAILABLE;
 

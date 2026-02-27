@@ -4,7 +4,7 @@ import WordPressKit
 
 class JetpackBackupService {
 
-    private let coreDataStack: CoreDataStack
+    private let coreDataStack: ContextManager
 
     private lazy var service: JetpackBackupServiceRemote = {
         var api: WordPressComRestApi!
@@ -15,7 +15,7 @@ class JetpackBackupService {
         return JetpackBackupServiceRemote(wordPressComRestApi: api)
     }()
 
-    init(coreDataStack: CoreDataStack) {
+    init(coreDataStack: ContextManager) {
         self.coreDataStack = coreDataStack
     }
 

@@ -11,7 +11,7 @@ final class LikeCommentActionTests: CoreDataTestCase {
             return service
         }
 
-        init(on: Bool, coreDataStack: CoreDataStackSwift) {
+        init(on: Bool, coreDataStack: ContextManager) {
             service = MockNotificationActionsService(coreDataStack: coreDataStack)
             super.init(on: on)
         }

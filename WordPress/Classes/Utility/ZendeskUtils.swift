@@ -93,11 +93,11 @@ class ZendeskUtils: NSObject, ZendeskUtilsProtocol {
         return Locale.preferredLanguages[0]
     }
 
-    private let contextManager: CoreDataStack
+    private let contextManager: ContextManager
 
     // MARK: - Public Methods
 
-    init(contextManager: CoreDataStack) {
+    init(contextManager: ContextManager) {
         self.contextManager = contextManager
     }
 

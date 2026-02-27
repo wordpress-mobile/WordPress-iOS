@@ -6,14 +6,14 @@ class FollowCommentsService: NSObject {
 
     let post: ReaderPost
     let remote: ReaderPostServiceRemote
-    private let coreDataStack: CoreDataStack
+    private let coreDataStack: ContextManager
 
     fileprivate let postID: Int
     fileprivate let siteID: Int
 
     required init?(
         post: ReaderPost,
-        coreDataStack: CoreDataStack = ContextManager.shared,
+        coreDataStack: ContextManager = ContextManager.shared,
         remote: ReaderPostServiceRemote = ReaderPostServiceRemote.withDefaultApi()
     ) {
         guard let postID = post.postID as? Int,

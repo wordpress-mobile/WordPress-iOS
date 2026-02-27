@@ -15,7 +15,7 @@ class NotificationSettingsService {
     ///
     /// - Parameter managedObjectContext: A Reference to the MOC that should be used to interact with the Core Data Stack.
     ///
-    public convenience init(coreDataStack: CoreDataStack) {
+    public convenience init(coreDataStack: ContextManager) {
         let remoteApi = coreDataStack.performQuery { context -> WordPressComRestApi? in
             guard let defaultAccount = try? WPAccount.lookupDefaultWordPressComAccount(in: context),
                   defaultAccount.authToken != nil,
@@ -34,7 +34,7 @@ class NotificationSettingsService {
     ///     - managedObjectContext: A Reference to the MOC that should be used to interact with the Core Data Stack.
     ///     - wordPressComRestApi: The WordPressComRestApi that should be used.
     ///
-    public init(coreDataStack: CoreDataStack, wordPressComRestApi: WordPressComRestApi?) {
+    public init(coreDataStack: ContextManager, wordPressComRestApi: WordPressComRestApi?) {
         self.coreDataStack = coreDataStack
         self.remoteApi = wordPressComRestApi
     }
@@ -302,7 +302,7 @@ class NotificationSettingsService {
 
     // MARK: - Private Properties
     fileprivate var remoteApi: WordPressComRestApi?
-    private let coreDataStack: CoreDataStack
+    private let coreDataStack: ContextManager
 
     // MARK: - Private Computed Properties
     fileprivate var notificationsServiceRemote: NotificationSettingsServiceRemote? {

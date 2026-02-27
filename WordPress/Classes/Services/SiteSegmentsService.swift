@@ -18,7 +18,7 @@ final class SiteCreationSegmentsService: SiteSegmentsService {
     /// A facade for WPCOM services.
     private let remoteService: WordPressComServiceRemote
 
-    init(coreDataStack: CoreDataStack) {
+    init(coreDataStack: ContextManager) {
         let api = coreDataStack.performQuery({ context in
             try? WPAccount.lookupDefaultWordPressComAccount(in: context)?.wordPressComRestV2Api
         }) ?? WordPressComRestApi.anonymousApi(userAgent: WPUserAgent.wordPress(), localeKey: WordPressComRestApi.LocaleKeyV2)

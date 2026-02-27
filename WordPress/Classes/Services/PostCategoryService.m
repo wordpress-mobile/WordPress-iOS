@@ -7,7 +7,7 @@ NS_ASSUME_NONNULL_BEGIN
 
 @implementation PostCategoryService
 
-- (instancetype)initWithCoreDataStack:(id<CoreDataStack>)coreDataStack
+- (instancetype)initWithCoreDataStack:(ContextManager *)coreDataStack
 {
     if ((self = [super init])) {
         _coreDataStack = coreDataStack;

@@ -13,9 +13,9 @@ extension NSNotification.Name {
 ///
 open class SiteManagementService: NSObject {
 
-    private let coreDataStack: CoreDataStack
+    private let coreDataStack: ContextManager
 
-    init(coreDataStack: CoreDataStack) {
+    init(coreDataStack: ContextManager) {
         self.coreDataStack = coreDataStack
     }
 

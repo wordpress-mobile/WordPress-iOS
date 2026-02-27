@@ -12,7 +12,7 @@ static NSString * const ReaderTopicCurrentTopicPathKey = @"ReaderTopicCurrentTop
 
 @implementation ReaderTopicService
 
-- (instancetype)initWithCoreDataStack:(id<CoreDataStack>)coreDataStack
+- (instancetype)initWithCoreDataStack:(ContextManager *)coreDataStack
 {
     self = [super init];
     if (self) {

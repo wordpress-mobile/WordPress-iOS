@@ -9,7 +9,7 @@ import WordPressShared
 let ContextManagerModelNameCurrent = "$CURRENT"
 
 @objc
-public class ContextManager: NSObject, CoreDataStack, CoreDataStackSwift {
+public class ContextManager: NSObject {
     static var inMemoryStoreURL: URL {
         URL(fileURLWithPath: "/dev/null")
     }

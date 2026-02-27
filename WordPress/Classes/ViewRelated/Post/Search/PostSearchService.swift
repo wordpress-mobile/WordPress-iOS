@@ -17,7 +17,7 @@ final class PostSearchService {
     let criteria: PostSearchCriteria
     private let blog: Blog
     private let settings: PostListFilterSettings
-    private let coreDataStack: CoreDataStack
+    private let coreDataStack: ContextManager
     private let repository: PostRepository
 
     private var postIDs: Set<NSManagedObjectID> = []
@@ -27,7 +27,7 @@ final class PostSearchService {
     init(blog: Blog,
          settings: PostListFilterSettings,
          criteria: PostSearchCriteria,
-         coreDataStack: CoreDataStackSwift = ContextManager.shared
+         coreDataStack: ContextManager = ContextManager.shared
     ) {
         self.blog = blog
         self.settings = settings

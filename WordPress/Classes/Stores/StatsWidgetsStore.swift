@@ -7,11 +7,11 @@ import WordPressData
 import WordPressKit
 
 class StatsWidgetsStore {
-    private let coreDataStack: CoreDataStack
+    private let coreDataStack: ContextManager
     private let appGroupName: String
     private let appKeychainAccessGroup: String
 
-    init(coreDataStack: CoreDataStack = ContextManager.shared,
+    init(coreDataStack: ContextManager = ContextManager.shared,
          appGroupName: String = BuildSettings.current.appGroupName,
          appKeychainAccessGroup: String = BuildSettings.current.appKeychainAccessGroup) {
         self.coreDataStack = coreDataStack

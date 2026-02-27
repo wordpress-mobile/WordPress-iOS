@@ -22,7 +22,7 @@ static NSString * const ReaderPostGlobalIDKey = @"globalID";
 
 @implementation ReaderPostService
 
-- (instancetype)initWithCoreDataStack:(id<CoreDataStack>)coreDataStack
+- (instancetype)initWithCoreDataStack:(ContextManager *)coreDataStack
 {
     self = [super init];
     if (self) {

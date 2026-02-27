@@ -1,6 +1,6 @@
 #import <Foundation/Foundation.h>
 
-@protocol CoreDataStack;
+@class ContextManager;
 
 NS_ASSUME_NONNULL_BEGIN
 
@@ -13,9 +13,9 @@ extern NSString * const ReaderSiteServiceErrorDomain;
 
 @interface ReaderSiteService : NSObject
 
-@property (nonatomic, strong, readonly) id<CoreDataStack> coreDataStack;
+@property (nonatomic, strong, readonly) ContextManager * coreDataStack;
 
-- (instancetype)initWithCoreDataStack:(id<CoreDataStack>)coreDataStack NS_DESIGNATED_INITIALIZER;
+- (instancetype)initWithCoreDataStack:(ContextManager *)coreDataStack NS_DESIGNATED_INITIALIZER;
 
 - (instancetype)init NS_UNAVAILABLE;
 

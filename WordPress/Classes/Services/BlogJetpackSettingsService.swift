@@ -4,9 +4,9 @@ import WordPressKit
 
 struct BlogJetpackSettingsService {
 
-    private let coreDataStack: CoreDataStack
+    private let coreDataStack: ContextManager
 
-    init(coreDataStack: CoreDataStack) {
+    init(coreDataStack: ContextManager) {
         self.coreDataStack = coreDataStack
     }
 

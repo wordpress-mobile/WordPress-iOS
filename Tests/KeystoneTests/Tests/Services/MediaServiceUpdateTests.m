@@ -19,7 +19,7 @@
 
 
 @interface MediaServiceUpdateTests : XCTestCase
-@property (nonatomic, strong) id<CoreDataStack> manager;
+@property (nonatomic, strong) ContextManager * manager;
 @property (nonatomic, strong) Blog *blog;
 @property (nonatomic, strong) MediaServiceForStubbing *service;
 @property (nonatomic, strong) NSDate *mediaCreationDate;

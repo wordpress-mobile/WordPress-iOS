@@ -25,7 +25,7 @@ final class PostSearchViewModel: NSObject, PostSearchServiceDelegate {
 
     private let blog: Blog
     private let settings: PostListFilterSettings
-    private let coreData: CoreDataStack
+    private let coreData: ContextManager
     private let entityName: String
 
     private var searchService: PostSearchService?
@@ -36,7 +36,7 @@ final class PostSearchViewModel: NSObject, PostSearchServiceDelegate {
 
     init(blog: Blog,
         filters: PostListFilterSettings,
-        coreData: CoreDataStack = ContextManager.shared
+        coreData: ContextManager = ContextManager.shared
     ) {
         self.blog = blog
         self.settings = filters

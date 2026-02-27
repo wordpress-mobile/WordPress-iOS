@@ -5,7 +5,7 @@ NS_ASSUME_NONNULL_BEGIN
 
 @class Blog;
 @class PostCategory;
-@protocol CoreDataStack;
+@class ContextManager;
 
 typedef NS_ENUM(NSInteger, PostCategoryServiceErrors) {
     PostCategoryServiceErrorsBlogNotFound
@@ -13,9 +13,9 @@ typedef NS_ENUM(NSInteger, PostCategoryServiceErrors) {
 
 @interface PostCategoryService : NSObject
 
-@property (nonatomic, strong, readonly) id<CoreDataStack> coreDataStack;
+@property (nonatomic, strong, readonly) ContextManager * coreDataStack;
 
-- (instancetype)initWithCoreDataStack:(id<CoreDataStack>)coreDataStack;
+- (instancetype)initWithCoreDataStack:(ContextManager *)coreDataStack;
 
 /** 
  Sync an initial batch of categories for blog via default remote parameters and responses.

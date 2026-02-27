@@ -232,7 +232,7 @@ public enum WordPressSite: Hashable {
         }
     }
 
-    public func blogId(in coreDataStack: CoreDataStack) -> TaggedManagedObjectID<Blog>? {
+    public func blogId(in coreDataStack: ContextManager) -> TaggedManagedObjectID<Blog>? {
         switch self {
         case let .dotCom(_, siteId, _):
             return coreDataStack.performQuery { context in

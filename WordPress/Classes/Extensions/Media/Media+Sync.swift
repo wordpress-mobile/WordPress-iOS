@@ -35,7 +35,7 @@ extension Media {
     ///   - onCompletion: block to invoke when status update is finished.
     ///   - onError: block to invoke if any error occurs while the update is being made.
     ///
-    static func refreshMediaStatus(using coreDataStack: CoreDataStackSwift, onCompletion: (() -> Void)? = nil, onError: ((Error) -> Void)? = nil) {
+    static func refreshMediaStatus(using coreDataStack: ContextManager, onCompletion: (() -> Void)? = nil, onError: ((Error) -> Void)? = nil) {
         coreDataStack.performAndSave({ context in
             let fetch = NSFetchRequest<Media>(entityName: Media.classNameWithoutNamespaces())
             let pushingPredicate = NSPredicate(format: "remoteStatusNumber = %@", NSNumber(value: MediaRemoteStatus.pushing.rawValue))

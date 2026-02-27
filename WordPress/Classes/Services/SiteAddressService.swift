@@ -45,7 +45,7 @@ final class DomainsServiceAdapter: SiteAddressService {
     /// The existing service for retrieving DomainSuggestions
     private let domainsService: DomainsService
 
-    @objc convenience init(coreDataStack: CoreDataStack) {
+    @objc convenience init(coreDataStack: ContextManager) {
         let api: WordPressComRestApi = coreDataStack.performQuery({
                 (try? WPAccount.lookupDefaultWordPressComAccount(in: $0))?.wordPressComRestApi
             }) ?? WordPressComRestApi.defaultApi(userAgent: WPUserAgent.wordPress())
@@ -54,7 +54,7 @@ final class DomainsServiceAdapter: SiteAddressService {
     }
 
     // Used to help with testing
-    init(coreDataStack: CoreDataStack, api: WordPressComRestApi) {
+    init(coreDataStack: ContextManager, api: WordPressComRestApi) {
         let remoteService = DomainsServiceRemote(wordPressComRestApi: api)
         self.domainsService = DomainsService(coreDataStack: coreDataStack, remote: remoteService)
     }

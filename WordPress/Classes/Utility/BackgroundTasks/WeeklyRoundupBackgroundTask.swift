@@ -26,7 +26,7 @@ private class WeeklyRoundupDataProvider {
 
     // MARK: - Misc Properties
 
-    private let coreDataStack: CoreDataStackSwift
+    private let coreDataStack: ContextManager
 
     /// Method to report errors that won't interrupt the execution.
     ///
@@ -36,7 +36,7 @@ private class WeeklyRoundupDataProvider {
     ///
     private let debugSettings = WeeklyRoundupDebugScreen.Settings()
 
-    init(coreDataStack: CoreDataStackSwift, onError: @escaping (Error) -> Void) {
+    init(coreDataStack: ContextManager, onError: @escaping (Error) -> Void) {
         self.coreDataStack = coreDataStack
         self.onError = onError
     }

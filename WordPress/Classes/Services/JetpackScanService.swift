@@ -4,9 +4,9 @@ import WordPressKit
 
 class JetpackScanService {
 
-    let coreDataStack: CoreDataStackSwift
+    let coreDataStack: ContextManager
 
-    init(coreDataStack: CoreDataStackSwift) {
+    init(coreDataStack: ContextManager) {
         self.coreDataStack = coreDataStack
     }
 

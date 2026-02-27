@@ -1,8 +1,8 @@
 import XCTest
 import WordPressData
 
-/// A `XCTestCase` subclass which manages a mock implementation of `CoreDataStack`. Inherit
-/// from this class to use the `CoreDataStack` mock instance in your test case.
+/// A `XCTestCase` subclass which manages a mock implementation of `ContextManager`. Inherit
+/// from this class to use the `ContextManager` mock instance in your test case.
 // FIXME: Currently duplicated from WordPressTests for ease of working. Eventually, should be extracted in a WordPressDataTestsHelper framework to share here and with the consumers.
 class CoreDataTestCase: XCTestCase {
 
@@ -18,7 +18,7 @@ class CoreDataTestCase: XCTestCase {
 
 extension XCTestCase {
 
-    @objc func coreDataStackForTesting() -> CoreDataStack {
+    @objc func coreDataStackForTesting() -> ContextManager {
         ContextManager.forTesting()
     }
 }

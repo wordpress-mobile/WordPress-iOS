@@ -3,7 +3,7 @@ NS_ASSUME_NONNULL_BEGIN
 @class Blog;
 @class Theme;
 @class WPAccount;
-@protocol CoreDataStack;
+@class ContextManager;
 
 typedef void(^ThemeServiceSuccessBlock)(void);
 typedef void(^ThemeServiceThemeRequestSuccessBlock)(Theme * _Nullable theme);
@@ -12,9 +12,9 @@ typedef void(^ThemeServiceFailureBlock)(NSError * _Nullable error);
 
 @interface ThemeService : NSObject
 
-@property (nonatomic, strong, readonly) id<CoreDataStack> coreDataStack;
+@property (nonatomic, strong, readonly) ContextManager * coreDataStack;
 
-- (nonnull instancetype)initWithCoreDataStack:(id<CoreDataStack>)coreDataStack NS_DESIGNATED_INITIALIZER;
+- (nonnull instancetype)initWithCoreDataStack:(ContextManager *)coreDataStack NS_DESIGNATED_INITIALIZER;
 
 - (instancetype)init NS_UNAVAILABLE;
 

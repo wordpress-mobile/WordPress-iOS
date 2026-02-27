@@ -16,7 +16,7 @@ class QRLoginVerifyCoordinator {
          parentCoordinator: QRLoginParentCoordinator,
          connectionChecker: QRLoginConnectionChecker = QRLoginInternetConnectionChecker(),
          service: QRLoginService? = nil,
-         coreDataStack: CoreDataStack = ContextManager.shared) {
+         coreDataStack: ContextManager = ContextManager.shared) {
         self.token = token
         self.view = view
         self.connectionChecker = connectionChecker

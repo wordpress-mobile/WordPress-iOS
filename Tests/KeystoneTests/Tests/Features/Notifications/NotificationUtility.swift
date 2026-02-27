@@ -6,12 +6,12 @@ import WordPressData
 @testable import FormattableContentKit
 
 class NotificationUtility {
-    private let coreDataStack: CoreDataStack
+    private let coreDataStack: ContextManager
     private var context: NSManagedObjectContext {
         coreDataStack.mainContext
     }
 
-    init(coreDataStack: CoreDataStack) {
+    init(coreDataStack: ContextManager) {
         self.coreDataStack = coreDataStack
     }
 

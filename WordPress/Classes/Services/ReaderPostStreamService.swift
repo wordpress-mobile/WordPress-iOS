@@ -3,12 +3,12 @@ import WordPressData
 
 class ReaderPostStreamService {
 
-    private let coreDataStack: CoreDataStack
+    private let coreDataStack: ContextManager
 
     private var nextPageHandle: String?
     private var pageNumber: Int = 0
 
-    init(coreDataStack: CoreDataStack) {
+    init(coreDataStack: ContextManager) {
         self.coreDataStack = coreDataStack
     }
 

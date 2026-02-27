@@ -3,7 +3,7 @@ import WordPressData
 import WordPressKit
 
 struct ReaderSubscriptionHelper {
-    let contextManager: CoreDataStackSwift = ContextManager.shared
+    let contextManager: ContextManager = ContextManager.shared
 
     // MARK: Subscribe
 

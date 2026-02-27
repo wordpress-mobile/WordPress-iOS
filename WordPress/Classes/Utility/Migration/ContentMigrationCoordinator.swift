@@ -21,7 +21,7 @@ class ContentMigrationCoordinator {
 
     // MARK: Dependencies
 
-    private let coreDataStack: CoreDataStack
+    private let coreDataStack: ContextManager
     private let dataMigrator: ContentDataMigrating
     private let notificationCenter: NotificationCenter
     private let userPersistentRepository: UserPersistentRepository
@@ -29,7 +29,7 @@ class ContentMigrationCoordinator {
     private let eligibilityProvider: ContentMigrationEligibilityProvider
     private let tracker: MigrationAnalyticsTracker
 
-    init(coreDataStack: CoreDataStack = ContextManager.shared,
+    init(coreDataStack: ContextManager = ContextManager.shared,
          dataMigrator: ContentDataMigrating = DataMigrator(),
          notificationCenter: NotificationCenter = .default,
          userPersistentRepository: UserPersistentRepository = UserDefaults.standard,

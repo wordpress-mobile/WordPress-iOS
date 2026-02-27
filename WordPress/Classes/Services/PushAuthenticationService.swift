@@ -14,7 +14,7 @@ class PushAuthenticationService {
     /// - Parameter managedObjectContext: A Reference to the MOC that should be used to interact with
     ///                                   the Core Data Persistent Store.
     ///
-    init(coreDataStack: CoreDataStack) {
+    init(coreDataStack: ContextManager) {
         let api = coreDataStack.performQuery(self.apiForRequest(in:))
         self.authenticationServiceRemote = PushAuthenticationServiceRemote(wordPressComRestApi: api)
     }

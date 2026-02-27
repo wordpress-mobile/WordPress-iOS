@@ -53,7 +53,7 @@ import AutomatticTracks
 
     private lazy var readerPostStreamService = ReaderPostStreamService(coreDataStack: coreDataStack)
 
-    private var coreDataStack: CoreDataStack { ContextManager.shared }
+    private var coreDataStack: ContextManager { ContextManager.shared }
     var viewContext: NSManagedObjectContext { coreDataStack.mainContext }
 
     private(set) lazy var footerView = PagingFooterView(state: .loading)

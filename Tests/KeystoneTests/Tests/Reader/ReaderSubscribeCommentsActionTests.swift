@@ -89,7 +89,7 @@ private class MockFollowCommentsService: FollowCommentsService {
         super.init(post: post)
     }
 
-    required init?(post: ReaderPost, coreDataStack: CoreDataStack, remote: ReaderPostServiceRemote) {
+    required init?(post: ReaderPost, coreDataStack: ContextManager, remote: ReaderPostServiceRemote) {
         fatalError("unsupported initialiser")
     }
 

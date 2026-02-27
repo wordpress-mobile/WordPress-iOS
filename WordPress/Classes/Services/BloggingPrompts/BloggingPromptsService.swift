@@ -6,7 +6,7 @@ import WordPressShared
 class BloggingPromptsService {
     let siteID: NSNumber
 
-    private let contextManager: CoreDataStackSwift
+    private let contextManager: ContextManager
     private let remote: BloggingPromptsServiceRemote // TODO: Remove once the settings logic is ported.
     private let api: WordPressComRestApi
     private let calendar: Calendar = .autoupdatingCurrent
@@ -189,14 +189,14 @@ class BloggingPromptsService {
     /// Initializes a service for blogging prompts.
     ///
     /// - Parameters:
-    ///   - contextManager: The CoreDataStack instance.
+    ///   - contextManager: The ContextManager instance.
     ///   - remote: When supplied, the service will use the specified remote service.
     ///     Otherwise, a remote service with the default account's credentials will be used.
     ///   - blog: When supplied, the service will perform blogging prompts requests for this specified blog.
     ///     Otherwise, this falls back to the default account's primary blog.
     ///   - api: When supplied, the WordPressComRestApi instance to use to fetch the prompts.
     ///     Otherwise, an default or anonymous instance will be computed based on whether there is an account available.
-    required init?(contextManager: CoreDataStackSwift = ContextManager.shared,
+    required init?(contextManager: ContextManager = ContextManager.shared,
                    api: WordPressComRestApi? = nil,
                    remote: BloggingPromptsServiceRemote? = nil,
                    blog: Blog? = nil) {
@@ -242,10 +242,10 @@ class BloggingPromptsService {
 /// Convenience factory to generate `BloggingPromptsService` for different blogs.
 ///
 class BloggingPromptsServiceFactory {
-    let contextManager: CoreDataStackSwift
+    let contextManager: ContextManager
     let remote: BloggingPromptsServiceRemote?
 
-    init(contextManager: CoreDataStackSwift = ContextManager.shared, remote: BloggingPromptsServiceRemote? = nil) {
+    init(contextManager: ContextManager = ContextManager.shared, remote: BloggingPromptsServiceRemote? = nil) {
         self.contextManager = contextManager
         self.remote = remote
     }

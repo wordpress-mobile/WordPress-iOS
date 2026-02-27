@@ -14,20 +14,20 @@ extern NSUInteger const WPTopLevelHierarchicalCommentsPerPage;
 @class RemoteComment;
 @class CommentServiceRemoteFactory;
 @class CommentServiceRemoteREST;
-@protocol CoreDataStack;
+@class ContextManager;
 
 @interface CommentService : NSObject
 
-@property (nonatomic, strong, readonly) id<CoreDataStack> coreDataStack;
+@property (nonatomic, strong, readonly) ContextManager * coreDataStack;
 
 /// Initializes the instance with a custom service remote provider.
 ///
-/// @param coreDataStack The `CoreDataStack` this instance will use for interacting with CoreData.
+/// @param coreDataStack The `ContextManager` this instance will use for interacting with CoreData.
 /// @param commentServiceRemoteFactory The factory this instance will use to get service remote instances from.
-- (instancetype)initWithCoreDataStack:(id<CoreDataStack>)coreDataStack
+- (instancetype)initWithCoreDataStack:(ContextManager *)coreDataStack
           commentServiceRemoteFactory:(CommentServiceRemoteFactory *)remoteFactory NS_DESIGNATED_INITIALIZER;
 
-- (nonnull instancetype)initWithCoreDataStack:(id<CoreDataStack>)coreDataStack;
+- (nonnull instancetype)initWithCoreDataStack:(ContextManager *)coreDataStack;
 
 - (instancetype)init NS_UNAVAILABLE;
 

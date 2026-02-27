@@ -38,11 +38,11 @@ final class WPCrashLoggingDataProviderTests: XCTestCase {
     // MARK: - Helpers
 
     private func makeCrashLoggingDataProvider() -> WPCrashLoggingDataProvider {
-        let provider = WPCrashLoggingDataProvider(contextManager: makeCoreDataStack())
+        let provider = WPCrashLoggingDataProvider(contextManager: makeContextManager())
         return provider
     }
 
-    private func makeCoreDataStack() -> ContextManager {
+    private func makeContextManager() -> ContextManager {
         let contextManager = ContextManager.forTesting()
         let account = AccountBuilder(contextManager.mainContext)
             .with(id: Constants.defaultAccountID)
