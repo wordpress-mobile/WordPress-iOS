@@ -32,16 +32,6 @@ extension PostHelper {
         }
     }
 
-    static func mapDictionaryToMetadataItems(_ dictionary: [String: Any]) -> RemotePostMetadataItem? {
-        let id = dictionary["id"]
-        let value = dictionary["value"]
-        return RemotePostMetadataItem(
-            id: (id as? String) ?? (id as? NSNumber)?.stringValue,
-            key: dictionary["key"] as? String,
-            value: value as? String
-        )
-    }
-
     @objc(createOrUpdateCategoryForRemoteCategory:blog:context:)
     public class func createOrUpdateCategory(for remoteCategory: RemotePostCategory, in blog: Blog, in context: NSManagedObjectContext) -> PostCategory? {
         guard let categoryID = remoteCategory.categoryID else {
