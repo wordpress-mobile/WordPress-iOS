@@ -60,12 +60,6 @@ extension Blog {
         isAdmin || isUserCapableOf(.ViewStats)
     }
 
-    /// Returns true if the current user is allowed to use WordAds
-    ///
-    @objc public func isWordAdsAllowed() -> Bool {
-        return isUserCapableOf(.ActivateWordAds)
-    }
-
     /// Returns true if WordAds is actually active on the site
     ///
     @objc public func isWordAdsActive() -> Bool {

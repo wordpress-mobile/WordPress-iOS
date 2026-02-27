@@ -17,10 +17,6 @@ extension Blog {
         getOptionBoolean(name: "can_blaze") && isAdmin
     }
 
-    @objc public var supportsFeaturedImages: Bool {
-        getOptionBoolean(name: "post_thumbnail")
-    }
-
     public var isWPComStagingSite: Bool {
         getOptionBoolean(name: "is_wpcom_staging_site")
     }

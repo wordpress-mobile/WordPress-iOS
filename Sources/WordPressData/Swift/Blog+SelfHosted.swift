@@ -223,17 +223,6 @@ public enum WordPressSite: Hashable {
         }
     }
 
-    public static func throughDotCom(blog: Blog) -> Self? {
-        guard
-            let siteURL = try? blog.getUrl(),
-            let account = blog.account,
-            let siteId = blog.dotComID?.intValue,
-            let authToken = try? account.authToken ?? WPAccount.token(forUsername: account.username)
-        else { return nil }
-
-        return .dotCom(siteURL: siteURL, siteId: siteId, authToken: authToken)
-    }
-
     public func blog(in context: NSManagedObjectContext) throws -> Blog? {
         switch self {
         case let .dotCom(_, siteId, _):
