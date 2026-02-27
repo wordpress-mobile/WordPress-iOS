@@ -42,12 +42,27 @@ WordPress-iOS uses a modular architecture with the main app and separate Swift p
 
 **Always check for the Xcode MCP server first.**
 If it is connected, use it to build and test — no exceptions.
-Only fall back to the `test` Fastlane lane when the Xcode MCP is unavailable:
+
+If the Xcode MCP fails (e.g. build errors from unrelated targets), fall back to the Fastlane `test` lane:
 
 ```bash
 bundle exec fastlane test
 bundle exec fastlane test only_testing:TargetName/Class/method
 ```
+
+If Fastlane also fails, fall back to `xcodebuild` directly:
+
+```bash
+xcodebuild \
+  -workspace WordPress.xcworkspace \
+  -scheme "${SCHEME}" \
+  -destination "platform=iOS Simulator,name=${DEVICE}" \
+  test \
+  | xcbeautify
+```
+
+Some test targets (e.g. `WordPressDataTests`) have their own scheme and are not part of the main `WordPress` scheme's test plan.
+When the `WordPress` scheme build fails due to an unrelated target, try using the target's dedicated scheme instead.
 
 ## Coding Standards
 - Follow Swift API Design Guidelines
