@@ -142,6 +142,28 @@ struct TagSelectionTests {
         #expect(callbackTags[0].id == Int(tags[0].id))
     }
 
+    // MARK: - getTerms
+
+    @Test
+    func getTermsReturnsMatchingTerms() async throws {
+        let mock = MockService(tags: ["Foo", "Bar", "Baz"])
+        let tags = await mock.tags
+        let ids = [tags[0].id, tags[2].id]
+
+        let result = try await mock.getTerms(ids: ids)
+
+        #expect(result.count == 2)
+        #expect(result.contains { $0.name == "Foo" })
+        #expect(result.contains { $0.name == "Baz" })
+    }
+
+    @Test
+    func getTermsWithEmptyIdsReturnsEmpty() async throws {
+        let mock = MockService(tags: ["Foo", "Bar"])
+        let result = try await mock.getTerms(ids: [])
+        #expect(result.isEmpty)
+    }
+
     // MARK: - removeSelectedTag
 
     @Test
@@ -235,5 +257,10 @@ private actor MockService: TaxonomyServiceProtocol {
 
     func deleteTag(_ term: AnyTermWithViewContext) async throws {
         tags.removeAll { $0.id == term.id }
+    }
+
+    func getTerms(ids: [Int64]) async throws -> [AnyTermWithViewContext] {
+        let idSet = Set(ids)
+        return tags.filter { idSet.contains($0.id) }
     }
 }

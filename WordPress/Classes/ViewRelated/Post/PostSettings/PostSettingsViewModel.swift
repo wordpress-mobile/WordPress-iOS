@@ -443,14 +443,19 @@ final class PostSettingsViewModel: NSObject, ObservableObject {
             guard let self else { return }
 
             do {
-                let resolvedTags = try await editorService.resolveTagNames(for: settings.tags)
+                let tagsService = AnyTermService(client: editorService.client, endpoint: .tags)
+                let resolvedTags = try await TermResolutionService(taxonomyService: tagsService)
+                    .resolveNames(for: settings.tags)
                 self.settings.tags = resolvedTags
                 self.refreshDisplayedTags()
                 self.isResolvingTags = false
 
-                let resolvedTerms = try await editorService.resolveCustomTermNames(for: settings.otherTerms)
-                for (slug, terms) in resolvedTerms {
-                    self.settings.otherTerms[slug] = terms
+                for taxonomy in editorService.taxonomies {
+                    guard let slugTerms = self.settings.otherTerms[taxonomy.slug] else { continue }
+                    let termService = AnyTermService(client: editorService.client, endpoint: taxonomy.endpoint)
+                    let resolved = try await TermResolutionService(taxonomyService: termService)
+                        .resolveNames(for: slugTerms)
+                    self.settings.otherTerms[taxonomy.slug] = resolved
                 }
                 self.isResolvingCustomTerms = false
             } catch {

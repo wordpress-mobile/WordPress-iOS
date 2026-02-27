@@ -172,6 +172,33 @@ static NSString * const TaxonomyXMLRPCOffsetParameter = @"offset";
                         } failure:failure];
 }
 
+- (void)getTagWithId:(NSNumber *)tagId
+             success:(nullable void (^)(RemotePostTag * _Nullable tag))success
+             failure:(nullable void (^)(NSError *error))failure
+{
+    NSArray *xmlrpcParameters = [self XMLRPCArgumentsWithExtraDefaults:@[TaxonomyXMLRPCTagIdentifier, tagId]
+                                                              andExtra:nil];
+
+    [self.api callMethod:@"wp.getTerm"
+              parameters:xmlrpcParameters
+                 success:^(id responseObject, NSHTTPURLResponse *httpResponse) {
+                     if (![responseObject isKindOfClass:[NSDictionary class]]) {
+                         [self handleResponseErrorWithMessage:@"Invalid response from wp.getTerm"
+                                                      method:@"wp.getTerm"
+                                                     failure:failure];
+                         return;
+                     }
+                     RemotePostTag *tag = [self remoteTagFromXMLRPCDictionary:responseObject];
+                     if (success) {
+                         success(tag);
+                     }
+                 } failure:^(NSError *error, NSHTTPURLResponse *httpResponse) {
+                     if (failure) {
+                         failure(error);
+                     }
+                 }];
+}
+
 #pragma mark - default methods
 
 - (void)createTaxonomyWithType:(NSString *)typeIdentifier

@@ -84,12 +84,20 @@ class CustomPostEditorService {
 
     // MARK: - Save
 
+    private func makeTermResolutionService(endpoint: TermEndpointType) -> TermResolutionService {
+        TermResolutionService(taxonomyService: AnyTermService(client: client, endpoint: endpoint))
+    }
+
     /// Saves or publishes from post settings. Handles term resolution, optional
     /// publish status override with editor content injection, and create-or-update branching.
     func save(settings: PostSettings, publish: Bool) async throws {
         var settings = settings
-        settings.tags = try await resolveUnknownTagIDs(for: settings.tags)
-        settings.otherTerms = try await resolveUnknownCustomTermIDs(for: settings.otherTerms)
+        settings.tags = try await makeTermResolutionService(endpoint: .tags).resolveIDs(for: settings.tags)
+        for taxonomy in taxonomies {
+            guard let slugTerms = settings.otherTerms[taxonomy.slug] else { continue }
+            settings.otherTerms[taxonomy.slug] = try await makeTermResolutionService(endpoint: taxonomy.endpoint)
+                .resolveIDs(for: slugTerms)
+        }
 
         switch (state, publish) {
         case (.newPost(let existing), false):
@@ -147,8 +155,12 @@ class CustomPostEditorService {
         case .existingPost(let post, let pending):
             var params: PostUpdateParams
             if var pending {
-                pending.tags = try await resolveUnknownTagIDs(for: pending.tags)
-                pending.otherTerms = try await resolveUnknownCustomTermIDs(for: pending.otherTerms)
+                pending.tags = try await makeTermResolutionService(endpoint: .tags).resolveIDs(for: pending.tags)
+                for taxonomy in taxonomies {
+                    guard let slugTerms = pending.otherTerms[taxonomy.slug] else { continue }
+                    pending.otherTerms[taxonomy.slug] = try await makeTermResolutionService(endpoint: taxonomy.endpoint)
+                        .resolveIDs(for: slugTerms)
+                }
                 params = pending.makeUpdateParameters(from: post, taxonomies: taxonomies)
             } else {
                 params = PostUpdateParams(meta: nil)
@@ -197,93 +209,6 @@ class CustomPostEditorService {
         return lastModified != post.modified
     }
 
-    // MARK: - Term Resolution
-
-    /// Resolves empty names for tags with known IDs. Returns updated tag array.
-    func resolveTagNames(for tags: [PostSettings.Term]) async throws -> [PostSettings.Term] {
-        try await resolveTermNames(for: tags, endpoint: .tags)
-    }
-
-    /// Resolves empty names for custom taxonomy terms. Returns updated dictionary.
-    func resolveCustomTermNames(
-        for terms: [String: [PostSettings.Term]]
-    ) async throws -> [String: [PostSettings.Term]] {
-        var result = terms
-        for taxonomy in taxonomies {
-            guard let slugTerms = result[taxonomy.slug] else { continue }
-            result[taxonomy.slug] = try await resolveTermNames(for: slugTerms, endpoint: taxonomy.endpoint)
-        }
-        return result
-    }
-
-    private func resolveTermNames(
-        for terms: [PostSettings.Term],
-        endpoint: TermEndpointType
-    ) async throws -> [PostSettings.Term] {
-        let unresolved = terms.filter { $0.id > 0 && $0.name.isEmpty }
-        guard !unresolved.isEmpty else { return terms }
-
-        let response = try await client.api.terms.listWithEditContext(
-            termEndpointType: endpoint,
-            params: TermListParams(include: unresolved.map { TermId(Int64($0.id)) })
-        )
-
-        var nameByID: [Int: String] = [:]
-        for term in response.data {
-            nameByID[Int(term.id)] = term.name
-        }
-
-        return terms.map { term in
-            if let name = nameByID[term.id], term.name.isEmpty {
-                return PostSettings.Term(id: term.id, name: name)
-            }
-            return term
-        }
-    }
-
-    /// Resolves `id == 0` tags by searching by name. Returns updated tag array.
-    private func resolveUnknownTagIDs(for tags: [PostSettings.Term]) async throws -> [PostSettings.Term] {
-        try await resolveUnknownIDs(in: tags, endpoint: .tags)
-    }
-
-    /// Resolves `id == 0` custom taxonomy terms by searching by name. Returns updated dictionary.
-    private func resolveUnknownCustomTermIDs(
-        for terms: [String: [PostSettings.Term]]
-    ) async throws -> [String: [PostSettings.Term]] {
-        var result = terms
-        for taxonomy in taxonomies {
-            guard let slugTerms = result[taxonomy.slug] else { continue }
-            result[taxonomy.slug] = try await resolveUnknownIDs(in: slugTerms, endpoint: taxonomy.endpoint)
-        }
-        return result
-    }
-
-    private func resolveUnknownIDs(
-        in terms: [PostSettings.Term],
-        endpoint: TermEndpointType
-    ) async throws -> [PostSettings.Term] {
-        var result = terms
-
-        for (index, term) in terms.enumerated() where term.id == 0 {
-            let response = try await client.api.terms.listWithEditContext(
-                termEndpointType: endpoint,
-                params: TermListParams(perPage: 1, search: term.name)
-            )
-            if let match = response.data.first(where: {
-                $0.name.caseInsensitiveCompare(term.name) == .orderedSame
-            }) {
-                result[index] = PostSettings.Term(id: Int(match.id), name: match.name)
-            } else {
-                let created = try await client.api.terms.create(
-                    termEndpointType: endpoint,
-                    params: TermCreateParams(name: term.name)
-                )
-                result[index] = PostSettings.Term(id: Int(created.data.id), name: created.data.name)
-            }
-        }
-
-        return result
-    }
 }
 
 extension CustomPostEditorService {
