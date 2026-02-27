@@ -168,10 +168,10 @@ extension ReaderPostService {
             return
         }
         let shouldContinueRetrying = filteredPosts.isEmpty && retry < maxRetries
-        if shouldContinueRetrying {
+        if shouldContinueRetrying, let sortDate = lastPost.sortDate {
             self.fetchUnblockedPostsWithRetries(
                 topicObjectID: topicObjectID,
-                earlierThan: lastPost.sortDate,
+                earlierThan: sortDate,
                 retryOption: .enabled(retry: retry + 1, maxRetries: maxRetries)
             )
         }

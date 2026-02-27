@@ -48,7 +48,9 @@ extension ReaderPost {
         authorDisplayName = remotePost.authorDisplayName
         authorEmail = remotePost.authorEmail
         authorURL = remotePost.authorURL
-        organizationID = remotePost.organizationID
+        if let organizationID = remotePost.organizationID {
+            self.organizationID = organizationID
+        }
         siteIconURL = remotePost.siteIconURL
         blogName = remotePost.blogName
         blogDescription = remotePost.blogDescription
@@ -84,8 +86,8 @@ extension ReaderPost {
         // The `read/search` endpoint might return the same post on more than one
         // page. If this happens, preserve the original sortRank to avoid content
         // jumping around in the UI.
-        if !(isExisting && topic is ReaderSearchTopic) {
-            sortRank = remotePost.sortRank
+        if !(isExisting && topic is ReaderSearchTopic), let sortRank = remotePost.sortRank {
+            self.sortRank = sortRank
         }
 
         statusString = remotePost.status
@@ -106,7 +108,7 @@ extension ReaderPost {
         updateSourceAttribution(from: remotePost, in: context)
 
         content = RichContentFormatter.removeInlineStyles(
-            RichContentFormatter.removeForbiddenTags(remotePost.content)
+            RichContentFormatter.removeForbiddenTags(remotePost.content ?? "")
         )
 
         self.topic = topic
@@ -118,16 +120,16 @@ extension ReaderPost {
 
 private extension ReaderPost {
     func updateCrossPostMeta(from remotePost: RemoteReaderPost, in context: NSManagedObjectContext) {
-        guard let remoteMeta = remotePost.value(forKey: "crossPostMeta") as? RemoteReaderCrossPostMeta else {
+        guard let remoteMeta = remotePost.crossPostMeta else {
             crossPostMeta = nil
             return
         }
         let meta = crossPostMeta ?? context.insertNewObject(ofType: ReaderCrossPostMeta.self)
-        meta.siteURL = remoteMeta.siteURL
-        meta.postURL = remoteMeta.postURL
-        meta.commentURL = remoteMeta.commentURL
-        meta.siteID = remoteMeta.siteID
-        meta.postID = remoteMeta.postID
+        meta.siteURL = remoteMeta.siteURL ?? ""
+        meta.postURL = remoteMeta.postURL ?? ""
+        meta.commentURL = remoteMeta.commentURL ?? ""
+        meta.siteID = remoteMeta.siteID ?? 0
+        meta.postID = remoteMeta.postID ?? 0
         crossPostMeta = meta
     }
 

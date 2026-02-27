@@ -1,5 +1,6 @@
 #import "RemoteReaderPost.h"
 #import "RemoteSourcePostAttribution.h"
+#import "RemoteReaderCrossPostMeta.h"
 #import "NSString+Helpers.h"
 #import "NSString+XMLExtensions.h"
 #import "WPKitDateUtils.h"
