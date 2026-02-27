@@ -114,20 +114,28 @@ class EditorSettingsServiceTest: CoreDataTestCase {
         let response = bulkResponse(with: .aztec, count: numberOfBlogs)
 
         blogs.forEach {
-            // Pre-set gutenberg to be sure it is overiden with aztec
+            // Pre-set gutenberg to be sure it is overridden with aztec
             $0.mobileEditor = .gutenberg
         }
 
         contextManager.saveContextAndWait(mainContext)
 
+        let editorsUpdated = expectation(description: "Editors updated to Aztec")
+        let observer = NotificationCenter.default.addObserver(
+            forName: .NSManagedObjectContextObjectsDidChange,
+            object: mainContext,
+            queue: nil
+        ) { _ in
+            if blogs.allSatisfy({ $0.editor == .aztec && !$0.isGutenbergEnabled }) {
+                editorsUpdated.fulfill()
+            }
+        }
+
         service.migrateGlobalSettingToRemote(isGutenbergEnabled: false)
         remoteApi.successBlockPassedIn?(response as AnyObject, HTTPURLResponse())
 
-        let editorsUpdated = XCTNSPredicateExpectation(
-            predicate: NSPredicate { _, _ in blogs.allSatisfy { $0.editor == .aztec } },
-            object: nil
-        )
-        wait(for: [editorsUpdated], timeout: 1)
+        wait(for: [editorsUpdated], timeout: 2)
+        NotificationCenter.default.removeObserver(observer)
         blogs.forEach { blog in
             XCTAssertFalse(blog.isGutenbergEnabled)
             XCTAssertEqual(blog.editor, .aztec)
