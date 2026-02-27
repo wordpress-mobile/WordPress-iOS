@@ -27,6 +27,7 @@ DerivedData
 
 # Claude
 .claude/settings.local.json
+.claude/worktrees/
 
 # Windows
 Thumbs.db
