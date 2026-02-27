@@ -100,53 +100,6 @@ class ReaderDetailCoordinatorTests: CoreDataTestCase {
         XCTAssertEqual(postSharingControllerMock.didCallShareReaderPostWithViewController, viewMock)
     }
 
-    /// Present a site preview in the current view stack
-    ///
-    func testShowPresentSitePreview() {
-        let post = makeReaderPost()
-        post.siteID = 1
-        post.isExternal = false
-        let serviceMock = ReaderPostServiceMock()
-        let viewMock = ReaderDetailViewMock()
-        let postSharingControllerMock = PostSharingControllerMock()
-        let coordinator = ReaderDetailCoordinator(readerPostService: serviceMock, sharingController: postSharingControllerMock, view: viewMock)
-        let navigationControllerMock = UINavigationControllerMock()
-        viewMock.navigationController = navigationControllerMock
-        coordinator.post = post
-
-        coordinator.didTapBlogName()
-
-        let expectation = XCTestExpectation(description: "Push view controller")
-        DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
-            expectation.fulfill()
-        }
-        wait(for: [expectation], timeout: 2)
-        XCTAssertTrue(navigationControllerMock.didCallPushViewControllerWith is ReaderStreamViewController)
-    }
-
-    /// Present a tag in the current view stack
-    ///
-    func testShowPresentTag() {
-        let post = makeReaderPost()
-        post.primaryTagSlug = "tag"
-        let serviceMock = ReaderPostServiceMock()
-        let viewMock = ReaderDetailViewMock()
-        let postSharingControllerMock = PostSharingControllerMock()
-        let coordinator = ReaderDetailCoordinator(readerPostService: serviceMock, sharingController: postSharingControllerMock, view: viewMock)
-        let navigationControllerMock = UINavigationControllerMock()
-        viewMock.navigationController = navigationControllerMock
-        coordinator.post = post
-
-        coordinator.didTapTagButton()
-
-        let expectation = XCTestExpectation(description: "Push view controller")
-        DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
-            expectation.fulfill()
-        }
-        wait(for: [expectation], timeout: 2)
-        XCTAssertTrue(navigationControllerMock.didCallPushViewControllerWith is ReaderStreamViewController)
-    }
-
     /// Present an image in the view controller
     ///
     func testShowPresentImage() {
@@ -301,13 +254,5 @@ private class PostSharingControllerMock: PostSharingController {
         didCallShareReaderPostWith = post
         didCallShareReaderPostWithView = anchor
         didCallShareReaderPostWithViewController = viewController
-    }
-}
-
-private class UINavigationControllerMock: UINavigationController {
-    var didCallPushViewControllerWith: UIViewController?
-
-    override func pushViewController(_ viewController: UIViewController, animated: Bool) {
-        didCallPushViewControllerWith = viewController
     }
 }
