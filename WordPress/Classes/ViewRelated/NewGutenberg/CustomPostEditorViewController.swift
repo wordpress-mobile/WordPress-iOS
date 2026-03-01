@@ -76,6 +76,9 @@ class CustomPostEditorViewController: PostGBKEditorViewController {
     }
 
     private func hasUnsavedChanges() async throws -> Bool {
+        if editorService.hasSettingsChanges {
+            return true
+        }
         let content = try await self.editorViewController.getTitleAndContent()
         let originalTitle = post?.title?.raw ?? ""
         let originalContent = post?.content.raw ?? ""
