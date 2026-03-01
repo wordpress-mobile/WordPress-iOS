@@ -199,7 +199,9 @@ public final class PostSettingsFeaturedImageViewModel: ObservableObject {
             if let post {
                 media = coordinator.addMedia(from: exportableAsset, to: post)
             } else {
-                media = coordinator.addMedia(from: exportableAsset, to: blog)
+                // Suppress the default "Media uploaded / Write Post" notice
+                // when uploading from a custom post editing session.
+                media = coordinator.addMedia(from: exportableAsset, to: blog, suppressSuccessNotice: true)
             }
             guard let media else {
                 return wpAssertionFailure("failed to add media")

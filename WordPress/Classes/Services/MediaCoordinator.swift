@@ -142,8 +142,8 @@ class MediaCoordinator: NSObject {
     /// - parameter origin: The location in the app where the upload was initiated (optional).
     ///
     @discardableResult
-    func addMedia(from asset: ExportableAsset, to blog: Blog, analyticsInfo: MediaAnalyticsInfo? = nil) -> Media? {
-        addMedia(from: asset, blog: blog, post: nil, coordinator: mediaLibraryProgressCoordinator, analyticsInfo: analyticsInfo)
+    func addMedia(from asset: ExportableAsset, to blog: Blog, suppressSuccessNotice: Bool = false, analyticsInfo: MediaAnalyticsInfo? = nil) -> Media? {
+        addMedia(from: asset, blog: blog, post: nil, coordinator: mediaLibraryProgressCoordinator, suppressSuccessNotice: suppressSuccessNotice, analyticsInfo: analyticsInfo)
     }
 
     /// Adds the specified media asset to the specified post. The upload process
@@ -163,7 +163,7 @@ class MediaCoordinator: NSObject {
     /// - Warning: This function must be called from the main thread.
     ///
     /// - SeeAlso: `MediaImportService.createMedia(with:blog:post:thumbnailCallback:completion:)`
-    private func addMedia(from asset: ExportableAsset, blog: Blog, post: AbstractPost?, coordinator: MediaProgressCoordinator, analyticsInfo: MediaAnalyticsInfo? = nil) -> Media? {
+    private func addMedia(from asset: ExportableAsset, blog: Blog, post: AbstractPost?, coordinator: MediaProgressCoordinator, suppressSuccessNotice: Bool = false, analyticsInfo: MediaAnalyticsInfo? = nil) -> Media? {
         coordinator.track(numberOfItems: 1)
         let service = MediaImportService(coreDataStack: coreDataStack)
         let totalProgress = Progress.discreteProgress(totalUnitCount: MediaExportProgressUnits.done)
@@ -186,6 +186,10 @@ class MediaCoordinator: NSObject {
 
         totalProgress.addChild(creationProgress, withPendingUnitCount: MediaExportProgressUnits.exportDone)
         coordinator.track(progress: totalProgress, of: media, withIdentifier: media.uploadID)
+
+        if suppressSuccessNotice {
+            totalProgress.setUserInfoObject(true, forKey: .suppressSuccessNotice)
+        }
 
         return media
     }
@@ -744,9 +748,18 @@ extension MediaCoordinator: MediaProgressCoordinatorDelegate {
         if mediaProgressCoordinator.failedMedia.isEmpty || (!allFailedMediaErrorsAreMissingFilesErrors && !allFailedMediaHaveAssociatedPost),
            mediaProgressCoordinator == mediaLibraryProgressCoordinator || mediaProgressCoordinator.hasFailedMedia {
 
-            let model = MediaProgressCoordinatorNoticeViewModel(mediaProgressCoordinator: mediaProgressCoordinator)
-            if let notice = model?.notice {
-                ActionDispatcher.dispatch(NoticeAction.post(notice))
+            // Skip the success notice when all successful uploads opted out (e.g.
+            // featured image set during custom post editing).
+            let allowSuccessNotice = mediaProgressCoordinator.successfulMedia.contains { media in
+                let progress = mediaProgressCoordinator.progress(forMediaID: media.uploadID)
+                return progress?.userInfo[.suppressSuccessNotice] == nil
+            }
+
+            if allowSuccessNotice || mediaProgressCoordinator.hasFailedMedia {
+                let model = MediaProgressCoordinatorNoticeViewModel(mediaProgressCoordinator: mediaProgressCoordinator)
+                if let notice = model?.notice {
+                    ActionDispatcher.dispatch(NoticeAction.post(notice))
+                }
             }
         }
 
