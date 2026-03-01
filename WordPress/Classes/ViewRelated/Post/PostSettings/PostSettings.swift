@@ -89,7 +89,7 @@ struct PostSettings: Hashable {
         if let author = params.author {
             self.author = Author(id: Int(author), displayName: "–", avatarURL: nil)
         }
-        if let featuredMedia = params.featuredMedia {
+        if let featuredMedia = params.featuredMedia, featuredMedia > 0 {
             featuredImageID = Int(featuredMedia)
         }
         if let commentStatus = params.commentStatus {
@@ -182,7 +182,9 @@ struct PostSettings: Hashable {
             author = Author(id: Int(authorId), displayName: "–", avatarURL: nil)
         }
 
-        featuredImageID = post.featuredMedia.map { Int($0) }
+        if let id = post.featuredMedia, id > 0 {
+            featuredImageID = Int(id)
+        }
 
         var otherTerms: [String: [Term]] = [:]
         for taxonomy in taxonomies {

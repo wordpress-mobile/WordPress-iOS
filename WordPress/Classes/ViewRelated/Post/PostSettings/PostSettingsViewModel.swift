@@ -328,10 +328,26 @@ final class PostSettingsViewModel: NSObject, ObservableObject {
         self.settings = initialSettings
         self.originalSettings = initialSettings
 
-        // Featured image is not supported for custom post types yet
-        self.featuredImageViewModel = nil
+        if capabilities.supportsFeaturedImage {
+            let featuredImage = initialSettings.featuredImageID.flatMap {
+                Media.existingOrStubMediaWith(
+                    mediaID: NSNumber(value: $0),
+                    inBlog: blog
+                )
+            }
+            self.featuredImageViewModel = PostSettingsFeaturedImageViewModel(
+                blog: blog,
+                featuredImage: featuredImage
+            )
+        } else {
+            self.featuredImageViewModel = nil
+        }
 
         super.init()
+
+        featuredImageViewModel?.$selection.dropFirst().sink { [weak self] media in
+            self?.settings.featuredImageID = media?.mediaID?.intValue
+        }.store(in: &cancellables)
 
         refreshDisplayedCategories()
         refreshDisplayedTags()
