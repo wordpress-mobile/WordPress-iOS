@@ -172,7 +172,7 @@ static const NSInteger PostTagIdDefaultValue = -1;
         return instance;
     }
 
-    if ([blog supports:BlogFeatureWPComRESTAPI]) {
+    if ([blog supports:BlogFeatureWpComRESTAPI]) {
         if (blog.wordPressComRestApi) {
             return [[TaxonomyServiceRemoteREST alloc] initWithWordPressComRestApi:blog.wordPressComRestApi siteID:blog.dotComID];
         }

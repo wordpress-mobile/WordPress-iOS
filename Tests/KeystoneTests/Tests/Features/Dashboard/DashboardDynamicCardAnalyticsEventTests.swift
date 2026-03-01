@@ -1,4 +1,3 @@
-import Nimble
 @testable import WordPress
 import XCTest
 

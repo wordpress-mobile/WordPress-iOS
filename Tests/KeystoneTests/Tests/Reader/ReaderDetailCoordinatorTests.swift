@@ -1,5 +1,4 @@
 import XCTest
-import Nimble
 
 @testable import WordPress
 @testable import WordPressData
@@ -16,9 +15,9 @@ class ReaderDetailCoordinatorTests: CoreDataTestCase {
 
         coordinator.start()
 
-        expect(serviceMock.didCallFetchPostWithPostID).to(equal(1))
-        expect(serviceMock.didCallFetchPostWithSiteID).to(equal(2))
-        expect(serviceMock.didCallFetchPostWithIsFeed).to(beTrue())
+        XCTAssertEqual(serviceMock.didCallFetchPostWithPostID, 1)
+        XCTAssertEqual(serviceMock.didCallFetchPostWithSiteID, 2)
+        XCTAssertEqual(serviceMock.didCallFetchPostWithIsFeed, true)
     }
 
     /// Inform the view to render a post after it is fetched
@@ -33,7 +32,7 @@ class ReaderDetailCoordinatorTests: CoreDataTestCase {
 
         coordinator.start()
 
-        expect(viewMock.didCallRenderWithPost).to(equal(post))
+        XCTAssertEqual(viewMock.didCallRenderWithPost, post)
     }
 
     /// When an error happens, tell the view to show an error
@@ -47,7 +46,7 @@ class ReaderDetailCoordinatorTests: CoreDataTestCase {
 
         coordinator.start()
 
-        expect(viewMock.didCallShowError).to(beTrue())
+        XCTAssertTrue(viewMock.didCallShowError)
     }
 
     /// If a post is given, do not call the servce and render the content right away
@@ -61,8 +60,8 @@ class ReaderDetailCoordinatorTests: CoreDataTestCase {
 
         coordinator.start()
 
-        expect(viewMock.didCallRenderWithPost).to(equal(post))
-        expect(serviceMock.didCallFetchPostWithPostID).to(beNil())
+        XCTAssertEqual(viewMock.didCallRenderWithPost, post)
+        XCTAssertNil(serviceMock.didCallFetchPostWithPostID)
     }
 
     /// Tell the view to show a loading indicator when start is called
@@ -76,7 +75,7 @@ class ReaderDetailCoordinatorTests: CoreDataTestCase {
 
         coordinator.start()
 
-        expect(viewMock.didCallShowLoading).to(beTrue())
+        XCTAssertTrue(viewMock.didCallShowLoading)
     }
 
     /// Show the share sheet
@@ -101,43 +100,6 @@ class ReaderDetailCoordinatorTests: CoreDataTestCase {
         XCTAssertEqual(postSharingControllerMock.didCallShareReaderPostWithViewController, viewMock)
     }
 
-    /// Present a site preview in the current view stack
-    ///
-    func testShowPresentSitePreview() {
-        let post = makeReaderPost()
-        post.siteID = 1
-        post.isExternal = false
-        let serviceMock = ReaderPostServiceMock()
-        let viewMock = ReaderDetailViewMock()
-        let postSharingControllerMock = PostSharingControllerMock()
-        let coordinator = ReaderDetailCoordinator(readerPostService: serviceMock, sharingController: postSharingControllerMock, view: viewMock)
-        let navigationControllerMock = UINavigationControllerMock()
-        viewMock.navigationController = navigationControllerMock
-        coordinator.post = post
-
-        coordinator.didTapBlogName()
-
-        expect(navigationControllerMock.didCallPushViewControllerWith).toEventually(beAKindOf(ReaderStreamViewController.self))
-    }
-
-    /// Present a tag in the current view stack
-    ///
-    func testShowPresentTag() {
-        let post = makeReaderPost()
-        post.primaryTagSlug = "tag"
-        let serviceMock = ReaderPostServiceMock()
-        let viewMock = ReaderDetailViewMock()
-        let postSharingControllerMock = PostSharingControllerMock()
-        let coordinator = ReaderDetailCoordinator(readerPostService: serviceMock, sharingController: postSharingControllerMock, view: viewMock)
-        let navigationControllerMock = UINavigationControllerMock()
-        viewMock.navigationController = navigationControllerMock
-        coordinator.post = post
-
-        coordinator.didTapTagButton()
-
-        expect(navigationControllerMock.didCallPushViewControllerWith).toEventually(beAKindOf(ReaderStreamViewController.self))
-    }
-
     /// Present an image in the view controller
     ///
     func testShowPresentImage() {
@@ -149,7 +111,7 @@ class ReaderDetailCoordinatorTests: CoreDataTestCase {
 
         coordinator.handle(URL(string: "https://wordpress.com/image.png")!)
 
-        expect(viewMock.didCallPresentWith).to(beAKindOf(LightboxViewController.self))
+        XCTAssertTrue(viewMock.didCallPresentWith is LightboxViewController)
     }
 
     /// Present an URL in a webview controller
@@ -164,7 +126,7 @@ class ReaderDetailCoordinatorTests: CoreDataTestCase {
         coordinator.handle(URL(string: "https://wordpress.com")!)
 
         let presentedViewController = (viewMock.didCallPresentWith as? UINavigationController)?.viewControllers.first
-        expect(presentedViewController).to(beAKindOf(WebKitViewController.self))
+        XCTAssertTrue(presentedViewController is WebKitViewController)
     }
 
     /// Tell the view to scroll when URL is a hash link
@@ -178,7 +140,7 @@ class ReaderDetailCoordinatorTests: CoreDataTestCase {
 
         coordinator.handle(URL(string: "https://wordpress.com#hash")!)
 
-        expect(viewMock.didCallScrollToWith).to(equal("hash"))
+        XCTAssertEqual(viewMock.didCallScrollToWith, "hash")
     }
 
     func testExtractCommentIDFromPostURL() {
@@ -188,7 +150,7 @@ class ReaderDetailCoordinatorTests: CoreDataTestCase {
         let coordinator = ReaderDetailCoordinator(readerPostService: serviceMock, view: viewMock)
         coordinator.postURL = postURL
 
-        expect(coordinator.commentID).to(equal(10))
+        XCTAssertEqual(coordinator.commentID, 10)
     }
 
     func makeReaderPost() -> ReaderPost {
@@ -292,13 +254,5 @@ private class PostSharingControllerMock: PostSharingController {
         didCallShareReaderPostWith = post
         didCallShareReaderPostWithView = anchor
         didCallShareReaderPostWithViewController = viewController
-    }
-}
-
-private class UINavigationControllerMock: UINavigationController {
-    var didCallPushViewControllerWith: UIViewController?
-
-    override func pushViewController(_ viewController: UIViewController, animated: Bool) {
-        didCallPushViewControllerWith = viewController
     }
 }

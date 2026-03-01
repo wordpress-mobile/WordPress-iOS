@@ -2,7 +2,6 @@ import UIKit
 import XCTest
 import OHHTTPStubs
 import OHHTTPStubsSwift
-import Nimble
 @testable import WordPress
 @testable import WordPressData
 
@@ -264,12 +263,12 @@ class AccountServiceTests: CoreDataTestCase {
         }
 
         let account = try createAccount(withUsername: "username", authToken: "token")
-        waitUntil { done in
-            self.accountService.updateUserDetails(for: account, success: { done() }, failure: { _ in done() })
-        }
+        let exp = expectation(description: "Update user details")
+        accountService.updateUserDetails(for: account, success: { exp.fulfill() }, failure: { _ in exp.fulfill() })
+        wait(for: [exp], timeout: 5)
 
-        expect(account.username).toEventually(equal("jimthetester"))
-        expect(account.email).toEventually(equal("jim@wptestaccounts.com"))
+        XCTAssertEqual(account.username, "jimthetester")
+        XCTAssertEqual(account.email, "jim@wptestaccounts.com")
     }
 
 }

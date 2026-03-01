@@ -1,9 +1,0 @@
-Pembaruan teknis dari kami sukses mengurangi ukuran aplikasi sekitar 6 MB. Silakan pakai ruang kosongnya sesuka hati.
-
-Pengaturan visibilitas untuk pos yang sudah ada kini lebih mudah dicari, dilihat, dan diubah. Tombol “Selesai” juga terus ditampilkan saat Anda mengatur kata sandi dalam penerbitan pos yang dilindungi kata sandi.
-
-Tampilan serasi: pembaruan ikon pintasan dan ilustrasi agar lebih cocok dengan keseluruhan nuansa aplikasi dan perangkat Anda.
-
-Perbaikan masalah sehingga kini pratinjau pos berfungsi dengan benar untuk situs tertentu yang menggunakan paket Bisnis dan eCommerce.
-
-Saat menambahkan situs baru yang di-hosting sendiri, Anda akan dimintai kata sandi aplikasi untuk autentikasi. Jaga kerahasiannya. Jaga keamanannya.

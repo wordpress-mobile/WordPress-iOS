@@ -614,7 +614,7 @@ private extension BlogDetailsTableViewModel {
     func buildJetpackSection() -> Section {
         var rows: [Row] = []
 
-        if blog.isViewingStatsAllowed() {
+        if blog.isViewingStatsAllowed {
             rows.append(Row.stats(viewController: viewController))
         }
 
@@ -650,7 +650,7 @@ private extension BlogDetailsTableViewModel {
     func buildGeneralSection() -> Section {
         var rows: [Row] = []
 
-        if blog.isViewingStatsAllowed() {
+        if blog.isViewingStatsAllowed {
             rows.append(Row.stats(viewController: viewController))
         }
 
@@ -773,7 +773,7 @@ private extension BlogDetailsTableViewModel {
 
         var rows: [Row] = []
 
-        if blog.isViewingStatsAllowed() {
+        if blog.isViewingStatsAllowed {
             rows.append(Row.stats(viewController: viewController))
         }
 

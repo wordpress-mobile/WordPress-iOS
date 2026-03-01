@@ -585,7 +585,7 @@ NSString *const WPBlogSettingsUpdatedNotification = @"WPBlogSettingsUpdatedNotif
 
 - (id<BlogServiceRemote>)remoteForBlog:(Blog *)blog
 {
-    if ([blog supports:BlogFeatureWPComRESTAPI]) {
+    if ([blog supports:BlogFeatureWpComRESTAPI]) {
         if (blog.wordPressComRestApi) {
             return [[BlogServiceRemoteREST alloc] initWithWordPressComRestApi:blog.wordPressComRestApi siteID:blog.dotComID];
         }
@@ -714,9 +714,9 @@ NSString *const WPBlogSettingsUpdatedNotification = @"WPBlogSettingsUpdatedNotif
             Blog *blog = (Blog *)[context existingObjectWithID:blogObjectID error:nil];
             if (blog) {
                 NSDictionary *formats = postFormats;
-                if (![formats objectForKey:PostFormatStandard]) {
+                if (![formats objectForKey:@"standard"]) {
                     NSMutableDictionary *mutablePostFormats = [formats mutableCopy];
-                    mutablePostFormats[PostFormatStandard] = NSLocalizedString(@"Standard", @"Standard post format label");
+                    mutablePostFormats[@"standard"] = NSLocalizedString(@"Standard", @"Standard post format label");
                     formats = [NSDictionary dictionaryWithDictionary:mutablePostFormats];
                 }
                 blog.postFormats = formats;

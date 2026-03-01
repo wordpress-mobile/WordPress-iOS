@@ -8,4 +8,4 @@ WordPress för iOS stöder WordPress.com och WordPress.org-webbplatser som drivs
 
 Behöver du hjälp med appen? Besök forumen på https://wordpress.org/support/forum/mobile/ eller kontakta oss på Twitter via @WordPressiOS.
 
-Visa sekretessmeddelandet för användare i Kalifornien på https://automattic.com/privacy/#california-consumer-privacy-act-ccpa.
+Visa integritetsmeddelandet för användare i Kalifornien på https://automattic.com/privacy/#california-consumer-privacy-act-ccpa.

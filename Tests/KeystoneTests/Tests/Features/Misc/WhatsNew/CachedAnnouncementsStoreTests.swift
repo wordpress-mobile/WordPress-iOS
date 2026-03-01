@@ -1,4 +1,3 @@
-import Nimble
 @testable import WordPress
 import XCTest
 
@@ -6,15 +5,15 @@ class CachedAnnouncementsStoreTests: XCTestCase {
 
     /// When the version is nil, the cache is never valid
     func testCacheIsValid_noVersion() {
-        expect(makeStore(withVersion: .none).cacheIsValid(for: [])) == false
-        expect(makeStore(withVersion: .none).cacheIsValid(for: [.fixture(minimumAppVersion: "1.0", maximumAppVersion: "2.0")])) == false
-        expect(makeStore(withVersion: .none).cacheIsValid(for: [.fixture(appVersionTargets: ["1.1", "1.2"])])) == false
+        XCTAssertFalse(makeStore(withVersion: .none).cacheIsValid(for: []))
+        XCTAssertFalse(makeStore(withVersion: .none).cacheIsValid(for: [.fixture(minimumAppVersion: "1.0", maximumAppVersion: "2.0")]))
+        XCTAssertFalse(makeStore(withVersion: .none).cacheIsValid(for: [.fixture(appVersionTargets: ["1.1", "1.2"])]))
     }
 
     /// When the announcements list is empty, the cache is never valid
     func testCacheIsValid_noAnnouncements() {
-        expect(makeStore(withVersion: .none).cacheIsValid(for: [])) == false
-        expect(makeStore(withVersion: "1.0").cacheIsValid(for: [])) == false
+        XCTAssertFalse(makeStore(withVersion: .none).cacheIsValid(for: []))
+        XCTAssertFalse(makeStore(withVersion: "1.0").cacheIsValid(for: []))
     }
 
     /// When the first announcement version bounds include the given version, the cache is valid
@@ -24,13 +23,13 @@ class CachedAnnouncementsStoreTests: XCTestCase {
             Announcement.fixture(minimumAppVersion: "2.1", maximumAppVersion: "3.0")
         ]
 
-        expect(makeStore(withVersion: "1.0").cacheIsValid(for: announcemens)) == true
-        expect(makeStore(withVersion: "1.1").cacheIsValid(for: announcemens)) == true
-        expect(makeStore(withVersion: "1.0.1").cacheIsValid(for: announcemens)) == true
-        expect(makeStore(withVersion: "2.0").cacheIsValid(for: announcemens)) == true
+        XCTAssertTrue(makeStore(withVersion: "1.0").cacheIsValid(for: announcemens))
+        XCTAssertTrue(makeStore(withVersion: "1.1").cacheIsValid(for: announcemens))
+        XCTAssertTrue(makeStore(withVersion: "1.0.1").cacheIsValid(for: announcemens))
+        XCTAssertTrue(makeStore(withVersion: "2.0").cacheIsValid(for: announcemens))
 
-        expect(makeStore(withVersion: "0.9").cacheIsValid(for: announcemens)) == false
-        expect(makeStore(withVersion: "2.1").cacheIsValid(for: announcemens)) == false
+        XCTAssertFalse(makeStore(withVersion: "0.9").cacheIsValid(for: announcemens))
+        XCTAssertFalse(makeStore(withVersion: "2.1").cacheIsValid(for: announcemens))
     }
 
     /// When the first announcement version targets includes the given version, the cache is valid
@@ -48,13 +47,13 @@ class CachedAnnouncementsStoreTests: XCTestCase {
             )
         ]
 
-        expect(makeStore(withVersion: "0.9").cacheIsValid(for: announcements)) == true
-        expect(makeStore(withVersion: "1.0").cacheIsValid(for: announcements)) == true
-        expect(makeStore(withVersion: "2.1").cacheIsValid(for: announcements)) == true
+        XCTAssertTrue(makeStore(withVersion: "0.9").cacheIsValid(for: announcements))
+        XCTAssertTrue(makeStore(withVersion: "1.0").cacheIsValid(for: announcements))
+        XCTAssertTrue(makeStore(withVersion: "2.1").cacheIsValid(for: announcements))
 
-        expect(makeStore(withVersion: "0.8").cacheIsValid(for: announcements)) == false
-        expect(makeStore(withVersion: "1.1").cacheIsValid(for: announcements)) == false
-        expect(makeStore(withVersion: "2.2").cacheIsValid(for: announcements)) == false
+        XCTAssertFalse(makeStore(withVersion: "0.8").cacheIsValid(for: announcements))
+        XCTAssertFalse(makeStore(withVersion: "1.1").cacheIsValid(for: announcements))
+        XCTAssertFalse(makeStore(withVersion: "2.2").cacheIsValid(for: announcements))
     }
 
     /// When the first announcement version bounds does not include the given version,
@@ -65,9 +64,9 @@ class CachedAnnouncementsStoreTests: XCTestCase {
             Announcement.fixture(minimumAppVersion: "1.0", maximumAppVersion: "2.0")
         ]
         // These versions are valid for the second announcement, but the SUT only looks at the first.
-        expect(makeStore(withVersion: "1.0").cacheIsValid(for: announcements)) == false
-        expect(makeStore(withVersion: "1.1").cacheIsValid(for: announcements)) == false
-        expect(makeStore(withVersion: "1.0.1").cacheIsValid(for: announcements)) == false
+        XCTAssertFalse(makeStore(withVersion: "1.0").cacheIsValid(for: announcements))
+        XCTAssertFalse(makeStore(withVersion: "1.1").cacheIsValid(for: announcements))
+        XCTAssertFalse(makeStore(withVersion: "1.0.1").cacheIsValid(for: announcements))
     }
 
     /// When the first announcement version bounds and app version targets do not include the given version,
@@ -86,8 +85,8 @@ class CachedAnnouncementsStoreTests: XCTestCase {
             )
         ]
         // These versions are valid for the second announcement, but the SUT only looks at the first.
-        expect(makeStore(withVersion: "1.6").cacheIsValid(for: announcements)) == false
-        expect(makeStore(withVersion: "1.7").cacheIsValid(for: announcements)) == false
+        XCTAssertFalse(makeStore(withVersion: "1.6").cacheIsValid(for: announcements))
+        XCTAssertFalse(makeStore(withVersion: "1.7").cacheIsValid(for: announcements))
     }
 }
 

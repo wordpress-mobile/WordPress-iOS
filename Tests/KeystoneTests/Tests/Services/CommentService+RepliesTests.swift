@@ -1,5 +1,4 @@
 import Foundation
-import Nimble
 import OHHTTPStubs
 import OHHTTPStubsSwift
 import XCTest
@@ -45,7 +44,7 @@ final class CommentService_RepliesTests: CoreDataTestCase {
         HTTPStubs.stubRequest(forEndpoint: endpoint, withFileAtPath: stubFilePath(commentsV2SuccessFilename))
 
         commentService.getLatestReplyID(for: commentID, siteID: siteID, accountService: accountService) { replyID in
-            expect(replyID).to(equal(expectedReplyID))
+            XCTAssertEqual(replyID, expectedReplyID)
             expectation.fulfill()
         } failure: { _ in
             XCTFail("This block shouldn't get called.")
@@ -61,7 +60,7 @@ final class CommentService_RepliesTests: CoreDataTestCase {
         HTTPStubs.stubRequest(forEndpoint: endpoint, withFileAtPath: stubFilePath(emptyArrayFilename))
 
         commentService.getLatestReplyID(for: commentID, siteID: siteID, accountService: accountService) { replyID in
-            expect(replyID).to(equal(expectedReplyID))
+            XCTAssertEqual(replyID, expectedReplyID)
             expectation.fulfill()
         } failure: { _ in
             XCTFail("This block shouldn't get called.")
@@ -96,18 +95,18 @@ final class CommentService_RepliesTests: CoreDataTestCase {
 
         let parentKey = CommentServiceRemoteREST.RequestKeys.parent.rawValue
 
-        waitUntil { done in
-            self.commentService.getLatestReplyID(
-                for: self.commentID,
-                siteID: self.siteID,
-                accountService: self.accountService,
-                success: { _ in done() },
-                failure: { _ in done() }
-            )
-        }
+        let exp = expectation(description: "Get latest reply ID should complete")
+        self.commentService.getLatestReplyID(
+            for: self.commentID,
+            siteID: self.siteID,
+            accountService: self.accountService,
+            success: { _ in exp.fulfill() },
+            failure: { _ in exp.fulfill() }
+        )
+        wait(for: [exp], timeout: 5)
 
-        expect(request).toNotEventually(beNil())
-        expect(request?.url?.query).to(contain("parent=\(commentID)"))
+        XCTAssertNotNil(request)
+        XCTAssertTrue(request?.url?.query?.contains("parent=\(commentID)") == true)
     }
 
     func test_replyToPost_givenSuccessfulAPICall_insertsNewComment() throws {
@@ -134,14 +133,14 @@ final class CommentService_RepliesTests: CoreDataTestCase {
         try XCTAssertEqual(mainContext.count(for: Comment.safeFetchRequest()), 0)
 
         // Call the reply function and wait for the HTTP API to complete
-        waitUntil { done in
-            self.commentService.reply(to: post, content: "test comment") {
-                done()
-            } failure: { error in
-                XCTFail("Unexpected error: \(String(describing: error))")
-                done()
-            }
+        let exp = expectation(description: "Reply should complete")
+        self.commentService.reply(to: post, content: "test comment") {
+            exp.fulfill()
+        } failure: { error in
+            XCTFail("Unexpected error: \(String(describing: error))")
+            exp.fulfill()
         }
+        wait(for: [exp], timeout: 5)
 
         // The new comment should be inserted into the database
         try XCTAssertEqual(mainContext.count(for: Comment.safeFetchRequest()), 1)
@@ -165,14 +164,14 @@ final class CommentService_RepliesTests: CoreDataTestCase {
         try XCTAssertEqual(mainContext.count(for: Comment.safeFetchRequest()), 0)
 
         // Call the reply function and wait for the HTTP API to complete
-        waitUntil { done in
-            self.commentService.reply(to: post, content: "test comment") {
-                XCTFail("The failure should be called instead")
-                done()
-            } failure: { error in
-                done()
-            }
+        let exp = expectation(description: "Reply should fail")
+        self.commentService.reply(to: post, content: "test comment") {
+            XCTFail("The failure should be called instead")
+            exp.fulfill()
+        } failure: { error in
+            exp.fulfill()
         }
+        wait(for: [exp], timeout: 5)
 
         // The HTTP API call failed and no comment was inserted into the database
         try XCTAssertEqual(mainContext.count(for: Comment.safeFetchRequest()), 0)
@@ -205,14 +204,14 @@ final class CommentService_RepliesTests: CoreDataTestCase {
         try XCTAssertEqual(mainContext.count(for: Comment.safeFetchRequest()), 1)
 
         // Call the reply function and wait for the HTTP API to complete
-        waitUntil { done in
-            self.commentService.replyToHierarchicalComment(withID: 3, post: post, content: "test comment") {
-                done()
-            } failure: { error in
-                XCTFail("Unexpected error: \(String(describing: error))")
-                done()
-            }
+        let exp = expectation(description: "Reply to comment should complete")
+        self.commentService.replyToHierarchicalComment(withID: 3, post: post, content: "test comment") {
+            exp.fulfill()
+        } failure: { error in
+            XCTFail("Unexpected error: \(String(describing: error))")
+            exp.fulfill()
         }
+        wait(for: [exp], timeout: 5)
 
         // The new comment should be inserted into the database
         try XCTAssertEqual(mainContext.count(for: Comment.safeFetchRequest()), 2)
@@ -239,14 +238,14 @@ final class CommentService_RepliesTests: CoreDataTestCase {
         try XCTAssertEqual(mainContext.count(for: Comment.safeFetchRequest()), 1)
 
         // Call the reply function and wait for the HTTP API to complete
-        waitUntil { done in
-            self.commentService.replyToHierarchicalComment(withID: 3, post: post, content: "test comment") {
-                XCTFail("The failure should be called instead")
-                done()
-            } failure: { error in
-                done()
-            }
+        let exp = expectation(description: "Reply to comment should fail")
+        self.commentService.replyToHierarchicalComment(withID: 3, post: post, content: "test comment") {
+            XCTFail("The failure should be called instead")
+            exp.fulfill()
+        } failure: { error in
+            exp.fulfill()
         }
+        wait(for: [exp], timeout: 5)
 
         // The HTTP API call failed and no comment was inserted into the database
         try XCTAssertEqual(mainContext.count(for: Comment.safeFetchRequest()), 1)
@@ -259,14 +258,14 @@ final class CommentService_RepliesTests: CoreDataTestCase {
         contextManager.saveContextAndWait(mainContext)
 
         HTTPStubs.stubRequest(forEndpoint: "rest/v1.1/sites/3584907/posts/51399/replies", withFileAtPath: stubFilePath("reader-post-comments-success.json"))
-        waitUntil { done in
-            self.commentService.syncHierarchicalComments(for: post, page: 1) { _, _ in
-                done()
-            } failure: { error in
-                XCTFail("Unexpected error: \(String(describing: error))")
-                done()
-            }
+        let syncExp = expectation(description: "Sync comments should complete")
+        self.commentService.syncHierarchicalComments(for: post, page: 1) { _, _ in
+            syncExp.fulfill()
+        } failure: { error in
+            XCTFail("Unexpected error: \(String(describing: error))")
+            syncExp.fulfill()
         }
+        wait(for: [syncExp], timeout: 5)
 
         // All comments are visible
         XCTAssertEqual(post.comments?.count, 24)
@@ -277,9 +276,11 @@ final class CommentService_RepliesTests: CoreDataTestCase {
         spamComment.status = CommentStatusType.spam.description
         contextManager.saveContextAndWait(mainContext)
 
-        waitUntil { done in
-            self.commentService.updateRepliesVisibility(for: spamComment, completion: done)
+        let visibilityExp = expectation(description: "Update replies visibility should complete")
+        self.commentService.updateRepliesVisibility(for: spamComment) {
+            visibilityExp.fulfill()
         }
+        wait(for: [visibilityExp], timeout: 5)
 
         // The spam comment and its two replies are no longer visible
         XCTAssertEqual(post.comments?.count, 24)

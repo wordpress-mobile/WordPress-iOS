@@ -1,18 +1,49 @@
 import Foundation
 import CoreData
+import ObjectiveC
 import NSURL_IDN
+import WordPressShared
+
+private nonisolated(unsafe) var blogKeychainKey: UInt8 = 0
 
 extension Blog {
+
+    // MARK: - Keychain
+
+    /// Injectable keychain for testability.
+    var keychain: any KeychainAccessible {
+        get {
+            objc_getAssociatedObject(self, &blogKeychainKey) as? (any KeychainAccessible) ?? KeychainUtils()
+        }
+        set {
+            objc_setAssociatedObject(self, &blogKeychainKey, newValue, .OBJC_ASSOCIATION_RETAIN_NONATOMIC)
+        }
+    }
+
+    @objc public var password: String? {
+        get {
+            guard let username, !username.isEmpty,
+                  let xmlrpc, !xmlrpc.isEmpty else {
+                return nil
+            }
+            if let password = try? keychain.getPassword(for: username, serviceName: xmlrpc) {
+                return password
+            }
+            // Application password can also be used to authenticate XML-RPC.
+            return try? getApplicationToken(using: keychain)
+        }
+        set {
+            assert(username != nil, "Can't set password if we don't know the username yet")
+            assert(xmlrpc != nil, "Can't set password if we don't know the XML-RPC endpoint yet")
+            guard let username, let xmlrpc else { return }
+            try? keychain.setPassword(for: username, to: newValue, serviceName: xmlrpc)
+        }
+    }
 
     /// Stores the relationship to the `BlockEditorSettings` which is an optional entity that holds settings realated to the BlockEditor. These are features
     /// such as Global Styles and Full Site Editing settings and capabilities.
     ///
     @NSManaged public var blockEditorSettings: BlockEditorSettings?
-
-    @objc
-    public func supportsBlockEditorSettings() -> Bool {
-        return hasRequiredWordPressVersion("5.8")
-    }
 
     /// Returns the username to use for this site.
     ///
@@ -123,6 +154,35 @@ extension Blog {
         return .gmt
     }
 
+    // MARK: - Auth
+
+    @objc public var isBasicAuthCredentialStored: Bool {
+        let storage = URLCredentialStorage.shared
+        guard let url = self.url.flatMap(URL.init(string:)) else { return false }
+        for protectionSpace in storage.allCredentials.keys {
+            if protectionSpace.host == url.host
+                && protectionSpace.port == (url.port ?? 80)
+                && protectionSpace.authenticationMethod == NSURLAuthenticationMethodHTTPBasic {
+                return true
+            }
+        }
+        return false
+    }
+
+    // MARK: - Logging
+
+    @objc public var logDescription: String {
+        let extra: String
+        if let account {
+            extra = " wp.com account: \(account.username ?? "") blogId: \(dotComID?.intValue ?? 0) plan: \(planTitle ?? "") (\(planID?.intValue ?? 0))"
+        } else if let jetpack {
+            extra = " jetpack: \(jetpack)"
+        } else {
+            extra = ""
+        }
+        return "<Blog Name: \(settings?.name ?? "") URL: \(url ?? "") XML-RPC: \(xmlrpc ?? "")\(extra) ObjectID: \(objectID.uriRepresentation())>"
+    }
+
     // MARK: - Misc
 
     /// Returns the display name for a post format slug.
@@ -135,7 +195,7 @@ extension Blog {
         if let slug, let name = allFormats?[slug] {
             result = name
         }
-        if (result ?? "").isEmpty, let standard = allFormats?[PostFormatStandard] {
+        if (result ?? "").isEmpty, let standard = allFormats?[Self.postFormatStandard] {
             result = standard
         }
         return result

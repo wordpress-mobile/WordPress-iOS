@@ -43,7 +43,7 @@ extension WPAccount {
                 draft.blog = candidate
             }
             // Once the drafts are moved (if any), we can safely delete the duplicate
-            DDLogInfo("Deleting duplicate blog \(blog.logDescription())")
+            DDLogInfo("Deleting duplicate blog \(blog.logDescription)")
             context.delete(blog)
         }
     }

@@ -8697,9 +8697,6 @@ Example: Reply to Pamela Nguyen */
 /* Title for comparison menu */
 "jetpackStats.datePicker.compareWith" = "Compare With…";
 
-/* Title for custom date range picker */
-"jetpackStats.datePicker.customRange" = "Custom Range";
-
 /* Menu item for custom date range picker */
 "jetpackStats.datePicker.customRangeMenu" = "Custom Range…";
 
@@ -9525,13 +9522,15 @@ Example: Reply to Pamela Nguyen */
 /* Title for the post author selection screen */
 "postAuthorPicker.title" = "Author";
 
-/* Button in an alert confirming discaring changes */
+/* Button in an alert confirming discarding changes
+   Button in an alert confirming discaring changes */
 "postEditor.closeConfirmationAlert.discardChanges" = "Discard Changes";
 
 /* Button in an alert confirming discaring a new draft */
 "postEditor.closeConfirmationAlert.discardDraft" = "Discard Draft";
 
-/* Button to keep the changes in an alert confirming discaring changes */
+/* Button to keep the changes in an alert confirming discarding changes
+   Button to keep the changes in an alert confirming discaring changes */
 "postEditor.closeConfirmationAlert.keepEditing" = "Keep Editing";
 
 /* Button in an alert confirming saving a new draft */

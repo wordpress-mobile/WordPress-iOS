@@ -144,7 +144,7 @@ class EditorMediaUtility {
             // the size that WPImageHelper expects is pixel size
             size.width = size.width * scale
             requestURL = WPImageURLHelper.imageURLWithSize(size, forImageURL: url)
-        } else if !post.blog.isHostedAtWPcom && post.blog.isBasicAuthCredentialStored() {
+        } else if !post.blog.isHostedAtWPcom && post.blog.isBasicAuthCredentialStored {
             size.width = size.width * scale
             requestURL = WPImageURLHelper.imageURLWithSize(size, forImageURL: url)
         } else {

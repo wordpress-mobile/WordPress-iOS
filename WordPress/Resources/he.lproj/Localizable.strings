@@ -1,4 +1,4 @@
-/* Translation-Revision-Date: 2026-01-27 09:54:09+0000 */
+/* Translation-Revision-Date: 2026-02-26 21:45:57+0000 */
 /* Plural-Forms: nplurals=2; plural=n != 1; */
 /* Generator: GlotPress/4.0.3 */
 /* Language: he_IL */
@@ -7225,6 +7225,9 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Feature name for the block editor in application password required prompt */
 "applicationPasswordRequired.feature.blockEditor" = "עורך הבלוקים";
 
+/* Feature name for managing custom post types in the app */
+"applicationPasswordRequired.feature.customPosts" = "סוגי תוכן מותאם אישית";
+
 /* Feature name for managing terms and taxonomies in the app */
 "applicationPasswordRequired.feature.customTaxonomies" = "ניהול טקסונומיות";
 
@@ -7384,6 +7387,27 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Action shown in a bottom notice to dismiss it. */
 "blogDashboard.dismiss" = "ביטול";
+
+/* Error message shown when the active theme cannot be found for a site. */
+"blogDetails.activeThemeNotFound.errorDescription" = "לא ניתן למצוא את התבנית הפעילה עבור אתר זה.";
+
+/* Button title to connect Jetpack in XML-RPC disabled alert */
+"blogDetails.xmlrpcDisabled.alert.connectJetpack" = "לחבר את Jetpack";
+
+/* Description explaining options to restore functionality when XML-RPC is disabled */
+"blogDetails.xmlrpcDisabled.alert.description" = "XML-RPC מושבת באתר שלך. לחלק מהאפשרויות באפליקציה נדרשת כרגע XML-RPC. לחבר את Jetpack או להפעיל XML-RPC כדי לגשת לכל האפשרויות.";
+
+/* Button title to learn more about XML-RPC being disabled */
+"blogDetails.xmlrpcDisabled.alert.learnMore" = "למידע נוסף";
+
+/* Title for the XML-RPC disabled alert */
+"blogDetails.xmlrpcDisabled.alert.title" = "XML-RPC מושבת";
+
+/* Subtitle for the XML-RPC disabled card on blog details */
+"blogDetails.xmlrpcDisabled.card.subtitle" = "ייתכן שחלק מהאפשרויות יהיו מוגבלות";
+
+/* Title for the XML-RPC disabled card on blog details */
+"blogDetails.xmlrpcDisabled.card.title" = "XML-RPC מושבת";
 
 /* Badge title in site list */
 "blogList.siteBadge.staging" = "שכפול אתר";
@@ -7842,6 +7866,39 @@ Example: Reply to Pamela Nguyen */
 /* Create Sheet button title */
 "createSheet.post" = "פוסט";
 
+/* Error message shown when the post was modified by another user while editing */
+"customPostEditor.error.conflict.message" = "הפוסט שניסית לשמור השתנה בינתיים.";
+
+/* Empty state message when no custom posts exist. %1$@ is the post type name (e.g., 'Podcasts', 'Products'). */
+"customPostList.emptyState.message" = "ללא %1$@";
+
+/* Tab title for draft posts */
+"customPostTab.drafts" = "טיוטות";
+
+/* Tab title for published posts */
+"customPostTab.published" = "פורסם";
+
+/* Tab title for scheduled posts */
+"customPostTab.scheduled" = "מתוזמן לפרסום";
+
+/* Menu item title for sending feedback on the custom post types screen */
+"customPostTab.sendFeedback" = "לשלוח משוב";
+
+/* Tab title for trashed posts */
+"customPostTab.trash" = "פח";
+
+/* Empty state message when there are no custom post types to display */
+"customPostTypes.emptyState.message" = "אין סוגי תוכן מותאמים";
+
+/* Accessibility label for the button to pin a custom post type */
+"customPostTypes.pin.accessibilityLabel" = "לנעוץ";
+
+/* Title for the Custom Post Types screen */
+"customPostTypes.title" = "עוד";
+
+/* Accessibility label for the button to unpin a custom post type */
+"customPostTypes.unpin.accessibilityLabel" = "להסיר את הנעץ";
+
 /* Customize Insights description */
 "customizeInsightsCell.content" = "ניתן ליצור לוח בקרה מותאם ולבחור אילו דוחות ברצונך להציג. להתמקד במידע שהכי חשוב לך.";
 
@@ -7982,6 +8039,9 @@ Example: Reply to Pamela Nguyen */
 
 /* Debug Menu action for TipKit */
 "debugMenu.hideAllTips" = "להסתיר את כל ההצעות";
+
+/* Debug Menu item title */
+"debugMenu.item.logs" = "קובצי יומן";
 
 /* Title of the screen that allows the user to change the Reader CSS URL for debug builds */
 "debugMenu.readerCellTitle" = "כתובת URL ל-CSS של Reader";
@@ -8714,8 +8774,14 @@ Example: Reply to Pamela Nguyen */
 /* Title of the primary button shown after the Jetpack plugin has been installed. Tapping on the button dismisses the installation screen. */
 "jetpack.install-flow.success.primaryButtonText" = "הושלם";
 
+/* Message asking the user to install Jetpack to access all app features */
+"jetpack.install.allFeatures.description" = "כדי להשתמש בכל אפשרויות האפליקציה, עליך להתקין את התוסף של Jetpack.";
+
 /* Title of a button for connecting user account to Jetpack. */
 "jetpack.install.connectUser.button.title" = "לחבר את חשבון המשתמש שלך";
+
+/* Message asking the user to connect Jetpack to access all app features */
+"jetpack.install.connectUser.bypassXMLRPC.description" = "כדי לפתוח את כל תכונות האפליקציה, תצטרכו לחבר את התוסף Jetpack לחשבון המשתמש שלכם.";
 
 /* Message asking the user if they want to set up Jetpack from notifications */
 "jetpack.install.connectUser.notifications.description" = "כדי לקבל הודעות שימושיות לטלפון מאתר שלך ב-WordPress, עליך לחבר את חשבון המשתמש שלך.";
@@ -9060,6 +9126,9 @@ Example: Reply to Pamela Nguyen */
 /* Line chart type */
 "jetpackStats.chart.lineChart" = "שורות";
 
+/* Label for aggregated 'Other' segment in pie charts */
+"jetpackStats.chart.other" = "אחר";
+
 /* Show chart data menu item */
 "jetpackStats.chart.showData" = "להציג נתונים";
 
@@ -9168,9 +9237,6 @@ Example: Reply to Pamela Nguyen */
 /* Option to turn off period comparison */
 "jetpackStats.datePicker.comparisonOff" = "ללא השוואה";
 
-/* Title for custom date range picker */
-"jetpackStats.datePicker.customRange" = "טווח מותאם";
-
 /* Menu item for custom date range picker */
 "jetpackStats.datePicker.customRangeMenu" = "טווח מותאם...";
 
@@ -9189,6 +9255,9 @@ Example: Reply to Pamela Nguyen */
 /* Label for quick period selection */
 "jetpackStats.datePicker.quickPeriodsForStartDate" = "תקופות קצרות לתאריך ההתחלה";
 
+/* Title for custom date range picker */
+"jetpackStats.datePicker.selectRange" = "יש לבחור טווח";
+
 /* Site time zone header */
 "jetpackStats.datePicker.siteTimeZone" = "אזור הזמן של האתר";
 
@@ -9204,6 +9273,15 @@ Example: Reply to Pamela Nguyen */
 /* Title for stats date range control tip */
 "jetpackStats.dateRangeTip.title" = "לעבור בין תקופות שונות";
 
+/* Device breakdown by browser */
+"jetpackStats.deviceBreakdowns.browser" = "דפדפן";
+
+/* Device breakdown by platform/OS */
+"jetpackStats.deviceBreakdowns.operatingSystem" = "מערכת הפעלה";
+
+/* Device breakdown by screen size */
+"jetpackStats.deviceBreakdowns.screensize" = "גודל המסך";
+
 /* Section title for the list of child links */
 "jetpackStats.externalLinkDetails.childLinks" = "קישורי משנה";
 
@@ -9212,6 +9290,12 @@ Example: Reply to Pamela Nguyen */
 
 /* Title for the external link details screen */
 "jetpackStats.externalLinkDetails.title" = "קישור חיצוני";
+
+/* Button to explore plans when a feature is gated */
+"jetpackStats.featureGate.explorePlans" = "עיון בתוכניות";
+
+/* Message shown when a stats feature is gated behind a paid plan */
+"jetpackStats.featureGate.message" = "לשדרג את התוכנית שלך כדי לקבל גישה לנתונים אנליטיים מתקדמים";
 
 /* Automatic granularity option */
 "jetpackStats.granularity.automatic" = "אוטומטי";
@@ -9327,6 +9411,9 @@ Example: Reply to Pamela Nguyen */
 /* Clicks data type (external links) */
 "jetpackStats.siteDataTypes.clicks" = "קליקים";
 
+/* Devices data type */
+"jetpackStats.siteDataTypes.devices" = "מכשירים";
+
 /* File downloads data type */
 "jetpackStats.siteDataTypes.fileDownloads" = "הורדות קבצים";
 
@@ -9402,6 +9489,9 @@ Example: Reply to Pamela Nguyen */
 /* Table column title for Top List card */
 "jetpackStats.topListColumnTitle.clicks" = "קישור חיצוני";
 
+/* Table column title for Devices Top List card */
+"jetpackStats.topListColumnTitle.devices" = "מכשיר";
+
 /* Table column title for Top List card */
 "jetpackStats.topListColumnTitle.fileDownloads" = "קובץ";
 
@@ -9417,8 +9507,65 @@ Example: Reply to Pamela Nguyen */
 /* Table column title for Top List card */
 "jetpackStats.topListColumnTitle.searchTerms" = "מונח";
 
+/* Table column title for UTM Top List card */
+"jetpackStats.topListColumnTitle.utm" = "קמפיין";
+
 /* Table column title for Top List card */
 "jetpackStats.topListColumnTitle.videos" = "וידאו";
+
+/* Plural post count for UTM metrics. %1$d is the number. */
+"jetpackStats.utmMetricDetails.postCount.plural" = "⁦%1$d⁩ פוסטים";
+
+/* Singular post count for UTM metrics. %1$d is the number. */
+"jetpackStats.utmMetricDetails.postCount.singular" = "פוסט ⁦%1$d⁩";
+
+/* Title for the UTM campaign details screen */
+"jetpackStats.utmMetricDetails.title" = "קמפיין UTM";
+
+/* Section title for top posts from this UTM campaign */
+"jetpackStats.utmMetricDetails.topPosts" = "פוסטים עליונים";
+
+/* UTM parameter for campaign only */
+"jetpackStats.utmParamGroupings.campaign" = "קמפיין";
+
+/* UTM parameter for medium only */
+"jetpackStats.utmParamGroupings.medium" = "בינוני";
+
+/* UTM parameter for source only */
+"jetpackStats.utmParamGroupings.source" = "מקור";
+
+/* Number of ads served. %@ is the ads count. */
+"jetpackStats.wordAds.adsServed.count" = "%@ פרסומות שהופיעו";
+
+/* Total earnings from WordAds */
+"jetpackStats.wordAds.earnings" = "רווחים";
+
+/* Button to learn more about WordAds earnings */
+"jetpackStats.wordAds.learnMore" = "למידע נוסף";
+
+/* Message shown when there are no payment records */
+"jetpackStats.wordAds.noPaymentsYet" = "עדיין אין תשלומים";
+
+/* Outstanding amount owed from WordAds */
+"jetpackStats.wordAds.outstanding" = "מצוין";
+
+/* Amount paid out from WordAds earnings */
+"jetpackStats.wordAds.paid" = "שולם";
+
+/* Title for payment history card and screen */
+"jetpackStats.wordAds.paymentsHistory" = "היסטוריית תשלומים";
+
+/* Title for WordAds total earnings card */
+"jetpackStats.wordAds.totalEarnings" = "סך כל הרווחים";
+
+/* Number of ads served */
+"jetpackStats.wordAdsMetrics.adsServed" = "פרסומות שהופיעו";
+
+/* Average cost per mille (thousand impressions) */
+"jetpackStats.wordAdsMetrics.averageCPM" = "CPM ממוצע";
+
+/* Revenue from ads */
+"jetpackStats.wordAdsMetrics.revenue" = "הכנסות";
 
 /* Title for a call-to-action button on the Jetpack install card. */
 "jetpackinstallcard.button.learn" = "למידע נוסף";
@@ -10158,6 +10305,9 @@ Example: Reply to Pamela Nguyen */
 /* A title for the log severity level */
 "phpLogs.severityWarning" = "אזהרה";
 
+/* Error message when a pinned custom post type cannot be found. %1$@ is the post type name. */
+"pinnedPostType.error.notFound" = "\"%1$@\" לא זמין באתר זה.";
+
 /* Title for the plan selection view */
 "planSelection.title" = "תוכניות";
 
@@ -10272,13 +10422,15 @@ Example: Reply to Pamela Nguyen */
 /* Navigation title for post discussion settings */
 "postDiscussion.title" = "דיון";
 
-/* Button in an alert confirming discaring changes */
+/* Button in an alert confirming discarding changes
+   Button in an alert confirming discaring changes */
 "postEditor.closeConfirmationAlert.discardChanges" = "לבטל את השינויים";
 
 /* Button in an alert confirming discaring a new draft */
 "postEditor.closeConfirmationAlert.discardDraft" = "לבטל את הטיוטה";
 
-/* Button to keep the changes in an alert confirming discaring changes */
+/* Button to keep the changes in an alert confirming discarding changes
+   Button to keep the changes in an alert confirming discaring changes */
 "postEditor.closeConfirmationAlert.keepEditing" = "להמשיך לערוך";
 
 /* Button in an alert confirming saving a new draft */
@@ -10326,6 +10478,9 @@ Example: Reply to Pamela Nguyen */
 /* A message for a snackbar informing the user that some media files requires their attention */
 "postEditor.postHasFailingMediaUploadsSnackbar.message" = "ההעלאה של כמה פריטי מדיה נכשלה";
 
+/* Title for the publish button in the post editor navigation bar */
+"postEditor.publishButton.title" = "לפרסם";
+
 /* Editor, notice for successful recovery a trashed post */
 "postEditor.recoverTrashedPost.postRecoveredNoticeTitle" = "הפוסט שוחזר למצב טיוטה";
 
@@ -10346,6 +10501,9 @@ Example: Reply to Pamela Nguyen */
 
 /* Saving draft to generate a preview (status message */
 "postEditor.savingDraftForPreview" = "שומר טיוטה...";
+
+/* Title for the update button in the post editor navigation bar */
+"postEditor.updateButton.title" = "לעדכן";
 
 /* Empty state description when no post formats are available */
 "postFormatPicker.emptyState.description" = "סוגי הפוסטים לא הוגדרו עבור אתר זה.";
@@ -12100,6 +12258,15 @@ Example: given a notice format "Following %@" and empty site name, this will be 
 
 /* Title for screen to select the privacy options for a blog */
 "siteSettings.privacy.title" = "פרטיות";
+
+/* Explanation for why the 'Use theme styles' toggle is disabled when the site doesn't have a block theme */
+"siteSettings.themeStyles.footer.blockThemeSuggested" = "האתר אינו משתמש בערכת עיצוב של בלוק, לכן ייתכן שהעורך לא יתאים את התוכן שלך. אם דברים לא נראים כמו שצריך, אפשר להשבית את סגנונות העורך.";
+
+/* Explanation for the option to enable theme styles when the feature is available */
+"siteSettings.themeStyles.footer.enabled" = "גרמו לעורך הבלוקים להיראות כמו ערכת הנושא שלכם.";
+
+/* Explanation for why the 'Use theme styles' toggle is disabled when the site doesn't have the Gutenberg plugin */
+"siteSettings.themeStyles.footer.gutenbergRequired" = "יש להתקין את התוסף של Gutenberg באתר כדי להפעיל תמיכה בסגנון ערכת עיצוב.";
 
 /* Format string for adding a new taxonomy term. %1$@ is the taxonomy name. */
 "siteTaxonomy.addNew.format" = "להוסיף %1$@";

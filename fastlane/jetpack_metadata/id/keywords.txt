@@ -1,1 +1,1 @@
-sosial,catatan,jetpack,tulisan,geotagging,media,blog,situsweb,blog,jurnal
+wordpress,sosial,catatan,jetpack,tulisan,geotagging,media,blog,situs,blogging,jurnal

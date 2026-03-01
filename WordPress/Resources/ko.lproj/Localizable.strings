@@ -1,4 +1,4 @@
-/* Translation-Revision-Date: 2026-01-27 09:54:09+0000 */
+/* Translation-Revision-Date: 2026-02-26 09:56:42+0000 */
 /* Plural-Forms: nplurals=1; plural=0; */
 /* Generator: GlotPress/4.0.3 */
 /* Language: ko_KR */
@@ -7231,6 +7231,9 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Feature name for the block editor in application password required prompt */
 "applicationPasswordRequired.feature.blockEditor" = "블록 에디터";
 
+/* Feature name for managing custom post types in the app */
+"applicationPasswordRequired.feature.customPosts" = "사용자 정의 글 유형";
+
 /* Feature name for managing terms and taxonomies in the app */
 "applicationPasswordRequired.feature.customTaxonomies" = "분류 관리";
 
@@ -7393,6 +7396,27 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Action shown in a bottom notice to dismiss it. */
 "blogDashboard.dismiss" = "무시";
+
+/* Error message shown when the active theme cannot be found for a site. */
+"blogDetails.activeThemeNotFound.errorDescription" = "이 사이트의 활성 테마를 찾을 수 없습니다.";
+
+/* Button title to connect Jetpack in XML-RPC disabled alert */
+"blogDetails.xmlrpcDisabled.alert.connectJetpack" = "젯팩 연결";
+
+/* Description explaining options to restore functionality when XML-RPC is disabled */
+"blogDetails.xmlrpcDisabled.alert.description" = "XML-RPC가 사이트에서 비활성화되었습니다. 현재 앱의 일부 기능에 XML-RPC가 필요합니다. 젯팩을 연결하거나 XML-RPC를 활성화하면 모든 기능을 이용할 수 있습니다.";
+
+/* Button title to learn more about XML-RPC being disabled */
+"blogDetails.xmlrpcDisabled.alert.learnMore" = "더 알아보기";
+
+/* Title for the XML-RPC disabled alert */
+"blogDetails.xmlrpcDisabled.alert.title" = "XML-RPC 비활성화됨";
+
+/* Subtitle for the XML-RPC disabled card on blog details */
+"blogDetails.xmlrpcDisabled.card.subtitle" = "일부 기능이 제한될 수 있습니다.";
+
+/* Title for the XML-RPC disabled card on blog details */
+"blogDetails.xmlrpcDisabled.card.title" = "XML-RPC 비활성화됨";
 
 /* Context menu button title */
 "blogHeader.actionVisitSite" = "사이트 방문하기";
@@ -7860,6 +7884,39 @@ Example: Reply to Pamela Nguyen */
 /* Create Sheet button title */
 "createSheet.postFromAudio" = "오디오에서 글 작성하기";
 
+/* Error message shown when the post was modified by another user while editing */
+"customPostEditor.error.conflict.message" = "저장하려는 글이 그 사이에 변경되었습니다.";
+
+/* Empty state message when no custom posts exist. %1$@ is the post type name (e.g., 'Podcasts', 'Products'). */
+"customPostList.emptyState.message" = "%1$@ 없음";
+
+/* Tab title for draft posts */
+"customPostTab.drafts" = "임시글";
+
+/* Tab title for published posts */
+"customPostTab.published" = "공개됨";
+
+/* Tab title for scheduled posts */
+"customPostTab.scheduled" = "예약됨";
+
+/* Menu item title for sending feedback on the custom post types screen */
+"customPostTab.sendFeedback" = "피드백 보내기";
+
+/* Tab title for trashed posts */
+"customPostTab.trash" = "휴지통";
+
+/* Empty state message when there are no custom post types to display */
+"customPostTypes.emptyState.message" = "사용자 정의 글 유형 없음";
+
+/* Accessibility label for the button to pin a custom post type */
+"customPostTypes.pin.accessibilityLabel" = "고정";
+
+/* Title for the Custom Post Types screen */
+"customPostTypes.title" = "더 보기";
+
+/* Accessibility label for the button to unpin a custom post type */
+"customPostTypes.unpin.accessibilityLabel" = "고정 해제";
+
 /* Customize Insights description */
 "customizeInsightsCell.content" = "나만의 사용자 정의 알림판을 만들고 보고 싶은 보고서를 선택하세요. 가장 중요한 데이터에 집중하세요.";
 
@@ -8000,6 +8057,9 @@ Example: Reply to Pamela Nguyen */
 
 /* Debug Menu action for TipKit */
 "debugMenu.hideAllTips" = "모든 팁 숨기기";
+
+/* Debug Menu item title */
+"debugMenu.item.logs" = "로그";
 
 /* Title of the screen that allows the user to change the Reader CSS URL for debug builds */
 "debugMenu.readerCellTitle" = "리더 CSS URL";
@@ -8732,8 +8792,14 @@ Example: Reply to Pamela Nguyen */
 /* Title of the primary button shown after the Jetpack plugin has been installed. Tapping on the button dismisses the installation screen. */
 "jetpack.install-flow.success.primaryButtonText" = "완료";
 
+/* Message asking the user to install Jetpack to access all app features */
+"jetpack.install.allFeatures.description" = "모든 앱 기능을 이용하려면 젯팩 플러그인을 설치해야 합니다.";
+
 /* Title of a button for connecting user account to Jetpack. */
 "jetpack.install.connectUser.button.title" = "사용자 계정 연결";
+
+/* Message asking the user to connect Jetpack to access all app features */
+"jetpack.install.connectUser.bypassXMLRPC.description" = "모든 앱 기능을 이용하려면 젯팩 플러그인을 해당 사용자 계정에 연결해야 합니다.";
 
 /* Message asking the user if they want to set up Jetpack from notifications */
 "jetpack.install.connectUser.notifications.description" = "스마트폰에서 워드프레스 사이트의 유용한 알림을 받으려면 사용자 계정을 연결해야 합니다.";
@@ -9078,6 +9144,9 @@ Example: Reply to Pamela Nguyen */
 /* Line chart type */
 "jetpackStats.chart.lineChart" = "줄";
 
+/* Label for aggregated 'Other' segment in pie charts */
+"jetpackStats.chart.other" = "기타";
+
 /* Show chart data menu item */
 "jetpackStats.chart.showData" = "데이터 표시";
 
@@ -9186,9 +9255,6 @@ Example: Reply to Pamela Nguyen */
 /* Option to turn off period comparison */
 "jetpackStats.datePicker.comparisonOff" = "비교 없음";
 
-/* Title for custom date range picker */
-"jetpackStats.datePicker.customRange" = "사용자 정의 범위";
-
 /* Menu item for custom date range picker */
 "jetpackStats.datePicker.customRangeMenu" = "사용자 정의 범위...";
 
@@ -9207,6 +9273,9 @@ Example: Reply to Pamela Nguyen */
 /* Label for quick period selection */
 "jetpackStats.datePicker.quickPeriodsForStartDate" = "시작 날짜의 빠른 기간";
 
+/* Title for custom date range picker */
+"jetpackStats.datePicker.selectRange" = "범위 선택";
+
 /* Site time zone header */
 "jetpackStats.datePicker.siteTimeZone" = "사이트 시간대";
 
@@ -9222,6 +9291,15 @@ Example: Reply to Pamela Nguyen */
 /* Title for stats date range control tip */
 "jetpackStats.dateRangeTip.title" = "시각 탐색";
 
+/* Device breakdown by browser */
+"jetpackStats.deviceBreakdowns.browser" = "브라우저";
+
+/* Device breakdown by platform/OS */
+"jetpackStats.deviceBreakdowns.operatingSystem" = "운영 체제";
+
+/* Device breakdown by screen size */
+"jetpackStats.deviceBreakdowns.screensize" = "화면 크기";
+
 /* Section title for the list of child links */
 "jetpackStats.externalLinkDetails.childLinks" = "하위 링크";
 
@@ -9230,6 +9308,12 @@ Example: Reply to Pamela Nguyen */
 
 /* Title for the external link details screen */
 "jetpackStats.externalLinkDetails.title" = "외부 링크";
+
+/* Button to explore plans when a feature is gated */
+"jetpackStats.featureGate.explorePlans" = "요금제 둘러보기";
+
+/* Message shown when a stats feature is gated behind a paid plan */
+"jetpackStats.featureGate.message" = "요금제를 업그레이드하고 고급 분석 이용";
 
 /* Automatic granularity option */
 "jetpackStats.granularity.automatic" = "자동";
@@ -9345,6 +9429,9 @@ Example: Reply to Pamela Nguyen */
 /* Clicks data type (external links) */
 "jetpackStats.siteDataTypes.clicks" = "클릭";
 
+/* Devices data type */
+"jetpackStats.siteDataTypes.devices" = "기기";
+
 /* File downloads data type */
 "jetpackStats.siteDataTypes.fileDownloads" = "파일 다운로드";
 
@@ -9420,6 +9507,9 @@ Example: Reply to Pamela Nguyen */
 /* Table column title for Top List card */
 "jetpackStats.topListColumnTitle.clicks" = "외부 링크";
 
+/* Table column title for Devices Top List card */
+"jetpackStats.topListColumnTitle.devices" = "기기";
+
 /* Table column title for Top List card */
 "jetpackStats.topListColumnTitle.fileDownloads" = "파일";
 
@@ -9435,8 +9525,65 @@ Example: Reply to Pamela Nguyen */
 /* Table column title for Top List card */
 "jetpackStats.topListColumnTitle.searchTerms" = "태그";
 
+/* Table column title for UTM Top List card */
+"jetpackStats.topListColumnTitle.utm" = "캠페인";
+
 /* Table column title for Top List card */
 "jetpackStats.topListColumnTitle.videos" = "비디오";
+
+/* Plural post count for UTM metrics. %1$d is the number. */
+"jetpackStats.utmMetricDetails.postCount.plural" = "글 %1$d개";
+
+/* Singular post count for UTM metrics. %1$d is the number. */
+"jetpackStats.utmMetricDetails.postCount.singular" = "글 %1$d개";
+
+/* Title for the UTM campaign details screen */
+"jetpackStats.utmMetricDetails.title" = "UTM 캠페인";
+
+/* Section title for top posts from this UTM campaign */
+"jetpackStats.utmMetricDetails.topPosts" = "인기 게시물";
+
+/* UTM parameter for campaign only */
+"jetpackStats.utmParamGroupings.campaign" = "캠페인";
+
+/* UTM parameter for medium only */
+"jetpackStats.utmParamGroupings.medium" = "중간";
+
+/* UTM parameter for source only */
+"jetpackStats.utmParamGroupings.source" = "소스";
+
+/* Number of ads served. %@ is the ads count. */
+"jetpackStats.wordAds.adsServed.count" = "%@개 광고 제공";
+
+/* Total earnings from WordAds */
+"jetpackStats.wordAds.earnings" = "수익";
+
+/* Button to learn more about WordAds earnings */
+"jetpackStats.wordAds.learnMore" = "더 알아보기";
+
+/* Message shown when there are no payment records */
+"jetpackStats.wordAds.noPaymentsYet" = "아직 결제하지 않음";
+
+/* Outstanding amount owed from WordAds */
+"jetpackStats.wordAds.outstanding" = "미결제";
+
+/* Amount paid out from WordAds earnings */
+"jetpackStats.wordAds.paid" = "결제됨";
+
+/* Title for payment history card and screen */
+"jetpackStats.wordAds.paymentsHistory" = "결제 내역";
+
+/* Title for WordAds total earnings card */
+"jetpackStats.wordAds.totalEarnings" = "총 수익";
+
+/* Number of ads served */
+"jetpackStats.wordAdsMetrics.adsServed" = "제공된 광고";
+
+/* Average cost per mille (thousand impressions) */
+"jetpackStats.wordAdsMetrics.averageCPM" = "평균 CPM";
+
+/* Revenue from ads */
+"jetpackStats.wordAdsMetrics.revenue" = "수익";
 
 /* Title for a call-to-action button on the Jetpack install card. */
 "jetpackinstallcard.button.learn" = "더 알아보기";
@@ -10182,6 +10329,9 @@ Example: Reply to Pamela Nguyen */
 /* A title for the log severity level */
 "phpLogs.severityWarning" = "경고";
 
+/* Error message when a pinned custom post type cannot be found. %1$@ is the post type name. */
+"pinnedPostType.error.notFound" = "\"%1$@\"은(는) 이 사이트에서 사용할 수 없습니다.";
+
 /* Title for the plan selection view */
 "planSelection.title" = "요금제";
 
@@ -10296,13 +10446,15 @@ Example: Reply to Pamela Nguyen */
 /* Navigation title for post discussion settings */
 "postDiscussion.title" = "토론";
 
-/* Button in an alert confirming discaring changes */
+/* Button in an alert confirming discarding changes
+   Button in an alert confirming discaring changes */
 "postEditor.closeConfirmationAlert.discardChanges" = "변경사항 폐기";
 
 /* Button in an alert confirming discaring a new draft */
 "postEditor.closeConfirmationAlert.discardDraft" = "임시글 삭제";
 
-/* Button to keep the changes in an alert confirming discaring changes */
+/* Button to keep the changes in an alert confirming discarding changes
+   Button to keep the changes in an alert confirming discaring changes */
 "postEditor.closeConfirmationAlert.keepEditing" = "계속 편집";
 
 /* Button in an alert confirming saving a new draft */
@@ -10350,6 +10502,9 @@ Example: Reply to Pamela Nguyen */
 /* A message for a snackbar informing the user that some media files requires their attention */
 "postEditor.postHasFailingMediaUploadsSnackbar.message" = "일부 미디어 항목을 업로드할 수 없습니다.";
 
+/* Title for the publish button in the post editor navigation bar */
+"postEditor.publishButton.title" = "공개";
+
 /* Editor, notice for successful recovery a trashed post */
 "postEditor.recoverTrashedPost.postRecoveredNoticeTitle" = "글이 임시글로 복원됨";
 
@@ -10370,6 +10525,9 @@ Example: Reply to Pamela Nguyen */
 
 /* Saving draft to generate a preview (status message */
 "postEditor.savingDraftForPreview" = "임시글 저장중…";
+
+/* Title for the update button in the post editor navigation bar */
+"postEditor.updateButton.title" = "업데이트";
 
 /* Empty state description when no post formats are available */
 "postFormatPicker.emptyState.description" = "이 사이트의 글 형식이 구성되지 않았습니다.";
@@ -12148,6 +12306,15 @@ Feel free to replace it with other bracket types that you think looks better for
 
 /* Title for screen to select the privacy options for a blog */
 "siteSettings.privacy.title" = "개인정보";
+
+/* Explanation for why the 'Use theme styles' toggle is disabled when the site doesn't have a block theme */
+"siteSettings.themeStyles.footer.blockThemeSuggested" = "사이트에서 블록 테마를 사용하고 있지 않으므로 편집기가 콘텐츠와 올바르게 일치하지 않을 수 있습니다. 문제가 해결되지 않으면 편집기 스타일을 비활성화할 수 있습니다.";
+
+/* Explanation for the option to enable theme styles when the feature is available */
+"siteSettings.themeStyles.footer.enabled" = "블록 편집기를 테마와 비슷하게 만듭니다.";
+
+/* Explanation for why the 'Use theme styles' toggle is disabled when the site doesn't have the Gutenberg plugin */
+"siteSettings.themeStyles.footer.gutenbergRequired" = "사이트에 Gutenberg 플러그인을 설치하여 테마 스타일 지원을 활성화하세요.";
 
 /* Format string for adding a new taxonomy term. %1$@ is the taxonomy name. */
 "siteTaxonomy.addNew.format" = "%1$@ 추가";

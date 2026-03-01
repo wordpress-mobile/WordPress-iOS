@@ -1,6 +1,5 @@
 import UIKit
 import XCTest
-import Nimble
 
 @testable import WordPress
 @testable import WordPressData
@@ -26,7 +25,7 @@ class ReaderCardServiceTests: CoreDataTestCase {
 
         service.fetch(isFirstPage: true, success: { _, _ in
             let cards = try? self.mainContext.fetch(NSFetchRequest(entityName: ReaderCard.classNameWithoutNamespaces()))
-            expect(cards?.count).to(equal(9))
+            XCTAssertEqual(cards?.count, 9)
             expectation.fulfill()
         }, failure: { _ in })
 
@@ -42,7 +41,7 @@ class ReaderCardServiceTests: CoreDataTestCase {
 
         service.fetch(isFirstPage: true, success: { _, _ in
             let cards = try? self.mainContext.fetch(NSFetchRequest(entityName: ReaderCard.classNameWithoutNamespaces())) as? [ReaderCard]
-            expect(cards?.filter { $0.post != nil }.count).to(equal(8))
+            XCTAssertEqual(cards?.filter { $0.post != nil }.count, 8)
             expectation.fulfill()
         }, failure: { _ in })
 
@@ -57,7 +56,7 @@ class ReaderCardServiceTests: CoreDataTestCase {
         remoteService.shouldCallFailure = true
 
         service.fetch(isFirstPage: true, success: { _, _ in }, failure: { error in
-            expect(error).toNot(beNil())
+            XCTAssertNotNil(error)
             expectation.fulfill()
         })
 
@@ -74,7 +73,7 @@ class ReaderCardServiceTests: CoreDataTestCase {
             // Fetch again, this time the 1st page
             service.fetch(isFirstPage: true, success: { _, _ in
                 let cards = try? self.mainContext.fetch(NSFetchRequest(entityName: ReaderCard.classNameWithoutNamespaces())) as? [ReaderCard]
-                expect(cards?.count).to(equal(9))
+                XCTAssertEqual(cards?.count, 9)
                 expectation.fulfill()
             }, failure: { _ in })
         }, failure: {_ in })
@@ -83,7 +82,7 @@ class ReaderCardServiceTests: CoreDataTestCase {
 
         service.clean()
         let cards = try? self.mainContext.fetch(NSFetchRequest(entityName: ReaderCard.classNameWithoutNamespaces())) as? [ReaderCard]
-        expect(cards?.count).to(equal(0))
+        XCTAssertEqual(cards?.count, 0)
     }
 }
 

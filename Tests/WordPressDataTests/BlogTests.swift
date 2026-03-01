@@ -132,9 +132,7 @@ struct BlogTests {
             .with(isAdmin: true)
             .build()
 
-        withKnownIssue("Fails because it gets a nil WordPressOrgRestApi instance") {
-            #expect(blog.supports(.pluginManagement))
-        }
+        #expect(blog.supports(.pluginManagement))
     }
 
     @Test func pluginManagementIsDisabledForNonAdmins() {
@@ -156,7 +154,7 @@ struct BlogTests {
             .with(modules: [""])
             .build()
 
-        #expect(blog.isStatsActive())
+        #expect(blog.isStatsActive)
     }
 
     @Test func statsActiveForSitesNotHostedAtWPCom() {
@@ -165,7 +163,7 @@ struct BlogTests {
             .with(modules: ["stats"])
             .build()
 
-        #expect(blog.isStatsActive())
+        #expect(blog.isStatsActive)
     }
 
     @Test func statsNotActiveForSitesNotHostedAtWPCom() {
@@ -174,7 +172,7 @@ struct BlogTests {
             .with(modules: [""])
             .build()
 
-        #expect(!blog.isStatsActive())
+        #expect(!blog.isStatsActive)
     }
 
     // MARK: - Blog.version String Conversion
@@ -870,6 +868,102 @@ struct BlogTests {
         contextManager.performAndSave { context in
             #expect((try? Blog.lookup(withID: 123, in: context)) != nil)
         }
+    }
+
+    // MARK: - Password
+
+    @Test func passwordReturnsNilWhenUsernameIsNil() {
+        let blog = BlogBuilder(mainContext).build()
+        blog.username = nil
+
+        #expect(blog.password == nil)
+    }
+
+    @Test func passwordReturnsNilWhenXmlrpcIsNil() {
+        let blog = BlogBuilder(mainContext)
+            .with(username: "user1")
+            .build()
+        blog.xmlrpc = nil
+
+        #expect(blog.password == nil)
+    }
+
+    @Test func passwordReturnsValueFromKeychain() {
+        let keychain = MockKeychainService()
+        let blog = BlogBuilder(mainContext)
+            .with(username: "user1")
+            .build()
+        blog.keychain = keychain
+        keychain.storage["user1"] = "secret"
+
+        #expect(blog.password == "secret")
+        #expect(keychain.receivedServiceNames.last == blog.xmlrpc)
+    }
+
+    @Test func passwordReturnsNilWhenKeychainHasNoEntry() {
+        let keychain = MockKeychainService()
+        let blog = BlogBuilder(mainContext)
+            .with(username: "user1")
+            .build()
+        blog.keychain = keychain
+
+        #expect(blog.password == nil)
+    }
+
+    @Test func passwordFallsBackToApplicationToken() {
+        let keychain = MockKeychainService()
+        let blog = BlogBuilder(mainContext)
+            .with(username: "user1")
+            .with(url: "https://example.com")
+            .build()
+        blog.keychain = keychain
+
+        // Both password (keyed by xmlrpc) and application token (keyed by url)
+        // queries go through the same mock, so verify both are attempted.
+        _ = blog.password
+
+        #expect(keychain.passwordCallCount == 2)
+        #expect(keychain.receivedServiceNames.contains(blog.xmlrpc!))
+        #expect(keychain.receivedServiceNames.contains(blog.url!))
+    }
+
+    @Test func setPasswordStoresInKeychain() {
+        let keychain = MockKeychainService()
+        let blog = BlogBuilder(mainContext)
+            .with(username: "user1")
+            .build()
+        blog.keychain = keychain
+
+        blog.password = "new-password"
+
+        #expect(keychain.storage["user1"] == "new-password")
+        #expect(keychain.receivedServiceNames == [blog.xmlrpc!])
+    }
+
+    @Test func setPasswordToNilDeletesFromKeychain() {
+        let keychain = MockKeychainService()
+        let blog = BlogBuilder(mainContext)
+            .with(username: "user1")
+            .build()
+        blog.keychain = keychain
+        keychain.storage["user1"] = "old-password"
+
+        blog.password = nil
+
+        #expect(keychain.storage["user1"] == nil)
+        #expect(keychain.deletedUsernames == ["user1"])
+    }
+
+    @Test func setPasswordUsesXmlrpcAsServiceName() {
+        let keychain = MockKeychainService()
+        let blog = BlogBuilder(mainContext)
+            .with(username: "user1")
+            .build()
+        blog.keychain = keychain
+
+        blog.password = "pw"
+
+        #expect(keychain.receivedServiceNames == [blog.xmlrpc!])
     }
 
     // MARK: - Username For Site

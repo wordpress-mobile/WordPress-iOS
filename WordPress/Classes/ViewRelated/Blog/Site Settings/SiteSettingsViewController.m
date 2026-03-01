@@ -176,7 +176,7 @@ NS_ENUM(NSInteger, SiteSettingsJetpack) {
         [sections addObject:@(SiteSettingsSectionThemeStyles)];
     }
 
-    if ([self.blog supports:BlogFeatureWPComRESTAPI] && self.blog.isAdmin) {
+    if ([self.blog supports:BlogFeatureWpComRESTAPI] && self.blog.isAdmin) {
         [sections addObject:@(SiteSettingsSectionWriting)];
         [sections addObject:@(SiteSettingsSectionDiscussion)];
         if (self.blog.isQuotaAvailable) {
@@ -1155,7 +1155,7 @@ NS_ENUM(NSInteger, SiteSettingsJetpack) {
 
 - (BOOL)savingWritingDefaultsIsAvailable
 {
-    return [self.blog supports:BlogFeatureWPComRESTAPI] && self.blog.isAdmin;
+    return [self.blog supports:BlogFeatureWpComRESTAPI] && self.blog.isAdmin;
 }
 
 - (IBAction)dismiss

@@ -1,5 +1,4 @@
 import Foundation
-import Nimble
 import OHHTTPStubs
 import OHHTTPStubsSwift
 import XCTest
@@ -52,14 +51,14 @@ final class CommentService_MorderationTests: CoreDataTestCase {
         }
 
         // Call the moderation function and wait for it to complete
-        waitUntil { done in
-            commentService.approve(self.comment) {
-                done()
-            } failure: { error in
-                XCTFail("Unexpected error: \(String(describing: error))")
-                done()
-            }
+        let exp = expectation(description: "Approve should complete")
+        commentService.approve(self.comment) {
+            exp.fulfill()
+        } failure: { error in
+            XCTFail("Unexpected error: \(String(describing: error))")
+            exp.fulfill()
         }
+        wait(for: [exp], timeout: 5)
 
         // The comment's status should be changed
         XCTAssertEqual(self.comment.status, CommentStatusType.approved.description)
@@ -84,14 +83,14 @@ final class CommentService_MorderationTests: CoreDataTestCase {
         }
 
         // Call the moderation function and wait for it to complete
-        waitUntil { done in
-            commentService.unapproveComment(self.comment) {
-                done()
-            } failure: { error in
-                XCTFail("Unexpected error: \(String(describing: error))")
-                done()
-            }
+        let exp = expectation(description: "Unapprove should complete")
+        commentService.unapproveComment(self.comment) {
+            exp.fulfill()
+        } failure: { error in
+            XCTFail("Unexpected error: \(String(describing: error))")
+            exp.fulfill()
         }
+        wait(for: [exp], timeout: 5)
 
         // The comment's status should be changed
         XCTAssertEqual(self.comment.status, CommentStatusType.pending.description)
@@ -116,14 +115,14 @@ final class CommentService_MorderationTests: CoreDataTestCase {
         }
 
         // Call the moderation function and wait for it to complete
-        waitUntil { done in
-            commentService.spamComment(self.comment) {
-                done()
-            } failure: { error in
-                XCTFail("Unexpected error: \(String(describing: error))")
-                done()
-            }
+        let exp = expectation(description: "Spam should complete")
+        commentService.spamComment(self.comment) {
+            exp.fulfill()
+        } failure: { error in
+            XCTFail("Unexpected error: \(String(describing: error))")
+            exp.fulfill()
         }
+        wait(for: [exp], timeout: 5)
 
         // The comment's status should be changed
         XCTAssertEqual(self.comment.status, CommentStatusType.spam.description)
@@ -148,14 +147,14 @@ final class CommentService_MorderationTests: CoreDataTestCase {
         }
 
         // Call the moderation function and wait for it to complete
-        waitUntil { done in
-            commentService.trashComment(self.comment) {
-                done()
-            } failure: { error in
-                XCTFail("Unexpected error: \(String(describing: error))")
-                done()
-            }
+        let exp = expectation(description: "Trash should complete")
+        commentService.trashComment(self.comment) {
+            exp.fulfill()
+        } failure: { error in
+            XCTFail("Unexpected error: \(String(describing: error))")
+            exp.fulfill()
         }
+        wait(for: [exp], timeout: 5)
 
         // The comment's status should be changed
         XCTAssertEqual(self.comment.status, CommentStatusType.unapproved.description)
@@ -174,14 +173,14 @@ final class CommentService_MorderationTests: CoreDataTestCase {
         }
 
         // Call the moderation function and wait for it to complete
-        waitUntil { done in
-            commentService.delete(self.comment) {
-                done()
-            } failure: { error in
-                XCTFail("Unexpected error: \(String(describing: error))")
-                done()
-            }
+        let exp = expectation(description: "Delete should complete")
+        commentService.delete(self.comment) {
+            exp.fulfill()
+        } failure: { error in
+            XCTFail("Unexpected error: \(String(describing: error))")
+            exp.fulfill()
         }
+        wait(for: [exp], timeout: 5)
 
         // The local comment should not be changed
         XCTAssertEqual(self.comment.status, CommentStatusType.pending.description)

@@ -10,13 +10,13 @@ import WordPressShared
 /// set to NULL. They are currently inaccessible because they are not attached to any `Blog`. But
 /// leaving them in the database would cause a crash if Core Data tries to save new entities.
 ///
-@objc class NullBlogPropertySanitizer: NSObject {
+class NullBlogPropertySanitizer {
     static let lastSanitizationVersionNumber = "null-property-sanitization"
 
     private let store: KeyValueDatabase
     private let context: NSManagedObjectContext
 
-    @objc init(context: NSManagedObjectContext) {
+    init(context: NSManagedObjectContext) {
         store = UserDefaults.standard
         self.context = context
     }
@@ -26,7 +26,7 @@ import WordPressShared
         self.context = context
     }
 
-    @objc func sanitize() {
+    func sanitize() {
         guard appWasUpdated() else {
             return
         }

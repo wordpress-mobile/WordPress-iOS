@@ -1,5 +1,4 @@
 import Foundation
-import Nimble
 import XCTest
 
 @testable import WordPress
@@ -60,18 +59,18 @@ extension CommentServiceTests {
         remoteMock.remoteUsersToReturnOnGetLikes = expectedUsers
 
         // Act
-        waitUntil(timeout: DispatchTimeInterval.seconds(2)) { done in
-            self.service.getLikesFor(commentID: commentID, siteID: siteID, success: { users, totalLikes, likesPerPage in
-                // Assert
-                expect(users).toNot(beNil())
-                expect(users.count) == 1
-                expect(likesPerPage) > 0
-                done()
-            },
-            failure: { _ in
-                fail("This closure should not be called")
-            })
-        }
+        let exp = expectation(description: "Fetch comment likes should succeed")
+        self.service.getLikesFor(commentID: commentID, siteID: siteID, success: { users, totalLikes, likesPerPage in
+            // Assert
+            XCTAssertNotNil(users)
+            XCTAssertEqual(users.count, 1)
+            XCTAssertGreaterThan(likesPerPage, 0)
+            exp.fulfill()
+        },
+        failure: { _ in
+            XCTFail("This closure should not be called")
+        })
+        wait(for: [exp], timeout: 2)
     }
 
     func testFailingFetchCommentLikesShouldCallFailureBlock() {
@@ -82,14 +81,14 @@ extension CommentServiceTests {
         remoteMock.fetchLikesShouldSucceed = false
 
         // Act
-        waitUntil(timeout: DispatchTimeInterval.seconds(2)) { done in
-            self.service.getLikesFor(commentID: commentID, siteID: siteID, success: { users, totalLikes, likesPerPage in
-                fail("this closure should not be called")
-            },
-            failure: { _ in
-                done()
-            })
-        }
+        let exp = expectation(description: "Fetch comment likes should fail")
+        self.service.getLikesFor(commentID: commentID, siteID: siteID, success: { users, totalLikes, likesPerPage in
+            XCTFail("this closure should not be called")
+        },
+        failure: { _ in
+            exp.fulfill()
+        })
+        wait(for: [exp], timeout: 2)
     }
 }
 

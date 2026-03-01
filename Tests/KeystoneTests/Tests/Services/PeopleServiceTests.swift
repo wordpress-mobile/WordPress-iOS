@@ -1,5 +1,4 @@
 import XCTest
-import Nimble
 import OHHTTPStubs
 import OHHTTPStubsSwift
 
@@ -55,18 +54,18 @@ class PeopleServiceTests: CoreDataTestCase {
             )
         }
 
-        waitUntil { done in
-            self.service.loadUsersPage(
-                success: { count, _ in
-                    XCTAssertEqual(count, 1)
-                    done()
-                },
-                failure: {
-                    XCTFail("Unexpected failure: \($0)")
-                    done()
-                }
-            )
-        }
+        let exp = expectation(description: "loadUsersPage succeeds")
+        self.service.loadUsersPage(
+            success: { count, _ in
+                XCTAssertEqual(count, 1)
+                exp.fulfill()
+            },
+            failure: {
+                XCTFail("Unexpected failure: \($0)")
+                exp.fulfill()
+            }
+        )
+        wait(for: [exp], timeout: 1)
     }
 
     func testLoadUsersFailure() {
@@ -74,18 +73,18 @@ class PeopleServiceTests: CoreDataTestCase {
             HTTPStubsResponse(jsonObject: [String: Any](), statusCode: 500, headers: nil)
         }
 
-        waitUntil { done in
-            self.service.loadUsersPage(
-                success: { count, _ in
-                    XCTFail("The failure block should be called instead")
-                    done()
-                },
-                failure: { error in
-                    XCTAssertTrue(error is WordPressAPIError<WordPressComRestApiEndpointError>)
-                    done()
-                }
-            )
-        }
+        let exp = expectation(description: "loadUsersPage fails")
+        self.service.loadUsersPage(
+            success: { count, _ in
+                XCTFail("The failure block should be called instead")
+                exp.fulfill()
+            },
+            failure: { error in
+                XCTAssertTrue(error is WordPressAPIError<WordPressComRestApiEndpointError>)
+                exp.fulfill()
+            }
+        )
+        wait(for: [exp], timeout: 1)
     }
 
     func testDeleteFollowerSuccess() throws {
@@ -106,9 +105,9 @@ class PeopleServiceTests: CoreDataTestCase {
             )
         }
 
-        waitUntil { done in
-            self.service.loadFollowersPage(success: { _, _ in done() }, failure: { _ in done() })
-        }
+        let loadExp = expectation(description: "loadFollowersPage completes")
+        self.service.loadFollowersPage(success: { _, _ in loadExp.fulfill() }, failure: { _ in loadExp.fulfill() })
+        wait(for: [loadExp], timeout: 1)
 
         // Verify if the loaded followers are stored in the database
         let request = NSFetchRequest<ManagedPerson>(entityName: "Person")
@@ -134,18 +133,18 @@ class PeopleServiceTests: CoreDataTestCase {
             )
         }
 
-        waitUntil { done in
-            self.service.deleteFollower(
-                Follower(managedPerson: follower),
-                success: {
-                    done()
-                },
-                failure: {
-                    XCTFail("Unexpected failure: \($0)")
-                    done()
-                }
-            )
-        }
+        let deleteExp = expectation(description: "deleteFollower succeeds")
+        self.service.deleteFollower(
+            Follower(managedPerson: follower),
+            success: {
+                deleteExp.fulfill()
+            },
+            failure: {
+                XCTFail("Unexpected failure: \($0)")
+                deleteExp.fulfill()
+            }
+        )
+        wait(for: [deleteExp], timeout: 1)
 
         // Verify the follower is deleted
         try XCTAssertEqual(mainContext.count(for: request), 0)
@@ -169,9 +168,9 @@ class PeopleServiceTests: CoreDataTestCase {
             )
         }
 
-        waitUntil { done in
-            self.service.loadFollowersPage(success: { _, _ in done() }, failure: { _ in done() })
-        }
+        let loadExp = expectation(description: "loadFollowersPage completes")
+        self.service.loadFollowersPage(success: { _, _ in loadExp.fulfill() }, failure: { _ in loadExp.fulfill() })
+        wait(for: [loadExp], timeout: 1)
 
         // Verify if the loaded followers are stored in the database
         let request = NSFetchRequest<ManagedPerson>(entityName: "Person")
@@ -185,18 +184,18 @@ class PeopleServiceTests: CoreDataTestCase {
             HTTPStubsResponse(jsonObject: [String: Any](), statusCode: 500, headers: nil)
         }
 
-        waitUntil { done in
-            self.service.deleteFollower(
-                Follower(managedPerson: follower),
-                success: {
-                    XCTFail("The failure block should be called instead")
-                    done()
-                },
-                failure: { _ in
-                    done()
-                }
-            )
-        }
+        let deleteExp = expectation(description: "deleteFollower fails")
+        self.service.deleteFollower(
+            Follower(managedPerson: follower),
+            success: {
+                XCTFail("The failure block should be called instead")
+                deleteExp.fulfill()
+            },
+            failure: { _ in
+                deleteExp.fulfill()
+            }
+        )
+        wait(for: [deleteExp], timeout: 1)
 
         // Verify the follower is not deleted from the database
         try XCTAssertEqual(mainContext.count(for: request), 1)
@@ -207,18 +206,18 @@ class PeopleServiceTests: CoreDataTestCase {
             HTTPStubsResponse(jsonObject: [String: Any](), statusCode: 500, headers: nil)
         }
 
-        waitUntil { done in
-            self.service.loadFollowersPage(
-                success: { count, _ in
-                    XCTFail("The failure block should be called instead")
-                    done()
-                },
-                failure: { error in
-                    XCTAssertTrue(error is WordPressAPIError<WordPressComRestApiEndpointError>)
-                    done()
-                }
-            )
-        }
+        let exp = expectation(description: "loadFollowersPage fails")
+        self.service.loadFollowersPage(
+            success: { count, _ in
+                XCTFail("The failure block should be called instead")
+                exp.fulfill()
+            },
+            failure: { error in
+                XCTAssertTrue(error is WordPressAPIError<WordPressComRestApiEndpointError>)
+                exp.fulfill()
+            }
+        )
+        wait(for: [exp], timeout: 1)
     }
 
 }

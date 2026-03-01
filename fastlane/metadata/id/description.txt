@@ -2,7 +2,7 @@ Kelola atau buat blog atau situs WordPress langsung dari perangkat iOS Anda: bua
 
 Dengan WordPress untuk iOS, Anda dapat membuat publikasi dengan mudah. Rangkai haiku secara spontan dari sofa Anda. Bidik dan poskan foto saat istirahat makan siang. Tanggapi komentar terbaru, atau periksa statistik untuk melihat dari negara mana saja pengunjung situs Anda hari ini.
 
-WordPress untuk iOS adalah proyek Sumber Terbuka, yang berarti Anda juga bisa memberikan kontribusi dalam pengembangannya. Pelajari selengkapnya di https://apps.wordpress.com/contribute/.
+WordPress untuk iOS adalah proyek Open Source, yang berarti Anda juga bisa memberikan kontribusi dalam pengembangannya. Pelajari selengkapnya di https://apps.wordpress.com/contribute/.
 
 WordPress untuk iOS mendukung WordPress.com dan situs WordPress.org yang dihosting sendiri yang menjalankan WordPress versi 4.0 atau versi lebih tinggi.
 

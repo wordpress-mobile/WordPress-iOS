@@ -1,4 +1,4 @@
-/* Translation-Revision-Date: 2026-01-27 15:54:11+0000 */
+/* Translation-Revision-Date: 2026-02-26 14:57:50+0000 */
 /* Plural-Forms: nplurals=1; plural=0; */
 /* Generator: GlotPress/4.0.3 */
 /* Language: zh_CN */
@@ -7231,6 +7231,9 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Feature name for the block editor in application password required prompt */
 "applicationPasswordRequired.feature.blockEditor" = "区块编辑器";
 
+/* Feature name for managing custom post types in the app */
+"applicationPasswordRequired.feature.customPosts" = "自定义文章类型";
+
 /* Feature name for managing terms and taxonomies in the app */
 "applicationPasswordRequired.feature.customTaxonomies" = "分类管理";
 
@@ -7393,6 +7396,27 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Action shown in a bottom notice to dismiss it. */
 "blogDashboard.dismiss" = "忽略";
+
+/* Error message shown when the active theme cannot be found for a site. */
+"blogDetails.activeThemeNotFound.errorDescription" = "无法找到此站点当前启用的主题。";
+
+/* Button title to connect Jetpack in XML-RPC disabled alert */
+"blogDetails.xmlrpcDisabled.alert.connectJetpack" = "连接 Jetpack";
+
+/* Description explaining options to restore functionality when XML-RPC is disabled */
+"blogDetails.xmlrpcDisabled.alert.description" = "您的站点已禁用 XML-RPC。 应用程序中的某些功能目前需要 XML-RPC。 连接 Jetpack 或启用 XML-RPC 以访问所有功能。";
+
+/* Button title to learn more about XML-RPC being disabled */
+"blogDetails.xmlrpcDisabled.alert.learnMore" = "了解更多";
+
+/* Title for the XML-RPC disabled alert */
+"blogDetails.xmlrpcDisabled.alert.title" = "XML-RPC 已禁用";
+
+/* Subtitle for the XML-RPC disabled card on blog details */
+"blogDetails.xmlrpcDisabled.card.subtitle" = "某些功能可能受到限制";
+
+/* Title for the XML-RPC disabled card on blog details */
+"blogDetails.xmlrpcDisabled.card.title" = "XML-RPC 已禁用";
 
 /* Context menu button title */
 "blogHeader.actionVisitSite" = "访问站点";
@@ -7854,6 +7878,39 @@ Example: Reply to Pamela Nguyen */
 /* Create Sheet button title */
 "createSheet.post" = "文章";
 
+/* Error message shown when the post was modified by another user while editing */
+"customPostEditor.error.conflict.message" = "您尝试保存的文章在此期间已被更改。";
+
+/* Empty state message when no custom posts exist. %1$@ is the post type name (e.g., 'Podcasts', 'Products'). */
+"customPostList.emptyState.message" = "无 %1$@";
+
+/* Tab title for draft posts */
+"customPostTab.drafts" = "草稿";
+
+/* Tab title for published posts */
+"customPostTab.published" = "已发布";
+
+/* Tab title for scheduled posts */
+"customPostTab.scheduled" = "已预发布";
+
+/* Menu item title for sending feedback on the custom post types screen */
+"customPostTab.sendFeedback" = "发送反馈";
+
+/* Tab title for trashed posts */
+"customPostTab.trash" = "移至回收站";
+
+/* Empty state message when there are no custom post types to display */
+"customPostTypes.emptyState.message" = "无自定义文章类型";
+
+/* Accessibility label for the button to pin a custom post type */
+"customPostTypes.pin.accessibilityLabel" = "置顶";
+
+/* Title for the Custom Post Types screen */
+"customPostTypes.title" = "更多";
+
+/* Accessibility label for the button to unpin a custom post type */
+"customPostTypes.unpin.accessibilityLabel" = "取消置顶";
+
 /* Customize Insights description */
 "customizeInsightsCell.content" = "创建专属于您的定制仪表盘并选择查看哪些报告。 重点关注您最关心的数据。";
 
@@ -7994,6 +8051,9 @@ Example: Reply to Pamela Nguyen */
 
 /* Debug Menu action for TipKit */
 "debugMenu.hideAllTips" = "隐藏所有提示";
+
+/* Debug Menu item title */
+"debugMenu.item.logs" = "日志";
 
 /* Title of the screen that allows the user to change the Reader CSS URL for debug builds */
 "debugMenu.readerCellTitle" = "阅读器 CSS URL";
@@ -8726,8 +8786,14 @@ Example: Reply to Pamela Nguyen */
 /* Title of the primary button shown after the Jetpack plugin has been installed. Tapping on the button dismisses the installation screen. */
 "jetpack.install-flow.success.primaryButtonText" = "完成";
 
+/* Message asking the user to install Jetpack to access all app features */
+"jetpack.install.allFeatures.description" = "要解锁所有应用程序功能，您需要安装 Jetpack 插件。";
+
 /* Title of a button for connecting user account to Jetpack. */
 "jetpack.install.connectUser.button.title" = "连接您的用户账户";
+
+/* Message asking the user to connect Jetpack to access all app features */
+"jetpack.install.connectUser.bypassXMLRPC.description" = "要解锁所有应用程序功能，您需要将 Jetpack 插件连接到您的用户账户。";
 
 /* Message asking the user if they want to set up Jetpack from notifications */
 "jetpack.install.connectUser.notifications.description" = "为了在您的手机上获取来自您的 WordPress 站点的通知，您需要连接到您的用户账户。";
@@ -9072,6 +9138,9 @@ Example: Reply to Pamela Nguyen */
 /* Line chart type */
 "jetpackStats.chart.lineChart" = "折线图";
 
+/* Label for aggregated 'Other' segment in pie charts */
+"jetpackStats.chart.other" = "其他";
+
 /* Show chart data menu item */
 "jetpackStats.chart.showData" = "显示数据";
 
@@ -9180,9 +9249,6 @@ Example: Reply to Pamela Nguyen */
 /* Option to turn off period comparison */
 "jetpackStats.datePicker.comparisonOff" = "无法比较";
 
-/* Title for custom date range picker */
-"jetpackStats.datePicker.customRange" = "自定义范围";
-
 /* Menu item for custom date range picker */
 "jetpackStats.datePicker.customRangeMenu" = "自定义范围...";
 
@@ -9201,6 +9267,9 @@ Example: Reply to Pamela Nguyen */
 /* Label for quick period selection */
 "jetpackStats.datePicker.quickPeriodsForStartDate" = "快速选择起始时段";
 
+/* Title for custom date range picker */
+"jetpackStats.datePicker.selectRange" = "选择范围";
+
 /* Site time zone header */
 "jetpackStats.datePicker.siteTimeZone" = "站点时区";
 
@@ -9216,6 +9285,15 @@ Example: Reply to Pamela Nguyen */
 /* Title for stats date range control tip */
 "jetpackStats.dateRangeTip.title" = "浏览时间";
 
+/* Device breakdown by browser */
+"jetpackStats.deviceBreakdowns.browser" = "浏览器";
+
+/* Device breakdown by platform/OS */
+"jetpackStats.deviceBreakdowns.operatingSystem" = "操作系统";
+
+/* Device breakdown by screen size */
+"jetpackStats.deviceBreakdowns.screensize" = "屏幕大小";
+
 /* Section title for the list of child links */
 "jetpackStats.externalLinkDetails.childLinks" = "子链接";
 
@@ -9224,6 +9302,12 @@ Example: Reply to Pamela Nguyen */
 
 /* Title for the external link details screen */
 "jetpackStats.externalLinkDetails.title" = "外部链接";
+
+/* Button to explore plans when a feature is gated */
+"jetpackStats.featureGate.explorePlans" = "探索各种套餐";
+
+/* Message shown when a stats feature is gated behind a paid plan */
+"jetpackStats.featureGate.message" = "升级您的套餐以使用高级分析功能";
 
 /* Automatic granularity option */
 "jetpackStats.granularity.automatic" = "自动";
@@ -9339,6 +9423,9 @@ Example: Reply to Pamela Nguyen */
 /* Clicks data type (external links) */
 "jetpackStats.siteDataTypes.clicks" = "点击次数";
 
+/* Devices data type */
+"jetpackStats.siteDataTypes.devices" = "设备";
+
 /* File downloads data type */
 "jetpackStats.siteDataTypes.fileDownloads" = "文件下载";
 
@@ -9414,6 +9501,9 @@ Example: Reply to Pamela Nguyen */
 /* Table column title for Top List card */
 "jetpackStats.topListColumnTitle.clicks" = "外部链接";
 
+/* Table column title for Devices Top List card */
+"jetpackStats.topListColumnTitle.devices" = "设备";
+
 /* Table column title for Top List card */
 "jetpackStats.topListColumnTitle.fileDownloads" = "文件";
 
@@ -9429,8 +9519,65 @@ Example: Reply to Pamela Nguyen */
 /* Table column title for Top List card */
 "jetpackStats.topListColumnTitle.searchTerms" = "名称";
 
+/* Table column title for UTM Top List card */
+"jetpackStats.topListColumnTitle.utm" = "活动";
+
 /* Table column title for Top List card */
 "jetpackStats.topListColumnTitle.videos" = "视频";
+
+/* Plural post count for UTM metrics. %1$d is the number. */
+"jetpackStats.utmMetricDetails.postCount.plural" = "%1$d 篇文章";
+
+/* Singular post count for UTM metrics. %1$d is the number. */
+"jetpackStats.utmMetricDetails.postCount.singular" = "%1$d 篇文章";
+
+/* Title for the UTM campaign details screen */
+"jetpackStats.utmMetricDetails.title" = "UTM 活动";
+
+/* Section title for top posts from this UTM campaign */
+"jetpackStats.utmMetricDetails.topPosts" = "热门文章";
+
+/* UTM parameter for campaign only */
+"jetpackStats.utmParamGroupings.campaign" = "活动";
+
+/* UTM parameter for medium only */
+"jetpackStats.utmParamGroupings.medium" = "媒介";
+
+/* UTM parameter for source only */
+"jetpackStats.utmParamGroupings.source" = "来源";
+
+/* Number of ads served. %@ is the ads count. */
+"jetpackStats.wordAds.adsServed.count" = "已投放 %@ 条广告";
+
+/* Total earnings from WordAds */
+"jetpackStats.wordAds.earnings" = "收益";
+
+/* Button to learn more about WordAds earnings */
+"jetpackStats.wordAds.learnMore" = "了解更多";
+
+/* Message shown when there are no payment records */
+"jetpackStats.wordAds.noPaymentsYet" = "尚无付款";
+
+/* Outstanding amount owed from WordAds */
+"jetpackStats.wordAds.outstanding" = "未结";
+
+/* Amount paid out from WordAds earnings */
+"jetpackStats.wordAds.paid" = "已付";
+
+/* Title for payment history card and screen */
+"jetpackStats.wordAds.paymentsHistory" = "付款历史记录";
+
+/* Title for WordAds total earnings card */
+"jetpackStats.wordAds.totalEarnings" = "总收益";
+
+/* Number of ads served */
+"jetpackStats.wordAdsMetrics.adsServed" = "已投放广告数";
+
+/* Average cost per mille (thousand impressions) */
+"jetpackStats.wordAdsMetrics.averageCPM" = "平均 CPM";
+
+/* Revenue from ads */
+"jetpackStats.wordAdsMetrics.revenue" = "收益";
 
 /* Title for a call-to-action button on the Jetpack install card. */
 "jetpackinstallcard.button.learn" = "详细了解";
@@ -10170,6 +10317,9 @@ Example: Reply to Pamela Nguyen */
 /* A title for the log severity level */
 "phpLogs.severityWarning" = "警告";
 
+/* Error message when a pinned custom post type cannot be found. %1$@ is the post type name. */
+"pinnedPostType.error.notFound" = "“%1$@”在此站点上不可用。";
+
 /* Title for the plan selection view */
 "planSelection.title" = "套餐";
 
@@ -10284,13 +10434,15 @@ Example: Reply to Pamela Nguyen */
 /* Navigation title for post discussion settings */
 "postDiscussion.title" = "讨论";
 
-/* Button in an alert confirming discaring changes */
+/* Button in an alert confirming discarding changes
+   Button in an alert confirming discaring changes */
 "postEditor.closeConfirmationAlert.discardChanges" = "放弃更改";
 
 /* Button in an alert confirming discaring a new draft */
 "postEditor.closeConfirmationAlert.discardDraft" = "放弃草稿";
 
-/* Button to keep the changes in an alert confirming discaring changes */
+/* Button to keep the changes in an alert confirming discarding changes
+   Button to keep the changes in an alert confirming discaring changes */
 "postEditor.closeConfirmationAlert.keepEditing" = "继续编辑";
 
 /* Button in an alert confirming saving a new draft */
@@ -10338,6 +10490,9 @@ Example: Reply to Pamela Nguyen */
 /* A message for a snackbar informing the user that some media files requires their attention */
 "postEditor.postHasFailingMediaUploadsSnackbar.message" = "部分媒体项目上传失败";
 
+/* Title for the publish button in the post editor navigation bar */
+"postEditor.publishButton.title" = "发布";
+
 /* Editor, notice for successful recovery a trashed post */
 "postEditor.recoverTrashedPost.postRecoveredNoticeTitle" = "文章已恢复为草稿";
 
@@ -10358,6 +10513,9 @@ Example: Reply to Pamela Nguyen */
 
 /* Saving draft to generate a preview (status message */
 "postEditor.savingDraftForPreview" = "正在保存草稿……";
+
+/* Title for the update button in the post editor navigation bar */
+"postEditor.updateButton.title" = "更新";
 
 /* Empty state description when no post formats are available */
 "postFormatPicker.emptyState.description" = "此站点尚未配置文章格式。";
@@ -12124,6 +12282,15 @@ Feel free to replace it with other bracket types that you think looks better for
 
 /* Title for screen to select the privacy options for a blog */
 "siteSettings.privacy.title" = "隐私";
+
+/* Explanation for why the 'Use theme styles' toggle is disabled when the site doesn't have a block theme */
+"siteSettings.themeStyles.footer.blockThemeSuggested" = "您的站点未使用区块主题，因此编辑器可能无法正确匹配您的内容。 如果显示异常，您可以禁用编辑器样式。";
+
+/* Explanation for the option to enable theme styles when the feature is available */
+"siteSettings.themeStyles.footer.enabled" = "让区块编辑器的外观与您的主题风格保持一致。";
+
+/* Explanation for why the 'Use theme styles' toggle is disabled when the site doesn't have the Gutenberg plugin */
+"siteSettings.themeStyles.footer.gutenbergRequired" = "在您的站点上安装 Gutenberg 插件，以激活主题样式支持。";
 
 /* Format string for adding a new taxonomy term. %1$@ is the taxonomy name. */
 "siteTaxonomy.addNew.format" = "添加 %1$@";

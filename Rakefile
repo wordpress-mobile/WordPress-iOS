@@ -78,9 +78,7 @@ namespace :dependencies do
     end
 
     task :install do
-      fold('install.bundler') do
-        sh 'bundle install --jobs=3 --retry=3 --path=${BUNDLE_PATH:-vendor/bundle}'
-      end
+      sh 'bundle install'
     end
     CLOBBER << 'vendor/bundle'
     CLOBBER << '.bundle'
@@ -634,11 +632,6 @@ def display_prompt_response?
   end
 
   response == 'Y'
-end
-
-# FIXME: This used to add Travis folding formatting, but we no longer use Travis. I'm leaving it here for the moment, but I think we should remove it.
-def fold(_)
-  yield
 end
 
 def xcodebuild(*build_cmds)

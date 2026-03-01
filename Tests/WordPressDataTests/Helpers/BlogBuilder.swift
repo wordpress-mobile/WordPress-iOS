@@ -22,6 +22,7 @@ class BlogBuilder {
         // Non-null properties in Core Data
         blog.url = "https://\(blog.dotComID?.stringValue ?? "wwww").example.com"
         blog.xmlrpc = "\(blog.url!)/xmlrpc.php"
+        blog.keychain = MockKeychainService()
     }
 
     func with(atomic: Bool) -> Self {

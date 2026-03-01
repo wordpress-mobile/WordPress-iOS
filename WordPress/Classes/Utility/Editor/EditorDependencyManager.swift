@@ -262,7 +262,7 @@ final class EditorDependencyManager: Sendable {
         }
 
         if needsWarmup {
-            DDLogInfo("EditorDependencyManager: Warming up editor for blog \(blog.logDescription())")
+            DDLogInfo("EditorDependencyManager: Warming up editor for blog \(blog.logDescription)")
             let configuration = EditorConfiguration(blog: blog, postType: .post)
             GutenbergKit.EditorViewController.warmup(configuration: configuration)
         }

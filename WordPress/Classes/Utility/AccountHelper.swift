@@ -64,7 +64,7 @@ import WordPressData
             let accountDescription = account?.logDescription ?? "<Self-Hosted>"
             let isDefault = (account != nil && account == defaultAccount) ? " (default)" : ""
             let blogsDescription = blogs.map({ (blog) -> String in
-                return "└─ " + blog.logDescription()
+                return "└─ " + blog.logDescription
             }).joined(separator: "\n")
 
             return accountDescription + isDefault + "\n" + blogsDescription

@@ -7,12 +7,12 @@ extension BasePost.Status: @retroactive Identifiable {
 
     var title: String {
         switch self {
-        case .draft: NSLocalizedString("postStatus.draft.title", value: "Draft", comment: "Post status title")
-        case .pending: NSLocalizedString("postStatus.pending.title", value: "Pending", comment: "Post status title")
-        case .publishPrivate: NSLocalizedString("postStatus.private.title", value: "Private", comment: "Post status title")
-        case .scheduled: NSLocalizedString("postStatus.scheduled.title", value: "Scheduled", comment: "Post status title")
-        case .publish: NSLocalizedString("postStatus.published.title", value: "Published", comment: "Post status title")
-        case .trash: NSLocalizedString("postStatus.trash.title", value: "Trashed", comment: "Post status title")
+        case .draft: SharedStrings.PostStatus.draft
+        case .pending: SharedStrings.PostStatus.pending
+        case .publishPrivate: SharedStrings.PostStatus.privatePost
+        case .scheduled: SharedStrings.PostStatus.scheduled
+        case .publish: SharedStrings.PostStatus.published
+        case .trash: SharedStrings.PostStatus.trash
         case .deleted: NSLocalizedString("postStatus.deleted.title", value: "Deleted", comment: "Post status title")
         }
     }

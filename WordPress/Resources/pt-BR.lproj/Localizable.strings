@@ -8733,13 +8733,15 @@ Example: Reply to Pamela Nguyen */
 /* Button label to view plugin on WordPress.org */
 "pluginDetails.viewOnWordPressOrg.button" = "Ver no WordPress.org";
 
-/* Button in an alert confirming discaring changes */
+/* Button in an alert confirming discarding changes
+   Button in an alert confirming discaring changes */
 "postEditor.closeConfirmationAlert.discardChanges" = "Descartar alterações";
 
 /* Button in an alert confirming discaring a new draft */
 "postEditor.closeConfirmationAlert.discardDraft" = "Descartar rascunho";
 
-/* Button to keep the changes in an alert confirming discaring changes */
+/* Button to keep the changes in an alert confirming discarding changes
+   Button to keep the changes in an alert confirming discaring changes */
 "postEditor.closeConfirmationAlert.keepEditing" = "Continuar editando";
 
 /* Button in an alert confirming saving a new draft */

@@ -1,5 +1,4 @@
 import XCTest
-import Nimble
 
 @testable import WordPress
 @testable import WordPressData
@@ -13,7 +12,7 @@ class ReaderDetailViewControllerTests: CoreDataTestCase {
 
         let controller = ReaderDetailViewController.controllerWithPostURL(url)
 
-        expect(controller).to(beAKindOf(ReaderDetailViewController.self))
+        XCTAssertTrue(controller is ReaderDetailViewController)
     }
 
     /// Starts the coordinator with the ReaderPost and call start in viewDidLoad
@@ -28,8 +27,8 @@ class ReaderDetailViewControllerTests: CoreDataTestCase {
 
         controller.viewDidLoad()
 
-        expect(coordinatorMock.didCallStart).to(beTrue())
-        expect(originalCoordinator?.post).to(equal(post))
+        XCTAssertTrue(coordinatorMock.didCallStart)
+        XCTAssertEqual(originalCoordinator?.post, post)
     }
 
     /// Given a post and site ID, give it correctly to the coordinator
@@ -40,9 +39,9 @@ class ReaderDetailViewControllerTests: CoreDataTestCase {
 
         let controller = ReaderDetailViewController.controllerWithPostID(postID, siteID: sideID)
 
-        expect(controller.coordinator?.postID).to(equal(1))
-        expect(controller.coordinator?.siteID).to(equal(2))
-        expect(controller.coordinator?.isFeed).to(beFalse())
+        XCTAssertEqual(controller.coordinator?.postID, 1)
+        XCTAssertEqual(controller.coordinator?.siteID, 2)
+        XCTAssertEqual(controller.coordinator?.isFeed, false)
     }
 
 }

@@ -29,106 +29,6 @@ NS_ASSUME_NONNULL_BEGIN
 @class MenuLocation;
 @class PostType;
 
-extern NSString * const BlogEntityName;
-extern NSString * const PostFormatStandard;
-
-/// - warning: These flags are app-agnostic and define whether the _blog_ supports
-/// the given feature. If the app needs to determine whether to show a feature or
-/// not, it has to implement additional logic on top of it.
-typedef NS_ENUM(NSUInteger, BlogFeature) {
-    /// Can the blog be removed?
-    BlogFeatureRemovable,
-    /// Can the blog be hidden?
-    BlogFeatureVisibility,
-    /// Can the blog use the WordPress.com REST API?
-    BlogFeatureWPComRESTAPI,
-    /// Can we use an OAuth2 token with wp-login.php?
-    BlogFeatureOAuth2Login,
-    /// Does the blog support reblogs?
-    BlogFeatureReblog,
-    /// Does the blog support comment likes?
-    BlogFeatureCommentLikes,
-    /// Can we show stats for the blog?
-    BlogFeatureStats,
-    /// Can we show activity for the blog?
-    BlogFeatureActivity,
-    /// Does the blog support mentions?
-    BlogFeatureMentions,
-    /// Does the blog support xposts?
-    BlogFeatureXposts,
-    /// Does the blog support push notifications?
-    BlogFeaturePushNotifications,
-    /// Does the blog support theme browsing?
-    BlogFeatureThemeBrowsing,
-    /// Does the blog support custom themes?
-    BlogFeatureCustomThemes,
-    /// Does the blog support premium themes?
-    BlogFeaturePremiumThemes,
-    /// Does the blog support Menus management?
-    BlogFeatureMenus,
-    /// Does the blog support private visibility?
-    BlogFeaturePrivate,
-    /// Does the blog support sharing?
-    BlogFeatureSharing,
-    /// Does the blog support people management?
-    BlogFeaturePeople,
-    /// Can the blog's site be changed or deleted?
-    BlogFeatureSiteManagement,
-    /// Does the blog support different paid plans?
-    BlogFeaturePlans,
-    /// Does the blog support plugins?
-    BlogFeaturePluginManagement,
-    /// Does the blog support Jetpack image settings?
-    BlogFeatureJetpackImageSettings,
-    /// Does the blog support Jetpack settings
-    BlogFeatureJetpackSettings,
-    /// Does the blog support custom domains?
-    BlogFeatureDomains,
-    /// Does the blog support frame-nonce to authenticate previews?
-    BlogFeatureNoncePreviews,
-    /// Does the blog support editing media metadata?
-    BlogFeatureMediaMetadataEditing,
-    /// Does the blog support editing media alternative text?
-    BlogFeatureMediaAltEditing,
-    /// Does the blog support deleting media?
-    BlogFeatureMediaDeletion,
-    /// Does the blog support Stock Photos feature (free photos library)
-    BlogFeatureStockPhotos,
-    /// Does the blog support setting the homepage type and pages?
-    BlogFeatureHomepageSettings,
-    /// Does the blog support Jetpack contact info block?
-    BlogFeatureContactInfo,
-    BlogFeatureBlockEditorSettings,
-    /// Does the blog support the Layout grid block?
-    BlogFeatureLayoutGrid,
-    /// Does the blog support the tiled gallery block?
-    BlogFeatureTiledGallery,
-    /// Does the blog support the VideoPress block?
-    BlogFeatureVideoPress,
-    /// Does the blog support v5 of the VideoPress block?
-    BlogFeatureVideoPressV5,
-    /// Does the blog support Facebook embed block?
-    BlogFeatureFacebookEmbed,
-    /// Does the blog support Instagram embed block?
-    BlogFeatureInstagramEmbed,
-    /// Does the blog support Loom embed block?
-    BlogFeatureLoomEmbed,
-    /// Does the blog support Smartframe embed block?
-    BlogFeatureSmartframeEmbed,
-    /// Does the blog support File Downloads section in stats?
-    BlogFeatureFileDownloadsStats,
-    /// Does the blog support Blaze?
-    BlogFeatureBlaze,
-    /// Does the blog support listing and editing Pages?
-    BlogFeaturePages,
-    /// Does the blog support Site Monitoring?
-    BlogFeatureSiteMonitoring,
-    /// Does the blog support Publicize?
-    BlogFeaturePublicize,
-    /// Does the blog support share buttons?
-    BlogFeatureShareButtons,
-};
-
 typedef NS_ENUM(NSInteger, SiteVisibility) {
     SiteVisibilityPrivate = -1,
     SiteVisibilityHidden = 0,
@@ -209,7 +109,6 @@ typedef NS_ENUM(NSInteger, SiteVisibility) {
  *  @warn       For WordPress.com or Jetpack Managed sites this will be nil. Use effectiveUsername instead
  */
 @property (nonatomic, strong, readwrite, nullable) NSString *username;
-@property (nonatomic, strong, readwrite, nullable) NSString *password;
 
 
 // Readonly Properties
@@ -218,32 +117,6 @@ typedef NS_ENUM(NSInteger, SiteVisibility) {
 
 // http://wp.koke.me/sub
 @property (nonatomic, strong, nullable) NSString *url;
-
-#pragma mark - Blog information
-
-- (nullable id)getOptionValue:(NSString *) name;
-- (void)setValue:(id)value forOption:(NSString *)name;
-- (BOOL)supports:(BlogFeature)feature;
-- (BOOL)isStatsActive;
-
-/**
- Returns a human readable description for logging
- 
- Instead of inspecting the core data object, this returns select information, more
- useful for support.
- */
-- (NSString *)logDescription;
-
-/**
- Check if there is already a basic auth credential stored for this blog/site.
-
- @return YES if there is a credential
- */
-- (BOOL)isBasicAuthCredentialStored;
-
-/// Checks the blogs installed WordPress version is more than or equal to the requiredVersion
-/// @param requiredVersion The minimum version to check for
-- (BOOL)hasRequiredWordPressVersion:(NSString *)requiredVersion;
 
 @end
 

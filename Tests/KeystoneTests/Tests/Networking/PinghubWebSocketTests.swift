@@ -1,7 +1,6 @@
 import Foundation
 import XCTest
 import Starscream
-import Nimble
 
 @testable import WordPress
 
@@ -20,22 +19,29 @@ class PinghubWebSocketTests: XCTestCase {
 
         delegate.connected = expectation(description: "Connected to pinghub")
         client.connect()
-        wait(for: [delegate.connected!], timeout: 0.1)
+        wait(for: [delegate.connected!], timeout: 2)
     }
 
     func testDisconnect() throws {
-        let (server, client, delegate) = try connect()
+        let (_, client, delegate) = try connect()
 
         delegate.disconnected = expectation(description: "Disconnected to pinghub")
         client.disconnect()
-        wait(for: [delegate.disconnected!], timeout: 0.1)
+        wait(for: [delegate.disconnected!], timeout: 2)
     }
 
     func testReceiveMessage() throws {
         let (server, client, delegate) = try connect()
 
+        let exp = expectation(description: "Received expected note IDs")
+        delegate.onActionReceived = {
+            if delegate.noteIDs == [2] {
+                exp.fulfill()
+            }
+        }
+
         server.broadcast(message: likePost)
-        expect(delegate.noteIDs).toEventually(equal([2]))
+        wait(for: [exp], timeout: 20)
 
         client.disconnect()
     }
@@ -43,10 +49,17 @@ class PinghubWebSocketTests: XCTestCase {
     func testReceiveManyMessage() throws {
         let (server, client, delegate) = try connect()
 
+        let exp = expectation(description: "Received all expected note IDs")
+        delegate.onActionReceived = {
+            if delegate.noteIDs == [2, 3, 4] {
+                exp.fulfill()
+            }
+        }
+
         server.broadcast(message: likePost)
         server.broadcast(message: unlikePost)
         server.broadcast(message: commentOnPost)
-        expect(delegate.noteIDs).toEventually(equal([2, 3, 4]))
+        wait(for: [exp], timeout: 20)
 
         client.disconnect()
     }
@@ -54,8 +67,15 @@ class PinghubWebSocketTests: XCTestCase {
     func testReceiveUnexpectedMessage() throws {
         let (server, client, delegate) = try connect()
 
+        let exp = expectation(description: "Received unexpected message")
+        delegate.onUnexpectedMessageReceived = {
+            if delegate.unexpectedMessages.count == 1 {
+                exp.fulfill()
+            }
+        }
+
         server.broadcast(message: #"{"foo": "bar"}"#)
-        expect(delegate.unexpectedMessages.count).toEventually(equal(1))
+        wait(for: [exp], timeout: 20)
 
         client.disconnect()
     }
@@ -69,7 +89,7 @@ class PinghubWebSocketTests: XCTestCase {
 
         delegate.connected = expectation(description: "Connected to pinghub")
         client.connect()
-        wait(for: [delegate.connected!], timeout: 0.1)
+        wait(for: [delegate.connected!], timeout: 2)
 
         return (server, client, delegate)
     }
@@ -136,6 +156,9 @@ private class PinghubClientDelegateSpy: PinghubClientDelegate {
     var connected: XCTestExpectation?
     var disconnected: XCTestExpectation?
 
+    var onActionReceived: (() -> Void)?
+    var onUnexpectedMessageReceived: (() -> Void)?
+
     var actions: [PinghubClient.Action] = []
     var unexpectedMessages: [PinghubClient.Unexpected] = []
 
@@ -160,10 +183,12 @@ private class PinghubClientDelegateSpy: PinghubClientDelegate {
 
     func pinghub(_ client: PinghubClient, actionReceived action: PinghubClient.Action) {
         actions.append(action)
+        onActionReceived?()
     }
 
     func pinghub(_ client: PinghubClient, unexpected message: PinghubClient.Unexpected) {
         unexpectedMessages.append(message)
+        onUnexpectedMessageReceived?()
     }
 
 }

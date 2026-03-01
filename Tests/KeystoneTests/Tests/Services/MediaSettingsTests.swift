@@ -1,6 +1,5 @@
 import WordPressShared
 import XCTest
-import Nimble
 @testable import WordPress
 
 class MediaSettingsTests: XCTestCase {
@@ -9,19 +8,19 @@ class MediaSettingsTests: XCTestCase {
     func testDefaultMaxImageSize() {
         let settings = MediaSettings(database: EphemeralKeyValueDatabase())
         let maxImageSize = settings.maxImageSizeSetting
-        expect(maxImageSize).to(equal(2000))
+        XCTAssertEqual(maxImageSize, 2000)
     }
 
     func testDefaultImageOptimization() {
         let settings = MediaSettings(database: EphemeralKeyValueDatabase())
         let imageOptimization = settings.imageOptimizationEnabled
-        expect(imageOptimization).to(beTrue())
+        XCTAssertTrue(imageOptimization)
     }
 
     func testDefaultImageQuality() {
         let settings = MediaSettings(database: EphemeralKeyValueDatabase())
         let imageQuality = settings.imageQualitySetting
-        expect(imageQuality).to(equal(.medium))
+        XCTAssertEqual(imageQuality, .medium)
     }
 
     // MARK: - Max Image Size values
@@ -32,7 +31,7 @@ class MediaSettingsTests: XCTestCase {
         database.set(NSCoder.string(for: size), forKey: "SavedMaxImageSizeSetting")
 
         let settings = MediaSettings(database: database)
-        expect(settings.maxImageSizeSetting).to(equal(dimension))
+        XCTAssertEqual(settings.maxImageSizeSetting, dimension)
     }
 
     func testMaxImageSizeClampsValues() {
@@ -41,9 +40,9 @@ class MediaSettingsTests: XCTestCase {
         let highValue = settings.allowedImageSizeRange.max + 1
 
         settings.maxImageSizeSetting = lowValue
-        expect(settings.maxImageSizeSetting).to(equal(settings.allowedImageSizeRange.min))
+        XCTAssertEqual(settings.maxImageSizeSetting, settings.allowedImageSizeRange.min)
         settings.maxImageSizeSetting = highValue
-        expect(settings.maxImageSizeSetting).to(equal(settings.allowedImageSizeRange.max))
+        XCTAssertEqual(settings.maxImageSizeSetting, settings.allowedImageSizeRange.max)
     }
 
     func testImageSizeForUploadReturnsIntMax() {
@@ -51,22 +50,22 @@ class MediaSettingsTests: XCTestCase {
         let highValue = settings.allowedImageSizeRange.max + 1
 
         settings.maxImageSizeSetting = highValue
-        expect(settings.imageSizeForUpload).to(equal(Int.max))
+        XCTAssertEqual(settings.imageSizeForUpload, Int.max)
 
     }
 
     // MARK: - Values based on image optimization
     func testImageSizeForUploadValueBasedOnOptimization() {
         let settings = MediaSettings(database: EphemeralKeyValueDatabase())
-        expect(settings.imageSizeForUpload).to(equal(2000))
+        XCTAssertEqual(settings.imageSizeForUpload, 2000)
         settings.imageOptimizationEnabled = false
-        expect(settings.imageSizeForUpload).to(equal(Int.max))
+        XCTAssertEqual(settings.imageSizeForUpload, Int.max)
     }
 
     func testImageQualityForUploadValueBasedOnOptimization() {
         let settings = MediaSettings(database: EphemeralKeyValueDatabase())
-        expect(settings.imageQualityForUpload).to(equal(.medium))
+        XCTAssertEqual(settings.imageQualityForUpload, .medium)
         settings.imageOptimizationEnabled = false
-        expect(settings.imageQualityForUpload).to(equal(.high))
+        XCTAssertEqual(settings.imageQualityForUpload, .high)
     }
 }

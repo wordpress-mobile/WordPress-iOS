@@ -1,4 +1,4 @@
-/* Translation-Revision-Date: 2026-01-27 09:54:10+0000 */
+/* Translation-Revision-Date: 2026-02-26 09:56:14+0000 */
 /* Plural-Forms: nplurals=1; plural=0; */
 /* Generator: GlotPress/4.0.3 */
 /* Language: ja_JP */
@@ -7222,6 +7222,9 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Feature name for the block editor in application password required prompt */
 "applicationPasswordRequired.feature.blockEditor" = "ブロックエディター";
 
+/* Feature name for managing custom post types in the app */
+"applicationPasswordRequired.feature.customPosts" = "カスタム投稿タイプ";
+
 /* Feature name for managing terms and taxonomies in the app */
 "applicationPasswordRequired.feature.customTaxonomies" = "タクソノミー管理";
 
@@ -7381,6 +7384,27 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Action shown in a bottom notice to dismiss it. */
 "blogDashboard.dismiss" = "削除";
+
+/* Error message shown when the active theme cannot be found for a site. */
+"blogDetails.activeThemeNotFound.errorDescription" = "このサイトのアクティブなテーマが見つかりませんでした。";
+
+/* Button title to connect Jetpack in XML-RPC disabled alert */
+"blogDetails.xmlrpcDisabled.alert.connectJetpack" = "Jetpack を連携";
+
+/* Description explaining options to restore functionality when XML-RPC is disabled */
+"blogDetails.xmlrpcDisabled.alert.description" = "サイトで XML-RPC が無効になっています。 現在、アプリの一部の機能には XML-RPC が必要です。 Jetpack を連携するか、XML-RPC を有効にしてすべての機能にアクセスします。";
+
+/* Button title to learn more about XML-RPC being disabled */
+"blogDetails.xmlrpcDisabled.alert.learnMore" = "さらに詳しく";
+
+/* Title for the XML-RPC disabled alert */
+"blogDetails.xmlrpcDisabled.alert.title" = "XML-RPC が無効";
+
+/* Subtitle for the XML-RPC disabled card on blog details */
+"blogDetails.xmlrpcDisabled.card.subtitle" = "一部の機能が制限される場合があります";
+
+/* Title for the XML-RPC disabled card on blog details */
+"blogDetails.xmlrpcDisabled.card.title" = "XML-RPC が無効";
 
 /* Badge title in site list */
 "blogList.siteBadge.staging" = "ステージング";
@@ -7836,6 +7860,39 @@ Example: Reply to Pamela Nguyen */
 /* Create Sheet button title */
 "createSheet.post" = "投稿";
 
+/* Error message shown when the post was modified by another user while editing */
+"customPostEditor.error.conflict.message" = "保存しようとしている投稿は変更されています。";
+
+/* Empty state message when no custom posts exist. %1$@ is the post type name (e.g., 'Podcasts', 'Products'). */
+"customPostList.emptyState.message" = "%1$@ なし";
+
+/* Tab title for draft posts */
+"customPostTab.drafts" = "下書き";
+
+/* Tab title for published posts */
+"customPostTab.published" = "公開済み";
+
+/* Tab title for scheduled posts */
+"customPostTab.scheduled" = "予約済み";
+
+/* Menu item title for sending feedback on the custom post types screen */
+"customPostTab.sendFeedback" = "フィードバックを送る";
+
+/* Tab title for trashed posts */
+"customPostTab.trash" = "ゴミ箱";
+
+/* Empty state message when there are no custom post types to display */
+"customPostTypes.emptyState.message" = "カスタム投稿タイプなし";
+
+/* Accessibility label for the button to pin a custom post type */
+"customPostTypes.pin.accessibilityLabel" = "固定";
+
+/* Title for the Custom Post Types screen */
+"customPostTypes.title" = "詳細";
+
+/* Accessibility label for the button to unpin a custom post type */
+"customPostTypes.unpin.accessibilityLabel" = "固定を解除";
+
 /* Customize Insights description */
 "customizeInsightsCell.content" = "カスタマイズされたダッシュボードを作成して、表示するレポートを選択します。 最も重視するデータに集中できます。";
 
@@ -7976,6 +8033,9 @@ Example: Reply to Pamela Nguyen */
 
 /* Debug Menu action for TipKit */
 "debugMenu.hideAllTips" = "すべてのヒントを隠す";
+
+/* Debug Menu item title */
+"debugMenu.item.logs" = "ログ";
 
 /* Title of the screen that allows the user to change the Reader CSS URL for debug builds */
 "debugMenu.readerCellTitle" = "Reader CSS URL";
@@ -8705,8 +8765,14 @@ Example: Reply to Pamela Nguyen */
 /* Title of the primary button shown after the Jetpack plugin has been installed. Tapping on the button dismisses the installation screen. */
 "jetpack.install-flow.success.primaryButtonText" = "完了";
 
+/* Message asking the user to install Jetpack to access all app features */
+"jetpack.install.allFeatures.description" = "すべてのアプリ機能を利用するには、Jetpack プラグインをインストールする必要があります。";
+
 /* Title of a button for connecting user account to Jetpack. */
 "jetpack.install.connectUser.button.title" = "ユーザーアカウントを連携する";
+
+/* Message asking the user to connect Jetpack to access all app features */
+"jetpack.install.connectUser.bypassXMLRPC.description" = "すべてのアプリ機能を利用するには、Jetpack プラグインをユーザーアカウントに連携する必要があります。";
 
 /* Message asking the user if they want to set up Jetpack from notifications */
 "jetpack.install.connectUser.notifications.description" = "スマートフォンで WordPress サイトからの役立つ通知を受信するには、ユーザーアカウントに連携する必要があります。";
@@ -9045,6 +9111,9 @@ Example: Reply to Pamela Nguyen */
 /* Line chart type */
 "jetpackStats.chart.lineChart" = "折れ線";
 
+/* Label for aggregated 'Other' segment in pie charts */
+"jetpackStats.chart.other" = "その他";
+
 /* Show chart data menu item */
 "jetpackStats.chart.showData" = "データを表示";
 
@@ -9150,9 +9219,6 @@ Example: Reply to Pamela Nguyen */
 /* Option to turn off period comparison */
 "jetpackStats.datePicker.comparisonOff" = "比較しない";
 
-/* Title for custom date range picker */
-"jetpackStats.datePicker.customRange" = "カスタム範囲";
-
 /* Menu item for custom date range picker */
 "jetpackStats.datePicker.customRangeMenu" = "カスタム範囲...";
 
@@ -9168,6 +9234,9 @@ Example: Reply to Pamela Nguyen */
 /* Label for quick period selection */
 "jetpackStats.datePicker.quickPeriodsForStartDate" = "開始日のクイック期間";
 
+/* Title for custom date range picker */
+"jetpackStats.datePicker.selectRange" = "範囲を選択";
+
 /* Site time zone header */
 "jetpackStats.datePicker.siteTimeZone" = "サイトのタイムゾーン";
 
@@ -9180,6 +9249,12 @@ Example: Reply to Pamela Nguyen */
 /* Title for stats date range control tip */
 "jetpackStats.dateRangeTip.title" = "期間を変更";
 
+/* Device breakdown by browser */
+"jetpackStats.deviceBreakdowns.browser" = "ブラウザー";
+
+/* Device breakdown by platform/OS */
+"jetpackStats.deviceBreakdowns.operatingSystem" = "オペレーティングシステム";
+
 /* Section title for the list of child links */
 "jetpackStats.externalLinkDetails.childLinks" = "サブリンク";
 
@@ -9188,6 +9263,12 @@ Example: Reply to Pamela Nguyen */
 
 /* Title for the external link details screen */
 "jetpackStats.externalLinkDetails.title" = "外部リンク";
+
+/* Button to explore plans when a feature is gated */
+"jetpackStats.featureGate.explorePlans" = "プランの内容を見る";
+
+/* Message shown when a stats feature is gated behind a paid plan */
+"jetpackStats.featureGate.message" = "プランをアップグレードして高度な分析にアクセスする";
 
 /* Automatic granularity option */
 "jetpackStats.granularity.automatic" = "自動";
@@ -9300,6 +9381,9 @@ Example: Reply to Pamela Nguyen */
 /* Clicks data type (external links) */
 "jetpackStats.siteDataTypes.clicks" = "クリック";
 
+/* Devices data type */
+"jetpackStats.siteDataTypes.devices" = "端末";
+
 /* File downloads data type */
 "jetpackStats.siteDataTypes.fileDownloads" = "ファイルのダウンロード";
 
@@ -9375,6 +9459,9 @@ Example: Reply to Pamela Nguyen */
 /* Table column title for Top List card */
 "jetpackStats.topListColumnTitle.clicks" = "外部リンク";
 
+/* Table column title for Devices Top List card */
+"jetpackStats.topListColumnTitle.devices" = "端末";
+
 /* Table column title for Top List card */
 "jetpackStats.topListColumnTitle.fileDownloads" = "ファイル";
 
@@ -9390,8 +9477,65 @@ Example: Reply to Pamela Nguyen */
 /* Table column title for Top List card */
 "jetpackStats.topListColumnTitle.searchTerms" = "期間";
 
+/* Table column title for UTM Top List card */
+"jetpackStats.topListColumnTitle.utm" = "キャンペーン";
+
 /* Table column title for Top List card */
 "jetpackStats.topListColumnTitle.videos" = "動画";
+
+/* Plural post count for UTM metrics. %1$d is the number. */
+"jetpackStats.utmMetricDetails.postCount.plural" = "%1$d件の投稿";
+
+/* Singular post count for UTM metrics. %1$d is the number. */
+"jetpackStats.utmMetricDetails.postCount.singular" = "%1$d 件の投稿";
+
+/* Title for the UTM campaign details screen */
+"jetpackStats.utmMetricDetails.title" = "UTM キャンペーン";
+
+/* Section title for top posts from this UTM campaign */
+"jetpackStats.utmMetricDetails.topPosts" = "人気記事";
+
+/* UTM parameter for campaign only */
+"jetpackStats.utmParamGroupings.campaign" = "キャンペーン";
+
+/* UTM parameter for medium only */
+"jetpackStats.utmParamGroupings.medium" = "中";
+
+/* UTM parameter for source only */
+"jetpackStats.utmParamGroupings.source" = "ソース";
+
+/* Number of ads served. %@ is the ads count. */
+"jetpackStats.wordAds.adsServed.count" = "%@件の広告が送信されました";
+
+/* Total earnings from WordAds */
+"jetpackStats.wordAds.earnings" = "収益";
+
+/* Button to learn more about WordAds earnings */
+"jetpackStats.wordAds.learnMore" = "さらに詳しく";
+
+/* Message shown when there are no payment records */
+"jetpackStats.wordAds.noPaymentsYet" = "まだ支払いがありません";
+
+/* Outstanding amount owed from WordAds */
+"jetpackStats.wordAds.outstanding" = "未払い";
+
+/* Amount paid out from WordAds earnings */
+"jetpackStats.wordAds.paid" = "有料";
+
+/* Title for payment history card and screen */
+"jetpackStats.wordAds.paymentsHistory" = "支払い履歴";
+
+/* Title for WordAds total earnings card */
+"jetpackStats.wordAds.totalEarnings" = "合計収益";
+
+/* Number of ads served */
+"jetpackStats.wordAdsMetrics.adsServed" = "送信された広告";
+
+/* Average cost per mille (thousand impressions) */
+"jetpackStats.wordAdsMetrics.averageCPM" = "平均 CPM";
+
+/* Revenue from ads */
+"jetpackStats.wordAdsMetrics.revenue" = "収益";
 
 /* Title for a call-to-action button on the Jetpack install card. */
 "jetpackinstallcard.button.learn" = "さらに詳しく";
@@ -10131,6 +10275,9 @@ Example: Reply to Pamela Nguyen */
 /* A title for the log severity level */
 "phpLogs.severityWarning" = "警告";
 
+/* Error message when a pinned custom post type cannot be found. %1$@ is the post type name. */
+"pinnedPostType.error.notFound" = "「%1$@」はこのサイトでは利用できません。";
+
 /* Title for the plan selection view */
 "planSelection.title" = "プラン";
 
@@ -10245,13 +10392,15 @@ Example: Reply to Pamela Nguyen */
 /* Navigation title for post discussion settings */
 "postDiscussion.title" = "ディスカッション";
 
-/* Button in an alert confirming discaring changes */
+/* Button in an alert confirming discarding changes
+   Button in an alert confirming discaring changes */
 "postEditor.closeConfirmationAlert.discardChanges" = "変更を破棄";
 
 /* Button in an alert confirming discaring a new draft */
 "postEditor.closeConfirmationAlert.discardDraft" = "下書きを破棄";
 
-/* Button to keep the changes in an alert confirming discaring changes */
+/* Button to keep the changes in an alert confirming discarding changes
+   Button to keep the changes in an alert confirming discaring changes */
 "postEditor.closeConfirmationAlert.keepEditing" = "編集を続行";
 
 /* Button in an alert confirming saving a new draft */
@@ -10299,6 +10448,9 @@ Example: Reply to Pamela Nguyen */
 /* A message for a snackbar informing the user that some media files requires their attention */
 "postEditor.postHasFailingMediaUploadsSnackbar.message" = "いくつかのメディアアイテムのアップロードに失敗しました";
 
+/* Title for the publish button in the post editor navigation bar */
+"postEditor.publishButton.title" = "公開";
+
 /* Editor, notice for successful recovery a trashed post */
 "postEditor.recoverTrashedPost.postRecoveredNoticeTitle" = "投稿が下書きとして復元されました";
 
@@ -10319,6 +10471,9 @@ Example: Reply to Pamela Nguyen */
 
 /* Saving draft to generate a preview (status message */
 "postEditor.savingDraftForPreview" = "下書きを保存中...";
+
+/* Title for the update button in the post editor navigation bar */
+"postEditor.updateButton.title" = "更新";
 
 /* Empty state description when no post formats are available */
 "postFormatPicker.emptyState.description" = "このサイトには投稿フォーマットが設定されていません。";
@@ -12055,6 +12210,15 @@ Example: given a notice format "Following %@" and empty site name, this will be 
 
 /* Title for screen to select the privacy options for a blog */
 "siteSettings.privacy.title" = "プライバシー";
+
+/* Explanation for why the 'Use theme styles' toggle is disabled when the site doesn't have a block theme */
+"siteSettings.themeStyles.footer.blockThemeSuggested" = "サイトでブロックテーマが使用されていないため、エディターがコンテンツと正しくマッチしない可能性があります。 表示に問題がある場合は、エディターのスタイルを無効化できます。";
+
+/* Explanation for the option to enable theme styles when the feature is available */
+"siteSettings.themeStyles.footer.enabled" = "ブロックエディターをテーマと同じ外観にします。";
+
+/* Explanation for why the 'Use theme styles' toggle is disabled when the site doesn't have the Gutenberg plugin */
+"siteSettings.themeStyles.footer.gutenbergRequired" = "サイトに Gutenberg プラグインをインストールして、テーマスタイルのサポートを有効化します。";
 
 /* Format string for adding a new taxonomy term. %1$@ is the taxonomy name. */
 "siteTaxonomy.addNew.format" = "%1$@を追加";

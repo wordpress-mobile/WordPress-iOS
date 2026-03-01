@@ -1,12 +1,11 @@
 import Foundation
-import WordPressData
 import WordPressShared
 
 extension AbstractPost {
     /// When updating the app through the App Store or installing a new version
     /// of the app from Xcode, the local paths can change. This will fix any
     /// outdated local path with the correct one.
-    func fixLocalMediaURLs() {
+    public func fixLocalMediaURLs() {
         guard var content = self.content else { return }
 
         media.forEach { media in

@@ -1,4 +1,3 @@
-import Nimble
 @testable import WordPress
 import XCTest
 
@@ -10,8 +9,8 @@ final class PrivacySettingsViewControllerTests: XCTestCase {
 
         viewController.crashReportingChanged(true)
 
-        expect(spy.trackedEvent).to(equal(.privacySettingsReportCrashesToggled))
-        expect(spy.trackedEventProperties).to(equal(["enabled": true.stringLiteral]))
+        XCTAssertEqual(spy.trackedEvent, .privacySettingsReportCrashesToggled)
+        XCTAssertEqual(spy.trackedEventProperties, ["enabled": true.stringLiteral])
     }
 }
 

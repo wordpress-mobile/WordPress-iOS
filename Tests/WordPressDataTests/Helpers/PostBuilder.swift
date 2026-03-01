@@ -1,4 +1,4 @@
-import WordPressData
+@testable import WordPressData
 
 /// Builds a Post
 ///
@@ -22,6 +22,7 @@ class PostBuilder {
         let blog = NSEntityDescription.insertNewObject(forEntityName: Blog.entityName(), into: context) as! Blog
         blog.xmlrpc = "http://example.com/xmlrpc.php"
         blog.url = "http://example.com"
+        blog.keychain = MockKeychainService()
         blog.username = "test"
         blog.password = "test"
 

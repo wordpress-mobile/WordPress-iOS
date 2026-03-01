@@ -41,6 +41,15 @@ enum SharedStrings {
         static let refreshFailed = NSLocalizedString("shared.error.failiedToReloadData", value: "Failed to update data", comment: "A generic error title indicating that a screen failed to fetch the latest data")
     }
 
+    enum PostStatus {
+        static let published = NSLocalizedString("postStatus.published.title", value: "Published", comment: "Post status title used in different contexts")
+        static let draft = NSLocalizedString("postStatus.draft.title", value: "Draft", comment: "Post status title used in different contexts")
+        static let pending = NSLocalizedString("postStatus.pending.title", value: "Pending", comment: "Post status title used in different contexts")
+        static let privatePost = NSLocalizedString("postStatus.private.title", value: "Private", comment: "Post status title used in different contexts")
+        static let scheduled = NSLocalizedString("postStatus.scheduled.title", value: "Scheduled", comment: "Post status title used in different contexts")
+        static let trash = NSLocalizedString("postStatus.trash.title", value: "Trash", comment: "Post status title used in different contexts")
+    }
+
     enum Reader {
         /// - warning: This is the legacy value. It's not compliant with the new format but has the correct translation for different languages.
         static let title = NSLocalizedString("Reader", comment: "The accessibility value of the Reader tab.")

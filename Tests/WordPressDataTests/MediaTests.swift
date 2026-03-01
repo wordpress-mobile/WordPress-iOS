@@ -53,14 +53,14 @@ struct MediaTests {
         let media = newTestMedia()
         media.addPostsObject(post)
 
-        #expect(media.hasAssociatedPost())
+        #expect(media.hasAssociatedPost)
     }
 
     @Test("Has no associated post when posts set is empty")
     func hasNoAssociatedPost() {
         let media = newTestMedia()
 
-        #expect(!media.hasAssociatedPost())
+        #expect(!media.hasAssociatedPost)
     }
 
     // MARK: - AutoUpload Failure Count
@@ -133,6 +133,15 @@ struct MediaTests {
         media.mediaID = 123
 
         #expect(media.hasRemote)
+    }
+
+    @Test("hasRemote is false when mediaID is not set or nil")
+    func hasRemoteNegative() {
+        let media = newTestMedia()
+        #expect(!media.hasRemote)
+
+        media.mediaID = 0
+        #expect(!media.hasRemote)
     }
 
     // MARK: - Prepare for Deletion
@@ -238,5 +247,64 @@ struct MediaTests {
         let media = newTestMedia()
         media.setMediaType(forFilenameExtension: ext)
         #expect(media.mediaType == expected)
+    }
+
+    // MARK: - Fix Local Media URLs
+
+    private let cacheDirectory = FileManager.default.urls(for: .cachesDirectory, in: .allDomainsMask).first!
+    private let documentDirectory = FileManager.default.urls(for: .documentDirectory, in: .allDomainsMask).first!
+
+    @Test("Fixes local media paths in caches directory")
+    func fixLocalMediaURLsInCachesDirectory() {
+        let post = PostBuilder(context)
+            .with(remoteStatus: .failed)
+            .with(image: "test.jpeg")
+            .with(snippet: "<img src=\"file:///Users/wapuu/Library/Developer/CoreSimulator/Devices/E690FA1D-AE36-4267-905D-8F6E71F4FA31/data/Containers/Data/Application/79D64D5C-6A83-4290-897E-794B7CC78B9F/Library/Caches/Media/thumb-test.jpeg\" class=\"size-full\" data-wp_upload_id=\"x-coredata://58514E00-46E2-4896-AAA1-A80722671857/Media/p16\">")
+            .build()
+
+        post.fixLocalMediaURLs()
+
+        #expect(post.content == "<img src=\"\(cacheDirectory.appendingPathComponent("Media/thumb-test.jpeg").absoluteString)\" class=\"size-full\" data-wp_upload_id=\"x-coredata://58514E00-46E2-4896-AAA1-A80722671857/Media/p16\">")
+    }
+
+    @Test("Fixes local media paths in document directory")
+    func fixLocalMediaURLsInDocumentDirectory() {
+        let post = PostBuilder(context)
+            .with(remoteStatus: .failed)
+            .with(image: "test.jpeg")
+            .with(snippet: "<img src=\"file:///Users/wapuu/Library/Developer/CoreSimulator/Devices/E690FA1D-AE36-4267-905D-8F6E71F4FA31/data/Containers/Data/Application/79D64D5C-6A83-4290-897E-794B7CC78B9F/Documents/Media/test.jpeg\" class=\"size-full\" data-wp_upload_id=\"x-coredata://58514E00-46E2-4896-AAA1-A80722671857/Media/p16\">")
+            .build()
+
+        post.fixLocalMediaURLs()
+
+        #expect(post.content == "<img src=\"\(documentDirectory.appendingPathComponent("Media/test.jpeg").absoluteString)\" class=\"size-full\" data-wp_upload_id=\"x-coredata://58514E00-46E2-4896-AAA1-A80722671857/Media/p16\">")
+    }
+
+    @Test("Fixes local media paths but does not change remote paths")
+    func fixLocalMediaURLsPreservesRemotePaths() {
+        let post = PostBuilder(context)
+            .with(remoteStatus: .failed)
+            .with(image: "test.jpeg")
+            .with(snippet: "<img src=\"file:///Users/wapuu/Library/Developer/CoreSimulator/Devices/E690FA1D-AE36-4267-905D-8F6E71F4FA31/data/Containers/Data/Application/79D64D5C-6A83-4290-897E-794B7CC78B9F/Library/Caches/Media/thumb-test.jpeg\" class=\"size-full\" data-wp_upload_id=\"x-coredata://58514E00-46E2-4896-AAA1-A80722671857/Media/p16\"><p>Lorem ipsum</p><img src=\"https://wordpress.com/\">")
+            .build()
+
+        post.fixLocalMediaURLs()
+
+        #expect(post.content == "<img src=\"\(cacheDirectory.appendingPathComponent("Media/thumb-test.jpeg").absoluteString)\" class=\"size-full\" data-wp_upload_id=\"x-coredata://58514E00-46E2-4896-AAA1-A80722671857/Media/p16\"><p>Lorem ipsum</p><img src=\"https://wordpress.com/\">")
+    }
+
+    @Test("Fixes multiple local media paths")
+    func fixMultipleLocalMediaURLs() {
+        let post = PostBuilder(context)
+            .with(remoteStatus: .failed)
+            .with(image: "test.jpeg")
+            .with(image: "another.jpeg")
+            .with(image: "wordpress.jpeg")
+            .with(snippet: "<img src=\"file:///Users/wapuu/Library/Developer/CoreSimulator/Devices/E690FA1D-AE36-4267-905D-8F6E71F4FA31/data/Containers/Data/Application/79D64D5C-6A83-4290-897E-794B7CC78B9F/Library/Caches/Media/thumb-test.jpeg\" class=\"size-full\" data-wp_upload_id=\"x-coredata://58514E00-46E2-4896-AAA1-A80722671857/Media/p16\"><p>Lorem ipsum</p><img src=\"file:///Users/wapuu/Library/Developer/CoreSimulator/Devices/E690FA1D-AE36-4267-905D-8F6E71F4FA31/data/Containers/Data/Application/79D64D5C-6A83-4290-897E-794B7CC78B9F/Documents/Media/another.jpeg\" class=\"size-full\" data-wp_upload_id=\"x-coredata://58514E00-46E2-4896-AAA1-A80722671875/Media/p17\"><img src=\"file:///Users/wapuu/Library/Developer/CoreSimulator/Devices/E690FA1D-AE36-4267-905D-8F6E71F4FA31/data/Containers/Data/Application/79D64D5C-6A83-4290-897E-794B7CC78B9F/Library/Caches/Media/thumb-wordpress.jpeg\" class=\"size-full\" data-wp_upload_id=\"x-coredata://58514E00-46E2-4896-AAA1-A80722672008/Media/p18\">")
+            .build()
+
+        post.fixLocalMediaURLs()
+
+        #expect(post.content == "<img src=\"\(cacheDirectory.appendingPathComponent("Media/thumb-test.jpeg").absoluteString)\" class=\"size-full\" data-wp_upload_id=\"x-coredata://58514E00-46E2-4896-AAA1-A80722671857/Media/p16\"><p>Lorem ipsum</p><img src=\"\(documentDirectory.appendingPathComponent("Media/another.jpeg").absoluteString)\" class=\"size-full\" data-wp_upload_id=\"x-coredata://58514E00-46E2-4896-AAA1-A80722671875/Media/p17\"><img src=\"\(cacheDirectory.appendingPathComponent("Media/thumb-wordpress.jpeg").absoluteString)\" class=\"size-full\" data-wp_upload_id=\"x-coredata://58514E00-46E2-4896-AAA1-A80722672008/Media/p18\">")
     }
 }

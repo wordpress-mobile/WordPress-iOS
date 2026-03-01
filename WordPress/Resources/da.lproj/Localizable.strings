@@ -1,4 +1,4 @@
-/* Translation-Revision-Date: 2025-08-13 08:09:18+0000 */
+/* Translation-Revision-Date: 2026-02-16 13:42:33+0000 */
 /* Plural-Forms: nplurals=2; plural=n != 1; */
 /* Generator: GlotPress/4.0.3 */
 /* Language: da_DK */
@@ -900,6 +900,9 @@
    Tags menu item in share extension. */
 "Tags" = "Tags";
 
+/* Label for viewing the custom taxonomies */
+"Taxonomies" = "Klassificering";
+
 /* Title of button that displays the App's terms of service */
 "Terms of Service" = "Servicevilkår";
 
@@ -1121,6 +1124,27 @@
 
 /* Later today */
 "later today" = "senere i dag";
+
+/* Verb. Button title. Tapping cancels an action. */
+"siteMedia.details.cancel" = "Annuler";
+
+/* Title for button that permanently deletes a media item (photo / video) */
+"siteMedia.details.delete" = "Slet";
+
+/* Text displayed in HUD after successfully deleting a media item */
+"siteMedia.details.deleted" = "Slettet!";
+
+/* Noun. Label for the title of a media asset (image / video) */
+"siteMedia.details.title" = "Titel";
+
+/* Accessibility label for trash buttons in nav bars */
+"siteMedia.details.trash" = "Skrald";
+
+/* Hint for image caption on image settings. */
+"siteMedia.hints.imageCaption" = "Billedtekst";
+
+/* Format string for adding a new taxonomy term. %1$@ is the taxonomy name. */
+"siteTaxonomy.addNew.format" = "Tilføj %1$@";
 
 /* Message to show when a request for a WP.com API endpoint is throttled */
 "wordpresskit.api.message.endpoint_throttled" = "Grænse nået. Du kan prøve igen om et minut. Hvis du prøver igen før dette vil du kun øge ventetiden før blokaden er løftet. Hvis du mener, dette er en fejl, så kontakt supporten.";

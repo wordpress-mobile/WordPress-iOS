@@ -1,4 +1,4 @@
-/* Translation-Revision-Date: 2026-01-26 15:54:11+0000 */
+/* Translation-Revision-Date: 2026-02-26 14:56:18+0000 */
 /* Plural-Forms: nplurals=2; plural=n > 1; */
 /* Generator: GlotPress/4.0.3 */
 /* Language: tr */
@@ -7231,6 +7231,9 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Feature name for the block editor in application password required prompt */
 "applicationPasswordRequired.feature.blockEditor" = "Blok Düzenleyici";
 
+/* Feature name for managing custom post types in the app */
+"applicationPasswordRequired.feature.customPosts" = "Özel gönderi türü";
+
 /* Feature name for managing terms and taxonomies in the app */
 "applicationPasswordRequired.feature.customTaxonomies" = "Sınıflandırma Yönetimi";
 
@@ -7393,6 +7396,27 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Action shown in a bottom notice to dismiss it. */
 "blogDashboard.dismiss" = "Kapat";
+
+/* Error message shown when the active theme cannot be found for a site. */
+"blogDetails.activeThemeNotFound.errorDescription" = "Bu site için etkin tema bulunamadı.";
+
+/* Button title to connect Jetpack in XML-RPC disabled alert */
+"blogDetails.xmlrpcDisabled.alert.connectJetpack" = "Jetpack'e bağlanın";
+
+/* Description explaining options to restore functionality when XML-RPC is disabled */
+"blogDetails.xmlrpcDisabled.alert.description" = "XML-RPC sitenizde devre dışı bırakıldı. Uygulamadaki bazı özellikler şu anda XML-RPC gerektiriyor. Tüm özelliklere erişmek için Jetpack'i bağlayın veya XML-RPC'yi etkinleştirin.";
+
+/* Button title to learn more about XML-RPC being disabled */
+"blogDetails.xmlrpcDisabled.alert.learnMore" = "Daha fazla bilgi edinin";
+
+/* Title for the XML-RPC disabled alert */
+"blogDetails.xmlrpcDisabled.alert.title" = "XML-RPC Devre Dışı Bırakıldı";
+
+/* Subtitle for the XML-RPC disabled card on blog details */
+"blogDetails.xmlrpcDisabled.card.subtitle" = "Bazı özellikler sınırlı olabilir";
+
+/* Title for the XML-RPC disabled card on blog details */
+"blogDetails.xmlrpcDisabled.card.title" = "XML-RPC Devre Dışı Bırakıldı";
 
 /* Context menu button title */
 "blogHeader.actionVisitSite" = "Siteyi Görüntüle";
@@ -7860,6 +7884,39 @@ Example: Reply to Pamela Nguyen */
 /* Create Sheet button title */
 "createSheet.postFromAudio" = "Sesten Gönderi Oluştur";
 
+/* Error message shown when the post was modified by another user while editing */
+"customPostEditor.error.conflict.message" = "Kaydetmeye çalıştığınız yazı bu sırada değiştirildi.";
+
+/* Empty state message when no custom posts exist. %1$@ is the post type name (e.g., 'Podcasts', 'Products'). */
+"customPostList.emptyState.message" = "%1$@ yok";
+
+/* Tab title for draft posts */
+"customPostTab.drafts" = "Taslaklar";
+
+/* Tab title for published posts */
+"customPostTab.published" = "Yayımlandı";
+
+/* Tab title for scheduled posts */
+"customPostTab.scheduled" = "Zamanlandı";
+
+/* Menu item title for sending feedback on the custom post types screen */
+"customPostTab.sendFeedback" = "Geri Bildirim Gönder";
+
+/* Tab title for trashed posts */
+"customPostTab.trash" = "Çöp";
+
+/* Empty state message when there are no custom post types to display */
+"customPostTypes.emptyState.message" = "Özel Yazı Türü Yok";
+
+/* Accessibility label for the button to pin a custom post type */
+"customPostTypes.pin.accessibilityLabel" = "Sabitle";
+
+/* Title for the Custom Post Types screen */
+"customPostTypes.title" = "Daha Fazla";
+
+/* Accessibility label for the button to unpin a custom post type */
+"customPostTypes.unpin.accessibilityLabel" = "Sabitlemeyi kaldır";
+
 /* Customize Insights description */
 "customizeInsightsCell.content" = "Kendi özelleştirilmiş panonuzu oluşturun ve görmek istediğiniz raporları seçin. Sizi en çok ilgilendiren verilere odaklanın.";
 
@@ -8000,6 +8057,9 @@ Example: Reply to Pamela Nguyen */
 
 /* Debug Menu action for TipKit */
 "debugMenu.hideAllTips" = "Tüm İpuçlarını Gizle";
+
+/* Debug Menu item title */
+"debugMenu.item.logs" = "Günlükler";
 
 /* Title of the screen that allows the user to change the Reader CSS URL for debug builds */
 "debugMenu.readerCellTitle" = "Okuyucu CSS adresi";
@@ -8732,8 +8792,14 @@ Example: Reply to Pamela Nguyen */
 /* Title of the primary button shown after the Jetpack plugin has been installed. Tapping on the button dismisses the installation screen. */
 "jetpack.install-flow.success.primaryButtonText" = "Bitti";
 
+/* Message asking the user to install Jetpack to access all app features */
+"jetpack.install.allFeatures.description" = "Tüm uygulama özelliklerinin kilidini açmak için Jetpack eklentisini yüklemeniz gerekir.";
+
 /* Title of a button for connecting user account to Jetpack. */
 "jetpack.install.connectUser.button.title" = "Kullanıcı hesabınızı bağlayın";
+
+/* Message asking the user to connect Jetpack to access all app features */
+"jetpack.install.connectUser.bypassXMLRPC.description" = "Sitenizde istatistikleri kullanmak için Jetpack eklentisini kullanıcı hesabınıza bağlamalısınız.";
 
 /* Message asking the user if they want to set up Jetpack from notifications */
 "jetpack.install.connectUser.notifications.description" = "Telefonunuza WordPress sitesinden yararlı bildirimler almak için kullanıcı hesabınızla bağlantı kurmanız gerekecek.";
@@ -9078,6 +9144,9 @@ Example: Reply to Pamela Nguyen */
 /* Line chart type */
 "jetpackStats.chart.lineChart" = "Satırlar";
 
+/* Label for aggregated 'Other' segment in pie charts */
+"jetpackStats.chart.other" = "Diğer";
+
 /* Show chart data menu item */
 "jetpackStats.chart.showData" = "Verileri Göster";
 
@@ -9186,9 +9255,6 @@ Example: Reply to Pamela Nguyen */
 /* Option to turn off period comparison */
 "jetpackStats.datePicker.comparisonOff" = "Karşılaştırma Yok";
 
-/* Title for custom date range picker */
-"jetpackStats.datePicker.customRange" = "Özel Aralık";
-
 /* Menu item for custom date range picker */
 "jetpackStats.datePicker.customRangeMenu" = "Özel Aralık…";
 
@@ -9207,6 +9273,9 @@ Example: Reply to Pamela Nguyen */
 /* Label for quick period selection */
 "jetpackStats.datePicker.quickPeriodsForStartDate" = "Başlangıç tarihi için hızlı dönemler";
 
+/* Title for custom date range picker */
+"jetpackStats.datePicker.selectRange" = "Tarih aralığı seçin";
+
 /* Site time zone header */
 "jetpackStats.datePicker.siteTimeZone" = "Site Saat Dilimi";
 
@@ -9222,6 +9291,12 @@ Example: Reply to Pamela Nguyen */
 /* Title for stats date range control tip */
 "jetpackStats.dateRangeTip.title" = "Zaman İçinde Gezinme";
 
+/* Device breakdown by browser */
+"jetpackStats.deviceBreakdowns.browser" = "Tarayıcı";
+
+/* Device breakdown by platform/OS */
+"jetpackStats.deviceBreakdowns.operatingSystem" = "İşletim Sistemi";
+
 /* Section title for the list of child links */
 "jetpackStats.externalLinkDetails.childLinks" = "Alt bağlantılar";
 
@@ -9230,6 +9305,12 @@ Example: Reply to Pamela Nguyen */
 
 /* Title for the external link details screen */
 "jetpackStats.externalLinkDetails.title" = "Harici Bağlantı";
+
+/* Button to explore plans when a feature is gated */
+"jetpackStats.featureGate.explorePlans" = "Paketleri keşfedin.";
+
+/* Message shown when a stats feature is gated behind a paid plan */
+"jetpackStats.featureGate.message" = "Gelişmiş analizlere erişim elde etmek için paketinizi yükseltin";
 
 /* Automatic granularity option */
 "jetpackStats.granularity.automatic" = "Otomatik";
@@ -9345,6 +9426,9 @@ Example: Reply to Pamela Nguyen */
 /* Clicks data type (external links) */
 "jetpackStats.siteDataTypes.clicks" = "Tıklamalar";
 
+/* Devices data type */
+"jetpackStats.siteDataTypes.devices" = "Cihazlar";
+
 /* File downloads data type */
 "jetpackStats.siteDataTypes.fileDownloads" = "Dosya İndirmeleri";
 
@@ -9420,6 +9504,9 @@ Example: Reply to Pamela Nguyen */
 /* Table column title for Top List card */
 "jetpackStats.topListColumnTitle.clicks" = "Harici Bağlantı";
 
+/* Table column title for Devices Top List card */
+"jetpackStats.topListColumnTitle.devices" = "Cihaz";
+
 /* Table column title for Top List card */
 "jetpackStats.topListColumnTitle.fileDownloads" = "Dosya";
 
@@ -9434,6 +9521,60 @@ Example: Reply to Pamela Nguyen */
 
 /* Table column title for Top List card */
 "jetpackStats.topListColumnTitle.searchTerms" = "Terim";
+
+/* Table column title for UTM Top List card */
+"jetpackStats.topListColumnTitle.utm" = "Kampanya";
+
+/* Plural post count for UTM metrics. %1$d is the number. */
+"jetpackStats.utmMetricDetails.postCount.plural" = "%1$d gönderi";
+
+/* Singular post count for UTM metrics. %1$d is the number. */
+"jetpackStats.utmMetricDetails.postCount.singular" = "%1$d gönderi";
+
+/* Title for the UTM campaign details screen */
+"jetpackStats.utmMetricDetails.title" = "UTM kampanyası";
+
+/* Section title for top posts from this UTM campaign */
+"jetpackStats.utmMetricDetails.topPosts" = "En Çok Okunan Yazılar";
+
+/* UTM parameter for campaign only */
+"jetpackStats.utmParamGroupings.campaign" = "Kampanya";
+
+/* UTM parameter for medium only */
+"jetpackStats.utmParamGroupings.medium" = "Orta";
+
+/* UTM parameter for source only */
+"jetpackStats.utmParamGroupings.source" = "Kaynak";
+
+/* Total earnings from WordAds */
+"jetpackStats.wordAds.earnings" = "Kazançlar";
+
+/* Button to learn more about WordAds earnings */
+"jetpackStats.wordAds.learnMore" = "Daha Fazla Bilgi Edinin";
+
+/* Message shown when there are no payment records */
+"jetpackStats.wordAds.noPaymentsYet" = "Henüz ödeme yok";
+
+/* Outstanding amount owed from WordAds */
+"jetpackStats.wordAds.outstanding" = "Ödenmemiş";
+
+/* Amount paid out from WordAds earnings */
+"jetpackStats.wordAds.paid" = "Ücretli";
+
+/* Title for payment history card and screen */
+"jetpackStats.wordAds.paymentsHistory" = "Ödeme Geçmişi";
+
+/* Title for WordAds total earnings card */
+"jetpackStats.wordAds.totalEarnings" = "Toplam Kazanç:";
+
+/* Number of ads served */
+"jetpackStats.wordAdsMetrics.adsServed" = "Sunulan Reklamlar";
+
+/* Average cost per mille (thousand impressions) */
+"jetpackStats.wordAdsMetrics.averageCPM" = "Ortalama CPM";
+
+/* Revenue from ads */
+"jetpackStats.wordAdsMetrics.revenue" = "Kazanç";
 
 /* Title for a call-to-action button on the Jetpack install card. */
 "jetpackinstallcard.button.learn" = "Ayrıntılı bilgi alın";
@@ -10182,6 +10323,9 @@ Example: Reply to Pamela Nguyen */
 /* A title for the log severity level */
 "phpLogs.severityWarning" = "Uyarı";
 
+/* Error message when a pinned custom post type cannot be found. %1$@ is the post type name. */
+"pinnedPostType.error.notFound" = "\"%1$@\" bu sitede kullanılamıyor.";
+
 /* Title for the plan selection view */
 "planSelection.title" = "Paketler";
 
@@ -10296,13 +10440,15 @@ Example: Reply to Pamela Nguyen */
 /* Navigation title for post discussion settings */
 "postDiscussion.title" = "Tartışma";
 
-/* Button in an alert confirming discaring changes */
+/* Button in an alert confirming discarding changes
+   Button in an alert confirming discaring changes */
 "postEditor.closeConfirmationAlert.discardChanges" = "Değişiklikleri İptal Et";
 
 /* Button in an alert confirming discaring a new draft */
 "postEditor.closeConfirmationAlert.discardDraft" = "Taslaktan Vazgeç";
 
-/* Button to keep the changes in an alert confirming discaring changes */
+/* Button to keep the changes in an alert confirming discarding changes
+   Button to keep the changes in an alert confirming discaring changes */
 "postEditor.closeConfirmationAlert.keepEditing" = "Düzenlemeye Devam Et";
 
 /* Button in an alert confirming saving a new draft */
@@ -10350,6 +10496,9 @@ Example: Reply to Pamela Nguyen */
 /* A message for a snackbar informing the user that some media files requires their attention */
 "postEditor.postHasFailingMediaUploadsSnackbar.message" = "Bazı ortam öğeleri karşıya yüklenemedi";
 
+/* Title for the publish button in the post editor navigation bar */
+"postEditor.publishButton.title" = "Yayımla";
+
 /* Editor, notice for successful recovery a trashed post */
 "postEditor.recoverTrashedPost.postRecoveredNoticeTitle" = "Gönderi, taslak olarak geri yüklendi";
 
@@ -10370,6 +10519,9 @@ Example: Reply to Pamela Nguyen */
 
 /* Saving draft to generate a preview (status message */
 "postEditor.savingDraftForPreview" = "Taslak kaydediliyor...";
+
+/* Title for the update button in the post editor navigation bar */
+"postEditor.updateButton.title" = "Güncelle";
 
 /* Empty state description when no post formats are available */
 "postFormatPicker.emptyState.description" = "Gönderi biçimleri bu site için yapılandırılmamış.";
@@ -12145,6 +12297,15 @@ Feel free to replace it with other bracket types that you think looks better for
 
 /* Title for screen to select the privacy options for a blog */
 "siteSettings.privacy.title" = "Gizlilik";
+
+/* Explanation for why the 'Use theme styles' toggle is disabled when the site doesn't have a block theme */
+"siteSettings.themeStyles.footer.blockThemeSuggested" = "Siteniz bir Blok Teması kullanmıyor, bu nedenle düzenleyici içeriğinizle doğru şekilde eşleşmeyebilir. İşler yolunda gitmiyorsa düzenleyici stillerini devre dışı bırakabilirsiniz.";
+
+/* Explanation for the option to enable theme styles when the feature is available */
+"siteSettings.themeStyles.footer.enabled" = "Blok düzenleyiciyi temanız gibi gösterin.";
+
+/* Explanation for why the 'Use theme styles' toggle is disabled when the site doesn't have the Gutenberg plugin */
+"siteSettings.themeStyles.footer.gutenbergRequired" = "Tema stili desteğini etkinleştirmek için sitenize Gutenberg Eklentisini yükleyin.";
 
 /* Format string for adding a new taxonomy term. %1$@ is the taxonomy name. */
 "siteTaxonomy.addNew.format" = "%1$@ ekle";

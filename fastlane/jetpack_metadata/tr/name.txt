@@ -1,1 +1,1 @@
-Jetpack, Web Sitesi Oluşturucu
+WordPress için Jetpack
