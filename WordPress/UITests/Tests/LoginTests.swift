@@ -4,16 +4,18 @@ import XCTest
 @MainActor
 class LoginTests: XCTestCase {
 
-    // Unified self hosted login/out
     func testSelfHostedLoginLogout() throws {
-        setUpTestSuite()
+        setUpTestSuite(arguments: [
+            "-ui-test-site-url", WPUITestCredentials.selfHostedSiteAddress,
+            "-ui-test-site-user", WPUITestCredentials.selfHostedUsername,
+            "-ui-test-site-pass", WPUITestCredentials.selfHostedAppPassword
+        ])
         try PrologueScreen()
             .selectSiteAddress()
-            .proceedWith(siteAddress: WPUITestCredentials.selfHostedSiteAddress)
-            .proceedWithSelfHosted(
-                username: WPUITestCredentials.selfHostedUsername,
-                password: WPUITestCredentials.selfHostedPassword
+            .proceedWithSelfHostedSiteLogin(
+                siteAddress: WPUITestCredentials.selfHostedSiteAddress
             )
+
         if XCTestCase.isPad {
             try SidebarNavComponent()
                 .openSiteMenu()
