@@ -264,6 +264,9 @@ GEM
     java-properties (0.3.0)
     jmespath (1.6.2)
     json (2.18.1)
+    json-schema (6.1.0)
+      addressable (~> 2.8)
+      bigdecimal (>= 3.1, < 5)
     jwt (2.10.2)
       base64
     kramdown (2.5.1)
@@ -274,6 +277,8 @@ GEM
     lint_roller (1.1.0)
     locale (2.1.4)
     logger (1.7.0)
+    mcp (0.7.1)
+      json-schema (>= 4.1)
     mini_magick (4.13.2)
     mini_mime (1.1.5)
     mini_portile2 (2.8.9)
@@ -300,7 +305,7 @@ GEM
     os (1.1.4)
     ostruct (0.6.3)
     parallel (1.27.0)
-    parser (3.3.10.1)
+    parser (3.3.10.2)
       ast (~> 2.4.1)
       racc
     pkg-config (1.6.5)
@@ -331,10 +336,11 @@ GEM
       observer (~> 0.1)
       pkg-config (~> 1.4)
     rouge (3.28.0)
-    rubocop (1.84.2)
+    rubocop (1.85.0)
       json (~> 2.3)
       language_server-protocol (~> 3.17.0.2)
       lint_roller (~> 1.1.0)
+      mcp (~> 0.6)
       parallel (~> 1.10)
       parser (>= 3.3.0.2)
       rainbow (>= 2.2.2, < 4.0)
@@ -406,7 +412,7 @@ DEPENDENCIES
   openssl (~> 4.0)
   rake
   rmagick (~> 6.2.0)
-  rubocop (~> 1.84)
+  rubocop (~> 1.85)
   rubocop-rake (~> 0.7)
 
 BUNDLED WITH
