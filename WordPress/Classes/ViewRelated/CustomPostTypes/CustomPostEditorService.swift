@@ -177,11 +177,18 @@ class CustomPostEditorService {
             } else {
                 params = PostUpdateParams(meta: nil)
             }
-            if publish {
+
+            if publish, params.status != .publish {
                 params.status = .publish
             }
-            params.title = hasTitle ? content.title : nil
-            params.content = content.content
+
+            if hasTitle, content.title != params.title {
+                params.title = content.title
+            }
+            if params.content != post.content.raw {
+                params.content = content.content
+            }
+
             try await update(post: post, params: params)
         }
     }
@@ -189,7 +196,18 @@ class CustomPostEditorService {
     /// Updates the post and refreshes the local post list cache.
     @discardableResult
     private func update(post: AnyPostWithEditContext, params: PostUpdateParams) async throws -> AnyPostWithEditContext {
-        guard try await !hasBeenModified(post: post) else { throw PostUpdateError.conflicts }
+        if try await hasBeenModified(post: post) {
+            let latest = try await client.api.posts
+                .retrieveWithEditContext(
+                    postEndpointType: details.toPostEndpointType(),
+                    postId: post.id,
+                    params: .init()
+                )
+                .data
+            if params.hasConflicts(from: post, to: latest) {
+                throw PostUpdateError.conflicts(latest: latest)
+            }
+        }
 
         let endpoint = details.toPostEndpointType()
         let updatedPost = try await service.updatePost(endpointType: endpoint, postId: post.id, params: params)
@@ -236,7 +254,7 @@ extension CustomPostEditorService {
 }
 
 enum PostUpdateError: LocalizedError {
-    case conflicts
+    case conflicts(latest: AnyPostWithEditContext)
 
     var errorDescription: String? {
         NSLocalizedString(
