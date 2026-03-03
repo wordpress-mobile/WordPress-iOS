@@ -425,7 +425,8 @@ private extension BloggingRemindersFlowSettingsViewController {
 
         let formatter = BloggingRemindersScheduleFormatter(calendar: calendar)
         let time = scheduler.scheduledTime(for: blog).toLocalTime()
-        let description = formatter.longScheduleDescription(for: schedule, time: time).string
+        let nsDescription = formatter.longScheduleDescription(for: schedule, time: time)
+        let description = (try? AttributedString(nsDescription, including: \.uiKit)) ?? AttributedString(nsDescription.string)
 
         let alert = AlertView {
             VStack(alignment: .leading, spacing: 9) {
