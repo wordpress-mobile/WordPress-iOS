@@ -67,6 +67,36 @@ final class FormattableContentGroupTests: CoreDataTestCase {
         XCTAssertEqual(linkRange.range.length, text.utf16.count)
     }
 
+    /// Regression test: building a full-text link range with `String.count`
+    /// instead of `String.utf16.count` produces the wrong NSRange when the
+    /// text contains multi-byte characters (e.g. emoji). The range must use
+    /// UTF-16 counts because NSAttributedString is backed by UTF-16.
+    func testFullTextLinkRangeWithEmojiUsesUTF16Count() {
+        // 👨‍👩‍👧‍👦 is 1 grapheme cluster but 11 UTF-16 code units.
+        let text = "👨‍👩‍👧‍👦 ソースの投稿を読む"
+        let url = URL(string: "https://example.com")!
+
+        let textRange = NSRange(location: 0, length: text.utf16.count)
+        var properties = NotificationContentRange.Properties(range: textRange)
+        properties.url = url
+
+        let linkRange = NotificationContentRange(kind: .link, properties: properties)
+
+        // The range must match NSAttributedString's length (UTF-16 based)
+        let attributed = NSMutableAttributedString(string: text)
+        XCTAssertEqual(linkRange.range.length, attributed.length,
+                       "Link range length should equal NSAttributedString.length (UTF-16)")
+
+        // Applying the range to an attributed string must not crash
+        attributed.addAttribute(.link, value: url, range: linkRange.range)
+
+        // Verify the link covers the full string
+        var effectiveRange = NSRange()
+        let value = attributed.attribute(.link, at: 0, effectiveRange: &effectiveRange)
+        XCTAssertNotNil(value)
+        XCTAssertEqual(effectiveRange.length, attributed.length)
+    }
+
     private func mockContent() throws -> FormattableTextContent {
         let text = try mockActivity()["text"] as? String ?? ""
         return FormattableTextContent(text: text, ranges: [], actions: [])
