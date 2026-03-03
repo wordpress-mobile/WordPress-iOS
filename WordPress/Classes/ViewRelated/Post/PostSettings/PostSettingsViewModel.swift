@@ -713,7 +713,7 @@ final class PostSettingsViewModel: NSObject, ObservableObject {
 
     private func getPublicizeServices() -> [PublicizeService] {
         let context = ContextManager.shared.mainContext
-        return (try? PublicizeService.allPublicizeServices(in: context)) ?? []
+        return (try? PublicizeService.allSupportedServices(in: context)) ?? []
     }
 
     /// Convenience variable representing whether the No Connection view has been dismissed.
