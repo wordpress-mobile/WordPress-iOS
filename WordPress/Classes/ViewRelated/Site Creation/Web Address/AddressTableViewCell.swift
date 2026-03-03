@@ -311,6 +311,8 @@ extension AddressTableViewCell {
         }
 
         let completeDomainName = NSMutableAttributedString(string: name, attributes: TextStyleAttributes.defaults)
+        // Domain names are ASCII-only (internationalized domains use Punycode),
+        // so .count == .utf16.count here and this is safe.
         let rangeOfCustomName = NSRange(location: 0, length: customName.count)
         completeDomainName.setAttributes(TextStyleAttributes.customName, range: rangeOfCustomName)
 
