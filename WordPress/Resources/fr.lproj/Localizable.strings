@@ -1,4 +1,4 @@
-/* Translation-Revision-Date: 2026-02-10 13:54:09+0000 */
+/* Translation-Revision-Date: 2026-02-27 12:56:49+0000 */
 /* Plural-Forms: nplurals=2; plural=n > 1; */
 /* Generator: GlotPress/4.0.3 */
 /* Language: fr */
@@ -7201,6 +7201,9 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Feature name for the block editor in application password required prompt */
 "applicationPasswordRequired.feature.blockEditor" = "Éditeur de blocs";
 
+/* Feature name for managing custom post types in the app */
+"applicationPasswordRequired.feature.customPosts" = "Types de publication personnalisés";
+
 /* Feature name for managing terms and taxonomies in the app */
 "applicationPasswordRequired.feature.customTaxonomies" = "Gestion des taxonomies";
 
@@ -7363,6 +7366,27 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Action shown in a bottom notice to dismiss it. */
 "blogDashboard.dismiss" = "Ignorer";
+
+/* Error message shown when the active theme cannot be found for a site. */
+"blogDetails.activeThemeNotFound.errorDescription" = "Le thème actif est introuvable pour ce site.";
+
+/* Button title to connect Jetpack in XML-RPC disabled alert */
+"blogDetails.xmlrpcDisabled.alert.connectJetpack" = "Connecter Jetpack";
+
+/* Description explaining options to restore functionality when XML-RPC is disabled */
+"blogDetails.xmlrpcDisabled.alert.description" = "XML-RPC est désactivé sur votre site. Actuellement, certaines fonctionnalités de l’application ont besoin de ce composant. Connectez Jetpack ou activez XML-RPC pour accéder à toutes les fonctionnalités.";
+
+/* Button title to learn more about XML-RPC being disabled */
+"blogDetails.xmlrpcDisabled.alert.learnMore" = "En savoir plus";
+
+/* Title for the XML-RPC disabled alert */
+"blogDetails.xmlrpcDisabled.alert.title" = "XML-RPC désactivé";
+
+/* Subtitle for the XML-RPC disabled card on blog details */
+"blogDetails.xmlrpcDisabled.card.subtitle" = "Certaines fonctionnalités peuvent être limitées";
+
+/* Title for the XML-RPC disabled card on blog details */
+"blogDetails.xmlrpcDisabled.card.title" = "XML-RPC désactivé";
 
 /* Badge title in site list */
 "blogList.siteBadge.staging" = "Préproduction";
@@ -7806,6 +7830,39 @@ Example: Reply to Pamela Nguyen */
 /* Create Sheet button title */
 "createSheet.post" = "Article";
 
+/* Error message shown when the post was modified by another user while editing */
+"customPostEditor.error.conflict.message" = "L’article que vous essayez d’enregistrer a été modifié depuis.";
+
+/* Empty state message when no custom posts exist. %1$@ is the post type name (e.g., 'Podcasts', 'Products'). */
+"customPostList.emptyState.message" = "Pas de %1$@";
+
+/* Tab title for draft posts */
+"customPostTab.drafts" = "Brouillons";
+
+/* Tab title for published posts */
+"customPostTab.published" = "Publié";
+
+/* Tab title for scheduled posts */
+"customPostTab.scheduled" = "Planifié";
+
+/* Menu item title for sending feedback on the custom post types screen */
+"customPostTab.sendFeedback" = "Envoyer un commentaire";
+
+/* Tab title for trashed posts */
+"customPostTab.trash" = "Corbeille";
+
+/* Empty state message when there are no custom post types to display */
+"customPostTypes.emptyState.message" = "Aucun type d’article personnalisé";
+
+/* Accessibility label for the button to pin a custom post type */
+"customPostTypes.pin.accessibilityLabel" = "Épingler";
+
+/* Title for the Custom Post Types screen */
+"customPostTypes.title" = "Plus";
+
+/* Accessibility label for the button to unpin a custom post type */
+"customPostTypes.unpin.accessibilityLabel" = "Désépingler";
+
 /* Customize Insights description */
 "customizeInsightsCell.content" = "Créez votre propre tableau de bord personnalisé et choisissez quels rapports afficher. Concentrez-vous sur les données qui vous importent le plus.";
 
@@ -7943,6 +8000,9 @@ Example: Reply to Pamela Nguyen */
 
 /* Debug Menu action for TipKit */
 "debugMenu.hideAllTips" = "Masquer toutes les astuces";
+
+/* Debug Menu item title */
+"debugMenu.item.logs" = "Journaux";
 
 /* Title of the screen that allows the user to change the Reader CSS URL for debug builds */
 "debugMenu.readerCellTitle" = "URL du CSS du Lecteur";
@@ -8669,8 +8729,14 @@ Example: Reply to Pamela Nguyen */
 /* Title of the primary button shown after the Jetpack plugin has been installed. Tapping on the button dismisses the installation screen. */
 "jetpack.install-flow.success.primaryButtonText" = "Terminé";
 
+/* Message asking the user to install Jetpack to access all app features */
+"jetpack.install.allFeatures.description" = "Pour débloquer toutes les fonctionnalités de l’application, vous devez installer l’extension Jetpack.";
+
 /* Title of a button for connecting user account to Jetpack. */
 "jetpack.install.connectUser.button.title" = "Connecter votre compte utilisateur\/utilisatrice";
+
+/* Message asking the user to connect Jetpack to access all app features */
+"jetpack.install.connectUser.bypassXMLRPC.description" = "Pour débloquer toutes les fonctionnalités de l’application, vous devez connecter l’extension Jetpack à votre compte utilisateur.";
 
 /* Message asking the user if they want to set up Jetpack from notifications */
 "jetpack.install.connectUser.notifications.description" = "Pour recevoir des notifications utiles sur votre téléphone à partir de votre site WordPress, vous devez vous connecter à votre compte utilisateur.";
@@ -9006,6 +9072,9 @@ Example: Reply to Pamela Nguyen */
 /* Line chart type */
 "jetpackStats.chart.lineChart" = "Lignes";
 
+/* Label for aggregated 'Other' segment in pie charts */
+"jetpackStats.chart.other" = "Autre";
+
 /* Show chart data menu item */
 "jetpackStats.chart.showData" = "Afficher les données";
 
@@ -9117,6 +9186,9 @@ Example: Reply to Pamela Nguyen */
 /* Label for quick period selection */
 "jetpackStats.datePicker.quickPeriodsForStartDate" = "Périodes rapides pour la date de début";
 
+/* Title for custom date range picker */
+"jetpackStats.datePicker.selectRange" = "Sélectionner une plage";
+
 /* Site time zone header */
 "jetpackStats.datePicker.siteTimeZone" = "Fuseau horaire du site";
 
@@ -9132,6 +9204,15 @@ Example: Reply to Pamela Nguyen */
 /* Title for stats date range control tip */
 "jetpackStats.dateRangeTip.title" = "Naviguez dans le temps";
 
+/* Device breakdown by browser */
+"jetpackStats.deviceBreakdowns.browser" = "Navigateur";
+
+/* Device breakdown by platform/OS */
+"jetpackStats.deviceBreakdowns.operatingSystem" = "Système d’exploitation";
+
+/* Device breakdown by screen size */
+"jetpackStats.deviceBreakdowns.screensize" = "Taille de l’écran";
+
 /* Section title for the list of child links */
 "jetpackStats.externalLinkDetails.childLinks" = "Sous-liens";
 
@@ -9140,6 +9221,12 @@ Example: Reply to Pamela Nguyen */
 
 /* Title for the external link details screen */
 "jetpackStats.externalLinkDetails.title" = "Lien externe";
+
+/* Button to explore plans when a feature is gated */
+"jetpackStats.featureGate.explorePlans" = "Découvrir les plans";
+
+/* Message shown when a stats feature is gated behind a paid plan */
+"jetpackStats.featureGate.message" = "Mettez votre plan à niveau pour accéder à des analyses avancées";
 
 /* Automatic granularity option */
 "jetpackStats.granularity.automatic" = "Automatique";
@@ -9252,6 +9339,9 @@ Example: Reply to Pamela Nguyen */
 /* Clicks data type (external links) */
 "jetpackStats.siteDataTypes.clicks" = "Clics";
 
+/* Devices data type */
+"jetpackStats.siteDataTypes.devices" = "Appareils";
+
 /* File downloads data type */
 "jetpackStats.siteDataTypes.fileDownloads" = "Téléchargements de fichiers";
 
@@ -9327,6 +9417,9 @@ Example: Reply to Pamela Nguyen */
 /* Table column title for Top List card */
 "jetpackStats.topListColumnTitle.clicks" = "Lien externe";
 
+/* Table column title for Devices Top List card */
+"jetpackStats.topListColumnTitle.devices" = "Appareil";
+
 /* Table column title for Top List card */
 "jetpackStats.topListColumnTitle.fileDownloads" = "Fichier";
 
@@ -9342,8 +9435,62 @@ Example: Reply to Pamela Nguyen */
 /* Table column title for Top List card */
 "jetpackStats.topListColumnTitle.searchTerms" = "Terme";
 
+/* Table column title for UTM Top List card */
+"jetpackStats.topListColumnTitle.utm" = "Campagne";
+
 /* Table column title for Top List card */
 "jetpackStats.topListColumnTitle.videos" = "Vidéo";
+
+/* Plural post count for UTM metrics. %1$d is the number. */
+"jetpackStats.utmMetricDetails.postCount.plural" = "%1$d articles";
+
+/* Singular post count for UTM metrics. %1$d is the number. */
+"jetpackStats.utmMetricDetails.postCount.singular" = "%1$d article";
+
+/* Title for the UTM campaign details screen */
+"jetpackStats.utmMetricDetails.title" = "Campagne UTM";
+
+/* Section title for top posts from this UTM campaign */
+"jetpackStats.utmMetricDetails.topPosts" = "Meilleurs articles";
+
+/* UTM parameter for campaign only */
+"jetpackStats.utmParamGroupings.campaign" = "Campagne";
+
+/* UTM parameter for medium only */
+"jetpackStats.utmParamGroupings.medium" = "Canal";
+
+/* Number of ads served. %@ is the ads count. */
+"jetpackStats.wordAds.adsServed.count" = "%@ publicités affichées";
+
+/* Total earnings from WordAds */
+"jetpackStats.wordAds.earnings" = "Revenus";
+
+/* Button to learn more about WordAds earnings */
+"jetpackStats.wordAds.learnMore" = "En savoir plus";
+
+/* Message shown when there are no payment records */
+"jetpackStats.wordAds.noPaymentsYet" = "Aucun paiement pour l’instant";
+
+/* Outstanding amount owed from WordAds */
+"jetpackStats.wordAds.outstanding" = "En attente";
+
+/* Amount paid out from WordAds earnings */
+"jetpackStats.wordAds.paid" = "Payé";
+
+/* Title for payment history card and screen */
+"jetpackStats.wordAds.paymentsHistory" = "Historique de paiement";
+
+/* Title for WordAds total earnings card */
+"jetpackStats.wordAds.totalEarnings" = "Revenus totaux";
+
+/* Number of ads served */
+"jetpackStats.wordAdsMetrics.adsServed" = "Publicités affichées";
+
+/* Average cost per mille (thousand impressions) */
+"jetpackStats.wordAdsMetrics.averageCPM" = "CPM moyen";
+
+/* Revenue from ads */
+"jetpackStats.wordAdsMetrics.revenue" = "Chiffre d’affaires";
 
 /* Title for a call-to-action button on the Jetpack install card. */
 "jetpackinstallcard.button.learn" = "Lire la suite";
@@ -10080,6 +10227,9 @@ Example: Reply to Pamela Nguyen */
 /* A title for the log severity level */
 "phpLogs.severityWarning" = "Attention";
 
+/* Error message when a pinned custom post type cannot be found. %1$@ is the post type name. */
+"pinnedPostType.error.notFound" = "« %1$@ » n’est pas disponible sur ce site.";
+
 /* Title for the plan selection view */
 "planSelection.title" = "Plans";
 
@@ -10250,6 +10400,9 @@ Example: Reply to Pamela Nguyen */
 /* A message for a snackbar informing the user that some media files requires their attention */
 "postEditor.postHasFailingMediaUploadsSnackbar.message" = "Échec du chargement de certains éléments multimédias";
 
+/* Title for the publish button in the post editor navigation bar */
+"postEditor.publishButton.title" = "Publier";
+
 /* Editor, notice for successful recovery a trashed post */
 "postEditor.recoverTrashedPost.postRecoveredNoticeTitle" = "Article rétabli en tant que brouillon";
 
@@ -10270,6 +10423,9 @@ Example: Reply to Pamela Nguyen */
 
 /* Saving draft to generate a preview (status message */
 "postEditor.savingDraftForPreview" = "Enregistrement du brouillon…";
+
+/* Title for the update button in the post editor navigation bar */
+"postEditor.updateButton.title" = "Mettre à jour";
 
 /* Empty state description when no post formats are available */
 "postFormatPicker.emptyState.description" = "Les formats d’article n’ont pas été configurés pour ce site.";
