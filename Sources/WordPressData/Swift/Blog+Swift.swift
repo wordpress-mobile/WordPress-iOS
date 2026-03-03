@@ -283,7 +283,7 @@ extension Blog {
         siteVisibility == .private
     }
 
-    @objc public var siteVisibility: SiteVisibility {
+    public var siteVisibility: SiteVisibility {
         get {
             guard let rawValue = settings?.privacy?.intValue,
                   let visibility = SiteVisibility(rawValue: rawValue) else {
