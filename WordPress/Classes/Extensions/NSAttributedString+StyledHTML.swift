@@ -45,7 +45,7 @@ extension NSAttributedString {
 
         attributedString.addAttribute(.paragraphStyle,
                                       value: paragraphStyle,
-                                      range: NSMakeRange(0, attributedString.string.count - 1))
+                                      range: NSMakeRange(0, attributedString.length))
 
         return NSAttributedString(attributedString: attributedString)
     }

@@ -344,7 +344,7 @@ public class FilterTabBar: UIControl {
         }
 
         let mutableString = NSMutableAttributedString(attributedString: attributedString)
-        mutableString.addAttributes([.foregroundColor: color], range: NSMakeRange(0, mutableString.string.count))
+        mutableString.addAttributes([.foregroundColor: color], range: NSMakeRange(0, mutableString.length))
 
         return mutableString
     }
