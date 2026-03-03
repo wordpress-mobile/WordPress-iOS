@@ -1,0 +1,17 @@
+Al 112 % de nuestro equipo le encantaron los grandes cambios que hicimos en la sección Estadísticas. (Es posible que algunas personas hayan votado dos veces, no podemos asegurarlo). 
+
+- Hay una nueva pestaña de anuncios donde puedes ver datos importantes de WordAds, como el número de anuncios publicados y los ingresos obtenidos.
+
+- Hemos añadido una pestaña UTM para que puedas ver la fuente y el medio del tráfico de tu sitio. También hay una vista de dispositivos que te muestra qué dispositivos han utilizado tus visitantes. 
+
+- Cuando seleccionas «Hoy» u otro periodo diario en la pantalla «Estadísticas de publicaciones», verás «Últimos 7 días» en lugar de datos por hora, que no existen. Todavía no podemos predecir el futuro.
+
+- Hemos solucionado algunos problemas visuales con los gráficos y hemos mejorado el diseño de toda la sección Estadísticas. 
+
+Hemos solucionado un problema de caché en la pantalla Insights que mostraba un área de actividad de publicación en blanco. Ahora siempre puedes ver lo que has estado haciendo. 
+
+Hemos realizado pequeñas mejoras visuales en la pantalla «Registros de actividad», como títulos, iconos y colores.
+
+Hemos añadido «Tipos de publicaciones personalizadas» como función experimental. Pruébala y dinos qué te parece. #ciencia 
+
+Una última cosa: si tu sitio está autenticado con una contraseña de aplicación, no es necesario que tengas habilitado XML-RPC. La desventaja es que solo están disponibles funciones limitadas. Una vez habilitado, podrás recuperar esas funciones.

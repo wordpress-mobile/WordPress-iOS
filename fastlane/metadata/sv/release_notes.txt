@@ -1,0 +1,14 @@
+112 % av vårt team älskade de stora ändringarna vi har gjort i sektionen Statistik. (Vissa människor kan ha röstat två gånger, vi kan inte säga säkert.)
+
+- Det finns en ny flik med namnet Annonser där du kan se viktiga WordAds-data såsom antalet visade annonser och genererade intäkter.
+- Vi har lagt till en UTM-flik så att du kan se källa och medium för din webbplatstrafik. Det finns också en vy med namnet Enheter som visar vilka enheter dina besökare använde.
+- När du väljer ”Idag” eller en annan daglig period på skärmen Inläggsstatistik visas ”De senaste 7 dagarna” istället för timdata som inte finns. Vi kan inte förutsäga framtiden ännu.
+- Vi har åtgärdat ett antal visuella problem med diagram och förbättrat designen i hela Statistik-sektionen.
+
+Vi har löst ett cachelagringsproblem på skärmen Insikter som gjorde att området Publiceringsaktivitet visades som tomt. Nu kan du alltid se vad du har hållit på med.
+
+Vi har gjort små visuella förbättringar på skärmen Aktivitetsloggar, exempelvis vad gäller rubriker, ikoner och färger.
+
+Vi har lagt till anpassade inläggstyper som en experimentell funktion. Testa det och berätta vad du tycker. #science
+
+En sista sak: Om din webbplats autentiseras med ett applikationslösenord behöver du inte ha XML-RPC aktiverat. Nackdelen är att endast begränsade funktioner är tillgängliga. När detta är aktiverat kan du få tillbaka funktionerna.
