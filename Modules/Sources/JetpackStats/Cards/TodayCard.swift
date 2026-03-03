@@ -15,7 +15,7 @@ struct TodayCard: View {
     }
 
     var body: some View {
-        VStack(alignment: .leading, spacing: 0) {
+        VStack(alignment: .leading, spacing: 6) {
             HStack(spacing: 32) {
                 VStack(alignment: .leading, spacing: 0) {
                     headerView
@@ -71,7 +71,7 @@ struct TodayCard: View {
                 .font(.caption.weight(.medium))
         }
         .foregroundStyle(Color.secondary)
-        .offset(y: 3) // Get it close to the value
+        .offset(y: 9) // Get it close to the value
         .dynamicTypeSize(...DynamicTypeSize.large)
     }
 
@@ -151,7 +151,7 @@ struct TodayCard: View {
         )
         .frame(maxWidth: .infinity)
         .padding(.trailing, 32)
-        .padding(.vertical, 2)
+        .padding(.vertical, 6)
         .transition(.opacity.combined(with: .scale(scale: 0.97)))
     }
 
