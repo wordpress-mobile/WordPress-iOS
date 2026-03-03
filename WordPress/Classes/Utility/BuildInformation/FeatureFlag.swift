@@ -89,7 +89,7 @@ public enum FeatureFlag: Int, CaseIterable {
         case .nativeBlockInserter:
             return true
         case .statsAds:
-            return BuildConfiguration.current == .debug
+            return true
         case .customPostTypes:
             return BuildConfiguration.current == .debug
         }
