@@ -636,7 +636,7 @@ class WeeklyRoundupNotificationScheduler {
         completion: @escaping (Result<Void, Error>) -> Void
     ) {
         let title = notificationTitle(siteTitle)
-        let body = notificationBodyWith(views: views, comments: likes, likes: comments)
+        let body = notificationBodyWith(views: views, comments: comments, likes: likes)
 
         // The dynamic notification date is defined by when the background task is run.
         // Since these lines of code execute when the BG Task is run, we can just schedule
