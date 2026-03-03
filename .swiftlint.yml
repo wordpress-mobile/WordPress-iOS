@@ -201,3 +201,9 @@ custom_rules:
     message: "Using `LocalizedStringKey` is incompatible with our tooling and doesn't allow you to provide a hint/context comment for translators either. Please use `NSLocalizedString` instead, even with SwiftUI code."
     severity: error
     excluded: '.*Widgets/.*'
+
+  full_range_attributed_string_attribute:
+    name: "Full-Range Attributed String Attribute"
+    regex: '\.addAttributes?\([^\n]*range:\s*NS(MakeRange\(0,|Range\(location:\s*0,\s*length:)'
+    message: "Use `applyAttribute(_:value:)` or `applyAttributes(_:)` instead of manually constructing a full-range NSRange. Manual ranges are error-prone with emoji and other multi-code-unit characters."
+    severity: warning

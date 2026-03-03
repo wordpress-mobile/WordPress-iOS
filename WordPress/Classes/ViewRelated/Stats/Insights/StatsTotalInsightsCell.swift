@@ -91,9 +91,10 @@ struct StatsTotalInsightsData: Equatable {
 
         let attributedString = NSMutableAttributedString(string: formattedString)
 
-        let textRange = NSMakeRange(0, formattedString.utf16.count)
-        attributedString.addAttribute(.font, value: UIFont.preferredFont(forTextStyle: .subheadline), range: textRange)
-        attributedString.addAttribute(.foregroundColor, value: UIColor.label, range: textRange)
+        attributedString.applyAttributes([
+            .font: UIFont.preferredFont(forTextStyle: .subheadline),
+            .foregroundColor: UIColor.label
+        ])
 
         let titlePlaceholderRange = (text as NSString).range(of: "%1$@")
         let titleRange = NSMakeRange(titlePlaceholderRange.location, title.utf16.count)

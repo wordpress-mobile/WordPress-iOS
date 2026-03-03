@@ -464,8 +464,7 @@ private extension JetpackThreatContext {
                 numberAttr.setAttributes(config.highlightedNumberAttributes,
                                          range: NSRange(location: 0, length: numberStr.count))
 
-                contentsAttr.addAttributes(config.highlightedContentsAttributes,
-                                           range: NSRange(location: 0, length: contentsStr.count))
+                contentsAttr.applyAttributes(config.highlightedContentsAttributes)
 
                 for highlight in highlights {
                     let location = highlight.location

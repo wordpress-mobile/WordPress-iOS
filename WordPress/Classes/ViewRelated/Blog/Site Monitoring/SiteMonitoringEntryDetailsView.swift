@@ -1,6 +1,7 @@
 import SwiftUI
 import WordPressData
 import WordPressKit
+import WordPressUI
 
 struct SiteMonitoringEntryDetailsView: View {
     let text: NSAttributedString
@@ -77,12 +78,12 @@ private func makeAttributedText(metadata: [(String, String?)], message: String? 
     if let message {
         output.append(NSAttributedString(string: "\n" + message, attributes: [.font: regular]))
     }
-    output.addAttribute(.paragraphStyle, value: {
+    output.applyAttribute(.paragraphStyle, value: {
         let style = NSMutableParagraphStyle()
         style.lineSpacing = 3
         return style
-    }(), range: NSRange(location: 0, length: output.length))
-    output.addAttribute(.foregroundColor, value: UIColor.label, range: NSRange(location: 0, length: output.length))
+    }())
+    output.applyAttribute(.foregroundColor, value: UIColor.label)
     return output
 }
 
