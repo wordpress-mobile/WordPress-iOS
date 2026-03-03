@@ -140,6 +140,7 @@
 		3F60D39D2D2C4BA4008ACD86 /* yoga.xcframework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 3F60D3932D2C4BA4008ACD86 /* yoga.xcframework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		3F7874622DA360840052F1BF /* WordPressData.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3F7AE0B52D9B30A100AB4892 /* WordPressData.framework */; };
 		3F7AE0BD2D9B30A200AB4892 /* WordPressData.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3F7AE0B52D9B30A100AB4892 /* WordPressData.framework */; };
+		3F7AE0E12D9B30A200AB4892 /* XcodeTarget_WordPressDataTests in Frameworks */ = {isa = PBXBuildFile; productRef = 3F7AE0E02D9B30A200AB4892 /* XcodeTarget_WordPressDataTests */; };
 		406A0EF0224D39C50016AD6A /* Flags.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 406A0EEF224D39C50016AD6A /* Flags.xcassets */; };
 		433840C722C2BA5B00CB13F8 /* AppImages.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 433840C622C2BA5B00CB13F8 /* AppImages.xcassets */; };
 		433840C822C2BA6300CB13F8 /* AppImages.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 433840C622C2BA5B00CB13F8 /* AppImages.xcassets */; };
@@ -155,7 +156,6 @@
 		4A690C1F2BA796CD00A8E0C5 /* PrivacyInfo.xcprivacy in Resources */ = {isa = PBXBuildFile; fileRef = 4A690C1D2BA796C500A8E0C5 /* PrivacyInfo.xcprivacy */; };
 		4A690C212BA7975500A8E0C5 /* PrivacyInfo.xcprivacy in Resources */ = {isa = PBXBuildFile; fileRef = 4A690C202BA7974E00A8E0C5 /* PrivacyInfo.xcprivacy */; };
 		4A690C222BA7975800A8E0C5 /* PrivacyInfo.xcprivacy in Resources */ = {isa = PBXBuildFile; fileRef = 4A690C202BA7974E00A8E0C5 /* PrivacyInfo.xcprivacy */; };
-		3F7AE0E12D9B30A200AB4892 /* XcodeTarget_WordPressDataTests in Frameworks */ = {isa = PBXBuildFile; productRef = 3F7AE0E02D9B30A200AB4892 /* XcodeTarget_WordPressDataTests */; };
 		4A8284B02E5FECB00037E180 /* XcodeTarget_WordPressKitTests in Frameworks */ = {isa = PBXBuildFile; productRef = 4A8284AF2E5FECB00037E180 /* XcodeTarget_WordPressKitTests */; };
 		4ABC59742DE52A7D005A6B84 /* Secrets-WordPressDraftActionExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4ABC59732DE52A7D005A6B84 /* Secrets-WordPressDraftActionExtension.swift */; };
 		4ABCAB2A2DE52E80005A6B84 /* Secrets-JetpackDraftActionExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4ABCAB272DE52E6B005A6B84 /* Secrets-JetpackDraftActionExtension.swift */; };
@@ -8072,13 +8072,13 @@
 			isa = XCSwiftPackageProductDependency;
 			productName = XcodeTarget_WordPressData;
 		};
-		4A8284AF2E5FECB00037E180 /* XcodeTarget_WordPressKitTests */ = {
-			isa = XCSwiftPackageProductDependency;
-			productName = XcodeTarget_WordPressKitTests;
-		};
 		3F7AE0E02D9B30A200AB4892 /* XcodeTarget_WordPressDataTests */ = {
 			isa = XCSwiftPackageProductDependency;
 			productName = XcodeTarget_WordPressDataTests;
+		};
+		4A8284AF2E5FECB00037E180 /* XcodeTarget_WordPressKitTests */ = {
+			isa = XCSwiftPackageProductDependency;
+			productName = XcodeTarget_WordPressKitTests;
 		};
 /* End XCSwiftPackageProductDependency section */
 	};
