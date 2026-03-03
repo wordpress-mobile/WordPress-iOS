@@ -1,4 +1,4 @@
-/* Translation-Revision-Date: 2026-02-26 14:57:08+0000 */
+/* Translation-Revision-Date: 2026-02-27 12:47:16+0000 */
 /* Plural-Forms: nplurals=2; plural=n != 1; */
 /* Generator: GlotPress/4.0.3 */
 /* Language: es */
@@ -9447,6 +9447,9 @@ Example: Reply to Pamela Nguyen */
 /* Search terms data type */
 "jetpackStats.siteDataTypes.searchTerms" = "Términos de búsqueda";
 
+/* UTM campaign tracking data type */
+"jetpackStats.siteDataTypes.utm" = "UTM";
+
 /* Videos data type */
 "jetpackStats.siteDataTypes.videos" = "Vídeos";
 
@@ -9551,6 +9554,9 @@ Example: Reply to Pamela Nguyen */
 
 /* UTM parameter for source only */
 "jetpackStats.utmParamGroupings.source" = "Fuente";
+
+/* Number of ads served. %@ is the ads count. */
+"jetpackStats.wordAds.adsServed.count" = "%@ anuncios servidos";
 
 /* Total earnings from WordAds */
 "jetpackStats.wordAds.earnings" = "Ganancias";

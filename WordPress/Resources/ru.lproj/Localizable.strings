@@ -1,4 +1,4 @@
-/* Translation-Revision-Date: 2026-02-06 21:53:11+0000 */
+/* Translation-Revision-Date: 2026-02-27 09:58:47+0000 */
 /* Plural-Forms: nplurals=3; plural=(n % 10 == 1 && n % 100 != 11) ? 0 : ((n % 10 >= 2 && n % 10 <= 4 && (n % 100 < 12 || n % 100 > 14)) ? 1 : 2); */
 /* Generator: GlotPress/4.0.3 */
 /* Language: ru */
@@ -7231,6 +7231,9 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Feature name for the block editor in application password required prompt */
 "applicationPasswordRequired.feature.blockEditor" = "Редактор блоков";
 
+/* Feature name for managing custom post types in the app */
+"applicationPasswordRequired.feature.customPosts" = "Пользовательские типы записей";
+
 /* Feature name for managing terms and taxonomies in the app */
 "applicationPasswordRequired.feature.customTaxonomies" = "Управление таксономиями";
 
@@ -7393,6 +7396,27 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Action shown in a bottom notice to dismiss it. */
 "blogDashboard.dismiss" = "Закрыть";
+
+/* Error message shown when the active theme cannot be found for a site. */
+"blogDetails.activeThemeNotFound.errorDescription" = "Не удалось найти активную тему этого сайта.";
+
+/* Button title to connect Jetpack in XML-RPC disabled alert */
+"blogDetails.xmlrpcDisabled.alert.connectJetpack" = "Подключить Jetpack";
+
+/* Description explaining options to restore functionality when XML-RPC is disabled */
+"blogDetails.xmlrpcDisabled.alert.description" = "XML-RPC отключён на вашем сайте. Некоторым функциям приложения для работы требуется XML-RPC. Подключите Jetpack или включите XML-RPC, чтобы пользоваться всеми функциями.";
+
+/* Button title to learn more about XML-RPC being disabled */
+"blogDetails.xmlrpcDisabled.alert.learnMore" = "Подробнее";
+
+/* Title for the XML-RPC disabled alert */
+"blogDetails.xmlrpcDisabled.alert.title" = "XML-RPC отключён";
+
+/* Subtitle for the XML-RPC disabled card on blog details */
+"blogDetails.xmlrpcDisabled.card.subtitle" = "Некоторые функции могут быть ограничены";
+
+/* Title for the XML-RPC disabled card on blog details */
+"blogDetails.xmlrpcDisabled.card.title" = "XML-RPC отключён";
 
 /* Context menu button title */
 "blogHeader.actionVisitSite" = "Перейти на сайт";
@@ -7860,6 +7884,39 @@ Example: Reply to Pamela Nguyen */
 /* Create Sheet button title */
 "createSheet.postFromAudio" = "Публикация из аудио";
 
+/* Error message shown when the post was modified by another user while editing */
+"customPostEditor.error.conflict.message" = "За это время запись, которую вы пытаетесь сохранить, была изменена.";
+
+/* Empty state message when no custom posts exist. %1$@ is the post type name (e.g., 'Podcasts', 'Products'). */
+"customPostList.emptyState.message" = "Нет %1$@";
+
+/* Tab title for draft posts */
+"customPostTab.drafts" = "Черновики";
+
+/* Tab title for published posts */
+"customPostTab.published" = "Опубликовано";
+
+/* Tab title for scheduled posts */
+"customPostTab.scheduled" = "Запланировано";
+
+/* Menu item title for sending feedback on the custom post types screen */
+"customPostTab.sendFeedback" = "Отправить отзыв";
+
+/* Tab title for trashed posts */
+"customPostTab.trash" = "Корзина";
+
+/* Empty state message when there are no custom post types to display */
+"customPostTypes.emptyState.message" = "Нет пользовательских типов записей";
+
+/* Accessibility label for the button to pin a custom post type */
+"customPostTypes.pin.accessibilityLabel" = "Закрепить";
+
+/* Title for the Custom Post Types screen */
+"customPostTypes.title" = "Ещё";
+
+/* Accessibility label for the button to unpin a custom post type */
+"customPostTypes.unpin.accessibilityLabel" = "Открепить";
+
 /* Customize Insights description */
 "customizeInsightsCell.content" = "Настройте вашу консоль и выберите отчёты, которые хотите видеть. Сфокусируйтесь на данных, которые вам наиболее важны.";
 
@@ -8000,6 +8057,9 @@ Example: Reply to Pamela Nguyen */
 
 /* Debug Menu action for TipKit */
 "debugMenu.hideAllTips" = "Скрыть все подсказки";
+
+/* Debug Menu item title */
+"debugMenu.item.logs" = "Журналы";
 
 /* Title of the screen that allows the user to change the Reader CSS URL for debug builds */
 "debugMenu.readerCellTitle" = "URL CSS Чтива";
@@ -8732,8 +8792,14 @@ Example: Reply to Pamela Nguyen */
 /* Title of the primary button shown after the Jetpack plugin has been installed. Tapping on the button dismisses the installation screen. */
 "jetpack.install-flow.success.primaryButtonText" = "Готово";
 
+/* Message asking the user to install Jetpack to access all app features */
+"jetpack.install.allFeatures.description" = "Чтобы разблокировать все функции приложения, необходимо установить плагин Jetpack.";
+
 /* Title of a button for connecting user account to Jetpack. */
 "jetpack.install.connectUser.button.title" = "Подключите вашу учётную запись";
+
+/* Message asking the user to connect Jetpack to access all app features */
+"jetpack.install.connectUser.bypassXMLRPC.description" = "Для сбора и просмотра статистики на сайте требуется подключить плагин Jetpack к учётной записи пользователя.";
 
 /* Message asking the user if they want to set up Jetpack from notifications */
 "jetpack.install.connectUser.notifications.description" = "Для получения уведомлений от WordPress на устройство нужно подключить учетную запись.";
@@ -9078,6 +9144,9 @@ Example: Reply to Pamela Nguyen */
 /* Line chart type */
 "jetpackStats.chart.lineChart" = "Строки";
 
+/* Label for aggregated 'Other' segment in pie charts */
+"jetpackStats.chart.other" = "Другое";
+
 /* Show chart data menu item */
 "jetpackStats.chart.showData" = "Показать данные";
 
@@ -9204,6 +9273,9 @@ Example: Reply to Pamela Nguyen */
 /* Label for quick period selection */
 "jetpackStats.datePicker.quickPeriodsForStartDate" = "Периоды для быстрого выбора даты начала";
 
+/* Title for custom date range picker */
+"jetpackStats.datePicker.selectRange" = "Выбор диапазона";
+
 /* Site time zone header */
 "jetpackStats.datePicker.siteTimeZone" = "Часовой пояс сайта";
 
@@ -9219,6 +9291,15 @@ Example: Reply to Pamela Nguyen */
 /* Title for stats date range control tip */
 "jetpackStats.dateRangeTip.title" = "Перемещайтесь во времени";
 
+/* Device breakdown by browser */
+"jetpackStats.deviceBreakdowns.browser" = "Браузер";
+
+/* Device breakdown by platform/OS */
+"jetpackStats.deviceBreakdowns.operatingSystem" = "Операционная система";
+
+/* Device breakdown by screen size */
+"jetpackStats.deviceBreakdowns.screensize" = "Размер экрана";
+
 /* Section title for the list of child links */
 "jetpackStats.externalLinkDetails.childLinks" = "Вспомогательные ссылки";
 
@@ -9227,6 +9308,12 @@ Example: Reply to Pamela Nguyen */
 
 /* Title for the external link details screen */
 "jetpackStats.externalLinkDetails.title" = "Внешняя ссылка";
+
+/* Button to explore plans when a feature is gated */
+"jetpackStats.featureGate.explorePlans" = "Тарифные планы";
+
+/* Message shown when a stats feature is gated behind a paid plan */
+"jetpackStats.featureGate.message" = "Перейдите на тарифный план повышенного уровня, чтобы пользоваться расширенными возможностями аналитики";
 
 /* Automatic granularity option */
 "jetpackStats.granularity.automatic" = "Автоматически";
@@ -9342,6 +9429,9 @@ Example: Reply to Pamela Nguyen */
 /* Clicks data type (external links) */
 "jetpackStats.siteDataTypes.clicks" = "Переходы";
 
+/* Devices data type */
+"jetpackStats.siteDataTypes.devices" = "Устройства";
+
 /* File downloads data type */
 "jetpackStats.siteDataTypes.fileDownloads" = "Скачивания файлов";
 
@@ -9417,6 +9507,9 @@ Example: Reply to Pamela Nguyen */
 /* Table column title for Top List card */
 "jetpackStats.topListColumnTitle.clicks" = "Внешняя ссылка";
 
+/* Table column title for Devices Top List card */
+"jetpackStats.topListColumnTitle.devices" = "Устройство";
+
 /* Table column title for Top List card */
 "jetpackStats.topListColumnTitle.fileDownloads" = "Файл";
 
@@ -9432,8 +9525,65 @@ Example: Reply to Pamela Nguyen */
 /* Table column title for Top List card */
 "jetpackStats.topListColumnTitle.searchTerms" = "Период";
 
+/* Table column title for UTM Top List card */
+"jetpackStats.topListColumnTitle.utm" = "Кампания";
+
 /* Table column title for Top List card */
 "jetpackStats.topListColumnTitle.videos" = "Видео";
+
+/* Plural post count for UTM metrics. %1$d is the number. */
+"jetpackStats.utmMetricDetails.postCount.plural" = "Записи: %1$d";
+
+/* Singular post count for UTM metrics. %1$d is the number. */
+"jetpackStats.utmMetricDetails.postCount.singular" = "Записи: %1$d";
+
+/* Title for the UTM campaign details screen */
+"jetpackStats.utmMetricDetails.title" = "Кампания UTM";
+
+/* Section title for top posts from this UTM campaign */
+"jetpackStats.utmMetricDetails.topPosts" = "Популярные записи";
+
+/* UTM parameter for campaign only */
+"jetpackStats.utmParamGroupings.campaign" = "Кампания";
+
+/* UTM parameter for medium only */
+"jetpackStats.utmParamGroupings.medium" = "Среднее";
+
+/* UTM parameter for source only */
+"jetpackStats.utmParamGroupings.source" = "Источник";
+
+/* Number of ads served. %@ is the ads count. */
+"jetpackStats.wordAds.adsServed.count" = "Показано объявлений: %@";
+
+/* Total earnings from WordAds */
+"jetpackStats.wordAds.earnings" = "Доход";
+
+/* Button to learn more about WordAds earnings */
+"jetpackStats.wordAds.learnMore" = "Подробнее";
+
+/* Message shown when there are no payment records */
+"jetpackStats.wordAds.noPaymentsYet" = "Платежей пока нет";
+
+/* Outstanding amount owed from WordAds */
+"jetpackStats.wordAds.outstanding" = "Превосходный";
+
+/* Amount paid out from WordAds earnings */
+"jetpackStats.wordAds.paid" = "Выплачено";
+
+/* Title for payment history card and screen */
+"jetpackStats.wordAds.paymentsHistory" = "Журнал платежей";
+
+/* Title for WordAds total earnings card */
+"jetpackStats.wordAds.totalEarnings" = "Итоговый доход";
+
+/* Number of ads served */
+"jetpackStats.wordAdsMetrics.adsServed" = "Показано объявлений";
+
+/* Average cost per mille (thousand impressions) */
+"jetpackStats.wordAdsMetrics.averageCPM" = "Средний коэфф. CPM";
+
+/* Revenue from ads */
+"jetpackStats.wordAdsMetrics.revenue" = "Доход";
 
 /* Title for a call-to-action button on the Jetpack install card. */
 "jetpackinstallcard.button.learn" = "Подробнее";
@@ -10197,6 +10347,9 @@ Example: Reply to Pamela Nguyen */
 /* A title for the log severity level */
 "phpLogs.severityWarning" = "Предупреждение";
 
+/* Error message when a pinned custom post type cannot be found. %1$@ is the post type name. */
+"pinnedPostType.error.notFound" = "«%1$@» недоступен на этом сайте.";
+
 /* Title for the plan selection view */
 "planSelection.title" = "Тарифы";
 
@@ -10367,6 +10520,9 @@ Example: Reply to Pamela Nguyen */
 /* A message for a snackbar informing the user that some media files requires their attention */
 "postEditor.postHasFailingMediaUploadsSnackbar.message" = "Не удалось загрузить некоторые медиафайлы";
 
+/* Title for the publish button in the post editor navigation bar */
+"postEditor.publishButton.title" = "Опубликовать";
+
 /* Editor, notice for successful recovery a trashed post */
 "postEditor.recoverTrashedPost.postRecoveredNoticeTitle" = "Запись восстановлена как черновик";
 
@@ -10387,6 +10543,9 @@ Example: Reply to Pamela Nguyen */
 
 /* Saving draft to generate a preview (status message */
 "postEditor.savingDraftForPreview" = "Сохранение черновика...";
+
+/* Title for the update button in the post editor navigation bar */
+"postEditor.updateButton.title" = "Обновить";
 
 /* Empty state description when no post formats are available */
 "postFormatPicker.emptyState.description" = "Форматы записей на этом сайте не настроены.";

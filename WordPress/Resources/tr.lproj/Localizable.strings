@@ -1,4 +1,4 @@
-/* Translation-Revision-Date: 2026-02-26 14:56:18+0000 */
+/* Translation-Revision-Date: 2026-02-27 15:58:37+0000 */
 /* Plural-Forms: nplurals=2; plural=n > 1; */
 /* Generator: GlotPress/4.0.3 */
 /* Language: tr */
@@ -7232,7 +7232,7 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 "applicationPasswordRequired.feature.blockEditor" = "Blok Düzenleyici";
 
 /* Feature name for managing custom post types in the app */
-"applicationPasswordRequired.feature.customPosts" = "Özel gönderi türü";
+"applicationPasswordRequired.feature.customPosts" = "Özel Gönderi Türü";
 
 /* Feature name for managing terms and taxonomies in the app */
 "applicationPasswordRequired.feature.customTaxonomies" = "Sınıflandırma Yönetimi";
@@ -7885,7 +7885,7 @@ Example: Reply to Pamela Nguyen */
 "createSheet.postFromAudio" = "Sesten Gönderi Oluştur";
 
 /* Error message shown when the post was modified by another user while editing */
-"customPostEditor.error.conflict.message" = "Kaydetmeye çalıştığınız yazı bu sırada değiştirildi.";
+"customPostEditor.error.conflict.message" = "Kaydetmeye çalıştığınız gönderi bu sırada değiştirildi.";
 
 /* Empty state message when no custom posts exist. %1$@ is the post type name (e.g., 'Podcasts', 'Products'). */
 "customPostList.emptyState.message" = "%1$@ yok";
@@ -7906,7 +7906,7 @@ Example: Reply to Pamela Nguyen */
 "customPostTab.trash" = "Çöp";
 
 /* Empty state message when there are no custom post types to display */
-"customPostTypes.emptyState.message" = "Özel Yazı Türü Yok";
+"customPostTypes.emptyState.message" = "Özel Gönderi Türü Yok";
 
 /* Accessibility label for the button to pin a custom post type */
 "customPostTypes.pin.accessibilityLabel" = "Sabitle";
@@ -8799,7 +8799,7 @@ Example: Reply to Pamela Nguyen */
 "jetpack.install.connectUser.button.title" = "Kullanıcı hesabınızı bağlayın";
 
 /* Message asking the user to connect Jetpack to access all app features */
-"jetpack.install.connectUser.bypassXMLRPC.description" = "Sitenizde istatistikleri kullanmak için Jetpack eklentisini kullanıcı hesabınıza bağlamalısınız.";
+"jetpack.install.connectUser.bypassXMLRPC.description" = "Tüm uygulama özelliklerinin kilidini açmak için Jetpack eklentisini kullanıcı hesabınıza bağlamanız gerekir.";
 
 /* Message asking the user if they want to set up Jetpack from notifications */
 "jetpack.install.connectUser.notifications.description" = "Telefonunuza WordPress sitesinden yararlı bildirimler almak için kullanıcı hesabınızla bağlantı kurmanız gerekecek.";
@@ -9274,7 +9274,7 @@ Example: Reply to Pamela Nguyen */
 "jetpackStats.datePicker.quickPeriodsForStartDate" = "Başlangıç tarihi için hızlı dönemler";
 
 /* Title for custom date range picker */
-"jetpackStats.datePicker.selectRange" = "Tarih aralığı seçin";
+"jetpackStats.datePicker.selectRange" = "Aralık Seçin";
 
 /* Site time zone header */
 "jetpackStats.datePicker.siteTimeZone" = "Site Saat Dilimi";
@@ -9297,6 +9297,9 @@ Example: Reply to Pamela Nguyen */
 /* Device breakdown by platform/OS */
 "jetpackStats.deviceBreakdowns.operatingSystem" = "İşletim Sistemi";
 
+/* Device breakdown by screen size */
+"jetpackStats.deviceBreakdowns.screensize" = "Ekran Boyutu:";
+
 /* Section title for the list of child links */
 "jetpackStats.externalLinkDetails.childLinks" = "Alt bağlantılar";
 
@@ -9307,7 +9310,7 @@ Example: Reply to Pamela Nguyen */
 "jetpackStats.externalLinkDetails.title" = "Harici Bağlantı";
 
 /* Button to explore plans when a feature is gated */
-"jetpackStats.featureGate.explorePlans" = "Paketleri keşfedin.";
+"jetpackStats.featureGate.explorePlans" = "Paketleri Keşfedin";
 
 /* Message shown when a stats feature is gated behind a paid plan */
 "jetpackStats.featureGate.message" = "Gelişmiş analizlere erişim elde etmek için paketinizi yükseltin";
@@ -9444,6 +9447,9 @@ Example: Reply to Pamela Nguyen */
 /* Search terms data type */
 "jetpackStats.siteDataTypes.searchTerms" = "Arama Terimleri";
 
+/* UTM campaign tracking data type */
+"jetpackStats.siteDataTypes.utm" = "UTM";
+
 /* Videos data type */
 "jetpackStats.siteDataTypes.videos" = "Videolar";
 
@@ -9535,7 +9541,7 @@ Example: Reply to Pamela Nguyen */
 "jetpackStats.utmMetricDetails.title" = "UTM kampanyası";
 
 /* Section title for top posts from this UTM campaign */
-"jetpackStats.utmMetricDetails.topPosts" = "En Çok Okunan Yazılar";
+"jetpackStats.utmMetricDetails.topPosts" = "En Çok Okunan Gönderiler";
 
 /* UTM parameter for campaign only */
 "jetpackStats.utmParamGroupings.campaign" = "Kampanya";
@@ -9545,6 +9551,9 @@ Example: Reply to Pamela Nguyen */
 
 /* UTM parameter for source only */
 "jetpackStats.utmParamGroupings.source" = "Kaynak";
+
+/* Number of ads served. %@ is the ads count. */
+"jetpackStats.wordAds.adsServed.count" = "%@ reklam sunuldu";
 
 /* Total earnings from WordAds */
 "jetpackStats.wordAds.earnings" = "Kazançlar";
@@ -9565,7 +9574,7 @@ Example: Reply to Pamela Nguyen */
 "jetpackStats.wordAds.paymentsHistory" = "Ödeme Geçmişi";
 
 /* Title for WordAds total earnings card */
-"jetpackStats.wordAds.totalEarnings" = "Toplam Kazanç:";
+"jetpackStats.wordAds.totalEarnings" = "Toplam Kazanç";
 
 /* Number of ads served */
 "jetpackStats.wordAdsMetrics.adsServed" = "Sunulan Reklamlar";
