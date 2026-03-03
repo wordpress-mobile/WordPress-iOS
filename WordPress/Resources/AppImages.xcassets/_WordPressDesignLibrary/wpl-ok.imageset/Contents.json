@@ -1,7 +1,7 @@
 {
   "images" : [
     {
-      "filename" : "bell.pdf",
+      "filename" : "wpl-ok.svg",
       "idiom" : "universal"
     }
   ],
@@ -11,6 +11,6 @@
   },
   "properties" : {
     "preserves-vector-representation" : true,
-    "template-rendering-intent" : "original"
+    "template-rendering-intent" : "template"
   }
 }
