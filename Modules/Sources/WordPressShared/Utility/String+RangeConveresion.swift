@@ -48,10 +48,10 @@ extension String {
     /// - Returns: the requested `Range<String.Index>`
     ///
     func range(from nsRange: NSRange) -> Range<String.Index> {
-        let lowerBound = index(startIndex, offsetBy: nsRange.location)
-        let upperBound = index(lowerBound, offsetBy: nsRange.length)
-
-        return lowerBound ..< upperBound
+        guard let range = Range(nsRange, in: self) else {
+            preconditionFailure("Invalid NSRange \(nsRange) for string of UTF-16 length \(utf16.count)")
+        }
+        return range
     }
 
     func range(fromUTF16NSRange utf16NSRange: NSRange) -> Range<String.Index> {
@@ -160,11 +160,7 @@ extension String {
     /// - Returns: the requested `NSRange`.
     ///
     func nsRange(from range: Range<String.Index>) -> NSRange {
-
-        let location = distance(from: startIndex, to: range.lowerBound)
-        let length = distance(from: range.lowerBound, to: range.upperBound)
-
-        return NSRange(location: location, length: length)
+        NSRange(range, in: self)
     }
 
     /// Converts a `Range<String.Index>` into an UTF16 NSRange.
@@ -190,7 +186,7 @@ extension String {
     /// Returns a NSRange with a starting location at the very end of the string
     ///
     func endOfStringNSRange() -> NSRange {
-        return NSRange(location: count, length: 0)
+        return NSRange(location: utf16.count, length: 0)
     }
 
     func indexFromLocation(_ location: Int) -> String.Index? {
