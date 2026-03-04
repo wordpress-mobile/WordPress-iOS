@@ -74,6 +74,7 @@ open class GravatarServiceRemote {
         task.resume()
     }
 
+    #if canImport(UIKit)
     /// This method hits the Gravatar Endpoint, and uploads a new image, to be used as profile.
     ///
     /// - Parameters:
@@ -107,6 +108,7 @@ open class GravatarServiceRemote {
 
         task.resume()
     }
+    #endif
 
     // MARK: - Private Helpers
 
