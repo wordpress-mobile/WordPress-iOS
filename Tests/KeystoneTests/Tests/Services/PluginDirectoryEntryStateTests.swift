@@ -7,7 +7,7 @@ class PluginDirectoryEntryStateTests: XCTestCase {
     static let dateFormatter: DateFormatter = {
         let formatter = DateFormatter()
         formatter.locale = Locale(identifier: "en_US_POSIX")
-        formatter.dateFormat = "YYYY-MM-dd h:mma z"
+        formatter.dateFormat = "yyyy-MM-dd h:mma z"
         return formatter
     }()
 
