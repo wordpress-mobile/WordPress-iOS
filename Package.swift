@@ -17,6 +17,7 @@ let package = Package(
         .package(url: "https://github.com/wordpress-mobile/NSObject-SafeExpectations", from: "0.0.6"),
         .package(url: "https://github.com/wordpress-mobile/wpxmlrpc", from: "0.9.0"),
         .package(url: "https://github.com/Automattic/wordpress-rs", revision: "alpha-20260226"),
+        .package(url: "https://github.com/Automattic/Reachability", branch: "framework-support-via-spm"),
     ],
     targets: [
         .target(name: "BuildSettingsKit", path: "Modules/Sources/BuildSettingsKit"),
@@ -67,6 +68,44 @@ let package = Package(
             ]
         ),
         .target(
+            name: "WordPressSharedObjC",
+            path: "Modules/Sources/WordPressSharedObjC",
+            swiftSettings: [.swiftLanguageMode(.v5)]
+        ),
+        .target(
+            name: "WordPressShared",
+            dependencies: [
+                .product(name: "Reachability", package: "Reachability"),
+                "SFHFKeychainUtils",
+                "WordPressSharedObjC",
+            ],
+            path: "Modules/Sources/WordPressShared",
+            resources: [.process("Resources")],
+            swiftSettings: [.swiftLanguageMode(.v5)]
+        ),
+        .target(
+            name: "WordPressKit",
+            dependencies: [
+                "WordPressKitObjC",
+                "WordPressKitModels",
+                "WordPressKitObjCUtils",
+                "NSObject-SafeExpectations",
+                "WordPressShared",
+                "wpxmlrpc",
+            ],
+            path: "Modules/Sources/WordPressKit",
+            swiftSettings: [.swiftLanguageMode(.v5)]
+        ),
+        .target(
+            name: "WordPressCore",
+            dependencies: [
+                "WordPressCoreProtocols",
+                "WordPressShared",
+                .product(name: "WordPressAPI", package: "wordpress-rs"),
+            ],
+            path: "Modules/Sources/WordPressCore"
+        ),
+        .target(
             name: "WordPressTesting",
             path: "Modules/Sources/WordPressTesting",
             resources: [.process("Resources")]
@@ -87,6 +126,23 @@ let package = Package(
             dependencies: ["WordPressFlux"],
             path: "Modules/Tests/WordPressFluxTests",
             exclude: ["WordPressFluxTests.xctestplan"],
+            swiftSettings: [.swiftLanguageMode(.v5)]
+        ),
+        .testTarget(
+            name: "WordPressCoreTests",
+            dependencies: ["WordPressCore"],
+            path: "Modules/Tests/WordPressCoreTests",
+            exclude: ["WordPressCore.xctestplan"]
+        ),
+        .testTarget(
+            name: "WordPressSharedTests",
+            dependencies: ["WordPressShared"],
+            path: "Modules/Tests/WordPressSharedTests",
+            exclude: [
+                "WordPressShared.xctestplan",
+                "RichContentFormatterTests.swift",
+                "WPUserAgentTests.swift",
+            ],
             swiftSettings: [.swiftLanguageMode(.v5)]
         ),
     ]

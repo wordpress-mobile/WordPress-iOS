@@ -1,5 +1,4 @@
 import Foundation
-import WordPressSharedObjC
 
 extension String {
 

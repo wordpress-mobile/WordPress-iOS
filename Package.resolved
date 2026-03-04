@@ -1,5 +1,5 @@
 {
-  "originHash" : "1b09cdc1a8eadc39ae768b2a02eda27ec24c47e1e704f150950a0faeb01c7fdf",
+  "originHash" : "fd8a7ab3bef43022c77af71fe6bacc3b1428759cb2570767081d8589b3eeef5f",
   "pins" : [
     {
       "identity" : "nsobject-safeexpectations",
@@ -8,6 +8,15 @@
       "state" : {
         "revision" : "eb84d994ab13a153888a19e5b99f536aafa77434",
         "version" : "0.0.6"
+      }
+    },
+    {
+      "identity" : "reachability",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/Automattic/Reachability",
+      "state" : {
+        "branch" : "framework-support-via-spm",
+        "revision" : "5552d6a2ceeb40ad6aa1a288ea7bbd544fb68d6f"
       }
     },
     {
