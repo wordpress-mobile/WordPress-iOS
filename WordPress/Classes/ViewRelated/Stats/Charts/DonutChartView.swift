@@ -178,7 +178,7 @@ class DonutChartView: UIView {
         // Here we'll increase the size of small segments if necessary. We loop through segments.count times
         // to ensure that after each adjustment the remaining segments are still an acceptable size.
         var displaySegments = adjustedSegmentsForDisplay(segments)
-        for _ in 0..<segments.count - 1 {
+        for _ in 0..<max(segments.count, 1) - 1 {
             displaySegments = adjustedSegmentsForDisplay(displaySegments)
         }
 
