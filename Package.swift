@@ -13,6 +13,11 @@ let package = Package(
         .macOS(.v13),
         .iOS(.v17),
     ],
+    dependencies: [
+        .package(url: "https://github.com/wordpress-mobile/NSObject-SafeExpectations", from: "0.0.6"),
+        .package(url: "https://github.com/wordpress-mobile/wpxmlrpc", from: "0.9.0"),
+        .package(url: "https://github.com/Automattic/wordpress-rs", revision: "alpha-20260226"),
+    ],
     targets: [
         .target(name: "BuildSettingsKit", path: "Modules/Sources/BuildSettingsKit"),
         .target(
@@ -32,6 +37,35 @@ let package = Package(
         ),
         .target(name: "TextBundle", path: "Modules/Sources/TextBundle"),
         .target(name: "WordPressCoreProtocols", path: "Modules/Sources/WordPressCoreProtocols"),
+        .target(
+            name: "WordPressKitObjCUtils",
+            path: "Modules/Sources/WordPressKitObjCUtils",
+            cSettings: [
+                .define("NS_BLOCK_ASSERTIONS", to: "1", .when(configuration: .release))
+            ]
+        ),
+        .target(
+            name: "WordPressKitModels",
+            dependencies: [
+                "NSObject-SafeExpectations",
+                "WordPressKitObjCUtils",
+            ],
+            path: "Modules/Sources/WordPressKitModels"
+        ),
+        .target(
+            name: "WordPressKitObjC",
+            dependencies: [
+                "NSObject-SafeExpectations",
+                "wpxmlrpc",
+                "WordPressKitModels",
+                "WordPressKitObjCUtils",
+            ],
+            path: "Modules/Sources/WordPressKitObjC",
+            publicHeadersPath: "include",
+            cSettings: [
+                .define("NS_BLOCK_ASSERTIONS", to: "1", .when(configuration: .release))
+            ]
+        ),
         .target(
             name: "WordPressTesting",
             path: "Modules/Sources/WordPressTesting",
