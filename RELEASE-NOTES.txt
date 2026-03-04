@@ -1,5 +1,6 @@
 26.8
 -----
+* [*] Enrich push notifications with icons [#25346]
 
 
 26.7

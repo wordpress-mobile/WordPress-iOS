@@ -166,8 +166,11 @@ class NotificationService: UNNotificationServiceExtension {
 
             tracks.trackNotificationAssembled()
 
-            // If the notification contains any image media, download it and attach it to the notification
-            guard let mediaURL = contentFormatter.mediaURL else {
+            let iconURL = NotificationKind.isNotificationIconSupported(notificationKind) ? notification.icon.flatMap(URL.init) : nil
+
+            // If the notification contains any image media, download it and
+            // attach it to the notification.
+            guard let mediaURL = contentFormatter.mediaURL ?? iconURL else {
                 contentHandler(notificationContent)
                 return
             }
