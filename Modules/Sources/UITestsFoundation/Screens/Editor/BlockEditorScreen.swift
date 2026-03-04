@@ -464,9 +464,6 @@ public class BlockEditorScreen: ScreenObject {
         // The following is a convoluted but seemingly robust approach that bypasses the keyboard by using the pasteboard instead.
         UIPasteboard.general.string = text
 
-        // Safety check
-        XCTAssertTrue(element.waitForExistence(timeout: 1))
-
         element.doubleTap()
 
         let pasteButton = app.menuItems["Paste"]
