@@ -4,6 +4,8 @@
 #import "WordPress-Swift.h"
 @import WordPressData;
 @import WordPressShared;
+@import WordPressSharedObjCUI;
+@import WordPressSharedUI;
 
 static CGFloat ViewExpansionAnimationDelay = 0.15;
 

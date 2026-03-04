@@ -5,6 +5,8 @@
 @import WordPressKit;
 @import WordPressKitModels;
 @import WordPressShared;
+@import WordPressSharedObjC;
+@import WordPressSharedUI;
 
 #import "WordPress-Swift.h"
 NSString * const WPAccountEmailAndDefaultBlogUpdatedNotification = @"WPAccountEmailAndDefaultBlogUpdatedNotification";

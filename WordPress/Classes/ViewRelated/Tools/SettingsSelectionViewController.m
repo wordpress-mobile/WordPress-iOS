@@ -3,6 +3,7 @@
 #import "NSDictionary+SafeExpectations.h"
 #import "WordPress-Swift.h"
 @import WordPressShared;
+@import WordPressSharedObjCUI;
 
 NSString * const SettingsSelectionTitleKey = @"Title";
 NSString * const SettingsSelectionTitlesKey = @"Titles";

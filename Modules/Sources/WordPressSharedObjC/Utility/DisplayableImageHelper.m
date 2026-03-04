@@ -1,5 +1,8 @@
 #import "DisplayableImageHelper.h"
-#import "NSString+Util.h"
+
+@interface NSObject (NumericValueHack)
+- (NSNumber *)numericValue;
+@end
 
 static const NSInteger FeaturedImageMinimumWidth = 150;
 

@@ -5,6 +5,7 @@
 #import "RemoteReaderPost.h"
 
 @import WordPressKit;
+@import WordPressSharedUI;
 
 @interface RemoteReaderPost ()
 

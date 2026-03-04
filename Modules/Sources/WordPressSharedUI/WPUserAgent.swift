@@ -1,5 +1,7 @@
 import Foundation
+import UIKit
 import WebKit
+import WordPressShared
 
 @objc
 public class WPUserAgent: NSObject {

@@ -2,6 +2,7 @@
 #import "Menu+ViewDesign.h"
 #import "WordPress-Swift.h"
 @import WordPressShared;
+@import WordPressSharedObjCUI;
 @import Gridicons;
 
 static CGFloat const iconPadding = 3.0;

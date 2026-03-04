@@ -7,6 +7,8 @@
 @import WordPressData;
 @import WordPressKit;
 @import WordPressShared;
+@import WordPressSharedObjC;
+@import WordPressSharedUI;
 
 NSUInteger const ReaderPostServiceNumberToSync = 7;
 // NOTE: The search endpoint is currently capped to max results of 20 and returns

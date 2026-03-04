@@ -5,6 +5,7 @@ import Gutenberg
 import WordPressData
 import WordPressKit
 import WordPressShared
+import WordPressSharedUI
 
 class PageLayoutService {
     private struct Parameters {

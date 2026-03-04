@@ -4,6 +4,8 @@
 #import "WordPress-Swift.h"
 @import WordPressData;
 @import WordPressShared;
+@import WordPressSharedObjCUI;
+@import WordPressSharedUI;
 
 @import Gridicons;
 @import WordPressUI;

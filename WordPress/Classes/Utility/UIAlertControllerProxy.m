@@ -1,8 +1,8 @@
 @import WordPressShared;
+@import WordPressSharedUI;
 
 #import "UIAlertControllerProxy.h"
 #import "WordPress-Swift.h"
-@import WordPressShared;
 
 @implementation UIAlertControllerProxy
 

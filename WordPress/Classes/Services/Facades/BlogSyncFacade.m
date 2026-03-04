@@ -6,6 +6,7 @@
 @import WordPressData;
 
 @import WordPressShared;
+@import WordPressSharedObjC;
 @import NSObject_SafeExpectations;
 
 @implementation BlogSyncFacade

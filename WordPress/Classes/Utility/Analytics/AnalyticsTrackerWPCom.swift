@@ -1,5 +1,6 @@
 import Foundation
 import WordPressShared
+import WordPressSharedUI
 
 @objc public final class AnalyticsTrackerWPCom: NSObject, WPAnalyticsTracker {
 

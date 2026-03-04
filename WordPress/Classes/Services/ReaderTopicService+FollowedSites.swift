@@ -1,6 +1,7 @@
 import WordPressData
 import WordPressShared
 import WordPressKit
+import WordPressSharedUI
 
 extension ReaderTopicService {
 

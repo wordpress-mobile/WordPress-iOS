@@ -1,6 +1,7 @@
 import Foundation
 import WordPressKit
 import WordPressShared
+import WordPressSharedUI
 
 /// Protocol for fetching timezone data
 protocol TimeZoneServiceProtocol {

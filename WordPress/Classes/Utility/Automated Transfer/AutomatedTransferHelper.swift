@@ -4,6 +4,7 @@ import WordPressData
 import WordPressFlux
 import WordPressShared
 import WordPressKit
+import WordPressSharedUI
 
 class AutomatedTransferHelper {
 

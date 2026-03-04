@@ -2,6 +2,7 @@ import Foundation
 import WordPressData
 import WordPressShared
 import WordPressKit
+import WordPressSharedUI
 
 typealias ReaderSiteSearchSuccessBlock = (_ feeds: [ReaderFeed], _ hasMore: Bool, _ total: Int?) -> Void
 typealias ReaderSiteSearchFailureBlock = (_ error: Error?) -> Void

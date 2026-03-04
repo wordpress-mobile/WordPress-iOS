@@ -8,6 +8,7 @@
 @import WordPressKit;
 @import WordPressKitModels;
 @import WordPressShared;
+@import WordPressSharedObjC;
 
 @class Comment;
 

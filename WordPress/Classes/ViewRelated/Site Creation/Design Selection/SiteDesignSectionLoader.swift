@@ -1,6 +1,7 @@
 import Foundation
 import WordPressKit
 import WordPressShared
+import WordPressSharedUI
 
 struct SiteDesignSectionLoader {
     typealias Assembler = ((SiteIntentVertical?) -> [SiteDesignSection])

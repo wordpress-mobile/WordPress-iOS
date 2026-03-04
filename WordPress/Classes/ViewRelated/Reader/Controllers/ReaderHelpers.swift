@@ -4,6 +4,7 @@ import WordPressShared
 import WordPressFlux
 import WordPressUI
 import AutomatticTracks
+import WordPressSharedUI
 
 // MARK: - Reader Notifications
 

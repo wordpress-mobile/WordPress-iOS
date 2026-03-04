@@ -1,6 +1,7 @@
 #import "SuggestionsTableViewCell.h"
 #import "WordPress-Swift.h"
 @import WordPressShared;
+@import WordPressSharedObjCUI;
 
 NSInteger const SuggestionsTableViewCellIconSize = 24;
 

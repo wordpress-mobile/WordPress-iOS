@@ -84,6 +84,7 @@ let package = Package(
             name: "AztecExtensions",
             dependencies: [
                 "WordPressShared",
+                "WordPressSharedUI",
                 .product(name: "Gridicons", package: "Gridicons-iOS"),
                 .product(name: "Aztec", package: "AztecEditor-iOS")
             ],
@@ -103,6 +104,7 @@ let package = Package(
             name: "FormattableContentKit",
             dependencies: [
                 "WordPressShared",
+                "WordPressSharedUI",
                 "WordPressUI",
                 // TODO: Remove — It's here just for a NSMutableParagraphStyle init helper
                 "WordPressKit",
@@ -116,7 +118,8 @@ let package = Package(
             dependencies: [
                 "WordPressUI",
                 "WordPressKit",
-                "WordPressShared"
+                "WordPressShared",
+                "WordPressSharedUI"
             ],
             resources: [.process("Resources")]
         ),
@@ -227,7 +230,13 @@ let package = Package(
         .target(name: "WordPressLegacy", dependencies: ["DesignSystem", "WordPressShared"]),
         .target(
             name: "WordPressSharedObjC",
+            swiftSettings: [.swiftLanguageMode(.v5)]
+        ),
+        .target(
+            name: "WordPressSharedObjCUI",
+            dependencies: ["WordPressSharedObjC"],
             resources: [.process("Resources")],
+            publicHeadersPath: "include",
             swiftSettings: [.swiftLanguageMode(.v5)]
         ),
         .target(
@@ -237,9 +246,18 @@ let package = Package(
                 .product(name: "Logging", package: "swift-log"),
                 .product(name: "SwiftSoup", package: "SwiftSoup"),
                 .target(name: "SFHFKeychainUtils"),
-                .target(name: "WordPressSharedObjC")
+                .target(name: "WordPressSharedObjC"),
+                .target(name: "WordPressSharedObjCUI")
             ],
             resources: [.process("Resources")],
+            swiftSettings: [.swiftLanguageMode(.v5)]
+        ),
+        .target(
+            name: "WordPressSharedUI",
+            dependencies: [
+                "WordPressShared",
+                "WordPressSharedObjCUI"
+            ],
             swiftSettings: [.swiftLanguageMode(.v5)]
         ),
         .target(name: "WordPressTesting", resources: [.process("Resources")]),
@@ -315,6 +333,7 @@ let package = Package(
                 "AsyncImageKit",
                 "WordPressUI",
                 "WordPressShared",
+                "WordPressSharedUI",
                 .product(name: "SwiftSoup", package: "SwiftSoup")
             ],
             resources: [.process("Resources")]
@@ -346,7 +365,7 @@ let package = Package(
         ),
         .testTarget(
             name: "WordPressSharedTests",
-            dependencies: [.target(name: "WordPressShared")],
+            dependencies: [.target(name: "WordPressShared"), .target(name: "WordPressSharedUI")],
             swiftSettings: [.swiftLanguageMode(.v5)]
         ),
         .testTarget(
@@ -361,12 +380,15 @@ let package = Package(
         ),
         .testTarget(
             name: "WordPressSharedObjCTests",
-            dependencies: [.target(name: "WordPressShared"), .target(name: "WordPressTesting")],
+            dependencies: [
+                .target(name: "WordPressShared"), .target(name: "WordPressSharedObjCUI"),
+                .target(name: "WordPressTesting")
+            ],
             swiftSettings: [.swiftLanguageMode(.v5)]
         ),
         .testTarget(
             name: "WordPressUIUnitTests",
-            dependencies: [.target(name: "WordPressUI")],
+            dependencies: [.target(name: "WordPressUI"), .target(name: "WordPressSharedUI")],
             swiftSettings: [.swiftLanguageMode(.v5)]
         ),
         .testTarget(name: "WordPressCoreTests", dependencies: [.target(name: "WordPressCore")]),

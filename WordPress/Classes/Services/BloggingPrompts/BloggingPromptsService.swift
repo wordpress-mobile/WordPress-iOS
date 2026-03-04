@@ -2,6 +2,7 @@ import CoreData
 import WordPressData
 import WordPressKit
 import WordPressShared
+import WordPressSharedUI
 
 class BloggingPromptsService {
     let siteID: NSNumber

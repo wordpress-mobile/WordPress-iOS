@@ -3,6 +3,7 @@ import Foundation
 import Gridicons
 import UIKit
 import WordPressShared
+import WordPressSharedUI
 import WordPressKit // FIXME: Here just for the NSMutableParagraphStyle custom init
 import WordPressUI
 

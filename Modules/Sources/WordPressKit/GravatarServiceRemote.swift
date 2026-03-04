@@ -1,4 +1,7 @@
 import Foundation
+#if canImport(UIKit)
+import UIKit
+#endif
 
 /// This ServiceRemote encapsulates all of the interaction with the Gravatar endpoint.
 ///

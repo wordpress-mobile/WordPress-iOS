@@ -1,6 +1,7 @@
 import UIKit
 import WordPressShared
 @preconcurrency import WebKit
+import WordPressSharedUI
 
 @objc protocol BlazeWebViewControllerDelegate {
     func dismissBlazeWebViewController(_ controller: BlazeWebViewController)

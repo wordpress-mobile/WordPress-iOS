@@ -1,5 +1,6 @@
 import XCTest
 @testable import WordPressShared
+@testable import WordPressSharedUI
 
 class RichContentFormatterTests: XCTestCase {
 

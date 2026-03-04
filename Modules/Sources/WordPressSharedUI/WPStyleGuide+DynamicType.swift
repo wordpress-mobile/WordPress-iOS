@@ -1,6 +1,7 @@
 import Foundation
 import UIKit
-import WordPressSharedObjC
+import WordPressShared
+import WordPressSharedObjCUI
 
 /// Extension on WPStyleGuide to use Dynamic Type fonts.
 ///

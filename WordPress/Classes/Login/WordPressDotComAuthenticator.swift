@@ -8,6 +8,7 @@ import WordPressShared
 import WordPressKit
 import BuildSettingsKit
 @preconcurrency import Combine
+import WordPressSharedUI
 
 /// Log in or sign up a WordPress.com account via web.
 ///

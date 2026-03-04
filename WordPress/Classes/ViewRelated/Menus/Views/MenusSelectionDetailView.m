@@ -4,6 +4,8 @@
 
 #import "WordPress-Swift.h"
 @import WordPressShared;
+@import WordPressSharedObjCUI;
+@import WordPressSharedUI;
 @import Gridicons;
 
 @interface MenusSelectionDetailView ()

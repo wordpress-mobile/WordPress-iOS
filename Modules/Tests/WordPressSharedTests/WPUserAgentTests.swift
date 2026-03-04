@@ -2,6 +2,7 @@ import Foundation
 import Testing
 import WebKit
 import WordPressShared
+import WordPressSharedUI
 
 class WPWPUserAgentTests {
 

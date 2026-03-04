@@ -1,4 +1,7 @@
 import Foundation
+#if canImport(UIKit)
+import UIKit
+#endif
 
 fileprivate struct Unit {
     let abbreviationFormat: String

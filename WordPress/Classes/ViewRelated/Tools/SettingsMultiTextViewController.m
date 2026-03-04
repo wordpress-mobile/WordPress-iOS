@@ -1,6 +1,7 @@
 #import "SettingsMultiTextViewController.h"
 #import "WordPress-Swift.h"
 @import WordPressShared;
+@import WordPressSharedObjCUI;
 
 static CGVector const SettingsTextPadding = {11.0f, 3.0f};
 static CGFloat const SettingsMinHeight = 82.0f;

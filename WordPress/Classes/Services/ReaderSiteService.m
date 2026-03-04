@@ -6,6 +6,7 @@
 #import "WPAppAnalytics.h"
 @import WordPressData;
 @import WordPressKit;
+@import WordPressSharedObjC;
 
 NSString * const ReaderSiteServiceErrorDomain = @"ReaderSiteServiceErrorDomain";
 

@@ -2,6 +2,7 @@
 #import "WordPress-Swift.h"
 @import WordPressData;
 @import WordPressShared;
+@import WordPressSharedUI;
 @import WordPressKit;
 
 

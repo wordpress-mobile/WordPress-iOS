@@ -1,5 +1,6 @@
 import Testing
 import WordPressUI
+import WordPressSharedUI
 
 struct UIImageScaleTests {
 
