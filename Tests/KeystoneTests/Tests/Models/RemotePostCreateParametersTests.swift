@@ -1,5 +1,5 @@
 import Testing
-@testable import WordPressData
+@testable import WordPress
 
 @Suite("RemotePostCreateParameters Tests")
 struct RemotePostCreateParametersTests {

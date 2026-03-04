@@ -1,14 +1,15 @@
+import WordPressData
 import WordPressKit
 
 extension RemotePostUpdateParameters {
 
-    public var isEmpty: Bool {
+    var isEmpty: Bool {
         self == RemotePostUpdateParameters()
     }
 
     /// Returns a diff between the original and the latest revision with the
     /// changes applied on top.
-    public static func changes(
+    static func changes(
         from original: AbstractPost,
         to latest: AbstractPost,
         with changes: RemotePostUpdateParameters? = nil

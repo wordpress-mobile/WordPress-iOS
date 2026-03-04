@@ -257,7 +257,7 @@ struct BlogTests {
         let blog = BlogBuilder(mainContext)
             .withAccount()
             .isHostedAtWPcom()
-            .with(capabilities: [.PublishPosts])
+            .with(capabilities: [.publishPosts])
             .build()
 
         #expect(blog.supports(.publicize))
@@ -267,7 +267,7 @@ struct BlogTests {
         let blog = BlogBuilder(mainContext)
             .withAccount()
             .isHostedAtWPcom()
-            .with(capabilities: [.PublishPosts])
+            .with(capabilities: [.publishPosts])
             .set(blogOption: "publicize_permanently_disabled", value: true)
             .build()
 
@@ -278,7 +278,7 @@ struct BlogTests {
         let blog = BlogBuilder(mainContext)
             .withAccount()
             .isNotHostedAtWPcom()
-            .with(capabilities: [.PublishPosts])
+            .with(capabilities: [.publishPosts])
             .with(modules: ["publicize"])
             .build()
 
@@ -289,7 +289,7 @@ struct BlogTests {
         let blog = BlogBuilder(mainContext)
             .withAccount()
             .isNotHostedAtWPcom()
-            .with(capabilities: [.PublishPosts])
+            .with(capabilities: [.publishPosts])
             .with(modules: ["stats"])
             .build()
 
@@ -832,6 +832,42 @@ struct BlogTests {
             .build()
 
         #expect(blog.allowedFileTypes.isEmpty)
+    }
+
+    // MARK: - isUserCapableOf
+
+    @Test func isUserCapableOfReturnsTrueForGrantedCapability() {
+        let blog = BlogBuilder(mainContext)
+            .with(capabilities: [.publishPosts])
+            .build()
+
+        #expect(blog.isUserCapableOf(.publishPosts))
+    }
+
+    @Test func isUserCapableOfReturnsFalseForMissingCapability() {
+        let blog = BlogBuilder(mainContext)
+            .with(capabilities: [.publishPosts])
+            .build()
+
+        #expect(!blog.isUserCapableOf(.uploadFiles))
+    }
+
+    @Test func isUserCapableOfReturnsFalseWhenCapabilitiesAreNil() {
+        let blog = BlogBuilder(mainContext).build()
+        blog.capabilities = nil
+
+        #expect(!blog.isUserCapableOf(.editPosts))
+    }
+
+    @Test func isUserCapableOfChecksMultipleCapabilities() {
+        let blog = BlogBuilder(mainContext)
+            .with(capabilities: [.publishPosts, .editPosts, .uploadFiles])
+            .build()
+
+        #expect(blog.isUserCapableOf(.publishPosts))
+        #expect(blog.isUserCapableOf(.editPosts))
+        #expect(blog.isUserCapableOf(.uploadFiles))
+        #expect(!blog.isUserCapableOf(.deleteOthersPosts))
     }
 
     // MARK: - Blog URL Parsing

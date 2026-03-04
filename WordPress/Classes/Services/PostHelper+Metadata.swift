@@ -1,11 +1,12 @@
 import Foundation
-import WordPressShared
+import WordPressData
 import WordPressKit
+import WordPressShared
 
 extension PostHelper {
-    @objc public static let foreignIDKey = PostMetadataContainer.Key.foreignID.rawValue
+    @objc static let foreignIDKey = PostMetadataContainer.Key.foreignID.rawValue
 
-    @objc public static func getForeignID(for post: RemotePost) -> UUID? {
+    @objc static func getForeignID(for post: RemotePost) -> UUID? {
         guard let metadata = post.metadata as? [[String: Any]] else {
             return nil
         }
@@ -16,7 +17,7 @@ extension PostHelper {
         return UUID(uuidString: value)
     }
 
-    @objc public static func makeRawMetadata(from post: RemotePost) -> Data? {
+    @objc static func makeRawMetadata(from post: RemotePost) -> Data? {
         guard let metadata = post.metadata else {
             return nil
         }
@@ -32,18 +33,8 @@ extension PostHelper {
         }
     }
 
-    static func mapDictionaryToMetadataItems(_ dictionary: [String: Any]) -> RemotePostMetadataItem? {
-        let id = dictionary["id"]
-        let value = dictionary["value"]
-        return RemotePostMetadataItem(
-            id: (id as? String) ?? (id as? NSNumber)?.stringValue,
-            key: dictionary["key"] as? String,
-            value: value as? String
-        )
-    }
-
     @objc(createOrUpdateCategoryForRemoteCategory:blog:context:)
-    public class func createOrUpdateCategory(for remoteCategory: RemotePostCategory, in blog: Blog, in context: NSManagedObjectContext) -> PostCategory? {
+    class func createOrUpdateCategory(for remoteCategory: RemotePostCategory, in blog: Blog, in context: NSManagedObjectContext) -> PostCategory? {
         guard let categoryID = remoteCategory.categoryID else {
             wpAssertionFailure("remote category missing categoryID")
             return nil

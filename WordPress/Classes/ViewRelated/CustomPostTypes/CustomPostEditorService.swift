@@ -29,12 +29,17 @@ class CustomPostEditorService {
     let client: WordPressClient
     let service: WordPressAPIInternal.PostService
     let taxonomies: [SiteTaxonomy]
+    private var initialSettings: PostSettings
 
     weak var delegate: CustomPostEditorServiceDelegate?
 
     var post: AnyPostWithEditContext? {
         if case .existingPost(let post, _) = state { return post }
         return nil
+    }
+
+    var hasSettingsChanges: Bool {
+        settings != initialSettings
     }
 
     var settings: PostSettings {
@@ -80,6 +85,13 @@ class CustomPostEditorService {
         self.taxonomies = (try? blog.taxonomies
             .filter { capabilities.customTaxonomySlugs.contains($0.slug) }
             .sorted(using: KeyPathComparator(\.name))) ?? []
+
+        switch self.state {
+        case let .newPost(params):
+            self.initialSettings = PostSettings(from: params, taxonomies: taxonomies)
+        case let .existingPost(post, pending):
+            self.initialSettings = pending ?? PostSettings(from: post, taxonomies: taxonomies)
+        }
     }
 
     // MARK: - Save
@@ -182,6 +194,7 @@ class CustomPostEditorService {
         let endpoint = details.toPostEndpointType()
         let updatedPost = try await service.updatePost(endpointType: endpoint, postId: post.id, params: params)
         state = .existingPost(updatedPost)
+        initialSettings = settings
 
         return updatedPost
     }
@@ -192,6 +205,7 @@ class CustomPostEditorService {
         let endpoint = details.toPostEndpointType()
         let createdPost = try await service.createPost(endpointType: endpoint, params: params)
         state = .existingPost(createdPost)
+        initialSettings = settings
         return createdPost
     }
 

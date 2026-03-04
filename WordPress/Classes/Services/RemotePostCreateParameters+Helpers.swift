@@ -1,10 +1,11 @@
 import Foundation
+import WordPressData
 import WordPressKit
 import WordPressShared
 
 extension RemotePostCreateParameters {
     /// Initializes the parameters required to create the given post.
-    public init(post: AbstractPost) {
+    init(post: AbstractPost) {
         self.init(
             type: post is Post ? "post" : "page",
             status: (post.status ?? .draft).rawValue
@@ -32,7 +33,7 @@ extension RemotePostCreateParameters {
                 $0.categoryID.intValue
             }
             metadata = Set(Self.generateRemoteMetadata(for: post).compactMap { dictionary -> RemotePostMetadataItem? in
-                return PostHelper.mapDictionaryToMetadataItems(dictionary)
+                return Self.mapDictionaryToMetadataItems(dictionary)
             })
             discussion = RemotePostDiscussionSettings(
                 allowComments: post.allowComments,
@@ -55,5 +56,15 @@ private extension RemotePostCreateParameters {
         // Add metadata mananged using `PostMetadata`
         output += PostMetadata.entries(in: PostMetadataContainer(post))
         return output
+    }
+
+    static func mapDictionaryToMetadataItems(_ dictionary: [String: Any]) -> RemotePostMetadataItem? {
+        let id = dictionary["id"]
+        let value = dictionary["value"]
+        return RemotePostMetadataItem(
+            id: (id as? String) ?? (id as? NSNumber)?.stringValue,
+            key: dictionary["key"] as? String,
+            value: value as? String
+        )
     }
 }

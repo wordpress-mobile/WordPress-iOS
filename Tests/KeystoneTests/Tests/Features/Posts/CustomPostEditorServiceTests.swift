@@ -82,6 +82,73 @@ struct CustomPostEditorServiceTests {
         #expect(service.inspectPendingSettings() == nil)
         #expect(service.settings.slug == "test-post")
     }
+
+    // MARK: - hasSettingsChanges Tests
+
+    @Test("hasSettingsChanges returns false when no changes made to existing post")
+    func hasSettingsChangesReturnsFalseForUnmodifiedExistingPost() throws {
+        let context = ContextManager.forTesting().mainContext
+        let blog = BlogBuilder(context).build()
+        let post = makeRemotePost()
+        let service = try makeService(blog: blog, post: post)
+
+        #expect(service.hasSettingsChanges == false)
+    }
+
+    @Test("hasSettingsChanges returns true after applying different settings to existing post")
+    func hasSettingsChangesReturnsTrueAfterApplyingSettingsToExistingPost() throws {
+        let context = ContextManager.forTesting().mainContext
+        let blog = BlogBuilder(context).build()
+        let post = makeRemotePost()
+        let service = try makeService(blog: blog, post: post)
+
+        var settings = service.settings
+        settings.slug = "changed-slug"
+        service.applyLocally(settings: settings)
+
+        #expect(service.hasSettingsChanges == true)
+    }
+
+    @Test("hasSettingsChanges returns false after reverting settings to original on existing post")
+    func hasSettingsChangesReturnsFalseAfterRevertingExistingPost() throws {
+        let context = ContextManager.forTesting().mainContext
+        let blog = BlogBuilder(context).build()
+        let post = makeRemotePost()
+        let service = try makeService(blog: blog, post: post)
+
+        let original = service.settings
+
+        var modified = original
+        modified.slug = "changed-slug"
+        service.applyLocally(settings: modified)
+        #expect(service.hasSettingsChanges == true)
+
+        // Revert
+        service.applyLocally(settings: original)
+        #expect(service.hasSettingsChanges == false)
+    }
+
+    @Test("hasSettingsChanges returns false for unmodified new post")
+    func hasSettingsChangesReturnsFalseForUnmodifiedNewPost() throws {
+        let context = ContextManager.forTesting().mainContext
+        let blog = BlogBuilder(context).build()
+        let service = try makeService(blog: blog, post: nil)
+
+        #expect(service.hasSettingsChanges == false)
+    }
+
+    @Test("hasSettingsChanges returns true after applying different settings to new post")
+    func hasSettingsChangesReturnsTrueAfterApplyingSettingsToNewPost() throws {
+        let context = ContextManager.forTesting().mainContext
+        let blog = BlogBuilder(context).build()
+        let service = try makeService(blog: blog, post: nil)
+
+        var settings = service.settings
+        settings.slug = "new-slug"
+        service.applyLocally(settings: settings)
+
+        #expect(service.hasSettingsChanges == true)
+    }
 }
 
 // MARK: - Test Helpers
