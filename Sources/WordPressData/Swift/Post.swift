@@ -219,14 +219,14 @@ public class Post: AbstractPost {
             if let preview = PostPreviewCache.shared.excerpt[excerpt] {
                 return preview
             }
-            let preview = excerpt.makePlainText().withCollapsedNewlines()
+            let preview = excerpt.makePlainText().withCollapsedNewlines().trimmedForPreview()
             PostPreviewCache.shared.excerpt[excerpt] = preview
             return preview
         } else if let content {
             if let preview = PostPreviewCache.shared.content[content] {
                 return preview
             }
-            let preview = GutenbergExcerptGenerator.firstParagraph(from: content, maxLength: 200).withCollapsedNewlines()
+            let preview = GutenbergExcerptGenerator.firstParagraph(from: content, maxLength: 200).withCollapsedNewlines().trimmedForPreview()
             PostPreviewCache.shared.content[content] = preview
             return preview
         } else {
@@ -252,6 +252,11 @@ private extension String {
     // Normalize newlines by collapsing multiple occurrences of newlines to a single newline
     func withCollapsedNewlines() -> String {
         replacingOccurrences(of: "[\n]{2,}", with: "\n", options: .regularExpression)
+    }
+
+    // Remove leading/trailing line breaks to avoid rendering blank trailing lines in preview labels.
+    func trimmedForPreview() -> String {
+        trimmingCharacters(in: .whitespacesAndNewlines)
     }
 }
 
