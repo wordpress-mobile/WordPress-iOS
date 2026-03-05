@@ -1,5 +1,6 @@
 import Foundation
 import SwiftUI
+import UIKit
 import WordPressAPI
 import WordPressAPIInternal
 import WordPressCore
@@ -10,8 +11,11 @@ import WordPressShared
 final class CustomPostListViewModel: ObservableObject {
     typealias IndentationMap = [Int64: PageTree.Entry<Int64>]
 
-    private let client: WordPressClient
-    private let blog: Blog
+    let client: WordPressClient
+    private let service: WpService
+    private let endpoint: PostEndpointType
+    private let details: PostTypeDetailsWithEditContext
+    let blog: Blog
     private let isHierarchical: Bool
     let filter: CustomPostListFilter
 
@@ -22,6 +26,9 @@ final class CustomPostListViewModel: ObservableObject {
     @Published private(set) var listInfo: ListInfo?
     @Published private(set) var indentationMap: IndentationMap = [:]
     @Published private var error: Error?
+    @Published var postToDelete: AnyPostWithEditContext?
+    @Published var menuNavigation: PostMenuNavigation?
+    @Published var progressHUDState: ProgressHUDState = .idle
 
     var shouldDisplayEmptyView: Bool {
         items.isEmpty && listInfo?.isSyncing == false
@@ -29,6 +36,10 @@ final class CustomPostListViewModel: ObservableObject {
 
     var shouldDisplayInitialLoading: Bool {
         items.isEmpty && listInfo?.isSyncing == true
+    }
+
+    var postService: WordPressAPIInternal.PostService {
+        service.posts()
     }
 
     func errorToDisplay() -> Error? {
@@ -43,6 +54,9 @@ final class CustomPostListViewModel: ObservableObject {
         blog: Blog
     ) {
         self.client = client
+        self.service = service
+        self.endpoint = details.toPostEndpointType()
+        self.details = details
         self.blog = blog
         self.isHierarchical = details.hierarchical
         self.filter = filter
@@ -89,7 +103,7 @@ final class CustomPostListViewModel: ObservableObject {
             }
             updateItems(from: metadataItems)
         } catch {
-            DDLogError("Failed to load cached items: \(error)")
+            Loggers.app.error("Failed to load cached items: \(error)")
         }
     }
 
@@ -101,17 +115,17 @@ final class CustomPostListViewModel: ObservableObject {
         for await batch in batches {
             guard !isBatchSyncing else { continue }
 
-            DDLogInfo("\(batch.count) updates received from WpApiCache")
+            Loggers.app.info("\(batch.count) updates received from WpApiCache")
 
             #if DEBUG
             for hook in batch {
-                DDLogDebug("  |- \(hook.action) to \(hook.table) at row \(hook.rowId)")
+                Loggers.app.debug("  |- \(hook.action) to \(hook.table) at row \(hook.rowId)")
             }
             #endif
 
             let listInfo = collection.listInfo()
 
-            DDLogInfo("List info: \(String(describing: listInfo))")
+            Loggers.app.info("List info: \(String(describing: listInfo))")
 
             do {
                 let metadataItems = try await collection.loadItems()
@@ -122,7 +136,7 @@ final class CustomPostListViewModel: ObservableObject {
                     updateItems(from: metadataItems)
                 }
             } catch {
-                DDLogError("Failed to get collection items: \(error)")
+                Loggers.app.error("Failed to get collection items: \(error)")
             }
         }
     }
@@ -135,7 +149,7 @@ final class CustomPostListViewModel: ObservableObject {
         do {
             _ = try await collection.refresh()
         } catch {
-            DDLogError("Failed to refresh posts: \(error)")
+            Loggers.app.error("Failed to refresh posts: \(error)")
             self.show(error: error)
         }
     }
@@ -158,7 +172,7 @@ final class CustomPostListViewModel: ObservableObject {
 
             await loadCachedItems()
         } catch {
-            DDLogError("Failed to refresh all pages: \(error)")
+            Loggers.app.error("Failed to refresh all pages: \(error)")
             self.show(error: error)
         }
     }
@@ -191,6 +205,100 @@ final class CustomPostListViewModel: ObservableObject {
         self.items = entries.compactMap { itemMap[$0.id] }
     }
 
+    // MARK: - Post Actions
+
+    func confirmDelete(_ post: AnyPostWithEditContext) {
+        postToDelete = post
+    }
+
+    func publishPost(_ post: AnyPostWithEditContext) async {
+        var params = PostUpdateParams(meta: nil)
+        params.status = .publish
+        await updatePost(post, params: params)
+    }
+
+    func moveToDraft(_ post: AnyPostWithEditContext) async {
+        var params = PostUpdateParams(meta: nil)
+        params.status = .draft
+        await updatePost(post, params: params)
+    }
+
+    func viewPost(_ post: AnyPostWithEditContext) {
+        guard let url = URL(string: post.link) else { return }
+        UIApplication.shared.open(url)
+    }
+
+    func navigationMenuItems(for post: AnyPostWithEditContext) -> [PostMenuNavigation] {
+        var items: [PostMenuNavigation] = []
+        if let nav = menuNavigation(forBlaze: post) {
+            items.append(nav)
+        }
+        if let nav = menuNavigation(forStats: post) {
+            items.append(nav)
+        }
+        if let nav = menuNavigation(forComments: post) {
+            items.append(nav)
+        }
+        if post.status != .trash {
+            items.append(.settings(post: post))
+        }
+        return items
+    }
+
+    func menuNavigation(forBlaze post: AnyPostWithEditContext) -> PostMenuNavigation? {
+        guard endpoint == .posts
+                && BlazeHelper.isBlazeFlagEnabled() && blog.canBlaze
+                && post.status == .publish && post.password == nil else { return nil }
+        return .blaze(post: post)
+    }
+
+    func menuNavigation(forStats post: AnyPostWithEditContext) -> PostMenuNavigation? {
+        guard endpoint == .posts
+                && JetpackFeaturesRemovalCoordinator.jetpackFeaturesEnabled()
+                && blog.supports(.stats) && post.status == .publish else { return nil }
+        return .stats(post: post)
+    }
+
+    func menuNavigation(forComments post: AnyPostWithEditContext) -> PostMenuNavigation? {
+        guard details.supports.supports(feature: .comments)
+                && JetpackFeaturesRemovalCoordinator.jetpackFeaturesEnabled()
+                && post.status == .publish, let siteID = blog.dotComID else { return nil }
+        return .comments(post: post, siteID: siteID)
+    }
+
+    func trashPost(_ post: AnyPostWithEditContext) async {
+        progressHUDState = .running
+        do {
+            _ = try await service.posts().trashPost(endpointType: endpoint, postId: post.id)
+            progressHUDState = .success
+        } catch {
+            Loggers.app.error("Failed to trash post: \(error)")
+            progressHUDState = .failure(error.localizedDescription)
+        }
+    }
+
+    func deletePost(_ post: AnyPostWithEditContext) async {
+        progressHUDState = .running
+        do {
+            _ = try await service.posts().deletePostPermanently(endpointType: endpoint, postId: post.id)
+            progressHUDState = .success
+        } catch {
+            Loggers.app.error("Failed to delete post: \(error)")
+            progressHUDState = .failure(error.localizedDescription)
+        }
+    }
+
+    private func updatePost(_ post: AnyPostWithEditContext, params: PostUpdateParams) async {
+        progressHUDState = .running
+        do {
+            _ = try await service.posts().updatePost(endpointType: endpoint, postId: post.id, params: params)
+            progressHUDState = .success
+        } catch {
+            Loggers.app.error("Failed to update post: \(error)")
+            progressHUDState = .failure(error.localizedDescription)
+        }
+    }
+
     private func show(error: Error) {
         // TODO: Ignore error https://github.com/Automattic/wordpress-rs/pull/1227
         self.error = error
@@ -200,6 +308,44 @@ final class CustomPostListViewModel: ObservableObject {
             Notice(error: error).post()
         }
     }
+}
+
+extension CustomPostListViewModel {
+
+    enum PostMenuNavigation: Identifiable {
+        case stats(post: AnyPostWithEditContext)
+        case comments(post: AnyPostWithEditContext, siteID: NSNumber)
+        case blaze(post: AnyPostWithEditContext)
+        case settings(post: AnyPostWithEditContext)
+
+        var id: String {
+            switch self {
+            case .stats(let post): return "stats-\(post.id)"
+            case .comments(let post, let siteId): return "site-\(siteId)-comments-\(post.id)"
+            case .blaze(let post): return "blaze-\(post.id)"
+            case .settings(let post): return "settings-\(post.id)"
+            }
+        }
+
+        var label: String {
+            switch self {
+            case .blaze: return Strings.blaze
+            case .stats: return Strings.stats
+            case .comments: return Strings.comments
+            case .settings: return Strings.settings
+            }
+        }
+
+        var systemImage: String {
+            switch self {
+            case .blaze: return "flame"
+            case .stats: return "chart.bar"
+            case .comments: return "bubble.left"
+            case .settings: return "gearshape"
+            }
+        }
+    }
+
 }
 
 struct CustomPostCollectionDisplayPost: Equatable {
@@ -321,14 +467,6 @@ struct CustomPostCollectionDisplayPost: Equatable {
     )
 }
 
-private enum Strings {
-    static let sticky = NSLocalizedString(
-        "customPostList.badge.sticky",
-        value: "Sticky",
-        comment: "Badge shown in the post list for sticky posts"
-    )
-}
-
 extension PostStatus {
     func localizedLabel() -> String {
         switch self {
@@ -434,4 +572,32 @@ extension AnyPostWithEditContext: HierarchicalPost {
     var order: Int64 {
         Int64(menuOrder ?? 0)
     }
+}
+
+private enum Strings {
+    static let sticky = NSLocalizedString(
+        "customPostList.badge.sticky",
+        value: "Sticky",
+        comment: "Badge shown in the post list for sticky posts"
+    )
+    static let blaze = NSLocalizedString(
+        "customPostList.action.blaze",
+        value: "Promote with Blaze",
+        comment: "Menu action to promote a post with Blaze"
+    )
+    static let stats = NSLocalizedString(
+        "customPostList.action.stats",
+        value: "Stats",
+        comment: "Menu action to view post statistics"
+    )
+    static let comments = NSLocalizedString(
+        "customPostList.action.comments",
+        value: "Comments",
+        comment: "Menu action to view post comments"
+    )
+    static let settings = NSLocalizedString(
+        "customPostList.action.settings",
+        value: "Settings",
+        comment: "Menu action to open post settings"
+    )
 }

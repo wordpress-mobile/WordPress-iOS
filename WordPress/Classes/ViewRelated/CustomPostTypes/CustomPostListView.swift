@@ -1,8 +1,10 @@
 import Foundation
 import SwiftUI
+import UIKit
 import WordPressAPI
 import WordPressAPIInternal
 import WordPressCore
+import WordPressData
 import WordPressUI
 
 /// Displays a paginated list of custom posts.
@@ -49,6 +51,7 @@ struct CustomPostListView<Header: View>: View {
 
     var body: some View {
         PaginatedList(
+            viewModel: viewModel,
             items: viewModel.items,
             onLoadNextPage: { try await viewModel.loadNextPage() },
             client: client,
@@ -72,6 +75,7 @@ struct CustomPostListView<Header: View>: View {
         .refreshable {
             await viewModel.refresh()
         }
+        .progressHUD(state: $viewModel.progressHUDState)
         .task(id: viewModel.filter) {
             await viewModel.loadCachedItems()
             await viewModel.refresh()
@@ -79,10 +83,53 @@ struct CustomPostListView<Header: View>: View {
         .task(id: viewModel.filter) {
             await viewModel.handleDataChanges()
         }
+        .alert(
+            Strings.deleteConfirmationTitle,
+            isPresented: Binding(
+                get: { viewModel.postToDelete != nil },
+                set: { if !$0 { viewModel.postToDelete = nil } }
+            ),
+            presenting: viewModel.postToDelete
+        ) { post in
+            Button(SharedStrings.Button.cancel, role: .cancel) {}
+            Button(Strings.deletePermanently, role: .destructive) {
+                Task { await viewModel.deletePost(post) }
+            }
+        } message: { _ in
+            Text(Strings.deleteConfirmationMessage)
+        }
+        .sheet(item: $viewModel.menuNavigation) {
+            menuNavigationDestination($0)
+        }
+    }
+
+    @ViewBuilder
+    private func menuNavigationDestination(_ navigation: CustomPostListViewModel.PostMenuNavigation) -> some View {
+        switch navigation {
+        case .stats(let post):
+            StatsRepresentable(
+                postID: Int(post.id),
+                postTitle: post.title?.raw,
+                postURL: URL(string: post.link)
+            )
+        case .comments(let post, let siteID):
+            CommentsRepresentable(postID: post.id, siteID: siteID)
+        case .blaze(let post):
+            BlazeRepresentable(postID: post.id, blog: viewModel.blog)
+        case .settings(let post):
+            SettingsRepresentable(
+                post: post,
+                blog: viewModel.blog,
+                client: viewModel.client,
+                service: viewModel.postService,
+                details: details
+            )
+        }
     }
 }
 
 private struct PaginatedList<Header: View>: View {
+    let viewModel: CustomPostListViewModel
     let items: [CustomPostCollectionItem]
     let onLoadNextPage: () async throws -> Void
     let client: WordPressClient?
@@ -95,6 +142,7 @@ private struct PaginatedList<Header: View>: View {
     @State var loadMoreError: Error?
 
     init(
+        viewModel: CustomPostListViewModel,
         items: [CustomPostCollectionItem],
         onLoadNextPage: @escaping () async throws -> Void,
         client: WordPressClient? = nil,
@@ -102,6 +150,7 @@ private struct PaginatedList<Header: View>: View {
         mediaHost: MediaHost? = nil,
         indentationMap: CustomPostListViewModel.IndentationMap = [:]
     ) where Header == EmptyView {
+        self.viewModel = viewModel
         self.items = items
         self.onLoadNextPage = onLoadNextPage
         self.client = client
@@ -112,6 +161,7 @@ private struct PaginatedList<Header: View>: View {
     }
 
     init(
+        viewModel: CustomPostListViewModel,
         items: [CustomPostCollectionItem],
         onLoadNextPage: @escaping () async throws -> Void,
         client: WordPressClient? = nil,
@@ -120,6 +170,7 @@ private struct PaginatedList<Header: View>: View {
         indentationMap: CustomPostListViewModel.IndentationMap = [:],
         @ViewBuilder header: @escaping () -> Header
     ) {
+        self.viewModel = viewModel
         self.items = items
         self.onLoadNextPage = onLoadNextPage
         self.client = client
@@ -158,7 +209,8 @@ private struct PaginatedList<Header: View>: View {
                 item: item,
                 client: client,
                 onSelectPost: onSelectPost,
-                mediaHost: mediaHost
+                mediaHost: mediaHost,
+                viewModel: viewModel
             )
             .task {
                 await onRowAppear(item: item)
@@ -173,6 +225,7 @@ private struct PaginatedList<Header: View>: View {
                 client: client,
                 onSelectPost: onSelectPost,
                 mediaHost: mediaHost,
+                viewModel: viewModel,
                 indentationLevel: indentationMap[item.id]?.indentationLevel ?? 0,
                 showSubdirectoryIcon: showSubdirectoryIcon(at: index)
             )
@@ -239,6 +292,7 @@ private struct ForEachContent: View {
     let client: WordPressClient?
     let onSelectPost: (AnyPostWithEditContext) -> Void
     let mediaHost: MediaHost?
+    let viewModel: CustomPostListViewModel
 
     var body: some View {
         switch item {
@@ -270,6 +324,10 @@ private struct ForEachContent: View {
                 PostContent(post: displayPost, client: client, mediaHost: mediaHost)
             }
             .buttonStyle(.plain)
+            .overlay(alignment: .topTrailing) {
+                PostActionMenu(post: post, viewModel: viewModel)
+                    .offset(y: -6)
+            }
 
         case .stale(_, let post):
             PostContent(post: post, client: client, mediaHost: mediaHost)
@@ -282,6 +340,7 @@ private struct ForEachContentWithIndentation: View {
     let client: WordPressClient?
     let onSelectPost: (AnyPostWithEditContext) -> Void
     let mediaHost: MediaHost?
+    let viewModel: CustomPostListViewModel
     let indentationLevel: Int
     let showSubdirectoryIcon: Bool
 
@@ -298,10 +357,89 @@ private struct ForEachContentWithIndentation: View {
                 item: item,
                 client: client,
                 onSelectPost: onSelectPost,
-                mediaHost: mediaHost
+                mediaHost: mediaHost,
+                viewModel: viewModel
             )
         }
         .padding(.leading, CGFloat(max(0, indentationLevel - 1)) * 32)
+    }
+}
+
+private struct PostActionMenu: View {
+    let post: AnyPostWithEditContext
+    let viewModel: CustomPostListViewModel
+
+    var body: some View {
+        Menu {
+            primarySection
+            navigationSection
+            trashSection
+        } label: {
+            Image(systemName: "ellipsis")
+                .font(.body)
+                .tint(.secondary)
+                .frame(width: 28, height: 28)
+                .contentShape(Rectangle())
+        }
+    }
+
+    @ViewBuilder
+    private var primarySection: some View {
+        Section {
+            if post.status != .trash {
+                Button(action: { viewModel.viewPost(post) }) {
+                    Label(SharedStrings.Button.view, systemImage: "safari")
+                }
+
+                // FIXME: Preview requires Core Data preview infrastructure (PreviewNonceHandler, AbstractPost)
+            }
+
+            if post.status == .draft || post.status == .pending {
+                Button(action: { Task { await viewModel.publishPost(post) } }) {
+                    Label(Strings.publish, systemImage: "paperplane")
+                }
+            }
+
+            if post.status != .draft {
+                Button(action: { Task { await viewModel.moveToDraft(post) } }) {
+                    Label(Strings.moveToDraft, systemImage: "pencil")
+                }
+            }
+
+            // FIXME: Duplicate requires Core Data editor (Post.blog.createDraftPost, PostListEditorPresenter)
+
+            if post.status == .publish, let url = URL(string: post.link) {
+                ShareLink(item: url, subject: Text(post.title?.raw ?? "")) {
+                    Label(SharedStrings.Button.share, systemImage: "square.and.arrow.up")
+                }
+            }
+        }
+    }
+
+    @ViewBuilder
+    private var navigationSection: some View {
+        Section {
+            ForEach(viewModel.navigationMenuItems(for: post)) { navigation in
+                Button(action: { viewModel.menuNavigation = navigation }) {
+                    Label(navigation.label, systemImage: navigation.systemImage)
+                }
+            }
+        }
+    }
+
+    @ViewBuilder
+    private var trashSection: some View {
+        Section {
+            if post.status != .trash {
+                Button(role: .destructive, action: { Task { await viewModel.trashPost(post) } }) {
+                    Label(Strings.moveToTrash, systemImage: "trash")
+                }
+            } else {
+                Button(role: .destructive, action: { viewModel.confirmDelete(post) }) {
+                    Label(Strings.deletePermanently, systemImage: "trash.fill")
+                }
+            }
+        }
     }
 }
 
@@ -309,7 +447,6 @@ private struct PostContent: View {
     let post: CustomPostCollectionDisplayPost
     let client: WordPressClient?
     let mediaHost: MediaHost?
-    var showsEllipsisMenu: Bool = false
 
     var body: some View {
         VStack(alignment: .leading, spacing: 6) {
@@ -326,12 +463,6 @@ private struct PostContent: View {
             Text(verbatim: post.headerBadges)
                 .font(.footnote)
                 .foregroundStyle(.secondary)
-
-            Spacer()
-
-            if showsEllipsisMenu {
-                ellipsisMenu
-            }
         }
     }
 
@@ -367,21 +498,6 @@ private struct PostContent: View {
                 .foregroundStyle(post.statusColor)
         }
     }
-
-    private var ellipsisMenu: some View {
-        // TODO: To be implemented
-        Menu {
-            Button(action: { Loggers.app.info("View tapped") }) {
-                Label(SharedStrings.Button.view, systemImage: "safari")
-            }
-        } label: {
-            Image(systemName: "ellipsis")
-                .font(.body)
-                .foregroundStyle(.secondary)
-                .frame(width: 28, height: 28)
-                .contentShape(Rectangle())
-        }
-    }
 }
 
 private struct ErrorRow: View {
@@ -400,129 +516,117 @@ private struct ErrorRow: View {
     }
 }
 
+// MARK: - UIViewControllerRepresentable
+
+private struct StatsRepresentable: UIViewControllerRepresentable {
+    let postID: Int
+    let postTitle: String?
+    let postURL: URL?
+
+    func makeUIViewController(context: Context) -> UIViewController {
+        let statsVC = PostStatsTableViewController.withJPBannerForBlog(
+            postID: postID,
+            postTitle: postTitle,
+            postURL: postURL
+        )
+        return UINavigationController(rootViewController: statsVC)
+    }
+
+    func updateUIViewController(_ uiViewController: UIViewController, context: Context) {}
+}
+
+private struct CommentsRepresentable: UIViewControllerRepresentable {
+    let postID: Int64
+    let siteID: NSNumber
+
+    func makeUIViewController(context: Context) -> UIViewController {
+        let commentsVC = ReaderCommentsViewController(
+            postID: NSNumber(value: postID),
+            siteID: siteID
+        )
+        return UINavigationController(rootViewController: commentsVC)
+    }
+
+    func updateUIViewController(_ uiViewController: UIViewController, context: Context) {}
+}
+
+private struct BlazeRepresentable: UIViewControllerRepresentable {
+    let postID: Int64
+    let blog: Blog
+
+    func makeUIViewController(context: Context) -> UINavigationController {
+        BlazeFlowCoordinator.makeBlazeWebViewController(
+            source: .postsList,
+            blog: blog,
+            postID: NSNumber(value: postID)
+        )
+    }
+
+    func updateUIViewController(_ uiViewController: UINavigationController, context: Context) {}
+}
+
+private struct SettingsRepresentable: UIViewControllerRepresentable {
+    let post: AnyPostWithEditContext
+    let blog: Blog
+    let client: WordPressClient
+    let service: WordPressAPIInternal.PostService
+    let details: PostTypeDetailsWithEditContext
+
+    func makeUIViewController(context: Context) -> UIViewController {
+        let editorService = CustomPostEditorService(
+            blog: blog,
+            post: post,
+            details: details,
+            client: client,
+            service: service
+        )
+        let viewModel = PostSettingsViewModel(editorService: editorService, blog: blog, isStandalone: true)
+        let settingsVC = PostSettingsViewController(viewModel: viewModel)
+        return UINavigationController(rootViewController: settingsVC)
+    }
+
+    func updateUIViewController(_ uiViewController: UIViewController, context: Context) {}
+}
+
 private enum Strings {
     static let emptyStateMessage = NSLocalizedString(
         "customPostList.emptyState.message",
         value: "No %1$@",
         comment: "Empty state message when no custom posts exist. %1$@ is the post type name (e.g., 'Podcasts', 'Products')."
     )
-    static let trashButton = NSLocalizedString(
-        "customPostList.action.trash",
-        value: "Trash",
-        comment: "Button title to move a post to trash"
+    static let publish = NSLocalizedString(
+        "customPostList.action.publish",
+        value: "Publish",
+        comment: "Menu action to publish a draft or pending post"
+    )
+    static let moveToDraft = NSLocalizedString(
+        "customPostList.action.moveToDraft",
+        value: "Move to Draft",
+        comment: "Menu action to change a post's status to draft"
+    )
+    static let moveToTrash = NSLocalizedString(
+        "customPostList.action.moveToTrash",
+        value: "Move to Trash",
+        comment: "Menu action to move a post to trash"
+    )
+    static let deletePermanently = NSLocalizedString(
+        "customPostList.action.deletePermanently",
+        value: "Delete Permanently",
+        comment: "Menu action to permanently delete a trashed post"
+    )
+    static let deleteConfirmationTitle = NSLocalizedString(
+        "customPostList.deleteConfirmation.title",
+        value: "Delete Permanently?",
+        comment: "Title for the confirmation alert when permanently deleting a post"
+    )
+    static let deleteConfirmationMessage = NSLocalizedString(
+        "customPostList.deleteConfirmation.message",
+        value: "This action cannot be undone.",
+        comment: "Message for the confirmation alert when permanently deleting a post"
     )
 }
 
 // MARK: - Previews
-
-#Preview("Fetching Placeholders") {
-    PaginatedList(
-        items: [
-            .fetching(id: 1),
-            .fetching(id: 2),
-            .fetching(id: 3)
-        ],
-        onLoadNextPage: {},
-        onSelectPost: { _ in }
-    )
-}
-
-#Preview("Error State") {
-    PaginatedList(
-        items: [
-            .error(id: 1, message: "Failed to load post"),
-            .error(id: 2, message: "Network connection lost")
-        ],
-        onLoadNextPage: {},
-        onSelectPost: { _ in }
-    )
-}
-
-#Preview("Stale Content") {
-    PaginatedList(
-        items: [
-            .stale(
-                id: 1,
-                post: CustomPostCollectionDisplayPost(
-                    date: .now,
-                    title: "First Draft Post",
-                    content: "This is a preview of the first post that might be outdated."
-                )
-            ),
-            .stale(
-                id: 2,
-                post: CustomPostCollectionDisplayPost(
-                    date: .now.addingTimeInterval(-86400),
-                    title: "Second Post",
-                    content: "Another post with stale data showing in the list."
-                )
-            ),
-            .stale(
-                id: 3,
-                post: CustomPostCollectionDisplayPost(
-                    date: .now.addingTimeInterval(-86400 * 7),
-                    title: nil,
-                    content: "Post without a title"
-                )
-            )
-        ],
-        onLoadNextPage: {},
-        onSelectPost: { _ in }
-    )
-}
-
-#Preview("Mixed States") {
-    PaginatedList(
-        items: [
-            .stale(
-                id: 1,
-                post: CustomPostCollectionDisplayPost(
-                    date: .now,
-                    title: "Published Post",
-                    content: "This post has stale data and is being refreshed."
-                )
-            ),
-            .refreshing(
-                id: 2,
-                post: CustomPostCollectionDisplayPost(
-                    date: .now.addingTimeInterval(-86400),
-                    title: "Refreshing Post",
-                    content: "Currently being refreshed in the background."
-                )
-            ),
-            .fetching(id: 3),
-            .error(id: 4, message: "Failed to sync"),
-            .errorWithData(
-                id: 5,
-                message: "Sync failed, showing cached data",
-                post: CustomPostCollectionDisplayPost(
-                    date: .now.addingTimeInterval(-86400 * 3),
-                    title: "Cached Post",
-                    content: "This post failed to sync but we have old data."
-                )
-            ),
-        ],
-        onLoadNextPage: {},
-        onSelectPost: { _ in }
-    )
-}
-
-#Preview("Load Next Page Error") {
-    PaginatedList(
-        items: [
-            .stale(
-                id: 1,
-                post: CustomPostCollectionDisplayPost(
-                    date: .now,
-                    title: "Published Post",
-                    content: "This post has stale data and is being refreshed."
-                )
-            ),
-        ],
-        onLoadNextPage: { throw CollectionError.DatabaseError(errMessage: "SQL error") },
-        onSelectPost: { _ in },
-    )
-}
 
 #Preview("Status Variants") {
     List {
@@ -555,22 +659,6 @@ private enum Strings {
             ),
             client: nil,
             mediaHost: nil
-        )
-    }
-    .listStyle(.plain)
-}
-
-#Preview("Flags: No Menu") {
-    List {
-        PostContent(
-            post: CustomPostCollectionDisplayPost(
-                date: .now,
-                title: "Minimal Row",
-                content: "No ellipsis menu."
-            ),
-            client: nil,
-            mediaHost: nil,
-            showsEllipsisMenu: false
         )
     }
     .listStyle(.plain)
