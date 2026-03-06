@@ -1059,7 +1059,7 @@ private extension SiteStatsInsightsDetailsViewModel {
     func countriesRowData(topCountries: StatsTopCountryTimeIntervalData?) -> [StatsTotalRowData] {
         return topCountries?.countries.map { StatsTotalRowData(name: $0.name,
                 data: $0.viewsCount.abbreviatedString(),
-                icon: UIImage(named: $0.code),
+                icon: StatsTotalRowData.flagImage(for: $0.code),
                 statSection: .periodCountries) }
                 ?? []
     }
