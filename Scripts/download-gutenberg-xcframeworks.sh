@@ -20,6 +20,7 @@ else
 
     # Extract into a temp directory first so a partial download doesn't
     # leave a corrupt cache that persists across runs.
+    mkdir -p "$(dirname "${CACHE_DIR}")"
     TEMP_DIR="$(mktemp -d "${CACHE_DIR}.XXXXXX")"
     trap 'rm -rf "${TEMP_DIR}"' EXIT
 
@@ -41,7 +42,6 @@ else
     rm -f "${TEMP_DIR}/dummy.txt"
 
     # Atomically promote the temp directory to the final cache path.
-    mkdir -p "$(dirname "${CACHE_DIR}")"
     mv "${TEMP_DIR}" "${CACHE_DIR}"
     trap - EXIT
 fi
