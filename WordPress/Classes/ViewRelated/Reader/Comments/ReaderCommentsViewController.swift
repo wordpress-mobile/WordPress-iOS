@@ -83,6 +83,11 @@ final class ReaderCommentsViewController: UIViewController, WPContentSyncHelperD
         trackCommentsOpened()
     }
 
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
+        WPAnalytics.track(screen: ScreenID.Reader.comments, context: trackingContext)
+    }
+
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
 

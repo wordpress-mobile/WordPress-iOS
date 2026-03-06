@@ -89,7 +89,15 @@ final class ReaderPostCellViewModel {
 
     func showSiteDetails() {
         guard let viewController else { return }
-        ReaderHeaderAction().execute(post: post, origin: viewController)
+        ReaderHeaderAction().execute(
+            post: post,
+            origin: viewController,
+            trackingSource: viewController.resolvedSource.map {
+                var source = $0
+                source.component = ElementID.Reader.postHeaderSiteName
+                return source
+            }
+        )
     }
 
     func toogleBookmark() {
@@ -104,7 +112,16 @@ final class ReaderPostCellViewModel {
 
     func comment() {
         guard let viewController else { return }
-        ReaderCommentAction().execute(post: post, origin: viewController, source: .postCard)
+        ReaderCommentAction().execute(
+            post: post,
+            origin: viewController,
+            source: .postCard,
+            trackingSource: viewController.resolvedSource.map {
+                var source = $0
+                source.component = ElementID.Reader.postCardComment
+                return source
+            }
+        )
     }
 
     func toggleLike() {

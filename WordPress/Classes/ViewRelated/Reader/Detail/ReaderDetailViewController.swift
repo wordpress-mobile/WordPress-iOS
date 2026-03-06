@@ -240,6 +240,11 @@ class ReaderDetailViewController: UIViewController, ReaderDetailView {
             }
     }
 
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
+        WPAnalytics.track(screen: ScreenID.Reader.article, context: trackingContext)
+    }
+
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
 
@@ -369,7 +374,8 @@ class ReaderDetailViewController: UIViewController, ReaderDetailView {
                 post: post,
                 origin: self,
                 navigateToCommentID: commentID,
-                source: .postDetails
+                source: .postDetails,
+                trackingSource: ScreenTrackingSource(ScreenID.Reader.article, component: ElementID.Reader.commentsSection)
             )
         }
     }
@@ -1165,6 +1171,7 @@ extension ReaderDetailViewController: UITableViewDataSource, UITableViewDelegate
         guard let controller = ReaderDetailViewController.controllerWithSimplePost(post) else {
             return
         }
+        controller.trackingContext.source = ScreenTrackingSource(ScreenID.Reader.article, component: ElementID.Reader.relatedPosts, position: indexPath.row)
         navigationController?.pushViewController(controller, animated: true)
     }
 
@@ -1464,7 +1471,8 @@ extension ReaderDetailViewController: BorderedButtonTableViewCellDelegate {
         ReaderCommentAction().execute(
             post: post,
             origin: self,
-            source: .postDetailsComments
+            source: .postDetailsComments,
+            trackingSource: ScreenTrackingSource(ScreenID.Reader.article, component: ElementID.Reader.commentsSection)
         )
     }
 

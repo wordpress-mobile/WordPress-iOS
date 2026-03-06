@@ -267,6 +267,7 @@ class ReaderDetailCoordinator {
 
         if let blogID = sourceAttribution.blogID {
             let controller = ReaderStreamViewController.controllerWithSiteID(blogID, isFeed: false)
+            controller.trackingContext.source = ScreenTrackingSource(ScreenID.Reader.article, component: ElementID.Reader.articleHeaderSiteName)
             viewController?.navigationController?.pushViewController(controller, animated: true)
             return
         }
@@ -428,6 +429,7 @@ class ReaderDetailCoordinator {
         }
 
         let controller = ReaderStreamViewController.controllerWithSiteID(siteID, isFeed: post.isExternal)
+        controller.trackingContext.source = ScreenTrackingSource(ScreenID.Reader.article, component: ElementID.Reader.articleHeaderSiteName)
         viewController?.navigationController?.pushViewController(controller, animated: true)
 
         let properties = ReaderHelpers.statsPropertiesForPost(post, andValue: post.blogURL as AnyObject?, forKey: "URL")
@@ -436,6 +438,7 @@ class ReaderDetailCoordinator {
 
     private func showTopic(_ topic: String) {
         let controller = ReaderStreamViewController.controllerWithTagSlug(topic)
+        controller.trackingContext.source = ScreenTrackingSource(ScreenID.Reader.article, component: ElementID.Reader.tagChip)
         viewController?.navigationController?.pushViewController(controller, animated: true)
     }
 
@@ -452,6 +455,7 @@ class ReaderDetailCoordinator {
         }
 
         let controller = ReaderStreamViewController.controllerWithTagSlug(primaryTagSlug)
+        controller.trackingContext.source = ScreenTrackingSource(ScreenID.Reader.article, component: ElementID.Reader.tagChip)
         viewController?.navigationController?.pushViewController(controller, animated: true)
 
         let properties = ReaderHelpers.statsPropertiesForPost(post, andValue: post.primaryTagSlug as AnyObject?, forKey: "tag")
