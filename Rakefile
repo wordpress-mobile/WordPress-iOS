@@ -10,8 +10,6 @@ require 'digest'
 RUBY_REPO_VERSION = File.read('./.ruby-version').rstrip
 XCODE_WORKSPACE = 'WordPress.xcworkspace'
 EXPECTED_XCODE_VERSION = File.read('.xcode-version').rstrip
-GUTENBERG_VERSION = 'v1.121.0'
-
 PROJECT_DIR = __dir__
 abort('Project directory contains one or more spaces – unable to continue.') if PROJECT_DIR.include?(' ')
 
@@ -98,7 +96,7 @@ bundle exec fastlane run configure_apply force:true
 
   desc 'Download and extract Gutenberg xcframeworks'
   task :gutenberg_xcframeworks do
-    sh("#{PROJECT_DIR}/Scripts/download-gutenberg-xcframeworks.sh", GUTENBERG_VERSION, 'WordPress/Frameworks')
+    sh("#{PROJECT_DIR}/Scripts/download-gutenberg-xcframeworks.sh")
   end
 end
 

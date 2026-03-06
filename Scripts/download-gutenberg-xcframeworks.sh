@@ -3,11 +3,11 @@ set -euo pipefail
 
 # Downloads and installs Gutenberg XCFrameworks with progress and on-disk caching.
 #
-# Usage: download-gutenberg-xcframeworks.sh <version> <frameworks_dir>
-# Example: download-gutenberg-xcframeworks.sh v1.121.0 WordPress/Frameworks
+# Usage: download-gutenberg-xcframeworks.sh [frameworks_dir]
+#   frameworks_dir defaults to WordPress/Frameworks
 
-VERSION="${1:?Usage: $0 <version> <frameworks_dir>}"
-FRAMEWORKS_DIR="${2:?Usage: $0 <version> <frameworks_dir>}"
+VERSION="v1.121.0"
+FRAMEWORKS_DIR="${1:-WordPress/Frameworks}"
 
 CACHE_DIR="${HOME}/Library/Caches/WordPress-iOS/Gutenberg/${VERSION}"
 DOWNLOAD_URL="https://cdn.a8c-ci.services/gutenberg-mobile/Gutenberg-${VERSION}.tar.gz"
