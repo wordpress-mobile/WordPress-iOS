@@ -17,24 +17,33 @@ if [[ -d "${CACHE_DIR}" ]]; then
     echo "Using cached Gutenberg ${VERSION}"
 else
     echo "Downloading Gutenberg ${VERSION}..."
-    mkdir -p "${CACHE_DIR}"
+
+    # Extract into a temp directory first so a partial download doesn't
+    # leave a corrupt cache that persists across runs.
+    TEMP_DIR="$(mktemp -d "${CACHE_DIR}.XXXXXX")"
+    trap 'rm -rf "${TEMP_DIR}"' EXIT
 
     curl --fail --location --progress-bar "${DOWNLOAD_URL}" \
-        | tar xzf - -C "${CACHE_DIR}"
+        | tar xzf - -C "${TEMP_DIR}"
 
     # Move xcframeworks up from the nested Frameworks/ directory.
-    if [[ -d "${CACHE_DIR}/Frameworks" ]]; then
-        mv "${CACHE_DIR}"/Frameworks/*.xcframework "${CACHE_DIR}/"
-        rm -rf "${CACHE_DIR}/Frameworks"
+    if [[ -d "${TEMP_DIR}/Frameworks" ]]; then
+        mv "${TEMP_DIR}"/Frameworks/*.xcframework "${TEMP_DIR}/"
+        rm -rf "${TEMP_DIR}/Frameworks"
     fi
 
     # Create dSYMs directories that Xcode expects for hermes.
     mkdir -p \
-        "${CACHE_DIR}/hermes.xcframework/ios-arm64/dSYMs" \
-        "${CACHE_DIR}/hermes.xcframework/ios-arm64_x86_64-simulator/dSYMs"
+        "${TEMP_DIR}/hermes.xcframework/ios-arm64/dSYMs" \
+        "${TEMP_DIR}/hermes.xcframework/ios-arm64_x86_64-simulator/dSYMs"
 
     # Clean up leftover files from the archive.
-    rm -f "${CACHE_DIR}/dummy.txt"
+    rm -f "${TEMP_DIR}/dummy.txt"
+
+    # Atomically promote the temp directory to the final cache path.
+    mkdir -p "$(dirname "${CACHE_DIR}")"
+    mv "${TEMP_DIR}" "${CACHE_DIR}"
+    trap - EXIT
 fi
 
 # Copy cached frameworks into the project.
