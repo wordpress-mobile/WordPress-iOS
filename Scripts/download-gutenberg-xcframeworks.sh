@@ -27,9 +27,9 @@ else
     curl --fail --location --progress-bar "${DOWNLOAD_URL}" \
         | tar xzf - -C "${TEMP_DIR}"
 
-    # Move xcframeworks up from the nested Frameworks/ directory.
+    # Move contents up from the nested Frameworks/ directory.
     if [[ -d "${TEMP_DIR}/Frameworks" ]]; then
-        mv "${TEMP_DIR}"/Frameworks/*.xcframework "${TEMP_DIR}/"
+        mv "${TEMP_DIR}"/Frameworks/* "${TEMP_DIR}/"
         rm -rf "${TEMP_DIR}/Frameworks"
     fi
 
@@ -46,9 +46,8 @@ else
     trap - EXIT
 fi
 
-# Copy cached frameworks into the project.
+# Copy cached contents into the project.
 rm -rf "${FRAMEWORKS_DIR}"
-mkdir -p "${FRAMEWORKS_DIR}"
-cp -a "${CACHE_DIR}/"*.xcframework "${FRAMEWORKS_DIR}/"
+cp -a "${CACHE_DIR}" "${FRAMEWORKS_DIR}"
 
 echo "Gutenberg ${VERSION} setup complete."
