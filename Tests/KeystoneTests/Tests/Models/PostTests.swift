@@ -265,7 +265,7 @@ class PostTests: CoreDataTestCase {
         post.content = "<p>Paragraph 1</p><p>Paragraph 2</p>"
         let preview = post.contentPreviewForDisplay()
 
-        XCTAssertEqual(preview, preview.trimmingCharacters(in: .whitespacesAndNewlines))
+        XCTAssertEqual("Paragraph 1\nParagraph 2", preview)
     }
 
     func testThatEnablingDisablingPublicizeConnectionsWorks() {
