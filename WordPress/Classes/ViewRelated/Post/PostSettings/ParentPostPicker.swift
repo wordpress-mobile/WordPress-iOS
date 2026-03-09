@@ -50,6 +50,8 @@ struct ParentPostPicker: View {
             viewModel: viewModel,
             details: details,
             client: client,
+            // TODO: Exclude `excludePostID` from the list at the data level
+            // TODO: Show a checkmark on the currently selected parent post row
             onSelectPost: { post in
                 guard post.id != excludePostID else { return }
                 onSelection(Int(post.id))
