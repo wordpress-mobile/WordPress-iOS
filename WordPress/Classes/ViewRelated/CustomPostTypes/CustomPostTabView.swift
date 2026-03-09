@@ -11,7 +11,6 @@ import DesignSystem
 struct CustomPostTabView: View {
     let client: WordPressClient
     let service: WpService
-    let endpoint: PostEndpointType
     let details: PostTypeDetailsWithEditContext
     let blog: Blog
 
@@ -43,48 +42,46 @@ struct CustomPostTabView: View {
     init(
         client: WordPressClient,
         service: WpService,
-        endpoint: PostEndpointType,
         details: PostTypeDetailsWithEditContext,
         blog: Blog
     ) {
         self.client = client
         self.service = service
-        self.endpoint = endpoint
         self.details = details
         self.blog = blog
 
         _allViewModel = State(initialValue: CustomPostListViewModel(
             client: client,
             service: service,
-            endpoint: endpoint,
+            details: details,
             filter: CustomPostListFilter(status: .custom("any")),
             blog: blog
         ))
         _publishedViewModel = State(initialValue: CustomPostListViewModel(
             client: client,
             service: service,
-            endpoint: endpoint,
+            details: details,
             filter: CustomPostListFilter(status: .publish),
             blog: blog
         ))
         _draftsViewModel = State(initialValue: CustomPostListViewModel(
             client: client,
             service: service,
-            endpoint: endpoint,
+            details: details,
             filter: CustomPostListFilter(status: .draft),
             blog: blog
         ))
         _scheduledViewModel = State(initialValue: CustomPostListViewModel(
             client: client,
             service: service,
-            endpoint: endpoint,
+            details: details,
             filter: CustomPostListFilter(status: .future),
             blog: blog
         ))
         _trashViewModel = State(initialValue: CustomPostListViewModel(
             client: client,
             service: service,
-            endpoint: endpoint,
+            details: details,
             filter: CustomPostListFilter(status: .trash),
             blog: blog
         ))
@@ -106,7 +103,6 @@ struct CustomPostTabView: View {
                     blog: blog,
                     client: client,
                     service: service,
-                    endpoint: endpoint,
                     details: details,
                     searchText: $searchText,
                     onSelectPost: { editorPresentation = .editPost($0) }

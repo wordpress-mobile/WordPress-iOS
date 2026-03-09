@@ -106,7 +106,7 @@ struct CustomPostTypesView: View {
         let isPinned = pinnedTypes.contains { $0.slug == details.slug }
         return NavigationLink {
             if let wpService = service.wpService {
-                CustomPostTabView(client: service.client, service: wpService, endpoint: details.toPostEndpointType(), details: details, blog: blog)
+                CustomPostTabView(client: service.client, service: wpService, details: details, blog: blog)
             } else {
                 let _ = wpAssertionFailure("Expected wpService to be available")
             }

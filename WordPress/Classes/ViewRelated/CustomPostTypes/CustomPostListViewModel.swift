@@ -8,15 +8,19 @@ import WordPressShared
 
 @MainActor
 final class CustomPostListViewModel: ObservableObject {
+    typealias IndentationMap = [Int64: PageTree.Entry<Int64>]
+
     private let client: WordPressClient
-    private let endpoint: PostEndpointType
     private let blog: Blog
+    private let isHierarchical: Bool
     let filter: CustomPostListFilter
 
     private var collection: PostMetadataCollectionWithEditContext
+    private var isBatchSyncing = false
 
     @Published private(set) var items: [CustomPostCollectionItem] = []
     @Published private(set) var listInfo: ListInfo?
+    @Published private(set) var indentationMap: IndentationMap = [:]
     @Published private var error: Error?
 
     var shouldDisplayEmptyView: Bool {
@@ -34,34 +38,36 @@ final class CustomPostListViewModel: ObservableObject {
     init(
         client: WordPressClient,
         service: WpService,
-        endpoint: PostEndpointType,
+        details: PostTypeDetailsWithEditContext,
         filter: CustomPostListFilter,
         blog: Blog
     ) {
         self.client = client
-        self.endpoint = endpoint
         self.blog = blog
+        self.isHierarchical = details.hierarchical
         self.filter = filter
 
         collection = service
             .posts()
             .createPostMetadataCollectionWithEditContext(
-                endpointType: endpoint,
+                endpointType: details.toPostEndpointType(),
                 filter: filter.asPostListFilter(),
                 perPage: 20
             )
     }
 
     func refresh() async {
-        do {
-            _ = try await collection.refresh()
-        } catch {
-            DDLogError("Failed to refresh posts: \(error)")
-            self.show(error: error)
+        if shouldDisplayHierarchy {
+            await fetchAllPages()
+        } else {
+            await fetchWithPagination()
         }
     }
 
     func loadNextPage() async throws {
+        // All pages are already loaded by refresh() for hierarchical posts.
+        guard !shouldDisplayHierarchy else { return }
+
         if let listInfo, listInfo.isSyncing || !listInfo.hasMorePages {
             return
         }
@@ -77,13 +83,11 @@ final class CustomPostListViewModel: ObservableObject {
         let listInfo = collection.listInfo()
 
         do {
-            let items = try await collection.loadItems().map { CustomPostCollectionItem(item: $0, blog: blog, filterStatus: filter.status) }
+            let metadataItems = try await collection.loadItems()
             if self.listInfo != listInfo {
                 self.listInfo = listInfo
             }
-            if self.items != items {
-                self.items = items
-            }
+            updateItems(from: metadataItems)
         } catch {
             DDLogError("Failed to load cached items: \(error)")
         }
@@ -95,6 +99,8 @@ final class CustomPostListViewModel: ObservableObject {
             .collect(.byTime(DispatchQueue.main, .milliseconds(50)))
             .values
         for await batch in batches {
+            guard !isBatchSyncing else { continue }
+
             DDLogInfo("\(batch.count) updates received from WpApiCache")
 
             #if DEBUG
@@ -108,19 +114,81 @@ final class CustomPostListViewModel: ObservableObject {
             DDLogInfo("List info: \(String(describing: listInfo))")
 
             do {
-                let items = try await collection.loadItems().map { CustomPostCollectionItem(item: $0, blog: blog, filterStatus: filter.status) }
+                let metadataItems = try await collection.loadItems()
                 withAnimation {
                     if self.listInfo != listInfo {
                         self.listInfo = listInfo
                     }
-                    if self.items != items {
-                        self.items = items
-                    }
+                    updateItems(from: metadataItems)
                 }
             } catch {
                 DDLogError("Failed to get collection items: \(error)")
             }
         }
+    }
+
+    // MARK: - Loading Strategies
+
+    /// Fetches the first page and lets `handleDataChanges` update the UI
+    /// incrementally as each page loads.
+    private func fetchWithPagination() async {
+        do {
+            _ = try await collection.refresh()
+        } catch {
+            DDLogError("Failed to refresh posts: \(error)")
+            self.show(error: error)
+        }
+    }
+
+    /// Fetches all pages before updating the UI, so the hierarchy tree is
+    /// built once from the complete dataset.
+    private func fetchAllPages() async {
+        isBatchSyncing = true
+        defer { isBatchSyncing = false }
+
+        do {
+            _ = try await collection.refresh()
+
+            while true {
+                guard let listInfo = collection.listInfo(), listInfo.hasMorePages, !listInfo.isSyncing else {
+                    break
+                }
+                _ = try await collection.loadNextPage()
+            }
+
+            await loadCachedItems()
+        } catch {
+            DDLogError("Failed to refresh all pages: \(error)")
+            self.show(error: error)
+        }
+    }
+
+    private var shouldDisplayHierarchy: Bool {
+        isHierarchical && filter.status == .publish
+    }
+
+    private func updateItems(from metadataItems: [PostMetadataCollectionItem]) {
+        let items = metadataItems.map { CustomPostCollectionItem(item: $0, blog: blog, filterStatus: filter.status) }
+
+        guard shouldDisplayHierarchy else {
+            indentationMap = [:]
+            self.items = items
+            return
+        }
+
+        // Use metadata items for hierarchy data, since parent/menuOrder are
+        // available from list metadata regardless of the item's fetch state.
+        let posts = metadataItems.map { item in
+            HierarchyInput(postId: item.id, parentPostId: item.parent ?? 0, order: Int64(item.menuOrder ?? 0))
+        }
+
+        let entries = PageTree.buildHierarchy(from: posts)
+        let itemMap = Dictionary(uniqueKeysWithValues: items.compactMap { item -> (Int64, CustomPostCollectionItem)? in
+            return (item.id, item)
+        })
+
+        indentationMap = Dictionary(uniqueKeysWithValues: entries.map { ($0.id, $0) })
+        self.items = entries.compactMap { itemMap[$0.id] }
     }
 
     private func show(error: Error) {
@@ -340,5 +408,29 @@ private extension ListInfo {
     var hasMorePages: Bool {
         guard let currentPage, let totalPages else { return true }
         return currentPage < totalPages
+    }
+}
+
+private struct HierarchyInput: HierarchicalPost {
+    var id: Int64 {
+        postId
+    }
+
+    var postId: Int64
+    var parentPostId: Int64
+    var order: Int64
+}
+
+extension AnyPostWithEditContext: HierarchicalPost {
+    var postId: Int64 {
+        id
+    }
+
+    var parentPostId: Int64 {
+        parent ?? 0
+    }
+
+    var order: Int64 {
+        Int64(menuOrder ?? 0)
     }
 }

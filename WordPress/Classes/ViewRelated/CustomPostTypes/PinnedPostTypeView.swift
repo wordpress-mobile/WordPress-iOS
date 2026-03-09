@@ -28,7 +28,7 @@ struct PinnedPostTypeView: View {
     var body: some View {
         Group {
             if let details, let wpService = customPostTypeService.wpService {
-                CustomPostTabView(client: customPostTypeService.client, service: wpService, endpoint: details.toPostEndpointType(), details: details, blog: blog)
+                CustomPostTabView(client: customPostTypeService.client, service: wpService, details: details, blog: blog)
             } else if isLoading {
                 ProgressView()
                     .progressViewStyle(.circular)

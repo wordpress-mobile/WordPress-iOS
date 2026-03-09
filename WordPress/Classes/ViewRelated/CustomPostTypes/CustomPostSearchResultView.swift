@@ -9,7 +9,6 @@ struct CustomPostSearchResultView: View {
     let blog: Blog
     let client: WordPressClient
     let service: WpService
-    let endpoint: PostEndpointType
     let details: PostTypeDetailsWithEditContext
     @Binding var searchText: String
     let onSelectPost: (AnyPostWithEditContext) -> Void
@@ -21,7 +20,7 @@ struct CustomPostSearchResultView: View {
             viewModel: CustomPostListViewModel(
                 client: client,
                 service: service,
-                endpoint: endpoint,
+                details: details,
                 filter: CustomPostListFilter.default.with(search: finalSearchText),
                 blog: blog
             ),

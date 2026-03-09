@@ -54,6 +54,7 @@ struct CustomPostListView<Header: View>: View {
             client: client,
             onSelectPost: onSelectPost,
             mediaHost: mediaHost,
+            indentationMap: viewModel.indentationMap,
             header: header
         )
         .overlay {
@@ -87,6 +88,7 @@ private struct PaginatedList<Header: View>: View {
     let client: WordPressClient?
     let onSelectPost: (AnyPostWithEditContext) -> Void
     let mediaHost: MediaHost?
+    let indentationMap: CustomPostListViewModel.IndentationMap
     @ViewBuilder let header: () -> Header
 
     @State var isLoadingMore = false
@@ -97,13 +99,15 @@ private struct PaginatedList<Header: View>: View {
         onLoadNextPage: @escaping () async throws -> Void,
         client: WordPressClient? = nil,
         onSelectPost: @escaping (AnyPostWithEditContext) -> Void,
-        mediaHost: MediaHost? = nil
+        mediaHost: MediaHost? = nil,
+        indentationMap: CustomPostListViewModel.IndentationMap = [:]
     ) where Header == EmptyView {
         self.items = items
         self.onLoadNextPage = onLoadNextPage
         self.client = client
         self.onSelectPost = onSelectPost
         self.mediaHost = mediaHost
+        self.indentationMap = indentationMap
         self.header = { EmptyView() }
     }
 
@@ -113,6 +117,7 @@ private struct PaginatedList<Header: View>: View {
         client: WordPressClient? = nil,
         onSelectPost: @escaping (AnyPostWithEditContext) -> Void,
         mediaHost: MediaHost? = nil,
+        indentationMap: CustomPostListViewModel.IndentationMap = [:],
         @ViewBuilder header: @escaping () -> Header
     ) {
         self.items = items
@@ -120,6 +125,7 @@ private struct PaginatedList<Header: View>: View {
         self.client = client
         self.onSelectPost = onSelectPost
         self.mediaHost = mediaHost
+        self.indentationMap = indentationMap
         self.header = header
     }
 
@@ -132,11 +138,39 @@ private struct PaginatedList<Header: View>: View {
             .listSectionSpacing(0)
             .listSectionSeparator(.hidden)
 
-            ForEach(items) { item in
-                ForEachContent(item: item, client: client, onSelectPost: onSelectPost, mediaHost: mediaHost)
+            if indentationMap.isEmpty {
+                ForEach(items) { item in
+                    ForEachContent(
+                        item: item,
+                        client: client,
+                        onSelectPost: onSelectPost,
+                        mediaHost: mediaHost
+                    )
                     .task {
                         await onRowAppear(item: item)
                     }
+                }
+            } else {
+                ForEach(Array(items.enumerated()), id: \.element.id) { index, item in
+                    let showSubdirectoryIcon: Bool = {
+                        guard let entry = indentationMap[item.id], entry.indentationLevel > 0, index > 0 else {
+                            return false
+                        }
+                        let previousLevel = indentationMap[items[index - 1].id]?.indentationLevel ?? 0
+                        return entry.indentationLevel == previousLevel + 1
+                    }()
+                    ForEachContentWithIndentation(
+                        item: item,
+                        client: client,
+                        onSelectPost: onSelectPost,
+                        mediaHost: mediaHost,
+                        indentationLevel: indentationMap[item.id]?.indentationLevel ?? 0,
+                        showSubdirectoryIcon: showSubdirectoryIcon
+                    )
+                    .task {
+                        await onRowAppear(item: item)
+                    }
+                }
             }
 
             Section {
@@ -230,6 +264,34 @@ private struct ForEachContent: View {
         case .stale(_, let post):
             PostContent(post: post, client: client, mediaHost: mediaHost)
         }
+    }
+}
+
+private struct ForEachContentWithIndentation: View {
+    let item: CustomPostCollectionItem
+    let client: WordPressClient?
+    let onSelectPost: (AnyPostWithEditContext) -> Void
+    let mediaHost: MediaHost?
+    let indentationLevel: Int
+    let showSubdirectoryIcon: Bool
+
+    var body: some View {
+        HStack(spacing: 0) {
+            if indentationLevel > 0 {
+                Image("subdirectory")
+                    .foregroundStyle(.secondary)
+                    .opacity(showSubdirectoryIcon ? 1 : 0)
+                    .padding(.trailing, 8)
+            }
+
+            ForEachContent(
+                item: item,
+                client: client,
+                onSelectPost: onSelectPost,
+                mediaHost: mediaHost
+            )
+        }
+        .padding(.leading, CGFloat(max(0, indentationLevel - 1)) * 32)
     }
 }
 
