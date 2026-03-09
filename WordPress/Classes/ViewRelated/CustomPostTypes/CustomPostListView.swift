@@ -98,6 +98,21 @@ struct CustomPostListView<Header: View>: View {
         } message: { _ in
             Text(Strings.deleteConfirmationMessage)
         }
+        .alert(
+            Strings.trashConfirmationTitle,
+            isPresented: Binding(
+                get: { viewModel.postToTrash != nil },
+                set: { if !$0 { viewModel.postToTrash = nil } }
+            ),
+            presenting: viewModel.postToTrash
+        ) { post in
+            Button(SharedStrings.Button.cancel, role: .cancel) {}
+            Button(Strings.moveToTrash, role: .destructive) {
+                Task { await viewModel.trashPost(post) }
+            }
+        } message: { _ in
+            Text(Strings.trashConfirmationMessage)
+        }
         .sheet(item: $viewModel.menuNavigation) {
             menuNavigationDestination($0)
         }
@@ -443,7 +458,13 @@ private struct PostActionMenuContent: View {
     private var trashSection: some View {
         Section {
             if post.status != .trash {
-                Button(role: .destructive, action: { Task { await viewModel.trashPost(post) } }) {
+                Button(role: .destructive, action: {
+                    if post.status == .publish {
+                        viewModel.confirmTrash(post)
+                    } else {
+                        Task { await viewModel.trashPost(post) }
+                    }
+                }) {
                     Label(Strings.moveToTrash, systemImage: "trash")
                 }
             } else {
@@ -625,6 +646,16 @@ private enum Strings {
         "customPostList.action.deletePermanently",
         value: "Delete Permanently",
         comment: "Menu action to permanently delete a trashed post"
+    )
+    static let trashConfirmationTitle = NSLocalizedString(
+        "customPostList.trashConfirmation.title",
+        value: "Move to Trash?",
+        comment: "Title for the confirmation alert when trashing a published post"
+    )
+    static let trashConfirmationMessage = NSLocalizedString(
+        "customPostList.trashConfirmation.message",
+        value: "This post is published and visible to visitors. Are you sure you want to move it to trash?",
+        comment: "Message for the confirmation alert when trashing a published post"
     )
     static let deleteConfirmationTitle = NSLocalizedString(
         "customPostList.deleteConfirmation.title",

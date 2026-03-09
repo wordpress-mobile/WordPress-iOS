@@ -27,6 +27,7 @@ final class CustomPostListViewModel: ObservableObject {
     @Published private(set) var indentationMap: IndentationMap = [:]
     @Published private var error: Error?
     @Published var postToDelete: AnyPostWithEditContext?
+    @Published var postToTrash: AnyPostWithEditContext?
     @Published var menuNavigation: PostMenuNavigation?
     @Published var progressHUDState: ProgressHUDState = .idle
 
@@ -209,6 +210,10 @@ final class CustomPostListViewModel: ObservableObject {
 
     func confirmDelete(_ post: AnyPostWithEditContext) {
         postToDelete = post
+    }
+
+    func confirmTrash(_ post: AnyPostWithEditContext) {
+        postToTrash = post
     }
 
     func publishPost(_ post: AnyPostWithEditContext) async {
