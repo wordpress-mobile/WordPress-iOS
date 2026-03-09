@@ -214,6 +214,10 @@ final class PostSettingsViewModel: NSObject, ObservableObject {
         abstractPost as? Page
     }
 
+    var customPostEditorService: CustomPostEditorService? {
+        editorService
+    }
+
     /// Whether the post has a remote representation (used for permalink preview).
     var hasRemote: Bool {
         switch details {
@@ -352,6 +356,7 @@ final class PostSettingsViewModel: NSObject, ObservableObject {
         refreshDisplayedCategories()
         refreshDisplayedTags()
         refreshCustomTaxonomies()
+        refreshParentPageText()
         resolveTermNames()
 
         WPAnalytics.track(.postSettingsShown)
@@ -511,12 +516,35 @@ final class PostSettingsViewModel: NSObject, ObservableObject {
     }
 
     private func refreshParentPageText() {
-        if let page,
-           let context = page.managedObjectContext,
-           let parentPageID = settings.parentPageID {
-            parentPageText = Page.parentPageText(in: context, parentID: NSNumber(value: parentPageID))
-        } else {
+        guard let parentPageID = settings.parentPageID else {
             parentPageText = nil
+            return
+        }
+
+        switch details {
+        case .abstractPost(let post):
+            if let page = post as? Page, let context = page.managedObjectContext {
+                parentPageText = Page.parentPageText(in: context, parentID: NSNumber(value: parentPageID))
+            }
+        case .customPost(let service):
+            parentPageText = "…"
+            Task { [weak self] in
+                guard let self else { return }
+                do {
+                    let post = try await service.client.api.posts
+                        .filterRetrieveWithEditContext(
+                            postEndpointType: service.details.toPostEndpointType(),
+                            postId: Int64(parentPageID),
+                            params: .init(),
+                            fields: [.title]
+                        )
+                        .data
+                    let title = post.title?.raw?.trimmingCharacters(in: .whitespacesAndNewlines) ?? ""
+                    self.parentPageText = title.isEmpty ? Strings.noTitle : title
+                } catch {
+                    self.parentPageText = nil
+                }
+            }
         }
     }
 
@@ -941,6 +969,12 @@ private enum Strings {
         "postSettings.navigationTitle.customPostType",
         value: "%1$@ Settings",
         comment: "The title of the Post Settings screen for custom post types. %1$@ is the post type name."
+    )
+
+    static let noTitle = NSLocalizedString(
+        "postSettings.parentPost.noTitle",
+        value: "(no title)",
+        comment: "Placeholder shown when the parent post has no title"
     )
 
     static let saveFailedMessage = NSLocalizedString(
