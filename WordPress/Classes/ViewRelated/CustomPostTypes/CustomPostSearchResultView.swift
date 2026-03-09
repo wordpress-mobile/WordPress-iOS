@@ -21,7 +21,7 @@ struct CustomPostSearchResultView: View {
                 client: client,
                 service: service,
                 details: details,
-                filter: CustomPostListFilter.default.with(search: finalSearchText),
+                filter: .search(input: finalSearchText),
                 blog: blog
             ),
             details: details,

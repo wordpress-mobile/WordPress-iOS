@@ -179,11 +179,11 @@ final class CustomPostListViewModel: ObservableObject {
     }
 
     private var shouldDisplayHierarchy: Bool {
-        isHierarchical && (filter.status == .publish || filter.status == .custom("any"))
+        isHierarchical && (filter.statuses.contains(.publish) || filter.statuses.contains(.custom("any")))
     }
 
     private func updateItems(from metadataItems: [PostMetadataCollectionItem]) {
-        let items = metadataItems.map { CustomPostCollectionItem(item: $0, blog: blog, filterStatus: filter.status) }
+        let items = metadataItems.map { CustomPostCollectionItem(item: $0, blog: blog, primaryStatus: filter.primaryStatus) }
 
         guard shouldDisplayHierarchy else {
             indentationMap = [:]
@@ -361,7 +361,7 @@ struct CustomPostCollectionDisplayPost: Equatable {
     let status: PostStatus
     let sticky: Bool
     let featuredMedia: MediaId?
-    let filterStatus: PostStatus?
+    let primaryStatus: PostStatus
 
     init(
         date: Date,
@@ -371,7 +371,7 @@ struct CustomPostCollectionDisplayPost: Equatable {
         status: PostStatus = .publish,
         sticky: Bool = false,
         featuredMedia: MediaId? = nil,
-        filterStatus: PostStatus? = nil
+        primaryStatus: PostStatus = .publish
     ) {
         self.date = date
         self.title = title
@@ -380,10 +380,10 @@ struct CustomPostCollectionDisplayPost: Equatable {
         self.status = status
         self.sticky = sticky
         self.featuredMedia = featuredMedia
-        self.filterStatus = filterStatus
+        self.primaryStatus = primaryStatus
     }
 
-    init(_ entity: AnyPostWithEditContext, blog: Blog, contentLimit: Int = 100, filterStatus: PostStatus? = nil) {
+    init(_ entity: AnyPostWithEditContext, blog: Blog, contentLimit: Int = 100, primaryStatus: PostStatus = .publish) {
         self.date = entity.dateGmt
         self.title = entity.title?.raw
         let contentPreview = GutenbergExcerptGenerator
@@ -405,7 +405,7 @@ struct CustomPostCollectionDisplayPost: Equatable {
         self.status = entity.status
         self.sticky = entity.sticky ?? false
         self.featuredMedia = entity.featuredMedia
-        self.filterStatus = filterStatus
+        self.primaryStatus = primaryStatus
     }
 
     /// The title to display, with a placeholder for untitled posts.
@@ -443,11 +443,9 @@ struct CustomPostCollectionDisplayPost: Equatable {
     var statusBadges: String? {
         var badges: [String] = []
 
-        // Each tab filters by a specific status. Show a status badge when the
-        // post's status doesn't match the tab's filter, since it would be redundant
-        // otherwise. The "All" tab uses `.custom("any")` which never matches any
-        // post status, so non-published posts always get a badge there.
-        let showStatus = filterStatus == .custom("any") ? status != .publish : status != filterStatus
+        // Show a status badge when the post's status isn't one of the filter's
+        // statuses, since it would be redundant otherwise.
+        let showStatus = status != primaryStatus
         if showStatus {
             badges.append(status.localizedLabel())
         }
@@ -516,18 +514,18 @@ enum CustomPostCollectionItem: Identifiable, Equatable {
         }
     }
 
-    init(item: PostMetadataCollectionItem, blog: Blog, filterStatus: PostStatus? = nil) {
+    init(item: PostMetadataCollectionItem, blog: Blog, primaryStatus: PostStatus = .publish) {
         let id = item.id
 
         switch item.state {
         case .fresh(let entity):
-            self = .ready(id: id, post: CustomPostCollectionDisplayPost(entity.data, blog: blog, filterStatus: filterStatus), fullPost: entity.data)
+            self = .ready(id: id, post: CustomPostCollectionDisplayPost(entity.data, blog: blog, primaryStatus: primaryStatus), fullPost: entity.data)
 
         case .stale(let entity):
-            self = .stale(id: id, post: CustomPostCollectionDisplayPost(entity.data, blog: blog, filterStatus: filterStatus))
+            self = .stale(id: id, post: CustomPostCollectionDisplayPost(entity.data, blog: blog, primaryStatus: primaryStatus))
 
         case .fetchingWithData(let entity):
-            self = .refreshing(id: id, post: CustomPostCollectionDisplayPost(entity.data, blog: blog, filterStatus: filterStatus))
+            self = .refreshing(id: id, post: CustomPostCollectionDisplayPost(entity.data, blog: blog, primaryStatus: primaryStatus))
 
         case .fetching:
             self = .fetching(id: id)
@@ -539,7 +537,7 @@ enum CustomPostCollectionItem: Identifiable, Equatable {
             self = .error(id: id, message: error)
 
         case .failedWithData(let error, let entity):
-            self = .errorWithData(id: id, message: error, post: CustomPostCollectionDisplayPost(entity.data, blog: blog, contentLimit: 50, filterStatus: filterStatus))
+            self = .errorWithData(id: id, message: error, post: CustomPostCollectionDisplayPost(entity.data, blog: blog, contentLimit: 50, primaryStatus: primaryStatus))
         }
     }
 }

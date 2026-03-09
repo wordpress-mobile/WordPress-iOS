@@ -54,35 +54,35 @@ struct CustomPostTabView: View {
             client: client,
             service: service,
             details: details,
-            filter: CustomPostListFilter(status: .custom("any")),
+            filter: CustomPostListFilter(tab: .all),
             blog: blog
         ))
         _publishedViewModel = State(initialValue: CustomPostListViewModel(
             client: client,
             service: service,
             details: details,
-            filter: CustomPostListFilter(status: .publish),
+            filter: CustomPostListFilter(tab: .published),
             blog: blog
         ))
         _draftsViewModel = State(initialValue: CustomPostListViewModel(
             client: client,
             service: service,
             details: details,
-            filter: CustomPostListFilter(status: .draft),
+            filter: CustomPostListFilter(tab: .drafts),
             blog: blog
         ))
         _scheduledViewModel = State(initialValue: CustomPostListViewModel(
             client: client,
             service: service,
             details: details,
-            filter: CustomPostListFilter(status: .future),
+            filter: CustomPostListFilter(tab: .scheduled),
             blog: blog
         ))
         _trashViewModel = State(initialValue: CustomPostListViewModel(
             client: client,
             service: service,
             details: details,
-            filter: CustomPostListFilter(status: .trash),
+            filter: CustomPostListFilter(tab: .trash),
             blog: blog
         ))
     }
@@ -175,13 +175,37 @@ enum CustomPostTab: Int, CaseIterable, AdaptiveTabBarItem {
         }
     }
 
-    var status: PostStatus {
+    var primaryStatus: PostStatus {
         switch self {
-        case .all: return .custom("any")
+        case .all: return .publish
         case .published: return .publish
         case .drafts: return .draft
         case .scheduled: return .future
         case .trash: return .trash
+        }
+    }
+
+    var statuses: [PostStatus] {
+        switch self {
+        case .all: return [.custom("any")]
+        case .published: return [.publish, .private]
+        case .drafts: return [.draft, .pending]
+        case .scheduled: return [.future]
+        case .trash: return [.trash]
+        }
+    }
+
+    var orderby: WpApiParamPostsOrderBy {
+        switch self {
+        case .all, .drafts: return .modified
+        case .published, .scheduled, .trash: return .date
+        }
+    }
+
+    var order: WpApiParamOrder {
+        switch self {
+        case .scheduled: return .asc
+        case .all, .published, .drafts, .trash: return .desc
         }
     }
 }

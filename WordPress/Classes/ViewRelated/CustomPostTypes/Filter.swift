@@ -3,19 +3,35 @@ import WordPressAPI
 import WordPressAPIInternal
 
 struct CustomPostListFilter: Equatable {
-    var status: PostStatus
+    var statuses: [PostStatus]
+    var primaryStatus: PostStatus
+    var order: WpApiParamOrder
+    var orderby: WpApiParamPostsOrderBy
     var search: String?
 
-    static var `default`: Self {
-        get {
-            .init(status: .custom("any"))
-        }
+    init(
+        statuses: [PostStatus],
+        primaryStatus: PostStatus = .publish,
+        order: WpApiParamOrder = .desc,
+        orderby: WpApiParamPostsOrderBy = .date,
+        search: String? = nil
+    ) {
+        self.statuses = statuses
+        self.primaryStatus = primaryStatus
+        self.order = order
+        self.orderby = orderby
+        self.search = search
     }
 
-    func with(search: String) -> Self {
-        var copy = self
-        copy.search = search
-        return copy
+    init(tab: CustomPostTab) {
+        self.statuses = tab.statuses
+        self.primaryStatus = tab.primaryStatus
+        self.order = tab.order
+        self.orderby = tab.orderby
+    }
+
+    static func search(input: String) -> Self {
+        .init(statuses: [.custom("any")], search: input)
     }
 
     func asPostListFilter() -> WordPressAPIInternal.PostListFilter {
@@ -23,7 +39,9 @@ struct CustomPostListFilter: Equatable {
             search: search,
             // TODO: Support author?
             searchColumns: search == nil ? [] : [.postTitle, .postContent, .postExcerpt],
-            status: [status],
+            order: order,
+            orderby: orderby,
+            status: statuses
         )
     }
 }
