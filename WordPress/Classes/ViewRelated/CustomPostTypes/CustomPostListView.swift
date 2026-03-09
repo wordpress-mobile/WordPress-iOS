@@ -386,13 +386,13 @@ private struct PostActionMenu: View {
     @ViewBuilder
     private var primarySection: some View {
         Section {
-            if post.status != .trash {
+            if post.status == .publish {
                 Button(action: { viewModel.viewPost(post) }) {
                     Label(SharedStrings.Button.view, systemImage: "safari")
                 }
-
-                // FIXME: Preview requires Core Data preview infrastructure (PreviewNonceHandler, AbstractPost)
             }
+
+            // FIXME: Preview requires Core Data preview infrastructure (PreviewNonceHandler, AbstractPost)
 
             if post.status == .draft || post.status == .pending {
                 Button(action: { Task { await viewModel.publishPost(post) } }) {
