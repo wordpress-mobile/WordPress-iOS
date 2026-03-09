@@ -463,6 +463,25 @@ struct PostSettingsFormContentView: View {
             } label: {
                 SettingsRow(Strings.parentPageLabel, value: viewModel.parentPageText ?? Strings.topLevelPage)
             }
+        } else if let editorService = viewModel.customPostEditorService,
+                  let client = viewModel.client,
+                  let service = try? client.service {
+            NavigationLink {
+                ParentPostPicker(
+                    blog: viewModel.blog,
+                    client: client,
+                    service: service,
+                    details: editorService.details,
+                    excludePostID: editorService.post?.id,
+                    selectedParentID: viewModel.settings.parentPageID,
+                    onSelection: { selectedParentID in
+                        viewModel.settings.parentPageID = selectedParentID
+                        viewModel.viewController?.navigationController?.popViewController(animated: true)
+                    }
+                )
+            } label: {
+                SettingsRow(Strings.parentPageLabel, value: viewModel.parentPageText ?? Strings.topLevelPage)
+            }
         }
     }
 
