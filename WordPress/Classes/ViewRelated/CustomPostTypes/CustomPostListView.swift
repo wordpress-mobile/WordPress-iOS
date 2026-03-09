@@ -324,6 +324,9 @@ private struct ForEachContent: View {
                 PostContent(post: displayPost, client: client, mediaHost: mediaHost)
             }
             .buttonStyle(.plain)
+            .contextMenu {
+                PostActionMenuContent(post: post, viewModel: viewModel)
+            }
             .overlay(alignment: .topTrailing) {
                 PostActionMenu(post: post, viewModel: viewModel)
                     .offset(y: -6)
@@ -371,9 +374,7 @@ private struct PostActionMenu: View {
 
     var body: some View {
         Menu {
-            primarySection
-            navigationSection
-            trashSection
+            PostActionMenuContent(post: post, viewModel: viewModel)
         } label: {
             Image(systemName: "ellipsis")
                 .font(.body)
@@ -381,6 +382,17 @@ private struct PostActionMenu: View {
                 .frame(width: 28, height: 28)
                 .contentShape(Rectangle())
         }
+    }
+}
+
+private struct PostActionMenuContent: View {
+    let post: AnyPostWithEditContext
+    let viewModel: CustomPostListViewModel
+
+    var body: some View {
+        primarySection
+        navigationSection
+        trashSection
     }
 
     @ViewBuilder
