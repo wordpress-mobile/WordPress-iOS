@@ -403,7 +403,7 @@ private struct PostActionMenuContent: View {
 
             if post.status != .draft {
                 Button(action: { Task { await viewModel.moveToDraft(post) } }) {
-                    Label(Strings.moveToDraft, systemImage: "pencil")
+                    Label(Strings.moveToDraft, systemImage: "pencil.line")
                 }
             }
 

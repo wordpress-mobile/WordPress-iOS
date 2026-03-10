@@ -257,12 +257,25 @@ final class CustomPostListViewModel: ObservableObject {
 
         switch navigation {
         case .stats(let post):
-            let statsVC = PostStatsTableViewController.withJPBannerForBlog(
-                postID: Int(post.id),
-                postTitle: post.title?.raw,
-                postURL: URL(string: post.link)
-            )
-            vc.navigationController?.pushViewController(statsVC, animated: true)
+            if FeatureFlag.newStats.enabled {
+                let statsVC = PostStatsViewController(
+                    postID: Int(post.id),
+                    postTitle: post.title?.raw ?? "",
+                    postURL: URL(string: post.link),
+                    postDate: post.dateGmt,
+                    blog: blog
+                )
+                let navController = UINavigationController(rootViewController: statsVC)
+                navController.modalPresentationStyle = .pageSheet
+                vc.present(navController, animated: true)
+            } else {
+                let statsVC = PostStatsTableViewController.withJPBannerForBlog(
+                    postID: Int(post.id),
+                    postTitle: post.title?.raw,
+                    postURL: URL(string: post.link)
+                )
+                vc.navigationController?.pushViewController(statsVC, animated: true)
+            }
 
         case .comments(let post, let siteID):
             let commentsVC = ReaderCommentsViewController(
@@ -381,8 +394,8 @@ extension CustomPostListViewModel {
         var systemImage: String {
             switch self {
             case .blaze: return "flame"
-            case .stats: return "chart.bar"
-            case .comments: return "bubble.left"
+            case .stats: return "chart.line.uptrend.xyaxis"
+            case .comments: return "bubble.right"
             case .settings: return "gearshape"
             }
         }

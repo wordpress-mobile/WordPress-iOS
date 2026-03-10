@@ -7,11 +7,33 @@ import WordPressShared
 
 /// View controller that displays post statistics using the new SwiftUI PostStatsView
 final class PostStatsViewController: UIViewController {
-    private let post: AbstractPost
+    private let postInfo: PostStatsView.PostInfo
+    private let blog: Blog
 
-    init(post: AbstractPost) {
-        self.post = post
+    init(postInfo: PostStatsView.PostInfo, blog: Blog) {
+        self.postInfo = postInfo
+        self.blog = blog
         super.init(nibName: nil, bundle: nil)
+    }
+
+    convenience init(postID: Int, postTitle: String, postURL: URL?, postDate: Date?, blog: Blog) {
+        let info = PostStatsView.PostInfo(
+            title: postTitle,
+            postID: String(postID),
+            postURL: postURL,
+            date: postDate
+        )
+        self.init(postInfo: info, blog: blog)
+    }
+
+    convenience init(post: AbstractPost) {
+        let info = PostStatsView.PostInfo(
+            title: post.titleForDisplay(),
+            postID: String(post.postID?.intValue ?? 0),
+            postURL: post.permaLink.flatMap(URL.init),
+            date: post.dateCreated
+        )
+        self.init(postInfo: info, blog: post.blog)
     }
 
     required init?(coder: NSCoder) {
@@ -29,18 +51,12 @@ final class PostStatsViewController: UIViewController {
     }
 
     private func setupStatsView() {
-        guard let context = StatsContext(blog: post.blog),
-              let postID = post.postID?.intValue else {
+        guard let context = StatsContext(blog: blog),
+              postInfo.postID != "0" else {
             return
         }
-        let info = PostStatsView.PostInfo(
-            title: post.titleForDisplay(),
-            postID: String(postID),
-            postURL: post.permaLink.flatMap(URL.init),
-            date: post.dateCreated
-        )
         let statsView = PostStatsView.make(
-            post: info,
+            post: postInfo,
             context: context,
             router: StatsRouter(viewController: self)
         )
