@@ -221,6 +221,7 @@ extension DateIntervalPreset {
         case .thisQuarter: "this_quarter"
         case .thisYear: "this_year"
         case .last7Days: "last_7_days"
+        case .last14Days: "last_14_days"
         case .last28Days: "last_28_days"
         case .last30Days: "last_30_days"
         case .last12Weeks: "last_12_weeks"

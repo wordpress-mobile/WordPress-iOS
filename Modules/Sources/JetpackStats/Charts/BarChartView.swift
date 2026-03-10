@@ -56,24 +56,48 @@ struct BarChartView: View {
     @ChartContentBuilder
     private var currentPeriodBars: some ChartContent {
         ForEach(data.currentData) { point in
+            let isIncomplete = context.calendar.isIncompleteDataPeriod(for: point.date, granularity: data.granularity)
             BarMark(
                 x: .value("Date", point.date, unit: data.granularity.component, calendar: context.calendar),
                 y: .value("Value", point.value),
                 width: .automatic
             )
-            .foregroundStyle(
-                LinearGradient(
-                    colors: [
-                        data.metric.primaryColor,
-                        lighten(data.metric.primaryColor)
-                    ],
-                    startPoint: .top,
-                    endPoint: .bottom
-                )
-            )
+            .foregroundStyle(isIncomplete ? AnyShapeStyle(incompleteBarPattern) : AnyShapeStyle(barGradient))
             .cornerRadius(4)
             .opacity(getOpacityForCurrentPeriodBar(for: point))
         }
+    }
+
+    private var barGradient: LinearGradient {
+        LinearGradient(
+            colors: [data.metric.primaryColor, lighten(data.metric.primaryColor)],
+            startPoint: .top,
+            endPoint: .bottom
+        )
+    }
+
+    /// A tiling diagonal-stripe pattern for today's incomplete bar.
+    private var incompleteBarPattern: ImagePaint {
+        let color = UIColor(data.metric.primaryColor)
+        let tileSize: CGFloat = 10
+        let renderer = UIGraphicsImageRenderer(size: CGSize(width: tileSize, height: tileSize))
+        let image = renderer.image { ctx in
+            color.withAlphaComponent(0.33).setFill()
+            ctx.fill(CGRect(x: 0, y: 0, width: tileSize, height: tileSize))
+
+            let cg = ctx.cgContext
+            cg.setStrokeColor(color.withAlphaComponent(0.5).cgColor)
+            cg.setLineWidth(1.5)
+            // Three parallel lines for seamless tiling
+            cg.move(to: CGPoint(x: -tileSize, y: tileSize))
+            cg.addLine(to: CGPoint(x: tileSize, y: -tileSize))
+            cg.move(to: CGPoint(x: 0, y: tileSize))
+            cg.addLine(to: CGPoint(x: tileSize, y: 0))
+            cg.move(to: CGPoint(x: 0, y: tileSize * 2))
+            cg.addLine(to: CGPoint(x: tileSize * 2, y: 0))
+            cg.strokePath()
+        }
+        return ImagePaint(image: Image(uiImage: image), scale: 1)
     }
 
     private func lighten(_ color: Color) -> Color {
@@ -93,9 +117,7 @@ struct BarChartView: View {
             if tappedDataPoint != nil {
                 return 0.5
             }
-            // If no selection and not tapped, check if data is incomplete
-            let isIncomplete = context.calendar.isIncompleteDataPeriod(for: point.date, granularity: data.granularity)
-            return isIncomplete ? 0.5 : 1
+            return 1
         }
         return selectedDataPoints.current?.id == point.id ? 1.0 : 0.5
     }
