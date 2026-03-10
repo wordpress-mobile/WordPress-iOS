@@ -396,7 +396,7 @@ private struct PostActionMenuContent: View {
             // FIXME: Preview requires Core Data preview infrastructure (PreviewNonceHandler, AbstractPost)
 
             if post.status == .draft || post.status == .pending {
-                Button(action: { Task { await viewModel.publishPost(post) } }) {
+                Button(action: { viewModel.publishPost(post) }) {
                     Label(Strings.publish, systemImage: "paperplane")
                 }
             }

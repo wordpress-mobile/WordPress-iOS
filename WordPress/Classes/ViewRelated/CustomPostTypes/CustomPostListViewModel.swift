@@ -218,10 +218,22 @@ final class CustomPostListViewModel: ObservableObject {
         postToTrash = post
     }
 
-    func publishPost(_ post: AnyPostWithEditContext) async {
-        var params = PostUpdateParams(meta: nil)
-        params.status = .publish
-        await updatePost(post, params: params)
+    func publishPost(_ post: AnyPostWithEditContext) {
+        guard let vc = presentingViewController else { return }
+
+        let editorService = CustomPostEditorService(
+            blog: blog,
+            post: post,
+            details: details,
+            client: client,
+            service: service.posts()
+        )
+        PublishPostViewController.show(
+            editorService: editorService,
+            blog: blog,
+            from: vc,
+            completion: { _ in }
+        )
     }
 
     func moveToDraft(_ post: AnyPostWithEditContext) async {
