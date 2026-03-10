@@ -1,7 +1,7 @@
 import SwiftUI
 import AuthenticationServices
 import WordPressAPI
-import WordPressAuthenticator
+import WordPressAPIInternal
 import WordPressData
 import DesignSystem
 import WordPressShared
@@ -112,47 +112,36 @@ struct LoginWithUrlView: View {
         isLoading = true
         defer { isLoading = false }
 
+        let details: AutoDiscoveryAttemptSuccess
+        do {
+            let loginClient = WordPressLoginClient(urlSession: URLSession(configuration: .ephemeral))
+            details = try await loginClient.details(ofSite: urlField)
+        } catch is CancellationError {
+            return
+        } catch {
+            errorMessage = error.localizedDescription
+            return
+        }
+
+        if Task.isCancelled { return }
+
+        if case let .oAuth2(endpoints) = details.authentication,
+           endpoints.authorizationUrl.contains("public-api.wordpress.com") {
+            presenter.dismiss(animated: true) {
+                Notice(title: Strings.wpcomSiteRedirect).post()
+                presentDotComLogin()
+            }
+            return
+        }
+
         do {
             let blog = try await SelfHostedSiteAuthenticator()
-                .signIn(site: urlField, from: presenter, context: .default)
-
+                .signIn(details: details, from: presenter, context: .default)
             dismiss()
             self.loginCompleted(blog)
         } catch {
-            if await shouldRedirectToDotComLogin(error: error) {
-                // We need to chain the dismissing and presenting,
-                // which is not supported by SwiftUI's `dismiss` variable.
-                presenter.dismiss(animated: true) {
-                    Notice(title: Strings.wpcomSiteRedirect).post()
-                    presentDotComLogin()
-                }
-            } else {
-                errorMessage = error.localizedDescription
-            }
+            errorMessage = error.localizedDescription
         }
-    }
-
-    // If the error is "API root (wp-json) not found", it's possible that the user typed
-    // a WP.com simple site address. We should redirect to WP.com login if that's
-    // the case.
-    private func shouldRedirectToDotComLogin(
-        error: SelfHostedSiteAuthenticator.SignInError
-    ) async -> Bool {
-        guard case let .authentication(error) = error,
-              let error = error as? AutoDiscoveryAttemptFailure,
-              error.shouldAttemptDotComLogin else { return false}
-
-        let api = WordPressComRestApi.anonymousApi(userAgent: WPUserAgent.defaultUserAgent())
-        let remote = BlogServiceRemoteREST(wordPressComRestApi: api, siteID: 0)
-        let url = WordPressAuthenticator.baseSiteURL(string: urlField)
-        let response: [AnyHashable: Any]? = await withCheckedContinuation { continuation in
-            remote.fetchUnauthenticatedSiteInfo(forAddress: url) {
-                continuation.resume(returning: $0)
-            } failure: { _ in
-                continuation.resume(returning: nil)
-            }
-        }
-        return (response?["isWordPressDotCom"] as? Bool) == true
     }
 }
 
@@ -174,17 +163,6 @@ private enum Strings {
         value: "This site is hosted on WordPress.com. Please log in with your WordPress.com account.",
         comment: "Notice message shown when a user tries to add a WordPress.com site as self-hosted"
     )
-}
-
-private extension AutoDiscoveryAttemptFailure {
-    var shouldAttemptDotComLogin: Bool {
-        switch self {
-        case .ParseSiteUrl:
-            false
-        case .FindApiRoot, .FetchAndParseApiRoot:
-            true
-        }
-    }
 }
 
 // MARK: - SwiftUI Preview
