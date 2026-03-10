@@ -170,7 +170,7 @@ private extension DashboardJetpackSocialCardCellTests {
         var builder = BlogBuilder(mainContext)
             .withAnAccount()
             .with(dotComID: 12345)
-            .with(capabilities: [.PublishPosts])
+            .with(capabilities: [.publishPosts])
             .with(atomic: isAtomic)
 
         if isPublicizeSupported {

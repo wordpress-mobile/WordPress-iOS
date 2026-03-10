@@ -1,5 +1,6 @@
 26.8
 -----
+* [*] Fix an issue Social Sharing placeholder card showing unsupported services [#25336]
 
 
 26.7

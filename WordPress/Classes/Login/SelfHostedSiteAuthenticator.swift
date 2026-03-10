@@ -138,7 +138,14 @@ struct SelfHostedSiteAuthenticator {
     @MainActor
     func signIn(details: AutoDiscoveryAttemptSuccess, from viewController: UIViewController, context: SignInContext) async throws(SignInError) -> TaggedManagedObjectID<Blog> {
         do {
-            let (apiRootURL, credentials) = try await authenticate(details: details, from: viewController)
+            let credentials: WpApiApplicationPasswordDetails
+            if let parsed = parseCredentialsFromLaunchArguments(), details.parsedSiteUrl.url().contains(parsed.siteUrl) {
+                credentials = parsed
+            } else {
+                credentials = try await authenticate(details: details, from: viewController)
+            }
+
+            let apiRootURL = details.apiRootUrl.asURL()
             let result = try await handle(credentials: credentials, apiRootURL: apiRootURL, apiDetails: details.apiDetails, context: context)
             trackSuccess(url: details.parsedSiteUrl.url())
             return result
@@ -149,14 +156,14 @@ struct SelfHostedSiteAuthenticator {
     }
 
     @MainActor
-    private func authenticate(details: AutoDiscoveryAttemptSuccess, from viewController: UIViewController) async throws(SignInError) -> (apiRootURL: URL, credentials: WpApiApplicationPasswordDetails) {
+    private func authenticate(details: AutoDiscoveryAttemptSuccess, from viewController: UIViewController) async throws(SignInError) -> WpApiApplicationPasswordDetails {
         let appId = Self.wordPressAppId
         let appName = Self.wordPressAppName
 
         do {
             let loginURL = details.loginURL(for: .init(id: appId, name: appName, callbackUrl: SelfHostedSiteAuthenticator.callbackURL.absoluteString))
             let callback = try await authorize(url: loginURL, callbackURL: SelfHostedSiteAuthenticator.callbackURL, from: viewController)
-            return (details.apiRootUrl.asURL(), try internalClient.credentials(from: callback))
+            return try internalClient.credentials(from: callback)
         } catch {
             throw .authentication(error)
         }
@@ -372,6 +379,18 @@ struct SelfHostedSiteAuthenticator {
         )
         let client = UniffiJetpackApiClient(apiUrlResolver: WpOrgSiteApiUrlResolver(apiRootUrl: try! ParsedUrl.from(url: apiRootURL)), delegate: delegate)
         return try? await client.connection().connectionData().data
+    }
+
+    private func parseCredentialsFromLaunchArguments() -> WpApiApplicationPasswordDetails? {
+        let defaults = UserDefaults.standard
+        guard let siteURL = defaults.string(forKey: "ui-test-site-url"),
+              let user = defaults.string(forKey: "ui-test-site-user"),
+              let pass = defaults.string(forKey: "ui-test-site-pass")
+        else {
+            return nil
+        }
+
+        return .init(siteUrl: siteURL, userLogin: user, password: pass)
     }
 }
 

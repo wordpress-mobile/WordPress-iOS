@@ -156,7 +156,7 @@ struct PostSettingsFeaturedImageRow: View {
 
     private func makeMediaPicker<Content: View>(@ViewBuilder content: @escaping () -> Content) -> some View {
         let configuration = MediaPickerConfiguration(
-            sources: [.photos, .camera, .playground, .siteMedia(blog: viewModel.post.blog)],
+            sources: [.photos, .camera, .playground, .siteMedia(blog: viewModel.blog)],
             filter: .images
         )
         return MediaPicker(configuration: configuration, onSelection: viewModel.setFeaturedImage) {
@@ -169,14 +169,22 @@ public final class PostSettingsFeaturedImageViewModel: ObservableObject {
     @Published private(set) var upload: Media?
     @Published var selection: Media?
 
-    let post: AbstractPost
+    let post: AbstractPost?
+    let blog: Blog
 
     private var receipt: UUID?
     private let coordinator = MediaCoordinator.shared
 
     public init(post: AbstractPost) {
         self.post = post
+        self.blog = post.blog
         self.selection = post.featuredImage
+    }
+
+    public init(blog: Blog, featuredImage: Media?) {
+        self.post = nil
+        self.blog = blog
+        self.selection = featuredImage
     }
 
     func setFeaturedImage(selection: MediaPickerSelection) {
@@ -187,8 +195,16 @@ public final class PostSettingsFeaturedImageViewModel: ObservableObject {
         }
         switch item.exported() {
         case .asset(let exportableAsset):
-            guard let media = coordinator.addMedia(from: exportableAsset, to: post) else {
-                return wpAssertionFailure("failed to add media to post")
+            let media: Media?
+            if let post {
+                media = coordinator.addMedia(from: exportableAsset, to: post)
+            } else {
+                // Suppress the default "Media uploaded / Write Post" notice
+                // when uploading from a custom post editing session.
+                media = coordinator.addMedia(from: exportableAsset, to: blog, suppressSuccessNotice: true)
+            }
+            guard let media else {
+                return wpAssertionFailure("failed to add media")
             }
             self.receipt = coordinator.addObserver({ [weak self] media, state in
                 self?.didUpdateUploadState(state, media: media)

@@ -6,6 +6,3 @@ FOUNDATION_EXPORT double WordPressDataVersionNumber;
 
 //! Project version string for WordPressData.
 FOUNDATION_EXPORT const unsigned char WordPressDataVersionString[];
-
-
-FOUNDATION_EXTERN void SetCocoaLumberjackObjCLogLevel(NSUInteger ddLogLevelRawValue);

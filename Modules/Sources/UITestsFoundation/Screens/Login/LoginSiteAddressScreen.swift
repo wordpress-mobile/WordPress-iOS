@@ -37,6 +37,12 @@ public class LoginSiteAddressScreen: ScreenObject {
         return try GetStartedScreen()
     }
 
+    public func proceedWithSelfHostedSiteLogin(siteAddress: String) {
+        siteAddressTextField.tap()
+        siteAddressTextField.typeText(siteAddress)
+        siteAddressNextButton.tap()
+    }
+
     public static func isLoaded() -> Bool {
         (try? LoginSiteAddressScreen().isLoaded) ?? false
     }

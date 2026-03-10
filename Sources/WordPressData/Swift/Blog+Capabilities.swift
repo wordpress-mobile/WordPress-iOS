@@ -6,22 +6,22 @@ extension Blog {
     /// Enumeration that contains all of the Blog's available capabilities.
     ///
     public enum Capability: String {
-        case ActivateWordAds = "activate_wordads"
-        case DeleteOthersPosts = "delete_others_posts"
-        case DeletePosts = "delete_posts"
-        case EditOthersPages = "edit_others_pages"
-        case EditOthersPosts = "edit_others_posts"
-        case EditPages = "edit_pages"
-        case EditPosts = "edit_posts"
-        case EditThemeOptions = "edit_theme_options"
-        case EditUsers = "edit_users"
-        case ListUsers = "list_users"
-        case ManageCategories = "manage_categories"
-        case ManageOptions = "manage_options"
-        case PromoteUsers = "promote_users"
-        case PublishPosts = "publish_posts"
-        case UploadFiles = "upload_files"
-        case ViewStats = "view_stats"
+        case activateWordAds = "activate_wordads"
+        case deleteOthersPosts = "delete_others_posts"
+        case deletePosts = "delete_posts"
+        case editOthersPages = "edit_others_pages"
+        case editOthersPosts = "edit_others_posts"
+        case editPages = "edit_pages"
+        case editPosts = "edit_posts"
+        case editThemeOptions = "edit_theme_options"
+        case editUsers = "edit_users"
+        case listUsers = "list_users"
+        case manageCategories = "manage_categories"
+        case manageOptions = "manage_options"
+        case promoteUsers = "promote_users"
+        case publishPosts = "publish_posts"
+        case uploadFiles = "upload_files"
+        case viewStats = "view_stats"
     }
 
     /// Returns true if a given capability is enabled. False otherwise
@@ -33,13 +33,13 @@ extension Blog {
     /// Returns true if the current user is allowed to publish to the Blog
     ///
     @objc public func isPublishingPostsAllowed() -> Bool {
-        return isUserCapableOf(.PublishPosts)
+        return isUserCapableOf(.publishPosts)
     }
 
     /// Returns true if the current user is allowed to upload files to the Blog
     ///
     @objc public func isUploadingFilesAllowed() -> Bool {
-        return isUserCapableOf(.UploadFiles)
+        return isUserCapableOf(.uploadFiles)
     }
 
     /// Returns true if the current user is allowed to see Jetpack's Backups
@@ -57,7 +57,7 @@ extension Blog {
     /// Returns true if the current user is allowed to view Stats
     ///
     public var isViewingStatsAllowed: Bool {
-        isAdmin || isUserCapableOf(.ViewStats)
+        isAdmin || isUserCapableOf(.viewStats)
     }
 
     /// Returns true if WordAds is actually active on the site

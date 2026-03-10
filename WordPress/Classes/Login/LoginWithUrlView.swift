@@ -51,6 +51,7 @@ struct LoginWithUrlView: View {
                 action: { self.loginTrigger += 1 }
             )
             .disabled(isContinueButtonDisabled)
+            .accessibilityIdentifier("Site Address Next Button")
         }
         .padding()
         .toolbar {
@@ -77,6 +78,7 @@ struct LoginWithUrlView: View {
             TextField(text: $urlField) {
                 Text("example.com")
             }
+            .accessibilityIdentifier("Site address")
 
             if !urlField.isEmpty {
                 Button {

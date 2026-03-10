@@ -15,6 +15,7 @@ extension ProgressUserInfoKey {
     static let mediaError = ProgressUserInfoKey("mediaError")
     static let mediaObject = ProgressUserInfoKey("mediaObject")
     static let uploadProgress = ProgressUserInfoKey("uploadProgress")
+    static let suppressSuccessNotice = ProgressUserInfoKey("suppressSuccessNotice")
 }
 
 /// Media Progress Coordinator allow the tracking of progress on multiple media objects.

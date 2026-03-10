@@ -1,3 +1,4 @@
+import SwiftUI
 import UIKit
 import WordPressData
 import WordPressFlux
@@ -44,19 +45,17 @@ final class BloggingRemindersFlow {
         if hasShownWeeklyRemindersFlow(for: blog) {
             showSettings()
         } else {
-            let introVC = BloggingRemindersFlowIntroViewController(tracker: tracker) { [weak presentingViewController] in
-                presentingViewController?.dismiss(animated: true) {
+            tracker.screenShown(.main)
+            let alert = AlertView {
+                AlertHeaderView(title: Strings.introTitle, description: Strings.introDescription)
+            } content: {
+                Image("reminders-celebration")
+            } actions: {
+                SetRemindersIntroActionsView(tracker: tracker) {
                     showSettings()
                 }
             }
-            let navigationVC = UINavigationController(rootViewController: introVC)
-            if presentingViewController.traitCollection.horizontalSizeClass == .regular {
-                navigationVC.preferredContentSize = CGSize(width: 375, height: 420)
-            } else {
-                navigationVC.sheetPresentationController?.detents = [.medium()]
-                navigationVC.sheetPresentationController?.preferredCornerRadius = 16
-            }
-            presentingViewController.present(navigationVC, animated: true)
+            alert.present(in: presentingViewController)
         }
 
         setHasShownWeeklyRemindersFlow(for: blog)
@@ -86,4 +85,35 @@ final class BloggingRemindersFlow {
     private init() {
         assertionFailure()
     }
+}
+
+private struct SetRemindersIntroActionsView: View {
+    @Environment(\.dismiss) var dismiss
+    let tracker: BloggingRemindersTracker
+    let action: () -> Void
+
+    var body: some View {
+        Button {
+            tracker.buttonPressed(button: .continue, screen: .main)
+            dismiss()
+            action()
+        } label: {
+            Text(Strings.introButtonTitle)
+                .font(.headline)
+                .frame(maxWidth: .infinity)
+        }
+        .buttonStyle(.borderedProminent)
+        .controlSize(.extraLarge)
+
+        Button(SharedStrings.Button.notNow) {
+            tracker.buttonPressed(button: .dismiss, screen: .main)
+            dismiss()
+        }
+    }
+}
+
+private enum Strings {
+    static let introTitle = NSLocalizedString("bloggingRemindersPrompt.intro.title", value: "Blogging Reminders", comment: "Title of the Blogging Reminders Settings screen.")
+    static let introDescription = NSLocalizedString("bloggingRemindersPrompt.intro.details", value: "Set up your blogging reminders on days you want to post.", comment: "Description on the first screen of the Blogging Reminders Settings flow called after post publishing.")
+    static let introButtonTitle = NSLocalizedString("bloggingRemindersPrompt.intro.continueButton", value: "Set Reminders", comment: "Title of the set goals button in the Blogging Reminders Settings flow.")
 }
