@@ -149,7 +149,7 @@ final class CustomPostListViewModel: ObservableObject {
         do {
             _ = try await collection.refresh()
 
-            while true {
+            while !Task.isCancelled {
                 guard let listInfo = collection.listInfo(), listInfo.hasMorePages, !listInfo.isSyncing else {
                     break
                 }
@@ -192,6 +192,7 @@ final class CustomPostListViewModel: ObservableObject {
     }
 
     private func show(error: Error) {
+        // TODO: Ignore error https://github.com/Automattic/wordpress-rs/pull/1227
         self.error = error
 
         if !items.isEmpty {
