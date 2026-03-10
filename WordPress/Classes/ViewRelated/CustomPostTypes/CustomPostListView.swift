@@ -139,38 +139,9 @@ private struct PaginatedList<Header: View>: View {
             .listSectionSeparator(.hidden)
 
             if indentationMap.isEmpty {
-                ForEach(items) { item in
-                    ForEachContent(
-                        item: item,
-                        client: client,
-                        onSelectPost: onSelectPost,
-                        mediaHost: mediaHost
-                    )
-                    .task {
-                        await onRowAppear(item: item)
-                    }
-                }
+                flatList
             } else {
-                ForEach(Array(items.enumerated()), id: \.element.id) { index, item in
-                    let showSubdirectoryIcon: Bool = {
-                        guard let entry = indentationMap[item.id], entry.indentationLevel > 0, index > 0 else {
-                            return false
-                        }
-                        let previousLevel = indentationMap[items[index - 1].id]?.indentationLevel ?? 0
-                        return entry.indentationLevel == previousLevel + 1
-                    }()
-                    ForEachContentWithIndentation(
-                        item: item,
-                        client: client,
-                        onSelectPost: onSelectPost,
-                        mediaHost: mediaHost,
-                        indentationLevel: indentationMap[item.id]?.indentationLevel ?? 0,
-                        showSubdirectoryIcon: showSubdirectoryIcon
-                    )
-                    .task {
-                        await onRowAppear(item: item)
-                    }
-                }
+                hierarchicalList
             }
 
             Section {
@@ -179,6 +150,45 @@ private struct PaginatedList<Header: View>: View {
             .listSectionSeparator(.hidden)
         }
         .listStyle(.plain)
+    }
+
+    private var flatList: some View {
+        ForEach(items) { item in
+            ForEachContent(
+                item: item,
+                client: client,
+                onSelectPost: onSelectPost,
+                mediaHost: mediaHost
+            )
+            .task {
+                await onRowAppear(item: item)
+            }
+        }
+    }
+
+    private var hierarchicalList: some View {
+        ForEach(Array(items.enumerated()), id: \.element.id) { index, item in
+            ForEachContentWithIndentation(
+                item: item,
+                client: client,
+                onSelectPost: onSelectPost,
+                mediaHost: mediaHost,
+                indentationLevel: indentationMap[item.id]?.indentationLevel ?? 0,
+                showSubdirectoryIcon: showSubdirectoryIcon(at: index)
+            )
+            .task {
+                await onRowAppear(item: item)
+            }
+        }
+    }
+
+    private func showSubdirectoryIcon(at index: Int) -> Bool {
+        let item = items[index]
+        guard let entry = indentationMap[item.id], entry.indentationLevel > 0, index > 0 else {
+            return false
+        }
+        let previousLevel = indentationMap[items[index - 1].id]?.indentationLevel ?? 0
+        return entry.indentationLevel == previousLevel + 1
     }
 
     private func onRowAppear(item: CustomPostCollectionItem) async {
