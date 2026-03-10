@@ -164,7 +164,7 @@ final class CustomPostListViewModel: ObservableObject {
     }
 
     private var shouldDisplayHierarchy: Bool {
-        isHierarchical && filter.status == .publish
+        isHierarchical && (filter.status == .publish || filter.status == .custom("any"))
     }
 
     private func updateItems(from metadataItems: [PostMetadataCollectionItem]) {
