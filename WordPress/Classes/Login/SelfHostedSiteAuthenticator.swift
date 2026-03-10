@@ -157,7 +157,7 @@ struct SelfHostedSiteAuthenticator {
 
     @MainActor
     private func authenticate(details: AutoDiscoveryAttemptSuccess, from viewController: UIViewController) async throws(SignInError) -> WpApiApplicationPasswordDetails {
-        guard case .applicationPasswords = details.authentication else {
+        guard case let .applicationPasswords(authURL) = details.authentication else {
             let failure = AutoDiscoveryAttemptFailure.FetchAndParseApiRoot(
                 parsedSiteUrl: details.parsedSiteUrl,
                 apiRootUrl: details.apiRootUrl,
@@ -170,7 +170,13 @@ struct SelfHostedSiteAuthenticator {
         let appName = Self.wordPressAppName
 
         do {
-            let loginURL = details.authentication.loginURL(for: .init(id: appId, name: appName, callbackUrl: SelfHostedSiteAuthenticator.callbackURL.absoluteString))!
+            let loginURL = createApplicationPasswordAuthenticationUrl(
+                loginUrl: authURL,
+                appName: appName,
+                appId: appId,
+                successUrl: SelfHostedSiteAuthenticator.callbackURL.absoluteString,
+                rejectUrl: SelfHostedSiteAuthenticator.callbackURL.absoluteString
+            ).asURL()
             let callback = try await authorize(url: loginURL, callbackURL: SelfHostedSiteAuthenticator.callbackURL, from: viewController)
             return try internalClient.credentials(from: callback)
         } catch {
