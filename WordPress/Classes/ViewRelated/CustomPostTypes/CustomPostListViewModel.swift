@@ -18,6 +18,7 @@ final class CustomPostListViewModel: ObservableObject {
     let blog: Blog
     private let isHierarchical: Bool
     let filter: CustomPostListFilter
+    weak var presentingViewController: UIViewController?
 
     private var collection: PostMetadataCollectionWithEditContext
     private var isBatchSyncing = false
@@ -28,7 +29,6 @@ final class CustomPostListViewModel: ObservableObject {
     @Published private var error: Error?
     @Published var postToDelete: AnyPostWithEditContext?
     @Published var postToTrash: AnyPostWithEditContext?
-    @Published var menuNavigation: PostMenuNavigation?
     @Published var progressHUDState: ProgressHUDState = .idle
 
     var shouldDisplayEmptyView: Bool {
@@ -52,7 +52,8 @@ final class CustomPostListViewModel: ObservableObject {
         service: WpService,
         details: PostTypeDetailsWithEditContext,
         filter: CustomPostListFilter,
-        blog: Blog
+        blog: Blog,
+        presentingViewController: UIViewController? = nil
     ) {
         self.client = client
         self.service = service
@@ -61,6 +62,7 @@ final class CustomPostListViewModel: ObservableObject {
         self.blog = blog
         self.isHierarchical = details.hierarchical
         self.filter = filter
+        self.presentingViewController = presentingViewController
 
         collection = service
             .posts()
@@ -250,23 +252,63 @@ final class CustomPostListViewModel: ObservableObject {
         return items
     }
 
+    func handleMenuNavigation(_ navigation: PostMenuNavigation) {
+        guard let vc = presentingViewController else { return }
+
+        switch navigation {
+        case .stats(let post):
+            let statsVC = PostStatsTableViewController.withJPBannerForBlog(
+                postID: Int(post.id),
+                postTitle: post.title?.raw,
+                postURL: URL(string: post.link)
+            )
+            vc.navigationController?.pushViewController(statsVC, animated: true)
+
+        case .comments(let post, let siteID):
+            let commentsVC = ReaderCommentsViewController(
+                postID: NSNumber(value: post.id),
+                siteID: siteID
+            )
+            vc.navigationController?.pushViewController(commentsVC, animated: true)
+
+        case .blaze(let post):
+            BlazeFlowCoordinator.presentBlazeWebFlow(
+                in: vc,
+                source: .postsList,
+                blog: blog,
+                postID: NSNumber(value: post.id)
+            )
+
+        case .settings(let post):
+            let editorService = CustomPostEditorService(
+                blog: blog,
+                post: post,
+                details: details,
+                client: client,
+                service: service.posts()
+            )
+            let viewModel = PostSettingsViewModel(editorService: editorService, blog: blog, isStandalone: true)
+            let settingsVC = PostSettingsViewController(viewModel: viewModel)
+            let nav = UINavigationController(rootViewController: settingsVC)
+            vc.present(nav, animated: true)
+        }
+    }
+
     func menuNavigation(forBlaze post: AnyPostWithEditContext) -> PostMenuNavigation? {
         guard endpoint == .posts
                 && BlazeHelper.isBlazeFlagEnabled() && blog.canBlaze
-                && post.status == .publish && post.password == nil else { return nil }
+                && post.status == .publish && (post.password ?? "") == "" else { return nil }
         return .blaze(post: post)
     }
 
     func menuNavigation(forStats post: AnyPostWithEditContext) -> PostMenuNavigation? {
         guard endpoint == .posts
-                && JetpackFeaturesRemovalCoordinator.jetpackFeaturesEnabled()
                 && blog.supports(.stats) && post.status == .publish else { return nil }
         return .stats(post: post)
     }
 
     func menuNavigation(forComments post: AnyPostWithEditContext) -> PostMenuNavigation? {
         guard details.supports.supports(feature: .comments)
-                && JetpackFeaturesRemovalCoordinator.jetpackFeaturesEnabled()
                 && post.status == .publish, let siteID = blog.dotComID else { return nil }
         return .comments(post: post, siteID: siteID)
     }
@@ -324,12 +366,7 @@ extension CustomPostListViewModel {
         case settings(post: AnyPostWithEditContext)
 
         var id: String {
-            switch self {
-            case .stats(let post): return "stats-\(post.id)"
-            case .comments(let post, let siteId): return "site-\(siteId)-comments-\(post.id)"
-            case .blaze(let post): return "blaze-\(post.id)"
-            case .settings(let post): return "settings-\(post.id)"
-            }
+            label
         }
 
         var label: String {

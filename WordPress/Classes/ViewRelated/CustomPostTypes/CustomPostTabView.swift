@@ -13,6 +13,7 @@ struct CustomPostTabView: View {
     let service: WpService
     let details: PostTypeDetailsWithEditContext
     let blog: Blog
+    weak var presentingViewController: UIViewController?
 
     @State private var selectedTab: CustomPostTab = .all
     @State private var searchText = ""
@@ -43,47 +44,54 @@ struct CustomPostTabView: View {
         client: WordPressClient,
         service: WpService,
         details: PostTypeDetailsWithEditContext,
-        blog: Blog
+        blog: Blog,
+        presentingViewController: UIViewController? = nil
     ) {
         self.client = client
         self.service = service
         self.details = details
         self.blog = blog
+        self.presentingViewController = presentingViewController
 
         _allViewModel = State(initialValue: CustomPostListViewModel(
             client: client,
             service: service,
             details: details,
             filter: CustomPostListFilter(tab: .all),
-            blog: blog
+            blog: blog,
+            presentingViewController: presentingViewController
         ))
         _publishedViewModel = State(initialValue: CustomPostListViewModel(
             client: client,
             service: service,
             details: details,
             filter: CustomPostListFilter(tab: .published),
-            blog: blog
+            blog: blog,
+            presentingViewController: presentingViewController
         ))
         _draftsViewModel = State(initialValue: CustomPostListViewModel(
             client: client,
             service: service,
             details: details,
             filter: CustomPostListFilter(tab: .drafts),
-            blog: blog
+            blog: blog,
+            presentingViewController: presentingViewController
         ))
         _scheduledViewModel = State(initialValue: CustomPostListViewModel(
             client: client,
             service: service,
             details: details,
             filter: CustomPostListFilter(tab: .scheduled),
-            blog: blog
+            blog: blog,
+            presentingViewController: presentingViewController
         ))
         _trashViewModel = State(initialValue: CustomPostListViewModel(
             client: client,
             service: service,
             details: details,
             filter: CustomPostListFilter(tab: .trash),
-            blog: blog
+            blog: blog,
+            presentingViewController: presentingViewController
         ))
     }
 
@@ -105,6 +113,7 @@ struct CustomPostTabView: View {
                     service: service,
                     details: details,
                     searchText: $searchText,
+                    presentingViewController: presentingViewController,
                     onSelectPost: { editorPresentation = .editPost($0) }
                 )
             }

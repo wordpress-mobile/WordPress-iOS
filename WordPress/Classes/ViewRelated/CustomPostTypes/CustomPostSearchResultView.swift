@@ -1,5 +1,6 @@
 import Foundation
 import SwiftUI
+import UIKit
 import WordPressAPI
 import WordPressAPIInternal
 import WordPressCore
@@ -11,6 +12,7 @@ struct CustomPostSearchResultView: View {
     let service: WpService
     let details: PostTypeDetailsWithEditContext
     @Binding var searchText: String
+    weak var presentingViewController: UIViewController?
     let onSelectPost: (AnyPostWithEditContext) -> Void
 
     @State private var finalSearchText = ""
@@ -22,7 +24,8 @@ struct CustomPostSearchResultView: View {
                 service: service,
                 details: details,
                 filter: .search(input: finalSearchText),
-                blog: blog
+                blog: blog,
+                presentingViewController: presentingViewController
             ),
             details: details,
             client: client,

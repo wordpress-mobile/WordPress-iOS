@@ -95,8 +95,12 @@ extension BlogDetailsViewController {
         let rootView = ApplicationPasswordRequiredView(
             blog: blog,
             localizedFeatureName: feature,
-            presentingViewController: self) { [blog] client in
-                CustomPostTypesView(blog: blog, service: CustomPostTypeService(client: client, blog: blog))
+            presentingViewController: self) { [blog, weak self] client in
+                CustomPostTypesView(
+                    blog: blog,
+                    service: CustomPostTypeService(client: client, blog: blog),
+                    presentingViewController: self
+                )
             }
         let controller = UIHostingController(rootView: rootView)
         controller.navigationItem.largeTitleDisplayMode = .never
@@ -114,8 +118,13 @@ extension BlogDetailsViewController {
         let rootView = ApplicationPasswordRequiredView(
             blog: blog,
             localizedFeatureName: feature,
-            presentingViewController: self) { [blog] client in
-                PinnedPostTypeView(blog: blog, service: CustomPostTypeService(client: client, blog: blog), postType: postType)
+            presentingViewController: self) { [blog, weak self] client in
+                PinnedPostTypeView(
+                    blog: blog,
+                    service: CustomPostTypeService(client: client, blog: blog),
+                    postType: postType,
+                    presentingViewController: self
+                )
             }
         let controller = UIHostingController(rootView: rootView)
         controller.navigationItem.largeTitleDisplayMode = .never

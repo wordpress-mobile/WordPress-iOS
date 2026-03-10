@@ -113,34 +113,8 @@ struct CustomPostListView<Header: View>: View {
         } message: { _ in
             Text(Strings.trashConfirmationMessage)
         }
-        .sheet(item: $viewModel.menuNavigation) {
-            menuNavigationDestination($0)
-        }
     }
 
-    @ViewBuilder
-    private func menuNavigationDestination(_ navigation: CustomPostListViewModel.PostMenuNavigation) -> some View {
-        switch navigation {
-        case .stats(let post):
-            StatsRepresentable(
-                postID: Int(post.id),
-                postTitle: post.title?.raw,
-                postURL: URL(string: post.link)
-            )
-        case .comments(let post, let siteID):
-            CommentsRepresentable(postID: post.id, siteID: siteID)
-        case .blaze(let post):
-            BlazeRepresentable(postID: post.id, blog: viewModel.blog)
-        case .settings(let post):
-            SettingsRepresentable(
-                post: post,
-                blog: viewModel.blog,
-                client: viewModel.client,
-                service: viewModel.postService,
-                details: details
-            )
-        }
-    }
 }
 
 private struct PaginatedList<Header: View>: View {
@@ -447,7 +421,7 @@ private struct PostActionMenuContent: View {
     private var navigationSection: some View {
         Section {
             ForEach(viewModel.navigationMenuItems(for: post)) { navigation in
-                Button(action: { viewModel.menuNavigation = navigation }) {
+                Button(action: { viewModel.handleMenuNavigation(navigation) }) {
                     Label(navigation.label, systemImage: navigation.systemImage)
                 }
             }
@@ -547,78 +521,6 @@ private struct ErrorRow: View {
         .foregroundStyle(.red)
         .padding(.vertical, 4)
     }
-}
-
-// MARK: - UIViewControllerRepresentable
-
-private struct StatsRepresentable: UIViewControllerRepresentable {
-    let postID: Int
-    let postTitle: String?
-    let postURL: URL?
-
-    func makeUIViewController(context: Context) -> UIViewController {
-        let statsVC = PostStatsTableViewController.withJPBannerForBlog(
-            postID: postID,
-            postTitle: postTitle,
-            postURL: postURL
-        )
-        return UINavigationController(rootViewController: statsVC)
-    }
-
-    func updateUIViewController(_ uiViewController: UIViewController, context: Context) {}
-}
-
-private struct CommentsRepresentable: UIViewControllerRepresentable {
-    let postID: Int64
-    let siteID: NSNumber
-
-    func makeUIViewController(context: Context) -> UIViewController {
-        let commentsVC = ReaderCommentsViewController(
-            postID: NSNumber(value: postID),
-            siteID: siteID
-        )
-        return UINavigationController(rootViewController: commentsVC)
-    }
-
-    func updateUIViewController(_ uiViewController: UIViewController, context: Context) {}
-}
-
-private struct BlazeRepresentable: UIViewControllerRepresentable {
-    let postID: Int64
-    let blog: Blog
-
-    func makeUIViewController(context: Context) -> UINavigationController {
-        BlazeFlowCoordinator.makeBlazeWebViewController(
-            source: .postsList,
-            blog: blog,
-            postID: NSNumber(value: postID)
-        )
-    }
-
-    func updateUIViewController(_ uiViewController: UINavigationController, context: Context) {}
-}
-
-private struct SettingsRepresentable: UIViewControllerRepresentable {
-    let post: AnyPostWithEditContext
-    let blog: Blog
-    let client: WordPressClient
-    let service: WordPressAPIInternal.PostService
-    let details: PostTypeDetailsWithEditContext
-
-    func makeUIViewController(context: Context) -> UIViewController {
-        let editorService = CustomPostEditorService(
-            blog: blog,
-            post: post,
-            details: details,
-            client: client,
-            service: service
-        )
-        let viewModel = PostSettingsViewModel(editorService: editorService, blog: blog, isStandalone: true)
-        let settingsVC = PostSettingsViewController(viewModel: viewModel)
-        return UINavigationController(rootViewController: settingsVC)
-    }
-
-    func updateUIViewController(_ uiViewController: UIViewController, context: Context) {}
 }
 
 private enum Strings {
