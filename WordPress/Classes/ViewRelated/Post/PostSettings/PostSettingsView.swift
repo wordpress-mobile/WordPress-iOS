@@ -465,7 +465,7 @@ struct PostSettingsFormContentView: View {
             }
         } else if let editorService = viewModel.customPostEditorService,
                   let client = viewModel.client,
-                  let service = try? client.service {
+                  let service = viewModel.wpService {
             NavigationLink {
                 ParentPostPicker(
                     blog: viewModel.blog,

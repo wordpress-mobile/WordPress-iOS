@@ -19,6 +19,13 @@ struct ParentPostPicker: View {
 
     @StateObject private var viewModel: CustomPostListViewModel
 
+    private var excludePostIDs: Set<Int64> {
+        if let excludePostID {
+            return [excludePostID]
+        }
+        return []
+    }
+
     init(
         blog: Blog,
         client: WordPressClient,
@@ -50,10 +57,9 @@ struct ParentPostPicker: View {
             viewModel: viewModel,
             details: details,
             client: client,
-            // TODO: Exclude `excludePostID` from the list at the data level
-            // TODO: Show a checkmark on the currently selected parent post row
+            excludePostIDs: excludePostIDs,
+            selectedPostID: selectedParentID.map { Int64($0) },
             onSelectPost: { post in
-                guard post.id != excludePostID else { return }
                 onSelection(Int(post.id))
             },
             header: {

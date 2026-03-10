@@ -13,6 +13,8 @@ struct CustomPostListView<Header: View>: View {
     let details: PostTypeDetailsWithEditContext
     let client: WordPressClient
     let mediaHost: MediaHost?
+    let excludePostIDs: Set<Int64>
+    let selectedPostID: Int64?
     let onSelectPost: (AnyPostWithEditContext) -> Void
     @ViewBuilder let header: () -> Header
 
@@ -21,6 +23,8 @@ struct CustomPostListView<Header: View>: View {
         details: PostTypeDetailsWithEditContext,
         client: WordPressClient,
         mediaHost: MediaHost? = nil,
+        excludePostIDs: Set<Int64> = [],
+        selectedPostID: Int64? = nil,
         onSelectPost: @escaping (AnyPostWithEditContext) -> Void
     ) where Header == EmptyView {
         self.viewModel = viewModel
@@ -28,6 +32,8 @@ struct CustomPostListView<Header: View>: View {
         self.client = client
         self.onSelectPost = onSelectPost
         self.mediaHost = mediaHost
+        self.excludePostIDs = excludePostIDs
+        self.selectedPostID = selectedPostID
         self.header = { EmptyView() }
     }
 
@@ -36,6 +42,8 @@ struct CustomPostListView<Header: View>: View {
         details: PostTypeDetailsWithEditContext,
         client: WordPressClient,
         mediaHost: MediaHost? = nil,
+        excludePostIDs: Set<Int64> = [],
+        selectedPostID: Int64? = nil,
         onSelectPost: @escaping (AnyPostWithEditContext) -> Void,
         @ViewBuilder header: @escaping () -> Header
     ) {
@@ -44,17 +52,27 @@ struct CustomPostListView<Header: View>: View {
         self.client = client
         self.onSelectPost = onSelectPost
         self.mediaHost = mediaHost
+        self.excludePostIDs = excludePostIDs
+        self.selectedPostID = selectedPostID
         self.header = header
+    }
+
+    private var filteredItems: [CustomPostCollectionItem] {
+        if excludePostIDs.isEmpty {
+            return viewModel.items
+        }
+        return viewModel.items.filter { !excludePostIDs.contains($0.id) }
     }
 
     var body: some View {
         PaginatedList(
-            items: viewModel.items,
+            items: filteredItems,
             onLoadNextPage: { try await viewModel.loadNextPage() },
             client: client,
             onSelectPost: onSelectPost,
             mediaHost: mediaHost,
             indentationMap: viewModel.indentationMap,
+            selectedPostID: selectedPostID,
             header: header
         )
         .overlay {
@@ -89,6 +107,7 @@ private struct PaginatedList<Header: View>: View {
     let onSelectPost: (AnyPostWithEditContext) -> Void
     let mediaHost: MediaHost?
     let indentationMap: CustomPostListViewModel.IndentationMap
+    let selectedPostID: Int64?
     @ViewBuilder let header: () -> Header
 
     @State var isLoadingMore = false
@@ -100,7 +119,8 @@ private struct PaginatedList<Header: View>: View {
         client: WordPressClient? = nil,
         onSelectPost: @escaping (AnyPostWithEditContext) -> Void,
         mediaHost: MediaHost? = nil,
-        indentationMap: CustomPostListViewModel.IndentationMap = [:]
+        indentationMap: CustomPostListViewModel.IndentationMap = [:],
+        selectedPostID: Int64? = nil
     ) where Header == EmptyView {
         self.items = items
         self.onLoadNextPage = onLoadNextPage
@@ -108,6 +128,7 @@ private struct PaginatedList<Header: View>: View {
         self.onSelectPost = onSelectPost
         self.mediaHost = mediaHost
         self.indentationMap = indentationMap
+        self.selectedPostID = selectedPostID
         self.header = { EmptyView() }
     }
 
@@ -118,6 +139,7 @@ private struct PaginatedList<Header: View>: View {
         onSelectPost: @escaping (AnyPostWithEditContext) -> Void,
         mediaHost: MediaHost? = nil,
         indentationMap: CustomPostListViewModel.IndentationMap = [:],
+        selectedPostID: Int64? = nil,
         @ViewBuilder header: @escaping () -> Header
     ) {
         self.items = items
@@ -126,6 +148,7 @@ private struct PaginatedList<Header: View>: View {
         self.onSelectPost = onSelectPost
         self.mediaHost = mediaHost
         self.indentationMap = indentationMap
+        self.selectedPostID = selectedPostID
         self.header = header
     }
 
@@ -144,7 +167,8 @@ private struct PaginatedList<Header: View>: View {
                         item: item,
                         client: client,
                         onSelectPost: onSelectPost,
-                        mediaHost: mediaHost
+                        mediaHost: mediaHost,
+                        isSelected: selectedPostID == item.id
                     )
                     .task {
                         await onRowAppear(item: item)
@@ -165,7 +189,8 @@ private struct PaginatedList<Header: View>: View {
                         onSelectPost: onSelectPost,
                         mediaHost: mediaHost,
                         indentationLevel: indentationMap[item.id]?.indentationLevel ?? 0,
-                        showSubdirectoryIcon: showSubdirectoryIcon
+                        showSubdirectoryIcon: showSubdirectoryIcon,
+                        isSelected: selectedPostID == item.id
                     )
                     .task {
                         await onRowAppear(item: item)
@@ -229,6 +254,7 @@ private struct ForEachContent: View {
     let client: WordPressClient?
     let onSelectPost: (AnyPostWithEditContext) -> Void
     let mediaHost: MediaHost?
+    var isSelected: Bool = false
 
     var body: some View {
         switch item {
@@ -257,7 +283,13 @@ private struct ForEachContent: View {
             Button {
                 onSelectPost(post)
             } label: {
-                PostContent(post: displayPost, client: client, mediaHost: mediaHost)
+                HStack {
+                    PostContent(post: displayPost, client: client, mediaHost: mediaHost)
+                    if isSelected {
+                        Image(systemName: "checkmark")
+                            .foregroundStyle(Color.accentColor)
+                    }
+                }
             }
             .buttonStyle(.plain)
 
@@ -274,6 +306,7 @@ private struct ForEachContentWithIndentation: View {
     let mediaHost: MediaHost?
     let indentationLevel: Int
     let showSubdirectoryIcon: Bool
+    var isSelected: Bool = false
 
     var body: some View {
         HStack(spacing: 0) {
@@ -288,7 +321,8 @@ private struct ForEachContentWithIndentation: View {
                 item: item,
                 client: client,
                 onSelectPost: onSelectPost,
-                mediaHost: mediaHost
+                mediaHost: mediaHost,
+                isSelected: isSelected
             )
         }
         .padding(.leading, CGFloat(max(0, indentationLevel - 1)) * 32)

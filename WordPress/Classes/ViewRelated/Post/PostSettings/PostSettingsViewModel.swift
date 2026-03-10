@@ -41,6 +41,7 @@ final class PostSettingsViewModel: NSObject, ObservableObject {
     @Published private(set) var suggestedTags: [String] = []
     @Published private(set) var customTaxonomies: [SiteTaxonomy] = []
     @Published private(set) var parentPageText: String?
+    @Published private(set) var wpService: WpService?
     @Published private(set) var socialSharingState: SocialSharingSectionState?
 
     @Published var isShowingDeletedAlert = false
@@ -358,6 +359,7 @@ final class PostSettingsViewModel: NSObject, ObservableObject {
         refreshCustomTaxonomies()
         refreshParentPageText()
         resolveTermNames()
+        resolveWpService()
 
         WPAnalytics.track(.postSettingsShown)
     }
@@ -545,6 +547,14 @@ final class PostSettingsViewModel: NSObject, ObservableObject {
                     self.parentPageText = nil
                 }
             }
+        }
+    }
+
+    private func resolveWpService() {
+        guard let client else { return }
+        Task { [weak self] in
+            guard let self else { return }
+            self.wpService = try? await client.service
         }
     }
 
