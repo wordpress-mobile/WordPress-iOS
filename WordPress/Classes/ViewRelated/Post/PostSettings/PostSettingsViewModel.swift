@@ -300,8 +300,7 @@ final class PostSettingsViewModel: NSObject, ObservableObject {
     }
 
     func shouldShow(_ row: Row) -> Bool {
-        // FIXME: meta support missing in AnyPostWithEditContext
-        guard case .abstractPost = details else { return false }
+        guard provider.supportsJetpackMetadata else { return false }
         switch row {
         case .jetpackAccessLevel:
             return blog.supports(.wpComRESTAPI)
@@ -571,7 +570,7 @@ final class PostSettingsViewModel: NSObject, ObservableObject {
     // MARK: - Social Sharing
 
     private func refreshSocialSharingState() {
-        guard let post = abstractPost as? Post, isPostEligibleForSocialSharing(post) else {
+        guard provider.isEligibleForSocialSharing else {
             socialSharingState = nil
             return
         }
@@ -584,19 +583,6 @@ final class PostSettingsViewModel: NSObject, ObservableObject {
         } else {
             socialSharingState = .connected
         }
-    }
-
-    private func isPostEligibleForSocialSharing(_ post: Post) -> Bool {
-        BuildSettings.current.brand == .jetpack
-            && RemoteFeatureFlag.jetpackSocialImprovements.enabled()
-            && post.status != .publishPrivate
-            && !getPublicizeServices().isEmpty
-            && blog.supports(.publicize)
-    }
-
-    private func getPublicizeServices() -> [PublicizeService] {
-        let context = ContextManager.shared.mainContext
-        return (try? PublicizeService.allSupportedServices(in: context)) ?? []
     }
 
     /// Convenience variable representing whether the No Connection view has been dismissed.
@@ -618,6 +604,11 @@ final class PostSettingsViewModel: NSObject, ObservableObject {
             dictionary["\(blogID)"] = newValue
             preferences.set(dictionary, forKey: Constants.noConnectionKey)
         }
+    }
+
+    private func getPublicizeServices() -> [PublicizeService] {
+        let context = ContextManager.shared.mainContext
+        return (try? PublicizeService.allSupportedServices(in: context)) ?? []
     }
 
     private func makeSocialSharingSetupViewModel() -> JetpackSocialNoConnectionViewModel {

@@ -6,6 +6,11 @@ final class CustomPostSettingsDataProvider: PostSettingsDataProvider {
     let blog: Blog
     let editorService: CustomPostEditorService
 
+    // FIXME: meta support missing in AnyPostWithEditContext
+    let supportsJetpackMetadata = false
+    // FIXME: social sharing support missing in AnyPostWithEditContext
+    let isEligibleForSocialSharing = false
+
     var capabilities: PostSettingsCapabilities {
         PostSettingsCapabilities(from: editorService.details)
     }

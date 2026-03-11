@@ -1,9 +1,12 @@
 import Foundation
+import BuildSettingsKit
 import WordPressData
+import WordPressKit
 
 @MainActor
 final class AbstractPostSettingsDataProvider: PostSettingsDataProvider {
     let post: AbstractPost
+    let supportsJetpackMetadata = true
 
     var blog: Blog {
         post.blog
@@ -119,8 +122,26 @@ final class AbstractPostSettingsDataProvider: PostSettingsDataProvider {
         try await TagSuggestionsService().getSuggestedTags(for: post)
     }
 
+    var isEligibleForSocialSharing: Bool {
+        guard let post = post as? Post else {
+            return false
+        }
+        return BuildSettings.current.brand == .jetpack
+            && RemoteFeatureFlag.jetpackSocialImprovements.enabled()
+            && post.status != .publishPrivate
+            && !getPublicizeServices().isEmpty
+            && blog.supports(.publicize)
+    }
+
     init(post: AbstractPost) {
         self.post = post
+    }
+
+    // MARK: - Private
+
+    private func getPublicizeServices() -> [PublicizeService] {
+        let context = ContextManager.shared.mainContext
+        return (try? PublicizeService.allSupportedServices(in: context)) ?? []
     }
 }
 

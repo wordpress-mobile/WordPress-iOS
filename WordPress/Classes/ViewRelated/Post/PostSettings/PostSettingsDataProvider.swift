@@ -42,11 +42,7 @@ protocol PostSettingsDataProvider: AnyObject {
 }
 
 extension PostSettingsDataProvider {
-    var isEligibleForSocialSharing: Bool { false }
-
     func parentPageText(for pageID: Int?) -> String? { nil }
 
     func suggestedTags() async throws -> [String] { [] }
-
-    var supportsJetpackMetadata: Bool { false }
 }
