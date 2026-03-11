@@ -48,24 +48,11 @@ final class PostSettingsViewModel: NSObject, ObservableObject {
 
     /// The content of the post, used for AI excerpt generation.
     var postContent: String {
-        switch details {
-        case .abstractPost(let post):
-            return post.content ?? ""
-        case .customPost(let service):
-            return service.post?.content.raw ?? ""
-        }
+        provider.postContent
     }
 
     var navigationTitle: String {
-        switch details {
-        case .abstractPost:
-            return isPost ? Strings.postSettingsTitle : Strings.pageSettingsTitle
-        case .customPost(let service):
-            return String.localizedStringWithFormat(
-                Strings.customPostSettingsTitle,
-                service.details.name
-            )
-        }
+        provider.navigationTitle
     }
 
     var deletedAlertTitle: String {
@@ -928,24 +915,6 @@ private enum PostDetails {
 // MARK: - Localized Strings
 
 private enum Strings {
-    static let postSettingsTitle = NSLocalizedString(
-        "postSettings.navigationTitle.post",
-        value: "Post Settings",
-        comment: "The title of the Post Settings screen."
-    )
-
-    static let pageSettingsTitle = NSLocalizedString(
-        "postSettings.navigationTitle.page",
-        value: "Page Settings",
-        comment: "The title of the Page Settings screen."
-    )
-
-    static let customPostSettingsTitle = NSLocalizedString(
-        "postSettings.navigationTitle.customPostType",
-        value: "%1$@ Settings",
-        comment: "The title of the Post Settings screen for custom post types. %1$@ is the post type name."
-    )
-
     static let saveFailedMessage = NSLocalizedString(
         "postSettings.saveFailed.message",
         value: "Failed to save changes",
