@@ -31,10 +31,6 @@ class ReaderWebView: WKWebView {
 
     var displaySetting: ReaderDisplaySettings = .standard
 
-    deinit {
-        print("here")
-    }
-
     /// Make the webview transparent
     ///
     override func awakeFromNib() {
