@@ -10,6 +10,7 @@ final class CustomPostSettingsDataProvider: PostSettingsDataProvider {
     let supportsJetpackMetadata = false
     // FIXME: social sharing support missing in AnyPostWithEditContext
     let isEligibleForSocialSharing = false
+    let hasTermNames = false
 
     var capabilities: PostSettingsCapabilities {
         PostSettingsCapabilities(from: editorService.details)

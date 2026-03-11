@@ -39,6 +39,7 @@ protocol PostSettingsDataProvider: AnyObject {
     func parentPageText(for pageID: Int?) -> String?
     func suggestedTags() async throws -> [String]
     var supportsJetpackMetadata: Bool { get }
+    var hasTermNames: Bool { get }
 }
 
 extension PostSettingsDataProvider {

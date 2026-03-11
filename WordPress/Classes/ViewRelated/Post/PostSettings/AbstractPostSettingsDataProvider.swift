@@ -7,6 +7,7 @@ import WordPressKit
 final class AbstractPostSettingsDataProvider: PostSettingsDataProvider {
     let post: AbstractPost
     let supportsJetpackMetadata = true
+    let hasTermNames = true
 
     var blog: Blog {
         post.blog

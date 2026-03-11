@@ -216,7 +216,7 @@ struct PostSettingsFormContentView: View {
                 viewModel.didSelectTags(tags)
             }
         } label: {
-            PostSettingsTagsRow(tags: viewModel.displayedTags, isLoading: viewModel.isResolvingTags)
+            PostSettingsTagsRow(tags: viewModel.displayedTags, isLoading: !viewModel.provider.hasTermNames && viewModel.isResolvingTags)
         }
         .accessibilityIdentifier("post_settings_tags")
     }
@@ -252,7 +252,7 @@ struct PostSettingsFormContentView: View {
                     PostSettingsCustomTaxonomyRow(
                         taxonomy: taxonomy,
                         terms: viewModel.settings.getTerms(forTaxonomySlug: taxonomy.slug).map(\.name),
-                        isLoading: viewModel.isResolvingCustomTerms
+                        isLoading: !viewModel.provider.hasTermNames && viewModel.isResolvingCustomTerms
                     )
                 }
             }
