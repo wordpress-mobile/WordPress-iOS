@@ -137,6 +137,14 @@ final class AbstractPostSettingsDataProvider: PostSettingsDataProvider {
         self.post = post
     }
 
+    func makeSettings() -> PostSettings {
+        PostSettings(from: post)
+    }
+
+    func makeFeaturedImageViewModel() -> PostSettingsFeaturedImageViewModel? {
+        PostSettingsFeaturedImageViewModel(post: post)
+    }
+
     // MARK: - Private
 
     private func getPublicizeServices() -> [PublicizeService] {

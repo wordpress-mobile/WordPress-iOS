@@ -100,6 +100,37 @@ final class CustomPostSettingsDataProvider: PostSettingsDataProvider {
         self.editorService = editorService
         self.blog = blog
     }
+
+    func makeSettings() -> PostSettings {
+        var initialSettings = editorService.settings
+        // Resolve author display name from Blog's cached authors
+        if let authorId = initialSettings.author?.id,
+           let authors = blog.authors,
+           let author = authors.first(where: { $0.userID.intValue == authorId }) {
+            initialSettings.author = PostSettings.Author(
+                id: authorId,
+                displayName: author.displayName ?? "–",
+                avatarURL: author.avatarURL.flatMap(URL.init)
+            )
+        }
+        return initialSettings
+    }
+
+    func makeFeaturedImageViewModel() -> PostSettingsFeaturedImageViewModel? {
+        guard capabilities.supportsFeaturedImage else { return nil }
+
+        let initialSettings = editorService.settings
+        let featuredImage = initialSettings.featuredImageID.flatMap {
+            Media.existingOrStubMediaWith(
+                mediaID: NSNumber(value: $0),
+                inBlog: blog
+            )
+        }
+        return PostSettingsFeaturedImageViewModel(
+            blog: blog,
+            featuredImage: featuredImage
+        )
+    }
 }
 
 // MARK: - Localized Strings
