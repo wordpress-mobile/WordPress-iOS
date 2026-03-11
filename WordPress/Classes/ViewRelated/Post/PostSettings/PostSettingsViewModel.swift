@@ -17,6 +17,7 @@ final class PostSettingsViewModel: NSObject, ObservableObject {
     let context: Context
     let featuredImageViewModel: PostSettingsFeaturedImageViewModel?
     let client: WordPressClient?
+    let provider: PostSettingsDataProvider
 
     private let details: PostDetails
     private let editorService: CustomPostEditorService?
@@ -262,6 +263,7 @@ final class PostSettingsViewModel: NSObject, ObservableObject {
         context: Context = .settings,
         preferences: UserPersistentRepository = UserDefaults.standard
     ) {
+        self.provider = AbstractPostSettingsDataProvider(post: post)
         self.details = .abstractPost(post)
         self.blog = post.blog
         self.capabilities = post is Post ? .post() : .page()
@@ -305,6 +307,7 @@ final class PostSettingsViewModel: NSObject, ObservableObject {
         context: Context = .settings,
         preferences: UserPersistentRepository = UserDefaults.standard
     ) {
+        self.provider = CustomPostSettingsDataProvider(editorService: editorService, blog: blog)
         self.details = .customPost(editorService)
         self.blog = blog
         self.capabilities = PostSettingsCapabilities(from: editorService.details)
