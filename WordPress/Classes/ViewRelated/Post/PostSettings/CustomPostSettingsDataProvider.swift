@@ -131,6 +131,18 @@ final class CustomPostSettingsDataProvider: PostSettingsDataProvider {
             featuredImage: featuredImage
         )
     }
+
+    func applyLocally(settings: PostSettings) {
+        editorService.applyLocally(settings: settings)
+    }
+
+    func save(settings: PostSettings) async throws {
+        try await editorService.save(settings: settings, publish: false)
+    }
+
+    func publish(settings: PostSettings) async throws {
+        try await editorService.save(settings: settings, publish: true)
+    }
 }
 
 // MARK: - Localized Strings

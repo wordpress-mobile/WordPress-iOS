@@ -317,25 +317,14 @@ final class PostSettingsViewModel: NSObject, ObservableObject {
     }
 
     func buttonSaveTapped() {
-        switch details {
-        case .abstractPost(let post):
-            buttonSaveTappedForAbstractPost(post)
-        case .customPost:
-            buttonSaveTappedForCustomPost()
-        }
-    }
-
-    private func buttonSaveTappedForAbstractPost(_ post: AbstractPost) {
-        // Check if the post still exists
-        guard let context = post.managedObjectContext,
-              let _ = try? context.existingObject(with: post.objectID) else {
+        guard !provider.isDeleted else {
             isShowingDeletedAlert = true
             return
         }
 
         guard isStandalone else {
             // Apply settings and return to the editor (editor-specific)
-            settings.apply(to: post)
+            provider.applyLocally(settings: settings)
             didSaveChanges()
             wpAssert(onEditorPostSaved != nil, "configuration missing")
             onEditorPostSaved?()
@@ -346,44 +335,8 @@ final class PostSettingsViewModel: NSObject, ObservableObject {
         isSaving = true
         Task {
             do {
-                let settings = getSettingsToSave(for: self.settings)
-                let coordinator = PostCoordinator.shared
-                if coordinator.isSyncAllowed(for: post) && post.status == settings.status {
-                    let revision = post.createRevision()
-                    settings.apply(to: revision)
-                    coordinator.setNeedsSync(for: revision)
-                } else {
-                    let changes = settings.makeUpdateParameters(from: post)
-                    try await coordinator.save(post, changes: changes)
-                }
-                didSaveChanges()
-                onDismiss?()
-            } catch {
-                isSaving = false
-            }
-        }
-    }
-
-    private func buttonSaveTappedForCustomPost() {
-        guard let editorService else {
-            wpAssertionFailure("missing editor service")
-            return
-        }
-
-        guard isStandalone else {
-            let settingsToSave = getSettingsToSave(for: settings)
-            editorService.applyLocally(settings: settingsToSave)
-            didSaveChanges()
-            onEditorPostSaved?()
-            onDismiss?()
-            return
-        }
-
-        isSaving = true
-        Task {
-            do {
                 let settingsToSave = getSettingsToSave(for: settings)
-                try await editorService.save(settings: settingsToSave, publish: false)
+                try await provider.save(settings: settingsToSave)
                 didSaveChanges()
                 onEditorPostSaved?()
                 onDismiss?()
@@ -408,18 +361,7 @@ final class PostSettingsViewModel: NSObject, ObservableObject {
     }
 
     func buttonPublishTapped() {
-        switch details {
-        case .abstractPost(let post):
-            publishAbstractPost(post)
-        case .customPost:
-            publishCustomPost()
-        }
-    }
-
-    private func publishAbstractPost(_ post: AbstractPost) {
-        // Check if the post still exists
-        guard let context = post.managedObjectContext,
-              let _ = try? context.existingObject(with: post.objectID) else {
+        guard !provider.isDeleted else {
             isShowingDeletedAlert = true
             return
         }
@@ -427,27 +369,7 @@ final class PostSettingsViewModel: NSObject, ObservableObject {
         isSaving = true
         Task {
             do {
-                let coordinator = PostCoordinator.shared
-                let changes = settings.makeUpdateParameters(from: post)
-                try await coordinator.publish(post.getOriginal(), parameters: changes)
-                onPostPublished?()
-            } catch {
-                isSaving = false
-                // `PostCoordinator` handles errors by showing an alert when needed
-            }
-        }
-    }
-
-    private func publishCustomPost() {
-        guard let editorService else {
-            wpAssertionFailure("missing editor service")
-            return
-        }
-
-        isSaving = true
-        Task {
-            do {
-                try await editorService.save(settings: settings, publish: true)
+                try await provider.publish(settings: settings)
                 onPostPublished?()
             } catch {
                 isSaving = false

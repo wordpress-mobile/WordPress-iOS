@@ -145,6 +145,27 @@ final class AbstractPostSettingsDataProvider: PostSettingsDataProvider {
         PostSettingsFeaturedImageViewModel(post: post)
     }
 
+    func applyLocally(settings: PostSettings) {
+        settings.apply(to: post)
+    }
+
+    func save(settings: PostSettings) async throws {
+        let coordinator = PostCoordinator.shared
+        if coordinator.isSyncAllowed(for: post) && post.status == settings.status {
+            let revision = post.createRevision()
+            settings.apply(to: revision)
+            coordinator.setNeedsSync(for: revision)
+        } else {
+            let changes = settings.makeUpdateParameters(from: post)
+            try await coordinator.save(post, changes: changes)
+        }
+    }
+
+    func publish(settings: PostSettings) async throws {
+        let changes = settings.makeUpdateParameters(from: post)
+        try await PostCoordinator.shared.publish(post.getOriginal(), parameters: changes)
+    }
+
     // MARK: - Private
 
     private func getPublicizeServices() -> [PublicizeService] {
