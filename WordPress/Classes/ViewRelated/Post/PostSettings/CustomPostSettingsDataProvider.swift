@@ -65,6 +65,14 @@ final class CustomPostSettingsDataProvider: PostSettingsDataProvider {
         false
     }
 
+    func resolveDisplayedCategories(for settings: PostSettings) -> [String] {
+        settings.getCategoryNames(for: blog)
+    }
+
+    func customTaxonomies() -> [SiteTaxonomy] {
+        editorService.taxonomies
+    }
+
     init(editorService: CustomPostEditorService, blog: Blog) {
         self.editorService = editorService
         self.blog = blog

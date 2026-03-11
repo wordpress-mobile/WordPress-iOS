@@ -70,6 +70,36 @@ final class AbstractPostSettingsDataProvider: PostSettingsDataProvider {
         return (try? context.existingObject(with: post.objectID)) == nil
     }
 
+    func resolveDisplayedCategories(for settings: PostSettings) -> [String] {
+        settings.getCategoryNames(for: post)
+    }
+
+    func customTaxonomies() -> [SiteTaxonomy] {
+        let postType: String? = switch post {
+        case is Post: "post"
+        case is Page: "page"
+        default: nil
+        }
+        guard let postType else {
+            return []
+        }
+        let taxonomies = try? blog.taxonomies
+            .filter {
+                $0.slug != "post_tag" && $0.slug != "category" && $0.supportedPostTypes.contains(postType)
+            }
+            .sorted(using: KeyPathComparator(\.name))
+        return taxonomies ?? []
+    }
+
+    func parentPageText(for pageID: Int?) -> String? {
+        guard let page = post as? Page,
+              let context = page.managedObjectContext,
+              let pageID else {
+            return nil
+        }
+        return Page.parentPageText(in: context, parentID: NSNumber(value: pageID))
+    }
+
     init(post: AbstractPost) {
         self.post = post
     }

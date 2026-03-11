@@ -339,27 +339,7 @@ final class PostSettingsViewModel: NSObject, ObservableObject {
     }
 
     private func refreshCustomTaxonomies() {
-        switch details {
-        case .abstractPost(let post):
-            let postType: String? = switch post {
-            case is Post: "post"
-            case is Page: "page"
-            default: nil
-            }
-            guard let postType else {
-                customTaxonomies = []
-                return
-            }
-            let taxonomies = try? blog.taxonomies
-                .filter {
-                    $0.slug != "post_tag" && $0.slug != "category" && $0.supportedPostTypes.contains(postType)
-                }
-                .sorted(using: KeyPathComparator(\.name))
-            customTaxonomies = taxonomies ?? []
-
-        case .customPost(let service):
-            customTaxonomies = service.taxonomies
-        }
+        customTaxonomies = provider.customTaxonomies()
     }
 
     // MARK: - Term Resolution
@@ -436,12 +416,7 @@ final class PostSettingsViewModel: NSObject, ObservableObject {
     }
 
     private func refreshDisplayedCategories() {
-        switch details {
-        case .abstractPost(let post):
-            displayedCategories = settings.getCategoryNames(for: post)
-        case .customPost:
-            displayedCategories = settings.getCategoryNames(for: blog)
-        }
+        displayedCategories = provider.resolveDisplayedCategories(for: settings)
     }
 
     private func refreshDisplayedTags() {
@@ -449,13 +424,7 @@ final class PostSettingsViewModel: NSObject, ObservableObject {
     }
 
     private func refreshParentPageText() {
-        if let page,
-           let context = page.managedObjectContext,
-           let parentPageID = settings.parentPageID {
-            parentPageText = Page.parentPageText(in: context, parentID: NSNumber(value: parentPageID))
-        } else {
-            parentPageText = nil
-        }
+        parentPageText = provider.parentPageText(for: settings.parentPageID)
     }
 
     // MARK: - Actions
