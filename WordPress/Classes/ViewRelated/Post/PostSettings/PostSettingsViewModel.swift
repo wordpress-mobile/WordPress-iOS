@@ -68,12 +68,7 @@ final class PostSettingsViewModel: NSObject, ObservableObject {
     }
 
     var authorDisplayName: String {
-        switch details {
-        case .abstractPost(let post):
-            return settings.author?.displayName ?? post.author?.makePlainText() ?? ""
-        case .customPost:
-            return settings.author?.displayName ?? ""
-        }
+        settings.author?.displayName ?? provider.authorFallbackDisplayName
     }
 
     var authorAvatarURL: URL? {
@@ -115,21 +110,11 @@ final class PostSettingsViewModel: NSObject, ObservableObject {
     }
 
     var suggestedSlug: String? {
-        switch details {
-        case .abstractPost(let post):
-            return post.suggested_slug
-        case .customPost(let service):
-            return service.post?.generatedSlug
-        }
+        provider.suggestedSlug
     }
 
     var permalinkTemplate: String? {
-        switch details {
-        case .abstractPost(let post):
-            return post.permalinkTemplateURL
-        case .customPost(let service):
-            return service.post?.permalinkTemplate
-        }
+        provider.permalinkTemplate
     }
 
     var postFormatText: String {

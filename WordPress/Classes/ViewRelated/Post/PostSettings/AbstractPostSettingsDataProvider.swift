@@ -33,6 +33,18 @@ final class AbstractPostSettingsDataProvider: PostSettingsDataProvider {
         post is Post
     }
 
+    var authorFallbackDisplayName: String {
+        post.author?.makePlainText() ?? ""
+    }
+
+    var suggestedSlug: String? {
+        post.suggested_slug
+    }
+
+    var permalinkTemplate: String? {
+        post.permalinkTemplateURL
+    }
+
     init(post: AbstractPost) {
         self.post = post
     }

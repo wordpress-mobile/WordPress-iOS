@@ -36,6 +36,18 @@ final class CustomPostSettingsDataProvider: PostSettingsDataProvider {
         editorService.details.slug == "post"
     }
 
+    var authorFallbackDisplayName: String {
+        ""
+    }
+
+    var suggestedSlug: String? {
+        editorService.post?.generatedSlug
+    }
+
+    var permalinkTemplate: String? {
+        editorService.post?.permalinkTemplate
+    }
+
     init(editorService: CustomPostEditorService, blog: Blog) {
         self.editorService = editorService
         self.blog = blog
