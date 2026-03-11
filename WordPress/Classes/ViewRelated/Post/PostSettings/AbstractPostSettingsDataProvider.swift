@@ -21,6 +21,18 @@ final class AbstractPostSettingsDataProvider: PostSettingsDataProvider {
         isPost ? Strings.postSettingsTitle : Strings.pageSettingsTitle
     }
 
+    var isScheduled: Bool {
+        post.getOriginal().status == .scheduled
+    }
+
+    var isDraftOrPending: Bool {
+        post.getOriginal().isStatus(in: [.draft, .pending])
+    }
+
+    var isPost: Bool {
+        post is Post
+    }
+
     init(post: AbstractPost) {
         self.post = post
     }

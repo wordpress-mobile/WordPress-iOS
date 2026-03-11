@@ -21,6 +21,21 @@ final class CustomPostSettingsDataProvider: PostSettingsDataProvider {
         )
     }
 
+    var isScheduled: Bool {
+        editorService.post?.status == .future
+    }
+
+    var isDraftOrPending: Bool {
+        if let post = editorService.post {
+            return post.status == .draft || post.status == .pending
+        }
+        return true
+    }
+
+    var isPost: Bool {
+        editorService.details.slug == "post"
+    }
+
     init(editorService: CustomPostEditorService, blog: Blog) {
         self.editorService = editorService
         self.blog = blog

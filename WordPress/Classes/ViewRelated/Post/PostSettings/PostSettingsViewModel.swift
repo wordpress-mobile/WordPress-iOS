@@ -64,10 +64,7 @@ final class PostSettingsViewModel: NSObject, ObservableObject {
     }
 
     var isScheduled: Bool {
-        switch details {
-        case .abstractPost(let post): return post.getOriginal().status == .scheduled
-        case .customPost(let service): return service.post?.status == .future
-        }
+        provider.isScheduled
     }
 
     var authorDisplayName: String {
@@ -145,24 +142,11 @@ final class PostSettingsViewModel: NSObject, ObservableObject {
     }
 
     var isDraftOrPending: Bool {
-        switch details {
-        case .abstractPost(let post):
-            return post.getOriginal().isStatus(in: [.draft, .pending])
-        case .customPost(let service):
-            if let post = service.post {
-                return post.status == .draft || post.status == .pending
-            }
-            return true
-        }
+        provider.isDraftOrPending
     }
 
     var isPost: Bool {
-        switch details {
-        case .abstractPost(let post):
-            return post is Post
-        case .customPost(let service):
-            return service.details.slug == "post"
-        }
+        provider.isPost
     }
 
     var shouldShowStickyOption: Bool {
