@@ -10,7 +10,8 @@ extension PostEditor {
     func displayPostSettings() {
         // Use the new SwiftUI-based Post Settings
         let originalFeaturedImageID = post.featuredImage?.mediaID
-        let viewModel = PostSettingsViewModel(post: post)
+        let provider = AbstractPostSettingsDataProvider(post: post)
+        let viewModel = PostSettingsViewModel(provider: provider)
         viewModel.onEditorPostSaved = { [weak self] in
             self?.didSavePostSettings(originalFeaturedImageID: originalFeaturedImageID)
         }

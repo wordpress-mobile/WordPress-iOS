@@ -35,7 +35,8 @@ final class PostSettingsViewController: UIHostingController<AnyView> {
     }
 
     static func showStandaloneEditor(for post: AbstractPost, from presentingVC: UIViewController) {
-        let viewModel = PostSettingsViewModel(post: post, isStandalone: true)
+        let provider = AbstractPostSettingsDataProvider(post: post)
+        let viewModel = PostSettingsViewModel(provider: provider, isStandalone: true)
         let postSettingsVC = PostSettingsViewController(viewModel: viewModel)
         let navigation = UINavigationController(rootViewController: postSettingsVC)
         presentingVC.present(navigation, animated: true)

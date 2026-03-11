@@ -19,14 +19,6 @@ final class PostSettingsViewModel: NSObject, ObservableObject {
     let client: WordPressClient?
     let provider: PostSettingsDataProvider
 
-    private let details: PostDetails
-    private let editorService: CustomPostEditorService?
-
-    private var abstractPost: AbstractPost? {
-        if case .abstractPost(let post) = details { return post }
-        return nil
-    }
-
     @Published var settings: PostSettings {
         didSet {
             refresh(from: oldValue, to: settings)
@@ -190,106 +182,38 @@ final class PostSettingsViewModel: NSObject, ObservableObject {
         case publishing
     }
 
-    // MARK: - AbstractPost Initializer
+    // MARK: - Initializer
 
     init(
-        post: AbstractPost,
+        provider: PostSettingsDataProvider,
         isStandalone: Bool = false,
         context: Context = .settings,
         preferences: UserPersistentRepository = UserDefaults.standard
     ) {
-        self.provider = AbstractPostSettingsDataProvider(post: post)
-        self.details = .abstractPost(post)
-        self.blog = post.blog
-        self.capabilities = post is Post ? .post() : .page()
+        self.provider = provider
+        self.blog = provider.blog
+        self.capabilities = provider.capabilities
         self.isStandalone = isStandalone
         self.context = context
         self.preferences = preferences
-        self.client = try? WordPressClientFactory.shared.instance(for: .init(blog: post.blog))
-        self.editorService = nil
+        self.client = try? WordPressClientFactory.shared.instance(for: .init(blog: provider.blog))
 
-        // Initialize settings from the post
-        let initialSettings = PostSettings(from: post)
+        let initialSettings = provider.makeSettings()
         self.settings = initialSettings
         self.originalSettings = initialSettings
-
-        // Initialize featured image view model
-        self.featuredImageViewModel = PostSettingsFeaturedImageViewModel(post: post)
+        self.featuredImageViewModel = provider.makeFeaturedImageViewModel()
 
         super.init()
 
-        // Observe selection changes from featured image view model
         featuredImageViewModel?.$selection.dropFirst().sink { [weak self] media in
             self?.settings.featuredImageID = media?.mediaID?.intValue
         }.store(in: &cancellables)
 
-        // Initialize all cached properties
         refreshDisplayedCategories()
         refreshDisplayedTags()
         refreshCustomTaxonomies()
         refreshParentPageText()
         refreshSocialSharingState()
-        resolveTerms()
-
-        WPAnalytics.track(.postSettingsShown)
-    }
-
-    // MARK: - CustomPostEditorService Initializer
-
-    init(
-        editorService: CustomPostEditorService,
-        blog: Blog,
-        context: Context = .settings,
-        preferences: UserPersistentRepository = UserDefaults.standard
-    ) {
-        self.provider = CustomPostSettingsDataProvider(editorService: editorService, blog: blog)
-        self.details = .customPost(editorService)
-        self.blog = blog
-        self.capabilities = PostSettingsCapabilities(from: editorService.details)
-        self.isStandalone = false
-        self.context = context
-        self.preferences = preferences
-        self.client = editorService.client
-        self.editorService = editorService
-
-        var initialSettings = editorService.settings
-        // Resolve author display name from Blog's cached authors
-        if let authorId = initialSettings.author?.id,
-           let authors = blog.authors,
-           let author = authors.first(where: { $0.userID.intValue == authorId }) {
-            initialSettings.author = PostSettings.Author(
-                id: authorId,
-                displayName: author.displayName ?? "–",
-                avatarURL: author.avatarURL.flatMap(URL.init)
-            )
-        }
-        self.settings = initialSettings
-        self.originalSettings = initialSettings
-
-        if capabilities.supportsFeaturedImage {
-            let featuredImage = initialSettings.featuredImageID.flatMap {
-                Media.existingOrStubMediaWith(
-                    mediaID: NSNumber(value: $0),
-                    inBlog: blog
-                )
-            }
-            self.featuredImageViewModel = PostSettingsFeaturedImageViewModel(
-                blog: blog,
-                featuredImage: featuredImage
-            )
-        } else {
-            self.featuredImageViewModel = nil
-        }
-
-        super.init()
-
-        featuredImageViewModel?.$selection.dropFirst().sink { [weak self] media in
-            self?.settings.featuredImageID = media?.mediaID?.intValue
-        }.store(in: &cancellables)
-
-        refreshDisplayedCategories()
-        refreshDisplayedTags()
-        refreshCustomTaxonomies()
         resolveTerms()
 
         WPAnalytics.track(.postSettingsShown)
@@ -773,11 +697,6 @@ extension PostFormat {
         default: return .custom(slug)
         }
     }
-}
-
-private enum PostDetails {
-    case abstractPost(AbstractPost)
-    case customPost(CustomPostEditorService)
 }
 
 // MARK: - Localized Strings
