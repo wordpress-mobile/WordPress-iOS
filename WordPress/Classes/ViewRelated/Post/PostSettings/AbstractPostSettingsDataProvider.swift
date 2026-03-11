@@ -45,6 +45,24 @@ final class AbstractPostSettingsDataProvider: PostSettingsDataProvider {
         post.permalinkTemplateURL
     }
 
+    var lastEditedText: String? {
+        guard let date = post.dateModified ?? post.dateCreated else {
+            return nil
+        }
+        return date.toMediumString()
+    }
+
+    var postID: Int? {
+        guard let postID = post.postID?.intValue, postID > 0 else {
+            return nil
+        }
+        return postID
+    }
+
+    var hasRemote: Bool {
+        post.hasRemote()
+    }
+
     init(post: AbstractPost) {
         self.post = post
     }

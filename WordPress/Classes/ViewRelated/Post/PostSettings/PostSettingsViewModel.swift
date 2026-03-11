@@ -142,43 +142,22 @@ final class PostSettingsViewModel: NSObject, ObservableObject {
     }
 
     var lastEditedText: String? {
-        switch details {
-        case .abstractPost(let post):
-            guard let date = post.dateModified ?? post.dateCreated else {
-                return nil
-            }
-            return date.toMediumString()
-        case .customPost(let service):
-            return service.post?.modifiedGmt.toMediumString()
-        }
+        provider.lastEditedText
     }
 
     var postID: Int? {
-        switch details {
-        case .abstractPost(let post):
-            guard let postID = post.postID?.intValue, postID > 0 else {
-                return nil
-            }
-            return postID
-        case .customPost(let service):
-            guard let id = service.post?.id else { return nil }
-            return id > 0 ? Int(id) : nil
-        }
+        provider.postID
     }
 
-    /// The underlying Page, if this is a Core Data-backed page.
+    /// The underlying Page for the parent page picker.
     var page: Page? {
-        abstractPost as? Page
+        // FIXME: This will be improved once we add parent page selection support to custom posts.
+        (provider as? AbstractPostSettingsDataProvider)?.post as? Page
     }
 
     /// Whether the post has a remote representation (used for permalink preview).
     var hasRemote: Bool {
-        switch details {
-        case .abstractPost(let post):
-            return post.hasRemote()
-        case .customPost(let service):
-            return service.post != nil
-        }
+        provider.hasRemote
     }
 
     enum SocialSharingSectionState {

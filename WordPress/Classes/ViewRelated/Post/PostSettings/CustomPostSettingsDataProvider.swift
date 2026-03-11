@@ -48,6 +48,19 @@ final class CustomPostSettingsDataProvider: PostSettingsDataProvider {
         editorService.post?.permalinkTemplate
     }
 
+    var lastEditedText: String? {
+        editorService.post?.modifiedGmt.toMediumString()
+    }
+
+    var postID: Int? {
+        guard let id = editorService.post?.id else { return nil }
+        return id > 0 ? Int(id) : nil
+    }
+
+    var hasRemote: Bool {
+        editorService.post != nil
+    }
+
     init(editorService: CustomPostEditorService, blog: Blog) {
         self.editorService = editorService
         self.blog = blog
