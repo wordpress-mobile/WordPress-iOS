@@ -229,7 +229,7 @@ final class PostSettingsViewModel: NSObject, ObservableObject {
         refreshCustomTaxonomies()
         refreshParentPageText()
         refreshSocialSharingState()
-        resolveAbstractPostTerms()
+        resolveTerms()
 
         WPAnalytics.track(.postSettingsShown)
     }
@@ -290,7 +290,7 @@ final class PostSettingsViewModel: NSObject, ObservableObject {
         refreshDisplayedCategories()
         refreshDisplayedTags()
         refreshCustomTaxonomies()
-        resolveTermNames()
+        resolveTerms()
 
         WPAnalytics.track(.postSettingsShown)
     }
@@ -313,15 +313,13 @@ final class PostSettingsViewModel: NSObject, ObservableObject {
     // MARK: - Suggested Tags
 
     private func refreshSuggestedTags() {
-        guard let abstractPost, isSuggestedTagsRefreshNeeded else {
-            return
-        }
+        guard isSuggestedTagsRefreshNeeded else { return }
         isSuggestedTagsRefreshNeeded = false
 
         let task = Task { @MainActor [weak self] in
             do {
-                let tags = try await TagSuggestionsService().getSuggestedTags(for: abstractPost)
                 guard let self else { return }
+                let tags = try await provider.suggestedTags()
                 if !tags.isEmpty {
                     withAnimation {
                         self.suggestedTags = tags
@@ -344,58 +342,20 @@ final class PostSettingsViewModel: NSObject, ObservableObject {
 
     // MARK: - Term Resolution
 
-    /// Resolves tags with `id == 0` in AbstractPost by searching the server.
-    /// AbstractPost stores tags as name-only strings, so they all start with
-    /// `id == 0` and need their IDs resolved.
-    private func resolveAbstractPostTerms() {
-        let pendingNames = settings.tags.filter { $0.id == 0 }.map(\.name)
-        guard !pendingNames.isEmpty else { return }
-
-        // No need to set `isResolvingTags`, because the tag name is available to be displayed on screen.
-
+    private func resolveTerms() {
         Task { [weak self] in
             guard let self else { return }
 
-            let service = TagsService(blog: blog)
-            let resolved = await service.resolveTerms(named: pendingNames)
-            for (name, existing) in resolved {
-                if let index = settings.tags.firstIndex(where: { $0.name == name }) {
-                    settings.tags[index] = PostSettings.Term(id: Int(existing.id), name: existing.name)
-                }
-            }
+            isResolvingTags = true
+            isResolvingCustomTerms = true
+
+            var currentSettings = self.settings
+            await provider.resolveTerms(in: &currentSettings)
+
+            self.settings = currentSettings
+            isResolvingTags = false
+            isResolvingCustomTerms = false
             refreshDisplayedTags()
-        }
-    }
-
-    private func resolveTermNames() {
-        guard let editorService else { return }
-
-        isResolvingTags = true
-        isResolvingCustomTerms = !settings.otherTerms.isEmpty
-
-        Task { [weak self] in
-            guard let self else { return }
-
-            do {
-                let tagsService = AnyTermService(client: editorService.client, endpoint: .tags)
-                let resolvedTags = try await TermResolutionService(taxonomyService: tagsService)
-                    .resolveNames(for: settings.tags)
-                self.settings.tags = resolvedTags
-                self.refreshDisplayedTags()
-                self.isResolvingTags = false
-
-                for taxonomy in editorService.taxonomies {
-                    guard let slugTerms = self.settings.otherTerms[taxonomy.slug] else { continue }
-                    let termService = AnyTermService(client: editorService.client, endpoint: taxonomy.endpoint)
-                    let resolved = try await TermResolutionService(taxonomyService: termService)
-                        .resolveNames(for: slugTerms)
-                    self.settings.otherTerms[taxonomy.slug] = resolved
-                }
-                self.isResolvingCustomTerms = false
-            } catch {
-                // TODO: We need better error handling
-                Loggers.app.log(level: .error, "Failed to resolve taxonomy terms: \(error)")
-            }
         }
     }
 

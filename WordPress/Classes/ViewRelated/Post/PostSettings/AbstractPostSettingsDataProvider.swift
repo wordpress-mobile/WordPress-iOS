@@ -100,6 +100,25 @@ final class AbstractPostSettingsDataProvider: PostSettingsDataProvider {
         return Page.parentPageText(in: context, parentID: NSNumber(value: pageID))
     }
 
+    func resolveTerms(in settings: inout PostSettings) async {
+        let pendingNames = settings.tags.filter { $0.id == 0 }.map(\.name)
+        guard !pendingNames.isEmpty else {
+            return
+        }
+
+        let service = TagsService(blog: blog)
+        let resolved = await service.resolveTerms(named: pendingNames)
+        for (name, existing) in resolved {
+            if let index = settings.tags.firstIndex(where: { $0.name == name }) {
+                settings.tags[index] = PostSettings.Term(id: Int(existing.id), name: existing.name)
+            }
+        }
+    }
+
+    func suggestedTags() async throws -> [String] {
+        try await TagSuggestionsService().getSuggestedTags(for: post)
+    }
+
     init(post: AbstractPost) {
         self.post = post
     }

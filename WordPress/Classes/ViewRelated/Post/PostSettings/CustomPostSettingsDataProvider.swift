@@ -73,6 +73,24 @@ final class CustomPostSettingsDataProvider: PostSettingsDataProvider {
         editorService.taxonomies
     }
 
+    func resolveTerms(in settings: inout PostSettings) async {
+        do {
+            let tagsService = AnyTermService(client: editorService.client, endpoint: .tags)
+            settings.tags = try await TermResolutionService(taxonomyService: tagsService)
+                .resolveNames(for: settings.tags)
+
+            for taxonomy in editorService.taxonomies {
+                guard let slugTerms = settings.otherTerms[taxonomy.slug] else { continue }
+                let termService = AnyTermService(client: editorService.client, endpoint: taxonomy.endpoint)
+                settings.otherTerms[taxonomy.slug] = try await TermResolutionService(taxonomyService: termService)
+                    .resolveNames(for: slugTerms)
+            }
+        } catch {
+            // TODO: We need better error handling
+            Loggers.app.log(level: .error, "Failed to resolve taxonomy terms: \(error)")
+        }
+    }
+
     init(editorService: CustomPostEditorService, blog: Blog) {
         self.editorService = editorService
         self.blog = blog
