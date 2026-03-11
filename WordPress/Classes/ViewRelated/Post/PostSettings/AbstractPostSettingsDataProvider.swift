@@ -63,6 +63,13 @@ final class AbstractPostSettingsDataProvider: PostSettingsDataProvider {
         post.hasRemote()
     }
 
+    var isDeleted: Bool {
+        guard let context = post.managedObjectContext else {
+            return true
+        }
+        return (try? context.existingObject(with: post.objectID)) == nil
+    }
+
     init(post: AbstractPost) {
         self.post = post
     }

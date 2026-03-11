@@ -61,6 +61,10 @@ final class CustomPostSettingsDataProvider: PostSettingsDataProvider {
         editorService.post != nil
     }
 
+    var isDeleted: Bool {
+        false
+    }
+
     init(editorService: CustomPostEditorService, blog: Blog) {
         self.editorService = editorService
         self.blog = blog
