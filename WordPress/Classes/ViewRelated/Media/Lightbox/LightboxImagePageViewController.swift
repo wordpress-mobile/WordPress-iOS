@@ -10,6 +10,9 @@ final class LightboxImagePageViewController: UIViewController {
     private let activityIndicator = UIActivityIndicatorView()
     private var errorView: UIImageView?
 
+    /// Used by UIPageViewController to track position.
+    var pageIndex: Int = 0
+
     init(item: LightboxItem) {
         self.item = item
         super.init(nibName: nil, bundle: nil)

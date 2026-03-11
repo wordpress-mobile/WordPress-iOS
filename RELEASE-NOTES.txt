@@ -1,7 +1,7 @@
 26.8
 -----
 * [*] Fix an issue Social Sharing placeholder card showing unsupported services [#25336]
-
+* [*] Reader: Add support for viewing media galleries fullscreen with a way to swipe between images [#25365]
 
 26.7
 -----
