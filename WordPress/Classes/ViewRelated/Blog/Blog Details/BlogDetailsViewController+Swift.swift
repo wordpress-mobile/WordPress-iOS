@@ -255,7 +255,7 @@ extension BlogDetailsViewController {
     public func showPlugins() {
         WPAppAnalytics.track(.openedPluginDirectory, blog: blog)
 
-        if Feature.enabled(.pluginManagementOverhaul) {
+        if Feature.enabled(.pluginManagementOverhaul) && blog.isSelfHosted {
             showManagePluginsScreen()
             return
         }
