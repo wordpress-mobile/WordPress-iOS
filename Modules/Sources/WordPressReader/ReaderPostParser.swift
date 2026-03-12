@@ -41,7 +41,9 @@ public enum ReaderPostParser {
         // Supported gallery selectors (order matters for specificity)
         let selectors = [
             "figure.wp-block-gallery",
+            "div.wp-block-gallery",
             "figure.wp-block-jetpack-tiled-gallery",
+            "div.wp-block-jetpack-tiled-gallery",
             "div.tiled-gallery",
             "div.gallery"
         ]

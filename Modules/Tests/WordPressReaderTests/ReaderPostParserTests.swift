@@ -188,7 +188,7 @@ struct ReaderPostParserTests {
 
     // MARK: - Multiple galleries
 
-    @Test func parseMultipleGalleries() {
+    @Test func parseMultipleGalleries() throws {
         let html = """
         <p>Some text</p>
         <figure class="wp-block-gallery">
@@ -208,7 +208,7 @@ struct ReaderPostParserTests {
         """
 
         let elements = ReaderPostParser.parse(html)
-        #expect(elements.count == 2)
+        try #require(elements.count == 2)
 
         guard case .gallery(let gallery1) = elements[0],
               case .gallery(let gallery2) = elements[1] else {
