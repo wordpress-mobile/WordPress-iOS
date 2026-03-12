@@ -315,9 +315,9 @@ class ReaderDetailCoordinator {
     private func presentGallery(_ gallery: ReaderPostParser.Gallery, startingAt index: Int) {
         WPAnalytics.trackReader(.readerArticleImageTapped)
         let host = post.map(MediaHost.init)
-        let screenWidth = Int(UIScreen.main.bounds.width * min(UIScreen.main.scale, 2))
+        let maxDimension = Int(max(UIScreen.main.bounds.width, UIScreen.main.bounds.height) * min(UIScreen.main.scale, 2))
         let assets = gallery.images.map { image in
-            let sourceURL = image.bestURL(forMaxWidth: screenWidth) ?? image.originalFileURL ?? image.src
+            let sourceURL = image.bestURL(maxDimension: maxDimension) ?? image.originalFileURL ?? image.src
             let previewURL = image.srcset.min(by: { $0.width < $1.width })?.url
             return LightboxAsset(sourceURL: sourceURL, previewURL: previewURL, host: host)
         }
