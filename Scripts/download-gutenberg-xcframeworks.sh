@@ -1,4 +1,5 @@
-#!/bin/bash
+#!/usr/bin/env bash
+
 set -euo pipefail
 
 # Downloads and installs Gutenberg XCFrameworks with progress and on-disk caching.
