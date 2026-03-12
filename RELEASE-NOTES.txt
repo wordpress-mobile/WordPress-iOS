@@ -1,6 +1,7 @@
 26.8
 -----
 * [*] Fix an issue Social Sharing placeholder card showing unsupported services [#25336]
+* [*] Fix an issue with pan gesture failing to dismiss Lightbox [#25372]
 * [*] Reader: Add support for viewing media galleries fullscreen with a way to swipe between images [#25365]
 * [*] [internal] Fix retain cycle in Reader Article screen [#25364]
 
