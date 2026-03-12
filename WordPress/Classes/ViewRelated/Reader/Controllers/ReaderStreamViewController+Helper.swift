@@ -185,7 +185,7 @@ extension ReaderStreamViewController {
         ])
         let icon = UIImage.gridicon(.bookmarkOutline, size: CGSize(width: 18, height: 18))
         string.replace("[bookmark-outline]", with: icon)
-        string.applyAttribute(.foregroundColor, value: UIColor.secondaryLabel)
+        string.addAttribute(.foregroundColor, value: UIColor.secondaryLabel)
         return string
     }
 }

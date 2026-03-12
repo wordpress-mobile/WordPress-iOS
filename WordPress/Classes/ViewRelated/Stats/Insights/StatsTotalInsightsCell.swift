@@ -91,7 +91,7 @@ struct StatsTotalInsightsData: Equatable {
 
         let attributedString = NSMutableAttributedString(string: formattedString)
 
-        attributedString.applyAttributes([
+        attributedString.addAttributes([
             .font: UIFont.preferredFont(forTextStyle: .subheadline),
             .foregroundColor: UIColor.label
         ])

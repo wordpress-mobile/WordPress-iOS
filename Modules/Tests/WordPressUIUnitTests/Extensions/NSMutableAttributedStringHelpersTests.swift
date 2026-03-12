@@ -11,7 +11,7 @@ struct NSMutableAttributedStringHelpersTests {
     func applyAttributeWithEmoji() {
         // 👨‍👩‍👧‍👦 is 1 grapheme cluster but 11 UTF-16 code units
         let string = NSMutableAttributedString(string: "Hello 👨‍👩‍👧‍👦 World")
-        string.applyAttribute(.foregroundColor, value: UIColor.red)
+        string.addAttribute(.foregroundColor, value: UIColor.red)
 
         var effectiveRange = NSRange()
         let value = string.attribute(.foregroundColor, at: 0, effectiveRange: &effectiveRange)
@@ -30,7 +30,7 @@ struct NSMutableAttributedStringHelpersTests {
             .foregroundColor: UIColor.blue,
             .font: UIFont.systemFont(ofSize: 14)
         ]
-        string.applyAttributes(attrs)
+        string.addAttributes(attrs)
 
         var colorRange = NSRange()
         let color = string.attribute(.foregroundColor, at: 0, effectiveRange: &colorRange)
@@ -49,7 +49,7 @@ struct NSMutableAttributedStringHelpersTests {
     @Test("applyForegroundColor covers the full string including emoji")
     func applyForegroundColorWithEmoji() {
         let string = NSMutableAttributedString(string: "🌍 Hello 🌍")
-        string.applyForegroundColor(.green)
+        string.addForegroundColor(.green)
 
         var effectiveRange = NSRange()
         let value = string.attribute(.foregroundColor, at: 0, effectiveRange: &effectiveRange)

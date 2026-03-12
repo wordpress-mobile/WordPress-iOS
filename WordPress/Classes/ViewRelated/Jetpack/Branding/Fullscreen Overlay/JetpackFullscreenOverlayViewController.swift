@@ -147,7 +147,7 @@ class JetpackFullscreenOverlayViewController: UIViewController {
             .kern: Metrics.titleKern
         ]
         let attributedString = NSMutableAttributedString(string: viewModel.title)
-        attributedString.applyAttributes(defaultAttributes)
+        attributedString.addAttributes(defaultAttributes)
         titleLabel.attributedText = attributedString
     }
 

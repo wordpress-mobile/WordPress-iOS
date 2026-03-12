@@ -78,12 +78,12 @@ private func makeAttributedText(metadata: [(String, String?)], message: String? 
     if let message {
         output.append(NSAttributedString(string: "\n" + message, attributes: [.font: regular]))
     }
-    output.applyAttribute(.paragraphStyle, value: {
+    output.addAttribute(.paragraphStyle, value: {
         let style = NSMutableParagraphStyle()
         style.lineSpacing = 3
         return style
     }())
-    output.applyAttribute(.foregroundColor, value: UIColor.label)
+    output.addAttribute(.foregroundColor, value: UIColor.label)
     return output
 }
 

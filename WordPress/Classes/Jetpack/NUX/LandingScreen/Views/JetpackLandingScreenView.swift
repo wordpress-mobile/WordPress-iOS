@@ -73,7 +73,7 @@ final class JetpackLandingScreenView: UIView {
             return nil
         }
         let attributedString = NSMutableAttributedString(string: text)
-        attributedString.applyAttributes(attributesForLabel(atIndex: index, traits: traits))
+        attributedString.addAttributes(attributesForLabel(atIndex: index, traits: traits))
         return attributedString
     }
 

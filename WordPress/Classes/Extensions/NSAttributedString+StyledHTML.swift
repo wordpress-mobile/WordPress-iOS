@@ -44,7 +44,7 @@ extension NSAttributedString {
         paragraphStyle.paragraphSpacing = 0
         paragraphStyle.paragraphSpacingBefore = 0
 
-        attributedString.applyAttribute(.paragraphStyle, value: paragraphStyle)
+        attributedString.addAttribute(.paragraphStyle, value: paragraphStyle)
 
         return NSAttributedString(attributedString: attributedString)
     }

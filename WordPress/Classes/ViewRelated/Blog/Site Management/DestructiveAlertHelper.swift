@@ -19,7 +19,7 @@ class DestructiveAlertHelper: DestructiveAlertHelperLogic {
         let attributedValue = NSMutableAttributedString(string: valueToConfirm)
         let paragraphStyle = NSMutableParagraphStyle()
         paragraphStyle.lineBreakMode = .byCharWrapping
-        attributedValue.applyAttribute(.paragraphStyle, value: paragraphStyle)
+        attributedValue.addAttribute(.paragraphStyle, value: paragraphStyle)
         attributedMessage.append(attributedValue)
 
         let alert = UIAlertController(title: title, message: nil, preferredStyle: .alert)

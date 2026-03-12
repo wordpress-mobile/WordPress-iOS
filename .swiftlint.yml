@@ -205,5 +205,5 @@ custom_rules:
   full_range_attributed_string_attribute:
     name: "Full-Range Attributed String Attribute"
     regex: '\.addAttributes?\([^\n]*range:\s*NS(MakeRange\(0,|Range\(location:\s*0,\s*length:)'
-    message: "Use `applyAttribute(_:value:)` or `applyAttributes(_:)` instead of manually constructing a full-range NSRange. Manual ranges are error-prone with emoji and other multi-code-unit characters."
+    message: "Use `addAttribute(_:value:)` or `addAttributes(_:)` instead of manually constructing a full-range NSRange. Manual ranges are error-prone with emoji and other multi-code-unit characters."
     severity: warning
