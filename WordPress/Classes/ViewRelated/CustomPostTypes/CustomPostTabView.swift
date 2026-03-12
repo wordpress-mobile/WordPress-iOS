@@ -196,7 +196,7 @@ enum CustomPostTab: Int, CaseIterable, AdaptiveTabBarItem {
 
     var statuses: [PostStatus] {
         switch self {
-        case .all: return [.custom("any")]
+        case .all: return [.any]
         case .published: return [.publish, .private]
         case .drafts: return [.draft, .pending]
         case .scheduled: return [.future]

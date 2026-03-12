@@ -562,6 +562,7 @@ extension BasePost.Status {
         case .private: self = .publishPrivate
         case .future: self = .scheduled
         case .trash: self = .trash
+        case .any: self = .publish
         case .custom:
             wpAssertionFailure("unexpected custom post status")
             self = .draft

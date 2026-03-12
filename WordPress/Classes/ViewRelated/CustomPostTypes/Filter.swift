@@ -31,7 +31,7 @@ struct CustomPostListFilter: Equatable {
     }
 
     static func search(input: String) -> Self {
-        .init(statuses: [.custom("any")], search: input)
+        .init(statuses: [.any], search: input)
     }
 
     func asPostListFilter() -> WordPressAPIInternal.PostListFilter {
