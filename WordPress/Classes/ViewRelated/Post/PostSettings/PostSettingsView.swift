@@ -7,10 +7,10 @@ import WordPressShared
 import WordPressUI
 import SwiftUI
 
-final class PostSettingsViewController: UIHostingController<AnyView> {
-    private let viewModel: PostSettingsViewModel
+final class PostSettingsViewController<ViewModel: PostSettingsViewModelProtocol>: UIHostingController<AnyView> {
+    private let viewModel: ViewModel
 
-    init(viewModel: PostSettingsViewModel) {
+    init(viewModel: ViewModel) {
         self.viewModel = viewModel
         let postSettingsView = PostSettingsView(viewModel: viewModel)
         super.init(rootView: AnyView(postSettingsView))
@@ -34,6 +34,9 @@ final class PostSettingsViewController: UIHostingController<AnyView> {
         fatalError("init(coder:) has not been implemented")
     }
 
+}
+
+extension PostSettingsViewController where ViewModel == PostSettingsViewModel {
     static func showStandaloneEditor(for post: AbstractPost, from presentingVC: UIViewController) {
         let viewModel = PostSettingsViewModel(post: post, isStandalone: true)
         let postSettingsVC = PostSettingsViewController(viewModel: viewModel)
@@ -43,8 +46,8 @@ final class PostSettingsViewController: UIHostingController<AnyView> {
 }
 
 @MainActor
-private struct PostSettingsView: View {
-    @ObservedObject var viewModel: PostSettingsViewModel
+private struct PostSettingsView<ViewModel: PostSettingsViewModelProtocol>: View {
+    @ObservedObject var viewModel: ViewModel
 
     @State private var isShowingDiscardChangesAlert = false
 
@@ -130,8 +133,8 @@ private struct PostSettingsView: View {
     }
 }
 
-struct PostSettingsFormContentView: View {
-    @ObservedObject var viewModel: PostSettingsViewModel
+struct PostSettingsFormContentView<ViewModel: PostSettingsViewModelProtocol>: View {
+    @ObservedObject var viewModel: ViewModel
 
     var body: some View {
         if viewModel.context == .publishing {

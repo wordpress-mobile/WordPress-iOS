@@ -1,8 +1,8 @@
 import SwiftUI
 import WordPressUI
 
-struct PostSettingsPublishDatePicker: View {
-    @ObservedObject var viewModel: PostSettingsViewModel
+struct PostSettingsPublishDatePicker<ViewModel: PostSettingsViewModelProtocol>: View {
+    @ObservedObject var viewModel: ViewModel
 
     var body: some View {
         PublishDatePickerView(configuration: PublishDatePickerConfiguration(

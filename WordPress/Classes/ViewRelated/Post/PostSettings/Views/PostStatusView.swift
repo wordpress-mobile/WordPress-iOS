@@ -61,7 +61,7 @@ struct PostStatusView: View {
                         PostStatusRow(status: status, isSelected: settings.status == status)
                         if status == .scheduled && settings.status == .scheduled, let date = settings.publishDate {
                             HStack {
-                                SettingsRow(Strings.scheduleDate, value: PostSettingsViewModel.formattedDate(date, in: timeZone))
+                                SettingsRow(Strings.scheduleDate, value: PostSettingsDateFormatter.formattedDate(date, in: timeZone))
                                 Image(systemName: "chevron.forward")
                                     .font(.footnote.weight(.semibold))
                                     .foregroundColor(Color(.tertiaryLabel))
