@@ -1319,6 +1319,12 @@
 			path = KeystoneTests;
 			sourceTree = "<group>";
 		};
+		0CBAFE7D2F62F0DF00019FC2 /* TestPlans */ = {
+			isa = PBXFileSystemSynchronizedRootGroup;
+			name = TestPlans;
+			path = ../TestPlans;
+			sourceTree = SOURCE_ROOT;
+		};
 		0CED35262D959427003015CF /* Misc */ = {
 			isa = PBXFileSystemSynchronizedRootGroup;
 			path = Misc;
@@ -1754,6 +1760,7 @@
 				3FD4B20E2DCC468200781DFA /* Modules */,
 				0C5C46FB2D98395300F2CD55 /* Sources */,
 				0C5A19CB2D9B07E700C25301 /* Tests */,
+				0CBAFE7D2F62F0DF00019FC2 /* TestPlans */,
 				F14B5F6F208E648200439554 /* config */,
 				E1B34C091CCDFFCE00889709 /* Credentials */,
 				24CE57C42CD3375200C7B37D /* Classes */,
