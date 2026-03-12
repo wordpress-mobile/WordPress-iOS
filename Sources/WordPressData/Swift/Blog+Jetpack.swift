@@ -1,3 +1,5 @@
+import CoreData
+
 public extension Blog {
     @objc var jetpack: JetpackState? {
         guard let options,

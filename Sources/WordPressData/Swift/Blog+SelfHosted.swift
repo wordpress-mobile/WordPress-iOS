@@ -1,4 +1,5 @@
 import Foundation
+import CoreData
 import CryptoKit
 import WordPressAPI
 import WordPressShared

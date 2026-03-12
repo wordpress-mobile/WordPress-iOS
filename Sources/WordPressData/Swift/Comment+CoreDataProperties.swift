@@ -1,3 +1,5 @@
+import CoreData
+
 extension Comment {
     @NSManaged public var commentID: Int32
     @NSManaged public var postID: Int32

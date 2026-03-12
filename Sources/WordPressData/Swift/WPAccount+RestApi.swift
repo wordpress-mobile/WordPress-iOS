@@ -1,4 +1,5 @@
 import WordPressKit
+import CoreData
 import WordPressShared
 
 extension WPAccount {

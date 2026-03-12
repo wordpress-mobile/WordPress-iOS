@@ -1,5 +1,6 @@
 import CocoaLumberjackSwift
 import Foundation
+import CoreData
 
 public extension ReaderSiteTopic {
 

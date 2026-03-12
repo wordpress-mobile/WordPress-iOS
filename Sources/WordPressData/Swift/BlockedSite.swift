@@ -1,4 +1,5 @@
 import Foundation
+import CoreData
 import CocoaLumberjackSwift
 
 @objc(BlockedSite)

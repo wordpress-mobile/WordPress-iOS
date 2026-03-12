@@ -1,4 +1,5 @@
 import Foundation
+import CoreData
 
 public extension PostCategory {
 

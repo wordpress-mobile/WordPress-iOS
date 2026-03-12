@@ -1165,13 +1165,6 @@
 			);
 			target = 0C5A3F8B2D9B1E3700C25301 /* Reader */;
 		};
-		3F7AE0D02D9B30A200AB4892 /* Exceptions for "WordPressData" folder in "WordPressData" target */ = {
-			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
-			publicHeaders = (
-				WordPressData.h,
-			);
-			target = 3F7AE0B42D9B30A100AB4892 /* WordPressData */;
-		};
 		4ABC59762DE52AA2005A6B84 /* Exceptions for "Classes" folder in "WordPressDraftActionExtension" target */ = {
 			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
 			membershipExceptions = (
@@ -1348,9 +1341,6 @@
 		};
 		3F7AE0B62D9B30A100AB4892 /* WordPressData */ = {
 			isa = PBXFileSystemSynchronizedRootGroup;
-			exceptions = (
-				3F7AE0D02D9B30A200AB4892 /* Exceptions for "WordPressData" folder in "WordPressData" target */,
-			);
 			path = WordPressData;
 			sourceTree = "<group>";
 		};
@@ -5172,7 +5162,6 @@
 				ENABLE_USER_SCRIPT_SANDBOXING = YES;
 				GCC_C_LANGUAGE_STANDARD = gnu17;
 				GCC_DYNAMIC_NO_PIC = NO;
-				GCC_PREFIX_HEADER = ../Sources/WordPressData/WordPressData_Prefix.pch;
 				GCC_PREPROCESSOR_DEFINITIONS = (
 					"DEBUG=1",
 					"$(inherited)",
@@ -5242,7 +5231,6 @@
 				ENABLE_NS_ASSERTIONS = NO;
 				ENABLE_USER_SCRIPT_SANDBOXING = YES;
 				GCC_C_LANGUAGE_STANDARD = gnu17;
-				GCC_PREFIX_HEADER = ../Sources/WordPressData/WordPressData_Prefix.pch;
 				GCC_TREAT_WARNINGS_AS_ERRORS = NO;
 				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
@@ -5307,7 +5295,6 @@
 				ENABLE_NS_ASSERTIONS = NO;
 				ENABLE_USER_SCRIPT_SANDBOXING = YES;
 				GCC_C_LANGUAGE_STANDARD = gnu17;
-				GCC_PREFIX_HEADER = ../Sources/WordPressData/WordPressData_Prefix.pch;
 				GCC_TREAT_WARNINGS_AS_ERRORS = NO;
 				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
