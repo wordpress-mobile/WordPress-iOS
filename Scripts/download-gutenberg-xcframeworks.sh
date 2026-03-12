@@ -48,7 +48,10 @@ else
 fi
 
 # Copy cached contents into the project.
-rm -rf "${FRAMEWORKS_DIR}"
+if [[ -z "${FRAMEWORKS_DIR}" || "${FRAMEWORKS_DIR}" == "/" ]]; then
+    echo "Error: invalid frameworks directory: '${FRAMEWORKS_DIR}'" >&2
+    exit 1
+fi
 cp -a "${CACHE_DIR}" "${FRAMEWORKS_DIR}"
 
 echo "Gutenberg ${VERSION} setup complete."
