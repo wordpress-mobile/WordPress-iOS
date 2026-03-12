@@ -102,6 +102,82 @@ import WordPressAPIInternal
             success?(formats)
         }
     }
+
+    static func mapSiteSettings(_ siteSettings: SiteSettingsWithEditContext) -> RemoteBlogSettings {
+        let settings = RemoteBlogSettings()
+
+        // General
+        settings.name = siteSettings.title
+        settings.tagline = siteSettings.description
+        settings.timezoneString = siteSettings.timezone
+
+        // Writing
+        let format = siteSettings.defaultPostFormat
+        if format.isEmpty || format == "0" {
+            settings.defaultPostFormat = "standard"
+        } else {
+            settings.defaultPostFormat = format
+        }
+        settings.defaultCategoryID = NSNumber(value: siteSettings.defaultCategory)
+        settings.dateFormat = siteSettings.dateFormat
+        settings.timeFormat = siteSettings.timeFormat
+        settings.startOfWeek = String(siteSettings.startOfWeek)
+        settings.postsPerPage = NSNumber(value: siteSettings.postsPerPage)
+
+        // The following properties are not available from the Core REST API
+        // site settings endpoint.
+        settings.privacy = nil
+        settings.languageID = nil
+        settings.iconMediaID = nil
+        settings.gmtOffset = nil
+        settings.commentsAllowed = nil
+        settings.commentsBlocklistKeys = nil
+        settings.commentsCloseAutomatically = nil
+        settings.commentsCloseAutomaticallyAfterDays = nil
+        settings.commentsFromKnownUsersAllowlisted = nil
+        settings.commentsMaximumLinks = nil
+        settings.commentsModerationKeys = nil
+        settings.commentsPagingEnabled = nil
+        settings.commentsPageSize = nil
+        settings.commentsRequireManualModeration = nil
+        settings.commentsRequireNameAndEmail = nil
+        settings.commentsRequireRegistration = nil
+        settings.commentsSortOrder = nil
+        settings.commentsThreadingEnabled = nil
+        settings.commentsThreadingDepth = nil
+        settings.pingbackInboundEnabled = nil
+        settings.pingbackOutboundEnabled = nil
+        settings.relatedPostsAllowed = nil
+        settings.relatedPostsEnabled = nil
+        settings.relatedPostsShowHeadline = nil
+        settings.relatedPostsShowThumbnails = nil
+        settings.ampSupported = nil
+        settings.ampEnabled = nil
+        settings.sharingButtonStyle = nil
+        settings.sharingLabel = nil
+        settings.sharingTwitterName = nil
+        settings.sharingCommentLikesEnabled = nil
+        settings.sharingDisabledLikes = nil
+        settings.sharingDisabledReblogs = nil
+
+        return settings
+    }
+
+    @objc public func syncBlogSettings(
+        success: SettingsHandler?,
+        failure: (((any Error)?) -> Void)?
+    ) {
+        Task { @MainActor in
+            do {
+                let response = try await client.api.siteSettings
+                    .retrieveWithEditContext()
+                let settings = Self.mapSiteSettings(response.data)
+                success?(settings)
+            } catch {
+                failure?(error)
+            }
+        }
+    }
 }
 
 struct ActiveThemeNotFoundError: LocalizedError {

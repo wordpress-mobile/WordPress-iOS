@@ -18,6 +18,7 @@ public protocol WordPressClientAPI: Sendable {
     var applicationPasswords: ApplicationPasswordsRequestExecutor { get }
     var posts: PostsRequestExecutor { get }
     var postTypes: PostTypesRequestExecutor { get }
+    var siteSettings: SiteSettingsRequestExecutor { get }
 
     func createSelfHostedService(cache: WordPressApiCache) throws -> WpService
 

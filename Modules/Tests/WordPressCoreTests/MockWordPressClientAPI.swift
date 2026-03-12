@@ -63,6 +63,7 @@ final class MockWordPressClientAPI: WordPressClientAPI, @unchecked Sendable {
     var applicationPasswords: ApplicationPasswordsRequestExecutor { fatalError("Not implemented") }
     var posts: PostsRequestExecutor { fatalError("Not implemented") }
     var postTypes: PostTypesRequestExecutor { fatalError("Not implemented") }
+    var siteSettings: SiteSettingsRequestExecutor { fatalError("Not implemented") }
 
     func createSelfHostedService(cache: WordPressApiCache) throws -> WpService {
         fatalError("Not implemented")
