@@ -2,6 +2,7 @@
 -----
 * [*] Fix an issue Social Sharing placeholder card showing unsupported services [#25336]
 * [*] [internal] Fix retain cycle in Reader Article screen [#25364]
+* [*] Fix incorrect default Post Format in new posts [#25369]
 
 
 26.7
