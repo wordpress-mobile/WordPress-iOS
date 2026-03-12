@@ -4,11 +4,10 @@ import AsyncImageKit
 
 final class LightboxImagePageViewController: UIViewController {
     private(set) var scrollView = LightboxImageScrollView()
-    private let controller = ImageLoadingController()
-    private let siteMediaImageLoadingController = SiteMediaImageLoadingController()
     private let item: LightboxItem
     private let activityIndicator = UIActivityIndicatorView()
     private var errorView: UIImageView?
+    private var task: Task<Void, Never>?
 
     /// Used by UIPageViewController to track position.
     var pageIndex: Int = 0
@@ -20,6 +19,10 @@ final class LightboxImagePageViewController: UIViewController {
 
     required init?(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
+    }
+
+    deinit {
+        task?.cancel()
     }
 
     override func viewDidLoad() {
@@ -35,15 +38,9 @@ final class LightboxImagePageViewController: UIViewController {
             self?.parent?.presentingViewController?.dismiss(animated: true)
         }
 
-        controller.onStateChanged = { [weak self] in
-            self?.setState($0)
+        task = Task { @MainActor [weak self] in
+            await self?.loadImage()
         }
-
-        siteMediaImageLoadingController.onStateChanged = { [weak self] in
-            self?.setState($0)
-        }
-
-        startFetching()
     }
 
     override func viewDidLayoutSubviews() {
@@ -55,41 +52,91 @@ final class LightboxImagePageViewController: UIViewController {
         }
     }
 
-    private func startFetching() {
+    // MARK: - Loading
+
+    @MainActor
+    private func loadImage() async {
         switch item {
         case .image(let image):
-            setState(.success(image))
+            showImage(image)
         case .asset(let asset):
-            controller.setImage(with: ImageRequest(url: asset.sourceURL, host: asset.host))
+            await loadAsset(asset)
         case .media(let media):
-            siteMediaImageLoadingController.setImage(with: media, size: .original)
+            await loadMedia(media)
         }
     }
 
-    private func setState(_ state: ImageLoadingController.State) {
-        switch state {
-        case .loading:
-            if scrollView.imageView.image == nil {
-                activityIndicator.startAnimating()
+    @MainActor
+    private func loadAsset(_ asset: LightboxAsset) async {
+        let downloader = ImageDownloader.shared
+        let request = ImageRequest(url: asset.sourceURL, host: asset.host)
+
+        if let cached = downloader.cachedImage(for: request) {
+            showImage(cached)
+            return
+        }
+
+        activityIndicator.startAnimating()
+
+        // Load preview first if available.
+        if let previewURL = asset.previewURL {
+            let previewRequest = ImageRequest(url: previewURL, host: asset.host)
+            if let preview = try? await downloader.image(for: previewRequest) {
+                guard !Task.isCancelled else { return }
+                showImage(preview)
             }
-        case .success(let image):
-            activityIndicator.stopAnimating()
-            scrollView.configure(with: image)
-        case .failure:
-            activityIndicator.stopAnimating()
-            makeErrorView().isHidden = false
+        }
+
+        // Load full-resolution image.
+        do {
+            let image = try await downloader.image(for: request)
+            guard !Task.isCancelled else { return }
+            showImage(image)
+        } catch {
+            guard !Task.isCancelled else { return }
+            if scrollView.imageView.image == nil {
+                showError()
+            }
         }
     }
 
-    private func makeErrorView() -> UIImageView {
-        if let errorView {
-            return errorView
+    @MainActor
+    private func loadMedia(_ media: Media) async {
+        let service = MediaImageService.shared
+
+        if let cached = service.getCachedThumbnail(for: .init(media), size: .original) {
+            showImage(cached)
+            return
         }
-        let errorView = UIImageView(image: UIImage(systemName: "exclamationmark.triangle"))
-        errorView.tintColor = .separator
-        view.addSubview(errorView)
-        errorView.pinCenter()
-        self.errorView = errorView
-        return errorView
+
+        activityIndicator.startAnimating()
+
+        do {
+            let image = try await service.image(for: media, size: .original)
+            guard !Task.isCancelled else { return }
+            showImage(image)
+        } catch {
+            guard !Task.isCancelled else { return }
+            showError()
+        }
+    }
+
+    // MARK: - State
+
+    private func showImage(_ image: UIImage) {
+        activityIndicator.stopAnimating()
+        scrollView.configure(with: image)
+    }
+
+    private func showError() {
+        activityIndicator.stopAnimating()
+        if errorView == nil {
+            let view = UIImageView(image: UIImage(systemName: "exclamationmark.triangle"))
+            view.tintColor = .separator
+            self.view.addSubview(view)
+            view.pinCenter()
+            errorView = view
+        }
+        errorView?.isHidden = false
     }
 }

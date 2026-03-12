@@ -31,7 +31,7 @@ final class LightboxViewController: UIViewController {
     }
 
     convenience init(_ item: LightboxItem, configuration: Configuration = .init()) {
-        self.init(items: [item])
+        self.init(items: [item], configuration: configuration)
     }
 
     convenience init(assets: [LightboxAsset], selectedIndex: Int = 0) {

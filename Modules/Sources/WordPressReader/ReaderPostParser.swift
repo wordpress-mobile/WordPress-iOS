@@ -23,6 +23,15 @@ public enum ReaderPostParser {
         public let description: String?
         /// From `data-image-caption`.
         public let caption: String?
+
+        /// Returns the srcset URL whose width is closest to (but at least)
+        /// `maxWidth`. Falls back to the largest available entry.
+        /// Returns `nil` when srcset is empty.
+        public func bestURL(forMaxWidth maxWidth: Int) -> URL? {
+            guard !srcset.isEmpty else { return nil }
+            let sorted = srcset.sorted { $0.width < $1.width }
+            return (sorted.first { $0.width >= maxWidth } ?? sorted.last)?.url
+        }
     }
 
     public struct SrcsetEntry: Sendable {
