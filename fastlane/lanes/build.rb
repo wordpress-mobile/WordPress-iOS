@@ -137,9 +137,9 @@ platform :ios do
     # Because we only support those two modes, we can infer the scheme name from the xctestrun name
     scheme = options[:name].include?('Jetpack') ? 'JetpackUITests' : 'WordPress'
 
-    # Only run Jetpack UI tests in parallel.
-    # At the time of writing, we need to explicitly set this value despite using test plans that configure parallelism.
-    parallel_testing_value = options[:name].include?('Jetpack')
+    # Disable parallel testing to verify whether it interferes with
+    # the test plan's `retryOnFailure` repetition mode.
+    parallel_testing_value = false
 
     run_tests(
       workspace: WORKSPACE_PATH,
