@@ -11,10 +11,7 @@
 
 @class Comment;
 
-NSString *const WPComGetFeatures = @"wpcom.getFeatures";
-NSString *const VideopressEnabled = @"videopress_enabled";
 NSString *const WordPressMinimumVersion = @"4.0";
-NSString *const HttpsPrefix = @"https://";
 NSString *const WPBlogUpdatedNotification = @"WPBlogUpdatedNotification";
 NSString *const WPBlogSettingsUpdatedNotification = @"WPBlogSettingsUpdatedNotification";
 

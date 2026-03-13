@@ -49,6 +49,11 @@ class ReaderDetailCoordinator {
     /// Called if the view controller's post fails to load
     var postLoadFailureBlock: (() -> Void)? = nil
 
+    private lazy var interactiveElements: [ReaderPostParser.InteractiveElement] = {
+        guard let content = post?.content else { return [] }
+        return ReaderPostParser.parse(content)
+    }()
+
     private var likesAvatarURLs: [String]?
 
     /// An authenticator to ensure any request made to WP sites is properly authenticated
@@ -267,6 +272,7 @@ class ReaderDetailCoordinator {
 
         if let blogID = sourceAttribution.blogID {
             let controller = ReaderStreamViewController.controllerWithSiteID(blogID, isFeed: false)
+            controller.trackingContext.source = ScreenTrackingSource(ScreenID.Reader.article, component: ElementID.Reader.articleHeaderSiteName)
             viewController?.navigationController?.pushViewController(controller, animated: true)
             return
         }
@@ -291,6 +297,28 @@ class ReaderDetailCoordinator {
 
         let host = post.map(MediaHost.init)
         let lightboxVC = LightboxViewController(sourceURL: url, host: host)
+        lightboxVC.configureZoomTransition()
+        viewController?.present(lightboxVC, animated: true)
+    }
+
+    private func findGallery(containing url: URL) -> (ReaderPostParser.Gallery, Int)? {
+        let urlString = url.absoluteString
+        for element in interactiveElements {
+            if case .gallery(let gallery) = element,
+               let index = gallery.images.firstIndex(where: { $0.src.absoluteString == urlString }) {
+                return (gallery, index)
+            }
+        }
+        return nil
+    }
+
+    private func presentGallery(_ gallery: ReaderPostParser.Gallery, startingAt index: Int) {
+        WPAnalytics.trackReader(.readerArticleImageTapped)
+        let host = post.map(MediaHost.init)
+        let assets = gallery.images.map {
+            LightboxAsset(sourceURL: $0.originalFileURL ?? $0.src, host: host)
+        }
+        let lightboxVC = LightboxViewController(assets: assets, selectedIndex: index)
         lightboxVC.configureZoomTransition()
         viewController?.present(lightboxVC, animated: true)
     }
@@ -428,6 +456,7 @@ class ReaderDetailCoordinator {
         }
 
         let controller = ReaderStreamViewController.controllerWithSiteID(siteID, isFeed: post.isExternal)
+        controller.trackingContext.source = ScreenTrackingSource(ScreenID.Reader.article, component: ElementID.Reader.articleHeaderSiteName)
         viewController?.navigationController?.pushViewController(controller, animated: true)
 
         let properties = ReaderHelpers.statsPropertiesForPost(post, andValue: post.blogURL as AnyObject?, forKey: "URL")
@@ -436,6 +465,7 @@ class ReaderDetailCoordinator {
 
     private func showTopic(_ topic: String) {
         let controller = ReaderStreamViewController.controllerWithTagSlug(topic)
+        controller.trackingContext.source = ScreenTrackingSource(ScreenID.Reader.article, component: ElementID.Reader.tagChip)
         viewController?.navigationController?.pushViewController(controller, animated: true)
     }
 
@@ -452,6 +482,7 @@ class ReaderDetailCoordinator {
         }
 
         let controller = ReaderStreamViewController.controllerWithTagSlug(primaryTagSlug)
+        controller.trackingContext.source = ScreenTrackingSource(ScreenID.Reader.article, component: ElementID.Reader.tagChip)
         viewController?.navigationController?.pushViewController(controller, animated: true)
 
         let properties = ReaderHelpers.statsPropertiesForPost(post, andValue: post.primaryTagSlug as AnyObject?, forKey: "tag")
@@ -474,6 +505,8 @@ class ReaderDetailCoordinator {
            let postURL = permaLinkURL,
            postURL.isHostAndPathEqual(to: url) {
             view?.scroll(to: hash)
+        } else if let (gallery, index) = findGallery(containing: url) {
+            presentGallery(gallery, startingAt: index)
         } else if url.pathExtension.contains("gif") ||
                     url.pathExtension.contains("jpg") ||
                     url.pathExtension.contains("jpeg") ||

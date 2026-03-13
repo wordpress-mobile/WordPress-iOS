@@ -1,5 +1,6 @@
 import Foundation
 import SwiftUI
+import UIKit
 import WordPressCore
 import WordPressData
 import WordPressAPI
@@ -10,6 +11,7 @@ struct PinnedPostTypeView: View {
     let blog: Blog
     let customPostTypeService: CustomPostTypeService
     let postType: PinnedPostType
+    weak var presentingViewController: UIViewController?
 
     @SiteStorage private var pinnedTypes: [PinnedPostType]
 
@@ -18,17 +20,18 @@ struct PinnedPostTypeView: View {
     @State private var isLoading = true
     @State private var error: Error?
 
-    init(blog: Blog, service: CustomPostTypeService, postType: PinnedPostType) {
+    init(blog: Blog, service: CustomPostTypeService, postType: PinnedPostType, presentingViewController: UIViewController? = nil) {
         self.blog = blog
         self.customPostTypeService = service
         self.postType = postType
+        self.presentingViewController = presentingViewController
         _pinnedTypes = .pinnedPostTypes(for: TaggedManagedObjectID(blog))
     }
 
     var body: some View {
         Group {
             if let details, let wpService = customPostTypeService.wpService {
-                CustomPostTabView(client: customPostTypeService.client, service: wpService, endpoint: details.toPostEndpointType(), details: details, blog: blog)
+                CustomPostTabView(client: customPostTypeService.client, service: wpService, details: details, blog: blog, presentingViewController: presentingViewController)
             } else if isLoading {
                 ProgressView()
                     .progressViewStyle(.circular)

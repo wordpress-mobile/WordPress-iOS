@@ -39,6 +39,7 @@ final class LightboxImageScrollView: UIScrollView, UIScrollViewDelegate {
         maximumZoomScale = 3
         showsHorizontalScrollIndicator = false
         showsVerticalScrollIndicator = false
+        panGestureRecognizer.isEnabled = false
 
         let doubleTapRecognizer = UITapGestureRecognizer(target: self, action: #selector(didRecognizeDoubleTap))
         doubleTapRecognizer.numberOfTapsRequired = 2
@@ -76,6 +77,7 @@ final class LightboxImageScrollView: UIScrollView, UIScrollViewDelegate {
         contentSize = bounds.size
         imageView.frame = bounds
         zoomScale = minimumZoomScale
+        panGestureRecognizer.isEnabled = false
 
         configureImageView()
     }
@@ -124,6 +126,14 @@ final class LightboxImageScrollView: UIScrollView, UIScrollViewDelegate {
 
     func viewForZooming(in scrollView: UIScrollView) -> UIView? {
         imageView
+    }
+
+    func scrollViewWillBeginZooming(_ scrollView: UIScrollView, with view: UIView?) {
+        panGestureRecognizer.isEnabled = false
+    }
+
+    func scrollViewDidEndZooming(_ scrollView: UIScrollView, with view: UIView?, atScale scale: CGFloat) {
+        panGestureRecognizer.isEnabled = scale > minimumZoomScale
     }
 
     func scrollViewDidZoom(_ scrollView: UIScrollView) {

@@ -1,5 +1,6 @@
 import Foundation
 import SwiftUI
+import UIKit
 import WordPressCore
 import WordPressData
 import WordPressAPI
@@ -14,6 +15,7 @@ struct CustomPostTypesView: View {
 
     let blog: Blog
     let service: CustomPostTypeService
+    weak var presentingViewController: UIViewController?
 
     @State private var types: [PostTypeDetailsWithEditContext] = []
     @State private var isLoading: Bool = true
@@ -22,9 +24,10 @@ struct CustomPostTypesView: View {
 
     @SiteStorage private var pinnedTypes: [PinnedPostType]
 
-    init(blog: Blog, service: CustomPostTypeService) {
+    init(blog: Blog, service: CustomPostTypeService, presentingViewController: UIViewController? = nil) {
         self.blog = blog
         self.service = service
+        self.presentingViewController = presentingViewController
         _pinnedTypes = .pinnedPostTypes(for: service.blog)
     }
 
@@ -106,7 +109,7 @@ struct CustomPostTypesView: View {
         let isPinned = pinnedTypes.contains { $0.slug == details.slug }
         return NavigationLink {
             if let wpService = service.wpService {
-                CustomPostTabView(client: service.client, service: wpService, endpoint: details.toPostEndpointType(), details: details, blog: blog)
+                CustomPostTabView(client: service.client, service: wpService, details: details, blog: blog, presentingViewController: presentingViewController)
             } else {
                 let _ = wpAssertionFailure("Expected wpService to be available")
             }

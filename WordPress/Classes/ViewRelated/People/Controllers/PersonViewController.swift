@@ -486,14 +486,14 @@ private extension PersonViewController {
     var isPromoteEnabled: Bool {
         // Note: *Only* users can be promoted.
         //
-        return blog.isUserCapableOf(.PromoteUsers) && isMyself == false && isUser == true
+        return blog.isUserCapableOf(.promoteUsers) && isMyself == false && isUser == true
     }
 
     var isRemoveEnabled: Bool {
         switch screenMode {
         case .user:
             // YES, ListUsers. Brought from Calypso's code
-            return blog.isUserCapableOf(.ListUsers) && isMyself == false && isUser == true
+            return blog.isUserCapableOf(.listUsers) && isMyself == false && isUser == true
         case .viewer:
             return isViewer == true
         }

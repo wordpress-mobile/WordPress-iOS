@@ -88,7 +88,7 @@ extension Blog {
         case .sharing:
             return supports(.publicize) || supports(.shareButtons)
         case .people:
-            return supportsRestAPI && isUserCapableOf(.ListUsers)
+            return supportsRestAPI && isUserCapableOf(.listUsers)
         case .siteManagement:
             return isHostedAtWPcom && isAdmin
         case .pluginManagement:
@@ -125,7 +125,7 @@ extension Blog {
         case .blaze:
             return canBlaze
         case .pages:
-            return isAdmin || isUserCapableOf(.EditPages)
+            return isAdmin || isUserCapableOf(.editPages)
         case .siteMonitoring:
             return isAdmin && isAtomic
         case .publicize:

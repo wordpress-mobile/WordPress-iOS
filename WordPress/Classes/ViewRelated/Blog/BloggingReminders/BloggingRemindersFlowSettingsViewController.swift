@@ -1,3 +1,4 @@
+import SwiftUI
 import UIKit
 import WordPressData
 import WordPressKit
@@ -363,7 +364,7 @@ final class BloggingRemindersFlowSettingsViewController: UIViewController {
                 DispatchQueue.main.async { [weak self] in
                     let completion = {
                         self?.delegate?.didSetUpBloggingReminders()
-                        self?.pushCompletionViewController()
+                        self?.showCompletionViewController()
                         self?.button.isEnabled = true
                     }
 
@@ -416,9 +417,42 @@ private extension BloggingRemindersFlowSettingsViewController {
         navigationController?.pushViewController(viewController, animated: true)
     }
 
-    func pushCompletionViewController() {
-        let viewController = BloggingRemindersFlowCompletionViewController(blog: blog, tracker: tracker, calendar: calendar)
-        navigationController?.pushViewController(viewController, animated: true)
+    func showCompletionViewController() {
+        tracker.screenShown(.allSet)
+
+        let schedule = scheduler.schedule(for: blog)
+        let title = schedule == .none ? CompletionStrings.remindersRemovedTitle : CompletionStrings.completionTitle
+
+        let formatter = BloggingRemindersScheduleFormatter(calendar: calendar)
+        let time = scheduler.scheduledTime(for: blog).toLocalTime()
+        let nsDescription = formatter.longScheduleDescription(for: schedule, time: time)
+        let description = (try? AttributedString(nsDescription, including: \.uiKit)) ?? AttributedString(nsDescription.string)
+
+        let alert = AlertView {
+            VStack(alignment: .leading, spacing: 9) {
+                Text(title)
+                    .font(.title2.weight(.medium))
+                Text(description)
+                    .foregroundStyle(.secondary)
+                Text(CompletionStrings.updateHint)
+                    .foregroundStyle(.secondary)
+            }
+        } content: {
+            ScaledImage("wpl-ok", height: 90)
+                .foregroundStyle(.secondary)
+        } actions: {
+            AlertDismissButton { [tracker = self.tracker] in
+                tracker.buttonPressed(button: .continue, screen: .allSet)
+                tracker.flowCompleted()
+            }
+        }
+
+        guard let presentingViewController = navigationController?.presentingViewController else {
+            return wpAssertionFailure("Missing presentingViewController")
+        }
+        presentingViewController.dismiss(animated: true) {
+            alert.present(in: presentingViewController)
+        }
     }
 
     private func pushPushPromptViewController() {
@@ -780,6 +814,12 @@ private enum TextContent {
     static let bloggingPromptsTitle = NSLocalizedString("Include a Blogging Prompt", comment: "Title of the switch to turn on or off the blogging prompts feature.")
     static let bloggingPromptsDescription = NSLocalizedString("Notification will include a word or short phrase for inspiration", comment: "Description of the blogging prompts feature on the Blogging Reminders Settings screen.")
     static let bloggingPromptsInfoButton = NSLocalizedString("Learn more about prompts", comment: "Accessibility label for the blogging prompts info button on the Blogging Reminders Settings screen.")
+}
+
+private enum CompletionStrings {
+    static let completionTitle = NSLocalizedString("All set!", comment: "Title of the completion screen of the Blogging Reminders Settings screen.")
+    static let remindersRemovedTitle = NSLocalizedString("Reminders removed", comment: "Title of the completion screen of the Blogging Reminders Settings screen when the reminders are removed.")
+    static let updateHint = NSLocalizedString("You can update this any time via My Site > Site Settings", comment: "Prompt shown on the completion screen of the Blogging Reminders Settings screen.")
 }
 
 private enum Images {

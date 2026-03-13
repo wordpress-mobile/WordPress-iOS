@@ -61,6 +61,29 @@ struct StatsTotalRowData: Equatable {
         return self.icon != nil || self.socialIconURL != nil || self.userIconURL != nil
     }
 
+    static func flagImage(for countryCode: String) -> UIImage? {
+        let base: UInt32 = 127397
+        var scalarView = String.UnicodeScalarView()
+        for scalar in countryCode.uppercased().unicodeScalars {
+            guard let flagScalar = UnicodeScalar(base + scalar.value) else { return nil }
+            scalarView.append(flagScalar)
+        }
+        let emoji = String(scalarView)
+        let size = CGSize(width: 24, height: 24)
+        let renderer = UIGraphicsImageRenderer(size: size)
+        return renderer.image { _ in
+            let attributes: [NSAttributedString.Key: Any] = [
+                .font: UIFont.systemFont(ofSize: 18)
+            ]
+            let textSize = emoji.size(withAttributes: attributes)
+            let origin = CGPoint(
+                x: (size.width - textSize.width) / 2,
+                y: (size.height - textSize.height) / 2
+            )
+            emoji.draw(at: origin, withAttributes: attributes)
+        }
+    }
+
     var canMarkReferrerAsSpam: Bool {
         if let url = disclosureURL {
             return url.absoluteString.contains(name)

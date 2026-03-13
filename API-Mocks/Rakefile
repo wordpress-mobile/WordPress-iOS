@@ -51,7 +51,7 @@ task :lint do
     ## Ensure there are no references to the actual API location – we should use the mocks
     # base URL – this ensures that any requests made based on the contents of other
     # requests won't fail.
-    if File.open(file).each_line.any? { |line| line.include?('public-api.wordpress.com') }
+    if File.foreach(file).any? { |line| line.include?('public-api.wordpress.com') }
       append_error(file, file_errors, 'Contains references to `https://public-api.wordpress.com`. Replace them with `{{request.requestLine.baseUrl}}`.')
     end
   end

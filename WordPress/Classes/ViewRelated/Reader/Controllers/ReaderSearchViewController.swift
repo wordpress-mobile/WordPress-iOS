@@ -65,6 +65,7 @@ final class ReaderSearchViewController: UIViewController {
 
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
+        WPAnalytics.track(screen: ScreenID.Reader.search, context: trackingContext)
 
         if isFirstAppearance {
             isFirstAppearance = false
@@ -165,6 +166,8 @@ final class ReaderSearchViewController: UIViewController {
             return
         }
         let postSearchVC = ReaderStreamViewController.controllerWithTopic(topic)
+        postSearchVC.trackingContext.source = ScreenTrackingSource(ScreenID.Reader.search, component: ElementID.Reader.searchResult)
+        postSearchVC.suppressesScreenTracking = true
         showChild(postSearchVC)
         postsResulsViewContoller = postSearchVC
 

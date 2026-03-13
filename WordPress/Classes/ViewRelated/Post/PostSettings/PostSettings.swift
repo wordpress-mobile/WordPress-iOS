@@ -517,6 +517,22 @@ extension PostSettings {
 // MARK: - PostFormat Slug
 
 extension PostFormat {
+    static func from(slug: String) -> PostFormat {
+        switch slug {
+        case "standard": return .standard
+        case "aside": return .aside
+        case "chat": return .chat
+        case "gallery": return .gallery
+        case "link": return .link
+        case "image": return .image
+        case "quote": return .quote
+        case "status": return .status
+        case "video": return .video
+        case "audio": return .audio
+        default: return .custom(slug)
+        }
+    }
+
     // TODO: Export from wordpress-rs
     var id: String {
         switch self {

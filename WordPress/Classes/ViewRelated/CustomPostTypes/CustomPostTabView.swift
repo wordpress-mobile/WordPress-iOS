@@ -11,9 +11,9 @@ import DesignSystem
 struct CustomPostTabView: View {
     let client: WordPressClient
     let service: WpService
-    let endpoint: PostEndpointType
     let details: PostTypeDetailsWithEditContext
     let blog: Blog
+    weak var presentingViewController: UIViewController?
 
     @State private var selectedTab: CustomPostTab = .all
     @State private var searchText = ""
@@ -43,50 +43,55 @@ struct CustomPostTabView: View {
     init(
         client: WordPressClient,
         service: WpService,
-        endpoint: PostEndpointType,
         details: PostTypeDetailsWithEditContext,
-        blog: Blog
+        blog: Blog,
+        presentingViewController: UIViewController? = nil
     ) {
         self.client = client
         self.service = service
-        self.endpoint = endpoint
         self.details = details
         self.blog = blog
+        self.presentingViewController = presentingViewController
 
         _allViewModel = State(initialValue: CustomPostListViewModel(
             client: client,
             service: service,
-            endpoint: endpoint,
-            filter: CustomPostListFilter(status: .custom("any")),
-            blog: blog
+            details: details,
+            filter: CustomPostListFilter(tab: .all),
+            blog: blog,
+            presentingViewController: presentingViewController
         ))
         _publishedViewModel = State(initialValue: CustomPostListViewModel(
             client: client,
             service: service,
-            endpoint: endpoint,
-            filter: CustomPostListFilter(status: .publish),
-            blog: blog
+            details: details,
+            filter: CustomPostListFilter(tab: .published),
+            blog: blog,
+            presentingViewController: presentingViewController
         ))
         _draftsViewModel = State(initialValue: CustomPostListViewModel(
             client: client,
             service: service,
-            endpoint: endpoint,
-            filter: CustomPostListFilter(status: .draft),
-            blog: blog
+            details: details,
+            filter: CustomPostListFilter(tab: .drafts),
+            blog: blog,
+            presentingViewController: presentingViewController
         ))
         _scheduledViewModel = State(initialValue: CustomPostListViewModel(
             client: client,
             service: service,
-            endpoint: endpoint,
-            filter: CustomPostListFilter(status: .future),
-            blog: blog
+            details: details,
+            filter: CustomPostListFilter(tab: .scheduled),
+            blog: blog,
+            presentingViewController: presentingViewController
         ))
         _trashViewModel = State(initialValue: CustomPostListViewModel(
             client: client,
             service: service,
-            endpoint: endpoint,
-            filter: CustomPostListFilter(status: .trash),
-            blog: blog
+            details: details,
+            filter: CustomPostListFilter(tab: .trash),
+            blog: blog,
+            presentingViewController: presentingViewController
         ))
     }
 
@@ -106,9 +111,9 @@ struct CustomPostTabView: View {
                     blog: blog,
                     client: client,
                     service: service,
-                    endpoint: endpoint,
                     details: details,
                     searchText: $searchText,
+                    presentingViewController: presentingViewController,
                     onSelectPost: { editorPresentation = .editPost($0) }
                 )
             }
@@ -179,13 +184,37 @@ enum CustomPostTab: Int, CaseIterable, AdaptiveTabBarItem {
         }
     }
 
-    var status: PostStatus {
+    var primaryStatus: PostStatus {
         switch self {
-        case .all: return .custom("any")
+        case .all: return .publish
         case .published: return .publish
         case .drafts: return .draft
         case .scheduled: return .future
         case .trash: return .trash
+        }
+    }
+
+    var statuses: [PostStatus] {
+        switch self {
+        case .all: return [.custom("any")]
+        case .published: return [.publish, .private]
+        case .drafts: return [.draft, .pending]
+        case .scheduled: return [.future]
+        case .trash: return [.trash]
+        }
+    }
+
+    var orderby: WpApiParamPostsOrderBy {
+        switch self {
+        case .all, .drafts: return .modified
+        case .published, .scheduled, .trash: return .date
+        }
+    }
+
+    var order: WpApiParamOrder {
+        switch self {
+        case .scheduled: return .asc
+        case .all, .published, .drafts, .trash: return .desc
         }
     }
 }
