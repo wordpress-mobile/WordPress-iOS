@@ -17,7 +17,7 @@ final class CustomPostListViewModel: ObservableObject {
     private let details: PostTypeDetailsWithEditContext
     let blog: Blog
     private let isHierarchical: Bool
-    let filter: CustomPostListFilter
+    private(set) var filter: CustomPostListFilter
     weak var presentingViewController: UIViewController?
 
     private var collection: PostMetadataCollectionWithEditContext
@@ -80,6 +80,23 @@ final class CustomPostListViewModel: ObservableObject {
 
     func pullToRefresh() async {
         await refresh(pullToRefresh: true)
+    }
+
+    func updateAuthorFilter(_ author: [UserId]) {
+        guard filter.author != author else { return }
+
+        withAnimation {
+            filter.author = author
+            collection = service
+                .posts()
+                .createPostMetadataCollectionWithEditContext(
+                    endpointType: endpoint,
+                    filter: filter.asPostListFilter(),
+                    perPage: 100
+                )
+            items = []
+            listInfo = nil
+        }
     }
 
     func refresh() async {
