@@ -151,7 +151,7 @@ struct DebugMenuView: View {
                 Task {
                     await ImageDownloader.shared.clearURLSessionCache()
                     await ImageDownloader.shared.clearMemoryCache()
-                    refreshImageCacheSize()
+                    await refreshImageCacheSize()
                     showSuccessNotice()
                 }
             } label: {
@@ -160,11 +160,11 @@ struct DebugMenuView: View {
             }
             .buttonStyle(.plain)
         }
-        .task { refreshImageCacheSize() }
+        .task { await refreshImageCacheSize() }
     }
 
-    private func refreshImageCacheSize() {
-        let bytes = ImageDownloader.shared.diskCacheSize
+    private func refreshImageCacheSize() async {
+        let bytes = await ImageDownloader.shared.diskCacheSize
         imageCacheSize = ByteCountFormatter.string(fromByteCount: Int64(bytes), countStyle: .file)
     }
 

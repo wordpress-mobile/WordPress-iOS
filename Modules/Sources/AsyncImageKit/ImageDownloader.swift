@@ -121,7 +121,7 @@ public final class ImageDownloader {
     }
 
     /// The current disk usage of the URL cache, in bytes.
-    nonisolated public var diskCacheSize: Int {
+    public var diskCacheSize: Int {
         urlSessionWithCache.configuration.urlCache?.currentDiskUsage ?? 0
     }
 

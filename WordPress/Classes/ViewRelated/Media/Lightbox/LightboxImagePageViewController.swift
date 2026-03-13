@@ -130,16 +130,17 @@ final class LightboxImagePageViewController: UIViewController {
     private func showImage(_ image: UIImage) {
         activityIndicator.stopAnimating()
         scrollView.configure(with: image)
+        errorView?.isHidden = true
     }
 
     private func showError() {
         activityIndicator.stopAnimating()
         if errorView == nil {
-            let view = UIImageView(image: UIImage(systemName: "exclamationmark.triangle"))
-            view.tintColor = .separator
-            self.view.addSubview(view)
-            view.pinCenter()
-            errorView = view
+            let errorView = UIImageView(image: UIImage(systemName: "exclamationmark.triangle"))
+            errorView.tintColor = .separator
+            self.view.addSubview(errorView)
+            errorView.pinCenter()
+            self.errorView = errorView
         }
         errorView?.isHidden = false
     }
