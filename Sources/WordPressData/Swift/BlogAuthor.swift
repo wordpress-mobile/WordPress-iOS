@@ -1,6 +1,7 @@
 import Foundation
 import CoreData
 
+@objc(BlogAuthor)
 public class BlogAuthor: NSManagedObject {
     @NSManaged public var userID: NSNumber
     @NSManaged public var username: String?

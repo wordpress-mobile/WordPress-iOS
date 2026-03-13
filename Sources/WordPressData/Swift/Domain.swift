@@ -17,6 +17,7 @@ public extension Domain {
     }
 }
 
+@objc(ManagedDomain)
 public class ManagedDomain: NSManagedObject {
 
     // MARK: - NSManagedObject

@@ -2,6 +2,7 @@ import Foundation
 import CoreData
 import WordPressKit
 
+@objc(Role)
 public class Role: NSManagedObject {
     @NSManaged public var name: String!
     @NSManaged public var slug: String!

@@ -54,7 +54,7 @@
             <fetchIndexElement property="blogs" type="Binary" order="ascending"/>
         </fetchIndex>
     </entity>
-    <entity name="AccountSettings" representedClassName=".ManagedAccountSettings" syncable="YES">
+    <entity name="AccountSettings" representedClassName="ManagedAccountSettings" syncable="YES">
         <attribute name="aboutMe" attributeType="String" syncable="YES"/>
         <attribute name="blockEmailNotifications" attributeType="Boolean" defaultValueString="NO" usesScalarValueType="NO" syncable="YES"/>
         <attribute name="displayName" attributeType="String" syncable="YES"/>
@@ -198,7 +198,7 @@
         </fetchIndex>
         <userInfo/>
     </entity>
-    <entity name="BlogAuthor" representedClassName=".BlogAuthor" syncable="YES">
+    <entity name="BlogAuthor" representedClassName="BlogAuthor" syncable="YES">
         <attribute name="avatarURL" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="deletedFromBlog" attributeType="Boolean" defaultValueString="NO" usesScalarValueType="YES" syncable="YES"/>
         <attribute name="displayName" optional="YES" attributeType="String" syncable="YES"/>
@@ -209,7 +209,7 @@
         <attribute name="username" optional="YES" attributeType="String" syncable="YES"/>
         <relationship name="blog" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="Blog" inverseName="authors" inverseEntity="Blog" syncable="YES"/>
     </entity>
-    <entity name="BloggingPrompt" representedClassName=".BloggingPrompt" syncable="YES">
+    <entity name="BloggingPrompt" representedClassName="BloggingPrompt" syncable="YES">
         <attribute name="additionalPostTags" optional="YES" attributeType="Transformable" valueTransformerName="NSSecureUnarchiveFromData" customClassName="[String]" syncable="YES"/>
         <attribute name="answerCount" attributeType="Integer 32" defaultValueString="0" usesScalarValueType="YES" syncable="YES"/>
         <attribute name="answered" attributeType="Boolean" defaultValueString="NO" usesScalarValueType="YES" syncable="YES"/>
@@ -220,7 +220,7 @@
         <attribute name="siteID" attributeType="Integer 32" defaultValueString="0" usesScalarValueType="YES" syncable="YES"/>
         <attribute name="text" attributeType="String" defaultValueString="" syncable="YES"/>
     </entity>
-    <entity name="BloggingPromptSettings" representedClassName=".BloggingPromptSettings" syncable="YES">
+    <entity name="BloggingPromptSettings" representedClassName="BloggingPromptSettings" syncable="YES">
         <attribute name="isPotentialBloggingSite" attributeType="Boolean" defaultValueString="NO" usesScalarValueType="YES" syncable="YES"/>
         <attribute name="promptCardEnabled" attributeType="Boolean" defaultValueString="YES" usesScalarValueType="YES" syncable="YES"/>
         <attribute name="promptRemindersEnabled" attributeType="Boolean" defaultValueString="NO" usesScalarValueType="YES" syncable="YES"/>
@@ -228,7 +228,7 @@
         <attribute name="siteID" attributeType="Integer 32" defaultValueString="0" usesScalarValueType="YES" syncable="YES"/>
         <relationship name="reminderDays" maxCount="1" deletionRule="Cascade" destinationEntity="BloggingPromptSettingsReminderDays" inverseName="settings" inverseEntity="BloggingPromptSettingsReminderDays" syncable="YES"/>
     </entity>
-    <entity name="BloggingPromptSettingsReminderDays" representedClassName=".BloggingPromptSettingsReminderDays" syncable="YES">
+    <entity name="BloggingPromptSettingsReminderDays" representedClassName="BloggingPromptSettingsReminderDays" syncable="YES">
         <attribute name="friday" attributeType="Boolean" defaultValueString="NO" usesScalarValueType="YES" syncable="YES"/>
         <attribute name="monday" attributeType="Boolean" defaultValueString="NO" usesScalarValueType="YES" syncable="YES"/>
         <attribute name="saturday" attributeType="Boolean" defaultValueString="NO" usesScalarValueType="YES" syncable="YES"/>
@@ -238,7 +238,7 @@
         <attribute name="wednesday" attributeType="Boolean" defaultValueString="NO" usesScalarValueType="YES" syncable="YES"/>
         <relationship name="settings" maxCount="1" deletionRule="Cascade" destinationEntity="BloggingPromptSettings" inverseName="reminderDays" inverseEntity="BloggingPromptSettings" syncable="YES"/>
     </entity>
-    <entity name="BlogSettings" representedClassName=".BlogSettings" syncable="YES">
+    <entity name="BlogSettings" representedClassName="BlogSettings" syncable="YES">
         <attribute name="ampEnabled" optional="YES" attributeType="Boolean" usesScalarValueType="NO" syncable="YES"/>
         <attribute name="ampSupported" optional="YES" attributeType="Boolean" usesScalarValueType="NO" syncable="YES"/>
         <attribute name="commentsAllowed" optional="YES" attributeType="Boolean" usesScalarValueType="NO" syncable="YES"/>
@@ -337,19 +337,19 @@
         </fetchIndex>
         <userInfo/>
     </entity>
-    <entity name="DiffAbstractValue" representedClassName=".DiffAbstractValue" isAbstract="YES" syncable="YES">
+    <entity name="DiffAbstractValue" representedClassName="DiffAbstractValue" isAbstract="YES" syncable="YES">
         <attribute name="diffOperation" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="diffType" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="index" optional="YES" attributeType="Integer 64" defaultValueString="0" usesScalarValueType="NO" syncable="YES"/>
         <attribute name="value" optional="YES" attributeType="String" syncable="YES"/>
     </entity>
-    <entity name="DiffContentValue" representedClassName=".DiffContentValue" parentEntity="DiffAbstractValue" syncable="YES">
+    <entity name="DiffContentValue" representedClassName="DiffContentValue" parentEntity="DiffAbstractValue" syncable="YES">
         <relationship name="revisionDiff" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="RevisionDiff" inverseName="contentDiffs" inverseEntity="RevisionDiff" syncable="YES"/>
     </entity>
-    <entity name="DiffTitleValue" representedClassName=".DiffTitleValue" parentEntity="DiffAbstractValue" syncable="YES">
+    <entity name="DiffTitleValue" representedClassName="DiffTitleValue" parentEntity="DiffAbstractValue" syncable="YES">
         <relationship name="revisionDiff" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="RevisionDiff" inverseName="titleDiffs" inverseEntity="RevisionDiff" syncable="YES"/>
     </entity>
-    <entity name="Domain" representedClassName=".ManagedDomain" syncable="YES">
+    <entity name="Domain" representedClassName="ManagedDomain" syncable="YES">
         <attribute name="autoRenewalDate" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="autoRenewing" optional="YES" attributeType="Boolean" usesScalarValueType="YES" syncable="YES"/>
         <attribute name="domainName" optional="YES" attributeType="String" syncable="YES"/>
@@ -497,7 +497,7 @@
         <attribute name="title" optional="YES" attributeType="String" syncable="YES"/>
         <relationship name="categories" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="PageTemplateCategory" inverseName="layouts" inverseEntity="PageTemplateCategory" syncable="YES"/>
     </entity>
-    <entity name="Person" representedClassName=".ManagedPerson" syncable="YES">
+    <entity name="Person" representedClassName="ManagedPerson" syncable="YES">
         <attribute name="avatarURL" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="creationDate" optional="YES" attributeType="Date" usesScalarValueType="NO" syncable="YES"/>
         <attribute name="displayName" attributeType="String" syncable="YES"/>
@@ -511,7 +511,7 @@
         <attribute name="userID" attributeType="Integer 64" usesScalarValueType="NO" syncable="YES"/>
         <attribute name="username" attributeType="String" syncable="YES"/>
     </entity>
-    <entity name="Plan" representedClassName=".Plan" syncable="YES">
+    <entity name="Plan" representedClassName="Plan" syncable="YES">
         <attribute name="features" attributeType="String" syncable="YES"/>
         <attribute name="groups" attributeType="String" syncable="YES"/>
         <attribute name="icon" attributeType="String" syncable="YES"/>
@@ -525,12 +525,12 @@
         <attribute name="supportPriority" attributeType="Integer 16" defaultValueString="0" usesScalarValueType="NO" syncable="YES"/>
         <attribute name="tagline" attributeType="String" syncable="YES"/>
     </entity>
-    <entity name="PlanFeature" representedClassName=".PlanFeature" syncable="YES">
+    <entity name="PlanFeature" representedClassName="PlanFeature" syncable="YES">
         <attribute name="slug" attributeType="String" syncable="YES"/>
         <attribute name="summary" attributeType="String" syncable="YES"/>
         <attribute name="title" attributeType="String" syncable="YES"/>
     </entity>
-    <entity name="PlanGroup" representedClassName=".PlanGroup" syncable="YES">
+    <entity name="PlanGroup" representedClassName="PlanGroup" syncable="YES">
         <attribute name="name" attributeType="String" syncable="YES"/>
         <attribute name="order" attributeType="Integer 16" defaultValueString="0" usesScalarValueType="NO" syncable="YES"/>
         <attribute name="slug" attributeType="String" syncable="YES"/>
@@ -570,7 +570,7 @@
         <attribute name="name" optional="YES" attributeType="String" syncable="YES"/>
         <relationship name="blog" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="Blog" inverseName="postTypes" inverseEntity="Blog" syncable="YES"/>
     </entity>
-    <entity name="PublicizeConnection" representedClassName=".PublicizeConnection" syncable="YES">
+    <entity name="PublicizeConnection" representedClassName="PublicizeConnection" syncable="YES">
         <attribute name="connectionID" optional="YES" attributeType="Integer 64" defaultValueString="0" usesScalarValueType="NO" syncable="YES"/>
         <attribute name="dateExpires" optional="YES" attributeType="Date" usesScalarValueType="NO" syncable="YES"/>
         <attribute name="dateIssued" optional="YES" attributeType="Date" usesScalarValueType="NO" syncable="YES"/>
@@ -598,7 +598,7 @@
         <attribute name="toBePublicizedCount" attributeType="Integer 64" defaultValueString="0" usesScalarValueType="YES" syncable="YES"/>
         <relationship name="blog" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="Blog" inverseName="publicizeInfo" inverseEntity="Blog"/>
     </entity>
-    <entity name="PublicizeService" representedClassName=".PublicizeService" syncable="YES">
+    <entity name="PublicizeService" representedClassName="PublicizeService" syncable="YES">
         <attribute name="connectURL" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="detail" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="externalUsersOnly" optional="YES" attributeType="Boolean" usesScalarValueType="NO" syncable="YES"/>
@@ -629,7 +629,7 @@
             <fetchIndexElement property="path" type="Binary" order="ascending"/>
         </fetchIndex>
     </entity>
-    <entity name="ReaderCard" representedClassName=".ReaderCard" syncable="YES">
+    <entity name="ReaderCard" representedClassName="ReaderCard" syncable="YES">
         <attribute name="sortRank" attributeType="Double" defaultValueString="0.0" usesScalarValueType="NO" syncable="YES"/>
         <relationship name="post" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="ReaderPost" inverseName="card" inverseEntity="ReaderPost" syncable="YES"/>
         <relationship name="sites" optional="YES" toMany="YES" deletionRule="Nullify" ordered="YES" destinationEntity="ReaderSiteTopic" inverseName="cards" inverseEntity="ReaderSiteTopic" syncable="YES"/>
@@ -766,7 +766,7 @@
         <attribute name="organizationID" attributeType="Integer 64" defaultValueString="0" usesScalarValueType="YES" syncable="YES"/>
         <attribute name="slug" optional="YES" attributeType="String" syncable="YES"/>
     </entity>
-    <entity name="Revision" representedClassName=".Revision" syncable="YES">
+    <entity name="Revision" representedClassName="Revision" syncable="YES">
         <attribute name="postAuthorId" optional="YES" attributeType="Integer 64" defaultValueString="0" usesScalarValueType="NO" syncable="YES"/>
         <attribute name="postContent" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="postDateGmt" optional="YES" attributeType="String" syncable="YES"/>
@@ -778,7 +778,7 @@
         <attribute name="siteId" attributeType="Integer 64" defaultValueString="0" usesScalarValueType="NO" syncable="YES"/>
         <relationship name="diff" optional="YES" maxCount="1" deletionRule="Cascade" destinationEntity="RevisionDiff" inverseName="revision" inverseEntity="RevisionDiff" syncable="YES"/>
     </entity>
-    <entity name="RevisionDiff" representedClassName=".RevisionDiff" syncable="YES">
+    <entity name="RevisionDiff" representedClassName="RevisionDiff" syncable="YES">
         <attribute name="fromRevisionId" attributeType="Integer 64" defaultValueString="0" usesScalarValueType="NO" syncable="YES"/>
         <attribute name="toRevisionId" attributeType="Integer 64" defaultValueString="0" usesScalarValueType="NO" syncable="YES"/>
         <attribute name="totalAdditions" attributeType="Integer 32" defaultValueString="0" usesScalarValueType="NO" syncable="YES"/>
@@ -787,7 +787,7 @@
         <relationship name="revision" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="Revision" inverseName="diff" inverseEntity="Revision" syncable="YES"/>
         <relationship name="titleDiffs" optional="YES" toMany="YES" deletionRule="Cascade" destinationEntity="DiffTitleValue" inverseName="revisionDiff" inverseEntity="DiffTitleValue" syncable="YES"/>
     </entity>
-    <entity name="Role" representedClassName=".Role" syncable="YES">
+    <entity name="Role" representedClassName="Role" syncable="YES">
         <attribute name="name" attributeType="String" syncable="YES"/>
         <attribute name="order" attributeType="Integer 16" defaultValueString="0" usesScalarValueType="NO" syncable="YES"/>
         <attribute name="slug" attributeType="String" syncable="YES"/>

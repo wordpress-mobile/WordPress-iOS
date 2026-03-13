@@ -4,6 +4,7 @@ import WordPressKit
 
 // MARK: - Reflects the user's Account Settings, as stored in Core Data.
 //
+@objc(ManagedAccountSettings)
 public class ManagedAccountSettings: NSManagedObject {
 
     // MARK: - NSManagedObject

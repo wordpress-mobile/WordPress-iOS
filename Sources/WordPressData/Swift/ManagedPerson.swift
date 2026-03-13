@@ -8,6 +8,7 @@ public typealias Person = RemotePerson
 
 // MARK: - Reflects a Person, stored in Core Data
 //
+@objc(ManagedPerson)
 public class ManagedPerson: NSManagedObject {
 
     public func updateWith<T: Person>(_ person: T) {

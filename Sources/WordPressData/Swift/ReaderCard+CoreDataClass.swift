@@ -2,6 +2,7 @@ import Foundation
 import CoreData
 import WordPressKit
 
+@objc(ReaderCard)
 public class ReaderCard: NSManagedObject {
     public enum CardType {
         case post
