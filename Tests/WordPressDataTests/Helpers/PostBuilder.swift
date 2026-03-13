@@ -1,3 +1,4 @@
+import CoreData
 @testable import WordPressData
 
 /// Builds a Post
