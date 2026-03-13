@@ -22,6 +22,10 @@ final class CustomPostListViewModel: ObservableObject {
 
     private var collection: PostMetadataCollectionWithEditContext
     private var isBatchSyncing = false
+    // Whether we should show the content in a hierarchy view.
+    // true if the number of cached items or the total items return by the API
+    // is less than a threshold, where the app can fetch all content relative quickly.
+    private var shouldShowHierarchy = false
 
     @Published private(set) var items: [CustomPostCollectionItem] = []
     @Published private(set) var listInfo: ListInfo?
@@ -69,13 +73,13 @@ final class CustomPostListViewModel: ObservableObject {
             .createPostMetadataCollectionWithEditContext(
                 endpointType: details.toPostEndpointType(),
                 filter: filter.asPostListFilter(),
-                perPage: 20
+                perPage: 100
             )
     }
 
     func refresh() async {
-        if shouldDisplayHierarchy {
-            await fetchAllPages()
+        if shouldAttemptDisplayHierarchy {
+            await fetchAllPagesIfBelowThreshold()
         } else {
             await fetchWithPagination()
         }
@@ -83,7 +87,7 @@ final class CustomPostListViewModel: ObservableObject {
 
     func loadNextPage() async throws {
         // All pages are already loaded by refresh() for hierarchical posts.
-        guard !shouldDisplayHierarchy else { return }
+        guard !isBatchSyncing else { return }
 
         if let listInfo, listInfo.isSyncing || !listInfo.hasMorePages {
             return
@@ -98,6 +102,10 @@ final class CustomPostListViewModel: ObservableObject {
 
     func loadCachedItems() async {
         let listInfo = collection.listInfo()
+
+        if let totalItems = listInfo?.totalItems, totalItems <= Constants.hierarchyPageCountThreshold {
+            shouldShowHierarchy = true
+        }
 
         do {
             let metadataItems = try await collection.loadItems()
@@ -116,7 +124,9 @@ final class CustomPostListViewModel: ObservableObject {
             .collect(.byTime(DispatchQueue.main, .milliseconds(50)))
             .values
         for await batch in batches {
-            guard !isBatchSyncing else { continue }
+            // When fetching all page to display hierarchical view, the post list is updated on one go after the
+            // fetching is completed. In that scenario, we should skip the paginationed UI update.
+            guard !isBatchSyncing && !shouldShowHierarchy else { continue }
 
             Loggers.app.info("\(batch.count) updates received from WpApiCache")
 
@@ -157,15 +167,30 @@ final class CustomPostListViewModel: ObservableObject {
         }
     }
 
-    /// Fetches all pages before updating the UI, so the hierarchy tree is
-    /// built once from the complete dataset.
-    private func fetchAllPages() async {
+    /// Fetches the first page to determine total count. If below the
+    /// threshold, fetches remaining pages and builds the hierarchy tree.
+    /// Otherwise, stays in flat paginated mode.
+    private func fetchAllPagesIfBelowThreshold() async {
+        do {
+            _ = try await collection.refresh()
+        } catch {
+            DDLogError("Failed to refresh pages: \(error)")
+            self.show(error: error)
+            return
+        }
+
+        // Load rest of the pages if total post count is less than the threshold
+        let totalItems = collection.listInfo()?.totalItems ?? Int64.max
+        guard totalItems <= Constants.hierarchyPageCountThreshold else {
+            return
+        }
+
+        shouldShowHierarchy = true
+
         isBatchSyncing = true
         defer { isBatchSyncing = false }
 
         do {
-            _ = try await collection.refresh()
-
             while !Task.isCancelled {
                 guard let listInfo = collection.listInfo(), listInfo.hasMorePages, !listInfo.isSyncing else {
                     break
@@ -175,19 +200,19 @@ final class CustomPostListViewModel: ObservableObject {
 
             await loadCachedItems()
         } catch {
-            Loggers.app.error("Failed to refresh all pages: \(error)")
+            Loggers.app.error("Failed to refresh all pages for hierarchy: \(error)")
             self.show(error: error)
         }
     }
 
-    private var shouldDisplayHierarchy: Bool {
+    private var shouldAttemptDisplayHierarchy: Bool {
         isHierarchical && (filter.statuses.contains(.publish) || filter.statuses.contains(.custom("any")))
     }
 
     private func updateItems(from metadataItems: [PostMetadataCollectionItem]) {
         let items = metadataItems.map { CustomPostCollectionItem(item: $0, blog: blog, primaryStatus: filter.primaryStatus) }
 
-        guard shouldDisplayHierarchy else {
+        guard shouldShowHierarchy else {
             indentationMap = [:]
             self.items = items
             return
@@ -665,4 +690,8 @@ private enum Strings {
         value: "Settings",
         comment: "Menu action to open post settings"
     )
+}
+
+private enum Constants {
+    static let hierarchyPageCountThreshold: Int64 = 200
 }
