@@ -113,6 +113,36 @@ struct AdjacentPeriod: Identifiable {
     let displayText: String
 }
 
+struct StatsDateRangeSelection: Equatable {
+    var range: StatsDateRange
+    var subrange: StatsDateRange?
+
+    var effectiveDateRange: StatsDateRange {
+        subrange ?? range
+    }
+
+    mutating func navigate(_ direction: NavigationDirection) {
+        if let currentSubrange = subrange {
+            let newSubrange = currentSubrange.navigate(direction)
+            self.subrange = isWithinRange(newSubrange) ? newSubrange : nil
+        } else {
+            range = range.navigate(direction)
+        }
+    }
+
+    func canNavigate(in direction: NavigationDirection) -> Bool {
+        if let subrange {
+            return isWithinRange(subrange.navigate(direction))
+        }
+        return range.canNavigate(in: direction)
+    }
+
+    private func isWithinRange(_ subrange: StatsDateRange) -> Bool {
+        subrange.dateInterval.start >= range.dateInterval.start &&
+        subrange.dateInterval.start < range.dateInterval.end
+    }
+}
+
 extension Calendar {
     func makeDateRange(
         for preset: DateIntervalPreset,

@@ -120,7 +120,7 @@ struct TopListScreenView: View {
                 Text(viewModel.selection.metric.localizedTitle)
                     .font(.title3.weight(.medium))
                     .foregroundColor(.primary)
-                Text(context.formatters.dateRange.string(from: viewModel.dateRange.dateInterval))
+                Text(context.formatters.dateRange.string(from: viewModel.effectiveDateRange.dateInterval))
                     .font(.subheadline)
                     .foregroundColor(.secondary)
             }
@@ -239,7 +239,7 @@ struct TopListScreenView: View {
                 previousValue: data.previousItem(for: item)?.metrics[viewModel.selection.metric],
                 metric: viewModel.selection.metric,
                 maxValue: data.metrics.maxValue,
-                dateRange: viewModel.dateRange
+                dateRange: viewModel.effectiveDateRange
             )
             .frame(height: TopListItemView.defaultCellHeight)
         }

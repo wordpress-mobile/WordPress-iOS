@@ -14,7 +14,7 @@ final class TopListViewModel: ObservableObject, TrafficCardViewModel {
     @Published private(set) var configuration: TopListCardConfiguration {
         didSet {
             configurationDelegate?.saveConfiguration(for: self)
-            updateSelection()
+            updateItemSelection()
         }
     }
 
@@ -44,9 +44,11 @@ final class TopListViewModel: ObservableObject, TrafficCardViewModel {
     private var loadRequestCount = 0
     private var staleTimer: Task<Void, Never>?
 
-    var dateRange: StatsDateRange {
+    var dateRange: StatsDateRangeSelection {
         didSet { loadData() }
     }
+
+    var effectiveDateRange: StatsDateRange { dateRange.effectiveDateRange }
 
     struct Selection: Equatable, Sendable {
         var item: TopListItemType
@@ -76,7 +78,7 @@ final class TopListViewModel: ObservableObject, TrafficCardViewModel {
         self.configuration = configuration
         self.selection = Selection(item: configuration.item, metric: configuration.metric)
         self.items = items ?? service.supportedItems
-        self.dateRange = dateRange
+        self.dateRange = StatsDateRangeSelection(range: dateRange)
         self.service = service
         self.tracker = tracker
         self.fetchLimit = fetchLimit
@@ -100,7 +102,7 @@ final class TopListViewModel: ObservableObject, TrafficCardViewModel {
         self.configuration = newConfiguration
     }
 
-    private func updateSelection() {
+    private func updateItemSelection() {
         selection = Selection(item: configuration.item, metric: configuration.metric)
     }
 
@@ -138,7 +140,7 @@ final class TopListViewModel: ObservableObject, TrafficCardViewModel {
         }
 
         // Create a new loading task
-        loadingTask = Task { [selection, dateRange, weak self] in
+        loadingTask = Task { [selection, effectiveDateRange, weak self] in
             guard let self else { return }
 
             // Add delay for subsequent requests to avoid rapid API calls when
@@ -148,7 +150,7 @@ final class TopListViewModel: ObservableObject, TrafficCardViewModel {
             }
 
             guard !Task.isCancelled else { return }
-            await self.actuallyLoadData(for: selection, dateRange: dateRange)
+            await self.actuallyLoadData(for: selection, dateRange: effectiveDateRange)
         }
     }
 

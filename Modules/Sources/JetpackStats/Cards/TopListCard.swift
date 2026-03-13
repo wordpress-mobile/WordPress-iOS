@@ -175,7 +175,7 @@ struct TopListCard: View {
     private func navigateToTopListScreen() {
         let screen = TopListScreenView(
             selection: viewModel.selection,
-            dateRange: viewModel.dateRange,
+            dateRange: viewModel.effectiveDateRange,
             service: context.service,
             context: context,
             initialData: viewModel.data,
@@ -334,7 +334,7 @@ struct TopListCard: View {
             TopListItemsView(
                 data: data,
                 itemLimit: showMoreInline && isExpanded ? data.items.count : itemLimit,
-                dateRange: viewModel.dateRange,
+                dateRange: viewModel.effectiveDateRange,
                 reserveSpace: reserveSpace
             )
             if showMoreInline && data.items.count > itemLimit {

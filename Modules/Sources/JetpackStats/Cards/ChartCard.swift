@@ -4,9 +4,7 @@ import Charts
 struct ChartCard: View {
     @ObservedObject private var viewModel: ChartCardViewModel
 
-    private var onDateRangeSelected: ((StatsDateRange) -> Void)?
-
-    private var dateRange: StatsDateRange { viewModel.dateRange }
+    private var dateRange: StatsDateRange { viewModel.effectiveDateRange }
     private var metrics: [SiteMetric] { viewModel.metrics }
     private var selectedMetric: SiteMetric { viewModel.selectedMetric }
     private var selectedChartType: ChartType { viewModel.selectedChartType }
@@ -28,6 +26,10 @@ struct ChartCard: View {
             }
             .padding(.vertical, Constants.step2)
             .padding(.horizontal, Constants.step3)
+            .contentShape(Rectangle())
+            .onTapGesture {
+                viewModel.selectedBarDate = nil
+            }
 
             if metrics.count > 1 {
                 Divider()
@@ -96,7 +98,7 @@ struct ChartCard: View {
         HStack(alignment: .center, spacing: 0) {
             if let data = viewModel.chartData[selectedMetric] {
                 ChartValuesSummaryView(
-                    trend: .make(data, context: .regular),
+                    trend: viewModel.selectedBarTrend ?? .make(data, context: .regular),
                     style: .compact
                 )
             } else if viewModel.isFirstLoad {
@@ -111,8 +113,8 @@ struct ChartCard: View {
 
             ChartLegendView(
                 metric: selectedMetric,
-                currentPeriod: dateRange.dateInterval,
-                previousPeriod: dateRange.effectiveComparisonInterval
+                currentPeriod: viewModel.dateRange.subrange?.dateInterval ?? dateRange.dateInterval,
+                previousPeriod: viewModel.dateRange.subrange?.effectiveComparisonInterval ?? dateRange.effectiveComparisonInterval
             )
         }
         .dynamicTypeSize(...DynamicTypeSize.xxLarge)
@@ -275,33 +277,8 @@ struct ChartCard: View {
         case .line:
             LineChartView(data: data)
         case .columns:
-            BarChartView(data: data) { selection in
-                handleDateSelection(selection, data: data)
-            }
+            BarChartView(data: data, selectedBarDate: $viewModel.selectedBarDate)
         }
-    }
-
-    private func handleDateSelection(_ selection: Date, data: ChartData) {
-        let calendar = viewModel.dateRange.calendar
-        let component = data.granularity.component
-        guard let interval = calendar.dateInterval(of: component, for: selection) else {
-            return assertionFailure("invalid component or date")
-        }
-        let newDateRange = StatsDateRange(
-            interval: interval,
-            component: component,
-            comparison: viewModel.dateRange.comparison,
-            calendar: calendar
-        )
-        onDateRangeSelected?(newDateRange)
-        viewModel.tracker?.send(.chartBarSelected)
-    }
-
-    /// Configures the action when a bar is tapped for drill-down navigation
-    func onDateRangeSelected(_ action: @escaping (StatsDateRange) -> Void) -> ChartCard {
-        var copy = self
-        copy.onDateRangeSelected = action
-        return copy
     }
 }
 

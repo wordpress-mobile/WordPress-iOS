@@ -7,6 +7,8 @@
 * [*] [internal] Fix retain cycle in Reader Article screen [#25364]
 * [*] Fix incorrect default Post Format in new posts [#25369]
 
+* [*] Stats: fix an issue where tapping on a bar in a bar chart would somtimes select an adjacent bar [#25374]
+* [*] Stats: improve bar selection. When you tap on a bar, it will now select this subrange without fully navigating it, which makes it much easier to go through multiple subranges. [#25374]
 
 26.7
 -----

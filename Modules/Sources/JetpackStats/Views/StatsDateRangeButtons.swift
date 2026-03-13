@@ -1,8 +1,15 @@
 import SwiftUI
 
 struct StatsDateRangeButtons: View {
-    @Binding var dateRange: StatsDateRange
+    @Binding var dateRange: StatsDateRangeSelection
     @State private var isShowingCustomRangePicker = false
+
+    private var dateRangeBinding: Binding<StatsDateRange> {
+        Binding(
+            get: { dateRange.range },
+            set: { dateRange = StatsDateRangeSelection(range: $0) }
+        )
+    }
 
     var body: some View {
         Group {
@@ -12,12 +19,12 @@ struct StatsDateRangeButtons: View {
             )
             .modifier(ProminentMenuModifier())
             .popover(isPresented: $isShowingCustomRangePicker) {
-                CustomDateRangePicker(dateRange: $dateRange)
+                CustomDateRangePicker(dateRange: dateRangeBinding)
                     .frame(idealWidth: 360)
             }
-            StatsNavigationButton(dateRange: $dateRange, direction: .backward)
+            StatsNavigationButton(selection: $dateRange, direction: .backward)
                 .modifier(ProminentMenuModifier())
-            StatsNavigationButton(dateRange: $dateRange, direction: .forward)
+            StatsNavigationButton(selection: $dateRange, direction: .forward)
                 .modifier(ProminentMenuModifier())
         }
 
@@ -25,48 +32,55 @@ struct StatsDateRangeButtons: View {
 }
 
 struct StatsDatePickerToolbarItem: View {
-    @Binding var dateRange: StatsDateRange
+    @Binding var dateRange: StatsDateRangeSelection
     @Binding var isShowingCustomRangePicker: Bool
 
     @Environment(\.context) var context
 
+    private var dateRangeBinding: Binding<StatsDateRange> {
+        Binding(
+            get: { dateRange.range },
+            set: { dateRange = StatsDateRangeSelection(range: $0) }
+        )
+    }
+
     var body: some View {
         Menu {
             StatsDateRangePickerMenu(
-                selection: $dateRange,
+                selection: dateRangeBinding,
                 isShowingCustomRangePicker: $isShowingCustomRangePicker
             )
         } label: {
             HStack {
                 Image(systemName: "calendar")
-                Text(context.formatters.dateRange.string(from: dateRange.dateInterval))
+                Text(context.formatters.dateRange.string(from: dateRange.effectiveDateRange.dateInterval))
             }
         }
         .menuOrder(.fixed)
         .menuStyle(.button)
-        .accessibilityLabel(Strings.Accessibility.dateRangeSelected(context.formatters.dateRange.string(from: dateRange.dateInterval)))
+        .accessibilityLabel(Strings.Accessibility.dateRangeSelected(context.formatters.dateRange.string(from: dateRange.effectiveDateRange.dateInterval)))
         .accessibilityHint(Strings.Accessibility.selectDateRange)
     }
 }
 
 struct StatsNavigationButton: View {
-    @Binding var dateRange: StatsDateRange
+    @Binding var selection: StatsDateRangeSelection
     let direction: NavigationDirection
 
     @Environment(\.context) var context
 
     var body: some View {
-        let isDisabled = !dateRange.canNavigate(in: direction)
+        let isDisabled = !selection.canNavigate(in: direction)
 
         Button {
             // Track navigation
-            let periodType = dateRange.preset?.analyticsName ?? "custom"
+            let periodType = selection.range.preset?.analyticsName ?? "custom"
             context.tracker?.send(.dateNavigationButtonTapped, properties: [
                 "direction": direction == .forward ? "next" : "previous",
                 "current_period_type": periodType
             ])
 
-            dateRange = dateRange.navigate(direction)
+            selection.navigate(direction)
         } label: {
             Image(systemName: direction.systemImage)
                 .foregroundStyle(isDisabled ? Color(.tertiaryLabel) : Color.primary)

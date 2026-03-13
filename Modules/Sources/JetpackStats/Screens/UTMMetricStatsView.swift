@@ -5,7 +5,7 @@ import DesignSystem
 struct UTMMetricStatsView: View {
     let utmMetric: TopListItem.UTMMetric
 
-    @State private var dateRange: StatsDateRange
+    @State private var dateRange: StatsDateRangeSelection
 
     @StateObject private var viewModel: TopListViewModel
 
@@ -16,7 +16,7 @@ struct UTMMetricStatsView: View {
         self.utmMetric = utmMetric
 
         let range = initialDateRange ?? context.calendar.makeDateRange(for: .last30Days)
-        self._dateRange = State(initialValue: range)
+        self._dateRange = State(initialValue: StatsDateRangeSelection(range: range))
 
         let configuration = TopListCardConfiguration(
             item: .postsAndPages,

@@ -6,28 +6,26 @@ import UIKit
 final class StatsViewModel: ObservableObject, CardConfigurationDelegate {
     @Published var trafficCardConfiguration: TrafficCardConfiguration
 
-    @Published var dateRange: StatsDateRange {
+    @Published var dateRange: StatsDateRangeSelection {
         didSet {
-            updateViewModelsDateRange()
-            if !isNavigationStackLocked {
+            updateViewModelsSelection()
+            if dateRange.range != oldValue.range {
                 saveSelectedDateRangePreset()
                 saveSelectedComparisonPeriod()
-            }
-            if !dateRange.isAdjacent(to: oldValue) {
-                clearNavigationStack()
             }
         }
     }
 
-    private var isNavigationStackLocked = false
+    var effectiveDateRange: StatsDateRange { dateRange.range }
+
+    private weak var selectedChartViewModel: ChartCardViewModel?
 
     @Published private(set) var cards: [any TrafficCardViewModel] = []
-    @Published private(set) var dateRangeNavigationStack: [StatsDateRange] = []
-
     let scrollToCardSubject = PassthroughSubject<UUID, Never>()
 
     let context: StatsContext
 
+    private var selectionCancellable: AnyCancellable?
     private let userDefaults: UserDefaults
     private static let configurationKey = "JetpackStatsTrafficConfiguration"
     private static let dateRangePresetKey = "JetpackStatsSelectedDateRangePreset"
@@ -42,10 +40,10 @@ final class StatsViewModel: ObservableObject, CardConfigurationDelegate {
 
         let preset = Self.loadDateRangePreset(from: userDefaults)
         let comparison = Self.loadComparisonPeriod(from: userDefaults)
-        self.dateRange = context.calendar.makeDateRange(
+        self.dateRange = StatsDateRangeSelection(range: context.calendar.makeDateRange(
             for: preset ?? .last7Days,
             comparison: comparison ?? .precedingPeriod
-        )
+        ))
 
         let configuraiton = Self.getConfiguration(from: userDefaults)
         self.trafficCardConfiguration = configuraiton ?? Self.makeDefaultConfiguration(context: context)
@@ -117,6 +115,38 @@ final class StatsViewModel: ObservableObject, CardConfigurationDelegate {
 
     private func configureCards() {
         cards = trafficCardConfiguration.cards.map(createViewModel)
+        subscribeToChartSelection()
+    }
+
+    private func subscribeToChartSelection() {
+        guard let chartVM = cards.first(where: { $0 is ChartCardViewModel }) as? ChartCardViewModel else { return }
+        selectedChartViewModel = chartVM
+
+        selectionCancellable = chartVM.$selectedBarDate
+            .dropFirst()
+            .removeDuplicates()
+            .sink { [weak self] selectedDate in
+                self?.handleChartBarSelection(selectedDate)
+            }
+    }
+
+    private func handleChartBarSelection(_ selectedDate: Date?) {
+        guard let chartVM = selectedChartViewModel else { return }
+
+        if let selectedDate {
+            let granularity = chartVM.effectiveGranularity
+            let calendar = dateRange.range.calendar
+            guard let interval = calendar.dateInterval(of: granularity.component, for: selectedDate) else { return }
+            let subrange = StatsDateRange(
+                interval: interval,
+                component: granularity.component,
+                comparison: dateRange.range.comparison,
+                calendar: calendar
+            )
+            dateRange.subrange = subrange
+        } else {
+            dateRange.subrange = nil
+        }
     }
 
     private func createViewModel(for card: TrafficCardConfiguration.Card) -> TrafficCardViewModel {
@@ -126,20 +156,20 @@ final class StatsViewModel: ObservableObject, CardConfigurationDelegate {
         case .today(let configuration):
             viewModel = TodayCardViewModel(
                 configuration: configuration,
-                dateRange: dateRange,
+                dateRange: effectiveDateRange,
                 context: context
             )
         case .chart(let configuration):
             viewModel = ChartCardViewModel(
                 configuration: configuration,
-                dateRange: dateRange,
+                dateRange: effectiveDateRange,
                 service: context.service,
                 tracker: context.tracker
             )
         case .topList(let configuration):
             viewModel = TopListViewModel(
                 configuration: configuration,
-                dateRange: dateRange,
+                dateRange: effectiveDateRange,
                 service: context.service,
                 tracker: context.tracker
             )
@@ -149,36 +179,10 @@ final class StatsViewModel: ObservableObject, CardConfigurationDelegate {
         return viewModel
     }
 
-    private func updateViewModelsDateRange() {
+    private func updateViewModelsSelection() {
         for card in cards {
             card.dateRange = dateRange
         }
-    }
-
-    // MARK: - Date Range Navigation
-
-    /// Navigates to a new date range with drill-down, pushing current range to stack
-    func pushDateRange(_ newDateRange: StatsDateRange) {
-        isNavigationStackLocked = true
-        dateRangeNavigationStack.append(dateRange)
-        dateRange = newDateRange
-        isNavigationStackLocked = false
-    }
-
-    /// Pops the previous date range from the navigation stack
-    func popDateRange() {
-        guard let previousRange = dateRangeNavigationStack.popLast() else {
-            return
-        }
-        isNavigationStackLocked = true
-        dateRange = previousRange
-        isNavigationStackLocked = false
-    }
-
-    /// Clears the navigation stack
-    private func clearNavigationStack() {
-        guard !isNavigationStackLocked else { return }
-        dateRangeNavigationStack.removeAll()
     }
 
     // MARK: - Adding Cards
@@ -305,7 +309,7 @@ final class StatsViewModel: ObservableObject, CardConfigurationDelegate {
     // MARK: - Date Range Persistence
 
     private func saveSelectedDateRangePreset() {
-        if let preset = dateRange.preset {
+        if let preset = dateRange.range.preset {
             userDefaults.set(preset.rawValue, forKey: Self.dateRangePresetKey)
         } else {
             // Do nothing – remember last used preset-based period
@@ -321,7 +325,7 @@ final class StatsViewModel: ObservableObject, CardConfigurationDelegate {
     }
 
     private func saveSelectedComparisonPeriod() {
-        userDefaults.set(dateRange.comparison.rawValue, forKey: Self.comparisonPeriodKey)
+        userDefaults.set(dateRange.range.comparison.rawValue, forKey: Self.comparisonPeriodKey)
     }
 
     private static func loadComparisonPeriod(from userDefaults: UserDefaults) -> DateRangeComparisonPeriod? {
@@ -346,6 +350,6 @@ final class StatsViewModel: ObservableObject, CardConfigurationDelegate {
         userDefaults.removeObject(forKey: Self.comparisonPeriodKey)
 
         // Reset date range to default
-        dateRange = context.calendar.makeDateRange(for: .last7Days)
+        dateRange = StatsDateRangeSelection(range: context.calendar.makeDateRange(for: .last7Days))
     }
 }
