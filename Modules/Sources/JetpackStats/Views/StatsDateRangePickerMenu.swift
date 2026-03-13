@@ -18,16 +18,16 @@ struct StatsDateRangePickerMenu: View {
         Section {
             makePresetButtons(for: [
                 .last7Days,
-                .last14Days,
                 .last30Days,
+                .last12Months
             ])
             Menu {
                 Section {
                     makePresetButtons(for: [
+                        .last14Days,
                         .last28Days,
                         .last12Weeks,
                         .last6Months,
-                        .last12Months,
                         .last3Years,
                         .last10Years
                     ])
