@@ -29,7 +29,7 @@ import WordPressShared
 /// ]
 /// ```
 public struct PostMetadataContainer {
-    public struct Key: ExpressibleByStringLiteral, Hashable {
+    public struct Key: ExpressibleByStringLiteral, Hashable, Sendable {
         public let rawValue: String
 
         public init(rawValue: String) {
