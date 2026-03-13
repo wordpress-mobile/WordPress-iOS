@@ -80,7 +80,7 @@ struct StatsDateRangeSelectionTests {
     }
 
     @Test
-    func navigateForwardWithSubrangeClearsWhenExitingRange() {
+    func navigateForwardWithSubrangeClearsAndNavigatesRangeWhenExitingRange() {
         let range = makeRange(start: "2025-01-01T00:00:00Z", end: "2025-01-08T00:00:00Z", component: .weekOfYear)
         // Subrange is at the last day of the range
         let subrange = makeRange(start: "2025-01-07T00:00:00Z", end: "2025-01-08T00:00:00Z", component: .day)
@@ -88,32 +88,61 @@ struct StatsDateRangeSelectionTests {
 
         selection.navigate(.forward)
 
-        // Navigating forward would put subrange outside range, so subrange should be cleared
+        // Navigating forward clears the subrange and navigates the range
         #expect(selection.subrange == nil)
-        // Range should remain unchanged
-        #expect(selection.range == range)
+        #expect(selection.range.dateInterval.start == Date("2025-01-08T00:00:00Z"))
     }
 
     @Test
-    func navigateBackwardWithSubrangeClearsWhenExitingRange() {
-        let range = makeRange(start: "2025-01-01T00:00:00Z", end: "2025-01-08T00:00:00Z", component: .weekOfYear)
+    func navigateBackwardWithSubrangeClearsAndNavigatesRangeWhenExitingRange() {
+        let range = makeRange(start: "2025-01-08T00:00:00Z", end: "2025-01-15T00:00:00Z", component: .weekOfYear)
         // Subrange is at the first day of the range
-        let subrange = makeRange(start: "2025-01-01T00:00:00Z", end: "2025-01-02T00:00:00Z", component: .day)
+        let subrange = makeRange(start: "2025-01-08T00:00:00Z", end: "2025-01-09T00:00:00Z", component: .day)
         var selection = StatsDateRangeSelection(range: range, subrange: subrange)
 
         selection.navigate(.backward)
 
-        // Navigating backward would put subrange before range start, so subrange should be cleared
+        // Navigating backward clears the subrange and navigates the range
         #expect(selection.subrange == nil)
-        #expect(selection.range == range)
+        #expect(selection.range.dateInterval.start == Date("2025-01-01T00:00:00Z"))
+    }
+
+    @Test
+    func navigateWithLargeGranularitySubrange() {
+        // Simulates custom weekly granularity in a 7-day range
+        let range = makeRange(start: "2025-01-01T00:00:00Z", end: "2025-01-08T00:00:00Z", component: .weekOfYear)
+        // Weekly subrange covers almost the entire range
+        let subrange = makeRange(start: "2025-01-01T00:00:00Z", end: "2025-01-08T00:00:00Z", component: .weekOfYear)
+        var selection = StatsDateRangeSelection(range: range, subrange: subrange)
+
+        // Both directions should be navigable (falls through to range navigation)
+        #expect(selection.canNavigate(in: .forward))
+        #expect(selection.canNavigate(in: .backward))
+
+        // Navigate forward: clears subrange and navigates the range
+        selection.navigate(.forward)
+        #expect(selection.subrange == nil)
+        #expect(selection.range.dateInterval.start == Date("2025-01-08T00:00:00Z"))
     }
 
     // MARK: - canNavigate
 
     @Test
-    func canNavigateReturnsTrueWhenSubrangeExists() {
+    func canNavigateReturnsTrueWhenSubrangeCanMoveWithinRange() {
         let range = makeRange(start: "2025-01-01T00:00:00Z", end: "2025-01-08T00:00:00Z", component: .weekOfYear)
         let subrange = makeRange(start: "2025-01-03T00:00:00Z", end: "2025-01-04T00:00:00Z", component: .day)
+        let selection = StatsDateRangeSelection(range: range, subrange: subrange)
+
+        #expect(selection.canNavigate(in: .forward))
+        #expect(selection.canNavigate(in: .backward))
+    }
+
+    @Test
+    func canNavigateReturnsTrueWhenSubrangeAtEdgeButRangeCanNavigate() {
+        // Subrange at the end of the range — can't move forward within range,
+        // but the range itself can navigate, so forward should still be enabled
+        let range = makeRange(start: "2025-01-01T00:00:00Z", end: "2025-01-08T00:00:00Z", component: .weekOfYear)
+        let subrange = makeRange(start: "2025-01-07T00:00:00Z", end: "2025-01-08T00:00:00Z", component: .day)
         let selection = StatsDateRangeSelection(range: range, subrange: subrange)
 
         #expect(selection.canNavigate(in: .forward))

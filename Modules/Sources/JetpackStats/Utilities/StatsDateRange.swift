@@ -124,15 +124,20 @@ struct StatsDateRangeSelection: Equatable {
     mutating func navigate(_ direction: NavigationDirection) {
         if let currentSubrange = subrange {
             let newSubrange = currentSubrange.navigate(direction)
-            self.subrange = isWithinRange(newSubrange) ? newSubrange : nil
+            if isWithinRange(newSubrange) {
+                self.subrange = newSubrange
+            } else {
+                self.subrange = nil
+                range = range.navigate(direction)
+            }
         } else {
             range = range.navigate(direction)
         }
     }
 
     func canNavigate(in direction: NavigationDirection) -> Bool {
-        if let subrange {
-            return isWithinRange(subrange.navigate(direction))
+        if let subrange, isWithinRange(subrange.navigate(direction)) {
+            return true
         }
         return range.canNavigate(in: direction)
     }
