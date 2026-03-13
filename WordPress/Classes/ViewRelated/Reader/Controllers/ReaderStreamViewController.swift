@@ -186,8 +186,13 @@ import AutomatticTracks
     private var showConfirmation = true
 
     var isEmbeddedInDiscover = false
+    var suppressesScreenTracking = false
     var isNotificationsBarButtonEnabled = false
     var preferredTableHeaderView: UIView?
+
+    /// The active discover tab identifier (e.g. `"recommended"`), set by the
+    /// parent ``ReaderDiscoverViewController``.
+    var discoverTab: String?
 
     var isCompact = true {
         didSet {
@@ -329,6 +334,10 @@ import AutomatticTracks
 
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
+
+        if !suppressesScreenTracking, let screen = resolveReaderScreenID() {
+            WPAnalytics.track(screen: screen, context: trackingContext)
+        }
 
         let mainContext = ContextManager.shared.mainContext
         NotificationCenter.default.removeObserver(self, name: NSNotification.Name.NSManagedObjectContextDidSave, object: mainContext)
@@ -766,6 +775,40 @@ import AutomatticTracks
 
         didBumpStats = true
         ReaderHelpers.trackLoadedTopic(topic, withProperties: properties)
+    }
+
+    /// The tracking source for this screen, including the discover tab section if applicable.
+    var resolvedSource: ScreenTrackingSource? {
+        guard let screen = resolveReaderScreenID() else { return nil }
+        var source = ScreenTrackingSource(screen)
+        source.section = discoverTab
+        return source
+    }
+
+    /// Maps the current topic/content type to a `ReaderScreen` identifier.
+    private func resolveReaderScreenID() -> String? {
+        if contentType == .saved {
+            return ScreenID.Reader.saved
+        }
+        guard let topic = readerTopic else {
+            return nil
+        }
+        if ReaderHelpers.topicIsDiscover(topic) {
+            return ScreenID.Reader.discover
+        } else if ReaderHelpers.topicIsFollowing(topic) {
+            return ScreenID.Reader.following
+        } else if ReaderHelpers.topicIsLiked(topic) {
+            return ScreenID.Reader.likes
+        } else if ReaderHelpers.isTopicSite(topic) {
+            return ScreenID.Reader.site
+        } else if ReaderHelpers.isTopicTag(topic) {
+            return ScreenID.Reader.tag
+        } else if ReaderHelpers.isTopicList(topic) {
+            return ScreenID.Reader.list
+        } else if topic is ReaderTeamTopic {
+            return ScreenID.Reader.organization
+        }
+        return nil
     }
 
     // MARK: - Sync Methods
@@ -1437,6 +1480,12 @@ extension ReaderStreamViewController: WPTableViewHandlerDelegate {
 
         let controller = ReaderDetailViewController.controllerWithPost(post)
         controller.coordinator?.readerTopic = readerTopic
+
+        if var source = resolvedSource {
+            source.component = ElementID.Reader.postCard
+            source.position = indexPath.row
+            controller.trackingContext.source = source
+        }
 
         if post.isSavedForLater || contentType == .saved {
             trackSavedPostNavigation()

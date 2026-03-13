@@ -19,8 +19,8 @@ enum PublishingSheetResult {
 
 /// A screen shown just before publishing the post and allows you to change
 /// the post settings along with some publishing options like the publish date.
-final class PublishPostViewController: UIHostingController<PublishPostView> {
-    private let viewModel: PostSettingsViewModel
+final class PublishPostViewController: UIHostingController<AnyView> {
+    private let viewModel: any PostSettingsViewModelProtocol
     private let uploadsViewModel: PostMediaUploadsViewModel?
 
     var onCompletion: ((PublishingSheetResult) -> Void)?
@@ -33,7 +33,7 @@ final class PublishPostViewController: UIHostingController<PublishPostView> {
         self.uploadsViewModel = uploadsViewModel
 
         let view = PublishPostView(viewModel: viewModel, uploadsViewModel: uploadsViewModel)
-        super.init(rootView: view)
+        super.init(rootView: AnyView(view))
     }
 
     static func show(for revision: AbstractPost, isStandalone: Bool = false, from presentingViewController: UIViewController, completion: @escaping (PublishingSheetResult) -> Void) {
@@ -57,12 +57,12 @@ final class PublishPostViewController: UIHostingController<PublishPostView> {
         editorService: CustomPostEditorService,
         blog: Blog
     ) {
-        let viewModel = PostSettingsViewModel(editorService: editorService, blog: blog, context: .publishing)
+        let viewModel = CustomPostSettingsViewModel(editorService: editorService, blog: blog, context: .publishing)
         self.viewModel = viewModel
         self.uploadsViewModel = nil
 
         let view = PublishPostView(viewModel: viewModel, uploadsViewModel: nil)
-        super.init(rootView: view)
+        super.init(rootView: AnyView(view))
     }
 
     static func show(
@@ -110,8 +110,8 @@ final class PublishPostViewController: UIHostingController<PublishPostView> {
     }
 }
 
-struct PublishPostView: View {
-    @ObservedObject var viewModel: PostSettingsViewModel
+struct PublishPostView<ViewModel: PostSettingsViewModelProtocol>: View {
+    @ObservedObject var viewModel: ViewModel
     var uploadsViewModel: PostMediaUploadsViewModel?
 
     @State private var isShowingDiscardChangesAlert = false
@@ -210,13 +210,6 @@ private struct PublishPostMediaSection: View {
                 PostMediaUploadsSnackbarView(state: state)
             }
         }
-    }
-}
-
-private extension PostSettingsViewModel {
-    var publishButtonTitle: String {
-        let isScheduled = settings.publishDate.map { $0 > .now } ?? false
-        return isScheduled ? Strings.schedule : Strings.publish
     }
 }
 

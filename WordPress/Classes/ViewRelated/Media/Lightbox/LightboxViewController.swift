@@ -8,6 +8,8 @@ import UniformTypeIdentifiers
 final class LightboxViewController: UIViewController {
     private var pageVC: LightboxImagePageViewController?
     private var items: [LightboxItem]
+    private var selectedIndex: Int
+    private var pageCounter: UILabel?
 
     /// A thumbnail to display during transition and for the initial image download.
     var thumbnail: UIImage?
@@ -32,9 +34,13 @@ final class LightboxViewController: UIViewController {
         self.init(items: [item])
     }
 
-    private init(items: [LightboxItem], configuration: Configuration = .init()) {
-        assert(items.count == 1, "Current API supports only one item at a time")
+    convenience init(assets: [LightboxAsset], selectedIndex: Int = 0) {
+        self.init(items: assets.map { .asset($0) }, selectedIndex: selectedIndex)
+    }
+
+    private init(items: [LightboxItem], selectedIndex: Int = 0, configuration: Configuration = .init()) {
         self.items = items
+        self.selectedIndex = min(selectedIndex, max(items.count - 1, 0))
         self.configuration = configuration
         super.init(nibName: nil, bundle: nil)
     }
@@ -48,26 +54,83 @@ final class LightboxViewController: UIViewController {
 
         view.backgroundColor = configuration.backgroundColor
 
-        if let item = items.first {
-            show(item)
+        if items.count > 1 {
+            showPageViewController()
+        } else if let item = items.first {
+            showSingle(item)
         }
         if configuration.showsCloseButton {
             addCloseButton()
         }
     }
 
-    private func show(_ item: LightboxItem) {
+    // MARK: - Single item
+
+    private func showSingle(_ item: LightboxItem) {
         let pageVC = LightboxImagePageViewController(item: item)
-        pageVC.willMove(toParent: self)
-        addChild(pageVC)
-        view.addSubview(pageVC.view)
-        pageVC.view.pinEdges()
-        pageVC.didMove(toParent: self)
+        addFullscreenChild(pageVC)
         if let thumbnail {
             pageVC.scrollView.configure(with: thumbnail)
             self.thumbnail = nil
         }
         self.pageVC = pageVC
+    }
+
+    // MARK: - Multi-item (UIPageViewController)
+
+    private var uiPageVC: UIPageViewController?
+
+    private func showPageViewController() {
+        let pageVC = UIPageViewController(transitionStyle: .scroll, navigationOrientation: .horizontal)
+        pageVC.dataSource = self
+        pageVC.delegate = self
+        let initialVC = makeImagePageVC(at: selectedIndex)
+        pageVC.setViewControllers([initialVC], direction: .forward, animated: false)
+        addFullscreenChild(pageVC)
+        self.uiPageVC = pageVC
+
+        addPageCounter()
+        updatePageCounter()
+    }
+
+    private func makeImagePageVC(at index: Int) -> LightboxImagePageViewController {
+        let vc = LightboxImagePageViewController(item: items[index])
+        vc.pageIndex = index
+        return vc
+    }
+
+    // MARK: - Page Counter
+
+    private func addPageCounter() {
+        let label = UILabel()
+        label.font = .preferredFont(forTextStyle: .footnote)
+        label.textColor = .white
+        label.textAlignment = .center
+        label.layer.shadowColor = UIColor.black.cgColor
+        label.layer.shadowOffset = .zero
+        label.layer.shadowRadius = 3
+        label.layer.shadowOpacity = 0.5
+        view.addSubview(label)
+        label.translatesAutoresizingMaskIntoConstraints = false
+        NSLayoutConstraint.activate([
+            label.centerXAnchor.constraint(equalTo: view.centerXAnchor),
+            label.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor, constant: -12)
+        ])
+        self.pageCounter = label
+    }
+
+    private func updatePageCounter() {
+        pageCounter?.text = "\(selectedIndex + 1) / \(items.count)"
+    }
+
+    // MARK: - Helpers
+
+    private func addFullscreenChild(_ child: UIViewController) {
+        child.willMove(toParent: self)
+        addChild(child)
+        view.addSubview(child.view)
+        child.view.pinEdges()
+        child.didMove(toParent: self)
     }
 
     private func addCloseButton() {
@@ -94,7 +157,7 @@ final class LightboxViewController: UIViewController {
             options.alignmentRectProvider = { context in
                 // For more info, see https://douglashill.co/zoom-transitions/#Zooming-to-only-part-of-the-destination-view
                 let detailViewController = context.zoomedViewController as! LightboxViewController
-                let detailsView: UIView = detailViewController.pageVC?.scrollView.imageView ?? detailViewController.view
+                let detailsView: UIView = detailViewController.currentPageVC?.scrollView.imageView ?? detailViewController.view
                 return detailsView.convert(detailsView.bounds, to: detailViewController.view)
             }
             preferredTransition = .zoom(options: options) { context in
@@ -112,6 +175,39 @@ final class LightboxViewController: UIViewController {
                 thumbnail = getThumbnail(fromSourceView: sourceView)
             }
         }
+    }
+
+    /// Returns the currently visible `LightboxImagePageViewController`.
+    private var currentPageVC: LightboxImagePageViewController? {
+        if let pageVC { return pageVC }
+        return uiPageVC?.viewControllers?.first as? LightboxImagePageViewController
+    }
+}
+
+// MARK: - UIPageViewControllerDataSource
+
+extension LightboxViewController: UIPageViewControllerDataSource {
+    func pageViewController(_ pageViewController: UIPageViewController, viewControllerBefore viewController: UIViewController) -> UIViewController? {
+        guard let vc = viewController as? LightboxImagePageViewController,
+              vc.pageIndex > 0 else { return nil }
+        return makeImagePageVC(at: vc.pageIndex - 1)
+    }
+
+    func pageViewController(_ pageViewController: UIPageViewController, viewControllerAfter viewController: UIViewController) -> UIViewController? {
+        guard let vc = viewController as? LightboxImagePageViewController,
+              vc.pageIndex < items.count - 1 else { return nil }
+        return makeImagePageVC(at: vc.pageIndex + 1)
+    }
+}
+
+// MARK: - UIPageViewControllerDelegate
+
+extension LightboxViewController: UIPageViewControllerDelegate {
+    func pageViewController(_ pageViewController: UIPageViewController, didFinishAnimating finished: Bool, previousViewControllers: [UIViewController], transitionCompleted completed: Bool) {
+        guard completed,
+              let vc = pageViewController.viewControllers?.first as? LightboxImagePageViewController else { return }
+        selectedIndex = vc.pageIndex
+        updatePageCounter()
     }
 }
 

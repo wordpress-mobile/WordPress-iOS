@@ -150,7 +150,7 @@ steps:
       - label: ":danger: Danger - PR Check"
         command: danger
         key: danger
-        if: "build.pull_request.id != null"
+        # No "build.pull_request.id" condition as we want this check to run also on merge queues where it is a no-op
         retry:
           manual:
             permit_on_passed: true

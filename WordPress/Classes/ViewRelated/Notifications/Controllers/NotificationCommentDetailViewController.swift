@@ -305,10 +305,10 @@ private extension NotificationCommentDetailViewController {
 
     func showLoadingView() {
         if let detailsVC {
-            detailsVC.showNoResultsView(title: NoResults.loadingTitle, accessoryView: NoResultsViewController.loadingAccessoryView())
+            detailsVC.showNoResultsView(title: "", accessoryView: NoResultsViewController.loadingAccessoryView())
         } else {
             hideNoResults()
-            configureAndDisplayNoResults(on: view, title: NoResults.loadingTitle, accessoryView: NoResultsViewController.loadingAccessoryView())
+            configureAndDisplayNoResults(on: view, title: "", accessoryView: NoResultsViewController.loadingAccessoryView())
         }
     }
 
@@ -322,7 +322,6 @@ private extension NotificationCommentDetailViewController {
     }
 
     struct NoResults {
-        static let loadingTitle = NSLocalizedString("Loading comment...", comment: "Displayed while a comment is being loaded.")
         static let errorTitle = NSLocalizedString("Oops", comment: "Title for the view when there's an error loading a comment.")
         static let errorSubtitle = NSLocalizedString("There was an error loading the comment.", comment: "Text displayed when there is a failure loading a comment.")
         static let imageName = "wp-illustration-notifications"

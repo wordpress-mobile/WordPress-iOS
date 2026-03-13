@@ -7,7 +7,7 @@ import WordPressShared
 
 class ReaderDiscoverViewController: UIViewController, ReaderDiscoverHeaderViewDelegate {
     private let headerView = ReaderDiscoverHeaderView()
-    private var selectedChannel: ReaderDiscoverChannel = .freshlyPresed
+    private var selectedChannel: ReaderDiscoverChannel = .freshlyPressed
     private let topic: ReaderAbstractTopic
     private var streamVC: ReaderStreamViewController?
     private weak var selectInterestsVC: ReaderSelectInterestsViewController?
@@ -43,6 +43,13 @@ class ReaderDiscoverViewController: UIViewController, ReaderDiscoverHeaderViewDe
         configureStream(for: selectedChannel)
 
         showSelectInterestsIfNeeded()
+    }
+
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
+
+        WPAnalytics.track(screen: ScreenID.Reader.discover, context: trackingContext)
+        trackDiscoverTab(selectedChannel)
     }
 
     override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
@@ -83,7 +90,7 @@ class ReaderDiscoverViewController: UIViewController, ReaderDiscoverHeaderViewDe
             .filter { $0.slug != ReaderTagTopic.dailyPromptTag }
             .map(ReaderDiscoverChannel.tag)
 
-        headerView.configure(channels: [.freshlyPresed, .recommended, .latest, .firstPosts, .dailyPrompts] + channels)
+        headerView.configure(channels: [.freshlyPressed, .recommended, .latest, .firstPosts, .dailyPrompts] + channels)
         headerView.setSelectedChannel(selectedChannel)
     }
 
@@ -95,7 +102,7 @@ class ReaderDiscoverViewController: UIViewController, ReaderDiscoverHeaderViewDe
 
     private func makeViewController(for channel: ReaderDiscoverChannel) -> ReaderStreamViewController {
         switch channel {
-        case .freshlyPresed:
+        case .freshlyPressed:
             ReaderStreamViewController.controllerWithTopic(ReaderHelpers.getFreshlyPressedTopic())
         case .recommended:
             ReaderDiscoverStreamViewController(topic: topic)
@@ -123,7 +130,10 @@ class ReaderDiscoverViewController: UIViewController, ReaderDiscoverHeaderViewDe
 
         // Important to set before `viewDidLoad`
         streamVC.isEmbeddedInDiscover = true
+        streamVC.suppressesScreenTracking = true
         streamVC.preferredTableHeaderView = headerView
+        streamVC.trackingContext = trackingContext
+        streamVC.discoverTab = selectedChannel.analyticsID
 
         addChild(streamVC)
         view.addSubview(streamVC.view)
@@ -151,6 +161,13 @@ class ReaderDiscoverViewController: UIViewController, ReaderDiscoverHeaderViewDe
         self.selectedChannel = selection
         configureStream(for: selection)
         WPAnalytics.track(.readerDiscoverChannelSelected, properties: selection.analyticsProperties)
+        trackDiscoverTab(selection)
+    }
+
+    private func trackDiscoverTab(_ channel: ReaderDiscoverChannel) {
+        var properties = channel.analyticsProperties
+        properties["source"] = "discover"
+        WPAnalytics.track(.readerDiscoverTabShown, properties: properties)
     }
 
     // MARK: Select Interests
@@ -408,15 +425,25 @@ extension ReaderDiscoverStreamViewController: ReaderRecommendationsCellDelegate 
         if topic as? ReaderTagTopic != nil {
             WPAnalytics.trackReader(.readerDiscoverTopicTapped)
 
-            let topicStreamViewController = ReaderStreamViewController.controllerWithTopic(topic)
-            navigationController?.pushViewController(topicStreamViewController, animated: true)
+            let controller = ReaderStreamViewController.controllerWithTopic(topic)
+            controller.trackingContext.source = resolvedSource.map {
+                var source = $0
+                source.component = ElementID.Reader.suggestedTagsCard
+                return source
+            }
+            navigationController?.pushViewController(controller, animated: true)
         } else if let siteTopic = topic as? ReaderSiteTopic {
             var properties = [String: Any]()
             properties[WPAppAnalyticsKeyBlogID] = siteTopic.siteID
             WPAnalytics.trackReader(.readerSuggestedSiteVisited, properties: properties)
 
-            let topicStreamViewController = ReaderStreamViewController.controllerWithSiteID(siteTopic.siteID, isFeed: false)
-            navigationController?.pushViewController(topicStreamViewController, animated: true)
+            let controller = ReaderStreamViewController.controllerWithSiteID(siteTopic.siteID, isFeed: false)
+            controller.trackingContext.source = resolvedSource.map {
+                var source = $0
+                source.component = ElementID.Reader.suggestedSitesCard
+                return source
+            }
+            navigationController?.pushViewController(controller, animated: true)
         }
     }
 }

@@ -85,7 +85,6 @@
 		0CCA99512DAD76AD0048F0A9 /* AppImages.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 433840C622C2BA5B00CB13F8 /* AppImages.xcassets */; };
 		0CCA99592DAD76BA0048F0A9 /* Noticons.ttf in Resources */ = {isa = PBXBuildFile; fileRef = F5A34D0C25DF2F7700C9654B /* Noticons.ttf */; };
 		0CCA995A2DAD76C20048F0A9 /* n.caf in Resources */ = {isa = PBXBuildFile; fileRef = 5D69DBC3165428CA00A2D1F7 /* n.caf */; };
-		0CCA995B2DAD76C90048F0A9 /* Flags.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 406A0EEF224D39C50016AD6A /* Flags.xcassets */; };
 		0CCA995C2DAD76D80048F0A9 /* PrivacyInfo.xcprivacy in Resources */ = {isa = PBXBuildFile; fileRef = 4A690C142BA790BC00A8E0C5 /* PrivacyInfo.xcprivacy */; };
 		0CCA995D2DAD76E00048F0A9 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 931DF4D818D09A2F00540BDD /* InfoPlist.strings */; };
 		0CCA995E2DAD76E00048F0A9 /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = E1D91454134A853D0089019C /* Localizable.strings */; };
@@ -141,7 +140,6 @@
 		3F7874622DA360840052F1BF /* WordPressData.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3F7AE0B52D9B30A100AB4892 /* WordPressData.framework */; };
 		3F7AE0BD2D9B30A200AB4892 /* WordPressData.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3F7AE0B52D9B30A100AB4892 /* WordPressData.framework */; };
 		3F7AE0E12D9B30A200AB4892 /* XcodeTarget_WordPressDataTests in Frameworks */ = {isa = PBXBuildFile; productRef = 3F7AE0E02D9B30A200AB4892 /* XcodeTarget_WordPressDataTests */; };
-		406A0EF0224D39C50016AD6A /* Flags.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 406A0EEF224D39C50016AD6A /* Flags.xcassets */; };
 		433840C722C2BA5B00CB13F8 /* AppImages.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 433840C622C2BA5B00CB13F8 /* AppImages.xcassets */; };
 		433840C822C2BA6300CB13F8 /* AppImages.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 433840C622C2BA5B00CB13F8 /* AppImages.xcassets */; };
 		433840C922C2BA6400CB13F8 /* AppImages.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 433840C622C2BA5B00CB13F8 /* AppImages.xcassets */; };
@@ -257,7 +255,6 @@
 		F98C58192228849E0073D752 /* XCTest+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = FF2716A01CABC7D40006E2D4 /* XCTest+Extensions.swift */; };
 		F9C47A6B238C7CFD00AAD9ED /* LoginFlow.swift in Sources */ = {isa = PBXBuildFile; fileRef = BED4D8321FF11E3800A11345 /* LoginFlow.swift */; };
 		F9C47A78238C7DAC00AAD9ED /* BaseScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE2B4E9E1FD664F5007AE3E4 /* BaseScreen.swift */; };
-		FABB1FD42602FC2C00C8785C /* Flags.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 406A0EEF224D39C50016AD6A /* Flags.xcassets */; };
 		FABB1FEE2602FC2C00C8785C /* AppImages.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 433840C622C2BA5B00CB13F8 /* AppImages.xcassets */; };
 		FABB1FF02602FC2C00C8785C /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 931DF4D818D09A2F00540BDD /* InfoPlist.strings */; };
 		FABB200A2602FC2C00C8785C /* Noticons.ttf in Resources */ = {isa = PBXBuildFile; fileRef = F5A34D0C25DF2F7700C9654B /* Noticons.ttf */; };
@@ -861,7 +858,6 @@
 		3F9DD3F72CC2188400DF1760 /* Common.alpha.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = Common.alpha.xcconfig; sourceTree = "<group>"; };
 		3FA640652670CEFE0064401E /* XCTest.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = XCTest.framework; path = Platforms/iPhoneOS.platform/Developer/Library/Frameworks/XCTest.framework; sourceTree = DEVELOPER_DIR; };
 		3FD4B20E2DCC468200781DFA /* Modules */ = {isa = PBXFileReference; lastKnownFileType = wrapper; name = Modules; path = ../Modules; sourceTree = SOURCE_ROOT; };
-		406A0EEF224D39C50016AD6A /* Flags.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Flags.xcassets; sourceTree = "<group>"; };
 		433840C622C2BA5B00CB13F8 /* AppImages.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; name = AppImages.xcassets; path = Resources/AppImages.xcassets; sourceTree = "<group>"; };
 		4A690C142BA790BC00A8E0C5 /* PrivacyInfo.xcprivacy */ = {isa = PBXFileReference; lastKnownFileType = text.xml; path = PrivacyInfo.xcprivacy; sourceTree = "<group>"; };
 		4A690C172BA794C300A8E0C5 /* PrivacyInfo.xcprivacy */ = {isa = PBXFileReference; lastKnownFileType = text.xml; path = PrivacyInfo.xcprivacy; sourceTree = "<group>"; };
@@ -1168,7 +1164,6 @@
 		3F7AE0D02D9B30A200AB4892 /* Exceptions for "WordPressData" folder in "WordPressData" target */ = {
 			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
 			publicHeaders = (
-				"Objective-C/include/Blog.h",
 				WordPressData.h,
 			);
 			target = 3F7AE0B42D9B30A100AB4892 /* WordPressData */;
@@ -1800,7 +1795,6 @@
 				433840C622C2BA5B00CB13F8 /* AppImages.xcassets */,
 				F5A34D0525DF2F7700C9654B /* Fonts */,
 				5D6651461637324000EBDA7D /* Sounds */,
-				406A0EEF224D39C50016AD6A /* Flags.xcassets */,
 				6EDC0E8E105881A800F68A1D /* iTunesArtwork */,
 				85ED98AA17DFB17200090D0B /* iTunesArtwork@2x */,
 				931DF4D818D09A2F00540BDD /* InfoPlist.strings */,
@@ -3016,7 +3010,6 @@
 			buildActionMask = 2147483647;
 			files = (
 				0CCA995A2DAD76C20048F0A9 /* n.caf in Resources */,
-				0CCA995B2DAD76C90048F0A9 /* Flags.xcassets in Resources */,
 				0CCA995D2DAD76E00048F0A9 /* InfoPlist.strings in Resources */,
 				0CCA995E2DAD76E00048F0A9 /* Localizable.strings in Resources */,
 				0CCA995C2DAD76D80048F0A9 /* PrivacyInfo.xcprivacy in Resources */,
@@ -3036,7 +3029,6 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				406A0EF0224D39C50016AD6A /* Flags.xcassets in Resources */,
 				433840C722C2BA5B00CB13F8 /* AppImages.xcassets in Resources */,
 				931DF4D618D09A2F00540BDD /* InfoPlist.strings in Resources */,
 				F5A34D1225DF2F7F00C9654B /* Noticons.ttf in Resources */,
@@ -3167,7 +3159,6 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				FABB1FD42602FC2C00C8785C /* Flags.xcassets in Resources */,
 				FABB1FEE2602FC2C00C8785C /* AppImages.xcassets in Resources */,
 				FABB1FF02602FC2C00C8785C /* InfoPlist.strings in Resources */,
 				FABB200A2602FC2C00C8785C /* Noticons.ttf in Resources */,

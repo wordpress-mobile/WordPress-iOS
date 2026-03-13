@@ -1,81 +1,84 @@
 import WordPressData
 
+protocol HierarchicalPost: Identifiable {
+    var postId: Int64 { get }
+    var parentPostId: Int64 { get }
+    var order: Int64 { get }
+}
+
 final class PageTree {
 
+    struct Entry<ID: Hashable>: Equatable {
+        let id: ID
+        let indentationLevel: Int
+        let hasVisibleParent: Bool
+    }
+
     // A node in a tree, which of course is also a tree itself.
-    private class TreeNode {
-        let page: Page
+    private class TreeNode<ID: Hashable> {
+        let id: ID
+        let postId: Int64
+        let parentPostId: Int64
+        let order: Int64
+
         var children = [TreeNode]()
         var parentNode: TreeNode?
 
-        init(page: Page) {
-            self.page = page
+        init<P: HierarchicalPost>(post: P) where P.ID == ID {
+            self.id = post.id
+            self.postId = post.postId
+            self.parentPostId = post.parentPostId
+            self.order = post.order
         }
 
-        func dfsList() -> [Page] {
-            var pages = [Page]()
-            _ = depthFirstSearch(sortByPageOrder: true) { level, node in
-                let page = node.page
-                page.hierarchyIndex = level
-                page.hasVisibleParent = node.parentNode != nil
-                pages.append(page)
-                return false
+        func dfsList() -> [Entry<ID>] {
+            var entries = [Entry<ID>]()
+            depthFirstSearch(level: 0) { level, node in
+                entries.append(Entry(
+                    id: node.id,
+                    indentationLevel: level,
+                    hasVisibleParent: node.parentNode != nil
+                ))
             }
-            return pages
+            return entries
         }
 
         /// Perform depth-first search starting with the current (`self`) node.
-        ///
-        /// - Parameter closure: A closure that takes a node and its level in the page tree as arguments and returns
-        ///     a boolean value indicate whether the search should be stopped.
-        /// - Returns: `true` if search has been stopped by the closure.
-        @discardableResult
-        func depthFirstSearch(sortByPageOrder: Bool, using closure: (Int, TreeNode) -> Bool) -> Bool {
-            depthFirstSearch(level: 0, sortByPageOrder: sortByPageOrder, using: closure)
-        }
-
-        private func depthFirstSearch(level: Int, sortByPageOrder: Bool, using closure: (Int, TreeNode) -> Bool) -> Bool {
-            let shouldStop = closure(level, self)
-            if shouldStop {
-                return true
+        private func depthFirstSearch(level: Int, using closure: (Int, TreeNode) -> Void) {
+            closure(level, self)
+            let sorted = children.sorted { $0.order < $1.order }
+            for child in sorted {
+                child.depthFirstSearch(level: level + 1, using: closure)
             }
-
-            let pages = sortByPageOrder ? children.sorted(using: KeyPathComparator(\TreeNode.page.order)) : children
-            for child in pages {
-                let shouldStop = child.depthFirstSearch(level: level + 1, sortByPageOrder: sortByPageOrder, using: closure)
-                if shouldStop {
-                    return true
-                }
-            }
-
-            return false
         }
     }
 
-    static func hierarchyList(of pages: [Page]) -> [Page] {
-        // An array of `TreeNode` instances that are one-to-one map of the `pages` list.
-        var nodes: [TreeNode] = []
-        // A map of parent page (the dictionary key) to its children (the dictionary value).
-        var children: [NSNumber: [TreeNode]] = [:]
-        var allPostIDs: Set<NSNumber> = []
+    static func buildHierarchy<P: HierarchicalPost>(from posts: [P]) -> [Entry<P.ID>] {
+        // An array of `TreeNode` instances that are one-to-one map of the `posts` list.
+        var nodes: [TreeNode<P.ID>] = []
+        // A map of parent post (the dictionary key) to its children (the dictionary value).
+        var children: [Int64: [TreeNode<P.ID>]] = [:]
+        var allPostIDs: Set<Int64> = []
 
-        for page in pages {
-            let node = TreeNode(page: page)
+        for post in posts {
+            let node = TreeNode(post: post)
             nodes.append(node)
-            allPostIDs.insert(page.postID ?? 0)
-            children[page.parentID ?? 0, default: []].append(node)
+            allPostIDs.insert(post.postId)
+            children[post.parentPostId, default: []].append(node)
         }
 
-        // Move children nodes to through the given node and its descendants.
-        func addChildren(to node: TreeNode) {
-            node.children = children[node.page.postID ?? 0] ?? []
+        // Move children nodes to the given node and its descendants.
+        func addChildren(to node: TreeNode<P.ID>) {
+            node.children = children[node.postId] ?? []
+            for child in node.children {
+                child.parentNode = node
+            }
             node.children.forEach(addChildren(to:))
         }
 
-        // The top level nodes are pages whose parent id is 0 and pages whose parent page are not in the `pages` list.
+        // The top level nodes are posts whose parent id is 0 and posts whose parent are not in the `posts` list.
         let topLevelNodes = nodes.filter {
-            let parentID = $0.page.parentID ?? 0
-            return ($0.page.parentID ?? 0) == 0 || !allPostIDs.contains(parentID)
+            $0.parentPostId == 0 || !allPostIDs.contains($0.parentPostId)
         }
 
         topLevelNodes.forEach(addChildren(to:))
@@ -83,5 +86,37 @@ final class PageTree {
         return topLevelNodes.reduce(into: []) {
             $0.append(contentsOf: $1.dfsList())
         }
+    }
+
+    static func hierarchyList(of pages: [Page]) -> [Page] {
+        let entries = buildHierarchy(from: pages.map { HierarchicalPage(page: $0) })
+        let pageMap = Dictionary(pages.map { ($0.objectID, $0) }, uniquingKeysWith: { first, _ in first })
+
+        return entries.compactMap { entry -> Page? in
+            guard let page = pageMap[entry.id] else { return nil }
+            page.hierarchyIndex = entry.indentationLevel
+            page.hasVisibleParent = entry.hasVisibleParent
+            return page
+        }
+    }
+}
+
+private struct HierarchicalPage: HierarchicalPost {
+    let page: Page
+
+    var id: NSManagedObjectID {
+        page.objectID
+    }
+
+    var postId: Int64 {
+        page.postID?.int64Value ?? 0
+    }
+
+    var parentPostId: Int64 {
+        page.parentID?.int64Value ?? 0
+    }
+
+    var order: Int64 {
+        page.order
     }
 }
