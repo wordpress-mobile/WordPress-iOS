@@ -78,12 +78,15 @@ final class LightboxImagePageViewController: UIViewController {
 
         activityIndicator.startAnimating()
 
-        // Load preview first if available.
+        // Load preview in parallel with the full image.
+        var previewTask: Task<Void, Never>?
         if let previewURL = asset.previewURL {
-            let previewRequest = ImageRequest(url: previewURL, host: asset.host)
-            if let preview = try? await downloader.image(for: previewRequest) {
-                guard !Task.isCancelled else { return }
-                showImage(preview)
+            previewTask = Task { @MainActor [weak self] in
+                let previewRequest = ImageRequest(url: previewURL, host: asset.host)
+                if let preview = try? await downloader.image(for: previewRequest) {
+                    guard !Task.isCancelled else { return }
+                    self?.showImage(preview)
+                }
             }
         }
 
@@ -91,6 +94,7 @@ final class LightboxImagePageViewController: UIViewController {
         do {
             let image = try await downloader.image(for: request)
             guard !Task.isCancelled else { return }
+            previewTask?.cancel()
             showImage(image)
         } catch {
             guard !Task.isCancelled else { return }
