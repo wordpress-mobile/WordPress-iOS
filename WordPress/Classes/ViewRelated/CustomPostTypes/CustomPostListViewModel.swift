@@ -210,7 +210,9 @@ final class CustomPostListViewModel: ObservableObject {
     }
 
     private func updateItems(from metadataItems: [PostMetadataCollectionItem]) {
-        let items = metadataItems.map { CustomPostCollectionItem(item: $0, blog: blog, primaryStatus: filter.primaryStatus) }
+        let items = metadataItems.map {
+            CustomPostCollectionItem(item: $0, blog: blog, primaryStatus: filter.primaryStatus)
+        }
 
         guard shouldShowHierarchy else {
             indentationMap = [:]
@@ -578,53 +580,40 @@ extension PostStatus {
     }
 }
 
-// TODO: Decouple the "display item" from the internall states of the `PostMetadataCollectionItem`
-enum CustomPostCollectionItem: Identifiable, Equatable {
-    case ready(id: Int64, post: CustomPostCollectionDisplayPost, fullPost: AnyPostWithEditContext)
-    case stale(id: Int64, post: CustomPostCollectionDisplayPost)
-    case refreshing(id: Int64, post: CustomPostCollectionDisplayPost)
-    case fetching(id: Int64)
-    case missing(id: Int64)
-    case error(id: Int64, message: String)
-    case errorWithData(id: Int64, message: String, post: CustomPostCollectionDisplayPost)
+struct CustomPostCollectionItem: Identifiable, Equatable {
+    let id: Int64
+    var post: CustomPostCollectionDisplayPost?
+    var state: State
 
-    var id: Int64 {
-        switch self {
-        case .ready(let id, _, _),
-             .stale(let id, _),
-             .refreshing(let id, _),
-             .fetching(let id),
-             .missing(let id),
-             .error(let id, _),
-             .errorWithData(let id, _, _):
-            return id
-        }
+    enum State: Equatable {
+        case loaded(fullPost: AnyPostWithEditContext, isUpToDate: Bool)
+        case loading
+        case error(message: String)
     }
 
     init(item: PostMetadataCollectionItem, blog: Blog, primaryStatus: PostStatus = .publish) {
-        let id = item.id
+        self.id = item.id
 
         switch item.state {
         case .fresh(let entity):
-            self = .ready(id: id, post: CustomPostCollectionDisplayPost(entity.data, blog: blog, primaryStatus: primaryStatus), fullPost: entity.data)
+            self.post = CustomPostCollectionDisplayPost(entity.data, blog: blog, primaryStatus: primaryStatus)
+            self.state = .loaded(fullPost: entity.data, isUpToDate: true)
 
         case .stale(let entity):
-            self = .stale(id: id, post: CustomPostCollectionDisplayPost(entity.data, blog: blog, primaryStatus: primaryStatus))
+            self.post = CustomPostCollectionDisplayPost(entity.data, blog: blog, primaryStatus: primaryStatus)
+            self.state = .loaded(fullPost: entity.data, isUpToDate: false)
 
-        case .fetchingWithData(let entity):
-            self = .refreshing(id: id, post: CustomPostCollectionDisplayPost(entity.data, blog: blog, primaryStatus: primaryStatus))
-
-        case .fetching:
-            self = .fetching(id: id)
-
-        case .missing:
-            self = .missing(id: id)
+        case .fetchingWithData, .fetching, .missing:
+            self.post = nil
+            self.state = .loading
 
         case .failed(let error):
-            self = .error(id: id, message: error)
+            self.post = nil
+            self.state = .error(message: error)
 
         case .failedWithData(let error, let entity):
-            self = .errorWithData(id: id, message: error, post: CustomPostCollectionDisplayPost(entity.data, blog: blog, contentLimit: 50, primaryStatus: primaryStatus))
+            self.post = CustomPostCollectionDisplayPost(entity.data, blog: blog, primaryStatus: primaryStatus)
+            self.state = .error(message: error)
         }
     }
 }
