@@ -21,6 +21,7 @@ final class CustomPostListViewModel: ObservableObject {
     weak var presentingViewController: UIViewController?
 
     private var collection: PostMetadataCollectionWithEditContext
+    private var homepageSetting: HomepageSetting?
     private var isBatchSyncing = false
     // Whether we should show the content in a hierarchy view.
     // true if the number of cached items or the total items return by the API
@@ -77,7 +78,21 @@ final class CustomPostListViewModel: ObservableObject {
             )
     }
 
+    func pullToRefresh() async {
+        await refresh(pullToRefresh: true)
+    }
+
     func refresh() async {
+        await refresh(pullToRefresh: false)
+    }
+
+    private func refresh(pullToRefresh: Bool) async {
+        await fetchHomepageSettingsIfNeeded()
+
+        if !pullToRefresh {
+            await loadCachedItems()
+        }
+
         if shouldAttemptDisplayHierarchy {
             await fetchAllPagesIfBelowThreshold()
         } else {
@@ -100,7 +115,7 @@ final class CustomPostListViewModel: ObservableObject {
         }
     }
 
-    func loadCachedItems() async {
+    private func loadCachedItems() async {
         let listInfo = collection.listInfo()
 
         if let totalItems = listInfo?.totalItems, totalItems <= Constants.hierarchyPageCountThreshold {
@@ -210,8 +225,14 @@ final class CustomPostListViewModel: ObservableObject {
     }
 
     private func updateItems(from metadataItems: [PostMetadataCollectionItem]) {
-        let items = metadataItems.map {
+        var items = metadataItems.map {
             CustomPostCollectionItem(item: $0, blog: blog, primaryStatus: filter.primaryStatus)
+        }
+
+        if endpoint == .pages,
+           case .staticPage(let homepagePageID) = homepageSetting,
+           filter.statuses.contains(.publish) || filter.statuses.contains(.custom("any")) {
+            items.markHomepage(id: homepagePageID)
         }
 
         guard shouldShowHierarchy else {
@@ -398,6 +419,24 @@ final class CustomPostListViewModel: ObservableObject {
         }
     }
 
+    /// Fetches homepage settings using the cached site settings from
+    /// `WordPressClient` when the endpoint is `.pages` and the setting
+    /// has not been resolved yet.
+    private func fetchHomepageSettingsIfNeeded() async {
+        guard endpoint == .pages, homepageSetting == nil else { return }
+
+        do {
+            let settings = try await client.fetchSiteSettings()
+            if settings.showOnFront == "page", settings.pageOnFront > 0 {
+                homepageSetting = .staticPage(id: Int64(settings.pageOnFront))
+            } else {
+                homepageSetting = .latestPosts
+            }
+        } catch {
+            Loggers.app.error("Failed to fetch site settings for homepage detection: \(error)")
+        }
+    }
+
     private func show(error: Error) {
         // TODO: Ignore error https://github.com/Automattic/wordpress-rs/pull/1227
         self.error = error
@@ -451,6 +490,7 @@ struct CustomPostCollectionDisplayPost: Equatable {
     let sticky: Bool
     let featuredMedia: MediaId?
     let primaryStatus: PostStatus
+    var isHomepage: Bool
 
     init(
         date: Date,
@@ -460,7 +500,8 @@ struct CustomPostCollectionDisplayPost: Equatable {
         status: PostStatus = .publish,
         sticky: Bool = false,
         featuredMedia: MediaId? = nil,
-        primaryStatus: PostStatus = .publish
+        primaryStatus: PostStatus = .publish,
+        isHomepage: Bool = false
     ) {
         self.date = date
         self.title = title
@@ -470,6 +511,7 @@ struct CustomPostCollectionDisplayPost: Equatable {
         self.sticky = sticky
         self.featuredMedia = featuredMedia
         self.primaryStatus = primaryStatus
+        self.isHomepage = isHomepage
     }
 
     init(_ entity: AnyPostWithEditContext, blog: Blog, contentLimit: Int = 100, primaryStatus: PostStatus = .publish) {
@@ -495,6 +537,7 @@ struct CustomPostCollectionDisplayPost: Equatable {
         self.sticky = entity.sticky ?? false
         self.featuredMedia = entity.featuredMedia
         self.primaryStatus = primaryStatus
+        self.isHomepage = false
     }
 
     /// The title to display, with a placeholder for untitled posts.
@@ -591,6 +634,15 @@ struct CustomPostCollectionItem: Identifiable, Equatable {
         case error(message: String)
     }
 
+    var isHomepage: Bool {
+        get {
+            post?.isHomepage ?? false
+        }
+        set {
+            post?.isHomepage = newValue
+        }
+    }
+
     init(item: PostMetadataCollectionItem, blog: Blog, primaryStatus: PostStatus = .publish) {
         self.id = item.id
 
@@ -615,6 +667,16 @@ struct CustomPostCollectionItem: Identifiable, Equatable {
             self.post = CustomPostCollectionDisplayPost(entity.data, blog: blog, primaryStatus: primaryStatus)
             self.state = .error(message: error)
         }
+    }
+}
+
+extension Array where Element == CustomPostCollectionItem {
+    /// Marks the homepage item with the `isHomepage` flag.
+    mutating func markHomepage(id: Int64) {
+        guard let homepageIndex = firstIndex(where: { $0.id == id }) else {
+            return
+        }
+        self[homepageIndex].isHomepage = true
     }
 }
 
@@ -679,6 +741,12 @@ private enum Strings {
         value: "Settings",
         comment: "Menu action to open post settings"
     )
+}
+
+/// Represents the WordPress "Your homepage displays" setting.
+private enum HomepageSetting {
+    case latestPosts
+    case staticPage(id: Int64)
 }
 
 private enum Constants {
