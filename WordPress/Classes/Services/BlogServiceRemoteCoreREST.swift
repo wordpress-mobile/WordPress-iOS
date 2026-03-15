@@ -169,9 +169,8 @@ import WordPressAPIInternal
     ) {
         Task { @MainActor in
             do {
-                let response = try await client.api.siteSettings
-                    .retrieveWithEditContext()
-                let settings = Self.mapSiteSettings(response.data)
+                let response = try await client.fetchSiteSettings()
+                let settings = Self.mapSiteSettings(response)
                 success?(settings)
             } catch {
                 failure?(error)

@@ -114,6 +114,9 @@ public actor WordPressClient {
     /// The cached task for fetching the site's active theme.
     private var loadActiveThemeTask: Task<ThemeWithEditContext, Error>
 
+    /// The cached task for fetching the site settings.
+    private var loadSiteSettingsTask: Task<SiteSettingsWithEditContext, Error>
+
     /// Creates a new WordPress client for the specified site.
     ///
     /// Upon initialization, the client automatically begins fetching and caching site info,
@@ -139,6 +142,9 @@ public actor WordPressClient {
 
             return activeTheme
         }
+        self.loadSiteSettingsTask = Task {
+            try await api.siteSettings.retrieveWithEditContext().data
+        }
     }
 
     /// Invalidates all cached data and triggers a fresh fetch from the server.
@@ -151,6 +157,7 @@ public actor WordPressClient {
         loadSiteInfoTask = self.newSiteInfoTask()
         loadCurrentUserTask = self.newCurrentUserTask()
         loadActiveThemeTask = self.newActiveThemeTask()
+        loadSiteSettingsTask = self.newSiteSettingsTask()
     }
 
     /// Checks whether the WordPress site supports a given feature.
@@ -260,6 +267,25 @@ public actor WordPressClient {
             }
 
             return theme
+        }
+    }
+
+    /// Fetches the site settings, using the cached value if available.
+    ///
+    /// If the cached task has failed, creates a new task and retries the fetch.
+    public func fetchSiteSettings() async throws -> SiteSettingsWithEditContext {
+        switch await self.loadSiteSettingsTask.result {
+        case .success(let settings): return settings
+        case .failure:
+            self.loadSiteSettingsTask = newSiteSettingsTask()
+            return try await self.loadSiteSettingsTask.value
+        }
+    }
+
+    /// Creates a new task to fetch the site settings from the server.
+    private func newSiteSettingsTask() -> Task<SiteSettingsWithEditContext, Error> {
+        Task {
+            try await api.siteSettings.retrieveWithEditContext().data
         }
     }
 }
