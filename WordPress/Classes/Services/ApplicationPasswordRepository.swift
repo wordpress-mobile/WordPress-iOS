@@ -170,7 +170,7 @@ private extension ApplicationPasswordRepository {
                 _ = try await api.applicationPasswords.retrieveCurrentWithViewContext()
                 validPasswords.append(password)
             } catch let error as WpApiError {
-                if case let .WpError(errorCode, _, _, _) = error {
+                if case let .WpError(errorCode, _, _, _, _, _) = error {
                     if errorCode == .Unauthorized {
                         invalidPasswords.append(password)
                     }
