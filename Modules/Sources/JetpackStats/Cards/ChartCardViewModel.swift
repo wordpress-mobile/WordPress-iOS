@@ -40,7 +40,9 @@ final class ChartCardViewModel: ObservableObject, TrafficCardViewModel {
                 if !dateRange.range.isAdjacent(to: oldValue.range) {
                     selectedGranularity = nil
                 }
-                selectedBarDate = nil
+                // Don't update selectedBarDate here — keep the current highlight
+                // visible during loading. It will be synced from dateRange.subrange
+                // once data arrives.
                 loadData(for: dateRange.range)
             } else if dateRange.subrange != oldValue.subrange {
                 let newDate = dateRange.subrange?.dateInterval.start
@@ -162,6 +164,9 @@ final class ChartCardViewModel: ObservableObject, TrafficCardViewModel {
             staleTimer?.cancel()
             isStale = false
             chartData = data
+
+            // Sync bar selection from subrange now that the new data is available
+            selectedBarDate = self.dateRange.subrange?.dateInterval.start
         } catch is CancellationError {
             return
         } catch {

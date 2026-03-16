@@ -80,7 +80,7 @@ struct StatsDateRangeSelectionTests {
     }
 
     @Test
-    func navigateForwardWithSubrangeClearsAndNavigatesRangeWhenExitingRange() {
+    func navigateForwardWithSubrangeAtEdgeMovesToFirstPeriodInNextRange() {
         let range = makeRange(start: "2025-01-01T00:00:00Z", end: "2025-01-08T00:00:00Z", component: .weekOfYear)
         // Subrange is at the last day of the range
         let subrange = makeRange(start: "2025-01-07T00:00:00Z", end: "2025-01-08T00:00:00Z", component: .day)
@@ -88,13 +88,14 @@ struct StatsDateRangeSelectionTests {
 
         selection.navigate(.forward)
 
-        // Navigating forward clears the subrange and navigates the range
-        #expect(selection.subrange == nil)
+        // Range navigates forward; subrange moves to the first day of the new range
         #expect(selection.range.dateInterval.start == Date("2025-01-08T00:00:00Z"))
+        #expect(selection.subrange?.dateInterval.start == Date("2025-01-08T00:00:00Z"))
+        #expect(selection.subrange?.dateInterval.end == Date("2025-01-09T00:00:00Z"))
     }
 
     @Test
-    func navigateBackwardWithSubrangeClearsAndNavigatesRangeWhenExitingRange() {
+    func navigateBackwardWithSubrangeAtEdgeMovesToLastPeriodInPreviousRange() {
         let range = makeRange(start: "2025-01-08T00:00:00Z", end: "2025-01-15T00:00:00Z", component: .weekOfYear)
         // Subrange is at the first day of the range
         let subrange = makeRange(start: "2025-01-08T00:00:00Z", end: "2025-01-09T00:00:00Z", component: .day)
@@ -102,9 +103,10 @@ struct StatsDateRangeSelectionTests {
 
         selection.navigate(.backward)
 
-        // Navigating backward clears the subrange and navigates the range
-        #expect(selection.subrange == nil)
+        // Range navigates backward; subrange moves to the last day of the new range
         #expect(selection.range.dateInterval.start == Date("2025-01-01T00:00:00Z"))
+        #expect(selection.subrange?.dateInterval.start == Date("2025-01-07T00:00:00Z"))
+        #expect(selection.subrange?.dateInterval.end == Date("2025-01-08T00:00:00Z"))
     }
 
     @Test
