@@ -126,7 +126,7 @@ final class CustomPostListViewModel: ObservableObject {
         for await batch in batches {
             // When fetching all page to display hierarchical view, the post list is updated on one go after the
             // fetching is completed. In that scenario, we should skip the paginationed UI update.
-            guard !isBatchSyncing && !shouldShowHierarchy else { continue }
+            guard !isBatchSyncing else { continue }
 
             Loggers.app.info("\(batch.count) updates received from WpApiCache")
 
