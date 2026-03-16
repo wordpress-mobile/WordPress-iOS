@@ -8,6 +8,7 @@ final class LightboxImagePageViewController: UIViewController {
     private let activityIndicator = UIActivityIndicatorView()
     private var errorView: UIImageView?
     private var task: Task<Void, Never>?
+    private var previewTask: Task<Void, Never>?
 
     /// Used by UIPageViewController to track position.
     var pageIndex: Int = 0
@@ -23,6 +24,7 @@ final class LightboxImagePageViewController: UIViewController {
 
     deinit {
         task?.cancel()
+        previewTask?.cancel()
     }
 
     override func viewDidLoad() {
@@ -88,6 +90,7 @@ final class LightboxImagePageViewController: UIViewController {
                     self?.showImage(preview)
                 }
             }
+            self.previewTask = previewTask
         }
 
         // Load full-resolution image.
