@@ -6,6 +6,7 @@
 * [*] Reader: Add support for viewing media galleries fullscreen with a way to swipe between images [#25365]
 * [*] [internal] Fix retain cycle in Reader Article screen [#25364]
 * [*] Fix incorrect default Post Format in new posts [#25369]
+* [*] Posts and Pages are available to XMLRPC-disable sites [#25382]
 
 
 26.7
