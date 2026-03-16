@@ -104,22 +104,6 @@ NSString *const WPBlogSettingsUpdatedNotification = @"WPBlogSettingsUpdatedNotif
             DDLogError(@"Failed syncing settings for blog %@: %@", blog.url, error);
             dispatch_group_leave(syncGroup);
         }];
-    } else if ([remote isKindOfClass:[BlogServiceRemoteCoreREST class]]) {
-        BlogServiceRemoteCoreREST *coreRestRemote = (BlogServiceRemoteCoreREST *)remote;
-        dispatch_group_enter(syncGroup);
-        [coreRestRemote syncBlogSettingsWithSuccess:^(RemoteBlogSettings *settings) {
-            [self.coreDataStack performAndSaveUsingBlock:^(NSManagedObjectContext *context) {
-                Blog *blogInContext = (Blog *)[context existingObjectWithID:blogObjectID error:nil];
-                if (blogInContext) {
-                    [self updateSettings:blogInContext.settings withRemoteSettings:settings];
-                }
-            } completion:^{
-                dispatch_group_leave(syncGroup);
-            } onQueue:dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0)];
-        } failure:^(NSError *error) {
-            DDLogError(@"Failed syncing settings for blog %@: %@", blog.url, error);
-            dispatch_group_leave(syncGroup);
-        }];
     } else {
         dispatch_group_enter(syncGroup);
         OptionsHandler handler = [self optionsHandlerWithBlogObjectID:blogObjectID
@@ -127,6 +111,24 @@ NSString *const WPBlogSettingsUpdatedNotification = @"WPBlogSettingsUpdatedNotif
         [self syncXMLRPCOptionsIfApplicableFor:blog
                                 optionsHandler:handler
                                         failure:^{ dispatch_group_leave(syncGroup); }];
+
+        if ([remote isKindOfClass:[BlogServiceRemoteCoreREST class]]) {
+            BlogServiceRemoteCoreREST *coreRestRemote = (BlogServiceRemoteCoreREST *)remote;
+            dispatch_group_enter(syncGroup);
+            [coreRestRemote syncBlogSettingsWithSuccess:^(RemoteBlogSettings *settings) {
+                [self.coreDataStack performAndSaveUsingBlock:^(NSManagedObjectContext *context) {
+                    Blog *blogInContext = (Blog *)[context existingObjectWithID:blogObjectID error:nil];
+                    if (blogInContext) {
+                        [self updateSettings:blogInContext.settings withRemoteSettings:settings];
+                    }
+                } completion:^{
+                    dispatch_group_leave(syncGroup);
+                } onQueue:dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0)];
+            } failure:^(NSError *error) {
+                DDLogError(@"Failed syncing settings for blog %@: %@", blog.url, error);
+                dispatch_group_leave(syncGroup);
+            }];
+        }
     }
 
     dispatch_group_enter(syncGroup);
