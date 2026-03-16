@@ -120,7 +120,14 @@ struct TrafficTabView: View {
         case let viewModel as TopListViewModel:
             TopListCard(viewModel: viewModel)
         case let viewModel as TodayCardViewModel:
-            TodayCard(viewModel: viewModel)
+            Button {
+                context.tracker?.send(.todayCardTapped)
+                self.viewModel.handleTodayCardTap()
+            } label: {
+                TodayCard(viewModel: viewModel)
+                    .chevronHidden(self.viewModel.isTodayFocused)
+            }
+            .buttonStyle(.plain)
         default:
             let _ = assertionFailure("Unsupported type: \(viewModel)")
             EmptyView()

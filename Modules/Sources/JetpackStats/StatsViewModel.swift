@@ -130,6 +130,35 @@ final class StatsViewModel: ObservableObject, CardConfigurationDelegate {
             }
     }
 
+    // MARK: - Today Card
+
+    var isTodayFocused: Bool {
+        if let subrange = dateRange.subrange {
+            return subrange.dateInterval.contains(Date.now)
+        }
+        return dateRange.range.preset == .today
+    }
+
+    func handleTodayCardTap() {
+        let calendar = dateRange.range.calendar
+        let now = Date.now
+
+        guard dateRange.range.dateInterval.contains(now) else {
+            dateRange = StatsDateRangeSelection(range: dateRange.range.updating(preset: .today))
+            return
+        }
+
+        let component = selectedChartViewModel?.effectiveGranularity.component ?? .day
+        guard let todayInterval = calendar.dateInterval(of: component, for: now) else { return }
+        let todaySubrange = StatsDateRange(
+            interval: todayInterval,
+            component: component,
+            comparison: dateRange.range.comparison,
+            calendar: calendar
+        )
+        dateRange.subrange = todaySubrange
+    }
+
     private func handleChartBarSelection(_ selectedDate: Date?) {
         guard let chartVM = selectedChartViewModel else { return }
 
