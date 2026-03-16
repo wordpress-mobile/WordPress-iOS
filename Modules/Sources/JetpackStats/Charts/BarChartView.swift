@@ -49,6 +49,7 @@ struct BarChartView: View {
         .chartLegend(.hidden)
         .environment(\.timeZone, context.timeZone)
         .animation(.spring, value: ObjectIdentifier(data))
+        .animation(.snappy, value: selectedBarDate)
         .chartOverlay { proxy in
             makeGesturesOverlayView(proxy: proxy)
         }
