@@ -514,14 +514,11 @@ struct CustomPostCollectionDisplayPost: Equatable {
         self.isHomepage = isHomepage
     }
 
-    init(_ entity: AnyPostWithEditContext, blog: Blog, contentLimit: Int = 100, primaryStatus: PostStatus = .publish) {
+    init(_ entity: AnyPostWithEditContext, blog: Blog, primaryStatus: PostStatus = .publish) {
         self.date = entity.dateGmt
         self.title = entity.title?.raw
         let contentPreview = GutenbergExcerptGenerator
-            .firstParagraph(
-                from: entity.content.rendered,
-                maxLength: contentLimit
-            )
+            .firstParagraph(from: entity.content.rendered)
             .replacingOccurrences(
                 of: "[\n]{2,}",
                 with: "\n",
