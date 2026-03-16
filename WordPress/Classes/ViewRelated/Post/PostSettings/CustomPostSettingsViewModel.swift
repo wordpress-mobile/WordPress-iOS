@@ -151,8 +151,7 @@ final class CustomPostSettingsViewModel: NSObject, ObservableObject, PostSetting
         return id > 0 ? Int(id) : nil
     }
 
-    /// The underlying Page, if this is a Core Data-backed page.
-    var page: Page? {
+    func parentPagePickerDestination() -> EmptyView? {
         nil
     }
 

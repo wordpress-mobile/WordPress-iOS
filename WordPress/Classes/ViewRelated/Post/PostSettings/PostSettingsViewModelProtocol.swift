@@ -1,4 +1,5 @@
 import Foundation
+import SwiftUI
 import UIKit
 import WordPressAPI
 import WordPressCore
@@ -36,6 +37,8 @@ enum PostSettingsSocialSharingSectionState {
 /// - `CustomPostSettingsViewModel` for REST API–backed custom post types
 @MainActor
 protocol PostSettingsViewModelProtocol: ObservableObject {
+    associatedtype ParentPagePickerDestination: View
+
     var blog: Blog { get }
     var capabilities: PostSettingsCapabilities { get }
     var isStandalone: Bool { get }
@@ -77,7 +80,6 @@ protocol PostSettingsViewModelProtocol: ObservableObject {
     var shouldShowStickyOption: Bool { get }
     var lastEditedText: String? { get }
     var postID: Int? { get }
-    var page: Page? { get }
     var hasRemote: Bool { get }
     var publishButtonTitle: String { get }
 
@@ -98,6 +100,7 @@ protocol PostSettingsViewModelProtocol: ObservableObject {
     func didSelectTerms(_ terms: [TagsViewModel.SelectedTerm], forTaxonomySlug: String)
     func showSocialSharingOptions()
     func showCategoriesPicker()
+    func parentPagePickerDestination() -> ParentPagePickerDestination?
 }
 
 // MARK: - Date Formatting

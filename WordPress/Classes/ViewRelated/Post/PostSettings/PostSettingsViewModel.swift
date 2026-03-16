@@ -140,9 +140,18 @@ final class PostSettingsViewModel: NSObject, ObservableObject, PostSettingsViewM
         return postID
     }
 
-    /// The underlying Page, if this is a Core Data-backed page.
-    var page: Page? {
-        post as? Page
+    func parentPagePickerDestination() -> ParentPagePicker? {
+        guard let page = post as? Page else {
+            return nil
+        }
+        return ParentPagePicker(
+            blog: blog,
+            currentPage: page,
+            onSelection: { [weak self] selectedParentPage in
+                self?.settings.parentPageID = selectedParentPage?.postID?.intValue
+                self?.viewController?.navigationController?.popViewController(animated: true)
+            }
+        )
     }
 
     /// Whether the post has a remote representation (used for permalink preview).
@@ -321,7 +330,7 @@ final class PostSettingsViewModel: NSObject, ObservableObject, PostSettingsViewM
     }
 
     private func refreshParentPageText() {
-        if let page,
+        if let page = post as? Page,
            let context = page.managedObjectContext,
            let parentPageID = settings.parentPageID {
             parentPageText = Page.parentPageText(in: context, parentID: NSNumber(value: parentPageID))

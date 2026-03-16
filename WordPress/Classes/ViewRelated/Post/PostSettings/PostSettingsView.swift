@@ -453,16 +453,10 @@ struct PostSettingsFormContentView<ViewModel: PostSettingsViewModelProtocol>: Vi
 
     @ViewBuilder
     private var parentPageRow: some View {
-        if let page = viewModel.page {
+        if viewModel.capabilities.supportsPageAttributes,
+           let destination = viewModel.parentPagePickerDestination() {
             NavigationLink {
-                ParentPagePicker(
-                    blog: viewModel.blog,
-                    currentPage: page,
-                    onSelection: { selectedParentPage in
-                        viewModel.settings.parentPageID = selectedParentPage?.postID?.intValue
-                        viewModel.viewController?.navigationController?.popViewController(animated: true)
-                    }
-                )
+                destination
             } label: {
                 SettingsRow(Strings.parentPageLabel, value: viewModel.parentPageText ?? Strings.topLevelPage)
             }
