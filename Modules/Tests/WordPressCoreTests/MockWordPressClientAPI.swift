@@ -11,6 +11,7 @@ final class MockWordPressClientAPI: WordPressClientAPI, @unchecked Sendable {
     private var _apiRootCallCount = 0
     private var _usersCallCount = 0
     private var _themesCallCount = 0
+    private var _siteSettingsCallCount = 0
 
     var apiRootCallCount: Int {
         lock.lock()
@@ -28,6 +29,12 @@ final class MockWordPressClientAPI: WordPressClientAPI, @unchecked Sendable {
         lock.lock()
         defer { lock.unlock() }
         return _themesCallCount
+    }
+
+    var siteSettingsCallCount: Int {
+        lock.lock()
+        defer { lock.unlock() }
+        return _siteSettingsCallCount
     }
 
     var mockRoutes: Set<String> = []
@@ -54,6 +61,13 @@ final class MockWordPressClientAPI: WordPressClientAPI, @unchecked Sendable {
         return MockThemesRequestExecutor(isBlockTheme: mockIsBlockTheme)
     }
 
+    var siteSettings: SiteSettingsRequestExecutor {
+        lock.lock()
+        _siteSettingsCallCount += 1
+        lock.unlock()
+        return MockSiteSettingsRequestExecutor()
+    }
+
     // Unused in WordPressClient.supports() - provide minimal implementations
     var plugins: PluginsRequestExecutor { fatalError("Not implemented") }
     var comments: CommentsRequestExecutor { fatalError("Not implemented") }
@@ -63,7 +77,6 @@ final class MockWordPressClientAPI: WordPressClientAPI, @unchecked Sendable {
     var applicationPasswords: ApplicationPasswordsRequestExecutor { fatalError("Not implemented") }
     var posts: PostsRequestExecutor { fatalError("Not implemented") }
     var postTypes: PostTypesRequestExecutor { fatalError("Not implemented") }
-    var siteSettings: SiteSettingsRequestExecutor { fatalError("Not implemented") }
 
     func createSelfHostedService(cache: WordPressApiCache) throws -> WpService {
         fatalError("Not implemented")
@@ -167,6 +180,47 @@ final class MockThemesRequestExecutor: ThemesRequestExecutor {
         )
         let mockHeaderMap = WpNetworkHeaderMap(noHandle: WpNetworkHeaderMap.NoHandle())
         return ThemesRequestListWithEditContextResponse(data: [mockTheme], headerMap: mockHeaderMap)
+    }
+}
+
+final class MockSiteSettingsRequestExecutor: SiteSettingsRequestExecutor {
+    override init(noHandle: SiteSettingsRequestExecutor.NoHandle) {
+        super.init(noHandle: noHandle)
+    }
+
+    init() {
+        super.init(noHandle: SiteSettingsRequestExecutor.NoHandle())
+    }
+
+    required init(unsafeFromHandle handle: UInt64) {
+        super.init(unsafeFromHandle: handle)
+    }
+
+    override func retrieveWithEditContextCancellation(context: RequestContext?) async throws -> SiteSettingsRequestRetrieveWithEditContextResponse {
+        let mockSettings = SiteSettingsWithEditContext(
+            title: "Test Site",
+            description: "A test site",
+            url: "https://example.com",
+            email: "test@example.com",
+            timezone: "",
+            dateFormat: "Y-m-d",
+            timeFormat: "H:i",
+            startOfWeek: 0,
+            language: "en_US",
+            useSmilies: true,
+            defaultCategory: 1,
+            defaultPostFormat: "",
+            postsPerPage: 10,
+            showOnFront: "posts",
+            pageOnFront: 0,
+            pageForPosts: 0,
+            defaultPingStatus: .open,
+            defaultCommentStatus: .open,
+            siteLogo: nil,
+            siteIcon: 0
+        )
+        let mockHeaderMap = WpNetworkHeaderMap(noHandle: WpNetworkHeaderMap.NoHandle())
+        return SiteSettingsRequestRetrieveWithEditContextResponse(data: mockSettings, headerMap: mockHeaderMap)
     }
 }
 
