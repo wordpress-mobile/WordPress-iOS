@@ -193,7 +193,8 @@ private extension CustomPostEditorViewController {
     }
 
     func showPostSettings() {
-        let viewModel = CustomPostSettingsViewModel(editorService: editorService, blog: blog)
+        // FIXME: `wpService` should not be nil here.
+        let viewModel = CustomPostSettingsViewModel(wpService: nil, editorService: editorService, blog: blog)
         viewModel.onEditorPostSaved = { /* No-op: shared editorService is already up-to-date */ }
         let settingsVC = PostSettingsViewController(viewModel: viewModel)
         let navigation = UINavigationController(rootViewController: settingsVC)

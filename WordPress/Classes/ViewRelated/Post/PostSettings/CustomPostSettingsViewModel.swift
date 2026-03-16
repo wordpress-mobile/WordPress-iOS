@@ -12,6 +12,7 @@ import Combine
 @MainActor
 final class CustomPostSettingsViewModel: NSObject, ObservableObject, PostSettingsViewModelProtocol {
     private let editorService: CustomPostEditorService
+    private let wpService: WpService?
 
     let blog: Blog
     let capabilities: PostSettingsCapabilities
@@ -151,8 +152,22 @@ final class CustomPostSettingsViewModel: NSObject, ObservableObject, PostSetting
         return id > 0 ? Int(id) : nil
     }
 
-    func parentPagePickerDestination() -> EmptyView? {
-        nil
+    func parentPagePickerDestination() -> CustomPostParentPagePicker? {
+        guard editorService.details.hierarchical,
+              let wpService else {
+            return nil
+        }
+        return CustomPostParentPagePicker(
+            client: editorService.client,
+            service: wpService,
+            details: editorService.details,
+            blog: blog,
+            currentPostID: postID,
+            currentParentID: settings.parentPageID,
+            onSelection: { [weak self] selectedParentID in
+                self?.settings.parentPageID = selectedParentID
+            }
+        )
     }
 
     /// Whether the post has a remote representation (used for permalink preview).
@@ -168,6 +183,7 @@ final class CustomPostSettingsViewModel: NSObject, ObservableObject, PostSetting
     // MARK: - Initializer
 
     init(
+        wpService: WpService?,
         editorService: CustomPostEditorService,
         blog: Blog,
         isStandalone: Bool = false,
@@ -178,6 +194,7 @@ final class CustomPostSettingsViewModel: NSObject, ObservableObject, PostSetting
         self.blog = blog
         self.isStandalone = isStandalone
         self.context = context
+        self.wpService = wpService
         self.preferences = preferences
         self.client = editorService.client
         self.capabilities = PostSettingsCapabilities(from: editorService.details)
@@ -225,6 +242,7 @@ final class CustomPostSettingsViewModel: NSObject, ObservableObject, PostSetting
         refreshDisplayedCategories()
         refreshDisplayedTags()
         refreshCustomTaxonomies()
+        refreshParentPageText()
         resolveTermNames()
     }
 
@@ -377,6 +395,9 @@ final class CustomPostSettingsViewModel: NSObject, ObservableObject, PostSetting
         if old.tags != new.tags {
             refreshDisplayedTags()
         }
+        if old.parentPageID != new.parentPageID {
+            refreshParentPageText()
+        }
     }
 
     private func refreshDisplayedCategories() {
@@ -385,6 +406,16 @@ final class CustomPostSettingsViewModel: NSObject, ObservableObject, PostSetting
 
     private func refreshDisplayedTags() {
         displayedTags = settings.tags.map(\.name)
+    }
+
+    private func refreshParentPageText() {
+        if let parentPageID = settings.parentPageID {
+            // TODO: Refactor to support loading state in the view layer
+            // for proper title resolution with a spinner
+            parentPageText = "(ID: \(parentPageID))"
+        } else {
+            parentPageText = nil
+        }
     }
 
     private func refreshCustomTaxonomies() {

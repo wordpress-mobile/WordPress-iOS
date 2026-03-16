@@ -386,7 +386,7 @@ final class CustomPostListViewModel: ObservableObject {
                 client: client,
                 service: service.posts()
             )
-            let viewModel = CustomPostSettingsViewModel(editorService: editorService, blog: blog, isStandalone: true)
+            let viewModel = CustomPostSettingsViewModel(wpService: service, editorService: editorService, blog: blog, isStandalone: true)
             let settingsVC = PostSettingsViewController(viewModel: viewModel)
             let nav = UINavigationController(rootViewController: settingsVC)
             vc.present(nav, animated: true)

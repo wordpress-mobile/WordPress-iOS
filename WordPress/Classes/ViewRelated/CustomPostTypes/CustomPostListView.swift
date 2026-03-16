@@ -15,6 +15,7 @@ struct CustomPostListView<Header: View>: View {
     let details: PostTypeDetailsWithEditContext
     let client: WordPressClient
     let mediaHost: MediaHost?
+    let showsPostActions: Bool
     let onSelectPost: (AnyPostWithEditContext) -> Void
     @ViewBuilder let header: () -> Header
 
@@ -23,13 +24,15 @@ struct CustomPostListView<Header: View>: View {
         details: PostTypeDetailsWithEditContext,
         client: WordPressClient,
         mediaHost: MediaHost? = nil,
+        showsPostActions: Bool = true,
         onSelectPost: @escaping (AnyPostWithEditContext) -> Void
     ) where Header == EmptyView {
         self.viewModel = viewModel
         self.details = details
         self.client = client
-        self.onSelectPost = onSelectPost
         self.mediaHost = mediaHost
+        self.showsPostActions = showsPostActions
+        self.onSelectPost = onSelectPost
         self.header = { EmptyView() }
     }
 
@@ -38,14 +41,16 @@ struct CustomPostListView<Header: View>: View {
         details: PostTypeDetailsWithEditContext,
         client: WordPressClient,
         mediaHost: MediaHost? = nil,
+        showsPostActions: Bool = true,
         onSelectPost: @escaping (AnyPostWithEditContext) -> Void,
         @ViewBuilder header: @escaping () -> Header
     ) {
         self.viewModel = viewModel
         self.details = details
         self.client = client
-        self.onSelectPost = onSelectPost
         self.mediaHost = mediaHost
+        self.showsPostActions = showsPostActions
+        self.onSelectPost = onSelectPost
         self.header = header
     }
 
@@ -57,6 +62,7 @@ struct CustomPostListView<Header: View>: View {
             client: client,
             onSelectPost: onSelectPost,
             mediaHost: mediaHost,
+            showsPostActions: showsPostActions,
             indentationMap: viewModel.indentationMap,
             header: header
         )
@@ -122,6 +128,7 @@ private struct PaginatedList<Header: View>: View {
     let client: WordPressClient?
     let onSelectPost: (AnyPostWithEditContext) -> Void
     let mediaHost: MediaHost?
+    let showsPostActions: Bool
     let indentationMap: CustomPostListViewModel.IndentationMap
     @ViewBuilder let header: () -> Header
 
@@ -135,6 +142,7 @@ private struct PaginatedList<Header: View>: View {
         client: WordPressClient? = nil,
         onSelectPost: @escaping (AnyPostWithEditContext) -> Void,
         mediaHost: MediaHost? = nil,
+        showsPostActions: Bool = true,
         indentationMap: CustomPostListViewModel.IndentationMap = [:]
     ) where Header == EmptyView {
         self.viewModel = viewModel
@@ -143,6 +151,7 @@ private struct PaginatedList<Header: View>: View {
         self.client = client
         self.onSelectPost = onSelectPost
         self.mediaHost = mediaHost
+        self.showsPostActions = showsPostActions
         self.indentationMap = indentationMap
         self.header = { EmptyView() }
     }
@@ -154,6 +163,7 @@ private struct PaginatedList<Header: View>: View {
         client: WordPressClient? = nil,
         onSelectPost: @escaping (AnyPostWithEditContext) -> Void,
         mediaHost: MediaHost? = nil,
+        showsPostActions: Bool = true,
         indentationMap: CustomPostListViewModel.IndentationMap = [:],
         @ViewBuilder header: @escaping () -> Header
     ) {
@@ -163,6 +173,7 @@ private struct PaginatedList<Header: View>: View {
         self.client = client
         self.onSelectPost = onSelectPost
         self.mediaHost = mediaHost
+        self.showsPostActions = showsPostActions
         self.indentationMap = indentationMap
         self.header = header
     }
@@ -197,7 +208,8 @@ private struct PaginatedList<Header: View>: View {
                 client: client,
                 onSelectPost: onSelectPost,
                 mediaHost: mediaHost,
-                viewModel: viewModel
+                viewModel: viewModel,
+                showsPostActions: showsPostActions
             )
             .task {
                 await onRowAppear(item: item)
@@ -213,6 +225,7 @@ private struct PaginatedList<Header: View>: View {
                 onSelectPost: onSelectPost,
                 mediaHost: mediaHost,
                 viewModel: viewModel,
+                showsPostActions: showsPostActions,
                 indentationLevel: indentationMap[item.id]?.indentationLevel ?? 0,
                 showSubdirectoryIcon: showSubdirectoryIcon(at: index)
             )
@@ -280,6 +293,7 @@ private struct ForEachContent: View {
     let onSelectPost: (AnyPostWithEditContext) -> Void
     let mediaHost: MediaHost?
     @ObservedObject var viewModel: CustomPostListViewModel
+    var showsPostActions: Bool = true
 
     var body: some View {
         switch item.state {
@@ -288,26 +302,32 @@ private struct ForEachContent: View {
         case .loaded(let fullPost, _):
             if let post = item.post {
                 let isPending = viewModel.pendingPostIDs.contains(item.id)
-                Button {
+                let button = Button {
                     onSelectPost(fullPost)
                 } label: {
                     PostContent(post: post, client: client, mediaHost: mediaHost)
                 }
                 .buttonStyle(.plain)
-                .contextMenu {
-                    if !isPending {
-                        PostActionMenuContent(post: fullPost, viewModel: viewModel)
-                    }
-                }
-                .overlay(alignment: .topTrailing) {
-                    if isPending {
-                        ProgressView()
-                            .frame(width: 28, height: 28)
-                            .offset(y: -6)
-                    } else {
-                        PostActionMenu(post: fullPost, viewModel: viewModel)
-                            .offset(y: -6)
-                    }
+
+                if showsPostActions {
+                    button
+                        .contextMenu {
+                            if !isPending {
+                                PostActionMenuContent(post: fullPost, viewModel: viewModel)
+                            }
+                        }
+                        .overlay(alignment: .topTrailing) {
+                            if isPending {
+                                ProgressView()
+                                    .frame(width: 28, height: 28)
+                                    .offset(y: -6)
+                            } else {
+                                PostActionMenu(post: fullPost, viewModel: viewModel)
+                                    .offset(y: -6)
+                            }
+                        }
+                } else {
+                    button
                 }
                 .opacity(isPending ? 0.4 : 1)
                 .disabled(isPending)
@@ -340,6 +360,7 @@ private struct ForEachContentWithIndentation: View {
     let onSelectPost: (AnyPostWithEditContext) -> Void
     let mediaHost: MediaHost?
     let viewModel: CustomPostListViewModel
+    var showsPostActions: Bool = true
     let indentationLevel: Int
     let showSubdirectoryIcon: Bool
 
@@ -357,7 +378,8 @@ private struct ForEachContentWithIndentation: View {
                 client: client,
                 onSelectPost: onSelectPost,
                 mediaHost: mediaHost,
-                viewModel: viewModel
+                viewModel: viewModel,
+                showsPostActions: showsPostActions
             )
         }
         .padding(.leading, CGFloat(max(0, indentationLevel - 1)) * 32)

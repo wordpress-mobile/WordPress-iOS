@@ -207,9 +207,7 @@ struct PostSettings: Hashable {
         allowComments = post.commentStatus == .open
         allowPings = post.pingStatus == .open
 
-        // TODO: The Post Settings UI currently only supports Pages
-        // The parent post is available in `post.parent`
-        parentPageID = nil
+        parentPageID = post.parent.map { Int($0) }
 
         // Social sharing (Publicize) is not available for REST API posts
         sharing = nil
@@ -426,11 +424,10 @@ struct PostSettings: Hashable {
             params.additionalFields = AnyJson.fromTermIdMap(map: customTermChanges)
         }
 
-        // TODO: The Post Settings UI currently only supports Pages
-//        let postParentPageID = post.parent.map { Int($0) }
-//        if postParentPageID != self.parentPageID {
-//            params.parent = self.parentPageID.map { PostId(Int64($0)) } ?? PostId(0)
-//        }
+        let postParentPageID = post.parent.map { Int($0) }
+        if postParentPageID != self.parentPageID {
+            params.parent = self.parentPageID.map { PostId(Int64($0)) } ?? PostId(0)
+        }
 
         return params
     }
@@ -467,6 +464,7 @@ struct PostSettings: Hashable {
         params.sticky = isStickyPost ? true : nil
         params.categories = categoryIds
         params.tags = tagIds
+        params.parent = parentPageID.map { PostId(Int64($0)) }
         params.additionalFields = additionalFields
         return params
     }

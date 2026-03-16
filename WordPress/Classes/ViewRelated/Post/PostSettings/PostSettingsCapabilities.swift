@@ -67,7 +67,7 @@ extension PostSettingsCapabilities {
         supportsPostFormats = details.supports.supports(feature: .postFormats)
         supportsComments = details.supports.supports(feature: .comments)
         supportsTrackbacks = details.supports.supports(feature: .trackbacks)
-        supportsPageAttributes = false // details.supports.supports(feature: .pageAttributes)
+        supportsPageAttributes = details.supports.supports(feature: .pageAttributes)
         supportsSlug = details.supports.supports(feature: .slug)
         supportsCustomFields = false // details.supports.supports(feature: .customFields)
         customTaxonomySlugs = details.taxonomies.filter { $0 != "category" && $0 != "post_tag" }
