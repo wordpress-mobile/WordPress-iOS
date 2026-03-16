@@ -91,27 +91,12 @@ struct BarChartView: View {
         }
     }
 
-    /// The bar immediately before the tapped bar in `currentData`, used to
-    /// indicate the comparison baseline for trend indicators.
-    private var adjacentPreviousPoint: DataPoint? {
-        guard let selectedBarDate,
-              let index = data.currentData.firstIndex(where: { $0.date == selectedBarDate }),
-              index > 0 else {
-            return nil
-        }
-        return data.currentData[index - 1]
-    }
-
     private func getOpacityForPeriodBar(for point: DataPoint) -> CGFloat {
         if let tappedDataPoint, tappedDataPoint.id == point.id {
             return 1.0
         }
         guard let selectedDataPoints else {
             if tappedDataPoint != nil {
-                // Paired highlight: keep adjacent previous bar visible
-                if let adjacentPreviousPoint, adjacentPreviousPoint.id == point.id {
-                    return 0.45
-                }
                 return 0.15
             }
             // If no selection and not tapped, check if data is incomplete
