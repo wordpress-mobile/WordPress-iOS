@@ -1,5 +1,6 @@
 import Foundation
 import CoreData
+import DesignSystem
 import WordPressReader
 import WordPressUI
 
@@ -13,7 +14,7 @@ import WordPressUI
 
     func makeWebRenderer() -> WebCommentContentRenderer {
         let renderer = WebCommentContentRenderer()
-        renderer.tintColor = UIAppColor.primary
+        renderer.tintColor = UIAppColor.link
         return renderer
     }
 

@@ -20,6 +20,11 @@ public enum UIAppColor {
         }
     }
 
+    /// Color used for links.
+    public static var link: UIColor {
+        UIColor(light: CSColor.Blue.base, dark: CSColor.Blue.shade(.shade30))
+    }
+
     public static func primary(_ shade: ColorStudioShade) -> UIColor {
         switch AppBrand.current {
         case .wordpress: CSColor.Blue.shade(shade)
