@@ -106,7 +106,13 @@ public class BlogDetailsViewController: UIViewController {
         super.viewDidAppear(animated)
         createUserActivity()
 
-        WPAnalytics.track(.mySiteSiteMenuShown)
+        WPAnalytics.track(
+            .mySiteSiteMenuShown,
+            properties: [
+                "has_application_password": (try? blog.getApplicationToken()) != nil ? "true" : "false"
+            ],
+            blog: blog
+        )
 
         if shouldShowJetpackInstallCard() {
             WPAnalytics.track(.jetpackInstallFullPluginCardViewed, properties: [WPAppAnalyticsKeyTabSource: "site_menu"])

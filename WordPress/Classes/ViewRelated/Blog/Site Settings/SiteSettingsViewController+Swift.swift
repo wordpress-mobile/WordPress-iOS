@@ -66,7 +66,7 @@ extension SiteSettingsViewController {
                 value: "Taxonomies Management",
                 comment: "Feature name for managing terms and taxonomies in the app"
             )
-            let rootView = ApplicationPasswordRequiredView(blog: self.blog, localizedFeatureName: feature, presentingViewController: self) { client in
+            let rootView = ApplicationPasswordRequiredView(blog: self.blog, localizedFeatureName: feature, source: "taxonomies", presentingViewController: self) { client in
                 SiteCustomTaxonomiesView(blog: self.blog, client: client)
             }
             viewController = UIHostingController(rootView: rootView)

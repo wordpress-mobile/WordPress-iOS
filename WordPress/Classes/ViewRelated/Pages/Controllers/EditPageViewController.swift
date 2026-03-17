@@ -86,6 +86,7 @@ class EditPageViewController: UIViewController {
         let applicationPasswordView = ApplicationPasswordRequiredView(
             blog: page.blog,
             localizedFeatureName: feature,
+            source: "block_editor",
             presentingViewController: self
         ) { [weak self] client in
             // Once authenticated, dismiss the application password view and show editor

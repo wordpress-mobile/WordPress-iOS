@@ -65,7 +65,7 @@ extension BlogDetailsViewController {
         }
 
         let feature = NSLocalizedString("applicationPasswordRequired.feature.users", value: "User Management", comment: "Feature name for managing users in the app")
-        let rootView = ApplicationPasswordRequiredView(blog: blog, localizedFeatureName: feature, presentingViewController: self) { client in
+        let rootView = ApplicationPasswordRequiredView(blog: blog, localizedFeatureName: feature, source: "user_management", presentingViewController: self) { client in
             let service = UserService(client: client)
             let applicationPasswordService = ApplicationPasswordService(api: client, currentUserId: userId)
             return UserListView(currentUserId: Int32(userId), userService: service, applicationTokenListDataProvider: applicationPasswordService)
@@ -84,7 +84,7 @@ extension BlogDetailsViewController {
         let viewController: UIViewController
         if Feature.enabled(.pluginManagementOverhaul) {
             let feature = NSLocalizedString("applicationPasswordRequired.feature.plugins", value: "Plugin Management", comment: "Feature name for managing plugins in the app")
-            let rootView = ApplicationPasswordRequiredView(blog: blog, localizedFeatureName: feature, presentingViewController: self) { client in
+            let rootView = ApplicationPasswordRequiredView(blog: blog, localizedFeatureName: feature, source: "plugin_management", presentingViewController: self) { client in
                 let service = PluginService(client: client, wordpressCoreVersion: wordpressCoreVersion)
                 InstalledPluginsListView(service: service)
             }

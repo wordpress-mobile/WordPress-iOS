@@ -634,6 +634,11 @@ import WordPressShared
     // Login Autodiscovery
     case applicationPasswordLogin
 
+    // Application Password Migration
+    case applicationPasswordMigrationPrompted
+    case applicationPasswordCreated
+    case applicationPasswordReauthPrompted
+
     case wpcomWebSignIn
 
     // MARK: - Jetpack Stats
@@ -1787,6 +1792,12 @@ import WordPressShared
         // Login Autodiscovery
         case .applicationPasswordLogin:
             return "application_password_login"
+        case .applicationPasswordMigrationPrompted:
+            return "application_password_migration_prompted"
+        case .applicationPasswordCreated:
+            return "application_password_created"
+        case .applicationPasswordReauthPrompted:
+            return "application_password_reauth_prompted"
 
         case .wpcomWebSignIn:
             return "wpcom_web_sign_in"

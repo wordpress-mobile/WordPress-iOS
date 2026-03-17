@@ -8,6 +8,7 @@ import WordPressUI
 struct ApplicationPasswordRequiredView<Content: View>: View {
     private let blog: Blog
     private let localizedFeatureName: String
+    private let source: String
     @State private var site: WordPressSite?
     @State private var showLoading: Bool = true
     @State private var isLoaded: Bool = false
@@ -15,9 +16,10 @@ struct ApplicationPasswordRequiredView<Content: View>: View {
 
     weak var presentingViewController: UIViewController?
 
-    init(blog: Blog, localizedFeatureName: String, presentingViewController: UIViewController, @ViewBuilder content: @escaping (WordPressClient) -> Content) {
+    init(blog: Blog, localizedFeatureName: String, source: String, presentingViewController: UIViewController, @ViewBuilder content: @escaping (WordPressClient) -> Content) {
         self.blog = blog
         self.localizedFeatureName = localizedFeatureName
+        self.source = source
         self.presentingViewController = presentingViewController
         self.builder = content
     }
@@ -35,6 +37,13 @@ struct ApplicationPasswordRequiredView<Content: View>: View {
                     Task {
                         await self.migrate()
                     }
+                }
+                .onAppear {
+                    WPAnalytics.track(
+                        .applicationPasswordMigrationPrompted,
+                        properties: ["source": source],
+                        blog: blog
+                    )
                 }
             }
         }
@@ -58,8 +67,24 @@ struct ApplicationPasswordRequiredView<Content: View>: View {
         do {
             let repository = ApplicationPasswordRepository.shared
             try await repository.createPasswordIfNeeded(for: TaggedManagedObjectID(blog))
+
+            WPAnalytics.track(
+                .applicationPasswordCreated,
+                properties: ["source": "auto_migration", "success": "true"],
+                blog: blog
+            )
+
             updateSite()
         } catch {
+            WPAnalytics.track(
+                .applicationPasswordCreated,
+                properties: [
+                    "source": "auto_migration",
+                    "success": "false",
+                    "error": "\(type(of: error))"
+                ] as [String: Any],
+                blog: blog
+            )
             DDLogError("Failed to create an application password: \(error)")
         }
     }
@@ -78,9 +103,24 @@ struct ApplicationPasswordRequiredView<Content: View>: View {
             let authenticator = SelfHostedSiteAuthenticator()
             let _ = try await authenticator.signIn(site: url, from: presenter, context: .reauthentication(TaggedManagedObjectID(blog), username: blog.username))
 
+            WPAnalytics.track(
+                .applicationPasswordCreated,
+                properties: ["source": "migration", "success": "true"],
+                blog: blog
+            )
+
             // Modify the `site` variable to display the intended feature.
             updateSite()
         } catch {
+            WPAnalytics.track(
+                .applicationPasswordCreated,
+                properties: [
+                    "source": "migration",
+                    "success": "false",
+                    "error": "\(type(of: error))"
+                ] as [String: Any],
+                blog: blog
+            )
             Notice(error: error).post()
         }
     }

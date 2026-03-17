@@ -107,6 +107,7 @@ extension BlogDetailsViewController {
         let rootView = ApplicationPasswordRequiredView(
             blog: blog,
             localizedFeatureName: feature,
+            source: "custom_post_types",
             presentingViewController: self) { [blog, weak self] client in
                 CustomPostTypesView(
                     blog: blog,
@@ -130,6 +131,7 @@ extension BlogDetailsViewController {
         let rootView = ApplicationPasswordRequiredView(
             blog: blog,
             localizedFeatureName: feature,
+            source: "custom_post_types",
             presentingViewController: self) { [blog, weak self] client in
                 PinnedPostTypeView(
                     blog: blog,
@@ -389,7 +391,7 @@ extension BlogDetailsViewController {
 
     public func showApplicationPasswords() {
         let feature = NSLocalizedString("applicationPasswordRequired.feature.applicationPasswords", value: "Application Passwords Management", comment: "Feature name for managing application passwords in the app")
-        let view = ApplicationPasswordRequiredView(blog: blog, localizedFeatureName: feature, presentingViewController: self) {
+        let view = ApplicationPasswordRequiredView(blog: blog, localizedFeatureName: feature, source: "application_passwords", presentingViewController: self) {
             ApplicationTokenListView(dataProvider: ApplicationPasswordService(api: $0))
         }
         presentationDelegate?.presentBlogDetailsViewController(UIHostingController(rootView: view))

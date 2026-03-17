@@ -3,6 +3,7 @@ import UIKit
 import SwiftUI
 import DesignSystem
 import WordPressData
+import WordPressShared
 
 struct ApplicationPasswordReAuthenticationView: View {
     let blog: Blog
@@ -41,9 +42,24 @@ struct ApplicationPasswordReAuthenticationView: View {
                                     context: .reauthentication(TaggedManagedObjectID(blog), username: blog.getUsername())
                                 )
 
+                            WPAnalytics.track(
+                                .applicationPasswordCreated,
+                                properties: ["source": "reauth", "success": "true"],
+                                blog: blog
+                            )
+
                             // Automatically dismiss this view upon a successful re-authentication.
                             dismiss()
                         } catch {
+                            WPAnalytics.track(
+                                .applicationPasswordCreated,
+                                properties: [
+                                    "source": "reauth",
+                                    "success": "false",
+                                    "error": "\(type(of: error))"
+                                ] as [String: Any],
+                                blog: blog
+                            )
                             self.error = error.localizedDescription
                         }
                     }
@@ -67,6 +83,13 @@ struct ApplicationPasswordReAuthenticationView: View {
                     }
                 }
             }
+        }
+        .onAppear {
+            WPAnalytics.track(
+                .applicationPasswordReauthPrompted,
+                properties: [:] as [String: Any],
+                blog: blog
+            )
         }
     }
 }
