@@ -1,3 +1,4 @@
+import CoreData
 @testable import WordPressData
 
 /// Centralized utility to generate preconfigured WPAccount instances

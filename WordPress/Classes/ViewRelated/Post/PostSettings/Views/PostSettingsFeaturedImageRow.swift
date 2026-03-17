@@ -26,7 +26,6 @@ struct PostSettingsFeaturedImageRow: View {
                         }
                     }
                 }
-                .listRowBackground(Color.clear)
                 .frame(height: height)
             }
         }
@@ -52,18 +51,18 @@ struct PostSettingsFeaturedImageRow: View {
     }
 
     private var setFeaturedImageView: some View {
-        makeWithProminentBackground {
-            VStack(spacing: 4) {
-                Image(systemName: "photo.on.rectangle.angled")
-                    .font(.title)
-                    .symbolRenderingMode(.hierarchical)
+        VStack(spacing: 4) {
+            Image(systemName: "photo.on.rectangle.angled")
+                .font(.title)
+                .symbolRenderingMode(.hierarchical)
 
-                Text(Strings.buttonSetFeaturedImage)
-                    .font(.body)
-            }
-            .foregroundColor(.accentColor)
-            .fontWeight(.medium)
+            Text(Strings.buttonSetFeaturedImage)
+                .font(.body)
         }
+        .foregroundColor(.accentColor)
+        .fontWeight(.medium)
+        .frame(maxWidth: .infinity, maxHeight: .infinity)
+        .padding(16)
     }
 
     private var menu: some View {
@@ -116,42 +115,23 @@ struct PostSettingsFeaturedImageRow: View {
                 Label(Strings.cancelUpload, systemImage: "xmark.circle.fill")
             }
         } label: {
-            makeWithProminentBackground {
-                HStack {
-                    ProgressView()
+            HStack {
+                ProgressView()
 
-                    Text(Strings.uploading)
-                        .font(.headline)
-                        .fontWeight(.medium)
-                }
-                .tint(.accentColor)
-                .foregroundColor(.accentColor)
+                Text(Strings.uploading)
+                    .font(.headline)
+                    .fontWeight(.medium)
             }
+            .tint(.accentColor)
+            .foregroundColor(.accentColor)
+            .frame(maxWidth: .infinity, maxHeight: .infinity)
+            .padding(16)
             .overlay(alignment: .topTrailing) {
                 Image(systemName: "ellipsis.circle")
                     .foregroundStyle(Color.secondary)
                     .padding(12)
             }
         }
-    }
-
-    /// A nice tinted background for the button and other states.
-    private func makeWithProminentBackground<Content: View>(@ViewBuilder content: @escaping () -> Content) -> some View {
-        ZStack {
-            // System background that adapts to dark mode
-            RoundedRectangle(cornerRadius: cornerRadius)
-                .fill(Color(UIColor.secondarySystemGroupedBackground))
-
-            content()
-
-            // Prominent border
-            RoundedRectangle(cornerRadius: cornerRadius)
-                .strokeBorder(Color.accentColor.opacity(0.3), lineWidth: 1)
-        }
-    }
-
-    private var cornerRadius: CGFloat {
-        if #available(iOS 26, *) { 26 } else { 12 }
     }
 
     private func makeMediaPicker<Content: View>(@ViewBuilder content: @escaping () -> Content) -> some View {

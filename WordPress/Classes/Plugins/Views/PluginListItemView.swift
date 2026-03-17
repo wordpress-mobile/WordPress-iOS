@@ -68,7 +68,7 @@ struct PluginListItemView: View {
         }
 
         static func version(_ version: String) -> String {
-            let format = NSLocalizedString("sitePluginsList.item.author", value: "Version: %@", comment: "The plugin version displayed in the plugins list. The first argument is plugin version")
+            let format = NSLocalizedString("sitePluginsList.item.version", value: "Version: %@", comment: "The plugin version displayed in the plugins list. The first argument is plugin version")
             return String(format: format, version)
         }
 

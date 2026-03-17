@@ -11,10 +11,7 @@
 
 @class Comment;
 
-NSString *const WPComGetFeatures = @"wpcom.getFeatures";
-NSString *const VideopressEnabled = @"videopress_enabled";
 NSString *const WordPressMinimumVersion = @"4.0";
-NSString *const HttpsPrefix = @"https://";
 NSString *const WPBlogUpdatedNotification = @"WPBlogUpdatedNotification";
 NSString *const WPBlogSettingsUpdatedNotification = @"WPBlogSettingsUpdatedNotification";
 
@@ -114,6 +111,24 @@ NSString *const WPBlogSettingsUpdatedNotification = @"WPBlogSettingsUpdatedNotif
         [self syncXMLRPCOptionsIfApplicableFor:blog
                                 optionsHandler:handler
                                         failure:^{ dispatch_group_leave(syncGroup); }];
+
+        if ([remote isKindOfClass:[BlogServiceRemoteCoreREST class]]) {
+            BlogServiceRemoteCoreREST *coreRestRemote = (BlogServiceRemoteCoreREST *)remote;
+            dispatch_group_enter(syncGroup);
+            [coreRestRemote syncBlogSettingsWithSuccess:^(RemoteBlogSettings *settings) {
+                [self.coreDataStack performAndSaveUsingBlock:^(NSManagedObjectContext *context) {
+                    Blog *blogInContext = (Blog *)[context existingObjectWithID:blogObjectID error:nil];
+                    if (blogInContext) {
+                        [self updateSettings:blogInContext.settings withRemoteSettings:settings];
+                    }
+                } completion:^{
+                    dispatch_group_leave(syncGroup);
+                } onQueue:dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0)];
+            } failure:^(NSError *error) {
+                DDLogError(@"Failed syncing settings for blog %@: %@", blog.url, error);
+                dispatch_group_leave(syncGroup);
+            }];
+        }
     }
 
     dispatch_group_enter(syncGroup);
@@ -267,6 +282,12 @@ NSString *const WPBlogSettingsUpdatedNotification = @"WPBlogSettingsUpdatedNotif
 
             BlogServiceRemoteREST *restRemote = remote;
             [restRemote syncBlogSettingsWithSuccess:^(RemoteBlogSettings *settings) {
+                updateOnSuccess(settings);
+            } failure:failure];
+
+        } else if ([remote isKindOfClass:[BlogServiceRemoteCoreREST class]]) {
+            BlogServiceRemoteCoreREST *coreRestRemote = (BlogServiceRemoteCoreREST *)remote;
+            [coreRestRemote syncBlogSettingsWithSuccess:^(RemoteBlogSettings *settings) {
                 updateOnSuccess(settings);
             } failure:failure];
         }

@@ -1,7 +1,0 @@
-#ifdef __OBJC__
-@import CocoaLumberjack;
-#ifndef COCOA_LUMBERJACK
-#define COCOA_LUMBERJACK
-extern DDLogLevel ddLogLevel;
-#endif
-#endif

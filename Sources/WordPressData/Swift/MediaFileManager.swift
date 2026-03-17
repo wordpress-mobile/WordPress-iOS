@@ -1,5 +1,6 @@
 import CocoaLumberjackSwift
 import Foundation
+import CoreData
 import WordPressShared
 
 /// Type of the local Media directory URL in implementation.

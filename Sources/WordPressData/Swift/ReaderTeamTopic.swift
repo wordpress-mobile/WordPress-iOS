@@ -1,4 +1,5 @@
 import Foundation
+import CoreData
 
 @objc(ReaderTeamTopic)
 open class ReaderTeamTopic: ReaderAbstractTopic {

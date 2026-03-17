@@ -78,7 +78,7 @@ public enum FeatureFlag: Int, CaseIterable {
         case .readerGutenbergCommentComposer:
             return false
         case .pluginManagementOverhaul:
-            return false
+            return true
         case .newStats:
             return false
         case .intelligence:

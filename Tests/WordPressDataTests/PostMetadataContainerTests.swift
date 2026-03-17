@@ -1,3 +1,4 @@
+import CoreData
 import Testing
 @testable import WordPressData
 

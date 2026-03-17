@@ -44,7 +44,7 @@ struct InstalledPluginsListView: View {
                         Text(Strings.filterOptionInactive).tag(PluginFilter.inactive)
                     }
                 } label: {
-                    Image(systemName: "ellipsis.circle")
+                    Image(systemName: "ellipsis")
                 }
             }
         }

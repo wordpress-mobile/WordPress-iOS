@@ -1,3 +1,4 @@
+import CoreData
 import XCTest
 import WordPressData
 

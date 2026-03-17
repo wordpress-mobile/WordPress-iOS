@@ -11,9 +11,9 @@ import DesignSystem
 struct CustomPostTabView: View {
     let client: WordPressClient
     let service: WpService
-    let endpoint: PostEndpointType
     let details: PostTypeDetailsWithEditContext
     let blog: Blog
+    weak var presentingViewController: UIViewController?
 
     @State private var selectedTab: CustomPostTab = .all
     @State private var searchText = ""
@@ -24,6 +24,8 @@ struct CustomPostTabView: View {
     @State private var trashViewModel: CustomPostListViewModel
     @State private var editorPresentation: EditorPresentation?
     @State private var isShowingFeedback = false
+
+    @SiteStorage private var authorFilter: CustomPostAuthorFilter
 
     private var activeViewModel: CustomPostListViewModel {
         switch selectedTab {
@@ -43,51 +45,59 @@ struct CustomPostTabView: View {
     init(
         client: WordPressClient,
         service: WpService,
-        endpoint: PostEndpointType,
         details: PostTypeDetailsWithEditContext,
-        blog: Blog
+        blog: Blog,
+        presentingViewController: UIViewController? = nil
     ) {
         self.client = client
         self.service = service
-        self.endpoint = endpoint
         self.details = details
         self.blog = blog
+        self.presentingViewController = presentingViewController
 
         _allViewModel = State(initialValue: CustomPostListViewModel(
             client: client,
             service: service,
-            endpoint: endpoint,
-            filter: CustomPostListFilter(status: .custom("any")),
-            blog: blog
+            details: details,
+            filter: CustomPostListFilter(tab: .all),
+            blog: blog,
+            presentingViewController: presentingViewController
         ))
         _publishedViewModel = State(initialValue: CustomPostListViewModel(
             client: client,
             service: service,
-            endpoint: endpoint,
-            filter: CustomPostListFilter(status: .publish),
-            blog: blog
+            details: details,
+            filter: CustomPostListFilter(tab: .published),
+            blog: blog,
+            presentingViewController: presentingViewController
         ))
         _draftsViewModel = State(initialValue: CustomPostListViewModel(
             client: client,
             service: service,
-            endpoint: endpoint,
-            filter: CustomPostListFilter(status: .draft),
-            blog: blog
+            details: details,
+            filter: CustomPostListFilter(tab: .drafts),
+            blog: blog,
+            presentingViewController: presentingViewController
         ))
         _scheduledViewModel = State(initialValue: CustomPostListViewModel(
             client: client,
             service: service,
-            endpoint: endpoint,
-            filter: CustomPostListFilter(status: .future),
-            blog: blog
+            details: details,
+            filter: CustomPostListFilter(tab: .scheduled),
+            blog: blog,
+            presentingViewController: presentingViewController
         ))
         _trashViewModel = State(initialValue: CustomPostListViewModel(
             client: client,
             service: service,
-            endpoint: endpoint,
-            filter: CustomPostListFilter(status: .trash),
-            blog: blog
+            details: details,
+            filter: CustomPostListFilter(tab: .trash),
+            blog: blog,
+            presentingViewController: presentingViewController
         ))
+
+        _authorFilter = .authorFilter(for: TaggedManagedObjectID(blog))
+        self.applyAuthorFilter()
     }
 
     var body: some View {
@@ -106,9 +116,9 @@ struct CustomPostTabView: View {
                     blog: blog,
                     client: client,
                     service: service,
-                    endpoint: endpoint,
                     details: details,
                     searchText: $searchText,
+                    presentingViewController: presentingViewController,
                     onSelectPost: { editorPresentation = .editPost($0) }
                 )
             }
@@ -116,6 +126,14 @@ struct CustomPostTabView: View {
         .searchable(text: $searchText)
         .navigationTitle(details.name)
         .toolbar {
+            if canFilterByAuthor {
+                ToolbarItem(placement: .topBarTrailing) {
+                    AuthorFilterToolbarButton(
+                        filter: $authorFilter,
+                        avatarURL: currentUserAvatarURL
+                    )
+                }
+            }
             ToolbarItem(placement: .topBarTrailing) {
                 Menu {
                     Button(action: { isShowingFeedback = true }) {
@@ -132,6 +150,7 @@ struct CustomPostTabView: View {
         .fullScreenCover(item: $editorPresentation) { presentation in
             CustomPostEditor(service: service.posts(), client: client, post: presentation.post, details: details, blog: blog)
         }
+        .onChange(of: authorFilter, applyAuthorFilter)
         .task {
             EditorDependencyManager.shared
                 .prefetchDependencies(
@@ -149,6 +168,38 @@ struct CustomPostTabView: View {
             }
             .padding()
         }
+    }
+
+    private var canFilterByAuthor: Bool {
+        blog.isMultiAuthor && blog.userID != nil
+    }
+
+    private var currentUserAvatarURL: URL? {
+        guard let userID = blog.userID,
+              let author = blog.getAuthorWith(id: userID),
+              let urlString = author.avatarURL else {
+            return nil
+        }
+        return URL(string: urlString)
+    }
+
+    private func authorIds(for filter: CustomPostAuthorFilter) -> [UserId] {
+        switch filter {
+        case .everyone:
+            return []
+        case .mine:
+            guard let userID = blog.userID else { return [] }
+            return [userID.int64Value]
+        }
+    }
+
+    private func applyAuthorFilter() {
+        let authorIds = authorIds(for: authorFilter)
+        allViewModel.updateAuthorFilter(authorIds)
+        publishedViewModel.updateAuthorFilter(authorIds)
+        draftsViewModel.updateAuthorFilter(authorIds)
+        scheduledViewModel.updateAuthorFilter(authorIds)
+        trashViewModel.updateAuthorFilter(authorIds)
     }
 
     private var tabBar: some View {
@@ -179,13 +230,37 @@ enum CustomPostTab: Int, CaseIterable, AdaptiveTabBarItem {
         }
     }
 
-    var status: PostStatus {
+    var primaryStatus: PostStatus {
         switch self {
-        case .all: return .custom("any")
+        case .all: return .publish
         case .published: return .publish
         case .drafts: return .draft
         case .scheduled: return .future
         case .trash: return .trash
+        }
+    }
+
+    var statuses: [PostStatus] {
+        switch self {
+        case .all: return [.custom("any")]
+        case .published: return [.publish, .private]
+        case .drafts: return [.draft, .pending]
+        case .scheduled: return [.future]
+        case .trash: return [.trash]
+        }
+    }
+
+    var orderby: WpApiParamPostsOrderBy {
+        switch self {
+        case .all, .drafts: return .modified
+        case .published, .scheduled, .trash: return .date
+        }
+    }
+
+    var order: WpApiParamOrder {
+        switch self {
+        case .scheduled: return .asc
+        case .all, .published, .drafts, .trash: return .desc
         }
     }
 }

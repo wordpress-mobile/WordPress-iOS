@@ -3,6 +3,7 @@ import WordPressData
 import WordPressShared
 
 @objc public enum WPAnalyticsEvent: Int {
+    case screenShown
 
     case createSheetShown
     case createSheetActionTapped
@@ -329,6 +330,7 @@ import WordPressShared
 
     // Reader: Discover
     case readerDiscoverChannelSelected
+    case readerDiscoverTabShown
     case readerDiscoverEditInterestsTapped
 
     // App Settings
@@ -710,6 +712,8 @@ import WordPressShared
     /// A String that represents the event
     var value: String {
         switch self {
+        case .screenShown:
+            return "screen_shown"
         case .createSheetShown:
             return "create_sheet_shown"
         case .createSheetActionTapped:
@@ -1282,6 +1286,8 @@ import WordPressShared
         // Reader: Discover
         case .readerDiscoverChannelSelected:
             return "reader_discover_channel_selected"
+        case .readerDiscoverTabShown:
+            return "reader_discover_tab_shown"
         case .readerDiscoverEditInterestsTapped:
             return "reader_discover_edit_interests_tapped"
 

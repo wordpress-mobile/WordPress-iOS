@@ -1,4 +1,5 @@
 import UIKit
+import AsyncImageKit
 import AutomatticTracks
 import BuildSettingsKit
 import SwiftUI
@@ -13,6 +14,7 @@ struct DebugMenuView: View {
     @State private var isShowingWebViewURLDialog = false
     @State private var webViewURL = ""
     @State private var isAuthenticatedMode = true
+    @State private var imageCacheSize: String = ""
 
     fileprivate var navigation: NavigationContext
 
@@ -23,6 +25,7 @@ struct DebugMenuView: View {
             Section(Strings.sectionTipKit) { tipKit }
             Section(Strings.sectionWebView) { webView }
             Section(Strings.sectionLogging) { logging }
+            Section(Strings.sectionCaches) { caches }
         }
         .toolbar {
             ToolbarItem(placement: .principal) {
@@ -136,6 +139,33 @@ struct DebugMenuView: View {
             }.buttonStyle(.plain)
         }
         Toggle(Strings.alwaysSendLogs, isOn: $viewModel.isForcedCrashLoggingEnabled)
+    }
+
+    @ViewBuilder private var caches: some View {
+        HStack {
+            Text(Strings.imageCache)
+            Spacer()
+            Text(imageCacheSize)
+                .foregroundStyle(.secondary)
+            Button {
+                Task {
+                    await ImageDownloader.shared.clearURLSessionCache()
+                    await ImageDownloader.shared.clearMemoryCache()
+                    await refreshImageCacheSize()
+                    showSuccessNotice()
+                }
+            } label: {
+                Image(systemName: "xmark.circle.fill")
+                    .foregroundStyle(.secondary)
+            }
+            .buttonStyle(.plain)
+        }
+        .task { await refreshImageCacheSize() }
+    }
+
+    private func refreshImageCacheSize() async {
+        let bytes = await ImageDownloader.shared.diskCacheSize
+        imageCacheSize = ByteCountFormatter.string(fromByteCount: Int64(bytes), countStyle: .file)
     }
 
     private func presentAuthenticatedWebView() {
@@ -292,4 +322,7 @@ private enum Strings {
     static let showAllTips = NSLocalizedString("debugMenu.showAllTips", value: "Show All Tips", comment: "Debug Menu action for TipKit")
     static let hideAllTips = NSLocalizedString("debugMenu.hideAllTips", value: "Hide All Tips", comment: "Debug Menu action for TipKit")
     static let resetTipKitData = NSLocalizedString("debugMenu.resetTipKitData", value: "Reset Data", comment: "Debug Menu action for TipKit")
+
+    static let sectionCaches = NSLocalizedString("debugMenu.section.caches", value: "Caches", comment: "Debug Menu section title")
+    static let imageCache = NSLocalizedString("debugMenu.caches.imageCache", value: "Image Cache", comment: "Debug Menu label for image cache size")
 }

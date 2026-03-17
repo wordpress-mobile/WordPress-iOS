@@ -1,4 +1,5 @@
 import Foundation
+import CoreData
 import WordPressKit
 
 /// - warning: Soft-deprecated.

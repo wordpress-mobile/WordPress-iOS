@@ -120,6 +120,11 @@ public final class ImageDownloader {
         return imageURL.absoluteString + (size.map { "?w=\($0.width),h=\($0.height)" } ?? "")
     }
 
+    /// The current disk usage of the URL cache, in bytes.
+    public var diskCacheSize: Int {
+        urlSessionWithCache.configuration.urlCache?.currentDiskUsage ?? 0
+    }
+
     public func clearURLSessionCache() {
         urlSessionWithCache.configuration.urlCache?.removeAllCachedResponses()
         urlSession.configuration.urlCache?.removeAllCachedResponses()

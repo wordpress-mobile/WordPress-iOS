@@ -55,19 +55,26 @@ import BuildSettingsKit
     }
 
     public func trackString(_ event: String, withProperties properties: [AnyHashable: Any]?) {
-        if properties == nil {
-            DDLogInfo("🔵 Tracked: \(event)")
-        } else {
-            let description = (properties ?? [:])
+        DDLogInfo("\(makeLogMessage(for: event, properties: properties))")
+        tracksService.trackEventName(event, withCustomProperties: properties)
+    }
+
+    private func makeLogMessage(for event: String, properties: [AnyHashable: Any]?) -> String {
+        var message = "🔵 Tracked: \(event)"
+        if let properties, !properties.isEmpty {
+            if event == WPAnalyticsEvent.screenShown.value, let screen = properties["screen"] {
+                message.append(" >> \(screen)")
+            }
+            let description = properties
                 .map { (key: "\($0)", value: $1) }
                 .sorted {
                     $0.key.localizedCaseInsensitiveCompare($1.key) == .orderedAscending
                 }
                 .map { key, value in "\(key): \(value)" }
                 .joined(separator: ", ")
-            DDLogInfo("🔵 Tracked: \(event) <\(description)>")
+            message.append(" <\(description)>")
         }
-        tracksService.trackEventName(event, withCustomProperties: properties)
+        return message
     }
 
     // MARK: - Session Management

@@ -1,5 +1,6 @@
 import Foundation
 import SwiftUI
+import UIKit
 import WordPressAPI
 import WordPressAPIInternal
 import WordPressCore
@@ -8,16 +9,32 @@ import WordPressShared
 
 @MainActor
 final class CustomPostListViewModel: ObservableObject {
-    private let client: WordPressClient
+    typealias IndentationMap = [Int64: PageTree.Entry<Int64>]
+
+    let client: WordPressClient
+    private let service: WpService
     private let endpoint: PostEndpointType
-    private let blog: Blog
-    let filter: CustomPostListFilter
+    private let details: PostTypeDetailsWithEditContext
+    let blog: Blog
+    private let isHierarchical: Bool
+    private(set) var filter: CustomPostListFilter
+    weak var presentingViewController: UIViewController?
 
     private var collection: PostMetadataCollectionWithEditContext
+    private var homepageSetting: HomepageSetting?
+    private var isBatchSyncing = false
+    // Whether we should show the content in a hierarchy view.
+    // true if the number of cached items or the total items return by the API
+    // is less than a threshold, where the app can fetch all content relative quickly.
+    private var shouldShowHierarchy = false
 
     @Published private(set) var items: [CustomPostCollectionItem] = []
     @Published private(set) var listInfo: ListInfo?
+    @Published private(set) var indentationMap: IndentationMap = [:]
     @Published private var error: Error?
+    @Published var postToDelete: AnyPostWithEditContext?
+    @Published var postToTrash: AnyPostWithEditContext?
+    @Published var progressHUDState: ProgressHUDState = .idle
 
     var shouldDisplayEmptyView: Bool {
         items.isEmpty && listInfo?.isSyncing == false
@@ -27,6 +44,10 @@ final class CustomPostListViewModel: ObservableObject {
         items.isEmpty && listInfo?.isSyncing == true
     }
 
+    var postService: WordPressAPIInternal.PostService {
+        service.posts()
+    }
+
     func errorToDisplay() -> Error? {
         items.isEmpty ? error : nil
     }
@@ -34,34 +55,72 @@ final class CustomPostListViewModel: ObservableObject {
     init(
         client: WordPressClient,
         service: WpService,
-        endpoint: PostEndpointType,
+        details: PostTypeDetailsWithEditContext,
         filter: CustomPostListFilter,
-        blog: Blog
+        blog: Blog,
+        presentingViewController: UIViewController? = nil
     ) {
         self.client = client
-        self.endpoint = endpoint
+        self.service = service
+        self.endpoint = details.toPostEndpointType()
+        self.details = details
         self.blog = blog
+        self.isHierarchical = details.hierarchical
         self.filter = filter
+        self.presentingViewController = presentingViewController
 
         collection = service
             .posts()
             .createPostMetadataCollectionWithEditContext(
-                endpointType: endpoint,
+                endpointType: details.toPostEndpointType(),
                 filter: filter.asPostListFilter(),
-                perPage: 20
+                perPage: 100
             )
     }
 
+    func pullToRefresh() async {
+        await refresh(pullToRefresh: true)
+    }
+
+    func updateAuthorFilter(_ author: [UserId]) {
+        guard filter.author != author else { return }
+
+        withAnimation {
+            filter.author = author
+            collection = service
+                .posts()
+                .createPostMetadataCollectionWithEditContext(
+                    endpointType: endpoint,
+                    filter: filter.asPostListFilter(),
+                    perPage: 100
+                )
+            items = []
+            listInfo = nil
+        }
+    }
+
     func refresh() async {
-        do {
-            _ = try await collection.refresh()
-        } catch {
-            DDLogError("Failed to refresh posts: \(error)")
-            self.show(error: error)
+        await refresh(pullToRefresh: false)
+    }
+
+    private func refresh(pullToRefresh: Bool) async {
+        await fetchHomepageSettingsIfNeeded()
+
+        if !pullToRefresh {
+            await loadCachedItems()
+        }
+
+        if shouldAttemptDisplayHierarchy {
+            await fetchAllPagesIfBelowThreshold()
+        } else {
+            await fetchWithPagination()
         }
     }
 
     func loadNextPage() async throws {
+        // All pages are already loaded by refresh() for hierarchical posts.
+        guard !isBatchSyncing else { return }
+
         if let listInfo, listInfo.isSyncing || !listInfo.hasMorePages {
             return
         }
@@ -73,19 +132,21 @@ final class CustomPostListViewModel: ObservableObject {
         }
     }
 
-    func loadCachedItems() async {
+    private func loadCachedItems() async {
         let listInfo = collection.listInfo()
 
+        if let totalItems = listInfo?.totalItems, totalItems <= Constants.hierarchyPageCountThreshold {
+            shouldShowHierarchy = true
+        }
+
         do {
-            let items = try await collection.loadItems().map { CustomPostCollectionItem(item: $0, blog: blog, filterStatus: filter.status) }
+            let metadataItems = try await collection.loadItems()
             if self.listInfo != listInfo {
                 self.listInfo = listInfo
             }
-            if self.items != items {
-                self.items = items
-            }
+            updateItems(from: metadataItems)
         } catch {
-            DDLogError("Failed to load cached items: \(error)")
+            Loggers.app.error("Failed to load cached items: \(error)")
         }
     }
 
@@ -95,35 +156,306 @@ final class CustomPostListViewModel: ObservableObject {
             .collect(.byTime(DispatchQueue.main, .milliseconds(50)))
             .values
         for await batch in batches {
-            DDLogInfo("\(batch.count) updates received from WpApiCache")
+            // When fetching all page to display hierarchical view, the post list is updated on one go after the
+            // fetching is completed. In that scenario, we should skip the paginationed UI update.
+            guard !isBatchSyncing else { continue }
+
+            Loggers.app.info("\(batch.count) updates received from WpApiCache")
 
             #if DEBUG
             for hook in batch {
-                DDLogDebug("  |- \(hook.action) to \(hook.table) at row \(hook.rowId)")
+                Loggers.app.debug("  |- \(hook.action) to \(hook.table) at row \(hook.rowId)")
             }
             #endif
 
             let listInfo = collection.listInfo()
 
-            DDLogInfo("List info: \(String(describing: listInfo))")
+            Loggers.app.info("List info: \(String(describing: listInfo))")
 
             do {
-                let items = try await collection.loadItems().map { CustomPostCollectionItem(item: $0, blog: blog, filterStatus: filter.status) }
+                let metadataItems = try await collection.loadItems()
                 withAnimation {
                     if self.listInfo != listInfo {
                         self.listInfo = listInfo
                     }
-                    if self.items != items {
-                        self.items = items
-                    }
+                    updateItems(from: metadataItems)
                 }
             } catch {
-                DDLogError("Failed to get collection items: \(error)")
+                Loggers.app.error("Failed to get collection items: \(error)")
             }
         }
     }
 
+    // MARK: - Loading Strategies
+
+    /// Fetches the first page and lets `handleDataChanges` update the UI
+    /// incrementally as each page loads.
+    private func fetchWithPagination() async {
+        do {
+            _ = try await collection.refresh()
+        } catch {
+            Loggers.app.error("Failed to refresh posts: \(error)")
+            self.show(error: error)
+        }
+    }
+
+    /// Fetches the first page to determine total count. If below the
+    /// threshold, fetches remaining pages and builds the hierarchy tree.
+    /// Otherwise, stays in flat paginated mode.
+    private func fetchAllPagesIfBelowThreshold() async {
+        do {
+            _ = try await collection.refresh()
+        } catch {
+            DDLogError("Failed to refresh pages: \(error)")
+            self.show(error: error)
+            return
+        }
+
+        // Load rest of the pages if total post count is less than the threshold
+        let totalItems = collection.listInfo()?.totalItems ?? Int64.max
+        guard totalItems <= Constants.hierarchyPageCountThreshold else {
+            return
+        }
+
+        shouldShowHierarchy = true
+
+        isBatchSyncing = true
+        defer { isBatchSyncing = false }
+
+        do {
+            while !Task.isCancelled {
+                guard let listInfo = collection.listInfo(), listInfo.hasMorePages, !listInfo.isSyncing else {
+                    break
+                }
+                _ = try await collection.loadNextPage()
+            }
+
+            await loadCachedItems()
+        } catch {
+            Loggers.app.error("Failed to refresh all pages for hierarchy: \(error)")
+            self.show(error: error)
+        }
+    }
+
+    private var shouldAttemptDisplayHierarchy: Bool {
+        isHierarchical && (filter.statuses.contains(.publish) || filter.statuses.contains(.custom("any")))
+    }
+
+    private func updateItems(from metadataItems: [PostMetadataCollectionItem]) {
+        var items = metadataItems.map {
+            CustomPostCollectionItem(item: $0, blog: blog, primaryStatus: filter.primaryStatus)
+        }
+
+        if endpoint == .pages,
+           case .staticPage(let homepagePageID) = homepageSetting,
+           filter.statuses.contains(.publish) || filter.statuses.contains(.custom("any")) {
+            items.markHomepage(id: homepagePageID)
+        }
+
+        guard shouldShowHierarchy else {
+            indentationMap = [:]
+            self.items = items
+            return
+        }
+
+        // Use metadata items for hierarchy data, since parent/menuOrder are
+        // available from list metadata regardless of the item's fetch state.
+        let posts = metadataItems.map { item in
+            HierarchyInput(postId: item.id, parentPostId: item.parent ?? 0, order: Int64(item.menuOrder ?? 0))
+        }
+
+        let entries = PageTree.buildHierarchy(from: posts)
+        let itemMap = Dictionary(uniqueKeysWithValues: items.compactMap { item -> (Int64, CustomPostCollectionItem)? in
+            return (item.id, item)
+        })
+
+        indentationMap = Dictionary(uniqueKeysWithValues: entries.map { ($0.id, $0) })
+        self.items = entries.compactMap { itemMap[$0.id] }
+    }
+
+    // MARK: - Post Actions
+
+    func confirmDelete(_ post: AnyPostWithEditContext) {
+        postToDelete = post
+    }
+
+    func confirmTrash(_ post: AnyPostWithEditContext) {
+        postToTrash = post
+    }
+
+    func publishPost(_ post: AnyPostWithEditContext) {
+        guard let vc = presentingViewController else { return }
+
+        let editorService = CustomPostEditorService(
+            blog: blog,
+            post: post,
+            details: details,
+            client: client,
+            service: service.posts()
+        )
+        PublishPostViewController.show(
+            editorService: editorService,
+            blog: blog,
+            from: vc,
+            completion: { _ in }
+        )
+    }
+
+    func moveToDraft(_ post: AnyPostWithEditContext) async {
+        var params = PostUpdateParams(meta: nil)
+        params.status = .draft
+        await updatePost(post, params: params)
+    }
+
+    func viewPost(_ post: AnyPostWithEditContext) {
+        guard let url = URL(string: post.link) else { return }
+        UIApplication.shared.open(url)
+    }
+
+    func navigationMenuItems(for post: AnyPostWithEditContext) -> [PostMenuNavigation] {
+        var items: [PostMenuNavigation] = []
+        if let nav = menuNavigation(forBlaze: post) {
+            items.append(nav)
+        }
+        if let nav = menuNavigation(forStats: post) {
+            items.append(nav)
+        }
+        if let nav = menuNavigation(forComments: post) {
+            items.append(nav)
+        }
+        if post.status != .trash {
+            items.append(.settings(post: post))
+        }
+        return items
+    }
+
+    func handleMenuNavigation(_ navigation: PostMenuNavigation) {
+        guard let vc = presentingViewController else { return }
+
+        switch navigation {
+        case .stats(let post):
+            if FeatureFlag.newStats.enabled {
+                let statsVC = PostStatsViewController(
+                    postID: Int(post.id),
+                    postTitle: post.title?.raw ?? "",
+                    postURL: URL(string: post.link),
+                    postDate: post.dateGmt,
+                    blog: blog
+                )
+                let navController = UINavigationController(rootViewController: statsVC)
+                navController.modalPresentationStyle = .pageSheet
+                vc.present(navController, animated: true)
+            } else {
+                let statsVC = PostStatsTableViewController.withJPBannerForBlog(
+                    postID: Int(post.id),
+                    postTitle: post.title?.raw,
+                    postURL: URL(string: post.link)
+                )
+                vc.navigationController?.pushViewController(statsVC, animated: true)
+            }
+
+        case .comments(let post, let siteID):
+            let commentsVC = ReaderCommentsViewController(
+                postID: NSNumber(value: post.id),
+                siteID: siteID
+            )
+            vc.navigationController?.pushViewController(commentsVC, animated: true)
+
+        case .blaze(let post):
+            BlazeFlowCoordinator.presentBlazeWebFlow(
+                in: vc,
+                source: .postsList,
+                blog: blog,
+                postID: NSNumber(value: post.id)
+            )
+
+        case .settings(let post):
+            let editorService = CustomPostEditorService(
+                blog: blog,
+                post: post,
+                details: details,
+                client: client,
+                service: service.posts()
+            )
+            let viewModel = CustomPostSettingsViewModel(editorService: editorService, blog: blog, isStandalone: true)
+            let settingsVC = PostSettingsViewController(viewModel: viewModel)
+            let nav = UINavigationController(rootViewController: settingsVC)
+            vc.present(nav, animated: true)
+        }
+    }
+
+    func menuNavigation(forBlaze post: AnyPostWithEditContext) -> PostMenuNavigation? {
+        guard endpoint == .posts
+                && BlazeHelper.isBlazeFlagEnabled() && blog.canBlaze
+                && post.status == .publish && (post.password ?? "") == "" else { return nil }
+        return .blaze(post: post)
+    }
+
+    func menuNavigation(forStats post: AnyPostWithEditContext) -> PostMenuNavigation? {
+        guard endpoint == .posts
+                && blog.supports(.stats) && post.status == .publish else { return nil }
+        return .stats(post: post)
+    }
+
+    func menuNavigation(forComments post: AnyPostWithEditContext) -> PostMenuNavigation? {
+        guard details.supports.supports(feature: .comments)
+                && post.status == .publish, let siteID = blog.dotComID else { return nil }
+        return .comments(post: post, siteID: siteID)
+    }
+
+    func trashPost(_ post: AnyPostWithEditContext) async {
+        progressHUDState = .running
+        do {
+            _ = try await service.posts().trashPost(endpointType: endpoint, postId: post.id)
+            progressHUDState = .success
+        } catch {
+            Loggers.app.error("Failed to trash post: \(error)")
+            progressHUDState = .failure(error.localizedDescription)
+        }
+    }
+
+    func deletePost(_ post: AnyPostWithEditContext) async {
+        progressHUDState = .running
+        do {
+            _ = try await service.posts().deletePostPermanently(endpointType: endpoint, postId: post.id)
+            progressHUDState = .success
+        } catch {
+            Loggers.app.error("Failed to delete post: \(error)")
+            progressHUDState = .failure(error.localizedDescription)
+        }
+    }
+
+    private func updatePost(_ post: AnyPostWithEditContext, params: PostUpdateParams) async {
+        progressHUDState = .running
+        do {
+            _ = try await service.posts().updatePost(endpointType: endpoint, postId: post.id, params: params)
+            progressHUDState = .success
+        } catch {
+            Loggers.app.error("Failed to update post: \(error)")
+            progressHUDState = .failure(error.localizedDescription)
+        }
+    }
+
+    /// Fetches homepage settings using the cached site settings from
+    /// `WordPressClient` when the endpoint is `.pages` and the setting
+    /// has not been resolved yet.
+    private func fetchHomepageSettingsIfNeeded() async {
+        guard endpoint == .pages, homepageSetting == nil else { return }
+
+        do {
+            let settings = try await client.fetchSiteSettings()
+            if settings.showOnFront == "page", settings.pageOnFront > 0 {
+                homepageSetting = .staticPage(id: Int64(settings.pageOnFront))
+            } else {
+                homepageSetting = .latestPosts
+            }
+        } catch {
+            Loggers.app.error("Failed to fetch site settings for homepage detection: \(error)")
+        }
+    }
+
     private func show(error: Error) {
+        // TODO: Ignore error https://github.com/Automattic/wordpress-rs/pull/1227
         self.error = error
 
         if !items.isEmpty {
@@ -131,6 +463,39 @@ final class CustomPostListViewModel: ObservableObject {
             Notice(error: error).post()
         }
     }
+}
+
+extension CustomPostListViewModel {
+
+    enum PostMenuNavigation: Identifiable {
+        case stats(post: AnyPostWithEditContext)
+        case comments(post: AnyPostWithEditContext, siteID: NSNumber)
+        case blaze(post: AnyPostWithEditContext)
+        case settings(post: AnyPostWithEditContext)
+
+        var id: String {
+            label
+        }
+
+        var label: String {
+            switch self {
+            case .blaze: return Strings.blaze
+            case .stats: return Strings.stats
+            case .comments: return Strings.comments
+            case .settings: return Strings.settings
+            }
+        }
+
+        var systemImage: String {
+            switch self {
+            case .blaze: return "flame"
+            case .stats: return "chart.line.uptrend.xyaxis"
+            case .comments: return "bubble.right"
+            case .settings: return "gearshape"
+            }
+        }
+    }
+
 }
 
 struct CustomPostCollectionDisplayPost: Equatable {
@@ -141,7 +506,8 @@ struct CustomPostCollectionDisplayPost: Equatable {
     let status: PostStatus
     let sticky: Bool
     let featuredMedia: MediaId?
-    let filterStatus: PostStatus?
+    let primaryStatus: PostStatus
+    var isHomepage: Bool
 
     init(
         date: Date,
@@ -151,7 +517,8 @@ struct CustomPostCollectionDisplayPost: Equatable {
         status: PostStatus = .publish,
         sticky: Bool = false,
         featuredMedia: MediaId? = nil,
-        filterStatus: PostStatus? = nil
+        primaryStatus: PostStatus = .publish,
+        isHomepage: Bool = false
     ) {
         self.date = date
         self.title = title
@@ -160,17 +527,15 @@ struct CustomPostCollectionDisplayPost: Equatable {
         self.status = status
         self.sticky = sticky
         self.featuredMedia = featuredMedia
-        self.filterStatus = filterStatus
+        self.primaryStatus = primaryStatus
+        self.isHomepage = isHomepage
     }
 
-    init(_ entity: AnyPostWithEditContext, blog: Blog, contentLimit: Int = 100, filterStatus: PostStatus? = nil) {
+    init(_ entity: AnyPostWithEditContext, blog: Blog, primaryStatus: PostStatus = .publish) {
         self.date = entity.dateGmt
         self.title = entity.title?.raw
         let contentPreview = GutenbergExcerptGenerator
-            .firstParagraph(
-                from: entity.content.rendered,
-                maxLength: contentLimit
-            )
+            .firstParagraph(from: entity.content.rendered)
             .replacingOccurrences(
                 of: "[\n]{2,}",
                 with: "\n",
@@ -185,7 +550,8 @@ struct CustomPostCollectionDisplayPost: Equatable {
         self.status = entity.status
         self.sticky = entity.sticky ?? false
         self.featuredMedia = entity.featuredMedia
-        self.filterStatus = filterStatus
+        self.primaryStatus = primaryStatus
+        self.isHomepage = false
     }
 
     /// The title to display, with a placeholder for untitled posts.
@@ -223,11 +589,9 @@ struct CustomPostCollectionDisplayPost: Equatable {
     var statusBadges: String? {
         var badges: [String] = []
 
-        // Each tab filters by a specific status. Show a status badge when the
-        // post's status doesn't match the tab's filter, since it would be redundant
-        // otherwise. The "All" tab uses `.custom("any")` which never matches any
-        // post status, so non-published posts always get a badge there.
-        let showStatus = filterStatus == .custom("any") ? status != .publish : status != filterStatus
+        // Show a status badge when the post's status isn't one of the filter's
+        // statuses, since it would be redundant otherwise.
+        let showStatus = status != primaryStatus
         if showStatus {
             badges.append(status.localizedLabel())
         }
@@ -252,14 +616,6 @@ struct CustomPostCollectionDisplayPost: Equatable {
     )
 }
 
-private enum Strings {
-    static let sticky = NSLocalizedString(
-        "customPostList.badge.sticky",
-        value: "Sticky",
-        comment: "Badge shown in the post list for sticky posts"
-    )
-}
-
 extension PostStatus {
     func localizedLabel() -> String {
         switch self {
@@ -281,54 +637,60 @@ extension PostStatus {
     }
 }
 
-// TODO: Decouple the "display item" from the internall states of the `PostMetadataCollectionItem`
-enum CustomPostCollectionItem: Identifiable, Equatable {
-    case ready(id: Int64, post: CustomPostCollectionDisplayPost, fullPost: AnyPostWithEditContext)
-    case stale(id: Int64, post: CustomPostCollectionDisplayPost)
-    case refreshing(id: Int64, post: CustomPostCollectionDisplayPost)
-    case fetching(id: Int64)
-    case missing(id: Int64)
-    case error(id: Int64, message: String)
-    case errorWithData(id: Int64, message: String, post: CustomPostCollectionDisplayPost)
+struct CustomPostCollectionItem: Identifiable, Equatable {
+    let id: Int64
+    var post: CustomPostCollectionDisplayPost?
+    var state: State
 
-    var id: Int64 {
-        switch self {
-        case .ready(let id, _, _),
-             .stale(let id, _),
-             .refreshing(let id, _),
-             .fetching(let id),
-             .missing(let id),
-             .error(let id, _),
-             .errorWithData(let id, _, _):
-            return id
+    enum State: Equatable {
+        case loaded(fullPost: AnyPostWithEditContext, isUpToDate: Bool)
+        case loading
+        case error(message: String)
+    }
+
+    var isHomepage: Bool {
+        get {
+            post?.isHomepage ?? false
+        }
+        set {
+            post?.isHomepage = newValue
         }
     }
 
-    init(item: PostMetadataCollectionItem, blog: Blog, filterStatus: PostStatus? = nil) {
-        let id = item.id
+    init(item: PostMetadataCollectionItem, blog: Blog, primaryStatus: PostStatus = .publish) {
+        self.id = item.id
 
         switch item.state {
         case .fresh(let entity):
-            self = .ready(id: id, post: CustomPostCollectionDisplayPost(entity.data, blog: blog, filterStatus: filterStatus), fullPost: entity.data)
+            self.post = CustomPostCollectionDisplayPost(entity.data, blog: blog, primaryStatus: primaryStatus)
+            self.state = .loaded(fullPost: entity.data, isUpToDate: true)
 
         case .stale(let entity):
-            self = .stale(id: id, post: CustomPostCollectionDisplayPost(entity.data, blog: blog, filterStatus: filterStatus))
+            self.post = CustomPostCollectionDisplayPost(entity.data, blog: blog, primaryStatus: primaryStatus)
+            self.state = .loaded(fullPost: entity.data, isUpToDate: false)
 
-        case .fetchingWithData(let entity):
-            self = .refreshing(id: id, post: CustomPostCollectionDisplayPost(entity.data, blog: blog, filterStatus: filterStatus))
-
-        case .fetching:
-            self = .fetching(id: id)
-
-        case .missing:
-            self = .missing(id: id)
+        case .fetchingWithData, .fetching, .missing:
+            self.post = nil
+            self.state = .loading
 
         case .failed(let error):
-            self = .error(id: id, message: error)
+            self.post = nil
+            self.state = .error(message: error)
 
         case .failedWithData(let error, let entity):
-            self = .errorWithData(id: id, message: error, post: CustomPostCollectionDisplayPost(entity.data, blog: blog, contentLimit: 50, filterStatus: filterStatus))
+            self.post = CustomPostCollectionDisplayPost(entity.data, blog: blog, primaryStatus: primaryStatus)
+            self.state = .error(message: error)
         }
+    }
+}
+
+extension Array where Element == CustomPostCollectionItem {
+    /// Marks the homepage item with the `isHomepage` flag.
+    mutating func markHomepage(id: Int64) {
+        guard let homepageIndex = firstIndex(where: { $0.id == id }) else {
+            return
+        }
+        self[homepageIndex].isHomepage = true
     }
 }
 
@@ -341,4 +703,66 @@ private extension ListInfo {
         guard let currentPage, let totalPages else { return true }
         return currentPage < totalPages
     }
+}
+
+private struct HierarchyInput: HierarchicalPost {
+    var id: Int64 {
+        postId
+    }
+
+    var postId: Int64
+    var parentPostId: Int64
+    var order: Int64
+}
+
+extension AnyPostWithEditContext: HierarchicalPost {
+    var postId: Int64 {
+        id
+    }
+
+    var parentPostId: Int64 {
+        parent ?? 0
+    }
+
+    var order: Int64 {
+        Int64(menuOrder ?? 0)
+    }
+}
+
+private enum Strings {
+    static let sticky = NSLocalizedString(
+        "customPostList.badge.sticky",
+        value: "Sticky",
+        comment: "Badge shown in the post list for sticky posts"
+    )
+    static let blaze = NSLocalizedString(
+        "customPostList.action.blaze",
+        value: "Promote with Blaze",
+        comment: "Menu action to promote a post with Blaze"
+    )
+    static let stats = NSLocalizedString(
+        "customPostList.action.stats",
+        value: "Stats",
+        comment: "Menu action to view post statistics"
+    )
+    static let comments = NSLocalizedString(
+        "customPostList.action.comments",
+        value: "Comments",
+        comment: "Menu action to view post comments"
+    )
+    static let settings = NSLocalizedString(
+        "customPostList.action.settings",
+        value: "Settings",
+        comment: "Menu action to open post settings"
+    )
+}
+
+/// Represents the WordPress "Your homepage displays" setting.
+private enum HomepageSetting {
+    case latestPosts
+    case staticPage(id: Int64)
+}
+
+private enum Constants {
+    static let hierarchyPageCountThreshold: Int64 = 200
 }

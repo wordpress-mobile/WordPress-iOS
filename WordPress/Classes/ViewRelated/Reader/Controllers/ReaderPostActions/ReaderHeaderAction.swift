@@ -2,12 +2,20 @@ import UIKit
 import WordPressData
 
 final class ReaderHeaderAction {
-    func execute(post: ReaderPost, origin: UIViewController, source: ReaderStreamViewController.StatSource? = nil) {
+    func execute(
+        post: ReaderPost,
+        origin: UIViewController,
+        source: ReaderStreamViewController.StatSource? = nil,
+        trackingSource: ScreenTrackingSource? = nil
+    ) {
         guard let siteID = post.siteID else { return }
 
         let controller = ReaderStreamViewController.controllerWithSiteID(siteID, isFeed: post.isExternal)
         if let source {
             controller.statSource = source
+        }
+        if let trackingSource {
+            controller.trackingContext.source = trackingSource
         }
         origin.navigationController?.pushViewController(controller, animated: true)
 

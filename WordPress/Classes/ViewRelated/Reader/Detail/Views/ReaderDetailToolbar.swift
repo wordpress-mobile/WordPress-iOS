@@ -208,7 +208,7 @@ class ReaderDetailToolbar {
             return
         }
 
-        ReaderCommentAction().execute(post: post, origin: viewController, source: .postDetails)
+        ReaderCommentAction().execute(post: post, origin: viewController, source: .postDetails, trackingSource: ScreenTrackingSource(ScreenID.Reader.article, component: ElementID.Reader.toolbarComment))
     }
 
     @objc private func didTapLike(_ sender: Any) {

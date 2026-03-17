@@ -74,6 +74,12 @@ extension BlogDetailsViewController {
 
     public func showPostList(from source: BlogDetailsNavigationSource) {
         trackEvent(.openedPosts, from: source)
+
+        if blog.isSelfHosted, blog.isXMLRPCDisabled {
+            showPinnedPostType(.posts)
+            return
+        }
+
         let controller = PostListViewController.controllerWithBlog(blog)
         controller.navigationItem.largeTitleDisplayMode = .never
         presentationDelegate?.presentBlogDetailsViewController(controller)
@@ -81,6 +87,12 @@ extension BlogDetailsViewController {
 
     public func showPageList(from source: BlogDetailsNavigationSource) {
         trackEvent(.openedPages, from: source)
+
+        if blog.isSelfHosted, blog.isXMLRPCDisabled {
+            showPinnedPostType(.pages)
+            return
+        }
+
         let controller = PageListViewController.controllerWithBlog(blog)
         controller.navigationItem.largeTitleDisplayMode = .never
         presentationDelegate?.presentBlogDetailsViewController(controller)
@@ -95,8 +107,12 @@ extension BlogDetailsViewController {
         let rootView = ApplicationPasswordRequiredView(
             blog: blog,
             localizedFeatureName: feature,
-            presentingViewController: self) { [blog] client in
-                CustomPostTypesView(blog: blog, service: CustomPostTypeService(client: client, blog: blog))
+            presentingViewController: self) { [blog, weak self] client in
+                CustomPostTypesView(
+                    blog: blog,
+                    service: CustomPostTypeService(client: client, blog: blog),
+                    presentingViewController: self
+                )
             }
         let controller = UIHostingController(rootView: rootView)
         controller.navigationItem.largeTitleDisplayMode = .never
@@ -114,8 +130,13 @@ extension BlogDetailsViewController {
         let rootView = ApplicationPasswordRequiredView(
             blog: blog,
             localizedFeatureName: feature,
-            presentingViewController: self) { [blog] client in
-                PinnedPostTypeView(blog: blog, service: CustomPostTypeService(client: client, blog: blog), postType: postType)
+            presentingViewController: self) { [blog, weak self] client in
+                PinnedPostTypeView(
+                    blog: blog,
+                    service: CustomPostTypeService(client: client, blog: blog),
+                    postType: postType,
+                    presentingViewController: self
+                )
             }
         let controller = UIHostingController(rootView: rootView)
         controller.navigationItem.largeTitleDisplayMode = .never
@@ -255,7 +276,7 @@ extension BlogDetailsViewController {
     public func showPlugins() {
         WPAppAnalytics.track(.openedPluginDirectory, blog: blog)
 
-        if Feature.enabled(.pluginManagementOverhaul) {
+        if Feature.enabled(.pluginManagementOverhaul) && blog.isSelfHosted {
             showManagePluginsScreen()
             return
         }
@@ -430,4 +451,11 @@ public class ApplicationPasswordAuthenticationInfo: NSObject {
         self.siteDetails = siteDetails
         self.siteUsername = siteUsername
     }
+}
+
+private extension PinnedPostType {
+    // TODO: Ideally use the post type details directly instead of PinnedPostType,
+    // once the CPT infrastructure is more mature.
+    static let posts = PinnedPostType(slug: "post", name: "Posts", icon: nil)
+    static let pages = PinnedPostType(slug: "page", name: "Pages", icon: nil)
 }

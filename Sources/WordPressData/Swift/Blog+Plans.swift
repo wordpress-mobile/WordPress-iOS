@@ -1,3 +1,5 @@
+import CoreData
+
 @objc extension Blog {
     @objc public var hasBusinessPlan: Bool {
         return [1008, // 1y Business Plan
