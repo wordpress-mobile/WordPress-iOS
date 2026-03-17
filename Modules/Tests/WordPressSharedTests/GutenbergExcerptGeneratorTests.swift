@@ -31,4 +31,12 @@ struct GutenbergPostExcerptGeneratorTests {
         let summary = GutenbergExcerptGenerator.firstParagraph(from: content, maxLength: 150)
         #expect(summary == "Before")
     }
+
+    @Test func testPostWithBRTags() {
+        let content = #"<p class="wp-block-paragraph">Yes,<br>look behind<br>in remembrance and with gratitude.</p><p class="wp-block-paragraph">Then,<br>stay present,<br>or miss memories in the making.</p>"#
+
+        let summary = GutenbergExcerptGenerator.firstParagraph(from: content, maxLength: 150)
+        print(summary)
+        #expect(summary == "Yes, look behind in remembrance and with gratitude.")
+    }
 }
