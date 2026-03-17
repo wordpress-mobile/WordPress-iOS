@@ -40,8 +40,9 @@ final class StatsViewModel: ObservableObject, CardConfigurationDelegate {
 
         let preset = Self.loadDateRangePreset(from: userDefaults)
         let comparison = Self.loadComparisonPeriod(from: userDefaults)
+
         self.dateRange = StatsDateRangeSelection(range: context.calendar.makeDateRange(
-            for: preset ?? .last7Days,
+            for: preset ?? .last14Days,
             comparison: comparison ?? .precedingPeriod
         ))
 
@@ -379,6 +380,7 @@ final class StatsViewModel: ObservableObject, CardConfigurationDelegate {
         userDefaults.removeObject(forKey: Self.comparisonPeriodKey)
 
         // Reset date range to default
-        dateRange = StatsDateRangeSelection(range: context.calendar.makeDateRange(for: .last7Days))
+        dateRange = StatsDateRangeSelection(range: context.calendar.makeDateRange(for: .last14Days))
+
     }
 }

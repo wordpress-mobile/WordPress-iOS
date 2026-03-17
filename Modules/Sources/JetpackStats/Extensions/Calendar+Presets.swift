@@ -13,13 +13,15 @@ enum DateIntervalPreset: String, CaseIterable, Identifiable {
     case thisQuarter
     /// The current calendar year
     case thisYear
-    /// The previous 7 days, not including today
+    /// The last 7 days, including today
     case last7Days
-    /// The previous 28 days, not including today
+    /// The last 14 days, including today
+    case last14Days
+    /// The last 28 days, including today
     case last28Days
-    /// The previous 30 days, not including today
+    /// The last 30 days, including today
     case last30Days
-    /// The previous 12 weeks (84 days), not including today
+    /// The last 12 weeks (84 days), including today
     case last12Weeks
     /// The last 6 months, including the current month
     case last6Months
@@ -40,6 +42,7 @@ enum DateIntervalPreset: String, CaseIterable, Identifiable {
         case .thisQuarter: Strings.Calendar.thisQuarter
         case .thisYear: Strings.Calendar.thisYear
         case .last7Days: Strings.Calendar.last7Days
+        case .last14Days: Strings.Calendar.last14Days
         case .last28Days: Strings.Calendar.last28Days
         case .last30Days: Strings.Calendar.last30Days
         case .last12Weeks: Strings.Calendar.last12Weeks
@@ -52,7 +55,7 @@ enum DateIntervalPreset: String, CaseIterable, Identifiable {
 
     var prefersDateIntervalFormatting: Bool {
         switch self {
-        case .today, .last7Days, .last28Days, .last30Days, .last12Weeks, .last6Months, .last12Months, .thisWeek:
+        case .today, .last7Days, .last14Days, .last28Days, .last30Days, .last12Weeks, .last6Months, .last12Months, .thisWeek:
             return false
         case .thisMonth, .thisYear, .thisQuarter, .last3Years, .last10Years:
             return true
@@ -72,7 +75,7 @@ enum DateIntervalPreset: String, CaseIterable, Identifiable {
             return .quarter
         case .thisYear, .last3Years, .last10Years:
             return .year
-        case .last7Days, .last28Days, .last30Days, .last12Weeks:
+        case .last7Days, .last14Days, .last28Days, .last30Days, .last12Weeks:
             return .day
         }
     }
@@ -95,10 +98,10 @@ extension Calendar {
     /// // Start: 2025-01-15 00:00:00
     /// // End: 2025-01-16 00:00:00
     ///
-    /// // Last 7 days: Returns previous 7 complete days, not including today
+    /// // Last 7 days: Returns the last 7 days, including today
     /// let last7 = calendar.makeDateInterval(for: .last7Days, now: now)
-    /// // Start: 2025-01-08 00:00:00
-    /// // End: 2025-01-15 00:00:00
+    /// // Start: 2025-01-09 00:00:00
+    /// // End: 2025-01-16 00:00:00
     /// ```
     func makeDateInterval(for preset: DateIntervalPreset, now: Date = .now) -> DateInterval {
         switch preset {
@@ -108,6 +111,7 @@ extension Calendar {
         case .thisQuarter: makeDateInterval(of: .quarter, for: now)
         case .thisYear: makeDateInterval(of: .year, for: now)
         case .last7Days: makeDateInterval(offset: -7, component: .day, for: now)
+        case .last14Days: makeDateInterval(offset: -14, component: .day, for: now)
         case .last28Days: makeDateInterval(offset: -28, component: .day, for: now)
         case .last30Days: makeDateInterval(offset: -30, component: .day, for: now)
         case .last12Weeks: makeDateInterval(offset: -84, component: .day, for: now)
@@ -127,10 +131,7 @@ extension Calendar {
     }
 
     private func makeDateInterval(offset: Int, component: Component, for date: Date) -> DateInterval {
-        var endDate = makeDateInterval(of: component, for: date).end
-        if component == .day {
-            endDate = self.date(byAdding: .day, value: -1, to: endDate) ?? endDate
-        }
+        let endDate = makeDateInterval(of: component, for: date).end
         guard let startDate = self.date(byAdding: component, value: offset, to: endDate), endDate >= startDate else {
             assertionFailure("Failed to calculate start date for \(offset) \(component) from \(endDate)")
             return DateInterval(start: date, end: date)

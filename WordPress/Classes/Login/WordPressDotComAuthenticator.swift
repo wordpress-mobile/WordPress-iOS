@@ -122,7 +122,11 @@ struct WordPressDotComAuthenticator {
 
         let token: String
         do {
-            token = try await authenticate(from: viewController, prefersEphemeralWebBrowserSession: hasAlreadySignedIn, accountEmail: context.accountEmail(in: coreDataStack.mainContext))
+            if let tokenLaunchArgument = UserDefaults.standard.string(forKey: "ui-test-wpcom-token") {
+                token = tokenLaunchArgument
+            } else {
+                token = try await authenticate(from: viewController, prefersEphemeralWebBrowserSession: hasAlreadySignedIn, accountEmail: context.accountEmail(in: coreDataStack.mainContext))
+            }
         } catch {
             throw .authentication(error)
         }

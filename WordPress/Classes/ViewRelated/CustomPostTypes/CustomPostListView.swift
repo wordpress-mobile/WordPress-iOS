@@ -73,11 +73,10 @@ struct CustomPostListView<Header: View>: View {
             }
         }
         .refreshable {
-            await viewModel.refresh()
+            await viewModel.pullToRefresh()
         }
         .progressHUD(state: $viewModel.progressHUDState)
         .task(id: viewModel.filter) {
-            await viewModel.loadCachedItems()
             await viewModel.refresh()
         }
         .task(id: viewModel.filter) {
@@ -284,45 +283,43 @@ private struct ForEachContent: View {
     let viewModel: CustomPostListViewModel
 
     var body: some View {
-        switch item {
-        case .error(_, let message):
-            ErrorRow(message: message)
-
-        case .errorWithData(_, let message, let post):
-            VStack(spacing: 4) {
-                PostContent(post: post, client: client, mediaHost: mediaHost)
-                ErrorRow(message: message)
+        switch item.state {
+        // TODO: When isUpToDate is false, fetch fresh data before opening
+        // the editor to prevent overwriting newer content.
+        case .loaded(let fullPost, _):
+            if let post = item.post {
+                Button {
+                    onSelectPost(fullPost)
+                } label: {
+                    PostContent(post: post, client: client, mediaHost: mediaHost)
+                }
+                .buttonStyle(.plain)
+                .contextMenu {
+                    PostActionMenuContent(post: fullPost, viewModel: viewModel)
+                }
+                .overlay(alignment: .topTrailing) {
+                    PostActionMenu(post: fullPost, viewModel: viewModel)
+                        .offset(y: -6)
+                }
             }
 
-        case .fetching, .missing, .refreshing:
+        case .loading:
             PostContent(
-                post: CustomPostCollectionDisplayPost(
-                    date: Date(),
-                    title: "Lorem ipsum dolor sit amet",
-                    content: "Lorem ipsum dolor sit amet consectetur adipiscing elit"
-                ),
+                post: .placeholder,
                 client: client,
                 mediaHost: mediaHost
             )
             .redacted(reason: .placeholder)
 
-        case .ready(_, let displayPost, let post):
-            Button {
-                onSelectPost(post)
-            } label: {
-                PostContent(post: displayPost, client: client, mediaHost: mediaHost)
+        case .error(let message):
+            if let post = item.post {
+                VStack(spacing: 4) {
+                    PostContent(post: post, client: client, mediaHost: mediaHost)
+                    ErrorRow(message: message)
+                }
+            } else {
+                ErrorRow(message: message)
             }
-            .buttonStyle(.plain)
-            .contextMenu {
-                PostActionMenuContent(post: post, viewModel: viewModel)
-            }
-            .overlay(alignment: .topTrailing) {
-                PostActionMenu(post: post, viewModel: viewModel)
-                    .offset(y: -6)
-            }
-
-        case .stale(_, let post):
-            PostContent(post: post, client: client, mediaHost: mediaHost)
         }
     }
 }
@@ -460,6 +457,7 @@ private struct PostContent: View {
             header
             content
             footer
+            homepageBadge
         }
         .frame(maxWidth: .infinity, alignment: .leading)
         .contentShape(Rectangle())
@@ -505,6 +503,18 @@ private struct PostContent: View {
                 .foregroundStyle(post.statusColor)
         }
     }
+
+    @ViewBuilder
+    private var homepageBadge: some View {
+        if post.isHomepage {
+            HStack(spacing: 2) {
+                Image(systemName: "house.fill")
+                Text(verbatim: Strings.homepageBadge)
+            }
+            .font(.footnote)
+            .foregroundStyle(.secondary)
+        }
+    }
 }
 
 private struct ErrorRow: View {
@@ -528,6 +538,11 @@ private enum Strings {
         "customPostList.emptyState.message",
         value: "No %1$@",
         comment: "Empty state message when no custom posts exist. %1$@ is the post type name (e.g., 'Podcasts', 'Products')."
+    )
+    static let homepageBadge = NSLocalizedString(
+        "customPostList.badge.homepage",
+        value: "Homepage",
+        comment: "Badge label shown on the homepage row in the custom post list for pages"
     )
     static let publish = NSLocalizedString(
         "customPostList.action.publish",

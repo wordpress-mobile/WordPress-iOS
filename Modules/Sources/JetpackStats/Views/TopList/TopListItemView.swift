@@ -12,7 +12,7 @@ struct TopListItemView: View {
     let dateRange: StatsDateRange
     var totalValue: Int?
 
-    @State private var isTapped = false
+    @State private var isPressed = false
 
     /// .title scales the bets in this scenario
     @ScaledMetric(relativeTo: .title) private var cellHeight = TopListItemView.defaultCellHeight
@@ -24,26 +24,22 @@ struct TopListItemView: View {
     var body: some View {
         if hasDetails {
             Button {
-                // Track item tap
                 trackItemTap()
-
-                // Trigger animation
-                withAnimation(.spring(response: 0.3, dampingFraction: 0.7)) {
-                    isTapped = true
-                }
-
-                // Reset after a delay
-                DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) {
-                    withAnimation(.spring(response: 0.3, dampingFraction: 0.7)) {
-                        isTapped = false
+                Task {
+                    withAnimation(.spring(response: 0.15, dampingFraction: 0.9)) {
+                        isPressed = true
+                    }
+                    try? await Task.sleep(for: .milliseconds(90))
+                    navigateToDetails()
+                    withAnimation(.spring(response: 0.4, dampingFraction: 0.9)) {
+                        isPressed = false
                     }
                 }
-                navigateToDetails()
             } label: {
                 content
                     .contentShape(Rectangle()) // Make the entire view tappable
-                    .scaleEffect(isTapped ? 0.97 : 1.0)
-                    .opacity(isTapped ? 0.85 : 1.0)
+                    .scaleEffect(isPressed ? 0.97 : 1.0)
+                    .opacity(isPressed ? 0.85 : 1.0)
             }
             .buttonStyle(.plain)
             .accessibilityHint(Strings.Accessibility.viewMoreDetails)

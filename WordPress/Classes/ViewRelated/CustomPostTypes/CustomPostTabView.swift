@@ -25,6 +25,8 @@ struct CustomPostTabView: View {
     @State private var editorPresentation: EditorPresentation?
     @State private var isShowingFeedback = false
 
+    @SiteStorage private var authorFilter: CustomPostAuthorFilter
+
     private var activeViewModel: CustomPostListViewModel {
         switch selectedTab {
         case .all:
@@ -93,6 +95,9 @@ struct CustomPostTabView: View {
             blog: blog,
             presentingViewController: presentingViewController
         ))
+
+        _authorFilter = .authorFilter(for: TaggedManagedObjectID(blog))
+        self.applyAuthorFilter()
     }
 
     var body: some View {
@@ -121,6 +126,14 @@ struct CustomPostTabView: View {
         .searchable(text: $searchText)
         .navigationTitle(details.name)
         .toolbar {
+            if canFilterByAuthor {
+                ToolbarItem(placement: .topBarTrailing) {
+                    AuthorFilterToolbarButton(
+                        filter: $authorFilter,
+                        avatarURL: currentUserAvatarURL
+                    )
+                }
+            }
             ToolbarItem(placement: .topBarTrailing) {
                 Menu {
                     Button(action: { isShowingFeedback = true }) {
@@ -137,6 +150,7 @@ struct CustomPostTabView: View {
         .fullScreenCover(item: $editorPresentation) { presentation in
             CustomPostEditor(service: service.posts(), client: client, post: presentation.post, details: details, blog: blog)
         }
+        .onChange(of: authorFilter, applyAuthorFilter)
         .task {
             EditorDependencyManager.shared
                 .prefetchDependencies(
@@ -154,6 +168,38 @@ struct CustomPostTabView: View {
             }
             .padding()
         }
+    }
+
+    private var canFilterByAuthor: Bool {
+        blog.isMultiAuthor && blog.userID != nil
+    }
+
+    private var currentUserAvatarURL: URL? {
+        guard let userID = blog.userID,
+              let author = blog.getAuthorWith(id: userID),
+              let urlString = author.avatarURL else {
+            return nil
+        }
+        return URL(string: urlString)
+    }
+
+    private func authorIds(for filter: CustomPostAuthorFilter) -> [UserId] {
+        switch filter {
+        case .everyone:
+            return []
+        case .mine:
+            guard let userID = blog.userID else { return [] }
+            return [userID.int64Value]
+        }
+    }
+
+    private func applyAuthorFilter() {
+        let authorIds = authorIds(for: authorFilter)
+        allViewModel.updateAuthorFilter(authorIds)
+        publishedViewModel.updateAuthorFilter(authorIds)
+        draftsViewModel.updateAuthorFilter(authorIds)
+        scheduledViewModel.updateAuthorFilter(authorIds)
+        trashViewModel.updateAuthorFilter(authorIds)
     }
 
     private var tabBar: some View {

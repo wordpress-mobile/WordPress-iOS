@@ -52,7 +52,8 @@ struct LineChartView: View {
 
     @ChartContentBuilder
     private var currentPeriodMarks: some ChartContent {
-        ForEach(data.currentData) { point in
+        // Solid line and area for complete data points
+        ForEach(completeDataPoints) { point in
             AreaMark(
                 x: .value("Date", point.date, unit: data.granularity.component, calendar: context.calendar),
                 y: .value("Value", point.value),
@@ -83,6 +84,43 @@ struct LineChartView: View {
             ))
             .interpolationMethod(.linear)
         }
+
+        // Dashed line segment connecting the last complete point to today's incomplete point
+        ForEach(incompleteSegmentPoints) { point in
+            LineMark(
+                x: .value("Date", point.date, unit: data.granularity.component, calendar: context.calendar),
+                y: .value("Value", point.value),
+                series: .value("Period", "Incomplete")
+            )
+            .foregroundStyle(data.metric.primaryColor.opacity(0.4))
+            .lineStyle(StrokeStyle(
+                lineWidth: 3,
+                lineCap: .round,
+                lineJoin: .round,
+                dash: [6, 5]
+            ))
+            .interpolationMethod(.linear)
+        }
+    }
+
+    /// All data points except the incomplete (today's) point.
+    private var completeDataPoints: [DataPoint] {
+        guard let last = data.currentData.last,
+              context.calendar.isIncompleteDataPeriod(for: last.date, granularity: data.granularity) else {
+            return data.currentData
+        }
+        return Array(data.currentData.dropLast())
+    }
+
+    /// The last complete point and today's incomplete point, forming the dashed segment.
+    /// Empty when there is no incomplete data.
+    private var incompleteSegmentPoints: [DataPoint] {
+        guard data.currentData.count >= 2,
+              let last = data.currentData.last,
+              context.calendar.isIncompleteDataPeriod(for: last.date, granularity: data.granularity) else {
+            return []
+        }
+        return [data.currentData[data.currentData.count - 2], last]
     }
 
     @ChartContentBuilder

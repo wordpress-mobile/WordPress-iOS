@@ -19,6 +19,7 @@ enum Strings {
         static let thisQuarter = AppLocalizedString("jetpackStats.calendar.thisQuarter", value: "This Quarter", comment: "This quarter date range")
         static let thisYear = AppLocalizedString("jetpackStats.calendar.thisYear", value: "This Year", comment: "This year date range")
         static let last7Days = AppLocalizedString("jetpackStats.calendar.last7Days", value: "Last 7 Days", comment: "Last 7 days date range")
+        static let last14Days = AppLocalizedString("jetpackStats.calendar.last14Days", value: "Last 14 Days", comment: "Last 14 days date range")
         static let last28Days = AppLocalizedString("jetpackStats.calendar.last28Days", value: "Last 28 Days", comment: "Last 28 days date range")
         static let last30Days = AppLocalizedString("jetpackStats.calendar.last30Days", value: "Last 30 Days", comment: "Last 30 days date range")
         static let last12Weeks = AppLocalizedString("jetpackStats.calendar.last12Weeks", value: "Last 12 Weeks", comment: "Last 12 weeks (84 days) date range")

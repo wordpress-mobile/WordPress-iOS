@@ -64,11 +64,15 @@ xcodebuild \
 Some test targets (e.g. `WordPressDataTests`) have their own scheme and are not part of the main `WordPress` scheme's test plan.
 When the `WordPress` scheme build fails due to an unrelated target, try using the target's dedicated scheme instead.
 
+### Simulator Sign-In
+
+To automatically sign in to the app on an iOS simulator, see @docs/simulator-sign-in.md.
+
 ## Coding Standards
 - Follow Swift API Design Guidelines
 - Use strict access control modifiers where possible
 - Use four spaces (not tabs)
-- Lines should not have trailing whitespace 
+- Lines should not have trailing whitespace
 - Follow the standard formatting practices enforced by SwiftLint
 - Don't create `body` for `View` that are too long
 - Use semantics text sizes like `.headline`

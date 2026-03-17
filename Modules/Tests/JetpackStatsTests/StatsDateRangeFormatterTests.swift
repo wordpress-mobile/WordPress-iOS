@@ -159,8 +159,8 @@ struct StatsDateRangeFormatterTests {
         (DateIntervalPreset.thisWeek, "Mar 9 – 15"),
         (DateIntervalPreset.thisMonth, "Mar 2025"),
         (DateIntervalPreset.thisYear, "2025"),
-        (DateIntervalPreset.last7Days, "Mar 8 – 14"),
-        (DateIntervalPreset.last30Days, "Feb 13 – Mar 14")
+        (DateIntervalPreset.last7Days, "Mar 9 – 15"),
+        (DateIntervalPreset.last30Days, "Feb 14 – Mar 15")
     ])
     func dateRangePresetFormattingCurrentYear(preset: DateIntervalPreset, expected: String) {
         // Set up a specific date in 2025
@@ -177,7 +177,7 @@ struct StatsDateRangeFormatterTests {
 
         // Last 30 days crosses year boundary
         let last30Days = calendar.makeDateInterval(for: .last30Days, now: testNow)
-        #expect(formatter.string(from: last30Days, now: testNow) == "Dec 6, 2024 – Jan 4, 2025")
+        #expect(formatter.string(from: last30Days, now: testNow) == "Dec 7, 2024 – Jan 5, 2025")
     }
 
     @Test("DateRangePreset formatting - custom ranges")
