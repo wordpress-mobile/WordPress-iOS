@@ -16,7 +16,7 @@ public struct GutenbergExcerptGenerator {
 
         // Extract content while convering  <br>, <br/>, <br /> to newlines first
         let rawText = String(content[tagEnd.upperBound..<pEnd.lowerBound])
-            .replacingOccurrences(of: "<br\\s*/?>", with: "\n", options: .regularExpression)
+            .replacingOccurrences(of: "<br\\s*/?>", with: " ", options: .regularExpression)
 
         // Remove HTML tags AND shortcodes in one pass
         let range = NSRange(rawText.startIndex..., in: rawText)

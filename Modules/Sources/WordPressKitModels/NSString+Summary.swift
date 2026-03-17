@@ -17,6 +17,7 @@ extension NSString {
         let characterSet = CharacterSet(charactersIn: "\n")
 
         return (self as String).strippingGutenbergContentForExcerpt()
+            .replacingOccurrences(of: "<br\\s*/?>", with: " ", options: .regularExpression)
             .strippingShortcodes()
             .makePlainText()
             .trimmingCharacters(in: characterSet)
