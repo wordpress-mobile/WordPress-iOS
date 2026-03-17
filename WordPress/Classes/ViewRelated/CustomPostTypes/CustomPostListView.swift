@@ -75,7 +75,6 @@ struct CustomPostListView<Header: View>: View {
         .refreshable {
             await viewModel.pullToRefresh()
         }
-        .progressHUD(state: $viewModel.progressHUDState)
         .task(id: viewModel.filter) {
             await viewModel.refresh()
         }
@@ -280,7 +279,7 @@ private struct ForEachContent: View {
     let client: WordPressClient?
     let onSelectPost: (AnyPostWithEditContext) -> Void
     let mediaHost: MediaHost?
-    let viewModel: CustomPostListViewModel
+    @ObservedObject var viewModel: CustomPostListViewModel
 
     var body: some View {
         switch item.state {
@@ -288,6 +287,7 @@ private struct ForEachContent: View {
         // the editor to prevent overwriting newer content.
         case .loaded(let fullPost, _):
             if let post = item.post {
+                let isPending = viewModel.pendingPostIDs.contains(item.id)
                 Button {
                     onSelectPost(fullPost)
                 } label: {
@@ -295,12 +295,22 @@ private struct ForEachContent: View {
                 }
                 .buttonStyle(.plain)
                 .contextMenu {
-                    PostActionMenuContent(post: fullPost, viewModel: viewModel)
+                    if !isPending {
+                        PostActionMenuContent(post: fullPost, viewModel: viewModel)
+                    }
                 }
                 .overlay(alignment: .topTrailing) {
-                    PostActionMenu(post: fullPost, viewModel: viewModel)
-                        .offset(y: -6)
+                    if isPending {
+                        ProgressView()
+                            .frame(width: 28, height: 28)
+                            .offset(y: -6)
+                    } else {
+                        PostActionMenu(post: fullPost, viewModel: viewModel)
+                            .offset(y: -6)
+                    }
                 }
+                .opacity(isPending ? 0.4 : 1)
+                .disabled(isPending)
             }
 
         case .loading:
