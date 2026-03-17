@@ -51,8 +51,8 @@ extension ReaderPost {
 extension ReaderPost {
 
     public func blogNameForDisplay() -> String? {
-        if let blogName, !blogName.isEmpty {
-            return blogName.replacing(/\s+/, with: " ")
+        if let blogName, !blogName.isEmpty, let regex = try? Regex(#"\s+"#) {
+            return blogName.replacing(regex, with: " ")
         }
         return URL(string: blogURL ?? "")?.host
     }

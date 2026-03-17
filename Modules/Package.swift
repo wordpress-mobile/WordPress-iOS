@@ -24,6 +24,7 @@ let package = Package(
         .library(name: "WordPressReader", targets: ["WordPressReader"]),
         .library(name: "WordPressCore", targets: ["WordPressCore"]),
         .library(name: "WordPressCoreProtocols", targets: ["WordPressCoreProtocols"]),
+        .library(name: "WordPressData", targets: ["WordPressData"]),
     ],
     dependencies: [
         .package(url: "https://github.com/airbnb/lottie-ios", from: "4.4.0"),
@@ -164,6 +165,24 @@ let package = Package(
             // This package should never have dependencies – it exists to expose protocols implemented in WordPressCore
             // to UI code, because `wordpress-rs` doesn't work nicely with previews.
         ]),
+        .target(
+            name: "WordPressData",
+            dependencies: [
+                "BuildSettingsKit",
+                "FormattableContentKit",
+                "SFHFKeychainUtils",
+                "WordPressShared",
+                "WordPressKit",
+                .product(name: "CocoaLumberjack", package: "CocoaLumberjack"),
+                .product(name: "CocoaLumberjackSwift", package: "CocoaLumberjack"),
+                .product(name: "Gravatar", package: "Gravatar-SDK-iOS"),
+                .product(name: "NSObject-SafeExpectations", package: "NSObject-SafeExpectations"),
+                .product(name: "NSURL-IDN", package: "NSURL-IDN"),
+                .product(name: "WordPressAPI", package: "wordpress-rs"),
+            ],
+            resources: [.process("Resources")],
+            swiftSettings: [.swiftLanguageMode(.v5)]
+        ),
         .target(name: "WordPressIntelligence", dependencies: [
             "WordPressShared",
             .product(name: "SwiftSoup", package: "SwiftSoup"),
@@ -260,6 +279,7 @@ let package = Package(
         .testTarget(name: "WordPressSharedTests", dependencies: [.target(name: "WordPressShared")], swiftSettings: [.swiftLanguageMode(.v5)]),
         .testTarget(name: "WordPressSharedObjCTests", dependencies: [.target(name: "WordPressShared"), .target(name: "WordPressTesting")], swiftSettings: [.swiftLanguageMode(.v5)]),
         .testTarget(name: "WordPressUIUnitTests", dependencies: [.target(name: "WordPressUI")], swiftSettings: [.swiftLanguageMode(.v5)]),
+        .testTarget(name: "WordPressDataTests", dependencies: [.target(name: "WordPressData")], swiftSettings: [.swiftLanguageMode(.v5)]),
         .testTarget(name: "WordPressCoreTests", dependencies: [.target(name: "WordPressCore")]),
         .testTarget(name: "WordPressIntelligenceTests", dependencies: [.target(name: "WordPressIntelligence")]),
         .testTarget(name: "WordPressReaderTests", dependencies: [.target(name: "WordPressReader")])
@@ -286,9 +306,6 @@ enum XcodeSupport {
             .library(name: "XcodeTarget_App", targets: ["XcodeTarget_App"]),
             .library(name: "XcodeTarget_Keystone", targets: ["XcodeTarget_Keystone"]),
             .library(name: "XcodeTarget_WordPressTests", targets: ["XcodeTarget_WordPressTests"]),
-            .library(name: "XcodeTarget_WordPressKitTests", targets: ["XcodeTarget_WordPressKitTests"]),
-            .library(name: "XcodeTarget_WordPressData", targets: ["XcodeTarget_WordPressData"]),
-            .library(name: "XcodeTarget_WordPressDataTests", targets: ["XcodeTarget_WordPressDataTests"]),
             .library(name: "XcodeTarget_WordPressAuthentificator", targets: ["XcodeTarget_WordPressAuthentificator"]),
             .library(name: "XcodeTarget_WordPressAuthentificatorTests", targets: ["XcodeTarget_WordPressAuthentificatorTests"]),
             .library(name: "XcodeTarget_ShareExtension", targets: ["XcodeTarget_ShareExtension"]),
@@ -360,6 +377,7 @@ enum XcodeSupport {
             "SFHFKeychainUtils",
             "ShareExtensionCore",
             "Support",
+            "WordPressData",
             "WordPressFlux",
             "WordPressIntelligence",
             "WordPressShared",
@@ -422,13 +440,6 @@ enum XcodeSupport {
                 .product(name: "NSObject-SafeExpectations", package: "NSObject-SafeExpectations"),
                 .product(name: "NSURL-IDN", package: "NSURL-IDN"),
                 .product(name: "WordPressAPI", package: "wordpress-rs"),
-            ]),
-            .xcodeTarget("XcodeTarget_WordPressKitTests", dependencies: testDependencies + [
-                "wpxmlrpc",
-                "WordPressKit",
-            ]),
-            .xcodeTarget("XcodeTarget_WordPressDataTests", dependencies: [
-                "WordPressKit",
             ]),
             .xcodeTarget("XcodeTarget_WordPressAuthentificator", dependencies: wordPresAuthentificatorDependencies),
             .xcodeTarget("XcodeTarget_WordPressAuthentificatorTests", dependencies: wordPresAuthentificatorDependencies + testDependencies),
@@ -493,22 +504,6 @@ enum XcodeSupport {
             .xcodeTarget("XcodeTarget_UITests", dependencies: [
                 "UITestsFoundation",
             ]),
-            .xcodeTarget(
-                "XcodeTarget_WordPressData",
-                dependencies: [
-                    "BuildSettingsKit",
-                    "FormattableContentKit",
-                    "SFHFKeychainUtils",
-                    "WordPressShared",
-                    "WordPressKit",
-                    .product(name: "CocoaLumberjack", package: "CocoaLumberjack"),
-                    .product(name: "CocoaLumberjackSwift", package: "CocoaLumberjack"),
-                    .product(name: "Gravatar", package: "Gravatar-SDK-iOS"),
-                    .product(name: "NSObject-SafeExpectations", package: "NSObject-SafeExpectations"),
-                    .product(name: "NSURL-IDN", package: "NSURL-IDN"),
-                    .product(name: "WordPressAPI", package: "wordpress-rs"),
-                ]
-            ),
         ]
     }
 }
