@@ -6,6 +6,8 @@ import WordPressData
 
 struct CustomPostParentPagePicker: View {
     @StateObject private var listViewModel: CustomPostListViewModel
+    private let blog: Blog
+    private let service: WpService
     private let details: PostTypeDetailsWithEditContext
     private let client: WordPressClient
     private let currentPostID: Int?
@@ -13,6 +15,7 @@ struct CustomPostParentPagePicker: View {
     private let onSelection: (Int?) -> Void
 
     @Environment(\.dismiss) private var dismiss
+    @State private var searchText = ""
 
     init(
         client: WordPressClient,
@@ -23,6 +26,8 @@ struct CustomPostParentPagePicker: View {
         currentParentID: Int?,
         onSelection: @escaping (Int?) -> Void
     ) {
+        self.blog = blog
+        self.service = service
         self.details = details
         self.client = client
         self.currentPostID = currentPostID
@@ -39,21 +44,56 @@ struct CustomPostParentPagePicker: View {
     }
 
     var body: some View {
+        ZStack {
+            if searchText.isEmpty {
+                publishedList
+            } else {
+                searchResultsList
+            }
+        }
+        .searchable(text: $searchText)
+        .navigationTitle(Strings.title)
+        .navigationBarTitleDisplayMode(.inline)
+    }
+
+    private var selectedPostID: Int64? {
+        currentParentID.map { Int64($0) }
+    }
+
+    private var publishedList: some View {
         CustomPostListView(
             viewModel: listViewModel,
             details: details,
             client: client,
             showsPostActions: false,
-            onSelectPost: { post in
-                onSelection(Int(post.id))
-                dismiss()
-            },
+            selectedPostID: selectedPostID,
+            onSelectPost: didSelectPost,
             header: {
                 topLevelRow
             }
         )
-        .navigationTitle(Strings.title)
-        .navigationBarTitleDisplayMode(.inline)
+    }
+
+    private var searchResultsList: some View {
+        CustomPostListView(
+            viewModel: CustomPostListViewModel(
+                client: client,
+                service: service,
+                details: details,
+                filter: .search(input: searchText),
+                blog: blog
+            ),
+            details: details,
+            client: client,
+            showsPostActions: false,
+            selectedPostID: selectedPostID,
+            onSelectPost: didSelectPost
+        )
+    }
+
+    private func didSelectPost(_ post: AnyPostWithEditContext) {
+        onSelection(Int(post.id))
+        dismiss()
     }
 
     private var topLevelRow: some View {
