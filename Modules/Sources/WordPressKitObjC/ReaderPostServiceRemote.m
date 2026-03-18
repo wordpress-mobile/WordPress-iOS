@@ -142,7 +142,7 @@ NSString * const ParamKeyMetaValue = @"site,feed";
 {
     NSAssert([phrase length] > 0, @"A search phrase is required.");
 
-    NSString *endpoint = [NSString stringWithFormat:@"read/search?q=%@", [phrase wpkit_stringByUrlEncoding]];
+    NSString *endpoint = [NSString stringWithFormat:@"read/search?q=%@", [phrase wp_stringByUrlEncoding]];
     NSString *absolutePath = [self pathForEndpoint:endpoint withVersion:WordPressComRESTAPIVersion_1_2];
     NSURL *url = [NSURL URLWithString:absolutePath relativeToURL:self.wordPressComRESTAPI.baseURL];
     return [url absoluteString];

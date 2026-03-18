@@ -80,23 +80,6 @@ static NSString *const Ellipsis =  @"\u2026";
     return [[NSString alloc] initWithBytes:&hex length:4 encoding:NSUTF32LittleEndianStringEncoding];
 }
 
-// Taken from AFNetworking's AFPercentEscapedQueryStringPairMemberFromStringWithEncoding
-- (NSString *)wpkit_stringByUrlEncoding
-{
-    NSMutableCharacterSet * allowedCharacterSet = [[NSCharacterSet URLQueryAllowedCharacterSet] mutableCopy];
-    NSString *charactersToLeaveUnescaped = @"[].";
-    [allowedCharacterSet addCharactersInString:charactersToLeaveUnescaped];
-    return [self stringByAddingPercentEncodingWithAllowedCharacters:allowedCharacterSet];
-}
-
-/*
- * Uses a RegEx to strip all HTML tags from a string and unencode entites
- */
-- (NSString *)wpkit_stringByStrippingHTML
-{
-    return [self stringByReplacingOccurrencesOfString:@"<[^>]+>" withString:@"" options:NSRegularExpressionSearch range:NSMakeRange(0, self.length)];
-}
-
 - (bool)wpkit_isEmpty {
     return self.length == 0;
 }

@@ -225,6 +225,15 @@ static NSString *const Ellipsis =  @"\u2026";
     return tokens;
 }
 
+// Taken from AFNetworking's AFPercentEscapedQueryStringPairMemberFromStringWithEncoding
+- (NSString *)wp_stringByUrlEncoding
+{
+    NSMutableCharacterSet * allowedCharacterSet = [[NSCharacterSet URLQueryAllowedCharacterSet] mutableCopy];
+    NSString *charactersToLeaveUnescaped = @"[].";
+    [allowedCharacterSet addCharactersInString:charactersToLeaveUnescaped];
+    return [self stringByAddingPercentEncodingWithAllowedCharacters:allowedCharacterSet];
+}
+
 - (BOOL)isWordPressComPath
 {
     NSString *const dotcomDomain    = @"wordpress.com";
