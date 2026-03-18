@@ -8,8 +8,6 @@ struct TodayCard: View {
     @ScaledMetric(relativeTo: .title)
     private var sparklineHeight: CGFloat = 52
 
-    private var isChevronHidden = false
-
     init(viewModel: TodayCardViewModel) {
         self.viewModel = viewModel
     }
@@ -39,11 +37,6 @@ struct TodayCard: View {
         }
         .overlay(alignment: .topTrailing) {
             moreMenu
-        }
-        .overlay(alignment: .bottomTrailing) {
-            if !isChevronHidden {
-                chevron
-            }
         }
         .cardStyle()
         .animation(.spring, value: viewModel.data?.id)
@@ -79,21 +72,6 @@ struct TodayCard: View {
         let formatter = DateFormatter()
         formatter.dateFormat = "EEEE, MMM d"
         return formatter.string(from: Date())
-    }
-
-    func chevronHidden(_ isHidden: Bool = true) -> TodayCard {
-        var copy = self
-        copy.isChevronHidden = isHidden
-        return copy
-    }
-
-    private var chevron: some View {
-        Image(systemName: "chevron.down")
-            .font(.system(size: 14, weight: .bold))
-            .foregroundStyle(Color.secondary.opacity(0.4))
-            .padding(.bottom, 22)
-            .padding(.trailing, 18)
-            .layoutPriority(1)
     }
 
     // MARK: - Content Views
@@ -152,6 +130,7 @@ struct TodayCard: View {
         .frame(maxWidth: .infinity)
         .padding(.trailing, 32)
         .padding(.vertical, 2)
+        .offset(y: -9)
         .transition(.opacity.combined(with: .scale(scale: 0.97)))
     }
 

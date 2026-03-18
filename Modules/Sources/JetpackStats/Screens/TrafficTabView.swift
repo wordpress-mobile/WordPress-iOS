@@ -125,7 +125,6 @@ struct TrafficTabView: View {
                 self.viewModel.handleTodayCardTap()
             } label: {
                 TodayCard(viewModel: viewModel)
-                    .chevronHidden(self.viewModel.isTodayFocused)
             }
             .buttonStyle(.plain)
         default:
