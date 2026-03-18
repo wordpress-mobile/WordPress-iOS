@@ -299,7 +299,7 @@ public enum ChartType: String, CaseIterable, Identifiable, Codable {
 // MARK: - ChartCardHeaderView
 
 private struct ChartCardHeaderView: View {
-    struct ViewModel {
+    struct ViewModel: Equatable {
         let trend: TrendViewModel
         let metricTitle: String
         let period: String
@@ -333,6 +333,7 @@ private struct ChartCardHeaderView: View {
             }
             Spacer(minLength: 0)
         }
+        .animation(.spring, value: viewModel)
     }
 }
 
