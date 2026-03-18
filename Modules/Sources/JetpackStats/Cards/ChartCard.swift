@@ -70,43 +70,23 @@ struct ChartCard: View {
         }
     }
 
+    private func makeHeaderViewModel(for metric: SiteMetric) -> ChartCardHeaderView.ViewModel {
+        let data = viewModel.chartData[selectedMetric] ?? mockChartData
+        return ChartCardHeaderView.ViewModel(
+            trend: viewModel.selectedBarTrend ?? .make(data, context: .regular),
+            metricTitle: metric.localizedTitle,
+            period: context.formatters.dateRange.string(from: viewModel.dateRange.subrange ?? viewModel.dateRange.range),
+            showComparison: dateRange.comparison != .off
+        )
+    }
+
     private func headerView(for metric: SiteMetric) -> some View {
-        HStack {
-            if let data = viewModel.chartData[selectedMetric] {
-                let trend = viewModel.selectedBarTrend ?? .make(data, context: .regular)
-                let period = context.formatters.dateRange.string(
-                    from: viewModel.dateRange.subrange ?? viewModel.dateRange.range
-                )
-
-                VStack(alignment: .leading, spacing: -1) {
-                    HStack(alignment: .lastTextBaseline, spacing: 3) {
-                        Text(trend.formattedCurrentValue)
-                            .font(.system(.title2, design: .rounded, weight: .semibold))
-                            .foregroundColor(.primary)
-                            .contentTransition(.numericText())
-                        Text(metric.localizedTitle)
-                            .font(.caption.weight(.medium))
-                            .foregroundColor(.secondary)
-                    }
-                    Text(period)
-                        .font(.system(.caption, design: .rounded, weight: .medium))
-                        .foregroundStyle(Color.secondary)
-
-                    if dateRange.comparison != .off {
-                        Text("\(trend.formattedChange)  \(trend.iconSign) \(trend.formattedPercentage)")
-                            .font(.caption.weight(.semibold))
-                            .foregroundColor(trend.sentiment.foregroundColor)
-                            .contentTransition(.numericText())
-                            .padding(.top, 5)
-                    }
-                }
-            }
-            Spacer(minLength: 0)
-        }
-        // Leave room for the "more" menu overlay (50pt button, 24pt card padding = 26pt overlap)
-        .padding(.trailing, Constants.step3 + Constants.step0_5)
-        .accessibilityElement(children: .combine)
-        .accessibilityLabel(Strings.Accessibility.cardTitle(metric.localizedTitle))
+        ChartCardHeaderView(viewModel: makeHeaderViewModel(for: metric))
+            .redacted(reason: viewModel.isFirstLoad ? .placeholder : [])
+            // Leave room for the "more" menu overlay (50pt button, 24pt card padding = 26pt overlap)
+            .padding(.trailing, Constants.step3 + Constants.step0_5)
+            .accessibilityElement(children: .combine)
+            .accessibilityLabel(Strings.Accessibility.cardTitle(metric.localizedTitle))
     }
 
     @ViewBuilder
@@ -312,6 +292,46 @@ public enum ChartType: String, CaseIterable, Identifiable, Codable {
         switch self {
         case .line: "chart.line.uptrend.xyaxis"
         case .columns: "chart.bar"
+        }
+    }
+}
+
+// MARK: - ChartCardHeaderView
+
+private struct ChartCardHeaderView: View {
+    struct ViewModel {
+        let trend: TrendViewModel
+        let metricTitle: String
+        let period: String
+        let showComparison: Bool
+    }
+
+    let viewModel: ViewModel
+
+    var body: some View {
+        HStack {
+            VStack(alignment: .leading, spacing: -1) {
+                HStack(alignment: .lastTextBaseline, spacing: 3) {
+                    Text(viewModel.trend.formattedCurrentValue)
+                        .font(.system(.title2, design: .rounded, weight: .semibold))
+                        .foregroundColor(.primary)
+                        .contentTransition(.numericText())
+                    Text(viewModel.metricTitle)
+                        .font(.caption.weight(.medium))
+                        .foregroundColor(.secondary)
+                }
+                Text(viewModel.period)
+                    .font(.system(.caption, design: .rounded, weight: .medium))
+                    .foregroundStyle(Color.secondary)
+                if viewModel.showComparison {
+                    Text("\(viewModel.trend.formattedChange)  \(viewModel.trend.iconSign) \(viewModel.trend.formattedPercentage)")
+                        .font(.caption.weight(.semibold))
+                        .foregroundColor(viewModel.trend.sentiment.foregroundColor)
+                        .contentTransition(.numericText())
+                        .padding(.top, 5)
+                }
+            }
+            Spacer(minLength: 0)
         }
     }
 }

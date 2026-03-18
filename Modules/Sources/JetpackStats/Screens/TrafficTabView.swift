@@ -21,7 +21,7 @@ struct TrafficTabView: View {
     var body: some View {
         ScrollViewReader { proxy in
             ScrollView {
-                VStack(spacing: Constants.step3) {
+                VStack(spacing: Constants.step2) {
                     cards
                     buttonAddChart
                     timeZoneInfo
