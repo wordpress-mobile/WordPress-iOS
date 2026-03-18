@@ -207,6 +207,7 @@ let package = Package(
             dependencies: [
                 "NSObject-SafeExpectations",
                 "WordPressKitObjCUtils",
+                "WordPressShared",
             ]
         ),
         .target(

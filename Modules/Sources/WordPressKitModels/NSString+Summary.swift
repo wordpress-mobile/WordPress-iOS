@@ -1,4 +1,5 @@
 import Foundation
+import WordPressShared
 import WordPressKitObjCUtils
 
 /// This is an extension to NSString that provides logic to summarize HTML content,
@@ -29,7 +30,7 @@ private extension String {
         let characterSet = NSCharacterSet.whitespacesAndNewlines
 
         return self.wpkit_stringByStrippingHTML()
-            .wpkit_stringByDecodingXMLCharacters()
+            .stringByDecodingXMLCharacters()
             .trimmingCharacters(in: characterSet)
     }
 
