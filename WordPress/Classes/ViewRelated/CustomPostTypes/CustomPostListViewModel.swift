@@ -500,6 +500,7 @@ extension CustomPostListViewModel {
 
 struct CustomPostCollectionDisplayPost: Equatable {
     let date: Date
+    let modifiedDate: Date?
     let title: String?
     let content: String?
     let authorName: String?
@@ -511,6 +512,7 @@ struct CustomPostCollectionDisplayPost: Equatable {
 
     init(
         date: Date,
+        modifiedDate: Date? = nil,
         title: String?,
         content: String?,
         authorName: String? = nil,
@@ -521,6 +523,7 @@ struct CustomPostCollectionDisplayPost: Equatable {
         isHomepage: Bool = false
     ) {
         self.date = date
+        self.modifiedDate = modifiedDate
         self.title = title
         self.content = content
         self.authorName = authorName
@@ -533,6 +536,7 @@ struct CustomPostCollectionDisplayPost: Equatable {
 
     init(_ entity: AnyPostWithEditContext, blog: Blog, primaryStatus: PostStatus = .publish) {
         self.date = entity.dateGmt
+        self.modifiedDate = entity.modifiedGmt
         self.title = entity.title?.raw
         let contentPreview = GutenbergExcerptGenerator
             .firstParagraph(from: entity.content.rendered)
@@ -578,10 +582,18 @@ struct CustomPostCollectionDisplayPost: Equatable {
     }
 
     private var dateForDisplay: String {
-        if status == .future {
-            return date.formatted(date: .abbreviated, time: .shortened)
+        let string: String
+        switch status {
+        case .future:
+            string = date.mediumStringWithTime()
+        case .publish, .private:
+            string = date.toMediumString()
+        case .trash:
+            string = (modifiedDate ?? date).toMediumString()
+        default:
+            string = (modifiedDate ?? date).toMediumString()
         }
-        return date.formatted(date: .abbreviated, time: .omitted)
+        return string.capitalized(with: .current)
     }
 
     /// Combined status badges (e.g. "Private · Sticky") matching the regular
