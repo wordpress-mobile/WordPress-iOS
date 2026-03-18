@@ -15,7 +15,7 @@ struct TodayCard: View {
     }
 
     var body: some View {
-        VStack(alignment: .leading, spacing: 3) {
+        VStack(alignment: .leading, spacing: 2) {
             HStack(spacing: 32) {
                 VStack(alignment: .leading, spacing: 0) {
                     headerView
@@ -71,7 +71,7 @@ struct TodayCard: View {
                 .font(.caption.weight(.medium))
         }
         .foregroundStyle(Color.secondary)
-        .offset(y: 6) // Get it close to the value
+        .offset(y: 5) // Get it close to the value
         .dynamicTypeSize(...DynamicTypeSize.large)
     }
 
@@ -114,7 +114,7 @@ struct TodayCard: View {
     }
 
     private func makeMetricsView(with metrics: SiteMetricsSet) -> some View {
-        HStack(alignment: .bottom, spacing: 20) {
+        HStack(alignment: .bottom, spacing: 16) {
             ForEach(viewModel.configuration.metrics) { metric in
                 if metric == .views {
                     TodayCardProminentMetricView(value: metrics[metric], metric: metric)
@@ -151,7 +151,7 @@ struct TodayCard: View {
         )
         .frame(maxWidth: .infinity)
         .padding(.trailing, 32)
-        .padding(.vertical, 3)
+        .padding(.vertical, 2)
         .transition(.opacity.combined(with: .scale(scale: 0.97)))
     }
 

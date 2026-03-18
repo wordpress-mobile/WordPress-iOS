@@ -17,7 +17,7 @@ struct MetricsOverviewTabView<Metric: MetricType>: View {
     var onMetricSelected: ((Metric) -> Void)?
     var showTrend: Bool = true
 
-    @ScaledMetric(relativeTo: .title) private var minTabWidth: CGFloat = 100
+    @ScaledMetric(relativeTo: .title) private var minTabWidth: CGFloat = 90
 
     var body: some View {
         ScrollViewReader { proxy in
@@ -76,10 +76,9 @@ private struct MetricItemView<Metric: MetricType>: View {
             VStack(alignment: .leading, spacing: 0) {
                 selectionIndicator
                     .padding(.leading, Constants.step2)
-                    .padding(.trailing, Constants.step1)
                 tabContent
-                    .padding(.top, Constants.step1 + 1)
-                    .padding(.bottom, Constants.step2)
+                    .padding(.top, Constants.step1 - 1)
+                    .padding(.bottom, Constants.step2 - 1)
                     .padding(.leading, Constants.step3)
                     .animation(.spring, value: isSelected)
             }
@@ -116,7 +115,7 @@ private struct MetricItemView<Metric: MetricType>: View {
         VStack(alignment: .leading, spacing: 4) {
             Text(formattedValue)
                 .contentTransition(.numericText())
-                .font(Font.system(.title, design: .rounded, weight: .medium))
+                .font(Font.system(.title2, design: .rounded, weight: .medium))
                 .kerning(-1.0)
                 .foregroundColor(.primary)
                 .lineLimit(1)

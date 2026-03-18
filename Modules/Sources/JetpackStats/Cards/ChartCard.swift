@@ -25,7 +25,7 @@ struct ChartCard: View {
                     .unredacted()
                 contentView
             }
-            .padding(.vertical, Constants.step2)
+            .padding(.vertical, 14)
             .padding(.horizontal, Constants.step3)
             .contentShape(Rectangle())
             .onTapGesture {
