@@ -100,48 +100,6 @@ steps:
               context: "Unit Tests WordPressData"
 
   #################
-  # UI Tests
-  #################
-  - group: "🔬 UI Tests"
-    key: ui_tests_group
-    steps:
-      - label: "🔬 :jetpack: UI Tests (iPhone)"
-        command: .buildkite/commands/run-ui-tests.sh 'iPhone 17'
-        depends_on: "build_jetpack"
-        plugins:
-          - $CI_TOOLKIT_PLUGIN
-          - ${TEST_COLLECTOR}:
-              files: build/results/report.junit
-              format: junit
-              missing-error: 0
-              api-token-env-name: BUILDKITE_ANALYTICS_TOKEN_UI_TESTS_IPHONE
-        artifact_paths:
-          - "build/results/*"
-          - "build/results/crashes/*"
-          - "build/logs/wiremock.txt"
-        notify:
-          - github_commit_status:
-              context: "UI Tests (iPhone)"
-
-      - label: "🔬 :jetpack: UI Tests (iPad)"
-        command: .buildkite/commands/run-ui-tests.sh 'iPad (A16)'
-        depends_on: "build_jetpack"
-        plugins:
-          - $CI_TOOLKIT_PLUGIN
-          - ${TEST_COLLECTOR}:
-              files: build/results/report.junit
-              format: junit
-              missing-error: 0
-              api-token-env-name: BUILDKITE_ANALYTICS_TOKEN_UI_TESTS_IPAD
-        artifact_paths:
-          - "build/results/*"
-          - "build/results/crashes/*"
-          - "build/logs/wiremock.txt"
-        notify:
-          - github_commit_status:
-              context: "UI Tests (iPad)"
-
-  #################
   # Linters
   #################
   - group: "Linters"
@@ -192,7 +150,6 @@ steps:
       - linters_group
       - prototype_builds_group
       - unit_tests_group
-      - ui_tests_group
     allow_dependency_failure: true
     agents:
       queue: upload
