@@ -74,12 +74,14 @@ struct ChartCard: View {
         HStack {
             if let data = viewModel.chartData[selectedMetric] {
                 let trend = viewModel.selectedBarTrend ?? .make(data, context: .regular)
-                let period = context.formatters.dateRange.string(from: dateRange.dateInterval)
+                let period = context.formatters.dateRange.string(
+                    from: viewModel.dateRange.subrange ?? viewModel.dateRange.range
+                )
 
                 VStack(alignment: .leading, spacing: -1) {
-                    HStack(alignment: .lastTextBaseline, spacing: 4) {
+                    HStack(alignment: .lastTextBaseline, spacing: 3) {
                         Text(trend.formattedCurrentValue)
-                            .font(.system(.title2, design: .rounded, weight: .medium))
+                            .font(.system(.title2, design: .rounded, weight: .semibold))
                             .foregroundColor(.primary)
                             .contentTransition(.numericText())
                         Text(metric.localizedTitle)
@@ -95,7 +97,7 @@ struct ChartCard: View {
                             .font(.caption.weight(.semibold))
                             .foregroundColor(trend.sentiment.foregroundColor)
                             .contentTransition(.numericText())
-                            .padding(.top, 6)
+                            .padding(.top, 5)
                     }
                 }
             }

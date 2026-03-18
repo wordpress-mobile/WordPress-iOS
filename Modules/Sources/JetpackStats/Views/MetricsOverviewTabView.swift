@@ -90,7 +90,7 @@ private struct MetricItemView<Metric: MetricType>: View {
     // MARK: - Private Views
 
     private var tabContent: some View {
-        VStack(alignment: .leading, spacing: -2) {
+        VStack(alignment: .leading, spacing: -1) {
             headerView
                 .unredacted()
             metricsView
@@ -113,7 +113,7 @@ private struct MetricItemView<Metric: MetricType>: View {
     }
 
     private var metricsView: some View {
-        VStack(alignment: .leading, spacing: 2) {
+        VStack(alignment: .leading, spacing: 4) {
             Text(formattedValue)
                 .contentTransition(.numericText())
                 .font(Font.system(.title, design: .rounded, weight: .medium))
