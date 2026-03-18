@@ -197,16 +197,9 @@ let package = Package(
             swiftSettings: [.swiftLanguageMode(.v5)]
         ),
         .target(
-            name: "WordPressKitObjCUtils",
-            cSettings: [
-                .define("NS_BLOCK_ASSERTIONS", to: "1", .when(configuration: .release))
-            ]
-        ),
-        .target(
             name: "WordPressKitModels",
             dependencies: [
                 "NSObject-SafeExpectations",
-                "WordPressKitObjCUtils",
                 "WordPressShared",
             ]
         ),
@@ -216,8 +209,7 @@ let package = Package(
                 "NSObject-SafeExpectations",
                 "wpxmlrpc",
                 "WordPressShared",
-                "WordPressKitModels",
-                "WordPressKitObjCUtils",
+                "WordPressKitModels"
             ],
             publicHeadersPath: "include",
             cSettings: [
@@ -229,7 +221,6 @@ let package = Package(
             dependencies: [
                 "WordPressKitObjC",
                 "WordPressKitModels",
-                "WordPressKitObjCUtils",
                 "NSObject-SafeExpectations",
                 "WordPressShared",
                 "wpxmlrpc",
