@@ -2,8 +2,9 @@ import Testing
 import Foundation
 import WordPressAPI
 import WordPressAPIInternal
-import WordPressCore
+
 @testable import WordPress
+@testable import WordPressCore
 @testable import WordPressData
 
 @MainActor
