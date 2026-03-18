@@ -127,7 +127,7 @@ final class ChartCardViewModel: ObservableObject, TrafficCardViewModel {
         // no response in more than T seconds.
         if !chartData.isEmpty {
             staleTimer = Task { [weak self] in
-                try? await Task.sleep(for: .seconds(2))
+                try? await Task.sleep(for: .seconds(0.8))
                 guard !Task.isCancelled else { return }
                 self?.isStale = true
             }

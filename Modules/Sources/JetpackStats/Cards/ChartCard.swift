@@ -41,13 +41,19 @@ struct ChartCard: View {
             viewModel.onAppear()
         }
         .overlay(alignment: .topTrailing) {
-            moreMenu
+            HStack(spacing: 0) {
+                if viewModel.isStale {
+                    ProgressView()
+                        .controlSize(.small)
+                        .transition(.scale.combined(with: .opacity))
+                }
+                moreMenu
+            }
+            .animation(.easeInOut(duration: 0.5), value: viewModel.isStale)
         }
         .cardStyle()
-        .grayscale(viewModel.isStale ? 1 : 0)
         .opacity(viewModel.isEditing ? 0.6 : 1)
         .scaleEffect(viewModel.isEditing ? 0.95 : 1)
-        .animation(.smooth, value: viewModel.isStale)
         .animation(.spring, value: viewModel.isEditing)
         .accessibilityElement(children: .contain)
         .accessibilityLabel(Strings.Accessibility.chartContainer)
