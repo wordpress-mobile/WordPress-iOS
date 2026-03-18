@@ -91,11 +91,14 @@ struct ChartCard: View {
 
     @ViewBuilder
     private var contentView: some View {
-        chartContentView
-            .environment(\.showComparison, dateRange.comparison != .off)
-            .animation(.spring, value: selectedMetric)
-            .animation(.spring, value: selectedChartType)
-            .animation(.easeInOut, value: viewModel.isFirstLoad)
+        // warning: important to put `chartContentView` in a container in order for animations to work properly. Do NOT remove the container.
+        HStack {
+            chartContentView
+        }
+        .environment(\.showComparison, dateRange.comparison != .off)
+        .animation(.spring, value: selectedMetric)
+        .animation(.spring, value: selectedChartType)
+        .animation(.easeInOut, value: viewModel.isFirstLoad)
     }
 
     @ViewBuilder
@@ -241,10 +244,12 @@ struct ChartCard: View {
 
     @ViewBuilder
     private func mainChartView(metric: SiteMetric, data: ChartData) -> some View {
-        chartContentView(data: data)
-            .frame(height: chartHeight)
-            .padding(.horizontal, -Constants.step1)
-            .transition(.push(from: .trailing).combined(with: .opacity).combined(with: .scale))
+        VStack(alignment: .leading, spacing: Constants.step1 / 2) {
+            chartContentView(data: data)
+                .frame(height: chartHeight)
+                .padding(.horizontal, -Constants.step1)
+                .transition(.push(from: .trailing).combined(with: .opacity).combined(with: .scale))
+        }
     }
 
     @ViewBuilder
