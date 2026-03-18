@@ -116,7 +116,7 @@ private extension NotificationCommentDetailViewController {
         var barButtonItems: [UIBarButtonItem] = []
 
         if splitViewControllerIsHorizontallyCompact {
-            barButtonItems.append(contentsOf: [nextButton, previousButton])
+            barButtonItems.append(contentsOf: [previousButton, nextButton])
         }
 
         if let comment, comment.allowsModeration(), let detailsVC {

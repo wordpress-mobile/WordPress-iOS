@@ -214,7 +214,7 @@ class NotificationDetailsViewController: UIViewController, NoResultsViewHost {
 
     fileprivate func enableNavigationRightBarButtonItems() {
         UIView.performWithoutAnimation {
-            navigationItem.rightBarButtonItems = [nextNavigationButton, previousNavigationButton]
+            navigationItem.rightBarButtonItems = [previousNavigationButton, nextNavigationButton]
         }
 
         previousNavigationButton.isEnabled = shouldEnablePreviousButton
