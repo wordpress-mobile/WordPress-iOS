@@ -12,6 +12,7 @@
 * [*] [internal] Fix retain cycle in Reader Article screen [#25364]
 * [*] Fix incorrect default Post Format in new posts [#25369]
 * [*] Posts and Pages are available to XMLRPC-disable sites [#25382]
+* [*] Activity Log: Show when actions were performed by an MCP agent [#25397]
 
 26.7
 -----
