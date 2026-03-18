@@ -29,7 +29,7 @@ private extension String {
     func makePlainText() -> String {
         let characterSet = NSCharacterSet.whitespacesAndNewlines
 
-        return self.wpkit_stringByStrippingHTML()
+        return self.stringByStrippingHTML()
             .stringByDecodingXMLCharacters()
             .trimmingCharacters(in: characterSet)
     }
