@@ -71,7 +71,7 @@ struct TodayCard: View {
                 .font(.caption.weight(.medium))
         }
         .foregroundStyle(Color.secondary)
-        .offset(y: 5) // Get it close to the value
+        .offset(y: 3) // Get it close to the value
         .dynamicTypeSize(...DynamicTypeSize.large)
     }
 
@@ -118,7 +118,7 @@ struct TodayCard: View {
             ForEach(viewModel.configuration.metrics) { metric in
                 if metric == .views {
                     TodayCardProminentMetricView(value: metrics[metric], metric: metric)
-                        .offset(y: 2.5) // Compensate for the larger line height
+                        .offset(y: 1) // Compensate for the larger line height
                 } else {
                     TodayCardMetricView(metric: metric, value: metrics[metric])
                 }
@@ -319,8 +319,8 @@ private struct TodayCardProminentMetricView: View {
     var body: some View {
         Text(formattedValue)
             .contentTransition(.numericText())
-            .font(Font.system(.title, design: .rounded, weight: .medium))
-            .kerning(-1.0)
+            .font(Font.system(.title2, design: .rounded, weight: .semibold))
+            .kerning(-0.33)
             .foregroundColor(.primary)
             .lineLimit(1)
             .animation(.spring, value: value)
