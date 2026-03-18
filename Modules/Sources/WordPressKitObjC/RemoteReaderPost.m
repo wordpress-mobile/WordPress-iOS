@@ -4,9 +4,9 @@
 #import "NSString+Helpers.h"
 #import "NSString+XMLExtensions.h"
 #import "WPKitDateUtils.h"
-#import "WPMapFilterReduce.h"
 #import "DisplayableImageHelper.h"
 
+@import WordPressShared;
 @import WordPressKitModels;
 @import NSObject_SafeExpectations;
 
@@ -534,7 +534,7 @@ static const NSUInteger ReaderPostTitleLength = 30;
 
 - (NSString *)suitableImageFromPostContent:(NSDictionary *)dict {
     NSString *content = [dict stringForKey:PostRESTKeyContent];
-    NSString *imageToDisplay = [WPKitDisplayableImageHelper searchPostContentForImageToDisplay:content];
+    NSString *imageToDisplay = [DisplayableImageHelper searchPostContentForImageToDisplay:content];
     return [self stringOrEmptyString:imageToDisplay];
 }
 
@@ -660,7 +660,7 @@ static const NSUInteger ReaderPostTitleLength = 30;
 
 - (NSArray *)slugsFromDiscoverPostTaxonomies:(NSArray *)discoverPostTaxonomies
 {
-    return [discoverPostTaxonomies wpkit_map:^id(NSDictionary *dict) {
+    return [discoverPostTaxonomies wp_map:^id(NSDictionary *dict) {
         return [dict stringForKey:PostRESTKeySlug];
     }];
 }

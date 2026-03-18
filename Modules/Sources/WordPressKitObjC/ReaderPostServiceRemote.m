@@ -4,9 +4,9 @@
 #import "ReaderTopicServiceRemote.h"
 #import "WPKitDateUtils.h"
 #import "NSString+Helpers.h"
-#import "WPMapFilterReduce.h"
 #import "WordPressComRestApiErrorDomain.h"
 
+@import WordPressShared;
 @import NSObject_SafeExpectations;
 
 NSString * const PostRESTKeyPosts = @"posts";
@@ -188,7 +188,7 @@ NSString * const ParamKeyMetaValue = @"site,feed";
                       __block CGFloat offset = [[params numberForKey:ParamKeyOffset] floatValue];
                       NSString *algorithm = [responseObject stringForKey:ParamsKeyAlgorithm];
                       NSArray *jsonPosts = [responseObject arrayForKey:PostRESTKeyPosts];
-                      NSArray *posts = [jsonPosts wpkit_map:^id(NSDictionary *jsonPost) {
+                      NSArray *posts = [jsonPosts wp_map:^id(NSDictionary *jsonPost) {
                           if (rankByOffset) {
                               RemoteReaderPost *post = [self formatPostDictionary:jsonPost offset:offset];
                               offset++;

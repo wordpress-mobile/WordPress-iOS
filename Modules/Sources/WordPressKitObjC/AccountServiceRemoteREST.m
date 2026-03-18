@@ -1,6 +1,6 @@
 #import "AccountServiceRemoteREST.h"
-#import "WPMapFilterReduce.h"
 
+@import WordPressShared;
 @import WordPressKitModels;
 @import NSObject_SafeExpectations;
 
@@ -420,9 +420,9 @@ MagicLinkFlow const MagicLinkFlowSignup = @"signup";
 - (NSArray *)remoteBlogsFromJSONArray:(NSArray *)jsonBlogs
 {
     NSArray *blogs = jsonBlogs;
-    return [[blogs wpkit_map:^id(NSDictionary *jsonBlog) {
+    return [[blogs wp_map:^id(NSDictionary *jsonBlog) {
         return [[RemoteBlog alloc] initWithJSONDictionary:jsonBlog];
-    }] wpkit_filter:^BOOL(RemoteBlog *blog) {
+    }] wp_filter:^BOOL(RemoteBlog *blog) {
         // Exclude deleted sites from query result, since the app does not handle deleted sites properly.
         // I tried to use query arguments `site_visibility=visible` and `site_activity=active`, but neither excludes
         // deleted sites.

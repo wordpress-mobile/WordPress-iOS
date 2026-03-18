@@ -1,7 +1,7 @@
 #import "MediaServiceRemoteXMLRPC.h"
 #import "RemoteMedia.h"
-#import "WPMapFilterReduce.h"
 
+@import WordPressShared;
 @import NSObject_SafeExpectations;
 
 @implementation MediaServiceRemoteXMLRPC
@@ -297,7 +297,7 @@
 
 - (NSArray *)remoteMediaFromXMLRPCArray:(NSArray *)xmlrpcArray
 {
-    return [xmlrpcArray wpkit_map:^id(NSDictionary *xmlrpcMedia) {
+    return [xmlrpcArray wp_map:^id(NSDictionary *xmlrpcMedia) {
         return [self remoteMediaFromXMLRPCDictionary:xmlrpcMedia];
     }];
 }

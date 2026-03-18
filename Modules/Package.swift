@@ -24,6 +24,7 @@ let package = Package(
         .library(name: "WordPressReader", targets: ["WordPressReader"]),
         .library(name: "WordPressCore", targets: ["WordPressCore"]),
         .library(name: "WordPressCoreProtocols", targets: ["WordPressCoreProtocols"]),
+        .library(name: "WordPressKit", targets: ["WordPressKit"]),
     ],
     dependencies: [
         .package(url: "https://github.com/airbnb/lottie-ios", from: "4.4.0"),
@@ -213,6 +214,7 @@ let package = Package(
             dependencies: [
                 "NSObject-SafeExpectations",
                 "wpxmlrpc",
+                "WordPressShared",
                 "WordPressKitModels",
                 "WordPressKitObjCUtils",
             ],
