@@ -18,21 +18,19 @@ public struct GutenbergExcerptGenerator {
         let rawText = String(content[tagEnd.upperBound..<pEnd.lowerBound])
             .replacingOccurrences(of: "<br\\s*/?>", with: " ", options: .regularExpression)
 
-        // Remove HTML tags AND shortcodes in one pass
         let range = NSRange(rawText.startIndex..., in: rawText)
-        let text = (regex?.stringByReplacingMatches(in: rawText, options: [], range: range, withTemplate: "") ?? rawText)
+        var text = (regex?.stringByReplacingMatches(in: rawText, options: [], range: range, withTemplate: "") ?? rawText)
             .stringByDecodingXMLCharacters()
             .trimmingCharacters(in: .whitespacesAndNewlines)
 
-        // Truncate if needed
-        if text.count <= maxLength {
-            return text
+        if text.count > maxLength {
+            let truncated = String(text.prefix(maxLength))
+            text = truncated.lastIndex(of: " ").map { String(truncated[..<$0]) } ?? truncated
         }
 
-        let truncated = String(text.prefix(maxLength))
-        if let lastSpace = truncated.lastIndex(of: " ") {
-            return String(truncated[..<lastSpace]) + "…"
+        if text.hasSuffix(".") {
+            text = String(text.dropLast())
         }
-        return truncated + "…"
+        return text + "…"
     }
 }
