@@ -720,7 +720,7 @@ static const NSUInteger ReaderPostTitleLength = 30;
  */
 - (NSString *)titleFromSummary:(NSString *)summary
 {
-    return [summary wpkit_stringByEllipsizingWithMaxLength:ReaderPostTitleLength preserveWords:YES];
+    return [summary wp_stringByEllipsizingWithMaxLength:ReaderPostTitleLength preserveWords:YES];
 }
 
 

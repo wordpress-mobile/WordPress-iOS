@@ -4,7 +4,6 @@
 
 - (NSString *)wpkit_stringByUrlEncoding;
 - (NSString *)wpkit_stringByStrippingHTML;
-- (NSString *)wpkit_stringByEllipsizingWithMaxLength:(NSInteger)lengthlimit preserveWords:(BOOL)preserveWords;
 - (bool)wpkit_isEmpty;
 
 @end

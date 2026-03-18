@@ -21,7 +21,7 @@ extension NSString {
             .strippingShortcodes()
             .makePlainText()
             .trimmingCharacters(in: characterSet)
-            .wpkit_stringByEllipsizing(withMaxLength: NSString.PostDerivedSummaryLength, preserveWords: true)
+            .wp_stringByEllipsizing(withMaxLength: NSString.PostDerivedSummaryLength, preserveWords: true)
     }
 }
 
@@ -29,7 +29,7 @@ private extension String {
     func makePlainText() -> String {
         let characterSet = NSCharacterSet.whitespacesAndNewlines
 
-        return self.stringByStrippingHTML()
+        return self.strippingHTML()
             .stringByDecodingXMLCharacters()
             .trimmingCharacters(in: characterSet)
     }
