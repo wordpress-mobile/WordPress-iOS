@@ -7,6 +7,7 @@
 * [*] Stats: The incomplete dates (include today) are displayed using dotted line on a line chart and are more visible on a bar chart too [#25361]
 * [*] Stats: Fix an issue where tapping on a bar in a bar chart would somtimes select an adjacent bar [#25374]
 * [*] Stats: Improve bar selection. When you tap on a bar, it will now select this subrange without fully navigating it, which makes it much easier to go through multiple subranges. [#25374]
+* [*] Stats: Usability improvements [#25404]
 * [*] Reader: Fix an issue with pan gesture failing to dismiss Lightbox [#25372]
 * [*] Reader: Fix color of links in comments [#25390]
 * [*] Reader: Add support for viewing media galleries fullscreen with a way to swipe between images [#25365]
