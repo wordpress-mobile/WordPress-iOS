@@ -409,12 +409,30 @@ final class CustomPostSettingsViewModel: NSObject, ObservableObject, PostSetting
     }
 
     private func refreshParentPageText() {
-        if let parentPageID = settings.parentPageID {
-            // TODO: Refactor to support loading state in the view layer
-            // for proper title resolution with a spinner
-            parentPageText = "(ID: \(parentPageID))"
-        } else {
+        guard let parentPageID = settings.parentPageID else {
             parentPageText = nil
+            return
+        }
+
+        parentPageText = "(ID: \(parentPageID))"
+
+        Task { [weak self] in
+            guard let self else { return }
+            do {
+                let post = try await editorService.client.api.posts
+                    .filterRetrieveWithEditContext(
+                        postEndpointType: editorService.details.toPostEndpointType(),
+                        postId: PostId(Int64(parentPageID)),
+                        params: .init(),
+                        fields: [.title]
+                    )
+                    .data
+                if self.settings.parentPageID == parentPageID {
+                    self.parentPageText = post.title?.raw ?? "(ID: \(parentPageID))"
+                }
+            } catch {
+                Loggers.app.log(level: .error, "Failed to resolve parent page title: \(error)")
+            }
         }
     }
 
