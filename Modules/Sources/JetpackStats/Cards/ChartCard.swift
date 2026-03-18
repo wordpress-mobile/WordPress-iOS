@@ -267,7 +267,7 @@ private struct CardGradientBackground: View {
         LinearGradient(
             colors: [
                 metric.primaryColor.opacity(colorScheme == .light ? 0.03 : 0.04),
-                Constants.Colors.secondaryBackground
+                Constants.Colors.secondaryBackground,
             ],
             startPoint: .top,
             endPoint: .center
@@ -314,6 +314,7 @@ private struct ChartCardHeaderView: View {
                 HStack(alignment: .lastTextBaseline, spacing: 3) {
                     Text(viewModel.trend.formattedCurrentValue)
                         .font(.system(.title2, design: .rounded, weight: .semibold))
+                        .kerning(-0.5)
                         .foregroundColor(.primary)
                         .contentTransition(.numericText())
                     Text(viewModel.metricTitle)

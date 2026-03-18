@@ -116,7 +116,7 @@ private struct MetricItemView<Metric: MetricType>: View {
             Text(formattedValue)
                 .contentTransition(.numericText())
                 .font(Font.system(.title2, design: .rounded, weight: .medium))
-                .kerning(-1.0)
+                .kerning(-0.5)
                 .foregroundColor(.primary)
                 .lineLimit(1)
                 .animation(.spring, value: formattedValue)
