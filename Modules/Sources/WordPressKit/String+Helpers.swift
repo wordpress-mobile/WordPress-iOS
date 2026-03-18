@@ -1,14 +1,6 @@
 import Foundation
 
 extension String {
-    func stringByDecodingXMLCharacters() -> String {
-        return NSString.wpkit_decodeXMLCharacters(in: self)
-    }
-
-    func stringByEncodingXMLCharacters() -> String {
-        return NSString.wpkit_encodeXMLCharacters(in: self)
-    }
-
     func trim() -> String {
         return trimmingCharacters(in: CharacterSet.whitespacesAndNewlines)
     }

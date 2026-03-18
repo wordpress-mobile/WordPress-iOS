@@ -1,6 +1,5 @@
 #import "NSString+Helpers.h"
 #import <CommonCrypto/CommonDigest.h>
-#import "NSString+XMLExtensions.h"
 
 static NSString *const Ellipsis =  @"\u2026";
 
