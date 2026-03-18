@@ -1,10 +1,8 @@
 #import "RemoteReaderPost.h"
 #import "RemoteSourcePostAttribution.h"
 #import "RemoteReaderCrossPostMeta.h"
-#import "NSString+Helpers.h"
-#import "NSString+XMLExtensions.h"
+#import "NSString+WPKitNumericValueHack.h"
 #import "WPKitDateUtils.h"
-#import "DisplayableImageHelper.h"
 
 @import WordPressShared;
 @import WordPressKitModels;

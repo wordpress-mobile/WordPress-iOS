@@ -3,7 +3,7 @@
 #import "RemotePostCategory.h"
 #import "RemotePostTerm.h"
 #import "NSMutableDictionary+Helpers.h"
-#import "NSString+Helpers.h"
+#import "NSString+WPKitNumericValueHack.h"
 
 @import WordPressShared;
 @import WordPressKitModels;
@@ -313,7 +313,7 @@ static NSString * const RemoteOptionValueOrderByPostID = @"ID";
     post.authorID = [xmlrpcDictionary numberForKey:@"post_author"];
     post.status = [self statusForPostStatus:xmlrpcDictionary[@"post_status"] andDate:post.date];
     post.password = xmlrpcDictionary[@"post_password"];
-    if ([post.password wpkit_isEmpty]) {
+    if (post.password.length == 0) {
         post.password = nil;
     }
     post.parentID = [xmlrpcDictionary numberForKey:@"post_parent"];

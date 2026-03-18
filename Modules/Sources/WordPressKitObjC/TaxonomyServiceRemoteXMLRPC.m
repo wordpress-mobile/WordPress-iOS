@@ -2,7 +2,7 @@
 #import "RemotePostCategory.h"
 #import "RemotePostTag.h"
 #import "RemoteTaxonomyPaging.h"
-#import "NSString+Helpers.h"
+#import "NSString+WPKitNumericValueHack.h"
 #import "WPKitLogging.h"
 
 @import WordPressShared;
