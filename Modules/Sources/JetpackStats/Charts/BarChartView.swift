@@ -270,7 +270,7 @@ struct BarChartView: View {
             return data.maxValue...0 // Just in case; should never happend
         }
         // Add some padding above the max value
-        let padding = max(Int(Double(data.maxValue) * 0.66), 1)
+        let padding = max(Int(Double(data.maxValue) * 0.33), 1)
         return 0...(data.maxValue + padding)
     }
 

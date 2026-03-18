@@ -12,7 +12,7 @@ struct ChartCard: View {
 
     @State private var isShowingRawData = false
 
-    @ScaledMetric(relativeTo: .largeTitle) private var chartHeight = 180
+    @ScaledMetric(relativeTo: .largeTitle) private var chartHeight = 140
 
     init(viewModel: ChartCardViewModel) {
         self.viewModel = viewModel
