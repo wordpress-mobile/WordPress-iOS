@@ -22,13 +22,8 @@ struct ActivityLogRowViewModel: Identifiable {
         self.id = activity.activityID
 
         if let actor = activity.actor {
-            actorSubtitle = ActivityStringFormatting.actorRole(for: actor)
-            if let botName = ActivityStringFormatting.botName(for: actor) {
-                actorMetadata = botName
-            }
-            else {
-                actorMetadata = nil
-            }
+            actorSubtitle = actor.role.isEmpty ? nil : actor.role.localizedCapitalized
+            actorMetadata = ActivityStringFormatting.botName(for: actor)
         } else {
             actorSubtitle = nil
             actorMetadata = nil

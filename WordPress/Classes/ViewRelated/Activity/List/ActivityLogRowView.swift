@@ -61,6 +61,7 @@ struct ActivityLogRowView: View {
                         Text(metadata)
                             .font(.footnote)
                             .foregroundColor(.secondary)
+                            .lineLimit(1)
                     }
                 }
             }

@@ -38,45 +38,6 @@ struct ActivityStringFormattingTests {
         #expect(ActivityStringFormatting.actorRole(for: actor) == "Application")
     }
 
-    // MARK: - actorDescription
-
-    @Test func actorDescriptionForMCPAgent() {
-        let actor = ActivityActor(dictionary: [
-            "name": "bot-user",
-            "type": "Person",
-            "role": "administrator",
-            "is_mcp_agent": true,
-            "mcp_client": "Claude"
-        ])
-        #expect(ActivityStringFormatting.actorDescription(for: actor) == "Administrator via Claude")
-    }
-
-    @Test func actorDescriptionForNonMCPActor() {
-        let actor = ActivityActor(dictionary: ["name": "Alice", "type": "Person", "role": "editor"])
-        #expect(ActivityStringFormatting.actorDescription(for: actor) == "Editor")
-    }
-
-    @Test func actorDescriptionForMCPAgentWithEmptyClient() {
-        let actor = ActivityActor(dictionary: [
-            "name": "bot-user",
-            "type": "Person",
-            "role": "administrator",
-            "is_mcp_agent": true,
-            "mcp_client": ""
-        ])
-        #expect(ActivityStringFormatting.actorDescription(for: actor) == "Administrator")
-    }
-
-    @Test func actorDescriptionForMCPAgentWithNoClient() {
-        let actor = ActivityActor(dictionary: [
-            "name": "bot-user",
-            "type": "Person",
-            "role": "administrator",
-            "is_mcp_agent": true
-        ])
-        #expect(ActivityStringFormatting.actorDescription(for: actor) == "Administrator")
-    }
-
     // MARK: - botName
 
     @Test func botNameForMCPAgent() {

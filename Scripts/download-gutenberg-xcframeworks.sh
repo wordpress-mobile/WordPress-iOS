@@ -53,6 +53,6 @@ if [[ -z "${FRAMEWORKS_DIR}" || "${FRAMEWORKS_DIR}" == "/" ]]; then
     exit 1
 fi
 mkdir -p "${FRAMEWORKS_DIR}"
-cp -a "${CACHE_DIR}/"* "${FRAMEWORKS_DIR}/"
+cp -a "${CACHE_DIR}/." "${FRAMEWORKS_DIR}/"
 
 echo "Gutenberg ${VERSION} setup complete."
