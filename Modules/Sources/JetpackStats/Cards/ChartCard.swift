@@ -3,6 +3,7 @@ import Charts
 
 struct ChartCard: View {
     @ObservedObject private var viewModel: ChartCardViewModel
+    @Environment(\.context) private var context
 
     private var dateRange: StatsDateRange { viewModel.effectiveDateRange }
     private var metrics: [SiteMetric] { viewModel.metrics }
@@ -19,7 +20,7 @@ struct ChartCard: View {
 
     var body: some View {
         VStack(spacing: 0) {
-            VStack(spacing: Constants.step1) {
+            VStack(spacing: Constants.step0_5) {
                 headerView(for: selectedMetric)
                     .unredacted()
                 contentView
@@ -70,54 +71,49 @@ struct ChartCard: View {
     }
 
     private func headerView(for metric: SiteMetric) -> some View {
-        HStack(alignment: .center) {
-            StatsCardTitleView(title: metric.localizedTitle)
+        HStack {
+            if let data = viewModel.chartData[selectedMetric] {
+                let trend = viewModel.selectedBarTrend ?? .make(data, context: .regular)
+                let period = context.formatters.dateRange.string(from: dateRange.dateInterval)
+
+                VStack(alignment: .leading, spacing: -1) {
+                    HStack(alignment: .lastTextBaseline, spacing: 4) {
+                        Text(trend.formattedCurrentValue)
+                            .font(.system(.title2, design: .rounded, weight: .medium))
+                            .foregroundColor(.primary)
+                            .contentTransition(.numericText())
+                        Text(metric.localizedTitle)
+                            .font(.caption.weight(.medium))
+                            .foregroundColor(.secondary)
+                    }
+                    Text(period)
+                        .font(.system(.caption, design: .rounded, weight: .medium))
+                        .foregroundStyle(Color.secondary)
+
+                    if dateRange.comparison != .off {
+                        Text("\(trend.formattedChange)  \(trend.iconSign) \(trend.formattedPercentage)")
+                            .font(.caption.weight(.semibold))
+                            .foregroundColor(trend.sentiment.foregroundColor)
+                            .contentTransition(.numericText())
+                            .padding(.top, 6)
+                    }
+                }
+            }
             Spacer(minLength: 0)
         }
+        // Leave room for the "more" menu overlay (50pt button, 24pt card padding = 26pt overlap)
+        .padding(.trailing, Constants.step3 + Constants.step0_5)
         .accessibilityElement(children: .combine)
         .accessibilityLabel(Strings.Accessibility.cardTitle(metric.localizedTitle))
     }
 
     @ViewBuilder
     private var contentView: some View {
-        VStack(spacing: Constants.step1) {
-            if dateRange.comparison != .off || metrics.count == 1 {
-                chartHeaderView
-                    .padding(.trailing, -Constants.step0_5)
-            }
-            chartContentView
-        }
-        .environment(\.showComparison, dateRange.comparison != .off)
-        .animation(.spring, value: selectedMetric)
-        .animation(.spring, value: selectedChartType)
-        .animation(.easeInOut, value: viewModel.isFirstLoad)
-    }
-
-    private var chartHeaderView: some View {
-        // Showing currently selected (not loaded period) by design
-        HStack(alignment: .center, spacing: 0) {
-            if let data = viewModel.chartData[selectedMetric] {
-                ChartValuesSummaryView(
-                    trend: viewModel.selectedBarTrend ?? .make(data, context: .regular),
-                    style: .compact
-                )
-            } else if viewModel.isFirstLoad {
-                ChartValuesSummaryView(
-                    trend: .init(currentValue: 100, previousValue: 10, metric: SiteMetric.views),
-                    style: .compact
-                )
-                .redacted(reason: .placeholder)
-            }
-
-            Spacer(minLength: 8)
-
-            ChartLegendView(
-                metric: selectedMetric,
-                currentPeriod: viewModel.dateRange.subrange?.dateInterval ?? dateRange.dateInterval,
-                previousPeriod: viewModel.dateRange.subrange?.effectiveComparisonInterval ?? dateRange.effectiveComparisonInterval
-            )
-        }
-        .dynamicTypeSize(...DynamicTypeSize.xxLarge)
+        chartContentView
+            .environment(\.showComparison, dateRange.comparison != .off)
+            .animation(.spring, value: selectedMetric)
+            .animation(.spring, value: selectedChartType)
+            .animation(.easeInOut, value: viewModel.isFirstLoad)
     }
 
     @ViewBuilder
@@ -263,12 +259,10 @@ struct ChartCard: View {
 
     @ViewBuilder
     private func mainChartView(metric: SiteMetric, data: ChartData) -> some View {
-        VStack(alignment: .leading, spacing: Constants.step1 / 2) {
-            chartContentView(data: data)
-                .frame(height: chartHeight)
-                .padding(.horizontal, -Constants.step1)
-                .transition(.push(from: .trailing).combined(with: .opacity).combined(with: .scale))
-        }
+        chartContentView(data: data)
+            .frame(height: chartHeight)
+            .padding(.horizontal, -Constants.step1)
+            .transition(.push(from: .trailing).combined(with: .opacity).combined(with: .scale))
     }
 
     @ViewBuilder
