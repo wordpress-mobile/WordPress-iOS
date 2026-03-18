@@ -322,7 +322,7 @@ private struct ForEachContent: View {
                     HStack {
                         PostContent(post: post, client: client, mediaHost: mediaHost)
                         if selectedPostID == fullPost.id {
-                            Image(systemName: "checkmark")
+                            Image(systemName: "checkmark.circle.fill")
                                 .foregroundStyle(.tint)
                         }
                     }

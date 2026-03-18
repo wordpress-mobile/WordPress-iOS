@@ -97,21 +97,29 @@ struct CustomPostParentPagePicker: View {
     }
 
     private var topLevelRow: some View {
-        Button {
-            onSelection(nil)
-            dismiss()
-        } label: {
-            HStack {
-                Text(Strings.topLevel)
-                    .foregroundStyle(.primary)
-                Spacer()
-                if currentParentID == nil {
-                    Image(systemName: "checkmark")
-                        .foregroundStyle(.tint)
+        VStack(spacing: 0) {
+            Button {
+                onSelection(nil)
+                dismiss()
+            } label: {
+                HStack {
+                    VStack(alignment: .leading, spacing: 2) {
+                        Text(Strings.topLevel)
+                            .foregroundStyle(.primary)
+                        Text(Strings.topLevelDescription)
+                            .font(.footnote)
+                            .foregroundStyle(.secondary)
+                    }
+                    Spacer()
+                    if currentParentID == nil {
+                        Image(systemName: "checkmark.circle.fill")
+                            .foregroundStyle(.tint)
+                    }
                 }
+                .padding(.horizontal)
+                .padding(.vertical, 12)
             }
-            .padding(.horizontal)
-            .padding(.vertical, 12)
+            Divider()
         }
     }
 }
@@ -127,5 +135,11 @@ private enum Strings {
         "customPostParentPicker.topLevel",
         value: "Top level",
         comment: "Option to set a post as top level (no parent)"
+    )
+
+    static let topLevelDescription = NSLocalizedString(
+        "customPostParentPicker.topLevel.description",
+        value: "No parent page",
+        comment: "Description for the top level option in the parent page picker, indicating this page will have no parent"
     )
 }
