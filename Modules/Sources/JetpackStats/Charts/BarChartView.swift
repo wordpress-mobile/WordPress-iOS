@@ -71,7 +71,7 @@ struct BarChartView: View {
                 width: .automatic
             )
             .foregroundStyle(isIncomplete ? AnyShapeStyle(incompleteBarPattern) : AnyShapeStyle(barGradient))
-            .cornerRadius(4)
+            .cornerRadius(5)
             .opacity(getOpacityForPeriodBar(for: point))
         }
     }
@@ -139,7 +139,7 @@ struct BarChartView: View {
                 stacking: .unstacked
             )
             .foregroundStyle(Color.secondary.opacity(0.25))
-            .cornerRadius(4)
+            .cornerRadius(5)
             .opacity(getOpacityForPeriodBar(for: point))
         }
     }

@@ -33,10 +33,6 @@ public enum Constants {
             dark: UIColor.secondarySystemBackground
         ))
 
-        static let lightBlue = Color(uiColor: UIColor(
-            light: CSColor.Blue.shade(.shade40),
-            dark: CSColor.Blue.shade(.shade30)
-        ))
         static let blue = Color(palette: CSColor.Blue.self)
         static let purple = Color(palette: CSColor.Purple.self)
         static let red = Color(palette: CSColor.Red.self)
