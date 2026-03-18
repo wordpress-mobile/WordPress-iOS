@@ -44,13 +44,13 @@ class NotificationCommentDetailViewController: UIViewController, NoResultsViewHo
     // MARK: - Notification Navigation Buttons
 
     private lazy var nextButton: UIBarButtonItem = {
-        let button = UIBarButtonItem(image: .gridicon(.arrowUp), style: .plain, target: self, action: #selector(nextButtonTapped))
+        let button = UIBarButtonItem(image: UIImage(systemName: "chevron.up"), style: .plain, target: self, action: #selector(nextButtonTapped))
         button.accessibilityLabel = NSLocalizedString("Next notification", comment: "Accessibility label for the next notification button")
         return button
     }()
 
     private lazy var previousButton: UIBarButtonItem = {
-        let button = UIBarButtonItem(image: .gridicon(.arrowDown), style: .plain, target: self, action: #selector(previousButtonTapped))
+        let button = UIBarButtonItem(image: UIImage(systemName: "chevron.down"), style: .plain, target: self, action: #selector(previousButtonTapped))
         button.accessibilityLabel = NSLocalizedString("Previous notification", comment: "Accessibility label for the previous notification button")
         return button
     }()

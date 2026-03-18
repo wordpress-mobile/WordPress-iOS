@@ -312,8 +312,8 @@ extension NotificationDetailsViewController {
 
         navigationItem.backBarButtonItem = backButton
 
-        nextNavigationButton = UIBarButtonItem(image: .gridicon(.arrowUp), style: .plain, target: self, action: #selector(nextNotificationWasPressed))
-        previousNavigationButton = UIBarButtonItem(image: .gridicon(.arrowDown), style: .plain, target: self, action: #selector(previousNotificationWasPressed))
+        nextNavigationButton = UIBarButtonItem(image: UIImage(systemName: "chevron.up"), style: .plain, target: self, action: #selector(nextNotificationWasPressed))
+        previousNavigationButton = UIBarButtonItem(image: UIImage(systemName: "chevron.down"), style: .plain, target: self, action: #selector(previousNotificationWasPressed))
 
         enableNavigationRightBarButtonItems()
     }
