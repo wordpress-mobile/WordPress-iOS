@@ -40,7 +40,7 @@ enum SiteMetric: String, CaseIterable, Identifiable, Sendable, Codable, MetricTy
 
     var primaryColor: Color {
         switch self {
-        case .views: Constants.Colors.blue
+        case .views: Constants.Colors.lightBlue
         case .visitors: Constants.Colors.purple
         case .likes: Constants.Colors.pink
         case .comments: Constants.Colors.green
