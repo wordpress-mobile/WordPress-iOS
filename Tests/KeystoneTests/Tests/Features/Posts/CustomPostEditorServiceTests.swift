@@ -166,14 +166,14 @@ private func makeService(
         api: api,
         siteURL: URL(string: "https://example.com")!
     )
-    let postService = PostService(noHandle: .init())
+    let wpService = try api.createSelfHostedService(cache: .bootstrap())
 
     return CustomPostEditorService(
         blog: blog,
         post: post,
         details: makePostTypeDetails(),
         client: client,
-        service: postService
+        wpService: wpService
     )
 }
 

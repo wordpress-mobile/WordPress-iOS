@@ -12,7 +12,9 @@ import Combine
 @MainActor
 final class CustomPostSettingsViewModel: NSObject, ObservableObject, PostSettingsViewModelProtocol {
     private let editorService: CustomPostEditorService
-    private let wpService: WpService?
+    private var wpService: WpService {
+        editorService.wpService
+    }
 
     let blog: Blog
     let capabilities: PostSettingsCapabilities
@@ -153,8 +155,7 @@ final class CustomPostSettingsViewModel: NSObject, ObservableObject, PostSetting
     }
 
     func parentPagePickerDestination() -> CustomPostParentPagePicker? {
-        guard editorService.details.hierarchical,
-              let wpService else {
+        guard editorService.details.hierarchical else {
             return nil
         }
         return CustomPostParentPagePicker(
@@ -183,7 +184,6 @@ final class CustomPostSettingsViewModel: NSObject, ObservableObject, PostSetting
     // MARK: - Initializer
 
     init(
-        wpService: WpService?,
         editorService: CustomPostEditorService,
         blog: Blog,
         isStandalone: Bool = false,
@@ -194,7 +194,6 @@ final class CustomPostSettingsViewModel: NSObject, ObservableObject, PostSetting
         self.blog = blog
         self.isStandalone = isStandalone
         self.context = context
-        self.wpService = wpService
         self.preferences = preferences
         self.client = editorService.client
         self.capabilities = PostSettingsCapabilities(from: editorService.details)

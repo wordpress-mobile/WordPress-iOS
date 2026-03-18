@@ -27,7 +27,7 @@ class CustomPostEditorViewController: PostGBKEditorViewController {
 
     init(
         blog: Blog,
-        service: WordPressAPIInternal.PostService,
+        wpService: WpService,
         client: WordPressClient,
         post: AnyPostWithEditContext?,
         details: PostTypeDetailsWithEditContext,
@@ -38,7 +38,7 @@ class CustomPostEditorViewController: PostGBKEditorViewController {
         self.completion = completion
 
         self.editorService = CustomPostEditorService(
-            blog: blog, post: post, details: details, client: client, service: service
+            blog: blog, post: post, details: details, client: client, wpService: wpService
         )
 
         let postTypeDetails = PostTypeDetails(
@@ -193,8 +193,7 @@ private extension CustomPostEditorViewController {
     }
 
     func showPostSettings() {
-        // FIXME: `wpService` should not be nil here.
-        let viewModel = CustomPostSettingsViewModel(wpService: nil, editorService: editorService, blog: blog)
+        let viewModel = CustomPostSettingsViewModel(editorService: editorService, blog: blog)
         viewModel.onEditorPostSaved = { /* No-op: shared editorService is already up-to-date */ }
         let settingsVC = PostSettingsViewController(viewModel: viewModel)
         let navigation = UINavigationController(rootViewController: settingsVC)

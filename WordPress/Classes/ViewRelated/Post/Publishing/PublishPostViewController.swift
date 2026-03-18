@@ -64,8 +64,7 @@ final class PublishPostViewController<ViewModel: PostSettingsViewModelProtocol>:
         editorService: CustomPostEditorService,
         blog: Blog
     ) where ViewModel == CustomPostSettingsViewModel {
-        // FIXME: `wpService` should not be nil here.
-        let viewModel = CustomPostSettingsViewModel(wpService: nil, editorService: editorService, blog: blog, context: .publishing)
+        let viewModel = CustomPostSettingsViewModel(editorService: editorService, blog: blog, context: .publishing)
         let view = PublishPostView(viewModel: viewModel, uploadsViewModel: nil)
         self.init(viewModel: viewModel, uploadsViewModel: nil, rootView: AnyView(view))
     }

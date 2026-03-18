@@ -148,7 +148,7 @@ struct CustomPostTabView: View {
             SubmitFeedbackViewRepresentable()
         }
         .fullScreenCover(item: $editorPresentation) { presentation in
-            CustomPostEditor(service: service.posts(), client: client, post: presentation.post, details: details, blog: blog)
+            CustomPostEditor(wpService: service, client: client, post: presentation.post, details: details, blog: blog)
         }
         .onChange(of: authorFilter, applyAuthorFilter)
         .task {
