@@ -273,6 +273,7 @@ final class CustomPostSettingsViewModel: NSObject, ObservableObject, PostSetting
             do {
                 try await editorService.save(settings: settings, publish: true)
                 onPostPublished?()
+                onDismiss?()
             } catch {
                 isSaving = false
                 Notice(error: error, title: PostSettingsStrings.saveFailedMessage).post()
