@@ -90,8 +90,6 @@ let package = Package(
             dependencies: [
                 "WordPressShared",
                 "WordPressUI",
-                // TODO: Remove — It's here just for a NSMutableParagraphStyle init helper
-                "WordPressKit",
                 .product(name: "Gridicons", package: "Gridicons-iOS"),
             ],
             // Set to v5 to avoid @Sendable warnings and errors
@@ -435,6 +433,7 @@ enum XcodeSupport {
                 "SFHFKeychainUtils",
                 "TracksMini",
                 "WordPressShared",
+                "WordPressKit",
                 // Even though the extensions are all in Swift, we need to include the Objective-C
                 // version of CocoaLumberjack to avoid linking issues with other dependencies that
                 // use it.

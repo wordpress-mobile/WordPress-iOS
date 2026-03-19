@@ -155,9 +155,13 @@ public class JetpackLoginViewController: UIViewController {
         signinButton.setTitle(Constants.Buttons.loginTitle, for: .normal)
         signinButton.isHidden = shouldDisableLogin || !(blog.hasJetpack && !jetpack.isSiteConnection)
 
-        let paragraph = NSMutableParagraphStyle(minLineHeight: WPStyleGuide.fontSizeForTextStyle(.footnote),
-                                                lineBreakMode: .byWordWrapping,
-                                                alignment: .center)
+        let paragraph: NSMutableParagraphStyle = {
+            let style = NSMutableParagraphStyle()
+            style.minimumLineHeight = WPStyleGuide.fontSizeForTextStyle(.footnote)
+            style.lineBreakMode = .byWordWrapping
+            style.alignment = .center
+            return style
+        }()
         let attributes: [NSAttributedString.Key: Any] = [.font: WPStyleGuide.fontForTextStyle(.footnote),
                                                          .foregroundColor: UIColor.secondaryLabel,
                                                          .paragraphStyle: paragraph]

@@ -3,7 +3,6 @@ import Foundation
 import Gridicons
 import UIKit
 import WordPressShared
-import WordPressKit // FIXME: Here just for the NSMutableParagraphStyle custom init
 import WordPressUI
 
 extension WPStyleGuide {
@@ -311,5 +310,14 @@ extension UIFont {
     private func withWeight(_ weight: UIFont.Weight) -> UIFont {
         let descriptor = fontDescriptor.addingAttributes([.traits: [UIFontDescriptor.TraitKey.weight: weight]])
         return UIFont(descriptor: descriptor, size: 0)
+    }
+}
+
+private extension NSMutableParagraphStyle {
+    convenience init(minLineHeight: CGFloat, lineBreakMode: NSLineBreakMode, alignment: NSTextAlignment) {
+        self.init()
+        self.minimumLineHeight = minLineHeight
+        self.lineBreakMode = lineBreakMode
+        self.alignment = alignment
     }
 }
