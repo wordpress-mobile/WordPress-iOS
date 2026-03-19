@@ -406,7 +406,7 @@ struct PostSettingsFormContentView<ViewModel: PostSettingsViewModelProtocol>: Vi
     /// The least-used options.
     @ViewBuilder
     private var moreOptionsSection: some View {
-        let options = visibleMoreOptions
+        let options = viewModel.visibleMoreOptions
         if !options.isEmpty {
             Section {
                 ForEach(options) { option in
@@ -419,7 +419,7 @@ struct PostSettingsFormContentView<ViewModel: PostSettingsViewModelProtocol>: Vi
     }
 
     @ViewBuilder
-    private func moreOptionRow(for option: MoreOption) -> some View {
+    private func moreOptionRow(for option: PostSettingsMoreOption) -> some View {
         switch option {
         case .emailToSubscribers:
             Toggle(isOn: $viewModel.emailToSubscribers) {
@@ -436,40 +436,6 @@ struct PostSettingsFormContentView<ViewModel: PostSettingsViewModelProtocol>: Vi
         case .parentPage:
             parentPageRow
         }
-    }
-
-    private enum MoreOption: Identifiable {
-        case emailToSubscribers
-        case stickyPost
-        case pendingReview
-        case discussion
-        case postFormat
-        case parentPage
-
-        var id: Self { self }
-    }
-
-    private var visibleMoreOptions: [MoreOption] {
-        var options: [MoreOption] = []
-        if viewModel.shouldShow(.jetpackNewsletterEmailOptions) {
-            options.append(.emailToSubscribers)
-        }
-        if viewModel.shouldShowStickyOption {
-            options.append(.stickyPost)
-        }
-        if viewModel.isDraftOrPending {
-            options.append(.pendingReview)
-        }
-        if viewModel.capabilities.supportsComments {
-            options.append(.discussion)
-        }
-        if viewModel.capabilities.supportsPostFormats {
-            options.append(.postFormat)
-        }
-        if viewModel.capabilities.supportsPageAttributes {
-            options.append(.parentPage)
-        }
-        return options
     }
 
     private var postFormatRow: some View {
