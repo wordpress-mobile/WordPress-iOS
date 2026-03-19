@@ -22,7 +22,7 @@ struct StandaloneChartCard: View {
     @State private var isShowingDatePicker = false
     @State private var chartData: ChartData?
 
-    @ScaledMetric(relativeTo: .largeTitle) private var chartHeight = 180
+    @ScaledMetric(relativeTo: .largeTitle) private var chartHeight = 140
 
     @Environment(\.context) private var context
 
@@ -54,10 +54,7 @@ struct StandaloneChartCard: View {
 
     var body: some View {
         VStack(spacing: Constants.step1) {
-            StatsCardTitleView(title: metric.localizedTitle)
-                .frame(maxWidth: .infinity, alignment: .leading)
             chartHeaderView
-                .padding(.trailing, -Constants.step0_5)
             chartContentView
                 .padding(.horizontal, -Constants.step1)
             dateRangeControls
@@ -79,29 +76,24 @@ struct StandaloneChartCard: View {
     }
 
     private var chartHeaderView: some View {
-        // Showing currently selected (not loaded period) by design
-        HStack(alignment: .firstTextBaseline, spacing: 0) {
-            if let data = chartData {
-                ChartValuesSummaryView(
-                    trend: .make(data, context: .regular),
-                    style: .compact
-                )
-            } else {
-                ChartValuesSummaryView(
-                    trend: .init(currentValue: 100, previousValue: 10, metric: SiteMetric.views),
-                    style: .compact
-                )
-                .redacted(reason: .placeholder)
-            }
+        ChartCardHeaderView(viewModel: makeHeaderViewModel())
+            .redacted(reason: chartData == nil ? .placeholder : [])
+            .padding(.trailing, Constants.step3 + Constants.step0_5)
+    }
 
-            Spacer(minLength: 8)
-
-            ChartLegendView(
-                metric: metric,
-                currentPeriod: dateRange.dateInterval,
-                previousPeriod: dateRange.effectiveComparisonInterval
-            )
+    private func makeHeaderViewModel() -> ChartCardHeaderView.ViewModel {
+        let trend: TrendViewModel
+        if let chartData {
+            trend = .make(chartData, context: .regular)
+        } else {
+            trend = TrendViewModel(currentValue: 100, previousValue: 10, metric: metric)
         }
+        return ChartCardHeaderView.ViewModel(
+            trend: trend,
+            metricTitle: metric.localizedTitle,
+            period: context.formatters.dateRange.string(from: dateRange),
+            showComparison: dateRange.comparison != .off
+        )
     }
 
     private var chartContentView: some View {
@@ -140,19 +132,6 @@ struct StandaloneChartCard: View {
             .overlay {
                 SimpleErrorView(message: message)
             }
-    }
-
-    // MARK: –
-
-    private var trend: TrendViewModel {
-        guard let chartData else {
-            return TrendViewModel(currentValue: 0, previousValue: 0, metric: metric)
-        }
-        return TrendViewModel(
-            currentValue: chartData.currentTotal,
-            previousValue: chartData.previousTotal,
-            metric: metric
-        )
     }
 
     private func refreshChartData() async {
@@ -302,7 +281,7 @@ private func generateChartData(
 
 #Preview {
     struct PreviewWrapper: View {
-        @State private var chartType: ChartType = .line
+        @State private var chartType: ChartType = .columns
 
         var body: some View {
             StandaloneChartCard(

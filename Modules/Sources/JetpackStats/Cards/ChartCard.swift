@@ -303,7 +303,7 @@ public enum ChartType: String, CaseIterable, Identifiable, Codable {
 
 // MARK: - ChartCardHeaderView
 
-private struct ChartCardHeaderView: View {
+struct ChartCardHeaderView: View {
     struct ViewModel: Equatable {
         let trend: TrendViewModel
         let metricTitle: String
