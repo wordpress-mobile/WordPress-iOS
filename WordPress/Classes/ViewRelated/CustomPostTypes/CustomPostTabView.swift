@@ -61,6 +61,7 @@ struct CustomPostTabView: View {
             details: details,
             filter: CustomPostListFilter(tab: .all),
             blog: blog,
+            showsHierarchyIfApplicable: true,
             presentingViewController: presentingViewController
         ))
         _publishedViewModel = State(initialValue: CustomPostListViewModel(
@@ -69,6 +70,7 @@ struct CustomPostTabView: View {
             details: details,
             filter: CustomPostListFilter(tab: .published),
             blog: blog,
+            showsHierarchyIfApplicable: true,
             presentingViewController: presentingViewController
         ))
         _draftsViewModel = State(initialValue: CustomPostListViewModel(

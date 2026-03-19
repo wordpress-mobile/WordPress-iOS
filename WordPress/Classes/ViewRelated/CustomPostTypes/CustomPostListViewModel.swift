@@ -17,6 +17,7 @@ final class CustomPostListViewModel: ObservableObject {
     private let details: PostTypeDetailsWithEditContext
     let blog: Blog
     private let isHierarchical: Bool
+    private let showsHierarchyIfApplicable: Bool
     private(set) var filter: CustomPostListFilter
     private let exclude: Predicate<CustomPostCollectionItem>?
     weak var presentingViewController: UIViewController?
@@ -61,6 +62,7 @@ final class CustomPostListViewModel: ObservableObject {
         filter: CustomPostListFilter,
         blog: Blog,
         exclude: Predicate<CustomPostCollectionItem>? = nil,
+        showsHierarchyIfApplicable: Bool = false,
         presentingViewController: UIViewController? = nil
     ) {
         self.client = client
@@ -71,6 +73,7 @@ final class CustomPostListViewModel: ObservableObject {
         self.isHierarchical = details.hierarchical
         self.filter = filter
         self.exclude = exclude
+        self.showsHierarchyIfApplicable = showsHierarchyIfApplicable
         self.presentingViewController = presentingViewController
 
         collection = service
@@ -242,7 +245,7 @@ final class CustomPostListViewModel: ObservableObject {
     }
 
     private var shouldAttemptDisplayHierarchy: Bool {
-        isHierarchical && (filter.statuses.contains(.publish) || filter.statuses.contains(.any))
+        isHierarchical && showsHierarchyIfApplicable
     }
 
     private func updateItems(from metadataItems: [PostMetadataCollectionItem]) {
