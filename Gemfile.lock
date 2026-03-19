@@ -264,7 +264,7 @@ GEM
       concurrent-ruby (~> 1.0)
     java-properties (0.3.0)
     jmespath (1.6.2)
-    json (2.19.1)
+    json (2.19.2)
     json-schema (6.2.0)
       addressable (~> 2.8)
       bigdecimal (>= 3.1, < 5)
