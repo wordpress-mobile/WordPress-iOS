@@ -408,7 +408,7 @@ final class CustomPostSettingsViewModel: NSObject, ObservableObject, PostSetting
     }
 
     private func refreshParentPageText() {
-        guard let parentPageID = settings.parentPageID else {
+        guard let parentPageID = settings.parentPageID, parentPageID != 0 else {
             parentPageText = nil
             return
         }
