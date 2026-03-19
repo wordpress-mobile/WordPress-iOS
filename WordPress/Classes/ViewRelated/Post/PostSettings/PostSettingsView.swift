@@ -406,30 +406,70 @@ struct PostSettingsFormContentView<ViewModel: PostSettingsViewModelProtocol>: Vi
     /// The least-used options.
     @ViewBuilder
     private var moreOptionsSection: some View {
-        Section {
-            if viewModel.shouldShow(.jetpackNewsletterEmailOptions) {
-                Toggle(isOn: $viewModel.emailToSubscribers) {
-                    Text(Strings.emailToSubscribers)
+        let options = visibleMoreOptions
+        if !options.isEmpty {
+            Section {
+                ForEach(options) { option in
+                    moreOptionRow(for: option)
                 }
+            } header: {
+                SectionHeader(Strings.moreOptionsHeader)
             }
-            if viewModel.shouldShowStickyOption {
-                stickyPostRow
-            }
-            if viewModel.isDraftOrPending {
-                pendingReviewRow
-            }
-            if viewModel.capabilities.supportsComments {
-                discussionRow
-            }
-            if viewModel.capabilities.supportsPostFormats {
-                postFormatRow
-            }
-            if viewModel.capabilities.supportsPageAttributes {
-                parentPageRow
-            }
-        } header: {
-            SectionHeader(Strings.moreOptionsHeader)
         }
+    }
+
+    @ViewBuilder
+    private func moreOptionRow(for option: MoreOption) -> some View {
+        switch option {
+        case .emailToSubscribers:
+            Toggle(isOn: $viewModel.emailToSubscribers) {
+                Text(Strings.emailToSubscribers)
+            }
+        case .stickyPost:
+            stickyPostRow
+        case .pendingReview:
+            pendingReviewRow
+        case .discussion:
+            discussionRow
+        case .postFormat:
+            postFormatRow
+        case .parentPage:
+            parentPageRow
+        }
+    }
+
+    private enum MoreOption: Identifiable {
+        case emailToSubscribers
+        case stickyPost
+        case pendingReview
+        case discussion
+        case postFormat
+        case parentPage
+
+        var id: Self { self }
+    }
+
+    private var visibleMoreOptions: [MoreOption] {
+        var options: [MoreOption] = []
+        if viewModel.shouldShow(.jetpackNewsletterEmailOptions) {
+            options.append(.emailToSubscribers)
+        }
+        if viewModel.shouldShowStickyOption {
+            options.append(.stickyPost)
+        }
+        if viewModel.isDraftOrPending {
+            options.append(.pendingReview)
+        }
+        if viewModel.capabilities.supportsComments {
+            options.append(.discussion)
+        }
+        if viewModel.capabilities.supportsPostFormats {
+            options.append(.postFormat)
+        }
+        if viewModel.capabilities.supportsPageAttributes {
+            options.append(.parentPage)
+        }
+        return options
     }
 
     private var postFormatRow: some View {
