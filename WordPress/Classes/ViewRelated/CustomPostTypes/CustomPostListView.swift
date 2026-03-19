@@ -329,28 +329,27 @@ private struct ForEachContent: View {
                 }
                 .buttonStyle(.plain)
 
-                if showsPostActions {
+                if isPending {
+                    button
+                        .overlay(alignment: .topTrailing) {
+                            ProgressView()
+                                .frame(width: 28, height: 28)
+                                .offset(y: -6)
+                        }
+                        .opacity(0.4)
+                        .disabled(true)
+                } else if showsPostActions {
                     button
                         .contextMenu {
-                            if !isPending {
-                                PostActionMenuContent(post: fullPost, viewModel: viewModel)
-                            }
+                            PostActionMenuContent(post: fullPost, viewModel: viewModel)
                         }
                         .overlay(alignment: .topTrailing) {
-                            if isPending {
-                                ProgressView()
-                                    .frame(width: 28, height: 28)
-                                    .offset(y: -6)
-                            } else {
-                                PostActionMenu(post: fullPost, viewModel: viewModel)
-                                    .offset(y: -6)
-                            }
+                            PostActionMenu(post: fullPost, viewModel: viewModel)
+                                .offset(y: -6)
                         }
                 } else {
                     button
                 }
-                .opacity(isPending ? 0.4 : 1)
-                .disabled(isPending)
             }
 
         case .loading:
