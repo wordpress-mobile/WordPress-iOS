@@ -18,6 +18,7 @@ final class CustomPostListViewModel: ObservableObject {
     let blog: Blog
     private let isHierarchical: Bool
     private(set) var filter: CustomPostListFilter
+    private let exclude: Predicate<CustomPostCollectionItem>?
     weak var presentingViewController: UIViewController?
 
     private var collection: PostMetadataCollectionWithEditContext
@@ -59,6 +60,7 @@ final class CustomPostListViewModel: ObservableObject {
         details: PostTypeDetailsWithEditContext,
         filter: CustomPostListFilter,
         blog: Blog,
+        exclude: Predicate<CustomPostCollectionItem>? = nil,
         presentingViewController: UIViewController? = nil
     ) {
         self.client = client
@@ -68,6 +70,7 @@ final class CustomPostListViewModel: ObservableObject {
         self.blog = blog
         self.isHierarchical = details.hierarchical
         self.filter = filter
+        self.exclude = exclude
         self.presentingViewController = presentingViewController
 
         collection = service
@@ -251,6 +254,10 @@ final class CustomPostListViewModel: ObservableObject {
            case .staticPage(let homepagePageID) = homepageSetting,
            filter.statuses.contains(.publish) || filter.statuses.contains(.custom("any")) {
             items.markHomepage(id: homepagePageID)
+        }
+
+        if let exclude {
+            items.removeAll { (try? exclude.evaluate($0)) == true }
         }
 
         guard shouldShowHierarchy else {

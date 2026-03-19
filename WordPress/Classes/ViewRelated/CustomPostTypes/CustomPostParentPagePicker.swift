@@ -34,12 +34,17 @@ struct CustomPostParentPagePicker: View {
         self.currentParentID = currentParentID
         self.onSelection = onSelection
 
+        let excludeCurrentPost = currentPostID.map { postID in
+            let id = Int64(postID)
+            return #Predicate<CustomPostCollectionItem> { $0.id == id }
+        }
         _listViewModel = StateObject(wrappedValue: CustomPostListViewModel(
             client: client,
             service: service,
             details: details,
             filter: CustomPostListFilter(statuses: [.publish]),
-            blog: blog
+            blog: blog,
+            exclude: excludeCurrentPost
         ))
     }
 
@@ -58,6 +63,13 @@ struct CustomPostParentPagePicker: View {
 
     private var selectedPostID: Int64? {
         currentParentID.map { Int64($0) }
+    }
+
+    private var excludeCurrentPost: Predicate<CustomPostCollectionItem>? {
+        currentPostID.map { postID in
+            let id = Int64(postID)
+            return #Predicate<CustomPostCollectionItem> { $0.id == id }
+        }
     }
 
     private var publishedList: some View {
@@ -81,7 +93,8 @@ struct CustomPostParentPagePicker: View {
                 service: service,
                 details: details,
                 filter: .search(input: searchText),
-                blog: blog
+                blog: blog,
+                exclude: excludeCurrentPost
             ),
             details: details,
             client: client,
