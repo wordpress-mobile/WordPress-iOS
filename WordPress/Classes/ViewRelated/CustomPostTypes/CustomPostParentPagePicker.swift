@@ -16,6 +16,7 @@ struct CustomPostParentPagePicker: View {
 
     @Environment(\.dismiss) private var dismiss
     @State private var searchText = ""
+    @State private var finalSearchText = ""
 
     init(
         client: WordPressClient,
@@ -50,13 +51,21 @@ struct CustomPostParentPagePicker: View {
 
     var body: some View {
         ZStack {
-            if searchText.isEmpty {
+            if finalSearchText.isEmpty {
                 publishedList
             } else {
                 searchResultsList
             }
         }
         .searchable(text: $searchText)
+        .task(id: searchText) {
+            do {
+                try await Task.sleep(for: .milliseconds(100))
+                finalSearchText = searchText
+            } catch {
+                // Do nothing.
+            }
+        }
         .navigationTitle(Strings.title)
         .navigationBarTitleDisplayMode(.inline)
     }
@@ -92,7 +101,7 @@ struct CustomPostParentPagePicker: View {
                 client: client,
                 service: service,
                 details: details,
-                filter: .search(input: searchText),
+                filter: .search(input: finalSearchText),
                 blog: blog,
                 exclude: excludeCurrentPost
             ),
