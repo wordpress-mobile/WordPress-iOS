@@ -37,6 +37,6 @@ struct GutenbergPostExcerptGeneratorTests {
 
         let summary = GutenbergExcerptGenerator.firstParagraph(from: content, maxLength: 150)
         print(summary)
-        #expect(summary == "Yes, look behind in remembrance and with gratitude…")
+        #expect(summary == "Yes, look behind in remembrance and with gratitude.")
     }
 }

@@ -19,18 +19,19 @@ public struct GutenbergExcerptGenerator {
             .replacingOccurrences(of: "<br\\s*/?>", with: " ", options: .regularExpression)
 
         let range = NSRange(rawText.startIndex..., in: rawText)
-        var text = (regex?.stringByReplacingMatches(in: rawText, options: [], range: range, withTemplate: "") ?? rawText)
+        let text = (regex?.stringByReplacingMatches(in: rawText, options: [], range: range, withTemplate: "") ?? rawText)
             .stringByDecodingXMLCharacters()
             .trimmingCharacters(in: .whitespacesAndNewlines)
 
-        if text.count > maxLength {
-            let truncated = String(text.prefix(maxLength))
-            text = truncated.lastIndex(of: " ").map { String(truncated[..<$0]) } ?? truncated
+        // Truncate if needed
+        if text.count <= maxLength {
+            return text
         }
 
-        if text.hasSuffix(".") {
-            text = String(text.dropLast())
+        let truncated = String(text.prefix(maxLength))
+        if let lastSpace = truncated.lastIndex(of: " ") {
+            return String(truncated[..<lastSpace]) + "…"
         }
-        return text + "…"
+        return truncated + "…"
     }
 }
