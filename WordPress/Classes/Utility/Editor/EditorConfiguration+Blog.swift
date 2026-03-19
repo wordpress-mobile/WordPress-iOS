@@ -56,6 +56,7 @@ extension EditorConfiguration {
             .setShouldUsePlugins(Self.shouldEnablePlugins(for: blog, appPassword: applicationPassword))
             .setLocale(WordPressComLanguageDatabase.shared.deviceLanguage.slug)
             .setEnableNetworkLogging(ExtensiveLogging.enabled)
+            .setNetworkFallbackMode(.automatic)
 
         // Build editor assets endpoint
         var editorAssetsEndpoint = siteApiRoot
