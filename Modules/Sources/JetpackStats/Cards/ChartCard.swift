@@ -81,8 +81,7 @@ struct ChartCard: View {
         return ChartCardHeaderView.ViewModel(
             trend: viewModel.selectedBarTrend ?? .make(data, context: .regular),
             metricTitle: metric.localizedTitle,
-            period: context.formatters.dateRange.string(from: viewModel.dateRange.subrange ?? viewModel.dateRange.range),
-            showComparison: dateRange.comparison != .off
+            period: context.formatters.dateRange.string(from: viewModel.dateRange.subrange ?? viewModel.dateRange.range)
         )
     }
 
@@ -314,7 +313,7 @@ struct ChartCardHeaderView: View {
         let trend: TrendViewModel
         let metricTitle: String
         let period: String
-        let showComparison: Bool
+        var showComparison: Bool = true
     }
 
     let viewModel: ViewModel
