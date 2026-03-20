@@ -408,6 +408,9 @@
 /* Button title for restoring a backup */
 "activityDetail.restore.button" = "Restore";
 
+/* Shows the MCP client used for an activity. %1$@ is the MCP client name (e.g. Claude). */
+"activityDetail.section.agent" = "via %1$@";
+
 /* Section title for restore site actions */
 "activityDetail.section.restoreSite" = "Restore Site";
 
@@ -1408,7 +1411,7 @@ Note that the word 'go' here should have a closer meaning to 'start' rather than
 /* Title of the set goals button in the Blogging Reminders Settings flow. */
 "bloggingRemindersPrompt.intro.continueButton" = "Set Reminders";
 
-/* Description on the first screen of the Blogging Reminders Settings flow called aftet post publishing. */
+/* Description on the first screen of the Blogging Reminders Settings flow called after post publishing. */
 "bloggingRemindersPrompt.intro.details" = "Set up your blogging reminders on days you want to post.";
 
 /* Title of the Blogging Reminders Settings screen. */
@@ -2610,8 +2613,80 @@ Example: Reply to Pamela Nguyen */
 /* Error message shown when the post was modified by another user while editing */
 "customPostEditor.error.conflict.message" = "The post you are trying to save has been changed in the meantime.";
 
+/* Menu action to promote a post with Blaze */
+"customPostList.action.blaze" = "Promote with Blaze";
+
+/* Menu action to view post comments */
+"customPostList.action.comments" = "Comments";
+
+/* Menu action to permanently delete a trashed post */
+"customPostList.action.deletePermanently" = "Delete Permanently";
+
+/* Menu action to change a post's status to draft */
+"customPostList.action.moveToDraft" = "Move to Draft";
+
+/* Menu action to move a post to trash */
+"customPostList.action.moveToTrash" = "Move to Trash";
+
+/* Menu action to publish a draft or pending post */
+"customPostList.action.publish" = "Publish";
+
+/* Menu action to open post settings */
+"customPostList.action.settings" = "Settings";
+
+/* Menu action to view post statistics */
+"customPostList.action.stats" = "Stats";
+
+/* Accessibility label for the author filter button in the custom post list */
+"customPostList.authorFilter.accessibilityLabel" = "Author Filter";
+
+/* Menu item to show posts from all authors in the custom post list */
+"customPostList.authorFilter.everyone" = "Everyone";
+
+/* Menu item to show only the current user's posts in the custom post list */
+"customPostList.authorFilter.mine" = "Mine";
+
+/* Accessibility value when the author filter shows posts from all authors */
+"customPostList.authorFilter.showingEveryone" = "Showing everyone's posts";
+
+/* Accessibility value when the author filter shows only the current user's posts */
+"customPostList.authorFilter.showingMine" = "Showing only my posts";
+
+/* Badge label shown on the homepage row in the custom post list for pages */
+"customPostList.badge.homepage" = "Homepage";
+
+/* Badge shown in the post list for sticky posts */
+"customPostList.badge.sticky" = "Sticky";
+
+/* Message for the confirmation alert when permanently deleting a post */
+"customPostList.deleteConfirmation.message" = "This action cannot be undone.";
+
+/* Title for the confirmation alert when permanently deleting a post */
+"customPostList.deleteConfirmation.title" = "Delete Permanently?";
+
 /* Empty state message when no custom posts exist. %1$@ is the post type name (e.g., 'Podcasts', 'Products'). */
 "customPostList.emptyState.message" = "No %1$@";
+
+/* Message for the confirmation alert when trashing a published post */
+"customPostList.trashConfirmation.message" = "This post is published and visible to visitors. Are you sure you want to move it to trash?";
+
+/* Title for the confirmation alert when trashing a published post */
+"customPostList.trashConfirmation.title" = "Move to Trash?";
+
+/* Placeholder title for posts without a title */
+"customPostList.untitled" = "(no title)";
+
+/* Title for the parent page picker screen for custom post types */
+"customPostParentPicker.title" = "Parent Page";
+
+/* Option to set a post as top level (no parent) */
+"customPostParentPicker.topLevel" = "Top level";
+
+/* Description for the top level option in the parent page picker, indicating this page will have no parent */
+"customPostParentPicker.topLevel.description" = "No parent page";
+
+/* Tab title for showing all posts regardless of status */
+"customPostTab.all" = "All";
 
 /* Tab title for draft posts */
 "customPostTab.drafts" = "Drafts";
@@ -2780,6 +2855,9 @@ Example: Reply to Pamela Nguyen */
 /* Boolean User Defaults Debug Menu screen title */
 "debugMenu.booleanUserDefaults.title" = "Boolean User Defaults";
 
+/* Debug Menu label for image cache size */
+"debugMenu.caches.imageCache" = "Image Cache";
+
 /* Feature flags menu item */
 "debugMenu.featureFlags" = "Feature Flags";
 
@@ -2819,6 +2897,9 @@ Example: Reply to Pamela Nguyen */
 
 /* Debug Menu action for TipKit */
 "debugMenu.resetTipKitData" = "Reset Data";
+
+/* Debug Menu section title */
+"debugMenu.section.caches" = "Caches";
 
 /* Debug Menu section title */
 "debugMenu.section.logging" = "Logging";
@@ -3130,7 +3211,6 @@ Example: Reply to Pamela Nguyen */
    Done. Action.
    Menu button title for finishing editing the Menu name.
    Tapping a button with this label allows the user to exit the Site Creation flow
-   Title for a Done button.
    Title for button that will dismiss this view
    Title for the button that will dismiss this view. */
 "Done" = "Done";
@@ -5099,6 +5179,9 @@ Please install the %3$@ to use the app with this site.";
 /* Last 12 weeks (84 days) date range */
 "jetpackStats.calendar.last12Weeks" = "Last 12 Weeks";
 
+/* Last 14 days date range */
+"jetpackStats.calendar.last14Days" = "Last 14 Days";
+
 /* Last 28 days date range */
 "jetpackStats.calendar.last28Days" = "Last 28 Days";
 
@@ -5798,9 +5881,6 @@ Please install the %3$@ to use the app with this site.";
 
 /* No comment provided by engineer. */
 "Loading" = "Loading";
-
-/* Displayed while a comment is being loaded. */
-"Loading comment..." = "Loading comment...";
 
 /* Menus label text displayed when a menu is loading. */
 "Loading menu..." = "Loading menu...";
@@ -8200,6 +8280,9 @@ Please install the %3$@ to use the app with this site.";
 /* Section header for More Options in Post Settings. Should use the same translation as core WP. */
 "postSettings.moreOptions.header" = "More Options";
 
+/* The title of the Post Settings screen for custom post types. %1$@ is the post type name. */
+"postSettings.navigationTitle.customPostType" = "%1$@ Settings";
+
 /* The title of the Page Settings screen. */
 "postSettings.navigationTitle.page" = "Page Settings";
 
@@ -8259,6 +8342,9 @@ Please install the %3$@ to use the app with this site.";
 
 /* Placeholder value for a publishing date in the prepublishing sheet when the date is not selected */
 "postSettings.publishDateImmediately" = "Immediately";
+
+/* Error message shown when saving post settings via REST API fails */
+"postSettings.saveFailed.message" = "Failed to save changes";
 
 /* Section header for General settings in Post Settings */
 "postSettings.section.general" = "General";
@@ -8350,6 +8436,9 @@ Please install the %3$@ to use the app with this site.";
 /* Navigation bar title of the Post Stats screen */
 "postStats.title" = "Post Stats";
 
+/* Post status title used in different contexts */
+"postStatus.any.title" = "Any";
+
 /* Post status title */
 "postStatus.deleted.details" = "Permanently deleted";
 
@@ -8359,38 +8448,38 @@ Please install the %3$@ to use the app with this site.";
 /* Post status details */
 "postStatus.draft.details" = "Not ready to publish";
 
-/* Post status title */
+/* Post status title used in different contexts */
 "postStatus.draft.title" = "Draft";
 
 /* Post status details */
 "postStatus.pending.details" = "Waiting for review before publishing";
 
-/* Post status title */
+/* Post status title used in different contexts */
 "postStatus.pending.title" = "Pending";
 
 /* Post status details */
 "postStatus.private.details" = "Only visible to site admins and editors";
 
-/* Post status title */
+/* Post status title used in different contexts */
 "postStatus.private.title" = "Private";
 
 /* Post status details */
 "postStatus.published.details" = "Visible to everyone";
 
-/* Post status title */
+/* Post status title used in different contexts */
 "postStatus.published.title" = "Published";
 
 /* Post status details */
 "postStatus.scheduled.details" = "Publish automatically on a chosen date";
 
-/* Post status title */
+/* Post status title used in different contexts */
 "postStatus.scheduled.title" = "Scheduled";
 
 /* Post status title */
 "postStatus.trash.details" = "Trashed but not deleted yet";
 
-/* Post status title */
-"postStatus.trash.title" = "Trashed";
+/* Post status title used in different contexts */
+"postStatus.trash.title" = "Trash";
 
 /* Button to add a new taxonomy term. %1$@ is the taxonomy name (e.g., 'tags', 'categories'). */
 "postTags.addTag" = "Add %1$@";
@@ -8980,9 +9069,6 @@ Example: given a notice format "Following %@" and empty site name, this will be 
 /* Context menu action */
 "reader.postContextMenu.blockUser" = "Block User";
 
-/* Context menu action (placeholder value when blog name not available – should never happen) */
-"reader.postContextMenu.blogDetails" = "Blog Details";
-
 /* Context menu action */
 "reader.postContextMenu.manageNotifications" = "Manage Notifications";
 
@@ -8999,9 +9085,6 @@ Example: given a notice format "Following %@" and empty site name, this will be 
 "reader.postContextMenu.reportUser" = "Report User";
 
 /* Context menu action */
-"reader.postContextMenu.showBlog" = "Go to Blog";
-
-/* Context menu action */
 "reader.postContextMenu.summarize" = "Summarize";
 
 /* Context menu action to translate post content */
@@ -9009,6 +9092,9 @@ Example: given a notice format "Following %@" and empty site name, this will be 
 
 /* Context menu action */
 "reader.postContextMenu.viewInBrowser" = "View in Browser";
+
+/* Context menu action */
+"reader.postContextMenu.viewSite" = "View Site";
 
 /* Reader post details view placeholder when blog name not avail */
 "reader.postDetails.blog" = "blog";
@@ -9952,6 +10038,9 @@ Feel free to replace it with other bracket types that you think looks better for
 "shared.button.edit" = "Edit";
 
 /* A shared button title used in different contexts */
+"shared.button.notNow" = "Now Now";
+
+/* A shared button title used in different contexts */
 "shared.button.ok" = "OK";
 
 /* A shared button title used in different contexts */
@@ -10451,12 +10540,14 @@ Feel free to replace it with other bracket types that you think looks better for
 /* Title for site switcher screen */
 "sitePicker.title" = "My Sites";
 
-/* The plugin author displayed in the plugins list. The first argument is plugin author name
-   The plugin version displayed in the plugins list. The first argument is plugin version */
+/* The plugin author displayed in the plugins list. The first argument is plugin author name */
 "sitePluginsList.item.author" = "By %@";
 
 /* The message displayed when a plugin has no description */
 "sitePluginsList.item.noDescriptionAvailable" = "The plugin author did not provide a description for this plugin.";
+
+/* The plugin version displayed in the plugins list. The first argument is plugin version */
+"sitePluginsList.item.version" = "Version: %@";
 
 /* Button to activate a plugin */
 "sitePluginsList.itemAction.activate" = "Activate";
