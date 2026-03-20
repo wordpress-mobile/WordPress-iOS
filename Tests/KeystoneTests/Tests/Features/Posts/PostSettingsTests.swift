@@ -801,6 +801,36 @@ struct PostSettingsTests {
         #expect(params.featuredMedia == nil)
     }
 
+    @Test("makeUpdateParameters(from: AnyPostWithEditContext) includes format when changed")
+    func testMakeRemoteUpdateParametersIncludesFormat() {
+        // Given: post has standard format
+        let post = makeRemotePost(format: .standard)
+
+        var settings = PostSettings(from: post)
+        settings.postFormat = "image"
+
+        // When
+        let params = settings.makeUpdateParameters(from: post)
+
+        // Then
+        #expect(params.format == .image)
+    }
+
+    @Test("makeUpdateParameters(from: AnyPostWithEditContext) includes format when original is nil")
+    func testMakeRemoteUpdateParametersIncludesFormatFromNil() {
+        // Given: post has no format set
+        let post = makeRemotePost()
+
+        var settings = PostSettings(from: post)
+        settings.postFormat = "image"
+
+        // When
+        let params = settings.makeUpdateParameters(from: post)
+
+        // Then
+        #expect(params.format == .image)
+    }
+
     @Test("Resolved terms (id > 0) are equal when ids match, regardless of name")
     func testResolvedTermEquality() {
         let term1 = PostSettings.Term(id: 5, name: "swift")
