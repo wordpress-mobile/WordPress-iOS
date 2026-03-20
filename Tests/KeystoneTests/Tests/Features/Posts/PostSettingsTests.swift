@@ -838,6 +838,66 @@ struct PostSettingsTests {
         // Then
         #expect(outputParams.parent == PostId(42))
     }
+
+    @Test("init(from: PostCreateParams) defaults status to draft when nil")
+    func testInitFromCreateParamsDefaultsStatusToDraft() {
+        // Given
+        let params = PostCreateParams(meta: nil)
+
+        // When
+        let settings = PostSettings(from: params)
+
+        // Then
+        #expect(settings.status == .draft)
+        #expect(settings.publishDate == nil)
+    }
+
+    @Test("init(from: PostCreateParams) reads scheduled status and date")
+    func testInitFromCreateParamsReadsScheduledStatus() {
+        // Given
+        var params = PostCreateParams(meta: nil)
+        params.status = .future
+        let scheduledDate = Date(timeIntervalSince1970: 2_000_000_000)
+        params.dateGmt = scheduledDate
+
+        // When
+        let settings = PostSettings(from: params)
+
+        // Then
+        #expect(settings.status == .scheduled)
+        #expect(settings.publishDate == scheduledDate)
+    }
+
+    @Test("init(from: PostCreateParams) reads pending status with nil date")
+    func testInitFromCreateParamsReadsPendingStatus() {
+        // Given
+        var params = PostCreateParams(meta: nil)
+        params.status = .pending
+
+        // When
+        let settings = PostSettings(from: params)
+
+        // Then
+        #expect(settings.status == .pending)
+        #expect(settings.publishDate == nil)
+    }
+
+    @Test("PostCreateParams status and date survive round-trip through PostSettings")
+    func testStatusAndDateRoundTripThroughPostSettings() {
+        // Given
+        var params = PostCreateParams(meta: nil)
+        params.status = .future
+        let scheduledDate = Date(timeIntervalSince1970: 2_000_000_000)
+        params.dateGmt = scheduledDate
+
+        // When
+        let settings = PostSettings(from: params)
+        let outputParams = settings.makeCreateParameters(from: .init(meta: nil), taxonomies: [])
+
+        // Then
+        #expect(outputParams.status == .future)
+        #expect(outputParams.dateGmt == scheduledDate)
+    }
 }
 
 // MARK: - Test Helpers

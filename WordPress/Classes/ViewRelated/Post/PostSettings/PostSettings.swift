@@ -81,8 +81,16 @@ struct PostSettings: Hashable {
     init(from params: PostCreateParams, taxonomies: [SiteTaxonomy] = []) {
         excerpt = params.excerpt ?? ""
         slug = params.slug ?? ""
-        status = .draft
-        publishDate = nil
+        if let paramStatus = params.status {
+            status = BasePost.Status(paramStatus)
+        } else {
+            status = .draft
+        }
+        if status == .draft || status == .pending {
+            publishDate = nil
+        } else {
+            publishDate = params.dateGmt
+        }
         password = params.password
         metadata = PostMetadata(from: .init())
 
