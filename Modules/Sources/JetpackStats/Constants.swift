@@ -43,6 +43,7 @@ public enum Constants {
         static let celadon = Color(palette: CSColor.Celadon.self)
 
         static let uiColorBlue = UIColor(palette: CSColor.Blue.self)
+        static let uiColorOrange = UIColor(palette: CSColor.Orange.self)
 
         static let jetpack = Color(palette: CSColor.JetpackGreen.self)
 
