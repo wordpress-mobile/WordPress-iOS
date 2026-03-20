@@ -811,6 +811,33 @@ struct PostSettingsTests {
             PostSettings.Term(id: 20, name: ""),
         ])
     }
+
+    @Test("init(from: PostCreateParams) populates parentPageID")
+    func testInitFromCreateParamsReadsParent() {
+        // Given
+        var params = PostCreateParams(meta: nil)
+        params.parent = PostId(42)
+
+        // When
+        let settings = PostSettings(from: params)
+
+        // Then
+        #expect(settings.parentPageID == 42)
+    }
+
+    @Test("PostCreateParams parent survives round-trip through PostSettings")
+    func testParentRoundTripThroughPostSettings() {
+        // Given
+        var params = PostCreateParams(meta: nil)
+        params.parent = PostId(42)
+
+        // When
+        let settings = PostSettings(from: params)
+        let outputParams = settings.makeCreateParameters(from: .init(meta: nil), taxonomies: [])
+
+        // Then
+        #expect(outputParams.parent == PostId(42))
+    }
 }
 
 // MARK: - Test Helpers

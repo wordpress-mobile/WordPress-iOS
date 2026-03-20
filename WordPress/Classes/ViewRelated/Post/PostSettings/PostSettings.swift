@@ -104,6 +104,9 @@ struct PostSettings: Hashable {
         if let sticky = params.sticky {
             isStickyPost = sticky
         }
+        if let parent = params.parent, parent > 0 {
+            parentPageID = Int(parent)
+        }
         if !params.categories.isEmpty {
             categoryIDs = Set(params.categories.map { Int($0) })
         }
