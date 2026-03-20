@@ -742,6 +742,65 @@ struct PostSettingsTests {
         #expect(Set(params.tags) == Set([TermId(5), TermId(8)]))
     }
 
+    @Test("makeUpdateParameters(from: AnyPostWithEditContext) includes featuredMedia when changed")
+    func testMakeRemoteUpdateParametersIncludesFeaturedMedia() {
+        // Given: post has no featured image
+        let post = makeRemotePost()
+
+        var settings = PostSettings(from: post)
+        settings.featuredImageID = 42
+
+        // When
+        let params = settings.makeUpdateParameters(from: post)
+
+        // Then
+        #expect(params.featuredMedia == MediaId(42))
+    }
+
+    @Test("makeUpdateParameters(from: AnyPostWithEditContext) includes featuredMedia removal")
+    func testMakeRemoteUpdateParametersIncludesFeaturedMediaRemoval() {
+        // Given: post has a featured image
+        let post = makeRemotePost(featuredMedia: MediaId(42))
+
+        var settings = PostSettings(from: post)
+        settings.featuredImageID = nil
+
+        // When
+        let params = settings.makeUpdateParameters(from: post)
+
+        // Then: featuredMedia should be set to 0 (removal)
+        #expect(params.featuredMedia == MediaId(0))
+    }
+
+    @Test("makeUpdateParameters(from: AnyPostWithEditContext) omits featuredMedia when unchanged (MediaId 0)")
+    func testMakeRemoteUpdateParametersOmitsFeaturedMediaWhenZero() {
+        // Given: post has featuredMedia = 0 (no featured image)
+        let post = makeRemotePost(featuredMedia: MediaId(0))
+
+        // Settings should also have no featured image (featuredImageID = nil)
+        let settings = PostSettings(from: post)
+
+        // When
+        let params = settings.makeUpdateParameters(from: post)
+
+        // Then: no spurious diff — featuredMedia should not be included
+        #expect(params.featuredMedia == nil)
+    }
+
+    @Test("makeUpdateParameters(from: AnyPostWithEditContext) omits featuredMedia when unchanged (nil)")
+    func testMakeRemoteUpdateParametersOmitsFeaturedMediaWhenNil() {
+        // Given: post has featuredMedia = nil
+        let post = makeRemotePost()
+
+        let settings = PostSettings(from: post)
+
+        // When
+        let params = settings.makeUpdateParameters(from: post)
+
+        // Then
+        #expect(params.featuredMedia == nil)
+    }
+
     @Test("Resolved terms (id > 0) are equal when ids match, regardless of name")
     func testResolvedTermEquality() {
         let term1 = PostSettings.Term(id: 5, name: "swift")
@@ -910,7 +969,9 @@ private extension SiteTaxonomy {
 
 private func makeRemotePost(
     tags: [TermId]? = nil,
-    categories: [TermId]? = nil
+    categories: [TermId]? = nil,
+    featuredMedia: MediaId? = nil,
+    format: PostFormat? = nil
 ) -> AnyPostWithEditContext {
     AnyPostWithEditContext(
         id: PostId(1),
@@ -930,10 +991,10 @@ private func makeRemotePost(
         content: PostContentWithEditContext(raw: nil, rendered: "", protected: nil, blockVersion: nil),
         author: nil,
         excerpt: nil,
-        featuredMedia: nil,
+        featuredMedia: featuredMedia,
         commentStatus: .open,
         pingStatus: .open,
-        format: nil,
+        format: format,
         meta: nil,
         sticky: nil,
         template: "",

@@ -378,7 +378,9 @@ struct PostSettings: Hashable {
             params.excerpt = self.excerpt
         }
 
-        if post.featuredMedia.map({ Int($0) }) != self.featuredImageID {
+        // Normalize 0 as nil (no featured image) to match the init(from:) convention.
+        let originalFeaturedImageID = post.featuredMedia.flatMap { $0 > 0 ? Int($0) : nil }
+        if originalFeaturedImageID != self.featuredImageID {
             params.featuredMedia = self.featuredImageID.map { MediaId(Int64($0)) } ?? MediaId(0)
         }
 
