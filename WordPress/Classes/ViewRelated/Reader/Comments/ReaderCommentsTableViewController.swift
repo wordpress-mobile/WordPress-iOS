@@ -96,6 +96,10 @@ final class ReaderCommentsTableViewController: UIViewController, UITableViewData
     }
 
     @objc func scrollToComment(withID commentID: NSNumber) -> Bool {
+        scrollToComment(withID: commentID, animated: true)
+    }
+
+    func scrollToComment(withID commentID: NSNumber, animated: Bool) -> Bool {
         let comments = fetchResultsController.fetchedObjects ?? []
         guard let comment = comments.first(where: { $0.commentID == commentID.int32Value }) else {
             return false

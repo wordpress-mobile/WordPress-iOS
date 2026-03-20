@@ -205,6 +205,24 @@ final class CommentContentTableViewCell: UITableViewCell, NibReusable {
         containerStackTrailingConstraint.constant = 0
     }
 
+    /// Emphasizes the cell and draws the user's attention with a flash that settles at the target highlight level.
+    func flashHighlight() {
+        isEmphasized = true
+
+        guard let highlightedBackgroundView else {
+            return wpAssertionFailure("background view not configured")
+        }
+
+        let originalBackgroundColor = highlightedBackgroundView.backgroundColor
+        UIView.animate(withDuration: 0.33, delay: 0.5, options: .curveEaseOut) {
+            highlightedBackgroundView.backgroundColor = UIAppColor.blue.withAlphaComponent(0.09)
+        } completion: { _ in
+            UIView.animate(withDuration: 0.33, delay: 1.5, options: .curveEaseOut) {
+                highlightedBackgroundView.backgroundColor = originalBackgroundColor
+            }
+        }
+    }
+
     func hideActions() {
         replyButton.isHidden = true
         likeButton.isHidden = true
@@ -233,7 +251,7 @@ final class CommentContentTableViewCell: UITableViewCell, NibReusable {
         }
         for level in 0..<depth {
             let separatorView = depthSeparators[level] ?? {
-                let separatorView = SeparatorView.vertical()
+                let separatorView = SeparatorView.vertical(width: 1.0)
                 depthSeparators[level] = separatorView
                 contentView.addSubview(separatorView)
                 separatorView.pinEdges([.top, .bottom])
