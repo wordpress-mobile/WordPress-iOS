@@ -153,6 +153,7 @@ private extension ReaderDetailCommentsTableViewDelegate {
 
         let leaveCommentView = LeaveCommentView()
         leaveCommentView.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(leaveCommentCellTapped)))
+        leaveCommentView.displaySettings = displaySetting
 
         cell.contentView.addSubview(leaveCommentView)
         leaveCommentView.pinEdges(insets: UIEdgeInsets(top: 16, left: 0, bottom: 8, right: 0))
