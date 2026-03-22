@@ -15,6 +15,11 @@ public class ReachabilityUtils: NSObject {
     }
 
     @objc
+    public static func isReachableViaWiFi() -> Bool {
+        internetReachability?.isReachableViaWiFi() ?? false
+    }
+
+    @objc
     public static func showAlertNoInternetConnection() {
         ReachabilityAlert(retryBlock: nil).show()
     }
