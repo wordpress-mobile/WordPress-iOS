@@ -1,11 +1,10 @@
 import Foundation
-import Reachability
+import Network
 
 @objc
 public class ReachabilityUtils: NSObject {
 
-    @objc
-    public private(set) static var internetReachability: Reachability?
+    private static var pathMonitor: NWPathMonitor?
 
     public static var connectionAvailable = false
 
@@ -16,7 +15,7 @@ public class ReachabilityUtils: NSObject {
 
     @objc
     public static func isReachableViaWiFi() -> Bool {
-        internetReachability?.isReachableViaWiFi() ?? false
+        pathMonitor?.currentPath.usesInterfaceType(.wifi) ?? false
     }
 
     @objc
@@ -43,39 +42,20 @@ public class ReachabilityUtils: NSObject {
         currentReachabilityAlert != nil
     }
 
-    public static func configure(
-        notificationCenter: NotificationCenter = .default,
-        reachability: Reachability? = .forInternetConnection()
-    ) {
-        // The fact that the reachability instance is nullable is only an Objective-C bridging byproduct.
-        guard let internetReachability = reachability else {
-            fatalError("Failed to acquire internet reachability. This should never happen.")
+    public static func configure() {
+        let monitor = NWPathMonitor()
+        monitor.pathUpdateHandler = { path in
+            let newValue = path.status == .satisfied
+            connectionAvailable = newValue
+
+            NotificationCenter.default.post(
+                name: .reachabilityUpdated,
+                object: self,
+                userInfo: [Notification.reachabilityKey: newValue]
+            )
         }
-
-        let reachableStateChangedHandler: NetworkReachable = { reachability in
-            guard let reachability else { return }
-
-            DispatchQueue.main.async {
-                print(
-                    "Reachability state changed. WiFi: \(reachability.isReachableViaWiFi()) WWAN: \(reachability.isReachableViaWWAN())"
-                )
-                let newValue = reachability.isReachable()
-                connectionAvailable = newValue
-
-                notificationCenter.post(
-                    name: .reachabilityUpdated,
-                    object: self,
-                    userInfo: [Notification.reachabilityKey: newValue]
-                )
-            }
-        }
-
-        internetReachability.reachableBlock = reachableStateChangedHandler
-        internetReachability.unreachableBlock = reachableStateChangedHandler
-
-        internetReachability.startNotifier()
-
-        self.internetReachability = internetReachability
-        connectionAvailable = internetReachability.isReachable()
+        monitor.start(queue: .main)
+        pathMonitor = monitor
+        connectionAvailable = monitor.currentPath.status == .satisfied
     }
 }
