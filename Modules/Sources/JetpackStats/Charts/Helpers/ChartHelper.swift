@@ -67,7 +67,7 @@ struct ChartHelper {
         } else {
             AxisMarks(values: .stride(by: granularity.component, count: 1, calendar: calendar)) { value in
                 if let date = value.as(Date.self) {
-                    AxisValueLabel(centered: true, collisionResolution: .greedy(minimumSpacing: 6)) {
+                    AxisValueLabel(centered: true, collisionResolution: .greedy(minimumSpacing: 5)) {
                         ChartAxisDateLabel(date: date, granularity: granularity)
                     }
                 }

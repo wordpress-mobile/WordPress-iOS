@@ -324,12 +324,9 @@ struct BarChartView: View {
             return nil
         }
 
-        let origin = geometry[frame].origin
-        let location = CGPoint(
-            x: location.x - origin.x,
-            y: location.y - origin.y
-        )
-        guard let date: Date = proxy.value(atX: location.x) else {
+        let plotFrame = geometry[frame]
+        let adjustedX = max(0, min(location.x - plotFrame.origin.x, plotFrame.width))
+        guard let date: Date = proxy.value(atX: adjustedX) else {
             return nil
         }
         // `proxy.value(atX:)` returns a precise date at the tap location.

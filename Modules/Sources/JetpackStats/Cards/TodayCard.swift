@@ -92,7 +92,7 @@ struct TodayCard: View {
     }
 
     private func makeMetricsView(with metrics: SiteMetricsSet) -> some View {
-        HStack(alignment: .bottom, spacing: 16) {
+        HStack(alignment: .bottom, spacing: 20) {
             ForEach(viewModel.configuration.metrics) { metric in
                 if metric == .views {
                     TodayCardProminentMetricView(value: metrics[metric], metric: metric)
@@ -130,7 +130,7 @@ struct TodayCard: View {
         .frame(maxWidth: .infinity)
         .padding(.trailing, 32)
         .padding(.vertical, 2)
-        .offset(y: -9)
+        .offset(y: -3)
         .transition(.opacity.combined(with: .scale(scale: 0.97)))
     }
 

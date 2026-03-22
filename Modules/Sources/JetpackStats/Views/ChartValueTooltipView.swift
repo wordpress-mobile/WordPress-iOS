@@ -75,8 +75,8 @@ struct ChartValueTooltipView: View {
             // Summary view
             if let trend {
                 ChartValuesSummaryView(trend: trend, style: .compact)
-            } else if let previousValue = previousPoint?.value {
-                Text(StatsValueFormatter(metric: metric).format(value: previousValue, context: .regular))
+            } else if let value = currentPoint?.value ?? previousPoint?.value {
+                Text(StatsValueFormatter(metric: metric).format(value: value, context: .regular))
                     .font(.subheadline.weight(.medium))
             }
 

@@ -32,6 +32,7 @@ final class ChartCardViewModel: ObservableObject, TrafficCardViewModel {
     }
 
     weak var configurationDelegate: CardConfigurationDelegate?
+    var onDateRangeChanged: ((StatsDateRangeSelection) -> Void)?
 
     var dateRange: StatsDateRangeSelection {
         didSet {
@@ -219,6 +220,11 @@ final class ChartCardViewModel: ObservableObject, TrafficCardViewModel {
         }
 
         return output
+    }
+
+    func promoteSubrangeToMainRange() {
+        guard let subrange = dateRange.subrange else { return }
+        onDateRangeChanged?(StatsDateRangeSelection(range: subrange))
     }
 
     var selectedBarTrend: TrendViewModel? {
