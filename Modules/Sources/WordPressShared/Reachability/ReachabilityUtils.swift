@@ -6,7 +6,12 @@ public class ReachabilityUtils: NSObject {
 
     private static var pathMonitor: NWPathMonitor?
 
-    public static var connectionAvailable = false
+    /// Whether the device currently has internet connectivity.
+    ///
+    /// The initial value is `false`. After `configure()` is called, `NWPathMonitor`
+    /// updates it to the correct value on the next main run loop cycle. Subsequent
+    /// changes are pushed automatically as the network state changes.
+    public internal(set) static var connectionAvailable = false
 
     @objc
     public static func isInternetReachable() -> Bool {
@@ -43,6 +48,8 @@ public class ReachabilityUtils: NSObject {
     }
 
     public static func configure() {
+        guard pathMonitor == nil else { return }
+
         let monitor = NWPathMonitor()
         monitor.pathUpdateHandler = { path in
             let newValue = path.status == .satisfied
