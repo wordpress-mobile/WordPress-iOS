@@ -1,6 +1,6 @@
 import UIKit
-import Reachability
 import WordPressData
+import WordPressShared
 
 // This is added as a top level function to avoid cluttering PingHubManager.init
 private func defaultAccountToken() -> String? {
@@ -22,7 +22,7 @@ private func defaultAccountToken() -> String? {
 /// app is in the foreground.
 ///
 /// When a connection fails for some reason, it will try to reconnect whenever
-/// there is an internet connection, as detected by Reachability. If the app
+/// there is an internet connection, as detected by ReachabilityUtils. If the app
 /// thinks it's online but connections are still failing, the manager adds an
 /// increasing delay to the reconnection to avoid too many attempts.
 ///
@@ -77,7 +77,6 @@ class PingHubManager: NSObject {
         }
     }
 
-    fileprivate let reachability: Reachability = Reachability.forInternetConnection()
     fileprivate var state: State {
         didSet {
             stateChanged(old: oldValue, new: state)
@@ -85,11 +84,12 @@ class PingHubManager: NSObject {
     }
     fileprivate var delay = IncrementalDelay(Configuration.delaySequence)
     fileprivate var delayedRetry: DispatchDelayedAction?
+    private var reachabilityObserver: NSObjectProtocol?
 
     override init() {
         let foreground = (UIApplication.shared.applicationState != .background)
         let authToken = defaultAccountToken()
-        state = State(connected: false, reachable: reachability.isReachable(), foreground: foreground, authToken: authToken)
+        state = State(connected: false, reachable: ReachabilityUtils.connectionAvailable, foreground: foreground, authToken: authToken)
         super.init()
 
         guard enabled else {
@@ -107,12 +107,18 @@ class PingHubManager: NSObject {
             stateChanged(old: state, new: state)
         }
 
-        setupReachability()
+        reachabilityObserver = NotificationCenter.default.addObserver(forName: .reachabilityUpdated, object: nil, queue: .main) { [weak self] notification in
+            if let reachable = notification.userInfo?[Notification.reachabilityKey] as? Bool {
+                self?.state.reachable = reachable
+            }
+        }
     }
 
     deinit {
         delayedRetry?.cancel()
-        reachability.stopNotifier()
+        if let reachabilityObserver {
+            NotificationCenter.default.removeObserver(reachabilityObserver)
+        }
     }
 
     fileprivate func stateChanged(old: State, new: State) {
@@ -191,20 +197,6 @@ fileprivate extension PingHubManager {
         state.foreground = true
     }
 
-    // MARK: reachability
-    func setupReachability() {
-        let reachabilityChanged: (Reachability?) -> Void = { [weak self] reachability in
-            guard let manager = self, let reachability else {
-                return
-            }
-            DispatchQueue.main.async {
-                manager.state.reachable = reachability.isReachable()
-            }
-        }
-        reachability.reachableBlock = reachabilityChanged
-        reachability.unreachableBlock = reachabilityChanged
-        reachability.startNotifier()
-    }
 }
 
 // MARK: - Actions
