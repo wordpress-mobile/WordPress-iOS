@@ -183,12 +183,16 @@ final class StatsViewModel: ObservableObject, CardConfigurationDelegate {
                 context: context
             )
         case .chart(let configuration):
-            viewModel = ChartCardViewModel(
+            let chartVM = ChartCardViewModel(
                 configuration: configuration,
                 dateRange: effectiveDateRange,
                 service: context.service,
                 tracker: context.tracker
             )
+            chartVM.onDateRangeChanged = { [weak self] newRange in
+                self?.dateRange = newRange
+            }
+            viewModel = chartVM
         case .topList(let configuration):
             viewModel = TopListViewModel(
                 configuration: configuration,

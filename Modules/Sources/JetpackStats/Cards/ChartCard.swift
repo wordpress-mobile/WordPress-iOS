@@ -82,7 +82,7 @@ struct ChartCard: View {
             trend: viewModel.selectedBarTrend ?? .make(data, context: .regular),
             metricTitle: metric.localizedTitle,
             period: context.formatters.dateRange.string(from: viewModel.dateRange.subrange ?? viewModel.dateRange.range),
-            showComparison: dateRange.comparison != .off
+            showDisclosureIndicator: viewModel.dateRange.subrange != nil
         )
     }
 
@@ -93,6 +93,9 @@ struct ChartCard: View {
             .padding(.trailing, Constants.step3 + Constants.step0_5)
             .accessibilityElement(children: .combine)
             .accessibilityLabel(Strings.Accessibility.cardTitle(metric.localizedTitle))
+            .simultaneousGesture(TapGesture().onEnded {
+                viewModel.promoteSubrangeToMainRange()
+            })
     }
 
     @ViewBuilder
@@ -314,7 +317,8 @@ struct ChartCardHeaderView: View {
         let trend: TrendViewModel
         let metricTitle: String
         let period: String
-        let showComparison: Bool
+        var showComparison: Bool = true
+        var showDisclosureIndicator: Bool = false
     }
 
     let viewModel: ViewModel
@@ -332,9 +336,17 @@ struct ChartCardHeaderView: View {
                         .font(.caption.weight(.medium))
                         .foregroundColor(.secondary)
                 }
-                Text(viewModel.period)
-                    .font(.system(.caption, design: .rounded, weight: .medium))
-                    .foregroundStyle(Color.secondary)
+                HStack(spacing: 2) {
+                    Text(viewModel.period)
+                        .font(.system(.caption, design: .rounded, weight: .medium))
+                        .foregroundStyle(Color.secondary)
+                    if viewModel.showDisclosureIndicator {
+                        Image(systemName: "chevron.forward")
+                            .font(.system(.caption2, weight: .semibold))
+                            .scaleEffect(0.8)
+                            .foregroundStyle(Color.secondary)
+                    }
+                }
                 if viewModel.showComparison {
                     Text("\(viewModel.trend.formattedChange)  \(viewModel.trend.iconSign) \(viewModel.trend.formattedPercentage)")
                         .font(.caption.weight(.semibold))
