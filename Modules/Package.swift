@@ -47,7 +47,7 @@ let package = Package(
         .package(url: "https://github.com/squarefrog/UIDeviceIdentifier", from: "2.3.0"),
         // We can remove the SVProgressHUD fork once this PR is merged: https://github.com/SVProgressHUD/SVProgressHUD/pull/1131
         .package(url: "https://github.com/automattic/SVProgressHUD", branch: "master"),
-        .package(url: "https://github.com/Automattic/Reachability", branch: "framework-support-via-spm"),
+
         .package(url: "https://github.com/weichsel/ZIPFoundation", from: "0.9.19"),
         .package(url: "https://github.com/wordpress-mobile/FSInteractiveMap", from: "0.3.0"),
         .package(url: "https://github.com/wordpress-mobile/MediaEditor-iOS", branch: "task/spm-support"),
@@ -174,7 +174,6 @@ let package = Package(
         .target(
             name: "WordPressShared",
             dependencies: [
-                .product(name: "Reachability", package: "Reachability"),
                 .product(name: "SwiftSoup", package: "SwiftSoup"),
                 .target(name: "SFHFKeychainUtils"),
                 .target(name: "WordPressSharedObjC"),
@@ -191,7 +190,6 @@ let package = Package(
                 "WordPressShared",
                 "WordPressLegacy",
                 .product(name: "ColorStudio", package: "color-studio"),
-                .product(name: "Reachability", package: "Reachability"),
             ],
             resources: [.process("Resources")],
             swiftSettings: [.swiftLanguageMode(.v5)]
@@ -330,7 +328,6 @@ enum XcodeSupport {
             .product(name: "CocoaLumberjackSwift", package: "CocoaLumberjack"),
             .product(name: "Down", package: "Down"),
             .product(name: "Gridicons", package: "Gridicons-iOS"),
-            .product(name: "Reachability", package: "Reachability"),
             .product(name: "SVProgressHUD", package: "SVProgressHUD"),
             .product(name: "ZIPFoundation", package: "ZIPFoundation"),
             .product(name: "Aztec", package: "AztecEditor-iOS"),
@@ -382,7 +379,6 @@ enum XcodeSupport {
             .product(name: "NSURL-IDN", package: "NSURL-IDN"),
             .product(name: "Pulse", package: "Pulse"),
             .product(name: "PulseUI", package: "Pulse"),
-            .product(name: "Reachability", package: "Reachability"),
             .product(name: "Starscream", package: "Starscream"),
             .product(name: "SVProgressHUD", package: "SVProgressHUD"),
             .product(name: "SwiftSoup", package: "SwiftSoup"),

@@ -1,5 +1,5 @@
 {
-  "originHash" : "3c17ad47fa74d088d3a4cdf98c8e1b35e19c735a0d996e782588e5b295c34aca",
+  "originHash" : "5cc06955f402a22a393b23b48582f917f06a1a799e1a9f9ceab0d2274a0d2247",
   "pins" : [
     {
       "identity" : "alamofire",
@@ -212,15 +212,6 @@
       "state" : {
         "revision" : "6125ce7fb51b114ba71b761d18cfd5557923bd4d",
         "version" : "5.1.4"
-      }
-    },
-    {
-      "identity" : "reachability",
-      "kind" : "remoteSourceControl",
-      "location" : "https://github.com/Automattic/Reachability",
-      "state" : {
-        "branch" : "framework-support-via-spm",
-        "revision" : "5552d6a2ceeb40ad6aa1a288ea7bbd544fb68d6f"
       }
     },
     {
