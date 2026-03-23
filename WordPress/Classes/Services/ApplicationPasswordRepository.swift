@@ -206,7 +206,7 @@ private extension ApplicationPasswordRepository {
         return validPasswords.first
     }
 
-    func createPassword(for blogId: TaggedManagedObjectID<Blog>) async throws -> ApplicationPassword {
+    private func createPassword(for blogId: TaggedManagedObjectID<Blog>) async throws -> ApplicationPassword {
         // Update `Blog.username` so that we can associate the created password with the site itself, in addition to the Jetpack site ID.
         let siteUsername = try await updateSiteUsernameIfNeeded(blogId)
         let apiRootURL = try await updateRestAPIURLIfNeeded(blogId)

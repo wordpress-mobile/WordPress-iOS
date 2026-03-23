@@ -76,6 +76,7 @@ To automatically sign in to the app on an iOS simulator, see @docs/simulator-sig
 - Follow the standard formatting practices enforced by SwiftLint
 - Don't create `body` for `View` that are too long
 - Use semantics text sizes like `.headline`
+- Use swift-log (see the `WordPress/Classes/System/Logging.swift` file) instead of CocoaLumberjack (`DDLogError`, etc)
 
 ## Development Workflow
 - Branch from `trunk` (main branch)

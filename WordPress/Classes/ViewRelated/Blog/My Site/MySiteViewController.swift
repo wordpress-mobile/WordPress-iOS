@@ -385,6 +385,14 @@ final class MySiteViewController: UIViewController, UIScrollViewDelegate, NoSite
             // Also refresh editor capabilities
             EditorDependencyManager.shared.fetchEditorCapabilities(for: blog)
         }
+
+        Task { [blogID = TaggedManagedObjectID(blog)] in
+            do {
+                try await ApplicationPasswordRepository.shared.createPasswordIfNeeded(for: blogID)
+            } catch {
+                Loggers.app.error("Failed to create an application password: \(error)")
+            }
+        }
     }
 
     @objc
