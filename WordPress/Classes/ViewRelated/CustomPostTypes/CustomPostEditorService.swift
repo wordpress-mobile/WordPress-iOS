@@ -68,10 +68,13 @@ class CustomPostEditorService {
         post: AnyPostWithEditContext?,
         details: PostTypeDetailsWithEditContext,
         client: WordPressClient,
-        wpService: WpService
+        wpService: WpService,
+        initialParams: PostCreateParams? = nil
     ) {
         if let post {
             self.state = .existingPost(post)
+        } else if let initialParams {
+            self.state = .newPost(initialParams)
         } else {
             self.state = .newPost(PostCreateParams.defaultParams(from: blog))
         }
@@ -230,6 +233,14 @@ extension CustomPostEditorService {
     func inspectPendingSettings() -> PostSettings? {
         if case .existingPost(_, let pending) = state {
             return pending
+        }
+        return nil
+    }
+
+    // Used in unit tests.
+    func inspectCreateParams() -> PostCreateParams? {
+        if case .newPost(let params) = state {
+            return params
         }
         return nil
     }

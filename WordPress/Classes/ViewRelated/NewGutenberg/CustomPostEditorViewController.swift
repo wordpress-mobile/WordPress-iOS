@@ -31,6 +31,7 @@ class CustomPostEditorViewController: PostGBKEditorViewController {
         client: WordPressClient,
         post: AnyPostWithEditContext?,
         details: PostTypeDetailsWithEditContext,
+        initialParams: PostCreateParams? = nil,
         completion: @escaping () -> Void
     ) {
         self.client = client
@@ -38,7 +39,8 @@ class CustomPostEditorViewController: PostGBKEditorViewController {
         self.completion = completion
 
         self.editorService = CustomPostEditorService(
-            blog: blog, post: post, details: details, client: client, wpService: wpService
+            blog: blog, post: post, details: details, client: client, wpService: wpService,
+            initialParams: initialParams
         )
 
         let postTypeDetails = PostTypeDetails(
@@ -49,8 +51,8 @@ class CustomPostEditorViewController: PostGBKEditorViewController {
         super.init(
             postId: post.map { Int($0.id) },
             postType: postTypeDetails,
-            title: post?.title?.raw,
-            content: post?.content.raw,
+            title: post?.title?.raw ?? initialParams?.title,
+            content: post?.content.raw ?? initialParams?.content,
             status: (post?.status ?? .draft).description,
             blog: blog
         )

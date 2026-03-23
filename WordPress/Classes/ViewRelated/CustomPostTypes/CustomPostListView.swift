@@ -18,6 +18,7 @@ struct CustomPostListView<Header: View>: View {
     let showsPostActions: Bool
     let selectedPostID: Int64?
     let onSelectPost: (AnyPostWithEditContext) -> Void
+    let onDuplicate: (AnyPostWithEditContext) -> Void
     @ViewBuilder let header: () -> Header
 
     init(
@@ -27,7 +28,8 @@ struct CustomPostListView<Header: View>: View {
         mediaHost: MediaHost? = nil,
         showsPostActions: Bool = true,
         selectedPostID: Int64? = nil,
-        onSelectPost: @escaping (AnyPostWithEditContext) -> Void
+        onSelectPost: @escaping (AnyPostWithEditContext) -> Void,
+        onDuplicate: @escaping (AnyPostWithEditContext) -> Void = { _ in }
     ) where Header == EmptyView {
         self.viewModel = viewModel
         self.details = details
@@ -36,6 +38,7 @@ struct CustomPostListView<Header: View>: View {
         self.showsPostActions = showsPostActions
         self.selectedPostID = selectedPostID
         self.onSelectPost = onSelectPost
+        self.onDuplicate = onDuplicate
         self.header = { EmptyView() }
     }
 
@@ -47,6 +50,7 @@ struct CustomPostListView<Header: View>: View {
         showsPostActions: Bool = true,
         selectedPostID: Int64? = nil,
         onSelectPost: @escaping (AnyPostWithEditContext) -> Void,
+        onDuplicate: @escaping (AnyPostWithEditContext) -> Void = { _ in },
         @ViewBuilder header: @escaping () -> Header
     ) {
         self.viewModel = viewModel
@@ -56,6 +60,7 @@ struct CustomPostListView<Header: View>: View {
         self.showsPostActions = showsPostActions
         self.selectedPostID = selectedPostID
         self.onSelectPost = onSelectPost
+        self.onDuplicate = onDuplicate
         self.header = header
     }
 
@@ -66,6 +71,7 @@ struct CustomPostListView<Header: View>: View {
             onLoadNextPage: { try await viewModel.loadNextPage() },
             client: client,
             onSelectPost: onSelectPost,
+            onDuplicate: onDuplicate,
             mediaHost: mediaHost,
             showsPostActions: showsPostActions,
             selectedPostID: selectedPostID,
@@ -133,6 +139,7 @@ private struct PaginatedList<Header: View>: View {
     let onLoadNextPage: () async throws -> Void
     let client: WordPressClient?
     let onSelectPost: (AnyPostWithEditContext) -> Void
+    let onDuplicate: (AnyPostWithEditContext) -> Void
     let mediaHost: MediaHost?
     let showsPostActions: Bool
     let selectedPostID: Int64?
@@ -148,6 +155,7 @@ private struct PaginatedList<Header: View>: View {
         onLoadNextPage: @escaping () async throws -> Void,
         client: WordPressClient? = nil,
         onSelectPost: @escaping (AnyPostWithEditContext) -> Void,
+        onDuplicate: @escaping (AnyPostWithEditContext) -> Void = { _ in },
         mediaHost: MediaHost? = nil,
         showsPostActions: Bool = true,
         selectedPostID: Int64? = nil,
@@ -158,6 +166,7 @@ private struct PaginatedList<Header: View>: View {
         self.onLoadNextPage = onLoadNextPage
         self.client = client
         self.onSelectPost = onSelectPost
+        self.onDuplicate = onDuplicate
         self.mediaHost = mediaHost
         self.showsPostActions = showsPostActions
         self.selectedPostID = selectedPostID
@@ -171,6 +180,7 @@ private struct PaginatedList<Header: View>: View {
         onLoadNextPage: @escaping () async throws -> Void,
         client: WordPressClient? = nil,
         onSelectPost: @escaping (AnyPostWithEditContext) -> Void,
+        onDuplicate: @escaping (AnyPostWithEditContext) -> Void = { _ in },
         mediaHost: MediaHost? = nil,
         showsPostActions: Bool = true,
         selectedPostID: Int64? = nil,
@@ -182,6 +192,7 @@ private struct PaginatedList<Header: View>: View {
         self.onLoadNextPage = onLoadNextPage
         self.client = client
         self.onSelectPost = onSelectPost
+        self.onDuplicate = onDuplicate
         self.mediaHost = mediaHost
         self.showsPostActions = showsPostActions
         self.selectedPostID = selectedPostID
@@ -218,6 +229,7 @@ private struct PaginatedList<Header: View>: View {
                 item: item,
                 client: client,
                 onSelectPost: onSelectPost,
+                onDuplicate: onDuplicate,
                 mediaHost: mediaHost,
                 viewModel: viewModel,
                 showsPostActions: showsPostActions,
@@ -235,6 +247,7 @@ private struct PaginatedList<Header: View>: View {
                 item: item,
                 client: client,
                 onSelectPost: onSelectPost,
+                onDuplicate: onDuplicate,
                 mediaHost: mediaHost,
                 viewModel: viewModel,
                 showsPostActions: showsPostActions,
@@ -304,6 +317,7 @@ private struct ForEachContent: View {
     let item: CustomPostCollectionItem
     let client: WordPressClient?
     let onSelectPost: (AnyPostWithEditContext) -> Void
+    let onDuplicate: (AnyPostWithEditContext) -> Void
     let mediaHost: MediaHost?
     @ObservedObject var viewModel: CustomPostListViewModel
     var showsPostActions: Bool = true
@@ -341,10 +355,10 @@ private struct ForEachContent: View {
                 } else if showsPostActions {
                     button
                         .contextMenu {
-                            PostActionMenuContent(post: fullPost, viewModel: viewModel)
+                            PostActionMenuContent(post: fullPost, viewModel: viewModel, onDuplicate: onDuplicate)
                         }
                         .overlay(alignment: .topTrailing) {
-                            PostActionMenu(post: fullPost, viewModel: viewModel)
+                            PostActionMenu(post: fullPost, viewModel: viewModel, onDuplicate: onDuplicate)
                                 .offset(y: -6)
                         }
                 } else {
@@ -377,6 +391,7 @@ private struct ForEachContentWithIndentation: View {
     let item: CustomPostCollectionItem
     let client: WordPressClient?
     let onSelectPost: (AnyPostWithEditContext) -> Void
+    let onDuplicate: (AnyPostWithEditContext) -> Void
     let mediaHost: MediaHost?
     let viewModel: CustomPostListViewModel
     var showsPostActions: Bool = true
@@ -397,6 +412,7 @@ private struct ForEachContentWithIndentation: View {
                 item: item,
                 client: client,
                 onSelectPost: onSelectPost,
+                onDuplicate: onDuplicate,
                 mediaHost: mediaHost,
                 viewModel: viewModel,
                 showsPostActions: showsPostActions,
@@ -410,10 +426,11 @@ private struct ForEachContentWithIndentation: View {
 private struct PostActionMenu: View {
     let post: AnyPostWithEditContext
     let viewModel: CustomPostListViewModel
+    let onDuplicate: (AnyPostWithEditContext) -> Void
 
     var body: some View {
         Menu {
-            PostActionMenuContent(post: post, viewModel: viewModel)
+            PostActionMenuContent(post: post, viewModel: viewModel, onDuplicate: onDuplicate)
         } label: {
             Image(systemName: "ellipsis")
                 .font(.body)
@@ -427,6 +444,7 @@ private struct PostActionMenu: View {
 private struct PostActionMenuContent: View {
     let post: AnyPostWithEditContext
     let viewModel: CustomPostListViewModel
+    let onDuplicate: (AnyPostWithEditContext) -> Void
 
     var body: some View {
         primarySection
@@ -457,7 +475,11 @@ private struct PostActionMenuContent: View {
                 }
             }
 
-            // FIXME: Duplicate requires Core Data editor (Post.blog.createDraftPost, PostListEditorPresenter)
+            if post.status == .publish || post.status == .draft || post.status == .pending {
+                Button(action: { onDuplicate(post) }) {
+                    Label(Strings.duplicate, systemImage: "doc.on.doc")
+                }
+            }
 
             if post.status == .publish, let url = URL(string: post.link) {
                 ShareLink(item: url, subject: Text(post.title?.raw ?? "")) {
@@ -601,6 +623,11 @@ private enum Strings {
         "customPostList.action.publish",
         value: "Publish",
         comment: "Menu action to publish a draft or pending post"
+    )
+    static let duplicate = NSLocalizedString(
+        "customPostList.action.duplicate",
+        value: "Duplicate",
+        comment: "Menu action to create a draft copy of a post"
     )
     static let moveToDraft = NSLocalizedString(
         "customPostList.action.moveToDraft",

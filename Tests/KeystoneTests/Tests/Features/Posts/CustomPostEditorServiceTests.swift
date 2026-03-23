@@ -150,13 +150,39 @@ struct CustomPostEditorServiceTests {
 
         #expect(service.hasSettingsChanges == true)
     }
+
+    // MARK: - initialParams Tests
+
+    @Test("init with initialParams uses provided params instead of defaults")
+    func initWithInitialParamsUsesProvidedParams() throws {
+        let context = ContextManager.forTesting().mainContext
+        let blog = BlogBuilder(context).build()
+
+        var params = PostCreateParams(meta: nil)
+        params.status = .draft
+        params.title = "Copied Title"
+        params.content = "Copied Content"
+        params.categories = [TermId(5)]
+
+        let service = try makeService(blog: blog, post: nil, initialParams: params)
+
+        // PostSettings does not store title/content (those are managed by the
+        // Gutenberg editor), so verify via categoryIDs which PostSettings does map.
+        #expect(service.settings.categoryIDs == [5])
+        // Also verify via the test-only inspection method that the full params
+        // are stored, including title and content.
+        let storedParams = service.inspectCreateParams()
+        #expect(storedParams?.title == "Copied Title")
+        #expect(storedParams?.content == "Copied Content")
+    }
 }
 
 // MARK: - Test Helpers
 
 private func makeService(
     blog: Blog,
-    post: AnyPostWithEditContext?
+    post: AnyPostWithEditContext?,
+    initialParams: PostCreateParams? = nil
 ) throws -> CustomPostEditorService {
     let api = try WordPressAPI(
         urlSession: .shared,
@@ -174,7 +200,8 @@ private func makeService(
         post: post,
         details: makePostTypeDetails(),
         client: client,
-        wpService: wpService
+        wpService: wpService,
+        initialParams: initialParams
     )
 }
 

@@ -111,6 +111,7 @@ struct CustomPostTabView: View {
                     client: client,
                     mediaHost: MediaHost(blog),
                     onSelectPost: { editorPresentation = .editPost($0) },
+                    onDuplicate: { duplicatePost($0) },
                     header: { tabBar }
                 )
             } else {
@@ -121,7 +122,8 @@ struct CustomPostTabView: View {
                     details: details,
                     searchText: $searchText,
                     presentingViewController: presentingViewController,
-                    onSelectPost: { editorPresentation = .editPost($0) }
+                    onSelectPost: { editorPresentation = .editPost($0) },
+                    onDuplicate: { duplicatePost($0) }
                 )
             }
         }
@@ -150,7 +152,14 @@ struct CustomPostTabView: View {
             SubmitFeedbackViewRepresentable()
         }
         .fullScreenCover(item: $editorPresentation) { presentation in
-            CustomPostEditor(wpService: service, client: client, post: presentation.post, details: details, blog: blog)
+            CustomPostEditor(
+                wpService: service,
+                client: client,
+                post: presentation.post,
+                details: details,
+                blog: blog,
+                initialParams: presentation.initialParams
+            )
         }
         .onChange(of: authorFilter, applyAuthorFilter)
         .task {
@@ -202,6 +211,22 @@ struct CustomPostTabView: View {
         draftsViewModel.updateAuthorFilter(authorIds)
         scheduledViewModel.updateAuthorFilter(authorIds)
         trashViewModel.updateAuthorFilter(authorIds)
+    }
+
+    private func duplicatePost(_ post: AnyPostWithEditContext) {
+        let capabilities = PostSettingsCapabilities(from: details)
+        var params = PostCreateParams.defaultParams(from: blog)
+        params.title = post.title?.raw
+        params.content = post.content.raw
+        if capabilities.supportsCategories, let categories = post.categories {
+            params.categories = categories
+        }
+        if capabilities.supportsPostFormats {
+            params.format = post.format
+        }
+        editorPresentation = .duplicatePost(params)
+
+        WPAnalytics.track(.postListDuplicateAction, withProperties: ["post_type": details.slug])
     }
 
     private var tabBar: some View {
@@ -317,18 +342,27 @@ private struct SubmitFeedbackViewRepresentable: UIViewControllerRepresentable {
 private enum EditorPresentation: Identifiable {
     case newPost
     case editPost(AnyPostWithEditContext)
+    case duplicatePost(PostCreateParams)
 
     var id: String {
         switch self {
         case .newPost: return "new"
         case .editPost(let post): return "post-\(post.id)"
+        case .duplicatePost: return "duplicate"
         }
     }
 
     var post: AnyPostWithEditContext? {
         switch self {
-        case .newPost: return nil
+        case .newPost, .duplicatePost: return nil
         case .editPost(let post): return post
+        }
+    }
+
+    var initialParams: PostCreateParams? {
+        switch self {
+        case .duplicatePost(let params): return params
+        default: return nil
         }
     }
 }
