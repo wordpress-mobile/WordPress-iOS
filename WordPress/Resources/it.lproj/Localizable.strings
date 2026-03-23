@@ -1874,7 +1874,6 @@ translators: %s: Block name e.g. \"Image block\" */
    Done. Action.
    Menu button title for finishing editing the Menu name.
    Tapping a button with this label allows the user to exit the Site Creation flow
-   Title for a Done button.
    Title for button that will dismiss this view
    Title for the button that will dismiss this view. */
 "Done" = "Fatto";
@@ -3243,9 +3242,6 @@ translators: %s: Block name e.g. \"Image block\" */
 
 /* Text displayed while loading the scan section for a site */
 "Loading Scan..." = "Caricamento della scansione in corso...";
-
-/* Displayed while a comment is being loaded. */
-"Loading comment..." = "Caricamento del commento...";
 
 /* Menus label text displayed when a menu is loading. */
 "Loading menu..." = "Caricamento menu...";
@@ -7458,7 +7454,7 @@ Note that the word 'go' here should have a closer meaning to 'start' rather than
 /* Title of the set goals button in the Blogging Reminders Settings flow. */
 "bloggingRemindersPrompt.intro.continueButton" = "Imposta promemoria";
 
-/* Description on the first screen of the Blogging Reminders Settings flow called aftet post publishing. */
+/* Description on the first screen of the Blogging Reminders Settings flow called after post publishing. */
 "bloggingRemindersPrompt.intro.details" = "Imposta i promemoria relativi al blog per i giorni in cui desideri pubblicare.";
 
 /* Title of the Blogging Reminders Settings screen. */
@@ -10881,35 +10877,32 @@ Example: Reply to Pamela Nguyen */
 /* Post status details */
 "postStatus.draft.details" = "Non pronto per la pubblicazione";
 
-/* Post status title */
+/* Post status title used in different contexts */
 "postStatus.draft.title" = "Bozza";
 
 /* Post status details */
 "postStatus.pending.details" = "In attesa di revisione prima della pubblicazione";
 
-/* Post status title */
+/* Post status title used in different contexts */
 "postStatus.pending.title" = "In sospeso";
 
-/* Post status title */
+/* Post status title used in different contexts */
 "postStatus.private.title" = "Privato";
 
 /* Post status details */
 "postStatus.published.details" = "Visibile a tutti";
 
-/* Post status title */
+/* Post status title used in different contexts */
 "postStatus.published.title" = "Pubblicato";
 
 /* Post status details */
 "postStatus.scheduled.details" = "Pubblica automaticamente in una data stabilita";
 
-/* Post status title */
+/* Post status title used in different contexts */
 "postStatus.scheduled.title" = "Pianificato";
 
 /* Post status title */
 "postStatus.trash.details" = "Cestinato ma non ancora eliminato";
-
-/* Post status title */
-"postStatus.trash.title" = "Cestinato";
 
 /* Button to add a new taxonomy term. %1$@ is the taxonomy name (e.g., 'tags', 'categories'). */
 "postTags.addTag" = "Aggiungi %1$@";
@@ -11426,9 +11419,6 @@ Example: given a notice format "Following %@" and empty site name, this will be 
 /* Context menu action */
 "reader.postContextMenu.blockUser" = "Blocca utente";
 
-/* Context menu action (placeholder value when blog name not available – should never happen) */
-"reader.postContextMenu.blogDetails" = "Dettagli del blog";
-
 /* Context menu action */
 "reader.postContextMenu.manageNotifications" = "Gestione notifiche";
 
@@ -11443,9 +11433,6 @@ Example: given a notice format "Following %@" and empty site name, this will be 
 
 /* Context menu action */
 "reader.postContextMenu.reportUser" = "Segnala utente";
-
-/* Context menu action */
-"reader.postContextMenu.showBlog" = "Vai al Blog";
 
 /* Context menu action */
 "reader.postContextMenu.summarize" = "Riassumi";
@@ -12201,8 +12188,7 @@ Feel free to replace it with other bracket types that you think looks better for
 /* Title for site switcher screen */
 "sitePicker.title" = "I miei siti";
 
-/* The plugin author displayed in the plugins list. The first argument is plugin author name
-   The plugin version displayed in the plugins list. The first argument is plugin version */
+/* The plugin author displayed in the plugins list. The first argument is plugin author name */
 "sitePluginsList.item.author" = "Di %@";
 
 /* The message displayed when a plugin has no description */

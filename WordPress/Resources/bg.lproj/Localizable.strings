@@ -1,4 +1,4 @@
-/* Translation-Revision-Date: 2025-11-30 08:04:12+0000 */
+/* Translation-Revision-Date: 2026-03-05 20:31:17+0000 */
 /* Plural-Forms: nplurals=2; plural=n != 1; */
 /* Generator: GlotPress/4.0.3 */
 /* Language: bg */
@@ -1874,7 +1874,6 @@ translators: %s: Block name e.g. \"Image block\" */
    Done. Action.
    Menu button title for finishing editing the Menu name.
    Tapping a button with this label allows the user to exit the Site Creation flow
-   Title for a Done button.
    Title for button that will dismiss this view
    Title for the button that will dismiss this view. */
 "Done" = "Готово";
@@ -3243,9 +3242,6 @@ translators: %s: Block name e.g. \"Image block\" */
 
 /* Text displayed while loading the scan section for a site */
 "Loading Scan..." = "Зареждане на сканирането...";
-
-/* Displayed while a comment is being loaded. */
-"Loading comment..." = "Зареждане на коментара...";
 
 /* Menus label text displayed when a menu is loading. */
 "Loading menu..." = "Зареждане на менюто...";
@@ -7388,6 +7384,9 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Action shown in a bottom notice to dismiss it. */
 "blogDashboard.dismiss" = "Отхвърляне";
 
+/* Button title to connect Jetpack in XML-RPC disabled alert */
+"blogDetails.xmlrpcDisabled.alert.connectJetpack" = "Свързване на Jetpack";
+
 /* Context menu button title */
 "blogHeader.actionVisitSite" = "Към сайта";
 
@@ -7437,7 +7436,7 @@ Note that the word 'go' here should have a closer meaning to 'start' rather than
 /* Title of the set goals button in the Blogging Reminders Settings flow. */
 "bloggingRemindersPrompt.intro.continueButton" = "Настройка на напомняния";
 
-/* Description on the first screen of the Blogging Reminders Settings flow called aftet post publishing. */
+/* Description on the first screen of the Blogging Reminders Settings flow called after post publishing. */
 "bloggingRemindersPrompt.intro.details" = "Настройте вашите напомняния за блогване за дните, в които искате да публикувате.";
 
 /* Title of the Blogging Reminders Settings screen. */
@@ -7839,6 +7838,36 @@ Example: Reply to Pamela Nguyen */
 /* Create Sheet button title */
 "createSheet.postFromAudio" = "Публикация от аудио";
 
+/* Empty state message when no custom posts exist. %1$@ is the post type name (e.g., 'Podcasts', 'Products'). */
+"customPostList.emptyState.message" = "Няма %1$@";
+
+/* Tab title for draft posts */
+"customPostTab.drafts" = "Чернови";
+
+/* Tab title for published posts */
+"customPostTab.published" = "Публикувана";
+
+/* Tab title for scheduled posts */
+"customPostTab.scheduled" = "Планирана";
+
+/* Menu item title for sending feedback on the custom post types screen */
+"customPostTab.sendFeedback" = "Обратна връзка";
+
+/* Tab title for trashed posts */
+"customPostTab.trash" = "Кошче";
+
+/* Empty state message when there are no custom post types to display */
+"customPostTypes.emptyState.message" = "Няма персонализирани типове публикации";
+
+/* Accessibility label for the button to pin a custom post type */
+"customPostTypes.pin.accessibilityLabel" = "Закачане";
+
+/* Title for the Custom Post Types screen */
+"customPostTypes.title" = "Още";
+
+/* Accessibility label for the button to unpin a custom post type */
+"customPostTypes.unpin.accessibilityLabel" = "Разкачане";
+
 /* Customize Insights description */
 "customizeInsightsCell.content" = "Създайте свое персонализирано табло и изберете какво да виждате. Фокусирайте се върху нужните данни.";
 
@@ -7958,6 +7987,9 @@ Example: Reply to Pamela Nguyen */
 
 /* Debug Menu action for TipKit */
 "debugMenu.hideAllTips" = "Скриване на всички съвети";
+
+/* Debug Menu item title */
+"debugMenu.item.logs" = "Дневници";
 
 /* Title of the screen that allows the user to change the Reader CSS URL for debug builds */
 "debugMenu.readerCellTitle" = "Reader CSS адрес";
@@ -8672,8 +8704,14 @@ Example: Reply to Pamela Nguyen */
 /* Title of the primary button shown after the Jetpack plugin has been installed. Tapping on the button dismisses the installation screen. */
 "jetpack.install-flow.success.primaryButtonText" = "Готово";
 
+/* Message asking the user to install Jetpack to access all app features */
+"jetpack.install.allFeatures.description" = "За да отключите всички функции, ще ви е нужно разширението Jetpack.";
+
 /* Title of a button for connecting user account to Jetpack. */
 "jetpack.install.connectUser.button.title" = "Свързване на профил";
+
+/* Message asking the user to connect Jetpack to access all app features */
+"jetpack.install.connectUser.bypassXMLRPC.description" = "За да отключите всички функции, свържете разширението Jetpack с вашия профил.";
 
 /* Message asking the user if they want to set up Jetpack from notifications */
 "jetpack.install.connectUser.notifications.description" = "За да получавате полезни известия на телефона си от вашия WordPress сайт, ще трябва да се свържете с вашия профил.";
@@ -9015,6 +9053,9 @@ Example: Reply to Pamela Nguyen */
 /* Line chart type */
 "jetpackStats.chart.lineChart" = "Линии";
 
+/* Label for aggregated 'Other' segment in pie charts */
+"jetpackStats.chart.other" = "Други";
+
 /* Show chart data menu item */
 "jetpackStats.chart.showData" = "Показване на данните";
 
@@ -9138,6 +9179,9 @@ Example: Reply to Pamela Nguyen */
 /* Label for quick period selection */
 "jetpackStats.datePicker.quickPeriodsForStartDate" = "Периоди за стартова дата";
 
+/* Title for custom date range picker */
+"jetpackStats.datePicker.selectRange" = "Избор на диапазон";
+
 /* Site time zone header */
 "jetpackStats.datePicker.siteTimeZone" = "Часова зона на сайта";
 
@@ -9153,6 +9197,15 @@ Example: Reply to Pamela Nguyen */
 /* Title for stats date range control tip */
 "jetpackStats.dateRangeTip.title" = "Навигация във времето";
 
+/* Device breakdown by browser */
+"jetpackStats.deviceBreakdowns.browser" = "Браузър";
+
+/* Device breakdown by platform/OS */
+"jetpackStats.deviceBreakdowns.operatingSystem" = "Операционна система";
+
+/* Device breakdown by screen size */
+"jetpackStats.deviceBreakdowns.screensize" = "Размер на екрана";
+
 /* Section title for the list of child links */
 "jetpackStats.externalLinkDetails.childLinks" = "Под-връзки";
 
@@ -9161,6 +9214,12 @@ Example: Reply to Pamela Nguyen */
 
 /* Title for the external link details screen */
 "jetpackStats.externalLinkDetails.title" = "Външна връзка";
+
+/* Button to explore plans when a feature is gated */
+"jetpackStats.featureGate.explorePlans" = "Разглеждане на плановете";
+
+/* Message shown when a stats feature is gated behind a paid plan */
+"jetpackStats.featureGate.message" = "Ъпгрейднете плана си за активиране на пълните статистики";
 
 /* Label for daily average in tooltip */
 "jetpackStats.postDetails.dailyAverage" = "Средно дневно";
@@ -9246,6 +9305,9 @@ Example: Reply to Pamela Nguyen */
 /* Authors data type */
 "jetpackStats.siteDataTypes.authors" = "Автори";
 
+/* Devices data type */
+"jetpackStats.siteDataTypes.devices" = "Устройства";
+
 /* File downloads data type */
 "jetpackStats.siteDataTypes.fileDownloads" = "Изтегляния на файлове";
 
@@ -9260,6 +9322,9 @@ Example: Reply to Pamela Nguyen */
 
 /* Search terms data type */
 "jetpackStats.siteDataTypes.searchTerms" = "Ключови думи";
+
+/* UTM campaign tracking data type */
+"jetpackStats.siteDataTypes.utm" = "UTM";
 
 /* Videos data type */
 "jetpackStats.siteDataTypes.videos" = "Видеа";
@@ -9308,6 +9373,66 @@ Example: Reply to Pamela Nguyen */
 
 /* Today card title */
 "jetpackStats.todayCard.title" = "Днес";
+
+/* Table column title for Devices Top List card */
+"jetpackStats.topListColumnTitle.devices" = "Устройство";
+
+/* Table column title for UTM Top List card */
+"jetpackStats.topListColumnTitle.utm" = "Кампания";
+
+/* Plural post count for UTM metrics. %1$d is the number. */
+"jetpackStats.utmMetricDetails.postCount.plural" = "%1$d публикации";
+
+/* Singular post count for UTM metrics. %1$d is the number. */
+"jetpackStats.utmMetricDetails.postCount.singular" = "%1$d публикация";
+
+/* Title for the UTM campaign details screen */
+"jetpackStats.utmMetricDetails.title" = "UTM кампания";
+
+/* Section title for top posts from this UTM campaign */
+"jetpackStats.utmMetricDetails.topPosts" = "Топ публикации";
+
+/* UTM parameter for campaign only */
+"jetpackStats.utmParamGroupings.campaign" = "Кампания";
+
+/* UTM parameter for medium only */
+"jetpackStats.utmParamGroupings.medium" = "Среда";
+
+/* UTM parameter for source only */
+"jetpackStats.utmParamGroupings.source" = "Източник";
+
+/* Number of ads served. %@ is the ads count. */
+"jetpackStats.wordAds.adsServed.count" = "%@ показани реклами";
+
+/* Total earnings from WordAds */
+"jetpackStats.wordAds.earnings" = "Приходи";
+
+/* Button to learn more about WordAds earnings */
+"jetpackStats.wordAds.learnMore" = "Научете повече";
+
+/* Message shown when there are no payment records */
+"jetpackStats.wordAds.noPaymentsYet" = "Няма плащания";
+
+/* Outstanding amount owed from WordAds */
+"jetpackStats.wordAds.outstanding" = "Изчакваща";
+
+/* Amount paid out from WordAds earnings */
+"jetpackStats.wordAds.paid" = "Платена";
+
+/* Title for payment history card and screen */
+"jetpackStats.wordAds.paymentsHistory" = "История на плащанията";
+
+/* Title for WordAds total earnings card */
+"jetpackStats.wordAds.totalEarnings" = "Общо приходи";
+
+/* Number of ads served */
+"jetpackStats.wordAdsMetrics.adsServed" = "Показани реклами";
+
+/* Average cost per mille (thousand impressions) */
+"jetpackStats.wordAdsMetrics.averageCPM" = "Среден CPM";
+
+/* Revenue from ads */
+"jetpackStats.wordAdsMetrics.revenue" = "Приходи";
 
 /* Title for a call-to-action button on the Jetpack install card. */
 "jetpackinstallcard.button.learn" = "Повече информация";
@@ -9930,6 +10055,9 @@ Example: Reply to Pamela Nguyen */
 /* A title for the log severity level */
 "phpLogs.severityWarning" = "Warning";
 
+/* Error message when a pinned custom post type cannot be found. %1$@ is the post type name. */
+"pinnedPostType.error.notFound" = "\"%1$@\" не е наличен в този сайт.";
+
 /* Title for the plan selection view */
 "planSelection.title" = "Планове";
 
@@ -10100,6 +10228,9 @@ Example: Reply to Pamela Nguyen */
 /* A message for a snackbar informing the user that some media files requires their attention */
 "postEditor.postHasFailingMediaUploadsSnackbar.message" = "Някои файлове не се качиха";
 
+/* Title for the publish button in the post editor navigation bar */
+"postEditor.publishButton.title" = "Публикуване";
+
 /* Editor, notice for successful recovery a trashed post */
 "postEditor.recoverTrashedPost.postRecoveredNoticeTitle" = "Публикацията бе възстановена като чернова";
 
@@ -10120,6 +10251,9 @@ Example: Reply to Pamela Nguyen */
 
 /* Saving draft to generate a preview (status message */
 "postEditor.savingDraftForPreview" = "Запазване на чернова...";
+
+/* Title for the update button in the post editor navigation bar */
+"postEditor.updateButton.title" = "Обновяване";
 
 /* Empty state description when no post formats are available */
 "postFormatPicker.emptyState.description" = "Форматите за публикация не са конфигурирани";
@@ -10533,38 +10667,35 @@ Example: Reply to Pamela Nguyen */
 /* Post status details */
 "postStatus.draft.details" = "Не е готово за публикуване";
 
-/* Post status title */
+/* Post status title used in different contexts */
 "postStatus.draft.title" = "Чернова";
 
 /* Post status details */
 "postStatus.pending.details" = "Изчаква одобрение преди публикуване";
 
-/* Post status title */
+/* Post status title used in different contexts */
 "postStatus.pending.title" = "Изчаква одобрение";
 
 /* Post status details */
 "postStatus.private.details" = "Видимо само за администратори и редактори";
 
-/* Post status title */
+/* Post status title used in different contexts */
 "postStatus.private.title" = "Лична";
 
 /* Post status details */
 "postStatus.published.details" = "Видима за всички";
 
-/* Post status title */
+/* Post status title used in different contexts */
 "postStatus.published.title" = "Публикувана";
 
 /* Post status details */
 "postStatus.scheduled.details" = "Автоматично публикуване на избрана дата";
 
-/* Post status title */
+/* Post status title used in different contexts */
 "postStatus.scheduled.title" = "Планирана";
 
 /* Post status title */
 "postStatus.trash.details" = "В кошчето, но не изтрита";
-
-/* Post status title */
-"postStatus.trash.title" = "Изтрита";
 
 /* Button to add a new taxonomy term. %1$@ is the taxonomy name (e.g., 'tags', 'categories'). */
 "postTags.addTag" = "Добавяне на %1$@";
@@ -11072,9 +11203,6 @@ Example: given a notice format "Following %@" and empty site name, this will be 
 /* Context menu action */
 "reader.postContextMenu.blockUser" = "Блокиране на потребителя";
 
-/* Context menu action (placeholder value when blog name not available – should never happen) */
-"reader.postContextMenu.blogDetails" = "Подробности за блога";
-
 /* Context menu action */
 "reader.postContextMenu.manageNotifications" = "Управление на известията";
 
@@ -11089,9 +11217,6 @@ Example: given a notice format "Following %@" and empty site name, this will be 
 
 /* Context menu action */
 "reader.postContextMenu.reportUser" = "Докладване на потребител";
-
-/* Context menu action */
-"reader.postContextMenu.showBlog" = "Към блога";
 
 /* Context menu action */
 "reader.postContextMenu.summarize" = "Обобщение";
@@ -11853,8 +11978,7 @@ Feel free to replace it with other bracket types that you think looks better for
 /* Title for site switcher screen */
 "sitePicker.title" = "Моите сайтове";
 
-/* The plugin author displayed in the plugins list. The first argument is plugin author name
-   The plugin version displayed in the plugins list. The first argument is plugin version */
+/* The plugin author displayed in the plugins list. The first argument is plugin author name */
 "sitePluginsList.item.author" = "От %@";
 
 /* The message displayed when a plugin has no description */

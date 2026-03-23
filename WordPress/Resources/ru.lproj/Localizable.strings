@@ -1,4 +1,4 @@
-/* Translation-Revision-Date: 2026-02-27 09:58:47+0000 */
+/* Translation-Revision-Date: 2026-03-20 21:05:32+0000 */
 /* Plural-Forms: nplurals=3; plural=(n % 10 == 1 && n % 100 != 11) ? 0 : ((n % 10 >= 2 && n % 10 <= 4 && (n % 100 < 12 || n % 100 > 14)) ? 1 : 2); */
 /* Generator: GlotPress/4.0.3 */
 /* Language: ru */
@@ -1874,7 +1874,6 @@ translators: %s: Block name e.g. \"Image block\" */
    Done. Action.
    Menu button title for finishing editing the Menu name.
    Tapping a button with this label allows the user to exit the Site Creation flow
-   Title for a Done button.
    Title for button that will dismiss this view
    Title for the button that will dismiss this view. */
 "Done" = "Готово";
@@ -3243,9 +3242,6 @@ translators: %s: Block name e.g. \"Image block\" */
 
 /* Text displayed while loading the scan section for a site */
 "Loading Scan..." = "Загружается проверка...";
-
-/* Displayed while a comment is being loaded. */
-"Loading comment..." = "Загрузка комментария...";
 
 /* Menus label text displayed when a menu is loading. */
 "Loading menu..." = "Загрузка меню...";
@@ -7467,7 +7463,7 @@ Note that the word 'go' here should have a closer meaning to 'start' rather than
 /* Title of the set goals button in the Blogging Reminders Settings flow. */
 "bloggingRemindersPrompt.intro.continueButton" = "Установить напоминания";
 
-/* Description on the first screen of the Blogging Reminders Settings flow called aftet post publishing. */
+/* Description on the first screen of the Blogging Reminders Settings flow called after post publishing. */
 "bloggingRemindersPrompt.intro.details" = "Установить напоминания о необходимости написать в блог в те дни, когда вы хотите это делать.";
 
 /* Title of the Blogging Reminders Settings screen. */
@@ -7890,6 +7886,15 @@ Example: Reply to Pamela Nguyen */
 /* Empty state message when no custom posts exist. %1$@ is the post type name (e.g., 'Podcasts', 'Products'). */
 "customPostList.emptyState.message" = "Нет %1$@";
 
+/* Option to set a post as top level (no parent) */
+"customPostParentPicker.topLevel" = "Верхний уровень";
+
+/* Description for the top level option in the parent page picker, indicating this page will have no parent */
+"customPostParentPicker.topLevel.description" = "Нет родительской страницы";
+
+/* Tab title for showing all posts regardless of status */
+"customPostTab.all" = "Все";
+
 /* Tab title for draft posts */
 "customPostTab.drafts" = "Черновики";
 
@@ -8052,6 +8057,9 @@ Example: Reply to Pamela Nguyen */
 /* Boolean User Defaults Debug Menu screen title */
 "debugMenu.booleanUserDefaults.title" = "Пользовательские настройки по умолчанию в формате логических значений";
 
+/* Debug Menu label for image cache size */
+"debugMenu.caches.imageCache" = "Кеш изображений";
+
 /* Feature flags menu item */
 "debugMenu.featureFlags" = "Отметки возможностей";
 
@@ -8091,6 +8099,9 @@ Example: Reply to Pamela Nguyen */
 
 /* Debug Menu action for TipKit */
 "debugMenu.resetTipKitData" = "Сброс данных";
+
+/* Debug Menu section title */
+"debugMenu.section.caches" = "Кеши";
 
 /* Debug Menu section title */
 "debugMenu.section.logging" = "Журналирование";
@@ -9080,6 +9091,9 @@ Example: Reply to Pamela Nguyen */
 
 /* Last 12 weeks (84 days) date range */
 "jetpackStats.calendar.last12Weeks" = "Последние 12 недель";
+
+/* Last 14 days date range */
+"jetpackStats.calendar.last14Days" = "Последние 14 дней";
 
 /* Last 28 days date range */
 "jetpackStats.calendar.last28Days" = "Последние 28 дней";
@@ -10818,6 +10832,9 @@ Example: Reply to Pamela Nguyen */
 /* Section header for More Options in Post Settings. Should use the same translation as core WP. */
 "postSettings.moreOptions.header" = "Дополнительные параметры";
 
+/* The title of the Post Settings screen for custom post types. %1$@ is the post type name. */
+"postSettings.navigationTitle.customPostType" = "Настройки %1$@";
+
 /* The title of the Page Settings screen. */
 "postSettings.navigationTitle.page" = "Настройки страницы";
 
@@ -10877,6 +10894,9 @@ Example: Reply to Pamela Nguyen */
 
 /* Placeholder value for a publishing date in the prepublishing sheet when the date is not selected */
 "postSettings.publishDateImmediately" = "Сразу";
+
+/* Error message shown when saving post settings via REST API fails */
+"postSettings.saveFailed.message" = "Ошибка сохранения изменений";
 
 /* Section header for General settings in Post Settings */
 "postSettings.section.general" = "Общие";
@@ -10953,6 +10973,9 @@ Example: Reply to Pamela Nguyen */
 /* Navigation bar title of the Post Stats screen */
 "postStats.title" = "Статистика по записям";
 
+/* Post status title used in different contexts */
+"postStatus.any.title" = "Любой";
+
 /* Post status title */
 "postStatus.deleted.details" = "Удалено навсегда.";
 
@@ -10962,37 +10985,37 @@ Example: Reply to Pamela Nguyen */
 /* Post status details */
 "postStatus.draft.details" = "Не готово к публикации";
 
-/* Post status title */
+/* Post status title used in different contexts */
 "postStatus.draft.title" = "Черновик";
 
 /* Post status details */
 "postStatus.pending.details" = "Ожидает проверки перед публикацией";
 
-/* Post status title */
+/* Post status title used in different contexts */
 "postStatus.pending.title" = "Ожидает проверки";
 
 /* Post status details */
 "postStatus.private.details" = "Видна только администраторам и редакторам";
 
-/* Post status title */
+/* Post status title used in different contexts */
 "postStatus.private.title" = "Закрытая";
 
 /* Post status details */
 "postStatus.published.details" = "Видна всем";
 
-/* Post status title */
+/* Post status title used in different contexts */
 "postStatus.published.title" = "Опубликована";
 
 /* Post status details */
 "postStatus.scheduled.details" = "Опубликовать автоматически в выбранную дату";
 
-/* Post status title */
+/* Post status title used in different contexts */
 "postStatus.scheduled.title" = "Запланирована";
 
 /* Post status title */
 "postStatus.trash.details" = "В корзине, но не удалена окончательно";
 
-/* Post status title */
+/* Post status title used in different contexts */
 "postStatus.trash.title" = "В корзине";
 
 /* Button to add a new taxonomy term. %1$@ is the taxonomy name (e.g., 'tags', 'categories'). */
@@ -11510,9 +11533,6 @@ Example: given a notice format "Following %@" and empty site name, this will be 
 /* Context menu action */
 "reader.postContextMenu.blockUser" = "Заблокировать пользователя";
 
-/* Context menu action (placeholder value when blog name not available – should never happen) */
-"reader.postContextMenu.blogDetails" = "Сведения о блоге";
-
 /* Context menu action */
 "reader.postContextMenu.manageNotifications" = "Управление уведомлениями";
 
@@ -11529,9 +11549,6 @@ Example: given a notice format "Following %@" and empty site name, this will be 
 "reader.postContextMenu.reportUser" = "Пожаловаться на пользователя";
 
 /* Context menu action */
-"reader.postContextMenu.showBlog" = "Перейти в блог";
-
-/* Context menu action */
 "reader.postContextMenu.summarize" = "Подвести итог";
 
 /* Context menu action to translate post content */
@@ -11539,6 +11556,9 @@ Example: given a notice format "Following %@" and empty site name, this will be 
 
 /* Context menu action */
 "reader.postContextMenu.viewInBrowser" = "Просмотреть в браузере";
+
+/* Context menu action */
+"reader.postContextMenu.viewSite" = "Посмотреть сайт";
 
 /* Reader post details view placeholder when blog name not avail */
 "reader.postDetails.blog" = "блог";
@@ -11950,6 +11970,9 @@ Feel free to replace it with other bracket types that you think looks better for
 "shared.button.edit" = "Редактировать";
 
 /* A shared button title used in different contexts */
+"shared.button.notNow" = "Не сейчас";
+
+/* A shared button title used in different contexts */
 "shared.button.ok" = "ОК";
 
 /* A shared button title used in different contexts */
@@ -12303,12 +12326,14 @@ Feel free to replace it with other bracket types that you think looks better for
 /* Title for site switcher screen */
 "sitePicker.title" = "Мои сайты";
 
-/* The plugin author displayed in the plugins list. The first argument is plugin author name
-   The plugin version displayed in the plugins list. The first argument is plugin version */
+/* The plugin author displayed in the plugins list. The first argument is plugin author name */
 "sitePluginsList.item.author" = "Автор: %@";
 
 /* The message displayed when a plugin has no description */
 "sitePluginsList.item.noDescriptionAvailable" = "Автор плагина не предоставил описания этого плагина.";
+
+/* The plugin version displayed in the plugins list. The first argument is plugin version */
+"sitePluginsList.item.version" = "Версия: %@";
 
 /* Button to activate a plugin */
 "sitePluginsList.itemAction.activate" = "Активировать";

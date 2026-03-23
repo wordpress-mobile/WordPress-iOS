@@ -1874,7 +1874,6 @@ translators: %s: Block name e.g. \"Image block\" */
    Done. Action.
    Menu button title for finishing editing the Menu name.
    Tapping a button with this label allows the user to exit the Site Creation flow
-   Title for a Done button.
    Title for button that will dismiss this view
    Title for the button that will dismiss this view. */
 "Done" = "完了";
@@ -3243,9 +3242,6 @@ translators: %s: Block name e.g. \"Image block\" */
 
 /* Text displayed while loading the scan section for a site */
 "Loading Scan..." = "スキャンを読み込んでいます...";
-
-/* Displayed while a comment is being loaded. */
-"Loading comment..." = "コメントを読み込み中…";
 
 /* Menus label text displayed when a menu is loading. */
 "Loading menu..." = "メニューの読み込み中...";
@@ -7449,7 +7445,7 @@ Note that the word 'go' here should have a closer meaning to 'start' rather than
 /* Title of the set goals button in the Blogging Reminders Settings flow. */
 "bloggingRemindersPrompt.intro.continueButton" = "リマインダーを設定";
 
-/* Description on the first screen of the Blogging Reminders Settings flow called aftet post publishing. */
+/* Description on the first screen of the Blogging Reminders Settings flow called after post publishing. */
 "bloggingRemindersPrompt.intro.details" = "投稿する予定の日にブログ投稿のリマインダーを設定します。";
 
 /* Title of the Blogging Reminders Settings screen. */
@@ -10881,35 +10877,32 @@ Example: Reply to Pamela Nguyen */
 /* Post status details */
 "postStatus.draft.details" = "公開の準備ができていない";
 
-/* Post status title */
+/* Post status title used in different contexts */
 "postStatus.draft.title" = "下書き";
 
 /* Post status details */
 "postStatus.pending.details" = "公開前のレビュー待ちです";
 
-/* Post status title */
+/* Post status title used in different contexts */
 "postStatus.pending.title" = "保留中";
 
-/* Post status title */
+/* Post status title used in different contexts */
 "postStatus.private.title" = "非公開";
 
 /* Post status details */
 "postStatus.published.details" = "すべての人に表示";
 
-/* Post status title */
+/* Post status title used in different contexts */
 "postStatus.published.title" = "公開済み";
 
 /* Post status details */
 "postStatus.scheduled.details" = "選択した日付に自動で公開";
 
-/* Post status title */
+/* Post status title used in different contexts */
 "postStatus.scheduled.title" = "予約済み";
 
 /* Post status title */
 "postStatus.trash.details" = "ゴミ箱に移動しましたが、まだ削除されていません";
-
-/* Post status title */
-"postStatus.trash.title" = "ゴミ箱に移動";
 
 /* Button to add a new taxonomy term. %1$@ is the taxonomy name (e.g., 'tags', 'categories'). */
 "postTags.addTag" = "%1$@を追加";
@@ -11420,9 +11413,6 @@ Example: given a notice format "Following %@" and empty site name, this will be 
 /* Context menu action */
 "reader.postContextMenu.blockUser" = "ユーザーをブロック";
 
-/* Context menu action (placeholder value when blog name not available – should never happen) */
-"reader.postContextMenu.blogDetails" = "ブログの詳細";
-
 /* Context menu action */
 "reader.postContextMenu.manageNotifications" = "通知を管理";
 
@@ -11437,9 +11427,6 @@ Example: given a notice format "Following %@" and empty site name, this will be 
 
 /* Context menu action */
 "reader.postContextMenu.reportUser" = "ユーザーを報告";
-
-/* Context menu action */
-"reader.postContextMenu.showBlog" = "「ブログ」に移動";
 
 /* Context menu action */
 "reader.postContextMenu.summarize" = "まとめる";
@@ -12189,8 +12176,7 @@ Example: given a notice format "Following %@" and empty site name, this will be 
 /* Title for site switcher screen */
 "sitePicker.title" = "自分のサイト";
 
-/* The plugin author displayed in the plugins list. The first argument is plugin author name
-   The plugin version displayed in the plugins list. The first argument is plugin version */
+/* The plugin author displayed in the plugins list. The first argument is plugin author name */
 "sitePluginsList.item.author" = "作成者: %@";
 
 /* The message displayed when a plugin has no description */

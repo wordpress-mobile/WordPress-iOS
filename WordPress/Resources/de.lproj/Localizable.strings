@@ -1,4 +1,4 @@
-/* Translation-Revision-Date: 2026-02-26 14:16:09+0000 */
+/* Translation-Revision-Date: 2026-03-22 05:32:08+0000 */
 /* Plural-Forms: nplurals=2; plural=n != 1; */
 /* Generator: GlotPress/4.0.3 */
 /* Language: de */
@@ -1874,7 +1874,6 @@ translators: %s: Block name e.g. \"Image block\" */
    Done. Action.
    Menu button title for finishing editing the Menu name.
    Tapping a button with this label allows the user to exit the Site Creation flow
-   Title for a Done button.
    Title for button that will dismiss this view
    Title for the button that will dismiss this view. */
 "Done" = "Fertig";
@@ -3244,9 +3243,6 @@ translators: %s: Block name e.g. \"Image block\" */
 /* Text displayed while loading the scan section for a site */
 "Loading Scan..." = "Scan wird geladen …";
 
-/* Displayed while a comment is being loaded. */
-"Loading comment..." = "Lade Kommentare...";
-
 /* Menus label text displayed when a menu is loading. */
 "Loading menu..." = "Menü wird geladen ...";
 
@@ -3564,7 +3560,7 @@ translators: %s: Block name e.g. \"Image block\" */
 /* Generic name for the detail screen for specific site - used for spotlight indexing on iOS. Note: this is only used if we cannot determine a name chances of this being used are small.
    The accessibility value of the my site tab.
    Title of My Site tab */
-"My Site" = "Meine Webseite";
+"My Site" = "Meine Website";
 
 /* Example post title used in the login prologue screens. */
 "My Top Ten Cafes" = "Meine Top 10 Cafés";
@@ -5257,7 +5253,7 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 "Sorry, that site already exists!" = "Tut mir Leid, diese Website existiert bereits!";
 
 /* No comment provided by engineer. */
-"Sorry, that site is reserved!" = "Diese Website ist leider reserviert!";
+"Sorry, that site is reserved!" = "Leider ist diese Website reserviert!";
 
 /* No comment provided by engineer. */
 "Sorry, that username already exists!" = "Tut mir Leid, dieser Benutzername existiert bereits!";
@@ -5291,7 +5287,7 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 "Sort By" = "Sortieren nach";
 
 /* Title of button that displays the App's source code information */
-"Source Code" = "Quelltext";
+"Source Code" = "Quellcode";
 
 /* Label for showing the available disk space quota available for media */
 "Space used" = "Belegter Speicherplatz";
@@ -5997,7 +5993,7 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Title of the trashed filter. This filter shows posts that have been moved to the trash bin.
    Title of trashed Comments filter. */
-"Trashed" = "In den Papierkorb verschoben.";
+"Trashed" = "Im Papierkorb";
 
 /* Travel site intent topic */
 "Travel" = "Reisen";
@@ -7467,7 +7463,7 @@ Note that the word 'go' here should have a closer meaning to 'start' rather than
 /* Title of the set goals button in the Blogging Reminders Settings flow. */
 "bloggingRemindersPrompt.intro.continueButton" = "Erinnerungen festlegen";
 
-/* Description on the first screen of the Blogging Reminders Settings flow called aftet post publishing. */
+/* Description on the first screen of the Blogging Reminders Settings flow called after post publishing. */
 "bloggingRemindersPrompt.intro.details" = "Richte deine Blog-Erinnerungen für Tage ein, an denen du einen Beitrag veröffentlichen möchtest.";
 
 /* Title of the Blogging Reminders Settings screen. */
@@ -7887,8 +7883,26 @@ Example: Reply to Pamela Nguyen */
 /* Error message shown when the post was modified by another user while editing */
 "customPostEditor.error.conflict.message" = "Der Beitrag, den du speichern möchtest, wurde in der Zwischenzeit geändert.";
 
+/* Menu action to permanently delete a trashed post */
+"customPostList.action.deletePermanently" = "Endgültig löschen";
+
+/* Menu action to move a post to trash */
+"customPostList.action.moveToTrash" = "In den Papierkorb verschieben";
+
+/* Menu action to publish a draft or pending post */
+"customPostList.action.publish" = "Veröffentlichen";
+
+/* Menu action to open post settings */
+"customPostList.action.settings" = "Einstellungen";
+
+/* Badge label shown on the homepage row in the custom post list for pages */
+"customPostList.badge.homepage" = "Homepage";
+
 /* Empty state message when no custom posts exist. %1$@ is the post type name (e.g., 'Podcasts', 'Products'). */
 "customPostList.emptyState.message" = "Keine %1$@";
+
+/* Tab title for showing all posts regardless of status */
+"customPostTab.all" = "Alle";
 
 /* Tab title for draft posts */
 "customPostTab.drafts" = "Entwürfe";
@@ -10965,38 +10979,35 @@ Example: Reply to Pamela Nguyen */
 /* Post status details */
 "postStatus.draft.details" = "Nicht bereit zum Veröffentlichen";
 
-/* Post status title */
+/* Post status title used in different contexts */
 "postStatus.draft.title" = "Entwurf";
 
 /* Post status details */
 "postStatus.pending.details" = "Vor dem Veröffentlichen auf Überprüfung warten";
 
-/* Post status title */
+/* Post status title used in different contexts */
 "postStatus.pending.title" = "Ausstehend";
 
 /* Post status details */
 "postStatus.private.details" = "Nur für Website-Administratoren und Redakteure sichtbar";
 
-/* Post status title */
+/* Post status title used in different contexts */
 "postStatus.private.title" = "Privat";
 
 /* Post status details */
 "postStatus.published.details" = "Sichtbar für jeden";
 
-/* Post status title */
+/* Post status title used in different contexts */
 "postStatus.published.title" = "Veröffentlicht";
 
 /* Post status details */
 "postStatus.scheduled.details" = "Automatisch an einem ausgewählten Datum veröffentlichen";
 
-/* Post status title */
+/* Post status title used in different contexts */
 "postStatus.scheduled.title" = "Geplant";
 
 /* Post status title */
 "postStatus.trash.details" = "In den Papierkorb verschoben, aber noch nicht gelöscht";
-
-/* Post status title */
-"postStatus.trash.title" = "In den Papierkorb verschoben";
 
 /* Button to add a new taxonomy term. %1$@ is the taxonomy name (e.g., 'tags', 'categories'). */
 "postTags.addTag" = "%1$@ hinzufügen";
@@ -11513,9 +11524,6 @@ Example: given a notice format "Following %@" and empty site name, this will be 
 /* Context menu action */
 "reader.postContextMenu.blockUser" = "Benutzer blockieren";
 
-/* Context menu action (placeholder value when blog name not available – should never happen) */
-"reader.postContextMenu.blogDetails" = "Blogdetails";
-
 /* Context menu action */
 "reader.postContextMenu.manageNotifications" = "Benachrichtigungen verwalten";
 
@@ -11532,9 +11540,6 @@ Example: given a notice format "Following %@" and empty site name, this will be 
 "reader.postContextMenu.reportUser" = "Benutzer melden";
 
 /* Context menu action */
-"reader.postContextMenu.showBlog" = "Weiter zum Blog";
-
-/* Context menu action */
 "reader.postContextMenu.summarize" = "Zusammenfassen";
 
 /* Context menu action to translate post content */
@@ -11542,6 +11547,9 @@ Example: given a notice format "Following %@" and empty site name, this will be 
 
 /* Context menu action */
 "reader.postContextMenu.viewInBrowser" = "Im Browser anzeigen";
+
+/* Context menu action */
+"reader.postContextMenu.viewSite" = "Website anzeigen";
 
 /* Reader post details view placeholder when blog name not avail */
 "reader.postDetails.blog" = "Blog";
@@ -12306,12 +12314,14 @@ Feel free to replace it with other bracket types that you think looks better for
 /* Title for site switcher screen */
 "sitePicker.title" = "Meine Websites";
 
-/* The plugin author displayed in the plugins list. The first argument is plugin author name
-   The plugin version displayed in the plugins list. The first argument is plugin version */
+/* The plugin author displayed in the plugins list. The first argument is plugin author name */
 "sitePluginsList.item.author" = "Von %@";
 
 /* The message displayed when a plugin has no description */
 "sitePluginsList.item.noDescriptionAvailable" = "Der Plugin-Autor hat keine Beschreibung für dieses Plugin angegeben.";
+
+/* The plugin version displayed in the plugins list. The first argument is plugin version */
+"sitePluginsList.item.version" = "Version: %@";
 
 /* Button to activate a plugin */
 "sitePluginsList.itemAction.activate" = "Aktivieren";

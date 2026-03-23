@@ -1,4 +1,4 @@
-/* Translation-Revision-Date: 2026-02-24 07:05:29+0000 */
+/* Translation-Revision-Date: 2026-03-20 09:40:56+0000 */
 /* Plural-Forms: nplurals=3; plural=(n == 1) ? 0 : ((n == 0 || n % 100 >= 2 && n % 100 <= 19) ? 1 : 2); */
 /* Generator: GlotPress/4.0.3 */
 /* Language: ro */
@@ -1874,7 +1874,6 @@ translators: %s: Block name e.g. \"Image block\" */
    Done. Action.
    Menu button title for finishing editing the Menu name.
    Tapping a button with this label allows the user to exit the Site Creation flow
-   Title for a Done button.
    Title for button that will dismiss this view
    Title for the button that will dismiss this view. */
 "Done" = "Gata";
@@ -3243,9 +3242,6 @@ translators: %s: Block name e.g. \"Image block\" */
 
 /* Text displayed while loading the scan section for a site */
 "Loading Scan..." = "Încarc scanarea...";
-
-/* Displayed while a comment is being loaded. */
-"Loading comment..." = "Încarc comentariul...";
 
 /* Menus label text displayed when a menu is loading. */
 "Loading menu..." = "Încărcare meniu...";
@@ -7029,6 +7025,9 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Button title for restoring a backup */
 "activityDetail.restore.button" = "Restaurează";
 
+/* Shows the MCP client used for an activity. %1$@ is the MCP client name (e.g. Claude). */
+"activityDetail.section.agent" = "via %1$@";
+
 /* Section title for restore site actions */
 "activityDetail.section.restoreSite" = "Restaurează site-ul";
 
@@ -7467,7 +7466,7 @@ Note that the word 'go' here should have a closer meaning to 'start' rather than
 /* Title of the set goals button in the Blogging Reminders Settings flow. */
 "bloggingRemindersPrompt.intro.continueButton" = "Setează reamintirile";
 
-/* Description on the first screen of the Blogging Reminders Settings flow called aftet post publishing. */
+/* Description on the first screen of the Blogging Reminders Settings flow called after post publishing. */
 "bloggingRemindersPrompt.intro.details" = "Configurează reamintirile pentru publicare, zilele în care vrei să publici.";
 
 /* Title of the Blogging Reminders Settings screen. */
@@ -7887,8 +7886,80 @@ Example: Reply to Pamela Nguyen */
 /* Error message shown when the post was modified by another user while editing */
 "customPostEditor.error.conflict.message" = "Articolul pe care încerci să-l salvezi a fost modificat între timp.";
 
+/* Menu action to promote a post with Blaze */
+"customPostList.action.blaze" = "Promovează cu Blaze";
+
+/* Menu action to view post comments */
+"customPostList.action.comments" = "Comentarii";
+
+/* Menu action to permanently delete a trashed post */
+"customPostList.action.deletePermanently" = "Șterge definitiv";
+
+/* Menu action to change a post's status to draft */
+"customPostList.action.moveToDraft" = "Mută în ciorne";
+
+/* Menu action to move a post to trash */
+"customPostList.action.moveToTrash" = "Aruncă la gunoi";
+
+/* Menu action to publish a draft or pending post */
+"customPostList.action.publish" = "Publică";
+
+/* Menu action to open post settings */
+"customPostList.action.settings" = "Setări";
+
+/* Menu action to view post statistics */
+"customPostList.action.stats" = "Statistici";
+
+/* Accessibility label for the author filter button in the custom post list */
+"customPostList.authorFilter.accessibilityLabel" = "Filtru după autor";
+
+/* Menu item to show posts from all authors in the custom post list */
+"customPostList.authorFilter.everyone" = "Oricine";
+
+/* Menu item to show only the current user's posts in the custom post list */
+"customPostList.authorFilter.mine" = "Ale mele";
+
+/* Accessibility value when the author filter shows posts from all authors */
+"customPostList.authorFilter.showingEveryone" = "Arată articolele tuturor";
+
+/* Accessibility value when the author filter shows only the current user's posts */
+"customPostList.authorFilter.showingMine" = "Arată numai articolele mele";
+
+/* Badge label shown on the homepage row in the custom post list for pages */
+"customPostList.badge.homepage" = "Prima pagină";
+
+/* Badge shown in the post list for sticky posts */
+"customPostList.badge.sticky" = "Reprezentative";
+
+/* Message for the confirmation alert when permanently deleting a post */
+"customPostList.deleteConfirmation.message" = "Această acțiune nu poate fi anulată.";
+
+/* Title for the confirmation alert when permanently deleting a post */
+"customPostList.deleteConfirmation.title" = "Ștergi definitiv?";
+
 /* Empty state message when no custom posts exist. %1$@ is the post type name (e.g., 'Podcasts', 'Products'). */
 "customPostList.emptyState.message" = "Niciun %1$@";
+
+/* Message for the confirmation alert when trashing a published post */
+"customPostList.trashConfirmation.message" = "Acest articol este publicat și vizibil pentru vizitatori. Sigur vrei să-l muți la gunoi?";
+
+/* Title for the confirmation alert when trashing a published post */
+"customPostList.trashConfirmation.title" = "Arunci la gunoi?";
+
+/* Placeholder title for posts without a title */
+"customPostList.untitled" = "(fără titlu)";
+
+/* Title for the parent page picker screen for custom post types */
+"customPostParentPicker.title" = "Pagină părinte";
+
+/* Option to set a post as top level (no parent) */
+"customPostParentPicker.topLevel" = "Nivel superior";
+
+/* Description for the top level option in the parent page picker, indicating this page will have no parent */
+"customPostParentPicker.topLevel.description" = "Fără pagină părinte";
+
+/* Tab title for showing all posts regardless of status */
+"customPostTab.all" = "Toate";
 
 /* Tab title for draft posts */
 "customPostTab.drafts" = "Ciorne";
@@ -8052,6 +8123,9 @@ Example: Reply to Pamela Nguyen */
 /* Boolean User Defaults Debug Menu screen title */
 "debugMenu.booleanUserDefaults.title" = "Valori implicite booleene pentru utilizator";
 
+/* Debug Menu label for image cache size */
+"debugMenu.caches.imageCache" = "Cache imagine";
+
 /* Feature flags menu item */
 "debugMenu.featureFlags" = "Comutări funcționalități";
 
@@ -8091,6 +8165,9 @@ Example: Reply to Pamela Nguyen */
 
 /* Debug Menu action for TipKit */
 "debugMenu.resetTipKitData" = "Resetează datele";
+
+/* Debug Menu section title */
+"debugMenu.section.caches" = "Cache-uri";
 
 /* Debug Menu section title */
 "debugMenu.section.logging" = "Jurnalizare";
@@ -9080,6 +9157,9 @@ Example: Reply to Pamela Nguyen */
 
 /* Last 12 weeks (84 days) date range */
 "jetpackStats.calendar.last12Weeks" = "Ultimele 12 săptămâni";
+
+/* Last 14 days date range */
+"jetpackStats.calendar.last14Days" = "Ultimele 14 zile";
 
 /* Last 28 days date range */
 "jetpackStats.calendar.last28Days" = "Ultimele 28 de zile";
@@ -10821,6 +10901,9 @@ Example: Reply to Pamela Nguyen */
 /* Section header for More Options in Post Settings. Should use the same translation as core WP. */
 "postSettings.moreOptions.header" = "Mai multe opțiuni";
 
+/* The title of the Post Settings screen for custom post types. %1$@ is the post type name. */
+"postSettings.navigationTitle.customPostType" = "Setări %1$@";
+
 /* The title of the Page Settings screen. */
 "postSettings.navigationTitle.page" = "Setări pagini";
 
@@ -10880,6 +10963,9 @@ Example: Reply to Pamela Nguyen */
 
 /* Placeholder value for a publishing date in the prepublishing sheet when the date is not selected */
 "postSettings.publishDateImmediately" = "Imediat";
+
+/* Error message shown when saving post settings via REST API fails */
+"postSettings.saveFailed.message" = "Salvarea modificărilor a eșuat";
 
 /* Section header for General settings in Post Settings */
 "postSettings.section.general" = "Generale";
@@ -10956,6 +11042,9 @@ Example: Reply to Pamela Nguyen */
 /* Navigation bar title of the Post Stats screen */
 "postStats.title" = "Statistici articol";
 
+/* Post status title used in different contexts */
+"postStatus.any.title" = "Oricare";
+
 /* Post status title */
 "postStatus.deleted.details" = "Șters definitiv";
 
@@ -10965,37 +11054,37 @@ Example: Reply to Pamela Nguyen */
 /* Post status details */
 "postStatus.draft.details" = "Nu este gata pentru publicare";
 
-/* Post status title */
+/* Post status title used in different contexts */
 "postStatus.draft.title" = "Ciornă";
 
 /* Post status details */
 "postStatus.pending.details" = "Așteaptă verificarea înainte de publicare";
 
-/* Post status title */
+/* Post status title used in different contexts */
 "postStatus.pending.title" = "În așteptare";
 
 /* Post status details */
 "postStatus.private.details" = "Vizibil numai pentru administratorii și editorii site-ului";
 
-/* Post status title */
+/* Post status title used in different contexts */
 "postStatus.private.title" = "Privat";
 
 /* Post status details */
 "postStatus.published.details" = "Vizibil pentru toată lumea";
 
-/* Post status title */
+/* Post status title used in different contexts */
 "postStatus.published.title" = "Publicat";
 
 /* Post status details */
 "postStatus.scheduled.details" = "Publică automat la o dată stabilită";
 
-/* Post status title */
+/* Post status title used in different contexts */
 "postStatus.scheduled.title" = "Programat";
 
 /* Post status title */
 "postStatus.trash.details" = "Aruncat la gunoi dar nu a fost încă șters";
 
-/* Post status title */
+/* Post status title used in different contexts */
 "postStatus.trash.title" = "Aruncat la gunoi";
 
 /* Button to add a new taxonomy term. %1$@ is the taxonomy name (e.g., 'tags', 'categories'). */
@@ -11513,9 +11602,6 @@ Example: given a notice format "Following %@" and empty site name, this will be 
 /* Context menu action */
 "reader.postContextMenu.blockUser" = "Blochează utilizatorul";
 
-/* Context menu action (placeholder value when blog name not available – should never happen) */
-"reader.postContextMenu.blogDetails" = "Detalii blog";
-
 /* Context menu action */
 "reader.postContextMenu.manageNotifications" = "Administrează notificările";
 
@@ -11532,9 +11618,6 @@ Example: given a notice format "Following %@" and empty site name, this will be 
 "reader.postContextMenu.reportUser" = "Raportează utilizatorul";
 
 /* Context menu action */
-"reader.postContextMenu.showBlog" = "Mergi la blog";
-
-/* Context menu action */
 "reader.postContextMenu.summarize" = "Rezumă";
 
 /* Context menu action to translate post content */
@@ -11542,6 +11625,9 @@ Example: given a notice format "Following %@" and empty site name, this will be 
 
 /* Context menu action */
 "reader.postContextMenu.viewInBrowser" = "Vizualizează în navigator";
+
+/* Context menu action */
+"reader.postContextMenu.viewSite" = "Vezi site-ul";
 
 /* Reader post details view placeholder when blog name not avail */
 "reader.postDetails.blog" = "blog";
@@ -11953,6 +12039,9 @@ Feel free to replace it with other bracket types that you think looks better for
 "shared.button.edit" = "Editează";
 
 /* A shared button title used in different contexts */
+"shared.button.notNow" = "Acum, acum";
+
+/* A shared button title used in different contexts */
 "shared.button.ok" = "OK";
 
 /* A shared button title used in different contexts */
@@ -12306,12 +12395,14 @@ Feel free to replace it with other bracket types that you think looks better for
 /* Title for site switcher screen */
 "sitePicker.title" = "Site-urile mele";
 
-/* The plugin author displayed in the plugins list. The first argument is plugin author name
-   The plugin version displayed in the plugins list. The first argument is plugin version */
+/* The plugin author displayed in the plugins list. The first argument is plugin author name */
 "sitePluginsList.item.author" = "De %@";
 
 /* The message displayed when a plugin has no description */
 "sitePluginsList.item.noDescriptionAvailable" = "Autorul modulului nu a oferit o descriere pentru acest modul.";
+
+/* The plugin version displayed in the plugins list. The first argument is plugin version */
+"sitePluginsList.item.version" = "Versiune: %@";
 
 /* Button to activate a plugin */
 "sitePluginsList.itemAction.activate" = "Activează";
