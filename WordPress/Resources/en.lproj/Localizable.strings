@@ -6814,6 +6814,42 @@ Please install the %3$@ to use the app with this site.";
    Title of a button that displays the WordPress.org blog */
 "News" = "News";
 
+/* Button to confirm to switch to the New Stats announcement screen */
+"newStats.announcement.continueButton" = "Get Started";
+
+/* Disclosure at the bottom of the New Stats announcement screen, informing users they can opt out */
+"newStats.announcement.disclosure" = "Not ready to switch? You can turn off New Stats from the More menu in the Stats tab.";
+
+/* Feature description: navigation moved to the bottom for thumb-friendly access */
+"newStats.announcement.feature.bottomNav.description" = "Navigation and date picker are now at the bottom of the screen - right where your thumb is.";
+
+/* Feature title: navigation moved to the bottom */
+"newStats.announcement.feature.bottomNav.title" = "Easier to Reach";
+
+/* Feature description: flexible date picker with presets, custom ranges, and comparisons */
+"newStats.announcement.feature.datePicker.description" = "Pick from common presets or set a custom date range with a comparison period - all in one tap.";
+
+/* Feature title: flexible date picker */
+"newStats.announcement.feature.datePicker.title" = "Any Period, Any Range";
+
+/* Feature description: feature parity with the web version of Stats */
+"newStats.announcement.feature.parity.description" = "Devices, UTM, locations, WordAds - the same data you get on WordPress.com.";
+
+/* Feature title: feature parity with the web version of Stats */
+"newStats.announcement.feature.parity.title" = "On Par with the Web";
+
+/* Feature description: trends shown for all metrics with comparison to previous period */
+"newStats.announcement.feature.trends.description" = "Every metric shows how it's trending compared to the previous period, so you always know if you're growing.";
+
+/* Feature title: trends visible for all metrics */
+"newStats.announcement.feature.trends.title" = "Trends at a Glance";
+
+/* Subtitle for the New Stats announcement screen */
+"newStats.announcement.subtitle" = "A better way to understand your site's performance - now on by default.";
+
+/* Title for the New Stats announcement screen */
+"newStats.announcement.title" = "New Stats";
+
 /* Next action on comment moderation snackbar.
    Next action on share extension editor screen.
    Title of a button.
@@ -11911,15 +11947,6 @@ Feel free to replace it with other bracket types that you think looks better for
 
 /* WordPress.com Marketing Footer Text */
 "Tips for getting the most out of WordPress.com." = "Tips for getting the most out of WordPress.com.";
-
-/* Action button title to enable new stats from tip */
-"tips.newStats.action" = "Enable Now";
-
-/* Tip for new stats feature */
-"tips.newStats.message" = "Experience new sleek and powerful stats. Switch back whenever you like.";
-
-/* Tip for new stats feature */
-"tips.newStats.title" = "Try New Stats";
 
 /* Tip for sidebar */
 "tips.sidebar.message" = "Swipe right to access your sites, Reader, notifications, and profile";
