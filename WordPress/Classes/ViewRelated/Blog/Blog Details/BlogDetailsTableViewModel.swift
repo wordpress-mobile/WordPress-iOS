@@ -847,9 +847,7 @@ private extension BlogDetailsTableViewModel {
             secondSectionRows.append(Row.domains(viewController: viewController))
         }
 
-        if FeatureFlag.allowApplicationPasswords.enabled {
-            secondSectionRows.append(Row.applicationPasswords(viewController: viewController))
-        }
+        secondSectionRows.append(Row.applicationPasswords(viewController: viewController))
 
         // Site Settings (always included)
         secondSectionRows.append(Row.siteSettings(viewController: viewController))
