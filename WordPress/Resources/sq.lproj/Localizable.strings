@@ -1,4 +1,4 @@
-/* Translation-Revision-Date: 2026-02-14 18:21:44+0000 */
+/* Translation-Revision-Date: 2026-03-15 10:44:38+0000 */
 /* Plural-Forms: nplurals=2; plural=n != 1; */
 /* Generator: GlotPress/4.0.3 */
 /* Language: sq_AL */
@@ -1871,7 +1871,6 @@ translators: %s: Block name e.g. \"Image block\" */
    Done. Action.
    Menu button title for finishing editing the Menu name.
    Tapping a button with this label allows the user to exit the Site Creation flow
-   Title for a Done button.
    Title for button that will dismiss this view
    Title for the button that will dismiss this view. */
 "Done" = "U bë";
@@ -3237,9 +3236,6 @@ translators: %s: Block name e.g. \"Image block\" */
 
 /* Text displayed while loading the scan section for a site */
 "Loading Scan..." = "Po ngarkohet Skanim…";
-
-/* Displayed while a comment is being loaded. */
-"Loading comment..." = "Po ngarkohet koment…";
 
 /* Menus label text displayed when a menu is loading. */
 "Loading menu..." = "Po ngarkohen menu…";
@@ -7216,6 +7212,9 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Feature name for the block editor in application password required prompt */
 "applicationPasswordRequired.feature.blockEditor" = "Përpunues Me Blloqe";
 
+/* Feature name for managing custom post types in the app */
+"applicationPasswordRequired.feature.customPosts" = "Lloje të Përshtatur Postimesh";
+
 /* Feature name for managing terms and taxonomies in the app */
 "applicationPasswordRequired.feature.customTaxonomies" = "Administrim Klasifikimesh";
 
@@ -7379,6 +7378,27 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Action shown in a bottom notice to dismiss it. */
 "blogDashboard.dismiss" = "Hidhe tej";
 
+/* Error message shown when the active theme cannot be found for a site. */
+"blogDetails.activeThemeNotFound.errorDescription" = "Për këtë sajt s’u gjet dot tema aktive.";
+
+/* Button title to connect Jetpack in XML-RPC disabled alert */
+"blogDetails.xmlrpcDisabled.alert.connectJetpack" = "Lidheni Jetpack-un";
+
+/* Description explaining options to restore functionality when XML-RPC is disabled */
+"blogDetails.xmlrpcDisabled.alert.description" = "XML-RPC është e çaktivizuar në sajtin tuaj. Disa veçori te aplikacioni aktualisht lypin XML-RPC. Që të mund të përdorni krejt veçoritë, lidheni Jetpack-un, ose aktivizoni XML-RPC.";
+
+/* Button title to learn more about XML-RPC being disabled */
+"blogDetails.xmlrpcDisabled.alert.learnMore" = "Mësoni më tepër";
+
+/* Title for the XML-RPC disabled alert */
+"blogDetails.xmlrpcDisabled.alert.title" = "XML-RPC e Çaktivizuar";
+
+/* Subtitle for the XML-RPC disabled card on blog details */
+"blogDetails.xmlrpcDisabled.card.subtitle" = "Disa veçori mund të jenë të kufizuara";
+
+/* Title for the XML-RPC disabled card on blog details */
+"blogDetails.xmlrpcDisabled.card.title" = "XML-RPC e Çaktivizuar";
+
 /* Context menu button title */
 "blogHeader.actionVisitSite" = "Vizitoni Sajtin";
 
@@ -7428,7 +7448,7 @@ Note that the word 'go' here should have a closer meaning to 'start' rather than
 /* Title of the set goals button in the Blogging Reminders Settings flow. */
 "bloggingRemindersPrompt.intro.continueButton" = "Ujdisni Kujtues";
 
-/* Description on the first screen of the Blogging Reminders Settings flow called aftet post publishing. */
+/* Description on the first screen of the Blogging Reminders Settings flow called after post publishing. */
 "bloggingRemindersPrompt.intro.details" = "Ujdisni kujtues blogimi për ditë kur doni të postoni.";
 
 /* Title of the Blogging Reminders Settings screen. */
@@ -7845,6 +7865,39 @@ Example: Reply to Pamela Nguyen */
 /* Create Sheet button title */
 "createSheet.postFromAudio" = "Postim që nga Audio";
 
+/* Error message shown when the post was modified by another user while editing */
+"customPostEditor.error.conflict.message" = "Postimi që po rrekeni të ruani, ndërkohë është ndryshuar.";
+
+/* Empty state message when no custom posts exist. %1$@ is the post type name (e.g., 'Podcasts', 'Products'). */
+"customPostList.emptyState.message" = "S’ka %1$@";
+
+/* Tab title for draft posts */
+"customPostTab.drafts" = "Skica";
+
+/* Tab title for published posts */
+"customPostTab.published" = "Të botuar";
+
+/* Tab title for scheduled posts */
+"customPostTab.scheduled" = "Të planifikuar";
+
+/* Menu item title for sending feedback on the custom post types screen */
+"customPostTab.sendFeedback" = "Dërgoni Përshtypjet";
+
+/* Tab title for trashed posts */
+"customPostTab.trash" = "Hedhurina";
+
+/* Empty state message when there are no custom post types to display */
+"customPostTypes.emptyState.message" = "S’ka Lloje Vetjake Postimesh";
+
+/* Accessibility label for the button to pin a custom post type */
+"customPostTypes.pin.accessibilityLabel" = "Fiksoje";
+
+/* Title for the Custom Post Types screen */
+"customPostTypes.title" = "Më tepër";
+
+/* Accessibility label for the button to unpin a custom post type */
+"customPostTypes.unpin.accessibilityLabel" = "Shfiksoje";
+
 /* Customize Insights description */
 "customizeInsightsCell.content" = "Krijoni pultin tuaj të përshtatur dhe zgjidhni cilët raporte të shihen. Përqendrohuni te të dhënat për të cilat merakoseni më shumë.";
 
@@ -7982,6 +8035,9 @@ Example: Reply to Pamela Nguyen */
 
 /* Debug Menu action for TipKit */
 "debugMenu.hideAllTips" = "Fshihi Krejt Ndihmëzat";
+
+/* Debug Menu item title */
+"debugMenu.item.logs" = "Regjistra";
 
 /* Title of the screen that allows the user to change the Reader CSS URL for debug builds */
 "debugMenu.readerCellTitle" = "URL CSS-je Lexuesi";
@@ -8705,8 +8761,14 @@ Example: Reply to Pamela Nguyen */
 /* Title of the primary button shown after the Jetpack plugin has been installed. Tapping on the button dismisses the installation screen. */
 "jetpack.install-flow.success.primaryButtonText" = "U bë";
 
+/* Message asking the user to install Jetpack to access all app features */
+"jetpack.install.allFeatures.description" = "Që të shkyçni krejt veçoritë e aplikacionit, do t’ju duhet të instaloni shtojcën Jetpack.";
+
 /* Title of a button for connecting user account to Jetpack. */
 "jetpack.install.connectUser.button.title" = "Lidhni llogarinë tuaj të përdoruesit";
+
+/* Message asking the user to connect Jetpack to access all app features */
+"jetpack.install.connectUser.bypassXMLRPC.description" = "Që të shkyçni krejt veçoritë e aplikacionit, do t’ju duhet të lidhni shtojcën Jetpack me llogarinë tuaj të përdoruesit.";
 
 /* Message asking the user if they want to set up Jetpack from notifications */
 "jetpack.install.connectUser.notifications.description" = "Që të merrni nga sajti juaj WordPress njoftime të dobishme në telefonin tuaj, do t’ju duhet të lidheni me llogarinë tuaj të përdoruesit.";
@@ -9048,6 +9110,9 @@ Example: Reply to Pamela Nguyen */
 /* Line chart type */
 "jetpackStats.chart.lineChart" = "Rreshta";
 
+/* Label for aggregated 'Other' segment in pie charts */
+"jetpackStats.chart.other" = "Tjetër";
+
 /* Show chart data menu item */
 "jetpackStats.chart.showData" = "Shfaq të Dhëna";
 
@@ -9174,6 +9239,9 @@ Example: Reply to Pamela Nguyen */
 /* Label for quick period selection */
 "jetpackStats.datePicker.quickPeriodsForStartDate" = "Periudha të shpejta për datë nisjeje";
 
+/* Title for custom date range picker */
+"jetpackStats.datePicker.selectRange" = "Përzgjidhni Interval";
+
 /* Site time zone header */
 "jetpackStats.datePicker.siteTimeZone" = "Zonë Kohore e Sajtit";
 
@@ -9189,6 +9257,15 @@ Example: Reply to Pamela Nguyen */
 /* Title for stats date range control tip */
 "jetpackStats.dateRangeTip.title" = "Lëvizni Nëpër Kohë";
 
+/* Device breakdown by browser */
+"jetpackStats.deviceBreakdowns.browser" = "Shfletues";
+
+/* Device breakdown by platform/OS */
+"jetpackStats.deviceBreakdowns.operatingSystem" = "Sistem Operativ";
+
+/* Device breakdown by screen size */
+"jetpackStats.deviceBreakdowns.screensize" = "Madhësi Ekrani";
+
 /* Section title for the list of child links */
 "jetpackStats.externalLinkDetails.childLinks" = "Nënlidhje";
 
@@ -9197,6 +9274,12 @@ Example: Reply to Pamela Nguyen */
 
 /* Title for the external link details screen */
 "jetpackStats.externalLinkDetails.title" = "Lidhje e Jashtme";
+
+/* Button to explore plans when a feature is gated */
+"jetpackStats.featureGate.explorePlans" = "Eksploroni Plane";
+
+/* Message shown when a stats feature is gated behind a paid plan */
+"jetpackStats.featureGate.message" = "Që të keni hyrje te statistika të thelluara, përmirësoni planin tuaj";
 
 /* Automatic granularity option */
 "jetpackStats.granularity.automatic" = "Automatike";
@@ -9309,6 +9392,9 @@ Example: Reply to Pamela Nguyen */
 /* Clicks data type (external links) */
 "jetpackStats.siteDataTypes.clicks" = "Klikime";
 
+/* Devices data type */
+"jetpackStats.siteDataTypes.devices" = "Pajisje";
+
 /* File downloads data type */
 "jetpackStats.siteDataTypes.fileDownloads" = "Shkarkime Kartelash";
 
@@ -9323,6 +9409,9 @@ Example: Reply to Pamela Nguyen */
 
 /* Search terms data type */
 "jetpackStats.siteDataTypes.searchTerms" = "Terma Kërkimesh";
+
+/* UTM campaign tracking data type */
+"jetpackStats.siteDataTypes.utm" = "UTM";
 
 /* Videos data type */
 "jetpackStats.siteDataTypes.videos" = "Video";
@@ -9384,6 +9473,9 @@ Example: Reply to Pamela Nguyen */
 /* Table column title for Top List card */
 "jetpackStats.topListColumnTitle.clicks" = "Lidhje e Jashtme";
 
+/* Table column title for Devices Top List card */
+"jetpackStats.topListColumnTitle.devices" = "Pajisje";
+
 /* Table column title for Top List card */
 "jetpackStats.topListColumnTitle.fileDownloads" = "Kartelë";
 
@@ -9399,8 +9491,62 @@ Example: Reply to Pamela Nguyen */
 /* Table column title for Top List card */
 "jetpackStats.topListColumnTitle.searchTerms" = "Term";
 
+/* Table column title for UTM Top List card */
+"jetpackStats.topListColumnTitle.utm" = "Fushatë";
+
 /* Table column title for Top List card */
 "jetpackStats.topListColumnTitle.videos" = "Video";
+
+/* Plural post count for UTM metrics. %1$d is the number. */
+"jetpackStats.utmMetricDetails.postCount.plural" = "%1$d postime";
+
+/* Singular post count for UTM metrics. %1$d is the number. */
+"jetpackStats.utmMetricDetails.postCount.singular" = "%1$d postim";
+
+/* Title for the UTM campaign details screen */
+"jetpackStats.utmMetricDetails.title" = "Fushatë UTM";
+
+/* Section title for top posts from this UTM campaign */
+"jetpackStats.utmMetricDetails.topPosts" = "Postimet Kryesuese";
+
+/* UTM parameter for campaign only */
+"jetpackStats.utmParamGroupings.campaign" = "Fushatë";
+
+/* UTM parameter for medium only */
+"jetpackStats.utmParamGroupings.medium" = "Medium";
+
+/* UTM parameter for source only */
+"jetpackStats.utmParamGroupings.source" = "Burim";
+
+/* Number of ads served. %@ is the ads count. */
+"jetpackStats.wordAds.adsServed.count" = "%@ reklama të shërbyera";
+
+/* Total earnings from WordAds */
+"jetpackStats.wordAds.earnings" = "Fitime";
+
+/* Button to learn more about WordAds earnings */
+"jetpackStats.wordAds.learnMore" = "Mësoni Më Tepër";
+
+/* Message shown when there are no payment records */
+"jetpackStats.wordAds.noPaymentsYet" = "Ende pa pagesa";
+
+/* Amount paid out from WordAds earnings */
+"jetpackStats.wordAds.paid" = "Të paguara";
+
+/* Title for payment history card and screen */
+"jetpackStats.wordAds.paymentsHistory" = "Historik Pagesash";
+
+/* Title for WordAds total earnings card */
+"jetpackStats.wordAds.totalEarnings" = "Fitime Gjithsej";
+
+/* Number of ads served */
+"jetpackStats.wordAdsMetrics.adsServed" = "Reklama të Shërbyera";
+
+/* Average cost per mille (thousand impressions) */
+"jetpackStats.wordAdsMetrics.averageCPM" = "CPM Mesatare";
+
+/* Revenue from ads */
+"jetpackStats.wordAdsMetrics.revenue" = "Të ardhura";
 
 /* Title for a call-to-action button on the Jetpack install card. */
 "jetpackinstallcard.button.learn" = "Mësoni më tepër";
@@ -10155,6 +10301,9 @@ Example: Reply to Pamela Nguyen */
 /* A title for the log severity level */
 "phpLogs.severityWarning" = "Kujdes";
 
+/* Error message when a pinned custom post type cannot be found. %1$@ is the post type name. */
+"pinnedPostType.error.notFound" = "“%1$@” s’është i përdorshëm në këtë sajt.";
+
 /* Title for the plan selection view */
 "planSelection.title" = "Plane";
 
@@ -10325,6 +10474,9 @@ Example: Reply to Pamela Nguyen */
 /* A message for a snackbar informing the user that some media files requires their attention */
 "postEditor.postHasFailingMediaUploadsSnackbar.message" = "S’u arrit të ngarkohen disa objekte media";
 
+/* Title for the publish button in the post editor navigation bar */
+"postEditor.publishButton.title" = "Botoje";
+
 /* Editor, notice for successful recovery a trashed post */
 "postEditor.recoverTrashedPost.postRecoveredNoticeTitle" = "Postimi u rikthye si një skicë";
 
@@ -10345,6 +10497,9 @@ Example: Reply to Pamela Nguyen */
 
 /* Saving draft to generate a preview (status message */
 "postEditor.savingDraftForPreview" = "Po ruhet skica…";
+
+/* Title for the update button in the post editor navigation bar */
+"postEditor.updateButton.title" = "Përditësoje";
 
 /* Empty state description when no post formats are available */
 "postFormatPicker.emptyState.description" = "Për këtë sajt s’janë formësuar formate postimi.";
@@ -10761,38 +10916,35 @@ Example: Reply to Pamela Nguyen */
 /* Post status details */
 "postStatus.draft.details" = "Jo gati për botim";
 
-/* Post status title */
+/* Post status title used in different contexts */
 "postStatus.draft.title" = "Skicë";
 
 /* Post status details */
 "postStatus.pending.details" = "Në pritje të shqyrtimit, para botimit";
 
-/* Post status title */
+/* Post status title used in different contexts */
 "postStatus.pending.title" = "Pezull";
 
 /* Post status details */
 "postStatus.private.details" = "E dukshme vetëm për përgjegjës sajti dhe redaktorë";
 
-/* Post status title */
+/* Post status title used in different contexts */
 "postStatus.private.title" = "Privat";
 
 /* Post status details */
 "postStatus.published.details" = "I dukshëm për këdo";
 
-/* Post status title */
+/* Post status title used in different contexts */
 "postStatus.published.title" = "I botuar";
 
 /* Post status details */
 "postStatus.scheduled.details" = "Botoje automatikisht në një datë të zgjedhur";
 
-/* Post status title */
+/* Post status title used in different contexts */
 "postStatus.scheduled.title" = "Vënë në plan për botim";
 
 /* Post status title */
 "postStatus.trash.details" = "Shpënë te hedhurinat, por ende i pafshirë";
-
-/* Post status title */
-"postStatus.trash.title" = "Shpënë te hedhurinat";
 
 /* Button to add a new taxonomy term. %1$@ is the taxonomy name (e.g., 'tags', 'categories'). */
 "postTags.addTag" = "Shtoni %1$@";
@@ -11309,9 +11461,6 @@ Example: given a notice format "Following %@" and empty site name, this will be 
 /* Context menu action */
 "reader.postContextMenu.blockUser" = "Bllokoje Përdoruesin";
 
-/* Context menu action (placeholder value when blog name not available – should never happen) */
-"reader.postContextMenu.blogDetails" = "Hollësi Blogu";
-
 /* Context menu action */
 "reader.postContextMenu.manageNotifications" = "Administroni Njoftime";
 
@@ -11326,9 +11475,6 @@ Example: given a notice format "Following %@" and empty site name, this will be 
 
 /* Context menu action */
 "reader.postContextMenu.reportUser" = "Raportoni Përdorues";
-
-/* Context menu action */
-"reader.postContextMenu.showBlog" = "Shkoni te Blogu";
 
 /* Context menu action */
 "reader.postContextMenu.summarize" = "Përmblidhe";
@@ -12102,8 +12248,7 @@ Feel free to replace it with other bracket types that you think looks better for
 /* Title for site switcher screen */
 "sitePicker.title" = "Sajtet e Mi";
 
-/* The plugin author displayed in the plugins list. The first argument is plugin author name
-   The plugin version displayed in the plugins list. The first argument is plugin version */
+/* The plugin author displayed in the plugins list. The first argument is plugin author name */
 "sitePluginsList.item.author" = "Nga %@";
 
 /* The message displayed when a plugin has no description */

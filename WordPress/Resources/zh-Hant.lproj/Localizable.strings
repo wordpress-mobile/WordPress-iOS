@@ -1874,7 +1874,6 @@ translators: %s: Block name e.g. \"Image block\" */
    Done. Action.
    Menu button title for finishing editing the Menu name.
    Tapping a button with this label allows the user to exit the Site Creation flow
-   Title for a Done button.
    Title for button that will dismiss this view
    Title for the button that will dismiss this view. */
 "Done" = "完成";
@@ -3240,9 +3239,6 @@ translators: %s: Block name e.g. \"Image block\" */
 
 /* Text displayed while loading the scan section for a site */
 "Loading Scan..." = "正在載入掃瞄…";
-
-/* Displayed while a comment is being loaded. */
-"Loading comment..." = "載入留言中…";
 
 /* Menus label text displayed when a menu is loading. */
 "Loading menu..." = "正在載入選單...";
@@ -7452,7 +7448,7 @@ Note that the word 'go' here should have a closer meaning to 'start' rather than
 /* Title of the set goals button in the Blogging Reminders Settings flow. */
 "bloggingRemindersPrompt.intro.continueButton" = "設定提醒";
 
-/* Description on the first screen of the Blogging Reminders Settings flow called aftet post publishing. */
+/* Description on the first screen of the Blogging Reminders Settings flow called after post publishing. */
 "bloggingRemindersPrompt.intro.details" = "在你想張貼文章的日期設定網誌提醒。";
 
 /* Title of the Blogging Reminders Settings screen. */
@@ -10920,35 +10916,32 @@ Example: Reply to Pamela Nguyen */
 /* Post status details */
 "postStatus.draft.details" = "還沒準備好發表";
 
-/* Post status title */
+/* Post status title used in different contexts */
 "postStatus.draft.title" = "草稿";
 
 /* Post status details */
 "postStatus.pending.details" = "待發表審核";
 
-/* Post status title */
+/* Post status title used in different contexts */
 "postStatus.pending.title" = "待確認";
 
-/* Post status title */
+/* Post status title used in different contexts */
 "postStatus.private.title" = "私人";
 
 /* Post status details */
 "postStatus.published.details" = "所有人都能檢視";
 
-/* Post status title */
+/* Post status title used in different contexts */
 "postStatus.published.title" = "已發表";
 
 /* Post status details */
 "postStatus.scheduled.details" = "在所選日期自動發表";
 
-/* Post status title */
+/* Post status title used in different contexts */
 "postStatus.scheduled.title" = "已排程";
 
 /* Post status title */
 "postStatus.trash.details" = "已移至垃圾桶但尚未刪除";
-
-/* Post status title */
-"postStatus.trash.title" = "已移至垃圾桶";
 
 /* Button to add a new taxonomy term. %1$@ is the taxonomy name (e.g., 'tags', 'categories'). */
 "postTags.addTag" = "新增「%1$@」";
@@ -11462,9 +11455,6 @@ Example: given a notice format "Following %@" and empty site name, this will be 
 /* Context menu action */
 "reader.postContextMenu.blockUser" = "封鎖使用者";
 
-/* Context menu action (placeholder value when blog name not available – should never happen) */
-"reader.postContextMenu.blogDetails" = "網誌詳細資料";
-
 /* Context menu action */
 "reader.postContextMenu.manageNotifications" = "管理通知";
 
@@ -11479,9 +11469,6 @@ Example: given a notice format "Following %@" and empty site name, this will be 
 
 /* Context menu action */
 "reader.postContextMenu.reportUser" = "檢舉使用者";
-
-/* Context menu action */
-"reader.postContextMenu.showBlog" = "前往「網誌」";
 
 /* Context menu action */
 "reader.postContextMenu.summarize" = "建立摘要";
@@ -12237,8 +12224,7 @@ Example: given a notice format "Following %@" and empty site name, this will be 
 /* Title for site switcher screen */
 "sitePicker.title" = "我的網站";
 
-/* The plugin author displayed in the plugins list. The first argument is plugin author name
-   The plugin version displayed in the plugins list. The first argument is plugin version */
+/* The plugin author displayed in the plugins list. The first argument is plugin author name */
 "sitePluginsList.item.author" = "作者：%@";
 
 /* The message displayed when a plugin has no description */

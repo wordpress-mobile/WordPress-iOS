@@ -1,4 +1,4 @@
-/* Translation-Revision-Date: 2026-02-25 10:54:37+0000 */
+/* Translation-Revision-Date: 2026-03-11 05:09:55+0000 */
 /* Plural-Forms: nplurals=2; plural=n > 1; */
 /* Generator: GlotPress/4.0.3 */
 /* Language: id */
@@ -1874,7 +1874,6 @@ translators: %s: Block name e.g. \"Image block\" */
    Done. Action.
    Menu button title for finishing editing the Menu name.
    Tapping a button with this label allows the user to exit the Site Creation flow
-   Title for a Done button.
    Title for button that will dismiss this view
    Title for the button that will dismiss this view. */
 "Done" = "Selesai";
@@ -3243,9 +3242,6 @@ translators: %s: Block name e.g. \"Image block\" */
 
 /* Text displayed while loading the scan section for a site */
 "Loading Scan..." = "Memuat Pemindaian...";
-
-/* Displayed while a comment is being loaded. */
-"Loading comment..." = "Memuat komentar...";
 
 /* Menus label text displayed when a menu is loading. */
 "Loading menu..." = "Memuat menu...";
@@ -7467,7 +7463,7 @@ Note that the word 'go' here should have a closer meaning to 'start' rather than
 /* Title of the set goals button in the Blogging Reminders Settings flow. */
 "bloggingRemindersPrompt.intro.continueButton" = "Setel Pengingat";
 
-/* Description on the first screen of the Blogging Reminders Settings flow called aftet post publishing. */
+/* Description on the first screen of the Blogging Reminders Settings flow called after post publishing. */
 "bloggingRemindersPrompt.intro.details" = "Setel pengingat blogging pada hari Anda ingin menerbitkan pos.";
 
 /* Title of the Blogging Reminders Settings screen. */
@@ -7874,6 +7870,9 @@ Example: Reply to Pamela Nguyen */
 
 /* Create Sheet button title */
 "createSheet.post" = "Pos";
+
+/* Create Sheet button title */
+"createSheet.postFromAudio" = "Pos dari Audio";
 
 /* Error message shown when the post was modified by another user while editing */
 "customPostEditor.error.conflict.message" = "Pos yang Anda coba simpan telah diubah.";
@@ -9270,6 +9269,9 @@ Example: Reply to Pamela Nguyen */
 /* Title for stats date range control tip */
 "jetpackStats.dateRangeTip.title" = "Navigasi Melalui Waktu";
 
+/* Device breakdown by browser */
+"jetpackStats.deviceBreakdowns.browser" = "Browser";
+
 /* Device breakdown by platform/OS */
 "jetpackStats.deviceBreakdowns.operatingSystem" = "Sistem Pengoperasian";
 
@@ -9420,6 +9422,9 @@ Example: Reply to Pamela Nguyen */
 /* Search terms data type */
 "jetpackStats.siteDataTypes.searchTerms" = "Istilah Pencarian";
 
+/* UTM campaign tracking data type */
+"jetpackStats.siteDataTypes.utm" = "UTM";
+
 /* Videos data type */
 "jetpackStats.siteDataTypes.videos" = "Video";
 
@@ -9500,6 +9505,9 @@ Example: Reply to Pamela Nguyen */
 
 /* Table column title for UTM Top List card */
 "jetpackStats.topListColumnTitle.utm" = "Kampanye";
+
+/* Table column title for Top List card */
+"jetpackStats.topListColumnTitle.videos" = "Video";
 
 /* Plural post count for UTM metrics. %1$d is the number. */
 "jetpackStats.utmMetricDetails.postCount.plural" = "%1$d pos";
@@ -9957,11 +9965,17 @@ Example: Reply to Pamela Nguyen */
 /* Noun. Links to a blog's Jetpack Backups screen. */
 "mySite.menu.backup" = "Pencadangan";
 
+/* Noun. Links to a blog's Blaze screen. */
+"mySite.menu.blaze" = "Blaze";
+
 /* Noun. Title. Links to the blog's Comments screen. */
 "mySite.menu.comments" = "Komentar";
 
 /* Section title for the configure table section in the blog details screen */
 "mySite.menu.configureSection" = "Konfigurasikan";
+
+/* Section title for the content table section in the blog details screen */
+"mySite.menu.content.section.title" = "Konten";
 
 /* Action title. Noun. Opens the user's WordPress.com dashboard in an external browser. */
 "mySite.menu.dashboard" = "Dasbor";
@@ -9975,11 +9989,20 @@ Example: Reply to Pamela Nguyen */
 /* Noun. Links to a blog's dashboard screen. */
 "mySite.menu.home" = "Beranda";
 
+/* Section title for the jetpack table section in the blog details screen */
+"mySite.menu.jetpackSection" = "Jetpack";
+
 /* Noun. Title. Links to the blog's Settings screen. */
 "mySite.menu.jetpackSettings" = "Pengaturan Jetpack";
 
+/* Section title for the maintenance table section in the blog details screen */
+"mySite.menu.maintenance.section.title" = "Pemeliharaan";
+
 /* Noun. Title. Links to the Me screen. */
 "mySite.menu.me" = "Saya";
+
+/* Noun. Title. Links to the blog's Media library. */
+"mySite.menu.media" = "Media";
 
 /* Menus option in the blog details */
 "mySite.menu.menus" = "Menu";
@@ -10011,6 +10034,9 @@ Example: Reply to Pamela Nguyen */
 /* Noun. Title. Links to a blog's sharing options. */
 "mySite.menu.sharing" = "Berbagi";
 
+/* Title for the site monitoring row in the blog details screen */
+"mySite.menu.site-monitoring.row.title" = "Pemantauan Situs";
+
 /* Noun. Title. Links to the blog's Settings screen. */
 "mySite.menu.siteSettings" = "Pengaturan Situs";
 
@@ -10025,6 +10051,9 @@ Example: Reply to Pamela Nguyen */
 
 /* Themes option in the blog details */
 "mySite.menu.themes" = "Tema";
+
+/* Section title for the traffic table section in the blog details screen */
+"mySite.menu.traffic.section.title" = "Lalu Lintas";
 
 /* Noun. Title. Links to the user management feature. */
 "mySite.menu.users" = "Pengguna";
@@ -10355,6 +10384,9 @@ Example: Reply to Pamela Nguyen */
 
 /* Title of the details section in plugin details */
 "pluginDetails.section.details" = "Rincian";
+
+/* Title of the FAQ section in plugin details */
+"pluginDetails.section.faq" = "Tanya Jawab";
 
 /* Title of the installation section in plugin details */
 "pluginDetails.section.installation" = "Instalasi";
@@ -10824,6 +10856,9 @@ Example: Reply to Pamela Nguyen */
 /* Button text to learn more about permalinks */
 "postSettings.slug.learnMore" = "Baca selengkapnya";
 
+/* Label for the slug field. Should be the same as WP core. */
+"postSettings.slug.navigationTitle" = "Slug";
+
 /* Notice shown when the post doesn't have a remote and permalink template is missing */
 "postSettings.slug.permalinkDraftNotice" = "Permalink yang disarankan akan muncul ketika konsep disimpan di server";
 
@@ -10884,38 +10919,35 @@ Example: Reply to Pamela Nguyen */
 /* Post status details */
 "postStatus.draft.details" = "Belum siap dipublikasikan";
 
-/* Post status title */
+/* Post status title used in different contexts */
 "postStatus.draft.title" = "Konsep";
 
 /* Post status details */
 "postStatus.pending.details" = "Menunggu peninjauan sebelum dipublikasikan";
 
-/* Post status title */
+/* Post status title used in different contexts */
 "postStatus.pending.title" = "Ditangguhkan";
 
 /* Post status details */
 "postStatus.private.details" = "Hanya dapat dilihat oleh admin dan editor situs";
 
-/* Post status title */
+/* Post status title used in different contexts */
 "postStatus.private.title" = "Privat";
 
 /* Post status details */
 "postStatus.published.details" = "Dapat dilihat oleh semua orang";
 
-/* Post status title */
+/* Post status title used in different contexts */
 "postStatus.published.title" = "Dipublikasikan";
 
 /* Post status details */
 "postStatus.scheduled.details" = "Publikasikan secara otomatis pada tanggal yang dipilih";
 
-/* Post status title */
+/* Post status title used in different contexts */
 "postStatus.scheduled.title" = "Terjadwal";
 
 /* Post status title */
 "postStatus.trash.details" = "Dibuang tetapi belum dihapus";
-
-/* Post status title */
-"postStatus.trash.title" = "Dibuang";
 
 /* Button to add a new taxonomy term. %1$@ is the taxonomy name (e.g., 'tags', 'categories'). */
 "postTags.addTag" = "Tambahkan %1$@";
@@ -11429,9 +11461,6 @@ Example: given a notice format "Following %@" and empty site name, this will be 
 /* Context menu action */
 "reader.postContextMenu.blockUser" = "Blokir Pengguna";
 
-/* Context menu action (placeholder value when blog name not available – should never happen) */
-"reader.postContextMenu.blogDetails" = "Detail Blog";
-
 /* Context menu action */
 "reader.postContextMenu.manageNotifications" = "Kelola Pemberitahuan";
 
@@ -11446,9 +11475,6 @@ Example: given a notice format "Following %@" and empty site name, this will be 
 
 /* Context menu action */
 "reader.postContextMenu.reportUser" = "Laporkan Pengguna";
-
-/* Context menu action */
-"reader.postContextMenu.showBlog" = "Buka Blog";
 
 /* Context menu action */
 "reader.postContextMenu.summarize" = "Buat ringkasan";
@@ -11705,6 +11731,9 @@ Feel free to replace it with other bracket types that you think looks better for
 
 /* Reader Welcome screen */
 "reader.welcome.subtitle" = "Bergabung dengan komunitas blogging terbesar";
+
+/* Reader app primary navigation tab bar */
+"readerApp.tabBar.discover" = "Jelajahi";
 
 /* Reader app primary navigation tab bar */
 "readerApp.tabBar.me" = "Saya";
@@ -12219,8 +12248,7 @@ Feel free to replace it with other bracket types that you think looks better for
 /* Title for site switcher screen */
 "sitePicker.title" = "Situs Saya";
 
-/* The plugin author displayed in the plugins list. The first argument is plugin author name
-   The plugin version displayed in the plugins list. The first argument is plugin version */
+/* The plugin author displayed in the plugins list. The first argument is plugin author name */
 "sitePluginsList.item.author" = "Oleh %@";
 
 /* The message displayed when a plugin has no description */

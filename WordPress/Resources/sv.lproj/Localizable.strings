@@ -1,4 +1,4 @@
-/* Translation-Revision-Date: 2026-02-26 09:55:22+0000 */
+/* Translation-Revision-Date: 2026-03-20 09:40:02+0000 */
 /* Plural-Forms: nplurals=2; plural=n != 1; */
 /* Generator: GlotPress/4.0.3 */
 /* Language: sv_SE */
@@ -1874,7 +1874,6 @@ translators: %s: Block name e.g. \"Image block\" */
    Done. Action.
    Menu button title for finishing editing the Menu name.
    Tapping a button with this label allows the user to exit the Site Creation flow
-   Title for a Done button.
    Title for button that will dismiss this view
    Title for the button that will dismiss this view. */
 "Done" = "Klar";
@@ -3243,9 +3242,6 @@ translators: %s: Block name e.g. \"Image block\" */
 
 /* Text displayed while loading the scan section for a site */
 "Loading Scan..." = "Laddar in genomsökningen …";
-
-/* Displayed while a comment is being loaded. */
-"Loading comment..." = "Laddar in kommentarer …";
 
 /* Menus label text displayed when a menu is loading. */
 "Loading menu..." = "Laddar in meny …";
@@ -7029,6 +7025,9 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Button title for restoring a backup */
 "activityDetail.restore.button" = "Återställ";
 
+/* Shows the MCP client used for an activity. %1$@ is the MCP client name (e.g. Claude). */
+"activityDetail.section.agent" = "via %1$@";
+
 /* Section title for restore site actions */
 "activityDetail.section.restoreSite" = "Återställ webbplats";
 
@@ -7467,7 +7466,7 @@ Note that the word 'go' here should have a closer meaning to 'start' rather than
 /* Title of the set goals button in the Blogging Reminders Settings flow. */
 "bloggingRemindersPrompt.intro.continueButton" = "Ställ in påminnelser";
 
-/* Description on the first screen of the Blogging Reminders Settings flow called aftet post publishing. */
+/* Description on the first screen of the Blogging Reminders Settings flow called after post publishing. */
 "bloggingRemindersPrompt.intro.details" = "Ställ in bloggpåminnelser de dagar du vill publicera.";
 
 /* Title of the Blogging Reminders Settings screen. */
@@ -7887,8 +7886,53 @@ Example: Reply to Pamela Nguyen */
 /* Error message shown when the post was modified by another user while editing */
 "customPostEditor.error.conflict.message" = "Inlägget du försöker spara har ändrats under tiden.";
 
+/* Menu action to promote a post with Blaze */
+"customPostList.action.blaze" = "Marknadsför med Blaze";
+
+/* Menu action to view post comments */
+"customPostList.action.comments" = "Kommentarer";
+
+/* Menu action to permanently delete a trashed post */
+"customPostList.action.deletePermanently" = "Ta bort permanent";
+
+/* Menu action to change a post's status to draft */
+"customPostList.action.moveToDraft" = "Flytta till utkast";
+
+/* Menu action to publish a draft or pending post */
+"customPostList.action.publish" = "Publicera";
+
+/* Menu action to open post settings */
+"customPostList.action.settings" = "Inställningar";
+
+/* Menu action to view post statistics */
+"customPostList.action.stats" = "Statistik";
+
+/* Badge label shown on the homepage row in the custom post list for pages */
+"customPostList.badge.homepage" = "Startsida";
+
+/* Badge shown in the post list for sticky posts */
+"customPostList.badge.sticky" = "Klistrat";
+
+/* Message for the confirmation alert when permanently deleting a post */
+"customPostList.deleteConfirmation.message" = "Denna åtgärd kan inte ångras.";
+
+/* Title for the confirmation alert when permanently deleting a post */
+"customPostList.deleteConfirmation.title" = "Ta bort permanent?";
+
 /* Empty state message when no custom posts exist. %1$@ is the post type name (e.g., 'Podcasts', 'Products'). */
 "customPostList.emptyState.message" = "Inget %1$@";
+
+/* Placeholder title for posts without a title */
+"customPostList.untitled" = "(ingen rubrik)";
+
+/* Title for the parent page picker screen for custom post types */
+"customPostParentPicker.title" = "Överordnad sida";
+
+/* Description for the top level option in the parent page picker, indicating this page will have no parent */
+"customPostParentPicker.topLevel.description" = "Ingen överordnad sida";
+
+/* Tab title for showing all posts regardless of status */
+"customPostTab.all" = "Alla";
 
 /* Tab title for draft posts */
 "customPostTab.drafts" = "Utkast";
@@ -9080,6 +9124,9 @@ Example: Reply to Pamela Nguyen */
 
 /* Last 12 weeks (84 days) date range */
 "jetpackStats.calendar.last12Weeks" = "De senaste 12 veckorna";
+
+/* Last 14 days date range */
+"jetpackStats.calendar.last14Days" = "Senaste 14 dagarna";
 
 /* Last 28 days date range */
 "jetpackStats.calendar.last28Days" = "Senaste 28 dagarna";
@@ -10956,6 +11003,9 @@ Example: Reply to Pamela Nguyen */
 /* Navigation bar title of the Post Stats screen */
 "postStats.title" = "Inläggsstatistik";
 
+/* Post status title used in different contexts */
+"postStatus.any.title" = "Valfri";
+
 /* Post status title */
 "postStatus.deleted.details" = "Permanent borttagen";
 
@@ -10965,38 +11015,35 @@ Example: Reply to Pamela Nguyen */
 /* Post status details */
 "postStatus.draft.details" = "Inte redo för publicering";
 
-/* Post status title */
+/* Post status title used in different contexts */
 "postStatus.draft.title" = "Utkast";
 
 /* Post status details */
 "postStatus.pending.details" = "Väntar på granskning innan publicering";
 
-/* Post status title */
+/* Post status title used in different contexts */
 "postStatus.pending.title" = "Väntar";
 
 /* Post status details */
 "postStatus.private.details" = "Endast synligt för webbplatsadministratörer och redigerare.";
 
-/* Post status title */
+/* Post status title used in different contexts */
 "postStatus.private.title" = "Privat";
 
 /* Post status details */
 "postStatus.published.details" = "Synligt för alla";
 
-/* Post status title */
+/* Post status title used in different contexts */
 "postStatus.published.title" = "Publicerat";
 
 /* Post status details */
 "postStatus.scheduled.details" = "Publicera automatiskt på ett valt datum";
 
-/* Post status title */
+/* Post status title used in different contexts */
 "postStatus.scheduled.title" = "Schemalagt";
 
 /* Post status title */
 "postStatus.trash.details" = "Borttaget men inte borttaget permanent än";
-
-/* Post status title */
-"postStatus.trash.title" = "Borttaget";
 
 /* Button to add a new taxonomy term. %1$@ is the taxonomy name (e.g., 'tags', 'categories'). */
 "postTags.addTag" = "Lägg till %1$@";
@@ -11513,9 +11560,6 @@ Example: given a notice format "Following %@" and empty site name, this will be 
 /* Context menu action */
 "reader.postContextMenu.blockUser" = "Blockera användare";
 
-/* Context menu action (placeholder value when blog name not available – should never happen) */
-"reader.postContextMenu.blogDetails" = "Bloggdetaljer";
-
 /* Context menu action */
 "reader.postContextMenu.manageNotifications" = "Hantera aviseringar";
 
@@ -11532,9 +11576,6 @@ Example: given a notice format "Following %@" and empty site name, this will be 
 "reader.postContextMenu.reportUser" = "Rapportera användare";
 
 /* Context menu action */
-"reader.postContextMenu.showBlog" = "Gå till blogg";
-
-/* Context menu action */
 "reader.postContextMenu.summarize" = "Sammanfatta";
 
 /* Context menu action to translate post content */
@@ -11542,6 +11583,9 @@ Example: given a notice format "Following %@" and empty site name, this will be 
 
 /* Context menu action */
 "reader.postContextMenu.viewInBrowser" = "Visa i webbläsare";
+
+/* Context menu action */
+"reader.postContextMenu.viewSite" = "Visa webbplats";
 
 /* Reader post details view placeholder when blog name not avail */
 "reader.postDetails.blog" = "blogg";
@@ -12306,12 +12350,14 @@ Feel free to replace it with other bracket types that you think looks better for
 /* Title for site switcher screen */
 "sitePicker.title" = "Mina webbplatser";
 
-/* The plugin author displayed in the plugins list. The first argument is plugin author name
-   The plugin version displayed in the plugins list. The first argument is plugin version */
+/* The plugin author displayed in the plugins list. The first argument is plugin author name */
 "sitePluginsList.item.author" = "Av %@";
 
 /* The message displayed when a plugin has no description */
 "sitePluginsList.item.noDescriptionAvailable" = "Tilläggets författare angav ingen beskrivning för detta tillägg.";
+
+/* The plugin version displayed in the plugins list. The first argument is plugin version */
+"sitePluginsList.item.version" = "Version: %@";
 
 /* Button to activate a plugin */
 "sitePluginsList.itemAction.activate" = "Aktivera";

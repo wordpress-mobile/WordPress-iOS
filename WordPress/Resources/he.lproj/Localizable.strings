@@ -1,4 +1,4 @@
-/* Translation-Revision-Date: 2026-02-26 21:45:57+0000 */
+/* Translation-Revision-Date: 2026-03-23 15:56:11+0000 */
 /* Plural-Forms: nplurals=2; plural=n != 1; */
 /* Generator: GlotPress/4.0.3 */
 /* Language: he_IL */
@@ -1874,7 +1874,6 @@ translators: %s: Block name e.g. \"Image block\" */
    Done. Action.
    Menu button title for finishing editing the Menu name.
    Tapping a button with this label allows the user to exit the Site Creation flow
-   Title for a Done button.
    Title for button that will dismiss this view
    Title for the button that will dismiss this view. */
 "Done" = "סיים";
@@ -3243,9 +3242,6 @@ translators: %s: Block name e.g. \"Image block\" */
 
 /* Text displayed while loading the scan section for a site */
 "Loading Scan..." = "טוען את הסריקה...";
-
-/* Displayed while a comment is being loaded. */
-"Loading comment..." = "טוען תגובה...";
 
 /* Menus label text displayed when a menu is loading. */
 "Loading menu..." = "טוען תפריט...";
@@ -7023,6 +7019,9 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Button title for restoring a backup */
 "activityDetail.restore.button" = "לשחזר";
 
+/* Shows the MCP client used for an activity. %1$@ is the MCP client name (e.g. Claude). */
+"activityDetail.section.agent" = "דרך %1$@";
+
 /* Section title for restore site actions */
 "activityDetail.section.restoreSite" = "לשחזר את האתר";
 
@@ -7455,7 +7454,7 @@ Note that the word 'go' here should have a closer meaning to 'start' rather than
 /* Title of the set goals button in the Blogging Reminders Settings flow. */
 "bloggingRemindersPrompt.intro.continueButton" = "להגדיר תזכורות";
 
-/* Description on the first screen of the Blogging Reminders Settings flow called aftet post publishing. */
+/* Description on the first screen of the Blogging Reminders Settings flow called after post publishing. */
 "bloggingRemindersPrompt.intro.details" = "להגדיר את התזכורות שלך לכתוב בלוג בימים שבחרת לפרסם.";
 
 /* Title of the Blogging Reminders Settings screen. */
@@ -7869,8 +7868,80 @@ Example: Reply to Pamela Nguyen */
 /* Error message shown when the post was modified by another user while editing */
 "customPostEditor.error.conflict.message" = "הפוסט שניסית לשמור השתנה בינתיים.";
 
+/* Menu action to promote a post with Blaze */
+"customPostList.action.blaze" = "לקדם עם Blaze";
+
+/* Menu action to view post comments */
+"customPostList.action.comments" = "תגובות";
+
+/* Menu action to permanently delete a trashed post */
+"customPostList.action.deletePermanently" = "למחוק לצמיתות";
+
+/* Menu action to change a post's status to draft */
+"customPostList.action.moveToDraft" = "להעביר לטיוטות";
+
+/* Menu action to move a post to trash */
+"customPostList.action.moveToTrash" = "להעביר לפח";
+
+/* Menu action to publish a draft or pending post */
+"customPostList.action.publish" = "לפרסם";
+
+/* Menu action to open post settings */
+"customPostList.action.settings" = "הגדרות";
+
+/* Menu action to view post statistics */
+"customPostList.action.stats" = "נתונים סטטיסטיים";
+
+/* Accessibility label for the author filter button in the custom post list */
+"customPostList.authorFilter.accessibilityLabel" = "סינון מחבר";
+
+/* Menu item to show posts from all authors in the custom post list */
+"customPostList.authorFilter.everyone" = "כולם";
+
+/* Menu item to show only the current user's posts in the custom post list */
+"customPostList.authorFilter.mine" = "שלי";
+
+/* Accessibility value when the author filter shows posts from all authors */
+"customPostList.authorFilter.showingEveryone" = "מראה את הפוסטים של כולם";
+
+/* Accessibility value when the author filter shows only the current user's posts */
+"customPostList.authorFilter.showingMine" = "מראה את הפוסטים שלי בלבד";
+
+/* Badge label shown on the homepage row in the custom post list for pages */
+"customPostList.badge.homepage" = "עמוד הבית";
+
+/* Badge shown in the post list for sticky posts */
+"customPostList.badge.sticky" = "דביק";
+
+/* Message for the confirmation alert when permanently deleting a post */
+"customPostList.deleteConfirmation.message" = "לא ניתן לבטל פעולה זו.";
+
+/* Title for the confirmation alert when permanently deleting a post */
+"customPostList.deleteConfirmation.title" = "האם למחוק לצמיתות?";
+
 /* Empty state message when no custom posts exist. %1$@ is the post type name (e.g., 'Podcasts', 'Products'). */
 "customPostList.emptyState.message" = "ללא %1$@";
+
+/* Message for the confirmation alert when trashing a published post */
+"customPostList.trashConfirmation.message" = "הפוסט הזה מוצג ונראה למבקרים. האם אתה בטוח שברצונך להעביר את זה לפח?";
+
+/* Title for the confirmation alert when trashing a published post */
+"customPostList.trashConfirmation.title" = "להעביר לפח?";
+
+/* Placeholder title for posts without a title */
+"customPostList.untitled" = "(אין כותרת)";
+
+/* Title for the parent page picker screen for custom post types */
+"customPostParentPicker.title" = "עמוד הורה";
+
+/* Option to set a post as top level (no parent) */
+"customPostParentPicker.topLevel" = "קטגוריה עליונה";
+
+/* Description for the top level option in the parent page picker, indicating this page will have no parent */
+"customPostParentPicker.topLevel.description" = "אין עמוד הורה";
+
+/* Tab title for showing all posts regardless of status */
+"customPostTab.all" = "הכול";
 
 /* Tab title for draft posts */
 "customPostTab.drafts" = "טיוטות";
@@ -8034,6 +8105,9 @@ Example: Reply to Pamela Nguyen */
 /* Boolean User Defaults Debug Menu screen title */
 "debugMenu.booleanUserDefaults.title" = "הגדרות ברירת מחדל עבור משתמש בוליאני";
 
+/* Debug Menu label for image cache size */
+"debugMenu.caches.imageCache" = "מטמון תמונות";
+
 /* Feature flags menu item */
 "debugMenu.featureFlags" = "האפשרות סומנה";
 
@@ -8073,6 +8147,9 @@ Example: Reply to Pamela Nguyen */
 
 /* Debug Menu action for TipKit */
 "debugMenu.resetTipKitData" = "לאפס נתונים";
+
+/* Debug Menu section title */
+"debugMenu.section.caches" = "מטמונים";
 
 /* Debug Menu section title */
 "debugMenu.section.logging" = "רישום";
@@ -9062,6 +9139,9 @@ Example: Reply to Pamela Nguyen */
 
 /* Last 12 weeks (84 days) date range */
 "jetpackStats.calendar.last12Weeks" = "12 השבועות האחרונים";
+
+/* Last 14 days date range */
+"jetpackStats.calendar.last14Days" = "14 הימים האחרונים";
 
 /* Last 28 days date range */
 "jetpackStats.calendar.last28Days" = "28 הימים האחרונים";
@@ -10776,6 +10856,9 @@ Example: Reply to Pamela Nguyen */
 /* Section header for More Options in Post Settings. Should use the same translation as core WP. */
 "postSettings.moreOptions.header" = "אפשרויות נוספות";
 
+/* The title of the Post Settings screen for custom post types. %1$@ is the post type name. */
+"postSettings.navigationTitle.customPostType" = "הגדרות %1$@";
+
 /* The title of the Page Settings screen. */
 "postSettings.navigationTitle.page" = "הגדרות עמוד";
 
@@ -10832,6 +10915,9 @@ Example: Reply to Pamela Nguyen */
 
 /* Placeholder value for a publishing date in the prepublishing sheet when the date is not selected */
 "postSettings.publishDateImmediately" = "מייד";
+
+/* Error message shown when saving post settings via REST API fails */
+"postSettings.saveFailed.message" = "שמירת השינויים נכשלה";
 
 /* Section header for General settings in Post Settings */
 "postSettings.section.general" = "כללי";
@@ -10908,6 +10994,9 @@ Example: Reply to Pamela Nguyen */
 /* Navigation bar title of the Post Stats screen */
 "postStats.title" = "נתונים סטטיסטיים של הפוסט";
 
+/* Post status title used in different contexts */
+"postStatus.any.title" = "הכול";
+
 /* Post status title */
 "postStatus.deleted.details" = "נמחק לצמיתות";
 
@@ -10917,35 +11006,35 @@ Example: Reply to Pamela Nguyen */
 /* Post status details */
 "postStatus.draft.details" = "לא מוכן לפרסום";
 
-/* Post status title */
+/* Post status title used in different contexts */
 "postStatus.draft.title" = "טיוטה";
 
 /* Post status details */
 "postStatus.pending.details" = "בהמתנה לביקורת לפני הפרסום";
 
-/* Post status title */
+/* Post status title used in different contexts */
 "postStatus.pending.title" = "בהמתנה";
 
-/* Post status title */
+/* Post status title used in different contexts */
 "postStatus.private.title" = "פרטי";
 
 /* Post status details */
 "postStatus.published.details" = "זמין לכולם";
 
-/* Post status title */
+/* Post status title used in different contexts */
 "postStatus.published.title" = "פורסם";
 
 /* Post status details */
 "postStatus.scheduled.details" = "פרסום אוטומטי בתאריך שנבחר";
 
-/* Post status title */
+/* Post status title used in different contexts */
 "postStatus.scheduled.title" = "מתוזמן לפרסום";
 
 /* Post status title */
 "postStatus.trash.details" = "הפריט הועבר לפח אבל עדיין לא נמחק";
 
-/* Post status title */
-"postStatus.trash.title" = "הועבר לפח";
+/* Post status title used in different contexts */
+"postStatus.trash.title" = "פח";
 
 /* Button to add a new taxonomy term. %1$@ is the taxonomy name (e.g., 'tags', 'categories'). */
 "postTags.addTag" = "להוסיף %1$@";
@@ -11459,9 +11548,6 @@ Example: given a notice format "Following %@" and empty site name, this will be 
 /* Context menu action */
 "reader.postContextMenu.blockUser" = "לחסום את המשתמש";
 
-/* Context menu action (placeholder value when blog name not available – should never happen) */
-"reader.postContextMenu.blogDetails" = "פרטי הבלוג";
-
 /* Context menu action */
 "reader.postContextMenu.manageNotifications" = "ניהול הודעות";
 
@@ -11478,9 +11564,6 @@ Example: given a notice format "Following %@" and empty site name, this will be 
 "reader.postContextMenu.reportUser" = "לדווח על המשתמש";
 
 /* Context menu action */
-"reader.postContextMenu.showBlog" = "מעבר לבלוג";
-
-/* Context menu action */
 "reader.postContextMenu.summarize" = "לסכם";
 
 /* Context menu action to translate post content */
@@ -11488,6 +11571,9 @@ Example: given a notice format "Following %@" and empty site name, this will be 
 
 /* Context menu action */
 "reader.postContextMenu.viewInBrowser" = "לפתוח בדפדפן";
+
+/* Context menu action */
+"reader.postContextMenu.viewSite" = "להציג אתר";
 
 /* Reader post details view placeholder when blog name not avail */
 "reader.postDetails.blog" = "בלוג";
@@ -11884,6 +11970,9 @@ Example: given a notice format "Following %@" and empty site name, this will be 
 "shared.button.edit" = "לערוך";
 
 /* A shared button title used in different contexts */
+"shared.button.notNow" = "עכשיו עכשיו";
+
+/* A shared button title used in different contexts */
 "shared.button.ok" = "אישור";
 
 /* A shared button title used in different contexts */
@@ -12237,12 +12326,14 @@ Example: given a notice format "Following %@" and empty site name, this will be 
 /* Title for site switcher screen */
 "sitePicker.title" = "האתרים שלי";
 
-/* The plugin author displayed in the plugins list. The first argument is plugin author name
-   The plugin version displayed in the plugins list. The first argument is plugin version */
+/* The plugin author displayed in the plugins list. The first argument is plugin author name */
 "sitePluginsList.item.author" = "מאת %@";
 
 /* The message displayed when a plugin has no description */
 "sitePluginsList.item.noDescriptionAvailable" = "מחבר התוסף לא סיפק תיאור לתוסף זה.";
+
+/* The plugin version displayed in the plugins list. The first argument is plugin version */
+"sitePluginsList.item.version" = "גרסה: %@";
 
 /* Button to activate a plugin */
 "sitePluginsList.itemAction.activate" = "להפעיל";
