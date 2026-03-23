@@ -1,4 +1,4 @@
-* [*] Fix an issue Social Sharing placeholder card showing unsupported services [#25336]
-* [*] Fix incorrect default Post Format in new posts [#25369]
-* [*] Posts and Pages are available to XMLRPC-disable sites [#25382]
-* [*] Activity Log: Show when actions were performed by an MCP agent [#25397]
+- The Activity Log now shows when your site was updated using AI agents.
+- In Post Settings, the Social Sharing card only shows platforms that the app supports.
+- New posts use the default post format instead of the standard version. You can update this format in your site settings.
+- If your site is self-hosted with XML-RPC disabled, you can see Posts and Pages in the app. That’s pretty important, if we do say so ourselves.
