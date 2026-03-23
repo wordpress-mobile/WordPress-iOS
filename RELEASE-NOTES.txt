@@ -1,5 +1,6 @@
 26.9
 -----
+* [*] All self-hosted sites now sign in using application passwords [#25424]
 
 
 26.8
