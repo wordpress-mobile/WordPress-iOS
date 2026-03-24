@@ -1,4 +1,3 @@
-import MobileCoreServices
 import UniformTypeIdentifiers
 import WordPressData
 
@@ -16,23 +15,13 @@ extension Blog {
     /// - returns: The collection of UTIs supported by this blog instance.
     ///
     var allowedTypeIdentifiers: [String] {
-        guard !allowedFileTypes.isEmpty else {
-            /**
-                NB: For self-hosted plans, this collection has been observed to be empty. In that
-                case, we fall back to base [System-Declared Uniform Type Identifiers](https://developer.apple.com/library/content/documentation/Miscellaneous/Reference/UTIRef/Articles/System-DeclaredUniformTypeIdentifiers.html).
-             */
-            return [UTType.content.identifier, UTType.zip.identifier]
+        let typeIdentifiers = allowedFileTypes.compactMap {
+            UTType(filenameExtension: $0)?.identifier
         }
 
-        var typeIdentifiers = [String]()
-        for pathExtension in allowedFileTypes {
-            let uti = UTType(filenameExtension: pathExtension)?.identifier
-
-            if let validUTI = uti {
-                typeIdentifiers.append(validUTI)
-            }
-        }
-
-        return typeIdentifiers
+        // Fall back to broad types when the blog has no known allowed file types,
+        // or none of the file extensions resolve to a known UTType. An empty list
+        // would cause the document picker to grey out all files.
+        return typeIdentifiers.isEmpty ? [UTType.content.identifier, UTType.zip.identifier] : typeIdentifiers
     }
 }
