@@ -371,6 +371,12 @@ private struct ForEachContent: View {
                                     Label(Strings.swipeDelete, systemImage: "trash.fill")
                                 }
                             }
+
+                            if fullPost.status == .publish, let url = URL(string: fullPost.link) {
+                                ShareLink(item: url, subject: Text(fullPost.title?.raw ?? "")) {
+                                    Label(SharedStrings.Button.share, systemImage: "square.and.arrow.up")
+                                }
+                            }
                         }
                         .overlay(alignment: .topTrailing) {
                             PostActionMenu(post: fullPost, viewModel: viewModel)
