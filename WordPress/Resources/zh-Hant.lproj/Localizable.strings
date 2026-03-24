@@ -1,4 +1,4 @@
-/* Translation-Revision-Date: 2026-02-27 09:55:24+0000 */
+/* Translation-Revision-Date: 2026-03-24 11:55:05+0000 */
 /* Plural-Forms: nplurals=1; plural=0; */
 /* Generator: GlotPress/4.0.3 */
 /* Language: zh_TW */
@@ -7016,6 +7016,9 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Button title for restoring a backup */
 "activityDetail.restore.button" = "還原";
 
+/* Shows the MCP client used for an activity. %1$@ is the MCP client name (e.g. Claude). */
+"activityDetail.section.agent" = "透過 %1$@";
+
 /* Section title for restore site actions */
 "activityDetail.section.restoreSite" = "還原網站";
 
@@ -7862,8 +7865,80 @@ Example: Reply to Pamela Nguyen */
 /* Error message shown when the post was modified by another user while editing */
 "customPostEditor.error.conflict.message" = "你嘗試儲存的文章已在此期間變更。";
 
+/* Menu action to promote a post with Blaze */
+"customPostList.action.blaze" = "使用 Blaze 進行宣傳";
+
+/* Menu action to view post comments */
+"customPostList.action.comments" = "留言數";
+
+/* Menu action to permanently delete a trashed post */
+"customPostList.action.deletePermanently" = "永久刪除";
+
+/* Menu action to change a post's status to draft */
+"customPostList.action.moveToDraft" = "移至草稿";
+
+/* Menu action to move a post to trash */
+"customPostList.action.moveToTrash" = "移至垃圾桶";
+
+/* Menu action to publish a draft or pending post */
+"customPostList.action.publish" = "發表";
+
+/* Menu action to open post settings */
+"customPostList.action.settings" = "設定";
+
+/* Menu action to view post statistics */
+"customPostList.action.stats" = "統計資料";
+
+/* Accessibility label for the author filter button in the custom post list */
+"customPostList.authorFilter.accessibilityLabel" = "作者篩選條件";
+
+/* Menu item to show posts from all authors in the custom post list */
+"customPostList.authorFilter.everyone" = "所有人";
+
+/* Menu item to show only the current user's posts in the custom post list */
+"customPostList.authorFilter.mine" = "屬於目前登入使用者";
+
+/* Accessibility value when the author filter shows posts from all authors */
+"customPostList.authorFilter.showingEveryone" = "顯示所有人的文章";
+
+/* Accessibility value when the author filter shows only the current user's posts */
+"customPostList.authorFilter.showingMine" = "只顯示我的文章";
+
+/* Badge label shown on the homepage row in the custom post list for pages */
+"customPostList.badge.homepage" = "首頁";
+
+/* Badge shown in the post list for sticky posts */
+"customPostList.badge.sticky" = "置頂";
+
+/* Message for the confirmation alert when permanently deleting a post */
+"customPostList.deleteConfirmation.message" = "此動作無法復原。";
+
+/* Title for the confirmation alert when permanently deleting a post */
+"customPostList.deleteConfirmation.title" = "是否要永久刪除？";
+
 /* Empty state message when no custom posts exist. %1$@ is the post type name (e.g., 'Podcasts', 'Products'). */
 "customPostList.emptyState.message" = "沒有 %1$@";
+
+/* Message for the confirmation alert when trashing a published post */
+"customPostList.trashConfirmation.message" = "這篇文章已發表，將向訪客顯示。 你確定要移至垃圾桶？";
+
+/* Title for the confirmation alert when trashing a published post */
+"customPostList.trashConfirmation.title" = "要移至垃圾桶嗎？";
+
+/* Placeholder title for posts without a title */
+"customPostList.untitled" = "(無標題)";
+
+/* Title for the parent page picker screen for custom post types */
+"customPostParentPicker.title" = "上層頁面";
+
+/* Option to set a post as top level (no parent) */
+"customPostParentPicker.topLevel" = "最上層";
+
+/* Description for the top level option in the parent page picker, indicating this page will have no parent */
+"customPostParentPicker.topLevel.description" = "沒有「家長」頁面";
+
+/* Tab title for showing all posts regardless of status */
+"customPostTab.all" = "全部";
 
 /* Tab title for draft posts */
 "customPostTab.drafts" = "草稿";
@@ -8027,6 +8102,9 @@ Example: Reply to Pamela Nguyen */
 /* Boolean User Defaults Debug Menu screen title */
 "debugMenu.booleanUserDefaults.title" = "使用者預設布林值";
 
+/* Debug Menu label for image cache size */
+"debugMenu.caches.imageCache" = "圖片快取";
+
 /* Feature flags menu item */
 "debugMenu.featureFlags" = "功能旗標";
 
@@ -8066,6 +8144,9 @@ Example: Reply to Pamela Nguyen */
 
 /* Debug Menu action for TipKit */
 "debugMenu.resetTipKitData" = "重設資料";
+
+/* Debug Menu section title */
+"debugMenu.section.caches" = "快取";
 
 /* Debug Menu section title */
 "debugMenu.section.logging" = "記錄";
@@ -9055,6 +9136,9 @@ Example: Reply to Pamela Nguyen */
 
 /* Last 12 weeks (84 days) date range */
 "jetpackStats.calendar.last12Weeks" = "過去 12 週";
+
+/* Last 14 days date range */
+"jetpackStats.calendar.last14Days" = "過去 14 天";
 
 /* Last 28 days date range */
 "jetpackStats.calendar.last28Days" = "過去 28 天";
@@ -10778,6 +10862,9 @@ Example: Reply to Pamela Nguyen */
 /* Section header for More Options in Post Settings. Should use the same translation as core WP. */
 "postSettings.moreOptions.header" = "更多選項";
 
+/* The title of the Post Settings screen for custom post types. %1$@ is the post type name. */
+"postSettings.navigationTitle.customPostType" = "「%1$@」設定";
+
 /* The title of the Page Settings screen. */
 "postSettings.navigationTitle.page" = "頁面設定";
 
@@ -10831,6 +10918,9 @@ Example: Reply to Pamela Nguyen */
 
 /* Placeholder value for a publishing date in the prepublishing sheet when the date is not selected */
 "postSettings.publishDateImmediately" = "立即";
+
+/* Error message shown when saving post settings via REST API fails */
+"postSettings.saveFailed.message" = "無法儲存變更";
 
 /* Section header for General settings in Post Settings */
 "postSettings.section.general" = "一般";
@@ -10907,6 +10997,9 @@ Example: Reply to Pamela Nguyen */
 /* Navigation bar title of the Post Stats screen */
 "postStats.title" = "文章統計資料";
 
+/* Post status title used in different contexts */
+"postStatus.any.title" = "任何";
+
 /* Post status title */
 "postStatus.deleted.details" = "已永久刪除";
 
@@ -10942,6 +11035,9 @@ Example: Reply to Pamela Nguyen */
 
 /* Post status title */
 "postStatus.trash.details" = "已移至垃圾桶但尚未刪除";
+
+/* Post status title used in different contexts */
+"postStatus.trash.title" = "垃圾桶";
 
 /* Button to add a new taxonomy term. %1$@ is the taxonomy name (e.g., 'tags', 'categories'). */
 "postTags.addTag" = "新增「%1$@」";
@@ -11479,6 +11575,9 @@ Example: given a notice format "Following %@" and empty site name, this will be 
 /* Context menu action */
 "reader.postContextMenu.viewInBrowser" = "在瀏覽器中檢視";
 
+/* Context menu action */
+"reader.postContextMenu.viewSite" = "檢視網站";
+
 /* Reader post details view placeholder when blog name not avail */
 "reader.postDetails.blog" = "網誌";
 
@@ -11871,6 +11970,9 @@ Example: given a notice format "Following %@" and empty site name, this will be 
 "shared.button.edit" = "編輯";
 
 /* A shared button title used in different contexts */
+"shared.button.notNow" = "立即";
+
+/* A shared button title used in different contexts */
 "shared.button.ok" = "確定";
 
 /* A shared button title used in different contexts */
@@ -12229,6 +12331,9 @@ Example: given a notice format "Following %@" and empty site name, this will be 
 
 /* The message displayed when a plugin has no description */
 "sitePluginsList.item.noDescriptionAvailable" = "外掛程式作者未提供此外掛程式的說明。";
+
+/* The plugin version displayed in the plugins list. The first argument is plugin version */
+"sitePluginsList.item.version" = "版本：%@";
 
 /* Button to activate a plugin */
 "sitePluginsList.itemAction.activate" = "啟用";
@@ -12869,15 +12974,6 @@ Example: given a notice format "Following %@" and empty site name, this will be 
 
 /* Title for the time zone selector */
 "timeZoneSelector.title" = "時區";
-
-/* Action button title to enable new stats from tip */
-"tips.newStats.action" = "立即啟用";
-
-/* Tip for new stats feature */
-"tips.newStats.message" = "體驗外觀時尚且效能強大的統計功能新面貌。 隨時可以切換回原本的介面。";
-
-/* Tip for new stats feature */
-"tips.newStats.title" = "試用新版統計功能";
 
 /* Tip for sidebar */
 "tips.sidebar.message" = "向右滑動即可存取網站、閱讀器、通知和個人檔案。";

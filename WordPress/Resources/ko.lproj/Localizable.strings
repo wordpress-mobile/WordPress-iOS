@@ -1,4 +1,4 @@
-/* Translation-Revision-Date: 2026-02-26 09:56:42+0000 */
+/* Translation-Revision-Date: 2026-03-24 09:58:56+0000 */
 /* Plural-Forms: nplurals=1; plural=0; */
 /* Generator: GlotPress/4.0.3 */
 /* Language: ko_KR */
@@ -7025,6 +7025,9 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Button title for restoring a backup */
 "activityDetail.restore.button" = "복원";
 
+/* Shows the MCP client used for an activity. %1$@ is the MCP client name (e.g. Claude). */
+"activityDetail.section.agent" = "%1$@을(를) 통해";
+
 /* Section title for restore site actions */
 "activityDetail.section.restoreSite" = "사이트 복원";
 
@@ -7883,8 +7886,80 @@ Example: Reply to Pamela Nguyen */
 /* Error message shown when the post was modified by another user while editing */
 "customPostEditor.error.conflict.message" = "저장하려는 글이 그 사이에 변경되었습니다.";
 
+/* Menu action to promote a post with Blaze */
+"customPostList.action.blaze" = "Blaze로 홍보";
+
+/* Menu action to view post comments */
+"customPostList.action.comments" = "댓글";
+
+/* Menu action to permanently delete a trashed post */
+"customPostList.action.deletePermanently" = "영구 삭제";
+
+/* Menu action to change a post's status to draft */
+"customPostList.action.moveToDraft" = "임시글로 이동";
+
+/* Menu action to move a post to trash */
+"customPostList.action.moveToTrash" = "휴지통으로 이동";
+
+/* Menu action to publish a draft or pending post */
+"customPostList.action.publish" = "발행";
+
+/* Menu action to open post settings */
+"customPostList.action.settings" = "설정";
+
+/* Menu action to view post statistics */
+"customPostList.action.stats" = "통계";
+
+/* Accessibility label for the author filter button in the custom post list */
+"customPostList.authorFilter.accessibilityLabel" = "글쓴이 필터";
+
+/* Menu item to show posts from all authors in the custom post list */
+"customPostList.authorFilter.everyone" = "모든 사람";
+
+/* Menu item to show only the current user's posts in the custom post list */
+"customPostList.authorFilter.mine" = "내 것";
+
+/* Accessibility value when the author filter shows posts from all authors */
+"customPostList.authorFilter.showingEveryone" = "모든 사람의 글 표시";
+
+/* Accessibility value when the author filter shows only the current user's posts */
+"customPostList.authorFilter.showingMine" = "내 글만 표시";
+
+/* Badge label shown on the homepage row in the custom post list for pages */
+"customPostList.badge.homepage" = "홈페이지";
+
+/* Badge shown in the post list for sticky posts */
+"customPostList.badge.sticky" = "붙박이";
+
+/* Message for the confirmation alert when permanently deleting a post */
+"customPostList.deleteConfirmation.message" = "이 작업은 취소할 수 없습니다.";
+
+/* Title for the confirmation alert when permanently deleting a post */
+"customPostList.deleteConfirmation.title" = "영구적으로 삭제할까요?";
+
 /* Empty state message when no custom posts exist. %1$@ is the post type name (e.g., 'Podcasts', 'Products'). */
 "customPostList.emptyState.message" = "%1$@ 없음";
+
+/* Message for the confirmation alert when trashing a published post */
+"customPostList.trashConfirmation.message" = "이 글은 작성되어 방문자에게 표시됩니다. 이 글을 휴지통으로 이동하시겠어요?";
+
+/* Title for the confirmation alert when trashing a published post */
+"customPostList.trashConfirmation.title" = "휴지통으로 이동";
+
+/* Placeholder title for posts without a title */
+"customPostList.untitled" = "(제목 없음)";
+
+/* Title for the parent page picker screen for custom post types */
+"customPostParentPicker.title" = "상위 페이지";
+
+/* Option to set a post as top level (no parent) */
+"customPostParentPicker.topLevel" = "최상위";
+
+/* Description for the top level option in the parent page picker, indicating this page will have no parent */
+"customPostParentPicker.topLevel.description" = "부모 페이지 없음";
+
+/* Tab title for showing all posts regardless of status */
+"customPostTab.all" = "전체";
 
 /* Tab title for draft posts */
 "customPostTab.drafts" = "임시글";
@@ -8048,6 +8123,9 @@ Example: Reply to Pamela Nguyen */
 /* Boolean User Defaults Debug Menu screen title */
 "debugMenu.booleanUserDefaults.title" = "Boolean 사용자 기본값";
 
+/* Debug Menu label for image cache size */
+"debugMenu.caches.imageCache" = "이미지 캐시";
+
 /* Feature flags menu item */
 "debugMenu.featureFlags" = "기능 플래그";
 
@@ -8087,6 +8165,9 @@ Example: Reply to Pamela Nguyen */
 
 /* Debug Menu action for TipKit */
 "debugMenu.resetTipKitData" = "데이터 재설정";
+
+/* Debug Menu section title */
+"debugMenu.section.caches" = "캐시";
 
 /* Debug Menu section title */
 "debugMenu.section.logging" = "로깅";
@@ -9076,6 +9157,9 @@ Example: Reply to Pamela Nguyen */
 
 /* Last 12 weeks (84 days) date range */
 "jetpackStats.calendar.last12Weeks" = "최근 12주";
+
+/* Last 14 days date range */
+"jetpackStats.calendar.last14Days" = "최근 14일";
 
 /* Last 28 days date range */
 "jetpackStats.calendar.last28Days" = "최근 28일";
@@ -10796,6 +10880,9 @@ Example: Reply to Pamela Nguyen */
 /* Section header for More Options in Post Settings. Should use the same translation as core WP. */
 "postSettings.moreOptions.header" = "추가 옵션";
 
+/* The title of the Post Settings screen for custom post types. %1$@ is the post type name. */
+"postSettings.navigationTitle.customPostType" = "%1$@ 설정";
+
 /* The title of the Page Settings screen. */
 "postSettings.navigationTitle.page" = "페이지 설정";
 
@@ -10855,6 +10942,9 @@ Example: Reply to Pamela Nguyen */
 
 /* Placeholder value for a publishing date in the prepublishing sheet when the date is not selected */
 "postSettings.publishDateImmediately" = "즉시";
+
+/* Error message shown when saving post settings via REST API fails */
+"postSettings.saveFailed.message" = "변경 사항 저장 실패";
 
 /* Section header for General settings in Post Settings */
 "postSettings.section.general" = "일반";
@@ -10931,6 +11021,9 @@ Example: Reply to Pamela Nguyen */
 /* Navigation bar title of the Post Stats screen */
 "postStats.title" = "게시물 통계";
 
+/* Post status title used in different contexts */
+"postStatus.any.title" = "모두";
+
 /* Post status title */
 "postStatus.deleted.details" = "영구적으로 삭제됨";
 
@@ -10969,6 +11062,9 @@ Example: Reply to Pamela Nguyen */
 
 /* Post status title */
 "postStatus.trash.details" = "휴지통으로 이동되었지만, 아직 삭제 안 됨";
+
+/* Post status title used in different contexts */
+"postStatus.trash.title" = "휴지통";
 
 /* Button to add a new taxonomy term. %1$@ is the taxonomy name (e.g., 'tags', 'categories'). */
 "postTags.addTag" = "%1$@ 추가";
@@ -11509,6 +11605,9 @@ Example: given a notice format "Following %@" and empty site name, this will be 
 /* Context menu action */
 "reader.postContextMenu.viewInBrowser" = "브라우저로 보기";
 
+/* Context menu action */
+"reader.postContextMenu.viewSite" = "사이트 보기";
+
 /* Reader post details view placeholder when blog name not avail */
 "reader.postDetails.blog" = "블로그";
 
@@ -11919,6 +12018,9 @@ Feel free to replace it with other bracket types that you think looks better for
 "shared.button.edit" = "편집";
 
 /* A shared button title used in different contexts */
+"shared.button.notNow" = "지금";
+
+/* A shared button title used in different contexts */
 "shared.button.ok" = "확인";
 
 /* A shared button title used in different contexts */
@@ -12277,6 +12379,9 @@ Feel free to replace it with other bracket types that you think looks better for
 
 /* The message displayed when a plugin has no description */
 "sitePluginsList.item.noDescriptionAvailable" = "플러그인 제작자가 이 플러그인에 대한 설명을 제공하지 않았습니다.";
+
+/* The plugin version displayed in the plugins list. The first argument is plugin version */
+"sitePluginsList.item.version" = "버전: %@";
 
 /* Button to activate a plugin */
 "sitePluginsList.itemAction.activate" = "활성화";
@@ -12923,15 +13028,6 @@ Feel free to replace it with other bracket types that you think looks better for
 
 /* Title for the time zone selector */
 "timeZoneSelector.title" = "시간대";
-
-/* Action button title to enable new stats from tip */
-"tips.newStats.action" = "지금 활성화";
-
-/* Tip for new stats feature */
-"tips.newStats.message" = "세련되고 강력한 새 통계를 경험해 보세요. 언제든지 다시 전환할 수 있습니다.";
-
-/* Tip for new stats feature */
-"tips.newStats.title" = "새 통계 체험";
 
 /* Tip for sidebar */
 "tips.sidebar.message" = "오른쪽으로 살짝 밀어 사이트, 뉴스피드, 알림, 프로필을 이용하세요.";

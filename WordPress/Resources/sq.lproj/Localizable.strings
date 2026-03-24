@@ -12900,15 +12900,6 @@ Feel free to replace it with other bracket types that you think looks better for
 /* Title for the time zone selector */
 "timeZoneSelector.title" = "Zonë Kohore";
 
-/* Action button title to enable new stats from tip */
-"tips.newStats.action" = "Aktivizojeni Tani";
-
-/* Tip for new stats feature */
-"tips.newStats.message" = "Shijoni statistika të reja të hajthme dhe të fuqishme. Rikthehuni te të vjetrat kur të doni.";
-
-/* Tip for new stats feature */
-"tips.newStats.title" = "Provoni Statistikat e Reja";
-
 /* Tip for sidebar */
 "tips.sidebar.message" = "Fërkojeni për djathtas që të përdorni sajtet tuaj, Lexuesin, njoftime dhe profilin";
 

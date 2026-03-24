@@ -1,4 +1,4 @@
-/* Translation-Revision-Date: 2026-03-20 14:23:59+0000 */
+/* Translation-Revision-Date: 2026-03-24 10:13:49+0000 */
 /* Plural-Forms: nplurals=3; plural=(n == 1) ? 0 : ((n >= 2 && n <= 4) ? 1 : 2); */
 /* Generator: GlotPress/4.0.3 */
 /* Language: cs_CZ */
@@ -10199,6 +10199,42 @@ Example: Reply to Pamela Nguyen */
 /* Menu title for the visit site option */
 "mySite.siteActions.visitSite" = "Navštívit web";
 
+/* Button to confirm to switch to the New Stats announcement screen */
+"newStats.announcement.continueButton" = "Začít";
+
+/* Disclosure at the bottom of the New Stats announcement screen, informing users they can opt out */
+"newStats.announcement.disclosure" = "Ještě nejste připraveni na změnu? Funkci „Nové statistiky“ můžete deaktivovat v nabídce „Více“ na záložce „Statistiky“.";
+
+/* Feature description: navigation moved to the bottom for thumb-friendly access */
+"newStats.announcement.feature.bottomNav.description" = "Navigační prvky a výběr data se nyní nacházejí ve spodní části obrazovky – přesně tam, kde máte palec.";
+
+/* Feature title: navigation moved to the bottom */
+"newStats.announcement.feature.bottomNav.title" = "Snadnější dostupnost";
+
+/* Feature description: flexible date picker with presets, custom ranges, and comparisons */
+"newStats.announcement.feature.datePicker.description" = "Vyberte si z běžných předvoleb nebo nastavte vlastní časové rozmezí s porovnávacím obdobím – vše jediným klepnutím.";
+
+/* Feature title: flexible date picker */
+"newStats.announcement.feature.datePicker.title" = "Jakékoli období, jakýkoli rozsah";
+
+/* Feature description: feature parity with the web version of Stats */
+"newStats.announcement.feature.parity.description" = "Zařízení, UTM, lokality, WordAds – stejná data, jaká získáváte na WordPress.com.";
+
+/* Feature title: feature parity with the web version of Stats */
+"newStats.announcement.feature.parity.title" = "Na stejné úrovni jako web";
+
+/* Feature description: trends shown for all metrics with comparison to previous period */
+"newStats.announcement.feature.trends.description" = "Každý ukazatel zobrazuje, jak se vyvíjí ve srovnání s předchozím obdobím, takže vždy víte, zda rostete.";
+
+/* Feature title: trends visible for all metrics */
+"newStats.announcement.feature.trends.title" = "Přehled trendů";
+
+/* Subtitle for the New Stats announcement screen */
+"newStats.announcement.subtitle" = "Lepší způsob, jak porozumět výkonu vašeho webu – nyní zapnutý ve výchozím nastavení.";
+
+/* Title for the New Stats announcement screen */
+"newStats.announcement.title" = "Nové statistiky";
+
 /* A no results message displayed on the atomic logs screen. */
 "noLogs.empty" = "Žádné záznamy v tomto časovém rozsahu";
 
@@ -13049,15 +13085,6 @@ Feel free to replace it with other bracket types that you think looks better for
 
 /* Title for the time zone selector */
 "timeZoneSelector.title" = "Časové pásmo";
-
-/* Action button title to enable new stats from tip */
-"tips.newStats.action" = "Povolit nyní";
-
-/* Tip for new stats feature */
-"tips.newStats.message" = "Vyzkoušejte nové elegantní a výkonné statistiky. Kdykoli se můžete vrátit zpět.";
-
-/* Tip for new stats feature */
-"tips.newStats.title" = "Vyzkoušet nové statistiky";
 
 /* Tip for sidebar */
 "tips.sidebar.message" = "Přejeďte doprava pro přístup k vašim webům, Čtečce, oznámením a profilu";

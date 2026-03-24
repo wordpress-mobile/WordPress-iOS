@@ -1,4 +1,4 @@
-/* Translation-Revision-Date: 2026-02-26 21:47:08+0000 */
+/* Translation-Revision-Date: 2026-03-24 11:58:27+0000 */
 /* Plural-Forms: nplurals=2; plural=n != 1; */
 /* Generator: GlotPress/4.0.3 */
 /* Language: it */
@@ -7022,6 +7022,9 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Button title for restoring a backup */
 "activityDetail.restore.button" = "Ripristina";
 
+/* Shows the MCP client used for an activity. %1$@ is the MCP client name (e.g. Claude). */
+"activityDetail.section.agent" = "tramite %1$@";
+
 /* Section title for restore site actions */
 "activityDetail.section.restoreSite" = "Ripristina sito";
 
@@ -7871,6 +7874,78 @@ Example: Reply to Pamela Nguyen */
 /* Error message shown when the post was modified by another user while editing */
 "customPostEditor.error.conflict.message" = "L'articolo che stai cercando di salvare è stato modificato nel frattempo.";
 
+/* Menu action to promote a post with Blaze */
+"customPostList.action.blaze" = "Promuovi con Blaze";
+
+/* Menu action to view post comments */
+"customPostList.action.comments" = "Commenti";
+
+/* Menu action to permanently delete a trashed post */
+"customPostList.action.deletePermanently" = "Elimina in modo permanente";
+
+/* Menu action to change a post's status to draft */
+"customPostList.action.moveToDraft" = "Sposta in bozze";
+
+/* Menu action to move a post to trash */
+"customPostList.action.moveToTrash" = "Sposta nel cestino";
+
+/* Menu action to publish a draft or pending post */
+"customPostList.action.publish" = "Pubblica";
+
+/* Menu action to open post settings */
+"customPostList.action.settings" = "Impostazioni";
+
+/* Menu action to view post statistics */
+"customPostList.action.stats" = "Statistiche";
+
+/* Accessibility label for the author filter button in the custom post list */
+"customPostList.authorFilter.accessibilityLabel" = "Filtro autore";
+
+/* Menu item to show posts from all authors in the custom post list */
+"customPostList.authorFilter.everyone" = "Tutti";
+
+/* Menu item to show only the current user's posts in the custom post list */
+"customPostList.authorFilter.mine" = "Le tue immagini";
+
+/* Accessibility value when the author filter shows posts from all authors */
+"customPostList.authorFilter.showingEveryone" = "Mostrando i post di tutti";
+
+/* Accessibility value when the author filter shows only the current user's posts */
+"customPostList.authorFilter.showingMine" = "Mostrando solo i miei post";
+
+/* Badge label shown on the homepage row in the custom post list for pages */
+"customPostList.badge.homepage" = "Home page";
+
+/* Badge shown in the post list for sticky posts */
+"customPostList.badge.sticky" = "In evidenza";
+
+/* Message for the confirmation alert when permanently deleting a post */
+"customPostList.deleteConfirmation.message" = "Questa azione non può essere annullata.";
+
+/* Title for the confirmation alert when permanently deleting a post */
+"customPostList.deleteConfirmation.title" = "Eliminare in modo permanente?";
+
+/* Message for the confirmation alert when trashing a published post */
+"customPostList.trashConfirmation.message" = "Questo articolo è pubblicato e visibile ai visitatori. Desideri spostarlo nel cestino?";
+
+/* Title for the confirmation alert when trashing a published post */
+"customPostList.trashConfirmation.title" = "Spostare nel cestino?";
+
+/* Placeholder title for posts without a title */
+"customPostList.untitled" = "(senza titolo)";
+
+/* Title for the parent page picker screen for custom post types */
+"customPostParentPicker.title" = "Pagina principale";
+
+/* Option to set a post as top level (no parent) */
+"customPostParentPicker.topLevel" = "Livello superiore";
+
+/* Description for the top level option in the parent page picker, indicating this page will have no parent */
+"customPostParentPicker.topLevel.description" = "Nessuna pagina principale";
+
+/* Tab title for showing all posts regardless of status */
+"customPostTab.all" = "Tutti";
+
 /* Tab title for draft posts */
 "customPostTab.drafts" = "Bozze";
 
@@ -8033,6 +8108,9 @@ Example: Reply to Pamela Nguyen */
 /* Boolean User Defaults Debug Menu screen title */
 "debugMenu.booleanUserDefaults.title" = "Predefiniti utente booleano";
 
+/* Debug Menu label for image cache size */
+"debugMenu.caches.imageCache" = "Cache delle immagini";
+
 /* Feature flags menu item */
 "debugMenu.featureFlags" = "Flag funzionalità";
 
@@ -8072,6 +8150,9 @@ Example: Reply to Pamela Nguyen */
 
 /* Debug Menu action for TipKit */
 "debugMenu.resetTipKitData" = "Ripristina i dati";
+
+/* Debug Menu section title */
+"debugMenu.section.caches" = "Cache";
 
 /* Debug Menu section title */
 "debugMenu.section.logging" = "Accesso";
@@ -9055,6 +9136,9 @@ Example: Reply to Pamela Nguyen */
 
 /* Last 12 weeks (84 days) date range */
 "jetpackStats.calendar.last12Weeks" = "Ultime 12 settimane";
+
+/* Last 14 days date range */
+"jetpackStats.calendar.last14Days" = "Ultimi 14 giorni";
 
 /* Last 28 days date range */
 "jetpackStats.calendar.last28Days" = "Ultimi 28 giorni";
@@ -10739,6 +10823,9 @@ Example: Reply to Pamela Nguyen */
 /* Section header for More Options in Post Settings. Should use the same translation as core WP. */
 "postSettings.moreOptions.header" = "Altre opzioni";
 
+/* The title of the Post Settings screen for custom post types. %1$@ is the post type name. */
+"postSettings.navigationTitle.customPostType" = "Impostazioni %1$@";
+
 /* The title of the Page Settings screen. */
 "postSettings.navigationTitle.page" = "Impostazioni pagina";
 
@@ -10792,6 +10879,9 @@ Example: Reply to Pamela Nguyen */
 
 /* Placeholder value for a publishing date in the prepublishing sheet when the date is not selected */
 "postSettings.publishDateImmediately" = "Immediatamente";
+
+/* Error message shown when saving post settings via REST API fails */
+"postSettings.saveFailed.message" = "Impossibile salvare le modifiche";
 
 /* Section header for General settings in Post Settings */
 "postSettings.section.general" = "Generale";
@@ -10868,6 +10958,9 @@ Example: Reply to Pamela Nguyen */
 /* Navigation bar title of the Post Stats screen */
 "postStats.title" = "Statistiche dell'articolo";
 
+/* Post status title used in different contexts */
+"postStatus.any.title" = "Qualsiasi";
+
 /* Post status title */
 "postStatus.deleted.details" = "Eliminato in modo permanente";
 
@@ -10903,6 +10996,9 @@ Example: Reply to Pamela Nguyen */
 
 /* Post status title */
 "postStatus.trash.details" = "Cestinato ma non ancora eliminato";
+
+/* Post status title used in different contexts */
+"postStatus.trash.title" = "Cestino";
 
 /* Button to add a new taxonomy term. %1$@ is the taxonomy name (e.g., 'tags', 'categories'). */
 "postTags.addTag" = "Aggiungi %1$@";
@@ -11443,6 +11539,9 @@ Example: given a notice format "Following %@" and empty site name, this will be 
 /* Context menu action */
 "reader.postContextMenu.viewInBrowser" = "Apri nel browser";
 
+/* Context menu action */
+"reader.postContextMenu.viewSite" = "Visualizza il sito";
+
 /* Button title */
 "reader.postDetails.viewFullPost" = "Visualizza l'articolo completo";
 
@@ -11841,6 +11940,9 @@ Feel free to replace it with other bracket types that you think looks better for
 "shared.button.edit" = "Modifica";
 
 /* A shared button title used in different contexts */
+"shared.button.notNow" = "Ora";
+
+/* A shared button title used in different contexts */
 "shared.button.remove" = "Elimina";
 
 /* A shared button title used in different contexts */
@@ -12193,6 +12295,9 @@ Feel free to replace it with other bracket types that you think looks better for
 
 /* The message displayed when a plugin has no description */
 "sitePluginsList.item.noDescriptionAvailable" = "L'autore del plugin non ha fornito una descrizione per questo plugin.";
+
+/* The plugin version displayed in the plugins list. The first argument is plugin version */
+"sitePluginsList.item.version" = "Versione: %@";
 
 /* Button to activate a plugin */
 "sitePluginsList.itemAction.activate" = "Attiva";
@@ -12833,15 +12938,6 @@ Feel free to replace it with other bracket types that you think looks better for
 
 /* Title for the time zone selector */
 "timeZoneSelector.title" = "Fuso orario";
-
-/* Action button title to enable new stats from tip */
-"tips.newStats.action" = "Attiva ora";
-
-/* Tip for new stats feature */
-"tips.newStats.message" = "Scopri le nuove statistiche, eleganti e potenti. Puoi tornare alla versione precedente quando vuoi.";
-
-/* Tip for new stats feature */
-"tips.newStats.title" = "Prova le nuove Statistiche";
 
 /* Tip for sidebar */
 "tips.sidebar.message" = "Scorri verso destra per accedere ai tuoi siti, al Reader, alle notifiche e al tuo profilo";

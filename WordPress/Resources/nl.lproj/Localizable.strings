@@ -1,4 +1,4 @@
-/* Translation-Revision-Date: 2026-03-19 16:15:23+0000 */
+/* Translation-Revision-Date: 2026-03-24 12:38:56+0000 */
 /* Plural-Forms: nplurals=2; plural=n != 1; */
 /* Generator: GlotPress/4.0.3 */
 /* Language: nl */
@@ -7025,6 +7025,9 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Button title for restoring a backup */
 "activityDetail.restore.button" = "Terugzetten";
 
+/* Shows the MCP client used for an activity. %1$@ is the MCP client name (e.g. Claude). */
+"activityDetail.section.agent" = "via %1$@";
+
 /* Section title for restore site actions */
 "activityDetail.section.restoreSite" = "Site terugzetten";
 
@@ -7883,8 +7886,80 @@ Example: Reply to Pamela Nguyen */
 /* Error message shown when the post was modified by another user while editing */
 "customPostEditor.error.conflict.message" = "Het bericht dat je probeert op te slaan is inmiddels gewijzigd.";
 
+/* Menu action to promote a post with Blaze */
+"customPostList.action.blaze" = "Promoten met Blaze";
+
+/* Menu action to view post comments */
+"customPostList.action.comments" = "Reacties";
+
+/* Menu action to permanently delete a trashed post */
+"customPostList.action.deletePermanently" = "Permanent verwijderen";
+
+/* Menu action to change a post's status to draft */
+"customPostList.action.moveToDraft" = "Naar concept verplaatsen";
+
+/* Menu action to move a post to trash */
+"customPostList.action.moveToTrash" = "Naar prullenbak verplaatsen";
+
+/* Menu action to publish a draft or pending post */
+"customPostList.action.publish" = "Publiceren";
+
+/* Menu action to open post settings */
+"customPostList.action.settings" = "Instellingen";
+
+/* Menu action to view post statistics */
+"customPostList.action.stats" = "Statistieken";
+
+/* Accessibility label for the author filter button in the custom post list */
+"customPostList.authorFilter.accessibilityLabel" = "Auteur filter";
+
+/* Menu item to show posts from all authors in the custom post list */
+"customPostList.authorFilter.everyone" = "Iedereen";
+
+/* Menu item to show only the current user's posts in the custom post list */
+"customPostList.authorFilter.mine" = "Mijn";
+
+/* Accessibility value when the author filter shows posts from all authors */
+"customPostList.authorFilter.showingEveryone" = "Berichten van iedereen worden getoond";
+
+/* Accessibility value when the author filter shows only the current user's posts */
+"customPostList.authorFilter.showingMine" = "Alleen mijn berichten worden weergeven";
+
+/* Badge label shown on the homepage row in the custom post list for pages */
+"customPostList.badge.homepage" = "Homepage";
+
+/* Badge shown in the post list for sticky posts */
+"customPostList.badge.sticky" = "Sticky";
+
+/* Message for the confirmation alert when permanently deleting a post */
+"customPostList.deleteConfirmation.message" = "Deze actie kan niet ongedaan worden gemaakt.";
+
+/* Title for the confirmation alert when permanently deleting a post */
+"customPostList.deleteConfirmation.title" = "Permanent verwijderen?";
+
 /* Empty state message when no custom posts exist. %1$@ is the post type name (e.g., 'Podcasts', 'Products'). */
 "customPostList.emptyState.message" = "Geen %1$@";
+
+/* Message for the confirmation alert when trashing a published post */
+"customPostList.trashConfirmation.message" = "Dit bericht is gepubliceerd en zichtbaar voor bezoekers. Weet je zeker dat je het naar de prullenbak wil verplaatsen?";
+
+/* Title for the confirmation alert when trashing a published post */
+"customPostList.trashConfirmation.title" = "Naar prullenbak verplaatsen?";
+
+/* Placeholder title for posts without a title */
+"customPostList.untitled" = "(geen titel)";
+
+/* Title for the parent page picker screen for custom post types */
+"customPostParentPicker.title" = "Hoofdpagina";
+
+/* Option to set a post as top level (no parent) */
+"customPostParentPicker.topLevel" = "Bovenste niveau";
+
+/* Description for the top level option in the parent page picker, indicating this page will have no parent */
+"customPostParentPicker.topLevel.description" = "Geen hoofdpagina";
+
+/* Tab title for showing all posts regardless of status */
+"customPostTab.all" = "Alle";
 
 /* Tab title for draft posts */
 "customPostTab.drafts" = "Concepten";
@@ -8048,6 +8123,9 @@ Example: Reply to Pamela Nguyen */
 /* Boolean User Defaults Debug Menu screen title */
 "debugMenu.booleanUserDefaults.title" = "Standaardwaarden gebruiker boolean";
 
+/* Debug Menu label for image cache size */
+"debugMenu.caches.imageCache" = "Afbeelding cache";
+
 /* Feature flags menu item */
 "debugMenu.featureFlags" = "Functie vlaggen";
 
@@ -8087,6 +8165,9 @@ Example: Reply to Pamela Nguyen */
 
 /* Debug Menu action for TipKit */
 "debugMenu.resetTipKitData" = "Gegevens resetten";
+
+/* Debug Menu section title */
+"debugMenu.section.caches" = "Caches";
 
 /* Debug Menu section title */
 "debugMenu.section.logging" = "Loggen";
@@ -9076,6 +9157,9 @@ Example: Reply to Pamela Nguyen */
 
 /* Last 12 weeks (84 days) date range */
 "jetpackStats.calendar.last12Weeks" = "Laatste 12 weken";
+
+/* Last 14 days date range */
+"jetpackStats.calendar.last14Days" = "Afgelopen 14 dagen";
 
 /* Last 28 days date range */
 "jetpackStats.calendar.last28Days" = "Laatste 28 dagen";
@@ -10115,6 +10199,42 @@ Example: Reply to Pamela Nguyen */
 /* Menu title for the visit site option */
 "mySite.siteActions.visitSite" = "Site bezoeken";
 
+/* Button to confirm to switch to the New Stats announcement screen */
+"newStats.announcement.continueButton" = "Ga aan de slag";
+
+/* Disclosure at the bottom of the New Stats announcement screen, informing users they can opt out */
+"newStats.announcement.disclosure" = "Nog niet klaar om over te schakelen? Je kunt Nieuwe statistieken uitschakelen via het menu Meer in de tab Statistieken.";
+
+/* Feature description: navigation moved to the bottom for thumb-friendly access */
+"newStats.announcement.feature.bottomNav.description" = "Navigatie en datumkiezer bevinden zich nu onderaan het scherm - precies waar je duim is.";
+
+/* Feature title: navigation moved to the bottom */
+"newStats.announcement.feature.bottomNav.title" = "Gemakkelijker bereikbaar";
+
+/* Feature description: flexible date picker with presets, custom ranges, and comparisons */
+"newStats.announcement.feature.datePicker.description" = "Uit veelgebruikte voorinstellingen of stel een aangepast datumbereik in met een vergelijkingsperiode - allemaal in één tik kiezen.";
+
+/* Feature title: flexible date picker */
+"newStats.announcement.feature.datePicker.title" = "Elke periode, elk bereik";
+
+/* Feature description: feature parity with the web version of Stats */
+"newStats.announcement.feature.parity.description" = "Apparaten, UTM, locaties, WordAds - dezelfde gegevens die je op WordPress.com krijgt.";
+
+/* Feature title: feature parity with the web version of Stats */
+"newStats.announcement.feature.parity.title" = "Gelijk aan het web";
+
+/* Feature description: trends shown for all metrics with comparison to previous period */
+"newStats.announcement.feature.trends.description" = "Elke metriek toont hoe het evolueert in vergelijking met de vorige periode, dus je weet altijd of je groeit.";
+
+/* Feature title: trends visible for all metrics */
+"newStats.announcement.feature.trends.title" = "Trends in één oogopslag";
+
+/* Subtitle for the New Stats announcement screen */
+"newStats.announcement.subtitle" = "Een betere manier om de prestaties van je site te begrijpen - nu standaard ingeschakeld.";
+
+/* Title for the New Stats announcement screen */
+"newStats.announcement.title" = "Nieuwe statistieken";
+
 /* A no results message displayed on the atomic logs screen. */
 "noLogs.empty" = "Geen loginvoeren in dit tijdbereik";
 
@@ -10817,6 +10937,9 @@ Example: Reply to Pamela Nguyen */
 /* Section header for More Options in Post Settings. Should use the same translation as core WP. */
 "postSettings.moreOptions.header" = "Meer opties";
 
+/* The title of the Post Settings screen for custom post types. %1$@ is the post type name. */
+"postSettings.navigationTitle.customPostType" = "%1$@ instellingen";
+
 /* The title of the Page Settings screen. */
 "postSettings.navigationTitle.page" = "Pagina instellingen";
 
@@ -10876,6 +10999,9 @@ Example: Reply to Pamela Nguyen */
 
 /* Placeholder value for a publishing date in the prepublishing sheet when the date is not selected */
 "postSettings.publishDateImmediately" = "Onmiddellijk";
+
+/* Error message shown when saving post settings via REST API fails */
+"postSettings.saveFailed.message" = "Opslaan wijzigingen mislukt";
 
 /* Section header for General settings in Post Settings */
 "postSettings.section.general" = "Algemeen";
@@ -10952,6 +11078,9 @@ Example: Reply to Pamela Nguyen */
 /* Navigation bar title of the Post Stats screen */
 "postStats.title" = "Berichtstatistieken";
 
+/* Post status title used in different contexts */
+"postStatus.any.title" = "Elke";
+
 /* Post status title */
 "postStatus.deleted.details" = "Permanent verwijderd";
 
@@ -10990,6 +11119,9 @@ Example: Reply to Pamela Nguyen */
 
 /* Post status title */
 "postStatus.trash.details" = "Naar prullenbak verplaatst maar nog niet verwijderd";
+
+/* Post status title used in different contexts */
+"postStatus.trash.title" = "Prullenbak";
 
 /* Button to add a new taxonomy term. %1$@ is the taxonomy name (e.g., 'tags', 'categories'). */
 "postTags.addTag" = "Toevoegen %1$@";
@@ -11530,6 +11662,9 @@ Example: given a notice format "Following %@" and empty site name, this will be 
 /* Context menu action */
 "reader.postContextMenu.viewInBrowser" = "In browser bekijken";
 
+/* Context menu action */
+"reader.postContextMenu.viewSite" = "Site bekijken";
+
 /* Reader post details view placeholder when blog name not avail */
 "reader.postDetails.blog" = "blog";
 
@@ -11940,6 +12075,9 @@ Feel free to replace it with other bracket types that you think looks better for
 "shared.button.edit" = "Bewerken";
 
 /* A shared button title used in different contexts */
+"shared.button.notNow" = "Nu";
+
+/* A shared button title used in different contexts */
 "shared.button.ok" = "OK";
 
 /* A shared button title used in different contexts */
@@ -12298,6 +12436,9 @@ Feel free to replace it with other bracket types that you think looks better for
 
 /* The message displayed when a plugin has no description */
 "sitePluginsList.item.noDescriptionAvailable" = "De plugin auteur heeft geen beschrijving voor deze plugin gegeven.";
+
+/* The plugin version displayed in the plugins list. The first argument is plugin version */
+"sitePluginsList.item.version" = "Versie: %@";
 
 /* Button to activate a plugin */
 "sitePluginsList.itemAction.activate" = "Activeren";
@@ -12944,15 +13085,6 @@ Feel free to replace it with other bracket types that you think looks better for
 
 /* Title for the time zone selector */
 "timeZoneSelector.title" = "Tijdzone";
-
-/* Action button title to enable new stats from tip */
-"tips.newStats.action" = "Nu inschakelen";
-
-/* Tip for new stats feature */
-"tips.newStats.message" = "Ervaar nieuwe strakke en krachtige statistieken. Schakel terug wanneer je wil.";
-
-/* Tip for new stats feature */
-"tips.newStats.title" = "Probeer nieuwe statistieken";
 
 /* Tip for sidebar */
 "tips.sidebar.message" = "Veeg naar rechts om toegang te krijgen tot je sites, Reader, meldingen en profiel";

@@ -1,4 +1,4 @@
-/* Translation-Revision-Date: 2026-03-22 05:32:08+0000 */
+/* Translation-Revision-Date: 2026-03-24 13:57:27+0000 */
 /* Plural-Forms: nplurals=2; plural=n != 1; */
 /* Generator: GlotPress/4.0.3 */
 /* Language: de */
@@ -7025,6 +7025,9 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Button title for restoring a backup */
 "activityDetail.restore.button" = "Wiederherstellen";
 
+/* Shows the MCP client used for an activity. %1$@ is the MCP client name (e.g. Claude). */
+"activityDetail.section.agent" = "über %1$@";
+
 /* Section title for restore site actions */
 "activityDetail.section.restoreSite" = "Website wiederherstellen";
 
@@ -7883,8 +7886,17 @@ Example: Reply to Pamela Nguyen */
 /* Error message shown when the post was modified by another user while editing */
 "customPostEditor.error.conflict.message" = "Der Beitrag, den du speichern möchtest, wurde in der Zwischenzeit geändert.";
 
+/* Menu action to promote a post with Blaze */
+"customPostList.action.blaze" = "Mit Blaze bewerben";
+
+/* Menu action to view post comments */
+"customPostList.action.comments" = "Kommentare";
+
 /* Menu action to permanently delete a trashed post */
 "customPostList.action.deletePermanently" = "Endgültig löschen";
+
+/* Menu action to change a post's status to draft */
+"customPostList.action.moveToDraft" = "In Entwurf verschieben";
 
 /* Menu action to move a post to trash */
 "customPostList.action.moveToTrash" = "In den Papierkorb verschieben";
@@ -7895,11 +7907,56 @@ Example: Reply to Pamela Nguyen */
 /* Menu action to open post settings */
 "customPostList.action.settings" = "Einstellungen";
 
+/* Menu action to view post statistics */
+"customPostList.action.stats" = "Statistiken";
+
+/* Accessibility label for the author filter button in the custom post list */
+"customPostList.authorFilter.accessibilityLabel" = "Autorenfilter";
+
+/* Menu item to show posts from all authors in the custom post list */
+"customPostList.authorFilter.everyone" = "Jeder";
+
+/* Menu item to show only the current user's posts in the custom post list */
+"customPostList.authorFilter.mine" = "Eigene";
+
+/* Accessibility value when the author filter shows posts from all authors */
+"customPostList.authorFilter.showingEveryone" = "Zeigt Beiträge von allen an";
+
+/* Accessibility value when the author filter shows only the current user's posts */
+"customPostList.authorFilter.showingMine" = "Zeigt nur meine Beiträge an";
+
 /* Badge label shown on the homepage row in the custom post list for pages */
 "customPostList.badge.homepage" = "Homepage";
 
+/* Badge shown in the post list for sticky posts */
+"customPostList.badge.sticky" = "Oben gehalten";
+
+/* Message for the confirmation alert when permanently deleting a post */
+"customPostList.deleteConfirmation.message" = "Diese Aktion kann nicht rückgängig gemacht werden.";
+
+/* Title for the confirmation alert when permanently deleting a post */
+"customPostList.deleteConfirmation.title" = "Unwiderruflich löschen?";
+
 /* Empty state message when no custom posts exist. %1$@ is the post type name (e.g., 'Podcasts', 'Products'). */
 "customPostList.emptyState.message" = "Keine %1$@";
+
+/* Message for the confirmation alert when trashing a published post */
+"customPostList.trashConfirmation.message" = "Dieser Beitrag ist veröffentlicht und für Besucher sichtbar. Bist du sicher, dass du „“ in den Papierkorb verschieben möchtest?";
+
+/* Title for the confirmation alert when trashing a published post */
+"customPostList.trashConfirmation.title" = "In den Papierkorb verschieben";
+
+/* Placeholder title for posts without a title */
+"customPostList.untitled" = "(kein Titel)";
+
+/* Title for the parent page picker screen for custom post types */
+"customPostParentPicker.title" = "Übergeordnete Seite";
+
+/* Option to set a post as top level (no parent) */
+"customPostParentPicker.topLevel" = "Oberste Ebene";
+
+/* Description for the top level option in the parent page picker, indicating this page will have no parent */
+"customPostParentPicker.topLevel.description" = "Eine übergeordnete Seite";
 
 /* Tab title for showing all posts regardless of status */
 "customPostTab.all" = "Alle";
@@ -8065,6 +8122,9 @@ Example: Reply to Pamela Nguyen */
 
 /* Boolean User Defaults Debug Menu screen title */
 "debugMenu.booleanUserDefaults.title" = "Boolesche Benutzerstandards";
+
+/* Debug Menu label for image cache size */
+"debugMenu.caches.imageCache" = "Bild-Cache";
 
 /* Feature flags menu item */
 "debugMenu.featureFlags" = "Feature Flags";
@@ -9094,6 +9154,9 @@ Example: Reply to Pamela Nguyen */
 
 /* Last 12 weeks (84 days) date range */
 "jetpackStats.calendar.last12Weeks" = "Letzte 12 Wochen";
+
+/* Last 14 days date range */
+"jetpackStats.calendar.last14Days" = "Letzte 14 Tage";
 
 /* Last 28 days date range */
 "jetpackStats.calendar.last28Days" = "Letzte 28 Tage";
@@ -10835,6 +10898,9 @@ Example: Reply to Pamela Nguyen */
 /* Section header for More Options in Post Settings. Should use the same translation as core WP. */
 "postSettings.moreOptions.header" = "Mehr Optionen";
 
+/* The title of the Post Settings screen for custom post types. %1$@ is the post type name. */
+"postSettings.navigationTitle.customPostType" = "%1$@ Einstellungen";
+
 /* The title of the Page Settings screen. */
 "postSettings.navigationTitle.page" = "Seiteneinstellungen";
 
@@ -10894,6 +10960,9 @@ Example: Reply to Pamela Nguyen */
 
 /* Placeholder value for a publishing date in the prepublishing sheet when the date is not selected */
 "postSettings.publishDateImmediately" = "Sofort";
+
+/* Error message shown when saving post settings via REST API fails */
+"postSettings.saveFailed.message" = "Änderungen konnten nicht gespeichert werden";
 
 /* Section header for General settings in Post Settings */
 "postSettings.section.general" = "Allgemein";
@@ -10970,6 +11039,9 @@ Example: Reply to Pamela Nguyen */
 /* Navigation bar title of the Post Stats screen */
 "postStats.title" = "Beitrags-Statistiken";
 
+/* Post status title used in different contexts */
+"postStatus.any.title" = "Alle";
+
 /* Post status title */
 "postStatus.deleted.details" = "Dauerhaft gelöscht";
 
@@ -11008,6 +11080,9 @@ Example: Reply to Pamela Nguyen */
 
 /* Post status title */
 "postStatus.trash.details" = "In den Papierkorb verschoben, aber noch nicht gelöscht";
+
+/* Post status title used in different contexts */
+"postStatus.trash.title" = "Papierkorb";
 
 /* Button to add a new taxonomy term. %1$@ is the taxonomy name (e.g., 'tags', 'categories'). */
 "postTags.addTag" = "%1$@ hinzufügen";
@@ -11959,6 +12034,9 @@ Feel free to replace it with other bracket types that you think looks better for
 
 /* A shared button title used in different contexts */
 "shared.button.edit" = "Bearbeiten";
+
+/* A shared button title used in different contexts */
+"shared.button.notNow" = "Jetzt";
 
 /* A shared button title used in different contexts */
 "shared.button.ok" = "OK";
@@ -12968,15 +13046,6 @@ Feel free to replace it with other bracket types that you think looks better for
 
 /* Title for the time zone selector */
 "timeZoneSelector.title" = "Zeitzone";
-
-/* Action button title to enable new stats from tip */
-"tips.newStats.action" = "Jetzt aktivieren";
-
-/* Tip for new stats feature */
-"tips.newStats.message" = "Sieh dir die neuen, eleganten und leistungsstarken Statistiken an. Du kannst bei Bedarf jederzeit zurückwechseln.";
-
-/* Tip for new stats feature */
-"tips.newStats.title" = "Neue Statistiken ausprobieren";
 
 /* Tip for sidebar */
 "tips.sidebar.message" = "Wische nach rechts, um auf deine Websites, dein Profil, den Reader und Benachrichtigungen zuzugreifen";

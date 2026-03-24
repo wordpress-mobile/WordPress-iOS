@@ -12603,15 +12603,6 @@ Feel free to replace it with other bracket types that you think looks better for
 /* Title for the time zone selector */
 "timeZoneSelector.title" = "Часова зона";
 
-/* Action button title to enable new stats from tip */
-"tips.newStats.action" = "Включване";
-
-/* Tip for new stats feature */
-"tips.newStats.message" = "Ползвайте удобни и мощни статистики. Върнете се обратно, когато поискате.";
-
-/* Tip for new stats feature */
-"tips.newStats.title" = "Нови статистики";
-
 /* Tip for sidebar */
 "tips.sidebar.message" = "Плъзнете надясно, за да получите достъп до вашите сайтове, Reader, известията и профила";
 
