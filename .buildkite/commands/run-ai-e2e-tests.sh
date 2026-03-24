@@ -2,12 +2,14 @@
 # Run AI-driven E2E tests on an iOS Simulator using Claude Code.
 #
 # This script manages the full lifecycle:
-#   1. Install Claude Code (if needed)
-#   2. Detect or boot a simulator
-#   3. Start WebDriverAgent and create a session
-#   4. Run Claude Code with a locked-down tool allowlist
-#   5. Stop WebDriverAgent
-#   6. Exit with the test result code
+#   1. Check for "Testing" label on PR (Buildkite only, skips if missing)
+#   2. Download build artifacts and install app (Buildkite only)
+#   3. Install Claude Code (if needed)
+#   4. Detect or boot a simulator
+#   5. Start WebDriverAgent and create a session
+#   6. Run Claude Code with a locked-down tool allowlist
+#   7. Stop WebDriverAgent
+#   8. Exit with the test result code
 #
 # Required environment variables:
 #   ANTHROPIC_API_KEY   Claude API key
@@ -22,11 +24,24 @@
 #   CLAUDE_MAX_TURNS    Max Claude Code tool-use turns (default: 200)
 #   TEST_DIR            Test directory (default: Tests/AgentTests/ui-tests)
 #   CLAUDE_MODEL        Model to use (default: claude-sonnet-4-20250514)
+
 set -euo pipefail
 
 SCRIPT_DIR="$(cd "$(dirname "$0")" && pwd)"
 REPO_ROOT="$(cd "$SCRIPT_DIR/../.." && pwd)"
 cd "$REPO_ROOT"
+
+# ── Label gate (Buildkite only) ─────────────────────────────────────
+if [ -n "${BUILDKITE_PULL_REQUEST_LABELS:-}" ]; then
+  echo "--- 🏷 Checking for 'Testing' label"
+
+  if ! echo ";${BUILDKITE_PULL_REQUEST_LABELS};" | grep -q ";Testing;"; then
+    echo "PR does not have the 'Testing' label. Skipping."
+    echo "Add the label and re-run this step to trigger AI E2E tests."
+    exit 0
+  fi
+  echo "'Testing' label found."
+fi
 
 # ── Required env vars ────────────────────────────────────────────────
 : "${ANTHROPIC_API_KEY:?Set ANTHROPIC_API_KEY}"
@@ -48,6 +63,16 @@ case "$APP" in
   *) echo "Error: APP must be 'wordpress' or 'jetpack', got '$APP'" >&2; exit 1 ;;
 esac
 
+# ── Artifact download (Buildkite only) ───────────────────────────────
+if [ -n "${BUILDKITE:-}" ]; then
+  echo "--- 📦 Downloading Build Artifacts"
+  download_artifact "build-products-${APP}.tar"
+  tar -xf "build-products-${APP}.tar"
+
+  echo "--- :rubygems: Setting up Gems"
+  install_gems
+fi
+
 # ── Locate WDA scripts ──────────────────────────────────────────────
 WDA_START="$REPO_ROOT/.claude/skills/ios-sim-navigation/scripts/wda-start.rb"
 WDA_STOP="$REPO_ROOT/.claude/skills/ios-sim-navigation/scripts/wda-stop.rb"
@@ -57,14 +82,16 @@ if [ ! -f "$WDA_START" ]; then
   exit 1
 fi
 
-# ── Step 1: Install Claude Code ─────────────────────────────────────
+# ── Install Claude Code ─────────────────────────────────────────────
 if ! command -v claude &>/dev/null; then
-  echo "Installing Claude Code..."
+  echo "--- 🤖 Installing Claude Code"
   npm install -g @anthropic-ai/claude-code
 fi
 echo "Claude Code: $(claude --version 2>/dev/null || echo 'unknown')"
 
-# ── Step 2: Detect or boot simulator ────────────────────────────────
+# ── Detect or boot simulator ────────────────────────────────────────
+echo "--- 📱 Setting up Simulator"
+
 get_booted_udid() {
   xcrun simctl list devices booted -j 2>/dev/null \
     | ruby -rjson -e '
@@ -90,11 +117,24 @@ if [ -z "$UDID" ]; then
 fi
 echo "Simulator UDID: $UDID"
 
-# ── Step 3: Start WDA ───────────────────────────────────────────────
-echo "Starting WebDriverAgent on port $WDA_PORT..."
+# ── Install app on simulator (Buildkite only) ────────────────────────
+if [ -n "${BUILDKITE:-}" ]; then
+  APP_DISPLAY_NAME="Jetpack"
+  [ "$APP" = "wordpress" ] && APP_DISPLAY_NAME="WordPress"
+
+  APP_PATH=$(find DerivedData/Build/Products -name "${APP_DISPLAY_NAME}.app" -path "*Debug-iphonesimulator*" | head -1)
+  if [ -z "$APP_PATH" ]; then
+    echo "Error: ${APP_DISPLAY_NAME}.app not found in build products" >&2
+    exit 1
+  fi
+  echo "Installing $APP_PATH on simulator..."
+  xcrun simctl install "$UDID" "$APP_PATH"
+fi
+
+# ── Start WDA ────────────────────────────────────────────────────────
+echo "--- 🔌 Starting WebDriverAgent"
 ruby "$WDA_START" --udid "$UDID" --port "$WDA_PORT"
 
-# Create a WDA session
 SESSION_ID="$(curl -s -X POST "http://localhost:${WDA_PORT}/session" \
   -H 'Content-Type: application/json' \
   -d '{"capabilities":{"alwaysMatch":{}}}' \
@@ -107,7 +147,7 @@ if [ -z "$SESSION_ID" ]; then
 fi
 echo "WDA Session: $SESSION_ID"
 
-# ── Step 4: Export env vars for wrapper scripts and Claude ───────────
+# ── Export env vars for wrapper scripts and Claude ───────────────────
 export SIMULATOR_UDID="$UDID"
 export WDA_SESSION_ID="$SESSION_ID"
 export WDA_PORT
@@ -116,12 +156,14 @@ export SITE_URL
 export WP_USERNAME
 export WP_APP_PASSWORD
 
-# ── Step 5: Prepare results directory ────────────────────────────────
+# ── Prepare results directory ────────────────────────────────────────
 TIMESTAMP="$(date +%Y-%m-%d-%H%M)"
 RESULTS_DIR="Tests/AgentTests/results/${TIMESTAMP}"
 mkdir -p "$RESULTS_DIR"
 
-# ── Step 6: Run Claude Code ──────────────────────────────────────────
+# ── Run Claude Code ──────────────────────────────────────────────────
+echo "--- 🧪 Running AI E2E Tests"
+
 PROMPT="Run all AI E2E test cases in ${TEST_DIR}/ using the ci-test-runner skill.
 
 Environment (already set as env vars, also available to wrapper scripts):
@@ -151,18 +193,14 @@ claude --print \
   --prompt "$PROMPT" \
   || CLAUDE_EXIT=$?
 
-# ── Step 7: Stop WDA ────────────────────────────────────────────────
-echo "Stopping WebDriverAgent..."
+# ── Stop WDA ─────────────────────────────────────────────────────────
+echo "--- 🧹 Cleanup"
 ruby "$WDA_STOP" --port "$WDA_PORT" 2>/dev/null || true
 
-# ── Step 8: Report results ───────────────────────────────────────────
+# ── Report results ───────────────────────────────────────────────────
+echo "--- 🚦 Results"
 RESULTS_FILE="${RESULTS_DIR}/results.md"
 if [ -f "$RESULTS_FILE" ]; then
-  echo ""
-  echo "═══════════════════════════════════════"
-  echo "  Test Results: ${RESULTS_DIR}/results.md"
-  echo "═══════════════════════════════════════"
-  echo ""
   cat "$RESULTS_FILE"
 else
   echo "Warning: no results.md found at $RESULTS_FILE"
