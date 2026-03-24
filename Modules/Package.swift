@@ -494,7 +494,6 @@ enum XcodeSupport {
                     .product(name: "CocoaLumberjack", package: "CocoaLumberjack"),
                     .product(name: "CocoaLumberjackSwift", package: "CocoaLumberjack"),
                     .product(name: "Gravatar", package: "Gravatar-SDK-iOS"),
-                    .product(name: "NSObject-SafeExpectations", package: "NSObject-SafeExpectations"),
                     .product(name: "NSURL-IDN", package: "NSURL-IDN"),
                     .product(name: "WordPressAPI", package: "wordpress-rs"),
                 ]
