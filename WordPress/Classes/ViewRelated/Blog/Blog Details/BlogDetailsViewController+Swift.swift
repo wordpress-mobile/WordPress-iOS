@@ -121,8 +121,6 @@ extension BlogDetailsViewController {
     }
 
     func showPinnedPostType(_ postType: PinnedPostType) {
-        guard let site = try? WordPressSite(blog: blog), case .selfHosted = site else { return }
-
         let feature = NSLocalizedString(
             "applicationPasswordRequired.feature.customPosts",
             value: "Custom Post Types",
