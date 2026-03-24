@@ -1,0 +1,117 @@
+#!/usr/bin/env bash
+# Run AI-driven E2E tests on an iOS Simulator using simulator-llm-pilot.
+#
+# This script manages the full lifecycle:
+#   1. Check for "Testing" label on PR (Buildkite only, skips if missing)
+#   2. Download build artifacts and install app (Buildkite only)
+#   3. Install the simulator-llm-pilot gem from GitHub
+#   4. Run tests (gem handles simulator, WDA, agent loop, and results)
+#
+# The gem provides a sandboxed agent that drives the simulator through a
+# fixed set of tools (tap, swipe, type, REST API, etc.) — no arbitrary
+# code execution, no shell access.
+#
+# Required environment variables:
+#   ANTHROPIC_API_KEY                  Claude API key
+#   SIMULATOR_LLM_PILOT_SITE_URL      WordPress test site URL
+#   SIMULATOR_LLM_PILOT_USERNAME      WordPress username
+#   SIMULATOR_LLM_PILOT_APP_PASSWORD  WordPress application password
+#
+# Optional environment variables:
+#   APP              wordpress | jetpack (default: jetpack)
+#   SIMULATOR_NAME   Simulator to boot if none running (default: iPhone 16)
+#   TEST_DIR         Test directory (default: Tests/AgentTests/ui-tests)
+
+set -euo pipefail
+
+SCRIPT_DIR="$(cd "$(dirname "$0")" && pwd)"
+REPO_ROOT="$(cd "$SCRIPT_DIR/../.." && pwd)"
+cd "$REPO_ROOT"
+
+# ── Label gate (Buildkite only) ─────────────────────────────────────
+if [ -n "${BUILDKITE_PULL_REQUEST_LABELS:-}" ]; then
+  echo "--- Checking for 'Testing' label"
+
+  if ! echo ";${BUILDKITE_PULL_REQUEST_LABELS};" | grep -q ";Testing;"; then
+    echo "PR does not have the 'Testing' label. Skipping."
+    echo "Add the label and re-run this step to trigger AI E2E tests."
+    exit 0
+  fi
+  echo "'Testing' label found."
+fi
+
+# ── Required env vars ────────────────────────────────────────────────
+: "${ANTHROPIC_API_KEY:?Set ANTHROPIC_API_KEY}"
+: "${SIMULATOR_LLM_PILOT_SITE_URL:?Set SIMULATOR_LLM_PILOT_SITE_URL}"
+: "${SIMULATOR_LLM_PILOT_USERNAME:?Set SIMULATOR_LLM_PILOT_USERNAME}"
+: "${SIMULATOR_LLM_PILOT_APP_PASSWORD:?Set SIMULATOR_LLM_PILOT_APP_PASSWORD}"
+
+# ── Defaults ─────────────────────────────────────────────────────────
+APP="${APP:-jetpack}"
+SIMULATOR_NAME="${SIMULATOR_NAME:-iPhone 16}"
+TEST_DIR="${TEST_DIR:-Tests/AgentTests/ui-tests}"
+
+case "$APP" in
+  wordpress) BUNDLE_ID="org.wordpress" ;;
+  jetpack)   BUNDLE_ID="com.automattic.jetpack" ;;
+  *) echo "Error: APP must be 'wordpress' or 'jetpack', got '$APP'" >&2; exit 1 ;;
+esac
+
+# ── Artifact download (Buildkite only) ───────────────────────────────
+if [ -n "${BUILDKITE:-}" ]; then
+  echo "--- Downloading Build Artifacts"
+  download_artifact "build-products-${APP}.tar"
+  tar -xf "build-products-${APP}.tar"
+
+  echo "--- Setting up Gems"
+  install_gems
+fi
+
+# ── Install simulator-llm-pilot ──────────────────────────────────────
+echo "--- Installing simulator-llm-pilot"
+GEM_BUILD_DIR="$(mktemp -d)"
+git clone --depth 1 https://github.com/Automattic/simulator-llm-pilot.git "$GEM_BUILD_DIR"
+gem build "$GEM_BUILD_DIR/simulator-llm-pilot.gemspec" --output "$GEM_BUILD_DIR/simulator-llm-pilot.gem"
+gem install "$GEM_BUILD_DIR/simulator-llm-pilot.gem"
+rm -rf "$GEM_BUILD_DIR"
+echo "simulator-llm-pilot $(simulator-llm-pilot version)"
+
+# ── Boot simulator and install app (Buildkite only) ──────────────────
+echo "--- Setting up Simulator"
+xcrun simctl boot "$SIMULATOR_NAME" 2>/dev/null || true
+sleep 3
+
+if [ -n "${BUILDKITE:-}" ]; then
+  APP_DISPLAY_NAME="Jetpack"
+  [ "$APP" = "wordpress" ] && APP_DISPLAY_NAME="WordPress"
+
+  APP_PATH=$(find DerivedData/Build/Products -name "${APP_DISPLAY_NAME}.app" -path "*Debug-iphonesimulator*" | head -1)
+  if [ -z "$APP_PATH" ]; then
+    echo "Error: ${APP_DISPLAY_NAME}.app not found in build products" >&2
+    exit 1
+  fi
+  echo "Installing $APP_PATH on simulator..."
+  xcrun simctl install booted "$APP_PATH"
+fi
+
+# ── Run tests ────────────────────────────────────────────────────────
+echo "--- Running AI E2E Tests"
+
+TIMESTAMP="$(date +%Y-%m-%d-%H%M)"
+RESULTS_DIR="Tests/AgentTests/results/${TIMESTAMP}"
+
+simulator-llm-pilot run "$TEST_DIR" \
+  --app-bundle-id "$BUNDLE_ID" \
+  --simulator-name "$SIMULATOR_NAME" \
+  --results-dir "$RESULTS_DIR"
+
+EXIT_CODE=$?
+
+# ── Report results ───────────────────────────────────────────────────
+echo "--- Results"
+RESULTS_FILE="${RESULTS_DIR}/results.md"
+if [ -f "$RESULTS_FILE" ]; then
+  cat "$RESULTS_FILE"
+fi
+
+exit "$EXIT_CODE"
