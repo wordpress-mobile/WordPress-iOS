@@ -22,9 +22,10 @@ class GutenbergCoverUploadProcessor: Processor {
         self.remoteURLString = remoteURLString
     }
 
-    lazy var coverBlockProcessor = GutenbergBlockProcessor(for: CoverBlockKeys.name, replacer: { coverBlock in
-        guard let mediaID = coverBlock.attributes[CoverBlockKeys.id] as? Int,
-            mediaID == self.mediaUploadID else {
+    lazy var coverBlockProcessor = GutenbergBlockProcessor(for: CoverBlockKeys.name, replacer: { [weak self] coverBlock in
+        guard let self,
+              let mediaID = coverBlock.attributes[CoverBlockKeys.id] as? Int,
+              mediaID == self.mediaUploadID else {
                 return nil
         }
         var block = "<!-- \(CoverBlockKeys.name) "
