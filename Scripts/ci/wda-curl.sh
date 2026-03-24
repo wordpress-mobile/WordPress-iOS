@@ -29,7 +29,7 @@ if [[ "$URL_PATH" != /* ]]; then
   URL_PATH="/${URL_PATH}"
 fi
 
-if [ -n "$BODY" ]; then
+if [[ -n "$BODY" ]]; then
   exec curl -s -X "$METHOD" \
     -H 'Content-Type: application/json' \
     -d "$BODY" \

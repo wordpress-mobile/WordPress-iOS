@@ -32,7 +32,7 @@ REPO_ROOT="$(cd "$SCRIPT_DIR/../.." && pwd)"
 cd "$REPO_ROOT"
 
 # ── Label gate (Buildkite only) ─────────────────────────────────────
-if [ -n "${BUILDKITE_PULL_REQUEST_LABELS:-}" ]; then
+if [[-n "${BUILDKITE_PULL_REQUEST_LABELS:-}" ]]; then
   echo "--- 🏷 Checking for 'Testing' label"
 
   if ! echo ";${BUILDKITE_PULL_REQUEST_LABELS};" | grep -q ";Testing;"; then
@@ -64,7 +64,7 @@ case "$APP" in
 esac
 
 # ── Artifact download (Buildkite only) ───────────────────────────────
-if [ -n "${BUILDKITE:-}" ]; then
+if [[-n "${BUILDKITE:-}" ]]; then
   echo "--- 📦 Downloading Build Artifacts"
   download_artifact "build-products-${APP}.tar"
   tar -xf "build-products-${APP}.tar"
@@ -77,7 +77,7 @@ fi
 WDA_START="$REPO_ROOT/.claude/skills/ios-sim-navigation/scripts/wda-start.rb"
 WDA_STOP="$REPO_ROOT/.claude/skills/ios-sim-navigation/scripts/wda-stop.rb"
 
-if [ ! -f "$WDA_START" ]; then
+if [[! -f "$WDA_START" ]]; then
   echo "Error: WDA start script not found at $WDA_START" >&2
   exit 1
 fi
@@ -104,26 +104,26 @@ get_booted_udid() {
 
 UDID="$(get_booted_udid)"
 
-if [ -z "$UDID" ]; then
+if [[-z "$UDID" ]]; then
   echo "No booted simulator found. Booting '$SIMULATOR_NAME'..."
   xcrun simctl boot "$SIMULATOR_NAME"
   sleep 5
   UDID="$(get_booted_udid)"
 fi
 
-if [ -z "$UDID" ]; then
+if [[-z "$UDID" ]]; then
   echo "Error: could not find a booted simulator" >&2
   exit 1
 fi
 echo "Simulator UDID: $UDID"
 
 # ── Install app on simulator (Buildkite only) ────────────────────────
-if [ -n "${BUILDKITE:-}" ]; then
+if [[-n "${BUILDKITE:-}" ]]; then
   APP_DISPLAY_NAME="Jetpack"
-  [ "$APP" = "wordpress" ] && APP_DISPLAY_NAME="WordPress"
+  [[ "$APP" = "wordpress" ]] && APP_DISPLAY_NAME="WordPress"
 
   APP_PATH=$(find DerivedData/Build/Products -name "${APP_DISPLAY_NAME}.app" -path "*Debug-iphonesimulator*" | head -1)
-  if [ -z "$APP_PATH" ]; then
+  if [[-z "$APP_PATH" ]]; then
     echo "Error: ${APP_DISPLAY_NAME}.app not found in build products" >&2
     exit 1
   fi
@@ -140,7 +140,7 @@ SESSION_ID="$(curl -s -X POST "http://localhost:${WDA_PORT}/session" \
   -d '{"capabilities":{"alwaysMatch":{}}}' \
   | ruby -rjson -e 'puts JSON.parse(STDIN.read).dig("value", "sessionId")')"
 
-if [ -z "$SESSION_ID" ]; then
+if [[-z "$SESSION_ID" ]]; then
   echo "Error: failed to create WDA session" >&2
   ruby "$WDA_STOP" --port "$WDA_PORT" 2>/dev/null || true
   exit 1
@@ -200,7 +200,7 @@ ruby "$WDA_STOP" --port "$WDA_PORT" 2>/dev/null || true
 # ── Report results ───────────────────────────────────────────────────
 echo "--- 🚦 Results"
 RESULTS_FILE="${RESULTS_DIR}/results.md"
-if [ -f "$RESULTS_FILE" ]; then
+if [[-f "$RESULTS_FILE" ]]; then
   cat "$RESULTS_FILE"
 else
   echo "Warning: no results.md found at $RESULTS_FILE"

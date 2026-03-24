@@ -37,7 +37,7 @@ fi
 # Strip leading slash if present
 API_PATH="${API_PATH#/}"
 
-if [ -n "$BODY" ]; then
+if [[ -n "$BODY" ]]; then
   exec curl -s -X "$METHOD" \
     -u "${WP_USERNAME}:${WP_APP_PASSWORD}" \
     -H 'Content-Type: application/json' \
