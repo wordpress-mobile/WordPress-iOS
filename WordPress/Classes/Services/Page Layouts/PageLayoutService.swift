@@ -21,7 +21,7 @@ class PageLayoutService {
         let blogPersistentID = blog.objectID
         let api: WordPressComRestApi
         let dotComID: Int?
-        if blog.isAccessibleThroughWPCom(),
+        if blog.isAccessibleThroughWPCom,
            let blogID = blog.dotComID?.intValue,
            let restAPI = blog.account?.wordPressComRestV2Api {
             api = restAPI

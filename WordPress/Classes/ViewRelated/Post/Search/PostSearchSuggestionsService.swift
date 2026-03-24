@@ -13,7 +13,7 @@ actor PostSearchSuggestionsService {
 
     init(blog: Blog, coreData: CoreDataStack = ContextManager.shared) {
         self.blogID = TaggedManagedObjectID(blog)
-        self.isEnabled = blog.isAccessibleThroughWPCom()
+        self.isEnabled = blog.isAccessibleThroughWPCom
         self.coreData = coreData
     }
 

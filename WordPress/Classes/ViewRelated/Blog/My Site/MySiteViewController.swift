@@ -846,7 +846,7 @@ final class MySiteViewController: UIViewController, UIScrollViewDelegate, NoSite
     func fetchPrompt(for blog: Blog?) {
         guard FeatureFlag.bloggingPrompts.enabled,
               let blog,
-              blog.isAccessibleThroughWPCom(),
+              blog.isAccessibleThroughWPCom,
               let promptsService = BloggingPromptsService(blog: blog),
               let siteID = blog.dotComID?.intValue else {
             return

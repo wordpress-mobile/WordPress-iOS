@@ -176,7 +176,7 @@ final class BlogListViewModel: NSObject, ObservableObject {
         }
 
         if configuration.shouldHideSelfHostedSites {
-            blogs = blogs.filter { $0.isAccessibleThroughWPCom() }
+            blogs = blogs.filter { $0.isAccessibleThroughWPCom }
         }
         if configuration.shouldHideBlogsNotSupportingDomains {
             blogs = blogs.filter { $0.supports(.domains) }

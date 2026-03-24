@@ -95,7 +95,7 @@ extension Blog {
     @objc public var effectiveUsername: String? {
         if let username {
             return username
-        } else if let account, isAccessibleThroughWPCom() {
+        } else if let account, isAccessibleThroughWPCom {
             return account.username
         } else {
             return nil

@@ -126,7 +126,7 @@ final class EditorConfigurationPluginsTests {
         let result = EditorConfiguration.shouldEnablePlugins(for: blog)
 
         let expectedResult = RemoteFeatureFlag.newGutenbergPlugins.enabled() &&
-                           blog.isAccessibleThroughWPCom() &&
+                           blog.isAccessibleThroughWPCom &&
                            blog.isHostedAtWPcom
 
         #expect(result == expectedResult,

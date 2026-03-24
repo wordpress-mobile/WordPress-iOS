@@ -684,7 +684,7 @@ extension BloggingRemindersFlowSettingsViewController: BloggingRemindersActions 
 private extension BloggingRemindersFlowSettingsViewController {
 
     var isBloggingPromptsEnabled: Bool {
-        return FeatureFlag.bloggingPrompts.enabled && blog.isAccessibleThroughWPCom()
+        return FeatureFlag.bloggingPrompts.enabled && blog.isAccessibleThroughWPCom
     }
 
     var promptRemindersEnabled: Bool {

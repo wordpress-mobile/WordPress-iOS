@@ -14,7 +14,7 @@ extension BlogDetailsViewController {
     }
 
     public func isDashboardEnabled() -> Bool {
-        JetpackFeaturesRemovalCoordinator.jetpackFeaturesEnabled() && blog.isAccessibleThroughWPCom()
+        JetpackFeaturesRemovalCoordinator.jetpackFeaturesEnabled() && blog.isAccessibleThroughWPCom
     }
 
     public func confirmRemoveSite() {
