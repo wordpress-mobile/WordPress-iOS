@@ -126,7 +126,24 @@ struct CustomPostTabView: View {
             }
         }
         .searchable(text: $searchText)
-        .navigationTitle(details.name)
+        .navigationBarTitleDisplayMode(.inline)
+        .toolbar {
+            ToolbarItem(placement: .principal) {
+                HStack(spacing: 6) {
+                    Text(details.name)
+                        .font(.headline)
+                        .lineLimit(1)
+                    Text(Strings.betaBadge)
+                        .font(.caption2.weight(.semibold))
+                        .foregroundStyle(.white)
+                        .padding(.horizontal, 6)
+                        .padding(.vertical, 2)
+                        .background(AppColor.primary)
+                        .clipShape(Capsule())
+                }
+                .accessibilityElement(children: .combine)
+            }
+        }
         .toolbar {
             if canFilterByAuthor {
                 ToolbarItem(placement: .topBarTrailing) {
@@ -363,5 +380,10 @@ private enum Strings {
         "customPostTab.sendFeedback",
         value: "Send Feedback",
         comment: "Menu item title for sending feedback on the custom post types screen"
+    )
+    static let betaBadge = NSLocalizedString(
+        "customPostType.navigation.betaBadge",
+        value: "BETA",
+        comment: "Badge label indicating that custom post type support is a beta feature. Displayed next to the navigation title."
     )
 }
