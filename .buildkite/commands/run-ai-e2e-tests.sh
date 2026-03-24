@@ -29,7 +29,7 @@ REPO_ROOT="$(cd "$SCRIPT_DIR/../.." && pwd)"
 cd "$REPO_ROOT"
 
 # ── Label gate (Buildkite only) ─────────────────────────────────────
-if [ -n "${BUILDKITE_PULL_REQUEST_LABELS:-}" ]; then
+if [[ -n "${BUILDKITE_PULL_REQUEST_LABELS:-}" ]]; then
   echo "--- Checking for 'Testing' label"
 
   if ! echo ";${BUILDKITE_PULL_REQUEST_LABELS};" | grep -q ";Testing;"; then
@@ -58,7 +58,7 @@ case "$APP" in
 esac
 
 # ── Artifact download (Buildkite only) ───────────────────────────────
-if [ -n "${BUILDKITE:-}" ]; then
+if [[ -n "${BUILDKITE:-}" ]]; then
   echo "--- Downloading Build Artifacts"
   download_artifact "build-products-${APP}.tar"
   tar -xf "build-products-${APP}.tar"
@@ -81,12 +81,12 @@ echo "--- Setting up Simulator"
 xcrun simctl boot "$SIMULATOR_NAME" 2>/dev/null || true
 sleep 3
 
-if [ -n "${BUILDKITE:-}" ]; then
+if [[ -n "${BUILDKITE:-}" ]]; then
   APP_DISPLAY_NAME="Jetpack"
   [ "$APP" = "wordpress" ] && APP_DISPLAY_NAME="WordPress"
 
   APP_PATH=$(find DerivedData/Build/Products -name "${APP_DISPLAY_NAME}.app" -path "*Debug-iphonesimulator*" | head -1)
-  if [ -z "$APP_PATH" ]; then
+  if [[ -z "$APP_PATH" ]]; then
     echo "Error: ${APP_DISPLAY_NAME}.app not found in build products" >&2
     exit 1
   fi
@@ -110,7 +110,7 @@ EXIT_CODE=$?
 # ── Report results ───────────────────────────────────────────────────
 echo "--- Results"
 RESULTS_FILE="${RESULTS_DIR}/results.md"
-if [ -f "$RESULTS_FILE" ]; then
+if [[ -f "$RESULTS_FILE" ]]; then
   cat "$RESULTS_FILE"
 fi
 
