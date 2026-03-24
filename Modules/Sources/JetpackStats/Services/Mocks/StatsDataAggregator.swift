@@ -61,7 +61,8 @@ struct StatsDataAggregator {
             case .sum:
                 normalizedData[date] = dataPoint.sum
             case .average:
-                if !dataPoint.isEmpty {
+                // swiftlint:disable:next empty_count
+                if dataPoint.count != 0 {
                     normalizedData[date] = dataPoint.sum / dataPoint.count
                 }
             }
