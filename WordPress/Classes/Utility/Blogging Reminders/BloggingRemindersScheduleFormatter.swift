@@ -18,7 +18,7 @@ struct BloggingRemindersScheduleFormatter {
         case .none:
             return Self.stringToAttributedString(TextContent.shortNoRemindersDescription)
         case .weekdays(let days):
-            guard days.count > 0 else {
+            guard !days.isEmpty else {
                 return shortScheduleDescription(for: .none, time: time)
             }
 
@@ -33,7 +33,7 @@ struct BloggingRemindersScheduleFormatter {
         case .none:
             return NSAttributedString(string: TextContent.longNoRemindersDescription)
         case .weekdays(let days):
-            guard days.count > 0 else {
+            guard !days.isEmpty else {
                 return longScheduleDescription(for: .none, time: time)
             }
 

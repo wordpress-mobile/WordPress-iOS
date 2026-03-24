@@ -158,7 +158,7 @@ struct BarChartView: View {
 
     @ChartContentBuilder
     private var significantPointAnnotations: some ChartContent {
-        if tappedDataPoint == nil, let maxPoint = data.significantPoints.currentMax, data.currentData.count > 0 {
+        if tappedDataPoint == nil, let maxPoint = data.significantPoints.currentMax, !data.currentData.isEmpty {
             PointMark(
                 x: .value("Date", maxPoint.date, unit: data.granularity.component, calendar: context.calendar),
                 y: .value("Value", maxPoint.value)

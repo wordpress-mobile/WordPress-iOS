@@ -80,7 +80,7 @@ import CoreData
         context.deleteAllObjects(ofType: DummyEntity.self)
 
         #expect(context.countObjects(ofType: DummyEntity.self) == 0)
-        #expect(context.allObjects(ofType: DummyEntity.self).count == 0)
+        #expect(context.allObjects(ofType: DummyEntity.self).isEmpty)
     }
 
     @Test func firstObjectMatchingPredicateReturnsTheExpectedObject() {

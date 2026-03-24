@@ -165,7 +165,7 @@ struct LineChartView: View {
 
     @ChartContentBuilder
     private var significantPointAnnotations: some ChartContent {
-        if let maxPoint = data.significantPoints.currentMax, data.currentData.count > 0 {
+        if let maxPoint = data.significantPoints.currentMax, !data.currentData.isEmpty {
             PointMark(
                 x: .value("Date", maxPoint.date, unit: data.granularity.component, calendar: context.calendar),
                 y: .value("Value", maxPoint.value)

@@ -231,7 +231,7 @@ private extension URL {
     var queryItems: [URLQueryItem]? {
         guard let components = URLComponents(url: self, resolvingAgainstBaseURL: false),
             let queryItems = components.queryItems,
-            queryItems.count > 0 else {
+            !queryItems.isEmpty else {
                 return nil
         }
         return queryItems

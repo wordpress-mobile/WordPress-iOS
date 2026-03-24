@@ -97,7 +97,7 @@ final class SiteDomainsViewModel: ObservableObject {
             sections.append(section)
         }
 
-        if otherDomains.count > 0 {
+        if !otherDomains.isEmpty {
             let domainRows = otherDomains.map {
                 SiteDomainsViewModel.Section.Row(
                     viewModel: .init(
@@ -120,7 +120,7 @@ final class SiteDomainsViewModel: ObservableObject {
             sections.append(section)
         }
 
-        if sections.count == 0 || blog.canRegisterDomainWithPaidPlan {
+        if sections.isEmpty || blog.canRegisterDomainWithPaidPlan {
             sections.append(Section(title: nil, footer: nil, content: .upgradePlan))
         } else {
             sections.append(Section(title: nil, footer: nil, content: .addDomain))

@@ -1590,7 +1590,7 @@ private extension NotificationsViewController {
     }
 
     var shouldDisplayNoResultsView: Bool {
-        return tableViewHandler?.resultsController?.fetchedObjects?.count == 0 && !shouldDisplayJetpackPrompt
+        return tableViewHandler?.resultsController?.fetchedObjects?.isEmpty == true && !shouldDisplayJetpackPrompt
     }
 
     var shouldDisplayFullscreenNoResultsView: Bool {

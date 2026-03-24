@@ -88,7 +88,7 @@ import WordPressUI
         var connectedAccounts = [KeyringAccount]()
         var accounts = keyringAccountHelper.accountsFromKeyringConnections(keyringConnections, with: publicizeService)
 
-        if accounts.count == 0 {
+        if accounts.isEmpty {
             showNoResultsViewController()
             return ImmuTable(sections: [])
         }
@@ -110,7 +110,7 @@ import WordPressUI
 
         // Build the section for connected accounts
         rows = rowsForConnectedKeyringAccounts(connectedAccounts)
-        if rows.count > 0 {
+        if !rows.isEmpty {
             let title = NSLocalizedString("Connected", comment: "Adjective. The title of a list of third-part sharing service account names.")
             let section = ImmuTableSection(headerText: title, rows: rows, footerText: nil)
             sections.append(section)
@@ -126,7 +126,7 @@ import WordPressUI
     /// - Returns: An ImmuTableSection or `nil` if there were no rows.
     ///
     fileprivate func sectionForUnconnectedKeyringAccountRows(_ rows: [ImmuTableRow]) -> ImmuTableSection? {
-        if rows.count == 0 {
+        if rows.isEmpty {
             return nil
         }
 

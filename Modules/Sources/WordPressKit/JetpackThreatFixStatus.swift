@@ -23,13 +23,13 @@ public struct JetpackThreatFixResponse: Decodable {
             statusArray.append(fixStatus)
         }
 
-        isFixingThreats = statusArray.filter { $0.status == .inProgress }.count > 0
+        isFixingThreats = !statusArray.filter { $0.status == .inProgress }.isEmpty
         threats = statusArray
     }
 
     /// Returns true the fixing status is complete, and all threats are no longer in progress
     public var finished: Bool {
-        return inProgress.count <= 0
+        return inProgress.isEmpty
     }
 
     /// Returns all the fixed threats

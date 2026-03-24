@@ -171,7 +171,7 @@ private extension ShareExtractor {
             return
         }
         textExtractor.extract(context: extensionContext) { extractedItems in
-            guard extractedItems.count > 0 else {
+            guard !extractedItems.isEmpty else {
             	completion(nil)
                 return
             }
@@ -204,7 +204,7 @@ private extension ShareExtractor {
             return
         }
         imageExtractor.extract(context: extensionContext) { extractedItems in
-            guard extractedItems.count > 0 else {
+            guard !extractedItems.isEmpty else {
                 completion([])
                 return
             }
@@ -251,7 +251,7 @@ private extension TypeBasedExtensionContentExtractor {
         let itemProviders = context.itemProviders(ofType: acceptedType)
         print(acceptedType)
         var results = [ExtractedItem]()
-        guard itemProviders.count > 0 else {
+        guard !itemProviders.isEmpty else {
             DispatchQueue.main.async {
                 completion(results)
             }

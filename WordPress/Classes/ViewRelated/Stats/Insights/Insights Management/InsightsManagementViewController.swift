@@ -109,7 +109,7 @@ class InsightsManagementViewController: UITableViewController {
     }
 
     override func tableView(_ tableView: UITableView, canEditRowAt indexPath: IndexPath) -> Bool {
-        return insightsShown.count > 0 && isActiveCardsSection(indexPath.section)
+        return !insightsShown.isEmpty && isActiveCardsSection(indexPath.section)
     }
 
     override func tableView(_ tableView: UITableView, targetIndexPathForMoveFromRowAt sourceIndexPath: IndexPath, toProposedIndexPath proposedDestinationIndexPath: IndexPath) -> IndexPath {
@@ -217,7 +217,7 @@ private extension InsightsManagementViewController {
     // MARK: - Table Sections
 
     func selectedStatsSection() -> ImmuTableSection? {
-        guard insightsShown.count > 0 else {
+        guard !insightsShown.isEmpty else {
             return ImmuTableSection(headerText: TextContent.activeCardsHeader, rows: [placeholderRow])
         }
 
@@ -232,7 +232,7 @@ private extension InsightsManagementViewController {
     func inactiveCardsSection() -> ImmuTableSection {
         let rows = insightsInactive
 
-        guard rows.count > 0 else {
+        guard !rows.isEmpty else {
             return ImmuTableSection(headerText: TextContent.inactiveCardsHeader, rows: [inactivePlaceholderRow])
         }
 
@@ -283,7 +283,7 @@ private extension InsightsManagementViewController {
         }
 
         /// Reload the data of the row to update the accessibility information
-        if let cell = tableView.cellForRow(at: destination), insightsShown.count > 0 {
+        if let cell = tableView.cellForRow(at: destination), !insightsShown.isEmpty {
             tableHandler.viewModel.rowAtIndexPath(destination).configureCell(cell)
         }
     }
@@ -311,7 +311,7 @@ private extension InsightsManagementViewController {
         }
 
         /// Reload the data of the row to update the accessibility information
-        if let cell = tableView.cellForRow(at: destination), insightsInactive.count > 0 {
+        if let cell = tableView.cellForRow(at: destination), !insightsInactive.isEmpty {
             tableHandler.viewModel.rowAtIndexPath(destination).configureCell(cell)
         }
     }

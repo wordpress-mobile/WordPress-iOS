@@ -101,7 +101,7 @@ open class LoginViewController: NUXViewController, LoginFacadeDelegate {
     ///     You will want to set this to `true` if the error was caused after pressing a button
     ///     (e.g. Next button).
     func displayError(message: String, moveVoiceOverFocus: Bool = false) {
-        guard message.count > 0 else {
+        guard !message.isEmpty else {
             errorLabel?.isHidden = true
             return
         }

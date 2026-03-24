@@ -356,7 +356,7 @@ extension TopTotalsCell: Accessible {
     func prepareForVoiceOver() {
         accessibilityTraits = .summaryElement
 
-        guard dataRows.count > 0 else {
+        guard !dataRows.isEmpty else {
             return
         }
 

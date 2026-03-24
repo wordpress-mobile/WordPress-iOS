@@ -1161,7 +1161,7 @@ private extension AztecPostViewController {
             self.displayPreview()
         }
 
-        if (post.revisions ?? []).count > 0 {
+        if !(post.revisions ?? []).isEmpty {
             alert.addDefaultActionWithTitle(MoreSheetAlert.historyTitle) { [unowned self] _ in
                 self.displayRevisionsList()
             }

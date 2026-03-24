@@ -1131,7 +1131,7 @@ private extension SiteStatsInsightsDetailsViewModel {
 
             let rowValue: Int = {
                 if forAverages {
-                    return months.count > 0 ? (yearTotalViews / months.count) : 0
+                    return !months.isEmpty ? (yearTotalViews / months.count) : 0
                 }
                 return yearTotalViews
             }()

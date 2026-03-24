@@ -521,7 +521,7 @@ extension WordPressComRestApi {
         }
 
         var errorDictionary: AnyObject? = responseDictionary as AnyObject?
-        if let errorArray = responseDictionary["errors"] as? [AnyObject], errorArray.count > 0 {
+        if let errorArray = responseDictionary["errors"] as? [AnyObject], !errorArray.isEmpty {
             errorDictionary = errorArray.first
         }
         guard let errorEntry = errorDictionary as? [String: AnyObject],

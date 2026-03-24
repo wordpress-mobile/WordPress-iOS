@@ -24,7 +24,7 @@ class RouteMatcherTests: XCTestCase {
         matcher = RouteMatcher(routes: routes)
 
         let matches = matcher.routesMatching(URL(string: "/hello")!)
-        XCTAssert(matches.count == 0)
+        XCTAssert(matches.isEmpty)
     }
 
     func testMatchingRouteWithSingleComponent() {
@@ -89,7 +89,7 @@ class RouteMatcherTests: XCTestCase {
         matcher = RouteMatcher(routes: routes)
 
         let matches = matcher.routesMatching(URL(string: "/me/bobsmith")!)
-        XCTAssert(matches.count == 0)
+        XCTAssert(matches.isEmpty)
     }
 
     func testMatchedRouteWithManyPlaceholders() {

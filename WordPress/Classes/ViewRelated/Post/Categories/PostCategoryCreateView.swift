@@ -120,7 +120,7 @@ struct PostCategoryPickerHostingView: UIViewControllerRepresentable {
         }
 
         func postCategoriesViewController(_ controller: PostCategoriesViewController, didUpdateSelectedCategories categories: NSSet) {
-            if categories.count == 0 {
+            if categories.isEmpty {
                 onSelectionChanged(nil)
             }
         }

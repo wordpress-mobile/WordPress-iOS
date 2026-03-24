@@ -392,7 +392,7 @@ extension PluginStore {
     func shouldFetchDirectory(feed: PluginDirectoryFeedType) -> Bool {
         let isFetching = state.fetchingDirectoryFeed[feed.slug, default: false]
 
-        if case .search(let term) = feed, term.count > 0 {
+        if case .search(let term) = feed, !term.isEmpty {
             return !isFetching
         }
 

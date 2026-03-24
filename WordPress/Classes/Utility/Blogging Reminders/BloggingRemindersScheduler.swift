@@ -188,7 +188,7 @@ class BloggingRemindersScheduler {
                 configuration[url] = schedule
             }
 
-            if configuration.count > 0 {
+            if !configuration.isEmpty {
                 try? PropertyListEncoder().encode(configuration).write(to: sharedFileUrl)
             }
         }
@@ -204,7 +204,7 @@ class BloggingRemindersScheduler {
         }
 
         // Only copy if the existing local store contains no schedules
-        if localStore.configuration.count == 0 {
+        if localStore.configuration.isEmpty {
             ContextManager.shared.performAndSave { context in
                 for (blogUrl, schedule) in sharedConfig {
                     guard let blog = try? BlogQuery().hostname(matching: blogUrl).blog(in: context) else {

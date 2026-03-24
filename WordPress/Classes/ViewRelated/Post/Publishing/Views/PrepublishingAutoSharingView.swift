@@ -27,7 +27,7 @@ struct PrepublishingAutoSharingView: View {
     private var content: some View {
         Group {
             textStack
-            if model.services.count > 0 {
+            if !model.services.isEmpty {
                 if !shouldStackContentVertically {
                     Spacer(minLength: .zero) // to push the icons to the trailing side in horizontal layout.
                 }

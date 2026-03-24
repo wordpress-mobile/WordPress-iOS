@@ -47,7 +47,7 @@ import WordPressSharedObjC
     /// - Returns: The formatted string.
     ///
     @objc public class func formatContentString(_ string: String, isPrivateSite isPrivate: Bool) -> String {
-        guard string.count > 0 else {
+        guard !string.isEmpty else {
             return string
         }
 
@@ -70,7 +70,7 @@ import WordPressSharedObjC
     /// - Returns: The formatted string.
     ///
     @objc public class func removeForbiddenTags(_ string: String) -> String {
-        guard string.count > 0 else {
+        guard !string.isEmpty else {
             return string
         }
         var content = string
@@ -101,7 +101,7 @@ import WordPressSharedObjC
     /// - Returns: The formatted string.
     ///
     @objc public class func normalizeParagraphs(_ string: String) -> String {
-        guard string.count > 0 else {
+        guard !string.isEmpty else {
             return string
         }
         var content = string
@@ -142,7 +142,7 @@ import WordPressSharedObjC
         // We don't want to remove new lines from preformatted tag blocks,
         // so get the ranges of such blocks.
         let matches = RegEx.preTags.matches(in: content, options: .reportCompletion, range: NSRange(location: 0, length: content.count))
-        if matches.count == 0 {
+        if matches.isEmpty {
 
             // No blocks found, so we'll parse the whole string.
             ranges.append(NSRange(location: 0, length: content.count))
@@ -184,7 +184,7 @@ import WordPressSharedObjC
     /// - Returns: The formatted string.
     ///
     @objc public class func removeInlineStyles(_ string: String) -> String {
-        guard string.count > 0 else {
+        guard !string.isEmpty else {
             return string
         }
         var content = string
@@ -206,7 +206,7 @@ import WordPressSharedObjC
     /// - Returns: The formatted string.
     ///
     @objc public class func resizeGalleryImageURL(_ string: String, isPrivateSite isPrivate: Bool) -> String {
-        guard string.count > 0 else {
+        guard !string.isEmpty else {
             return string
         }
 
@@ -282,7 +282,7 @@ import WordPressSharedObjC
     /// - Returns: The formatted string.
     ///
     @objc public class func removeTrailingBreakTags(_ string: String) -> String {
-        guard string.count > 0 else {
+        guard !string.isEmpty else {
             return string
         }
 
