@@ -2703,6 +2703,9 @@ Example: Reply to Pamela Nguyen */
 /* Tab title for trashed posts */
 "customPostTab.trash" = "Trash";
 
+/* Badge label indicating that custom post type support is a beta feature. Displayed next to the navigation title. */
+"customPostType.navigation.betaBadge" = "BETA";
+
 /* Empty state message when there are no custom post types to display */
 "customPostTypes.emptyState.message" = "No Custom Post Types";
 
