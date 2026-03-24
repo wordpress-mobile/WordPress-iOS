@@ -12978,15 +12978,6 @@ Example: given a notice format "Following %@" and empty site name, this will be 
 /* Title for the time zone selector */
 "timeZoneSelector.title" = "אזור זמן";
 
-/* Action button title to enable new stats from tip */
-"tips.newStats.action" = "להפעיל עכשיו";
-
-/* Tip for new stats feature */
-"tips.newStats.message" = "חוויה חדשה, מלוטשת ועוצמתית יותר עם הנתונים הסטטיסטיים. אפשר לחזור למצב הישן מתי שרוצים.";
-
-/* Tip for new stats feature */
-"tips.newStats.title" = "לנסות את הנתונים הסטטיסטיים החדשים";
-
 /* Tip for sidebar */
 "tips.sidebar.message" = "יש להחליק לימין כדי לגשת לאתר, ל-Reader, להודעות ולפרופיל שלך";
 

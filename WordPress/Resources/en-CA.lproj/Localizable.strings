@@ -11649,15 +11649,6 @@ Feel free to replace it with other bracket types that you think looks better for
 /* Title for the time zone selector */
 "timeZoneSelector.title" = "Time Zone";
 
-/* Action button title to enable new stats from tip */
-"tips.newStats.action" = "Enable Now";
-
-/* Tip for new stats feature */
-"tips.newStats.message" = "Experience new sleek and powerful stats. Switch back whenever you like.";
-
-/* Tip for new stats feature */
-"tips.newStats.title" = "Try New Stats";
-
 /* Tip for sidebar */
 "tips.sidebar.message" = "Swipe right to access your sites, Reader, notifications, and profile";
 

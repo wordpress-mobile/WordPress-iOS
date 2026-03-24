@@ -1,4 +1,4 @@
-/* Translation-Revision-Date: 2026-03-20 09:40:56+0000 */
+/* Translation-Revision-Date: 2026-03-24 12:03:33+0000 */
 /* Plural-Forms: nplurals=3; plural=(n == 1) ? 0 : ((n == 0 || n % 100 >= 2 && n % 100 <= 19) ? 1 : 2); */
 /* Generator: GlotPress/4.0.3 */
 /* Language: ro */
@@ -10199,6 +10199,42 @@ Example: Reply to Pamela Nguyen */
 /* Menu title for the visit site option */
 "mySite.siteActions.visitSite" = "Vizitează site-ul";
 
+/* Button to confirm to switch to the New Stats announcement screen */
+"newStats.announcement.continueButton" = "Începe";
+
+/* Disclosure at the bottom of the New Stats announcement screen, informing users they can opt out */
+"newStats.announcement.disclosure" = "Nu ești gata să le vezi? Poți să dezactivezi Statistici noi în meniul Mai multe din fila Statistici.";
+
+/* Feature description: navigation moved to the bottom for thumb-friendly access */
+"newStats.announcement.feature.bottomNav.description" = "Navigarea și selectorul de date sunt acum în partea de jos a ecranului - exact acolo unde ai degetul.";
+
+/* Feature title: navigation moved to the bottom */
+"newStats.announcement.feature.bottomNav.title" = "Mai ușor de accesat";
+
+/* Feature description: flexible date picker with presets, custom ranges, and comparisons */
+"newStats.announcement.feature.datePicker.description" = "Alegi dintre presetările comune sau setezi un interval de date personalizat cu o perioadă de comparație - totul cu o singură atingere.";
+
+/* Feature title: flexible date picker */
+"newStats.announcement.feature.datePicker.title" = "Orice perioadă, orice interval";
+
+/* Feature description: feature parity with the web version of Stats */
+"newStats.announcement.feature.parity.description" = "Dispozitive, UTM, locații, WordAds - aceleași date de care beneficiezi pe WordPress.com.";
+
+/* Feature title: feature parity with the web version of Stats */
+"newStats.announcement.feature.parity.title" = "La egalitate cu web-ul";
+
+/* Feature description: trends shown for all metrics with comparison to previous period */
+"newStats.announcement.feature.trends.description" = "Fiecare valoare metrică arată tendința în comparație cu perioada anterioară, astfel știi întotdeauna dacă te dezvolți.";
+
+/* Feature title: trends visible for all metrics */
+"newStats.announcement.feature.trends.title" = "Tendințe dintr-o privire";
+
+/* Subtitle for the New Stats announcement screen */
+"newStats.announcement.subtitle" = "O modalitate mai bună de a înțelege performanța pe site-ul tău - acum activată implicit.";
+
+/* Title for the New Stats announcement screen */
+"newStats.announcement.title" = "Statistici noi";
+
 /* A no results message displayed on the atomic logs screen. */
 "noLogs.empty" = "Nu există intrări în jurnal în această perioadă de timp";
 
@@ -13049,15 +13085,6 @@ Feel free to replace it with other bracket types that you think looks better for
 
 /* Title for the time zone selector */
 "timeZoneSelector.title" = "Fus orar";
-
-/* Action button title to enable new stats from tip */
-"tips.newStats.action" = "Activează acum";
-
-/* Tip for new stats feature */
-"tips.newStats.message" = "Experimentezi statistici noi, elegante și puternice. Comuți înapoi oricând dorești.";
-
-/* Tip for new stats feature */
-"tips.newStats.title" = "Încearcă noile Statistici";
 
 /* Tip for sidebar */
 "tips.sidebar.message" = "Trece cu degetul spre dreapta pentru a-ți accesa site-urile, Cititorul, notificările și profilul tău";

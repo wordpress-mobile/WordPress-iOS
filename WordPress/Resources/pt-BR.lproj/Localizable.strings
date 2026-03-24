@@ -12168,12 +12168,6 @@ Feel free to replace it with other bracket types that you think looks better for
 /* Section title for suggested timezones */
 "timeZoneSelector.suggested" = "Sugestões";
 
-/* Tip for new stats feature */
-"tips.newStats.message" = "Experimente as novas, elegantes e avançadas estatísticas. Volte para o modelo antigo a qualquer momento.";
-
-/* Tip for new stats feature */
-"tips.newStats.title" = "Experimente as novas estatísticas";
-
 /* Tip for sidebar */
 "tips.sidebar.message" = "Deslize para a direita para acessar seus sites, Leitor, notificações e perfil";
 

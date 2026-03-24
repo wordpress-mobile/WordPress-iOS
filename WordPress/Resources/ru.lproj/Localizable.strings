@@ -1,4 +1,4 @@
-/* Translation-Revision-Date: 2026-03-20 21:05:32+0000 */
+/* Translation-Revision-Date: 2026-03-24 14:56:48+0000 */
 /* Plural-Forms: nplurals=3; plural=(n % 10 == 1 && n % 100 != 11) ? 0 : ((n % 10 >= 2 && n % 10 <= 4 && (n % 100 < 12 || n % 100 > 14)) ? 1 : 2); */
 /* Generator: GlotPress/4.0.3 */
 /* Language: ru */
@@ -7025,6 +7025,9 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Button title for restoring a backup */
 "activityDetail.restore.button" = "Восстановить";
 
+/* Shows the MCP client used for an activity. %1$@ is the MCP client name (e.g. Claude). */
+"activityDetail.section.agent" = "через %1$@";
+
 /* Section title for restore site actions */
 "activityDetail.section.restoreSite" = "Восстановление сайта";
 
@@ -7883,8 +7886,71 @@ Example: Reply to Pamela Nguyen */
 /* Error message shown when the post was modified by another user while editing */
 "customPostEditor.error.conflict.message" = "За это время запись, которую вы пытаетесь сохранить, была изменена.";
 
+/* Menu action to promote a post with Blaze */
+"customPostList.action.blaze" = "Продвигайте с помощью Blaze";
+
+/* Menu action to view post comments */
+"customPostList.action.comments" = "Комментарии";
+
+/* Menu action to permanently delete a trashed post */
+"customPostList.action.deletePermanently" = "Удалить навсегда";
+
+/* Menu action to change a post's status to draft */
+"customPostList.action.moveToDraft" = "Переместить в черновик";
+
+/* Menu action to move a post to trash */
+"customPostList.action.moveToTrash" = "Отправить в корзину";
+
+/* Menu action to publish a draft or pending post */
+"customPostList.action.publish" = "Опубликовать";
+
+/* Menu action to open post settings */
+"customPostList.action.settings" = "Настройки";
+
+/* Menu action to view post statistics */
+"customPostList.action.stats" = "Статистика";
+
+/* Accessibility label for the author filter button in the custom post list */
+"customPostList.authorFilter.accessibilityLabel" = "Фильтрация по автору";
+
+/* Menu item to show posts from all authors in the custom post list */
+"customPostList.authorFilter.everyone" = "Любой";
+
+/* Menu item to show only the current user's posts in the custom post list */
+"customPostList.authorFilter.mine" = "Моё";
+
+/* Accessibility value when the author filter shows posts from all authors */
+"customPostList.authorFilter.showingEveryone" = "Показаны записи всех авторов";
+
+/* Accessibility value when the author filter shows only the current user's posts */
+"customPostList.authorFilter.showingMine" = "Показаны только ваши записи";
+
+/* Badge label shown on the homepage row in the custom post list for pages */
+"customPostList.badge.homepage" = "Главная";
+
+/* Badge shown in the post list for sticky posts */
+"customPostList.badge.sticky" = "Закреплённая";
+
+/* Message for the confirmation alert when permanently deleting a post */
+"customPostList.deleteConfirmation.message" = "Это действие нельзя отменить.";
+
+/* Title for the confirmation alert when permanently deleting a post */
+"customPostList.deleteConfirmation.title" = "Удалить навсегда?";
+
 /* Empty state message when no custom posts exist. %1$@ is the post type name (e.g., 'Podcasts', 'Products'). */
 "customPostList.emptyState.message" = "Нет %1$@";
+
+/* Message for the confirmation alert when trashing a published post */
+"customPostList.trashConfirmation.message" = "Эта запись опубликована и видна посетителям. Вы уверены, что хотите переместить её в корзину?";
+
+/* Title for the confirmation alert when trashing a published post */
+"customPostList.trashConfirmation.title" = "Удалить в корзину?";
+
+/* Placeholder title for posts without a title */
+"customPostList.untitled" = "(без названия)";
+
+/* Title for the parent page picker screen for custom post types */
+"customPostParentPicker.title" = "Родительская страница";
 
 /* Option to set a post as top level (no parent) */
 "customPostParentPicker.topLevel" = "Верхний уровень";
@@ -9461,6 +9527,9 @@ Example: Reply to Pamela Nguyen */
 /* Search terms data type */
 "jetpackStats.siteDataTypes.searchTerms" = "Поисковые запросы";
 
+/* UTM campaign tracking data type */
+"jetpackStats.siteDataTypes.utm" = "UTM";
+
 /* Videos data type */
 "jetpackStats.siteDataTypes.videos" = "Видео";
 
@@ -10129,6 +10198,42 @@ Example: Reply to Pamela Nguyen */
 
 /* Menu title for the visit site option */
 "mySite.siteActions.visitSite" = "Перейти на сайт";
+
+/* Button to confirm to switch to the New Stats announcement screen */
+"newStats.announcement.continueButton" = "Начать";
+
+/* Disclosure at the bottom of the New Stats announcement screen, informing users they can opt out */
+"newStats.announcement.disclosure" = "Не готовы переключиться? Вы можете отключить новую статистику в меню «Дополнительно» на вкладке «Статистика».";
+
+/* Feature description: navigation moved to the bottom for thumb-friendly access */
+"newStats.announcement.feature.bottomNav.description" = "Навигация и выбор даты теперь находятся внизу экрана — прямо там, где находится ваш большой палец.";
+
+/* Feature title: navigation moved to the bottom */
+"newStats.announcement.feature.bottomNav.title" = "Лёгкая доступность";
+
+/* Feature description: flexible date picker with presets, custom ranges, and comparisons */
+"newStats.announcement.feature.datePicker.description" = "Выберите одну из стандартных настроек или установите собственный диапазон дат с периодом сравнения — и все это одним нажатием.";
+
+/* Feature title: flexible date picker */
+"newStats.announcement.feature.datePicker.title" = "Любой период, любой диапазон";
+
+/* Feature description: feature parity with the web version of Stats */
+"newStats.announcement.feature.parity.description" = "Устройства, UTM, местоположения, WordAds — те же данные, которые вы получаете на WordPress.com.";
+
+/* Feature title: feature parity with the web version of Stats */
+"newStats.announcement.feature.parity.title" = "Наравне с Интернетом";
+
+/* Feature description: trends shown for all metrics with comparison to previous period */
+"newStats.announcement.feature.trends.description" = "Каждый показатель показывает, насколько он меняется по сравнению с предыдущим периодом, поэтому вы всегда знаете, растёте ли вы.";
+
+/* Feature title: trends visible for all metrics */
+"newStats.announcement.feature.trends.title" = "Статистика в общих чертах";
+
+/* Subtitle for the New Stats announcement screen */
+"newStats.announcement.subtitle" = "Лучший способ к пониманию эффективности вашего сайта — теперь включен по умолчанию.";
+
+/* Title for the New Stats announcement screen */
+"newStats.announcement.title" = "Новая статистика";
 
 /* A no results message displayed on the atomic logs screen. */
 "noLogs.empty" = "Ни одной записи в журнале в указанном диапазоне времени";
@@ -12980,15 +13085,6 @@ Feel free to replace it with other bracket types that you think looks better for
 
 /* Title for the time zone selector */
 "timeZoneSelector.title" = "Часовой пояс";
-
-/* Action button title to enable new stats from tip */
-"tips.newStats.action" = "Активировать";
-
-/* Tip for new stats feature */
-"tips.newStats.message" = "Новая статистика: элегантная и эффективная. Можно вернуться к старой версии в любой момент.";
-
-/* Tip for new stats feature */
-"tips.newStats.title" = "Встречайте обновлённую статистику";
 
 /* Tip for sidebar */
 "tips.sidebar.message" = "Смахивайте вправо, чтобы перейти к своим сайтам, «Читалке», уведомлениям и профилю";

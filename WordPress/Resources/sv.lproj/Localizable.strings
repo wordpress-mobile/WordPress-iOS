@@ -1,4 +1,4 @@
-/* Translation-Revision-Date: 2026-03-20 09:40:02+0000 */
+/* Translation-Revision-Date: 2026-03-24 09:57:29+0000 */
 /* Plural-Forms: nplurals=2; plural=n != 1; */
 /* Generator: GlotPress/4.0.3 */
 /* Language: sv_SE */
@@ -7898,6 +7898,9 @@ Example: Reply to Pamela Nguyen */
 /* Menu action to change a post's status to draft */
 "customPostList.action.moveToDraft" = "Flytta till utkast";
 
+/* Menu action to move a post to trash */
+"customPostList.action.moveToTrash" = "Flytta till papperskorgen";
+
 /* Menu action to publish a draft or pending post */
 "customPostList.action.publish" = "Publicera";
 
@@ -7906,6 +7909,21 @@ Example: Reply to Pamela Nguyen */
 
 /* Menu action to view post statistics */
 "customPostList.action.stats" = "Statistik";
+
+/* Accessibility label for the author filter button in the custom post list */
+"customPostList.authorFilter.accessibilityLabel" = "Filtrering på författare";
+
+/* Menu item to show posts from all authors in the custom post list */
+"customPostList.authorFilter.everyone" = "Alla";
+
+/* Menu item to show only the current user's posts in the custom post list */
+"customPostList.authorFilter.mine" = "Mina";
+
+/* Accessibility value when the author filter shows posts from all authors */
+"customPostList.authorFilter.showingEveryone" = "Visar allas inlägg";
+
+/* Accessibility value when the author filter shows only the current user's posts */
+"customPostList.authorFilter.showingMine" = "Visar endast mina inlägg";
 
 /* Badge label shown on the homepage row in the custom post list for pages */
 "customPostList.badge.homepage" = "Startsida";
@@ -7922,11 +7940,20 @@ Example: Reply to Pamela Nguyen */
 /* Empty state message when no custom posts exist. %1$@ is the post type name (e.g., 'Podcasts', 'Products'). */
 "customPostList.emptyState.message" = "Inget %1$@";
 
+/* Message for the confirmation alert when trashing a published post */
+"customPostList.trashConfirmation.message" = "Detta inlägg är publicerat och synligt för besökare. Är du säker på att du vill flytta \"\" till papperskorgen?";
+
+/* Title for the confirmation alert when trashing a published post */
+"customPostList.trashConfirmation.title" = "Flytta till papperskorgen";
+
 /* Placeholder title for posts without a title */
 "customPostList.untitled" = "(ingen rubrik)";
 
 /* Title for the parent page picker screen for custom post types */
 "customPostParentPicker.title" = "Överordnad sida";
+
+/* Option to set a post as top level (no parent) */
+"customPostParentPicker.topLevel" = "Toppnivå";
 
 /* Description for the top level option in the parent page picker, indicating this page will have no parent */
 "customPostParentPicker.topLevel.description" = "Ingen överordnad sida";
@@ -8096,6 +8123,9 @@ Example: Reply to Pamela Nguyen */
 /* Boolean User Defaults Debug Menu screen title */
 "debugMenu.booleanUserDefaults.title" = "Booleska användarstandarder";
 
+/* Debug Menu label for image cache size */
+"debugMenu.caches.imageCache" = "Bildcache";
+
 /* Feature flags menu item */
 "debugMenu.featureFlags" = "Funktionsflaggor";
 
@@ -8135,6 +8165,9 @@ Example: Reply to Pamela Nguyen */
 
 /* Debug Menu action for TipKit */
 "debugMenu.resetTipKitData" = "Återställ data";
+
+/* Debug Menu section title */
+"debugMenu.section.caches" = "Cachar";
 
 /* Debug Menu section title */
 "debugMenu.section.logging" = "Loggning";
@@ -10868,6 +10901,9 @@ Example: Reply to Pamela Nguyen */
 /* Section header for More Options in Post Settings. Should use the same translation as core WP. */
 "postSettings.moreOptions.header" = "Fler alternativ";
 
+/* The title of the Post Settings screen for custom post types. %1$@ is the post type name. */
+"postSettings.navigationTitle.customPostType" = "Inställningar för %1$@";
+
 /* The title of the Page Settings screen. */
 "postSettings.navigationTitle.page" = "Sidinställningar";
 
@@ -10927,6 +10963,9 @@ Example: Reply to Pamela Nguyen */
 
 /* Placeholder value for a publishing date in the prepublishing sheet when the date is not selected */
 "postSettings.publishDateImmediately" = "Omedelbart";
+
+/* Error message shown when saving post settings via REST API fails */
+"postSettings.saveFailed.message" = "Misslyckades att spara ändringar";
 
 /* Section header for General settings in Post Settings */
 "postSettings.section.general" = "Allmänt";
@@ -11044,6 +11083,9 @@ Example: Reply to Pamela Nguyen */
 
 /* Post status title */
 "postStatus.trash.details" = "Borttaget men inte borttaget permanent än";
+
+/* Post status title used in different contexts */
+"postStatus.trash.title" = "Papperskorg";
 
 /* Button to add a new taxonomy term. %1$@ is the taxonomy name (e.g., 'tags', 'categories'). */
 "postTags.addTag" = "Lägg till %1$@";
@@ -11995,6 +12037,9 @@ Feel free to replace it with other bracket types that you think looks better for
 
 /* A shared button title used in different contexts */
 "shared.button.edit" = "Redigera";
+
+/* A shared button title used in different contexts */
+"shared.button.notNow" = "Nu nu";
 
 /* A shared button title used in different contexts */
 "shared.button.ok" = "OK";
@@ -13004,15 +13049,6 @@ Feel free to replace it with other bracket types that you think looks better for
 
 /* Title for the time zone selector */
 "timeZoneSelector.title" = "Tidszon";
-
-/* Action button title to enable new stats from tip */
-"tips.newStats.action" = "Aktivera nu";
-
-/* Tip for new stats feature */
-"tips.newStats.message" = "Upplev ny elegant och kraftfull statistik. Växla tillbaka när du vill.";
-
-/* Tip for new stats feature */
-"tips.newStats.title" = "Prova nya Statistik";
 
 /* Tip for sidebar */
 "tips.sidebar.message" = "Svep åt höger för att komma till dina webbplatser, läsaren, aviseringar och din profil";
