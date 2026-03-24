@@ -354,7 +354,8 @@ extension ReaderSelectInterestsViewController: UICollectionViewDelegateFlowLayou
 // MARK: - ReaderInterestsDataDelegate
 extension ReaderSelectInterestsViewController: ReaderInterestsDataDelegate {
     func readerInterestsDidUpdate(_ dataSource: ReaderInterestsDataSource) {
-        if !dataSource.isEmpty {
+        // swiftlint:disable:next empty_count
+        if dataSource.count != 0 {
             hideLoadingView()
             reloadData()
         } else if !topics.isEmpty {

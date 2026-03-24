@@ -173,7 +173,8 @@ open class SettingsListEditorViewController: UITableViewController {
     }
 
     fileprivate func isEmpty() -> Bool {
-        return rows.isEmpty
+        // swiftlint:disable:next empty_count
+        return rows.count == 0
     }
 
     // MARK: - Constants
