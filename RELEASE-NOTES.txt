@@ -1,6 +1,7 @@
 26.9
 -----
 * [*] All self-hosted sites now sign in using application passwords [#25424]
+* [*] Reader: Fix button style [#25447]
 
 
 26.8

@@ -216,7 +216,6 @@ class ReaderWebView: WKWebView {
         """
     }
 
-    // TODO: remove `reader-full-post.reader-full-post__story-content` from-mobile-reader.css on Calypso when this fixed is shipped on the app level
     private func overrideStyles() -> String {
         /// Some context: We are fetching the CSS file from a remote endpoint, but we store a local `reader.css` file
         /// to override some styles for mobile-specific purposes.
@@ -233,13 +232,6 @@ class ReaderWebView: WKWebView {
             a {
                 font-weight: \(displaySetting.color == .system ? "inherit" : "600");
                 text-decoration: underline;
-            }
-
-            /* workaround for CMM-1964 */
-            .reader-full-post.reader-full-post__story-content {
-                a {
-                    color: var(--main-link-color);
-                }
             }
         """
     }

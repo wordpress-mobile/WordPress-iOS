@@ -76,6 +76,24 @@ figure.wp-block-embed.is-type-video {
     max-width: 99vw;
 }
 
+/* workaround for CMM-1964 */
+.reader-full-post .reader-full-post__story-content {
+  a {
+    color: var(--main-link-color);
+  }
+}
+
+.reader-full-post__story-content .wp-block-button {
+  a {
+    color: var(--color-text);
+    font-weight: 500;
+    font-size: 1rem;
+    text-decoration: none;
+  }
+
+  border-radius: 8px;
+}
+
 /* Temporary override for Reader Customization */
 .reader-full-post__story-content blockquote {
     color: var(--color-text);
