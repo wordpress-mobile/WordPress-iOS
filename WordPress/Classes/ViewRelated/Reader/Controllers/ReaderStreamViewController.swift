@@ -939,7 +939,8 @@ import AutomatticTracks
         let successBlock = { [weak self] (count: Int, hasMore: Bool) in
             DispatchQueue.main.async {
                 if let strongSelf = self {
-                    if !strongSelf.recentlyBlockedSitePostObjectIDs.isEmpty {
+                    // swiftlint:disable:next empty_count
+                    if strongSelf.recentlyBlockedSitePostObjectIDs.count > 0 {
                         strongSelf.recentlyBlockedSitePostObjectIDs.removeAllObjects()
                         strongSelf.updateAndPerformFetchRequest()
                     }
@@ -1009,7 +1010,8 @@ import AutomatticTracks
             let successBlock = { [weak self] (count: Int, hasMore: Bool) in
                 DispatchQueue.main.async {
                     if let strongSelf = self {
-                        if !strongSelf.recentlyBlockedSitePostObjectIDs.isEmpty {
+                        // swiftlint:disable:next empty_count
+                        if strongSelf.recentlyBlockedSitePostObjectIDs.count > 0 {
                             strongSelf.recentlyBlockedSitePostObjectIDs.removeAllObjects()
                             strongSelf.updateAndPerformFetchRequest()
                         }
@@ -1148,7 +1150,8 @@ import AutomatticTracks
             return predicateForNilTopic
         }
 
-        if !recentlyBlockedSitePostObjectIDs.isEmpty {
+        // swiftlint:disable:next empty_count
+        if recentlyBlockedSitePostObjectIDs.count > 0 {
             return NSPredicate(format: "topic = %@ AND (isSiteBlocked = NO OR SELF in %@)", topicInContext, recentlyBlockedSitePostObjectIDs)
         }
 
