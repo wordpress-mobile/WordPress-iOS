@@ -32,10 +32,10 @@ REPO_ROOT="$(cd "$SCRIPT_DIR/../.." && pwd)"
 cd "$REPO_ROOT"
 
 # ── Label gate (Buildkite only) ─────────────────────────────────────
-if [[-n "${BUILDKITE_PULL_REQUEST_LABELS:-}" ]]; then
-  echo "--- 🏷 Checking for 'Testing' label"
+if [[ -n "${BUILDKITE_PULL_REQUEST_LABELS:-}" ]]; then
+  echo "--- Checking for 'Testing' label"
 
-  if ! echo ";${BUILDKITE_PULL_REQUEST_LABELS};" | grep -q ";Testing;"; then
+  if ! echo ",${BUILDKITE_PULL_REQUEST_LABELS}," | grep -qF ",Testing,"; then
     echo "PR does not have the 'Testing' label. Skipping."
     echo "Add the label and re-run this step to trigger AI E2E tests."
     exit 0
@@ -64,12 +64,12 @@ case "$APP" in
 esac
 
 # ── Artifact download (Buildkite only) ───────────────────────────────
-if [[-n "${BUILDKITE:-}" ]]; then
-  echo "--- 📦 Downloading Build Artifacts"
+if [[ -n "${BUILDKITE:-}" ]]; then
+  echo "--- Downloading Build Artifacts"
   download_artifact "build-products-${APP}.tar"
   tar -xf "build-products-${APP}.tar"
 
-  echo "--- :rubygems: Setting up Gems"
+  echo "--- Setting up Gems"
   install_gems
 fi
 
@@ -77,20 +77,24 @@ fi
 WDA_START="$REPO_ROOT/.claude/skills/ios-sim-navigation/scripts/wda-start.rb"
 WDA_STOP="$REPO_ROOT/.claude/skills/ios-sim-navigation/scripts/wda-stop.rb"
 
-if [[! -f "$WDA_START" ]]; then
+if [[ ! -f "$WDA_START" ]]; then
   echo "Error: WDA start script not found at $WDA_START" >&2
   exit 1
 fi
 
 # ── Install Claude Code ─────────────────────────────────────────────
 if ! command -v claude &>/dev/null; then
-  echo "--- 🤖 Installing Claude Code"
+  echo "--- Installing Claude Code"
+  if ! command -v npm &>/dev/null; then
+    echo "npm not found, installing Node.js via Homebrew..."
+    brew install node
+  fi
   npm install -g @anthropic-ai/claude-code
 fi
 echo "Claude Code: $(claude --version 2>/dev/null || echo 'unknown')"
 
 # ── Detect or boot simulator ────────────────────────────────────────
-echo "--- 📱 Setting up Simulator"
+echo "--- Setting up Simulator"
 
 get_booted_udid() {
   xcrun simctl list devices booted -j 2>/dev/null \
@@ -100,30 +104,31 @@ get_booted_udid() {
           devs.each { |d| (puts d["udid"]; exit) if d["state"] == "Booted" }
         end
       ' 2>/dev/null || true
+  return 0
 }
 
 UDID="$(get_booted_udid)"
 
-if [[-z "$UDID" ]]; then
+if [[ -z "$UDID" ]]; then
   echo "No booted simulator found. Booting '$SIMULATOR_NAME'..."
   xcrun simctl boot "$SIMULATOR_NAME"
   sleep 5
   UDID="$(get_booted_udid)"
 fi
 
-if [[-z "$UDID" ]]; then
+if [[ -z "$UDID" ]]; then
   echo "Error: could not find a booted simulator" >&2
   exit 1
 fi
 echo "Simulator UDID: $UDID"
 
 # ── Install app on simulator (Buildkite only) ────────────────────────
-if [[-n "${BUILDKITE:-}" ]]; then
+if [[ -n "${BUILDKITE:-}" ]]; then
   APP_DISPLAY_NAME="Jetpack"
   [[ "$APP" = "wordpress" ]] && APP_DISPLAY_NAME="WordPress"
 
   APP_PATH=$(find DerivedData/Build/Products -name "${APP_DISPLAY_NAME}.app" -path "*Debug-iphonesimulator*" | head -1)
-  if [[-z "$APP_PATH" ]]; then
+  if [[ -z "$APP_PATH" ]]; then
     echo "Error: ${APP_DISPLAY_NAME}.app not found in build products" >&2
     exit 1
   fi
@@ -132,7 +137,7 @@ if [[-n "${BUILDKITE:-}" ]]; then
 fi
 
 # ── Start WDA ────────────────────────────────────────────────────────
-echo "--- 🔌 Starting WebDriverAgent"
+echo "--- Starting WebDriverAgent"
 ruby "$WDA_START" --udid "$UDID" --port "$WDA_PORT"
 
 SESSION_ID="$(curl -s -X POST "http://localhost:${WDA_PORT}/session" \
@@ -140,7 +145,7 @@ SESSION_ID="$(curl -s -X POST "http://localhost:${WDA_PORT}/session" \
   -d '{"capabilities":{"alwaysMatch":{}}}' \
   | ruby -rjson -e 'puts JSON.parse(STDIN.read).dig("value", "sessionId")')"
 
-if [[-z "$SESSION_ID" ]]; then
+if [[ -z "$SESSION_ID" ]]; then
   echo "Error: failed to create WDA session" >&2
   ruby "$WDA_STOP" --port "$WDA_PORT" 2>/dev/null || true
   exit 1
@@ -162,7 +167,7 @@ RESULTS_DIR="Tests/AgentTests/results/${TIMESTAMP}"
 mkdir -p "$RESULTS_DIR"
 
 # ── Run Claude Code ──────────────────────────────────────────────────
-echo "--- 🧪 Running AI E2E Tests"
+echo "--- Running AI E2E Tests"
 
 PROMPT="Run all AI E2E test cases in ${TEST_DIR}/ using the ci-test-runner skill.
 
@@ -194,13 +199,13 @@ claude --print \
   || CLAUDE_EXIT=$?
 
 # ── Stop WDA ─────────────────────────────────────────────────────────
-echo "--- 🧹 Cleanup"
+echo "--- Cleanup"
 ruby "$WDA_STOP" --port "$WDA_PORT" 2>/dev/null || true
 
 # ── Report results ───────────────────────────────────────────────────
-echo "--- 🚦 Results"
+echo "--- Results"
 RESULTS_FILE="${RESULTS_DIR}/results.md"
-if [[-f "$RESULTS_FILE" ]]; then
+if [[ -f "$RESULTS_FILE" ]]; then
   cat "$RESULTS_FILE"
 else
   echo "Warning: no results.md found at $RESULTS_FILE"
