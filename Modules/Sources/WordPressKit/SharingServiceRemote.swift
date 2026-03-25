@@ -2,7 +2,7 @@ import Foundation
 import NSObject_SafeExpectations
 
 /// SharingServiceRemote is responsible for wrangling the REST API calls related to
-/// publiczice services, publicize connections, and keyring connections.
+/// sharing buttons.
 ///
 open class SharingServiceRemote: ServiceRemoteWordPressComREST {
 
@@ -101,7 +101,7 @@ open class SharingServiceRemote: ServiceRemoteWordPressComREST {
         })
     }
 
-    /// Composees a `RemotePublicizeConnection` populated with values from the passed `NSDictionary`
+    /// Composes an array of `RemoteSharingButton` objects from the passed `NSArray` of dictionaries.
     ///
     /// - Parameter buttons: An `NSArray` of `NSDictionary`s representing `RemoteSharingButton` objects.
     ///
