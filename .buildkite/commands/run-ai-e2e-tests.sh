@@ -32,7 +32,7 @@ cd "$REPO_ROOT"
 if [[ -n "${BUILDKITE_PULL_REQUEST_LABELS:-}" ]]; then
   echo "--- Checking for 'Testing' label"
 
-  if ! echo ";${BUILDKITE_PULL_REQUEST_LABELS};" | grep -q ";Testing;"; then
+  if ! echo ",${BUILDKITE_PULL_REQUEST_LABELS}," | grep -qF ",Testing,"; then
     echo "PR does not have the 'Testing' label. Skipping."
     echo "Add the label and re-run this step to trigger AI E2E tests."
     exit 0
