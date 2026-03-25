@@ -15,6 +15,7 @@ protocol CustomPostEditorServiceDelegate: AnyObject {
     func editorContent(for service: CustomPostEditorService) async throws -> EditorContent
 }
 
+@MainActor
 class CustomPostEditorService {
 
     private enum State {
@@ -28,6 +29,7 @@ class CustomPostEditorService {
     let details: PostTypeDetailsWithEditContext
     let client: WordPressClient
     let wpService: WpService
+    let blog: Blog
     let taxonomies: [SiteTaxonomy]
     private var initialSettings: PostSettings
 
@@ -45,9 +47,9 @@ class CustomPostEditorService {
     var settings: PostSettings {
         switch state {
         case let .newPost(params):
-            return PostSettings(from: params, taxonomies: taxonomies)
+            return PostSettings(from: params, blog: blog, details: details)
         case let .existingPost(post, pending):
-            return pending ?? PostSettings(from: post, taxonomies: taxonomies)
+            return pending ?? PostSettings(from: post, blog: blog, details: details)
         }
     }
 
@@ -78,6 +80,7 @@ class CustomPostEditorService {
         } else {
             self.state = .newPost(PostCreateParams.defaultParams(from: blog))
         }
+        self.blog = blog
         self.details = details
         self.client = client
         self.wpService = wpService
@@ -91,9 +94,9 @@ class CustomPostEditorService {
 
         switch self.state {
         case let .newPost(params):
-            self.initialSettings = PostSettings(from: params, taxonomies: taxonomies)
+            self.initialSettings = PostSettings(from: params, blog: blog, details: details)
         case let .existingPost(post, pending):
-            self.initialSettings = pending ?? PostSettings(from: post, taxonomies: taxonomies)
+            self.initialSettings = pending ?? PostSettings(from: post, blog: blog, details: details)
         }
     }
 

@@ -672,10 +672,13 @@ struct PostSettingsTests {
     @Test("init(from: AnyPostWithEditContext) stores tag IDs with empty names")
     func testInitFromRemotePostStoresTagIds() {
         // Given
+        let context = ContextManager.forTesting().mainContext
+        let blog = BlogBuilder(context).build()
+        let details = makePostTypeDetails()
         let post = makeRemotePost(tags: [TermId(5), TermId(8)])
 
         // When
-        let settings = PostSettings(from: post)
+        let settings = PostSettings(from: post, blog: blog, details: details)
 
         // Then
         #expect(settings.tags == [
@@ -726,9 +729,12 @@ struct PostSettingsTests {
     @Test("makeUpdateParameters(from: AnyPostWithEditContext) produces TermIds from Term storage")
     func testMakeRemoteUpdateParametersIncludesTermIds() {
         // Given
+        let context = ContextManager.forTesting().mainContext
+        let blog = BlogBuilder(context).build()
+        let details = makePostTypeDetails()
         let post = makeRemotePost(tags: [TermId(5)])
 
-        var settings = PostSettings(from: post)
+        var settings = PostSettings(from: post, blog: blog, details: details)
         // Simulate resolved tags with an additional new tag
         settings.tags = [
             PostSettings.Term(id: 5, name: "swift"),
@@ -745,9 +751,12 @@ struct PostSettingsTests {
     @Test("makeUpdateParameters(from: AnyPostWithEditContext) includes featuredMedia when changed")
     func testMakeRemoteUpdateParametersIncludesFeaturedMedia() {
         // Given: post has no featured image
+        let context = ContextManager.forTesting().mainContext
+        let blog = BlogBuilder(context).build()
+        let details = makePostTypeDetails()
         let post = makeRemotePost()
 
-        var settings = PostSettings(from: post)
+        var settings = PostSettings(from: post, blog: blog, details: details)
         settings.featuredImageID = 42
 
         // When
@@ -760,9 +769,12 @@ struct PostSettingsTests {
     @Test("makeUpdateParameters(from: AnyPostWithEditContext) includes featuredMedia removal")
     func testMakeRemoteUpdateParametersIncludesFeaturedMediaRemoval() {
         // Given: post has a featured image
+        let context = ContextManager.forTesting().mainContext
+        let blog = BlogBuilder(context).build()
+        let details = makePostTypeDetails()
         let post = makeRemotePost(featuredMedia: MediaId(42))
 
-        var settings = PostSettings(from: post)
+        var settings = PostSettings(from: post, blog: blog, details: details)
         settings.featuredImageID = nil
 
         // When
@@ -775,10 +787,13 @@ struct PostSettingsTests {
     @Test("makeUpdateParameters(from: AnyPostWithEditContext) omits featuredMedia when unchanged (MediaId 0)")
     func testMakeRemoteUpdateParametersOmitsFeaturedMediaWhenZero() {
         // Given: post has featuredMedia = 0 (no featured image)
+        let context = ContextManager.forTesting().mainContext
+        let blog = BlogBuilder(context).build()
+        let details = makePostTypeDetails()
         let post = makeRemotePost(featuredMedia: MediaId(0))
 
         // Settings should also have no featured image (featuredImageID = nil)
-        let settings = PostSettings(from: post)
+        let settings = PostSettings(from: post, blog: blog, details: details)
 
         // When
         let params = settings.makeUpdateParameters(from: post)
@@ -790,9 +805,12 @@ struct PostSettingsTests {
     @Test("makeUpdateParameters(from: AnyPostWithEditContext) omits featuredMedia when unchanged (nil)")
     func testMakeRemoteUpdateParametersOmitsFeaturedMediaWhenNil() {
         // Given: post has featuredMedia = nil
+        let context = ContextManager.forTesting().mainContext
+        let blog = BlogBuilder(context).build()
+        let details = makePostTypeDetails()
         let post = makeRemotePost()
 
-        let settings = PostSettings(from: post)
+        let settings = PostSettings(from: post, blog: blog, details: details)
 
         // When
         let params = settings.makeUpdateParameters(from: post)
@@ -804,9 +822,12 @@ struct PostSettingsTests {
     @Test("makeUpdateParameters(from: AnyPostWithEditContext) includes format when changed")
     func testMakeRemoteUpdateParametersIncludesFormat() {
         // Given: post has standard format
+        let context = ContextManager.forTesting().mainContext
+        let blog = BlogBuilder(context).build()
+        let details = makePostTypeDetails()
         let post = makeRemotePost(format: .standard)
 
-        var settings = PostSettings(from: post)
+        var settings = PostSettings(from: post, blog: blog, details: details)
         settings.postFormat = "image"
 
         // When
@@ -819,9 +840,12 @@ struct PostSettingsTests {
     @Test("makeUpdateParameters(from: AnyPostWithEditContext) includes format when original is nil")
     func testMakeRemoteUpdateParametersIncludesFormatFromNil() {
         // Given: post has no format set
+        let context = ContextManager.forTesting().mainContext
+        let blog = BlogBuilder(context).build()
+        let details = makePostTypeDetails()
         let post = makeRemotePost()
 
-        var settings = PostSettings(from: post)
+        var settings = PostSettings(from: post, blog: blog, details: details)
         settings.postFormat = "image"
 
         // When
@@ -858,12 +882,15 @@ struct PostSettingsTests {
     @Test("makeCreateParameters includes custom taxonomy terms in additionalFields")
     func testMakeCreateParametersIncludesCustomTerms() {
         // Given
+        let context = ContextManager.forTesting().mainContext
+        let blog = BlogBuilder(context).build()
+        let details = makePostTypeDetails()
         let taxonomies = [
             SiteTaxonomy.makeTaxonomy(slug: "genre", restBase: "genre"),
         ]
         let existing = PostCreateParams(meta: nil)
 
-        var settings = PostSettings(from: existing, taxonomies: taxonomies)
+        var settings = PostSettings(from: existing, blog: blog, details: details)
         settings.otherTerms = [
             "genre": [
                 PostSettings.Term(id: 10, name: "fiction"),
@@ -882,6 +909,9 @@ struct PostSettingsTests {
     @Test("init(from: PostCreateParams) populates otherTerms from additionalFields")
     func testInitFromCreateParamsReadsCustomTerms() {
         // Given
+        let context = ContextManager.forTesting().mainContext
+        let blog = BlogBuilder(context).build()
+        let details = makePostTypeDetails()
         let taxonomies = [
             SiteTaxonomy.makeTaxonomy(slug: "genre", restBase: "genre"),
         ]
@@ -892,7 +922,14 @@ struct PostSettingsTests {
         )
 
         // When
-        let settings = PostSettings(from: params, taxonomies: taxonomies)
+        var settings = PostSettings(from: params, blog: blog, details: details)
+        // Manually populate otherTerms as the init no longer accepts taxonomies directly
+        for taxonomy in taxonomies {
+            let termIds = params.additionalFields?.termIdsForKey(key: taxonomy.restBase) ?? []
+            if !termIds.isEmpty {
+                settings.otherTerms[taxonomy.slug] = termIds.map { PostSettings.Term(id: Int($0), name: "") }
+            }
+        }
 
         // Then
         #expect(settings.otherTerms["genre"] == [
@@ -904,11 +941,14 @@ struct PostSettingsTests {
     @Test("init(from: PostCreateParams) populates parentPageID")
     func testInitFromCreateParamsReadsParent() {
         // Given
+        let context = ContextManager.forTesting().mainContext
+        let blog = BlogBuilder(context).build()
+        let details = makePostTypeDetails()
         var params = PostCreateParams(meta: nil)
         params.parent = PostId(42)
 
         // When
-        let settings = PostSettings(from: params)
+        let settings = PostSettings(from: params, blog: blog, details: details)
 
         // Then
         #expect(settings.parentPageID == 42)
@@ -917,11 +957,14 @@ struct PostSettingsTests {
     @Test("PostCreateParams parent survives round-trip through PostSettings")
     func testParentRoundTripThroughPostSettings() {
         // Given
+        let context = ContextManager.forTesting().mainContext
+        let blog = BlogBuilder(context).build()
+        let details = makePostTypeDetails()
         var params = PostCreateParams(meta: nil)
         params.parent = PostId(42)
 
         // When
-        let settings = PostSettings(from: params)
+        let settings = PostSettings(from: params, blog: blog, details: details)
         let outputParams = settings.makeCreateParameters(from: .init(meta: nil), taxonomies: [])
 
         // Then
@@ -931,10 +974,13 @@ struct PostSettingsTests {
     @Test("init(from: PostCreateParams) defaults status to draft when nil")
     func testInitFromCreateParamsDefaultsStatusToDraft() {
         // Given
+        let context = ContextManager.forTesting().mainContext
+        let blog = BlogBuilder(context).build()
+        let details = makePostTypeDetails()
         let params = PostCreateParams(meta: nil)
 
         // When
-        let settings = PostSettings(from: params)
+        let settings = PostSettings(from: params, blog: blog, details: details)
 
         // Then
         #expect(settings.status == .draft)
@@ -944,13 +990,16 @@ struct PostSettingsTests {
     @Test("init(from: PostCreateParams) reads scheduled status and date")
     func testInitFromCreateParamsReadsScheduledStatus() {
         // Given
+        let context = ContextManager.forTesting().mainContext
+        let blog = BlogBuilder(context).build()
+        let details = makePostTypeDetails()
         var params = PostCreateParams(meta: nil)
         params.status = .future
         let scheduledDate = Date(timeIntervalSince1970: 2_000_000_000)
         params.dateGmt = scheduledDate
 
         // When
-        let settings = PostSettings(from: params)
+        let settings = PostSettings(from: params, blog: blog, details: details)
 
         // Then
         #expect(settings.status == .scheduled)
@@ -960,11 +1009,14 @@ struct PostSettingsTests {
     @Test("init(from: PostCreateParams) reads pending status with nil date")
     func testInitFromCreateParamsReadsPendingStatus() {
         // Given
+        let context = ContextManager.forTesting().mainContext
+        let blog = BlogBuilder(context).build()
+        let details = makePostTypeDetails()
         var params = PostCreateParams(meta: nil)
         params.status = .pending
 
         // When
-        let settings = PostSettings(from: params)
+        let settings = PostSettings(from: params, blog: blog, details: details)
 
         // Then
         #expect(settings.status == .pending)
@@ -974,13 +1026,16 @@ struct PostSettingsTests {
     @Test("PostCreateParams status and date survive round-trip through PostSettings")
     func testStatusAndDateRoundTripThroughPostSettings() {
         // Given
+        let context = ContextManager.forTesting().mainContext
+        let blog = BlogBuilder(context).build()
+        let details = makePostTypeDetails()
         var params = PostCreateParams(meta: nil)
         params.status = .future
         let scheduledDate = Date(timeIntervalSince1970: 2_000_000_000)
         params.dateGmt = scheduledDate
 
         // When
-        let settings = PostSettings(from: params)
+        let settings = PostSettings(from: params, blog: blog, details: details)
         let outputParams = settings.makeCreateParameters(from: .init(meta: nil), taxonomies: [])
 
         // Then
@@ -995,6 +1050,45 @@ private extension SiteTaxonomy {
     static func makeTaxonomy(slug: String, restBase: String) -> SiteTaxonomy {
         SiteTaxonomy(slug: slug, name: slug, restBase: restBase)
     }
+}
+
+private func makePostTypeDetails() -> PostTypeDetailsWithEditContext {
+    PostTypeDetailsWithEditContext(
+        capabilities: [:],
+        description: "",
+        hierarchical: false,
+        viewable: true,
+        labels: makePostTypeLabels(),
+        name: "Test Post Type",
+        slug: "test_post_type",
+        supports: PostTypeSupportsMap(map: [
+            .title: .bool(true),
+            .editor: .bool(true),
+        ]),
+        hasArchive: .bool(false),
+        taxonomies: [],
+        restBase: "test_post_type",
+        restNamespace: "wp/v2",
+        visibility: PostTypeVisibility(showInNavMenus: true, showUi: true),
+        icon: nil
+    )
+}
+
+private func makePostTypeLabels() -> PostTypeLabels {
+    PostTypeLabels(
+        name: "", singularName: "", addNew: "", addNewItem: "",
+        editItem: "", newItem: "", viewItem: "", viewItems: "",
+        searchItems: "", notFound: "", notFoundInTrash: "",
+        parentItemColon: nil, allItems: "", archives: "",
+        attributes: "", insertIntoItem: "", uploadedToThisItem: "",
+        featuredImage: "", setFeaturedImage: "", removeFeaturedImage: "",
+        useFeaturedImage: "", filterItemsList: "", filterByDate: "",
+        itemsListNavigation: "", itemsList: "", itemPublished: "",
+        itemPublishedPrivately: "", itemRevertedToDraft: "",
+        itemTrashed: "", itemScheduled: "", itemUpdated: "",
+        itemLink: "", itemLinkDescription: "", menuName: "",
+        nameAdminBar: ""
+    )
 }
 
 private func makeRemotePost(

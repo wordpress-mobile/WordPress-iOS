@@ -1,4 +1,5 @@
 import Foundation
+import BuildSettingsKit
 import SwiftUI
 import WordPressAPI
 import WordPressData
@@ -243,6 +244,7 @@ final class CustomPostSettingsViewModel: NSObject, ObservableObject, PostSetting
         refreshCustomTaxonomies()
         refreshParentPageText()
         resolveTermNames()
+        refreshSocialSharingState()
     }
 
     // MARK: - Actions
@@ -349,7 +351,19 @@ final class CustomPostSettingsViewModel: NSObject, ObservableObject, PostSetting
         viewController?.navigationController?.pushViewController(categoriesVC, animated: true)
     }
 
-    func showSocialSharingOptions() {}
+    func showSocialSharingOptions() {
+        guard let blogID = blog.dotComID?.intValue,
+              let sharing = settings.sharing else {
+            return wpAssertionFailure("invalid context")
+        }
+        let optionsVC = PrepublishingSocialAccountsViewController(
+            blogID: blogID,
+            model: sharing,
+            delegate: self,
+            coreDataStack: ContextManager.shared
+        )
+        viewController?.navigationController?.pushViewController(optionsVC, animated: true)
+    }
 
     // MARK: - Term Resolution
 
@@ -439,6 +453,78 @@ final class CustomPostSettingsViewModel: NSObject, ObservableObject, PostSetting
         customTaxonomies = editorService.taxonomies
     }
 
+    // MARK: - Social Sharing
+
+    private func refreshSocialSharingState() {
+        guard isPostEligibleForSocialSharing() else {
+            socialSharingState = nil
+            return
+        }
+        if (blog.connections ?? []).isEmpty {
+            if isSocialConnectionSetupDismissed {
+                socialSharingState = nil
+            } else {
+                socialSharingState = .setup(makeSocialSharingSetupViewModel())
+            }
+        } else {
+            socialSharingState = .connected
+        }
+    }
+
+    private func isPostEligibleForSocialSharing() -> Bool {
+        BuildSettings.current.brand == .jetpack
+            && RemoteFeatureFlag.jetpackSocialImprovements.enabled()
+            && settings.status != .publishPrivate
+            && editorService.details.supports.supports(feature: .custom("publicize"))
+            && blog.supports(.publicize)
+    }
+
+    private var isSocialConnectionSetupDismissed: Bool {
+        get {
+            guard let blogID = blog.dotComID?.intValue,
+                  let dictionary = preferences.dictionary(forKey: SocialSharingConstants.noConnectionKey) as? [String: Bool],
+                  let value = dictionary["\(blogID)"] else {
+                return false
+            }
+            return value
+        }
+        set {
+            guard let blogID = blog.dotComID?.intValue else {
+                return wpAssertionFailure("blogID missing")
+            }
+            var dictionary = (preferences.dictionary(forKey: SocialSharingConstants.noConnectionKey) as? [String: Bool]) ?? .init()
+            dictionary["\(blogID)"] = newValue
+            preferences.set(dictionary, forKey: SocialSharingConstants.noConnectionKey)
+        }
+    }
+
+    private func makeSocialSharingSetupViewModel() -> JetpackSocialNoConnectionViewModel {
+        let services = (try? PublicizeService.allSupportedServices(in: ContextManager.shared.mainContext)) ?? []
+        return JetpackSocialNoConnectionViewModel(
+            services: services,
+            padding: .zero,
+            onConnectTap: { [weak self] in self?.showSocialSharingSetupScreen() },
+            onNotNowTap: { [weak self] in self?.didDismissSocialSharingSetupPrompt() }
+        )
+    }
+
+    private func showSocialSharingSetupScreen() {
+        guard let sharingVC = SharingViewController(blog: blog, delegate: self) else {
+            return wpAssertionFailure("failed to instantiate SharingVC")
+        }
+        track(.jetpackSocialNoConnectionCTATapped)
+        let navigationVC = UINavigationController(rootViewController: sharingVC)
+        viewController?.present(navigationVC, animated: true)
+    }
+
+    private func didDismissSocialSharingSetupPrompt() {
+        track(.jetpackSocialNoConnectionCardDismissed)
+        isSocialConnectionSetupDismissed = true
+        withAnimation {
+            socialSharingState = nil
+        }
+    }
+
     // MARK: - Analytics
 
     private func didSaveChanges() {
@@ -502,4 +588,39 @@ final class CustomPostSettingsViewModel: NSObject, ObservableObject, PostSetting
         case .publishing: "pre_publishing"
         }
     }
+}
+
+extension CustomPostSettingsViewModel: @MainActor PrepublishingSocialAccountsDelegate {
+    func didUpdateSharingLimit(with newValue: PublicizeInfo.SharingLimit?) {
+        settings.sharing?.sharingLimit = newValue
+    }
+
+    func didFinish(with connectionChanges: [String: Bool], message: String?) {
+        guard var sharing = settings.sharing else {
+            return wpAssertionFailure("social sharing settings missing")
+        }
+        sharing.services = sharing.services.map {
+            var service = $0
+            service.connections = service.connections.map {
+                var connection = $0
+                if let isEnabled = connectionChanges[connection.id] {
+                    connection.enabled = isEnabled
+                }
+                return connection
+            }
+            return service
+        }
+        sharing.message = message ?? ""
+        self.settings.sharing = sharing
+    }
+}
+
+extension CustomPostSettingsViewModel: @MainActor SharingViewControllerDelegate {
+    func didChangePublicizeServices() {
+        refreshSocialSharingState()
+    }
+}
+
+private enum SocialSharingConstants {
+    static let noConnectionKey = "prepublishing-social-no-connection-view-hidden"
 }

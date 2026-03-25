@@ -78,7 +78,8 @@ struct PostSettings: Hashable {
     /// When `params` is nil (first open), all fields use sensible defaults.
     /// When non-nil, the stored values from a previous Post Settings session
     /// are applied on top of the defaults.
-    init(from params: PostCreateParams, taxonomies: [SiteTaxonomy] = []) {
+    init(from params: PostCreateParams, blog: Blog, details: PostTypeDetailsWithEditContext) {
+        let taxonomies = Self.deriveTaxonomies(from: blog, details: details)
         excerpt = params.excerpt ?? ""
         slug = params.slug ?? ""
         if let paramStatus = params.status {
@@ -131,6 +132,13 @@ struct PostSettings: Hashable {
             }
         }
         self.otherTerms = otherTerms
+
+        // Social sharing for new posts: enable all connections by default
+        if details.supports.supports(feature: .custom("publicize")) {
+            sharing = PostSocialSharingSettings.makeDefault(for: blog)
+        } else {
+            sharing = nil
+        }
     }
 
     /// Creates PostSettings from an AbstractPost instance.
@@ -175,7 +183,8 @@ struct PostSettings: Hashable {
     }
 
     /// Creates PostSettings from an AnyPostWithEditContext (REST API) instance.
-    init(from post: AnyPostWithEditContext, taxonomies: [SiteTaxonomy] = []) {
+    init(from post: AnyPostWithEditContext, blog: Blog, details: PostTypeDetailsWithEditContext) {
+        let taxonomies = Self.deriveTaxonomies(from: blog, details: details)
         excerpt = post.excerpt?.raw ?? ""
         slug = post.slug
         status = BasePost.Status(post.status)
@@ -220,8 +229,13 @@ struct PostSettings: Hashable {
 
         parentPageID = post.parent.map { Int($0) }
 
-        // Social sharing (Publicize) is not available for REST API posts
-        sharing = nil
+        // Social sharing (Publicize)
+        if details.supports.supports(feature: .custom("publicize")) {
+            sharing = PostSocialSharingSettings.make(from: post, blog: blog)
+                ?? PostSocialSharingSettings.makeDefault(for: blog, postTitle: post.title?.raw ?? "")
+        } else {
+            sharing = nil
+        }
     }
 
     // MARK: - Applying Changes
@@ -313,12 +327,16 @@ struct PostSettings: Hashable {
 
             if let sharing {
                 for connection in sharing.services.flatMap(\.connections) {
-                    let keyringID = NSNumber(value: connection.keyringID)
-                    if !post.publicizeConnectionDisabledForKeyringID(keyringID) != connection.enabled {
+                    guard let connectionIDValue = Int(connection.id) else {
+                        wpAssertionFailure("unexpected connection ID format in apply(to:)")
+                        continue
+                    }
+                    let connectionID = NSNumber(value: connectionIDValue)
+                    if !post.publicizeConnectionDisabled(forConnectionID: connectionID) != connection.enabled {
                         if connection.enabled {
-                            post.enablePublicizeConnectionWithKeyringID(keyringID)
+                            post.enablePublicizeConnection(forConnectionID: connectionID)
                         } else {
-                            post.disablePublicizeConnectionWithKeyringID(keyringID)
+                            post.disablePublicizeConnection(forConnectionID: connectionID)
                         }
                     }
                 }
@@ -433,8 +451,24 @@ struct PostSettings: Hashable {
                 customTermChanges[restBase] = termIds
             }
         }
-        if !customTermChanges.isEmpty {
-            params.additionalFields = AnyJson.fromTermIdMap(map: customTermChanges)
+        // Custom taxonomy terms → additionalFields
+        var jsonParts: [String: Any] = [:]
+        for (restBase, termIds) in customTermChanges {
+            jsonParts[restBase] = termIds.map { Int($0) }
+        }
+        if !jsonParts.isEmpty {
+            if let data = try? JSONSerialization.data(withJSONObject: jsonParts),
+               let jsonString = String(data: data, encoding: .utf8) {
+                params.additionalFields = AnyJson.fromRawJson(json: jsonString)
+            } else {
+                wpAssertionFailure("failed to serialize additionalFields")
+            }
+        }
+
+        // Publicize fields → typed wordpress-rs API
+        if let sharing {
+            params.setJetpackSocialPublicizeConnections(sharing.makeConnectionUpdates())
+            params.setJetpackSocialPublicizeMessage(sharing.message)
         }
 
         let postParentPageID = post.parent.map { Int($0) }
@@ -459,9 +493,20 @@ struct PostSettings: Hashable {
                 customTerms[taxonomy.restBase] = termIds
             }
         }
-        let additionalFields: AnyJson? = customTerms.isEmpty
-            ? nil
-            : AnyJson.fromTermIdMap(map: customTerms)
+        var jsonParts: [String: Any] = [:]
+        for (restBase, termIds) in customTerms {
+            jsonParts[restBase] = termIds.map { Int($0) }
+        }
+        let additionalFields: AnyJson?
+        if jsonParts.isEmpty {
+            additionalFields = nil
+        } else if let data = try? JSONSerialization.data(withJSONObject: jsonParts),
+                  let jsonString = String(data: data, encoding: .utf8) {
+            additionalFields = AnyJson.fromRawJson(json: jsonString)
+        } else {
+            wpAssertionFailure("failed to serialize additionalFields")
+            additionalFields = nil
+        }
 
         var params = existing
         params.dateGmt = publishDate
@@ -479,7 +524,26 @@ struct PostSettings: Hashable {
         params.tags = tagIds
         params.parent = parentPageID.map { PostId(Int64($0)) }
         params.additionalFields = additionalFields
+
+        // Publicize fields → typed wordpress-rs API
+        if let sharing {
+            params.setJetpackSocialPublicizeConnections(sharing.makeConnectionUpdates())
+            params.setJetpackSocialPublicizeMessage(sharing.message)
+        }
+
         return params
+    }
+
+    // MARK: - Helpers
+
+    private static func deriveTaxonomies(
+        from blog: Blog,
+        details: PostTypeDetailsWithEditContext
+    ) -> [SiteTaxonomy] {
+        let capabilities = PostSettingsCapabilities(from: details)
+        return (try? blog.taxonomies
+            .filter { capabilities.customTaxonomySlugs.contains($0.slug) }
+            .sorted(using: KeyPathComparator(\.name))) ?? []
     }
 }
 
@@ -608,7 +672,7 @@ struct PostSocialSharingSettings: Hashable {
 
     struct Connection: Hashable {
         let account: String
-        let keyringID: Int
+        let id: String
         var enabled: Bool
     }
 
@@ -620,13 +684,13 @@ struct PostSocialSharingSettings: Hashable {
 
         let connections = post.blog.sortedConnections
 
-        // first, build a dictionary to categorize the connections.
-        var connectionsMap = [PublicizeService.ServiceName: [PublicizeConnection]]()
+        // Build a dictionary keyed by the raw service string (e.g. "bluesky")
+        // to avoid collapsing unknown services into a single bucket.
+        var connectionsMap = [String: [PublicizeConnection]]()
         connections.filter { !$0.requiresUserAction() }.forEach { connection in
-            let name = PublicizeService.ServiceName(rawValue: connection.service) ?? .unknown
-            var serviceConnections = connectionsMap[name] ?? []
+            var serviceConnections = connectionsMap[connection.service] ?? []
             serviceConnections.append(connection)
-            connectionsMap[name] = serviceConnections
+            connectionsMap[connection.service] = serviceConnections
         }
 
         let publicizeServices: [PublicizeService]
@@ -638,8 +702,7 @@ struct PostSocialSharingSettings: Hashable {
         }
 
         let services = publicizeServices.compactMap { service -> PostSocialSharingSettings.Service? in
-            // skip services without connections.
-            guard let serviceConnections = connectionsMap[service.name],
+            guard let serviceConnections = connectionsMap[service.serviceID],
                   !serviceConnections.isEmpty else {
                 return nil
             }
@@ -648,8 +711,8 @@ struct PostSocialSharingSettings: Hashable {
                 name: service.name,
                 connections: serviceConnections.map {
                     .init(account: $0.externalDisplay,
-                          keyringID: $0.keyringConnectionID.intValue,
-                          enabled: !post.publicizeConnectionDisabledForKeyringID($0.keyringConnectionID))
+                          id: String($0.connectionID.intValue),
+                          enabled: !post.publicizeConnectionDisabled(forConnectionID: $0.connectionID))
                 }
             )
         }
