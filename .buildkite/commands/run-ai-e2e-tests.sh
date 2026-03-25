@@ -136,6 +136,10 @@ if [[ -n "${BUILDKITE:-}" ]]; then
   xcrun simctl install "$UDID" "$APP_PATH"
 fi
 
+# ── Build WebDriverAgent (if not present) ────────────────────────────
+echo "--- Building WebDriverAgent"
+"$(dirname "$0")/build-wda.sh"
+
 # ── Start WDA ────────────────────────────────────────────────────────
 echo "--- Starting WebDriverAgent"
 ruby "$WDA_START" --udid "$UDID" --port "$WDA_PORT"
