@@ -85,7 +85,7 @@ sleep 3
 
 if [[ -n "${BUILDKITE:-}" ]]; then
   APP_DISPLAY_NAME="Jetpack"
-  [ "$APP" = "wordpress" ] && APP_DISPLAY_NAME="WordPress"
+  [[ "$APP" = "wordpress" ]] && APP_DISPLAY_NAME="WordPress"
 
   APP_PATH=$(find DerivedData/Build/Products -name "${APP_DISPLAY_NAME}.app" -path "*Debug-iphonesimulator*" | head -1)
   if [[ -z "$APP_PATH" ]]; then
@@ -95,6 +95,10 @@ if [[ -n "${BUILDKITE:-}" ]]; then
   echo "Installing $APP_PATH on simulator..."
   xcrun simctl install booted "$APP_PATH"
 fi
+
+# ── Build WebDriverAgent (if not present) ────────────────────────────
+echo "--- Building WebDriverAgent"
+"$(dirname "$0")/build-wda.sh"
 
 # ── Run tests ────────────────────────────────────────────────────────
 echo "--- Running AI E2E Tests"
