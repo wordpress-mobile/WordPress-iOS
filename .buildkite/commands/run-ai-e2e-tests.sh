@@ -71,8 +71,10 @@ fi
 echo "--- Installing simulator-llm-pilot"
 GEM_BUILD_DIR="$(mktemp -d)"
 git clone --depth 1 https://github.com/Automattic/simulator-llm-pilot.git "$GEM_BUILD_DIR"
-gem build "$GEM_BUILD_DIR/simulator-llm-pilot.gemspec" --output "$GEM_BUILD_DIR/simulator-llm-pilot.gem"
-gem install "$GEM_BUILD_DIR/simulator-llm-pilot.gem"
+pushd "$GEM_BUILD_DIR"
+gem build simulator-llm-pilot.gemspec
+gem install simulator-llm-pilot-*.gem
+popd
 rm -rf "$GEM_BUILD_DIR"
 echo "simulator-llm-pilot $(simulator-llm-pilot version)"
 
