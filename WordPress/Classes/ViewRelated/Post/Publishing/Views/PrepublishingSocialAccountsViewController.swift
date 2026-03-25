@@ -8,7 +8,7 @@ protocol PrepublishingSocialAccountsDelegate: NSObjectProtocol {
 
     func didUpdateSharingLimit(with newValue: PublicizeInfo.SharingLimit?)
 
-    func didFinish(with connectionChanges: [Int: Bool], message: String?)
+    func didFinish(with connectionChanges: [String: Bool], message: String?)
 }
 
 class PrepublishingSocialAccountsViewController: UITableViewController {
@@ -27,7 +27,7 @@ class PrepublishingSocialAccountsViewController: UITableViewController {
 
     private let originalMessage: String
 
-    private var connectionChanges = [Int: Bool]()
+    private var connectionChanges = [String: Bool]()
 
     private var sharingLimit: PublicizeInfo.SharingLimit? {
         didSet {
@@ -77,7 +77,7 @@ class PrepublishingSocialAccountsViewController: UITableViewController {
         self.blogID = blogID
         self.connections = model.services.flatMap { service in
             service.connections.map {
-                .init(service: service.name, account: $0.account, keyringID: $0.keyringID, isOn: $0.enabled)
+                .init(service: service.name, account: $0.account, id: $0.id, isOn: $0.enabled)
             }
         }
         self.originalMessage = model.message
@@ -179,7 +179,7 @@ extension PrepublishingSocialAccountsViewController {
 private extension PrepublishingSocialAccountsViewController {
     var enabledCount: Int {
         connections
-            .filter { connectionChanges[$0.keyringID] ?? $0.isOn }
+            .filter { connectionChanges[$0.id] ?? $0.isOn }
             .count
     }
 
@@ -225,7 +225,7 @@ private extension PrepublishingSocialAccountsViewController {
         guard let connection = connections[safe: index] else {
             return false
         }
-        return connectionChanges[connection.keyringID] ?? connection.isOn
+        return connectionChanges[connection.id] ?? connection.isOn
     }
 
     func updateConnection(at index: Int, value: Bool) {
@@ -236,9 +236,9 @@ private extension PrepublishingSocialAccountsViewController {
         let originalValue = connection.isOn
 
         if value == originalValue {
-            connectionChanges.removeValue(forKey: connection.keyringID)
+            connectionChanges.removeValue(forKey: connection.id)
         } else {
-            connectionChanges[connection.keyringID] = value
+            connectionChanges[connection.id] = value
         }
 
         lastToggledRow = index
@@ -326,7 +326,7 @@ private extension PrepublishingSocialAccountsViewController {
     struct Connection {
         let service: PublicizeService.ServiceName
         let account: String
-        let keyringID: Int
+        let id: String
         let isOn: Bool
 
         lazy var imageForCell: UIImage = {

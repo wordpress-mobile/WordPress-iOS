@@ -630,7 +630,7 @@ extension PostSettingsViewModel: @MainActor PrepublishingSocialAccountsDelegate 
         settings.sharing?.sharingLimit = newValue
     }
 
-    func didFinish(with connectionChanges: [Int: Bool], message: String?) {
+    func didFinish(with connectionChanges: [String: Bool], message: String?) {
         guard var settings = settings.sharing else {
             return wpAssertionFailure("social sharing settings missing")
         }
@@ -638,7 +638,7 @@ extension PostSettingsViewModel: @MainActor PrepublishingSocialAccountsDelegate 
             var service = $0
             service.connections = service.connections.map {
                 var connection = $0
-                if let isEnabled = connectionChanges[connection.keyringID] {
+                if let isEnabled = connectionChanges[connection.id] {
                     connection.enabled = isEnabled
                 }
                 return connection

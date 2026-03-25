@@ -24,8 +24,8 @@ class PostHelperJetpackSocialTests: CoreDataTestCase {
         let result = PostHelper.disabledPublicizeConnections(for: post, metadata: [metadataEntry])
 
         // Then
-        // the keyring ID should be used as the key, while keeping the entry intact.
-        XCTAssertEqual(result[NSNumber(value: keyringId)], metadataEntry)
+        // the connection ID should be used as the key, while keeping the entry intact.
+        XCTAssertEqual(result[NSNumber(value: connectionId)], metadataEntry)
     }
 
     func testMetadataWithKeyringIDKey() {
@@ -43,8 +43,8 @@ class PostHelperJetpackSocialTests: CoreDataTestCase {
         let result = PostHelper.disabledPublicizeConnections(for: post, metadata: [metadataEntry])
 
         // Then
-        // the keyring ID should be used as the key, while keeping the entry intact.
-        XCTAssertEqual(result[NSNumber(value: keyringId)], metadataEntry)
+        // the keyring ID is converted to connection ID via the PublicizeConnection lookup.
+        XCTAssertEqual(result[NSNumber(value: connectionId)], metadataEntry)
     }
 
     func testMetadataWithConnectionIDKeyNotMatchingAnyPublicizeConnections() {
@@ -92,8 +92,8 @@ class PostHelperJetpackSocialTests: CoreDataTestCase {
         let connectionId2 = 234
         let keyringId2 = 567
         let presetDisabledConnections: [NSNumber: [String: String]] = [
-            NSNumber(value: keyringId): ["id": "10", "value": "1"],
-            NSNumber(value: keyringId2): ["id": "11", "key": "_wpas_skip_\(keyringId2)", "value": "0"]
+            NSNumber(value: connectionId): ["id": "10", "value": "1"],
+            NSNumber(value: connectionId2): ["id": "11", "key": "_wpas_skip_\(keyringId2)", "value": "0"]
         ]
         let connections = makeConnections(with: [(connectionId, keyringId), (connectionId2, keyringId2)])
         let blog = makeBlog(connections: connections)
@@ -105,8 +105,8 @@ class PostHelperJetpackSocialTests: CoreDataTestCase {
         // Then
         XCTAssertEqual(entries.count, 2)
 
-        // keyless entries with id should default to the _wpas_skip_ format, despite having a matching connection.
-        let _ = try XCTUnwrap(entries.first(where: { $0["key"] == "_wpas_skip_\(keyringId)" }))
+        // keyless entries should use _wpas_skip_publicize_ format with connectionID.
+        let _ = try XCTUnwrap(entries.first(where: { $0["key"] == "_wpas_skip_publicize_\(connectionId)" }))
 
         // entries with keys should be passed as is.
         let _ = try XCTUnwrap(entries.first(where: { $0["key"] == "_wpas_skip_\(keyringId2)" }))
@@ -118,8 +118,8 @@ class PostHelperJetpackSocialTests: CoreDataTestCase {
         let connectionId2 = 234
         let keyringId2 = 567
         let presetDisabledConnections: [NSNumber: [String: String]] = [
-            NSNumber(value: keyringId): ["value": "1"],
-            NSNumber(value: keyringId2): ["key": "_wpas_skip_\(keyringId2)", "value": "0"]
+            NSNumber(value: connectionId): ["value": "1"],
+            NSNumber(value: connectionId2): ["key": "_wpas_skip_\(keyringId2)", "value": "0"]
         ]
         let connections = makeConnections(with: [(connectionId, keyringId), (connectionId2, keyringId2)])
         let blog = makeBlog(connections: connections)
@@ -131,7 +131,7 @@ class PostHelperJetpackSocialTests: CoreDataTestCase {
         // Then
         XCTAssertEqual(entries.count, 2)
 
-        // local entries should be updated to the _wpas_skip_publicize format.
+        // local entries should use _wpas_skip_publicize format with connectionID.
         let _ = try XCTUnwrap(entries.first(where: { $0["key"] == "_wpas_skip_publicize_\(connectionId)" }))
 
         // it's unlikely for a no-id entry to have a key, since it's assigned by the PostService when syncing.
@@ -140,8 +140,8 @@ class PostHelperJetpackSocialTests: CoreDataTestCase {
     }
 
     func testDisabledConnectionsWithoutIdAndNoMatchingPublicizeConnection() {
-        let nonExistentKeyringId = 3942
-        let presetDisabledConnections = [NSNumber(value: nonExistentKeyringId): ["value": "1"]]
+        let nonExistentConnectionId = 3942
+        let presetDisabledConnections = [NSNumber(value: nonExistentConnectionId): ["value": "1"]]
         let connections = makeConnections(with: [(connectionId, keyringId)])
         let blog = makeBlog(connections: connections)
         let post = makePost(for: blog, disabledConnections: presetDisabledConnections)
@@ -152,8 +152,8 @@ class PostHelperJetpackSocialTests: CoreDataTestCase {
         // Then
         XCTAssertEqual(entries.count, 1)
 
-        // local entries with no matching PublicizeConnection should default to _wpas_skip format.
-        XCTAssertEqual(entries.first?["key"], "_wpas_skip_\(nonExistentKeyringId)")
+        // The dictionary key is treated as connectionID, so it uses _wpas_skip_publicize_ format.
+        XCTAssertEqual(entries.first?["key"], "_wpas_skip_publicize_\(nonExistentConnectionId)")
     }
 
     func testInvalidDisabledConnectionEntry() {

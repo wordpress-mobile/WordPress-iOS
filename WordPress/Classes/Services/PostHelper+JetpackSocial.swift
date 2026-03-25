@@ -7,10 +7,10 @@ extension PostHelper {
 
     /// Returns a dictionary format for the `Post`'s `disabledPublicizeConnection` property based on the given metadata.
     ///
-    /// This will try to handle both Publicize skip key formats, `_wpas_skip_{keyringID}` and `_wpas_skip_publicize_{connectionID`.
-    ///
-    /// There's a possibility that the `keyringID` obtained from remote doesn't match with any of the `PublicizeConnection`
-    /// that's stored locally, perhaps due to the app being out of sync. In this case, we'll fall back to using the old format.
+    /// This handles both Publicize skip key formats: `_wpas_skip_{keyringID}` and `_wpas_skip_publicize_{connectionID}`.
+    /// The dictionary key is always `connectionID`. For keyring format keys, the matching `PublicizeConnection` is
+    /// looked up by `keyringConnectionID` to resolve the `connectionID`. If no match is found, the raw ID is used
+    /// as a fallback.
     ///
     /// - Parameters:
     ///   - post: The associated `Post` object. Optional because Obj-C shouldn't be trusted.
@@ -38,26 +38,18 @@ extension PostHelper {
 
                     switch prefixType {
                     case .keyring:
-                        return Int(key.removingPrefix(SkipPrefix.keyring.rawValue))
+                        let rawID = Int(key.removingPrefix(SkipPrefix.keyring.rawValue))
+                        // Convert keyring ID to connection ID if possible
+                        if let rawID,
+                           let connections = post.blog.connections,
+                           let connection = connections.first(where: { $0.keyringConnectionID.intValue == rawID }) {
+                            return connection.connectionID.intValue
+                        }
+                        // Fall back to raw ID if no matching connection found
+                        return rawID
 
                     case .connection:
-                        // If the key uses the new format, try to find an existing `PublicizeConnection` matching
-                        // the connectionID, and return its keyringID.
-                        let entryConnectionID = Int(key.removingPrefix(SkipPrefix.connection.rawValue))
-
-                        guard let connections = post.blog.connections,
-                              let connectionID = entryConnectionID,
-                              let connection = connections.first(where: { $0.connectionID.intValue == connectionID }) else {
-                            /// Otherwise, fall back to the connectionID extracted from the metadata key.
-                            /// Note that entries with `connectionID` won't be detected by the Post's
-                            /// `publicizeConnectionDisabledForKeyringID` method.
-                            ///
-                            /// However, the Publicize methods in `Post.swift` will attempt to update the key into
-                            /// its `keyringID`, since the `PublicizeConnection` object is guaranteed to exist.
-                            return entryConnectionID
-                        }
-
-                        return connection.keyringConnectionID.intValue
+                        return Int(key.removingPrefix(SkipPrefix.connection.rawValue))
                     }
                 }
 
@@ -78,11 +70,11 @@ extension PostHelper {
             return []
         }
 
-        return disabledConnectionsDictionary.compactMap { (keyringID: NSNumber, entry: StringDictionary) in
+        return disabledConnectionsDictionary.compactMap { (connectionID: NSNumber, entry: StringDictionary) in
             // The previous implementation didn't properly parse `_wpas_skip_publicize_` keys, causing it
             // to use 0 as the dictionary key. Although this will be ignored by the server, let's make sure
             // it's not sent to the remote any longer.
-            guard keyringID.intValue > 0 else {
+            guard connectionID.intValue > 0 else {
                 return nil
             }
 
@@ -92,17 +84,8 @@ extension PostHelper {
                 return entry
             }
 
-            // If the key doesn't exist, this means that the dictionary is still using the old format.
-            // Try to add a key with the new format ONLY if the metadata hasn't been synced to the remote.
-            let metadataKeyValue: String = {
-                guard entry[Keys.publicizeIdKey] == nil,
-                      let connections = post.blog.connections,
-                      let connection = connections.first(where: { $0.keyringConnectionID == keyringID }) else {
-                    // Fall back to the old keyring format.
-                    return "\(SkipPrefix.keyring.rawValue)\(keyringID)"
-                }
-                return "\(SkipPrefix.connection.rawValue)\(connection.connectionID)"
-            }()
+            // For new entries, use the connection format since the key IS the connectionID.
+            let metadataKeyValue = "\(SkipPrefix.connection.rawValue)\(connectionID)"
 
             return entry.merging([Keys.publicizeKeyKey: metadataKeyValue]) { _, newValue in newValue }
         }

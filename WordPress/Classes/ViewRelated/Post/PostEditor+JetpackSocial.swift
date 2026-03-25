@@ -11,7 +11,7 @@ extension PostEditor {
             return
         }
         for connection in connections {
-            post.disablePublicizeConnectionWithKeyringID(connection.keyringConnectionID)
+            post.disablePublicizeConnection(forConnectionID: connection.connectionID)
         }
     }
 }
