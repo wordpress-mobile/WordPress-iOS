@@ -107,8 +107,8 @@
 
     if (self.reconnecting) {
         // Resync publicize connections.
-        SharingSyncService *sharingService = [[SharingSyncService alloc] initWithCoreDataStack:[ContextManager sharedInstance]];
-        [sharingService syncPublicizeConnectionsForBlog:self.blog success:^{
+        JetpackPublicizeService *service = [[JetpackPublicizeService alloc] initWithCoreDataStack:[ContextManager sharedInstance]];
+        [service syncConnectionsFor:self.blog success:^{
             [self handleReconnectSucceeded];
         } failure:^(NSError *error) {
             DDLogError([error description]);
@@ -173,9 +173,9 @@
         [self.delegate sharingAuthorizationHelper:self willFetchKeyringsForService:self.publicizeService];
     }
 
-    SharingService *sharingService = [[SharingService alloc] initWithContextManager:[ContextManager sharedInstance]];
+    JetpackPublicizeService *service = [[JetpackPublicizeService alloc] initWithCoreDataStack:[ContextManager sharedInstance]];
     __weak __typeof__(self) weakSelf = self;
-    [sharingService fetchKeyringConnectionsForBlog:self.blog success:^(NSArray *keyringConnections) {
+    [service fetchKeyringConnectionsFor:self.blog success:^(NSArray *keyringConnections) {
         if ([weakSelf.delegate respondsToSelector:@selector(sharingAuthorizationHelper:didFetchKeyringsForService:)]) {
             [weakSelf.delegate sharingAuthorizationHelper:weakSelf didFetchKeyringsForService:weakSelf.publicizeService];
         }
@@ -338,9 +338,9 @@
 
     [self dismissNavViewController];
 
-    SharingService *sharingService = [[SharingService alloc] initWithContextManager:[ContextManager sharedInstance]];
+    JetpackPublicizeService *service = [[JetpackPublicizeService alloc] initWithCoreDataStack:[ContextManager sharedInstance]];
 
-    [sharingService updateExternalID:externalID forBlog:self.blog forPublicizeConnection:publicizeConnection success:^{
+    [service updateExternalID:externalID for:self.blog forPublicizeConnection:publicizeConnection success:^{
         if ([self.delegate respondsToSelector:@selector(sharingAuthorizationHelper:didConnectToService:withPublicizeConnection:)]) {
             [self.delegate sharingAuthorizationHelper:self didConnectToService:self.publicizeService withPublicizeConnection:publicizeConnection];
         }
@@ -365,11 +365,11 @@
 
     [self dismissNavViewController];
 
-    SharingService *sharingService = [[SharingService alloc] initWithContextManager:[ContextManager sharedInstance]];
-    [sharingService createPublicizeConnectionForBlog:self.blog
-                                             keyring:keyConn
-                                      externalUserID:externalUserID
-                                             success:^(PublicizeConnection *pubConn) {
+    JetpackPublicizeService *service = [[JetpackPublicizeService alloc] initWithCoreDataStack:[ContextManager sharedInstance]];
+    [service createConnectionFor:self.blog
+                              keyring:keyConn
+                       externalUserID:externalUserID
+                              success:^(PublicizeConnection *pubConn) {
                                                  if ([self.delegate respondsToSelector:@selector(sharingAuthorizationHelper:didConnectToService:withPublicizeConnection:)]) {
                                                      [self.delegate sharingAuthorizationHelper:self didConnectToService:self.publicizeService withPublicizeConnection:pubConn];
                                                  }

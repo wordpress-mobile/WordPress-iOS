@@ -406,9 +406,9 @@ static NSString *const CellIdentifier = @"CellIdentifier";
 
 - (void)syncPublicizeServices
 {
-    SharingService *sharingService = [[SharingService alloc] initWithContextManager:[ContextManager sharedInstance]];
+    JetpackPublicizeService *service = [[JetpackPublicizeService alloc] initWithCoreDataStack:[ContextManager sharedInstance]];
     __weak __typeof__(self) weakSelf = self;
-    [sharingService syncPublicizeServicesForBlog:self.blog success:^{
+    [service syncServicesFor:self.blog success:^{
         [weakSelf syncConnections];
     } failure:^(NSError * __unused error) {
         if (!ReachabilityUtils.isInternetReachable) {
@@ -422,9 +422,9 @@ static NSString *const CellIdentifier = @"CellIdentifier";
 
 - (void)syncConnections
 {
-    SharingSyncService *sharingService = [[SharingSyncService alloc] initWithCoreDataStack:[ContextManager sharedInstance]];
+    JetpackPublicizeService *service = [[JetpackPublicizeService alloc] initWithCoreDataStack:[ContextManager sharedInstance]];
     __weak __typeof__(self) weakSelf = self;
-    [sharingService syncPublicizeConnectionsForBlog:self.blog success:^{
+    [service syncConnectionsFor:self.blog success:^{
         [weakSelf refreshPublicizers];
     } failure:^(NSError * __unused error) {
         if (!ReachabilityUtils.isInternetReachable) {

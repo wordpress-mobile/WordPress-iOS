@@ -222,31 +222,24 @@ static NSString *const CellIdentifier = @"CellIdentifier";
 - (void)updateSharedGlobally:(BOOL)shared
 {
     __weak __typeof(self) weakSelf = self;
-    SharingService *sharingService = [[SharingService alloc] initWithContextManager:[ContextManager sharedInstance]];
-    [sharingService updateSharedForBlog:self.blog
-                                 shared:shared
-                 forPublicizeConnection:self.publicizeConnection
-                                success:nil
-                                failure:^(NSError *error) {
-                                    DDLogError([error description]);
-                                    [SVProgressHUD showDismissibleErrorWithStatus:NSLocalizedString(@"Change failed", @"Message to show when Publicize globally shared setting failed")];
-                                    [weakSelf.tableView reloadData];
-                                }];
+    JetpackPublicizeService *service = [[JetpackPublicizeService alloc] initWithCoreDataStack:[ContextManager sharedInstance]];
+    [service updateSharedFor:self.blog shared:shared forPublicizeConnection:self.publicizeConnection success:nil failure:^(NSError *error) {
+        DDLogError([error description]);
+        [SVProgressHUD showDismissibleErrorWithStatus:NSLocalizedString(@"Change failed", @"Message to show when Publicize globally shared setting failed")];
+        [weakSelf.tableView reloadData];
+    }];
 }
 
 - (void)reconnectPublicizeConnection
 {
-    SharingService *sharingService = [[SharingService alloc] initWithContextManager:[ContextManager sharedInstance]];
-
     __weak __typeof(self) weakSelf = self;
     if (self.helper == nil) {
-        [sharingService syncPublicizeServicesForBlog:self.blog
-                                             success:^{
-                                                 [[weakSelf helper] reconnectPublicizeConnection:weakSelf.publicizeConnection];
-                                             }
-                                             failure:^(NSError * _Nullable error) {
-                                                 [WPError showNetworkingAlertWithError:error];
-                                             }];
+        JetpackPublicizeService *service = [[JetpackPublicizeService alloc] initWithCoreDataStack:[ContextManager sharedInstance]];
+        [service syncServicesFor:self.blog success:^{
+            [[weakSelf helper] reconnectPublicizeConnection:weakSelf.publicizeConnection];
+        } failure:^(NSError * _Nullable error) {
+            [WPError showNetworkingAlertWithError:error];
+        }];
     } else {
         [self.helper reconnectPublicizeConnection:weakSelf.publicizeConnection];
     }
@@ -254,8 +247,8 @@ static NSString *const CellIdentifier = @"CellIdentifier";
 
 - (void)disconnectPublicizeConnection
 {
-    SharingService *sharingService = [[SharingService alloc] initWithContextManager:[ContextManager sharedInstance]];
-    [sharingService deletePublicizeConnectionForBlog:self.blog pubConn:self.publicizeConnection success:nil failure:^(NSError *error) {
+    JetpackPublicizeService *service = [[JetpackPublicizeService alloc] initWithCoreDataStack:[ContextManager sharedInstance]];
+    [service deleteConnectionFor:self.blog pubConn:self.publicizeConnection success:nil failure:^(NSError *error) {
         DDLogError([error description]);
         [SVProgressHUD showDismissibleErrorWithStatus:NSLocalizedString(@"Disconnect failed", @"Message to show when Publicize disconnect failed")];
     }];

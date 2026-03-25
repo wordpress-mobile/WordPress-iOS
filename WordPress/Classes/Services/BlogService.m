@@ -152,20 +152,17 @@ NSString *const WPBlogSettingsUpdatedNotification = @"WPBlogSettingsUpdatedNotif
                                        dispatch_group_leave(syncGroup);
                                    }];
 
-    SharingSyncService *sharingService = [[SharingSyncService alloc] initWithCoreDataStack:self.coreDataStack];
+    JetpackPublicizeService *publicizeService = [[JetpackPublicizeService alloc] initWithCoreDataStack:[ContextManager sharedInstance]];
     dispatch_group_enter(syncGroup);
-    [sharingService syncPublicizeConnectionsForBlog:blog
-                                            success:^{
-                                                dispatch_group_leave(syncGroup);
-                                            }
-                                            failure:^(NSError *error) {
-                                                DDLogError(@"Failed syncing publicize connections for blog %@: %@", blog.url, error);
-                                                dispatch_group_leave(syncGroup);
-                                            }];
+    [publicizeService syncConnectionsFor:blog success:^{
+        dispatch_group_leave(syncGroup);
+    } failure:^(NSError *error) {
+        DDLogError(@"Failed syncing publicize connections for blog %@: %@", blog.url, error);
+        dispatch_group_leave(syncGroup);
+    }];
 
-    SharingService *publicizeService = [[SharingService alloc] initWithContextManager:[ContextManager sharedInstance]];
     dispatch_group_enter(syncGroup);
-    [publicizeService syncPublicizeServicesForBlog:blog success:^{
+    [publicizeService syncServicesFor:blog success:^{
         dispatch_group_leave(syncGroup);
     } failure:^(NSError * _Nullable error) {
         DDLogError(@"Failed syncing publicize services for blog %@: %@", blog.url, error);
