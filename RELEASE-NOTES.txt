@@ -2,6 +2,7 @@
 -----
 * [*] All self-hosted sites now sign in using application passwords [#25424]
 * [*] Reader: Fix button style [#25447]
+* [*] Reader: Add smart cropping for featured images in the feed so it never cut the heads off [#25451]
 
 
 26.8
