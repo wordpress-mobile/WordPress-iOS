@@ -17,6 +17,10 @@
 #   AI_TEST_USAGE_FILE  Path to the per-test usage log
 set -euo pipefail
 
+SCRIPT_DIR="$(cd "$(dirname "$0")" && pwd)"
+# shellcheck source=Scripts/ci/ai-test-progress.sh
+source "$SCRIPT_DIR/ai-test-progress.sh"
+
 PURPOSE="${1:?Usage: wp-api.sh PURPOSE METHOD API_PATH [BODY]}"
 METHOD="${2:?Usage: wp-api.sh PURPOSE METHOD API_PATH [BODY]}"
 API_PATH="${3:?Usage: wp-api.sh PURPOSE METHOD API_PATH [BODY]}"
@@ -76,6 +80,8 @@ if [[ "$status_code" =~ ^2[0-9][0-9]$ ]]; then
 else
   log_usage "$status_code" 0
 fi
+
+log_ai_test_progress "REST ${PURPOSE} ${METHOD} /wp-json/${API_PATH} -> ${status_code}"
 
 printf 'HTTP %s\n' "$status_code"
 cat "$tmp_body"

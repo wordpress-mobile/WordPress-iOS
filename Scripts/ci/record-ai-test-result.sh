@@ -4,6 +4,10 @@
 # Usage: record-ai-test-result.sh <pass|fail> <reason> [screenshot-relative-path]
 set -euo pipefail
 
+SCRIPT_DIR="$(cd "$(dirname "$0")" && pwd)"
+# shellcheck source=Scripts/ci/ai-test-progress.sh
+source "$SCRIPT_DIR/ai-test-progress.sh"
+
 STATUS="${1:?Usage: record-ai-test-result.sh <pass|fail> <reason> [screenshot-relative-path]}"
 REASON="${2:?Usage: record-ai-test-result.sh <pass|fail> <reason> [screenshot-relative-path]}"
 SCREENSHOT_REL="${3:-}"
@@ -24,4 +28,5 @@ ruby Scripts/ci/write-ai-test-result.rb \
   "$REASON" \
   "$SCREENSHOT_REL"
 
+log_ai_test_progress "Test result: $(printf '%s' "$STATUS" | tr '[:lower:]' '[:upper:]') — ${REASON}"
 echo "Recorded ${STATUS} result for ${AI_TEST_TITLE}"

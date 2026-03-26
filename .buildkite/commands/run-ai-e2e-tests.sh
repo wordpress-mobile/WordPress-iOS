@@ -45,9 +45,18 @@ normalize_site_url() {
 }
 
 cleanup_wda() {
+  stop_progress_tail
   if [[ "$WDA_STARTED" -eq 1 ]]; then
     echo "--- Cleanup"
     ruby "$WDA_STOP" --port "$WDA_PORT" 2>/dev/null || true
+  fi
+}
+
+stop_progress_tail() {
+  if [[ -n "${AI_TEST_PROGRESS_TAIL_PID:-}" ]]; then
+    kill "$AI_TEST_PROGRESS_TAIL_PID" 2>/dev/null || true
+    wait "$AI_TEST_PROGRESS_TAIL_PID" 2>/dev/null || true
+    unset AI_TEST_PROGRESS_TAIL_PID
   fi
 }
 
@@ -228,8 +237,9 @@ RESULTS_DIR="Tests/AgentTests/results/$(date +%Y-%m-%d-%H%M)"
 RESULTS_JSON_DIR="${RESULTS_DIR}/.results"
 RESULT_EVENTS_DIR="${RESULTS_DIR}/.result-events"
 USAGE_DIR="${RESULTS_DIR}/.rest-api-usage"
+PROGRESS_DIR="${RESULTS_DIR}/.progress"
 SCREENSHOTS_DIR="${RESULTS_DIR}/screenshots"
-mkdir -p "$RESULTS_JSON_DIR" "$RESULT_EVENTS_DIR" "$USAGE_DIR" "$SCREENSHOTS_DIR"
+mkdir -p "$RESULTS_JSON_DIR" "$RESULT_EVENTS_DIR" "$USAGE_DIR" "$PROGRESS_DIR" "$SCREENSHOTS_DIR"
 
 TEST_FILES=()
 while IFS= read -r test_file; do
@@ -265,11 +275,13 @@ for index in "${!TEST_FILES[@]}"; do
   AI_TEST_RESULT_FILE="${RESULTS_JSON_DIR}/${AI_TEST_SLUG}.json"
   AI_TEST_RESULT_EVENTS_FILE="${RESULT_EVENTS_DIR}/${AI_TEST_SLUG}.log"
   AI_TEST_USAGE_FILE="${USAGE_DIR}/${AI_TEST_SLUG}.log"
+  AI_TEST_PROGRESS_FILE="${PROGRESS_DIR}/${AI_TEST_SLUG}.log"
   AI_TEST_RESULTS_DIR="$RESULTS_DIR"
   AI_TEST_SCREENSHOTS_DIR="$SCREENSHOTS_DIR"
-  export AI_TEST_FILE AI_TEST_TITLE AI_TEST_SLUG AI_TEST_RESULT_FILE AI_TEST_RESULT_EVENTS_FILE AI_TEST_USAGE_FILE AI_TEST_RESULTS_DIR AI_TEST_SCREENSHOTS_DIR
+  export AI_TEST_FILE AI_TEST_TITLE AI_TEST_SLUG AI_TEST_RESULT_FILE AI_TEST_RESULT_EVENTS_FILE AI_TEST_USAGE_FILE AI_TEST_PROGRESS_FILE AI_TEST_RESULTS_DIR AI_TEST_SCREENSHOTS_DIR
 
-  rm -f "$AI_TEST_RESULT_FILE" "$AI_TEST_RESULT_EVENTS_FILE" "$AI_TEST_USAGE_FILE"
+  rm -f "$AI_TEST_RESULT_FILE" "$AI_TEST_RESULT_EVENTS_FILE" "$AI_TEST_USAGE_FILE" "$AI_TEST_PROGRESS_FILE"
+  : > "$AI_TEST_PROGRESS_FILE"
 
   VERIFICATION_EXPECTED="$(ruby Scripts/ci/inspect-ai-test-case.rb "$AI_TEST_FILE" section-present verification)"
   CLEANUP_EXPECTED="$(ruby Scripts/ci/inspect-ai-test-case.rb "$AI_TEST_FILE" section-present cleanup)"
@@ -291,6 +303,8 @@ for index in "${!TEST_FILES[@]}"; do
 
   TEST_CONTENT="$(cat "$AI_TEST_FILE")"
   PROMPT="$(cat <<EOF
+Use the ci-test-runner Claude Code skill for this task.
+
 Execute exactly one AI-driven iOS UI test case against the ${APP} app.
 
 Environment:
@@ -318,6 +332,7 @@ Rules:
 - If you fail the test, take a screenshot first and pass the returned relative path to record-ai-test-result.sh.
 - You must call record-ai-test-result.sh exactly once before you stop.
 - Keep reasons short and single-line so they are safe to store in CI output.
+- Do not spend turns narrating a plan. Use the available commands to act.
 
 Test case:
 
@@ -326,6 +341,8 @@ EOF
 )"
 
   CLAUDE_EXIT=0
+  tail -n 0 -f "$AI_TEST_PROGRESS_FILE" &
+  AI_TEST_PROGRESS_TAIL_PID=$!
   claude --print \
     --model "$CLAUDE_MODEL" \
     --max-turns "$CLAUDE_MAX_TURNS" \
@@ -333,6 +350,7 @@ EOF
     -- \
     "$PROMPT" \
     || CLAUDE_EXIT=$?
+  stop_progress_tail
 
   declare -a ENFORCEMENT_REASONS=()
   if [[ $CLAUDE_EXIT -ne 0 ]]; then

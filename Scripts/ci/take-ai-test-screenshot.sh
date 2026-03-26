@@ -5,6 +5,10 @@
 # Usage: take-ai-test-screenshot.sh <label>
 set -euo pipefail
 
+SCRIPT_DIR="$(cd "$(dirname "$0")" && pwd)"
+# shellcheck source=Scripts/ci/ai-test-progress.sh
+source "$SCRIPT_DIR/ai-test-progress.sh"
+
 LABEL="${1:?Usage: take-ai-test-screenshot.sh <label>}"
 
 : "${SIMULATOR_UDID:?SIMULATOR_UDID is required}"
@@ -18,4 +22,5 @@ absolute_path="$(mktemp "${AI_TEST_SCREENSHOTS_DIR}/${AI_TEST_SLUG}-${safe_label
 xcrun simctl io "$SIMULATOR_UDID" screenshot "$absolute_path" >/dev/null
 
 relative_path="${absolute_path#${AI_TEST_RESULTS_DIR}/}"
+log_ai_test_progress "Screenshot: ${relative_path}"
 echo "$relative_path"
