@@ -1,0 +1,21 @@
+Wer ist wer auf deiner Website? Jetzt weißt du es: Push-Benachrichtigungen verwenden jetzt Gravatare, damit du sehen kannst, wer deine Inhalte kommentiert oder damit interagiert hat. Das Aktivitätsprotokoll zeigt auch an, wann deine Website mithilfe von KI-Agenten aktualisiert wurde.
+
+Wenn du dachtest, dass unsere letzten Updates zu den Statistiken sehr umfangreich waren, bist du noch nicht auf dem neusten Stand.
+
+- Das heutige Datum ist jetzt in Intervallen wie „Letzte 7 Tage“ enthalten. Wir haben auch ein neues Intervall „Letzte 14 Tage“ hinzugefügt.
+- Unvollständige Daten, einschließlich heute, werden im Liniendiagramm als gepunktete Linie angezeigt. Du kannst sie auch leichter in der Balkendiagrammansicht sehen.
+- Apropos Balkendiagramme: Wenn du auf einen Balken tippst, siehst du die Daten für dieses Datum. So kannst du leichter durch die Daten für mehrere Tage scrollen. Oh, und wenn du auf einen Balken tippst, wird der Balken daneben nicht mehr ausgewählt.
+- Wir haben visuelle Änderungen wie einen kleineren Kartenheader in Diagrammen, kleinere Schriftarten in Tabs und reduzierte Abstände vorgenommen. Es ist minimalistisch.
+
+Außerdem haben wir Änderungen am Reader vorgenommen. (Übrigens, keine davon hat etwas mit Lesen zu tun.)
+
+- Wenn du ein Bild in einer Galerie ansiehst, wird es durch Wischen nach unten verworfen, auch wenn du es vergrößert hast.
+- Wir haben die Farbe von Links in Kommentaren und im Dunkelmodus bei individuellen Themes korrigiert. Sieht gut aus.
+- Du kannst Mediengalerien im Vollbildmodus anzeigen. Wische einfach nach rechts oder links, um alle Bilder anzuzeigen.
+
+Und weil wir noch ein wenig Zeit hatten, haben wir auch ein paar Details behoben, die uns störten.
+
+- Wir haben die Pfeil-Icons und Abstände auf dem Benachrichtigungsbildschirm aktualisiert.
+- In den Beitragseinstellungen werden auf der Social Sharing-Karte nur Plattformen angezeigt, die von der App unterstützt werden.
+- Neue Beiträge verwenden das Standardformat für Beiträge anstelle der Standardversion. Du kannst dieses Format in deinen Website-Einstellungen aktualisieren.
+- Wenn deine Website selbst gehostet wird und XML-RPC deaktiviert ist, kannst du Beiträge und Seiten in der App anzeigen. Das ist ziemlich wichtig, wenn wir das so sagen dürfen.

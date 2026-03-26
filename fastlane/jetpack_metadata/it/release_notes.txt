@@ -1,0 +1,21 @@
+Chi è chi sul tuo sito web? Ora sai che le notifiche push ora usano i gravatar in modo che tu possa vedere chi ha commentato o interagito con i tuoi contenuti. Il log attività mostra anche quando il tuo sito è stato aggiornato usando agenti IA.
+
+Se pensavi che i nostri ultimi aggiornamenti alle Statistiche fossero grandi, non hai ancora visto nulla.
+
+- La data odierna è ora inclusa in intervalli come "Ultimi 7 giorni". Abbiamo anche aggiunto un nuovo intervallo "Ultimi 14 giorni".
+- Le date incomplete, inclusa quella odierna, sono visualizzate sul grafico a linee come una linea tratteggiata. È possibile visualizzarli più facilmente anche nella vista grafico a barre.
+- Per quanto riguarda i grafici a barre, toccando una barra verranno visualizzati i dati relativi a tale data. In questo modo è più facile scorrere i dati per più giorni. Oh, e toccando una barra non verrà più selezionata la barra accanto ad essa.
+- Potresti notare cambiamenti visivi come un'intestazione più piccola della scheda Grafico, font più piccoli nelle schede e una spaziatura ridotta qua e là. Dà un tocco minimalista.
+
+Già che c'eravamo, abbiamo apportato modifiche anche al Reader. (Tra l'altro, nessuno di questi è legato alla lettura.)
+
+- Quando visualizzi un'immagine in un lightbox, scorrere verso il basso la ignorerà, anche quando hai eseguito lo zoom avanti.
+- Abbiamo fissato il colore dei link nei commenti e in modalità dark su temi personalizzati. Sembra perfetto.
+- È possibile visualizzare le gallerie multimediali in modalità a schermo intero. Basta scorrere verso destra o sinistra per visualizzare tutte le immagini.
+
+E siccome avevamo ancora un po' di tempo libero, abbiamo anche sistemato alcuni dettagli che ci infastidivano.
+
+- Abbiamo aggiornato le icone delle frecce e la spaziatura nella schermata Notifiche.
+- Nelle Impostazioni articolo, la scheda di condivisione sui social mostra solo le piattaforme supportate dall'app.
+- I nuovi articoli usano il formato di pubblicazione predefinito invece della versione standard. Puoi aggiornare questo formato nelle impostazioni del sito.
+- Se il tuo sito è ospitato personalmente con XML-RPC disabilitato, puoi vedere Articoli e Pagine nell'app. È molto importante, se lo diciamo noi stessi.

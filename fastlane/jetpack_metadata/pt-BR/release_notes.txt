@@ -1,0 +1,21 @@
+Quem é quem em seu site? Agora você sabe: as notificações por push agora usam gravatars para que você possa ver quem comentou ou interagiu com seu conteúdo. O registro de atividades também mostra quando seu site foi atualizado usando agentes de IA.
+
+Se achou que nossas últimas atualizações nas Estatísticas foram grandes, você ainda não viu nada.
+
+- A data atual agora está inclusa em intervalos como "Últimos sete dias". Também adicionamos um novo intervalo de "Últimos 14 dias".
+- Datas incompletas, incluindo a atual, são mostradas no gráfico de linhas como uma linha pontilhada. Você também pode vê-las mais facilmente na visualização de gráfico de barras.
+- Falando em gráficos de barras, tocar em uma barra mostrará os dados dessa data. Isso facilita a navegação pelos dados de vários dias. E tocar em uma barra não selecionará mais a barra ao lado dela.
+- Você pode notar mudanças visuais como um cabeçalho menor de cartão de gráfico, fontes menores em abas e espaçamento reduzido aqui e ali. Está bem minimalista.
+
+Aproveitamos para fazer alterações no Leitor também. (Aliás, nenhuma delas é relacionada à leitura.)
+
+- Quando você vê uma imagem com efeito lightbox, deslizar para baixo a fecha, mesmo quando você está com o zoom.
+- Corrigimos a cor dos links em comentários e no modo escuro em temas personalizados. Está bonito.
+- Você pode visualizar galerias de mídia no modo tela cheia. Basta deslizar para a direita ou esquerda para ver todas as imagens.
+
+E, como ainda tínhamos um tempo livre, também resolvemos alguns detalhes que nos incomodavam.
+
+- Atualizamos os ícones de seta e o espaçamento na tela Notificações.
+- Em Configurações do post, o cartão de compartilhamento social mostra apenas plataformas compatíveis com o aplicativo.
+- Novos posts usam o formato de post padrão em vez da versão padrão. Você pode atualizar esse formato nas configurações do seu site.
+- Se seu site for auto-hospedado com XML-RPC desativado, você poderá ver posts e páginas no aplicativo. Isso é muito importante, diga-se de passagem.
