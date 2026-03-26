@@ -150,6 +150,8 @@ steps:
     plugins: [$CI_TOOLKIT_PLUGIN]
     env:
       APP: jetpack
+      CLAUDE_CODE_EXPECTED_VERSION: "2.1.84"
+      CLAUDE_CODE_NPM_SPEC: "@anthropic-ai/claude-code@2.1.84"
     artifact_paths:
       - "Tests/AgentTests/results/**/*"
     notify:

@@ -29,12 +29,20 @@ if [[ "$URL_PATH" != /* ]]; then
   URL_PATH="/${URL_PATH}"
 fi
 
+case "$URL_PATH" in
+  /status|/session|/source\?format=description|/source\?format=json|/session/*/actions|/session/*/elements|/session/*/element/*/click|/session/*/wda/keys|/session/*/wda/pressButton) ;;
+  *)
+    echo "Error: WDA path '$URL_PATH' is not allowed" >&2
+    exit 1
+    ;;
+esac
+
 if [[ -n "$BODY" ]]; then
-  exec curl -s -X "$METHOD" \
+  exec curl -sS --max-time 30 -X "$METHOD" \
     -H 'Content-Type: application/json' \
     -d "$BODY" \
     "http://localhost:${PORT}${URL_PATH}"
 else
-  exec curl -s -X "$METHOD" \
+  exec curl -sS --max-time 30 -X "$METHOD" \
     "http://localhost:${PORT}${URL_PATH}"
 fi

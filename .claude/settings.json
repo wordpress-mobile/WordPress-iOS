@@ -1,17 +1,15 @@
 {
   "permissions": {
-    "allow": [
-      "Bash(cat:*)",
-      "Bash(ls:*)",
-      "Bash(rg:*)",
-      "Bash(find:*)",
-      "Bash(grep:*)",
-      "Bash(head:*)",
-      "Bash(tail:*)",
-      "Bash(wc:*)",
-      "Bash(tree:*)",
-      "Bash(git:log,status,diff,branch)"
-    ],
-    "deny": []
+    "deny": [
+      "Read(./.env)",
+      "Read(./.env.*)",
+      "Read(./.git/**)",
+      "Read(./DerivedData/**)",
+      "Read(./build/**)",
+      "Read(./build-products-*.tar)",
+      "Read(./**/*.mobileprovision)",
+      "Read(./**/*.p12)",
+      "Read(./**/*secret*)"
+    ]
   }
 }

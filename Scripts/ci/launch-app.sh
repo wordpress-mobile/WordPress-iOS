@@ -20,6 +20,11 @@ set -euo pipefail
 
 exec xcrun simctl launch --terminate-running-process \
   "$SIMULATOR_UDID" "$APP_BUNDLE_ID" \
+  -ui-testing YES \
+  -ui-test-reset-everything YES \
+  -ui-test-disable-prompts YES \
+  -ui-test-disable-animations YES \
+  -ui-test-disable-migration YES \
   -ui-test-site-url "$SITE_URL" \
   -ui-test-site-user "$WP_USERNAME" \
   -ui-test-site-pass "$WP_APP_PASSWORD"
