@@ -8,6 +8,7 @@ public actor SaliencyService {
     public nonisolated static let shared = SaliencyService()
 
     private nonisolated let cache = SaliencyCache()
+    private nonisolated let detector = SaliencyDetector()
     private var inflightTasks: [URL: Task<CGRect?, Never>] = [:]
 
     init() {
@@ -26,21 +27,19 @@ public actor SaliencyService {
     ///
     /// - warning: The underlying `Vision` framework works _only_ on the device.
     public func saliencyRect(for image: UIImage, url: URL) async -> CGRect? {
-        if let cached = cache.cachedRect(for: url) {
-            return cached
+        if cache.isCached(for: url) {
+            return cache.cachedRect(for: url)
         }
         if let existing = inflightTasks[url] {
             return await existing.value
         }
-        let task = Task<CGRect?, Never> {
-            await SaliencyService.detect(in: image)
+        let task = Task<CGRect?, Never> { [detector] in
+            await detector.detect(in: image)
         }
         inflightTasks[url] = task
         let result = await task.value
         inflightTasks[url] = nil
-        if let result {
-            cache.store(result, for: url)
-        }
+        cache.store(result, for: url)
         return result
     }
 
@@ -76,37 +75,39 @@ public actor SaliencyService {
         return CGRect(x: 0, y: clampedY, width: containerSize.width, height: scaledHeight)
     }
 
-    private static func detect(in image: UIImage) async -> CGRect? {
+}
+
+/// Runs saliency detection serially — one image at a time.
+private actor SaliencyDetector {
+    func detect(in image: UIImage) -> CGRect? {
         guard let cgImage = image.cgImage else { return nil }
-        return await Task.detached(priority: .userInitiated) {
-            let request = VNGenerateObjectnessBasedSaliencyImageRequest()
-            let handler = VNImageRequestHandler(cgImage: cgImage, options: [:])
-            do {
-                try handler.perform([request])
-            } catch {
-                return nil
-            }
-            guard let observation = request.results?.first,
-                  let salientObjects = observation.salientObjects,
-                  !salientObjects.isEmpty else {
-                return nil
-            }
-            // Union all salient object bounding boxes.
-            // Vision coordinates: origin at bottom-left, Y increases upward.
-            let union = salientObjects.reduce(CGRect.null) { $0.union($1.boundingBox) }
-            // Convert to UIKit coordinates (origin at top-left, Y increases downward).
-            return CGRect(
-                x: union.origin.x,
-                y: 1.0 - union.origin.y - union.height,
-                width: union.width,
-                height: union.height
-            )
-        }.value
+        let request = VNGenerateObjectnessBasedSaliencyImageRequest()
+        let handler = VNImageRequestHandler(cgImage: cgImage, options: [:])
+        do {
+            try handler.perform([request])
+        } catch {
+            return nil
+        }
+        guard let observation = request.results?.first,
+              let salientObjects = observation.salientObjects,
+              !salientObjects.isEmpty else {
+            return nil
+        }
+        // Union all salient object bounding boxes.
+        // Vision coordinates: origin at bottom-left, Y increases upward.
+        let union = salientObjects.reduce(CGRect.null) { $0.union($1.boundingBox) }
+        // Convert to UIKit coordinates (origin at top-left, Y increases downward).
+        return CGRect(
+            x: union.origin.x,
+            y: 1.0 - union.origin.y - union.height,
+            width: union.width,
+            height: union.height
+        )
     }
 }
 
 private final class SaliencyCache: @unchecked Sendable {
-    private var store: OrderedDictionary<String, CGRect> = [:]
+    private var store: OrderedDictionary<String, CGRect?> = [:]
     private let lock = NSLock()
     private var isDirty = false
     private var observer: AnyObject?
@@ -132,11 +133,15 @@ private final class SaliencyCache: @unchecked Sendable {
         if let observer { NotificationCenter.default.removeObserver(observer) }
     }
 
-    func cachedRect(for url: URL) -> CGRect? {
-        lock.withLock { store[url.absoluteString] }
+    func isCached(for url: URL) -> Bool {
+        lock.withLock { store[url.absoluteString] != nil }
     }
 
-    func store(_ rect: CGRect, for url: URL) {
+    func cachedRect(for url: URL) -> CGRect? {
+        lock.withLock { store[url.absoluteString] ?? nil }
+    }
+
+    func store(_ rect: CGRect?, for url: URL) {
         lock.withLock {
             let key = url.absoluteString
             store.updateValue(rect, forKey: key)
@@ -149,7 +154,7 @@ private final class SaliencyCache: @unchecked Sendable {
 
     func loadFromDisk() {
         guard let data = try? Data(contentsOf: Self.diskURL),
-              let decoded = try? JSONDecoder().decode([String: CGRect].self, from: data) else {
+              let decoded = try? JSONDecoder().decode([String: CGRect?].self, from: data) else {
             return
         }
         lock.withLock {
@@ -158,13 +163,13 @@ private final class SaliencyCache: @unchecked Sendable {
     }
 
     func saveToDisk() {
-        let snapshot: OrderedDictionary<String, CGRect>? = lock.withLock {
+        let snapshot: OrderedDictionary<String, CGRect?>? = lock.withLock {
             guard isDirty else { return nil }
             isDirty = false
             return store
         }
         guard let snapshot else { return }
-        let dict = snapshot.reduce(into: [String: CGRect]()) { $0[$1.key] = $1.value }
+        let dict = snapshot.reduce(into: [String: CGRect?]()) { $0[$1.key] = $1.value }
         guard let data = try? JSONEncoder().encode(dict) else { return }
         try? data.write(to: Self.diskURL, options: .atomic)
     }
