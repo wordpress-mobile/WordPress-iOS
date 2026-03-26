@@ -35,6 +35,15 @@ REPO_ROOT="$(cd "$SCRIPT_DIR/../.." && pwd)"
 cd "$REPO_ROOT"
 WDA_STARTED=0
 
+normalize_site_url() {
+  local site_url="$1"
+  if [[ "$site_url" == http://* || "$site_url" == https://* ]]; then
+    printf '%s' "$site_url"
+  else
+    printf 'https://%s' "$site_url"
+  fi
+}
+
 cleanup_wda() {
   if [[ "$WDA_STARTED" -eq 1 ]]; then
     echo "--- Cleanup"
@@ -61,6 +70,7 @@ fi
 : "${SITE_URL:?Set SITE_URL}"
 : "${WP_USERNAME:?Set WP_USERNAME}"
 : "${WP_APP_PASSWORD:?Set WP_APP_PASSWORD}"
+export SITE_URL="$(normalize_site_url "$SITE_URL")"
 
 # ── Defaults ───────────────────────────────────────────────────────────
 APP="${APP:-jetpack}"
@@ -71,6 +81,7 @@ TEST_DIR="${TEST_DIR:-Tests/AgentTests/ui-tests}"
 CLAUDE_MODEL="${CLAUDE_MODEL:-claude-sonnet-4-20250514}"
 CLAUDE_CODE_EXPECTED_VERSION="${CLAUDE_CODE_EXPECTED_VERSION:-2.1.84}"
 CLAUDE_CODE_NPM_SPEC="${CLAUDE_CODE_NPM_SPEC:-@anthropic-ai/claude-code@${CLAUDE_CODE_EXPECTED_VERSION}}"
+WDA_START_TIMEOUT="${WDA_START_TIMEOUT:-120}"
 
 case "$APP" in
   wordpress) APP_BUNDLE_ID="org.wordpress" ;;
@@ -210,7 +221,7 @@ echo "--- Building WebDriverAgent"
 "$(dirname "$0")/build-wda.sh"
 
 echo "--- Starting WebDriverAgent"
-ruby "$WDA_START" --udid "$SIMULATOR_UDID" --port "$WDA_PORT"
+ruby "$WDA_START" --udid "$SIMULATOR_UDID" --port "$WDA_PORT" --timeout "$WDA_START_TIMEOUT"
 WDA_STARTED=1
 
 RESULTS_DIR="Tests/AgentTests/results/$(date +%Y-%m-%d-%H%M)"

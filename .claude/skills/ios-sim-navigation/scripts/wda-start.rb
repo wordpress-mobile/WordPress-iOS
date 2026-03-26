@@ -9,6 +9,7 @@
 # Options:
 #   --udid <UDID>   Target a specific simulator (default: first booted)
 #   --port <PORT>   WDA port (default: 8100)
+#   --timeout <S>   Seconds to wait for WDA to become ready (default: 60)
 #
 # Exit codes:
 #   0  WDA started successfully
@@ -20,6 +21,7 @@ require "net/http"
 require "json"
 
 DEFAULT_PORT = 8100
+DEFAULT_TIMEOUT = 60
 
 def get_booted_udid
   output = `xcrun simctl list devices booted -j 2>/dev/null`
@@ -55,11 +57,13 @@ end
 
 udid = nil
 port = DEFAULT_PORT
+timeout = DEFAULT_TIMEOUT
 
 parser = OptionParser.new do |opts|
   opts.banner = "Usage: wda-start.rb [options]"
   opts.on("--udid UDID", "Target a specific simulator") { |v| udid = v }
   opts.on("--port PORT", Integer, "WDA port (default: 8100)") { |v| port = v }
+  opts.on("--timeout SECONDS", Integer, "Seconds to wait for WDA to become ready (default: 60)") { |v| timeout = v }
 end
 parser.parse!
 
@@ -100,7 +104,7 @@ File.write(pid_path, pid.to_s)
 Process.detach(pid)
 
 # Wait for WDA to become ready
-max_wait = 60
+max_wait = timeout
 interval = 2
 elapsed = 0
 
