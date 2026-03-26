@@ -51,7 +51,7 @@ fi
 
 # ── Defaults ─────────────────────────────────────────────────────────
 APP="${APP:-jetpack}"
-SIMULATOR_NAME="${SIMULATOR_NAME:-iPhone 16}"
+export SIMULATOR_NAME="${SIMULATOR_NAME:-iPhone 16}"
 WDA_PORT="${WDA_PORT:-8100}"
 CLAUDE_MAX_TURNS="${CLAUDE_MAX_TURNS:-200}"
 TEST_DIR="${TEST_DIR:-Tests/AgentTests/ui-tests}"
