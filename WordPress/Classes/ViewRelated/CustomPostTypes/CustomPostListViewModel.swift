@@ -647,9 +647,6 @@ struct CustomPostCollectionDisplayPost: Equatable {
     let primaryStatus: PostStatus
     var pageRole: PageRole?
 
-    /// Bridge property for backward compatibility — remove when `homepageBadge` is replaced with `pageRoleBadge`.
-    var isHomepage: Bool { pageRole == .homepage }
-
     init(
         date: Date,
         modifiedDate: Date? = nil,

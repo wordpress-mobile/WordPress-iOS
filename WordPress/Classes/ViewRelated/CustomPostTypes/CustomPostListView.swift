@@ -356,7 +356,12 @@ private struct ForEachContent: View {
                 } else if showsPostActions {
                     button
                         .contextMenu {
-                            PostActionMenuContent(post: fullPost, viewModel: viewModel, onDuplicate: onDuplicate)
+                            PostActionMenuContent(
+                                post: fullPost,
+                                pageRole: item.pageRole,
+                                viewModel: viewModel,
+                                onDuplicate: onDuplicate
+                            )
                         }
                         .swipeActions(edge: .leading) {
                             if fullPost.status == .publish {
@@ -394,7 +399,12 @@ private struct ForEachContent: View {
                             }
                         }
                         .overlay(alignment: .topTrailing) {
-                            PostActionMenu(post: fullPost, viewModel: viewModel, onDuplicate: onDuplicate)
+                            PostActionMenu(
+                                post: fullPost,
+                                pageRole: item.pageRole,
+                                viewModel: viewModel,
+                                onDuplicate: onDuplicate
+                            )
                                 .offset(y: -6)
                         }
                 } else {
@@ -461,12 +471,13 @@ private struct ForEachContentWithIndentation: View {
 
 private struct PostActionMenu: View {
     let post: AnyPostWithEditContext
+    let pageRole: PageRole?
     let viewModel: CustomPostListViewModel
     let onDuplicate: (AnyPostWithEditContext) -> Void
 
     var body: some View {
         Menu {
-            PostActionMenuContent(post: post, viewModel: viewModel, onDuplicate: onDuplicate)
+            PostActionMenuContent(post: post, pageRole: pageRole, viewModel: viewModel, onDuplicate: onDuplicate)
         } label: {
             Image(systemName: "ellipsis")
                 .font(.body)
@@ -479,13 +490,27 @@ private struct PostActionMenu: View {
 
 private struct PostActionMenuContent: View {
     let post: AnyPostWithEditContext
+    let pageRole: PageRole?
     let viewModel: CustomPostListViewModel
     let onDuplicate: (AnyPostWithEditContext) -> Void
 
     var body: some View {
         primarySection
+        pageAttributesSection
         navigationSection
         trashSection
+    }
+
+    @ViewBuilder
+    private var pageAttributesSection: some View {
+        if viewModel.isPages, post.status == .publish {
+            PageAttributeMenuSection(
+                pageRole: pageRole,
+                onSetHomepage: { Task { await viewModel.setAsHomepage(post) } },
+                onSetPostsPage: { Task { await viewModel.setAsPostsPage(post) } },
+                onSetRegularPage: { Task { await viewModel.setAsRegularPage(post) } }
+            )
+        }
     }
 
     @ViewBuilder
@@ -561,6 +586,37 @@ private struct PostActionMenuContent: View {
     }
 }
 
+private struct PageAttributeMenuSection: View {
+    let pageRole: PageRole?
+    let onSetHomepage: () -> Void
+    let onSetPostsPage: () -> Void
+    let onSetRegularPage: () -> Void
+
+    var body: some View {
+        Section {
+            Menu {
+                if pageRole != .homepage {
+                    Button(action: onSetHomepage) {
+                        Label(Strings.setHomepage, systemImage: "house")
+                    }
+                }
+                if pageRole != .postsPage {
+                    Button(action: onSetPostsPage) {
+                        Label(Strings.setPostsPage, systemImage: "text.word.spacing")
+                    }
+                }
+                if pageRole == .postsPage {
+                    Button(action: onSetRegularPage) {
+                        Label(Strings.setRegularPage, systemImage: "arrow.uturn.backward")
+                    }
+                }
+            } label: {
+                Label(Strings.pageAttributes, systemImage: "doc")
+            }
+        }
+    }
+}
+
 private struct PostContent: View {
     let post: CustomPostCollectionDisplayPost
     let client: WordPressClient?
@@ -571,7 +627,7 @@ private struct PostContent: View {
             header
             content
             footer
-            homepageBadge
+            pageRoleBadge
         }
         .frame(maxWidth: .infinity, alignment: .leading)
         .contentShape(Rectangle())
@@ -619,14 +675,24 @@ private struct PostContent: View {
     }
 
     @ViewBuilder
-    private var homepageBadge: some View {
-        if post.isHomepage {
+    private var pageRoleBadge: some View {
+        switch post.pageRole {
+        case .homepage:
             HStack(spacing: 2) {
                 Image(systemName: "house.fill")
                 Text(verbatim: Strings.homepageBadge)
             }
             .font(.footnote)
             .foregroundStyle(.secondary)
+        case .postsPage:
+            HStack(spacing: 2) {
+                Image(systemName: "paragraphsign")
+                Text(verbatim: Strings.postsPageBadge)
+            }
+            .font(.footnote)
+            .foregroundStyle(.secondary)
+        case nil:
+            EmptyView()
         }
     }
 }
@@ -713,6 +779,31 @@ private enum Strings {
         "customPostList.swipeAction.delete",
         value: "Delete",
         comment: "Short label for the swipe action to permanently delete a trashed post. Keep this translation short."
+    )
+    static let setHomepage = NSLocalizedString(
+        "customPostList.action.setHomepage",
+        value: "Set as Homepage",
+        comment: "Menu action to set a page as the site homepage"
+    )
+    static let setPostsPage = NSLocalizedString(
+        "customPostList.action.setPostsPage",
+        value: "Set as Posts Page",
+        comment: "Menu action to set a page as the posts page"
+    )
+    static let setRegularPage = NSLocalizedString(
+        "customPostList.action.setRegularPage",
+        value: "Set as Regular Page",
+        comment: "Menu action to remove the posts page designation from a page"
+    )
+    static let pageAttributes = NSLocalizedString(
+        "customPostList.action.pageAttributes",
+        value: "Page Attributes",
+        comment: "Label for the page attributes submenu in the context menu"
+    )
+    static let postsPageBadge = NSLocalizedString(
+        "customPostList.badge.postsPage",
+        value: "Posts page",
+        comment: "Badge label shown on the posts page row in the custom post list for pages"
     )
 }
 
