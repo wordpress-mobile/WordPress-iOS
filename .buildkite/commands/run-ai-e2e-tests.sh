@@ -56,8 +56,8 @@ SIMULATOR_LLM_PILOT_REPO_URL="${SIMULATOR_LLM_PILOT_REPO_URL:-https://github.com
 SIMULATOR_LLM_PILOT_SOURCE_PATH="${SIMULATOR_LLM_PILOT_SOURCE_PATH:-}"
 
 case "$APP" in
-  wordpress) BUNDLE_ID="org.wordpress" ;;
-  jetpack)   BUNDLE_ID="com.automattic.jetpack" ;;
+  wordpress) APP_BUNDLE_ID="org.wordpress" ;;
+  jetpack)   APP_BUNDLE_ID="com.automattic.jetpack" ;;
   *) echo "Error: APP must be 'wordpress' or 'jetpack', got '$APP'" >&2; exit 1 ;;
 esac
 
@@ -119,7 +119,7 @@ RESULTS_DIR="Tests/AgentTests/results/${TIMESTAMP}"
 
 EXIT_CODE=0
 simulator-llm-pilot run "$TEST_DIR" \
-  --app-bundle-id "$BUNDLE_ID" \
+  --app-bundle-id "$APP_BUNDLE_ID" \
   --simulator-udid "$UDID" \
   --results-dir "$RESULTS_DIR" \
   || EXIT_CODE=$?
