@@ -48,7 +48,7 @@ fi
 
 # ── Defaults ─────────────────────────────────────────────────────────
 APP="${APP:-jetpack}"
-SIMULATOR_NAME="${SIMULATOR_NAME:-iPhone 16}"
+export SIMULATOR_NAME="${SIMULATOR_NAME:-iPhone 16}"
 TEST_DIR="${TEST_DIR:-Tests/AgentTests/ui-tests}"
 
 case "$APP" in
