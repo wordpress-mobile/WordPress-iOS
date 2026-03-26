@@ -234,13 +234,6 @@ class ReaderWebView: WKWebView {
                 font-weight: \(displaySetting.color == .system ? "inherit" : "600");
                 text-decoration: underline;
             }
-
-            /* workaround for CMM-1964 */
-            .reader-full-post.reader-full-post__story-content {
-                a {
-                    color: var(--main-link-color);
-                }
-            }
         """
     }
 
