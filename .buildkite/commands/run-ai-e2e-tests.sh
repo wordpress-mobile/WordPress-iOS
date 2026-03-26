@@ -24,7 +24,7 @@
 #   WDA_PORT                       WebDriverAgent port (default: 8100)
 #   CLAUDE_MAX_TURNS               Max Claude Code tool-use turns (default: 120)
 #   TEST_DIR                       Test directory (default: Tests/AgentTests/ui-tests)
-#   CLAUDE_MODEL                   Model to use (default: claude-sonnet-4-20250514)
+#   CLAUDE_MODEL                   Model to use (default: claude-sonnet-4-6)
 #   CLAUDE_CODE_EXPECTED_VERSION   Claude Code version to install (default: 2.1.84)
 #   CLAUDE_CODE_NPM_SPEC           npm package spec for Claude Code
 
@@ -330,6 +330,7 @@ EOF
     --model "$CLAUDE_MODEL" \
     --max-turns "$CLAUDE_MAX_TURNS" \
     "${CLAUDE_ALLOWED_TOOLS[@]}" \
+    -- \
     "$PROMPT" \
     || CLAUDE_EXIT=$?
 
