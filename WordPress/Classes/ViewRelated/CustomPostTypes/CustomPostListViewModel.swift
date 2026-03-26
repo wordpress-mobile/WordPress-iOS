@@ -256,10 +256,10 @@ final class CustomPostListViewModel: ObservableObject {
         }
 
         if endpoint == .pages,
-            case .staticPage(let homepagePageID) = homepageSetting,
+            case .staticPage(let homepageID, let postsPageID) = homepageSetting,
             filter.statuses.contains(.publish) || filter.statuses.contains(.custom("any"))
         {
-            items.markHomepage(id: homepagePageID)
+            items.markPageRoles(homepageID: homepageID, postsPageID: postsPageID)
         }
 
         if let exclude {
@@ -465,8 +465,11 @@ final class CustomPostListViewModel: ObservableObject {
 
         do {
             let settings = try await client.fetchSiteSettings()
-            if settings.showOnFront == "page", settings.pageOnFront > 0 {
-                homepageSetting = .staticPage(id: Int64(settings.pageOnFront))
+            if settings.showOnFront == "page" {
+                homepageSetting = .staticPage(
+                    homepageID: settings.pageOnFront > 0 ? Int64(settings.pageOnFront) : nil,
+                    postsPageID: settings.pageForPosts > 0 ? Int64(settings.pageForPosts) : nil
+                )
             } else {
                 homepageSetting = .latestPosts
             }
@@ -532,7 +535,10 @@ struct CustomPostCollectionDisplayPost: Equatable {
     let sticky: Bool
     let featuredMedia: MediaId?
     let primaryStatus: PostStatus
-    var isHomepage: Bool
+    var pageRole: PageRole?
+
+    /// Bridge property for backward compatibility — remove when `homepageBadge` is replaced with `pageRoleBadge`.
+    var isHomepage: Bool { pageRole == .homepage }
 
     init(
         date: Date,
@@ -544,7 +550,7 @@ struct CustomPostCollectionDisplayPost: Equatable {
         sticky: Bool = false,
         featuredMedia: MediaId? = nil,
         primaryStatus: PostStatus = .publish,
-        isHomepage: Bool = false
+        pageRole: PageRole? = nil
     ) {
         self.date = date
         self.modifiedDate = modifiedDate
@@ -555,7 +561,7 @@ struct CustomPostCollectionDisplayPost: Equatable {
         self.sticky = sticky
         self.featuredMedia = featuredMedia
         self.primaryStatus = primaryStatus
-        self.isHomepage = isHomepage
+        self.pageRole = pageRole
     }
 
     init(_ entity: AnyPostWithEditContext, blog: Blog, primaryStatus: PostStatus = .publish) {
@@ -580,7 +586,7 @@ struct CustomPostCollectionDisplayPost: Equatable {
         self.sticky = entity.sticky ?? false
         self.featuredMedia = entity.featuredMedia
         self.primaryStatus = primaryStatus
-        self.isHomepage = false
+        self.pageRole = nil
     }
 
     /// The title to display, with a placeholder for untitled posts.
@@ -677,6 +683,11 @@ extension PostStatus {
     }
 }
 
+enum PageRole: Equatable {
+    case homepage
+    case postsPage
+}
+
 struct CustomPostCollectionItem: Identifiable, Equatable {
     let id: Int64
     var post: CustomPostCollectionDisplayPost?
@@ -688,12 +699,12 @@ struct CustomPostCollectionItem: Identifiable, Equatable {
         case error(message: String)
     }
 
-    var isHomepage: Bool {
+    var pageRole: PageRole? {
         get {
-            post?.isHomepage ?? false
+            post?.pageRole
         }
         set {
-            post?.isHomepage = newValue
+            post?.pageRole = newValue
         }
     }
 
@@ -722,15 +733,26 @@ struct CustomPostCollectionItem: Identifiable, Equatable {
             self.state = .error(message: error)
         }
     }
+
+    #if DEBUG
+    /// Testing-only initializer.
+    init(id: Int64, post: CustomPostCollectionDisplayPost?, state: State) {
+        self.id = id
+        self.post = post
+        self.state = state
+    }
+    #endif
 }
 
 extension Array where Element == CustomPostCollectionItem {
-    /// Marks the homepage item with the `isHomepage` flag.
-    mutating func markHomepage(id: Int64) {
-        guard let homepageIndex = firstIndex(where: { $0.id == id }) else {
-            return
+    /// Marks items with their page roles based on the site's homepage settings.
+    mutating func markPageRoles(homepageID: Int64?, postsPageID: Int64?) {
+        if let homepageID, let index = firstIndex(where: { $0.id == homepageID }) {
+            self[index].pageRole = .homepage
         }
-        self[homepageIndex].isHomepage = true
+        if let postsPageID, let index = firstIndex(where: { $0.id == postsPageID }) {
+            self[index].pageRole = .postsPage
+        }
     }
 }
 
@@ -800,7 +822,7 @@ private enum Strings {
 /// Represents the WordPress "Your homepage displays" setting.
 private enum HomepageSetting {
     case latestPosts
-    case staticPage(id: Int64)
+    case staticPage(homepageID: Int64?, postsPageID: Int64?)
 }
 
 private enum Constants {
