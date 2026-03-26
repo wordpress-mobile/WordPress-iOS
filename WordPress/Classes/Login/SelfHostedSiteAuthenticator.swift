@@ -77,9 +77,8 @@ struct SelfHostedSiteAuthenticator {
                 return error.localizedDescription
             case .xmlrpcEndpointNotFound:
                 return NSLocalizedString("addSite.selfHosted.xmlrpcEndpointNotFound", value: "Could not determine the site's XML-RPC endpoint", comment: "Error message when the app cannot find the XML-RPC endpoint of a self-hosted WordPress site")
-            case .loadingSiteInfoFailure(let underlyingError):
-                let format = NSLocalizedString("addSite.selfHosted.loadingSiteInfoFailure", value: "Cannot load the WordPress site details: %1$@", comment: "Error message when failing to load details from a self-hosted WordPress site. %1$@ is the detailed error description.")
-                return String.localizedStringWithFormat(format, underlyingError.localizedDescription)
+            case .loadingSiteInfoFailure:
+                return NSLocalizedString("addSite.selfHosted.loadingSiteInfoFailure", value: "Cannot load the WordPress site details", comment: "Error message shown when failing to load details from a self-hosted WordPress site")
             case .savingSiteFailure:
                 return NSLocalizedString("addSite.selfHosted.savingSiteFailure", value: "Cannot save the WordPress site, please try again later.", comment: "Error message shown when failing to save a self-hosted site to user's device")
             case let .mismatchedUser(username):
