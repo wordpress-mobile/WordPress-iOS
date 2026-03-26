@@ -18,9 +18,11 @@
 #   SIMULATOR_LLM_PILOT_APP_PASSWORD  WordPress application password
 #
 # Optional environment variables:
-#   APP              wordpress | jetpack (default: jetpack)
-#   SIMULATOR_NAME   Simulator to boot if none running (default: iPhone 16)
-#   TEST_DIR         Test directory (default: Tests/AgentTests/ui-tests)
+#   APP                            wordpress | jetpack (default: jetpack)
+#   SIMULATOR_NAME                 Simulator to boot if none running (default: iPhone 16)
+#   TEST_DIR                       Test directory (default: Tests/AgentTests/ui-tests)
+#   SIMULATOR_LLM_PILOT_REPO_URL   Remote repo URL for simulator-llm-pilot
+#   SIMULATOR_LLM_PILOT_SOURCE_PATH Local source checkout override for simulator-llm-pilot
 
 set -euo pipefail
 
@@ -50,6 +52,8 @@ fi
 APP="${APP:-jetpack}"
 export SIMULATOR_NAME="${SIMULATOR_NAME:-iPhone 16}"
 TEST_DIR="${TEST_DIR:-Tests/AgentTests/ui-tests}"
+SIMULATOR_LLM_PILOT_REPO_URL="${SIMULATOR_LLM_PILOT_REPO_URL:-https://github.com/Automattic/simulator-llm-pilot.git}"
+SIMULATOR_LLM_PILOT_SOURCE_PATH="${SIMULATOR_LLM_PILOT_SOURCE_PATH:-}"
 
 case "$APP" in
   wordpress) BUNDLE_ID="org.wordpress" ;;
@@ -69,19 +73,26 @@ fi
 
 # ── Install simulator-llm-pilot ──────────────────────────────────────
 echo "--- Installing simulator-llm-pilot"
-GEM_BUILD_DIR="$(mktemp -d)"
-git clone --depth 1 https://github.com/Automattic/simulator-llm-pilot.git "$GEM_BUILD_DIR"
-pushd "$GEM_BUILD_DIR"
-gem build simulator-llm-pilot.gemspec
-gem install simulator-llm-pilot-*.gem
-popd
-rm -rf "$GEM_BUILD_DIR"
+bash Scripts/ci/install-simulator-llm-pilot.sh
 echo "simulator-llm-pilot $(simulator-llm-pilot version)"
 
-# ── Boot simulator and install app (Buildkite only) ──────────────────
+# ── Resolve simulator and install app (Buildkite only) ───────────────
 echo "--- Setting up Simulator"
-xcrun simctl boot "$SIMULATOR_NAME" 2>/dev/null || true
-sleep 3
+
+UDID="$(ruby Scripts/ci/find-booted-simulator.rb "$SIMULATOR_NAME" 2>/dev/null || true)"
+if [[ -z "$UDID" ]]; then
+  echo "No booted simulator named '$SIMULATOR_NAME' found. Booting..."
+  xcrun simctl boot "$SIMULATOR_NAME" 2>/dev/null || true
+  UDID="$(ruby Scripts/ci/find-booted-simulator.rb "$SIMULATOR_NAME" 30 1 2>/dev/null || true)"
+fi
+
+if [[ -z "$UDID" ]]; then
+  echo "Error: could not find a booted simulator named '$SIMULATOR_NAME'" >&2
+  exit 1
+fi
+
+export SIMULATOR_UDID="$UDID"
+echo "Simulator UDID: $UDID"
 
 if [[ -n "${BUILDKITE:-}" ]]; then
   APP_DISPLAY_NAME="Jetpack"
@@ -93,7 +104,7 @@ if [[ -n "${BUILDKITE:-}" ]]; then
     exit 1
   fi
   echo "Installing $APP_PATH on simulator..."
-  xcrun simctl install booted "$APP_PATH"
+  xcrun simctl install "$UDID" "$APP_PATH"
 fi
 
 # ── Build WebDriverAgent (if not present) ────────────────────────────
@@ -106,18 +117,20 @@ echo "--- Running AI E2E Tests"
 TIMESTAMP="$(date +%Y-%m-%d-%H%M)"
 RESULTS_DIR="Tests/AgentTests/results/${TIMESTAMP}"
 
+EXIT_CODE=0
 simulator-llm-pilot run "$TEST_DIR" \
   --app-bundle-id "$BUNDLE_ID" \
-  --simulator-name "$SIMULATOR_NAME" \
-  --results-dir "$RESULTS_DIR"
-
-EXIT_CODE=$?
+  --simulator-udid "$UDID" \
+  --results-dir "$RESULTS_DIR" \
+  || EXIT_CODE=$?
 
 # ── Report results ───────────────────────────────────────────────────
 echo "--- Results"
 RESULTS_FILE="${RESULTS_DIR}/results.md"
 if [[ -f "$RESULTS_FILE" ]]; then
   cat "$RESULTS_FILE"
+else
+  echo "Warning: no results.md found at $RESULTS_FILE"
 fi
 
 exit "$EXIT_CODE"
