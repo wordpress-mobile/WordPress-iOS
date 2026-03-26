@@ -1,4 +1,4 @@
-/* Translation-Revision-Date: 2026-03-23 15:56:11+0000 */
+/* Translation-Revision-Date: 2026-03-26 09:54:31+0000 */
 /* Plural-Forms: nplurals=2; plural=n != 1; */
 /* Generator: GlotPress/4.0.3 */
 /* Language: he_IL */
@@ -10153,6 +10153,42 @@ Example: Reply to Pamela Nguyen */
 
 /* Menu title for the visit site option */
 "mySite.siteActions.visitSite" = "לבקר באתר";
+
+/* Button to confirm to switch to the New Stats announcement screen */
+"newStats.announcement.continueButton" = "מתחילים כאן";
+
+/* Disclosure at the bottom of the New Stats announcement screen, informing users they can opt out */
+"newStats.announcement.disclosure" = "אינך רוצה להחליף בינתיים? אפשר לכבות את 'נתונים סטטיסטיים חדשים' מתפריט 'עוד' בלשונית 'נתונים סטטיסטיים'.";
+
+/* Feature description: navigation moved to the bottom for thumb-friendly access */
+"newStats.announcement.feature.bottomNav.description" = "הניווט ובורר התאריכים נמצאים כעת בתחתית המסך - בדיוק במקום שבו נמצא האגודל שלך.";
+
+/* Feature title: navigation moved to the bottom */
+"newStats.announcement.feature.bottomNav.title" = "יותר נגיש";
+
+/* Feature description: flexible date picker with presets, custom ranges, and comparisons */
+"newStats.announcement.feature.datePicker.description" = "אפשר לבחור מתוך תבניות מוגדרות מראש נפוצות, או לקבוע טווח תאריכים מותאם אישית עם תקופת השוואה - הכול בלחיצה אחת.";
+
+/* Feature title: flexible date picker */
+"newStats.announcement.feature.datePicker.title" = "כל תקופה, כל טווח";
+
+/* Feature description: feature parity with the web version of Stats */
+"newStats.announcement.feature.parity.description" = "מכשירים, UTM, מיקומים, WordAds - אותם הנתונים שמקבלים ב-WordPress.com.";
+
+/* Feature title: feature parity with the web version of Stats */
+"newStats.announcement.feature.parity.title" = "באותה רמה עם הרשת";
+
+/* Feature description: trends shown for all metrics with comparison to previous period */
+"newStats.announcement.feature.trends.description" = "כל מדד מציג את מגמות השינוי בהשוואה לתקופה הקודמת, כך שתמיד אפשר לדעת אם הצמיחה עולה.";
+
+/* Feature title: trends visible for all metrics */
+"newStats.announcement.feature.trends.title" = "מגמות במבט כללי";
+
+/* Subtitle for the New Stats announcement screen */
+"newStats.announcement.subtitle" = "דרך טובה יותר להבין את ביצועי האתר שלך - מעכשיו פועל כברירת מחדל.";
+
+/* Title for the New Stats announcement screen */
+"newStats.announcement.title" = "נתונים סטטיסטיים חדשים";
 
 /* A no results message displayed on the atomic logs screen. */
 "noLogs.empty" = "לא נמצאו רישומים ביומן בטווח הזמן הזה";

@@ -1,4 +1,4 @@
-/* Translation-Revision-Date: 2026-03-24 17:40:46+0000 */
+/* Translation-Revision-Date: 2026-03-25 09:54:48+0000 */
 /* Plural-Forms: nplurals=2; plural=n > 1; */
 /* Generator: GlotPress/4.0.3 */
 /* Language: tr */
@@ -7896,7 +7896,7 @@ Example: Reply to Pamela Nguyen */
 "customPostList.action.deletePermanently" = "Kalıcı Olarak Sil";
 
 /* Menu action to change a post's status to draft */
-"customPostList.action.moveToDraft" = "Taslağa taşı";
+"customPostList.action.moveToDraft" = "Taslağa Taşı";
 
 /* Menu action to move a post to trash */
 "customPostList.action.moveToTrash" = "Çöp Kutusuna Taşı";
@@ -7941,10 +7941,10 @@ Example: Reply to Pamela Nguyen */
 "customPostList.emptyState.message" = "%1$@ yok";
 
 /* Message for the confirmation alert when trashing a published post */
-"customPostList.trashConfirmation.message" = "Bu yazı yayınlandı ve ziyaretçiler tarafından görülebilir. \"\" öğesini çöp kutusuna taşımak istediğinizden emin misiniz?";
+"customPostList.trashConfirmation.message" = "Bu gönderi yayımlandı ve ziyaretçiler tarafından görülebilir. Bunu çöp kutusuna taşımak istediğinizden emin misiniz?";
 
 /* Title for the confirmation alert when trashing a published post */
-"customPostList.trashConfirmation.title" = "Çöp Kutusuna Taşı";
+"customPostList.trashConfirmation.title" = "Çöp kutusuna taşınsın mı?";
 
 /* Placeholder title for posts without a title */
 "customPostList.untitled" = "(başlıksız)";
@@ -7956,7 +7956,7 @@ Example: Reply to Pamela Nguyen */
 "customPostParentPicker.topLevel" = "Üst seviye";
 
 /* Description for the top level option in the parent page picker, indicating this page will have no parent */
-"customPostParentPicker.topLevel.description" = "Bir Ebeveyn Sayfası";
+"customPostParentPicker.topLevel.description" = "Üst sayfa yok";
 
 /* Tab title for showing all posts regardless of status */
 "customPostTab.all" = "Tümü";
@@ -7975,6 +7975,9 @@ Example: Reply to Pamela Nguyen */
 
 /* Tab title for trashed posts */
 "customPostTab.trash" = "Çöp";
+
+/* Badge label indicating that custom post type support is a beta feature. Displayed next to the navigation title. */
+"customPostType.navigation.betaBadge" = "BETA";
 
 /* Empty state message when there are no custom post types to display */
 "customPostTypes.emptyState.message" = "Özel Gönderi Türü Yok";
@@ -8167,7 +8170,7 @@ Example: Reply to Pamela Nguyen */
 "debugMenu.resetTipKitData" = "Verileri Sıfırla";
 
 /* Debug Menu section title */
-"debugMenu.section.caches" = "Önbelekler";
+"debugMenu.section.caches" = "Önbellekler";
 
 /* Debug Menu section title */
 "debugMenu.section.logging" = "Günlük kaydı";
@@ -11663,7 +11666,7 @@ Example: given a notice format "Following %@" and empty site name, this will be 
 "reader.postContextMenu.viewInBrowser" = "Tarayıcıda Görüntüle";
 
 /* Context menu action */
-"reader.postContextMenu.viewSite" = "Siteyi görüntüle";
+"reader.postContextMenu.viewSite" = "Siteyi Görüntüle";
 
 /* Reader post details view placeholder when blog name not avail */
 "reader.postDetails.blog" = "blog";
@@ -12075,7 +12078,7 @@ Feel free to replace it with other bracket types that you think looks better for
 "shared.button.edit" = "Düzenle";
 
 /* A shared button title used in different contexts */
-"shared.button.notNow" = "Şimdi";
+"shared.button.notNow" = "Şimdi değil";
 
 /* A shared button title used in different contexts */
 "shared.button.ok" = "Tamam";

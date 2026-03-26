@@ -1,4 +1,4 @@
-/* Translation-Revision-Date: 2026-03-24 09:57:29+0000 */
+/* Translation-Revision-Date: 2026-03-26 09:54:43+0000 */
 /* Plural-Forms: nplurals=2; plural=n != 1; */
 /* Generator: GlotPress/4.0.3 */
 /* Language: sv_SE */
@@ -7911,7 +7911,7 @@ Example: Reply to Pamela Nguyen */
 "customPostList.action.stats" = "Statistik";
 
 /* Accessibility label for the author filter button in the custom post list */
-"customPostList.authorFilter.accessibilityLabel" = "Filtrering på författare";
+"customPostList.authorFilter.accessibilityLabel" = "Filtrering efter författare";
 
 /* Menu item to show posts from all authors in the custom post list */
 "customPostList.authorFilter.everyone" = "Alla";
@@ -7941,10 +7941,10 @@ Example: Reply to Pamela Nguyen */
 "customPostList.emptyState.message" = "Inget %1$@";
 
 /* Message for the confirmation alert when trashing a published post */
-"customPostList.trashConfirmation.message" = "Detta inlägg är publicerat och synligt för besökare. Är du säker på att du vill flytta \"\" till papperskorgen?";
+"customPostList.trashConfirmation.message" = "Det här inlägget är publicerat och synligt för besökare. Är du säker på att du vill flytta det till papperskorgen?";
 
 /* Title for the confirmation alert when trashing a published post */
-"customPostList.trashConfirmation.title" = "Flytta till papperskorgen";
+"customPostList.trashConfirmation.title" = "Flytta till papperskorgen?";
 
 /* Placeholder title for posts without a title */
 "customPostList.untitled" = "(ingen rubrik)";
@@ -8167,7 +8167,7 @@ Example: Reply to Pamela Nguyen */
 "debugMenu.resetTipKitData" = "Återställ data";
 
 /* Debug Menu section title */
-"debugMenu.section.caches" = "Cachar";
+"debugMenu.section.caches" = "Cachlagrar";
 
 /* Debug Menu section title */
 "debugMenu.section.logging" = "Loggning";
@@ -10199,6 +10199,42 @@ Example: Reply to Pamela Nguyen */
 /* Menu title for the visit site option */
 "mySite.siteActions.visitSite" = "Besök webbplats";
 
+/* Button to confirm to switch to the New Stats announcement screen */
+"newStats.announcement.continueButton" = "Kom igång";
+
+/* Disclosure at the bottom of the New Stats announcement screen, informing users they can opt out */
+"newStats.announcement.disclosure" = "Inte redo att byta? Du kan stänga av Ny statistik från menyn Mer på fliken Statistik.";
+
+/* Feature description: navigation moved to the bottom for thumb-friendly access */
+"newStats.announcement.feature.bottomNav.description" = "Navigering och datumväljare finns nu längst ner på skärmen – precis där din tumme är.";
+
+/* Feature title: navigation moved to the bottom */
+"newStats.announcement.feature.bottomNav.title" = "Enklare att nå";
+
+/* Feature description: flexible date picker with presets, custom ranges, and comparisons */
+"newStats.announcement.feature.datePicker.description" = "Välj bland vanliga förinställningar eller ange ett anpassat datumintervall med en jämförelseperiod – allt med ett tryck.";
+
+/* Feature title: flexible date picker */
+"newStats.announcement.feature.datePicker.title" = "Valfri period, valfritt intervall";
+
+/* Feature description: feature parity with the web version of Stats */
+"newStats.announcement.feature.parity.description" = "Enheter, UTM, platser, WordAds – samma data som du får på WordPress.com.";
+
+/* Feature title: feature parity with the web version of Stats */
+"newStats.announcement.feature.parity.title" = "På samma nivå som webben";
+
+/* Feature description: trends shown for all metrics with comparison to previous period */
+"newStats.announcement.feature.trends.description" = "Varje nyckeltal visar hur utvecklingen ser ut jämfört med föregående period, så att du alltid vet om du är på väg uppåt.";
+
+/* Feature title: trends visible for all metrics */
+"newStats.announcement.feature.trends.title" = "Trender i korthet";
+
+/* Subtitle for the New Stats announcement screen */
+"newStats.announcement.subtitle" = "Ett bättre sätt att förstå webbplatsens prestanda – nu aktiverad som standard.";
+
+/* Title for the New Stats announcement screen */
+"newStats.announcement.title" = "Ny statistik";
+
 /* A no results message displayed on the atomic logs screen. */
 "noLogs.empty" = "Inga loggposter inom detta tidsintervall";
 
@@ -10965,7 +11001,7 @@ Example: Reply to Pamela Nguyen */
 "postSettings.publishDateImmediately" = "Omedelbart";
 
 /* Error message shown when saving post settings via REST API fails */
-"postSettings.saveFailed.message" = "Misslyckades att spara ändringar";
+"postSettings.saveFailed.message" = "Det gick inte att spara ändringar";
 
 /* Section header for General settings in Post Settings */
 "postSettings.section.general" = "Allmänt";

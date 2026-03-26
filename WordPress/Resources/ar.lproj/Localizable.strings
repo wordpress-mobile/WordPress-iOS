@@ -1,4 +1,4 @@
-/* Translation-Revision-Date: 2026-03-24 13:58:13+0000 */
+/* Translation-Revision-Date: 2026-03-25 19:54:39+0000 */
 /* Plural-Forms: nplurals=6; plural=(n == 0) ? 0 : ((n == 1) ? 1 : ((n == 2) ? 2 : ((n % 100 >= 3 && n % 100 <= 10) ? 3 : ((n % 100 >= 11 && n % 100 <= 99) ? 4 : 5)))); */
 /* Generator: GlotPress/4.0.3 */
 /* Language: ar */
@@ -10153,6 +10153,42 @@ Example: Reply to Pamela Nguyen */
 
 /* Menu title for the visit site option */
 "mySite.siteActions.visitSite" = "زيارة الموقع";
+
+/* Button to confirm to switch to the New Stats announcement screen */
+"newStats.announcement.continueButton" = "ابدأ الآن";
+
+/* Disclosure at the bottom of the New Stats announcement screen, informing users they can opt out */
+"newStats.announcement.disclosure" = "لست مستعدًا للتبديل؟ يمكنك إيقاف تشغيل الإحصائيات الجديدة من قائمة \"المزيد\" في تبويب الإحصائيات.";
+
+/* Feature description: navigation moved to the bottom for thumb-friendly access */
+"newStats.announcement.feature.bottomNav.description" = "أصبح التنقل وأداة اختيار التاريخ الآن في أسفل الشاشة - تمامًا حيث يوجد إبهامك.";
+
+/* Feature title: navigation moved to the bottom */
+"newStats.announcement.feature.bottomNav.title" = "وصول أسهل";
+
+/* Feature description: flexible date picker with presets, custom ranges, and comparisons */
+"newStats.announcement.feature.datePicker.description" = "اختر من الإعدادات المسبقة الشائعة أو حدد نطاقًا زمنيًا مخصصًا مع فترة مقارنة - كل ذلك بنقرة واحدة.";
+
+/* Feature title: flexible date picker */
+"newStats.announcement.feature.datePicker.title" = "أي فترة، أي نطاق";
+
+/* Feature description: feature parity with the web version of Stats */
+"newStats.announcement.feature.parity.description" = "الأجهزة، وUTM، والمواقع، وWordAds - نفس البيانات التي تحصل عليها في WordPress.com.";
+
+/* Feature title: feature parity with the web version of Stats */
+"newStats.announcement.feature.parity.title" = "مماثلة لنسخة الويب";
+
+/* Feature description: trends shown for all metrics with comparison to previous period */
+"newStats.announcement.feature.trends.description" = "يوضح كل مقياس اتجاهه مقارنة بالفترة السابقة، لتعرف دائمًا ما إذا كنت تحقق نموًا.";
+
+/* Feature title: trends visible for all metrics */
+"newStats.announcement.feature.trends.title" = "لمحة عن الاتجاهات";
+
+/* Subtitle for the New Stats announcement screen */
+"newStats.announcement.subtitle" = "طريقة أفضل لفهم أداء موقعك الإلكتروني - مفعلة الآن افتراضيًا.";
+
+/* Title for the New Stats announcement screen */
+"newStats.announcement.title" = "إحصاءات جديدة";
 
 /* A no results message displayed on the atomic logs screen. */
 "noLogs.empty" = "لا توجد إدخالات سجل في هذا النطاق الزمني";

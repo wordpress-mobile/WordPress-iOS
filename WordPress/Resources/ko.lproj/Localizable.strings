@@ -1,4 +1,4 @@
-/* Translation-Revision-Date: 2026-03-24 09:58:56+0000 */
+/* Translation-Revision-Date: 2026-03-26 09:54:38+0000 */
 /* Plural-Forms: nplurals=1; plural=0; */
 /* Generator: GlotPress/4.0.3 */
 /* Language: ko_KR */
@@ -10177,6 +10177,42 @@ Example: Reply to Pamela Nguyen */
 
 /* Menu title for the visit site option */
 "mySite.siteActions.visitSite" = "사이트 방문";
+
+/* Button to confirm to switch to the New Stats announcement screen */
+"newStats.announcement.continueButton" = "시작하기";
+
+/* Disclosure at the bottom of the New Stats announcement screen, informing users they can opt out */
+"newStats.announcement.disclosure" = "아직 준비가 되지 않으셨나요? 통계 탭의 추가 메뉴에서 새 통계를 끌 수 있습니다.";
+
+/* Feature description: navigation moved to the bottom for thumb-friendly access */
+"newStats.announcement.feature.bottomNav.description" = "탐색과 날짜 선택기는 이제 엄지 손가락이 위치하는 화면 하단에 위치합니다.";
+
+/* Feature title: navigation moved to the bottom */
+"newStats.announcement.feature.bottomNav.title" = "더 쉽게 도달";
+
+/* Feature description: flexible date picker with presets, custom ranges, and comparisons */
+"newStats.announcement.feature.datePicker.description" = "한 번 눌러서 공통 사전 설정 중에서 선택하거나 비교 기간으로 사용자 정의 날짜 범위를 설정할 수 있습니다.";
+
+/* Feature title: flexible date picker */
+"newStats.announcement.feature.datePicker.title" = "모든 기간, 모든 범위";
+
+/* Feature description: feature parity with the web version of Stats */
+"newStats.announcement.feature.parity.description" = "기기, UTM, 위치, WordAds 등 워드프레스닷컴에서 받는 것과 동일한 데이터가 제공됩니다.";
+
+/* Feature title: feature parity with the web version of Stats */
+"newStats.announcement.feature.parity.title" = "웹과 동등한 데이터";
+
+/* Feature description: trends shown for all metrics with comparison to previous period */
+"newStats.announcement.feature.trends.description" = "모든 지표는 이전 기간 대비 추세를 보여주기 때문에 성장 여부를 항상 알 수 있습니다.";
+
+/* Feature title: trends visible for all metrics */
+"newStats.announcement.feature.trends.title" = "한 눈에 살펴보는 추세";
+
+/* Subtitle for the New Stats announcement screen */
+"newStats.announcement.subtitle" = "이제 사이트 성능을 더 효과적으로 이해할 수 있는 기능을 기본적으로 사용할 수 있습니다.";
+
+/* Title for the New Stats announcement screen */
+"newStats.announcement.title" = "새 통계";
 
 /* A no results message displayed on the atomic logs screen. */
 "noLogs.empty" = "이 시간 범위 내에 로그 항목 없음";
