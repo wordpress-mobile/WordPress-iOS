@@ -31,9 +31,7 @@ results.each do |result|
   lines << "### #{status_label}: #{result.fetch('title')}"
   lines << "**Reason:** #{result.fetch('reason')}"
   lines << "**Test File:** #{result.fetch('test_file')}"
-  if result['screenshot']
-    lines << "**Screenshot:** #{result.fetch('screenshot')}"
-  end
+  lines << "**Screenshot:** #{result.fetch('screenshot')}" if result['screenshot']
   lines << ''
 end
 

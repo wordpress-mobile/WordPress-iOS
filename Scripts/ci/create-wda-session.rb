@@ -19,4 +19,4 @@ exit 1 unless response.code.to_i.between?(200, 499)
 
 parsed = JSON.parse(response.body)
 session_id = parsed.dig('value', 'sessionId') || parsed['sessionId']
-print(session_id.to_s)
+print(session_id)
