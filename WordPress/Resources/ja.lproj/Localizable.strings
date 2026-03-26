@@ -1,4 +1,4 @@
-/* Translation-Revision-Date: 2026-03-24 09:56:27+0000 */
+/* Translation-Revision-Date: 2026-03-26 09:57:23+0000 */
 /* Plural-Forms: nplurals=1; plural=0; */
 /* Generator: GlotPress/4.0.3 */
 /* Language: ja_JP */
@@ -10123,6 +10123,42 @@ Example: Reply to Pamela Nguyen */
 
 /* Menu title for the visit site option */
 "mySite.siteActions.visitSite" = "サイトを表示";
+
+/* Button to confirm to switch to the New Stats announcement screen */
+"newStats.announcement.continueButton" = "開始する";
+
+/* Disclosure at the bottom of the New Stats announcement screen, informing users they can opt out */
+"newStats.announcement.disclosure" = "切り替える準備がまだですか ? 「統計情報」タブの「その他」メニューで新しい統計をオフにできます。";
+
+/* Feature description: navigation moved to the bottom for thumb-friendly access */
+"newStats.announcement.feature.bottomNav.description" = "ナビゲーションと日付ピッカーが画面の一番下に表示されるようになり、親指で操作しやすくなりました。";
+
+/* Feature title: navigation moved to the bottom */
+"newStats.announcement.feature.bottomNav.title" = "より操作しやすく";
+
+/* Feature description: flexible date picker with presets, custom ranges, and comparisons */
+"newStats.announcement.feature.datePicker.description" = "共通のプリセットから選択することも、比較期間でカスタムの日付範囲を設定することも、すべて1回のタップで可能です。";
+
+/* Feature title: flexible date picker */
+"newStats.announcement.feature.datePicker.title" = "どんな期間も、どんな範囲も";
+
+/* Feature description: feature parity with the web version of Stats */
+"newStats.announcement.feature.parity.description" = "WordPress.com で取得するのと同じデータを端末、UTM、位置情報、WordAds で利用できます。";
+
+/* Feature title: feature parity with the web version of Stats */
+"newStats.announcement.feature.parity.title" = "ウェブ版と同等のデータを";
+
+/* Feature description: trends shown for all metrics with comparison to previous period */
+"newStats.announcement.feature.trends.description" = "すべての指標が前の期間と比較した傾向を表示するため、成長の程度をいつでも把握できます。";
+
+/* Feature title: trends visible for all metrics */
+"newStats.announcement.feature.trends.title" = "傾向を瞬時に把握";
+
+/* Subtitle for the New Stats announcement screen */
+"newStats.announcement.subtitle" = "サイトのパフォーマンスを把握する優れた方法です。現在はデフォルトでオンになっています。";
+
+/* Title for the New Stats announcement screen */
+"newStats.announcement.title" = "新しい統計";
 
 /* A no results message displayed on the atomic logs screen. */
 "noLogs.empty" = "この時間範囲にはログエントリーはありません";

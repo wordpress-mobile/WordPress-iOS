@@ -1,4 +1,4 @@
-/* Translation-Revision-Date: 2026-03-24 12:03:33+0000 */
+/* Translation-Revision-Date: 2026-03-25 10:05:01+0000 */
 /* Plural-Forms: nplurals=3; plural=(n == 1) ? 0 : ((n == 0 || n % 100 >= 2 && n % 100 <= 19) ? 1 : 2); */
 /* Generator: GlotPress/4.0.3 */
 /* Language: ro */
@@ -7975,6 +7975,9 @@ Example: Reply to Pamela Nguyen */
 
 /* Tab title for trashed posts */
 "customPostTab.trash" = "Gunoi";
+
+/* Badge label indicating that custom post type support is a beta feature. Displayed next to the navigation title. */
+"customPostType.navigation.betaBadge" = "BETA";
 
 /* Empty state message when there are no custom post types to display */
 "customPostTypes.emptyState.message" = "Niciun tip de articol personalizat";
