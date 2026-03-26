@@ -1,0 +1,4 @@
+- Etkinlik Günlüğü artık sitenizin yapay zeka aracıları kullanılarak güncellendiğinde görüntülenir.
+- Gönderi Ayarları'nda Sosyal Paylaşım kartı yalnızca uygulamanın desteklediği platformları gösterir.
+- Yeni gönderilerde standart sürüm yerine varsayılan yazı biçimi kullanılıyor. Bu biçimi site ayarlarınızdan güncelleyebilirsiniz.
+- Siteniz XML-RPC devre dışı bırakılmış olarak kullanıcı tarafından barındırılıyorsa uygulamadaki Gönderileri ve Sayfaları görebilirsiniz. Bu epey önemli, bizden söylemesi.

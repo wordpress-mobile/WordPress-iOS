@@ -1,0 +1,4 @@
+- Aktivitetsloggen visar nu när din webbplats uppdaterades med hjälp av AI-agenter.
+- I Inläggsinställningar visar kortet för social delning endast plattformar som appen stöder.
+- Nya inlägg använder standardinläggsformatet istället för standardversionen. Du kan uppdatera formatet i dina webbplatsinställningar.
+- Om webbplatsen drivs på en egen server, och XML-RPC är inaktiverat, kan du ändå se Inlägg och Sidor i appen. Det är ganska viktigt, om vi får säga det själva.
