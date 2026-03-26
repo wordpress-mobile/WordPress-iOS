@@ -30,6 +30,15 @@ SCRIPT_DIR="$(cd "$(dirname "$0")" && pwd)"
 REPO_ROOT="$(cd "$SCRIPT_DIR/../.." && pwd)"
 cd "$REPO_ROOT"
 
+normalize_site_url() {
+  local site_url="$1"
+  if [[ "$site_url" == http://* || "$site_url" == https://* ]]; then
+    printf '%s' "$site_url"
+  else
+    printf 'https://%s' "$site_url"
+  fi
+}
+
 # ── Label gate (Buildkite only) ─────────────────────────────────────
 if [[ -n "${BUILDKITE_PULL_REQUEST_LABELS:-}" ]]; then
   echo "--- Checking for 'Testing' label"
@@ -47,6 +56,7 @@ fi
 : "${SIMULATOR_LLM_PILOT_SITE_URL:?Set SIMULATOR_LLM_PILOT_SITE_URL}"
 : "${SIMULATOR_LLM_PILOT_USERNAME:?Set SIMULATOR_LLM_PILOT_USERNAME}"
 : "${SIMULATOR_LLM_PILOT_APP_PASSWORD:?Set SIMULATOR_LLM_PILOT_APP_PASSWORD}"
+export SIMULATOR_LLM_PILOT_SITE_URL="$(normalize_site_url "$SIMULATOR_LLM_PILOT_SITE_URL")"
 
 # ── Defaults ─────────────────────────────────────────────────────────
 APP="${APP:-jetpack}"
