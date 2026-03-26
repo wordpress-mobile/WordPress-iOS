@@ -77,6 +77,7 @@ end
 
 # Find the WDA project
 wda_project = File.join(Dir.pwd, ".build", "WebDriverAgent", "WebDriverAgent.xcodeproj")
+wda_derived_data = File.join(Dir.pwd, ".build", "WebDriverAgent", "DerivedData")
 unless File.exist?(wda_project)
   $stderr.puts "Error: WebDriverAgent project not found at #{wda_project}"
   $stderr.puts "Clone it: git clone https://github.com/appium/WebDriverAgent.git .build/WebDriverAgent"
@@ -89,6 +90,7 @@ cmd = [
   "-project", wda_project,
   "-scheme", "WebDriverAgentRunner",
   "-destination", "id=#{udid}",
+  "-derivedDataPath", wda_derived_data,
   "USE_PORT=#{port}",
   "CODE_SIGNING_ALLOWED=NO"
 ]
