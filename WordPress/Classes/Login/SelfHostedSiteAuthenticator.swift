@@ -65,7 +65,8 @@ struct SelfHostedSiteAuthenticator {
     enum SignInError: Error, LocalizedError {
         case authentication(Error)
         case xmlrpcDisabled(Error)
-        case loadingSiteInfoFailure
+        case xmlrpcEndpointNotFound
+        case loadingSiteInfoFailure(Error)
         case savingSiteFailure
         case mismatchedUser(expectedUsername: String)
         case cancelled
@@ -74,8 +75,11 @@ struct SelfHostedSiteAuthenticator {
             switch self {
             case .authentication(let error):
                 return error.localizedDescription
-            case .loadingSiteInfoFailure:
-                return NSLocalizedString("addSite.selfHosted.loadingSiteInfoFailure", value: "Cannot load the WordPress site details", comment: "Error message shown when failing to load details from a self-hosted WordPress site")
+            case .xmlrpcEndpointNotFound:
+                return NSLocalizedString("addSite.selfHosted.xmlrpcEndpointNotFound", value: "Could not determine the site's XML-RPC endpoint", comment: "Error message when the app cannot find the XML-RPC endpoint of a self-hosted WordPress site")
+            case .loadingSiteInfoFailure(let underlyingError):
+                let format = NSLocalizedString("addSite.selfHosted.loadingSiteInfoFailure", value: "Cannot load the WordPress site details: %1$@", comment: "Error message when failing to load details from a self-hosted WordPress site. %1$@ is the detailed error description.")
+                return String.localizedStringWithFormat(format, underlyingError.localizedDescription)
             case .savingSiteFailure:
                 return NSLocalizedString("addSite.selfHosted.savingSiteFailure", value: "Cannot save the WordPress site, please try again later.", comment: "Error message shown when failing to save a self-hosted site to user's device")
             case let .mismatchedUser(username):
@@ -264,7 +268,7 @@ struct SelfHostedSiteAuthenticator {
         let xmlrpc = (try? await discoverXMLRPCEndpoint(site: credentials.siteUrl))
             ?? URL(string: credentials.siteUrl)?.appending(component: "xmlrpc.php")
         guard let xmlrpc else {
-            throw .loadingSiteInfoFailure
+            throw .xmlrpcEndpointNotFound
         }
 
         let api = WordPressAPI(
@@ -288,7 +292,7 @@ struct SelfHostedSiteAuthenticator {
             (siteSettings, isAdmin, jetpackSite, jetpackConnection, xmlrpcOptions) =
                 try await (siteSettings_, isAdmin_, jetpackSite_, jetpackConnection_, xmlrpcOptions_)
         } catch {
-            throw .loadingSiteInfoFailure
+            throw .loadingSiteInfoFailure(error)
         }
 
         let blog: TaggedManagedObjectID<Blog>
