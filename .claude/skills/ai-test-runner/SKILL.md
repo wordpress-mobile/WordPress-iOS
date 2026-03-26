@@ -96,7 +96,7 @@ Use the ios-sim-navigation skill for WDA interaction reference.
 
 ## Context
 
-- App Bundle ID: <BUNDLE_ID>
+- App Bundle ID: <APP_BUNDLE_ID>
 - WDA Session ID: <SESSION_ID>
 - Simulator UDID: <UDID>
 - Test file: <TEST_FILE_PATH> (absolute path)
@@ -117,7 +117,7 @@ Use the ios-sim-navigation skill for WDA interaction reference.
 2. **Relaunch the app** for a clean state:
 
    ```bash
-   xcrun simctl launch --terminate-running-process <UDID> <BUNDLE_ID> \
+   xcrun simctl launch --terminate-running-process <UDID> <APP_BUNDLE_ID> \
      -ui-test-site-url <SITE_URL> \
      -ui-test-site-user <USERNAME> \
      -ui-test-site-pass <APPLICATION_PASSWORD>

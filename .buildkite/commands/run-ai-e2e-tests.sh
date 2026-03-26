@@ -73,10 +73,11 @@ CLAUDE_CODE_EXPECTED_VERSION="${CLAUDE_CODE_EXPECTED_VERSION:-2.1.84}"
 CLAUDE_CODE_NPM_SPEC="${CLAUDE_CODE_NPM_SPEC:-@anthropic-ai/claude-code@${CLAUDE_CODE_EXPECTED_VERSION}}"
 
 case "$APP" in
-  wordpress) BUNDLE_ID="org.wordpress" ;;
-  jetpack)   BUNDLE_ID="com.automattic.jetpack" ;;
+  wordpress) APP_BUNDLE_ID="org.wordpress" ;;
+  jetpack)   APP_BUNDLE_ID="com.automattic.jetpack" ;;
   *) echo "Error: APP must be 'wordpress' or 'jetpack', got '$APP'" >&2; exit 1 ;;
 esac
+export APP_BUNDLE_ID
 
 # ── Artifact download (Buildkite only) ─────────────────────────────────
 if [[ -n "${BUILDKITE:-}" ]]; then
@@ -282,7 +283,7 @@ for index in "${!TEST_FILES[@]}"; do
 Execute exactly one AI-driven iOS UI test case against the ${APP} app.
 
 Environment:
-- App bundle ID: ${BUNDLE_ID}
+- App bundle ID: ${APP_BUNDLE_ID}
 - Simulator UDID: ${SIMULATOR_UDID}
 - WDA Port: ${WDA_PORT}
 - WDA Session ID: ${WDA_SESSION_ID}
