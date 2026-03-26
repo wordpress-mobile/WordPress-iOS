@@ -24,6 +24,7 @@ final class CustomPostListViewModel: ObservableObject {
 
     private var collection: PostMetadataCollectionWithEditContext
     private var homepageSetting: HomepageSetting?
+    private var canManageOptions = false
     private var isBatchSyncing = false
     // Whether we should show the content in a hierarchy view.
     // true if the number of cached items or the total items return by the API
@@ -41,6 +42,12 @@ final class CustomPostListViewModel: ObservableObject {
 
     var isPages: Bool {
         endpoint == .pages
+    }
+
+    /// Whether the "Page Attributes" submenu should be available.
+    /// Requires the `page` post type and `manage_options` capability.
+    var canChangePageAttributes: Bool {
+        isPages && canManageOptions
     }
 
     var shouldDisplayEmptyView: Bool {
@@ -556,9 +563,9 @@ final class CustomPostListViewModel: ObservableObject {
         }
     }
 
-    /// Fetches homepage settings using the cached site settings from
-    /// `WordPressClient` when the endpoint is `.pages` and the setting
-    /// has not been resolved yet.
+    /// Fetches homepage settings and user capabilities using cached data from
+    /// `WordPressClient` when the endpoint is `.pages` and the settings
+    /// have not been resolved yet.
     private func fetchHomepageSettingsIfNeeded() async {
         guard endpoint == .pages, homepageSetting == nil else { return }
 
@@ -574,6 +581,12 @@ final class CustomPostListViewModel: ObservableObject {
             }
         } catch {
             Loggers.app.error("Failed to fetch site settings for homepage detection: \(error)")
+        }
+
+        do {
+            canManageOptions = try await client.currentUserCan(.manageOptions)
+        } catch {
+            Loggers.app.error("Failed to fetch user capabilities: \(error)")
         }
     }
 

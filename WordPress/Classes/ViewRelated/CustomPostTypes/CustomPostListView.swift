@@ -503,7 +503,7 @@ private struct PostActionMenuContent: View {
 
     @ViewBuilder
     private var pageAttributesSection: some View {
-        if viewModel.isPages, post.status == .publish {
+        if viewModel.canChangePageAttributes, post.status == .publish {
             PageAttributeMenuSection(
                 pageRole: pageRole,
                 onSetHomepage: { Task { await viewModel.setAsHomepage(post) } },
