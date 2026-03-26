@@ -4,8 +4,8 @@ import Vision
 
 /// Detects the most salient (visually interesting) region in images using Vision framework.
 /// Results are cached by image URL.
-public actor SaliencyService {
-    public nonisolated static let shared = SaliencyService()
+public actor ImageSaliencyService {
+    public nonisolated static let shared = ImageSaliencyService()
 
     private nonisolated let cache = SaliencyCache()
     private nonisolated let detector = SaliencyDetector()

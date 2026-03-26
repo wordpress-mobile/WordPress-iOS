@@ -143,7 +143,7 @@ public final class AsyncImageView: UIView {
             let needsDetection = isSaliencyDetectionEnabled
                 && !(isSaliencyPortraitOnly && image.size.width >= image.size.height)
             if needsDetection, let url = currentImageURL {
-                if let cached = SaliencyService.shared.cachedSaliencyRect(for: url) {
+                if let cached = ImageSaliencyService.shared.cachedSaliencyRect(for: url) {
                     saliencyRect = cached
                     imageView.isHidden = false
                     backgroundColor = .clear
@@ -164,7 +164,7 @@ public final class AsyncImageView: UIView {
     private func triggerSaliencyDetection(image: UIImage, url: URL) {
         saliencyTask = Task { @MainActor [weak self] in
             guard let self else { return }
-            let rect = await SaliencyService.shared.saliencyRect(for: image, url: url)
+            let rect = await ImageSaliencyService.shared.saliencyRect(for: image, url: url)
             guard !Task.isCancelled else { return }
             // Reveal the image only after saliency detection finishes (with or without a result).
             self.saliencyRect = rect
@@ -179,7 +179,7 @@ public final class AsyncImageView: UIView {
         guard isSaliencyDetectionEnabled, let image, let saliencyRect else {
             return bounds
         }
-        return SaliencyService.shared.adjustedFrame(
+        return ImageSaliencyService.shared.adjustedFrame(
             saliencyRect: saliencyRect,
             imageSize: image.size,
             in: bounds.size
