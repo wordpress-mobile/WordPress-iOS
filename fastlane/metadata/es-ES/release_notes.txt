@@ -1,0 +1,4 @@
+- El registro de actividad muestra ahora cuándo se actualizó tu sitio con agentes de IA.
+- In Post Settings, the Social Sharing card only shows platforms that the app supports.
+- New posts use the default post format instead of the standard version. You can update this format in your site settings.
+- If your site is self-hosted with XML-RPC disabled, you can see Posts and Pages in the app. That’s pretty important, if we do say so ourselves.

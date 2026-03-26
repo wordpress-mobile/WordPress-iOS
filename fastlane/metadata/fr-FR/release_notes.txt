@@ -1,0 +1,4 @@
+- Le journal d’activités s’affiche désormais lorsque votre site a été mis à jour à l’aide d’agents IA.
+- Dans Réglages d’article, la carte Partage sur les réseaux sociaux affiche uniquement les plateformes prises en charge par l’application.
+- Les nouveaux articles utilisent le format d’article par défaut au lieu de la version standard. Vous pouvez mettre à jour ce format dans les réglages de votre site.
+- Si votre site est auto-hébergé avec XML-RPC désactivé, vous pouvez voir les articles et les pages dans l’application. C’est assez important, croyez-nous sur parole.

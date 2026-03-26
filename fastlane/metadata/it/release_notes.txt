@@ -1,0 +1,4 @@
+- Il log attività ora mostra quando il tuo sito è stato aggiornato usando gli agenti IA.
+- Nelle impostazioni degli articoli, la scheda di condivisione social mostra solo le piattaforme supportate dall'app.
+- I nuovi articoli usano il formato predefinito invece della versione standard. Puoi aggiornare il formato dalle impostazioni del tuo sito.
+- Se il tuo sito è ospitato personalmente e XML-RPC è disattivato, puoi visualizzare le pagine e gli articoli nell'app. È una cosa piuttosto importante, se possiamo permetterci.
