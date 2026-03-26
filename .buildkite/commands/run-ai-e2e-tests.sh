@@ -330,7 +330,7 @@ EOF
     --model "$CLAUDE_MODEL" \
     --max-turns "$CLAUDE_MAX_TURNS" \
     "${CLAUDE_ALLOWED_TOOLS[@]}" \
-    --prompt "$PROMPT" \
+    "$PROMPT" \
     || CLAUDE_EXIT=$?
 
   declare -a ENFORCEMENT_REASONS=()
@@ -368,7 +368,8 @@ EOF
 
   RESULT_STATUS="$(result_field status)"
   RESULT_REASON="$(result_field reason)"
-  echo "[${RESULT_STATUS^^}] ${AI_TEST_TITLE}"
+  RESULT_STATUS_LABEL="$(printf '%s' "$RESULT_STATUS" | tr '[:lower:]' '[:upper:]')"
+  echo "[${RESULT_STATUS_LABEL}] ${AI_TEST_TITLE}"
   echo "  ${RESULT_REASON}"
 
   if [[ "$RESULT_STATUS" != "pass" ]]; then
