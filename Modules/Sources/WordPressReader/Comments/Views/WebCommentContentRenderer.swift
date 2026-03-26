@@ -20,7 +20,7 @@ public final class WebCommentContentRenderer: NSObject, CommentContentRenderer {
 
     /// It can't be changed at the moment, but this capability was included from the
     /// start, and this implementation continues supporting it.
-    private var displaySetting = ReaderDisplaySettings.standard
+    public var displaySettings = ReaderDisplaySettings.standard
 
     /// - warning: This has to be configured _before_ you render.
     public var tintColor: UIColor {
@@ -109,7 +109,7 @@ extension WebCommentContentRenderer: WKNavigationDelegate {
                 /// The display setting's custom size is applied through the HTML's initial-scale property
                 /// in the meta tag. The `scrollHeight` value seems to return the height as if it's at 1.0 scale,
                 /// so we'll need to add the custom scale into account.
-                let actualHeight = round(height * self.displaySetting.size.scale)
+                let actualHeight = round(height * self.displaySettings.size.scale)
                 self.delegate?.renderer(self, asyncRenderCompletedWithHeight: actualHeight, comment: comment)
             }
         }
@@ -175,8 +175,8 @@ private extension WebCommentContentRenderer {
     }
 
     private func actuallyMakeHead() -> String {
-        let meta = "width=device-width,initial-scale=\(displaySetting.size.scale),maximum-scale=\(displaySetting.size.scale),user-scalable=no,shrink-to-fit=no"
-        let styles = displaySetting.makeStyles(tintColor: webView.tintColor)
+        let meta = "width=device-width,initial-scale=\(displaySettings.size.scale),maximum-scale=\(displaySettings.size.scale),user-scalable=no,shrink-to-fit=no"
+        let styles = displaySettings.makeStyles(tintColor: webView.tintColor)
         return String(format: Self.headTemplate, meta, styles)
     }
 

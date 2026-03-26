@@ -166,9 +166,9 @@ public struct ReaderDisplaySettings: Codable, Equatable, Hashable, Sendable {
             case .system:
                 return .tertiaryLabel
             case .evening, .oled, .hacker:
-                return foreground.withAlphaComponent(0.8) // slightly higher contrast for dark themes.
+                return foreground.withAlphaComponent(0.45) // slightly higher contrast for dark themes.
             default:
-                return foreground.withAlphaComponent(0.6)
+                return foreground.withAlphaComponent(0.33)
             }
         }
 
