@@ -113,7 +113,7 @@ final class CommentContentTableViewCell: UITableViewCell, NibReusable {
     /// can be scoped by using the "legacy" style when the passed parameter is nil.
     private var style: CellStyle = .init(displaySetting: nil)
 
-    var displaySetting: ReaderDisplaySettings? = nil {
+    var displaySetting: ReaderDisplaySettings = .standard {
         didSet {
             style = CellStyle(displaySetting: displaySetting)
             applyStyles()
@@ -377,20 +377,17 @@ private extension CommentContentTableViewCell {
         dateLabel?.font = style.dateFont
         dateLabel?.textColor = style.dateTextColor
 
-        accessoryButton?.tintColor = .secondaryLabel
         accessoryButton?.setImage(accessoryButtonImage, for: .normal)
         accessoryButton?.addTarget(self, action: #selector(accessoryButtonTapped), for: .touchUpInside)
 
         replyButton.configuration = makeReactionButtonConfiguration(image: UIImage(named: "icon-reader-comment-reply"))
         replyButton.configuration?.contentInsets.leading = 0
-        replyButton.tintColor = .secondaryLabel
         replyButton.setTitle(.reply, for: .normal)
         replyButton.addTarget(self, action: #selector(replyButtonTapped), for: .touchUpInside)
         replyButton.maximumContentSizeCategory = .accessibilityMedium
         replyButton.accessibilityIdentifier = .replyButtonAccessibilityId
 
         likeButton.configuration = makeReactionButtonConfiguration(image: WPStyleGuide.ReaderDetail.likeToolbarIcon)
-        likeButton.tintColor = .secondaryLabel
 
         likeButton.addTarget(self, action: #selector(likeButtonTapped), for: .touchUpInside)
         likeButton.maximumContentSizeCategory = .accessibilityMedium
@@ -422,6 +419,11 @@ private extension CommentContentTableViewCell {
 
         dateLabel?.font = style.dateFont
         dateLabel?.textColor = style.dateTextColor
+
+        replyButton?.tintColor = displaySetting.color.secondaryForeground
+        likeButton?.tintColor = displaySetting.color.secondaryForeground
+
+        accessoryButton?.tintColor = displaySetting.color.secondaryForeground
     }
 
     private func getShowMoreOverlay() -> UIView {
@@ -461,7 +463,7 @@ private extension CommentContentTableViewCell {
     }
 
     func updateLikeButton(isLiked: Bool, likeCount: Int) {
-        likeButton.tintColor = isLiked ? UIAppColor.primary : .secondaryLabel
+        likeButton.tintColor = isLiked ? UIAppColor.primary : displaySetting.color.secondaryForeground
         if var configuration = likeButton.configuration {
             configuration.image = isLiked ? WPStyleGuide.ReaderDetail.likeSelectedToolbarIcon : WPStyleGuide.ReaderDetail.likeToolbarIcon
             configuration.title = likeCount > 0 ? "\(likeCount)" : String.noLikes
@@ -488,6 +490,8 @@ private extension CommentContentTableViewCell {
             self.renderer = renderer
             return renderer
         }()
+
+        renderer.displaySettings = displaySetting
 
         configureContentView(contentHeight: helper.getCachedContentHeight(for: content))
 

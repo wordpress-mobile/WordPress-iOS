@@ -26,7 +26,7 @@ extension ReaderDisplaySettings {
         :root {
             --text-font: \(font.cssString);
             --link-font-weight: \(color == .system ? "inherit" : "600");
-            --link-text-decoration: \(color == .system ? "inherit" : "underline");
+            --link-text-decoration: underline;
         }
 
         @media(prefers-color-scheme: light) {
@@ -44,6 +44,7 @@ extension ReaderDisplaySettings {
     /// - parameter interfaceStyle: The current `UIUserInterfaceStyle` value.
     private func makeColors(interfaceStyle: UIUserInterfaceStyle, tintColor: UIColor) -> String {
         let trait = UITraitCollection(userInterfaceStyle: interfaceStyle)
+        let tintColor = color == .system ? tintColor : color.foreground
         return """
         :root {
             --text-color: \(color.foreground.color(for: trait).cssHex);
