@@ -348,6 +348,7 @@ import WordPressShared
     case appSettingsClearSpotlightIndexTapped
     case appSettingsClearSiriSuggestionsTapped
     case appSettingsOpenDeviceSettingsTapped
+    case experimentalFeatureToggled
 
     // Notifications
     case notificationsPreviousTapped
@@ -1313,6 +1314,8 @@ import WordPressShared
             return "app_settings_max_image_size_changed"
         case .appSettingsImageQualityChanged:
             return "app_settings_image_quality_changed"
+        case .experimentalFeatureToggled:
+            return "experimental_feature_toggled"
 
         // Account Close
         case .accountCloseTapped:

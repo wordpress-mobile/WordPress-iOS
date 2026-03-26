@@ -36,6 +36,11 @@ class ExperimentalFeaturesDataProvider: ExperimentalFeaturesViewModel.DataProvid
     func didChangeValue(for feature: WordPressUI.Feature, to newValue: Bool) {
         flagStore.override(flag(for: feature), withValue: newValue)
 
+        WPAnalytics.track(.experimentalFeatureToggled, properties: [
+            "feature": feature.name,
+            "enabled": newValue
+        ])
+
         if feature.key == RemoteFeatureFlag.newGutenberg.key && !newValue {
             let alert = UIAlertController(title: Strings.editorFeedbackTitle, message: Strings.editorFeedbackMessage, preferredStyle: .alert)
             alert.addAction(UIAlertAction(title: Strings.editorFeedbackDecline, style: .cancel, handler: nil))
