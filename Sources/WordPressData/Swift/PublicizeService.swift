@@ -13,14 +13,13 @@ open class PublicizeService: NSManagedObject {
     @NSManaged open var detail: String
     @NSManaged open var externalUsersOnly: Bool
     @NSManaged open var icon: String
-    @NSManaged open var jetpackSupport: Bool
-    @NSManaged open var jetpackModuleRequired: String
     @NSManaged open var label: String
     @NSManaged open var multipleExternalUserIDSupport: Bool
-    @NSManaged open var order: NSNumber
     @NSManaged open var serviceID: String
-    @NSManaged open var type: String
     @NSManaged open var status: String
+
+    // TODO: Remove jetpackSupport, jetpackModuleRequired, order, type
+    // from the Core Data model (WordPress.xcdatamodeld) in a new model version.
 
     @objc open var isSupported: Bool {
         status == Self.defaultStatus

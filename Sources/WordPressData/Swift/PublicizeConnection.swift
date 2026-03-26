@@ -8,14 +8,11 @@ open class PublicizeConnection: NSManagedObject {
 
     // Properties
     @NSManaged open var connectionID: NSNumber
-    @NSManaged open var dateIssued: Date
-    @NSManaged open var dateExpires: Date?
     @NSManaged open var externalID: String
     @NSManaged open var externalName: String
     @NSManaged open var externalDisplay: String
     @NSManaged open var externalProfilePicture: String
     @NSManaged open var externalProfileURL: String
-    @NSManaged open var externalFollowerCount: NSNumber
     @NSManaged open var keyringConnectionID: NSNumber
     @NSManaged open var keyringConnectionUserID: NSNumber
     @NSManaged open var label: String
@@ -23,8 +20,9 @@ open class PublicizeConnection: NSManagedObject {
     @NSManaged open var service: String
     @NSManaged open var shared: Bool
     @NSManaged open var status: String
-    @NSManaged open var siteID: NSNumber
-    @NSManaged open var userID: NSNumber
+
+    // TODO: Remove dateIssued, dateExpires, externalFollowerCount, siteID, userID
+    // from the Core Data model (WordPress.xcdatamodeld) in a new model version.
 
     @objc open func isBroken() -> Bool {
         return status != "ok"

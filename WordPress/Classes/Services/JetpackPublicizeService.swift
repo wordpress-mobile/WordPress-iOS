@@ -498,9 +498,8 @@ import WordPressShared
 
         // TODO: Unmapped remote fields: id, externalHandle, serviceLabel,
         // profileDisplayName, wpcomUserId
-        // TODO: Unmapped Core Data fields: dateIssued, dateExpires,
-        // externalFollowerCount, keyringConnectionID, keyringConnectionUserID,
-        // label, refreshURL, siteID, userID
+        // TODO: Unmapped Core Data fields: keyringConnectionID,
+        // keyringConnectionUserID, label, refreshURL
     }
 
     // MARK: - Service Helpers
@@ -525,8 +524,7 @@ import WordPressShared
         service?.externalUsersOnly = remote.supports.additionalUsersOnly
         service?.connectURL = remote.url
 
-        // TODO: Unmapped Core Data fields: icon (not in v2 response),
-        // jetpackSupport, jetpackModuleRequired, order, type
+        // TODO: Unmapped Core Data field: icon (not in v2 response)
 
         return service!
     }
