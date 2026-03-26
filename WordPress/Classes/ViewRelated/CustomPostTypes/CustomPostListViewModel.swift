@@ -39,6 +39,10 @@ final class CustomPostListViewModel: ObservableObject {
     /// The view uses this set to dim rows, show spinners, and disable interaction.
     @Published private(set) var pendingPostIDs: Set<Int64> = []
 
+    var isPages: Bool {
+        endpoint == .pages
+    }
+
     var shouldDisplayEmptyView: Bool {
         items.isEmpty && listInfo?.isSyncing == false
     }
@@ -49,6 +53,10 @@ final class CustomPostListViewModel: ObservableObject {
 
     var postService: WordPressAPIInternal.PostService {
         service.posts()
+    }
+
+    func pageRole(for post: AnyPostWithEditContext) -> PageRole? {
+        items.first(where: { $0.id == post.id })?.pageRole
     }
 
     func errorToDisplay() -> Error? {
@@ -457,6 +465,97 @@ final class CustomPostListViewModel: ObservableObject {
         }
     }
 
+    func setAsHomepage(_ post: AnyPostWithEditContext) async {
+        await applyPageRoleChange(for: post, role: .homepage)
+    }
+
+    func setAsPostsPage(_ post: AnyPostWithEditContext) async {
+        await applyPageRoleChange(for: post, role: .postsPage)
+    }
+
+    func setAsRegularPage(_ post: AnyPostWithEditContext) async {
+        await applyPageRoleChange(for: post, role: nil)
+    }
+
+    /// Updates the site's homepage / posts-page assignment so `post` takes on
+    /// `role`, or clears its role when `role` is `nil`.
+    ///
+    /// Performs an optimistic local update that is reverted if the server-side
+    /// settings update fails.
+    private func applyPageRoleChange(for post: AnyPostWithEditContext, role: PageRole?) async {
+        let previousSetting = homepageSetting
+        let postID = post.id
+
+        let newSetting: HomepageSetting
+        let params: SiteSettingsUpdateParams
+        let successMessage: String
+
+        switch role {
+        case .homepage:
+            var postsPageID: Int64?
+            var clearPostsPage = false
+            if case .staticPage(_, let prev) = previousSetting {
+                if prev == postID {
+                    clearPostsPage = true
+                } else {
+                    postsPageID = prev
+                }
+            }
+            newSetting = .staticPage(homepageID: postID, postsPageID: postsPageID)
+            params = SiteSettingsUpdateParams(
+                showOnFront: "page",
+                pageOnFront: UInt64(postID),
+                pageForPosts: clearPostsPage ? 0 : nil
+            )
+            successMessage = Strings.setHomepageSuccess
+
+        case .postsPage:
+            var homepageID: Int64?
+            var clearHomepage = false
+            if case .staticPage(let prev, _) = previousSetting {
+                if prev == postID {
+                    clearHomepage = true
+                } else {
+                    homepageID = prev
+                }
+            }
+            newSetting = .staticPage(homepageID: homepageID, postsPageID: postID)
+            params = SiteSettingsUpdateParams(
+                showOnFront: "page",
+                pageOnFront: clearHomepage ? 0 : nil,
+                pageForPosts: UInt64(postID)
+            )
+            successMessage = Strings.setPostsPageSuccess
+
+        case nil:
+            // The "set as regular page" action only makes sense when a static
+            // page is currently designated; the context menu surfaces it only
+            // for the posts page, but we still bail defensively if the site is
+            // on "latest posts" mode.
+            guard case .staticPage(let homepageID, _) = previousSetting else { return }
+            newSetting = .staticPage(homepageID: homepageID, postsPageID: nil)
+            params = SiteSettingsUpdateParams(pageForPosts: 0)
+            successMessage = Strings.setRegularPageSuccess
+        }
+
+        guard !pendingPostIDs.contains(postID) else { return }
+        pendingPostIDs.insert(postID)
+        defer { pendingPostIDs.remove(postID) }
+
+        homepageSetting = newSetting
+        reapplyPageRoles()
+
+        do {
+            _ = try await client.api.siteSettings.update(params: params)
+            Notice(title: successMessage).post()
+        } catch {
+            Loggers.app.error("Failed to update page role: \(error)")
+            homepageSetting = previousSetting
+            reapplyPageRoles()
+            Notice(error: error).post()
+        }
+    }
+
     /// Fetches homepage settings using the cached site settings from
     /// `WordPressClient` when the endpoint is `.pages` and the setting
     /// has not been resolved yet.
@@ -475,6 +574,17 @@ final class CustomPostListViewModel: ObservableObject {
             }
         } catch {
             Loggers.app.error("Failed to fetch site settings for homepage detection: \(error)")
+        }
+    }
+
+    private func reapplyPageRoles() {
+        // Clear all existing page roles
+        for index in items.indices {
+            items[index].pageRole = nil
+        }
+
+        if case .staticPage(let homepageID, let postsPageID) = homepageSetting {
+            items.markPageRoles(homepageID: homepageID, postsPageID: postsPageID)
         }
     }
 
@@ -816,6 +926,21 @@ private enum Strings {
         "customPostList.action.settings",
         value: "Settings",
         comment: "Menu action to open post settings"
+    )
+    static let setHomepageSuccess = NSLocalizedString(
+        "customPostList.action.setHomepage.success",
+        value: "Page successfully updated",
+        comment: "Notice shown after successfully setting a page as the homepage"
+    )
+    static let setPostsPageSuccess = NSLocalizedString(
+        "customPostList.action.setPostsPage.success",
+        value: "Page successfully updated",
+        comment: "Notice shown after successfully setting a page as the posts page"
+    )
+    static let setRegularPageSuccess = NSLocalizedString(
+        "customPostList.action.setRegularPage.success",
+        value: "Page successfully updated",
+        comment: "Notice shown after successfully setting a page as a regular page"
     )
 }
 
