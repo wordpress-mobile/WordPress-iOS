@@ -22,7 +22,7 @@
 #   APP                            wordpress | jetpack (default: jetpack)
 #   SIMULATOR_NAME                 Simulator to boot if none running (default: iPhone 16)
 #   WDA_PORT                       WebDriverAgent port (default: 8100)
-#   CLAUDE_MAX_TURNS               Max Claude Code tool-use turns (default: 120)
+#   CLAUDE_MAX_TURNS               Max Claude Code tool-use turns (default: 80)
 #   TEST_DIR                       Test directory (default: Tests/AgentTests/ui-tests)
 #   CLAUDE_MODEL                   Model to use (default: claude-sonnet-4-6)
 #   CLAUDE_CODE_EXPECTED_VERSION   Claude Code version to install (default: 2.1.84)
@@ -85,7 +85,7 @@ export SITE_URL="$(normalize_site_url "$SITE_URL")"
 APP="${APP:-jetpack}"
 export SIMULATOR_NAME="${SIMULATOR_NAME:-iPhone 16}"
 WDA_PORT="${WDA_PORT:-8100}"
-CLAUDE_MAX_TURNS="${CLAUDE_MAX_TURNS:-120}"
+CLAUDE_MAX_TURNS="${CLAUDE_MAX_TURNS:-80}"
 TEST_DIR="${TEST_DIR:-Tests/AgentTests/ui-tests}"
 CLAUDE_MODEL="${CLAUDE_MODEL:-claude-sonnet-4-6}"
 CLAUDE_CODE_EXPECTED_VERSION="${CLAUDE_CODE_EXPECTED_VERSION:-2.1.84}"
@@ -188,6 +188,7 @@ echo "Claude Code: $(claude --version 2>/dev/null || echo 'unknown')"
 CLAUDE_ALLOWED_TOOLS=(
   --allowedTools "Bash(./Scripts/ci/launch-app.sh)"
   --allowedTools "Bash(./Scripts/ci/wda-curl.sh *)"
+  --allowedTools "Bash(./Scripts/ci/tap-element.sh *)"
   --allowedTools "Bash(./Scripts/ci/wp-api.sh *)"
   --allowedTools "Bash(./Scripts/ci/take-ai-test-screenshot.sh *)"
   --allowedTools "Bash(./Scripts/ci/record-ai-test-result.sh *)"

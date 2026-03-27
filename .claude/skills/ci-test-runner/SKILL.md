@@ -16,7 +16,8 @@ Do not narrate plans — act.
 | Command | Purpose |
 |---------|---------|
 | `./Scripts/ci/launch-app.sh` | Relaunch app with test credentials |
-| `./Scripts/ci/wda-curl.sh METHOD PATH [BODY]` | WDA HTTP calls (patterns below) |
+| `./Scripts/ci/tap-element.sh IDENTIFIER_OR_LABEL` | Find element by accessibility ID or label and tap it (one call) |
+| `./Scripts/ci/wda-curl.sh METHOD PATH [BODY]` | Raw WDA HTTP calls (for actions, typing, scrolling — see patterns below) |
 | `./Scripts/ci/wp-api.sh PURPOSE METHOD PATH [BODY]` | REST API with purpose `setup`, `verification`, or `cleanup` |
 | `./Scripts/ci/take-ai-test-screenshot.sh LABEL` | Screenshot (use only on failure) |
 | `./Scripts/ci/record-ai-test-result.sh STATUS REASON [SCREENSHOT]` | Record final result — call exactly once |
@@ -35,26 +36,22 @@ Session ID is in `$WDA_SESSION_ID`.
 Returns a text tree. Each element has type, frame `{{x, y}, {width, height}}`,
 optional identifier and label. The root node frame gives screen dimensions.
 
-### Tap by coordinates (preferred — saves a turn)
+### Tap element by ID or label (preferred — one call)
+
+```bash
+./Scripts/ci/tap-element.sh 'Prologue Self Hosted Button'
+```
+
+Finds the element by accessibility ID first, then by label as fallback, and
+taps it. Use this for all taps where you know the identifier or label.
+
+### Tap by coordinates (when no ID/label, or for precise positioning)
 
 Compute center from frame: `X = x + width/2`, `Y = y + height/2`, then:
 
 ```bash
 ./Scripts/ci/wda-curl.sh POST "/session/${WDA_SESSION_ID}/actions" \
   '{"actions":[{"type":"pointer","id":"f1","parameters":{"pointerType":"touch"},"actions":[{"type":"pointerMove","duration":0,"x":X,"y":Y},{"type":"pointerDown"},{"type":"pointerUp"}]}]}'
-```
-
-### Tap by accessibility ID (when you know the exact ID)
-
-```bash
-./Scripts/ci/wda-curl.sh POST "/session/${WDA_SESSION_ID}/elements" \
-  '{"using":"accessibility id","value":"IDENTIFIER"}'
-```
-
-Then click using the element ID from `value[0].ELEMENT` in the response:
-
-```bash
-./Scripts/ci/wda-curl.sh POST "/session/${WDA_SESSION_ID}/element/ELEMENT_ID/click"
 ```
 
 ### Type text
@@ -115,10 +112,10 @@ Same as tap but add a pause between down and up:
 
 ## Login Flow
 
-1. Tap `Prologue Self Hosted Button` (accessibility ID)
-2. Tap the `Site address` field
+1. `./Scripts/ci/tap-element.sh 'Prologue Self Hosted Button'`
+2. `./Scripts/ci/tap-element.sh 'Site address'`
 3. Type the site host (without scheme, e.g., `example.com`)
-4. Tap `Site Address Next Button`
+4. `./Scripts/ci/tap-element.sh 'Site Address Next Button'`
 5. `sleep 3`, fetch tree — you should see the logged-in state
 
 Never use the WordPress.com flow. Never type a password — it is passed via
@@ -149,7 +146,8 @@ launch arguments.
 ## Rules
 
 - **Act, don't narrate.** Every response must contain tool calls.
-- **Prefer coordinate taps** from the tree — they save a turn vs find+click.
+- **Use `tap-element.sh`** whenever you know the element's identifier or label.
+  Fall back to coordinate taps only when there's no usable ID/label.
 - **Screenshots only on failure.** Do not screenshot during normal flow.
 - **Do not undo to recover from mistakes.** Move forward or fail the test.
   Only use undo/redo if the test case specifically asks for it.

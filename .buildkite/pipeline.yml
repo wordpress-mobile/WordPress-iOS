@@ -146,7 +146,7 @@ steps:
     depends_on: "build_jetpack"
     if: "build.pull_request.id != null"
     soft_fail: true
-    timeout_in_minutes: 60
+    timeout_in_minutes: 90
     plugins: [$CI_TOOLKIT_PLUGIN]
     env:
       APP: jetpack
