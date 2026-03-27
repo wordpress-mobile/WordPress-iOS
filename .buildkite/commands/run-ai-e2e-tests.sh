@@ -87,7 +87,7 @@ export SIMULATOR_NAME="${SIMULATOR_NAME:-iPhone 16}"
 WDA_PORT="${WDA_PORT:-8100}"
 CLAUDE_MAX_TURNS="${CLAUDE_MAX_TURNS:-120}"
 TEST_DIR="${TEST_DIR:-Tests/AgentTests/ui-tests}"
-CLAUDE_MODEL="${CLAUDE_MODEL:-claude-sonnet-4-6}"
+CLAUDE_MODEL="${CLAUDE_MODEL:-claude-haiku-4-5}"
 CLAUDE_CODE_EXPECTED_VERSION="${CLAUDE_CODE_EXPECTED_VERSION:-2.1.84}"
 CLAUDE_CODE_NPM_SPEC="${CLAUDE_CODE_NPM_SPEC:-@anthropic-ai/claude-code@${CLAUDE_CODE_EXPECTED_VERSION}}"
 WDA_START_TIMEOUT="${WDA_START_TIMEOUT:-120}"
@@ -302,12 +302,14 @@ for index in "${!TEST_FILES[@]}"; do
   export WDA_SESSION_ID
 
   TEST_CONTENT="$(cat "$AI_TEST_FILE")"
+  SKILL_CONTENT="$(cat .claude/skills/ci-test-runner/SKILL.md | tail -n +8)"
   PROMPT="$(cat <<EOF
-Use the ci-test-runner Claude Code skill for this task.
+${SKILL_CONTENT}
 
-Execute exactly one AI-driven iOS UI test case against the ${APP} app.
+---
 
-Environment:
+## Environment
+
 - App bundle ID: ${APP_BUNDLE_ID}
 - Simulator UDID: ${SIMULATOR_UDID}
 - WDA Port: ${WDA_PORT}
@@ -317,33 +319,21 @@ Environment:
 - Verification required: $( [[ "$VERIFICATION_EXPECTED" == "1" ]] && echo yes || echo no )
 - Cleanup required: $( [[ "$CLEANUP_EXPECTED" == "1" ]] && echo yes || echo no )
 
-Available commands:
-- ./Scripts/ci/launch-app.sh
-- ./Scripts/ci/wda-curl.sh METHOD PATH [JSON_BODY]
-- ./Scripts/ci/wp-api.sh PURPOSE METHOD PATH [JSON_BODY]
-- ./Scripts/ci/take-ai-test-screenshot.sh LABEL
-- ./Scripts/ci/record-ai-test-result.sh STATUS REASON [SCREENSHOT_RELATIVE_PATH]
-- sleep N
-
-Rules:
-- Start by running ./Scripts/ci/launch-app.sh, then sleep 3, then fetch the accessibility tree.
-- Use the accessibility tree instead of screenshots whenever possible.
-- Use wp-api.sh with purpose=setup for prerequisites, purpose=verification for verification work, and purpose=cleanup for cleanup work.
-- If you fail the test, take a screenshot first and pass the returned relative path to record-ai-test-result.sh.
-- You must call record-ai-test-result.sh exactly once before you stop.
-- Keep reasons short and single-line so they are safe to store in CI output.
-- Do not spend turns narrating a plan. Use the available commands to act.
-
-Test case:
+## Test Case
 
 ${TEST_CONTENT}
+
+---
+
+Execute this test now. Start with ./Scripts/ci/launch-app.sh, then sleep 3, then fetch the accessibility tree.
 EOF
 )"
 
   CLAUDE_EXIT=0
   tail -n 0 -f "$AI_TEST_PROGRESS_FILE" &
   AI_TEST_PROGRESS_TAIL_PID=$!
-  claude --print \
+  NO_COLOR=1 claude --print \
+    --bare \
     --model "$CLAUDE_MODEL" \
     --max-turns "$CLAUDE_MAX_TURNS" \
     "${CLAUDE_ALLOWED_TOOLS[@]}" \
