@@ -19,7 +19,7 @@ Do not narrate plans — act.
 | `./Scripts/ci/tap-element.sh IDENTIFIER_OR_LABEL` | Find element by accessibility ID or label and tap it (one call) |
 | `./Scripts/ci/wda-curl.sh METHOD PATH [BODY]` | Raw WDA HTTP calls (for actions, typing, scrolling — see patterns below) |
 | `./Scripts/ci/wp-api.sh PURPOSE METHOD PATH [BODY]` | REST API with purpose `setup`, `verification`, or `cleanup` |
-| `./Scripts/ci/take-ai-test-screenshot.sh LABEL` | Screenshot (use only on failure) |
+| `./Scripts/ci/take-ai-test-screenshot.sh LABEL` | Screenshot — **only before recording a failure** (max 3 per test) |
 | `./Scripts/ci/record-ai-test-result.sh STATUS REASON [SCREENSHOT]` | Record final result — call exactly once |
 | `sleep N` | Wait N seconds |
 
@@ -148,7 +148,10 @@ launch arguments.
 - **Act, don't narrate.** Every response must contain tool calls.
 - **Use `tap-element.sh`** whenever you know the element's identifier or label.
   Fall back to coordinate taps only when there's no usable ID/label.
-- **Screenshots only on failure.** Do not screenshot during normal flow.
+- **NEVER take screenshots to inspect the UI.** Use the accessibility tree
+  instead — it is faster and does not cost a turn. Only call
+  `take-ai-test-screenshot.sh` right before `record-ai-test-result.sh fail`
+  so there is evidence of the failure. Maximum 3 per test.
 - **Do not undo to recover from mistakes.** Move forward or fail the test.
   Only use undo/redo if the test case specifically asks for it.
 - **Do not skip verification or cleanup** if the test case declares them.
