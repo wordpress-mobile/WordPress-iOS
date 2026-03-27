@@ -68,22 +68,7 @@ class ReaderDetailViewController: UIViewController, ReaderDetailView {
     /// Attribution view for Discovery posts
     @IBOutlet weak var attributionView: ReaderCardDiscoverAttributionView!
 
-    @IBOutlet weak var scrollViewTopConstraint: NSLayoutConstraint!
-
     private let activityIndicator = UIActivityIndicatorView(style: .medium)
-
-    /// The actual header
-    private let featuredImageView = ReaderDetailFeaturedImageView()
-
-    private var heroView: ReaderHeroView?
-
-    private var isNewFeaturedImageEnabled: Bool {
-        if #available(iOS 26, *) {
-            return true
-        } else {
-            return false
-        }
-    }
 
     /// The actual header
     private lazy var header = ReaderDetailHeaderHostingView()
@@ -125,12 +110,6 @@ class ReaderDetailViewController: UIViewController, ReaderDetailView {
     var postLoadFailureBlock: (() -> Void)? {
         didSet {
             coordinator?.postLoadFailureBlock = postLoadFailureBlock
-        }
-    }
-
-    var currentPreferredStatusBarStyle = UIStatusBarStyle.lightContent {
-        didSet {
-            setNeedsStatusBarAppearanceUpdate()
         }
     }
 
@@ -201,7 +180,6 @@ class ReaderDetailViewController: UIViewController, ReaderDetailView {
         configureNavigationBar()
         applyStyles()
         configureWebView()
-        configureLegacyFeaturedImage()
         configureHeader()
         configureRelatedPosts()
         configureToolbar()
@@ -214,13 +192,6 @@ class ReaderDetailViewController: UIViewController, ReaderDetailView {
         coordinator?.start()
 
         startObservingPost()
-
-        if #available(iOS 26, *) {
-            scrollViewTopConstraint?.isActive = false
-            scrollView.pinEdges(.top)
-
-            headerContainerView.clipsToBounds = true
-        }
 
         // Fixes swipe to go back not working when leftBarButtonItem is set
         navigationController?.interactivePopGestureRecognizer?.delegate = self
@@ -249,18 +220,10 @@ class ReaderDetailViewController: UIViewController, ReaderDetailView {
         super.viewWillAppear(animated)
 
         updateLeftBarButtonItem()
-        setupFeaturedImage()
         updateFollowButtonState()
         toolbar.viewWillAppear()
 
-        if #unavailable(iOS 26) {
-            DispatchQueue.main.asyncAfter(deadline: .now() + .milliseconds(100)) {
-                // Workaround for tab bar dismiss iteraction
-                self.navigationController?.setToolbarHidden(false, animated: animated)
-            }
-        } else {
-            navigationController?.setToolbarHidden(false, animated: animated)
-        }
+        navigationController?.setToolbarHidden(false, animated: animated)
     }
 
     override func viewWillDisappear(_ animated: Bool) {
@@ -270,21 +233,8 @@ class ReaderDetailViewController: UIViewController, ReaderDetailView {
             return
         }
 
-        if !isNewFeaturedImageEnabled {
-            featuredImageView.viewWillDisappear()
-        }
         toolbar.viewWillDisappear()
         navigationController?.setToolbarHidden(true, animated: animated)
-    }
-
-    override func viewWillTransition(to size: CGSize, with coordinator: UIViewControllerTransitionCoordinator) {
-        super.viewWillTransition(to: size, with: coordinator)
-
-        if !isNewFeaturedImageEnabled {
-            coordinator.animate(alongsideTransition: { _ in
-                self.featuredImageView.deviceDidRotate()
-            })
-        }
     }
 
     override func accessibilityPerformEscape() -> Bool {
@@ -296,19 +246,9 @@ class ReaderDetailViewController: UIViewController, ReaderDetailView {
         scrollView
     }
 
-    override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
-        super.traitCollectionDidChange(previousTraitCollection)
-
-        let isCompact = traitCollection.horizontalSizeClass == .compact
-        headerContainerView.layer.cornerRadius = isCompact ? DesignConstants.radius(.large) : 0
-        headerContainerView.layer.maskedCorners = isCompact ? [.layerMaxXMinYCorner, .layerMinXMinYCorner] : []
-    }
-
     func render(_ post: ReaderPost) {
         configureDiscoverAttribution(post)
 
-        setupHeroView()
-        featuredImageView.configure(for: post, with: self)
         toolbar.configure(for: post, in: self)
         updateToolbarItems()
         header.configure(for: post)
@@ -328,10 +268,6 @@ class ReaderDetailViewController: UIViewController, ReaderDetailView {
         }
 
         navigateToCommentIfNecessary()
-
-        if !isNewFeaturedImageEnabled && !featuredImageView.isLoaded {
-            featuredImageView.load()
-        }
     }
 
     private func showPostContent(_ post: ReaderPost) {
@@ -557,9 +493,6 @@ class ReaderDetailViewController: UIViewController, ReaderDetailView {
             header.displaySetting = displaySetting
         }
 
-        // Featured image view
-        featuredImageView.displaySetting = displaySetting
-
         // Update Reader Post web view
         if let contentForDisplay = post?.contentForDisplay() {
             webView.displaySetting = displaySetting
@@ -613,95 +546,6 @@ class ReaderDetailViewController: UIViewController, ReaderDetailView {
                 self.webViewHeight.constant = min(scaledWebViewHeight, height)
             })
         }
-    }
-
-    private func setupFeaturedImage() {
-        if isNewFeaturedImageEnabled {
-            setupHeroView()
-        } else {
-            setupLegacyFeaturedImage()
-        }
-    }
-
-    override func viewDidLayoutSubviews() {
-        super.viewDidLayoutSubviews()
-
-        layoutHeroView()
-    }
-
-    private func setupHeroView() {
-        guard isNewFeaturedImageEnabled else {
-            return
-        }
-        guard let post, let imageURL = post.featuredImageURL,
-              !post.contentIncludesFeaturedImage() else {
-            return
-        }
-        if heroView == nil {
-            let heroView = ReaderHeroView()
-            heroView.configureTapGesture(in: scrollView) { [weak self] in
-                self?.coordinator?.didTapFeaturedImage($0)
-            }
-            view.insertSubview(heroView, belowSubview: scrollView)
-            self.heroView = heroView
-        }
-        if heroView?.imageURL != imageURL {
-            heroView?.imageURL = imageURL
-            heroView?.imageView.setImage(with: ImageRequest(url: imageURL, host: MediaHost(post)))
-        }
-        layoutHeroView()
-    }
-
-    private func layoutHeroView() {
-        guard let heroView else {
-            return
-        }
-        let contentInsetTop = heroView.imageView.frame.height + heroView.estimatedStatusBarOffset - view.safeAreaInsets.top
-        if contentInsetTop != scrollView.contentInset.top {
-            // `contentInset` is automatically adjusted to include safeAreaInsets.top
-            scrollView.contentInset.top = contentInsetTop
-        }
-        // DesignConstants.radius(.large) to extend a bit behind the header view
-        let heroViewFrame = CGRect(x: 0, y: 0, width: view.bounds.width, height: max(0, -scrollView.contentOffset.y + heroView.bottomExtensionHeight))
-        if heroViewFrame != heroView.frame {
-            heroView.frame = heroViewFrame
-        }
-    }
-
-    private func setupLegacyFeaturedImage() {
-        configureLegacyFeaturedImage()
-
-        featuredImageView.configure(
-            scrollView: scrollView,
-            navigationBar: navigationController?.navigationBar,
-            navigationItem: navigationItem
-        )
-
-        if !featuredImageView.isLoaded {
-            featuredImageView.load()
-        }
-    }
-
-    private func configureLegacyFeaturedImage() {
-        guard featuredImageView.superview == nil else {
-            return
-        }
-
-        if ReaderDisplaySettings.customizationEnabled {
-            featuredImageView.displaySetting = displaySetting
-        }
-
-        featuredImageView.delegate = coordinator
-
-        view.insertSubview(featuredImageView, belowSubview: scrollView)
-
-        NSLayoutConstraint.activate([
-            featuredImageView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 0),
-            featuredImageView.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: 0),
-            featuredImageView.topAnchor.constraint(equalTo: view.topAnchor, constant: 0)
-        ])
-
-        headerContainerView.translatesAutoresizingMaskIntoConstraints = false
     }
 
     private func configureHeader() {
@@ -1072,7 +916,6 @@ extension ReaderDetailViewController: UIScrollViewDelegate {
             toolbarHiddenDebouncer.send(false) // Scrolling up
         }
         lastContentOffset = currentOffset
-        layoutHeroView()
     }
 
     private func setNeedsToolbarHidden(_ isHidden: Bool) {
@@ -1212,17 +1055,6 @@ extension ReaderDetailViewController: UIGestureRecognizerDelegate {
 extension ReaderDetailViewController: ReaderCardDiscoverAttributionViewDelegate {
     public func attributionActionSelectedForVisitingSite(_ view: ReaderCardDiscoverAttributionView) {
         coordinator?.showMore()
-    }
-}
-
-// MARK: - UpdatableStatusBarStyle
-extension ReaderDetailViewController: UpdatableStatusBarStyle {
-    func updateStatusBarStyle(to style: UIStatusBarStyle) {
-        guard style != currentPreferredStatusBarStyle else {
-            return
-        }
-
-        currentPreferredStatusBarStyle = style
     }
 }
 
