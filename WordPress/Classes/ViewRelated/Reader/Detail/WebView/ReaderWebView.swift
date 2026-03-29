@@ -21,7 +21,7 @@ class ReaderWebView: WKWebView {
     ///
     /// Documentation: https://developers.google.com/youtube/terms/required-minimum-functionality#set-the-referer
     /// See also: https://stackoverflow.com/q/79802987/496295
-    private let baseURL = URL(string: "https://wordpress.com/reader")!
+    static let baseURL = URL(string: "https://wordpress.com/reader")!
 
     let jsToRemoveSrcSet = "document.querySelectorAll('img, img-placeholder').forEach((el) => {el.removeAttribute('srcset')})"
 
@@ -53,7 +53,7 @@ class ReaderWebView: WKWebView {
 
         let content = formattedContent(addPlaceholder(string), additionalJavaScript: additionalJavaScript)
 
-        super.loadHTMLString(content, baseURL: baseURL)
+        super.loadHTMLString(content, baseURL: Self.baseURL)
     }
 
     /// Given a HTML content, returns it formatted.
@@ -79,31 +79,6 @@ class ReaderWebView: WKWebView {
                 \(additionalJavaScript)
                 // Remove autoplay to avoid media autoplaying
                 document.querySelectorAll('video-placeholder, audio-placeholder').forEach((el) => {el.removeAttribute('autoplay')})
-
-                // Replaces the bundle URL with the post URL for each "blank" anchor tag (<a href="#anchor"></a>).
-                // this fixes an issue where tapping on one would return a file url with the anchor attached to it
-                let baseURL = "\(Bundle.wordPressSharedBundle.bundleURL)"
-                let postURL = "\(postURL?.absoluteString ?? "")"
-
-                if(postURL.length > 0){
-                    let anchors = document.querySelectorAll('a')
-
-                    anchors.forEach(function(elem){
-                      // Ignore any regular links that don't have hashes
-                      if(!elem.hash || elem.hash.length < 0) {
-                        return
-                      }
-
-                      let href = elem.href;
-
-                      // Skip any links that aren't the base URL
-                      if(href.substr(0, baseURL.length) != baseURL){
-                        return
-                      }
-
-                      elem.href = postURL + elem.hash;
-                    });
-                }
             })
             function debounce(fn, timeout) {
                 let timer;
