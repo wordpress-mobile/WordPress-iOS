@@ -1,5 +1,6 @@
 import UIKit
 import AsyncImageKit
+import DesignSystem
 import WordPressShared
 import WordPressUI
 
@@ -16,7 +17,6 @@ public final class ReaderPostHeaderView: UIView {
         case subscribe
         case author
         case featuredImage
-        case viewOriginal
     }
 
     public weak var delegate: ReaderPostHeaderViewDelegate?
@@ -28,7 +28,7 @@ public final class ReaderPostHeaderView: UIView {
         public let postTitle: String
         public let authorName: String
         public let authorAvatarURL: URL?
-        public let dateString: String
+        public let dateString: String?
         public let featuredImageURL: URL?
         public let excerpt: String?
         public let readingTime: String
@@ -38,7 +38,7 @@ public final class ReaderPostHeaderView: UIView {
             postTitle: String,
             authorName: String,
             authorAvatarURL: URL? = nil,
-            dateString: String,
+            dateString: String?,
             featuredImageURL: URL? = nil,
             excerpt: String? = nil,
             readingTime: String
@@ -65,26 +65,14 @@ public final class ReaderPostHeaderView: UIView {
         return label
     }()
 
-    public let subscribeButton: UIButton = {
+    public let buttonSubscribe: UIButton = {
         var config = UIButton.Configuration.plain()
-        config.contentInsets = NSDirectionalEdgeInsets(top: 4, leading: 12, bottom: 4, trailing: 12)
-        config.cornerStyle = .capsule
-        config.background.strokeWidth = 1
+        config.imagePadding = 8 // This sets padding for the built-in loading indicator
+
         let button = UIButton(configuration: config)
         button.maximumContentSizeCategory = .extraExtraExtraLarge
         button.setContentHuggingPriority(.required, for: .horizontal)
         button.setContentCompressionResistancePriority(.required, for: .horizontal)
-        return button
-    }()
-
-    public let viewOriginalButton: UIButton = {
-        var config = UIButton.Configuration.plain()
-        config.contentInsets = .zero
-        config.imagePadding = 4
-        config.imagePlacement = .leading
-        let button = UIButton(configuration: config)
-        button.maximumContentSizeCategory = .extraExtraLarge
-        button.setContentHuggingPriority(.required, for: .horizontal)
         return button
     }()
 
@@ -138,35 +126,30 @@ public final class ReaderPostHeaderView: UIView {
         let label = UILabel()
         label.numberOfLines = 0
         label.adjustsFontForContentSizeCategory = true
+        label.isUserInteractionEnabled = true
         label.isHidden = true
         return label
-    }()
-
-    private let readingTimeLabel: UILabel = {
-        let label = UILabel()
-        label.adjustsFontForContentSizeCategory = true
-        label.maximumContentSizeCategory = .extraExtraLarge
-        return label
-    }()
-
-    private let readingTimeIcon: UIImageView = {
-        let imageView = UIImageView()
-        imageView.maximumContentSizeCategory = .extraExtraLarge
-        imageView.setContentHuggingPriority(.required, for: .horizontal)
-        imageView.setContentCompressionResistancePriority(.required, for: .horizontal)
-        return imageView
     }()
 
     private let separator = SeparatorView.horizontal(height: 1)
 
     // Stacks
 
-    private lazy var siteNameRow: UIStackView = {
-        let stack = UIStackView(arrangedSubviews: [siteNameLabel, subscribeButton, UIView()])
-        stack.axis = .horizontal
-        stack.alignment = .firstBaseline
-        stack.spacing = 8
-        return stack
+    private lazy var headerRow: UIView = {
+        let containerView = UIView()
+        containerView.addSubview(siteNameLabel)
+        containerView.addSubview(buttonSubscribe)
+
+        siteNameLabel.pinEdges([.leading, .vertical])
+        siteNameLabel.trailingAnchor.constraint(equalTo: buttonSubscribe.leadingAnchor, constant: -8).isActive = true
+
+        buttonSubscribe.pinEdges(.trailing)
+        buttonSubscribe.centerYAnchor.constraint(equalTo: siteNameLabel.centerYAnchor).isActive = true
+
+        // Site name shrinks first
+        buttonSubscribe.setContentCompressionResistancePriority(.init(999), for: .horizontal)
+
+        return containerView
     }()
 
     private lazy var authorTextStack: UIStackView = {
@@ -184,34 +167,16 @@ public final class ReaderPostHeaderView: UIView {
         return stack
     }()
 
-    private lazy var readingTimeStack: UIStackView = {
-        let stack = UIStackView(arrangedSubviews: [readingTimeIcon, readingTimeLabel])
-        stack.axis = .horizontal
-        stack.spacing = 4
-        stack.alignment = .center
-        return stack
-    }()
-
-    private lazy var footerRow: UIStackView = {
-        let spacer = UIView()
-        spacer.setContentHuggingPriority(.defaultLow, for: .horizontal)
-        let stack = UIStackView(arrangedSubviews: [readingTimeStack, spacer, viewOriginalButton])
-        stack.axis = .horizontal
-        stack.alignment = .center
-        stack.spacing = 8
-        return stack
-    }()
-
     private lazy var mainStack: UIStackView = {
         let stack = UIStackView(arrangedSubviews: [
-            siteNameRow,
+            headerRow,
             titleLabel,
             authorRow,
             featuredImageView,
             excerptLabel,
             separator,
-            footerRow
         ])
+        stack.setCustomSpacing(9, after: separator)
         stack.axis = .vertical
         stack.spacing = 12
         return stack
@@ -219,7 +184,25 @@ public final class ReaderPostHeaderView: UIView {
 
     private var featuredImageAspectConstraint: NSLayoutConstraint?
     private var avatarSizeConstraints: [NSLayoutConstraint] = []
-    private var displaySetting: ReaderDisplaySettings = .standard
+    private var displaySettings: ReaderDisplaySettings = .standard
+    private var fullExcerptText: String?
+    private var isExcerptExpanded = false
+    private var lastExcerptLayoutWidth: CGFloat = 0
+
+    public var isSubscribed: Bool = false {
+        didSet {
+            guard isSubscribed != oldValue else { return }
+            updateSubscribeButtonAppearance()
+        }
+    }
+
+    public var isShowingSubscribeLoadingIndicator: Bool = false {
+        didSet {
+            guard isShowingSubscribeLoadingIndicator != oldValue else { return }
+            buttonSubscribe.isEnabled = !isShowingSubscribeLoadingIndicator
+            buttonSubscribe.configuration?.showsActivityIndicator = isShowingSubscribeLoadingIndicator
+        }
+    }
 
     // MARK: - Init
 
@@ -239,6 +222,7 @@ public final class ReaderPostHeaderView: UIView {
         titleLabel.text = viewModel.postTitle
         authorNameLabel.text = viewModel.authorName
         dateLabel.text = viewModel.dateString
+        dateLabel.isHidden = viewModel.dateString == nil
 
         if let avatarURL = viewModel.authorAvatarURL {
             avatarImageView.wp.setImage(with: avatarURL)
@@ -246,68 +230,52 @@ public final class ReaderPostHeaderView: UIView {
             avatarImageView.image = nil
         }
 
+        mainStack.setCustomSpacing(viewModel.featuredImageURL != nil ? 18 : 12, after: authorRow)
+
         configureFeaturedImage(with: viewModel.featuredImageURL)
         configureExcerpt(with: viewModel.excerpt)
-        configureReadingTime(with: viewModel.readingTime)
     }
 
-    public func apply(_ displaySetting: ReaderDisplaySettings) {
-        self.displaySetting = displaySetting
+    public func apply(_ displaySettings: ReaderDisplaySettings) {
+        self.displaySettings = displaySettings
 
-        let colors = displaySetting.color
+        let colors = displaySettings.color
 
-        siteNameLabel.font = displaySetting.font(with: .subheadline)
+        siteNameLabel.font = displaySettings.font(with: .subheadline)
         siteNameLabel.textColor = colors.secondaryForeground
 
-        titleLabel.font = displaySetting.font(with: .title1, weight: .bold)
+        titleLabel.font = displaySettings.font(with: .title1, weight: .bold)
         titleLabel.textColor = colors.foreground
         titleLabel.tintColor = colors.foreground
 
         avatarImageView.layer.borderColor = colors.foreground.withAlphaComponent(0.1).cgColor
 
-        authorNameLabel.font = displaySetting.font(with: .footnote, weight: .semibold)
+        authorNameLabel.font = displaySettings.font(with: .footnote, weight: .semibold)
         authorNameLabel.textColor = colors.foreground
 
-        dateLabel.font = displaySetting.font(with: .footnote)
+        dateLabel.font = displaySettings.font(with: .footnote)
         dateLabel.textColor = colors.secondaryForeground
 
-        excerptLabel.font = displaySetting.font(with: .callout)
+        excerptLabel.font = displaySettings.font(with: .callout)
         excerptLabel.textColor = colors.secondaryForeground
 
-        readingTimeLabel.font = displaySetting.font(with: .footnote)
-        readingTimeLabel.textColor = colors.secondaryForeground
-
-        let iconConfig = UIImage.SymbolConfiguration(font: displaySetting.font(with: .caption1))
-        readingTimeIcon.image = UIImage(systemName: "clock", withConfiguration: iconConfig)
-        readingTimeIcon.tintColor = colors.secondaryForeground
-
-        let subscribeFont = displaySetting.font(with: .footnote, weight: .medium)
-        subscribeButton.configuration?.attributedTitle = AttributedString(
-            Strings.subscribe,
-            attributes: AttributeContainer([.font: subscribeFont])
-        )
-        subscribeButton.configuration?.baseForegroundColor = colors.secondaryForeground
-        subscribeButton.configuration?.background.strokeColor = colors.secondaryForeground.withAlphaComponent(0.3)
-
-        viewOriginalButton.configuration?.attributedTitle = AttributedString(
-            Strings.viewOriginal,
-            attributes: AttributeContainer([.font: displaySetting.font(with: .footnote)])
-        )
-        viewOriginalButton.configuration?.image = UIImage(systemName: "arrow.up.right.circle", withConfiguration: UIImage.SymbolConfiguration(font: displaySetting.font(with: .caption2)))
-        viewOriginalButton.configuration?.baseForegroundColor = colors.secondaryForeground
+        buttonSubscribe.configuration?.baseForegroundColor = colors.secondaryForeground
+        updateSubscribeButtonAppearance()
 
         separator.backgroundColor = colors.border
+
+        lastExcerptLayoutWidth = 0
+        updateExcerptTruncation()
     }
 
     // MARK: - Private
 
     private func setupView() {
         addSubview(mainStack)
-        mainStack.pinEdges(insets: UIEdgeInsets(top: Constants.padding, left: Constants.padding, bottom: Constants.padding, right: Constants.padding))
+        mainStack.pinEdges(insets: UIEdgeInsets(top: Constants.padding, left: Constants.padding, bottom: 20, right: Constants.padding))
 
-        mainStack.setCustomSpacing(9, after: siteNameRow)
-        mainStack.setCustomSpacing(18, after: authorRow)
-        mainStack.setCustomSpacing(18, after: featuredImageView)
+        mainStack.setCustomSpacing(9, after: headerRow)
+        mainStack.setCustomSpacing(12, after: featuredImageView)
 
         avatarSizeConstraints = [
             avatarImageView.widthAnchor.constraint(equalToConstant: Constants.avatarSize),
@@ -322,17 +290,39 @@ public final class ReaderPostHeaderView: UIView {
         siteNameLabel.isUserInteractionEnabled = true
         siteNameLabel.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(siteNameTapped)))
 
-        subscribeButton.addTarget(self, action: #selector(subscribeTapped), for: .touchUpInside)
+        buttonSubscribe.addTarget(self, action: #selector(subscribeTapped), for: .touchUpInside)
 
         authorRow.isUserInteractionEnabled = true
         authorRow.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(authorTapped)))
 
+        excerptLabel.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(excerptTapped)))
+
         featuredImageView.isUserInteractionEnabled = true
         featuredImageView.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(featuredImageTapped)))
 
-        viewOriginalButton.addTarget(self, action: #selector(viewOriginalTapped), for: .touchUpInside)
-
         apply(.standard)
+    }
+
+    public override func layoutSubviews() {
+        super.layoutSubviews()
+
+        let width = mainStack.bounds.width
+        if width > 0 && width != lastExcerptLayoutWidth {
+            lastExcerptLayoutWidth = width
+            updateExcerptTruncation()
+        }
+    }
+
+    // Extends tap area of the controls.
+    public override func hitTest(_ point: CGPoint, with event: UIEvent?) -> UIView? {
+        let expandedViews: [UIView] = [buttonSubscribe, siteNameLabel, authorRow, featuredImageView]
+        for view in expandedViews where !view.isHidden {
+            let converted = convert(point, to: view)
+            if view.bounds.insetBy(dx: -8, dy: -8).contains(converted) {
+                return view
+            }
+        }
+        return super.hitTest(point, with: event)
     }
 
     @objc private func siteNameTapped() {
@@ -347,12 +337,16 @@ public final class ReaderPostHeaderView: UIView {
         delegate?.readerPostHeaderView(self, didTap: .author)
     }
 
-    @objc private func featuredImageTapped() {
-        delegate?.readerPostHeaderView(self, didTap: .featuredImage)
+    @objc private func excerptTapped() {
+        guard !isExcerptExpanded, let text = fullExcerptText else { return }
+        isExcerptExpanded = true
+        let font = displaySettings.font(with: .callout)
+        let textColor = displaySettings.color.secondaryForeground
+        excerptLabel.attributedText = NSAttributedString(string: text, attributes: [.font: font, .foregroundColor: textColor])
     }
 
-    @objc private func viewOriginalTapped() {
-        delegate?.readerPostHeaderView(self, didTap: .viewOriginal)
+    @objc private func featuredImageTapped() {
+        delegate?.readerPostHeaderView(self, didTap: .featuredImage)
     }
 
     private func updateForSizeClass() {
@@ -371,7 +365,7 @@ public final class ReaderPostHeaderView: UIView {
         } else {
             siteNameLabel.isHidden = true
         }
-        siteNameRow.isHidden = siteNameLabel.isHidden && subscribeButton.isHidden
+        headerRow.isHidden = siteNameLabel.isHidden
     }
 
     private func configureFeaturedImage(with url: URL?) {
@@ -400,15 +394,92 @@ public final class ReaderPostHeaderView: UIView {
 
     private func configureExcerpt(with excerpt: String?) {
         if let excerpt, !excerpt.isEmpty {
-            excerptLabel.text = excerpt
+            fullExcerptText = excerpt
             excerptLabel.isHidden = false
+            lastExcerptLayoutWidth = 0
+            updateExcerptTruncation()
         } else {
+            fullExcerptText = nil
             excerptLabel.isHidden = true
         }
     }
 
-    private func configureReadingTime(with readingTime: String) {
-        readingTimeLabel.text = readingTime
+    private func updateExcerptTruncation() {
+        guard let text = fullExcerptText, !text.isEmpty, !isExcerptExpanded else { return }
+
+        let font = displaySettings.font(with: .callout)
+        let textColor = displaySettings.color.secondaryForeground
+        let atttributes: [NSAttributedString.Key: Any] = [.font: font, .foregroundColor: textColor]
+        let availableWidth = mainStack.bounds.width
+
+        guard availableWidth > 0 else {
+            excerptLabel.attributedText = NSAttributedString(string: text, attributes: atttributes)
+            return
+        }
+
+        let maxHeight = font.lineHeight * CGFloat(Constants.excerptMaxLines) + 1
+
+        func isEnoughSpace(for string: String, maxHeight: CGFloat) -> Bool {
+            let height = (string as NSString).boundingRect(
+                with: CGSize(width: availableWidth, height: .greatestFiniteMagnitude),
+                options: [.usesLineFragmentOrigin, .usesFontLeading],
+                attributes: atttributes,
+                context: nil
+            ).height
+            return height <= maxHeight
+        }
+
+        // Hide under the cut only if there is enough text to warrant it. If there is only one extra
+        // line, there is no reason to cut it.
+        if isEnoughSpace(for: text, maxHeight: maxHeight + font.leading * 1) {
+            excerptLabel.attributedText = NSAttributedString(string: text, attributes: atttributes)
+            return
+        }
+
+        let suffix = " " + Strings.viewMore
+
+        // Find the longest prefix that fits with the suffix.
+        var low = 0, high = text.count, bestCut = 0
+        while low <= high {
+            let mid = (low + high) / 2
+            if isEnoughSpace(for: String(text.prefix(mid)) + suffix, maxHeight: maxHeight) {
+                bestCut = mid
+                low = mid + 1
+            } else {
+                high = mid - 1
+            }
+        }
+
+        let trimmed = String(text.prefix(bestCut)).trimmingCharacters(in: .whitespacesAndNewlines)
+        let result = NSMutableAttributedString(string: trimmed, attributes: atttributes)
+        result.append(
+            NSAttributedString(string: suffix, attributes: [
+                .font: font.withWeight(.regular),
+                .foregroundColor: UIColor.label,
+            ])
+        )
+        excerptLabel.attributedText = result
+    }
+
+    private func updateSubscribeButtonAppearance() {
+        let subscribeFont = displaySettings.font(with: .subheadline, weight: .medium)
+        let colors = displaySettings.color
+
+        if isSubscribed {
+            // Show "Subscribed" with clear background (current design)
+            buttonSubscribe.configuration?.attributedTitle = AttributedString(
+                Strings.subscribed,
+                attributes: AttributeContainer([.font: subscribeFont])
+            )
+            buttonSubscribe.configuration?.baseForegroundColor = colors.secondaryForeground
+        } else {
+            // Show "Subscribe" with black background to stand out
+            buttonSubscribe.configuration?.attributedTitle = AttributedString(
+                Strings.subscribe,
+                attributes: AttributeContainer([.font: subscribeFont])
+            )
+            buttonSubscribe.configuration?.baseForegroundColor = UIAppColor.primary
+        }
     }
 }
 
@@ -419,6 +490,7 @@ private extension ReaderPostHeaderView {
         static let padding: CGFloat = 16
         static let avatarSize: CGFloat = 32
         static let avatarSizeRegular: CGFloat = 40
+        static let excerptMaxLines: Int = 5
         static let defaultFeaturedImageAspectRatio: CGFloat = 9.0 / 16.0
         static let maxFeaturedImageAspectRatio: CGFloat = 2.0
     }
@@ -430,10 +502,17 @@ private enum Strings {
         value: "Subscribe",
         comment: "Button in the reader post header to subscribe to the site"
     )
-    static let viewOriginal = AppLocalizedString(
-        "reader.post.header.viewOriginal",
-        value: "View Original",
-        comment: "Button in the reader post header to view the original post in a browser"
+
+    static let subscribed = AppLocalizedString(
+        "reader.post.header.subscribed",
+        value: "Subscribed",
+        comment: "Button in the reader post header showing the user is subscribed to the site"
+    )
+
+    static let viewMore = AppLocalizedString(
+        "reader.post.header.viewMore",
+        value: "\u{2026}view more",
+        comment: "Appended to the truncated excerpt in the reader post header to indicate more content is available"
     )
 }
 

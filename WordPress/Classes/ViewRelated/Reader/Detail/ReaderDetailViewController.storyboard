@@ -39,6 +39,12 @@
                                     <stackView opaque="NO" contentMode="scaleToFill" ambiguous="YES" axis="vertical" translatesAutoresizingMaskIntoConstraints="NO" id="ybg-ZD-3Ou">
                                         <rect key="frame" x="16" y="270.5" width="414" height="0.0"/>
                                     </stackView>
+                                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="fXc-TM-Dgr" userLabel="Tags Container View">
+                                        <rect key="frame" x="16" y="270.5" width="414" height="0.0"/>
+                                        <constraints>
+                                            <constraint firstAttribute="height" placeholder="YES" id="tKj-Qz-4Np"/>
+                                        </constraints>
+                                    </view>
                                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="qXQ-id-Ffz" userLabel="Likes Container View">
                                         <rect key="frame" x="16" y="270.5" width="414" height="0.0"/>
                                         <constraints>
@@ -108,7 +114,7 @@
                                     <constraint firstItem="iSu-TI-yew" firstAttribute="leading" secondItem="9JA-VQ-zzw" secondAttribute="leading" constant="16" placeholder="YES" id="9Vy-Wt-ZIb"/>
                                     <constraint firstItem="6yS-ZE-nbR" firstAttribute="top" secondItem="qXQ-id-Ffz" secondAttribute="bottom" id="DJi-VX-sTS"/>
                                     <constraint firstAttribute="trailing" secondItem="iSu-TI-yew" secondAttribute="trailing" constant="16" placeholder="YES" id="FvD-7O-znG"/>
-                                    <constraint firstItem="iSu-TI-yew" firstAttribute="top" secondItem="Xyq-y6-zPR" secondAttribute="bottom" constant="16" id="IET-mv-Ieo"/>
+                                    <constraint firstItem="iSu-TI-yew" firstAttribute="top" secondItem="Xyq-y6-zPR" secondAttribute="bottom" id="IET-mv-Ieo"/>
                                     <constraint firstItem="Xyq-y6-zPR" firstAttribute="top" secondItem="9JA-VQ-zzw" secondAttribute="top" id="JZU-vN-GKO"/>
                                     <constraint firstItem="6yS-ZE-nbR" firstAttribute="width" secondItem="iSu-TI-yew" secondAttribute="width" id="LmZ-4g-gFE"/>
                                     <constraint firstItem="ybg-ZD-3Ou" firstAttribute="top" secondItem="iSu-TI-yew" secondAttribute="bottom" id="QH3-gd-a9s"/>
@@ -121,7 +127,10 @@
                                     <constraint firstItem="CpT-U7-bfv" firstAttribute="top" secondItem="6yS-ZE-nbR" secondAttribute="bottom" id="sQt-BP-vDY"/>
                                     <constraint firstItem="CpT-U7-bfv" firstAttribute="width" secondItem="iSu-TI-yew" secondAttribute="width" id="wUK-AO-ZOc"/>
                                     <constraint firstItem="Xyq-y6-zPR" firstAttribute="width" secondItem="iSu-TI-yew" secondAttribute="width" constant="32" id="xfj-7c-Lke"/>
-                                    <constraint firstItem="ybg-ZD-3Ou" firstAttribute="bottom" secondItem="qXQ-id-Ffz" secondAttribute="top" id="yVj-JV-rBF"/>
+                                    <constraint firstItem="ybg-ZD-3Ou" firstAttribute="bottom" secondItem="fXc-TM-Dgr" secondAttribute="top" id="yVj-JV-rBF"/>
+                                    <constraint firstItem="fXc-TM-Dgr" firstAttribute="width" secondItem="iSu-TI-yew" secondAttribute="width" id="2Cr-Ax-aBc"/>
+                                    <constraint firstItem="fXc-TM-Dgr" firstAttribute="centerX" secondItem="iSu-TI-yew" secondAttribute="centerX" id="3Ju-Qx-bCd"/>
+                                    <constraint firstItem="fXc-TM-Dgr" firstAttribute="bottom" secondItem="qXQ-id-Ffz" secondAttribute="top" constant="-12" id="4Kl-Nx-eFg"/>
                                 </constraints>
                                 <viewLayoutGuide key="contentLayoutGuide" id="QF8-fp-xzq"/>
                                 <viewLayoutGuide key="frameLayoutGuide" id="eXr-4k-Adq"/>
@@ -149,6 +158,7 @@
                         <outlet property="likesContainerView" destination="qXQ-id-Ffz" id="DL3-un-wtF"/>
                         <outlet property="relatedPostsTableView" destination="CpT-U7-bfv" id="Ndh-H4-FlR"/>
                         <outlet property="scrollView" destination="9JA-VQ-zzw" id="lCO-o1-bLB"/>
+                        <outlet property="tagsContainerView" destination="fXc-TM-Dgr" id="sQa-Ym-8pJ"/>
                         <outlet property="webView" destination="iSu-TI-yew" id="DQy-Fd-C3y"/>
                         <outlet property="webViewHeight" destination="ywz-kG-xyW" id="q3p-wI-yeb"/>
                     </connections>
