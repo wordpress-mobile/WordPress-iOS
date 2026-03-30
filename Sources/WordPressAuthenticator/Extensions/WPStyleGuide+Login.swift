@@ -273,7 +273,7 @@ extension WPStyleGuide {
 
         let labelString = NSMutableAttributedString(string: firstPart, attributes: [.foregroundColor: WPStyleGuide.greyDarken30()])
 
-        if lastPart != "" {
+        if !lastPart.isEmpty {
             labelString.append(formattedGoogleString(forHyperlink: true))
         }
 

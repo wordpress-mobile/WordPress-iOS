@@ -222,7 +222,7 @@ class AztecAttachmentViewController: UITableViewController {
     }
 
     @objc func handleDoneButtonTapped(sender: UIBarButtonItem) {
-        let checkedAlt = alt == "" ? nil : alt
+        let checkedAlt = alt?.isEmpty == true ? nil : alt
         onUpdate?(alignment, size, linkURL, checkedAlt, caption)
         dismiss(animated: true)
     }
