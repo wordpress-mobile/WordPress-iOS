@@ -202,7 +202,7 @@ struct BlogTests {
             .build()
 
         #expect((blog.version as Any) is String)
-        #expect(blog.version?.isEmpty == true)
+        #expect(blog.version.isEmpty)
     }
 
     @Test func removeDuplicates() async throws {
