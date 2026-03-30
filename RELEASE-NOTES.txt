@@ -3,6 +3,7 @@
 * [*] All self-hosted sites now sign in using application passwords [#25424]
 * [*] Reader: Fix button style [#25447]
 * [*] Reader: Fix a regression with anchors not working in posts [#25459]
+* [*] Reader: Fix an issue with the article view removing autoplay without showing controls [#25468]
 
 
 26.8
