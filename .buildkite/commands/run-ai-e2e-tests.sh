@@ -66,10 +66,12 @@ SIMULATOR_LLM_PILOT_REPO_URL="${SIMULATOR_LLM_PILOT_REPO_URL:-https://github.com
 SIMULATOR_LLM_PILOT_SOURCE_PATH="${SIMULATOR_LLM_PILOT_SOURCE_PATH:-}"
 
 case "$APP" in
-  wordpress) APP_BUNDLE_ID="org.wordpress" ;;
-  jetpack)   APP_BUNDLE_ID="com.automattic.jetpack" ;;
+  wordpress) APP_BUNDLE_ID="org.wordpress"; APP_DISPLAY_NAME="WordPress" ;;
+  jetpack)   APP_BUNDLE_ID="com.automattic.jetpack"; APP_DISPLAY_NAME="Jetpack" ;;
   *) echo "Error: APP must be 'wordpress' or 'jetpack', got '$APP'" >&2; exit 1 ;;
 esac
+
+APP_INSTRUCTIONS_FILE="${REPO_ROOT}/Tests/AgentTests/app-instructions.md"
 
 # ── Artifact download (Buildkite only) ───────────────────────────────
 if [[ -n "${BUILDKITE:-}" ]]; then
@@ -105,9 +107,6 @@ export SIMULATOR_UDID="$UDID"
 echo "Simulator UDID: $UDID"
 
 if [[ -n "${BUILDKITE:-}" ]]; then
-  APP_DISPLAY_NAME="Jetpack"
-  [[ "$APP" = "wordpress" ]] && APP_DISPLAY_NAME="WordPress"
-
   APP_PATH=$(find DerivedData/Build/Products -name "${APP_DISPLAY_NAME}.app" -path "*Debug-iphonesimulator*" | head -1)
   if [[ -z "$APP_PATH" ]]; then
     echo "Error: ${APP_DISPLAY_NAME}.app not found in build products" >&2
@@ -130,6 +129,8 @@ RESULTS_DIR="Tests/AgentTests/results/${TIMESTAMP}"
 EXIT_CODE=0
 simulator-llm-pilot run "$TEST_DIR" \
   --app-bundle-id "$APP_BUNDLE_ID" \
+  --app-name "$APP_DISPLAY_NAME" \
+  --app-instructions-file "$APP_INSTRUCTIONS_FILE" \
   --simulator-udid "$UDID" \
   --results-dir "$RESULTS_DIR" \
   || EXIT_CODE=$?
