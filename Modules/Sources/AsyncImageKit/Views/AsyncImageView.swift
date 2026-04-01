@@ -96,7 +96,17 @@ public final class AsyncImageView: UIView {
 
     public override func layoutSubviews() {
         super.layoutSubviews()
-        imageView.frame = saliencyAdjustedFrame()
+
+        imageView.frame = {
+            guard isSaliencyDetectionEnabled, let image, let saliencyRect else {
+                return bounds
+            }
+            return ImageSaliencyService.shared.adjustedFrame(
+                saliencyRect: saliencyRect,
+                imageSize: image.size,
+                in: bounds.size
+            ) ?? bounds
+        }()
     }
 
     /// Removes the current image and stops the outstanding downloads.
@@ -171,19 +181,6 @@ public final class AsyncImageView: UIView {
             self.imageView.isHidden = false
             self.backgroundColor = .clear
         }
-    }
-
-    // MARK: - Frame Calculation
-
-    private func saliencyAdjustedFrame() -> CGRect {
-        guard isSaliencyDetectionEnabled, let image, let saliencyRect else {
-            return bounds
-        }
-        return ImageSaliencyService.shared.adjustedFrame(
-            saliencyRect: saliencyRect,
-            imageSize: image.size,
-            in: bounds.size
-        ) ?? bounds
     }
 
     // MARK: - Helpers
