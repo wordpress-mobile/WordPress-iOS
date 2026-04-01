@@ -52,7 +52,7 @@ import Foundation
     public var options: NSDictionary
 
     /// Blog's capabilities: Indicate which actions are allowed / not allowed, for the current user.
-    public var capabilities: [String: Bool]
+    public var capabilities: [String: Any]
 
     /// Blog's total disk quota space.
     public var quotaSpaceAllowed: NSNumber?
@@ -74,7 +74,7 @@ import Foundation
         self.jetpack = json.number(forKey: "jetpack")?.boolValue ?? false
         self.jetpackConnection = json.number(forKey: "jetpack_connection")?.boolValue ?? false
         self.icon = json.string(forKeyPath: "icon.img")
-        self.capabilities = json.object(forKey: "capabilities") as? [String: Bool] ?? [:]
+        self.capabilities = json.object(forKey: "capabilities") as? [String: Any] ?? [:]
         self.isAdmin = json.number(forKeyPath: "capabilities.manage_options")?.boolValue ?? false
         self.visible = json.number(forKey: "visible")?.boolValue ?? false
         self.options = RemoteBlogOptionsHelper.mapOptions(fromResponse: json)
