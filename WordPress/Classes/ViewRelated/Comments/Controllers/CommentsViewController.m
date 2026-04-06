@@ -383,10 +383,12 @@ static NSString *RestorableFilterIndexKey = @"restorableFilterIndexKey";
 {
     [CommentAnalytics trackCommentTrashedWithComment:comment];
     CommentService *service = [[CommentService alloc] initWithCoreDataStack:[ContextManager sharedInstance]];
-    
+
+    __typeof(self) __weak weakSelf = self;
     [self.tableView setEditing:NO animated:YES];
     [service deleteComment:comment success:nil failure:^(NSError *error) {
         DDLogError(@"Error deleting comment: %@", error);
+        [weakSelf showTrashCommentErrorNotice:error];
     }];
 }
 
@@ -488,7 +490,7 @@ static NSString *RestorableFilterIndexKey = @"restorableFilterIndexKey";
 {
     NSPredicate *predicate;
     if (statusFilter == CommentStatusFilterAll && ![self isUnrepliedFilterSelected:self.filterTabBar]) {
-        predicate = [NSPredicate predicateWithFormat:@"(blog == %@)", self.blog];
+        predicate = [NSPredicate predicateWithFormat:@"(blog == %@) AND NOT (status IN %@)", self.blog, @[@"trash", @"spam"]];
     } else {
         // Exclude any local replies from all filters except all.
         predicate = [NSPredicate predicateWithFormat:@"(blog == %@) AND commentID != nil", self.blog];

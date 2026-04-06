@@ -75,4 +75,13 @@ extension CommentsViewController {
         }
         return item == CommentFilter.unreplied
     }
+
+    @objc public func showTrashCommentErrorNotice(_ error: NSError) {
+        let title = NSLocalizedString(
+            "comments.trash.error.title",
+            value: "Error trashing comment",
+            comment: "Title for the error notice shown when trashing a comment fails."
+        )
+        Notice(error: error, title: title).post()
+    }
 }

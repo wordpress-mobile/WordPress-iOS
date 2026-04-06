@@ -528,8 +528,28 @@ static NSTimeInterval const CommentsRefreshTimeoutInSeconds = 60 * 5; // 5 minut
     id<CommentServiceRemote> remote = [self remoteForBlog:comment.blog];
 
     // If the Comment is not permanently deleted, don't remove it from the local cache as it can still be displayed.
+    // Optimistically update the status so the comment is immediately removed from filtered views.
     if (!comment.deleteWillBePermanent) {
-        [remote trashComment:remoteComment success:success failure:failure];
+        NSString *prevStatus = comment.status;
+        NSString *trashStatus = [Comment descriptionFor:CommentStatusTypeUnapproved];
+
+        [self.coreDataStack performAndSaveUsingBlock:^(NSManagedObjectContext *context) {
+            Comment *commentInContext = [context existingObjectWithID:comment.objectID error:nil];
+            commentInContext.status = trashStatus;
+        }];
+        comment.status = trashStatus;
+
+        [remote trashComment:remoteComment success:success failure:^(NSError *error) {
+            // Revert status on failure.
+            [self.coreDataStack performAndSaveUsingBlock:^(NSManagedObjectContext *context) {
+                Comment *commentInContext = [context existingObjectWithID:comment.objectID error:nil];
+                commentInContext.status = prevStatus;
+            } completion:^{
+                if (failure) {
+                    failure(error);
+                }
+            } onQueue:dispatch_get_main_queue()];
+        }];
         return;
     }
 
