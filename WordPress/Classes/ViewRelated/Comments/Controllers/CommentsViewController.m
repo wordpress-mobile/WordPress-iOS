@@ -356,9 +356,11 @@ static NSString *RestorableFilterIndexKey = @"restorableFilterIndexKey";
     [CommentAnalytics trackCommentUnApprovedWithComment:comment];
     CommentService *service = [[CommentService alloc] initWithCoreDataStack:[ContextManager sharedInstance]];;
 
+    __typeof(self) __weak weakSelf = self;
     [self.tableView setEditing:NO animated:YES];
     [service approveComment:comment success:nil failure:^(NSError *error) {
         DDLogError(@"Error approving comment: %@", error);
+        [weakSelf showApproveCommentErrorNotice:error];
     }];
 }
 
@@ -366,10 +368,12 @@ static NSString *RestorableFilterIndexKey = @"restorableFilterIndexKey";
 {
     [CommentAnalytics trackCommentUnApprovedWithComment:comment];
     CommentService *service = [[CommentService alloc] initWithCoreDataStack:[ContextManager sharedInstance]];
-    
+
+    __typeof(self) __weak weakSelf = self;
     [self.tableView setEditing:NO animated:YES];
     [service unapproveComment:comment success:nil failure:^(NSError *error) {
         DDLogError(@"Error unapproving comment: %@", error);
+        [weakSelf showUnapproveCommentErrorNotice:error];
     }];
 }
 
