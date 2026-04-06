@@ -1182,10 +1182,6 @@ static NSTimeInterval const CommentsRefreshTimeoutInSeconds = 60 * 5; // 5 minut
 {
     NSParameterAssert(post.managedObjectContext != nil);
 
-    if (![comments count]) {
-        return NO;
-    }
-
     NSMutableSet<NSNumber *> *visibleCommentIds = [NSMutableSet new];
     NSMutableArray *ancestors = [NSMutableArray array];
     NSMutableArray *commentsToKeep = [NSMutableArray array];
