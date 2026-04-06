@@ -3,7 +3,7 @@
 * [*] All self-hosted sites now sign in using application passwords [#25424]
 * [*] Reader: Fix button style [#25447]
 * [*] Reader: Fix a regression with anchors not working in posts [#25459]
-
+* [*] Menus: Fix an issue with footer view in Menu Editing not resizing [#25481]
 
 26.8
 -----
