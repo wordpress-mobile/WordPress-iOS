@@ -62,6 +62,7 @@ final class CommentCreateViewController: UIViewController {
                 let text = await editorVC.text
                 try await viewModel.save(content: text)
                 UINotificationFeedbackGenerator().notificationOccurred(.success)
+                NotificationCenter.default.post(name: .ReaderCommentModifiedNotification, object: nil)
                 presentingViewController?.dismiss(animated: true)
             } catch {
                 setLoading(false)
