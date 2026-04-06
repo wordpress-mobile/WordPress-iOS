@@ -318,9 +318,7 @@ static NSString *RestorableFilterIndexKey = @"restorableFilterIndexKey";
     
     // Trash Action
     UIContextualAction *trash = [UIContextualAction contextualActionWithStyle:UIContextualActionStyleDestructive title:NSLocalizedString(@"Trash", @"Trashes a comment") handler:^(UIContextualAction * _Nonnull __unused action, __kindof UIView * _Nonnull __unused sourceView, void (^ _Nonnull completionHandler)(BOOL)) {
-        [ReachabilityUtils onAvailableInternetConnectionDo:^{
-            [weakSelf deleteComment:comment];
-        }];
+        [weakSelf deleteComment:comment];
         completionHandler(YES);
     }];
     
@@ -331,9 +329,7 @@ static NSString *RestorableFilterIndexKey = @"restorableFilterIndexKey";
 
         // Unapprove Action
         UIContextualAction *unapprove = [UIContextualAction contextualActionWithStyle:UIContextualActionStyleNormal title:NSLocalizedString(@"Unapprove", @"Unapproves a Comment") handler:^(UIContextualAction * _Nonnull __unused action, __kindof UIView * _Nonnull __unused sourceView, void (^ _Nonnull completionHandler)(BOOL)) {
-            [ReachabilityUtils onAvailableInternetConnectionDo:^{
-                [weakSelf unapproveComment:comment];
-            }];
+            [weakSelf unapproveComment:comment];
             completionHandler(YES);
         }];
         
@@ -342,9 +338,7 @@ static NSString *RestorableFilterIndexKey = @"restorableFilterIndexKey";
     } else {
         // Approve Action
         UIContextualAction *approve = [UIContextualAction contextualActionWithStyle:UIContextualActionStyleNormal title:NSLocalizedString(@"Approve", @"Approves a Comment") handler:^(UIContextualAction * _Nonnull __unused action, __kindof UIView * _Nonnull __unused sourceView, void (^ _Nonnull completionHandler)(BOOL)) {
-            [ReachabilityUtils onAvailableInternetConnectionDo:^{
-                [weakSelf approveComment:comment];
-            }];
+            [weakSelf approveComment:comment];
             completionHandler(YES);
         }];
         
