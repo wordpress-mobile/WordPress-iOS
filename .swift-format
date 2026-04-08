@@ -1,0 +1,16 @@
+{
+  "version": 1,
+  "indentation": {
+    "spaces": 4
+  },
+  "lineLength": 120,
+  "spacesBeforeEndOfLineComments": 1,
+  "lineBreakBeforeEachArgument": true,
+  "prioritizeKeepingFunctionOutputTogether": true,
+  "lineBreakAroundMultilineExpressionChainComponents": true,
+  "indentConditionalCompilationBlocks": false,
+  "multiElementCollectionTrailingCommas": false,
+  "rules": {
+    "OmitExplicitReturns": true
+  }
+}
