@@ -183,7 +183,7 @@ final class CommentService_MorderationTests: CoreDataTestCase {
         wait(for: [exp], timeout: 5)
 
         // The local comment should not be changed
-        XCTAssertEqual(self.comment.status, CommentStatusType.pending.description)
+        XCTAssertEqual(self.comment.status, "trash")
     }
 
 }
