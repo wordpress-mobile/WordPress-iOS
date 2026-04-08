@@ -90,12 +90,19 @@ private struct ReaderSiteHeader: View {
                 countsDisplay
             }
             HStack {
-                ReaderFollowButton(isFollowing: viewModel.isFollowingSite,
-                                   isEnabled: viewModel.isFollowEnabled,
-                                   size: .regular) {
-                    viewModel.updateFollowStatus()
+                HStack(spacing: 12) {
+                    ReaderFollowButton(isFollowing: viewModel.isFollowingSite,
+                                       isEnabled: viewModel.isFollowEnabled && !viewModel.isFollowLoading,
+                                       size: .regular) {
+                        viewModel.updateFollowStatus()
+                    }
+                    if viewModel.isFollowLoading {
+                        ProgressView()
+                            .scaleEffect(0.9, anchor: .center)
+                    }
                 }
-                if let site = viewModel.site, site.canManageNotifications {
+
+                if viewModel.isFollowingSite, let site = viewModel.site, site.canManageNotifications, !viewModel.isFollowLoading {
                     ReaderSubscriptionNotificationSettingsButton(site: site)
                         .padding(.horizontal, 2)
                         .padding(.vertical, 8)
@@ -146,6 +153,7 @@ private final class ReaderSiteHeaderViewModel: ObservableObject {
     @Published var followerCount: String
     @Published var isFollowingSite: Bool
     @Published var isFollowEnabled: Bool
+    @Published var isFollowLoading: Bool = false
 
     private let onFollowTap: (_ completion: @escaping () -> Void) -> Void
 
@@ -168,9 +176,11 @@ private final class ReaderSiteHeaderViewModel: ObservableObject {
     }
 
     func updateFollowStatus() {
-        isFollowEnabled = false
+        isFollowLoading = true
         onFollowTap { [weak self] in
-            self?.isFollowEnabled = true
+            withAnimation {
+                self?.isFollowLoading = false
+            }
         }
     }
 }

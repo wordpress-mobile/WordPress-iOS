@@ -142,9 +142,7 @@ steps:
   # Claude Build Analysis - dynamically uploaded so Build result conditions evaluate at runtime after the wait
   #################
   - label: ":claude: 🕵️ Check for Build Failures and Run Claude Analysis"
-    command: |
-      source .buildkite/shared-pipeline-vars
-      buildkite-agent pipeline upload .buildkite/claude-analysis.yml
+    command: .buildkite/commands/upload-claude-analysis.sh
     # Add specific group dependencies. Using a `wait` step wouldn't work as it would never start given the prompt block
     depends_on:
       - linters_group
