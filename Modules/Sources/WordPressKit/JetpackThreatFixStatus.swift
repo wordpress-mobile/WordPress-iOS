@@ -23,7 +23,7 @@ public struct JetpackThreatFixResponse: Decodable {
             statusArray.append(fixStatus)
         }
 
-        isFixingThreats = !statusArray.filter { $0.status == .inProgress }.isEmpty
+        isFixingThreats = statusArray.contains { $0.status == .inProgress }
         threats = statusArray
     }
 
