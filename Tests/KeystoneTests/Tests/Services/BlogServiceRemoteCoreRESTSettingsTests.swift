@@ -7,6 +7,9 @@ struct BlogServiceRemoteCoreRESTSettingsTests {
 
     // MARK: - Helpers
 
+    /// - Parameters:
+    ///   - commentsOpen: `true` → `.open`, `false` → `.closed`, `nil` → `nil`
+    ///   - pingsOpen: `true` → `.open`, `false` → `.closed`, `nil` → `nil`
     private func makeSiteSettings(
         title: String = "My Blog",
         description: String = "Just another WordPress site",
@@ -16,18 +19,31 @@ struct BlogServiceRemoteCoreRESTSettingsTests {
         startOfWeek: UInt64 = 1,
         defaultCategory: UInt64 = 1,
         defaultPostFormat: String = "standard",
-        postsPerPage: UInt64 = 10
+        postsPerPage: UInt64 = 10,
+        pingsOpen: Bool? = false,
+        commentsOpen: Bool? = false
     ) -> SiteSettingsWithEditContext {
         SiteSettingsWithEditContext(
-            title: title, description: description, url: "", email: "",
-            timezone: timezone, dateFormat: dateFormat, timeFormat: timeFormat,
-            startOfWeek: startOfWeek, language: "", useSmilies: false,
-            defaultCategory: defaultCategory, defaultPostFormat: defaultPostFormat,
-            postsPerPage: postsPerPage, showOnFront: "posts",
-            pageOnFront: 0, pageForPosts: 0,
-            defaultPingStatus: .closed,
-            defaultCommentStatus: .closed,
-            siteLogo: nil, siteIcon: 0
+            title: title,
+            description: description,
+            url: "",
+            email: "",
+            timezone: timezone,
+            dateFormat: dateFormat,
+            timeFormat: timeFormat,
+            startOfWeek: startOfWeek,
+            language: "",
+            useSmilies: false,
+            defaultCategory: defaultCategory,
+            defaultPostFormat: defaultPostFormat,
+            postsPerPage: postsPerPage,
+            showOnFront: "posts",
+            pageOnFront: 0,
+            pageForPosts: 0,
+            defaultPingStatus: pingsOpen.map { $0 ? .open : .closed },
+            defaultCommentStatus: commentsOpen.map { $0 ? .open : .closed },
+            siteLogo: nil,
+            siteIcon: 0
         )
     }
 
@@ -110,6 +126,36 @@ struct BlogServiceRemoteCoreRESTSettingsTests {
             makeSiteSettings(postsPerPage: 25)
         )
         #expect(result.postsPerPage == NSNumber(value: 25))
+    }
+
+    // MARK: - Discussion
+
+    @Test func mapsCommentsAllowedOpen() {
+        let result = BlogServiceRemoteCoreREST.mapSiteSettings(
+            makeSiteSettings(commentsOpen: true)
+        )
+        #expect(result.commentsAllowed == NSNumber(value: true))
+    }
+
+    @Test func mapsCommentsAllowedClosed() {
+        let result = BlogServiceRemoteCoreREST.mapSiteSettings(
+            makeSiteSettings(commentsOpen: false)
+        )
+        #expect(result.commentsAllowed == NSNumber(value: false))
+    }
+
+    @Test func mapsPingStatusOpen() {
+        let result = BlogServiceRemoteCoreREST.mapSiteSettings(
+            makeSiteSettings(pingsOpen: true)
+        )
+        #expect(result.pingbackInboundEnabled == NSNumber(value: true))
+    }
+
+    @Test func mapsPingStatusClosed() {
+        let result = BlogServiceRemoteCoreREST.mapSiteSettings(
+            makeSiteSettings(pingsOpen: false)
+        )
+        #expect(result.pingbackInboundEnabled == NSNumber(value: false))
     }
 
 }
