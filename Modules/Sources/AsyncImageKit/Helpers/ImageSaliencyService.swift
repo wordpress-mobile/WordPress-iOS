@@ -81,7 +81,7 @@ public actor ImageSaliencyService {
 private actor SaliencyDetector {
     func detect(in image: UIImage) -> CGRect? {
         guard let cgImage = image.cgImage else { return nil }
-        let request = VNGenerateObjectnessBasedSaliencyImageRequest()
+        let request = VNGenerateAttentionBasedSaliencyImageRequest()
         let handler = VNImageRequestHandler(cgImage: cgImage, options: [:])
         do {
             try handler.perform([request])
