@@ -12,7 +12,7 @@ import WordPressData
     }
 
     func hasAddedNewConnectionTo(_ connections: [PublicizeConnection]) -> Bool {
-        guard connections.count > 0 else {
+        guard !connections.isEmpty else {
             return false
         }
 

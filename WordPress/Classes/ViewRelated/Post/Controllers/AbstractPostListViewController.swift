@@ -71,7 +71,7 @@ class AbstractPostListViewController: UIViewController,
     private lazy var searchController = UISearchController(searchResultsController: searchResultsViewController)
 
     private var emptyResults: Bool {
-        fetchResultsController?.fetchedObjects?.count == 0
+        fetchResultsController?.fetchedObjects?.isEmpty == true
     }
 
     private var atLeastSyncedOnce = false
@@ -466,7 +466,7 @@ class AbstractPostListViewController: UIViewController,
     }
 
     func updateFilter(_ filter: PostListFilter, withSyncedPosts posts: [AbstractPost], hasMore: Bool) {
-        guard posts.count > 0 else {
+        guard !posts.isEmpty else {
             wpAssertionFailure("This method should not be called with no posts.")
             return
         }
@@ -529,7 +529,7 @@ class AbstractPostListViewController: UIViewController,
 
                 guard let self else { return }
 
-                if posts.count > 0 {
+                if !posts.isEmpty {
                     self.updateFilter(filter, withSyncedPosts: posts, hasMore: hasMore)
                     SearchManager.shared.indexItems(posts)
                 }
@@ -561,7 +561,7 @@ class AbstractPostListViewController: UIViewController,
                 // User may have exit the screen when the "syncPosts" call above completes.
                 guard let self else { return }
 
-                if posts.count > 0 {
+                if !posts.isEmpty {
                     self.updateFilter(filter, withSyncedPosts: posts, hasMore: hasMore)
                     SearchManager.shared.indexItems(posts)
                 }

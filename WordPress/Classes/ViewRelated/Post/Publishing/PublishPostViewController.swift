@@ -19,24 +19,31 @@ enum PublishingSheetResult {
 
 /// A screen shown just before publishing the post and allows you to change
 /// the post settings along with some publishing options like the publish date.
-final class PublishPostViewController: UIHostingController<AnyView> {
-    private let viewModel: any PostSettingsViewModelProtocol
+final class PublishPostViewController<ViewModel: PostSettingsViewModelProtocol>: UIHostingController<AnyView> {
+    private let viewModel: ViewModel
     private let uploadsViewModel: PostMediaUploadsViewModel?
 
     var onCompletion: ((PublishingSheetResult) -> Void)?
 
-    init(post: AbstractPost, isStandalone: Bool) {
-        let viewModel = PostSettingsViewModel(post: post, isStandalone: isStandalone, context: .publishing)
+    fileprivate init(viewModel: ViewModel, uploadsViewModel: PostMediaUploadsViewModel?, rootView: AnyView) {
         self.viewModel = viewModel
-
-        let uploadsViewModel = PostMediaUploadsViewModel(post: post)
         self.uploadsViewModel = uploadsViewModel
-
-        let view = PublishPostView(viewModel: viewModel, uploadsViewModel: uploadsViewModel)
-        super.init(rootView: AnyView(view))
+        super.init(rootView: rootView)
     }
 
-    static func show(for revision: AbstractPost, isStandalone: Bool = false, from presentingViewController: UIViewController, completion: @escaping (PublishingSheetResult) -> Void) {
+    convenience init(post: AbstractPost, isStandalone: Bool) where ViewModel == PostSettingsViewModel {
+        let viewModel = PostSettingsViewModel(post: post, isStandalone: isStandalone, context: .publishing)
+        let uploadsViewModel = PostMediaUploadsViewModel(post: post)
+        let view = PublishPostView(viewModel: viewModel, uploadsViewModel: uploadsViewModel)
+        self.init(viewModel: viewModel, uploadsViewModel: uploadsViewModel, rootView: AnyView(view))
+    }
+
+    static func show(
+        for revision: AbstractPost,
+        isStandalone: Bool = false,
+        from presentingViewController: UIViewController,
+        completion: @escaping (PublishingSheetResult) -> Void
+    ) where ViewModel == PostSettingsViewModel {
         // End editing to avoid issues with accessibility
         presentingViewController.view.endEditing(true)
 
@@ -53,16 +60,13 @@ final class PublishPostViewController: UIHostingController<AnyView> {
 
     // MARK: - Remote Post
 
-    init(
+    convenience init(
         editorService: CustomPostEditorService,
         blog: Blog
-    ) {
+    ) where ViewModel == CustomPostSettingsViewModel {
         let viewModel = CustomPostSettingsViewModel(editorService: editorService, blog: blog, context: .publishing)
-        self.viewModel = viewModel
-        self.uploadsViewModel = nil
-
         let view = PublishPostView(viewModel: viewModel, uploadsViewModel: nil)
-        super.init(rootView: AnyView(view))
+        self.init(viewModel: viewModel, uploadsViewModel: nil, rootView: AnyView(view))
     }
 
     static func show(
@@ -70,7 +74,7 @@ final class PublishPostViewController: UIHostingController<AnyView> {
         blog: Blog,
         from presentingViewController: UIViewController,
         completion: @escaping (PublishingSheetResult) -> Void
-    ) {
+    ) where ViewModel == CustomPostSettingsViewModel {
         presentingViewController.view.endEditing(true)
 
         let publishVC = PublishPostViewController(

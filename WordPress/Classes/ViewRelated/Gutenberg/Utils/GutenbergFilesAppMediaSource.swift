@@ -36,7 +36,7 @@ extension GutenbergFilesAppMediaSource: UIDocumentPickerDelegate {
         defer {
             mediaPickerCallback = nil
         }
-        if urls.count == 0 {
+        if urls.isEmpty {
             mediaPickerCallback?(nil)
         } else {
             insertOnBlock(with: urls)

@@ -10,7 +10,7 @@ struct TopListExternalLinkRowView: View {
                 .foregroundColor(.primary)
                 .lineLimit(1)
 
-            if item.children.count > 0 {
+            if !item.children.isEmpty {
                 Text(Strings.ArchiveSections.itemCount(item.children.count))
                     .font(.caption)
                     .foregroundColor(.secondary)

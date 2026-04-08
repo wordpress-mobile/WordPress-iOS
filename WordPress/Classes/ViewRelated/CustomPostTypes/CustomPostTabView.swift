@@ -61,6 +61,7 @@ struct CustomPostTabView: View {
             details: details,
             filter: CustomPostListFilter(tab: .all),
             blog: blog,
+            showsHierarchyIfApplicable: true,
             presentingViewController: presentingViewController
         ))
         _publishedViewModel = State(initialValue: CustomPostListViewModel(
@@ -69,6 +70,7 @@ struct CustomPostTabView: View {
             details: details,
             filter: CustomPostListFilter(tab: .published),
             blog: blog,
+            showsHierarchyIfApplicable: true,
             presentingViewController: presentingViewController
         ))
         _draftsViewModel = State(initialValue: CustomPostListViewModel(
@@ -109,6 +111,7 @@ struct CustomPostTabView: View {
                     client: client,
                     mediaHost: MediaHost(blog),
                     onSelectPost: { editorPresentation = .editPost($0) },
+                    onDuplicate: { duplicatePost($0) },
                     header: { tabBar }
                 )
             } else {
@@ -119,12 +122,30 @@ struct CustomPostTabView: View {
                     details: details,
                     searchText: $searchText,
                     presentingViewController: presentingViewController,
-                    onSelectPost: { editorPresentation = .editPost($0) }
+                    onSelectPost: { editorPresentation = .editPost($0) },
+                    onDuplicate: { duplicatePost($0) }
                 )
             }
         }
         .searchable(text: $searchText)
-        .navigationTitle(details.name)
+        .navigationBarTitleDisplayMode(.inline)
+        .toolbar {
+            ToolbarItem(placement: .principal) {
+                HStack(spacing: 6) {
+                    Text(details.name)
+                        .font(.headline)
+                        .lineLimit(1)
+                    Text(Strings.betaBadge)
+                        .font(.caption2.weight(.semibold))
+                        .foregroundStyle(.white)
+                        .padding(.horizontal, 6)
+                        .padding(.vertical, 2)
+                        .background(AppColor.primary)
+                        .clipShape(Capsule())
+                }
+                .accessibilityElement(children: .combine)
+            }
+        }
         .toolbar {
             if canFilterByAuthor {
                 ToolbarItem(placement: .topBarTrailing) {
@@ -148,7 +169,14 @@ struct CustomPostTabView: View {
             SubmitFeedbackViewRepresentable()
         }
         .fullScreenCover(item: $editorPresentation) { presentation in
-            CustomPostEditor(service: service.posts(), client: client, post: presentation.post, details: details, blog: blog)
+            CustomPostEditor(
+                wpService: service,
+                client: client,
+                post: presentation.post,
+                details: details,
+                blog: blog,
+                initialParams: presentation.initialParams
+            )
         }
         .onChange(of: authorFilter, applyAuthorFilter)
         .task {
@@ -200,6 +228,22 @@ struct CustomPostTabView: View {
         draftsViewModel.updateAuthorFilter(authorIds)
         scheduledViewModel.updateAuthorFilter(authorIds)
         trashViewModel.updateAuthorFilter(authorIds)
+    }
+
+    private func duplicatePost(_ post: AnyPostWithEditContext) {
+        let capabilities = PostSettingsCapabilities(from: details)
+        var params = PostCreateParams.defaultParams(from: blog)
+        params.title = post.title?.raw
+        params.content = post.content.raw
+        if capabilities.supportsCategories, let categories = post.categories {
+            params.categories = categories
+        }
+        if capabilities.supportsPostFormats {
+            params.format = post.format
+        }
+        editorPresentation = .duplicatePost(params)
+
+        WPAnalytics.track(.postListDuplicateAction, withProperties: ["post_type": details.slug])
     }
 
     private var tabBar: some View {
@@ -315,18 +359,27 @@ private struct SubmitFeedbackViewRepresentable: UIViewControllerRepresentable {
 private enum EditorPresentation: Identifiable {
     case newPost
     case editPost(AnyPostWithEditContext)
+    case duplicatePost(PostCreateParams)
 
     var id: String {
         switch self {
         case .newPost: return "new"
         case .editPost(let post): return "post-\(post.id)"
+        case .duplicatePost: return "duplicate"
         }
     }
 
     var post: AnyPostWithEditContext? {
         switch self {
-        case .newPost: return nil
+        case .newPost, .duplicatePost: return nil
         case .editPost(let post): return post
+        }
+    }
+
+    var initialParams: PostCreateParams? {
+        switch self {
+        case .duplicatePost(let params): return params
+        default: return nil
         }
     }
 }
@@ -361,5 +414,10 @@ private enum Strings {
         "customPostTab.sendFeedback",
         value: "Send Feedback",
         comment: "Menu item title for sending feedback on the custom post types screen"
+    )
+    static let betaBadge = NSLocalizedString(
+        "customPostType.navigation.betaBadge",
+        value: "BETA",
+        comment: "Badge label indicating that custom post type support is a beta feature. Displayed next to the navigation title."
     )
 }

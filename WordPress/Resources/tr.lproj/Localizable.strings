@@ -1,4 +1,4 @@
-/* Translation-Revision-Date: 2026-02-27 15:58:37+0000 */
+/* Translation-Revision-Date: 2026-03-25 09:54:48+0000 */
 /* Plural-Forms: nplurals=2; plural=n > 1; */
 /* Generator: GlotPress/4.0.3 */
 /* Language: tr */
@@ -1874,7 +1874,6 @@ translators: %s: Block name e.g. \"Image block\" */
    Done. Action.
    Menu button title for finishing editing the Menu name.
    Tapping a button with this label allows the user to exit the Site Creation flow
-   Title for a Done button.
    Title for button that will dismiss this view
    Title for the button that will dismiss this view. */
 "Done" = "Tamamlandı";
@@ -3243,9 +3242,6 @@ translators: %s: Block name e.g. \"Image block\" */
 
 /* Text displayed while loading the scan section for a site */
 "Loading Scan..." = "Tarama yükleniyor....";
-
-/* Displayed while a comment is being loaded. */
-"Loading comment..." = "Yorum yükleniyor...";
 
 /* Menus label text displayed when a menu is loading. */
 "Loading menu..." = "Menü yükleniyor...";
@@ -7029,6 +7025,9 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Button title for restoring a backup */
 "activityDetail.restore.button" = "Geri Yükle";
 
+/* Shows the MCP client used for an activity. %1$@ is the MCP client name (e.g. Claude). */
+"activityDetail.section.agent" = "%1$@ ile";
+
 /* Section title for restore site actions */
 "activityDetail.section.restoreSite" = "Siteyi Geri Yükle";
 
@@ -7467,7 +7466,7 @@ Note that the word 'go' here should have a closer meaning to 'start' rather than
 /* Title of the set goals button in the Blogging Reminders Settings flow. */
 "bloggingRemindersPrompt.intro.continueButton" = "Hatırlatıcı Ayarla";
 
-/* Description on the first screen of the Blogging Reminders Settings flow called aftet post publishing. */
+/* Description on the first screen of the Blogging Reminders Settings flow called after post publishing. */
 "bloggingRemindersPrompt.intro.details" = "Gönderi paylaşmak istediğiniz günler için blog hatırlatıcılarınızı ayarlayın.";
 
 /* Title of the Blogging Reminders Settings screen. */
@@ -7887,8 +7886,80 @@ Example: Reply to Pamela Nguyen */
 /* Error message shown when the post was modified by another user while editing */
 "customPostEditor.error.conflict.message" = "Kaydetmeye çalıştığınız gönderi bu sırada değiştirildi.";
 
+/* Menu action to promote a post with Blaze */
+"customPostList.action.blaze" = "Blaze ile Tanıt";
+
+/* Menu action to view post comments */
+"customPostList.action.comments" = "Yorumlar";
+
+/* Menu action to permanently delete a trashed post */
+"customPostList.action.deletePermanently" = "Kalıcı Olarak Sil";
+
+/* Menu action to change a post's status to draft */
+"customPostList.action.moveToDraft" = "Taslağa Taşı";
+
+/* Menu action to move a post to trash */
+"customPostList.action.moveToTrash" = "Çöp Kutusuna Taşı";
+
+/* Menu action to publish a draft or pending post */
+"customPostList.action.publish" = "Yayımla";
+
+/* Menu action to open post settings */
+"customPostList.action.settings" = "Ayarlar";
+
+/* Menu action to view post statistics */
+"customPostList.action.stats" = "İstatistikler";
+
+/* Accessibility label for the author filter button in the custom post list */
+"customPostList.authorFilter.accessibilityLabel" = "Yazar Filtresi";
+
+/* Menu item to show posts from all authors in the custom post list */
+"customPostList.authorFilter.everyone" = "Herkes";
+
+/* Menu item to show only the current user's posts in the custom post list */
+"customPostList.authorFilter.mine" = "Benim";
+
+/* Accessibility value when the author filter shows posts from all authors */
+"customPostList.authorFilter.showingEveryone" = "Herkesin gönderileri gösteriliyor";
+
+/* Accessibility value when the author filter shows only the current user's posts */
+"customPostList.authorFilter.showingMine" = "Sadece kendi yazılarımı göster";
+
+/* Badge label shown on the homepage row in the custom post list for pages */
+"customPostList.badge.homepage" = "Ana sayfa";
+
+/* Badge shown in the post list for sticky posts */
+"customPostList.badge.sticky" = "Yapışkan";
+
+/* Message for the confirmation alert when permanently deleting a post */
+"customPostList.deleteConfirmation.message" = "Bu işlem geri alınamaz.";
+
+/* Title for the confirmation alert when permanently deleting a post */
+"customPostList.deleteConfirmation.title" = "Kalıcı olarak silinsin mi?";
+
 /* Empty state message when no custom posts exist. %1$@ is the post type name (e.g., 'Podcasts', 'Products'). */
 "customPostList.emptyState.message" = "%1$@ yok";
+
+/* Message for the confirmation alert when trashing a published post */
+"customPostList.trashConfirmation.message" = "Bu gönderi yayımlandı ve ziyaretçiler tarafından görülebilir. Bunu çöp kutusuna taşımak istediğinizden emin misiniz?";
+
+/* Title for the confirmation alert when trashing a published post */
+"customPostList.trashConfirmation.title" = "Çöp kutusuna taşınsın mı?";
+
+/* Placeholder title for posts without a title */
+"customPostList.untitled" = "(başlıksız)";
+
+/* Title for the parent page picker screen for custom post types */
+"customPostParentPicker.title" = "Üst Sayfa";
+
+/* Option to set a post as top level (no parent) */
+"customPostParentPicker.topLevel" = "Üst seviye";
+
+/* Description for the top level option in the parent page picker, indicating this page will have no parent */
+"customPostParentPicker.topLevel.description" = "Üst sayfa yok";
+
+/* Tab title for showing all posts regardless of status */
+"customPostTab.all" = "Tümü";
 
 /* Tab title for draft posts */
 "customPostTab.drafts" = "Taslaklar";
@@ -7904,6 +7975,9 @@ Example: Reply to Pamela Nguyen */
 
 /* Tab title for trashed posts */
 "customPostTab.trash" = "Çöp";
+
+/* Badge label indicating that custom post type support is a beta feature. Displayed next to the navigation title. */
+"customPostType.navigation.betaBadge" = "BETA";
 
 /* Empty state message when there are no custom post types to display */
 "customPostTypes.emptyState.message" = "Özel Gönderi Türü Yok";
@@ -8052,6 +8126,9 @@ Example: Reply to Pamela Nguyen */
 /* Boolean User Defaults Debug Menu screen title */
 "debugMenu.booleanUserDefaults.title" = "Boolean kullanıcı varsayılanları";
 
+/* Debug Menu label for image cache size */
+"debugMenu.caches.imageCache" = "Görsel Önbelleği";
+
 /* Feature flags menu item */
 "debugMenu.featureFlags" = "Özellik bayrakları";
 
@@ -8091,6 +8168,9 @@ Example: Reply to Pamela Nguyen */
 
 /* Debug Menu action for TipKit */
 "debugMenu.resetTipKitData" = "Verileri Sıfırla";
+
+/* Debug Menu section title */
+"debugMenu.section.caches" = "Önbellekler";
 
 /* Debug Menu section title */
 "debugMenu.section.logging" = "Günlük kaydı";
@@ -9081,6 +9161,9 @@ Example: Reply to Pamela Nguyen */
 /* Last 12 weeks (84 days) date range */
 "jetpackStats.calendar.last12Weeks" = "Son 12 Hafta";
 
+/* Last 14 days date range */
+"jetpackStats.calendar.last14Days" = "Son 14 Gün";
+
 /* Last 28 days date range */
 "jetpackStats.calendar.last28Days" = "Son 28 Gün";
 
@@ -9530,6 +9613,9 @@ Example: Reply to Pamela Nguyen */
 
 /* Table column title for UTM Top List card */
 "jetpackStats.topListColumnTitle.utm" = "Kampanya";
+
+/* Table column title for Top List card */
+"jetpackStats.topListColumnTitle.videos" = "Video";
 
 /* Plural post count for UTM metrics. %1$d is the number. */
 "jetpackStats.utmMetricDetails.postCount.plural" = "%1$d gönderi";
@@ -9990,11 +10076,17 @@ Example: Reply to Pamela Nguyen */
 /* Noun. Links to a blog's Jetpack Backups screen. */
 "mySite.menu.backup" = "Yedekleme";
 
+/* Noun. Links to a blog's Blaze screen. */
+"mySite.menu.blaze" = "Blaze";
+
 /* Noun. Title. Links to the blog's Comments screen. */
 "mySite.menu.comments" = "Yorumlar";
 
 /* Section title for the configure table section in the blog details screen */
 "mySite.menu.configureSection" = "Yapılandır";
+
+/* Section title for the content table section in the blog details screen */
+"mySite.menu.content.section.title" = "İçerik";
 
 /* Action title. Noun. Opens the user's WordPress.com dashboard in an external browser. */
 "mySite.menu.dashboard" = "Pano";
@@ -10008,8 +10100,14 @@ Example: Reply to Pamela Nguyen */
 /* Noun. Links to a blog's dashboard screen. */
 "mySite.menu.home" = "Ana Sayfa";
 
+/* Section title for the jetpack table section in the blog details screen */
+"mySite.menu.jetpackSection" = "Jetpack";
+
 /* Noun. Title. Links to the blog's Settings screen. */
 "mySite.menu.jetpackSettings" = "Jetpack Ayarları";
+
+/* Section title for the maintenance table section in the blog details screen */
+"mySite.menu.maintenance.section.title" = "Bakım";
 
 /* Noun. Title. Links to the Me screen. */
 "mySite.menu.me" = "Ben";
@@ -10065,6 +10163,9 @@ Example: Reply to Pamela Nguyen */
 /* Themes option in the blog details */
 "mySite.menu.themes" = "Temalar";
 
+/* Section title for the traffic table section in the blog details screen */
+"mySite.menu.traffic.section.title" = "Trafik";
+
 /* Noun. Title. Links to the user management feature. */
 "mySite.menu.users" = "Kullanıcılar";
 
@@ -10100,6 +10201,42 @@ Example: Reply to Pamela Nguyen */
 
 /* Menu title for the visit site option */
 "mySite.siteActions.visitSite" = "Siteye git";
+
+/* Button to confirm to switch to the New Stats announcement screen */
+"newStats.announcement.continueButton" = "Başlarken";
+
+/* Disclosure at the bottom of the New Stats announcement screen, informing users they can opt out */
+"newStats.announcement.disclosure" = "Henüz geçiş yapmaya hazır değil misiniz? İstatistikler sekmesindeki Daha Fazla menüsünden Yeni İstatistikler özelliğini kapatabilirsiniz.";
+
+/* Feature description: navigation moved to the bottom for thumb-friendly access */
+"newStats.announcement.feature.bottomNav.description" = "Navigasyon ve tarih seçici artık ekranın alt kısmında, tam baş parmağınızın bulunduğu yerde yer alıyor.";
+
+/* Feature title: navigation moved to the bottom */
+"newStats.announcement.feature.bottomNav.title" = "Erişimi Daha Kolay";
+
+/* Feature description: flexible date picker with presets, custom ranges, and comparisons */
+"newStats.announcement.feature.datePicker.description" = "Tek bir dokunuşla yaygın ön ayarlar arasından seçim yapın veya karşılaştırma süresiyle özel bir tarih aralığı belirleyin.";
+
+/* Feature title: flexible date picker */
+"newStats.announcement.feature.datePicker.title" = "Herhangi Bir Dönem, Herhangi Bir Aralık";
+
+/* Feature description: feature parity with the web version of Stats */
+"newStats.announcement.feature.parity.description" = "Cihazlar, UTM, konumlar, WordAds - WordPress.com’da aldığınız verilerin aynısı.";
+
+/* Feature title: feature parity with the web version of Stats */
+"newStats.announcement.feature.parity.title" = "Web ile Eş Düzeyde";
+
+/* Feature description: trends shown for all metrics with comparison to previous period */
+"newStats.announcement.feature.trends.description" = "Her bir ölçüm, bir önceki döneme kıyasla nasıl bir eğilim gösterdiğini ortaya koyar, böylece her zaman büyüyüp büyümediğinizi bilirsiniz.";
+
+/* Feature title: trends visible for all metrics */
+"newStats.announcement.feature.trends.title" = "Eğilimlere Genel Bakış";
+
+/* Subtitle for the New Stats announcement screen */
+"newStats.announcement.subtitle" = "Sitenizin performansını anlamanın daha iyi bir yolu - artık varsayılan olarak açık.";
+
+/* Title for the New Stats announcement screen */
+"newStats.announcement.title" = "Yeni İstatistikler";
 
 /* A no results message displayed on the atomic logs screen. */
 "noLogs.empty" = "Bu zaman aralığında bir günlük kaydı yok";
@@ -10803,6 +10940,9 @@ Example: Reply to Pamela Nguyen */
 /* Section header for More Options in Post Settings. Should use the same translation as core WP. */
 "postSettings.moreOptions.header" = "Daha Fazla Seçenek";
 
+/* The title of the Post Settings screen for custom post types. %1$@ is the post type name. */
+"postSettings.navigationTitle.customPostType" = "%1$@ Ayarları";
+
 /* The title of the Page Settings screen. */
 "postSettings.navigationTitle.page" = "Sayfa Ayarları";
 
@@ -10862,6 +11002,9 @@ Example: Reply to Pamela Nguyen */
 
 /* Placeholder value for a publishing date in the prepublishing sheet when the date is not selected */
 "postSettings.publishDateImmediately" = "Hemen";
+
+/* Error message shown when saving post settings via REST API fails */
+"postSettings.saveFailed.message" = "Değişiklikler kaydedilemedi";
 
 /* Section header for General settings in Post Settings */
 "postSettings.section.general" = "Genel";
@@ -10938,6 +11081,9 @@ Example: Reply to Pamela Nguyen */
 /* Navigation bar title of the Post Stats screen */
 "postStats.title" = "Gönderi İstatistikleri";
 
+/* Post status title used in different contexts */
+"postStatus.any.title" = "Herhangi biri";
+
 /* Post status title */
 "postStatus.deleted.details" = "Kalıcı olarak silindi";
 
@@ -10947,35 +11093,38 @@ Example: Reply to Pamela Nguyen */
 /* Post status details */
 "postStatus.draft.details" = "Yayımlanmaya hazır değil";
 
-/* Post status title */
+/* Post status title used in different contexts */
 "postStatus.draft.title" = "Taslak";
 
 /* Post status details */
 "postStatus.pending.details" = "Yayımlamadan önce inceleme bekliyor";
 
-/* Post status title */
+/* Post status title used in different contexts */
 "postStatus.pending.title" = "Beklemede";
 
-/* Post status title */
+/* Post status details */
+"postStatus.private.details" = "Yalnızca site yöneticileri ve editörler tarafından görülebilir";
+
+/* Post status title used in different contexts */
 "postStatus.private.title" = "Gizli";
 
 /* Post status details */
 "postStatus.published.details" = "Herkes tarafından görülebilir";
 
-/* Post status title */
+/* Post status title used in different contexts */
 "postStatus.published.title" = "Yayımlandı";
 
 /* Post status details */
 "postStatus.scheduled.details" = "Seçilen bir tarihte otomatik olarak yayımla";
 
-/* Post status title */
+/* Post status title used in different contexts */
 "postStatus.scheduled.title" = "Zamanlandı";
 
 /* Post status title */
 "postStatus.trash.details" = "Çöpe atıldı ancak henüz silinmedi";
 
-/* Post status title */
-"postStatus.trash.title" = "Çöpe atıldı";
+/* Post status title used in different contexts */
+"postStatus.trash.title" = "Çöp";
 
 /* Button to add a new taxonomy term. %1$@ is the taxonomy name (e.g., 'tags', 'categories'). */
 "postTags.addTag" = "%1$@ ekle";
@@ -11492,9 +11641,6 @@ Example: given a notice format "Following %@" and empty site name, this will be 
 /* Context menu action */
 "reader.postContextMenu.blockUser" = "Kullanıcıyı Engelle";
 
-/* Context menu action (placeholder value when blog name not available – should never happen) */
-"reader.postContextMenu.blogDetails" = "Blog Ayrıntıları";
-
 /* Context menu action */
 "reader.postContextMenu.manageNotifications" = "Bildirimleri Yönet";
 
@@ -11511,9 +11657,6 @@ Example: given a notice format "Following %@" and empty site name, this will be 
 "reader.postContextMenu.reportUser" = "Kullanıcıyı Bildir";
 
 /* Context menu action */
-"reader.postContextMenu.showBlog" = "Blog'a Git";
-
-/* Context menu action */
 "reader.postContextMenu.summarize" = "Özetleyin";
 
 /* Context menu action to translate post content */
@@ -11521,6 +11664,9 @@ Example: given a notice format "Following %@" and empty site name, this will be 
 
 /* Context menu action */
 "reader.postContextMenu.viewInBrowser" = "Tarayıcıda Görüntüle";
+
+/* Context menu action */
+"reader.postContextMenu.viewSite" = "Siteyi Görüntüle";
 
 /* Reader post details view placeholder when blog name not avail */
 "reader.postDetails.blog" = "blog";
@@ -11932,6 +12078,9 @@ Feel free to replace it with other bracket types that you think looks better for
 "shared.button.edit" = "Düzenle";
 
 /* A shared button title used in different contexts */
+"shared.button.notNow" = "Şimdi değil";
+
+/* A shared button title used in different contexts */
 "shared.button.ok" = "Tamam";
 
 /* A shared button title used in different contexts */
@@ -12285,12 +12434,14 @@ Feel free to replace it with other bracket types that you think looks better for
 /* Title for site switcher screen */
 "sitePicker.title" = "Sitelerim";
 
-/* The plugin author displayed in the plugins list. The first argument is plugin author name
-   The plugin version displayed in the plugins list. The first argument is plugin version */
+/* The plugin author displayed in the plugins list. The first argument is plugin author name */
 "sitePluginsList.item.author" = "%@ tarafından";
 
 /* The message displayed when a plugin has no description */
 "sitePluginsList.item.noDescriptionAvailable" = "Eklenti yazarı bu eklenti için bir açıklama sağlamadı.";
+
+/* The plugin version displayed in the plugins list. The first argument is plugin version */
+"sitePluginsList.item.version" = "Sürüm: %@";
 
 /* Button to activate a plugin */
 "sitePluginsList.itemAction.activate" = "Etkinleştir";
@@ -12937,15 +13088,6 @@ Feel free to replace it with other bracket types that you think looks better for
 
 /* Title for the time zone selector */
 "timeZoneSelector.title" = "Saat Dilimi";
-
-/* Action button title to enable new stats from tip */
-"tips.newStats.action" = "Şimdi Etkinleştir";
-
-/* Tip for new stats feature */
-"tips.newStats.message" = "Yeni, şık ve güçlü istatistikler deneyimleyin. İstediğiniz zaman tekrar değiştirin.";
-
-/* Tip for new stats feature */
-"tips.newStats.title" = "Yeni İstatistikleri Deneyin";
 
 /* Tip for sidebar */
 "tips.sidebar.message" = "Sitelerinize, Okuyucunuza, bildirimlerinize ve profilinize erişmek için sağa kaydırın";

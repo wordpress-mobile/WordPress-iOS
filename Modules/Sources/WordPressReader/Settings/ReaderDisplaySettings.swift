@@ -161,6 +161,17 @@ public struct ReaderDisplaySettings: Codable, Equatable, Hashable, Sendable {
             }
         }
 
+        public var tertiatyForeground: UIColor {
+            switch self {
+            case .system:
+                return .tertiaryLabel
+            case .evening, .oled, .hacker:
+                return foreground.withAlphaComponent(0.45) // slightly higher contrast for dark themes.
+            default:
+                return foreground.withAlphaComponent(0.33)
+            }
+        }
+
         public var background: UIColor {
             switch self {
             case .system:

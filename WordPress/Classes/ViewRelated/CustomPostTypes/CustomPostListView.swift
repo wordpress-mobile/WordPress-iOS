@@ -15,7 +15,10 @@ struct CustomPostListView<Header: View>: View {
     let details: PostTypeDetailsWithEditContext
     let client: WordPressClient
     let mediaHost: MediaHost?
+    let showsPostActions: Bool
+    let selectedPostID: Int64?
     let onSelectPost: (AnyPostWithEditContext) -> Void
+    let onDuplicate: (AnyPostWithEditContext) -> Void
     @ViewBuilder let header: () -> Header
 
     init(
@@ -23,13 +26,19 @@ struct CustomPostListView<Header: View>: View {
         details: PostTypeDetailsWithEditContext,
         client: WordPressClient,
         mediaHost: MediaHost? = nil,
-        onSelectPost: @escaping (AnyPostWithEditContext) -> Void
+        showsPostActions: Bool = true,
+        selectedPostID: Int64? = nil,
+        onSelectPost: @escaping (AnyPostWithEditContext) -> Void,
+        onDuplicate: @escaping (AnyPostWithEditContext) -> Void = { _ in }
     ) where Header == EmptyView {
         self.viewModel = viewModel
         self.details = details
         self.client = client
-        self.onSelectPost = onSelectPost
         self.mediaHost = mediaHost
+        self.showsPostActions = showsPostActions
+        self.selectedPostID = selectedPostID
+        self.onSelectPost = onSelectPost
+        self.onDuplicate = onDuplicate
         self.header = { EmptyView() }
     }
 
@@ -38,14 +47,20 @@ struct CustomPostListView<Header: View>: View {
         details: PostTypeDetailsWithEditContext,
         client: WordPressClient,
         mediaHost: MediaHost? = nil,
+        showsPostActions: Bool = true,
+        selectedPostID: Int64? = nil,
         onSelectPost: @escaping (AnyPostWithEditContext) -> Void,
+        onDuplicate: @escaping (AnyPostWithEditContext) -> Void = { _ in },
         @ViewBuilder header: @escaping () -> Header
     ) {
         self.viewModel = viewModel
         self.details = details
         self.client = client
-        self.onSelectPost = onSelectPost
         self.mediaHost = mediaHost
+        self.showsPostActions = showsPostActions
+        self.selectedPostID = selectedPostID
+        self.onSelectPost = onSelectPost
+        self.onDuplicate = onDuplicate
         self.header = header
     }
 
@@ -56,7 +71,10 @@ struct CustomPostListView<Header: View>: View {
             onLoadNextPage: { try await viewModel.loadNextPage() },
             client: client,
             onSelectPost: onSelectPost,
+            onDuplicate: onDuplicate,
             mediaHost: mediaHost,
+            showsPostActions: showsPostActions,
+            selectedPostID: selectedPostID,
             indentationMap: viewModel.indentationMap,
             header: header
         )
@@ -75,7 +93,6 @@ struct CustomPostListView<Header: View>: View {
         .refreshable {
             await viewModel.pullToRefresh()
         }
-        .progressHUD(state: $viewModel.progressHUDState)
         .task(id: viewModel.filter) {
             await viewModel.refresh()
         }
@@ -122,7 +139,10 @@ private struct PaginatedList<Header: View>: View {
     let onLoadNextPage: () async throws -> Void
     let client: WordPressClient?
     let onSelectPost: (AnyPostWithEditContext) -> Void
+    let onDuplicate: (AnyPostWithEditContext) -> Void
     let mediaHost: MediaHost?
+    let showsPostActions: Bool
+    let selectedPostID: Int64?
     let indentationMap: CustomPostListViewModel.IndentationMap
     @ViewBuilder let header: () -> Header
 
@@ -135,7 +155,10 @@ private struct PaginatedList<Header: View>: View {
         onLoadNextPage: @escaping () async throws -> Void,
         client: WordPressClient? = nil,
         onSelectPost: @escaping (AnyPostWithEditContext) -> Void,
+        onDuplicate: @escaping (AnyPostWithEditContext) -> Void = { _ in },
         mediaHost: MediaHost? = nil,
+        showsPostActions: Bool = true,
+        selectedPostID: Int64? = nil,
         indentationMap: CustomPostListViewModel.IndentationMap = [:]
     ) where Header == EmptyView {
         self.viewModel = viewModel
@@ -143,7 +166,10 @@ private struct PaginatedList<Header: View>: View {
         self.onLoadNextPage = onLoadNextPage
         self.client = client
         self.onSelectPost = onSelectPost
+        self.onDuplicate = onDuplicate
         self.mediaHost = mediaHost
+        self.showsPostActions = showsPostActions
+        self.selectedPostID = selectedPostID
         self.indentationMap = indentationMap
         self.header = { EmptyView() }
     }
@@ -154,7 +180,10 @@ private struct PaginatedList<Header: View>: View {
         onLoadNextPage: @escaping () async throws -> Void,
         client: WordPressClient? = nil,
         onSelectPost: @escaping (AnyPostWithEditContext) -> Void,
+        onDuplicate: @escaping (AnyPostWithEditContext) -> Void = { _ in },
         mediaHost: MediaHost? = nil,
+        showsPostActions: Bool = true,
+        selectedPostID: Int64? = nil,
         indentationMap: CustomPostListViewModel.IndentationMap = [:],
         @ViewBuilder header: @escaping () -> Header
     ) {
@@ -163,7 +192,10 @@ private struct PaginatedList<Header: View>: View {
         self.onLoadNextPage = onLoadNextPage
         self.client = client
         self.onSelectPost = onSelectPost
+        self.onDuplicate = onDuplicate
         self.mediaHost = mediaHost
+        self.showsPostActions = showsPostActions
+        self.selectedPostID = selectedPostID
         self.indentationMap = indentationMap
         self.header = header
     }
@@ -197,8 +229,11 @@ private struct PaginatedList<Header: View>: View {
                 item: item,
                 client: client,
                 onSelectPost: onSelectPost,
+                onDuplicate: onDuplicate,
                 mediaHost: mediaHost,
-                viewModel: viewModel
+                viewModel: viewModel,
+                showsPostActions: showsPostActions,
+                selectedPostID: selectedPostID
             )
             .task {
                 await onRowAppear(item: item)
@@ -212,8 +247,11 @@ private struct PaginatedList<Header: View>: View {
                 item: item,
                 client: client,
                 onSelectPost: onSelectPost,
+                onDuplicate: onDuplicate,
                 mediaHost: mediaHost,
                 viewModel: viewModel,
+                showsPostActions: showsPostActions,
+                selectedPostID: selectedPostID,
                 indentationLevel: indentationMap[item.id]?.indentationLevel ?? 0,
                 showSubdirectoryIcon: showSubdirectoryIcon(at: index)
             )
@@ -279,8 +317,11 @@ private struct ForEachContent: View {
     let item: CustomPostCollectionItem
     let client: WordPressClient?
     let onSelectPost: (AnyPostWithEditContext) -> Void
+    let onDuplicate: (AnyPostWithEditContext) -> Void
     let mediaHost: MediaHost?
-    let viewModel: CustomPostListViewModel
+    @ObservedObject var viewModel: CustomPostListViewModel
+    var showsPostActions: Bool = true
+    var selectedPostID: Int64?
 
     var body: some View {
         switch item.state {
@@ -288,18 +329,75 @@ private struct ForEachContent: View {
         // the editor to prevent overwriting newer content.
         case .loaded(let fullPost, _):
             if let post = item.post {
-                Button {
+                let isPending = viewModel.pendingPostIDs.contains(item.id)
+                let button = Button {
                     onSelectPost(fullPost)
                 } label: {
-                    PostContent(post: post, client: client, mediaHost: mediaHost)
+                    HStack {
+                        PostContent(post: post, client: client, mediaHost: mediaHost)
+                        if selectedPostID == fullPost.id {
+                            Image(systemName: "checkmark.circle.fill")
+                                .foregroundStyle(.tint)
+                        }
+                    }
                 }
                 .buttonStyle(.plain)
-                .contextMenu {
-                    PostActionMenuContent(post: fullPost, viewModel: viewModel)
-                }
-                .overlay(alignment: .topTrailing) {
-                    PostActionMenu(post: fullPost, viewModel: viewModel)
-                        .offset(y: -6)
+
+                if isPending {
+                    button
+                        .overlay(alignment: .topTrailing) {
+                            ProgressView()
+                                .frame(width: 28, height: 28)
+                                .offset(y: -6)
+                        }
+                        .opacity(0.4)
+                        .disabled(true)
+                } else if showsPostActions {
+                    button
+                        .contextMenu {
+                            PostActionMenuContent(post: fullPost, viewModel: viewModel, onDuplicate: onDuplicate)
+                        }
+                        .swipeActions(edge: .leading) {
+                            if fullPost.status == .publish {
+                                Button {
+                                    viewModel.viewPost(fullPost)
+                                } label: {
+                                    Label(SharedStrings.Button.view, systemImage: "safari")
+                                }
+                                .tint(.blue)
+                            }
+                        }
+                        .swipeActions(edge: .trailing, allowsFullSwipe: false) {
+                            if fullPost.status != .trash {
+                                Button(role: .destructive) {
+                                    if fullPost.status == .publish {
+                                        viewModel.confirmTrash(fullPost)
+                                    } else {
+                                        Task { await viewModel.trashPost(fullPost) }
+                                    }
+                                } label: {
+                                    Label(Strings.swipeTrash, systemImage: "trash")
+                                }
+                            } else {
+                                Button(role: .destructive) {
+                                    viewModel.confirmDelete(fullPost)
+                                } label: {
+                                    Label(Strings.swipeDelete, systemImage: "trash.fill")
+                                }
+                            }
+
+                            if fullPost.status == .publish, let url = URL(string: fullPost.link) {
+                                ShareLink(item: url, subject: Text(fullPost.title?.raw ?? "")) {
+                                    Label(SharedStrings.Button.share, systemImage: "square.and.arrow.up")
+                                }
+                            }
+                        }
+                        .overlay(alignment: .topTrailing) {
+                            PostActionMenu(post: fullPost, viewModel: viewModel, onDuplicate: onDuplicate)
+                                .offset(y: -6)
+                        }
+                } else {
+                    button
                 }
             }
 
@@ -328,8 +426,11 @@ private struct ForEachContentWithIndentation: View {
     let item: CustomPostCollectionItem
     let client: WordPressClient?
     let onSelectPost: (AnyPostWithEditContext) -> Void
+    let onDuplicate: (AnyPostWithEditContext) -> Void
     let mediaHost: MediaHost?
     let viewModel: CustomPostListViewModel
+    var showsPostActions: Bool = true
+    var selectedPostID: Int64?
     let indentationLevel: Int
     let showSubdirectoryIcon: Bool
 
@@ -346,8 +447,11 @@ private struct ForEachContentWithIndentation: View {
                 item: item,
                 client: client,
                 onSelectPost: onSelectPost,
+                onDuplicate: onDuplicate,
                 mediaHost: mediaHost,
-                viewModel: viewModel
+                viewModel: viewModel,
+                showsPostActions: showsPostActions,
+                selectedPostID: selectedPostID
             )
         }
         .padding(.leading, CGFloat(max(0, indentationLevel - 1)) * 32)
@@ -357,10 +461,11 @@ private struct ForEachContentWithIndentation: View {
 private struct PostActionMenu: View {
     let post: AnyPostWithEditContext
     let viewModel: CustomPostListViewModel
+    let onDuplicate: (AnyPostWithEditContext) -> Void
 
     var body: some View {
         Menu {
-            PostActionMenuContent(post: post, viewModel: viewModel)
+            PostActionMenuContent(post: post, viewModel: viewModel, onDuplicate: onDuplicate)
         } label: {
             Image(systemName: "ellipsis")
                 .font(.body)
@@ -374,6 +479,7 @@ private struct PostActionMenu: View {
 private struct PostActionMenuContent: View {
     let post: AnyPostWithEditContext
     let viewModel: CustomPostListViewModel
+    let onDuplicate: (AnyPostWithEditContext) -> Void
 
     var body: some View {
         primarySection
@@ -404,7 +510,11 @@ private struct PostActionMenuContent: View {
                 }
             }
 
-            // FIXME: Duplicate requires Core Data editor (Post.blog.createDraftPost, PostListEditorPresenter)
+            if post.status == .publish || post.status == .draft || post.status == .pending {
+                Button(action: { onDuplicate(post) }) {
+                    Label(Strings.duplicate, systemImage: "doc.on.doc")
+                }
+            }
 
             if post.status == .publish, let url = URL(string: post.link) {
                 ShareLink(item: url, subject: Text(post.title?.raw ?? "")) {
@@ -549,6 +659,11 @@ private enum Strings {
         value: "Publish",
         comment: "Menu action to publish a draft or pending post"
     )
+    static let duplicate = NSLocalizedString(
+        "customPostList.action.duplicate",
+        value: "Duplicate",
+        comment: "Menu action to create a draft copy of a post"
+    )
     static let moveToDraft = NSLocalizedString(
         "customPostList.action.moveToDraft",
         value: "Move to Draft",
@@ -583,6 +698,16 @@ private enum Strings {
         "customPostList.deleteConfirmation.message",
         value: "This action cannot be undone.",
         comment: "Message for the confirmation alert when permanently deleting a post"
+    )
+    static let swipeTrash = NSLocalizedString(
+        "customPostList.swipeAction.trash",
+        value: "Trash",
+        comment: "Short label for the swipe action to trash a post. Keep this translation short."
+    )
+    static let swipeDelete = NSLocalizedString(
+        "customPostList.swipeAction.delete",
+        value: "Delete",
+        comment: "Short label for the swipe action to permanently delete a trashed post. Keep this translation short."
     )
 }
 

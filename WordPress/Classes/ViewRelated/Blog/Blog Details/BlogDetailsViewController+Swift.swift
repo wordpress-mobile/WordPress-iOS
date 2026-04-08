@@ -14,7 +14,7 @@ extension BlogDetailsViewController {
     }
 
     public func isDashboardEnabled() -> Bool {
-        JetpackFeaturesRemovalCoordinator.jetpackFeaturesEnabled() && blog.isAccessibleThroughWPCom()
+        JetpackFeaturesRemovalCoordinator.jetpackFeaturesEnabled() && blog.isAccessibleThroughWPCom
     }
 
     public func confirmRemoveSite() {
@@ -121,8 +121,6 @@ extension BlogDetailsViewController {
     }
 
     func showPinnedPostType(_ postType: PinnedPostType) {
-        guard let site = try? WordPressSite(blog: blog), case .selfHosted = site else { return }
-
         let feature = NSLocalizedString(
             "applicationPasswordRequired.feature.customPosts",
             value: "Custom Post Types",

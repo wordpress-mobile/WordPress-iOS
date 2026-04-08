@@ -33,25 +33,14 @@ struct ReaderPostMenu {
     }
 
     private func makeBlogSection() -> UIMenu {
-        var actions = [makeBlogMenu()]
+        var actions = [viewBlog]
         if !post.isFollowing {
             actions.append(subscribe)
+        } else {
+            actions.append(ubsubscribe)
         }
+//        return UIMenu(title: post.blogNameForDisplay() ?? "", options: [.displayInline], children: actions)
         return UIMenu(options: [.displayInline], children: actions)
-    }
-
-    private func makeBlogMenu() -> UIMenuElement {
-        var actions: [UIAction] = [goToBlog]
-        if let siteURL = post.blogURL.flatMap(URL.init) {
-            actions.append(viewBlogInBrowser(siteURL: siteURL))
-        }
-        if post.isFollowing {
-            if let siteID = post.siteID?.intValue {
-                actions.append(manageNotifications(for: siteID))
-            }
-            actions += [ubsubscribe]
-        }
-        return UIMenu(title: post.blogNameForDisplay() ?? Strings.blogDetails, children: actions)
     }
 
     // MARK: Actions
@@ -84,11 +73,11 @@ struct ReaderPostMenu {
         }
     }
 
-    private var goToBlog: UIAction {
-        UIAction(Strings.goToBlog, systemImage: "chevron.forward") {
+    private var viewBlog: UIAction {
+        UIAction(title: Strings.viewBlog, subtitle: post.blogNameForDisplay() ?? "", image: UIImage(systemName: "person")) {_ in
             guard let viewController else { return }
             ReaderHeaderAction().execute(post: post, origin: viewController)
-            track(.goToBlog)
+            track(.viewBlog)
         }
     }
 
@@ -96,14 +85,6 @@ struct ReaderPostMenu {
         UIAction(SharedStrings.Reader.subscribe, systemImage: "plus.circle") {
             ReaderSubscriptionHelper().toggleSiteSubscription(forPost: post)
             track(.subscribe)
-        }
-    }
-
-    private func viewBlogInBrowser(siteURL: URL) -> UIAction {
-        return UIAction(Strings.viewInBrowser, systemImage: "safari") {
-            let safariVC = SFSafariViewController(url: siteURL)
-            viewController?.present(safariVC, animated: true)
-            track(.viewBlogInBrowser)
         }
     }
 
@@ -235,8 +216,7 @@ private enum ReaderPostMenuAnalyticsButton: String {
     case share = "share"
     case viewPostInBrowser = "view_in_browser"
     case copyPostLink = "copy_post_link"
-    case goToBlog = "blog_open"
-    case viewBlogInBrowser = "blog_view_in_browser"
+    case viewBlog = "blog_open"
     case subscribe = "blog_subscribe"
     case unsubscribe = "blog_unsubscribe"
     case manageNotifications = "blog_manage_notifications"
@@ -253,9 +233,8 @@ private enum ReaderPostMenuAnalyticsButton: String {
 private enum Strings {
     static let viewInBrowser = NSLocalizedString("reader.postContextMenu.viewInBrowser", value: "View in Browser", comment: "Context menu action")
     static let blockOrReport = NSLocalizedString("reader.postContextMenu.blockOrReportMenu", value: "Block or Report", comment: "Context menu action")
-    static let goToBlog = NSLocalizedString("reader.postContextMenu.showBlog", value: "Go to Blog", comment: "Context menu action")
+    static let viewBlog = NSLocalizedString("reader.postContextMenu.viewSite", value: "View Site", comment: "Context menu action")
     static let manageNotifications = NSLocalizedString("reader.postContextMenu.manageNotifications", value: "Manage Notifications", comment: "Context menu action")
-    static let blogDetails = NSLocalizedString("reader.postContextMenu.blogDetails", value: "Blog Details", comment: "Context menu action (placeholder value when blog name not available – should never happen)")
     static let blockSite = NSLocalizedString("reader.postContextMenu.blockSite", value: "Block Site", comment: "Context menu action")
     static let blockUser = NSLocalizedString("reader.postContextMenu.blockUser", value: "Block User", comment: "Context menu action")
     static let reportPost = NSLocalizedString("reader.postContextMenu.reportPost", value: "Report Post", comment: "Context menu action")

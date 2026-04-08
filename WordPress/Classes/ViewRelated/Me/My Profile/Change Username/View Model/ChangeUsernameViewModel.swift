@@ -1,4 +1,3 @@
-import Reachability
 import WordPressFlux
 import WordPressKit
 import WordPressShared
@@ -18,7 +17,7 @@ class ChangeUsernameViewModel {
     }
 
     var isReachable: Bool {
-        return reachability?.isReachable() ?? false
+        return ReachabilityUtils.isInternetReachable()
     }
 
     var usernameIsValidToBeChanged: Bool {
@@ -39,7 +38,6 @@ class ChangeUsernameViewModel {
 
     private let settings: AccountSettings?
     private let store: AccountSettingsStore
-    private let reachability = Reachability.forInternetConnection()
     private var receipt: Receipt?
     private var saveUsernameBlock: StateBlock?
     private var reloadAllSections: Bool = true
@@ -106,20 +104,15 @@ private extension ChangeUsernameViewModel {
         let notificationCenter = NotificationCenter.default
         notificationCenter.addObserver(self, selector: #selector(adjustForKeyboard), name: UIResponder.keyboardWillHideNotification, object: nil)
         notificationCenter.addObserver(self, selector: #selector(adjustForKeyboard), name: UIResponder.keyboardWillChangeFrameNotification, object: nil)
-
-        let reachabilityBlock: NetworkReachable = { [weak self] reachability in
-            DispatchQueue.main.async {
-                self?.reachabilityListener?()
-            }
-        }
-        reachability?.reachableBlock = reachabilityBlock
-        reachability?.unreachableBlock = reachabilityBlock
-        reachability?.startNotifier()
+        notificationCenter.addObserver(self, selector: #selector(reachabilityChanged), name: .reachabilityUpdated, object: nil)
     }
 
     func removeObserver() {
         NotificationCenter.default.removeObserver(self)
-        reachability?.stopNotifier()
+    }
+
+    @objc func reachabilityChanged() {
+        reachabilityListener?()
     }
 
     @objc func adjustForKeyboard(notification: Foundation.Notification) {

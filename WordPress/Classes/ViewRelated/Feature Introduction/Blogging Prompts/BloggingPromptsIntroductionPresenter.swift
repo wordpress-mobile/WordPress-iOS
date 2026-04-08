@@ -26,7 +26,7 @@ class BloggingPromptsIntroductionPresenter: NSObject {
 
     private lazy var accountSites: [Blog]? = {
         let account = try? WPAccount.lookupDefaultWordPressComAccount(in: ContextManager.shared.mainContext)
-        return account?.blogs?.filter { $0.isAccessibleThroughWPCom() }
+        return account?.blogs?.filter { $0.isAccessibleThroughWPCom }
     }()
 
     private lazy var accountHasMultipleSites: Bool = {

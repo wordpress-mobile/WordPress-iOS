@@ -1,6 +1,6 @@
 #import "ReaderTopicServiceRemote.h"
-#import "WPMapFilterReduce.h"
 
+@import WordPressShared;
 @import WordPressKitModels;
 @import NSObject_SafeExpectations;
 
@@ -301,9 +301,9 @@ static NSString * const TopicNotFoundMarker = @"-notfound-";
 
 - (NSArray *)normalizeMenuTopicsList:(NSArray *)rawTopics subscribed:(BOOL)subscribed recommended:(BOOL)recommended
 {
-    return [[rawTopics wpkit_filter:^BOOL(id obj) {
+    return [[rawTopics wp_filter:^BOOL(id obj) {
         return [obj isKindOfClass:[NSDictionary class]];
-    }] wpkit_map:^id(NSDictionary *topic) {
+    }] wp_map:^id(NSDictionary *topic) {
         return [self normalizeMenuTopicDictionary:topic subscribed:subscribed recommended:recommended];
     }];
 }

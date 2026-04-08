@@ -659,7 +659,7 @@ private extension ZendeskUtils {
 
         ZendeskUtils.sharedInstance.userEmail = wpAccount.email
         ZendeskUtils.sharedInstance.userName = wpAccount.username
-        if accountSettings.firstName.count > 0 || accountSettings.lastName.count > 0 {
+        if !accountSettings.firstName.isEmpty || !accountSettings.lastName.isEmpty {
             ZendeskUtils.sharedInstance.userName = (accountSettings.firstName + " " + accountSettings.lastName).trim()
         }
     }
@@ -765,7 +765,7 @@ private extension ZendeskUtils {
 
     static func getBlogInformation() -> String {
         let allBlogs = (try? BlogQuery().blogs(in: ContextManager.shared.mainContext)) ?? []
-        guard allBlogs.count > 0 else {
+        guard !allBlogs.isEmpty else {
             return Constants.noValue
         }
 
@@ -794,7 +794,7 @@ private extension ZendeskUtils {
         tags.append(Constants.platformTag)
 
         // If there are no sites, then the user has an empty WP account.
-        guard allBlogs.count > 0 else {
+        guard !allBlogs.isEmpty else {
             tags.append(Constants.wpComTag)
             return tags
         }
@@ -880,7 +880,7 @@ private extension ZendeskUtils {
 
         // Submit Action
         let submitAction = alertController.addDefaultActionWithTitle(alertOptions.submit) { [weak alertController] (_) in
-            guard let email = alertController?.textFields?.first?.text, email.count > 0 else {
+            guard let email = alertController?.textFields?.first?.text, !email.isEmpty else {
                 completion(false)
                 return
             }

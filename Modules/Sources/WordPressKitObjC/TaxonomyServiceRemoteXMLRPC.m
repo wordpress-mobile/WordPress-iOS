@@ -2,10 +2,10 @@
 #import "RemotePostCategory.h"
 #import "RemotePostTag.h"
 #import "RemoteTaxonomyPaging.h"
-#import "NSString+Helpers.h"
-#import "WPMapFilterReduce.h"
+#import "NSString+WPKitNumericValueHack.h"
 #import "WPKitLogging.h"
 
+@import WordPressShared;
 @import NSObject_SafeExpectations;
 
 NS_ASSUME_NONNULL_BEGIN
@@ -316,7 +316,7 @@ static NSString * const TaxonomyXMLRPCOffsetParameter = @"offset";
 
 - (NSArray <RemotePostCategory *> *)remoteCategoriesFromXMLRPCArray:(NSArray *)xmlrpcArray
 {
-    return [xmlrpcArray wpkit_map:^id(NSDictionary *xmlrpcCategory) {
+    return [xmlrpcArray wp_map:^id(NSDictionary *xmlrpcCategory) {
         return [self remoteCategoryFromXMLRPCDictionary:xmlrpcCategory];
     }];
 }
@@ -332,7 +332,7 @@ static NSString * const TaxonomyXMLRPCOffsetParameter = @"offset";
 
 - (NSArray <RemotePostTag *> *)remoteTagsFromXMLRPCArray:(NSArray *)xmlrpcArray
 {
-    return [xmlrpcArray wpkit_map:^id(NSDictionary *xmlrpcTag) {
+    return [xmlrpcArray wp_map:^id(NSDictionary *xmlrpcTag) {
         return [self remoteTagFromXMLRPCDictionary:xmlrpcTag];
     }];
 }

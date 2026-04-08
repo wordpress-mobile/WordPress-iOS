@@ -183,7 +183,7 @@ struct JetpackScanStatusViewModel {
 
         switch scan.state {
         case .idle:
-            if let threats = scan.threats, threats.count > 0 {
+            if let threats = scan.threats, !threats.isEmpty {
                 viewState = scan.hasFixableThreats ? .hasFixableThreats : .hasThreats
             } else {
                 if scan.mostRecent?.didFail ?? false {

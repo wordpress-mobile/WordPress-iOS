@@ -102,7 +102,7 @@ struct SimpleBarChartView: View {
 
     @ChartContentBuilder
     private var peakAnnotation: some ChartContent {
-        if let maxPoint = data.currentData.max(by: { $0.value < $1.value }), data.currentData.count > 0 {
+        if let maxPoint = data.currentData.max(by: { $0.value < $1.value }), !data.currentData.isEmpty {
             PointMark(
                 x: .value("Date", maxPoint.date, unit: data.granularity.component),
                 y: .value("Value", maxPoint.value)

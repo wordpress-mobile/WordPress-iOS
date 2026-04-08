@@ -36,7 +36,11 @@ final class CommentCreateViewController: UIViewController {
             let preview = CommentComposerReplyCommentView(comment: comment)
             contentView.addArrangedSubview(preview)
 
-            let separator = SeparatorView.horizontal()
+            let separator = SeparatorView.horizontal(height: 0.5)
+            separator.backgroundColor = UIColor(
+                light: .separator,
+                dark: UIColor(white: 1.0, alpha: 0.25)
+            )
             contentView.addArrangedSubview(separator)
         }
 

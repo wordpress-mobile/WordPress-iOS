@@ -29,7 +29,7 @@ struct StatsReferrersChartViewModel {
         }
 
         // Then add groups from the top of the list to make up our target group count
-        while topReferrers.count < (Constants.referrersMaxGroupCount - 1) && allReferrers.count > 0 {
+        while topReferrers.count < (Constants.referrersMaxGroupCount - 1) && !allReferrers.isEmpty {
             topReferrers.append(allReferrers.removeFirst())
         }
 

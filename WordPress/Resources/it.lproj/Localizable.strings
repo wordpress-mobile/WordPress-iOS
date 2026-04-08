@@ -1,4 +1,4 @@
-/* Translation-Revision-Date: 2026-02-26 21:47:08+0000 */
+/* Translation-Revision-Date: 2026-03-26 09:56:52+0000 */
 /* Plural-Forms: nplurals=2; plural=n != 1; */
 /* Generator: GlotPress/4.0.3 */
 /* Language: it */
@@ -1874,7 +1874,6 @@ translators: %s: Block name e.g. \"Image block\" */
    Done. Action.
    Menu button title for finishing editing the Menu name.
    Tapping a button with this label allows the user to exit the Site Creation flow
-   Title for a Done button.
    Title for button that will dismiss this view
    Title for the button that will dismiss this view. */
 "Done" = "Fatto";
@@ -3243,9 +3242,6 @@ translators: %s: Block name e.g. \"Image block\" */
 
 /* Text displayed while loading the scan section for a site */
 "Loading Scan..." = "Caricamento della scansione in corso...";
-
-/* Displayed while a comment is being loaded. */
-"Loading comment..." = "Caricamento del commento...";
 
 /* Menus label text displayed when a menu is loading. */
 "Loading menu..." = "Caricamento menu...";
@@ -7026,6 +7022,9 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Button title for restoring a backup */
 "activityDetail.restore.button" = "Ripristina";
 
+/* Shows the MCP client used for an activity. %1$@ is the MCP client name (e.g. Claude). */
+"activityDetail.section.agent" = "tramite %1$@";
+
 /* Section title for restore site actions */
 "activityDetail.section.restoreSite" = "Ripristina sito";
 
@@ -7458,7 +7457,7 @@ Note that the word 'go' here should have a closer meaning to 'start' rather than
 /* Title of the set goals button in the Blogging Reminders Settings flow. */
 "bloggingRemindersPrompt.intro.continueButton" = "Imposta promemoria";
 
-/* Description on the first screen of the Blogging Reminders Settings flow called aftet post publishing. */
+/* Description on the first screen of the Blogging Reminders Settings flow called after post publishing. */
 "bloggingRemindersPrompt.intro.details" = "Imposta i promemoria relativi al blog per i giorni in cui desideri pubblicare.";
 
 /* Title of the Blogging Reminders Settings screen. */
@@ -7875,6 +7874,78 @@ Example: Reply to Pamela Nguyen */
 /* Error message shown when the post was modified by another user while editing */
 "customPostEditor.error.conflict.message" = "L'articolo che stai cercando di salvare è stato modificato nel frattempo.";
 
+/* Menu action to promote a post with Blaze */
+"customPostList.action.blaze" = "Promuovi con Blaze";
+
+/* Menu action to view post comments */
+"customPostList.action.comments" = "Commenti";
+
+/* Menu action to permanently delete a trashed post */
+"customPostList.action.deletePermanently" = "Elimina in modo permanente";
+
+/* Menu action to change a post's status to draft */
+"customPostList.action.moveToDraft" = "Sposta in bozze";
+
+/* Menu action to move a post to trash */
+"customPostList.action.moveToTrash" = "Sposta nel cestino";
+
+/* Menu action to publish a draft or pending post */
+"customPostList.action.publish" = "Pubblica";
+
+/* Menu action to open post settings */
+"customPostList.action.settings" = "Impostazioni";
+
+/* Menu action to view post statistics */
+"customPostList.action.stats" = "Statistiche";
+
+/* Accessibility label for the author filter button in the custom post list */
+"customPostList.authorFilter.accessibilityLabel" = "Filtro autore";
+
+/* Menu item to show posts from all authors in the custom post list */
+"customPostList.authorFilter.everyone" = "Tutti";
+
+/* Menu item to show only the current user's posts in the custom post list */
+"customPostList.authorFilter.mine" = "Le tue immagini";
+
+/* Accessibility value when the author filter shows posts from all authors */
+"customPostList.authorFilter.showingEveryone" = "Mostrando i post di tutti";
+
+/* Accessibility value when the author filter shows only the current user's posts */
+"customPostList.authorFilter.showingMine" = "Mostrando solo i miei post";
+
+/* Badge label shown on the homepage row in the custom post list for pages */
+"customPostList.badge.homepage" = "Home page";
+
+/* Badge shown in the post list for sticky posts */
+"customPostList.badge.sticky" = "In evidenza";
+
+/* Message for the confirmation alert when permanently deleting a post */
+"customPostList.deleteConfirmation.message" = "Questa azione non può essere annullata.";
+
+/* Title for the confirmation alert when permanently deleting a post */
+"customPostList.deleteConfirmation.title" = "Eliminare in modo permanente?";
+
+/* Message for the confirmation alert when trashing a published post */
+"customPostList.trashConfirmation.message" = "Questo articolo è pubblicato e visibile ai visitatori. Desideri spostarlo nel cestino?";
+
+/* Title for the confirmation alert when trashing a published post */
+"customPostList.trashConfirmation.title" = "Spostare nel cestino?";
+
+/* Placeholder title for posts without a title */
+"customPostList.untitled" = "(senza titolo)";
+
+/* Title for the parent page picker screen for custom post types */
+"customPostParentPicker.title" = "Pagina principale";
+
+/* Option to set a post as top level (no parent) */
+"customPostParentPicker.topLevel" = "Livello superiore";
+
+/* Description for the top level option in the parent page picker, indicating this page will have no parent */
+"customPostParentPicker.topLevel.description" = "Nessuna pagina principale";
+
+/* Tab title for showing all posts regardless of status */
+"customPostTab.all" = "Tutti";
+
 /* Tab title for draft posts */
 "customPostTab.drafts" = "Bozze";
 
@@ -8037,6 +8108,9 @@ Example: Reply to Pamela Nguyen */
 /* Boolean User Defaults Debug Menu screen title */
 "debugMenu.booleanUserDefaults.title" = "Predefiniti utente booleano";
 
+/* Debug Menu label for image cache size */
+"debugMenu.caches.imageCache" = "Cache delle immagini";
+
 /* Feature flags menu item */
 "debugMenu.featureFlags" = "Flag funzionalità";
 
@@ -8076,6 +8150,9 @@ Example: Reply to Pamela Nguyen */
 
 /* Debug Menu action for TipKit */
 "debugMenu.resetTipKitData" = "Ripristina i dati";
+
+/* Debug Menu section title */
+"debugMenu.section.caches" = "Cache";
 
 /* Debug Menu section title */
 "debugMenu.section.logging" = "Accesso";
@@ -9059,6 +9136,9 @@ Example: Reply to Pamela Nguyen */
 
 /* Last 12 weeks (84 days) date range */
 "jetpackStats.calendar.last12Weeks" = "Ultime 12 settimane";
+
+/* Last 14 days date range */
+"jetpackStats.calendar.last14Days" = "Ultimi 14 giorni";
 
 /* Last 28 days date range */
 "jetpackStats.calendar.last28Days" = "Ultimi 28 giorni";
@@ -10047,6 +10127,42 @@ Example: Reply to Pamela Nguyen */
 /* Menu title for the visit site option */
 "mySite.siteActions.visitSite" = "Visualizza il sito";
 
+/* Button to confirm to switch to the New Stats announcement screen */
+"newStats.announcement.continueButton" = "Inizia";
+
+/* Disclosure at the bottom of the New Stats announcement screen, informing users they can opt out */
+"newStats.announcement.disclosure" = "Non è il momento di cambiare? Puoi disattivare le Nuove statistiche dal menu Altro nella scheda Statistiche.";
+
+/* Feature description: navigation moved to the bottom for thumb-friendly access */
+"newStats.announcement.feature.bottomNav.description" = "Navigazione e selezione data ora sono nella parte inferiore dello schermo, proprio dove si trova il tuo pollice.";
+
+/* Feature title: navigation moved to the bottom */
+"newStats.announcement.feature.bottomNav.title" = "Più facile da raggiungere";
+
+/* Feature description: flexible date picker with presets, custom ranges, and comparisons */
+"newStats.announcement.feature.datePicker.description" = "Scegli tra i valori predefiniti comuni o imposta un intervallo di date personalizzato con un periodo di confronto: tutto in un tocco.";
+
+/* Feature title: flexible date picker */
+"newStats.announcement.feature.datePicker.title" = "Qualsiasi periodo, qualsiasi intervallo";
+
+/* Feature description: feature parity with the web version of Stats */
+"newStats.announcement.feature.parity.description" = "Dispositivi, UTM, posizioni, WordAds: gli stessi dati che ottieni su WordPress.com.";
+
+/* Feature title: feature parity with the web version of Stats */
+"newStats.announcement.feature.parity.title" = "Alla pari con il web";
+
+/* Feature description: trends shown for all metrics with comparison to previous period */
+"newStats.announcement.feature.trends.description" = "Ogni indicatore mostra l'andamento rispetto al periodo precedente, così saprai sempre se stai crescendo.";
+
+/* Feature title: trends visible for all metrics */
+"newStats.announcement.feature.trends.title" = "Le tendenze in un colpo d'occhio";
+
+/* Subtitle for the New Stats announcement screen */
+"newStats.announcement.subtitle" = "Un modo migliore per comprendere le prestazioni del tuo sito: ora attivo per impostazione predefinita.";
+
+/* Title for the New Stats announcement screen */
+"newStats.announcement.title" = "Nuove statistiche";
+
 /* A no results message displayed on the atomic logs screen. */
 "noLogs.empty" = "Non ci sono voci di registro in questo intervallo di tempo";
 
@@ -10743,6 +10859,9 @@ Example: Reply to Pamela Nguyen */
 /* Section header for More Options in Post Settings. Should use the same translation as core WP. */
 "postSettings.moreOptions.header" = "Altre opzioni";
 
+/* The title of the Post Settings screen for custom post types. %1$@ is the post type name. */
+"postSettings.navigationTitle.customPostType" = "Impostazioni %1$@";
+
 /* The title of the Page Settings screen. */
 "postSettings.navigationTitle.page" = "Impostazioni pagina";
 
@@ -10796,6 +10915,9 @@ Example: Reply to Pamela Nguyen */
 
 /* Placeholder value for a publishing date in the prepublishing sheet when the date is not selected */
 "postSettings.publishDateImmediately" = "Immediatamente";
+
+/* Error message shown when saving post settings via REST API fails */
+"postSettings.saveFailed.message" = "Impossibile salvare le modifiche";
 
 /* Section header for General settings in Post Settings */
 "postSettings.section.general" = "Generale";
@@ -10872,6 +10994,9 @@ Example: Reply to Pamela Nguyen */
 /* Navigation bar title of the Post Stats screen */
 "postStats.title" = "Statistiche dell'articolo";
 
+/* Post status title used in different contexts */
+"postStatus.any.title" = "Qualsiasi";
+
 /* Post status title */
 "postStatus.deleted.details" = "Eliminato in modo permanente";
 
@@ -10881,35 +11006,35 @@ Example: Reply to Pamela Nguyen */
 /* Post status details */
 "postStatus.draft.details" = "Non pronto per la pubblicazione";
 
-/* Post status title */
+/* Post status title used in different contexts */
 "postStatus.draft.title" = "Bozza";
 
 /* Post status details */
 "postStatus.pending.details" = "In attesa di revisione prima della pubblicazione";
 
-/* Post status title */
+/* Post status title used in different contexts */
 "postStatus.pending.title" = "In sospeso";
 
-/* Post status title */
+/* Post status title used in different contexts */
 "postStatus.private.title" = "Privato";
 
 /* Post status details */
 "postStatus.published.details" = "Visibile a tutti";
 
-/* Post status title */
+/* Post status title used in different contexts */
 "postStatus.published.title" = "Pubblicato";
 
 /* Post status details */
 "postStatus.scheduled.details" = "Pubblica automaticamente in una data stabilita";
 
-/* Post status title */
+/* Post status title used in different contexts */
 "postStatus.scheduled.title" = "Pianificato";
 
 /* Post status title */
 "postStatus.trash.details" = "Cestinato ma non ancora eliminato";
 
-/* Post status title */
-"postStatus.trash.title" = "Cestinato";
+/* Post status title used in different contexts */
+"postStatus.trash.title" = "Cestino";
 
 /* Button to add a new taxonomy term. %1$@ is the taxonomy name (e.g., 'tags', 'categories'). */
 "postTags.addTag" = "Aggiungi %1$@";
@@ -11426,9 +11551,6 @@ Example: given a notice format "Following %@" and empty site name, this will be 
 /* Context menu action */
 "reader.postContextMenu.blockUser" = "Blocca utente";
 
-/* Context menu action (placeholder value when blog name not available – should never happen) */
-"reader.postContextMenu.blogDetails" = "Dettagli del blog";
-
 /* Context menu action */
 "reader.postContextMenu.manageNotifications" = "Gestione notifiche";
 
@@ -11445,9 +11567,6 @@ Example: given a notice format "Following %@" and empty site name, this will be 
 "reader.postContextMenu.reportUser" = "Segnala utente";
 
 /* Context menu action */
-"reader.postContextMenu.showBlog" = "Vai al Blog";
-
-/* Context menu action */
 "reader.postContextMenu.summarize" = "Riassumi";
 
 /* Context menu action to translate post content */
@@ -11455,6 +11574,9 @@ Example: given a notice format "Following %@" and empty site name, this will be 
 
 /* Context menu action */
 "reader.postContextMenu.viewInBrowser" = "Apri nel browser";
+
+/* Context menu action */
+"reader.postContextMenu.viewSite" = "Visualizza il sito";
 
 /* Button title */
 "reader.postDetails.viewFullPost" = "Visualizza l'articolo completo";
@@ -11854,6 +11976,9 @@ Feel free to replace it with other bracket types that you think looks better for
 "shared.button.edit" = "Modifica";
 
 /* A shared button title used in different contexts */
+"shared.button.notNow" = "Ora";
+
+/* A shared button title used in different contexts */
 "shared.button.remove" = "Elimina";
 
 /* A shared button title used in different contexts */
@@ -12201,12 +12326,14 @@ Feel free to replace it with other bracket types that you think looks better for
 /* Title for site switcher screen */
 "sitePicker.title" = "I miei siti";
 
-/* The plugin author displayed in the plugins list. The first argument is plugin author name
-   The plugin version displayed in the plugins list. The first argument is plugin version */
+/* The plugin author displayed in the plugins list. The first argument is plugin author name */
 "sitePluginsList.item.author" = "Di %@";
 
 /* The message displayed when a plugin has no description */
 "sitePluginsList.item.noDescriptionAvailable" = "L'autore del plugin non ha fornito una descrizione per questo plugin.";
+
+/* The plugin version displayed in the plugins list. The first argument is plugin version */
+"sitePluginsList.item.version" = "Versione: %@";
 
 /* Button to activate a plugin */
 "sitePluginsList.itemAction.activate" = "Attiva";
@@ -12847,15 +12974,6 @@ Feel free to replace it with other bracket types that you think looks better for
 
 /* Title for the time zone selector */
 "timeZoneSelector.title" = "Fuso orario";
-
-/* Action button title to enable new stats from tip */
-"tips.newStats.action" = "Attiva ora";
-
-/* Tip for new stats feature */
-"tips.newStats.message" = "Scopri le nuove statistiche, eleganti e potenti. Puoi tornare alla versione precedente quando vuoi.";
-
-/* Tip for new stats feature */
-"tips.newStats.title" = "Prova le nuove Statistiche";
 
 /* Tip for sidebar */
 "tips.sidebar.message" = "Scorri verso destra per accedere ai tuoi siti, al Reader, alle notifiche e al tuo profilo";

@@ -1,6 +1,5 @@
 import UIKit
 import WordPressShared
-import Reachability
 
 @objc public protocol NoResultsViewControllerDelegate {
     @objc optional func actionButtonPressed()
@@ -54,8 +53,6 @@ import Reachability
     private var titleLabelMaxWidthConstraint: NSLayoutConstraint?
     private var titleLabelTopConstraint: NSLayoutConstraint?
 
-    //For No results on connection issue
-    private let reachability = Reachability.forInternetConnection()
     /// sets an additional/alternate handler for the action button that can be directly injected
     public var actionButtonHandler: (() -> Void)?
     /// sets an additional/alternate handler for the dismiss button that can be directly injected
@@ -72,13 +69,7 @@ import Reachability
 
     public override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        reachability?.startNotifier()
         configureView()
-    }
-
-    public override func viewDidDisappear(_ animated: Bool) {
-        super.viewDidDisappear(animated)
-        reachability?.stopNotifier()
     }
 
     public override func didMove(toParent parent: UIViewController?) {
@@ -160,7 +151,7 @@ import Reachability
                          image: String? = nil,
                          subtitleImage: String? = nil,
                          accessoryView: UIView? = nil) {
-        isReachable = reachability?.isReachable() ?? false
+        isReachable = ReachabilityUtils.isInternetReachable()
         if !isReachable {
             titleText = noConnectionTitle != nil ? noConnectionTitle : NoConnection.title
             let subtitle = noConnectionSubtitle != nil ? noConnectionSubtitle : NoConnection.subTitle

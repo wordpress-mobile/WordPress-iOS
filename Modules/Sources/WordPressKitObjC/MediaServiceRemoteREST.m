@@ -2,9 +2,9 @@
 #import "RemoteMedia.h"
 #import "FilePart.h"
 #import "WPKitLogging.h"
-#import "WPMapFilterReduce.h"
 #import "WordPressComRestApiErrorDomain.h"
 
+@import WordPressShared;
 @import WordPressKitModels;
 @import NSObject_SafeExpectations;
 
@@ -384,7 +384,7 @@ const NSInteger WPRestErrorCodeMediaNew = 10;
 
 + (NSArray *)remoteMediaFromJSONArray:(NSArray *)jsonMedia
 {
-    return [jsonMedia wpkit_map:^id(NSDictionary *json) {
+    return [jsonMedia wp_map:^id(NSDictionary *json) {
         return [self remoteMediaFromJSONDictionary:json];
     }];
 }

@@ -385,6 +385,14 @@ final class MySiteViewController: UIViewController, UIScrollViewDelegate, NoSite
             // Also refresh editor capabilities
             EditorDependencyManager.shared.fetchEditorCapabilities(for: blog)
         }
+
+        Task { [blogID = TaggedManagedObjectID(blog)] in
+            do {
+                try await ApplicationPasswordRepository.shared.createPasswordIfNeeded(for: blogID)
+            } catch {
+                Loggers.app.error("Failed to create an application password: \(error)")
+            }
+        }
     }
 
     @objc
@@ -846,7 +854,7 @@ final class MySiteViewController: UIViewController, UIScrollViewDelegate, NoSite
     func fetchPrompt(for blog: Blog?) {
         guard FeatureFlag.bloggingPrompts.enabled,
               let blog,
-              blog.isAccessibleThroughWPCom(),
+              blog.isAccessibleThroughWPCom,
               let promptsService = BloggingPromptsService(blog: blog),
               let siteID = blog.dotComID?.intValue else {
             return

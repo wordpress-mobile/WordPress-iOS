@@ -54,7 +54,7 @@ class AllDomainsListViewModel {
             self.domainsService = .init(coreDataStack: coreDataStack, wordPressComRestApi: account.wordPressComRestApi)
         }
         self.domains = domains
-        if domains.count > 0 {
+        if !domains.isEmpty {
             self.state = self.state(from: domains, searchQuery: lastSearchQuery)
         }
     }

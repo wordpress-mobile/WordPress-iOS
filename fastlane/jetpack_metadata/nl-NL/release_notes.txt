@@ -1,0 +1,21 @@
+Wie is wie op jouw website? Nu weet je het: pushmeldingen gebruiken nu gravatars zodat je kan zien wie gereageerd heeft op of iets heeft gedaan met je inhoud. Het activiteitenlog laat ook zien wanneer je site is bijgewerkt door AI-agents.
+
+Als je dacht dat onze laatste updates voor de statistieken groot waren, bereid je maar voor.
+
+- De datum van vandaag is nu inbegrepen in intervallen zoals 'Afgelopen 7 dagen'. We hebben ook de nieuwe interval 'Afgelopen 14 dagen' toegevoegd.
+- Onvolledige data, inclusief vandaag, worden op de lijngrafiek weergegeven als een stippellijn. Je kan ze ook eenvoudiger zien in de weergave van het staafdiagram.
+- Over staafdiagrammen gesproken, als je op een balk tikt, worden de gegevens voor die datum weergegeven. Dit maakt het eenvoudiger om voor meerdere dagen door gegevens te scrollen. O, en door op een balk te tikken, wordt de balk ernaast niet meer geselecteerd.
+- Je kan visuele veranderingen opmerken zoals een kleinere kaartkop in de grafiek, kleinere lettertypen in tabbladen en hier en daar minder afstand. Het geeft minimalistische vibes.
+
+Terwijl we toch bezig waren, hebben we ook wijzigingen aangebracht aan de Reader. (Overigens heeft er geen een te maken met lezen.)
+
+- Als je een afbeelding in een lichtbak bekijkt, wordt deze genegeerd door naar beneden te vegen, zelfs als je ingezoomd bent.
+- We hebben problemen met de kleur van links in reacties en in donkere modus op aangepaste thema's opgelost. Ziet er goed uit.
+- Je kan mediagalerijen in volledig beeld bekijken. Veeg naar rechts of links om alle afbeeldingen te bekijken.
+
+En omdat we nog een beetje vrije tijd hadden, hebben we ook een paar problemen met details opgelost die ons dwars zaten.
+
+- We hebben de pijltjestoetsen en spatiëring op het scherm Meldingen bijgewerkt.
+- In berichtinstellingen toont de kaart voor delen via social media alleen platforms die de app ondersteunt.
+- Nieuwe berichten gebruiken de standaardberichtindeling in plaats van de standaardversie. Je kan deze indeling bijwerken in je site-instellingen.
+- Als je site zelf-gehost is en XML-RPC is uitgeschakeld, kan je Berichten en Pagina's in de app zien. Dat is heel belangrijk, al zeggen we het zelf.

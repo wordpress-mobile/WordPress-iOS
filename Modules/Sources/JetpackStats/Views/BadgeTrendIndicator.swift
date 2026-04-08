@@ -16,8 +16,8 @@ struct BadgeTrendIndicator: View {
                 .font(.system(.caption, design: .rounded, weight: .semibold)).tracking(-0.25)
         }
         .foregroundColor(trend.sentiment.foregroundColor)
-        .padding(.horizontal, 6)
-        .padding(.vertical, 5)
+        .padding(.horizontal, 5)
+        .padding(.vertical, 4)
         .background(trend.sentiment.backgroundColor)
         .cornerRadius(6)
         .animation(.spring, value: trend.percentage)

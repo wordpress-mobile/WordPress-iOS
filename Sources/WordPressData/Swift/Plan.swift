@@ -1,6 +1,7 @@
 import Foundation
 import CoreData
 
+@objc(Plan)
 public class Plan: NSManagedObject {
     @NSManaged public var order: Int16
     @NSManaged public var tagline: String

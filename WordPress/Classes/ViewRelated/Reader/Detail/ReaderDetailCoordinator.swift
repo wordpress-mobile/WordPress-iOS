@@ -502,11 +502,12 @@ class ReaderDetailCoordinator {
     ///
     /// - Parameter url: the URL to be handled
     func handle(_ url: URL) {
-        // If the URL has an anchor (#)
-        // and the URL is equal to the current post URL
-        if let hash = URLComponents(url: url, resolvingAgainstBaseURL: true)?.fragment,
-           let postURL = permaLinkURL,
-           postURL.isHostAndPathEqual(to: url) {
+        // If the URL has an anchor (#) and the URL matches either the current
+        // post URL or the webview's baseURL, scroll within the document.
+        // In-document anchors (e.g. footnotes) resolve against the baseURL,
+        // so we need to check both.
+        let isInDocumentAnchor = permaLinkURL?.isHostAndPathEqual(to: url) == true || ReaderWebView.baseURL.isHostAndPathEqual(to: url)
+        if let hash = URLComponents(url: url, resolvingAgainstBaseURL: true)?.fragment, isInDocumentAnchor {
             view?.scroll(to: hash)
         } else if let (gallery, index) = findGallery(containing: url) {
             presentGallery(gallery, startingAt: index)

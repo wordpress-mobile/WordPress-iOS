@@ -380,7 +380,7 @@ class DashboardPromptsCardCell: UICollectionViewCell, Reusable {
     // and therefore should not be shown.
     static func shouldShowCard(for blog: Blog) -> Bool {
         guard FeatureFlag.bloggingPrompts.enabled,
-              blog.isAccessibleThroughWPCom(),
+              blog.isAccessibleThroughWPCom,
               let promptsService = BloggingPromptsService(blog: blog) else {
             return false
         }

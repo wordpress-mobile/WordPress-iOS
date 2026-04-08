@@ -252,7 +252,7 @@ extension BlogDetailsTableViewModel: UITableViewDataSource {
         switch sections[section].category {
         case .jetpackInstallCard, .migrationSuccess, .jetpackBrandingCard, .extensiveLogging, .xmlrpcDisabled:
             // The "card" sections do not set the `rows` property. It's hard-coded to show specific types of cards.
-            wpAssert(sections[section].rows.count == 0)
+            wpAssert(sections[section].rows.isEmpty)
             return 1
         default:
             return sections[section].rows.count
@@ -847,9 +847,7 @@ private extension BlogDetailsTableViewModel {
             secondSectionRows.append(Row.domains(viewController: viewController))
         }
 
-        if FeatureFlag.allowApplicationPasswords.enabled {
-            secondSectionRows.append(Row.applicationPasswords(viewController: viewController))
-        }
+        secondSectionRows.append(Row.applicationPasswords(viewController: viewController))
 
         // Site Settings (always included)
         secondSectionRows.append(Row.siteSettings(viewController: viewController))

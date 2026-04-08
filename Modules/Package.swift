@@ -24,6 +24,7 @@ let package = Package(
         .library(name: "WordPressReader", targets: ["WordPressReader"]),
         .library(name: "WordPressCore", targets: ["WordPressCore"]),
         .library(name: "WordPressCoreProtocols", targets: ["WordPressCoreProtocols"]),
+        .library(name: "WordPressKit", targets: ["WordPressKit"]),
     ],
     dependencies: [
         .package(url: "https://github.com/airbnb/lottie-ios", from: "4.4.0"),
@@ -46,7 +47,7 @@ let package = Package(
         .package(url: "https://github.com/squarefrog/UIDeviceIdentifier", from: "2.3.0"),
         // We can remove the SVProgressHUD fork once this PR is merged: https://github.com/SVProgressHUD/SVProgressHUD/pull/1131
         .package(url: "https://github.com/automattic/SVProgressHUD", branch: "master"),
-        .package(url: "https://github.com/Automattic/Reachability", branch: "framework-support-via-spm"),
+
         .package(url: "https://github.com/weichsel/ZIPFoundation", from: "0.9.19"),
         .package(url: "https://github.com/wordpress-mobile/FSInteractiveMap", from: "0.3.0"),
         .package(url: "https://github.com/wordpress-mobile/MediaEditor-iOS", branch: "task/spm-support"),
@@ -54,9 +55,9 @@ let package = Package(
         .package(url: "https://github.com/wordpress-mobile/wpxmlrpc", from: "0.9.0"),
         .package(url: "https://github.com/wordpress-mobile/NSURL-IDN", revision: "b34794c9a3f32312e1593d4a3d120572afa0d010"),
         .package(url: "https://github.com/zendesk/support_sdk_ios", from: "8.0.3"),
-        .package(url: "https://github.com/wordpress-mobile/GutenbergKit", revision: "v0.14.0-alpha.0"),
+        .package(url: "https://github.com/wordpress-mobile/GutenbergKit", from: "0.15.0"),
         // We can't use wordpress-rs branches nor commits here. Only tags work.
-        .package(url: "https://github.com/Automattic/wordpress-rs", revision: "alpha-20260313"),
+        .package(url: "https://github.com/Automattic/wordpress-rs", revision: "alpha-20260313.1"),
         .package(
             url: "https://github.com/Automattic/color-studio",
             revision: "bf141adc75e2769eb469a3e095bdc93dc30be8de"
@@ -173,7 +174,6 @@ let package = Package(
         .target(
             name: "WordPressShared",
             dependencies: [
-                .product(name: "Reachability", package: "Reachability"),
                 .product(name: "SwiftSoup", package: "SwiftSoup"),
                 .target(name: "SFHFKeychainUtils"),
                 .target(name: "WordPressSharedObjC"),
@@ -190,22 +190,15 @@ let package = Package(
                 "WordPressShared",
                 "WordPressLegacy",
                 .product(name: "ColorStudio", package: "color-studio"),
-                .product(name: "Reachability", package: "Reachability"),
             ],
             resources: [.process("Resources")],
             swiftSettings: [.swiftLanguageMode(.v5)]
         ),
         .target(
-            name: "WordPressKitObjCUtils",
-            cSettings: [
-                .define("NS_BLOCK_ASSERTIONS", to: "1", .when(configuration: .release))
-            ]
-        ),
-        .target(
             name: "WordPressKitModels",
             dependencies: [
                 "NSObject-SafeExpectations",
-                "WordPressKitObjCUtils",
+                "WordPressShared",
             ]
         ),
         .target(
@@ -213,8 +206,8 @@ let package = Package(
             dependencies: [
                 "NSObject-SafeExpectations",
                 "wpxmlrpc",
-                "WordPressKitModels",
-                "WordPressKitObjCUtils",
+                "WordPressShared",
+                "WordPressKitModels"
             ],
             publicHeadersPath: "include",
             cSettings: [
@@ -226,7 +219,6 @@ let package = Package(
             dependencies: [
                 "WordPressKitObjC",
                 "WordPressKitModels",
-                "WordPressKitObjCUtils",
                 "NSObject-SafeExpectations",
                 "WordPressShared",
                 "wpxmlrpc",
@@ -336,7 +328,6 @@ enum XcodeSupport {
             .product(name: "CocoaLumberjackSwift", package: "CocoaLumberjack"),
             .product(name: "Down", package: "Down"),
             .product(name: "Gridicons", package: "Gridicons-iOS"),
-            .product(name: "Reachability", package: "Reachability"),
             .product(name: "SVProgressHUD", package: "SVProgressHUD"),
             .product(name: "ZIPFoundation", package: "ZIPFoundation"),
             .product(name: "Aztec", package: "AztecEditor-iOS"),
@@ -388,7 +379,6 @@ enum XcodeSupport {
             .product(name: "NSURL-IDN", package: "NSURL-IDN"),
             .product(name: "Pulse", package: "Pulse"),
             .product(name: "PulseUI", package: "Pulse"),
-            .product(name: "Reachability", package: "Reachability"),
             .product(name: "Starscream", package: "Starscream"),
             .product(name: "SVProgressHUD", package: "SVProgressHUD"),
             .product(name: "SwiftSoup", package: "SwiftSoup"),
@@ -504,7 +494,6 @@ enum XcodeSupport {
                     .product(name: "CocoaLumberjack", package: "CocoaLumberjack"),
                     .product(name: "CocoaLumberjackSwift", package: "CocoaLumberjack"),
                     .product(name: "Gravatar", package: "Gravatar-SDK-iOS"),
-                    .product(name: "NSObject-SafeExpectations", package: "NSObject-SafeExpectations"),
                     .product(name: "NSURL-IDN", package: "NSURL-IDN"),
                     .product(name: "WordPressAPI", package: "wordpress-rs"),
                 ]

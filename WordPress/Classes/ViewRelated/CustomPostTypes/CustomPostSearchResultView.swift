@@ -14,6 +14,7 @@ struct CustomPostSearchResultView: View {
     @Binding var searchText: String
     weak var presentingViewController: UIViewController?
     let onSelectPost: (AnyPostWithEditContext) -> Void
+    var onDuplicate: (AnyPostWithEditContext) -> Void = { _ in }
 
     @State private var finalSearchText = ""
 
@@ -30,7 +31,8 @@ struct CustomPostSearchResultView: View {
             details: details,
             client: client,
             mediaHost: MediaHost(blog),
-            onSelectPost: onSelectPost
+            onSelectPost: onSelectPost,
+            onDuplicate: onDuplicate
         )
         .task(id: searchText) {
             do {

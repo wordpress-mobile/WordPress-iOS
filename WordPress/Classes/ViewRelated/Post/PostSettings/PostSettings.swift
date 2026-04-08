@@ -81,8 +81,16 @@ struct PostSettings: Hashable {
     init(from params: PostCreateParams, taxonomies: [SiteTaxonomy] = []) {
         excerpt = params.excerpt ?? ""
         slug = params.slug ?? ""
-        status = .draft
-        publishDate = nil
+        if let paramStatus = params.status {
+            status = BasePost.Status(paramStatus)
+        } else {
+            status = .draft
+        }
+        if status == .draft || status == .pending {
+            publishDate = nil
+        } else {
+            publishDate = params.dateGmt
+        }
         password = params.password
         metadata = PostMetadata(from: .init())
 
@@ -103,6 +111,9 @@ struct PostSettings: Hashable {
         }
         if let sticky = params.sticky {
             isStickyPost = sticky
+        }
+        if let parent = params.parent, parent > 0 {
+            parentPageID = Int(parent)
         }
         if !params.categories.isEmpty {
             categoryIDs = Set(params.categories.map { Int($0) })
@@ -207,9 +218,7 @@ struct PostSettings: Hashable {
         allowComments = post.commentStatus == .open
         allowPings = post.pingStatus == .open
 
-        // TODO: The Post Settings UI currently only supports Pages
-        // The parent post is available in `post.parent`
-        parentPageID = nil
+        parentPageID = post.parent.map { Int($0) }
 
         // Social sharing (Publicize) is not available for REST API posts
         sharing = nil
@@ -369,7 +378,9 @@ struct PostSettings: Hashable {
             params.excerpt = self.excerpt
         }
 
-        if post.featuredMedia.map({ Int($0) }) != self.featuredImageID {
+        // Normalize 0 as nil (no featured image) to match the init(from:) convention.
+        let originalFeaturedImageID = post.featuredMedia.flatMap { $0 > 0 ? Int($0) : nil }
+        if originalFeaturedImageID != self.featuredImageID {
             params.featuredMedia = self.featuredImageID.map { MediaId(Int64($0)) } ?? MediaId(0)
         }
 
@@ -426,11 +437,10 @@ struct PostSettings: Hashable {
             params.additionalFields = AnyJson.fromTermIdMap(map: customTermChanges)
         }
 
-        // TODO: The Post Settings UI currently only supports Pages
-//        let postParentPageID = post.parent.map { Int($0) }
-//        if postParentPageID != self.parentPageID {
-//            params.parent = self.parentPageID.map { PostId(Int64($0)) } ?? PostId(0)
-//        }
+        let postParentPageID = post.parent.map { Int($0) }
+        if postParentPageID != self.parentPageID {
+            params.parent = self.parentPageID.map { PostId(Int64($0)) } ?? PostId(0)
+        }
 
         return params
     }
@@ -467,6 +477,7 @@ struct PostSettings: Hashable {
         params.sticky = isStickyPost ? true : nil
         params.categories = categoryIds
         params.tags = tagIds
+        params.parent = parentPageID.map { PostId(Int64($0)) }
         params.additionalFields = additionalFields
         return params
     }

@@ -316,7 +316,7 @@ extension TwoFAViewController: ASAuthorizationControllerDelegate, ASAuthorizatio
     // Some password managers(like 1P) don't deliver `rawClientDataJSON`. In those cases we need to assemble it manually.
     func extractClientData(from credential: ASAuthorizationPlatformPublicKeyCredentialAssertion, challengeInfo: WebauthnChallengeInfo) -> Data? {
 
-        if credential.rawClientDataJSON.count > 0 {
+        if !credential.rawClientDataJSON.isEmpty {
             return credential.rawClientDataJSON
         }
 

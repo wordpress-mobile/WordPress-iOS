@@ -939,6 +939,7 @@ import AutomatticTracks
         let successBlock = { [weak self] (count: Int, hasMore: Bool) in
             DispatchQueue.main.async {
                 if let strongSelf = self {
+                    // swiftlint:disable:next empty_count
                     if strongSelf.recentlyBlockedSitePostObjectIDs.count > 0 {
                         strongSelf.recentlyBlockedSitePostObjectIDs.removeAllObjects()
                         strongSelf.updateAndPerformFetchRequest()
@@ -1009,6 +1010,7 @@ import AutomatticTracks
             let successBlock = { [weak self] (count: Int, hasMore: Bool) in
                 DispatchQueue.main.async {
                     if let strongSelf = self {
+                        // swiftlint:disable:next empty_count
                         if strongSelf.recentlyBlockedSitePostObjectIDs.count > 0 {
                             strongSelf.recentlyBlockedSitePostObjectIDs.removeAllObjects()
                             strongSelf.updateAndPerformFetchRequest()
@@ -1148,6 +1150,7 @@ import AutomatticTracks
             return predicateForNilTopic
         }
 
+        // swiftlint:disable:next empty_count
         if recentlyBlockedSitePostObjectIDs.count > 0 {
             return NSPredicate(format: "topic = %@ AND (isSiteBlocked = NO OR SELF in %@)", topicInContext, recentlyBlockedSitePostObjectIDs)
         }
@@ -1302,7 +1305,7 @@ extension ReaderStreamViewController: WPTableViewHandlerDelegate {
 
     func tableViewHandlerDidRefreshTableViewPreservingOffset(_ tableViewHandler: WPTableViewHandler) {
         hideResultsStatus()
-        if tableViewHandler.resultsController?.fetchedObjects?.count == 0 {
+        if tableViewHandler.resultsController?.fetchedObjects?.isEmpty == true {
             if let syncHelper, syncHelper.isSyncing {
                 return
             }

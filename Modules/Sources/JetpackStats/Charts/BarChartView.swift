@@ -71,7 +71,7 @@ struct BarChartView: View {
                 width: .automatic
             )
             .foregroundStyle(isIncomplete ? AnyShapeStyle(incompleteBarPattern) : AnyShapeStyle(barGradient))
-            .cornerRadius(4)
+            .cornerRadius(5)
             .opacity(getOpacityForPeriodBar(for: point))
         }
     }
@@ -139,7 +139,7 @@ struct BarChartView: View {
                 stacking: .unstacked
             )
             .foregroundStyle(Color.secondary.opacity(0.25))
-            .cornerRadius(4)
+            .cornerRadius(5)
             .opacity(getOpacityForPeriodBar(for: point))
         }
     }
@@ -158,7 +158,7 @@ struct BarChartView: View {
 
     @ChartContentBuilder
     private var significantPointAnnotations: some ChartContent {
-        if tappedDataPoint == nil, let maxPoint = data.significantPoints.currentMax, data.currentData.count > 0 {
+        if tappedDataPoint == nil, let maxPoint = data.significantPoints.currentMax, !data.currentData.isEmpty {
             PointMark(
                 x: .value("Date", maxPoint.date, unit: data.granularity.component, calendar: context.calendar),
                 y: .value("Value", maxPoint.value)
@@ -270,7 +270,7 @@ struct BarChartView: View {
             return data.maxValue...0 // Just in case; should never happend
         }
         // Add some padding above the max value
-        let padding = max(Int(Double(data.maxValue) * 0.66), 1)
+        let padding = max(Int(Double(data.maxValue) * 0.33), 1)
         return 0...(data.maxValue + padding)
     }
 
@@ -324,12 +324,9 @@ struct BarChartView: View {
             return nil
         }
 
-        let origin = geometry[frame].origin
-        let location = CGPoint(
-            x: location.x - origin.x,
-            y: location.y - origin.y
-        )
-        guard let date: Date = proxy.value(atX: location.x) else {
+        let plotFrame = geometry[frame]
+        let adjustedX = max(0, min(location.x - plotFrame.origin.x, plotFrame.width))
+        guard let date: Date = proxy.value(atX: adjustedX) else {
             return nil
         }
         // `proxy.value(atX:)` returns a precise date at the tap location.

@@ -26,7 +26,7 @@ public enum ContentExtractor {
     public static func extractRelevantText(from content: String) throws -> String {
         let doc = try SwiftSoup.parse(content)
 
-        guard let body = doc.body(), body.children().count > 0 else {
+        guard let body = doc.body(), !body.children().isEmpty else {
             return content // Return as is
         }
 

@@ -1,0 +1,21 @@
+Qui est qui sur votre site Web ? Vous le savez désormais : les notifications push utilisent désormais des gravatars afin que vous puissiez voir qui a commenté ou interagi avec votre contenu. Le journal d’activités indique également quand votre site a été mis à jour à l’aide d’agents IA.
+
+Si vous pensiez que nos dernières mises à jour des statistiques étaient importantes, vous n’avez encore rien vu.
+
+- La date du jour est désormais incluse dans les intervalles comme « 7 derniers jours ». Nous avons également ajouté le nouvel intervalle « 14 derniers jours ».
+- Les dates incomplètes, y compris aujourd’hui, sont indiquées sur le graphique sous la forme d’une ligne en pointillés. Vous pouvez également les voir plus facilement dans l’affichage en graphique à barres.
+- En parlant de graphiques à barres, si vous appuyez sur une barre, les données de cette date s’affichent. Il est ainsi plus facile de faire défiler les données pour plusieurs jours. Aussi, lorsque vous appuyez sur une barre, la barre d’à côté ne sera plus sélectionnée.
+- Vous remarquerez peut-être des modifications visuelles comme un en-tête plus petit pour la carte Graphiques, une taille de police réduite dans les onglets et un espacement réduit ici et là. Une petite touche de minimalisme qui ne fait pas de mal.
+
+Et à propos, nous avons également apporté des modifications au Lecteur. (Soit dit en passant, aucune d’entre elles n’est liée à la lecture.)
+
+- Lorsque vous affichez une image dans une lightbox, balayer vers le bas vous permettra de la fermer, même lorsque vous faites un zoom avant.
+- Nous avons corrigé la couleur des liens dans les commentaires et en mode sombre dans les thèmes personnalisés. Stylé !
+- Vous pouvez afficher les galeries de médias en mode plein écran. Balayez simplement à droite ou à gauche pour consulter toutes les images.
+
+Et parce que nous avions encore un peu de temps libre, nous avons aussi corrigé quelques détails qui nous gênaient.
+
+- Nous avons mis à jour les icônes de flèche et l’espacement sur l’écran Notifications.
+- Dans Réglages d’article, la carte Partage sur les réseaux sociaux affiche uniquement les plateformes prises en charge par l’application.
+- Les nouveaux articles utilisent le format d’article par défaut au lieu de la version standard. Vous pouvez mettre à jour ce format dans les réglages de votre site.
+- Si votre site est auto-hébergé avec XML-RPC désactivé, vous pouvez voir les articles et les pages dans l’application. C’est assez important, croyez-nous sur parole.

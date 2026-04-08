@@ -3,10 +3,9 @@
 #import "RemotePostCategory.h"
 #import "RemotePostTerm.h"
 #import "NSMutableDictionary+Helpers.h"
-#import "NSString+Helpers.h"
-#import "WPMapFilterReduce.h"
-#import "DisplayableImageHelper.h"
+#import "NSString+WPKitNumericValueHack.h"
 
+@import WordPressShared;
 @import WordPressKitModels;
 @import NSObject_SafeExpectations;
 
@@ -289,7 +288,7 @@ static NSString * const RemoteOptionValueOrderByPostID = @"ID";
 #pragma mark - Private methods
 
 - (NSArray <RemotePost *> *)remotePostsFromXMLRPCArray:(NSArray *)xmlrpcArray {
-    return [xmlrpcArray wpkit_map:^id(NSDictionary *xmlrpcPost) {
+    return [xmlrpcArray wp_map:^id(NSDictionary *xmlrpcPost) {
         return [self remotePostFromXMLRPCDictionary:xmlrpcPost];
     }];
 }
@@ -314,7 +313,7 @@ static NSString * const RemoteOptionValueOrderByPostID = @"ID";
     post.authorID = [xmlrpcDictionary numberForKey:@"post_author"];
     post.status = [self statusForPostStatus:xmlrpcDictionary[@"post_status"] andDate:post.date];
     post.password = xmlrpcDictionary[@"post_password"];
-    if ([post.password wpkit_isEmpty]) {
+    if (post.password.length == 0) {
         post.password = nil;
     }
     post.parentID = [xmlrpcDictionary numberForKey:@"post_parent"];
@@ -343,7 +342,7 @@ static NSString * const RemoteOptionValueOrderByPostID = @"ID";
         post.pathForDisplayImage = post.postThumbnailPath;
     } else {
         // parse content for a suitable image.
-        post.pathForDisplayImage = [WPKitDisplayableImageHelper searchPostContentForImageToDisplay:post.content];
+        post.pathForDisplayImage = [DisplayableImageHelper searchPostContentForImageToDisplay:post.content];
     }
 
     return post;
@@ -365,18 +364,18 @@ static NSString * const RemoteOptionValueOrderByPostID = @"ID";
 }
 
 + (NSArray *)remoteCategoriesFromXMLRPCTermsArray:(NSArray *)terms {
-    return [[terms wpkit_filter:^BOOL(NSDictionary *category) {
+    return [[terms wp_filter:^BOOL(NSDictionary *category) {
         return [[category stringForKey:@"taxonomy"] isEqualToString:@"category"];
-    }] wpkit_map:^id(NSDictionary *category) {
+    }] wp_map:^id(NSDictionary *category) {
         return [self remoteCategoryFromXMLRPCDictionary:category];
     }];
 }
 
 + (NSArray<RemotePostTerm *> *)otherTermsFromXMLRPCTermsArray:(NSArray *)terms {
-    return [[terms wpkit_filter:^BOOL(NSDictionary *category) {
+    return [[terms wp_filter:^BOOL(NSDictionary *category) {
         return ![[category stringForKey:@"taxonomy"] isEqualToString:@"category"]
             && ![[category stringForKey:@"taxonomy"] isEqualToString:@"post_tag"];
-    }] wpkit_map:^id(NSDictionary *term) {
+    }] wp_map:^id(NSDictionary *term) {
         return [[RemotePostTerm alloc] initWithXMLRPCResponse:term];
     }];
 }
@@ -426,7 +425,7 @@ static NSString * const RemoteOptionValueOrderByPostID = @"ID";
         postParams[@"date_created_gmt"] = [NSDate date];
     }
     if (post.categories) {
-        NSArray *categoryNames = [post.categories wpkit_map:^id(RemotePostCategory *category) {
+        NSArray *categoryNames = [post.categories wp_map:^id(RemotePostCategory *category) {
             return category.name;
         }];
 

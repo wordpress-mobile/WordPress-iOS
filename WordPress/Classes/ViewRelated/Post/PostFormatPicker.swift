@@ -5,8 +5,10 @@ import WordPressUI
 
 @MainActor
 struct PostFormatPicker: View {
-    @State private var selection: String
-    @State private var formats: [String]
+    /// The currently selected format slug.
+    @State private var selection: String?
+    /// Sorted format slugs.
+    @State private var slugs: [String]
     @State private var isLoading = false
     @State private var error: Error?
 
@@ -17,15 +19,14 @@ struct PostFormatPicker: View {
 
     init(blog: Blog, currentFormat: String?, onSubmit: @escaping (String) -> Void) {
         self.blog = blog
-        let formats = blog.sortedPostFormatNames
-        self._formats = State(initialValue: formats)
-        self._selection = State(initialValue: blog.postFormatText(fromSlug: currentFormat) ?? "")
+        self._slugs = State(initialValue: blog.sortedPostFormats)
+        self._selection = State(initialValue: currentFormat)
         self.onSubmit = onSubmit
     }
 
     var body: some View {
         Group {
-            if formats.isEmpty {
+            if slugs.isEmpty {
                 if isLoading {
                     ProgressView()
                 } else if let error {
@@ -45,7 +46,7 @@ struct PostFormatPicker: View {
             await refreshPostFormats()
         }
         .onAppear {
-            if formats.isEmpty {
+            if slugs.isEmpty {
                 refreshPostFormats()
             }
         }
@@ -59,12 +60,12 @@ struct PostFormatPicker: View {
 
     private var formView: some View {
         Form {
-            ForEach(formats, id: \.self) { format in
-                Button(action: { selectFormat(format) }) {
+            ForEach(slugs, id: \.self) { slug in
+                Button(action: { selectFormat(slug) }) {
                     HStack {
-                        Text(format)
+                        Text(blog.postFormatText(fromSlug: slug) ?? slug)
                         Spacer()
-                        if selection == format {
+                        if selection == slug {
                             Image(systemName: "checkmark")
                                 .fontWeight(.medium)
                                 .foregroundColor(Color(UIAppColor.primary))
@@ -84,9 +85,9 @@ struct PostFormatPicker: View {
         )
     }
 
-    private func selectFormat(_ format: String) {
-        selection = format
-        onSubmit(format)
+    private func selectFormat(_ slug: String) {
+        selection = slug
+        onSubmit(slug)
     }
 
     private func refreshPostFormats() async {
@@ -96,10 +97,10 @@ struct PostFormatPicker: View {
         let blogService = BlogService(coreDataStack: ContextManager.shared)
         do {
             try await blogService.syncPostFormats(for: blog)
-            self.formats = blog.sortedPostFormatNames
+            self.slugs = blog.sortedPostFormats
         } catch {
             self.error = error
-            if !formats.isEmpty {
+            if !slugs.isEmpty {
                 Notice(error: error, title: Strings.errorTitle).post()
             }
         }

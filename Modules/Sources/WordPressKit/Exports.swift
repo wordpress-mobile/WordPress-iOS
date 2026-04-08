@@ -1,6 +1,5 @@
 @_exported import WordPressKitModels
 @_exported import WordPressKitObjC
-@_exported import WordPressKitObjCUtils
 
 extension ServiceRemoteWordPressComREST {
     public var wordPressComRestApi: WordPressComRestApi {

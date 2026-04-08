@@ -298,7 +298,7 @@ class NotificationSettingDetailsViewController: UITableViewController {
 
     // MARK: - Service Helpers
     private func saveSettingsIfNeeded() {
-        if newValues.count == 0 || settings == nil {
+        if newValues.isEmpty || settings == nil {
             return
         }
 

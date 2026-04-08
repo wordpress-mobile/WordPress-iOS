@@ -18,7 +18,7 @@ class RemoteFeatureFlagTests: XCTestCase {
         exp.expectedFulfillmentCount = 2
 
         mock.deviceIdCallback = {
-            deviceId == "" ? deviceId = $0 : XCTAssertEqual(deviceId, $0)
+            deviceId.isEmpty ? deviceId = $0 : XCTAssertEqual(deviceId, $0)
             exp.fulfill()
         }
 

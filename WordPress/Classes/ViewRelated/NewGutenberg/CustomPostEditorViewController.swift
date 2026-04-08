@@ -27,10 +27,11 @@ class CustomPostEditorViewController: PostGBKEditorViewController {
 
     init(
         blog: Blog,
-        service: WordPressAPIInternal.PostService,
+        wpService: WpService,
         client: WordPressClient,
         post: AnyPostWithEditContext?,
         details: PostTypeDetailsWithEditContext,
+        initialParams: PostCreateParams? = nil,
         completion: @escaping () -> Void
     ) {
         self.client = client
@@ -38,7 +39,8 @@ class CustomPostEditorViewController: PostGBKEditorViewController {
         self.completion = completion
 
         self.editorService = CustomPostEditorService(
-            blog: blog, post: post, details: details, client: client, service: service
+            blog: blog, post: post, details: details, client: client, wpService: wpService,
+            initialParams: initialParams
         )
 
         let postTypeDetails = PostTypeDetails(
@@ -49,8 +51,8 @@ class CustomPostEditorViewController: PostGBKEditorViewController {
         super.init(
             postId: post.map { Int($0.id) },
             postType: postTypeDetails,
-            title: post?.title?.raw,
-            content: post?.content.raw,
+            title: post?.title?.raw ?? initialParams?.title,
+            content: post?.content.raw ?? initialParams?.content,
             status: (post?.status ?? .draft).description,
             blog: blog
         )
@@ -131,11 +133,7 @@ private extension CustomPostEditorViewController {
     }
 
     func rightBarButtonItems() -> [UIBarButtonItem] {
-        var children: [UIMenuElement] = [editorModeToggle()]
-        if FeatureFlag.cptPostSettings.enabled {
-            children.append(settingsAction())
-        }
-        children.append(contentsOf: [helpAction(), feedbackAction()])
+        var children: [UIMenuElement] = [editorModeToggle(), settingsAction(), helpAction(), feedbackAction()]
 
         if post?.status ?? .draft == .draft {
             let menu = UIDeferredMenuElement.uncached { [weak self] resolve in
@@ -167,11 +165,7 @@ private extension CustomPostEditorViewController {
         if post?.status ?? .draft == .draft {
             return UIAction(title: PostEditorStrings.publish) { [weak self] _ in
                 Task {
-                    if FeatureFlag.cptPostSettings.enabled {
-                        await self?.showPublishingSheet()
-                    } else {
-                        await self?.save(publish: true)
-                    }
+                    await self?.showPublishingSheet()
                 }
             }
         } else {

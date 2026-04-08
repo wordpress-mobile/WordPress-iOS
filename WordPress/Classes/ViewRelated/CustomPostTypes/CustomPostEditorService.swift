@@ -27,7 +27,7 @@ class CustomPostEditorService {
     private var state: State
     let details: PostTypeDetailsWithEditContext
     let client: WordPressClient
-    let service: WordPressAPIInternal.PostService
+    let wpService: WpService
     let taxonomies: [SiteTaxonomy]
     private var initialSettings: PostSettings
 
@@ -68,16 +68,19 @@ class CustomPostEditorService {
         post: AnyPostWithEditContext?,
         details: PostTypeDetailsWithEditContext,
         client: WordPressClient,
-        service: WordPressAPIInternal.PostService
+        wpService: WpService,
+        initialParams: PostCreateParams? = nil
     ) {
         if let post {
             self.state = .existingPost(post)
+        } else if let initialParams {
+            self.state = .newPost(initialParams)
         } else {
             self.state = .newPost(PostCreateParams.defaultParams(from: blog))
         }
         self.details = details
         self.client = client
-        self.service = service
+        self.wpService = wpService
 
         let capabilities = PostSettingsCapabilities(from: details)
         // At the moment, category & tags are separated from custom taxonomies. We can unify them as taxonomies later,
@@ -192,7 +195,7 @@ class CustomPostEditorService {
         guard try await !hasBeenModified(post: post) else { throw PostUpdateError.conflicts }
 
         let endpoint = details.toPostEndpointType()
-        let updatedPost = try await service.updatePost(endpointType: endpoint, postId: post.id, params: params)
+        let updatedPost = try await wpService.posts().updatePost(endpointType: endpoint, postId: post.id, params: params)
         state = .existingPost(updatedPost)
         initialSettings = settings
 
@@ -203,7 +206,7 @@ class CustomPostEditorService {
     @discardableResult
     private func create(params: PostCreateParams) async throws -> AnyPostWithEditContext {
         let endpoint = details.toPostEndpointType()
-        let createdPost = try await service.createPost(endpointType: endpoint, params: params)
+        let createdPost = try await wpService.posts().createPost(endpointType: endpoint, params: params)
         state = .existingPost(createdPost)
         initialSettings = settings
         return createdPost
@@ -230,6 +233,14 @@ extension CustomPostEditorService {
     func inspectPendingSettings() -> PostSettings? {
         if case .existingPost(_, let pending) = state {
             return pending
+        }
+        return nil
+    }
+
+    // Used in unit tests.
+    func inspectCreateParams() -> PostCreateParams? {
+        if case .newPost(let params) = state {
+            return params
         }
         return nil
     }

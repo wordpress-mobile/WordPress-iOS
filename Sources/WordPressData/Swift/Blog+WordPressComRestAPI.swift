@@ -14,8 +14,7 @@ extension Blog {
     }
 
     /// Whether the blog is hosted on WordPress.com or connected through Jetpack.
-    @objc
-    public func isAccessibleThroughWPCom() -> Bool {
+    public var isAccessibleThroughWPCom: Bool {
         wordPressComRestApi != nil
     }
 }

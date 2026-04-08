@@ -133,13 +133,6 @@ final class StatsViewModel: ObservableObject, CardConfigurationDelegate {
 
     // MARK: - Today Card
 
-    var isTodayFocused: Bool {
-        if let subrange = dateRange.subrange {
-            return subrange.dateInterval.contains(Date.now)
-        }
-        return dateRange.range.preset == .today
-    }
-
     func handleTodayCardTap() {
         let calendar = dateRange.range.calendar
         let now = Date.now
@@ -190,12 +183,16 @@ final class StatsViewModel: ObservableObject, CardConfigurationDelegate {
                 context: context
             )
         case .chart(let configuration):
-            viewModel = ChartCardViewModel(
+            let chartVM = ChartCardViewModel(
                 configuration: configuration,
                 dateRange: effectiveDateRange,
                 service: context.service,
                 tracker: context.tracker
             )
+            chartVM.onDateRangeChanged = { [weak self] newRange in
+                self?.dateRange = newRange
+            }
+            viewModel = chartVM
         case .topList(let configuration):
             viewModel = TopListViewModel(
                 configuration: configuration,

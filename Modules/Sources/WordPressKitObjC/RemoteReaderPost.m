@@ -1,12 +1,10 @@
 #import "RemoteReaderPost.h"
 #import "RemoteSourcePostAttribution.h"
 #import "RemoteReaderCrossPostMeta.h"
-#import "NSString+Helpers.h"
-#import "NSString+XMLExtensions.h"
+#import "NSString+WPKitNumericValueHack.h"
 #import "WPKitDateUtils.h"
-#import "WPMapFilterReduce.h"
-#import "DisplayableImageHelper.h"
 
+@import WordPressShared;
 @import WordPressKitModels;
 @import NSObject_SafeExpectations;
 
@@ -101,7 +99,7 @@ static const NSUInteger ReaderPostTitleLength = 30;
     self.authorID = [authorDict numberForKey:PostRESTKeyID];
     self.author = [self stringOrEmptyString:[authorDict stringForKey:PostRESTKeyNiceName]]; // typically the author's screen name
     self.authorAvatarURL = [self stringOrEmptyString:[authorDict stringForKey:PostRESTKeyAvatarURL]];
-    self.authorDisplayName = [[self stringOrEmptyString:[authorDict stringForKey:PostRESTKeyName]] wpkit_stringByDecodingXMLCharacters]; // Typically the author's given name
+    self.authorDisplayName = [[self stringOrEmptyString:[authorDict stringForKey:PostRESTKeyName]] stringByDecodingXMLCharacters]; // Typically the author's given name
     self.authorEmail = [self authorEmailFromAuthorDictionary:authorDict];
     self.authorURL = [self stringOrEmptyString:[authorDict stringForKey:PostRESTKeyURL]];
     self.siteIconURL = [self stringOrEmptyString:[dict stringForKeyPath:@"site_icon.img"]];
@@ -283,8 +281,8 @@ static const NSUInteger ReaderPostTitleLength = 30;
         primaryTagSlug = editorialSlug;
     }
 
-    primaryTag = [primaryTag wpkit_stringByDecodingXMLCharacters];
-    secondaryTag = [secondaryTag wpkit_stringByDecodingXMLCharacters];
+    primaryTag = [primaryTag stringByDecodingXMLCharacters];
+    secondaryTag = [secondaryTag stringByDecodingXMLCharacters];
 
     return @{
              TagKeyPrimary:primaryTag,
@@ -534,7 +532,7 @@ static const NSUInteger ReaderPostTitleLength = 30;
 
 - (NSString *)suitableImageFromPostContent:(NSDictionary *)dict {
     NSString *content = [dict stringForKey:PostRESTKeyContent];
-    NSString *imageToDisplay = [WPKitDisplayableImageHelper searchPostContentForImageToDisplay:content];
+    NSString *imageToDisplay = [DisplayableImageHelper searchPostContentForImageToDisplay:content];
     return [self stringOrEmptyString:imageToDisplay];
 }
 
@@ -660,7 +658,7 @@ static const NSUInteger ReaderPostTitleLength = 30;
 
 - (NSArray *)slugsFromDiscoverPostTaxonomies:(NSArray *)discoverPostTaxonomies
 {
-    return [discoverPostTaxonomies wpkit_map:^id(NSDictionary *dict) {
+    return [discoverPostTaxonomies wp_map:^id(NSDictionary *dict) {
         return [dict stringForKey:PostRESTKeySlug];
     }];
 }
@@ -720,7 +718,7 @@ static const NSUInteger ReaderPostTitleLength = 30;
  */
 - (NSString *)titleFromSummary:(NSString *)summary
 {
-    return [summary wpkit_stringByEllipsizingWithMaxLength:ReaderPostTitleLength preserveWords:YES];
+    return [summary wp_stringByEllipsizingWithMaxLength:ReaderPostTitleLength preserveWords:YES];
 }
 
 

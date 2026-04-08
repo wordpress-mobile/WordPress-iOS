@@ -146,7 +146,7 @@ import WordPressKit
     ///   - uploadOpObjectIDs: Array of object IDs
     ///
     fileprivate func logError(_ errorString: String, uploadOpObjectIDs: [NSManagedObjectID]) {
-        guard uploadOpObjectIDs.count > 0 else {
+        guard !uploadOpObjectIDs.isEmpty else {
             return
         }
         DDLogError("\(errorString)")

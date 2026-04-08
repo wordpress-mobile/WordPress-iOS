@@ -25,7 +25,7 @@ struct MockStatsServiceTests {
         print("elapsed: \((CFAbsoluteTimeGetCurrent() - startTime) * 1000) ms")
 
         // THEN
-        #expect(response.items.count > 0)
+        #expect(!response.items.isEmpty)
         #expect(response.items.count <= 40, "Should return maximum 40 items")
 
         // THEN all items are posts
@@ -56,6 +56,6 @@ struct MockStatsServiceTests {
         print("elapsed: \((CFAbsoluteTimeGetCurrent() - startTime) * 1000) ms")
 
         // THEN - Basic validations
-        #expect(response.metrics.count > 0, "Should return at least one data point")
+        #expect(!response.metrics.isEmpty, "Should return at least one data point")
     }
 }

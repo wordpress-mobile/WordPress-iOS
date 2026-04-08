@@ -1,6 +1,7 @@
 import Foundation
 import CoreData
 
+@objc(BloggingPrompt)
 public class BloggingPrompt: NSManagedObject {
 
     @nonobjc public class func fetchRequest() -> NSFetchRequest<BloggingPrompt> {

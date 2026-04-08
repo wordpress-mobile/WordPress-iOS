@@ -6,7 +6,7 @@ This file provides guidance to AI agents when working with code in this reposito
 
 WordPress for iOS is the official mobile app for WordPress that lets users create, manage, and publish content to their WordPress websites directly from their iPhone or iPad.
 
-Minimum requires iOS version is iOS 16.
+Minimum requires iOS version is iOS 17. The latest iOS version is iOS 26.
 
 ## High-Level Architecture
 
@@ -76,6 +76,7 @@ To automatically sign in to the app on an iOS simulator, see @docs/simulator-sig
 - Follow the standard formatting practices enforced by SwiftLint
 - Don't create `body` for `View` that are too long
 - Use semantics text sizes like `.headline`
+- Use swift-log (see the `WordPress/Classes/System/Logging.swift` file) instead of CocoaLumberjack (`DDLogError`, etc)
 
 ## Development Workflow
 - Branch from `trunk` (main branch)

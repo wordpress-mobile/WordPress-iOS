@@ -5,7 +5,6 @@
 
 @import WordPressData;
 @import WordPressShared;
-@import Reachability;
 
 @interface StatsViewController () <NoResultsViewControllerDelegate>
 
@@ -52,7 +51,7 @@
         self.title = self.blog.settings.name;
     }
 
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(reachabilityChanged:) name:kTMReachabilityChangedNotification object:ReachabilityUtils.internetReachability];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(reachabilityChanged:) name:NSNotification.ReachabilityUpdatedNotification object:nil];
 
     [self registerForTraitChanges:@[UITraitHorizontalSizeClass.class] withAction:@selector(updateNavigationTitle)];
 
@@ -181,8 +180,7 @@
 
 - (void)reachabilityChanged:(NSNotification *)notification
 {
-    Reachability *reachability = notification.object;
-    if (reachability.isReachable) {
+    if ([ReachabilityUtils isInternetReachable]) {
         [self initStats];
     }
 }

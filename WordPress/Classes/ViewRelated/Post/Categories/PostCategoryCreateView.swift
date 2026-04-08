@@ -120,6 +120,7 @@ struct PostCategoryPickerHostingView: UIViewControllerRepresentable {
         }
 
         func postCategoriesViewController(_ controller: PostCategoriesViewController, didUpdateSelectedCategories categories: NSSet) {
+            // swiftlint:disable:next empty_count
             if categories.count == 0 {
                 onSelectionChanged(nil)
             }

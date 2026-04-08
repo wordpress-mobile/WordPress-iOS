@@ -74,7 +74,7 @@ extension Blog {
         case .activity:
             return supportsRestAPI && isAdmin
         case .mentions, .xposts:
-            return isAccessibleThroughWPCom()
+            return isAccessibleThroughWPCom
         case .pushNotifications:
             return isDefaultAccount
         case .themeBrowsing, .menus, .homepageSettings:

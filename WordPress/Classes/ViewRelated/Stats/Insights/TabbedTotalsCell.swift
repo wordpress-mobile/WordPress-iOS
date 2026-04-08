@@ -118,7 +118,7 @@ private extension TabbedTotalsCell {
 
     func toggleFilterTabBar() {
         // If none of the tabs have data, hide the FilterTabBar.
-        let noTabsData = (tabsData.first { $0.dataRows.count > 0 }) == nil
+        let noTabsData = (tabsData.first { !$0.dataRows.isEmpty }) == nil
         filterTabBar.isHidden = noTabsData
     }
 
@@ -189,7 +189,7 @@ private extension TabbedTotalsCell {
         Style.configureLabelAsSubtitle(itemSubtitleLabel)
         Style.configureLabelAsSubtitle(dataSubtitleLabel)
 
-        let noData = tabData.dataRows.count == 0
+        let noData = tabData.dataRows.isEmpty
         totalCountView.isHidden = !showTotalCount || noData
         labelsStackView.isHidden = noData
     }

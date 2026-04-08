@@ -7,7 +7,7 @@
 
 @import WordPressShared;
 
-NSUInteger const WPTopLevelHierarchicalCommentsPerPage = 20;
+NSUInteger const WPTopLevelHierarchicalCommentsPerPage = 40;
 NSInteger const  WPNumberOfCommentsToSync = 100;
 static NSTimeInterval const CommentsRefreshTimeoutInSeconds = 60 * 5; // 5 minutes
 

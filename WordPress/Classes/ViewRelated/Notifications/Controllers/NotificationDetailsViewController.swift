@@ -60,11 +60,11 @@ class NotificationDetailsViewController: UIViewController, NoResultsViewHost {
 
     /// Previous NavBar Navigation Button
     ///
-    var previousNavigationButton: UIButton!
+    var previousNavigationButton: UIBarButtonItem!
 
     /// Next NavBar Navigation Button
     ///
-    var nextNavigationButton: UIButton!
+    var nextNavigationButton: UIBarButtonItem!
 
     /// Arrows Navigation Datasource
     ///
@@ -213,20 +213,8 @@ class NotificationDetailsViewController: UIViewController, NoResultsViewHost {
     }
 
     fileprivate func enableNavigationRightBarButtonItems() {
-
-        // https://github.com/wordpress-mobile/WordPress-iOS/issues/6662#issue-207316186
-        let buttonSize = CGFloat(24)
-        let buttonSpacing = CGFloat(12)
-
-        let width = buttonSize + buttonSpacing + buttonSize
-        let height = buttonSize
-        let buttons = UIStackView(arrangedSubviews: [nextNavigationButton, previousNavigationButton])
-        buttons.axis = .horizontal
-        buttons.spacing = buttonSpacing
-        buttons.frame = CGRect(x: 0, y: 0, width: width, height: height)
-
         UIView.performWithoutAnimation {
-            navigationItem.rightBarButtonItem = UIBarButtonItem(customView: buttons)
+            navigationItem.rightBarButtonItems = [previousNavigationButton, nextNavigationButton]
         }
 
         previousNavigationButton.isEnabled = shouldEnablePreviousButton
@@ -324,16 +312,8 @@ extension NotificationDetailsViewController {
 
         navigationItem.backBarButtonItem = backButton
 
-        let next = UIButton(type: .custom)
-        next.setImage(.gridicon(.arrowUp), for: .normal)
-        next.addTarget(self, action: #selector(nextNotificationWasPressed), for: .touchUpInside)
-
-        let previous = UIButton(type: .custom)
-        previous.setImage(.gridicon(.arrowDown), for: .normal)
-        previous.addTarget(self, action: #selector(previousNotificationWasPressed), for: .touchUpInside)
-
-        previousNavigationButton = previous
-        nextNavigationButton = next
+        nextNavigationButton = UIBarButtonItem(image: UIImage(systemName: "chevron.up"), style: .plain, target: self, action: #selector(nextNotificationWasPressed))
+        previousNavigationButton = UIBarButtonItem(image: UIImage(systemName: "chevron.down"), style: .plain, target: self, action: #selector(previousNotificationWasPressed))
 
         enableNavigationRightBarButtonItems()
     }

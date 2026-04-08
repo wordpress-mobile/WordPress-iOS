@@ -72,7 +72,7 @@ class InvitePersonViewController: UITableViewController {
                 return
             }
 
-            if blog.inviteLinks?.count == 0 {
+            if blog.inviteLinks?.isEmpty == true {
                 generateShareCell.accessoryView = inviteActivityView
             } else {
                 disableLinksCell.accessoryView = inviteActivityView
@@ -97,7 +97,7 @@ class InvitePersonViewController: UITableViewController {
 
     private var currentInviteLink: InviteLinks? {
         let links = sortedInviteLinks
-        guard links.count > 0 && selectedInviteLinkIndex < links.count else {
+        guard !links.isEmpty && selectedInviteLinkIndex < links.count else {
             return nil
         }
         return links[selectedInviteLinkIndex]
@@ -205,7 +205,7 @@ class InvitePersonViewController: UITableViewController {
             return super.tableView(tableView, numberOfRowsInSection: section)
         }
         // One cell for no cached inviteLinks. Otherwise 4.
-        return blog.inviteLinks?.count == 0 ? 1 : 4
+        return blog.inviteLinks?.isEmpty == true ? 1 : 4
     }
 
     override func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
@@ -568,7 +568,7 @@ private extension InvitePersonViewController {
     }
 
     func refreshGenerateShareCell() {
-        if blog.inviteLinks?.count == 0 {
+        if blog.inviteLinks?.isEmpty == true {
             generateShareCell.textLabel?.text = NSLocalizedString("Generate new link", comment: "Title. A call to action to generate a new invite link.")
             generateShareCell.textLabel?.font = WPStyleGuide.tableviewTextFont()
         } else {
@@ -737,7 +737,7 @@ private extension InvitePersonViewController {
         }
         switch row {
         case .generateShare:
-            if blog.inviteLinks?.count == 0 {
+            if blog.inviteLinks?.isEmpty == true {
                 generateInviteLinks()
             } else {
                 shareInviteLink()

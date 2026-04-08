@@ -363,7 +363,8 @@ private extension SiteStatsPeriodViewModel {
         let likesData = intervalData(summaryType: .likes)
         // If Summary Likes is still loading, show dashes (instead of 0)
         // to indicate it's still loading.
-        let likesLoadingStub = likesData.count > 0 ? nil : (store.isFetchingSummary ? "----" : nil)
+        // swiftlint:disable:next empty_count
+        let likesLoadingStub = likesData.count != 0 ? nil : (store.isFetchingSummary ? "----" : nil)
         let likesTabData = OverviewTabData(tabTitle: StatSection.periodOverviewLikes.tabTitle,
                                            tabData: likesData.count,
                                            tabDataStub: likesLoadingStub,

@@ -19,7 +19,6 @@ public enum FeatureFlag: Int, CaseIterable {
     case compliancePopover
     case googleDomainsCard
     case voiceToContent
-    case allowApplicationPasswords
     case selfHostedSiteUserManagement
     case readerGutenbergCommentComposer
     case pluginManagementOverhaul
@@ -29,7 +28,6 @@ public enum FeatureFlag: Int, CaseIterable {
     case nativeBlockInserter
     case statsAds
     case customPostTypes
-    case cptPostSettings
     case cptPostsAndPages
 
     /// Returns a boolean indicating if the feature is enabled.
@@ -71,8 +69,6 @@ public enum FeatureFlag: Int, CaseIterable {
             return false
         case .voiceToContent:
             return app == .jetpack && BuildConfiguration.current.isInternal
-        case .allowApplicationPasswords:
-            return false
         case .selfHostedSiteUserManagement:
             return true
         case .readerGutenbergCommentComposer:
@@ -93,8 +89,6 @@ public enum FeatureFlag: Int, CaseIterable {
         case .statsAds:
             return BuildConfiguration.current == .debug
         case .customPostTypes:
-            return BuildConfiguration.current == .debug
-        case .cptPostSettings:
             return BuildConfiguration.current == .debug
         case .cptPostsAndPages:
             return BuildConfiguration.current == .debug
@@ -133,7 +127,6 @@ extension FeatureFlag {
         case .compliancePopover: "Compliance Popover"
         case .googleDomainsCard: "Google Domains Promotional Card"
         case .voiceToContent: "Voice to Content"
-        case .allowApplicationPasswords: "Allow creating Application Passwords"
         case .selfHostedSiteUserManagement: "Self-hosted Site User Management"
         case .pluginManagementOverhaul: "Plugin Management Overhaul"
         case .readerGutenbergCommentComposer: "Gutenberg Comment Composer"
@@ -143,7 +136,6 @@ extension FeatureFlag {
         case .nativeBlockInserter: "Native Block Inserter"
         case .statsAds: "Stats Ads Tab"
         case .customPostTypes: "Custom Post Types"
-        case .cptPostSettings: "Custom Post Types: Post Settings"
         case .cptPostsAndPages: "Custom Post Types: Posts and Pages"
         }
     }
@@ -156,15 +148,7 @@ extension FeatureFlag: OverridableFlag {
     }
 
     var key: String {
-        let key: String
-        switch self {
-        case .allowApplicationPasswords:
-            // This feature toggle description is already shipped and used in the production.
-            // We want to keep using the same key, but change the description.
-            key = "Application Passwords for self-hosted sites"
-        default:
-            key = String(describing: self)
-        }
+        let key = String(describing: self)
         return "ff-override-\(key)"
     }
 }

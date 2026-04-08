@@ -1,5 +1,5 @@
 import Foundation
-import WordPressKitObjCUtils
+import WordPressShared
 
 /// This is an extension to NSString that provides logic to summarize HTML content,
 /// and convert HTML into plain text.
@@ -20,7 +20,7 @@ extension NSString {
             .strippingShortcodes()
             .makePlainText()
             .trimmingCharacters(in: characterSet)
-            .wpkit_stringByEllipsizing(withMaxLength: NSString.PostDerivedSummaryLength, preserveWords: true)
+            .wp_stringByEllipsizing(withMaxLength: NSString.PostDerivedSummaryLength, preserveWords: true)
     }
 }
 
@@ -28,8 +28,8 @@ private extension String {
     func makePlainText() -> String {
         let characterSet = NSCharacterSet.whitespacesAndNewlines
 
-        return self.wpkit_stringByStrippingHTML()
-            .wpkit_stringByDecodingXMLCharacters()
+        return self.strippingHTML()
+            .stringByDecodingXMLCharacters()
             .trimmingCharacters(in: characterSet)
     }
 

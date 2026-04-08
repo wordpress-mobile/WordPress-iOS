@@ -83,7 +83,7 @@ public class Post: AbstractPost {
 
             let matchingCategories = blogCategories.filter({ return $0.categoryName == categoryName })
 
-            if matchingCategories.count > 0 {
+            if !matchingCategories.isEmpty {
                 newCategories = newCategories.union(matchingCategories)
             }
         }
@@ -215,7 +215,7 @@ public class Post: AbstractPost {
     // MARK: - BasePost
 
     override public func contentPreviewForDisplay() -> String {
-        if let excerpt = mt_excerpt, excerpt.count > 0 {
+        if let excerpt = mt_excerpt, !excerpt.isEmpty {
             if let preview = PostPreviewCache.shared.excerpt[excerpt] {
                 return preview
             }
@@ -240,7 +240,7 @@ public class Post: AbstractPost {
             .stringByDecodingXMLCharacters()
             .strippingHTML()
 
-        if title.count == 0 && !hasRemote() && contentPreviewForDisplay().count == 0 {
+        if title.isEmpty && !hasRemote() && contentPreviewForDisplay().isEmpty {
             title = NSLocalizedString("(no title)", comment: "Lets a user know that a local draft does not have a title.")
         }
 

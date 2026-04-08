@@ -275,7 +275,7 @@ extension RegisterDomainDetailsViewController {
             }
             switch field {
             case .country:
-                if viewModel.countryNames.count > 0 {
+                if !viewModel.countryNames.isEmpty {
                     showItemSelectionPage(onSelectionAt: indexPath,
                                           title: Localized.ContactInformation.country,
                                           items: viewModel.countryNames)
@@ -289,7 +289,7 @@ extension RegisterDomainDetailsViewController {
             case .addNewAddressLine:
                 viewModel.replaceAddNewAddressLine()
             case .state:
-                if viewModel.stateNames.count > 0 {
+                if !viewModel.stateNames.isEmpty {
                     showItemSelectionPage(onSelectionAt: indexPath,
                                           title: Localized.Address.state,
                                           items: viewModel.stateNames)

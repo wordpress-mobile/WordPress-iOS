@@ -28,7 +28,7 @@ struct GutenbergNetworkRequest {
     }
 
     func request(completion: @escaping CompletionHandler) {
-        if blog.isAccessibleThroughWPCom(), let dotComID = blog.dotComID {
+        if blog.isAccessibleThroughWPCom, let dotComID = blog.dotComID {
             switch method {
             case .get:
                 dotComGetRequest(with: dotComID, completion: completion)

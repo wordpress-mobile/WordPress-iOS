@@ -3,10 +3,9 @@
 #import "RemotePostCategory.h"
 #import "RemotePostTerm.h"
 #import "FilePart.h"
-#import "WPMapFilterReduce.h"
-#import "DisplayableImageHelper.h"
 #import "NSString+Helpers.h"
 
+@import WordPressShared;
 @import WordPressKitModels;
 @import NSObject_SafeExpectations;
 
@@ -385,7 +384,7 @@ static NSString * const RemoteOptionValueOrderByPostID = @"ID";
 #pragma mark - Private methods
 
 - (NSArray *)remotePostsFromJSONArray:(NSArray *)jsonPosts {
-    return [jsonPosts wpkit_map:^id(NSDictionary *jsonPost) {
+    return [jsonPosts wp_map:^id(NSDictionary *jsonPost) {
         return [self remotePostFromJSONDictionary:jsonPost];
     }];
 }
@@ -418,7 +417,7 @@ static NSString * const RemoteOptionValueOrderByPostID = @"ID";
     post.permalinkTemplateURL = [jsonPost stringForKeyPath:@"other_URLs.permalink_URL"];
     post.status = jsonPost[@"status"];
     post.password = jsonPost[@"password"];
-    if ([post.password wpkit_isEmpty]) {
+    if (post.password.length == 0) {
         post.password = nil;
     }
     post.parentID = [jsonPost numberForKeyPath:@"parent.ID"];
@@ -474,9 +473,9 @@ static NSString * const RemoteOptionValueOrderByPostID = @"ID";
         post.pathForDisplayImage = post.postThumbnailPath;
     } else {
         // parse contents for a suitable image
-        post.pathForDisplayImage = [WPKitDisplayableImageHelper searchPostContentForImageToDisplay:post.content];
+        post.pathForDisplayImage = [DisplayableImageHelper searchPostContentForImageToDisplay:post.content];
         if ([post.pathForDisplayImage length] == 0) {
-            post.pathForDisplayImage = [WPKitDisplayableImageHelper searchPostAttachmentsForImageToDisplay:[jsonPost dictionaryForKey:@"attachments"] existingInContent:post.content];
+            post.pathForDisplayImage = [DisplayableImageHelper searchPostAttachmentsForImageToDisplay:[jsonPost dictionaryForKey:@"attachments"] existingInContent:post.content];
         }
     }
 
@@ -564,7 +563,7 @@ static NSString * const RemoteOptionValueOrderByPostID = @"ID";
 }
 
 - (NSArray *)metadataForPost:(RemotePost *)post {
-    return [post.metadata wpkit_map:^id(NSDictionary *meta) {
+    return [post.metadata wp_map:^id(NSDictionary *meta) {
         NSNumber *metaID = [meta objectForKey:@"id"];
         NSString *metaValue = [meta objectForKey:@"value"];
         NSString *metaKey = [meta objectForKey:@"key"];
@@ -585,7 +584,7 @@ static NSString * const RemoteOptionValueOrderByPostID = @"ID";
 }
 
 + (NSArray *)remoteCategoriesFromJSONArray:(NSArray *)jsonCategories {
-    return [jsonCategories wpkit_map:^id(NSDictionary *jsonCategory) {
+    return [jsonCategories wp_map:^id(NSDictionary *jsonCategory) {
         return [self remoteCategoryFromJSONDictionary:jsonCategory];
     }];
 }
@@ -635,7 +634,7 @@ static NSString * const RemoteOptionValueOrderByPostID = @"ID";
                                                  postID:(NSNumber *)postID
                                                  siteID:(NSNumber *)siteID
 {
-    return [jsonUsers wpkit_map:^id(NSDictionary *jsonUser) {
+    return [jsonUsers wp_map:^id(NSDictionary *jsonUser) {
         return [[RemoteLikeUser alloc] initWithDictionary:jsonUser postID:postID siteID:siteID];
     }];
 }

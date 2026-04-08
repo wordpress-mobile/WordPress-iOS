@@ -15,6 +15,12 @@ class ReaderSiteHeaderView: ReaderBaseHeaderView, ReaderStreamHeader {
         })
     }()
 
+    private let separatorView: UIView = {
+        let view = UIView()
+        view.backgroundColor = .separator
+        return view
+    }()
+
     override init(frame: CGRect) {
         super.init(frame: frame)
 
@@ -22,6 +28,15 @@ class ReaderSiteHeaderView: ReaderBaseHeaderView, ReaderStreamHeader {
         let view = UIView.embedSwiftUIView(header)
         contentView.addSubview(view)
         view.pinEdges()
+
+        addSubview(separatorView)
+        separatorView.translatesAutoresizingMaskIntoConstraints = false
+        NSLayoutConstraint.activate([
+            separatorView.leadingAnchor.constraint(equalTo: leadingAnchor),
+            separatorView.trailingAnchor.constraint(equalTo: trailingAnchor),
+            separatorView.bottomAnchor.constraint(equalTo: bottomAnchor, constant: -8),
+            separatorView.heightAnchor.constraint(equalToConstant: 1)
+        ])
     }
 
     required init?(coder: NSCoder) {
@@ -75,12 +90,19 @@ private struct ReaderSiteHeader: View {
                 countsDisplay
             }
             HStack {
-                ReaderFollowButton(isFollowing: viewModel.isFollowingSite,
-                                   isEnabled: viewModel.isFollowEnabled,
-                                   size: .regular) {
-                    viewModel.updateFollowStatus()
+                HStack(spacing: 12) {
+                    ReaderFollowButton(isFollowing: viewModel.isFollowingSite,
+                                       isEnabled: viewModel.isFollowEnabled && !viewModel.isFollowLoading,
+                                       size: .regular) {
+                        viewModel.updateFollowStatus()
+                    }
+                    if viewModel.isFollowLoading {
+                        ProgressView()
+                            .scaleEffect(0.9, anchor: .center)
+                    }
                 }
-                if let site = viewModel.site, site.canManageNotifications {
+
+                if viewModel.isFollowingSite, let site = viewModel.site, site.canManageNotifications, !viewModel.isFollowLoading {
                     ReaderSubscriptionNotificationSettingsButton(site: site)
                         .padding(.horizontal, 2)
                         .padding(.vertical, 8)
@@ -131,6 +153,7 @@ private final class ReaderSiteHeaderViewModel: ObservableObject {
     @Published var followerCount: String
     @Published var isFollowingSite: Bool
     @Published var isFollowEnabled: Bool
+    @Published var isFollowLoading: Bool = false
 
     private let onFollowTap: (_ completion: @escaping () -> Void) -> Void
 
@@ -153,9 +176,11 @@ private final class ReaderSiteHeaderViewModel: ObservableObject {
     }
 
     func updateFollowStatus() {
-        isFollowEnabled = false
+        isFollowLoading = true
         onFollowTap { [weak self] in
-            self?.isFollowEnabled = true
+            withAnimation {
+                self?.isFollowLoading = false
+            }
         }
     }
 }

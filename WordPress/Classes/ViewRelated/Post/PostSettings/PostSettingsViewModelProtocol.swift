@@ -1,4 +1,5 @@
 import Foundation
+import SwiftUI
 import UIKit
 import WordPressAPI
 import WordPressCore
@@ -20,6 +21,18 @@ enum PostSettingsRow {
     case jetpackNewsletterEmailOptions
 }
 
+/// Options that can appear in the "More Options" section of the post settings form.
+enum PostSettingsMoreOption: Identifiable {
+    case emailToSubscribers
+    case stickyPost
+    case pendingReview
+    case discussion
+    case postFormat
+    case parentPage
+
+    var id: Self { self }
+}
+
 /// The state of the social sharing section.
 enum PostSettingsSocialSharingSectionState {
     /// The initial prompt to set up connections.
@@ -36,6 +49,8 @@ enum PostSettingsSocialSharingSectionState {
 /// - `CustomPostSettingsViewModel` for REST API–backed custom post types
 @MainActor
 protocol PostSettingsViewModelProtocol: ObservableObject {
+    associatedtype ParentPagePickerDestination: View
+
     var blog: Blog { get }
     var capabilities: PostSettingsCapabilities { get }
     var isStandalone: Bool { get }
@@ -77,7 +92,6 @@ protocol PostSettingsViewModelProtocol: ObservableObject {
     var shouldShowStickyOption: Bool { get }
     var lastEditedText: String? { get }
     var postID: Int? { get }
-    var page: Page? { get }
     var hasRemote: Bool { get }
     var publishButtonTitle: String { get }
 
@@ -98,6 +112,34 @@ protocol PostSettingsViewModelProtocol: ObservableObject {
     func didSelectTerms(_ terms: [TagsViewModel.SelectedTerm], forTaxonomySlug: String)
     func showSocialSharingOptions()
     func showCategoriesPicker()
+    func parentPagePickerDestination() -> ParentPagePickerDestination?
+}
+
+// MARK: - Default Implementations
+
+extension PostSettingsViewModelProtocol {
+    var visibleMoreOptions: [PostSettingsMoreOption] {
+        var options: [PostSettingsMoreOption] = []
+        if shouldShow(.jetpackNewsletterEmailOptions) {
+            options.append(.emailToSubscribers)
+        }
+        if shouldShowStickyOption {
+            options.append(.stickyPost)
+        }
+        if isDraftOrPending {
+            options.append(.pendingReview)
+        }
+        if capabilities.supportsComments {
+            options.append(.discussion)
+        }
+        if capabilities.supportsPostFormats {
+            options.append(.postFormat)
+        }
+        if capabilities.supportsPageAttributes {
+            options.append(.parentPage)
+        }
+        return options
+    }
 }
 
 // MARK: - Date Formatting

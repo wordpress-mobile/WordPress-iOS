@@ -64,13 +64,6 @@ class ReaderDisplaySettingViewController: UIViewController {
             return
         }
 
-        // add the experimental label
-        let label = UILabel()
-        label.translatesAutoresizingMaskIntoConstraints = false
-        label.adjustsFontForContentSizeCategory = true
-        label.text = Constants.experimentalText
-        navigationItem.leftBarButtonItem = .init(customView: label)
-
         // add close button
         navigationItem.rightBarButtonItem = UIBarButtonItem(systemItem: .close, primaryAction: UIAction { [weak self] _ in
             WPAnalytics.track(.readingPreferencesClosed)
@@ -87,29 +80,12 @@ class ReaderDisplaySettingViewController: UIViewController {
     @MainActor
     private func updateNavigationBar(with setting: ReaderDisplaySettings) {
         navigationController?.navigationBar.overrideUserInterfaceStyle = setting.hasLightBackground ? .light : .dark
-
-        // update the experimental label style
-        if let label = navigationItem.leftBarButtonItem?.customView as? UILabel {
-            label.font = setting.font(with: .footnote, weight: .semibold)
-            label.textColor = setting.color.secondaryForeground
-        }
     }
 
     private struct Constants {
         // matches SwiftUI's `easeInOut` default animation duration.
         // see: https://developer.apple.com/documentation/swiftui/animation/easeinout#discussion
         static let animationDuration: TimeInterval = 0.35
-
-        static let experimentalText = NSLocalizedString(
-            "reader.preferences.navBar.experimental.label",
-            value: "<Experimental>",
-            comment: """
-                Text for a small label in the navigation bar that hints that this is an experimental feature.
-
-                The enclosing angled brackets ('<' and '>') are decorative and only intended as a flavor.
-                Feel free to replace it with other bracket types that you think looks better for the locale.
-                """
-        )
     }
 }
 

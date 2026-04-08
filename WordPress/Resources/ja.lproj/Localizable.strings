@@ -1,4 +1,4 @@
-/* Translation-Revision-Date: 2026-02-26 09:56:14+0000 */
+/* Translation-Revision-Date: 2026-03-26 09:57:23+0000 */
 /* Plural-Forms: nplurals=1; plural=0; */
 /* Generator: GlotPress/4.0.3 */
 /* Language: ja_JP */
@@ -1874,7 +1874,6 @@ translators: %s: Block name e.g. \"Image block\" */
    Done. Action.
    Menu button title for finishing editing the Menu name.
    Tapping a button with this label allows the user to exit the Site Creation flow
-   Title for a Done button.
    Title for button that will dismiss this view
    Title for the button that will dismiss this view. */
 "Done" = "完了";
@@ -3243,9 +3242,6 @@ translators: %s: Block name e.g. \"Image block\" */
 
 /* Text displayed while loading the scan section for a site */
 "Loading Scan..." = "スキャンを読み込んでいます...";
-
-/* Displayed while a comment is being loaded. */
-"Loading comment..." = "コメントを読み込み中…";
 
 /* Menus label text displayed when a menu is loading. */
 "Loading menu..." = "メニューの読み込み中...";
@@ -7020,6 +7016,9 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Button title for restoring a backup */
 "activityDetail.restore.button" = "復元";
 
+/* Shows the MCP client used for an activity. %1$@ is the MCP client name (e.g. Claude). */
+"activityDetail.section.agent" = "%1$@ 経由";
+
 /* Section title for restore site actions */
 "activityDetail.section.restoreSite" = "サイトを復元";
 
@@ -7449,7 +7448,7 @@ Note that the word 'go' here should have a closer meaning to 'start' rather than
 /* Title of the set goals button in the Blogging Reminders Settings flow. */
 "bloggingRemindersPrompt.intro.continueButton" = "リマインダーを設定";
 
-/* Description on the first screen of the Blogging Reminders Settings flow called aftet post publishing. */
+/* Description on the first screen of the Blogging Reminders Settings flow called after post publishing. */
 "bloggingRemindersPrompt.intro.details" = "投稿する予定の日にブログ投稿のリマインダーを設定します。";
 
 /* Title of the Blogging Reminders Settings screen. */
@@ -7863,8 +7862,80 @@ Example: Reply to Pamela Nguyen */
 /* Error message shown when the post was modified by another user while editing */
 "customPostEditor.error.conflict.message" = "保存しようとしている投稿は変更されています。";
 
+/* Menu action to promote a post with Blaze */
+"customPostList.action.blaze" = "Blaze を使って宣伝";
+
+/* Menu action to view post comments */
+"customPostList.action.comments" = "コメント";
+
+/* Menu action to permanently delete a trashed post */
+"customPostList.action.deletePermanently" = "完全に削除";
+
+/* Menu action to change a post's status to draft */
+"customPostList.action.moveToDraft" = "下書きに移動";
+
+/* Menu action to move a post to trash */
+"customPostList.action.moveToTrash" = "ゴミ箱に移動";
+
+/* Menu action to publish a draft or pending post */
+"customPostList.action.publish" = "公開";
+
+/* Menu action to open post settings */
+"customPostList.action.settings" = "設定";
+
+/* Menu action to view post statistics */
+"customPostList.action.stats" = "統計";
+
+/* Accessibility label for the author filter button in the custom post list */
+"customPostList.authorFilter.accessibilityLabel" = "投稿者フィルター";
+
+/* Menu item to show posts from all authors in the custom post list */
+"customPostList.authorFilter.everyone" = "すべて";
+
+/* Menu item to show only the current user's posts in the custom post list */
+"customPostList.authorFilter.mine" = "自分";
+
+/* Accessibility value when the author filter shows posts from all authors */
+"customPostList.authorFilter.showingEveryone" = "すべての人の投稿を表示中";
+
+/* Accessibility value when the author filter shows only the current user's posts */
+"customPostList.authorFilter.showingMine" = "自分の投稿のみ表示中";
+
+/* Badge label shown on the homepage row in the custom post list for pages */
+"customPostList.badge.homepage" = "ホームページ";
+
+/* Badge shown in the post list for sticky posts */
+"customPostList.badge.sticky" = "先頭固定表示";
+
+/* Message for the confirmation alert when permanently deleting a post */
+"customPostList.deleteConfirmation.message" = "この操作を取り消すことはできません。";
+
+/* Title for the confirmation alert when permanently deleting a post */
+"customPostList.deleteConfirmation.title" = "完全に削除しますか ?";
+
 /* Empty state message when no custom posts exist. %1$@ is the post type name (e.g., 'Podcasts', 'Products'). */
 "customPostList.emptyState.message" = "%1$@ なし";
+
+/* Message for the confirmation alert when trashing a published post */
+"customPostList.trashConfirmation.message" = "この投稿は公開され、訪問者に表示されます。 ゴミ箱に移動してもよいですか ?";
+
+/* Title for the confirmation alert when trashing a published post */
+"customPostList.trashConfirmation.title" = "ゴミ箱に移動しますか ?";
+
+/* Placeholder title for posts without a title */
+"customPostList.untitled" = "(タイトルなし)";
+
+/* Title for the parent page picker screen for custom post types */
+"customPostParentPicker.title" = "親ページ";
+
+/* Option to set a post as top level (no parent) */
+"customPostParentPicker.topLevel" = "トップレベル";
+
+/* Description for the top level option in the parent page picker, indicating this page will have no parent */
+"customPostParentPicker.topLevel.description" = "親ページなし";
+
+/* Tab title for showing all posts regardless of status */
+"customPostTab.all" = "すべて";
 
 /* Tab title for draft posts */
 "customPostTab.drafts" = "下書き";
@@ -8028,6 +8099,9 @@ Example: Reply to Pamela Nguyen */
 /* Boolean User Defaults Debug Menu screen title */
 "debugMenu.booleanUserDefaults.title" = "ブール型のユーザーデフォルト";
 
+/* Debug Menu label for image cache size */
+"debugMenu.caches.imageCache" = "画像キャッシュ";
+
 /* Feature flags menu item */
 "debugMenu.featureFlags" = "機能フラグ";
 
@@ -8067,6 +8141,9 @@ Example: Reply to Pamela Nguyen */
 
 /* Debug Menu action for TipKit */
 "debugMenu.resetTipKitData" = "データをリセット";
+
+/* Debug Menu section title */
+"debugMenu.section.caches" = "キャッシュ";
 
 /* Debug Menu section title */
 "debugMenu.section.logging" = "ロギング";
@@ -9047,6 +9124,9 @@ Example: Reply to Pamela Nguyen */
 
 /* Last 12 weeks (84 days) date range */
 "jetpackStats.calendar.last12Weeks" = "過去12週間";
+
+/* Last 14 days date range */
+"jetpackStats.calendar.last14Days" = "過去14日間";
 
 /* Last 28 days date range */
 "jetpackStats.calendar.last28Days" = "過去28日間";
@@ -10044,6 +10124,42 @@ Example: Reply to Pamela Nguyen */
 /* Menu title for the visit site option */
 "mySite.siteActions.visitSite" = "サイトを表示";
 
+/* Button to confirm to switch to the New Stats announcement screen */
+"newStats.announcement.continueButton" = "開始する";
+
+/* Disclosure at the bottom of the New Stats announcement screen, informing users they can opt out */
+"newStats.announcement.disclosure" = "切り替える準備がまだですか ? 「統計情報」タブの「その他」メニューで新しい統計をオフにできます。";
+
+/* Feature description: navigation moved to the bottom for thumb-friendly access */
+"newStats.announcement.feature.bottomNav.description" = "ナビゲーションと日付ピッカーが画面の一番下に表示されるようになり、親指で操作しやすくなりました。";
+
+/* Feature title: navigation moved to the bottom */
+"newStats.announcement.feature.bottomNav.title" = "より操作しやすく";
+
+/* Feature description: flexible date picker with presets, custom ranges, and comparisons */
+"newStats.announcement.feature.datePicker.description" = "共通のプリセットから選択することも、比較期間でカスタムの日付範囲を設定することも、すべて1回のタップで可能です。";
+
+/* Feature title: flexible date picker */
+"newStats.announcement.feature.datePicker.title" = "どんな期間も、どんな範囲も";
+
+/* Feature description: feature parity with the web version of Stats */
+"newStats.announcement.feature.parity.description" = "WordPress.com で取得するのと同じデータを端末、UTM、位置情報、WordAds で利用できます。";
+
+/* Feature title: feature parity with the web version of Stats */
+"newStats.announcement.feature.parity.title" = "ウェブ版と同等のデータを";
+
+/* Feature description: trends shown for all metrics with comparison to previous period */
+"newStats.announcement.feature.trends.description" = "すべての指標が前の期間と比較した傾向を表示するため、成長の程度をいつでも把握できます。";
+
+/* Feature title: trends visible for all metrics */
+"newStats.announcement.feature.trends.title" = "傾向を瞬時に把握";
+
+/* Subtitle for the New Stats announcement screen */
+"newStats.announcement.subtitle" = "サイトのパフォーマンスを把握する優れた方法です。現在はデフォルトでオンになっています。";
+
+/* Title for the New Stats announcement screen */
+"newStats.announcement.title" = "新しい統計";
+
 /* A no results message displayed on the atomic logs screen. */
 "noLogs.empty" = "この時間範囲にはログエントリーはありません";
 
@@ -10746,6 +10862,9 @@ Example: Reply to Pamela Nguyen */
 /* Section header for More Options in Post Settings. Should use the same translation as core WP. */
 "postSettings.moreOptions.header" = "追加オプション";
 
+/* The title of the Post Settings screen for custom post types. %1$@ is the post type name. */
+"postSettings.navigationTitle.customPostType" = "%1$@ の設定";
+
 /* The title of the Page Settings screen. */
 "postSettings.navigationTitle.page" = "ページ設定";
 
@@ -10796,6 +10915,9 @@ Example: Reply to Pamela Nguyen */
 
 /* Placeholder value for a publishing date in the prepublishing sheet when the date is not selected */
 "postSettings.publishDateImmediately" = "すぐに";
+
+/* Error message shown when saving post settings via REST API fails */
+"postSettings.saveFailed.message" = "変更を保存できませんでした";
 
 /* Section header for General settings in Post Settings */
 "postSettings.section.general" = "一般";
@@ -10872,6 +10994,9 @@ Example: Reply to Pamela Nguyen */
 /* Navigation bar title of the Post Stats screen */
 "postStats.title" = "投稿統計情報";
 
+/* Post status title used in different contexts */
+"postStatus.any.title" = "すべて";
+
 /* Post status title */
 "postStatus.deleted.details" = "完全に削除しました";
 
@@ -10881,35 +11006,35 @@ Example: Reply to Pamela Nguyen */
 /* Post status details */
 "postStatus.draft.details" = "公開の準備ができていない";
 
-/* Post status title */
+/* Post status title used in different contexts */
 "postStatus.draft.title" = "下書き";
 
 /* Post status details */
 "postStatus.pending.details" = "公開前のレビュー待ちです";
 
-/* Post status title */
+/* Post status title used in different contexts */
 "postStatus.pending.title" = "保留中";
 
-/* Post status title */
+/* Post status title used in different contexts */
 "postStatus.private.title" = "非公開";
 
 /* Post status details */
 "postStatus.published.details" = "すべての人に表示";
 
-/* Post status title */
+/* Post status title used in different contexts */
 "postStatus.published.title" = "公開済み";
 
 /* Post status details */
 "postStatus.scheduled.details" = "選択した日付に自動で公開";
 
-/* Post status title */
+/* Post status title used in different contexts */
 "postStatus.scheduled.title" = "予約済み";
 
 /* Post status title */
 "postStatus.trash.details" = "ゴミ箱に移動しましたが、まだ削除されていません";
 
-/* Post status title */
-"postStatus.trash.title" = "ゴミ箱に移動";
+/* Post status title used in different contexts */
+"postStatus.trash.title" = "ゴミ箱";
 
 /* Button to add a new taxonomy term. %1$@ is the taxonomy name (e.g., 'tags', 'categories'). */
 "postTags.addTag" = "%1$@を追加";
@@ -11420,9 +11545,6 @@ Example: given a notice format "Following %@" and empty site name, this will be 
 /* Context menu action */
 "reader.postContextMenu.blockUser" = "ユーザーをブロック";
 
-/* Context menu action (placeholder value when blog name not available – should never happen) */
-"reader.postContextMenu.blogDetails" = "ブログの詳細";
-
 /* Context menu action */
 "reader.postContextMenu.manageNotifications" = "通知を管理";
 
@@ -11439,9 +11561,6 @@ Example: given a notice format "Following %@" and empty site name, this will be 
 "reader.postContextMenu.reportUser" = "ユーザーを報告";
 
 /* Context menu action */
-"reader.postContextMenu.showBlog" = "「ブログ」に移動";
-
-/* Context menu action */
 "reader.postContextMenu.summarize" = "まとめる";
 
 /* Context menu action to translate post content */
@@ -11449,6 +11568,9 @@ Example: given a notice format "Following %@" and empty site name, this will be 
 
 /* Context menu action */
 "reader.postContextMenu.viewInBrowser" = "ブラウザで表示";
+
+/* Context menu action */
+"reader.postContextMenu.viewSite" = "サイトを表示";
 
 /* Reader post details view placeholder when blog name not avail */
 "reader.postDetails.blog" = "ブログ";
@@ -11842,6 +11964,9 @@ Example: given a notice format "Following %@" and empty site name, this will be 
 "shared.button.edit" = "編集";
 
 /* A shared button title used in different contexts */
+"shared.button.notNow" = "今すぐ";
+
+/* A shared button title used in different contexts */
 "shared.button.remove" = "削除";
 
 /* A shared button title used in different contexts */
@@ -12189,12 +12314,14 @@ Example: given a notice format "Following %@" and empty site name, this will be 
 /* Title for site switcher screen */
 "sitePicker.title" = "自分のサイト";
 
-/* The plugin author displayed in the plugins list. The first argument is plugin author name
-   The plugin version displayed in the plugins list. The first argument is plugin version */
+/* The plugin author displayed in the plugins list. The first argument is plugin author name */
 "sitePluginsList.item.author" = "作成者: %@";
 
 /* The message displayed when a plugin has no description */
 "sitePluginsList.item.noDescriptionAvailable" = "プラグイン作成者はこのプラグインの説明を提供しませんでした。";
+
+/* The plugin version displayed in the plugins list. The first argument is plugin version */
+"sitePluginsList.item.version" = "バージョン: %@";
 
 /* Button to activate a plugin */
 "sitePluginsList.itemAction.activate" = "有効化する";
@@ -12835,15 +12962,6 @@ Example: given a notice format "Following %@" and empty site name, this will be 
 
 /* Title for the time zone selector */
 "timeZoneSelector.title" = "タイムゾーン";
-
-/* Action button title to enable new stats from tip */
-"tips.newStats.action" = "すぐに有効化";
-
-/* Tip for new stats feature */
-"tips.newStats.message" = "新しく洗練された高機能な統計をお試しください。 いつでも元に戻せます。";
-
-/* Tip for new stats feature */
-"tips.newStats.title" = "新しい統計を試す";
 
 /* Tip for sidebar */
 "tips.sidebar.message" = "右にスワイプしてサイト、Reader、通知、プロフィールにアクセス";

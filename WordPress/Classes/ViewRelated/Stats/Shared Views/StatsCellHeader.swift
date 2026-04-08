@@ -68,7 +68,7 @@ private extension StatsCellHeader {
 
     func updateStackView() {
         // Only show the top padding if there is actually a label.
-        stackViewTopConstraint.constant = headerLabel.text == "" ? 0 : defaultStackViewTopConstraint
+        stackViewTopConstraint.constant = (headerLabel.text ?? "").isEmpty ? 0 : defaultStackViewTopConstraint
 
         // Adjust the height if displaying on Post Stats with no title.
         stackViewHeightConstraint.constant = adjustHeightForPostStats ? emptyPostStatsHeight : defaultStackViewHeightConstraint

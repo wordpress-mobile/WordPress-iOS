@@ -2,6 +2,7 @@ import Foundation
 import CoreData
 import WordPressKit
 
+@objc(BloggingPromptSettings)
 public class BloggingPromptSettings: NSManagedObject {
 
     public static func of(_ blog: Blog) throws -> BloggingPromptSettings? {

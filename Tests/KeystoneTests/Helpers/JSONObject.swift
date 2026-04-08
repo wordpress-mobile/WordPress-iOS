@@ -10,7 +10,7 @@ extension JSONObject {
     /// - Parameter fileName: The name of the json file to load. The "json" file extension can be omitted.
     init(fromFileNamed fileName: String) throws {
         let type = (fileName as NSString).pathExtension
-        if type != "" && type != "json" {
+        if !type.isEmpty && type != "json" {
             throw NSError(
                 domain: "JSONObject",
                 code: 1,

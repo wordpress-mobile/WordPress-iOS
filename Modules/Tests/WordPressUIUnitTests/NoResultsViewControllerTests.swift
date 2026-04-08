@@ -1,4 +1,5 @@
 import XCTest
+@testable import WordPressShared
 @testable import WordPressUI
 
 class NoResultsViewControllerTests: XCTestCase {
@@ -21,6 +22,7 @@ class NoResultsViewControllerTests: XCTestCase {
     private var parentViewController: UIViewController!
 
     override func setUpWithError() throws {
+        ReachabilityUtils.connectionAvailable = true
         resultViewController = NoResultsViewController.controller()
         parentViewController = UIViewController()
     }

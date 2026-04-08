@@ -43,6 +43,11 @@ final class ReaderCommentsViewController: UIViewController, WPContentSyncHelperD
     private var commentModified = false
     private var highlightedIndexPath: IndexPath?
 
+    private var navigationOverlayView: UIView?
+    private var navigationPagesLoaded = 0
+    private var navigationCommentID: Int32?
+    private var onNavigationCommentRendered: (() -> Void)?
+
     private var syncHelper: WPContentSyncHelper?
     private var followCommentsService: FollowCommentsService?
     private var readerCommentsFollowPresenter: ReaderCommentsFollowPresenter?
@@ -362,7 +367,8 @@ final class ReaderCommentsViewController: UIViewController, WPContentSyncHelperD
         let isModerationEnabled = comment.allowsModeration()
         cell.accessoryButton.showsMenuAsPrimaryAction = isModerationEnabled
         cell.accessoryButton.menu = isModerationEnabled ? menu(for: comment, indexPath: indexPath, tableView: tableView, sourceView: cell.accessoryButton) : nil
-        cell.configure(viewModel: viewModel, helper: helper) { [weak tableView] _ in
+        let commentID = comment.commentID
+        cell.configure(viewModel: viewModel, helper: helper) { [weak self, weak tableView] _ in
             guard let tableView else { return }
 
             if tableView.alpha == 0 {
@@ -373,6 +379,7 @@ final class ReaderCommentsViewController: UIViewController, WPContentSyncHelperD
             UIView.setAnimationsEnabled(false)
             tableView.performBatchUpdates({})
             UIView.setAnimationsEnabled(true)
+            self?.commentRenderedIfNeeded(commentID: commentID)
         }
 
         cell.isEmphasized = indexPath == highlightedIndexPath
@@ -427,14 +434,88 @@ final class ReaderCommentsViewController: UIViewController, WPContentSyncHelperD
         self.highlightedIndexPath = indexPath
     }
 
+    // Shows an overlay while searching for the target comment across pages (up to 5).
+    // Once found, waits for the cell's WebKit content to finish rendering, then
+    // fades the overlay out and flashes the cell to draw the user's attention.
     private func navigateToCommentIDIfNeeded() {
-        guard let navigateToCommentID, let tableVC else {
+        guard let navigateToCommentID, let tableVC else { return }
+
+        showNavigationOverlay()
+
+        if tableVC.scrollToComment(withID: navigateToCommentID, animated: false) {
+            let commentID = navigateToCommentID.int32Value
+            self.navigateToCommentID = nil
+            self.navigationPagesLoaded = 0
+            setupNavigationReveal(commentID: commentID, in: tableVC)
+        } else if navigationPagesLoaded < 5, let syncHelper, syncHelper.hasMoreContent {
+            navigationPagesLoaded += 1
+            syncHelper.syncMoreContent()
+        } else {
+            self.navigateToCommentID = nil
+            self.navigationPagesLoaded = 0
+            hideNavigationOverlay(completion: nil)
+        }
+    }
+
+    private func setupNavigationReveal(commentID: Int32, in tableVC: ReaderCommentsTableViewController) {
+        navigationCommentID = commentID
+
+        let reveal: () -> Void = { [weak self, weak tableVC] in
+            guard let self, let tableVC, self.navigationCommentID == commentID else { return }
+            self.navigationCommentID = nil
+            self.onNavigationCommentRendered = nil
+
+            guard let indexPath = self.highlightedIndexPath else { return }
+            tableVC.tableView.scrollToRow(at: indexPath, at: .top, animated: false)
+
+            DispatchQueue.main.asyncAfter(deadline: .now() + 0.33) { [weak self, weak tableVC] in
+                guard let self, let tableVC else { return }
+                // The initial scroll occasionally fails due to the async rendering
+                tableVC.tableView.scrollToRow(at: indexPath, at: .top, animated: false)
+                self.hideNavigationOverlay {
+                    (tableVC.tableView.cellForRow(at: indexPath) as? CommentContentTableViewCell)?.flashHighlight()
+                }
+            }
+        }
+
+        onNavigationCommentRendered = reveal
+
+        // Safety timeout in case the render callback never fires
+        DispatchQueue.main.asyncAfter(deadline: .now() + 1.5) { [weak self] in
+            guard self?.navigationCommentID == commentID else { return }
+            reveal()
+        }
+    }
+
+    func commentRenderedIfNeeded(commentID: Int32) {
+        guard commentID == navigationCommentID else { return }
+        onNavigationCommentRendered?()
+    }
+
+    private func showNavigationOverlay() {
+        guard navigationOverlayView == nil else { return }
+        let overlay = UIView()
+        overlay.backgroundColor = .systemBackground
+        let spinner = UIActivityIndicatorView(style: .medium)
+        spinner.startAnimating()
+        overlay.addSubview(spinner)
+        spinner.pinCenter()
+        view.addSubview(overlay)
+        overlay.pinEdges()
+        navigationOverlayView = overlay
+    }
+
+    private func hideNavigationOverlay(completion: (() -> Void)?) {
+        guard let overlay = navigationOverlayView else {
+            completion?()
             return
         }
-        DispatchQueue.main.asyncAfter(deadline: .now() + .milliseconds(500)) {
-            if tableVC.scrollToComment(withID: navigateToCommentID) {
-                self.navigateToCommentID = nil
-            }
+        navigationOverlayView = nil
+        UIView.animate(withDuration: 0.33) {
+            overlay.alpha = 0
+        } completion: { _ in
+            overlay.removeFromSuperview()
+            completion?()
         }
     }
 

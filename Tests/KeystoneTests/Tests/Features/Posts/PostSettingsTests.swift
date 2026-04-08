@@ -742,6 +742,95 @@ struct PostSettingsTests {
         #expect(Set(params.tags) == Set([TermId(5), TermId(8)]))
     }
 
+    @Test("makeUpdateParameters(from: AnyPostWithEditContext) includes featuredMedia when changed")
+    func testMakeRemoteUpdateParametersIncludesFeaturedMedia() {
+        // Given: post has no featured image
+        let post = makeRemotePost()
+
+        var settings = PostSettings(from: post)
+        settings.featuredImageID = 42
+
+        // When
+        let params = settings.makeUpdateParameters(from: post)
+
+        // Then
+        #expect(params.featuredMedia == MediaId(42))
+    }
+
+    @Test("makeUpdateParameters(from: AnyPostWithEditContext) includes featuredMedia removal")
+    func testMakeRemoteUpdateParametersIncludesFeaturedMediaRemoval() {
+        // Given: post has a featured image
+        let post = makeRemotePost(featuredMedia: MediaId(42))
+
+        var settings = PostSettings(from: post)
+        settings.featuredImageID = nil
+
+        // When
+        let params = settings.makeUpdateParameters(from: post)
+
+        // Then: featuredMedia should be set to 0 (removal)
+        #expect(params.featuredMedia == MediaId(0))
+    }
+
+    @Test("makeUpdateParameters(from: AnyPostWithEditContext) omits featuredMedia when unchanged (MediaId 0)")
+    func testMakeRemoteUpdateParametersOmitsFeaturedMediaWhenZero() {
+        // Given: post has featuredMedia = 0 (no featured image)
+        let post = makeRemotePost(featuredMedia: MediaId(0))
+
+        // Settings should also have no featured image (featuredImageID = nil)
+        let settings = PostSettings(from: post)
+
+        // When
+        let params = settings.makeUpdateParameters(from: post)
+
+        // Then: no spurious diff — featuredMedia should not be included
+        #expect(params.featuredMedia == nil)
+    }
+
+    @Test("makeUpdateParameters(from: AnyPostWithEditContext) omits featuredMedia when unchanged (nil)")
+    func testMakeRemoteUpdateParametersOmitsFeaturedMediaWhenNil() {
+        // Given: post has featuredMedia = nil
+        let post = makeRemotePost()
+
+        let settings = PostSettings(from: post)
+
+        // When
+        let params = settings.makeUpdateParameters(from: post)
+
+        // Then
+        #expect(params.featuredMedia == nil)
+    }
+
+    @Test("makeUpdateParameters(from: AnyPostWithEditContext) includes format when changed")
+    func testMakeRemoteUpdateParametersIncludesFormat() {
+        // Given: post has standard format
+        let post = makeRemotePost(format: .standard)
+
+        var settings = PostSettings(from: post)
+        settings.postFormat = "image"
+
+        // When
+        let params = settings.makeUpdateParameters(from: post)
+
+        // Then
+        #expect(params.format == .image)
+    }
+
+    @Test("makeUpdateParameters(from: AnyPostWithEditContext) includes format when original is nil")
+    func testMakeRemoteUpdateParametersIncludesFormatFromNil() {
+        // Given: post has no format set
+        let post = makeRemotePost()
+
+        var settings = PostSettings(from: post)
+        settings.postFormat = "image"
+
+        // When
+        let params = settings.makeUpdateParameters(from: post)
+
+        // Then
+        #expect(params.format == .image)
+    }
+
     @Test("Resolved terms (id > 0) are equal when ids match, regardless of name")
     func testResolvedTermEquality() {
         let term1 = PostSettings.Term(id: 5, name: "swift")
@@ -811,6 +900,93 @@ struct PostSettingsTests {
             PostSettings.Term(id: 20, name: ""),
         ])
     }
+
+    @Test("init(from: PostCreateParams) populates parentPageID")
+    func testInitFromCreateParamsReadsParent() {
+        // Given
+        var params = PostCreateParams(meta: nil)
+        params.parent = PostId(42)
+
+        // When
+        let settings = PostSettings(from: params)
+
+        // Then
+        #expect(settings.parentPageID == 42)
+    }
+
+    @Test("PostCreateParams parent survives round-trip through PostSettings")
+    func testParentRoundTripThroughPostSettings() {
+        // Given
+        var params = PostCreateParams(meta: nil)
+        params.parent = PostId(42)
+
+        // When
+        let settings = PostSettings(from: params)
+        let outputParams = settings.makeCreateParameters(from: .init(meta: nil), taxonomies: [])
+
+        // Then
+        #expect(outputParams.parent == PostId(42))
+    }
+
+    @Test("init(from: PostCreateParams) defaults status to draft when nil")
+    func testInitFromCreateParamsDefaultsStatusToDraft() {
+        // Given
+        let params = PostCreateParams(meta: nil)
+
+        // When
+        let settings = PostSettings(from: params)
+
+        // Then
+        #expect(settings.status == .draft)
+        #expect(settings.publishDate == nil)
+    }
+
+    @Test("init(from: PostCreateParams) reads scheduled status and date")
+    func testInitFromCreateParamsReadsScheduledStatus() {
+        // Given
+        var params = PostCreateParams(meta: nil)
+        params.status = .future
+        let scheduledDate = Date(timeIntervalSince1970: 2_000_000_000)
+        params.dateGmt = scheduledDate
+
+        // When
+        let settings = PostSettings(from: params)
+
+        // Then
+        #expect(settings.status == .scheduled)
+        #expect(settings.publishDate == scheduledDate)
+    }
+
+    @Test("init(from: PostCreateParams) reads pending status with nil date")
+    func testInitFromCreateParamsReadsPendingStatus() {
+        // Given
+        var params = PostCreateParams(meta: nil)
+        params.status = .pending
+
+        // When
+        let settings = PostSettings(from: params)
+
+        // Then
+        #expect(settings.status == .pending)
+        #expect(settings.publishDate == nil)
+    }
+
+    @Test("PostCreateParams status and date survive round-trip through PostSettings")
+    func testStatusAndDateRoundTripThroughPostSettings() {
+        // Given
+        var params = PostCreateParams(meta: nil)
+        params.status = .future
+        let scheduledDate = Date(timeIntervalSince1970: 2_000_000_000)
+        params.dateGmt = scheduledDate
+
+        // When
+        let settings = PostSettings(from: params)
+        let outputParams = settings.makeCreateParameters(from: .init(meta: nil), taxonomies: [])
+
+        // Then
+        #expect(outputParams.status == .future)
+        #expect(outputParams.dateGmt == scheduledDate)
+    }
 }
 
 // MARK: - Test Helpers
@@ -823,7 +999,9 @@ private extension SiteTaxonomy {
 
 private func makeRemotePost(
     tags: [TermId]? = nil,
-    categories: [TermId]? = nil
+    categories: [TermId]? = nil,
+    featuredMedia: MediaId? = nil,
+    format: PostFormat? = nil
 ) -> AnyPostWithEditContext {
     AnyPostWithEditContext(
         id: PostId(1),
@@ -843,10 +1021,10 @@ private func makeRemotePost(
         content: PostContentWithEditContext(raw: nil, rendered: "", protected: nil, blockVersion: nil),
         author: nil,
         excerpt: nil,
-        featuredMedia: nil,
+        featuredMedia: featuredMedia,
         commentStatus: .open,
         pingStatus: .open,
-        format: nil,
+        format: format,
         meta: nil,
         sticky: nil,
         template: "",

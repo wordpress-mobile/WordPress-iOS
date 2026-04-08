@@ -133,7 +133,7 @@ extension GutenbergMediaPickerHelper: PHPickerViewControllerDelegate {
     func picker(_ picker: PHPickerViewController, didFinishPicking results: [PHPickerResult]) {
         context.dismiss(animated: true)
 
-        guard results.count > 0 else {
+        guard !results.isEmpty else {
             return
         }
 

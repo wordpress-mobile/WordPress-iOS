@@ -2,7 +2,6 @@ import UIKit
 import WordPressData
 import WordPressShared
 import WordPressUI
-import Reachability
 import Gridicons
 
 public protocol BlogDetailsPresentationDelegate: AnyObject {
@@ -189,7 +188,7 @@ public class BlogDetailsViewController: UIViewController {
 
     private func preloadBlogData() {
         // only preload on wifi
-        guard ReachabilityUtils.internetReachability?.isReachableViaWiFi() == true else {
+        guard ReachabilityUtils.isReachableViaWiFi() else {
             return
         }
 

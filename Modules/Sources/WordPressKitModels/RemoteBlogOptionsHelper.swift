@@ -1,4 +1,5 @@
 import Foundation
+import WordPressShared
 
 @objcMembers public class RemoteBlogOptionsHelper: NSObject {
 
@@ -73,8 +74,8 @@ import Foundation
 
     public class func remoteBlogSettings(fromXMLRPCDictionaryOptions options: NSDictionary) -> RemoteBlogSettings {
         let remoteSettings = RemoteBlogSettings()
-        remoteSettings.name = options.string(forKeyPath: "blog_title.value")?.wpkit_stringByDecodingXMLCharacters()
-        remoteSettings.tagline = options.string(forKeyPath: "blog_tagline.value")?.wpkit_stringByDecodingXMLCharacters()
+        remoteSettings.name = options.string(forKeyPath: "blog_title.value")?.stringByDecodingXMLCharacters()
+        remoteSettings.tagline = options.string(forKeyPath: "blog_tagline.value")?.stringByDecodingXMLCharacters()
         if options["blog_public"] != nil {
             remoteSettings.privacy = options.number(forKeyPath: "blog_public.value")
         }

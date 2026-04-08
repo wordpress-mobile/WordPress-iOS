@@ -8,14 +8,12 @@ struct TodayCard: View {
     @ScaledMetric(relativeTo: .title)
     private var sparklineHeight: CGFloat = 52
 
-    private var isChevronHidden = false
-
     init(viewModel: TodayCardViewModel) {
         self.viewModel = viewModel
     }
 
     var body: some View {
-        VStack(alignment: .leading, spacing: 6) {
+        VStack(alignment: .leading, spacing: 2) {
             HStack(spacing: 32) {
                 VStack(alignment: .leading, spacing: 0) {
                     headerView
@@ -39,11 +37,6 @@ struct TodayCard: View {
         }
         .overlay(alignment: .topTrailing) {
             moreMenu
-        }
-        .overlay(alignment: .bottomTrailing) {
-            if !isChevronHidden {
-                chevron
-            }
         }
         .cardStyle()
         .animation(.spring, value: viewModel.data?.id)
@@ -71,7 +64,7 @@ struct TodayCard: View {
                 .font(.caption.weight(.medium))
         }
         .foregroundStyle(Color.secondary)
-        .offset(y: 9) // Get it close to the value
+        .offset(y: 3) // Get it close to the value
         .dynamicTypeSize(...DynamicTypeSize.large)
     }
 
@@ -79,21 +72,6 @@ struct TodayCard: View {
         let formatter = DateFormatter()
         formatter.dateFormat = "EEEE, MMM d"
         return formatter.string(from: Date())
-    }
-
-    func chevronHidden(_ isHidden: Bool = true) -> TodayCard {
-        var copy = self
-        copy.isChevronHidden = isHidden
-        return copy
-    }
-
-    private var chevron: some View {
-        Image(systemName: "chevron.down")
-            .font(.system(size: 14, weight: .bold))
-            .foregroundStyle(Color.secondary.opacity(0.4))
-            .padding(.bottom, 22)
-            .padding(.trailing, 18)
-            .layoutPriority(1)
     }
 
     // MARK: - Content Views
@@ -118,7 +96,7 @@ struct TodayCard: View {
             ForEach(viewModel.configuration.metrics) { metric in
                 if metric == .views {
                     TodayCardProminentMetricView(value: metrics[metric], metric: metric)
-                        .offset(y: 2.5) // Compensate for the larger line height
+                        .offset(y: 1) // Compensate for the larger line height
                 } else {
                     TodayCardMetricView(metric: metric, value: metrics[metric])
                 }
@@ -151,7 +129,8 @@ struct TodayCard: View {
         )
         .frame(maxWidth: .infinity)
         .padding(.trailing, 32)
-        .padding(.vertical, 6)
+        .padding(.vertical, 2)
+        .offset(y: -3)
         .transition(.opacity.combined(with: .scale(scale: 0.97)))
     }
 
@@ -319,8 +298,8 @@ private struct TodayCardProminentMetricView: View {
     var body: some View {
         Text(formattedValue)
             .contentTransition(.numericText())
-            .font(Font.system(.title, design: .rounded, weight: .medium))
-            .kerning(-1.0)
+            .font(Font.system(.title2, design: .rounded, weight: .semibold))
+            .kerning(-0.33)
             .foregroundColor(.primary)
             .lineLimit(1)
             .animation(.spring, value: value)

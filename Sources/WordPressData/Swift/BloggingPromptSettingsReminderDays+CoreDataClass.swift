@@ -2,6 +2,7 @@ import Foundation
 import CoreData
 import WordPressKit
 
+@objc(BloggingPromptSettingsReminderDays)
 public class BloggingPromptSettingsReminderDays: NSManagedObject {
 
     public func configure(with remoteReminderDays: RemoteBloggingPromptsSettings.ReminderDays) {

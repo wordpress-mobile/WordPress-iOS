@@ -1,0 +1,21 @@
+¿Quién es quién en tu web? Ya lo sabes: las notificaciones push ahora usan gravatares para que puedas ver quién ha comentado o interactuado con tu contenido. El registro de actividad también muestra cuándo se actualizó tu sitio con agentes de IA.
+
+Si pensabas que nuestras últimas actualizaciones de Estadísticas eran increíbles, no son nada en comparación con lo que está por venir.
+
+- Ahora, la fecha de hoy se incluye en intervalos como «Últimos 7 días». También hemos añadido un nuevo intervalo de «Últimos 14 días».
+- Las fechas incompletas, incluso la de hoy, se muestran en el gráfico de líneas como una línea de puntos. También puedes verlas más fácilmente en la vista de gráfico de barras.
+- Ahora que hablamos de los gráficos de barras, al tocar una barra se mostrarán los datos de esa fecha, lo hace que sea más fácil desplazarse por los datos de varios días. Ah, y al tocar una barra ya no se seleccionará la barra que hay al lado.
+- Es posible que notes cambios visuales como una cabecera del gráfico más pequeña, fuentes más pequeñas en las pestañas y espacio reducido aquí y allá. El estilo es más minimalista.
+
+Mientras hacíamos esto, también hemos introducido cambios en el Lector. (Por cierto, ninguno de ellos está relacionado con la lectura).
+
+- Cuando ves una imagen en un lightbox, deslizar hacia abajo la descartará, incluso cuando hayas acercado la imagen.
+- Hemos corregido el color de los enlaces en los comentarios y en el modo oscuro en los temas personalizados. Ahora se ve mejor.
+- Puedes ver galerías de medios en modo de pantalla completa. Solo tienes que deslizar a la derecha o a la izquierda para ver todas las imágenes.
+
+Y como todavía teníamos un poco de tiempo libre, también arreglamos algunos detalles que nos estaban molestando.
+
+- Hemos actualizado los iconos de las flechas y el espaciado en la pantalla de notificaciones.
+- En los ajustes de entradas, la tarjeta de compartir en redes sociales solo muestra las plataformas compatibles con la aplicación.
+- Las entradas nuevas usan el formato de entrada predeterminado en lugar de la versión estándar. Puedes actualizar este formato en los ajustes de tu sitio.
+- Si tu sitio está autoalojado con XML-RPC inhabilitado, puedes ver entradas y páginas en la aplicación. Eso es muy importante, si se nos permite decirlo.

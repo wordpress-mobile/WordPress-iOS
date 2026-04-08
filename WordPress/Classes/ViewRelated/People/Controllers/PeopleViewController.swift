@@ -431,7 +431,7 @@ private extension PeopleViewController {
     // MARK: No Results Helpers
 
     func refreshNoResultsView() {
-        guard resultsController.fetchedObjects?.count == 0 else {
+        guard resultsController.fetchedObjects?.isEmpty == true else {
             noResultsViewController.removeFromView()
             return
         }

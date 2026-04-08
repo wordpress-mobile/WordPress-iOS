@@ -52,7 +52,7 @@ private class WeeklyRoundupDataProvider {
         self.getSites { [weak self] sitesResult in
             switch sitesResult {
             case .success(let sites):
-                guard let self, sites.count > 0 else {
+                guard let self, !sites.isEmpty else {
                     completion(.success(nil))
                     return
                 }
@@ -179,7 +179,7 @@ private class WeeklyRoundupDataProvider {
             site.isAdmin && !site.isAutomatticP2
         }
 
-        guard administeredSites.count > 0 else {
+        guard !administeredSites.isEmpty else {
             result(.success([]))
             return
         }
@@ -729,7 +729,7 @@ class WeeklyRoundupNotificationScheduler {
         userNotificationCenter.getPendingNotificationRequests { requests in
             let notifications = requests.filter({ $0.content.threadIdentifier == Self.threadIdentifier })
 
-            guard notifications.count > 0 else {
+            guard !notifications.isEmpty else {
                 return
             }
 

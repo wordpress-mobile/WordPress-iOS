@@ -165,7 +165,7 @@ struct LineChartView: View {
 
     @ChartContentBuilder
     private var significantPointAnnotations: some ChartContent {
-        if let maxPoint = data.significantPoints.currentMax, data.currentData.count > 0 {
+        if let maxPoint = data.significantPoints.currentMax, !data.currentData.isEmpty {
             PointMark(
                 x: .value("Date", maxPoint.date, unit: data.granularity.component, calendar: context.calendar),
                 y: .value("Value", maxPoint.value)
@@ -265,7 +265,7 @@ struct LineChartView: View {
             return data.maxValue...0 // Just in case; should never happend
         }
         // Add some padding above the max value
-        let padding = max(Int(Double(data.maxValue) * 0.66), 1)
+        let padding = max(Int(Double(data.maxValue) * 0.33), 1)
         return 0...(data.maxValue + padding)
     }
 
