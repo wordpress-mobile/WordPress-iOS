@@ -262,10 +262,10 @@ class PostTests: CoreDataTestCase {
     func testThatContentPreviewForDisplayTrimsLeadingAndTrailingNewlines() {
         let post = newTestPost()
 
-        post.content = "<p>Paragraph 1</p><p>Paragraph 2</p>"
+        post.content = "\n\n<p>\nParagraph 1\n</p>\n\n"
         let preview = post.contentPreviewForDisplay()
 
-        XCTAssertEqual("Paragraph 1\nParagraph 2", preview)
+        XCTAssertEqual("Paragraph 1", preview)
     }
 
     func testThatEnablingDisablingPublicizeConnectionsWorks() {
