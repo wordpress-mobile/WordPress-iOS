@@ -36,6 +36,9 @@ only_rules:
   # Prefer `() -> ` over `Void -> `.
   - empty_parameters
 
+  # Prefer checking `isEmpty` over comparing to empty string literal `""`.
+  - empty_string
+
   # MARK comment should be in valid format.
   - mark
 

@@ -406,7 +406,7 @@ final class CustomPostListViewModel: ObservableObject {
     func menuNavigation(forBlaze post: AnyPostWithEditContext) -> PostMenuNavigation? {
         guard endpoint == .posts
                 && BlazeHelper.isBlazeFlagEnabled() && blog.canBlaze
-                && post.status == .publish && (post.password ?? "") == "" else { return nil }
+                && post.status == .publish && (post.password ?? "").isEmpty else { return nil }
         return .blaze(post: post)
     }
 
