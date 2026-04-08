@@ -24,7 +24,7 @@ steps:
           build_log_mode: "failed"
           trigger: "on-failure"
           max_log_lines: 1500
-          custom_prompt: >
+          custom_prompt: |
             Ignore these jobs — they are not real failures:
             (1) The "Claude Build Analysis" job itself (uses `exit 1` to trigger this hook).
             (2) The "Danger - PR Check" job (external linter, not indicative of build health).
