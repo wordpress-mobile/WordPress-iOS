@@ -68,7 +68,8 @@ public class CommentsScreen: ScreenObject {
     public func verifyCommentsListEmpty() -> CommentsScreen {
         XCTAssertTrue(emptyImage.waitForExistence(timeout: 3))
         XCTAssertTrue(app.staticTexts["Be the first to leave a comment."].isHittable)
-        XCTAssertTrue(app.cells.containing(.button, identifier: "reply-comment-button").isEmpty)
+        // swiftlint:disable:next empty_count
+        XCTAssertTrue(app.cells.containing(.button, identifier: "reply-comment-button").count == 0)
         return self
     }
 
