@@ -78,7 +78,10 @@ class ReaderWebView: WKWebView {
             document.addEventListener('DOMContentLoaded', function(event) {
                 \(additionalJavaScript)
                 // Remove autoplay to avoid media autoplaying
-                document.querySelectorAll('video-placeholder, audio-placeholder').forEach((el) => {el.removeAttribute('autoplay')})
+                document.querySelectorAll('video-placeholder, audio-placeholder').forEach((el) => {
+                    el.removeAttribute('autoplay');
+                    el.setAttribute('controls', '');
+                })
             })
             function debounce(fn, timeout) {
                 let timer;

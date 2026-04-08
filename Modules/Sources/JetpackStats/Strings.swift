@@ -247,6 +247,14 @@ enum Strings {
         static let referralSources = AppLocalizedString("jetpackStats.referrerDetails.referralSources", value: "Referral Sources", comment: "Section title for the list of referral sources")
         static let markAsSpamError = AppLocalizedString("jetpackStats.referrerDetails.markAsSpamError", value: "Failed to mark as spam", comment: "Error message when marking a referrer as spam fails")
         static let errorAlertTitle = AppLocalizedString("jetpackStats.referrerDetails.errorAlertTitle", value: "Error", comment: "Title for error alert when marking referrer as spam fails")
+        static func confirmAsSpamMessage(domain: String) -> String {
+            let message = AppLocalizedString(
+                "jetpackStats.referrerDetails.confirmAsSpam.message",
+                value: "Marking \"%1$@\" as spam will hide it from your future stats. You can undo this anytime using the web interface.",
+                comment: "Confirmation message when marking a referrer as spam. %1$@ is the domain name."
+            )
+            return String.localizedStringWithFormat(message, domain)
+        }
     }
 
     enum ExternalLinkDetails {
