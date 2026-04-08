@@ -40,6 +40,7 @@ final class CommentLargeButton: UIView {
         backgroundColor = .systemBackground
 
         addSubview(leaveCommentView)
+        leaveCommentView.displaySettings = .standard
         leaveCommentView.pinEdges(to: safeAreaLayoutGuide, insets: UIEdgeInsets.init(top: 14, left: 20, bottom: 8, right: 20))
 
         let divider = SeparatorView.horizontal()

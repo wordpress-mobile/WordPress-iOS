@@ -9,6 +9,7 @@
 * [*] Reader: Fix an issue with "Notificaton Settings" showing incorrect state right after subscribing [#25459]
 * [*] Reader: Fix an issue with "Notificaton Settings" button shown when you are not subscribed [#25459]
 * [*] Reader: Fix a regression with anchors not working in posts [#25459]
+* [*] Reader: Fix an issue with empty state not disappearing on Reader Comments view after you post a comment [#25484]
 * [*] Reader: Fix an issues with Reader failing to clear cached comments if all the comments are deleted [#25482]
 * [*] Reader: Fix an issue with the article view removing autoplay without showing controls [#25468]
 * [*] Menus: Fix an issue with footer view in Menu Editing not resizing [#25481]
