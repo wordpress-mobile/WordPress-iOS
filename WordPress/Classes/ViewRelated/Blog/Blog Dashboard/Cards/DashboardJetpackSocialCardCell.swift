@@ -278,7 +278,7 @@ private extension DashboardJetpackSocialCardCell {
         let isNoSharesViewHidden = hiddenSites[dotComID] ?? false
 
         return blog.supports(.publicize)
-        && !connections.filter { !$0.requiresUserAction() }.isEmpty
+        && connections.contains { !$0.requiresUserAction() }
         && !isNoSharesViewHidden
         && sharingLimit.remaining == 0
     }

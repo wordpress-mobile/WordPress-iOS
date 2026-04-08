@@ -2,9 +2,12 @@
 -----
 * [*] All self-hosted sites now sign in using application passwords [#25424]
 * [*] Reader: Fix button style [#25447]
+* [*] Reader: Fix separator not visible in Dark Mode for comments [#25466]
+* [*] Reader: Fix an issue with "Notificaton Settings" showing incorrect state right after subscribing [#25459]
+* [*] Reader: Fix an issue with "Notificaton Settings" button shown when you are not subscribed [#25459]
 * [*] Reader: Fix a regression with anchors not working in posts [#25459]
 * [*] Reader: Fix an issue with the article view removing autoplay without showing controls [#25468]
-
+* [*] Menus: Fix an issue with footer view in Menu Editing not resizing [#25481]
 
 26.8
 -----
@@ -28,6 +31,7 @@
 * [*] Fix incorrect default Post Format in new posts [#25369]
 * [*] Posts and Pages are available to XMLRPC-disable sites [#25382]
 * [*] Activity Log: Show when actions were performed by an MCP agent [#25397]
+* [*] Fix post list preview showing an extra blank line when content contains paragraph separators [#25349]
 
 26.7
 -----

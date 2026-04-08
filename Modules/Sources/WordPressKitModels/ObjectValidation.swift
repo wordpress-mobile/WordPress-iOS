@@ -16,6 +16,6 @@ import Foundation
     ///
     /// - Returns: Bool value
     func wp_isValidString() -> Bool {
-        return wp_isValidObject() && self != ""
+        return wp_isValidObject() && length > 0
     }
 }

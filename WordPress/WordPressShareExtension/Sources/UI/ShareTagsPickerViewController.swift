@@ -264,7 +264,7 @@ extension ShareTagsPickerViewController: UITextViewDelegate {
             // Don't allow a second comma if the last tag is blank
             return false
         } else if
-            range.length == 1 && text == "", // Deleting last character
+            range.length == 1 && text.isEmpty, // Deleting last character
             range.location > 0, // Not at the beginning
             range.location + range.length == original.length, // At the end
             original.substring(with: NSRange(location: range.location - 1, length: 1)) == "," { // Previous is a comma

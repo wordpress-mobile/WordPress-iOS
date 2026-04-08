@@ -24,8 +24,15 @@ steps:
           build_log_mode: "failed"
           trigger: "on-failure"
           max_log_lines: 1500
-          custom_prompt: "Do not mention successful points, focus on failures and recovery to keep the analysis succinct. Only add the `Best Practices` section if the changes in this PR are directly relevant to it. Only add a `Root Cause` section when you're sure about the issues' causes."
-          model: "claude-sonnet-4-5"
+          custom_prompt: >
+            Ignore these jobs — they are not real failures:
+            (1) The "Claude Build Analysis" job itself (uses `exit 1` to trigger this hook).
+            (2) The "Danger - PR Check" job (external linter, not indicative of build health).
+            (3) Jobs in "broken" state due to unmet branch conditions — expected skips, not failures.
+
+            Focus on real failures and recovery. Keep the analysis succinct. Do not mention successful jobs.
+            Only add a `Root Cause` section when you are confident about the cause.
+          model: "claude-sonnet-4-6"
 
   - label: ":claude: 💬 Comment Claude Analysis"
     command: .buildkite/commands/comment-claude-analysis.sh
