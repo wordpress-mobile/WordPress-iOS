@@ -92,4 +92,27 @@ struct RemotePostParametersEncodingTests {
         #expect(dictionary["comment_status"] as? String == "closed")
         #expect(dictionary["ping_status"] as? String == "open")
     }
+
+    // MARK: - Diff (changes)
+
+    @Test("Diff omits discussion when unchanged")
+    func diffOmitsDiscussionWhenUnchanged() {
+        let original = RemotePostCreateParameters(type: "post", status: "draft")
+        let latest = RemotePostCreateParameters(type: "post", status: "draft")
+
+        let changes = latest.changes(from: original)
+
+        #expect(changes.discussion == nil)
+    }
+
+    @Test("Diff includes updated discussion when changed")
+    func diffIncludesUpdatedDiscussion() {
+        let original = RemotePostCreateParameters(type: "post", status: "draft")
+        var latest = RemotePostCreateParameters(type: "post", status: "draft")
+        latest.discussion = RemotePostDiscussionSettings(allowComments: false, allowPings: false)
+
+        let changes = latest.changes(from: original)
+
+        #expect(changes.discussion == RemotePostDiscussionSettings(allowComments: false, allowPings: false))
+    }
 }

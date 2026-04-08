@@ -74,6 +74,7 @@ extension Blog {
 
         post.postFormat = settings?.defaultPostFormat
         post.allowComments = settings?.commentsAllowed ?? true
+        post.allowPings = settings?.pingbackInboundEnabled ?? true
         post.postType = Post.typeDefaultIdentifier
 
         if let userID, let author = getAuthorWith(id: userID) {
