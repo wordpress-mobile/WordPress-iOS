@@ -6,7 +6,7 @@ final class CommentWebView: UIView, CommentContentRendererDelegate {
     let renderer = WebCommentContentRenderer()
     lazy var heightConstraint = renderer.view.heightAnchor.constraint(equalToConstant: 20)
 
-    init(comment: String) {
+    init(comment: String, displaySettings: ReaderDisplaySettings = .standard) {
         super.init(frame: .zero)
 
         addSubview(renderer.view)
@@ -14,6 +14,7 @@ final class CommentWebView: UIView, CommentContentRendererDelegate {
 
         heightConstraint.isActive = true
 
+        renderer.displaySettings = displaySettings
         renderer.delegate = self
         renderer.render(comment: comment)
     }
@@ -43,6 +44,13 @@ final class CommentWebView: UIView, CommentContentRendererDelegate {
     """)
 }
 
+#Preview("Sepia") {
+    makeView(
+        comment: "<p>Thank you so much! You should <a href=\"https:://wordpress.com/\">see it now</a> &#8211; people are losing their minds!</p>\n",
+        displaySettings: ReaderDisplaySettings(color: .sepia, font: .sans, size: .normal)
+    )
+}
+
 #Preview("Media") {
     makeView(comment: """
     <p>Test image in the middle.</p>\n<figure class=\"wp-block-image size-medium\"><img src=\"https://fastly.picsum.photos/id/31/3264/4912.jpg?hmac=lfmmWE3h_aXmRwDDZ7pZb6p0Foq6u86k_PpaFMnq0r8\" alt=\"\" /></figure>\n<p>Text below.</p>\n
@@ -50,12 +58,13 @@ final class CommentWebView: UIView, CommentContentRendererDelegate {
 }
 
 @MainActor
-private func makeView(comment: String) -> UIView {
-    let webView = CommentWebView(comment: comment)
+private func makeView(comment: String, displaySettings: ReaderDisplaySettings = .standard) -> UIView {
+    let webView = CommentWebView(comment: comment, displaySettings: displaySettings)
     webView.layer.borderColor = UIColor.opaqueSeparator.withAlphaComponent(0.66).cgColor
     webView.layer.borderWidth = 0.5
 
     let container = UIView()
+    container.backgroundColor = displaySettings.color.background
     container.addSubview(webView)
     webView.pinEdges(insets: UIEdgeInsets(.all, 16))
 

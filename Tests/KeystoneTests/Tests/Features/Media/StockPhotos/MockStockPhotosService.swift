@@ -10,7 +10,7 @@ final class MockStockPhotosService: StockPhotosService {
 
     func search(params: StockPhotosSearchParams, completion: @escaping (StockPhotosResultsPage) -> Void) {
         let text = params.text
-        guard text.count > 0 else {
+        guard !text.isEmpty else {
             completion(StockPhotosResultsPage.empty())
             return
         }

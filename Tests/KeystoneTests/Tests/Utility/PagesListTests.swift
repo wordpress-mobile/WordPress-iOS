@@ -212,10 +212,10 @@ class PagesListTests: CoreDataTestCase {
         NSLog("Array.sort took \(String(format: "%.3f", (CFAbsoluteTimeGetCurrent() - start) * 1000)) millisecond to process \(pages.count) pages")
 
         let orderDiff = originalIDs.difference(from: newIDs).inferringMoves()
-        XCTAssertTrue(orderDiff.count == 0, "Unexpected order difference: \(orderDiff)", file: file, line: line)
+        XCTAssertTrue(orderDiff.isEmpty, "Unexpected order difference: \(orderDiff)", file: file, line: line)
 
         let levelDiff = originalLevels.difference(from: newLevels).inferringMoves()
-        XCTAssertTrue(levelDiff.count == 0, "Unexpected level difference: \(levelDiff)", file: file, line: line)
+        XCTAssertTrue(levelDiff.isEmpty, "Unexpected level difference: \(levelDiff)", file: file, line: line)
     }
 }
 

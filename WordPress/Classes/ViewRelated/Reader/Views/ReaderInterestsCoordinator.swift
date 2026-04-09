@@ -53,7 +53,7 @@ class ReaderSelectInterestsCoordinator {
                    interests.count == 1 {
                     return interest.slug != Post.Strings.promptTag
                 }
-                return interests.count > 0
+                return !interests.isEmpty
             }()
 
             completion(isFollowingInterests)

@@ -1,4 +1,4 @@
-/* Translation-Revision-Date: 2026-03-24 13:58:55+0000 */
+/* Translation-Revision-Date: 2026-03-26 09:54:53+0000 */
 /* Plural-Forms: nplurals=2; plural=n > 1; */
 /* Generator: GlotPress/4.0.3 */
 /* Language: id */
@@ -10174,6 +10174,42 @@ Example: Reply to Pamela Nguyen */
 
 /* Menu title for the visit site option */
 "mySite.siteActions.visitSite" = "Kunjungi situs";
+
+/* Button to confirm to switch to the New Stats announcement screen */
+"newStats.announcement.continueButton" = "Mulai Sekarang";
+
+/* Disclosure at the bottom of the New Stats announcement screen, informing users they can opt out */
+"newStats.announcement.disclosure" = "Belum siap beralih? Anda dapat menonaktifkan Statistik Baru dari menu Selengkapnya di tab Statistik.";
+
+/* Feature description: navigation moved to the bottom for thumb-friendly access */
+"newStats.announcement.feature.bottomNav.description" = "Pemilih navigasi dan tanggal sekarang berada di bagian bawah layar: di posisi ibu jari Anda.";
+
+/* Feature title: navigation moved to the bottom */
+"newStats.announcement.feature.bottomNav.title" = "Jangkauan Lebih Mudah";
+
+/* Feature description: flexible date picker with presets, custom ranges, and comparisons */
+"newStats.announcement.feature.datePicker.description" = "Pilih salah satu preset umum atau tentukan rentang tanggal kustom dengan periode perbandingan - semua dalam satu ketuk.";
+
+/* Feature title: flexible date picker */
+"newStats.announcement.feature.datePicker.title" = "Periode dan Rentang Apa Pun";
+
+/* Feature description: feature parity with the web version of Stats */
+"newStats.announcement.feature.parity.description" = "Perangkat, UTM, lokasi, WordAds - data yang sama dengan yang Anda dapatkan di WordPress.com.";
+
+/* Feature title: feature parity with the web version of Stats */
+"newStats.announcement.feature.parity.title" = "Setara dengan Web";
+
+/* Feature description: trends shown for all metrics with comparison to previous period */
+"newStats.announcement.feature.trends.description" = "Setiap metrik menunjukkan tren dibandingkan periode sebelumnya, jadi Anda selalu tahu apakah Anda sedang berkembang.";
+
+/* Feature title: trends visible for all metrics */
+"newStats.announcement.feature.trends.title" = "Sekilas Info Tren";
+
+/* Subtitle for the New Stats announcement screen */
+"newStats.announcement.subtitle" = "Cara yang lebih baik untuk memahami performa situs Anda - sekarang secara default.";
+
+/* Title for the New Stats announcement screen */
+"newStats.announcement.title" = "Statistik Baru";
 
 /* A no results message displayed on the atomic logs screen. */
 "noLogs.empty" = "Tidak ada entri log dalam rentang waktu ini";

@@ -219,7 +219,7 @@ extension WPStyleGuide {
 
         static let subTitleFont = WPStyleGuide.fontForTextStyle(.footnote, fontWeight: .medium)
         static let summaryFont = WPStyleGuide.fontForTextStyle(.subheadline, fontWeight: .regular)
-        static let insightsCountFont = UIFont.preferredFont(forTextStyle: .title1).bold()
+        static let insightsCountFont = UIFont.preferredFont(forTextStyle: .title2).bold()
 
         static let tableBackgroundColor = UIColor.systemGroupedBackground
         static let cellBackgroundColor = UIColor.secondarySystemGroupedBackground

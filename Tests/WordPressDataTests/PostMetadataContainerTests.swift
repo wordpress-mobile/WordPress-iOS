@@ -36,7 +36,7 @@ struct PostMetadataContainerTests {
         let metadata = PostMetadataContainer()
 
         #expect(metadata.values.isEmpty)
-        #expect(metadata.values.count == 0)
+        #expect(metadata.values.isEmpty)
     }
 
     // MARK: - CRUD
@@ -117,7 +117,7 @@ struct PostMetadataContainerTests {
         metadata.clear()
 
         #expect(metadata.values.isEmpty)
-        #expect(metadata.values.count == 0)
+        #expect(metadata.values.isEmpty)
     }
 
     // MARK: - Encoding Tests

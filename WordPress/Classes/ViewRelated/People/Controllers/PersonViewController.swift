@@ -375,7 +375,7 @@ private extension PersonViewController {
 
         headerCell.userNameLabel.font = .preferredFont(forTextStyle: .subheadline)
         headerCell.userNameLabel.textColor = .secondaryLabel
-        headerCell.userNameLabel.text = person.username.count > 0 ? "@" + person.username : ""
+        headerCell.userNameLabel.text = !person.username.isEmpty ? "@" + person.username : ""
 
         refreshGravatarImage(in: headerCell.gravatarImageView)
     }

@@ -28,7 +28,7 @@ final class MigrationFlowCoordinator: ObservableObject {
 
         // Skip the migration if the user just created an account and haven't
         // created any site yet.
-        if (try? BlogQuery().blogs(in: ContextManager.shared.mainContext))?.count == 0 {
+        if (try? BlogQuery().blogs(in: ContextManager.shared.mainContext))?.isEmpty == true {
             self.currentStep = MigrationStep.done
             self.userPersistentRepository.jetpackContentMigrationState = .completed
         }

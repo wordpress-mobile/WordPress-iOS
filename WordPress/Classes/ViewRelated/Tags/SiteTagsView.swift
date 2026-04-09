@@ -168,7 +168,8 @@ private struct TagRowContent: View {
 
             Spacer()
 
-            if showPostCount, tag.count > 0 {
+            // swiftlint:disable:next empty_count
+            if showPostCount, tag.count != 0 {
                 Text("\(tag.count)")
                     .font(.callout)
                     .foregroundColor(.secondary)

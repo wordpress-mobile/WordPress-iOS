@@ -310,7 +310,7 @@ extension AppExtensionsService {
             requestEnqueued()
         }, success: { remoteMedia in
             guard let returnedMedia = remoteMedia as? [RemoteMedia],
-                returnedMedia.count > 0,
+                !returnedMedia.isEmpty,
                 let mediaUploadOps = self.coreDataStack.fetchMediaUploadOps(for: self.groupIdentifier) else {
                     DDLogError("Error creating post in share extension. RemoteMedia info not returned from server.")
                     return

@@ -10,7 +10,7 @@ final class MockTenorService: TenorService {
 
     override func search(params: TenorSearchParams, completion: @escaping (TenorResultsPage) -> Void) {
         let text = params.text
-        guard text.count > 0 else {
+        guard !text.isEmpty else {
             completion(TenorResultsPage.empty())
             return
         }

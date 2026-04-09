@@ -1,4 +1,4 @@
-/* Translation-Revision-Date: 2026-03-24 11:58:27+0000 */
+/* Translation-Revision-Date: 2026-03-26 09:56:52+0000 */
 /* Plural-Forms: nplurals=2; plural=n != 1; */
 /* Generator: GlotPress/4.0.3 */
 /* Language: it */
@@ -10126,6 +10126,42 @@ Example: Reply to Pamela Nguyen */
 
 /* Menu title for the visit site option */
 "mySite.siteActions.visitSite" = "Visualizza il sito";
+
+/* Button to confirm to switch to the New Stats announcement screen */
+"newStats.announcement.continueButton" = "Inizia";
+
+/* Disclosure at the bottom of the New Stats announcement screen, informing users they can opt out */
+"newStats.announcement.disclosure" = "Non è il momento di cambiare? Puoi disattivare le Nuove statistiche dal menu Altro nella scheda Statistiche.";
+
+/* Feature description: navigation moved to the bottom for thumb-friendly access */
+"newStats.announcement.feature.bottomNav.description" = "Navigazione e selezione data ora sono nella parte inferiore dello schermo, proprio dove si trova il tuo pollice.";
+
+/* Feature title: navigation moved to the bottom */
+"newStats.announcement.feature.bottomNav.title" = "Più facile da raggiungere";
+
+/* Feature description: flexible date picker with presets, custom ranges, and comparisons */
+"newStats.announcement.feature.datePicker.description" = "Scegli tra i valori predefiniti comuni o imposta un intervallo di date personalizzato con un periodo di confronto: tutto in un tocco.";
+
+/* Feature title: flexible date picker */
+"newStats.announcement.feature.datePicker.title" = "Qualsiasi periodo, qualsiasi intervallo";
+
+/* Feature description: feature parity with the web version of Stats */
+"newStats.announcement.feature.parity.description" = "Dispositivi, UTM, posizioni, WordAds: gli stessi dati che ottieni su WordPress.com.";
+
+/* Feature title: feature parity with the web version of Stats */
+"newStats.announcement.feature.parity.title" = "Alla pari con il web";
+
+/* Feature description: trends shown for all metrics with comparison to previous period */
+"newStats.announcement.feature.trends.description" = "Ogni indicatore mostra l'andamento rispetto al periodo precedente, così saprai sempre se stai crescendo.";
+
+/* Feature title: trends visible for all metrics */
+"newStats.announcement.feature.trends.title" = "Le tendenze in un colpo d'occhio";
+
+/* Subtitle for the New Stats announcement screen */
+"newStats.announcement.subtitle" = "Un modo migliore per comprendere le prestazioni del tuo sito: ora attivo per impostazione predefinita.";
+
+/* Title for the New Stats announcement screen */
+"newStats.announcement.title" = "Nuove statistiche";
 
 /* A no results message displayed on the atomic logs screen. */
 "noLogs.empty" = "Non ci sono voci di registro in questo intervallo di tempo";

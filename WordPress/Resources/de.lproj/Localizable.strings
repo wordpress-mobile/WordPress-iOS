@@ -1,4 +1,4 @@
-/* Translation-Revision-Date: 2026-03-24 13:57:27+0000 */
+/* Translation-Revision-Date: 2026-03-26 09:58:56+0000 */
 /* Plural-Forms: nplurals=2; plural=n != 1; */
 /* Generator: GlotPress/4.0.3 */
 /* Language: de */
@@ -7941,10 +7941,10 @@ Example: Reply to Pamela Nguyen */
 "customPostList.emptyState.message" = "Keine %1$@";
 
 /* Message for the confirmation alert when trashing a published post */
-"customPostList.trashConfirmation.message" = "Dieser Beitrag ist veröffentlicht und für Besucher sichtbar. Bist du sicher, dass du „“ in den Papierkorb verschieben möchtest?";
+"customPostList.trashConfirmation.message" = "Dieser Beitrag ist veröffentlicht und für Besucher sichtbar. Bist du sicher, dass du den Beitrag in den Papierkorb verschieben möchtest?";
 
 /* Title for the confirmation alert when trashing a published post */
-"customPostList.trashConfirmation.title" = "In den Papierkorb verschieben";
+"customPostList.trashConfirmation.title" = "In den Papierkorb verschieben?";
 
 /* Placeholder title for posts without a title */
 "customPostList.untitled" = "(kein Titel)";
@@ -7956,7 +7956,7 @@ Example: Reply to Pamela Nguyen */
 "customPostParentPicker.topLevel" = "Oberste Ebene";
 
 /* Description for the top level option in the parent page picker, indicating this page will have no parent */
-"customPostParentPicker.topLevel.description" = "Eine übergeordnete Seite";
+"customPostParentPicker.topLevel.description" = "Keine übergeordnete Seite";
 
 /* Tab title for showing all posts regardless of status */
 "customPostTab.all" = "Alle";
@@ -8165,6 +8165,9 @@ Example: Reply to Pamela Nguyen */
 
 /* Debug Menu action for TipKit */
 "debugMenu.resetTipKitData" = "Daten zurücksetzen";
+
+/* Debug Menu section title */
+"debugMenu.section.caches" = "Caches";
 
 /* Debug Menu section title */
 "debugMenu.section.logging" = "Protokollierung";
@@ -9156,7 +9159,7 @@ Example: Reply to Pamela Nguyen */
 "jetpackStats.calendar.last12Weeks" = "Letzte 12 Wochen";
 
 /* Last 14 days date range */
-"jetpackStats.calendar.last14Days" = "Letzte 14 Tage";
+"jetpackStats.calendar.last14Days" = "Letzte 14 Tage";
 
 /* Last 28 days date range */
 "jetpackStats.calendar.last28Days" = "Letzte 28 Tage";
@@ -10196,6 +10199,42 @@ Example: Reply to Pamela Nguyen */
 /* Menu title for the visit site option */
 "mySite.siteActions.visitSite" = "Website aufrufen";
 
+/* Button to confirm to switch to the New Stats announcement screen */
+"newStats.announcement.continueButton" = "Los geht’s";
+
+/* Disclosure at the bottom of the New Stats announcement screen, informing users they can opt out */
+"newStats.announcement.disclosure" = "Bereit für den Umstieg? Du kannst „Neue Statistiken“ über das Menü „Mehr“ im Tab „Statistiken“ deaktivieren.";
+
+/* Feature description: navigation moved to the bottom for thumb-friendly access */
+"newStats.announcement.feature.bottomNav.description" = "Navigation und Datumsauswahl befinden sich jetzt am unteren Bildschirmrand – genau dort, wo auch dein Daumen ist.";
+
+/* Feature title: navigation moved to the bottom */
+"newStats.announcement.feature.bottomNav.title" = "Einfacher zu erreichen";
+
+/* Feature description: flexible date picker with presets, custom ranges, and comparisons */
+"newStats.announcement.feature.datePicker.description" = "Wähle aus gängigen Voreinstellungen oder lege einen individuellen Zeitraum mit einem Vergleichszeitraum fest – alles mit einem Tippen.";
+
+/* Feature title: flexible date picker */
+"newStats.announcement.feature.datePicker.title" = "Beliebiger Zeitraum, beliebiger Datumsbereich";
+
+/* Feature description: feature parity with the web version of Stats */
+"newStats.announcement.feature.parity.description" = "Geräte, UTM, Standorte, WordAds – dieselben Daten wie auf WordPress.com.";
+
+/* Feature title: feature parity with the web version of Stats */
+"newStats.announcement.feature.parity.title" = "Auf Augenhöhe mit dem Web";
+
+/* Feature description: trends shown for all metrics with comparison to previous period */
+"newStats.announcement.feature.trends.description" = "Jede Kennzahl zeigt den Trend im Vergleich zum vorherigen Zeitraum an, sodass du immer weißt, ob du wächst.";
+
+/* Feature title: trends visible for all metrics */
+"newStats.announcement.feature.trends.title" = "Trends auf einen Blick";
+
+/* Subtitle for the New Stats announcement screen */
+"newStats.announcement.subtitle" = "Eine bessere Möglichkeit, die Performance deiner Website zu verstehen – jetzt standardmäßig aktiviert.";
+
+/* Title for the New Stats announcement screen */
+"newStats.announcement.title" = "Neue Statistiken";
+
 /* A no results message displayed on the atomic logs screen. */
 "noLogs.empty" = "Es gibt keine Protokolleinträge innerhalb dieses Zeitraums";
 
@@ -10899,7 +10938,7 @@ Example: Reply to Pamela Nguyen */
 "postSettings.moreOptions.header" = "Mehr Optionen";
 
 /* The title of the Post Settings screen for custom post types. %1$@ is the post type name. */
-"postSettings.navigationTitle.customPostType" = "%1$@ Einstellungen";
+"postSettings.navigationTitle.customPostType" = "Einstellungen für %1$@";
 
 /* The title of the Page Settings screen. */
 "postSettings.navigationTitle.page" = "Seiteneinstellungen";
@@ -12036,7 +12075,7 @@ Feel free to replace it with other bracket types that you think looks better for
 "shared.button.edit" = "Bearbeiten";
 
 /* A shared button title used in different contexts */
-"shared.button.notNow" = "Jetzt";
+"shared.button.notNow" = "Nicht jetzt";
 
 /* A shared button title used in different contexts */
 "shared.button.ok" = "OK";

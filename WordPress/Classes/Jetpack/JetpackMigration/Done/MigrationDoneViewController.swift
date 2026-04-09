@@ -38,7 +38,7 @@ class MigrationDoneViewController: UIViewController {
         super.viewDidAppear(animated)
 
         var properties: [String: String] = [:]
-        if (try? BlogQuery().blogs(in: ContextManager.shared.mainContext))?.count == 0 {
+        if (try? BlogQuery().blogs(in: ContextManager.shared.mainContext))?.isEmpty == true {
             properties["no_sites"] = "true"
         }
         tracker.track(.thanksScreenShown, properties: properties)

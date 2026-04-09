@@ -318,9 +318,7 @@ static NSString *RestorableFilterIndexKey = @"restorableFilterIndexKey";
     
     // Trash Action
     UIContextualAction *trash = [UIContextualAction contextualActionWithStyle:UIContextualActionStyleDestructive title:NSLocalizedString(@"Trash", @"Trashes a comment") handler:^(UIContextualAction * _Nonnull __unused action, __kindof UIView * _Nonnull __unused sourceView, void (^ _Nonnull completionHandler)(BOOL)) {
-        [ReachabilityUtils onAvailableInternetConnectionDo:^{
-            [weakSelf deleteComment:comment];
-        }];
+        [weakSelf deleteComment:comment];
         completionHandler(YES);
     }];
     
@@ -331,9 +329,7 @@ static NSString *RestorableFilterIndexKey = @"restorableFilterIndexKey";
 
         // Unapprove Action
         UIContextualAction *unapprove = [UIContextualAction contextualActionWithStyle:UIContextualActionStyleNormal title:NSLocalizedString(@"Unapprove", @"Unapproves a Comment") handler:^(UIContextualAction * _Nonnull __unused action, __kindof UIView * _Nonnull __unused sourceView, void (^ _Nonnull completionHandler)(BOOL)) {
-            [ReachabilityUtils onAvailableInternetConnectionDo:^{
-                [weakSelf unapproveComment:comment];
-            }];
+            [weakSelf unapproveComment:comment];
             completionHandler(YES);
         }];
         
@@ -342,9 +338,7 @@ static NSString *RestorableFilterIndexKey = @"restorableFilterIndexKey";
     } else {
         // Approve Action
         UIContextualAction *approve = [UIContextualAction contextualActionWithStyle:UIContextualActionStyleNormal title:NSLocalizedString(@"Approve", @"Approves a Comment") handler:^(UIContextualAction * _Nonnull __unused action, __kindof UIView * _Nonnull __unused sourceView, void (^ _Nonnull completionHandler)(BOOL)) {
-            [ReachabilityUtils onAvailableInternetConnectionDo:^{
-                [weakSelf approveComment:comment];
-            }];
+            [weakSelf approveComment:comment];
             completionHandler(YES);
         }];
         
@@ -362,9 +356,11 @@ static NSString *RestorableFilterIndexKey = @"restorableFilterIndexKey";
     [CommentAnalytics trackCommentUnApprovedWithComment:comment];
     CommentService *service = [[CommentService alloc] initWithCoreDataStack:[ContextManager sharedInstance]];;
 
+    __typeof(self) __weak weakSelf = self;
     [self.tableView setEditing:NO animated:YES];
     [service approveComment:comment success:nil failure:^(NSError *error) {
         DDLogError(@"Error approving comment: %@", error);
+        [weakSelf showApproveCommentErrorNotice:error];
     }];
 }
 
@@ -372,10 +368,12 @@ static NSString *RestorableFilterIndexKey = @"restorableFilterIndexKey";
 {
     [CommentAnalytics trackCommentUnApprovedWithComment:comment];
     CommentService *service = [[CommentService alloc] initWithCoreDataStack:[ContextManager sharedInstance]];
-    
+
+    __typeof(self) __weak weakSelf = self;
     [self.tableView setEditing:NO animated:YES];
     [service unapproveComment:comment success:nil failure:^(NSError *error) {
         DDLogError(@"Error unapproving comment: %@", error);
+        [weakSelf showUnapproveCommentErrorNotice:error];
     }];
 }
 
@@ -383,10 +381,12 @@ static NSString *RestorableFilterIndexKey = @"restorableFilterIndexKey";
 {
     [CommentAnalytics trackCommentTrashedWithComment:comment];
     CommentService *service = [[CommentService alloc] initWithCoreDataStack:[ContextManager sharedInstance]];
-    
+
+    __typeof(self) __weak weakSelf = self;
     [self.tableView setEditing:NO animated:YES];
     [service deleteComment:comment success:nil failure:^(NSError *error) {
         DDLogError(@"Error deleting comment: %@", error);
+        [weakSelf showTrashCommentErrorNotice:error];
     }];
 }
 
@@ -488,7 +488,7 @@ static NSString *RestorableFilterIndexKey = @"restorableFilterIndexKey";
 {
     NSPredicate *predicate;
     if (statusFilter == CommentStatusFilterAll && ![self isUnrepliedFilterSelected:self.filterTabBar]) {
-        predicate = [NSPredicate predicateWithFormat:@"(blog == %@)", self.blog];
+        predicate = [NSPredicate predicateWithFormat:@"(blog == %@) AND NOT (status IN %@)", self.blog, @[@"trash", @"spam"]];
     } else {
         // Exclude any local replies from all filters except all.
         predicate = [NSPredicate predicateWithFormat:@"(blog == %@) AND commentID != nil", self.blog];

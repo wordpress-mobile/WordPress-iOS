@@ -160,7 +160,7 @@ class DomainsServiceRemoteRESTTests: RemoteTestCase, RESTTestable {
 
         remote.getStates(for: countryCode,
                          success: { (stateList) in
-            XCTAssert(stateList.count == 0)
+            XCTAssert(stateList.isEmpty)
             expect.fulfill()
         }) { (_) in
             XCTFail("This callback shouldn't get called")

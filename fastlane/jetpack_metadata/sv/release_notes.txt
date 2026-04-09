@@ -1,0 +1,21 @@
+Vem är vem på din webbplats? Nu vet du – Pushnotiser använder nu gravatarer så att du kan se vem som kommenterade eller interagerade med ditt innehåll. Aktivitetsloggen visar även när din webbplats uppdaterades med hjälp av AI-agenter.
+
+Om du tyckte att våra senaste uppdateringar av statistiken var stora har du inte sett någonting än.
+
+- Dagens datum är nu inkluderat i intervaller som ”Senaste 7 dagarna”. Vi lade även till ett nytt ”Senaste 14 dagarna”-intervall.
+- Ofullständiga datum, däribland idag, visas i linjediagrammet som en streckad linje. Du kan också se dem ännu tydligare i stapeldiagramvyn.
+- På tal om stapeldiagram: om du klickar på en stapel visas uppgifterna för det datumet. På så sätt blir det enklare att bläddra igenom data för flera dagar. Och om du klickar på en stapel markeras inte längre stapeln bredvid.
+- Du kanske märker vissa visuella förändringar, till exempel en mindre rubrik på diagramkortet, mindre teckenstorlek i flikarna och mindre mellanrum här och där. Det andas minimalism.
+
+När vi ändå höll på gjorde vi ändringar i Läsaren också. (För övrigt har ingen av dem något med läsning att göra.)
+
+- När du tittar på en bild i en lightbox kan du avfärda den genom att svepa nedåt, även om du har zoomat in.
+- Vi har korrigerat färgen på länkar i kommentarer och i mörkt läge för anpassade teman. Det ser bra ut!
+- Du kan visa mediegallerier i fullskärmsläge. Svep bara åt höger eller vänster för att visa alla bilder.
+
+Och eftersom vi fortfarande hade lite tid över passade vi även på att åtgärda några småsaker som störde oss.
+
+- Vi uppdaterade pilikonerna och avståndet på skärmen Aviseringar.
+- I Inläggsinställningar visar kortet för social delning endast plattformar som appen stöder.
+- Nya inlägg använder standardinläggsformatet istället för standardversionen. Du kan uppdatera formatet i dina webbplatsinställningar.
+- Om webbplatsen drivs på en egen server, och XML-RPC är inaktiverat, kan du ändå se Inlägg och Sidor i appen. Det är ganska viktigt, om vi får säga det själva.

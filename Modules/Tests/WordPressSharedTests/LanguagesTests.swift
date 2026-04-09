@@ -12,8 +12,8 @@ class LanguagesTests {
     @Test func testLanguagesEffectivelyLoadJsonFile() {
         let languages = WordPressComLanguageDatabase.shared
 
-        XCTAssert(languages.all.count != 0)
-        XCTAssert(languages.popular.count != 0)
+        XCTAssert(!languages.all.isEmpty)
+        XCTAssert(!languages.popular.isEmpty)
     }
 
     @Test func testAllLanguagesHaveValidFields() {
@@ -21,8 +21,8 @@ class LanguagesTests {
         let sum = languages.all + languages.popular
 
         for language in sum {
-            XCTAssert(language.slug.count > 0)
-            XCTAssert(language.name.count > 0)
+            XCTAssert(!language.slug.isEmpty)
+            XCTAssert(!language.name.isEmpty)
         }
     }
 

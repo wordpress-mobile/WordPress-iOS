@@ -203,7 +203,7 @@ final class ReaderCommentsViewController: UIViewController, WPContentSyncHelperD
         navigationItem.rightBarButtonItem = post.isSubscribedComments ? barButtonItemFollowingSettings : barButtonItemFollowConversation
     }
 
-    private func refreshEmptyStateView() {
+    func refreshEmptyStateView() {
         activityIndicator.stopAnimating()
 
         emptyStateView?.removeFromSuperview()

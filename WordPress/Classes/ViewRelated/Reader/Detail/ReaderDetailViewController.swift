@@ -459,7 +459,8 @@ class ReaderDetailViewController: UIViewController, ReaderDetailView {
                 return
             }
 
-            self.scrollView.setContentOffset(CGPoint(x: 0, y: height + self.webView.frame.origin.y), animated: true)
+            let y = height + self.webView.frame.origin.y - self.scrollView.adjustedContentInset.top
+            self.scrollView.setContentOffset(CGPoint(x: 0, y: y), animated: true)
         })
     }
 

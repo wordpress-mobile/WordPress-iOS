@@ -233,7 +233,7 @@ class DonutChartView: UIView {
         // need to adjust it to match the minimum, and add it to the array.
         let totalAdjustment: CGFloat = belowMinimumSegments.reduce(0) { $0 + minimumSizePercentage - $1.value }
 
-        guard belowMinimumSegments.count > 0 else {
+        guard !belowMinimumSegments.isEmpty else {
             return segments
         }
 

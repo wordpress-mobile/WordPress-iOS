@@ -443,7 +443,7 @@ fileprivate extension ShareModularViewController {
             }
 
             cell.detailTextLabel?.text = shareData.selectedCategoriesNameString
-            if (shareData.userSelectedCategories == nil || shareData.userSelectedCategories?.count == 0)
+            if (shareData.userSelectedCategories == nil || shareData.userSelectedCategories?.isEmpty == true)
                 && shareData.defaultCategoryID == Constants.unknownDefaultCategoryID {
                 cell.detailTextLabel?.textColor = UIAppColor.neutral(.shade30)
             } else {
@@ -596,7 +596,7 @@ fileprivate extension ShareModularViewController {
         clearAllSelectedSiteRows()
         cell.accessoryType = .checkmark
         shareData.selectedSiteID = site.blogID.intValue
-        shareData.selectedSiteName = site.name.count > 0 ? site.name : URL(string: site.url)?.host
+        shareData.selectedSiteName = !site.name.isEmpty ? site.name : URL(string: site.url)?.host
         fetchCategoriesForSelectedSite()
         updatePublishButtonStatus()
         self.refreshModulesTable()

@@ -243,7 +243,7 @@ final class DomainSelectionViewController: CollapsableHeaderViewController {
 
     override func estimatedContentSize() -> CGSize {
         guard !isShowingError else { return CGSize(width: view.frame.width, height: 44) }
-        guard data.count > 0 else { return .zero }
+        guard !data.isEmpty else { return .zero }
         let estimatedSectionHeaderHeight: CGFloat = 85
         let cellCount = data.count
         let height = estimatedSectionHeaderHeight + (CGFloat(cellCount) * AddressTableViewCell.estimatedSize.height)
@@ -662,7 +662,7 @@ extension DomainSelectionViewController: UITableViewDataSource {
     }
 
     func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
-        guard data.count > 0 else { return nil }
+        guard !data.isEmpty else { return nil }
         return Strings.suggestions
     }
 

@@ -76,7 +76,7 @@ class DomainsServiceTests: CoreDataTestCase {
 
     func testDomainServiceHandlesTwoNewDomains() {
         let domains = findAllDomains()
-        XCTAssert(domains.count == 0, "Expecting no domains initially")
+        XCTAssert(domains.isEmpty, "Expecting no domains initially")
 
         stubDomainsResponseWithFile("domain-service-valid-domains.json")
         fetchDomains()

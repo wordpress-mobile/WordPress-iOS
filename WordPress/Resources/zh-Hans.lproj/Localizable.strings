@@ -1,4 +1,4 @@
-/* Translation-Revision-Date: 2026-03-24 11:54:41+0000 */
+/* Translation-Revision-Date: 2026-03-26 09:56:04+0000 */
 /* Plural-Forms: nplurals=1; plural=0; */
 /* Generator: GlotPress/4.0.3 */
 /* Language: zh_CN */
@@ -10165,6 +10165,42 @@ Example: Reply to Pamela Nguyen */
 
 /* Menu title for the visit site option */
 "mySite.siteActions.visitSite" = "查看站点";
+
+/* Button to confirm to switch to the New Stats announcement screen */
+"newStats.announcement.continueButton" = "开始";
+
+/* Disclosure at the bottom of the New Stats announcement screen, informing users they can opt out */
+"newStats.announcement.disclosure" = "还没准备好转换吗？ 您可以从“统计”选项卡的“更多”菜单中关闭“新统计信息”。";
+
+/* Feature description: navigation moved to the bottom for thumb-friendly access */
+"newStats.announcement.feature.bottomNav.description" = "导航和日期选择器现已移至屏幕底部，正好就在您的拇指触控位置。";
+
+/* Feature title: navigation moved to the bottom */
+"newStats.announcement.feature.bottomNav.title" = "更易触控";
+
+/* Feature description: flexible date picker with presets, custom ranges, and comparisons */
+"newStats.announcement.feature.datePicker.description" = "只需轻点一下，即可从常见预设中选择，或设置包含比较时段的自定义日期范围。";
+
+/* Feature title: flexible date picker */
+"newStats.announcement.feature.datePicker.title" = "任意时间段、任意范围";
+
+/* Feature description: feature parity with the web version of Stats */
+"newStats.announcement.feature.parity.description" = "设备、UTM、地理位置、WordAds — 这些数据与您在 WordPress.com 上看到的一致。";
+
+/* Feature title: feature parity with the web version of Stats */
+"newStats.announcement.feature.parity.title" = "与网页版保持同步";
+
+/* Feature description: trends shown for all metrics with comparison to previous period */
+"newStats.announcement.feature.trends.description" = "每个指标都会显示与前一时间段的趋势对比，以便您可以随时掌握增长情况。";
+
+/* Feature title: trends visible for all metrics */
+"newStats.announcement.feature.trends.title" = "趋势一览";
+
+/* Subtitle for the New Stats announcement screen */
+"newStats.announcement.subtitle" = "更深入了解站点性能的方法，现已默认启用。";
+
+/* Title for the New Stats announcement screen */
+"newStats.announcement.title" = "新统计信息";
 
 /* A no results message displayed on the atomic logs screen. */
 "noLogs.empty" = "此时间范围内无日志条目";

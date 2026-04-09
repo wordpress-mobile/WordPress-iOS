@@ -16,6 +16,9 @@ only_rules:
   # There should be no space before and one after any comma.
   - comma
 
+  # Prefer `contains` over using `filter(where:).isEmpty`.
+  - contains_over_filter_is_empty
+
   # if,for,while,do statements shouldn't wrap their conditionals in parentheses.
   - control_statement
 
@@ -26,12 +29,18 @@ only_rules:
 
   - duplicate_imports
 
+  # Prefer checking `isEmpty` over comparing `count` to zero.
+  - empty_count
+
   # Arguments can be omitted when matching enums with associated types if they
   # are not used.
   - empty_enum_arguments
 
   # Prefer `() -> ` over `Void -> `.
   - empty_parameters
+
+  # Prefer checking `isEmpty` over comparing to empty string literal `""`.
+  - empty_string
 
   # MARK comment should be in valid format.
   - mark

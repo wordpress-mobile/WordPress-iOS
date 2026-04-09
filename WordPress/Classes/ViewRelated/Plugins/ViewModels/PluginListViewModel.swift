@@ -184,7 +184,7 @@ class PluginListViewModel: Observable {
             guard case .feed(let feedType) = query,
                 case .search = feedType,
                 case .directory(let result) = plugins,
-                result.count == 0 else {
+                result.isEmpty else {
                     return nil
             }
 

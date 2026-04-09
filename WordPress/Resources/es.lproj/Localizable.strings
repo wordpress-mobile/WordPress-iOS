@@ -1,4 +1,4 @@
-/* Translation-Revision-Date: 2026-03-24 11:54:58+0000 */
+/* Translation-Revision-Date: 2026-03-25 12:55:32+0000 */
 /* Plural-Forms: nplurals=2; plural=n != 1; */
 /* Generator: GlotPress/4.0.3 */
 /* Language: es */
@@ -7929,7 +7929,7 @@ Example: Reply to Pamela Nguyen */
 "customPostList.badge.homepage" = "Página de inicio";
 
 /* Badge shown in the post list for sticky posts */
-"customPostList.badge.sticky" = "Fija";
+"customPostList.badge.sticky" = "Fijas";
 
 /* Message for the confirmation alert when permanently deleting a post */
 "customPostList.deleteConfirmation.message" = "Esta acción no se puede deshacer.";
@@ -7941,7 +7941,7 @@ Example: Reply to Pamela Nguyen */
 "customPostList.emptyState.message" = "No hay %1$@";
 
 /* Message for the confirmation alert when trashing a published post */
-"customPostList.trashConfirmation.message" = "Esta entrada está publicada y es visible para los visitantes. ¿Seguro que quieres enviar «» a la papelera?";
+"customPostList.trashConfirmation.message" = "Esta entrada está publicada y es visible para los visitantes. ¿Seguro que quieres moverlo a la papelera?";
 
 /* Title for the confirmation alert when trashing a published post */
 "customPostList.trashConfirmation.title" = "Mover a la papelera";
@@ -7956,10 +7956,10 @@ Example: Reply to Pamela Nguyen */
 "customPostParentPicker.topLevel" = "Nivel superior";
 
 /* Description for the top level option in the parent page picker, indicating this page will have no parent */
-"customPostParentPicker.topLevel.description" = "Una página padre";
+"customPostParentPicker.topLevel.description" = "Sin página superior";
 
 /* Tab title for showing all posts regardless of status */
-"customPostTab.all" = "Todos";
+"customPostTab.all" = "Todas";
 
 /* Tab title for draft posts */
 "customPostTab.drafts" = "Borradores";
@@ -10199,6 +10199,42 @@ Example: Reply to Pamela Nguyen */
 /* Menu title for the visit site option */
 "mySite.siteActions.visitSite" = "Visitar sitio";
 
+/* Button to confirm to switch to the New Stats announcement screen */
+"newStats.announcement.continueButton" = "Empezar";
+
+/* Disclosure at the bottom of the New Stats announcement screen, informing users they can opt out */
+"newStats.announcement.disclosure" = "¿No tienes todo listo para hacer el cambio? Puedes desactivar las nuevas estadísticas en el menú Más de la pestaña Estadísticas.";
+
+/* Feature description: navigation moved to the bottom for thumb-friendly access */
+"newStats.announcement.feature.bottomNav.description" = "La navegación y el selector de fechas están ahora en la parte inferior de la pantalla, justo donde está tu pulgar.";
+
+/* Feature title: navigation moved to the bottom */
+"newStats.announcement.feature.bottomNav.title" = "Más fácil de alcanzar";
+
+/* Feature description: flexible date picker with presets, custom ranges, and comparisons */
+"newStats.announcement.feature.datePicker.description" = "Elige entre los preajustes habituales o establece un rango de fechas personalizado con un periodo de comparación, todo con un solo toque.";
+
+/* Feature title: flexible date picker */
+"newStats.announcement.feature.datePicker.title" = "Cualquier período, cualquier rango";
+
+/* Feature description: feature parity with the web version of Stats */
+"newStats.announcement.feature.parity.description" = "Dispositivos, UTM, ubicaciones, WordAds: los mismos datos que obtienes en WordPress.com.";
+
+/* Feature title: feature parity with the web version of Stats */
+"newStats.announcement.feature.parity.title" = "A la par de la web";
+
+/* Feature description: trends shown for all metrics with comparison to previous period */
+"newStats.announcement.feature.trends.description" = "Cada métrica muestra cómo es tendencia en comparación con el período anterior, por lo que siempre sabes si estás creciendo.";
+
+/* Feature title: trends visible for all metrics */
+"newStats.announcement.feature.trends.title" = "Tendencias de un vistazo";
+
+/* Subtitle for the New Stats announcement screen */
+"newStats.announcement.subtitle" = "Una forma mejor de entender el rendimiento de tu sitio, ahora activada por defecto.";
+
+/* Title for the New Stats announcement screen */
+"newStats.announcement.title" = "Nuevas estadísticas";
+
 /* A no results message displayed on the atomic logs screen. */
 "noLogs.empty" = "No hay entradas de registro en este intervalo de tiempo";
 
@@ -12039,7 +12075,7 @@ Feel free to replace it with other bracket types that you think looks better for
 "shared.button.edit" = "Editar";
 
 /* A shared button title used in different contexts */
-"shared.button.notNow" = "Ahora";
+"shared.button.notNow" = "Ahora no";
 
 /* A shared button title used in different contexts */
 "shared.button.ok" = "OK";
@@ -12400,6 +12436,9 @@ Feel free to replace it with other bracket types that you think looks better for
 
 /* The message displayed when a plugin has no description */
 "sitePluginsList.item.noDescriptionAvailable" = "El autor del plugin no facilitó una descripción de este plugin.";
+
+/* The plugin version displayed in the plugins list. The first argument is plugin version */
+"sitePluginsList.item.version" = "Versión: %@";
 
 /* Button to activate a plugin */
 "sitePluginsList.itemAction.activate" = "Activar";

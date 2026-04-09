@@ -141,7 +141,7 @@ import WordPressKit
 
         // Call callback and return result
         self.searchResultUpdated?(self)
-        return sections.count > 0
+        return !sections.isEmpty
     }
 
     private static func searchResult(searchQuery: String, suggestions: Suggestions, suggestionType: SuggestionType, prominentSuggestionsIds: [NSNumber]) -> SearchResult {
@@ -198,7 +198,7 @@ import WordPressKit
 
         // Move suggestions to the beginning of `searchResults` array.
         var userSuggestions = userSuggestions
-        if !prominentSuggestions.isEmpty && suggestionIndexesToRemove.count > 0 {
+        if !prominentSuggestions.isEmpty && !suggestionIndexesToRemove.isEmpty {
             let prominentSuggestions = prominentSuggestions.compactMap { $0 }
             suggestionIndexesToRemove = suggestionIndexesToRemove.sorted(by: >)
             suggestionIndexesToRemove.forEach { userSuggestions.remove(at: $0) }

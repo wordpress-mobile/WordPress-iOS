@@ -5,6 +5,8 @@ import UIKit
 public protocol CommentContentRenderer: AnyObject {
     var delegate: CommentContentRendererDelegate? { get set }
 
+    var displaySettings: ReaderDisplaySettings { get set }
+
     /// A view for rendering the comments.
     var view: UIView { get }
 

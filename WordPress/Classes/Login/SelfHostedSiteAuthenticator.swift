@@ -65,7 +65,8 @@ struct SelfHostedSiteAuthenticator {
     enum SignInError: Error, LocalizedError {
         case authentication(Error)
         case xmlrpcDisabled(Error)
-        case loadingSiteInfoFailure
+        case xmlrpcEndpointNotFound
+        case loadingSiteInfoFailure(Error)
         case savingSiteFailure
         case mismatchedUser(expectedUsername: String)
         case cancelled
@@ -74,6 +75,8 @@ struct SelfHostedSiteAuthenticator {
             switch self {
             case .authentication(let error):
                 return error.localizedDescription
+            case .xmlrpcEndpointNotFound:
+                return NSLocalizedString("addSite.selfHosted.xmlrpcEndpointNotFound", value: "Could not determine the site's XML-RPC endpoint", comment: "Error message when the app cannot find the XML-RPC endpoint of a self-hosted WordPress site")
             case .loadingSiteInfoFailure:
                 return NSLocalizedString("addSite.selfHosted.loadingSiteInfoFailure", value: "Cannot load the WordPress site details", comment: "Error message shown when failing to load details from a self-hosted WordPress site")
             case .savingSiteFailure:
@@ -264,7 +267,7 @@ struct SelfHostedSiteAuthenticator {
         let xmlrpc = (try? await discoverXMLRPCEndpoint(site: credentials.siteUrl))
             ?? URL(string: credentials.siteUrl)?.appending(component: "xmlrpc.php")
         guard let xmlrpc else {
-            throw .loadingSiteInfoFailure
+            throw .xmlrpcEndpointNotFound
         }
 
         let api = WordPressAPI(
@@ -273,13 +276,15 @@ struct SelfHostedSiteAuthenticator {
             authentication: WpAuthentication(username: credentials.userLogin, password: credentials.password)
         )
 
-        let siteSettings: SiteSettingsWithViewContext
+        let siteSettings: SiteSettingsWithViewContext?
         let isAdmin: Bool
         let jetpackSite: RemoteBlog?
         let jetpackConnection: JetpackConnectionData?
         let xmlrpcOptions: [AnyHashable: Any]?
         do {
-            async let siteSettings_ = api.siteSettings.retrieveWithViewContext().data
+            // site settings is only available to admin users. Ignore errors for now,
+            // since we need to allow other users to sign in to the app too.
+            async let siteSettings_ = try? api.siteSettings.retrieveWithViewContext().data
             async let isAdmin_ = api.users.retrieveMeWithEditContext().data.roles.contains(.administrator)
             async let jetpackSite_ = fetchJetpackSite(apiRootURL: apiRootURL, credentials: credentials)
             async let jetpackConnection_ = fetchJetpackConnectionData(apiRootURL: apiRootURL, credentials: credentials)
@@ -288,7 +293,7 @@ struct SelfHostedSiteAuthenticator {
             (siteSettings, isAdmin, jetpackSite, jetpackConnection, xmlrpcOptions) =
                 try await (siteSettings_, isAdmin_, jetpackSite_, jetpackConnection_, xmlrpcOptions_)
         } catch {
-            throw .loadingSiteInfoFailure
+            throw .loadingSiteInfoFailure(error)
         }
 
         let blog: TaggedManagedObjectID<Blog>
@@ -306,7 +311,7 @@ struct SelfHostedSiteAuthenticator {
 
                 blog.isAdmin = isAdmin
                 blog.addSettingsIfNecessary()
-                blog.settings?.name = siteSettings.title
+                blog.settings?.name = siteSettings?.title
 
                 blog.options = (xmlrpcOptions ?? [:])
                     .merging(
@@ -327,12 +332,12 @@ struct SelfHostedSiteAuthenticator {
                     }
                 }
 
-                if blog.getOptionString(name: "blog_title") == nil {
-                    blog.setValue(siteSettings.title, forOption: "blog_title")
+                if blog.getOptionString(name: "blog_title") == nil, let title = siteSettings?.title {
+                    blog.setValue(title, forOption: "blog_title")
                 }
 
-                if blog.getOptionString(name: "timezone") == nil {
-                    blog.setValue(siteSettings.timezone, forOption: "timezone")
+                if blog.getOptionString(name: "timezone") == nil, let timezone = siteSettings?.timezone {
+                    blog.setValue(timezone, forOption: "timezone")
                 }
 
                 if blog.getOptionString(name: "gmt_offset") == nil, let offset = apiDetails.gmtOffset() {

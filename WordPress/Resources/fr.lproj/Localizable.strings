@@ -1,4 +1,4 @@
-/* Translation-Revision-Date: 2026-03-24 17:57:22+0000 */
+/* Translation-Revision-Date: 2026-03-26 15:59:08+0000 */
 /* Plural-Forms: nplurals=2; plural=n > 1; */
 /* Generator: GlotPress/4.0.3 */
 /* Language: fr */
@@ -10070,6 +10070,42 @@ Example: Reply to Pamela Nguyen */
 /* Menu title for the visit site option */
 "mySite.siteActions.visitSite" = "Aller sur le site";
 
+/* Button to confirm to switch to the New Stats announcement screen */
+"newStats.announcement.continueButton" = "Commencer";
+
+/* Disclosure at the bottom of the New Stats announcement screen, informing users they can opt out */
+"newStats.announcement.disclosure" = "Prêt(e) à procéder au changement ? Vous pouvez désactiver les nouvelles statistiques à partir du menu Plus de l’onglet Statistiques.";
+
+/* Feature description: navigation moved to the bottom for thumb-friendly access */
+"newStats.announcement.feature.bottomNav.description" = "La navigation et le sélecteur de date sont désormais en bas de l’écran, à l’endroit où se trouve votre pouce.";
+
+/* Feature title: navigation moved to the bottom */
+"newStats.announcement.feature.bottomNav.title" = "Plus facile d’accès";
+
+/* Feature description: flexible date picker with presets, custom ranges, and comparisons */
+"newStats.announcement.feature.datePicker.description" = "Choisissez parmi les préréglages courants ou définissez une plage de dates personnalisée avec une période de comparaison, le tout en un clic.";
+
+/* Feature title: flexible date picker */
+"newStats.announcement.feature.datePicker.title" = "Toute période, toute plage";
+
+/* Feature description: feature parity with the web version of Stats */
+"newStats.announcement.feature.parity.description" = "Appareils, UTM, emplacements, WordAds - les mêmes données que celles que vous obtenez sur WordPress.com.";
+
+/* Feature title: feature parity with the web version of Stats */
+"newStats.announcement.feature.parity.title" = "À égalité avec le Web";
+
+/* Feature description: trends shown for all metrics with comparison to previous period */
+"newStats.announcement.feature.trends.description" = "Chaque indicateur montre sa tendance par rapport à la période précédente, de sorte que vous savez toujours si votre croissance est bonne.";
+
+/* Feature title: trends visible for all metrics */
+"newStats.announcement.feature.trends.title" = "Aperçu des tendances";
+
+/* Subtitle for the New Stats announcement screen */
+"newStats.announcement.subtitle" = "Une meilleure façon de comprendre les performances de votre site - maintenant activé par défaut.";
+
+/* Title for the New Stats announcement screen */
+"newStats.announcement.title" = "Nouvelles statistiques";
+
 /* A no results message displayed on the atomic logs screen. */
 "noLogs.empty" = "Aucune entrée de journal dans cet intervalle";
 
@@ -10810,6 +10846,9 @@ Example: Reply to Pamela Nguyen */
 
 /* Label for the post format field. Should be the same as WP core. */
 "postSettings.postFormat.label" = "Format d’article";
+
+/* Label for the post ID field in Post Settings */
+"postSettings.postID.label" = "ID :";
 
 /* Placeholder value for a publishing date in the prepublishing sheet when the date is not selected */
 "postSettings.publishDateImmediately" = "Immédiatement";

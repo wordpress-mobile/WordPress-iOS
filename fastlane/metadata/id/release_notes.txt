@@ -1,0 +1,4 @@
+- Log Aktivitas sekarang muncul saat situs Anda diperbarui menggunakan agen AI.
+- Dalam Pengaturan Pos, kartu Berbagi di Media Sosial hanya menunjukkan platforms yang didukung aplikasi.
+- Pos baru menggunakan format pos default, bukan versi standarnya. Anda dapat memperbarui format ini dalam pengaturan situs Anda.
+- Jika situs Anda dihosting sendiri dengan XML-RPC yang dinonaktifkan, Anda dapat melihat Pos dan Halaman di aplikasi. Menurut kami fitur itu cukup penting.

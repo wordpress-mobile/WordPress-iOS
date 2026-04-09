@@ -452,7 +452,7 @@ private extension NotificationSettingsViewController {
             return followedSites.isEmpty
 
         default:
-            return groupedSettings[section]?.count == 0
+            return groupedSettings[section]?.isEmpty ?? true
         }
     }
 
