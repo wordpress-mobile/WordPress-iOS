@@ -24,8 +24,8 @@ class JetpackCapabilitiesServiceTests: CoreDataTestCase {
         let service = JetpackCapabilitiesService(coreDataStack: contextManager, capabilitiesServiceRemote: remoteMock)
 
         service.sync(blogs: [RemoteBlog.mock()], success: { blogs in
-            XCTAssertTrue(blogs.first!.capabilities["backup"]!)
-            XCTAssertTrue(blogs.first!.capabilities["scan"]!)
+            XCTAssertTrue(blogs.first!.capabilities["backup"]! as! Bool)
+            XCTAssertTrue(blogs.first!.capabilities["scan"]! as! Bool)
             expect.fulfill()
         })
 
