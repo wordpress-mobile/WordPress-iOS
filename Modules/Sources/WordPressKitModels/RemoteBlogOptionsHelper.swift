@@ -79,6 +79,12 @@ import WordPressShared
         if options["blog_public"] != nil {
             remoteSettings.privacy = options.number(forKeyPath: "blog_public.value")
         }
+        if let commentStatus = options.string(forKeyPath: "default_comment_status.value") {
+            remoteSettings.commentsAllowed = NSNumber(value: commentStatus == "open")
+        }
+        if let pingStatus = options.string(forKeyPath: "default_ping_status.value") {
+            remoteSettings.pingbackInboundEnabled = NSNumber(value: pingStatus == "open")
+        }
         return remoteSettings
     }
 }
