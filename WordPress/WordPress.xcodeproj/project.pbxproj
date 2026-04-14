@@ -3942,6 +3942,7 @@
 				CODE_SIGN_ENTITLEMENTS = "JetpackIntents/Supporting Files/JetpackIntents.entitlements";
 				CODE_SIGN_STYLE = Manual;
 				COPY_PHASE_STRIP = NO;
+				"DEVELOPMENT_TEAM[sdk=iphoneos*]" = PZYM8XX95Q;
 				GCC_C_LANGUAGE_STANDARD = gnu11;
 				GCC_DYNAMIC_NO_PIC = NO;
 				GCC_PREPROCESSOR_DEFINITIONS = (
@@ -3961,6 +3962,7 @@
 				PRODUCT_BUNDLE_IDENTIFIER = com.automattic.jetpack.JetpackIntents;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "Jetpack iOS Development Intents";
+				"PROVISIONING_PROFILE_SPECIFIER[sdk=iphoneos*]" = "Jetpack iOS Development Intents Extension";
 				SKIP_INSTALL = YES;
 				SWIFT_ACTIVE_COMPILATION_CONDITIONS = DEBUG;
 				SWIFT_VERSION = 5.0;
