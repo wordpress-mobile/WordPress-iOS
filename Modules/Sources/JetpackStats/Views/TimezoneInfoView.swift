@@ -27,7 +27,7 @@ struct TimezoneInfoView: View {
     }
 
     private var formattedTimeZone: String {
-        let name = context.timeZone.localizedName(for: .standard, locale: .current)
+        let name = context.timeZone.localizedName(for: .generic, locale: .current)
         return name ?? context.timeZone.identifier
     }
 
