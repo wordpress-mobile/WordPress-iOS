@@ -16,6 +16,7 @@
 * [*] Reader: Fix an issues with Reader failing to clear cached comments if all the comments are deleted [#25482]
 * [*] Reader: Fix an issue with the article view removing autoplay without showing controls [#25468]
 * [*] Menus: Fix an issue with footer view in Menu Editing not resizing [#25481]
+* [*] About screen: Remove the non-functional Twitter/X link [#25496]
 
 26.8
 -----
