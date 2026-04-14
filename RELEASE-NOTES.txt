@@ -3,6 +3,7 @@
 * [*] All self-hosted sites now sign in using application passwords [#25424]
 * [*] Comments: Fix "Trash" trailing action not updating the status of the comments cached on the device [#25485]
 * [*] Stats: Add a confirmation dialog when marking referrers as spam [#25475]
+* [*] Stats: Fix timezone label showing "Standard Time" during daylight saving time - thanks @btraviswright for the report! [#25495]
 * [*] Reader: Fix an issue with Article screen not updating comments if comment is posted from inline section [#25483]
 * [*] Reader: Fix button style [#25447]
 * [*] Reader: Add smart cropping for featured images in the feed so it never cut the heads off [#25451]
