@@ -179,6 +179,7 @@ final class ReaderCommentsTableViewController: UIViewController, UITableViewData
         UIView.performWithoutAnimation {
             tableView.endUpdates()
         }
+        containerViewController?.refreshEmptyStateView()
     }
 
     // MARK: - UITableViewDataSource
