@@ -21,5 +21,3 @@ gem 'rubocop-rake', '~> 0.7'
 group :screenshots, optional: true do
   gem 'rmagick', '~> 6.3.0'
 end
-
-gem 'openssl', '~> 4.0'
