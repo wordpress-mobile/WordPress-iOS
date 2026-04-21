@@ -383,7 +383,7 @@ class PluginViewModel: Observable {
             expandedText: setHTMLTextAttributes(text),
             expanded: descriptionExpandedStatus,
             action: { [unowned self] row in
-                self.descriptionExpandedStatus = !self.descriptionExpandedStatus
+                self.descriptionExpandedStatus.toggle()
                 (row as? ExpandableRow)?.expanded = self.descriptionExpandedStatus
             },
             onLinkTap: { [unowned self] url in
@@ -399,7 +399,7 @@ class PluginViewModel: Observable {
             expandedText: setHTMLTextAttributes(text),
             expanded: installationExpandedStatus,
             action: { [unowned self] row in
-                self.installationExpandedStatus = !self.installationExpandedStatus
+                self.installationExpandedStatus.toggle()
                 (row as? ExpandableRow)?.expanded = self.installationExpandedStatus
             },
             onLinkTap: { [unowned self] url in
@@ -415,7 +415,7 @@ class PluginViewModel: Observable {
             expandedText: setHTMLTextAttributes(text),
             expanded: changeLogExpandedStatus,
             action: { [unowned self] row in
-                self.changeLogExpandedStatus = !self.changeLogExpandedStatus
+                self.changeLogExpandedStatus.toggle()
                 (row as? ExpandableRow)?.expanded = self.changeLogExpandedStatus
             },
             onLinkTap: { [unowned self] url in
@@ -431,7 +431,7 @@ class PluginViewModel: Observable {
             expandedText: setHTMLTextAttributes(text),
             expanded: faqExpandedStatus,
             action: { [unowned self] row in
-                self.faqExpandedStatus = !self.faqExpandedStatus
+                self.faqExpandedStatus.toggle()
                 (row as? ExpandableRow)?.expanded = self.faqExpandedStatus
             },
             onLinkTap: { [unowned self] url in

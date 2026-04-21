@@ -406,7 +406,7 @@ class SharingButtonsViewController: UITableViewController {
                 switchCell.onChange = { [weak self] newValue in
                     guard let self else { return }
                     WPAnalytics.track(.sharingButtonsEditSharingButtonsToggled, properties: ["checked": newValue as Any], blog: self.blog)
-                    self.buttonsSection.editing = !self.buttonsSection.editing
+                    self.buttonsSection.editing.toggle()
                     self.updateButtonOrderAfterEditing()
                     self.reloadButtons()
                 }
@@ -452,7 +452,7 @@ class SharingButtonsViewController: UITableViewController {
                     guard let self else { return }
                     WPAnalytics.track(.sharingButtonsEditMoreButtonToggled, properties: ["checked": newValue as Any], blog: self.blog)
                     self.updateButtonOrderAfterEditing()
-                    self.moreSection.editing = !self.moreSection.editing
+                    self.moreSection.editing.toggle()
                     self.reloadButtons()
                 }
             }

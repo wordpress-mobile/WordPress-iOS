@@ -55,6 +55,9 @@ only_rules:
 
   - shorthand_optional_binding
 
+  # Prefer `someBool.toggle()` over `someBool = !someBool`.
+  - toggle_bool
+
   # Files should have a single trailing newline.
   - trailing_newline
 

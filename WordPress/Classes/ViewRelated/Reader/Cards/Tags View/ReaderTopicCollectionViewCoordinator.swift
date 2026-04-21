@@ -206,7 +206,7 @@ extension ReaderTopicCollectionViewCoordinator: UICollectionViewDelegateFlowLayo
             return
         }
 
-        layout.isExpanded = !layout.isExpanded
+        layout.isExpanded.toggle()
         layout.invalidateLayout()
 
         WPAnalytics.trackReader(.readerChipsMoreToggled)

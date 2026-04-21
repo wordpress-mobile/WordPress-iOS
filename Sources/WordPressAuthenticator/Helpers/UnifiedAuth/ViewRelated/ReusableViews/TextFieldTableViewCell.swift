@@ -173,7 +173,7 @@ private extension TextFieldTableViewCell {
     }
 
     @objc func secureTextEntryToggleAction(_ sender: Any) {
-        textField.isSecureTextEntry = !textField.isSecureTextEntry
+        textField.isSecureTextEntry.toggle()
 
         // Save and re-apply the current selection range to save the cursor position
         let currentTextRange = textField.selectedTextRange

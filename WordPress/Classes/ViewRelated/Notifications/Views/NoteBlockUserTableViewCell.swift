@@ -96,7 +96,7 @@ class NoteBlockUserTableViewCell: NoteBlockTableViewCell {
             if let listener = isFollowOn ? onUnfollowClick : onFollowClick {
                 listener()
             }
-            isFollowOn = !isFollowOn
+            isFollowOn.toggle()
         }
     }
 

@@ -53,7 +53,7 @@ class ExpandableCell: WPReusableTableViewCell, NibLoadable {
     }
 
     public func toggle() {
-        expanded = !expanded
+        expanded.toggle()
     }
 
     private func setupSubviews() {

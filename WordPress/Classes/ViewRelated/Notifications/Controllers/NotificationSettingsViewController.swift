@@ -582,10 +582,10 @@ extension NotificationSettingsViewController {
         let section = self.section(at: index.section)
         switch section {
         case .blog:
-            displayBlogMoreWasAccepted = !displayBlogMoreWasAccepted
+            displayBlogMoreWasAccepted.toggle()
 
         case .followedSites:
-            displayFollowedMoreWasAccepted = !displayFollowedMoreWasAccepted
+            displayFollowedMoreWasAccepted.toggle()
 
         default:
             return
