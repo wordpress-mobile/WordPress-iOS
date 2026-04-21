@@ -139,9 +139,12 @@ public struct CachedAsyncImage<Content>: View where Content: View {
             } else {
                 phase = .empty
                 let image = try await imageDownloader.image(for: request)
+
+                try Task.checkCancellation()
                 phase = .success(Image(uiImage: image))
             }
         } catch {
+            guard !Task.isCancelled else { return }
             phase = .failure(error)
         }
     }
