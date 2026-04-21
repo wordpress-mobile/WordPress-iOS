@@ -17,6 +17,7 @@
 * [*] Reader: Fix an issue with the article view removing autoplay without showing controls [#25468]
 * [*] Menus: Fix an issue with footer view in Menu Editing not resizing [#25481]
 * [*] About screen: Remove the non-functional Twitter/X link - thanks @zynp-KC for reporting! [#25496]
+* [*] Notifications: Attempt to fix incorrect avatars in the notifications [#25501]
 
 26.8
 -----
