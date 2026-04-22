@@ -7,7 +7,7 @@ import WordPressShared
 
 class ReaderDiscoverViewController: UIViewController, ReaderDiscoverHeaderViewDelegate {
     private let headerView = ReaderDiscoverHeaderView()
-    private var selectedChannel: ReaderDiscoverChannel = .freshlyPressed
+    private var selectedChannel: ReaderDiscoverChannel
     private let topic: ReaderAbstractTopic
     private var streamVC: ReaderStreamViewController?
     private weak var selectInterestsVC: ReaderSelectInterestsViewController?
@@ -18,10 +18,11 @@ class ReaderDiscoverViewController: UIViewController, ReaderDiscoverHeaderViewDe
     private let notificationsButtonViewModel = NotificationsButtonViewModel()
     private var notificationsButtonCancellable: AnyCancellable?
 
-    init(topic: ReaderAbstractTopic) {
+    init(topic: ReaderAbstractTopic, initialChannel: ReaderDiscoverChannel = .freshlyPressed) {
         wpAssert(ReaderHelpers.topicIsDiscover(topic))
         self.viewContext = ContextManager.shared.mainContext
         self.topic = topic
+        self.selectedChannel = initialChannel
         self.tags = ManagedObjectsObserver(
             predicate: ReaderSidebarTagsSection.predicate,
             sortDescriptors: [SortDescriptor(\.title, order: .forward)],
@@ -90,7 +91,7 @@ class ReaderDiscoverViewController: UIViewController, ReaderDiscoverHeaderViewDe
             .filter { $0.slug != ReaderTagTopic.dailyPromptTag }
             .map(ReaderDiscoverChannel.tag)
 
-        headerView.configure(channels: [.freshlyPressed, .recommended, .latest, .firstPosts, .dailyPrompts] + channels)
+        headerView.configure(channels: [.freshlyPressed, .recommended, .latest, .firstPosts, .dailyPrompts, .onThisDay] + channels)
         headerView.setSelectedChannel(selectedChannel)
     }
 
@@ -112,6 +113,8 @@ class ReaderDiscoverViewController: UIViewController, ReaderDiscoverHeaderViewDe
             ReaderDiscoverStreamViewController(topic: topic, sorting: .date)
         case .dailyPrompts:
             ReaderStreamViewController.controllerWithTagSlug(ReaderTagTopic.dailyPromptTag)
+        case .onThisDay:
+            ReaderDiscoverStreamViewController(topic: topic, stream: .onThisDay)
         case .tag(let tag):
             ReaderStreamViewController.controllerWithTopic(tag)
         }

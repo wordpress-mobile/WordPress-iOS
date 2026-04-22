@@ -16,6 +16,7 @@ public enum ReaderStream: String {
     case discover = "discover"
     case freshlyPressed = "freshly-pressed"
     case firstPosts = "first-posts"
+    case onThisDay = "on-this-day"
 }
 
 extension ReaderPostServiceRemote {

@@ -22,6 +22,7 @@ public final class ReaderPresenter: NSObject, SplitViewDisplayable {
     }
 
     private var selectionObserver: AnyCancellable?
+    private var pendingDiscoverChannel: ReaderDiscoverChannel?
 
     public convenience override init() {
         self.init(viewModel: ReaderSidebarViewModel())
@@ -141,7 +142,9 @@ public final class ReaderPresenter: NSObject, SplitViewDisplayable {
         case .recent, .discover, .likes:
             if let topic = screen.topicType.flatMap(sidebarViewModel.getTopic) {
                 if screen == .discover {
-                    return ReaderDiscoverViewController(topic: topic)
+                    let initialChannel = pendingDiscoverChannel ?? .freshlyPressed
+                    pendingDiscoverChannel = nil
+                    return ReaderDiscoverViewController(topic: topic, initialChannel: initialChannel)
                 } else {
                     return ReaderStreamViewController.controllerWithTopic(topic)
                 }
@@ -290,6 +293,10 @@ public final class ReaderPresenter: NSObject, SplitViewDisplayable {
         case .recent:
             viewModel.selection = .main(.recent)
         case .discover:
+            pendingDiscoverChannel = nil
+            viewModel.selection = .main(.discover)
+        case .discoverOnThisDay:
+            pendingDiscoverChannel = .onThisDay
             viewModel.selection = .main(.discover)
         case .likes:
             viewModel.selection = .main(.likes)

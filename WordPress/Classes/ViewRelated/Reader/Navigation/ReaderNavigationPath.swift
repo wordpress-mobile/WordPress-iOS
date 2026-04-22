@@ -6,6 +6,7 @@ import WordPressKit
 enum ReaderNavigationPath: Hashable {
     case recent
     case discover
+    case discoverOnThisDay
     case likes
     case search
     case subscriptions

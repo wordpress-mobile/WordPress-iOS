@@ -180,6 +180,9 @@ enum ReaderDiscoverChannel: Hashable {
 
     case dailyPrompts
 
+    /// Posts you published on this day in previous years.
+    case onThisDay
+
     /// A quick access for your tags.
     case tag(ReaderTagTopic)
 
@@ -197,6 +200,8 @@ enum ReaderDiscoverChannel: Hashable {
             NSLocalizedString("reader.discover.channel.dailyPrompts", value: "Daily Prompts", comment: "Header view channel (filter)")
         case .tag(let tag):
             tag.formattedTitle
+        case .onThisDay:
+            NSLocalizedString("reader.discover.channel.onThisDay", value: "On This Day", comment: "Header view channel (filter) showing posts you published on this day in previous years")
         }
     }
 
@@ -215,6 +220,7 @@ enum ReaderDiscoverChannel: Hashable {
         case .firstPosts: "first_posts"
         case .latest: "latest"
         case .dailyPrompts: "daily_prompts"
+        case .onThisDay: "on_this_day"
         case .tag: "tag"
         }
     }

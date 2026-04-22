@@ -15,6 +15,7 @@ public enum NotificationKind: String, Sendable {
     case user = "user"
     case login = "push_auth"
     case viewMilestone = "view_milestone"
+    case onThisDay = "on_this_day"
     case unknown = "unknown"
 }
 
