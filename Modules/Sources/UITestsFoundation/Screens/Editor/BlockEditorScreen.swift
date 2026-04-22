@@ -446,7 +446,7 @@ public class BlockEditorScreen: ScreenObject {
 
     @discardableResult
     public func closeBlockPicker() throws -> BlockEditorScreen {
-        editorCloseButton.coordinate(withNormalizedOffset: CGVector(dx: 0, dy: 0)).tap()
+        editorCloseButton.coordinate(withNormalizedOffset: CGVector.zero).tap()
         return try BlockEditorScreen()
     }
 

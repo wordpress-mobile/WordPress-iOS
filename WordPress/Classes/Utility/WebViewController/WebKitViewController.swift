@@ -94,7 +94,7 @@ class WebKitViewController: UIViewController, WebKitAuthenticatable {
     let linkBehavior: LinkBehavior
 
     private var reachabilityObserver: Any?
-    private var tapLocation = CGPoint(x: 0.0, y: 0.0)
+    private var tapLocation = CGPoint.zero
     private var widthConstraint: NSLayoutConstraint?
     private var stackViewBottomAnchor: NSLayoutConstraint?
     private var onClose: (() -> Void)?
@@ -613,7 +613,7 @@ extension WebKitViewController: UIPopoverPresentationControllerDelegate {
 
     private func handleDocumentMenuPresentation(presented: UIPopoverPresentationController) {
           presented.sourceView = webView
-          presented.sourceRect = CGRect(origin: tapLocation, size: CGSize(width: 0, height: 0))
+          presented.sourceRect = CGRect(origin: tapLocation, size: CGSize.zero)
       }
 }
 

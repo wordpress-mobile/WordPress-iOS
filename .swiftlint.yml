@@ -53,6 +53,8 @@ only_rules:
 
   - overridden_super_call
 
+  - prefer_zero_over_explicit_init
+
   - shorthand_optional_binding
 
   # Files should have a single trailing newline.

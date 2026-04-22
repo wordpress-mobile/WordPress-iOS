@@ -42,9 +42,9 @@ struct UIImageScaleTests {
     }
 
     @Test func zeroTargetSize() {
-        let targetSize = CGSize(width: 0, height: 0)
+        let targetSize = CGSize.zero
         let originalImage = UIImage(color: .blue, size: CGSize(width: 1024, height: 680))
         let size = originalImage.dimensions(forSuggestedSize: targetSize, format: .scaleAspectFill)
-        #expect(size == CGSize(width: 0, height: 0))
+        #expect(size == CGSize.zero)
     }
 }

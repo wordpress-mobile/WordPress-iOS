@@ -136,7 +136,7 @@ class SparklineView: UIView {
         // ... then the bottom gradient
         if let maskLayerPath = lineLayerPath.mutableCopy() {
             maskLayerPath.addLine(to: CGPoint(x: bounds.width, y: 0))
-            maskLayerPath.addLine(to: CGPoint(x: 0, y: 0))
+            maskLayerPath.addLine(to: CGPoint.zero)
             maskLayer.path = maskLayerPath
         }
 
