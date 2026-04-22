@@ -1,0 +1,230 @@
+import Testing
+import Foundation
+import JetpackSocial
+import WordPressAPI
+import WordPressAPIInternal
+
+@testable import WordPress
+@testable import WordPressCore
+@testable import WordPressData
+
+@MainActor
+struct CustomPostSettingsViewModelTests {
+
+    @Test("hasChanges stays false after settings mutation when social v2 is enabled and post has disabled connections")
+    func hasChangesIsFalseAfterUnrelatedSettingsMutation() throws {
+        // Given: a published post whose additional_fields encode a disabled connection.
+        let context = ContextManager.forTesting().mainContext
+        let blog = BlogBuilder(context).build()
+        let post = try makePostWithDisabledConnection()
+        let editorService = try makeEditorService(blog: blog, post: post)
+        let connectionsService = makeConnectionsService()
+
+        let viewModel = CustomPostSettingsViewModel(
+            editorService: editorService,
+            blog: blog,
+            socialConnectionsService: connectionsService
+        )
+
+        // Sanity: the parsed draft has the disabled connection from the post.
+        #expect(viewModel.socialSharingDraft.disabledConnectionIDs == ["12345"])
+
+        // When: settings is reassigned to a value-equivalent copy (simulating
+        // `resolveTermNames` writing back resolved-but-identical tags).
+        viewModel.settings = viewModel.settings
+
+        // Then: hasChanges stays false because nothing actually changed.
+        #expect(!viewModel.hasChanges)
+    }
+
+    @Test("hasChanges flips to true when the user toggles a social connection")
+    func hasChangesIsTrueAfterSocialDraftToggle() throws {
+        let context = ContextManager.forTesting().mainContext
+        let blog = BlogBuilder(context).build()
+        let post = try makePostWithDisabledConnection()
+        let editorService = try makeEditorService(blog: blog, post: post)
+        let connectionsService = makeConnectionsService()
+
+        let viewModel = CustomPostSettingsViewModel(
+            editorService: editorService,
+            blog: blog,
+            socialConnectionsService: connectionsService
+        )
+
+        // When: the user toggles the disabled connection back ON.
+        viewModel.socialSharingDraft.disabledConnectionIDs.remove("12345")
+
+        // Then: hasChanges flips to true.
+        #expect(viewModel.hasChanges)
+    }
+
+    @Test("hasChanges returns to false when the user toggles back to the original state")
+    func hasChangesReturnsFalseAfterToggleAndUntoggle() throws {
+        let context = ContextManager.forTesting().mainContext
+        let blog = BlogBuilder(context).build()
+        let post = try makePostWithDisabledConnection()
+        let editorService = try makeEditorService(blog: blog, post: post)
+        let connectionsService = makeConnectionsService()
+
+        let viewModel = CustomPostSettingsViewModel(
+            editorService: editorService,
+            blog: blog,
+            socialConnectionsService: connectionsService
+        )
+
+        // When: toggle ON, then toggle back OFF.
+        viewModel.socialSharingDraft.disabledConnectionIDs.remove("12345")
+        viewModel.socialSharingDraft.disabledConnectionIDs.insert("12345")
+
+        // Then: PostSocialSharingDraft is structurally Equatable, so we're back
+        // to the initial state.
+        #expect(!viewModel.hasChanges)
+    }
+}
+
+// MARK: - Test Helpers
+
+private func makePostWithDisabledConnection() throws -> AnyPostWithEditContext {
+    // Mirrors the real server response observed when a published post has a
+    // connection that was already shared (server returns enabled: false).
+    let json = #"""
+        {
+            "jetpack_publicize_connections": [
+                {"connection_id": "12345", "enabled": false}
+            ]
+        }
+        """#
+    let additionalFields = try WpAdditionalFields.fromJsonString(json: json)
+    return AnyPostWithEditContext(
+        id: PostId(1),
+        date: "2025-01-01T00:00:00",
+        dateGmt: Date(timeIntervalSince1970: 0),
+        guid: PostGuidWithEditContext(raw: nil, rendered: ""),
+        link: "https://example.com",
+        modified: "2025-01-01T00:00:00",
+        modifiedGmt: Date(timeIntervalSince1970: 0),
+        slug: "test-post",
+        status: .publish,
+        postType: "post",
+        password: nil,
+        permalinkTemplate: nil,
+        generatedSlug: nil,
+        title: nil,
+        content: PostContentWithEditContext(raw: nil, rendered: "", protected: nil, blockVersion: nil),
+        author: nil,
+        excerpt: nil,
+        featuredMedia: nil,
+        commentStatus: .open,
+        pingStatus: .open,
+        format: nil,
+        meta: nil,
+        sticky: nil,
+        template: "",
+        categories: nil,
+        tags: nil,
+        parent: nil,
+        menuOrder: nil,
+        additionalFields: additionalFields
+    )
+}
+
+@MainActor
+private func makeEditorService(
+    blog: Blog,
+    post: AnyPostWithEditContext
+) throws -> CustomPostEditorService {
+    let api = try WordPressAPI(
+        urlSession: .shared,
+        apiRootUrl: .parse(input: "https://example.com/wp-json"),
+        authentication: .none
+    )
+    let client = WordPressClient(
+        api: api,
+        siteURL: URL(string: "https://example.com")!
+    )
+    let wpService = try api.createSelfHostedService(cache: .bootstrap())
+
+    return CustomPostEditorService(
+        blog: blog,
+        post: post,
+        details: makePostTypeDetails(),
+        client: client,
+        wpService: wpService
+    )
+}
+
+private func makeConnectionsService() -> SiteSocialConnectionsService {
+    // A real instance whose `connections` stays in `.idle` for the whole
+    // test — sufficient for the regression check, which doesn't depend on
+    // any populated data.
+    let client = WPComApiClient(
+        urlSession: .shared,
+        authentication: .none
+    )
+    return SiteSocialConnectionsService(
+        client: client,
+        siteId: 1
+    )
+}
+
+private func makePostTypeDetails() -> PostTypeDetailsWithEditContext {
+    PostTypeDetailsWithEditContext(
+        capabilities: [:],
+        description: "",
+        hierarchical: false,
+        viewable: true,
+        labels: makePostTypeLabels(),
+        name: "Test Post Type",
+        slug: "test_post_type",
+        supports: PostTypeSupportsMap(map: [
+            .title: .bool(true),
+            .editor: .bool(true)
+        ]),
+        hasArchive: .bool(false),
+        taxonomies: [],
+        restBase: "test_post_type",
+        restNamespace: "wp/v2",
+        visibility: PostTypeVisibility(showInNavMenus: true, showUi: true),
+        icon: nil
+    )
+}
+
+private func makePostTypeLabels() -> PostTypeLabels {
+    PostTypeLabels(
+        name: "",
+        singularName: "",
+        addNew: "",
+        addNewItem: "",
+        editItem: "",
+        newItem: "",
+        viewItem: "",
+        viewItems: "",
+        searchItems: "",
+        notFound: "",
+        notFoundInTrash: "",
+        parentItemColon: nil,
+        allItems: "",
+        archives: "",
+        attributes: "",
+        insertIntoItem: "",
+        uploadedToThisItem: "",
+        featuredImage: "",
+        setFeaturedImage: "",
+        removeFeaturedImage: "",
+        useFeaturedImage: "",
+        filterItemsList: "",
+        filterByDate: "",
+        itemsListNavigation: "",
+        itemsList: "",
+        itemPublished: "",
+        itemPublishedPrivately: "",
+        itemRevertedToDraft: "",
+        itemTrashed: "",
+        itemScheduled: "",
+        itemUpdated: "",
+        itemLink: "",
+        itemLinkDescription: "",
+        menuName: "",
+        nameAdminBar: ""
+    )
+}

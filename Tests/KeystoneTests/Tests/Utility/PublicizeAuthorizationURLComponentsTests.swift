@@ -1,3 +1,4 @@
+import JetpackSocial
 import XCTest
 @testable import WordPress
 

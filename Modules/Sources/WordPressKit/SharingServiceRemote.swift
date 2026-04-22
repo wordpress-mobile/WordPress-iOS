@@ -118,6 +118,9 @@ open class SharingServiceRemote: ServiceRemoteWordPressComREST {
                     conn.externalDisplay = dict.string(forKey: ConnectionDictionaryKeys.externalDisplay) ?? conn.externalDisplay
                     conn.externalID = dict.string(forKey: ConnectionDictionaryKeys.externalID) ?? conn.externalID
                     conn.externalName = dict.string(forKey: ConnectionDictionaryKeys.externalName) ?? conn.externalName
+                    if conn.externalDisplay.isEmpty {
+                        conn.externalDisplay = conn.externalName
+                    }
                     conn.externalProfilePicture = dict.string(forKey: ConnectionDictionaryKeys.externalProfilePicture) ?? conn.externalProfilePicture
                     conn.keyringID = dict.number(forKey: ConnectionDictionaryKeys.ID) ?? conn.keyringID
                     conn.label = dict.string(forKey: ConnectionDictionaryKeys.label) ?? conn.label
@@ -359,6 +362,9 @@ open class SharingServiceRemote: ServiceRemoteWordPressComREST {
         conn.externalDisplay = dict.string(forKey: ConnectionDictionaryKeys.externalDisplay) ?? conn.externalDisplay
         conn.externalID = dict.string(forKey: ConnectionDictionaryKeys.externalID) ?? conn.externalID
         conn.externalName = dict.string(forKey: ConnectionDictionaryKeys.externalName) ?? conn.externalName
+        if conn.externalDisplay.isEmpty {
+            conn.externalDisplay = conn.externalName
+        }
         conn.externalProfilePicture = dict.string(forKey: ConnectionDictionaryKeys.externalProfilePicture) ?? conn.externalProfilePicture
         conn.externalProfileURL = dict.string(forKey: ConnectionDictionaryKeys.externalProfileURL) ?? conn.externalProfileURL
         conn.keyringConnectionID = dict.number(forKey: ConnectionDictionaryKeys.keyringConnectionID) ?? conn.keyringConnectionID

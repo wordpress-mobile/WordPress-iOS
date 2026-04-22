@@ -1,4 +1,5 @@
 import Foundation
+import JetpackSocial
 import WordPressAPIInternal
 import WordPressData
 import WordPressKit
@@ -65,6 +66,19 @@ struct PostSettings: Hashable {
     var postFormat: String?
     var isStickyPost = false
     var sharing: PostSocialSharingSettings?
+    /// Save-time-only field: populated by `CustomPostSettingsViewModel` from
+    /// the post's saved publicize state. To avoid driving a false-positive
+    /// `hasChanges`, the viewmodel must pre-bake this into both `settings`
+    /// and `originalSettings` at init. If you add another save-time-only
+    /// field here, thread it through `makeSavePayload()` (not
+    /// `getSettingsToSave(for:)`), or it will re-introduce the bug.
+    var socialSharingDraft: PostSocialSharingDraft?
+    /// Runtime snapshot of the current site's connection IDs. Must be
+    /// populated only by `makeSavePayload()` at save time and kept out of
+    /// `getSettingsToSave(for:)` — its value drifts during the session
+    /// (`[]` while connections load, then non-empty), so including it in
+    /// `originalSettings` would cause a false-positive `hasChanges`.
+    var socialSharingConnectionIDs: [String] = []
     var allowComments = true
     var allowPings = true
 
@@ -161,9 +175,12 @@ struct PostSettings: Hashable {
             postFormat = post.postFormat
             isStickyPost = post.isStickyPost
             tags = AbstractPost.makeTags(from: post.tags ?? "").map { Term(id: 0, name: $0) }
-            categoryIDs = Set((post.categories ?? []).map {
-                $0.categoryID.intValue
-            })
+            categoryIDs = Set(
+                (post.categories ?? [])
+                    .map {
+                        $0.categoryID.intValue
+                    }
+            )
             sharing = PostSocialSharingSettings.make(for: post)
             allowComments = post.allowComments
             allowPings = post.allowPings
@@ -253,7 +270,10 @@ struct PostSettings: Hashable {
         if let featuredImageID {
             // Only update if changed
             if post.featuredImage?.mediaID?.intValue != featuredImageID {
-                post.featuredImage = Media.existingOrStubMediaWith(mediaID: NSNumber(value: featuredImageID), inBlog: post.blog)
+                post.featuredImage = Media.existingOrStubMediaWith(
+                    mediaID: NSNumber(value: featuredImageID),
+                    inBlog: post.blog
+                )
             }
         } else {
             post.featuredImage = nil
@@ -433,8 +453,25 @@ struct PostSettings: Hashable {
                 customTermChanges[restBase] = termIds
             }
         }
-        if !customTermChanges.isEmpty {
-            params.additionalFields = AnyJson.fromTermIdMap(map: customTermChanges)
+        var fields: WpAdditionalFields? = nil
+        for (restBase, termIds) in customTermChanges {
+            fields = (fields ?? WpAdditionalFields())
+                .withValue(
+                    key: restBase,
+                    value: .array(termIds.map { .int($0) })
+                )
+        }
+
+        // Social connections
+        if let draft = socialSharingDraft, !socialSharingConnectionIDs.isEmpty {
+            fields = (fields ?? WpAdditionalFields())
+                .addingPublicizeConnections(socialSharingConnectionIDs, disabled: draft.disabledConnectionIDs)
+        }
+        params.additionalFields = fields
+
+        // Social meta
+        if let message = socialSharingDraft?.customMessage, !message.isEmpty {
+            params.meta = (params.meta ?? PostMeta()).addingPublicizeMessage(message)
         }
 
         let postParentPageID = post.parent.map { Int($0) }
@@ -459,9 +496,20 @@ struct PostSettings: Hashable {
                 customTerms[taxonomy.restBase] = termIds
             }
         }
-        let additionalFields: AnyJson? = customTerms.isEmpty
-            ? nil
-            : AnyJson.fromTermIdMap(map: customTerms)
+        var fields: WpAdditionalFields? = nil
+        for (restBase, termIds) in customTerms {
+            fields = (fields ?? WpAdditionalFields())
+                .withValue(
+                    key: restBase,
+                    value: .array(termIds.map { .int($0) })
+                )
+        }
+
+        // Social connections
+        if let draft = socialSharingDraft, !socialSharingConnectionIDs.isEmpty {
+            fields = (fields ?? WpAdditionalFields())
+                .addingPublicizeConnections(socialSharingConnectionIDs, disabled: draft.disabledConnectionIDs)
+        }
 
         var params = existing
         params.dateGmt = publishDate
@@ -478,7 +526,13 @@ struct PostSettings: Hashable {
         params.categories = categoryIds
         params.tags = tagIds
         params.parent = parentPageID.map { PostId(Int64($0)) }
-        params.additionalFields = additionalFields
+        params.additionalFields = fields
+
+        // Social meta
+        if let message = socialSharingDraft?.customMessage, !message.isEmpty {
+            params.meta = (params.meta ?? PostMeta()).addingPublicizeMessage(message)
+        }
+
         return params
     }
 }
@@ -519,9 +573,10 @@ extension PostSettings {
     }
 
     mutating func setTerms(_ terms: String, forTaxonomySlug taxonomySlug: String) {
-        otherTerms[taxonomySlug] = AbstractPost.makeTags(from: terms).map {
-            Term(id: 0, name: $0)
-        }
+        otherTerms[taxonomySlug] = AbstractPost.makeTags(from: terms)
+            .map {
+                Term(id: 0, name: $0)
+            }
     }
 }
 
@@ -622,12 +677,13 @@ struct PostSocialSharingSettings: Hashable {
 
         // first, build a dictionary to categorize the connections.
         var connectionsMap = [PublicizeService.ServiceName: [PublicizeConnection]]()
-        connections.filter { !$0.requiresUserAction() }.forEach { connection in
-            let name = PublicizeService.ServiceName(rawValue: connection.service) ?? .unknown
-            var serviceConnections = connectionsMap[name] ?? []
-            serviceConnections.append(connection)
-            connectionsMap[name] = serviceConnections
-        }
+        connections.filter { !$0.requiresUserAction() }
+            .forEach { connection in
+                let name = PublicizeService.ServiceName(rawValue: connection.service) ?? .unknown
+                var serviceConnections = connectionsMap[name] ?? []
+                serviceConnections.append(connection)
+                connectionsMap[name] = serviceConnections
+            }
 
         let publicizeServices: [PublicizeService]
         do {
@@ -640,16 +696,19 @@ struct PostSocialSharingSettings: Hashable {
         let services = publicizeServices.compactMap { service -> PostSocialSharingSettings.Service? in
             // skip services without connections.
             guard let serviceConnections = connectionsMap[service.name],
-                  !serviceConnections.isEmpty else {
+                !serviceConnections.isEmpty
+            else {
                 return nil
             }
 
             return PostSocialSharingSettings.Service(
                 name: service.name,
                 connections: serviceConnections.map {
-                    .init(account: $0.externalDisplay,
-                          keyringID: $0.keyringConnectionID.intValue,
-                          enabled: !post.publicizeConnectionDisabledForKeyringID($0.keyringConnectionID))
+                    .init(
+                        account: $0.externalDisplay,
+                        keyringID: $0.keyringConnectionID.intValue,
+                        enabled: !post.publicizeConnectionDisabledForKeyringID($0.keyringConnectionID)
+                    )
                 }
             )
         }

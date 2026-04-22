@@ -57,6 +57,19 @@ To automatically sign in to the app on an iOS simulator, see @docs/simulator-sig
 - Use semantics text sizes like `.headline`
 - Use swift-log (see the `WordPress/Classes/System/Logging.swift` file) instead of CocoaLumberjack (`DDLogError`, etc)
 
+## Core Data Concurrency
+
+Don't capture an `NSManagedObject` (e.g. `Blog`, `WPAccount`) across threads — touching its properties off its context's queue violates Core Data's concurrency model.
+
+Store a `TaggedManagedObjectID<Model>` instead, inject a `CoreDataStack` (typically `ContextManager.shared`), and resolve the object inside `coreDataStack.performQuery { context in ... }` (or `performAndSave` for writes):
+
+```swift
+try await coreDataStack.performQuery { [blogID] context in
+    let blog = try context.existingObject(with: blogID)
+    return blog.someValue  // return value types, not the managed object
+}
+```
+
 ## Development Workflow
 - Branch from `trunk` (main branch)
 - PR target should be `trunk`
