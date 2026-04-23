@@ -42,6 +42,10 @@ only_rules:
   # Prefer checking `isEmpty` over comparing to empty string literal `""`.
   - empty_string
 
+  # When calling the `joined` method on an array of strings, omit an
+  # explicit empty-string separator since that is the default.
+  - joined_default_parameter
+
   # MARK comment should be in valid format.
   - mark
 
