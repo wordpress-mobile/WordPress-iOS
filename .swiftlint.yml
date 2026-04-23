@@ -53,6 +53,7 @@ only_rules:
 
   - overridden_super_call
 
+  # Example: CGPoint.zero instead of CGPoint(x: 0, y: 0)
   - prefer_zero_over_explicit_init
 
   - shorthand_optional_binding
