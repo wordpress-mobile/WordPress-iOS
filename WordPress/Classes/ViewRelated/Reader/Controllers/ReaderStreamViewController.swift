@@ -398,6 +398,18 @@ import AutomatticTracks
         NotificationsViewController.showInPopover(from: self, sourceItem: sender)
     }
 
+    private func setupSavedPostsSettingsBarButtonItemIfNeeded() {
+        guard contentType == .saved else { return }
+        let action = UIAction { [weak self] _ in
+            let settingsVC = UIHostingController(rootView: ReaderSavedPostsSettingsView())
+            self?.navigationController?.pushViewController(settingsVC, animated: true)
+        }
+        let button = UIBarButtonItem(title: nil, image: UIImage(systemName: "ellipsis.circle"), primaryAction: action)
+        button.tag = NavigationItemTag.savedPostsSettings.rawValue
+        button.accessibilityLabel = Strings.savedPostsSettingsAccessibilityLabel
+        addRightBarButtonItem(button)
+    }
+
     // MARK: - Topic acquisition
 
     /// Fetches a site topic for the value of the `siteID` property.
@@ -1705,4 +1717,5 @@ extension ReaderStreamViewController: ContentIdentifiable {
 
 private enum Strings {
     static let postRemoved = NSLocalizedString("reader.savedPostRemovedNotificationTitle", value: "Saved post removed", comment: "Notification title for when saved post is removed")
+    static let savedPostsSettingsAccessibilityLabel = NSLocalizedString("reader.savedPosts.settings.button.accessibilityLabel", value: "Saved posts settings", comment: "Accessibility label for the button that opens saved Reader posts import and export settings")
 }
