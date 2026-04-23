@@ -212,7 +212,9 @@ class ReaderDiscoverViewController: UIViewController, ReaderDiscoverHeaderViewDe
     }
 }
 
-private class ReaderDiscoverStreamViewController: ReaderStreamViewController {
+private class ReaderDiscoverStreamViewController: ReaderStreamViewController, ReaderStreamProviding {
+    let readerStream: ReaderStream?
+
     private let readerCardTopicsIdentifier = "ReaderTopicsCell"
     private let readerCardSitesIdentifier = "ReaderSitesCell"
 
@@ -235,6 +237,7 @@ private class ReaderDiscoverStreamViewController: ReaderStreamViewController {
 
     init(topic: ReaderAbstractTopic, stream: ReaderStream = .discover, sorting: ReaderSortingOption = .noSorting) {
         self.cardsService = ReaderCardService(stream: stream, sorting: sorting)
+        self.readerStream = stream
 
         super.init(nibName: nil, bundle: nil)
 

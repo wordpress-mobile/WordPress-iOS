@@ -1,7 +1,14 @@
 import Foundation
 import SwiftUI
 import WordPressData
+import WordPressKit
 import WordPressUI
+
+/// Implemented by stream view controllers that can report which `ReaderStream` they are showing,
+/// so the base class can tailor things like empty-state messaging.
+protocol ReaderStreamProviding: AnyObject {
+    var readerStream: ReaderStream? { get }
+}
 
 // MARK: - ReaderHeader
 
@@ -44,7 +51,8 @@ extension ReaderStreamViewController {
 
 extension ReaderStreamViewController {
     func makeEmptyStateView(for topic: ReaderAbstractTopic) -> UIView {
-        let response = ReaderStreamViewController.responseForNoResults(topic)
+        let stream = (self as? ReaderStreamProviding)?.readerStream
+        let response = ReaderStreamViewController.responseForNoResults(topic, stream: stream)
         return UIHostingView(view: EmptyStateView(response.title, scaledImage: response.scaledImageName, description: response.message))
     }
 
@@ -54,7 +62,13 @@ extension ReaderStreamViewController {
         var scaledImageName = "wpl-glasses"
     }
 
-    private class func responseForNoResults(_ topic: ReaderAbstractTopic) -> NoResultsResponse {
+    private class func responseForNoResults(_ topic: ReaderAbstractTopic, stream: ReaderStream? = nil) -> NoResultsResponse {
+        if stream == .onThisDay {
+            return NoResultsResponse(
+                title: NSLocalizedString("reader.no.results.onThisDay.title", value: "No posts from this day", comment: "Empty-state title shown in the Reader's On This Day stream when the user has no posts published on this date in previous years."),
+                message: NSLocalizedString("reader.no.results.onThisDay.message", value: "You haven’t published any posts on this day in previous years. Check back as your blog grows.", comment: "Empty-state message shown in the Reader's On This Day stream when the user has no posts published on this date in previous years.")
+            )
+        }
         if ReaderHelpers.topicIsFollowing(topic) {
             return NoResultsResponse(
                 title: NSLocalizedString("Welcome to the Reader", comment: "A message title"),
