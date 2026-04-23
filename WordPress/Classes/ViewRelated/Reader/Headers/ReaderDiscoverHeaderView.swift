@@ -220,7 +220,7 @@ enum ReaderDiscoverChannel: Hashable {
         case .firstPosts: "first_posts"
         case .latest: "latest"
         case .dailyPrompts: "daily_prompts"
-        case .onThisDay: "on_this_day"
+        case .onThisDay: "on-this-day"
         case .tag: "tag"
         }
     }
