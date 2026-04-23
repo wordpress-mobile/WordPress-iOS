@@ -32,7 +32,7 @@ extension NotificationKind {
     private static let kindsWithoutRichNotificationBodyText: Set<NotificationKind> = [
         .commentLike,
         .like,
-        .login
+        .login,
     ]
 
     private static let kindsWithNotificationIconSupport: Set<NotificationKind> = [

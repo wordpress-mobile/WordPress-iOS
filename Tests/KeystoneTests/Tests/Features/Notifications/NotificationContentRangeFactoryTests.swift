@@ -72,7 +72,7 @@ final class NotificationContentRangeFactoryTests: XCTestCase {
     }
 
     private func mockReaderStreamRange() throws -> JSONObject {
-        try JSONObject(fromFileNamed: "notifications-readerstream-range.json")
+        return try JSONObject(fromFileNamed: "notifications-readerstream-range.json")
     }
 
 }

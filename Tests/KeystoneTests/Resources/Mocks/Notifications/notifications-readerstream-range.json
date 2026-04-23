@@ -1,6 +1,7 @@
 {
-    "url" : "https://wordpress.com/read/tags/mental-health",
+    "url" : "https://wordpress.com/reader/on-this-day",
     "type" : "readerstream",
+    "id" : "on-this-day",
     "indices" : [
         0,
         12
