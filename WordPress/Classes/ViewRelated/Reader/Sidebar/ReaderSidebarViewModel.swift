@@ -18,9 +18,11 @@ final class ReaderSidebarViewModel: ObservableObject {
 
     let menu: [ReaderStaticScreen]
 
-    init(menuStore: ReaderMenuStoreProtocol = ReaderMenuStore(),
-         contextManager: CoreDataStackSwift = ContextManager.shared,
-         isReaderAppModeEnabled: Bool = false) {
+    init(
+        menuStore: ReaderMenuStoreProtocol = ReaderMenuStore(),
+        contextManager: CoreDataStackSwift = ContextManager.shared,
+        isReaderAppModeEnabled: Bool = false
+    ) {
         self.tabItemsStore = menuStore
         self.contextManager = contextManager
 
@@ -46,9 +48,10 @@ final class ReaderSidebarViewModel: ObservableObject {
     }
 
     func getTopic(for topicType: ReaderTopicType) -> ReaderAbstractTopic? {
-        return try? ReaderAbstractTopic.lookupAllMenus(in: contextManager.mainContext).first {
-            ReaderHelpers.topicType($0) == topicType
-        }
+        try? ReaderAbstractTopic.lookupAllMenus(in: contextManager.mainContext)
+            .first {
+                ReaderHelpers.topicType($0) == topicType
+            }
     }
 
     func onAppear() {
@@ -64,7 +67,8 @@ final class ReaderSidebarViewModel: ObservableObject {
 
     private func persistenSelection() {
         if !isRestoringSelection, case .main(let screen)? = selection,
-           screen == .recent || screen == .discover {
+            screen == .recent || screen == .discover
+        {
             UserDefaults.standard.readerSidebarSelection = screen
         }
     }
@@ -73,6 +77,9 @@ final class ReaderSidebarViewModel: ObservableObject {
 enum ReaderSidebarItem: Identifiable, Hashable {
     /// One of the main navigation areas.
     case main(ReaderStaticScreen)
+    /// The Discover screen opened on a specific channel. Used for deep links
+    /// like `/read/streams/:stream_key`; does not highlight a sidebar row.
+    case discover(channel: ReaderDiscoverChannel)
     case allSubscriptions
     case subscription(TaggedManagedObjectID<ReaderSiteTopic>)
     case list(TaggedManagedObjectID<ReaderListTopic>)

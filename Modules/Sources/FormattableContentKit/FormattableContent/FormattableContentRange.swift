@@ -77,7 +77,6 @@ extension FormattableRangeKind {
     public static let post = FormattableRangeKind("post")
     public static let comment = FormattableRangeKind("comment")
     public static let readerStream = FormattableRangeKind("readerstream")
-    public static let onThisDay = FormattableRangeKind("on-this-day")
     public static let stats = FormattableRangeKind("stat")
     public static let follow = FormattableRangeKind("follow")
     public static let blockquote = FormattableRangeKind("blockquote")

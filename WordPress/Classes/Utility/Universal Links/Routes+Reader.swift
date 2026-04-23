@@ -15,6 +15,7 @@ enum ReaderRoute {
     case blog
     case feedsPost
     case blogsPost
+    case stream
     case wpcomPost
 }
 
@@ -53,6 +54,8 @@ extension ReaderRoute: Route {
             return ["/read/feeds/:feed_id/posts/:post_id", "/reader/feeds/:feed_id/posts/:post_id"]
         case .blogsPost:
             return ["/read/blogs/:blog_id/posts/:post_id", "/reader/blogs/:blog_id/posts/:post_id"]
+        case .stream:
+            return ["/read/streams/:stream_key", "/reader/streams/:stream_key"]
         case .wpcomPost:
             return ["/:post_year/:post_month/:post_day/:post_name"]
         }
@@ -118,6 +121,10 @@ extension ReaderRoute: NavigationAction {
             if let (blogID, postID) = blogAndPostID(from: values) {
                 presenter.showReader(path: .post(postID: postID, siteID: blogID))
             }
+        case .stream:
+            if let streamKey = values["stream_key"] {
+                presenter.showReader(path: .discoverStream(key: streamKey))
+            }
         case .wpcomPost:
             if let urlString = values[MatchedRouteURLComponentKey.url.rawValue], let url = URL(string: urlString) {
                 presenter.showReader(path: .postURL(url))
@@ -130,7 +137,7 @@ extension ReaderRoute: NavigationAction {
             let postIDValue = values?["post_id"],
             let feedID = Int(feedIDValue),
             let postID = Int(postIDValue) else {
-                return nil
+            return nil
         }
 
         return (feedID, postID)
@@ -141,7 +148,7 @@ extension ReaderRoute: NavigationAction {
             let postIDValue = values?["post_id"],
             let blogID = Int(blogIDValue),
             let postID = Int(postIDValue) else {
-                return nil
+            return nil
         }
 
         return (blogID, postID)

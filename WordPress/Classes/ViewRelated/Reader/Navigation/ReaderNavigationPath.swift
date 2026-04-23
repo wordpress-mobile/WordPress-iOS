@@ -6,7 +6,9 @@ import WordPressKit
 enum ReaderNavigationPath: Hashable {
     case recent
     case discover
-    case discoverOnThisDay
+    /// A Reader stream identified by key, e.g. the key used by `/read/streams/:stream_key`.
+    /// Resolves to a matching Discover channel when available, otherwise falls back to a tag.
+    case discoverStream(key: String)
     case likes
     case search
     case subscriptions

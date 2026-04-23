@@ -139,14 +139,7 @@ struct DefaultContentCoordinator: ContentCoordinator {
         guard let streamKey, !streamKey.isEmpty else {
             throw DisplayError.missingParameter
         }
-
-        if streamKey == "on-this-day" {
-            RootViewCoordinator.sharedPresenter.showReader(path: .discoverOnThisDay)
-            return
-        }
-
-        let browseViewController = ReaderStreamViewController.controllerWithTagSlug(streamKey)
-        controller?.navigationController?.pushViewController(browseViewController, animated: true)
+        RootViewCoordinator.sharedPresenter.showReader(path: .discoverStream(key: streamKey))
     }
 
     func displayWebViewWithURL(_ url: URL, source: String) {

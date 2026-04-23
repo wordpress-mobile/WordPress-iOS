@@ -87,7 +87,7 @@ final class ReaderDiscoverHeaderView: ReaderBaseHeaderView {
     private func makeChannelView(_ channel: ReaderDiscoverChannel) -> ReaderDiscoverChannelView {
         let view = ReaderDiscoverChannelView(channel: channel)
         view.button.addAction(UIAction { [weak self] _ in
-            self?.didSelectChannel(channel)
+                self?.didSelectChannel(channel)
         }, for: .primaryActionTriggered)
         return view
     }
@@ -225,6 +225,27 @@ enum ReaderDiscoverChannel: Hashable {
         }
     }
 
+    /// The stream key a channel responds to when resolving deep links of the
+    /// form `/read/streams/:stream_key`. Returns `nil` for channels that are
+    /// not backed by a stream key.
+    var streamKey: String? {
+        switch self {
+        case .onThisDay: "on-this-day"
+        case .freshlyPressed, .recommended, .firstPosts, .latest, .dailyPrompts, .tag:
+            nil
+        }
+    }
+
+    /// Returns the channel (if any) that responds to the given stream key.
+    init?(streamKey: String) {
+        let candidates: [ReaderDiscoverChannel] = [
+            .freshlyPressed, .recommended, .firstPosts, .latest, .dailyPrompts, .onThisDay
+        ]
+        guard let match = candidates.first(where: { $0.streamKey == streamKey }) else {
+            return nil
+        }
+        self = match
+    }
 }
 
 #Preview {
