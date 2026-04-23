@@ -202,7 +202,7 @@ public final class ReaderPresenter: NSObject, SplitViewDisplayable {
         let view = ReaderListsView() { [weak self] selection in
             let streamVC = ReaderStreamViewController.controllerWithTopic(selection)
             self?.push(streamVC)
-         }.environment(\.managedObjectContext, viewContext)
+        }.environment(\.managedObjectContext, viewContext)
         let hostVC = UIHostingController(rootView: view)
         hostVC.title = SharedStrings.Reader.lists
         if sidebarViewModel.isCompact {

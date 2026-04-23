@@ -85,10 +85,9 @@ final class ReaderDiscoverHeaderView: ReaderBaseHeaderView {
     // MARK: Channels
 
     private func makeChannelView(_ channel: ReaderDiscoverChannel) -> ReaderDiscoverChannelView {
-        let view = ReaderDiscoverChannelView {
         let view = ReaderDiscoverChannelView(channel: channel)
         view.button.addAction(UIAction { [weak self] _ in
-                    self?.didSelectChannel(channel)
+            self?.didSelectChannel(channel)
         }, for: .primaryActionTriggered)
         return view
     }
