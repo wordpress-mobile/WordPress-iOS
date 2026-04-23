@@ -137,7 +137,7 @@ extension ReaderRoute: NavigationAction {
             let postIDValue = values?["post_id"],
             let feedID = Int(feedIDValue),
             let postID = Int(postIDValue) else {
-            return nil
+                return nil
         }
 
         return (feedID, postID)
@@ -148,7 +148,7 @@ extension ReaderRoute: NavigationAction {
             let postIDValue = values?["post_id"],
             let blogID = Int(blogIDValue),
             let postID = Int(postIDValue) else {
-            return nil
+                return nil
         }
 
         return (blogID, postID)

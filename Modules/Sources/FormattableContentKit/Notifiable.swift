@@ -25,7 +25,7 @@ extension NotificationKind {
         .commentLike,
         .like,
         .matcher,
-        .login
+        .login,
     ]
 
     /// Enumerates the Kinds of rich notifications that include body text
@@ -48,7 +48,7 @@ extension NotificationKind {
     /// - Parameter kind: the notification type to evaluate
     /// - Returns: `true` if the kind of rich notification includes a body; `false` otherwise
     public static func omitsRichNotificationBody(_ kind: NotificationKind) -> Bool {
-        kindsWithoutRichNotificationBodyText.contains(kind)
+        return kindsWithoutRichNotificationBodyText.contains(kind)
     }
 
     /// Indicates whether or not a given kind has rich notification support.
@@ -56,7 +56,7 @@ extension NotificationKind {
     /// - Parameter kind: the notification type to evaluate
     /// - Returns: `true` if the kind supports rich notifications; `false` otherwise
     public static func isSupportedByRichNotifications(_ kind: NotificationKind) -> Bool {
-        kindsWithRichNotificationSupport.contains(kind)
+        return kindsWithRichNotificationSupport.contains(kind)
     }
 
     /// Indicates whether or not to download and attach the notification icon
@@ -69,7 +69,7 @@ extension NotificationKind {
     /// - Parameter kind: the notification type to evaluate
     /// - Returns: `true` if the notification kind is `viewMilestone`, `false` otherwise
     public static func isViewMilestone(_ kind: NotificationKind) -> Bool {
-        kind == .viewMilestone
+        return kind == .viewMilestone
     }
 
     /// Returns a client-side notification category. The category provides a match to ensure that the Long Look

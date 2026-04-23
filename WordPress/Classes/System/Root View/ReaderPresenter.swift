@@ -129,9 +129,7 @@ public final class ReaderPresenter: NSObject, SplitViewDisplayable {
         }
     }
 
-    private func makeViewController<T: ReaderAbstractTopic>(
-        withTopicID objectID: TaggedManagedObjectID<T>
-    ) -> UIViewController {
+    private func makeViewController<T: ReaderAbstractTopic>(withTopicID objectID: TaggedManagedObjectID<T>) -> UIViewController {
         do {
             let topic = try viewContext.existingObject(with: objectID)
             return ReaderStreamViewController.controllerWithTopic(topic)

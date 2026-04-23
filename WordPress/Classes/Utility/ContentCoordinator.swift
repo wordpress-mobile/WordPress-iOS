@@ -55,8 +55,8 @@ struct DefaultContentCoordinator: ContentCoordinator {
 
     func displayStatsWithSiteID(_ siteID: NSNumber?, url: URL? = nil) throws {
         guard let siteID,
-            let blog = Blog.lookup(withID: siteID, in: mainContext),
-            blog.supports(.stats)
+              let blog = Blog.lookup(withID: siteID, in: mainContext),
+              blog.supports(.stats)
         else {
             throw DisplayError.missingParameter
         }
@@ -78,7 +78,7 @@ struct DefaultContentCoordinator: ContentCoordinator {
         let matcher = RouteMatcher(routes: UniversalLinkRouter.statsRoutes)
         let matches = matcher.routesMatching(url)
         if let match = matches.first,
-            let action = match.action as? StatsRoute,
+           let action = match.action as? StatsRoute,
            let tab = action.tab {
             SiteStatsDashboardPreferences.setSelected(tabType: tab, siteID: siteID)
         }
@@ -86,7 +86,7 @@ struct DefaultContentCoordinator: ContentCoordinator {
 
     func displayBackupWithSiteID(_ siteID: NSNumber?) throws {
         guard let siteID,
-            let blog = Blog.lookup(withID: siteID, in: mainContext)
+              let blog = Blog.lookup(withID: siteID, in: mainContext)
         else {
             throw DisplayError.missingParameter
         }
@@ -100,8 +100,8 @@ struct DefaultContentCoordinator: ContentCoordinator {
 
     func displayScanWithSiteID(_ siteID: NSNumber?) throws {
         guard let siteID,
-            let blog = Blog.lookup(withID: siteID, in: mainContext),
-            blog.isScanAllowed()
+              let blog = Blog.lookup(withID: siteID, in: mainContext),
+              blog.isScanAllowed()
         else {
             throw DisplayError.missingParameter
         }
@@ -112,7 +112,7 @@ struct DefaultContentCoordinator: ContentCoordinator {
 
     func displayFollowersWithSiteID(_ siteID: NSNumber?, expirationTime: TimeInterval) throws {
         guard let siteID,
-            let blog = Blog.lookup(withID: siteID, in: mainContext)
+              let blog = Blog.lookup(withID: siteID, in: mainContext)
         else {
             throw DisplayError.missingParameter
         }

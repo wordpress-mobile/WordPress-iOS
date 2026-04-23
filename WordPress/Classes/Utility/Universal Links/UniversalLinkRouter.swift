@@ -124,7 +124,7 @@ struct UniversalLinkRouter: LinkRouter {
         // If there's a hostname, check if it's WordPress.com or jetpack.com/app.
         return (scheme == "https" || scheme == "http")
         && (host == "wordpress.com" || host == "jetpack.com" || host.hasSuffix(".wordpress.com") || host.hasSuffix(".jetpack.com"))
-            && matcherCanHandle
+        && matcherCanHandle
     }
 
     /// Attempts to find a route that matches the url's path, and perform its
@@ -150,8 +150,8 @@ struct UniversalLinkRouter: LinkRouter {
                 return
             }
 
-            UIApplication.shared.open(url,
-                options: [:],
+           UIApplication.shared.open(url,
+                                      options: [:],
                                       completionHandler: nil)
         }
 
