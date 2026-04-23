@@ -19,6 +19,7 @@ struct NotificationContentRangeFactory: FormattableRangesFactory {
 
         properties.siteID = dictionary[RangeKeys.siteId] as? NSNumber
         properties.postID = dictionary[RangeKeys.postId] as? NSNumber
+        properties.streamKey = dictionary[RangeKeys.id] as? String
 
         if let url = dictionary[RangeKeys.url] as? String {
             properties.url = URL(string: url)

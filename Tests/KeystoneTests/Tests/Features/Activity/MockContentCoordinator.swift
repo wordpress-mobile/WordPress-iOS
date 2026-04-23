@@ -1,4 +1,3 @@
-
 @testable import WordPress
 
 class MockContentCoordinator: ContentCoordinator {
@@ -15,7 +14,12 @@ class MockContentCoordinator: ContentCoordinator {
     var commentsWasDisplayed = false
     var commentPostID: NSNumber?
     var commentSiteID: NSNumber?
-    func displayCommentsWithPostId(_ postID: NSNumber?, siteID: NSNumber?, commentID: NSNumber?, source: ReaderCommentsSource) throws {
+    func displayCommentsWithPostId(
+        _ postID: NSNumber?,
+        siteID: NSNumber?,
+        commentID: NSNumber?,
+        source: ReaderCommentsSource
+    ) throws {
         commentsWasDisplayed = true
         commentPostID = postID
         commentSiteID = siteID
@@ -42,6 +46,13 @@ class MockContentCoordinator: ContentCoordinator {
     func displayStreamWithSiteID(_ siteID: NSNumber?) throws {
         streamWasDisplayed = true
         streamSiteID = siteID
+    }
+
+    var streamWasDisplayedByStreamKey = false
+    var streamKey: String?
+    func displayStreamWithStreamKey(_ streamKey: String?) throws {
+        streamWasDisplayedByStreamKey = true
+        self.streamKey = streamKey
     }
 
     func displayWebViewWithURL(_ url: URL, source: String) {

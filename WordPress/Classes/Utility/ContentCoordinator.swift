@@ -8,6 +8,7 @@ protocol ContentCoordinator {
     func displayStatsWithSiteID(_ siteID: NSNumber?, url: URL?) throws
     func displayFollowersWithSiteID(_ siteID: NSNumber?, expirationTime: TimeInterval) throws
     func displayStreamWithSiteID(_ siteID: NSNumber?) throws
+    func displayStreamWithStreamKey(_ streamKey: String?) throws
     func displayWebViewWithURL(_ url: URL, source: String)
     func displayFullscreenImage(_ image: UIImage)
     func displayPlugin(withSlug pluginSlug: String, on siteSlug: String) throws
@@ -54,8 +55,8 @@ struct DefaultContentCoordinator: ContentCoordinator {
 
     func displayStatsWithSiteID(_ siteID: NSNumber?, url: URL? = nil) throws {
         guard let siteID,
-              let blog = Blog.lookup(withID: siteID, in: mainContext),
-              blog.supports(.stats)
+            let blog = Blog.lookup(withID: siteID, in: mainContext),
+            blog.supports(.stats)
         else {
             throw DisplayError.missingParameter
         }
@@ -77,7 +78,7 @@ struct DefaultContentCoordinator: ContentCoordinator {
         let matcher = RouteMatcher(routes: UniversalLinkRouter.statsRoutes)
         let matches = matcher.routesMatching(url)
         if let match = matches.first,
-           let action = match.action as? StatsRoute,
+            let action = match.action as? StatsRoute,
            let tab = action.tab {
             SiteStatsDashboardPreferences.setSelected(tabType: tab, siteID: siteID)
         }
@@ -85,7 +86,7 @@ struct DefaultContentCoordinator: ContentCoordinator {
 
     func displayBackupWithSiteID(_ siteID: NSNumber?) throws {
         guard let siteID,
-              let blog = Blog.lookup(withID: siteID, in: mainContext)
+            let blog = Blog.lookup(withID: siteID, in: mainContext)
         else {
             throw DisplayError.missingParameter
         }
@@ -99,8 +100,8 @@ struct DefaultContentCoordinator: ContentCoordinator {
 
     func displayScanWithSiteID(_ siteID: NSNumber?) throws {
         guard let siteID,
-              let blog = Blog.lookup(withID: siteID, in: mainContext),
-              blog.isScanAllowed()
+            let blog = Blog.lookup(withID: siteID, in: mainContext),
+            blog.isScanAllowed()
         else {
             throw DisplayError.missingParameter
         }
@@ -111,7 +112,7 @@ struct DefaultContentCoordinator: ContentCoordinator {
 
     func displayFollowersWithSiteID(_ siteID: NSNumber?, expirationTime: TimeInterval) throws {
         guard let siteID,
-              let blog = Blog.lookup(withID: siteID, in: mainContext)
+            let blog = Blog.lookup(withID: siteID, in: mainContext)
         else {
             throw DisplayError.missingParameter
         }
@@ -131,6 +132,20 @@ struct DefaultContentCoordinator: ContentCoordinator {
         }
 
         let browseViewController = ReaderStreamViewController.controllerWithSiteID(siteID, isFeed: false)
+        controller?.navigationController?.pushViewController(browseViewController, animated: true)
+    }
+
+    func displayStreamWithStreamKey(_ streamKey: String?) throws {
+        guard let streamKey, !streamKey.isEmpty else {
+            throw DisplayError.missingParameter
+        }
+
+        if streamKey == "on-this-day" {
+            RootViewCoordinator.sharedPresenter.showReader(path: .discoverOnThisDay)
+            return
+        }
+
+        let browseViewController = ReaderStreamViewController.controllerWithTagSlug(streamKey)
         controller?.navigationController?.pushViewController(browseViewController, animated: true)
     }
 

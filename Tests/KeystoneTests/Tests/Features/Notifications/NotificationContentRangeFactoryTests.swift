@@ -40,6 +40,13 @@ final class NotificationContentRangeFactoryTests: XCTestCase {
         XCTAssertNotNil(subject)
     }
 
+    func testReaderStreamRangeReturnsExpectedKind() throws {
+        let subject =
+            NotificationContentRangeFactory.contentRange(from: try mockReaderStreamRange()) as? NotificationContentRange
+
+        XCTAssertEqual(subject?.kind, .readerStream)
+    }
+
     private func mockCommentRange() throws -> JSONObject {
         return try JSONObject(fromFileNamed: "notifications-comment-range.json")
     }
@@ -62,6 +69,10 @@ final class NotificationContentRangeFactoryTests: XCTestCase {
 
     private func mockBlockQuoteRange() throws -> JSONObject {
         return try JSONObject(fromFileNamed: "notifications-blockquote-range.json")
+    }
+
+    private func mockReaderStreamRange() throws -> JSONObject {
+        try JSONObject(fromFileNamed: "notifications-readerstream-range.json")
     }
 
 }

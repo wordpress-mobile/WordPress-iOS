@@ -32,16 +32,16 @@ extension ReaderPostServiceRemote {
     /// - Parameter success: Called when the request succeeds and the data returned is valid
     /// - Parameter failure: Called if the request fails for any reason, or the response data is invalid
     public func fetchCards(for topics: [String],
-                           page: String? = nil,
-                           sortingOption: ReaderSortingOption = .noSorting,
-                           refreshCount: Int? = nil,
-                           success: @escaping ([RemoteReaderCard], String?) -> Void,
+        page: String? = nil,
+        sortingOption: ReaderSortingOption = .noSorting,
+        refreshCount: Int? = nil,
+        success: @escaping ([RemoteReaderCard], String?) -> Void,
                            failure: @escaping (Error) -> Void) {
         let path = "read/tags/cards"
         guard let requestUrl = cardsEndpoint(with: path,
-                                             topics: topics,
-                                             page: page,
-                                             sortingOption: sortingOption,
+                topics: topics,
+                page: page,
+                sortingOption: sortingOption,
                                              refreshCount: refreshCount) else {
             return
         }
@@ -62,19 +62,19 @@ extension ReaderPostServiceRemote {
     /// - Parameter success: Called when the request succeeds and the data returned is valid
     /// - Parameter failure: Called if the request fails for any reason, or the response data is invalid
     public func fetchStreamCards(stream: ReaderStream = .discover,
-                                 for topics: [String],
-                                 page: String? = nil,
-                                 sortingOption: ReaderSortingOption = .noSorting,
-                                 refreshCount: Int? = nil,
-                                 count: Int? = nil,
-                                 success: @escaping ([RemoteReaderCard], String?) -> Void,
+        for topics: [String],
+        page: String? = nil,
+        sortingOption: ReaderSortingOption = .noSorting,
+        refreshCount: Int? = nil,
+        count: Int? = nil,
+        success: @escaping ([RemoteReaderCard], String?) -> Void,
                                  failure: @escaping (Error) -> Void) {
         let path = "read/streams/\(stream.rawValue)"
         guard let requestUrl = cardsEndpoint(with: path,
-                                             topics: topics,
-                                             page: page,
-                                             sortingOption: sortingOption,
-                                             count: count,
+                topics: topics,
+                page: page,
+                sortingOption: sortingOption,
+                count: count,
                                              refreshCount: refreshCount) else {
             return
         }
@@ -82,7 +82,7 @@ extension ReaderPostServiceRemote {
     }
 
     private func fetch(_ endpoint: String,
-                       success: @escaping ([RemoteReaderCard], String?) -> Void,
+        success: @escaping ([RemoteReaderCard], String?) -> Void,
                        failure: @escaping (Error) -> Void) {
         Task { @MainActor [wordPressComRestApi] in
             await wordPressComRestApi.perform(.get, URLString: endpoint, type: ReaderCardEnvelope.self)
@@ -93,10 +93,10 @@ extension ReaderPostServiceRemote {
     }
 
     private func cardsEndpoint(with path: String,
-                               topics: [String],
-                               page: String? = nil,
-                               sortingOption: ReaderSortingOption = .noSorting,
-                               count: Int? = nil,
+        topics: [String],
+        page: String? = nil,
+        sortingOption: ReaderSortingOption = .noSorting,
+        count: Int? = nil,
                                refreshCount: Int? = nil) -> String? {
         var path = URLComponents(string: path)
 
