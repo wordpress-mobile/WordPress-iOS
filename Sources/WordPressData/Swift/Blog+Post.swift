@@ -38,7 +38,12 @@ extension Blog {
     @objc(lookupLocalPostWithForeignID:inContext:)
     public func lookupLocalPost(withForeignID foreignID: UUID, in context: NSManagedObjectContext) -> AbstractPost? {
         let request = NSFetchRequest<AbstractPost>(entityName: NSStringFromClass(AbstractPost.self))
-        request.predicate = NSPredicate(format: "blog = %@ AND original = NULL AND (postID = NULL OR postID <= 0) AND \(#keyPath(AbstractPost.foreignID)) == %@", self, foreignID as NSUUID)
+        request.predicate = NSPredicate(
+            format:
+                "blog = %@ AND original = NULL AND (postID = NULL OR postID <= 0) AND \(#keyPath(AbstractPost.foreignID)) == %@",
+            self,
+            foreignID as NSUUID
+        )
         request.fetchLimit = 1
         return (try? context.fetch(request))?.first
     }
@@ -61,12 +66,15 @@ extension Blog {
         post.foreignID = UUID()
 
         if let categoryID = settings?.defaultCategoryID,
-           categoryID != PostCategory.uncategorized,
-           let category = try? PostCategory.lookup(withBlogID: objectID, categoryID: categoryID, in: context) {
+            categoryID != PostCategory.uncategorized,
+            let category = try? PostCategory.lookup(withBlogID: objectID, categoryID: categoryID, in: context)
+        {
             post.addCategoriesObject(category)
         }
 
         post.postFormat = settings?.defaultPostFormat
+        post.allowComments = settings?.commentsAllowed ?? true
+        post.allowPings = settings?.pingbackInboundEnabled ?? true
         post.postType = Post.typeDefaultIdentifier
 
         if let userID, let author = getAuthorWith(id: userID) {

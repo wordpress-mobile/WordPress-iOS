@@ -773,7 +773,9 @@ NSString *const WPBlogSettingsUpdatedNotification = @"WPBlogSettingsUpdatedNotif
     settings.postsPerPage = remoteSettings.postsPerPage;
 
     // Discussion
-    settings.commentsAllowed = [remoteSettings.commentsAllowed boolValue];
+    if (remoteSettings.commentsAllowed != nil) {
+        settings.commentsAllowed = [remoteSettings.commentsAllowed boolValue];
+    }
     settings.commentsBlocklistKeys = separatedBlocklistKeys;
     settings.commentsCloseAutomatically = [remoteSettings.commentsCloseAutomatically boolValue];
     settings.commentsCloseAutomaticallyAfterDays = remoteSettings.commentsCloseAutomaticallyAfterDays;
@@ -794,7 +796,9 @@ NSString *const WPBlogSettingsUpdatedNotification = @"WPBlogSettingsUpdatedNotif
     settings.commentsThreadingDepth = remoteSettings.commentsThreadingDepth;
     settings.commentsThreadingEnabled = [remoteSettings.commentsThreadingEnabled boolValue];
     
-    settings.pingbackInboundEnabled = [remoteSettings.pingbackInboundEnabled boolValue];
+    if (remoteSettings.pingbackInboundEnabled != nil) {
+        settings.pingbackInboundEnabled = [remoteSettings.pingbackInboundEnabled boolValue];
+    }
     settings.pingbackOutboundEnabled = [remoteSettings.pingbackOutboundEnabled boolValue];
 
     // Related Posts

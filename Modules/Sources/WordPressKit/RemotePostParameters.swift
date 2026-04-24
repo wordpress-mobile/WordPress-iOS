@@ -280,9 +280,10 @@ struct RemotePostCreateParametersWordPressComEncoder: Encodable {
         if parameters.isSticky {
             try container.encode(parameters.isSticky, forKey: .isSticky)
         }
-        if parameters.discussion != .default {
-            try container.encode(RemotePostDiscussionSettingsWordPressComEncoder(discussion: parameters.discussion), forKey: .discussion)
-        }
+        try container.encode(
+            RemotePostDiscussionSettingsWordPressComEncoder(discussion: parameters.discussion),
+            forKey: .discussion
+        )
     }
 }
 
@@ -370,7 +371,10 @@ struct RemotePostUpdateParametersWordPressComEncoder: Encodable {
         try container.encodeIfPresent(parameters.categoryIDs, forKey: .categoryIDs)
         try container.encodeIfPresent(parameters.isSticky, forKey: .isSticky)
         if let discussion = parameters.discussion {
-            try container.encode(RemotePostDiscussionSettingsWordPressComEncoder(discussion: discussion), forKey: .discussion)
+            try container.encode(
+                RemotePostDiscussionSettingsWordPressComEncoder(discussion: discussion),
+                forKey: .discussion
+            )
         }
     }
 }
@@ -445,10 +449,14 @@ struct RemotePostCreateParametersXMLRPCEncoder: Encodable {
         if parameters.isSticky {
             try container.encode(parameters.isSticky, forKey: .isSticky)
         }
-        if parameters.discussion != .default {
-            try container.encode(RemotePostDiscussionState(isOpen: parameters.discussion.allowComments).rawValue, forKey: .commentStatus)
-            try container.encode(RemotePostDiscussionState(isOpen: parameters.discussion.allowPings).rawValue, forKey: .pingStatus)
-        }
+        try container.encode(
+            RemotePostDiscussionState(isOpen: parameters.discussion.allowComments).rawValue,
+            forKey: .commentStatus
+        )
+        try container.encode(
+            RemotePostDiscussionState(isOpen: parameters.discussion.allowPings).rawValue,
+            forKey: .pingStatus
+        )
     }
 }
 
@@ -498,7 +506,10 @@ struct RemotePostUpdateParametersXMLRPCEncoder: Encodable {
         }
         try container.encodeIfPresent(parameters.isSticky, forKey: .isSticky)
         if let discussion = parameters.discussion {
-            try container.encode(RemotePostDiscussionState(isOpen: discussion.allowComments).rawValue, forKey: .commentStatus)
+            try container.encode(
+                RemotePostDiscussionState(isOpen: discussion.allowComments).rawValue,
+                forKey: .commentStatus
+            )
             try container.encode(RemotePostDiscussionState(isOpen: discussion.allowPings).rawValue, forKey: .pingStatus)
         }
     }

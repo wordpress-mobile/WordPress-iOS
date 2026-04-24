@@ -22,8 +22,10 @@ final class PostRepository {
     private let coreDataStack: CoreDataStackSwift
     private let remoteFactory: PostServiceRemoteFactory
 
-    init(coreDataStack: CoreDataStackSwift = ContextManager.shared,
-         remoteFactory: PostServiceRemoteFactory = PostServiceRemoteFactory()) {
+    init(
+        coreDataStack: CoreDataStackSwift = ContextManager.shared,
+        remoteFactory: PostServiceRemoteFactory = PostServiceRemoteFactory()
+    ) {
         self.coreDataStack = coreDataStack
         self.remoteFactory = remoteFactory
     }
@@ -34,7 +36,10 @@ final class PostRepository {
     ///   - postID: The ID of the post to sync
     ///   - blogID: The blog that has the post.
     /// - Returns: The stored post object id.
-    func getPost(withID postID: NSNumber, from blogID: TaggedManagedObjectID<Blog>) async throws -> TaggedManagedObjectID<AbstractPost> {
+    func getPost(
+        withID postID: NSNumber,
+        from blogID: TaggedManagedObjectID<Blog>
+    ) async throws -> TaggedManagedObjectID<AbstractPost> {
         let remote = try await getRemoteService(forblogID: blogID)
         let remotePost = try await remote.post(withID: postID.intValue)
         return try await coreDataStack.performAndSave { context in
@@ -72,10 +77,22 @@ final class PostRepository {
         var errorDescription: String? {
             switch self {
             case .conflict:
-                return NSLocalizedString("postSaveErrorMessage.conflict", value: "The content was modified on another device", comment: "Error message: content was modified on another device")
+                return NSLocalizedString(
+                    "postSaveErrorMessage.conflict",
+                    value: "The content was modified on another device",
+                    comment: "Error message: content was modified on another device"
+                )
             case .deleted(let title):
-                let format = NSLocalizedString("postSaveErrorMessage.deleted", value: "\"%@\" was permanently deleted and can no longer be updated", comment: "Error message: item permanently deleted")
-                let untitled = NSLocalizedString("postSaveErrorMessage.postUntitled", value: "Untitled", comment: "A default value for an post without a title")
+                let format = NSLocalizedString(
+                    "postSaveErrorMessage.deleted",
+                    value: "\"%@\" was permanently deleted and can no longer be updated",
+                    comment: "Error message: item permanently deleted"
+                )
+                let untitled = NSLocalizedString(
+                    "postSaveErrorMessage.postUntitled",
+                    value: "Untitled",
+                    comment: "A default value for an post without a title"
+                )
                 return String(format: format, title ?? untitled)
             }
         }
@@ -140,7 +157,19 @@ final class PostRepository {
         let remotePost: RemotePost
         var isCreated = false
         if let postID = post.postID?.intValue, postID > 0 {
-            let changes = RemotePostUpdateParameters.changes(from: post, to: revision, with: changes)
+            var changes = RemotePostUpdateParameters.changes(from: post, to: revision, with: changes)
+
+            // Always include discussion settings in updates. WordPress
+            // core's `wp.editPost` defaults `comment_status` to "closed"
+            // when the field is omitted (Trac #36462). Use the blog's
+            // synced settings as the source of truth for the defaults.
+            if changes.discussion == nil, let settings = post.blog.settings {
+                changes.discussion = RemotePostDiscussionSettings(
+                    allowComments: settings.commentsAllowed,
+                    allowPings: settings.pingbackInboundEnabled
+                )
+            }
+
             guard !changes.isEmpty else {
                 post.deleteSyncedRevisions(until: revision) // Nothing to sync
                 ContextManager.shared.saveContextAndWait(context)
@@ -165,7 +194,10 @@ final class PostRepository {
         }
         ContextManager.shared.saveContextAndWait(context)
 
-        WPAnalytics.track(isCreated ? .postRepositoryPostCreated : .postRepositoryPostUpdated, properties: post.analyticsUserInfo)
+        WPAnalytics.track(
+            isCreated ? .postRepositoryPostCreated : .postRepositoryPostUpdated,
+            properties: post.analyticsUserInfo
+        )
     }
 
     // The app currently computes changes between revision to track what
@@ -228,7 +260,12 @@ final class PostRepository {
     }
 
     @MainActor
-    private func _patch(_ post: AbstractPost, postID: Int, changes: RemotePostUpdateParameters, overwrite: Bool) async throws -> RemotePost {
+    private func _patch(
+        _ post: AbstractPost,
+        postID: Int,
+        changes: RemotePostUpdateParameters,
+        overwrite: Bool
+    ) async throws -> RemotePost {
         WPAnalytics.track(.postRepositoryPatchStarted)
         let service = try getRemoteService(for: post.blog)
         let original = post.getOriginal()
@@ -250,7 +287,9 @@ final class PostRepository {
                 // Fetch the latest post to consolidate the changes
                 let remotePost = try await service.post(withID: postID)
                 // Check for false positives
-                if changes.content != nil && remotePost.content != changes.content && remotePost.content != original.content {
+                if changes.content != nil && remotePost.content != changes.content
+                    && remotePost.content != original.content
+                {
                     WPAnalytics.track(.postRepositoryConflictEncountered, properties: ["false_positive": false])
                     // The conflict in content can be resolved only manually
                     throw PostSaveError.conflict(latest: remotePost)
@@ -354,7 +393,10 @@ final class PostRepository {
     }
 
     @MainActor
-    func buildPageTree(pageIDs: [TaggedManagedObjectID<Page>]? = nil, request: NSFetchRequest<Page>? = nil) async throws -> [(pageID: TaggedManagedObjectID<Page>, hierarchyIndex: Int)] {
+    func buildPageTree(
+        pageIDs: [TaggedManagedObjectID<Page>]? = nil,
+        request: NSFetchRequest<Page>? = nil
+    ) async throws -> [(pageID: TaggedManagedObjectID<Page>, hierarchyIndex: Int)] {
         assert(pageIDs != nil || request != nil, "`pageIDs` and `request` can not both be nil")
 
         let coreDataStack = ContextManager.shared
@@ -463,11 +505,16 @@ private extension PostServiceRemote {
 
     func getPosts(ofType type: String, options: PostRepositoryPostsSerivceRemoteOptions) async throws -> [RemotePost] {
         try await withCheckedThrowingContinuation { continuation in
-            self.getPostsOfType(type, options: self.dictionary(with: options), success: {
-                continuation.resume(returning: $0 ?? [])
-            }, failure: {
-                continuation.resume(throwing: $0!)
-            })
+            self.getPostsOfType(
+                type,
+                options: self.dictionary(with: options),
+                success: {
+                    continuation.resume(returning: $0 ?? [])
+                },
+                failure: {
+                    continuation.resume(throwing: $0!)
+                }
+            )
         }
     }
 }
@@ -561,7 +608,11 @@ extension PostRepository {
     ///   - statuses: Only fetch pages whose status is included in the given statues.
     ///   - blogID: Object ID of the site.
     /// - Returns: A `Task` instance representing the fetching. The fetch pages API requests will stop if the task is cancelled.
-    func fetchAllPages(statuses: [BasePost.Status], authorUserID: NSNumber? = nil, in blogID: TaggedManagedObjectID<Blog>) -> Task<[TaggedManagedObjectID<Page>], Swift.Error> {
+    func fetchAllPages(
+        statuses: [BasePost.Status],
+        authorUserID: NSNumber? = nil,
+        in blogID: TaggedManagedObjectID<Blog>
+    ) -> Task<[TaggedManagedObjectID<Page>], Swift.Error> {
         Task {
             let pageSize = 100
             var allPages = [TaggedManagedObjectID<Page>]()
@@ -591,18 +642,21 @@ extension PostRepository {
             try await coreDataStack.performAndSave { context in
                 let request = Page.fetchRequest()
                 // Delete posts that match _all of the following conditions_:
-                request.predicate = NSCompoundPredicate(andPredicateWithSubpredicates: [
-                    // belongs to the given blog
-                    NSPredicate(format: "blog = %@", blogID.objectID),
-                    // was fetched from the site
-                    NSPredicate(format: "postID != NULL AND postID > 0"),
-                    // doesn't have local edits
-                    NSPredicate(format: "original = NULL AND revision = NULL"),
-                    // is not included in the fetched page lists (i.e. it has been deleted from the site)
-                    NSPredicate(format: "NOT (SELF IN %@)", allPages.map { $0.objectID }),
-                    // we only need to deal with pages that match the filters passed to this function.
-                    statuses.isEmpty ? nil : NSPredicate(format: "status IN %@", statuses),
-                ].compactMap { $0 })
+                request.predicate = NSCompoundPredicate(
+                    andPredicateWithSubpredicates: [
+                        // belongs to the given blog
+                        NSPredicate(format: "blog = %@", blogID.objectID),
+                        // was fetched from the site
+                        NSPredicate(format: "postID != NULL AND postID > 0"),
+                        // doesn't have local edits
+                        NSPredicate(format: "original = NULL AND revision = NULL"),
+                        // is not included in the fetched page lists (i.e. it has been deleted from the site)
+                        NSPredicate(format: "NOT (SELF IN %@)", allPages.map { $0.objectID }),
+                        // we only need to deal with pages that match the filters passed to this function.
+                        statuses.isEmpty ? nil : NSPredicate(format: "status IN %@", statuses)
+                    ]
+                    .compactMap { $0 }
+                )
 
                 try context.execute(NSBatchDeleteRequest(fetchRequest: request))
             }
@@ -645,16 +699,18 @@ extension PostRepository {
         }
 
         let statuses = statuses?.map { $0.rawValue }
-        let options = PostRepositoryPostsSerivceRemoteOptions(options: .init(
-            statuses: statuses,
-            number: range.count,
-            offset: range.lowerBound,
-            order: descending ? .descending : .ascending,
-            orderBy: orderBy,
-            authorID: authorUserID,
-            search: searchInput,
-            tag: tag
-        ))
+        let options = PostRepositoryPostsSerivceRemoteOptions(
+            options: .init(
+                statuses: statuses,
+                number: range.count,
+                offset: range.lowerBound,
+                order: descending ? .descending : .ascending,
+                orderBy: orderBy,
+                authorID: authorUserID,
+                search: searchInput,
+                tag: tag
+            )
+        )
         let remotePosts = try await remote.getPosts(ofType: postType, options: options)
 
         let updatedPosts = try await coreDataStack.performAndSave { context in
@@ -683,6 +739,14 @@ extension PostRepository {
 }
 
 private enum Strings {
-    static let genericErrorMessage = NSLocalizedString("postList.genericErrorMessage", value: "Something went wrong", comment: "A generic error message title")
-    static let errorUnsyncedChangesMessage = NSLocalizedString("postList.errorUnsyncedChangesMessage", value: "The app is uploading previously made changes to the server. Please try again later.", comment: "An error message")
+    static let genericErrorMessage = NSLocalizedString(
+        "postList.genericErrorMessage",
+        value: "Something went wrong",
+        comment: "A generic error message title"
+    )
+    static let errorUnsyncedChangesMessage = NSLocalizedString(
+        "postList.errorUnsyncedChangesMessage",
+        value: "The app is uploading previously made changes to the server. Please try again later.",
+        comment: "An error message"
+    )
 }
