@@ -55,22 +55,24 @@ extension ReaderRoute: Route {
         case .blogsPost:
             return ["/read/blogs/:blog_id/posts/:post_id", "/reader/blogs/:blog_id/posts/:post_id"]
         case .stream:
-            return ["/read/streams/:stream_key", "/reader/streams/:stream_key"]
+            return [
+                "/read/streams/:stream_key", "/reader/streams/:stream_key", "/read/:stream_key", "/reader/:stream_key"
+            ]
         case .wpcomPost:
             return ["/:post_year/:post_month/:post_day/:post_name"]
         }
     }
 
     var section: DeepLinkSection? {
-        return .reader
+        .reader
     }
 
     var action: NavigationAction {
-        return self
+        self
     }
 
     var jetpackPowered: Bool {
-        return true
+        true
     }
 }
 
@@ -122,8 +124,10 @@ extension ReaderRoute: NavigationAction {
                 presenter.showReader(path: .post(postID: postID, siteID: blogID))
             }
         case .stream:
+            let query = queryParametersFromReaderStreamURL(in: values)
+            let queryParameters: [String: String]? = query.isEmpty ? nil : query
             if let streamKey = values["stream_key"] {
-                presenter.showReader(path: .discoverStream(key: streamKey))
+                presenter.showReader(path: .discoverStream(key: streamKey, queryParameters: queryParameters))
             }
         case .wpcomPost:
             if let urlString = values[MatchedRouteURLComponentKey.url.rawValue], let url = URL(string: urlString) {
@@ -137,7 +141,7 @@ extension ReaderRoute: NavigationAction {
             let postIDValue = values?["post_id"],
             let feedID = Int(feedIDValue),
             let postID = Int(postIDValue) else {
-                return nil
+            return nil
         }
 
         return (feedID, postID)
@@ -148,10 +152,26 @@ extension ReaderRoute: NavigationAction {
             let postIDValue = values?["post_id"],
             let blogID = Int(blogIDValue),
             let postID = Int(postIDValue) else {
-                return nil
+            return nil
         }
 
         return (blogID, postID)
+    }
+
+    private func queryParametersFromReaderStreamURL(in values: [String: String]) -> [String: String] {
+        guard let urlString = values[MatchedRouteURLComponentKey.url.rawValue],
+            let url = URL(string: urlString),
+            let items = URLComponents(url: url, resolvingAgainstBaseURL: false)?.queryItems
+        else {
+            return [:]
+        }
+        var result: [String: String] = [:]
+        for item in items {
+            if let value = item.value, !value.isEmpty {
+                result[item.name] = value
+            }
+        }
+        return result
     }
 }
 

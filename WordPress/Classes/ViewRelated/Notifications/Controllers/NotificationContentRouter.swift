@@ -58,15 +58,15 @@ struct NotificationContentRouter {
             // Focus on the primary comment, and default to the reply ID if its set
             let commentID = notification.metaCommentID ?? notification.metaReplyID
             try coordinator.displayCommentsWithPostId(notification.metaPostID,
-                                                      siteID: notification.metaSiteID,
-                                                      commentID: commentID,
+                siteID: notification.metaSiteID,
+                commentID: commentID,
                                                       source: .commentNotification)
         case .commentLike:
             // Focus on the primary comment, and default to the reply ID if its set
             let commentID = notification.metaCommentID ?? notification.metaReplyID
             try coordinator.displayCommentsWithPostId(notification.metaPostID,
-                                                      siteID: notification.metaSiteID,
-                                                      commentID: commentID,
+                siteID: notification.metaSiteID,
+                commentID: commentID,
                                                       source: .commentLikeNotification)
         default:
             throw DefaultContentCoordinator.DisplayError.unsupportedType
@@ -87,8 +87,8 @@ struct NotificationContentRouter {
             // Focus on the comment reply if it's set over the primary comment ID
             let commentID = notification.metaReplyID ?? notification.metaCommentID
             try coordinator.displayCommentsWithPostId(range.postID,
-                                                      siteID: range.siteID,
-                                                      commentID: commentID,
+                siteID: range.siteID,
+                commentID: commentID,
                                                       source: .commentNotification)
         case .stats:
             /// Backup notifications are configured as "stat" notifications
@@ -109,7 +109,8 @@ struct NotificationContentRouter {
             guard let streamKey = range.streamKey else {
                 throw DefaultContentCoordinator.DisplayError.missingParameter
             }
-            try coordinator.displayStreamWithStreamKey(streamKey)
+            let query: [String: String]? = range.streamQueryParameters.isEmpty ? nil : range.streamQueryParameters
+            try coordinator.displayStreamWithStreamKey(streamKey, queryParameters: query)
         default:
             throw DefaultContentCoordinator.DisplayError.unsupportedType
         }

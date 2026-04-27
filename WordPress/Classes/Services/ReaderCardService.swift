@@ -4,18 +4,21 @@ import WordPressKit
 import WordPressShared
 
 protocol ReaderCardServiceRemote {
-    func fetchStreamCards(stream: ReaderStream,
-                          for topics: [String],
-                          page: String?,
-                          sortingOption: ReaderSortingOption,
-                          refreshCount: Int?,
-                          count: Int?,
-                          success: @escaping ([RemoteReaderCard], String?) -> Void,
-                          failure: @escaping (Error) -> Void)
+    func fetchStreamCards(
+        stream: ReaderStream,
+        for topics: [String],
+        page: String?,
+        sortingOption: ReaderSortingOption,
+        refreshCount: Int?,
+        count: Int?,
+        forwardedQueryParameters: [String: String]?,
+        success: @escaping ([RemoteReaderCard], String?) -> Void,
+        failure: @escaping (Error) -> Void
+    )
 
 }
 
-extension ReaderPostServiceRemote: ReaderCardServiceRemote { }
+extension ReaderPostServiceRemote: ReaderCardServiceRemote {}
 
 class ReaderCardService {
     private let stream: ReaderStream
@@ -33,14 +36,20 @@ class ReaderCardService {
     /// Used only internally to order the cards
     private var pageNumber = 1
 
-    init(stream: ReaderStream = .discover,
-         sorting: ReaderSortingOption = .noSorting,
-         service: ReaderCardServiceRemote = ReaderPostServiceRemote.withDefaultApi(),
-         coreDataStack: CoreDataStack = ContextManager.shared,
-         followedInterestsService: ReaderFollowedInterestsService? = nil,
-         siteInfoService: ReaderSiteInfoService? = nil) {
+    private let streamQueryParameters: [String: String]?
+
+    init(
+        stream: ReaderStream = .discover,
+        sorting: ReaderSortingOption = .noSorting,
+        streamQueryParameters: [String: String]? = nil,
+        service: ReaderCardServiceRemote = ReaderPostServiceRemote.withDefaultApi(),
+        coreDataStack: CoreDataStack = ContextManager.shared,
+        followedInterestsService: ReaderFollowedInterestsService? = nil,
+        siteInfoService: ReaderSiteInfoService? = nil
+    ) {
         self.stream = stream
         self.sorting = sorting
+        self.streamQueryParameters = streamQueryParameters
         self.service = service
         self.coreDataStack = coreDataStack
         self.followedInterestsService = followedInterestsService ?? ReaderTopicService(coreDataStack: coreDataStack)
@@ -73,44 +82,44 @@ class ReaderCardService {
                 self.pageHandle = pageHandle
 
                 self.coreDataStack.performAndSave({ context in
-                    if isFirstPage {
-                        self.pageNumber = 1
-                        ReaderCardService.removeAllCards(in: context)
-                    } else {
-                        self.pageNumber += 1
-                    }
+                        if isFirstPage {
+                            self.pageNumber = 1
+                            ReaderCardService.removeAllCards(in: context)
+                        } else {
+                            self.pageNumber += 1
+                        }
 
                     updatedCards.enumerated().forEach { index, remoteCard in
-                        let card = ReaderCard.createOrReuse(context: context, from: remoteCard)
+                                let card = ReaderCard.createOrReuse(context: context, from: remoteCard)
 
-                        // Assign each interest an endpoint
-                        card?
-                            .topics?
-                            .array
-                            .compactMap { $0 as? ReaderTagTopic }
-                            .forEach { $0.path = self.followedInterestsService.path(slug: $0.slug) }
+                                // Assign each interest an endpoint
+                                card?
+                                    .topics?
+                                    .array
+                                    .compactMap { $0 as? ReaderTagTopic }
+                                    .forEach { $0.path = self.followedInterestsService.path(slug: $0.slug) }
 
-                        // Assign each site an endpoint URL if needed
-                        card?
-                            .sites?
-                            .array
-                            .compactMap { $0 as? ReaderSiteTopic }
-                            .forEach {
-                                let path = $0.path
-                                // Sites coming from the cards API only have a path and not a full url
-                                // Once we save the model locally it will be a full URL, so we don't
-                                // want to reapply this logic
-                                if !path.hasPrefix("http") {
-                                    $0.path = self.siteInfoService.endpointURLString(path: path)
-                                }
+                                // Assign each site an endpoint URL if needed
+                                card?
+                                    .sites?
+                                    .array
+                                    .compactMap { $0 as? ReaderSiteTopic }
+                                    .forEach {
+                                        let path = $0.path
+                                        // Sites coming from the cards API only have a path and not a full url
+                                        // Once we save the model locally it will be a full URL, so we don't
+                                        // want to reapply this logic
+                                        if !path.hasPrefix("http") {
+                                            $0.path = self.siteInfoService.endpointURLString(path: path)
+                                        }
+                                    }
+
+                                // To keep the API order
+                                card?.sortRank = Double((self.pageNumber * Constants.paginationMultiplier) + index)
                             }
-
-                        // To keep the API order
-                        card?.sortRank = Double((self.pageNumber * Constants.paginationMultiplier) + index)
-                    }
                 }, completion: {
-                    let hasMore = pageHandle != nil
-                    success(cards.count, hasMore)
+                        let hasMore = pageHandle != nil
+                        success(cards.count, hasMore)
                 }, on: .main)
             }
             let failure: (Error?) -> Void = { error in
@@ -124,6 +133,7 @@ class ReaderCardService {
                 sortingOption: self.sorting,
                 refreshCount: refreshCount,
                 count: nil,
+                forwardedQueryParameters: self.streamQueryParameters,
                 success: success,
                 failure: failure
             )
@@ -174,7 +184,7 @@ extension ReaderPostServiceRemote {
         let token: String? = defaultAccount?.authToken
 
         let api = WordPressComRestApi.defaultApi(oAuthToken: token,
-                                              userAgent: WPUserAgent.wordPress(),
+            userAgent: WPUserAgent.wordPress(),
                                               localeKey: WordPressComRestApi.LocaleKeyV2)
         return ReaderPostServiceRemote(wordPressComRestApi: api)
     }

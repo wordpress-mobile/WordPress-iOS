@@ -31,18 +31,24 @@ extension ReaderPostServiceRemote {
     /// - Parameter sortingOption: a ReaderSortingOption that represents a sorting option
     /// - Parameter success: Called when the request succeeds and the data returned is valid
     /// - Parameter failure: Called if the request fails for any reason, or the response data is invalid
-    public func fetchCards(for topics: [String],
-                           page: String? = nil,
-                           sortingOption: ReaderSortingOption = .noSorting,
-                           refreshCount: Int? = nil,
-                           success: @escaping ([RemoteReaderCard], String?) -> Void,
-                           failure: @escaping (Error) -> Void) {
+    public func fetchCards(
+        for topics: [String],
+        page: String? = nil,
+        sortingOption: ReaderSortingOption = .noSorting,
+        refreshCount: Int? = nil,
+        success: @escaping ([RemoteReaderCard], String?) -> Void,
+        failure: @escaping (Error) -> Void
+    ) {
         let path = "read/tags/cards"
-        guard let requestUrl = cardsEndpoint(with: path,
-                                             topics: topics,
-                                             page: page,
-                                             sortingOption: sortingOption,
-                                             refreshCount: refreshCount) else {
+        guard
+            let requestUrl = cardsEndpoint(
+                with: path,
+                topics: topics,
+                page: page,
+                sortingOption: sortingOption,
+                refreshCount: refreshCount
+            )
+        else {
             return
         }
         fetch(requestUrl, success: success, failure: failure)
@@ -61,28 +67,36 @@ extension ReaderPostServiceRemote {
     /// - Parameter count: the number of cards to fetch. Warning: This also changes the number of objects returned for recommended sites/tags.
     /// - Parameter success: Called when the request succeeds and the data returned is valid
     /// - Parameter failure: Called if the request fails for any reason, or the response data is invalid
-    public func fetchStreamCards(stream: ReaderStream = .discover,
-                                 for topics: [String],
-                                 page: String? = nil,
-                                 sortingOption: ReaderSortingOption = .noSorting,
-                                 refreshCount: Int? = nil,
-                                 count: Int? = nil,
-                                 success: @escaping ([RemoteReaderCard], String?) -> Void,
-                                 failure: @escaping (Error) -> Void) {
+    public func fetchStreamCards(
+        stream: ReaderStream = .discover,
+        for topics: [String],
+        page: String? = nil,
+        sortingOption: ReaderSortingOption = .noSorting,
+        refreshCount: Int? = nil,
+        count: Int? = nil,
+        forwardedQueryParameters: [String: String]? = nil,
+        success: @escaping ([RemoteReaderCard], String?) -> Void,
+        failure: @escaping (Error) -> Void
+    ) {
         let path = "read/streams/\(stream.rawValue)"
-        guard let requestUrl = cardsEndpoint(with: path,
-                                             topics: topics,
-                                             page: page,
-                                             sortingOption: sortingOption,
-                                             count: count,
-                                             refreshCount: refreshCount) else {
+        guard
+            let requestUrl = cardsEndpoint(
+                with: path,
+                topics: topics,
+                page: page,
+                sortingOption: sortingOption,
+                count: count,
+                refreshCount: refreshCount,
+                forwardedQueryParameters: forwardedQueryParameters
+            )
+        else {
             return
         }
         fetch(requestUrl, success: success, failure: failure)
     }
 
     private func fetch(_ endpoint: String,
-                       success: @escaping ([RemoteReaderCard], String?) -> Void,
+        success: @escaping ([RemoteReaderCard], String?) -> Void,
                        failure: @escaping (Error) -> Void) {
         Task { @MainActor [wordPressComRestApi] in
             await wordPressComRestApi.perform(.get, URLString: endpoint, type: ReaderCardEnvelope.self)
@@ -93,11 +107,13 @@ extension ReaderPostServiceRemote {
     }
 
     private func cardsEndpoint(with path: String,
-                               topics: [String],
-                               page: String? = nil,
-                               sortingOption: ReaderSortingOption = .noSorting,
-                               count: Int? = nil,
-                               refreshCount: Int? = nil) -> String? {
+        topics: [String],
+        page: String? = nil,
+        sortingOption: ReaderSortingOption = .noSorting,
+        count: Int? = nil,
+        refreshCount: Int? = nil,
+        forwardedQueryParameters: [String: String]? = nil
+    ) -> String? {
         var path = URLComponents(string: path)
 
         path?.queryItems = topics.map { URLQueryItem(name: "tags[]", value: $0) }
@@ -116,6 +132,12 @@ extension ReaderPostServiceRemote {
 
         if let refreshCount {
             path?.queryItems?.append(URLQueryItem(name: "refresh", value: String(refreshCount)))
+        }
+
+        if let forwardedQueryParameters {
+            for (name, value) in forwardedQueryParameters {
+                path?.queryItems?.append(URLQueryItem(name: name, value: value))
+            }
         }
 
         guard let endpoint = path?.string else {

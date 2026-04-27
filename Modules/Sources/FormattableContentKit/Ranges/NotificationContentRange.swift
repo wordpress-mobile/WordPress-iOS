@@ -8,6 +8,7 @@ public class NotificationContentRange: FormattableContentRange, LinkContentRange
     public let siteID: NSNumber?
     public let postID: NSNumber?
     public let streamKey: String?
+    public let streamQueryParameters: [String: String]
     public let url: URL?
 
     public init(kind: FormattableRangeKind, properties: Properties) {
@@ -18,6 +19,7 @@ public class NotificationContentRange: FormattableContentRange, LinkContentRange
         userID = properties.userID
         postID = properties.postID
         streamKey = properties.streamKey
+        streamQueryParameters = properties.streamQueryParameters
     }
 }
 
@@ -29,6 +31,7 @@ extension NotificationContentRange {
         public var userID: NSNumber?
         public var postID: NSNumber?
         public var streamKey: String?
+        public var streamQueryParameters: [String: String] = [:]
 
         public init(range: NSRange) {
             self.range = range

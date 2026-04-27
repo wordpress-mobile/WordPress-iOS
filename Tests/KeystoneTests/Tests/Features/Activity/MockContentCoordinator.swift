@@ -45,9 +45,11 @@ class MockContentCoordinator: ContentCoordinator {
 
     var streamWasDisplayedByStreamKey = false
     var streamKey: String?
-    func displayStreamWithStreamKey(_ streamKey: String?) throws {
+    var streamQueryParameters: [String: String]?
+    func displayStreamWithStreamKey(_ streamKey: String?, queryParameters: [String: String]?) throws {
         streamWasDisplayedByStreamKey = true
         self.streamKey = streamKey
+        streamQueryParameters = queryParameters
     }
 
     func displayWebViewWithURL(_ url: URL, source: String) {

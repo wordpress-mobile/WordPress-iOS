@@ -9,6 +9,8 @@ import WordPressUI
 public final class ReaderPresenter: NSObject, SplitViewDisplayable {
     private let sidebarViewModel: ReaderSidebarViewModel
 
+    private var discoverStreamQueryParameters: [String: String]?
+
     // The view controllers used during split view presentation.
     let sidebar: ReaderSidebarViewController
     let supplementary: UINavigationController
@@ -129,7 +131,9 @@ public final class ReaderPresenter: NSObject, SplitViewDisplayable {
         }
     }
 
-    private func makeViewController<T: ReaderAbstractTopic>(withTopicID objectID: TaggedManagedObjectID<T>) -> UIViewController {
+    private func makeViewController<T: ReaderAbstractTopic>(
+        withTopicID objectID: TaggedManagedObjectID<T>
+    ) -> UIViewController {
         do {
             let topic = try viewContext.existingObject(with: objectID)
             return ReaderStreamViewController.controllerWithTopic(topic)
@@ -166,7 +170,13 @@ public final class ReaderPresenter: NSObject, SplitViewDisplayable {
         guard let topic = sidebarViewModel.getTopic(for: .discover) else {
             return makeErrorViewController() // This should never happen
         }
-        return ReaderDiscoverViewController(topic: topic, initialChannel: channel)
+        let query = discoverStreamQueryParameters
+        discoverStreamQueryParameters = nil
+        return ReaderDiscoverViewController(
+            topic: topic,
+            initialChannel: channel,
+            streamQueryParameters: query
+        )
     }
 
     private func makeAllSubscriptionsViewController(source: ScreenTrackingSource? = nil) -> UIViewController {
@@ -178,9 +188,11 @@ public final class ReaderPresenter: NSObject, SplitViewDisplayable {
             )
             self?.push(streamVC)
         }
-        let hostVC = UIHostingController(rootView: view
-            .environment(\.managedObjectContext, viewContext)
-            .environment(\.trackingContext, ScreenTrackingContext(source: source))
+        let hostVC = UIHostingController(
+            rootView:
+                view
+                .environment(\.managedObjectContext, viewContext)
+                .environment(\.trackingContext, ScreenTrackingContext(source: source))
         )
         hostVC.title = SharedStrings.Reader.subscriptions
         if sidebarViewModel.isCompact {
@@ -202,7 +214,8 @@ public final class ReaderPresenter: NSObject, SplitViewDisplayable {
         let view = ReaderListsView() { [weak self] selection in
             let streamVC = ReaderStreamViewController.controllerWithTopic(selection)
             self?.push(streamVC)
-        }.environment(\.managedObjectContext, viewContext)
+        }
+        .environment(\.managedObjectContext, viewContext)
         let hostVC = UIHostingController(rootView: view)
         hostVC.title = SharedStrings.Reader.lists
         if sidebarViewModel.isCompact {
@@ -212,7 +225,9 @@ public final class ReaderPresenter: NSObject, SplitViewDisplayable {
     }
 
     private func makeErrorViewController() -> UIViewController {
-        UIHostingController(rootView: EmptyStateView(SharedStrings.Error.generic, systemImage: "exclamationmark.circle"))
+        UIHostingController(
+            rootView: EmptyStateView(SharedStrings.Error.generic, systemImage: "exclamationmark.circle")
+        )
     }
 
     /// Shows the given view controller by either displaying it in the `.secondary`
@@ -302,10 +317,12 @@ public final class ReaderPresenter: NSObject, SplitViewDisplayable {
             viewModel.selection = .main(.recent)
         case .discover:
             viewModel.selection = .main(.discover)
-        case let .discoverStream(key):
+        case let .discoverStream(key, queryParameters):
             if let channel = ReaderDiscoverChannel(streamKey: key) {
+                discoverStreamQueryParameters = queryParameters
                 viewModel.selection = .discover(channel: channel)
             } else {
+                discoverStreamQueryParameters = nil
                 // Unknown stream key: fall back to rendering it as a tag stream.
                 viewModel.selection = nil
                 show(ReaderStreamViewController.controllerWithTagSlug(key))
@@ -317,7 +334,13 @@ public final class ReaderPresenter: NSObject, SplitViewDisplayable {
         case .subscriptions:
             viewModel.selection = .allSubscriptions
         case let .post(postID, siteID, isFeed):
-            push(ReaderDetailViewController.controllerWithPostID(NSNumber(value: postID), siteID: NSNumber(value: siteID), isFeed: isFeed))
+            push(
+                ReaderDetailViewController.controllerWithPostID(
+                    NSNumber(value: postID),
+                    siteID: NSNumber(value: siteID),
+                    isFeed: isFeed
+                )
+            )
         case let .postURL(url):
             push(ReaderDetailViewController.controllerWithPostURL(url))
         case let .topic(topic):
@@ -346,7 +369,10 @@ private extension UINavigationController {
     // A workaround for https://a8c.sentry.io/issues/3140539221.
     func safePushViewController(_ viewController: UIViewController, animated: Bool) {
         guard !children.contains(viewController) else {
-            return wpAssertionFailure("pushing the same view controller more than once", userInfo: ["viewController": "\(viewController)"])
+            return wpAssertionFailure(
+                "pushing the same view controller more than once",
+                userInfo: ["viewController": "\(viewController)"]
+            )
         }
         pushViewController(viewController, animated: animated)
     }

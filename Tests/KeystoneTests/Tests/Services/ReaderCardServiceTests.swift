@@ -25,8 +25,8 @@ class ReaderCardServiceTests: CoreDataTestCase {
 
         service.fetch(isFirstPage: true, success: { _, _ in
             let cards = try? self.mainContext.fetch(NSFetchRequest(entityName: ReaderCard.classNameWithoutNamespaces()))
-            XCTAssertEqual(cards?.count, 9)
-            expectation.fulfill()
+                XCTAssertEqual(cards?.count, 9)
+                expectation.fulfill()
         }, failure: { _ in })
 
         waitForExpectations(timeout: 5, handler: nil)
@@ -41,8 +41,8 @@ class ReaderCardServiceTests: CoreDataTestCase {
 
         service.fetch(isFirstPage: true, success: { _, _ in
             let cards = try? self.mainContext.fetch(NSFetchRequest(entityName: ReaderCard.classNameWithoutNamespaces())) as? [ReaderCard]
-            XCTAssertEqual(cards?.filter { $0.post != nil }.count, 8)
-            expectation.fulfill()
+                XCTAssertEqual(cards?.filter { $0.post != nil }.count, 8)
+                expectation.fulfill()
         }, failure: { _ in })
 
         waitForExpectations(timeout: 5, handler: nil)
@@ -56,8 +56,8 @@ class ReaderCardServiceTests: CoreDataTestCase {
         remoteService.shouldCallFailure = true
 
         service.fetch(isFirstPage: true, success: { _, _ in }, failure: { error in
-            XCTAssertNotNil(error)
-            expectation.fulfill()
+                XCTAssertNotNil(error)
+                expectation.fulfill()
         })
 
         waitForExpectations(timeout: 5, handler: nil)
@@ -70,11 +70,11 @@ class ReaderCardServiceTests: CoreDataTestCase {
         let service = ReaderCardService(service: remoteService, coreDataStack: contextManager, followedInterestsService: followedInterestsService)
 
         service.fetch(isFirstPage: false, success: { _, _ in
-            // Fetch again, this time the 1st page
+                // Fetch again, this time the 1st page
             service.fetch(isFirstPage: true, success: { _, _ in
                 let cards = try? self.mainContext.fetch(NSFetchRequest(entityName: ReaderCard.classNameWithoutNamespaces())) as? [ReaderCard]
-                XCTAssertEqual(cards?.count, 9)
-                expectation.fulfill()
+                        XCTAssertEqual(cards?.count, 9)
+                        expectation.fulfill()
             }, failure: { _ in })
         }, failure: {_ in })
 
@@ -89,14 +89,17 @@ class ReaderCardServiceTests: CoreDataTestCase {
 final class ReaderPostServiceRemoteMock: ReaderCardServiceRemote {
     var shouldCallFailure = false
 
-    func fetchStreamCards(stream: WordPressKit.ReaderStream,
-                          for topics: [String],
-                          page: String?,
-                          sortingOption: WordPressKit.ReaderSortingOption,
-                          refreshCount: Int?,
-                          count: Int?,
-                          success: @escaping ([WordPressKit.RemoteReaderCard], String?) -> Void,
-                          failure: @escaping (any Error) -> Void) {
+    func fetchStreamCards(
+        stream: WordPressKit.ReaderStream,
+        for topics: [String],
+        page: String?,
+        sortingOption: WordPressKit.ReaderSortingOption,
+        refreshCount: Int?,
+        count: Int?,
+        forwardedQueryParameters: [String: String]?,
+        success: @escaping ([WordPressKit.RemoteReaderCard], String?) -> Void,
+        failure: @escaping (any Error) -> Void
+    ) {
         mockFetch(success: success, failure: failure)
     }
 
@@ -108,7 +111,7 @@ final class ReaderPostServiceRemoteMock: ReaderCardServiceRemote {
         }
 
         guard let fileUrl = Bundle(for: ReaderPostServiceRemoteMock.self).url(forResource: "reader-cards.json", withExtension: nil),
-              let data = try? Data(contentsOf: fileUrl),
+            let data = try? Data(contentsOf: fileUrl),
               let cards = try? JSONDecoder().decode([RemoteReaderCard].self, from: data) else {
             XCTFail("Error setting up mock data")
             return
@@ -166,6 +169,6 @@ private class ReaderFollowedInterestsServiceMock: ReaderFollowedInterestsService
     }
 
     func path(slug: String) -> String {
-        return ""
+        ""
     }
 }

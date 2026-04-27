@@ -14,15 +14,25 @@ struct NotificationContentRangeFactory: FormattableRangesFactory {
         return contentRangeWithoutKindSpecified(with: properties, from: dictionary)
     }
 
-    private static func propertiesFrom(_ dictionary: [String: AnyObject], with range: NSRange) -> NotificationContentRange.Properties {
+    private static func propertiesFrom(
+        _ dictionary: [String: AnyObject],
+        with range: NSRange
+    ) -> NotificationContentRange.Properties {
         var properties = NotificationContentRange.Properties(range: range)
 
         properties.siteID = dictionary[RangeKeys.siteId] as? NSNumber
         properties.postID = dictionary[RangeKeys.postId] as? NSNumber
         properties.streamKey = dictionary[RangeKeys.id] as? String
 
-        if let url = dictionary[RangeKeys.url] as? String {
-            properties.url = URL(string: url)
+        if let urlString = dictionary[RangeKeys.url] as? String, let url = URL(string: urlString) {
+            properties.url = url
+            if let items = URLComponents(url: url, resolvingAgainstBaseURL: false)?.queryItems {
+                for item in items {
+                    if let value = item.value, !value.isEmpty {
+                        properties.streamQueryParameters[item.name] = value
+                    }
+                }
+            }
         }
         return properties
     }

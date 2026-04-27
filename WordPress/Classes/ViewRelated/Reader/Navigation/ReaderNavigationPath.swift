@@ -8,7 +8,7 @@ enum ReaderNavigationPath: Hashable {
     case discover
     /// A Reader stream identified by key, e.g. the key used by `/read/streams/:stream_key`.
     /// Resolves to a matching Discover channel when available, otherwise falls back to a tag.
-    case discoverStream(key: String)
+    case discoverStream(key: String, queryParameters: [String: String]?)
     case likes
     case search
     case subscriptions
