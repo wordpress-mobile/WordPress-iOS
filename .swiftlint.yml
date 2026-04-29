@@ -86,6 +86,9 @@ control_statement:
 discarded_notification_center_observer:
   severity: error
 
+opening_brace:
+  ignore_multiline_statement_conditions: true
+
 operator_usage_whitespace:
   skip_aligned_constants: false
 
