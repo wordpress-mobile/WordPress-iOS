@@ -38,33 +38,12 @@ WordPress-iOS uses a modular architecture with the main app and separate Swift p
 - **Accessibility**: Use proper accessibility labels and traits
 - **Localization**: follow best practices from @docs/localization.md
 
-## Build & Test
+## Xcode Schemes
+- `WordPress` builds the WordPress iOS app and runs `WordPressUnitTests.xctestplan` — default for builds and the full unit test suite.
+- `Jetpack` builds the Jetpack iOS app — switch to it for Jetpack-only work.
+- Some test targets (e.g. `WordPressDataTests`) have their own scheme and aren't in `WordPressUnitTests.xctestplan`. If the `WordPress` scheme fails to build because of an unrelated target, fall back to the target's dedicated scheme.
 
-**Always check for the Xcode MCP server first.**
-If it is connected, use it to build and test — no exceptions.
-
-If the Xcode MCP fails (e.g. build errors from unrelated targets), fall back to the Fastlane `test` lane:
-
-```bash
-bundle exec fastlane test
-bundle exec fastlane test only_testing:TargetName/Class/method
-```
-
-If Fastlane also fails, fall back to `xcodebuild` directly:
-
-```bash
-xcodebuild \
-  -workspace WordPress.xcworkspace \
-  -scheme "${SCHEME}" \
-  -destination "platform=iOS Simulator,name=${DEVICE}" \
-  test \
-  | xcbeautify
-```
-
-Some test targets (e.g. `WordPressDataTests`) have their own scheme and are not part of the main `WordPress` scheme's test plan.
-When the `WordPress` scheme build fails due to an unrelated target, try using the target's dedicated scheme instead.
-
-### Simulator Sign-In
+## Simulator Sign-In
 
 To automatically sign in to the app on an iOS simulator, see @docs/simulator-sign-in.md.
 
