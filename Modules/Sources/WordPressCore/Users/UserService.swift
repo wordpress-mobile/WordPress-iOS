@@ -37,7 +37,7 @@ public actor UserService: UserServiceProtocol {
     }
 
     public func isCurrentUserCapableOf(_ capability: UserCapability) async -> Bool {
-        await currentUser?.capabilities.keys.contains(capability) == true
+        await currentUser?.capabilities.hasCap(capability: capability) == true
     }
 
     public func deleteUser(id: Int64, reassigningPostsTo newUserId: Int64) async throws {

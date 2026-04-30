@@ -1,5 +1,6 @@
 import Testing
 import WordPressAPI
+import WordPressAPIInternal
 @testable import WordPress
 @testable import WordPressKit
 
@@ -19,15 +20,27 @@ struct BlogServiceRemoteCoreRESTSettingsTests {
         postsPerPage: UInt64 = 10
     ) -> SiteSettingsWithEditContext {
         SiteSettingsWithEditContext(
-            title: title, description: description, url: "", email: "",
-            timezone: timezone, dateFormat: dateFormat, timeFormat: timeFormat,
-            startOfWeek: startOfWeek, language: "", useSmilies: false,
-            defaultCategory: defaultCategory, defaultPostFormat: defaultPostFormat,
-            postsPerPage: postsPerPage, showOnFront: "posts",
-            pageOnFront: 0, pageForPosts: 0,
+            title: title,
+            description: description,
+            url: "",
+            email: "",
+            timezone: timezone,
+            dateFormat: dateFormat,
+            timeFormat: timeFormat,
+            startOfWeek: startOfWeek,
+            language: "",
+            useSmilies: false,
+            defaultCategory: defaultCategory,
+            defaultPostFormat: defaultPostFormat,
+            postsPerPage: postsPerPage,
+            showOnFront: "posts",
+            pageOnFront: 0,
+            pageForPosts: 0,
             defaultPingStatus: .closed,
             defaultCommentStatus: .closed,
-            siteLogo: nil, siteIcon: 0
+            siteLogo: nil,
+            siteIcon: 0,
+            additionalFields: WpAdditionalFields()
         )
     }
 
