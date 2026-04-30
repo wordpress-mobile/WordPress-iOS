@@ -1,6 +1,7 @@
 import Foundation
 import BuildSettingsKit
 import SVProgressHUD
+import SwiftUI
 import WordPressData
 import WordPressFlux
 import WordPressShared
@@ -94,6 +95,7 @@ import AutomatticTracks
     enum NavigationItemTag: Int {
         case notifications
         case share
+        case savedPostsSettings
     }
 
     private var siteID: NSNumber? {
@@ -307,6 +309,7 @@ import AutomatticTracks
         NotificationCenter.default.addObserver(self, selector: #selector(postSeenToggled(_:)), name: .ReaderPostSeenToggled, object: nil)
 
         configureCloseButtonIfNeeded()
+        setupSavedPostsSettingsBarButtonItemIfNeeded()
         setupTableView()
         setupFooterView()
         setupContentHandler()
