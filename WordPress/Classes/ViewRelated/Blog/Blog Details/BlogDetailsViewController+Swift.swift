@@ -1,6 +1,7 @@
 import Foundation
 import UIKit
 import SwiftUI
+import JetpackSocial
 import WordPressData
 import WordPressShared
 import WordPressAPI
@@ -338,6 +339,10 @@ extension BlogDetailsViewController {
         if !blog.supports(.publicize) {
             // if publicize is disabled, show the sharing buttons settings.
             sharingVC = SharingButtonsViewController(blog: blog)
+        } else if FeatureFlag.socialSharingV2.enabled,
+            let manage = ManageConnectionsHostingController.make(for: blog)
+        {
+            sharingVC = manage
         } else {
             sharingVC = SharingViewController(blog: blog, delegate: nil)
         }

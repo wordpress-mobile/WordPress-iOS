@@ -98,6 +98,7 @@ import WordPressData
         deleteAccountData()
 
         WordPressClientFactory.shared.reset()
+        JetpackSocialFactory.shared.reset()
     }
 
     static func deleteAccountData() {
