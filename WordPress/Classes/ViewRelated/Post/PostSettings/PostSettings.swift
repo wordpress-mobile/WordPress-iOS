@@ -439,10 +439,9 @@ struct PostSettings: Hashable {
                 customTermChanges[restBase] = termIds
             }
         }
-        params.additionalFields =
-            customTermChanges.isEmpty
-            ? nil
-            : WpAdditionalFields.fromTermIdMap(map: customTermChanges)
+        if !customTermChanges.isEmpty {
+            params.additionalFields = WpAdditionalFields.fromTermIdMap(map: customTermChanges)
+        }
 
         let postParentPageID = post.parent.map { Int($0) }
         if postParentPageID != self.parentPageID {
