@@ -321,7 +321,13 @@ let package = Package(
         .testTarget(name: "WordPressCoreTests", dependencies: [.target(name: "WordPressCore")]),
         .testTarget(name: "WordPressIntelligenceTests", dependencies: [.target(name: "WordPressIntelligence")]),
         .testTarget(name: "WordPressReaderTests", dependencies: [.target(name: "WordPressReader")]),
-        .testTarget(name: "JetpackSocialTests", dependencies: [.target(name: "JetpackSocial")])
+        .testTarget(
+            name: "JetpackSocialTests",
+            dependencies: [
+                .target(name: "JetpackSocial"),
+                .product(name: "OHHTTPStubsSwift", package: "OHHTTPStubs")
+            ]
+        )
     ]
 )
 
