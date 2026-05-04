@@ -46,6 +46,9 @@ only_rules:
   # explicit empty-string separator since that is the default.
   - joined_default_parameter
 
+  # Prefer `last(where:)` over `filter { }.last`.
+  - last_where
+
   # MARK comment should be in valid format.
   - mark
 
