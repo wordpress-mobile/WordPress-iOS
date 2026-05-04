@@ -47,6 +47,16 @@ WordPress-iOS uses a modular architecture with the main app and separate Swift p
 
 To automatically sign in to the app on an iOS simulator, see @docs/simulator-sign-in.md.
 
+## Libraries
+
+### wordpress-rs
+
+The `wordpress-rs` Swift package provides the `WordPressAPI` and `WordPressAPIInternal` modules and includes an xcframework target. Builds occasionally fail with an error like:
+
+> File '/path/to/libwordpressFFI/wp_api_uniffi.h' has been modified since the module file '/path/to/libwordpressFFI-[random].pcm' was built.
+
+To recover, delete all `*.pcm` files in the directory reported by the error and rebuild.
+
 ## Coding Standards
 - Follow Swift API Design Guidelines
 - Use strict access control modifiers where possible
