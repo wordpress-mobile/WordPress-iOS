@@ -12,6 +12,7 @@ let package = Package(
         .library(name: "DesignSystem", targets: ["DesignSystem"]),
         .library(name: "FormattableContentKit", targets: ["FormattableContentKit"]),
         .library(name: "JetpackStats", targets: ["JetpackStats"]),
+        .library(name: "JetpackSocial", targets: ["JetpackSocial"]),
         .library(name: "JetpackStatsWidgetsCore", targets: ["JetpackStatsWidgetsCore"]),
         .library(name: "NotificationServiceExtensionCore", targets: ["NotificationServiceExtensionCore"]),
         .library(name: "ShareExtensionCore", targets: ["ShareExtensionCore"]),
@@ -119,6 +120,19 @@ let package = Package(
             resources: [.process("Resources")]
         ),
         .target(name: "JetpackStatsWidgetsCore", swiftSettings: [.swiftLanguageMode(.v5)]),
+        .target(
+            name: "JetpackSocial",
+            dependencies: [
+                "AsyncImageKit",
+                "DesignSystem",
+                "WordPressShared",
+                "WordPressUI",
+                "WordPressCore",
+                .product(name: "WordPressAPI", package: "wordpress-rs"),
+                .product(name: "Logging", package: "swift-log")
+            ],
+            resources: [.process("Resources")]
+        ),
         .target(
             name: "ShareExtensionCore",
             dependencies: [
@@ -306,7 +320,8 @@ let package = Package(
         ),
         .testTarget(name: "WordPressCoreTests", dependencies: [.target(name: "WordPressCore")]),
         .testTarget(name: "WordPressIntelligenceTests", dependencies: [.target(name: "WordPressIntelligence")]),
-        .testTarget(name: "WordPressReaderTests", dependencies: [.target(name: "WordPressReader")])
+        .testTarget(name: "WordPressReaderTests", dependencies: [.target(name: "WordPressReader")]),
+        .testTarget(name: "JetpackSocialTests", dependencies: [.target(name: "JetpackSocial")])
     ]
 )
 
@@ -403,6 +418,7 @@ enum XcodeSupport {
             "DesignSystem",
             "BuildSettingsKit",
             "FormattableContentKit",
+            "JetpackSocial",
             "JetpackStats",
             "JetpackStatsWidgetsCore",
             "NotificationServiceExtensionCore",
