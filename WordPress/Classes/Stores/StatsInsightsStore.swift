@@ -936,7 +936,7 @@ extension StatsInsightsStore {
          * with value .loading. If at least one exists then the store is still fetching the overview.
          */
         let mirror = Mirror(reflecting: state)
-        return mirror.children.compactMap { $0.value as? StoreFetchingStatus }.first { $0 == .loading } != nil
+        return mirror.children.compactMap { $0.value as? StoreFetchingStatus }.contains { $0 == .loading }
     }
 
     var isFetchingAllFollowers: Bool {
@@ -996,7 +996,7 @@ extension StatsInsightsStore {
          * If the result is nil the store failed loading the overview.
          */
         let mirror = Mirror(reflecting: state)
-        return mirror.children.compactMap { $0.value as? StoreFetchingStatus }.first { $0 != .error } == nil
+        return !mirror.children.compactMap { $0.value as? StoreFetchingStatus }.contains { $0 != .error }
     }
 
     func fetchingFailed(for query: InsightQuery) -> Bool {

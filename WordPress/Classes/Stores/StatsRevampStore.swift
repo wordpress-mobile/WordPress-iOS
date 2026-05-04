@@ -105,11 +105,11 @@ extension StatsRevampStore {
 
 private extension StatsRevampStore {
     func aggregateStatus(for statuses: [StoreFetchingStatus], data: Any?) -> StoreFetchingStatus {
-        if statuses.first(where: { $0 == .loading }) != nil {
+        if statuses.contains(where: { $0 == .loading }) {
             return .loading
-        } else if statuses.first(where: { $0 == .success }) != nil || data != nil {
+        } else if statuses.contains(where: { $0 == .success }) || data != nil {
             return .success
-        } else if statuses.first(where: { $0 == .error }) != nil {
+        } else if statuses.contains(where: { $0 == .error }) {
             return .error
         } else {
             return .idle

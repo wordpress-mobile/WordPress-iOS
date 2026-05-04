@@ -489,7 +489,7 @@ private extension NotificationsViewController {
             guard let notes = tableViewHandler?.resultsController?.fetchedObjects as? [WordPressData.Notification] else {
                 return nil
             }
-            let isEnabled = notes.first { !$0.read } != nil
+            let isEnabled = notes.contains { !$0.read }
             let attributes = isEnabled ? UIAction.Attributes(rawValue: 0) : .disabled
             return UIAction(
                 title: Strings.NavigationBar.markAllAsReadActionTitle,

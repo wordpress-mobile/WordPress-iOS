@@ -118,7 +118,7 @@ private extension TabbedTotalsCell {
 
     func toggleFilterTabBar() {
         // If none of the tabs have data, hide the FilterTabBar.
-        let noTabsData = (tabsData.first { !$0.dataRows.isEmpty }) == nil
+        let noTabsData = !tabsData.contains { !$0.dataRows.isEmpty }
         filterTabBar.isHidden = noTabsData
     }
 
