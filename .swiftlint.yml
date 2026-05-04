@@ -16,6 +16,9 @@ only_rules:
   # There should be no space before and one after any comma.
   - comma
 
+  # Prefer `contains` over `filter(where:).count`.
+  - contains_over_filter_count
+
   # Prefer `contains` over using `filter(where:).isEmpty`.
   - contains_over_filter_is_empty
 
