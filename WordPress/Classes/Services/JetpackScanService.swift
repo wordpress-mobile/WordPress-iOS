@@ -71,7 +71,7 @@ class JetpackScanService {
                         continue
                     }
 
-                    var threat = threats.filter({ $0.id == item.threatId }).first
+                    var threat = threats.first(where: { $0.id == item.threatId })
                     if item.status == .inProgress {
                         threat?.status = .fixing
                     }

@@ -372,9 +372,9 @@ class RegisterDomainDetailsViewModel {
         section.rows[safe: addressSectionIndexHelper.postalCodeIndex]?.editableRow?.value = domainContactInformation.postalCode
         section.rows[safe: addressSectionIndexHelper.addressLine1]?.editableRow?.value = domainContactInformation.address1
         section.rows[safe: addressSectionIndexHelper.stateIndex]?.editableRow?.idValue = domainContactInformation.state
-        section.rows[safe: addressSectionIndexHelper.stateIndex]?.editableRow?.value = states?.filter {
+        section.rows[safe: addressSectionIndexHelper.stateIndex]?.editableRow?.value = states?.first(where: {
             return $0.code == domainContactInformation.state
-            }.first?.name
+            })?.name
     }
 
     private func updatePhoneSection(with domainContactInformation: DomainContactInformation) {
@@ -391,9 +391,9 @@ class RegisterDomainDetailsViewModel {
     private func updateContactInformationSection(with domainContactInformation: DomainContactInformation) {
         let section = sections[SectionIndex.contactInformation.rawValue]
         section.rows[safe: CellIndex.ContactInformation.country.rawValue]?.editableRow?.idValue = domainContactInformation.countryCode
-        section.rows[safe: CellIndex.ContactInformation.country.rawValue]?.editableRow?.value = countries?.filter {
+        section.rows[safe: CellIndex.ContactInformation.country.rawValue]?.editableRow?.value = countries?.first(where: {
             return $0.code == domainContactInformation.countryCode
-            }.first?.name
+            })?.name
         section.rows[safe: CellIndex.ContactInformation.email.rawValue]?.editableRow?.value = domainContactInformation.email
         section.rows[safe: CellIndex.ContactInformation.firstName.rawValue]?.editableRow?.value = domainContactInformation.firstName
         section.rows[safe: CellIndex.ContactInformation.lastName.rawValue]?.editableRow?.value = domainContactInformation.lastName

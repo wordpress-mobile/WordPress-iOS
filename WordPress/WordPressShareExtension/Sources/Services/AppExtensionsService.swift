@@ -127,7 +127,7 @@ extension AppExtensionsService {
     ///
     func isAuthorizedToUploadMedia(in sites: [RemoteBlog], for selectedSiteID: Int) -> Bool {
         let siteID = NSNumber(value: selectedSiteID)
-        guard let isAuthorizedToUploadFiles = sites.filter({$0.blogID == siteID}).first?.isUploadingFilesAllowed() else {
+        guard let isAuthorizedToUploadFiles = sites.first(where: {$0.blogID == siteID})?.isUploadingFilesAllowed() else {
             return false
         }
 

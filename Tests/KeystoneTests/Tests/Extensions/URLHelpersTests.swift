@@ -17,7 +17,7 @@ class URLHelpersTests: XCTestCase {
         XCTAssertNotEqual(url.absoluteString, newURL.absoluteString)
 
         let components = URLComponents(url: newURL, resolvingAgainstBaseURL: false)
-        let cacheBusterQueryItem = components?.queryItems?.filter { $0.name == "_" }.first
+        let cacheBusterQueryItem = components?.queryItems?.first(where: { $0.name == "_" })
         XCTAssertNotNil(cacheBusterQueryItem?.value)
     }
 }

@@ -29,9 +29,9 @@ extension FormattableContent {
     }
 
     public func action(id: Identifier) -> FormattableContentAction? {
-        return actions?.filter {
+        return actions?.first(where: {
             $0.identifier == id
-        }.first
+        })
     }
 
     public func range(with url: URL) -> FormattableContentRange? {

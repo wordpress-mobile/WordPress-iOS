@@ -42,6 +42,9 @@ only_rules:
   # Prefer checking `isEmpty` over comparing to empty string literal `""`.
   - empty_string
 
+  # Prefer `first(where:)` over `filter { }.first`.
+  - first_where
+
   # When calling the `joined` method on an array of strings, omit an
   # explicit empty-string separator since that is the default.
   - joined_default_parameter
