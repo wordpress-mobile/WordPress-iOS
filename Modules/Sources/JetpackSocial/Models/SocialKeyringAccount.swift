@@ -32,8 +32,15 @@ public struct SocialKeyringAccount: Identifiable, Hashable, Sendable {
     }
 
     /// Flattens a list of keyrings into one account row per (keyring,
-    /// external user) pair. Every keyring yields at least the primary row.
-    public static func flatten(_ keyrings: [SocialKeyringConnection]) -> [SocialKeyringAccount] {
+    /// external user) pair.
+    ///
+    /// `includesPrimary` should be `false` for services where Publicize only
+    /// targets sub-accounts (Facebook → Pages); in that case the keyring's
+    /// primary row is omitted and the result contains only additional users.
+    public static func flatten(
+        _ keyrings: [SocialKeyringConnection],
+        includesPrimary: Bool = true
+    ) -> [SocialKeyringAccount] {
         keyrings.flatMap { keyring -> [SocialKeyringAccount] in
             // The `primary:` and `user:` discriminators keep IDs unique even
             // when a keyring's externalID happens to equal an additional
@@ -54,7 +61,7 @@ public struct SocialKeyringAccount: Identifiable, Hashable, Sendable {
                     externalUserID: user.id
                 )
             }
-            return [primary] + additional
+            return includesPrimary ? [primary] + additional : additional
         }
     }
 }

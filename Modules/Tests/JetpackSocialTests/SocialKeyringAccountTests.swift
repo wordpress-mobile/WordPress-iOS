@@ -66,4 +66,22 @@ struct SocialKeyringAccountTests {
         #expect(accounts[0].id == "42:primary:prim")
         #expect(accounts[1].id == "42:user:x-1")
     }
+
+    @Test("flatten with includesPrimary=false drops the primary row")
+    func flattenWithoutPrimary() {
+        let page = AdditionalExternalUser(id: "page-1", name: "My Page", description: nil, profilePictureURL: nil)
+        let keyring = makeKeyring(additional: [page])
+        let accounts = SocialKeyringAccount.flatten([keyring], includesPrimary: false)
+        #expect(accounts.count == 1)
+        let account = try! #require(accounts.first)
+        #expect(account.externalUserID == "page-1")
+        #expect(account.name == "My Page")
+    }
+
+    @Test("flatten with includesPrimary=false on a keyring with no additional users yields no rows")
+    func flattenWithoutPrimaryAndNoAdditional() {
+        let keyring = makeKeyring()
+        let accounts = SocialKeyringAccount.flatten([keyring], includesPrimary: false)
+        #expect(accounts.isEmpty)
+    }
 }

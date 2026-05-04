@@ -33,6 +33,20 @@ public enum Strings {
                 "Error when the WP.com account has no authorized keyring for a given service. %1$@ is the service label (e.g. 'Mastodon')."
         )
 
+        public static let noPagesForFacebook = NSLocalizedString(
+            "jetpackSocial.error.noPagesForFacebook",
+            value:
+                "The Facebook connection cannot find any Pages. Publicize cannot connect to Facebook Profiles, only published Pages.",
+            comment:
+                "Error shown after Facebook OAuth when the user's account doesn't manage any Facebook Pages, since Publicize only targets Pages."
+        )
+
+        public static let learnMore = NSLocalizedString(
+            "jetpackSocial.error.learnMore",
+            value: "Learn more",
+            comment: "Link label that opens documentation explaining how to resolve a social sharing error."
+        )
+
         public static let decoding = NSLocalizedString(
             "jetpackSocial.error.decoding",
             value: "Received an unexpected response from the server.",
@@ -147,6 +161,21 @@ public enum Strings {
             comment: "Explanation text shown at the top of the account confirmation screen."
         )
 
+        public static let allConnectedDescription = NSLocalizedString(
+            "jetpackSocial.accountConfirmation.allConnectedDescription",
+            value:
+                "You're all set. Every available account is already connected to this site, and your new posts will be shared automatically. You can change this when writing a post.",
+            comment:
+                "Message shown at the top of the account confirmation screen when every available account is already connected to the site."
+        )
+
+        public static let done = NSLocalizedString(
+            "jetpackSocial.accountConfirmation.done",
+            value: "Done",
+            comment:
+                "Button that dismisses the account confirmation screen when every account is already connected and there is nothing to confirm."
+        )
+
         public static let markAsSharedLabel = NSLocalizedString(
             "jetpackSocial.accountConfirmation.markAsSharedLabel",
             value: "Mark the connection as shared",
@@ -228,6 +257,18 @@ public enum Strings {
             "jetpackSocial.connectionDetail.availableToAllUsersFooter",
             value: "Allow this connection to be used by all admins and users of your site.",
             comment: "Footer caption below the 'Available to all users' toggle."
+        )
+
+        public static let updateFailedTitle = NSLocalizedString(
+            "jetpackSocial.connectionDetail.updateFailedTitle",
+            value: "Couldn't Update Connection",
+            comment: "Title of the alert shown when updating a social connection setting fails."
+        )
+
+        public static let updateFailedDismiss = NSLocalizedString(
+            "jetpackSocial.connectionDetail.updateFailedDismiss",
+            value: "OK",
+            comment: "Dismiss button in the social connection update failure alert."
         )
     }
 
