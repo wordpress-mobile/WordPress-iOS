@@ -1,3 +1,4 @@
+import JetpackSocial
 import WebKit
 import CoreMedia
 import WordPressData

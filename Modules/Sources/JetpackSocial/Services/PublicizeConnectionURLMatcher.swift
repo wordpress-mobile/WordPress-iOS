@@ -1,8 +1,8 @@
 import Foundation
 
 /// Used to detect whether a URL matches a particular Publicize authorization success or failure route.
-struct PublicizeConnectionURLMatcher {
-    enum MatchComponent {
+public struct PublicizeConnectionURLMatcher {
+    public enum MatchComponent {
         case verifyActionItem
         case denyActionItem
         case requestActionItem
@@ -60,7 +60,7 @@ struct PublicizeConnectionURLMatcher {
 
     /// @return True if the url matches the current authorization component
     ///
-    static func url(_ url: URL, contains matchComponent: MatchComponent) -> Bool {
+    public static func url(_ url: URL, contains matchComponent: MatchComponent) -> Bool {
         if let queryItem = matchComponent.queryItem {
             return self.url(url, contains: queryItem)
         }
@@ -100,7 +100,7 @@ struct PublicizeConnectionURLMatcher {
 
     /// Classify actions taken by the web API
     ///
-    enum AuthorizeAction: Int {
+    public enum AuthorizeAction: Int {
         case none
         case unknown
         case request
@@ -108,7 +108,7 @@ struct PublicizeConnectionURLMatcher {
         case deny
     }
 
-    static func authorizeAction(for matchURL: URL) -> AuthorizeAction {
+    public static func authorizeAction(for matchURL: URL) -> AuthorizeAction {
         // Path oauth declines are handled by a redirect to a path.com URL, so check this first.
         if url(matchURL, contains: .declinePath) {
             return .deny
