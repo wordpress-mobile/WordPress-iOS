@@ -60,7 +60,7 @@ extension CommentServiceTests {
 
         // Act
         let exp = expectation(description: "Fetch comment likes should succeed")
-        self.service.getLikesFor(commentID: commentID, siteID: siteID, success: { users, totalLikes, likesPerPage in
+        self.service.getLikesFor(commentID: commentID, siteID: siteID, success: { users, _, likesPerPage in
             // Assert
             XCTAssertNotNil(users)
             XCTAssertEqual(users.count, 1)
@@ -82,7 +82,7 @@ extension CommentServiceTests {
 
         // Act
         let exp = expectation(description: "Fetch comment likes should fail")
-        self.service.getLikesFor(commentID: commentID, siteID: siteID, success: { users, totalLikes, likesPerPage in
+        self.service.getLikesFor(commentID: commentID, siteID: siteID, success: { _, _, _ in
             XCTFail("this closure should not be called")
         },
         failure: { _ in

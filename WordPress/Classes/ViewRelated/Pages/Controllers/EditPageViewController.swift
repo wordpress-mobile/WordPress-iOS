@@ -88,7 +88,7 @@ class EditPageViewController: UIViewController {
             localizedFeatureName: feature,
             source: "block_editor",
             presentingViewController: self
-        ) { [weak self] client in
+        ) { [weak self] _ in
             // Once authenticated, dismiss the application password view and show editor
             guard let self else { return EmptyView() }
 

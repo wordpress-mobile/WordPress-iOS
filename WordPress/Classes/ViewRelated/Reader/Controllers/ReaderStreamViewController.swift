@@ -415,7 +415,7 @@ import AutomatticTracks
         let service = ReaderTopicService(coreDataStack: ContextManager.shared)
         service.siteTopicForSite(withID: siteID,
             isFeed: isFeed,
-            success: { [weak self] (objectID: NSManagedObjectID?, isFollowing: Bool) in
+            success: { [weak self] (objectID: NSManagedObjectID?, _: Bool) in
 
                 let context = ContextManager.shared.mainContext
                 guard let objectID,
@@ -430,7 +430,7 @@ import AutomatticTracks
                 self?.readerTopic = topic
 
             },
-            failure: { [weak self] (error: Error?) in
+            failure: { [weak self] (_: Error?) in
                 if self?.isLoadingDiscover ?? false {
                     self?.updateContent(synchronize: false)
                 }
@@ -936,7 +936,7 @@ import AutomatticTracks
 
         let objectID = topic.objectID
 
-        let successBlock = { [weak self] (count: Int, hasMore: Bool) in
+        let successBlock = { [weak self] (_: Int, hasMore: Bool) in
             DispatchQueue.main.async {
                 if let strongSelf = self {
                     // swiftlint:disable:next empty_count
@@ -1007,7 +1007,7 @@ import AutomatticTracks
                 return
             }
 
-            let successBlock = { [weak self] (count: Int, hasMore: Bool) in
+            let successBlock = { [weak self] (_: Int, hasMore: Bool) in
                 DispatchQueue.main.async {
                     if let strongSelf = self {
                         // swiftlint:disable:next empty_count
@@ -1049,7 +1049,7 @@ import AutomatticTracks
 
         footerView.isHidden = false
 
-        let successBlock = { (count: Int, hasMore: Bool) in
+        let successBlock = { (_: Int, hasMore: Bool) in
             DispatchQueue.main.async(execute: {
                 success?(hasMore)
             })
@@ -1184,7 +1184,7 @@ import AutomatticTracks
         let service = ReaderTopicService(coreDataStack: ContextManager.shared)
         service.toggleFollowing(forTag: topic, success: {
             completion?(true)
-        }, failure: { (error: Error?) in
+        }, failure: { (_: Error?) in
             generator.notificationOccurred(.error)
             completion?(false)
         })
@@ -1497,7 +1497,7 @@ extension ReaderStreamViewController: WPTableViewHandlerDelegate {
         }
 
         if traitCollection.horizontalSizeClass == .regular, #available(iOS 18, *) {
-            controller.preferredTransition = .zoom { [weak self] context in
+            controller.preferredTransition = .zoom { [weak self] _ in
                 guard let self, let cell = self.tableView.cellForRow(at: indexPath) else {
                     return nil
                 }

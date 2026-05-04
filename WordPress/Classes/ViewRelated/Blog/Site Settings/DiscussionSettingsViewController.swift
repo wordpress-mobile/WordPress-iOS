@@ -311,7 +311,7 @@ open class DiscussionSettingsViewController: UITableViewController {
         pickerViewController.pickerMinimumValue = commentsLinksMinimumValue
         pickerViewController.pickerMaximumValue = commentsLinksMaximumValue
         pickerViewController.pickerSelectedValue = settings.commentsMaximumLinks as? Int
-        pickerViewController.onChange = { [weak self] (enabled: Bool, newValue: Int) in
+        pickerViewController.onChange = { [weak self] (_: Bool, newValue: Int) in
             self?.settings.commentsMaximumLinks = newValue as NSNumber
             self?.didChangeSetting("comments_links", value: newValue as Any)
         }

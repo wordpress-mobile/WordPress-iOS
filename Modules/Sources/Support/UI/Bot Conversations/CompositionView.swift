@@ -50,7 +50,7 @@ struct CompositionView: View {
         }
         .padding(.horizontal, 16)
         .padding(.vertical, 8)
-        .onChange(of: self.text, initial: true, { oldValue, newValue in
+        .onChange(of: self.text, initial: true, { _, newValue in
             withAnimation {
                 textIsEmpty = newValue
                     .trimmingCharacters(in: .whitespacesAndNewlines)
@@ -88,7 +88,7 @@ struct CompositionView: View {
     NavigationStack {
         VStack {
             Spacer()
-            CompositionView(isDisabled: false) { message in
+            CompositionView(isDisabled: false) { _ in
                 // Do nothing
             }
         }
@@ -103,7 +103,7 @@ struct CompositionView: View {
             }
             VStack {
                 Spacer()
-                CompositionView(isDisabled: false) { message in
+                CompositionView(isDisabled: false) { _ in
                     // You'd do something with the message if this weren't a preview
                 }
             }

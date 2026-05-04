@@ -53,7 +53,7 @@ class MediaCacheSettingsViewController: UITableViewController {
         let mediaClearCacheRow = BrandedNavigationRow(
             title: NSLocalizedString("Clear Device Media Cache",
                                      comment: "Label for button that clears all media cache."),
-            action: { [weak self] row in
+            action: { [weak self] _ in
                 self?.clearMediaCache()
             },
             accessibilityIdentifier: "mediaClearCacheButton")
@@ -121,7 +121,7 @@ class MediaCacheSettingsViewController: UITableViewController {
         setMediaCacheRowDescription(status: .clearingCache)
         MediaFileManager.clearAllMediaCacheFiles(onCompletion: { [weak self] in
             self?.updateMediaCacheSize()
-            }, onError: { [weak self] (error) in
+            }, onError: { [weak self] (_) in
                 self?.updateMediaCacheSize()
         })
     }

@@ -135,7 +135,7 @@ struct DomainPurchaseChoicesView: View {
             return [WPAppAnalyticsKeySource: source]
         }()
 
-        let properties = defaultProperties.merging(properties ?? [:]) { first, second in
+        let properties = defaultProperties.merging(properties ?? [:]) { first, _ in
             return first
         }
 

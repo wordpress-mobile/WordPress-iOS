@@ -40,7 +40,7 @@ class GutenbergMediaEditorImage: AsyncImage {
      If a thumbnail doesn't exist in cache, fetch one
      */
     func thumbnail(finishedRetrievingThumbnail: @escaping (UIImage?) -> ()) {
-        let task = ImageDownloader.shared.downloadImage(at: originalURL, completion: { image, error in
+        let task = ImageDownloader.shared.downloadImage(at: originalURL, completion: { image, _ in
             guard let image else {
                 finishedRetrievingThumbnail(nil)
                 return

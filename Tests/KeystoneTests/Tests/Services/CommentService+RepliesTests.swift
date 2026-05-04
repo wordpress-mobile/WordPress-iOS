@@ -168,7 +168,7 @@ final class CommentService_RepliesTests: CoreDataTestCase {
         self.commentService.reply(to: post, content: "test comment") {
             XCTFail("The failure should be called instead")
             exp.fulfill()
-        } failure: { error in
+        } failure: { _ in
             exp.fulfill()
         }
         wait(for: [exp], timeout: 5)
@@ -242,7 +242,7 @@ final class CommentService_RepliesTests: CoreDataTestCase {
         self.commentService.replyToHierarchicalComment(withID: 3, post: post, content: "test comment") {
             XCTFail("The failure should be called instead")
             exp.fulfill()
-        } failure: { error in
+        } failure: { _ in
             exp.fulfill()
         }
         wait(for: [exp], timeout: 5)

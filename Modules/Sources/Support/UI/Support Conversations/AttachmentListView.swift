@@ -10,7 +10,7 @@ struct SingleImageView: View {
     @GestureState private var currentZoom = 1.0
 
     var magnification: some Gesture {
-        MagnifyGesture().updating($currentZoom, body: { newValue, state, transaction in
+        MagnifyGesture().updating($currentZoom, body: { newValue, state, _ in
             state = newValue.magnification
         })
     }

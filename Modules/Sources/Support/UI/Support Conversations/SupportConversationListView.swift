@@ -159,7 +159,7 @@ struct EmailRowView: View {
                 header
 
                 HStack {
-                    TimelineView(.periodic(from: .now, by: 1.0)) { context in
+                    TimelineView(.periodic(from: .now, by: 1.0)) { _ in
                         Text(formatTimestamp(conversation.lastMessageSentAt))
                             .font(.caption)
                             .foregroundColor(.secondary)

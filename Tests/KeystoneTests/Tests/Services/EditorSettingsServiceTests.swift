@@ -67,7 +67,7 @@ class EditorSettingsServiceTest: CoreDataTestCase {
         let finalResponse = responseWith(mobileEditor: "gutenberg")
         remoteApi.successBlockPassedIn?(finalResponse, HTTPURLResponse())
 
-        waitForExpectations(timeout: 0.1) { (error) in
+        waitForExpectations(timeout: 0.1) { (_) in
             // The default value should be now on local and remote
             XCTAssertEqual(blog.mobileEditor, .gutenberg)
         }

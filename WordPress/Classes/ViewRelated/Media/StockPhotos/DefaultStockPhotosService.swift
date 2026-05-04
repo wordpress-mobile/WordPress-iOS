@@ -22,7 +22,7 @@ final class DefaultStockPhotosService: StockPhotosService {
     }
 
     func search(params: StockPhotosSearchParams, completion: @escaping (StockPhotosResultsPage) -> Void) {
-        api.GET(endPoint, parameters: parameters(params: params), success: { results, response in
+        api.GET(endPoint, parameters: parameters(params: params), success: { results, _ in
             if let media = results[ParsingKeys.media], let meta = results[ParsingKeys.meta] as? [String: Int] {
                 do {
                     let mediaJSON = try JSONSerialization.data(withJSONObject: media as Any)
@@ -39,7 +39,7 @@ final class DefaultStockPhotosService: StockPhotosService {
                     completion(StockPhotosResultsPage.empty())
                 }
             }
-        }) { error, response in
+        }) { _, _ in
             // I am not sure how we are going to handle errors. In the meantime, I'm returning an empty result
             completion(StockPhotosResultsPage.empty())
         }

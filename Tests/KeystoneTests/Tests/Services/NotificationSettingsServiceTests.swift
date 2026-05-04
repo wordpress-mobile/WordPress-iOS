@@ -163,7 +163,7 @@ class NotificationSettingsServiceTests: CoreDataTestCase {
                 settings = theSettings
                 expect.fulfill()
             },
-            failure: { (error: NSError?) in
+            failure: { (_: NSError?) in
                 expect.fulfill()
             })
 

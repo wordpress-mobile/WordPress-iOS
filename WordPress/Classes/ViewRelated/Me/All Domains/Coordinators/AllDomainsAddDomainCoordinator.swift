@@ -12,7 +12,7 @@ import WordPressData
             coordinator: coordinator
         )
 
-        let domainPurchasedCallback = { (domainViewController: UIViewController, domainName: String) in
+        let domainPurchasedCallback = { (domainViewController: UIViewController, _: String) in
             domainViewController.dismiss(animated: true) {
                 allDomainsViewController.reloadDomains()
             }

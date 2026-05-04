@@ -664,7 +664,7 @@ private extension CommentDetailViewController {
                                         // The comment might have changed its approval status
                                         self?.refreshData()
                                      },
-                                     failure: { [weak self] error in
+                                     failure: { [weak self] _ in
                                         let message = NSLocalizedString("There has been an unexpected error while editing your comment",
                                                                         comment: "Error displayed if a comment fails to get updated")
                                         self?.displayNotice(title: message)
@@ -747,7 +747,7 @@ private extension CommentDetailViewController {
         commentService.unapproveComment(comment, success: { [weak self] in
             self?.showActionableNotice(title: ModerationMessages.pendingSuccess)
             self?.refreshData()
-        }, failure: { [weak self] error in
+        }, failure: { [weak self] _ in
             self?.displayNotice(title: ModerationMessages.pendingFail)
             self?.commentStatus = CommentStatusType.typeForStatus(self?.comment.status)
         })
@@ -762,7 +762,7 @@ private extension CommentDetailViewController {
         commentService.approve(comment, success: { [weak self] in
             self?.showActionableNotice(title: ModerationMessages.approveSuccess)
             self?.refreshData()
-        }, failure: { [weak self] error in
+        }, failure: { [weak self] _ in
             self?.displayNotice(title: ModerationMessages.approveFail)
             self?.commentStatus = CommentStatusType.typeForStatus(self?.comment.status)
         })
@@ -777,7 +777,7 @@ private extension CommentDetailViewController {
         commentService.spamComment(comment, success: { [weak self] in
             self?.showActionableNotice(title: ModerationMessages.spamSuccess)
             self?.refreshData()
-        }, failure: { [weak self] error in
+        }, failure: { [weak self] _ in
             self?.displayNotice(title: ModerationMessages.spamFail)
             self?.commentStatus = CommentStatusType.typeForStatus(self?.comment.status)
         })
@@ -795,7 +795,7 @@ private extension CommentDetailViewController {
             self?.trashButtonCell.isLoading = false
             self?.showActionableNotice(title: ModerationMessages.trashSuccess)
             self?.refreshData()
-        }, failure: { [weak self] error in
+        }, failure: { [weak self] _ in
             self?.trashButtonCell.isLoading = false
             self?.displayNotice(title: ModerationMessages.trashFail)
             self?.commentStatus = CommentStatusType.typeForStatus(self?.comment.status)
@@ -809,7 +809,7 @@ private extension CommentDetailViewController {
         commentService.delete(comment, success: { [weak self] in
             self?.showActionableNotice(title: ModerationMessages.deleteSuccess)
             completion?(true)
-        }, failure: { [weak self] error in
+        }, failure: { [weak self] _ in
             self?.deleteButtonCell.isLoading = false
             self?.displayNotice(title: ModerationMessages.deleteFail)
             completion?(false)

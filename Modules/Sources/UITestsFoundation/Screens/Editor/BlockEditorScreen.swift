@@ -248,8 +248,8 @@ public class BlockEditorScreen: ScreenObject {
 
     // returns void since return screen depends on from which screen it loaded
     public func closeEditor() {
-        XCTContext.runActivity(named: "Close the block editor") { (activity) in
-            XCTContext.runActivity(named: "Close the More menu if needed") { (activity) in
+        XCTContext.runActivity(named: "Close the block editor") { (_) in
+            XCTContext.runActivity(named: "Close the More menu if needed") { (_) in
                 let actionSheet = app.sheets.element(boundBy: 0)
                 if actionSheet.exists {
                     dismissBlockEditorPopovers()
@@ -260,7 +260,7 @@ public class BlockEditorScreen: ScreenObject {
             editorCloseButton.waitForIsHittable(timeout: 3)
             editorCloseButton.tap()
 
-            XCTContext.runActivity(named: "Discard any local changes") { (activity) in
+            XCTContext.runActivity(named: "Discard any local changes") { (_) in
                 guard unsavedChangesLabel.waitForIsHittable(timeout: 3) else { return }
 
                 Logger.log(message: "Discarding unsaved changes", event: .v)

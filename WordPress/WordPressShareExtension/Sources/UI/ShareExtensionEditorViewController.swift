@@ -735,7 +735,7 @@ extension ShareExtensionEditorViewController {
         })
 
         // Action: Insert
-        let insertAction = alertController.addDefaultActionWithTitle(insertButtonTitle) { [weak self] action in
+        let insertAction = alertController.addDefaultActionWithTitle(insertButtonTitle) { [weak self] _ in
             self?.richTextView.becomeFirstResponder()
             let linkURLString = alertController.textFields?.first?.text
             var linkTitle = alertController.textFields?.last?.text
@@ -756,7 +756,7 @@ extension ShareExtensionEditorViewController {
 
         // Action: Remove
         if !isInsertingNewLink {
-            alertController.addDestructiveActionWithTitle(removeTitle) { [weak self] action in
+            alertController.addDestructiveActionWithTitle(removeTitle) { [weak self] _ in
                 self?.richTextView.becomeFirstResponder()
                 self?.richTextView.removeLink(inRange: range)
             }
@@ -961,7 +961,7 @@ extension ShareExtensionEditorViewController {
                 comment: "User action to dismiss media options."
             ),
             style: .cancel,
-            handler: { (action) in
+            handler: { (_) in
                 if attachment == self.currentSelectedAttachment {
                     self.currentSelectedAttachment = nil
                     self.resetMediaAttachmentOverlay(attachment)
@@ -977,7 +977,7 @@ extension ShareExtensionEditorViewController {
                     comment: "User action to remove media."
                 ),
                 style: .destructive,
-                handler: { (action) in
+                handler: { (_) in
                     self.richTextView.remove(attachmentID: mediaID)
                 }
             )

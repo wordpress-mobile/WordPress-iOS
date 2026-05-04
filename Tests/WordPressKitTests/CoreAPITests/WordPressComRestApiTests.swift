@@ -541,7 +541,7 @@ class WordPressComRestApiTests: XCTestCase {
                 complete.fulfill()
                 XCTFail("The API call should complete with a failure")
             },
-            failure: { error, _ in
+            failure: { _, _ in
                 complete.fulfill()
             }
         )

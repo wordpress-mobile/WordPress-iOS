@@ -384,7 +384,7 @@ class NotificationsViewController: UIViewController, UITableViewDataSource, UITa
         let title = isRead ? NSLocalizedString("Mark Unread", comment: "Marks a notification as unread") :
                              NSLocalizedString("Mark Read", comment: "Marks a notification as unread")
 
-        let action = UIContextualAction(style: .normal, title: title, handler: { (action, view, completionHandler) in
+        let action = UIContextualAction(style: .normal, title: title, handler: { (_, _, completionHandler) in
             if isRead {
                 WPAnalytics.track(.notificationMarkAsUnreadTapped)
                 self.markAsUnread(note: note)
@@ -1646,7 +1646,7 @@ private extension NotificationsViewController {
 
         DDLogInfo("Sync'ing Notification [\(noteId)]")
 
-        mediator?.syncNote(with: noteId) { error, note in
+        mediator?.syncNote(with: noteId) { _, note in
             guard abs(startDate.timeIntervalSinceNow) <= timeout else {
                 DDLogError("Error: Timeout while trying to load Notification [\(noteId)]")
                 return

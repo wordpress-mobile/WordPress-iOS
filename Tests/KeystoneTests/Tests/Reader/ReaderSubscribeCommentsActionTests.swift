@@ -42,7 +42,7 @@ final class ReaderSubscribeCommentsActionTests: CoreDataTestCase {
             context: mainContext,
             followCommentsService: service,
             sourceViewController: UIViewController(),
-            completion: nil) { error in
+            completion: nil) { _ in
                 XCTAssertEqual(service.toggleSubscribedCallCount, 1)
                 XCTAssertEqual(service.toggleNotificationSettingsCallCount, 0)
                 testExpectation.fulfill()
@@ -66,7 +66,7 @@ final class ReaderSubscribeCommentsActionTests: CoreDataTestCase {
             context: mainContext,
             followCommentsService: service,
             sourceViewController: UIViewController(),
-            completion: nil) { error in
+            completion: nil) { _ in
                 XCTAssertEqual(service.toggleSubscribedCallCount, 1)
                 XCTAssertEqual(service.toggleNotificationSettingsCallCount, 1)
                 testExpectation.fulfill()

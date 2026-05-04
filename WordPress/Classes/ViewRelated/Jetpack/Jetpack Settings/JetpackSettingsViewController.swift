@@ -235,7 +235,7 @@ open class JetpackSettingsViewController: UITableViewController {
     }
 
     func pressedAllowlistedIPAddresses() -> ImmuTableAction {
-        return { [unowned self] row in
+        return { [unowned self] _ in
             let allowListedIPs = self.settings.jetpackLoginAllowListedIPAddresses
             let settingsViewController = SettingsListEditorViewController(collection: allowListedIPs)
 
@@ -307,7 +307,7 @@ open class JetpackSettingsViewController: UITableViewController {
     }
 
     fileprivate func pressedManageConnection() -> ImmuTableAction {
-        return { [unowned self] row in
+        return { [unowned self] _ in
             WPAnalytics.trackEvent(.jetpackManageConnectionViewed)
             let jetpackConnectionVC = JetpackConnectionViewController(blog: blog)
             jetpackConnectionVC.delegate = self

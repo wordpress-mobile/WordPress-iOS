@@ -289,7 +289,7 @@ private extension SupportTableViewController {
     }
 
     func contactUsSelected() -> ImmuTableAction {
-        return { [weak self] row in
+        return { [weak self] _ in
             guard let self else { return }
             self.tableView.deselectSelectedRowWithAnimation(true)
 
@@ -300,7 +300,7 @@ private extension SupportTableViewController {
     }
 
     func myTicketsSelected() -> ImmuTableAction {
-        return { [weak self] row in
+        return { [weak self] _ in
             guard let self else { return }
             showTicketView()
         }
@@ -316,7 +316,7 @@ private extension SupportTableViewController {
     }
 
     func supportEmailSelected() -> ImmuTableAction {
-        return { [unowned self] row in
+        return { [unowned self] _ in
 
             self.tableView.deselectSelectedRowWithAnimation(true)
 
@@ -339,7 +339,7 @@ private extension SupportTableViewController {
     }
 
     func visitForumsSelected() -> ImmuTableAction {
-        return { [weak self] row in
+        return { [weak self] _ in
             guard let self else { return }
             self.tableView.deselectSelectedRowWithAnimation(true)
             self.launchForum(url: Constants.forumsURL)
@@ -414,7 +414,7 @@ private extension SupportTableViewController {
     }
 
     func activityLogsSelected() -> ImmuTableAction {
-        return { [unowned self] row in
+        return { [unowned self] _ in
             let activityLogView = SupportActivityLogView()
             let hostingController = UIHostingController(rootView: activityLogView)
             self.navigationController?.pushViewController(hostingController, animated: true)
@@ -422,7 +422,7 @@ private extension SupportTableViewController {
     }
 
     private func logOutTapped() -> ImmuTableAction {
-        return { [weak self] row in
+        return { [weak self] _ in
             guard let self else {
                 return
             }

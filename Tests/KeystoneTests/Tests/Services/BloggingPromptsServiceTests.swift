@@ -84,7 +84,7 @@ final class BloggingPromptsServiceTests: CoreDataTestCase {
 
             expectation.fulfill()
 
-        } failure: { error in
+        } failure: { _ in
             XCTFail("This closure shouldn't be called.")
             expectation.fulfill()
         }
@@ -111,7 +111,7 @@ final class BloggingPromptsServiceTests: CoreDataTestCase {
 
             expectation.fulfill()
 
-        } failure: { error in
+        } failure: { _ in
             XCTFail("This closure shouldn't be called.")
             expectation.fulfill()
         }
@@ -185,7 +185,7 @@ final class BloggingPromptsServiceTests: CoreDataTestCase {
 
             expectation.fulfill()
 
-        } failure: { error in
+        } failure: { _ in
             XCTFail("This closure shouldn't be called.")
             expectation.fulfill()
         }
@@ -219,7 +219,7 @@ final class BloggingPromptsServiceTests: CoreDataTestCase {
 
             expectation.fulfill()
 
-        } failure: { error in
+        } failure: { _ in
             XCTFail("This closure shouldn't be called.")
             expectation.fulfill()
         }
@@ -254,7 +254,7 @@ final class BloggingPromptsServiceTests: CoreDataTestCase {
 
             expectation.fulfill()
 
-        } failure: { error in
+        } failure: { _ in
             XCTFail("This closure shouldn't be called.")
             expectation.fulfill()
         }
@@ -279,7 +279,7 @@ final class BloggingPromptsServiceTests: CoreDataTestCase {
         service.fetchPrompts(from: .distantPast) { prompts in
             XCTAssertEqual(prompts.count, 3)
             expectation.fulfill()
-        } failure: { error in
+        } failure: { _ in
             XCTFail("This closure shouldn't be called.")
             expectation.fulfill()
         }
@@ -325,7 +325,7 @@ final class BloggingPromptsServiceTests: CoreDataTestCase {
 
             expectation.fulfill()
 
-        } failure: { error in
+        } failure: { _ in
             XCTFail("This closure shouldn't be called.")
             expectation.fulfill()
         }

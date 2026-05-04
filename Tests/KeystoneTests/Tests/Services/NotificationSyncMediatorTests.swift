@@ -143,7 +143,7 @@ class NotificationSyncMediatorTests: CoreDataTestCase {
         let expect = expectation(description: "Mark as Read")
 
         // Mark as Read!
-        mediator.markAsRead(note) { success in
+        mediator.markAsRead(note) { _ in
             XCTAssertTrue(note.read)
             expect.fulfill()
         }
@@ -179,7 +179,7 @@ class NotificationSyncMediatorTests: CoreDataTestCase {
         let expect = expectation(description: "Mark as Read")
 
         // Mark as Read!
-        mediator.markAsRead([note1, note3]) { success in
+        mediator.markAsRead([note1, note3]) { _ in
             XCTAssertTrue(note1.read)
             XCTAssertTrue(note2.read)
             XCTAssertTrue(note3.read)
@@ -217,7 +217,7 @@ class NotificationSyncMediatorTests: CoreDataTestCase {
         let expect = expectation(description: "Mark as Read")
 
         // Mark as Read!
-        mediator.markAsRead([note1]) { success in
+        mediator.markAsRead([note1]) { _ in
             XCTAssertTrue(note1.read)
             XCTAssertFalse(note3.read)
             expect.fulfill()

@@ -284,7 +284,7 @@ class AppRatingUtility {
         var state = [String: Any]()
         defaults.dictionaryRepresentation()
             .filter({ key, _ in key.hasPrefix("AppRating") })
-            .forEach { key, value in
+            .forEach { key, _ in
                 let cleanKey = (try? key.removingPrefix(pattern: "AppRatings?")) ?? key
                 state[cleanKey] = defaults.object(forKey: key)
         }

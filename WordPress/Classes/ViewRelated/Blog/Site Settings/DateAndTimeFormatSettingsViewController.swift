@@ -111,7 +111,7 @@ open class DateAndTimeFormatSettingsViewController: UITableViewController {
     // MARK: - Row Handlers
 
     func pressedDateFormat() -> ImmuTableAction {
-        return { [unowned self] row in
+        return { [unowned self] _ in
             let settingsViewController = SettingsSelectionViewController(style: .insetGrouped)
             settingsViewController.title = NSLocalizedString("Date Format",
                                                              comment: "Writing Date Format Settings Title")
@@ -145,7 +145,7 @@ open class DateAndTimeFormatSettingsViewController: UITableViewController {
     }
 
     func pressedTimeFormat() -> ImmuTableAction {
-        return { [unowned self] row in
+        return { [unowned self] _ in
             let settingsViewController = SettingsSelectionViewController(style: .insetGrouped)
             settingsViewController.title = NSLocalizedString("Time Format",
                                                              comment: "Writing Time Format Settings Title")
@@ -180,7 +180,7 @@ open class DateAndTimeFormatSettingsViewController: UITableViewController {
     }
 
     func pressedStartOfWeek() -> ImmuTableAction {
-        return { [unowned self] row in
+        return { [unowned self] _ in
             let settingsViewController = SettingsSelectionViewController(style: .insetGrouped)
             settingsViewController.title = NSLocalizedString("Week starts on",
                                                              comment: "Blog Writing Settings: Weeks starts on")

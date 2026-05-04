@@ -148,7 +148,7 @@ extension TopListData {
             ("Medium", "medium.com", 600)
         ]
 
-        return referrers.enumerated().map { index, data in
+        return referrers.enumerated().map { _, data in
             let baseValue = data.2
             let metrics = createMetrics(baseValue: baseValue, metric: metric)
             return TopListItem.Referrer(
@@ -195,7 +195,7 @@ extension TopListData {
             ("Netherlands", "NL", "🇳🇱", 900)
         ]
 
-        return locations.enumerated().map { index, data in
+        return locations.enumerated().map { _, data in
             let baseValue = data.3
             let metrics = createMetrics(baseValue: baseValue, metric: metric)
             return TopListItem.Location(
@@ -266,7 +266,7 @@ extension TopListData {
             ("Sarah Davis", "Contributor", 8, 400)
         ]
 
-        return authors.enumerated().map { index, data in
+        return authors.enumerated().map { _, data in
             let baseValue = data.3
             let metrics = createMetrics(baseValue: baseValue, metric: metric)
             return TopListItem.Author(
@@ -291,7 +291,7 @@ extension TopListData {
             ("SwiftUI Lab", "https://swiftui-lab.com", 300)
         ]
 
-        return links.enumerated().map { index, data in
+        return links.enumerated().map { _, data in
             let baseValue = data.2
             let metrics = createMetrics(baseValue: baseValue, metric: metric)
             return TopListItem.ExternalLink(
@@ -315,7 +315,7 @@ extension TopListData {
             ("dataset.csv", "/downloads/data/dataset.csv", 400)
         ]
 
-        return files.enumerated().map { index, data in
+        return files.enumerated().map { _, data in
             let baseValue = data.2
             let metrics = createMetrics(baseValue: baseValue, metric: metric)
             return TopListItem.FileDownload(
@@ -338,7 +338,7 @@ extension TopListData {
             ("swift best practices", 500)
         ]
 
-        return terms.enumerated().map { index, data in
+        return terms.enumerated().map { _, data in
             let baseValue = data.1
             let metrics = createMetrics(baseValue: baseValue, metric: metric)
             return TopListItem.SearchTerm(
@@ -360,7 +360,7 @@ extension TopListData {
             ("Testing Strategies", "108", "https://example.com/videos/testing.mp4", 700)
         ]
 
-        return videos.enumerated().map { index, data in
+        return videos.enumerated().map { _, data in
             let baseValue = data.3
             let metrics = createMetrics(baseValue: baseValue, metric: metric)
             return TopListItem.Video(

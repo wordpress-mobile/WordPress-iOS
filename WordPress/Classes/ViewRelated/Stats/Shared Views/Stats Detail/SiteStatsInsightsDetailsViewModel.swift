@@ -268,7 +268,7 @@ class SiteStatsInsightsDetailsViewModel: Observable {
 
         switch statSection {
         case .insightsViewsVisitors:
-            return periodImmuTable(for: revampStore.viewsAndVisitorsStatus) { status in
+            return periodImmuTable(for: revampStore.viewsAndVisitorsStatus) { _ in
                 var rows = [any HashableImmutableRow]()
 
                 let viewsAndVisitorsData = revampStore.getViewsAndVisitorsData()
@@ -380,7 +380,7 @@ class SiteStatsInsightsDetailsViewModel: Observable {
                 return rows
             }
         case .insightsLikesTotals:
-            return periodImmuTable(for: revampStore.likesTotalsStatus) { status in
+            return periodImmuTable(for: revampStore.likesTotalsStatus) { _ in
                 var rows = [any HashableImmutableRow]()
 
                 let likesTotalsData = revampStore.getLikesTotalsData()

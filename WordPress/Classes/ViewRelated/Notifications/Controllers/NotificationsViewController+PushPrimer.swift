@@ -41,7 +41,7 @@ extension NotificationsViewController {
         let noTitle = NSLocalizedString("Not now",
                                         comment: "Button label for denying our request to allow push notifications")
 
-        inlinePromptView.setupYesButton(title: yesTitle) { [weak self] button in
+        inlinePromptView.setupYesButton(title: yesTitle) { [weak self] _ in
             defer {
                 WPAnalytics.track(.pushNotificationPrimerAllowTapped, withProperties: [Analytics.locationKey: Analytics.inlineKey])
             }
@@ -53,7 +53,7 @@ extension NotificationsViewController {
             }
         }
 
-        inlinePromptView.setupNoButton(title: noTitle) { [weak self] button in
+        inlinePromptView.setupNoButton(title: noTitle) { [weak self] _ in
             defer {
                 WPAnalytics.track(.pushNotificationPrimerNoTapped, withProperties: [Analytics.locationKey: Analytics.inlineKey])
             }
@@ -88,7 +88,7 @@ extension NotificationsViewController {
         let noTitle = NSLocalizedString("No thanks",
                                         comment: "Button label for denying our request to re-allow push notifications")
 
-        inlinePromptView.setupYesButton(title: yesTitle) { [weak self] button in
+        inlinePromptView.setupYesButton(title: yesTitle) { [weak self] _ in
             defer {
                 WPAnalytics.track(.pushNotificationWinbackSettingsTapped, withProperties: [Analytics.locationKey: Analytics.inlineKey])
             }
@@ -98,7 +98,7 @@ extension NotificationsViewController {
             UserPersistentStoreFactory.instance().notificationPrimerInlineWasAcknowledged = true
         }
 
-        inlinePromptView.setupNoButton(title: noTitle) { [weak self] button in
+        inlinePromptView.setupNoButton(title: noTitle) { [weak self] _ in
             defer {
                 WPAnalytics.track(.pushNotificationWinbackNoTapped, withProperties: [Analytics.locationKey: Analytics.inlineKey])
             }

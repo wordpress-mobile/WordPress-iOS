@@ -790,7 +790,7 @@ private extension BloggingRemindersFlowSettingsViewController {
             return
         }
 
-        service.updateSettings(settings: newSettings) { updatedSettings in
+        service.updateSettings(settings: newSettings) { _ in
             completion()
         } failure: { error in
             DDLogError("Error saving prompt reminder schedule: \(String(describing: error))")

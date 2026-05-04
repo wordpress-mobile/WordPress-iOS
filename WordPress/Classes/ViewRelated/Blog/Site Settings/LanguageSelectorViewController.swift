@@ -102,7 +102,7 @@ class LanguageSelectorViewController: UITableViewController, UISearchResultsUpda
     }
 
     private func action(language: Language) -> ImmuTableAction {
-        return { [weak self] row in
+        return { [weak self] _ in
             guard let strongSelf = self else {
                 return
             }

@@ -264,7 +264,7 @@ private extension View {
             UserDetailsView.Strings.deleteUserConfirmationTitle,
             isPresented: view.$presentDeleteConfirmation,
             presenting: view.deleteUserViewModel.selectedUser,
-            actions: { attribution in
+            actions: { _ in
                 Button(role: .destructive) {
                     Task { @MainActor in
                         do {

@@ -432,7 +432,7 @@ class ActivityServiceRemoteTests: RemoteTestCase, RESTTestable {
         remote.getRewindStatus(siteID) {
             expect.fulfill()
             XCTAssertEqual($0.state, .unavailable)
-        } failure: { error in
+        } failure: { _ in
             expect.fulfill()
             XCTFail("The success block should be called")
         }

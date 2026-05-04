@@ -145,7 +145,7 @@ class MediaThumbnailExporter: MediaExporter {
             onError(exporterErrorWith(error: ThumbnailExportError.failedToGenerateThumbnailFileURL))
             return Progress.discreteCompletedProgress()
         }
-        return exportThumbnail(forFile: fileURL, onCompletion: { (identifier, export) in
+        return exportThumbnail(forFile: fileURL, onCompletion: { (_, export) in
             onCompletion(export)
         }, onError: onError)
     }

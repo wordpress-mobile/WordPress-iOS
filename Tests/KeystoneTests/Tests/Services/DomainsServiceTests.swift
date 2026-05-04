@@ -67,7 +67,7 @@ class DomainsServiceTests: CoreDataTestCase {
     fileprivate func fetchDomains() {
         let expect = expectation(description: "Domains fetch complete expectation")
         let service = DomainsService(coreDataStack: contextManager, remote: remote)
-        service.refreshDomains(siteID: testBlog.dotComID!.intValue) { result in
+        service.refreshDomains(siteID: testBlog.dotComID!.intValue) { _ in
             expect.fulfill()
         }
 

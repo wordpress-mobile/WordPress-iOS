@@ -21,7 +21,7 @@ struct PHPLogsView: View {
         .onAppear {
             loadLogs(searchCriteria: searchCriteria)
         }
-        .onChange(of: searchCriteria) { oldValue, newValue in
+        .onChange(of: searchCriteria) { _, newValue in
             loadLogs(searchCriteria: newValue, reset: true)
         }
     }

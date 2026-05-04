@@ -289,7 +289,7 @@ import WordPressShared
                                  homePageID: homepagePageID,
                                  success: { [weak self] in
             self?.endUpdating()
-        }, failure: { [weak self] error in
+        }, failure: { [weak self] _ in
             self?.endUpdating()
 
             let notice = Notice(title: Strings.updateErrorTitle, message: Strings.updateErrorMessage, feedbackType: .error)

@@ -23,7 +23,7 @@ extension GravatarUploader {
         updateGravatarStatus(.uploading(image: newGravatar))
 
         let service = GravatarService()
-        service.uploadImage(newGravatar, forAccount: account) { [weak self] error in
+        service.uploadImage(newGravatar, forAccount: account) { [weak self] _ in
             DispatchQueue.main.async(execute: {
                 WPAppAnalytics.track(.gravatarUploaded)
                 self?.updateGravatarStatus(.finished)

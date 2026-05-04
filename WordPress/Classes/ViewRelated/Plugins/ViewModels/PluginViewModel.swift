@@ -494,7 +494,7 @@ class PluginViewModel: Observable {
             WPAnalytics.track(.automatedTransferCustomDomainDialogCancelled)
         }
 
-        let registerDomainAction = alertController.addDefaultActionWithTitle(registerDomainActionTitle) { [weak self] (action) in
+        let registerDomainAction = alertController.addDefaultActionWithTitle(registerDomainActionTitle) { [weak self] (_) in
             self?.presentDomainRegistration(for: directoryEntry)
         }
 
@@ -540,7 +540,7 @@ class PluginViewModel: Observable {
             return
         }
 
-        let coordinator = RegisterDomainCoordinator(site: blog, domainPurchasedCallback: { [weak self] _, domain in
+        let coordinator = RegisterDomainCoordinator(site: blog, domainPurchasedCallback: { [weak self] _, _ in
 
             guard let strongSelf = self,
                 let atHelper = AutomatedTransferHelper(site: strongSelf.site, plugin: directoryEntry) else {

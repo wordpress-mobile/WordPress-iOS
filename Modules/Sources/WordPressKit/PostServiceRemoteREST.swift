@@ -40,7 +40,7 @@ extension PostServiceRemoteREST {
 
         wordPressComRESTAPI.get(requestUrl,
                                parameters: parameters,
-                               success: { (responseObject, httpResponse) in
+                               success: { (responseObject, _) in
             if let success {
                 let responseDict = responseObject as? [String: Any] ?? [:]
                 let jsonUsers = responseDict["likes"] as? [[String: Any]] ?? []

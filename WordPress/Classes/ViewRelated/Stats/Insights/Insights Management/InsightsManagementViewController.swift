@@ -245,7 +245,7 @@ private extension InsightsManagementViewController {
     }
 
     func rowActionFor(_ statSection: StatSection) -> ImmuTableAction {
-        return { [unowned self] row in
+        return { [unowned self] _ in
             toggleRow(for: statSection)
         }
     }

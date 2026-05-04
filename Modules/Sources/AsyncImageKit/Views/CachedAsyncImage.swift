@@ -182,7 +182,7 @@ fileprivate let videoURL = URL(
 }
 
 #Preview("Image that never loads") {
-    CachedAsyncImage(url: nil) { image in
+    CachedAsyncImage(url: nil) { _ in
         Text("This shouldn't be visible")
     } placeholder: {
         ProgressView("Forever loading...")

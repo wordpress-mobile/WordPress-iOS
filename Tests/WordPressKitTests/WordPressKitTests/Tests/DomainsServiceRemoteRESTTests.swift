@@ -305,7 +305,7 @@ class DomainsServiceRemoteRESTTests: RemoteTestCase, RESTTestable {
             let matchesURL = containsQueryParams && matchesPath
             XCTAssertTrue(matchesURL)
             return matchesURL
-        } response: { request in
+        } response: { _ in
             let path = OHPathForFile(self.allDomainsMockFilename, type(of: self))!
             return fixture(filePath: path, status: 200, headers: nil)
         }

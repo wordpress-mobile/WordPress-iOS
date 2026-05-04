@@ -74,6 +74,9 @@ only_rules:
   # Lines should not have trailing whitespace.
   - trailing_whitespace
 
+  # Unused parameter in a closure should be replaced with _.
+  - unused_closure_parameter
+
   - vertical_whitespace
 
   - weak_delegate

@@ -103,7 +103,7 @@ public final class AdaptiveTabBarController<Item: AdaptiveTabBarItem> {
     }
 
     private func setupTraitObserver(for viewController: UIViewController) {
-        traitObserver = viewController.registerForTraitChanges([UITraitHorizontalSizeClass.self]) { [weak self] (viewController: UIViewController, previousTraitCollection: UITraitCollection) in
+        traitObserver = viewController.registerForTraitChanges([UITraitHorizontalSizeClass.self]) { [weak self] (_: UIViewController, _: UITraitCollection) in
             self?.refresh()
         }
     }

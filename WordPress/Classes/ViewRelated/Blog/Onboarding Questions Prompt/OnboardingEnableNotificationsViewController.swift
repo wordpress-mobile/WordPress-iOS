@@ -43,7 +43,7 @@ extension OnboardingEnableNotificationsViewController {
     @IBAction func enableButtonTapped(_ sender: Any) {
         WPAnalytics.track(.onboardingEnableNotificationsEnableTapped)
 
-        InteractiveNotificationsManager.shared.requestAuthorization { authorized in
+        InteractiveNotificationsManager.shared.requestAuthorization { _ in
             DispatchQueue.main.async {
                 self.completion()
             }

@@ -52,7 +52,7 @@ public final class Debouncer {
     }
 
     private func scheduleCallback() {
-        timer = Timer.scheduledTimer(withTimeInterval: delay, repeats: false) { [callback] timer in
+        timer = Timer.scheduledTimer(withTimeInterval: delay, repeats: false) { [callback] _ in
             callback?()
         }
     }

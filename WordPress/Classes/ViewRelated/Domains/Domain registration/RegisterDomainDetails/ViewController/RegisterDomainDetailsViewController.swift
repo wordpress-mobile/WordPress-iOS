@@ -133,7 +133,7 @@ class RegisterDomainDetailsViewController: UITableViewController {
         let gestureRecognizer = UITapGestureRecognizer()
         gestureRecognizer.cancelsTouchesInView = false
 
-        gestureRecognizer.on { [weak self] (gesture) in
+        gestureRecognizer.on { [weak self] (_) in
             self?.view.endEditing(true)
         }
 

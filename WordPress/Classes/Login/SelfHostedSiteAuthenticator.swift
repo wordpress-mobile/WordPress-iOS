@@ -194,7 +194,7 @@ struct SelfHostedSiteAuthenticator {
             let session = ASWebAuthenticationSession(
                 url: url,
                 callbackURLScheme: callbackURL.scheme!
-            ) { url, error in
+            ) { url, _ in
                 if let url {
                     continuation.resume(returning: url)
                 } else {

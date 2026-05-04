@@ -263,7 +263,7 @@ private extension TypeBasedExtensionContentExtractor {
         for provider in itemProviders {
             syncGroup.enter()
             // Remember, this is an async call....
-            provider.loadItem(forTypeIdentifier: acceptedType, options: nil) { (payload, error) in
+            provider.loadItem(forTypeIdentifier: acceptedType, options: nil) { (payload, _) in
                 let payload = payload as? Payload
                 let result = payload.flatMap(self.convert(payload:))
                 if let result {
@@ -403,7 +403,7 @@ private struct URLExtractor: TypeBasedExtensionContentExtractor {
         var returnedItem = ExtractedItem()
 
         var cachedImages = [String: ExtractedImage]()
-        bundleWrapper.assetsFileWrapper.fileWrappers?.forEach { (key: String, fileWrapper: FileWrapper) in
+        bundleWrapper.assetsFileWrapper.fileWrappers?.forEach { (_: String, fileWrapper: FileWrapper) in
             guard let fileName = fileWrapper.filename else {
                 return
             }

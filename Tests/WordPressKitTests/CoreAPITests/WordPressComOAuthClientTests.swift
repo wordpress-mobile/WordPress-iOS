@@ -267,7 +267,7 @@ class WordPressComOAuthClientTests: XCTestCase {
                 expect.fulfill()
                 XCTFail("This call should need multifactor")
             },
-            failure: { (error) in
+            failure: { (_) in
                 expect.fulfill()
                 XCTFail("This call should need multifactor")
             }

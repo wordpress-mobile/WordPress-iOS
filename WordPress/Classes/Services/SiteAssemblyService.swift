@@ -190,7 +190,7 @@ final class EnhancedSiteCreationService: SiteAssemblyService {
                     self.createdBlog = blog
                     self.endSuccessfulAssembly()
                 },
-                failure: { error in self.endFailedAssembly() }
+                failure: { _ in self.endFailedAssembly() }
             )
         })
     }

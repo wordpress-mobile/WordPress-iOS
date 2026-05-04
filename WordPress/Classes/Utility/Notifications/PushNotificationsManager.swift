@@ -395,7 +395,7 @@ extension PushNotificationsManager {
 
         DDLogInfo("Running Notifications Background Fetch...")
 
-        mediator.sync { error, newData in
+        mediator.sync { _, newData in
             DDLogInfo("Finished Notifications Background Fetch!")
 
             let result = newData ? UIBackgroundFetchResult.newData : .noData

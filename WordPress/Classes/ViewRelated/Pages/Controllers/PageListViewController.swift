@@ -395,7 +395,7 @@ final class PageListViewController: AbstractPostListViewController {
         homepageSettingsService?.setHomepageType(.page, homePageID: homePageID, success: { [weak self] in
             self?.refreshAndReload()
             self?.handleHomepageSettingsSuccess()
-        }, failure: { [weak self] error in
+        }, failure: { [weak self] _ in
             self?.refreshControl.endRefreshing()
             self?.handleHomepageSettingsFailure()
         })
@@ -408,7 +408,7 @@ final class PageListViewController: AbstractPostListViewController {
         homepageSettingsService?.setHomepageType(.page, withPostsPageID: postsPageID, success: { [weak self] in
             self?.refreshAndReload()
             self?.handleHomepagePostsPageSettingsSuccess(isPostsPage: newValue)
-        }, failure: { [weak self] error in
+        }, failure: { [weak self] _ in
             self?.refreshControl.endRefreshing()
             self?.handleHomepageSettingsFailure()
         })
