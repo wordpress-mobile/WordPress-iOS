@@ -439,15 +439,10 @@ struct PostSettings: Hashable {
                 customTermChanges[restBase] = termIds
             }
         }
-        var fields: WpAdditionalFields? = nil
-        for (restBase, termIds) in customTermChanges {
-            fields = (fields ?? WpAdditionalFields())
-                .withValue(
-                    key: restBase,
-                    value: .array(termIds.map { .int($0) })
-                )
-        }
-        params.additionalFields = fields
+        params.additionalFields =
+            customTermChanges.isEmpty
+            ? nil
+            : WpAdditionalFields.fromTermIdMap(map: customTermChanges)
 
         let postParentPageID = post.parent.map { Int($0) }
         if postParentPageID != self.parentPageID {
@@ -471,14 +466,10 @@ struct PostSettings: Hashable {
                 customTerms[taxonomy.restBase] = termIds
             }
         }
-        var fields: WpAdditionalFields? = nil
-        for (restBase, termIds) in customTerms {
-            fields = (fields ?? WpAdditionalFields())
-                .withValue(
-                    key: restBase,
-                    value: .array(termIds.map { .int($0) })
-                )
-        }
+        let fields: WpAdditionalFields? =
+            customTerms.isEmpty
+            ? nil
+            : WpAdditionalFields.fromTermIdMap(map: customTerms)
 
         var params = existing
         params.dateGmt = publishDate
