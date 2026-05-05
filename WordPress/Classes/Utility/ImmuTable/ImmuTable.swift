@@ -59,12 +59,8 @@ public struct ImmuTable {
     /// This function exists for testing purposes
     /// - seealso: registerRows(_:tableView:)
     internal static func registerRows(_ rows: [ImmuTableRow.Type], registrator: CellRegistrar) {
-        let registrables = rows.reduce([:]) {
-            (classes, row) -> [String: ImmuTableCell] in
-
-            var classes = classes
+        let registrables: [String: ImmuTableCell] = rows.reduce(into: [:]) { classes, row in
             classes[row.cell.reusableIdentifier] = row.cell
-            return classes
         }
         for (identifier, registrable) in registrables {
             registrator.register(registrable, cellReuseIdentifier: identifier)

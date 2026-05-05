@@ -60,6 +60,9 @@ only_rules:
   # Example: CGPoint.zero instead of CGPoint(x: 0, y: 0)
   - prefer_zero_over_explicit_init
 
+  # Prefer `reduce(into:_:)` over `reduce(_:_:)` for non-trivial accumulator types.
+  - reduce_into
+
   - shorthand_optional_binding
 
   # Prefer `someBool.toggle()` over `someBool = !someBool`.

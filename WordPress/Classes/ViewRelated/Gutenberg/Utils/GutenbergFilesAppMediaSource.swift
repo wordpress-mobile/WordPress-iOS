@@ -26,7 +26,7 @@ class GutenbergFilesAppMediaSource: NSObject {
         if filters.contains(.any) {
             return allowedTypesOnBlog
         } else {
-            return filters.map { $0.filterTypesConformingTo(allTypes: allowedTypesOnBlog) }.reduce([], +)
+            return filters.map { $0.filterTypesConformingTo(allTypes: allowedTypesOnBlog) }.reduce(into: []) { $0 += $1 }
         }
     }
 }
