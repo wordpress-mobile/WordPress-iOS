@@ -62,7 +62,7 @@ let package = Package(
         // We can't use wordpress-rs branches nor commits here. Only tags work.
         .package(
             url: "https://github.com/Automattic/wordpress-rs",
-            revision: "17f7ad0186a799371a3d402317832c7e869eb2a8"
+            exact: "0.2.0"
         ),
         .package(
             url: "https://github.com/Automattic/color-studio",

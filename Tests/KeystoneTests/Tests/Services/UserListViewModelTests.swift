@@ -18,7 +18,10 @@ class UserListViewModelTests: XCTestCase {
 
         let api = try WordPressAPI(
             urlSession: .shared,
-            apiRootUrl: .parse(input: "https://example.com/wp-json"),
+            siteInfo: .selfHosted(
+                siteUrl: .parse(input: "https://example.com"),
+                apiRoot: .parse(input: "https://example.com/wp-json")
+            ),
             authentication: .none
         )
         let client = try WordPressClient(

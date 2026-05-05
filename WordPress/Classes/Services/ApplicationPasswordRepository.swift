@@ -59,7 +59,7 @@ actor ApplicationPasswordRepository {
             return (blog.asApplicationPasswordOwners(), try? WordPressSite(blog: blog))
         }
 
-        guard case let .selfHosted(_, _, apiRootURL, username, authToken) = site else {
+        guard case let .selfHosted(_, siteURL, apiRootURL, username, authToken) = site else {
             return
         }
 
@@ -73,7 +73,7 @@ actor ApplicationPasswordRepository {
         let api = WordPressAPI(
             urlSession: URLSession(configuration: .ephemeral),
             notifyingDelegate: PulseNetworkLogger(),
-            apiRootUrl: apiRootURL,
+            siteInfo: .selfHosted(siteUrl: try! ParsedUrl.from(url: siteURL), apiRoot: apiRootURL),
             authentication: .init(username: username, password: authToken)
         )
         guard let uuid = try? await api.applicationPasswords.retrieveCurrentWithViewContext().data.uuid.uuid else {
@@ -171,11 +171,12 @@ private extension ApplicationPasswordRepository {
         let session = URLSession(configuration: .ephemeral)
         var validPasswords = [ApplicationPassword]()
         var invalidPasswords = [ApplicationPassword]()
+        let parsedSiteURL = try ParsedUrl.parse(input: siteUrl)
         for password in passwords {
             let api = WordPressAPI(
                 urlSession: session,
                 notifyingDelegate: PulseNetworkLogger(),
-                apiRootUrl: apiRootURL,
+                siteInfo: .selfHosted(siteUrl: parsedSiteURL, apiRoot: apiRootURL),
                 authentication: .init(username: siteUsername, password: password.password)
             )
             do {

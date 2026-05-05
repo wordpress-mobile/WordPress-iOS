@@ -357,7 +357,10 @@ struct SelfHostedSiteAuthenticator {
 
         let api = WordPressAPI(
             urlSession: URLSession(configuration: .ephemeral),
-            apiRootUrl: try! ParsedUrl.parse(input: apiRootURL.absoluteString),
+            siteInfo: .selfHosted(
+                siteUrl: try! ParsedUrl.parse(input: credentials.siteUrl),
+                apiRoot: try! ParsedUrl.parse(input: apiRootURL.absoluteString)
+            ),
             authentication: WpAuthentication(username: credentials.userLogin, password: credentials.password)
         )
 

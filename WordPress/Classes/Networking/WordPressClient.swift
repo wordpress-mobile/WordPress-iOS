@@ -56,22 +56,19 @@ extension WordPressClient {
             )
         )
         let siteURL: URL
-        let apiRootURL: ParsedUrl
-        let resolver: ApiUrlResolver
+        let siteInfo: SiteInfo
         switch site {
         case let .dotCom(url, siteId, _):
             siteURL = url
-            apiRootURL = try! ParsedUrl.parse(input: AppEnvironment.current.wordPressComApiBase.absoluteString)
-            resolver = WpComDotOrgApiUrlResolver(siteId: "\(siteId)", baseUrl: .custom(apiRootURL))
+            siteInfo = .wordPressCom(siteId: WpComSiteId(siteId))
         case let .selfHosted(_, url, apiRoot, _, _):
             siteURL = url
-            apiRootURL = apiRoot
-            resolver = WpOrgSiteApiUrlResolver(apiRootUrl: apiRoot)
+            siteInfo = .selfHosted(siteUrl: try! ParsedUrl.from(url: url), apiRoot: apiRoot)
         }
         let api = WordPressAPI(
             urlSession: session,
             notifyingDelegate: PulseNetworkLogger(),
-            apiUrlResolver: resolver,
+            siteInfo: siteInfo,
             authenticationProvider: provider,
             appNotifier: notifier,
         )

@@ -78,7 +78,7 @@ final class MockWordPressClientAPI: WordPressClientAPI, @unchecked Sendable {
     var posts: PostsRequestExecutor { fatalError("Not implemented") }
     var postTypes: PostTypesRequestExecutor { fatalError("Not implemented") }
 
-    func createSelfHostedService(cache: WordPressApiCache) throws -> WpService {
+    func createService(cache: WordPressApiCache) throws -> WpService {
         fatalError("Not implemented")
     }
 
@@ -140,7 +140,7 @@ final class MockUsersRequestExecutor: UsersRequestExecutor {
             registeredDate: "2024-01-01T00:00:00",
             roles: [],
             capabilities: UserCapabilitiesMap(map: [:]),
-            extraCapabilities: [:],
+            extraCapabilities: UserCapabilitiesMap(map: [:]),
             avatarUrls: nil
         )
         let mockHeaderMap = WpNetworkHeaderMap(noHandle: WpNetworkHeaderMap.NoHandle())
