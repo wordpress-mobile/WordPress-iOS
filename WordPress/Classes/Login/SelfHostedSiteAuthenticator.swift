@@ -187,7 +187,8 @@ struct SelfHostedSiteAuthenticator {
     ) async throws(SignInError) -> TaggedManagedObjectID<Blog> {
         do {
             let credentials: WpApiApplicationPasswordDetails
-            if let parsed = parseCredentialsFromLaunchArguments(), details.parsedSiteUrl.url().contains(parsed.siteUrl)
+            if let parsed = parseCredentialsFromLaunchArguments(),
+                details.parsedSiteUrl.url().contains(parsed.siteUrl)
             {
                 credentials = parsed
             } else {
