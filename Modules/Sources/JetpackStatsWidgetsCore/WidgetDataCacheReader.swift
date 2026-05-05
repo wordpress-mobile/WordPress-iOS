@@ -17,7 +17,7 @@ public extension WidgetDataCacheReader {
         } else {
             if userLoggedIn {
                 /// In rare cases there could be no default site and no defaultSiteId set
-                if let firstSiteData: T = widgetData()?.sorted(by: { $0.siteID < $1.siteID }).first {
+                if let firstSiteData: T = widgetData()?.min(by: { $0.siteID < $1.siteID }) {
                     return .success(firstSiteData)
                 } else {
                     return .failure(.noSite)

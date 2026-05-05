@@ -65,6 +65,9 @@ only_rules:
   # Prefer `someBool.toggle()` over `someBool = !someBool`.
   - toggle_bool
 
+  # Prefer `min(by:)` / `max(by:)` over `sorted { ... }.first` / `.last`.
+  - sorted_first_last
+
   # Files should have a single trailing newline.
   - trailing_newline
 
