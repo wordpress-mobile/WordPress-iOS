@@ -2,7 +2,7 @@ import SwiftUI
 
 struct CompositionView: View {
 
-    private let cornerSize: CGSize = CGSize(width: 9, height: 8)
+    private let cornerSize = CGSize(width: 9, height: 8)
 
     private let action: (String) -> Void
     private let isDisabled: Bool

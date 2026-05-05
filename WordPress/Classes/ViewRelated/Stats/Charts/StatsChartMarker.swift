@@ -8,8 +8,8 @@ class StatsChartMarker: MarkerView {
     var minimumSize = CGSize()
 
     private var tooltipLabel: NSMutableAttributedString?
-    private var labelSize: CGSize = CGSize()
-    private var size: CGSize = CGSize()
+    private var labelSize = CGSize()
+    private var size = CGSize()
     var paragraphStyle: NSMutableParagraphStyle = {
         let paragraphStyle = NSMutableParagraphStyle()
         paragraphStyle.alignment = .center

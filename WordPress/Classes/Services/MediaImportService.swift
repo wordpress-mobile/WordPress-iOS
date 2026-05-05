@@ -9,7 +9,7 @@ import WordPressData
 ///
 class MediaImportService: NSObject {
 
-    private static let defaultImportQueue: DispatchQueue = DispatchQueue(label: "org.wordpress.mediaImportService", autoreleaseFrequency: .workItem)
+    private static let defaultImportQueue = DispatchQueue(label: "org.wordpress.mediaImportService", autoreleaseFrequency: .workItem)
 
     @objc lazy var importQueue: DispatchQueue = {
         return MediaImportService.defaultImportQueue
@@ -246,7 +246,7 @@ class MediaImportService: NSObject {
     /// - Returns: a progress object that report the current state of the import process.
     ///
     private func `import`(_ exportable: ExportableAsset, to media: Media, options: ExportOptions, completion: @escaping (Error?) -> Void) -> Progress {
-        let progress: Progress = Progress.discreteProgress(totalUnitCount: 1)
+        let progress = Progress.discreteProgress(totalUnitCount: 1)
         importQueue.async {
             guard let exporter = self.makeExporter(for: exportable, options: options) else {
                 preconditionFailure("An exporter needs to be availale")

@@ -141,11 +141,11 @@ extension UIAppColor {
     public static let appBarText = UIColor.systemOrange
 
     public static let placeholderElement = UIColor(light: .systemGray5, dark: .systemGray4)
-    public static let placeholderElementFaded: UIColor = UIColor(light: .systemGray6, dark: .systemGray5)
+    public static let placeholderElementFaded = UIColor(light: .systemGray6, dark: .systemGray5)
 
     public static let prologueBackground = UIColor(light: blue(.shade0), dark: .systemBackground)
 
-    public static let switchStyle: SwitchToggleStyle = SwitchToggleStyle(tint: Color(UIAppColor.primary))
+    public static let switchStyle = SwitchToggleStyle(tint: Color(UIAppColor.primary))
 }
 
 public enum AppColor {

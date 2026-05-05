@@ -44,7 +44,7 @@ struct SiteDomainsPresentationCard: View {
 
 extension SiteDomainsPresentationCard {
     struct Destination: Identifiable {
-        let id: UUID = UUID()
+        let id = UUID()
         let title: String
         let style: DSButtonStyle.Emphasis
         let action: (() -> Void)

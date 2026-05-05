@@ -7,7 +7,7 @@ struct InMemoryDataStoreTests {
 
     @Test
     func testUpdatesAfterCreation() async {
-        let store: InMemoryUserDataStore = InMemoryUserDataStore()
+        let store = InMemoryUserDataStore()
         let stream = await store.listStream(query: .all)
 
         await confirmation("The stream produces an update") { confirmation in
@@ -19,7 +19,7 @@ struct InMemoryDataStoreTests {
 
     @Test
     func testUpdatesAfterStore() async {
-        let store: InMemoryUserDataStore = InMemoryUserDataStore()
+        let store = InMemoryUserDataStore()
         let stream = await store.listStream(query: .all)
 
         Task.detached {
@@ -36,7 +36,7 @@ struct InMemoryDataStoreTests {
 
     @Test
     func testUpdatesAfterDelete() async throws {
-        let store: InMemoryUserDataStore = InMemoryUserDataStore()
+        let store = InMemoryUserDataStore()
         try await store.store([.mockUser])
 
         let stream = await store.listStream(query: .all)

@@ -80,7 +80,7 @@ class CollabsableHeaderFilterCollectionViewCell: UICollectionViewCell, NibLoadab
 
     private func updateSelectedStyle() {
         let oppositeInterfaceStyle: UIUserInterfaceStyle = (traitCollection.userInterfaceStyle == .dark) ? .light : .dark
-        let selectedColor: UIColor = UIColor.systemGray6.color(for: UITraitCollection(userInterfaceStyle: oppositeInterfaceStyle))
+        let selectedColor = UIColor.systemGray6.color(for: UITraitCollection(userInterfaceStyle: oppositeInterfaceStyle))
         pillBackgroundView.backgroundColor = isSelected ? selectedColor : .quaternarySystemFill
 
         if traitCollection.userInterfaceStyle == .dark {

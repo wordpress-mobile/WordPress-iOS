@@ -232,7 +232,7 @@ private extension ReminderScheduleCoordinatorTests {
     struct MockSchedulerBehavior {
         // states
         var scheduleToReturn: BloggingRemindersScheduler.Schedule = .none
-        var scheduledTimeToReturn: Date = Date()
+        var scheduledTimeToReturn = Date()
 
         // schedule
         var scheduleCalled = false

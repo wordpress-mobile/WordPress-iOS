@@ -14,7 +14,7 @@ class AppleAuthenticator: NSObject {
 
     // MARK: - Properties
 
-    static var sharedInstance: AppleAuthenticator = AppleAuthenticator()
+    static var sharedInstance = AppleAuthenticator()
     private var showFromViewController: UIViewController?
     private let loginFields = LoginFields()
     weak var delegate: AppleAuthenticatorDelegate?

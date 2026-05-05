@@ -60,6 +60,9 @@ only_rules:
   # Example: CGPoint.zero instead of CGPoint(x: 0, y: 0)
   - prefer_zero_over_explicit_init
 
+  # Type annotations are redundant when the type can be inferred.
+  - redundant_type_annotation
+
   - shorthand_optional_binding
 
   # Prefer `someBool.toggle()` over `someBool = !someBool`.

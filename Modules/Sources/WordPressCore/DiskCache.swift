@@ -7,7 +7,7 @@ public actor DiskCache: DiskCacheProtocol {
 
     public static let shared = DiskCache()
 
-    private let cacheRoot: URL = URL.cachesDirectory
+    private let cacheRoot = URL.cachesDirectory
 
     public init() {}
 
