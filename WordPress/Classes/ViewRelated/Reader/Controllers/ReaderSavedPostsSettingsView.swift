@@ -3,7 +3,11 @@ import WordPressData
 import UniformTypeIdentifiers
 
 struct ReaderSavedPostsSettingsView: View {
-    @StateObject private var viewModel = ReaderSavedPostsSettingsViewModel()
+    @StateObject private var viewModel: ReaderSavedPostsSettingsViewModel
+
+    init(coreDataStack: CoreDataStack = ContextManager.shared) {
+        _viewModel = StateObject(wrappedValue: ReaderSavedPostsSettingsViewModel(coreDataStack: coreDataStack))
+    }
 
     var body: some View {
         List {
@@ -69,14 +73,19 @@ final class ReaderSavedPostsSettingsViewModel: ObservableObject {
     @Published var importProgress: Double = 0
     @Published var importStatusText = ""
 
-    private(set) var importResultMessage = ""
-    private(set) var errorMessage = ""
+    @Published private(set) var importResultMessage = ""
+    @Published private(set) var errorMessage = ""
 
+    private let coreDataStack: CoreDataStack
     private let exporter = ReaderSavedPostsExporter()
+
+    init(coreDataStack: CoreDataStack) {
+        self.coreDataStack = coreDataStack
+    }
 
     func exportSavedPosts() {
         do {
-            guard let fileURL = try exporter.export(context: ContextManager.shared.mainContext) else {
+            guard let fileURL = try exporter.export(context: coreDataStack.mainContext) else {
                 errorMessage = Strings.exportEmpty
                 isShowingError = true
                 return
@@ -115,7 +124,7 @@ final class ReaderSavedPostsSettingsViewModel: ObservableObject {
 
             ReaderSavedPostsExporter.importPosts(
                 postDicts,
-                coreDataStack: ContextManager.shared,
+                coreDataStack: coreDataStack,
                 progress: { [weak self] completed, total in
                     DispatchQueue.main.async {
                         self?.importProgress = Double(completed) / Double(total)
