@@ -1,5 +1,6 @@
 import SwiftUI
 import WordPressData
+import WordPressShared
 import UniformTypeIdentifiers
 
 struct ReaderSavedPostsSettingsView: View {
@@ -58,6 +59,9 @@ struct ReaderSavedPostsSettingsView: View {
         } message: {
             Text(viewModel.errorMessage)
         }
+        .onAppear {
+            viewModel.viewAppeared()
+        }
     }
 }
 
@@ -83,6 +87,10 @@ final class ReaderSavedPostsSettingsViewModel: ObservableObject {
         self.coreDataStack = coreDataStack
     }
 
+    func viewAppeared() {
+        WPAnalytics.track(.readerSavedPostsSettingsShown)
+    }
+
     func exportSavedPosts() {
         do {
             guard let fileURL = try exporter.export(context: coreDataStack.mainContext) else {
@@ -91,6 +99,7 @@ final class ReaderSavedPostsSettingsViewModel: ObservableObject {
                 return
             }
             exportedFileURL = IdentifiableURL(value: fileURL)
+            WPAnalytics.track(.readerSavedPostsExported)
         } catch {
             errorMessage = Strings.exportError
             isShowingError = true
@@ -145,6 +154,14 @@ final class ReaderSavedPostsSettingsViewModel: ObservableObject {
                             importResult.failed
                         )
                         self?.isShowingImportResult = true
+                        WPAnalytics.track(
+                            .readerSavedPostsImported,
+                            properties: [
+                                "imported": importResult.imported,
+                                "skipped": importResult.skipped,
+                                "failed": importResult.failed
+                            ]
+                        )
                     }
                 }
             )

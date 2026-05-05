@@ -124,6 +124,9 @@ import WordPressShared
     case readerCommentTextCopied
     case readerPostContextMenuButtonTapped
     case readerAddSiteToFavoritesTapped
+    case readerSavedPostsSettingsShown
+    case readerSavedPostsExported
+    case readerSavedPostsImported
 
     // Stats - Empty Stats nudges
     case statsPublicizeNudgeShown
@@ -928,6 +931,12 @@ import WordPressShared
             return "reader_post_context_menu_button_tapped"
         case .readerAddSiteToFavoritesTapped:
             return "reader_add_site_to_favorites_tapped"
+        case .readerSavedPostsSettingsShown:
+            return "reader_saved_posts_settings_shown"
+        case .readerSavedPostsExported:
+            return "reader_saved_posts_exported"
+        case .readerSavedPostsImported:
+            return "reader_saved_posts_imported"
 
         // Stats - Empty Stats nudges
         case .statsPublicizeNudgeShown:
