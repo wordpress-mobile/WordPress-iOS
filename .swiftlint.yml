@@ -51,6 +51,9 @@ only_rules:
   # Prefer `first(where:)` over `filter { }.first`.
   - first_where
 
+  # Prefer `flatMap { ... }` over `map { ... }.reduce([], +)`.
+  - flatmap_over_map_reduce
+
   # When calling the `joined` method on an array of strings, omit an
   # explicit empty-string separator since that is the default.
   - joined_default_parameter
