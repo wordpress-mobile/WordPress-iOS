@@ -108,13 +108,14 @@ extension BlogDetailsViewController {
             blog: blog,
             localizedFeatureName: feature,
             source: "custom_post_types",
-            presentingViewController: self) { [blog, weak self] client in
-                CustomPostTypesView(
-                    blog: blog,
-                    service: CustomPostTypeService(client: client, blog: blog),
-                    presentingViewController: self
-                )
-            }
+            presentingViewController: self
+        ) { [blog, weak self] client in
+            CustomPostTypesView(
+                blog: blog,
+                service: CustomPostTypeService(client: client, blog: blog),
+                presentingViewController: self
+            )
+        }
         let controller = UIHostingController(rootView: rootView)
         controller.navigationItem.largeTitleDisplayMode = .never
         presentationDelegate?.presentBlogDetailsViewController(controller)
@@ -130,14 +131,15 @@ extension BlogDetailsViewController {
             blog: blog,
             localizedFeatureName: feature,
             source: "custom_post_types",
-            presentingViewController: self) { [blog, weak self] client in
-                PinnedPostTypeView(
-                    blog: blog,
-                    service: CustomPostTypeService(client: client, blog: blog),
-                    postType: postType,
-                    presentingViewController: self
-                )
-            }
+            presentingViewController: self
+        ) { [blog, weak self] client in
+            PinnedPostTypeView(
+                blog: blog,
+                service: CustomPostTypeService(client: client, blog: blog),
+                postType: postType,
+                presentingViewController: self
+            )
+        }
         let controller = UIHostingController(rootView: rootView)
         controller.navigationItem.largeTitleDisplayMode = .never
         presentationDelegate?.presentBlogDetailsViewController(controller)
@@ -317,7 +319,11 @@ extension BlogDetailsViewController {
         guard let presentationDelegate else {
             return wpAssertionFailure("presentationDelegate mising")
         }
-        DomainsDashboardCoordinator.presentDomainsDashboard(with: presentationDelegate, source: source.string, blog: blog)
+        DomainsDashboardCoordinator.presentDomainsDashboard(
+            with: presentationDelegate,
+            source: source.string,
+            blog: blog
+        )
     }
 
     public func showJetpackSettings() {
@@ -388,8 +394,17 @@ extension BlogDetailsViewController {
     }
 
     public func showApplicationPasswords() {
-        let feature = NSLocalizedString("applicationPasswordRequired.feature.applicationPasswords", value: "Application Passwords Management", comment: "Feature name for managing application passwords in the app")
-        let view = ApplicationPasswordRequiredView(blog: blog, localizedFeatureName: feature, source: "application_passwords", presentingViewController: self) {
+        let feature = NSLocalizedString(
+            "applicationPasswordRequired.feature.applicationPasswords",
+            value: "Application Passwords Management",
+            comment: "Feature name for managing application passwords in the app"
+        )
+        let view = ApplicationPasswordRequiredView(
+            blog: blog,
+            localizedFeatureName: feature,
+            source: "application_passwords",
+            presentingViewController: self
+        ) {
             ApplicationTokenListView(dataProvider: ApplicationPasswordService(api: $0))
         }
         presentationDelegate?.presentBlogDetailsViewController(UIHostingController(rootView: view))

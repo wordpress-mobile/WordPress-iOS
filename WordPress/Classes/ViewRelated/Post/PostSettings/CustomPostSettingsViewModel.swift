@@ -120,7 +120,8 @@ final class CustomPostSettingsViewModel: NSObject, ObservableObject, PostSetting
 
     var postFormatText: String {
         guard capabilities.supportsPostFormats else { return "" }
-        return blog.postFormatText(fromSlug: settings.postFormat) ?? NSLocalizedString("Standard", comment: "Default post format")
+        return blog.postFormatText(fromSlug: settings.postFormat)
+            ?? NSLocalizedString("Standard", comment: "Default post format")
     }
 
     var timeZone: TimeZone {
@@ -201,8 +202,9 @@ final class CustomPostSettingsViewModel: NSObject, ObservableObject, PostSetting
         var initialSettings = editorService.settings
         // Resolve author display name from Blog's cached authors
         if let authorId = initialSettings.author?.id,
-           let authors = blog.authors,
-           let author = authors.first(where: { $0.userID.intValue == authorId }) {
+            let authors = blog.authors,
+            let author = authors.first(where: { $0.userID.intValue == authorId })
+        {
             initialSettings.author = PostSettings.Author(
                 id: authorId,
                 displayName: author.displayName ?? "–",
@@ -232,9 +234,11 @@ final class CustomPostSettingsViewModel: NSObject, ObservableObject, PostSetting
 
         super.init()
 
-        featuredImageViewModel?.$selection.dropFirst().sink { [weak self] media in
-            self?.settings.featuredImageID = media?.mediaID?.intValue
-        }.store(in: &cancellables)
+        featuredImageViewModel?.$selection.dropFirst()
+            .sink { [weak self] media in
+                self?.settings.featuredImageID = media?.mediaID?.intValue
+            }
+            .store(in: &cancellables)
 
         WPAnalytics.track(.postSettingsShown)
 

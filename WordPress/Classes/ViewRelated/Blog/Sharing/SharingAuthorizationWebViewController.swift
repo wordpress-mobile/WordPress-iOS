@@ -44,13 +44,13 @@ class SharingAuthorizationWebViewController: WebKitViewController {
         fatalError("init(coder:) has not been implemented")
     }
 
-     // MARK: - View Lifecycle
+    // MARK: - View Lifecycle
 
-     override func viewWillDisappear(_ animated: Bool) {
-         super.viewWillDisappear(animated)
+    override func viewWillDisappear(_ animated: Bool) {
+        super.viewWillDisappear(animated)
 
-         cleanupCookies()
-     }
+        cleanupCookies()
+    }
 
     // MARK: - Cookies Management
 
@@ -62,8 +62,9 @@ class SharingAuthorizationWebViewController: WebKitViewController {
     func saveHostForCookiesCleanup(from url: URL) {
         guard let host = url.host,
             !host.contains("wordpress"),
-            !hosts.contains(host) else {
-                return
+            !hosts.contains(host)
+        else {
+            return
         }
 
         let components = host.components(separatedBy: ".")
@@ -117,16 +118,25 @@ class SharingAuthorizationWebViewController: WebKitViewController {
 // MARK: - WKNavigationDelegate
 
 extension SharingAuthorizationWebViewController {
-    override func webView(_ webView: WKWebView, decidePolicyFor navigationAction: WKNavigationAction, decisionHandler: @escaping (WKNavigationActionPolicy) -> Void) {
+    override func webView(
+        _ webView: WKWebView,
+        decidePolicyFor navigationAction: WKNavigationAction,
+        decisionHandler: @escaping (WKNavigationActionPolicy) -> Void
+    ) {
         decidePolicy(webView: webView, navigationAction: navigationAction, decisionHandler: decisionHandler)
     }
 
-    private func decidePolicy(webView: WKWebView, navigationAction: WKNavigationAction, decisionHandler: @escaping @MainActor @Sendable (WKNavigationActionPolicy) -> Void) {
+    private func decidePolicy(
+        webView: WKWebView,
+        navigationAction: WKNavigationAction,
+        decisionHandler: @escaping @MainActor @Sendable (WKNavigationActionPolicy) -> Void
+    ) {
         // Prevent a second verify load by someone happy clicking.
         guard !loadingVerify,
-            let url = navigationAction.request.url else {
-                decisionHandler(.cancel)
-                return
+            let url = navigationAction.request.url
+        else {
+            decisionHandler(.cancel)
+            return
         }
 
         let action = PublicizeConnectionURLMatcher.authorizeAction(for: url)
@@ -150,7 +160,11 @@ extension SharingAuthorizationWebViewController {
         }
     }
 
-    override func webView(_ webView: WKWebView, didFailProvisionalNavigation navigation: WKNavigation!, withError error: Error) {
+    override func webView(
+        _ webView: WKWebView,
+        didFailProvisionalNavigation navigation: WKNavigation!,
+        withError error: Error
+    ) {
         if loadingVerify && (error as NSError).code == NSURLErrorCancelled {
             // Authenticating to Facebook and Twitter can return an false
             // NSURLErrorCancelled (-999) error. However the connection still succeeds.

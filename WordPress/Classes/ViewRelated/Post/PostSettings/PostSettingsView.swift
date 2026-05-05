@@ -145,7 +145,8 @@ struct PostSettingsFormContentView<ViewModel: PostSettingsViewModelProtocol>: Vi
         }
         if viewModel.capabilities.supportsCategories
             || viewModel.capabilities.supportsTags
-            || !viewModel.capabilities.customTaxonomySlugs.isEmpty {
+            || !viewModel.capabilities.customTaxonomySlugs.isEmpty
+        {
             organizationSection
         }
         if viewModel.capabilities.supportsExcerpt {
@@ -453,14 +454,18 @@ struct PostSettingsFormContentView<ViewModel: PostSettingsViewModelProtocol>: Vi
         NavigationLink {
             PostDiscussionSettingsView(postSettings: $viewModel.settings)
         } label: {
-            SettingsRow(Strings.discussionLabel, value: viewModel.settings.allowComments ? Strings.discussionOpen : Strings.discussionClosed)
+            SettingsRow(
+                Strings.discussionLabel,
+                value: viewModel.settings.allowComments ? Strings.discussionOpen : Strings.discussionClosed
+            )
         }
     }
 
     @ViewBuilder
     private var parentPageRow: some View {
         if viewModel.capabilities.supportsPageAttributes,
-           let destination = viewModel.parentPagePickerDestination() {
+            let destination = viewModel.parentPagePickerDestination()
+        {
             NavigationLink {
                 destination
             } label: {
@@ -691,7 +696,8 @@ private enum Strings {
     static let slugHint = NSLocalizedString(
         "postSettings.slug.hint",
         value: "The slug is the URL-friendly version of the post title.",
-        comment: "Hint text for the slug field. Should be the same as the text displayed if the user clicks the (i) in Slug in Calypso."
+        comment:
+            "Hint text for the slug field. Should be the same as the text displayed if the user clicks the (i) in Slug in Calypso."
     )
 
     static let stickyPostLabel = NSLocalizedString(
@@ -745,7 +751,8 @@ private enum Strings {
     static let readyToPublish = NSLocalizedString(
         "prepublishing.publishingSectionTitle",
         value: "Ready to Publish?",
-        comment: "The title of the top section that shows the site your are publishing to. Default is 'Ready to Publish?'"
+        comment:
+            "The title of the top section that shows the site your are publishing to. Default is 'Ready to Publish?'"
     )
 
     static let statusAndVisibility = NSLocalizedString(
