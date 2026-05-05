@@ -321,7 +321,7 @@ class AppSettingsViewController: UITableViewController {
     }
 
     func pushSavedPostsSettings() -> ImmuTableAction {
-        return { [weak self] row in
+        return { [weak self] _ in
             let controller = UIHostingController(rootView: ReaderSavedPostsSettingsView())
             self?.navigationController?.pushViewController(controller, animated: true)
         }
