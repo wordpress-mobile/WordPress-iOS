@@ -116,7 +116,7 @@ struct MediaHostTests {
                 isAtomic: true,
                 siteID: nil,
                 username: nil,
-                authToken: nil) { error in
+                authToken: nil) { _ in
                     continuation.resume()
                 }
         }

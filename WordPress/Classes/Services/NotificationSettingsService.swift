@@ -60,7 +60,7 @@ class NotificationSettingsService {
 
                     let localSettings = self.loadLocalSettings(for: blog)
 
-                    let updatedPreferences = preferences.merging(localSettings) { first, second in
+                    let updatedPreferences = preferences.merging(localSettings) { _, second in
                         second
                     }
 

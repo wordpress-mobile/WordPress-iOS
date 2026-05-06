@@ -274,7 +274,7 @@ class BlogDashboardServiceTests: CoreDataTestCase {
 
         let blog = newTestBlog(id: wpComID, context: mainContext)
 
-        service.fetch(blog: blog) { snapshot in
+        service.fetch(blog: blog) { _ in
             XCTAssertEqual(self.persistenceMock.didCallPersistWithCards,
                            self.dictionary(from: "dashboard-200-with-drafts-and-scheduled.json"))
             XCTAssertEqual(self.persistenceMock.didCallPersistWithWpComID, self.wpComID)

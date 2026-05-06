@@ -181,7 +181,7 @@ private class AccountSettingsController: SettingsController {
     }
 
     func changePassword(with settings: AccountSettings?, service: AccountSettingsService) -> (ImmuTableRow) -> SettingsTextViewController {
-        return { row in
+        return { _ in
             return ChangePasswordViewController(username: settings?.username ?? "") { [weak self] value in
                 DispatchQueue.main.async {
                     SVProgressHUD.show(withStatus: Constants.changingPassword)
@@ -356,7 +356,7 @@ private class AccountSettingsController: SettingsController {
     }
 
     private var contactSupportAction: ((UIAlertAction) -> Void) {
-        return { action in
+        return { _ in
             if ZendeskUtils.zendeskEnabled {
                 guard let leafViewController = UIApplication.shared.leafViewController else {
                     return

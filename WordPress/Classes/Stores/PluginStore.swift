@@ -502,7 +502,7 @@ private extension PluginStore {
         }
         remote(site: site)?.activateAndEnableAutoupdates(pluginID: plugin.state.id,
                                                          success: {},
-                                                         failure: { [weak self] error in
+                                                         failure: { [weak self] _ in
                                                             self?.state.modifyPlugin(id: pluginID, site: site) { plugin in
                                                                 plugin.autoupdate = false
                                                                 plugin.active = false

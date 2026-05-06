@@ -164,7 +164,7 @@ class AuthenticationService {
         }
         request.setValue(WPUserAgent.wordPress(), forHTTPHeaderField: "User-Agent")
 
-        let task = session.dataTask(with: request) { data, response, error in
+        let task = session.dataTask(with: request) { _, response, error in
             if let error {
                 DispatchQueue.main.async {
                     failure(error)

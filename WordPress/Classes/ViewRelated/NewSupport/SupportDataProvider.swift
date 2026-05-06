@@ -213,7 +213,7 @@ actor WpBotConversationDataProvider: BotConversationDataProvider {
                 fatalError("Could not get the current user ID – this should never happen because users should be logged in")
             }
 
-        let params: CreateBotConversationParams = CreateBotConversationParams(
+        let params = CreateBotConversationParams(
             message: message,
             userId: accountId
         )
@@ -228,7 +228,7 @@ actor WpBotConversationDataProvider: BotConversationDataProvider {
     }
 
     private func add(message: String, to conversation: Support.BotConversation) async throws -> Support.BotConversation {
-        let params: AddMessageToBotConversationParams = AddMessageToBotConversationParams(
+        let params = AddMessageToBotConversationParams(
             message: message,
             context: [:]
         )

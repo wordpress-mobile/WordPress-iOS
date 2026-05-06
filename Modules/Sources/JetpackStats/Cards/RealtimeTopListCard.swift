@@ -42,7 +42,7 @@ struct RealtimeTopListCard: View {
         }
         .padding(.vertical, Constants.step3)
         .redacted(reason: viewModel.isFirstLoad ? .placeholder : [])
-        .onChange(of: selectedItem) { oldValue, newValue in
+        .onChange(of: selectedItem) { _, newValue in
             viewModel.loadData(for: newValue)
         }
     }

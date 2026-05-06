@@ -70,7 +70,7 @@ struct ActivityLogDetailView: View {
         }
         .task(self.loadLogContent)
         .refreshable(action: self.loadLogContent)
-        .onChange(of: state) { oldValue, newValue in
+        .onChange(of: state) { _, _ in
             if case .loaded(_, let isSharing) = state {
                 self.sharingIsDisabled = false
                 self.isDisplayingShareSheet = isSharing

@@ -158,7 +158,7 @@ public class MeViewController: UITableViewController {
             icon: UIImage(named: "wpl-globe")?.withRenderingMode(.alwaysTemplate),
             tintColor: .label,
             accessoryType: accessoryType,
-            action: { [weak self] action in
+            action: { [weak self] _ in
                 self?.showOrPushController(AllDomainsListViewController())
                 WPAnalytics.track(.meDomainsTapped)
             },
@@ -253,7 +253,7 @@ public class MeViewController: UITableViewController {
     // MARK: - Actions
 
     fileprivate func presentGravatarAboutEditorAction() -> ImmuTableAction {
-        return { [unowned self] row in
+        return { [unowned self] _ in
             presentGravatarQuickEditor(initialPage: .aboutEditor)
         }
     }
@@ -276,7 +276,7 @@ public class MeViewController: UITableViewController {
     }
 
     fileprivate func pushAccountSettings() -> ImmuTableAction {
-        return { [unowned self] row in
+        return { [unowned self] _ in
             if let account = self.defaultAccount() {
                 WPAppAnalytics.track(.openedAccountSettings)
                 guard let controller = AccountSettingsViewController(account: account) else {
@@ -288,7 +288,7 @@ public class MeViewController: UITableViewController {
     }
 
     private func presentQRLogin() -> ImmuTableAction {
-        return { [weak self] row in
+        return { [weak self] _ in
             guard let self else {
                 return
             }
@@ -299,13 +299,13 @@ public class MeViewController: UITableViewController {
     }
 
     func pushAppSettings() -> ImmuTableAction {
-        return { [unowned self] row in
+        return { [unowned self] _ in
             self.navigateToAppSettings()
         }
     }
 
     func pushHelp() -> ImmuTableAction {
-        return { [unowned self] row in
+        return { [unowned self] _ in
             if FeatureFlag.newSupport.enabled == true {
                 let controller = RootSupportViewController(dataProvider: SupportDataProvider.shared)
                 self.showOrPushController(controller)
@@ -329,7 +329,7 @@ public class MeViewController: UITableViewController {
     }
 
     func displayShareFlow() -> ImmuTableAction {
-        return { [unowned self] row in
+        return { [unowned self] _ in
             defer {
                 self.tableView.deselectSelectedRowWithAnimation(true)
             }
@@ -344,14 +344,14 @@ public class MeViewController: UITableViewController {
     }
 
     fileprivate func presentLogin() -> ImmuTableAction {
-        return { [unowned self] row in
+        return { [unowned self] _ in
             self.tableView.deselectSelectedRowWithAnimation(true)
             self.promptForLoginOrSignup()
         }
     }
 
     fileprivate func logoutRowWasPressed() -> ImmuTableAction {
-        return { [unowned self] row in
+        return { [unowned self] _ in
             self.tableView.deselectSelectedRowWithAnimation(true)
             self.displayLogOutAlert()
         }

@@ -11,9 +11,9 @@ import Foundation
 /// There are two different algorithms to achieve this: Throttle and Debounce. Both are implemented as a separate function in this class.
 ///
 public class Scheduler {
-    private let queue: DispatchQueue = DispatchQueue.global(qos: .default)
-    private var job: DispatchWorkItem = DispatchWorkItem(block: {})
-    private var previousRun: Date = Date.distantPast
+    private let queue = DispatchQueue.global(qos: .default)
+    private var job = DispatchWorkItem(block: {})
+    private var previousRun = Date.distantPast
     private var maxInterval: Double
 
     init(seconds: Double) {

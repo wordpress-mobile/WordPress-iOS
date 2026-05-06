@@ -39,7 +39,7 @@ class SharingServiceTests: CoreDataTestCase {
         let sharingService = SharingSyncService(coreDataStack: contextManager)
         sharingService.syncPublicizeConnectionsForBlog(blog) {
             expect.fulfill()
-        } failure: { (error) in
+        } failure: { (_) in
             expect.fulfill()
         }
 

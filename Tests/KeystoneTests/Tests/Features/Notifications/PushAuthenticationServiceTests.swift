@@ -33,13 +33,13 @@ class PushAuthenticationServiceTests: CoreDataTestCase {
 
     func testAuthorizeLoginDoesntCallServiceRemoteIfItsNull() {
         pushAuthenticationService.authenticationServiceRemote = nil
-        pushAuthenticationService.authorizeLogin(token, completion: { (completed: Bool) -> () in
+        pushAuthenticationService.authorizeLogin(token, completion: { (_: Bool) -> () in
         })
         XCTAssertFalse(mockPushAuthenticationServiceRemote!.authorizeLoginCalled, "Authorize login should not have been called")
     }
 
     func testAuthorizeLoginCallsServiceRemoteAuthorizeLoginWhenItsNotNull() {
-        pushAuthenticationService.authorizeLogin(token, completion: { (completed: Bool) -> () in
+        pushAuthenticationService.authorizeLogin(token, completion: { (_: Bool) -> () in
         })
         XCTAssertTrue(mockPushAuthenticationServiceRemote.authorizeLoginCalled, "Authorize login should have been called")
     }

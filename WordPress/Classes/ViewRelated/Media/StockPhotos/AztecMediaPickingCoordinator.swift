@@ -37,19 +37,19 @@ final class AztecMediaPickingCoordinator {
     }
 
     private func freePhotoAction(origin: UIViewController, blog: Blog) -> UIAlertAction {
-        return UIAlertAction(title: .freePhotosLibrary, style: .default, handler: { [weak self] action in
+        return UIAlertAction(title: .freePhotosLibrary, style: .default, handler: { [weak self] _ in
             self?.showStockPhotos(origin: origin, blog: blog)
         })
     }
 
     private func tenorAction(origin: UIViewController, blog: Blog) -> UIAlertAction {
-        return UIAlertAction(title: .tenor, style: .default, handler: { [weak self] action in
+        return UIAlertAction(title: .tenor, style: .default, handler: { [weak self] _ in
             self?.showTenor(origin: origin, blog: blog)
         })
     }
 
     private func otherAppsAction(origin: UIViewController & UIDocumentPickerDelegate, blog: Blog) -> UIAlertAction {
-        return UIAlertAction(title: .otherApps, style: .default, handler: { [weak self] action in
+        return UIAlertAction(title: .otherApps, style: .default, handler: { [weak self] _ in
             self?.showDocumentPicker(origin: origin, blog: blog)
         })
     }

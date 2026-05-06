@@ -27,7 +27,7 @@ class FeatureFlagRemoteTests: RemoteTestCase, RESTTestable {
             let matchesURL = containsQueryParams && matchesPath
             XCTAssertTrue(matchesURL)
             return matchesURL
-        } response: { request in
+        } response: { _ in
             return response
         }
 

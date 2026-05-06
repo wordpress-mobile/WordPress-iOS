@@ -252,7 +252,7 @@ class RegisterDomainCoordinator {
     private func track(_ event: WPAnalyticsEvent, properties: [AnyHashable: Any]? = nil) {
         let defaultProperties: [AnyHashable: Any] = [WPAppAnalyticsKeySource: analyticsSource]
 
-        let properties = defaultProperties.merging(properties ?? [:]) { first, second in
+        let properties = defaultProperties.merging(properties ?? [:]) { first, _ in
             return first
         }
 

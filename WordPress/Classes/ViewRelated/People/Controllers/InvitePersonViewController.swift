@@ -427,7 +427,7 @@ extension InvitePersonViewController {
             SVProgressHUD.showDismissibleSuccess(status: success)
 
             WPAnalytics.track(.peopleUserInvited, properties: ["role": role], blog: blog)
-        }, failure: { error in
+        }, failure: { _ in
             self.handleSendError() {
                 self.sendInvitation(blog, recipient: recipient, role: role, message: message)
             }
@@ -442,7 +442,7 @@ extension InvitePersonViewController {
         let alertController = UIAlertController(title: nil, message: message, preferredStyle: .alert)
 
         alertController.addCancelActionWithTitle(cancelText)
-        alertController.addDefaultActionWithTitle(retryText) { action in
+        alertController.addDefaultActionWithTitle(retryText) { _ in
             onRetry()
         }
 

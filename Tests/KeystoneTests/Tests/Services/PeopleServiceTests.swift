@@ -75,7 +75,7 @@ class PeopleServiceTests: CoreDataTestCase {
 
         let exp = expectation(description: "loadUsersPage fails")
         self.service.loadUsersPage(
-            success: { count, _ in
+            success: { _, _ in
                 XCTFail("The failure block should be called instead")
                 exp.fulfill()
             },
@@ -208,7 +208,7 @@ class PeopleServiceTests: CoreDataTestCase {
 
         let exp = expectation(description: "loadFollowersPage fails")
         self.service.loadFollowersPage(
-            success: { count, _ in
+            success: { _, _ in
                 XCTFail("The failure block should be called instead")
                 exp.fulfill()
             },

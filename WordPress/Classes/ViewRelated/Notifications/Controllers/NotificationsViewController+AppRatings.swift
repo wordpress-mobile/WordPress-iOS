@@ -15,11 +15,11 @@ extension NotificationsViewController {
         let noTitle = NSLocalizedString("notifications.appRatings.prompt.no.buttonTitle", value: "Could improve",
                                         comment: "This is one of the buttons we display inside of the prompt to review the app")
 
-        inlinePromptView.setupYesButton(title: yesTitle) { [weak self] button in
+        inlinePromptView.setupYesButton(title: yesTitle) { [weak self] _ in
             self?.likedApp()
         }
 
-        inlinePromptView.setupNoButton(title: noTitle) { [weak self] button in
+        inlinePromptView.setupNoButton(title: noTitle) { [weak self] _ in
             self?.dislikedApp()
         }
 
@@ -61,10 +61,10 @@ extension NotificationsViewController {
                                              comment: "This is one of the buttons we display when prompting the user for a review")
             let noTitle = NSLocalizedString("notifications.appRatings.sendFeedback.no.buttonTitle", value: "No thanks",
                                             comment: "This is one of the buttons we display when prompting the user for a review")
-            self?.inlinePromptView.setupYesButton(title: yesTitle) { [weak self] button in
+            self?.inlinePromptView.setupYesButton(title: yesTitle) { [weak self] _ in
                 self?.gatherFeedback()
             }
-            self?.inlinePromptView.setupNoButton(title: noTitle) { [weak self] button in
+            self?.inlinePromptView.setupNoButton(title: noTitle) { [weak self] _ in
                 self?.dismissRatingsPrompt()
             }
         }

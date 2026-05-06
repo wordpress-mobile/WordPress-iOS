@@ -109,7 +109,7 @@ extension Double {
             return self.formatWithCommas()
         }
 
-        let exp: Int = Int(log10(absValue) / 3.0)
+        let exp = Int(log10(absValue) / 3.0)
         let unsignedRoundedNum: Double = Foundation.round(10 * absValue / pow(1000.0, Double(exp))) / 10
 
         var roundedNum: Double

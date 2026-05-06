@@ -211,7 +211,7 @@ class SiteManagementServiceTests: CoreDataTestCase {
         let expect = expectation(description: "GetActivePurchases success expectation")
         mockRemoteService.reset()
         siteManagementService.getActivePurchasesForBlog(blog,
-            success: { purchases in
+            success: { _ in
                 expect.fulfill()
             }, failure: nil)
         mockRemoteService.successResultBlockPassedIn?([])

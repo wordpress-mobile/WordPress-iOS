@@ -65,9 +65,9 @@ class BloggingRemindersSchedulerTests: XCTestCase {
             return
         }
 
-        let notificationCenter = NotificationSchedulerMock { (request, completionHandler) in
+        let notificationCenter = NotificationSchedulerMock { (_, completionHandler) in
             completionHandler?(nil)
-        } removeNotificationMock: { identifier in
+        } removeNotificationMock: { _ in
         }
 
         let scheduler = BloggingRemindersScheduler(
@@ -109,10 +109,10 @@ class BloggingRemindersSchedulerTests: XCTestCase {
             return
         }
 
-        let notificationCenter = NotificationSchedulerMock { (request, completionHandler) in
+        let notificationCenter = NotificationSchedulerMock { (_, completionHandler) in
             scheduleExpectation.fulfill()
             completionHandler?(nil)
-        } removeNotificationMock: { identifier in
+        } removeNotificationMock: { _ in
             cancelExpectation.fulfill()
         }
 

@@ -689,7 +689,7 @@ class PostRepositorySaveTests: CoreDataTestCase {
             ], statusCode: 409, headers: nil)
         }
 
-        stub(condition: isPath("/rest/v1.1/sites/80511/posts/974")) { request in
+        stub(condition: isPath("/rest/v1.1/sites/80511/posts/974")) { _ in
             var post = WordPressComPost.mock
             post.modified = serverDateModified
             post.content = "content-c"
@@ -794,7 +794,7 @@ class PostRepositorySaveTests: CoreDataTestCase {
             throw URLError(.unknown)
         }
 
-        stub(condition: isPath("/rest/v1.1/sites/80511/posts/974")) { request in
+        stub(condition: isPath("/rest/v1.1/sites/80511/posts/974")) { _ in
             try HTTPStubsResponse(value: serverPost, statusCode: 200)
         }
 
@@ -897,7 +897,7 @@ class PostRepositorySaveTests: CoreDataTestCase {
             throw URLError(.unknown)
         }
 
-        stub(condition: isPath("/rest/v1.1/sites/80511/posts/974")) { request in
+        stub(condition: isPath("/rest/v1.1/sites/80511/posts/974")) { _ in
             try HTTPStubsResponse(value: serverPost, statusCode: 200)
         }
 
@@ -983,7 +983,7 @@ class PostRepositorySaveTests: CoreDataTestCase {
             throw URLError(.unknown)
         }
 
-        stub(condition: isPath("/rest/v1.1/sites/80511/posts/974")) { request in
+        stub(condition: isPath("/rest/v1.1/sites/80511/posts/974")) { _ in
             try HTTPStubsResponse(value: serverPost, statusCode: 200)
         }
 
@@ -1292,12 +1292,12 @@ class PostRepositorySaveTests: CoreDataTestCase {
         revision2.remoteStatus = .syncNeeded
 
         // GIVEN a server with the an updated content (but not title)
-        stub(condition: isPath("/rest/v1.2/sites/80511/posts/974")) { request in
+        stub(condition: isPath("/rest/v1.2/sites/80511/posts/974")) { _ in
             XCTFail("No POST requests should be made")
             return HTTPStubsResponse(error: URLError(.unknown))
         }
 
-        stub(condition: isPath("/rest/v1.1/sites/80511/posts/974")) { request in
+        stub(condition: isPath("/rest/v1.1/sites/80511/posts/974")) { _ in
             XCTFail("No GET requests should be made")
             return HTTPStubsResponse(error: URLError(.unknown))
         }
@@ -1396,10 +1396,10 @@ class PostRepositorySaveTests: CoreDataTestCase {
         revision.content = "content-b"
 
         // GIVEN
-        stub(condition: isPath("/rest/v1.1/sites/80511/posts/974")) { request in
+        stub(condition: isPath("/rest/v1.1/sites/80511/posts/974")) { _ in
             try HTTPStubsResponse(value: WordPressComPost.mock, statusCode: 200)
         }
-        stub(condition: isPath("/rest/v1.1/sites/80511/posts/974/delete")) { request in
+        stub(condition: isPath("/rest/v1.1/sites/80511/posts/974/delete")) { _ in
             var mock = WordPressComPost.mock
             mock.status = BasePost.Status.trash.rawValue
             return try HTTPStubsResponse(value: mock, statusCode: 201)
@@ -1426,7 +1426,7 @@ class PostRepositorySaveTests: CoreDataTestCase {
         }
 
         // GIVEN post trashed on the remote (and updated)
-        stub(condition: isPath("/rest/v1.1/sites/80511/posts/974")) { request in
+        stub(condition: isPath("/rest/v1.1/sites/80511/posts/974")) { _ in
             var mock = WordPressComPost.mock
             mock.status = BasePost.Status.trash.rawValue
             return try HTTPStubsResponse(value: mock, statusCode: 200)
@@ -1454,7 +1454,7 @@ class PostRepositorySaveTests: CoreDataTestCase {
         }
 
         // GIVEN post permanently deleted on the remote
-        stub(condition: isPath("/rest/v1.1/sites/80511/posts/974")) { request in
+        stub(condition: isPath("/rest/v1.1/sites/80511/posts/974")) { _ in
             return try HTTPStubsResponse(value: [
                 "error": "unknown_post",
                 "message": "Unknown post"

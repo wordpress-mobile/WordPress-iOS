@@ -75,7 +75,7 @@ final class CommentService_LikesTests: CoreDataTestCase {
         commentService.toggleLikeStatus(for: comment, siteID: 1) {
             XCTFail("The failure block should be called instaled")
             exp.fulfill()
-        } failure: { error in
+        } failure: { _ in
             exp.fulfill()
         }
         wait(for: [exp], timeout: 5)
@@ -149,7 +149,7 @@ final class CommentService_LikesTests: CoreDataTestCase {
         commentService.toggleLikeStatus(for: comment, siteID: 1) {
             XCTFail("The failure block should be called instaled")
             exp.fulfill()
-        } failure: { error in
+        } failure: { _ in
             exp.fulfill()
         }
         wait(for: [exp], timeout: 5)

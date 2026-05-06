@@ -54,7 +54,7 @@ final class MigrationEmailService {
 
     private func sendMigrationEmail(path: String) async throws -> SendMigrationEmailResponse {
         return try await withCheckedThrowingContinuation { continuation in
-            api.POST(path, parameters: nil) { responseObject, httpResponse in
+            api.POST(path, parameters: nil) { responseObject, _ in
                 do {
                     let decoder = JSONDecoder()
                     let data = try JSONSerialization.data(withJSONObject: responseObject)
@@ -63,7 +63,7 @@ final class MigrationEmailService {
                 } catch let error {
                     continuation.resume(throwing: error)
                 }
-            } failure: { error, httpResponse in
+            } failure: { error, _ in
                 continuation.resume(throwing: error)
             }
         }

@@ -217,7 +217,7 @@ private extension PersonViewController {
 
         alert.addCancelActionWithTitle(cancelTitle)
 
-        alert.addDestructiveActionWithTitle(removeTitle) { [weak self] action in
+        alert.addDestructiveActionWithTitle(removeTitle) { [weak self] _ in
             guard let strongSelf = self else {
                 return
             }
@@ -344,7 +344,7 @@ private extension PersonViewController {
         let alertController = UIAlertController(title: title, message: messageText, preferredStyle: .alert)
 
         alertController.addCancelActionWithTitle(cancelTitle, handler: nil)
-        alertController.addDefaultActionWithTitle(retryTitle) { action in
+        alertController.addDefaultActionWithTitle(retryTitle) { _ in
             self.updateUserRole(newRole)
         }
 

@@ -138,7 +138,7 @@ extension ShareExtensionAbstractViewController {
         let accept = AppLocalizedString("Cancel sharing", comment: "Share extension dialog dismiss button label - displayed when user is missing a login token.")
 
         let alertController = UIAlertController(title: title, message: message, preferredStyle: .alert)
-        let alertAction = UIAlertAction(title: accept, style: .default) { (action) in
+        let alertAction = UIAlertAction(title: accept, style: .default) { (_) in
             self.cleanUpSharedContainerAndCache()
             self.dismissalCompletionBlock?(false)
         }

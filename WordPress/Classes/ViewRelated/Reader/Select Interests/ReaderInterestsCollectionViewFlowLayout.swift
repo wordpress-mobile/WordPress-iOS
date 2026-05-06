@@ -68,10 +68,10 @@ class ReaderInterestsCollectionViewFlowLayout: UICollectionViewFlowLayout {
         let count = isExpanded ? numberOfItems + 1 : numberOfItems
 
         for item in 0 ..< count {
-            let indexPath: IndexPath = IndexPath(row: item, section: 0)
+            let indexPath = IndexPath(row: item, section: 0)
             let isCollapseItem = item == numberOfItems
             let itemSize = isCollapseItem ? sizeForOverflowItem(at: indexPath) : sizeForItem(at: indexPath)
-            var frame: CGRect = CGRect(origin: .zero, size: itemSize)
+            var frame = CGRect(origin: .zero, size: itemSize)
 
             if item == 0 {
                 let minX: CGFloat = isRightToLeft ? maxContentWidth - frame.width : 0

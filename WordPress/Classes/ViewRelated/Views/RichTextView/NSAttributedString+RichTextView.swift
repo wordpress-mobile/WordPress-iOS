@@ -6,7 +6,7 @@ extension NSAttributedString {
         let range = NSMakeRange(0, length)
 
         enumerateAttribute(.attachment, in: range, options: .longestEffectiveRangeNotRequired) {
-            (value: Any?, range: NSRange, stop: UnsafeMutablePointer<ObjCBool>) -> Void in
+            (value: Any?, range: NSRange, _: UnsafeMutablePointer<ObjCBool>) -> Void in
 
             if let attachment = value as? NSTextAttachment {
                 block(attachment, range)

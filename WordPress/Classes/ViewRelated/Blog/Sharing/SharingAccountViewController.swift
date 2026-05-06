@@ -164,7 +164,7 @@ import WordPressUI
     /// - Returns: An ImmuTableAction instance.
     ///
     fileprivate func actionForRow(_ keyringAccount: KeyringAccount) -> ImmuTableAction {
-        return { [unowned self] row in
+        return { [unowned self] _ in
             self.tableView.deselectSelectedRowWithAnimation(true)
 
             self.delegate?.sharingAccountViewController(self,

@@ -46,7 +46,7 @@ class MediaRequestAuthenticatorTests: CoreDataTestCase {
 
                 XCTAssertFalse(hasAuthorizationHeader)
                 XCTAssertEqual(request.url, url)
-        }) { error in
+        }) { _ in
             XCTFail("This should not be called")
         }
     }
@@ -63,7 +63,7 @@ class MediaRequestAuthenticatorTests: CoreDataTestCase {
 
                 XCTAssertFalse(hasAuthorizationHeader)
                 XCTAssertEqual(request.url, url)
-        }) { error in
+        }) { _ in
             XCTFail("This should not be called")
         }
     }
@@ -85,7 +85,7 @@ class MediaRequestAuthenticatorTests: CoreDataTestCase {
 
                 XCTAssertFalse(hasAuthorizationHeader)
                 XCTAssertEqual(request.url, url)
-        }) { error in
+        }) { _ in
             XCTFail("This should not be called")
         }
     }
@@ -106,7 +106,7 @@ class MediaRequestAuthenticatorTests: CoreDataTestCase {
 
                 XCTAssertTrue(hasAuthorizationHeader)
                 XCTAssertEqual(request.url, expectedURL)
-        }) { error in
+        }) { _ in
             XCTFail("This should not be called")
         }
     }
@@ -138,7 +138,7 @@ class MediaRequestAuthenticatorTests: CoreDataTestCase {
 
                 XCTAssertTrue(hasAuthorizationHeader)
                 XCTAssertEqual(request.url, expectedURL)
-        }) { error in
+        }) { _ in
             XCTFail("This should not be called")
         }
 

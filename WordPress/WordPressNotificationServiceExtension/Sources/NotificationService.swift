@@ -232,7 +232,7 @@ private extension NotificationService {
         }
 
         let session = URLSession(configuration: .default)
-        let task = session.dataTask(with: request) { data, response, error in
+        let task = session.dataTask(with: request) { data, response, _ in
             guard let data, let mimeType = response?.mimeType else {
                 completion(nil, nil)
                 return

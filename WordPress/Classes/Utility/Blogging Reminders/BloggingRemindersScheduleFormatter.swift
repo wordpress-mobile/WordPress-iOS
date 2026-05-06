@@ -128,7 +128,7 @@ private extension BloggingRemindersScheduleFormatter {
 
         // This loop applies the default font to the whole text, while keeping any symbolic attributes the previous font may
         // have had (such as bold style).
-        attributedString.enumerateAttribute(.font, in: NSRange(location: 0, length: attributedString.length)) { (value, range, stop) in
+        attributedString.enumerateAttribute(.font, in: NSRange(location: 0, length: attributedString.length)) { (value, range, _) in
 
             guard let oldFont = value as? UIFont,
                   let newDescriptor = UIFontDescriptor.preferredFontDescriptor(withTextStyle: .body)

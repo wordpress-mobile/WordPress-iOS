@@ -50,7 +50,7 @@ class RequestAuthenticatorTests: XCTestCase {
                     "Set-Cookie": self.selfHostedAuthCookies])
         }
 
-        authenticator.request(url: url, cookieJar: cookieJar) { request in
+        authenticator.request(url: url, cookieJar: cookieJar) { _ in
             cookieJar.hasWordPressSelfHostedAuthCookie(for: url, username: self.siteUser) { hasCookie in
                 if hasCookie {
                     expectation.fulfill()
@@ -77,7 +77,7 @@ class RequestAuthenticatorTests: XCTestCase {
                     "Set-Cookie": self.wpComAuthCookies])
         }
 
-        authenticator.request(url: url, cookieJar: cookieJar) { request in
+        authenticator.request(url: url, cookieJar: cookieJar) { _ in
             cookieJar.hasWordPressComAuthCookie(username: self.dotComUser, atomicSite: false) { hasCookie in
                 if hasCookie {
                     expectation.fulfill()

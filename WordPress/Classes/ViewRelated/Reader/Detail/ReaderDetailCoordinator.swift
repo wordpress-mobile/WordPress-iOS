@@ -171,7 +171,7 @@ class ReaderDetailCoordinator {
 
         // Fetch a full page of Likes but only return the `maxAvatarsDisplayed` number.
         // That way the first page will already be cached if the user displays the full Likes list.
-        postService.getLikesFor(postID: postID, siteID: siteID, success: { [weak self] users, totalLikes, _ in
+        postService.getLikesFor(postID: postID, siteID: siteID, success: { [weak self] users, _, _ in
             guard let self else { return }
 
             var filteredUsers = users

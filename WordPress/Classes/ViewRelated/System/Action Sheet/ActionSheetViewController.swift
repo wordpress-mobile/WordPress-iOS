@@ -22,13 +22,13 @@ class ActionSheetViewController: UIViewController {
         static let gripHeight: CGFloat = 5
         static let cornerRadius: CGFloat = 8
         static let buttonSpacing: CGFloat = 8
-        static let additionalSafeAreaInsetsRegular: UIEdgeInsets = UIEdgeInsets(top: 20, left: 0, bottom: 20, right: 0)
+        static let additionalSafeAreaInsetsRegular = UIEdgeInsets(top: 20, left: 0, bottom: 20, right: 0)
         static let minimumWidth: CGFloat = 300
         static let maximumWidth: CGFloat = 600
 
         enum Header {
             static let spacing: CGFloat = 16
-            static let insets: UIEdgeInsets = UIEdgeInsets(top: 0, left: 18, bottom: 0, right: 18)
+            static let insets = UIEdgeInsets(top: 0, left: 18, bottom: 0, right: 18)
         }
 
         enum Button {
@@ -42,7 +42,7 @@ class ActionSheetViewController: UIViewController {
         }
 
         enum Stack {
-            static let insets: UIEdgeInsets = UIEdgeInsets(top: 5, left: 0, bottom: 0, right: 0)
+            static let insets = UIEdgeInsets(top: 5, left: 0, bottom: 0, right: 0)
         }
     }
 

@@ -114,7 +114,7 @@ extension HomeSiteHeaderViewController {
                 self.blogDetailHeaderView.refreshIconImage()
             }, failure: { _ in })
 
-        }, failure: { [weak self] error in
+        }, failure: { [weak self] _ in
             self?.showErrorForSiteIconUpdate()
         })
     }
@@ -140,7 +140,7 @@ extension HomeSiteHeaderViewController {
                     success: {
                         self?.updateBlogIconWithMedia(media)
                         completion()
-                    }, failure: { error in
+                    }, failure: { _ in
                         self?.showErrorForSiteIconUpdate()
                         completion()
                     })
@@ -161,7 +161,7 @@ extension HomeSiteHeaderViewController {
             self?.blogDetailHeaderView.updatingIcon = false
         }
 
-        imageCropController.onCompletion = { [weak self] image, modified in
+        imageCropController.onCompletion = { [weak self] image, _ in
             self?.dismiss(animated: true)
             self?.uploadDroppedSiteIcon(image, completion: {
                 self?.blogDetailHeaderView.updatingIcon = false

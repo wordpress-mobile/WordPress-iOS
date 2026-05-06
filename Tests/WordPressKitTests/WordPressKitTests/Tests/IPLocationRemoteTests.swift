@@ -29,7 +29,7 @@ final class IPLocationRemoteTests: XCTestCase {
 
         let data = jsonString.data(using: .utf8)
 
-        MockURLProtocol.requestHandler = { request in
+        MockURLProtocol.requestHandler = { _ in
           let response = HTTPURLResponse(url: self.apiURL, statusCode: 200, httpVersion: nil, headerFields: nil)!
           return (response, data)
         }

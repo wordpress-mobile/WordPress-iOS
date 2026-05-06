@@ -6,7 +6,7 @@ import UIKit
 open class NUXTableViewController: UITableViewController, NUXViewControllerBase, UIViewControllerTransitioningDelegate {
     // MARK: NUXViewControllerBase properties
     /// these properties comply with NUXViewControllerBase and are duplicated with NUXViewController
-    public var helpButton: UIButton = UIButton(type: .custom)
+    public var helpButton = UIButton(type: .custom)
     public var dismissBlock: ((_ cancelled: Bool) -> Void)?
     public var loginFields = LoginFields()
     open var sourceTag: WordPressSupportSourceTag {

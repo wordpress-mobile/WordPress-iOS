@@ -217,7 +217,7 @@ class RegisterDomainDetailsViewModel {
                             // the user we could opt to show a Notice in the future.
                             onChange?(.registerSucceeded(domain))
                         })
-                }, failure: { error in
+                }, failure: { _ in
                     // Same as above. If adding items to cart fails, not much we can do to recover :(
                     WPAnalytics.track(.automatedTransferCustomDomainPurchaseFailed)
                     self?.isLoading = false
@@ -287,7 +287,7 @@ class RegisterDomainDetailsViewModel {
                 } else {
                     prefillSuccessBlock()
                 }
-        }) { [weak self] (error) in
+        }) { [weak self] (_) in
             guard let strongSelf = self else {
                 return
             }
@@ -319,7 +319,7 @@ class RegisterDomainDetailsViewModel {
             }
             strongSelf.countries = result
             successCompletion()
-        }) { [weak self] (error) in
+        }) { [weak self] (_) in
             guard let strongSelf = self else {
                 return
             }
@@ -351,7 +351,7 @@ class RegisterDomainDetailsViewModel {
                 }
                 strongSelf.states = result
                 successCompletion?()
-        }) { [weak self] (error) in
+        }) { [weak self] (_) in
             guard let strongSelf = self else {
                 return
             }
@@ -500,7 +500,7 @@ extension RegisterDomainDetailsViewModel {
                     strongSelf.updateValidationErrors(with: response.messages)
                     strongSelf.onChange?(.remoteValidationFinished)
                 }
-        }) { [weak self] (error) in
+        }) { [weak self] (_) in
             guard let strongSelf = self else {
                 return
             }

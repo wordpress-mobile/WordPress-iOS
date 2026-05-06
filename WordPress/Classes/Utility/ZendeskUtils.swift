@@ -46,7 +46,7 @@ protocol ZendeskUtilsProtocol {
 class ZendeskUtils: NSObject, ZendeskUtilsProtocol {
     // MARK: - Public Properties
 
-    static var sharedInstance: ZendeskUtils = ZendeskUtils(contextManager: ContextManager.shared)
+    static var sharedInstance = ZendeskUtils(contextManager: ContextManager.shared)
     static var zendeskEnabled = false
     static var unreadNotificationsCount = 0
 
@@ -206,7 +206,7 @@ class ZendeskUtils: NSObject, ZendeskUtilsProtocol {
         let planService = planService ?? PlanService(coreDataStack: contextManager)
         planService.getAllSitesNonLocalizedPlanDescriptionsForAccount(account, success: { plans in
             self.sitePlansCache = plans
-        }, failure: { error in })
+        }, failure: { _ in })
     }
 
     func createRequest(planServiceRemote: PlanServiceRemote? = nil,
@@ -426,7 +426,7 @@ extension ZendeskUtils {
 
         status?(.identifyingUser)
 
-        ZendeskUtils.createIdentity(alertOptions: alertOptions) { success, newIdentity in
+        ZendeskUtils.createIdentity(alertOptions: alertOptions) { success, _ in
             guard success else {
                 if alertOptions.optionalIdentity {
                     let identity = Identity.createAnonymous()
@@ -588,7 +588,7 @@ private extension ZendeskUtils {
                 return
         }
 
-        ZDKPushProvider(zendesk: zendeskInstance).register(deviceIdentifier: deviceID, locale: appLanguage) { (pushResponse, error) in
+        ZDKPushProvider(zendesk: zendeskInstance).register(deviceIdentifier: deviceID, locale: appLanguage) { (_, error) in
             if let error {
                 DDLogInfo("Zendesk couldn't register device: \(deviceID). Error: \(error)")
             } else {

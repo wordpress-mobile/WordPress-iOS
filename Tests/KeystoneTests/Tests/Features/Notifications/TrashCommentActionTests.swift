@@ -52,7 +52,7 @@ final class TrashCommentActionTests: CoreDataTestCase {
         action?.on = false
 
         var executionCompleted = false
-        let context = ActionContext(block: try utils.mockCommentContent(), content: "content") { (request, success) in
+        let context = ActionContext(block: try utils.mockCommentContent(), content: "content") { (_, _) in
             executionCompleted = true
         }
 

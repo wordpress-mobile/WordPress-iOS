@@ -208,7 +208,7 @@ public class SiteStatsDashboardViewController: UIViewController {
             statsMenuButton.menu = createStatsMenu()
 
             // Set up observer for navigation item changes
-            navigationItemObserver = trafficTableViewController.navigationItem.observe(\.trailingItemGroups, options: [.initial, .new]) { [weak self] navigationItem, _ in
+            navigationItemObserver = trafficTableViewController.navigationItem.observe(\.trailingItemGroups, options: [.initial, .new]) { [weak self] _, _ in
                 guard let self else { return }
                 DispatchQueue.main.async {
                     self.updateParentNavigationItems(with: self.trafficTableViewController)

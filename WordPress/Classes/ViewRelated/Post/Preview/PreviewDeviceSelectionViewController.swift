@@ -53,7 +53,7 @@ class PreviewDeviceSelectionViewController: UIViewController {
         }
     }
 
-    var selectedOption: PreviewDevice = PreviewDevice.default
+    var selectedOption = PreviewDevice.default
 
     var onDeviceChange: ((PreviewDevice) -> Void)?
 

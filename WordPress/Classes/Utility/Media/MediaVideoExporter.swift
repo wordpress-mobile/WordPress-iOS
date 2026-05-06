@@ -208,7 +208,7 @@ class MediaVideoExporter: MediaExporter {
             generator.cancelAllCGImageGeneration()
         }
         generator.generateCGImagesAsynchronously(forTimes: [NSValue(time: CMTimeMake(value: 0, timescale: 1))],
-                                                 completionHandler: { (time, cgImage, actualTime, result, error) in
+                                                 completionHandler: { (_, cgImage, _, _, _) in
                                                     progress.completedUnitCount = MediaExportProgressUnits.halfDone
                                                     guard let cgImage else {
                                                         onError(VideoExportError.failedGeneratingVideoPreviewImage)

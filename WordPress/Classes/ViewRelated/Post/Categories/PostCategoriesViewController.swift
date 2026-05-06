@@ -114,7 +114,7 @@ import WordPressUI
             self?.reloadCategories()
             self?.refreshControl?.endRefreshing()
             self?.hasSyncedCategories = true
-        }) { [weak self] error in
+        }) { [weak self] _ in
             self?.refreshControl?.endRefreshing()
         }
     }

@@ -136,7 +136,7 @@ private extension SupportChatBotViewController {
 
 extension SupportChatBotViewController: WKNavigationDelegate {
     func webView(_ webView: WKWebView, didFinish navigation: WKNavigation!) {
-        webView.evaluateJavaScript(createDocsBotInitCode(), completionHandler: { (result, error) in
+        webView.evaluateJavaScript(createDocsBotInitCode(), completionHandler: { (_, error) in
             if let error {
                 DDLogError("Failed to initialize docs bot code: \(error)")
             }

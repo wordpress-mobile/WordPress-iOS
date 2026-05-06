@@ -99,9 +99,9 @@ class QRLoginServiceRemoteTests: RemoteTestCase, RESTTestable {
         let expect = expectation(description: "Failed Authentication")
         stubRemoteResponse("wpcom/v2/auth/qr-code/authenticate", filename: "qrlogin-authenticate-failed-400.json", contentType: .ApplicationJSON, status: 400)
 
-        qrLoginServiceRemote.authenticate(token: "valid_token", data: "valid_data") { authenticated in
+        qrLoginServiceRemote.authenticate(token: "valid_token", data: "valid_data") { _ in
             XCTFail("This request should not succeed")
-        } failure: { error in
+        } failure: { _ in
             expect.fulfill()
         }
 
@@ -113,9 +113,9 @@ class QRLoginServiceRemoteTests: RemoteTestCase, RESTTestable {
         let expect = expectation(description: "Failed Authentication")
         stubRemoteResponse("wpcom/v2/auth/qr-code/authenticate", data: "foo".data(using: .utf8)!, contentType: .ApplicationJSON)
 
-        qrLoginServiceRemote.authenticate(token: "valid_token", data: "valid_data") { authenticated in
+        qrLoginServiceRemote.authenticate(token: "valid_token", data: "valid_data") { _ in
             XCTFail("This request should not succeed")
-        } failure: { error in
+        } failure: { _ in
             expect.fulfill()
         }
 

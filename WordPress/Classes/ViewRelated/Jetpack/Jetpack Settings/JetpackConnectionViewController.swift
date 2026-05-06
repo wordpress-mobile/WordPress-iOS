@@ -82,7 +82,7 @@ open class JetpackConnectionViewController: UITableViewController {
     // MARK: - Row Handler
 
     func disconnectJetpackTapped() -> ImmuTableAction {
-        return { [unowned self] row in
+        return { [unowned self] _ in
             self.tableView.deselectSelectedRowWithAnimation(true)
             let message = NSLocalizedString("Are you sure you want to disconnect Jetpack from the site?",
                                             comment: "Message prompting the user to confirm that they want to disconnect Jetpack from the site.")
@@ -93,7 +93,7 @@ open class JetpackConnectionViewController: UITableViewController {
             alertController.addCancelActionWithTitle(NSLocalizedString("Cancel", comment: "Verb. A button title. Tapping cancels an action."))
             alertController.addDestructiveActionWithTitle(NSLocalizedString("Disconnect",
                                                                             comment: "Title for button that disconnects Jetpack from the site"),
-                                                          handler: { action in
+                                                          handler: { _ in
                                                               self.disconnectJetpack()
                                                           })
             WPAnalytics.trackEvent(.jetpackDisconnectTapped)

@@ -139,7 +139,7 @@ private extension ReaderCommentsFollowPresenter {
                 title: Messages.promptTitle,
                 message: Messages.promptMessage,
                 actionTitle: Messages.undoActionTitle,
-                actionHandler: { (accepted: Bool) in
+                actionHandler: { (_: Bool) in
                 self.handleNotificationsButtonTapped(canUndo: false)
             })
         }, failure: { [weak self] error in

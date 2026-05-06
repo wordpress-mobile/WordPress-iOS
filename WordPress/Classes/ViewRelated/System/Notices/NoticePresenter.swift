@@ -201,7 +201,7 @@ class NoticePresenter {
                                             content: content,
                                             trigger: nil)
 
-        UNUserNotificationCenter.current().add(request, withCompletionHandler: { error in
+        UNUserNotificationCenter.current().add(request, withCompletionHandler: { _ in
             DispatchQueue.main.async {
                 ActionDispatcher.dispatch(NoticeAction.clear(notice))
             }

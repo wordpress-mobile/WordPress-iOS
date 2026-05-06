@@ -78,11 +78,14 @@ final class MockWordPressClientAPI: WordPressClientAPI, @unchecked Sendable {
     var posts: PostsRequestExecutor { fatalError("Not implemented") }
     var postTypes: PostTypesRequestExecutor { fatalError("Not implemented") }
 
-    func createSelfHostedService(cache: WordPressApiCache) throws -> WpService {
+    func createService(cache: WordPressApiCache) throws -> WpService {
         fatalError("Not implemented")
     }
 
-    func uploadMedia(params: MediaCreateParams, fulfilling progress: Progress) async throws -> MediaRequestCreateResponse {
+    func uploadMedia(
+        params: MediaCreateParams,
+        fulfilling progress: Progress
+    ) async throws -> MediaRequestCreateResponse {
         fatalError("Not implemented")
     }
 }
@@ -118,7 +121,9 @@ final class MockUsersRequestExecutor: UsersRequestExecutor {
         super.init(unsafeFromHandle: handle)
     }
 
-    override func retrieveMeWithEditContextCancellation(context: RequestContext?) async throws -> UsersRequestRetrieveMeWithEditContextResponse {
+    override func retrieveMeWithEditContextCancellation(
+        context: RequestContext?
+    ) async throws -> UsersRequestRetrieveMeWithEditContextResponse {
         let mockUser = UserWithEditContext(
             id: UserId(1),
             username: "testuser",
@@ -134,8 +139,8 @@ final class MockUsersRequestExecutor: UsersRequestExecutor {
             slug: "testuser",
             registeredDate: "2024-01-01T00:00:00",
             roles: [],
-            capabilities: [:],
-            extraCapabilities: [:],
+            capabilities: UserCapabilitiesMap(map: [:]),
+            extraCapabilities: UserCapabilitiesMap(map: [:]),
             avatarUrls: nil
         )
         let mockHeaderMap = WpNetworkHeaderMap(noHandle: WpNetworkHeaderMap.NoHandle())
@@ -156,7 +161,10 @@ final class MockThemesRequestExecutor: ThemesRequestExecutor {
         super.init(unsafeFromHandle: handle)
     }
 
-    override func listWithEditContextCancellation(params: ThemeListParams, context: RequestContext?) async throws -> ThemesRequestListWithEditContextResponse {
+    override func listWithEditContextCancellation(
+        params: ThemeListParams,
+        context: RequestContext?
+    ) async throws -> ThemesRequestListWithEditContextResponse {
         let mockTheme = ThemeWithEditContext(
             stylesheet: ThemeStylesheet(value: "twentytwentyfour"),
             template: "twentytwentyfour",
@@ -196,7 +204,9 @@ final class MockSiteSettingsRequestExecutor: SiteSettingsRequestExecutor {
         super.init(unsafeFromHandle: handle)
     }
 
-    override func retrieveWithEditContextCancellation(context: RequestContext?) async throws -> SiteSettingsRequestRetrieveWithEditContextResponse {
+    override func retrieveWithEditContextCancellation(
+        context: RequestContext?
+    ) async throws -> SiteSettingsRequestRetrieveWithEditContextResponse {
         let mockSettings = SiteSettingsWithEditContext(
             title: "Test Site",
             description: "A test site",
@@ -217,7 +227,8 @@ final class MockSiteSettingsRequestExecutor: SiteSettingsRequestExecutor {
             defaultPingStatus: .open,
             defaultCommentStatus: .open,
             siteLogo: nil,
-            siteIcon: 0
+            siteIcon: 0,
+            additionalFields: WpAdditionalFields()
         )
         let mockHeaderMap = WpNetworkHeaderMap(noHandle: WpNetworkHeaderMap.NoHandle())
         return SiteSettingsRequestRetrieveWithEditContextResponse(data: mockSettings, headerMap: mockHeaderMap)

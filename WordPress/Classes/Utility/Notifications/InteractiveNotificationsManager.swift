@@ -320,7 +320,7 @@ private extension InteractiveNotificationsManager {
         commentService.likeComment(withID: commentID, siteID: siteID, success: {
             self.notificationSyncMediator?.markAsReadAndSync(noteID.stringValue)
             DDLogInfo("Liked comment from push notification")
-        }, failure: { error in
+        }, failure: { _ in
             DDLogInfo("Couldn't like comment from push notification")
         })
     }
@@ -335,7 +335,7 @@ private extension InteractiveNotificationsManager {
         commentService.approveComment(withID: commentID, siteID: siteID, success: {
             self.notificationSyncMediator?.markAsReadAndSync(noteID.stringValue)
             DDLogInfo("Successfully moderated comment from push notification")
-        }, failure: { error in
+        }, failure: { _ in
             DDLogInfo("Couldn't moderate comment from push notification")
         })
     }
@@ -359,7 +359,7 @@ private extension InteractiveNotificationsManager {
         commentService.replyToComment(withID: commentID, siteID: siteID, content: content, success: {
             self.notificationSyncMediator?.markAsReadAndSync(noteID.stringValue)
             DDLogInfo("Successfully replied comment from push notification")
-        }, failure: { error in
+        }, failure: { _ in
             DDLogInfo("Couldn't reply to comment from push notification")
         })
     }

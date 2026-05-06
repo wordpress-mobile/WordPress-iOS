@@ -460,7 +460,7 @@ public protocol ThemePresenter: AnyObject {
             page: themesSyncingPage,
             search: search,
             sync: page == 1,
-            success: {[weak self](themes: [Theme]?, hasMore: Bool, themeCount: NSInteger) in
+            success: {[weak self](_: [Theme]?, hasMore: Bool, themeCount: NSInteger) in
                 if let success {
                     success(hasMore)
                 }
@@ -478,7 +478,7 @@ public protocol ThemePresenter: AnyObject {
     fileprivate func syncCustomThemes(success: ((_ hasMore: Bool) -> Void)?, failure: ((_ error: NSError) -> Void)?) {
         _ = themeService.getCustomThemes(for: blog,
             sync: true,
-            success: {[weak self](themes: [Theme]?, hasMore: Bool, themeCount: NSInteger) in
+            success: {[weak self](_: [Theme]?, hasMore: Bool, themeCount: NSInteger) in
                 if let success {
                     success(hasMore)
                 }
@@ -861,7 +861,7 @@ public protocol ThemePresenter: AnyObject {
                     preferredStyle: .alert)
                 alertController.addActionWithTitle(manageTitle,
                     style: .default,
-                    handler: { [weak self] (action: UIAlertAction) in
+                    handler: { [weak self] (_: UIAlertAction) in
                         _ = self?.navigationController?.popViewController(animated: true)
                     })
             alertController.addDefaultActionWithTitle(SharedStrings.Button.ok, handler: nil)

@@ -56,7 +56,7 @@ struct AuthorStatsView: View {
         }
         .background(Constants.Colors.background)
         .animation(.spring, value: viewModel.data.map(ObjectIdentifier.init))
-        .onChange(of: dateRange) { oldValue, newValue in
+        .onChange(of: dateRange) { _, newValue in
             viewModel.dateRange = newValue
         }
         .onAppear {

@@ -186,14 +186,17 @@ private func makeService(
 ) throws -> CustomPostEditorService {
     let api = try WordPressAPI(
         urlSession: .shared,
-        apiRootUrl: .parse(input: "https://example.com/wp-json"),
+        siteInfo: .selfHosted(
+            siteUrl: .parse(input: "https://example.com"),
+            apiRoot: .parse(input: "https://example.com/wp-json")
+        ),
         authentication: .none
     )
     let client = WordPressClient(
         api: api,
         siteURL: URL(string: "https://example.com")!
     )
-    let wpService = try api.createSelfHostedService(cache: .bootstrap())
+    let wpService = try api.createService(cache: .bootstrap())
 
     return CustomPostEditorService(
         blog: blog,
@@ -216,7 +219,7 @@ private func makePostTypeDetails() -> PostTypeDetailsWithEditContext {
         slug: "test_post_type",
         supports: PostTypeSupportsMap(map: [
             .title: .bool(true),
-            .editor: .bool(true),
+            .editor: .bool(true)
         ]),
         hasArchive: .bool(false),
         taxonomies: [],
@@ -229,17 +232,40 @@ private func makePostTypeDetails() -> PostTypeDetailsWithEditContext {
 
 private func makePostTypeLabels() -> PostTypeLabels {
     PostTypeLabels(
-        name: "", singularName: "", addNew: "", addNewItem: "",
-        editItem: "", newItem: "", viewItem: "", viewItems: "",
-        searchItems: "", notFound: "", notFoundInTrash: "",
-        parentItemColon: nil, allItems: "", archives: "",
-        attributes: "", insertIntoItem: "", uploadedToThisItem: "",
-        featuredImage: "", setFeaturedImage: "", removeFeaturedImage: "",
-        useFeaturedImage: "", filterItemsList: "", filterByDate: "",
-        itemsListNavigation: "", itemsList: "", itemPublished: "",
-        itemPublishedPrivately: "", itemRevertedToDraft: "",
-        itemTrashed: "", itemScheduled: "", itemUpdated: "",
-        itemLink: "", itemLinkDescription: "", menuName: "",
+        name: "",
+        singularName: "",
+        addNew: "",
+        addNewItem: "",
+        editItem: "",
+        newItem: "",
+        viewItem: "",
+        viewItems: "",
+        searchItems: "",
+        notFound: "",
+        notFoundInTrash: "",
+        parentItemColon: nil,
+        allItems: "",
+        archives: "",
+        attributes: "",
+        insertIntoItem: "",
+        uploadedToThisItem: "",
+        featuredImage: "",
+        setFeaturedImage: "",
+        removeFeaturedImage: "",
+        useFeaturedImage: "",
+        filterItemsList: "",
+        filterByDate: "",
+        itemsListNavigation: "",
+        itemsList: "",
+        itemPublished: "",
+        itemPublishedPrivately: "",
+        itemRevertedToDraft: "",
+        itemTrashed: "",
+        itemScheduled: "",
+        itemUpdated: "",
+        itemLink: "",
+        itemLinkDescription: "",
+        menuName: "",
         nameAdminBar: ""
     )
 }

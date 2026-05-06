@@ -3,7 +3,7 @@ import DesignSystem
 
 final class NotificationsTableHeaderView: UITableViewHeaderFooterView {
 
-    static let reuseIdentifier: String = String(describing: NotificationsTableHeaderView.self)
+    static let reuseIdentifier = String(describing: NotificationsTableHeaderView.self)
 
     // MARK: - Properties
 

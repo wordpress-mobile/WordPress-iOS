@@ -71,7 +71,7 @@ class SignupUsernameTableViewController: UITableViewController, SearchTableViewC
 
     func setupBackgroundTapGestureRecognizer() {
         let gestureRecognizer = UITapGestureRecognizer()
-        gestureRecognizer.on(call: { [weak self] (gesture) in
+        gestureRecognizer.on(call: { [weak self] (_) in
             self?.view.endEditing(true)
         })
         gestureRecognizer.cancelsTouchesInView = false

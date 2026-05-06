@@ -363,7 +363,7 @@ private extension ReaderDetailToolbar {
 
 private extension ReaderDetailToolbar {
     func subscribePostChanges() {
-        likeCountObserver = post?.observe(\.likeCount, options: [.old, .new]) { [weak self] updatedPost, change in
+        likeCountObserver = post?.observe(\.likeCount, options: [.old, .new]) { [weak self] _, change in
             // ensure that we only update the like button when there's actual change.
             let oldValue = change.oldValue??.intValue ?? 0
             let newValue = change.newValue??.intValue ?? 0

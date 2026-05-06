@@ -164,7 +164,7 @@ extension SiteSettingsViewController {
         } else {
             pickerViewController.pickerMaximumValue = maxNumberOfPostPerPage
         }
-        pickerViewController.onChange = { [weak self] (enabled: Bool, newValue: Int) in
+        pickerViewController.onChange = { [weak self] (_: Bool, newValue: Int) in
             self?.blog.settings?.postsPerPage = newValue as NSNumber?
             self?.saveSettings()
             self?.trackSettingsChange(fieldName: "posts_per_page", value: newValue as Any)

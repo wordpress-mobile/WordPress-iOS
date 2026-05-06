@@ -34,7 +34,7 @@ class PagesCardViewModel: NSObject {
 
     private let managedObjectContext: NSManagedObjectContext
 
-    private var filter: PostListFilter = PostListFilter.allNonTrashedFilter()
+    private var filter = PostListFilter.allNonTrashedFilter()
 
     private var fetchedResultsController: NSFetchedResultsController<Page>?
 

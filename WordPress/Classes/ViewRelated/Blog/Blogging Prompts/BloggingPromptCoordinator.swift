@@ -137,7 +137,7 @@ private extension BloggingPromptCoordinator {
             context.perform {
                 // Reschedule the prompt reminders.
                 let schedule = BloggingRemindersScheduler.Schedule.weekdays(activeWeekdays)
-                self.scheduler.schedule(schedule, for: blog, time: reminderTimeDate) { result in
+                self.scheduler.schedule(schedule, for: blog, time: reminderTimeDate) { _ in
                     completion()
                 }
             }

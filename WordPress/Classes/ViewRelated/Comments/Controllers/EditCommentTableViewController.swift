@@ -207,7 +207,7 @@ private extension EditCommentTableViewController {
         let alertController = UIAlertController(title: title, message: nil, preferredStyle: .actionSheet)
         alertController.addCancelActionWithTitle(keepEditingTitle)
 
-        alertController.addDestructiveActionWithTitle(discardTitle) { [weak self] action in
+        alertController.addDestructiveActionWithTitle(discardTitle) { [weak self] _ in
             self?.finishWithoutUpdates()
         }
 

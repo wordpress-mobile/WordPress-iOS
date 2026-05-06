@@ -66,7 +66,7 @@ class CircularProgressView: UIView {
     // MARK: - public fields
 
     let retryView = AccessoryView()
-    @objc var errorView: UIView = UIView() {
+    @objc var errorView = UIView() {
         didSet {
             oldValue.removeFromSuperview()
             configureErrorView()

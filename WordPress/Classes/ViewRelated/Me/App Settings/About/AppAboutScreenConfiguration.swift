@@ -41,7 +41,7 @@ class AppAboutScreenConfiguration: AboutScreenConfiguration {
             [
                 AboutItem(
                     title: TextContent.rateUs,
-                    action: { [weak self] context in
+                    action: { [weak self] _ in
                         WPAnalytics.track(.appReviewsRatedApp)
                         self?.tracker.buttonPressed(.rateUs)
                         AppRatingUtility.shared.ratedCurrentVersion()

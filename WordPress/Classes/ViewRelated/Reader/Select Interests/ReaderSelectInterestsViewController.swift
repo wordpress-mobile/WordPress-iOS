@@ -57,7 +57,7 @@ class ReaderSelectInterestsViewController: UIViewController {
         return ReaderInterestsDataSource(topics: topics)
     }()
 
-    private let coordinator: ReaderSelectInterestsCoordinator = ReaderSelectInterestsCoordinator()
+    private let coordinator = ReaderSelectInterestsCoordinator()
 
     private let noResultsViewController = NoResultsViewController.controller()
 

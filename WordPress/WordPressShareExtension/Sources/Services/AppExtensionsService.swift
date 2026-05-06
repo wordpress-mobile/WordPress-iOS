@@ -492,7 +492,7 @@ fileprivate extension AppExtensionsService {
         media.forEach { mediaItem in
             syncGroup.enter()
             mediaItem.postID = NSNumber(value: postID)
-            service.update(mediaItem, success: { updatedRemoteMedia in
+            service.update(mediaItem, success: { _ in
                 syncGroup.leave()
             }, failure: { error in
                 var errorString = "Error assigning media items to post in share extension"

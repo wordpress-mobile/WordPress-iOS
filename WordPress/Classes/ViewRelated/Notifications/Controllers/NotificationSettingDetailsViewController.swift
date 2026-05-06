@@ -310,7 +310,7 @@ class NotificationSettingDetailsViewController: UITableViewController {
             success: {
                 WPAnalytics.track(.notificationsSettingsUpdated, withProperties: ["success": true])
             },
-            failure: { (error: Error?) in
+            failure: { (_: Error?) in
                 WPAnalytics.track(.notificationsSettingsUpdated, withProperties: ["success": false])
                 self.handleUpdateError()
             })
@@ -327,7 +327,7 @@ class NotificationSettingDetailsViewController: UITableViewController {
 
         alertController.addCancelActionWithTitle(cancelText, handler: nil)
 
-        alertController.addDefaultActionWithTitle(retryText) { (action: UIAlertAction) in
+        alertController.addDefaultActionWithTitle(retryText) { (_: UIAlertAction) in
             self.saveSettingsIfNeeded()
         }
 

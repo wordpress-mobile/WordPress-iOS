@@ -126,7 +126,7 @@ extension DashboardDynamicCardModel: BlogDashboardPersonalizable, BlogDashboardA
 
     var analyticProperties: [AnyHashable: Any] {
         let properties: [AnyHashable: Any] = ["id": payload.id]
-        return cardType.analyticProperties.merging(properties, uniquingKeysWith: { first, second in
+        return cardType.analyticProperties.merging(properties, uniquingKeysWith: { first, _ in
             return first
         })
     }

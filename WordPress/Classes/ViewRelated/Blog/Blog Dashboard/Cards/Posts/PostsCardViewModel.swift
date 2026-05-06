@@ -30,7 +30,7 @@ class PostsCardViewModel: NSObject {
 
     private let managedObjectContext: NSManagedObjectContext
 
-    private var postListFilter: PostListFilter = PostListFilter.draftFilter()
+    private var postListFilter = PostListFilter.draftFilter()
 
     private var fetchedResultsController: NSFetchedResultsController<Post>!
 

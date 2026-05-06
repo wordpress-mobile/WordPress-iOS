@@ -36,7 +36,7 @@ class PluginDirectoryViewModel: Observable {
         popularReceipt = store.query(.feed(type: .popular))
         newReceipt = store.query(.feed(type: .newest))
 
-        actionReceipt = ActionDispatcher.global.subscribe { [changeDispatcher, throttle] action in
+        actionReceipt = ActionDispatcher.global.subscribe { [changeDispatcher, throttle] _ in
             // Fairly often, a bunch of those network calls can finish very close to each other — within few hundred
             // milliseconds or so. Doing a reload in this case is both wasteful and noticably slow.
             // Instead, we throttle the call so we trigger the reload at most once a second.
