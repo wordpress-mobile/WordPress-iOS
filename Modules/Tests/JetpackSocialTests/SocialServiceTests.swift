@@ -22,8 +22,24 @@ struct SocialServiceTests {
         #expect(model.label == "Mastodon")
         #expect(model.description == "Share to your Mastodon timeline")
         #expect(!model.supportsAdditionalUsers)
+        #expect(!model.additionalUsersOnly)
         #expect(model.isActive)
         #expect(model.connectURL == URL(string: "https://mastodon.example"))
+    }
+
+    @Test("maps additionalUsersOnly from supports")
+    func mapsAdditionalUsersOnly() {
+        let wire = PublicizeServiceResponse(
+            id: "facebook",
+            description: "",
+            label: "Facebook",
+            status: "ok",
+            supports: PublicizeServiceSupports(additionalUsers: true, additionalUsersOnly: true),
+            url: ""
+        )
+        let model = SocialService(from: wire)
+        #expect(model.additionalUsersOnly)
+        #expect(model.supportsAdditionalUsers)
     }
 
     @Test("empty url maps to nil connectURL")
