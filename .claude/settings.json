@@ -21,9 +21,15 @@
         "hooks": [
           {
             "type": "command",
-            "command": "jq -r '.tool_input.file_path' | { read -r f; case \"$f\" in *.swift) xcrun swift format --in-place \"$f\" ;; esac; } 2>/dev/null || true",
+            "command": "\"$CLAUDE_PROJECT_DIR\"/Scripts/claude-hooks/swift-format.sh",
             "timeout": 30,
             "statusMessage": "Formatting Swift..."
+          },
+          {
+            "type": "command",
+            "command": "\"$CLAUDE_PROJECT_DIR\"/Scripts/claude-hooks/swiftlint.sh",
+            "timeout": 30,
+            "statusMessage": "Linting Swift..."
           }
         ]
       }
