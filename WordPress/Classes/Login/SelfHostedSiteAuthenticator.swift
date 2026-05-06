@@ -15,14 +15,15 @@ struct SelfHostedSiteAuthenticator {
 
     static var wordPressAppId: WpUuid {
         // The following UUIDs must be UUID v4.
-        let uuid = switch BuildSettings.current.brand {
-        case .wordpress:
-            "a9cb72ed-311b-4f01-a0ac-a7af563d103e"
-        case .jetpack:
-            "7088f42d-34e9-4402-ab50-b506b819f3e4"
-        case .reader:
-            "d7753a1f-ec90-4fb5-80db-951929239796"
-        }
+        let uuid =
+            switch BuildSettings.current.brand {
+            case .wordpress:
+                "a9cb72ed-311b-4f01-a0ac-a7af563d103e"
+            case .jetpack:
+                "7088f42d-34e9-4402-ab50-b506b819f3e4"
+            case .reader:
+                "d7753a1f-ec90-4fb5-80db-951929239796"
+            }
 
         return try! WpUuid.parse(input: uuid)
     }
@@ -42,7 +43,9 @@ struct SelfHostedSiteAuthenticator {
         return "\(appName) iOS app on \(deviceName)"
     }
 
-    static let applicationPasswordUpdated = Foundation.Notification.Name(rawValue: "SelfHostedSiteAuthenticator.applicationPasswordUpdated")
+    static let applicationPasswordUpdated = Foundation.Notification.Name(
+        rawValue: "SelfHostedSiteAuthenticator.applicationPasswordUpdated"
+    )
 
     enum SignInContext: Equatable {
         // Sign in to a self-hosted site. Using this context results in automatically reloading the app to display the site dashboard.
@@ -76,21 +79,49 @@ struct SelfHostedSiteAuthenticator {
             case .authentication(let error):
                 return error.localizedDescription
             case .xmlrpcEndpointNotFound:
-                return NSLocalizedString("addSite.selfHosted.xmlrpcEndpointNotFound", value: "Could not determine the site's XML-RPC endpoint", comment: "Error message when the app cannot find the XML-RPC endpoint of a self-hosted WordPress site")
+                return NSLocalizedString(
+                    "addSite.selfHosted.xmlrpcEndpointNotFound",
+                    value: "Could not determine the site's XML-RPC endpoint",
+                    comment:
+                        "Error message when the app cannot find the XML-RPC endpoint of a self-hosted WordPress site"
+                )
             case .loadingSiteInfoFailure:
-                return NSLocalizedString("addSite.selfHosted.loadingSiteInfoFailure", value: "Cannot load the WordPress site details", comment: "Error message shown when failing to load details from a self-hosted WordPress site")
+                return NSLocalizedString(
+                    "addSite.selfHosted.loadingSiteInfoFailure",
+                    value: "Cannot load the WordPress site details",
+                    comment: "Error message shown when failing to load details from a self-hosted WordPress site"
+                )
             case .savingSiteFailure:
-                return NSLocalizedString("addSite.selfHosted.savingSiteFailure", value: "Cannot save the WordPress site, please try again later.", comment: "Error message shown when failing to save a self-hosted site to user's device")
+                return NSLocalizedString(
+                    "addSite.selfHosted.savingSiteFailure",
+                    value: "Cannot save the WordPress site, please try again later.",
+                    comment: "Error message shown when failing to save a self-hosted site to user's device"
+                )
             case let .mismatchedUser(username):
-                let format = NSLocalizedString("addSite.selfHosted.mismatchUser", value: "Please sign in with the logged in user. Username: %@", comment: "Error message when user signs in with an unexpected usern. The first argument is the expected username")
+                let format = NSLocalizedString(
+                    "addSite.selfHosted.mismatchUser",
+                    value: "Please sign in with the logged in user. Username: %@",
+                    comment:
+                        "Error message when user signs in with an unexpected usern. The first argument is the expected username"
+                )
                 return String(format: format, username)
             case .cancelled:
-                return NSLocalizedString("addSite.selfHosted.cancelled", value: "Login has been cancelled", comment: "Error message when user cancels login")
+                return NSLocalizedString(
+                    "addSite.selfHosted.cancelled",
+                    value: "Login has been cancelled",
+                    comment: "Error message when user cancels login"
+                )
             case let .xmlrpcDisabled(underlying):
                 if let reason = underlying as? WordPressOrgXMLRPCValidatorError {
                     return reason.localizedDescription
                 } else {
-                    return NSLocalizedString("addSite.selfHosted.xmlrpcDisabled", value: "Couldn't connect to the WordPress site. XML-RPC may have been disabled on the server. Please contact your hosting provider to solve this problem.", comment: "Error message when XML-RPC is disabled on the WordPress site. The first argument is detailed error message")
+                    return NSLocalizedString(
+                        "addSite.selfHosted.xmlrpcDisabled",
+                        value:
+                            "Couldn't connect to the WordPress site. XML-RPC may have been disabled on the server. Please contact your hosting provider to solve this problem.",
+                        comment:
+                            "Error message when XML-RPC is disabled on the WordPress site. The first argument is detailed error message"
+                    )
                 }
             }
         }
@@ -104,24 +135,34 @@ struct SelfHostedSiteAuthenticator {
     }
 
     private func trackSuccess(url: String) {
-        WPAnalytics.track(.applicationPasswordLogin, properties: [
-            "url": url,
-            "success": true
-        ])
+        WPAnalytics.track(
+            .applicationPasswordLogin,
+            properties: [
+                "url": url,
+                "success": true
+            ]
+        )
     }
 
     private func trackTypedError(_ error: SelfHostedSiteAuthenticator.SignInError, url: String) {
         DDLogError("Unable to login to \(url): \(error.localizedDescription)")
 
-        WPAnalytics.track(.applicationPasswordLogin, properties: [
-            "url": url,
-            "success": false,
-            "error": "\(error)"
-        ])
+        WPAnalytics.track(
+            .applicationPasswordLogin,
+            properties: [
+                "url": url,
+                "success": false,
+                "error": "\(error)"
+            ]
+        )
     }
 
     @MainActor
-    func signIn(site: String, from viewController: UIViewController, context: SignInContext) async throws(SignInError) -> TaggedManagedObjectID<Blog> {
+    func signIn(
+        site: String,
+        from viewController: UIViewController,
+        context: SignInContext
+    ) async throws(SignInError) -> TaggedManagedObjectID<Blog> {
         let details: AutoDiscoveryAttemptSuccess
         do {
             details = try await internalClient.details(ofSite: site)
@@ -139,17 +180,28 @@ struct SelfHostedSiteAuthenticator {
     }
 
     @MainActor
-    func signIn(details: AutoDiscoveryAttemptSuccess, from viewController: UIViewController, context: SignInContext) async throws(SignInError) -> TaggedManagedObjectID<Blog> {
+    func signIn(
+        details: AutoDiscoveryAttemptSuccess,
+        from viewController: UIViewController,
+        context: SignInContext
+    ) async throws(SignInError) -> TaggedManagedObjectID<Blog> {
         do {
             let credentials: WpApiApplicationPasswordDetails
-            if let parsed = parseCredentialsFromLaunchArguments(), details.parsedSiteUrl.url().contains(parsed.siteUrl) {
+            if let parsed = parseCredentialsFromLaunchArguments(),
+                details.parsedSiteUrl.url().contains(parsed.siteUrl)
+            {
                 credentials = parsed
             } else {
                 credentials = try await authenticate(details: details, from: viewController)
             }
 
             let apiRootURL = details.apiRootUrl.asURL()
-            let result = try await handle(credentials: credentials, apiRootURL: apiRootURL, apiDetails: details.apiDetails, context: context)
+            let result = try await handle(
+                credentials: credentials,
+                apiRootURL: apiRootURL,
+                apiDetails: details.apiDetails,
+                context: context
+            )
             trackSuccess(url: details.parsedSiteUrl.url())
             return result
         } catch {
@@ -159,12 +211,18 @@ struct SelfHostedSiteAuthenticator {
     }
 
     @MainActor
-    private func authenticate(details: AutoDiscoveryAttemptSuccess, from viewController: UIViewController) async throws(SignInError) -> WpApiApplicationPasswordDetails {
+    private func authenticate(
+        details: AutoDiscoveryAttemptSuccess,
+        from viewController: UIViewController
+    ) async throws(SignInError) -> WpApiApplicationPasswordDetails {
         guard case let .applicationPasswords(authURL) = details.authentication else {
             let failure = AutoDiscoveryAttemptFailure.FetchAndParseApiRoot(
                 parsedSiteUrl: details.parsedSiteUrl,
                 apiRootUrl: details.apiRootUrl,
-                fetchAndParseApiRootFailure: .applicationPasswordsNotSupported(apiDetails: details.apiDetails, reason: nil)
+                fetchAndParseApiRootFailure: .applicationPasswordsNotSupported(
+                    apiDetails: details.apiDetails,
+                    reason: nil
+                )
             )
             throw .authentication(failure)
         }
@@ -179,8 +237,13 @@ struct SelfHostedSiteAuthenticator {
                 appId: appId,
                 successUrl: SelfHostedSiteAuthenticator.callbackURL.absoluteString,
                 rejectUrl: SelfHostedSiteAuthenticator.callbackURL.absoluteString
-            ).asURL()
-            let callback = try await authorize(url: loginURL, callbackURL: SelfHostedSiteAuthenticator.callbackURL, from: viewController)
+            )
+            .asURL()
+            let callback = try await authorize(
+                url: loginURL,
+                callbackURL: SelfHostedSiteAuthenticator.callbackURL,
+                from: viewController
+            )
             return try internalClient.credentials(from: callback)
         } catch {
             throw .authentication(error)
@@ -188,7 +251,12 @@ struct SelfHostedSiteAuthenticator {
     }
 
     @MainActor
-    private func authorize(url: URL, callbackURL: URL, from viewController: UIViewController, prefersEphemeralWebBrowserSession: Bool = false) async throws -> URL {
+    private func authorize(
+        url: URL,
+        callbackURL: URL,
+        from viewController: UIViewController,
+        prefersEphemeralWebBrowserSession: Bool = false
+    ) async throws -> URL {
         let provider = WebAuthenticationPresentationAnchorProvider(anchor: viewController.view.window ?? UIWindow())
         return try await withCheckedThrowingContinuation { continuation in
             let session = ASWebAuthenticationSession(
@@ -208,7 +276,12 @@ struct SelfHostedSiteAuthenticator {
     }
 
     @MainActor
-    private func handle(credentials: WpApiApplicationPasswordDetails, apiRootURL: URL, apiDetails: WpApiDetails, context: SignInContext) async throws(SignInError) -> TaggedManagedObjectID<Blog> {
+    private func handle(
+        credentials: WpApiApplicationPasswordDetails,
+        apiRootURL: URL,
+        apiDetails: WpApiDetails,
+        context: SignInContext
+    ) async throws(SignInError) -> TaggedManagedObjectID<Blog> {
         SVProgressHUD.show()
         defer {
             SVProgressHUD.dismiss()
@@ -218,11 +291,19 @@ struct SelfHostedSiteAuthenticator {
             throw .mismatchedUser(expectedUsername: username)
         }
 
-        let blog = try await createSite(credentials: credentials, apiRootURL: apiRootURL, apiDetails: apiDetails, context: context)
+        let blog = try await createSite(
+            credentials: credentials,
+            apiRootURL: apiRootURL,
+            apiDetails: apiDetails,
+            context: context
+        )
 
         switch context {
         case .default:
-            NotificationCenter.default.post(name: Foundation.Notification.Name(rawValue: WordPressAuthenticator.WPSigninDidFinishNotification), object: nil)
+            NotificationCenter.default.post(
+                name: Foundation.Notification.Name(rawValue: WordPressAuthenticator.WPSigninDidFinishNotification),
+                object: nil
+            )
         case .reauthentication:
             NotificationCenter.default.post(name: Self.applicationPasswordUpdated, object: nil)
         }
@@ -246,10 +327,14 @@ struct SelfHostedSiteAuthenticator {
         }
     }
 
-    private func loadSiteOptions(xmlrpc: URL, details: WpApiApplicationPasswordDetails) async throws -> [AnyHashable: Any] {
-        return try await withCheckedThrowingContinuation { continuation in
+    private func loadSiteOptions(
+        xmlrpc: URL,
+        details: WpApiApplicationPasswordDetails
+    ) async throws -> [AnyHashable: Any] {
+        try await withCheckedThrowingContinuation { continuation in
             let api = WordPressXMLRPCAPIFacade()
-            api.getBlogOptions(withEndpoint: xmlrpc, username: details.userLogin, password: details.password) { options in
+            api.getBlogOptions(withEndpoint: xmlrpc, username: details.userLogin, password: details.password) {
+                options in
                 continuation.resume(returning: options ?? [:])
             } failure: { error in
                 continuation.resume(throwing: error ?? Blog.BlogCredentialsError.incorrectCredentials)
@@ -264,7 +349,8 @@ struct SelfHostedSiteAuthenticator {
         context: SignInContext
     ) async throws(SignInError) -> TaggedManagedObjectID<Blog> {
         // We still need to set the `Blog.xmlrpc`, because it's used all across the app.
-        let xmlrpc = (try? await discoverXMLRPCEndpoint(site: credentials.siteUrl))
+        let xmlrpc =
+            (try? await discoverXMLRPCEndpoint(site: credentials.siteUrl))
             ?? URL(string: credentials.siteUrl)?.appending(component: "xmlrpc.php")
         guard let xmlrpc else {
             throw .xmlrpcEndpointNotFound
@@ -272,7 +358,10 @@ struct SelfHostedSiteAuthenticator {
 
         let api = WordPressAPI(
             urlSession: URLSession(configuration: .ephemeral),
-            apiRootUrl: try! ParsedUrl.parse(input: apiRootURL.absoluteString),
+            siteInfo: .selfHosted(
+                siteUrl: try! ParsedUrl.parse(input: credentials.siteUrl),
+                apiRoot: try! ParsedUrl.parse(input: apiRootURL.absoluteString)
+            ),
             authentication: WpAuthentication(username: credentials.userLogin, password: credentials.password)
         )
 
@@ -361,7 +450,7 @@ struct SelfHostedSiteAuthenticator {
         // This endpoint proxies to WP.com public api `site/<site-id>` endpoint. When the site is connected to WP.com,
         // we can use this endpoint to get a full response of `RemoteBlog`, including the "options".
         guard let auth = "\(credentials.userLogin):\(credentials.password)".data(using: .utf8)?.base64EncodedString()
-            else { return nil }
+        else { return nil }
 
         struct SiteRequestResponse: Decodable {
             var code: String
@@ -373,7 +462,7 @@ struct SelfHostedSiteAuthenticator {
 
         // Ignoring the error cases, because the site may not connected to WP.com.
         guard let (data, response) = try? await URLSession.shared.data(for: siteRequest),
-              (response as? HTTPURLResponse)?.statusCode == 200
+            (response as? HTTPURLResponse)?.statusCode == 200
         else { return nil }
 
         do {
@@ -390,22 +479,28 @@ struct SelfHostedSiteAuthenticator {
         }
     }
 
-    private func fetchJetpackConnectionData(apiRootURL: URL, credentials: WpApiApplicationPasswordDetails) async -> JetpackConnectionData? {
+    private func fetchJetpackConnectionData(
+        apiRootURL: URL,
+        credentials: WpApiApplicationPasswordDetails
+    ) async -> JetpackConnectionData? {
         let delegate = WpApiClientDelegate(
             authProvider: .staticWithAuth(auth: .init(username: credentials.userLogin, password: credentials.password)),
             requestExecutor: WpRequestExecutor(urlSession: .init(configuration: .ephemeral)),
             middlewarePipeline: .default,
             appNotifier: EmptyAppNotifier()
         )
-        let client = UniffiJetpackApiClient(apiUrlResolver: WpOrgSiteApiUrlResolver(apiRootUrl: try! ParsedUrl.from(url: apiRootURL)), delegate: delegate)
+        let client = UniffiJetpackApiClient(
+            apiUrlResolver: WpOrgSiteApiUrlResolver(apiRootUrl: try! ParsedUrl.from(url: apiRootURL)),
+            delegate: delegate
+        )
         return try? await client.connection().connectionData().data
     }
 
     private func parseCredentialsFromLaunchArguments() -> WpApiApplicationPasswordDetails? {
         let defaults = UserDefaults.standard
         guard let siteURL = defaults.string(forKey: "ui-test-site-url"),
-              let user = defaults.string(forKey: "ui-test-site-user"),
-              let pass = defaults.string(forKey: "ui-test-site-pass")
+            let user = defaults.string(forKey: "ui-test-site-user"),
+            let pass = defaults.string(forKey: "ui-test-site-pass")
         else {
             return nil
         }

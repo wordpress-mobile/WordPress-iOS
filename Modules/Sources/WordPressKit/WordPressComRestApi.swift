@@ -84,7 +84,7 @@ open class WordPressComRestApi: NSObject {
     public typealias FailureReponseBlock = (_ error: NSError, _ httpResponse: HTTPURLResponse?) -> Void
     public typealias APIResult<T> = WordPressAPIResult<HTTPAPIResponse<T>, WordPressComRestApiEndpointError>
 
-    @objc public static let apiBaseURL: URL = URL(string: "https://public-api.wordpress.com/")!
+    @objc public static let apiBaseURL = URL(string: "https://public-api.wordpress.com/")!
 
     @objc public static let defaultBackgroundSessionIdentifier = "org.wordpress.wpcomrestapi"
 

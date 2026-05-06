@@ -30,10 +30,8 @@ public extension CommentServiceRemoteREST {
                 return [:]
             }
 
-            return someParameters.reduce([String: AnyHashable]()) { result, pair in
-                var result = result
+            return someParameters.reduce(into: [String: AnyHashable]()) { result, pair in
                 result[pair.key.rawValue] = pair.value
-                return result
             }
         }()
 

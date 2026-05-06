@@ -36,7 +36,7 @@ extension CommentService {
             // Filter for comments authored by the current user, and return the most recent commentID (if any).
             success(remoteComments
                         .filter { $0.authorID == userID }
-                        .sorted { $0.date > $1.date }.first?.commentID ?? 0)
+                        .max { $0.date < $1.date }?.commentID ?? 0)
         } failure: { error in
             failure(error)
         }

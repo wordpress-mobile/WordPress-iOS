@@ -10,6 +10,9 @@ included:
 # Rules – Opt-in only, so we can progressively introduce new ones
 #
 only_rules:
+  # Prefer `Array(xs)` over `xs.map { $0 }`.
+  - array_init
+
   # Colons should be next to the identifier when specifying a type.
   - colon
 
@@ -45,6 +48,9 @@ only_rules:
   # Prefer checking `isEmpty` over comparing to empty string literal `""`.
   - empty_string
 
+  # Prefer `first(where:)` over `filter { }.first`.
+  - first_where
+
   # When calling the `joined` method on an array of strings, omit an
   # explicit empty-string separator since that is the default.
   - joined_default_parameter
@@ -66,10 +72,19 @@ only_rules:
   # Example: CGPoint.zero instead of CGPoint(x: 0, y: 0)
   - prefer_zero_over_explicit_init
 
+  # Prefer `reduce(into:_:)` over `reduce(_:_:)` for non-trivial accumulator types.
+  - reduce_into
+
+  # Type annotations are redundant when the type can be inferred.
+  - redundant_type_annotation
+
   - shorthand_optional_binding
 
   # Prefer `someBool.toggle()` over `someBool = !someBool`.
   - toggle_bool
+
+  # Prefer `min(by:)` / `max(by:)` over `sorted { ... }.first` / `.last`.
+  - sorted_first_last
 
   # Files should have a single trailing newline.
   - trailing_newline

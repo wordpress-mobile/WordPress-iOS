@@ -201,7 +201,7 @@ open class PlanServiceRemote: ServiceRemoteWordPressComREST {
             await wordPressComRestApi.perform(.get, URLString: path, parameters: parameters, type: ZendeskSiteContainer.self)
                 .eraseToError()
                 .flatMap { container in
-                    guard let metadata = container.body.sites.filter({ $0.ID == siteID }).first?.zendeskMetadata else {
+                    guard let metadata = container.body.sites.first(where: { $0.ID == siteID })?.zendeskMetadata else {
                         return .failure(PlanServiceRemoteError.noMetadata)
                     }
                     return .success(metadata)

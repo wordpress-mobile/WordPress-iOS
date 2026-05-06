@@ -82,7 +82,7 @@ class GoogleAuthenticator: NSObject {
 
     // MARK: - Properties
 
-    static var sharedInstance: GoogleAuthenticator = GoogleAuthenticator()
+    static var sharedInstance = GoogleAuthenticator()
     weak var loginDelegate: GoogleAuthenticatorLoginDelegate?
     weak var signupDelegate: GoogleAuthenticatorSignupDelegate?
     weak var delegate: GoogleAuthenticatorDelegate?

@@ -773,7 +773,7 @@ class SharingButtonsViewController: UITableViewController {
     /// Represents a section in the sharinging management table view.
     ///
     class SharingButtonsSection {
-        var rows: [SharingButtonsRow] = [SharingButtonsRow]()
+        var rows = [SharingButtonsRow]()
         var headerText: String?
         var footerText: String?
         var editing = false

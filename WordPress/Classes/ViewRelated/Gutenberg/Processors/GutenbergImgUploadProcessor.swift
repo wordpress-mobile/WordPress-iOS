@@ -21,9 +21,9 @@ class GutenbergImgUploadProcessor: GutenbergProcessor {
             }
             let classAttributes = imgClass.components(separatedBy: " ")
 
-            guard let imageIDAttribute = classAttributes.filter({ (value) -> Bool in
+            guard let imageIDAttribute = classAttributes.first(where: { (value) -> Bool in
                 value.hasPrefix(GutenbergImgUploadProcessor.imgClassIDPrefixAttribute)
-            }).first else {
+            }) else {
                 return
             }
 

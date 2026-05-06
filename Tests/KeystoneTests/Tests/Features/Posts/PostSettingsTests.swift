@@ -531,7 +531,11 @@ struct PostSettingsTests {
         settings.setTerms("tag1, tag2", forTaxonomySlug: "genre")
 
         // Then
-        #expect(settings.getTerms(forTaxonomySlug: "genre") == [PostSettings.Term(id: 0, name: "tag1"), PostSettings.Term(id: 0, name: "tag2")])
+        #expect(
+            settings.getTerms(forTaxonomySlug: "genre") == [
+                PostSettings.Term(id: 0, name: "tag1"), PostSettings.Term(id: 0, name: "tag2")
+            ]
+        )
         #expect(settings.getTerms(forTaxonomySlug: "nonexistent") == [])
 
         // Verify apply persists the terms to the post
@@ -573,7 +577,11 @@ struct PostSettingsTests {
         let settings = PostSettings(from: sourcePost)
 
         // Then — init captures the custom terms
-        #expect(settings.otherTerms == ["genre": [PostSettings.Term(id: 0, name: "fiction"), PostSettings.Term(id: 0, name: "drama")]])
+        #expect(
+            settings.otherTerms == [
+                "genre": [PostSettings.Term(id: 0, name: "fiction"), PostSettings.Term(id: 0, name: "drama")]
+            ]
+        )
 
         // When — apply to a different post
         let targetPost = PostBuilder(context, blog: blog).build()
@@ -588,7 +596,7 @@ struct PostSettingsTests {
         arguments: [
             ("swift, ios, testing", ["swift", "ios", "testing"]),
             ("", []),
-            ("  swift , , ios  ", ["swift", "ios"]),
+            ("  swift , , ios  ", ["swift", "ios"])
         ] as [(String, [String])]
     )
     func testMakeTags(input: String, expected: [String]) {
@@ -645,10 +653,12 @@ struct PostSettingsTests {
         let settings = PostSettings(from: post)
 
         // Then
-        #expect(settings.tags == [
-            PostSettings.Term(id: 0, name: "swift"),
-            PostSettings.Term(id: 0, name: "ios"),
-        ])
+        #expect(
+            settings.tags == [
+                PostSettings.Term(id: 0, name: "swift"),
+                PostSettings.Term(id: 0, name: "ios")
+            ]
+        )
     }
 
     @Test("init(from: Post) creates other terms with id=0")
@@ -663,10 +673,12 @@ struct PostSettingsTests {
         let settings = PostSettings(from: post)
 
         // Then
-        #expect(settings.otherTerms["genre"] == [
-            PostSettings.Term(id: 0, name: "fiction"),
-            PostSettings.Term(id: 0, name: "drama"),
-        ])
+        #expect(
+            settings.otherTerms["genre"] == [
+                PostSettings.Term(id: 0, name: "fiction"),
+                PostSettings.Term(id: 0, name: "drama")
+            ]
+        )
     }
 
     @Test("init(from: AnyPostWithEditContext) stores tag IDs with empty names")
@@ -678,10 +690,12 @@ struct PostSettingsTests {
         let settings = PostSettings(from: post)
 
         // Then
-        #expect(settings.tags == [
-            PostSettings.Term(id: 5, name: ""),
-            PostSettings.Term(id: 8, name: ""),
-        ])
+        #expect(
+            settings.tags == [
+                PostSettings.Term(id: 5, name: ""),
+                PostSettings.Term(id: 8, name: "")
+            ]
+        )
     }
 
     @Test("apply(to:) converts terms back to name strings")
@@ -694,7 +708,7 @@ struct PostSettingsTests {
         var settings = PostSettings(from: post)
         settings.tags = [
             PostSettings.Term(id: 0, name: "swift"),
-            PostSettings.Term(id: 0, name: "ios"),
+            PostSettings.Term(id: 0, name: "ios")
         ]
 
         // When
@@ -717,10 +731,12 @@ struct PostSettingsTests {
         settings.setTerms("tag1, tag2", forTaxonomySlug: "genre")
 
         // Then
-        #expect(settings.getTerms(forTaxonomySlug: "genre") == [
-            PostSettings.Term(id: 0, name: "tag1"),
-            PostSettings.Term(id: 0, name: "tag2"),
-        ])
+        #expect(
+            settings.getTerms(forTaxonomySlug: "genre") == [
+                PostSettings.Term(id: 0, name: "tag1"),
+                PostSettings.Term(id: 0, name: "tag2")
+            ]
+        )
     }
 
     @Test("makeUpdateParameters(from: AnyPostWithEditContext) produces TermIds from Term storage")
@@ -732,7 +748,7 @@ struct PostSettingsTests {
         // Simulate resolved tags with an additional new tag
         settings.tags = [
             PostSettings.Term(id: 5, name: "swift"),
-            PostSettings.Term(id: 8, name: "ios"),
+            PostSettings.Term(id: 8, name: "ios")
         ]
 
         // When
@@ -859,7 +875,7 @@ struct PostSettingsTests {
     func testMakeCreateParametersIncludesCustomTerms() {
         // Given
         let taxonomies = [
-            SiteTaxonomy.makeTaxonomy(slug: "genre", restBase: "genre"),
+            SiteTaxonomy.makeTaxonomy(slug: "genre", restBase: "genre")
         ]
         let existing = PostCreateParams(meta: nil)
 
@@ -867,7 +883,7 @@ struct PostSettingsTests {
         settings.otherTerms = [
             "genre": [
                 PostSettings.Term(id: 10, name: "fiction"),
-                PostSettings.Term(id: 20, name: "drama"),
+                PostSettings.Term(id: 20, name: "drama")
             ]
         ]
 
@@ -883,22 +899,24 @@ struct PostSettingsTests {
     func testInitFromCreateParamsReadsCustomTerms() {
         // Given
         let taxonomies = [
-            SiteTaxonomy.makeTaxonomy(slug: "genre", restBase: "genre"),
+            SiteTaxonomy.makeTaxonomy(slug: "genre", restBase: "genre")
         ]
         let termMap: [String: [TermId]] = ["genre": [TermId(10), TermId(20)]]
         let params = PostCreateParams(
             meta: nil,
-            additionalFields: AnyJson.fromTermIdMap(map: termMap)
+            additionalFields: WpAdditionalFields.fromTermIdMap(map: termMap)
         )
 
         // When
         let settings = PostSettings(from: params, taxonomies: taxonomies)
 
         // Then
-        #expect(settings.otherTerms["genre"] == [
-            PostSettings.Term(id: 10, name: ""),
-            PostSettings.Term(id: 20, name: ""),
-        ])
+        #expect(
+            settings.otherTerms["genre"] == [
+                PostSettings.Term(id: 10, name: ""),
+                PostSettings.Term(id: 20, name: "")
+            ]
+        )
     }
 
     @Test("init(from: PostCreateParams) populates parentPageID")

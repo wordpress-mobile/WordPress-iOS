@@ -318,7 +318,7 @@ private extension CommentDetailViewController {
         static let deleteButtonNormalColor = UIColor(light: UIAppColor.error, dark: UIAppColor.red(.shade40))
         static let deleteButtonHighlightColor: UIColor = .white
         static let trashButtonBackgroundColor = UIColor.quaternarySystemFill
-        static let trashButtonHighlightColor: UIColor = UIColor.tertiarySystemFill
+        static let trashButtonHighlightColor = UIColor.tertiarySystemFill
         static let notificationDetailSource = ["source": "notification_details"]
     }
 

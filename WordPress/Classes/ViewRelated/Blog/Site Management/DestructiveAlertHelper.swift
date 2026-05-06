@@ -13,9 +13,9 @@ class DestructiveAlertHelper: DestructiveAlertHelperLogic {
     func makeAlertWithConfirmation(title: String, message: String, valueToConfirm: String, destructiveActionTitle: String, destructiveAction: @escaping () -> Void) -> UIAlertController {
         self.valueToConfirm = valueToConfirm
 
-        let attributedMessage: NSMutableAttributedString = NSMutableAttributedString(string: message)
+        let attributedMessage = NSMutableAttributedString(string: message)
 
-        let attributedValue: NSMutableAttributedString = NSMutableAttributedString(string: valueToConfirm)
+        let attributedValue = NSMutableAttributedString(string: valueToConfirm)
         let paragraphStyle = NSMutableParagraphStyle()
         paragraphStyle.lineBreakMode = .byCharWrapping
         attributedValue.addAttribute(.paragraphStyle, value: paragraphStyle, range: NSMakeRange(0, attributedValue.string.count - 1))

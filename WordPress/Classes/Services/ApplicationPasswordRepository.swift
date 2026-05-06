@@ -30,13 +30,19 @@ import WordPressCore
 /// continuing to work as it is. The `createPasswordIfNeeded` function ensures the `Blog.getApplicationToken` returns the valid one.
 
 actor ApplicationPasswordRepository {
-    static let shared: ApplicationPasswordRepository = .init(coreDataStack: ContextManager.shared, keychain: KeychainUtils())
+    static let shared: ApplicationPasswordRepository = .init(
+        coreDataStack: ContextManager.shared,
+        keychain: KeychainUtils()
+    )
 
     private let coreDataStack: CoreDataStackSwift
     private let storage: ApplicationPasswordStorage
     private var inflightTasks: [TaggedManagedObjectID<Blog>: Task<ApplicationPassword, Error>] = [:]
 
-    static func forTesting(coreDataStack: CoreDataStackSwift, keychain: KeychainAccessible) -> ApplicationPasswordRepository {
+    static func forTesting(
+        coreDataStack: CoreDataStackSwift,
+        keychain: KeychainAccessible
+    ) -> ApplicationPasswordRepository {
         ApplicationPasswordRepository(coreDataStack: coreDataStack, keychain: keychain)
     }
 
@@ -53,11 +59,12 @@ actor ApplicationPasswordRepository {
             return (blog.asApplicationPasswordOwners(), try? WordPressSite(blog: blog))
         }
 
-        guard case let .selfHosted(_, _, apiRootURL, username, authToken) = site else {
+        guard case let .selfHosted(_, siteURL, apiRootURL, username, authToken) = site else {
             return
         }
 
-        let alreadyStored = await storage
+        let alreadyStored =
+            await storage
             .passwords(belongTo: owners)
             .contains { $0.password == authToken }
         guard !alreadyStored else { return }
@@ -66,10 +73,12 @@ actor ApplicationPasswordRepository {
         let api = WordPressAPI(
             urlSession: URLSession(configuration: .ephemeral),
             notifyingDelegate: PulseNetworkLogger(),
-            apiRootUrl: apiRootURL,
+            siteInfo: .selfHosted(siteUrl: try! ParsedUrl.from(url: siteURL), apiRoot: apiRootURL),
             authentication: .init(username: username, password: authToken)
         )
-        guard let uuid = try? await api.applicationPasswords.retrieveCurrentWithViewContext().data.uuid.uuid else { return }
+        guard let uuid = try? await api.applicationPasswords.retrieveCurrentWithViewContext().data.uuid.uuid else {
+            return
+        }
 
         try await storage.save(.init(password: .init(uuid: uuid, password: authToken), owners: owners))
     }
@@ -115,7 +124,10 @@ actor ApplicationPasswordRepository {
         }
     }
 
-    private func waitForInflightTask(_ inflight: Task<ApplicationPassword, Error>, blogId: TaggedManagedObjectID<Blog>) async -> WaitResult {
+    private func waitForInflightTask(
+        _ inflight: Task<ApplicationPassword, Error>,
+        blogId: TaggedManagedObjectID<Blog>
+    ) async -> WaitResult {
         let result = await inflight.result
 
         // If the current task, which is waiting for the inflight task result, is cancelled, the function should
@@ -125,18 +137,18 @@ actor ApplicationPasswordRepository {
         }
 
         return switch result {
-            case let .success(value):
-                .success(value)
-            case let .failure(error):
-                // If the inflight task is cancelled, the current Task should start a new call to create an application
-                // password.
-                if error.isCancellationError() {
-                    .restart
-                } else {
-                    // For other errors, we can still retry, but I don't see the need to do that.
-                    .failure(error)
-                }
+        case let .success(value):
+            .success(value)
+        case let .failure(error):
+            // If the inflight task is cancelled, the current Task should start a new call to create an application
+            // password.
+            if error.isCancellationError() {
+                .restart
+            } else {
+                // For other errors, we can still retry, but I don't see the need to do that.
+                .failure(error)
             }
+        }
     }
 }
 
@@ -159,11 +171,12 @@ private extension ApplicationPasswordRepository {
         let session = URLSession(configuration: .ephemeral)
         var validPasswords = [ApplicationPassword]()
         var invalidPasswords = [ApplicationPassword]()
+        let parsedSiteURL = try ParsedUrl.parse(input: siteUrl)
         for password in passwords {
             let api = WordPressAPI(
                 urlSession: session,
                 notifyingDelegate: PulseNetworkLogger(),
-                apiRootUrl: apiRootURL,
+                siteInfo: .selfHosted(siteUrl: parsedSiteURL, apiRoot: apiRootURL),
                 authentication: .init(username: siteUsername, password: password.password)
             )
             do {
@@ -183,7 +196,9 @@ private extension ApplicationPasswordRepository {
         }
 
         DDLogInfo("\(passwords.count) passwords stored for user (\(siteUsername)) on \(siteUrl).")
-        DDLogInfo("\(validPasswords.count) have been verified, and \(invalidPasswords.count) invalid ones have been deleted.")
+        DDLogInfo(
+            "\(validPasswords.count) have been verified, and \(invalidPasswords.count) invalid ones have been deleted."
+        )
 
         // Make sure the saved password in `Blog` is one of the valid ones.
         if !validPasswords.isEmpty {
@@ -228,7 +243,11 @@ private extension ApplicationPasswordRepository {
 
         let password: ApplicationPassword
         if let dotComApi, let dotComSiteId {
-            password = try await createPasswordOnJetpackSites(api: dotComApi, siteid: dotComSiteId.intValue, parameters: parameters)
+            password = try await createPasswordOnJetpackSites(
+                api: dotComApi,
+                siteid: dotComSiteId.intValue,
+                parameters: parameters
+            )
         } else if let dotOrgApi {
             password = try await createPasswordOnSelfHostedSites(api: dotOrgApi, parameters: parameters)
         } else {
@@ -250,7 +269,11 @@ private extension ApplicationPasswordRepository {
 
     // When a site is fully connected to Jetpack (a.k.a, "user connection"), we can use the Jetpack Proxy endpoint to
     // call its REST API.
-    func createPasswordOnJetpackSites(api: WordPressComRestApi, siteid: Int, parameters: [String: AnyHashable]) async throws -> ApplicationPassword {
+    func createPasswordOnJetpackSites(
+        api: WordPressComRestApi,
+        siteid: Int,
+        parameters: [String: AnyHashable]
+    ) async throws -> ApplicationPassword {
         let remote = JetpackProxyServiceRemote(wordPressComRestApi: api)
         let result = try await withCheckedThrowingContinuation { continuation in
             remote.proxyRequest(
@@ -272,7 +295,10 @@ private extension ApplicationPasswordRepository {
     }
 
     // For sites that are not on WP.com, we try to create an application password via wp-json REST API using `WordPressOrgRestApi`.
-    func createPasswordOnSelfHostedSites(api: WordPressOrgRestApi, parameters: [String: AnyHashable]) async throws -> ApplicationPassword {
+    func createPasswordOnSelfHostedSites(
+        api: WordPressOrgRestApi,
+        parameters: [String: AnyHashable]
+    ) async throws -> ApplicationPassword {
         // WordPressOrgRestApi uses cookie and nonce authentication to access the wp-json REST API. Cookies are
         // obtained by simulating wp-login with the site's username and password, and the nonce is fetched from wp-admin.
         // Some sites may block these authentication requests. We verify REST API accessibility before attempting
@@ -295,7 +321,11 @@ private extension ApplicationPasswordRepository {
         return try JSONDecoder().decode(ApplicationPassword.self, from: json)
     }
 
-    func assign(_ password: ApplicationPassword, apiRootURL: ParsedUrl, to blogId: TaggedManagedObjectID<Blog>) async throws {
+    func assign(
+        _ password: ApplicationPassword,
+        apiRootURL: ParsedUrl,
+        to blogId: TaggedManagedObjectID<Blog>
+    ) async throws {
         _ = try await updateSiteUsernameIfNeeded(blogId)
 
         let keychain = await storage.keychain

@@ -611,10 +611,8 @@ private extension SiteStatsPeriodViewModel {
         let countries = store.getTopCountries()?.countries ?? []
         return CountriesMap(minViewsCount: countries.last?.viewsCount ?? 0,
                             maxViewsCount: countries.first?.viewsCount ?? 0,
-                            data: countries.reduce([String: NSNumber]()) { (dict, country) in
-                                var nextDict = dict
-                                nextDict.updateValue(NSNumber(value: country.viewsCount), forKey: country.code)
-                                return nextDict
+                            data: countries.reduce(into: [String: NSNumber]()) { dict, country in
+                                dict.updateValue(NSNumber(value: country.viewsCount), forKey: country.code)
         })
     }
 

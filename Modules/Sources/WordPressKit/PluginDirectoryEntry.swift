@@ -139,12 +139,10 @@ extension PluginDirectoryEntry: Codable {
         let sections: [String: String] = [SectionKeys.changelog: changelogHTML,
                                           SectionKeys.description: descriptionHTML,
                                           SectionKeys.faq: faqHTML,
-                                          SectionKeys.installation: installationHTML].reduce([:]) {
-                                            var newValue = $0
+                                          SectionKeys.installation: installationHTML].reduce(into: [:]) {
                                             if let value = $1.value {
-                                                newValue[$1.key.rawValue] = value
+                                                $0[$1.key.rawValue] = value
                                             }
-                                            return newValue
         }
 
         try container.encode(sections, forKey: .sections)

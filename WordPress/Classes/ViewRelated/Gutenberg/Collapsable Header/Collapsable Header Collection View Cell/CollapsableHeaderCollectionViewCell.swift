@@ -102,12 +102,12 @@ class CollapsableHeaderCollectionViewCell: UICollectionViewCell, NibLoadable {
             return
         }
 
-        let borderWidthAnimation: CABasicAnimation = CABasicAnimation(keyPath: "borderWidth")
+        let borderWidthAnimation = CABasicAnimation(keyPath: "borderWidth")
         borderWidthAnimation.fromValue = imageView.layer.borderWidth
         borderWidthAnimation.toValue = imageBorderWidth
         borderWidthAnimation.duration = CollapsableHeaderCollectionViewCell.selectionAnimationSpeed
 
-        let borderColorAnimation: CABasicAnimation = CABasicAnimation(keyPath: "borderColor")
+        let borderColorAnimation = CABasicAnimation(keyPath: "borderColor")
         borderColorAnimation.fromValue = imageView.layer.borderColor
         borderColorAnimation.toValue = imageBorderColor
         borderColorAnimation.duration = CollapsableHeaderCollectionViewCell.selectionAnimationSpeed

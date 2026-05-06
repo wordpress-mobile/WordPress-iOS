@@ -82,7 +82,7 @@ class ShareCategoriesPickerViewController: UITableViewController {
 
         // Add the default site to the selected list if it's empty.
         var selected = categoryInfo.selectedCategories ?? []
-        if selected.isEmpty, let defaultCategory = categoryInfo.allCategories?.filter({$0.categoryID == categoryInfo.defaultCategoryID }).first {
+        if selected.isEmpty, let defaultCategory = categoryInfo.allCategories?.first(where: {$0.categoryID == categoryInfo.defaultCategoryID }) {
             selected.append(defaultCategory)
         }
         self.selectedCategories = selected

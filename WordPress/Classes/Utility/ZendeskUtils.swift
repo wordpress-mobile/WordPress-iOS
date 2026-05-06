@@ -46,7 +46,7 @@ protocol ZendeskUtilsProtocol {
 class ZendeskUtils: NSObject, ZendeskUtilsProtocol {
     // MARK: - Public Properties
 
-    static var sharedInstance: ZendeskUtils = ZendeskUtils(contextManager: ContextManager.shared)
+    static var sharedInstance = ZendeskUtils(contextManager: ContextManager.shared)
     static var zendeskEnabled = false
     static var unreadNotificationsCount = 0
 
