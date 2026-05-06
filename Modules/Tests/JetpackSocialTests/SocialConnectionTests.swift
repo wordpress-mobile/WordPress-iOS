@@ -86,7 +86,7 @@ struct SocialConnectionTests {
         )
 
         let model = SocialConnection(from: wire)
-        #expect(model.displayName == "")
+        #expect(model.displayName.isEmpty)
         #expect(model.externalHandle == nil)
     }
 
@@ -111,7 +111,7 @@ struct SocialConnectionTests {
         )
 
         let model = SocialConnection(from: wire)
-        #expect(model.externalID == "")
+        #expect(model.externalID.isEmpty)
         #expect(model.externalHandle == nil)
         #expect(model.profileLink == nil)
         #expect(model.profilePictureURL == nil)
