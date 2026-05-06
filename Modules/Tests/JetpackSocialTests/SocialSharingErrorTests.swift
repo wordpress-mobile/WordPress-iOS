@@ -11,6 +11,7 @@ struct SocialSharingErrorTests {
             .notAuthenticated,
             .connectionNotFound(id: "42"),
             .keyringNotFound(id: 99),
+            .noKeyringForService(serviceLabel: "Mastodon"),
             .decoding(NSError(domain: "t", code: 2)),
             .unknown(NSError(domain: "t", code: 3))
         ]

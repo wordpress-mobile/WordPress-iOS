@@ -61,7 +61,7 @@ public enum Strings {
 
         public static let footer = NSLocalizedString(
             "jetpackSocial.manageConnections.footer",
-            value: "Connect your favourite social media services to automatically share new posts with friends.",
+            value: "Connect your favorite social media services to automatically share new posts with friends.",
             comment: "Footer caption under the list of services in the Connect Account picker modal."
         )
 
@@ -163,7 +163,7 @@ public enum Strings {
         public static let confirm = NSLocalizedString(
             "jetpackSocial.accountConfirmation.confirm",
             value: "Confirm",
-            comment: "Nav-bar button that finalises the social connection after choosing an account."
+            comment: "Nav-bar button that finalizes the social connection after choosing an account."
         )
 
         public static let connectedSectionTitle = NSLocalizedString(
