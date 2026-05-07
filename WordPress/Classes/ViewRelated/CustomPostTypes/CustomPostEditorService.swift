@@ -85,9 +85,10 @@ class CustomPostEditorService {
         let capabilities = PostSettingsCapabilities(from: details)
         // At the moment, category & tags are separated from custom taxonomies. We can unify them as taxonomies later,
         // by which point we won't need this filter logic.
-        self.taxonomies = (try? blog.taxonomies
-            .filter { capabilities.customTaxonomySlugs.contains($0.slug) }
-            .sorted(using: KeyPathComparator(\.name))) ?? []
+        self.taxonomies =
+            (try? blog.taxonomies
+                .filter { capabilities.customTaxonomySlugs.contains($0.slug) }
+                .sorted(using: KeyPathComparator(\.name))) ?? []
 
         switch self.state {
         case let .newPost(params):
@@ -195,7 +196,8 @@ class CustomPostEditorService {
         guard try await !hasBeenModified(post: post) else { throw PostUpdateError.conflicts }
 
         let endpoint = details.toPostEndpointType()
-        let updatedPost = try await wpService.posts().updatePost(endpointType: endpoint, postId: post.id, params: params)
+        let updatedPost = try await wpService.posts()
+            .updatePost(endpointType: endpoint, postId: post.id, params: params)
         state = .existingPost(updatedPost)
         initialSettings = settings
 
@@ -264,7 +266,8 @@ extension PostCreateParams {
         params.status = .draft
 
         if let categoryID = blog.settings?.defaultCategoryID,
-           categoryID != PostCategory.uncategorized {
+            categoryID != PostCategory.uncategorized
+        {
             params.categories = [TermId(categoryID.int64Value)]
         }
 

@@ -55,48 +55,58 @@ struct CustomPostTabView: View {
         self.blog = blog
         self.presentingViewController = presentingViewController
 
-        _allViewModel = State(initialValue: CustomPostListViewModel(
-            client: client,
-            service: service,
-            details: details,
-            filter: CustomPostListFilter(tab: .all),
-            blog: blog,
-            showsHierarchyIfApplicable: true,
-            presentingViewController: presentingViewController
-        ))
-        _publishedViewModel = State(initialValue: CustomPostListViewModel(
-            client: client,
-            service: service,
-            details: details,
-            filter: CustomPostListFilter(tab: .published),
-            blog: blog,
-            showsHierarchyIfApplicable: true,
-            presentingViewController: presentingViewController
-        ))
-        _draftsViewModel = State(initialValue: CustomPostListViewModel(
-            client: client,
-            service: service,
-            details: details,
-            filter: CustomPostListFilter(tab: .drafts),
-            blog: blog,
-            presentingViewController: presentingViewController
-        ))
-        _scheduledViewModel = State(initialValue: CustomPostListViewModel(
-            client: client,
-            service: service,
-            details: details,
-            filter: CustomPostListFilter(tab: .scheduled),
-            blog: blog,
-            presentingViewController: presentingViewController
-        ))
-        _trashViewModel = State(initialValue: CustomPostListViewModel(
-            client: client,
-            service: service,
-            details: details,
-            filter: CustomPostListFilter(tab: .trash),
-            blog: blog,
-            presentingViewController: presentingViewController
-        ))
+        _allViewModel = State(
+            initialValue: CustomPostListViewModel(
+                client: client,
+                service: service,
+                details: details,
+                filter: CustomPostListFilter(tab: .all),
+                blog: blog,
+                showsHierarchyIfApplicable: true,
+                presentingViewController: presentingViewController
+            )
+        )
+        _publishedViewModel = State(
+            initialValue: CustomPostListViewModel(
+                client: client,
+                service: service,
+                details: details,
+                filter: CustomPostListFilter(tab: .published),
+                blog: blog,
+                showsHierarchyIfApplicable: true,
+                presentingViewController: presentingViewController
+            )
+        )
+        _draftsViewModel = State(
+            initialValue: CustomPostListViewModel(
+                client: client,
+                service: service,
+                details: details,
+                filter: CustomPostListFilter(tab: .drafts),
+                blog: blog,
+                presentingViewController: presentingViewController
+            )
+        )
+        _scheduledViewModel = State(
+            initialValue: CustomPostListViewModel(
+                client: client,
+                service: service,
+                details: details,
+                filter: CustomPostListFilter(tab: .scheduled),
+                blog: blog,
+                presentingViewController: presentingViewController
+            )
+        )
+        _trashViewModel = State(
+            initialValue: CustomPostListViewModel(
+                client: client,
+                service: service,
+                details: details,
+                filter: CustomPostListFilter(tab: .trash),
+                blog: blog,
+                presentingViewController: presentingViewController
+            )
+        )
 
         _authorFilter = .authorFilter(for: TaggedManagedObjectID(blog))
         self.applyAuthorFilter()
@@ -204,8 +214,9 @@ struct CustomPostTabView: View {
 
     private var currentUserAvatarURL: URL? {
         guard let userID = blog.userID,
-              let author = blog.getAuthorWith(id: userID),
-              let urlString = author.avatarURL else {
+            let author = blog.getAuthorWith(id: userID),
+            let urlString = author.avatarURL
+        else {
             return nil
         }
         return URL(string: urlString)
@@ -418,6 +429,7 @@ private enum Strings {
     static let betaBadge = NSLocalizedString(
         "customPostType.navigation.betaBadge",
         value: "BETA",
-        comment: "Badge label indicating that custom post type support is a beta feature. Displayed next to the navigation title."
+        comment:
+            "Badge label indicating that custom post type support is a beta feature. Displayed next to the navigation title."
     )
 }
