@@ -42,6 +42,7 @@ public struct SocialConnectionDetailView: View {
                 ZStack {
                     Color(.systemBackground).opacity(0.7)
                     ProgressView()
+                        .controlSize(.large)
                 }
                 .ignoresSafeArea()
             }
