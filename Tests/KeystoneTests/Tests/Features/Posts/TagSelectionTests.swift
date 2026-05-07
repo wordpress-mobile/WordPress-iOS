@@ -114,7 +114,11 @@ struct TagSelectionTests {
     // MARK: - Selection callback
 
     @Test
-    func selectionCallbackFiltersOutPendingItems() async {
+    func selectionCallbackEmitsPendingItemsImmediately() async {
+        // Regression coverage for the missing-tags bug: if the user publishes before the
+        // async search/create completes, the parent's tag list must still contain the
+        // typed name. The callback must therefore fire synchronously on `addNewTag` with
+        // the pending (`id == 0`) term so the parent never observes an empty selection.
         let mock = MockService(tags: ["Foo", "Bar"])
         var callbackTags: [TagsViewModel.SelectedTerm] = []
         let viewModel = TagsViewModel(
@@ -125,10 +129,15 @@ struct TagSelectionTests {
             })
         )
 
-        _ = viewModel.addNewTag(named: "Baz")
+        // Do not await — we want to observe the state before the create task can run.
+        let task = viewModel.addNewTag(named: "Baz")
 
-        // The pending item (id == 0) should be filtered out of the callback
-        #expect(callbackTags.isEmpty)
+        #expect(callbackTags.count == 1)
+        #expect(callbackTags[0].name == "Baz")
+        #expect(callbackTags[0].id == 0)
+        #expect(callbackTags[0].isPending)
+
+        await task?.value
     }
 
     @Test

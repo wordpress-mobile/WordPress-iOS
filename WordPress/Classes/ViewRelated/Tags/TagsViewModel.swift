@@ -30,7 +30,12 @@ class TagsViewModel: ObservableObject {
     @Published private(set) var selectedTags: [SelectedTerm] {
         didSet {
             if case .selection(let onSelectedTagsChanged) = mode {
-                onSelectedTagsChanged?(selectedTags.filter { !$0.isPending })
+                // Emit the full selection, including pending (`id == 0`) terms.
+                // Filtering them here would silently drop user-typed tag names from the parent's
+                // selection state if publish/save runs before the async search/create completes.
+                // Consumers that require resolved IDs (e.g. custom-post REST flows) resolve them
+                // at save time via `TermResolutionService.resolveIDs(for:)`.
+                onSelectedTagsChanged?(selectedTags)
             }
         }
     }
