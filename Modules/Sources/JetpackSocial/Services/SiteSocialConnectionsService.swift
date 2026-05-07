@@ -238,7 +238,7 @@ public final class SiteSocialConnectionsService: ObservableObject {
     }
 }
 
-private let log: Logger = Logger(label: "org.wordpress.jetpack-social")
+private let log = Logger(label: "org.wordpress.jetpack-social")
 
 private extension Task where Success == Result<[SocialConnection], SocialSharingError>, Failure == Never {
     var socialConnectionValue: [SocialConnection] {
