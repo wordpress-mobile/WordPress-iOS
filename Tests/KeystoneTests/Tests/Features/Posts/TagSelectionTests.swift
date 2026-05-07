@@ -117,9 +117,13 @@ struct TagSelectionTests {
     func selectionCallbackFiltersOutPendingItems() async {
         let mock = MockService(tags: ["Foo", "Bar"])
         var callbackTags: [TagsViewModel.SelectedTerm] = []
-        let viewModel = TagsViewModel(taxonomy: nil, service: mock, mode: .selection(onSelectedTagsChanged: { tags in
-            callbackTags = tags
-        }))
+        let viewModel = TagsViewModel(
+            taxonomy: nil,
+            service: mock,
+            mode: .selection(onSelectedTagsChanged: { tags in
+                callbackTags = tags
+            })
+        )
 
         _ = viewModel.addNewTag(named: "Baz")
 
@@ -132,9 +136,13 @@ struct TagSelectionTests {
         let mock = MockService(tags: ["Foo", "Bar"])
         let tags = await mock.tags
         var callbackTags: [TagsViewModel.SelectedTerm] = []
-        let viewModel = TagsViewModel(taxonomy: nil, service: mock, mode: .selection(onSelectedTagsChanged: { tags in
-            callbackTags = tags
-        }))
+        let viewModel = TagsViewModel(
+            taxonomy: nil,
+            service: mock,
+            mode: .selection(onSelectedTagsChanged: { tags in
+                callbackTags = tags
+            })
+        )
 
         viewModel.toggleSelection(for: tags[0])
 
@@ -217,7 +225,11 @@ private actor MockService: TaxonomyServiceProtocol {
 
         let lowercasedName = name.lowercased()
         if tags.contains(where: { $0.name.lowercased() == lowercasedName }) {
-            let error = NSError(domain: "MockService", code: -1, userInfo: [NSLocalizedDescriptionKey: "Tag already exists"])
+            let error = NSError(
+                domain: "MockService",
+                code: -1,
+                userInfo: [NSLocalizedDescriptionKey: "Tag already exists"]
+            )
             throw error
         }
 
@@ -235,7 +247,11 @@ private actor MockService: TaxonomyServiceProtocol {
         return newTag
     }
 
-    func updateTag(_ term: AnyTermWithViewContext, name: String, description: String) async throws -> AnyTermWithViewContext {
+    func updateTag(
+        _ term: AnyTermWithViewContext,
+        name: String,
+        description: String
+    ) async throws -> AnyTermWithViewContext {
         guard let index = tags.firstIndex(where: { $0.id == term.id }) else {
             let error = NSError(domain: "MockService", code: -2, userInfo: [NSLocalizedDescriptionKey: "Tag not found"])
             throw error
