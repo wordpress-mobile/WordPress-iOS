@@ -287,4 +287,58 @@ public enum Strings {
             comment: "Navigation bar title of the service picker modal shown when adding a new social connection."
         )
     }
+
+    public enum PostSection {
+        public static let header = NSLocalizedString(
+            "jetpackSocial.postSection.header",
+            value: "Share to social media",
+            comment: "Title of the row that opens the social sharing detail screen in Post Settings."
+        )
+
+        public static let togglesFooter = NSLocalizedString(
+            "jetpackSocial.postSection.togglesFooter",
+            value: "When this post is published, it will be shared to the enabled accounts.",
+            comment: "Footer below the per-connection toggles on the social sharing detail screen."
+        )
+
+        public static let emptyCaption = NSLocalizedString(
+            "jetpackSocial.postSection.empty",
+            value: "No social accounts connected yet.",
+            comment: "Caption shown when the site has no social connections."
+        )
+
+        public static let customMessageLabel = NSLocalizedString(
+            "jetpackSocial.postSection.customMessage",
+            value: "Custom message",
+            comment: "Label above the optional custom social-sharing message field."
+        )
+
+        public static let customMessagePlaceholder = NSLocalizedString(
+            "jetpackSocial.postSection.customMessagePlaceholder",
+            value: "Write a custom message for your social audience here.",
+            comment: "Placeholder for the optional custom social-sharing message field."
+        )
+
+        public static let customMessageFooter = NSLocalizedString(
+            "jetpackSocial.postSection.customMessageFooter",
+            value: """
+                Customize the message you want to share.
+                If you don't add your own text here, we'll use the post's title as the message.
+                """,
+            comment: "Footer caption below the custom social-sharing message field."
+        )
+
+        public static let retry = NSLocalizedString(
+            "jetpackSocial.postSection.retry",
+            value: "Retry",
+            comment: "Button to retry a failed load of the connections list."
+        )
+
+        public static let summaryFormat = NSLocalizedString(
+            "jetpackSocial.postSection.summary.format",
+            value: "%1$d of %2$d",
+            comment:
+                "Trailing value on the 'Share to Social' post settings row. %1$d is the enabled count, %2$d is the total."
+        )
+    }
 }

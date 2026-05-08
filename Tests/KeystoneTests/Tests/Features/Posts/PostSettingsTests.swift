@@ -1,6 +1,7 @@
 import Testing
 import Foundation
 import CoreData
+import JetpackSocial
 import WordPressAPIInternal
 @testable import WordPress
 @testable import WordPressData
@@ -847,6 +848,81 @@ struct PostSettingsTests {
         #expect(params.format == .image)
     }
 
+    @Test("makeUpdateParameters preserves publicize message when social v2 is unavailable")
+    func testMakeRemoteUpdateParametersPreservesPublicizeMessageWhenSocialContextIsNil() {
+        // Given: the fetched post has a saved Publicize message, but Social v2
+        // is not active for this save path.
+        let post = makeRemotePost(meta: PostMeta().addingPublicizeMessage("Saved message"))
+        var settings = PostSettings(from: post)
+        settings.slug = "changed-slug"
+
+        // When
+        let params = settings.makeUpdateParameters(from: post)
+
+        // Then: an unrelated settings save must not clear the saved message.
+        #expect(params.slug == "changed-slug")
+        #expect(params.meta == nil)
+    }
+
+    @Test("makeUpdateParameters(from: AnyPostWithEditContext) clears publicize message when social v2 draft is empty")
+    func testMakeRemoteUpdateParametersClearsPublicizeMessageFromEmptySocialDraft() {
+        // Given
+        let post = makeRemotePost(meta: PostMeta().addingPublicizeMessage("Saved message"))
+        var settings = PostSettings(from: post)
+        settings.socialSharingDraft = PostSocialSharingDraft(customMessage: nil)
+
+        // When
+        let params = settings.makeUpdateParameters(from: post)
+
+        // Then: an active Social v2 draft owns the field, so nil/empty clears it.
+        #expect(params.meta != nil)
+        #expect(params.meta?.publicizeMessage == nil)
+    }
+
+    @Test("makeUpdateParameters(from: AnyPostWithEditContext) adds publicize message from social v2 draft")
+    func testMakeRemoteUpdateParametersAddsPublicizeMessageFromSocialDraft() {
+        // Given
+        let post = makeRemotePost()
+        var settings = PostSettings(from: post)
+        settings.socialSharingDraft = PostSocialSharingDraft(customMessage: "Share this")
+
+        // When
+        let params = settings.makeUpdateParameters(from: post)
+
+        // Then
+        #expect(params.meta?.publicizeMessage == "Share this")
+    }
+
+    @Test("makeUpdateParameters(from: AnyPostWithEditContext) encodes social connections")
+    func testMakeRemoteUpdateParametersAddsPublicizeConnectionsFromSocialDraft() throws {
+        // Given
+        let post = makeRemotePost()
+        var settings = PostSettings(from: post)
+        settings.socialSharingDraft = PostSocialSharingDraft(connectionsByID: [
+            "1": .init(id: "1", enabled: true),
+            "2": .init(id: "2", enabled: false),
+            "3": .init(id: "3", enabled: true)
+        ])
+
+        // When
+        let params = settings.makeUpdateParameters(from: post)
+
+        // Then
+        let entries = try #require(params.additionalFields?.arrayValueForKey(key: "jetpack_publicize_connections"))
+        let flagsByID = Dictionary(
+            uniqueKeysWithValues: entries.compactMap { entry -> (String, Bool)? in
+                guard case let .object(dict) = entry,
+                    case let .string(id)? = dict["connection_id"],
+                    case let .bool(enabled)? = dict["enabled"]
+                else {
+                    return nil
+                }
+                return (id, enabled)
+            }
+        )
+        #expect(flagsByID == ["1": true, "2": false, "3": true])
+    }
+
     @Test("Resolved terms (id > 0) are equal when ids match, regardless of name")
     func testResolvedTermEquality() {
         let term1 = PostSettings.Term(id: 5, name: "swift")
@@ -1019,7 +1095,8 @@ private func makeRemotePost(
     tags: [TermId]? = nil,
     categories: [TermId]? = nil,
     featuredMedia: MediaId? = nil,
-    format: PostFormat? = nil
+    format: PostFormat? = nil,
+    meta: PostMeta? = nil
 ) -> AnyPostWithEditContext {
     AnyPostWithEditContext(
         id: PostId(1),
@@ -1043,7 +1120,7 @@ private func makeRemotePost(
         commentStatus: .open,
         pingStatus: .open,
         format: format,
-        meta: nil,
+        meta: meta,
         sticky: nil,
         template: "",
         categories: categories,

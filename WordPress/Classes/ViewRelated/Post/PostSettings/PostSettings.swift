@@ -1,4 +1,5 @@
 import Foundation
+import JetpackSocial
 import WordPressAPIInternal
 import WordPressData
 import WordPressKit
@@ -65,6 +66,9 @@ struct PostSettings: Hashable {
     var postFormat: String?
     var isStickyPost = false
     var sharing: PostSocialSharingSettings?
+    /// Publicize draft state used for change detection and REST parameter encoding.
+    /// When available, `connectionsByID` carries the full post-level connection state.
+    var socialSharingDraft: PostSocialSharingDraft?
     var allowComments = true
     var allowPings = true
 
@@ -443,6 +447,24 @@ struct PostSettings: Hashable {
             params.additionalFields = WpAdditionalFields.fromTermIdMap(map: customTermChanges)
         }
 
+        // Social connections
+        if let connectionsByID = socialSharingDraft?.connectionsByID, !connectionsByID.isEmpty {
+            params.additionalFields = (params.additionalFields ?? WpAdditionalFields())
+                .addingPublicizeConnections(connectionsByID)
+        }
+
+        // Social meta. The custom message is sent only when it differs from
+        // the post's saved value. An emptied field maps to an empty string so
+        // that the partial-update PATCH actually clears the previous value
+        // server-side, instead of being omitted from the meta dictionary.
+        if let socialSharingDraft {
+            let originalMessage = post.meta?.publicizeMessage
+            let newMessage = socialSharingDraft.customMessage ?? ""
+            if originalMessage != (newMessage.isEmpty ? nil : newMessage) {
+                params.meta = (params.meta ?? PostMeta()).addingPublicizeMessage(newMessage)
+            }
+        }
+
         let postParentPageID = post.parent.map { Int($0) }
         if postParentPageID != self.parentPageID {
             params.parent = self.parentPageID.map { PostId(Int64($0)) } ?? PostId(0)
@@ -465,10 +487,16 @@ struct PostSettings: Hashable {
                 customTerms[taxonomy.restBase] = termIds
             }
         }
-        let fields: WpAdditionalFields? =
+        var fields: WpAdditionalFields? =
             customTerms.isEmpty
             ? nil
             : WpAdditionalFields.fromTermIdMap(map: customTerms)
+
+        // Social connections
+        if let connectionsByID = socialSharingDraft?.connectionsByID, !connectionsByID.isEmpty {
+            fields = (fields ?? WpAdditionalFields())
+                .addingPublicizeConnections(connectionsByID)
+        }
 
         var params = existing
         params.dateGmt = publishDate
@@ -486,6 +514,12 @@ struct PostSettings: Hashable {
         params.tags = tagIds
         params.parent = parentPageID.map { PostId(Int64($0)) }
         params.additionalFields = fields
+
+        // Social meta
+        if let message = socialSharingDraft?.customMessage, !message.isEmpty {
+            params.meta = (params.meta ?? PostMeta()).addingPublicizeMessage(message)
+        }
+
         return params
     }
 }

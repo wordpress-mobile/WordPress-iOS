@@ -8,6 +8,7 @@ public final class AddConnectionCoordinator {
     private let connectionsService: SiteSocialConnectionsService
     private let authenticator: any SocialOAuthAuthenticator
     private weak var presenter: UIViewController?
+    private let onConnectionCreated: ((SocialConnection) -> Void)?
 
     private var navController: UINavigationController?
     private var confirmationHost: UIHostingController<AccountConfirmationView>?
@@ -17,11 +18,13 @@ public final class AddConnectionCoordinator {
     public init(
         connectionsService: SiteSocialConnectionsService,
         authenticator: any SocialOAuthAuthenticator,
-        presenter: UIViewController
+        presenter: UIViewController,
+        onConnectionCreated: ((SocialConnection) -> Void)? = nil
     ) {
         self.connectionsService = connectionsService
         self.authenticator = authenticator
         self.presenter = presenter
+        self.onConnectionCreated = onConnectionCreated
     }
 
     public func start() {
@@ -97,7 +100,8 @@ public final class AddConnectionCoordinator {
             onFinish: { [weak self] result in
                 guard let self else { return }
                 switch result {
-                case .success:
+                case .success(let connection):
+                    self.onConnectionCreated?(connection)
                     self.dismissNav()
                 case .failure(let error):
                     self.dismissAndAlertFailure(error)
