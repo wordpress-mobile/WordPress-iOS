@@ -13,7 +13,8 @@ class GutenbergVideoUploadProcessor: Processor {
         self.remoteURLString = remoteURLString
     }
 
-    lazy var videoHtmlProcessor = HTMLProcessor(for: "video", replacer: { (video) in
+    lazy var videoHtmlProcessor = HTMLProcessor(for: "video", replacer: { [weak self] (video) in
+        guard let self else { return "" }
         var attributes = video.attributes
 
         attributes.set(.string(self.remoteURLString), forKey: "src")
@@ -30,8 +31,9 @@ class GutenbergVideoUploadProcessor: Processor {
         static var id = "id"
     }
 
-    lazy var videoBlockProcessor = GutenbergBlockProcessor(for: VideoBlockKeys.name, replacer: { videoBlock in
-        guard let mediaID = videoBlock.attributes[VideoBlockKeys.id] as? Int,
+    lazy var videoBlockProcessor = GutenbergBlockProcessor(for: VideoBlockKeys.name, replacer: { [weak self] videoBlock in
+        guard let self,
+            let mediaID = videoBlock.attributes[VideoBlockKeys.id] as? Int,
             mediaID == self.mediaUploadID else {
                 return nil
         }
@@ -53,8 +55,9 @@ class GutenbergVideoUploadProcessor: Processor {
         static var id = "mediaId"
     }
 
-    lazy var mediaTextVideoBlockProcessor = GutenbergBlockProcessor(for: MediaTextBlockKeys.name, replacer: { videoBlock in
-        guard let mediaID = videoBlock.attributes[MediaTextBlockKeys.id] as? Int,
+    lazy var mediaTextVideoBlockProcessor = GutenbergBlockProcessor(for: MediaTextBlockKeys.name, replacer: { [weak self] videoBlock in
+        guard let self,
+            let mediaID = videoBlock.attributes[MediaTextBlockKeys.id] as? Int,
             mediaID == self.mediaUploadID else {
                 return nil
         }
