@@ -76,6 +76,11 @@ class AnnouncementsDataStoreTests: XCTestCase {
 
     private var subscription: Receipt?
 
+    override func tearDown() {
+        subscription = nil
+        super.tearDown()
+    }
+
     /// local cache contains valid announcements
     func testLocalAnnouncementsRetrieved() {
         // Given
