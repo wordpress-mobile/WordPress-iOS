@@ -88,8 +88,10 @@ class CustomPostEditorViewController: PostGBKEditorViewController {
         undoButton.isEnabled = false
     }
 
-    override func editor(_ viewController: GutenbergKit.EditorViewController, didUpdateHistoryState state: EditorState)
-    {
+    override func editor(
+        _ viewController: GutenbergKit.EditorViewController,
+        didUpdateHistoryState state: EditorState
+    ) {
         redoButton.isEnabled = state.hasRedo
         undoButton.isEnabled = state.hasUndo
     }
