@@ -11,6 +11,7 @@ class ExperimentalFeaturesDataProvider: ExperimentalFeaturesViewModel.DataProvid
         RemoteFeatureFlag.newGutenberg,
         FeatureFlag.customPostTypes,
         FeatureFlag.newSupport,
+        FeatureFlag.socialSharingV2,
     ]
 
     private let flagStore = FeatureFlagOverrideStore()
