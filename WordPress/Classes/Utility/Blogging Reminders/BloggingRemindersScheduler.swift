@@ -380,7 +380,7 @@ class BloggingRemindersScheduler {
         let uuidString = UUID().uuidString
         let request = UNNotificationRequest(identifier: uuidString, content: content, trigger: trigger)
 
-        notificationScheduler.add(request) { (error) in
+        notificationScheduler.add(request) { error in
             if let error {
                 DDLogError("\(error)")
             }

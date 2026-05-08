@@ -263,7 +263,7 @@ private extension TypeBasedExtensionContentExtractor {
         for provider in itemProviders {
             syncGroup.enter()
             // Remember, this is an async call....
-            provider.loadItem(forTypeIdentifier: acceptedType, options: nil) { (payload, _) in
+            provider.loadItem(forTypeIdentifier: acceptedType, options: nil) { payload, _ in
                 let payload = payload as? Payload
                 let result = payload.flatMap(self.convert(payload:))
                 if let result {

@@ -46,14 +46,14 @@ open class HTTPAuthenticationAlertController {
 
         let cancelAction = UIAlertAction(title: NSLocalizedString("Cancel", comment: "Cancel button label"),
                                          style: .default,
-                                         handler: { (_) in
+                                         handler: { _ in
                                             executeHandlerForChallenge(challenge, disposition: .cancelAuthenticationChallenge, credential: nil)
         })
         controller.addAction(cancelAction)
 
         let trustAction = UIAlertAction(title: NSLocalizedString("Trust", comment: "Connect when the SSL certificate is invalid"),
                                         style: .default,
-                                        handler: { (_) in
+                                        handler: { _ in
                                             let credential = URLCredential(trust: challenge.protectionSpace.serverTrust!)
                                             URLCredentialStorage.shared.setDefaultCredential(credential, for: challenge.protectionSpace)
                                             executeHandlerForChallenge(challenge, disposition: .useCredential, credential: credential)
@@ -69,25 +69,25 @@ open class HTTPAuthenticationAlertController {
                                             message: message,
                                             preferredStyle: .alert)
 
-        controller.addTextField( configurationHandler: { (textField) in
+        controller.addTextField( configurationHandler: { textField in
             textField.placeholder = NSLocalizedString("Username", comment: "Login dialog username placeholder")
         })
 
-        controller.addTextField(configurationHandler: { (textField) in
+        controller.addTextField(configurationHandler: { textField in
             textField.placeholder = NSLocalizedString("Password", comment: "Login dialog password placeholder")
             textField.isSecureTextEntry = true
         })
 
         let cancelAction = UIAlertAction(title: NSLocalizedString("Cancel", comment: "Cancel button label"),
                                          style: .default,
-                                         handler: { (_) in
+                                         handler: { _ in
                                             executeHandlerForChallenge(challenge, disposition: .cancelAuthenticationChallenge, credential: nil)
         })
         controller.addAction(cancelAction)
 
         let loginAction = UIAlertAction(title: NSLocalizedString("Log In", comment: "Log In button label."),
                                         style: .default,
-                                        handler: { (_) in
+                                        handler: { _ in
                                             guard let username = controller.textFields?.first?.text,
                                                 let password = controller.textFields?.last?.text else {
                                                     executeHandlerForChallenge(challenge, disposition: .cancelAuthenticationChallenge, credential: nil)

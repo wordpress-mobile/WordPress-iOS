@@ -588,7 +588,7 @@ private extension ZendeskUtils {
                 return
         }
 
-        ZDKPushProvider(zendesk: zendeskInstance).register(deviceIdentifier: deviceID, locale: appLanguage) { (_, error) in
+        ZDKPushProvider(zendesk: zendeskInstance).register(deviceIdentifier: deviceID, locale: appLanguage) { _, error in
             if let error {
                 DDLogInfo("Zendesk couldn't register device: \(deviceID). Error: \(error)")
             } else {
@@ -872,14 +872,14 @@ private extension ZendeskUtils {
 
         // Cancel Action
         if let cancel = alertOptions.cancel {
-            alertController.addCancelActionWithTitle(cancel) { (_) in
+            alertController.addCancelActionWithTitle(cancel) { _ in
                 completion(false)
                 return
             }
         }
 
         // Submit Action
-        let submitAction = alertController.addDefaultActionWithTitle(alertOptions.submit) { [weak alertController] (_) in
+        let submitAction = alertController.addDefaultActionWithTitle(alertOptions.submit) { [weak alertController] _ in
             guard let email = alertController?.textFields?.first?.text, !email.isEmpty else {
                 completion(false)
                 return

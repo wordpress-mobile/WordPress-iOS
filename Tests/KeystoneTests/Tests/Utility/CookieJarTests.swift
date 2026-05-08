@@ -18,7 +18,7 @@ class CookieJarTests: XCTestCase {
         addCookies()
 
         let expectation = self.expectation(description: "getCookies completion called")
-        cookieJar.getCookies(url: wordPressComLoginURL) { (cookies) in
+        cookieJar.getCookies(url: wordPressComLoginURL) { cookies in
             XCTAssertEqual(cookies.count, 2)
             expectation.fulfill()
         }
@@ -29,7 +29,7 @@ class CookieJarTests: XCTestCase {
         addCookies()
 
         let expectation = self.expectation(description: "hasCookie completion called")
-        cookieJar.hasWordPressComAuthCookie(username: "testuser", atomicSite: false) { (matches) in
+        cookieJar.hasWordPressComAuthCookie(username: "testuser", atomicSite: false) { matches in
             XCTAssertTrue(matches)
             expectation.fulfill()
         }
@@ -40,7 +40,7 @@ class CookieJarTests: XCTestCase {
         addCookies()
 
         let expectation = self.expectation(description: "hasCookie completion called")
-        cookieJar.hasWordPressComAuthCookie(username: "anotheruser", atomicSite: false) { (matches) in
+        cookieJar.hasWordPressComAuthCookie(username: "anotheruser", atomicSite: false) { matches in
             XCTAssertFalse(matches)
             expectation.fulfill()
         }

@@ -72,7 +72,7 @@ class RegisterDomainDetailsViewController: UITableViewController {
         configureTableView()
         WPStyleGuide.configureColors(view: view, tableView: tableView)
 
-        viewModel.onChange = { [weak self] (change) in
+        viewModel.onChange = { [weak self] change in
             self?.handle(change: change)
         }
 
@@ -133,7 +133,7 @@ class RegisterDomainDetailsViewController: UITableViewController {
         let gestureRecognizer = UITapGestureRecognizer()
         gestureRecognizer.cancelsTouchesInView = false
 
-        gestureRecognizer.on { [weak self] (_) in
+        gestureRecognizer.on { [weak self] _ in
             self?.view.endEditing(true)
         }
 
@@ -322,7 +322,7 @@ extension RegisterDomainDetailsViewController {
             viewController.selectRow(at: selectedIndex)
         }
         viewController.title = title
-        viewController.onSelect = { [weak self] (index) in
+        viewController.onSelect = { [weak self] index in
             self?.navigationController?.popViewController(animated: true)
             self?.selectedItemIndex[indexPath] = index
             if let section = SectionIndex(rawValue: indexPath.section) {

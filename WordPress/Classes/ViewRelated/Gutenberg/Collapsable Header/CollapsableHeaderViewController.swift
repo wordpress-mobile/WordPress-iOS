@@ -95,7 +95,7 @@ class CollapsableHeaderViewController: UIViewController, NoResultsViewHost {
 
     @IBOutlet var visualEffects: [UIVisualEffectView]! {
         didSet {
-            visualEffects.forEach { (visualEffect) in
+            visualEffects.forEach { visualEffect in
                 if #available(iOS 26, *) {
                     visualEffect.effect = UIBlurEffect(style: .regular)
                 } else {
@@ -260,7 +260,7 @@ class CollapsableHeaderViewController: UIViewController, NoResultsViewHost {
             return
         }
 
-        coordinator.animate(alongsideTransition: nil) { (_) in
+        coordinator.animate(alongsideTransition: nil) { _ in
             self.accessoryBarTopCompactConstraint.isActive = self.shouldUseCompactLayout
             self.updateHeaderDisplay()
             // we're keeping this only for no results,
@@ -377,7 +377,7 @@ class CollapsableHeaderViewController: UIViewController, NoResultsViewHost {
     private func styleButtons() {
         let seperator = UIColor.separator
 
-        [defaultActionButton, secondaryActionButton].forEach { (button) in
+        [defaultActionButton, secondaryActionButton].forEach { button in
             button?.titleLabel?.font = WPStyleGuide.fontForTextStyle(.body, fontWeight: .medium)
             button?.titleLabel?.adjustsFontSizeToFitWidth = true
             button?.titleLabel?.adjustsFontForContentSizeCategory = true
@@ -491,7 +491,7 @@ class CollapsableHeaderViewController: UIViewController, NoResultsViewHost {
                                      subtitle: subtitle,
                                      noConnectionSubtitle: subtitle,
                                      buttonTitle: NSLocalizedString("Retry", comment: "A prompt to attempt the failed network request again"),
-                                     customizationBlock: { (noResultsController) in
+                                     customizationBlock: { noResultsController in
                                         noResultsController.delegate = resultsDelegate
                                      })
     }
@@ -527,7 +527,7 @@ class CollapsableHeaderViewController: UIViewController, NoResultsViewHost {
 
     /// A public interface to hide the header blur.
     func hideHeaderVisualEffects() {
-        visualEffects.forEach { (visualEffect) in
+        visualEffects.forEach { visualEffect in
             visualEffect.isHidden = true
         }
     }
@@ -576,7 +576,7 @@ class CollapsableHeaderViewController: UIViewController, NoResultsViewHost {
         UIView.animate(withDuration: animationSpeed, delay: 0, options: .transitionCrossDissolve, animations: {
             self.defaultActionButton.alpha = alpha
             self.selectedStateButtonsContainer.alpha = selectedStateContainerAlpha
-        }) { (_) in
+        }) { _ in
             self.defaultActionButton.isHidden = hasSelectedItem
             self.selectedStateButtonsContainer.isHidden = !hasSelectedItem
         }
@@ -725,23 +725,23 @@ extension CollapsableHeaderViewController: UIScrollViewDelegate {
 // MARK: - Keyboard Adjustments
 extension CollapsableHeaderViewController {
     private func startObservingKeyboardChanges() {
-        let willShowObserver = NotificationCenter.default.addObserver(forName: UIResponder.keyboardWillShowNotification, object: nil, queue: .main) { [weak self] (notification) in
+        let willShowObserver = NotificationCenter.default.addObserver(forName: UIResponder.keyboardWillShowNotification, object: nil, queue: .main) { [weak self] notification in
             guard let self else { return }
-            UIView.animate(withKeyboard: notification) { (_, endFrame) in
+            UIView.animate(withKeyboard: notification) { _, endFrame in
                 self.scrollableContainerBottomConstraint.constant = endFrame.height - self.footerHeight
             }
         }
 
-        let willHideObserver = NotificationCenter.default.addObserver(forName: UIResponder.keyboardWillHideNotification, object: nil, queue: .main) { [weak self] (notification) in
+        let willHideObserver = NotificationCenter.default.addObserver(forName: UIResponder.keyboardWillHideNotification, object: nil, queue: .main) { [weak self] notification in
             guard let self else { return }
-            UIView.animate(withKeyboard: notification) { (_, _) in
+            UIView.animate(withKeyboard: notification) { _, _ in
                 self.scrollableContainerBottomConstraint.constant = 0
             }
         }
 
-        let willChangeFrameObserver = NotificationCenter.default.addObserver(forName: UIResponder.keyboardWillChangeFrameNotification, object: nil, queue: .main) { [weak self] (notification) in
+        let willChangeFrameObserver = NotificationCenter.default.addObserver(forName: UIResponder.keyboardWillChangeFrameNotification, object: nil, queue: .main) { [weak self] notification in
             guard let self else { return }
-            UIView.animate(withKeyboard: notification) { (_, endFrame) in
+            UIView.animate(withKeyboard: notification) { _, endFrame in
                 self.scrollableContainerBottomConstraint.constant = endFrame.height - self.footerHeight
             }
         }
@@ -752,7 +752,7 @@ extension CollapsableHeaderViewController {
     }
 
     private func stopObservingKeyboardChanges() {
-        notificationObservers.forEach { (observer) in
+        notificationObservers.forEach { observer in
             NotificationCenter.default.removeObserver(observer)
         }
         notificationObservers = []

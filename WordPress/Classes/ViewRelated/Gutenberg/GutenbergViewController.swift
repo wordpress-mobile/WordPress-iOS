@@ -334,7 +334,7 @@ class GutenbergViewController: UIViewController, PostEditor, PublishingEditor {
 
         service?.syncJetpackSettingsForBlog(post.blog, success: { [weak self] in
             self?.gutenberg.updateCapabilities()
-        }, failure: { (error) in
+        }, failure: { error in
             DDLogError("Error syncing JETPACK: \(String(describing: error))")
         })
 
@@ -394,13 +394,13 @@ class GutenbergViewController: UIViewController, PostEditor, PublishingEditor {
     private var previousFirstResponder: UIView?
 
     private func setupKeyboardObservers() {
-        keyboardShowObserver = NotificationCenter.default.addObserver(forName: UIResponder.keyboardDidShowNotification, object: nil, queue: .main) { [weak self] (notification) in
+        keyboardShowObserver = NotificationCenter.default.addObserver(forName: UIResponder.keyboardDidShowNotification, object: nil, queue: .main) { [weak self] notification in
             if let self, let keyboardRect = notification.userInfo?[UIResponder.keyboardFrameEndUserInfoKey] as? CGRect {
                 self.keyboardFrame = keyboardRect
                 self.updateConstraintsToAvoidKeyboard(frame: keyboardRect)
             }
         }
-        keyboardHideObserver = NotificationCenter.default.addObserver(forName: UIResponder.keyboardDidShowNotification, object: nil, queue: .main) { [weak self] (notification) in
+        keyboardHideObserver = NotificationCenter.default.addObserver(forName: UIResponder.keyboardDidShowNotification, object: nil, queue: .main) { [weak self] notification in
             if let self, let keyboardRect = notification.userInfo?[UIResponder.keyboardFrameEndUserInfoKey] as? CGRect {
                 self.keyboardFrame = keyboardRect
                 self.updateConstraintsToAvoidKeyboard(frame: keyboardRect)
@@ -731,7 +731,7 @@ extension GutenbergViewController: GutenbergBridgeDelegate {
                                                 message: NSLocalizedString("You already have a featured image set. Do you want to replace it with the new image?", comment: "Main message on dialog that prompts user to confirm or cancel the replacement of a featured image."),
                                                 preferredStyle: .actionSheet)
 
-        let replaceAction = UIAlertAction(title: NSLocalizedString("Replace featured image", comment: "Button to confirm the replacement of a featured image."), style: .default) { (_) in
+        let replaceAction = UIAlertAction(title: NSLocalizedString("Replace featured image", comment: "Button to confirm the replacement of a featured image."), style: .default) { _ in
             self.featuredImageHelper.setFeaturedImage(mediaID: mediaID)
         }
 
@@ -754,13 +754,13 @@ extension GutenbergViewController: GutenbergBridgeDelegate {
         let title: String = MediaAttachmentActionSheet.title
         var message: String? = nil
         let alertController = UIAlertController(title: title, message: nil, preferredStyle: .actionSheet)
-        let dismissAction = UIAlertAction(title: MediaAttachmentActionSheet.dismissActionTitle, style: .cancel) { (_) in
+        let dismissAction = UIAlertAction(title: MediaAttachmentActionSheet.dismissActionTitle, style: .cancel) { _ in
 
         }
         alertController.addAction(dismissAction)
 
         if media.remoteStatus == .failed || media.remoteStatus == .processing || media.remoteStatus == .local || media.remoteStatus == .pushing {
-            let cancelUploadAction = UIAlertAction(title: MediaAttachmentActionSheet.stopUploadActionTitle, style: .destructive) { (_) in
+            let cancelUploadAction = UIAlertAction(title: MediaAttachmentActionSheet.stopUploadActionTitle, style: .destructive) { _ in
                 self.mediaInserterHelper.cancelUploadOf(media: media)
             }
             alertController.addAction(cancelUploadAction)
@@ -769,7 +769,7 @@ extension GutenbergViewController: GutenbergBridgeDelegate {
         if media.remoteStatus == .failed, let error = media.error {
             message = error.localizedDescription
             if media.canRetry {
-                let retryUploadAction = UIAlertAction(title: MediaAttachmentActionSheet.retryUploadActionTitle, style: .default) { (_) in
+                let retryUploadAction = UIAlertAction(title: MediaAttachmentActionSheet.retryUploadActionTitle, style: .default) { _ in
                     self.mediaInserterHelper.retryFailedMediaUploads()
                 }
                 alertController.addAction(retryUploadAction)
@@ -789,7 +789,7 @@ extension GutenbergViewController: GutenbergBridgeDelegate {
         let title: String = (self.post is Page) ? EmptyPostActionSheet.titlePage : EmptyPostActionSheet.titlePost
         let message: String = EmptyPostActionSheet.message
         let alertController = UIAlertController(title: title, message: message, preferredStyle: .actionSheet)
-        let dismissAction = UIAlertAction(title: MediaAttachmentActionSheet.dismissActionTitle, style: .cancel) { (_) in
+        let dismissAction = UIAlertAction(title: MediaAttachmentActionSheet.dismissActionTitle, style: .cancel) { _ in
 
         }
         alertController.addAction(dismissAction)
@@ -1023,7 +1023,7 @@ extension GutenbergViewController {
 
         previousFirstResponder = view.findFirstResponder()
         let suggestionsController = GutenbergSuggestionsViewController(siteID: siteID, suggestionType: type)
-        suggestionsController.onCompletion = { (result) in
+        suggestionsController.onCompletion = { result in
             callback(result)
             suggestionsController.view.removeFromSuperview()
             suggestionsController.removeFromParent()

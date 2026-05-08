@@ -35,7 +35,7 @@ class UsersServiceRemoteXMLRPCTests: RemoteTestCase, XMLRPCTestable {
         stubRemoteResponse(XMLRPCTestableConstants.xmlRpcUrl, filename: fetchProfileSuccessMockFilename, contentType: .XML)
 
         if let remoteInstance = remote as? UsersServiceRemoteXMLRPC {
-            remoteInstance.fetchProfile({ (remoteProfile) in
+            remoteInstance.fetchProfile({ remoteProfile in
                 XCTAssertEqual(remoteProfile.bio, "", "Bios should be equal.")
                 XCTAssertEqual(remoteProfile.displayName, "Test", "Display name should be equal.")
                 XCTAssertEqual(remoteProfile.email, "user@example.com", "Email should be equal.")
@@ -49,7 +49,7 @@ class UsersServiceRemoteXMLRPCTests: RemoteTestCase, XMLRPCTestable {
 
                 expect.fulfill()
 
-            }, failure: { (_) in
+            }, failure: { _ in
                 XCTFail("This callback shouldn't get called")
                 expect.fulfill()
             })
@@ -64,7 +64,7 @@ class UsersServiceRemoteXMLRPCTests: RemoteTestCase, XMLRPCTestable {
         stubRemoteResponse(XMLRPCTestableConstants.xmlRpcUrl, filename: fetchProfileMissingDataMockFilename, contentType: .XML)
 
         if let remoteInstance = remote as? UsersServiceRemoteXMLRPC {
-            remoteInstance.fetchProfile({ (remoteProfile) in
+            remoteInstance.fetchProfile({ remoteProfile in
                 XCTAssertEqual(remoteProfile.bio, "", "Bios should be equal.")
                 XCTAssertEqual(remoteProfile.displayName, "", "Display name should be equal.")
                 XCTAssertEqual(remoteProfile.email, "", "Email should be equal.")
@@ -78,7 +78,7 @@ class UsersServiceRemoteXMLRPCTests: RemoteTestCase, XMLRPCTestable {
 
                 expect.fulfill()
 
-            }, failure: { (_) in
+            }, failure: { _ in
                 XCTFail("This callback shouldn't get called")
                 expect.fulfill()
             })

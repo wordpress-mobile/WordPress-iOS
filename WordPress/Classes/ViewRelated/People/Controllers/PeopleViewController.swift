@@ -333,7 +333,7 @@ private extension PeopleViewController {
     func refreshPeople() {
         self.isInitialLoad = true
         self.refreshNoResultsView()
-        loadPeoplePage() { [weak self] (retrieved, shouldLoadMore) in
+        loadPeoplePage() { [weak self] retrieved, shouldLoadMore in
             self?.isInitialLoad = false
             self?.refreshNoResultsView()
             self?.tableView.reloadData()
@@ -360,7 +360,7 @@ private extension PeopleViewController {
 
         isLoadingMore = true
 
-        loadPeoplePage(nextRequestOffset) { [weak self] (retrieved, shouldLoadMore) in
+        loadPeoplePage(nextRequestOffset) { [weak self] retrieved, shouldLoadMore in
             self?.nextRequestOffset += retrieved
             self?.shouldLoadMore = shouldLoadMore
             self?.isLoadingMore = false
@@ -392,7 +392,7 @@ private extension PeopleViewController {
 
         let group = DispatchGroup()
         group.enter()
-        peopleService.loadUsersPage(offset, success: { (retrieved, shouldLoadMore) in
+        peopleService.loadUsersPage(offset, success: { retrieved, shouldLoadMore in
             result = (retrieved, shouldLoadMore)
             group.leave()
         }, failure: { error in

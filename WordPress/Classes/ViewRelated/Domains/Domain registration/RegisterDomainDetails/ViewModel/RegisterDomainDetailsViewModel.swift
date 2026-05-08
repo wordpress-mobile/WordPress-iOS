@@ -77,7 +77,7 @@ class RegisterDomainDetailsViewModel {
         manuallyTriggerValidation()
     }
 
-    lazy var sectionChangeHandler: ((Section.Change) -> Void)? = { [weak self] (change) in
+    lazy var sectionChangeHandler: ((Section.Change) -> Void)? = { [weak self] change in
         guard let strongSelf = self else { return }
 
         switch change {
@@ -265,7 +265,7 @@ class RegisterDomainDetailsViewModel {
     private func fetchDomainContactInformation() {
         isLoading = true
         registerDomainDetailsService.getDomainContactInformation(
-            success: { [weak self] (domainContactInformation) in
+            success: { [weak self] domainContactInformation in
                 guard let strongSelf = self else {
                     return
                 }
@@ -287,7 +287,7 @@ class RegisterDomainDetailsViewModel {
                 } else {
                     prefillSuccessBlock()
                 }
-        }) { [weak self] (_) in
+        }) { [weak self] _ in
             guard let strongSelf = self else {
                 return
             }
@@ -298,7 +298,7 @@ class RegisterDomainDetailsViewModel {
 
     private func fetchCountries(successCompletion: @escaping () -> Void) {
         isLoading = true
-        registerDomainDetailsService.getSupportedCountries(success: { [weak self] (countriesResponse) in
+        registerDomainDetailsService.getSupportedCountries(success: { [weak self] countriesResponse in
             guard let strongSelf = self else {
                 return
             }
@@ -319,7 +319,7 @@ class RegisterDomainDetailsViewModel {
             }
             strongSelf.countries = result
             successCompletion()
-        }) { [weak self] (_) in
+        }) { [weak self] _ in
             guard let strongSelf = self else {
                 return
             }
@@ -334,7 +334,7 @@ class RegisterDomainDetailsViewModel {
         clearStateSelection()
         registerDomainDetailsService.getStates(
             for: countryCode,
-            success: { [weak self] (statesResponse) in
+            success: { [weak self] statesResponse in
                 guard let strongSelf = self else {
                     return
                 }
@@ -351,7 +351,7 @@ class RegisterDomainDetailsViewModel {
                 }
                 strongSelf.states = result
                 successCompletion?()
-        }) { [weak self] (_) in
+        }) { [weak self] _ in
             guard let strongSelf = self else {
                 return
             }
@@ -415,9 +415,9 @@ class RegisterDomainDetailsViewModel {
         if let privacySectionSelectedItem = privacySectionSelectedItem() {
             dict[privacySectionSelectedItem.jsonKey] = String(privacySectionSelectedItem.rawValue)
         }
-        dict.merge(phoneNumberSectionJson(), uniquingKeysWith: { (first, _) in first })
-        dict.merge(sectionJson(sectionIndex: .contactInformation), uniquingKeysWith: { (first, _) in first })
-        dict.merge(sectionJson(sectionIndex: .address), uniquingKeysWith: { (first, _) in first })
+        dict.merge(phoneNumberSectionJson(), uniquingKeysWith: { first, _ in first })
+        dict.merge(sectionJson(sectionIndex: .contactInformation), uniquingKeysWith: { first, _ in first })
+        dict.merge(sectionJson(sectionIndex: .address), uniquingKeysWith: { first, _ in first })
         return dict
     }
 
@@ -485,7 +485,7 @@ extension RegisterDomainDetailsViewModel {
         registerDomainDetailsService.validateDomainContactInformation(
             contactInformation: jsonRepresentation(),
             domainNames: [domain.domainName],
-            success: { [weak self] (response) in
+            success: { [weak self] response in
                 guard let strongSelf = self else {
                     return
                 }
@@ -500,7 +500,7 @@ extension RegisterDomainDetailsViewModel {
                     strongSelf.updateValidationErrors(with: response.messages)
                     strongSelf.onChange?(.remoteValidationFinished)
                 }
-        }) { [weak self] (_) in
+        }) { [weak self] _ in
             guard let strongSelf = self else {
                 return
             }

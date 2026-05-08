@@ -778,7 +778,7 @@ extension MediaCoordinator {
     // We want to collect more data about that, so we're going to log that info to Sentry,
     // and also delete the `Media` object, since there isn't really a reasonable way to recover from that failure.
     func addObserverForDeletedFiles() {
-        addObserver({ (media, _) in
+        addObserver({ media, _ in
             guard let mediaError = media.error,
                 media.hasMissingFileError else {
                 return

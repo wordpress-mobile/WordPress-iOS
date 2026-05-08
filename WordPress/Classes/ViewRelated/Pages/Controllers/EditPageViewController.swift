@@ -68,7 +68,7 @@ class EditPageViewController: UIViewController {
             // Proceed with normal editor instantiation
             let editorViewController = editorFactory.instantiateEditor(
                 for: page,
-                replaceEditor: { [weak self] (editor, replacement) in
+                replaceEditor: { [weak self] editor, replacement in
                     self?.replaceEditor(editor: editor, replacement: replacement)
             })
 
@@ -94,7 +94,7 @@ class EditPageViewController: UIViewController {
 
             let editorViewController = editorFactory.instantiateEditor(
                 for: page,
-                replaceEditor: { [weak self] (editor, replacement) in
+                replaceEditor: { [weak self] editor, replacement in
                     self?.replaceEditor(editor: editor, replacement: replacement)
             })
 

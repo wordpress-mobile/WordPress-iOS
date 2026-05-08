@@ -35,10 +35,10 @@ class PostServiceRemoteRESTRevisionsTest: RemoteTestCase, RESTTestable {
         stubRemoteResponse(performEndpoint, filename: performRevisionsSuccessFilename, contentType: .ApplicationJSON)
         remote.getPostRevisions(for: siteId,
                                 postId: postId,
-                                success: { (revisions) in
+                                success: { revisions in
                                     XCTAssertNotNil(revisions, "Revisions shouldn't be nil")
                                     expect.fulfill()
-        }) { (_) in
+        }) { _ in
             XCTFail("This callback shouldn't get called")
             expect.fulfill()
         }
@@ -51,10 +51,10 @@ class PostServiceRemoteRESTRevisionsTest: RemoteTestCase, RESTTestable {
         stubRemoteResponse(performEndpoint, filename: performRevisionsFailureFilename, contentType: .ApplicationJSON)
         remote.getPostRevisions(for: siteId,
                                 postId: postId,
-                                success: { (_) in
+                                success: { _ in
                                     XCTFail("This callback shouldn't get called")
                                     expect.fulfill()
-        }) { (error) in
+        }) { error in
             XCTAssertNotNil(error)
             expect.fulfill()
         }
@@ -67,7 +67,7 @@ class PostServiceRemoteRESTRevisionsTest: RemoteTestCase, RESTTestable {
         stubRemoteResponse(performEndpoint, filename: performRevisionsMappingSuccessFilename, contentType: .ApplicationJSON)
         remote.getPostRevisions(for: siteId,
                                 postId: postId,
-                                success: { (revisions) in
+                                success: { revisions in
                                     XCTAssertNotNil(revisions, "Revisions shouldn't be nil")
                                     XCTAssertNotNil(revisions?.first, "Revision model shouldn't be nil")
                                     XCTAssertNotNil(revisions?.first?.diff, "Revision diff shouldn't be nil")
@@ -113,7 +113,7 @@ class PostServiceRemoteRESTRevisionsTest: RemoteTestCase, RESTTestable {
                                     XCTAssertEqual(diff.values.contentDiffs[5].operation, .copy)
 
                                     expect.fulfill()
-        }) { (_) in
+        }) { _ in
             XCTFail("This callback shouldn't get called")
             expect.fulfill()
         }

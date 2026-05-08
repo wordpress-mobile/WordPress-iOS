@@ -303,7 +303,7 @@ class ReaderSiteServiceRemoteTests: XCTestCase {
         readerSiteServiceRemote.checkSiteExists(at: testURL, success: {
             expect.fulfill()
             XCTAssertTrue(true)
-        }, failure: { (_) in
+        }, failure: { _ in
             expect.fulfill()
             XCTFail("This call should be successfull")
         })
@@ -326,7 +326,7 @@ class ReaderSiteServiceRemoteTests: XCTestCase {
         readerSiteServiceRemote.checkSiteExists(at: testURL, success: {
             expect.fulfill()
             XCTAssertTrue(false, "This call should be unsuccessfull")
-        }, failure: { (_) in
+        }, failure: { _ in
             expect.fulfill()
             XCTAssertTrue(true)
         })
@@ -344,7 +344,7 @@ class ReaderSiteServiceRemoteTests: XCTestCase {
         readerSiteServiceRemote.checkSiteExists(at: testURL, success: {
             expect.fulfill()
             XCTAssertTrue(false, "This call should be unsuccessfull")
-        }, failure: { (_) in
+        }, failure: { _ in
             expect.fulfill()
             XCTAssertTrue(true)
         })

@@ -89,11 +89,11 @@ public class NotificationSyncServiceRemote: ServiceRemoteWordPressComREST {
 
         let parameters = ["counts": notifications]
 
-        wordPressComRESTAPI.post(requestUrl, parameters: parameters as [String: AnyObject]?, success: { (response, _)  in
+        wordPressComRESTAPI.post(requestUrl, parameters: parameters as [String: AnyObject]?, success: { response, _ in
             let error = self.errorFromResponse(response)
             completion(error)
 
-        }, failure: { (error, _) in
+        }, failure: { error, _ in
             completion(error)
         })
     }
@@ -112,11 +112,11 @@ public class NotificationSyncServiceRemote: ServiceRemoteWordPressComREST {
             "time": timestamp
         ]
 
-        wordPressComRESTAPI.post(requestUrl, parameters: parameters as [String: AnyObject]?, success: { (response, _)  in
+        wordPressComRESTAPI.post(requestUrl, parameters: parameters as [String: AnyObject]?, success: { response, _ in
             let error = self.errorFromResponse(response)
             completion(error)
 
-        }, failure: { (error, _) in
+        }, failure: { error, _ in
             completion(error)
         })
     }

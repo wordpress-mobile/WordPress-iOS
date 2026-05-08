@@ -39,7 +39,7 @@ class GutenbergGalleryUploadProcessor: GutenbergProcessor {
 
             let classAttributes = imgClass.components(separatedBy: " ")
 
-            guard let imageIDAttribute = classAttributes.first(where: { (value) -> Bool in
+            guard let imageIDAttribute = classAttributes.first(where: { value -> Bool in
                 value.hasPrefix(GutenbergImgUploadProcessor.imgClassIDPrefixAttribute)
             }) else {
                 return

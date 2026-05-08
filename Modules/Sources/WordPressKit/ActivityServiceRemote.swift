@@ -220,7 +220,7 @@ private extension ActivityServiceRemote {
             throw ActivityServiceRemote.ResponseError.decodingFailure
         }
 
-        let groups: [ActivityGroup] = try rawGroups.map { (key, value) -> ActivityGroup in
+        let groups: [ActivityGroup] = try rawGroups.map { key, value -> ActivityGroup in
             guard let group = value as? [String: AnyObject] else {
                 throw ActivityServiceRemote.ResponseError.decodingFailure
             }

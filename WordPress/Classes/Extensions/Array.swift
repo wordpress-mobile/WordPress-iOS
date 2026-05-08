@@ -38,7 +38,7 @@ extension Array where Element: Equatable {
     /// corresponding element in the given array.
     ///
     public func differentIndices(_ other: [Element]) -> [Int] {
-        return enumerated().compactMap({ (offset, value) -> Int? in
+        return enumerated().compactMap({ offset, value -> Int? in
             guard offset < other.endIndex else {
                 return offset
             }
@@ -68,7 +68,7 @@ extension Array {
         var currentValue: Value?
         var currentGroup = [Element]()
         var result = [(Value, [Element])]()
-        forEach { (element) in
+        forEach { element in
             let value = transforming(element)
             if currentValue != value {
                 if let currentValue {

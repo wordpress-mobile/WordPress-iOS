@@ -84,10 +84,10 @@ extension ReaderTopicServiceRemote {
 
         WPKitLogInfo("URL: \(urlRequest)")
 
-        wordPressComRESTAPI.post(urlRequest, parameters: parameters, success: { (_, response) in
+        wordPressComRESTAPI.post(urlRequest, parameters: parameters, success: { _, response in
             WPKitLogInfo("Success \(response?.url?.absoluteString ?? "unknown url")")
             success()
-        }) { (error, response) in
+        }) { error, response in
             WPKitLogError("Error: \(error.localizedDescription)")
             let urlAbsoluteString = response?.url?.absoluteString ?? NSLocalizedString("unknown url", comment: "Used when the response doesn't have a valid url to display")
             failure(ReaderTopicServiceError.remoteResponse(message: error.localizedDescription, url: urlAbsoluteString))

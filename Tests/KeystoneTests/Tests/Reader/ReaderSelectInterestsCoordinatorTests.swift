@@ -13,7 +13,7 @@ class ReaderSelectInterestsCoordinatorTests: CoreDataTestCase {
         service.fetchSuccessExpectation = expectation(description: "Fetching of interests succeeds")
 
         let displayExpectation = expectation(description: "Should display returns true")
-        coordinator.isFollowingInterests { (result) in
+        coordinator.isFollowingInterests { result in
             displayExpectation.fulfill()
 
             XCTAssertFalse(result)
@@ -33,7 +33,7 @@ class ReaderSelectInterestsCoordinatorTests: CoreDataTestCase {
         service.fetchSuccessExpectation = successExpectation
 
         let displayExpectation = expectation(description: "Should display returns true")
-        coordinator.isFollowingInterests { (result) in
+        coordinator.isFollowingInterests { result in
             displayExpectation.fulfill()
 
             XCTAssertTrue(result)

@@ -80,7 +80,7 @@ import WordPressKit
             let currentPublicizeConnections = self.allPublicizeConnections(for: blog, in: context)
 
             // Create or update based on the contents synced.
-            let connectionsToKeep = remoteConnections.map { (remoteConnection) -> PublicizeConnection in
+            let connectionsToKeep = remoteConnections.map { remoteConnection -> PublicizeConnection in
                 let pubConnection = PublicizeConnection.createOrReplace(from: remoteConnection, in: context)
                 pubConnection.blog = blog
                 return pubConnection

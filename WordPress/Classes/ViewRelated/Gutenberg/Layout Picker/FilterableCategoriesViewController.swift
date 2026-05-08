@@ -204,7 +204,7 @@ extension FilterableCategoriesViewController: CategorySectionTableViewCellDelega
     private func deselectCurrentLayout() {
         guard let previousSelection = selectedItem else { return }
 
-        tableView.indexPathsForVisibleRows?.forEach { (indexPath) in
+        tableView.indexPathsForVisibleRows?.forEach { indexPath in
             if containsSelectedItem(previousSelection, atIndexPath: indexPath) {
                 (tableView.cellForRow(at: indexPath) as? CategorySectionTableViewCell)?.deselectItems()
             }

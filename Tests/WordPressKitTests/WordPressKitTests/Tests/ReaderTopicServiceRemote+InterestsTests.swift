@@ -20,7 +20,7 @@ class ReaderTopicServiceRemoteInterestsTests: RemoteTestCase, RESTTestable {
         let expect = expectation(description: "Get reader interests returns successfully")
         stubRemoteResponse("read/interests", filename: "reader-interests-success.json", contentType: .ApplicationJSON)
 
-        readerTopicServiceRemote.fetchInterests({ (interests) in
+        readerTopicServiceRemote.fetchInterests({ interests in
             XCTAssertTrue(interests.count == 5)
             expect.fulfill()
         }, failure: { _ in })
@@ -40,7 +40,7 @@ class ReaderTopicServiceRemoteInterestsTests: RemoteTestCase, RESTTestable {
             ["Four", "four"],
             ["Five", "five"]
         ]
-        readerTopicServiceRemote.fetchInterests({ (interests) in
+        readerTopicServiceRemote.fetchInterests({ interests in
             let mapped = interests.map { return [$0.title, $0.slug ]}
 
             XCTAssertEqual(mapped, expectedInterests)

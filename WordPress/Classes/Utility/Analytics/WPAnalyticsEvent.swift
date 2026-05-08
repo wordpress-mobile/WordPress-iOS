@@ -1996,7 +1996,7 @@ extension WPAnalytics {
         #endif
 
         var mergedProperties: [AnyHashable: Any] = event.defaultProperties ?? [:]
-        mergedProperties.merge(properties) { (_, new) in new }
+        mergedProperties.merge(properties) { _, new in new }
 
         WPAnalytics.trackString(event.value, withProperties: mergedProperties)
     }
@@ -2120,7 +2120,7 @@ extension WPAnalytics {
 
         if let value {
             let additionalProperties: [AnyHashable: Any] = ["value": value]
-            properties.merge(additionalProperties) { (_, new) in new }
+            properties.merge(additionalProperties) { _, new in new }
         }
 
         WPAnalytics.track(.settingsDidChange, properties: properties)

@@ -93,7 +93,7 @@ class ActionSheetViewController: UIViewController {
         headerLabel.translatesAutoresizingMaskIntoConstraints = false
         headerLabel.adjustsFontForContentSizeCategory = true
 
-        let buttonViews = buttons.map({ (buttonInfo) -> UIButton in
+        let buttonViews = buttons.map({ buttonInfo -> UIButton in
             return button(buttonInfo)
         })
 

@@ -129,7 +129,7 @@ extension ReaderPostServiceRemote {
 
         let path = self.path(forEndpoint: endpoint, withVersion: ._2_0)
 
-        wordPressComRESTAPI.post(path, parameters: params, success: { (responseObject, _) in
+        wordPressComRESTAPI.post(path, parameters: params, success: { responseObject, _ in
             guard let response = responseObject as? [String: AnyObject],
                   let status = response["status"] as? Bool,
                   status == true else {
@@ -137,7 +137,7 @@ extension ReaderPostServiceRemote {
                 return
             }
             success()
-        }, failure: { (error, _) in
+        }, failure: { error, _ in
             failure(error)
         })
     }

@@ -599,7 +599,7 @@ class ReaderDetailViewController: UIViewController, ReaderDetailView {
             /// (except for a few times when it returns a very big weird number)
             /// We use that value so the content is not displayed with weird empty space at the bottom
             ///
-            self.webView.evaluateJavaScript("document.body.scrollHeight", completionHandler: { [weak self] (webViewHeight, _) in
+            self.webView.evaluateJavaScript("document.body.scrollHeight", completionHandler: { [weak self] webViewHeight, _ in
                 guard let self else { return }
                 guard let webViewHeight = webViewHeight as? CGFloat else {
                     self.webViewHeight.constant = height

@@ -191,7 +191,7 @@ open class JetpackSettingsViewController: UITableViewController {
             self.reloadViewModel()
             self.service.updateJetpackSettingsForBlog(self.blog,
                                                       success: {},
-                                                      failure: { [weak self] (_) in
+                                                      failure: { [weak self] _ in
                                                           self?.refreshSettingsAfterSavingError()
                                                       })
         }
@@ -203,7 +203,7 @@ open class JetpackSettingsViewController: UITableViewController {
             self.settings.jetpackMonitorEmailNotifications = newValue
             self.service.updateJetpackMonitorSettingsForBlog(self.blog,
                                                              success: {},
-                                                             failure: { [weak self] (_) in
+                                                             failure: { [weak self] _ in
                                                                  self?.refreshSettingsAfterSavingError()
                                                              })
         }
@@ -215,7 +215,7 @@ open class JetpackSettingsViewController: UITableViewController {
             self.settings.jetpackMonitorPushNotifications = newValue
             self.service.updateJetpackMonitorSettingsForBlog(self.blog,
                                                              success: {},
-                                                             failure: { [weak self] (_) in
+                                                             failure: { [weak self] _ in
                                                                  self?.refreshSettingsAfterSavingError()
                                                              })
         }
@@ -228,7 +228,7 @@ open class JetpackSettingsViewController: UITableViewController {
             self.reloadViewModel()
             self.service.updateJetpackSettingsForBlog(self.blog,
                                                       success: {},
-                                                      failure: { [weak self] (_) in
+                                                      failure: { [weak self] _ in
                                                           self?.refreshSettingsAfterSavingError()
                                                       })
         }
@@ -260,7 +260,7 @@ open class JetpackSettingsViewController: UITableViewController {
                                                                self?.refreshSettings()
                                                             WPAnalytics.track(.jetpackAllowlistedIpsChanged)
                                                            },
-                                                           failure: { [weak self] (_) in
+                                                           failure: { [weak self] _ in
                                                                self?.refreshSettingsAfterSavingError()
                                                            })
             }
@@ -276,7 +276,7 @@ open class JetpackSettingsViewController: UITableViewController {
             self.reloadViewModel()
             self.service.updateJetpackSettingsForBlog(self.blog,
                                                       success: {},
-                                                      failure: { [weak self] (_) in
+                                                      failure: { [weak self] _ in
                                                           self?.refreshSettingsAfterSavingError()
                                                       })
         }
@@ -288,7 +288,7 @@ open class JetpackSettingsViewController: UITableViewController {
             self.settings.jetpackSSOMatchAccountsByEmail = newValue
             self.service.updateJetpackSettingsForBlog(self.blog,
                                                       success: {},
-                                                      failure: { [weak self] (_) in
+                                                      failure: { [weak self] _ in
                                                           self?.refreshSettingsAfterSavingError()
                                                       })
         }
@@ -300,7 +300,7 @@ open class JetpackSettingsViewController: UITableViewController {
             self.settings.jetpackSSORequireTwoStepAuthentication = newValue
             self.service.updateJetpackSettingsForBlog(self.blog,
                                                       success: {},
-                                                      failure: { [weak self] (_) in
+                                                      failure: { [weak self] _ in
                                                           self?.refreshSettingsAfterSavingError()
                                                       })
         }

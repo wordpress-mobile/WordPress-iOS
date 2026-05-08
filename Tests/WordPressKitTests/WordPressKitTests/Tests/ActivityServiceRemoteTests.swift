@@ -68,7 +68,7 @@ class ActivityServiceRemoteTests: RemoteTestCase, RESTTestable {
         remote.getActivityForSite(siteID,
                                   offset: 0,
                                   count: 20,
-                                  success: { (activities, hasMore) in
+                                  success: { activities, hasMore in
                                       XCTAssertEqual(activities.count, 8, "The activity count should be 8")
                                       XCTAssertEqual(hasMore, false, "The value of hasMore should be false")
                                       expect.fulfill()
@@ -86,7 +86,7 @@ class ActivityServiceRemoteTests: RemoteTestCase, RESTTestable {
         remote.getActivityForSite(siteID,
                                   offset: 0,
                                   count: 20,
-                                  success: { (activities, hasMore) in
+                                  success: { activities, hasMore in
                                       XCTAssertEqual(activities.count, 20, "The activity count should be 20")
                                       XCTAssertEqual(hasMore, true, "The value of hasMore should be true")
                                       expect.fulfill()
@@ -105,7 +105,7 @@ class ActivityServiceRemoteTests: RemoteTestCase, RESTTestable {
         remote.getActivityForSite(siteID,
                                   offset: 100,
                                   count: 20,
-                                  success: { (activities, hasMore) in
+                                  success: { activities, hasMore in
                                       XCTAssertEqual(activities.count, 19, "The activity count should be 19")
                                       XCTAssertEqual(hasMore, false, "The value of hasMore should be false")
                                       expect.fulfill()
@@ -128,7 +128,7 @@ class ActivityServiceRemoteTests: RemoteTestCase, RESTTestable {
                                   after: dateFormatter.date(from: "1970-01-01T10:44:00+0000"),
                                   before: dateFormatter.date(from: "1970-01-02T10:44:00+0000"),
                                   group: ["post", "user"],
-                                  success: { (activities, hasMore) in
+                                  success: { activities, hasMore in
                                       XCTAssertEqual(activities.count, 19, "The activity count should be 19")
                                       XCTAssertEqual(hasMore, false, "The value of hasMore should be false")
                                       expect.fulfill()
@@ -148,7 +148,7 @@ class ActivityServiceRemoteTests: RemoteTestCase, RESTTestable {
         remote.getActivityForSite(siteID,
                                   count: 20,
                                   after: dateFormatter.date(from: "1970-01-01T10:44:00+0000"),
-                                  success: { (_, _) in
+                                  success: { _, _ in
                                       expect.fulfill()
                                   }, failure: { _ in
                                       XCTFail("This callback shouldn't get called")
@@ -164,7 +164,7 @@ class ActivityServiceRemoteTests: RemoteTestCase, RESTTestable {
         stubRemoteResponse(siteActivityEndpoint, filename: getActivityAuthFailureMockFilename, contentType: .ApplicationJSON, status: 403)
         remote.getActivityForSite(siteID,
                                   count: 20,
-                                  success: { (_, _) in
+                                  success: { _, _ in
                                       XCTFail("This callback shouldn't get called")
                                       expect.fulfill()
                                   }, failure: { error in
@@ -183,7 +183,7 @@ class ActivityServiceRemoteTests: RemoteTestCase, RESTTestable {
         stubRemoteResponse(siteActivityEndpoint, filename: getActivityBadJsonFailureMockFilename, contentType: .ApplicationJSON, status: 200)
         remote.getActivityForSite(siteID,
                                   count: 20,
-                                  success: { (_, _) in
+                                  success: { _, _ in
                                       XCTFail("This callback shouldn't get called")
                                       expect.fulfill()
                                  }, failure: { _ in
@@ -271,7 +271,7 @@ class ActivityServiceRemoteTests: RemoteTestCase, RESTTestable {
 
         remoteV1.restoreSite(siteID,
                              rewindID: rewindID,
-                             success: { (restoreID, jobID) in
+                             success: { restoreID, jobID in
                                 XCTAssertEqual(restoreID, self.restoreID)
                                 XCTAssertEqual(jobID, self.jobID)
                                 expect.fulfill()
@@ -297,7 +297,7 @@ class ActivityServiceRemoteTests: RemoteTestCase, RESTTestable {
         remoteV1.restoreSite(siteID,
                              rewindID: rewindID,
                              types: restoreTypes,
-                             success: { (restoreID, jobID) in
+                             success: { restoreID, jobID in
                                 XCTAssertEqual(restoreID, self.restoreID)
                                 XCTAssertEqual(jobID, self.jobID)
                                 expect.fulfill()
@@ -332,7 +332,7 @@ class ActivityServiceRemoteTests: RemoteTestCase, RESTTestable {
         stubRemoteResponse(rewindStatusEndpoint, filename: rewindStatusSuccessMockFilename, contentType: .ApplicationJSON)
 
         remote.getRewindStatus(siteID,
-                               success: { (rewindStatus) in
+                               success: { rewindStatus in
                                    XCTAssertEqual(rewindStatus.state, .active)
                                    XCTAssertNotNil(rewindStatus.lastUpdated)
                                    XCTAssertNil(rewindStatus.restore)
@@ -350,7 +350,7 @@ class ActivityServiceRemoteTests: RemoteTestCase, RESTTestable {
         stubRemoteResponse(rewindStatusEndpoint, filename: rewindStatusRestoreFinishedMockFilename, contentType: .ApplicationJSON)
 
         remote.getRewindStatus(siteID,
-                               success: { (rewindStatus) in
+                               success: { rewindStatus in
                                    XCTAssertNotNil(rewindStatus.restore)
                                    XCTAssertNotNil(rewindStatus.restore!.id)
                                    XCTAssertEqual(rewindStatus.restore!.status, .finished)
@@ -370,7 +370,7 @@ class ActivityServiceRemoteTests: RemoteTestCase, RESTTestable {
         stubRemoteResponse(rewindStatusEndpoint, filename: rewindStatusRestoreFailureMockFilename, contentType: .ApplicationJSON)
 
         remote.getRewindStatus(siteID,
-                               success: { (rewindStatus) in
+                               success: { rewindStatus in
                                    XCTAssertNotNil(rewindStatus.restore)
                                    XCTAssertNotNil(rewindStatus.restore!.id)
                                    XCTAssertEqual(rewindStatus.restore!.status, .fail)
@@ -390,7 +390,7 @@ class ActivityServiceRemoteTests: RemoteTestCase, RESTTestable {
         stubRemoteResponse(rewindStatusEndpoint, filename: rewindStatusRestoreInProgressMockFilename, contentType: .ApplicationJSON)
 
         remote.getRewindStatus(siteID,
-                               success: { (rewindStatus) in
+                               success: { rewindStatus in
                                    XCTAssertNotNil(rewindStatus.restore)
                                    XCTAssertNotNil(rewindStatus.restore!.id)
                                    XCTAssertEqual(rewindStatus.restore!.status, .running)
@@ -409,7 +409,7 @@ class ActivityServiceRemoteTests: RemoteTestCase, RESTTestable {
         stubRemoteResponse(rewindStatusEndpoint, filename: rewindStatusRestoreQueuedMockFilename, contentType: .ApplicationJSON)
 
         remote.getRewindStatus(siteID,
-                               success: { (rewindStatus) in
+                               success: { rewindStatus in
                                    XCTAssertNotNil(rewindStatus.restore)
                                    XCTAssertNotNil(rewindStatus.restore!.id)
                                    XCTAssertEqual(rewindStatus.restore!.status, .queued)

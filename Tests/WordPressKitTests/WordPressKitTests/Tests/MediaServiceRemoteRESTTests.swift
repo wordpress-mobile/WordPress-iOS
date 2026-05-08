@@ -172,7 +172,7 @@ class MediaServiceRemoteRESTTests: RemoteTestCase, RESTTestable {
 
         let response = ["media": []]
         var remoteMedias = [RemoteMedia]()
-        mediaServiceRemote.getMediaLibrary(pageLoad: nil, success: { (medias) in
+        mediaServiceRemote.getMediaLibrary(pageLoad: nil, success: { medias in
             if let medias = medias as? [RemoteMedia] {
                 remoteMedias = medias
             }
@@ -185,7 +185,7 @@ class MediaServiceRemoteRESTTests: RemoteTestCase, RESTTestable {
 
         let response = ["media": [["ID": 2]]]
         var remoteMedias = [RemoteMedia]()
-        mediaServiceRemote.getMediaLibrary(pageLoad: nil, success: { (medias) in
+        mediaServiceRemote.getMediaLibrary(pageLoad: nil, success: { medias in
             if let medias = medias as? [RemoteMedia] {
                 remoteMedias = medias
             }
@@ -198,7 +198,7 @@ class MediaServiceRemoteRESTTests: RemoteTestCase, RESTTestable {
 
         let response = ["media": [["ID": 2], ["ID": 3], ["ID": 4]]]
         var remoteMedias = [RemoteMedia]()
-        mediaServiceRemote.getMediaLibrary(pageLoad: nil, success: { (medias) in
+        mediaServiceRemote.getMediaLibrary(pageLoad: nil, success: { medias in
             if let medias = medias as? [RemoteMedia] {
                 remoteMedias = medias
             }
@@ -220,7 +220,7 @@ class MediaServiceRemoteRESTTests: RemoteTestCase, RESTTestable {
         let response = ["found": expectedCount]
 
         var remoteCount = 0
-        mediaServiceRemote.getMediaLibraryCount(forType: nil, withSuccess: { (count) in
+        mediaServiceRemote.getMediaLibraryCount(forType: nil, withSuccess: { count in
             remoteCount = count
         }, failure: nil)
         // Note: This needs to be called here, after triggerting the API request, or it won't take effect
@@ -237,7 +237,7 @@ class MediaServiceRemoteRESTTests: RemoteTestCase, RESTTestable {
         let response = ["found": expectedCount]
 
         var remoteCount = 0
-        mediaServiceRemote.getMediaLibraryCount(forType: "a_type", withSuccess: { (count) in
+        mediaServiceRemote.getMediaLibraryCount(forType: "a_type", withSuccess: { count in
             remoteCount = count
         }, failure: nil)
         // Note: This needs to be called here, after triggerting the API request, or it won't take effect.

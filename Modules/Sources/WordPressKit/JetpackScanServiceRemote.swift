@@ -4,7 +4,7 @@ import WordPressKitObjC
 public class JetpackScanServiceRemote: ServiceRemoteWordPressComREST {
     // MARK: - Scanning
     public func getScanAvailableForSite(_ siteID: Int, success: @escaping(Bool) -> Void, failure: @escaping(Error) -> Void) {
-        getScanForSite(siteID, success: { (scan) in
+        getScanForSite(siteID, success: { scan in
             success(scan.isEnabled)
         }, failure: failure)
     }
@@ -19,7 +19,7 @@ public class JetpackScanServiceRemote: ServiceRemoteWordPressComREST {
     public func startScanForSite(_ siteID: Int, success: @escaping(Bool) -> Void, failure: @escaping(Error) -> Void) {
         let path = self.scanPath(for: siteID, with: "enqueue")
 
-        wordPressComRESTAPI.post(path, parameters: nil, success: { (response, _) in
+        wordPressComRESTAPI.post(path, parameters: nil, success: { response, _ in
             guard let responseDict = response as? [String: Any],
                 let responseValue = responseDict["success"] as? Bool else {
                 success(false)
@@ -27,7 +27,7 @@ public class JetpackScanServiceRemote: ServiceRemoteWordPressComREST {
             }
 
             success(responseValue)
-        }, failure: { (error, _) in
+        }, failure: { error, _ in
             failure(error)
         })
     }
@@ -36,7 +36,7 @@ public class JetpackScanServiceRemote: ServiceRemoteWordPressComREST {
     public func getScanForSite(_ siteID: Int, success: @escaping(JetpackScan) -> Void, failure: @escaping(Error) -> Void) {
         let path = self.scanPath(for: siteID)
 
-        wordPressComRESTAPI.get(path, parameters: nil, success: { (response, _) in
+        wordPressComRESTAPI.get(path, parameters: nil, success: { response, _ in
             do {
                 let decoder = JSONDecoder.apiDecoder
                 let data = try JSONSerialization.data(withJSONObject: response, options: [])
@@ -47,7 +47,7 @@ public class JetpackScanServiceRemote: ServiceRemoteWordPressComREST {
                 failure(error)
             }
 
-        }, failure: { (error, _) in
+        }, failure: { error, _ in
             failure(error)
         })
     }
@@ -68,7 +68,7 @@ public class JetpackScanServiceRemote: ServiceRemoteWordPressComREST {
         let path = self.path(forEndpoint: "sites/\(siteID)/alerts/fix", withVersion: ._2_0)
         let parameters = ["threat_ids": threats.map { $0.id as AnyObject }] as [String: AnyObject]
 
-        wordPressComRESTAPI.post(path, parameters: parameters, success: { (response, _) in
+        wordPressComRESTAPI.post(path, parameters: parameters, success: { response, _ in
             do {
                 let decoder = JSONDecoder.apiDecoder
                 let data = try JSONSerialization.data(withJSONObject: response, options: [])
@@ -78,7 +78,7 @@ public class JetpackScanServiceRemote: ServiceRemoteWordPressComREST {
             } catch {
                 failure(error)
             }
-        }, failure: { (error, _) in
+        }, failure: { error, _ in
             failure(error)
         })
     }
@@ -102,9 +102,9 @@ public class JetpackScanServiceRemote: ServiceRemoteWordPressComREST {
         let path = self.path(forEndpoint: "sites/\(siteID)/alerts/\(threat.id)", withVersion: ._2_0)
         let parameters = ["ignore": true] as [String: AnyObject]
 
-        wordPressComRESTAPI.post(path, parameters: parameters, success: { (_, _) in
+        wordPressComRESTAPI.post(path, parameters: parameters, success: { _, _ in
             success()
-        }, failure: { (error, _) in
+        }, failure: { error, _ in
             failure(error)
         })
     }
@@ -114,7 +114,7 @@ public class JetpackScanServiceRemote: ServiceRemoteWordPressComREST {
         let path = self.path(forEndpoint: "sites/\(siteID)/alerts/fix", withVersion: ._2_0)
         let parameters = ["threat_ids": threats.map { $0.id as AnyObject }] as [String: AnyObject]
 
-        wordPressComRESTAPI.get(path, parameters: parameters, success: { (response, _) in
+        wordPressComRESTAPI.get(path, parameters: parameters, success: { response, _ in
             do {
                 let decoder = JSONDecoder.apiDecoder
                 let data = try JSONSerialization.data(withJSONObject: response, options: [])
@@ -124,7 +124,7 @@ public class JetpackScanServiceRemote: ServiceRemoteWordPressComREST {
             } catch {
                 failure(error)
             }
-        }, failure: { (error, _) in
+        }, failure: { error, _ in
             failure(error)
         })
     }
@@ -133,7 +133,7 @@ public class JetpackScanServiceRemote: ServiceRemoteWordPressComREST {
     public func getHistoryForSite(_ siteID: Int, success: @escaping(JetpackScanHistory) -> Void, failure: @escaping(Error) -> Void) {
         let path = scanPath(for: siteID, with: "history")
 
-        wordPressComRESTAPI.get(path, parameters: nil, success: { (response, _) in
+        wordPressComRESTAPI.get(path, parameters: nil, success: { response, _ in
             do {
                 let decoder = JSONDecoder.apiDecoder
                 let data = try JSONSerialization.data(withJSONObject: response, options: [])
@@ -143,7 +143,7 @@ public class JetpackScanServiceRemote: ServiceRemoteWordPressComREST {
             } catch {
                 failure(error)
             }
-        }, failure: { (error, _) in
+        }, failure: { error, _ in
             failure(error)
         })
     }

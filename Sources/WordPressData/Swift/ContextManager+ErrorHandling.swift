@@ -105,7 +105,7 @@ private extension ContextManager {
     }
 
     func reasonForMultipleErrors(_ errors: [NSError]) -> String {
-        return "Multiple errors:\n" + errors.enumerated().map({ (index, error) in
+        return "Multiple errors:\n" + errors.enumerated().map({ index, error in
             return "  \(index + 1): " + reasonForIndividualError(error)
         }).joined(separator: "\n")
     }

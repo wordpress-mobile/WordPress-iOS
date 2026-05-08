@@ -31,7 +31,7 @@ public struct StringRankedSearch {
             // Get the maximum score for each word. There is no penalty for a
             // position of the word in the input string.
             let match = words.enumerated()
-                .map { (index, word) in (index: index, score: self.score(for: word, term: term)) }
+                .map { index, word in (index: index, score: self.score(for: word, term: term)) }
                 .max { $0.score < $1.score }!
             score += match.score
             matchIndices.insert(match.index)

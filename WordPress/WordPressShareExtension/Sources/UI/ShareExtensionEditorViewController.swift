@@ -961,7 +961,7 @@ extension ShareExtensionEditorViewController {
                 comment: "User action to dismiss media options."
             ),
             style: .cancel,
-            handler: { (_) in
+            handler: { _ in
                 if attachment == self.currentSelectedAttachment {
                     self.currentSelectedAttachment = nil
                     self.resetMediaAttachmentOverlay(attachment)
@@ -977,7 +977,7 @@ extension ShareExtensionEditorViewController {
                     comment: "User action to remove media."
                 ),
                 style: .destructive,
-                handler: { (_) in
+                handler: { _ in
                     self.richTextView.remove(attachmentID: mediaID)
                 }
             )

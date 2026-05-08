@@ -40,12 +40,12 @@ class WordPressComOAuthClientTests: XCTestCase {
             password: "fakePass",
             multifactorCode: nil,
             needsMultifactor: { _, _ in XCTFail("This closure should not be called") },
-            success: { (token) in
+            success: { token in
                 expect.fulfill()
                 XCTAssert(!token!.isEmpty, "There should be a token available")
                 XCTAssert(token == "fakeToken", "There should be a token available")
             },
-            failure: { (_) in
+            failure: { _ in
                 expect.fulfill()
                 XCTFail("This call should be successful")
             }
@@ -69,12 +69,12 @@ class WordPressComOAuthClientTests: XCTestCase {
                 expect.fulfill()
                 XCTFail("This call should be successful")
             },
-            success: { (token) in
+            success: { token in
                 expect.fulfill()
                 XCTAssert(!token!.isEmpty, "There should be a token available")
                 XCTAssert(token == "fakeToken", "There should be a token available")
             },
-            failure: { (_) in
+            failure: { _ in
                 expect.fulfill()
                 XCTFail("This call should be successful")
             }
@@ -97,11 +97,11 @@ class WordPressComOAuthClientTests: XCTestCase {
             password: "wrongPassword",
             multifactorCode: nil,
             needsMultifactor: { _, _ in XCTFail("This closure should not be called") },
-            success: { (_) in
+            success: { _ in
                 expect.fulfill()
                 XCTFail("This call should fail")
             },
-            failure: { (error) in
+            failure: { error in
                 expect.fulfill()
                 XCTAssertEqual(error.authenticationFailureKind, .invalidRequest, "The code should be invalid request")
             }
@@ -127,11 +127,11 @@ class WordPressComOAuthClientTests: XCTestCase {
                 expect.fulfill()
                 XCTFail("This call should fail")
             },
-            success: { (_) in
+            success: { _ in
                 expect.fulfill()
                 XCTFail("This call should fail")
             },
-            failure: { (error) in
+            failure: { error in
                 expect.fulfill()
                 XCTAssertEqual(error.authenticationFailureKind, .invalidRequest, "The code should be invalid request")
             }
@@ -158,11 +158,11 @@ class WordPressComOAuthClientTests: XCTestCase {
             password: "wrongPassword",
             multifactorCode: nil,
             needsMultifactor: { _, _ in XCTFail("This closure should not be called") },
-            success: { (_) in
+            success: { _ in
                 expect.fulfill()
                 XCTFail("This call should fail")
             },
-            failure: { (error) in
+            failure: { error in
                 expect.fulfill()
                 XCTAssertEqual(error.authenticationFailureKind, .needsMultifactorCode, "The code should 'be needs multifactor'")
             }
@@ -178,11 +178,11 @@ class WordPressComOAuthClientTests: XCTestCase {
                 expect.fulfill()
                 XCTFail("This call should fail")
             },
-            success: { (_) in
+            success: { _ in
                 expectation2.fulfill()
                 XCTFail("This call should fail")
             },
-            failure: { (error) in
+            failure: { error in
                 expectation2.fulfill()
                 XCTAssertEqual(error.authenticationFailureKind, .needsMultifactorCode, "The code should be needs multifactor")
             }
@@ -212,11 +212,11 @@ class WordPressComOAuthClientTests: XCTestCase {
                 expect.fulfill()
                 XCTFail("This call should fail")
             },
-            success: { (_) in
+            success: { _ in
                 expect.fulfill()
                 XCTFail("This call should fail")
             },
-            failure: { (error) in
+            failure: { error in
                 expect.fulfill()
                 XCTAssertEqual(error.authenticationFailureKind, .needsMultifactorCode, "The code should be needs multifactor")
             }
@@ -232,11 +232,11 @@ class WordPressComOAuthClientTests: XCTestCase {
                 expect.fulfill()
                 XCTFail("This call should fail")
             },
-            success: { (_) in
+            success: { _ in
                 expectation2.fulfill()
                 XCTFail("This call should fail")
             },
-            failure: { (error) in
+            failure: { error in
                 expectation2.fulfill()
                 XCTAssertEqual(error.authenticationFailureKind, .needsMultifactorCode, "The code should be needs multifactor")
             }
@@ -263,11 +263,11 @@ class WordPressComOAuthClientTests: XCTestCase {
                 XCTAssertEqual(userID, 1234)
                 XCTAssertEqual(nonceInfo.nonceWebauthn, "two_step_nonce_webauthn")
             },
-            success: { (_) in
+            success: { _ in
                 expect.fulfill()
                 XCTFail("This call should need multifactor")
             },
-            failure: { (_) in
+            failure: { _ in
                 expect.fulfill()
                 XCTFail("This call should need multifactor")
             }
@@ -288,7 +288,7 @@ class WordPressComOAuthClientTests: XCTestCase {
         client.requestOneTimeCode(username: "fakeUser", password: "fakePassword",
                                               success: { () in
                                                 expect.fulfill()
-        }, failure: { (_) in
+        }, failure: { _ in
             expect.fulfill()
             XCTFail("This call should be successful")
 
@@ -307,11 +307,11 @@ class WordPressComOAuthClientTests: XCTestCase {
         let expect = expectation(description: "One callback should be invoked")
         let client = WordPressComOAuthClient(clientID: "Fake", secret: "Fake")
         client.requestSocial2FACode(userID: 0, nonce: "nonce",
-        success: { (newNonce) in
+        success: { newNonce in
             expect.fulfill()
             XCTAssert(!newNonce.isEmpty, "There should be a newNonce available")
             XCTAssert(newNonce == "two_step_nonce_sms", "The newNonce should match")
-        }, failure: { (_, _) in
+        }, failure: { _, _ in
             expect.fulfill()
             XCTFail("This call should be successful")
 
@@ -332,12 +332,12 @@ class WordPressComOAuthClientTests: XCTestCase {
         client.authenticate(
             socialIDToken: "token",
             service: "google",
-            success: { (token) in
+            success: { token in
                 expect.fulfill()
                 XCTAssert(!token!.isEmpty, "There should be a token available")
                 XCTAssert(token == "bearer_token", "The newNonce should match")
             },
-            needsMultifactor: { (_, _) in
+            needsMultifactor: { _, _ in
                 expect.fulfill()
                 XCTFail("This call should be successful")
             },
@@ -345,7 +345,7 @@ class WordPressComOAuthClientTests: XCTestCase {
                 expect.fulfill()
                 XCTFail("This call should be successful")
             },
-            failure: { (_) in
+            failure: { _ in
                 expect.fulfill()
                 XCTFail("This call should be successful")
 
@@ -367,11 +367,11 @@ class WordPressComOAuthClientTests: XCTestCase {
         client.authenticate(
             socialIDToken: "token",
             service: "google",
-            success: { (_) in
+            success: { _ in
                 expect.fulfill()
                 XCTFail("This call should need multifactor")
             },
-            needsMultifactor: { (userID, nonceInfo) in
+            needsMultifactor: { userID, nonceInfo in
                 expect.fulfill()
                 XCTAssertEqual(userID, 1)
                 XCTAssertEqual(nonceInfo.nonceBackup, "two_step_nonce_backup")
@@ -381,7 +381,7 @@ class WordPressComOAuthClientTests: XCTestCase {
                 expect.fulfill()
                 XCTFail("This call should need multifactor")
             },
-            failure: { (_) in
+            failure: { _ in
                 expect.fulfill()
                 XCTFail("This call should need multifactor")
 
@@ -403,11 +403,11 @@ class WordPressComOAuthClientTests: XCTestCase {
         client.authenticate(
             socialIDToken: "token",
             service: "google",
-            success: { (_) in
+            success: { _ in
                 expect.fulfill()
                 XCTFail("This call should invoke user needs connection")
             },
-            needsMultifactor: { (_, _) in
+            needsMultifactor: { _, _ in
                 expect.fulfill()
                 XCTFail("This call should invoke user needs connection")
             },
@@ -415,7 +415,7 @@ class WordPressComOAuthClientTests: XCTestCase {
                 expect.fulfill()
                 XCTAssertEqual(email, "email")
             },
-            failure: { (_) in
+            failure: { _ in
                 expect.fulfill()
                 XCTFail("This call should invoke user needs connection")
 
@@ -435,11 +435,11 @@ class WordPressComOAuthClientTests: XCTestCase {
         let expect = expectation(description: "One callback should be invoked")
         let client = WordPressComOAuthClient(clientID: "Fake", secret: "Fake")
         client.authenticate(socialLoginUserID: 1, authType: "authenticator", twoStepCode: "two_step_code", twoStepNonce: "two_step_nonce",
-                                       success: { (token) in
+                                       success: { token in
                                         expect.fulfill()
                                         XCTAssert(!token!.isEmpty, "There should be a token available")
                                         XCTAssert(token == "bearer_token", "The newNonce should match")
-        }, failure: { (_) in
+        }, failure: { _ in
             expect.fulfill()
             XCTFail("This call should be successful")
 

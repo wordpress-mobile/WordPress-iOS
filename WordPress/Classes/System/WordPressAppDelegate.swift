@@ -405,7 +405,7 @@ extension WordPressAppDelegate {
     }
 
     func configureSelfHostedChallengeHandler() {
-        WordPressOrgXMLRPCApi.onChallenge = { (challenge, completionHandler) in
+        WordPressOrgXMLRPCApi.onChallenge = { challenge, completionHandler in
             guard let alertController = HTTPAuthenticationAlertController.controller(for: challenge, handler: completionHandler) else {
                 completionHandler(.performDefaultHandling, nil)
                 return
@@ -782,7 +782,7 @@ extension WordPressAppDelegate {
         }
 
         // Get the Apple User ID state. If not authorized, log out the account.
-        WordPressAuthenticator.shared.getAppleIDCredentialState(for: appleUserID) { [weak self] (state, error) in
+        WordPressAuthenticator.shared.getAppleIDCredentialState(for: appleUserID) { [weak self] state, error in
 
             Loggers.app.debug("checkAppleIDCredentialState: Apple ID state: \(state.rawValue)")
 

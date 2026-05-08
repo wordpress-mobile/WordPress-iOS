@@ -179,7 +179,7 @@ actor MockStatsService: ObservableObject, StatsServiceProtocol {
 
         // Convert to array with updated metric value and sort
         let sortedItems = aggregatedItems.values
-            .map { (item, totalValue) -> any TopListItemProtocol in
+            .map { item, totalValue -> any TopListItemProtocol in
                 // Create a mutable copy and update the aggregated metric value
                 var mutableItem = item
                 mutableItem.metrics[metric] = totalValue

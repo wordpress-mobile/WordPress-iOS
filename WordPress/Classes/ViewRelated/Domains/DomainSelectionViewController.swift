@@ -232,7 +232,7 @@ final class DomainSelectionViewController: CollapsableHeaderViewController {
 
         updateNoResultsLabelTopInset()
 
-        coordinator.animate(alongsideTransition: nil) { [weak self] (_) in
+        coordinator.animate(alongsideTransition: nil) { [weak self] _ in
             guard let self else { return }
 
             if !self.siteTemplateHostingController.view.isHidden {
@@ -304,7 +304,7 @@ final class DomainSelectionViewController: CollapsableHeaderViewController {
         let data = sortFreeAndPaidSuggestions(data)
 
         setAddressHintVisibility(isHidden: true)
-        let resultsHavePreviousSelection = data.contains { (suggestion) -> Bool in self.selectedDomain?.domainName == suggestion.domainName }
+        let resultsHavePreviousSelection = data.contains { suggestion -> Bool in self.selectedDomain?.domainName == suggestion.domainName }
         if !resultsHavePreviousSelection {
             clearSelectionAndCreateSiteButton()
         }

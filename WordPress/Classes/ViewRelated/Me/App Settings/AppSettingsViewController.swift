@@ -135,7 +135,7 @@ class AppSettingsViewController: UITableViewController {
 
     fileprivate func updateMediaCacheSize() {
         setMediaCacheRowDescription(status: .calculatingSize)
-        MediaFileManager.calculateSizeOfMediaDirectories { [weak self] (allocatedSize) in
+        MediaFileManager.calculateSizeOfMediaDirectories { [weak self] allocatedSize in
             self?.setMediaCacheRowDescription(allocatedSize: allocatedSize)
         }
     }

@@ -234,7 +234,7 @@ private extension SignupEpilogueViewController {
 
         let accountSettingService = AccountSettingsService(userID: userID.intValue, api: restApi)
 
-        accountSettingService.updateDisplayName(newDisplayName) { (success, _) in
+        accountSettingService.updateDisplayName(newDisplayName) { success, _ in
             let event: WPAnalyticsStat = success ? .signupEpilogueDisplayNameUpdateSucceeded : .signupEpilogueDisplayNameUpdateFailed
             WordPressAuthenticator.track(event, properties: self.tracksProperties())
 

@@ -142,7 +142,7 @@ open class WordPressOrgXMLRPCValidator: NSObject {
             return
         }
 
-        validateXMLRPCURL(xmlrpcURL, success: success, failure: { (error) in
+        validateXMLRPCURL(xmlrpcURL, success: success, failure: { error in
             // WPKitLogError(error.localizedDescription)
             if (error.domain == NSURLErrorDomain && error.code == NSURLErrorUserCancelledAuthentication) ||
                 (error.domain == NSURLErrorDomain && error.code == NSURLErrorCannotFindHost) ||
@@ -153,10 +153,10 @@ open class WordPressOrgXMLRPCValidator: NSObject {
             }
             // Try the original given url as an XML-RPC endpoint
             // WPKitLogError("Try the original given url as an XML-RPC endpoint: \(originalXMLRPCURL)")
-            self.validateXMLRPCURL(originalXMLRPCURL, success: success, failure: { (error) in
+            self.validateXMLRPCURL(originalXMLRPCURL, success: success, failure: { error in
                 // WPKitLogError(error.localizedDescription)
                 // Fetch the original url and look for the RSD link
-                self.guessXMLRPCURLFromHTMLURL(originalXMLRPCURL, success: success, failure: { (error) in
+                self.guessXMLRPCURLFromHTMLURL(originalXMLRPCURL, success: success, failure: { error in
                     // WPKitLogError(error.localizedDescription)
 
                     errorHandler(error)
@@ -217,7 +217,7 @@ open class WordPressOrgXMLRPCValidator: NSObject {
             return
         }
         let api = WordPressOrgXMLRPCApi(endpoint: url)
-        api.callMethod("system.listMethods", parameters: nil, success: { (responseObject, httpResponse) in
+        api.callMethod("system.listMethods", parameters: nil, success: { responseObject, httpResponse in
                 guard let methods = responseObject as? [String], methods.contains("wp.getUsersBlogs") else {
                     failure(WordPressOrgXMLRPCValidatorError.notWordPressError as NSError)
                         return
@@ -227,7 +227,7 @@ open class WordPressOrgXMLRPCValidator: NSObject {
                 } else {
                     failure(WordPressOrgXMLRPCValidatorError.invalid as NSError)
                 }
-            }, failure: { (error, httpResponse) in
+            }, failure: { error, httpResponse in
                 if httpResponse?.url != url {
                     // we where redirected, let's check the answer content
                     if let data = (error as NSError).userInfo[WordPressOrgXMLRPCApi.WordPressOrgXMLRPCApiErrorKeyData as String] as? Data,
@@ -267,7 +267,7 @@ open class WordPressOrgXMLRPCValidator: NSObject {
 
         var isWpSite = false
         let session = URLSession(configuration: URLSessionConfiguration.ephemeral)
-        let dataTask = session.dataTask(with: htmlURL, completionHandler: { (data, _, error) in
+        let dataTask = session.dataTask(with: htmlURL, completionHandler: { data, _, error in
             if let error {
                 failure(error as NSError)
                 return
@@ -290,7 +290,7 @@ open class WordPressOrgXMLRPCValidator: NSObject {
                     failure(WordPressOrgXMLRPCValidatorError.invalid as NSError)
                     return
                 }
-                self.validateXMLRPCURL(newURL, success: success, failure: { (error) in
+                self.validateXMLRPCURL(newURL, success: success, failure: { error in
                     // Try to validate by using the RSD file directly
                     if error.code == 403 || error.code == 405, let xmlrpcValidatorError = error as? WordPressOrgXMLRPCValidatorError {
                         failure(xmlrpcValidatorError as NSError)
@@ -340,7 +340,7 @@ open class WordPressOrgXMLRPCValidator: NSObject {
             return
         }
         let session = URLSession(configuration: URLSessionConfiguration.ephemeral)
-        let dataTask = session.dataTask(with: rsdURL, completionHandler: { (data, _, error) in
+        let dataTask = session.dataTask(with: rsdURL, completionHandler: { data, _, error in
             if let error {
                 failure(error as NSError)
                 return

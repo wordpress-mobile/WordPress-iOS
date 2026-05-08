@@ -145,7 +145,7 @@ private class WeeklyRoundupDataProvider {
     /// definition of "best" through a sorting mechanism where the "best" sites are placed first.
     ///
     private func filterBest(_ count: Int, minimumViewsCount: Int = 5, from blogStats: SiteStats) -> SiteStats {
-        let filteredAndSorted = blogStats.filter { (_, stats) in
+        let filteredAndSorted = blogStats.filter { _, stats in
             stats.viewsCount >= minimumViewsCount
         }.sorted { (first: (_, value: StatsSummaryData), second: (_, value: StatsSummaryData)) in
             first.value.viewsCount >= second.value.viewsCount

@@ -138,12 +138,12 @@ class DomainsServiceRemoteRESTTests: RemoteTestCase, RESTTestable {
                            status: 200)
 
         remote.getStates(for: countryCode,
-                         success: { (stateList) in
+                         success: { stateList in
             XCTAssert(stateList.count == 61)
             XCTAssert(stateList[0].code == "AL")
             XCTAssert(stateList[0].name == "Alabama")
             expect.fulfill()
-        }) { (_) in
+        }) { _ in
             XCTFail("This callback shouldn't get called")
             expect.fulfill()
         }
@@ -159,10 +159,10 @@ class DomainsServiceRemoteRESTTests: RemoteTestCase, RESTTestable {
                            status: 200)
 
         remote.getStates(for: countryCode,
-                         success: { (stateList) in
+                         success: { stateList in
             XCTAssert(stateList.isEmpty)
             expect.fulfill()
-        }) { (_) in
+        }) { _ in
             XCTFail("This callback shouldn't get called")
             expect.fulfill()
         }
@@ -178,13 +178,13 @@ class DomainsServiceRemoteRESTTests: RemoteTestCase, RESTTestable {
 
         remote.validateDomainContactInformation(
             contactInformation: [:],
-            domainNames: ["someblog.blog"], success: { (reponse) in
+            domainNames: ["someblog.blog"], success: { reponse in
                 XCTAssert(!reponse.success)
                 XCTAssert(reponse.messages!.phone![0] == "Enter a valid country code followed by a dot (for example +1.6285550199).")
                 XCTAssert(reponse.messages!.postalCode![0] == "This field is required.")
                 XCTAssert(reponse.messages!.email![0] == "The 'Email' field does not appear to be valid.")
                 expect.fulfill()
-            }) { (_) in
+            }) { _ in
                 XCTFail("This callback shouldn't get called")
                 expect.fulfill()
             }
@@ -200,10 +200,10 @@ class DomainsServiceRemoteRESTTests: RemoteTestCase, RESTTestable {
 
         remote.validateDomainContactInformation(
             contactInformation: [:],
-            domainNames: ["someblog.blog"], success: { (reponse) in
+            domainNames: ["someblog.blog"], success: { reponse in
                 XCTAssert(reponse.success)
                 expect.fulfill()
-            }) { (_) in
+            }) { _ in
                 XCTFail("This callback shouldn't get called")
                 expect.fulfill()
             }
@@ -217,13 +217,13 @@ class DomainsServiceRemoteRESTTests: RemoteTestCase, RESTTestable {
                            contentType: .ApplicationJSON,
                            status: 200)
         remote.getDomainContactInformation(
-            success: { (reponse) in
+            success: { reponse in
                 XCTAssert(reponse.email == "pinar@yahoo.com")
                 XCTAssert(reponse.firstName == "Pinar")
                 XCTAssert(reponse.lastName == nil)
                 XCTAssert(reponse.postalCode == "12345")
                 expect.fulfill()
-            }) { (_) in
+            }) { _ in
                 XCTFail("This callback shouldn't get called")
                 expect.fulfill()
             }

@@ -121,7 +121,7 @@ class NotificationSettingsViewController: UIViewController {
         dispatchGroup.enter()
         siteService.fetchAllFollowedSites(success: {
             dispatchGroup.leave()
-        }, failure: { (error) in
+        }, failure: { error in
             dispatchGroup.leave()
             DDLogError("Could not sync sites: \(String(describing: error))")
         })

@@ -50,12 +50,12 @@ class PluginServiceRemoteTests: RemoteTestCase, RESTTestable {
         stubRemoteResponse(sitePluginsEndpoint,
                            filename: getPluginsSuccessMockFilename,
                            contentType: .ApplicationJSON)
-        remote.getPlugins(siteID: siteID, success: { (sitePlugins) in
+        remote.getPlugins(siteID: siteID, success: { sitePlugins in
             XCTAssertEqual(sitePlugins.plugins.count, 8)
             XCTAssertTrue(sitePlugins.capabilities.autoupdate)
             XCTAssertTrue(sitePlugins.capabilities.modify)
             expect.fulfill()
-        }, failure: { (_) in
+        }, failure: { _ in
             XCTFail("This callback shouldn't get called")
             expect.fulfill()
         })
@@ -69,10 +69,10 @@ class PluginServiceRemoteTests: RemoteTestCase, RESTTestable {
         stubRemoteResponse(sitePluginsEndpoint,
                            filename: getPluginsErrorMockFilename,
                            contentType: .ApplicationJSON)
-        remote.getPlugins(siteID: siteID, success: { (_)  in
+        remote.getPlugins(siteID: siteID, success: { _ in
             XCTFail("This callback shouldn't get called")
             expect.fulfill()
-        }, failure: { (error) in
+        }, failure: { error in
             let error = error as NSError
             let expected = PluginServiceRemote.ResponseError.unauthorized as NSError
             XCTAssertEqual(error, expected)
@@ -88,10 +88,10 @@ class PluginServiceRemoteTests: RemoteTestCase, RESTTestable {
         stubRemoteResponse(sitePluginsEndpoint,
                            filename: getPluginsMalformedMockFile,
                            contentType: .ApplicationJSON)
-        remote.getPlugins(siteID: siteID, success: { (_)  in
+        remote.getPlugins(siteID: siteID, success: { _ in
             XCTFail("This callback shouldn't get called")
             expect.fulfill()
-        }, failure: { (error) in
+        }, failure: { error in
             let error = error as NSError
             XCTAssertEqual(error.domain, "WordPressKit.WordPressComRestApiError")
             XCTAssertEqual(error.code, WordPressComRestApiErrorCode.responseSerializationFailed.rawValue)
@@ -108,12 +108,12 @@ class PluginServiceRemoteTests: RemoteTestCase, RESTTestable {
                            filename: getFeaturedPluginsMockFile,
                            contentType: .ApplicationJSON)
 
-        remote.getFeaturedPlugins(success: { (featuredPlugins) in
+        remote.getFeaturedPlugins(success: { featuredPlugins in
             XCTAssertEqual(featuredPlugins.count, 6)
             XCTAssertEqual(featuredPlugins[1].name, "Yoast SEO")
             XCTAssertEqual(featuredPlugins[3].slug, "tinymce-advanced")
             expect.fulfill()
-        }) { (_) in
+        }) { _ in
             XCTFail("This callback shouldn't get called")
             expect.fulfill()
         }
@@ -128,10 +128,10 @@ class PluginServiceRemoteTests: RemoteTestCase, RESTTestable {
                            filename: getFeaturedPluginsMalformedMockFile,
                            contentType: .ApplicationJSON)
 
-        remote.getFeaturedPlugins(success: { (_) in
+        remote.getFeaturedPlugins(success: { _ in
             XCTFail("Callback should not get called")
             expect.fulfill()
-        }) { (error) in
+        }) { error in
             let error = error as NSError
             XCTAssertEqual(error.domain, "WordPressKit.WordPressComRestApiError")
             XCTAssertEqual(error.code, WordPressComRestApiErrorCode.responseSerializationFailed.rawValue)
@@ -149,10 +149,10 @@ class PluginServiceRemoteTests: RemoteTestCase, RESTTestable {
                            filename: getFeaturedPluginsInvalidResponse,
                            contentType: .ApplicationJSON)
 
-        remote.getFeaturedPlugins(success: { (_) in
+        remote.getFeaturedPlugins(success: { _ in
             XCTFail("Callback should not get called")
             expect.fulfill()
-        }) { (error) in
+        }) { error in
             let error = error as NSError
             let expected = PluginServiceRemote.ResponseError.decodingFailure as NSError
             XCTAssertEqual(error, expected)
@@ -170,10 +170,10 @@ class PluginServiceRemoteTests: RemoteTestCase, RESTTestable {
                            filename: getPluginsErrorMockFilename,
                            contentType: .ApplicationJSON)
 
-        remote.getFeaturedPlugins(success: { (_) in
+        remote.getFeaturedPlugins(success: { _ in
             XCTFail("Callback should not get called")
             expect.fulfill()
-        }) { (error) in
+        }) { error in
             let error = error as NSError
             let expected = PluginServiceRemote.ResponseError.decodingFailure as NSError
             XCTAssertEqual(error, expected)
@@ -201,7 +201,7 @@ class PluginServiceRemoteTests: RemoteTestCase, RESTTestable {
                                       endpointAction: .update,
                                       responseFile: postRemotePluginUpdateJetpack)
 
-        remote.updatePlugin(pluginID: "jetpack/jetpack", siteID: siteID, success: { (pluginState) in
+        remote.updatePlugin(pluginID: "jetpack/jetpack", siteID: siteID, success: { pluginState in
             XCTAssertEqual(pluginState.slug, "jetpack")
             XCTAssertEqual(pluginState.name, "Jetpack by WordPress.com")
             XCTAssertEqual(pluginState.version, "8.6.1")
@@ -209,7 +209,7 @@ class PluginServiceRemoteTests: RemoteTestCase, RESTTestable {
             XCTAssertEqual(pluginState.updateState, PluginState.UpdateState.updated)
 
             expect.fulfill()
-        }) { (_) in
+        }) { _ in
             XCTFail("This callback shouldn't get called")
             expect.fulfill()
         }
@@ -225,7 +225,7 @@ class PluginServiceRemoteTests: RemoteTestCase, RESTTestable {
                                       endpointAction: .update,
                                       responseFile: postRemotePluginUpdateGutenberg)
 
-        remote.updatePlugin(pluginID: "gutenberg/gutenberg", siteID: siteID, success: { (pluginState) in
+        remote.updatePlugin(pluginID: "gutenberg/gutenberg", siteID: siteID, success: { pluginState in
             XCTAssertEqual(pluginState.slug, "gutenberg")
             XCTAssertEqual(pluginState.name, "Gutenberg")
             XCTAssertEqual(pluginState.version, "7.2.1")
@@ -233,7 +233,7 @@ class PluginServiceRemoteTests: RemoteTestCase, RESTTestable {
             XCTAssertEqual(pluginState.updateState, PluginState.UpdateState.available("8.3.0"))
 
             expect.fulfill()
-        }) { (_) in
+        }) { _ in
             XCTFail("This callback shouldn't get called")
             expect.fulfill()
         }
@@ -249,10 +249,10 @@ class PluginServiceRemoteTests: RemoteTestCase, RESTTestable {
                                       endpointAction: .update,
                                       responseFile: postRemotePluginUpdateAuthFailure)
 
-        remote.updatePlugin(pluginID: "gutenberg/gutenberg", siteID: siteID, success: { (_) in
+        remote.updatePlugin(pluginID: "gutenberg/gutenberg", siteID: siteID, success: { _ in
             XCTFail("This callback should not be called")
             expect.fulfill()
-        }) { (error) in
+        }) { error in
             let error = error as NSError
             let expected = PluginServiceRemote.ResponseError.unauthorized as NSError
 
@@ -271,10 +271,10 @@ class PluginServiceRemoteTests: RemoteTestCase, RESTTestable {
                                       endpointAction: .update,
                                       responseFile: postRemotePluginUpdateMalformed)
 
-        remote.updatePlugin(pluginID: "gutenberg/gutenberg", siteID: siteID, success: { (_) in
+        remote.updatePlugin(pluginID: "gutenberg/gutenberg", siteID: siteID, success: { _ in
             XCTFail("This callback shouldn't get called")
             expect.fulfill()
-        }) { (error) in
+        }) { error in
             let error = error as NSError
             XCTAssertEqual(error.domain, "WordPressKit.WordPressComRestApiError")
             XCTAssertEqual(error.code, WordPressComRestApiErrorCode.responseSerializationFailed.rawValue)
@@ -291,14 +291,14 @@ class PluginServiceRemoteTests: RemoteTestCase, RESTTestable {
                                       endpointAction: .install,
                                       responseFile: postPluginInstallSucceeds)
 
-        remote.install(pluginSlug: "code-snippets", siteID: siteID, success: { (pluginState) in
+        remote.install(pluginSlug: "code-snippets", siteID: siteID, success: { pluginState in
             XCTAssertEqual(pluginState.slug, "code-snippets")
             XCTAssertEqual(pluginState.name, "Code Snippets")
             XCTAssertEqual(pluginState.version, "2.14.0")
             XCTAssertEqual(pluginState.autoupdate, false)
 
             expect.fulfill()
-        }) { (_) in
+        }) { _ in
             XCTFail("This callback shouldn't get called")
             expect.fulfill()
         }
@@ -313,10 +313,10 @@ class PluginServiceRemoteTests: RemoteTestCase, RESTTestable {
                                              endpointAction: .install,
                                              responseFile: postPluginInstallAlreadyInstalled)
 
-        remote.install(pluginSlug: "code-snippets", siteID: siteID, success: { (_) in
+        remote.install(pluginSlug: "code-snippets", siteID: siteID, success: { _ in
            XCTFail("This callback shouldn't get called")
             expect.fulfill()
-        }) { (error) in
+        }) { error in
             let error = error as NSError
             let expected = PluginServiceRemote.ResponseError.unknownError as NSError
             XCTAssertEqual(error, expected)
@@ -333,10 +333,10 @@ class PluginServiceRemoteTests: RemoteTestCase, RESTTestable {
                                              endpointAction: .install,
                                              responseFile: postPluginInstallGenericError)
 
-        remote.install(pluginSlug: "code-snippets", siteID: siteID, success: { (_) in
+        remote.install(pluginSlug: "code-snippets", siteID: siteID, success: { _ in
            XCTFail("This callback shouldn't get called")
             expect.fulfill()
-        }) { (error) in
+        }) { error in
             let error = error as NSError
             let expected = PluginServiceRemote.ResponseError.unknownError as NSError
             XCTAssertEqual(error, expected)
@@ -353,10 +353,10 @@ class PluginServiceRemoteTests: RemoteTestCase, RESTTestable {
                                              endpointAction: .install,
                                              responseFile: postPluginModifyMalformed)
 
-        remote.install(pluginSlug: "code-snippets", siteID: siteID, success: { (_) in
+        remote.install(pluginSlug: "code-snippets", siteID: siteID, success: { _ in
            XCTFail("This callback shouldn't get called")
             expect.fulfill()
-        }) { (error) in
+        }) { error in
             let error = error as NSError
             XCTAssertEqual(error.domain, "WordPressKit.WordPressComRestApiError")
             XCTAssertEqual(error.code, WordPressComRestApiErrorCode.responseSerializationFailed.rawValue)
@@ -376,7 +376,7 @@ class PluginServiceRemoteTests: RemoteTestCase, RESTTestable {
         remote.remove(pluginID: "code-snippets/code-snippets", siteID: siteID, success: {
             XCTFail("This callback shouldn't get called")
             expect.fulfill()
-        }) { (error) in
+        }) { error in
             let error = error as NSError
             XCTAssertEqual(error.domain, "WordPressKit.WordPressComRestApiError")
             XCTAssertEqual(error.code, WordPressComRestApiErrorCode.responseSerializationFailed.rawValue)
@@ -396,7 +396,7 @@ class PluginServiceRemoteTests: RemoteTestCase, RESTTestable {
         remote.activatePlugin(pluginID: "code-snippets/code-snippets", siteID: siteID, success: {
             XCTFail("This callback shouldn't get called")
             expect.fulfill()
-        }) { (error) in
+        }) { error in
             let error = error as NSError
             XCTAssertEqual(error.domain, "WordPressKit.WordPressComRestApiError")
             XCTAssertEqual(error.code, WordPressComRestApiErrorCode.responseSerializationFailed.rawValue)
@@ -416,7 +416,7 @@ class PluginServiceRemoteTests: RemoteTestCase, RESTTestable {
         remote.deactivatePlugin(pluginID: "code-snippets/code-snippets", siteID: siteID, success: {
             XCTFail("This callback shouldn't get called")
             expect.fulfill()
-        }) { (error) in
+        }) { error in
             let error = error as NSError
             XCTAssertEqual(error.domain, "WordPressKit.WordPressComRestApiError")
             XCTAssertEqual(error.code, WordPressComRestApiErrorCode.responseSerializationFailed.rawValue)
@@ -436,7 +436,7 @@ class PluginServiceRemoteTests: RemoteTestCase, RESTTestable {
         remote.enableAutoupdates(pluginID: "code-snippets/code-snippets", siteID: siteID, success: {
             XCTFail("This callback shouldn't get called")
             expect.fulfill()
-        }) { (error) in
+        }) { error in
             let error = error as NSError
             XCTAssertEqual(error.domain, "WordPressKit.WordPressComRestApiError")
             XCTAssertEqual(error.code, WordPressComRestApiErrorCode.responseSerializationFailed.rawValue)
@@ -456,7 +456,7 @@ class PluginServiceRemoteTests: RemoteTestCase, RESTTestable {
         remote.disableAutoupdates(pluginID: "code-snippets/code-snippets", siteID: siteID, success: {
             XCTFail("This callback shouldn't get called")
             expect.fulfill()
-        }) { (error) in
+        }) { error in
             let error = error as NSError
             XCTAssertEqual(error.domain, "WordPressKit.WordPressComRestApiError")
             XCTAssertEqual(error.code, WordPressComRestApiErrorCode.responseSerializationFailed.rawValue)
@@ -476,7 +476,7 @@ class PluginServiceRemoteTests: RemoteTestCase, RESTTestable {
         remote.activateAndEnableAutoupdates(pluginID: "code-snippets/code-snippets", siteID: siteID, success: {
             XCTFail("This callback shouldn't get called")
             expect.fulfill()
-        }) { (error) in
+        }) { error in
             let error = error as NSError
             XCTAssertEqual(error.domain, "WordPressKit.WordPressComRestApiError")
             XCTAssertEqual(error.code, WordPressComRestApiErrorCode.responseSerializationFailed.rawValue)

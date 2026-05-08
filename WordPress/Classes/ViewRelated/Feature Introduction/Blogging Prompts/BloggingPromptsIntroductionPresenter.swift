@@ -87,7 +87,7 @@ private extension BloggingPromptsIntroductionPresenter {
             return
         }
 
-        fetchPrompt(completion: { [weak self] (prompt) in
+        fetchPrompt(completion: { [weak self] prompt in
             guard let prompt else {
                 self?.dispatchErrorNotice()
                 self?.navigationController.dismiss(animated: true)
@@ -138,9 +138,9 @@ private extension BloggingPromptsIntroductionPresenter {
             return
         }
 
-        bloggingPromptsService.fetchTodaysPrompt(success: { (prompt) in
+        bloggingPromptsService.fetchTodaysPrompt(success: { prompt in
             completion(prompt)
-        }, failure: { (error) in
+        }, failure: { error in
             completion(nil)
             DDLogError("Feature Introduction: failed fetching blogging prompt: \(String(describing: error))")
         })

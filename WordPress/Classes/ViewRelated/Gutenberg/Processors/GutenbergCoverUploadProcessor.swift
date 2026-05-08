@@ -61,7 +61,7 @@ extension GutenbergCoverUploadProcessor {
     }
 
     private func imgUploadProcessor() -> HTMLProcessor {
-        return HTMLProcessor(for: ImgHTMLKeys.name, replacer: { (div) in
+        return HTMLProcessor(for: ImgHTMLKeys.name, replacer: { div in
 
             guard let styleAttributeValue = div.attributes[ImgHTMLKeys.styleComponents]?.value,
                 case let .string(styleAttribute) = styleAttributeValue
@@ -116,7 +116,7 @@ extension GutenbergCoverUploadProcessor {
     }
 
     private func videoUploadProcessor() -> HTMLProcessor {
-        return HTMLProcessor(for: VideoHTMLKeys.name, replacer: { (video) in
+        return HTMLProcessor(for: VideoHTMLKeys.name, replacer: { video in
             var attributes = video.attributes
             attributes.set(.string(self.remoteURLString), forKey: VideoHTMLKeys.source)
 

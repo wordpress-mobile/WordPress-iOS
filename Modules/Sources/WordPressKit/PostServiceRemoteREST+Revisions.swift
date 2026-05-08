@@ -9,10 +9,10 @@ public extension PostServiceRemoteREST {
         let path = self.path(forEndpoint: endpoint, withVersion: ._1_1)
         wordPressComRESTAPI.get(path,
                                 parameters: nil,
-                                success: { (response, _) in
+                                success: { response, _ in
                                     do {
                                         let data = try JSONSerialization.data(withJSONObject: response, options: [])
-                                        self.map(from: data) { (revisions, error) in
+                                        self.map(from: data) { revisions, error in
                                             if let error {
                                                 failure(error)
                                             } else {
@@ -37,7 +37,7 @@ public extension PostServiceRemoteREST {
                 "context": "edit",
                 "fields": "revisions"
             ] as [String: AnyObject],
-            success: { (response, _) in
+            success: { response, _ in
                 let latestRevision: NSNumber?
                 if let json = response as? [String: Any],
                    let revisions = json["revisions"] as? NSArray,

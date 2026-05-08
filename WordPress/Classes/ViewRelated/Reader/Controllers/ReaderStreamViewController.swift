@@ -895,7 +895,7 @@ import AutomatticTracks
                 }
                 completionHandler(.newData)
             }
-        }, failure: { (_) in
+        }, failure: { _ in
             completionHandler(.failed)
         })
     }

@@ -137,7 +137,7 @@ class CollapsableHeaderCollectionViewCell: UICollectionViewCell, NibLoadable {
 
         UIView.animate(withDuration: CollapsableHeaderCollectionViewCell.selectionAnimationSpeed, animations: {
             self.checkmarkContainerView.alpha = targetAlpha
-        }, completion: { (_) in
+        }, completion: { _ in
             self.checkmarkContainerView.isHidden = !self.isSelected
         })
     }

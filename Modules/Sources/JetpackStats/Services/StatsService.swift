@@ -350,7 +350,7 @@ actor StatsService: StatsServiceProtocol {
             switch metric {
             case .views:
                 let data = try await getData(StatsArchiveTimeIntervalData.self)
-                let sections = data.summary.compactMap { (sectionName, items) -> TopListItem.ArchiveSection? in
+                let sections = data.summary.compactMap { sectionName, items -> TopListItem.ArchiveSection? in
                     guard !items.isEmpty else { return nil }
                     return TopListItem.ArchiveSection(sectionName: sectionName, items: items)
                 }

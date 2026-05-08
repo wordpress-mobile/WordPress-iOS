@@ -34,22 +34,22 @@ struct BlogJetpackSettingsService {
 
         syncGroup.enter()
         remote.getJetpackSettingsForSite(blogDotComId,
-                                         success: { (remoteSettings) in
+                                         success: { remoteSettings in
                                              remoteJetpackSettings = remoteSettings
                                              syncGroup.leave()
                                          },
-                                         failure: { (error) in
+                                         failure: { error in
                                              fetchError = error
                                              syncGroup.leave()
                                          })
 
         syncGroup.enter()
         remote.getJetpackMonitorSettingsForSite(blogDotComId,
-                                                success: { (remoteMonitorSettings) in
+                                                success: { remoteMonitorSettings in
                                                     remoteJetpackMonitorSettings = remoteMonitorSettings
                                                     syncGroup.leave()
                                                 },
-                                                failure: { (error) in
+                                                failure: { error in
                                                     fetchError = error
                                                     syncGroup.leave()
                                                 })
@@ -89,7 +89,7 @@ struct BlogJetpackSettingsService {
         let remote = BlogJetpackSettingsServiceRemote(wordPressComRestApi: remoteAPI)
         remote.getJetpackModulesSettingsForSite(
             blogDotComId,
-            success: { (remoteModulesSettings) in
+            success: { remoteModulesSettings in
                 self.coreDataStack.performAndSave({ context in
                     guard let blogSettings = Blog.lookup(withObjectID: blog.objectID, in: context)?.settings else {
                         return

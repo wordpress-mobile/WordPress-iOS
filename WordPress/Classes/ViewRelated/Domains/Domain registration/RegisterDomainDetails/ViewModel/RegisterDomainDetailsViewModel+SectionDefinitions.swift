@@ -28,7 +28,7 @@ extension RegisterDomainDetailsViewModel {
         let sectionIndex: SectionIndex
         var onChange: ((Change) -> Void)?
 
-        lazy var editableRowValidationStateChangeHandler: EditableKeyValueRow.ValidationStateChangedHandler = { [weak self] (editableRow, rule) in
+        lazy var editableRowValidationStateChangeHandler: EditableKeyValueRow.ValidationStateChangedHandler = { [weak self] editableRow, rule in
             guard let strongSelf = self,
                 let rowIndex = strongSelf.rowIndex(of: editableRow) else {
                     return
@@ -48,7 +48,7 @@ extension RegisterDomainDetailsViewModel {
             }
         }
 
-        lazy var valueChangeHandler: EditableKeyValueRow.ValueChangeHandler = { [weak self] (editableRow) in
+        lazy var valueChangeHandler: EditableKeyValueRow.ValueChangeHandler = { [weak self] editableRow in
             guard let strongSelf = self,
                 let rowIndex = strongSelf.rowIndex(of: editableRow) else {
                     return
@@ -95,7 +95,7 @@ extension RegisterDomainDetailsViewModel {
         }
 
         private func registerChangeHandlers() {
-            self.rows.forEach { (row) in
+            self.rows.forEach { row in
                 switch row {
                 case .inlineEditable(let editableRow):
                     editableRow.validationStateChangedHandler = self.editableRowValidationStateChangeHandler

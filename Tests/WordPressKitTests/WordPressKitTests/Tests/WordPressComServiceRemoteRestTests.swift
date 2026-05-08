@@ -62,10 +62,10 @@ class WordPressComServiceRemoteRestTests: XCTestCase {
                                             andPassword: "fakePassword",
                                             andClientID: "moo",
                                             andClientSecret: "cow",
-                                            success: { (_) in
+                                            success: { _ in
                                                 expect.fulfill()
                                                 XCTFail("This call should fail")
-            }, failure: { (error) in
+            }, failure: { error in
                 expect.fulfill()
                 let error = error! as NSError
                 XCTAssert(error.domain == "WordPressKit.WordPressComRestApiError", "The error should a WordPressComRestApiError")

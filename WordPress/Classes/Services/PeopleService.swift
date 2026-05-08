@@ -374,7 +374,7 @@ extension PeopleService {
             deleteInviteLinks(keys: deletedKeys, for: siteID) {
                 success()
             }
-        } failure: { (error) in
+        } failure: { error in
             failure(error)
         }
     }

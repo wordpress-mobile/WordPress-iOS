@@ -16,7 +16,7 @@ import WordPressData
         if let title {
             controller.setValue(title, forKey: "subject")
         }
-        controller.completionWithItemsHandler = { (activityType, completed, _, _) in
+        controller.completionWithItemsHandler = { activityType, completed, _, _ in
             if completed {
                 WPActivityDefaults.trackActivityType((activityType).map { $0.rawValue })
             }

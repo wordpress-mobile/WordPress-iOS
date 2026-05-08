@@ -98,6 +98,9 @@ only_rules:
   # Lines should not have trailing whitespace.
   - trailing_whitespace
 
+  # Closure arguments don't need to be wrapped in parentheses.
+  - unneeded_parentheses_in_closure_argument
+
   # Unused parameter in a closure should be replaced with _.
   - unused_closure_parameter
 

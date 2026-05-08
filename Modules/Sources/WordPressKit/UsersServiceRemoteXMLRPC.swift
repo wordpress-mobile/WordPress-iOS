@@ -13,7 +13,7 @@ public class UsersServiceRemoteXMLRPC: ServiceRemoteWordPressXMLRPC {
     ///
     public func fetchProfile(_ success: @escaping ((RemoteProfile) -> Void), failure: @escaping ((NSError?) -> Void)) {
         let params = defaultXMLRPCArguments() as [AnyObject]
-        api.callMethod("wp.getProfile", parameters: params, success: { (responseObj, _) in
+        api.callMethod("wp.getProfile", parameters: params, success: { responseObj, _ in
             guard let dict = responseObj as? NSDictionary else {
                 assertionFailure("A dictionary was expected but the API returned something different.")
                 failure(UsersServiceRemoteError.UnexpectedResponseData as NSError)
@@ -22,7 +22,7 @@ public class UsersServiceRemoteXMLRPC: ServiceRemoteWordPressXMLRPC {
             let profile = RemoteProfile(dictionary: dict)
             success(profile)
 
-        }, failure: { (error, _) in
+        }, failure: { error, _ in
             failure(error as NSError)
         })
     }

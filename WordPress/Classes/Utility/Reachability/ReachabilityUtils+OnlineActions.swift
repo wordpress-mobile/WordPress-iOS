@@ -38,7 +38,7 @@ extension ReachabilityUtils {
             object: nil,
             queue: .main,
             using: { _ in action() },
-            filter: { (notification) in
+            filter: { notification in
                 return notification.userInfo?[Foundation.Notification.reachabilityKey] as? Bool == true
         })
     }

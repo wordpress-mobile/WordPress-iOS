@@ -117,10 +117,10 @@ private extension BloggingPromptsViewController {
 
         isLoading = true
 
-        bloggingPromptsService.fetchListPrompts(success: { [weak self] (prompts) in
+        bloggingPromptsService.fetchListPrompts(success: { [weak self] prompts in
             self?.isLoading = false
             self?.prompts = prompts.sorted(by: { $0.date.compare($1.date) == .orderedDescending })
-        }, failure: { [weak self] (error) in
+        }, failure: { [weak self] error in
             DDLogError("Failed fetching blogging prompts: \(String(describing: error))")
             self?.isLoading = false
             self?.showErrorView()

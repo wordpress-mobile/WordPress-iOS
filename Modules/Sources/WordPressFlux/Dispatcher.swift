@@ -61,7 +61,7 @@ public class Dispatcher<Payload> {
     ///
     public func dispatch(_ payload: Payload) {
         assertMainThread()
-        self.observers.forEach { (_, callback) in
+        self.observers.forEach { _, callback in
             callback(payload)
         }
     }

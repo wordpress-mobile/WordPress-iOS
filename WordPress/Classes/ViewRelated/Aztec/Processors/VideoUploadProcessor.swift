@@ -14,7 +14,7 @@ class VideoUploadProcessor: Processor {
         self.videoPressID = videoPressID
     }
 
-    lazy var videoPostMediaUploadProcessor = ShortcodeProcessor(tag: "video", replacer: { (shortcode) in
+    lazy var videoPostMediaUploadProcessor = ShortcodeProcessor(tag: "video", replacer: { shortcode in
         guard let uploadValue = shortcode.attributes[MediaAttachment.uploadKey]?.value,
             case let .string(uploadID) = uploadValue,
             self.mediaUploadID == uploadID else {

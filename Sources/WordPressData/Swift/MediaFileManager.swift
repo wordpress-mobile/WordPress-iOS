@@ -199,9 +199,9 @@ public class MediaFileManager: NSObject {
     ///
     public class func calculateSizeOfMediaDirectories(onCompletion: @escaping (Int64?) -> Void) {
         let cacheManager = MediaFileManager(directory: .cache)
-        cacheManager.calculateSizeOfDirectory { (cacheSize) in
+        cacheManager.calculateSizeOfDirectory { cacheSize in
             let defaultManager = MediaFileManager.default
-            defaultManager.calculateSizeOfDirectory { (mediaSize) in
+            defaultManager.calculateSizeOfDirectory { mediaSize in
                 onCompletion( (mediaSize ?? 0) + (cacheSize ?? 0) )
             }
         }

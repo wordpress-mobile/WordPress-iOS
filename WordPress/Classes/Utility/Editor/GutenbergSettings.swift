@@ -155,7 +155,7 @@ class GutenbergSettings {
     /// - Parameter blog: The site to synch editor settings
     func postSettingsToRemote(for blog: Blog) {
         let editorSettingsService = EditorSettingsService(coreDataStack: coreDataStack)
-        editorSettingsService.postEditorSetting(for: blog, success: {}) { (error) in
+        editorSettingsService.postEditorSetting(for: blog, success: {}) { error in
             DDLogError("Failed to post new post selection with Error: \(error)")
         }
     }

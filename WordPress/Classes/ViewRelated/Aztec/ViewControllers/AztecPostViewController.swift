@@ -1590,7 +1590,7 @@ extension AztecPostViewController {
         }
 
         let linkSettings = LinkSettings(url: urlToUse?.absoluteString ?? "", text: title ?? "", openInNewWindow: target != nil, isNewLink: isInsertingNewLink)
-        let linkController = LinkSettingsViewController(settings: linkSettings, callback: { [weak self](action, settings) in
+        let linkController = LinkSettingsViewController(settings: linkSettings, callback: { [weak self]action, settings in
             guard let strongSelf = self else {
                 return
             }
@@ -2099,7 +2099,7 @@ extension AztecPostViewController {
 extension AztecPostViewController {
 
     func registerMediaObserver() {
-        mediaObserverReceipt = mediaCoordinator.addObserver({ [weak self](media, state) in
+        mediaObserverReceipt = mediaCoordinator.addObserver({ [weak self]media, state in
             self?.mediaObserver(media: media, state: state)
             }, forMediaFor: post)
     }
@@ -2143,7 +2143,7 @@ extension AztecPostViewController {
 
     func findAttachment(withUploadID uploadID: String) -> MediaAttachment? {
         var result: MediaAttachment?
-        self.richTextView.textStorage.enumerateAttachments { (attachment, _) in
+        self.richTextView.textStorage.enumerateAttachments { attachment, _ in
             if let mediaAttachment = attachment as? MediaAttachment, mediaAttachment.uploadID == uploadID {
                 result = mediaAttachment
             }
@@ -2456,7 +2456,7 @@ extension AztecPostViewController {
 
     fileprivate var failedMediaIDs: [String] {
         var failedIDs = [String]()
-        richTextView.textStorage.enumerateAttachments { (attachment, _) in
+        richTextView.textStorage.enumerateAttachments { attachment, _ in
             guard let mediaAttachment = attachment as? MediaAttachment,
                 let mediaUploadID = mediaAttachment.uploadID,
                 let media = self.mediaCoordinator.media(withObjectID: mediaUploadID),
@@ -2490,7 +2490,7 @@ extension AztecPostViewController {
 
     fileprivate func processMediaAttachments() {
         refreshGlobalProgress()
-        richTextView.textStorage.enumerateAttachments { (attachment, _) in
+        richTextView.textStorage.enumerateAttachments { attachment, _ in
             guard let mediaAttachment = attachment as? MediaAttachment else {
                 return
             }
@@ -2553,7 +2553,7 @@ extension AztecPostViewController {
         let title: String = MediaAttachmentActionSheet.title
         var message: String?
         let alertController = UIAlertController(title: title, message: nil, preferredStyle: .actionSheet)
-        let dismissAction = UIAlertAction(title: MediaAttachmentActionSheet.dismissActionTitle, style: .cancel) { (_) in
+        let dismissAction = UIAlertAction(title: MediaAttachmentActionSheet.dismissActionTitle, style: .cancel) { _ in
             if attachment == self.currentSelectedAttachment {
                 self.currentSelectedAttachment = nil
                 self.resetMediaAttachmentOverlay(attachment)
@@ -2570,14 +2570,14 @@ extension AztecPostViewController {
                 showDefaultActions = false
                 alertController.addActionWithTitle(MediaAttachmentActionSheet.stopUploadActionTitle,
                                                    style: .destructive,
-                                                   handler: { (_) in
+                                                   handler: { _ in
                                                     self.mediaCoordinator.cancelUpload(of: media)
                 })
             }
         } else {
             alertController.addActionWithTitle(attachment is ImageAttachment ? MediaAttachmentActionSheet.removeImageActionTitle : MediaAttachmentActionSheet.removeVideoActionTitle,
                 style: .destructive,
-                handler: { (_) in
+                handler: { _ in
                     self.richTextView.remove(attachmentID: attachmentID)
             })
         }
@@ -2591,14 +2591,14 @@ extension AztecPostViewController {
                 if failedMediaIDs.count > 1 {
                     alertController.addActionWithTitle(MediaAttachmentActionSheet.retryAllFailedUploadsActionTitle,
                                                        style: .default,
-                                                       handler: { [weak self] (_) in
+                                                       handler: { [weak self] _ in
                                                         self?.retryAllFailedMediaUploads()
                     })
                 }
 
                 alertController.addActionWithTitle(MediaAttachmentActionSheet.retryUploadActionTitle,
                                                    style: .default,
-                                                   handler: { [weak self] (_) in
+                                                   handler: { [weak self] _ in
                                                     guard let strongSelf = self,
                                                         let attachment = strongSelf.richTextView.attachment(withId: attachmentID) else {
                                                             return
@@ -2612,21 +2612,21 @@ extension AztecPostViewController {
             if let imageAttachment = attachment as? ImageAttachment {
                 alertController.preferredAction = alertController.addActionWithTitle(MediaAttachmentActionSheet.settingsActionTitle,
                                                                                      style: .default,
-                                                                                     handler: { (_) in
+                                                                                     handler: { _ in
                                                                                         self.displayDetails(forAttachment: imageAttachment)
                 })
 
                 if imageAttachment.isLoaded {
                     alertController.addActionWithTitle(MediaAttachmentActionSheet.editActionTitle,
                                                                                          style: .default,
-                                                                                         handler: { (_) in
+                                                                                         handler: { _ in
                                                                                             self.edit(imageAttachment)
                     })
                 }
             } else if let videoAttachment = attachment as? VideoAttachment {
                 alertController.preferredAction = alertController.addActionWithTitle(MediaAttachmentActionSheet.playVideoActionTitle,
                                                                                      style: .default,
-                                                                                     handler: { (_) in
+                                                                                     handler: { _ in
                                                                                         self.displayPlayerFor(videoAttachment: videoAttachment, atPosition: position)
                 })
             }
@@ -2663,7 +2663,7 @@ extension AztecPostViewController {
             controller.linkURL = url
         }
 
-        controller.onUpdate = { [weak self] (alignment, size, linkURL, alt, caption) in
+        controller.onUpdate = { [weak self] alignment, size, linkURL, alt, caption in
 
             guard let `self` = self else {
                 return
@@ -2720,7 +2720,7 @@ extension AztecPostViewController {
             return
         }
 
-        remote.getMetadataFromVideoPressID(videoPressID, isSitePrivate: self.post.blog.isPrivate, success: { [weak self] (metadata) in
+        remote.getMetadataFromVideoPressID(videoPressID, isSitePrivate: self.post.blog.isPrivate, success: { [weak self] metadata in
             guard let `self` = self else {
                 return
             }
@@ -2735,7 +2735,7 @@ extension AztecPostViewController {
             }
             self.richTextView.refresh(videoAttachment)
             self.displayVideoPlayer(for: newVideoURL)
-        }, failure: { [weak self] (error) in
+        }, failure: { [weak self] error in
             self?.displayUnableToPlayVideoAlert()
             DDLogError("Unable to find information for VideoPress video with ID = \(videoPressID). Details: \(String(describing: error?.localizedDescription))")
         })
@@ -2768,7 +2768,7 @@ extension AztecPostViewController {
     }
 
     func downloadImage(from url: URL, success: @escaping (UIImage) -> Void, onFailure failure: @escaping () -> Void) {
-        let receipt = mediaUtility.downloadImage(from: url, post: post, success: success, onFailure: { (_) in failure()})
+        let receipt = mediaUtility.downloadImage(from: url, post: post, success: success, onFailure: { _ in failure()})
         activeMediaRequests.append(receipt)
     }
 

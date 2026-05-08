@@ -22,7 +22,7 @@ class GutenGhostView: UIView {
 
     @IBOutlet var blockElementViews: [UIView]! {
         didSet {
-            blockElementViews.forEach { (view) in
+            blockElementViews.forEach { view in
                 view.backgroundColor = .ghostBlockBackground
             }
         }
@@ -30,7 +30,7 @@ class GutenGhostView: UIView {
 
     @IBOutlet var buttonsViews: [UIView]! {
         didSet {
-            buttonsViews.forEach { (view) in
+            buttonsViews.forEach { view in
                 view.backgroundColor = .clear
             }
         }
@@ -45,7 +45,7 @@ class GutenGhostView: UIView {
 
     @IBOutlet private var roundedCornerViews: [UIView]! {
         didSet {
-            roundedCornerViews.forEach { (view) in
+            roundedCornerViews.forEach { view in
                 view.layer.cornerRadius = 6
                 view.clipsToBounds = true
             }

@@ -37,10 +37,10 @@ class PageLayoutService {
     private static func fetchLayouts(_ api: WordPressComRestApi, _ dotComID: Int?, _ blogPersistentID: NSManagedObjectID, _ thumbnailSize: CGSize, _ completion: CompletionHandler?) {
         let params = parameters(thumbnailSize)
 
-        PageLayoutServiceRemote.fetchLayouts(api, forBlogID: dotComID, withParameters: params) { (result) in
+        PageLayoutServiceRemote.fetchLayouts(api, forBlogID: dotComID, withParameters: params) { result in
             switch result {
             case .success(let remoteLayouts):
-                persistToCoreData(blogPersistentID, remoteLayouts) { (persistanceResult) in
+                persistToCoreData(blogPersistentID, remoteLayouts) { persistanceResult in
                     switch persistanceResult {
                     case .success:
                         completion?(.success(()))

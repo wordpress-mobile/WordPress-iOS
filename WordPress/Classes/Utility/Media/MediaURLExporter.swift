@@ -118,7 +118,7 @@ class MediaURLExporter: MediaExporter {
             exporter.options = options
         }
         return exporter.export(
-            onCompletion: { (imageExport) in
+            onCompletion: { imageExport in
                 onCompletion(imageExport)
         },
             onError: onError)

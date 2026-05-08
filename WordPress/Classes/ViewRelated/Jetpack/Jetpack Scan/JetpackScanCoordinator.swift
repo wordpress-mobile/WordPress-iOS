@@ -108,7 +108,7 @@ class JetpackScanCoordinator {
         // server doesn't update its state immediately after starting a scan
         startPolling(triggerImmediately: false)
 
-        service.startScan(for: blog) { [weak self] (success) in
+        service.startScan(for: blog) { [weak self] success in
             if success == false {
                 DDLogError("Error starting scan: Scan response returned false")
 
@@ -118,7 +118,7 @@ class JetpackScanCoordinator {
                 self?.stopPolling()
                 self?.view.showScanStartError()
             }
-        } failure: { [weak self] (error) in
+        } failure: { [weak self] error in
             DDLogError("Error starting scan: \(String(describing: error?.localizedDescription))")
 
             WPAnalytics.track(.jetpackScanError, properties: ["action": "scan",
@@ -176,7 +176,7 @@ class JetpackScanCoordinator {
 
         startPolling(triggerImmediately: false)
 
-        service.fixThreats(threats, blog: blog) { [weak self] (response) in
+        service.fixThreats(threats, blog: blog) { [weak self] response in
             if response.success == false {
                 DDLogError("Error starting scan: Scan response returned false")
                 self?.stopPolling()
@@ -184,7 +184,7 @@ class JetpackScanCoordinator {
             } else {
                 self?.refreshData()
             }
-        } failure: { [weak self] (error) in
+        } failure: { [weak self] error in
             DDLogError("Error fixing threats: \(String(describing: error.localizedDescription))")
 
             self?.refreshDidFail(with: error)
@@ -337,7 +337,7 @@ class JetpackScanCoordinator {
             return
         }
 
-        refreshTimer = Timer.scheduledTimer(withTimeInterval: Constants.refreshTimerInterval, repeats: true, block: { [weak self] (_) in
+        refreshTimer = Timer.scheduledTimer(withTimeInterval: Constants.refreshTimerInterval, repeats: true, block: { [weak self] _ in
             self?.refreshData()
         })
 

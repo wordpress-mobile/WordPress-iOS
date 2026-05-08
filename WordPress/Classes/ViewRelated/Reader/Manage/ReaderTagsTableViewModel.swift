@@ -192,7 +192,7 @@ extension ReaderTagsTableViewModel {
             if let tag = service.currentTopic(in: self.context) as? ReaderTagTopic {
                 self.scrollToTag(tag)
             }
-        }, failure: { (error) in
+        }, failure: { error in
             DDLogError("Could not follow topic named \(tagName) : \(String(describing: error))")
 
             generator.notificationOccurred(.error)

@@ -40,7 +40,7 @@ class EditorMediaUtility {
 
     func fetchPosterImage(for sourceURL: URL, onSuccess: @escaping (UIImage) -> (), onFailure: @escaping () -> ()) {
         let thumbnailGenerator = MediaVideoExporter(url: sourceURL)
-        thumbnailGenerator.exportPreviewImageForVideo(atURL: sourceURL, imageOptions: nil, onCompletion: { (exportResult) in
+        thumbnailGenerator.exportPreviewImageForVideo(atURL: sourceURL, imageOptions: nil, onCompletion: { exportResult in
             guard let image = UIImage(contentsOfFile: exportResult.url.path) else {
                 onFailure()
                 return
@@ -48,7 +48,7 @@ class EditorMediaUtility {
             DispatchQueue.main.async {
                 onSuccess(image)
             }
-        }, onError: { (error) in
+        }, onError: { error in
             DDLogError("Unable to grab frame from video = \(sourceURL). Details: \(error.localizedDescription)")
             onFailure()
         })

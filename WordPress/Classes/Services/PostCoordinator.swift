@@ -718,7 +718,7 @@ class PostCoordinator: NSObject {
             completion(.failure(SavingError.mediaFailure(post, error)))
         }
 
-        return mediaCoordinator.addObserver({ [weak self](media, state) in
+        return mediaCoordinator.addObserver({ [weak self]media, state in
             guard let `self` = self else {
                 return
             }
@@ -733,7 +733,7 @@ class PostCoordinator: NSObject {
                 }
                 switch media.mediaType {
                 case .video:
-                    EditorMediaUtility.fetchRemoteVideoURL(for: media, in: post) { (result) in
+                    EditorMediaUtility.fetchRemoteVideoURL(for: media, in: post) { result in
                         switch result {
                         case .failure(let error):
                             handleSingleMediaFailure(error)
@@ -821,12 +821,12 @@ class PostCoordinator: NSObject {
 
         // Gutenberg processors need to run first because they are more specific/and target only content inside specific blocks
         gutenbergBlockProcessors.forEach { $0.process(contentBlocks) }
-        postContent = gutenbergProcessors.reduce(postContent) { (content, processor) -> String in
+        postContent = gutenbergProcessors.reduce(postContent) { content, processor -> String in
             return processor.process(content)
         }
 
         // Aztec processors are next because they are more generic and only worried about HTML tags
-        postContent = aztecProcessors.reduce(postContent) { (content, processor) -> String in
+        postContent = aztecProcessors.reduce(postContent) { content, processor -> String in
             return processor.process(content)
         }
 

@@ -127,7 +127,7 @@ class BloggingRemindersTracker {
     private func event(_ event: Event, properties: [String: String]) -> AnalyticsEvent {
         let finalProperties = sharedProperties().merging(
             properties,
-            uniquingKeysWith: { (first, _) in
+            uniquingKeysWith: { first, _ in
                 return first
         })
 

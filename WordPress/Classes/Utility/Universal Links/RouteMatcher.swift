@@ -47,7 +47,7 @@ class RouteMatcher {
                     return nil
                 }
 
-                let allValues = values.merging(placeholderValues, uniquingKeysWith: { (current, _) in current })
+                let allValues = values.merging(placeholderValues, uniquingKeysWith: { current, _ in current })
                 return route.matched(with: allValues)
             }.first
         }

@@ -62,11 +62,11 @@ import WordPressData
         let accountsDescription = "wp.com account: " + (defaultAccount?.logDescription ?? "<none>") + otherAccounts
 
         let blogTree =
-            blogsByAccount.map({ (account, blogs) -> String in
+            blogsByAccount.map({ account, blogs -> String in
                 let accountDescription = account?.logDescription ?? "<Self-Hosted>"
                 let isDefault = (account != nil && account == defaultAccount) ? " (default)" : ""
                 let blogsDescription =
-                    blogs.map({ (blog) -> String in
+                    blogs.map({ blog -> String in
                         "└─ " + blog.logDescription
                     })
                     .joined(separator: "\n")

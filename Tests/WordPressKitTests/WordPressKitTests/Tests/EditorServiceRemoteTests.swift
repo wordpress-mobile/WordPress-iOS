@@ -27,7 +27,7 @@ class EditorServiceRemoteTests: XCTestCase {
             XCTAssertEqual(editor.mobile, .gutenberg)
             XCTAssertEqual(editor.web, .gutenberg)
             expec.fulfill()
-        }) { (error) in
+        }) { error in
             XCTFail("This call should succeed. Error: \(error)")
             expec.fulfill()
         }
@@ -44,7 +44,7 @@ class EditorServiceRemoteTests: XCTestCase {
             XCTAssertEqual(editor.mobile, .aztec)
             XCTAssertEqual(editor.web, .classic)
             expec.fulfill()
-        }) { (error) in
+        }) { error in
             XCTFail("This call should succeed. Error: \(error)")
             expec.fulfill()
         }
@@ -63,7 +63,7 @@ class EditorServiceRemoteTests: XCTestCase {
         editorServiceRemote.postDesignateMobileEditor(siteID, editor: .gutenberg, success: { _ in
             XCTFail("This should fail")
             expec.fulfill()
-        }) { (error) in
+        }) { error in
             let nsError = error as NSError
             XCTAssertEqual(nsError.code, NSCoderValueNotFoundError)
             expec.fulfill()
@@ -82,7 +82,7 @@ class EditorServiceRemoteTests: XCTestCase {
         editorServiceRemote.postDesignateMobileEditor(siteID, editor: .gutenberg, success: { _ in
             XCTFail("This should throw an error")
             expec.fulfill()
-        }) { (error) in
+        }) { error in
             XCTAssertEqual(error as NSError, EditorSettings.Error.decodingFailed as NSError)
             expec.fulfill()
         }
@@ -97,7 +97,7 @@ class EditorServiceRemoteTests: XCTestCase {
         editorServiceRemote.postDesignateMobileEditor(siteID, editor: .gutenberg, success: { _ in
             XCTFail("This call should error")
             expec.fulfill()
-        }) { (error) in
+        }) { error in
             XCTAssertEqual(error as NSError, errorExpec)
             expec.fulfill()
         }
@@ -113,11 +113,11 @@ class EditorServiceRemoteTests: XCTestCase {
         let expec = expectation(description: "success")
         let response = mockResponse(forMobile: .gutenberg, andWeb: .gutenberg)
 
-        editorServiceRemote.getEditorSettings(siteID, success: { (editor) in
+        editorServiceRemote.getEditorSettings(siteID, success: { editor in
             XCTAssertEqual(editor.mobile, .gutenberg)
             XCTAssertEqual(editor.web, .gutenberg)
             expec.fulfill()
-        }) { (error) in
+        }) { error in
             XCTFail("This call should succeed. Error: \(error)")
             expec.fulfill()
         }
@@ -131,11 +131,11 @@ class EditorServiceRemoteTests: XCTestCase {
         let expec = expectation(description: "success")
         let response = mockResponse(forMobile: .notSet, andWeb: .gutenberg)
 
-        editorServiceRemote.getEditorSettings(siteID, success: { (editor) in
+        editorServiceRemote.getEditorSettings(siteID, success: { editor in
             XCTAssertEqual(editor.mobile, .notSet)
             XCTAssertEqual(editor.web, .gutenberg)
             expec.fulfill()
-        }) { (error) in
+        }) { error in
             XCTFail("This call should succeed. Error: \(error)")
             expec.fulfill()
         }
@@ -149,11 +149,11 @@ class EditorServiceRemoteTests: XCTestCase {
         let expec = expectation(description: "success")
         let response = mockResponse(forMobile: .aztec, andWeb: .classic)
 
-        editorServiceRemote.getEditorSettings(siteID, success: { (editor) in
+        editorServiceRemote.getEditorSettings(siteID, success: { editor in
             XCTAssertEqual(editor.mobile, .aztec)
             XCTAssertEqual(editor.web, .classic)
             expec.fulfill()
-        }) { (error) in
+        }) { error in
             XCTFail("This call should succeed. Error: \(error)")
             expec.fulfill()
         }
@@ -167,10 +167,10 @@ class EditorServiceRemoteTests: XCTestCase {
         let expec = expectation(description: "success")
         let errorExpec = NSError(domain: NSURLErrorDomain, code: NSURLErrorUnknown, userInfo: nil)
 
-        editorServiceRemote.getEditorSettings(siteID, success: { (_) in
+        editorServiceRemote.getEditorSettings(siteID, success: { _ in
             XCTFail("This call should error")
             expec.fulfill()
-        }) { (error) in
+        }) { error in
              XCTAssertEqual(error as NSError, errorExpec)
             expec.fulfill()
         }
@@ -197,7 +197,7 @@ class EditorServiceRemoteTests: XCTestCase {
         editorServiceRemote.postDesignateMobileEditorForAllSites(editor, success: {
             XCTAssertEqual($0, expected)
             expec.fulfill()
-        }) { (_) in
+        }) { _ in
             XCTFail("This call should NOT error")
             expec.fulfill()
         }
@@ -225,7 +225,7 @@ class EditorServiceRemoteTests: XCTestCase {
         editorServiceRemote.postDesignateMobileEditorForAllSites(editor, success: {
             XCTAssertEqual($0, expected)
             expec.fulfill()
-        }) { (_) in
+        }) { _ in
             XCTFail("This call should NOT error")
             expec.fulfill()
         }

@@ -415,7 +415,7 @@ class SharingButtonsViewController: UITableViewController {
         rows.append(row)
 
         if !buttonsSection.editing {
-            let buttonsToShow = buttons.filter { (button) -> Bool in
+            let buttonsToShow = buttons.filter { button -> Bool in
                 return button.enabled && button.visible
             }
 
@@ -460,7 +460,7 @@ class SharingButtonsViewController: UITableViewController {
         rows.append(row)
 
         if !moreSection.editing {
-            let buttonsToShow = buttons.filter { (button) -> Bool in
+            let buttonsToShow = buttons.filter { button -> Bool in
                 return button.enabled && !button.visible
             }
 
@@ -595,13 +595,13 @@ class SharingButtonsViewController: UITableViewController {
     /// Updates rows after editing.
     ///
     private func updateButtonOrderAfterEditing() {
-        let buttonsForButtonSection = buttons.filter { (btn) -> Bool in
+        let buttonsForButtonSection = buttons.filter { btn -> Bool in
             return btn.enabled && btn.visible
         }
-        let buttonsForMoreSection = buttons.filter { (btn) -> Bool in
+        let buttonsForMoreSection = buttons.filter { btn -> Bool in
             return btn.enabled && !btn.visible
         }
-        let remainingButtons = buttons.filter { (btn) -> Bool in
+        let remainingButtons = buttons.filter { btn -> Bool in
             return !btn.enabled
         }
 
@@ -697,7 +697,7 @@ class SharingButtonsViewController: UITableViewController {
         let controller = SettingsTextViewController(text: text, placeholder: placeholder, hint: hint)
 
         controller.title = labelTitle
-        controller.onValueChanged = {[unowned self] (value) in
+        controller.onValueChanged = {[unowned self] value in
             guard value != self.blog.settings!.sharingLabel else {
                 return
             }
@@ -731,7 +731,7 @@ class SharingButtonsViewController: UITableViewController {
         ]
 
         let controller = SettingsSelectionViewController(dictionary: dict)
-        controller?.onItemSelected = { [unowned self] (selected) in
+        controller?.onItemSelected = { [unowned self] selected in
             if let str = selected as? String {
                 if self.blog.settings!.sharingButtonStyle == str {
                     return
@@ -755,7 +755,7 @@ class SharingButtonsViewController: UITableViewController {
         let controller = SettingsTextViewController(text: text, placeholder: placeholder, hint: hint)
 
         controller.title = twitterUsernameTitle
-        controller.onValueChanged = {[unowned self] (value) in
+        controller.onValueChanged = {[unowned self] value in
             if value == self.blog.settings!.sharingTwitterName {
                 return
             }
@@ -905,7 +905,7 @@ extension SharingButtonsViewController {
         let diff = destinationIndexPath.row - sourceIndexPath.row
         let movedRow = sourceSection.rows[sourceIndexPath.row] as! SortableSharingSwitchRow
 
-        let movedButton = buttons.filter { (button) -> Bool in
+        let movedButton = buttons.filter { button -> Bool in
             return button.buttonID == movedRow.buttonID
         }
         let theButton = movedButton.first!

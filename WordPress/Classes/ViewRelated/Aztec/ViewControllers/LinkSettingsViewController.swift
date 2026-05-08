@@ -151,7 +151,7 @@ class LinkSettingsViewController: UITableViewController {
         guard let blog else {
             return
         }
-        let selectPostViewController = SelectPostViewController(blog: blog, isSelectedPost: { [weak self] in $0.permaLink == self?.linkSettings.url }, callback: { [weak self] (post) in
+        let selectPostViewController = SelectPostViewController(blog: blog, isSelectedPost: { [weak self] in $0.permaLink == self?.linkSettings.url }, callback: { [weak self] post in
             guard let strongSelf = self,
                     let url = post.permaLink else {
                 return

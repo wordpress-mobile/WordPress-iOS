@@ -25,7 +25,7 @@ class PageLayoutServiceRemoteTests: RemoteTestCase, RESTTestable {
     func testFetchBlogSpecificLayouts() {
         let expect = expectation(description: "Fetch blog specific site layouts")
         stubRemoteResponse(blogSpecificEndPoint, filename: successMockFilename, contentType: .ApplicationJSON)
-        PageLayoutServiceRemote.fetchLayouts(restAPI, forBlogID: blogID, withParameters: nil) { (result) in
+        PageLayoutServiceRemote.fetchLayouts(restAPI, forBlogID: blogID, withParameters: nil) { result in
             switch result {
             case .success(let layouts):
                 XCTAssertNotNil(layouts.categories)
@@ -42,7 +42,7 @@ class PageLayoutServiceRemoteTests: RemoteTestCase, RESTTestable {
     func testFetchCommonLayouts() {
         let expect = expectation(description: "Fetch blog specific site layouts")
         stubRemoteResponse(commonLayoutsEndPoint, filename: successMockFilename, contentType: .ApplicationJSON)
-        PageLayoutServiceRemote.fetchLayouts(restAPI, forBlogID: nil, withParameters: nil) { (result) in
+        PageLayoutServiceRemote.fetchLayouts(restAPI, forBlogID: nil, withParameters: nil) { result in
             switch result {
             case .success(let layouts):
                 XCTAssertNotNil(layouts.categories)
@@ -60,7 +60,7 @@ class PageLayoutServiceRemoteTests: RemoteTestCase, RESTTestable {
     func testMalformedData() {
         let expect = expectation(description: "Fetch blog specific site layouts")
         stubRemoteResponse(blogSpecificEndPoint, filename: malformedMockFilename, contentType: .ApplicationJSON)
-        PageLayoutServiceRemote.fetchLayouts(restAPI, forBlogID: blogID, withParameters: nil) { (result) in
+        PageLayoutServiceRemote.fetchLayouts(restAPI, forBlogID: blogID, withParameters: nil) { result in
             switch result {
             case .success:
                 XCTFail("This callback shouldn't get called")

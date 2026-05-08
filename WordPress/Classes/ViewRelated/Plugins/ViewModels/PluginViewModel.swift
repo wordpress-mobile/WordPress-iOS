@@ -247,7 +247,7 @@ class PluginViewModel: Observable {
                 title: message,
                 subtitle: subtitle,
                 actionLabel: NSLocalizedString("Update", comment: "Button label to update a plugin"),
-                onButtonTap: { [unowned self] (_) in
+                onButtonTap: { [unowned self] _ in
                     ActionDispatcher.dispatch(PluginAction.update(id: plugin.id, site: self.site))
                 }
             )
@@ -301,7 +301,7 @@ class PluginViewModel: Observable {
         return SwitchRow(
             title: NSLocalizedString("Active", comment: "Whether a plugin is active on a site"),
             value: activationPlugin.state.active,
-            onChange: { [unowned self] (active) in
+            onChange: { [unowned self] active in
                 self.setActive(active, for: activationPlugin)
             }
         )
@@ -319,7 +319,7 @@ class PluginViewModel: Observable {
         return SwitchRow(
             title: NSLocalizedString("Autoupdates", comment: "Whether a plugin has enabled automatic updates"),
             value: autoUpdatePlugin.state.autoupdate,
-            onChange: { [unowned self] (autoupdate) in
+            onChange: { [unowned self] autoupdate in
                 self.setAutoupdate(autoupdate, for: autoUpdatePlugin)
             }
         )
@@ -494,7 +494,7 @@ class PluginViewModel: Observable {
             WPAnalytics.track(.automatedTransferCustomDomainDialogCancelled)
         }
 
-        let registerDomainAction = alertController.addDefaultActionWithTitle(registerDomainActionTitle) { [weak self] (_) in
+        let registerDomainAction = alertController.addDefaultActionWithTitle(registerDomainActionTitle) { [weak self] _ in
             self?.presentDomainRegistration(for: directoryEntry)
         }
 
@@ -594,7 +594,7 @@ class PluginViewModel: Observable {
 
         copy.enumerateAttribute(NSAttributedString.Key.font,
                                 in: NSRange(location: 0, length: copy.length),
-                                options: NSAttributedString.EnumerationOptions(rawValue: 0)) { (value, range, _) in
+                                options: NSAttributedString.EnumerationOptions(rawValue: 0)) { value, range, _ in
             guard let font = value as? UIFont, font.familyName == "Times New Roman" else { return }
 
             copy.addAttribute(.font, value: WPStyleGuide.subtitleFont(), range: range)
@@ -605,7 +605,7 @@ class PluginViewModel: Observable {
 
         copy.enumerateAttribute(NSAttributedString.Key.paragraphStyle,
                                 in: NSRange(location: 0, length: copy.length),
-                                options: [.longestEffectiveRangeNotRequired]) { (value, range, _) in
+                                options: [.longestEffectiveRangeNotRequired]) { value, range, _ in
             guard let paragraphStyle = value as? NSParagraphStyle else { return }
 
             paragraphAttributes.append((paragraphStyle, range))

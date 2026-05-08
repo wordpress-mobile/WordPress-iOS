@@ -75,7 +75,7 @@ class MainShareViewController: UIViewController {
 private extension MainShareViewController {
     func loadAndPresentNavigationVC() {
         editorController.context = extensionContext
-        editorController.dismissalCompletionBlock = { [weak self] (exitSharing) in
+        editorController.dismissalCompletionBlock = { [weak self] exitSharing in
             if exitSharing {
                 self?.extensionContext?.completeRequest(returningItems: nil, completionHandler: nil)
             } else {

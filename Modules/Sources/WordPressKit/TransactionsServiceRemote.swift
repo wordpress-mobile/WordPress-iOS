@@ -71,7 +71,7 @@ import WordPressKitObjC
 
         wordPressComRESTAPI.post(urlPath,
                                  parameters: parameters,
-                                 success: { (response, _) in
+                                 success: { response, _ in
 
             guard let jsonResponse = response as? [String: AnyObject],
                   let cart = CartResponse(jsonDictionary: jsonResponse),
@@ -82,7 +82,7 @@ import WordPressKitObjC
             }
 
             success(cart)
-        }) { (error, _) in
+        }) { error, _ in
             failure(error)
         }
     }
@@ -104,9 +104,9 @@ import WordPressKitObjC
                                                "cart": cart.jsonRepresentation() as AnyObject,
                                                "payment": paymentDict as AnyObject]
 
-        wordPressComRESTAPI.post(urlPath, parameters: parameters, success: { (_, _) in
+        wordPressComRESTAPI.post(urlPath, parameters: parameters, success: { _, _ in
             success()
-        }) { (error, _) in
+        }) { error, _ in
             failure(error)
         }
     }
@@ -163,7 +163,7 @@ public struct CartResponse {
                 return nil
         }
 
-        let mappedProducts = products.compactMap { (product) -> Product? in
+        let mappedProducts = products.compactMap { product -> Product? in
             guard
                 let productID = product["product_id"] as? Int else {
                     return nil

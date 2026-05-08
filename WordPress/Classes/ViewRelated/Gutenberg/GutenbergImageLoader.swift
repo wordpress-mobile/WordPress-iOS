@@ -30,9 +30,9 @@ class GutenbergImageLoader: NSObject, RCTImageURLLoader {
             finalSize = CGSize(width: size.width / screenScale, height: size.height / screenScale)
         }
 
-        let task = mediaUtility.downloadImage(from: imageURL, size: finalSize, scale: finalScale, post: post, success: { (image) in
+        let task = mediaUtility.downloadImage(from: imageURL, size: finalSize, scale: finalScale, post: post, success: { image in
             completionHandler(nil, image)
-        }, onFailure: { (error) in
+        }, onFailure: { error in
             completionHandler(error, nil)
         })
 

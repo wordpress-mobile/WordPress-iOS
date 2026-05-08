@@ -53,7 +53,7 @@ struct ReaderSubscriptionHelper {
         service.toggleFollowing(forSite: topic, success: { follow in
             ReaderHelpers.dispatchToggleFollowSiteMessage(site: topic, follow: follow, success: true)
             completion?(true)
-        }, failure: { (follow, _) in
+        }, failure: { follow, _ in
             ReaderHelpers.dispatchToggleFollowSiteMessage(site: topic, follow: follow, success: false)
             completion?(false)
         })

@@ -13,7 +13,7 @@ class GutenbergVideoUploadProcessor: Processor {
         self.remoteURLString = remoteURLString
     }
 
-    lazy var videoHtmlProcessor = HTMLProcessor(for: "video", replacer: { (video) in
+    lazy var videoHtmlProcessor = HTMLProcessor(for: "video", replacer: { video in
         var attributes = video.attributes
 
         attributes.set(.string(self.remoteURLString), forKey: "src")

@@ -40,7 +40,7 @@ class ReaderSiteSearchServiceRemoteTests: RemoteTestCase, RESTTestable {
 
         stubRemoteResponse(performSearchEndpoint, filename: performSearchSuccessFilename, contentType: .ApplicationJSON)
         remote.performSearch("discover",
-                             count: 10, success: { (feeds, hasMore, totalFeeds) in
+                             count: 10, success: { feeds, hasMore, totalFeeds in
                                 XCTAssertEqual(feeds.count, 2, "The feed count should be 2")
                                 XCTAssertEqual(totalFeeds, 2, "The total feed count should be 2")
                                 XCTAssertFalse(hasMore, "The value of hasMore should be false")
@@ -57,7 +57,7 @@ class ReaderSiteSearchServiceRemoteTests: RemoteTestCase, RESTTestable {
 
         stubRemoteResponse(performSearchEndpoint, filename: performSearchSuccessNoIconFilename, contentType: .ApplicationJSON)
         remote.performSearch("discover",
-                             count: 10, success: { (feeds, hasMore, totalFeeds) in
+                             count: 10, success: { feeds, hasMore, totalFeeds in
                                 XCTAssertEqual(feeds.count, 1, "The feed count should be 1")
                                 XCTAssertEqual(totalFeeds, 1, "The total feed count should be 1")
                                 XCTAssertFalse(hasMore, "The value of hasMore should be false")
@@ -87,7 +87,7 @@ class ReaderSiteSearchServiceRemoteTests: RemoteTestCase, RESTTestable {
 
         stubRemoteResponse(performSearchEndpoint, filename: performSearchSuccessNoDataFilename, contentType: .ApplicationJSON)
         remote.performSearch("discover",
-                             count: 10, success: { (feeds, hasMore, totalFeeds) in
+                             count: 10, success: { feeds, hasMore, totalFeeds in
                                 XCTAssertEqual(feeds.count, 1, "The feed count should be 1")
                                 XCTAssertEqual(totalFeeds, 1, "The total feed count should be 1")
                                 XCTAssertFalse(hasMore, "The value of hasMore should be false")
@@ -118,7 +118,7 @@ class ReaderSiteSearchServiceRemoteTests: RemoteTestCase, RESTTestable {
 
         stubRemoteResponse(performSearchEndpoint, filename: performSearchSuccessHasMoreFilename, contentType: .ApplicationJSON)
         remote.performSearch("discover",
-                             count: 2, success: { (feeds, hasMore, totalFeeds) in
+                             count: 2, success: { feeds, hasMore, totalFeeds in
                                 XCTAssertEqual(feeds.count, 2, "The feed count should be 2")
                                 XCTAssertEqual(totalFeeds, 3, "The total feed count should be 3")
                                 XCTAssertTrue(hasMore, "The value of hasMore should be true")
@@ -135,7 +135,7 @@ class ReaderSiteSearchServiceRemoteTests: RemoteTestCase, RESTTestable {
 
         stubRemoteResponse(performSearchEndpoint, filename: performSearchSuccessFilename, contentType: .ApplicationJSON)
         remote.performSearch("discover",
-                             count: 2, success: { (feeds, hasMore, totalFeeds) in
+                             count: 2, success: { feeds, hasMore, totalFeeds in
                                 XCTAssertEqual(feeds.count, 2, "The feed count should be 2")
                                 XCTAssertEqual(totalFeeds, 2, "The total feed count should be 2")
                                 XCTAssertFalse(hasMore, "The value of hasMore should be false")
@@ -152,7 +152,7 @@ class ReaderSiteSearchServiceRemoteTests: RemoteTestCase, RESTTestable {
 
         stubRemoteResponse(performSearchEndpoint, filename: performSearchBlogIDFallbackFilename, contentType: .ApplicationJSON)
         remote.performSearch("discover",
-                             count: 10, success: { (feeds, hasMore, totalFeeds) in
+                             count: 10, success: { feeds, hasMore, totalFeeds in
                                 XCTAssertEqual(feeds.count, 1, "The feed count should be 1")
                                 XCTAssertEqual(totalFeeds, 1, "The total feed count should be 1")
                                 XCTAssertFalse(hasMore, "The value of hasMore should be false")
@@ -182,7 +182,7 @@ class ReaderSiteSearchServiceRemoteTests: RemoteTestCase, RESTTestable {
 
         stubRemoteResponse(performSearchEndpoint, filename: performSearchFailsWithNoBlogOrFeedIDFilename, contentType: .ApplicationJSON)
         remote.performSearch("discover",
-                             count: 10, success: { (feeds, hasMore, totalFeeds) in
+                             count: 10, success: { feeds, hasMore, totalFeeds in
                                 XCTAssertEqual(feeds.count, 1, "The feed count should be 1")
                                 XCTAssertEqual(totalFeeds, 2, "The total feed count should be 2")   // one feed filtered out
                                 XCTAssertFalse(hasMore, "The value of hasMore should be false")

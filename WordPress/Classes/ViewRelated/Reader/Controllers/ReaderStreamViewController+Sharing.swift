@@ -49,7 +49,7 @@ extension ReaderStreamViewController {
 
         let activities = WPActivityDefaults.defaultActivities() as! [UIActivity]
         let activityViewController = UIActivityViewController(activityItems: [sitePendingPost], applicationActivities: activities)
-        activityViewController.completionWithItemsHandler = { (activityType, completed, _, _) in
+        activityViewController.completionWithItemsHandler = { activityType, completed, _, _ in
             if completed {
                 WPActivityDefaults.trackActivityType((activityType).map { $0.rawValue })
             }

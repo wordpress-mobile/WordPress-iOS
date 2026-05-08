@@ -61,7 +61,7 @@ final class InteractiveNotificationsManager: NSObject {
         let options: UNAuthorizationOptions = [.badge, .sound, .alert, .providesAppNotificationSettings]
 
         let notificationCenter = UNUserNotificationCenter.current()
-        notificationCenter.requestAuthorization(options: options) { [weak self] (allowed, _)  in
+        notificationCenter.requestAuthorization(options: options) { [weak self] allowed, _ in
             DispatchQueue.main.async {
                 if allowed {
                     WPAnalytics.track(.pushNotificationOSAlertAllowed)

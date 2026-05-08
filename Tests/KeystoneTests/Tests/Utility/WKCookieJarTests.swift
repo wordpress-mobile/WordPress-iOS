@@ -26,7 +26,7 @@ class WKCookieJarTests: XCTestCase {
         )
 
         let expectation = self.expectation(description: "getCookies completion called")
-        cookieJar.getCookies(url: wordPressComLoginURL) { (cookies) in
+        cookieJar.getCookies(url: wordPressComLoginURL) { cookies in
             XCTAssertEqual(cookies.count, 1, "Should be one cookie for wordpress.com")
             expectation.fulfill()
         }
@@ -40,7 +40,7 @@ class WKCookieJarTests: XCTestCase {
         )
 
         let expectation = self.expectation(description: "hasCookie completion called")
-        cookieJar.hasWordPressComAuthCookie(username: "testuser", atomicSite: false) { (matches) in
+        cookieJar.hasWordPressComAuthCookie(username: "testuser", atomicSite: false) { matches in
             XCTAssertTrue(matches, "Cookies should exist for wordpress.com + testuser")
             expectation.fulfill()
         }
@@ -55,7 +55,7 @@ class WKCookieJarTests: XCTestCase {
         )
 
         let expectation = self.expectation(description: "hasCookie completion called")
-        cookieJar.hasWordPressComAuthCookie(username: "anotheruser", atomicSite: false) { (matches) in
+        cookieJar.hasWordPressComAuthCookie(username: "anotheruser", atomicSite: false) { matches in
             XCTAssertFalse(matches, "Cookies should not exist for wordpress.com + anotheruser")
             expectation.fulfill()
         }

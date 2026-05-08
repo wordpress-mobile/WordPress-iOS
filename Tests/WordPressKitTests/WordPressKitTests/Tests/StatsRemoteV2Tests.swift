@@ -491,7 +491,7 @@ class StatsRemoteV2Tests: RemoteTestCase, RESTTestable {
         let feb21 = DateComponents(year: 2019, month: 2, day: 21)
         let date = Calendar.autoupdatingCurrent.date(from: feb21)!
 
-        remote.getDetails(forPostID: 9001) { (postDetails, error) in
+        remote.getDetails(forPostID: 9001) { postDetails, error in
             XCTAssertNil(error)
             XCTAssertNotNil(postDetails)
 
@@ -853,7 +853,7 @@ class StatsRemoteV2Tests: RemoteTestCase, RESTTestable {
 
         stubRemoteResponse(siteEmailOpensEndpoint, filename: getEmailOpensFilename, contentType: .ApplicationJSON)
 
-        remote.getEmailOpens(for: 231) { (emailOpens, error) in
+        remote.getEmailOpens(for: 231) { emailOpens, error in
             XCTAssertNil(error)
             XCTAssertNotNil(emailOpens)
 

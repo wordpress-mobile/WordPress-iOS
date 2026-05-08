@@ -9,14 +9,14 @@ public class TimeZoneServiceRemote: ServiceRemoteWordPressComREST {
     public func getTimezones(success: @escaping (([TimeZoneGroup]) -> Void), failure: @escaping ((Error) -> Void)) {
         let endpoint = "timezones"
         let path = self.path(forEndpoint: endpoint, withVersion: ._2_0)
-        wordPressComRESTAPI.get(path, parameters: nil, success: { (response, _) in
+        wordPressComRESTAPI.get(path, parameters: nil, success: { response, _ in
             do {
                 let groups = try self.timezoneGroupsFromResponse(response)
                 success(groups)
             } catch {
                 failure(error)
             }
-        }) { (error, _) in
+        }) { error, _ in
             failure(error)
         }
     }

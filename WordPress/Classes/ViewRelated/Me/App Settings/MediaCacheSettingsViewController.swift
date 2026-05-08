@@ -110,7 +110,7 @@ class MediaCacheSettingsViewController: UITableViewController {
 
     fileprivate func updateMediaCacheSize() {
         setMediaCacheRowDescription(status: .calculatingSize)
-        MediaFileManager.calculateSizeOfMediaDirectories { [weak self] (allocatedSize) in
+        MediaFileManager.calculateSizeOfMediaDirectories { [weak self] allocatedSize in
             self?.setMediaCacheRowDescription(allocatedSize: allocatedSize)
         }
     }
@@ -121,7 +121,7 @@ class MediaCacheSettingsViewController: UITableViewController {
         setMediaCacheRowDescription(status: .clearingCache)
         MediaFileManager.clearAllMediaCacheFiles(onCompletion: { [weak self] in
             self?.updateMediaCacheSize()
-            }, onError: { [weak self] (_) in
+            }, onError: { [weak self] _ in
                 self?.updateMediaCacheSize()
         })
     }

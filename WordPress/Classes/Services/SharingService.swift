@@ -301,7 +301,7 @@ import WordPressKit
             let currentPublicizeServices = (try? PublicizeService.allPublicizeServices(in: context)) ?? []
 
             // Create or update based on the contents synced.
-            let servicesToKeep = remoteServices.map { (remoteService) -> PublicizeService in
+            let servicesToKeep = remoteServices.map { remoteService -> PublicizeService in
                 self.createOrReplaceFromRemotePublicizeService(remoteService, in: context)
             }
 
@@ -424,7 +424,7 @@ import WordPressKit
             let currentSharingbuttons = try SharingButton.allSharingButtons(for: blog, in: context)
 
             // Create or update based on the contents synced.
-            let buttonsToKeep = remoteSharingButtons.map { (remoteButton) -> SharingButton in
+            let buttonsToKeep = remoteSharingButtons.map { remoteButton -> SharingButton in
                 return self.createOrReplaceFromRemoteSharingButton(remoteButton, blog: blog, in: context)
             }
 
@@ -475,7 +475,7 @@ import WordPressKit
     /// - Returns: An array of `RemoteSharingButton` objects.
     ///
     private func remoteShareButtonsFromShareButtons(_ shareButtons: [SharingButton]) -> [RemoteSharingButton] {
-        return shareButtons.map { (shareButton) -> RemoteSharingButton in
+        return shareButtons.map { shareButton -> RemoteSharingButton in
             let btn = RemoteSharingButton()
             btn.buttonID = shareButton.buttonID
             btn.name = shareButton.name

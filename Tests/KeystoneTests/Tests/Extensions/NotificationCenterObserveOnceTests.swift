@@ -15,7 +15,7 @@ class NotificationCenterObserveOnceTests: XCTestCase {
 
     func testNotificationIsOnlyReceivedOnce() {
         var timesReceived = 0
-        observer = notificationCenter.observeOnce(forName: testNotification, object: nil, queue: nil, using: { (_) in
+        observer = notificationCenter.observeOnce(forName: testNotification, object: nil, queue: nil, using: { _ in
             timesReceived += 1
         })
         notificationCenter.post(name: testNotification, object: nil)
@@ -26,9 +26,9 @@ class NotificationCenterObserveOnceTests: XCTestCase {
 
     func testNotificationIsOnlyReceivedWhenMatchesFilter() {
         var timesReceived = 0
-        observer = notificationCenter.observeOnce(forName: testNotification, object: nil, queue: nil, using: { (_) in
+        observer = notificationCenter.observeOnce(forName: testNotification, object: nil, queue: nil, using: { _ in
             timesReceived += 1
-        }, filter: { (notification) in
+        }, filter: { notification in
             guard let counter = notification.userInfo?[counterKey] as? Int else {
                 return false
             }

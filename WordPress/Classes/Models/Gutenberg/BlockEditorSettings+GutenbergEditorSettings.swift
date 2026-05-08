@@ -13,9 +13,9 @@ extension BlockEditorSettings: @retroactive GutenbergEditorSettings {
     }
 
     private func elementsByType(_ type: BlockEditorSettingElementTypes) -> [[String: String]]? {
-        return elements?.sorted(by: { (lhs, rhs) -> Bool in
+        return elements?.sorted(by: { lhs, rhs -> Bool in
             return lhs.order >= rhs.order
-        }).compactMap({ (element) -> [String: String]? in
+        }).compactMap({ element -> [String: String]? in
             guard element.type == type.rawValue else { return nil }
             return element.rawRepresentation
         })
@@ -31,11 +31,11 @@ extension BlockEditorSettings {
 
         var parsedElements = Set<BlockEditorSettingElement>()
         if let themeSupport = editorTheme.themeSupport {
-            themeSupport.colors?.enumerated().forEach({ (index, color) in
+            themeSupport.colors?.enumerated().forEach({ index, color in
                 parsedElements.insert(BlockEditorSettingElement(fromRawRepresentation: color, type: .color, order: index, context: context))
             })
 
-            themeSupport.gradients?.enumerated().forEach({ (index, gradient) in
+            themeSupport.gradients?.enumerated().forEach({ index, gradient in
                 parsedElements.insert(BlockEditorSettingElement(fromRawRepresentation: gradient, type: .gradient, order: index, context: context))
             })
         }
@@ -53,11 +53,11 @@ extension BlockEditorSettings {
 
         var parsedElements = Set<BlockEditorSettingElement>()
 
-        remoteSettings.colors?.enumerated().forEach({ (index, color) in
+        remoteSettings.colors?.enumerated().forEach({ index, color in
             parsedElements.insert(BlockEditorSettingElement(fromRawRepresentation: color, type: .color, order: index, context: context))
         })
 
-        remoteSettings.gradients?.enumerated().forEach({ (index, gradient) in
+        remoteSettings.gradients?.enumerated().forEach({ index, gradient in
             parsedElements.insert(BlockEditorSettingElement(fromRawRepresentation: gradient, type: .gradient, order: index, context: context))
         })
 

@@ -57,7 +57,7 @@ open class StatsServiceRemoteV2: ServiceRemoteWordPressComREST {
 
         let path = self.path(forEndpoint: "sites/\(siteID)/\(pathComponent)/", withVersion: ._1_1)
 
-        wordPressComRESTAPI.get(path, parameters: properties, success: { (response, _) in
+        wordPressComRESTAPI.get(path, parameters: properties, success: { response, _ in
             guard
                 let jsonResponse = response as? [String: AnyObject],
                 let insight = InsightType(jsonDictionary: jsonResponse)
@@ -67,7 +67,7 @@ open class StatsServiceRemoteV2: ServiceRemoteWordPressComREST {
             }
 
             completion(insight, nil)
-        }, failure: { (error, _) in
+        }, failure: { error, _ in
             completion(nil, error)
         })
     }
@@ -145,7 +145,7 @@ open class StatsServiceRemoteV2: ServiceRemoteWordPressComREST {
             return val1
         }
 
-        wordPressComRESTAPI.get(path, parameters: properties, success: { (response, _) in
+        wordPressComRESTAPI.get(path, parameters: properties, success: { response, _ in
             guard
                 let jsonResponse = response as? [String: AnyObject],
                 let dateString = jsonResponse["date"] as? String,
@@ -173,7 +173,7 @@ open class StatsServiceRemoteV2: ServiceRemoteWordPressComREST {
             }
 
             completion(timestats, nil)
-        }, failure: { (error, _) in
+        }, failure: { error, _ in
             completion(nil, error)
         })
     }
@@ -181,7 +181,7 @@ open class StatsServiceRemoteV2: ServiceRemoteWordPressComREST {
     public func getDetails(forPostID postID: Int, completion: @escaping ((StatsPostDetails?, Error?) -> Void)) {
         let path = self.path(forEndpoint: "sites/\(siteID)/stats/post/\(postID)/", withVersion: ._1_1)
 
-        wordPressComRESTAPI.get(path, parameters: [:], success: { (response, _) in
+        wordPressComRESTAPI.get(path, parameters: [:], success: { response, _ in
             guard
                 let jsonResponse = response as? [String: AnyObject],
                 let postDetails = StatsPostDetails(jsonDictionary: jsonResponse)
@@ -191,7 +191,7 @@ open class StatsServiceRemoteV2: ServiceRemoteWordPressComREST {
             }
 
             completion(postDetails, nil)
-        }, failure: { (error, _) in
+        }, failure: { error, _ in
             completion(nil, error)
         })
     }
@@ -211,7 +211,7 @@ extension StatsServiceRemoteV2 {
         let pathComponent = StatsLastPostInsight.pathComponent
         let path = self.path(forEndpoint: "sites/\(siteID)/\(pathComponent)", withVersion: ._1_1)
 
-        wordPressComRESTAPI.get(path, parameters: properties, success: { (response, _) in
+        wordPressComRESTAPI.get(path, parameters: properties, success: { response, _ in
             guard let jsonResponse = response as? [String: AnyObject],
                   let postCount = jsonResponse["found"] as? Int else {
                 completion(nil, ResponseError.decodingFailure)
@@ -231,7 +231,7 @@ extension StatsServiceRemoteV2 {
                     return
             }
 
-            self.getPostViews(for: postID) { (views, _) in
+            self.getPostViews(for: postID) { views, _ in
                 guard
                     let views,
                     let insight = StatsLastPostInsight(jsonDictionary: post, views: views) else {
@@ -242,7 +242,7 @@ extension StatsServiceRemoteV2 {
 
                 completion(insight, nil)
             }
-        }, failure: {(error, _) in
+        }, failure: {error, _ in
             completion(nil, error)
         })
     }
@@ -254,7 +254,7 @@ extension StatsServiceRemoteV2 {
 
         wordPressComRESTAPI.get(path,
                                 parameters: parameters,
-                                success: { (response, _) in
+                                success: { response, _ in
                                     guard
                                         let jsonResponse = response as? [String: AnyObject],
                                         let views = jsonResponse["views"] as? Int else {
@@ -262,7 +262,7 @@ extension StatsServiceRemoteV2 {
                                             return
                                     }
                                     completion(views, nil)
-                                }, failure: { (error, _) in
+                                }, failure: { error, _ in
                                     completion(nil, error)
                                 }
         )
@@ -289,7 +289,7 @@ extension StatsServiceRemoteV2 {
 
         wordPressComRESTAPI.get(path,
                                 parameters: properties,
-                                success: { (response, _) in
+                                success: { response, _ in
                                     guard
                                         let jsonResponse = response as? [String: AnyObject],
                                         let response = StatsPublishedPostsTimeIntervalData(date: endingOn, period: period, unit: nil, jsonDictionary: jsonResponse) else {
@@ -297,7 +297,7 @@ extension StatsServiceRemoteV2 {
                                             return
                                     }
                                     completion(response, nil)
-                                }, failure: { (error, _) in
+                                }, failure: { error, _ in
                                     completion(nil, error)
                                 }
             )
@@ -358,7 +358,7 @@ public extension StatsServiceRemoteV2 {
         let path = self.path(forEndpoint: "sites/\(siteID)/\(pathComponent)/", withVersion: ._1_1)
         let properties = StatsEmailsSummaryData.queryProperties(quantity: quantity, sortField: sortField, sortOrder: sortOrder) as [String: AnyObject]
 
-        wordPressComRESTAPI.get(path, parameters: properties, success: { (response, _) in
+        wordPressComRESTAPI.get(path, parameters: properties, success: { response, _ in
             guard let jsonResponse = response as? [String: AnyObject],
                   let emailsSummaryData = StatsEmailsSummaryData(jsonDictionary: jsonResponse)
             else {
@@ -367,7 +367,7 @@ public extension StatsServiceRemoteV2 {
             }
 
             completion(.success(emailsSummaryData))
-        }, failure: { (error, _) in
+        }, failure: { error, _ in
             completion(.failure(error))
         })
     }
@@ -379,7 +379,7 @@ public extension StatsServiceRemoteV2 {
     func getEmailOpens(for postID: Int, completion: @escaping ((StatsEmailOpensData?, Error?) -> Void)) {
         let path = self.path(forEndpoint: "sites/\(siteID)/stats/opens/emails/\(postID)/rate", withVersion: ._1_1)
 
-        wordPressComRESTAPI.get(path, parameters: [:], success: { (response, _) in
+        wordPressComRESTAPI.get(path, parameters: [:], success: { response, _ in
             guard
                 let jsonResponse = response as? [String: AnyObject],
                 let emailOpensData = StatsEmailOpensData(jsonDictionary: jsonResponse)
@@ -389,7 +389,7 @@ public extension StatsServiceRemoteV2 {
             }
 
             completion(emailOpensData, nil)
-        }, failure: { (error, _) in
+        }, failure: { error, _ in
             completion(nil, error)
         })
     }

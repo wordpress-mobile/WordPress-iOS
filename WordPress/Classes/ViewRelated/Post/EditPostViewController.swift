@@ -127,7 +127,7 @@ class EditPostViewController: UIViewController {
             // Proceed with normal editor instantiation
             let editor = editorFactory.instantiateEditor(
                 for: post,
-                replaceEditor: { [weak self] (editor, replacement) in
+                replaceEditor: { [weak self] editor, replacement in
                     self?.replaceEditor(editor: editor, replacement: replacement)
             })
             editor.postIsReblogged = postIsReblogged
@@ -154,7 +154,7 @@ class EditPostViewController: UIViewController {
 
             let editor = self.editorFactory.instantiateEditor(
                 for: post,
-                replaceEditor: { [weak self] (editor, replacement) in
+                replaceEditor: { [weak self] editor, replacement in
                     self?.replaceEditor(editor: editor, replacement: replacement)
             })
             editor.postIsReblogged = self.postIsReblogged

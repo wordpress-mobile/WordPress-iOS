@@ -65,7 +65,7 @@ extension GutenbergFilesAppMediaSource: UIDocumentPickerDelegate {
             return assertionFailure("Image picked without callback")
         }
 
-        let mediaInfo = urls.compactMap({ (url) -> MediaInfo? in
+        let mediaInfo = urls.compactMap({ url -> MediaInfo? in
             guard let media = mediaInserter.insert(exportableAsset: url as NSURL, source: .otherApps) else {
                 return nil
             }

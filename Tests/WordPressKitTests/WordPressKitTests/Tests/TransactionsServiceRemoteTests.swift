@@ -19,12 +19,12 @@ class TransactionsServiceRemoteTests: RemoteTestCase, RESTTestable {
                            contentType: .ApplicationJSON,
                            status: 200)
 
-        remote.getSupportedCountries(success: { (countryList) in
+        remote.getSupportedCountries(success: { countryList in
             expect.fulfill()
             XCTAssert(countryList.count == 239)
             XCTAssert(countryList[0].code == "TR")
             XCTAssert(countryList[0].name == "Turkey")
-        }) { (_) in
+        }) { _ in
             XCTFail("This callback shouldn't get called")
             expect.fulfill()
         }

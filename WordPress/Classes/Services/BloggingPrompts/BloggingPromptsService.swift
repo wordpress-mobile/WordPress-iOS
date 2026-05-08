@@ -85,7 +85,7 @@ class BloggingPromptsService {
     ///   - failure: Closure to be called when the fetch process failed.
     func fetchTodaysPrompt(success: ((BloggingPrompt?) -> Void)? = nil,
                            failure: ((Error?) -> Void)? = nil) {
-        fetchPrompts(from: Date(), number: 1, success: { (prompts) in
+        fetchPrompts(from: Date(), number: 1, success: { prompts in
             success?(prompts.first)
         }, failure: failure)
     }
@@ -329,7 +329,7 @@ private extension BloggingPromptsService {
             return params
         }()
 
-        api.GET(path, parameters: requestParameter as [String: AnyObject], success: { (responseObject, _) in
+        api.GET(path, parameters: requestParameter as [String: AnyObject], success: { responseObject, _ in
             do {
                 let data = try JSONSerialization.data(withJSONObject: responseObject, options: [])
                 let remotePrompts = try Self.jsonDecoder.decode([BloggingPromptRemoteObject].self, from: data)
@@ -337,7 +337,7 @@ private extension BloggingPromptsService {
             } catch {
                 completion(.failure(error))
             }
-        }, failure: { (error, _) in
+        }, failure: { error, _ in
             completion(.failure(error))
         })
     }

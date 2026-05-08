@@ -99,7 +99,7 @@ open class GravatarServiceRemote {
 
         // Task
         let session = URLSession.shared
-        let task = session.uploadTask(with: request as URLRequest, from: requestBody, completionHandler: { (_, _, error) in
+        let task = session.uploadTask(with: request as URLRequest, from: requestBody, completionHandler: { _, _, error in
             completion?(error as NSError?)
         })
 

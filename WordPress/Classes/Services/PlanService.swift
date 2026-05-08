@@ -207,7 +207,7 @@ extension PlanService {
         let remote_v1_3 = PlanServiceRemote_ApiVersion1_3(wordPressComRestApi: restAPI)
         remote_v1_3.getPlansForSite(
             siteID,
-            success: { (plans) in
+            success: { plans in
                 guard let planId = plans.activePlan.planID,
                     let planIdInt = Int(planId) else {
                         // There won't necessarily be an active plan so this is not really a failure

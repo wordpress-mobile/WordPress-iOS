@@ -123,7 +123,7 @@ class PluginListViewModel: Observable {
         storeReceipt = store.onChange { [weak self] in
             self?.refreshState()
         }
-        actionReceipt = ActionDispatcher.global.subscribe { [weak self] (action) in
+        actionReceipt = ActionDispatcher.global.subscribe { [weak self] action in
             guard let error = self?.receiveError(from: action) else {
                 return
             }
