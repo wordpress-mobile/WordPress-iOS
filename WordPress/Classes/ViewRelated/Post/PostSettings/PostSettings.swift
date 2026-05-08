@@ -192,7 +192,7 @@ struct PostSettings: Hashable {
 
     /// Settings for a brand-new post on the given blog, prefilled with the
     /// blog's defaults (default category, default post format, current user
-    /// as author).
+    /// as author, site-level discussion defaults).
     static func defaults(from blog: Blog) -> PostSettings {
         var settings = PostSettings()
         if let categoryID = blog.settings?.defaultCategoryID,
@@ -203,6 +203,10 @@ struct PostSettings: Hashable {
         settings.postFormat = blog.settings?.defaultPostFormat
         if let userID = blog.userID {
             settings.author = Author(id: userID.intValue, displayName: "–", avatarURL: nil)
+        }
+        if let blogSettings = blog.settings {
+            settings.allowComments = blogSettings.commentsAllowed
+            settings.allowPings = blogSettings.pingbackInboundEnabled
         }
         return settings
     }

@@ -1006,6 +1006,40 @@ struct PostSettingsTests {
         #expect(Set(termIds) == Set([TermId(10), TermId(20)]))
     }
 
+    // MARK: - defaults(from: Blog) Tests
+
+    @Test("defaults inherits site discussion defaults (closed)")
+    func testDefaultsInheritsClosedDiscussion() {
+        let context = ContextManager.forTesting().mainContext
+        let blog = BlogBuilder(context).with(siteName: "Test").build()
+        blog.settings?.commentsAllowed = false
+        blog.settings?.pingbackInboundEnabled = false
+
+        let settings = PostSettings.defaults(from: blog)
+        let params = settings.makeCreateParameters(taxonomies: [])
+
+        #expect(!settings.allowComments)
+        #expect(!settings.allowPings)
+        #expect(params.commentStatus == .closed)
+        #expect(params.pingStatus == .closed)
+    }
+
+    @Test("defaults inherits site discussion defaults (open)")
+    func testDefaultsInheritsOpenDiscussion() {
+        let context = ContextManager.forTesting().mainContext
+        let blog = BlogBuilder(context).with(siteName: "Test").build()
+        blog.settings?.commentsAllowed = true
+        blog.settings?.pingbackInboundEnabled = true
+
+        let settings = PostSettings.defaults(from: blog)
+        let params = settings.makeCreateParameters(taxonomies: [])
+
+        #expect(settings.allowComments)
+        #expect(settings.allowPings)
+        #expect(params.commentStatus == .open)
+        #expect(params.pingStatus == .open)
+    }
+
 }
 
 // MARK: - Test Helpers
