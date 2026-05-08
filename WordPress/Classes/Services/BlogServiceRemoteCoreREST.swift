@@ -73,14 +73,14 @@ import WordPressAPIInternal
                 return
             }
 
-//            taxonomy-post_format-post-format-[id]
-//            │        │           │
-//            │        │           └─ term slug: "post-format-aside"
-//            │        │              (WP prefixes format terms with "post-format-")
-//            │        │
-//            │        └─ taxonomy name: "post_format"
-//            │
-//            └─ template type: taxonomy archive
+            //            taxonomy-post_format-post-format-[id]
+            //            │        │           │
+            //            │        │           └─ term slug: "post-format-aside"
+            //            │        │              (WP prefixes format terms with "post-format-")
+            //            │        │
+            //            │        └─ taxonomy name: "post_format"
+            //            │
+            //            └─ template type: taxonomy archive
             let slugPrefix = "taxonomy-post_format-post-format-"
 
             var labelsBySlugs: [String: String] = [:]
