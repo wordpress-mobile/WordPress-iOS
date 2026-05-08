@@ -11,7 +11,8 @@ struct CustomPostEditor: View {
     let post: AnyPostWithEditContext?
     let details: PostTypeDetailsWithEditContext
     let blog: Blog
-    let initialParams: PostCreateParams?
+    let initialSettings: PostSettings?
+    let initialContent: EditorContent?
 
     var body: some View {
         ViewControllerWrapper(
@@ -20,7 +21,8 @@ struct CustomPostEditor: View {
             post: post,
             details: details,
             blog: blog,
-            initialParams: initialParams
+            initialSettings: initialSettings,
+            initialContent: initialContent
         )
         .ignoresSafeArea()
     }
@@ -32,7 +34,8 @@ private struct ViewControllerWrapper: UIViewControllerRepresentable {
     let post: AnyPostWithEditContext?
     let details: PostTypeDetailsWithEditContext
     let blog: Blog
-    let initialParams: PostCreateParams?
+    let initialSettings: PostSettings?
+    let initialContent: EditorContent?
 
     @Environment(\.dismiss)
     var dismiss: DismissAction
@@ -44,7 +47,8 @@ private struct ViewControllerWrapper: UIViewControllerRepresentable {
             client: client,
             post: post,
             details: details,
-            initialParams: initialParams
+            initialSettings: initialSettings,
+            initialContent: initialContent
         ) {
             dismiss()
         }

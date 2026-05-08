@@ -18,7 +18,7 @@ protocol CustomPostEditorServiceDelegate: AnyObject {
 class CustomPostEditorService {
 
     private enum State {
-        case newPost(PostCreateParams)
+        case newPost(PostSettings)
         /// - Parameter pending: Settings applied locally from Post Settings
         ///   but not yet saved to the server.
         case existingPost(AnyPostWithEditContext, pending: PostSettings? = nil)
@@ -44,8 +44,8 @@ class CustomPostEditorService {
 
     var settings: PostSettings {
         switch state {
-        case let .newPost(params):
-            return PostSettings(from: params, taxonomies: taxonomies)
+        case let .newPost(settings):
+            return settings
         case let .existingPost(post, pending):
             return pending ?? PostSettings(from: post, taxonomies: taxonomies)
         }
@@ -55,9 +55,8 @@ class CustomPostEditorService {
     /// Term resolution is deferred to the actual save.
     func applyLocally(settings: PostSettings) {
         switch state {
-        case .newPost(let existing):
-            let params = settings.makeCreateParameters(from: existing, taxonomies: taxonomies)
-            state = .newPost(params)
+        case .newPost:
+            state = .newPost(settings)
         case .existingPost(let post, _):
             state = .existingPost(post, pending: settings)
         }
@@ -69,15 +68,8 @@ class CustomPostEditorService {
         details: PostTypeDetailsWithEditContext,
         client: WordPressClient,
         wpService: WpService,
-        initialParams: PostCreateParams? = nil
+        initialSettings: PostSettings? = nil
     ) {
-        if let post {
-            self.state = .existingPost(post)
-        } else if let initialParams {
-            self.state = .newPost(initialParams)
-        } else {
-            self.state = .newPost(PostCreateParams.defaultParams(from: blog))
-        }
         self.details = details
         self.client = client
         self.wpService = wpService
@@ -90,11 +82,13 @@ class CustomPostEditorService {
                 .filter { capabilities.customTaxonomySlugs.contains($0.slug) }
                 .sorted(using: KeyPathComparator(\.name))) ?? []
 
-        switch self.state {
-        case let .newPost(params):
-            self.initialSettings = PostSettings(from: params, taxonomies: taxonomies)
-        case let .existingPost(post, pending):
-            self.initialSettings = pending ?? PostSettings(from: post, taxonomies: taxonomies)
+        if let post {
+            self.state = .existingPost(post)
+            self.initialSettings = PostSettings(from: post, taxonomies: self.taxonomies)
+        } else {
+            let settings = initialSettings ?? .defaults(from: blog)
+            self.state = .newPost(settings)
+            self.initialSettings = settings
         }
     }
 
@@ -104,9 +98,10 @@ class CustomPostEditorService {
         TermResolutionService(taxonomyService: AnyTermService(client: client, endpoint: endpoint))
     }
 
-    /// Saves or publishes from post settings. Handles term resolution, optional
-    /// publish status override with editor content injection, and create-or-update branching.
-    func save(settings: PostSettings, publish: Bool) async throws {
+    /// Resolves any unresolved (`id == 0`) tags and custom-taxonomy terms by
+    /// looking them up on the server or creating them. Required before turning
+    /// settings into create/update parameters, which filter to `id > 0`.
+    private func resolveTerms(in settings: PostSettings) async throws -> PostSettings {
         var settings = settings
         settings.tags = try await makeTermResolutionService(endpoint: .tags).resolveIDs(for: settings.tags)
         for taxonomy in taxonomies {
@@ -114,15 +109,21 @@ class CustomPostEditorService {
             settings.otherTerms[taxonomy.slug] = try await makeTermResolutionService(endpoint: taxonomy.endpoint)
                 .resolveIDs(for: slugTerms)
         }
+        return settings
+    }
+
+    /// Saves or publishes from post settings. Handles term resolution, optional
+    /// publish status override with editor content injection, and create-or-update branching.
+    func save(settings: PostSettings, publish: Bool) async throws {
+        let settings = try await resolveTerms(in: settings)
 
         switch (state, publish) {
-        case (.newPost(let existing), false):
+        case (.newPost, false):
             // Store settings locally so the editor can create the post later.
-            let params = settings.makeCreateParameters(from: existing, taxonomies: taxonomies)
-            state = .newPost(params)
+            state = .newPost(settings)
 
-        case (.newPost(let existing), true):
-            var params = settings.makeCreateParameters(from: existing, taxonomies: taxonomies)
+        case (.newPost, true):
+            var params = settings.makeCreateParameters(taxonomies: taxonomies)
 
             // Update content
             if let delegate {
@@ -161,8 +162,11 @@ class CustomPostEditorService {
         let hasTitle = details.supports.map[.title] == .bool(true)
 
         switch state {
-        case .newPost(let existing):
-            var params = existing
+        case .newPost(let settings):
+            // Resolve any new tags / custom terms (id == 0) before they get
+            // filtered out by `makeCreateParameters`.
+            let resolved = try await resolveTerms(in: settings)
+            var params = resolved.makeCreateParameters(taxonomies: taxonomies)
             params.status = publish ? .publish : .draft
             params.title = hasTitle ? content.title : nil
             params.content = content.content
@@ -170,14 +174,9 @@ class CustomPostEditorService {
 
         case .existingPost(let post, let pending):
             var params: PostUpdateParams
-            if var pending {
-                pending.tags = try await makeTermResolutionService(endpoint: .tags).resolveIDs(for: pending.tags)
-                for taxonomy in taxonomies {
-                    guard let slugTerms = pending.otherTerms[taxonomy.slug] else { continue }
-                    pending.otherTerms[taxonomy.slug] = try await makeTermResolutionService(endpoint: taxonomy.endpoint)
-                        .resolveIDs(for: slugTerms)
-                }
-                params = pending.makeUpdateParameters(from: post, taxonomies: taxonomies)
+            if let pending {
+                let resolved = try await resolveTerms(in: pending)
+                params = resolved.makeUpdateParameters(from: post, taxonomies: taxonomies)
             } else {
                 params = PostUpdateParams(meta: nil)
             }
@@ -239,9 +238,9 @@ extension CustomPostEditorService {
     }
 
     // Used in unit tests.
-    func inspectCreateParams() -> PostCreateParams? {
-        if case .newPost(let params) = state {
-            return params
+    func inspectNewPostSettings() -> PostSettings? {
+        if case .newPost(let settings) = state {
+            return settings
         }
         return nil
     }
@@ -256,27 +255,5 @@ enum PostUpdateError: LocalizedError {
             value: "The post you are trying to save has been changed in the meantime.",
             comment: "Error message shown when the post was modified by another user while editing"
         )
-    }
-}
-
-extension PostCreateParams {
-    /// Creates default parameters for a new post, equivalent to `Blog.createPost()`.
-    static func defaultParams(from blog: Blog) -> PostCreateParams {
-        var params = PostCreateParams(meta: nil)
-        params.status = .draft
-
-        if let categoryID = blog.settings?.defaultCategoryID,
-            categoryID != PostCategory.uncategorized
-        {
-            params.categories = [TermId(categoryID.int64Value)]
-        }
-
-        params.format = blog.settings?.defaultPostFormat.flatMap { PostFormat.from(slug: $0) }
-
-        if let userID = blog.userID {
-            params.author = UserId(userID.int64Value)
-        }
-
-        return params
     }
 }

@@ -982,7 +982,7 @@ struct PostSettingsTests {
         #expect(term1 != term3, "Same id 0, different name — different unresolved term")
     }
 
-    // MARK: - PostCreateParams Custom Terms Tests
+    // MARK: - makeCreateParameters Tests
 
     @Test("makeCreateParameters includes custom taxonomy terms in additionalFields")
     func testMakeCreateParametersIncludesCustomTerms() {
@@ -990,9 +990,7 @@ struct PostSettingsTests {
         let taxonomies = [
             SiteTaxonomy.makeTaxonomy(slug: "genre", restBase: "genre")
         ]
-        let existing = PostCreateParams(meta: nil)
-
-        var settings = PostSettings(from: existing, taxonomies: taxonomies)
+        var settings = PostSettings()
         settings.otherTerms = [
             "genre": [
                 PostSettings.Term(id: 10, name: "fiction"),
@@ -1001,157 +999,13 @@ struct PostSettingsTests {
         ]
 
         // When
-        let params = settings.makeCreateParameters(from: existing, taxonomies: taxonomies)
+        let params = settings.makeCreateParameters(taxonomies: taxonomies)
 
         // Then
         let termIds = params.additionalFields?.termIdsForKey(key: "genre") ?? []
         #expect(Set(termIds) == Set([TermId(10), TermId(20)]))
     }
 
-    @Test("init(from: PostCreateParams) populates otherTerms from additionalFields")
-    func testInitFromCreateParamsReadsCustomTerms() {
-        // Given
-        let taxonomies = [
-            SiteTaxonomy.makeTaxonomy(slug: "genre", restBase: "genre")
-        ]
-        let termMap: [String: [TermId]] = ["genre": [TermId(10), TermId(20)]]
-        let params = PostCreateParams(
-            meta: nil,
-            additionalFields: WpAdditionalFields.fromTermIdMap(map: termMap)
-        )
-
-        // When
-        let settings = PostSettings(from: params, taxonomies: taxonomies)
-
-        // Then
-        #expect(
-            settings.otherTerms["genre"] == [
-                PostSettings.Term(id: 10, name: ""),
-                PostSettings.Term(id: 20, name: "")
-            ]
-        )
-    }
-
-    @Test("init(from: PostCreateParams) preserves social sharing draft")
-    func testInitFromCreateParamsPreservesSocialSharingDraft() {
-        let params = PostCreateParams(
-            meta: PostMeta().addingPublicizeMessage("Stored message"),
-            additionalFields: WpAdditionalFields()
-                .addingPublicizeConnections([
-                    "1": .init(id: "1", enabled: true),
-                    "2": .init(id: "2", enabled: false)
-                ])
-        )
-
-        let settings = PostSettings(from: params)
-
-        #expect(settings.socialSharingDraft?.customMessage == "Stored message")
-        #expect(settings.socialSharingDraft?.connectionsByID == [
-            "1": .init(id: "1", enabled: true),
-            "2": .init(id: "2", enabled: false)
-        ])
-    }
-
-    @Test("makeCreateParameters clears stored publicize message from empty social draft")
-    func testMakeCreateParametersClearsStoredPublicizeMessage() {
-        let existing = PostCreateParams(
-            meta: PostMeta().addingPublicizeMessage("Stored message")
-        )
-        var settings = PostSettings(from: existing)
-        settings.socialSharingDraft = PostSocialSharingDraft(customMessage: nil)
-
-        let params = settings.makeCreateParameters(from: existing)
-
-        #expect(params.meta != nil)
-        #expect(params.meta?.publicizeMessage == nil)
-    }
-
-    @Test("init(from: PostCreateParams) populates parentPageID")
-    func testInitFromCreateParamsReadsParent() {
-        // Given
-        var params = PostCreateParams(meta: nil)
-        params.parent = PostId(42)
-
-        // When
-        let settings = PostSettings(from: params)
-
-        // Then
-        #expect(settings.parentPageID == 42)
-    }
-
-    @Test("PostCreateParams parent survives round-trip through PostSettings")
-    func testParentRoundTripThroughPostSettings() {
-        // Given
-        var params = PostCreateParams(meta: nil)
-        params.parent = PostId(42)
-
-        // When
-        let settings = PostSettings(from: params)
-        let outputParams = settings.makeCreateParameters(from: .init(meta: nil), taxonomies: [])
-
-        // Then
-        #expect(outputParams.parent == PostId(42))
-    }
-
-    @Test("init(from: PostCreateParams) defaults status to draft when nil")
-    func testInitFromCreateParamsDefaultsStatusToDraft() {
-        // Given
-        let params = PostCreateParams(meta: nil)
-
-        // When
-        let settings = PostSettings(from: params)
-
-        // Then
-        #expect(settings.status == .draft)
-        #expect(settings.publishDate == nil)
-    }
-
-    @Test("init(from: PostCreateParams) reads scheduled status and date")
-    func testInitFromCreateParamsReadsScheduledStatus() {
-        // Given
-        var params = PostCreateParams(meta: nil)
-        params.status = .future
-        let scheduledDate = Date(timeIntervalSince1970: 2_000_000_000)
-        params.dateGmt = scheduledDate
-
-        // When
-        let settings = PostSettings(from: params)
-
-        // Then
-        #expect(settings.status == .scheduled)
-        #expect(settings.publishDate == scheduledDate)
-    }
-
-    @Test("init(from: PostCreateParams) reads pending status with nil date")
-    func testInitFromCreateParamsReadsPendingStatus() {
-        // Given
-        var params = PostCreateParams(meta: nil)
-        params.status = .pending
-
-        // When
-        let settings = PostSettings(from: params)
-
-        // Then
-        #expect(settings.status == .pending)
-        #expect(settings.publishDate == nil)
-    }
-
-    @Test("PostCreateParams status and date survive round-trip through PostSettings")
-    func testStatusAndDateRoundTripThroughPostSettings() {
-        // Given
-        var params = PostCreateParams(meta: nil)
-        params.status = .future
-        let scheduledDate = Date(timeIntervalSince1970: 2_000_000_000)
-        params.dateGmt = scheduledDate
-
-        // When
-        let settings = PostSettings(from: params)
-        let outputParams = settings.makeCreateParameters(from: .init(meta: nil), taxonomies: [])
-
-        // Then
-        #expect(outputParams.status == .future)
-        #expect(outputParams.dateGmt == scheduledDate)
-    }
 }
 
 // MARK: - Test Helpers

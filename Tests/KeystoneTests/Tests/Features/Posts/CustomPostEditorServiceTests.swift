@@ -13,8 +13,8 @@ struct CustomPostEditorServiceTests {
 
     // MARK: - New Post Tests
 
-    @Test("applyLocally updates PostCreateParams for new posts")
-    func applyLocallyUpdatesCreateParamsForNewPost() throws {
+    @Test("applyLocally updates settings for new posts")
+    func applyLocallyUpdatesSettingsForNewPost() throws {
         // Given
         let context = ContextManager.forTesting().mainContext
         let blog = BlogBuilder(context).build()
@@ -52,7 +52,8 @@ struct CustomPostEditorServiceTests {
         service.applyLocally(settings: settings)
 
         // Then
-        let params = try #require(service.inspectCreateParams())
+        let newSettings = try #require(service.inspectNewPostSettings())
+        let params = newSettings.makeCreateParameters()
         #expect(params.meta?.publicizeMessage == "Share this")
 
         let entries = try #require(params.additionalFields?.arrayValueForKey(key: "jetpack_publicize_connections"))
@@ -239,29 +240,20 @@ struct CustomPostEditorServiceTests {
         #expect(service.hasSettingsChanges == true)
     }
 
-    // MARK: - initialParams Tests
+    // MARK: - initialSettings Tests
 
-    @Test("init with initialParams uses provided params instead of defaults")
-    func initWithInitialParamsUsesProvidedParams() throws {
+    @Test("init with initialSettings uses provided settings instead of defaults")
+    func initWithInitialSettingsUsesProvidedSettings() throws {
         let context = ContextManager.forTesting().mainContext
         let blog = BlogBuilder(context).build()
 
-        var params = PostCreateParams(meta: nil)
-        params.status = .draft
-        params.title = "Copied Title"
-        params.content = "Copied Content"
-        params.categories = [TermId(5)]
+        var settings = PostSettings()
+        settings.categoryIDs = [5]
 
-        let service = try makeService(blog: blog, post: nil, initialParams: params)
+        let service = try makeService(blog: blog, post: nil, initialSettings: settings)
 
-        // PostSettings does not store title/content (those are managed by the
-        // Gutenberg editor), so verify via categoryIDs which PostSettings does map.
         #expect(service.settings.categoryIDs == [5])
-        // Also verify via the test-only inspection method that the full params
-        // are stored, including title and content.
-        let storedParams = service.inspectCreateParams()
-        #expect(storedParams?.title == "Copied Title")
-        #expect(storedParams?.content == "Copied Content")
+        #expect(service.inspectNewPostSettings()?.categoryIDs == [5])
     }
 }
 
@@ -270,7 +262,7 @@ struct CustomPostEditorServiceTests {
 private func makeService(
     blog: Blog,
     post: AnyPostWithEditContext?,
-    initialParams: PostCreateParams? = nil
+    initialSettings: PostSettings? = nil
 ) throws -> CustomPostEditorService {
     let api = try WordPressAPI(
         urlSession: .shared,
@@ -292,7 +284,7 @@ private func makeService(
         details: makePostTypeDetails(),
         client: client,
         wpService: wpService,
-        initialParams: initialParams
+        initialSettings: initialSettings
     )
 }
 
