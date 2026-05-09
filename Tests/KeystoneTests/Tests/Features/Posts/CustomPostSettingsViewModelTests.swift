@@ -122,6 +122,40 @@ struct CustomPostSettingsViewModelTests {
         #expect(viewModel.settings.socialSharingDraft == storedDraft)
     }
 
+    @Test("social v2 is hidden when the post type does not support publicize")
+    func socialV2IsHiddenWhenPostTypeDoesNotSupportPublicize() throws {
+        let context = ContextManager.forTesting().mainContext
+        let blog = BlogBuilder(context).build()
+        let storedDraft = PostSocialSharingDraft(
+            customMessage: "Stored message",
+            connectionsByID: [
+                "12345": .init(id: "12345", enabled: false)
+            ]
+        )
+        let initialParams = PostCreateParams(
+            meta: PostMeta().addingPublicizeMessage("Stored message"),
+            additionalFields: WpAdditionalFields()
+                .addingPublicizeConnections(storedDraft.connectionsByID ?? [:])
+        )
+        let editorService = try makeEditorService(
+            blog: blog,
+            post: nil,
+            initialParams: initialParams,
+            supportsPublicize: false
+        )
+        let connectionsService = makeConnectionsService()
+
+        let viewModel = CustomPostSettingsViewModel(
+            editorService: editorService,
+            blog: blog,
+            socialConnectionsService: connectionsService
+        )
+
+        #expect(viewModel.v2SocialSharing == nil)
+        #expect(viewModel.settings.socialSharingDraft == nil)
+        #expect(viewModel.getSettingsToSave(for: viewModel.settings).socialSharingDraft == nil)
+    }
+
 }
 
 // MARK: - Test Helpers
@@ -174,13 +208,14 @@ private func makePostWithDisabledConnection() throws -> AnyPostWithEditContext {
 private func makeEditorService(
     blog: Blog,
     post: AnyPostWithEditContext?,
-    initialParams: PostCreateParams? = nil
+    initialParams: PostCreateParams? = nil,
+    supportsPublicize: Bool = true
 ) throws -> CustomPostEditorService {
     let dependencies = try makeServiceDependencies()
     return CustomPostEditorService(
         blog: blog,
         post: post,
-        details: makePostTypeDetails(),
+        details: makePostTypeDetails(supportsPublicize: supportsPublicize),
         client: dependencies.client,
         wpService: dependencies.wpService,
         initialParams: initialParams
@@ -221,8 +256,16 @@ private func makeConnectionsService() -> SiteSocialConnectionsService {
     )
 }
 
-private func makePostTypeDetails() -> PostTypeDetailsWithEditContext {
-    PostTypeDetailsWithEditContext(
+private func makePostTypeDetails(supportsPublicize: Bool = true) -> PostTypeDetailsWithEditContext {
+    var supports: [PostTypeSupports: JsonValue] = [
+        .title: .bool(true),
+        .editor: .bool(true)
+    ]
+    if supportsPublicize {
+        supports[.custom("publicize")] = .bool(true)
+    }
+
+    return PostTypeDetailsWithEditContext(
         capabilities: [:],
         description: "",
         hierarchical: false,
@@ -230,10 +273,7 @@ private func makePostTypeDetails() -> PostTypeDetailsWithEditContext {
         labels: makePostTypeLabels(),
         name: "Test Post Type",
         slug: "test_post_type",
-        supports: PostTypeSupportsMap(map: [
-            .title: .bool(true),
-            .editor: .bool(true)
-        ]),
+        supports: PostTypeSupportsMap(map: supports),
         hasArchive: .bool(false),
         taxonomies: [],
         restBase: "test_post_type",

@@ -208,7 +208,9 @@ final class CustomPostSettingsViewModel: NSObject, ObservableObject, PostSetting
         self.context = context
         self.preferences = preferences
         self.client = editorService.client
-        self.capabilities = PostSettingsCapabilities(from: editorService.details)
+        let capabilities = PostSettingsCapabilities(from: editorService.details)
+        self.capabilities = capabilities
+        let socialConnectionsService = capabilities.supportsPublicize ? socialConnectionsService : nil
         self.socialConnectionsService = socialConnectionsService
 
         var initialSettings = editorService.settings
@@ -235,6 +237,8 @@ final class CustomPostSettingsViewModel: NSObject, ObservableObject, PostSetting
                 // posts can already carry a draft on editorService.settings.
                 initialSettings.socialSharingDraft = PostSocialSharingDraft()
             }
+        } else {
+            initialSettings.socialSharingDraft = nil
         }
 
         self.settings = initialSettings
@@ -284,7 +288,7 @@ final class CustomPostSettingsViewModel: NSObject, ObservableObject, PostSetting
         self.init(
             editorService: editorService,
             blog: blog,
-            socialConnectionsService: Self.resolveSocialConnectionsService(blog: blog),
+            socialConnectionsService: Self.resolveSocialConnectionsService(blog: blog, details: editorService.details),
             isStandalone: isStandalone,
             context: context,
             preferences: preferences
@@ -345,6 +349,9 @@ final class CustomPostSettingsViewModel: NSObject, ObservableObject, PostSetting
 
     func getSettingsToSave(for settings: PostSettings) -> PostSettings {
         var settings = settings
+        if !capabilities.supportsPublicize {
+            settings.socialSharingDraft = nil
+        }
         if context == .publishing {
             // We don't support saving these changes on the "Publishing" sheet
             // as it would trigger the change in status and publishing. We'll
@@ -589,8 +596,12 @@ final class CustomPostSettingsViewModel: NSObject, ObservableObject, PostSetting
         }
     }
 
-    private static func resolveSocialConnectionsService(blog: Blog) -> SiteSocialConnectionsService? {
-        guard FeatureFlag.socialSharingV2.enabled,
+    private static func resolveSocialConnectionsService(
+        blog: Blog,
+        details: PostTypeDetailsWithEditContext
+    ) -> SiteSocialConnectionsService? {
+        guard PostSettingsCapabilities(from: details).supportsPublicize,
+            FeatureFlag.socialSharingV2.enabled,
             blog.supports(.publicize),
             let service = JetpackSocialFactory.shared.connectionsService(for: blog)
         else {
