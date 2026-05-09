@@ -226,7 +226,7 @@ final class CustomPostSettingsViewModel: NSObject, ObservableObject, PostSetting
             )
         }
 
-        if socialConnectionsService != nil {
+        if socialConnectionsService != nil, initialSettings.status != .publishPrivate {
             if editorService.post == nil, initialSettings.socialSharingDraft == nil {
                 // Note: After PR 25543 is merged, keep this nil guard. New
                 // posts can already carry a draft on editorService.settings.
@@ -344,7 +344,7 @@ final class CustomPostSettingsViewModel: NSObject, ObservableObject, PostSetting
 
     func getSettingsToSave(for settings: PostSettings) -> PostSettings {
         var settings = settings
-        if !capabilities.supportsPublicize {
+        if !capabilities.supportsPublicize || settings.status == .publishPrivate {
             settings.socialSharingDraft = nil
         }
         if context == .publishing {
@@ -400,7 +400,11 @@ final class CustomPostSettingsViewModel: NSObject, ObservableObject, PostSetting
     func showSocialSharingOptions() {}
 
     var v2SocialSharing: V2SocialSharingBinding? {
-        guard let service = socialConnectionsService else { return nil }
+        guard let service = socialConnectionsService,
+            settings.status != .publishPrivate
+        else {
+            return nil
+        }
         let binding = Binding<PostSocialSharingDraft>(
             get: { self.settings.socialSharingDraft ?? PostSocialSharingDraft() },
             set: { self.settings.socialSharingDraft = $0 }

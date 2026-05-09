@@ -156,11 +156,51 @@ struct CustomPostSettingsViewModelTests {
         #expect(viewModel.getSettingsToSave(for: viewModel.settings).socialSharingDraft == nil)
     }
 
+    @Test("social v2 is hidden and stripped when the post is private")
+    func socialV2IsHiddenAndStrippedWhenPostIsPrivate() throws {
+        let context = ContextManager.forTesting().mainContext
+        let blog = BlogBuilder(context).build()
+        let post = try makePostWithDisabledConnection(status: .private)
+        let editorService = try makeEditorService(blog: blog, post: post)
+        let connectionsService = makeConnectionsService()
+
+        let viewModel = CustomPostSettingsViewModel(
+            editorService: editorService,
+            blog: blog,
+            socialConnectionsService: connectionsService
+        )
+
+        #expect(viewModel.v2SocialSharing == nil)
+        #expect(viewModel.settings.socialSharingDraft == nil)
+        #expect(!viewModel.hasChanges)
+        #expect(viewModel.getSettingsToSave(for: viewModel.settings).socialSharingDraft == nil)
+    }
+
+    @Test("social sharing draft is stripped when settings are changed to private")
+    func socialSharingDraftIsStrippedWhenSettingsBecomePrivate() throws {
+        let context = ContextManager.forTesting().mainContext
+        let blog = BlogBuilder(context).build()
+        let post = try makePostWithDisabledConnection()
+        let editorService = try makeEditorService(blog: blog, post: post)
+        let connectionsService = makeConnectionsService()
+
+        let viewModel = CustomPostSettingsViewModel(
+            editorService: editorService,
+            blog: blog,
+            socialConnectionsService: connectionsService
+        )
+
+        viewModel.settings.status = .publishPrivate
+
+        #expect(viewModel.v2SocialSharing == nil)
+        #expect(viewModel.getSettingsToSave(for: viewModel.settings).socialSharingDraft == nil)
+    }
+
 }
 
 // MARK: - Test Helpers
 
-private func makePostWithDisabledConnection() throws -> AnyPostWithEditContext {
+private func makePostWithDisabledConnection(status: PostStatus = .publish) throws -> AnyPostWithEditContext {
     // Mirrors the real server response observed when a published post has a
     // connection that was already shared (server returns enabled: false).
     let json = #"""
@@ -180,7 +220,7 @@ private func makePostWithDisabledConnection() throws -> AnyPostWithEditContext {
         modified: "2025-01-01T00:00:00",
         modifiedGmt: Date(timeIntervalSince1970: 0),
         slug: "test-post",
-        status: .publish,
+        status: status,
         postType: "post",
         password: nil,
         permalinkTemplate: nil,
