@@ -465,10 +465,15 @@ struct PostSettings: Hashable {
             params.additionalFields = WpAdditionalFields.fromTermIdMap(map: customTermChanges)
         }
 
-        // Social connections
-        if let connectionsByID = socialSharingDraft?.connectionsByID, !connectionsByID.isEmpty {
-            params.additionalFields = (params.additionalFields ?? WpAdditionalFields())
-                .addingPublicizeConnections(connectionsByID)
+        // Social connections. The fetched post can already carry explicit
+        // per-post connection state, so only send it back when the user changed
+        // it during this edit session.
+        if let connectionsByID = socialSharingDraft?.connectionsByID {
+            let originalConnectionsByID = post.additionalFields?.publicizeConnectionsByID
+            if originalConnectionsByID != connectionsByID {
+                params.additionalFields = (params.additionalFields ?? WpAdditionalFields())
+                    .addingPublicizeConnections(connectionsByID)
+            }
         }
 
         // Social meta. The custom message is sent only when it differs from

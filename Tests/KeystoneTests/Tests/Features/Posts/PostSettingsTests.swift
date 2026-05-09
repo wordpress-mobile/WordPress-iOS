@@ -943,6 +943,23 @@ struct PostSettingsTests {
         #expect(flagsByID == ["1": true, "2": false, "3": true])
     }
 
+    @Test("makeUpdateParameters(from: AnyPostWithEditContext) omits unchanged social connections")
+    func testMakeRemoteUpdateParametersOmitsUnchangedPublicizeConnections() {
+        let additionalFields = WpAdditionalFields()
+            .addingPublicizeConnections([
+                "1": .init(id: "1", enabled: true),
+                "2": .init(id: "2", enabled: false)
+            ])
+        let post = makeRemotePost(additionalFields: additionalFields)
+        var settings = PostSettings(from: post)
+        settings.slug = "changed-slug"
+
+        let params = settings.makeUpdateParameters(from: post)
+
+        #expect(params.slug == "changed-slug")
+        #expect(params.additionalFields == nil)
+    }
+
     @Test("Resolved terms (id > 0) are equal when ids match, regardless of name")
     func testResolvedTermEquality() {
         let term1 = PostSettings.Term(id: 5, name: "swift")
