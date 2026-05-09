@@ -135,6 +135,16 @@ struct PostSettings: Hashable {
             }
         }
         self.otherTerms = otherTerms
+
+        // TODO: After PR 25543 is merged, remove this PostCreateParams
+        // restore path. New-post state will carry PostSettings directly.
+        let socialSharingDraft = PostSocialSharingDraft(
+            fromPostAdditionalFields: params.additionalFields,
+            meta: params.meta
+        )
+        if socialSharingDraft.customMessage != nil || socialSharingDraft.connectionsByID != nil {
+            self.socialSharingDraft = socialSharingDraft
+        }
     }
 
     /// Creates PostSettings from an AbstractPost instance.
@@ -515,9 +525,18 @@ struct PostSettings: Hashable {
         params.parent = parentPageID.map { PostId(Int64($0)) }
         params.additionalFields = fields
 
-        // Social meta
-        if let message = socialSharingDraft?.customMessage, !message.isEmpty {
-            params.meta = (params.meta ?? PostMeta()).addingPublicizeMessage(message)
+        // Social meta. When a local new-post draft already carries a saved
+        // message, clearing the field needs to write an empty string back into
+        // the create params rather than leaving the stale value in place.
+        // TODO: After PR 25543 is merged, move this social serialization into
+        // makeCreateParameters(taxonomies:) and remove the existing-param
+        // comparison.
+        if let socialSharingDraft {
+            let originalMessage = existing.meta?.publicizeMessage
+            let newMessage = socialSharingDraft.customMessage ?? ""
+            if originalMessage != (newMessage.isEmpty ? nil : newMessage) {
+                params.meta = (params.meta ?? PostMeta()).addingPublicizeMessage(newMessage)
+            }
         }
 
         return params

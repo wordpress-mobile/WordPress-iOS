@@ -995,6 +995,40 @@ struct PostSettingsTests {
         )
     }
 
+    @Test("init(from: PostCreateParams) preserves social sharing draft")
+    func testInitFromCreateParamsPreservesSocialSharingDraft() {
+        let params = PostCreateParams(
+            meta: PostMeta().addingPublicizeMessage("Stored message"),
+            additionalFields: WpAdditionalFields()
+                .addingPublicizeConnections([
+                    "1": .init(id: "1", enabled: true),
+                    "2": .init(id: "2", enabled: false)
+                ])
+        )
+
+        let settings = PostSettings(from: params)
+
+        #expect(settings.socialSharingDraft?.customMessage == "Stored message")
+        #expect(settings.socialSharingDraft?.connectionsByID == [
+            "1": .init(id: "1", enabled: true),
+            "2": .init(id: "2", enabled: false)
+        ])
+    }
+
+    @Test("makeCreateParameters clears stored publicize message from empty social draft")
+    func testMakeCreateParametersClearsStoredPublicizeMessage() {
+        let existing = PostCreateParams(
+            meta: PostMeta().addingPublicizeMessage("Stored message")
+        )
+        var settings = PostSettings(from: existing)
+        settings.socialSharingDraft = PostSocialSharingDraft(customMessage: nil)
+
+        let params = settings.makeCreateParameters(from: existing)
+
+        #expect(params.meta != nil)
+        #expect(params.meta?.publicizeMessage == nil)
+    }
+
     @Test("init(from: PostCreateParams) populates parentPageID")
     func testInitFromCreateParamsReadsParent() {
         // Given

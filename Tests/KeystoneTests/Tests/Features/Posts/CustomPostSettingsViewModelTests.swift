@@ -91,6 +91,37 @@ struct CustomPostSettingsViewModelTests {
         #expect(!viewModel.hasChanges)
     }
 
+    @Test("new post initialization preserves locally stored social sharing draft")
+    func newPostInitializationPreservesStoredSocialSharingDraft() throws {
+        let context = ContextManager.forTesting().mainContext
+        let blog = BlogBuilder(context).build()
+        let storedDraft = PostSocialSharingDraft(
+            customMessage: "Stored message",
+            connectionsByID: [
+                "12345": .init(id: "12345", enabled: false)
+            ]
+        )
+        let initialParams = PostCreateParams(
+            meta: PostMeta().addingPublicizeMessage("Stored message"),
+            additionalFields: WpAdditionalFields()
+                .addingPublicizeConnections(storedDraft.connectionsByID ?? [:])
+        )
+        let editorService = try makeEditorService(
+            blog: blog,
+            post: nil,
+            initialParams: initialParams
+        )
+        let connectionsService = makeConnectionsService()
+
+        let viewModel = CustomPostSettingsViewModel(
+            editorService: editorService,
+            blog: blog,
+            socialConnectionsService: connectionsService
+        )
+
+        #expect(viewModel.settings.socialSharingDraft == storedDraft)
+    }
+
 }
 
 // MARK: - Test Helpers
@@ -142,7 +173,8 @@ private func makePostWithDisabledConnection() throws -> AnyPostWithEditContext {
 @MainActor
 private func makeEditorService(
     blog: Blog,
-    post: AnyPostWithEditContext
+    post: AnyPostWithEditContext?,
+    initialParams: PostCreateParams? = nil
 ) throws -> CustomPostEditorService {
     let dependencies = try makeServiceDependencies()
     return CustomPostEditorService(
@@ -150,7 +182,8 @@ private func makeEditorService(
         post: post,
         details: makePostTypeDetails(),
         client: dependencies.client,
-        wpService: dependencies.wpService
+        wpService: dependencies.wpService,
+        initialParams: initialParams
     )
 }
 

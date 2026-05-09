@@ -225,11 +225,16 @@ final class CustomPostSettingsViewModel: NSObject, ObservableObject, PostSetting
         }
 
         if socialConnectionsService != nil {
-            let initialSocialSharingDraft =
-                editorService.post.map {
-                    PostSocialSharingDraft(fromPostAdditionalFields: $0.additionalFields, meta: $0.meta)
-                } ?? PostSocialSharingDraft()
-            initialSettings.socialSharingDraft = initialSocialSharingDraft
+            if let post = editorService.post {
+                initialSettings.socialSharingDraft = PostSocialSharingDraft(
+                    fromPostAdditionalFields: post.additionalFields,
+                    meta: post.meta
+                )
+            } else if initialSettings.socialSharingDraft == nil {
+                // Note: After PR 25543 is merged, keep this nil guard. New
+                // posts can already carry a draft on editorService.settings.
+                initialSettings.socialSharingDraft = PostSocialSharingDraft()
+            }
         }
 
         self.settings = initialSettings
