@@ -699,6 +699,26 @@ struct PostSettingsTests {
         )
     }
 
+    @Test("init(from: AnyPostWithEditContext) preserves social sharing draft")
+    func testInitFromRemotePostPreservesSocialSharingDraft() {
+        let expectedDraft = PostSocialSharingDraft(
+            customMessage: "Stored message",
+            connectionsByID: [
+                "1": .init(id: "1", enabled: true),
+                "2": .init(id: "2", enabled: false)
+            ]
+        )
+        let post = makeRemotePost(
+            meta: PostMeta().addingPublicizeMessage("Stored message"),
+            additionalFields: WpAdditionalFields()
+                .addingPublicizeConnections(expectedDraft.connectionsByID ?? [:])
+        )
+
+        let settings = PostSettings(from: post)
+
+        #expect(settings.socialSharingDraft == expectedDraft)
+    }
+
     @Test("apply(to:) converts terms back to name strings")
     func testApplyConvertsTermsToNameStrings() {
         // Given
@@ -1130,7 +1150,8 @@ private func makeRemotePost(
     categories: [TermId]? = nil,
     featuredMedia: MediaId? = nil,
     format: PostFormat? = nil,
-    meta: PostMeta? = nil
+    meta: PostMeta? = nil,
+    additionalFields: WpAdditionalFields? = nil
 ) -> AnyPostWithEditContext {
     AnyPostWithEditContext(
         id: PostId(1),
@@ -1161,6 +1182,6 @@ private func makeRemotePost(
         tags: tags,
         parent: nil,
         menuOrder: nil,
-        additionalFields: nil
+        additionalFields: additionalFields
     )
 }

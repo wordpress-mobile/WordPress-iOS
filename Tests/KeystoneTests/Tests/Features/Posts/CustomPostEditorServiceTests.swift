@@ -157,6 +157,33 @@ struct CustomPostEditorServiceTests {
         #expect(service.hasSettingsChanges == false)
     }
 
+    @Test("hasSettingsChanges stays false after applying fetched social sharing draft")
+    func hasSettingsChangesReturnsFalseAfterApplyingFetchedSocialSharingDraft() throws {
+        let context = ContextManager.forTesting().mainContext
+        let blog = BlogBuilder(context).build()
+        let fetchedDraft = PostSocialSharingDraft(
+            customMessage: "Stored message",
+            connectionsByID: [
+                "12345": .init(id: "12345", enabled: false)
+            ]
+        )
+        let post = makeRemotePost(
+            meta: PostMeta().addingPublicizeMessage("Stored message"),
+            additionalFields: WpAdditionalFields()
+                .addingPublicizeConnections(fetchedDraft.connectionsByID ?? [:])
+        )
+        let service = try makeService(blog: blog, post: post)
+
+        var settings = service.settings
+        // Mirrors the value that CustomPostSettingsViewModel receives from the
+        // fetched post. Applying it locally should not dirty the editor baseline.
+        settings.socialSharingDraft = fetchedDraft
+        service.applyLocally(settings: settings)
+
+        #expect(service.settings.socialSharingDraft == fetchedDraft)
+        #expect(service.hasSettingsChanges == false)
+    }
+
     @Test("hasSettingsChanges returns true after applying different settings to existing post")
     func hasSettingsChangesReturnsTrueAfterApplyingSettingsToExistingPost() throws {
         let context = ContextManager.forTesting().mainContext
@@ -333,7 +360,9 @@ private func makePostTypeLabels() -> PostTypeLabels {
 
 private func makeRemotePost(
     tags: [TermId]? = nil,
-    categories: [TermId]? = nil
+    categories: [TermId]? = nil,
+    meta: PostMeta? = nil,
+    additionalFields: WpAdditionalFields? = nil
 ) -> AnyPostWithEditContext {
     AnyPostWithEditContext(
         id: PostId(1),
@@ -357,13 +386,13 @@ private func makeRemotePost(
         commentStatus: .open,
         pingStatus: .open,
         format: nil,
-        meta: nil,
+        meta: meta,
         sticky: nil,
         template: "",
         categories: categories,
         tags: tags,
         parent: nil,
         menuOrder: nil,
-        additionalFields: nil
+        additionalFields: additionalFields
     )
 }

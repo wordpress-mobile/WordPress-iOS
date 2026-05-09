@@ -237,8 +237,16 @@ struct PostSettings: Hashable {
 
         parentPageID = post.parent.map { Int($0) }
 
-        // Social sharing (Publicize) is not available for REST API posts
+        // Legacy Publicize settings are not available for REST API posts.
         sharing = nil
+
+        let socialSharingDraft = PostSocialSharingDraft(
+            fromPostAdditionalFields: post.additionalFields,
+            meta: post.meta
+        )
+        if socialSharingDraft.customMessage != nil || socialSharingDraft.connectionsByID != nil {
+            self.socialSharingDraft = socialSharingDraft
+        }
     }
 
     // MARK: - Applying Changes
