@@ -618,6 +618,7 @@ private struct JetpackBrandSectionHeader: View {
             Image("icon-jetpack")
                 .resizable()
                 .frame(width: 14, height: 14)
+                .accessibilityHidden(true)
             SectionHeader("Jetpack")
         }
     }
