@@ -58,6 +58,7 @@ The `wordpress-rs` Swift package provides the `WordPressAPI` and `WordPressAPIIn
 To recover, delete all `*.pcm` files in the directory reported by the error and rebuild.
 
 ## Coding Standards
+- Before writing code, read and follow the [best practice guidelines](./docs/best-practices.md).
 - Follow Swift API Design Guidelines
 - Use strict access control modifiers where possible
 - Use four spaces (not tabs)
