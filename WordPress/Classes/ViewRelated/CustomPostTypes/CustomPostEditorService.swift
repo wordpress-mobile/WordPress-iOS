@@ -124,12 +124,12 @@ class CustomPostEditorService {
 
         case (.newPost, true):
             var params = settings.makeCreateParameters(taxonomies: taxonomies)
+            params.status = params.status?.normalizedPublishStatus() ?? .publish
 
             // Update content
             if let delegate {
                 let hasTitle = details.supports.map[.title] == .bool(true)
                 let editorContent = try await delegate.editorContent(for: self)
-                params.status = .publish
                 params.title = hasTitle ? editorContent.title : nil
                 params.content = editorContent.content
             }
@@ -142,7 +142,7 @@ class CustomPostEditorService {
 
         case (.existingPost(let post, _), true):
             var params = settings.makeUpdateParameters(from: post, taxonomies: taxonomies)
-            params.status = .publish
+            params.status = PostStatus(settings.status).normalizedPublishStatus()
 
             // Update content
             if let delegate {
@@ -167,7 +167,7 @@ class CustomPostEditorService {
             // filtered out by `makeCreateParameters`.
             let resolved = try await resolveTerms(in: settings)
             var params = resolved.makeCreateParameters(taxonomies: taxonomies)
-            params.status = publish ? .publish : .draft
+            params.status = publish ? (params.status?.normalizedPublishStatus() ?? .publish) : .draft
             params.title = hasTitle ? content.title : nil
             params.content = content.content
             try await create(params: params)
@@ -181,7 +181,7 @@ class CustomPostEditorService {
                 params = PostUpdateParams(meta: nil)
             }
             if publish {
-                params.status = .publish
+                params.status = pending.map { PostStatus($0.status).normalizedPublishStatus() } ?? .publish
             }
             params.title = hasTitle ? content.title : nil
             params.content = content.content
@@ -255,5 +255,20 @@ enum PostUpdateError: LocalizedError {
             value: "The post you are trying to save has been changed in the meantime.",
             comment: "Error message shown when the post was modified by another user while editing"
         )
+    }
+}
+
+private extension PostStatus {
+    /// Maps a user-selected status to the one used by a publish action.
+    /// `.future` and `.private` are preserved because they carry their own
+    /// publishing semantics (scheduled, password/private visibility); every
+    /// other selection — draft or pending — collapses to `.publish` so the
+    /// post is published normally.
+    func normalizedPublishStatus() -> PostStatus {
+        switch self {
+        case .future: return .future
+        case .private: return .private
+        default: return .publish
+        }
     }
 }
