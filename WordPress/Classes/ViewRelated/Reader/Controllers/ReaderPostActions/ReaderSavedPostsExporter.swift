@@ -46,17 +46,15 @@ struct ReaderSavedPostsExporter {
             return dict
         }
 
-        let appName = (Bundle.main.object(forInfoDictionaryKey: "CFBundleDisplayName") as? String) ?? "WordPress"
-        let appVersion = Bundle.main.object(forInfoDictionaryKey: "CFBundleShortVersionString") as? String
+        let appName = Bundle.main.object(forInfoDictionaryKey: "CFBundleDisplayName") as! String
+        let appVersion = Bundle.main.object(forInfoDictionaryKey: "CFBundleShortVersionString") as! String
 
-        var envelope: [String: Any] = [
+        let envelope: [String: Any] = [
             "exportDate": dateFormatter.string(from: Date()),
             "postCount": posts.count,
-            "posts": postDicts
+            "posts": postDicts,
+            "appVersion": "\(appName) \(appVersion)"
         ]
-        if let appVersion {
-            envelope["appVersion"] = "\(appName) \(appVersion)"
-        }
 
         let data = try JSONSerialization.data(withJSONObject: envelope, options: [.prettyPrinted, .sortedKeys])
 
