@@ -1,19 +1,16 @@
 import SwiftUI
 
 struct RootView: View {
+    @EnvironmentObject private var env: AppEnvironment
+
     var body: some View {
         NavigationStack {
-            VStack(spacing: 8) {
-                Image(systemName: "mic.circle.fill")
-                    .resizable()
-                    .aspectRatio(contentMode: .fit)
-                    .frame(height: 48)
-                    .foregroundStyle(.red)
-                Text("Voice Notes")
-                    .font(.headline)
-                Text("Scaffolding")
-                    .font(.caption2)
-                    .foregroundStyle(.secondary)
+            List {
+                Section("Wiring check") {
+                    LabeledContent("Sites", value: "\(env.siteCatalog.sites.count)")
+                    LabeledContent("Default", value: env.siteCatalog.defaultSite?.name ?? "—")
+                    LabeledContent("Notes", value: "\(env.noteStore.notes.count)")
+                }
             }
             .navigationTitle("Jetpack")
         }
@@ -22,4 +19,5 @@ struct RootView: View {
 
 #Preview {
     RootView()
+        .environmentObject(AppEnvironment.preview())
 }
