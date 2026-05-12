@@ -366,7 +366,7 @@ If actions consistently fail or the tree looks unexpected, the app may have cras
 xcrun simctl list devices booted
 
 # Re-launch the app
-xcrun simctl launch <UDID> <BUNDLE_ID>
+xcrun simctl launch <UDID> <APP_BUNDLE_ID>
 ```
 
 After re-launching, create a new WDA session before continuing.
