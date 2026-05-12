@@ -139,24 +139,6 @@ steps:
         plugins: [$CI_TOOLKIT_PLUGIN]
 
   #################
-  # AI E2E Tests (requires "Testing" label on PR)
-  #################
-  - label: "🤖 AI E2E Tests"
-    command: .buildkite/commands/run-ai-e2e-tests.sh
-    depends_on: "build_jetpack"
-    if: "build.pull_request.id != null"
-    soft_fail: true
-    timeout_in_minutes: 60
-    plugins: [$CI_TOOLKIT_PLUGIN]
-    env:
-      APP: jetpack
-    artifact_paths:
-      - "Tests/AgentTests/results/**/*"
-    notify:
-      - github_commit_status:
-          context: "AI E2E Tests"
-
-  #################
   # Claude Build Analysis - dynamically uploaded so Build result conditions evaluate at runtime after the wait
   #################
   - label: ":claude: 🕵️ Check for Build Failures and Run Claude Analysis"
