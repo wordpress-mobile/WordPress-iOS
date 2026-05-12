@@ -1150,6 +1150,13 @@
 			);
 			target = 932225A61C7CE50300443B02 /* WordPressShareExtension */;
 		};
+		D10AEBD1535F4CC3B0EE9E3E /* Exceptions for "JetpackWatch Watch App" folder in "JetpackWatch Watch App" target */ = {
+			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
+			membershipExceptions = (
+				Info.plist,
+			);
+			target = 942520692FB33FBE0027445A /* JetpackWatch Watch App */;
+		};
 /* End PBXFileSystemSynchronizedBuildFileExceptionSet section */
 
 /* Begin PBXFileSystemSynchronizedGroupBuildPhaseMembershipExceptionSet section */
@@ -1288,6 +1295,9 @@
 		};
 		9425206B2FB33FBE0027445A /* JetpackWatch Watch App */ = {
 			isa = PBXFileSystemSynchronizedRootGroup;
+			exceptions = (
+				D10AEBD1535F4CC3B0EE9E3E /* Exceptions for "JetpackWatch Watch App" folder in "JetpackWatch Watch App" target */,
+			);
 			path = "JetpackWatch Watch App";
 			sourceTree = "<group>";
 		};
@@ -6793,11 +6803,7 @@
 				);
 				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
-				GENERATE_INFOPLIST_FILE = YES;
-				INFOPLIST_KEY_CFBundleDisplayName = JetpackWatch;
-				INFOPLIST_KEY_NSMicrophoneUsageDescription = "Jetpack records your voice notes and turns them into draft blog posts.";
-				INFOPLIST_KEY_UISupportedInterfaceOrientations = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown";
-				INFOPLIST_KEY_WKCompanionAppBundleIdentifier = com.automattic.jetpack;
+				INFOPLIST_FILE = "JetpackWatch Watch App/Info.plist";
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -6852,11 +6858,7 @@
 				GCC_C_LANGUAGE_STANDARD = gnu17;
 				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
-				GENERATE_INFOPLIST_FILE = YES;
-				INFOPLIST_KEY_CFBundleDisplayName = JetpackWatch;
-				INFOPLIST_KEY_NSMicrophoneUsageDescription = "Jetpack records your voice notes and turns them into draft blog posts.";
-				INFOPLIST_KEY_UISupportedInterfaceOrientations = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown";
-				INFOPLIST_KEY_WKCompanionAppBundleIdentifier = com.automattic.jetpack;
+				INFOPLIST_FILE = "JetpackWatch Watch App/Info.plist";
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -6910,11 +6912,7 @@
 				GCC_C_LANGUAGE_STANDARD = gnu17;
 				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
-				GENERATE_INFOPLIST_FILE = YES;
-				INFOPLIST_KEY_CFBundleDisplayName = JetpackWatch;
-				INFOPLIST_KEY_NSMicrophoneUsageDescription = "Jetpack records your voice notes and turns them into draft blog posts.";
-				INFOPLIST_KEY_UISupportedInterfaceOrientations = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown";
-				INFOPLIST_KEY_WKCompanionAppBundleIdentifier = com.automattic.jetpack;
+				INFOPLIST_FILE = "JetpackWatch Watch App/Info.plist";
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
