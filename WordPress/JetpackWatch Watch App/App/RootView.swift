@@ -5,14 +5,8 @@ struct RootView: View {
 
     var body: some View {
         NavigationStack {
-            List {
-                Section("Wiring check") {
-                    LabeledContent("Sites", value: "\(env.siteCatalog.sites.count)")
-                    LabeledContent("Default", value: env.siteCatalog.defaultSite?.name ?? "—")
-                    LabeledContent("Notes", value: "\(env.noteStore.notes.count)")
-                }
-            }
-            .navigationTitle("Jetpack")
+            RecordView(env: env)
+                .navigationTitle("Jetpack")
         }
     }
 }
