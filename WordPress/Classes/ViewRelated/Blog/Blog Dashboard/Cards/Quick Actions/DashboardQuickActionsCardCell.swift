@@ -108,6 +108,16 @@ final class DashboardQuickActionsCardCell: UICollectionViewCell, Reusable, UITab
                 parentViewController.show(viewController, sender: nil)
             }
         case .media:
+            if let v2 = MediaLibraryRouting.makeViewController(
+                for: blog,
+                baseAnalyticsProperties: [
+                    WPAppAnalyticsKeyTapSource: "quick_actions",
+                    WPAppAnalyticsKeyTabSource: "dashboard"
+                ]
+            ) {
+                parentViewController.show(v2, sender: nil)
+                return
+            }
             trackQuickActionsEvent(.openedMediaLibrary, blog: blog)
             let controller = SiteMediaViewController(blog: blog)
             parentViewController.show(controller, sender: nil)
