@@ -1,6 +1,9 @@
 import Foundation
 import Combine
 import SwiftUI
+import os
+
+let watchLogger = Logger(subsystem: "com.automattic.jetpack.watch", category: "general")
 
 @MainActor
 final class AppEnvironment: ObservableObject {

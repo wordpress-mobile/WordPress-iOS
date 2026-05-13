@@ -19,7 +19,11 @@ struct HistoryView: View {
                     .disabled(note.status != .draftReady)
                     .swipeActions(edge: .trailing, allowsFullSwipe: false) {
                         Button(role: .destructive) {
-                            try? env.noteStore.delete(id: note.id)
+                            do {
+                                try env.noteStore.delete(id: note.id)
+                            } catch {
+                                watchLogger.error("HistoryView: delete note failed: \(error, privacy: .public)")
+                            }
                             let bridge = env.phoneBridge
                             Task { await bridge.deleteNote(note.id) }
                         } label: {

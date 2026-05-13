@@ -24,12 +24,20 @@ final class SiteCatalog: ObservableObject {
 
     func setSites(_ sites: [Site]) {
         self.sites = sites
-        try? save(sites, to: sitesURL)
+        do {
+            try save(sites, to: sitesURL)
+        } catch {
+            watchLogger.error("SiteCatalog sites save failed: \(error, privacy: .public)")
+        }
     }
 
     func setDefaultSiteID(_ id: Int64?) {
         self.defaultSiteID = id
-        try? save(id, to: defaultURL)
+        do {
+            try save(id, to: defaultURL)
+        } catch {
+            watchLogger.error("SiteCatalog default site save failed: \(error, privacy: .public)")
+        }
     }
 
     private func load() {

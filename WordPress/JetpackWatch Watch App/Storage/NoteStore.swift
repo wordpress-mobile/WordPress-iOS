@@ -1,6 +1,5 @@
 import Foundation
 import Combine
-import os
 
 enum NoteStoreError: Error, Equatable, Sendable {
     case notFound
@@ -89,7 +88,12 @@ class NoteStore: ObservableObject {
     }
 
     private func save() throws {
-        let data = try JSONEncoder().encode(notes)
-        try data.write(to: fileURL, options: .atomic)
+        do {
+            let data = try JSONEncoder().encode(notes)
+            try data.write(to: fileURL, options: .atomic)
+        } catch {
+            watchLogger.error("NoteStore save failed: \(error, privacy: .public)")
+            throw error
+        }
     }
 }
