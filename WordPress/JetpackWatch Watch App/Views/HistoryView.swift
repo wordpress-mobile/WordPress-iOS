@@ -20,6 +20,8 @@ struct HistoryView: View {
                     .swipeActions(edge: .trailing, allowsFullSwipe: false) {
                         Button(role: .destructive) {
                             try? env.noteStore.delete(id: note.id)
+                            let bridge = env.phoneBridge
+                            Task { await bridge.deleteNote(note.id) }
                         } label: {
                             Label("Delete", systemImage: "trash")
                         }
