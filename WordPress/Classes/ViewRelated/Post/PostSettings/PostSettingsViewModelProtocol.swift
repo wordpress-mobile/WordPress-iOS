@@ -1,4 +1,5 @@
 import Foundation
+import JetpackSocial
 import SwiftUI
 import UIKit
 import WordPressAPI
@@ -69,6 +70,12 @@ protocol PostSettingsViewModelProtocol: ObservableObject {
     var customTaxonomies: [SiteTaxonomy] { get }
     var parentPageText: String? { get }
     var socialSharingState: PostSettingsSocialSharingSectionState? { get }
+
+    /// Non-nil when the host screen should render the v2 social sharing
+    /// section. Only `CustomPostSettingsViewModel` populates this; legacy
+    /// `AbstractPost` flows return `nil`.
+    var v2SocialSharing: V2SocialSharingBinding? { get }
+
     var isShowingDeletedAlert: Bool { get set }
 
     var postContent: String { get }
@@ -116,6 +123,18 @@ protocol PostSettingsViewModelProtocol: ObservableObject {
 }
 
 // MARK: - Default Implementations
+
+/// Bindings and services the v2 social sharing section needs from its host view model.
+struct V2SocialSharingBinding {
+    let connections: SiteSocialConnectionsService
+    let draft: Binding<PostSocialSharingDraft>
+    let isPostPublished: Bool
+    let onAddConnection: (() -> Void)?
+}
+
+extension PostSettingsViewModelProtocol {
+    var v2SocialSharing: V2SocialSharingBinding? { nil }
+}
 
 extension PostSettingsViewModelProtocol {
     var visibleMoreOptions: [PostSettingsMoreOption] {

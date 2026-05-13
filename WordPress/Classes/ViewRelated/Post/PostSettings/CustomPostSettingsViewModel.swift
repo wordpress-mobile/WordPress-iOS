@@ -1,4 +1,5 @@
 import Foundation
+import JetpackSocial
 import SwiftUI
 import WordPressAPI
 import WordPressData
@@ -40,6 +41,13 @@ final class CustomPostSettingsViewModel: NSObject, ObservableObject, PostSetting
     @Published var parentPageText: String?
     @Published var socialSharingState: PostSettingsSocialSharingSectionState?
     @Published var isShowingDeletedAlert = false
+    private let socialConnectionsService: SiteSocialConnectionsService?
+
+    /// Strong reference that keeps `AddConnectionCoordinator` alive while
+    /// the OAuth flow is in progress. Cleared when the user starts a new
+    /// add flow or when this view model is deallocated. Mirrors the same
+    /// lifetime pattern in `ManageConnectionsHostingController`.
+    private var addConnectionCoordinator: AddConnectionCoordinator?
 
     private let originalSettings: PostSettings
     private let preferences: UserPersistentRepository
@@ -184,9 +192,12 @@ final class CustomPostSettingsViewModel: NSObject, ObservableObject, PostSetting
 
     // MARK: - Initializer
 
+    /// Designated init exposed to tests so they can inject a stubbed
+    /// `SiteSocialConnectionsService` without going through `JetpackSocialFactory.shared`.
     init(
         editorService: CustomPostEditorService,
         blog: Blog,
+        socialConnectionsService: SiteSocialConnectionsService?,
         isStandalone: Bool = false,
         context: PostSettingsContext = .settings,
         preferences: UserPersistentRepository = UserDefaults.standard
@@ -197,7 +208,10 @@ final class CustomPostSettingsViewModel: NSObject, ObservableObject, PostSetting
         self.context = context
         self.preferences = preferences
         self.client = editorService.client
-        self.capabilities = PostSettingsCapabilities(from: editorService.details)
+        let capabilities = PostSettingsCapabilities(from: editorService.details)
+        self.capabilities = capabilities
+        let socialConnectionsService = capabilities.supportsPublicize ? socialConnectionsService : nil
+        self.socialConnectionsService = socialConnectionsService
 
         var initialSettings = editorService.settings
         // Resolve author display name from Blog's cached authors
@@ -210,6 +224,16 @@ final class CustomPostSettingsViewModel: NSObject, ObservableObject, PostSetting
                 displayName: author.displayName ?? "–",
                 avatarURL: author.avatarURL.flatMap(URL.init)
             )
+        }
+
+        if socialConnectionsService != nil, initialSettings.status != .publishPrivate {
+            if editorService.post == nil, initialSettings.socialSharingDraft == nil {
+                // Note: After PR 25543 is merged, keep this nil guard. New
+                // posts can already carry a draft on editorService.settings.
+                initialSettings.socialSharingDraft = PostSocialSharingDraft()
+            }
+        } else {
+            initialSettings.socialSharingDraft = nil
         }
 
         self.settings = initialSettings
@@ -247,6 +271,23 @@ final class CustomPostSettingsViewModel: NSObject, ObservableObject, PostSetting
         refreshCustomTaxonomies()
         refreshParentPageText()
         resolveTermNames()
+    }
+
+    convenience init(
+        editorService: CustomPostEditorService,
+        blog: Blog,
+        isStandalone: Bool = false,
+        context: PostSettingsContext = .settings,
+        preferences: UserPersistentRepository = UserDefaults.standard
+    ) {
+        self.init(
+            editorService: editorService,
+            blog: blog,
+            socialConnectionsService: Self.resolveSocialConnectionsService(blog: blog, details: editorService.details),
+            isStandalone: isStandalone,
+            context: context,
+            preferences: preferences
+        )
     }
 
     // MARK: - Actions
@@ -303,6 +344,9 @@ final class CustomPostSettingsViewModel: NSObject, ObservableObject, PostSetting
 
     func getSettingsToSave(for settings: PostSettings) -> PostSettings {
         var settings = settings
+        if !capabilities.supportsPublicize || settings.status == .publishPrivate {
+            settings.socialSharingDraft = nil
+        }
         if context == .publishing {
             // We don't support saving these changes on the "Publishing" sheet
             // as it would trigger the change in status and publishing. We'll
@@ -354,6 +398,50 @@ final class CustomPostSettingsViewModel: NSObject, ObservableObject, PostSetting
     }
 
     func showSocialSharingOptions() {}
+
+    var v2SocialSharing: V2SocialSharingBinding? {
+        guard let service = socialConnectionsService,
+            settings.status != .publishPrivate
+        else {
+            return nil
+        }
+        let binding = Binding<PostSocialSharingDraft>(
+            get: { self.settings.socialSharingDraft ?? PostSocialSharingDraft() },
+            set: { self.settings.socialSharingDraft = $0 }
+        )
+        return V2SocialSharingBinding(
+            connections: service,
+            draft: binding,
+            isPostPublished: editorService.post?.status == .publish,
+            onAddConnection: { [weak self] in
+                self?.presentAddSocialConnection()
+            }
+        )
+    }
+
+    private func presentAddSocialConnection() {
+        guard let service = socialConnectionsService,
+            let presenter = viewController
+        else {
+            return
+        }
+        let coordinator = AddConnectionCoordinator(
+            connectionsService: service,
+            authenticator: BlogSocialOAuthAuthenticator(blog: blog),
+            presenter: presenter,
+            onConnectionCreated: { [weak self, weak service] connection in
+                guard let self else { return }
+                var draft = self.settings.socialSharingDraft ?? PostSocialSharingDraft()
+                draft.addConnection(
+                    connection,
+                    availableConnections: service?.connections.value ?? [connection]
+                )
+                self.settings.socialSharingDraft = draft
+            }
+        )
+        addConnectionCoordinator = coordinator
+        coordinator.start()
+    }
 
     // MARK: - Term Resolution
 
@@ -505,5 +593,19 @@ final class CustomPostSettingsViewModel: NSObject, ObservableObject, PostSetting
         case .settings: "post_settings"
         case .publishing: "pre_publishing"
         }
+    }
+
+    private static func resolveSocialConnectionsService(
+        blog: Blog,
+        details: PostTypeDetailsWithEditContext
+    ) -> SiteSocialConnectionsService? {
+        guard PostSettingsCapabilities(from: details).supportsPublicize,
+            FeatureFlag.socialSharingV2.enabled,
+            blog.supports(.publicize),
+            let service = JetpackSocialFactory.shared.connectionsService(for: blog)
+        else {
+            return nil
+        }
+        return service
     }
 }

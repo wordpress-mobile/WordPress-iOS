@@ -12,6 +12,7 @@ struct PostSettingsCapabilities {
     var supportsPageAttributes: Bool
     var supportsSlug: Bool
     var supportsCustomFields: Bool
+    var supportsPublicize: Bool
     var customTaxonomySlugs: [String]
 }
 
@@ -32,6 +33,7 @@ extension PostSettingsCapabilities {
             supportsPageAttributes: false,
             supportsSlug: true,
             supportsCustomFields: true,
+            supportsPublicize: true,
             customTaxonomySlugs: []
         )
     }
@@ -53,6 +55,7 @@ extension PostSettingsCapabilities {
             supportsPageAttributes: true,
             supportsSlug: true,
             supportsCustomFields: true,
+            supportsPublicize: false,
             customTaxonomySlugs: []
         )
     }
@@ -70,6 +73,8 @@ extension PostSettingsCapabilities {
         supportsPageAttributes = details.supports.supports(feature: .pageAttributes)
         supportsSlug = details.supports.supports(feature: .slug)
         supportsCustomFields = false // details.supports.supports(feature: .customFields)
+        supportsPublicize = details.toPostEndpointType() == .posts
+            || details.supports.supports(feature: .custom("publicize"))
         customTaxonomySlugs = details.taxonomies.filter { $0 != "category" && $0 != "post_tag" }
     }
 }

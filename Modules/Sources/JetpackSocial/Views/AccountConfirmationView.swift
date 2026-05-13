@@ -5,7 +5,7 @@ public struct AccountConfirmationView: View {
     private let service: SocialService
     @ObservedObject private var connectionsService: SiteSocialConnectionsService
     private let onCancel: () -> Void
-    private let onFinish: (Result<SocialKeyringAccount, SocialSharingError>) -> Void
+    private let onFinish: (Result<SocialConnection, SocialSharingError>) -> Void
 
     @State private var state: LoadingState = .loading
     @State private var connectedExternalIDs: Set<String> = []
@@ -18,7 +18,7 @@ public struct AccountConfirmationView: View {
         service: SocialService,
         connectionsService: SiteSocialConnectionsService,
         onCancel: @escaping () -> Void,
-        onFinish: @escaping (Result<SocialKeyringAccount, SocialSharingError>) -> Void
+        onFinish: @escaping (Result<SocialConnection, SocialSharingError>) -> Void
     ) {
         self.service = service
         self.connectionsService = connectionsService
@@ -111,14 +111,14 @@ public struct AccountConfirmationView: View {
     private func submit(account: SocialKeyringAccount) {
         submitting = true
         submitTask = Task {
-            let result: Result<SocialKeyringAccount, SocialSharingError>
+            let result: Result<SocialConnection, SocialSharingError>
             do throws(SocialSharingError) {
-                _ = try await connectionsService.createConnection(
+                let connection = try await connectionsService.createConnection(
                     keyringID: account.keyring.id,
                     externalUserID: account.externalUserID,
                     shared: connectionsService.canMarkAsShared ? sharedEnabled : nil
                 )
-                result = .success(account)
+                result = .success(connection)
             } catch {
                 result = .failure(error)
             }

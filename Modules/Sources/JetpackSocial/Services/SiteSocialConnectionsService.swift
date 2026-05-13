@@ -120,12 +120,6 @@ public final class SiteSocialConnectionsService: ObservableObject {
         }
     }
 
-    /// Snapshot of the currently loaded connection IDs. Returns `[]` if
-    /// `connections` has not been loaded yet.
-    public func currentConnectionIDs() -> [String] {
-        connections.value?.map(\.id) ?? []
-    }
-
     // MARK: - Mutations
 
     @discardableResult

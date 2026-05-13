@@ -7,18 +7,6 @@ import WordPressAPI
 
 @Suite("SiteSocialConnectionsService initial state", .serialized)
 struct SiteSocialConnectionsServiceTests {
-    @Test("currentConnectionIDs is empty before loading")
-    @MainActor
-    func emptyBeforeLoad() {
-        let client = WPComApiClient(authentication: .none)
-        let service = SiteSocialConnectionsService(
-            client: client,
-            siteId: 1,
-            canMarkAsShared: false
-        )
-        #expect(service.currentConnectionIDs().isEmpty)
-    }
-
     @Test("connections starts in loading state")
     @MainActor
     func connectionsLoadingOnInit() {
