@@ -28,12 +28,11 @@ struct HandoffPublisherTests {
         publisher.publishDraftReady(postID: 1, siteID: 1)
         let first = publisher.currentActivity!
 
-        var firstInvalidated = false
-        first.invalidationHandler = { firstInvalidated = true }
-
         publisher.publishDraftReady(postID: 2, siteID: 1)
 
-        #expect(firstInvalidated)
+        // The publisher must have replaced the reference (new activity, not the same object).
         #expect(publisher.currentActivity !== first)
+        // The first activity must have been invalidated (isValid becomes false after invalidate()).
+        #expect(!first.isValid)
     }
 }
