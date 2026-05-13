@@ -4,6 +4,7 @@ import Combine
 enum RecordingViewModelError: Error, Equatable, Sendable {
     case noDefaultSite
     case alreadyRecording
+    case storeFailed(String)
 }
 
 enum RecordingState: Equatable, Sendable {
@@ -14,6 +15,7 @@ enum RecordingState: Equatable, Sendable {
 @MainActor
 final class RecordingViewModel: ObservableObject {
     @Published private(set) var state: RecordingState = .idle
+    @Published private(set) var lastError: RecordingViewModelError?
 
     private let recorder: AudioRecorder
     private let store: NoteStore
@@ -72,7 +74,15 @@ final class RecordingViewModel: ObservableObject {
             statusReason: nil,
             postID: nil
         )
-        try store.add(note)
+        do {
+            try store.add(note)
+        } catch {
+            recorder.cancel(id: id)
+            watchLogger.error("RecordingViewModel: store.add failed: \(error, privacy: .public)")
+            lastError = .storeFailed(error.localizedDescription)
+            state = .idle
+            return
+        }
         let audioURL = recorder.fileURL(for: id)
         let bridge = phoneBridge
         Task { await bridge.handOff(noteID: id, audioURL: audioURL, siteID: siteID) }

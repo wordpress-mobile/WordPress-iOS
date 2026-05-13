@@ -10,7 +10,7 @@ enum NoteStoreError: Error, Equatable, Sendable {
 /// on every mutation. Eviction: when over `cap`, oldest terminal notes go first;
 /// active notes are never auto-evicted.
 @MainActor
-final class NoteStore: ObservableObject {
+class NoteStore: ObservableObject {
     static let cap = 20
 
     @Published private(set) var notes: [VoiceNote] = []

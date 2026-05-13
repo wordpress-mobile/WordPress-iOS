@@ -81,6 +81,47 @@ struct RecordingViewModelTests {
         #expect(store.notes.count == 1)
         #expect(store.notes.first?.status == .queued)
     }
+
+    @Test func stopRecording_with_failing_store_cleans_up_audio_and_returns_to_idle() throws {
+        let tempDir = FileManager.default.temporaryDirectory
+            .appendingPathComponent("RecordingVMFailTests-\(UUID().uuidString)")
+        try? FileManager.default.createDirectory(at: tempDir, withIntermediateDirectories: true)
+        let recorder = StubAudioRecorder(rootURL: tempDir)
+        let store = FailingNoteStore(rootURL: tempDir, audioRootURL: tempDir)
+        let bridge = MockPhoneBridge(seedSites: [])
+        let catalog = SiteCatalog(rootURL: tempDir)
+        catalog.setSites([Site(id: 1, name: "Test")])
+        catalog.setDefaultSiteID(1)
+        let vm = RecordingViewModel(
+            recorder: recorder,
+            store: store,
+            siteCatalog: catalog,
+            phoneBridge: bridge
+        )
+
+        try vm.startRecording()
+        let recordingID: UUID
+        if case let .recording(id, _) = vm.state {
+            recordingID = id
+        } else {
+            Issue.record("expected .recording"); return
+        }
+
+        try vm.stopRecording()
+
+        if case .idle = vm.state {} else { Issue.record("expected .idle after store failure"); return }
+        #expect(recorder.cancelled.contains(recordingID))
+        #expect(vm.lastError != nil)
+    }
+}
+
+@MainActor
+final class FailingNoteStore: NoteStore {
+    private enum StoreError: Error { case injectedFailure }
+
+    override func add(_ note: VoiceNote) throws {
+        throw StoreError.injectedFailure
+    }
 }
 
 @MainActor
