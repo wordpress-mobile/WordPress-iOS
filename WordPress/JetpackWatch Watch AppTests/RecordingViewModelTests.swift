@@ -16,7 +16,7 @@ struct RecordingViewModelTests {
             .appendingPathComponent("RecordingVMTests-\(UUID().uuidString)")
         try? FileManager.default.createDirectory(at: tempDir, withIntermediateDirectories: true)
         let recorder = StubAudioRecorder(rootURL: tempDir)
-        let store = NoteStore(rootURL: tempDir)
+        let store = NoteStore(rootURL: tempDir, audioRootURL: tempDir)
         let bridge = MockPhoneBridge(seedSites: [])
         let catalog = SiteCatalog(rootURL: tempDir)
         if let siteID {

@@ -27,7 +27,7 @@ final class AppEnvironment: ObservableObject {
 
     static func live() -> AppEnvironment {
         let docs = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask).first!
-        let noteStore = NoteStore(rootURL: docs)
+        let noteStore = NoteStore(rootURL: docs, audioRootURL: docs)
         let siteCatalog = SiteCatalog(rootURL: docs)
         let seed = AppEnvironment.developmentSeedSites
         let bridge = MockPhoneBridge(seedSites: seed)
@@ -77,7 +77,7 @@ extension AppEnvironment {
         let tempDir = FileManager.default.temporaryDirectory
             .appendingPathComponent("watch-preview-\(UUID().uuidString)")
         try? FileManager.default.createDirectory(at: tempDir, withIntermediateDirectories: true)
-        let noteStore = NoteStore(rootURL: tempDir)
+        let noteStore = NoteStore(rootURL: tempDir, audioRootURL: tempDir)
         let siteCatalog = SiteCatalog(rootURL: tempDir)
         siteCatalog.setSites(Site.previewSeed)
         siteCatalog.setDefaultSiteID(Site.previewSeed.first?.id)

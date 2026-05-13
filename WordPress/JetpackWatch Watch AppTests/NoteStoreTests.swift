@@ -10,7 +10,7 @@ struct NoteStoreTests {
         let tempDir = FileManager.default.temporaryDirectory
             .appendingPathComponent("NoteStoreTests-\(UUID().uuidString)")
         try? FileManager.default.createDirectory(at: tempDir, withIntermediateDirectories: true)
-        return (NoteStore(rootURL: tempDir), tempDir)
+        return (NoteStore(rootURL: tempDir, audioRootURL: tempDir), tempDir)
     }
 
     private func makeNote(
@@ -45,7 +45,7 @@ struct NoteStoreTests {
         #expect(store.notes.count == 1)
         #expect(store.notes.first?.id == note.id)
 
-        let reloaded = NoteStore(rootURL: tempDir)
+        let reloaded = NoteStore(rootURL: tempDir, audioRootURL: tempDir)
         #expect(reloaded.notes.count == 1)
         #expect(reloaded.notes.first?.id == note.id)
     }
@@ -118,5 +118,45 @@ struct NoteStoreTests {
             ))
         }
         #expect(store.notes.count == 25)
+    }
+
+    @Test func delete_removes_associated_audio_file() throws {
+        let (store, tempDir) = makeStore()
+        let note = makeNote()
+        try store.add(note)
+
+        let audioURL = tempDir.appendingPathComponent(note.audioFilename)
+        try Data("fake-audio".utf8).write(to: audioURL)
+        #expect(FileManager.default.fileExists(atPath: audioURL.path))
+
+        try store.delete(id: note.id)
+
+        #expect(!FileManager.default.fileExists(atPath: audioURL.path))
+    }
+
+    @Test func eviction_removes_associated_audio_files() throws {
+        let (store, tempDir) = makeStore()
+
+        var audioURLs: [URL] = []
+        for i in 0..<21 {
+            let note = makeNote(
+                status: .draftReady,
+                createdAt: Date(timeIntervalSince1970: TimeInterval(i))
+            )
+            try store.add(note)
+            let audioURL = tempDir.appendingPathComponent(note.audioFilename)
+            try Data("fake-audio".utf8).write(to: audioURL)
+            audioURLs.append(audioURL)
+        }
+
+        // 21 notes added — eviction runs after the last add, removing the oldest
+        #expect(store.notes.count == 20)
+
+        // The first note (oldest, createdAt = 0) should have its audio file removed
+        #expect(!FileManager.default.fileExists(atPath: audioURLs[0].path))
+        // The remaining notes' audio files should still exist
+        for url in audioURLs[1...] {
+            #expect(FileManager.default.fileExists(atPath: url.path))
+        }
     }
 }
