@@ -25,7 +25,8 @@ let package = Package(
         .library(name: "WordPressReader", targets: ["WordPressReader"]),
         .library(name: "WordPressCore", targets: ["WordPressCore"]),
         .library(name: "WordPressCoreProtocols", targets: ["WordPressCoreProtocols"]),
-        .library(name: "WordPressKit", targets: ["WordPressKit"])
+        .library(name: "WordPressKit", targets: ["WordPressKit"]),
+        .library(name: "WordPressMediaLibrary", targets: ["WordPressMediaLibrary"])
     ],
     dependencies: [
         .package(url: "https://github.com/airbnb/lottie-ios", from: "4.4.0"),
@@ -132,6 +133,18 @@ let package = Package(
                 .product(name: "Logging", package: "swift-log")
             ],
             resources: [.process("Resources")]
+        ),
+        .target(
+            name: "WordPressMediaLibrary",
+            dependencies: [
+                "AsyncImageKit",
+                "DesignSystem",
+                "WordPressShared",
+                "WordPressUI",
+                "WordPressCore",
+                .product(name: "WordPressAPI", package: "wordpress-rs"),
+                .product(name: "Logging", package: "swift-log")
+            ]
         ),
         .target(
             name: "ShareExtensionCore",
@@ -435,6 +448,7 @@ enum XcodeSupport {
             "WordPressIntelligence",
             "WordPressShared",
             "WordPressLegacy",
+            "WordPressMediaLibrary",
             "WordPressReader",
             "WordPressUI",
             "WordPressCore",
