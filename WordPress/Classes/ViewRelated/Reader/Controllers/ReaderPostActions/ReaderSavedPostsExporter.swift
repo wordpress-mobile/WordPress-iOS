@@ -5,6 +5,28 @@ import WordPressData
 /// Handles exporting and importing saved Reader posts as JSON files.
 struct ReaderSavedPostsExporter {
 
+    struct Envelope: Codable {
+        var exportDate: String
+        var postCount: Int
+        var posts: [ExportedPost]
+        var appVersion: String
+    }
+
+    struct ExportedPost: Codable {
+        var title: String
+        var url: String
+        var author: String
+        var siteName: String
+        var siteURL: String
+        var date: String?
+        var summary: String
+        var tags: [String]?
+        var featuredImageURL: String?
+        var siteID: UInt?
+        var postID: UInt?
+        var isFeed: Bool
+    }
+
     /// Fetches all saved Reader posts and writes them to a temporary JSON file.
     /// - Parameter context: The managed object context to fetch from.
     /// - Returns: The file URL of the exported JSON, or `nil` if there are no saved posts.
@@ -18,45 +40,41 @@ struct ReaderSavedPostsExporter {
 
         let dateFormatter = ISO8601DateFormatter()
 
-        let postDicts: [[String: Any]] = posts.map { post in
-            var dict: [String: Any] = [:]
-            dict["title"] = post.titleForDisplay()
-            dict["url"] = post.permaLink ?? ""
-            dict["author"] = post.authorForDisplay() ?? ""
-            dict["siteName"] = post.blogNameForDisplay() ?? ""
-            dict["siteURL"] = post.blogURL ?? ""
-            if let date = post.dateForDisplay() {
-                dict["date"] = dateFormatter.string(from: date)
-            }
-            dict["summary"] = post.contentPreviewForDisplay() ?? ""
+        let exportedPosts: [ExportedPost] = posts.map { post in
             let tags = post.tagsForDisplay()
-            if !tags.isEmpty {
-                dict["tags"] = tags
-            }
-            if let featuredImage = post.featuredImage, !featuredImage.isEmpty {
-                dict["featuredImageURL"] = featuredImage
-            }
-            if let siteID = post.siteID, siteID.intValue > 0 {
-                dict["siteID"] = siteID
-            }
-            if let postID = post.postID, postID.intValue > 0 {
-                dict["postID"] = postID
-            }
-            dict["isFeed"] = post.isExternal
-            return dict
+            let featuredImage = post.featuredImage
+            let siteID = post.siteID?.uintValue ?? 0
+            let postID = post.postID?.uintValue ?? 0
+
+            return ExportedPost(
+                title: post.titleForDisplay(),
+                url: post.permaLink ?? "",
+                author: post.authorForDisplay() ?? "",
+                siteName: post.blogNameForDisplay() ?? "",
+                siteURL: post.blogURL ?? "",
+                date: post.dateForDisplay().map { dateFormatter.string(from: $0) },
+                summary: post.contentPreviewForDisplay() ?? "",
+                tags: tags.isEmpty ? nil : tags,
+                featuredImageURL: (featuredImage?.isEmpty ?? true) ? nil : featuredImage,
+                siteID: siteID > 0 ? siteID : nil,
+                postID: postID > 0 ? postID : nil,
+                isFeed: post.isExternal
+            )
         }
 
         let appName = Bundle.main.object(forInfoDictionaryKey: "CFBundleDisplayName") as! String
         let appVersion = Bundle.main.object(forInfoDictionaryKey: "CFBundleShortVersionString") as! String
 
-        let envelope: [String: Any] = [
-            "exportDate": dateFormatter.string(from: Date()),
-            "postCount": posts.count,
-            "posts": postDicts,
-            "appVersion": "\(appName) \(appVersion)"
-        ]
+        let envelope = Envelope(
+            exportDate: dateFormatter.string(from: Date()),
+            postCount: posts.count,
+            posts: exportedPosts,
+            appVersion: "\(appName) \(appVersion)"
+        )
 
-        let data = try JSONSerialization.data(withJSONObject: envelope, options: [.prettyPrinted, .sortedKeys])
+        let encoder = JSONEncoder()
+        encoder.outputFormatting = [.prettyPrinted, .sortedKeys]
+        let data = try encoder.encode(envelope)
 
         let filenameDateFormatter = DateFormatter()
         filenameDateFormatter.dateFormat = "yyyy-MM-dd"
@@ -75,26 +93,26 @@ struct ReaderSavedPostsExporter {
     }
 
     /// Parses the JSON file and returns post entries to import.
-    static func parseExportFile(at fileURL: URL) throws -> [[String: Any]] {
+    static func parseExportFile(at fileURL: URL) throws -> [ExportedPost] {
         let data = try Data(contentsOf: fileURL)
-        guard let envelope = try JSONSerialization.jsonObject(with: data) as? [String: Any],
-            let postDicts = envelope["posts"] as? [[String: Any]]
-        else {
+        do {
+            let envelope = try JSONDecoder().decode(Envelope.self, from: data)
+            return envelope.posts
+        } catch {
             throw ImportError.invalidFormat
         }
-        return postDicts
     }
 
     /// Imports saved posts by fetching each one from the API, then marking it as saved.
     /// This ensures posts are created through the normal Core Data pipeline with all required fields.
     ///
     /// - Parameters:
-    ///   - postDicts: Parsed post entries from a JSON export file.
+    ///   - posts: Parsed post entries from a JSON export file.
     ///   - coreDataStack: The Core Data stack.
     ///   - progress: Called after each post is processed with (completed, total).
     ///   - completion: Called when all posts have been processed.
     static func importPosts(
-        _ postDicts: [[String: Any]],
+        _ posts: [ExportedPost],
         coreDataStack: CoreDataStack,
         progress: @escaping (Int, Int) -> Void,
         completion: @escaping (ImportResult) -> Void
@@ -106,7 +124,7 @@ struct ReaderSavedPostsExporter {
         do {
             existingURLs = try fetchSavedPostURLs(in: context)
         } catch {
-            completion(ImportResult(imported: 0, skipped: 0, failed: postDicts.count))
+            completion(ImportResult(imported: 0, skipped: 0, failed: posts.count))
             return
         }
 
@@ -114,27 +132,26 @@ struct ReaderSavedPostsExporter {
         var toImport: [(siteID: UInt, postID: UInt, isFeed: Bool)] = []
         var skipped = 0
 
-        for dict in postDicts {
-            guard let url = dict["url"] as? String, !url.isEmpty else {
+        for post in posts {
+            guard !post.url.isEmpty else {
                 skipped += 1
                 continue
             }
 
-            if existingURLs.contains(url) {
+            if existingURLs.contains(post.url) {
                 skipped += 1
                 continue
             }
 
-            guard let siteID = (dict["siteID"] as? NSNumber)?.uintValue, siteID > 0,
-                let postID = (dict["postID"] as? NSNumber)?.uintValue, postID > 0
+            guard let siteID = post.siteID, siteID > 0,
+                let postID = post.postID, postID > 0
             else {
-                DDLogError("Import: skipping post with missing siteID/postID: \(dict["url"] ?? "unknown")")
+                DDLogError("Import: skipping post with missing siteID/postID: \(post.url)")
                 skipped += 1
                 continue
             }
 
-            let isFeed = (dict["isFeed"] as? Bool) ?? false
-            toImport.append((siteID: siteID, postID: postID, isFeed: isFeed))
+            toImport.append((siteID: siteID, postID: postID, isFeed: post.isFeed))
         }
 
         guard !toImport.isEmpty else {
@@ -180,7 +197,9 @@ struct ReaderSavedPostsExporter {
                             }
                             imported += 1
                         } else {
-                            DDLogError("Import: fetchPost returned nil for post \(entry.postID) from site \(entry.siteID)")
+                            DDLogError(
+                                "Import: fetchPost returned nil for post \(entry.postID) from site \(entry.siteID)"
+                            )
                             failed += 1
                         }
                         progress(index + 1, total)

@@ -115,9 +115,9 @@ final class ReaderSavedPostsSettingsViewModel: ObservableObject {
                 return
             }
 
-            let postDicts: [[String: Any]]
+            let posts: [ReaderSavedPostsExporter.ExportedPost]
             do {
-                postDicts = try ReaderSavedPostsExporter.parseExportFile(at: url)
+                posts = try ReaderSavedPostsExporter.parseExportFile(at: url)
             } catch {
                 url.stopAccessingSecurityScopedResource()
                 errorMessage = error.localizedDescription
@@ -129,10 +129,10 @@ final class ReaderSavedPostsSettingsViewModel: ObservableObject {
 
             isImporting = true
             importProgress = 0
-            importStatusText = String.localizedStringWithFormat(Strings.importProgressFormat, 0, postDicts.count)
+            importStatusText = String.localizedStringWithFormat(Strings.importProgressFormat, 0, posts.count)
 
             ReaderSavedPostsExporter.importPosts(
-                postDicts,
+                posts,
                 coreDataStack: coreDataStack,
                 progress: { [weak self] completed, total in
                     DispatchQueue.main.async {

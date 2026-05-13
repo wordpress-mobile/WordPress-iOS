@@ -126,20 +126,21 @@ class ReaderSavedPostsExporterTests: CoreDataTestCase {
 
     // MARK: - parseExportFile
 
-    func testParseExportFileReturnsPostDicts() throws {
-        let json: [String: Any] = [
-            "exportDate": "2026-04-23",
-            "postCount": 2,
-            "posts": [
-                ["url": "https://example.com/1", "siteID": 100, "postID": 1],
-                ["url": "https://example.com/2", "siteID": 200, "postID": 2]
-            ]
-        ]
-        let fileURL = try writeJSONToTempFile(json)
-        let postDicts = try ReaderSavedPostsExporter.parseExportFile(at: fileURL)
+    func testParseExportFileReturnsPosts() throws {
+        let envelope = ReaderSavedPostsExporter.Envelope(
+            exportDate: "2026-04-23",
+            postCount: 2,
+            posts: [
+                makeExportedPost(url: "https://example.com/1", siteID: 100, postID: 1),
+                makeExportedPost(url: "https://example.com/2", siteID: 200, postID: 2)
+            ],
+            appVersion: "Test 1.0"
+        )
+        let fileURL = try writeEnvelopeToTempFile(envelope)
+        let posts = try ReaderSavedPostsExporter.parseExportFile(at: fileURL)
 
-        XCTAssertEqual(postDicts.count, 2)
-        XCTAssertEqual(postDicts[0]["url"] as? String, "https://example.com/1")
+        XCTAssertEqual(posts.count, 2)
+        XCTAssertEqual(posts[0].url, "https://example.com/1")
     }
 
     func testParseExportFileThrowsForInvalidFormat() throws {
@@ -165,13 +166,11 @@ class ReaderSavedPostsExporterTests: CoreDataTestCase {
         existing.sortDate = Date()
         try mainContext.save()
 
-        let postDicts: [[String: Any]] = [
-            ["url": "https://example.com/already-saved", "siteID": 100, "postID": 1]
-        ]
+        let posts = [makeExportedPost(url: "https://example.com/already-saved", siteID: 100, postID: 1)]
 
         let expectation = expectation(description: "import completes")
         ReaderSavedPostsExporter.importPosts(
-            postDicts,
+            posts,
             coreDataStack: contextManager,
             progress: { _, _ in },
             completion: { result in
@@ -186,13 +185,11 @@ class ReaderSavedPostsExporterTests: CoreDataTestCase {
     }
 
     func testImportSkipsPostsWithMissingSiteID() {
-        let postDicts: [[String: Any]] = [
-            ["url": "https://example.com/no-site", "postID": 1]
-        ]
+        let posts = [makeExportedPost(url: "https://example.com/no-site", siteID: nil, postID: 1)]
 
         let expectation = expectation(description: "import completes")
         ReaderSavedPostsExporter.importPosts(
-            postDicts,
+            posts,
             coreDataStack: contextManager,
             progress: { _, _ in },
             completion: { result in
@@ -207,13 +204,11 @@ class ReaderSavedPostsExporterTests: CoreDataTestCase {
     }
 
     func testImportSkipsPostsWithMissingPostID() {
-        let postDicts: [[String: Any]] = [
-            ["url": "https://example.com/no-post-id", "siteID": 100]
-        ]
+        let posts = [makeExportedPost(url: "https://example.com/no-post-id", siteID: 100, postID: nil)]
 
         let expectation = expectation(description: "import completes")
         ReaderSavedPostsExporter.importPosts(
-            postDicts,
+            posts,
             coreDataStack: contextManager,
             progress: { _, _ in },
             completion: { result in
@@ -228,13 +223,11 @@ class ReaderSavedPostsExporterTests: CoreDataTestCase {
     }
 
     func testImportSkipsPostsWithEmptyURL() {
-        let postDicts: [[String: Any]] = [
-            ["url": "", "siteID": 100, "postID": 1]
-        ]
+        let posts = [makeExportedPost(url: "", siteID: 100, postID: 1)]
 
         let expectation = expectation(description: "import completes")
         ReaderSavedPostsExporter.importPosts(
-            postDicts,
+            posts,
             coreDataStack: contextManager,
             progress: { _, _ in },
             completion: { result in
@@ -286,22 +279,22 @@ class ReaderSavedPostsExporterTests: CoreDataTestCase {
         try mainContext.save()
 
         let fileURL = try XCTUnwrap(exporter.export(context: mainContext))
-        let postDicts = try ReaderSavedPostsExporter.parseExportFile(at: fileURL)
+        let posts = try ReaderSavedPostsExporter.parseExportFile(at: fileURL)
 
-        XCTAssertEqual(postDicts.count, 1)
-        let dict = postDicts[0]
-        XCTAssertEqual(dict["title"] as? String, "Round Trip")
-        XCTAssertEqual(dict["url"] as? String, "https://example.com/round-trip")
-        XCTAssertEqual(dict["author"] as? String, "Author")
-        XCTAssertEqual(dict["siteName"] as? String, "Blog")
-        XCTAssertEqual(dict["siteURL"] as? String, "https://blog.example.com")
-        XCTAssertEqual(dict["summary"] as? String, "Summary text")
-        XCTAssertEqual(dict["featuredImageURL"] as? String, "https://example.com/img.jpg")
-        XCTAssertEqual(dict["tags"] as? [String], ["tag1", "tag2"])
-        XCTAssertEqual((dict["siteID"] as? NSNumber)?.intValue, 999)
-        XCTAssertEqual((dict["postID"] as? NSNumber)?.intValue, 888)
-        XCTAssertEqual(dict["isFeed"] as? Bool, true)
-        XCTAssertNotNil(dict["date"])
+        XCTAssertEqual(posts.count, 1)
+        let exported = posts[0]
+        XCTAssertEqual(exported.title, "Round Trip")
+        XCTAssertEqual(exported.url, "https://example.com/round-trip")
+        XCTAssertEqual(exported.author, "Author")
+        XCTAssertEqual(exported.siteName, "Blog")
+        XCTAssertEqual(exported.siteURL, "https://blog.example.com")
+        XCTAssertEqual(exported.summary, "Summary text")
+        XCTAssertEqual(exported.featuredImageURL, "https://example.com/img.jpg")
+        XCTAssertEqual(exported.tags, ["tag1", "tag2"])
+        XCTAssertEqual(exported.siteID, 999)
+        XCTAssertEqual(exported.postID, 888)
+        XCTAssertEqual(exported.isFeed, true)
+        XCTAssertNotNil(exported.date)
     }
 }
 
@@ -315,8 +308,38 @@ private extension ReaderSavedPostsExporterTests {
         ) as! ReaderPost
     }
 
+    func makeExportedPost(
+        url: String,
+        siteID: UInt?,
+        postID: UInt?,
+        isFeed: Bool = false
+    ) -> ReaderSavedPostsExporter.ExportedPost {
+        ReaderSavedPostsExporter.ExportedPost(
+            title: "",
+            url: url,
+            author: "",
+            siteName: "",
+            siteURL: "",
+            date: nil,
+            summary: "",
+            tags: nil,
+            featuredImageURL: nil,
+            siteID: siteID,
+            postID: postID,
+            isFeed: isFeed
+        )
+    }
+
     func writeJSONToTempFile(_ json: [String: Any]) throws -> URL {
         let data = try JSONSerialization.data(withJSONObject: json)
+        let fileURL = FileManager.default.temporaryDirectory
+            .appendingPathComponent(UUID().uuidString + ".json")
+        try data.write(to: fileURL)
+        return fileURL
+    }
+
+    func writeEnvelopeToTempFile(_ envelope: ReaderSavedPostsExporter.Envelope) throws -> URL {
+        let data = try JSONEncoder().encode(envelope)
         let fileURL = FileManager.default.temporaryDirectory
             .appendingPathComponent(UUID().uuidString + ".json")
         try data.write(to: fileURL)
