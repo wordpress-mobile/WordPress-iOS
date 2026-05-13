@@ -21,6 +21,3 @@ steps:
       APP: jetpack
     artifact_paths:
       - "Tests/AgentTests/results/**/*"
-    notify:
-      - slack: "#wpmobile-team"
-        if: build.state == "failed"
