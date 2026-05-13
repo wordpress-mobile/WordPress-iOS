@@ -24,7 +24,7 @@ class UserListViewModelTests: XCTestCase {
             ),
             authentication: .none
         )
-        let client = try WordPressClient(
+        let client = WordPressClient(
             api: api,
             siteURL: URL(string: "https://example.com")!
         )

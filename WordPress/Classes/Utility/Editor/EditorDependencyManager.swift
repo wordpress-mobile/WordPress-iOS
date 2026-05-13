@@ -284,8 +284,8 @@ final class EditorDependencyManager: Sendable {
 
         var siteId: Int? = nil
 
-        if case .dotCom(_, let _siteId, _) = site {
-            siteId = _siteId
+        if case let .dotCom(credentials) = site.flavor {
+            siteId = credentials.siteId
         }
 
         let hasBlockTheme = try await client.supports(.blockTheme, forSiteId: siteId)

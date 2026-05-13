@@ -109,7 +109,7 @@ extension Blog {
             // alt is not supported via XML-RPC API
             // https://core.trac.wordpress.org/ticket/58582
             // https://github.com/wordpress-mobile/WordPress-Android/issues/18514#issuecomment-1589752274
-            return supportsRestAPI || supportsCoreRestApi
+            return supportsRestAPI || hasDirectCoreRESTAPIAccess
         case .contactInfo:
             return hasRequiredJetpackVersion("8.5") || isHostedAtWPcom
         case .blockEditorSettings:

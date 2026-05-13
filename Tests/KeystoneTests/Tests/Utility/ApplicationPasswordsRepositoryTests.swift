@@ -55,6 +55,27 @@ class ApplicationPasswordsRepositoryTests {
     }
 
     @Test
+    func atomicSiteWithExistingApplicationPassword() async throws {
+        defer { HTTPStubs.removeAllStubs() }
+
+        try await signInWPComAccount()
+        let blog = try await createAtomicSite(existingApplicationPassword: "existing token")
+
+        let validationMonitor = Monitor()
+        let creationMonitor = Monitor()
+        stubCurrentApplicationPassword(host: "atomic.com", monitor: validationMonitor)
+        stubJetpackProxyCreateApplicationPassword(siteId: 456, password: "new token", monitor: creationMonitor)
+
+        let repository = ApplicationPasswordRepository.forTesting(coreDataStack: coreDataStack, keychain: keychain)
+        try await repository.createPasswordIfNeeded(for: blog)
+
+        let password = await password(of: blog)
+        #expect(password == "existing token")
+        #expect(validationMonitor.numberOfRequests > 0)
+        #expect(creationMonitor.numberOfRequests == 0)
+    }
+
+    @Test
     func selfHostedSite() async throws {
         defer { HTTPStubs.removeAllStubs() }
 
@@ -287,7 +308,7 @@ private extension ApplicationPasswordsRepositoryTests {
         }
     }
 
-    func createAtomicSite() async throws -> TaggedManagedObjectID<Blog> {
+    func createAtomicSite(existingApplicationPassword: String? = nil) async throws -> TaggedManagedObjectID<Blog> {
         try await coreDataStack.performAndSave { context in
             let account = try #require(try WPAccount.lookupDefaultWordPressComAccount(in: context))
             let blog = try BlogBuilder(context, dotComID: 456)
@@ -295,6 +316,11 @@ private extension ApplicationPasswordsRepositoryTests {
                 .withAccount(id: account.objectID)
                 .with(atomic: true)
                 .build()
+            if let existingApplicationPassword {
+                blog.username = "demo"
+                blog.restApiRootURL = "https://atomic.com/wp-json"
+                try blog.setApplicationToken(existingApplicationPassword, using: self.keychain)
+            }
             return TaggedManagedObjectID(blog)
         }
     }
@@ -353,9 +379,11 @@ private extension ApplicationPasswordsRepositoryTests {
         }
     }
 
-    func stubJetpackProxyCreateApplicationPassword(siteId: Int, password: String) {
+    func stubJetpackProxyCreateApplicationPassword(siteId: Int, password: String, monitor: Monitor? = nil) {
         stub(condition: isHost("public-api.wordpress.com") && isPath("/rest/v1.1/jetpack-blogs/\(siteId)/rest-api")) {
             _ in
+            monitor?.requestReceived()
+
             let json = """
                 {
                   "data": {
@@ -377,6 +405,34 @@ private extension ApplicationPasswordsRepositoryTests {
                       ]
                     }
                   }
+                }
+                """
+            return HTTPStubsResponse(data: json.data(using: .utf8)!, statusCode: 200, headers: nil)
+        }
+    }
+
+    func stubCurrentApplicationPassword(host: String, monitor: Monitor? = nil) {
+        stub(condition: isHost(host) && isPath("/wp-json/wp/v2/users/me/application-passwords/introspect")) { _ in
+            monitor?.requestReceived()
+
+            let json = """
+                {
+                    "uuid": "56cadaa8-e810-4752-abf9-cc39e120ea97",
+                    "app_id": "",
+                    "name": "Test",
+                    "created": "2025-07-15T22:14:13",
+                    "last_used": "2025-07-25T02:43:58",
+                    "last_ip": "127.0.0.1",
+                    "_links": {
+                      "self": [
+                        {
+                          "href": "https://\(host)/wp-json/wp/v2/users/1/application-passwords/56cadaa8-e810-4752-abf9-cc39e120ea97",
+                          "targetHints": {
+                            "allow": ["GET", "POST", "PUT", "PATCH", "DELETE"]
+                          }
+                        }
+                      ]
+                    }
                 }
                 """
             return HTTPStubsResponse(data: json.data(using: .utf8)!, statusCode: 200, headers: nil)

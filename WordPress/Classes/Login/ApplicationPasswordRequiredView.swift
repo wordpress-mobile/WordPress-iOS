@@ -136,9 +136,9 @@ struct ApplicationPasswordRequiredView<Content: View>: View {
     }
 
     private func updateSite() {
-        // We check that the site is `selfHosted` to ensure an _Application Password_ is available. That's what this view
-        // is for, after all.
-        if let site = try? WordPressSite(blog: blog), case .selfHosted = site {
+        // We check that the site has application password credentials to ensure
+        // direct wp/v2 API access is available. That's what this view is for.
+        if let site = try? WordPressSite(blog: blog), site.applicationPasswordCredentials != nil {
             self.site = site
         }
     }
