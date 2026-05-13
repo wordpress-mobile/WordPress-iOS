@@ -116,8 +116,18 @@ final class MediaLibraryViewModel: ObservableObject {
             return
         }
 
+        // The filter closure runs synchronously on whichever thread the
+        // upstream publisher emits on — for wp-rs's `databaseUpdatesPublisher()`
+        // that's the SQLite worker thread (NotificationCenter post from the
+        // rusqlite update hook). Marking it `@Sendable` opts out of the
+        // implicit `@MainActor` isolation that Swift 6 would otherwise
+        // inherit from the enclosing class, so the cheap `isRelevantUpdate`
+        // check stays on the background thread without tripping the runtime
+        // MainActor assertion. The downstream `.collect(.byTime(DispatchQueue.main, …))`
+        // hops to main before delivering batches, so the `for await` body
+        // runs on main where it mutates `@Published` state.
         let batches = await client.cache.databaseUpdatesPublisher()
-            .filter { [weak collection] in collection?.isRelevantUpdate(hook: $0) == true }
+            .filter { @Sendable [weak collection] in collection?.isRelevantUpdate(hook: $0) == true }
             .collect(.byTime(DispatchQueue.main, .milliseconds(50)))
             .values
 
