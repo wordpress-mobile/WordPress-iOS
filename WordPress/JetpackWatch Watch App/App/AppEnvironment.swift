@@ -34,13 +34,13 @@ final class AppEnvironment: ObservableObject {
         let audioRecorder = AudioRecorder(rootURL: docs)
         let handoff = HandoffPublisher()
 
-        bridge.onSitesReceived = { sites in
+        bridge.onSitesReceived = { @MainActor @Sendable sites in
             siteCatalog.setSites(sites)
             if siteCatalog.defaultSiteID == nil, let first = sites.first {
                 siteCatalog.setDefaultSiteID(first.id)
             }
         }
-        bridge.onNoteStateUpdate = { id, status, postID, reason in
+        bridge.onNoteStateUpdate = { @MainActor @Sendable id, status, postID, reason in
             guard var note = noteStore.notes.first(where: { $0.id == id }) else { return }
             note.status = status
             if let postID { note.postID = postID }

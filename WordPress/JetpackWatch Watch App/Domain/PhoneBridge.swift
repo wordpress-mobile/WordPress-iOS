@@ -21,17 +21,17 @@ protocol PhoneBridge: AnyObject {
     func deleteNote(_ id: UUID) async
 
     /// Called when the phone pushes a fresh site list.
-    var onSitesReceived: (([Site]) -> Void)? { get set }
+    var onSitesReceived: (@MainActor @Sendable ([Site]) -> Void)? { get set }
 
     /// Called when the phone pushes a state update for a note.
     /// Parameters: noteID, status, postID (if draft_ready), statusReason (if failed).
-    var onNoteStateUpdate: ((UUID, NoteStatus, Int64?, String?) -> Void)? { get set }
+    var onNoteStateUpdate: (@MainActor @Sendable (UUID, NoteStatus, Int64?, String?) -> Void)? { get set }
 }
 
 @MainActor
 final class MockPhoneBridge: PhoneBridge {
-    var onSitesReceived: (([Site]) -> Void)?
-    var onNoteStateUpdate: ((UUID, NoteStatus, Int64?, String?) -> Void)?
+    var onSitesReceived: (@MainActor @Sendable ([Site]) -> Void)?
+    var onNoteStateUpdate: (@MainActor @Sendable (UUID, NoteStatus, Int64?, String?) -> Void)?
 
     private(set) var handedOffNoteIDs: [UUID] = []
     private(set) var retriedNoteIDs: [UUID] = []

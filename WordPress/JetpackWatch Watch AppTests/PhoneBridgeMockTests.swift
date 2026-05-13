@@ -11,7 +11,7 @@ struct PhoneBridgeMockTests {
         let bridge = MockPhoneBridge(seedSites: sites)
 
         var received: [Site]?
-        bridge.onSitesReceived = { received = $0 }
+        bridge.onSitesReceived = { @MainActor @Sendable sites in received = sites }
         await bridge.start()
 
         #expect(received?.count == 1)
