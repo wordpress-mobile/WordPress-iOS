@@ -1,4 +1,5 @@
 import SwiftUI
+import os
 
 struct HistoryView: View {
     @EnvironmentObject private var env: AppEnvironment

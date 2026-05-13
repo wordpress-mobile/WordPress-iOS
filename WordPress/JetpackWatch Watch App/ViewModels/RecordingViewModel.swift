@@ -1,5 +1,6 @@
 import Foundation
 import Combine
+import os
 
 enum RecordingViewModelError: Error, Equatable, Sendable {
     case noDefaultSite

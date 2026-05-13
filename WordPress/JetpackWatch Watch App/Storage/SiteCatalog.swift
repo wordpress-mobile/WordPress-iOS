@@ -1,5 +1,6 @@
 import Foundation
 import Combine
+import os
 
 /// Caches the list of sites and the user's selected default site.
 /// JSON-backed: two files inside the root directory.

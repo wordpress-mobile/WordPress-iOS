@@ -1,5 +1,6 @@
 import Foundation
 import Combine
+import os
 
 enum NoteStoreError: Error, Equatable, Sendable {
     case notFound
