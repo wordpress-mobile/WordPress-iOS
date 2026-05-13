@@ -36,7 +36,12 @@ struct NoteRowView: View {
         case .transcribing: return "Transcribing…"
         case .drafting:     return "Drafting…"
         case .draftReady:   return "Draft ready"
-        case .failed:       return note.statusReason ?? "Failed"
+        case .failed:
+            if let reason = note.statusReason.flatMap(FailureReason.init(rawValue:)) {
+                return reason.userFacingMessage
+            } else {
+                return "Failed"
+            }
         }
     }
 
