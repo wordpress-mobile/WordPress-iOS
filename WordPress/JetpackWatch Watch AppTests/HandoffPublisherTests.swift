@@ -22,4 +22,18 @@ struct HandoffPublisherTests {
         publisher.clear()
         #expect(publisher.currentActivity == nil)
     }
+
+    @Test func publishing_a_second_activity_invalidates_the_first() {
+        let publisher = HandoffPublisher()
+        publisher.publishDraftReady(postID: 1, siteID: 1)
+        let first = publisher.currentActivity!
+
+        var firstInvalidated = false
+        first.invalidationHandler = { firstInvalidated = true }
+
+        publisher.publishDraftReady(postID: 2, siteID: 1)
+
+        #expect(firstInvalidated)
+        #expect(publisher.currentActivity !== first)
+    }
 }

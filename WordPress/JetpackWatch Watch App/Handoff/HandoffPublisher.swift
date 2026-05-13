@@ -7,6 +7,7 @@ final class HandoffPublisher {
     private(set) var currentActivity: NSUserActivity?
 
     func publishDraftReady(postID: Int64, siteID: Int64) {
+        currentActivity?.invalidate()
         let activity = NSUserActivity(activityType: Self.activityType)
         activity.title = "Open voice-note draft"
         activity.userInfo = ["postID": postID, "siteID": siteID]
