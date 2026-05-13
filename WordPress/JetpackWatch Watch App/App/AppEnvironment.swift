@@ -26,11 +26,11 @@ final class AppEnvironment: ObservableObject {
     }
 
     static func live() -> AppEnvironment {
+        #if DEBUG
         let docs = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask).first!
         let noteStore = NoteStore(rootURL: docs, audioRootURL: docs)
         let siteCatalog = SiteCatalog(rootURL: docs)
-        let seed = AppEnvironment.developmentSeedSites
-        let bridge = MockPhoneBridge(seedSites: seed)
+        let bridge = MockPhoneBridge(seedSites: Site.previewSeed)
         let audioRecorder = AudioRecorder(rootURL: docs)
         let handoff = HandoffPublisher()
 
@@ -56,17 +56,8 @@ final class AppEnvironment: ObservableObject {
             audioRecorder: audioRecorder,
             handoffPublisher: handoff
         )
-    }
-}
-
-private extension AppEnvironment {
-    /// Seed shown while Plan 1 uses MockPhoneBridge. Plan 2 swaps this for
-    /// real sites received over WatchConnectivity.
-    static var developmentSeedSites: [Site] {
-        #if DEBUG
-        return Site.previewSeed
         #else
-        return []
+        fatalError("JetpackWatch Watch App is not yet shippable: Plan 2 introduces the WCSession-backed PhoneBridge. Build with the Debug configuration.")
         #endif
     }
 }
