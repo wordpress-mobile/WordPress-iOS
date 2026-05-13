@@ -26,12 +26,13 @@ public extension Blog {
         using keychainImplementation: KeychainAccessible = KeychainUtils()
     ) async throws -> TaggedManagedObjectID<Blog> {
         try await contextManager.performAndSave { context in
-            let blog = if let blogID {
-                try context.existingObject(with: blogID)
-            } else {
-                Blog.lookup(username: details.userLogin, xmlrpc: xmlrpcEndpointURL.absoluteString, in: context)
-                    ?? Blog.createBlankBlog(in: context)
-            }
+            let blog =
+                if let blogID {
+                    try context.existingObject(with: blogID)
+                } else {
+                    Blog.lookup(username: details.userLogin, xmlrpc: xmlrpcEndpointURL.absoluteString, in: context)
+                        ?? Blog.createBlankBlog(in: context)
+                }
 
             blog.url = details.siteUrl
             blog.username = details.userLogin
@@ -104,12 +105,19 @@ public extension Blog {
 
     /// A null-safe replacement for `Blog.password(get)`
     func getPassword(using keychainImplementation: KeychainAccessible = KeychainUtils()) throws -> String {
-        try keychainImplementation.getPassword(for: self.getUsername(), serviceName: self.getXMLRPCEndpoint().absoluteString)
+        try keychainImplementation.getPassword(
+            for: self.getUsername(),
+            serviceName: self.getXMLRPCEndpoint().absoluteString
+        )
     }
 
     /// A null-safe replacement for `Blog.password(set)`
     func setPassword(to newValue: String, using keychainImplementation: KeychainAccessible = KeychainUtils()) throws {
-        try keychainImplementation.setPassword(for: self.getUsername(), to: newValue, serviceName: self.getXMLRPCEndpoint().absoluteString)
+        try keychainImplementation.setPassword(
+            for: self.getUsername(),
+            to: newValue,
+            serviceName: self.getXMLRPCEndpoint().absoluteString
+        )
     }
 
     func wordPressClientParsedUrl() throws -> ParsedUrl {
@@ -192,16 +200,29 @@ public extension WpApiApplicationPasswordDetails {
 
 public enum WordPressSite: Hashable {
     case dotCom(siteURL: URL, siteId: Int, authToken: String)
-    case selfHosted(blogId: TaggedManagedObjectID<Blog>, siteURL: URL, apiRootURL: ParsedUrl, username: String, authToken: String)
+    case selfHosted(
+        blogId: TaggedManagedObjectID<Blog>,
+        siteURL: URL,
+        apiRootURL: ParsedUrl,
+        username: String,
+        authToken: String
+    )
 
     public init(blog: Blog) throws {
         let siteURL = try blog.getUrl()
         // Directly access the site content when available.
         if let restApiRootURL = blog.restApiRootURL,
-           let restApiRootURL = try? ParsedUrl.parse(input: restApiRootURL),
-           let username = blog.username,
-           let authToken = try? blog.getApplicationToken() {
-            self = .selfHosted(blogId: TaggedManagedObjectID(blog), siteURL: siteURL, apiRootURL: restApiRootURL, username: username, authToken: authToken)
+            let restApiRootURL = try? ParsedUrl.parse(input: restApiRootURL),
+            let username = blog.username,
+            let authToken = try? blog.getApplicationToken()
+        {
+            self = .selfHosted(
+                blogId: TaggedManagedObjectID(blog),
+                siteURL: siteURL,
+                apiRootURL: restApiRootURL,
+                username: username,
+                authToken: authToken
+            )
         } else if let account = blog.account, let siteId = blog.dotComID?.intValue {
             // When the site is added via a WP.com account, access the site via WP.com
             let authToken = try account.authToken ?? WPAccount.token(forUsername: account.username)
@@ -210,8 +231,16 @@ public enum WordPressSite: Hashable {
             // In theory, this branch should never run, because the two if statements above should have covered all paths.
             // But we'll keep it here as the fallback.
             let url = try blog.getUrl()
-            let apiRootURL = try ParsedUrl.parse(input: blog.restApiRootURL ?? blog.getUrl().appending(path: "wp-json").absoluteString)
-            self = .selfHosted(blogId: TaggedManagedObjectID(blog), siteURL: url, apiRootURL: apiRootURL, username: try blog.getUsername(), authToken: try blog.getApplicationToken())
+            let apiRootURL = try ParsedUrl.parse(
+                input: blog.restApiRootURL ?? blog.getUrl().appending(path: "wp-json").absoluteString
+            )
+            self = .selfHosted(
+                blogId: TaggedManagedObjectID(blog),
+                siteURL: url,
+                apiRootURL: apiRootURL,
+                username: try blog.getUsername(),
+                authToken: try blog.getApplicationToken()
+            )
         }
     }
 

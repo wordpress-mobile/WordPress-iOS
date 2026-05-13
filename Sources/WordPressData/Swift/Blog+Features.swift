@@ -82,7 +82,9 @@ extension Blog {
         case .customThemes:
             return supportsRestAPI && isAdmin && !isHostedAtWPcom
         case .premiumThemes:
-            return supports(.customThemes) && (planID?.intValue == Self.jetpackProfessionalYearlyPlanId || planID?.intValue == Self.jetpackProfessionalMonthlyPlanId)
+            return supports(.customThemes)
+                && (planID?.intValue == Self.jetpackProfessionalYearlyPlanId
+                    || planID?.intValue == Self.jetpackProfessionalMonthlyPlanId)
         case .private:
             return isHostedAtWPcom
         case .sharing:
@@ -192,7 +194,8 @@ private extension Blog {
             return true
         }
         if account == nil && !isHostedAtWPcom && selfHostedSiteRestApi != nil
-            && hasRequiredWordPressVersion("5.5") {
+            && hasRequiredWordPressVersion("5.5")
+        {
             return true
         }
         return false
@@ -207,7 +210,8 @@ private extension Blog {
 
     func hasRequiredJetpackVersion(_ requiredVersion: String) -> Bool {
         guard supportsRestAPI, !isHostedAtWPcom,
-              let version = jetpack?.version else {
+            let version = jetpack?.version
+        else {
             return false
         }
         return version.compare(requiredVersion, options: .numeric) != .orderedAscending

@@ -55,7 +55,8 @@ final class EditorDependencyManager: Sendable {
             $0.featureFlagObserver = NotificationCenter.default
                 .publisher(for: FeatureFlagOverrideStore.didChangeNotification)
                 .filter {
-                    ($0.userInfo?[FeatureFlagOverrideStore.notificationFeatureFlagKey] as? RemoteFeatureFlag) == .newGutenberg
+                    ($0.userInfo?[FeatureFlagOverrideStore.notificationFeatureFlagKey] as? RemoteFeatureFlag)
+                        == .newGutenberg
                 }
                 .sink { [weak self] _ in
                     Task {
@@ -203,7 +204,8 @@ final class EditorDependencyManager: Sendable {
         // dependencies cache (the "slow path") creates on-disk caches that
         // EditorDependencyManager doesn't track. We should consider exposing
         // GutenbergKit's cache to access and/or track these slow-path caches.
-        let postTypes = keysToInvalidate.isEmpty
+        let postTypes =
+            keysToInvalidate.isEmpty
             ? [PostTypeDetails.post]
             : keysToInvalidate.map(\.postType)
 
@@ -222,7 +224,9 @@ final class EditorDependencyManager: Sendable {
             do {
                 try await EditorService(configuration: configuration).purge()
             } catch {
-                DDLogError("EditorDependencyManager: Failed to clear cache for \(configuration.postType.postType): \(error)")
+                DDLogError(
+                    "EditorDependencyManager: Failed to clear cache for \(configuration.postType.postType): \(error)"
+                )
             }
         }
     }
