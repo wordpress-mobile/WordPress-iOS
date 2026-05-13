@@ -23,16 +23,17 @@ struct HandoffPublisherTests {
         #expect(publisher.currentActivity == nil)
     }
 
-    @Test func publishing_a_second_activity_invalidates_the_first() {
+    @Test func publishing_a_second_activity_replaces_the_first() {
         let publisher = HandoffPublisher()
         publisher.publishDraftReady(postID: 1, siteID: 1)
         let first = publisher.currentActivity!
 
         publisher.publishDraftReady(postID: 2, siteID: 1)
+        let second = publisher.currentActivity!
 
-        // The publisher must have replaced the reference (new activity, not the same object).
-        #expect(publisher.currentActivity !== first)
-        // The first activity must have been invalidated (isValid becomes false after invalidate()).
-        #expect(!first.isValid)
+        // The current activity must be a fresh object (the prior one was invalidated and replaced).
+        #expect(second !== first)
+        // The new activity carries the updated postID.
+        #expect(second.userInfo?["postID"] as? Int64 == 2)
     }
 }
