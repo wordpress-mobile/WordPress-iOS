@@ -38,13 +38,33 @@ struct MediaGridCell: View {
         case .image:
             imageContent
         case .video:
-            Image(systemName: "play.rectangle.fill")
-                .font(.title)
-                .foregroundStyle(.secondary)
+            videoContent
         case .audio:
             kindIcon(systemImage: "waveform", title: item.displayTitle)
         case .document:
             kindIcon(systemImage: "doc", title: item.displayTitle)
+        }
+    }
+
+    /// Video thumbnail via AsyncImageKit's `CachedAsyncImage(videoUrl:)`,
+    /// which extracts a frame from the video file at `thumbnailURL` (the
+    /// video's `sourceUrl`). The duration badge sits on top via the
+    /// `durationOverlay` modifier. Falls back to a centered play-rectangle
+    /// icon when the URL is missing.
+    @ViewBuilder private var videoContent: some View {
+        if let url = item.thumbnailURL {
+            CachedAsyncImage(videoUrl: url) { image in
+                image.resizable().aspectRatio(contentMode: .fill)
+            } placeholder: {
+                Image(systemName: "play.rectangle.fill")
+                    .font(.title)
+                    .foregroundStyle(.secondary)
+            }
+            .clipped()
+        } else {
+            Image(systemName: "play.rectangle.fill")
+                .font(.title)
+                .foregroundStyle(.secondary)
         }
     }
 

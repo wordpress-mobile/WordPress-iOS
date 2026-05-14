@@ -10,7 +10,7 @@ struct MediaGridItem: Identifiable, Equatable {
     let id: Int64
     let kind: MediaKind
     let displayTitle: String
-    let thumbnailURL: URL? // image kind only
+    let thumbnailURL: URL? // image or video kind; the cell picks the right CachedAsyncImage initializer based on kind
     let aspectRatio: CGFloat? // image kind only; width / height
     let durationString: String? // video kind only
     let state: State
@@ -61,7 +61,10 @@ struct MediaGridItem: Identifiable, Equatable {
             }
             self.durationString = nil
         case .video(let videoDetails):
-            self.thumbnailURL = nil
+            // For video, `thumbnailURL` carries the video file URL itself —
+            // the cell renders it via `CachedAsyncImage(videoUrl:)`, which
+            // extracts a frame for the thumbnail (V1 parity).
+            self.thumbnailURL = URL(string: media.sourceUrl)
             self.aspectRatio = nil
             self.durationString = MediaGridDuration.string(forSeconds: videoDetails.length)
         case .audio, .document, .none:

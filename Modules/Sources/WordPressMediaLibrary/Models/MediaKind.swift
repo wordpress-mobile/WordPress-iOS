@@ -22,6 +22,17 @@ public enum MediaKind: String, CaseIterable, Hashable, Sendable {
         }
     }
 
+    /// Maps the V2 grid filter selection to the wordpress-rs REST query
+    /// parameter. **Known narrowing for `.document`:** V1's "Documents"
+    /// bucket includes attachments the system classifies as `text/*` (e.g.
+    /// `.txt`, `.md`) alongside the `application/*` MIME family, because V1
+    /// builds its filter locally against Core Data's `mediaTypeString`. V2
+    /// goes through the wordpress-rs `MediaListFilter.mediaType` parameter,
+    /// which is a single optional `MediaTypeParam` — we can't OR
+    /// `.application` and `.text` in one query without an upstream
+    /// wordpress-rs change. M2 ships with the narrower `.application`-only
+    /// document bucket; full V1 parity here depends on the wordpress-rs
+    /// Phase 0 surface gaining multi-value media-type filtering.
     var asMediaTypeParam: MediaTypeParam {
         switch self {
         case .image: .image
