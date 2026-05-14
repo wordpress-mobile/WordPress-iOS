@@ -4,6 +4,7 @@ struct MediaLibraryView: View {
     @ObservedObject var viewModel: MediaLibraryViewModel
     let tracker: any MediaTracker
 
+    @Environment(\.horizontalSizeClass) private var sizeClass
     @State private var searchText: String = ""
     /// Incremented by the Retry button. A `.task(id: retryToken)` modifier
     /// listens for changes; the initial value 0 is ignored so we don't
@@ -14,32 +15,34 @@ struct MediaLibraryView: View {
     /// outlive view dismantle.
     @State private var retryToken: Int = 0
 
+    private var spacing: CGFloat { viewModel.isAspectRatioModeEnabled ? 8 : 2 }
+
+    private var columns: [GridItem] {
+        Array(
+            repeating: GridItem(.flexible(), spacing: spacing),
+            count: sizeClass == .regular ? 5 : 4
+        )
+    }
+
     var body: some View {
-        GeometryReader { proxy in
-            let layout = MediaGridLayoutMath(
-                availableWidth: proxy.size.width,
-                isAspectRatioMode: viewModel.isAspectRatioModeEnabled
-            )
-            ScrollView {
-                LazyVGrid(columns: layout.columns, spacing: layout.spacing) {
-                    ForEach(viewModel.items) { item in
-                        MediaGridCell(
-                            item: item,
-                            isAspectRatioMode: viewModel.isAspectRatioModeEnabled
-                        )
-                        // Cell-scoped pagination trigger. SwiftUI cancels
-                        // this task on cell disappear AND on view dismantle.
-                        .task(id: item.id) {
-                            await viewModel.loadNextPageIfNeeded(after: item)
-                        }
+        ScrollView {
+            LazyVGrid(columns: columns, spacing: spacing) {
+                ForEach(viewModel.items) { item in
+                    MediaGridCell(
+                        item: item,
+                        isAspectRatioMode: viewModel.isAspectRatioModeEnabled
+                    )
+                    // Cell-scoped pagination trigger. SwiftUI cancels
+                    // this task on cell disappear AND on view dismantle.
+                    .task(id: item.id) {
+                        await viewModel.loadNextPageIfNeeded(after: item)
                     }
                 }
-                // V1 parity: top inset matches the spacing.
-                .padding(.top, layout.spacing)
-                .animation(.default, value: viewModel.isAspectRatioModeEnabled)
             }
-            .refreshable { await viewModel.refresh(pullToRefresh: true) }
+            .padding(.top, spacing)
+            .animation(.default, value: viewModel.isAspectRatioModeEnabled)
         }
+        .refreshable { await viewModel.refresh(pullToRefresh: true) }
         .task { tracker.track(.mediaLibraryOpened) }
         .task(id: viewModel.filter) { await viewModel.refresh() }
         .task(id: viewModel.filter) { await viewModel.handleDataChanges() }
