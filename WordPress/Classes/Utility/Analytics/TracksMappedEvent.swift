@@ -960,6 +960,12 @@ extension TracksMappedEvent {
             name = "signup_magic_link_requested"
         case .signupTermsButtonTapped:
             name = "signup_terms_of_service_tapped"
+        case .siteMediaFilterChanged:
+            name = "site_media_filter_changed"
+        case .siteMediaGridModeToggled:
+            name = "site_media_grid_mode_toggled"
+        case .siteMediaSearched:
+            name = "site_media_searched"
         case .siteSettingsSiteIconTapped:
             name = "my_site_icon_tapped"
         case .siteSettingsSiteIconRemoved:
