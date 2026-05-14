@@ -119,6 +119,11 @@ final class MediaLibraryViewModel: ObservableObject {
             isRefreshing = true
         }
         collectionTask = makeCollectionTask(for: newFilter)
+        // Analytics fire synchronously, after the state mutation above. Each
+        // event is guarded so filter-only changes don't fire a stale-search
+        // event and search-only changes don't fire a filter event; clearing
+        // the search to empty doesn't fire (the !newFilter.search.isEmpty
+        // guard) because that's not a user-initiated search.
         if newFilter.kind != oldFilter.kind {
             tracker.track(.mediaLibraryFilterChanged(kind: newFilter.kind))
         }
@@ -236,6 +241,16 @@ final class MediaLibraryViewModel: ObservableObject {
         }
     }
 
+    /// Reads the current snapshot from the collection and updates the
+    /// published state. Errors from `collection.loadItems()` (a SQLite read)
+    /// are logged only — never surfaced via `show(error:)`. This is the
+    /// observer-loop path's behavior carried forward from M1, and is shared
+    /// with the user-visible paths (`fetchPageOne`, `loadNextPage`) for
+    /// simplicity. A SQLite-read failure after a successful network refresh
+    /// or pagination would currently show stale rows with only a log line;
+    /// M3+ should split the user-visible callers off so they can surface
+    /// the error to `show(error:)`. The cache-corruption failure mode is
+    /// rare enough that this trade-off is acceptable for M2.
     private func loadItems(
         from collection: MediaMetadataCollectionWithEditContext,
         snapshot: UInt64

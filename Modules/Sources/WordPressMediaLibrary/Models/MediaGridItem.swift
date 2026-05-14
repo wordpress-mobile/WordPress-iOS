@@ -72,7 +72,11 @@ struct MediaGridItem: Identifiable, Equatable {
     }
 
     /// Designated initializer for payload-less states. Initializes every
-    /// stored property exactly once.
+    /// stored property exactly once. The accessibility label branches on
+    /// `state` because the same initializer covers both `.fetching` /
+    /// `.missing` (genuinely loading) and `.failed` (error without payload):
+    /// VoiceOver shouldn't hear "Loading media" while the cell shows an
+    /// error icon.
     private init(placeholderID id: Int64, state: State) {
         self.id = id
         self.kind = .image // best-effort placeholder; cell renders a uniformly-grey square under the loading / error overlay
@@ -81,7 +85,12 @@ struct MediaGridItem: Identifiable, Equatable {
         self.aspectRatio = nil
         self.durationString = nil
         self.state = state
-        self.accessibilityLabel = Strings.accessibilityLoadingMedia
+        switch state {
+        case .error:
+            self.accessibilityLabel = Strings.accessibilityErrorMedia
+        case .loading, .loaded:
+            self.accessibilityLabel = Strings.accessibilityLoadingMedia
+        }
     }
 
     private static func makeTitle(media: MediaWithEditContext) -> String {

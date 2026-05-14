@@ -115,4 +115,10 @@ enum Strings {
         value: "Loading media",
         comment: "Accessibility label for a cell that is still loading its data"
     )
+
+    static let accessibilityErrorMedia = NSLocalizedString(
+        "mediaLibrary.accessibility.error",
+        value: "Media failed to load",
+        comment: "Accessibility label for a cell whose underlying media couldn't be loaded"
+    )
 }

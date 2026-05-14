@@ -14,9 +14,23 @@ struct MediaGridCell: View {
             stateOverlay
         }
         .aspectRatio(1, contentMode: .fit)
-        .clipShape(RoundedRectangle(cornerRadius: isAspectRatioMode ? 4 : 0))
+        .clipShape(RoundedRectangle(cornerRadius: outerCornerRadius))
         .accessibilityElement(children: .ignore)
         .accessibilityLabel(item.accessibilityLabel)
+    }
+
+    /// V1 parity: in aspect-ratio mode, image cells with a non-square aspect
+    /// ratio leave the OUTER cell square (sharp corners) and apply the 4pt
+    /// rounding to the inner image container only — see `imageContent` below
+    /// for the inner clip. For square images and non-image kinds, V1's
+    /// imageContainerView fills the cell, so cell-level rounding matches
+    /// V1's container-level rounding.
+    private var outerCornerRadius: CGFloat {
+        guard isAspectRatioMode else { return 0 }
+        if item.kind == .image, let ratio = item.aspectRatio, ratio != 1.0 {
+            return 0
+        }
+        return 4
     }
 
     @ViewBuilder private var content: some View {
@@ -35,9 +49,11 @@ struct MediaGridCell: View {
     }
 
     /// V1 parity for aspect-ratio mode: the inner image container takes the
-    /// media's natural aspect ratio centered inside the square cell. In
-    /// default mode the container fills the cell and the image crops. See
-    /// `SiteMediaCollectionCell.swift:113-125` for the V1 reference.
+    /// media's natural aspect ratio centered inside the square cell and
+    /// gets the 4pt rounding applied to itself (not to the surrounding
+    /// letterbox area). In default mode the container fills the cell and
+    /// the image crops with no rounding. See `SiteMediaCollectionCell.swift:113-125`
+    /// for the V1 reference.
     @ViewBuilder private var imageContent: some View {
         let cached = CachedAsyncImage(url: item.thumbnailURL) { image in
             image.resizable().aspectRatio(contentMode: .fill)
@@ -47,7 +63,7 @@ struct MediaGridCell: View {
         if isAspectRatioMode, let ratio = item.aspectRatio {
             cached
                 .aspectRatio(ratio, contentMode: .fit)
-                .clipped()
+                .clipShape(RoundedRectangle(cornerRadius: 4))
         } else {
             cached.clipped()
         }
