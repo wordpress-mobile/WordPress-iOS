@@ -149,7 +149,7 @@ final class MediaLibraryViewModel: ObservableObject {
         //      in quick succession before the collection's listInfo
         //      reflects the sync, producing duplicate fetches and noisy
         //      StaleLoadMore errors. Mirrors the isLoadingMore guard in
-        //      CustomPostListView.swift:273-283.
+        //      CustomPostListView.
         guard !isRefreshing, !isLoadingNextPage else { return }
         isLoadingNextPage = true
         defer { isLoadingNextPage = false }
@@ -205,10 +205,10 @@ final class MediaLibraryViewModel: ObservableObject {
     }
 }
 
-// Mirrors the private extension in CustomPostListViewModel.swift:726-735.
+// Mirrors the private extension in CustomPostListViewModel.
 // `isSyncing` is NOT part of the wordpress-rs ListInfo surface (which
-// exposes only state, currentPage, totalPages, totalItems, perPage at
-// wp_mobile.swift:5595-5607); this extension fills the gap.
+// exposes only state, currentPage, totalPages, totalItems, and perPage);
+// this extension fills the gap.
 private extension ListInfo {
     var isSyncing: Bool {
         state == .fetchingFirstPage || state == .fetchingNextPage
