@@ -8,207 +8,261 @@ import WordPressCore
 final class MediaLibraryViewModel: ObservableObject {
     private let client: WordPressClient
     private let tracker: any MediaTracker
-    private var collectionTask: Task<MediaMetadataCollectionWithEditContext, Error>?
-    private var isLoadingNextPage = false
 
-    @Published private(set) var items: [MediaListItem] = []
+    /// Cached lazy resolution of `WpService` + a
+    /// `MediaMetadataCollectionWithEditContext` for the current `filter`.
+    /// Replaced on every `setFilter(_:)`; evicted on non-cancellation
+    /// throws in `resolveCollection`.
+    private var collectionTask: Task<MediaMetadataCollectionWithEditContext, Error>?
+
+    /// Monotonically increments on every `setFilter(_:)`. Methods that
+    /// publish into `items` / `listInfo` / `error` from an `await` snapshot
+    /// this at entry and guard every state write on
+    /// `self.generation == snapshot && !Task.isCancelled`. Both conditions
+    /// are load-bearing: the generation check rejects writes from an older
+    /// filter whose body is still finishing its `await` chain, and the
+    /// cancellation check rejects writes after view dismantle. Swift task
+    /// cancellation is cooperative — an FFI await may resume normally
+    /// without throwing `CancellationError`, so the cancellation flag has
+    /// to be consulted explicitly at every write site.
+    private var generation: UInt64 = 0
+
+    @Published private(set) var filter: MediaGridFilter = .initial
+    @Published private(set) var items: [MediaGridItem] = []
     @Published private(set) var listInfo: ListInfo?
     @Published private(set) var error: Error?
-    /// Set to true while `refresh()` is in flight. Drives the cold-cache
-    /// initial-loading spinner explicitly, instead of inferring from the
-    /// wp-rs collection's `listInfo.isSyncing` (which only updates after
-    /// the cache observer wakes — racy).
     @Published private(set) var isRefreshing = false
 
+    @Published var isAspectRatioModeEnabled: Bool {
+        didSet {
+            AspectRatioPreference.save(isAspectRatioModeEnabled)
+            tracker.track(.mediaLibraryGridModeToggled(isAspectRatio: isAspectRatioModeEnabled))
+        }
+    }
+
+    private var isLoadingNextPage = false
+
     var shouldDisplayInitialLoading: Bool { items.isEmpty && isRefreshing }
-    var shouldDisplayEmptyView: Bool { items.isEmpty && !isRefreshing && error == nil }
+    var shouldDisplayEmpty: Bool {
+        items.isEmpty && !isRefreshing && error == nil
+            && filter.search.isEmpty && filter.kind == nil
+    }
+    var shouldDisplayFilterEmpty: Bool {
+        items.isEmpty && !isRefreshing && error == nil
+            && filter.search.isEmpty && filter.kind != nil
+    }
+    var shouldDisplaySearchEmpty: Bool {
+        items.isEmpty && !isRefreshing && error == nil && !filter.search.isEmpty
+    }
     func errorToDisplay() -> Error? { items.isEmpty ? error : nil }
 
     init(client: WordPressClient, tracker: any MediaTracker) {
         self.client = client
         self.tracker = tracker
+        self.isAspectRatioModeEnabled = AspectRatioPreference.load()
+        // Eagerly schedule the first collection task so `.task(id: filter)`
+        // can await it on first appearance without re-creation.
+        self.collectionTask = makeCollectionTask(for: .initial)
     }
 
-    /// Resolves WpService and constructs the collection, exactly once.
-    /// Cached as a Task so concurrent callers (the cache observer task and
-    /// the refresh task both wake at view appearance) await the same
-    /// construction. Same pattern WordPressClient itself uses for site
-    /// info / current user.
-    private func resolveCollection() async throws -> MediaMetadataCollectionWithEditContext {
-        if let collectionTask {
-            return try await collectionTask.value
-        }
-        let task = Task<MediaMetadataCollectionWithEditContext, Error> { [client] in
+    /// Builds a Task that awaits `client.service` (actor-isolated) and
+    /// constructs a `MediaMetadataCollectionWithEditContext` for the given
+    /// filter. The Task does not capture `self`; it captures only `client`.
+    private func makeCollectionTask(
+        for filter: MediaGridFilter
+    ) -> Task<MediaMetadataCollectionWithEditContext, Error> {
+        Task { [client] in
             let service = try await client.service
             return service.media()
                 .createMediaMetadataCollectionWithEditContext(
-                    filter: MediaListFilter(),
+                    filter: filter.asMediaListFilter(),
                     perPage: 100
                 )
         }
-        self.collectionTask = task
-        return try await task.value
     }
 
-    /// Loads cached items into `items` immediately so the first paint isn't
-    /// blocked on the network round-trip.
-    func loadCachedItems() async {
+    /// Awaits the cached collection task. On a non-cancellation throw,
+    /// evicts the cached task IF the generation hasn't advanced — so the
+    /// next call (e.g. Retry) builds a fresh task. Cancellation throws
+    /// don't evict because they're expected during filter change and
+    /// `setFilter` already installed the replacement.
+    private func resolveCollection() async throws -> MediaMetadataCollectionWithEditContext {
+        if collectionTask == nil {
+            collectionTask = makeCollectionTask(for: filter)
+        }
+        let task = collectionTask!
+        let snapshot = generation
         do {
-            let collection = try await resolveCollection()
-            await loadItems(from: collection)
+            return try await task.value
         } catch {
-            Loggers.mediaLibrary.error("Failed to load cached items: \(error)")
+            if !(error is CancellationError), generation == snapshot {
+                collectionTask = nil
+            }
+            throw error
         }
     }
 
-    /// Single entry point for the SwiftUI .task block. Owns isRefreshing
-    /// across BOTH loadCachedItems() and refresh() so the empty state can't
-    /// flash in the microsecond window between them on cold-cache first
-    /// open. SwiftUI re-evaluates body on every @Published change, so even
-    /// a single MainActor scheduling hop where (items.isEmpty &&
-    /// !isRefreshing && error == nil) holds will paint the empty view.
-    func performInitialLoad() async {
-        isRefreshing = true
-        defer { isRefreshing = false }
-        await loadCachedItems()
-        await refresh()
+    func setFilter(_ newFilter: MediaGridFilter) {
+        guard filter != newFilter else { return }
+        let oldFilter = filter
+        collectionTask?.cancel()
+        generation &+= 1
+        withAnimation {
+            filter = newFilter
+            items = []
+            listInfo = nil
+            error = nil
+            // Flip the loading overlay on in the SAME render tick that
+            // clears `items` so the between-task render gap doesn't paint
+            // the empty / filter-empty / search-empty state for one frame
+            // before refresh() runs on the next MainActor turn.
+            isRefreshing = true
+        }
+        collectionTask = makeCollectionTask(for: newFilter)
+        if newFilter.kind != oldFilter.kind {
+            tracker.track(.mediaLibraryFilterChanged(kind: newFilter.kind))
+        }
+        if newFilter.search != oldFilter.search, !newFilter.search.isEmpty {
+            tracker.track(.mediaLibrarySearched(queryLength: newFilter.search.count))
+        }
     }
 
-    func refresh() async {
-        // isRefreshing drives the cold-cache initial-loading UI deterministically,
-        // independent of the wp-rs cache observer's wake timing.
+    func refresh(pullToRefresh: Bool = false) async {
+        let snapshot = generation
+        // Idempotent — already true after setFilter; covers first .task
+        // invocation on view appearance (where setFilter never ran).
         isRefreshing = true
-        defer { isRefreshing = false }
+        // Clear stale error so a successful retry that returns zero items
+        // shows the empty state rather than the previous failure. setFilter
+        // also clears errors, but Retry and pull-to-refresh come through
+        // here without changing the filter.
+        error = nil
+        defer {
+            if generation == snapshot, !Task.isCancelled {
+                isRefreshing = false
+            }
+        }
+        if !pullToRefresh {
+            await loadCachedItems(snapshot: snapshot)
+        }
+        await fetchPageOne(snapshot: snapshot)
+    }
 
-        // Clear stale error from any previous failed attempt so a successful
-        // retry unblocks the empty/list UI even when the new fetch returns
-        // zero items. Without this, errorToDisplay() would keep showing the
-        // old error because items.isEmpty stays true.
-        self.error = nil
-
+    private func loadCachedItems(snapshot: UInt64) async {
         do {
             let collection = try await resolveCollection()
+            await loadItems(from: collection, snapshot: snapshot)
+        } catch {
+            if !(error is CancellationError) {
+                Loggers.mediaLibrary.error("Failed to load cached items: \(error)")
+            }
+        }
+    }
+
+    private func fetchPageOne(snapshot: UInt64) async {
+        do {
+            let collection = try await resolveCollection()
+            guard generation == snapshot, !Task.isCancelled else { return }
             _ = try await collection.refresh()
-            // Reload items directly after refresh succeeds, instead of
-            // relying on the cache observer to wake up. SwiftUI doesn't
-            // order sibling .task modifiers, so handleDataChanges() may not
-            // have subscribed before refresh wrote to the cache. This makes
-            // the cold-cache first load deterministic; handleDataChanges()
-            // handles subsequent updates only.
-            await loadItems(from: collection)
+            await loadItems(from: collection, snapshot: snapshot)
         } catch {
-            Loggers.mediaLibrary.error("Media library refresh failed: \(error)")
-            show(error: error)
+            if !(error is CancellationError) {
+                Loggers.mediaLibrary.error("Media library refresh failed: \(error)")
+                show(error: error, snapshot: snapshot)
+            }
         }
     }
 
-    func pullToRefresh() async { await refresh() }
-
-    /// Long-running cache observer for SUBSEQUENT updates only — the initial
-    /// load is handled deterministically by `refresh()` calling
-    /// `loadItems(from:)` directly.
+    /// Long-running cache observer. Restarted by `.task(id: viewModel.filter)`
+    /// on every filter change, so the snapshot captured here stays tied to
+    /// the active-at-start generation.
     func handleDataChanges() async {
+        let snapshot = generation
         let collection: MediaMetadataCollectionWithEditContext
         do {
             collection = try await resolveCollection()
         } catch {
-            // Collection couldn't be constructed; nothing to observe.
             return
         }
 
-        // The filter closure runs synchronously on whichever thread the
-        // upstream publisher emits on — for wp-rs's `databaseUpdatesPublisher()`
-        // that's the SQLite worker thread (NotificationCenter post from the
-        // rusqlite update hook). Marking it `@Sendable` opts out of the
-        // implicit `@MainActor` isolation that Swift 6 would otherwise
-        // inherit from the enclosing class, so the cheap `isRelevantUpdate`
-        // check stays on the background thread without tripping the runtime
-        // MainActor assertion. The downstream `.collect(.byTime(DispatchQueue.main, …))`
-        // hops to main before delivering batches, so the `for await` body
-        // runs on main where it mutates `@Published` state.
         let batches = await client.cache.databaseUpdatesPublisher()
-            .filter { @Sendable [weak collection] in collection?.isRelevantUpdate(hook: $0) == true }
+            .filter { @Sendable [weak collection] in
+                collection?.isRelevantUpdate(hook: $0) == true
+            }
             .collect(.byTime(DispatchQueue.main, .milliseconds(50)))
             .values
 
         for await _ in batches {
-            await loadItems(from: collection)
+            await loadItems(from: collection, snapshot: snapshot)
         }
     }
 
-    // TODO: Pagination is temporary for M1. Future milestones will switch
-    // the Media Library to a full-library sync model rather than per-page
-    // fetches.
     func loadNextPage() async throws {
-        // Two guards:
-        //   1. !isRefreshing — warm-cache first open paints cached rows
-        //      while the initial refresh is still in flight; trailing-row
-        //      .onAppear can fire loadNextPage concurrently with that
-        //      refresh. Defer pagination until the initial load completes.
-        //   2. !isLoadingNextPage — trailing-N rows can each fire .onAppear
-        //      in quick succession before the collection's listInfo
-        //      reflects the sync, producing duplicate fetches and noisy
-        //      StaleLoadMore errors. Mirrors the isLoadingMore guard in
-        //      CustomPostListView.
         guard !isRefreshing, !isLoadingNextPage else { return }
         isLoadingNextPage = true
         defer { isLoadingNextPage = false }
 
+        let snapshot = generation
         let collection = try await resolveCollection()
         guard !collection.isSyncing,
-            collection.hasMorePages() ?? true
+            collection.hasMorePages() ?? true,
+            generation == snapshot,
+            !Task.isCancelled
         else { return }
+
         if collection.listInfo()?.currentPage == nil {
             _ = try await collection.refresh()
         } else {
             _ = try await collection.loadNextPage()
         }
-        await loadItems(from: collection)
+        await loadItems(from: collection, snapshot: snapshot)
     }
 
-    // TODO: Pagination is temporary for M1 — see loadNextPage().
-    func loadNextPageIfNeeded(after item: MediaListItem) async {
-        // Trigger a fetch only when the row that just appeared is one of the
-        // last few rows we have loaded — protects against firing for every
-        // single .onAppear above the fold.
+    func loadNextPageIfNeeded(after item: MediaGridItem) async {
         let trailingThreshold = 10
         guard items.suffix(trailingThreshold).contains(where: { $0.id == item.id }) else {
             return
         }
+        // Capture the snapshot BEFORE the await so a filter change during
+        // pagination can't route the error into the new generation's state.
+        let snapshot = generation
         do {
             try await loadNextPage()
         } catch {
-            Loggers.mediaLibrary.error("Media library loadNextPage failed: \(error)")
-            show(error: error)
+            if !(error is CancellationError) {
+                Loggers.mediaLibrary.error("Media library loadNextPage failed: \(error)")
+                show(error: error, snapshot: snapshot)
+            }
         }
     }
 
-    /// Reads the current snapshot from the collection and updates @Published
-    /// state. Shared by `loadCachedItems()`, `refresh()`, `loadNextPage()`,
-    /// and `handleDataChanges()` so all reload paths funnel through the
-    /// same code.
-    private func loadItems(from collection: MediaMetadataCollectionWithEditContext) async {
+    private func loadItems(
+        from collection: MediaMetadataCollectionWithEditContext,
+        snapshot: UInt64
+    ) async {
         do {
-            self.listInfo = collection.listInfo()
+            let listInfo = collection.listInfo()
             let metadataItems = try await collection.loadItems()
+            guard generation == snapshot, !Task.isCancelled else { return }
+            self.listInfo = listInfo
             withAnimation {
-                self.items = metadataItems.map(MediaListItem.init(item:))
+                self.items = metadataItems.map(MediaGridItem.init(item:))
             }
         } catch {
-            Loggers.mediaLibrary.error("Failed to load items: \(error)")
+            if !(error is CancellationError) {
+                Loggers.mediaLibrary.error("Failed to load items: \(error)")
+            }
         }
     }
 
-    private func show(error: Error) {
+    private func show(error: Error, snapshot: UInt64) {
         if case FetchError.StaleLoadMore = error { return }
+        guard generation == snapshot, !Task.isCancelled else { return }
         self.error = error
     }
 }
 
-// Mirrors the private extension in CustomPostListViewModel.
-// `isSyncing` is NOT part of the wordpress-rs ListInfo surface (which
-// exposes only state, currentPage, totalPages, totalItems, and perPage);
-// this extension fills the gap.
+// Mirrors the private extension in `CustomPostListViewModel.swift`.
 private extension ListInfo {
     var isSyncing: Bool {
         state == .fetchingFirstPage || state == .fetchingNextPage
