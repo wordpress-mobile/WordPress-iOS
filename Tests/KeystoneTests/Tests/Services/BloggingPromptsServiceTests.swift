@@ -83,7 +83,6 @@ final class BloggingPromptsServiceTests: CoreDataTestCase {
             }
 
             expectation.fulfill()
-
         } failure: { _ in
             XCTFail("This closure shouldn't be called.")
             expectation.fulfill()
@@ -110,7 +109,6 @@ final class BloggingPromptsServiceTests: CoreDataTestCase {
             XCTAssertTrue(dateParam.compare(prompt.date) == .orderedAscending)
 
             expectation.fulfill()
-
         } failure: { _ in
             XCTFail("This closure shouldn't be called.")
             expectation.fulfill()
@@ -184,7 +182,6 @@ final class BloggingPromptsServiceTests: CoreDataTestCase {
             XCTAssertTrue(promptIDs == expectedPromptIDs)
 
             expectation.fulfill()
-
         } failure: { _ in
             XCTFail("This closure shouldn't be called.")
             expectation.fulfill()
@@ -218,7 +215,6 @@ final class BloggingPromptsServiceTests: CoreDataTestCase {
             XCTAssertTrue(promptIDs == expectedPromptIDs)
 
             expectation.fulfill()
-
         } failure: { _ in
             XCTFail("This closure shouldn't be called.")
             expectation.fulfill()
@@ -253,7 +249,6 @@ final class BloggingPromptsServiceTests: CoreDataTestCase {
             XCTAssertTrue(promptIDs == expectedPromptIDs)
 
             expectation.fulfill()
-
         } failure: { _ in
             XCTFail("This closure shouldn't be called.")
             expectation.fulfill()
@@ -314,7 +309,6 @@ final class BloggingPromptsServiceTests: CoreDataTestCase {
                     let tags = prompt.additionalPostTags!
                     XCTAssertTrue(tags.contains("bloganuary"))
                     XCTAssertTrue(tags.contains(bloganuaryId))
-
                 } else {
                     // otherwise, normal cards shouldn't have the bloganuary attributions.
                     // no additional tags should be added here.
@@ -324,7 +318,6 @@ final class BloggingPromptsServiceTests: CoreDataTestCase {
             }
 
             expectation.fulfill()
-
         } failure: { _ in
             XCTFail("This closure shouldn't be called.")
             expectation.fulfill()

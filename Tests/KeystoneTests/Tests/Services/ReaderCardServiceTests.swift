@@ -115,7 +115,6 @@ final class ReaderPostServiceRemoteMock: ReaderCardServiceRemote {
         }
         success(cards, nil)
     }
-
 }
 
 private class ReaderFollowedInterestsServiceMock: ReaderFollowedInterestsService {
@@ -162,7 +161,6 @@ private class ReaderFollowedInterestsServiceMock: ReaderFollowedInterestsService
     }
 
     func followInterests(_ interests: [RemoteReaderInterest], success: @escaping ([ReaderTagTopic]?) -> Void, failure: @escaping (Error) -> Void, isLoggedIn: Bool) {
-
     }
 
     func path(slug: String) -> String {

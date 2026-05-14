@@ -237,7 +237,6 @@ extension StatsServiceRemoteV2 {
                     let insight = StatsLastPostInsight(jsonDictionary: post, views: views) else {
                         completion(nil, ResponseError.decodingFailure)
                         return
-
                 }
 
                 completion(insight, nil)
@@ -324,7 +323,6 @@ extension StatsServiceRemoteV2 {
             return calendarForSite.startOfDay(for: jan1)
         }
     }
-
 }
 
 // MARK: - Mark referrer as spam helpers

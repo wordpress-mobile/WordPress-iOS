@@ -54,7 +54,6 @@ extension CommentService {
                                         failure(error)
                                     })
     }
-
 }
 
 private extension CommentService {
@@ -97,5 +96,4 @@ private extension CommentService {
             DDLogError("Error fetching comment Like Users: \(error)")
         }
     }
-
 }

@@ -53,7 +53,6 @@ import WordPressKit
                         // add or update the publicizeInfo for the blog.
                         newOrExistingInfo.configure(with: remotePublicizeInfo)
                         blog.publicizeInfo = newOrExistingInfo
-
                     } else if let existingPublicizeInfo = blog.publicizeInfo {
                         // if the remote object is nil, delete the blog's publicizeInfo if it exists.
                         context.delete(existingPublicizeInfo)
@@ -61,7 +60,6 @@ import WordPressKit
                     }
 
                     return blog.publicizeInfo?.sharingLimit
-
                 }, completion: { completion($0) }, on: .main)
 
             case .failure(let error):

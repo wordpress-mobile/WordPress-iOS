@@ -59,5 +59,4 @@ class JetpackRestoreCompleteViewController: BaseRestoreCompleteViewController {
 
         self.present(navigationVC, animated: true)
     }
-
 }

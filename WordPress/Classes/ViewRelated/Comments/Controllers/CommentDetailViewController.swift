@@ -168,7 +168,6 @@ public class CommentDetailViewController: UIViewController, NoResultsViewHost {
 
         if let blog = comment.blog {
             return blog.comment(withID: comment.parentID)
-
         }
 
         if let post = comment.post as? ReaderPost {
@@ -288,7 +287,6 @@ public class CommentDetailViewController: UIViewController, NoResultsViewHost {
                                      image: imageName,
                                      accessoryView: accessoryView)
     }
-
 }
 
 // MARK: - Private Helpers
@@ -511,11 +509,9 @@ private extension CommentDetailViewController {
             ContextManager.shared.saveContextAndWait(context)
 
             self.updateReplyIndicator()
-
         } failure: { error in
             DDLogError("Failed fetching latest comment reply ID: \(String(describing: error))")
         }
-
     }
 
     func updateReplyIndicator() {
@@ -869,7 +865,6 @@ private extension CommentDetailViewController {
         static let deleteFail = NSLocalizedString("Error deleting comment.", comment: "Message displayed when deleting a comment fails.")
         static let next = NSLocalizedString("Next", comment: "Next action on comment moderation snackbar.")
     }
-
 }
 
 // MARK: - UITableView Methods
@@ -989,7 +984,6 @@ extension CommentDetailViewController: UITableViewDelegate, UITableViewDataSourc
                 break
             }
         }
-
     }
 }
 

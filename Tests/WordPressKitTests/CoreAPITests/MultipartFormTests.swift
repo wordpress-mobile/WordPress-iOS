@@ -123,7 +123,6 @@ class MutliparFormDataTests: XCTestCase {
         // Reminder: Check the multipart form file before updating this assertion
         XCTAssertTrue(SHA256.hash(data: formData).description.contains("2cedb35673a6982453a6e8e5ca901feabf92250630cdfabb961a03467f28bc8e"))
     }
-
 }
 
 extension Either<Data, URL> {

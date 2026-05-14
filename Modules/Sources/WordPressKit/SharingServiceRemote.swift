@@ -50,7 +50,6 @@ open class SharingServiceRemote: ServiceRemoteWordPressComREST {
             }
 
             success?(self.remotePublicizeServicesFromDictionary(responseDict))
-
         } failure: { error, _ in
             failure?(error as NSError)
         }

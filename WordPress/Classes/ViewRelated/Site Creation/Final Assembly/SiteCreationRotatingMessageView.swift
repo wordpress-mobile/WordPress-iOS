@@ -158,7 +158,6 @@ class SiteCreationRotatingMessageView: UIView {
             statusStackView.leadingAnchor.constraint(equalTo: leadingAnchor, constant: Margins.horizontalMargin),
             statusStackView.trailingAnchor.constraint(equalTo: trailingAnchor, constant: Margins.horizontalMargin),
             statusStackView.bottomAnchor.constraint(equalTo: bottomAnchor, constant: Margins.verticalMargin),
-
         ])
     }
 

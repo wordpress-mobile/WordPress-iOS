@@ -164,5 +164,4 @@ class EditPageViewController: UIViewController {
             self?.show(replacement)
         }
     }
-
 }

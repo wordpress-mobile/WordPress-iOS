@@ -65,5 +65,4 @@ extension StatsSearchTermTimeIntervalData: StatsTimeIntervalData {
         self.otherSearchTermsCount = otherSearchTerms
         self.searchTerms = searchTerms
     }
-
 }

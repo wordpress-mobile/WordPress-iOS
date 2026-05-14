@@ -167,5 +167,4 @@ class JetpackBackupServiceRemoteTests: RemoteTestCase, RESTTestable {
 
         waitForExpectations(timeout: timeout, handler: nil)
     }
-
 }

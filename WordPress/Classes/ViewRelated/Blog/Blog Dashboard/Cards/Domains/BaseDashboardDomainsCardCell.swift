@@ -134,7 +134,6 @@ struct DashboardDomainsCardViewModel {
             self.source = source
             self.accessibilityIdentifier = accessibilityIdentifier
         }
-
     }
 
     let strings: DashboardDomainsCardViewModel.Strings

@@ -92,5 +92,4 @@ public extension NSManagedObjectContext {
             throw error
         }
     }
-
 }

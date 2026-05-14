@@ -89,7 +89,6 @@ extension PostService {
 
         return [LikeUser]()
     }
-
 }
 
 private extension PostService {
@@ -132,5 +131,4 @@ private extension PostService {
             DDLogError("Error fetching post Like Users: \(error)")
         }
     }
-
 }

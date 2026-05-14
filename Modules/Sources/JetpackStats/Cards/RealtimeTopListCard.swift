@@ -120,7 +120,6 @@ struct RealtimeTopListCard: View {
         )
         return TopListResponse(items: chartData.items)
     }
-
 }
 
 // MARK: - Preview

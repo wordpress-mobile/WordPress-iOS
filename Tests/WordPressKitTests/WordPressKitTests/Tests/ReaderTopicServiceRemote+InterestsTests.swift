@@ -81,5 +81,4 @@ class ReaderTopicServiceRemoteInterestsTests: RemoteTestCase, RESTTestable {
             "https://public-api.wordpress.com/rest/v1.2/read/tags/foo/posts"
         )
     }
-
 }

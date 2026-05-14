@@ -397,7 +397,6 @@ extension LoginViewController {
         static let ipadPortrait: CGFloat = 0.1667
         static let ipadLandscape: CGFloat = 0.25
     }
-
 }
 
 // MARK: - Social Sign In Handling
@@ -466,7 +465,6 @@ extension LoginViewController {
         vc.loginFields = loginFields
         navigationController?.pushViewController(vc, animated: true)
     }
-
 }
 
 // MARK: - LoginSocialError delegate methods
@@ -538,5 +536,4 @@ extension LoginViewController: LoginSocialErrorViewControllerDelegate {
 
         navigationController?.pushViewController(vc, animated: true)
     }
-
 }

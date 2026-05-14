@@ -122,7 +122,6 @@ struct CollectionViewContainerRow<CollectionViewCellType: UICollectionViewCell, 
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         collectionCellSeletectedBlock(dataSourceItems[indexPath.item])
     }
-
 }
 
 class CollectionViewContainerCell: UITableViewCell {
@@ -235,5 +234,4 @@ class CollectionViewContainerCell: UITableViewCell {
         static var spacing: CGFloat = 18
         static var labelVerticalSpacing: CGFloat = 8
     }
-
 }

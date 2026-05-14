@@ -12,7 +12,6 @@ protocol ReaderCardServiceRemote {
                           count: Int?,
                           success: @escaping ([RemoteReaderCard], String?) -> Void,
                           failure: @escaping (Error) -> Void)
-
 }
 
 extension ReaderPostServiceRemote: ReaderCardServiceRemote { }

@@ -61,5 +61,4 @@ class RemotePersonTests: XCTestCase {
         // Then
         XCTAssertNil(follower)
     }
-
 }

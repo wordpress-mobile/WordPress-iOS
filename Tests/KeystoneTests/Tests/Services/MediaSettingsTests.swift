@@ -51,7 +51,6 @@ class MediaSettingsTests: XCTestCase {
 
         settings.maxImageSizeSetting = highValue
         XCTAssertEqual(settings.imageSizeForUpload, Int.max)
-
     }
 
     // MARK: - Values based on image optimization

@@ -63,5 +63,4 @@ final class NotificationContentRangeFactoryTests: XCTestCase {
     private func mockBlockQuoteRange() throws -> JSONObject {
         return try JSONObject(fromFileNamed: "notifications-blockquote-range.json")
     }
-
 }

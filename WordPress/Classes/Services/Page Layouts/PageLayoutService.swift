@@ -77,7 +77,6 @@ class PageLayoutService {
 
     // Return "true" or "false" for isBeta that gets passed into the endpoint.
     private static let isBeta = String(BuildConfiguration.current.isInternal)
-
 }
 
 extension PageLayoutService {

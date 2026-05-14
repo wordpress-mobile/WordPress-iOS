@@ -75,5 +75,4 @@ class HTTPHeaderValueParserTests: XCTestCase {
         XCTAssertEqual(response?.value(forHTTPHeaderField: "Link", withoutParameters: true), "https://site.com/wp-json")
         XCTAssertEqual(response?.value(forHTTPHeaderField: "Content-Type", withoutParameters: true), "text/html")
     }
-
 }

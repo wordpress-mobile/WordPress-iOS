@@ -225,7 +225,6 @@ class CustomPostEditorService {
             .modified
         return lastModified != post.modified
     }
-
 }
 
 extension CustomPostEditorService {

@@ -23,7 +23,6 @@ class KeychainUtilsTests: XCTestCase {
         let sharedPassword = try? SFHFKeychainUtilsMock.getPasswordForUsername(username, andServiceName: service, accessGroup: sharedGroup)
         XCTAssertEqual(sharedPassword, password)
     }
-
 }
 
 // MARK: - SFHFKeychainUtilsMock

@@ -71,7 +71,6 @@ class PluginListViewModel: Observable {
                     return .selective(oldPlugins.differentIndices(newPlugins))
 
                 default: return.replace
-
                 }
             default:
                 return .replace
@@ -148,7 +147,6 @@ class PluginListViewModel: Observable {
         default:
             return nil
         }
-
     }
 
     func onStateChange(_ handler: @escaping (StateChange) -> Void) -> Receipt {
@@ -323,5 +321,4 @@ class PluginListViewModel: Observable {
         static let noConnectionTitle = NSLocalizedString("No connection", comment: "Title for the error view when there's no connection")
         static let noConnectionSubtitle = NSLocalizedString("An active internet connection is required to view plugins", comment: "Error message shown when trying to view the Plugins feature and there is no internet connection.")
     }
-
 }

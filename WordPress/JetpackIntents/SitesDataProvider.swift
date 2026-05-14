@@ -53,7 +53,6 @@ class SitesDataProvider {
             }
 
             return firstTitle < secondTitle
-
         })
     }
 

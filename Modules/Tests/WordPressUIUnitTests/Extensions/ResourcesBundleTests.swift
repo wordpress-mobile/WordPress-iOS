@@ -13,5 +13,4 @@ class ResourcesBundleTests: XCTestCase {
         let storyboard = UIStoryboard(name: "FancyAlerts", bundle: .wordPressUIBundle)
         XCTAssertNotNil(storyboard.instantiateInitialViewController())
     }
-
 }

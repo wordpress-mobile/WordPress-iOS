@@ -1297,7 +1297,6 @@ private extension ReaderDetailViewController {
         static let errorLoadingTitle = NSLocalizedString("Error Loading Post", comment: "Text displayed when load post fails.")
         static let errorLoadingPostURLButtonTitle = NSLocalizedString("Open in browser", comment: "Button title to load a post in an in-app web view")
     }
-
 }
 
 // MARK: - Navigation Bar Configuration

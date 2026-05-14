@@ -48,11 +48,9 @@ class AztecAttachmentDelegate: TextViewAttachmentDelegate {
     }
 
     func textView(_ textView: TextView, selected attachment: NSTextAttachment, atPosition position: CGPoint) {
-
     }
 
     func textView(_ textView: TextView, deselected attachment: NSTextAttachment, atPosition position: CGPoint) {
-
     }
 
     func fetchPosterImageFor(videoAttachment: VideoAttachment, onSuccess: @escaping (UIImage) -> (), onFailure: @escaping () -> ()) {

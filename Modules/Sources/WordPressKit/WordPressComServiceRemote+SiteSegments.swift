@@ -57,7 +57,6 @@ extension SiteSegment: Decodable {
         }
 
         mobile = try values.decode(Bool.self, forKey: .mobile)
-
     }
 }
 

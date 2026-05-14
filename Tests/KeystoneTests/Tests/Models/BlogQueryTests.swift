@@ -37,5 +37,4 @@ class BlogQueryTests: CoreDataTestCase {
     func testQueryCombinations() {
         XCTAssertEqual(BlogQuery().hostedByWPCom(false).count(in: mainContext), 1)
     }
-
 }

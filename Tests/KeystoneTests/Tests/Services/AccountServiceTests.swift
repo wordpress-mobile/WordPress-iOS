@@ -270,5 +270,4 @@ class AccountServiceTests: CoreDataTestCase {
         XCTAssertEqual(account.username, "jimthetester")
         XCTAssertEqual(account.email, "jim@wptestaccounts.com")
     }
-
 }

@@ -36,5 +36,4 @@ public final class PulseNetworkLogger: NSObject, URLSessionTaskDelegate, URLSess
     public func urlSession(_ session: URLSession, dataTask: URLSessionDataTask, didReceive data: Data) {
         logger?.logDataTask(dataTask, didReceive: data)
     }
-
 }

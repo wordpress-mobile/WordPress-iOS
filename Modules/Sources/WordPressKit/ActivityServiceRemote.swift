@@ -176,7 +176,6 @@ open class ActivityServiceRemote: ServiceRemoteWordPressComREST {
                                     return
                                 })
     }
-
 }
 
 private extension ActivityServiceRemote {
@@ -204,7 +203,6 @@ private extension ActivityServiceRemote {
             let activities = try decoder.decode([Activity].self, from: data)
 
             return (activities, totalItems)
-
         } catch {
             throw ActivityServiceRemote.ResponseError.decodingFailure
         }
@@ -229,5 +227,4 @@ private extension ActivityServiceRemote {
 
         return groups
     }
-
 }

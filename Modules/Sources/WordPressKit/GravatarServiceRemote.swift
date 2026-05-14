@@ -62,7 +62,6 @@ open class GravatarServiceRemote {
                     success(profile)
                 }
                 return
-
             } catch {
                 failure(error)
                 return

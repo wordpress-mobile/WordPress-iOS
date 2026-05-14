@@ -10,5 +10,4 @@ extension Dictionary where Key == UserAvatarSize, Value == WpResponseString {
 
         return URL(string: url)
     }
-
 }

@@ -49,7 +49,6 @@ open class UsersService {
             profile.username = remoteProfile.username
 
             onCompletion(profile)
-
         }, failure: { error in
             DDLogError("\(error.debugDescription)")
             onCompletion(nil)

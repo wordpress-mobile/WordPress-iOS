@@ -80,7 +80,6 @@ class PostStatsTableViewController: UITableViewController, StoryboardLoadable {
         tableHeaderView = cell
         return cell
     }
-
 }
 
 extension PostStatsTableViewController: StatsForegroundObservable {
@@ -194,7 +193,6 @@ private extension PostStatsTableViewController {
 
         tableHandler.diffableDataSource.apply(viewModel.tableViewSnapshot(), animatingDifferences: false)
     }
-
 }
 
 // MARK: - PostStatsDelegate Methods
@@ -223,7 +221,6 @@ extension PostStatsTableViewController: PostStatsDelegate {
         detailTableViewController.configure(statSection: statSection, postID: postID)
         navigationController?.pushViewController(detailTableViewController, animated: true)
     }
-
 }
 
 // MARK: - StatsBarChartViewDelegate

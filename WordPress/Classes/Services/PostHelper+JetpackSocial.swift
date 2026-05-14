@@ -107,5 +107,4 @@ extension PostHelper {
             return entry.merging([Keys.publicizeKeyKey: metadataKeyValue]) { _, newValue in newValue }
         }
     }
-
 }

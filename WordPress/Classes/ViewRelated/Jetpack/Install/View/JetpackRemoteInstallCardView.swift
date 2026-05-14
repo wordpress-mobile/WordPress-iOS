@@ -131,9 +131,7 @@ class JetpackRemoteInstallCardView: UIView {
         static let hideThis = NSLocalizedString("jetpackinstallcard.menu.hide",
                                                  value: "Hide this",
                                                  comment: "Title for a menu action in the context menu on the Jetpack install card.")
-
     }
-
 }
 
 // MARK: - JetpackRemoteInstallCardViewModel
@@ -177,5 +175,4 @@ struct JetpackRemoteInstallCardViewModel {
                                                        value: "This site is using individual Jetpack plugins, which don’t support all features of the app yet. Please install the full Jetpack plugin.",
                                                        comment: "Text displayed in the Jetpack install card on the Home screen and Menu screen when a user has multiple installed individual Jetpack plugins but not the full plugin.")
     }
-
 }

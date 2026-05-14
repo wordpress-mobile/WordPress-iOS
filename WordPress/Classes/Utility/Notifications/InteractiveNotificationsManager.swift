@@ -261,7 +261,6 @@ final class InteractiveNotificationsManager: NSObject {
                 if identifier == UNNotificationDefaultActionIdentifier {
                     WPAnalytics.track(.promptsNotificationTapped)
                     answerPromptBlock()
-
                 } else if identifier == UNNotificationDismissActionIdentifier {
                     WPAnalytics.track(.promptsNotificationDismissed)
                     // no-op

@@ -53,5 +53,4 @@ class PushAuthenticationServiceRemoteTests: XCTestCase {
         XCTAssertTrue(mockRemoteApi.postMethodCalled, "Method was not called")
         XCTAssertTrue(failureBlockCalled, "Failure block not called")
     }
-
 }

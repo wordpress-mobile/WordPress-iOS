@@ -115,7 +115,6 @@ class CoreDataIterativeMigrator {
                     description = description + " Original Error: \(error)"
                     throw CoreDataIterativeMigrator.error(with: IterativeMigratorErrorCodes.failedOnCustomMappingModel, description: description)
                 }
-
             }
 
             // Migrate the model to the next step

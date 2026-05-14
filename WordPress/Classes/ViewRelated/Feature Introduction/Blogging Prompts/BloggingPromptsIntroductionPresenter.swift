@@ -150,5 +150,4 @@ private extension BloggingPromptsIntroductionPresenter {
         let message = NSLocalizedString("Error loading prompt", comment: "Text displayed when there is a failure loading a blogging prompt.")
         presentingViewController?.displayNotice(title: message)
     }
-
 }

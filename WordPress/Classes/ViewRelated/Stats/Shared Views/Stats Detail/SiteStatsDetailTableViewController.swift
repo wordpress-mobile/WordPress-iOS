@@ -127,7 +127,6 @@ class SiteStatsDetailTableViewController: UITableViewController, StoryboardLoada
 
         return UITableView.automaticDimension
     }
-
 }
 
 extension SiteStatsDetailTableViewController: StatsForegroundObservable {
@@ -260,7 +259,6 @@ private extension SiteStatsDetailTableViewController {
 
         initViewModel()
     }
-
 }
 
 // MARK: - SiteStatsDetailsDelegate Methods
@@ -375,5 +373,4 @@ extension SiteStatsDetailTableViewController: SiteStatsTableHeaderDelegate {
         viewModel?.updateSelectedDate(newDate)
         refreshTableView()
     }
-
 }

@@ -23,5 +23,4 @@ class AnnouncementServiceRemoteTests: XCTestCase {
 
         try XCTAssertEqual(XCTUnwrap(result).get().count, 0)
     }
-
 }

@@ -71,7 +71,6 @@ public class AutomatedTransferService: ServiceRemoteWordPressComREST {
         }) { error, _ in
             failure(error)
         }
-
     }
 
     public func fetchAutomatedTransferStatus(siteID: Int,
@@ -99,7 +98,6 @@ public class AutomatedTransferService: ServiceRemoteWordPressComREST {
         }) { error, _ in
             failure(error)
         }
-
     }
 
     private func eligibilityError(from response: [String: AnyObject]) -> AutomatedTransferEligibilityError {
@@ -133,5 +131,4 @@ public class AutomatedTransferService: ServiceRemoteWordPressComREST {
             return .unknown
         }
     }
-
 }

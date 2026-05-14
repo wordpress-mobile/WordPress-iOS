@@ -138,7 +138,6 @@ private extension BloggingPromptsViewController {
         static let emptyTitle = NSLocalizedString("No prompts yet", comment: "Title displayed when there are no blogging prompts to display.")
         static let imageName = "wp-illustration-empty-results"
     }
-
 }
 
 // MARK: - Table Methods
@@ -173,7 +172,6 @@ extension BloggingPromptsViewController: UITableViewDataSource, UITableViewDeleg
         editor.entryPoint = .bloggingPromptsListView
         present(editor, animated: true)
     }
-
 }
 
 // MARK: - Filter Tab Bar Support
@@ -212,7 +210,6 @@ private extension BloggingPromptsViewController {
         // - track selected filter changed
         // - refresh view for selected filter
     }
-
 }
 
 // MARK: - StoryboardLoadable

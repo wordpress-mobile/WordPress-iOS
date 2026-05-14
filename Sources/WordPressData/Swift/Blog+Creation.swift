@@ -27,5 +27,4 @@ extension Blog {
         settings = BlogSettings(context: managedObjectContext!)
         settings?.blog = self
     }
-
 }

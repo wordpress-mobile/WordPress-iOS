@@ -67,7 +67,6 @@ final class DashboardStatsNudgeView: UIView {
         static let iconBounds = CGRect(x: 0, y: -2, width: 16, height: 16)
         static let margins = UIEdgeInsets(top: 0, left: 16, bottom: 8, right: 16)
     }
-
 }
 
 extension DashboardStatsNudgeView: Accessible {

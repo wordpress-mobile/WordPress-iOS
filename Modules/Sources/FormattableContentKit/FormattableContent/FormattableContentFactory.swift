@@ -1,6 +1,5 @@
 
 public protocol FormattableContentFactory {
-
 }
 
 extension FormattableContentFactory {

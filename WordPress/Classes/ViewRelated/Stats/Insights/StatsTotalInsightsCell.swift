@@ -272,7 +272,6 @@ class StatsTotalInsightsCell: StatsBaseCell {
             // Setting this here appears to help with updating the layout
             guideViewLabel.lineBreakMode = .byWordWrapping
             invalidateIntrinsicContentSize()
-
         } else if guideView.superview != nil {
             guideView.removeFromSuperview()
         }

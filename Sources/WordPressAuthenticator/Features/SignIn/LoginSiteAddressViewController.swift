@@ -161,7 +161,6 @@ class LoginSiteAddressViewController: LoginViewController, NUXKeyboardResponder 
             }
             // Let's try to grab site info in preparation for the next screen.
             self?.fetchSiteInfo()
-
         }, failure: { [weak self] error in
             guard let error, let self else {
                 return
@@ -175,7 +174,6 @@ class LoginSiteAddressViewController: LoginViewController, NUXKeyboardResponder 
 
             if let xmlrpcValidatorError = err as? WordPressOrgXMLRPCValidatorError {
                 self.displayError(message: xmlrpcValidatorError.localizedDescription, moveVoiceOverFocus: true)
-
             } else if (err.domain == NSURLErrorDomain && err.code == NSURLErrorCannotFindHost) ||
                 (err.domain == NSURLErrorDomain && err.code == NSURLErrorNetworkConnectionLost) {
                 // NSURLErrorNetworkConnectionLost can be returned when an invalid URL is entered.
@@ -183,7 +181,6 @@ class LoginSiteAddressViewController: LoginViewController, NUXKeyboardResponder 
                     "The site at this address is not a WordPress site. For us to connect to it, the site must use WordPress.",
                     comment: "Error message shown a URL does not point to an existing site.")
                 self.displayError(message: msg, moveVoiceOverFocus: true)
-
             } else {
                 self.displayError(error, sourceTag: self.sourceTag)
             }

@@ -152,7 +152,6 @@ enum PluginDirectoryEntryState: Codable {
 
         self = .unknown
     }
-
 }
 
 struct PluginStoreState {

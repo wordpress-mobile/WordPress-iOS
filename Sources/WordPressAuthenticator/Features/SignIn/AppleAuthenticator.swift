@@ -174,7 +174,6 @@ private extension AppleAuthenticator {
         loginFields.emailAddress = email
         loginFields.username = email
     }
-
 }
 
 extension AppleAuthenticator: ASAuthorizationControllerDelegate {
@@ -282,7 +281,6 @@ extension AppleAuthenticator {
                         self?.loginSuccessful(with: credentials)
                     }
                 }
-
             },
             failure: { [weak self] error in
                 SVProgressHUD.dismiss()

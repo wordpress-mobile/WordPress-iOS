@@ -16,5 +16,4 @@ extension NSManagedObject {
         }
         return model
     }
-
 }

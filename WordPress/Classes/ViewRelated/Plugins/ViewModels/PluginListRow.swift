@@ -34,5 +34,4 @@ struct PluginListRow: ImmuTableRow {
         cell.selectionStyle = .default
         cell.pluginAccessoryView = accessoryView
     }
-
 }

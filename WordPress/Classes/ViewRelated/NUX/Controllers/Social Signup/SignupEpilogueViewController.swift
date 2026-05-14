@@ -89,7 +89,6 @@ class SignupEpilogueViewController: UIViewController {
             navigationItem.backBarButtonItem = UIBarButtonItem(title: String(), style: .plain, target: nil, action: nil)
         }
     }
-
 }
 
 // MARK: - SignupEpilogueTableViewControllerDataSource
@@ -269,7 +268,6 @@ private extension SignupEpilogueViewController {
 
                 finished(success, error)
             }
-
         } catch let err {
             finished(false, err)
             return
@@ -335,7 +333,6 @@ private extension SignupEpilogueViewController {
         static let changingPassword = NSLocalizedString("Changing password", comment: "Shown while the app waits for the password changing web service to return.")
         static let changePasswordGenericError = NSLocalizedString("There was an error changing the password", comment: "Text displayed when there is a failure changing the password.")
     }
-
 }
 
 extension SignupEpilogueViewController: SignupUsernameViewControllerDelegate {

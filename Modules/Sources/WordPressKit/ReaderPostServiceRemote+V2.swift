@@ -154,5 +154,4 @@ extension ReaderPostServiceRemote {
     private enum MarkSeenError: Error {
         case failed
     }
-
 }

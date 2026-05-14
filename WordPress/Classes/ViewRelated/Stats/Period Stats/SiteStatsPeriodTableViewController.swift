@@ -143,7 +143,6 @@ final class SiteStatsPeriodTableViewController: SiteStatsBaseTableViewController
         addViewModelListeners()
         viewModel.refreshTrafficOverviewData(withDate: datePickerViewModel.date, forPeriod: datePickerViewModel.period)
     }
-
 }
 
 // MARK: - Private Extension

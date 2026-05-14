@@ -193,7 +193,6 @@ struct BlogJetpackSettingsService {
         let remote = BlogJetpackSettingsServiceRemote(wordPressComRestApi: remoteAPI)
         remote.disconnectJetpackFromSite(blogDotComId, success: success, failure: failure)
     }
-
 }
 
 private extension BlogJetpackSettingsService {

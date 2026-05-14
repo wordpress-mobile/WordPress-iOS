@@ -369,7 +369,6 @@ class NotificationsViewController: UIViewController, UITableViewDataSource, UITa
         if !splitViewControllerIsHorizontallyCompact {
             syncNotificationsWithModeratedComments()
         }
-
     }
 
     func tableView(_ tableView: UITableView, leadingSwipeActionsConfigurationForRowAt indexPath: IndexPath) -> UISwipeActionsConfiguration? {
@@ -1031,7 +1030,6 @@ private extension NotificationsViewController {
             tableView(tableView, didSelectRowAt: indexPath)
         }
     }
-
 }
 
 // MARK: - Marking as Read

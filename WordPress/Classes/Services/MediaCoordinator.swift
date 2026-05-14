@@ -707,7 +707,6 @@ class MediaCoordinator: NSObject {
                 )
             }
         })
-
     }
 
     /// This method checks the status of all media objects and updates them to the correct status if needed.
@@ -733,7 +732,6 @@ extension MediaCoordinator: MediaProgressCoordinatorDelegate {
     }
 
     func mediaProgressCoordinatorDidStartUploading(_ mediaProgressCoordinator: MediaProgressCoordinator) {
-
     }
 
     func mediaProgressCoordinatorDidFinishUpload(_ mediaProgressCoordinator: MediaProgressCoordinator) {
@@ -786,7 +784,6 @@ extension MediaCoordinator {
 
             self.cancelUploadAndDeleteMedia(media)
             WordPressAppDelegate.crashLogging?.logMessage("Deleting a media object that's failed to upload because of a missing local file. \(mediaError)")
-
         }, for: nil)
     }
 

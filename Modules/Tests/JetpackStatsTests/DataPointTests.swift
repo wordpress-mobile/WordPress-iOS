@@ -369,5 +369,4 @@ struct DataPointTests {
         #expect(mappedData[6].date == Date("2025-01-26T00:00:00-03:00"))
         #expect(mappedData[6].value == 70)
     }
-
 }

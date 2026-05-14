@@ -1003,7 +1003,6 @@ private extension SiteStatsDetailsViewModel {
                                         hideIndentedSeparator: true,
                                         hideFullSeparator: hideFullSeparator,
                                         showImage: showImage)
-
     }
 
     func parentRow(rowData: StatsTotalRowData, hideIndentedSeparator: Bool, hideFullSeparator: Bool, expanded: Bool) -> DetailExpandableRow {

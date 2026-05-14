@@ -554,7 +554,6 @@ private extension ZendeskUtils {
             getUserInformationFrom(jetpackState: jetpackState)
             completion()
             return
-
         }
 
         // 2b. self-hosted site
@@ -1158,7 +1157,6 @@ private extension ZendeskUtils {
         static let namePlaceholder = NSLocalizedString("Name", comment: "Name text field placeholder")
         static let nameAccessibilityLabel = NSLocalizedString("Name", comment: "Accessibility label for the Email text field.")
     }
-
 }
 
 // MARK: - UITextFieldDelegate
@@ -1183,7 +1181,6 @@ extension ZendeskUtils: UITextFieldDelegate {
 
         return EmailFormatValidator.validate(string: email)
     }
-
 }
 
 extension ZendeskUtils {

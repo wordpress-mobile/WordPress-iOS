@@ -111,5 +111,4 @@ class SelfHostedPluginManagementClientTests: XCTestCase {
 
         wait(for: [success], timeout: 0.3)
     }
-
 }

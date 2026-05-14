@@ -16,7 +16,6 @@ class BloggingPromptsFeatureDescriptionView: UIView, NibLoadable {
         super.awakeFromNib()
         configureView()
     }
-
 }
 
 private extension BloggingPromptsFeatureDescriptionView {

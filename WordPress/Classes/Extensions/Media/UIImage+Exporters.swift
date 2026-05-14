@@ -11,5 +11,4 @@ extension UIImage: ExportableAsset {
             return .image
         }
     }
-
 }

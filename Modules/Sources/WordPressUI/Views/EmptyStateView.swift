@@ -143,7 +143,6 @@ extension EmptyStateView where Label == SwiftUI.Label<Text, Image>, Description 
         Text("Tags created here can be easily added to new posts")
     } actions: {
         Button {
-
         } label: {
             Text("Create Tag")
         }

@@ -118,5 +118,4 @@ class GutenbergGalleryUploadProcessorTests: XCTestCase {
             XCTAssertEqual(parser.html(), postResultContent, "Post content should be updated correctly")
         }
     }
-
 }

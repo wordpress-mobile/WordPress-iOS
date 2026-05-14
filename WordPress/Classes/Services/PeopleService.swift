@@ -474,7 +474,6 @@ extension PeopleService {
             invite.role = remoteInvite.role
         }
     }
-
 }
 
 // MARK: - Private Methods
@@ -509,7 +508,6 @@ private extension PeopleService {
                 }
             }
         }, on: .main)
-
     }
 
     /// Updates the Core Data collection of users, to match with the array of People received.

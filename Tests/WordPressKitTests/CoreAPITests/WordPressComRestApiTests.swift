@@ -356,7 +356,6 @@ class WordPressComRestApiTests: XCTestCase {
         progress1?.cancel()
         api.multipartPOST(wordPressMediaNewEndpointPath, parameters: nil, fileParts: [filePart], success: { (_: AnyObject, _: HTTPURLResponse?) in
             expect.fulfill()
-
             }, failure: { _, _ in
                 expect.fulfill()
                 XCTFail("This call should succesful")

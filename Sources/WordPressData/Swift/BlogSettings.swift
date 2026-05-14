@@ -231,5 +231,4 @@ open class BlogSettings: NSManagedObject {
     /// Indicates whether to force or not two-step authentication when users log in via WordPress.com
     ///
     @NSManaged public var jetpackSSORequireTwoStepAuthentication: Bool
-
 }

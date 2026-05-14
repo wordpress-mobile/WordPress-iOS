@@ -40,5 +40,4 @@ class JetpackRestoreService {
     func getRewindStatus(for site: JetpackSiteRef, success: @escaping (RewindStatus) -> Void, failure: @escaping (Error) -> Void) {
         service.getRewindStatus(site.siteID, success: success, failure: failure)
     }
-
 }

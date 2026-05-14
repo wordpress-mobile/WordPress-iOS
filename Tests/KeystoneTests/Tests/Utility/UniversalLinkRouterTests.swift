@@ -14,5 +14,4 @@ struct UniversalLinkRouterTests {
         let router = UniversalLinkRouter.shared
         #expect(router.canHandle(url: URL(string: url)!))
     }
-
 }

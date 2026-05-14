@@ -51,7 +51,6 @@ public class PeopleServiceRemote: ServiceRemoteWordPressComREST {
 
             let hasMore = self.peopleFoundFromResponse(response) > (offset + people.count)
             success(people, hasMore)
-
         }, failure: { error, _ in
             failure(error)
         })
@@ -92,7 +91,6 @@ public class PeopleServiceRemote: ServiceRemoteWordPressComREST {
 
             let hasMore = self.peopleFoundFromResponse(response) > (offset + people.count)
             success(people, hasMore)
-
         }, failure: { error, _ in
             failure(error)
         })
@@ -169,7 +167,6 @@ public class PeopleServiceRemote: ServiceRemoteWordPressComREST {
 
             let hasMore = self.peopleFoundFromResponse(response) > (offset + people.count)
             success(people, hasMore)
-
         }, failure: { error, _ in
             failure(error)
         })
@@ -369,7 +366,6 @@ public class PeopleServiceRemote: ServiceRemoteWordPressComREST {
             }
 
             success()
-
         }, failure: { error, _ in
             failure(error)
         })
@@ -412,7 +408,6 @@ public class PeopleServiceRemote: ServiceRemoteWordPressComREST {
             }
 
             success()
-
         }, failure: { error, _ in
             failure(error)
         })
@@ -449,7 +444,6 @@ public class PeopleServiceRemote: ServiceRemoteWordPressComREST {
                 }
             }
             success(results)
-
         }, failure: { error, _ in
             failure(error)
         })
@@ -479,11 +473,9 @@ public class PeopleServiceRemote: ServiceRemoteWordPressComREST {
                 results.append(RemoteInviteLink(dict: dict))
             }
             success(results)
-
         }, failure: { error, _ in
             failure(error)
         })
-
     }
 
     /// Disable any existing invite links.
@@ -502,12 +494,10 @@ public class PeopleServiceRemote: ServiceRemoteWordPressComREST {
         wordPressComRESTAPI.post(path, parameters: nil, success: { responseObject, _ in
             let deletedKeys = responseObject as? [String] ?? [String]()
             success(deletedKeys)
-
         }, failure: { error, _ in
             failure(error)
         })
     }
-
 }
 
 /// Encapsulates PeopleServiceRemote Private Methods

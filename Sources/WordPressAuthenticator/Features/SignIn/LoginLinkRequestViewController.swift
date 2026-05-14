@@ -127,7 +127,6 @@ class LoginLinkRequestViewController: LoginViewController {
                                           success: { [weak self] in
                                             self?.didRequestAuthenticationLink()
                                             self?.configureLoading(false)
-
             }, failure: { [weak self] (error: Error) in
                 WordPressAuthenticator.track(.loginMagicLinkFailed)
                 WordPressAuthenticator.track(.loginFailed, error: error)

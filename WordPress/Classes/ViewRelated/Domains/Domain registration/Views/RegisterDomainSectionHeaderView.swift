@@ -27,5 +27,4 @@ class RegisterDomainSectionHeaderView: UITableViewHeaderFooterView, NibLoadable 
     func setDescription(_ description: String?) {
         descriptionLabel.text = description
     }
-
 }

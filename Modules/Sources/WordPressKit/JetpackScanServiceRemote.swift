@@ -46,7 +46,6 @@ public class JetpackScanServiceRemote: ServiceRemoteWordPressComREST {
             } catch {
                 failure(error)
             }
-
         }, failure: { error, _ in
             failure(error)
         })

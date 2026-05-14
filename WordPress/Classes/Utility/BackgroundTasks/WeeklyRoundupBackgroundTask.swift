@@ -284,7 +284,6 @@ private class WeeklyRoundupDataProvider {
             self.isAutomatticP2 = blog.isAutomatticP2
         }
     }
-
 }
 
 class WeeklyRoundupBackgroundTask: BackgroundTask {

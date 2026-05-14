@@ -27,7 +27,6 @@ public struct StatsContext: Sendable {
             var calendar = Calendar.current
             calendar.timeZone = timeZone
             return calendar
-
         }()
         self.service = service
         self.formatters = StatsFormatters(timeZone: timeZone)

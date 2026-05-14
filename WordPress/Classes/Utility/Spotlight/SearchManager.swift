@@ -40,7 +40,6 @@ import WordPressData
             }
             DDLogError("Could not index post. Error: \(error.localizedDescription)")
         })
-
     }
 
     // MARK: - Removal

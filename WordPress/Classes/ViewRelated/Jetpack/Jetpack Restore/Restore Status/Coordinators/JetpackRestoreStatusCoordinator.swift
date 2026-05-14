@@ -71,7 +71,6 @@ class JetpackRestoreStatusCoordinator {
             case .fail:
                 self.view.showRestoreFailed()
             }
-
         }, failure: { [weak self] error in
             DDLogError("Error fetching rewind status object: \(error.localizedDescription)")
 
@@ -88,7 +87,6 @@ class JetpackRestoreStatusCoordinator {
             self.retryCount += 1
         })
     }
-
 }
 
 extension JetpackRestoreStatusCoordinator {

@@ -63,7 +63,6 @@ public class JetpackRemoteInstallTableViewCell: UITableViewCell {
         contentView.addSubview(cardView)
         contentView.pinSubviewToAllEdges(cardView, priority: .defaultHigh)
     }
-
 }
 
 // MARK: - BlogDetailsViewController view model
@@ -81,5 +80,4 @@ extension BlogDetailsViewController: JetpackRemoteInstallDelegate {
     func jetpackRemoteInstallWebviewFallback() {
         // No op
     }
-
 }

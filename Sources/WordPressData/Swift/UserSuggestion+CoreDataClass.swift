@@ -28,5 +28,4 @@ public class UserSuggestion: NSManagedObject {
             imageURL = nil
         }
     }
-
 }

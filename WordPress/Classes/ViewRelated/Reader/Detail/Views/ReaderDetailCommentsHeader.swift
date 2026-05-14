@@ -74,7 +74,6 @@ private extension ReaderDetailCommentsHeader {
     func configureView() {
         contentView.backgroundColor = .clear
         addBottomBorder(withColor: separatorColor)
-
     }
 
     func configureTitle() {
@@ -182,5 +181,4 @@ extension ReaderDetailCommentsHeader: ReaderCommentsFollowPresenterDelegate {
     func toggleNotificationComplete(success: Bool, post: ReaderPost) {
         self.post = post
     }
-
 }

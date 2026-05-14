@@ -51,7 +51,6 @@ struct JetpackSocialSettingsRemainingSharesView: View {
                                                      value: "Subscribe now to share more",
                                                      comment: "Title for the button to subscribe to Jetpack Social on the remaining shares view")
     }
-
 }
 
 struct JetpackSocialRemainingSharesViewModel {

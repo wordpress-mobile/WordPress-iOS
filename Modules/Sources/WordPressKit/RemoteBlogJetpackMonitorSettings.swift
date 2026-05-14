@@ -17,5 +17,4 @@ public struct RemoteBlogJetpackMonitorSettings {
         self.monitorEmailNotifications = monitorEmailNotifications
         self.monitorPushNotifications = monitorPushNotifications
     }
-
 }

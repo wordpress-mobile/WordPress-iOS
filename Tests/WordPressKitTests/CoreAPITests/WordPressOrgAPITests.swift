@@ -198,7 +198,6 @@ class WordPressOrgAPITests: XCTestCase {
         let _ = await api.get(path: "wp/v2/hello-world", parameters: ["foo": "bar"], type: AnyResponse.self)
         await fulfillment(of: [expectation], timeout: 0.1)
     }
-
 }
 
 private struct AnyResponse: Decodable {}

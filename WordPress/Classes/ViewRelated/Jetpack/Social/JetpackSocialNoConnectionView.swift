@@ -116,7 +116,6 @@ struct JetpackSocialNoConnectionViewModel {
         }
         self.icons = images
     }
-
 }
 
 // MARK: - Constants
@@ -136,5 +135,4 @@ private struct Constants {
     static let iconGroupAccessibilityLabel = NSLocalizedString("social.noconnection.icons.accessibility.label",
                                                                value: "Social media icons",
                                                                comment: "Accessibility label for the social media icons in the Jetpack Social no connection view")
-
 }

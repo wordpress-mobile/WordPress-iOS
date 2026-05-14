@@ -246,5 +246,4 @@ class DashboardCardTests: CoreDataTestCase {
         let activity = hasActivity ? FailableDecodable(value: BlogDashboardRemoteEntity.BlogDashboardActivity(current: currentActivity)) : nil
         return BlogDashboardRemoteEntity(posts: wrappedPosts, todaysStats: stats, pages: wrappedPages, activity: activity)
     }
-
 }

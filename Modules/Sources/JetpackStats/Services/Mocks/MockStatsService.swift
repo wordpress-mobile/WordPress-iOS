@@ -828,5 +828,4 @@ actor MockStatsService: ObservableObject, StatsServiceProtocol {
             }
         }
     }
-
 }

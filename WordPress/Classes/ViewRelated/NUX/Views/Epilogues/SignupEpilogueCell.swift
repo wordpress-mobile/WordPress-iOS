@@ -114,7 +114,6 @@ class SignupEpilogueCell: UITableViewCell, NibLoadable {
         // So for now we'll override it here.
         cellField.backgroundColor = .systemBackground
     }
-
 }
 
 extension SignupEpilogueCell: UITextFieldDelegate {
@@ -213,5 +212,4 @@ private extension SignupEpilogueCell {
             cellField.enablesReturnKeyAutomatically = true
         }
     }
-
 }

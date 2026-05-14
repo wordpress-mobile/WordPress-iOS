@@ -58,5 +58,4 @@ final class FormattableContentGroupTests: CoreDataTestCase {
     private func mockActivity() throws -> JSONObject {
         return try JSONObject(fromFileNamed: "activity-log-activity-content.json")
     }
-
 }

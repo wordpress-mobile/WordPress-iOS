@@ -97,7 +97,6 @@ class EditorMediaUtility {
                     success(image)
                 } catch {
                     failure(error)
-
                 }
             }
             return MediaUtilityTask { task.cancel() }

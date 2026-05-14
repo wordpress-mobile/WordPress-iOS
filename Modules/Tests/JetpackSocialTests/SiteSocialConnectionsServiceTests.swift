@@ -140,7 +140,6 @@ struct SiteSocialConnectionsServiceTests {
             Issue.record("Expected .network, got \(error)")
         }
     }
-
 }
 
 @MainActor

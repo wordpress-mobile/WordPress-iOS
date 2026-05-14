@@ -162,7 +162,6 @@ class StatsRemoteV2Tests: RemoteTestCase, RESTTestable {
         }
 
         waitForExpectations(timeout: timeout, handler: nil)
-
     }
 
     func testVideos() {
@@ -194,7 +193,6 @@ class StatsRemoteV2Tests: RemoteTestCase, RESTTestable {
         }
 
         waitForExpectations(timeout: timeout, handler: nil)
-
     }
 
     func testCountries() {
@@ -791,7 +789,6 @@ class StatsRemoteV2Tests: RemoteTestCase, RESTTestable {
         }
 
         waitForExpectations(timeout: timeout, handler: nil)
-
     }
 
     func testArchives() throws {

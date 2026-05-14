@@ -175,7 +175,6 @@ struct CheckmarkRow: ImmuTableRow {
         self.checked = checked
         self.action = action
     }
-
 }
 
 struct ActivityIndicatorRow: ImmuTableRow {
@@ -199,7 +198,6 @@ struct ActivityIndicatorRow: ImmuTableRow {
 
         WPStyleGuide.configureTableViewCell(cell)
     }
-
 }
 
 struct LinkRow: ImmuTableRow {

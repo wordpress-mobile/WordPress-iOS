@@ -33,7 +33,6 @@ class StatsLikesListViewController: UIViewController {
         configureTableView()
         WPAnalytics.track(.likeListOpened, properties: ["list_type": "post", "source": "stats_post_details"])
     }
-
 }
 
 private extension StatsLikesListViewController {
@@ -84,7 +83,6 @@ private extension StatsLikesListViewController {
         static let plural = NSLocalizedString("%1$d Likes",
                                               comment: "Plural format string for view title displaying the number of post likes. %1$d is the number of likes.")
     }
-
 }
 
 // MARK: - LikesListController Delegate

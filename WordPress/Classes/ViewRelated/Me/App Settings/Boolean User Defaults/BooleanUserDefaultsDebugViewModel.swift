@@ -164,7 +164,6 @@ final class BooleanUserDefaultsDebugViewModel: ObservableObject {
     }
 
     typealias Sections = [Section]
-
 }
 
 // MARK: - Constants

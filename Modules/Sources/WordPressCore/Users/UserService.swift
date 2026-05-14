@@ -70,7 +70,6 @@ public actor UserService: UserServiceProtocol {
     public func streamAll() async -> AsyncStream<Result<[DisplayUser], Error>> {
         await userDataStore.listStream(query: .all)
     }
-
 }
 
 private extension DisplayUser {

@@ -15,5 +15,4 @@ import Foundation
     public var classes: [String]?
     public var children: [RemoteMenuItem]?
     public weak var parentItem: RemoteMenuItem?
-
 }

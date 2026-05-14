@@ -388,5 +388,4 @@ class WordPressOrgXMLRPCApiTests: XCTestCase {
 
         XCTAssertEqual(progress.fractionCompleted, 1)
     }
-
 }

@@ -25,5 +25,4 @@ extension ReaderListTopic {
 
         return topic
     }
-
 }

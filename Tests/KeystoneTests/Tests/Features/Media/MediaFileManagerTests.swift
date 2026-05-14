@@ -80,7 +80,6 @@ class MediaFileManagerTests: XCTestCase {
 
             url = try fileManager.makeLocalMediaURL(withFilename: expected, fileExtension: nil)
             XCTAssertTrue(url.lastPathComponent == expected, "Error: local media url has unexpected filename: \(url)")
-
         } catch {
             XCTFail("Error creating local media URL: \(error)")
         }

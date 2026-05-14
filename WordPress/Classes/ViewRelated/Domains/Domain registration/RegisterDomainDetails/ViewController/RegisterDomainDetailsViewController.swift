@@ -183,7 +183,6 @@ class RegisterDomainDetailsViewController: UITableViewController {
             break
         }
     }
-
 }
 
 // MARK: - Actions
@@ -205,7 +204,6 @@ extension RegisterDomainDetailsViewController {
     @objc func handleTermsAndConditionsTap(_ sender: UITapGestureRecognizer) {
         UIApplication.shared.open(URL(string: WPAutomatticTermsOfServiceURL)!, options: [:], completionHandler: nil)
     }
-
 }
 
 // MARK: - InlineEditableNameValueCellDelegate

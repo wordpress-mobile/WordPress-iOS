@@ -4,5 +4,4 @@ import UIKit
 /// appearance as part of the sign in flow.
 ///
 public class NUXNavigationController: RotationAwareNavigationViewController {
-
 }

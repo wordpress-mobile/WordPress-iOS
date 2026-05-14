@@ -101,5 +101,4 @@ private extension StatsCellHeader {
         manageInsightImageView.isHidden = !show
         manageInsightButton.isHidden = !show
     }
-
 }

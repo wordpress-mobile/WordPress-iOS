@@ -77,7 +77,6 @@ class JetpackPluginOverlayViewModel: JetpackFullscreenOverlayViewModel {
         }
         coordinator?.navigateToLinkRoute(url: termsURL, source: Constants.webViewSource)
     }
-
 }
 
 // MARK: - Private Helpers

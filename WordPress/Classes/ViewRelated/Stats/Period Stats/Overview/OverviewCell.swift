@@ -157,7 +157,6 @@ class OverviewCell: UITableViewCell, NibLoadable {
         configureChartView()
         updateLabels()
     }
-
 }
 
 // MARK: - Private Extension
@@ -284,5 +283,4 @@ private extension OverviewCell {
             WPAppAnalytics.track(event, withProperties: properties)
         }
     }
-
 }

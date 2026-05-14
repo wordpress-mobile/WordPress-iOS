@@ -73,5 +73,4 @@ class WordPressComServiceRemoteRestTests: XCTestCase {
         })
         self.waitForExpectations(timeout: 2, handler: nil)
     }
-
 }

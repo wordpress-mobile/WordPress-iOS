@@ -243,7 +243,6 @@ class RegisterDomainCoordinator {
 
         if domainRegistrationSucceeded {
             onSuccess(domain)
-
         }
     }
 

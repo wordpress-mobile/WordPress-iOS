@@ -27,7 +27,6 @@ struct StatsDateRangeButtons: View {
             StatsNavigationButton(selection: $dateRange, direction: .forward)
                 .modifier(ProminentMenuModifier())
         }
-
     }
 }
 

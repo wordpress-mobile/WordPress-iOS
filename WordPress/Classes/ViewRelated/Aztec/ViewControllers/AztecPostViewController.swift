@@ -2017,7 +2017,6 @@ extension AztecPostViewController {
 // MARK: - UINavigationControllerDelegate Conformance
 //
 extension AztecPostViewController: UINavigationControllerDelegate {
-
 }
 
 // MARK: - UIPopoverPresentationControllerDelegate
@@ -2885,7 +2884,6 @@ extension AztecPostViewController: TextViewAttachmentDelegate {
         default:
             failure()
         }
-
     }
 
     func textView(_ textView: TextView, urlFor imageAttachment: ImageAttachment) -> URL? {
@@ -3172,7 +3170,6 @@ extension AztecPostViewController {
         static let title = NSLocalizedString("Unable to play video", comment: "Dialog box title for when the user is canceling an upload.")
         static let message = NSLocalizedString("Something went wrong. Please check your connectivity and try again.", comment: "This prompt is displayed when the user attempts to play a video in the editor but for some reason we are unable to retrieve from the server.")
     }
-
 }
 
 extension AztecPostViewController: PostEditorNavigationBarManagerDelegate {
@@ -3303,5 +3300,4 @@ extension AztecPostViewController {
         }
         attachment.uploadID = media.uploadID
     }
-
 }

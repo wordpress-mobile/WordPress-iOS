@@ -133,7 +133,6 @@ class GrowAudienceCell: UITableViewCell, NibLoadable {
         case .readerDiscover:
             insightsDelegate?.growAudienceReaderDiscoverButtonTapped?()
         }
-
     }
 
     // MARK: - Localization
@@ -269,7 +268,6 @@ class GrowAudienceCell: UITableViewCell, NibLoadable {
             )
         }
     }
-
 }
 
 extension GrowAudienceCell {

@@ -80,5 +80,4 @@ class GutenbergVideoUploadProcessorTests: XCTestCase {
 
         XCTAssertEqual(resultContent, postMediaBlockReversedAttributesResultContent, "Post content should be updated correctly")
     }
-
 }

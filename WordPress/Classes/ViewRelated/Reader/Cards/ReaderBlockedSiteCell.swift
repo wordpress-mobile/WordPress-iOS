@@ -37,7 +37,6 @@ open class ReaderBlockedSiteCell: UITableViewCell, NibLoadable {
         attrStr.setAttributes(swiftedBoldAttributes, range: range)
         label.attributedText = attrStr
     }
-
 }
 
 private extension NSAttributedString.Key {

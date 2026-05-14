@@ -289,7 +289,6 @@ class PluginDirectoryViewModel: Observable {
     private func accessoryView(`for` plugin: Plugin) -> UIView {
         return PluginDirectoryAccessoryItem.accessoryView(pluginState: plugin.state)
     }
-
 }
 
 private extension CollectionViewContainerRow where Item == PluginDirectoryEntry, CollectionViewCellType == PluginDirectoryCollectionViewCell {
@@ -326,7 +325,6 @@ private extension CollectionViewContainerRow where Item == PluginDirectoryEntry,
                   configureCollectionCell: configureCell,
                   collectionCellSelected: cellSelected)
     }
-
 }
 
 private extension CollectionViewContainerRow where Item == Plugin, CollectionViewCellType == PluginDirectoryCollectionViewCell {

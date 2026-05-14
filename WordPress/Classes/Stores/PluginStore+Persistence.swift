@@ -27,5 +27,4 @@ extension PluginStoreState: Codable {
         try container.encode(directoryFeeds, forKey: .directoryFeeds)
         try container.encode(directoryEntries, forKey: .directoryEntries)
     }
-
 }

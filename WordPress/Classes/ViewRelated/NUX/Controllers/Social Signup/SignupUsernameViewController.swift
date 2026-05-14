@@ -56,7 +56,6 @@ private extension SignupUsernameViewController {
         supportVC.sourceTag = .wpComCreateSiteUsername
         supportVC.showFromTabBar()
     }
-
 }
 
 // MARK: - SignupUsernameTableViewControllerDelegate

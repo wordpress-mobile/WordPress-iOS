@@ -88,7 +88,6 @@ class StatsDotComFollowersInsightTests: XCTestCase {
         // Then
         XCTAssertNotNil(follower)
     }
-
 }
 
 // MARK: - Test functions
@@ -117,5 +116,4 @@ private extension StatsDotComFollowersInsightTests {
 
         return components.url
     }
-
 }

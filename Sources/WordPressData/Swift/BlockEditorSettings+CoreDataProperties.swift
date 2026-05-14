@@ -55,5 +55,4 @@ extension BlockEditorSettings {
 }
 
 extension BlockEditorSettings: Identifiable {
-
 }

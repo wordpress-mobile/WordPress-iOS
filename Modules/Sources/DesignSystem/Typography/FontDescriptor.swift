@@ -36,7 +36,6 @@ struct FontDescriptor: Decodable {
             descriptor.weight = weight // Override the standard weight
         }
         return FontDescriptor.make(font: font, size: descriptor.size, weight: descriptor.weight)
-
     }
 
     static func make(font: FontManager.FontName, size: CGFloat, weight: Font.Weight) -> FontDescriptor {

@@ -10,5 +10,4 @@ extension UIConfigurationTextAttributesTransformer {
             return outgoing
         }
     }
-
 }

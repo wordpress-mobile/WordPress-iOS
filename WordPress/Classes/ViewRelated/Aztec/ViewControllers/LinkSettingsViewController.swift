@@ -8,7 +8,6 @@ struct LinkSettings {
     var  isNewLink: Bool = true
 
     init() {
-
     }
 
     init(url: String, text: String, openInNewWindow: Bool, isNewLink: Bool = true) {

@@ -392,7 +392,6 @@ class DashboardPromptsCardCell: UICollectionViewCell, Reusable {
 
         return !userSkippedPrompt(todaysPrompt, for: blog)
     }
-
 }
 
 // MARK: - BlogDashboardCardConfigurable
@@ -684,5 +683,4 @@ private extension DashboardPromptsCardCell {
 
         return !matchingPrompts.isEmpty
     }
-
 }

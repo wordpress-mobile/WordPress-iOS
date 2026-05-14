@@ -15,5 +15,4 @@ extension InviteLinks {
     @NSManaged public var expiry: Int64
     @NSManaged public var link: String!
     @NSManaged public var blog: Blog!
-
 }

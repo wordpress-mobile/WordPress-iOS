@@ -755,7 +755,6 @@ extension GutenbergViewController: GutenbergBridgeDelegate {
         var message: String? = nil
         let alertController = UIAlertController(title: title, message: nil, preferredStyle: .actionSheet)
         let dismissAction = UIAlertAction(title: MediaAttachmentActionSheet.dismissActionTitle, style: .cancel) { _ in
-
         }
         alertController.addAction(dismissAction)
 
@@ -790,7 +789,6 @@ extension GutenbergViewController: GutenbergBridgeDelegate {
         let message: String = EmptyPostActionSheet.message
         let alertController = UIAlertController(title: title, message: message, preferredStyle: .actionSheet)
         let dismissAction = UIAlertAction(title: MediaAttachmentActionSheet.dismissActionTitle, style: .cancel) { _ in
-
         }
         alertController.addAction(dismissAction)
 
@@ -1265,7 +1263,6 @@ extension GutenbergViewController: PostEditorNavigationBarManagerDelegate {
     }
 
     func navigationBarManager(_ manager: PostEditorNavigationBarManager, displayCancelMediaUploads sender: UIButton) {
-
     }
 }
 
@@ -1283,7 +1280,6 @@ private extension GutenbergViewController {
     enum Analytics {
         static let editorSource = "gutenberg"
     }
-
 }
 
 private extension GutenbergViewController {

@@ -48,5 +48,4 @@ extension ReaderTagTopic {
     public static func objc_lookup(withTagID tagID: NSNumber, in context: NSManagedObjectContext) -> ReaderTagTopic? {
         try? lookup(withTagID: tagID, in: context)
     }
-
 }

@@ -545,7 +545,6 @@ open class LoginEmailViewController: LoginViewController, NUXKeyboardResponder {
             }
         }
     }
-
 }
 
 // MARK: - AppleAuthenticatorDelegate
@@ -575,7 +574,6 @@ extension LoginEmailViewController: AppleAuthenticatorDelegate {
     func authFailedWithError(message: String) {
         displayErrorAlert(message, sourceTag: .loginApple)
     }
-
 }
 
 // MARK: - GoogleAuthenticatorLoginDelegate
@@ -630,5 +628,4 @@ extension LoginEmailViewController: GoogleAuthenticatorLoginDelegate {
         socialErrorVC.modalPresentationStyle = .fullScreen
         present(socialErrorNav, animated: true)
     }
-
 }

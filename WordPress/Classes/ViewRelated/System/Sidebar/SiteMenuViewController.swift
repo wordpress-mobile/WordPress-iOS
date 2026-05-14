@@ -43,7 +43,6 @@ final class SiteMenuViewController: UIViewController {
         blogDetailsVC.showInitialDetailsForBlog()
 
         navigationItem.title = blog.settings?.name ?? (blog.displayURL) ?? ""
-
     }
 
     private func getTipAnchor() -> UIView {

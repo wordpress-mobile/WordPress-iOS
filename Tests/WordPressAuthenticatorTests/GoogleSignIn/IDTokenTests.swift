@@ -22,5 +22,4 @@ class IDTokenTests: XCTestCase {
         XCTAssertEqual(token.name, JSONWebToken.nameFromValidJWTStringWithEmail)
         XCTAssertEqual(token.email, JSONWebToken.emailFromValidJWTStringWithEmail)
     }
-
 }

@@ -74,7 +74,6 @@ public actor ImageSaliencyService {
 
         return CGRect(x: 0, y: clampedY, width: containerSize.width, height: scaledHeight)
     }
-
 }
 
 /// Runs saliency detection serially — one image at a time.

@@ -51,7 +51,6 @@ final class PostingActivityViewController: UIViewController, StoryboardLoadable 
         super.viewDidLayoutSubviews()
         collectionView.collectionViewLayout.invalidateLayout()
     }
-
 }
 
 // MARK: - UICollectionViewDataSource
@@ -73,7 +72,6 @@ extension PostingActivityViewController: UICollectionViewDataSource {
 
         return cell
     }
-
 }
 
 // MARK: - UICollectionViewDelegateFlowLayout
@@ -83,7 +81,6 @@ extension PostingActivityViewController: UICollectionViewDelegateFlowLayout {
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
         return Style.cellSizeForFrameWidth(collectionView.frame.size.width)
     }
-
 }
 
 // MARK: - PostingActivityDayDelegate
@@ -102,7 +99,6 @@ extension PostingActivityViewController: PostingActivityDayDelegate {
         dateLabel.text = formattedDate(dayData.date)
         postCountLabel.text = formattedPostCount(dayData.postCount)
     }
-
 }
 
 // MARK: - Private Extension

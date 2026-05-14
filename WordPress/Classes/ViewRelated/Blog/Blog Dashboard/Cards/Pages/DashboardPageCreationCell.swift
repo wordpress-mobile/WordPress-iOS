@@ -157,7 +157,6 @@ private extension DashboardPageCreationCell {
         static let promoImageSize: CGSize = .init(width: 110, height: 80)
         static let promoImageSuperViewInsets: UIEdgeInsets = .init(top: 10, left: 0, bottom: 10, right: 0)
         static let promoImageCornerRadius: CGFloat = 5
-
     }
 
     enum Graphics {

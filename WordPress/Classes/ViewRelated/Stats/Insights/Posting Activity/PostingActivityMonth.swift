@@ -149,7 +149,6 @@ private extension PostingActivityMonth {
         let viewWidthAdjustment = hideLastStackView ? lastStackViewWidth : 0
         viewWidthConstraint.constant -= viewWidthAdjustment
     }
-
 }
 
 // MARK: - Accessibility

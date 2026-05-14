@@ -57,5 +57,4 @@ class GutenbergImageLoader: NSObject, RCTImageURLLoader {
     func loaderPriority() -> Float {
         return 100
     }
-
 }

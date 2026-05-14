@@ -49,5 +49,4 @@ class NotificationCenterObserveOnceTests: XCTestCase {
     private func notification(counter: Int) -> Foundation.Notification {
         return Notification(name: testNotification, object: nil, userInfo: [counterKey: counter])
     }
-
 }

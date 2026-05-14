@@ -75,7 +75,6 @@ class DetailDataCell: UITableViewCell, NibLoadable {
         super.prepareForReuse()
         row?.removeFromSuperview()
     }
-
 }
 
 // MARK: - StatsTotalRowDelegate

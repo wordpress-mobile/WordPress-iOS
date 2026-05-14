@@ -14,7 +14,6 @@ class CoreDataTestCase: XCTestCase {
     var mainContext: NSManagedObjectContext {
         return contextManager.mainContext
     }
-
 }
 
 extension XCTestCase {

@@ -72,7 +72,6 @@ class ExpandableCell: WPReusableTableViewCell, NibLoadable {
         expandableTextView?.textContainer.lineFragmentPadding = 0
         expandableTextView?.backgroundColor = .clear
     }
-
 }
 
 extension ExpandableCell: UITextViewDelegate {

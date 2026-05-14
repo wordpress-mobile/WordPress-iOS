@@ -41,7 +41,6 @@ extension PageTemplateCategory {
 
     @objc(removeLayouts:)
     @NSManaged public func removeFromLayouts(_ values: Set<PageTemplateLayout>)
-
 }
 
 public extension PageTemplateCategory {

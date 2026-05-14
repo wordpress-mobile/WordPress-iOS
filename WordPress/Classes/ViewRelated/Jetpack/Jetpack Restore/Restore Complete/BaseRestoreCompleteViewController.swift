@@ -112,5 +112,4 @@ class BaseRestoreCompleteViewController: UIViewController {
     @objc private func doneTapped() {
         self.dismiss(animated: true)
     }
-
 }

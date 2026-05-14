@@ -157,7 +157,6 @@ extension SupportChatBotViewController: WKNavigationDelegate {
             decisionHandler(.allow)
         }
     }
-
 }
 
 // MARK: - Support Callback
@@ -212,7 +211,6 @@ extension SupportChatBotViewController {
         static let thinking = NSLocalizedString("support.chatBot.botThinkingIndicator",
                                                 value: "Thinking...",
                                                 comment: "Indicator that the chat bot is processing user's input.")
-
     }
 
     private enum Constants {

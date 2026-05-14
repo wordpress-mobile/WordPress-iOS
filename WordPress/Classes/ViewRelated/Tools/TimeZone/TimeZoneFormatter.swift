@@ -52,5 +52,4 @@ private extension TimeZoneFormatter {
     enum Constants {
         static let timeZoneOffsetFormat = "ZZZZ"
     }
-
 }

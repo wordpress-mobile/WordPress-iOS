@@ -146,5 +146,4 @@ public extension NUXKeyboardResponder where Self: NUXViewController {
         let bottomAdjust: CGFloat = view.safeAreaInsets.bottom
         return keyboardFrame.height - bottomAdjust
     }
-
 }

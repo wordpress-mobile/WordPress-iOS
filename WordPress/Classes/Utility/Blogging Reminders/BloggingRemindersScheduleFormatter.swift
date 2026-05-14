@@ -63,7 +63,6 @@ struct BloggingRemindersScheduleFormatter {
             return Self.stringToAttributedString(text)
         }
     }
-
 }
 
 // MARK: - Private type methods and properties

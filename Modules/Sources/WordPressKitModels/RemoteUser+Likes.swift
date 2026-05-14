@@ -38,7 +38,6 @@ import Foundation
             return nil
         }()
     }
-
 }
 
 @objc public class RemoteLikeUserPreferredBlog: NSObject {

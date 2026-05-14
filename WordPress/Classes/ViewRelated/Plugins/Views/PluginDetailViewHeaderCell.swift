@@ -52,7 +52,6 @@ class PluginDetailViewHeaderCell: UITableViewCell, NibLoadable {
     @IBAction func linkButtonTapped(_ sender: Any) {
         onLinkTap?()
     }
-
 }
 
 struct PluginHeaderRow: ImmuTableRow {

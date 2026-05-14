@@ -39,5 +39,4 @@ struct SelectedDataPoints {
             mappedPreviousSeries: data.mappedPreviousData
         )
     }
-
 }

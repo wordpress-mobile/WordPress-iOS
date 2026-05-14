@@ -33,7 +33,6 @@ class WordPressAPIErrorTests: XCTestCase {
         XCTAssertIdentical(APIError.unparsableResponse(response: response, body: Data()).response, response)
         XCTAssertNil(APIError.unknown(underlyingError: URLError(.badURL)).response)
     }
-
 }
 
 private struct TestError: LocalizedError, HTTPURLResponseProviding {

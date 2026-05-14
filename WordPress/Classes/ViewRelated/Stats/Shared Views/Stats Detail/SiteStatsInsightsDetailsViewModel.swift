@@ -1264,7 +1264,6 @@ private extension SiteStatsInsightsDetailsViewModel {
                 hideIndentedSeparator: true,
                 hideFullSeparator: hideFullSeparator,
                 showImage: showImage)
-
     }
 
     func parentRow(rowData: StatsTotalRowData, hideIndentedSeparator: Bool, hideFullSeparator: Bool, expanded: Bool) -> DetailExpandableRow {
@@ -1347,7 +1346,6 @@ private extension SiteStatsInsightsDetailsViewModel {
             } else {
                 snapshot.addSection([row])
             }
-
         })
 
         snapshot.addSection(countriesRows)

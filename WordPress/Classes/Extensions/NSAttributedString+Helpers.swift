@@ -54,10 +54,8 @@ public extension NSAttributedString {
             }
 
             rangeDelta += attachmentString.length
-
         }
 
         return theString
     }
-
 }

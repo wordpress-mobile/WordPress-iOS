@@ -26,5 +26,4 @@ class JetpackBackupStatusFailedViewController: BaseRestoreStatusFailedViewContro
     override func viewDidLoad() {
         super.viewDidLoad()
     }
-
 }

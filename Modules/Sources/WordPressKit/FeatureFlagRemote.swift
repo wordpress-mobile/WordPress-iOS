@@ -44,7 +44,6 @@ open class FeatureFlagRemote: ServiceRemoteWordPressComREST {
                                     } else {
                                         callback(.failure(FeatureFlagRemoteError.InvalidDataError))
                                     }
-
                                 }, failure: { error, response in
                                     WPKitLogError("Error retrieving remote feature flags")
                                     WPKitLogError("\(error)")

@@ -91,5 +91,4 @@ private extension NonceRetrievalMethod {
 
         return retrieveNonce(from: content)
     }
-
 }

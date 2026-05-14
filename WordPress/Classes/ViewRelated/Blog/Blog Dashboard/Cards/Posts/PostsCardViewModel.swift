@@ -67,7 +67,6 @@ class PostsCardViewModel: NSObject {
         case .ghost:
             return self.configureGhostCell(tableView: tableView, indexPath: indexPath)
         }
-
     }
 
     init(blog: Blog, status: BasePost.Status, view: PostsCardView, managedObjectContext: NSManagedObjectContext = ContextManager.shared.mainContext) {

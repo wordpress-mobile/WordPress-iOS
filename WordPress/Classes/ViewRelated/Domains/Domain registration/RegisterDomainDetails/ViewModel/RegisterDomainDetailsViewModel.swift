@@ -277,7 +277,6 @@ class RegisterDomainDetailsViewModel {
                 let prefillSuccessBlock = {
                     strongSelf.update(with: domainContactInformation)
                     strongSelf.onChange?(.prefillSuccess)
-
                 }
                 if let countryCode = domainContactInformation.countryCode {
                     strongSelf.prefillCountryCodePrefix(countryCode: countryCode)
@@ -609,5 +608,4 @@ extension ValidateDomainContactInformationResponse.Messages {
             return nil
         }
     }
-
 }

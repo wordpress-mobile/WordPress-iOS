@@ -159,6 +159,5 @@ class UserListViewModelTests: XCTestCase {
                 headers: ["Content-Type": "application/json"]
             )
         }
-
     }
 }

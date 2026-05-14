@@ -416,7 +416,6 @@ private struct URLExtractor: TypeBasedExtensionContentExtractor {
                         let tmpImage = UIImage(data: file),
                         let cachedURL = saveToSharedContainer(image: tmpImage) {
                         cachedImages["assets/\(fileName)"] = ExtractedImage(url: cachedURL, insertionState: .requiresInsertion)
-
                     }
                 }
             case "jpg", "jpeg", "gif", "png":

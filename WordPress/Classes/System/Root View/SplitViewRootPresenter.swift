@@ -104,7 +104,6 @@ final class SplitViewRootPresenter: RootViewPresenter {
         case .reader:
             content = readerPresenter
             readerPresenter.splitViewController = splitVC
-
         }
 
         display(content: content)

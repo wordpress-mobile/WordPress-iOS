@@ -202,7 +202,6 @@ public final class WordPressOrgRestApi: NSObject {
                 return error
             }
     }
-
 }
 
 // MARK: - Authentication

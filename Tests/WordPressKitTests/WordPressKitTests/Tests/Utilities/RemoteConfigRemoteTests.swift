@@ -90,5 +90,4 @@ final class RemoteConfigRemoteTests: RemoteTestCase, RESTTestable {
         encoder.outputFormatting = [.sortedKeys, .prettyPrinted]
         return try encoder.encode(object)
     }
-
 }

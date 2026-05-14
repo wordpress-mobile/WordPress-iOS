@@ -26,5 +26,4 @@ extension Blog {
     private static func firstBlog(in context: NSManagedObjectContext) -> Blog? {
         try? BlogQuery().blog(in: context)
     }
-
 }

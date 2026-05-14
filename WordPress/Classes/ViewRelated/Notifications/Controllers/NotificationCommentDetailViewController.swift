@@ -313,5 +313,4 @@ private extension NotificationCommentDetailViewController {
             comment: "Error message that informs comment details from a private blog cannot be fetched."
         )
     }
-
 }

@@ -166,7 +166,6 @@ class AutomatedTransferHelper {
                 DDLogInfo("[AT] Scheduling status update.")
                 self.updateAutomatedTransferStatus()
             }
-
         }, failure: { error in
 
             // The async nature of AT process bites us here again. Sometimes, even though the backend says
@@ -215,7 +214,6 @@ class AutomatedTransferHelper {
             DDLogInfo("[AT] Incrementing kickoff  counter.")
             wrapper.increment()
             self.delayWrapper = wrapper
-
         })
     }
 
@@ -411,5 +409,4 @@ class AutomatedTransferHelper {
         static let afterDomainPurchaseMaxRetries = 14
         // It takes a bit longer to issue the SSL certificate for the new domain for AT process. We're more lenient here because of this.
     }
-
 }

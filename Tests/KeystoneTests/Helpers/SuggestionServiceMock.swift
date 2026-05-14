@@ -34,5 +34,4 @@ final class SuggestionServiceMock: SuggestionService {
     override func shouldShowSuggestions(for blog: Blog) -> Bool {
         return true
     }
-
 }

@@ -183,7 +183,6 @@ public struct CartResponse {
         return ["blog_id": blogID as AnyObject,
                 "cart_key": cartKey as AnyObject,
                 "products": products.map { $0.jsonRepresentation() } as AnyObject]
-
     }
 }
 

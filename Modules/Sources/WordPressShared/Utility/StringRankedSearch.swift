@@ -177,7 +177,6 @@ public extension Sequence {
     func search(_ query: String, minScore: Double = 0.7) -> [Element] where Element == String {
         search(query, minScore: minScore, using: \.self)
     }
-
 }
 
 private extension Array {

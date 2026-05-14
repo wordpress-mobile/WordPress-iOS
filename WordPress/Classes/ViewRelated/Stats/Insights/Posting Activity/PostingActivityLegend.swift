@@ -35,7 +35,6 @@ class PostingActivityLegend: UIView, NibLoadable {
             return Style.PostingActivityColors.range5
         }
     }
-
 }
 
 // MARK: - Private Extension
@@ -59,5 +58,4 @@ private extension PostingActivityLegend {
             numberInRange += 2
         }
     }
-
 }

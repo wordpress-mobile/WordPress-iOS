@@ -1050,7 +1050,6 @@ private extension StatsInsightsStore {
         }
 
         return mappedMonth
-
     }
 
     private func getPostingEventsDates() -> [Date: PostingStreakEvent] {

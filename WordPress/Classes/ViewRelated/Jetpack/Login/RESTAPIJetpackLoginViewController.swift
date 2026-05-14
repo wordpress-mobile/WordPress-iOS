@@ -239,5 +239,4 @@ private enum Strings {
         value: "Connect your site",
         comment: "Title for the button that starts the Jetpack connection process"
     )
-
 }

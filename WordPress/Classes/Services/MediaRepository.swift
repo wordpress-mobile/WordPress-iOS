@@ -75,7 +75,6 @@ final class MediaRepository {
             context.delete(media)
         }
     }
-
 }
 
 private extension MediaRepository {
@@ -108,7 +107,6 @@ private extension MediaRepository {
 
         throw MediaRepository.Error.remoteAPIUnavailable
     }
-
 }
 
 extension MediaServiceRemote {
@@ -134,7 +132,6 @@ extension MediaServiceRemote {
             )
         }
     }
-
 }
 
 extension RemoteMedia {
@@ -162,5 +159,4 @@ extension RemoteMedia {
         remoteMedia.postID = media.postID
         return remoteMedia
     }
-
 }

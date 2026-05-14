@@ -137,7 +137,6 @@ class MediaURLExporter: MediaExporter {
                                     onCompletion(videoExport)
         },
                                   onError: onError)
-
     }
 
     /// Exports the GIF file at the URL to a new Media URL, by simply copying the file.

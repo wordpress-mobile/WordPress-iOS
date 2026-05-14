@@ -93,5 +93,4 @@ public struct ManageSocialConnectionsView: View {
             }
         }
     }
-
 }

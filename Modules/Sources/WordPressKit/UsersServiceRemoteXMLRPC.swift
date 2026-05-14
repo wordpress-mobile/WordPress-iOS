@@ -21,10 +21,8 @@ public class UsersServiceRemoteXMLRPC: ServiceRemoteWordPressXMLRPC {
             }
             let profile = RemoteProfile(dictionary: dict)
             success(profile)
-
         }, failure: { error, _ in
             failure(error as NSError)
         })
     }
-
 }

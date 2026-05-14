@@ -428,7 +428,6 @@ import AutomatticTracks
                     return
                 }
                 self?.readerTopic = topic
-
             },
             failure: { [weak self] (_: Error?) in
                 if self?.isLoadingDiscover ?? false {
@@ -1540,7 +1539,6 @@ extension ReaderStreamViewController: UITableViewDataSourcePrefetching {
 
     func tableView(_ tableView: UITableView, cancelPrefetchingForRowsAt indexPaths: [IndexPath]) {
         prefetcher.stopPrefetching(for: makeImageRequests(for: indexPaths))
-
     }
 
     private func makeImageRequests(for indexPaths: [IndexPath]) -> [ImageRequest] {

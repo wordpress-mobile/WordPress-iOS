@@ -16,11 +16,9 @@ extension StatsViewController {
                                                         active: true,
                                                         success: success,
                                                         failure: failure)
-
     }
 
     private enum Constants {
         static let statsModule = "stats"
     }
-
 }

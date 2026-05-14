@@ -109,6 +109,8 @@ only_rules:
 
   - vertical_whitespace
 
+  - vertical_whitespace_closing_braces
+
   - weak_delegate
 
 # Rules configuration

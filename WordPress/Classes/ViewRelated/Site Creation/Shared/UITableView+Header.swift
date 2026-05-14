@@ -74,5 +74,4 @@ extension UITableView {
             self.tableFooterView = tableFooterView
         }
     }
-
 }

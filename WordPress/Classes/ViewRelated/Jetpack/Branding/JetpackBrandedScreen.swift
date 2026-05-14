@@ -103,7 +103,6 @@ enum JetpackBadgeScreen: String, JetpackBrandedScreen {
         case .sharing:
             return NSLocalizedString("Sharing", comment: "Noun. Name of the Social Sharing feature")
         }
-
     }
 
     var isPlural: Bool {

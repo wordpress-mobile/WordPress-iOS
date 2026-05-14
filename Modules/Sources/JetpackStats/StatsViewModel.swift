@@ -378,6 +378,5 @@ final class StatsViewModel: ObservableObject, CardConfigurationDelegate {
 
         // Reset date range to default
         dateRange = StatsDateRangeSelection(range: context.calendar.makeDateRange(for: .last7Days))
-
     }
 }

@@ -49,7 +49,6 @@ class InlineEditableSingleLineCell: UITableViewCell, NibReusable {
         contentView.layer.borderWidth = 1.0
         contentView.layer.cornerRadius = 10
     }
-
 }
 
 // MARK: - UITextFieldDelegate
@@ -64,7 +63,6 @@ extension InlineEditableSingleLineCell: UITextFieldDelegate {
     @IBAction func textFieldChanged(_ sender: UITextField) {
         validateText(sender.text)
     }
-
 }
 
 // MARK: - Private Extension
@@ -108,5 +106,4 @@ private extension InlineEditableSingleLineCell {
         isUserInteractionEnabled = !disabled
         textField.textColor = disabled ? UIAppColor.neutral(.shade20) : .label
     }
-
 }

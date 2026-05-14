@@ -29,7 +29,6 @@ struct ShapeWithTextView: View {
             .background(backgroundColor)
             .clipShape(RoundedRectangle(cornerRadius: Appearance.smallRoundedRectangleCornerRadius,
                                         style: .continuous))
-
     }
 
     private enum Appearance {

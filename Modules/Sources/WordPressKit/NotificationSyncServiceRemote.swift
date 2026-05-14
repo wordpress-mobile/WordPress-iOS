@@ -92,7 +92,6 @@ public class NotificationSyncServiceRemote: ServiceRemoteWordPressComREST {
         wordPressComRESTAPI.post(requestUrl, parameters: parameters as [String: AnyObject]?, success: { response, _ in
             let error = self.errorFromResponse(response)
             completion(error)
-
         }, failure: { error, _ in
             completion(error)
         })
@@ -115,7 +114,6 @@ public class NotificationSyncServiceRemote: ServiceRemoteWordPressComREST {
         wordPressComRESTAPI.post(requestUrl, parameters: parameters as [String: AnyObject]?, success: { response, _ in
             let error = self.errorFromResponse(response)
             completion(error)
-
         }, failure: { error, _ in
             completion(error)
         })
@@ -177,7 +175,6 @@ private extension NotificationSyncServiceRemote {
             } else {
                 completion(SyncError.failed, nil)
             }
-
         }, failure: { error, _ in
             completion(error, nil)
         })

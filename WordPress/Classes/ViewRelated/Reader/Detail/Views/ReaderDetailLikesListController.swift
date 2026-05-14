@@ -75,7 +75,6 @@ private extension ReaderDetailLikesListController {
         static let plural = NSLocalizedString("%1$d Likes",
                                               comment: "Plural format string for view title displaying the number of post likes. %1$d is the number of likes.")
     }
-
 }
 
 // MARK: - LikesListController Delegate

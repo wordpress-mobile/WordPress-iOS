@@ -257,7 +257,6 @@ extension SupportDataProvider {
             )
         ]
     )
-
 }
 
 actor InternalLogDataProvider: ApplicationLogDataProvider {

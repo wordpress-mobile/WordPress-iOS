@@ -63,7 +63,6 @@ class MockAnnouncementsService: AnnouncementServiceRemote {
         getAnnouncementsExpectation?.fulfill()
         let result = getAnnouncementsSucceeds ? successResult : failureResult
         completion(result)
-
     }
 }
 

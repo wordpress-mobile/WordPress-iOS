@@ -57,7 +57,6 @@ public struct SocialConnection: Identifiable, Hashable, Sendable {
             status: ConnectionStatus(wireString: wire.status)
         )
     }
-
 }
 
 private extension String {

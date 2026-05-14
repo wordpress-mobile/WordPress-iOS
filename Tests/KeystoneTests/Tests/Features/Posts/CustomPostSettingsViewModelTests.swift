@@ -195,7 +195,6 @@ struct CustomPostSettingsViewModelTests {
         #expect(viewModel.v2SocialSharing == nil)
         #expect(viewModel.getSettingsToSave(for: viewModel.settings).socialSharingDraft == nil)
     }
-
 }
 
 // MARK: - Test Helpers

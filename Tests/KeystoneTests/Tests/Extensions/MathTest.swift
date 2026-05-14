@@ -57,5 +57,4 @@ class MathTest: XCTestCase {
             XCTAssertEqual(clamped, expected)
         }
     }
-
 }

@@ -42,5 +42,4 @@ extension AccountService {
         destination.addBlogs(account.blogs ?? [])
         context.deleteObject(account)
     }
-
 }

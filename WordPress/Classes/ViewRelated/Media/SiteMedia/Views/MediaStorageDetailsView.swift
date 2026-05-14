@@ -610,7 +610,6 @@ private extension Media {
 
         return value * multiplier
     }
-
 }
 
 private enum Strings {

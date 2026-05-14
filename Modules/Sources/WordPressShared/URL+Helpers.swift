@@ -109,7 +109,6 @@ public extension NSURL {
         }
         return NSNumber(value: fileSize)
     }
-
 }
 
 public extension URL {

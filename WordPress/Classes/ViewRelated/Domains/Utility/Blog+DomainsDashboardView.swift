@@ -17,7 +17,6 @@ extension Blog {
             .filter { $0.domainType != .wpCom }
             .sorted(by: { $0.domainName > $1.domainName })
             .map { DomainRepresentation(domain: Domain(managedDomain: $0)) }
-
     }
 
     var canRegisterDomainWithPaidPlan: Bool {

@@ -113,7 +113,6 @@ extension HomeSiteHeaderViewController {
                 self.blogDetailHeaderView.updatingIcon = false
                 self.blogDetailHeaderView.refreshIconImage()
             }, failure: { _ in })
-
         }, failure: { [weak self] _ in
             self?.showErrorForSiteIconUpdate()
         })

@@ -38,5 +38,4 @@ open class JetpackCapabilitiesServiceRemote: ServiceRemoteWordPressComREST {
             success(jetpackCapabilities)
         }
     }
-
 }

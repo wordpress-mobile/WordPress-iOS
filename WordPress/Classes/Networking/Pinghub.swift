@@ -268,7 +268,6 @@ private class StarscreamWebSocket: Socket {
     func disconnect() {
         socket.disconnect()
     }
-
 }
 
 private struct ConnectionClosed: Error {

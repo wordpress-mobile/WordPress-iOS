@@ -37,5 +37,4 @@ class ReaderPostServiceRemoteFetchEndpointTests: XCTestCase {
         url.query = nil
         XCTAssertEqual(url.url?.absoluteString, "https://public-api.wordpress.com/rest/v1.2/read/liked")
     }
-
 }

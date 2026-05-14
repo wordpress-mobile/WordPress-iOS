@@ -56,5 +56,4 @@ private extension PostingActivityDay {
         dayButton.backgroundColor = WPStyleGuide.Stats.PostingActivityColors.selectedDay
         delegate?.daySelected(self)
     }
-
 }

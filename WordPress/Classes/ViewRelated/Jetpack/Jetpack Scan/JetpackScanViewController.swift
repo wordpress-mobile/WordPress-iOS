@@ -265,7 +265,6 @@ extension JetpackScanViewController: UITableViewDataSource, UITableViewDelegate 
             configureStatusCell(cell: statusCell)
 
             cell = statusCell
-
         }
         return cell
     }

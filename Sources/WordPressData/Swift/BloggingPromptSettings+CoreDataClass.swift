@@ -53,5 +53,4 @@ public extension RemoteBloggingPromptsSettings {
                   reminderTime: model.reminderTime ?? String(),
                   isPotentialBloggingSite: model.isPotentialBloggingSite)
     }
-
 }

@@ -80,5 +80,4 @@ class GutenbergVideoUploadProcessor: Processor {
         result = mediaTextVideoBlockProcessor.process(result)
         return result
     }
-
 }

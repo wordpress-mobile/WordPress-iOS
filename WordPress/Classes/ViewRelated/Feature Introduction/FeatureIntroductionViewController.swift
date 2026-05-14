@@ -98,7 +98,6 @@ class FeatureIntroductionViewController: CollapsableHeaderViewController {
         featureIntroductionDelegate?.closeButtonWasTapped?()
         dismiss(animated: true)
     }
-
 }
 
 private extension FeatureIntroductionViewController {
@@ -116,5 +115,4 @@ private extension FeatureIntroductionViewController {
             contentView.widthAnchor.constraint(equalTo: scrollView.widthAnchor),
         ])
     }
-
 }

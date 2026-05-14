@@ -70,7 +70,6 @@ final class BlogDashboardService {
                 blog.dashboardState.failedToLoad = true
                 failure?([])
             }
-
         }, failure: { [weak self] error in
             DDLogError("Failed to fetch Dashboard Cards: \(error.localizedDescription)")
 

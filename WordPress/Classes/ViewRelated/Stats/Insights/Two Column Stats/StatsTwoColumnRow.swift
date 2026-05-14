@@ -62,5 +62,4 @@ private extension StatsTwoColumnRow {
         Style.configureLabelAsCellValue(rightDataLabel)
         Style.configureViewAsVerticalSeparator(separatorLine)
     }
-
 }

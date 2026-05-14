@@ -63,5 +63,4 @@ class DashboardStatsViewModelTests: XCTestCase {
         // When & Then
         XCTAssertEqual(viewModel.shouldDisplayNudge, false)
     }
-
 }

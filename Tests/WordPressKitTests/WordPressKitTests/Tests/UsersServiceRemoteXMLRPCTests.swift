@@ -48,7 +48,6 @@ class UsersServiceRemoteXMLRPCTests: RemoteTestCase, XMLRPCTestable {
                 XCTAssertEqual(remoteProfile.username, "test", "Username should be equal.")
 
                 expect.fulfill()
-
             }, failure: { _ in
                 XCTFail("This callback shouldn't get called")
                 expect.fulfill()
@@ -77,7 +76,6 @@ class UsersServiceRemoteXMLRPCTests: RemoteTestCase, XMLRPCTestable {
                 XCTAssertEqual(remoteProfile.username, "", "Username should be equal.")
 
                 expect.fulfill()
-
             }, failure: { _ in
                 XCTFail("This callback shouldn't get called")
                 expect.fulfill()
@@ -86,5 +84,4 @@ class UsersServiceRemoteXMLRPCTests: RemoteTestCase, XMLRPCTestable {
 
         waitForExpectations(timeout: timeout, handler: nil)
     }
-
 }

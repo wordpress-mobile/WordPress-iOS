@@ -37,7 +37,6 @@ struct MockStatsServiceTests {
                 Issue.record("Expected post item but got \(type(of: item))")
             }
         }
-
     }
 
     @Test("Verify getChartData returns valid data for views metric with today range")

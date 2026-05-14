@@ -315,7 +315,6 @@ extension BlogDetailsViewController: UIViewControllerTransitioningDelegate {
         }
         return nil
     }
-
 }
 
 extension BlogDetailsViewController: UIAdaptivePresentationControllerDelegate {
@@ -325,5 +324,4 @@ extension BlogDetailsViewController: UIAdaptivePresentationControllerDelegate {
             tableView?.deselectSelectedRowWithAnimation(true)
         }
     }
-
 }

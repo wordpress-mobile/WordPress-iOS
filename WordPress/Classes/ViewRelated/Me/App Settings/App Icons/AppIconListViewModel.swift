@@ -57,5 +57,4 @@ final class AppIconListViewModel: AppIconListViewModelType {
             .init(title: legacyIconsTitle, items: legacyIcons)
         ].filter { !$0.items.isEmpty }
     }
-
 }

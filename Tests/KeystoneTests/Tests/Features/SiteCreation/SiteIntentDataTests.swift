@@ -121,5 +121,4 @@ class SiteIntentDataTests: XCTestCase {
         // Then
         XCTAssertNil(nilNonDefault)
     }
-
 }

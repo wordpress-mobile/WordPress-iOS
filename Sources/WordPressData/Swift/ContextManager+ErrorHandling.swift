@@ -76,7 +76,6 @@ extension ContextManager {
             handleSaveError(error as NSError, in: context)
         }
     }
-
 }
 
 private extension ContextManager {
@@ -127,5 +126,4 @@ private extension ContextManager {
     func propertyName(for error: NSError) -> String? {
         return error.userInfo[NSValidationKeyErrorKey] as? String
     }
-
 }

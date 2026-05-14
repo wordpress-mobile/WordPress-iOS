@@ -52,5 +52,4 @@ extension PostServiceRemoteREST {
             failure?(error)
         })
     }
-
 }

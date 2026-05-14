@@ -59,5 +59,4 @@ import WordPressKitObjC
         }
         return (activePlan, activePlans)
     }
-
 }

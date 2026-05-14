@@ -120,6 +120,5 @@ import WordPressData
             presentationController.sourceView = view
             presentationController.sourceRect = rect
         }
-
     }
 }

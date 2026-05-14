@@ -45,7 +45,6 @@ class WKCookieJarTests: XCTestCase {
             expectation.fulfill()
         }
         waitForExpectations(timeout: 5, handler: nil)
-
     }
 
     func testHasCookieNotMatching() {

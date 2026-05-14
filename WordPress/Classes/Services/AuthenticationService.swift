@@ -105,7 +105,6 @@ class AuthenticationService {
                             }
                             success()
                         }
-
                     }
                 }) { error in
                     // Make sure this error scenario isn't silently ignored.

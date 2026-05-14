@@ -27,5 +27,4 @@ public extension SharingButton {
         request.predicate = NSPredicate(format: "buttonID = %@ AND blog = %@", buttonID, blog)
         return try context.fetch(request).first
     }
-
 }

@@ -167,7 +167,6 @@ extension BlockEditorSettingsServiceRemoteTests {
 
         wait(for: [waitExpectation], timeout: 0.3)
     }
-
 }
 
 // MARK: Editor Global Styles support

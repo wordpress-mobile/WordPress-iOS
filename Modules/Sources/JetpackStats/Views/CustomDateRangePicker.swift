@@ -168,7 +168,6 @@ struct CustomDateRangePicker: View {
             }
         }
     }
-
 }
 
 private struct QuickPeriodButtonView: View {

@@ -382,7 +382,6 @@ extension WordPressAppDelegate {
             fetchCompletionHandler: completionHandler
         )
     }
-
 }
 
 // MARK: - Utility Configuration
@@ -835,7 +834,6 @@ extension WordPressAppDelegate {
             }
         }
     }
-
 }
 
 // MARK: - UI Test Support
@@ -858,5 +856,4 @@ extension WordPressAppDelegate {
             fatalError("Can't sync blogs: \($0)")
         })
     }
-
 }

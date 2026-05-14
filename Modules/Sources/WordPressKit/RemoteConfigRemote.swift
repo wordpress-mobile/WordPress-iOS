@@ -22,7 +22,6 @@ open class RemoteConfigRemote: ServiceRemoteWordPressComREST {
             } else {
                 callback(.failure(RemoteConfigRemoteError.InvalidDataError))
             }
-
         }, failure: { error, response in
             WPKitLogError("Error retrieving remote config values")
             WPKitLogError("\(error)")

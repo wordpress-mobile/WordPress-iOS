@@ -100,7 +100,6 @@ class BloggingRemindersTracker {
 
     func flowStarted(source: FlowStartSource) {
         track(event(.flowStart, properties: [Property.source.rawValue: source.rawValue]))
-
     }
 
     func scheduled(_ schedule: BloggingRemindersScheduler.Schedule, time: Date) {

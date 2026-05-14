@@ -124,5 +124,4 @@ struct BlogServiceRemoteCoreRESTSettingsTests {
         )
         #expect(result.postsPerPage == NSNumber(value: 25))
     }
-
 }

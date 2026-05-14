@@ -218,7 +218,6 @@ enum ReaderDiscoverChannel: Hashable {
         case .tag: "tag"
         }
     }
-
 }
 
 #Preview {

@@ -156,7 +156,6 @@ struct AttachmentThumbnailView: View {
                         Color.gray.opacity(0.2).overlay {
                             ProgressView()
                         }
-
                     }
                 }
 

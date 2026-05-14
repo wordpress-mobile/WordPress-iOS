@@ -47,7 +47,6 @@ struct TimezoneInfoView: View {
                 .foregroundColor(.secondary)
                 .fixedSize(horizontal: false, vertical: true)
                 .padding(.top, 12)
-
         }
         .padding()
         .frame(idealWidth: 280, maxWidth: 320)

@@ -125,7 +125,6 @@ class EditCommentTableViewController: UITableViewController {
 
         return nil
     }
-
 }
 
 // MARK: - Private Extension
@@ -255,7 +254,6 @@ private extension EditCommentTableViewController {
             }
         }
     }
-
 }
 
 extension EditCommentTableViewController: InlineEditableSingleLineCellDelegate {
@@ -281,7 +279,6 @@ extension EditCommentTableViewController: InlineEditableSingleLineCellDelegate {
 
         updateDoneButton()
     }
-
 }
 
 extension EditCommentTableViewController: InlineEditableMultiLineCellDelegate {
@@ -294,5 +291,4 @@ extension EditCommentTableViewController: InlineEditableMultiLineCellDelegate {
         updatedContent = cell.textView.text.trim()
         updateDoneButton()
     }
-
 }

@@ -42,7 +42,6 @@ final class CommentPlainTextEditorViewController: UIViewController {
 
         textView.becomeFirstResponder()
         setupSuggestionsTableViewIfNeeded()
-
     }
 
     private func setupView() {

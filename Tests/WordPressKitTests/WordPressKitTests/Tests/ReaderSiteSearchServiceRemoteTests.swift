@@ -105,7 +105,6 @@ class ReaderSiteSearchServiceRemoteTests: RemoteTestCase, RESTTestable {
                                 XCTAssertNil(feed.description)
 
                                 expect.fulfill()
-
         }, failure: { _ in
             XCTFail("This callback shouldn't get called")
             expect.fulfill()

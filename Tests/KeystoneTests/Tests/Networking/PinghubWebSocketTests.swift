@@ -93,7 +93,6 @@ class PinghubWebSocketTests: XCTestCase {
 
         return (server, client, delegate)
     }
-
 }
 
 /// A websocket server to simulate sending push notifications from WP.com Pinghub endpoint.
@@ -190,5 +189,4 @@ private class PinghubClientDelegateSpy: PinghubClientDelegate {
         unexpectedMessages.append(message)
         onUnexpectedMessageReceived?()
     }
-
 }

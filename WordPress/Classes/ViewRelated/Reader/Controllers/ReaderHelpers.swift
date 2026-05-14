@@ -171,26 +171,19 @@ struct ReaderNotificationKeys {
 
         if topicIsFreshlyPressed(topic) {
             stat = .readerFreshlyPressedLoaded
-
         } else if topicIsFollowing(topic) {
             WPAnalytics.trackReader(.readerFollowingShown, properties: properties)
-
         } else if topicIsLiked(topic) {
             WPAnalytics.trackReader(.readerLikedShown, properties: properties)
-
         } else if isTopicSite(topic) {
             WPAnalytics.trackReader(.readerBlogPreviewed, properties: properties)
-
         } else if isTopicDefault(topic) && topicIsDiscover(topic) {
             // Tracks Discover only if it was one of the default menu items.
             WPAnalytics.trackReaderEvent(.readerDiscoverShown, properties: properties)
-
         } else if isTopicList(topic) {
             stat = .readerListLoaded
-
         } else if isTopicTag(topic) {
             stat = .readerTagLoaded
-
         } else if let teamTopic = topic as? ReaderTeamTopic {
             WPAnalytics.trackReader(teamTopic.slug == ReaderTeamTopic.a8cSlug ? .readerA8CShown : .readerP2Shown, properties: properties)
         }

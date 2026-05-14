@@ -16,5 +16,4 @@ public extension Swift.Result {
     func eraseToError() -> Result<Success, Error> {
         mapError { $0 }
     }
-
 }

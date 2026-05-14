@@ -547,6 +547,5 @@ private enum Strings {
             value: "Next, we'll help you get it ready to be browsed.",
             comment: "Domain Purchase Completion description (only for FREE domains)."
         )
-
     }
 }

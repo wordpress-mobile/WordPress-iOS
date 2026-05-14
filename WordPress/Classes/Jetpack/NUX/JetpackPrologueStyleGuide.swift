@@ -63,5 +63,4 @@ struct JetpackPrologueStyleGuide {
                                                      disabled: .init(backgroundColor: .white,
                                                                      borderColor: .white,
                                                                      titleColor: backgroundColor))
-
 }

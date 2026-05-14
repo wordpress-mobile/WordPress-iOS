@@ -20,5 +20,4 @@ class PostingActivityCollectionViewCell: UICollectionViewCell {
         super.prepareForReuse()
         subviews.forEach({ $0.removeFromSuperview()})
     }
-
 }

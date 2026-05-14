@@ -185,5 +185,4 @@ final class CommentService_MorderationTests: CoreDataTestCase {
         // The local comment should not be changed
         XCTAssertEqual(self.comment.status, "trash")
     }
-
 }

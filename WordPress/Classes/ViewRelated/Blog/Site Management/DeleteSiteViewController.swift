@@ -270,5 +270,4 @@ open class DeleteSiteViewController: UITableViewController {
             presentingViewController.dismiss(animated: true)
         }
     }
-
 }

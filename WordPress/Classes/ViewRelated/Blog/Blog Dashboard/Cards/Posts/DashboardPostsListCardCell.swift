@@ -78,7 +78,6 @@ class DashboardPostsListCardCell: UICollectionViewCell, Reusable {
     func trackPostsDisplayed() {
         BlogDashboardAnalytics.shared.track(.dashboardCardShown, properties: ["type": "post", "sub_type": status.rawValue])
     }
-
 }
 
 // MARK: BlogDashboardCardConfigurable
@@ -164,7 +163,6 @@ extension DashboardPostsListCardCell {
         PostListViewController.showForBlog(blog, from: viewController, withPostStatus: status)
         WPAppAnalytics.track(.openedPosts, properties: [WPAppAnalyticsKeyTabSource: "dashboard", WPAppAnalyticsKeyTapSource: "posts_card"], blog: blog)
     }
-
 }
 
 // MARK: - UITableViewDelegate

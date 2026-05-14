@@ -146,7 +146,6 @@ import WordPressSharedObjC
 
             // No blocks found, so we'll parse the whole string.
             ranges.append(NSRange(location: 0, length: content.count))
-
         } else {
 
             // One or more preformatted blocks found, we don't want to remove new lines

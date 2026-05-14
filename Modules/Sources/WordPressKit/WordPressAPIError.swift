@@ -65,7 +65,6 @@ extension WordPressAPIError: LocalizedError {
         }
         return localizedErrorMessage
     }
-
 }
 
 protocol HTTPURLResponseProviding {

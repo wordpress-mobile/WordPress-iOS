@@ -44,7 +44,6 @@ final class DashboardQuickActionsViewModel {
     }
 
     func viewWillDisappear() {
-
     }
 }
 

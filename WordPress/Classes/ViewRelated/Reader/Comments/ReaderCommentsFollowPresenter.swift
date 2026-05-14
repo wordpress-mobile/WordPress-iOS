@@ -111,7 +111,6 @@ class ReaderCommentsFollowPresenter: NSObject {
     func showNotificationSheet(sourceView: UIView?) {
         showBottomSheet(sourceView: sourceView)
     }
-
 }
 
 // MARK: - Private Extension
@@ -248,7 +247,6 @@ private extension ReaderCommentsFollowPresenter {
             }
         }
     }
-
 }
 
 // MARK: - ReaderCommentsNotificationSheetDelegate Methods
@@ -262,5 +260,4 @@ extension ReaderCommentsFollowPresenter: ReaderCommentsNotificationSheetDelegate
     func didTapUnfollowConversation() {
         handleFollowConversationButtonTapped()
     }
-
 }

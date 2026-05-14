@@ -32,7 +32,6 @@ struct UnifiedPrologueStatsContentView: View {
                             backgroundColor: Color(UIAppColor.celadon(.shade30))
                         )
                     }
-
                 }
                 .frame(idealHeight: content.size.height * 0.52)
                 .fixedSize(horizontal: false, vertical: true)
@@ -70,7 +69,6 @@ struct UnifiedPrologueStatsContentView: View {
                 .frame(idealHeight: content.size.height * 0.45)
                 .fixedSize(horizontal: false, vertical: true)
                 .offset(x: content.size.height * 0.03, y: 0)
-
             }
         }
     }

@@ -422,7 +422,6 @@ class SharingButtonsViewController: UITableViewController {
             for button in buttonsToShow {
                 rows.append(sortableRowForButton(button))
             }
-
         } else {
 
             for button in buttons {
@@ -467,7 +466,6 @@ class SharingButtonsViewController: UITableViewController {
             for button in buttonsToShow {
                 rows.append(sortableRowForButton(button))
             }
-
         } else {
 
             for button in buttons {
@@ -740,7 +738,6 @@ class SharingButtonsViewController: UITableViewController {
                 self.blog.settings!.sharingButtonStyle = str
                 self.saveBlogSettingsChanges(true)
             }
-
         }
         navigationController?.pushViewController(controller!, animated: true)
     }

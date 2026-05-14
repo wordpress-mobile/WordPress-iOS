@@ -112,7 +112,6 @@ class StatsWidgetsStore {
                 date: Date(),
                 stats: stats
             ) as? T
-
         } else if widgetType == HomeWidgetAllTimeData.self, let stats = stats as? AllTimeWidgetStats {
             widgetReload = WidgetCenter.shared.reloadAllTimeTimelines
 
@@ -124,7 +123,6 @@ class StatsWidgetsStore {
                 date: Date(),
                 stats: stats
             ) as? T
-
         } else if widgetType == HomeWidgetThisWeekData.self, let stats = stats as? ThisWeekWidgetStats {
             widgetReload = WidgetCenter.shared.reloadThisWeekTimelines
 
@@ -245,7 +243,6 @@ private extension StatsWidgetsStore {
                     date: date,
                     stats: stats
                 ) as? T
-
             } else if type == HomeWidgetThisWeekData.self {
 
                 let stats = (existingSite as? HomeWidgetThisWeekData)?.stats ?? ThisWeekWidgetStats(days: initializedWeekdays)

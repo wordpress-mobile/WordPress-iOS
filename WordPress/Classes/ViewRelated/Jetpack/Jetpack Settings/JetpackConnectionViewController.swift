@@ -133,7 +133,6 @@ open class JetpackConnectionViewController: UITableViewController {
             navigationController?.popViewController(animated: true)
         }
     }
-
 }
 
 // MARK: - Loading

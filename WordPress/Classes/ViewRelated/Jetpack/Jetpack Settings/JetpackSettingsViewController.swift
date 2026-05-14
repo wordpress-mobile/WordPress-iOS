@@ -355,7 +355,6 @@ open class JetpackSettingsViewController: UITableViewController {
         WPError.showAlert(withTitle: errorTitle, message: errorMessage, withSupportButton: true)
         refreshSettings()
     }
-
 }
 
 extension JetpackSettingsViewController: JetpackConnectionDelegate {

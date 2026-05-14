@@ -447,5 +447,4 @@ private extension BloggingPromptsService {
         fetchRequest.fetchLimit = 1
         return (try? context.fetch(fetchRequest))?.first
     }
-
 }
