@@ -31,3 +31,29 @@ public enum MediaKind: String, CaseIterable, Hashable, Sendable {
         }
     }
 }
+
+// MARK: - UI helpers
+//
+// These properties live in the same file as the enum but in their own
+// extension so they're easy to spot and so the base enum (used by the
+// public analytics surface) doesn't pull in localized strings unnecessarily.
+
+extension MediaKind {
+    var title: String {
+        switch self {
+        case .image: Strings.filterImages
+        case .video: Strings.filterVideos
+        case .audio: Strings.filterAudio
+        case .document: Strings.filterDocuments
+        }
+    }
+
+    var systemImageName: String {
+        switch self {
+        case .image: "photo"
+        case .video: "video"
+        case .audio: "waveform"
+        case .document: "folder"
+        }
+    }
+}
