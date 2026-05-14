@@ -6,31 +6,27 @@ struct MediaGridCell: View {
     let isAspectRatioMode: Bool
 
     var body: some View {
-        ZStack(alignment: .bottomTrailing) {
-            Color(uiColor: .secondarySystemBackground)
-            content
-                .frame(maxWidth: .infinity, maxHeight: .infinity)
-            durationOverlay
-            stateOverlay
+        // GeometryReader inside .aspectRatio(1, .fit) gives the cell a
+        // square frame and a known size. Without this, `.resizable()` +
+        // `.aspectRatio(.fit)` on the image renders at the image's
+        // intrinsic pixel-derived size and overflows the cell horizontally
+        // into adjacent grid positions.
+        GeometryReader { proxy in
+            let side = min(proxy.size.width, proxy.size.height)
+            ZStack(alignment: .bottomTrailing) {
+                Color(uiColor: .secondarySystemBackground)
+                content
+                    .frame(width: side, height: side)
+                    .clipped()
+                durationOverlay
+                stateOverlay
+            }
+            .frame(width: side, height: side)
         }
         .aspectRatio(1, contentMode: .fit)
-        .clipShape(RoundedRectangle(cornerRadius: outerCornerRadius))
+        .clipShape(RoundedRectangle(cornerRadius: isAspectRatioMode ? 4 : 0))
         .accessibilityElement(children: .ignore)
         .accessibilityLabel(item.accessibilityLabel)
-    }
-
-    /// V1 parity: in aspect-ratio mode, image cells with a non-square aspect
-    /// ratio leave the OUTER cell square (sharp corners) and apply the 4pt
-    /// rounding to the inner image container only — see `imageContent` below
-    /// for the inner clip. For square images and non-image kinds, V1's
-    /// imageContainerView fills the cell, so cell-level rounding matches
-    /// V1's container-level rounding.
-    private var outerCornerRadius: CGFloat {
-        guard isAspectRatioMode else { return 0 }
-        if item.kind == .image, let ratio = item.aspectRatio, ratio != 1.0 {
-            return 0
-        }
-        return 4
     }
 
     @ViewBuilder private var content: some View {
@@ -68,24 +64,31 @@ struct MediaGridCell: View {
         }
     }
 
-    /// V1 parity for aspect-ratio mode: the inner image container takes the
-    /// media's natural aspect ratio centered inside the square cell and
-    /// gets the 4pt rounding applied to itself (not to the surrounding
-    /// letterbox area). In default mode the container fills the cell and
-    /// the image crops with no rounding. See `SiteMediaCollectionCell.swift:113-125`
+    /// Aspect-ratio mode letterboxes the image inside the square cell using
+    /// `.fit` on the resizable image — this keeps the rendered image
+    /// constrained to cell bounds and avoids the overflow that an outer
+    /// `.aspectRatio(ratio, .fit)` modifier on the CachedAsyncImage wrapper
+    /// produced (image escaping its cell horizontally into adjacent
+    /// positions). Default mode uses `.fill` so the image crops to cover
+    /// the cell. The whole cell rounds at 4pt in aspect-ratio mode (see
+    /// outer `.clipShape` in `body`); this is a small deviation from V1
+    /// which rounds only the inner image container, but the alternative
+    /// caused a much worse rendering bug. See `SiteMediaCollectionCell.swift:113-125`
     /// for the V1 reference.
     @ViewBuilder private var imageContent: some View {
-        let cached = CachedAsyncImage(url: item.thumbnailURL) { image in
-            image.resizable().aspectRatio(contentMode: .fill)
-        } placeholder: {
-            Color(uiColor: .secondarySystemBackground)
-        }
-        if isAspectRatioMode, let ratio = item.aspectRatio {
-            cached
-                .aspectRatio(ratio, contentMode: .fit)
-                .clipShape(RoundedRectangle(cornerRadius: 4))
+        if isAspectRatioMode {
+            CachedAsyncImage(url: item.thumbnailURL) { image in
+                image.resizable().aspectRatio(contentMode: .fit)
+            } placeholder: {
+                Color(uiColor: .secondarySystemBackground)
+            }
         } else {
-            cached.clipped()
+            CachedAsyncImage(url: item.thumbnailURL) { image in
+                image.resizable().aspectRatio(contentMode: .fill)
+            } placeholder: {
+                Color(uiColor: .secondarySystemBackground)
+            }
+            .clipped()
         }
     }
 
