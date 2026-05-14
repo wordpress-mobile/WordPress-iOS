@@ -73,8 +73,8 @@ struct MediaGridCell: View {
     /// the cell. The whole cell rounds at 4pt in aspect-ratio mode (see
     /// outer `.clipShape` in `body`); this is a small deviation from V1
     /// which rounds only the inner image container, but the alternative
-    /// caused a much worse rendering bug. See `SiteMediaCollectionCell.swift:113-125`
-    /// for the V1 reference.
+    /// caused a much worse rendering bug. See `SiteMediaCollectionCell` for
+    /// the V1 reference.
     @ViewBuilder private var imageContent: some View {
         if isAspectRatioMode {
             CachedAsyncImage(url: item.thumbnailURL) { image in

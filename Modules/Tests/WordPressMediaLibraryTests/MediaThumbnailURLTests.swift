@@ -9,8 +9,8 @@ struct MediaThumbnailURLTests {
     }
 
     private func scaled(_ urlString: String) -> ScaledImageDetails {
-        // ScaledImageDetails init signature per wp_api.swift:65820 —
-        // file / width / height / sourceUrl (no mimeType).
+        // ScaledImageDetails init signature: file / width / height / sourceUrl
+        // (no mimeType).
         ScaledImageDetails(file: "x", width: 0, height: 0, sourceUrl: urlString)
     }
 

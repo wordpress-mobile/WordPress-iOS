@@ -24,9 +24,9 @@ struct MediaKindTests {
     }
 
     @Test func payloadAudioMapsToAudio() {
-        // AudioMediaDetails has 13 init parameters per wp_api.swift:32603 —
-        // fileSize, length (UInt64), lengthFormatted, plus ten optional
-        // metadata fields. Pass minimal valid values.
+        // AudioMediaDetails has 13 init parameters: fileSize, length (UInt64),
+        // lengthFormatted, plus ten optional metadata fields. Pass minimal
+        // valid values.
         let details = AudioMediaDetails(
             fileSize: 0,
             length: 0,

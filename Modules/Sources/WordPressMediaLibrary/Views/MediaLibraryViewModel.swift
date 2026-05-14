@@ -243,14 +243,13 @@ final class MediaLibraryViewModel: ObservableObject {
 
     /// Reads the current snapshot from the collection and updates the
     /// published state. Errors from `collection.loadItems()` (a SQLite read)
-    /// are logged only — never surfaced via `show(error:)`. This is the
-    /// observer-loop path's behavior carried forward from M1, and is shared
+    /// are logged only — never surfaced via `show(error:)`. This is shared
     /// with the user-visible paths (`fetchPageOne`, `loadNextPage`) for
     /// simplicity. A SQLite-read failure after a successful network refresh
     /// or pagination would currently show stale rows with only a log line;
-    /// M3+ should split the user-visible callers off so they can surface
-    /// the error to `show(error:)`. The cache-corruption failure mode is
-    /// rare enough that this trade-off is acceptable for M2.
+    /// a future change could split the user-visible callers off so they can
+    /// surface the error to `show(error:)`. The cache-corruption failure
+    /// mode is rare enough that this trade-off is acceptable for now.
     private func loadItems(
         from collection: MediaMetadataCollectionWithEditContext,
         snapshot: UInt64

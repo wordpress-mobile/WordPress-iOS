@@ -1,8 +1,6 @@
 import Foundation
 
 enum Strings {
-    // MARK: - M1
-
     static let title = NSLocalizedString(
         "mediaLibrary.screen.title",
         value: "Media",
@@ -26,8 +24,6 @@ enum Strings {
         value: "(no title)",
         comment: "Placeholder shown for media items with no title"
     )
-
-    // MARK: - M2
 
     static let searchPrompt = NSLocalizedString(
         "mediaLibrary.search.prompt",

@@ -109,10 +109,10 @@ struct MediaGridItem: Identifiable, Equatable {
 
     private static func makeAccessibilityLabel(media: MediaWithEditContext, kind: MediaKind) -> String {
         // `WpGmtDateTime` is a typealias for `Date` in the wordpress-rs Swift
-        // binding (wp_api.swift:167229), so `media.dateGmt` is already a
-        // proper Date — no string parsing needed. The DateFormatter applies
-        // the user's locale + time zone, so a UTC dateGmt renders as local
-        // time, matching the V1 cell view-model's behavior.
+        // binding, so `media.dateGmt` is already a proper Date — no string
+        // parsing needed. The DateFormatter applies the user's locale + time
+        // zone, so a UTC dateGmt renders as local time, matching the V1 cell
+        // view-model's behavior.
         let date = MediaGridItem.accessibilityDateFormatter.string(from: media.dateGmt)
         switch kind {
         case .image:

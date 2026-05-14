@@ -6,7 +6,7 @@ import WordPressAPIInternal
 /// can carry it across the module boundary; the app-target analytics
 /// adapter reads `rawValue` for its property dict. The `MediaDetailsPayload`
 /// initializer, the `MediaTypeParam` mapping, and the UI helpers
-/// (`title` / `systemImageName`, added in Task 11) all stay module-internal
+/// (`title` / `systemImageName`) all stay module-internal
 /// — they're used only inside the module and in `@testable` tests, so
 /// there's no reason to leak `WordPressAPIInternal` types through the
 /// public surface.
@@ -30,9 +30,9 @@ public enum MediaKind: String, CaseIterable, Hashable, Sendable {
     /// goes through the wordpress-rs `MediaListFilter.mediaType` parameter,
     /// which is a single optional `MediaTypeParam` — we can't OR
     /// `.application` and `.text` in one query without an upstream
-    /// wordpress-rs change. M2 ships with the narrower `.application`-only
-    /// document bucket; full V1 parity here depends on the wordpress-rs
-    /// Phase 0 surface gaining multi-value media-type filtering.
+    /// wordpress-rs change. V2 ships with the narrower `.application`-only
+    /// document bucket; full V1 parity here depends on a wordpress-rs
+    /// change to support multi-value media-type filtering.
     var asMediaTypeParam: MediaTypeParam {
         switch self {
         case .image: .image
