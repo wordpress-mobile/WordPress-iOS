@@ -149,7 +149,7 @@ class CollectionViewContainerCell: UITableViewCell {
                 noResultsView.view.bottomAnchor.constraint(equalTo: collectionView.bottomAnchor),
                 noResultsView.view.leadingAnchor.constraint(equalTo: collectionView.leadingAnchor),
                 noResultsView.view.trailingAnchor.constraint(equalTo: collectionView.trailingAnchor)
-                ])
+            ])
         }
     }
 

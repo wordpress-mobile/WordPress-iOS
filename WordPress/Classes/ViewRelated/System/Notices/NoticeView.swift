@@ -186,7 +186,7 @@ class NoticeView: UIView {
         NSLayoutConstraint.activate([
             actionBackgroundView.topAnchor.constraint(equalTo: backgroundView.contentView.topAnchor),
             actionBackgroundView.bottomAnchor.constraint(equalTo: backgroundView.contentView.bottomAnchor),
-            ])
+        ])
 
         actionBackgroundView.pinSubviewToAllEdgeMargins(actionButton)
 
@@ -401,7 +401,7 @@ fileprivate extension UIView {
             borderView.topAnchor.constraint(equalTo: topAnchor),
             borderView.centerXAnchor.constraint(equalTo: centerXAnchor),
             borderView.widthAnchor.constraint(equalTo: widthAnchor)
-            ])
+        ])
     }
 
     func addTrailingBorder() {
@@ -412,7 +412,7 @@ fileprivate extension UIView {
             borderView.trailingAnchor.constraint(equalTo: trailingAnchor),
             borderView.centerYAnchor.constraint(equalTo: centerYAnchor),
             borderView.widthAnchor.constraint(equalToConstant: .hairlineBorderWidth)
-            ])
+        ])
     }
 
     func makeBorderView() -> UIView {

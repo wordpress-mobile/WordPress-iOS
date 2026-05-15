@@ -81,7 +81,7 @@ class LanguageSelectorViewController: UITableViewController, UISearchResultsUpda
         }
         return ImmuTable(sections: [
             ImmuTableSection(rows: filtered.map(model(language:)))
-            ])
+        ])
     }
 
     private func modelForBrowsing() -> ImmuTable {
@@ -92,7 +92,7 @@ class LanguageSelectorViewController: UITableViewController, UISearchResultsUpda
             ImmuTableSection(
                 headerText: NSLocalizedString("All languages", comment: "Section title for All Languages"),
                 rows: database.all.map(model(language:)))
-            ])
+        ])
     }
 
     private func model(language: Language) -> ImmuTableRow {

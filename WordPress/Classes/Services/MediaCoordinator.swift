@@ -366,7 +366,7 @@ class MediaCoordinator: NSObject {
                         "width": media.width ?? "",
                         "localURL": media.localURL ?? "",
                         "remoteURL": media.remoteURL ?? "",
-                ])
+                    ])
 
             self.coordinator(for: media).attach(error: nserror, toMediaID: media.uploadID)
             self.fail(nserror, media: media)

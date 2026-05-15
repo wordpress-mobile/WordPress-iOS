@@ -667,7 +667,7 @@ class AztecPostViewController: UIViewController, PostEditor {
             titleTextField.trailingAnchor.constraint(equalTo: view.readableContentGuide.trailingAnchor),
             titleTopConstraint,
             titleHeightConstraint
-            ])
+        ])
 
         let insets = titleTextField.textContainerInset
 
@@ -676,35 +676,35 @@ class AztecPostViewController: UIViewController, PostEditor {
             titlePlaceholderLabel.rightAnchor.constraint(equalTo: titleTextField.rightAnchor, constant: -insets.right - titleTextField.textContainer.lineFragmentPadding),
             titlePlaceholderLabel.topAnchor.constraint(equalTo: titleTextField.topAnchor, constant: insets.top),
             titlePlaceholderLabel.heightAnchor.constraint(equalToConstant: titleTextField.font!.lineHeight)
-            ])
+        ])
 
         NSLayoutConstraint.activate([
             separatorView.leadingAnchor.constraint(equalTo: view.readableContentGuide.leadingAnchor),
             separatorView.trailingAnchor.constraint(equalTo: view.readableContentGuide.trailingAnchor),
             separatorView.topAnchor.constraint(equalTo: titleTextField.bottomAnchor),
             separatorView.heightAnchor.constraint(equalToConstant: separatorView.frame.height)
-            ])
+        ])
 
         NSLayoutConstraint.activate([
             richTextView.leadingAnchor.constraint(equalTo: view.readableContentGuide.leadingAnchor),
             richTextView.trailingAnchor.constraint(equalTo: view.readableContentGuide.trailingAnchor),
             richTextView.topAnchor.constraint(equalTo: view.topAnchor),
             richTextView.bottomAnchor.constraint(equalTo: view.bottomAnchor)
-            ])
+        ])
 
         NSLayoutConstraint.activate([
             htmlTextView.leftAnchor.constraint(equalTo: richTextView.leftAnchor),
             htmlTextView.rightAnchor.constraint(equalTo: richTextView.rightAnchor),
             htmlTextView.topAnchor.constraint(equalTo: richTextView.topAnchor),
             htmlTextView.bottomAnchor.constraint(equalTo: richTextView.bottomAnchor)
-            ])
+        ])
 
         NSLayoutConstraint.activate([
             placeholderLabel.leftAnchor.constraint(equalTo: richTextView.leftAnchor, constant: insets.left + richTextView.textContainer.lineFragmentPadding),
             placeholderLabel.rightAnchor.constraint(equalTo: richTextView.rightAnchor, constant: -insets.right - richTextView.textContainer.lineFragmentPadding),
             textPlaceholderTopConstraint,
             placeholderLabel.bottomAnchor.constraint(lessThanOrEqualTo: richTextView.bottomAnchor, constant: Constants.placeholderPadding.bottom)
-            ])
+        ])
     }
 
     private func configureDefaultProperties(for textView: UITextView, accessibilityLabel: String) {
@@ -745,7 +745,7 @@ class AztecPostViewController: UIViewController, PostEditor {
             mediaProgressView.leadingAnchor.constraint(equalTo: navigationBar.leadingAnchor),
             mediaProgressView.widthAnchor.constraint(equalTo: navigationBar.widthAnchor),
             mediaProgressView.topAnchor.constraint(equalTo: navigationBar.bottomAnchor, constant: -mediaProgressView.frame.height)
-            ])
+        ])
     }
 
     func registerAttachmentImageProviders() {

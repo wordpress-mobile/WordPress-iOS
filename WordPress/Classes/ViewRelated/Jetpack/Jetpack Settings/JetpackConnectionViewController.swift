@@ -76,7 +76,8 @@ open class JetpackConnectionViewController: UITableViewController {
                 rows: [disconnectRow],
                 footerText: NSLocalizedString("Your site will no longer send data to WordPress.com and Jetpack features will stop working. You will lose access to the site on the app and you will have to re-add it with the site credentials.",
                                               comment: "Explanatory text bellow the Disconnect from WordPress.com button")
-            )])
+            )
+        ])
     }
 
     // MARK: - Row Handler

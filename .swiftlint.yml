@@ -64,6 +64,10 @@ only_rules:
   # Prefer `last(where:)` over `filter { }.last`.
   - last_where
 
+  # Trailing closing brackets/parens of literal expressions (arrays, dicts)
+  # should match the indentation of the line that introduced them.
+  - literal_expression_end_indentation
+
   # MARK comment should be in valid format.
   - mark
 

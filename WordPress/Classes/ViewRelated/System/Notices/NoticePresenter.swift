@@ -405,7 +405,7 @@ class NoticeContainerView: UIView {
             stackView.trailingAnchor.constraint(equalTo: layoutMarginsGuide.trailingAnchor),
             stackView.topAnchor.constraint(equalTo: layoutMarginsGuide.topAnchor),
             stackView.bottomAnchor.constraint(equalTo: layoutMarginsGuide.bottomAnchor)
-            ])
+        ])
     }
 
     required init?(coder aDecoder: NSCoder) {

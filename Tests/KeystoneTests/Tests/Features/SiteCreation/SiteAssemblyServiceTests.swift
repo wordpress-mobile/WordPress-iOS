@@ -31,7 +31,7 @@ class SiteAssemblyServiceTests: XCTestCase {
             "domain_name": "domainName.com" as AnyObject,
             "product_id": 42 as AnyObject,
             "supports_privacy": true as AnyObject,
-            ]
+        ]
         siteCreator.address = try DomainSuggestion(json: domainSuggestionPayload)
 
         creationRequest = siteCreator.build()

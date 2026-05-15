@@ -226,8 +226,8 @@ class PluginDirectoryViewModel: Observable {
                 featuredRow(presenter: presenter),
                 popularRow(presenter: presenter),
                 newRow(presenter: presenter),
-                ]),
-            ])
+            ]),
+        ])
     }
 
     public func refresh() {

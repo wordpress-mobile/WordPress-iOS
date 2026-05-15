@@ -657,7 +657,7 @@ class ButtonCell: WPTableViewCellDefault {
                                         button.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -SupportTableLayoutSpacing.sidePadding),
                                         button.topAnchor.constraint(equalTo: contentView.topAnchor, constant: SupportTableLayoutSpacing.topBottomPadding),
                                         button.bottomAnchor.constraint(equalTo: contentView.bottomAnchor, constant: -SupportTableLayoutSpacing.topBottomPadding)
-                                    ])
+        ])
     }
 
     enum LayoutSpacing {

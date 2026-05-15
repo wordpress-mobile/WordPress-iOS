@@ -461,26 +461,26 @@ class PluginViewModel: Observable {
             ImmuTableSection(optionalRows: [
                 header,
                 versionRow
-                ]),
+            ]),
             ImmuTableSection(optionalRows: [
                 active,
                 autoupdates
-                ]),
+            ]),
             ImmuTableSection(optionalRows: [
                 settingsLink,
                 wpOrgPluginLink,
                 homeLink
-                ]),
+            ]),
             ImmuTableSection(optionalRows: [
                 description,
                 installation,
                 changelog,
                 faq
-                ]),
+            ]),
             ImmuTableSection(optionalRows: [
                 remove
-                ])
             ])
+        ])
     }
 
     private func confirmRegisterDomainAlert(for directoryEntry: PluginDirectoryEntry) -> UIAlertController {

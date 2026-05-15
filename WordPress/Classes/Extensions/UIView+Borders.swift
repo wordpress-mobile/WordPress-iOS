@@ -10,7 +10,7 @@ extension UIView {
             borderView.topAnchor.constraint(equalTo: topAnchor),
             borderView.centerXAnchor.constraint(equalTo: centerXAnchor),
             borderView.widthAnchor.constraint(equalTo: widthAnchor)
-            ])
+        ])
         return borderView
     }
 
@@ -23,7 +23,7 @@ extension UIView {
             borderView.bottomAnchor.constraint(equalTo: bottomAnchor),
             borderView.centerXAnchor.constraint(equalTo: centerXAnchor),
             borderView.widthAnchor.constraint(equalTo: widthAnchor)
-            ])
+        ])
         return borderView
     }
 
@@ -36,7 +36,7 @@ extension UIView {
             borderView.bottomAnchor.constraint(equalTo: bottomAnchor),
             borderView.leadingAnchor.constraint(equalTo: leadingAnchor, constant: leadingMargin),
             borderView.trailingAnchor.constraint(equalTo: trailingAnchor)
-            ])
+        ])
         return borderView
     }
 
@@ -49,7 +49,7 @@ extension UIView {
             borderView.bottomAnchor.constraint(equalTo: bottomAnchor),
             borderView.leadingAnchor.constraint(equalTo: leadingAnchor, constant: leadingMargin),
             borderView.trailingAnchor.constraint(equalTo: trailingAnchor, constant: trailingMargin)
-            ])
+        ])
         return borderView
     }
 

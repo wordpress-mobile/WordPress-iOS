@@ -152,7 +152,7 @@ open class JetpackSettingsViewController: UITableViewController {
                                               comment: "Jetpack Settings: WordPress.com Login settings"),
                 rows: wordPressLoginRows,
                 footerText: nil)
-            ])
+        ])
     }
 
     // MARK: Learn More footer

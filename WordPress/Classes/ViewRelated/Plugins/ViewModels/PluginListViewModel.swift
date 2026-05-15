@@ -232,7 +232,7 @@ class PluginListViewModel: Observable {
 
             return ImmuTable(sections: [
                 ImmuTableSection(rows: rows)
-                ])
+            ])
         }
     }
 

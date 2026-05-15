@@ -392,7 +392,7 @@ class ShareExtensionEditorViewController: ShareExtensionAbstractViewController {
             titleTextField.trailingAnchor.constraint(equalTo: layoutGuide.trailingAnchor),
             titleTopConstraint,
             titleHeightConstraint
-            ])
+        ])
 
         let insets = titleTextField.textContainerInset
 
@@ -401,28 +401,28 @@ class ShareExtensionEditorViewController: ShareExtensionAbstractViewController {
             titlePlaceholderLabel.rightAnchor.constraint(equalTo: titleTextField.rightAnchor, constant: -insets.right - titleTextField.textContainer.lineFragmentPadding),
             titlePlaceholderLabel.topAnchor.constraint(equalTo: titleTextField.topAnchor, constant: insets.top),
             titlePlaceholderLabel.heightAnchor.constraint(equalToConstant: titleTextField.font!.lineHeight)
-            ])
+        ])
 
         NSLayoutConstraint.activate([
             separatorView.leftAnchor.constraint(equalTo: layoutGuide.leftAnchor),
             separatorView.rightAnchor.constraint(equalTo: layoutGuide.rightAnchor),
             separatorView.topAnchor.constraint(equalTo: titleTextField.bottomAnchor),
             separatorView.heightAnchor.constraint(equalToConstant: separatorView.frame.height)
-            ])
+        ])
 
         NSLayoutConstraint.activate([
             richTextView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
             richTextView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
             richTextView.topAnchor.constraint(equalTo: view.topAnchor),
             richTextView.bottomAnchor.constraint(equalTo: view.bottomAnchor)
-            ])
+        ])
 
         NSLayoutConstraint.activate([
             placeholderLabel.leadingAnchor.constraint(equalTo: layoutGuide.leadingAnchor, constant: Constants.placeholderPadding.left),
             placeholderLabel.trailingAnchor.constraint(equalTo: layoutGuide.trailingAnchor, constant: -(Constants.placeholderPadding.right + richTextView.textContainer.lineFragmentPadding)),
             textPlaceholderTopConstraint,
             placeholderLabel.bottomAnchor.constraint(lessThanOrEqualTo: richTextView.bottomAnchor, constant: Constants.placeholderPadding.bottom)
-            ])
+        ])
     }
 
     private func configureDefaultProperties(for textView: UITextView, accessibilityLabel: String) {
@@ -827,7 +827,7 @@ extension ShareExtensionEditorViewController {
             .header4: .h4,
             .header5: .h5,
             .header6: .h6,
-            ]
+        ]
         for (key, value) in mapping {
             if identifiers.contains(key) {
                 return value
