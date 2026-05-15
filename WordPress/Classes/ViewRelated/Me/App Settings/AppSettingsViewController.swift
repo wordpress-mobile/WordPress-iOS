@@ -212,9 +212,9 @@ class AppSettingsViewController: UITableViewController {
             let title = NSLocalizedString("appSettings.media.imageQuality.title", value: "Quality", comment: "The quality of image used when uploading")
 
             let settingsSelectionConfiguration = [SettingsSelectionDefaultValueKey: currentImageQuality,
-                                                         SettingsSelectionTitleKey: title,
-                                                        SettingsSelectionTitlesKey: titles,
-                                                        SettingsSelectionValuesKey: values] as [String: Any]
+                                                  SettingsSelectionTitleKey: title,
+                                                  SettingsSelectionTitlesKey: titles,
+                                                  SettingsSelectionValuesKey: values] as [String: Any]
 
             let viewController = SettingsSelectionViewController(dictionary: settingsSelectionConfiguration)
 

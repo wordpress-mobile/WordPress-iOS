@@ -30,7 +30,7 @@ class PluginDetailViewHeaderCell: UITableViewCell, NibLoadable {
         let author = directoryEntry.author
 
         let defaultAttributes: [NSAttributedString.Key: Any] = [.font: UIFont.preferredFont(forTextStyle: .subheadline),
-                                                               .foregroundColor: UIAppColor.neutral(.shade70)]
+                                                                .foregroundColor: UIAppColor.neutral(.shade70)]
 
         let authorAttributes: [NSAttributedString.Key: Any] = [.foregroundColor: UIAppColor.primary(.shade40)]
 

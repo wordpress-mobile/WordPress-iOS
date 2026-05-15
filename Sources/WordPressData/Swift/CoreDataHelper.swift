@@ -289,7 +289,7 @@ public extension CoreDataStack {
 
         do {
             let options = [NSMigratePersistentStoresAutomaticallyOption: true,
-                                 NSInferMappingModelAutomaticallyOption: true]
+                           NSInferMappingModelAutomaticallyOption: true]
             try storeCoordinator.addPersistentStore(ofType: NSSQLiteStoreType,
                                                     configurationName: nil,
                                                     at: currentDatabaseLocation,

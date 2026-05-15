@@ -267,18 +267,18 @@ class MediaServiceRemoteRESTTests: RemoteTestCase, RESTTestable {
         let width = 432
 
         let jsonDictionary: [String: Any] = ["ID": id,
-                                                      "URL": url,
-                                                      "guid": guid,
-                                                      "date": date,
-                                                      "post_ID": postID,
-                                                      "mime_type": mimeType,
-                                                      "file": file,
-                                                      "title": title,
-                                                      "caption": caption,
-                                                      "description": description,
-                                                      "alt": alt,
-                                                      "height": height,
-                                                      "width": width]
+                                             "URL": url,
+                                             "guid": guid,
+                                             "date": date,
+                                             "post_ID": postID,
+                                             "mime_type": mimeType,
+                                             "file": file,
+                                             "title": title,
+                                             "caption": caption,
+                                             "description": description,
+                                             "alt": alt,
+                                             "height": height,
+                                             "width": width]
 
         let remoteMedia = MediaServiceRemoteREST.remoteMedia(fromJSONDictionary: jsonDictionary)
         XCTAssertEqual(remoteMedia?.mediaID?.intValue, id)
@@ -327,18 +327,18 @@ class MediaServiceRemoteRESTTests: RemoteTestCase, RESTTestable {
                                               "width": width]
 
         let jsonDictionary2: [String: Any] = ["ID": id2,
-                                               "URL": url,
-                                               "guid": guid,
-                                               "date": date,
-                                               "post_ID": postID,
-                                               "mime_type": mimeType,
-                                               "file": file,
-                                               "title": title,
-                                               "caption": caption,
-                                               "description": description,
-                                               "alt": alt,
-                                               "height": height,
-                                               "width": width]
+                                              "URL": url,
+                                              "guid": guid,
+                                              "date": date,
+                                              "post_ID": postID,
+                                              "mime_type": mimeType,
+                                              "file": file,
+                                              "title": title,
+                                              "caption": caption,
+                                              "description": description,
+                                              "alt": alt,
+                                              "height": height,
+                                              "width": width]
         let jsonArray = [jsonDictionary1, jsonDictionary2]
 
         let remoteMediaArray: [RemoteMedia] = MediaServiceRemoteREST.remoteMedia(fromJSONArray: jsonArray) as! [RemoteMedia]

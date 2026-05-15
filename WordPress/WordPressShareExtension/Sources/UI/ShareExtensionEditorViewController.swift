@@ -53,7 +53,7 @@ class ShareExtensionEditorViewController: ShareExtensionAbstractViewController {
         self.configureDefaultProperties(for: textView, accessibilityLabel: accessibilityLabel)
 
         let linkAttributes: [NSAttributedString.Key: Any] = [.underlineStyle: NSUnderlineStyle.single.rawValue,
-                                                            .foregroundColor: ShareColors.aztecLinkColor]
+                                                             .foregroundColor: ShareColors.aztecLinkColor]
 
         textView.delegate = self
         textView.formattingDelegate = self
@@ -94,8 +94,8 @@ class ShareExtensionEditorViewController: ShareExtensionAbstractViewController {
         titleParagraphStyle.alignment = .natural
 
         let attributes: [NSAttributedString.Key: Any] = [.foregroundColor: UIColor.label,
-                                                        .font: ShareFonts.title,
-                                                        .paragraphStyle: titleParagraphStyle]
+                                                         .font: ShareFonts.title,
+                                                         .paragraphStyle: titleParagraphStyle]
 
         let textView = UITextView()
 

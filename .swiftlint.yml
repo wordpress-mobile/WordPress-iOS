@@ -13,6 +13,9 @@ only_rules:
   # Prefer `Array(xs)` over `xs.map { $0 }`.
   - array_init
 
+  # All elements in a collection literal should be vertically aligned.
+  - collection_alignment
+
   # Colons should be next to the identifier when specifying a type.
   - colon
 

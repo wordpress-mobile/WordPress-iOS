@@ -22,11 +22,11 @@ class GutenbergLightNavigationController: UINavigationController {
         let barButtonItemAppearance = UIBarButtonItem.appearance(whenContainedInInstancesOf: [GutenbergLightNavigationController.self])
         barButtonItemAppearance.tintColor = tintColor
         barButtonItemAppearance.setTitleTextAttributes([NSAttributedString.Key.font: WPFontManager.systemRegularFont(ofSize: 17.0),
-                                                    NSAttributedString.Key.foregroundColor: tintColor],
-                                                   for: .normal)
+                                                        NSAttributedString.Key.foregroundColor: tintColor],
+                                                       for: .normal)
         barButtonItemAppearance.setTitleTextAttributes([NSAttributedString.Key.font: WPFontManager.systemRegularFont(ofSize: 17.0),
-                                                    NSAttributedString.Key.foregroundColor: tintColor.withAlphaComponent(0.25)],
-                                                   for: .disabled)
+                                                        NSAttributedString.Key.foregroundColor: tintColor.withAlphaComponent(0.25)],
+                                                       for: .disabled)
 
         setNeedsStatusBarAppearanceUpdate()
     }
