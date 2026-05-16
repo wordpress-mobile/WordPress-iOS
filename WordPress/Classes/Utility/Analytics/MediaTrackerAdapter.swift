@@ -31,11 +31,29 @@ struct MediaTrackerAdapter: MediaTracker {
             stat = .siteMediaGridModeToggled
             properties["mode"] = isAspectRatio ? "aspect_ratio" : "square"
 
-        // TODO: M4 — map to real WPAnalyticsStat values in Task 9.
-        case .mediaLibraryAdded, .mediaLibraryUploadRetried:
-            return
+        case .mediaLibraryAdded(let source, let kind):
+            guard let resolvedStat = uploadAddedStat(source: source, kind: kind) else {
+                // .audio / .document map to no event — V1 parity.
+                return
+            }
+            stat = resolvedStat
+
+        case .mediaLibraryUploadRetried:
+            stat = .mediaLibraryUploadMediaRetried
         }
 
         WPAppAnalytics.track(stat, properties: properties, blog: blog)
+    }
+
+    private func uploadAddedStat(source: MediaUploadSource, kind: MediaKind) -> WPAnalyticsStat? {
+        switch (source, kind) {
+        case (.photoLibrary, .image): return .mediaLibraryAddedPhotoViaDeviceLibrary
+        case (.photoLibrary, .video): return .mediaLibraryAddedVideoViaDeviceLibrary
+        case (.camera, .image): return .mediaLibraryAddedPhotoViaCamera
+        case (.camera, .video): return .mediaLibraryAddedVideoViaCamera
+        case (.otherApps, .image): return .mediaLibraryAddedPhotoViaOtherApps
+        case (.otherApps, .video): return .mediaLibraryAddedVideoViaOtherApps
+        case (_, .audio), (_, .document): return nil
+        }
     }
 }
