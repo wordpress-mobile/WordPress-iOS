@@ -1,13 +1,36 @@
 import Foundation
 import SwiftUI
+import UniformTypeIdentifiers
 import WordPressAPI
 import WordPressAPIInternal
 import WordPressCore
 
 @MainActor
 final class MediaLibraryViewModel: ObservableObject {
-    private let client: WordPressClient
+    private let client: WordPressClient?
     private let tracker: any MediaTracker
+    let uploader: MediaUploader
+
+    @Published private(set) var bannerSummary: BannerSummary?
+    @Published private(set) var uploadsScreenItems: [UploadRowItem] = []
+
+    private var uploaderObserverTask: Task<Void, Never>?
+
+    struct BannerSummary: Equatable {
+        let pendingCount: Int
+        let failedCount: Int
+    }
+
+    struct UploadRowItem: Identifiable, Equatable {
+        enum Mode: Equatable {
+            case uploading(Progress)
+            case failed(message: String, isRetryable: Bool)
+        }
+        let id: UUID
+        let displayName: String
+        let kind: MediaKind
+        let mode: Mode
+    }
 
     /// Cached lazy resolution of `WpService` + a
     /// `MediaMetadataCollectionWithEditContext` for the current `filter`.
@@ -56,13 +79,141 @@ final class MediaLibraryViewModel: ObservableObject {
     }
     func errorToDisplay() -> Error? { items.isEmpty ? error : nil }
 
-    init(client: WordPressClient, tracker: any MediaTracker) {
+    init(client: WordPressClient, tracker: any MediaTracker, uploader: MediaUploader) {
         self.client = client
         self.tracker = tracker
+        self.uploader = uploader
         self.isAspectRatioModeEnabled = AspectRatioPreference.load()
         // Eagerly schedule the first collection task so `.task(id: filter)`
         // can await it on first appearance without re-creation.
         self.collectionTask = makeCollectionTask(for: .initial)
+        startUploaderObserver()
+    }
+
+    /// Test-only seam. Skips the collection task so tests that only exercise
+    /// uploader state don't need a real `WordPressClient`.
+    init(tracker: any MediaTracker, uploader: MediaUploader) {
+        self.client = nil
+        self.tracker = tracker
+        self.uploader = uploader
+        self.isAspectRatioModeEnabled = false
+        self.collectionTask = nil
+        startUploaderObserver()
+    }
+
+    /// Subscribes weakly so a navigated-away view model deallocates instead
+    /// of being kept alive by the stream loop. The publisher replays the
+    /// current snapshot to the new subscriber before emitting transitions.
+    private func startUploaderObserver() {
+        let publisher = uploader.statePublisher
+        uploaderObserverTask = Task { [weak self] in
+            for await state in publisher.values {
+                guard !Task.isCancelled else { return }
+                guard let self else { return }
+                await self.applyUploaderState(state)
+            }
+        }
+    }
+
+    deinit {
+        uploaderObserverTask?.cancel()
+    }
+
+    @MainActor
+    private func applyUploaderState(_ state: UploaderState) {
+        if state.isEmpty {
+            bannerSummary = nil
+        } else {
+            bannerSummary = BannerSummary(
+                pendingCount: state.pendingCount,
+                failedCount: state.failedCount
+            )
+        }
+        // `state.entries` preserves submission order across pending/failed
+        // transitions, so the Uploads-screen row stays put when an
+        // in-flight upload fails (or a failed row is retried).
+        uploadsScreenItems = state.entries.map { entry in
+            switch entry {
+            case .pending(let p):
+                return UploadRowItem(
+                    id: p.id,
+                    displayName: p.displayName,
+                    kind: p.kind,
+                    mode: .uploading(p.progress)
+                )
+            case .failed(let f):
+                return UploadRowItem(
+                    id: f.id,
+                    displayName: f.displayName,
+                    kind: f.kind,
+                    mode: .failed(message: f.errorMessage, isRetryable: f.isRetryable)
+                )
+            }
+        }
+    }
+
+    func enqueue(sources: [UploadSource]) async {
+        for source in sources {
+            let kind = kindFor(source: source)
+            let analyticsSource = analyticsSourceFor(source: source)
+            tracker.track(.mediaLibraryAdded(source: analyticsSource, kind: kind))
+        }
+        await uploader.enqueue(sources: sources)
+    }
+
+    func cancelUpload(_ id: UUID) async {
+        await uploader.cancel(id)
+    }
+
+    func retryUpload(_ id: UUID) async {
+        tracker.track(.mediaLibraryUploadRetried)
+        await uploader.retry(id)
+    }
+
+    func dismissUpload(_ id: UUID) async {
+        await uploader.dismiss(id)
+    }
+
+    func cancelAllUploads() async { await uploader.cancelAllPending() }
+
+    func retryAllUploads() async {
+        let retryable = uploadsScreenItems.contains { row in
+            if case .failed(_, let isRetryable) = row.mode { return isRetryable }
+            return false
+        }
+        guard retryable else { return }
+        tracker.track(.mediaLibraryUploadRetried)
+        await uploader.retryAllFailed()
+    }
+
+    func dismissAllUploads() async { await uploader.dismissAllFailed() }
+
+    private func kindFor(source: UploadSource) -> MediaKind {
+        switch source {
+        case .photoLibrary(_, _, let hint):
+            if hint.conforms(to: .movie) { return .video }
+            return .image
+        case .cameraImage: return .image
+        case .cameraVideo: return .video
+        case .file(let url):
+            let resolved: UTType? =
+                (try? url.resourceValues(forKeys: [.contentTypeKey]))?.contentType
+                ?? UTType(filenameExtension: url.pathExtension)
+            if let type = resolved {
+                if type.conforms(to: .image) { return .image }
+                if type.conforms(to: .movie) { return .video }
+                if type.conforms(to: .audio) { return .audio }
+            }
+            return .document
+        }
+    }
+
+    private func analyticsSourceFor(source: UploadSource) -> MediaUploadSource {
+        switch source {
+        case .photoLibrary: return .photoLibrary
+        case .cameraImage, .cameraVideo: return .camera
+        case .file: return .otherApps
+        }
     }
 
     /// Builds a Task that awaits `client.service` (actor-isolated) and
@@ -72,6 +223,7 @@ final class MediaLibraryViewModel: ObservableObject {
         for filter: MediaGridFilter
     ) -> Task<MediaMetadataCollectionWithEditContext, Error> {
         Task { [client] in
+            guard let client else { throw CancellationError() }
             let service = try await client.service
             return service.media()
                 .createMediaMetadataCollectionWithEditContext(
@@ -190,6 +342,7 @@ final class MediaLibraryViewModel: ObservableObject {
             return
         }
 
+        guard let client else { return }
         let batches = await client.cache.databaseUpdatesPublisher()
             .filter { @Sendable [weak collection] in
                 collection?.isRelevantUpdate(hook: $0) == true

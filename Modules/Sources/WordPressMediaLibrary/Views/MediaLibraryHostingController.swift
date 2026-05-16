@@ -10,9 +10,10 @@ public enum MediaLibraryHostingController {
     @MainActor
     public static func make(
         client: WordPressClient,
-        tracker: any MediaTracker
+        tracker: any MediaTracker,
+        uploader: MediaUploader
     ) -> UIViewController {
-        let viewModel = MediaLibraryViewModel(client: client, tracker: tracker)
+        let viewModel = MediaLibraryViewModel(client: client, tracker: tracker, uploader: uploader)
         let view = MediaLibraryView(viewModel: viewModel, tracker: tracker)
         let host = UIHostingController(rootView: view)
         host.navigationItem.largeTitleDisplayMode = .never
