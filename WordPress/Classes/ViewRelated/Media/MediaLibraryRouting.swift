@@ -1,6 +1,4 @@
-import AVFoundation
 import UIKit
-import UniformTypeIdentifiers
 import WordPressCore
 import WordPressData
 import WordPressMediaLibrary
@@ -31,16 +29,14 @@ enum MediaLibraryRouting {
         properties["is_v2"] = "1"
         let tracker = MediaTrackerAdapter(blog: blog, baseProperties: properties)
 
-        // TODO: Task 10 replaces this with MediaUploaderRegistry.shared.uploader(for: blog).
-        let policy = MediaUploadPolicy(
-            filePickerContentTypes: [.content],
-            isAllowedForUpload: { _, _ in true },
-            videoExportPreset: AVAssetExportPresetMediumQuality
-        )
-        let uploader = MediaUploader(
-            entryPoint: ClientBackedMediaUploadEntryPoint(client: client),
-            policy: policy
-        )
+        let uploader: MediaUploader
+        do {
+            uploader = try MediaUploaderRegistry.shared.uploader(for: blog)
+        } catch {
+            Loggers.app.error("Failed to vend uploader: \(error)")
+            return nil
+        }
+
         return MediaLibraryHostingController.make(client: client, tracker: tracker, uploader: uploader)
     }
 }

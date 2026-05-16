@@ -30,10 +30,18 @@ open class SiteManagementService: NSObject {
         guard let remote = siteManagementServiceRemoteForBlog(blog) else {
             return
         }
-        remote.deleteSite(blog.dotComID!,
+        // Capture the blog id synchronously, before `remove(blog)` deletes
+        // the managed object. The teardown Task can then run safely without
+        // touching the deleted Core Data instance.
+        let blogID = TaggedManagedObjectID<Blog>(blog)
+        remote.deleteSite(
+            blog.dotComID!,
             success: {
                 let blogService = BlogService(coreDataStack: self.coreDataStack)
                 blogService.remove(blog)
+                Task { @MainActor in
+                    await MediaUploaderRegistry.shared.tearDown(blogID: blogID)
+                }
                 DispatchQueue.main.async {
                     NotificationCenter.default.post(name: .WPSiteDeleted, object: nil)
                     success?()
@@ -41,7 +49,8 @@ open class SiteManagementService: NSObject {
             },
             failure: { error in
                 failure?(error)
-            })
+            }
+        )
     }
 
     /// Triggers content export of the specified WordPress.com site.
@@ -57,13 +66,15 @@ open class SiteManagementService: NSObject {
         guard let remote = siteManagementServiceRemoteForBlog(blog) else {
             return
         }
-        remote.exportContent(blog.dotComID!,
+        remote.exportContent(
+            blog.dotComID!,
             success: {
                 success?()
             },
             failure: { error in
                 failure?(error)
-            })
+            }
+        )
     }
 
     /// Gets the list of active purchases of the specified WordPress.com site.
@@ -73,17 +84,23 @@ open class SiteManagementService: NSObject {
     ///     - success: Optional success block with array of purchases (if any)
     ///     - failure: Optional failure block with NSError
     ///
-    @objc open func getActivePurchasesForBlog(_ blog: Blog, success: (([SitePurchase]) -> Void)?, failure: ((NSError) -> Void)?) {
+    @objc open func getActivePurchasesForBlog(
+        _ blog: Blog,
+        success: (([SitePurchase]) -> Void)?,
+        failure: ((NSError) -> Void)?
+    ) {
         guard let remote = siteManagementServiceRemoteForBlog(blog) else {
             return
         }
-        remote.getActivePurchases(blog.dotComID!,
+        remote.getActivePurchases(
+            blog.dotComID!,
             success: { purchases in
                 success?(purchases)
             },
             failure: { error in
                 failure?(error)
-            })
+            }
+        )
     }
 
     /// Creates a remote service for site management

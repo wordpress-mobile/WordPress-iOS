@@ -99,6 +99,9 @@ import WordPressData
 
         WordPressClientFactory.shared.reset()
         JetpackSocialFactory.shared.reset()
+        Task { @MainActor in
+            await MediaUploaderRegistry.shared.tearDownAll()
+        }
     }
 
     static func deleteAccountData() {
