@@ -1,4 +1,5 @@
 import SwiftUI
+import UIKit
 
 struct MediaLibraryView: View {
     @ObservedObject var viewModel: MediaLibraryViewModel
@@ -14,6 +15,13 @@ struct MediaLibraryView: View {
     /// tasks — an unstructured `Task { … }` from the button action would
     /// outlive view dismantle.
     @State private var retryToken: Int = 0
+    @State private var activePicker: ActivePicker?
+    @State private var isPresentingUploads = false
+
+    private enum ActivePicker: Identifiable {
+        case photoLibrary, takePhoto, takeVideo, chooseFile
+        var id: Self { self }
+    }
 
     private var spacing: CGFloat { viewModel.isAspectRatioModeEnabled ? 8 : 2 }
 
@@ -25,50 +33,125 @@ struct MediaLibraryView: View {
     }
 
     var body: some View {
-        ScrollView {
-            LazyVGrid(columns: columns, spacing: spacing) {
-                ForEach(viewModel.items) { item in
-                    MediaGridCell(
-                        item: item,
-                        isAspectRatioMode: viewModel.isAspectRatioModeEnabled
-                    )
-                    // Cell-scoped pagination trigger. SwiftUI cancels
-                    // this task on cell disappear AND on view dismantle.
-                    .task(id: item.id) {
-                        await viewModel.loadNextPageIfNeeded(after: item)
-                    }
+        VStack(spacing: 0) {
+            if let summary = viewModel.bannerSummary {
+                BannerView(summary: summary) {
+                    isPresentingUploads = true
                 }
             }
-            .padding(.top, spacing)
-            .animation(.default, value: viewModel.isAspectRatioModeEnabled)
-        }
-        .refreshable { await viewModel.refresh(pullToRefresh: true) }
-        .task { tracker.track(.mediaLibraryOpened) }
-        .task(id: viewModel.filter) { await viewModel.refresh() }
-        .task(id: viewModel.filter) { await viewModel.handleDataChanges() }
-        .task(id: searchText) {
-            // SwiftUI cancels this on every searchText change and on
-            // view dismantle. try-await propagates cancellation so the
-            // setFilter hop never fires after dismissal or mid-typing.
-            do {
-                try await Task.sleep(for: .milliseconds(300))
-            } catch {
-                return
+            ScrollView {
+                LazyVGrid(columns: columns, spacing: spacing) {
+                    ForEach(viewModel.items) { item in
+                        MediaGridCell(
+                            item: item,
+                            isAspectRatioMode: viewModel.isAspectRatioModeEnabled
+                        )
+                        // Cell-scoped pagination trigger. SwiftUI cancels
+                        // this task on cell disappear AND on view dismantle.
+                        .task(id: item.id) {
+                            await viewModel.loadNextPageIfNeeded(after: item)
+                        }
+                    }
+                }
+                .padding(.top, spacing)
+                .animation(.default, value: viewModel.isAspectRatioModeEnabled)
             }
-            viewModel.setFilter(viewModel.filter.with(search: searchText))
+            .refreshable { await viewModel.refresh(pullToRefresh: true) }
+            .task { tracker.track(.mediaLibraryOpened) }
+            .task(id: viewModel.filter) { await viewModel.refresh() }
+            .task(id: viewModel.filter) { await viewModel.handleDataChanges() }
+            .task(id: searchText) {
+                // SwiftUI cancels this on every searchText change and on
+                // view dismantle. try-await propagates cancellation so the
+                // setFilter hop never fires after dismissal or mid-typing.
+                do {
+                    try await Task.sleep(for: .milliseconds(300))
+                } catch {
+                    return
+                }
+                viewModel.setFilter(viewModel.filter.with(search: searchText))
+            }
+            .task(id: retryToken) {
+                // Skip the initial value — first appearance is driven by the
+                // `.task(id: viewModel.filter)` modifier above.
+                guard retryToken > 0 else { return }
+                await viewModel.refresh()
+            }
+            .navigationTitle(Strings.title)
+            .searchable(text: $searchText, prompt: Strings.searchPrompt)
+            .autocorrectionDisabled()
+            .textInputAutocapitalization(.never)
+            .toolbar {
+                filterMenu
+                addMenu
+            }
+            .overlay { contentOverlay }
         }
-        .task(id: retryToken) {
-            // Skip the initial value — first appearance is driven by the
-            // `.task(id: viewModel.filter)` modifier above.
-            guard retryToken > 0 else { return }
-            await viewModel.refresh()
+        // `MediaLibraryView` is hosted in a UIKit `UINavigationController`
+        // via `UIHostingController`, so there's no SwiftUI `NavigationStack`
+        // ancestor for `.navigationDestination` to push into. Present the
+        // Uploads queue as a sheet instead — it's a self-contained
+        // management surface (its own toolbar + bulk menu) and survives
+        // the SwiftUI/UIKit boundary cleanly.
+        .sheet(isPresented: $isPresentingUploads) {
+            NavigationStack {
+                UploadsView(viewModel: viewModel)
+                    .toolbar {
+                        ToolbarItem(placement: .topBarLeading) {
+                            Button(Strings.uploadsScreenClose) {
+                                isPresentingUploads = false
+                            }
+                        }
+                    }
+            }
         }
-        .navigationTitle(Strings.title)
-        .searchable(text: $searchText, prompt: Strings.searchPrompt)
-        .autocorrectionDisabled()
-        .textInputAutocapitalization(.never)
-        .toolbar { filterMenu }
-        .overlay { contentOverlay }
+        .sheet(item: $activePicker) { picker in
+            switch picker {
+            case .photoLibrary:
+                PhotosPickerRepresentable(
+                    onPicked: { sources in
+                        activePicker = nil
+                        Task { await viewModel.enqueue(sources: sources) }
+                    },
+                    onCancel: { activePicker = nil }
+                )
+                .ignoresSafeArea()
+            case .takePhoto:
+                CameraPickerRepresentable(
+                    mode: .photo,
+                    onPicked: { source in
+                        activePicker = nil
+                        Task { await viewModel.enqueue(sources: [source]) }
+                    },
+                    onCancel: { activePicker = nil }
+                )
+                .ignoresSafeArea()
+            case .takeVideo:
+                CameraPickerRepresentable(
+                    mode: .video,
+                    onPicked: { source in
+                        activePicker = nil
+                        Task { await viewModel.enqueue(sources: [source]) }
+                    },
+                    onCancel: { activePicker = nil }
+                )
+                .ignoresSafeArea()
+            case .chooseFile:
+                EmptyView()
+                    .fileImporter(
+                        isPresented: .constant(true),
+                        allowedContentTypes: viewModel.uploader.filePickerContentTypes,
+                        allowsMultipleSelection: true,
+                        onCompletion: { result in
+                            activePicker = nil
+                            if case .success(let urls) = result {
+                                let sources = urls.map { UploadSource.file($0) }
+                                Task { await viewModel.enqueue(sources: sources) }
+                            }
+                        }
+                    )
+            }
+        }
     }
 
     @ToolbarContentBuilder private var filterMenu: some ToolbarContent {
@@ -94,6 +177,30 @@ struct MediaLibraryView: View {
                 }
             } label: {
                 Image(systemName: "line.3.horizontal.decrease")
+            }
+        }
+    }
+
+    @ToolbarContentBuilder private var addMenu: some ToolbarContent {
+        ToolbarItem(placement: .topBarTrailing) {
+            Menu {
+                Button(Strings.addMenuPhotoLibrary, systemImage: "photo.on.rectangle") {
+                    activePicker = .photoLibrary
+                }
+                if UIImagePickerController.isSourceTypeAvailable(.camera) {
+                    Button(Strings.addMenuTakePhoto, systemImage: "camera") {
+                        activePicker = .takePhoto
+                    }
+                    Button(Strings.addMenuTakeVideo, systemImage: "video") {
+                        activePicker = .takeVideo
+                    }
+                }
+                Button(Strings.addMenuChooseFile, systemImage: "folder") {
+                    activePicker = .chooseFile
+                }
+            } label: {
+                Image(systemName: "plus")
+                    .accessibilityLabel(Strings.addMenuTitle)
             }
         }
     }
