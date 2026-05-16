@@ -178,4 +178,105 @@ enum Strings {
         value: "Camera video",
         comment: "Display name used for camera-captured videos in the Uploads queue."
     )
+
+    // MARK: - Upload banner and uploads screen
+
+    static let uploadBannerUploadingOnly = NSLocalizedString(
+        "media.upload.banner.uploadingOnly",
+        value: "Uploading %1$d items",
+        comment: "Banner shown above the grid while uploads are in flight. %1$d is the count."
+    )
+    static let uploadBannerMixed = NSLocalizedString(
+        "media.upload.banner.mixed",
+        value: "Uploading %1$d · %2$d failed",
+        comment: "Banner shown when both pending and failed uploads exist. %1$d pending, %2$d failed."
+    )
+    static let uploadBannerFailedOnly = NSLocalizedString(
+        "media.upload.banner.failedOnly",
+        value: "%1$d upload failed",
+        comment: "Banner shown when only failed uploads remain. %1$d is the count."
+    )
+    static let uploadsScreenTitle = NSLocalizedString(
+        "media.uploads.title",
+        value: "Uploads",
+        comment: "Navigation title for the Uploads queue screen."
+    )
+    static let uploadsScreenAllDone = NSLocalizedString(
+        "media.uploads.allDone",
+        value: "All uploaded",
+        comment: "Empty-state label shown on the Uploads screen after the last item resolves."
+    )
+    static let uploadsScreenClose = NSLocalizedString(
+        "media.uploads.close",
+        value: "Close",
+        comment: "Button to dismiss the modally-presented Uploads queue screen."
+    )
+    static let uploadBulkCancelAllConfirm = NSLocalizedString(
+        "media.uploads.bulk.cancelAll.confirm",
+        value: "Cancel uploads",
+        comment: "Destructive button title in the confirmation alert for canceling every in-flight upload."
+    )
+    static let uploadBulkCancelAllMessage = NSLocalizedString(
+        "media.uploads.bulk.cancelAll.message",
+        value: "All in-progress uploads will be cancelled. This can't be undone.",
+        comment: "Body of the confirmation alert shown before canceling every in-flight upload."
+    )
+    static let cancel = NSLocalizedString(
+        "media.uploads.alert.cancel",
+        value: "Keep uploading",
+        comment: "Cancel-the-alert button on the bulk-cancel confirmation dialog. Keeps uploads running."
+    )
+    static let uploadActionRetry = NSLocalizedString(
+        "media.uploads.retry",
+        value: "Retry",
+        comment: "Per-row action: retry a failed upload."
+    )
+    static let uploadActionDismiss = NSLocalizedString(
+        "media.uploads.dismiss",
+        value: "Dismiss",
+        comment: "Per-row action: remove a failed upload from the queue."
+    )
+    static let uploadBulkRetryAll = NSLocalizedString(
+        "media.uploads.bulk.retryAll",
+        value: "Retry all failed",
+        comment: "Bulk action: retry every failed upload."
+    )
+    static let uploadBulkDismissAll = NSLocalizedString(
+        "media.uploads.bulk.dismissAll",
+        value: "Dismiss all failed",
+        comment: "Bulk action: dismiss every failed upload."
+    )
+    static let uploadBulkCancelAll = NSLocalizedString(
+        "media.uploads.bulk.cancelAll",
+        value: "Cancel all uploading",
+        comment: "Bulk action: cancel every in-flight upload."
+    )
+
+    // MARK: - Add menu
+
+    static let addMenuTitle = NSLocalizedString(
+        "media.addMenu.title",
+        value: "Add",
+        comment: "Accessibility label for the toolbar + button that opens the Add menu."
+    )
+    static let addMenuPhotoLibrary = NSLocalizedString(
+        "media.addMenu.photoLibrary",
+        value: "Photo Library",
+        comment: "Add-menu item that opens the system photo library picker."
+    )
+    static let addMenuTakePhoto = NSLocalizedString(
+        "media.addMenu.takePhoto",
+        value: "Take Photo",
+        comment: "Add-menu item that opens the camera in photo mode."
+    )
+    static let addMenuTakeVideo = NSLocalizedString(
+        "media.addMenu.takeVideo",
+        value: "Take Video",
+        comment: "Add-menu item that opens the camera in video mode."
+    )
+    static let addMenuChooseFile = NSLocalizedString(
+        "media.addMenu.chooseFile",
+        value: "Choose File",
+        comment: "Add-menu item that opens the system file picker."
+    )
 }
