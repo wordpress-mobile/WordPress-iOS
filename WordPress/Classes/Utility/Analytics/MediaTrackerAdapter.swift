@@ -30,6 +30,10 @@ struct MediaTrackerAdapter: MediaTracker {
         case .mediaLibraryGridModeToggled(let isAspectRatio):
             stat = .siteMediaGridModeToggled
             properties["mode"] = isAspectRatio ? "aspect_ratio" : "square"
+
+        // TODO: M4 — map to real WPAnalyticsStat values in Task 9.
+        case .mediaLibraryAdded, .mediaLibraryUploadRetried:
+            return
         }
 
         WPAppAnalytics.track(stat, properties: properties, blog: blog)

@@ -117,4 +117,65 @@ enum Strings {
         value: "Media failed to load",
         comment: "Accessibility label for a cell whose underlying media couldn't be loaded"
     )
+
+    // MARK: - Upload error messages
+
+    static let uploadErrorSecurityScopedAccess = NSLocalizedString(
+        "media.upload.error.securityScopedAccess",
+        value: "Couldn't access the selected file.",
+        comment: "Error shown when iOS denies access to a file picked via Files."
+    )
+    static let uploadErrorFileNotFound = NSLocalizedString(
+        "media.upload.error.fileNotFound",
+        value: "The selected file could not be found.",
+        comment: "Error shown when a picked file no longer exists on disk."
+    )
+    static let uploadErrorDurationCap = NSLocalizedString(
+        "media.upload.error.durationCap",
+        value: "This video is longer than your site allows.",
+        comment: "Error shown when a picked video exceeds the duration cap configured for the blog."
+    )
+    static let uploadErrorDisallowedType = NSLocalizedString(
+        "media.upload.error.disallowedType",
+        value: "This file type isn't allowed for upload on your site.",
+        comment: "Error shown when a picked file's type is not in the blog's allowed list."
+    )
+    static let uploadErrorHEICConversion = NSLocalizedString(
+        "media.upload.error.heicConversion",
+        value: "Couldn't convert the photo for upload.",
+        comment: "Error shown when HEIC-to-JPEG conversion fails before upload."
+    )
+    static let uploadErrorVideoExport = NSLocalizedString(
+        "media.upload.error.videoExport",
+        value: "Couldn't prepare the video for upload.",
+        comment: "Error shown when AVAssetExportSession fails before upload."
+    )
+    static let uploadErrorTempWrite = NSLocalizedString(
+        "media.upload.error.tempWrite",
+        value: "Couldn't write the file for upload.",
+        comment: "Error shown when the materializer can't write to the temp directory."
+    )
+    static let uploadErrorUnknownContentType = NSLocalizedString(
+        "media.upload.error.unknownContentType",
+        value: "Couldn't determine the file type.",
+        comment: "Error shown when no UTType can be derived from the picker output."
+    )
+
+    // MARK: - Upload fallback display names
+
+    static let uploadFallbackPhotoName = NSLocalizedString(
+        "media.upload.fallback.photo",
+        value: "Photo",
+        comment: "Display name used when a picked photo has no source filename."
+    )
+    static let uploadFallbackCameraImageName = NSLocalizedString(
+        "media.upload.fallback.cameraImage",
+        value: "Camera photo",
+        comment: "Display name used for camera-captured photos in the Uploads queue."
+    )
+    static let uploadFallbackCameraVideoName = NSLocalizedString(
+        "media.upload.fallback.cameraVideo",
+        value: "Camera video",
+        comment: "Display name used for camera-captured videos in the Uploads queue."
+    )
 }
