@@ -59,8 +59,8 @@ struct MediaListItem: Identifiable, Equatable {
         return slug.isEmpty ? nil : slug
     }
 
-    /// M1 uses `sourceUrl` as the thumbnail. M2 picks a smaller size from
-    /// `media.mediaDetails.sizes` for grid rendering.
+    /// Uses `sourceUrl` as the thumbnail for now. A future change will pick a
+    /// smaller size from `media.mediaDetails.sizes` for grid rendering.
     private static func makeThumbnailURL(from media: MediaWithEditContext) -> URL? {
         URL(string: media.sourceUrl)
     }

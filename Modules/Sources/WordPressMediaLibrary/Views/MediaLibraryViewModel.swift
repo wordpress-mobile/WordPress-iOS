@@ -136,9 +136,8 @@ final class MediaLibraryViewModel: ObservableObject {
         }
     }
 
-    // TODO: Pagination is temporary for M1. Future milestones will switch
-    // the Media Library to a full-library sync model rather than per-page
-    // fetches.
+    // TODO: Pagination is temporary. A future change will switch the Media
+    // Library to a full-library sync model rather than per-page fetches.
     func loadNextPage() async throws {
         // Two guards:
         //   1. !isRefreshing — warm-cache first open paints cached rows
@@ -166,7 +165,7 @@ final class MediaLibraryViewModel: ObservableObject {
         await loadItems(from: collection)
     }
 
-    // TODO: Pagination is temporary for M1 — see loadNextPage().
+    // TODO: Pagination is temporary, see loadNextPage().
     func loadNextPageIfNeeded(after item: MediaListItem) async {
         // Trigger a fetch only when the row that just appeared is one of the
         // last few rows we have loaded — protects against firing for every

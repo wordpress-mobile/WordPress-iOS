@@ -13,7 +13,6 @@ public protocol MediaTracker {
 
 public enum MediaTrackerEvent: Sendable {
     case mediaLibraryOpened
-    // M2-M7 add more cases here.
 }
 
 /// No-op tracker for previews and module-internal default-construction.
