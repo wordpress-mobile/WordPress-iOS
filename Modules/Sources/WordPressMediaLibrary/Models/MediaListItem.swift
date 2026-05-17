@@ -55,8 +55,7 @@ struct MediaListItem: Identifiable, Equatable {
     private static func makeTitle(from media: MediaWithEditContext) -> String? {
         let raw = (media.title.raw ?? "").trimmingCharacters(in: .whitespacesAndNewlines)
         if !raw.isEmpty { return raw }
-        let slug = media.slug.trimmingCharacters(in: .whitespacesAndNewlines)
-        return slug.isEmpty ? nil : slug
+        return media.slug.isEmpty ? nil : media.slug
     }
 
     /// Uses `sourceUrl` as the thumbnail for now. A future change will pick a
