@@ -61,10 +61,9 @@ let package = Package(
         ),
         .package(url: "https://github.com/zendesk/support_sdk_ios", from: "8.0.3"),
         .package(url: "https://github.com/wordpress-mobile/GutenbergKit", from: "0.15.0"),
-        // We can't use wordpress-rs branches nor commits here. Only tags work.
         .package(
-            url: "https://github.com/Automattic/wordpress-rs",
-            exact: "0.2.0"
+            url: "https://github.com/automattic/wordpress-rs",
+            branch: "pr-build/1346"
         ),
         .package(
             url: "https://github.com/Automattic/color-studio",
