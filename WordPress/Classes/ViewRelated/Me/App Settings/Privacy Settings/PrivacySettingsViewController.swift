@@ -128,7 +128,7 @@ class PrivacySettingsViewController: UITableViewController {
                 ccpaLink,
                 otherTracking,
                 otherTrackingLink
-                ]),
+            ]),
             ImmuTableSection(rows: [
                 reportCrashes,
                 reportCrashesInfoText

@@ -98,7 +98,7 @@ open class TableViewHeaderDetailView: UITableViewHeaderFooterView {
             stackView.trailingAnchor.constraint(equalTo: contentView.readableContentGuide.trailingAnchor),
             stackView.topAnchor.constraint(equalTo: contentView.readableContentGuide.topAnchor),
             stackView.bottomAnchor.constraint(equalTo: contentView.readableContentGuide.bottomAnchor),
-            ])
+        ])
     }
 
     // MARK: - View Lifecycle

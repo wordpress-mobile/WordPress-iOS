@@ -102,7 +102,7 @@ class AztecAttachmentViewController: UITableViewController {
                     captionRow
                 ],
                 footerText: nil)
-            ])
+        ])
     }
 
     // MARK: - Actions

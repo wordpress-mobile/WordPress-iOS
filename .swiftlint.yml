@@ -31,6 +31,9 @@ only_rules:
   # Prefer `contains` over `first(where:) != nil`.
   - contains_over_first_not_nil
 
+  # Prefer `contains` over `range(of:) != nil` and `range(of:) == nil`.
+  - contains_over_range_nil_comparison
+
   # if,for,while,do statements shouldn't wrap their conditionals in parentheses.
   - control_statement
 
@@ -66,6 +69,10 @@ only_rules:
 
   # Prefer `last(where:)` over `filter { }.last`.
   - last_where
+
+  # Trailing closing brackets/parens of literal expressions (arrays, dicts)
+  # should match the indentation of the line that introduced them.
+  - literal_expression_end_indentation
 
   # MARK comment should be in valid format.
   - mark

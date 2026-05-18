@@ -491,7 +491,7 @@ import WordPressKit
 
         if isSiteURLSchemeEmpty {
             path = "https://\(path)"
-        } else if path.isWordPressComPath() && path.range(of: "http://") != nil {
+        } else if path.isWordPressComPath() && path.contains("http://") {
             path = path.replacingOccurrences(of: "http://", with: "https://")
         }
 

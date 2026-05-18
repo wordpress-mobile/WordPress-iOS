@@ -45,7 +45,7 @@ extension UIView {
             layoutMarginsGuide.trailingAnchor.constraint(equalTo: subview.trailingAnchor),
             layoutMarginsGuide.topAnchor.constraint(equalTo: subview.topAnchor),
             layoutMarginsGuide.bottomAnchor.constraint(equalTo: subview.bottomAnchor)
-            ])
+        ])
     }
 
     /// Adds constraints that pin a subview to self's safe area with padding insets.

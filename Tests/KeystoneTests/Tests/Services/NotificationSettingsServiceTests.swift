@@ -29,8 +29,8 @@ class NotificationSettingsServiceTests: CoreDataTestCase {
         service = NotificationSettingsService(coreDataStack: contextManager, wordPressComRestApi: remoteApi)
 
         stub(condition: { request in
-            return request.url?.absoluteString.range(of: self.settingsEndpoint) != nil
-                && request.httpMethod! == "GET"
+            let matchesEndpoint = request.url?.absoluteString.contains(self.settingsEndpoint) ?? false
+            return matchesEndpoint && request.httpMethod! == "GET"
             }) { _ in
                 let stubPath = OHPathForFile(self.settingsFilename, type(of: self))
                 return fixture(filePath: stubPath!, headers: ["Content-Type" as NSObject: self.contentTypeJson as AnyObject])

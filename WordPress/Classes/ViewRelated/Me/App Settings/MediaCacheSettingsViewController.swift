@@ -25,7 +25,7 @@ class MediaCacheSettingsViewController: UITableViewController {
         ImmuTable.registerRows([
             TextRow.self,
             BrandedNavigationRow.self
-            ], tableView: self.tableView)
+        ], tableView: self.tableView)
 
         reloadViewModel()
 

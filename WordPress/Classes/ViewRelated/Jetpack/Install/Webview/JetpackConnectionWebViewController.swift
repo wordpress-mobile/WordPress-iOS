@@ -47,7 +47,7 @@ class JetpackConnectionWebViewController: UIViewController {
         let stackView = UIStackView(arrangedSubviews: [
             progressView,
             webView
-            ])
+        ])
         stackView.axis = .vertical
         view = stackView
     }
