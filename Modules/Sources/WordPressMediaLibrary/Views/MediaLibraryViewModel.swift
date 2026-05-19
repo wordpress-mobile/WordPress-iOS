@@ -5,6 +5,25 @@ import WordPressAPI
 import WordPressAPIInternal
 import WordPressCore
 
+/// App-target switches that gate which detail screen affordances are
+/// available. Public so app-side routing can populate it without going
+/// through the (internal) view model type.
+public struct MediaLibraryCapabilities: Equatable {
+    public let supportsAltEditing: Bool
+    public let supportsMetadataEditing: Bool
+    public let supportsDeletion: Bool
+
+    public init(
+        supportsAltEditing: Bool,
+        supportsMetadataEditing: Bool,
+        supportsDeletion: Bool
+    ) {
+        self.supportsAltEditing = supportsAltEditing
+        self.supportsMetadataEditing = supportsMetadataEditing
+        self.supportsDeletion = supportsDeletion
+    }
+}
+
 /// Backs a single media grid: the library (no query) or one search query.
 /// Owns exactly one collection. The library instance also drives the
 /// client-side `kind` filter; the search instance leaves `kind` nil, so its
@@ -17,6 +36,15 @@ final class MediaLibraryViewModel: ObservableObject {
     private let client: WordPressClient
     private let collection: Collection
     let uploader: MediaUploader?
+    let urlOpener: (any MediaDetailURLOpener)?
+    let shareService: (any MediaDetailShareService)?
+    let detailNavigator: (any MediaDetailNavigator)?
+    let detailCapabilities: MediaLibraryCapabilities?
+
+    /// Caches the most-recent `MediaWithEditContext` per item id so
+    /// `makeDetailVM(for:)` can hand the detail screen a fully-resolved
+    /// payload without re-fetching. Rebuilt on every `loadItems` snapshot.
+    private var resolvedMediaByID: [Int64: MediaWithEditContext] = [:]
 
     @Published private(set) var bannerSummary: BannerSummary?
     @Published private(set) var uploadsScreenItems: [UploadRowItem] = []
@@ -81,14 +109,19 @@ final class MediaLibraryViewModel: ObservableObject {
     /// Builds the collection from the wordpress-rs service: the library when
     /// `search` is nil, a search collection otherwise. `client` is retained so
     /// `observe()` can subscribe to the local cache's update stream. The
-    /// `uploader` is wired only for the library instance; search instances
-    /// leave it nil and never surface the upload banner or queue.
+    /// `uploader` and detail wiring are passed only for the library instance;
+    /// search instances leave them nil and never surface the upload banner,
+    /// the queue, or the cell-tap detail push.
     init(
         service: WpService,
         client: WordPressClient,
         tracker: any MediaTracker,
         search: String? = nil,
-        uploader: MediaUploader? = nil
+        uploader: MediaUploader? = nil,
+        urlOpener: (any MediaDetailURLOpener)? = nil,
+        shareService: (any MediaDetailShareService)? = nil,
+        navigator: (any MediaDetailNavigator)? = nil,
+        capabilities: MediaLibraryCapabilities? = nil
     ) {
         self.tracker = tracker
         self.client = client
@@ -98,6 +131,10 @@ final class MediaLibraryViewModel: ObservableObject {
                 perPage: 100
             )
         self.uploader = uploader
+        self.urlOpener = urlOpener
+        self.shareService = shareService
+        self.detailNavigator = navigator
+        self.detailCapabilities = capabilities
         startUploaderObserver()
     }
 
@@ -275,6 +312,14 @@ final class MediaLibraryViewModel: ObservableObject {
         do {
             let metadataItems = try await collection.loadItems()
             guard !Task.isCancelled else { return }
+            // Rebuild the resolved-media side store from this batch so
+            // `makeDetailVM(for:)` can hand the detail screen a fully-
+            // hydrated payload without re-fetching.
+            var resolved: [Int64: MediaWithEditContext] = [:]
+            for item in metadataItems {
+                if let media = item.resolvedMedia { resolved[item.id] = media }
+            }
+            self.resolvedMediaByID = resolved
             withAnimation {
                 items = metadataItems.map(MediaGridItem.init(item:))
                 displayItems = Self.applyingKindFilter(items, kind: kind)
@@ -284,6 +329,36 @@ final class MediaLibraryViewModel: ObservableObject {
                 Loggers.mediaLibrary.error("Failed to load items: \(error)")
             }
         }
+    }
+
+    // MARK: Detail navigation
+
+    /// Cheap check for whether the cell should render as tappable.
+    /// Mirrors the early-out conditions in `makeDetailVM(for:)` without
+    /// constructing the throwaway detail VM on every cell render.
+    func canOpenDetail(for item: MediaGridItem) -> Bool {
+        detailNavigator != nil && resolvedMediaByID[item.id] != nil
+    }
+
+    /// Builds a `MediaDetailViewModel` for the tapped cell. Returns nil when
+    /// the cell carries no resolvable payload (placeholder states), or when the
+    /// instance has no detail wiring (e.g. a search-results grid).
+    func makeDetailVM(for item: MediaGridItem) -> MediaDetailViewModel? {
+        guard let urlOpener,
+            let shareService,
+            let detailNavigator,
+            let detailCapabilities,
+            let media = resolvedMediaByID[item.id]
+        else { return nil }
+        return MediaDetailViewModel(
+            media: media,
+            client: client,
+            tracker: tracker,
+            urlOpener: urlOpener,
+            shareService: shareService,
+            navigator: detailNavigator,
+            capabilities: detailCapabilities
+        )
     }
 }
 
