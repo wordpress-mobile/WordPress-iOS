@@ -159,7 +159,7 @@ class ReaderSavedPostsExporterTests: CoreDataTestCase {
 
     // MARK: - Import filtering
 
-    func testImportSkipsPostsAlreadySaved() throws {
+    func testImportSkipsPostsAlreadySaved() async throws {
         let existing = makeReaderPost()
         existing.permaLink = "https://example.com/already-saved"
         existing.isSavedForLater = true
@@ -168,94 +168,69 @@ class ReaderSavedPostsExporterTests: CoreDataTestCase {
 
         let posts = [makeExportedPost(url: "https://example.com/already-saved", siteID: 100, postID: 1)]
 
-        let expectation = expectation(description: "import completes")
-        ReaderSavedPostsExporter.importPosts(
+        let result = await ReaderSavedPostsExporter.importPosts(
             posts,
             coreDataStack: contextManager,
-            progress: { _, _ in },
-            completion: { result in
-                XCTAssertEqual(result.imported, 0)
-                XCTAssertEqual(result.skipped, 1)
-                XCTAssertEqual(result.failed, 0)
-                expectation.fulfill()
-            }
+            progress: Progress()
         )
 
-        wait(for: [expectation], timeout: 1.0)
+        XCTAssertEqual(result.imported, 0)
+        XCTAssertEqual(result.skipped, 1)
+        XCTAssertEqual(result.failed, 0)
     }
 
-    func testImportSkipsPostsWithMissingSiteID() {
+    func testImportSkipsPostsWithMissingSiteID() async {
         let posts = [makeExportedPost(url: "https://example.com/no-site", siteID: nil, postID: 1)]
 
-        let expectation = expectation(description: "import completes")
-        ReaderSavedPostsExporter.importPosts(
+        let result = await ReaderSavedPostsExporter.importPosts(
             posts,
             coreDataStack: contextManager,
-            progress: { _, _ in },
-            completion: { result in
-                XCTAssertEqual(result.imported, 0)
-                XCTAssertEqual(result.skipped, 1)
-                XCTAssertEqual(result.failed, 0)
-                expectation.fulfill()
-            }
+            progress: Progress()
         )
 
-        wait(for: [expectation], timeout: 1.0)
+        XCTAssertEqual(result.imported, 0)
+        XCTAssertEqual(result.skipped, 1)
+        XCTAssertEqual(result.failed, 0)
     }
 
-    func testImportSkipsPostsWithMissingPostID() {
+    func testImportSkipsPostsWithMissingPostID() async {
         let posts = [makeExportedPost(url: "https://example.com/no-post-id", siteID: 100, postID: nil)]
 
-        let expectation = expectation(description: "import completes")
-        ReaderSavedPostsExporter.importPosts(
+        let result = await ReaderSavedPostsExporter.importPosts(
             posts,
             coreDataStack: contextManager,
-            progress: { _, _ in },
-            completion: { result in
-                XCTAssertEqual(result.imported, 0)
-                XCTAssertEqual(result.skipped, 1)
-                XCTAssertEqual(result.failed, 0)
-                expectation.fulfill()
-            }
+            progress: Progress()
         )
 
-        wait(for: [expectation], timeout: 1.0)
+        XCTAssertEqual(result.imported, 0)
+        XCTAssertEqual(result.skipped, 1)
+        XCTAssertEqual(result.failed, 0)
     }
 
-    func testImportSkipsPostsWithEmptyURL() {
+    func testImportSkipsPostsWithEmptyURL() async {
         let posts = [makeExportedPost(url: "", siteID: 100, postID: 1)]
 
-        let expectation = expectation(description: "import completes")
-        ReaderSavedPostsExporter.importPosts(
+        let result = await ReaderSavedPostsExporter.importPosts(
             posts,
             coreDataStack: contextManager,
-            progress: { _, _ in },
-            completion: { result in
-                XCTAssertEqual(result.imported, 0)
-                XCTAssertEqual(result.skipped, 1)
-                XCTAssertEqual(result.failed, 0)
-                expectation.fulfill()
-            }
+            progress: Progress()
         )
 
-        wait(for: [expectation], timeout: 1.0)
+        XCTAssertEqual(result.imported, 0)
+        XCTAssertEqual(result.skipped, 1)
+        XCTAssertEqual(result.failed, 0)
     }
 
-    func testImportReturnsEmptyResultForEmptyPostsList() {
-        let expectation = expectation(description: "import completes")
-        ReaderSavedPostsExporter.importPosts(
+    func testImportReturnsEmptyResultForEmptyPostsList() async {
+        let result = await ReaderSavedPostsExporter.importPosts(
             [],
             coreDataStack: contextManager,
-            progress: { _, _ in },
-            completion: { result in
-                XCTAssertEqual(result.imported, 0)
-                XCTAssertEqual(result.skipped, 0)
-                XCTAssertEqual(result.failed, 0)
-                expectation.fulfill()
-            }
+            progress: Progress()
         )
 
-        wait(for: [expectation], timeout: 1.0)
+        XCTAssertEqual(result.imported, 0)
+        XCTAssertEqual(result.skipped, 0)
+        XCTAssertEqual(result.failed, 0)
     }
 
     // MARK: - Round-trip (export -> parse)

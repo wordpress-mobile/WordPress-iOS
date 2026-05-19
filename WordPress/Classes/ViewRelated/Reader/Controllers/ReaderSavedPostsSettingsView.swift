@@ -6,7 +6,7 @@ import UniformTypeIdentifiers
 struct ReaderSavedPostsSettingsView: View {
     @StateObject private var viewModel: ReaderSavedPostsSettingsViewModel
 
-    init(coreDataStack: CoreDataStack = ContextManager.shared) {
+    init(coreDataStack: CoreDataStackSwift = ContextManager.shared) {
         _viewModel = StateObject(wrappedValue: ReaderSavedPostsSettingsViewModel(coreDataStack: coreDataStack))
     }
 
@@ -80,10 +80,11 @@ final class ReaderSavedPostsSettingsViewModel: ObservableObject {
     @Published private(set) var importResultMessage = ""
     @Published private(set) var errorMessage = ""
 
-    private let coreDataStack: CoreDataStack
+    private let coreDataStack: CoreDataStackSwift
     private let exporter = ReaderSavedPostsExporter()
+    private var progressObservation: NSKeyValueObservation?
 
-    init(coreDataStack: CoreDataStack) {
+    init(coreDataStack: CoreDataStackSwift) {
         self.coreDataStack = coreDataStack
     }
 
@@ -131,40 +132,42 @@ final class ReaderSavedPostsSettingsViewModel: ObservableObject {
             importProgress = 0
             importStatusText = String.localizedStringWithFormat(Strings.importProgressFormat, 0, posts.count)
 
-            ReaderSavedPostsExporter.importPosts(
-                posts,
-                coreDataStack: coreDataStack,
-                progress: { [weak self] completed, total in
-                    DispatchQueue.main.async {
-                        self?.importProgress = Double(completed) / Double(total)
-                        self?.importStatusText = String.localizedStringWithFormat(
-                            Strings.importProgressFormat,
-                            completed,
-                            total
-                        )
-                    }
-                },
-                completion: { [weak self] importResult in
-                    DispatchQueue.main.async {
-                        self?.isImporting = false
-                        self?.importResultMessage = String.localizedStringWithFormat(
-                            Strings.importResultFormat,
-                            importResult.imported,
-                            importResult.skipped,
-                            importResult.failed
-                        )
-                        self?.isShowingImportResult = true
-                        WPAnalytics.track(
-                            .readerSavedPostsImported,
-                            properties: [
-                                "imported": importResult.imported,
-                                "skipped": importResult.skipped,
-                                "failed": importResult.failed
-                            ]
-                        )
-                    }
+            let progress = Progress(totalUnitCount: Int64(posts.count))
+            progressObservation = progress.observe(\.fractionCompleted) { [weak self] progress, _ in
+                Task { @MainActor in
+                    self?.importProgress = progress.fractionCompleted
+                    self?.importStatusText = String.localizedStringWithFormat(
+                        Strings.importProgressFormat,
+                        Int(progress.completedUnitCount),
+                        Int(progress.totalUnitCount)
+                    )
                 }
-            )
+            }
+
+            Task {
+                let importResult = await ReaderSavedPostsExporter.importPosts(
+                    posts,
+                    coreDataStack: coreDataStack,
+                    progress: progress
+                )
+                progressObservation = nil
+                isImporting = false
+                importResultMessage = String.localizedStringWithFormat(
+                    Strings.importResultFormat,
+                    importResult.imported,
+                    importResult.skipped,
+                    importResult.failed
+                )
+                isShowingImportResult = true
+                WPAnalytics.track(
+                    .readerSavedPostsImported,
+                    properties: [
+                        "imported": importResult.imported,
+                        "skipped": importResult.skipped,
+                        "failed": importResult.failed
+                    ]
+                )
+            }
 
         case .failure:
             errorMessage = Strings.importError

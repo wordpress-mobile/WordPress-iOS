@@ -103,32 +103,36 @@ struct ReaderSavedPostsExporter {
         }
     }
 
+    /// The maximum number of posts to fetch from the API at the same time.
+    ///
+    /// Imports run in parallel for speed, but the concurrency is bounded so a
+    /// large export file doesn't overwhelm the API with requests.
+    private static let maxConcurrentImports = 4
+
     /// Imports saved posts by fetching each one from the API, then marking it as saved.
     /// This ensures posts are created through the normal Core Data pipeline with all required fields.
     ///
     /// - Parameters:
     ///   - posts: Parsed post entries from a JSON export file.
     ///   - coreDataStack: The Core Data stack.
-    ///   - progress: Called after each post is processed with (completed, total).
-    ///   - completion: Called when all posts have been processed.
+    ///   - progress: Updated as posts are processed so callers can surface import progress.
+    /// - Returns: A summary of how many posts were imported, skipped, or failed.
     static func importPosts(
         _ posts: [ExportedPost],
-        coreDataStack: CoreDataStack,
-        progress: @escaping (Int, Int) -> Void,
-        completion: @escaping (ImportResult) -> Void
-    ) {
-        let context = coreDataStack.mainContext
-
-        // Fetch existing saved post URLs for deduplication
+        coreDataStack: CoreDataStackSwift,
+        progress: Progress
+    ) async -> ImportResult {
+        // Fetch existing saved post URLs for deduplication.
         let existingURLs: Set<String>
         do {
-            existingURLs = try fetchSavedPostURLs(in: context)
+            existingURLs = try await coreDataStack.performQuery { context in
+                try fetchSavedPostURLs(in: context)
+            }
         } catch {
-            completion(ImportResult(imported: 0, skipped: 0, failed: posts.count))
-            return
+            return ImportResult(imported: 0, skipped: 0, failed: posts.count)
         }
 
-        // Filter to posts that need importing (have siteID + postID, not already saved)
+        // Filter to posts that need importing (have siteID + postID, not already saved).
         var toImport: [(siteID: UInt, postID: UInt, isFeed: Bool)] = []
         var skipped = 0
 
@@ -146,7 +150,7 @@ struct ReaderSavedPostsExporter {
             guard let siteID = post.siteID, siteID > 0,
                 let postID = post.postID, postID > 0
             else {
-                DDLogError("Import: skipping post with missing siteID/postID: \(post.url)")
+                Loggers.app.error("Import: skipping post with missing siteID/postID: \(post.url)")
                 skipped += 1
                 continue
             }
@@ -155,71 +159,116 @@ struct ReaderSavedPostsExporter {
         }
 
         guard !toImport.isEmpty else {
-            completion(ImportResult(imported: 0, skipped: skipped, failed: 0))
-            return
+            return ImportResult(imported: 0, skipped: skipped, failed: 0)
         }
 
-        let total = toImport.count
-        let readerPostService = ReaderPostService(coreDataStack: coreDataStack)
+        progress.totalUnitCount = Int64(toImport.count)
+        progress.completedUnitCount = 0
 
-        // Process posts sequentially to avoid overwhelming the API with parallel
-        // requests. All counter mutations and recursion happen on the main queue
-        // so they remain single-threaded regardless of which queue the underlying
-        // success/failure callback fires on.
+        let service = ReaderPostService(coreDataStack: coreDataStack)
+
         var imported = 0
         var failed = 0
-        var pendingSave = false
 
-        func finish() {
-            if pendingSave {
-                coreDataStack.save(context)
+        // Import posts in parallel, but bound the concurrency so we don't flood
+        // the API. Counter and progress mutations happen here in the parent task
+        // as each child task finishes, so they stay single-threaded.
+        await withTaskGroup(of: Bool.self) { group in
+            var iterator = toImport.makeIterator()
+
+            func addNextTask() {
+                guard let entry = iterator.next() else { return }
+                group.addTask {
+                    await importPost(
+                        siteID: entry.siteID,
+                        postID: entry.postID,
+                        isFeed: entry.isFeed,
+                        service: service,
+                        coreDataStack: coreDataStack
+                    )
+                }
             }
-            completion(ImportResult(imported: imported, skipped: skipped, failed: failed))
+
+            for _ in 0..<maxConcurrentImports {
+                addNextTask()
+            }
+
+            while let didImport = await group.next() {
+                if didImport {
+                    imported += 1
+                } else {
+                    failed += 1
+                }
+                progress.completedUnitCount += 1
+                addNextTask()
+            }
         }
 
-        func fetchNext(index: Int) {
-            guard index < toImport.count else {
-                finish()
-                return
-            }
+        return ImportResult(imported: imported, skipped: skipped, failed: failed)
+    }
 
-            let entry = toImport[index]
-            readerPostService.fetchPost(
-                entry.postID,
-                forSite: entry.siteID,
-                isFeed: entry.isFeed,
+    /// Fetches a single post from the API and marks it as saved.
+    /// - Returns: `true` if the post was imported, `false` if it couldn't be fetched.
+    private static func importPost(
+        siteID: UInt,
+        postID: UInt,
+        isFeed: Bool,
+        service: ReaderPostService,
+        coreDataStack: CoreDataStackSwift
+    ) async -> Bool {
+        do {
+            let objectID = try await fetchPost(
+                siteID: siteID,
+                postID: postID,
+                isFeed: isFeed,
+                service: service
+            )
+            try await coreDataStack.performAndSave { context in
+                guard let post = try context.existingObject(with: objectID) as? ReaderPost else {
+                    throw ImportError.postUnavailable
+                }
+                if !post.isSavedForLater {
+                    post.isSavedForLater = true
+                }
+            }
+            return true
+        } catch {
+            Loggers.app.error(
+                "Import: failed to fetch post \(postID) from site \(siteID): \(String(describing: error))"
+            )
+            return false
+        }
+    }
+
+    /// Wraps `ReaderPostService.fetchPost` as an async call, returning the
+    /// object ID of the fetched post.
+    private static func fetchPost(
+        siteID: UInt,
+        postID: UInt,
+        isFeed: Bool,
+        service: ReaderPostService
+    ) async throws -> NSManagedObjectID {
+        try await withCheckedThrowingContinuation { continuation in
+            service.fetchPost(
+                postID,
+                forSite: siteID,
+                isFeed: isFeed,
                 success: { post in
-                    DispatchQueue.main.async {
-                        if let post {
-                            if !post.isSavedForLater {
-                                post.isSavedForLater = true
-                                pendingSave = true
-                            }
-                            imported += 1
-                        } else {
-                            DDLogError(
-                                "Import: fetchPost returned nil for post \(entry.postID) from site \(entry.siteID)"
-                            )
-                            failed += 1
-                        }
-                        progress(index + 1, total)
-                        fetchNext(index: index + 1)
+                    if let post {
+                        continuation.resume(returning: post.objectID)
+                    } else {
+                        continuation.resume(throwing: ImportError.postUnavailable)
                     }
                 },
                 failure: { error in
-                    DispatchQueue.main.async {
-                        DDLogError(
-                            "Import: failed to fetch post \(entry.postID) from site \(entry.siteID): \(String(describing: error))"
-                        )
-                        failed += 1
-                        progress(index + 1, total)
-                        fetchNext(index: index + 1)
+                    if let error {
+                        continuation.resume(throwing: error)
+                    } else {
+                        continuation.resume(throwing: ImportError.postUnavailable)
                     }
                 }
             )
         }
-
-        fetchNext(index: 0)
     }
 
     private static func fetchSavedPostURLs(in context: NSManagedObjectContext) throws -> Set<String> {
@@ -233,6 +282,7 @@ struct ReaderSavedPostsExporter {
 
     enum ImportError: LocalizedError {
         case invalidFormat
+        case postUnavailable
 
         var errorDescription: String? {
             switch self {
@@ -242,6 +292,8 @@ struct ReaderSavedPostsExporter {
                     value: "The selected file is not a valid saved posts export.",
                     comment: "Error when the imported file doesn't match the expected JSON format"
                 )
+            case .postUnavailable:
+                return nil
             }
         }
     }
