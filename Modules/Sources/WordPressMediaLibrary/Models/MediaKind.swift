@@ -33,6 +33,18 @@ public enum MediaKind: String, CaseIterable, Hashable, Sendable {
             self = .document
         }
     }
+
+    /// Derives the kind directly from a MIME-type string. Mirrors the
+    /// prefix logic in wordpress-rs' `MediaDetails::parse_as_mime_type`
+    /// (`image/*`, `video/*`, `audio/*`, else document) but avoids the
+    /// FFI call and full-payload JSON deserialization those callers pay
+    /// for when only the kind tag is needed.
+    static func from(mimeType: String) -> MediaKind {
+        if mimeType.hasPrefix("image/") { return .image }
+        if mimeType.hasPrefix("video/") { return .video }
+        if mimeType.hasPrefix("audio/") { return .audio }
+        return .document
+    }
 }
 
 // MARK: - UI helpers

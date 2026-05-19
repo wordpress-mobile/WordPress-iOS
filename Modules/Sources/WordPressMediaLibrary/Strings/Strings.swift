@@ -314,4 +314,183 @@ enum Strings {
         value: "Choose File",
         comment: "Add-menu item that opens the system file picker."
     )
+
+    // MARK: - Detail — fields
+
+    static let detailFieldTitle = NSLocalizedString(
+        "mediaLibrary.detail.field.title.label",
+        value: "Title",
+        comment: "Label for the title field on the media detail screen"
+    )
+    static let detailFieldCaption = NSLocalizedString(
+        "mediaLibrary.detail.field.caption.label",
+        value: "Caption",
+        comment: "Label for the caption field on the media detail screen"
+    )
+    static let detailFieldDescription = NSLocalizedString(
+        "mediaLibrary.detail.field.description.label",
+        value: "Description",
+        comment: "Label for the description field on the media detail screen"
+    )
+    static let detailFieldAltText = NSLocalizedString(
+        "mediaLibrary.detail.field.altText.label",
+        value: "Alt Text",
+        comment: "Label for the alt text field on the media detail screen"
+    )
+
+    static let detailFieldTitlePlaceholder = NSLocalizedString(
+        "mediaLibrary.detail.field.title.placeholder",
+        value: "Title",
+        comment: "Placeholder for the title editor"
+    )
+    static let detailFieldCaptionPlaceholder = NSLocalizedString(
+        "mediaLibrary.detail.field.caption.placeholder",
+        value: "Caption",
+        comment: "Placeholder for the caption editor"
+    )
+    static let detailFieldDescriptionPlaceholder = NSLocalizedString(
+        "mediaLibrary.detail.field.description.placeholder",
+        value: "Description",
+        comment: "Placeholder for the description editor"
+    )
+    static let detailFieldAltTextPlaceholder = NSLocalizedString(
+        "mediaLibrary.detail.field.altText.placeholder",
+        value: "Alt text",
+        comment: "Placeholder for the alt text editor"
+    )
+
+    static let detailFieldTitleHint = NSLocalizedString(
+        "mediaLibrary.detail.field.title.hint",
+        value: "Image title",
+        comment: "Hint shown under the title editor"
+    )
+    static let detailFieldCaptionHint = NSLocalizedString(
+        "mediaLibrary.detail.field.caption.hint",
+        value: "Image caption",
+        comment: "Hint shown under the caption editor"
+    )
+    static let detailFieldDescriptionHint = NSLocalizedString(
+        "mediaLibrary.detail.field.description.hint",
+        value: "Image description",
+        comment: "Hint shown under the description editor"
+    )
+    static let detailFieldAltTextHint = NSLocalizedString(
+        "mediaLibrary.detail.field.altText.hint",
+        value: "Alt text",
+        comment: "Hint shown under the alt text editor"
+    )
+
+    static let detailShareErrorInvalidURL = NSLocalizedString(
+        "mediaLibrary.detail.share.error.invalidURL",
+        value: "Source URL is invalid.",
+        comment: "Error shown when share fails due to an invalid source URL."
+    )
+
+    static let detailPreviewImageAccessibility = NSLocalizedString(
+        "mediaLibrary.detail.preview.imageAccessibility",
+        value: "Image preview",
+        comment: "Accessibility label for the image preview header."
+    )
+    static let detailPreviewVideoAccessibility = NSLocalizedString(
+        "mediaLibrary.detail.preview.videoAccessibility",
+        value: "Video preview",
+        comment: "Accessibility label for the video preview header."
+    )
+    static let detailPreviewAudioAccessibility = NSLocalizedString(
+        "mediaLibrary.detail.preview.audioAccessibility",
+        value: "Audio",
+        comment: "Accessibility label for the audio icon header."
+    )
+    static let detailPreviewDocumentAccessibility = NSLocalizedString(
+        "mediaLibrary.detail.preview.documentAccessibility",
+        value: "Document",
+        comment: "Accessibility label for the document icon header."
+    )
+
+    static let commonDone = NSLocalizedString(
+        "mediaLibrary.common.done",
+        value: "Done",
+        comment: "Confirmation action — used in editor toolbars"
+    )
+    static let commonOK = NSLocalizedString(
+        "mediaLibrary.common.ok",
+        value: "OK",
+        comment: "Acknowledgement action — used in alert dismissals"
+    )
+    static let commonCancel = NSLocalizedString(
+        "mediaLibrary.common.cancel",
+        value: "Cancel",
+        comment: "Cancel action — used in alert dismissals"
+    )
+    static let commonShare = NSLocalizedString(
+        "mediaLibrary.common.share",
+        value: "Share",
+        comment: "Accessibility label for the share button"
+    )
+
+    static let detailMetadataURL = NSLocalizedString(
+        "mediaLibrary.detail.metadata.url",
+        value: "URL",
+        comment: "Label for the URL row on the media detail screen"
+    )
+    static let detailMetadataFileName = NSLocalizedString(
+        "mediaLibrary.detail.metadata.fileName",
+        value: "File Name",
+        comment: "Label for the file name row on the media detail screen"
+    )
+    static let detailMetadataFileType = NSLocalizedString(
+        "mediaLibrary.detail.metadata.fileType",
+        value: "File Type",
+        comment: "Label for the file type row on the media detail screen"
+    )
+    static let detailMetadataFileSize = NSLocalizedString(
+        "mediaLibrary.detail.metadata.fileSize",
+        value: "File Size",
+        comment: "Label for the file size row on the media detail screen"
+    )
+    static let detailMetadataDimensions = NSLocalizedString(
+        "mediaLibrary.detail.metadata.dimensions",
+        value: "Dimensions",
+        comment: "Label for the dimensions row on the media detail screen"
+    )
+    static let detailMetadataUploaded = NSLocalizedString(
+        "mediaLibrary.detail.metadata.uploaded",
+        value: "Uploaded",
+        comment: "Label for the uploaded-date row on the media detail screen"
+    )
+    static let detailMetadataMimeType = NSLocalizedString(
+        "mediaLibrary.detail.metadata.mimeType",
+        value: "MIME Type",
+        comment: "Label for the MIME type row on the media detail screen"
+    )
+    static let detailIdFooter = NSLocalizedString(
+        "mediaLibrary.detail.idFooter",
+        value: "ID %1$lld",
+        comment: "Footer caption showing the entity ID; %1$lld is the media ID"
+    )
+    static let detailUnableToSaveTitle = NSLocalizedString(
+        "mediaLibrary.detail.unableToSaveTitle",
+        value: "Unable to save changes",
+        comment: "Title for the save-failure alert on the detail screen"
+    )
+    static let detailUnableToDeleteTitle = NSLocalizedString(
+        "mediaLibrary.detail.unableToDeleteTitle",
+        value: "Unable to delete media",
+        comment: "Title for the delete-failure alert on the detail screen"
+    )
+    static let detailUnableToShareTitle = NSLocalizedString(
+        "mediaLibrary.detail.unableToShareTitle",
+        value: "Unable to share media",
+        comment: "Title for the share-failure alert on the detail screen"
+    )
+    static let detailDeleteConfirmation = NSLocalizedString(
+        "mediaLibrary.detail.deleteConfirmation",
+        value: "Are you sure you want to permanently delete this item?",
+        comment: "Confirmation message in the delete alert"
+    )
+    static let detailDeleteAction = NSLocalizedString(
+        "mediaLibrary.detail.deleteAction",
+        value: "Delete",
+        comment: "Destructive button title in the delete-confirmation alert"
+    )
 }
