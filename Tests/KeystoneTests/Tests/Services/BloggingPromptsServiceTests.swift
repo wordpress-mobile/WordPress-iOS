@@ -153,8 +153,9 @@ final class BloggingPromptsServiceTests: CoreDataTestCase {
         // call the fetch just to trigger default parameter assignment. the completion blocks can be ignored.
         service.fetchPrompts(from: expectedDate, number: 10, success: { _ in }, failure: { _ in })
 
-        let date = try passedDate()
-        XCTAssertEqual("2022-01-02", try passedDate())
+        // `force_year` is now always the current year, so the reconstructed date carries it.
+        let currentYear = Calendar(identifier: .gregorian).component(.year, from: Date())
+        XCTAssertEqual("\(currentYear)-01-02", try passedDate())
     }
 
     // MARK: - Upsert Tests

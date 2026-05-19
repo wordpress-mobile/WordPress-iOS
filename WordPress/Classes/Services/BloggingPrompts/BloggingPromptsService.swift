@@ -334,6 +334,7 @@ private extension BloggingPromptsService {
         let path = "wpcom/v3/sites/\(siteID)/blogging-prompts"
         let requestParameter: [String: AnyHashable] = {
             var params = [String: AnyHashable]()
+            params["order"] = "desc"
 
             if let number, number > 0 {
                 params["per_page"] = number
@@ -351,9 +352,7 @@ private extension BloggingPromptsService {
                 params["after"] = dateString
             }
 
-            if let forceYear = forceYear ?? fromDate?.dateAndTimeComponents().year {
-                params["force_year"] = forceYear
-            }
+            params["force_year"] = forceYear ?? Calendar(identifier: .gregorian).component(.year, from: Date())
 
             return params
         }()
