@@ -51,7 +51,6 @@ class LoadMediaLibraryTests: XCTestCase {
         let loaded = pageLoad.map { $0?.count ?? 0 }.reduce(0, +)
         XCTAssertEqual(loaded, 200)
     }
-
 }
 
 private extension LoadMediaLibraryTests {
@@ -106,5 +105,4 @@ class LoadMediaLibraryRPCTests: LoadMediaLibraryTests {
     override func setUp() {
         kind = .xmlrpc
     }
-
 }

@@ -104,5 +104,4 @@ struct PostTermComparisonTests {
 
         #expect(RemotePost.compare(otherTerms: lhs, withAnother: rhs) == true)
     }
-
 }

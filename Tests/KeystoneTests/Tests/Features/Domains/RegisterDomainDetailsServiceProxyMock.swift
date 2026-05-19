@@ -56,7 +56,6 @@ class RegisterDomainDetailsServiceProxyMock: RegisterDomainDetailsServiceProxyPr
         var response = ValidateDomainContactInformationResponse()
         response.success = validateDomainContactInformationResponseSuccess
         success(response)
-
     }
 
     func getDomainContactInformation(success: @escaping (DomainContactInformation) -> Void,

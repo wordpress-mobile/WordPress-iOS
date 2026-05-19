@@ -39,5 +39,4 @@ import WordPressKit
     @objc public func restRemote(siteID: NSNumber, api: WordPressComRestApi) -> CommentServiceRemoteREST {
         return CommentServiceRemoteREST(wordPressComRestApi: api, siteID: siteID)
     }
-
 }

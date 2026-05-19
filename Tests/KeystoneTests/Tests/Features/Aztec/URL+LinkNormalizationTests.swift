@@ -33,5 +33,4 @@ class URL_WordPressLinkNormalizationTests: XCTestCase {
         normalizedURL = url.normalizedURLForWordPressLink()
         XCTAssertEqual("/index.html", normalizedURL.absoluteString)
     }
-
 }

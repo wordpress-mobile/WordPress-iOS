@@ -190,7 +190,6 @@ private extension VerifyEmailViewController {
                                           success: { [weak self] in
                                             self?.didRequestAuthenticationLink()
                                             self?.configureViewLoading(false)
-
             }, failure: { [weak self] (error: Error) in
                 guard let self else { return }
 

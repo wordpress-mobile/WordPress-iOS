@@ -116,7 +116,6 @@ class SiteStatsInsightsTableViewController: SiteStatsBaseTableViewController {
         navigationController.presentationController?.delegate = self
         present(navigationController, animated: true, completion: nil)
     }
-
 }
 
 // MARK: - Private Extension

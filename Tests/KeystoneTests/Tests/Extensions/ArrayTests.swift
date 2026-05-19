@@ -79,7 +79,6 @@ class ArrayTests: XCTestCase {
 
         XCTAssertTrue(result.count == 2 && result.contains("🦄") && result.contains("🌈"))
     }
-
 }
 
 class TestElement: Equatable {

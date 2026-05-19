@@ -19,7 +19,6 @@ class PluginDirectoryTests: XCTestCase {
             XCTAssertEqual(plugin.authorURL, URL(string: "https://jetpack.com"))
             XCTAssertNotNil(plugin.icon)
             XCTAssertNotNil(plugin.banner)
-
         } catch {
             XCTFail("Failed decoding plugin \(error)")
         }
@@ -84,7 +83,6 @@ class PluginDirectoryTests: XCTestCase {
         } catch {
             XCTFail(error.localizedDescription)
         }
-
     }
 
     func testValidateResponseNotFound() {
@@ -150,7 +148,6 @@ class PluginDirectoryTests: XCTestCase {
 
             let slugs = response.plugins.map { $0.slug }
             XCTAssertEqual(response.pageMetadata.pluginSlugs, slugs)
-
         } catch {
             XCTFail("Failed decoding plugin \(error)")
         }
@@ -172,7 +169,6 @@ class PluginDirectoryTests: XCTestCase {
 
             let slugs = response.plugins.map { $0.slug }
             XCTAssertEqual(response.pageMetadata.pluginSlugs, slugs)
-
         } catch {
             XCTFail("Failed decoding plugin \(error)")
         }
@@ -191,7 +187,6 @@ class PluginDirectoryTests: XCTestCase {
 
             let slugs = response.plugins.map { $0.slug }
             XCTAssertEqual(response.pageMetadata.pluginSlugs, slugs)
-
         } catch {
             XCTFail("Failed decoding plugin \(error)")
         }

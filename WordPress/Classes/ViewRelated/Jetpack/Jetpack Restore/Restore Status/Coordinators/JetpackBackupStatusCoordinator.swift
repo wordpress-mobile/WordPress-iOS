@@ -82,7 +82,6 @@ class JetpackBackupStatusCoordinator {
             }
 
             self.view.render(backup)
-
         }, failure: { [weak self] error in
             DDLogError("Error fetching backup object: \(error.localizedDescription)")
 

@@ -284,5 +284,4 @@ extension WPStyleGuide {
             static let standardCellVerticalPadding: CGFloat = 11
         }
     }
-
 }

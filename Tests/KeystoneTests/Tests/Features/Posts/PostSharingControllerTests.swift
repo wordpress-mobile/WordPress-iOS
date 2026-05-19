@@ -18,5 +18,4 @@ class PostSharingControllerTests: XCTestCase {
         controller = sharingController.shareController(nil, link: nil)
         XCTAssertNotNil(controller, "Controller should not be nil")
     }
-
 }

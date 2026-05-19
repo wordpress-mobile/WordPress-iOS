@@ -31,5 +31,4 @@ class MediaSizeSliderCellTest: XCTestCase {
         model.value = 360
         XCTAssertEqual(model.value, 300)
     }
-
 }

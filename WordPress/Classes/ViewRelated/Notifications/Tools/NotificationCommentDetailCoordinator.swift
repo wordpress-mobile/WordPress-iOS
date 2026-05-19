@@ -58,7 +58,6 @@ class NotificationCommentDetailCoordinator: NSObject {
         updateNavigationButtonStates()
         return viewController
     }
-
 }
 
 // MARK: - Private Extension
@@ -168,5 +167,4 @@ extension NotificationCommentDetailCoordinator: CommentDetailsNotificationDelega
 
         notificationsCommentModerated.append(notification)
     }
-
 }

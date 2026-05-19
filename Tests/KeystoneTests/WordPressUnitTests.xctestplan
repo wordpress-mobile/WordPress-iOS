@@ -83,6 +83,13 @@
     {
       "target" : {
         "containerPath" : "container:..\/Modules",
+        "identifier" : "JetpackSocialTests",
+        "name" : "JetpackSocialTests"
+      }
+    },
+    {
+      "target" : {
+        "containerPath" : "container:..\/Modules",
         "identifier" : "JetpackStatsTests",
         "name" : "JetpackStatsTests"
       }

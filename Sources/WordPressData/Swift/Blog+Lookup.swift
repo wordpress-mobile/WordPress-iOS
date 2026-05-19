@@ -138,5 +138,4 @@ public extension Blog {
     func comment(withID id: Int32) -> Comment? {
         comments?.first { $0.commentID == id }
     }
-
 }

@@ -303,7 +303,6 @@ class LikesListController: NSObject {
 
         return Calendar.current.date(byAdding: .second, value: 1, to: lastDate)
     }
-
 }
 
 // MARK: - Table View Related
@@ -366,7 +365,6 @@ extension LikesListController: UITableViewDataSource, UITableViewDelegate {
 
         delegate?.didSelectUser(user, at: indexPath)
     }
-
 }
 
 // MARK: - Notification Cell Handling
@@ -411,7 +409,6 @@ private extension LikesListController {
         cell.configure(withUser: user, isLastRow: (indexPath.row == likingUsers.endIndex - 1))
         return cell
     }
-
 }
 
 // MARK: - Private Definitions
@@ -437,5 +434,4 @@ private extension LikesListController {
             comment: "Error message that informs likes from a private blog cannot be fetched."
         )
     }
-
 }

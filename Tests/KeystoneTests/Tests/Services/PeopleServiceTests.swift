@@ -219,5 +219,4 @@ class PeopleServiceTests: CoreDataTestCase {
         )
         wait(for: [exp], timeout: 1)
     }
-
 }

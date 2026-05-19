@@ -38,7 +38,6 @@ class CustomizeInsightsCell: UITableViewCell, NibLoadable, Accessible {
         tryButton.accessibilityLabel = Labels.tryIt
         tryButton.accessibilityHint = Labels.tryItHint
     }
-
 }
 
 // MARK: - Private Extension
@@ -107,5 +106,4 @@ private extension CustomizeInsightsCell {
             comment: "Accessibility hint"
         )
     }
-
 }

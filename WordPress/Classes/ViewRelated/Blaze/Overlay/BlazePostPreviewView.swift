@@ -100,7 +100,6 @@ final class BlazePostPreviewView: UIView {
             featuredImageView.isHidden = false
             let targetSize = ImageSize(scaling: featuredImageView.frame.size, in: self)
             featuredImageView.setImage(with: url, host: MediaHost(post), size: targetSize)
-
         } else {
             featuredImageView.isHidden = true
         }

@@ -104,7 +104,6 @@ class MediaSizeSliderCell: UITableViewCell, NibLoadable {
         model.value = Int(sender.value)
         onChange?(model.value)
     }
-
 }
 
 struct ImageSizeModel: MediaSizeModel {

@@ -599,7 +599,7 @@ class ReaderDetailViewController: UIViewController, ReaderDetailView {
             /// (except for a few times when it returns a very big weird number)
             /// We use that value so the content is not displayed with weird empty space at the bottom
             ///
-            self.webView.evaluateJavaScript("document.body.scrollHeight", completionHandler: { [weak self] (webViewHeight, _) in
+            self.webView.evaluateJavaScript("document.body.scrollHeight", completionHandler: { [weak self] webViewHeight, _ in
                 guard let self else { return }
                 guard let webViewHeight = webViewHeight as? CGFloat else {
                     self.webViewHeight.constant = height
@@ -1297,7 +1297,6 @@ private extension ReaderDetailViewController {
         static let errorLoadingTitle = NSLocalizedString("Error Loading Post", comment: "Text displayed when load post fails.")
         static let errorLoadingPostURLButtonTitle = NSLocalizedString("Open in browser", comment: "Button title to load a post in an in-app web view")
     }
-
 }
 
 // MARK: - Navigation Bar Configuration

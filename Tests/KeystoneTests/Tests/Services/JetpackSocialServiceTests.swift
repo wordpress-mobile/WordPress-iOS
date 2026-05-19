@@ -214,7 +214,6 @@ class JetpackSocialServiceTests: CoreDataTestCase {
 
         XCTAssertFalse(syncSucceeded)
     }
-
 }
 
 // MARK: - Helpers
@@ -229,5 +228,4 @@ private extension JetpackSocialServiceTests {
         blog?.publicizeInfo = info
         contextManager.saveContextAndWait(mainContext)
     }
-
 }

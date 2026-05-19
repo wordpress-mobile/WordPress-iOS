@@ -137,7 +137,7 @@ private extension BlogServiceDeduplicationTests {
     }
 
     func findPost(title: String, in blog: Blog) -> Bool {
-        return blog.posts?.contains(where: { (post) in
+        return blog.posts?.contains(where: { post in
             post.postTitle?.contains(title) ?? false
         }) ?? false
     }

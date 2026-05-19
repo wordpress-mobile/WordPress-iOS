@@ -164,10 +164,8 @@ private extension BloggingPromptCoordinator {
                 return
             }
             completion(.success(prompt))
-
         } failure: { error in
             completion(.failure(error ?? Errors.unknown))
         }
     }
-
 }

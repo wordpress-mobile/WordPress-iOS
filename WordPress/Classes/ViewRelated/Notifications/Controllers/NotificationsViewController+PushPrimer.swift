@@ -15,7 +15,7 @@ extension NotificationsViewController {
     }
 
     func setupNotificationPrompt() {
-        PushNotificationsManager.shared.loadAuthorizationStatus { [weak self] (status) in
+        PushNotificationsManager.shared.loadAuthorizationStatus { [weak self] status in
             switch status {
             case .notDetermined:
                 self?.setupPrimeForPush()

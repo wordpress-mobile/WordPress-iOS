@@ -14,6 +14,5 @@ struct LockScreenSiteTitleView: View {
                 .lineLimit(1)
                 .allowsTightening(true)
         }
-
     }
 }

@@ -296,7 +296,6 @@ private extension ContentMigrationCoordinatorTests {
             .with(remoteStatus: remoteStatus)
             .build()
     }
-
 }
 
 private final class MockNotificationCenter: NotificationCenter {

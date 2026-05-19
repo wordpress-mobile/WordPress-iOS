@@ -7,5 +7,4 @@ import Foundation
     public var name: String?
     public var items: [RemoteMenuItem]?
     public var locationNames: [String]?
-
 }

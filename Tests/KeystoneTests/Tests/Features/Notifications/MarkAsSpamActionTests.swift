@@ -54,7 +54,7 @@ final class MarkAsSpamActionTests: CoreDataTestCase {
 
         var executionCompleted = false
 
-        let context = ActionContext(block: try utility.mockCommentContent(), content: "content") { (_, _) in
+        let context = ActionContext(block: try utility.mockCommentContent(), content: "content") { _, _ in
             executionCompleted = true
         }
 

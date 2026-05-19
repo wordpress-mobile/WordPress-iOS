@@ -31,5 +31,4 @@ struct ZendeskUtilsA8CEmailTests {
         let result = ZendeskUtils.a8cTestEmail(email)
         #expect(result == email)
     }
-
 }

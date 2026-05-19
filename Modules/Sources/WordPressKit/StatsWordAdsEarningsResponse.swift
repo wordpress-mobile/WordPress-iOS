@@ -29,7 +29,7 @@ public struct StatsWordAdsEarningsResponse: Decodable {
         totalAmountOwed = earningsContainer.totalAmountOwed.value
 
         // Convert dictionary to sorted array
-        var earnings = earningsContainer.wordads.compactMap { (period, data) -> MonthlyEarning? in
+        var earnings = earningsContainer.wordads.compactMap { period, data -> MonthlyEarning? in
             guard let parsedPeriod = Period(string: period) else { return nil }
             return MonthlyEarning(period: parsedPeriod, data: data)
         }

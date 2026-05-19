@@ -16,7 +16,5 @@ class BlogServiceMock: BlogService {
         else {
             failure(testError())
         }
-
     }
-
 }

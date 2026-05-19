@@ -47,7 +47,7 @@ class JetpackConnectionWebViewController: UIViewController {
         let stackView = UIStackView(arrangedSubviews: [
             progressView,
             webView
-            ])
+        ])
         stackView.axis = .vertical
         view = stackView
     }
@@ -241,7 +241,7 @@ private extension JetpackConnectionWebViewController {
         let success: () -> Void = { [weak self] in
             self?.delegate?.jetpackConnectionCompleted()
         }
-        let failure: (Error) -> Void = { (error) in
+        let failure: (Error) -> Void = { error in
             DDLogError("\(error)")
             success()
         }

@@ -167,7 +167,6 @@ extension BlockEditorSettingsServiceRemoteTests {
 
         wait(for: [waitExpectation], timeout: 0.3)
     }
-
 }
 
 // MARK: Editor Global Styles support
@@ -297,7 +296,7 @@ extension BlockEditorSettingsServiceRemoteTests {
 
         let waitExpectation = expectation(description: "Block Settings should be successfully fetched")
         service = BlockEditorSettingsServiceRemote(remoteAPI: WordPressOrgRestApi(apiBase: URL(string: "https://example.com/wp-json/")!))
-        service.fetchBlockEditorSettings { (_) in
+        service.fetchBlockEditorSettings { _ in
             waitExpectation.fulfill()
         }
 
@@ -315,7 +314,7 @@ extension BlockEditorSettingsServiceRemoteTests {
 
         let waitExpectation = expectation(description: "Block Settings should be successfully fetched")
         service = BlockEditorSettingsServiceRemote(remoteAPI: WordPressOrgRestApi(apiBase: URL(string: "https://example.com/wp-json")!))
-        service.fetchBlockEditorSettings { (_) in
+        service.fetchBlockEditorSettings { _ in
             waitExpectation.fulfill()
         }
 

@@ -73,7 +73,6 @@ final class NotificationsViewControllerTests: XCTestCase {
         // Then
         XCTAssertEqual(controller.needsReloadResults, true)
     }
-
 }
 
 private extension NotificationsViewControllerTests {

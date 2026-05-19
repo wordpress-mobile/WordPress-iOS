@@ -107,7 +107,5 @@ extension WordPressComRestApiEndpointError: CustomNSError {
         }
 
         return userInfo
-
     }
-
 }

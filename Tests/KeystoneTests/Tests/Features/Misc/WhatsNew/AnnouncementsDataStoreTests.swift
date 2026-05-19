@@ -63,7 +63,6 @@ class MockAnnouncementsService: AnnouncementServiceRemote {
         getAnnouncementsExpectation?.fulfill()
         let result = getAnnouncementsSucceeds ? successResult : failureResult
         completion(result)
-
     }
 }
 
@@ -75,6 +74,11 @@ struct MockVersionProvider: AnnouncementsVersionProvider {
 class AnnouncementsDataStoreTests: XCTestCase {
 
     private var subscription: Receipt?
+
+    override func tearDown() {
+        subscription = nil
+        super.tearDown()
+    }
 
     /// local cache contains valid announcements
     func testLocalAnnouncementsRetrieved() {

@@ -24,7 +24,7 @@ extension UIImageView {
             gravatarWrapper = nil
         }
 
-        let observer = NotificationCenter.default.addObserver(forName: .GravatarImageUpdateNotification, object: nil, queue: nil) { [weak self] (notification) in
+        let observer = NotificationCenter.default.addObserver(forName: .GravatarImageUpdateNotification, object: nil, queue: nil) { [weak self] notification in
             guard let userInfo = notification.userInfo,
                 let email = userInfo[Defaults.emailKey] as? String,
                 email == trackedEmail,

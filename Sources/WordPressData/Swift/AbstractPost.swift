@@ -202,7 +202,7 @@ public extension AbstractPost {
     /// Returns true if the post has any media that needs manual intervention to be uploaded
     ///
     func hasPermanentFailedMedia() -> Bool {
-        return media.first(where: { !$0.willAttemptToUploadLater() }) != nil
+        return media.contains(where: { !$0.willAttemptToUploadLater() })
     }
 
     /// Returns all revisions of the post including the original one.

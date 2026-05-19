@@ -23,7 +23,6 @@ public class SelfHostedPluginManagementClient: PluginManagementClient {
                     )
                 }
                 .execute(onSuccess: success, onFailure: failure)
-
         }
     }
 
@@ -35,7 +34,6 @@ public class SelfHostedPluginManagementClient: PluginManagementClient {
             await remote.perform(.put, path: path, parameters: parameters, type: AnyResponse.self)
                 .map { _ in }
                 .execute(onSuccess: success, onFailure: failure)
-
         }
     }
 

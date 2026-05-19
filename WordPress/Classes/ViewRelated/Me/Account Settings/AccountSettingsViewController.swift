@@ -185,7 +185,7 @@ private class AccountSettingsController: SettingsController {
             return ChangePasswordViewController(username: settings?.username ?? "") { [weak self] value in
                 DispatchQueue.main.async {
                     SVProgressHUD.show(withStatus: Constants.changingPassword)
-                    service.updatePassword(value, finished: { (success, error) in
+                    service.updatePassword(value, finished: { success, error in
                         if success {
                             self?.refreshAccountDetails {
                                 SVProgressHUD.showSuccess(withStatus: Constants.changedPasswordSuccess)

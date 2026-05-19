@@ -79,7 +79,6 @@ private extension CountriesCell {
         rowsStackViewTopConstraint.constant = !dataRows.isEmpty ? subtitleHeight : 0
         topSeparatorLineHeightConstraint.constant = dataRows.isEmpty ? 0.5 : 0.33
     }
-
 }
 
 // MARK: - ViewMoreRowDelegate
@@ -90,5 +89,4 @@ extension CountriesCell: ViewMoreRowDelegate {
         siteStatsPeriodDelegate?.viewMoreSelectedForStatSection?(statSection)
         siteStatsInsightsDetailsDelegate?.viewMoreSelectedForStatSection?(statSection)
     }
-
 }

@@ -82,7 +82,6 @@ class WordPressComSyncService {
         if isJetpackLogin && !account.isDefaultWordPressComAccount {
             let blogService = BlogService(coreDataStack: coreDataStack)
             blogService.associateSyncedBlogs(toJetpackAccount: account, success: onSuccessInternal, failure: onFailureInternal)
-
         } else {
             if !account.isDefaultWordPressComAccount {
                 accountService.removeDefaultWordPressComAccount()

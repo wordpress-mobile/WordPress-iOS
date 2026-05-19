@@ -196,7 +196,6 @@ fileprivate extension PingHubManager {
     func applicationWillEnterForeground() {
         state.foreground = true
     }
-
 }
 
 // MARK: - Actions

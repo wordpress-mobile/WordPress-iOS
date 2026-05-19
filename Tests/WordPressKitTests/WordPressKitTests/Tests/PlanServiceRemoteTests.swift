@@ -230,7 +230,7 @@ class PlanServiceRemoteTests: RemoteTestCase, RESTTestable {
         let expect = expectation(description: "Get plan descriptions success")
         stubRemoteResponse(meSitesEndpoint, filename: getPlansMeSitesSuccessMockFilename, contentType: .ApplicationJSON)
 
-        remote.getPlanDescriptionsForAllSitesForLocale("en", success: { (response) in
+        remote.getPlanDescriptionsForAllSitesForLocale("en", success: { response in
             XCTAssertEqual(response.count, 5)
             expect.fulfill()
         }) { _ in
@@ -245,7 +245,7 @@ class PlanServiceRemoteTests: RemoteTestCase, RESTTestable {
         let expect = expectation(description: "Get plan descriptions failure")
         stubRemoteResponse(meSitesEndpoint, data: Data(), contentType: .NoContentType, status: 500)
 
-        remote.getPlanDescriptionsForAllSitesForLocale("en", success: { (_) in
+        remote.getPlanDescriptionsForAllSitesForLocale("en", success: { _ in
             XCTFail("This callback shouldn't get called")
             expect.fulfill()
         }) { error in

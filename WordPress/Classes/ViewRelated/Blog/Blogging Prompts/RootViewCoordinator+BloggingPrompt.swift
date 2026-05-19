@@ -39,7 +39,6 @@ extension RootViewCoordinator {
 
         bloggingPromptCoordinator.showPromptAnsweringFlow(from: viewController, promptID: promptID, blog: blog, source: source)
     }
-
 }
 
 private extension RootViewCoordinator {

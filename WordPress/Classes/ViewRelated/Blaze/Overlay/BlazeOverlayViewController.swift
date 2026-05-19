@@ -165,7 +165,6 @@ final class BlazeOverlayViewController: UIViewController {
             blazeButton.leadingAnchor.constraint(equalTo: stackView.leadingAnchor),
             blazeButton.trailingAnchor.constraint(equalTo: stackView.trailingAnchor),
         ])
-
     }
 
     // MARK: - Button Action
@@ -214,5 +213,4 @@ private extension BlazeOverlayViewController {
         static let blazeButtonBackgroundColor = UIColor(light: .black, dark: UIColor(red: 0.11, green: 0.11, blue: 0.118, alpha: 1))
         static let backgroundColor = UIColor(light: .systemBackground, dark: .black)
     }
-
 }

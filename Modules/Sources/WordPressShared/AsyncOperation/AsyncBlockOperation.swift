@@ -11,5 +11,4 @@ public class AsyncBlockOperation: AsyncOperation, @unchecked Sendable {
             self?.state = .isFinished
         }
     }
-
 }

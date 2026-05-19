@@ -51,7 +51,6 @@ struct MovedToJetpackViewModel {
     var learnMoreButtonTitle: String {
         return Strings.learnMoreButtonTitle
     }
-
 }
 
 extension MovedToJetpackViewModel {
@@ -104,6 +103,5 @@ extension MovedToJetpackViewModel {
             value: "Learn more at jetpack.com",
             comment: "Title for a button that displays a blog post in a web view."
         )
-
     }
 }

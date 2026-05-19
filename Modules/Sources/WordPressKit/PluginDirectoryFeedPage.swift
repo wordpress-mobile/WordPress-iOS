@@ -41,7 +41,6 @@ public struct PluginDirectoryFeedPage: Decodable, Equatable {
         return lhs.pageMetadata == rhs.pageMetadata
             && lhs.plugins == rhs.plugins
     }
-
 }
 
 public struct PluginDirectoryPageMetadata: Equatable, Codable {

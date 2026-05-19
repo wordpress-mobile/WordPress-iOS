@@ -60,7 +60,6 @@ struct LengthGallery: View {
                 .frame(width: 120, height: 120)
             Text(name)
                 .foregroundStyle(.primary)
-
         }
     }
 }

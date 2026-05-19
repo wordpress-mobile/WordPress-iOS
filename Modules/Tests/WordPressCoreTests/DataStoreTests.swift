@@ -70,5 +70,4 @@ struct InMemoryDataStoreTests {
             confirmation()
         }
     }
-
 }

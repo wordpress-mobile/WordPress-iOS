@@ -426,5 +426,4 @@ class MediaImportService: NSObject {
             media.caption = caption
         }
     }
-
 }

@@ -348,7 +348,6 @@ extension NotificationDetailsViewController {
 
         tableView.register(LikeUserTableViewCell.defaultNib,
                            forCellReuseIdentifier: LikeUserTableViewCell.defaultReuseID)
-
     }
 
     /// Configure the delegate and data source for the table view based on notification type.
@@ -363,7 +362,6 @@ extension NotificationDetailsViewController {
 
             // always call refresh to ensure that the controller fetches the data.
             likesListController.refresh()
-
         } else {
             tableView.delegate = self
             tableView.dataSource = self
@@ -649,7 +647,6 @@ private extension NotificationDetailsViewController {
 
         WPAnalytics.track(.userProfileSheetShown, properties: ["source": "like_notification_list"])
     }
-
 }
 
 // MARK: - Helpers
@@ -822,7 +819,6 @@ extension NotificationDetailsViewController: LikesListControllerDelegate {
                                      subtitle: subtitle,
                                      image: "wp-illustration-notifications")
     }
-
 }
 
 // MARK: - Private Properties

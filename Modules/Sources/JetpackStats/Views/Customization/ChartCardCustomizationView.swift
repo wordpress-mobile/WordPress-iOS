@@ -27,7 +27,6 @@ struct ChartCardCustomizationView: View {
                     Text(Strings.Buttons.resetSettings)
                         .foregroundColor(.red)
                         .frame(maxWidth: .infinity, alignment: .center)
-
                 }
                 .padding(.top, 12)
                 .listRowBackground(Color.clear)

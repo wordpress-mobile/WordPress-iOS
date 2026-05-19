@@ -168,7 +168,7 @@ class AccountSettingsService {
     func updatePassword(_ password: String, finished: ((Bool, Error?) -> ())? = nil) {
         remote.updatePassword(password, success: {
             finished?(true, nil)
-        }) { (error) -> Void in
+        }) { error -> Void in
             DDLogError("Error saving account settings change \(error)")
             NotificationCenter.default.post(name: NSNotification.Name.AccountSettingsServiceChangeSaveFailed, object: error as NSError)
 

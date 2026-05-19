@@ -33,7 +33,7 @@ startup time. This will block the thread. Do not use unless you're sure.
 
     // Send the event and block the thread until it was actually sent
     @objc func send(title: String) {
-        let userInfo = errors.enumerated().reduce(into: [String: Any](), { (result, arg1) in
+        let userInfo = errors.enumerated().reduce(into: [String: Any](), { result, arg1 in
             let (index, errorWithCaller) = arg1
             let error = errorWithCaller.error
             result["Error \(index + 1)"] = [

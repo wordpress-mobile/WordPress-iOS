@@ -12,5 +12,4 @@ final class ActivityContentFactoryTests: XCTestCase {
     private func mockBlock() throws -> JSONObject {
         return try JSONObject(fromFileNamed: "activity-log-activity-content.json")
     }
-
 }

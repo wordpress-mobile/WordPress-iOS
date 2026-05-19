@@ -366,7 +366,7 @@ class MediaCoordinator: NSObject {
                         "width": media.width ?? "",
                         "localURL": media.localURL ?? "",
                         "remoteURL": media.remoteURL ?? "",
-                ])
+                    ])
 
             self.coordinator(for: media).attach(error: nserror, toMediaID: media.uploadID)
             self.fail(nserror, media: media)
@@ -707,7 +707,6 @@ class MediaCoordinator: NSObject {
                 )
             }
         })
-
     }
 
     /// This method checks the status of all media objects and updates them to the correct status if needed.
@@ -733,7 +732,6 @@ extension MediaCoordinator: MediaProgressCoordinatorDelegate {
     }
 
     func mediaProgressCoordinatorDidStartUploading(_ mediaProgressCoordinator: MediaProgressCoordinator) {
-
     }
 
     func mediaProgressCoordinatorDidFinishUpload(_ mediaProgressCoordinator: MediaProgressCoordinator) {
@@ -778,7 +776,7 @@ extension MediaCoordinator {
     // We want to collect more data about that, so we're going to log that info to Sentry,
     // and also delete the `Media` object, since there isn't really a reasonable way to recover from that failure.
     func addObserverForDeletedFiles() {
-        addObserver({ (media, _) in
+        addObserver({ media, _ in
             guard let mediaError = media.error,
                 media.hasMissingFileError else {
                 return
@@ -786,7 +784,6 @@ extension MediaCoordinator {
 
             self.cancelUploadAndDeleteMedia(media)
             WordPressAppDelegate.crashLogging?.logMessage("Deleting a media object that's failed to upload because of a missing local file. \(mediaError)")
-
         }, for: nil)
     }
 

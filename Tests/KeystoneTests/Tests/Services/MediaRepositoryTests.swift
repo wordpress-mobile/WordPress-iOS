@@ -118,7 +118,6 @@ class MediaRepositoryTests: CoreDataTestCase {
         }
         XCTAssertTrue(mediaExists)
     }
-
 }
 
 private class MediaServiceRemoteFactoryStub: MediaServiceRemoteFactory {

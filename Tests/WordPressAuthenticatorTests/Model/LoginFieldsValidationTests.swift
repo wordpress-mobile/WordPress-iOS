@@ -38,6 +38,5 @@ class LoginFieldsValidationTests: XCTestCase {
 
         loginFields.siteAddress = "https://hostname"
         XCTAssert(loginFields.validateSiteForSignin(), "Since we want to validate simple mistakes, to use a hostname you'll need an http:// or https:// prefix.")
-
     }
 }

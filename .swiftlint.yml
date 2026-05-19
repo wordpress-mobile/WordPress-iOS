@@ -13,6 +13,9 @@ only_rules:
   # Prefer `Array(xs)` over `xs.map { $0 }`.
   - array_init
 
+  # All elements in a collection literal should be vertically aligned.
+  - collection_alignment
+
   # Colons should be next to the identifier when specifying a type.
   - colon
 
@@ -24,6 +27,12 @@ only_rules:
 
   # Prefer `contains` over using `filter(where:).isEmpty`.
   - contains_over_filter_is_empty
+
+  # Prefer `contains` over `first(where:) != nil`.
+  - contains_over_first_not_nil
+
+  # Prefer `contains` over `range(of:) != nil` and `range(of:) == nil`.
+  - contains_over_range_nil_comparison
 
   # if,for,while,do statements shouldn't wrap their conditionals in parentheses.
   - control_statement
@@ -51,12 +60,19 @@ only_rules:
   # Prefer `first(where:)` over `filter { }.first`.
   - first_where
 
+  # Prefer `flatMap { ... }` over `map { ... }.reduce([], +)`.
+  - flatmap_over_map_reduce
+
   # When calling the `joined` method on an array of strings, omit an
   # explicit empty-string separator since that is the default.
   - joined_default_parameter
 
   # Prefer `last(where:)` over `filter { }.last`.
   - last_where
+
+  # Trailing closing brackets/parens of literal expressions (arrays, dicts)
+  # should match the indentation of the line that introduced them.
+  - literal_expression_end_indentation
 
   # MARK comment should be in valid format.
   - mark
@@ -95,10 +111,15 @@ only_rules:
   # Lines should not have trailing whitespace.
   - trailing_whitespace
 
+  # Closure arguments don't need to be wrapped in parentheses.
+  - unneeded_parentheses_in_closure_argument
+
   # Unused parameter in a closure should be replaced with _.
   - unused_closure_parameter
 
   - vertical_whitespace
+
+  - vertical_whitespace_closing_braces
 
   - weak_delegate
 

@@ -91,7 +91,7 @@ extension RemoteTestCase {
         }
 
         stub(condition: { request in
-            return request.url?.absoluteString.range(of: endpoint) != nil
+            return request.url?.absoluteString.contains(endpoint) ?? false
         }) { _ in
             var headers: [NSObject: AnyObject]?
 
@@ -112,7 +112,7 @@ extension RemoteTestCase {
     ///
     func stubRemoteResponse(_ endpoint: String, data: Data, contentType: ResponseContentType, status: Int32 = 200) {
         stub(condition: { request in
-            return request.url?.absoluteString.range(of: endpoint) != nil
+            return request.url?.absoluteString.contains(endpoint) ?? false
         }) { _ in
             var headers: [NSObject: AnyObject]?
 
@@ -140,7 +140,7 @@ extension RemoteTestCase {
     func stubRemoteResponse(_ endpoint: String, files: [String], contentType: ResponseContentType, status: Int32 = 200) {
         var callCounter = 0
         stub(condition: { request in
-            return request.url?.absoluteString.range(of: endpoint) != nil
+            return request.url?.absoluteString.contains(endpoint) ?? false
         }) { response in
             guard files.indices.contains(callCounter) else {
                 // An extra call was made to this stub and no corresponding response file existed.

@@ -179,7 +179,7 @@ public class DomainsServiceRemote: ServiceRemoteWordPressComREST {
         wordPressComRESTAPI.get(
             servicePath,
             parameters: nil,
-            success: { (response, _) in
+            success: { response, _ in
                 do {
                     let data = try JSONSerialization.data(withJSONObject: response, options: .prettyPrinted)
                     let decodedResult = try JSONDecoder.apiDecoder.decode(DomainContactInformation.self, from: data)
@@ -188,7 +188,7 @@ public class DomainsServiceRemote: ServiceRemoteWordPressComREST {
                     WPKitLogError("Error parsing DomainContactInformation  (\(error)): \(response)")
                     failure(error)
                 }
-        }) { (error, _) in
+        }) { error, _ in
             failure(error)
         }
     }
@@ -214,7 +214,7 @@ public class DomainsServiceRemote: ServiceRemoteWordPressComREST {
                     WPKitLogError("Error parsing ValidateDomainContactInformationResponse  (\(error)): \(response)")
                     failure(error)
                 }
-        }) { (error, _) in
+        }) { error, _ in
             failure(error)
         }
     }

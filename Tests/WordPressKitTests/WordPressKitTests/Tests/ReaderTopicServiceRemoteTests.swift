@@ -67,5 +67,4 @@ class ReaderTopicServiceRemoteTests: RemoteTestCase, RESTTestable {
             )
         }
     }
-
 }

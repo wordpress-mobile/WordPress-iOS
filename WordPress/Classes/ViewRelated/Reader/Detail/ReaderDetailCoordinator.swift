@@ -726,7 +726,6 @@ extension ReaderDetailCoordinator: ReaderDetailHeaderViewDelegate {
     func didSelectTopic(_ topic: String) {
         showTopic(topic)
     }
-
 }
 
 extension ReaderDetailCoordinator: ReaderDetailFeaturedImageViewDelegate {
@@ -754,7 +753,6 @@ private extension ReaderDetailCoordinator {
             comment: "Error message that informs reader detail from a private blog cannot be fetched."
         )
     }
-
 }
 
 private extension URL {

@@ -30,7 +30,7 @@ class SiteDesignServiceRemoteTests: RemoteTestCase, RESTTestable {
     func testFetchSiteDesigns() {
         let expect = expectation(description: "Fetch available site designs")
         stubRemoteResponse(endpoint, filename: successMockFilename, contentType: .ApplicationJSON)
-        SiteDesignServiceRemote.fetchSiteDesigns(restAPI, request: request) { (result) in
+        SiteDesignServiceRemote.fetchSiteDesigns(restAPI, request: request) { result in
             switch result {
             case .success(let siteDesigns):
                 XCTAssertNotNil(siteDesigns)
@@ -46,7 +46,7 @@ class SiteDesignServiceRemoteTests: RemoteTestCase, RESTTestable {
     func testFetchSiteDesignsEmptyResponse() {
         let expect = expectation(description: "Fetch available site designs")
         stubRemoteResponse(endpoint, filename: emptyDesignsMockFilename, contentType: .ApplicationJSON)
-        SiteDesignServiceRemote.fetchSiteDesigns(restAPI) { (result) in
+        SiteDesignServiceRemote.fetchSiteDesigns(restAPI) { result in
             switch result {
             case .success(let siteDesigns):
                 XCTAssertNotNil(siteDesigns)
@@ -63,7 +63,7 @@ class SiteDesignServiceRemoteTests: RemoteTestCase, RESTTestable {
     func testMalformedData() {
         let expect = expectation(description: "Fetch available site designs")
         stubRemoteResponse(endpoint, filename: malformedMockFilename, contentType: .ApplicationJSON)
-        SiteDesignServiceRemote.fetchSiteDesigns(restAPI) { (result) in
+        SiteDesignServiceRemote.fetchSiteDesigns(restAPI) { result in
             switch result {
             case .success:
                 XCTFail("This callback shouldn't get called")

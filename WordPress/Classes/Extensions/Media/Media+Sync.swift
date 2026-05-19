@@ -66,5 +66,4 @@ extension Media {
             }
         }, on: .main)
     }
-
 }

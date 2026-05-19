@@ -157,7 +157,6 @@ class OverviewCell: UITableViewCell, NibLoadable {
         configureChartView()
         updateLabels()
     }
-
 }
 
 // MARK: - Private Extension
@@ -259,7 +258,7 @@ private extension OverviewCell {
             chartView.trailingAnchor.constraint(equalTo: chartContainerView.trailingAnchor),
             chartView.topAnchor.constraint(equalTo: chartContainerView.topAnchor),
             chartView.bottomAnchor.constraint(equalTo: chartContainerView.bottomAnchor)
-            ])
+        ])
     }
 
     func resetChartContainerView() {
@@ -284,5 +283,4 @@ private extension OverviewCell {
             WPAppAnalytics.track(event, withProperties: properties)
         }
     }
-
 }

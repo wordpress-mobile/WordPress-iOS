@@ -250,7 +250,6 @@ import WordPressKit
     // MARK: - Types
 
     public typealias StateUpdatedHandler = (SuggestionsListViewModelType) -> Void
-
 }
 
 // MARK: - List Type

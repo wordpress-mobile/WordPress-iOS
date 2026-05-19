@@ -407,7 +407,7 @@ final class MySiteViewController: UIViewController, UIScrollViewDelegate, NoSite
 
         blogService.syncBlogs(for: account) {
             finishSync()
-        } failure: { (_) in
+        } failure: { _ in
             finishSync()
         }
     }

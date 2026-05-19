@@ -20,5 +20,4 @@ class HTTPBodyEncodingTests: XCTestCase {
         let originalBodyData = try XCTUnwrap(Data(base64Encoded: base64EncodedBody))
         return HTTPAPIResponse(response: response, body: originalBodyData).bodyText
     }
-
 }

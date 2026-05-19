@@ -62,5 +62,4 @@ class PluginDirectoryCollectionViewCell: UICollectionViewCell, NibLoadable {
         nameLabel?.textColor = .label
         authorLabel?.textColor = .secondaryLabel
     }
-
 }

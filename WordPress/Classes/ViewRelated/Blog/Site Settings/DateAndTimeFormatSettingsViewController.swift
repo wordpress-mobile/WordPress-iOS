@@ -171,7 +171,6 @@ open class DateAndTimeFormatSettingsViewController: UITableViewController {
                     self?.settings.timeFormat = newTimeFormat
                     self?.saveSettings()
                     WPAnalytics.trackSettingsChange("date_format", fieldName: "time_format")
-
                 }
             }
 
@@ -239,5 +238,4 @@ open class DateAndTimeFormatSettingsViewController: UITableViewController {
                                 DDLogError("Error while sync'ing blog settings: \(error)")
                              })
     }
-
 }

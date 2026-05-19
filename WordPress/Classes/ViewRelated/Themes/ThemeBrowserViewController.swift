@@ -423,7 +423,7 @@ public protocol ThemePresenter: AnyObject {
                     self?.collectionView?.collectionViewLayout.invalidateLayout()
                 }
             },
-            failure: { (error) in
+            failure: { error in
                 DDLogError("Error updating active theme: \(String(describing: error?.localizedDescription))")
         })
     }
@@ -466,7 +466,7 @@ public protocol ThemePresenter: AnyObject {
                 }
                 self?.totalThemeCount = themeCount
             },
-            failure: { (error) in
+            failure: { error in
                 DDLogError("Error syncing themes: \(String(describing: error?.localizedDescription))")
                 if let failure,
                     let error {
@@ -484,7 +484,7 @@ public protocol ThemePresenter: AnyObject {
                 }
                 self?.totalCustomThemeCount = themeCount
             },
-            failure: { (error) in
+            failure: { error in
                 DDLogError("Error syncing themes: \(String(describing: error?.localizedDescription))")
                 if let failure,
                     let error {
@@ -867,7 +867,7 @@ public protocol ThemePresenter: AnyObject {
             alertController.addDefaultActionWithTitle(SharedStrings.Button.ok, handler: nil)
                 alertController.presentFromRootViewController()
             },
-            failure: { [weak self] (error) in
+            failure: { [weak self] error in
                 DDLogError("Error activating theme \(String(describing: theme.themeId)): \(String(describing: error?.localizedDescription))")
 
                 let errorTitle = NSLocalizedString("Activation Error", comment: "Title of alert when theme activation fails")

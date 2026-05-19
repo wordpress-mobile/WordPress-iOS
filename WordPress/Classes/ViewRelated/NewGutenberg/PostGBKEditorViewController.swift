@@ -230,13 +230,13 @@ private extension PostGBKEditorViewController {
     // MARK: - Keyboard Observers
 
     func setupKeyboardObservers() {
-        keyboardShowObserver = NotificationCenter.default.addObserver(forName: UIResponder.keyboardDidShowNotification, object: nil, queue: .main) { [weak self] (notification) in
+        keyboardShowObserver = NotificationCenter.default.addObserver(forName: UIResponder.keyboardDidShowNotification, object: nil, queue: .main) { [weak self] notification in
             if let self, let keyboardRect = notification.userInfo?[UIResponder.keyboardFrameEndUserInfoKey] as? CGRect {
                 self.keyboardFrame = keyboardRect
                 self.updateConstraintsToAvoidKeyboard(frame: keyboardRect)
             }
         }
-        keyboardHideObserver = NotificationCenter.default.addObserver(forName: UIResponder.keyboardDidHideNotification, object: nil, queue: .main) { [weak self] (notification) in
+        keyboardHideObserver = NotificationCenter.default.addObserver(forName: UIResponder.keyboardDidHideNotification, object: nil, queue: .main) { [weak self] notification in
             if let self, let keyboardRect = notification.userInfo?[UIResponder.keyboardFrameEndUserInfoKey] as? CGRect {
                 self.keyboardFrame = keyboardRect
                 self.updateConstraintsToAvoidKeyboard(frame: keyboardRect)
@@ -292,7 +292,7 @@ private extension PostGBKEditorViewController {
         let previousFirstResponder = view.findFirstResponder()
         let suggestionsController = GutenbergSuggestionsViewController(siteID: siteID, suggestionType: type)
         currentSuggestionsController = suggestionsController
-        suggestionsController.onCompletion = { [weak self] (result) in
+        suggestionsController.onCompletion = { [weak self] result in
             callback(result)
 
             if let self {

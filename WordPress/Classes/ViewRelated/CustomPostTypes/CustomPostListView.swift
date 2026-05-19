@@ -130,7 +130,6 @@ struct CustomPostListView<Header: View>: View {
             Text(Strings.trashConfirmationMessage)
         }
     }
-
 }
 
 private struct PaginatedList<Header: View>: View {

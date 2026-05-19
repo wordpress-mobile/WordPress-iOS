@@ -85,7 +85,7 @@ extension PluginDirectoryEntry: Codable {
         rating = try container.decode(Double.self, forKey: .rating)
 
         let icons = try? container.decodeIfPresent([String: String].self, forKey: .icons)
-        icon = icons?["2x"].flatMap({ (s) -> URL? in
+        icon = icons?["2x"].flatMap({ s -> URL? in
             URL(string: s)
         })
 

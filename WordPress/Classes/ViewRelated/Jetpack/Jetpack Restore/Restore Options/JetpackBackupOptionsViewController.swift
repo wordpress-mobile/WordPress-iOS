@@ -93,5 +93,4 @@ extension JetpackBackupOptionsViewController: JetpackBackupOptionsView {
         statusVC.delegate = backupStatusDelegate
         self.navigationController?.pushViewController(statusVC, animated: true)
     }
-
 }

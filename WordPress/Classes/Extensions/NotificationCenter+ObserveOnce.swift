@@ -33,7 +33,7 @@ extension NotificationCenter {
             forName: name,
             object: object,
             queue: queue,
-            using: { (notification) in
+            using: { notification in
                 guard filter?(notification) ?? true else {
                     return
                 }

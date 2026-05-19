@@ -161,7 +161,6 @@ class GoogleAuthenticator: NSObject {
 
         createWordPressComUser(token: token, email: loginFields.emailAddress)
     }
-
 }
 
 // MARK: - Private Extension
@@ -244,7 +243,6 @@ private extension GoogleAuthenticator {
         static let googleConnectedError = NSLocalizedString("The Google account \"%@\" doesn't match any account on WordPress.com", comment: "Description shown when a user logs in with Google but no matching WordPress.com account is found")
         static let googleUnableToConnect = NSLocalizedString("Unable To Connect", comment: "Shown when a user logs in with Google but it subsequently fails to work as login to WordPress.com")
     }
-
 }
 
 // MARK: - SDK-less flow
@@ -358,7 +356,6 @@ extension GoogleAuthenticator: LoginFacadeDelegate {
         loginDelegate?.googleLoginFailed(errorTitle: errorTitle, errorDescription: errorDescription, loginFields: loginFields)
         delegate?.googleLoginFailed(errorTitle: errorTitle, errorDescription: errorDescription, loginFields: loginFields, unknownUser: unknownUser)
     }
-
 }
 
 // MARK: - Sign Up Methods
@@ -394,7 +391,6 @@ private extension GoogleAuthenticator {
                 // Notify delegate
                 self?.logInInstead(credentials: credentials)
             }
-
             }, failure: { [weak self] error in
                 SVProgressHUD.dismiss()
                 // Notify delegate
@@ -443,5 +439,4 @@ private extension GoogleAuthenticator {
         signupDelegate?.googleSignupFailed(error: error, loginFields: loginFields)
         delegate?.googleSignupFailed(error: error, loginFields: loginFields)
     }
-
 }

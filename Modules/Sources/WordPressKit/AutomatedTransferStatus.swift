@@ -36,5 +36,4 @@ public struct AutomatedTransferStatus {
         self.step = step
         self.totalSteps = totalSteps
     }
-
 }

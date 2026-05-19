@@ -112,7 +112,6 @@ class SharedDataIssueSolverTests: XCTestCase {
         XCTAssertEqual(sharedUserDefaults.string(forKey: "JPShareExtensionMaximumMediaDimensionKey"), "test5")
         XCTAssertEqual(sharedUserDefaults.string(forKey: "JPShareExtensionRecentSitesKey"), "test6")
     }
-
 }
 
 // MARK: - Helpers

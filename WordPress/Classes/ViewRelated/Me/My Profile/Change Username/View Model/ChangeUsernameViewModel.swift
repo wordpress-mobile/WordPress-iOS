@@ -45,7 +45,7 @@ class ChangeUsernameViewModel {
     init(service: AccountSettingsService?, settings: AccountSettings?) {
         self.settings = settings
         self.store = AccountSettingsStore(service: service)
-        self.receipt = self.store.onStateChange { [weak self] (old, new) in
+        self.receipt = self.store.onStateChange { [weak self] old, new in
             DispatchQueue.main.async {
                 if old.suggestUsernamesState != new.suggestUsernamesState {
                     self?.suggestionsListener?(new.suggestUsernamesState, new.suggestions, self?.reloadAllSections ?? true)

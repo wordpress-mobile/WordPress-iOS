@@ -80,7 +80,6 @@ class MediaFileManagerTests: XCTestCase {
 
             url = try fileManager.makeLocalMediaURL(withFilename: expected, fileExtension: nil)
             XCTAssertTrue(url.lastPathComponent == expected, "Error: local media url has unexpected filename: \(url)")
-
         } catch {
             XCTFail("Error creating local media URL: \(error)")
         }
@@ -113,7 +112,7 @@ class MediaFileManagerTests: XCTestCase {
             // Ideally we would verify that the local media directory was indeed cleaned.
             // However, for now we're just looking to make sure there aren't any errors being thrown with the implementation.
             expect.fulfill()
-        }) { (error) in
+        }) { error in
             expect.fulfill()
             XCTFail("Failed cleaning unused local media directory files with error: \(error.localizedDescription)")
         }
@@ -126,7 +125,7 @@ class MediaFileManagerTests: XCTestCase {
             // Ideally we would verify that the local media directory was indeed cleaned.
             // However, for now we're just looking to make sure there aren't any errors being thrown with the implementation.
             expect.fulfill()
-        }) { (error) in
+        }) { error in
             expect.fulfill()
             XCTFail("Failed cleaning local media directory with error: \(error.localizedDescription)")
         }

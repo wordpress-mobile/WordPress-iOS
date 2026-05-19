@@ -145,7 +145,7 @@ class MediaThumbnailExporter: MediaExporter {
             onError(exporterErrorWith(error: ThumbnailExportError.failedToGenerateThumbnailFileURL))
             return Progress.discreteCompletedProgress()
         }
-        return exportThumbnail(forFile: fileURL, onCompletion: { (_, export) in
+        return exportThumbnail(forFile: fileURL, onCompletion: { _, export in
             onCompletion(export)
         }, onError: onError)
     }
@@ -189,7 +189,7 @@ class MediaThumbnailExporter: MediaExporter {
         let exporter = MediaImageExporter(url: url)
         exporter.mediaDirectoryType = .temporary
         exporter.options = imageExporterOptions
-        return exporter.export(onCompletion: { (export) in
+        return exporter.export(onCompletion: { export in
             self.exportImageToThumbnailCache(export, onCompletion: onCompletion, onError: onError)
         },
                         onError: onError)
@@ -202,7 +202,7 @@ class MediaThumbnailExporter: MediaExporter {
         exporter.mediaDirectoryType = .temporary
         return exporter.exportPreviewImageForVideo(atURL: url,
                                             imageOptions: imageExporterOptions,
-                                            onCompletion: { (export) in
+                                            onCompletion: { export in
                                                 self.exportImageToThumbnailCache(export, onCompletion: onCompletion, onError: onError)
         },
                                             onError: onError)

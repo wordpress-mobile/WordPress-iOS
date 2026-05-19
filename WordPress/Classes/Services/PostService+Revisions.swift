@@ -18,7 +18,7 @@ extension PostService {
         let remote = PostServiceRemoteREST(wordPressComRestApi: api, siteID: blogId)
         remote.getPostRevisions(for: blogId.intValue,
                                 postId: postId.intValue,
-                                success: { (remoteRevisions) in
+                                success: { remoteRevisions in
                                     self.managedObjectContext.perform {
                                         let _ = self.syncPostRevisions(
                                             from: remoteRevisions ?? [],

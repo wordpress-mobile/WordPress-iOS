@@ -63,7 +63,6 @@ struct JetpackSocialNoSharesViewModel {
         self.totalServiceCount = totalServiceCount
         self.onSubscribeTap = onSubscribeTap
     }
-
 }
 
 // MARK: - Constants

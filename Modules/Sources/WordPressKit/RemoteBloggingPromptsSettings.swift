@@ -48,5 +48,4 @@ public struct RemoteBloggingPromptsSettings: Codable {
         self.reminderTime = reminderTime
         self.isPotentialBloggingSite = isPotentialBloggingSite
     }
-
 }

@@ -1,5 +1,6 @@
 import Testing
 import Foundation
+import JetpackSocial
 import WordPressAPI
 import WordPressAPIInternal
 
@@ -32,6 +33,43 @@ struct CustomPostEditorServiceTests {
         #expect(service.inspectPendingSettings() == nil) // new posts don't use pendingSettings
     }
 
+    @Test("applyLocally encodes social sharing context into create params for new posts")
+    func applyLocallyEncodesSocialSharingContextIntoCreateParamsForNewPost() throws {
+        // Given
+        let context = ContextManager.forTesting().mainContext
+        let blog = BlogBuilder(context).build()
+        let service = try makeService(blog: blog, post: nil)
+        var settings = service.settings
+        settings.socialSharingDraft = PostSocialSharingDraft(
+            customMessage: "Share this",
+            connectionsByID: [
+                "1": .init(id: "1", enabled: true),
+                "2": .init(id: "2", enabled: false)
+            ]
+        )
+
+        // When
+        service.applyLocally(settings: settings)
+
+        // Then
+        let params = try #require(service.inspectCreateParams())
+        #expect(params.meta?.publicizeMessage == "Share this")
+
+        let entries = try #require(params.additionalFields?.arrayValueForKey(key: "jetpack_publicize_connections"))
+        let flagsByID = Dictionary(
+            uniqueKeysWithValues: entries.compactMap { entry -> (String, Bool)? in
+                guard case let .object(dict) = entry,
+                    case let .string(id)? = dict["connection_id"],
+                    case let .bool(enabled)? = dict["enabled"]
+                else {
+                    return nil
+                }
+                return (id, enabled)
+            }
+        )
+        #expect(flagsByID == ["1": true, "2": false])
+    }
+
     // MARK: - Existing Post Tests
 
     @Test("applyLocally stores pendingSettings for existing posts")
@@ -51,6 +89,29 @@ struct CustomPostEditorServiceTests {
         // Then
         #expect(service.inspectPendingSettings() != nil)
         #expect(service.inspectPendingSettings()?.slug == "updated-slug")
+    }
+
+    @Test("applyLocally stores social sharing draft for existing posts")
+    func applyLocallyStoresSocialSharingDraftForExistingPost() throws {
+        // Given
+        let context = ContextManager.forTesting().mainContext
+        let blog = BlogBuilder(context).build()
+        let post = makeRemotePost()
+        let service = try makeService(blog: blog, post: post)
+        var settings = service.settings
+        settings.socialSharingDraft = PostSocialSharingDraft(
+            customMessage: "Share this",
+            connectionsByID: [
+                "1": .init(id: "1", enabled: true),
+                "2": .init(id: "2", enabled: false)
+            ]
+        )
+
+        // When
+        service.applyLocally(settings: settings)
+
+        // Then
+        #expect(service.inspectPendingSettings()?.socialSharingDraft == settings.socialSharingDraft)
     }
 
     @Test("settings returns pendingSettings when set")
@@ -93,6 +154,33 @@ struct CustomPostEditorServiceTests {
         let post = makeRemotePost()
         let service = try makeService(blog: blog, post: post)
 
+        #expect(service.hasSettingsChanges == false)
+    }
+
+    @Test("hasSettingsChanges stays false after applying fetched social sharing draft")
+    func hasSettingsChangesReturnsFalseAfterApplyingFetchedSocialSharingDraft() throws {
+        let context = ContextManager.forTesting().mainContext
+        let blog = BlogBuilder(context).build()
+        let fetchedDraft = PostSocialSharingDraft(
+            customMessage: "Stored message",
+            connectionsByID: [
+                "12345": .init(id: "12345", enabled: false)
+            ]
+        )
+        let post = makeRemotePost(
+            meta: PostMeta().addingPublicizeMessage("Stored message"),
+            additionalFields: WpAdditionalFields()
+                .addingPublicizeConnections(fetchedDraft.connectionsByID ?? [:])
+        )
+        let service = try makeService(blog: blog, post: post)
+
+        var settings = service.settings
+        // Mirrors the value that CustomPostSettingsViewModel receives from the
+        // fetched post. Applying it locally should not dirty the editor baseline.
+        settings.socialSharingDraft = fetchedDraft
+        service.applyLocally(settings: settings)
+
+        #expect(service.settings.socialSharingDraft == fetchedDraft)
         #expect(service.hasSettingsChanges == false)
     }
 
@@ -272,7 +360,9 @@ private func makePostTypeLabels() -> PostTypeLabels {
 
 private func makeRemotePost(
     tags: [TermId]? = nil,
-    categories: [TermId]? = nil
+    categories: [TermId]? = nil,
+    meta: PostMeta? = nil,
+    additionalFields: WpAdditionalFields? = nil
 ) -> AnyPostWithEditContext {
     AnyPostWithEditContext(
         id: PostId(1),
@@ -296,13 +386,13 @@ private func makeRemotePost(
         commentStatus: .open,
         pingStatus: .open,
         format: nil,
-        meta: nil,
+        meta: meta,
         sticky: nil,
         template: "",
         categories: categories,
         tags: tags,
         parent: nil,
         menuOrder: nil,
-        additionalFields: nil
+        additionalFields: additionalFields
     )
 }

@@ -113,7 +113,7 @@ class CategorySectionTableViewCell: UITableViewCell, NibLoadable {
 
     func deselectItems() {
         guard let selectedItems = collectionView.indexPathsForSelectedItems else { return }
-        selectedItems.forEach { (indexPath) in
+        selectedItems.forEach { indexPath in
             collectionView.deselectItem(at: indexPath, animated: true)
         }
     }

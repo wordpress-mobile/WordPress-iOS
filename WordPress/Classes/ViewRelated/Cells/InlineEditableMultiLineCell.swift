@@ -30,7 +30,6 @@ class InlineEditableMultiLineCell: UITableViewCell, NibReusable {
         textView.text = text
         adjustHeight()
     }
-
 }
 
 // MARK: - UITextViewDelegate
@@ -41,7 +40,6 @@ extension InlineEditableMultiLineCell: UITextViewDelegate {
         delegate?.textUpdatedForCell(self)
         adjustHeight()
     }
-
 }
 
 // MARK: - Private Extension
@@ -64,5 +62,4 @@ private extension InlineEditableMultiLineCell {
             delegate?.textViewHeightUpdatedForCell(self)
         }
     }
-
 }

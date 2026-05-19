@@ -12,5 +12,4 @@ class MediaEditorOperationDescriptionTests: XCTestCase {
 
         XCTAssertEqual(description, "crop, rotate")
     }
-
 }

@@ -56,5 +56,4 @@ class GutenbergImgUploadProcessorTests: XCTestCase {
 
         XCTAssertEqual(parser.html(), postMediaBlockResultContent, "Post content should be updated correctly")
     }
-
 }

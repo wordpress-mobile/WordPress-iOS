@@ -80,7 +80,7 @@ final class SearchTextField: UITextField {
 
         NSLayoutConstraint.activate([
             heightAnchor.constraint(equalToConstant: Constants.searchHeight),
-            ])
+        ])
     }
 
     private lazy var searchIconImageView: UIImageView = {

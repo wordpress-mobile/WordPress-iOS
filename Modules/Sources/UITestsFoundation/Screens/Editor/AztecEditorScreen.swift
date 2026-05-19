@@ -212,8 +212,8 @@ public class AztecEditorScreen: ScreenObject {
 
     // returns void since return screen depends on from which screen it loaded
     public func closeEditor() {
-        XCTContext.runActivity(named: "Close the Aztec editor") { (_) in
-            XCTContext.runActivity(named: "Close the More menu if needed") { (_) in
+        XCTContext.runActivity(named: "Close the Aztec editor") { _ in
+            XCTContext.runActivity(named: "Close the More menu if needed") { _ in
                 let actionSheet = app.sheets.element(boundBy: 0)
                 if actionSheet.exists {
                     if XCTestCase.isPad {
@@ -228,7 +228,7 @@ public class AztecEditorScreen: ScreenObject {
 
             editorCloseButton.tap()
 
-            XCTContext.runActivity(named: "Discard any local changes") { (_) in
+            XCTContext.runActivity(named: "Discard any local changes") { _ in
 
                 let postHasChangesSheet = app.sheets["post-has-changes-alert"]
                 let discardButton = XCTestCase.isPad ? postHasChangesSheet.buttons.lastMatch : postHasChangesSheet.buttons.element(boundBy: 1)

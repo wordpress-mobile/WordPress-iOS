@@ -55,7 +55,7 @@ class PostsCardViewModel: NSObject {
     typealias Snapshot = NSDiffableDataSourceSnapshot<PostsListSection, PostsListItem>
     typealias PostsSnapshot = NSDiffableDataSourceSnapshot<Int, NSManagedObjectID>
 
-    lazy var diffableDataSource = DataSource(tableView: view!.tableView) { [weak self] (tableView, indexPath, item) -> UITableViewCell? in
+    lazy var diffableDataSource = DataSource(tableView: view!.tableView) { [weak self] tableView, indexPath, item -> UITableViewCell? in
         guard let self else {
             return nil
         }
@@ -67,7 +67,6 @@ class PostsCardViewModel: NSObject {
         case .ghost:
             return self.configureGhostCell(tableView: tableView, indexPath: indexPath)
         }
-
     }
 
     init(blog: Blog, status: BasePost.Status, view: PostsCardView, managedObjectContext: NSManagedObjectContext = ContextManager.shared.mainContext) {

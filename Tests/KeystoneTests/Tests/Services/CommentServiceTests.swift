@@ -101,7 +101,6 @@ private class CommentServiceRemoteFactoryMock: CommentServiceRemoteFactory {
     override func restRemote(siteID: NSNumber, api: WordPressComRestApi) -> CommentServiceRemoteREST {
         return restRemote
     }
-
 }
 
 private class CommentServiceRemoteRESTMock: CommentServiceRemoteREST {

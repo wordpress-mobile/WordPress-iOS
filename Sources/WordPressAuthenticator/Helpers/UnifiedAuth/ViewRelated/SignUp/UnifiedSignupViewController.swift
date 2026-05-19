@@ -202,7 +202,6 @@ private extension UnifiedSignupViewController {
             }
         }
     }
-
 }
 
 // MARK: - Instance Methods
@@ -223,7 +222,6 @@ extension UnifiedSignupViewController {
                                   success: { [weak self] in
                                     self?.didRequestSignupLink()
                                     self?.configureSubmitButton(animating: false)
-
             }, failure: { [weak self] (error: Error) in
                 WPLogError("Request for signup link email failed.")
 

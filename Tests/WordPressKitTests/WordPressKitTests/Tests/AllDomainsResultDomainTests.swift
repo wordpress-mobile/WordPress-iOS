@@ -159,5 +159,4 @@ final class AllDomainsResultDomainTests: XCTestCase {
 
     typealias Domain = DomainsServiceRemote.AllDomainsListItem
     typealias DomainStatus = Domain.Status
-
 }

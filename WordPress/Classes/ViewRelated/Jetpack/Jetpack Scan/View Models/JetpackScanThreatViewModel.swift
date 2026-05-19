@@ -474,7 +474,6 @@ private extension JetpackThreatContext {
 
                     contentsAttr.addAttributes(config.highlightedSectionAttributes, range: range)
                 }
-
             } else {
                 numberAttr.setAttributes(config.numberAttributes,
                                          range: NSRange(location: 0, length: numberStr.count))

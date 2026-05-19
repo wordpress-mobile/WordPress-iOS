@@ -72,7 +72,7 @@ class BlazeCreateCampaignWebViewModel: BlazeWebViewModel {
             view?.dismissView()
             return
         }
-        authenticatedRequest(for: initialURL, with: cookieJar) { [weak self] (request) in
+        authenticatedRequest(for: initialURL, with: cookieJar) { [weak self] request in
             guard let weakSelf = self else {
                 return
             }

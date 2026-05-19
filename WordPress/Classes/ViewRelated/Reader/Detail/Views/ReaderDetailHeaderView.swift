@@ -192,7 +192,6 @@ class ReaderDetailHeaderViewModel: ObservableObject {
             self?.isFollowButtonInteractive = true
         }
     }
-
 }
 
 // MARK: - SwiftUI
@@ -353,7 +352,6 @@ fileprivate extension ReaderDetailHeaderView {
             comment: "Accessibility hint to inform that the author section can be tapped to see posts from the site."
         )
     }
-
 }
 
 // MARK: - TopicCollectionView UIViewRepresentable Wrapper

@@ -199,5 +199,4 @@ final class OverlayFrequencyTrackerTests: XCTestCase {
         // When & Then
         XCTAssertFalse(tracker.shouldShow(forced: false))
     }
-
 }

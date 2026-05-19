@@ -40,7 +40,6 @@ class RegisterDomainDetailsSectionTests: XCTestCase {
         //empty email is invalid in terms of enableSubmit rules
         section.updateValue("", at: emailRowIndex)
         XCTAssert(section.rows[emailRowIndex].editableRow?.isValid(inContext: .clientSide) == false)
-
     }
 
     func testUpdateWholeSection() {

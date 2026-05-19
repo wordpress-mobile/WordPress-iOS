@@ -73,7 +73,7 @@ final class SiteIconPickerPresenter: NSObject {
                         post: nil,
                         receiveUpdate: nil,
                         thumbnailCallback: nil
-                    ) { (media, error) in
+                    ) { media, error in
                         guard let media, error == nil else {
                             WPAnalytics.track(.siteSettingsSiteIconUploadFailed)
                             self.onCompletion?(nil, error)
@@ -86,7 +86,7 @@ final class SiteIconPickerPresenter: NSObject {
                                                  success: {
                             WPAnalytics.track(.siteSettingsSiteIconUploaded)
                             self.onCompletion?(media, nil)
-                        }, failure: { (error) in
+                        }, failure: { error in
                             WPAnalytics.track(.siteSettingsSiteIconUploadFailed)
                             self.onCompletion?(nil, error)
                         })

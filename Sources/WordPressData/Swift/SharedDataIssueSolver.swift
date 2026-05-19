@@ -84,7 +84,6 @@ public final class SharedDataIssueSolver {
             sharedDefaults.set(objectToMigrate, forKey: key.valueForJetpack)
         }
     }
-
 }
 
 // MARK: - Helpers
@@ -108,7 +107,6 @@ private extension SharedDataIssueSolver {
             }
         }
     }
-
 }
 
 // MARK: - Today Widget Helpers

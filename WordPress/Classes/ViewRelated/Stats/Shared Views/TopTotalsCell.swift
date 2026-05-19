@@ -250,7 +250,6 @@ private extension TopTotalsCell {
         if previousRow is StatsChildRowsView {
             (previousRow as! StatsChildRowsView).showBottomSeperatorLine = !row.expanded
         }
-
     }
 
     func toggleSeparatorsAfterRow(_ row: StatsTotalRow) {
@@ -294,7 +293,6 @@ private extension TopTotalsCell {
     func stackViewContainingRow(_ row: StatsTotalRow) -> UIStackView? {
         return row.parentRow?.childRowsView?.rowsStackView ?? rowsStackView
     }
-
 }
 
 // MARK: - StatsTotalRowDelegate
@@ -347,7 +345,6 @@ extension TopTotalsCell: ViewMoreRowDelegate {
         siteStatsPeriodDelegate?.viewMoreSelectedForStatSection?(statSection)
         postStatsDelegate?.viewMoreSelectedForStatSection?(statSection)
     }
-
 }
 
 // MARK: - Accessibility

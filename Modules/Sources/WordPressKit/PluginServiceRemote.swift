@@ -12,7 +12,7 @@ public class PluginServiceRemote: ServiceRemoteWordPressComREST {
     public func getFeaturedPlugins(success: @escaping ([PluginDirectoryEntry]) -> Void, failure: @escaping (Error) -> Void) {
         let endpoint = "wpcom/v2/plugins/featured"
 
-        wordPressComRESTAPI.get(endpoint, parameters: nil, success: { (responseObject, _) in
+        wordPressComRESTAPI.get(endpoint, parameters: nil, success: { responseObject, _ in
             guard let response = responseObject as? [[String: AnyObject]] else {
                 failure(ResponseError.decodingFailure)
                 return
@@ -23,7 +23,7 @@ public class PluginServiceRemote: ServiceRemoteWordPressComREST {
             } catch {
                 failure(ResponseError.decodingFailure)
             }
-        }, failure: { (error, _) in
+        }, failure: { error, _ in
             WPKitLogError("[PluginServiceRemoteError] Error fetching featured plugins: \(error)")
             failure(error)
         })
@@ -34,7 +34,7 @@ public class PluginServiceRemote: ServiceRemoteWordPressComREST {
         let path = self.path(forEndpoint: endpoint, withVersion: ._1_2)
         let parameters = [String: AnyObject]()
 
-        wordPressComRESTAPI.get(path, parameters: parameters, success: { (responseObject, _) in
+        wordPressComRESTAPI.get(path, parameters: parameters, success: { responseObject, _ in
             guard let response = responseObject as? [String: AnyObject] else {
                 failure(ResponseError.decodingFailure)
                 return
@@ -46,7 +46,7 @@ public class PluginServiceRemote: ServiceRemoteWordPressComREST {
             } catch {
                 failure(self.errorFromResponse(response))
             }
-        }, failure: { (error, _) in
+        }, failure: { error, _ in
             WPKitLogError("[PluginServiceRemoteError] Error fetching site plugins: \(error)")
             failure(error)
         })
@@ -63,7 +63,7 @@ public class PluginServiceRemote: ServiceRemoteWordPressComREST {
         wordPressComRESTAPI.post(
             path,
             parameters: parameters,
-            success: { (responseObject, _)  in
+            success: { responseObject, _ in
                 guard let response = responseObject as? [String: AnyObject] else {
                     failure(ResponseError.decodingFailure)
                     return
@@ -75,7 +75,7 @@ public class PluginServiceRemote: ServiceRemoteWordPressComREST {
                     failure(self.errorFromResponse(response))
                 }
         },
-            failure: { (error, _) in
+            failure: { error, _ in
                 WPKitLogError("[PluginServiceRemoteError] Error updating plugin: \(error)")
                 failure(error)
         })
@@ -84,28 +84,28 @@ public class PluginServiceRemote: ServiceRemoteWordPressComREST {
     public func activatePlugin(pluginID: String, siteID: Int, success: @escaping () -> Void, failure: @escaping (Error) -> Void) {
         let parameters = [
             "active": "true"
-            ] as [String: AnyObject]
+        ] as [String: AnyObject]
         modifyPlugin(parameters: parameters, pluginID: pluginID, siteID: siteID, success: success, failure: failure)
     }
 
      public func deactivatePlugin(pluginID: String, siteID: Int, success: @escaping () -> Void, failure: @escaping (Error) -> Void) {
         let parameters = [
             "active": "false"
-            ] as [String: AnyObject]
+        ] as [String: AnyObject]
         modifyPlugin(parameters: parameters, pluginID: pluginID, siteID: siteID, success: success, failure: failure)
     }
 
      public func enableAutoupdates(pluginID: String, siteID: Int, success: @escaping () -> Void, failure: @escaping (Error) -> Void) {
         let parameters = [
             "autoupdate": "true"
-            ] as [String: AnyObject]
+        ] as [String: AnyObject]
         modifyPlugin(parameters: parameters, pluginID: pluginID, siteID: siteID, success: success, failure: failure)
     }
 
      public func disableAutoupdates(pluginID: String, siteID: Int, success: @escaping () -> Void, failure: @escaping (Error) -> Void) {
         let parameters = [
             "autoupdate": "false"
-            ] as [String: AnyObject]
+        ] as [String: AnyObject]
         modifyPlugin(parameters: parameters, pluginID: pluginID, siteID: siteID, success: success, failure: failure)
     }
 
@@ -113,7 +113,7 @@ public class PluginServiceRemote: ServiceRemoteWordPressComREST {
         let parameters = [
             "active": "true",
             "autoupdate": "true"
-            ] as [String: AnyObject]
+        ] as [String: AnyObject]
         modifyPlugin(parameters: parameters, pluginID: pluginID, siteID: siteID, success: success, failure: failure)
     }
 
@@ -135,7 +135,7 @@ public class PluginServiceRemote: ServiceRemoteWordPressComREST {
                 } catch {
                     failure(self.errorFromResponse(response))
                 }
-            }, failure: { (error, _) in
+            }, failure: { error, _ in
                 WPKitLogError("[PluginServiceRemoteError] Error installing plugin: \(error)")
                 failure(error)
             }
@@ -154,7 +154,7 @@ public class PluginServiceRemote: ServiceRemoteWordPressComREST {
             parameters: nil,
             success: { _, _  in
                 success()
-            }, failure: { (error, _) in
+            }, failure: { error, _ in
                 WPKitLogError("[PluginServiceRemoteError] Error removing plugin: \(error)")
                 failure(error)
             }
@@ -174,7 +174,7 @@ public class PluginServiceRemote: ServiceRemoteWordPressComREST {
             success: { _, _  in
                 success()
             },
-            failure: { (error, _) in
+            failure: { error, _ in
                 WPKitLogError("[PluginServiceRemoteError] Error modifying plugin: \(error)")
                 failure(error)
             })
@@ -196,7 +196,7 @@ internal extension PluginServiceRemote {
             throw ResponseError.decodingFailure
         }
 
-        return try plugins.map { (plugin) -> PluginState in
+        return try plugins.map { plugin -> PluginState in
             return try pluginState(response: plugin)
         }
     }

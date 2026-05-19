@@ -12,5 +12,4 @@ extension SiteSuggestion {
     @NSManaged public var subdomain: String?
     @NSManaged public var blavatarURL: URL?
     @NSManaged public var blog: Blog?
-
 }

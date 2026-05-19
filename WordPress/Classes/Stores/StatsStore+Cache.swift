@@ -10,7 +10,7 @@ protocol StatsStoreCacheable {
 
 extension StatsStoreCacheable {
     func containsCachedData(for types: [StatsStoreType]) -> Bool {
-        return types.first { containsCachedData(for: $0) } != nil
+        return types.contains { containsCachedData(for: $0) }
     }
 }
 

@@ -18,5 +18,4 @@ extension WPStyleGuide {
 
         WPStyleGuide.configureLabel(label, textStyle: .subheadline)
     }
-
 }

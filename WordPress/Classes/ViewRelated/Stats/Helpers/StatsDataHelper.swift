@@ -289,7 +289,6 @@ extension StatsPeriodUnit {
     static var analyticsPeriodKey: String {
         return "period"
     }
-
 }
 
 extension TimeZone {

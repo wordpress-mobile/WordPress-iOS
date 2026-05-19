@@ -244,7 +244,6 @@ private extension BlogDashboardViewModel {
             loadCardsFromCache()
         }
     }
-
 }
 
 // MARK: - Ghost/Skeleton cards and failures

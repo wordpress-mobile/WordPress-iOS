@@ -127,7 +127,6 @@ private extension UserProfileSheetViewController {
         }
 
         showSiteTopicWithID(NSNumber(value: blog.blogID))
-
     }
 
     func showSiteTopicWithID(_ siteID: NSNumber) {

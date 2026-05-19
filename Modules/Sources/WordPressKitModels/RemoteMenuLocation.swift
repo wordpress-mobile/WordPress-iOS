@@ -5,5 +5,4 @@ import Foundation
     public var name: String?
     public var defaultState: String?
     public var details: String?
-
 }

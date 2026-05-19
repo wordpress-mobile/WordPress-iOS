@@ -52,7 +52,7 @@ extension WPAccount {
         // The original predicate from PostService.countPostsWithoutRemote() was:
         //   "postID = NULL OR postID <= 0"
         // Swift optionals make things a bit more verbose, but this should be equivalent
-        return blog.posts?.filter({ (post) -> Bool in
+        return blog.posts?.filter({ post -> Bool in
             if let postID = post.postID?.intValue,
                 postID > 0 {
                 return false

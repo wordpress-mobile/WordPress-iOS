@@ -35,7 +35,7 @@ public class BlogDetailsSectionFooterView: UITableViewHeaderFooterView {
             stackView.bottomAnchor.constraint(equalTo: contentView.readableContentGuide.bottomAnchor),
             // Spacer view.
             spacerView.heightAnchor.constraint(equalToConstant: 20),
-            ])
+        ])
         updateUI(title: nil, shouldShowExtraSpacing: false)
     }
 

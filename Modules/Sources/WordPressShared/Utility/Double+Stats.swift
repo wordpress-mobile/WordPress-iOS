@@ -153,7 +153,6 @@ extension Double {
     private func formatWithFractions() -> String {
         return decimalFormatter.string(for: self) ?? String(self)
     }
-
 }
 
 extension Int {

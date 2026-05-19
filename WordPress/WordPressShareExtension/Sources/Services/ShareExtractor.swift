@@ -263,7 +263,7 @@ private extension TypeBasedExtensionContentExtractor {
         for provider in itemProviders {
             syncGroup.enter()
             // Remember, this is an async call....
-            provider.loadItem(forTypeIdentifier: acceptedType, options: nil) { (payload, _) in
+            provider.loadItem(forTypeIdentifier: acceptedType, options: nil) { payload, _ in
                 let payload = payload as? Payload
                 let result = payload.flatMap(self.convert(payload:))
                 if let result {
@@ -416,7 +416,6 @@ private struct URLExtractor: TypeBasedExtensionContentExtractor {
                         let tmpImage = UIImage(data: file),
                         let cachedURL = saveToSharedContainer(image: tmpImage) {
                         cachedImages["assets/\(fileName)"] = ExtractedImage(url: cachedURL, insertionState: .requiresInsertion)
-
                     }
                 }
             case "jpg", "jpeg", "gif", "png":

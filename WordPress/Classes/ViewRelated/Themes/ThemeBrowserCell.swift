@@ -267,7 +267,6 @@ open class ThemeBrowserCell: UICollectionViewCell {
             popover.canOverlapSourceViewRect = true
         }
     }
-
 }
 
 extension ThemeBrowserCell: Accessible {

@@ -51,7 +51,7 @@ class NotificationSyncMediatorTests: CoreDataTestCase {
         let expect = expectation(description: "Sync")
 
         // Sync!
-        mediator.sync { (_, _) in
+        mediator.sync { _, _ in
             XCTAssert(self.mainContext.countObjects(ofType: Notification.self) == 1)
             expect.fulfill()
         }

@@ -213,7 +213,7 @@ import WordPressShared
                                                       entityName: Page.entityName(),
                                                       hiddenPosts: hiddenPosts,
                                                       publishedOnly: selectionType.publishedPostsOnly,
-                                                      callback: { [weak self] (post) in
+                                                      callback: { [weak self] post in
             if let page = post as? Page {
                 completion(page)
             }

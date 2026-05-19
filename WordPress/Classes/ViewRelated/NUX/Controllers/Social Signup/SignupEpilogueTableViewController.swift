@@ -116,7 +116,6 @@ class SignupEpilogueTableViewController: UITableViewController {
         }
 
         return getEpilogueCellFor(cellType: cellType)
-
     }
 
     override func tableView(_ tableView: UITableView, estimatedHeightForHeaderInSection section: Int) -> CGFloat {
@@ -145,7 +144,6 @@ class SignupEpilogueTableViewController: UITableViewController {
             delegate?.usernameTapped(userInfo: epilogueUserInfo)
         }
     }
-
 }
 
 // MARK: - Private Extension
@@ -253,7 +251,6 @@ extension SignupEpilogueTableViewController: SignupEpilogueCellDelegate {
             delegate?.passwordUpdated(newPassword: value)
         }
     }
-
 }
 
 extension SignupEpilogueTableViewController {

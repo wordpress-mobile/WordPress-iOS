@@ -43,7 +43,6 @@ class ReaderDetailViewControllerTests: CoreDataTestCase {
         XCTAssertEqual(controller.coordinator?.siteID, 2)
         XCTAssertEqual(controller.coordinator?.isFeed, false)
     }
-
 }
 
 /// Builds a ReaderPost

@@ -14,5 +14,4 @@ import WordPressShared
     public func contentForDisplay() -> String? {
         return content
     }
-
 }

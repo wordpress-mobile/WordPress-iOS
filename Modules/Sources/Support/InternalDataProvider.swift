@@ -105,7 +105,7 @@ extension SupportDataProvider {
                     userWantsToTalkToHuman: true,
                     isWrittenByUser: false
                 )
-        ])
+            ])
     }
 
     static let supportConversationSummaries: [ConversationSummary] = [
@@ -257,7 +257,6 @@ extension SupportDataProvider {
             )
         ]
     )
-
 }
 
 actor InternalLogDataProvider: ApplicationLogDataProvider {

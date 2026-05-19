@@ -20,7 +20,6 @@ extension SiteSettingsViewController {
             presentBloggingRemindersFlow(indexPath: indexPath)
         }
     }
-
 }
 
 // MARK: - Private methods

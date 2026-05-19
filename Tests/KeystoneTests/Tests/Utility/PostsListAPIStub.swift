@@ -140,5 +140,4 @@ class PostsListAPIStubTests: CoreDataTestCase {
         let result = try await repository.search(type: Post.self, input: nil, statuses: [], tag: nil, offset: 0, limit: 0, orderBy: .byDate, descending: true, in: blogID)
         XCTAssertEqual(result.count, 20)
     }
-
 }

@@ -401,7 +401,6 @@ final class BloggingRemindersFlowSettingsViewController: UIViewController {
             }
         }
     }
-
 }
 
 // MARK: - Navigation
@@ -797,7 +796,6 @@ private extension BloggingRemindersFlowSettingsViewController {
             completion()
         }
     }
-
 }
 
 // MARK: - Constants

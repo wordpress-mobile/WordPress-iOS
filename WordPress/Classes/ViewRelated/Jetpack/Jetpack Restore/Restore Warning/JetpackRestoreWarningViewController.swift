@@ -84,7 +84,6 @@ class JetpackRestoreWarningViewController: UIViewController {
         view.addSubview(warningView)
         warningView.pinEdges(to: view.safeAreaLayoutGuide)
     }
-
 }
 
 extension JetpackRestoreWarningViewController: JetpackRestoreWarningView {

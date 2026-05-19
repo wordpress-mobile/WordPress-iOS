@@ -118,5 +118,4 @@ final class StatsInsightsStoreTests: XCTestCase {
         sut.state.emailFollowersStatus = .success
         XCTAssertEqual(sut.followersTotalsStatus, .success)
     }
-
 }

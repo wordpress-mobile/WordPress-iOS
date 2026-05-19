@@ -49,7 +49,6 @@ final class RemoteParameterTests: XCTestCase {
         // Then
         XCTAssertEqual(value, "overridden_value")
     }
-
 }
 
 struct MockRemoteParameter: RemoteParameter {

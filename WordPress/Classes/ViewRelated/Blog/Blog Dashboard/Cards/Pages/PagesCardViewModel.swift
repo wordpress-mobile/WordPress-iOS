@@ -57,7 +57,7 @@ class PagesCardViewModel: NSObject {
     typealias Snapshot = NSDiffableDataSourceSnapshot<PagesListSection, PagesListItem>
     typealias PagesSnapshot = NSDiffableDataSourceSnapshot<Int, NSManagedObjectID>
 
-    lazy var diffableDataSource = DataSource(tableView: view!.tableView) { [weak self] (tableView, indexPath, item) -> UITableViewCell? in
+    lazy var diffableDataSource = DataSource(tableView: view!.tableView) { [weak self] tableView, indexPath, item -> UITableViewCell? in
         guard let self else {
             return nil
         }
@@ -69,7 +69,6 @@ class PagesCardViewModel: NSObject {
         case .createPage(let compact, let hasPages):
             return self.configureCreationCell(compact: compact, hasPages: hasPages, tableView: tableView, indexPath: indexPath)
         }
-
     }
 
     init(blog: Blog, view: PagesCardView, managedObjectContext: NSManagedObjectContext = ContextManager.shared.mainContext) {
@@ -183,7 +182,6 @@ private extension PagesCardViewModel {
         cell?.configure(hasPages: hasPages)
         return cell ?? UITableViewCell()
     }
-
 }
 
 // MARK: - Private methods

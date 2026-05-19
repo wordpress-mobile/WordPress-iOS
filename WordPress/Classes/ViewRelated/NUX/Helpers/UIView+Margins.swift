@@ -13,12 +13,10 @@ extension UIView {
 
         return frame.width * multiplier
     }
-
 }
 
 private extension CGFloat {
 
     static let ipadPortrait: CGFloat = 0.1667
     static let ipadLandscape: CGFloat = 0.25
-
 }

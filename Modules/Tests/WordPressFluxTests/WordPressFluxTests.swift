@@ -59,7 +59,7 @@ class WordPressFluxTests: XCTestCase {
             changeCount += 1
         }))
         var stateChangeCount = 0
-        receipts.append(store.onStateChange({ (old, new) in
+        receipts.append(store.onStateChange({ old, new in
             XCTAssertEqual(new, old * 2, "New state should be double than old")
             stateChangeCount += 1
         }))
@@ -90,7 +90,7 @@ class WordPressFluxTests: XCTestCase {
             changeCount += 1
         }))
         var stateChangeCount = 0
-        receipts.append(store.onStateChange({ (old, new) in
+        receipts.append(store.onStateChange({ old, new in
             XCTAssertEqual(new, old * 2, "New state should be double than old")
             stateChangeCount += 1
         }))
@@ -109,7 +109,7 @@ class WordPressFluxTests: XCTestCase {
             }
 
             func test() {
-                transaction { (state) in
+                transaction { state in
                     state += state
                     state += state
                 }
@@ -123,7 +123,7 @@ class WordPressFluxTests: XCTestCase {
             changeCount += 1
         }))
         var stateChangeCount = 0
-        receipts.append(store.onStateChange({ (old, new) in
+        receipts.append(store.onStateChange({ old, new in
             XCTAssertEqual(new, old * 4, "New state should be 4x the old one")
             stateChangeCount += 1
         }))

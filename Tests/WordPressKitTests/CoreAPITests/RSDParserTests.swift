@@ -46,5 +46,4 @@ class RSDParserTests: XCTestCase {
         let parser = try XCTUnwrap(WordPressRSDParser(xmlString: xml))
         try XCTAssertEqual(parser.parsedEndpoint(), "https://developer.wordpress.org/xmlrpc.php")
     }
-
 }

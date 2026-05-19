@@ -281,7 +281,6 @@ private final class InstalledPluginsListViewModel: ObservableObject {
         } catch {
             DDLogError("Failed to uninstall plugin: \(error)")
         }
-
     }
 }
 

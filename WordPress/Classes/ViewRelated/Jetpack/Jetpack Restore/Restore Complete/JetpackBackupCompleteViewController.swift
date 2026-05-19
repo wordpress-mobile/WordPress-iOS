@@ -84,5 +84,4 @@ class JetpackBackupCompleteViewController: BaseRestoreCompleteViewController {
 
         self.present(activityVC, animated: true)
     }
-
 }

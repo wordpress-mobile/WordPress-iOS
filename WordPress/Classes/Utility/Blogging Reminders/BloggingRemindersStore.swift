@@ -181,7 +181,6 @@ extension BloggingRemindersStore.ScheduledReminders: Codable {
             try container.encode(days, forKey: .weekdays)
         case .weekDaysWithTime(let daysWithTime):
             try container.encode(daysWithTime, forKey: .weekDaysWithTime)
-
         }
     }
 }

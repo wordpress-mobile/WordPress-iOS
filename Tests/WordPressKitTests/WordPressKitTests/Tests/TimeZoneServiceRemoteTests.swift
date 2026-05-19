@@ -40,7 +40,7 @@ class TimeZoneServiceRemoteTests: RemoteTestCase, RESTTestable {
 
         let expect = expectation(description: "Get time zones")
         let remote = TimeZoneServiceRemote(wordPressComRestApi: getRestApi())
-        remote.getTimezones(success: { (results) in
+        remote.getTimezones(success: { results in
             XCTAssertEqual(results.count, 11)
             XCTAssertEqual(results[0].name, "Africa")
             XCTAssertEqual(results[10].name, "Manual Offsets")

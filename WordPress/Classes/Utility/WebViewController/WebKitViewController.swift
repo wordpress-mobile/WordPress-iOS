@@ -20,7 +20,7 @@ extension WebKitAuthenticatable {
         }
 
         DispatchQueue.main.async {
-            authenticator.request(url: url, cookieJar: cookieJar) { (request) in
+            authenticator.request(url: url, cookieJar: cookieJar) { request in
                 completion(request)
             }
         }
@@ -241,7 +241,7 @@ class WebKitViewController: UIViewController, WebKitAuthenticatable {
             return
         }
 
-        authenticatedRequest(for: url, on: webView) { [weak self] (request) in
+        authenticatedRequest(for: url, on: webView) { [weak self] request in
             self?.load(request: request)
         }
     }
@@ -400,7 +400,7 @@ class WebKitViewController: UIViewController, WebKitAuthenticatable {
         activityViewController.modalPresentationStyle = .popover
         activityViewController.popoverPresentationController?.barButtonItem = shareButton
 
-        activityViewController.completionWithItemsHandler = { (type, completed, _, _) in
+        activityViewController.completionWithItemsHandler = { type, completed, _, _ in
             if completed, let type = type?.rawValue {
                 WPActivityDefaults.trackActivityType(type)
             }

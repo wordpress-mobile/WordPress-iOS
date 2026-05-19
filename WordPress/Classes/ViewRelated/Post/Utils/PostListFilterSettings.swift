@@ -66,7 +66,6 @@ class PostListFilterSettings {
     func setFilterWithPostStatus(_ status: BasePost.Status) {
         let index = indexOfFilterThatDisplaysPostsWithStatus(status)
         self.setCurrentFilterIndex(index)
-
     }
 
     // MARK: - Current filter

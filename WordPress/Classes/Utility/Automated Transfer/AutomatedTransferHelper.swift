@@ -76,7 +76,7 @@ class AutomatedTransferHelper {
                 self.delayWrapper = nil
                 success()
         },
-            failure: { (error) in
+            failure: { error in
                 DDLogInfo(("[AT] Site ineligible for AT, error: \(error)"))
 
                 let errorMessage: String
@@ -166,8 +166,7 @@ class AutomatedTransferHelper {
                 DDLogInfo("[AT] Scheduling status update.")
                 self.updateAutomatedTransferStatus()
             }
-
-        }, failure: { (error) in
+        }, failure: { error in
 
             // The async nature of AT process bites us here again. Sometimes, even though the backend says
             // 'hell yeah son, everything's fine, go ahead!' in the eligibility check, trying to actually
@@ -215,14 +214,13 @@ class AutomatedTransferHelper {
             DDLogInfo("[AT] Incrementing kickoff  counter.")
             wrapper.increment()
             self.delayWrapper = wrapper
-
         })
     }
 
     private func updateAutomatedTransferStatus() {
         // Definining this here, because we also want to be able to call it if we "successfully" fetch a status update
         // and the resulting status is `failed`.
-        let failureBlock: ((Error?) -> ()) = { (error) in
+        let failureBlock: ((Error?) -> ()) = { error in
             DDLogInfo("[AT] Status update failed: \(String(describing: error))")
 
             WPAnalytics.track(.automatedTransferStatusFailed)
@@ -231,7 +229,7 @@ class AutomatedTransferHelper {
             ActionDispatcher.dispatch(NoticeAction.post(Notice(title: Constants.PluginNameStrings.genericErrorMessage(self.plugin.name))))
         }
 
-        automatedTransferService.fetchAutomatedTransferStatus(siteID: site.siteID, success: { (status) in
+        automatedTransferService.fetchAutomatedTransferStatus(siteID: site.siteID, success: { status in
             DDLogInfo("[AT] Received AT status update: \(status)")
 
             guard status.status != .error else {
@@ -284,7 +282,7 @@ class AutomatedTransferHelper {
 
             // after we refreshed the site, we need to manually fetch plugins so the directory/detail screens has correct data.
             self.reloadPlugins()
-        }, failure: { (error) in
+        }, failure: { error in
             DDLogInfo("[AT] Failed to fetch site info, error: \(error)")
 
             // It's expected for this call to initially fail, due to how JP/AT works.
@@ -322,7 +320,7 @@ class AutomatedTransferHelper {
         DDLogInfo("[AT] Fetching site plugins.")
 
         let pluginsRemote = PluginServiceRemote(wordPressComRestApi: automatedTransferService.wordPressComRestApi)
-        pluginsRemote.getPlugins(siteID: site.siteID, success: { (plugins) in
+        pluginsRemote.getPlugins(siteID: site.siteID, success: { plugins in
             // This was the last step in the process! The transfer is complete. Time to celebrate 🎇🎉✨
             DDLogInfo("[AT] Successfully fetched plugins.")
             DDLogInfo("[AT] AT Process complete.")
@@ -332,7 +330,7 @@ class AutomatedTransferHelper {
             ActionDispatcher.dispatch(PluginAction.receivePlugins(site: self.site, plugins: plugins))
             SVProgressHUD.dismiss()
             ActionDispatcher.dispatch(NoticeAction.post(Notice(title: Constants.PluginNameStrings.successMessage(self.plugin.name))))
-        }, failure: { (error) in
+        }, failure: { error in
             DDLogInfo("[AT] Failed to fetch plugins, error: \(error)")
 
             // Same spiel as with site refresh — it's semi-expected for this call to fail initially.
@@ -411,5 +409,4 @@ class AutomatedTransferHelper {
         static let afterDomainPurchaseMaxRetries = 14
         // It takes a bit longer to issue the SSL certificate for the new domain for AT process. We're more lenient here because of this.
     }
-
 }

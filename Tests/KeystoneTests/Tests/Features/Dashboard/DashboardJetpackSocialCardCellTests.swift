@@ -212,5 +212,4 @@ private extension DashboardJetpackSocialCardCellTests {
     func createPublicizeService() -> PublicizeService {
         return PublicizeService(context: mainContext)
     }
-
 }

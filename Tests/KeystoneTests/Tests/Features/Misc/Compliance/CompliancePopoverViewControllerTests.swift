@@ -17,7 +17,6 @@ final class CompliancePopoverViewControllerTests: CoreDataTestCase {
         // Then
         XCTAssertTrue(viewModel.didDisplayPopoverCalled)
     }
-
 }
 
 // MARK: - Test Doubles

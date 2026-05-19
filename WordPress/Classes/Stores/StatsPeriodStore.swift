@@ -1050,7 +1050,7 @@ private extension StatsPeriodStore {
                 state.topSearchTermsStatus,
                 state.topCountriesStatus,
                 state.topVideosStatus,
-                state.topFileDownloadsStatus].first { $0 == .loading } == nil
+                state.topFileDownloadsStatus].allSatisfy { $0 != .loading }
     }
 
     private func setAllFetchingStatus(_ status: StoreFetchingStatus) {
@@ -1263,7 +1263,7 @@ extension StatsPeriodStore {
                 state.topSearchTermsStatus,
                 state.topCountriesStatus,
                 state.topVideosStatus,
-                state.topFileDownloadsStatus].first { $0 != .error } == nil
+                state.topFileDownloadsStatus].allSatisfy { $0 == .error }
     }
 
     func fetchingFailed(for query: PeriodQuery) -> Bool {

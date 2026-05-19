@@ -16,7 +16,6 @@ extension PageTemplateLayout {
     @NSManaged public var slug: String
     @NSManaged public var title: String?
     @NSManaged public var categories: Set<PageTemplateCategory>?
-
 }
 
 // MARK: Generated accessors for categories

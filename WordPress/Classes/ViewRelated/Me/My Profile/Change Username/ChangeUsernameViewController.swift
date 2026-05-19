@@ -124,7 +124,7 @@ private extension ChangeUsernameViewController {
         SVProgressHUD.setDefaultMaskType(.clear)
         SVProgressHUD.show()
 
-        viewModel.save() { [weak self] (state, error) in
+        viewModel.save() { [weak self] state, error in
             SVProgressHUD.setDefaultMaskType(.none)
             switch state {
             case .success:

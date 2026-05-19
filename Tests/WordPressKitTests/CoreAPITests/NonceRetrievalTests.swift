@@ -70,5 +70,4 @@ class NonceRetrievalTests: XCTestCase {
             HTTPStubsResponse(data: (statusCode == 200 ? Self.nonce : "<html>...</html>").data(using: .utf8)!, statusCode: statusCode, headers: nil)
         }
     }
-
 }

@@ -59,5 +59,4 @@ private extension PluginJetpackProxyService {
     enum Constants {
         static let pluginsPath = "/wp/v2/plugins"
     }
-
 }

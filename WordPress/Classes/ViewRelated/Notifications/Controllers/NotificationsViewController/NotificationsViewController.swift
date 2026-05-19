@@ -369,7 +369,6 @@ class NotificationsViewController: UIViewController, UITableViewDataSource, UITa
         if !splitViewControllerIsHorizontallyCompact {
             syncNotificationsWithModeratedComments()
         }
-
     }
 
     func tableView(_ tableView: UITableView, leadingSwipeActionsConfigurationForRowAt indexPath: IndexPath) -> UISwipeActionsConfiguration? {
@@ -384,7 +383,7 @@ class NotificationsViewController: UIViewController, UITableViewDataSource, UITa
         let title = isRead ? NSLocalizedString("Mark Unread", comment: "Marks a notification as unread") :
                              NSLocalizedString("Mark Read", comment: "Marks a notification as unread")
 
-        let action = UIContextualAction(style: .normal, title: title, handler: { (_, _, completionHandler) in
+        let action = UIContextualAction(style: .normal, title: title, handler: { _, _, completionHandler in
             if isRead {
                 WPAnalytics.track(.notificationMarkAsUnreadTapped)
                 self.markAsUnread(note: note)
@@ -415,7 +414,7 @@ class NotificationsViewController: UIViewController, UITableViewDataSource, UITa
             return nil
         }
 
-        let action = UIContextualAction(style: .normal, title: actionTitle, handler: { (_, _, completionHandler) in
+        let action = UIContextualAction(style: .normal, title: actionTitle, handler: { _, _, completionHandler in
             WPAppAnalytics.track(approveAction.on ? .notificationsCommentUnapproved : .notificationsCommentApproved, properties: [Stats.sourceKey: Stats.sourceValue], blogID: block.metaSiteID)
 
             let actionContext = ActionContext(block: block)
@@ -489,7 +488,7 @@ private extension NotificationsViewController {
             guard let notes = tableViewHandler?.resultsController?.fetchedObjects as? [WordPressData.Notification] else {
                 return nil
             }
-            let isEnabled = notes.first { !$0.read } != nil
+            let isEnabled = notes.contains { !$0.read }
             let attributes = isEnabled ? UIAction.Attributes(rawValue: 0) : .disabled
             return UIAction(
                 title: Strings.NavigationBar.markAllAsReadActionTitle,
@@ -1031,7 +1030,6 @@ private extension NotificationsViewController {
             tableView(tableView, didSelectRowAt: indexPath)
         }
     }
-
 }
 
 // MARK: - Marking as Read
@@ -1255,7 +1253,7 @@ extension NotificationsViewController {
 
         let start = Date()
 
-        mediator.sync { [weak self] (error, _) in
+        mediator.sync { [weak self] error, _ in
 
             let delta = max(Syncing.minimumPullToRefreshDelay + start.timeIntervalSinceNow, 0)
             let delay = DispatchTime.now() + Double(Int64(delta * Double(NSEC_PER_SEC))) / Double(NSEC_PER_SEC)
@@ -1919,7 +1917,7 @@ extension NotificationsViewController {
         guard (try? WPAccount.lookupDefaultWordPressComAccount(in: mainContext)) != nil else {
             return
         }
-        PushNotificationsManager.shared.loadAuthorizationStatus { [weak self] (enabled) in
+        PushNotificationsManager.shared.loadAuthorizationStatus { [weak self] enabled in
             guard enabled == .notDetermined else {
                 return
             }

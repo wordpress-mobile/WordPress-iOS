@@ -57,5 +57,4 @@ final class DomainDetailsWebViewControllerTests: XCTestCase {
         let url = "\(Constants.domainManagementBase)/\(domain)/\(viewSlug)/\(siteSlug)".addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed)
         return try XCTUnwrap(url)
     }
-
 }

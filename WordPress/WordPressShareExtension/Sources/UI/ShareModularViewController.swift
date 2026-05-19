@@ -891,13 +891,13 @@ fileprivate extension ShareModularViewController {
             value: "Try again",
             comment: "Share extension error dialog retry button label."
         )
-        let acceptAction = UIAlertAction(title: acceptButtonText, style: .default) { (_) in
+        let acceptAction = UIAlertAction(title: acceptButtonText, style: .default) { _ in
             self.savePostToRemoteSite()
         }
         alertController.addAction(acceptAction)
 
         let dismissButtonText = dismiss
-        let dismissAction = UIAlertAction(title: dismissButtonText, style: .cancel) { (_) in
+        let dismissAction = UIAlertAction(title: dismissButtonText, style: .cancel) { _ in
             self.showCancellingView()
             self.cleanUpSharedContainerAndCache()
             self.dismiss()
@@ -914,7 +914,7 @@ fileprivate extension ShareModularViewController {
 
         let alertController = UIAlertController(title: title, message: message, preferredStyle: .alert)
 
-        let dismissAction = UIAlertAction(title: dismiss, style: .cancel) { [weak self] (_) in
+        let dismissAction = UIAlertAction(title: dismiss, style: .cancel) { [weak self] _ in
             self?.noResultsViewController.removeFromView()
         }
         alertController.addAction(dismissAction)

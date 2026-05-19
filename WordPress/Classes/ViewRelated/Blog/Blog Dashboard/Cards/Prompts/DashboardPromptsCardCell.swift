@@ -392,7 +392,6 @@ class DashboardPromptsCardCell: UICollectionViewCell, Reusable {
 
         return !userSkippedPrompt(todaysPrompt, for: blog)
     }
-
 }
 
 // MARK: - BlogDashboardCardConfigurable
@@ -478,10 +477,10 @@ private extension DashboardPromptsCardCell {
             return
         }
 
-        bloggingPromptsService.todaysPrompt(success: { [weak self] (prompt) in
+        bloggingPromptsService.todaysPrompt(success: { [weak self] prompt in
             self?.prompt = prompt
             self?.didFailLoadingPrompt = false
-        }, failure: { [weak self] (error) in
+        }, failure: { [weak self] error in
             self?.prompt = nil
             self?.didFailLoadingPrompt = true
             DDLogError("Failed fetching blogging prompt: \(String(describing: error))")
@@ -684,5 +683,4 @@ private extension DashboardPromptsCardCell {
 
         return !matchingPrompts.isEmpty
     }
-
 }

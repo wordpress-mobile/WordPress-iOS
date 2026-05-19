@@ -65,5 +65,4 @@ final class Blog_PublicizeTests: CoreDataTestCase {
 
         return blog
     }
-
 }

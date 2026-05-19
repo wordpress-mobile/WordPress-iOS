@@ -251,7 +251,6 @@ extension SiteSettingsViewController {
     fileprivate var minNumberOfPostPerPage: Int { return 1 }
     fileprivate var maxNumberOfPostPerPage: Int { return 1000 }
     fileprivate var ampSupportURL: String { return "https://support.wordpress.com/amp-accelerated-mobile-pages/" }
-
 }
 
 // MARK: - General Settings Table Section Management
@@ -456,7 +455,6 @@ extension SiteSettingsViewController {
                                         fieldName: fieldName,
                                         value: value)
     }
-
 }
 
 private extension SiteSettingsViewController {

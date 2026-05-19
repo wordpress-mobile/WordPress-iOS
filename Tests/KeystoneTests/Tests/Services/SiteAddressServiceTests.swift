@@ -21,7 +21,7 @@ class SiteAddressServiceTests: CoreDataTestCase {
         let searchTerm = "domaintesting"
 
         let waitExpectation = expectation(description: "Domains should be successfully fetched")
-        service.addresses(for: searchTerm, type: .wordPressDotComAndDotBlogSubdomains) { (results) in
+        service.addresses(for: searchTerm, type: .wordPressDotComAndDotBlogSubdomains) { results in
             switch results {
             case .success(let fetchedResults):
                 self.resultsAreSorted(fetchedResults, forQuery: searchTerm, expectMatch: true)
@@ -49,7 +49,7 @@ class SiteAddressServiceTests: CoreDataTestCase {
         let searchTerm = "notIncludedResult"
 
         let waitExpectation = expectation(description: "Domains should be successfully fetched")
-        service.addresses(for: searchTerm, type: .wordPressDotComAndDotBlogSubdomains) { (results) in
+        service.addresses(for: searchTerm, type: .wordPressDotComAndDotBlogSubdomains) { results in
             switch results {
             case .success(let fetchedResults):
                 self.resultsAreSorted(fetchedResults, forQuery: searchTerm, expectMatch: false)
@@ -77,7 +77,7 @@ class SiteAddressServiceTests: CoreDataTestCase {
     func resultsAreSorted(_ results: SiteAddressServiceResult, forQuery query: String, expectMatch: Bool) {
         let suggestions = results.domainSuggestions
 
-        let domainNames = suggestions.compactMap { (suggestion) -> String? in
+        let domainNames = suggestions.compactMap { suggestion -> String? in
             guard !suggestion.domainName.contains(query) else { return nil } //Filter out exact matches
             return suggestion.domainName
         }

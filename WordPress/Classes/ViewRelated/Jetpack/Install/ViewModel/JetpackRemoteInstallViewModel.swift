@@ -74,7 +74,6 @@ extension JetpackRemoteInstallStateViewModel {
             }
         }()
     }
-
 }
 
 // MARK: - Jetpack Remote Install Events

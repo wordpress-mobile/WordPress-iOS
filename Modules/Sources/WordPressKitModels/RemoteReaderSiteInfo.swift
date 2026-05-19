@@ -85,7 +85,6 @@ private let DeliveryMethodNotificationKey = "notification"
 
         return siteInfo
     }
-
 }
 
 private extension RemoteReaderSiteInfo {

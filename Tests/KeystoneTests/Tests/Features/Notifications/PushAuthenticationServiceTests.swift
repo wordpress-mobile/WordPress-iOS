@@ -65,5 +65,4 @@ class PushAuthenticationServiceTests: CoreDataTestCase {
 
         XCTAssertTrue(methodCalled, "Failure callback was not called")
     }
-
 }

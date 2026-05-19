@@ -13,5 +13,4 @@ class ReaderInterestsCollectionViewCell: UICollectionViewCell, NibReusable {
         label.isAccessibilityElement = true
         accessibilityElements = [label]
     }
-
 }

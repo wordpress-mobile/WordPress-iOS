@@ -38,7 +38,6 @@ extension JSONObject {
         let parseResult = try JSONSerialization.jsonObject(with: data, options: [.mutableContainers, .mutableLeaves])
         self = try XCTUnwrap(parseResult as? JSONObject)
     }
-
 }
 
 /// Class for finding the test bundler

@@ -386,7 +386,6 @@ class InvitePersonViewController: UITableViewController {
         case expires
         case disable
     }
-
 }
 
 // MARK: - Helpers: Actions
@@ -498,7 +497,6 @@ private extension InvitePersonViewController {
             }
 
             self?.sendActionEnabled = true
-
         }, failure: { [weak self] error in
             guard self?.shouldHandleValidationResponse(usernameOrEmail) == true else {
                 return
@@ -861,5 +859,4 @@ extension InvitePersonViewController: UITextViewDelegate {
         performSegue(withIdentifier: "message", sender: nil)
         return false
     }
-
 }

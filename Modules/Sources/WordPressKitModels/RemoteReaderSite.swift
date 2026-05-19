@@ -9,5 +9,4 @@ import Foundation
     public var path: String! // URL
     public var icon: String! // Sites only
     public var isSubscribed: Bool = false
-
 }

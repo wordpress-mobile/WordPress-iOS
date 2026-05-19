@@ -413,7 +413,7 @@ private struct MediaTypeBreakdown {
         }
 
         // Then, we group media items into `Item` for displaying on the breakdown view.
-        var items = categorized.map { (category, media) in
+        var items = categorized.map { category, media in
             let size = media.reduce(0) { $0 + $1.actualFileSize }
             return Item(category: category, size: Measurement(value: size, unit: .bytes), percentage: size / allowed)
         }
@@ -610,7 +610,6 @@ private extension Media {
 
         return value * multiplier
     }
-
 }
 
 private enum Strings {

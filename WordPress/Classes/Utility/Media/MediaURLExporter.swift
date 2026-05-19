@@ -118,7 +118,7 @@ class MediaURLExporter: MediaExporter {
             exporter.options = options
         }
         return exporter.export(
-            onCompletion: { (imageExport) in
+            onCompletion: { imageExport in
                 onCompletion(imageExport)
         },
             onError: onError)
@@ -137,7 +137,6 @@ class MediaURLExporter: MediaExporter {
                                     onCompletion(videoExport)
         },
                                   onError: onError)
-
     }
 
     /// Exports the GIF file at the URL to a new Media URL, by simply copying the file.

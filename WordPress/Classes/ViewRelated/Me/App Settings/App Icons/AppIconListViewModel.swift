@@ -18,7 +18,7 @@ final class AppIconListViewModel: AppIconListViewModelType {
         // Produces a closure which sorts alphabetically, giving priority to items
         // beginning with the specified prefix.
         func sortWithPriority(toItemsWithPrefix prefix: String) -> ((AppIcon, AppIcon) -> Bool) {
-            return { (first, second) in
+            return { first, second in
                 let firstIsDefault = first.name.hasPrefix(prefix)
                 let secondIsDefault = second.name.hasPrefix(prefix)
 
@@ -57,5 +57,4 @@ final class AppIconListViewModel: AppIconListViewModelType {
             .init(title: legacyIconsTitle, items: legacyIcons)
         ].filter { !$0.items.isEmpty }
     }
-
 }

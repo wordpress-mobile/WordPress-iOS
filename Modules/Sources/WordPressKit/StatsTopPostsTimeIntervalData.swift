@@ -65,5 +65,4 @@ private extension StatsTopPost {
         self.viewsCount = viewsCount
         self.kind = type(of: self).kind(from: typeString)
     }
-
 }

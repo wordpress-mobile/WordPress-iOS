@@ -93,7 +93,6 @@ class BorderedButtonTableViewCell: UITableViewCell {
             updateButtonBorderColors()
         }
     }
-
 }
 
 // MARK: - Private Extension
@@ -165,5 +164,4 @@ private extension BorderedButtonTableViewCell {
 
         loadingOverlayView.isHidden = !loading
     }
-
 }

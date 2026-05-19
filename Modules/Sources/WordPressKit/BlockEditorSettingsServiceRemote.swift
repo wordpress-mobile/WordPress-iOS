@@ -21,7 +21,6 @@ public extension BlockEditorSettingsServiceRemote {
             completion(result)
         }
     }
-
 }
 
 // MARK: Editor Global Styles support

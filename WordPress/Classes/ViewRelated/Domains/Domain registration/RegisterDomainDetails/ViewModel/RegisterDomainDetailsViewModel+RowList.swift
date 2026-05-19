@@ -137,7 +137,8 @@ extension RegisterDomainDetailsViewModel {
                 editingStyle: .multipleChoice,
                 validationRules: [nonEmptyRule,
                                   serverSideRule(with: Localized.ContactInformation.country)]
-                ))]
+                ))
+        ]
     }
 
     static var phoneNumberRows: [RowType] {

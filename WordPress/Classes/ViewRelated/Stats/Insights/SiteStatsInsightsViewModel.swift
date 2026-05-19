@@ -705,7 +705,6 @@ private extension SiteStatsInsightsViewModel {
                                                    rightColumnData: annualInsights.averageWords.abbreviatedString()))
 
         return dataRows
-
     }
 
     func createCommentsRow() -> TabbedTotalsStatsRow {

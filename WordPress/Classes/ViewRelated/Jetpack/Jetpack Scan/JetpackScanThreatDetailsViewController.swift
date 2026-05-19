@@ -193,7 +193,6 @@ extension JetpackScanThreatDetailsViewController {
             warningButton.setAttributedTitle(attributedTitle, for: .normal)
 
             warningButton.isHidden = false
-
         } else {
             warningButton.isHidden = true
         }

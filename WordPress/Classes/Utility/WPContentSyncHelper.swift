@@ -115,5 +115,4 @@ public class WPContentSyncHelper: NSObject {
             delegate?.syncContentEnded?(self)
         }
     }
-
 }

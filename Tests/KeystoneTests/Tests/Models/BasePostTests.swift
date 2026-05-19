@@ -46,7 +46,7 @@ class BasePostTests: CoreDataTestCase {
         [
             try! MediaFileManager.cache.directoryURL().appendingPathComponent("thumbnail-p16-1792x1792.jpeg"),
             try! MediaFileManager().directoryURL().appendingPathComponent("p16-1792x1792.jpeg")
-            ].forEach {
+        ].forEach {
                 try? "".write(to: $0, atomically: true, encoding: .utf8)
         }
     }

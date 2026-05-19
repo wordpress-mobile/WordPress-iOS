@@ -79,7 +79,6 @@ class GoogleSignupConfirmationViewController: LoginViewController {
             tableView.reloadData()
         }
     }
-
 }
 
 // MARK: - UITableViewDataSource
@@ -209,7 +208,6 @@ private extension GoogleSignupConfirmationViewController {
             }
         }
     }
-
 }
 
 // MARK: - GoogleAuthenticatorDelegate
@@ -255,5 +253,4 @@ extension GoogleSignupConfirmationViewController: GoogleAuthenticatorDelegate {
     func googleAuthCancelled() {
         // Here for protocol compliance.
     }
-
 }

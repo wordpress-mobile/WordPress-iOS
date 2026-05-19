@@ -18,13 +18,13 @@ class MediaURLExporterTests: XCTestCase {
         let url = URL(fileURLWithPath: mediaPath)
         let exporter = MediaURLExporter(url: url)
         exporter.mediaDirectoryType = .temporary
-        exporter.export(onCompletion: { (urlExport) in
+        exporter.export(onCompletion: { urlExport in
                         expect.fulfill()
                         let exportFileName = urlExport.url.lastPathComponent.replacingMatches(of: "." + urlExport.url.pathExtension, with: "")
                         let originalFileName = url.lastPathComponent.replacingMatches(of: "." + url.pathExtension, with: "")
                         XCTAssertEqual(exportFileName, originalFileName)
                         MediaExporterTests.cleanUpExportedMedia(atURL: urlExport.url)
-        }) { (error) in
+        }) { error in
             XCTFail("Error: an error occurred testing a URL export: \(error.toNSError())")
             expect.fulfill()
         }
@@ -54,11 +54,11 @@ class MediaURLExporterTests: XCTestCase {
         options.stripsGeoLocationIfNeeded = removingGPS
         exporter.videoOptions = options
         weak var weakExporter = exporter
-        exporter.export(onCompletion: { (urlExport) in
+        exporter.export(onCompletion: { urlExport in
                         MediaURLExporterTests.validateVideoExport(urlExport, exporter: weakExporter!)
                         MediaExporterTests.cleanUpExportedMedia(atURL: urlExport.url)
                         expect.fulfill()
-        }) { (error) in
+        }) { error in
             XCTFail("Error: an error occurred testing a URL export: \(error.toNSError())")
             expect.fulfill()
         }
@@ -74,10 +74,10 @@ class MediaURLExporterTests: XCTestCase {
         let url = URL(fileURLWithPath: mediaPath)
         let exporter = MediaURLExporter(url: url)
         exporter.mediaDirectoryType = .temporary
-        exporter.export(onCompletion: { (urlExport) in
+        exporter.export(onCompletion: { urlExport in
             MediaExporterTests.cleanUpExportedMedia(atURL: urlExport.url)
             expect.fulfill()
-        }) { (error) in
+        }) { error in
             XCTFail("Error: an error occurred testing a URL export: \(error.toNSError())")
             expect.fulfill()
         }

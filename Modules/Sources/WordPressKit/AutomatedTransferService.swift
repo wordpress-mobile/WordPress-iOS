@@ -27,7 +27,7 @@ public class AutomatedTransferService: ServiceRemoteWordPressComREST {
         let endpoint = "sites/\(siteID)/automated-transfers/eligibility"
         let path = self.path(forEndpoint: endpoint, withVersion: ._1_1)
 
-        wordPressComRESTAPI.get(path, parameters: nil, success: { (responseObject, _) in
+        wordPressComRESTAPI.get(path, parameters: nil, success: { responseObject, _ in
             guard let response = responseObject as? [String: AnyObject] else {
                 failure(.unknown)
                 return
@@ -54,7 +54,7 @@ public class AutomatedTransferService: ServiceRemoteWordPressComREST {
         let path = self.path(forEndpoint: endpoint, withVersion: ._1_1)
         let payload = ["plugin": pluginSlug] as [String: AnyObject]
 
-        wordPressComRESTAPI.post(path, parameters: payload, success: { (responseObject, _) in
+        wordPressComRESTAPI.post(path, parameters: payload, success: { responseObject, _ in
             guard let response = responseObject as? [String: AnyObject] else {
                 failure(ResponseError.decodingFailure)
                 return
@@ -68,10 +68,9 @@ public class AutomatedTransferService: ServiceRemoteWordPressComREST {
             }
 
             success((transferID: transferID, status: statusObject))
-        }) { (error, _) in
+        }) { error, _ in
             failure(error)
         }
-
     }
 
     public func fetchAutomatedTransferStatus(siteID: Int,
@@ -81,7 +80,7 @@ public class AutomatedTransferService: ServiceRemoteWordPressComREST {
         let endpoint = "sites/\(siteID)/automated-transfers/status"
         let path = self.path(forEndpoint: endpoint, withVersion: ._1_1)
 
-        wordPressComRESTAPI.get(path, parameters: nil, success: { (responseObject, _) in
+        wordPressComRESTAPI.get(path, parameters: nil, success: { responseObject, _ in
             guard let response = responseObject as? [String: AnyObject] else {
                 failure(ResponseError.decodingFailure)
                 return
@@ -96,10 +95,9 @@ public class AutomatedTransferService: ServiceRemoteWordPressComREST {
             }
 
             success(statusObject)
-        }) { (error, _) in
+        }) { error, _ in
             failure(error)
         }
-
     }
 
     private func eligibilityError(from response: [String: AnyObject]) -> AutomatedTransferEligibilityError {
@@ -133,5 +131,4 @@ public class AutomatedTransferService: ServiceRemoteWordPressComREST {
             return .unknown
         }
     }
-
 }

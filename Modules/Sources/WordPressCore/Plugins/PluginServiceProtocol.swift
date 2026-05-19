@@ -24,7 +24,6 @@ public protocol PluginServiceProtocol: Actor {
     func pluginDirectoryUpdates(query: CategorizedPluginInformationDataStoreQuery) async -> AsyncStream<Result<[CategorizedPluginInformation], Error>>
 
     func searchPluginsDirectory(input: String) async throws -> [PluginInformation]
-
 }
 
 extension PluginServiceProtocol {

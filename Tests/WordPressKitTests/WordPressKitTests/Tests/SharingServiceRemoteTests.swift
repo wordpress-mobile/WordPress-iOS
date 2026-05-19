@@ -52,7 +52,6 @@ final class SharingServiceRemoteTests: RemoteTestCase, RESTTestable {
             XCTAssertEqual(twitterService.status, "unsupported")
 
             expectation.fulfill()
-
         } failure: { _ in
             XCTFail("Failure block unexpectedly called")
         }
@@ -126,5 +125,4 @@ final class SharingServiceRemoteTests: RemoteTestCase, RESTTestable {
         XCTAssertTrue(api.postMethodCalled, "Method was not called")
         XCTAssertEqual(api.URLStringPassedIn, url, "Incorrect URL passed in")
     }
-
 }

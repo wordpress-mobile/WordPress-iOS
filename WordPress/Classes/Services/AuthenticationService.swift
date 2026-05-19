@@ -105,7 +105,6 @@ class AuthenticationService {
                             }
                             success()
                         }
-
                     }
                 }) { error in
                     // Make sure this error scenario isn't silently ignored.
@@ -159,7 +158,7 @@ class AuthenticationService {
         request.httpMethod = "POST"
         request.httpBody = body(withParameters: parameters)
 
-        headers.forEach { (key, value) in
+        headers.forEach { key, value in
             request.setValue(value, forHTTPHeaderField: key)
         }
         request.setValue(WPUserAgent.wordPress(), forHTTPHeaderField: "User-Agent")

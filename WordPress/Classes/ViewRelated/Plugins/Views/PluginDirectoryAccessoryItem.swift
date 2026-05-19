@@ -194,6 +194,5 @@ struct PluginDirectoryAccessoryItem {
         static var imageSize = CGSize(width: 14, height: 14)
         static var starImageSize = CGSize(width: 12, height: 12)
         static var trailingSpacing: CGFloat = 4
-
     }
 }

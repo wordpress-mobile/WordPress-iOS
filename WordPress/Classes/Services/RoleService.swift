@@ -25,7 +25,7 @@ struct RoleService {
     /// Forces a refresh of roles from the api and stores them in Core Data.
     ///
     func fetchRoles(success: @escaping () -> Void, failure: @escaping (Error) -> Void) {
-        remote.getUserRoles(siteID, success: { (remoteRoles) in
+        remote.getUserRoles(siteID, success: { remoteRoles in
             self.coreDataStack.performAndSave({ context in
                 self.mergeRoles(remoteRoles, in: context)
             }, completion: success, on: .main)

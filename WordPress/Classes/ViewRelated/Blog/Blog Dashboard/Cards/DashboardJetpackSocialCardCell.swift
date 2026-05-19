@@ -167,7 +167,6 @@ class DashboardJetpackSocialCardCell: DashboardCollectionViewCell {
         case noConnections
         case noShares
     }
-
 }
 
 // MARK: - Private Functions
@@ -394,7 +393,6 @@ private extension DashboardJetpackSocialCardCell {
             updateDisplayState(for: blog)
         }
     }
-
 }
 
 // MARK: - SharingViewControllerDelegate
@@ -404,5 +402,4 @@ extension DashboardJetpackSocialCardCell: SharingViewControllerDelegate {
     func didChangePublicizeServices() {
         dashboardViewController?.reloadCardsLocally()
     }
-
 }

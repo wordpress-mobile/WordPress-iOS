@@ -38,5 +38,4 @@ class PluginListCell: UITableViewCell, NibLoadable {
         iconImageView.cancelImageDownload()
         iconImageView.image = nil
     }
-
 }

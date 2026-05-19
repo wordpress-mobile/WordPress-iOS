@@ -33,5 +33,4 @@ public extension MenusViewController {
 
         return fetchAllPagesTask.cancel
     }
-
 }

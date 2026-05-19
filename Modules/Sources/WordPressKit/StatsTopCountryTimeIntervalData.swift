@@ -59,7 +59,6 @@ extension StatsTopCountryTimeIntervalData: StatsTimeIntervalData {
         self.otherViewsCount = otherViews
         self.countries = countriesViews.compactMap { StatsCountry(jsonDictionary: $0, countryInfo: countryInfo) }
     }
-
 }
 
 extension StatsCountry {

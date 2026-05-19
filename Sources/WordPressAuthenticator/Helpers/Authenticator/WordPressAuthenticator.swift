@@ -491,7 +491,7 @@ import WordPressKit
 
         if isSiteURLSchemeEmpty {
             path = "https://\(path)"
-        } else if path.isWordPressComPath() && path.range(of: "http://") != nil {
+        } else if path.isWordPressComPath() && path.contains("http://") {
             path = path.replacingOccurrences(of: "http://", with: "https://")
         }
 
@@ -526,14 +526,14 @@ import WordPressKit
 public extension WordPressAuthenticator {
 
     func getAppleIDCredentialState(for userID: String, completion: @escaping (ASAuthorizationAppleIDProvider.CredentialState, Error?) -> Void) {
-        AppleAuthenticator.sharedInstance.getAppleIDCredentialState(for: userID) { (state, error) in
+        AppleAuthenticator.sharedInstance.getAppleIDCredentialState(for: userID) { state, error in
             // If credentialState == .notFound, error will have a value.
             completion(state, error)
         }
     }
 
     func startObservingAppleIDCredentialRevoked(completion: @escaping () -> Void) {
-        appleIDCredentialObserver = NotificationCenter.default.addObserver(forName: AppleAuthenticator.credentialRevokedNotification, object: nil, queue: nil) { (_) in
+        appleIDCredentialObserver = NotificationCenter.default.addObserver(forName: AppleAuthenticator.credentialRevokedNotification, object: nil, queue: nil) { _ in
             completion()
         }
     }

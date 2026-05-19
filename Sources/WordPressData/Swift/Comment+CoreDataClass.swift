@@ -136,7 +136,6 @@ private extension Comment {
 
         return String()
     }
-
 }
 
 extension Comment {
@@ -177,7 +176,6 @@ extension Comment {
     @objc public func authorURL() -> URL? {
         return !author_url.isEmpty ? URL(string: author_url) : nil
     }
-
 }
 
 // When CommentViewController and CommentService are converted to Swift, this can be simplified to a String enum.

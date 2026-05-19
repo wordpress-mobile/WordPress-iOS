@@ -280,7 +280,6 @@ extension ReaderDisplaySettingSelectionView {
             )
         }
     }
-
 }
 
 // MARK: - Control View

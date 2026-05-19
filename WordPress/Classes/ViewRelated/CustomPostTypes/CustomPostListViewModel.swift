@@ -509,7 +509,6 @@ extension CustomPostListViewModel {
             }
         }
     }
-
 }
 
 struct CustomPostCollectionDisplayPost: Equatable {

@@ -78,7 +78,6 @@ class BloggingPromptsFeatureIntroduction: FeatureIntroductionViewController {
         WPAnalytics.track(.promptsIntroductionModalDismissed)
         super.closeButtonTapped()
     }
-
 }
 
 extension BloggingPromptsFeatureIntroduction: FeatureIntroductionDelegate {
@@ -102,7 +101,6 @@ extension BloggingPromptsFeatureIntroduction: FeatureIntroductionDelegate {
         WPAnalytics.track(.promptsIntroductionModalRemindMe)
         presenter?.secondaryButtonSelected()
     }
-
 }
 
 private extension BloggingPromptsFeatureIntroduction {

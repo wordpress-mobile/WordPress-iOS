@@ -164,7 +164,6 @@ extension GutenbergSuggestionsViewController: SuggestionsTableViewDelegate {
     }
 
     public func suggestionsTableView(_ suggestionsTableView: SuggestionsTableView, didChangeTableBounds bounds: CGRect) {
-
     }
 
     public func suggestionsTableViewMaxDisplayedRows(_ suggestionsTableView: SuggestionsTableView) -> Int {

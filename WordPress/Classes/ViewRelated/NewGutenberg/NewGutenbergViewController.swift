@@ -415,8 +415,7 @@ extension NewGutenbergViewController {
         let title: String = (self.post is Page) ? EmptyPostActionSheet.titlePage : EmptyPostActionSheet.titlePost
         let message: String = EmptyPostActionSheet.message
         let alertController = UIAlertController(title: title, message: message, preferredStyle: .actionSheet)
-        let dismissAction = UIAlertAction(title: MediaAttachmentActionSheet.dismissActionTitle, style: .cancel) { (_) in
-
+        let dismissAction = UIAlertAction(title: MediaAttachmentActionSheet.dismissActionTitle, style: .cancel) { _ in
         }
         alertController.addAction(dismissAction)
 
@@ -434,7 +433,6 @@ extension NewGutenbergViewController {
         lightboxVC.configureZoomTransition()
         present(lightboxVC, animated: true)
     }
-
 }
 
 // MARK: - GutenbergBridgeDataSource
@@ -625,7 +623,6 @@ private extension NewGutenbergViewController {
     enum Analytics {
         static let editorSource = "new-gutenberg"
     }
-
 }
 
 private extension NewGutenbergViewController {

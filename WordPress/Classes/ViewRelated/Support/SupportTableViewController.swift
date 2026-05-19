@@ -359,7 +359,7 @@ private extension SupportTableViewController {
     ///
     func checkForAutomatticEmail() {
         guard let email = ZendeskUtils.userSupportEmail(),
-              (ZendeskUtils.automatticEmails.first { email.contains($0) }) != nil else {
+              ZendeskUtils.automatticEmails.contains(where: { email.contains($0) }) else {
                 return
         }
 
@@ -654,10 +654,10 @@ class ButtonCell: WPTableViewCellDefault {
 
         NSLayoutConstraint.activate([
             button.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: SupportTableLayoutSpacing.sidePadding),
-                                        button.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -SupportTableLayoutSpacing.sidePadding),
-                                        button.topAnchor.constraint(equalTo: contentView.topAnchor, constant: SupportTableLayoutSpacing.topBottomPadding),
-                                        button.bottomAnchor.constraint(equalTo: contentView.bottomAnchor, constant: -SupportTableLayoutSpacing.topBottomPadding)
-                                    ])
+            button.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -SupportTableLayoutSpacing.sidePadding),
+            button.topAnchor.constraint(equalTo: contentView.topAnchor, constant: SupportTableLayoutSpacing.topBottomPadding),
+            button.bottomAnchor.constraint(equalTo: contentView.bottomAnchor, constant: -SupportTableLayoutSpacing.topBottomPadding)
+        ])
     }
 
     enum LayoutSpacing {

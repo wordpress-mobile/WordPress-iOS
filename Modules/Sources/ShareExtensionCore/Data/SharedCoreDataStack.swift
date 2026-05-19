@@ -35,7 +35,7 @@ public final class SharedCoreDataStack {
 
     fileprivate lazy var storeContainer: SharedPersistentContainer = {
         let container = SharedPersistentContainer(name: "SharedCoreDataStack", managedObjectModel: SharedCoreDataStack.model)
-        container.loadPersistentStores { (_, error) in
+        container.loadPersistentStores { _, error in
             if let error = error as NSError? {
                 DDLogError("Error loading persistent stores: \(error), \(error.userInfo)")
             }

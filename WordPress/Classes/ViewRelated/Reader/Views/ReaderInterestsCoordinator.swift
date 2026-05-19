@@ -28,10 +28,8 @@ class ReaderSelectInterestsCoordinator {
 
         interestsService.followInterests(interests, success: { _ in
             completion(true)
-
         }, failure: { _ in
             completion(false)
-
         }, isLoggedIn: isLoggedIn)
     }
 

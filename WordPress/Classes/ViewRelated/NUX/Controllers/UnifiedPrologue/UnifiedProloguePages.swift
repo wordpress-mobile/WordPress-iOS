@@ -88,7 +88,6 @@ class UnifiedProloguePageViewController: UIViewController {
         if traitCollection.horizontalSizeClass == .compact {
             deactivateRegularWidthConstraints()
             activateCompactWidthConstraints()
-
         } else {
             deactivateCompactWidthConstraints()
             activateRegularWidthConstraints()

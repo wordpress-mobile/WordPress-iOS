@@ -86,5 +86,4 @@ import Foundation
         self.quotaSpaceUsed = json.number(forKeyPath: "quota.space_used")
         self.isDeleted = json.number(forKey: "is_deleted")?.boolValue == true
     }
-
 }

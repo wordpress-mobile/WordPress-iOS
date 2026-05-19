@@ -1,6 +1,7 @@
 import UIKit
 import CoreData
 import Combine
+import JetpackSocial
 import WordPressData
 import WordPressKit
 import WordPressShared
@@ -33,7 +34,6 @@ final class PostSettingsViewController<ViewModel: PostSettingsViewModelProtocol>
     @preconcurrency required dynamic init?(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
-
 }
 
 extension PostSettingsViewController where ViewModel == PostSettingsViewModel {
@@ -145,14 +145,15 @@ struct PostSettingsFormContentView<ViewModel: PostSettingsViewModelProtocol>: Vi
         }
         if viewModel.capabilities.supportsCategories
             || viewModel.capabilities.supportsTags
-            || !viewModel.capabilities.customTaxonomySlugs.isEmpty {
+            || !viewModel.capabilities.customTaxonomySlugs.isEmpty
+        {
             organizationSection
         }
         if viewModel.capabilities.supportsExcerpt {
             excerptSection
         }
         generalSection
-        socialSharingSection
+        socialSharingSectionDispatcher
         accessSection
         moreOptionsSection
     }
@@ -382,6 +383,24 @@ struct PostSettingsFormContentView<ViewModel: PostSettingsViewModelProtocol>: Vi
     // MARK: - "Social Sharing" Section
 
     @ViewBuilder
+    private var socialSharingSectionDispatcher: some View {
+        if let binding = viewModel.v2SocialSharing {
+            // The server early-returns updates to `jetpack_publicize_connections`
+            // for already-published posts, and re-share isn't supported in the
+            // app yet — so the section has nothing actionable to show.
+            if !binding.isPostPublished {
+                V2SocialSharingEntrySection(
+                    connections: binding.connections,
+                    draft: binding.draft,
+                    onAddConnection: binding.onAddConnection
+                )
+            }
+        } else {
+            socialSharingSection
+        }
+    }
+
+    @ViewBuilder
     private var socialSharingSection: some View {
         if let state = viewModel.socialSharingState {
             Section {
@@ -453,14 +472,18 @@ struct PostSettingsFormContentView<ViewModel: PostSettingsViewModelProtocol>: Vi
         NavigationLink {
             PostDiscussionSettingsView(postSettings: $viewModel.settings)
         } label: {
-            SettingsRow(Strings.discussionLabel, value: viewModel.settings.allowComments ? Strings.discussionOpen : Strings.discussionClosed)
+            SettingsRow(
+                Strings.discussionLabel,
+                value: viewModel.settings.allowComments ? Strings.discussionOpen : Strings.discussionClosed
+            )
         }
     }
 
     @ViewBuilder
     private var parentPageRow: some View {
         if viewModel.capabilities.supportsPageAttributes,
-           let destination = viewModel.parentPagePickerDestination() {
+            let destination = viewModel.parentPagePickerDestination()
+        {
             NavigationLink {
                 destination
             } label: {
@@ -555,6 +578,52 @@ private struct LegacyNavigationLinkRow<Content: View>: View {
         .tint(.primary)
     }
 }
+
+/// Top-level entry for the v2 social-sharing flow. Shows a single
+/// `NavigationLink` in Post Settings; the toggles and custom message
+/// field live on the pushed detail screen.
+private struct V2SocialSharingEntrySection: View {
+    @ObservedObject var connections: SiteSocialConnectionsService
+    @Binding var draft: PostSocialSharingDraft
+    let onAddConnection: (() -> Void)?
+
+    var body: some View {
+        Section {
+            NavigationLink {
+                PostSocialSharingDetailView(
+                    connections: connections,
+                    draft: $draft,
+                    onAddConnection: onAddConnection
+                )
+            } label: {
+                SettingsRow(JetpackSocialStrings.PostSection.header) {
+                    if let summary = draft.summary(for: connections.connections.value ?? []) {
+                        Text(summary)
+                    }
+                }
+            }
+        } header: {
+            JetpackBrandSectionHeader()
+        }
+        .task {
+            _ = try? await connections.loadConnections()
+        }
+    }
+}
+
+private struct JetpackBrandSectionHeader: View {
+    var body: some View {
+        HStack(spacing: 4) {
+            Image("icon-jetpack")
+                .resizable()
+                .frame(width: 14, height: 14)
+                .accessibilityHidden(true)
+            SectionHeader("Jetpack")
+        }
+    }
+}
+
+private typealias JetpackSocialStrings = JetpackSocial.Strings
 
 private enum Strings {
     static let generalHeader = NSLocalizedString(
@@ -691,7 +760,8 @@ private enum Strings {
     static let slugHint = NSLocalizedString(
         "postSettings.slug.hint",
         value: "The slug is the URL-friendly version of the post title.",
-        comment: "Hint text for the slug field. Should be the same as the text displayed if the user clicks the (i) in Slug in Calypso."
+        comment:
+            "Hint text for the slug field. Should be the same as the text displayed if the user clicks the (i) in Slug in Calypso."
     )
 
     static let stickyPostLabel = NSLocalizedString(
@@ -745,7 +815,8 @@ private enum Strings {
     static let readyToPublish = NSLocalizedString(
         "prepublishing.publishingSectionTitle",
         value: "Ready to Publish?",
-        comment: "The title of the top section that shows the site your are publishing to. Default is 'Ready to Publish?'"
+        comment:
+            "The title of the top section that shows the site your are publishing to. Default is 'Ready to Publish?'"
     )
 
     static let statusAndVisibility = NSLocalizedString(

@@ -24,5 +24,4 @@ public class RemoteProfile {
         userID = dictionary.number(forKey: "user_id")?.intValue ?? 0
         username = dictionary.string(forKey: "username") ?? ""
     }
-
 }

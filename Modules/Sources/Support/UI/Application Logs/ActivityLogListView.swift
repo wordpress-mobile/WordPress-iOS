@@ -73,7 +73,6 @@ public struct ActivityLogListView: View {
             Button(Localization.cancel, role: .cancel) {
                 // Alert will be dismissed on its own
             }
-
         }, message: {
             Text(Localization.cannotRecoverLogs)
         })

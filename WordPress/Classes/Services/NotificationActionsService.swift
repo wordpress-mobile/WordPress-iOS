@@ -27,7 +27,6 @@ class NotificationActionsService {
             DDLogInfo("Successfully followed site \(siteID)")
             self.invalidateCacheAndForceSyncNotification(with: block)
             completion?(true)
-
         }, failure: { error in
             DDLogError("Error while trying to follow site: \(String(describing: error))")
             completion?(false)
@@ -49,7 +48,6 @@ class NotificationActionsService {
             DDLogInfo("Successfully unfollowed site \(siteID)")
             self.invalidateCacheAndForceSyncNotification(with: block)
             completion?(true)
-
         }, failure: { error in
             DDLogError("Error while trying to unfollow site: \(String(describing: error))")
             completion?(false)
@@ -72,7 +70,6 @@ class NotificationActionsService {
             DDLogInfo("Successfully replied to comment \(siteID).\(commentID)")
             self.invalidateCacheAndForceSyncNotification(with: block)
             completion?(true)
-
         }, failure: { error in
             DDLogError("Error while trying to reply comment: \(String(describing: error))")
             completion?(false)
@@ -99,7 +96,6 @@ class NotificationActionsService {
             DDLogInfo("Successfully updated to comment \(siteID).\(commentID)")
             self.invalidateCacheAndForceSyncNotification(with: block)
             completion?(true)
-
         }, failure: { error in
             DDLogError("Error while trying to update comment: \(String(describing: error))")
             completion?(false)
@@ -127,7 +123,6 @@ class NotificationActionsService {
             DDLogInfo("Successfully liked comment \(siteID).\(commentID)")
             self.invalidateCacheAndForceSyncNotification(with: block)
             completion?(true)
-
         }, failure: { error in
             DDLogError("Error while trying to like comment: \(String(describing: error))")
             completion?(false)
@@ -149,7 +144,6 @@ class NotificationActionsService {
             DDLogInfo("Successfully unliked comment \(siteID).\(commentID)")
             self.invalidateCacheAndForceSyncNotification(with: block)
             completion?(true)
-
         }, failure: { error in
             DDLogError("Error while trying to unlike comment: \(String(describing: error))")
             completion?(false)
@@ -171,7 +165,6 @@ class NotificationActionsService {
             DDLogInfo("Successfully approved comment \(siteID).\(commentID)")
             self.invalidateCacheAndForceSyncNotification(with: block)
             completion?(true)
-
         }, failure: { error in
             DDLogError("Error while trying to moderate comment: \(String(describing: error))")
             completion?(false)
@@ -193,7 +186,6 @@ class NotificationActionsService {
             DDLogInfo("Successfully unapproved comment \(siteID).\(commentID)")
             self.invalidateCacheAndForceSyncNotification(with: block)
             completion?(true)
-
         }, failure: { error in
             DDLogError("Error while trying to moderate comment: \(String(describing: error))")
             completion?(false)
@@ -215,7 +207,6 @@ class NotificationActionsService {
             DDLogInfo("Successfully spammed comment \(siteID).\(commentID)")
             self.invalidateCacheAndForceSyncNotification(with: block)
             completion?(true)
-
         }, failure: { error in
             DDLogError("Error while trying to mark comment as spam: \(String(describing: error))")
             completion?(false)
@@ -237,7 +228,6 @@ class NotificationActionsService {
             DDLogInfo("Successfully deleted comment \(siteID).\(commentID)")
             self.invalidateCacheAndForceSyncNotification(with: block)
             completion?(true)
-
         }, failure: { error in
             DDLogError("Error while trying to delete comment: \(String(describing: error))")
             completion?(false)

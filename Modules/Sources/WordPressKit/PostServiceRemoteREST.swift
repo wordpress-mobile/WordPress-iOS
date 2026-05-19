@@ -40,7 +40,7 @@ extension PostServiceRemoteREST {
 
         wordPressComRESTAPI.get(requestUrl,
                                parameters: parameters,
-                               success: { (responseObject, _) in
+                               success: { responseObject, _ in
             if let success {
                 let responseDict = responseObject as? [String: Any] ?? [:]
                 let jsonUsers = responseDict["likes"] as? [[String: Any]] ?? []
@@ -48,9 +48,8 @@ extension PostServiceRemoteREST {
                 let found = responseDict["found"] as? NSNumber ?? 0
                 success(users, found)
             }
-        }, failure: { (error, _) in
+        }, failure: { error, _ in
             failure?(error)
         })
     }
-
 }

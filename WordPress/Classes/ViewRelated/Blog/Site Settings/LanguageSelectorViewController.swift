@@ -72,7 +72,7 @@ class LanguageSelectorViewController: UITableViewController, UISearchResultsUpda
     private func modelForSearch(query: String?) -> ImmuTable {
         let filtered: [Language]
         if let query {
-            filtered = database.all.filter({ (language) -> Bool in
+            filtered = database.all.filter({ language -> Bool in
                 return language.name.localizedCaseInsensitiveContains(query)
                     || language.description.localizedCaseInsensitiveContains(query)
             })
@@ -81,7 +81,7 @@ class LanguageSelectorViewController: UITableViewController, UISearchResultsUpda
         }
         return ImmuTable(sections: [
             ImmuTableSection(rows: filtered.map(model(language:)))
-            ])
+        ])
     }
 
     private func modelForBrowsing() -> ImmuTable {
@@ -92,7 +92,7 @@ class LanguageSelectorViewController: UITableViewController, UISearchResultsUpda
             ImmuTableSection(
                 headerText: NSLocalizedString("All languages", comment: "Section title for All Languages"),
                 rows: database.all.map(model(language:)))
-            ])
+        ])
     }
 
     private func model(language: Language) -> ImmuTableRow {

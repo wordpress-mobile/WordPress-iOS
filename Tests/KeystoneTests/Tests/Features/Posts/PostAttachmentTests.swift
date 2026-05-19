@@ -47,7 +47,7 @@ class PostAttachmentTests: XCTestCase {
         let controller = AztecAttachmentViewController()
         controller.attachment = attachment
         controller.alt = altValue
-        controller.onUpdate = { (_, _, _, alt, _) in
+        controller.onUpdate = { _, _, _, alt, _ in
             richTextView.edit(attachment) { updated in
                 if let alt {
                     updated.alt = alt
@@ -82,7 +82,7 @@ class PostAttachmentTests: XCTestCase {
         let controller = AztecAttachmentViewController()
         controller.attachment = attachment
         controller.alt = altValue
-        controller.onUpdate = { (_, _, _, alt, _) in
+        controller.onUpdate = { _, _, _, alt, _ in
             richTextView.edit(attachment) { updated in
                 if let alt {
                     updated.alt = alt
@@ -117,7 +117,7 @@ class PostAttachmentTests: XCTestCase {
         let controller = AztecAttachmentViewController()
         controller.attachment = attachment
         controller.linkURL = linkURLValue
-        controller.onUpdate = { (_, _, linkURL, _, _) in
+        controller.onUpdate = { _, _, linkURL, _, _ in
             if let url = linkURL, let range = richTextView.textStorage.ranges(forAttachment: attachment).first {
                 richTextView.setLink(url, inRange: range)
             }

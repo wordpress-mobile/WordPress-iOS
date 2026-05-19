@@ -29,6 +29,7 @@ public enum FeatureFlag: Int, CaseIterable {
     case statsAds
     case customPostTypes
     case cptPostsAndPages
+    case socialSharingV2
 
     /// Returns a boolean indicating if the feature is enabled.
     ///
@@ -92,11 +93,13 @@ public enum FeatureFlag: Int, CaseIterable {
             return BuildConfiguration.current == .debug
         case .cptPostsAndPages:
             return BuildConfiguration.current == .debug
+        case .socialSharingV2:
+            return BuildConfiguration.current == .debug
         }
     }
 
     var disabled: Bool {
-        return enabled == false
+        enabled == false
     }
 }
 
@@ -106,14 +109,14 @@ public enum FeatureFlag: Int, CaseIterable {
 public class Feature: NSObject {
     /// Returns a boolean indicating if the feature is enabled
     @objc public static func enabled(_ feature: FeatureFlag) -> Bool {
-        return feature.enabled
+        feature.enabled
     }
 }
 
 extension FeatureFlag {
     /// Descriptions used to display the feature flag override menu in debug builds
     public var description: String {
-        return switch self {
+        switch self {
         case .signUp: "Sign Up"
         case .domainRegistration: "Domain Registration"
         case .selfHostedSites: "Self-Hosted Sites"
@@ -137,6 +140,7 @@ extension FeatureFlag {
         case .statsAds: "Stats Ads Tab"
         case .customPostTypes: "Custom Post Types"
         case .cptPostsAndPages: "Custom Post Types: Posts and Pages"
+        case .socialSharingV2: "Social Sharing v2"
         }
     }
 }
@@ -144,7 +148,7 @@ extension FeatureFlag {
 extension FeatureFlag: OverridableFlag {
 
     var originalValue: Bool {
-        return enabled
+        enabled
     }
 
     var key: String {
@@ -160,6 +164,6 @@ extension FeatureFlag: RolloutConfigurableFlag {
     /// If a percentage rollout isn't applicable for the flag, return nil.
     ///
     var rolloutPercentage: Double? {
-        return nil
+        nil
     }
 }

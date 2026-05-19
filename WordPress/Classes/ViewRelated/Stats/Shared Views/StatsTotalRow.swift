@@ -508,7 +508,6 @@ private extension StatsTotalRow {
             WPAppAnalytics.track(event)
         }
     }
-
 }
 
 // MARK: - Analytics support

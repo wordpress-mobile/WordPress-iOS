@@ -115,7 +115,7 @@ struct PostTagsView: View {
                 text: $viewModel.searchText,
                 onSubmit: addTag
             )
-            .onChange(of: viewModel.searchText) { (_, newValue) in
+            .onChange(of: viewModel.searchText) { _, newValue in
                 handleTextChange(newValue)
             }
 

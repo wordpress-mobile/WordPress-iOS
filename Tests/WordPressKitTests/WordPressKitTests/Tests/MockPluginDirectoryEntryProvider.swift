@@ -73,5 +73,4 @@ struct MockPluginDirectoryProvider {
 
         return data
     }
-
 }

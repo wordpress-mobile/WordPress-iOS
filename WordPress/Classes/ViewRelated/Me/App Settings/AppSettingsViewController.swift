@@ -135,7 +135,7 @@ class AppSettingsViewController: UITableViewController {
 
     fileprivate func updateMediaCacheSize() {
         setMediaCacheRowDescription(status: .calculatingSize)
-        MediaFileManager.calculateSizeOfMediaDirectories { [weak self] (allocatedSize) in
+        MediaFileManager.calculateSizeOfMediaDirectories { [weak self] allocatedSize in
             self?.setMediaCacheRowDescription(allocatedSize: allocatedSize)
         }
     }
@@ -212,9 +212,9 @@ class AppSettingsViewController: UITableViewController {
             let title = NSLocalizedString("appSettings.media.imageQuality.title", value: "Quality", comment: "The quality of image used when uploading")
 
             let settingsSelectionConfiguration = [SettingsSelectionDefaultValueKey: currentImageQuality,
-                                                         SettingsSelectionTitleKey: title,
-                                                        SettingsSelectionTitlesKey: titles,
-                                                        SettingsSelectionValuesKey: values] as [String: Any]
+                                                  SettingsSelectionTitleKey: title,
+                                                  SettingsSelectionTitlesKey: titles,
+                                                  SettingsSelectionValuesKey: values] as [String: Any]
 
             let viewController = SettingsSelectionViewController(dictionary: settingsSelectionConfiguration)
 
@@ -346,7 +346,6 @@ class AppSettingsViewController: UITableViewController {
 
             if let targetURL = URL(string: UIApplication.openSettingsURLString) {
                 UIApplication.shared.open(targetURL)
-
             } else {
                 assertionFailure("Couldn't unwrap Settings URL")
             }

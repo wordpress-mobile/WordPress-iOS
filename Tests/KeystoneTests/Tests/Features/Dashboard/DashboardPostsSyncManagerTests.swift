@@ -184,7 +184,6 @@ class DashboardPostsSyncManagerTests: CoreDataTestCase {
         XCTAssertEqual(blog.dashboardState.postsSyncingStatuses, [])
         XCTAssertTrue(blogService.syncAuthorsCalled)
     }
-
 }
 
 private class SyncManagerListenerMock: NSObject, DashboardPostsSyncManagerListener {
