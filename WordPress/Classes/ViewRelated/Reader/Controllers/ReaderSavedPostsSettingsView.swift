@@ -18,19 +18,27 @@ struct ReaderSavedPostsSettingsView: View {
                 } label: {
                     Label(Strings.importButton, systemImage: "arrow.down.doc")
                 }
-                .disabled(viewModel.isImporting)
+                .disabled(viewModel.isBusy)
 
                 Button {
                     viewModel.exportSavedPosts()
                 } label: {
                     Label(Strings.exportButton, systemImage: "arrow.up.doc")
                 }
-                .disabled(viewModel.isImporting)
+                .disabled(viewModel.isBusy)
 
                 if viewModel.isImporting {
                     VStack(alignment: .leading, spacing: 8) {
                         ProgressView(value: viewModel.importProgress, total: 1.0)
                         Text(viewModel.importStatusText)
+                            .font(.footnote)
+                            .foregroundStyle(.secondary)
+                    }
+                    .padding(.vertical, 4)
+                } else if viewModel.isExporting {
+                    HStack(spacing: 8) {
+                        ProgressView()
+                        Text(Strings.exportingStatus)
                             .font(.footnote)
                             .foregroundStyle(.secondary)
                     }
@@ -74,8 +82,12 @@ final class ReaderSavedPostsSettingsViewModel: ObservableObject {
     @Published var isShowingImportResult = false
     @Published var isShowingError = false
     @Published var isImporting = false
+    @Published var isExporting = false
     @Published var importProgress: Double = 0
     @Published var importStatusText = ""
+
+    /// Whether an import or export is currently in flight.
+    var isBusy: Bool { isImporting || isExporting }
 
     @Published private(set) var importResultMessage = ""
     @Published private(set) var errorMessage = ""
@@ -93,7 +105,10 @@ final class ReaderSavedPostsSettingsViewModel: ObservableObject {
     }
 
     func exportSavedPosts() {
+        guard !isBusy else { return }
+        isExporting = true
         Task {
+            defer { isExporting = false }
             do {
                 guard let fileURL = try await exporter.export(coreDataStack: coreDataStack) else {
                     errorMessage = Strings.exportEmpty
@@ -230,6 +245,11 @@ private enum Strings {
         "reader.savedPosts.settings.exportError",
         value: "Could not export saved posts. Please try again.",
         comment: "Error message when export of saved Reader posts fails"
+    )
+    static let exportingStatus = NSLocalizedString(
+        "reader.savedPosts.settings.exportingStatus",
+        value: "Preparing export…",
+        comment: "Status text shown while the saved Reader posts export file is being prepared"
     )
     static let importError = NSLocalizedString(
         "reader.savedPosts.settings.importError",
