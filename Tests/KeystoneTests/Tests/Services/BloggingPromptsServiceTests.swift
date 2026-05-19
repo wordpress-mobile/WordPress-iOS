@@ -341,7 +341,7 @@ private extension BloggingPromptsServiceTests {
     }
 
     func makeBlog() -> Blog {
-        return BlogBuilder(mainContext).isHostedAtWPcom().with(blogID: siteID).build()
+        BlogBuilder(mainContext).isHostedAtWPcom().with(blogID: siteID).build()
     }
 
     func stubFetchPromptsResponse(with fileName: String? = nil) {
@@ -369,7 +369,7 @@ private extension BloggingPromptsServiceTests {
     }
 
     func passedNumber() throws -> Int {
-        return try XCTUnwrap(passedParameter("per_page") as? Int)
+        try XCTUnwrap(passedParameter("per_page") as? Int)
     }
 
     func passedDate() throws -> String {
@@ -387,8 +387,9 @@ private extension BloggingPromptsServiceTests {
         return [
             String(forcedYear),
             String(format: "%02d", month),
-            String(format: "%02d", day),
-        ].joined(separator: "-")
+            String(format: "%02d", day)
+        ]
+        .joined(separator: "-")
     }
 
     // MARK: Test Prompts
@@ -396,8 +397,9 @@ private extension BloggingPromptsServiceTests {
     private func loadTestPrompts(from fileName: String) -> [BloggingPromptRemoteObject] {
         let bundle = Bundle(for: BloggingPromptsServiceTests.self)
         guard let url = bundle.url(forResource: fileName, withExtension: "json"),
-              let data = try? Data(contentsOf: url),
-              let prompts = try? Self.jsonDecoder.decode([BloggingPromptRemoteObject].self, from: data) else {
+            let data = try? Data(contentsOf: url),
+            let prompts = try? Self.jsonDecoder.decode([BloggingPromptRemoteObject].self, from: data)
+        else {
             return []
         }
         return prompts
