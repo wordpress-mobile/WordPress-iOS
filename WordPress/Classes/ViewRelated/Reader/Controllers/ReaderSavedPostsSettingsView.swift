@@ -93,17 +93,19 @@ final class ReaderSavedPostsSettingsViewModel: ObservableObject {
     }
 
     func exportSavedPosts() {
-        do {
-            guard let fileURL = try exporter.export(context: coreDataStack.mainContext) else {
-                errorMessage = Strings.exportEmpty
+        Task {
+            do {
+                guard let fileURL = try await exporter.export(coreDataStack: coreDataStack) else {
+                    errorMessage = Strings.exportEmpty
+                    isShowingError = true
+                    return
+                }
+                exportedFileURL = IdentifiableURL(value: fileURL)
+                WPAnalytics.track(.readerSavedPostsExported)
+            } catch {
+                errorMessage = Strings.exportError
                 isShowingError = true
-                return
             }
-            exportedFileURL = IdentifiableURL(value: fileURL)
-            WPAnalytics.track(.readerSavedPostsExported)
-        } catch {
-            errorMessage = Strings.exportError
-            isShowingError = true
         }
     }
 

@@ -9,21 +9,21 @@ class ReaderSavedPostsExporterTests: CoreDataTestCase {
 
     // MARK: - Export
 
-    func testExportReturnsNilWhenNoSavedPosts() throws {
-        let result = try exporter.export(context: mainContext)
+    func testExportReturnsNilWhenNoSavedPosts() async throws {
+        let result = try await exporter.export(coreDataStack: contextManager)
         XCTAssertNil(result)
     }
 
-    func testExportReturnsNilWhenPostsExistButNoneAreSaved() throws {
+    func testExportReturnsNilWhenPostsExistButNoneAreSaved() async throws {
         let post = makeReaderPost()
         post.isSavedForLater = false
         try mainContext.save()
 
-        let result = try exporter.export(context: mainContext)
+        let result = try await exporter.export(coreDataStack: contextManager)
         XCTAssertNil(result)
     }
 
-    func testExportCreatesJSONFileWithSavedPosts() throws {
+    func testExportCreatesJSONFileWithSavedPosts() async throws {
         let post = makeReaderPost()
         post.postTitle = "Test Post"
         post.permaLink = "https://example.com/test-post"
@@ -41,7 +41,8 @@ class ReaderSavedPostsExporterTests: CoreDataTestCase {
         post.date_created_gmt = Date(timeIntervalSince1970: 1000000)
         try mainContext.save()
 
-        let fileURL = try XCTUnwrap(exporter.export(context: mainContext))
+        let url = try await exporter.export(coreDataStack: contextManager)
+        let fileURL = try XCTUnwrap(url)
 
         let data = try Data(contentsOf: fileURL)
         let envelope = try XCTUnwrap(JSONSerialization.jsonObject(with: data) as? [String: Any])
@@ -66,7 +67,7 @@ class ReaderSavedPostsExporterTests: CoreDataTestCase {
         XCTAssertEqual(exported["isFeed"] as? Bool, false)
     }
 
-    func testExportOnlyIncludesSavedPosts() throws {
+    func testExportOnlyIncludesSavedPosts() async throws {
         let saved = makeReaderPost()
         saved.postTitle = "Saved"
         saved.permaLink = "https://example.com/saved"
@@ -81,7 +82,8 @@ class ReaderSavedPostsExporterTests: CoreDataTestCase {
 
         try mainContext.save()
 
-        let fileURL = try XCTUnwrap(exporter.export(context: mainContext))
+        let url = try await exporter.export(coreDataStack: contextManager)
+        let fileURL = try XCTUnwrap(url)
         let data = try Data(contentsOf: fileURL)
         let envelope = try XCTUnwrap(JSONSerialization.jsonObject(with: data) as? [String: Any])
         let posts = try XCTUnwrap(envelope["posts"] as? [[String: Any]])
@@ -90,14 +92,15 @@ class ReaderSavedPostsExporterTests: CoreDataTestCase {
         XCTAssertEqual(posts[0]["title"] as? String, "Saved")
     }
 
-    func testExportOmitsEmptyOptionalFields() throws {
+    func testExportOmitsEmptyOptionalFields() async throws {
         let post = makeReaderPost()
         post.permaLink = "https://example.com/minimal"
         post.isSavedForLater = true
         post.sortDate = Date()
         try mainContext.save()
 
-        let fileURL = try XCTUnwrap(exporter.export(context: mainContext))
+        let url = try await exporter.export(coreDataStack: contextManager)
+        let fileURL = try XCTUnwrap(url)
         let data = try Data(contentsOf: fileURL)
         let envelope = try XCTUnwrap(JSONSerialization.jsonObject(with: data) as? [String: Any])
         let posts = try XCTUnwrap(envelope["posts"] as? [[String: Any]])
@@ -107,14 +110,15 @@ class ReaderSavedPostsExporterTests: CoreDataTestCase {
         XCTAssertNil(exported["tags"])
     }
 
-    func testExportFileNameContainsDate() throws {
+    func testExportFileNameContainsDate() async throws {
         let post = makeReaderPost()
         post.permaLink = "https://example.com/test"
         post.isSavedForLater = true
         post.sortDate = Date()
         try mainContext.save()
 
-        let fileURL = try XCTUnwrap(exporter.export(context: mainContext))
+        let url = try await exporter.export(coreDataStack: contextManager)
+        let fileURL = try XCTUnwrap(url)
 
         let dateFormatter = DateFormatter()
         dateFormatter.dateFormat = "yyyy-MM-dd"
@@ -235,7 +239,7 @@ class ReaderSavedPostsExporterTests: CoreDataTestCase {
 
     // MARK: - Round-trip (export -> parse)
 
-    func testExportThenParsePreservesAllFields() throws {
+    func testExportThenParsePreservesAllFields() async throws {
         let post = makeReaderPost()
         post.postTitle = "Round Trip"
         post.permaLink = "https://example.com/round-trip"
@@ -253,7 +257,8 @@ class ReaderSavedPostsExporterTests: CoreDataTestCase {
         post.date_created_gmt = Date(timeIntervalSince1970: 1700000000)
         try mainContext.save()
 
-        let fileURL = try XCTUnwrap(exporter.export(context: mainContext))
+        let url = try await exporter.export(coreDataStack: contextManager)
+        let fileURL = try XCTUnwrap(url)
         let posts = try ReaderSavedPostsExporter.parseExportFile(at: fileURL)
 
         XCTAssertEqual(posts.count, 1)

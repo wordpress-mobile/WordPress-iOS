@@ -28,46 +28,54 @@ struct ReaderSavedPostsExporter {
     }
 
     /// Fetches all saved Reader posts and writes them to a temporary JSON file.
-    /// - Parameter context: The managed object context to fetch from.
+    ///
+    /// The Core Data fetch, JSON encoding, and file write all run off the main
+    /// thread so a large export doesn't block the UI.
+    ///
+    /// - Parameter coreDataStack: The Core Data stack.
     /// - Returns: The file URL of the exported JSON, or `nil` if there are no saved posts.
-    func export(context: NSManagedObjectContext) throws -> URL? {
-        let request = NSFetchRequest<ReaderPost>(entityName: ReaderPost.classNameWithoutNamespaces())
-        request.predicate = NSPredicate(format: "isSavedForLater == YES")
-        request.sortDescriptors = [NSSortDescriptor(key: "sortDate", ascending: false)]
+    func export(coreDataStack: CoreDataStackSwift) async throws -> URL? {
+        // Do the Core Data work on a background context and only return value
+        // types (no managed objects escape the closure).
+        let exportedPosts: [ExportedPost] = try await coreDataStack.performQuery { context in
+            let request = NSFetchRequest<ReaderPost>(entityName: ReaderPost.classNameWithoutNamespaces())
+            request.predicate = NSPredicate(format: "isSavedForLater == YES")
+            request.sortDescriptors = [NSSortDescriptor(key: "sortDate", ascending: false)]
 
-        let posts = try context.fetch(request)
-        guard !posts.isEmpty else { return nil }
+            let posts = try context.fetch(request)
+            let dateFormatter = ISO8601DateFormatter()
 
-        let dateFormatter = ISO8601DateFormatter()
+            return posts.map { post in
+                let tags = post.tagsForDisplay()
+                let featuredImage = post.featuredImage
+                let siteID = post.siteID?.uintValue ?? 0
+                let postID = post.postID?.uintValue ?? 0
 
-        let exportedPosts: [ExportedPost] = posts.map { post in
-            let tags = post.tagsForDisplay()
-            let featuredImage = post.featuredImage
-            let siteID = post.siteID?.uintValue ?? 0
-            let postID = post.postID?.uintValue ?? 0
-
-            return ExportedPost(
-                title: post.titleForDisplay(),
-                url: post.permaLink ?? "",
-                author: post.authorForDisplay() ?? "",
-                siteName: post.blogNameForDisplay() ?? "",
-                siteURL: post.blogURL ?? "",
-                date: post.dateForDisplay().map { dateFormatter.string(from: $0) },
-                summary: post.contentPreviewForDisplay() ?? "",
-                tags: tags.isEmpty ? nil : tags,
-                featuredImageURL: (featuredImage?.isEmpty ?? true) ? nil : featuredImage,
-                siteID: siteID > 0 ? siteID : nil,
-                postID: postID > 0 ? postID : nil,
-                isFeed: post.isExternal
-            )
+                return ExportedPost(
+                    title: post.titleForDisplay(),
+                    url: post.permaLink ?? "",
+                    author: post.authorForDisplay() ?? "",
+                    siteName: post.blogNameForDisplay() ?? "",
+                    siteURL: post.blogURL ?? "",
+                    date: post.dateForDisplay().map { dateFormatter.string(from: $0) },
+                    summary: post.contentPreviewForDisplay() ?? "",
+                    tags: tags.isEmpty ? nil : tags,
+                    featuredImageURL: (featuredImage?.isEmpty ?? true) ? nil : featuredImage,
+                    siteID: siteID > 0 ? siteID : nil,
+                    postID: postID > 0 ? postID : nil,
+                    isFeed: post.isExternal
+                )
+            }
         }
+
+        guard !exportedPosts.isEmpty else { return nil }
 
         let appName = Bundle.main.object(forInfoDictionaryKey: "CFBundleDisplayName") as! String
         let appVersion = Bundle.main.object(forInfoDictionaryKey: "CFBundleShortVersionString") as! String
 
         let envelope = Envelope(
-            exportDate: dateFormatter.string(from: Date()),
-            postCount: posts.count,
+            exportDate: ISO8601DateFormatter().string(from: Date()),
+            postCount: exportedPosts.count,
             posts: exportedPosts,
             appVersion: "\(appName) \(appVersion)"
         )
