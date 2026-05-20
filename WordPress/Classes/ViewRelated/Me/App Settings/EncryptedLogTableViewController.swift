@@ -109,7 +109,7 @@ class EncryptedLogTableViewController: UITableViewController {
 
             try self.eventLogging.enqueueLogForUpload(log: LogFile(url: url))
         }
-        catch let err {
+        catch {
             let alert = UIAlertController(title: "Unable to create log", message: err.localizedDescription, preferredStyle: .actionSheet)
             self.present(alert, animated: true)
         }

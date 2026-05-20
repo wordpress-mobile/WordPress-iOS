@@ -114,6 +114,9 @@ only_rules:
   # Closure arguments don't need to be wrapped in parentheses.
   - unneeded_parentheses_in_closure_argument
 
+  # Catch statements should not declare error variables without type casting.
+  - untyped_error_in_catch
+
   # Unused parameter in a closure should be replaced with _.
   - unused_closure_parameter
 

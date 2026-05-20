@@ -79,7 +79,7 @@ class ReaderPostStreamService {
                 }
                 context.delete(post)
             }
-        } catch let error {
+        } catch {
             print("Clean post error:", error)
         }
     }

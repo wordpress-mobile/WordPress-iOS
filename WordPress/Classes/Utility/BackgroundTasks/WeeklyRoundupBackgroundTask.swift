@@ -86,7 +86,7 @@ private class WeeklyRoundupDataProvider {
 
             do {
                 service = try Self.makeRemoteStatsService(for: site)
-            } catch let error {
+            } catch {
                 self.onError(error)
                 continue
             }

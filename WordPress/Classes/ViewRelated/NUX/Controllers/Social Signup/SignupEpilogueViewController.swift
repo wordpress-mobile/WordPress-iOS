@@ -268,7 +268,7 @@ private extension SignupEpilogueViewController {
 
                 finished(success, error)
             }
-        } catch let err {
+        } catch {
             finished(false, err)
             return
         }

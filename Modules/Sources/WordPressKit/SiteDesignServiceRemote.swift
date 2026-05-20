@@ -46,7 +46,7 @@ public class SiteDesignServiceRemote {
             do {
                 let result = try parseLayouts(fromResponse: responseObject)
                 completion(.success(result))
-            } catch let error {
+            } catch {
                 NSLog("error response object: %@", String(describing: responseObject))
                 completion(.failure(error))
             }
