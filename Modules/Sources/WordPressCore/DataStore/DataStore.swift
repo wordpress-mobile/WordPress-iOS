@@ -2,7 +2,7 @@ import Foundation
 
 /// An abstraction of local data storage, with CRUD operations.
 public protocol DataStore: Actor {
-    associatedtype T: Identifiable & Sendable
+    associatedtype T: Identifiable, Sendable
     associatedtype Query: Sendable
 
     func list(query: Query) async throws -> [T]

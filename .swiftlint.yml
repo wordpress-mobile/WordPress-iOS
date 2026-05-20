@@ -22,6 +22,9 @@ only_rules:
   # There should be no space before and one after any comma.
   - comma
 
+  # There should be a space after the comma in inheritance lists.
+  - comma_inheritance
+
   # Prefer `contains` over `filter(where:).count`.
   - contains_over_filter_count
 
