@@ -443,7 +443,8 @@ import AutomatticTracks
             displayLoadingStream()
         }
         guard let tagSlug else {
-            return wpAssertionFailure("tag slug is missing")
+            wpAssertionFailure("tag slug is missing")
+            return
         }
         let service = ReaderTopicService(coreDataStack: ContextManager.shared)
         service.tagTopicForTag(withSlug: tagSlug, success: { [weak self] objectID in

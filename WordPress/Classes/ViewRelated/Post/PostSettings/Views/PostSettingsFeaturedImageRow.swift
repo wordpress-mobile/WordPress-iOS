@@ -171,7 +171,8 @@ public final class PostSettingsFeaturedImageViewModel: ObservableObject {
         WPAnalytics.track(.editorPostFeaturedImageChanged, properties: ["via": "settings", "action": "added", "source": selection.source.rawValue])
 
         guard let item = selection.items.first else {
-            return wpAssertionFailure("selection is empty")
+            wpAssertionFailure("selection is empty")
+            return
         }
         switch item.exported() {
         case .asset(let exportableAsset):
@@ -184,7 +185,8 @@ public final class PostSettingsFeaturedImageViewModel: ObservableObject {
                 media = coordinator.addMedia(from: exportableAsset, to: blog, suppressSuccessNotice: true)
             }
             guard let media else {
-                return wpAssertionFailure("failed to add media")
+                wpAssertionFailure("failed to add media")
+                return
             }
             self.receipt = coordinator.addObserver({ [weak self] media, state in
                 self?.didUpdateUploadState(state, media: media)

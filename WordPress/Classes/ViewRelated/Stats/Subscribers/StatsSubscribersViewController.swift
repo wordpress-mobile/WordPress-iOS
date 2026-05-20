@@ -87,10 +87,12 @@ extension StatsSubscribersViewController: SiteStatsPeriodDelegate {
             WPAnalytics.track(.statsSubscribersViewMoreTapped)
 
             guard let blog = RootViewCoordinator.sharedPresenter.currentlyVisibleBlog() else {
-                return wpAssertionFailure("blog missing")
+                wpAssertionFailure("blog missing")
+                return
             }
             guard let subscribersBlog = SubscribersBlog(blog: blog) else {
-                return wpAssertionFailure("unsupported blog")
+                wpAssertionFailure("unsupported blog")
+                return
             }
             let subscribersVC = SubscribersViewController(blog: subscribersBlog)
             navigationController?.pushViewController(subscribersVC, animated: true)

@@ -47,21 +47,23 @@ func assert(
     line: UInt = #line
 ) {
     guard var components = URLComponents(url: actual, resolvingAgainstBaseURL: false) else {
-        return XCTFail(
+        XCTFail(
             "Could not created `URLComponents` from given `URL` \(actual).",
             file: file,
             line: line
         )
+        return
     }
 
     components.query = .none
 
     guard let baseURL = components.url else {
-        return XCTFail(
+        XCTFail(
             "Could not extract `URL` from `URLComponents` created from \(actual).",
             file: file,
             line: line
         )
+        return
     }
 
     XCTAssertEqual(baseURL.absoluteString, baseURLString, file: file, line: line)
@@ -75,11 +77,12 @@ func assertQueryItems(
     line: UInt = #line
 ) {
     guard let components = URLComponents(url: url, resolvingAgainstBaseURL: false) else {
-        return XCTFail(
+        XCTFail(
             "Could not created `URLComponents` from given `URL` \(url).",
             file: file,
             line: line
         )
+        return
     }
 
     guard let queryItems = components.queryItems else {

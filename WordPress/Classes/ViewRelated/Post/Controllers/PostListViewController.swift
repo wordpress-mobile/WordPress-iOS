@@ -200,7 +200,8 @@ final class PostListViewController: AbstractPostListViewController, InteractiveP
 
     private func editDuplicatePost(_ post: AbstractPost) {
         guard let post = post.latest() as? Post else {
-            return wpAssertionFailure("unexpected post type")
+            wpAssertionFailure("unexpected post type")
+            return
         }
         PostListEditorPresenter.handleCopy(post: post, in: self)
     }

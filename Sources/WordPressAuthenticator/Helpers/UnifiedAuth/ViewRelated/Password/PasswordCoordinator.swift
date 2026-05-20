@@ -59,7 +59,8 @@ private extension PasswordCoordinator {
     /// Navigates the user to enter WP.com password.
     func showPassword() {
         guard let vc = PasswordViewController.instantiate(from: .password) else {
-            return WPLogError("Failed to navigate to PasswordViewController from GetStartedViewController")
+            WPLogError("Failed to navigate to PasswordViewController from GetStartedViewController")
+            return
         }
 
         vc.source = source

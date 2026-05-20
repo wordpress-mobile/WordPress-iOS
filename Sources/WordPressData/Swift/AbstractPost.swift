@@ -257,7 +257,8 @@ public extension AbstractPost {
         // - warning: The use of `.original` is intentional – we want to get
         // the previous revision in the list.
         guard let previous = revision.original else {
-            return wpAssertionFailure("missing original")
+            wpAssertionFailure("missing original")
+            return
         }
         let original = revision.getOriginal()
         previous.deleteRevision()

@@ -160,7 +160,8 @@ extension BlogDetailsViewController {
         trackEvent(.openedSiteSettings, from: source)
 
         guard let settingsVC = SiteSettingsViewController(blog: blog) else {
-            return wpAssertionFailure("failed to instantiate")
+            wpAssertionFailure("failed to instantiate")
+            return
         }
         settingsVC.navigationItem.largeTitleDisplayMode = .never
 
@@ -192,7 +193,8 @@ extension BlogDetailsViewController {
 
     public func showPeople() {
         guard let controller = PeopleViewController.withJPBannerForBlog(blog) else {
-            return wpAssertionFailure("failed to instantiate")
+            wpAssertionFailure("failed to instantiate")
+            return
         }
         presentationDelegate?.presentBlogDetailsViewController(controller)
     }
@@ -248,7 +250,8 @@ extension BlogDetailsViewController {
         trackEvent(.openedComments, from: source)
 
         guard let commentsVC = CommentsViewController(blog: blog) else {
-            return wpAssertionFailure("failed to instantiate")
+            wpAssertionFailure("failed to instantiate")
+            return
         }
         commentsVC.navigationItem.largeTitleDisplayMode = .never
 
@@ -285,7 +288,8 @@ extension BlogDetailsViewController {
         }
 
         guard let site = JetpackSiteRef(blog: blog) else {
-            return wpAssertionFailure("unexpected blog")
+            wpAssertionFailure("unexpected blog")
+            return
         }
         let controller = PluginDirectoryViewController(site: site)
         controller.navigationItem.largeTitleDisplayMode = .never
@@ -318,7 +322,8 @@ extension BlogDetailsViewController {
 
     public func showDomains(from source: BlogDetailsNavigationSource) {
         guard let presentationDelegate else {
-            return wpAssertionFailure("presentationDelegate mising")
+            wpAssertionFailure("presentationDelegate mising")
+            return
         }
         DomainsDashboardCoordinator.presentDomainsDashboard(
             with: presentationDelegate,
@@ -356,7 +361,8 @@ extension BlogDetailsViewController {
         trackEvent(.openedViewSite, from: source)
 
         guard let string = blog.homeURL, let homeURL = URL(string: string as String) else {
-            return wpAssertionFailure("homeURL missing")
+            wpAssertionFailure("homeURL missing")
+            return
         }
 
         let webViewController = WebViewControllerFactory.controller(

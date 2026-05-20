@@ -316,7 +316,8 @@ private extension GetStartedViewController {
     ///
     func configureDivider() {
         guard showsContinueButtonAtTheBottom == false else {
-            return dividerStackView.isHidden = true
+            dividerStackView.isHidden = true
+            return
         }
         let color = WordPressAuthenticator.shared.unifiedStyle?.borderColor ?? WordPressAuthenticator.shared.style.primaryNormalBorderColor
         leadingDividerLine.backgroundColor = color

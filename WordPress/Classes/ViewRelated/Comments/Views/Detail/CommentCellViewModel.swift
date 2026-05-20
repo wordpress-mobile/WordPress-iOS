@@ -93,7 +93,8 @@ final class CommentCellViewModel: NSObject {
 
     func buttonLikeTapped() {
         guard let siteID else {
-            return wpAssertionFailure("context missing")
+            wpAssertionFailure("context missing")
+            return
         }
         if comment.isLiked {
             notification != nil ? WPAppAnalytics.track(.notificationsCommentUnliked, blogID: siteID) : CommentAnalytics.trackCommentUnLiked(comment: comment)

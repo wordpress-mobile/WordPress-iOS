@@ -19,7 +19,8 @@ class JetpackProxyServiceRemoteTests: XCTestCase {
         remote.proxyRequest(for: siteID, path: "path", method: .get) { _ in }
 
         guard let passedURLString = api.URLStringPassedIn else {
-            return XCTFail()
+            XCTFail()
+            return
         }
         XCTAssertTrue(passedURLString.hasSuffix(urlString))
     }
@@ -28,7 +29,8 @@ class JetpackProxyServiceRemoteTests: XCTestCase {
         remote.proxyRequest(for: siteID, path: "path", method: .get) { _ in }
 
         guard let passedParameter = api.parametersPassedIn as? [String: AnyObject] else {
-            return XCTFail()
+            XCTFail()
+            return
         }
         XCTAssertEqual(passedParameter["json"] as? String, "true")
     }
@@ -40,7 +42,8 @@ class JetpackProxyServiceRemoteTests: XCTestCase {
         remote.proxyRequest(for: siteID, path: path, method: method) { _ in }
 
         guard let passedParameter = api.parametersPassedIn as? [String: AnyObject] else {
-            return XCTFail()
+            XCTFail()
+            return
         }
         XCTAssertEqual(passedParameter["path"] as? String, "\(path)&_method=\(method.rawValue)")
     }
@@ -52,7 +55,8 @@ class JetpackProxyServiceRemoteTests: XCTestCase {
         remote.proxyRequest(for: siteID, path: "path", method: method, parameters: params) { _ in }
 
         guard let passedParameter = api.parametersPassedIn as? [String: AnyObject] else {
-            return XCTFail()
+            XCTFail()
+            return
         }
         XCTAssertNotNil(passedParameter["query"])
     }
@@ -64,7 +68,8 @@ class JetpackProxyServiceRemoteTests: XCTestCase {
         remote.proxyRequest(for: siteID, path: "path", method: method, parameters: params) { _ in }
 
         guard let passedParameter = api.parametersPassedIn as? [String: AnyObject] else {
-            return XCTFail()
+            XCTFail()
+            return
         }
         XCTAssertNotNil(passedParameter["body"])
     }
@@ -82,7 +87,8 @@ class JetpackProxyServiceRemoteTests: XCTestCase {
               let jsonString = passedParameter["body"] as? String,
               let jsonData = jsonString.data(using: .utf8),
               let jsonDictionary = try? JSONSerialization.jsonObject(with: jsonData, options: []) as? [String: String] else {
-            return XCTFail()
+            XCTFail()
+            return
         }
         XCTAssertEqual(jsonDictionary, params)
     }
@@ -93,7 +99,8 @@ class JetpackProxyServiceRemoteTests: XCTestCase {
         remote.proxyRequest(for: siteID, path: "path", method: .post, parameters: params) { _ in }
 
         guard let passedParameter = api.parametersPassedIn as? [String: AnyObject] else {
-            return XCTFail()
+            XCTFail()
+            return
         }
         XCTAssertNil(passedParameter["body"])
     }
@@ -104,7 +111,8 @@ class JetpackProxyServiceRemoteTests: XCTestCase {
         remote.proxyRequest(for: siteID, path: "path", method: .post, locale: locale) { _ in }
 
         guard let passedParameter = api.parametersPassedIn as? [String: AnyObject] else {
-            return XCTFail()
+            XCTFail()
+            return
         }
         XCTAssertEqual(passedParameter["locale"] as? String, locale)
     }
@@ -115,7 +123,8 @@ class JetpackProxyServiceRemoteTests: XCTestCase {
         remote.proxyRequest(for: siteID, path: "path", method: .post, locale: locale) { _ in }
 
         guard let passedParameter = api.parametersPassedIn as? [String: AnyObject] else {
-            return XCTFail()
+            XCTFail()
+            return
         }
         XCTAssertNil(passedParameter["locale"])
     }

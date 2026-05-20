@@ -24,12 +24,14 @@ import WordPressKit
     public func syncEditorSettings(for blog: Blog, success: @escaping () -> Void, failure: @escaping (Swift.Error) -> Void) {
         guard let api = api(for: blog) else {
             // SelfHosted non-jetpack sites won't sync with remote.
-            return success()
+            success()
+            return
         }
         guard let siteID = blog.dotComID?.intValue else {
             assertionFailure("Blog with dotCom Rest API but dotCom Site ID not found")
             let error = NSError(domain: "EditorSettingsService", code: 0, userInfo: [NSDebugDescriptionErrorKey: "dotCom Site ID not found"])
-            return failure(error)
+            failure(error)
+            return
         }
 
         let service = EditorServiceRemote(wordPressComRestApi: api)

@@ -27,7 +27,8 @@ class LoginViewControllerTests: XCTestCase {
 
         let service = try XCTUnwrap(delegateSpy.socialUser?.service)
         guard case .google = service else {
-            return XCTFail("Expected Google social service, got \(service) instead")
+            XCTFail("Expected Google social service, got \(service) instead")
+            return
         }
     }
 }

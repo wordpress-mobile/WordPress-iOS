@@ -245,7 +245,8 @@ struct PostSettingsGenerateExcerptView: View {
 
     private func generateMoreExcerpts() {
         guard let session else {
-            return wpAssertionFailure("session missing")
+            wpAssertionFailure("session missing")
+            return
         }
         generationTask = Task {
             do {

@@ -96,7 +96,8 @@ final class SplitViewRootPresenter: RootViewPresenter {
                     siteContent = SiteSplitViewContent(blog: site)
                     content = siteContent!
                 } catch {
-                    return wpAssertionFailure("selected blog not found")
+                    wpAssertionFailure("selected blog not found")
+                    return
                 }
             }
         case .notifications:

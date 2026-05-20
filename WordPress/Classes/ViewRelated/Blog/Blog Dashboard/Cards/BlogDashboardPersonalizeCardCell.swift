@@ -69,7 +69,8 @@ final class BlogDashboardPersonalizeCardCell: DashboardCollectionViewCell {
 
     @objc private func buttonTapped() {
         guard let blog, let siteID = blog.dotComID?.intValue else {
-            return DDLogError("Failed to show dashboard personalization screen: siteID is missing")
+            DDLogError("Failed to show dashboard personalization screen: siteID is missing")
+            return
         }
         WPAnalytics.track(.dashboardCardItemTapped, properties: ["type": DashboardCard.personalize.rawValue], blog: blog)
         let viewController = UIHostingController(rootView: NavigationView {

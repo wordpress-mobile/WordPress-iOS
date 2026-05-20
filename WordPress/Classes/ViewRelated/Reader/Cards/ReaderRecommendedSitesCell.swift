@@ -141,14 +141,16 @@ private final class ReaderRecommendedSitesCellView: UIView {
 
     @objc private func buttonShowDetailsTapped() {
         guard let site else {
-            return wpAssertionFailure("site missing")
+            wpAssertionFailure("site missing")
+            return
         }
         delegate?.didSelect(topic: site)
     }
 
     @objc private func buttonSubscribeTapped() {
         guard let site else {
-            return wpAssertionFailure("site missing")
+            wpAssertionFailure("site missing")
+            return
         }
 
         var properties = [String: Any]()

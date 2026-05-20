@@ -29,7 +29,8 @@ final class ReaderSubscriptionsViewModel: ObservableObject {
             await _refresh()
         }
         refreshTask = task
-        return await task.value
+        await task.value
+        return
     }
 
     private func _refresh() async {

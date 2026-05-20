@@ -114,7 +114,8 @@ struct PostNoticePublishSuccessView: View {
 
     private func buttonViewTapped() {
         guard let presenter = context.viewController else {
-            return wpAssertionFailure("presenter missing")
+            wpAssertionFailure("presenter missing")
+            return
         }
         WPAnalytics.track(.postEpilogueView)
         let controller = PreviewWebKitViewController(post: post, source: "edit_post_preview")
@@ -125,7 +126,8 @@ struct PostNoticePublishSuccessView: View {
 
     private func buttonShareTapped() {
         guard let presenter = context.viewController else {
-            return wpAssertionFailure("presenter missing")
+            wpAssertionFailure("presenter missing")
+            return
         }
         WPAnalytics.track(.postEpilogueShare)
         let shareController = PostSharingController()
@@ -134,7 +136,8 @@ struct PostNoticePublishSuccessView: View {
 
     private func buttonBlazeTapped() {
         guard let presenter = context.viewController else {
-            return wpAssertionFailure("presenter missing")
+            wpAssertionFailure("presenter missing")
+            return
         }
         BlazeEventsTracker.trackEntryPointTapped(for: .publishSuccessView)
         BlazeFlowCoordinator.presentBlaze(in: presenter, source: .publishSuccessView, blog: post.blog, post: post)

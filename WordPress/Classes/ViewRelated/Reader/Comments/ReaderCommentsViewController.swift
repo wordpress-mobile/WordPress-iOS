@@ -148,7 +148,8 @@ final class ReaderCommentsViewController: UIViewController, WPContentSyncHelperD
 
     private func fetchPost() {
         guard let postID, let siteID else {
-            return wpAssertionFailure("missing parameters")
+            wpAssertionFailure("missing parameters")
+            return
         }
 
         let service = ReaderPostService(coreDataStack: ContextManager.shared)
@@ -254,7 +255,8 @@ final class ReaderCommentsViewController: UIViewController, WPContentSyncHelperD
 
     func syncHelper(_ syncHelper: WPContentSyncHelper, syncContentWithUserInteraction userInteraction: Bool, success: ((Bool) -> Void)?, failure: ((NSError) -> Void)?) {
         guard let post else {
-            return wpAssertionFailure("post missing")
+            wpAssertionFailure("post missing")
+            return
         }
 
         self.fetchCommentsError = nil
@@ -269,7 +271,8 @@ final class ReaderCommentsViewController: UIViewController, WPContentSyncHelperD
 
     func syncHelper(_ syncHelper: WPContentSyncHelper, syncMoreWithSuccess success: ((Bool) -> Void)?, failure: ((NSError) -> Void)?) {
         guard let post else {
-            return wpAssertionFailure("post missing")
+            wpAssertionFailure("post missing")
+            return
         }
 
         self.fetchCommentsError = nil
@@ -297,7 +300,8 @@ final class ReaderCommentsViewController: UIViewController, WPContentSyncHelperD
 
     private func buttonAddCommentTapped() {
         guard let post else {
-            return wpAssertionFailure("post missing")
+            wpAssertionFailure("post missing")
+            return
         }
         let viewModel = CommentCreateViewModel(post: post)
         showCommentComposer(viewModel: viewModel)
@@ -305,7 +309,8 @@ final class ReaderCommentsViewController: UIViewController, WPContentSyncHelperD
 
     func didTapReply(comment: Comment) {
         guard let post else {
-            return wpAssertionFailure("post missing")
+            wpAssertionFailure("post missing")
+            return
         }
         let viewModel = CommentCreateViewModel(post: post, replyingTo: comment)
         showCommentComposer(viewModel: viewModel)
@@ -321,7 +326,8 @@ final class ReaderCommentsViewController: UIViewController, WPContentSyncHelperD
 
     private func presentWebViewController(with url: URL) {
         guard let post else {
-            return wpAssertionFailure("post missing")
+            wpAssertionFailure("post missing")
+            return
         }
         var linkURL = url
         if let components = URLComponents(string: url.absoluteString), components.host == nil, let blogURL = post.blogURL {

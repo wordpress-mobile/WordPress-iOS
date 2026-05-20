@@ -35,7 +35,8 @@ class AppleAuthenticatorTests: XCTestCase {
 
         let service = try XCTUnwrap(delegateSpy.socialUser?.service)
         guard case .apple = service else {
-            return XCTFail("Expected Apple social service, got \(service) instead")
+            XCTFail("Expected Apple social service, got \(service) instead")
+            return
         }
     }
 

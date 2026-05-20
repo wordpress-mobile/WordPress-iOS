@@ -33,7 +33,8 @@ final class BlazeCampaignsStreamTests: CoreDataTestCase {
         XCTAssertEqual(service.numberOfRequests, 1)
         XCTAssertEqual(delegate.appendedIndexPaths, [[IndexPath(row: 0, section: 0)]])
         guard delegate.states.count == 2 else {
-            return XCTFail("Unexpected state updates recorded: \(delegate.states)")
+            XCTFail("Unexpected state updates recorded: \(delegate.states)")
+            return
         }
         do {
             let state = delegate.states[0]
@@ -56,7 +57,8 @@ final class BlazeCampaignsStreamTests: CoreDataTestCase {
         XCTAssertEqual(service.numberOfRequests, 2)
         XCTAssertEqual(delegate.appendedIndexPaths, [[IndexPath(row: 1, section: 0)]])
         guard delegate.states.count == 2 else {
-            return XCTFail("Unexpected state updates recorded: \(delegate.states)")
+            XCTFail("Unexpected state updates recorded: \(delegate.states)")
+            return
         }
         do {
             let state = delegate.states[0]
@@ -98,7 +100,8 @@ final class BlazeCampaignsStreamTests: CoreDataTestCase {
         XCTAssertEqual(service.numberOfRequests, 1)
         XCTAssertEqual(delegate.appendedIndexPaths, [])
         guard delegate.states.count == 2 else {
-            return XCTFail("Unexpected state updates recorded: \(delegate.states)")
+            XCTFail("Unexpected state updates recorded: \(delegate.states)")
+            return
         }
         do {
             let state = delegate.states[0]
@@ -125,7 +128,8 @@ final class BlazeCampaignsStreamTests: CoreDataTestCase {
         XCTAssertEqual(service.numberOfRequests, 2)
         XCTAssertEqual(delegate.appendedIndexPaths, [[IndexPath(row: 0, section: 0)]])
         guard delegate.states.count == 2 else {
-            return XCTFail("Unexpected state updates recorded: \(delegate.states)")
+            XCTFail("Unexpected state updates recorded: \(delegate.states)")
+            return
         }
         do {
             let state = delegate.states[0]
@@ -161,7 +165,8 @@ final class BlazeCampaignsStreamTests: CoreDataTestCase {
         XCTAssertEqual(service.numberOfRequests, 2)
         XCTAssertEqual(delegate.appendedIndexPaths, [])
         guard delegate.states.count == 2 else {
-            return XCTFail("Unexpected state updates recorded: \(delegate.states)")
+            XCTFail("Unexpected state updates recorded: \(delegate.states)")
+            return
         }
         do {
             let state = delegate.states[0]
@@ -188,7 +193,8 @@ final class BlazeCampaignsStreamTests: CoreDataTestCase {
         XCTAssertEqual(service.numberOfRequests, 3)
         XCTAssertEqual(delegate.appendedIndexPaths, [[IndexPath(row: 1, section: 0)]])
         guard delegate.states.count == 2 else {
-            return XCTFail("Unexpected state updates recorded: \(delegate.states)")
+            XCTFail("Unexpected state updates recorded: \(delegate.states)")
+            return
         }
         do {
             let state = delegate.states[0]
@@ -254,7 +260,8 @@ private final class MockBlazePaginatedService: BlazeServiceProtocol {
         numberOfRequests += 1
 
         guard !isFailing else {
-            return completion(.failure(URLError(.notConnectedToInternet)))
+            completion(.failure(URLError(.notConnectedToInternet)))
+            return
         }
 
         do {

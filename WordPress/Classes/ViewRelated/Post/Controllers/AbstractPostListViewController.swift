@@ -222,7 +222,8 @@ class AbstractPostListViewController: UIViewController,
 
     @objc private func postCoordinatorDidUpdate(_ notification: Foundation.Notification) {
         guard let updatedObjects = (notification.userInfo?[NSUpdatedObjectsKey] as? Set<NSManagedObject>) else {
-            return wpAssertionFailure("missing NSUpdatedObjectsKey")
+            wpAssertionFailure("missing NSUpdatedObjectsKey")
+            return
         }
         let updatedIndexPaths = (tableView.indexPathsForVisibleRows ?? []).filter {
             let cell = tableView.cellForRow(at: $0) as? AbstractPostListCell
@@ -676,7 +677,8 @@ class AbstractPostListViewController: UIViewController,
         }
 
         guard !(post.status == .draft || post.status == .pending) || post.revision != nil else {
-            return performAction()
+            performAction()
+            return
         }
 
         let alert = UIAlertController(title: Strings.Trash.actionTitle, message: Strings.Trash.message(for: post.latest()), preferredStyle: .alert)
@@ -749,7 +751,8 @@ class AbstractPostListViewController: UIViewController,
             SiteStatsInformation.sharedInstance.siteID = blog.dotComID
 
             guard let postURL = post.permaLink.flatMap(URL.init) else {
-                return wpAssertionFailure("permalink missing or invalid")
+                wpAssertionFailure("permalink missing or invalid")
+                return
             }
             let postStatsTableViewController = PostStatsTableViewController.withJPBannerForBlog(postID: postID,
                                                                                                 postTitle: post.titleForDisplay(),

@@ -893,7 +893,8 @@ extension GutenbergViewController: GutenbergBridgeDelegate {
             showGutenbergWeb(controller)
         } catch {
             DDLogError("Error loading Gutenberg Web with unsupported block: \(error)")
-            return showUnsupportedBlockUnexpectedErrorAlert()
+            showUnsupportedBlockUnexpectedErrorAlert()
+            return
         }
     }
 

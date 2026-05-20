@@ -37,7 +37,8 @@ final class ReaderHomeViewController: ReaderStreamViewController {
     private func showCreateSiteFlow() {
         let wizardLauncher = SiteCreationWizardLauncher()
         guard let wizard = wizardLauncher.ui else {
-            return wpAssertionFailure("something went wrong")
+            wpAssertionFailure("something went wrong")
+            return
         }
         present(wizard, animated: true)
         SiteCreationAnalyticsHelper.trackSiteCreationAccessed(source: "home")

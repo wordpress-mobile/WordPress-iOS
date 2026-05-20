@@ -27,7 +27,8 @@ class NewGoogleAuthenticatorTests: XCTestCase {
         } catch {
             let error = try XCTUnwrap(error as? OAuthError)
             guard case .urlDidNotContainCodeParameter(let urlFromError) = error else {
-                return XCTFail("Received unexpected error \(error)")
+                XCTFail("Received unexpected error \(error)")
+                return
             }
             XCTAssertEqual(urlFromError, url)
         }
@@ -76,7 +77,8 @@ class NewGoogleAuthenticatorTests: XCTestCase {
         } catch {
             let error = try XCTUnwrap(error as? OAuthError)
             guard case .tokenResponseDidNotIncludeIdToken = error else {
-                return XCTFail("Received unexpected error \(error)")
+                XCTFail("Received unexpected error \(error)")
+                return
             }
         }
     }

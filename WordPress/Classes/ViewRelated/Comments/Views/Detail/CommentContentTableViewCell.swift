@@ -210,7 +210,8 @@ final class CommentContentTableViewCell: UITableViewCell, NibReusable {
         isEmphasized = true
 
         guard let highlightedBackgroundView else {
-            return wpAssertionFailure("background view not configured")
+            wpAssertionFailure("background view not configured")
+            return
         }
 
         let originalBackgroundColor = highlightedBackgroundView.backgroundColor
@@ -567,7 +568,8 @@ private extension CommentContentTableViewCell {
 
     @objc func likeButtonTapped() {
         guard let viewModel else {
-            return wpAssertionFailure("ViewModel missing")
+            wpAssertionFailure("ViewModel missing")
+            return
         }
         if !viewModel.state.isLiked, let imageView = likeButton.imageView {
             // Animate the changes and then update the model to avoid animation interruptions
@@ -582,7 +584,8 @@ private extension CommentContentTableViewCell {
 
     @objc func showMoreButtonTapped() {
         guard let fullContentHeight else {
-            return wpAssertionFailure("Invalid state")
+            wpAssertionFailure("Invalid state")
+            return
         }
         isContentExpanded = true
         if let commentID = viewModel?.comment.objectID {

@@ -190,7 +190,8 @@ final class SiteMediaCollectionViewController: UIViewController, NSFetchedResult
 
     private func updateSelection(_ perform: () -> Void) {
         guard !isBatchSelectionUpdate else {
-            return perform()
+            perform()
+            return
         }
 
         let previousSelection = selectedMedia

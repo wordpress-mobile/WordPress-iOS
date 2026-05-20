@@ -138,14 +138,16 @@ final class BlogListViewModel: NSObject, ObservableObject {
 
     func refresh() async throws {
         if let task = syncBlogsTask {
-            return try await task.value
+            try await task.value
+            return
         }
         let task = Task {
             defer { syncBlogsTask = nil }
             try await syncBlogs()
         }
         syncBlogsTask = task
-        return try await task.value
+        try await task.value
+        return
     }
 
     @MainActor

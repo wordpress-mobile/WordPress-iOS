@@ -123,13 +123,14 @@ class TagsService: TaxonomyServiceProtocol {
             throw TagsServiceError.invalidTag
         }
 
-        return try await withCheckedThrowingContinuation { continuation in
+        try await withCheckedThrowingContinuation { continuation in
             remote.delete(tag, success: {
                 continuation.resume()
             }, failure: { error in
                 continuation.resume(throwing: error)
             })
         }
+        return
     }
 
     func getTerms(ids: [Int64]) async throws -> [AnyTermWithViewContext] {

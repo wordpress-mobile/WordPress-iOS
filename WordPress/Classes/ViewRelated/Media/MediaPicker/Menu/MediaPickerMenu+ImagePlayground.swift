@@ -30,7 +30,8 @@ extension MediaPickerMenu {
         guard let presentingViewController else { return }
 
         guard #available(iOS 18.1, *) else {
-            return wpAssertionFailure("Not available on this platform. Use `isImagePlaygroundAvailable`.")
+            wpAssertionFailure("Not available on this platform. Use `isImagePlaygroundAvailable`.")
+            return
         }
 
         let controller = _ImagePlaygroundController()

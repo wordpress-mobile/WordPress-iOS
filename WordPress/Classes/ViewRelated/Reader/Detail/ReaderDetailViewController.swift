@@ -1479,7 +1479,8 @@ extension ReaderDetailViewController: BorderedButtonTableViewCellDelegate {
 
     func buttonLeaveCommentTapped(replyingTo comment: Comment?) {
         guard let post else {
-            return wpAssertionFailure("post missing")
+            wpAssertionFailure("post missing")
+            return
         }
         let viewModel = CommentCreateViewModel(post: post, replyingTo: comment)
         let composerVC = CommentCreateViewController(viewModel: viewModel)

@@ -34,7 +34,8 @@ extension RootViewPresenter {
 
     func showStats(for blog: Blog, source: BlogDetailsNavigationSource? = nil, tab: StatsTabType? = nil, unit: StatsPeriodUnit? = nil, date: Date? = nil) {
         guard JetpackFeaturesRemovalCoordinator.shouldShowJetpackFeatures() else {
-            return showJetpackOverlayForDisabledEntryPoint()
+            showJetpackOverlayForDisabledEntryPoint()
+            return
         }
         if let date {
             UserPersistentStoreFactory.instance().set(date, forKey: SiteStatsDashboardViewController.lastSelectedStatsDateKey)

@@ -469,17 +469,18 @@ public class MeViewController: UITableViewController {
     }
 
     fileprivate static func refreshAccountDetails(with service: AccountService, account: WPAccount) async throws {
-        return try await withCheckedThrowingContinuation { continuation in
+        try await withCheckedThrowingContinuation { continuation in
             service.updateUserDetails(for: account, success: {
                 continuation.resume()
             }, failure: { error in
                 continuation.resume(throwing: error)
             })
         }
+        return
     }
 
     fileprivate static func refreshAccountSettings(with service: AccountSettingsService) async throws {
-        return try await withCheckedThrowingContinuation { continuation in
+        try await withCheckedThrowingContinuation { continuation in
             service.refreshSettings { result in
                 switch result {
                 case .success: continuation.resume()
@@ -487,6 +488,7 @@ public class MeViewController: UITableViewController {
                 }
             }
         }
+        return
     }
 
     // MARK: - LogOut

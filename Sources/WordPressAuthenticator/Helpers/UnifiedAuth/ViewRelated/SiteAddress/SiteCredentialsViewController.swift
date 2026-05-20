@@ -558,7 +558,8 @@ extension SiteCredentialsViewController {
     ///
     @objc func validateForm() {
         guard configuration.enableManualSiteCredentialLogin else {
-            return validateFormAndLogin() // handles login with XMLRPC normally
+            validateFormAndLogin() // handles login with XMLRPC normally
+            return // handles login with XMLRPC normally
         }
 
         // asks the delegate to handle the login

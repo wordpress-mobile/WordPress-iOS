@@ -327,7 +327,8 @@ private extension UINavigationController {
     // A workaround for https://a8c.sentry.io/issues/3140539221.
     func safePushViewController(_ viewController: UIViewController, animated: Bool) {
         guard !children.contains(viewController) else {
-            return wpAssertionFailure("pushing the same view controller more than once", userInfo: ["viewController": "\(viewController)"])
+            wpAssertionFailure("pushing the same view controller more than once", userInfo: ["viewController": "\(viewController)"])
+            return
         }
         pushViewController(viewController, animated: animated)
     }

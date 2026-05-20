@@ -329,7 +329,8 @@ class PostCoordinatorTests: CoreDataTestCase {
         } catch {
             guard let error = error as? PostRepository.PostSaveError,
                   case .deleted = error else {
-                return XCTFail("Unexpected error")
+                XCTFail("Unexpected error")
+                return
             }
         }
 
@@ -630,12 +631,13 @@ private extension PostCoordinator {
     func waitForSync(_ post: AbstractPost, to revision: AbstractPost, ignoreErrors: Bool = false, timeout: TimeInterval = 5) async throws {
         var olderRevisionIDs = Set(post.allRevisions.filter(\.isSyncNeeded).map(\.objectID))
         olderRevisionIDs.remove(revision.objectID)
-        return try await waitForSync(post, ignoreErrors: ignoreErrors, timeout: timeout) { operation in
+        try await waitForSync(post, ignoreErrors: ignoreErrors, timeout: timeout) { operation in
             guard !olderRevisionIDs.contains(operation.revision.objectID) else {
                 return false // Skip operation for older revisions
             }
             return true
         }
+        return
     }
 
     /// Taps into the coordinator events and waits until the post syncs to the

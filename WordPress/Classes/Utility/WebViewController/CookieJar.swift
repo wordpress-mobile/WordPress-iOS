@@ -18,7 +18,8 @@ extension CookieJar {
     func hasWordPressComAuthCookie(username: String, atomicSite: Bool, completion: @escaping (Bool) -> Void) {
         let url = URL(string: "https://wordpress.com/")!
 
-        return hasWordPressAuthCookie(for: url, username: username, atomicSite: atomicSite, completion: completion)
+        hasWordPressAuthCookie(for: url, username: username, atomicSite: atomicSite, completion: completion)
+        return
     }
 
     func hasWordPressSelfHostedAuthCookie(for url: URL, username: String, completion: @escaping (Bool) -> Void) {
@@ -123,7 +124,8 @@ extension WKHTTPCookieStore: CookieJar {
 
     func setCookies(_ cookies: [HTTPCookie], completion: @escaping () -> Void) {
         guard let cookie = cookies.last else {
-            return completion()
+            completion()
+            return
         }
 
         DispatchQueue.main.async {

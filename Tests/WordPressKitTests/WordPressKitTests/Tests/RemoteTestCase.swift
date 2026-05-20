@@ -61,7 +61,8 @@ extension RemoteTestCase {
         // The pattern here should be to XCTUnwrap and throw.
         // In the interest of moving along with the work, let's fail the tests at this level if the file is not found.
         guard let stubPath = OHPathForFile(filename, type(of: self)) else {
-            return XCTFail("Could not find file at path '\(filename)'.")
+            XCTFail("Could not find file at path '\(filename)'.")
+            return
         }
 
         stub(condition: condition) { _ in
@@ -87,7 +88,8 @@ extension RemoteTestCase {
         // The pattern here should be to XCTUnwrap and throw.
         // In the interest of moving along with the work, let's fail the tests at this level if the file is not found.
         guard let stubPath = OHPathForFile(filename, type(of: self)) else {
-            return XCTFail("Could not find file at path '\(filename)'.")
+            XCTFail("Could not find file at path '\(filename)'.")
+            return
         }
 
         stub(condition: { request in

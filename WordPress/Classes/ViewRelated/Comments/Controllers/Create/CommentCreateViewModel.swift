@@ -129,7 +129,8 @@ final class CommentCreateViewModel {
 
     func saveDraft(_ content: String) {
         guard let key = makeDraftKey() else { return }
-        return UserDefaults.standard.set(content, forKey: key)
+        UserDefaults.standard.set(content, forKey: key)
+        return
     }
 
     func deleteDraft() {

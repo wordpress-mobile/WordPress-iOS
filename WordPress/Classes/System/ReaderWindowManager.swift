@@ -26,7 +26,8 @@ class ReaderWindowManager: WindowManager {
 
     private func continueWithDotComTapped() {
         guard let presentingViewController = UIViewController.topViewController else {
-            return wpAssertionFailure("missing top view controller")
+            wpAssertionFailure("missing top view controller")
+            return
         }
         Task { @MainActor [weak self] in
             let accountID = await WordPressDotComAuthenticator().signIn(from: presentingViewController, context: .default)

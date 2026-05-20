@@ -544,7 +544,8 @@ extension WordPressAppDelegate {
 
     private func checkForAppUpdates() {
         guard let version = Bundle.main.infoDictionary?["CFBundleShortVersionString"] as? String else {
-            return wpAssertionFailure("No CFBundleShortVersionString found in Info.plist")
+            wpAssertionFailure("No CFBundleShortVersionString found in Info.plist")
+            return
         }
         let coordinator = AppUpdateCoordinator(currentVersion: version)
         Task {

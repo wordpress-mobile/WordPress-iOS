@@ -264,7 +264,8 @@ private final class ReaderPostCellView: UIView {
 
     @objc private func buttonLikeTapped() {
         guard let viewModel else {
-            return wpAssertionFailure("missing ViewModel")
+            wpAssertionFailure("missing ViewModel")
+            return
         }
         if !viewModel.toolbar.isLiked {
             var toolbar = viewModel.toolbar

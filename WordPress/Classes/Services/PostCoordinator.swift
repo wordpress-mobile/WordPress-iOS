@@ -430,7 +430,8 @@ class PostCoordinator: NSObject {
             postDidUpdateNotification(for: post)
         }
         guard let revision = post.getLatestRevisionNeedingSync() else {
-            return DDLogInfo("sync: \(post.objectID.shortDescription) is already up to date")
+            DDLogInfo("sync: \(post.objectID.shortDescription) is already up to date")
+            return
         }
         startSync(for: post, revision: revision)
     }
@@ -446,20 +447,24 @@ class PostCoordinator: NSObject {
            Date.now.timeIntervalSince(date) > SyncWorker.maximumRetryTimeInterval {
             worker.error = PostCoordinator.SavingError.maximumRetryTimeIntervalReached
             postDidUpdateNotification(for: post)
-            return worker.log("stopping – failing to upload changes for too long")
+            worker.log("stopping – failing to upload changes for too long")
+            return
         }
 
         guard !worker.isPaused else {
-            return worker.log("start failed: worker is paused")
+            worker.log("start failed: worker is paused")
+            return
         }
 
         if let operation = worker.operation {
             guard operation.revision != revision else {
-                return worker.log("already syncing to the latest revision")
+                worker.log("already syncing to the latest revision")
+                return
             }
             tryCancelSyncOperation(operation)
             guard operation.isCancelled else {
-                return worker.log("waiting until the current operation finishes")
+                worker.log("waiting until the current operation finishes")
+                return
             }
         } else {
             worker.retryTimer?.invalidate()

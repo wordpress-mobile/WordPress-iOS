@@ -118,7 +118,8 @@ class BlogServiceDeduplicationTests: CoreDataTestCase {
 
         XCTAssertEqual(blog1.posts?.count, 0)
         guard let blog2Final = account.blogs?.first(where: { $0.dotComID == 2 }) else {
-            return XCTFail("There should be one blog with ID = 2")
+            XCTFail("There should be one blog with ID = 2")
+            return
         }
         XCTAssertTrue(findPost(title: "Post 1 in Blog 2", in: blog2Final))
         XCTAssertTrue(findPost(title: "Draft 2 in Blog 2", in: blog2Final))

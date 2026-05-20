@@ -16,7 +16,8 @@ extension WebKitAuthenticatable {
 
     func authenticatedRequest(for url: URL, with cookieJar: CookieJar, completion: @escaping (URLRequest) -> Void) {
         guard let authenticator else {
-            return completion(URLRequest(url: url))
+            completion(URLRequest(url: url))
+            return
         }
 
         DispatchQueue.main.async {

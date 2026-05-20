@@ -166,7 +166,8 @@ private extension NUXStackedButtonsViewController {
 
     func configureDivider() {
         guard showDivider else {
-            return dividerStackView.isHidden = true
+            dividerStackView.isHidden = true
+            return
         }
 
         leadingDividerLine.backgroundColor = style.orDividerSeparatorColor

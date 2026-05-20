@@ -23,7 +23,8 @@ class PostNoticeNavigationCoordinator {
 
     private static func presentViewPage(for page: Page) {
         guard let presenter = UIApplication.shared.delegate?.window??.topmostPresentedViewController else {
-            return wpAssertionFailure("presenter missing")
+            wpAssertionFailure("presenter missing")
+            return
         }
 
         let controller = PreviewWebKitViewController(post: page, source: "post_notice_preview")
@@ -39,7 +40,8 @@ class PostNoticeNavigationCoordinator {
 
     private static func presentPostEpilogue(for post: Post) {
         guard let presenter = UIApplication.shared.delegate?.window??.topmostPresentedViewController else {
-            return wpAssertionFailure("presenter missing")
+            wpAssertionFailure("presenter missing")
+            return
         }
 
         let context = PostNoticePublishSuccessView.Context()

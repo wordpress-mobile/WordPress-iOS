@@ -56,7 +56,8 @@ extension Tracks {
 
     private func trackExtensionEvent(_ event: ExtensionEvents, properties: [String: AnyObject]? = nil) {
         guard let namespace = Bundle.main.object(forInfoDictionaryKey: "WPAppExtensionType") as? String else {
-            return assertionFailure("WPAppExtensionType missing")
+            assertionFailure("WPAppExtensionType missing")
+            return
         }
         let eventName = "\(namespace)_extension_\(event.rawValue)"
         track(eventName, properties: properties)

@@ -170,7 +170,8 @@ public struct PostMetadataContainer {
             dict["id"] = existingID
         }
         guard JSONSerialization.isValidJSONObject(dict) else {
-            return wpAssertionFailure("invalid value", userInfo: ["type": String(describing: type(of: value))])
+            wpAssertionFailure("invalid value", userInfo: ["type": String(describing: type(of: value))])
+            return
         }
         items[key] = dict
     }

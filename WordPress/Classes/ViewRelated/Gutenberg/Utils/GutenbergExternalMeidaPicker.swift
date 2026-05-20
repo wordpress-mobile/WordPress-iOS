@@ -77,7 +77,8 @@ extension GutenbergExternalMediaPicker: ExternalMediaPickerViewDelegate {
     /// - Parameter assets: Tenor Media objects to add.
     func insertOnBlock(with assets: [ExternalMediaAsset], source: MediaSource) {
         guard let callback = mediaPickerCallback else {
-            return assertionFailure("Image picked without callback")
+            assertionFailure("Image picked without callback")
+            return
         }
 
         let mediaInfo = assets.compactMap { asset -> MediaInfo? in

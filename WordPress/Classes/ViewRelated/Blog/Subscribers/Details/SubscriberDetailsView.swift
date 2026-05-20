@@ -104,7 +104,8 @@ struct SubscriberDetailsView: View {
 
     private func deleteSubscriber() {
         guard let details else {
-            return wpAssertionFailure("action should not be available until details are loaded")
+            wpAssertionFailure("action should not be available until details are loaded")
+            return
         }
         isDeleting = true
         Task {

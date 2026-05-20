@@ -125,7 +125,8 @@ final class TwoFAViewController: LoginViewController {
         // If the error happened because the security key challenge request started more than 1 minute ago, show a timeout error.
         // This check is needed because the server sends a generic error.
         if let initialChallengeRequestTime, Date().timeIntervalSince(initialChallengeRequestTime) >= 60, err.code == .zero {
-            return displaySecurityKeyErrorMessageAndExitFlow(message: LocalizedText.timeoutError)
+            displaySecurityKeyErrorMessageAndExitFlow(message: LocalizedText.timeoutError)
+            return
         }
 
         configureViewLoading(false)
@@ -187,12 +188,14 @@ private extension TwoFAViewController {
     ///
     func validateForm() {
         guard let nonceInfo = loginFields.nonceInfo else {
-            return validateFormAndLogin()
+            validateFormAndLogin()
+            return
         }
 
         let (authType, nonce) = nonceInfo.authTypeAndNonce(for: loginFields.multifactorCode)
         if nonce.isEmpty {
-            return validateFormAndLogin()
+            validateFormAndLogin()
+            return
         }
 
         loginWithNonce(nonce, authType: authType, code: loginFields.multifactorCode)
@@ -214,7 +217,8 @@ private extension TwoFAViewController {
     func loginWithSecurityKeys() {
 
         guard let twoStepNonce = loginFields.nonceInfo?.nonceWebauthn else {
-            return displaySecurityKeyErrorMessageAndExitFlow()
+            displaySecurityKeyErrorMessageAndExitFlow()
+            return
         }
 
         configureViewLoading(true)
@@ -294,12 +298,14 @@ extension TwoFAViewController: ASAuthorizationControllerDelegate, ASAuthorizatio
         guard let credential = authorization.credential as? ASAuthorizationPlatformPublicKeyCredentialAssertion,
               let challengeInfo = loginFields.webauthnChallengeInfo,
               let clientDataJson = extractClientData(from: credential, challengeInfo: challengeInfo) else {
-            return displaySecurityKeyErrorMessageAndExitFlow()
+            displaySecurityKeyErrorMessageAndExitFlow()
+            return
         }
 
         // Validate that the submitted passkey is allowed.
         guard challengeInfo.allowedCredentialIDs.contains(credential.credentialID.base64URLEncodedString()) else {
-            return displaySecurityKeyErrorMessageAndExitFlow(message: LocalizedText.invalidKey)
+            displaySecurityKeyErrorMessageAndExitFlow(message: LocalizedText.invalidKey)
+            return
         }
 
         loginFacade.authenticateWebauthnSignature(userID: loginFields.nonceUserID,

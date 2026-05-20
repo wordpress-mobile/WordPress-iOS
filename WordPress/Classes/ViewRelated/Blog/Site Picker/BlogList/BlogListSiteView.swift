@@ -86,7 +86,8 @@ final class BlogListSiteViewModel: Identifiable {
 
     func buttonViewTapped() {
         guard let siteURL else {
-            return wpAssertionFailure("missing-url")
+            wpAssertionFailure("missing-url")
+            return
         }
         WPAnalytics.track(.siteListViewTapped)
         UIApplication.shared.open(siteURL)

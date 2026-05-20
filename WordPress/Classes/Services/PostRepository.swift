@@ -119,7 +119,8 @@ final class PostRepository {
     func sync(_ post: AbstractPost, revision: AbstractPost? = nil) async throws {
         wpAssert(post.original == nil, "Must be called on an original post")
         guard let revision = revision ?? post.getLatestRevisionNeedingSync() else {
-            return wpAssertionFailure("Requires a revision")
+            wpAssertionFailure("Requires a revision")
+            return
         }
         try await _sync(post, revision: revision)
     }
@@ -330,7 +331,8 @@ final class PostRepository {
             context.deleteObject(post)
             ContextManager.shared.saveContextAndWait(context)
 
-            return wpAssertionFailure("Trying to patch a non-existent post")
+            wpAssertionFailure("Trying to patch a non-existent post")
+            return
         }
         try await getRemoteService(for: post.blog).deletePost(withID: postID.intValue)
 

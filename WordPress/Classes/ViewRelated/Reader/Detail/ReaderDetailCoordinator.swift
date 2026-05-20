@@ -191,7 +191,8 @@ class ReaderDetailCoordinator {
 
     private func startObservingLikes() {
         guard let post else {
-            return wpAssertionFailure("post missing")
+            wpAssertionFailure("post missing")
+            return
         }
 
         likesObserver = Publishers.CombineLatest(

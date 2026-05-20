@@ -302,7 +302,8 @@ extension ContextManager {
         let container = persistentContainer.persistentStoreCoordinator
         assert(container.persistentStores.count == 1)
         guard let store = container.persistentStores.first, let storeURL = store.url else {
-            return assertionFailure()
+            assertionFailure()
+            return
         }
         do {
             try container.destroyPersistentStore(at: storeURL, ofType: store.type, options: nil)

@@ -517,7 +517,8 @@ final class PostSettingsViewModel: NSObject, ObservableObject, PostSettingsViewM
 
     private func showSocialSharingSetupScreen() {
         guard let sharingVC = SharingViewController(blog: blog, delegate: self) else {
-            return wpAssertionFailure("failed to instantiate SharingVC")
+            wpAssertionFailure("failed to instantiate SharingVC")
+            return
         }
         track(.jetpackSocialNoConnectionCTATapped)
         let navigationVC = UINavigationController(rootViewController: sharingVC)
@@ -535,7 +536,8 @@ final class PostSettingsViewModel: NSObject, ObservableObject, PostSettingsViewM
     func showSocialSharingOptions() {
         guard let blogID = blog.dotComID?.intValue,
               let settings = settings.sharing else {
-            return wpAssertionFailure("invalid context")
+            wpAssertionFailure("invalid context")
+            return
         }
         let optionsVC = PrepublishingSocialAccountsViewController(
             blogID: blogID,
@@ -632,7 +634,8 @@ extension PostSettingsViewModel: @MainActor PrepublishingSocialAccountsDelegate 
 
     func didFinish(with connectionChanges: [Int: Bool], message: String?) {
         guard var settings = settings.sharing else {
-            return wpAssertionFailure("social sharing settings missing")
+            wpAssertionFailure("social sharing settings missing")
+            return
         }
         settings.services = settings.services.map {
             var service = $0

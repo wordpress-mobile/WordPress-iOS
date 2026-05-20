@@ -73,7 +73,8 @@ public extension XCUIElement {
         retryInterval: TimeInterval
     ) {
         guard retriedCount < maxRetries else {
-            return XCTFail("\(failureMessage) after \(retriedCount) tries.")
+            XCTFail("\(failureMessage) after \(retriedCount) tries.")
+            return
         }
 
         tap()
@@ -81,13 +82,14 @@ public extension XCUIElement {
         guard condition.isMet() else {
             sleep(UInt32(retryInterval))
 
-            return tapUntil(
+            tapUntil(
                 condition,
                 retriedCount: retriedCount + 1,
                 failureMessage: failureMessage,
                 maxRetries: maxRetries,
                 retryInterval: retryInterval
             )
+            return
         }
     }
 }

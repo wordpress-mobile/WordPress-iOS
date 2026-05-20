@@ -139,7 +139,8 @@ private struct SubmitFeedbackView: View {
         wpAssert(!isInputEmpty)
 
         guard let presentingViewController else {
-            return wpAssertionFailure("presentingViewController missing")
+            wpAssertionFailure("presentingViewController missing")
+            return
         }
 
         isSubmitting = true

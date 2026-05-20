@@ -435,7 +435,8 @@ private extension SiteAddressViewController {
 
         guard let url = URL(string: loginFields.siteAddress) else {
             configureViewLoading(false)
-            return displayError(message: Localization.invalidURL, moveVoiceOverFocus: true)
+            displayError(message: Localization.invalidURL, moveVoiceOverFocus: true)
+            return
         }
 
         // Checks that the site exists

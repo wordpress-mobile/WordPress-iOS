@@ -73,7 +73,8 @@ extension PublishingEditor {
         WPAnalytics.track(.editorPostSaveDraftTapped)
         mapUIContentToPostAndSave(immediate: true)
         guard !isUploadingMedia else {
-            return displayMediaIsUploadingAlert()
+            displayMediaIsUploadingAlert()
+            return
         }
         performUpdateAction(analyticsStat: .editorSavedDraft)
     }
@@ -90,12 +91,14 @@ extension PublishingEditor {
             showPublishingConfirmation(for: action, analyticsStat: analyticsStat)
         case .update:
             guard !isUploadingMedia else {
-                return displayMediaIsUploadingAlert()
+                displayMediaIsUploadingAlert()
+                return
             }
             performUpdateAction(analyticsStat: .editorUpdatedPost)
         case .submitForReview:
             guard !isUploadingMedia else {
-                return displayMediaIsUploadingAlert()
+                displayMediaIsUploadingAlert()
+                return
             }
             var changes = RemotePostUpdateParameters()
             changes.status = Post.Status.pending.rawValue
@@ -190,7 +193,8 @@ extension PublishingEditor {
         stopEditing()
 
         guard editorHasChanges && editorHasContent else {
-            return discardAndDismiss()
+            discardAndDismiss()
+            return
         }
 
         if post.getOriginal().isStatus(in: [.draft, .pending]) {
@@ -324,7 +328,8 @@ extension PublishingEditor {
 
     func createRevisionOfPost(loadAutosaveRevision: Bool = false) {
         guard let managedObjectContext = post.managedObjectContext else {
-            return wpAssertionFailure("managedObjectContext is missing")
+            wpAssertionFailure("managedObjectContext is missing")
+            return
         }
 
         wpAssert(post.latest() == post, "Must be opened with the latest verison of the post")

@@ -447,7 +447,8 @@ private extension BloggingRemindersFlowSettingsViewController {
         }
 
         guard let presentingViewController = navigationController?.presentingViewController else {
-            return wpAssertionFailure("Missing presentingViewController")
+            wpAssertionFailure("Missing presentingViewController")
+            return
         }
         presentingViewController.dismiss(animated: true) {
             alert.present(in: presentingViewController)

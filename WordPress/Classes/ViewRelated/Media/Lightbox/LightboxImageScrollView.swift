@@ -84,7 +84,8 @@ final class LightboxImageScrollView: UIScrollView, UIScrollViewDelegate {
 
     private func configureImageView() {
         guard let image = imageView.image else {
-            return centerImageView()
+            centerImageView()
+            return
         }
 
         let imageViewSize = imageView.frame.size
