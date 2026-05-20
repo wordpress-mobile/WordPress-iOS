@@ -295,8 +295,12 @@ final class CustomPostSettingsViewModel: NSObject, ObservableObject, PostSetting
     func onAppear() {}
 
     func shouldShow(_ row: PostSettingsRow) -> Bool {
-        // FIXME: meta support missing in AnyPostWithEditContext
-        false
+        switch row {
+        case .jetpackAccessLevel:
+            return isPost && blog.supports(.wpComRESTAPI)
+        case .jetpackNewsletterEmailOptions:
+            return isPost && blog.supports(.wpComRESTAPI) && context == .publishing
+        }
     }
 
     func buttonCancelTapped() {
