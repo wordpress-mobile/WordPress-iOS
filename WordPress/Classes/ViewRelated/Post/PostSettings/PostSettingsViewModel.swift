@@ -104,7 +104,8 @@ final class PostSettingsViewModel: NSObject, ObservableObject, PostSettingsViewM
 
     var postFormatText: String {
         guard capabilities.supportsPostFormats else { return "" }
-        return blog.postFormatText(fromSlug: settings.postFormat) ?? NSLocalizedString("Standard", comment: "Default post format")
+        return blog.postFormatText(fromSlug: settings.postFormat)
+            ?? NSLocalizedString("Standard", comment: "Default post format")
     }
 
     var timeZone: TimeZone {
@@ -204,9 +205,11 @@ final class PostSettingsViewModel: NSObject, ObservableObject, PostSettingsViewM
         super.init()
 
         // Observe selection changes from featured image view model
-        featuredImageViewModel?.$selection.dropFirst().sink { [weak self] media in
-            self?.settings.featuredImageID = media?.mediaID?.intValue
-        }.store(in: &cancellables)
+        featuredImageViewModel?.$selection.dropFirst()
+            .sink { [weak self] media in
+                self?.settings.featuredImageID = media?.mediaID?.intValue
+            }
+            .store(in: &cancellables)
 
         // Initialize all cached properties
         refreshDisplayedCategories()
@@ -254,20 +257,26 @@ final class PostSettingsViewModel: NSObject, ObservableObject, PostSettingsViewM
                 self.track(.intelligenceSuggestedTagsGenerated, properties: ["count": tags.count])
             } catch {
                 guard let self else { return }
-                self.track(.intelligenceGenerationFailed, properties: ["description": (error as NSError).debugDescription])
+                self.track(
+                    .intelligenceGenerationFailed,
+                    properties: ["description": (error as NSError).debugDescription]
+                )
             }
         }
-        cancellables.insert(AnyCancellable {
-            task.cancel()
-        })
+        cancellables.insert(
+            AnyCancellable {
+                task.cancel()
+            }
+        )
     }
 
     private func refreshCustomTaxonomies() {
-        let postType: String? = switch post {
-        case is Post: "post"
-        case is Page: "page"
-        default: nil
-        }
+        let postType: String? =
+            switch post {
+            case is Post: "post"
+            case is Page: "page"
+            default: nil
+            }
         guard let postType else {
             customTaxonomies = []
             return
@@ -331,8 +340,9 @@ final class PostSettingsViewModel: NSObject, ObservableObject, PostSettingsViewM
 
     private func refreshParentPageText() {
         if let page = post as? Page,
-           let context = page.managedObjectContext,
-           let parentPageID = settings.parentPageID {
+            let context = page.managedObjectContext,
+            let parentPageID = settings.parentPageID
+        {
             parentPageText = Page.parentPageText(in: context, parentID: NSNumber(value: parentPageID))
         } else {
             parentPageText = nil
@@ -348,7 +358,8 @@ final class PostSettingsViewModel: NSObject, ObservableObject, PostSettingsViewM
     func buttonSaveTapped() {
         // Check if the post still exists
         guard let context = post.managedObjectContext,
-              let _ = try? context.existingObject(with: post.objectID) else {
+            let _ = try? context.existingObject(with: post.objectID)
+        else {
             isShowingDeletedAlert = true
             return
         }
@@ -400,7 +411,8 @@ final class PostSettingsViewModel: NSObject, ObservableObject, PostSettingsViewM
     func buttonPublishTapped() {
         // Check if the post still exists
         guard let context = post.managedObjectContext,
-              let _ = try? context.existingObject(with: post.objectID) else {
+            let _ = try? context.existingObject(with: post.objectID)
+        else {
             isShowingDeletedAlert = true
             return
         }
@@ -490,8 +502,9 @@ final class PostSettingsViewModel: NSObject, ObservableObject, PostSettingsViewM
     private var isSocialConnectionSetupDismissed: Bool {
         get {
             guard let blogID = blog.dotComID?.intValue,
-                  let dictionary = preferences.dictionary(forKey: Constants.noConnectionKey) as? [String: Bool],
-                  let value = dictionary["\(blogID)"] else {
+                let dictionary = preferences.dictionary(forKey: Constants.noConnectionKey) as? [String: Bool],
+                let value = dictionary["\(blogID)"]
+            else {
                 return false
             }
             return value
@@ -534,7 +547,8 @@ final class PostSettingsViewModel: NSObject, ObservableObject, PostSettingsViewM
 
     func showSocialSharingOptions() {
         guard let blogID = blog.dotComID?.intValue,
-              let settings = settings.sharing else {
+            let settings = settings.sharing
+        else {
             return wpAssertionFailure("invalid context")
         }
         let optionsVC = PrepublishingSocialAccountsViewController(
