@@ -85,6 +85,9 @@ only_rules:
 
   - overridden_super_call
 
+  # There should be no whitespace immediately after a period.
+  - period_spacing
+
   # Example: CGPoint.zero instead of CGPoint(x: 0, y: 0)
   - prefer_zero_over_explicit_init
 

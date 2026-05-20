@@ -387,8 +387,8 @@ import WordPressKit
     ///
     /// - Parameters:
     ///     - url: The authentication URL
-    ///     - rootViewController: The view controller to act as the presenter for the signin view controller.  By convention this is the app's root vc.
-    ///     - automatedTesting: for calling this method for automated testing.  It won't sync the account or load any other VCs.
+    ///     - rootViewController: The view controller to act as the presenter for the signin view controller. By convention this is the app's root vc.
+    ///     - automatedTesting: for calling this method for automated testing. It won't sync the account or load any other VCs.
     ///
     @objc public class func openAuthenticationURL(
         _ url: URL,
@@ -417,7 +417,7 @@ import WordPressKit
         }
 
         // We could just use the flow, but since `MagicLinkFlow` is an ObjC enum, it always
-        // allows a `default` value.  By mapping the ObjC enum to a Swift enum we can avoid that afterwards.
+        // allows a `default` value. By mapping the ObjC enum to a Swift enum we can avoid that afterwards.
         let flow: NUXLinkAuthViewController.Flow
 
         switch MagicLinkFlow(rawValue: flowRawValue) {

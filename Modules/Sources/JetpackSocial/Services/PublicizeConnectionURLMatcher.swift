@@ -16,7 +16,7 @@ public struct PublicizeConnectionURLMatcher {
 
         // Special handling for the inconsistent way that services respond to a user's choice to decline
         // oauth authorization.
-        // Right now we have no clear way to know if Tumblr fails.  This is something we should try
+        // Right now we have no clear way to know if Tumblr fails. This is something we should try
         // fixing moving forward.
         // Path does not set the action param or call the callback. It forwards to its own URL ending in /decline.
         case userRefused
@@ -138,7 +138,7 @@ public struct PublicizeConnectionURLMatcher {
         }
 
         // If we've made it this far and the `action=verify` query param is present then we're
-        // *probably* verifying the oauth request.  There are edge cases ( :cough: tumblr :cough: )
+        // *probably* verifying the oauth request. There are edge cases ( :cough: tumblr :cough: )
         // where verification is declined and we get a false positive.
         if url(matchURL, contains: .verifyActionItem) {
             return .verify

@@ -35,7 +35,7 @@ public class LoginFields: NSObject {
     public var webauthnChallengeInfo: WebauthnChallengeInfo?
 
     /// Used by the SignupViewController. Signup currently asks for both a
-    /// username and an email address.  This can be factored away when we revamp
+    /// username and an email address. This can be factored away when we revamp
     /// the signup flow.
     @objc public var emailAddress = ""
 

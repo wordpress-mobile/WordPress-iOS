@@ -4,7 +4,7 @@ extension String {
 
     /// This method can be used to check if the string contains a valid URL.
     ///
-    /// - Returns: `true` if the string contains a valid string.  `false` otherwise.
+    /// - Returns: `true` if the string contains a valid string. `false` otherwise.
     ///
     public func isValidURL() -> Bool {
         let detector = try! NSDataDetector(types: NSTextCheckingResult.CheckingType.link.rawValue)

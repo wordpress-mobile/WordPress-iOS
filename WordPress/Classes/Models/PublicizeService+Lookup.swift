@@ -22,7 +22,7 @@ extension PublicizeService {
 
     /// Returns an array of all cached `PublicizeService` objects.
     ///
-    /// - Returns: An array of `PublicizeService`.  The array is empty if no objects are cached.
+    /// - Returns: An array of `PublicizeService`. The array is empty if no objects are cached.
     ///
     @objc(allPublicizeServicesInContext:error:)
     public static func allPublicizeServices(in context: NSManagedObjectContext) throws -> [PublicizeService] {

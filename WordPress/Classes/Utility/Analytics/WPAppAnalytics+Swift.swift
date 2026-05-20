@@ -32,7 +32,7 @@ extension WPAppAnalytics {
         }
         self.applicationOpenedTime = Date()
 
-        // This stat is part of a funnel that provides critical information.  Before
+        // This stat is part of a funnel that provides critical information. Before
         // making ANY modification to this stat please refer to: p4qSXL-35X-p2
         WPAnalytics.track(.applicationOpened)
     }

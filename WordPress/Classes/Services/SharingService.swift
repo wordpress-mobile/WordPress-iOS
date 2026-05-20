@@ -25,7 +25,7 @@ import WordPressKit
 
     // MARK: - Publicize Related Methods
 
-    /// Syncs the list of Publicize services.  The list is expected to very rarely change.
+    /// Syncs the list of Publicize services. The list is expected to very rarely change.
     ///
     /// - Parameters:
     ///     - blog: The `Blog` for which to sync publicize services
@@ -65,7 +65,7 @@ import WordPressKit
     }
 
     /// Creates a new publicize connection for the specified `Blog`, using the specified
-    /// keyring.  Optionally the connection can target a particular external user account.
+    /// keyring. Optionally the connection can target a particular external user account.
     ///
     /// - Parameters
     ///     - blog: The `Blog` for which to sync publicize connections
@@ -117,7 +117,7 @@ import WordPressKit
             })
     }
 
-    /// Update the specified `PublicizeConnection`.  The update to core data is performed
+    /// Update the specified `PublicizeConnection`. The update to core data is performed
     /// optimistically. In case of failure the original value will be restored.
     ///
     /// - Parameters:
@@ -194,7 +194,7 @@ import WordPressKit
         }, on: .main)
     }
 
-    /// Update the specified `PublicizeConnection`.  The update to core data is performed
+    /// Update the specified `PublicizeConnection`. The update to core data is performed
     /// optimistically. In case of failure the original value will be restored.
     ///
     /// - Parameters:
@@ -237,8 +237,8 @@ import WordPressKit
                 failure: failure)
     }
 
-    /// Deletes the specified `PublicizeConnection`.  The delete from core data is performed
-    /// optimistically.  The caller's `failure` block should be responsible for resyncing
+    /// Deletes the specified `PublicizeConnection`. The delete from core data is performed
+    /// optimistically. The caller's `failure` block should be responsible for resyncing
     /// the deleted connection.
     ///
     /// - Parameters:
@@ -290,7 +290,7 @@ import WordPressKit
     // MARK: - Private PublicizeService Methods
 
     /// Called when syncing Publicize services. Merges synced and cached data, removing
-    /// anything that does not exist on the server.  Saves the context.
+    /// anything that does not exist on the server. Saves the context.
     ///
     /// - Parameters
     ///     - remoteServices: An array of `RemotePublicizeService` objects to merge.
@@ -410,7 +410,7 @@ import WordPressKit
     }
 
     /// Called when syncing sharng buttons. Merges synced and cached data, removing
-    /// anything that does not exist on the server.  Saves the context.
+    /// anything that does not exist on the server. Saves the context.
     ///
     /// - Parameters:
     ///     - blogObjectID: the NSManagedObjectID of a `Blog`

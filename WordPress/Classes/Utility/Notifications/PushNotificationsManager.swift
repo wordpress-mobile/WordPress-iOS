@@ -309,8 +309,8 @@ extension PushNotificationsManager {
 
         /// This is a (hopefully temporary) workaround. A Push Authentication must be dealt with whenever:
         ///
-        ///     1.  When the user interacts with a Push Notification
-        ///     2.  When the App is in Foreground
+        ///     1. When the user interacts with a Push Notification
+        ///     2. When the App is in Foreground
         ///
         /// As per iOS 13 there are certain scenarios in which the `applicationState` may be `.background` when the user pressed over the Alert.
         /// By means of the `userInteraction` flag, we're just working around the new SDK behavior.

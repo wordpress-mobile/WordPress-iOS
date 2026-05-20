@@ -103,7 +103,7 @@ final class MySiteViewController: UIViewController, UIScrollViewDelegate, NoSite
 
     // MARK: - Blog
 
-    /// Convenience setter and getter for the blog.  This calculated property takes care of showing the appropriate VC, depending
+    /// Convenience setter and getter for the blog. This calculated property takes care of showing the appropriate VC, depending
     /// on whether there's a blog to show or not.
     ///
     @objc var blog: Blog? {
@@ -267,7 +267,7 @@ final class MySiteViewController: UIViewController, UIScrollViewDelegate, NoSite
 
     // MARK: - Navigation Item
 
-    /// In iPad and iOS 14, the large-title bar is collapsed when the VC is first loaded.  Call this method from
+    /// In iPad and iOS 14, the large-title bar is collapsed when the VC is first loaded. Call this method from
     /// `viewDidAppear(_:)` to quickly refresh the navigation bar so that it's expanded.
     ///
     private func workaroundLargeTitleCollapseBug() {
@@ -641,7 +641,7 @@ final class MySiteViewController: UIViewController, UIScrollViewDelegate, NoSite
         removeChildFromStackView(blogDetailsViewController)
     }
 
-    /// Shows a `BlogDetailsViewController` for the specified `Blog`.  If the VC doesn't exist, this method also takes care
+    /// Shows a `BlogDetailsViewController` for the specified `Blog`. If the VC doesn't exist, this method also takes care
     /// of creating it.
     ///
     /// - Parameters:
@@ -745,7 +745,7 @@ final class MySiteViewController: UIViewController, UIScrollViewDelegate, NoSite
         removeChildFromStackView(blogDashboardViewController)
     }
 
-    /// Shows a `BlogDashboardViewController` for the specified `Blog`.  If the VC doesn't exist, this method also takes care
+    /// Shows a `BlogDashboardViewController` for the specified `Blog`. If the VC doesn't exist, this method also takes care
     /// of creating it.
     ///
     /// - Parameters:

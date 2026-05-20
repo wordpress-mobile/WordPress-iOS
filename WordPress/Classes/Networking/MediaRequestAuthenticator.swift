@@ -51,7 +51,7 @@ struct MediaRequestAuthenticator {
     ///
     /// - Parameters:
     ///     - url: the url for the media.
-    ///     - host: the `MediaHost` for the requested Media.  This is used for authenticating the requests.
+    ///     - host: the `MediaHost` for the requested Media. This is used for authenticating the requests.
     ///     - provide: the closure that will be called once authentication is sorted out by this class.
     ///         The request can be executed directly without having to do anything else in terms of
     ///         authentication.
@@ -218,7 +218,7 @@ struct MediaRequestAuthenticator {
     /// https://public-api.wordpress.com/wpcom/v2/sites/$siteID/atomic-auth-proxy/file/$wpContentPath
     ///
     /// To know whether you can remove this method, try requesting the photon URL from an
-    /// atomic private site.  If it works then you can remove this workaround logic.
+    /// atomic private site. If it works then you can remove this workaround logic.
     ///
     /// - Parameters:
     ///     - url: the url for the media.

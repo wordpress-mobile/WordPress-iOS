@@ -29,10 +29,10 @@ class CoreDataIterativeMigrator {
             return
         }
 
-        // Get the persistent store's metadata.  The metadata is used to
+        // Get the persistent store's metadata. The metadata is used to
         // get information about the store's managed object model.
         // If metadataForPersistentStore throws an error that error is propagated, not replaced by the throw
-        // in the guard's else clause.  If metadataForPersistentStore returns nil then an error is thrown.
+        // in the guard's else clause. If metadataForPersistentStore returns nil then an error is thrown.
         guard let sourceMetadata = try metadataForPersistentStore(storeType: storeType, at: sourceStore) else {
             throw error(with: .failedRetrievingMetadata, description: "The source metadata was nil.")
         }

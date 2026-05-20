@@ -5,8 +5,8 @@ import WordPressKit
 import WordPressShared
 
 /// The authorization flow handled by this class starts by showing Apple's `ASAuthorizationController`
-/// through our class `StoredCredentialsPicker`.  This controller lets the user pick the credentials they
-/// want to login with.  This class handles both showing that controller and executing the remaining flow to
+/// through our class `StoredCredentialsPicker`. This controller lets the user pick the credentials they
+/// want to login with. This class handles both showing that controller and executing the remaining flow to
 /// complete the login process.
 ///
 class StoredCredentialsAuthenticator: NSObject {
@@ -87,7 +87,7 @@ class StoredCredentialsAuthenticator: NSObject {
         }
     }
 
-    /// The selection of credentials and subsequent authorization by the OS succeeded.  This method processes the credentials
+    /// The selection of credentials and subsequent authorization by the OS succeeded. This method processes the credentials
     /// and proceeds with the login operation.
     ///
     /// - Parameters:
@@ -114,7 +114,7 @@ class StoredCredentialsAuthenticator: NSObject {
         }
     }
 
-    /// The selection of credentials or the subsequent authorization by the OS failed.  This method processes the failure.
+    /// The selection of credentials or the subsequent authorization by the OS failed. This method processes the failure.
     ///
     /// - Parameters:
     ///         - error: The error detailing what failed.
@@ -127,9 +127,9 @@ class StoredCredentialsAuthenticator: NSObject {
             // The user cancelling the flow is not really an error, so we're not reporting or tracking
             // this as an error.
             //
-            // We're not tracking this either, since the Android App doesn't for SmartLock.  The reason is
+            // We're not tracking this either, since the Android App doesn't for SmartLock. The reason is
             // that it's not trivial to know when the credentials picker UI is shown to the user, so knowing
-            // it's being dismissed is also not trivial.  This was decided during the Unified Login & Signup
+            // it's being dismissed is also not trivial. This was decided during the Unified Login & Signup
             // project in a conversation between myself (Diego Rey Mendez) and Renan Ferrari.
             break
         default:
@@ -194,7 +194,7 @@ extension StoredCredentialsAuthenticator {
                                                     onDismiss: {})
     }
 
-    /// Presents the login email screen, displaying the specified error.  This is useful
+    /// Presents the login email screen, displaying the specified error. This is useful
     /// for example for iCloud Keychain in the case where there's an error logging the user
     /// in with the stored credentials for whatever reason.
     ///
@@ -212,7 +212,7 @@ extension StoredCredentialsAuthenticator {
         navigationController?.pushViewController(toVC, animated: true)
     }
 
-    /// Presents the get started screen, displaying the specified error.  This is useful
+    /// Presents the get started screen, displaying the specified error. This is useful
     /// for example for iCloud Keychain in the case where there's an error logging the user
     /// in with the stored credentials for whatever reason.
     ///

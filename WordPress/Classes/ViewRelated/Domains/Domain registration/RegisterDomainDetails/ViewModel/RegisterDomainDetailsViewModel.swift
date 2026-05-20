@@ -213,7 +213,7 @@ class RegisterDomainDetailsViewModel {
                             self?.isLoading = false
 
                             // Setting the domain as primary doesn't affect the success of registering the domain
-                            // so we'll simply ignore this for now.  If we want to highlight this as an error to
+                            // so we'll simply ignore this for now. If we want to highlight this as an error to
                             // the user we could opt to show a Notice in the future.
                             onChange?(.registerSucceeded(domain))
                         })

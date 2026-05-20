@@ -285,7 +285,7 @@ extension GoogleAuthenticator: LoginFacadeDelegate {
     func finishedLogin(withGoogleIDToken googleIDToken: String, authToken: String) {
         SVProgressHUD.dismiss()
 
-        // This stat is part of a funnel that provides critical information.  Please
+        // This stat is part of a funnel that provides critical information. Please
         // consult with your lead before removing this event.
         track(.signedIn)
 
@@ -399,11 +399,11 @@ private extension GoogleAuthenticator {
     }
 
     func accountCreated(credentials: AuthenticatorCredentials) {
-        // This stat is part of a funnel that provides critical information.  Before
+        // This stat is part of a funnel that provides critical information. Before
         // making ANY modification to this stat please refer to: p4qSXL-35X-p2
         track(.createdAccount)
 
-        // This stat is part of a funnel that provides critical information.  Please
+        // This stat is part of a funnel that provides critical information. Please
         // consult with your lead before removing this event.
         track(.signedIn)
 
@@ -418,7 +418,7 @@ private extension GoogleAuthenticator {
     func logInInstead(credentials: AuthenticatorCredentials) {
         tracker.set(flow: .loginWithGoogle)
 
-        // This stat is part of a funnel that provides critical information.  Please
+        // This stat is part of a funnel that provides critical information. Please
         // consult with your lead before removing this event.
         track(.signedIn)
 

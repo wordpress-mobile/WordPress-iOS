@@ -298,7 +298,7 @@ extension InteractiveNotificationsManager {
         return nil
     }
 
-    /// Retrieves a date from the userInfo dictionary using a generic "date" key.  This was made generic on purpose.
+    /// Retrieves a date from the userInfo dictionary using a generic "date" key. This was made generic on purpose.
     ///
     private func date(from userInfo: NSDictionary) -> Date? {
         userInfo[Self.dateKey] as? Date

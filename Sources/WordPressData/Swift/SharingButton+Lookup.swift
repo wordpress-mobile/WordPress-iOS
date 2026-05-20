@@ -4,7 +4,7 @@ public extension SharingButton {
 
     /// Returns an array of all cached `SharingButtons` objects.
     ///
-    /// - Returns: An array of `SharingButton`s.  The array is empty if no objects are cached.
+    /// - Returns: An array of `SharingButton`s. The array is empty if no objects are cached.
     ///
     @objc(allSharingButtonsForBlog:inContext:error:)
     static func allSharingButtons(for blog: Blog, in context: NSManagedObjectContext) throws -> [SharingButton] {

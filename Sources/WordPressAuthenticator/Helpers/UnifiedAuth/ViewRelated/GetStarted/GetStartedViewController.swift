@@ -596,7 +596,7 @@ private extension GetStartedViewController {
             self.sendEmail()
         } else if errorCode == "email_login_not_allowed" {
                 // If we get this error, we know we have a WordPress.com user but their
-                // email address is flagged as suspicious.  They need to login via their
+                // email address is flagged as suspicious. They need to login via their
                 // username instead.
                 self.showSelfHostedWithError(error)
         } else {

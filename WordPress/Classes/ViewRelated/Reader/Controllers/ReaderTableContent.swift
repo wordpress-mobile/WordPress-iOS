@@ -28,7 +28,7 @@ final class ReaderTableContent {
     }
 
     /// The fetch request can need a different predicate depending on how the content
-    /// being displayed has changed (blocking sites for instance).  Call this method to
+    /// being displayed has changed (blocking sites for instance). Call this method to
     /// update the fetch request predicate and then perform a new fetch.
     ///
     func updateAndPerformFetchRequest(predicate: NSPredicate) {

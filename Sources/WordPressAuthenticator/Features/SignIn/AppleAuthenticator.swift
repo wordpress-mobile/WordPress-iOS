@@ -91,7 +91,7 @@ private extension AppleAuthenticator {
     }
 
     func signupSuccessful(with credentials: AuthenticatorCredentials) {
-        // This stat is part of a funnel that provides critical information.  Before
+        // This stat is part of a funnel that provides critical information. Before
         // making ANY modification to this stat please refer to: p4qSXL-35X-p2
         track(.createdAccount)
 
@@ -103,7 +103,7 @@ private extension AppleAuthenticator {
     }
 
     func loginSuccessful(with credentials: AuthenticatorCredentials) {
-        // This stat is part of a funnel that provides critical information.  Please
+        // This stat is part of a funnel that provides critical information. Please
         // consult with your lead before removing this event.
         track(.signedIn)
 

@@ -107,8 +107,8 @@ public extension AbstractPost {
         return title(forStatus: status.rawValue)
     }
 
-    /// Returns the localized title for the specified status.  Status should be
-    /// one of the `PostStatus...` constants.  If a matching title is not found
+    /// Returns the localized title for the specified status. Status should be
+    /// one of the `PostStatus...` constants. If a matching title is not found
     /// the status is returned.
     ///
     /// - parameter status: The post status value

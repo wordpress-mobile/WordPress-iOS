@@ -854,7 +854,7 @@ extension SiteStatsInsightsViewModel: AsyncBlocksLoadable {
             // when more than 14 rows we take the last 14 rows for most recent data
             return createStatsSummaryTimeIntervalDataAsAWeeks(summaryData: Array(summaryData[count - Constants.fourteenDays..<count]))
         case let count where count < Constants.fourteenDays:
-            // when 0 to 14 rows presume the user could be new / doesn't have enough data.  Pad 0's to prev week
+            // when 0 to 14 rows presume the user could be new / doesn't have enough data. Pad 0's to prev week
             summaryData.reverse()
 
             guard var date = summaryData.last?.periodStartDate else {

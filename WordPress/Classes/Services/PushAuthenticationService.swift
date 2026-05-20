@@ -41,7 +41,7 @@ class PushAuthenticationService {
 
     /// Helper method to get the WordPress.com REST Api, if any
     ///
-    /// - Returns: WordPressComRestApi instance.  It can be an anonymous API instance if there are no credentials.
+    /// - Returns: WordPressComRestApi instance. It can be an anonymous API instance if there are no credentials.
     ///
     private func apiForRequest(in context: NSManagedObjectContext) -> WordPressComRestApi {
 
