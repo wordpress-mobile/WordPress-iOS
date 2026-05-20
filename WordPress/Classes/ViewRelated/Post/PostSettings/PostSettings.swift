@@ -165,8 +165,10 @@ struct PostSettings: Hashable {
         }
         self.otherTerms = otherTerms
 
-        // FIXME: Post metadata is not supported yet. Require wordpress-rs changes.
-        metadata = PostMetadata(from: .init())
+        metadata = PostMetadata(
+            accessLevel: post.meta?.jetpackNewsletterAccess,
+            isJetpackNewsletterEmailDisabled: post.meta?.isJetpackNewsletterEmailDisabled ?? false
+        )
 
         postFormat = post.format.map { $0.id }
         isStickyPost = post.sticky ?? false
@@ -446,6 +448,19 @@ struct PostSettings: Hashable {
             }
         }
 
+        let originalMetadata = PostMetadata(
+            accessLevel: post.meta?.jetpackNewsletterAccess,
+            isJetpackNewsletterEmailDisabled: post.meta?.isJetpackNewsletterEmailDisabled ?? false
+        )
+        if originalMetadata.accessLevel != self.metadata.accessLevel {
+            params.meta = (params.meta ?? PostMeta())
+                .addingJetpackNewsletterAccess(self.metadata.accessLevel)
+        }
+        if originalMetadata.isJetpackNewsletterEmailDisabled != self.metadata.isJetpackNewsletterEmailDisabled {
+            params.meta = (params.meta ?? PostMeta())
+                .addingJetpackNewsletterEmailDisabled(self.metadata.isJetpackNewsletterEmailDisabled)
+        }
+
         let postParentPageID = post.parent.map { Int($0) }
         if postParentPageID != self.parentPageID {
             params.parent = self.parentPageID.map { PostId(Int64($0)) } ?? PostId(0)
@@ -499,6 +514,15 @@ struct PostSettings: Hashable {
         // Social meta
         if let message = socialSharingDraft?.customMessage {
             params.meta = (params.meta ?? PostMeta()).addingPublicizeMessage(message)
+        }
+
+        if metadata.accessLevel != nil {
+            params.meta = (params.meta ?? PostMeta())
+                .addingJetpackNewsletterAccess(metadata.accessLevel)
+        }
+        if metadata.isJetpackNewsletterEmailDisabled {
+            params.meta = (params.meta ?? PostMeta())
+                .addingJetpackNewsletterEmailDisabled(true)
         }
 
         return params

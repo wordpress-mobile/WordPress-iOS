@@ -720,6 +720,30 @@ struct PostSettingsTests {
         #expect(settings.socialSharingDraft == expectedDraft)
     }
 
+    @Test("init(from: AnyPostWithEditContext) populates jetpack newsletter access from meta")
+    func initFromRestPopulatesAccessLevel() throws {
+        let meta = PostMeta().addingJetpackNewsletterAccess(.paidSubscribers)
+        let post = makeRemotePost(meta: meta)
+        let settings = PostSettings(from: post)
+        #expect(settings.metadata.accessLevel == .paidSubscribers)
+    }
+
+    @Test("init(from: AnyPostWithEditContext) populates email-disabled flag from meta")
+    func initFromRestPopulatesEmailDisabled() throws {
+        let meta = PostMeta().addingJetpackNewsletterEmailDisabled(true)
+        let post = makeRemotePost(meta: meta)
+        let settings = PostSettings(from: post)
+        #expect(settings.metadata.isJetpackNewsletterEmailDisabled)
+    }
+
+    @Test("init(from: AnyPostWithEditContext) defaults metadata when meta is nil")
+    func initFromRestDefaultsMetadata() throws {
+        let post = makeRemotePost(meta: nil)
+        let settings = PostSettings(from: post)
+        #expect(settings.metadata.accessLevel == nil)
+        #expect(!settings.metadata.isJetpackNewsletterEmailDisabled)
+    }
+
     @Test("apply(to:) converts terms back to name strings")
     func testApplyConvertsTermsToNameStrings() {
         // Given
@@ -1046,6 +1070,88 @@ struct PostSettingsTests {
             }
         )
         #expect(flagsByID == ["1": true, "2": false])
+    }
+
+    // MARK: - makeUpdateParameters(from: AnyPostWithEditContext) Newsletter Meta Tests
+
+    @Test("makeUpdateParameters(from: AnyPostWithEditContext) omits meta when newsletter settings unchanged")
+    func updateParamsOmitsMetaWhenUnchanged() throws {
+        let meta = PostMeta()
+            .addingJetpackNewsletterAccess(.subscribers)
+            .addingJetpackNewsletterEmailDisabled(true)
+        let post = makeRemotePost(meta: meta)
+        let settings = PostSettings(from: post)
+        // Sanity: metadata read back correctly.
+        #expect(settings.metadata.accessLevel == .subscribers)
+
+        let params = settings.makeUpdateParameters(from: post)
+        #expect(params.meta?.jetpackNewsletterAccess == nil)
+        #expect(params.meta?.valueForKey(key: "_jetpack_dont_email_post_to_subs") == nil)
+    }
+
+    @Test("makeUpdateParameters(from: AnyPostWithEditContext) writes access level when changed")
+    func updateParamsWritesAccessLevelChange() throws {
+        let post = makeRemotePost(meta: nil)
+        var settings = PostSettings(from: post)
+        settings.metadata.accessLevel = .paidSubscribers
+
+        let params = settings.makeUpdateParameters(from: post)
+        #expect(params.meta?.jetpackNewsletterAccess == .paidSubscribers)
+        // Email-disabled key should NOT be written because it didn't change.
+        #expect(params.meta?.valueForKey(key: "_jetpack_dont_email_post_to_subs") == nil)
+    }
+
+    @Test("makeUpdateParameters(from: AnyPostWithEditContext) writes email-disabled when changed")
+    func updateParamsWritesEmailDisabledChange() throws {
+        let post = makeRemotePost(meta: nil)
+        var settings = PostSettings(from: post)
+        settings.metadata.isJetpackNewsletterEmailDisabled = true
+
+        let params = settings.makeUpdateParameters(from: post)
+        #expect(params.meta?.isJetpackNewsletterEmailDisabled == true)
+        #expect(params.meta?.valueForKey(key: "_jetpack_newsletter_access") == nil)
+    }
+
+    @Test("makeUpdateParameters(from: AnyPostWithEditContext) clears access level when set to nil")
+    func updateParamsClearsAccessLevel() throws {
+        let meta = PostMeta().addingJetpackNewsletterAccess(.subscribers)
+        let post = makeRemotePost(meta: meta)
+        var settings = PostSettings(from: post)
+        settings.metadata.accessLevel = nil
+
+        let params = settings.makeUpdateParameters(from: post)
+        // A nil access level writes `.null` so the server clears the meta.
+        #expect(params.meta?.valueForKey(key: "_jetpack_newsletter_access") == JsonValue.null)
+    }
+
+    // MARK: - makeCreateParameters Newsletter Meta Tests
+
+    @Test("makeCreateParameters emits access level when set")
+    func createParamsEmitsAccessLevel() throws {
+        var settings = PostSettings()
+        settings.metadata.accessLevel = .subscribers
+
+        let params = settings.makeCreateParameters()
+        #expect(params.meta?.jetpackNewsletterAccess == .subscribers)
+    }
+
+    @Test("makeCreateParameters emits email-disabled when true")
+    func createParamsEmitsEmailDisabled() throws {
+        var settings = PostSettings()
+        settings.metadata.isJetpackNewsletterEmailDisabled = true
+
+        let params = settings.makeCreateParameters()
+        #expect(params.meta?.isJetpackNewsletterEmailDisabled == true)
+    }
+
+    @Test("makeCreateParameters omits newsletter meta at defaults")
+    func createParamsOmitsDefaults() throws {
+        let settings = PostSettings()
+        // Defaults: accessLevel nil, isJetpackNewsletterEmailDisabled false.
+
+        let params = settings.makeCreateParameters()
+        #expect(params.meta?.valueForKey(key: "_jetpack_newsletter_access") == nil)
+        #expect(params.meta?.valueForKey(key: "_jetpack_dont_email_post_to_subs") == nil)
     }
 
     // MARK: - defaults(from: Blog) Tests
