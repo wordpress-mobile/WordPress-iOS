@@ -18,7 +18,7 @@ public class SiteSuggestion: NSManagedObject, Decodable {
         case blavatarURL = "blavatar"
     }
 
-    required convenience public init(from decoder: Decoder) throws {
+    public required convenience init(from decoder: Decoder) throws {
         guard let managedObjectContext = decoder.userInfo[CodingUserInfoKey.managedObjectContext] as? NSManagedObjectContext else {
             throw DecoderError.missingManagedObjectContext
         }

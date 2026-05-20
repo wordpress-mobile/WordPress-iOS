@@ -22,7 +22,7 @@ public class ManagedDomain: NSManagedObject {
 
     // MARK: - NSManagedObject
 
-    public override class func entityName() -> String {
+    override public class func entityName() -> String {
         return "Domain"
     }
 

@@ -56,7 +56,7 @@ import WordPressShared
         fatalError("init(coder:) has not been implemented")
     }
 
-    open override func viewDidLoad() {
+    override open func viewDidLoad() {
         super.viewDidLoad()
 
         title = Strings.title
@@ -73,12 +73,12 @@ import WordPressShared
         fetchAllPagesTask = postRepository.fetchAllPages(statuses: [], in: TaggedManagedObjectID(blog))
     }
 
-    open override func viewWillAppear(_ animated: Bool) {
+    override open func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         animateDeselectionInteractively()
     }
 
-    open override func viewDidDisappear(_ animated: Bool) {
+    override open func viewDidDisappear(_ animated: Bool) {
         super.viewDidDisappear(animated)
 
         if self.navigationController == nil {

@@ -200,7 +200,7 @@ private class WeeklyRoundupDataProvider {
         }
     }
 
-    static private func weeklyRoundupEnabledSites(
+    private static func weeklyRoundupEnabledSites(
         settings: [NotificationSettings],
         sites: [Site]
     ) -> [Site] {
@@ -250,7 +250,7 @@ private class WeeklyRoundupDataProvider {
     /// - Throws: `DataRequestError.authTokenNotFound` if the account associated with the site has no auth token.
     /// - Throws: `DataRequestError.dotComSiteWithoutDotComID(site)` if the dotComID of the site is not available.
     /// - Returns: An instance of `StatsServiceRemoteV2` for the site.
-    static private func makeRemoteStatsService(for site: Site) throws -> StatsServiceRemoteV2 {
+    private static func makeRemoteStatsService(for site: Site) throws -> StatsServiceRemoteV2 {
         guard let authToken = site.authToken else {
             throw DataRequestError.authTokenNotFound
         }
@@ -314,7 +314,7 @@ class WeeklyRoundupBackgroundTask: BackgroundTask {
     // MARK: - Misc Properties
 
     static let identifier = Constants.taskIdentifierProcessing
-    static private let secondsPerDay = 24 * 60 * 60
+    private static let secondsPerDay = 24 * 60 * 60
 
     private let store: Store
 

@@ -14,7 +14,7 @@ public enum IntelligenceService {
     public static let contextSizeLimit = 4096
 
     /// Checks if intelligence features are supported on the current device.
-    public nonisolated static var isSupported: Bool {
+    nonisolated public static var isSupported: Bool {
         guard #available(iOS 26, *) else {
             return false
         }

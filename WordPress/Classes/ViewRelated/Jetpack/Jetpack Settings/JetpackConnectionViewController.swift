@@ -43,7 +43,7 @@ open class JetpackConnectionViewController: UITableViewController {
 
     // MARK: - View Lifecycle
 
-    open override func viewDidLoad() {
+    override open func viewDidLoad() {
         super.viewDidLoad()
         title = NSLocalizedString("Manage Connection", comment: "Title for the Jetpack Manage Connection Screen")
         ImmuTable.registerRows([DestructiveButtonRow.self], tableView: tableView)
@@ -51,11 +51,11 @@ open class JetpackConnectionViewController: UITableViewController {
         reloadViewModel()
     }
 
-    open override func viewWillAppear(_ animated: Bool) {
+    override open func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
     }
 
-    open override func viewWillDisappear(_ animated: Bool) {
+    override open func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
     }
 

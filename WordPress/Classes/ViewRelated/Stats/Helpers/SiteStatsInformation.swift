@@ -10,7 +10,7 @@ import WordPressShared
     typealias SiteInsights = [String: [Int]]
     private let userDefaultsInsightTypesKey = "StatsInsightTypes"
     @objc public static var sharedInstance = SiteStatsInformation()
-    private override init() {}
+    override private init() {}
 
     @objc public var siteID: NSNumber?
     @objc public var siteTimeZone: TimeZone?

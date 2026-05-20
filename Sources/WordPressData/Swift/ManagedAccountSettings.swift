@@ -9,7 +9,7 @@ public class ManagedAccountSettings: NSManagedObject {
 
     // MARK: - NSManagedObject
 
-    public override class func entityName() -> String {
+    override public class func entityName() -> String {
         return "AccountSettings"
     }
 

@@ -5,10 +5,10 @@ import Vision
 /// Detects the most salient (visually interesting) region in images using Vision framework.
 /// Results are cached by image URL.
 public actor ImageSaliencyService {
-    public nonisolated static let shared = ImageSaliencyService()
+    nonisolated public static let shared = ImageSaliencyService()
 
-    private nonisolated let cache = SaliencyCache()
-    private nonisolated let detector = SaliencyDetector()
+    nonisolated private let cache = SaliencyCache()
+    nonisolated private let detector = SaliencyDetector()
     private var inflightTasks: [URL: Task<CGRect?, Never>] = [:]
 
     init() {
@@ -18,7 +18,7 @@ public actor ImageSaliencyService {
     }
 
     /// Returns a cached rect synchronously without starting a task, or `nil` if not yet cached.
-    public nonisolated func cachedSaliencyRect(for url: URL) -> CGRect? {
+    nonisolated public func cachedSaliencyRect(for url: URL) -> CGRect? {
         cache.cachedRect(for: url)
     }
 
@@ -46,7 +46,7 @@ public actor ImageSaliencyService {
     /// Returns the frame for the image view within a container such that `saliencyRect`
     /// appears at `topInset` points from the top. Returns `nil` when no adjustment is needed
     /// (i.e. the image is not portrait relative to the container).
-    public nonisolated func adjustedFrame(
+    nonisolated public func adjustedFrame(
         saliencyRect: CGRect,
         imageSize: CGSize,
         in containerSize: CGSize,

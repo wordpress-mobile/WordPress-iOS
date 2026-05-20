@@ -12,7 +12,7 @@ class BloggingPromptsFeatureDescriptionView: UIView, NibLoadable {
 
     // MARK: - Init
 
-    open override func awakeFromNib() {
+    override open func awakeFromNib() {
         super.awakeFromNib()
         configureView()
     }

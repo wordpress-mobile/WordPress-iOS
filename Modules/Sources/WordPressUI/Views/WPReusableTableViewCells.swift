@@ -3,7 +3,7 @@ import WordPressShared
 import WordPressLegacy
 
 open class WPReusableTableViewCell: WPTableViewCell {
-    open override func prepareForReuse() {
+    override open func prepareForReuse() {
         super.prepareForReuse()
 
         textLabel?.text = nil
@@ -18,7 +18,7 @@ open class WPReusableTableViewCell: WPTableViewCell {
         accessibilityLabel = nil
     }
 
-    public override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
+    override public init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
         commonInit()
     }
@@ -40,7 +40,7 @@ open class WPReusableTableViewCell: WPTableViewCell {
 }
 
 open class WPTableViewCellDefault: WPReusableTableViewCell {
-    public override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
+    override public init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: .default, reuseIdentifier: reuseIdentifier)
     }
 
@@ -50,7 +50,7 @@ open class WPTableViewCellDefault: WPReusableTableViewCell {
 }
 
 open class WPTableViewCellSubtitle: WPReusableTableViewCell {
-    public override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
+    override public init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: .subtitle, reuseIdentifier: reuseIdentifier)
     }
 
@@ -60,7 +60,7 @@ open class WPTableViewCellSubtitle: WPReusableTableViewCell {
 }
 
 open class WPTableViewCellValue1: WPReusableTableViewCell {
-    public override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
+    override public init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: .value1, reuseIdentifier: reuseIdentifier)
     }
 
@@ -68,14 +68,14 @@ open class WPTableViewCellValue1: WPReusableTableViewCell {
         super.init(coder: aDecoder)
     }
 
-    public override func commonInit() {
+    override public func commonInit() {
         super.commonInit()
         detailTextLabel?.numberOfLines = 1
     }
 }
 
 open class WPTableViewCellValue2: WPReusableTableViewCell {
-    public override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
+    override public init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: .value2, reuseIdentifier: reuseIdentifier)
     }
 

@@ -9,7 +9,7 @@ open class HTTPAuthenticationAlertController {
 
     private static var onGoingChallenges = [URLProtectionSpace: [AuthenticationHandler]]()
 
-    static public func controller(for challenge: URLAuthenticationChallenge, handler: @escaping AuthenticationHandler) -> UIAlertController? {
+    public static func controller(for challenge: URLAuthenticationChallenge, handler: @escaping AuthenticationHandler) -> UIAlertController? {
         if var handlers = onGoingChallenges[challenge.protectionSpace] {
             handlers.append(handler)
             onGoingChallenges[challenge.protectionSpace] = handlers

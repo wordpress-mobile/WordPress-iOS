@@ -37,7 +37,7 @@ public class RemoteBlockEditorSettings: Codable {
         return String(data: data, encoding: .utf8)
     }
 
-    required public init(from decoder: Decoder) throws {
+    public required init(from decoder: Decoder) throws {
         let map = try decoder.container(keyedBy: CodingKeys.self)
         self.isFSETheme = (try? map.decode(Bool.self, forKey: .isFSETheme)) ?? false
         self.galleryWithImageBlocks = (try? map.decode(Bool.self, forKey: .galleryWithImageBlocks)) ?? false

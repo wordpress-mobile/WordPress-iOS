@@ -26,7 +26,7 @@ public final class ManageConnectionsHostingController: UIHostingController<AnyVi
         )
     }
 
-    @preconcurrency required dynamic init?(coder: NSCoder) {
+    @preconcurrency dynamic required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
 

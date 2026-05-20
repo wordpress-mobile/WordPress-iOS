@@ -68,7 +68,7 @@ public final class AsyncImageView: UIView {
         }
     }
 
-    public override init(frame: CGRect) {
+    override public init(frame: CGRect) {
         super.init(frame: frame)
 
         setupView()
@@ -94,7 +94,7 @@ public final class AsyncImageView: UIView {
         backgroundColor = .secondarySystemBackground
     }
 
-    public override func layoutSubviews() {
+    override public func layoutSubviews() {
         super.layoutSubviews()
 
         imageView.frame = {

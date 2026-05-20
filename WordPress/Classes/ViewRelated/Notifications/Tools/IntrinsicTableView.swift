@@ -8,13 +8,13 @@ import UIKit
 ///     -   http://stackoverflow.com/questions/17334478/uitableview-within-uiscrollview-using-autolayout
 ///
 @objc public class IntrinsicTableView: UITableView {
-    public override var contentSize: CGSize {
+    override public var contentSize: CGSize {
         didSet {
             self.invalidateIntrinsicContentSize()
         }
     }
 
-    public override var intrinsicContentSize: CGSize {
+    override public var intrinsicContentSize: CGSize {
         layoutIfNeeded()
         return CGSize(width: UIView.noIntrinsicMetric, height: contentSize.height)
     }

@@ -25,7 +25,7 @@ public final class SpacerView: UIView {
         heightAnchor.constraint(equalToConstant: height).isActive = true
     }
 
-    public override init(frame: CGRect) {
+    override public init(frame: CGRect) {
         super.init(frame: .zero)
 
         // Make sure it compresses or expands before any other views if needed.
@@ -35,7 +35,7 @@ public final class SpacerView: UIView {
         setContentHuggingPriority(.init(10), for: .vertical)
     }
 
-    public override var intrinsicContentSize: CGSize {
+    override public var intrinsicContentSize: CGSize {
         CGSizeMake(0, 0) // Avoid ambiguous layout
     }
 

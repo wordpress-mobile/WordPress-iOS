@@ -46,7 +46,7 @@ final class ReaderSearchViewController: UIViewController {
 
     var isStandaloneAppModeEnabled = false
 
-    public override func viewDidLoad() {
+    override public func viewDidLoad() {
         super.viewDidLoad()
 
         view.backgroundColor = .systemBackground
@@ -75,7 +75,7 @@ final class ReaderSearchViewController: UIViewController {
         }
     }
 
-    public override func didMove(toParent parent: UIViewController?) {
+    override public func didMove(toParent parent: UIViewController?) {
         super.didMove(toParent: parent)
 
         if parent == nil {

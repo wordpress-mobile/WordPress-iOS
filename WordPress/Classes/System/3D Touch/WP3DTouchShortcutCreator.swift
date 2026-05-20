@@ -28,7 +28,7 @@ open class WP3DTouchShortcutCreator: NSObject {
         registerForNotifications()
     }
 
-    public convenience override init() {
+    override public convenience init() {
         self.init(shortcutsProvider: UIApplication.shared)
     }
 

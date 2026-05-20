@@ -10,7 +10,7 @@ class PluginJetpackProxyServiceTests: XCTestCase {
         .init(wordPressComRestApi: api)
     }
 
-    lazy private var service: PluginJetpackProxyService = {
+    private lazy var service: PluginJetpackProxyService = {
         .init(remote: remote)
     }()
 

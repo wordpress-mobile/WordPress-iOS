@@ -32,7 +32,7 @@ struct AppIcon {
     }
 
     /// An `AppIcon` instance representing the current icon used by the app, whether custom or default.
-    static private var currentOrDefaultIcon: AppIcon {
+    private static var currentOrDefaultIcon: AppIcon {
         if let name = UIApplication.shared.alternateIconName {
             return allIcons.first(where: { $0.name == name }) ?? defaultIcon
         } else {

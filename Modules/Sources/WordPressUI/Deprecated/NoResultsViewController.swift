@@ -62,22 +62,22 @@ import WordPressShared
 
     // MARK: - View
 
-    public override func viewDidLoad() {
+    override public func viewDidLoad() {
         super.viewDidLoad()
         WPStyleGuide.configureColors(view: view, tableView: nil)
     }
 
-    public override func viewWillAppear(_ animated: Bool) {
+    override public func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         configureView()
     }
 
-    public override func didMove(toParent parent: UIViewController?) {
+    override public func didMove(toParent parent: UIViewController?) {
         super.didMove(toParent: parent)
         configureView()
     }
 
-    public override func viewWillTransition(to size: CGSize, with coordinator: UIViewControllerTransitionCoordinator) {
+    override public func viewWillTransition(to size: CGSize, with coordinator: UIViewControllerTransitionCoordinator) {
         super.viewWillTransition(to: size, with: coordinator)
         setAccessoryViewsVisibility()
         // `traitCollectionDidChange` is not fired for iOS 16.0 + Media adding flow. The reason why the constraints update call was moved to here.
@@ -87,7 +87,7 @@ import WordPressShared
         }
     }
 
-    public override func viewDidLayoutSubviews() {
+    override public func viewDidLayoutSubviews() {
         super.viewDidLayoutSubviews()
         adjustTitleOnlyLabelHeight()
     }

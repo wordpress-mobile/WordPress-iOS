@@ -45,7 +45,7 @@ public class LockingHashMap<Value>: @unchecked Sendable {
 public class LockingTaskHashMap<T, E>: LockingHashMap<Task<T, E>>, @unchecked Sendable where T: Sendable, E: Error {
 
     @discardableResult
-    public override func removeValue(forKey key: AnyHashable) -> Task<T, E>? {
+    override public func removeValue(forKey key: AnyHashable) -> Task<T, E>? {
         lock.withLock {
             let task = self.list.removeValue(forKey: key)
             task?.cancel()
@@ -53,7 +53,7 @@ public class LockingTaskHashMap<T, E>: LockingHashMap<Task<T, E>>, @unchecked Se
         }
     }
 
-    public override func removeAll() {
+    override public func removeAll() {
         lock.withLock {
             for key in self.list.keys {
                 let task = self.list.removeValue(forKey: key)

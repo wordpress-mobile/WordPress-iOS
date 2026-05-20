@@ -526,7 +526,7 @@ class ImmuTableDiffableViewHandler: ImmuTableViewHandler {
         return diffableDataSource.itemIdentifier(for: indexPath)?.immuTableRow
     }
 
-    open override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+    override open func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         if target.responds(to: #selector(UITableViewDelegate.tableView(_:didSelectRowAt:))) {
             target.tableView?(tableView, didSelectRowAt: indexPath)
         } else if let item = item(for: indexPath) {
@@ -537,7 +537,7 @@ class ImmuTableDiffableViewHandler: ImmuTableViewHandler {
         }
     }
 
-    open override func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
+    override open func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
         if let item = item(for: indexPath), let customHeight = type(of: item).customHeight {
             return CGFloat(customHeight)
         }

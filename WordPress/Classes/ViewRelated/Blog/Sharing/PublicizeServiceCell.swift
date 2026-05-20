@@ -10,7 +10,7 @@ public final class PublicizeServiceCell: UITableViewCell {
 
     @objc public class var cellId: String { "PublicizeServiceCell" }
 
-    public override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
+    override public init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
 
         detailsLabel.font = .preferredFont(forTextStyle: .footnote)
@@ -38,7 +38,7 @@ public final class PublicizeServiceCell: UITableViewCell {
         fatalError("init(coder:) has not been implemented")
     }
 
-    public override func prepareForReuse() {
+    override public func prepareForReuse() {
         super.prepareForReuse()
 
         accessoryView = .none

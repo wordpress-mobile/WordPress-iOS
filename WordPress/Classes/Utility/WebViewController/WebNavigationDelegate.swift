@@ -14,7 +14,7 @@ class WebNavigationPolicy: NSObject {
     @objc private(set) var redirectRequest: URLRequest?
     @objc private(set) var action: WKNavigationActionPolicy = .cancel
 
-    private override init() {}
+    override private init() {}
 
     @objc static let allow: WebNavigationPolicy = {
         let policy = WebNavigationPolicy()

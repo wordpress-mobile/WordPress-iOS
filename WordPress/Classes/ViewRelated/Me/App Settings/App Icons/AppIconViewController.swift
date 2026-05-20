@@ -17,13 +17,13 @@ open class AppIconViewController: UITableViewController {
         super.init(style: .insetGrouped)
     }
 
-    required public init?(coder: NSCoder) {
+    public required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
 
     // MARK: - View Lifecycle
 
-    open override func viewDidLoad() {
+    override open func viewDidLoad() {
         super.viewDidLoad()
 
         title = NSLocalizedString("App Icon", comment: "Title of screen to change the app's icon")
@@ -44,19 +44,19 @@ open class AppIconViewController: UITableViewController {
 
     // MARK: - UITableview Data Source
 
-    open override func numberOfSections(in tableView: UITableView) -> Int {
+    override open func numberOfSections(in tableView: UITableView) -> Int {
         return icons.count
     }
 
-    open override func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
+    override open func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
         return icons[section].title
     }
 
-    open override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+    override open func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return icons[section].items.count
     }
 
-    open override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+    override open func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let icon = icons[indexPath.section][indexPath.row]
 
         let cell = tableView.dequeueReusableCell(withIdentifier: Constants.cellIdentifier, for: indexPath)
@@ -90,7 +90,7 @@ open class AppIconViewController: UITableViewController {
         return currentIconName == icon.name
     }
 
-    open override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+    override open func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         guard !iconIsSelected(for: indexPath) else {
             tableView.deselectRow(at: indexPath, animated: true)
             return

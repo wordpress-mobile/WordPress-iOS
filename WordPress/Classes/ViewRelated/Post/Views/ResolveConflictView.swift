@@ -181,7 +181,7 @@ final class ResolveConflictViewController: UIHostingController<ResolveConflictVi
         rootView.dismiss = { self.dismiss(animated: true) }
     }
 
-    @MainActor required dynamic init?(coder aDecoder: NSCoder) {
+    @MainActor dynamic required init?(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
 }

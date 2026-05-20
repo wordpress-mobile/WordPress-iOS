@@ -12,7 +12,7 @@ public class BlogDetailsSectionFooterView: UITableViewHeaderFooterView {
     }()
     private let spacerView = UIView(frame: .zero)
 
-    public override init(reuseIdentifier: String?) {
+    override public init(reuseIdentifier: String?) {
         super.init(reuseIdentifier: reuseIdentifier)
         setupSubviews()
     }

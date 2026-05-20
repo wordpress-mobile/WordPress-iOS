@@ -91,7 +91,7 @@ fileprivate extension AllDomainsListItemViewModel.Row {
 
 extension AllDomainsListItemViewModel.Row: Equatable {
 
-    static public func ==(left: Self, right: Self) -> Bool {
+    public static func ==(left: Self, right: Self) -> Bool {
         return left.name == right.name
         && left.description == right.description
         && left.expiryDate == right.expiryDate

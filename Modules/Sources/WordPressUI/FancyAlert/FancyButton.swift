@@ -109,17 +109,17 @@ open class FancyButton: UIButton {
 
     // MARK: - LifeCycle Methods
 
-    open override func didMoveToWindow() {
+    override open func didMoveToWindow() {
         super.didMoveToWindow()
         configureAppearance()
     }
 
-    open override func awakeFromNib() {
+    override open func awakeFromNib() {
         super.awakeFromNib()
         configureAppearance()
     }
 
-    open override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
+    override open func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
         super.traitCollectionDidChange(previousTraitCollection)
         configureBackgrounds()
     }
@@ -127,7 +127,7 @@ open class FancyButton: UIButton {
     // This implementation is required to allow the text of a button to
     // wrap appropriately including insets above and below.
     //
-    open override var intrinsicContentSize: CGSize {
+    override open var intrinsicContentSize: CGSize {
         guard let titleLabel else {
             return super.intrinsicContentSize
         }
@@ -143,7 +143,7 @@ open class FancyButton: UIButton {
         return size
     }
 
-    open override func layoutSubviews() {
+    override open func layoutSubviews() {
         titleLabel?.preferredMaxLayoutWidth = bounds.width
 
         super.layoutSubviews()

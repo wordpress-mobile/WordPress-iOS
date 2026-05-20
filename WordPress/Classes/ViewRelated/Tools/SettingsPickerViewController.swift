@@ -43,7 +43,7 @@ open class SettingsPickerViewController: UITableViewController {
     @objc open var onChange: ((_ enabled: Bool, _ newValue: Int) -> ())?
 
     // MARK: - View Lifecycle
-    open override func viewDidLoad() {
+    override open func viewDidLoad() {
         assert(selectionText != nil)
         assert(pickerSelectedValue != nil)
         assert(pickerMinimumValue != nil)
@@ -62,15 +62,15 @@ open class SettingsPickerViewController: UITableViewController {
     }
 
     // MARK: - UITableViewDataSoutce Methods
-    open override func numberOfSections(in tableView: UITableView) -> Int {
+    override open func numberOfSections(in tableView: UITableView) -> Int {
         return sections.count
     }
 
-    open override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+    override open func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return sections[section].count
     }
 
-    open override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+    override open func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let row = rowAtIndexPath(indexPath)
         let cell = cellForRow(row, tableView: tableView)
 
@@ -86,14 +86,14 @@ open class SettingsPickerViewController: UITableViewController {
         return cell
     }
 
-    open override func tableView(_ tableView: UITableView, titleForFooterInSection section: Int) -> String? {
+    override open func tableView(_ tableView: UITableView, titleForFooterInSection section: Int) -> String? {
         if section != sectionWithFooter || pickerHint == nil {
             return nil
         }
         return pickerHint!
     }
 
-    open override func tableView(_ tableView: UITableView, willDisplayFooterView view: UIView, forSection section: Int) {
+    override open func tableView(_ tableView: UITableView, willDisplayFooterView view: UIView, forSection section: Int) {
         WPStyleGuide.configureTableViewSectionFooter(view)
     }
 

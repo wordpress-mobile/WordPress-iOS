@@ -105,7 +105,7 @@ public class AdaptiveTabBar: UIControl {
         if #available(iOS 26, *) { 1 } else { 0.33 }
     }
 
-    public override func layoutSubviews() {
+    override public func layoutSubviews() {
         super.layoutSubviews()
 
         if previousWidth != bounds.width {

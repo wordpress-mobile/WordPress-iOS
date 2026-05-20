@@ -40,7 +40,7 @@ final class KeychainTools: NSObject {
         }
     }
 
-    static fileprivate func serviceForItem(_ item: String) -> String? {
+    fileprivate static func serviceForItem(_ item: String) -> String? {
         switch item {
         case "wordpress.com":
             return BuildSettings.current.authKeychainServiceName
@@ -51,7 +51,7 @@ final class KeychainTools: NSObject {
         }
     }
 
-    static fileprivate func removeKeychainItem(forService service: String) {
+    fileprivate static func removeKeychainItem(forService service: String) {
         let query: [NSString: AnyObject] = [
             kSecClass: kSecClassGenericPassword,
             kSecAttrService: service as AnyObject
@@ -67,7 +67,7 @@ final class KeychainTools: NSObject {
         }
     }
 
-    static fileprivate func removeAllKeychainItems() {
+    fileprivate static func removeAllKeychainItems() {
         let query: [NSString: AnyObject] = [
             kSecClass: kSecClassGenericPassword
         ]

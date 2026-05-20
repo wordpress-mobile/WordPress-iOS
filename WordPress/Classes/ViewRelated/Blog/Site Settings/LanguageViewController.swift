@@ -20,7 +20,7 @@ open class LanguageViewController: UITableViewController, LanguageSelectorDelega
         self.blog = blog
     }
 
-    open override func viewDidLoad() {
+    override open func viewDidLoad() {
         super.viewDidLoad()
 
         // Setup tableViewController
@@ -33,7 +33,7 @@ open class LanguageViewController: UITableViewController, LanguageSelectorDelega
         tableView.cellLayoutMarginsFollowReadableWidth = true
     }
 
-    open override func viewWillAppear(_ animated: Bool) {
+    override open func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
 
         tableView.reloadDataPreservingSelection()
@@ -41,15 +41,15 @@ open class LanguageViewController: UITableViewController, LanguageSelectorDelega
     }
 
     // MARK: - UITableViewDataSource Methods
-    open override func numberOfSections(in tableView: UITableView) -> Int {
+    override open func numberOfSections(in tableView: UITableView) -> Int {
         return 1
     }
 
-    open override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+    override open func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return 1
     }
 
-    open override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+    override open func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         var cell = tableView.dequeueReusableCell(withIdentifier: reuseIdentifier)
         if cell == nil {
             cell = WPTableViewCell(style: .value1, reuseIdentifier: reuseIdentifier)
@@ -62,16 +62,16 @@ open class LanguageViewController: UITableViewController, LanguageSelectorDelega
         return cell!
     }
 
-    open override func tableView(_ tableView: UITableView, titleForFooterInSection section: Int) -> String? {
+    override open func tableView(_ tableView: UITableView, titleForFooterInSection section: Int) -> String? {
         return footerText
     }
 
-    open override func tableView(_ tableView: UITableView, willDisplayFooterView view: UIView, forSection section: Int) {
+    override open func tableView(_ tableView: UITableView, willDisplayFooterView view: UIView, forSection section: Int) {
         WPStyleGuide.configureTableViewSectionFooter(view)
     }
 
     // MARK: - UITableViewDelegate Methods
-    open override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+    override open func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         pressedLanguageRow()
     }
 

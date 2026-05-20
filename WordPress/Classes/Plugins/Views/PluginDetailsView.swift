@@ -449,7 +449,7 @@ final class WordPressPluginDetailViewModel: ObservableObject {
     @Published var newVersion: UpdateCheckPluginInfo?
     @Published private(set) var error: String?
 
-    @Published private(set) fileprivate var operation: PluginOperationStatus?
+    @Published fileprivate private(set) var operation: PluginOperationStatus?
 
     var previouslyLoadedSlug: PluginWpOrgDirectorySlug?
 

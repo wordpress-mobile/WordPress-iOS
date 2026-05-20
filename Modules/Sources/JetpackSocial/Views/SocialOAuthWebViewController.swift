@@ -57,7 +57,7 @@ public final class SocialOAuthWebViewController: UIViewController, WKNavigationD
         fatalError("init(coder:) has not been implemented")
     }
 
-    public override func viewDidLoad() {
+    override public func viewDidLoad() {
         super.viewDidLoad()
 
         view.backgroundColor = .systemBackground

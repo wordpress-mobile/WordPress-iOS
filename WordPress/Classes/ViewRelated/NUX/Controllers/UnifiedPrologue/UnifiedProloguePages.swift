@@ -31,7 +31,7 @@ class UnifiedProloguePageViewController: UIViewController {
 
     private let titleLabel = UILabel()
 
-    lazy private var contentView: UIView = {
+    private lazy var contentView: UIView = {
         makeContentView()
     }()
 

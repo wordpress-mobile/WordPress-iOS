@@ -11,7 +11,7 @@ private struct CodingKeys {
 @objc public class RemoteReaderSiteInfoSubscriptionPost: NSObject {
     @objc public var sendPosts: Bool
 
-    @objc required public init(dictionary: [String: Any]) {
+    @objc public required init(dictionary: [String: Any]) {
         self.sendPosts = (dictionary[CodingKeys.sendPost] as? Bool) ?? false
         super.init()
     }
@@ -22,7 +22,7 @@ private struct CodingKeys {
     @objc public var sendComments: Bool
     @objc public var postDeliveryFrequency: String
 
-    @objc required public init(dictionary: [String: Any]) {
+    @objc public required init(dictionary: [String: Any]) {
         sendComments = (dictionary[CodingKeys.sendComments] as? Bool) ?? false
         postDeliveryFrequency = (dictionary[CodingKeys.postDeliveryFrequency] as? String) ?? ""
         super.init(dictionary: dictionary)

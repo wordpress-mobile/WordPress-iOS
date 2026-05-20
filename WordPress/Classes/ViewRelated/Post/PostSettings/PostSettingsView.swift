@@ -31,7 +31,7 @@ final class PostSettingsViewController<ViewModel: PostSettingsViewModelProtocol>
         viewModel.viewController = self
     }
 
-    @preconcurrency required dynamic init?(coder aDecoder: NSCoder) {
+    @preconcurrency dynamic required init?(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
 }

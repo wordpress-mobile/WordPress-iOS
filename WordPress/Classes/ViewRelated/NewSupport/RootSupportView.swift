@@ -205,7 +205,7 @@ class RootSupportViewController: UIHostingController<AnyView> {
         super.init(rootView: AnyView(erasing: type))
     }
 
-    @MainActor @preconcurrency required dynamic init?(coder aDecoder: NSCoder) {
+    @MainActor @preconcurrency dynamic required init?(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
 }

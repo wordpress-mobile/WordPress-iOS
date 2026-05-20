@@ -262,7 +262,7 @@ public class MediaProgressCoordinator: NSObject {
 
     // MARK: - KeyPath observer method for the global progress property
 
-    public override func observeValue(forKeyPath keyPath: String?, of object: Any?, change: [NSKeyValueChangeKey: Any]?, context: UnsafeMutableRawPointer?) {
+    override public func observeValue(forKeyPath keyPath: String?, of object: Any?, change: [NSKeyValueChangeKey: Any]?, context: UnsafeMutableRawPointer?) {
         guard
             context == &Self.mediaProgressObserverContext,
             keyPath == #keyPath(Progress.fractionCompleted)

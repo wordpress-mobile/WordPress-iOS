@@ -43,7 +43,7 @@ private enum ReaderCardDiscoverAttribution: Int {
 
     // MARK: - Lifecycle Methods
 
-    open override func awakeFromNib() {
+    override open func awakeFromNib() {
         super.awakeFromNib()
 
         // Add a tap gesture for detecting a tap on the label and acting on the current attributionAction.
@@ -172,7 +172,7 @@ private enum ReaderCardDiscoverAttribution: Int {
 
     // MARK: - Touches
 
-    open override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
+    override open func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
         super.touchesBegan(touches, with: event)
         // Add highlight if the touch begins inside of the textLabel's frame
         guard let touch: UITouch = event?.allTouches?.first else {
@@ -183,7 +183,7 @@ private enum ReaderCardDiscoverAttribution: Int {
         }
     }
 
-    open override func touchesMoved(_ touches: Set<UITouch>, with event: UIEvent?) {
+    override open func touchesMoved(_ touches: Set<UITouch>, with event: UIEvent?) {
         super.touchesMoved(touches, with: event)
         // Remove highlight if the touch moves outside of the textLabel's frame
         guard textLabel.isHighlighted else {
@@ -197,7 +197,7 @@ private enum ReaderCardDiscoverAttribution: Int {
         }
     }
 
-    open override func touchesEnded(_ touches: Set<UITouch>, with event: UIEvent?) {
+    override open func touchesEnded(_ touches: Set<UITouch>, with event: UIEvent?) {
         super.touchesEnded(touches, with: event)
         guard textLabel.isHighlighted else {
             return
@@ -205,7 +205,7 @@ private enum ReaderCardDiscoverAttribution: Int {
         textLabel.isHighlighted = false
     }
 
-    open override func touchesCancelled(_ touches: Set<UITouch>?, with event: UIEvent?) {
+    override open func touchesCancelled(_ touches: Set<UITouch>?, with event: UIEvent?) {
         super.touchesCancelled(touches!, with: event)
         guard textLabel.isHighlighted else {
             return

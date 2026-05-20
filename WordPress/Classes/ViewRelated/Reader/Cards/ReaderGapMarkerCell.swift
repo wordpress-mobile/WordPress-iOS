@@ -9,7 +9,7 @@ open class ReaderGapMarkerCell: UITableViewCell, NibLoadable {
     @IBOutlet fileprivate weak var activityView: UIActivityIndicatorView!
     @IBOutlet fileprivate weak var button: UIButton!
 
-    open override func awakeFromNib() {
+    override open func awakeFromNib() {
         super.awakeFromNib()
         applyStyles()
     }
@@ -49,7 +49,7 @@ open class ReaderGapMarkerCell: UITableViewCell, NibLoadable {
         }
     }
 
-    open override func setHighlighted(_ highlighted: Bool, animated: Bool) {
+    override open func setHighlighted(_ highlighted: Bool, animated: Bool) {
         super.setHighlighted(highlighted, animated: animated)
         button.isHighlighted = highlighted
         button.backgroundColor = highlighted ? WPStyleGuide.gapMarkerButtonBackgroundColorHighlighted() : WPStyleGuide.gapMarkerButtonBackgroundColor()

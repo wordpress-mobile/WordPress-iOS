@@ -124,7 +124,7 @@ public class Media: NSManagedObject {
 
     // MARK: - Core Data Lifecycle
 
-    public override func prepareForDeletion() {
+    override public func prepareForDeletion() {
         let fileManager = FileManager.default
         if let path = absoluteLocalURL?.path, fileManager.fileExists(atPath: path) {
             do {

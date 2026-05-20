@@ -284,9 +284,9 @@ public class AuthenticatorAnalyticsTracker {
     /// State for the analytics tracker.
     ///
     public class State {
-        internal(set) public var lastFlow: Flow
-        internal(set) public var lastSource: Source
-        internal(set) public var lastStep: Step
+        public internal(set) var lastFlow: Flow
+        public internal(set) var lastSource: Source
+        public internal(set) var lastStep: Step
 
         init(lastFlow: Flow = AuthenticatorAnalyticsTracker.defaultFlow, lastSource: Source = AuthenticatorAnalyticsTracker.defaultSource, lastStep: Step = AuthenticatorAnalyticsTracker.defaultStep) {
             self.lastFlow = lastFlow

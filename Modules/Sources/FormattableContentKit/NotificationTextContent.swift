@@ -55,11 +55,11 @@ public class NotificationTextContent: FormattableTextContent, FormattableMediaCo
     public let parent: Notifiable
     public let meta: [String: AnyObject]?
 
-    public override var text: String? {
+    override public var text: String? {
         return textOverride ?? super.text
     }
 
-    public override var kind: FormattableContentKind {
+    override public var kind: FormattableContentKind {
         if let firstMedia = media.first, firstMedia.kind == .image || firstMedia.kind == .badge {
             return .image
         }

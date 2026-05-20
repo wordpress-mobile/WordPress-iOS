@@ -27,7 +27,7 @@ class KeychainUtilsTests: XCTestCase {
 
 // MARK: - SFHFKeychainUtilsMock
 
-final private class SFHFKeychainUtilsMock: SFHFKeychainUtils {
+private final class SFHFKeychainUtilsMock: SFHFKeychainUtils {
     typealias MockKeychain = [String: [String: [String: String]]]
 
     static var keychain: MockKeychain = [:]

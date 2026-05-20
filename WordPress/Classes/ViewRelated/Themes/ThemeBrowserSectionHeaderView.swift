@@ -21,7 +21,7 @@ class ThemeBrowserSectionHeaderView: UICollectionReusableView, NibLoadable {
         }
     }
 
-    open override func awakeFromNib() {
+    override open func awakeFromNib() {
         super.awakeFromNib()
         countLabel.isHidden = true
         applyStyles()

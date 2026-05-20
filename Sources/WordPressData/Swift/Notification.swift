@@ -89,7 +89,7 @@ public class Notification: NSManagedObject {
     ///
     fileprivate static let cachedAttributes = Set(arrayLiteral: "body", "header", "subject", "timestamp")
 
-    public override func awakeFromFetch() {
+    override public func awakeFromFetch() {
         super.awakeFromFetch()
 
         if cachedAttributesObserver == nil {

@@ -107,7 +107,7 @@ public class FilterTabBar: UIControl {
     /// If selectedTitleColor is not provided, tint color will also be applied to
     /// titles of selected tabs.
     ///
-    public override var tintColor: UIColor! {
+    override public var tintColor: UIColor! {
         didSet {
             tabs.forEach({
                 $0.tintColor = tintColor
@@ -284,7 +284,7 @@ public class FilterTabBar: UIControl {
         activateTabSeparatorPlacementConstraints()
     }
 
-    public override func layoutSubviews() {
+    override public func layoutSubviews() {
         super.layoutSubviews()
 
         updateForCurrentEnvironment()
@@ -555,7 +555,7 @@ public class FilterTabBar: UIControl {
         static let initialVelocity: CGFloat = -0.5
     }
 
-    public override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
+    override public func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
         super.traitCollectionDidChange(previousTraitCollection)
 
         if isAutomaticTabSizingStyleEnabled {

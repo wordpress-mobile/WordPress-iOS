@@ -19,7 +19,7 @@ import UniformTypeIdentifiers
         self.init(frame: CGRect.zero)
     }
 
-    public override init(frame: CGRect) {
+    override public init(frame: CGRect) {
         super.init(frame: frame)
         setupSubviews()
     }
@@ -86,7 +86,7 @@ import UniformTypeIdentifiers
         }
     }
 
-    open override var backgroundColor: UIColor? {
+    override open var backgroundColor: UIColor? {
         didSet {
             textView?.backgroundColor = backgroundColor
         }
@@ -191,7 +191,7 @@ import UniformTypeIdentifiers
     }
 
     // MARK: - Overriden Methods
-    open override var intrinsicContentSize: CGSize {
+    override open var intrinsicContentSize: CGSize {
         guard let maxWidth = preferredMaxLayoutWidth else {
             return super.intrinsicContentSize
         }

@@ -19,14 +19,14 @@ open class DiscussionSettingsViewController: UITableViewController {
     }
 
     // MARK: - View Lifecycle
-    open override func viewDidLoad() {
+    override open func viewDidLoad() {
         super.viewDidLoad()
 
         setupNavBar()
         setupTableView()
     }
 
-    open override func viewWillAppear(_ animated: Bool) {
+    override open func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
 
         tableView.reloadSelectedRow()
@@ -97,15 +97,15 @@ open class DiscussionSettingsViewController: UITableViewController {
     }
 
     // MARK: - UITableViewDataSoutce Methods
-    open override func numberOfSections(in tableView: UITableView) -> Int {
+    override open func numberOfSections(in tableView: UITableView) -> Int {
         return sections.count
     }
 
-    open override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+    override open func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return sections[section].rows.count
     }
 
-    open override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+    override open func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let row = rowAtIndexPath(indexPath)
         let cell = cellForRow(row, tableView: tableView)
 
@@ -119,20 +119,20 @@ open class DiscussionSettingsViewController: UITableViewController {
         return cell
     }
 
-    open override func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
+    override open func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
         return sections[section].headerText
     }
 
-    open override func tableView(_ tableView: UITableView, titleForFooterInSection section: Int) -> String? {
+    override open func tableView(_ tableView: UITableView, titleForFooterInSection section: Int) -> String? {
         return sections[section].footerText
     }
 
-    open override func tableView(_ tableView: UITableView, willDisplayFooterView view: UIView, forSection section: Int) {
+    override open func tableView(_ tableView: UITableView, willDisplayFooterView view: UIView, forSection section: Int) {
         WPStyleGuide.configureTableViewSectionFooter(view)
     }
 
     // MARK: - UITableViewDelegate Methods
-    open override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+    override open func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         rowAtIndexPath(indexPath).handler?(tableView)
     }
 

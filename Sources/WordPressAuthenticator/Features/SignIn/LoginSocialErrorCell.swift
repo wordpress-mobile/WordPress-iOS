@@ -42,7 +42,7 @@ open class LoginSocialErrorCell: UITableViewCell {
         layoutLabels()
     }
 
-    required public init?(coder aDecoder: NSCoder) {
+    public required init?(coder aDecoder: NSCoder) {
         errorTitle = aDecoder.value(forKey: "errorTitle") as? String ?? ""
         errorDescription = aDecoder.value(forKey: "errorDescription") as? String ?? ""
         titleLabel = UILabel()

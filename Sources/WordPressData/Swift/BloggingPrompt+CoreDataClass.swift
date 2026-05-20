@@ -12,7 +12,7 @@ public class BloggingPrompt: NSManagedObject {
         return NSEntityDescription.insertNewObject(forEntityName: Self.entityName(), into: context) as? BloggingPrompt
     }
 
-    public override func awakeFromInsert() {
+    override public func awakeFromInsert() {
         self.date = .init(timeIntervalSince1970: 0)
         self.displayAvatarURLs = []
     }

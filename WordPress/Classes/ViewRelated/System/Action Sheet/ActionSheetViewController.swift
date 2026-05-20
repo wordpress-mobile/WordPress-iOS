@@ -184,7 +184,7 @@ class ActionSheetViewController: UIViewController {
         return button
     }
 
-    open override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
+    override open func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
         super.traitCollectionDidChange(previousTraitCollection)
         refreshForTraits()
     }

@@ -188,7 +188,7 @@ class DashboardPostsSyncManagerTests: CoreDataTestCase {
 
 private class SyncManagerListenerMock: NSObject, DashboardPostsSyncManagerListener {
 
-    @objc dynamic private(set) var postsSyncedCalled = false
+    @objc private(set) dynamic var postsSyncedCalled = false
     private(set) var postsSyncSuccess: Bool?
     private(set) var postsSyncBlog: Blog?
     private(set) var postsSyncType: DashboardPostsSyncManager.PostType?

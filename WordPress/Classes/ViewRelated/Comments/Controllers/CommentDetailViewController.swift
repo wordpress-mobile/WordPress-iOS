@@ -244,7 +244,7 @@ public class CommentDetailViewController: UIViewController, NoResultsViewHost {
 
     // MARK: View lifecycle
 
-    public override func viewDidLoad() {
+    override public func viewDidLoad() {
         super.viewDidLoad()
 
         configureNavigationBar()
@@ -253,7 +253,7 @@ public class CommentDetailViewController: UIViewController, NoResultsViewHost {
         refreshCommentReplyIfNeeded()
     }
 
-    public override func viewWillTransition(to size: CGSize, with coordinator: UIViewControllerTransitionCoordinator) {
+    override public func viewWillTransition(to size: CGSize, with coordinator: UIViewControllerTransitionCoordinator) {
         super.viewWillTransition(to: size, with: coordinator)
 
         // when an orientation change is triggered, recalculate the content cell's height.

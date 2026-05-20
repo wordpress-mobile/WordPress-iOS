@@ -246,7 +246,7 @@ final class DebugMenuViewController: UIHostingController<DebugMenuView> {
         navigation.parentViewController = self
     }
 
-    @MainActor required dynamic init?(coder aDecoder: NSCoder) {
+    @MainActor dynamic required init?(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
 

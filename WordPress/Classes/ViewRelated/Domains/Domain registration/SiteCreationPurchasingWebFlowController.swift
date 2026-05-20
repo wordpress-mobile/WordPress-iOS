@@ -21,7 +21,7 @@ final class SiteCreationPurchasingWebFlowController {
     // MARK: - Dependencies
 
     /// The view controller that presents the domain checkout web page.
-    weak private var presentingViewController: UIViewController?
+    private weak var presentingViewController: UIViewController?
 
     /// The service that interacts with the Backend API.
     private let shoppingCartService: ShoppingCartServiceProtocol

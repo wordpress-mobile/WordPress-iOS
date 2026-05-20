@@ -91,7 +91,7 @@ public class Blog: NSManagedObject {
 
     // MARK: - NSManagedObject Lifecycle
 
-    public override func willSave() {
+    override public func willSave() {
         super.willSave()
 
         // The `dotComID` getter has special code to _update_ `blogID` value.
@@ -102,7 +102,7 @@ public class Blog: NSManagedObject {
         _ = dotComID
     }
 
-    public override func prepareForDeletion() {
+    override public func prepareForDeletion() {
         super.prepareForDeletion()
 
         // Delete stored password in the keychain for self-hosted sites.
@@ -126,7 +126,7 @@ public class Blog: NSManagedObject {
         }
     }
 
-    public override func didTurnIntoFault() {
+    override public func didTurnIntoFault() {
         super.didTurnIntoFault()
 
         xmlrpcApi = nil

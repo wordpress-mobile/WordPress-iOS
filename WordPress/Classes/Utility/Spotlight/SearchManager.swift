@@ -10,7 +10,7 @@ import WordPressData
     // MARK: - Singleton
 
     @objc static let shared = SearchManager()
-    private override init() {}
+    override private init() {}
 
     // MARK: - Indexing
 

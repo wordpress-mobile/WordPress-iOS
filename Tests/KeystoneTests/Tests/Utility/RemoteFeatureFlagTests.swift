@@ -80,7 +80,7 @@ class MockFeatureFlagRemote: FeatureFlagRemote {
         super.init()
     }
 
-    public override func getRemoteFeatureFlags(forDeviceId deviceId: String, callback: @escaping FeatureFlagResponseCallback) {
+    override public func getRemoteFeatureFlags(forDeviceId deviceId: String, callback: @escaping FeatureFlagResponseCallback) {
         deviceIdCallback?(deviceId)
         callback(.success(flags))
     }

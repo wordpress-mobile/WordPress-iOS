@@ -139,7 +139,7 @@ extension WPTabBarController {
         return true
     }
 
-    open override var supportedInterfaceOrientations: UIInterfaceOrientationMask {
+    override open var supportedInterfaceOrientations: UIInterfaceOrientationMask {
         guard let selectedViewController else {
             return super.supportedInterfaceOrientations
         }

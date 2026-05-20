@@ -36,7 +36,7 @@ class GutenGhostView: UIView {
         }
     }
 
-    @IBOutlet weak private var inserterView: UIView! {
+    @IBOutlet private weak var inserterView: UIView! {
         didSet {
             inserterView.layer.cornerRadius = inserterView.frame.height / 2
             inserterView.clipsToBounds = true

@@ -11,7 +11,7 @@ public class FormattableCommentContent: NotificationTextContent {
         return isActionOn(id: identifier) || !isActionEnabled(id: identifier)
     }
 
-    public override var kind: FormattableContentKind {
+    override public var kind: FormattableContentKind {
         return .comment
     }
 

@@ -29,7 +29,7 @@ class StatsLatestPostSummaryInsightsCell: StatsBaseCell, LatestPostSummaryConfig
 
     // MARK: - Initialization
 
-    required override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
+    override required init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
 
         configureView()

@@ -365,7 +365,7 @@ extension RegisterDomainDetailsViewController {
 
     // MARK: Section Header Footer
 
-    open override func tableView(_ tableView: UITableView, viewForFooterInSection section: Int) -> UIView? {
+    override open func tableView(_ tableView: UITableView, viewForFooterInSection section: Int) -> UIView? {
         guard let sectionType = SectionIndex(rawValue: section) else {
             return nil
         }
@@ -377,7 +377,7 @@ extension RegisterDomainDetailsViewController {
         }
     }
 
-    open override func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
+    override open func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
         guard let sectionType = SectionIndex(rawValue: section) else {
             return nil
         }
@@ -392,7 +392,7 @@ extension RegisterDomainDetailsViewController {
         return nil
     }
 
-    open override func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
+    override open func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
         guard let sectionType = SectionIndex(rawValue: section) else {
             return nil
         }

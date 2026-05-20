@@ -13,7 +13,7 @@ public class ReaderPost: BasePost {
     /// Used for tracking when a post is rendered (displayed), and bumping the train tracks rendered event.
     public var rendered: Bool = false
 
-    public override func didSave() {
+    override public func didSave() {
         super.didSave()
 
         // A ReaderCard can have either a post, or a list of topics, but not both.
@@ -57,7 +57,7 @@ extension ReaderPost {
         return URL(string: blogURL ?? "")?.host
     }
 
-    public override func titleForDisplay() -> String {
+    override public func titleForDisplay() -> String {
         let title = postTitle?.trimmingCharacters(in: .whitespaces).stringByDecodingXMLCharacters()
         guard let title, !title.isEmpty else {
             return ""

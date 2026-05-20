@@ -85,13 +85,13 @@ public class WPAccount: NSManagedObject {
 
     // MARK: - Entity Name
 
-    @objc public override class func entityName() -> String {
+    @objc override public class func entityName() -> String {
         return "Account"
     }
 
     // MARK: - Lifecycle
 
-    public override func prepareForDeletion() {
+    override public func prepareForDeletion() {
         super.prepareForDeletion()
 
         // Only do these deletions in the primary context (no parent)
@@ -102,7 +102,7 @@ public class WPAccount: NSManagedObject {
         }
     }
 
-    public override func didTurnIntoFault() {
+    override public func didTurnIntoFault() {
         super.didTurnIntoFault()
         _private_wordPressComRestApi = nil
         cachedToken = nil

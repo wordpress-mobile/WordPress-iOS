@@ -3,7 +3,7 @@ import CoreData
 import Combine
 
 public final class ManagedObjectsObserver<T: NSManagedObject>: NSObject, NSFetchedResultsControllerDelegate {
-    @Published private(set) public var objects: [T] = []
+    @Published public private(set) var objects: [T] = []
 
     private let controller: NSFetchedResultsController<T>
 

@@ -39,7 +39,7 @@ open class LoginViewController: NUXViewController, LoginFacadeDelegate {
         return delegate
     }
 
-    open override var preferredStatusBarStyle: UIStatusBarStyle {
+    override open var preferredStatusBarStyle: UIStatusBarStyle {
         // Set to the old style as the default.
         // Each VC in the unified flows needs to override this to use the unified style.
         return WordPressAuthenticator.shared.style.statusBarStyle
@@ -172,7 +172,7 @@ open class LoginViewController: NUXViewController, LoginFacadeDelegate {
     }
 
     // MARK: SigninWPComSyncHandler methods
-    dynamic open func finishedLogin(withAuthToken authToken: String, requiredMultifactorCode: Bool) {
+    open dynamic func finishedLogin(withAuthToken authToken: String, requiredMultifactorCode: Bool) {
         let wpcom = WordPressComCredentials(authToken: authToken, isJetpackLogin: isJetpackLogin, multifactor: requiredMultifactorCode, siteURL: loginFields.siteAddress)
         let credentials = AuthenticatorCredentials(wpcom: wpcom)
 
@@ -186,7 +186,7 @@ open class LoginViewController: NUXViewController, LoginFacadeDelegate {
     }
 
     /// Overridden here to direct these errors to the login screen's error label
-    dynamic open func displayRemoteError(_ error: Error) {
+    open dynamic func displayRemoteError(_ error: Error) {
         configureViewLoading(false)
         let err = error as NSError
         guard err.code != 403 else {
@@ -350,7 +350,7 @@ extension LoginViewController {
 //
 extension LoginViewController {
 
-    open override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
+    override open func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
         super.traitCollectionDidChange(previousTraitCollection)
 
         // Update Dynamic Type
@@ -362,7 +362,7 @@ extension LoginViewController {
         setTableViewMargins(forWidth: view.frame.width)
     }
 
-    open override func viewWillTransition(to size: CGSize, with coordinator: UIViewControllerTransitionCoordinator) {
+    override open func viewWillTransition(to size: CGSize, with coordinator: UIViewControllerTransitionCoordinator) {
         super.viewWillTransition(to: size, with: coordinator)
         setTableViewMargins(forWidth: size.width)
     }

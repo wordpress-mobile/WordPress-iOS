@@ -13,7 +13,7 @@ class ExpandableCell: WPReusableTableViewCell, NibLoadable {
         setupSubviews()
     }
 
-    public required override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
+    override public required init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
         setupSubviews()
     }

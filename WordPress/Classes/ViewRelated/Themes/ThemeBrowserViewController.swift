@@ -60,11 +60,11 @@ public protocol ThemePresenter: AnyObject {
 
 /// Invalidates the layout whenever the collection view's bounds change
 @objc open class ThemeBrowserCollectionViewLayout: UICollectionViewFlowLayout {
-    open override func shouldInvalidateLayout(forBoundsChange newBounds: CGRect) -> Bool {
+    override open func shouldInvalidateLayout(forBoundsChange newBounds: CGRect) -> Bool {
         return shouldInvalidateForNewBounds(newBounds)
     }
 
-    open override func invalidationContext(forBoundsChange newBounds: CGRect) -> UICollectionViewFlowLayoutInvalidationContext {
+    override open func invalidationContext(forBoundsChange newBounds: CGRect) -> UICollectionViewFlowLayoutInvalidationContext {
         let context = super.invalidationContext(forBoundsChange: newBounds) as! UICollectionViewFlowLayoutInvalidationContext
         context.invalidateFlowLayoutDelegateMetrics = shouldInvalidateForNewBounds(newBounds)
 
@@ -295,7 +295,7 @@ public protocol ThemePresenter: AnyObject {
 
     // MARK: - UIViewController
 
-    open override func viewDidLoad() {
+    override open func viewDidLoad() {
         super.viewDidLoad()
 
         collectionView.delegate = self
@@ -332,13 +332,13 @@ public protocol ThemePresenter: AnyObject {
         collectionView.register(ThemeBrowserSectionHeaderView.defaultNib, forSupplementaryViewOfKind: UICollectionView.elementKindSectionHeader, withReuseIdentifier: ThemeBrowserViewController.reuseIdentifierForCustomThemesHeader)
     }
 
-    open override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
+    override open func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
         super.traitCollectionDidChange(previousTraitCollection)
 
         collectionView?.collectionViewLayout.invalidateLayout()
     }
 
-    open override func viewWillAppear(_ animated: Bool) {
+    override open func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
 
         registerForKeyboardNotifications()
@@ -362,7 +362,7 @@ public protocol ThemePresenter: AnyObject {
         }
     }
 
-    open override func viewDidAppear(_ animated: Bool) {
+    override open func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
 
         if isFirstAppearance {
@@ -371,7 +371,7 @@ public protocol ThemePresenter: AnyObject {
         }
     }
 
-    open override func viewWillDisappear(_ animated: Bool) {
+    override open func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
 
         unregisterForKeyboardNotifications()

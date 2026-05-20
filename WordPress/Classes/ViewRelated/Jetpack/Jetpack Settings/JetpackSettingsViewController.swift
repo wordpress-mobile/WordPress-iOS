@@ -36,7 +36,7 @@ open class JetpackSettingsViewController: UITableViewController {
 
     // MARK: - View Lifecycle
 
-    open override func viewDidLoad() {
+    override open func viewDidLoad() {
         super.viewDidLoad()
         WPAnalytics.trackEvent(.jetpackSettingsViewed)
         title = NSLocalizedString("Settings", comment: "Title for the Jetpack Security Settings Screen")
@@ -46,14 +46,14 @@ open class JetpackSettingsViewController: UITableViewController {
         reloadViewModel()
     }
 
-    open override func viewWillAppear(_ animated: Bool) {
+    override open func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         tableView.reloadSelectedRow()
         tableView.deselectSelectedRowWithAnimation(true)
         refreshSettings()
     }
 
-    open override func viewWillDisappear(_ animated: Bool) {
+    override open func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
     }
 
@@ -157,14 +157,14 @@ open class JetpackSettingsViewController: UITableViewController {
 
     // MARK: Learn More footer
 
-    open override func tableView(_ tableView: UITableView, heightForFooterInSection section: Int) -> CGFloat {
+    override open func tableView(_ tableView: UITableView, heightForFooterInSection section: Int) -> CGFloat {
         if section == JetpackSettingsViewController.wordPressLoginSection {
             return JetpackSettingsViewController.footerHeight
         }
         return 0.0
     }
 
-    open override func tableView(_ tableView: UITableView, viewForFooterInSection section: Int) -> UIView? {
+    override open func tableView(_ tableView: UITableView, viewForFooterInSection section: Int) -> UIView? {
         if section == JetpackSettingsViewController.wordPressLoginSection {
             let footer = UITableViewHeaderFooterView(frame: CGRect(x: 0.0,
                                                                    y: 0.0,

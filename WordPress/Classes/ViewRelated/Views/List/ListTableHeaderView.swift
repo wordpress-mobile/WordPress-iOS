@@ -33,7 +33,7 @@ public class ListTableHeaderView: UITableViewHeaderFooterView, NibReusable {
 
     // MARK: Initialization
 
-    public override func awakeFromNib() {
+    override public func awakeFromNib() {
         super.awakeFromNib()
 
         // Hide text label to prevent values being shown due to interaction with

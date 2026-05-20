@@ -6,7 +6,7 @@ public class AsyncBlockOperation: AsyncOperation, @unchecked Sendable {
         self.block = block
     }
 
-    public override func main() {
+    override public func main() {
         self.block { [weak self] in
             self?.state = .isFinished
         }

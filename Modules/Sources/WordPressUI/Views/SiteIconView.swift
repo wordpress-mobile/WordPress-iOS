@@ -120,7 +120,7 @@ public struct SiteIconViewModel {
 public final class SiteIconHostingView: UIView {
     private let viewModel = SiteIconHostingViewModel()
 
-    public override init(frame: CGRect) {
+    override public init(frame: CGRect) {
         super.init(frame: frame)
 
         let host = UIHostingController(rootView: _SiteIconHostingView(viewModel: viewModel))

@@ -23,7 +23,7 @@ public final class ReaderPresenter: NSObject, SplitViewDisplayable {
 
     private var selectionObserver: AnyCancellable?
 
-    public convenience override init() {
+    override public convenience init() {
         self.init(viewModel: ReaderSidebarViewModel())
     }
 

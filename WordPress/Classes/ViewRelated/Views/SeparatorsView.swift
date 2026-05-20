@@ -58,7 +58,7 @@ open class SeparatorsView: UIView {
             setNeedsDisplay()
         }
     }
-    open override var frame: CGRect {
+    override open var frame: CGRect {
         didSet {
             setNeedsDisplay()
         }
@@ -69,16 +69,16 @@ open class SeparatorsView: UIView {
         self.init(frame: CGRect.zero)
     }
 
-    required override public init(frame: CGRect) {
+    override public required init(frame: CGRect) {
         super.init(frame: frame)
         setupView()
     }
-    required public init(coder aDecoder: NSCoder) {
+    public required init(coder aDecoder: NSCoder) {
         super.init(coder: aDecoder)!
         setupView()
     }
 
-    open override func draw(_ rect: CGRect) {
+    override open func draw(_ rect: CGRect) {
         super.draw(rect)
 
         let scale = UIScreen.main.scale

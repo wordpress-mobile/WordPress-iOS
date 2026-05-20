@@ -15,7 +15,7 @@ public class MeViewController: UITableViewController {
 
     // MARK: - Table View Controller
 
-    public override init(style: UITableView.Style) {
+    override public init(style: UITableView.Style) {
         super.init(style: style)
         navigationItem.title = NSLocalizedString("Me", comment: "Me page title")
         clearsSelectionOnViewWillAppear = false
@@ -32,7 +32,7 @@ public class MeViewController: UITableViewController {
         fatalError("init(coder:) has not been implemented")
     }
 
-    public override func viewDidLoad() {
+    override public func viewDidLoad() {
         super.viewDidLoad()
 
         if isSidebarModeEnabled {
@@ -62,26 +62,26 @@ public class MeViewController: UITableViewController {
         reloadViewModel()
     }
 
-    public override func viewDidLayoutSubviews() {
+    override public func viewDidLayoutSubviews() {
         super.viewDidLayoutSubviews()
 
         tableView.layoutHeaderView()
     }
 
-    public override func viewWillAppear(_ animated: Bool) {
+    override public func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
 
         refreshAccountDetailsAndSettings()
         animateDeselectionInteractively()
     }
 
-    public override func viewDidAppear(_ animated: Bool) {
+    override public func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
 
         registerUserActivity()
     }
 
-    public override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
+    override public func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
         super.traitCollectionDidChange(previousTraitCollection)
 
         // Required to update the tableview cell disclosure indicators
@@ -240,7 +240,7 @@ public class MeViewController: UITableViewController {
 
     // MARK: - UITableViewDelegate
 
-    public override func tableView(_ tableView: UITableView, willSelectRowAt indexPath: IndexPath) -> IndexPath? {
+    override public func tableView(_ tableView: UITableView, willSelectRowAt indexPath: IndexPath) -> IndexPath? {
         let isNewSelection = (indexPath != tableView.indexPathForSelectedRow)
 
         if isNewSelection {
@@ -626,7 +626,7 @@ extension MeViewController: ShareAppContentPresenterDelegate {
 // MARK: - Jetpack powered badge
 extension MeViewController {
 
-    public override func tableView(_ tableView: UITableView, viewForFooterInSection section: Int) -> UIView? {
+    override public func tableView(_ tableView: UITableView, viewForFooterInSection section: Int) -> UIView? {
         guard section == handler.viewModel.sections.count - 1,
               JetpackBrandingVisibility.all.enabled else {
             return nil

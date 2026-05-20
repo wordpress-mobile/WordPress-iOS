@@ -12,7 +12,7 @@ import BuildSettingsKit
     private var cachedAnonymousUserID: String?
     private var cachedCurrentUserID: String?
 
-    @objc convenience public override init() {
+    @objc override public convenience init() {
         let settings = BuildSettings.current
         self.init(
             eventNamePrefix: WPAnalyticsTesting.eventNamePrefix ?? settings.eventNamePrefix,

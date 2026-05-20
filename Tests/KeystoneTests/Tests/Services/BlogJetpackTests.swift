@@ -11,15 +11,15 @@ class BlogJetpackTests: CoreDataTestCase {
 
     private let timeout: TimeInterval = 2.0
 
-    lazy private var blog: Blog = {
+    private lazy var blog: Blog = {
         makeBlog()
     }()
 
-    lazy private var accountService: AccountService = {
+    private lazy var accountService: AccountService = {
         .init(coreDataStack: contextManager)
     }()
 
-    lazy private var blogService: BlogService = {
+    private lazy var blogService: BlogService = {
         .init(coreDataStack: contextManager)
     }()
 

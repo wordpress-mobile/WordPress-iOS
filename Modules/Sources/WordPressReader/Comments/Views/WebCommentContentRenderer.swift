@@ -38,7 +38,7 @@ public final class WebCommentContentRenderer: NSObject, CommentContentRenderer {
     private var isReloadNeeded = false
 
     // MARK: Methods
-    public override init() {
+    override public init() {
         super.init()
 
         webView.isInspectable = true

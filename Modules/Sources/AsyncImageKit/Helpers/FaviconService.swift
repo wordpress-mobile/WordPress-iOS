@@ -4,7 +4,7 @@ import UIKit
 public actor FaviconService {
     public static let shared = FaviconService()
 
-    private nonisolated let cache = FaviconCache()
+    nonisolated private let cache = FaviconCache()
 
     private let session = URLSession(configuration: {
         let configuration = URLSessionConfiguration.default

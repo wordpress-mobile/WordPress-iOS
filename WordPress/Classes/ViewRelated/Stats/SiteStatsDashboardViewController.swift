@@ -160,7 +160,7 @@ public class SiteStatsDashboardViewController: UIViewController {
         navigationItemObserver?.invalidate()
     }
 
-    public override func viewDidLoad() {
+    override public func viewDidLoad() {
         super.viewDidLoad()
 
         // Important to make navigation bar match the filter bar
@@ -179,13 +179,13 @@ public class SiteStatsDashboardViewController: UIViewController {
         containerView.pinEdges()
     }
 
-    public override func viewWillAppear(_ animated: Bool) {
+    override public func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         addWillEnterForegroundObserver()
         JetpackFeaturesRemovalCoordinator.presentOverlayIfNeeded(in: self, source: .stats)
     }
 
-    public override func viewDidAppear(_ animated: Bool) {
+    override public func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
 
         NewStatsAnnouncementPresenter.presentIfNeeded(in: self) { [weak self] in
@@ -332,12 +332,12 @@ public class SiteStatsDashboardViewController: UIViewController {
         present(SubmitFeedbackViewController(source: "new_stats", feedbackPrefix: "Stats"), animated: true)
     }
 
-    public override func viewWillDisappear(_ animated: Bool) {
+    override public func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
         removeWillEnterForegroundObserver()
     }
 
-    public override func viewWillTransition(to size: CGSize, with coordinator: UIViewControllerTransitionCoordinator) {
+    override public func viewWillTransition(to size: CGSize, with coordinator: UIViewControllerTransitionCoordinator) {
         if traitCollection.verticalSizeClass == .regular, traitCollection.horizontalSizeClass == .compact {
             updatePeriodView(oldSelectedTab: currentSelectedTab)
         }

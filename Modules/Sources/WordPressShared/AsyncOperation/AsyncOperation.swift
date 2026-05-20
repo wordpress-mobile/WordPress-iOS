@@ -3,7 +3,7 @@ open class AsyncOperation: Operation, @unchecked Sendable {
         case isReady, isExecuting, isFinished
     }
 
-    public override var isAsynchronous: Bool {
+    override public var isAsynchronous: Bool {
         return true
     }
 
@@ -18,15 +18,15 @@ open class AsyncOperation: Operation, @unchecked Sendable {
         }
     }
 
-    public override var isExecuting: Bool {
+    override public var isExecuting: Bool {
         return state == .isExecuting
     }
 
-    public override var isFinished: Bool {
+    override public var isFinished: Bool {
         return state == .isFinished
     }
 
-    public override func start() {
+    override public func start() {
         if isCancelled {
             state = .isFinished
             return

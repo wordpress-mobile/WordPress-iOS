@@ -22,7 +22,7 @@ open class ReaderTagTopic: ReaderAbstractTopic {
     }
 
     /// Creates a new ReaderTagTopic object from a RemoteReaderInterest
-    convenience public init(remoteInterest: RemoteReaderInterest, context: NSManagedObjectContext, isFollowing: Bool = false) {
+    public convenience init(remoteInterest: RemoteReaderInterest, context: NSManagedObjectContext, isFollowing: Bool = false) {
         self.init(context: context)
 
         title = remoteInterest.title

@@ -23,7 +23,7 @@ public struct AppEnvironment {
 
     /// The current environment. Use this to access the app globals.
     ///
-    public static private(set) var current = AppEnvironment()
+    public private(set) static var current = AppEnvironment()
 
     // MARK: - Initialization
 

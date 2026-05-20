@@ -76,7 +76,7 @@ public class ListTableViewCell: UITableViewCell, NibReusable {
 
     // MARK: Initialization
 
-    public override func awakeFromNib() {
+    override public func awakeFromNib() {
         super.awakeFromNib()
         configureSubviews()
     }

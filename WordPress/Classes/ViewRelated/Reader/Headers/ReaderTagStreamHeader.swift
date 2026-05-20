@@ -34,7 +34,7 @@ final class ReaderTagStreamHeader: ReaderBaseHeaderView, ReaderStreamHeader {
         WPStyleGuide.applyReaderStreamHeaderTitleStyle(titleLabel)
     }
 
-    public override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
+    override public func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
         super.traitCollectionDidChange(previousTraitCollection)
 
         if traitCollection.hasDifferentColorAppearance(comparedTo: previousTraitCollection) {

@@ -30,7 +30,7 @@ public class ContextManager: NSObject, CoreDataStack, CoreDataStackSwift {
         persistentContainer.viewContext
     }
 
-    convenience override init() {
+    override convenience init() {
         self.init(modelName: ContextManagerModelNameCurrent, store: Self.localDatabasePath)
     }
 

@@ -50,7 +50,7 @@ extension AccountServiceRemoteREST {
     ///     - email Email from Apple account.
     ///     - fullName User's full name from Apple account.
     /// - Returns: Dictionary with endpoint parameters, to be used when connecting to social service.
-    static public func appleSignInParameters(email: String, fullName: String) -> [String: AnyObject] {
+    public static func appleSignInParameters(email: String, fullName: String) -> [String: AnyObject] {
         return [
             "user_email": email as AnyObject,
             "user_name": fullName as AnyObject

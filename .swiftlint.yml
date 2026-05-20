@@ -77,6 +77,9 @@ only_rules:
   # MARK comment should be in valid format.
   - mark
 
+  # Modifier order should be consistent.
+  - modifier_order
+
   # Opening braces should be preceded by a single space and on the same line as
   # the declaration.
   - opening_brace

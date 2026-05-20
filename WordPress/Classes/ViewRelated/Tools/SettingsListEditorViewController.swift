@@ -25,7 +25,7 @@ open class SettingsListEditorViewController: UITableViewController {
     }
 
     // MARK: - View Lifecycle
-    open override func viewDidLoad() {
+    override open func viewDidLoad() {
         super.viewDidLoad()
         setupNavBar()
         setupTableView()
@@ -64,17 +64,17 @@ open class SettingsListEditorViewController: UITableViewController {
     }
 
     // MARK: - UITableViewDataSoutce Methods
-    open override func numberOfSections(in tableView: UITableView) -> Int {
+    override open func numberOfSections(in tableView: UITableView) -> Int {
         return 1
     }
 
-    open override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+    override open func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         // Note:
         // We'll always render, at least, one row, with the Empty State text
         return max(rows.count, 1)
     }
 
-    open override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+    override open func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: reuseIdentifier)!
 
         WPStyleGuide.configureTableViewCell(cell)
@@ -86,15 +86,15 @@ open class SettingsListEditorViewController: UITableViewController {
         return cell
     }
 
-    open override func tableView(_ tableView: UITableView, titleForFooterInSection section: Int) -> String? {
+    override open func tableView(_ tableView: UITableView, titleForFooterInSection section: Int) -> String? {
         return footerText
     }
 
-    open override func tableView(_ tableView: UITableView, willDisplayFooterView view: UIView, forSection section: Int) {
+    override open func tableView(_ tableView: UITableView, willDisplayFooterView view: UIView, forSection section: Int) {
         WPStyleGuide.configureTableViewSectionFooter(view)
     }
 
-    open override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+    override open func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         tableView.deselectSelectedRowWithAnimation(true)
 
         // Empty State
@@ -117,16 +117,16 @@ open class SettingsListEditorViewController: UITableViewController {
         navigationController?.pushViewController(settingsViewController, animated: true)
     }
 
-    open override func tableView(_ tableView: UITableView, canEditRowAt indexPath: IndexPath) -> Bool {
+    override open func tableView(_ tableView: UITableView, canEditRowAt indexPath: IndexPath) -> Bool {
         return isEmpty() == false
     }
 
-    open override func tableView(_ tableView: UITableView,
+    override open func tableView(_ tableView: UITableView,
                                  editingStyleForRowAt indexPath: IndexPath) -> UITableViewCell.EditingStyle {
         return .delete
     }
 
-    open override func tableView(_ tableView: UITableView,
+    override open func tableView(_ tableView: UITableView,
                                  commit editingStyle: UITableViewCell.EditingStyle,
                                  forRowAt indexPath: IndexPath) {
         // Nuke it from the collection

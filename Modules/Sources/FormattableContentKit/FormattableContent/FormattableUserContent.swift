@@ -1,7 +1,7 @@
 import Foundation
 
 public class FormattableUserContent: NotificationTextContent {
-    public override var kind: FormattableContentKind {
+    override public var kind: FormattableContentKind {
         return .user
     }
 

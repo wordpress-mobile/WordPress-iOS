@@ -45,7 +45,7 @@ import Foundation
         return version.compare(JetpackState.minimumVersionRequired, options: .numeric) != .orderedAscending
     }
 
-    public override var description: String {
+    override public var description: String {
         if isConnected {
             let connectedAs = connectedUsername?.nonEmptyString()
                 ?? connectedEmail?.nonEmptyString()

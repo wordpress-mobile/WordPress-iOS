@@ -338,7 +338,7 @@ class DateValueFormatter: NSObject, AxisValueFormatter {
     var dateFormatter: DateFormatter
     var xAxisDates: [Date] = []
 
-    public override init() {
+    override public init() {
         dateFormatter = DateFormatter()
         dateFormatter.dateFormat = "MMM d"
     }

@@ -15,7 +15,7 @@ public final class ImagePrefetcher {
         }
     }
 
-    public nonisolated init(
+    nonisolated public init(
         downloader: ImageDownloader = .shared,
         maxConcurrentTasks: Int = 2
     ) {
@@ -23,7 +23,7 @@ public final class ImagePrefetcher {
         self.maxConcurrentTasks = maxConcurrentTasks
     }
 
-    public nonisolated func startPrefetching(for requests: [ImageRequest]) {
+    nonisolated public func startPrefetching(for requests: [ImageRequest]) {
         Task { @ImageDownloaderActor in
             for request in requests {
                 startPrefetching(for: request)
@@ -67,7 +67,7 @@ public final class ImagePrefetcher {
         performPendingTasks()
     }
 
-    public nonisolated func stopPrefetching(for requests: [ImageRequest]) {
+    nonisolated public func stopPrefetching(for requests: [ImageRequest]) {
         Task { @ImageDownloaderActor in
             for request in requests {
                 stopPrefetching(for: request)
@@ -83,7 +83,7 @@ public final class ImagePrefetcher {
         }
     }
 
-    public nonisolated func stopAll() {
+    nonisolated public func stopAll() {
         Task { @ImageDownloaderActor in
             for (_, value) in queue {
                 value.task?.cancel()

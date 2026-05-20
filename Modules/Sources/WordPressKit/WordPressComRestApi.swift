@@ -113,11 +113,11 @@ open class WordPressComRestApi: NSObject {
 
     // MARK: WordPressComRestApi
 
-    @objc convenience public init(oAuthToken: String? = nil, userAgent: String? = nil) {
+    @objc public convenience init(oAuthToken: String? = nil, userAgent: String? = nil) {
         self.init(oAuthToken: oAuthToken, userAgent: userAgent, backgroundUploads: false, backgroundSessionIdentifier: WordPressComRestApi.defaultBackgroundSessionIdentifier)
     }
 
-    @objc convenience public init(oAuthToken: String? = nil, userAgent: String? = nil, baseURL: URL = WordPressComRestApi.apiBaseURL) {
+    @objc public convenience init(oAuthToken: String? = nil, userAgent: String? = nil, baseURL: URL = WordPressComRestApi.apiBaseURL) {
         self.init(oAuthToken: oAuthToken, userAgent: userAgent, backgroundUploads: false, backgroundSessionIdentifier: WordPressComRestApi.defaultBackgroundSessionIdentifier, baseURL: baseURL)
     }
 
@@ -586,13 +586,13 @@ extension WordPressComRestApi {
 
     /// Returns an API object without an OAuth token defined & with the userAgent set for the WordPress App user agent
     ///
-    @objc class public func anonymousApi(userAgent: String) -> WordPressComRestApi {
+    @objc public class func anonymousApi(userAgent: String) -> WordPressComRestApi {
         return WordPressComRestApi(oAuthToken: nil, userAgent: userAgent)
     }
 
     /// Returns an API object without an OAuth token defined & with both the userAgent & localeKey set for the WordPress App user agent
     ///
-    @objc class public func anonymousApi(userAgent: String, localeKey: String) -> WordPressComRestApi {
+    @objc public class func anonymousApi(userAgent: String, localeKey: String) -> WordPressComRestApi {
         return WordPressComRestApi(oAuthToken: nil, userAgent: userAgent, localeKey: localeKey)
     }
 }

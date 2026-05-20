@@ -73,11 +73,11 @@ class MediaVideoExporter: MediaExporter {
         self.filename = filename
     }
 
-    convenience public init(url: URL) {
+    public convenience init(url: URL) {
         self.init(url: url, session: nil, filename: url.lastPathComponent)
     }
 
-    convenience public init(session: AVAssetExportSession, filename: String? = nil) {
+    public convenience init(session: AVAssetExportSession, filename: String? = nil) {
         self.init(url: nil, session: session, filename: filename)
     }
 

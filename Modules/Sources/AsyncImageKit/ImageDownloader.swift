@@ -5,9 +5,9 @@ import AVFoundation
 /// The system that downloads and caches images, and prepares them for display.
 @ImageDownloaderActor
 public final class ImageDownloader {
-    public nonisolated static let shared = ImageDownloader()
+    nonisolated public static let shared = ImageDownloader()
 
-    private nonisolated let cache: MemoryCacheProtocol
+    nonisolated private let cache: MemoryCacheProtocol
 
     private let urlSession = URLSession {
         $0.urlCache = nil
@@ -23,7 +23,7 @@ public final class ImageDownloader {
 
     private var tasks: [String: ImageDataTask] = [:]
 
-    public nonisolated init(
+    nonisolated public init(
         cache: MemoryCacheProtocol = MemoryCache.shared
     ) {
         self.cache = cache
@@ -112,7 +112,7 @@ public final class ImageDownloader {
         cache[makeKey(for: imageURL, size: size)] = image
     }
 
-    private nonisolated func makeKey(for imageURL: URL?, size: ImageSize?) -> String {
+    nonisolated private func makeKey(for imageURL: URL?, size: ImageSize?) -> String {
         guard let imageURL else {
             assertionFailure("The request.url was nil") // This should never happen
             return ""
@@ -150,7 +150,7 @@ public final class ImageDownloader {
         return try await task.getData(subscriptionID: subscriptionID)
     }
 
-    fileprivate nonisolated func unsubscribe(_ subscriptionID: UUID, key: String) {
+    nonisolated fileprivate func unsubscribe(_ subscriptionID: UUID, key: String) {
         Task {
             await _unsubscribe(subscriptionID, key: key)
         }

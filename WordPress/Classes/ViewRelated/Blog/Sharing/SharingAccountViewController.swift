@@ -36,12 +36,12 @@ import WordPressUI
         navigationItem.title = publicizeService.label
     }
 
-    required public init?(coder aDecoder: NSCoder) {
+    public required init?(coder aDecoder: NSCoder) {
         // TODO:
         fatalError("init(coder:) has not been implemented")
     }
 
-    open override func viewDidLoad() {
+    override open func viewDidLoad() {
         super.viewDidLoad()
 
         configureNavbar()

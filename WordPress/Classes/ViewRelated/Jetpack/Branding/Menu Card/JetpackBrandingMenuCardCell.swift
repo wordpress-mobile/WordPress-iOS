@@ -135,7 +135,7 @@ public class JetpackBrandingMenuCardCell: UITableViewCell {
 
     // MARK: Initializers
 
-    public override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
+    override public init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
         commonInit()
     }
@@ -151,7 +151,7 @@ public class JetpackBrandingMenuCardCell: UITableViewCell {
 
     // MARK: Cell Lifecycle
 
-    public override func prepareForReuse() {
+    override public func prepareForReuse() {
         super.prepareForReuse()
 
         containerStackView.removeAllSubviews()

@@ -4,7 +4,7 @@ import ObjectiveC
 import NSURL_IDN
 import WordPressShared
 
-private nonisolated(unsafe) var blogKeychainKey: UInt8 = 0
+nonisolated(unsafe) private var blogKeychainKey: UInt8 = 0
 
 extension Blog {
 

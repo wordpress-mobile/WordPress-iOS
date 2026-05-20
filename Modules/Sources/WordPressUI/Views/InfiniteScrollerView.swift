@@ -47,7 +47,7 @@ public final class InfiniteScrollView: UIScrollView {
         return stackView.arrangedSubviews[0].frame.size.height
     }
 
-    public override init(frame: CGRect) {
+    override public init(frame: CGRect) {
         guard viewBuilder != nil else {
             fatalError("this class must be initialized using init(frame:viewBuilder:)")
         }

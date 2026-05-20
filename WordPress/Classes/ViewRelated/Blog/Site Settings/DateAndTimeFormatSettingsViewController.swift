@@ -42,7 +42,7 @@ open class DateAndTimeFormatSettingsViewController: UITableViewController {
 
     // MARK: - View Lifecycle
 
-    open override func viewDidLoad() {
+    override open func viewDidLoad() {
         super.viewDidLoad()
         title = NSLocalizedString("Date and Time Format", comment: "Title for the Date and Time Format Settings Screen")
         ImmuTable.registerRows([NavigationItemRow.self], tableView: tableView)
@@ -51,7 +51,7 @@ open class DateAndTimeFormatSettingsViewController: UITableViewController {
         reloadViewModel()
     }
 
-    open override func viewWillAppear(_ animated: Bool) {
+    override open func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         reloadViewModel()
     }
@@ -89,11 +89,11 @@ open class DateAndTimeFormatSettingsViewController: UITableViewController {
 
     // MARK: Learn More footer
 
-    open override func tableView(_ tableView: UITableView, heightForFooterInSection section: Int) -> CGFloat {
+    override open func tableView(_ tableView: UITableView, heightForFooterInSection section: Int) -> CGFloat {
         return DateAndTimeFormatSettingsViewController.footerHeight
     }
 
-    open override func tableView(_ tableView: UITableView, viewForFooterInSection section: Int) -> UIView? {
+    override open func tableView(_ tableView: UITableView, viewForFooterInSection section: Int) -> UIView? {
         let footer = UITableViewHeaderFooterView(frame: CGRect(x: 0.0,
                                                                y: 0.0,
                                                                width: tableView.frame.width,

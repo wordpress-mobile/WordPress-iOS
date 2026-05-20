@@ -79,7 +79,7 @@ open class WordPressOrgXMLRPCApi: NSObject, WordPressOrgXMLRPCApiInterfacing {
     /// - Parameters:
     ///   - endpoint:  the endpoint to connect to the xmlrpc api interface.
     ///   - userAgent: the user agent to use on the connection.
-    @objc convenience public init(endpoint: URL, userAgent: String? = nil) {
+    @objc public convenience init(endpoint: URL, userAgent: String? = nil) {
         self.init(endpoint: endpoint, userAgent: userAgent, backgroundUploads: false, backgroundSessionIdentifier: WordPressOrgXMLRPCApi.defaultBackgroundSessionIdentifier + "." + endpoint.absoluteString)
     }
 

@@ -114,7 +114,7 @@ class MediaSettings: NSObject {
         super.init()
     }
 
-    convenience override init() {
+    override convenience init() {
         self.init(database: UserPersistentStoreFactory.instance() as KeyValueDatabase)
     }
 

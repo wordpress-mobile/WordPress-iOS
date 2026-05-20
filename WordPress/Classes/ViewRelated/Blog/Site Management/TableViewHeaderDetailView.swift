@@ -69,7 +69,7 @@ open class TableViewHeaderDetailView: UITableViewHeaderFooterView {
     ///     - title: String displayed in standard section header style
     ///     - detail: String displayed in standard section footer style
     ///
-    @objc convenience public init(title: String?, detail: String?) {
+    @objc public convenience init(title: String?, detail: String?) {
         self.init(reuseIdentifier: nil)
         defer {
             self.title = title ?? ""
@@ -82,7 +82,7 @@ open class TableViewHeaderDetailView: UITableViewHeaderFooterView {
         stackSubviews()
     }
 
-    required public init?(coder aDecoder: NSCoder) {
+    public required init?(coder aDecoder: NSCoder) {
         super.init(coder: aDecoder)
         stackSubviews()
     }

@@ -2,7 +2,7 @@ import UIKit
 
 @MainActor
 public final class AdaptiveTabBarController<Item: AdaptiveTabBarItem> {
-    private(set) public var items: [Item] = []
+    public private(set) var items: [Item] = []
 
     public var selection: Item? {
         didSet {

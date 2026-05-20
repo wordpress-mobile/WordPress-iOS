@@ -54,7 +54,7 @@ private class AutomaticTeardownTestObserver: NSObject, XCTestObservation {
 
     static let instance = AutomaticTeardownTestObserver()
 
-    private override init() {
+    override private init() {
         super.init()
         XCTestObservationCenter.shared.addTestObserver(self)
     }

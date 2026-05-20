@@ -13,7 +13,7 @@ public class DefaultFormattableContentAction: FormattableContentAction {
         }
     }
 
-    private(set) public var command: FormattableContentActionCommand?
+    public private(set) var command: FormattableContentActionCommand?
 
     public var identifier: Identifier {
         return type(of: self).actionIdentifier()

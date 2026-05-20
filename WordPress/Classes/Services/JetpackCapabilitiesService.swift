@@ -17,7 +17,7 @@ import WordPressKit
         }
     }
 
-    public override convenience init() {
+    override public convenience init() {
         self.init(coreDataStack: ContextManager.shared, capabilitiesServiceRemote: nil)
     }
 

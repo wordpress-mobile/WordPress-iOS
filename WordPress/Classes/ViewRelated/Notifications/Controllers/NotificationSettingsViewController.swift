@@ -62,7 +62,7 @@ class NotificationSettingsViewController: UIViewController {
 
     // MARK: - View Lifecycle
 
-    open override func viewDidLoad() {
+    override open func viewDidLoad() {
         super.viewDidLoad()
 
         // Initialize Interface
@@ -73,7 +73,7 @@ class NotificationSettingsViewController: UIViewController {
         reloadSettings()
     }
 
-    open override func viewWillAppear(_ animated: Bool) {
+    override open func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
 
         WPAnalytics.track(.openedNotificationSettingsList)
@@ -82,7 +82,7 @@ class NotificationSettingsViewController: UIViewController {
         tableView.deselectSelectedRowWithAnimation(true)
     }
 
-    open override func viewDidAppear(_ animated: Bool) {
+    override open func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
 
         registerUserActivity()

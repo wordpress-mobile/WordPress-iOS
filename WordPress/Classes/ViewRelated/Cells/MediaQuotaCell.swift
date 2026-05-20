@@ -59,7 +59,7 @@ import WordPressUI
     }
 
     // MARK: - UIKit bindings
-    public override func awakeFromNib() {
+    override public func awakeFromNib() {
         super.awakeFromNib()
         customizeAppearance()
     }

@@ -32,7 +32,7 @@ open class JetpackSpeedUpSiteSettingsViewController: UITableViewController {
 
     // MARK: - View Lifecycle
 
-    open override func viewDidLoad() {
+    override open func viewDidLoad() {
         super.viewDidLoad()
 
         title = NSLocalizedString("Speed up your site", comment: "Title for the Speed up your site Settings Screen")
@@ -41,7 +41,7 @@ open class JetpackSpeedUpSiteSettingsViewController: UITableViewController {
         reloadViewModel()
     }
 
-    open override func viewWillAppear(_ animated: Bool) {
+    override open func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
 
         reloadViewModel()

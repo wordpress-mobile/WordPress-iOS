@@ -33,7 +33,7 @@ class GutenbergLayoutSection: CategorySection {
 
 class GutenbergLayoutPickerViewController: FilterableCategoriesViewController {
     private var sections: [GutenbergLayoutSection] = []
-    internal override var categorySections: [CategorySection] { get { sections }}
+    override internal var categorySections: [CategorySection] { get { sections }}
     lazy var resultsController: NSFetchedResultsController<PageTemplateCategory> = {
         let resultsController = PageLayoutService.resultsController(forBlog: blog, delegate: self)
         sections = makeSectionData(with: resultsController)

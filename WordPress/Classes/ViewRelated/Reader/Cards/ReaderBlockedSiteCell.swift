@@ -5,7 +5,7 @@ open class ReaderBlockedSiteCell: UITableViewCell, NibLoadable {
     @IBOutlet fileprivate weak var borderedContentView: UIView!
     @IBOutlet fileprivate weak var label: UILabel!
 
-    open override func awakeFromNib() {
+    override open func awakeFromNib() {
         super.awakeFromNib()
         applyStyles()
     }
