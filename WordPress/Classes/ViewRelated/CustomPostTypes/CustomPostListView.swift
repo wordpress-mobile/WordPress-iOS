@@ -80,7 +80,8 @@ struct CustomPostListView<Header: View>: View {
         )
         .overlay {
             if viewModel.shouldDisplayEmptyView {
-                let emptyText = details.labels.notFound.isEmpty
+                let emptyText =
+                    details.labels.notFound.isEmpty
                     ? String.localizedStringWithFormat(Strings.emptyStateMessage, details.name)
                     : details.labels.notFound
                 EmptyStateView(emptyText, systemImage: "doc.text")
@@ -307,7 +308,8 @@ private struct PaginatedList<Header: View>: View {
                     Text(verbatim: SharedStrings.Button.retry)
                 }
                 .buttonStyle(.borderedProminent)
-            }.frame(maxWidth: .infinity, alignment: .center)
+            }
+            .frame(maxWidth: .infinity, alignment: .center)
         }
     }
 }
@@ -538,13 +540,16 @@ private struct PostActionMenuContent: View {
     private var trashSection: some View {
         Section {
             if post.status != .trash {
-                Button(role: .destructive, action: {
-                    if post.status == .publish {
-                        viewModel.confirmTrash(post)
-                    } else {
-                        Task { await viewModel.trashPost(post) }
+                Button(
+                    role: .destructive,
+                    action: {
+                        if post.status == .publish {
+                            viewModel.confirmTrash(post)
+                        } else {
+                            Task { await viewModel.trashPost(post) }
+                        }
                     }
-                }) {
+                ) {
                     Label(Strings.moveToTrash, systemImage: "trash")
                 }
             } else {
@@ -646,7 +651,8 @@ private enum Strings {
     static let emptyStateMessage = NSLocalizedString(
         "customPostList.emptyState.message",
         value: "No %1$@",
-        comment: "Empty state message when no custom posts exist. %1$@ is the post type name (e.g., 'Podcasts', 'Products')."
+        comment:
+            "Empty state message when no custom posts exist. %1$@ is the post type name (e.g., 'Podcasts', 'Products')."
     )
     static let homepageBadge = NSLocalizedString(
         "customPostList.badge.homepage",
