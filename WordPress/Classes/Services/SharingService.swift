@@ -409,7 +409,7 @@ import WordPressKit
             failure: failure)
     }
 
-    /// Called when syncing sharng buttons. Merges synced and cached data, removing
+    /// Called when syncing sharing buttons. Merges synced and cached data, removing
     /// anything that does not exist on the server. Saves the context.
     ///
     /// - Parameters:

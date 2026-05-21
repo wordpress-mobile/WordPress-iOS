@@ -337,7 +337,7 @@ final class BloggingRemindersFlowSettingsViewController: UIViewController {
     /// - Parameters:
     ///     - showPushPrompt: if `true` the PN authorization prompt VC will be shown.
     ///         When `false`, the VC won't be shown. This is useful because this method
-    ///         can also be called when the refrenced VC is already on-screen.
+    ///         can also be called when the referenced VC is already on-screen.
     ///
     private func scheduleReminders(showPushPrompt: Bool = true) {
         let schedule: BloggingRemindersScheduler.Schedule

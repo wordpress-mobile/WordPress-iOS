@@ -273,7 +273,7 @@ class SharingButtonsViewController: UITableViewController {
         return SharingButtonsSection()
     }
 
-    /// Configures the twiter name section. When the twitter button is disabled,
+    /// Configures the X/Twitter name section. When the X/Twitter button is disabled,
     /// the section header is empty, and there are no rows. When the twitter button
     /// is enabled. the section header and the row is shown.
     ///

@@ -34,7 +34,7 @@ class WindowManager: NSObject {
     // MARK: - Initial App UI
 
     /// Shows the initial UI for the App to be shown right after launch. This method will present the sign-in flow if the user is not
-    /// authenticated, or the actuall App UI if the user is already authenticated.
+    /// authenticated, or the actual App UI if the user is already authenticated.
     ///
     public func showUI(for blog: Blog? = nil, animated: Bool = true) {
         if AccountHelper.isLoggedIn {
