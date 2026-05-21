@@ -344,6 +344,7 @@ private func makeViewModel(
     } else {
         blog = builder.withAnAccount().build()
     }
+    try coreData.save()
     let post = try makePostWithDisabledConnection()
     let details = makePostTypeDetails(supportsPublicize: true, slug: postTypeSlug)
     let dependencies = try makeServiceDependencies()
