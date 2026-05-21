@@ -367,7 +367,7 @@ class WeeklyRoundupBackgroundTask: BackgroundTask {
             direction: .backward) ?? Date()
 
         // The run date is when the task is scheduled to run, but the period end date is actually
-        // the previous day at 24:59:59.
+        // the previous day at 23:59:59.
         let periodEndDate = Calendar.current.date(bySettingHour: 0, minute: 0, second: 0, of: runDate)!.addingTimeInterval(TimeInterval(-1))
 
         return periodEndDate
