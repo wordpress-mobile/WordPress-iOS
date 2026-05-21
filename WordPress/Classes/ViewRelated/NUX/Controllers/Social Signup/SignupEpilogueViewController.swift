@@ -269,7 +269,7 @@ private extension SignupEpilogueViewController {
                 finished(success, error)
             }
         } catch {
-            finished(false, err)
+            finished(false, error)
             return
         }
     }

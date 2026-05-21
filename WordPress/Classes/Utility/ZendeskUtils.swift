@@ -747,7 +747,7 @@ private extension ZendeskUtils {
             try eventLogging.enqueueLogForUpload(log: logFile)
         }
         catch {
-            return "Error preparing log file: \(err.localizedDescription)"
+            return "Error preparing log file: \(error.localizedDescription)"
         }
 
         return logFile.uuid
