@@ -157,7 +157,10 @@ final class BloggingPromptsServiceTests: CoreDataTestCase {
         let currentYear = Calendar(identifier: .gregorian).component(.year, from: Date())
         XCTAssertEqual("\(currentYear)-01-02", try passedDate())
     }
-
+func test_fetchPrompts_alwaysPassesDescendingOrder() throws {
+    service.fetchPrompts(success: { _ in }, failure: { _ in })
+    XCTAssertEqual(try passedParameter("order") as? String, "desc")
+}
     // MARK: - Upsert Tests
 
     // new prompts should overwrite any existing prompts.
