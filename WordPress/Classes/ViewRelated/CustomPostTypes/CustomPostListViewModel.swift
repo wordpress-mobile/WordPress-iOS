@@ -272,7 +272,7 @@ final class CustomPostListViewModel: ObservableObject {
 
         if endpoint == .pages,
             case .staticPage(let homepageID, let postsPageID) = homepageSetting,
-            filter.statuses.contains(.publish) || filter.statuses.contains(.custom("any"))
+            filter.statuses.contains(.publish) || filter.statuses.contains(.any)
         {
             items.markPageRoles(homepageID: homepageID, postsPageID: postsPageID)
         }
