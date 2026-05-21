@@ -352,6 +352,7 @@ private extension BloggingPromptsService {
                 params["after"] = dateString
             }
 
+            // The server expects a Gregorian year, so use that Calendar rather than the user's
             params["force_year"] = forceYear ?? Calendar(identifier: .gregorian).component(.year, from: Date())
 
             return params
