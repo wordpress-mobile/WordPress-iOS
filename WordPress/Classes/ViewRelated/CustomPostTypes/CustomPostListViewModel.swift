@@ -128,7 +128,7 @@ final class CustomPostListViewModel: ObservableObject {
     }
 
     private func refresh(pullToRefresh: Bool) async {
-        await fetchHomepageSettingsIfNeeded()
+        await fetchHomepageSettingsIfNeeded(forceRefresh: pullToRefresh)
 
         if !pullToRefresh {
             await loadCachedItems()
@@ -563,14 +563,17 @@ final class CustomPostListViewModel: ObservableObject {
         }
     }
 
-    /// Fetches homepage settings and user capabilities using cached data from
-    /// `WordPressClient` when the endpoint is `.pages` and the settings
-    /// have not been resolved yet.
-    private func fetchHomepageSettingsIfNeeded() async {
-        guard endpoint == .pages, homepageSetting == nil else { return }
+    /// Fetches homepage settings and user capabilities when the endpoint is `.pages`.
+    ///
+    /// Uses the `WordPressClient` cache unless `forceRefresh` is `true`. Pass `true`
+    /// from pull-to-refresh paths so the list picks up settings changed elsewhere
+    /// (e.g. via the web admin or another device) without requiring an app relaunch.
+    private func fetchHomepageSettingsIfNeeded(forceRefresh: Bool = false) async {
+        guard endpoint == .pages else { return }
+        guard forceRefresh || homepageSetting == nil else { return }
 
         do {
-            let settings = try await client.fetchSiteSettings()
+            let settings = try await client.fetchSiteSettings(forceRefresh: forceRefresh)
             if settings.showOnFront == "page" {
                 homepageSetting = .staticPage(
                     homepageID: settings.pageOnFront > 0 ? Int64(settings.pageOnFront) : nil,
