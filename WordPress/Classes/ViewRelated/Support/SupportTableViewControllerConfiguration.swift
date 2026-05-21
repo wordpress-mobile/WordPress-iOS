@@ -12,7 +12,7 @@ struct SupportTableViewControllerConfiguration {
     // MARK: Default Configurations
 
     static func currentAccountConfiguration() -> Self {
-        var config = Self.init()
+        var config = Self()
         if let account = Self.makeAccount() {
             config.meHeaderConfiguration = .init(account: account)
             config.showsLogOutButton = true

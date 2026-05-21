@@ -233,7 +233,7 @@ class AccountSettingsService {
                 return nil
             }
 
-            return AccountSettings.init(managed: managedAccount)
+            return AccountSettings(managed: managedAccount)
         }
     }
 

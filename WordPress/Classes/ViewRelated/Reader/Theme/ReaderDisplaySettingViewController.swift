@@ -302,7 +302,7 @@ extension ReaderDisplaySettingSelectionView {
                 fontSelectionView
                 sizeSelectionView
                     .padding(.horizontal, .DS.Padding.double)
-                DSButton(title: Strings.doneButton, style: DSButtonStyle.init(emphasis: .primary, size: .large)) {
+                DSButton(title: Strings.doneButton, style: DSButtonStyle(emphasis: .primary, size: .large)) {
                     viewModel.doneButtonTapped()
                 }
                 .padding(.horizontal, .DS.Padding.double)

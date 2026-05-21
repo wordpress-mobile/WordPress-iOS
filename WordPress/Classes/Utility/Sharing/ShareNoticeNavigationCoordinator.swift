@@ -19,7 +19,7 @@ class ShareNoticeNavigationCoordinator {
     static func presentEditor(for post: Post, source: String) {
         WPAppAnalytics.track(.notificationsShareSuccessEditPost, post: post)
 
-        let editor = EditPostViewController.init(post: post)
+        let editor = EditPostViewController(post: post)
         editor.modalPresentationStyle = .fullScreen
         RootViewCoordinator.sharedPresenter.rootViewController.present(editor, animated: false)
     }

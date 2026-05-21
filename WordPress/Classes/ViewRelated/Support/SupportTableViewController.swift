@@ -82,7 +82,7 @@ class SupportTableViewController: UITableViewController {
     }
 
     func show(from presentingViewController: UIViewController) {
-        let navigationController = UINavigationController.init(rootViewController: self)
+        let navigationController = UINavigationController(rootViewController: self)
 
         if WPDeviceIdentification.isiPad() {
             navigationController.modalTransitionStyle = .crossDissolve
@@ -94,7 +94,7 @@ class SupportTableViewController: UITableViewController {
 
     // TODO: Refactor this method to use the general `show(from:)` method
     func showFromTabBar() {
-        let navigationController = UINavigationController.init(rootViewController: self)
+        let navigationController = UINavigationController(rootViewController: self)
 
         if WPDeviceIdentification.isiPad() {
             navigationController.modalTransitionStyle = .crossDissolve

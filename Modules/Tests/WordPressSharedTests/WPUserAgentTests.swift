@@ -23,7 +23,7 @@ class WPWPUserAgentTests {
         let userDefaults = UserDefaults.standard
         let appVersion = try #require(Bundle.main.infoDictionary?["CFBundleShortVersionString"] as? String)
         let defaultUserAgent = WPUserAgent.defaultUserAgent(userDefaults: userDefaults)
-        let expectedUserAgent = String.init(format: "%@ wp-iphone/%@", defaultUserAgent, appVersion)
+        let expectedUserAgent = String(format: "%@ wp-iphone/%@", defaultUserAgent, appVersion)
 
         #expect(WPUserAgent.wordPressUserAgent(userDefaults: userDefaults) == expectedUserAgent)
     }

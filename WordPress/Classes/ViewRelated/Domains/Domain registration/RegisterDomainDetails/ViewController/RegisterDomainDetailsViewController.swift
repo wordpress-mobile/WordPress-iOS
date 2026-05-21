@@ -303,7 +303,7 @@ extension RegisterDomainDetailsViewController {
     private func showItemSelectionPage(onSelectionAt indexPath: IndexPath, title: String, items: [String]) {
         var options: [OptionsTableViewOption] = []
         for item in items {
-            let attributedItem = NSAttributedString.init(
+            let attributedItem = NSAttributedString(
                 string: item,
                 attributes: [.font: WPStyleGuide.tableviewTextFont(),
                              .foregroundColor: UIColor.label]

@@ -57,6 +57,9 @@ only_rules:
   # Prefer checking `isEmpty` over comparing to empty string literal `""`.
   - empty_string
 
+  # Avoid explicitly calling `.init()`; prefer `Type(...)` over `Type.init(...)`.
+  - explicit_init
+
   # Prefer `first(where:)` over `filter { }.first`.
   - first_where
 

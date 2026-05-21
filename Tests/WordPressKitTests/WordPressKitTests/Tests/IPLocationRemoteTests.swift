@@ -9,7 +9,7 @@ final class IPLocationRemoteTests: XCTestCase {
         super.setUp()
         let configuration = URLSessionConfiguration.default
         configuration.protocolClasses = [MockURLProtocol.self]
-        let urlSession = URLSession.init(configuration: configuration)
+        let urlSession = URLSession(configuration: configuration)
 
         remote = IPLocationRemote(urlSession: urlSession)
     }

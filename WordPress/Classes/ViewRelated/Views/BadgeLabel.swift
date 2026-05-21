@@ -37,7 +37,7 @@ class BadgeLabel: UILabel {
     // MARK: Padding
 
     override func drawText(in rect: CGRect) {
-        let insets = UIEdgeInsets.init(top: verticalPadding, left: horizontalPadding, bottom: verticalPadding, right: horizontalPadding)
+        let insets = UIEdgeInsets(top: verticalPadding, left: horizontalPadding, bottom: verticalPadding, right: horizontalPadding)
         super.drawText(in: rect.inset(by: insets))
     }
 

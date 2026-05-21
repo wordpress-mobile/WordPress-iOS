@@ -94,7 +94,7 @@ extension StatsLikesListViewController: LikesListControllerDelegate {
     }
 
     func showErrorView(title: String, subtitle: String?) {
-        let stateView = UIHostingView(view: EmptyStateView.init(title, systemImage: "exclamationmark.circle", description: subtitle))
+        let stateView = UIHostingView(view: EmptyStateView(title, systemImage: "exclamationmark.circle", description: subtitle))
         view.addSubview(stateView)
         stateView.pinEdges()
     }

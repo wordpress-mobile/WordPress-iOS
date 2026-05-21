@@ -11,7 +11,7 @@ extension RemoteParameter {
                                              overrideStore: RemoteConfigOverrideStore = .init()) -> T? {
         if let overriddenStringValue = overrideStore.overriddenValue(for: self) {
             DDLogInfo("🚩 Returning overridden value for remote config param: \(description).")
-            return T.init(overriddenStringValue)
+            return T(overriddenStringValue)
         }
         if let remoteValue = remoteStore.value(for: key) {
             return remoteValue as? T
