@@ -417,6 +417,11 @@ final class CustomPostListViewModel: ObservableObject {
                 wpService: service
             )
             let viewModel = CustomPostSettingsViewModel(editorService: editorService, blog: blog, isStandalone: true)
+            viewModel.onEditorPostSaved = { [editorService] in
+                let postTitle = editorService.post?.title?.raw
+                let subtitle = (postTitle?.isEmpty == false) ? postTitle : nil
+                Notice(title: Strings.CustomPostNotice.postUpdated, message: subtitle, feedbackType: .success).post()
+            }
             let settingsVC = PostSettingsViewController(viewModel: viewModel)
             let nav = UINavigationController(rootViewController: settingsVC)
             vc.present(nav, animated: true)
@@ -941,6 +946,27 @@ private enum Strings {
         value: "Page successfully updated",
         comment: "Notice shown after successfully changing a page's role (homepage, posts page, or regular page)"
     )
+
+    /// Localized titles for the success notices emitted when a custom post is
+    /// persisted to the server. Shared between the editor and the standalone
+    /// settings sheet (from the Custom Posts list).
+    enum CustomPostNotice {
+        static let draftSaved = NSLocalizedString(
+            "customPost.notice.draftSaved",
+            value: "Draft saved",
+            comment: "Success notice shown after a new draft custom post is created on the server."
+        )
+        static let postUpdated = NSLocalizedString(
+            "customPost.notice.postUpdated",
+            value: "Post updated",
+            comment: "Success notice shown after an existing custom post is updated on the server."
+        )
+        static let postPublished = NSLocalizedString(
+            "customPost.notice.postPublished",
+            value: "Post published",
+            comment: "Success notice shown after a custom post is published on the server."
+        )
+    }
 }
 
 /// Represents the WordPress "Your homepage displays" setting.

@@ -231,6 +231,10 @@ private extension CustomPostEditorViewController {
                 guard let self else { return }
                 switch result {
                 case .published:
+                    let postTitle = editorService.post?.title?.raw
+                    let subtitle = (postTitle?.isEmpty == false) ? postTitle : nil
+                    Notice(title: Strings.CustomPostNotice.postPublished, message: subtitle, feedbackType: .success)
+                        .post()
                     completion()
                 case .cancelled:
                     break
@@ -251,6 +255,12 @@ private extension CustomPostEditorViewController {
     func save(publish: Bool) async {
         SVProgressHUD.show()
 
+        // Capture whether this is a brand-new post (not yet on the server) so the
+        // notice can distinguish "Draft saved" (just created) from "Post updated"
+        // (edited an existing post). Any save of an already-existing post — draft
+        // or published — reads as an update from the user's perspective.
+        let isNewPost = post == nil
+
         do {
             let data = try await editorViewController.getTitleAndContent()
             try await editorService.save(
@@ -259,6 +269,17 @@ private extension CustomPostEditorViewController {
             )
 
             dismissHUDWithSuccess()
+
+            let title: String
+            if publish {
+                title = Strings.CustomPostNotice.postPublished
+            } else if isNewPost {
+                title = Strings.CustomPostNotice.draftSaved
+            } else {
+                title = Strings.CustomPostNotice.postUpdated
+            }
+            let subtitle = data.title.isEmpty ? nil : data.title
+            Notice(title: title, message: subtitle, feedbackType: .success).post()
 
             if publish {
                 completion()
@@ -278,5 +299,28 @@ extension CustomPostEditorViewController: CustomPostEditorServiceDelegate {
     func editorContent(for service: CustomPostEditorService) async throws -> EditorContent {
         let result = try await editorViewController.getTitleAndContent()
         return EditorContent(title: result.title, content: result.content)
+    }
+}
+
+private enum Strings {
+    /// Localized titles for the success notices emitted when a custom post is
+    /// persisted to the server. Shared between the editor and the standalone
+    /// settings sheet (from the Custom Posts list).
+    enum CustomPostNotice {
+        static let draftSaved = NSLocalizedString(
+            "customPost.notice.draftSaved",
+            value: "Draft saved",
+            comment: "Success notice shown after a new draft custom post is created on the server."
+        )
+        static let postUpdated = NSLocalizedString(
+            "customPost.notice.postUpdated",
+            value: "Post updated",
+            comment: "Success notice shown after an existing custom post is updated on the server."
+        )
+        static let postPublished = NSLocalizedString(
+            "customPost.notice.postPublished",
+            value: "Post published",
+            comment: "Success notice shown after a custom post is published on the server."
+        )
     }
 }
