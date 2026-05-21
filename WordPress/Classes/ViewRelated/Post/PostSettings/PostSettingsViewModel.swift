@@ -229,9 +229,9 @@ final class PostSettingsViewModel: NSObject, ObservableObject, PostSettingsViewM
     func shouldShow(_ row: PostSettingsRow) -> Bool {
         switch row {
         case .jetpackAccessLevel:
-            return blog.supports(.wpComRESTAPI)
+            return blog.supports(.jetpackNewsletter)
         case .jetpackNewsletterEmailOptions:
-            return blog.supports(.wpComRESTAPI) && context == .publishing
+            return blog.supports(.jetpackNewsletter) && context == .publishing
         }
     }
 

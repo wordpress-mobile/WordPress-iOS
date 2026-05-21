@@ -194,36 +194,36 @@ struct CustomPostSettingsViewModelTests {
 
     // MARK: - shouldShow Jetpack rows
 
-    @Test("shouldShow .jetpackAccessLevel is true for post type on wpcom site")
+    @Test("shouldShow .jetpackAccessLevel is true for post type when Jetpack newsletter is available")
     func shouldShowAccessLevelTrue() throws {
-        let viewModel = try makeViewModel(postTypeSlug: "post", wpComRESTAPI: true)
+        let viewModel = try makeViewModel(postTypeSlug: "post", jetpackNewsletter: true)
         #expect(viewModel.shouldShow(.jetpackAccessLevel))
     }
 
     @Test("shouldShow .jetpackAccessLevel is false for non-post type")
     func shouldShowAccessLevelFalseForNonPost() throws {
-        let viewModel = try makeViewModel(postTypeSlug: "page", wpComRESTAPI: true)
+        let viewModel = try makeViewModel(postTypeSlug: "page", jetpackNewsletter: true)
         #expect(!viewModel.shouldShow(.jetpackAccessLevel))
     }
 
-    @Test("shouldShow .jetpackAccessLevel is false on non-wpcom site")
-    func shouldShowAccessLevelFalseForNonWpcom() throws {
-        let viewModel = try makeViewModel(postTypeSlug: "post", wpComRESTAPI: false)
+    @Test("shouldShow .jetpackAccessLevel is false when Jetpack newsletter is unavailable")
+    func shouldShowAccessLevelFalseWithoutNewsletter() throws {
+        let viewModel = try makeViewModel(postTypeSlug: "post", jetpackNewsletter: false)
         #expect(!viewModel.shouldShow(.jetpackAccessLevel))
     }
 
     @Test("shouldShow .jetpackNewsletterEmailOptions is true only in publishing context")
     func shouldShowNewsletterTrueOnlyInPublishing() throws {
-        let publishingVM = try makeViewModel(postTypeSlug: "post", wpComRESTAPI: true, context: .publishing)
+        let publishingVM = try makeViewModel(postTypeSlug: "post", jetpackNewsletter: true, context: .publishing)
         #expect(publishingVM.shouldShow(.jetpackNewsletterEmailOptions))
 
-        let settingsVM = try makeViewModel(postTypeSlug: "post", wpComRESTAPI: true, context: .settings)
+        let settingsVM = try makeViewModel(postTypeSlug: "post", jetpackNewsletter: true, context: .settings)
         #expect(!settingsVM.shouldShow(.jetpackNewsletterEmailOptions))
     }
 
     @Test("shouldShow .jetpackNewsletterEmailOptions is false for non-post type")
     func shouldShowNewsletterFalseForNonPost() throws {
-        let viewModel = try makeViewModel(postTypeSlug: "page", wpComRESTAPI: true, context: .publishing)
+        let viewModel = try makeViewModel(postTypeSlug: "page", jetpackNewsletter: true, context: .publishing)
         #expect(!viewModel.shouldShow(.jetpackNewsletterEmailOptions))
     }
 }
@@ -333,16 +333,16 @@ private func makeConnectionsService() -> SiteSocialConnectionsService {
 @MainActor
 private func makeViewModel(
     postTypeSlug: String,
-    wpComRESTAPI: Bool,
+    jetpackNewsletter: Bool,
     context: PostSettingsContext = .settings
 ) throws -> CustomPostSettingsViewModel {
     let coreData = ContextManager.forTesting().mainContext
     let builder = BlogBuilder(coreData)
     let blog: Blog
-    if wpComRESTAPI {
-        blog = builder.withAnAccount().build()
+    if jetpackNewsletter {
+        blog = builder.withAnAccount().with(modules: ["subscriptions"]).build()
     } else {
-        blog = builder.build()
+        blog = builder.withAnAccount().build()
     }
     let post = try makePostWithDisabledConnection()
     let details = makePostTypeDetails(supportsPublicize: true, slug: postTypeSlug)
