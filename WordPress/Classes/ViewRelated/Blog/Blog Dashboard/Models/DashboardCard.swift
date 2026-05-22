@@ -11,7 +11,6 @@ import Support
 enum DashboardCard: String, CaseIterable, Sendable {
     case dynamic
     case jetpackInstall
-    case bloganuaryNudge = "bloganuary_nudge"
     case prompts
     case extensiveLogging
     case googleDomains
@@ -47,8 +46,6 @@ enum DashboardCard: String, CaseIterable, Sendable {
             return DashboardScheduledPostsCardCell.self
         case .todaysStats:
             return DashboardStatsCardCell.self
-        case .bloganuaryNudge:
-            return DashboardBloganuaryCardCell.self
         case .prompts:
             return DashboardPromptsCardCell.self
         case .ghost:
@@ -110,8 +107,6 @@ enum DashboardCard: String, CaseIterable, Sendable {
             return shouldShowRemoteCard(apiResponse: apiResponse)
         case .todaysStats:
             return DashboardStatsCardCell.shouldShowCard(for: blog) && shouldShowRemoteCard(apiResponse: apiResponse)
-        case .bloganuaryNudge:
-            return DashboardBloganuaryCardCell.shouldShowCard(for: blog)
         case .prompts:
             return DashboardPromptsCardCell.shouldShowCard(for: blog)
         case .extensiveLogging:
