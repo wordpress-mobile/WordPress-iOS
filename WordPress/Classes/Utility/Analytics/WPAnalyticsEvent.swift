@@ -742,7 +742,7 @@ import WordPressShared
             return "media_library_photo_added"
         case .editorAddedPhotoViaTenor:
             return "editor_photo_added"
-            // Media
+        // Media
         case .siteMediaShareTapped:
             return "site_media_shared_tapped"
         case .mediaStorageDetailsViewed:
@@ -1909,7 +1909,7 @@ import WordPressShared
         case .jetpackConnectStepRetried:
             return "jetpack_rest_connect_step_retried"
 
-            // Intelligence
+        // Intelligence
         case .intelligenceExcerptGeneratorOpened:
             return "intelligence_excerpt_generator_opened"
         case .intelligenceExcerptSelected:
@@ -2009,7 +2009,8 @@ extension WPAnalytics {
     static func track(_ event: WPAnalyticsEvent, properties: [AnyHashable: Any], blog: Blog) {
         var props = properties
         props[WPAppAnalyticsKeyBlogID] = blog.dotComID
-        props[WPAppAnalyticsKeySiteType] = blog.isWPForTeams ? WPAppAnalyticsValueSiteTypeP2 : WPAppAnalyticsValueSiteTypeBlog
+        props[WPAppAnalyticsKeySiteType] =
+            blog.isWPForTeams ? WPAppAnalyticsValueSiteTypeP2 : WPAppAnalyticsValueSiteTypeBlog
         WPAnalytics.track(event, properties: props)
     }
 
@@ -2105,7 +2106,9 @@ extension WPAnalytics {
         }
 
         if event == nil {
-            print("🟡 Not Tracked: \"\(eventName)\" Block Editor event ignored as it was not found in the `trackBlockEditorEvent` conversion cases.")
+            print(
+                "🟡 Not Tracked: \"\(eventName)\" Block Editor event ignored as it was not found in the `trackBlockEditorEvent` conversion cases."
+            )
         } else {
             WPAnalytics.track(event!, properties: properties, blog: blog)
         }
