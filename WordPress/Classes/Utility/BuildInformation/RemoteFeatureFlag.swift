@@ -228,8 +228,10 @@ public enum RemoteFeatureFlag: Int, CaseIterable {
     /// If the flag is overridden, the overridden value is returned.
     /// If the flag exists in the local cache, the current value will be returned.
     /// If the flag is not overridden and does not exist in the local cache, the compile-time default will be returned.
-    func enabled(using remoteStore: RemoteFeatureFlagStore = RemoteFeatureFlagStore(),
-                 overrideStore: FeatureFlagOverrideStore = FeatureFlagOverrideStore()) -> Bool {
+    func enabled(
+        using remoteStore: RemoteFeatureFlagStore = RemoteFeatureFlagStore(),
+        overrideStore: FeatureFlagOverrideStore = FeatureFlagOverrideStore()
+    ) -> Bool {
         if let overriddenValue = overrideStore.overriddenValue(for: self) {
             return overriddenValue
         }
@@ -243,11 +245,11 @@ public enum RemoteFeatureFlag: Int, CaseIterable {
 
 extension RemoteFeatureFlag: OverridableFlag {
     var key: String {
-        return "ff-override-\(String(describing: self))"
+        "ff-override-\(String(describing: self))"
     }
 
     var originalValue: Bool {
-        return enabled()
+        enabled()
     }
 
     var canOverride: Bool {
