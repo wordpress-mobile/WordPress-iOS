@@ -21,21 +21,18 @@ extension BloggingPromptsAttribution {
     var source: String {
         switch self {
         case .dayone: return Strings.dayOne
-        case .bloganuary: return Strings.bloganuary
         }
     }
 
     var iconImage: UIImage? {
         switch self {
         case .dayone: return Constants.dayOneIcon
-        case .bloganuary: return Constants.bloganuaryIcon
         }
     }
 
     var externalURL: URL? {
         switch self {
         case .dayone: return Constants.dayOneURL
-        case .bloganuary: return nil
         }
     }
 
@@ -53,7 +50,6 @@ extension BloggingPromptsAttribution {
             comment: "Format for blogging prompts attribution. %1$@ is the attribution source."
         )
         static let dayOne = "Day One"
-        static let bloganuary = "Bloganuary"
     }
 
     private struct Constants {
@@ -74,17 +70,5 @@ extension BloggingPromptsAttribution {
             systemName: "link",
             withConfiguration: UIImage.SymbolConfiguration(pointSize: linkIconSize)
         )
-
-        /// This is computed so it can react accordingly on color scheme changes.
-        static var bloganuaryIcon: UIImage? {
-            UIImage(named: "logo-bloganuary")?
-                .withRenderingMode(.alwaysTemplate)
-                .resized(to: Constants.bloganuaryIconSize)
-                .withAlignmentRectInsets(UIEdgeInsets(.all, -6.0))
-                .withTintColor(.label)
-        }
-
-        /// Unlike the dayOne icon, the bloganuary icon has no implicit 6px padding surrounding the icon.
-        static let bloganuaryIconSize = CGSize(width: 12, height: 12)
     }
 }

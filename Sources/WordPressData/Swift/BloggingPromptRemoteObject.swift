@@ -11,7 +11,6 @@ public struct BloggingPromptRemoteObject {
     let answeredUserAvatarURLs: [URL]
     let answeredLink: URL?
     let answeredLinkText: String
-    let bloganuaryId: String?
 
     /// Used for comparison on import
     public var dateString: String {
@@ -32,7 +31,6 @@ extension BloggingPromptRemoteObject: Decodable {
         case answeredUserAvatarURLs = "answered_users_sample"
         case answeredLink = "answered_link"
         case answeredLinkText = "answered_link_text"
-        case bloganuaryId = "bloganuary_id"
     }
 
     /// meta structure to simplify decoding logic for user avatar objects.
@@ -73,14 +71,5 @@ extension BloggingPromptRemoteObject: Decodable {
         }()
 
         self.answeredLinkText = try container.decode(String.self, forKey: .answeredLinkText)
-
-        self.bloganuaryId = {
-            guard let remoteBloganuaryId = try? container.decode(String.self, forKey: .bloganuaryId),
-                !remoteBloganuaryId.isEmpty
-            else {
-                return nil
-            }
-            return remoteBloganuaryId
-        }()
     }
 }
