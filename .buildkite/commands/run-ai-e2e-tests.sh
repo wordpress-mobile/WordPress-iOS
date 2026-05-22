@@ -60,7 +60,7 @@ export SIMULATOR_LLM_PILOT_SITE_URL="$(normalize_site_url "$SIMULATOR_LLM_PILOT_
 
 # ── Defaults ─────────────────────────────────────────────────────────
 APP="${APP:-jetpack}"
-export SIMULATOR_NAME="${SIMULATOR_NAME:-iPhone 16}"
+export SIMULATOR_NAME="${SIMULATOR_NAME:-iPhone 17}"
 TEST_DIR="${TEST_DIR:-Tests/AgentTests/ui-tests}"
 SIMULATOR_LLM_PILOT_REPO_URL="${SIMULATOR_LLM_PILOT_REPO_URL:-https://github.com/Automattic/simulator-llm-pilot.git}"
 SIMULATOR_LLM_PILOT_SOURCE_PATH="${SIMULATOR_LLM_PILOT_SOURCE_PATH:-}"
