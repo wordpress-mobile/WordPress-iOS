@@ -48,7 +48,10 @@ extension BloggingPromptsAttribution {
     }
 
     private struct Strings {
-        static let fromTextFormat = NSLocalizedString("From %1$@", comment: "Format for blogging prompts attribution. %1$@ is the attribution source.")
+        static let fromTextFormat = NSLocalizedString(
+            "From %1$@",
+            comment: "Format for blogging prompts attribution. %1$@ is the attribution source."
+        )
         static let dayOne = "Day One"
         static let bloganuary = "Bloganuary"
     }
@@ -56,18 +59,21 @@ extension BloggingPromptsAttribution {
     private struct Constants {
         static let baseAttributes: [NSAttributedString.Key: Any] = [
             .font: WPStyleGuide.fontForTextStyle(.caption1),
-            .foregroundColor: UIColor.secondaryLabel,
+            .foregroundColor: UIColor.secondaryLabel
         ]
         static let sourceAttributes: [NSAttributedString.Key: Any] = [
             .font: WPStyleGuide.fontForTextStyle(.caption1, fontWeight: .medium),
-            .foregroundColor: UIColor.label,
+            .foregroundColor: UIColor.label
         ]
         static let dayOneIconSize = CGSize(width: 18, height: 18)
         static let dayOneIcon = UIImage(named: "logo-dayone")?.resized(to: Constants.dayOneIconSize)
         static let dayOneURL = URL(string: "https://dayoneapp.com/?utm_source=jetpack&utm_medium=prompts")
 
         static let linkIconSize = CGFloat(10)
-        static let linkIcon = UIImage(systemName: "link", withConfiguration: UIImage.SymbolConfiguration(pointSize: linkIconSize))
+        static let linkIcon = UIImage(
+            systemName: "link",
+            withConfiguration: UIImage.SymbolConfiguration(pointSize: linkIconSize)
+        )
 
         /// This is computed so it can react accordingly on color scheme changes.
         static var bloganuaryIcon: UIImage? {

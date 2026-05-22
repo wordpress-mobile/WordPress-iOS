@@ -65,7 +65,8 @@ extension BloggingPromptRemoteObject: Decodable {
 
         self.answeredLink = {
             guard let linkURLString = try? container.decode(String.self, forKey: .answeredLink),
-                  let answeredLinkURL = URL(string: linkURLString) else {
+                let answeredLinkURL = URL(string: linkURLString)
+            else {
                 return nil
             }
             return answeredLinkURL
@@ -75,7 +76,8 @@ extension BloggingPromptRemoteObject: Decodable {
 
         self.bloganuaryId = {
             guard let remoteBloganuaryId = try? container.decode(String.self, forKey: .bloganuaryId),
-                  !remoteBloganuaryId.isEmpty else {
+                !remoteBloganuaryId.isEmpty
+            else {
                 return nil
             }
             return remoteBloganuaryId
