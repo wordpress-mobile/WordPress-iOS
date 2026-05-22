@@ -29,7 +29,8 @@ extension DashboardCard: BlogDashboardPersonalizable {
             return "activity-log-card-enabled-site-settings"
         case .pages:
             return "pages-card-enabled-site-settings"
-        case .dynamic, .jetpackBadge, .jetpackInstall, .jetpackSocial, .failure, .ghost, .personalize, .empty, .extensiveLogging:
+        case .dynamic, .jetpackBadge, .jetpackInstall, .jetpackSocial, .failure, .ghost, .personalize, .empty,
+            .extensiveLogging:
             return nil
         }
     }

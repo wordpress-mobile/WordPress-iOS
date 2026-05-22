@@ -137,9 +137,11 @@ enum DashboardCard: String, CaseIterable, Sendable {
         case .personalize:
             return true
         case .pages:
-            return DashboardPagesListCardCell.shouldShowCard(for: blog) && shouldShowRemoteCard(apiResponse: apiResponse)
+            return DashboardPagesListCardCell.shouldShowCard(for: blog)
+                && shouldShowRemoteCard(apiResponse: apiResponse)
         case .activityLog:
-            return DashboardActivityLogCardCell.shouldShowCard(for: blog) && shouldShowRemoteCard(apiResponse: apiResponse)
+            return DashboardActivityLogCardCell.shouldShowCard(for: blog)
+                && shouldShowRemoteCard(apiResponse: apiResponse)
         case .jetpackSocial:
             return DashboardJetpackSocialCardCell.shouldShowCard(for: blog)
         case .googleDomains:
@@ -212,31 +214,31 @@ enum DashboardCard: String, CaseIterable, Sendable {
 
 private extension BlogDashboardRemoteEntity {
     var hasDrafts: Bool {
-        return (self.posts?.value?.draft?.count ?? 0) > 0
+        (self.posts?.value?.draft?.count ?? 0) > 0
     }
 
     var hasScheduled: Bool {
-        return (self.posts?.value?.scheduled?.count ?? 0) > 0
+        (self.posts?.value?.scheduled?.count ?? 0) > 0
     }
 
     var hasPages: Bool {
-        return self.pages?.value != nil
+        self.pages?.value != nil
     }
 
     var hasStats: Bool {
-        return self.todaysStats?.value != nil
+        self.todaysStats?.value != nil
     }
 
     var hasActivities: Bool {
-        return (self.activity?.value?.current?.orderedItems?.count ?? 0) > 0
+        (self.activity?.value?.current?.orderedItems?.count ?? 0) > 0
     }
- }
+}
 
 // MARK: - BlogDashboardAnalyticPropertiesProviding Protocol Conformance
 
 extension DashboardCard: BlogDashboardAnalyticPropertiesProviding {
 
     var analyticProperties: [AnyHashable: Any] {
-        return ["card": rawValue]
+        ["card": rawValue]
     }
 }
