@@ -23,7 +23,6 @@ public enum RemoteFeatureFlag: Int, CaseIterable {
     case domainManagement
     case dynamicDashboardCards
     case plansInSiteCreation
-    case bloganuaryDashboardNudge // pcdRpT-4FE-p2
     case inAppRating
     case siteMonitoring
     case inAppUpdates
@@ -77,8 +76,6 @@ public enum RemoteFeatureFlag: Int, CaseIterable {
             return false
         case .plansInSiteCreation:
             return false
-        case .bloganuaryDashboardNudge:
-            return AppConfiguration.isJetpack
         case .inAppRating:
             return false
         case .siteMonitoring:
@@ -141,8 +138,6 @@ public enum RemoteFeatureFlag: Int, CaseIterable {
             return "dynamic_dashboard_cards"
         case .plansInSiteCreation:
             return "plans_in_site_creation"
-        case .bloganuaryDashboardNudge:
-            return "bloganuary_dashboard_nudge"
         case .inAppRating:
             return "in_app_rating_and_feedback"
         case .siteMonitoring:
@@ -204,8 +199,6 @@ public enum RemoteFeatureFlag: Int, CaseIterable {
             return "Dynamic Dashboard Cards"
         case .plansInSiteCreation:
             return "Plans in Site Creation"
-        case .bloganuaryDashboardNudge:
-            return "Bloganuary Dashboard Nudge"
         case .inAppRating:
             return "In-App Rating and Feedback"
         case .siteMonitoring:
