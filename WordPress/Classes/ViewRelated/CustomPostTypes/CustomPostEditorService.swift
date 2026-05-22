@@ -260,14 +260,15 @@ enum PostUpdateError: LocalizedError {
 
 private extension PostStatus {
     /// Maps a user-selected status to the one used by a publish action.
-    /// `.future` and `.private` are preserved because they carry their own
-    /// publishing semantics (scheduled, password/private visibility); every
-    /// other selection — draft or pending — collapses to `.publish` so the
-    /// post is published normally.
+    /// `.future`, `.private`, and `.pending` are preserved because they carry
+    /// their own publishing semantics (scheduled, password/private visibility,
+    /// submit for review); every other selection (draft) collapses to
+    /// `.publish` so the post is published normally.
     func normalizedPublishStatus() -> PostStatus {
         switch self {
         case .future: return .future
         case .private: return .private
+        case .pending: return .pending
         default: return .publish
         }
     }
