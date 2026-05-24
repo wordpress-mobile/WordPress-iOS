@@ -1006,6 +1006,47 @@ struct PostSettingsTests {
         #expect(Set(termIds) == Set([TermId(10), TermId(20)]))
     }
 
+    @Test("makeCreateParameters encodes the social custom message")
+    func testMakeCreateParametersEncodesSocialCustomMessage() {
+        // Given
+        var settings = PostSettings()
+        settings.socialSharingDraft = PostSocialSharingDraft(customMessage: "Share this")
+
+        // When
+        let params = settings.makeCreateParameters()
+
+        // Then
+        #expect(params.meta?.publicizeMessage == "Share this")
+    }
+
+    @Test("makeCreateParameters encodes social connections")
+    func testMakeCreateParametersEncodesSocialConnections() throws {
+        // Given
+        var settings = PostSettings()
+        settings.socialSharingDraft = PostSocialSharingDraft(connectionsByID: [
+            "1": .init(id: "1", enabled: true),
+            "2": .init(id: "2", enabled: false)
+        ])
+
+        // When
+        let params = settings.makeCreateParameters()
+
+        // Then
+        let entries = try #require(params.additionalFields?.arrayValueForKey(key: "jetpack_publicize_connections"))
+        let flagsByID = Dictionary(
+            uniqueKeysWithValues: entries.compactMap { entry -> (String, Bool)? in
+                guard case let .object(dict) = entry,
+                    case let .string(id)? = dict["connection_id"],
+                    case let .bool(enabled)? = dict["enabled"]
+                else {
+                    return nil
+                }
+                return (id, enabled)
+            }
+        )
+        #expect(flagsByID == ["1": true, "2": false])
+    }
+
     // MARK: - defaults(from: Blog) Tests
 
     @Test("defaults inherits site discussion defaults (closed)")
@@ -1039,7 +1080,6 @@ struct PostSettingsTests {
         #expect(params.commentStatus == .open)
         #expect(params.pingStatus == .open)
     }
-
 }
 
 // MARK: - Test Helpers
