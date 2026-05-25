@@ -1,21 +1,18 @@
-Who’s who on your website? Now you know—Push notifications now use gravatars so you can see who commented or interacted with your content. The Activity Log also shows when your site was updated using AI agents.
-
-If you thought our last updates to the Stats were big, you haven’t seen anything yet.
-
-- Today’s date is now included in intervals like “Last 7 days.” We also added a new “Last 14 days” interval.
-- Incomplete dates, including today, are shown on the line chart as a dotted line. You can see them more easily in the bar chart view as well.
-- Speaking of bar charts, tapping on a bar will show you the data for that date. This makes it easier to scroll through data for multiple days. Oh, and tapping a bar will no longer select the bar next to it.
-- You might notice visual changes like a smaller Chart card header, smaller fonts in tabs, and reduced spacing here and there. It’s giving minimalist.
-
-While we were at it, we made changes to the Reader, too. (Incidentally, none of them are related to reading.)
-
-- When you view an image in a lightbox, swiping downward will dismiss it, even when you’re zoomed in.
-- We fixed the color of links in comments and in dark mode on custom themes. Looking good.
-- You can view media galleries in fullscreen mode. Just swipe right or left to view all images.
-
-And because we still had a little free time, we also fixed a few details that were bothering us.
-
-- We updated the arrow icons and spacing on the Notifications screen.
-- In Post Settings, the Social Sharing card only shows platforms that the app supports.
-- New posts use the default post format instead of the standard version. You can update this format in your site settings.
-- If your site is self-hosted with XML-RPC disabled, you can see Posts and Pages in the app. That’s pretty important, if we do say so ourselves.
+* [*] All self-hosted sites now sign in using application passwords [#25424]
+* [*] Comments: Fix "Trash" trailing action not updating the status of the comments cached on the device [#25485]
+* [*] Stats: Add a confirmation dialog when marking referrers as spam [#25475]
+* [*] Stats: Fix timezone label showing "Standard Time" during daylight saving time - thanks @btraviswright for the report! [#25495]
+* [*] Reader: Fix an issue with Article screen not updating comments if comment is posted from inline section [#25483]
+* [*] Reader: Fix button style [#25447]
+* [*] Reader: Add smart cropping for featured images in the feed so it never cut the heads off [#25451]
+* [*] Reader: Fix separator not visible in Dark Mode for comments [#25466]
+* [*] Reader: Fix an issue with "Notificaton Settings" showing incorrect state right after subscribing [#25459]
+* [*] Reader: Fix an issue with "Notificaton Settings" button shown when you are not subscribed [#25459]
+* [*] Reader: Fix a regression with anchors not working in posts [#25459]
+* [*] Reader: Fix an issue with Subscribe button not working for Freshly Pressed posts [#25476]
+* [*] Reader: Fix an issue with empty state not disappearing on Reader Comments view after you post a comment [#25484]
+* [*] Reader: Fix an issues with Reader failing to clear cached comments if all the comments are deleted [#25482]
+* [*] Reader: Fix an issue with the article view removing autoplay without showing controls [#25468]
+* [*] Menus: Fix an issue with footer view in Menu Editing not resizing [#25481]
+* [*] About screen: Remove the non-functional Twitter/X link - thanks @zynp-KC for reporting! [#25496]
+* [*] Notifications: Attempt to fix incorrect avatars in the notifications [#25501]
