@@ -10,6 +10,15 @@ case "$APP" in
   *) echo "Error: APP must be 'wordpress' or 'jetpack', got '$APP'" >&2; exit 1 ;;
 esac
 
+echo "--- :inbox_tray: Installing Claude Code"
+# The native installer puts the binary in ~/.local/bin, which may not be on PATH yet.
+export PATH="$HOME/.local/bin:$PATH"
+if ! command -v claude >/dev/null 2>&1; then
+  echo "Claude Code not found. Installing (stable channel)..."
+  curl -fsSL https://claude.ai/install.sh | bash -s stable
+fi
+claude --version
+
 echo "--- :key: Validating Test Site Credentials"
 if [[ "$SIMULATOR_LLM_PILOT_SITE_URL" != http://* && "$SIMULATOR_LLM_PILOT_SITE_URL" != https://* ]]; then
   SIMULATOR_LLM_PILOT_SITE_URL="https://${SIMULATOR_LLM_PILOT_SITE_URL}"
