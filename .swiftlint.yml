@@ -100,6 +100,9 @@ only_rules:
   # Prefer `reduce(into:_:)` over `reduce(_:_:)` for non-trivial accumulator types.
   - reduce_into
 
+  # `nil` coalescing on a non-optional is redundant.
+  - redundant_nil_coalescing
+
   # Type annotations are redundant when the type can be inferred.
   - redundant_type_annotation
 

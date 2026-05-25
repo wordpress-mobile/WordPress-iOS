@@ -140,7 +140,7 @@ class ReaderDetailHeaderViewModel: ObservableObject {
 
             self.isFollowingSite = post.isFollowing
 
-            self.authorAvatarURL = post.avatarURLForDisplay() ?? nil
+            self.authorAvatarURL = post.avatarURLForDisplay()
 
             if let authorName = post.authorForDisplay(), !authorName.isEmpty {
                 self.authorName = authorName
