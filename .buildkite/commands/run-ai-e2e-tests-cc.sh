@@ -127,8 +127,12 @@ fromjson? |
 JQ_EOF
 )
 
+# Tune down thinking to speed up the run: medium effort, and disable adaptive
+# thinking so the model uses a small fixed budget instead of deciding on its own.
+CLAUDE_CODE_DISABLE_ADAPTIVE_THINKING=1 MAX_THINKING_TOKENS=1024 \
 claude --bare -p \
   --model sonnet \
+  --effort medium \
   --permission-mode auto \
   --output-format stream-json \
   --verbose \
