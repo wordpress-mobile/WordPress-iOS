@@ -36,7 +36,7 @@ App bundle IDs:
 
 Also resolve the absolute path to the `ios-sim-navigation` skill's
 `scripts/` directory and store it as `<WDA_SCRIPTS_DIR>` for use in
-Phases 3, 6, and 7 — typically
+Phases 3, 5, 6, and 7 — typically
 `<project-root>/.claude/skills/ios-sim-navigation/scripts` on this
 project.
 
@@ -95,28 +95,60 @@ process, tell the user, and stop.
 
 ## Phase 5: Sign In
 
-Sign in once, following `docs/simulator-sign-in.md`. Test relaunches in
-Phase 6 preserve the signed-in state, so each test skips sign-in. This is
-the only phase that uses `-ui-test-reset-everything`. If any step below
-fails, run `<WDA_SCRIPTS_DIR>/wda-stop.rb` to release the simulator,
-tell the user, and stop.
+Sign in once. Test relaunches in Phase 6 preserve the signed-in state, so each
+test skips sign-in. This is the only phase that uses `-ui-test-reset-everything`.
+If any step below fails, run `<WDA_SCRIPTS_DIR>/wda-stop.rb` to release the
+simulator, tell the user, and stop.
 
-1. Launch the app using `<SITE_URL>` and `<SIGN_IN_CREDENTIALS>`, with
-   `-ui-test-reset-everything` in the launch arguments. Poll the WDA
-   accessibility tree until the app's initial screen appears.
+The credentials are launch arguments, and `wda-session.rb` is what gets them
+into the app: it launches the app with the arguments and binds the WDA session
+in one step, so the process you drive actually has the credentials. Don't
+relaunch the app any other way before it's signed in, or the arguments are lost
+and the app drops into a web login that launch arguments can't complete.
 
-2. Pick the matching sign-in path on the welcome screen per
-   `docs/simulator-sign-in.md` — self-hosted or WordPress.com, inferred
-   from `<SIGN_IN_CREDENTIALS>`. The launch arguments hold the
-   credentials, so do not type a username, password, or bearer token
-   into the UI. If the launch already dropped you on a signed-in
-   screen, skip this step. Poll the accessibility tree until a
-   signed-in screen appears.
+1. **Reset to a clean, signed-out state** (kept separate from the credentialed
+   launch, since reset clears `UserDefaults`):
 
-3. Verify the active site matches `<SITE_URL>`. For the self-hosted flow
-   this is automatic (the launch arguments target that site directly).
-   For the WordPress.com flow, use the site switcher if a different site
-   is currently selected.
+   ```bash
+   xcrun simctl launch --terminate-running-process <UDID> <APP_BUNDLE_ID> -ui-test-reset-everything
+   xcrun simctl terminate <UDID> <APP_BUNDLE_ID>
+   ```
+
+2. **Create the credentialed WDA session**, passing each launch-argument token
+   as an `--arg`:
+
+   - Self-hosted: `--arg -ui-test-site-url --arg <SITE_URL> --arg -ui-test-site-user --arg <username> --arg -ui-test-site-pass --arg <application-password>`
+   - WordPress.com: `--arg -ui-test-wpcom-token --arg <bearer-token>`
+
+   ```bash
+   ruby <WDA_SCRIPTS_DIR>/wda-session.rb --bundle <APP_BUNDLE_ID> --arg ... --arg ...
+   ```
+
+   Then poll the accessibility tree (`GET /source`, no session needed) until the
+   welcome screen appears.
+
+3. **Tap through the welcome screen** for the matching flow:
+
+   - WordPress.com: tap **"Continue with WordPress.com"**.
+   - Self-hosted: tap **"Enter your existing site address"**, type `<SITE_URL>`,
+     tap **"Continue"**.
+
+   Never type a username, password, or bearer token — the launch arguments
+   supply those.
+
+4. **Confirm sign-in, and fail fast if it didn't take.** Poll for a signed-in
+   screen (e.g. My Site) for up to ~20 s. If instead a web login form or a
+   system dialog "<App> Wants to Use <site> to Sign In" appears (the dialog
+   won't show in `GET /source`; check `GET /session/<sid>/alert/text`), the
+   credentials didn't apply. Don't type into the web form or wait on the
+   spinner. Retry once with WDA left running: reset (step 1), recreate the
+   session (step 2), tap through (step 3). If it still hits the web flow, the
+   credentials or `<SITE_URL>` are wrong (often a scheme/host mismatch with the
+   site's canonical URL) — run `wda-stop.rb`, tell the user, and stop.
+
+5. **Verify the active site matches `<SITE_URL>`.** For self-hosted this is
+   automatic. For WordPress.com, use the site switcher if a different site is
+   currently selected.
 
 ## Phase 6: Run Tests
 
