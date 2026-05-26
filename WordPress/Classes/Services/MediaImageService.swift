@@ -211,7 +211,7 @@ final class MediaImageService {
         return exporter
     }
 
-    /// - warning: This method was added only for backward-compatability with
+    /// - warning: This method was added only for backward-compatibility with
     /// the editor that relies on using URLs for displaying the preview thumbnail
     /// while the image is loaded. There is no guarantee that the URL will
     /// still be available after a period of time.
