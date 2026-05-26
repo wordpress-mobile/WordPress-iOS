@@ -848,7 +848,7 @@ static NSString * const ReaderPostGlobalIDKey = @"globalID";
     marker.sortDate = [post.sortDate dateByAddingTimeInterval:-0.1];
     marker.date_created_gmt = post.sortDate;
 
-    // For compatability with posts that are sorted by score
+    // For compatibility with posts that are sorted by score
     marker.sortRank = @([post.sortRank doubleValue] - CGFLOAT_MIN);
     marker.score = post.score;
 
