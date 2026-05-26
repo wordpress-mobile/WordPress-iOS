@@ -50,12 +50,19 @@ struct ReaderReadTimeTests {
         var post = "<h1>Getting Started with Swift Concurrency</h1>"
         post += "<p>" + String(repeating: "This is a detailed explanation of the concept. ", count: 100) + "</p>"
         post += "<img src=\"diagram1.png\">"
-        post += "<p>" + String(repeating: "Here we explore another important aspect of the topic. ", count: 100) + "</p>"
+        post +=
+            "<p>" + String(repeating: "Here we explore another important aspect of the topic. ", count: 100) + "</p>"
         post += "<img src=\"diagram2.png\">"
-        post += "<pre><code>```func fetchData() async throws { let data = try await URLSession.shared.data(from: url)```</code></pre>"
+        post +=
+            "<pre><code>```func fetchData() async throws { let data = try await URLSession.shared.data(from: url)```</code></pre>"
         post += "<p>" + String(repeating: "In conclusion this wraps up the discussion nicely. ", count: 50) + "</p>"
         // ~2500 words / 200 WPM ≈ 12.5 min + image/code penalties → ~13 min
         let result = ReaderReadTime.compute(post)
         #expect(result == 12)
+    }
+
+    @Test func cjkTextProducesReasonableEstimate() {
+        let text = String(repeating: "测试句子", count: 125) // 500 chars
+        #expect(ReaderReadTime.compute(text) > 1)
     }
 }
