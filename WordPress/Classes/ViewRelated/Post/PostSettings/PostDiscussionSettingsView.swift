@@ -69,7 +69,9 @@ private enum Strings {
         comment: "Footer text when comments are disabled"
     )
 
-    static let pingbacksLearnMoreURL = URL(string: "https://wordpress.org/documentation/article/trackbacks-and-pingbacks/")!
+    static let pingbacksLearnMoreURL = URL(
+        string: "https://wordpress.org/documentation/article/trackbacks-and-pingbacks/"
+    )!
 
     static let learnMorePingbacksText = NSLocalizedString(
         "postDiscussion.pingbacks.learnMore.text",
