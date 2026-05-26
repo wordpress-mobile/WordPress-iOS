@@ -6,7 +6,7 @@ public enum ReaderReadTime {
     ///
     /// - Parameters:
     ///   - text: The raw post content (may contain HTML/Markdown).
-    ///   - wpm: Words per minute reading speed (default 238).
+    ///   - wpm: Words per minute reading speed (default 200).
     /// - Returns: Estimated reading time in minutes (minimum 1).
     public static func compute(_ text: String, wpm: Double = 200) -> Int {
         // 1. Strip HTML & Markdown
