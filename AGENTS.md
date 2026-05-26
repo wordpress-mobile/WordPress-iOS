@@ -10,26 +10,13 @@ Minimum requires iOS version is iOS 17. The latest iOS version is iOS 26.
 
 ## Bootstrap
 
-Before building or running tests — including in any newly created worktree — run:
+To prepare a fresh clone or worktree to build the app, run:
 
 ```sh
-bundle exec rake dependencies
+rake dependencies
 ```
 
 This is the canonical entry point for getting the repo ready to build.
-It checks Ruby/Bundler, applies mobile-secrets credentials (when configured), downloads the Gutenberg xcframeworks, and generates the internal app icon.
-
-`WordPress/Frameworks/` is gitignored and per-worktree, so this must be re-run in every fresh worktree.
-The Gutenberg xcframeworks themselves are cached at `~/Library/Caches/WordPress-iOS/Gutenberg/<version>`, so the network download only happens once per version.
-
-Other common task-runner entry points:
-
-- `bundle exec rake lint` / `bundle exec rake lintfix` — SwiftLint
-- `bundle exec rake xcode` — open the workspace (runs `dependencies` first)
-- `bundle exec rake mocks` — start the API mock server on port 8282
-
-For first-time machine setup (Xcode, Homebrew tools, credentials, GPG), see the "Getting Started" section in `README.md`.
-
 ## High-Level Architecture
 
 ### Project Structure
