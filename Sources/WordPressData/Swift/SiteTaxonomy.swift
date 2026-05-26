@@ -33,13 +33,13 @@ public struct SiteTaxonomy: Codable {
         self.name = details.name
         self.restBase = details.restBase
         self.labels = LocalizedLabels(
-            name: details.labels[.name],
-            newItemName: details.labels[.newItemName],
-            addNewItem: details.labels[.addNewItem],
-            nameFieldDescription: details.labels[.nameFieldDescription],
-            descFieldDescription: details.labels[.descFieldDescription],
-            noTerms: details.labels[.noTerms],
-            searchItems: details.labels[.searchItems]
+            name: details.labels[.name, default: nil],
+            newItemName: details.labels[.newItemName, default: nil],
+            addNewItem: details.labels[.addNewItem, default: nil],
+            nameFieldDescription: details.labels[.nameFieldDescription, default: nil],
+            descFieldDescription: details.labels[.descFieldDescription, default: nil],
+            noTerms: details.labels[.noTerms, default: nil],
+            searchItems: details.labels[.searchItems, default: nil]
         )
         self.supportedPostTypes = details.types
     }
