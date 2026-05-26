@@ -914,7 +914,7 @@ class PostRepositorySaveTests: CoreDataTestCase {
     }
 
     /// Scenario: the use sends the updated content to the server, the content
-    /// gets updated on the server, but the app never recieves a response.
+    /// gets updated on the server, but the app never receives a response.
     func testSaveConflictFalsePositiveNoResponseFromTheServer() async throws {
         // GIVEN a draft post (client behind, server has "content-c")
         let clientDateModified = Date(timeIntervalSince1970: 1709852440)
