@@ -619,7 +619,7 @@ extension InteractiveNotificationsManager: UNUserNotificationCenterDelegate {
                 return
         }
 
-        // If the notification orginated from the share extension, disregard this current notification and resend a new one.
+        // If the notification originated from the share extension, disregard this current notification and resend a new one.
         ShareExtensionSessionManager.fireUserNotificationIfNeeded(postUploadOpID)
         completionHandler([])
     }
