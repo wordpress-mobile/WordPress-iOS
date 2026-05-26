@@ -69,8 +69,8 @@ struct PostSettings: Hashable {
     /// Publicize draft state used for change detection and REST parameter encoding.
     /// When available, `connectionsByID` carries the full post-level connection state.
     var socialSharingDraft: PostSocialSharingDraft?
-    var allowComments = true
-    var allowPings = true
+    var allowComments: Bool?
+    var allowPings: Bool?
 
     // MARK: - Page-specific
     var parentPageID: Int?
@@ -123,8 +123,8 @@ struct PostSettings: Hashable {
                     }
             )
             sharing = PostSocialSharingSettings.make(for: post)
-            allowComments = post.allowComments
-            allowPings = post.allowPings
+            allowComments = post.commentsStatus.map { $0 != RemotePostDiscussionState.closed.rawValue }
+            allowPings = post.pingsStatus.map { $0 != RemotePostDiscussionState.closed.rawValue }
         case let page as Page:
             parentPageID = page.parentID?.intValue
         default:
@@ -173,8 +173,8 @@ struct PostSettings: Hashable {
         // Tag names will be resolved asynchronously in PostSettingsViewModel
         tags = (post.tags ?? []).map { Term(id: Int($0), name: "") }
         categoryIDs = Set((post.categories ?? []).map { Int($0) })
-        allowComments = post.commentStatus == .open
-        allowPings = post.pingStatus == .open
+        allowComments = post.commentStatus.map { $0 == .open }
+        allowPings = post.pingStatus.map { $0 == .open }
 
         parentPageID = post.parent.map { Int($0) }
 
@@ -204,10 +204,8 @@ struct PostSettings: Hashable {
         if let userID = blog.userID {
             settings.author = Author(id: userID.intValue, displayName: "–", avatarURL: nil)
         }
-        if let blogSettings = blog.settings {
-            settings.allowComments = blogSettings.commentsAllowed
-            settings.allowPings = blogSettings.pingbackInboundEnabled
-        }
+        settings.allowComments = blog.settings?.commentsAllowed?.boolValue
+        settings.allowPings = blog.settings?.pingbackInboundEnabled?.boolValue
         return settings
     }
 
@@ -294,10 +292,10 @@ struct PostSettings: Hashable {
             }
 
             // Update discussion settings
-            if post.allowComments != allowComments {
+            if let allowComments, post.allowComments != allowComments {
                 post.allowComments = allowComments
             }
-            if post.allowPings != allowPings {
+            if let allowPings, post.allowPings != allowPings {
                 post.allowPings = allowPings
             }
 
@@ -374,14 +372,12 @@ struct PostSettings: Hashable {
             params.featuredMedia = self.featuredImageID.map { MediaId(Int64($0)) } ?? MediaId(0)
         }
 
-        let postAllowsComments = post.commentStatus == .open
-        if postAllowsComments != self.allowComments {
-            params.commentStatus = self.allowComments ? .open : .closed
+        if let allowComments, (post.commentStatus == .open) != allowComments {
+            params.commentStatus = allowComments ? .open : .closed
         }
 
-        let postAllowsPings = post.pingStatus == .open
-        if postAllowsPings != self.allowPings {
-            params.pingStatus = self.allowPings ? .open : .closed
+        if let allowPings, (post.pingStatus == .open) != allowPings {
+            params.pingStatus = allowPings ? .open : .closed
         }
 
         if post.format.map({ $0.id }) != self.postFormat {
@@ -491,8 +487,8 @@ struct PostSettings: Hashable {
         params.author = author.map { UserId(Int64($0.id)) }
         params.excerpt = excerpt.isEmpty ? nil : excerpt
         params.featuredMedia = featuredImageID.map { MediaId(Int64($0)) }
-        params.commentStatus = allowComments ? .open : .closed
-        params.pingStatus = allowPings ? .open : .closed
+        params.commentStatus = allowComments.map { $0 ? .open : .closed }
+        params.pingStatus = allowPings.map { $0 ? .open : .closed }
         params.format = postFormat.flatMap { PostFormat.from(slug: $0) }
         params.sticky = isStickyPost ? true : nil
         params.categories = categoryIds

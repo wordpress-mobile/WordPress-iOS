@@ -75,7 +75,7 @@ open class BlogSettings: NSManagedObject {
 
     /// Represents whether comments are allowed, or not.
     ///
-    @NSManaged public var commentsAllowed: Bool
+    @NSManaged public var commentsAllowed: NSNumber?
 
     /// Contains a list of words, space separated, that would cause a comment to be automatically blocklisted.
     ///
@@ -138,7 +138,7 @@ open class BlogSettings: NSManagedObject {
 
     /// If set to true, 3rd party sites will be allowed to post pingbacks.
     ///
-    @NSManaged public var pingbackInboundEnabled: Bool
+    @NSManaged public var pingbackInboundEnabled: NSNumber?
 
     /// When Outbound Pingbacks are enabled, 3rd party sites that get linked will be notified.
     ///

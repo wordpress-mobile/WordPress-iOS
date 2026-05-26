@@ -39,12 +39,13 @@ struct PostListEditorPresenter {
     }
 
     static func handleCopy(post: Post, in postListViewController: EditorPresenterViewController) {
-        // Copy Post
         let newPost = post.blog.createDraftPost()
         newPost.postTitle = post.postTitle
         newPost.content = post.content
         newPost.categories = post.categories
         newPost.postFormat = post.postFormat
+        newPost.commentsStatus = post.commentsStatus
+        newPost.pingsStatus = post.pingsStatus
 
         openEditor(with: newPost, in: postListViewController)
 

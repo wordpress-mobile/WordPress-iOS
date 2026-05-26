@@ -474,7 +474,7 @@ struct PostSettingsFormContentView<ViewModel: PostSettingsViewModelProtocol>: Vi
         } label: {
             SettingsRow(
                 Strings.discussionLabel,
-                value: viewModel.settings.allowComments ? Strings.discussionOpen : Strings.discussionClosed
+                value: viewModel.settings.allowComments == true ? Strings.discussionOpen : Strings.discussionClosed
             )
         }
     }

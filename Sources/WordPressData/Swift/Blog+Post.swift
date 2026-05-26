@@ -1,5 +1,6 @@
 import CoreData
 import Foundation
+import WordPressKit
 
 // MARK: - Lookup posts
 
@@ -73,6 +74,14 @@ extension Blog {
         }
 
         post.postFormat = settings?.defaultPostFormat
+
+        if let allowComments = settings?.commentsAllowed?.boolValue {
+            post.commentsStatus = (allowComments ? RemotePostDiscussionState.open : .closed).rawValue
+        }
+        if let allowPings = settings?.pingbackInboundEnabled?.boolValue {
+            post.pingsStatus = (allowPings ? RemotePostDiscussionState.open : .closed).rawValue
+        }
+
         post.postType = Post.typeDefaultIdentifier
 
         if let userID, let author = getAuthorWith(id: userID) {

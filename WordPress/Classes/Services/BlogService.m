@@ -750,11 +750,11 @@ NSString *const WPBlogSettingsUpdatedNotification = @"WPBlogSettingsUpdatedNotif
 {
     NSParameterAssert(settings);
     NSParameterAssert(remoteSettings);
-    
+
     // Transformables
     NSSet *separatedBlocklistKeys = [remoteSettings.commentsBlocklistKeys uniqueStringComponentsSeparatedByNewline];
     NSSet *separatedModerationKeys = [remoteSettings.commentsModerationKeys uniqueStringComponentsSeparatedByNewline];
-    
+
     // General
     settings.name = remoteSettings.name;
     settings.tagline = remoteSettings.tagline;
@@ -763,7 +763,7 @@ NSString *const WPBlogSettingsUpdatedNotification = @"WPBlogSettingsUpdatedNotif
     settings.iconMediaID = remoteSettings.iconMediaID;
     settings.gmtOffset = remoteSettings.gmtOffset;
     settings.timezoneString = remoteSettings.timezoneString;
-    
+
     // Writing
     settings.defaultCategoryID = remoteSettings.defaultCategoryID ?: settings.defaultCategoryID;
     settings.defaultPostFormat = remoteSettings.defaultPostFormat ?: settings.defaultPostFormat;
@@ -773,28 +773,28 @@ NSString *const WPBlogSettingsUpdatedNotification = @"WPBlogSettingsUpdatedNotif
     settings.postsPerPage = remoteSettings.postsPerPage;
 
     // Discussion
-    settings.commentsAllowed = [remoteSettings.commentsAllowed boolValue];
+    settings.commentsAllowed = remoteSettings.commentsAllowed;
     settings.commentsBlocklistKeys = separatedBlocklistKeys;
     settings.commentsCloseAutomatically = [remoteSettings.commentsCloseAutomatically boolValue];
     settings.commentsCloseAutomaticallyAfterDays = remoteSettings.commentsCloseAutomaticallyAfterDays;
     settings.commentsFromKnownUsersAllowlisted = [remoteSettings.commentsFromKnownUsersAllowlisted boolValue];
-    
+
     settings.commentsMaximumLinks = remoteSettings.commentsMaximumLinks;
     settings.commentsModerationKeys = separatedModerationKeys;
-    
+
     settings.commentsPagingEnabled = [remoteSettings.commentsPagingEnabled boolValue];
     settings.commentsPageSize = remoteSettings.commentsPageSize;
-    
+
     settings.commentsRequireManualModeration = [remoteSettings.commentsRequireManualModeration boolValue];
     settings.commentsRequireNameAndEmail = [remoteSettings.commentsRequireNameAndEmail boolValue];
     settings.commentsRequireRegistration = [remoteSettings.commentsRequireRegistration boolValue];
-    
+
     settings.commentsSortOrderAscending = remoteSettings.commentsSortOrderAscending;
-    
+
     settings.commentsThreadingDepth = remoteSettings.commentsThreadingDepth;
     settings.commentsThreadingEnabled = [remoteSettings.commentsThreadingEnabled boolValue];
-    
-    settings.pingbackInboundEnabled = [remoteSettings.pingbackInboundEnabled boolValue];
+
+    settings.pingbackInboundEnabled = remoteSettings.pingbackInboundEnabled;
     settings.pingbackOutboundEnabled = [remoteSettings.pingbackOutboundEnabled boolValue];
 
     // Related Posts
@@ -843,7 +843,7 @@ NSString *const WPBlogSettingsUpdatedNotification = @"WPBlogSettingsUpdatedNotif
     remoteSettings.postsPerPage = settings.postsPerPage;
 
     // Discussion
-    remoteSettings.commentsAllowed = @(settings.commentsAllowed);
+    remoteSettings.commentsAllowed = settings.commentsAllowed;
     remoteSettings.commentsBlocklistKeys = joinedBlocklistKeys;
     remoteSettings.commentsCloseAutomatically = @(settings.commentsCloseAutomatically);
     remoteSettings.commentsCloseAutomaticallyAfterDays = settings.commentsCloseAutomaticallyAfterDays;
@@ -864,7 +864,7 @@ NSString *const WPBlogSettingsUpdatedNotification = @"WPBlogSettingsUpdatedNotif
     remoteSettings.commentsThreadingDepth = settings.commentsThreadingDepth;
     remoteSettings.commentsThreadingEnabled = @(settings.commentsThreadingEnabled);
     
-    remoteSettings.pingbackInboundEnabled = @(settings.pingbackInboundEnabled);
+    remoteSettings.pingbackInboundEnabled = settings.pingbackInboundEnabled;
     remoteSettings.pingbackOutboundEnabled = @(settings.pingbackOutboundEnabled);
 
     // AMP

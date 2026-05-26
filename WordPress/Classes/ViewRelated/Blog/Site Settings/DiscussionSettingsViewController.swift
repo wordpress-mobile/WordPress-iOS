@@ -139,7 +139,11 @@ open class DiscussionSettingsViewController: UITableViewController {
         sections[section].footerText
     }
 
-    open override func tableView(_ tableView: UITableView, willDisplayFooterView view: UIView, forSection section: Int)
+    open override func tableView(
+        _ tableView: UITableView,
+        willDisplayFooterView view: UIView,
+        forSection section: Int
+    ) // swiftlint:disable:next opening_brace
     {
         WPStyleGuide.configureTableViewSectionFooter(view)
     }
@@ -187,7 +191,7 @@ open class DiscussionSettingsViewController: UITableViewController {
             return
         }
         didChangeSetting("allow_comments", value: enabled as Any)
-        settings.commentsAllowed = enabled
+        settings.commentsAllowed = NSNumber(value: enabled)
     }
 
     private func pressedPingbacksInbound(_ payload: AnyObject?) {
@@ -195,7 +199,7 @@ open class DiscussionSettingsViewController: UITableViewController {
             return
         }
         didChangeSetting("receive_pingbacks", value: enabled as Any)
-        settings.pingbackInboundEnabled = enabled
+        settings.pingbackInboundEnabled = NSNumber(value: enabled)
     }
 
     private func pressedPingbacksOutbound(_ payload: AnyObject?) {
@@ -409,7 +413,7 @@ open class DiscussionSettingsViewController: UITableViewController {
             Row(
                 style: .switch,
                 title: NSLocalizedString("Allow Comments", comment: "Settings: Comments Enabled"),
-                boolValue: self.settings.commentsAllowed,
+                boolValue: self.settings.commentsAllowed?.boolValue ?? false,
                 handler: { [weak self] in
                     self?.pressedCommentsAllowed($0)
                 }
@@ -427,7 +431,7 @@ open class DiscussionSettingsViewController: UITableViewController {
             Row(
                 style: .switch,
                 title: NSLocalizedString("Receive Pingbacks", comment: "Settings: Receiving Pingbacks"),
-                boolValue: self.settings.pingbackInboundEnabled,
+                boolValue: self.settings.pingbackInboundEnabled?.boolValue ?? false,
                 handler: { [weak self] in
                     self?.pressedPingbacksInbound($0)
                 }

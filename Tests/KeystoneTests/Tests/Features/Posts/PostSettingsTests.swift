@@ -2,6 +2,7 @@ import Testing
 import Foundation
 import CoreData
 import JetpackSocial
+import SwiftUI
 import WordPressAPIInternal
 @testable import WordPress
 @testable import WordPressData
@@ -1053,14 +1054,14 @@ struct PostSettingsTests {
     func testDefaultsInheritsClosedDiscussion() {
         let context = ContextManager.forTesting().mainContext
         let blog = BlogBuilder(context).with(siteName: "Test").build()
-        blog.settings?.commentsAllowed = false
-        blog.settings?.pingbackInboundEnabled = false
+        blog.settings?.commentsAllowed = NSNumber(value: false)
+        blog.settings?.pingbackInboundEnabled = NSNumber(value: false)
 
         let settings = PostSettings.defaults(from: blog)
         let params = settings.makeCreateParameters(taxonomies: [])
 
-        #expect(!settings.allowComments)
-        #expect(!settings.allowPings)
+        #expect(settings.allowComments == false)
+        #expect(settings.allowPings == false)
         #expect(params.commentStatus == .closed)
         #expect(params.pingStatus == .closed)
     }
@@ -1069,16 +1070,197 @@ struct PostSettingsTests {
     func testDefaultsInheritsOpenDiscussion() {
         let context = ContextManager.forTesting().mainContext
         let blog = BlogBuilder(context).with(siteName: "Test").build()
-        blog.settings?.commentsAllowed = true
-        blog.settings?.pingbackInboundEnabled = true
+        blog.settings?.commentsAllowed = NSNumber(value: true)
+        blog.settings?.pingbackInboundEnabled = NSNumber(value: true)
 
         let settings = PostSettings.defaults(from: blog)
         let params = settings.makeCreateParameters(taxonomies: [])
 
-        #expect(settings.allowComments)
-        #expect(settings.allowPings)
+        #expect(settings.allowComments == true)
+        #expect(settings.allowPings == true)
         #expect(params.commentStatus == .open)
         #expect(params.pingStatus == .open)
+    }
+
+    // MARK: - PostSettings discussion tri-state
+
+    @Test("New AbstractPost with unset comment status yields nil allowComments")
+    func testInitFromNewPostHasUnknownDiscussion() {
+        let context = ContextManager.forTesting().mainContext
+        let blog = BlogBuilder(context).build()
+        let post = PostBuilder(context, blog: blog).build()
+        post.commentsStatus = nil
+        post.pingsStatus = nil
+
+        let settings = PostSettings(from: post)
+
+        #expect(settings.allowComments == nil)
+        #expect(settings.allowPings == nil)
+    }
+
+    @Test("Existing AbstractPost maps stored comment status to non-nil")
+    func testInitFromExistingPostHasKnownDiscussion() {
+        let context = ContextManager.forTesting().mainContext
+        let blog = BlogBuilder(context).build()
+        let post = PostBuilder(context, blog: blog).build()
+        post.commentsStatus = "closed"
+        post.pingsStatus = "open"
+
+        let settings = PostSettings(from: post)
+
+        #expect(settings.allowComments == false)
+        #expect(settings.allowPings == true)
+    }
+
+    @Test("REST post with unset comment status yields nil discussion settings")
+    func testInitFromRestPostHasUnknownDiscussion() {
+        let post = makeRemotePost(commentStatus: nil, pingStatus: nil)
+
+        let settings = PostSettings(from: post)
+
+        #expect(settings.allowComments == nil)
+        #expect(settings.allowPings == nil)
+    }
+
+    @Test("makeCreateParameters omits comment status when unknown")
+    func testMakeCreateParametersOmitsUnknownDiscussion() {
+        var settings = PostSettings()
+        settings.allowComments = nil
+        settings.allowPings = nil
+
+        let params = settings.makeCreateParameters()
+
+        #expect(params.commentStatus == nil)
+        #expect(params.pingStatus == nil)
+    }
+
+    @Test("makeUpdateParameters omits comment/ping status when unknown")
+    func testMakeUpdateParametersOmitsUnknownDiscussion() {
+        let post = makeRemotePost()
+        var settings = PostSettings(from: post)
+        settings.allowComments = nil
+        settings.allowPings = nil
+
+        let params = settings.makeUpdateParameters(from: post)
+
+        #expect(params.commentStatus == nil)
+        #expect(params.pingStatus == nil)
+    }
+
+    @Test("apply leaves stored comment/ping status untouched when unknown")
+    func testApplyLeavesDiscussionUntouchedWhenUnknown() {
+        let context = ContextManager.forTesting().mainContext
+        let blog = BlogBuilder(context).build()
+        let post = PostBuilder(context, blog: blog).build()
+        post.commentsStatus = "closed"
+        post.pingsStatus = "closed"
+
+        var settings = PostSettings(from: post)
+        settings.allowComments = nil
+        settings.allowPings = nil
+        settings.apply(to: post)
+
+        #expect(post.commentsStatus == "closed")
+        #expect(post.pingsStatus == "closed")
+    }
+
+    // MARK: - Blog.createPost() discussion seeding
+
+    @Test("createPost seeds comment/ping status from blog discussion defaults")
+    func testCreatePostSeedsDiscussionDefaults() {
+        let context = ContextManager.forTesting().mainContext
+        let blog = BlogBuilder(context).with(siteName: "Test").build()
+        blog.settings?.commentsAllowed = NSNumber(value: false)
+        blog.settings?.pingbackInboundEnabled = NSNumber(value: true)
+
+        let post = blog.createPost()
+
+        #expect(post.commentsStatus == "closed")
+        #expect(post.pingsStatus == "open")
+    }
+
+    // MARK: - Unreadable site discussion defaults
+
+    @Test("defaults yields nil discussion when site defaults are unreadable")
+    func testDefaultsUnknownWhenSiteDefaultsUnreadable() {
+        let context = ContextManager.forTesting().mainContext
+        let blog = BlogBuilder(context).with(siteName: "Test").build()
+        blog.settings?.commentsAllowed = nil
+        blog.settings?.pingbackInboundEnabled = nil
+
+        let settings = PostSettings.defaults(from: blog)
+
+        #expect(settings.allowComments == nil)
+        #expect(settings.allowPings == nil)
+    }
+
+    @Test("createPost leaves comment status unset when site defaults are unreadable")
+    func testCreatePostNoSeedWhenUnreadable() {
+        let context = ContextManager.forTesting().mainContext
+        let blog = BlogBuilder(context).with(siteName: "Test").build()
+        blog.settings?.commentsAllowed = nil
+        blog.settings?.pingbackInboundEnabled = nil
+
+        let post = blog.createPost()
+
+        #expect(post.commentsStatus == nil)
+        #expect(post.pingsStatus == nil)
+    }
+
+    // MARK: - Discussion row visibility gate (CMM-2077)
+
+    @Test("Discussion row is hidden for a new post with unknown discussion defaults")
+    func testDiscussionRowHiddenWhenDefaultsUnknown() {
+        let context = ContextManager.forTesting().mainContext
+        let blog = BlogBuilder(context).build()
+        let post = PostBuilder(context, blog: blog).build()
+        post.commentsStatus = nil
+        post.pingsStatus = nil
+
+        let viewModel = PostSettingsViewModel(post: post)
+
+        #expect(viewModel.settings.allowComments == nil)
+        #expect(!viewModel.visibleMoreOptions.contains(.discussion))
+    }
+
+    @Test("Discussion row is shown when the post has a known comment status")
+    func testDiscussionRowShownWhenStatusKnown() {
+        let context = ContextManager.forTesting().mainContext
+        let blog = BlogBuilder(context).build()
+        let post = PostBuilder(context, blog: blog).build()
+        post.commentsStatus = "open"
+        post.pingsStatus = "open"
+
+        let viewModel = PostSettingsViewModel(post: post)
+
+        #expect(viewModel.settings.allowComments == true)
+        #expect(viewModel.visibleMoreOptions.contains(.discussion))
+    }
+
+    @Test("Discussion row is shown when only the ping status is known")
+    func testDiscussionRowShownWhenOnlyPingStatusKnown() {
+        let context = ContextManager.forTesting().mainContext
+        let blog = BlogBuilder(context).build()
+        let post = PostBuilder(context, blog: blog).build()
+        post.commentsStatus = nil
+        post.pingsStatus = "open"
+
+        let viewModel = PostSettingsViewModel(post: post)
+
+        #expect(viewModel.settings.allowComments == nil)
+        #expect(viewModel.settings.allowPings == true)
+        #expect(viewModel.visibleMoreOptions.contains(.discussion))
+    }
+
+    @Test("Discussion view only shows sections for known settings")
+    func testDiscussionViewSectionVisibility() {
+        let commentsOnlyView = makeDiscussionView(allowComments: true, allowPings: nil)
+        #expect(commentsOnlyView.showsCommentsSection)
+        #expect(!commentsOnlyView.showsPingsSection)
+
+        let pingsOnlyView = makeDiscussionView(allowComments: nil, allowPings: true)
+        #expect(!pingsOnlyView.showsCommentsSection)
+        #expect(pingsOnlyView.showsPingsSection)
     }
 }
 
@@ -1090,12 +1272,21 @@ private extension SiteTaxonomy {
     }
 }
 
+private func makeDiscussionView(allowComments: Bool?, allowPings: Bool?) -> PostDiscussionSettingsView {
+    var settings = PostSettings()
+    settings.allowComments = allowComments
+    settings.allowPings = allowPings
+    return PostDiscussionSettingsView(postSettings: .constant(settings))
+}
+
 private func makeRemotePost(
     tags: [TermId]? = nil,
     categories: [TermId]? = nil,
     featuredMedia: MediaId? = nil,
     format: PostFormat? = nil,
     meta: PostMeta? = nil,
+    commentStatus: PostCommentStatus? = .open,
+    pingStatus: PostPingStatus? = .open,
     additionalFields: WpAdditionalFields? = nil
 ) -> AnyPostWithEditContext {
     AnyPostWithEditContext(
@@ -1117,8 +1308,8 @@ private func makeRemotePost(
         author: nil,
         excerpt: nil,
         featuredMedia: featuredMedia,
-        commentStatus: .open,
-        pingStatus: .open,
+        commentStatus: commentStatus,
+        pingStatus: pingStatus,
         format: format,
         meta: meta,
         sticky: nil,

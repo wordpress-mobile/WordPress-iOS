@@ -195,7 +195,11 @@ struct CustomPostSettingsViewModelTests {
 
 // MARK: - Test Helpers
 
-private func makePostWithDisabledConnection(status: PostStatus = .publish) throws -> AnyPostWithEditContext {
+private func makePostWithDisabledConnection(
+    status: PostStatus = .publish,
+    commentStatus: PostCommentStatus? = .open,
+    pingStatus: PostPingStatus? = .open
+) throws -> AnyPostWithEditContext {
     // Mirrors the real server response observed when a published post has a
     // connection that was already shared (server returns enabled: false).
     let json = #"""
@@ -225,8 +229,8 @@ private func makePostWithDisabledConnection(status: PostStatus = .publish) throw
         author: nil,
         excerpt: nil,
         featuredMedia: nil,
-        commentStatus: .open,
-        pingStatus: .open,
+        commentStatus: commentStatus,
+        pingStatus: pingStatus,
         format: nil,
         meta: nil,
         sticky: nil,
