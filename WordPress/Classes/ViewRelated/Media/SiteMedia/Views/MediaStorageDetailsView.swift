@@ -406,7 +406,7 @@ private struct MediaTypeBreakdown {
             } else {
                 // Media items with `mediaType` that is not handled by the app are consider "others". In an unlikely
                 // scenario where the media file size is zero, we'll consider them as "others", too. That's to avoid
-                // showing a specifc type with incorrect total file size.
+                // showing a specific type with incorrect total file size.
                 category = .other
             }
             categorized[category, default: []].append(item)
