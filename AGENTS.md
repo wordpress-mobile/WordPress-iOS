@@ -17,6 +17,7 @@ rake dependencies
 ```
 
 This is the canonical entry point for getting the repo ready to build.
+
 ## High-Level Architecture
 
 ### Project Structure
