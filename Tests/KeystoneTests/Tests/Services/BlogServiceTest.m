@@ -4,6 +4,7 @@
 #import "WordPressTest-Swift.h"
 
 @import WordPressData;
+@import WordPressKitModels;
 
 @import OCMock;
 
@@ -66,6 +67,35 @@
 - (void)cleanUpNSUserDefaultValues
 {
     [UserSettings setDefaultDotComUUID:nil];
+}
+
+- (void)testUpdateSettingsAppliesPresentValuesIncludingFalse
+{
+    self.blog.settings.commentsAllowed = @YES;
+    self.blog.settings.commentsCloseAutomatically = YES;
+    self.blog.settings.pingbackOutboundEnabled = YES;
+    self.blog.settings.relatedPostsEnabled = YES;
+    self.blog.settings.ampEnabled = YES;
+    self.blog.settings.sharingDisabledLikes = YES;
+
+    RemoteBlogSettings *remoteSettings = [RemoteBlogSettings new];
+    remoteSettings.commentsAllowed = @NO;
+    remoteSettings.commentsCloseAutomatically = @NO;
+    remoteSettings.pingbackOutboundEnabled = @NO;
+    remoteSettings.relatedPostsEnabled = @NO;
+    remoteSettings.ampEnabled = @NO;
+    remoteSettings.sharingDisabledLikes = @NO;
+    remoteSettings.tagline = @"New tagline";
+
+    [self.blogService updateSettings:self.blog.settings withRemoteSettings:remoteSettings];
+
+    XCTAssertEqualObjects(self.blog.settings.commentsAllowed, @NO);
+    XCTAssertFalse(self.blog.settings.commentsCloseAutomatically);
+    XCTAssertFalse(self.blog.settings.pingbackOutboundEnabled);
+    XCTAssertFalse(self.blog.settings.relatedPostsEnabled);
+    XCTAssertFalse(self.blog.settings.ampEnabled);
+    XCTAssertFalse(self.blog.settings.sharingDisabledLikes);
+    XCTAssertEqualObjects(self.blog.settings.tagline, @"New tagline");
 }
 
 @end
