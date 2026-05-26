@@ -40,8 +40,8 @@ struct ReaderReadTimeTests {
     }
 
     @Test func codeBlocksAddPenalty() {
-        let base = String(repeating: "word ", count: 200)
-        let withCode = base + "```let x = 1; let y = 2; let z = 3```"
+        let base = "print 'Hello world'"
+        let withCode = "```\(base)```"
         #expect(ReaderReadTime.compute(withCode) >= ReaderReadTime.compute(base))
     }
 
