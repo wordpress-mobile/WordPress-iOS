@@ -822,7 +822,7 @@ import AutomatticTracks
     private func updateLastSyncedForTopic(_ objectID: NSManagedObjectID) {
         let context = ContextManager.shared.mainContext
         guard let topic = (try? context.existingObject(with: objectID)) as? ReaderAbstractTopic else {
-            DDLogError("Failed to retrive an existing topic when updating last sync date.")
+            DDLogError("Failed to retrieve an existing topic when updating last sync date.")
             return
         }
         topic.lastSynced = Date()
@@ -874,7 +874,7 @@ import AutomatticTracks
     }
 
     /// Returns the number of posts for the current topic
-    /// This allows the count to be overriden by subclasses
+    /// This allows the count to be overridden by subclasses
     var topicPostsCount: Int {
         return readerTopic?.posts.count ?? 0
     }
