@@ -48,7 +48,7 @@ extension Media {
                 if media.remoteStatus == .pushing || media.remoteStatus == .processing {
                     media.remoteStatus = .failed
                 }
-                // If they failed to upload themselfs because no local copy exists then we need to delete this media object
+                // If they failed to upload themselves because no local copy exists then we need to delete this media object
                 // This scenario can happen when media objects were created based on an asset that failed to import to the WordPress App.
                 // For example a that is stored on the iCloud storage and because of the network connection failed the import process.
                 if media.remoteStatus == .failed,
