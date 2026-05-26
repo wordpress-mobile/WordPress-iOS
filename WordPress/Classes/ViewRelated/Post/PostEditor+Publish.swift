@@ -327,7 +327,7 @@ extension PublishingEditor {
             return wpAssertionFailure("managedObjectContext is missing")
         }
 
-        wpAssert(post.latest() == post, "Must be opened with the latest verison of the post")
+        wpAssert(post.latest() == post, "Must be opened with the latest version of the post")
 
         if !post.isUnsavedRevision && post.status != .trash {
             DDLogDebug("Creating new revision")
