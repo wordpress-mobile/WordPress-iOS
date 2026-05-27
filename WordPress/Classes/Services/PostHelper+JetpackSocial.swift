@@ -17,12 +17,16 @@ extension PostHelper {
     ///   - metadata: The metadata dictionary for the post. Optional because Obj-C shouldn't be trusted.
     /// - Returns: A dictionary for the `Post`'s `disabledPublicizeConnections` property.
     @objc(disabledPublicizeConnectionsForPost:andMetadata:)
-    static func disabledPublicizeConnections(for post: AbstractPost?, metadata: [[String: Any]]?) -> [NSNumber: StringDictionary] {
+    static func disabledPublicizeConnections(
+        for post: AbstractPost?,
+        metadata: [[String: Any]]?
+    ) -> [NSNumber: StringDictionary] {
         guard let post, let metadata else {
             return [:]
         }
 
-        return metadata
+        return
+            metadata
             .compactMap { $0 as? [String: String] }
             .filter { $0[Keys.publicizeKeyKey]?.hasPrefix(SkipPrefix.keyring.rawValue) ?? false }
             .reduce(into: [NSNumber: StringDictionary]()) { partialResult, entry in
@@ -46,8 +50,9 @@ extension PostHelper {
                         let entryConnectionID = Int(key.removingPrefix(SkipPrefix.connection.rawValue))
 
                         guard let connections = post.blog.connections,
-                              let connectionID = entryConnectionID,
-                              let connection = connections.first(where: { $0.connectionID.intValue == connectionID }) else {
+                            let connectionID = entryConnectionID,
+                            let connection = connections.first(where: { $0.connectionID.intValue == connectionID })
+                        else {
                             /// Otherwise, fall back to the connectionID extracted from the metadata key.
                             /// Note that entries with `connectionID` won't be detected by the Post's
                             /// `publicizeConnectionDisabledForKeyringID` method.
@@ -74,7 +79,8 @@ extension PostHelper {
     @objc(publicizeMetadataEntriesForPost:)
     static func publicizeMetadataEntries(for post: Post?) -> [StringDictionary] {
         guard let post,
-              let disabledConnectionsDictionary = post.disabledPublicizeConnections else {
+            let disabledConnectionsDictionary = post.disabledPublicizeConnections
+        else {
             return []
         }
 
@@ -96,8 +102,9 @@ extension PostHelper {
             // Try to add a key with the new format ONLY if the metadata hasn't been synced to the remote.
             let metadataKeyValue: String = {
                 guard entry[Keys.publicizeIdKey] == nil,
-                      let connections = post.blog.connections,
-                      let connection = connections.first(where: { $0.keyringConnectionID == keyringID }) else {
+                    let connections = post.blog.connections,
+                    let connection = connections.first(where: { $0.keyringConnectionID == keyringID })
+                else {
                     // Fall back to the old keyring format.
                     return "\(SkipPrefix.keyring.rawValue)\(keyringID)"
                 }

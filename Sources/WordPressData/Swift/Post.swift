@@ -35,13 +35,13 @@ public class Post: AbstractPost {
     // MARK: - NSManagedObject
 
     public override class func entityName() -> String {
-        return "Post"
+        "Post"
     }
 
     // MARK: - Format
 
     @objc public func postFormatText() -> String? {
-        return blog.postFormatText(fromSlug: postFormat)
+        blog.postFormatText(fromSlug: postFormat)
     }
 
     @objc public func setPostFormatText(_ postFormatText: String) {
@@ -81,7 +81,7 @@ public class Post: AbstractPost {
                 return
             }
 
-            let matchingCategories = blogCategories.filter({ return $0.categoryName == categoryName })
+            let matchingCategories = blogCategories.filter({ $0.categoryName == categoryName })
 
             if !matchingCategories.isEmpty {
                 newCategories = newCategories.union(matchingCategories)
@@ -94,18 +94,20 @@ public class Post: AbstractPost {
     // MARK: - Sharing
 
     @objc public func canEditPublicizeSettings() -> Bool {
-        return !self.hasRemote() || self.status != .publish
+        !self.hasRemote() || self.status != .publish
     }
 
     // MARK: - PublicizeConnections
 
     @objc public func publicizeConnectionDisabledForKeyringID(_ keyringID: NSNumber) -> Bool {
-        let isKeyringEntryDisabled = disabledPublicizeConnections?[keyringID]?[Constants.publicizeValueKey] == Constants.publicizeDisabledValue
+        let isKeyringEntryDisabled =
+            disabledPublicizeConnections?[keyringID]?[Constants.publicizeValueKey] == Constants.publicizeDisabledValue
 
         // try to check in case there's an entry for the PublicizeConnection that's keyed by the connectionID.
         guard let connections = blog.connections,
-              let connection = connections.first(where: { $0.keyringConnectionID == keyringID }),
-              let existingValue = disabledPublicizeConnections?[connection.connectionID]?[Constants.publicizeValueKey] else {
+            let connection = connections.first(where: { $0.keyringConnectionID == keyringID }),
+            let existingValue = disabledPublicizeConnections?[connection.connectionID]?[Constants.publicizeValueKey]
+        else {
             // fall back to keyringID if there is no such entry with the connectionID.
             return isKeyringEntryDisabled
         }
@@ -118,8 +120,9 @@ public class Post: AbstractPost {
         // if there's another entry keyed by connectionID references to the same connection,
         // we need to make sure that the values are kept in sync.
         if let connections = blog.connections,
-           let connection = connections.first(where: { $0.keyringConnectionID == keyringID }),
-           let _ = disabledPublicizeConnections?[connection.connectionID] {
+            let connection = connections.first(where: { $0.keyringConnectionID == keyringID }),
+            let _ = disabledPublicizeConnections?[connection.connectionID]
+        {
             enablePublicizeConnection(keyedBy: connection.connectionID)
         }
 
@@ -130,14 +133,16 @@ public class Post: AbstractPost {
         // if there's another entry keyed by connectionID references to the same connection,
         // we need to make sure that the values are kept in sync.
         if let connections = blog.connections,
-           let connectionID = connections.first(where: { $0.keyringConnectionID == keyringID })?.connectionID,
-           let _ = disabledPublicizeConnections?[connectionID] {
+            let connectionID = connections.first(where: { $0.keyringConnectionID == keyringID })?.connectionID,
+            let _ = disabledPublicizeConnections?[connectionID]
+        {
             disablePublicizeConnection(keyedBy: connectionID)
 
             // additionally, if the keyring entry doesn't exist, there's no need create both formats.
             // we can just update the dictionary's key from connectionID to keyringID instead.
             if disabledPublicizeConnections?[keyringID] == nil,
-               let updatedEntry = disabledPublicizeConnections?[connectionID] {
+                let updatedEntry = disabledPublicizeConnections?[connectionID]
+            {
                 disabledPublicizeConnections?.removeValue(forKey: connectionID)
                 disabledPublicizeConnections?[keyringID] = updatedEntry
                 return
@@ -185,13 +190,13 @@ public class Post: AbstractPost {
     // MARK: - Comments
 
     @objc public func numberOfComments() -> Int {
-        return commentCount?.intValue ?? 0
+        commentCount?.intValue ?? 0
     }
 
     // MARK: - Likes
 
     @objc public func numberOfLikes() -> Int {
-        return likeCount?.intValue ?? 0
+        likeCount?.intValue ?? 0
     }
 
     // MARK: - AbstractPost
@@ -209,7 +214,7 @@ public class Post: AbstractPost {
     }
 
     public func dateForDisplay() -> Date? {
-        return dateCreated
+        dateCreated
     }
 
     // MARK: - BasePost
@@ -226,7 +231,8 @@ public class Post: AbstractPost {
             if let preview = PostPreviewCache.shared.content[content] {
                 return preview
             }
-            let preview = GutenbergExcerptGenerator.firstParagraph(from: content, maxLength: 200).withCollapsedNewlines().trimmedForPreview()
+            let preview = GutenbergExcerptGenerator.firstParagraph(from: content, maxLength: 200)
+                .withCollapsedNewlines().trimmedForPreview()
             PostPreviewCache.shared.content[content] = preview
             return preview
         } else {
@@ -236,12 +242,16 @@ public class Post: AbstractPost {
 
     override public func titleForDisplay() -> String {
         var title = postTitle?.trimmingCharacters(in: CharacterSet.whitespaces) ?? ""
-        title = title
+        title =
+            title
             .stringByDecodingXMLCharacters()
             .strippingHTML()
 
         if title.isEmpty && !hasRemote() && contentPreviewForDisplay().isEmpty {
-            title = NSLocalizedString("(no title)", comment: "Lets a user know that a local draft does not have a title.")
+            title = NSLocalizedString(
+                "(no title)",
+                comment: "Lets a user know that a local draft does not have a title."
+            )
         }
 
         return title

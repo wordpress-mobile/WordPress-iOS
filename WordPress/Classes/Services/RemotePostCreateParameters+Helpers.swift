@@ -29,12 +29,16 @@ extension RemotePostCreateParameters {
             format = post.postFormat
             isSticky = post.isStickyPost
             tags = AbstractPost.makeTags(from: post.tags ?? "")
-            categoryIDs = (post.categories ?? []).map {
-                $0.categoryID.intValue
-            }
-            metadata = Set(Self.generateRemoteMetadata(for: post).compactMap { dictionary -> RemotePostMetadataItem? in
-                return Self.mapDictionaryToMetadataItems(dictionary)
-            })
+            categoryIDs = (post.categories ?? [])
+                .map {
+                    $0.categoryID.intValue
+                }
+            metadata = Set(
+                Self.generateRemoteMetadata(for: post)
+                    .compactMap { dictionary -> RemotePostMetadataItem? in
+                        Self.mapDictionaryToMetadataItems(dictionary)
+                    }
+            )
             discussion = RemotePostDiscussionSettings(
                 allowComments: post.allowComments,
                 allowPings: post.allowPings

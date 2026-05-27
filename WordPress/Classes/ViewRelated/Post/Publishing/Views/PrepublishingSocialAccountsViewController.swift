@@ -69,11 +69,13 @@ class PrepublishingSocialAccountsViewController: UITableViewController {
         fatalError("init(coder:) has not been implemented")
     }
 
-    init(blogID: Int,
-         model: PostSocialSharingSettings,
-         delegate: PrepublishingSocialAccountsDelegate?,
-         coreDataStack: CoreDataStackSwift = ContextManager.shared,
-         blogService: BlogService? = nil) {
+    init(
+        blogID: Int,
+        model: PostSocialSharingSettings,
+        delegate: PrepublishingSocialAccountsDelegate?,
+        coreDataStack: CoreDataStackSwift = ContextManager.shared,
+        blogService: BlogService? = nil
+    ) {
         self.blogID = blogID
         self.connections = model.services.flatMap { service in
             service.connections.map {
@@ -116,7 +118,7 @@ class PrepublishingSocialAccountsViewController: UITableViewController {
 extension PrepublishingSocialAccountsViewController {
 
     override func numberOfSections(in tableView: UITableView) -> Int {
-        return 2
+        2
     }
 
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
@@ -165,11 +167,13 @@ extension PrepublishingSocialAccountsViewController {
             return nil
         }
 
-        return PrepublishingSocialAccountsTableFooterView(remaining: sharingLimit.remaining,
-                                                          showsWarning: shouldDisplayWarning,
-                                                          onButtonTap: { [weak self] in
-            self?.subscribeButtonTapped()
-        })
+        return PrepublishingSocialAccountsTableFooterView(
+            remaining: sharingLimit.remaining,
+            showsWarning: shouldDisplayWarning,
+            onButtonTap: { [weak self] in
+                self?.subscribeButtonTapped()
+            }
+        )
     }
 }
 
@@ -198,7 +202,9 @@ private extension PrepublishingSocialAccountsViewController {
 
     func accountCell(for indexPath: IndexPath) -> UITableViewCell {
         guard var connection = connections[safe: indexPath.row],
-              let cell = tableView.dequeueReusableCell(withIdentifier: Constants.accountCellIdentifier) as? SwitchTableViewCell else {
+            let cell = tableView.dequeueReusableCell(withIdentifier: Constants.accountCellIdentifier)
+                as? SwitchTableViewCell
+        else {
             return UITableViewCell()
         }
 
@@ -243,7 +249,10 @@ private extension PrepublishingSocialAccountsViewController {
         lastToggledRow = index
         toggleInteractivityIfNeeded()
 
-        WPAnalytics.track(.jetpackSocialConnectionToggled, properties: ["source": Constants.trackingSource, "value": value])
+        WPAnalytics.track(
+            .jetpackSocialConnectionToggled,
+            properties: ["source": Constants.trackingSource, "value": value]
+        )
     }
 
     func toggleInteractivityIfNeeded() {
@@ -278,11 +287,12 @@ private extension PrepublishingSocialAccountsViewController {
     }
 
     func makeCheckoutViewController() -> UIViewController? {
-        return coreDataStack.performQuery { [weak self] context in
+        coreDataStack.performQuery { [weak self] context in
             guard let self,
-                  let blog = try? Blog.lookup(withID: self.blogID, in: context),
-                  let host = blog.hostname,
-                  let url = URL(string: "https://wordpress.com/checkout/\(host)/jetpack_social_basic_yearly") else {
+                let blog = try? Blog.lookup(withID: self.blogID, in: context),
+                let host = blog.hostname,
+                let url = URL(string: "https://wordpress.com/checkout/\(host)/jetpack_social_basic_yearly")
+            else {
                 return nil
             }
 
@@ -299,7 +309,8 @@ private extension PrepublishingSocialAccountsViewController {
         assert(Thread.isMainThread, "\(#function) must be called from the main thread")
 
         guard let blog = try? Blog.lookup(withID: blogID, in: coreDataStack.mainContext),
-              ReachabilityUtils.isInternetReachable() else {
+            ReachabilityUtils.isInternetReachable()
+        else {
             return
         }
 
