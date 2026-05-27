@@ -4,6 +4,7 @@ import OHHTTPStubs
 import OHHTTPStubsSwift
 
 @testable import WordPress
+@testable import WordPressData
 
 @MainActor
 class PostCoordinatorTests: CoreDataTestCase {
@@ -435,7 +436,9 @@ class PostCoordinatorTests: CoreDataTestCase {
 
         // GIVEN an editor revision
         let revision = post.createRevision() as! Post
-        revision.publicizeMessage = "message-a"
+        var metadata = PostMetadataContainer()
+        metadata.setValue("message-a", for: "_wpas_mess")
+        revision.rawMetadata = try metadata.encode()
 
         // GIVEN
         stub(condition: isPath("/rest/v1.2/sites/80511/posts/974")) { request in
