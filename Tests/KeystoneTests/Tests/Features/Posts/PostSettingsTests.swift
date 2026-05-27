@@ -152,6 +152,32 @@ struct PostSettingsTests {
         #expect(post.status == .publish) // Changed
     }
 
+    @Test("apply preserves stored publicize metadata when social draft is unavailable")
+    func applyPreservesStoredPublicizeMetadataWhenSocialDraftIsUnavailable() throws {
+        let context = ContextManager.forTesting().mainContext
+        let blog = BlogBuilder(context).build()
+        let post = PostBuilder(context, blog: blog).build()
+        post.rawMetadata = try PostMetadataContainer(metadata: [
+            ["key": "_wpas_mess", "value": "Hello", "id": "1"],
+            ["key": "_wpas_skip_publicize_111", "value": "1", "id": "2"],
+            ["key": "_jetpack_newsletter_access", "value": "everybody", "id": "3"]
+        ])
+        .encode()
+
+        var settings = PostSettings(from: post)
+        settings.socialSharingDraft = nil
+
+        settings.apply(to: post)
+
+        // With no draft to apply, the existing publicize metadata is left untouched
+        // (the user's per-connection choices are preserved, not neutralized).
+        let container = PostMetadataContainer(post)
+        #expect(container.getString(for: "_wpas_mess") == "Hello")
+        #expect(container.getString(for: "_wpas_skip_publicize_111") == "1")
+        #expect(container.entry(forKey: "_wpas_skip_publicize_111")?["id"] as? String == "2")
+        #expect(container.getString(for: "_jetpack_newsletter_access") == "everybody")
+    }
+
     // MARK: - makeUpdateParameters Tests
 
     @Test("Creates update parameters for changed properties")

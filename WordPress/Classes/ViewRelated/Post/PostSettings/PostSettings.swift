@@ -122,7 +122,10 @@ struct PostSettings: Hashable {
                         $0.categoryID.intValue
                     }
             )
-            sharing = PostSocialSharingSettings.make(for: post)
+            if PostSocialSharing.isEligible(for: post) {
+                socialSharingDraft = PostSocialSharingDraft(socialMetadata: PostMetadataContainer(post))
+            }
+            // `sharing` (the legacy keyring-keyed model) is intentionally no longer populated.
             allowComments = post.allowComments
             allowPings = post.allowPings
         case let page as Page:
@@ -301,19 +304,17 @@ struct PostSettings: Hashable {
                 post.allowPings = allowPings
             }
 
-            if let sharing {
-                for connection in sharing.services.flatMap(\.connections) {
-                    let keyringID = NSNumber(value: connection.keyringID)
-                    if !post.publicizeConnectionDisabledForKeyringID(keyringID) != connection.enabled {
-                        if connection.enabled {
-                            post.enablePublicizeConnectionWithKeyringID(keyringID)
-                        } else {
-                            post.disablePublicizeConnectionWithKeyringID(keyringID)
-                        }
-                    }
-                }
-                if post.publicizeMessage != sharing.message {
-                    post.publicizeMessage = sharing.message
+            // Only write when there is a draft to apply. When the draft is absent
+            // (the connections service is unavailable, so the view model stripped it),
+            // leave the existing publicize metadata untouched so the user's
+            // per-connection choices are preserved rather than silently re-enabled.
+            if let socialSharingDraft {
+                var container = PostMetadataContainer(post)
+                socialSharingDraft.applySocialMetadata(to: &container)
+                do {
+                    post.rawMetadata = try container.encode()
+                } catch {
+                    wpAssertionFailure("failed to encode social sharing metadata")
                 }
             }
         case let page as Page:
@@ -623,6 +624,8 @@ extension PostStatus {
 }
 
 /// A value-type representation of `PublicizeService` for the current blog that's simplified for the auto-sharing flow.
+// Deprecated: superseded for post editing by connection_id-keyed PostSocialSharingDraft stored in post metadata.
+// Kept for remaining legacy references.
 struct PostSocialSharingSettings: Hashable {
     var services: [Service]
     var message: String
