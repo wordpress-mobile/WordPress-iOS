@@ -99,6 +99,8 @@ public class Post: AbstractPost {
 
     // MARK: - PublicizeConnections
 
+    // Deprecated: superseded for post editing by connection_id-keyed PostSocialSharingDraft stored in post metadata.
+    // Kept to avoid a Core Data migration and for remaining legacy references.
     @objc public func publicizeConnectionDisabledForKeyringID(_ keyringID: NSNumber) -> Bool {
         let isKeyringEntryDisabled =
             disabledPublicizeConnections?[keyringID]?[Constants.publicizeValueKey] == Constants.publicizeDisabledValue
@@ -116,6 +118,8 @@ public class Post: AbstractPost {
         return isConnectionEntryDisabled || isKeyringEntryDisabled
     }
 
+    // Deprecated: superseded for post editing by connection_id-keyed PostSocialSharingDraft stored in post metadata.
+    // Kept to avoid a Core Data migration and for remaining legacy references.
     public func enablePublicizeConnectionWithKeyringID(_ keyringID: NSNumber) {
         // if there's another entry keyed by connectionID references to the same connection,
         // we need to make sure that the values are kept in sync.
@@ -129,6 +133,8 @@ public class Post: AbstractPost {
         enablePublicizeConnection(keyedBy: keyringID)
     }
 
+    // Deprecated: superseded for post editing by connection_id-keyed PostSocialSharingDraft stored in post metadata.
+    // Kept to avoid a Core Data migration and for remaining legacy references.
     public func disablePublicizeConnectionWithKeyringID(_ keyringID: NSNumber) {
         // if there's another entry keyed by connectionID references to the same connection,
         // we need to make sure that the values are kept in sync.
@@ -155,6 +161,7 @@ public class Post: AbstractPost {
     /// Marks the Publicize connection with the given id as enabled.
     ///
     /// - Parameter id: The dictionary key for `disabledPublicizeConnections`.
+    // Deprecated: helper for keyring-keyed publicize code kept for remaining legacy references.
     private func enablePublicizeConnection(keyedBy id: NSNumber) {
         guard var connection = disabledPublicizeConnections?[id] else {
             return
@@ -174,6 +181,7 @@ public class Post: AbstractPost {
     /// Marks the Publicize connection with the given id as disabled.
     ///
     /// - Parameter id: The dictionary key for `disabledPublicizeConnections`.
+    // Deprecated: helper for keyring-keyed publicize code kept for remaining legacy references.
     private func disablePublicizeConnection(keyedBy id: NSNumber) {
         if let _ = disabledPublicizeConnections?[id] {
             disabledPublicizeConnections?[id]?[Constants.publicizeValueKey] = Constants.publicizeDisabledValue

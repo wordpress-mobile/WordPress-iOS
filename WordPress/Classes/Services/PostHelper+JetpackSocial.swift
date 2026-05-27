@@ -16,6 +16,8 @@ extension PostHelper {
     ///   - post: The associated `Post` object. Optional because Obj-C shouldn't be trusted.
     ///   - metadata: The metadata dictionary for the post. Optional because Obj-C shouldn't be trusted.
     /// - Returns: A dictionary for the `Post`'s `disabledPublicizeConnections` property.
+    // Deprecated: superseded for post editing by connection_id-keyed PostSocialSharingDraft stored in post metadata.
+    // Kept to avoid a Core Data migration and for remaining legacy references.
     @objc(disabledPublicizeConnectionsForPost:andMetadata:)
     static func disabledPublicizeConnections(
         for post: AbstractPost?,
@@ -76,6 +78,8 @@ extension PostHelper {
     ///
     /// - Parameter post: The associated `Post` object.
     /// - Returns: An array of metadata dictionaries representing the `Post`'s disabled connections.
+    // Deprecated: superseded for post editing by connection_id-keyed PostSocialSharingDraft stored in post metadata.
+    // Kept to avoid a Core Data migration and for remaining legacy references.
     @objc(publicizeMetadataEntriesForPost:)
     static func publicizeMetadataEntries(for post: Post?) -> [StringDictionary] {
         guard let post,

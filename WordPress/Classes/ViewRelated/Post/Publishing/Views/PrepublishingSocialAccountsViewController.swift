@@ -4,6 +4,8 @@ import WordPressData
 import WordPressShared
 import WordPressUI
 
+// Deprecated: superseded for post editing by connection_id-keyed PostSocialSharingDraft stored in post metadata.
+// Kept for remaining legacy references.
 protocol PrepublishingSocialAccountsDelegate: NSObjectProtocol {
 
     func didUpdateSharingLimit(with newValue: PublicizeInfo.SharingLimit?)
@@ -11,6 +13,8 @@ protocol PrepublishingSocialAccountsDelegate: NSObjectProtocol {
     func didFinish(with connectionChanges: [Int: Bool], message: String?)
 }
 
+// Deprecated: superseded for post editing by connection_id-keyed PostSocialSharingDraft stored in post metadata.
+// Kept for remaining legacy references.
 class PrepublishingSocialAccountsViewController: UITableViewController {
 
     // MARK: Properties
