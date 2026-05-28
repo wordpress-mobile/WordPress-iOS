@@ -1,6 +1,6 @@
 27.0
 -----
-
+* [*] [internal] Jetpack Social: use new publicize API to support Jetpack Social [#25587]
 
 26.9
 -----
