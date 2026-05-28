@@ -26,7 +26,7 @@ extension CookieJar {
     }
 
     private func hasWordPressAuthCookie(for url: URL, username: String, atomicSite: Bool, completion: @escaping (Bool) -> Void) {
-        getCookies(url: url) { (cookies) in
+        getCookies(url: url) { cookies in
             let cookie = cookies
                 .contains(where: { cookie in
                     return cookie.isWordPressLoggedIn(username: username, atomic: atomicSite)
@@ -37,7 +37,7 @@ extension CookieJar {
     }
 
     func removeWordPressComCookies(completion: @escaping () -> Void) {
-        getCookies { [unowned self] (cookies) in
+        getCookies { [unowned self] cookies in
             self.removeCookies(cookies.filter({ $0.domain.hasSuffix(".wordpress.com") }), completion: completion)
         }
     }
@@ -82,8 +82,8 @@ extension WKHTTPCookieStore: CookieJar {
             var urlCookies: [HTTPCookie] = []
 
             DispatchQueue.main.async {
-                self.getAllCookies { (cookies) in
-                    urlCookies = cookies.filter({ (cookie) in
+                self.getAllCookies { cookies in
+                    urlCookies = cookies.filter({ cookie in
                         return cookie.matches(url: url)
                     })
                     group.leave()
@@ -108,7 +108,7 @@ extension WKHTTPCookieStore: CookieJar {
     func removeCookies(_ cookies: [HTTPCookie], completion: @escaping () -> Void) {
         let group = DispatchGroup()
         cookies
-            .forEach({ [unowned self] (cookie) in
+            .forEach({ [unowned self] cookie in
                 group.enter()
                 self.delete(cookie, completionHandler: {
                     group.leave()

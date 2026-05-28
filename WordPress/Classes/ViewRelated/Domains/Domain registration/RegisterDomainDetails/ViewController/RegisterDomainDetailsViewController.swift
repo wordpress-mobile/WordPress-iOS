@@ -72,7 +72,7 @@ class RegisterDomainDetailsViewController: UITableViewController {
         configureTableView()
         WPStyleGuide.configureColors(view: view, tableView: tableView)
 
-        viewModel.onChange = { [weak self] (change) in
+        viewModel.onChange = { [weak self] change in
             self?.handle(change: change)
         }
 
@@ -133,7 +133,7 @@ class RegisterDomainDetailsViewController: UITableViewController {
         let gestureRecognizer = UITapGestureRecognizer()
         gestureRecognizer.cancelsTouchesInView = false
 
-        gestureRecognizer.on { [weak self] (gesture) in
+        gestureRecognizer.on { [weak self] _ in
             self?.view.endEditing(true)
         }
 
@@ -183,7 +183,6 @@ class RegisterDomainDetailsViewController: UITableViewController {
             break
         }
     }
-
 }
 
 // MARK: - Actions
@@ -205,7 +204,6 @@ extension RegisterDomainDetailsViewController {
     @objc func handleTermsAndConditionsTap(_ sender: UITapGestureRecognizer) {
         UIApplication.shared.open(URL(string: WPAutomatticTermsOfServiceURL)!, options: [:], completionHandler: nil)
     }
-
 }
 
 // MARK: - InlineEditableNameValueCellDelegate
@@ -275,7 +273,7 @@ extension RegisterDomainDetailsViewController {
             }
             switch field {
             case .country:
-                if viewModel.countryNames.count > 0 {
+                if !viewModel.countryNames.isEmpty {
                     showItemSelectionPage(onSelectionAt: indexPath,
                                           title: Localized.ContactInformation.country,
                                           items: viewModel.countryNames)
@@ -289,7 +287,7 @@ extension RegisterDomainDetailsViewController {
             case .addNewAddressLine:
                 viewModel.replaceAddNewAddressLine()
             case .state:
-                if viewModel.stateNames.count > 0 {
+                if !viewModel.stateNames.isEmpty {
                     showItemSelectionPage(onSelectionAt: indexPath,
                                           title: Localized.Address.state,
                                           items: viewModel.stateNames)
@@ -305,7 +303,7 @@ extension RegisterDomainDetailsViewController {
     private func showItemSelectionPage(onSelectionAt indexPath: IndexPath, title: String, items: [String]) {
         var options: [OptionsTableViewOption] = []
         for item in items {
-            let attributedItem = NSAttributedString.init(
+            let attributedItem = NSAttributedString(
                 string: item,
                 attributes: [.font: WPStyleGuide.tableviewTextFont(),
                              .foregroundColor: UIColor.label]
@@ -322,7 +320,7 @@ extension RegisterDomainDetailsViewController {
             viewController.selectRow(at: selectedIndex)
         }
         viewController.title = title
-        viewController.onSelect = { [weak self] (index) in
+        viewController.onSelect = { [weak self] index in
             self?.navigationController?.popViewController(animated: true)
             self?.selectedItemIndex[indexPath] = index
             if let section = SectionIndex(rawValue: indexPath.section) {

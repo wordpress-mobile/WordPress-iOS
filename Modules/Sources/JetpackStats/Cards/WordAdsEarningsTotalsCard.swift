@@ -13,7 +13,8 @@ struct WordAdsEarningsTotalsCard: View {
             VStack(alignment: .leading, spacing: Constants.step1) {
                 Text(totalEarningsValue)
                     .contentTransition(.numericText())
-                    .font(Font.make(.recoleta, textStyle: .largeTitle, weight: .medium))
+                    .font(Constants.Typography.largeDisplayFont)
+                    .kerning(Constants.Typography.largeDisplayKerning)
                     .foregroundColor(.primary)
                     .animation(.spring, value: totalEarningsValue)
 

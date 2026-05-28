@@ -1,4 +1,5 @@
 import Foundation
+import CoreData
 import WordPressKit
 import WordPressShared
 
@@ -106,8 +107,8 @@ public extension AbstractPost {
         return title(forStatus: status.rawValue)
     }
 
-    /// Returns the localized title for the specified status.  Status should be
-    /// one of the `PostStatus...` constants.  If a matching title is not found
+    /// Returns the localized title for the specified status. Status should be
+    /// one of the `PostStatus...` constants. If a matching title is not found
     /// the status is returned.
     ///
     /// - parameter status: The post status value
@@ -201,16 +202,7 @@ public extension AbstractPost {
     /// Returns true if the post has any media that needs manual intervention to be uploaded
     ///
     func hasPermanentFailedMedia() -> Bool {
-        return media.first(where: { !$0.willAttemptToUploadLater() }) != nil
-    }
-
-    /// Returns the changes made in the current revision compared to the
-    /// previous revision or the original post if there is only one revision.
-    var changes: RemotePostUpdateParameters {
-        guard let original else {
-            return RemotePostUpdateParameters() // Empty
-        }
-        return RemotePostUpdateParameters.changes(from: original, to: self)
+        return media.contains(where: { !$0.willAttemptToUploadLater() })
     }
 
     /// Returns all revisions of the post including the original one.
@@ -411,8 +403,6 @@ public extension AbstractPost {
 
         let mediaIDs = DisplayableImageHelper.searchPostContentForAttachmentIds(inGalleries: content) as? Set<NSNumber> ?? []
         for media in allMedia {
-            guard let media = media as? Media else { continue }
-
             guard let mediaID = media.mediaID,
                   mediaIDs.contains(mediaID) else {
                 continue

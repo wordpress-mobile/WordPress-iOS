@@ -1,4 +1,3 @@
-import Nimble
 import OHHTTPStubs
 import OHHTTPStubsSwift
 @testable import WordPress
@@ -32,14 +31,14 @@ class AccountSettingsServiceTests: CoreDataTestCase {
             coreDataStack: contextManager
         )
 
-        waitUntil { done in
-            service.saveChange(.firstName("Updated"), finished: { success in
-                expect(success).to(beTrue())
-                done()
-            })
-        }
+        let exp = expectation(description: "Update should succeed")
+        service.saveChange(.firstName("Updated"), finished: { success in
+            XCTAssertTrue(success)
+            exp.fulfill()
+        })
+        wait(for: [exp], timeout: 5)
 
-        expect(self.managedAccountSettings()?.firstName).to(equal("Updated"))
+        XCTAssertEqual(self.managedAccountSettings()?.firstName, "Updated")
     }
 
     func testUpdateFailure() throws {
@@ -51,14 +50,14 @@ class AccountSettingsServiceTests: CoreDataTestCase {
             coreDataStack: contextManager
         )
 
-        waitUntil { done in
-            service.saveChange(.firstName("Updated"), finished: { success in
-                expect(success).to(beFalse())
-                done()
-            })
-        }
+        let exp = expectation(description: "Update should fail")
+        service.saveChange(.firstName("Updated"), finished: { success in
+            XCTAssertFalse(success)
+            exp.fulfill()
+        })
+        wait(for: [exp], timeout: 5)
 
-        expect(self.managedAccountSettings()?.firstName).to(equal("Test"))
+        XCTAssertEqual(self.managedAccountSettings()?.firstName, "Test")
     }
 
     func testCancelGettingSettings() throws {

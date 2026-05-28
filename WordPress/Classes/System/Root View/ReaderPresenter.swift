@@ -89,21 +89,26 @@ public final class ReaderPresenter: NSObject, SplitViewDisplayable {
     }
 
     private func configure(for selection: ReaderSidebarItem) {
-        switch selection {
+        let source = ScreenTrackingSource(ScreenID.Reader.sidebar)
+
+        let vc: UIViewController = switch selection {
         case .main(let screen):
-            show(makeViewController(for: screen))
+            makeViewController(for: screen)
         case .allSubscriptions:
-            show(makeAllSubscriptionsViewController(), isLargeTitle: true)
+            makeAllSubscriptionsViewController(source: source)
         case .subscription(let objectID):
-            show(makeViewController(withTopicID: objectID))
+            makeViewController(withTopicID: objectID)
         case .list(let objectID):
-            show(makeViewController(withTopicID: objectID))
+            makeViewController(withTopicID: objectID)
         case .tag(let objectID):
-            show(makeViewController(withTopicID: objectID))
+            makeViewController(withTopicID: objectID)
         case .organization(let objectID):
-            show(makeViewController(withTopicID: objectID))
+             makeViewController(withTopicID: objectID)
         }
 
+        vc.trackingContext.source = source
+
+        show(vc)
         hideSupplementaryColumnIfNeeded()
     }
 
@@ -156,12 +161,16 @@ public final class ReaderPresenter: NSObject, SplitViewDisplayable {
         }
     }
 
-    private func makeAllSubscriptionsViewController() -> UIViewController {
-        let view = ReaderSubscriptionsView() { [weak self] selection in
+    private func makeAllSubscriptionsViewController(source: ScreenTrackingSource? = nil) -> UIViewController {
+        let view = ReaderSubscriptionsView { [weak self] selection in
             let streamVC = ReaderStreamViewController.controllerWithTopic(selection)
+            streamVC.trackingContext.source = ScreenTrackingSource(ScreenID.Reader.subscriptions, component: ElementID.Reader.subscriptionCell)
             self?.push(streamVC)
-        }.environment(\.managedObjectContext, viewContext)
-        let hostVC = UIHostingController(rootView: view)
+        }
+        let hostVC = UIHostingController(rootView: view
+            .environment(\.managedObjectContext, viewContext)
+            .environment(\.trackingContext, ScreenTrackingContext(source: source))
+        )
         hostVC.title = SharedStrings.Reader.subscriptions
         if sidebarViewModel.isCompact {
             hostVC.navigationItem.largeTitleDisplayMode = .never
@@ -197,7 +206,7 @@ public final class ReaderPresenter: NSObject, SplitViewDisplayable {
 
     /// Shows the given view controller by either displaying it in the `.secondary`
     /// column (split view) or pushing to the navigation stack.
-    private func show(_ viewController: UIViewController, isLargeTitle: Bool = false) {
+    private func show(_ viewController: UIViewController) {
         if let splitViewController {
             guard !self.contentIsAlreadyDisplayed(viewController, in: splitViewController, for: .secondary) else {
                 DDLogInfo("View controller for \(viewController.contentIdentifier) already presented – skipping show")
@@ -206,9 +215,6 @@ public final class ReaderPresenter: NSObject, SplitViewDisplayable {
             (viewController as? ReaderStreamViewController)?.isNotificationsBarButtonEnabled = true
 
             let navigationVC = UINavigationController(rootViewController: viewController)
-            if isLargeTitle {
-                navigationVC.navigationBar.prefersLargeTitles = true
-            }
             splitViewController.setViewController(navigationVC, for: .secondary)
         } else {
             // Don't push a view controller on top of another with the same content

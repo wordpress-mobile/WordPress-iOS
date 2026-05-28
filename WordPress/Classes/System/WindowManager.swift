@@ -33,8 +33,8 @@ class WindowManager: NSObject {
 
     // MARK: - Initial App UI
 
-    /// Shows the initial UI for the App to be shown right after launch.  This method will present the sign-in flow if the user is not
-    /// authenticated, or the actuall App UI if the user is already authenticated.
+    /// Shows the initial UI for the App to be shown right after launch. This method will present the sign-in flow if the user is not
+    /// authenticated, or the actual App UI if the user is already authenticated.
     ///
     public func showUI(for blog: Blog? = nil, animated: Bool = true) {
         if AccountHelper.isLoggedIn {
@@ -83,7 +83,7 @@ class WindowManager: NSObject {
         RootViewCoordinator.shared.showSignInUI(completion: completion)
     }
 
-    /// Shows the specified VC as the root VC for the managed window.  Takes care of animating the transition whenever the existing
+    /// Shows the specified VC as the root VC for the managed window. Takes care of animating the transition whenever the existing
     /// root VC isn't `nil` (this is because a `nil` VC means we're showing the initial VC on a call to this method).
     ///
     func show(_ viewController: UIViewController, animated: Bool = true, completion: Completion? = nil) {

@@ -64,7 +64,10 @@ struct TrafficTabView: View {
             }
         }
         .sheet(isPresented: $isShowingCustomRangePicker) {
-            CustomDateRangePicker(dateRange: $viewModel.dateRange)
+            CustomDateRangePicker(dateRange: Binding(
+                get: { viewModel.dateRange.range },
+                set: { viewModel.dateRange = StatsDateRangeSelection(range: $0) }
+            ))
         }
     }
 
@@ -107,17 +110,6 @@ struct TrafficTabView: View {
                 insertion: .push(from: .bottom).combined(with: .opacity),
                 removal: .scale.combined(with: .opacity)
             ))
-            .overlay(alignment: .top) {
-                // Display it on top of the first `.chart` card if present
-                if let other = viewModel.cards.prefix(2).first(where: { $0.cardType == .chart }) {
-                    if card.id == other.id {
-                        popButton
-                    }
-                } else if card.id == viewModel.cards.first?.id {
-                    // Or the first available card
-                    popButton
-                }
-            }
     }
 
     @ViewBuilder
@@ -125,68 +117,19 @@ struct TrafficTabView: View {
         switch viewModel {
         case let viewModel as ChartCardViewModel:
             ChartCard(viewModel: viewModel)
-                .onDateRangeSelected(pushDateRange)
         case let viewModel as TopListViewModel:
             TopListCard(viewModel: viewModel)
         case let viewModel as TodayCardViewModel:
-            let isToday = self.viewModel.dateRange.preset == .today
             Button {
-                guard !isToday else { return }
                 context.tracker?.send(.todayCardTapped)
-                pushDateRange(self.viewModel.dateRange.updating(preset: .today))
+                self.viewModel.handleTodayCardTap()
             } label: {
                 TodayCard(viewModel: viewModel)
-                    .chevronHidden(isToday)
             }
-             .buttonStyle(.plain)
+            .buttonStyle(.plain)
         default:
             let _ = assertionFailure("Unsupported type: \(viewModel)")
             EmptyView()
-        }
-    }
-
-    // MARK: - Push/Pop
-
-    private func pushDateRange(_ dateRange: StatsDateRange) {
-        UIImpactFeedbackGenerator(style: .light).impactOccurred()
-        withAnimation(.spring) {
-            self.viewModel.pushDateRange(dateRange)
-        }
-    }
-
-    private func popDateRange() {
-        UIImpactFeedbackGenerator(style: .light).impactOccurred()
-        withAnimation(.spring) {
-            self.viewModel.popDateRange()
-        }
-    }
-
-    @ViewBuilder
-    private var popButton: some View {
-        if let range = viewModel.dateRangeNavigationStack.last {
-            let button = Button {
-                popDateRange()
-            } label: {
-                HStack(spacing: 5) {
-                    Image(systemName: "chevron.backward")
-                    Text(context.formatters.dateRange.string(from: range))
-                }
-                .padding(.vertical, 2)
-                .font(.subheadline.weight(.medium))
-            }
-                .transition(.scale(0.8).combined(with: .opacity).combined(with: .offset(y: 12)))
-                .dynamicTypeSize(...DynamicTypeSize.xLarge)
-            if #available(iOS 26, *) {
-                button
-                    .buttonStyle(.glass)
-                    .padding(.top, -8)
-            } else {
-                button
-                    .buttonStyle(.bordered)
-                    .buttonBorderShape(.capsule)
-                    .foregroundStyle(Color.primary)
-                    .padding(.top, 6)
-            }
         }
     }
 

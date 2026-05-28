@@ -12,6 +12,9 @@ protocol OverridableFlag: CustomStringConvertible {
 /// Used to override values for feature flags at runtime in debug builds
 ///
 struct FeatureFlagOverrideStore {
+    static let didChangeNotification = Notification.Name("FeatureFlagOverrideStore.didChange")
+    static let notificationFeatureFlagKey = "featureFlag"
+
     private let store: KeyValueDatabase
 
     init(store: KeyValueDatabase = UserDefaults.standard) {
@@ -36,10 +39,13 @@ struct FeatureFlagOverrideStore {
         if value != featureFlag.originalValue {
             store.set(value, forKey: key)
         }
+
+        postDidChangeNotification(for: featureFlag)
     }
 
     func removeOverride(for featureFlag: OverridableFlag) {
         store.removeObject(forKey: featureFlag.key)
+        postDidChangeNotification(for: featureFlag)
     }
 
     /// - returns: The overridden value for the specified feature flag, if one exists.
@@ -57,6 +63,14 @@ struct FeatureFlagOverrideStore {
         default:
             return nil
         }
+    }
+
+    private func postDidChangeNotification(for featureFlag: OverridableFlag) {
+        NotificationCenter.default.post(
+            name: Self.didChangeNotification,
+            object: nil,
+            userInfo: [Self.notificationFeatureFlagKey: featureFlag]
+        )
     }
 }
 

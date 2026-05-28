@@ -136,7 +136,7 @@ private extension SupportChatBotViewController {
 
 extension SupportChatBotViewController: WKNavigationDelegate {
     func webView(_ webView: WKWebView, didFinish navigation: WKNavigation!) {
-        webView.evaluateJavaScript(createDocsBotInitCode(), completionHandler: { (result, error) in
+        webView.evaluateJavaScript(createDocsBotInitCode(), completionHandler: { _, error in
             if let error {
                 DDLogError("Failed to initialize docs bot code: \(error)")
             }
@@ -157,7 +157,6 @@ extension SupportChatBotViewController: WKNavigationDelegate {
             decisionHandler(.allow)
         }
     }
-
 }
 
 // MARK: - Support Callback
@@ -212,7 +211,6 @@ extension SupportChatBotViewController {
         static let thinking = NSLocalizedString("support.chatBot.botThinkingIndicator",
                                                 value: "Thinking...",
                                                 comment: "Indicator that the chat bot is processing user's input.")
-
     }
 
     private enum Constants {

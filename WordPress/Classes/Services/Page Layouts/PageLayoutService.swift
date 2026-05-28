@@ -21,7 +21,7 @@ class PageLayoutService {
         let blogPersistentID = blog.objectID
         let api: WordPressComRestApi
         let dotComID: Int?
-        if blog.isAccessibleThroughWPCom(),
+        if blog.isAccessibleThroughWPCom,
            let blogID = blog.dotComID?.intValue,
            let restAPI = blog.account?.wordPressComRestV2Api {
             api = restAPI
@@ -37,10 +37,10 @@ class PageLayoutService {
     private static func fetchLayouts(_ api: WordPressComRestApi, _ dotComID: Int?, _ blogPersistentID: NSManagedObjectID, _ thumbnailSize: CGSize, _ completion: CompletionHandler?) {
         let params = parameters(thumbnailSize)
 
-        PageLayoutServiceRemote.fetchLayouts(api, forBlogID: dotComID, withParameters: params) { (result) in
+        PageLayoutServiceRemote.fetchLayouts(api, forBlogID: dotComID, withParameters: params) { result in
             switch result {
             case .success(let remoteLayouts):
-                persistToCoreData(blogPersistentID, remoteLayouts) { (persistanceResult) in
+                persistToCoreData(blogPersistentID, remoteLayouts) { persistanceResult in
                     switch persistanceResult {
                     case .success:
                         completion?(.success(()))
@@ -77,7 +77,6 @@ class PageLayoutService {
 
     // Return "true" or "false" for isBeta that gets passed into the endpoint.
     private static let isBeta = String(BuildConfiguration.current.isInternal)
-
 }
 
 extension PageLayoutService {

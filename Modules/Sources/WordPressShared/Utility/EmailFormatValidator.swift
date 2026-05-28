@@ -1,6 +1,6 @@
 import Foundation
 
-/// Test a string to see if it resembles an email address.  The checks in this
+/// Test a string to see if it resembles an email address. The checks in this
 /// class are based on those in wp-includes/formatting.php `is_email`.
 ///
 open class EmailFormatValidator {

@@ -16,7 +16,7 @@ extension ReachabilityUtils {
     /// - warning: Do not use it as it can't reliably identify as the connection
     /// is reachable or not and can significantly lag behind the actual
     /// connectivity status.
-    @objc public class func onAvailableInternetConnectionDo(_ action: () -> Void) {
+    public class func onAvailableInternetConnectionDo(_ action: () -> Void) {
         guard ReachabilityUtils.isInternetReachable() else {
             WPError.showAlert(withTitle: DefaultNoConnectionMessage.title, message: DefaultNoConnectionMessage.message)
             return
@@ -38,7 +38,7 @@ extension ReachabilityUtils {
             object: nil,
             queue: .main,
             using: { _ in action() },
-            filter: { (notification) in
+            filter: { notification in
                 return notification.userInfo?[Foundation.Notification.reachabilityKey] as? Bool == true
         })
     }

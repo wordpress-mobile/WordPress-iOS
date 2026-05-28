@@ -1,4 +1,5 @@
 import Foundation
+import CoreData
 
 public extension PostCategory {
 
@@ -23,7 +24,6 @@ public extension PostCategory {
 
         return blog.categories?.first { predicate.evaluate(with: $0) } as? PostCategory
     }
-
 }
 
 // MARK: - Objective-C API
@@ -39,5 +39,4 @@ public extension PostCategory {
     static func objc_lookup(withBlogID id: NSManagedObjectID, parentCategoryID: NSNumber?, categoryName: String, in context: NSManagedObjectContext) -> PostCategory? {
         try? lookup(withBlogID: id, parentCategoryID: parentCategoryID, categoryName: categoryName, in: context)
     }
-
 }

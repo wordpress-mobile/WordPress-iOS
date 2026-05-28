@@ -18,7 +18,7 @@ struct StandaloneMetricView: View {
                     .textCase(.uppercase)
             }
             Text(StatsValueFormatter.formatNumber(value, onlyLarge: true))
-                .font(Font.make(.recoleta, textStyle: .title2, weight: .medium))
+                .font(Constants.Typography.smallDisplayFont)
                 .foregroundColor(.primary)
                 .contentTransition(.numericText())
         }

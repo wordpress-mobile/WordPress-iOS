@@ -44,6 +44,5 @@ class PluginJetpackProxyServiceTests: XCTestCase {
         }
         XCTAssertEqual(dictionary["slug"], expectedSlug)
         XCTAssertEqual(dictionary["status"], expectedStatus)
-
     }
 }

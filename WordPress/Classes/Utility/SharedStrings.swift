@@ -21,6 +21,7 @@ enum SharedStrings {
         static let `continue` = NSLocalizedString("shared.button.continue", value: "Continue", comment: "A shared button title used in different contexts")
         static let undo = NSLocalizedString("shared.button.undo", value: "Undo", comment: "A shared button title used in different contexts")
         static let clear = NSLocalizedString("shared.button.clear", value: "Clear", comment: "A shared button title used in different contexts")
+        static let notNow = NSLocalizedString("shared.button.notNow", value: "Not Now", comment: "A shared button title used in different contexts")
     }
 
     enum Misc {
@@ -39,6 +40,16 @@ enum SharedStrings {
     enum Error {
         static let generic = NSLocalizedString("shared.error.generic", value: "Something went wrong", comment: "A generic error message")
         static let refreshFailed = NSLocalizedString("shared.error.failiedToReloadData", value: "Failed to update data", comment: "A generic error title indicating that a screen failed to fetch the latest data")
+    }
+
+    enum PostStatus {
+        static let published = NSLocalizedString("postStatus.published.title", value: "Published", comment: "Post status title used in different contexts")
+        static let draft = NSLocalizedString("postStatus.draft.title", value: "Draft", comment: "Post status title used in different contexts")
+        static let pending = NSLocalizedString("postStatus.pending.title", value: "Pending", comment: "Post status title used in different contexts")
+        static let privatePost = NSLocalizedString("postStatus.private.title", value: "Private", comment: "Post status title used in different contexts")
+        static let scheduled = NSLocalizedString("postStatus.scheduled.title", value: "Scheduled", comment: "Post status title used in different contexts")
+        static let trash = NSLocalizedString("postStatus.trash.title", value: "Trash", comment: "Post status title used in different contexts")
+        static let any = NSLocalizedString("postStatus.any.title", value: "Any", comment: "Post status title used in different contexts")
     }
 
     enum Reader {

@@ -14,9 +14,9 @@ extension Calendar {
     ///
     /// - Parameters:
     ///     - localizedWeekdayIndex: a localized weekday index representing the desired day of
-    ///         the week.  0 could either be Sunday or Monday depending on the `Calendar`'s locale settings.
+    ///         the week. 0 could either be Sunday or Monday depending on the `Calendar`'s locale settings.
     ///
-    /// - Returns: an index where 0 is always Sunday.  This index can be used with methods such as `Calendar.weekdaySymbol`
+    /// - Returns: an index where 0 is always Sunday. This index can be used with methods such as `Calendar.weekdaySymbol`
     ///     to obtain the name of the day.
     ///
     public func unlocalizedWeekdayIndex(localizedWeekdayIndex: Int) -> Int {
@@ -28,7 +28,7 @@ extension Calendar {
     ///
     /// - Parameters:
     ///     - unlocalizedWeekdayIndex: an unlocalized weekday index representing the desired day of
-    ///         the week.  0 is always Sunday.
+    ///         the week. 0 is always Sunday.
     ///
     /// - Returns: an index where 0 can be either Sunday or Monday depending on locale settings.
     ///

@@ -146,7 +146,7 @@ import WordPressKit
     ///   - uploadOpObjectIDs: Array of object IDs
     ///
     fileprivate func logError(_ errorString: String, uploadOpObjectIDs: [NSManagedObjectID]) {
-        guard uploadOpObjectIDs.count > 0 else {
+        guard !uploadOpObjectIDs.isEmpty else {
             return
         }
         DDLogError("\(errorString)")
@@ -271,7 +271,7 @@ import WordPressKit
         media?.forEach { mediaItem in
             syncGroup.enter()
             mediaItem.postID = NSNumber(value: postID)
-            service.update(mediaItem, success: { updatedRemoteMedia in
+            service.update(mediaItem, success: { _ in
                 syncGroup.leave()
             }, failure: { error in
                 var errorString = "Error creating post in share extension"

@@ -1,6 +1,7 @@
 import Foundation
 import UIKit
 import SwiftUI
+import JetpackSocial
 import WordPressData
 import WordPressShared
 import WordPressAPI
@@ -14,7 +15,7 @@ extension BlogDetailsViewController {
     }
 
     public func isDashboardEnabled() -> Bool {
-        JetpackFeaturesRemovalCoordinator.jetpackFeaturesEnabled() && blog.isAccessibleThroughWPCom()
+        JetpackFeaturesRemovalCoordinator.jetpackFeaturesEnabled() && blog.isAccessibleThroughWPCom
     }
 
     public func confirmRemoveSite() {
@@ -74,6 +75,12 @@ extension BlogDetailsViewController {
 
     public func showPostList(from source: BlogDetailsNavigationSource) {
         trackEvent(.openedPosts, from: source)
+
+        if blog.isSelfHosted, blog.isXMLRPCDisabled {
+            showPinnedPostType(.posts)
+            return
+        }
+
         let controller = PostListViewController.controllerWithBlog(blog)
         controller.navigationItem.largeTitleDisplayMode = .never
         presentationDelegate?.presentBlogDetailsViewController(controller)
@@ -81,7 +88,60 @@ extension BlogDetailsViewController {
 
     public func showPageList(from source: BlogDetailsNavigationSource) {
         trackEvent(.openedPages, from: source)
+
+        if blog.isSelfHosted, blog.isXMLRPCDisabled {
+            showPinnedPostType(.pages)
+            return
+        }
+
         let controller = PageListViewController.controllerWithBlog(blog)
+        controller.navigationItem.largeTitleDisplayMode = .never
+        presentationDelegate?.presentBlogDetailsViewController(controller)
+    }
+
+    public func showCustomPostTypes() {
+        let feature = NSLocalizedString(
+            "applicationPasswordRequired.feature.customPosts",
+            value: "Custom Post Types",
+            comment: "Feature name for managing custom post types in the app"
+        )
+        let rootView = ApplicationPasswordRequiredView(
+            blog: blog,
+            localizedFeatureName: feature,
+            source: "custom_post_types",
+            presentingViewController: self
+        ) { [blog, weak self] client in
+            CustomPostTypesView(
+                blog: blog,
+                service: CustomPostTypeService(client: client, blog: blog),
+                presentingViewController: self
+            )
+        }
+        let controller = UIHostingController(rootView: rootView)
+        controller.navigationItem.largeTitleDisplayMode = .never
+        presentationDelegate?.presentBlogDetailsViewController(controller)
+    }
+
+    func showPinnedPostType(_ postType: PinnedPostType) {
+        let feature = NSLocalizedString(
+            "applicationPasswordRequired.feature.customPosts",
+            value: "Custom Post Types",
+            comment: "Feature name for managing custom post types in the app"
+        )
+        let rootView = ApplicationPasswordRequiredView(
+            blog: blog,
+            localizedFeatureName: feature,
+            source: "custom_post_types",
+            presentingViewController: self
+        ) { [blog, weak self] client in
+            PinnedPostTypeView(
+                blog: blog,
+                service: CustomPostTypeService(client: client, blog: blog),
+                postType: postType,
+                presentingViewController: self
+            )
+        }
+        let controller = UIHostingController(rootView: rootView)
         controller.navigationItem.largeTitleDisplayMode = .never
         presentationDelegate?.presentBlogDetailsViewController(controller)
     }
@@ -219,7 +279,7 @@ extension BlogDetailsViewController {
     public func showPlugins() {
         WPAppAnalytics.track(.openedPluginDirectory, blog: blog)
 
-        if Feature.enabled(.pluginManagementOverhaul) {
+        if Feature.enabled(.pluginManagementOverhaul) && blog.isSelfHosted {
             showManagePluginsScreen()
             return
         }
@@ -260,7 +320,11 @@ extension BlogDetailsViewController {
         guard let presentationDelegate else {
             return wpAssertionFailure("presentationDelegate mising")
         }
-        DomainsDashboardCoordinator.presentDomainsDashboard(with: presentationDelegate, source: source.string, blog: blog)
+        DomainsDashboardCoordinator.presentDomainsDashboard(
+            with: presentationDelegate,
+            source: source.string,
+            blog: blog
+        )
     }
 
     public func showJetpackSettings() {
@@ -272,9 +336,13 @@ extension BlogDetailsViewController {
     public func showSharing(from source: BlogDetailsNavigationSource) {
         let sharingVC: UIViewController
 
-        if !blog.supportsPublicize() {
+        if !blog.supports(.publicize) {
             // if publicize is disabled, show the sharing buttons settings.
             sharingVC = SharingButtonsViewController(blog: blog)
+        } else if FeatureFlag.socialSharingV2.enabled,
+            let manage = ManageConnectionsHostingController.make(for: blog)
+        {
+            sharingVC = manage
         } else {
             sharingVC = SharingViewController(blog: blog, delegate: nil)
         }
@@ -313,7 +381,7 @@ extension BlogDetailsViewController {
         if blog.isHostedAtWPcom, let hostname = blog.hostname {
             dashboardPath = "\(Constants.calypsoDashboardPath)\(hostname)"
         } else {
-            dashboardPath = blog.adminUrl(withPath: "")
+            dashboardPath = blog.makeAdminURL()?.absoluteString ?? ""
         }
 
         guard let url = URL(string: dashboardPath) else { return }
@@ -331,8 +399,17 @@ extension BlogDetailsViewController {
     }
 
     public func showApplicationPasswords() {
-        let feature = NSLocalizedString("applicationPasswordRequired.feature.applicationPasswords", value: "Application Passwords Management", comment: "Feature name for managing application passwords in the app")
-        let view = ApplicationPasswordRequiredView(blog: blog, localizedFeatureName: feature, presentingViewController: self) {
+        let feature = NSLocalizedString(
+            "applicationPasswordRequired.feature.applicationPasswords",
+            value: "Application Passwords Management",
+            comment: "Feature name for managing application passwords in the app"
+        )
+        let view = ApplicationPasswordRequiredView(
+            blog: blog,
+            localizedFeatureName: feature,
+            source: "application_passwords",
+            presentingViewController: self
+        ) {
             ApplicationTokenListView(dataProvider: ApplicationPasswordService(api: $0))
         }
         presentationDelegate?.presentBlogDetailsViewController(UIHostingController(rootView: view))
@@ -394,4 +471,11 @@ public class ApplicationPasswordAuthenticationInfo: NSObject {
         self.siteDetails = siteDetails
         self.siteUsername = siteUsername
     }
+}
+
+private extension PinnedPostType {
+    // TODO: Ideally use the post type details directly instead of PinnedPostType,
+    // once the CPT infrastructure is more mature.
+    static let posts = PinnedPostType(slug: "post", name: "Posts", icon: nil)
+    static let pages = PinnedPostType(slug: "page", name: "Pages", icon: nil)
 }

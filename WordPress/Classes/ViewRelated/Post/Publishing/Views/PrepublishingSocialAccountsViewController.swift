@@ -109,7 +109,6 @@ class PrepublishingSocialAccountsViewController: UITableViewController {
             delegate?.didFinish(with: connectionChanges, message: shareMessage)
         }
     }
-
 }
 
 // MARK: - UITableView
@@ -316,7 +315,6 @@ private extension PrepublishingSocialAccountsViewController {
                 }
                 return blog.sharingLimit
             }
-
         } failure: { error in
             DDLogError("Failed to sync blog after dismissing checkout webview due to error: \(error)")
         }

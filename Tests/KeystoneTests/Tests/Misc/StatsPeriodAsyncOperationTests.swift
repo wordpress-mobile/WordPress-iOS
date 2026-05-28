@@ -14,7 +14,7 @@ class StatsPeriodAsyncOperationTests: XCTestCase {
 
     func testStatsPeriodOperation() {
         let expect = expectation(description: "Add Stats Period Operation")
-        let operation = StatsPeriodAsyncOperation(service: mockRemoteService, for: .day, date: date) { [unowned self] (item: MockStatsType?, error: Error?) in
+        let operation = StatsPeriodAsyncOperation(service: mockRemoteService, for: .day, date: date) { [unowned self] (item: MockStatsType?, _: Error?) in
             XCTAssertNotNil(item)
             XCTAssertTrue(item?.period == .day)
             XCTAssertTrue(item?.periodEndDate == self.date)

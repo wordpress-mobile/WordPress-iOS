@@ -1,4 +1,5 @@
 import Foundation
+import CoreData
 
 public extension AbstractPost {
     /// Count posts that have never been uploaded to the server.

@@ -127,7 +127,7 @@ extension AppExtensionsService {
     ///
     func isAuthorizedToUploadMedia(in sites: [RemoteBlog], for selectedSiteID: Int) -> Bool {
         let siteID = NSNumber(value: selectedSiteID)
-        guard let isAuthorizedToUploadFiles = sites.filter({$0.blogID == siteID}).first?.isUploadingFilesAllowed() else {
+        guard let isAuthorizedToUploadFiles = sites.first(where: {$0.blogID == siteID})?.isUploadingFilesAllowed() else {
             return false
         }
 
@@ -310,7 +310,7 @@ extension AppExtensionsService {
             requestEnqueued()
         }, success: { remoteMedia in
             guard let returnedMedia = remoteMedia as? [RemoteMedia],
-                returnedMedia.count > 0,
+                !returnedMedia.isEmpty,
                 let mediaUploadOps = self.coreDataStack.fetchMediaUploadOps(for: self.groupIdentifier) else {
                     DDLogError("Error creating post in share extension. RemoteMedia info not returned from server.")
                     return
@@ -463,7 +463,7 @@ fileprivate extension AppExtensionsService {
         let remote = PostServiceRemoteREST(wordPressComRestApi: simpleRestAPI, siteID: remotePost.siteID)
         remote.createPost(remotePost, success: { post in
             if let post {
-                DDLogInfo("Post \(post.postID.stringValue) sucessfully uploaded to site \(post.siteID.stringValue)")
+                DDLogInfo("Post \(post.postID.stringValue) successfully uploaded to site \(post.siteID.stringValue)")
                 if let postID = post.postID {
                     self.coreDataStack.updatePostOperation(with: .complete, remotePostID: postID.int64Value, forPostUploadOpWithObjectID: uploadOpObjectID)
                 } else {
@@ -492,7 +492,7 @@ fileprivate extension AppExtensionsService {
         media.forEach { mediaItem in
             syncGroup.enter()
             mediaItem.postID = NSNumber(value: postID)
-            service.update(mediaItem, success: { updatedRemoteMedia in
+            service.update(mediaItem, success: { _ in
                 syncGroup.leave()
             }, failure: { error in
                 var errorString = "Error assigning media items to post in share extension"

@@ -46,7 +46,7 @@ protocol ZendeskUtilsProtocol {
 class ZendeskUtils: NSObject, ZendeskUtilsProtocol {
     // MARK: - Public Properties
 
-    static var sharedInstance: ZendeskUtils = ZendeskUtils(contextManager: ContextManager.shared)
+    static var sharedInstance = ZendeskUtils(contextManager: ContextManager.shared)
     static var zendeskEnabled = false
     static var unreadNotificationsCount = 0
 
@@ -206,7 +206,7 @@ class ZendeskUtils: NSObject, ZendeskUtilsProtocol {
         let planService = planService ?? PlanService(coreDataStack: contextManager)
         planService.getAllSitesNonLocalizedPlanDescriptionsForAccount(account, success: { plans in
             self.sitePlansCache = plans
-        }, failure: { error in })
+        }, failure: { _ in })
     }
 
     func createRequest(planServiceRemote: PlanServiceRemote? = nil,
@@ -426,7 +426,7 @@ extension ZendeskUtils {
 
         status?(.identifyingUser)
 
-        ZendeskUtils.createIdentity(alertOptions: alertOptions) { success, newIdentity in
+        ZendeskUtils.createIdentity(alertOptions: alertOptions) { success, _ in
             guard success else {
                 if alertOptions.optionalIdentity {
                     let identity = Identity.createAnonymous()
@@ -554,7 +554,6 @@ private extension ZendeskUtils {
             getUserInformationFrom(jetpackState: jetpackState)
             completion()
             return
-
         }
 
         // 2b. self-hosted site
@@ -588,7 +587,7 @@ private extension ZendeskUtils {
                 return
         }
 
-        ZDKPushProvider(zendesk: zendeskInstance).register(deviceIdentifier: deviceID, locale: appLanguage) { (pushResponse, error) in
+        ZDKPushProvider(zendesk: zendeskInstance).register(deviceIdentifier: deviceID, locale: appLanguage) { _, error in
             if let error {
                 DDLogInfo("Zendesk couldn't register device: \(deviceID). Error: \(error)")
             } else {
@@ -659,7 +658,7 @@ private extension ZendeskUtils {
 
         ZendeskUtils.sharedInstance.userEmail = wpAccount.email
         ZendeskUtils.sharedInstance.userName = wpAccount.username
-        if accountSettings.firstName.count > 0 || accountSettings.lastName.count > 0 {
+        if !accountSettings.firstName.isEmpty || !accountSettings.lastName.isEmpty {
             ZendeskUtils.sharedInstance.userName = (accountSettings.firstName + " " + accountSettings.lastName).trim()
         }
     }
@@ -747,8 +746,8 @@ private extension ZendeskUtils {
             let eventLogging = EventLogging(dataSource: dataProvider, delegate: delegate)
             try eventLogging.enqueueLogForUpload(log: logFile)
         }
-        catch let err {
-            return "Error preparing log file: \(err.localizedDescription)"
+        catch {
+            return "Error preparing log file: \(error.localizedDescription)"
         }
 
         return logFile.uuid
@@ -765,7 +764,7 @@ private extension ZendeskUtils {
 
     static func getBlogInformation() -> String {
         let allBlogs = (try? BlogQuery().blogs(in: ContextManager.shared.mainContext)) ?? []
-        guard allBlogs.count > 0 else {
+        guard !allBlogs.isEmpty else {
             return Constants.noValue
         }
 
@@ -794,7 +793,7 @@ private extension ZendeskUtils {
         tags.append(Constants.platformTag)
 
         // If there are no sites, then the user has an empty WP account.
-        guard allBlogs.count > 0 else {
+        guard !allBlogs.isEmpty else {
             tags.append(Constants.wpComTag)
             return tags
         }
@@ -817,7 +816,7 @@ private extension ZendeskUtils {
             }
         }
 
-        if let currentSite = Blog.lastUsedOrFirst(in: context), !currentSite.isHostedAtWPcom, !currentSite.isAtomic() {
+        if let currentSite = Blog.lastUsedOrFirst(in: context), !currentSite.isHostedAtWPcom, !currentSite.isAtomic {
             tags.append(Constants.mobileSelfHosted)
         }
 
@@ -872,15 +871,15 @@ private extension ZendeskUtils {
 
         // Cancel Action
         if let cancel = alertOptions.cancel {
-            alertController.addCancelActionWithTitle(cancel) { (_) in
+            alertController.addCancelActionWithTitle(cancel) { _ in
                 completion(false)
                 return
             }
         }
 
         // Submit Action
-        let submitAction = alertController.addDefaultActionWithTitle(alertOptions.submit) { [weak alertController] (_) in
-            guard let email = alertController?.textFields?.first?.text, email.count > 0 else {
+        let submitAction = alertController.addDefaultActionWithTitle(alertOptions.submit) { [weak alertController] _ in
+            guard let email = alertController?.textFields?.first?.text, !email.isEmpty else {
                 completion(false)
                 return
             }
@@ -1158,7 +1157,6 @@ private extension ZendeskUtils {
         static let namePlaceholder = NSLocalizedString("Name", comment: "Name text field placeholder")
         static let nameAccessibilityLabel = NSLocalizedString("Name", comment: "Accessibility label for the Email text field.")
     }
-
 }
 
 // MARK: - UITextFieldDelegate
@@ -1183,7 +1181,6 @@ extension ZendeskUtils: UITextFieldDelegate {
 
         return EmailFormatValidator.validate(string: email)
     }
-
 }
 
 extension ZendeskUtils {

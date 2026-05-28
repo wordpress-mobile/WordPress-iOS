@@ -43,7 +43,7 @@ extension OnboardingEnableNotificationsViewController {
     @IBAction func enableButtonTapped(_ sender: Any) {
         WPAnalytics.track(.onboardingEnableNotificationsEnableTapped)
 
-        InteractiveNotificationsManager.shared.requestAuthorization { authorized in
+        InteractiveNotificationsManager.shared.requestAuthorization { _ in
             DispatchQueue.main.async {
                 self.completion()
             }
@@ -88,7 +88,7 @@ private extension OnboardingEnableNotificationsViewController {
     func applyStyles() {
         navigationController?.navigationBar.isHidden = true
 
-        titleLabel.font = WPStyleGuide.serifFontForTextStyle(.title1, fontWeight: .semibold)
+        titleLabel.font = .preferredFont(forTextStyle: .title1).withWeight(.medium)
         titleLabel.textColor = .label
 
         subTitleLabel.font = .preferredFont(forTextStyle: .title3)

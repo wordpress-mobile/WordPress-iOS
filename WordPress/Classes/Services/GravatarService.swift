@@ -43,7 +43,6 @@ public class GravatarService {
             profile.name = remoteProfile.name
             profile.displayName = remoteProfile.displayName
             onCompletion(profile)
-
         }, failure: { error in
             DDLogError("\(error.debugDescription)")
             onCompletion(nil)

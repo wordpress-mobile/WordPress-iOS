@@ -40,7 +40,7 @@ import WordPressKitObjC
         var activePlans: [RemotePlan_ApiVersion1_3] = []
         var currentlyActivePlan: RemotePlan_ApiVersion1_3?
 
-        try json.forEach { (key, value) in
+        try json.forEach { key, value in
             let data = try JSONSerialization.data(withJSONObject: value, options: .prettyPrinted)
             do {
                 let decodedResult = try JSONDecoder.apiDecoder.decode(RemotePlan_ApiVersion1_3.self, from: data)
@@ -49,7 +49,7 @@ import WordPressKitObjC
                 if decodedResult.isCurrentPlan {
                     currentlyActivePlan = decodedResult
                 }
-            } catch let error {
+            } catch {
                 WPKitLogError("Error parsing plans response for site \(error)")
             }
         }
@@ -59,5 +59,4 @@ import WordPressKitObjC
         }
         return (activePlan, activePlans)
     }
-
 }

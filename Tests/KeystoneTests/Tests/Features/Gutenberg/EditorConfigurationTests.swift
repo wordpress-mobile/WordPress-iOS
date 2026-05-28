@@ -27,7 +27,7 @@ struct EditorConfigurationTests {
             .with(dotComID: 12345)
             .build()
 
-        let config = EditorConfiguration(blog: blog)
+        let config = EditorConfiguration(blog: blog, postType: .post)
 
         #expect(config.siteApiRoot == URL(string: "https://public-api.wordpress.com/")!, "Should use WP.com API root")
         #expect(config.authHeader == "Bearer simple-bearer-token", "Should use Bearer authentication from account")
@@ -46,7 +46,7 @@ struct EditorConfigurationTests {
             .with(url: "https://atomic.com")
             .build()
 
-        let config = EditorConfiguration(blog: blog)
+        let config = EditorConfiguration(blog: blog, postType: .post)
 
         #expect(config.siteApiRoot == URL(string: "https://public-api.wordpress.com/")!, "Should use WP.com API root")
         #expect(config.authHeader == "Bearer atomic-bearer-token", "Should use Bearer authentication")
@@ -65,7 +65,7 @@ struct EditorConfigurationTests {
             .withApplicationPassword("test-app-password-1234", using: keychain)
             .build()
 
-        let config = EditorConfiguration(blog: blog, keychain: keychain)
+        let config = EditorConfiguration(blog: blog, postType: .post, keychain: keychain)
         let base64Credentials = "YXRvbWljdXNlcjp0ZXN0LWFwcC1wYXNzd29yZC0xMjM0" // Base64 encoding of "atomicuser:test-app-password-1234"
 
         #expect(config.siteApiRoot == URL(string: "https://67890.example.com/wp-json/")!, "Should use self-hosted API URL")
@@ -86,7 +86,7 @@ struct EditorConfigurationTests {
             .with(restApiRootURL: "https://self-hosted.org/wp-json/")
             .build()
 
-        let config = EditorConfiguration(blog: blog, keychain: keychain)
+        let config = EditorConfiguration(blog: blog, postType: .post, keychain: keychain)
         let base64Credentials = "c2VsZmhvc3RlZHVzZXI6dGVzdC1hcHAtcGFzc3dvcmQtMTIzNA==" // Base64 encoding of "selfhosteduser:test-app-password-1234"
 
         #expect(config.siteApiRoot == URL(string: "https://self-hosted.org/wp-json/")!, "Should use self-hosted API URL")
@@ -106,7 +106,7 @@ struct EditorConfigurationTests {
             .with(url: "https://self-hosted.org")
             .build()
 
-        let config = EditorConfiguration(blog: blog, keychain: keychain)
+        let config = EditorConfiguration(blog: blog, postType: .post, keychain: keychain)
 
         #expect(config.siteApiRoot == URL(string: "https://public-api.wordpress.com/"), "Should use WP.com API root")
         #expect(config.authHeader == "Bearer self-hosted-bearer-token", "Should use Bearer authentication")
@@ -127,7 +127,7 @@ struct EditorConfigurationTests {
             .with(restApiRootURL: "https://self-hosted.org/wp-json/")
             .build()
 
-        let config = EditorConfiguration(blog: blog, keychain: keychain)
+        let config = EditorConfiguration(blog: blog, postType: .post, keychain: keychain)
         let base64Credentials = "c2VsZmhvc3RlZHVzZXI6dGVzdC1hcHAtcGFzc3dvcmQtMTIzNA==" // Base64 encoding of "selfhosteduser:test-app-password-1234"
 
         #expect(config.siteApiRoot == URL(string: "https://self-hosted.org/wp-json/"), "Should use self-hosted API URL")

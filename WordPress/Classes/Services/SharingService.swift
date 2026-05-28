@@ -13,7 +13,7 @@ import WordPressKit
 
     /// The initialiser for Objective-C code.
     ///
-    /// Using `ContextManager` as the argument becuase `CoreDataStackSwift` is not accessible from Objective-C code.
+    /// Using `ContextManager` as the argument because `CoreDataStackSwift` is not accessible from Objective-C code.
     @objc
     public init(contextManager: ContextManager) {
         self.coreDataStack = contextManager
@@ -25,7 +25,7 @@ import WordPressKit
 
     // MARK: - Publicize Related Methods
 
-    /// Syncs the list of Publicize services.  The list is expected to very rarely change.
+    /// Syncs the list of Publicize services. The list is expected to very rarely change.
     ///
     /// - Parameters:
     ///     - blog: The `Blog` for which to sync publicize services
@@ -65,7 +65,7 @@ import WordPressKit
     }
 
     /// Creates a new publicize connection for the specified `Blog`, using the specified
-    /// keyring.  Optionally the connection can target a particular external user account.
+    /// keyring. Optionally the connection can target a particular external user account.
     ///
     /// - Parameters
     ///     - blog: The `Blog` for which to sync publicize connections
@@ -117,7 +117,7 @@ import WordPressKit
             })
     }
 
-    /// Update the specified `PublicizeConnection`.  The update to core data is performed
+    /// Update the specified `PublicizeConnection`. The update to core data is performed
     /// optimistically. In case of failure the original value will be restored.
     ///
     /// - Parameters:
@@ -194,7 +194,7 @@ import WordPressKit
         }, on: .main)
     }
 
-    /// Update the specified `PublicizeConnection`.  The update to core data is performed
+    /// Update the specified `PublicizeConnection`. The update to core data is performed
     /// optimistically. In case of failure the original value will be restored.
     ///
     /// - Parameters:
@@ -237,8 +237,8 @@ import WordPressKit
                 failure: failure)
     }
 
-    /// Deletes the specified `PublicizeConnection`.  The delete from core data is performed
-    /// optimistically.  The caller's `failure` block should be responsible for resyncing
+    /// Deletes the specified `PublicizeConnection`. The delete from core data is performed
+    /// optimistically. The caller's `failure` block should be responsible for resyncing
     /// the deleted connection.
     ///
     /// - Parameters:
@@ -290,7 +290,7 @@ import WordPressKit
     // MARK: - Private PublicizeService Methods
 
     /// Called when syncing Publicize services. Merges synced and cached data, removing
-    /// anything that does not exist on the server.  Saves the context.
+    /// anything that does not exist on the server. Saves the context.
     ///
     /// - Parameters
     ///     - remoteServices: An array of `RemotePublicizeService` objects to merge.
@@ -301,7 +301,7 @@ import WordPressKit
             let currentPublicizeServices = (try? PublicizeService.allPublicizeServices(in: context)) ?? []
 
             // Create or update based on the contents synced.
-            let servicesToKeep = remoteServices.map { (remoteService) -> PublicizeService in
+            let servicesToKeep = remoteServices.map { remoteService -> PublicizeService in
                 self.createOrReplaceFromRemotePublicizeService(remoteService, in: context)
             }
 
@@ -409,8 +409,8 @@ import WordPressKit
             failure: failure)
     }
 
-    /// Called when syncing sharng buttons. Merges synced and cached data, removing
-    /// anything that does not exist on the server.  Saves the context.
+    /// Called when syncing sharing buttons. Merges synced and cached data, removing
+    /// anything that does not exist on the server. Saves the context.
     ///
     /// - Parameters:
     ///     - blogObjectID: the NSManagedObjectID of a `Blog`
@@ -424,7 +424,7 @@ import WordPressKit
             let currentSharingbuttons = try SharingButton.allSharingButtons(for: blog, in: context)
 
             // Create or update based on the contents synced.
-            let buttonsToKeep = remoteSharingButtons.map { (remoteButton) -> SharingButton in
+            let buttonsToKeep = remoteSharingButtons.map { remoteButton -> SharingButton in
                 return self.createOrReplaceFromRemoteSharingButton(remoteButton, blog: blog, in: context)
             }
 
@@ -475,7 +475,7 @@ import WordPressKit
     /// - Returns: An array of `RemoteSharingButton` objects.
     ///
     private func remoteShareButtonsFromShareButtons(_ shareButtons: [SharingButton]) -> [RemoteSharingButton] {
-        return shareButtons.map { (shareButton) -> RemoteSharingButton in
+        return shareButtons.map { shareButton -> RemoteSharingButton in
             let btn = RemoteSharingButton()
             btn.buttonID = shareButton.buttonID
             btn.name = shareButton.name

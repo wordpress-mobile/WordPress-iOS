@@ -183,7 +183,7 @@ before_all do |lane|
   ENV['FASTLANE_XCODEBUILD_SETTINGS_TIMEOUT'] = '120'
 
   # Skip these checks/steps for test lane (not needed for testing)
-  next if lane == :test_without_building
+  next if %i[test test_without_building].include?(lane)
 
   # Ensure we use the latest version of the toolkit
   check_for_toolkit_updates unless is_ci || ENV['FASTLANE_SKIP_TOOLKIT_UPDATE_CHECK']

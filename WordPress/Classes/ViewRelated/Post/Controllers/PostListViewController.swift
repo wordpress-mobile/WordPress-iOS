@@ -41,7 +41,7 @@ final class PostListViewController: AbstractPostListViewController, InteractiveP
         }
 
         if let blog = self.blog, RemoteFeatureFlag.newGutenberg.enabled() {
-            EditorDependencyManager.shared.prefetchDependencies(for: blog)
+            EditorDependencyManager.shared.prefetchDependencies(for: blog, postType: .post)
         }
     }
 

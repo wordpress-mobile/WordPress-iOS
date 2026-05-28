@@ -102,6 +102,7 @@ public struct AlertDismissButton: View {
                 .frame(maxWidth: .infinity)
         }
         .buttonStyle(.borderedProminent)
+        .buttonBorderShape(.roundedRectangle(radius: 8))
         .controlSize(.extraLarge)
     }
 }

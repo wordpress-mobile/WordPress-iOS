@@ -139,7 +139,7 @@ class GutenbergLayoutPickerViewController: FilterableCategoriesViewController {
     }
 
     private func makeSectionData(with controller: NSFetchedResultsController<PageTemplateCategory>?) -> [GutenbergLayoutSection] {
-        return controller?.fetchedObjects?.map({ (category) -> GutenbergLayoutSection in
+        return controller?.fetchedObjects?.map({ category -> GutenbergLayoutSection in
             return GutenbergLayoutSection(category, thumbnailSize: GutenbergLayoutPickerViewController.thumbnailSize)
         }) ?? []
     }

@@ -34,21 +34,40 @@ CONCURRENT_SIMULATORS = 2
 #   use the build number we set!
 COMMON_EXPORT_OPTIONS = { manageAppVersionAndBuildNumber: false }.freeze
 
-# https://buildkite.com/docs/test-analytics/ci-environments
-TEST_ANALYTICS_ENVIRONMENT = %w[
-  BUILDKITE_ANALYTICS_TOKEN
-  BUILDKITE_BUILD_ID
-  BUILDKITE_BUILD_NUMBER
-  BUILDKITE_JOB_ID
-  BUILDKITE_BRANCH
-  BUILDKITE_COMMIT
-  BUILDKITE_MESSAGE
-  BUILDKITE_BUILD_URL
-].freeze
-
 # Lanes related to Building and Testing the code
 #
 platform :ios do
+  # Runs tests locally without CI prerequisites (env files, signing, etc.)
+  #
+  # @option [String] scheme The scheme to test (default: WordPress)
+  # @option [String] device The Simulator device name
+  # @option [String] ios_version The deployment target version
+  # @option [String] only_testing Specific test target/class/method (e.g. WordPressUnitTests/MyClass/testFoo)
+  # @option [Boolean] clean Whether to clean before building (default: false for incremental builds)
+  #
+  # @example Run all WordPress tests:
+  #   bundle exec fastlane test
+  # @example Run a single test class:
+  #   bundle exec fastlane test only_testing:WordPressUnitTests/MyClass
+  # @example Test the Jetpack scheme:
+  #   bundle exec fastlane test scheme:Jetpack
+  # @example Clean build before testing:
+  #   bundle exec fastlane test clean:true
+  #
+  desc 'Run tests locally'
+  lane :test do |scheme: 'WordPress', device: 'iPhone 17', ios_version: nil, only_testing: nil, clean: false|
+    run_tests(
+      workspace: WORKSPACE_PATH,
+      scheme: scheme,
+      device: device,
+      derived_data_path: DERIVED_DATA_PATH,
+      deployment_target_version: ios_version,
+      only_testing: only_testing,
+      clean: clean,
+      skip_package_dependencies_resolution: !clean
+    )
+  end
+
   # Builds the WordPress app for Testing
   #
   # @option [String] device the name of the Simulator device to run the tests on
@@ -108,7 +127,6 @@ platform :ios do
 
     UI.user_error!("Unable to find .xctestrun file at #{build_products_path}.") if xctestrun_path.nil? || !File.exist?(xctestrun_path)
 
-    inject_buildkite_analytics_environment(xctestrun_path: xctestrun_path) if buildkite_ci?
     # Our current configuration allows for either running the Jetpack UI tests or the WordPress unit tests.
     #
     # Their scheme and xctestrun name pairing are:
@@ -134,14 +152,11 @@ platform :ios do
       output_directory: File.join(PROJECT_ROOT_FOLDER, 'build', 'results'),
       reset_simulator: true,
       result_bundle: true,
-      output_types: '',
-      fail_build: false,
+      output_types: 'junit',
       parallel_testing: parallel_testing_value,
       concurrent_workers: CONCURRENT_SIMULATORS,
       max_concurrent_simulators: CONCURRENT_SIMULATORS
     )
-
-    trainer(path: lane_context[SharedValues::SCAN_GENERATED_XCRESULT_PATH], fail_build: true)
   end
 
   # Builds the WordPress app and uploads it to TestFlight, for beta-testing or final release
@@ -182,11 +197,11 @@ platform :ios do
       beta_app_description_path: WORDPRESS_BETA_APP_DESCRIPTION_PATH
     )
 
-    sentry_upload_dsym(
+    sentry_debug_files_upload(
       auth_token: get_required_env('SENTRY_AUTH_TOKEN'),
       org_slug: SENTRY_ORG_SLUG,
       project_slug: SENTRY_PROJECT_SLUG_WORDPRESS,
-      dsym_path: lane_context[SharedValues::DSYM_OUTPUT_PATH]
+      path: lane_context[SharedValues::DSYM_OUTPUT_PATH]
     )
 
     upload_gutenberg_sourcemaps(
@@ -251,11 +266,11 @@ platform :ios do
       beta_app_description_path: JETPACK_BETA_APP_DESCRIPTION_PATH
     )
 
-    sentry_upload_dsym(
+    sentry_debug_files_upload(
       auth_token: get_required_env('SENTRY_AUTH_TOKEN'),
       org_slug: SENTRY_ORG_SLUG,
       project_slug: SENTRY_PROJECT_SLUG_JETPACK,
-      dsym_path: lane_context[SharedValues::DSYM_OUTPUT_PATH]
+      path: lane_context[SharedValues::DSYM_OUTPUT_PATH]
     )
 
     release_version = release_version_current
@@ -396,11 +411,11 @@ platform :ios do
     )
 
     # Upload dSYMs to Sentry
-    sentry_upload_dsym(
+    sentry_debug_files_upload(
       auth_token: get_required_env('SENTRY_AUTH_TOKEN'),
       org_slug: SENTRY_ORG_SLUG,
       project_slug: sentry_project_slug,
-      dsym_path: lane_context[SharedValues::DSYM_OUTPUT_PATH]
+      path: lane_context[SharedValues::DSYM_OUTPUT_PATH]
     )
 
     upload_gutenberg_sourcemaps(
@@ -409,28 +424,6 @@ platform :ios do
       build_version: build_number,
       app_identifier: app_identifier
     )
-  end
-
-  def inject_buildkite_analytics_environment(xctestrun_path:)
-    require 'plist'
-
-    xctestrun = Plist.parse_xml(xctestrun_path)
-    xctestrun['TestConfigurations'].each do |configuration|
-      configuration['TestTargets'].each do |target|
-        TEST_ANALYTICS_ENVIRONMENT.each do |key|
-          value = ENV.fetch(key)
-          next if value.nil?
-
-          target['EnvironmentVariables'][key] = value
-        end
-      end
-    end
-
-    File.write(xctestrun_path, Plist::Emit.dump(xctestrun))
-  end
-
-  def buildkite_ci?
-    ENV.fetch('BUILDKITE', false)
   end
 
   def upload_build_to_testflight(ipa_path:, whats_new_path:, distribution_groups:, beta_app_description_path:)

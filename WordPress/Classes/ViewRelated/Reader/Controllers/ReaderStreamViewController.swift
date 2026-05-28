@@ -186,8 +186,13 @@ import AutomatticTracks
     private var showConfirmation = true
 
     var isEmbeddedInDiscover = false
+    var suppressesScreenTracking = false
     var isNotificationsBarButtonEnabled = false
     var preferredTableHeaderView: UIView?
+
+    /// The active discover tab identifier (e.g. `"recommended"`), set by the
+    /// parent ``ReaderDiscoverViewController``.
+    var discoverTab: String?
 
     var isCompact = true {
         didSet {
@@ -292,7 +297,7 @@ import AutomatticTracks
         // Setup Site Blocking Controller
         self.siteBlockingController.delegate = self
 
-        // Disable the view until we have a topic.  This prevents a premature
+        // Disable the view until we have a topic. This prevents a premature
         // pull to refresh animation.
         view.isUserInteractionEnabled = readerTopic != nil
         view.backgroundColor = .systemBackground
@@ -329,6 +334,10 @@ import AutomatticTracks
 
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
+
+        if !suppressesScreenTracking, let screen = resolveReaderScreenID() {
+            WPAnalytics.track(screen: screen, context: trackingContext)
+        }
 
         let mainContext = ContextManager.shared.mainContext
         NotificationCenter.default.removeObserver(self, name: NSNotification.Name.NSManagedObjectContextDidSave, object: mainContext)
@@ -406,7 +415,7 @@ import AutomatticTracks
         let service = ReaderTopicService(coreDataStack: ContextManager.shared)
         service.siteTopicForSite(withID: siteID,
             isFeed: isFeed,
-            success: { [weak self] (objectID: NSManagedObjectID?, isFollowing: Bool) in
+            success: { [weak self] (objectID: NSManagedObjectID?, _: Bool) in
 
                 let context = ContextManager.shared.mainContext
                 guard let objectID,
@@ -419,9 +428,8 @@ import AutomatticTracks
                     return
                 }
                 self?.readerTopic = topic
-
             },
-            failure: { [weak self] (error: Error?) in
+            failure: { [weak self] (_: Error?) in
                 if self?.isLoadingDiscover ?? false {
                     self?.updateContent(synchronize: false)
                 }
@@ -614,7 +622,7 @@ import AutomatticTracks
     }
 
     /// The fetch request can need a different predicate depending on how the content
-    /// being displayed has changed (blocking sites for instance).  Call this method to
+    /// being displayed has changed (blocking sites for instance). Call this method to
     /// update the fetch request predicate and then perform a new fetch.
     ///
     private func updateAndPerformFetchRequest() {
@@ -768,9 +776,43 @@ import AutomatticTracks
         ReaderHelpers.trackLoadedTopic(topic, withProperties: properties)
     }
 
+    /// The tracking source for this screen, including the discover tab section if applicable.
+    var resolvedSource: ScreenTrackingSource? {
+        guard let screen = resolveReaderScreenID() else { return nil }
+        var source = ScreenTrackingSource(screen)
+        source.section = discoverTab
+        return source
+    }
+
+    /// Maps the current topic/content type to a `ReaderScreen` identifier.
+    private func resolveReaderScreenID() -> String? {
+        if contentType == .saved {
+            return ScreenID.Reader.saved
+        }
+        guard let topic = readerTopic else {
+            return nil
+        }
+        if ReaderHelpers.topicIsDiscover(topic) {
+            return ScreenID.Reader.discover
+        } else if ReaderHelpers.topicIsFollowing(topic) {
+            return ScreenID.Reader.following
+        } else if ReaderHelpers.topicIsLiked(topic) {
+            return ScreenID.Reader.likes
+        } else if ReaderHelpers.isTopicSite(topic) {
+            return ScreenID.Reader.site
+        } else if ReaderHelpers.isTopicTag(topic) {
+            return ScreenID.Reader.tag
+        } else if ReaderHelpers.isTopicList(topic) {
+            return ScreenID.Reader.list
+        } else if topic is ReaderTeamTopic {
+            return ScreenID.Reader.organization
+        }
+        return nil
+    }
+
     // MARK: - Sync Methods
 
-    /// Updates the last synced date for a topic.  Since its possible for a sync
+    /// Updates the last synced date for a topic. Since its possible for a sync
     /// to complete *after* the current topic is changed we fetch the correct topic
     /// via its objectID.
     ///
@@ -780,7 +822,7 @@ import AutomatticTracks
     private func updateLastSyncedForTopic(_ objectID: NSManagedObjectID) {
         let context = ContextManager.shared.mainContext
         guard let topic = (try? context.existingObject(with: objectID)) as? ReaderAbstractTopic else {
-            DDLogError("Failed to retrive an existing topic when updating last sync date.")
+            DDLogError("Failed to retrieve an existing topic when updating last sync date.")
             return
         }
         topic.lastSynced = Date()
@@ -832,7 +874,7 @@ import AutomatticTracks
     }
 
     /// Returns the number of posts for the current topic
-    /// This allows the count to be overriden by subclasses
+    /// This allows the count to be overridden by subclasses
     var topicPostsCount: Int {
         return readerTopic?.posts.count ?? 0
     }
@@ -852,7 +894,7 @@ import AutomatticTracks
                 }
                 completionHandler(.newData)
             }
-        }, failure: { (_) in
+        }, failure: { _ in
             completionHandler(.failed)
         })
     }
@@ -893,9 +935,10 @@ import AutomatticTracks
 
         let objectID = topic.objectID
 
-        let successBlock = { [weak self] (count: Int, hasMore: Bool) in
+        let successBlock = { [weak self] (_: Int, hasMore: Bool) in
             DispatchQueue.main.async {
                 if let strongSelf = self {
+                    // swiftlint:disable:next empty_count
                     if strongSelf.recentlyBlockedSitePostObjectIDs.count > 0 {
                         strongSelf.recentlyBlockedSitePostObjectIDs.removeAllObjects()
                         strongSelf.updateAndPerformFetchRequest()
@@ -963,9 +1006,10 @@ import AutomatticTracks
                 return
             }
 
-            let successBlock = { [weak self] (count: Int, hasMore: Bool) in
+            let successBlock = { [weak self] (_: Int, hasMore: Bool) in
                 DispatchQueue.main.async {
                     if let strongSelf = self {
+                        // swiftlint:disable:next empty_count
                         if strongSelf.recentlyBlockedSitePostObjectIDs.count > 0 {
                             strongSelf.recentlyBlockedSitePostObjectIDs.removeAllObjects()
                             strongSelf.updateAndPerformFetchRequest()
@@ -1004,7 +1048,7 @@ import AutomatticTracks
 
         footerView.isHidden = false
 
-        let successBlock = { (count: Int, hasMore: Bool) in
+        let successBlock = { (_: Int, hasMore: Bool) in
             DispatchQueue.main.async(execute: {
                 success?(hasMore)
             })
@@ -1105,6 +1149,7 @@ import AutomatticTracks
             return predicateForNilTopic
         }
 
+        // swiftlint:disable:next empty_count
         if recentlyBlockedSitePostObjectIDs.count > 0 {
             return NSPredicate(format: "topic = %@ AND (isSiteBlocked = NO OR SELF in %@)", topicInContext, recentlyBlockedSitePostObjectIDs)
         }
@@ -1138,7 +1183,7 @@ import AutomatticTracks
         let service = ReaderTopicService(coreDataStack: ContextManager.shared)
         service.toggleFollowing(forTag: topic, success: {
             completion?(true)
-        }, failure: { (error: Error?) in
+        }, failure: { (_: Error?) in
             generator.notificationOccurred(.error)
             completion?(false)
         })
@@ -1259,7 +1304,7 @@ extension ReaderStreamViewController: WPTableViewHandlerDelegate {
 
     func tableViewHandlerDidRefreshTableViewPreservingOffset(_ tableViewHandler: WPTableViewHandler) {
         hideResultsStatus()
-        if tableViewHandler.resultsController?.fetchedObjects?.count == 0 {
+        if tableViewHandler.resultsController?.fetchedObjects?.isEmpty == true {
             if let syncHelper, syncHelper.isSyncing {
                 return
             }
@@ -1438,6 +1483,12 @@ extension ReaderStreamViewController: WPTableViewHandlerDelegate {
         let controller = ReaderDetailViewController.controllerWithPost(post)
         controller.coordinator?.readerTopic = readerTopic
 
+        if var source = resolvedSource {
+            source.component = ElementID.Reader.postCard
+            source.position = indexPath.row
+            controller.trackingContext.source = source
+        }
+
         if post.isSavedForLater || contentType == .saved {
             trackSavedPostNavigation()
         } else {
@@ -1445,7 +1496,7 @@ extension ReaderStreamViewController: WPTableViewHandlerDelegate {
         }
 
         if traitCollection.horizontalSizeClass == .regular, #available(iOS 18, *) {
-            controller.preferredTransition = .zoom { [weak self] context in
+            controller.preferredTransition = .zoom { [weak self] _ in
                 guard let self, let cell = self.tableView.cellForRow(at: indexPath) else {
                     return nil
                 }
@@ -1488,7 +1539,6 @@ extension ReaderStreamViewController: UITableViewDataSourcePrefetching {
 
     func tableView(_ tableView: UITableView, cancelPrefetchingForRowsAt indexPaths: [IndexPath]) {
         prefetcher.stopPrefetching(for: makeImageRequests(for: indexPaths))
-
     }
 
     private func makeImageRequests(for indexPaths: [IndexPath]) -> [ImageRequest] {

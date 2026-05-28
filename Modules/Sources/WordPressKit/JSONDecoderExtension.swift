@@ -26,7 +26,7 @@ extension JSONDecoder.DateDecodingStrategy {
     }
 
     static var supportMultipleDateFormats: JSONDecoder.DateDecodingStrategy {
-        return JSONDecoder.DateDecodingStrategy.custom({ (decoder) -> Date in
+        return JSONDecoder.DateDecodingStrategy.custom({ decoder -> Date in
             let container = try decoder.singleValueContainer()
             let dateStr = try container.decode(String.self)
 

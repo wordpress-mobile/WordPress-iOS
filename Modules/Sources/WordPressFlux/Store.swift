@@ -29,7 +29,7 @@ open class Store: Observable {
     ///
     public init(dispatcher: ActionDispatcher = .global) {
         actionDispatcher = dispatcher
-        dispatchReceipt = dispatcher.subscribe { [weak self] (action) in
+        dispatchReceipt = dispatcher.subscribe { [weak self] action in
             self?.onDispatch(action)
         }
     }

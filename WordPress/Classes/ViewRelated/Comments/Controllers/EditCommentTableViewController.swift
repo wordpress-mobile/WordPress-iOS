@@ -125,7 +125,6 @@ class EditCommentTableViewController: UITableViewController {
 
         return nil
     }
-
 }
 
 // MARK: - Private Extension
@@ -207,7 +206,7 @@ private extension EditCommentTableViewController {
         let alertController = UIAlertController(title: title, message: nil, preferredStyle: .actionSheet)
         alertController.addCancelActionWithTitle(keepEditingTitle)
 
-        alertController.addDestructiveActionWithTitle(discardTitle) { [weak self] action in
+        alertController.addDestructiveActionWithTitle(discardTitle) { [weak self] _ in
             self?.finishWithoutUpdates()
         }
 
@@ -255,7 +254,6 @@ private extension EditCommentTableViewController {
             }
         }
     }
-
 }
 
 extension EditCommentTableViewController: InlineEditableSingleLineCellDelegate {
@@ -281,7 +279,6 @@ extension EditCommentTableViewController: InlineEditableSingleLineCellDelegate {
 
         updateDoneButton()
     }
-
 }
 
 extension EditCommentTableViewController: InlineEditableMultiLineCellDelegate {
@@ -294,5 +291,4 @@ extension EditCommentTableViewController: InlineEditableMultiLineCellDelegate {
         updatedContent = cell.textView.text.trim()
         updateDoneButton()
     }
-
 }

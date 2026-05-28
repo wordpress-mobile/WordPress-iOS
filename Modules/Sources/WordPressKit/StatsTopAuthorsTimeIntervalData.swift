@@ -106,7 +106,6 @@ extension StatsTopAuthor {
         self.viewsCount = views
         self.iconURL = url
         self.posts = mappedPosts
-
     }
 }
 

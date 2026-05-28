@@ -25,13 +25,7 @@ extension RemoteBlog {
     /// Returns true if a given capability is enabled. False otherwise
     ///
     public func isUserCapableOf(_ capability: Capability) -> Bool {
-        return capabilities[capability.rawValue, default: false]
-    }
-
-    /// Returns true if the current user is allowed to list a Blog's Users
-    ///
-    @objc public func isListingUsersAllowed() -> Bool {
-        return isUserCapableOf(.listUsers)
+        return capabilities[capability.rawValue] as? Bool ?? false
     }
 
     /// Returns true if the current user is allowed to publish to the Blog

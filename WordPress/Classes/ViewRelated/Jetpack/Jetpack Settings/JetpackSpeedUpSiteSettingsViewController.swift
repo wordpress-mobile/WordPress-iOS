@@ -109,5 +109,4 @@ open class JetpackSpeedUpSiteSettingsViewController: UITableViewController {
         WPError.showAlert(withTitle: errorTitle, message: errorMessage, withSupportButton: true)
         refreshSettings()
     }
-
 }

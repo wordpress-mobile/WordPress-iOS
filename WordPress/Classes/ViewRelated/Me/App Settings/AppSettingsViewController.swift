@@ -135,7 +135,7 @@ class AppSettingsViewController: UITableViewController {
 
     fileprivate func updateMediaCacheSize() {
         setMediaCacheRowDescription(status: .calculatingSize)
-        MediaFileManager.calculateSizeOfMediaDirectories { [weak self] (allocatedSize) in
+        MediaFileManager.calculateSizeOfMediaDirectories { [weak self] allocatedSize in
             self?.setMediaCacheRowDescription(allocatedSize: allocatedSize)
         }
     }
@@ -169,7 +169,7 @@ class AppSettingsViewController: UITableViewController {
     }
 
     func pushVideoResolutionSettings() -> ImmuTableAction {
-        return { [weak self] row in
+        return { [weak self] _ in
             let values = [MediaSettings.VideoResolution.size640x480,
                           MediaSettings.VideoResolution.size1280x720,
                           MediaSettings.VideoResolution.size1920x1080,
@@ -201,7 +201,7 @@ class AppSettingsViewController: UITableViewController {
     }
 
     func pushImageQualitySettings() -> ImmuTableAction {
-        return { [weak self] row in
+        return { [weak self] _ in
             let values = [MediaSettings.ImageQuality.low,
                           MediaSettings.ImageQuality.medium,
                           MediaSettings.ImageQuality.high,
@@ -212,9 +212,9 @@ class AppSettingsViewController: UITableViewController {
             let title = NSLocalizedString("appSettings.media.imageQuality.title", value: "Quality", comment: "The quality of image used when uploading")
 
             let settingsSelectionConfiguration = [SettingsSelectionDefaultValueKey: currentImageQuality,
-                                                         SettingsSelectionTitleKey: title,
-                                                        SettingsSelectionTitlesKey: titles,
-                                                        SettingsSelectionValuesKey: values] as [String: Any]
+                                                  SettingsSelectionTitleKey: title,
+                                                  SettingsSelectionTitlesKey: titles,
+                                                  SettingsSelectionValuesKey: values] as [String: Any]
 
             let viewController = SettingsSelectionViewController(dictionary: settingsSelectionConfiguration)
 
@@ -267,7 +267,7 @@ class AppSettingsViewController: UITableViewController {
     }
 
     func pushAppearanceSettings() -> ImmuTableAction {
-        return { [weak self] row in
+        return { [weak self] _ in
             let values = UIUserInterfaceStyle.allStyles
 
             let rawValues = values.map({ $0.rawValue })
@@ -307,21 +307,21 @@ class AppSettingsViewController: UITableViewController {
     }
 
     func pushDebugMenu() -> ImmuTableAction {
-        return { [weak self] row in
+        return { [weak self] _ in
             let controller = DebugMenuViewController()
             self?.navigationController?.pushViewController(controller, animated: true)
         }
     }
 
     func pushDesignSystemGallery() -> ImmuTableAction {
-        return { [weak self] row in
+        return { [weak self] _ in
             let controller = UIHostingController(rootView: DesignSystemGallery())
             self?.navigationController?.pushViewController(controller, animated: true)
         }
     }
 
     func pushAppIconSwitcher() -> ImmuTableAction {
-        return { [weak self] row in
+        return { [weak self] _ in
             let controller = AppIconViewController()
             self?.navigationController?.pushViewController(controller, animated: true)
         }
@@ -334,12 +334,11 @@ class AppSettingsViewController: UITableViewController {
     }
 
     func openApplicationSettings() -> ImmuTableAction {
-        return { [weak self] row in
+        return { [weak self] _ in
             WPAnalytics.track(.appSettingsOpenDeviceSettingsTapped)
 
             if let targetURL = URL(string: UIApplication.openSettingsURLString) {
                 UIApplication.shared.open(targetURL)
-
             } else {
                 assertionFailure("Couldn't unwrap Settings URL")
             }
@@ -362,7 +361,7 @@ class AppSettingsViewController: UITableViewController {
     }
 
     func clearSpotlightCache() -> ImmuTableAction {
-        return { [weak self] row in
+        return { [weak self] _ in
             WPAnalytics.track(.appSettingsClearSpotlightIndexTapped)
 
             self?.tableView.deselectSelectedRowWithAnimation(true)
@@ -374,7 +373,7 @@ class AppSettingsViewController: UITableViewController {
     }
 
     func presentWhatIsNew() -> ImmuTableAction {
-        return { [weak self] row in
+        return { [weak self] _ in
             guard let self else {
                 return
             }
@@ -386,7 +385,7 @@ class AppSettingsViewController: UITableViewController {
     private let experimentalFeaturesVM = ExperimentalFeaturesViewModel(dataProvider: ExperimentalFeaturesDataProvider())
 
     func pushExperimentalFeatures() -> ImmuTableAction {
-        return { [weak self] row in
+        return { [weak self] _ in
             guard let self else {
                 return
             }

@@ -62,7 +62,7 @@ class LoginWPComViewController: LoginViewController, NUXKeyboardResponder {
 
         if isMovingFromParent {
             // There was a bug that was causing iOS's update password prompt to come up
-            // when this VC was being dismissed pressing the "< Back" button.  The following
+            // when this VC was being dismissed pressing the "< Back" button. The following
             // line ensures that such prompt doesn't come up anymore.
             //
             // More information can be found in the PR where this workaround is introduced:

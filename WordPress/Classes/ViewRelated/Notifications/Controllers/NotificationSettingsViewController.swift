@@ -121,7 +121,7 @@ class NotificationSettingsViewController: UIViewController {
         dispatchGroup.enter()
         siteService.fetchAllFollowedSites(success: {
             dispatchGroup.leave()
-        }, failure: { (error) in
+        }, failure: { error in
             dispatchGroup.leave()
             DDLogError("Could not sync sites: \(String(describing: error))")
         })
@@ -229,11 +229,11 @@ class NotificationSettingsViewController: UIViewController {
 
         let alertController = UIAlertController(title: title, message: message, preferredStyle: .alert)
 
-        alertController.addCancelActionWithTitle(cancelText) { (action: UIAlertAction) in
+        alertController.addCancelActionWithTitle(cancelText) { (_: UIAlertAction) in
             _ = self.navigationController?.popViewController(animated: true)
         }
 
-        alertController.addDefaultActionWithTitle(retryText) { (action: UIAlertAction) in
+        alertController.addDefaultActionWithTitle(retryText) { (_: UIAlertAction) in
             self.reloadSettings()
         }
 
@@ -452,7 +452,7 @@ private extension NotificationSettingsViewController {
             return followedSites.isEmpty
 
         default:
-            return groupedSettings[section]?.count == 0
+            return groupedSettings[section]?.isEmpty ?? true
         }
     }
 
@@ -582,10 +582,10 @@ extension NotificationSettingsViewController {
         let section = self.section(at: index.section)
         switch section {
         case .blog:
-            displayBlogMoreWasAccepted = !displayBlogMoreWasAccepted
+            displayBlogMoreWasAccepted.toggle()
 
         case .followedSites:
-            displayFollowedMoreWasAccepted = !displayFollowedMoreWasAccepted
+            displayFollowedMoreWasAccepted.toggle()
 
         default:
             return

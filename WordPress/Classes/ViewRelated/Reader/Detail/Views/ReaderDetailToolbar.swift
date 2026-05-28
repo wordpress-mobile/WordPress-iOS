@@ -143,7 +143,7 @@ class ReaderDetailToolbar {
     }
 
     private func makeLikeButton() -> UIBarButtonItem? {
-        guard let post else { return nil }
+        guard let post, post.isLikesEnabled else { return nil }
 
         let isLiked = post.isLiked
 
@@ -153,9 +153,6 @@ class ReaderDetailToolbar {
             isSelected: isLiked,
             action: #selector(didTapLike)
         )
-
-        customButton.isEnabled = (ReaderHelpers.isLoggedIn() || likeCount > 0) && !post.isExternal
-        customButton.alpha = customButton.isEnabled ? 1.0 : 0.5
 
         let button = UIBarButtonItem(customView: customButton)
         button.accessibilityHint = isLiked ? Constants.likedButtonHint : Constants.likeButtonHint
@@ -211,7 +208,7 @@ class ReaderDetailToolbar {
             return
         }
 
-        ReaderCommentAction().execute(post: post, origin: viewController, source: .postDetails)
+        ReaderCommentAction().execute(post: post, origin: viewController, source: .postDetails, trackingSource: ScreenTrackingSource(ScreenID.Reader.article, component: ElementID.Reader.toolbarComment))
     }
 
     @objc private func didTapLike(_ sender: Any) {
@@ -366,7 +363,7 @@ private extension ReaderDetailToolbar {
 
 private extension ReaderDetailToolbar {
     func subscribePostChanges() {
-        likeCountObserver = post?.observe(\.likeCount, options: [.old, .new]) { [weak self] updatedPost, change in
+        likeCountObserver = post?.observe(\.likeCount, options: [.old, .new]) { [weak self] _, change in
             // ensure that we only update the like button when there's actual change.
             let oldValue = change.oldValue??.intValue ?? 0
             let newValue = change.newValue??.intValue ?? 0

@@ -60,7 +60,7 @@ class BlockEditorSettingsService {
 // MARK: Editor `theme_supports` support
 private extension BlockEditorSettingsService {
     func fetchTheme(_ completion: @escaping BlockEditorSettingsServiceCompletion) {
-        remote.fetchTheme { [weak self] (response) in
+        remote.fetchTheme { [weak self] response in
             guard let `self` = self else { return }
             switch response {
             case .success(let editorTheme):
@@ -122,7 +122,7 @@ private extension BlockEditorSettingsService {
 // MARK: Editor Global Styles support
 private extension BlockEditorSettingsService {
     func fetchBlockEditorSettings(_ completion: @escaping BlockEditorSettingsServiceCompletion) {
-        remote.fetchBlockEditorSettings { [weak self] (response) in
+        remote.fetchBlockEditorSettings { [weak self] response in
             guard let `self` = self else { return }
             switch response {
             case .success(let remoteSettings):

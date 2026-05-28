@@ -3,6 +3,9 @@ import WordPressData
 
 extension Blog {
     var isAutomatticP2: Bool {
-        SiteOrganizationType(rawValue: organizationID.intValue) == .automattic
+        guard let organizationID = organizationID?.intValue else {
+            return false
+        }
+        return SiteOrganizationType(rawValue: organizationID) == .automattic
     }
 }

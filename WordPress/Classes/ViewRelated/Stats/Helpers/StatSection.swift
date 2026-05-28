@@ -510,7 +510,6 @@ import WordPressShared
         static let socialImage = CGFloat(20)
         static let userImage = CGFloat(28)
     }
-
 }
 
 // MARK: - Strings specific to Annual Site Stats

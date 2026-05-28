@@ -22,6 +22,7 @@ struct ReaderSubscriptionsView: View {
 
     @Environment(\.horizontalSizeClass) private var horizontalSizeClass
 
+    @Environment(\.trackingContext) private var trackingContext
     var onSelection: (_ subscription: ReaderSiteTopic) -> Void = { _ in }
 
     var body: some View {
@@ -35,6 +36,9 @@ struct ReaderSubscriptionsView: View {
             } else {
                 main
             }
+        }
+        .onAppear {
+            WPAnalytics.track(screen: ScreenID.Reader.subscriptions, context: trackingContext)
         }
         .refreshable {
             await viewModel.refresh()

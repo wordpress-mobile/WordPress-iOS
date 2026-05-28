@@ -66,7 +66,7 @@ class CircularProgressView: UIView {
     // MARK: - public fields
 
     let retryView = AccessoryView()
-    @objc var errorView: UIView = UIView() {
+    @objc var errorView = UIView() {
         didSet {
             oldValue.removeFromSuperview()
             configureErrorView()
@@ -174,7 +174,7 @@ class CircularProgressView: UIView {
         NSLayoutConstraint.activate([
             progressIndicator.centerXAnchor.constraint(equalTo: centerXAnchor),
             progressIndicator.centerYAnchor.constraint(equalTo: centerYAnchor)
-            ])
+        ])
     }
 
     private func configureErrorView() {
@@ -198,7 +198,7 @@ class CircularProgressView: UIView {
             view.bottomAnchor.constraint(equalTo: bottomAnchor),
             view.leadingAnchor.constraint(equalTo: leadingAnchor),
             view.trailingAnchor.constraint(equalTo: trailingAnchor)
-            ])
+        ])
 
         view.isHidden = true
     }
@@ -272,7 +272,7 @@ final class AccessoryView: UIView {
         NSLayoutConstraint.activate([
             container.centerXAnchor.constraint(equalTo: centerXAnchor),
             container.centerYAnchor.constraint(equalTo: centerYAnchor)
-            ])
+        ])
     }
 }
 

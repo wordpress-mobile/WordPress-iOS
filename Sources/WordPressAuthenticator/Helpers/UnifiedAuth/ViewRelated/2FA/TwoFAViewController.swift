@@ -155,7 +155,6 @@ final class TwoFAViewController: LoginViewController {
             tableView.reloadData()
         }
     }
-
 }
 
 // MARK: - Validation and Login
@@ -284,7 +283,6 @@ private extension TwoFAViewController {
         loginFields.multifactorCode = codeField?.nonNilTrimmedText() ?? ""
         configureSubmitButton(animating: false)
     }
-
 }
 
 // MARK: - Security Keys
@@ -316,7 +314,7 @@ extension TwoFAViewController: ASAuthorizationControllerDelegate, ASAuthorizatio
     // Some password managers(like 1P) don't deliver `rawClientDataJSON`. In those cases we need to assemble it manually.
     func extractClientData(from credential: ASAuthorizationPlatformPublicKeyCredentialAssertion, challengeInfo: WebauthnChallengeInfo) -> Data? {
 
-        if credential.rawClientDataJSON.count > 0 {
+        if !credential.rawClientDataJSON.isEmpty {
             return credential.rawClientDataJSON
         }
 
@@ -370,7 +368,6 @@ extension TwoFAViewController: UITextFieldDelegate {
         validateForm()
         return true
     }
-
 }
 
 // MARK: - UITableViewDataSource
@@ -387,7 +384,6 @@ extension TwoFAViewController: UITableViewDataSource {
         configure(cell, for: row, at: indexPath)
         return cell
     }
-
 }
 
 // MARK: - Keyboard Notifications
@@ -401,7 +397,6 @@ extension TwoFAViewController: NUXKeyboardResponder {
     @objc func handleKeyboardWillHide(_ notification: Foundation.Notification) {
         keyboardWillHide(notification)
     }
-
 }
 
 // MARK: - Application state changes
@@ -443,7 +438,6 @@ private extension TwoFAViewController {
             break
         }
     }
-
 }
 
 // MARK: - Table Management

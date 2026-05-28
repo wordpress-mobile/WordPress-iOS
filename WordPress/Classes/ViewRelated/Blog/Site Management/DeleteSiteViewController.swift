@@ -76,7 +76,7 @@ open class DeleteSiteViewController: UITableViewController {
         warningImage.tintColor = UIAppColor.warning
         siteTitleLabel.textColor = UIAppColor.neutral(.shade70)
         siteTitleLabel.font = WPStyleGuide.fontForTextStyle(.footnote, fontWeight: .semibold)
-        siteTitleLabel.text = blog.displayURL as String?
+        siteTitleLabel.text = blog.displayURL
         siteTitleSubText.textColor = UIAppColor.neutral(.shade70)
         siteTitleSubText.text = NSLocalizedString("will be unavailable in the future.",
                                                   comment: "Second part of delete screen title stating [the site] will be unavailable in the future.")
@@ -127,8 +127,8 @@ open class DeleteSiteViewController: UITableViewController {
         paragraphStyle.alignment = .natural
 
         let attributes: [NSAttributedString.Key: Any] = [.font: WPStyleGuide.fontForTextStyle(.body, fontWeight: .regular),
-                                                        .foregroundColor: UIAppColor.neutral(.shade70),
-                                                        .paragraphStyle: paragraphStyle ]
+                                                         .foregroundColor: UIAppColor.neutral(.shade70),
+                                                         .paragraphStyle: paragraphStyle ]
         let htmlAttributes: StyledHTMLAttributes = [.BodyAttribute: attributes]
 
         let attributedText1 = NSAttributedString.attributedStringWithHTML(paragraph1, attributes: htmlAttributes)
@@ -142,7 +142,7 @@ open class DeleteSiteViewController: UITableViewController {
         sectionThreeBody.textColor = UIAppColor.neutral(.shade70)
 
         let contactButtonAttributes: [NSAttributedString.Key: Any] = [.foregroundColor: UIAppColor.primary,
-                                                                     .underlineStyle: NSUnderlineStyle.single.rawValue]
+                                                                      .underlineStyle: NSUnderlineStyle.single.rawValue]
         supportButton.setAttributedTitle(NSAttributedString(string: NSLocalizedString("Contact Support",
                                                             comment: "Button label for contacting support"),
                                                             attributes: contactButtonAttributes),
@@ -191,7 +191,7 @@ open class DeleteSiteViewController: UITableViewController {
     /// - Returns: UIAlertController
     ///
     fileprivate func confirmDeleteController() -> UIAlertController? {
-        guard let value = blog.displayURL as String? else {
+        guard let value = blog.displayURL else {
             return nil
         }
 
@@ -270,5 +270,4 @@ open class DeleteSiteViewController: UITableViewController {
             presentingViewController.dismiss(animated: true)
         }
     }
-
 }

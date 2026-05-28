@@ -36,7 +36,7 @@ class PluginDirectoryViewModel: Observable {
         popularReceipt = store.query(.feed(type: .popular))
         newReceipt = store.query(.feed(type: .newest))
 
-        actionReceipt = ActionDispatcher.global.subscribe { [changeDispatcher, throttle] action in
+        actionReceipt = ActionDispatcher.global.subscribe { [changeDispatcher, throttle] _ in
             // Fairly often, a bunch of those network calls can finish very close to each other — within few hundred
             // milliseconds or so. Doing a reload in this case is both wasteful and noticably slow.
             // Instead, we throttle the call so we trigger the reload at most once a second.
@@ -226,8 +226,8 @@ class PluginDirectoryViewModel: Observable {
                 featuredRow(presenter: presenter),
                 popularRow(presenter: presenter),
                 newRow(presenter: presenter),
-                ]),
-            ])
+            ]),
+        ])
     }
 
     public func refresh() {
@@ -289,7 +289,6 @@ class PluginDirectoryViewModel: Observable {
     private func accessoryView(`for` plugin: Plugin) -> UIView {
         return PluginDirectoryAccessoryItem.accessoryView(pluginState: plugin.state)
     }
-
 }
 
 private extension CollectionViewContainerRow where Item == PluginDirectoryEntry, CollectionViewCellType == PluginDirectoryCollectionViewCell {
@@ -326,7 +325,6 @@ private extension CollectionViewContainerRow where Item == PluginDirectoryEntry,
                   configureCollectionCell: configureCell,
                   collectionCellSelected: cellSelected)
     }
-
 }
 
 private extension CollectionViewContainerRow where Item == Plugin, CollectionViewCellType == PluginDirectoryCollectionViewCell {

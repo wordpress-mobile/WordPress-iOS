@@ -1,6 +1,7 @@
 import Foundation
 import CoreData
 
+@objc(Revision)
 public class Revision: NSManagedObject {
     @NSManaged public var siteId: NSNumber
     @NSManaged public var revisionId: NSNumber

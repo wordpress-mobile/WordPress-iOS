@@ -19,7 +19,6 @@ public enum FeatureFlag: Int, CaseIterable {
     case compliancePopover
     case googleDomainsCard
     case voiceToContent
-    case allowApplicationPasswords
     case selfHostedSiteUserManagement
     case readerGutenbergCommentComposer
     case pluginManagementOverhaul
@@ -28,6 +27,9 @@ public enum FeatureFlag: Int, CaseIterable {
     case newSupport
     case nativeBlockInserter
     case statsAds
+    case customPostTypes
+    case cptPostsAndPages
+    case socialSharingV2
 
     /// Returns a boolean indicating if the feature is enabled.
     ///
@@ -68,14 +70,12 @@ public enum FeatureFlag: Int, CaseIterable {
             return false
         case .voiceToContent:
             return app == .jetpack && BuildConfiguration.current.isInternal
-        case .allowApplicationPasswords:
-            return false
         case .selfHostedSiteUserManagement:
-            return false
+            return true
         case .readerGutenbergCommentComposer:
             return false
         case .pluginManagementOverhaul:
-            return false
+            return true
         case .newStats:
             return false
         case .intelligence:
@@ -89,11 +89,17 @@ public enum FeatureFlag: Int, CaseIterable {
             return true
         case .statsAds:
             return BuildConfiguration.current == .debug
+        case .customPostTypes:
+            return BuildConfiguration.current == .debug
+        case .cptPostsAndPages:
+            return BuildConfiguration.current == .debug
+        case .socialSharingV2:
+            return BuildConfiguration.current == .debug
         }
     }
 
     var disabled: Bool {
-        return enabled == false
+        enabled == false
     }
 }
 
@@ -103,14 +109,14 @@ public enum FeatureFlag: Int, CaseIterable {
 public class Feature: NSObject {
     /// Returns a boolean indicating if the feature is enabled
     @objc public static func enabled(_ feature: FeatureFlag) -> Bool {
-        return feature.enabled
+        feature.enabled
     }
 }
 
 extension FeatureFlag {
     /// Descriptions used to display the feature flag override menu in debug builds
     public var description: String {
-        return switch self {
+        switch self {
         case .signUp: "Sign Up"
         case .domainRegistration: "Domain Registration"
         case .selfHostedSites: "Self-Hosted Sites"
@@ -124,7 +130,6 @@ extension FeatureFlag {
         case .compliancePopover: "Compliance Popover"
         case .googleDomainsCard: "Google Domains Promotional Card"
         case .voiceToContent: "Voice to Content"
-        case .allowApplicationPasswords: "Allow creating Application Passwords"
         case .selfHostedSiteUserManagement: "Self-hosted Site User Management"
         case .pluginManagementOverhaul: "Plugin Management Overhaul"
         case .readerGutenbergCommentComposer: "Gutenberg Comment Composer"
@@ -133,6 +138,9 @@ extension FeatureFlag {
         case .newSupport: "New Support"
         case .nativeBlockInserter: "Native Block Inserter"
         case .statsAds: "Stats Ads Tab"
+        case .customPostTypes: "Custom Post Types"
+        case .cptPostsAndPages: "Custom Post Types: Posts and Pages"
+        case .socialSharingV2: "Social Sharing v2"
         }
     }
 }
@@ -140,19 +148,11 @@ extension FeatureFlag {
 extension FeatureFlag: OverridableFlag {
 
     var originalValue: Bool {
-        return enabled
+        enabled
     }
 
     var key: String {
-        let key: String
-        switch self {
-        case .allowApplicationPasswords:
-            // This feature toggle description is already shipped and used in the production.
-            // We want to keep using the same key, but change the description.
-            key = "Application Passwords for self-hosted sites"
-        default:
-            key = String(describing: self)
-        }
+        let key = String(describing: self)
         return "ff-override-\(key)"
     }
 }
@@ -164,6 +164,6 @@ extension FeatureFlag: RolloutConfigurableFlag {
     /// If a percentage rollout isn't applicable for the flag, return nil.
     ///
     var rolloutPercentage: Double? {
-        return nil
+        nil
     }
 }

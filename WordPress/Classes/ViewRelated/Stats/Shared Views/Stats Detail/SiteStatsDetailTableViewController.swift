@@ -127,7 +127,6 @@ class SiteStatsDetailTableViewController: UITableViewController, StoryboardLoada
 
         return UITableView.automaticDimension
     }
-
 }
 
 extension SiteStatsDetailTableViewController: StatsForegroundObservable {
@@ -260,7 +259,6 @@ private extension SiteStatsDetailTableViewController {
 
         initViewModel()
     }
-
 }
 
 // MARK: - SiteStatsDetailsDelegate Methods
@@ -273,7 +271,7 @@ extension SiteStatsDetailTableViewController: SiteStatsDetailsDelegate {
 
     func displayWebViewWithURL(_ url: URL) {
         let webViewController = WebViewControllerFactory.controllerAuthenticatedWithDefaultAccount(url: url, source: "site_stats_detail")
-        let navController = UINavigationController.init(rootViewController: webViewController)
+        let navController = UINavigationController(rootViewController: webViewController)
         present(navController, animated: true)
     }
 
@@ -375,5 +373,4 @@ extension SiteStatsDetailTableViewController: SiteStatsTableHeaderDelegate {
         viewModel?.updateSelectedDate(newDate)
         refreshTableView()
     }
-
 }

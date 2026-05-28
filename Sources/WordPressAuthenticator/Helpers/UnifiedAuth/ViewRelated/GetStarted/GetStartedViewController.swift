@@ -267,7 +267,6 @@ extension GetStartedViewController: UITableViewDataSource {
         configure(cell, for: row, at: indexPath)
         return cell
     }
-
 }
 
 // MARK: - Private methods
@@ -597,7 +596,7 @@ private extension GetStartedViewController {
             self.sendEmail()
         } else if errorCode == "email_login_not_allowed" {
                 // If we get this error, we know we have a WordPress.com user but their
-                // email address is flagged as suspicious.  They need to login via their
+                // email address is flagged as suspicious. They need to login via their
                 // username instead.
                 self.showSelfHostedWithError(error)
         } else {
@@ -636,7 +635,6 @@ private extension GetStartedViewController {
                                   success: { [weak self] in
                                     self?.didRequestSignupLink()
                                     self?.configureSubmitButton(animating: false)
-
             }, failure: { [weak self] (error: Error) in
                 WPLogError("Request for signup link email failed.")
 
@@ -680,7 +678,6 @@ private extension GetStartedViewController {
                                           success: { [weak self] in
                                             self?.didRequestAuthenticationLink()
                                             self?.configureViewLoading(false)
-
             }, failure: { [weak self] (error: Error) in
                 guard let self else {
                     return
@@ -932,7 +929,6 @@ extension GetStartedViewController: AppleAuthenticatorDelegate {
         displayErrorAlert(message, sourceTag: .loginApple)
         tracker.set(flow: .wpCom)
     }
-
 }
 
 // MARK: - LoginFacadeDelegate
@@ -945,7 +941,6 @@ extension GetStartedViewController {
         configureViewLoading(false)
         socialNeedsMultifactorCode(forUserID: userID, andNonceInfo: nonceInfo)
     }
-
 }
 
 // MARK: - UITextFieldDelegate
@@ -962,7 +957,6 @@ extension GetStartedViewController: UITextFieldDelegate {
         }
         return true
     }
-
 }
 
 // MARK: - Keyboard Notifications

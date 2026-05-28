@@ -17,7 +17,7 @@ class MediaThumbnailExporterTests: XCTestCase {
         let exporter = MediaThumbnailExporter()
         exporter.options.preferredSize = CGSize(width: 200, height: 200)
         exporter.exportThumbnail(forFile: url,
-                                 onCompletion: { (identifier, export) in
+                                 onCompletion: { identifier, export in
                                     self.validateThumbnailExport(withExporter: exporter,
                                                                  identifier: identifier,
                                                                  export: export)
@@ -25,7 +25,7 @@ class MediaThumbnailExporterTests: XCTestCase {
                                                                                 withExpectedSize: exporter.options.preferredMaximumSizeAtScale!)
                                     MediaExporterTests.cleanUpExportedMedia(atURL: export.url)
                                     expect.fulfill()
-        }) { (error) in
+        }) { error in
             XCTFail("Error: an error occurred testing a thumbnail export: \(error.toNSError())")
             expect.fulfill()
         }
@@ -42,7 +42,7 @@ class MediaThumbnailExporterTests: XCTestCase {
         let exporter = MediaThumbnailExporter()
         exporter.options.preferredSize = CGSize(width: 200, height: 200)
         exporter.exportThumbnail(forFile: url,
-                                 onCompletion: { (identifier, export) in
+                                 onCompletion: { identifier, export in
                                     self.validateThumbnailExport(withExporter: exporter,
                                                                  identifier: identifier,
                                                                  export: export)
@@ -50,7 +50,7 @@ class MediaThumbnailExporterTests: XCTestCase {
                                                                                 withExpectedSize: exporter.options.preferredMaximumSizeAtScale!)
                                     MediaExporterTests.cleanUpExportedMedia(atURL: export.url)
                                     expect.fulfill()
-        }) { (error) in
+        }) { error in
             XCTFail("Error: an error occurred testing a video thumbnail export: \(error.toNSError())")
             expect.fulfill()
         }

@@ -107,7 +107,6 @@ public struct PluginDirectoryFeedEndpoint {
             parameters["request[browse]"] = "new"
         case .search(let term):
             parameters["request[search]"] = term
-
         }
 
         return try HTTPRequestBuilder(url: PluginDirectoryRemoteConstants.feedEndpoint)

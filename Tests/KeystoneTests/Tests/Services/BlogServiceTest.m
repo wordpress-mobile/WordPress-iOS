@@ -1,9 +1,9 @@
 #import <XCTest/XCTest.h>
 #import "AccountService.h"
 #import "BlogService.h"
-#import "Blog.h"
-#import "WPAccount.h"
 #import "WordPressTest-Swift.h"
+
+@import WordPressData;
 
 @import OCMock;
 

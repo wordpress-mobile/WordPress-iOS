@@ -311,7 +311,6 @@ private extension JetpackBrandingMenuCardCell {
             return 0
         }
     }
-
 }
 
 private extension JetpackBrandingMenuCardCell {

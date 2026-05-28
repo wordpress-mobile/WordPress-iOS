@@ -152,7 +152,7 @@ class GutenbergMediaInserterHelper: NSObject {
     }
 
     private func registerMediaObserver() {
-        mediaObserverReceipt = mediaCoordinator.addObserver({ [weak self](media, state) in
+        mediaObserverReceipt = mediaCoordinator.addObserver({ [weak self] media, state in
             self?.mediaObserver(media: media, state: state)
             }, forMediaFor: post)
     }
@@ -189,7 +189,7 @@ class GutenbergMediaInserterHelper: NSObject {
             case .video:
                 // Fetch metadata when is a VideoPress video
                 if media.videopressGUID != nil {
-                    EditorMediaUtility.fetchVideoPressMetadata(for: media, in: post) { [weak self] (result) in
+                    EditorMediaUtility.fetchVideoPressMetadata(for: media, in: post) { [weak self] result in
                         guard let strongSelf = self else {
                             return
                         }

@@ -25,7 +25,7 @@ class MediaCacheSettingsViewController: UITableViewController {
         ImmuTable.registerRows([
             TextRow.self,
             BrandedNavigationRow.self
-            ], tableView: self.tableView)
+        ], tableView: self.tableView)
 
         reloadViewModel()
 
@@ -53,7 +53,7 @@ class MediaCacheSettingsViewController: UITableViewController {
         let mediaClearCacheRow = BrandedNavigationRow(
             title: NSLocalizedString("Clear Device Media Cache",
                                      comment: "Label for button that clears all media cache."),
-            action: { [weak self] row in
+            action: { [weak self] _ in
                 self?.clearMediaCache()
             },
             accessibilityIdentifier: "mediaClearCacheButton")
@@ -110,7 +110,7 @@ class MediaCacheSettingsViewController: UITableViewController {
 
     fileprivate func updateMediaCacheSize() {
         setMediaCacheRowDescription(status: .calculatingSize)
-        MediaFileManager.calculateSizeOfMediaDirectories { [weak self] (allocatedSize) in
+        MediaFileManager.calculateSizeOfMediaDirectories { [weak self] allocatedSize in
             self?.setMediaCacheRowDescription(allocatedSize: allocatedSize)
         }
     }
@@ -121,7 +121,7 @@ class MediaCacheSettingsViewController: UITableViewController {
         setMediaCacheRowDescription(status: .clearingCache)
         MediaFileManager.clearAllMediaCacheFiles(onCompletion: { [weak self] in
             self?.updateMediaCacheSize()
-            }, onError: { [weak self] (error) in
+            }, onError: { [weak self] _ in
                 self?.updateMediaCacheSize()
         })
     }

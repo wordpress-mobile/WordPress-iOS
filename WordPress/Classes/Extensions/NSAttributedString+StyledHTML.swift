@@ -62,7 +62,7 @@ extension NSAttributedString {
             return style + " }"
         }
 
-        let joinedStyles = styles?.joined(separator: "") ?? ""
+        let joinedStyles = styles?.joined() ?? ""
         return "<style>" + joinedStyles + "</style>"
     }
 

@@ -1,6 +1,6 @@
 import WordPressData
 
-/// Small override of RequestAuthenticator to be able to authenticate with writting rights on Atomic sites.
+/// Small override of RequestAuthenticator to be able to authenticate with writing rights on Atomic sites.
 /// Needed to load the gutenberg web editor on a web view on Atomic public and private sites.
 class GutenbergRequestAuthenticator: RequestAuthenticator {
     convenience init?(account: WPAccount, blog: Blog? = nil) {

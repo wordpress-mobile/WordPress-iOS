@@ -7,7 +7,7 @@
 
 @import WordPressShared;
 
-NSUInteger const WPTopLevelHierarchicalCommentsPerPage = 20;
+NSUInteger const WPTopLevelHierarchicalCommentsPerPage = 40;
 NSInteger const  WPNumberOfCommentsToSync = 100;
 static NSTimeInterval const CommentsRefreshTimeoutInSeconds = 60 * 5; // 5 minutes
 
@@ -528,8 +528,28 @@ static NSTimeInterval const CommentsRefreshTimeoutInSeconds = 60 * 5; // 5 minut
     id<CommentServiceRemote> remote = [self remoteForBlog:comment.blog];
 
     // If the Comment is not permanently deleted, don't remove it from the local cache as it can still be displayed.
+    // Optimistically update the status so the comment is immediately removed from filtered views.
     if (!comment.deleteWillBePermanent) {
-        [remote trashComment:remoteComment success:success failure:failure];
+        NSString *prevStatus = comment.status;
+        NSString *trashStatus = [Comment descriptionFor:CommentStatusTypeUnapproved];
+
+        [self.coreDataStack performAndSaveUsingBlock:^(NSManagedObjectContext *context) {
+            Comment *commentInContext = [context existingObjectWithID:comment.objectID error:nil];
+            commentInContext.status = trashStatus;
+        }];
+        comment.status = trashStatus;
+
+        [remote trashComment:remoteComment success:success failure:^(NSError *error) {
+            // Revert status on failure.
+            [self.coreDataStack performAndSaveUsingBlock:^(NSManagedObjectContext *context) {
+                Comment *commentInContext = [context existingObjectWithID:comment.objectID error:nil];
+                commentInContext.status = prevStatus;
+            } completion:^{
+                if (failure) {
+                    failure(error);
+                }
+            } onQueue:dispatch_get_main_queue()];
+        }];
         return;
     }
 
@@ -1104,7 +1124,7 @@ static NSTimeInterval const CommentsRefreshTimeoutInSeconds = 60 * 5; // 5 minut
         return nil;
     }
 
-    // (Insert a new comment into core data. Check for its existance first for paranoia sake.
+    // (Insert a new comment into core data. Check for its existence first for paranoia sake.
     // In theory a sync could include a newly created comment before the request that created it returned.
     Comment *comment = [NSEntityDescription insertNewObjectForEntityForName:NSStringFromClass([Comment class]) inManagedObjectContext:context];
 
@@ -1181,10 +1201,6 @@ static NSTimeInterval const CommentsRefreshTimeoutInSeconds = 60 * 5; // 5 minut
 - (BOOL)mergeHierarchicalComments:(NSArray *)comments forPage:(NSUInteger)page forPost:(ReaderPost *)post
 {
     NSParameterAssert(post.managedObjectContext != nil);
-
-    if (![comments count]) {
-        return NO;
-    }
 
     NSMutableSet<NSNumber *> *visibleCommentIds = [NSMutableSet new];
     NSMutableArray *ancestors = [NSMutableArray array];

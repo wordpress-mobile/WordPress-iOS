@@ -7,7 +7,7 @@ import Foundation
 /// from App Extensions and Widgets, in order to reference strings whose localization live in the app bundle's `.strings` file
 /// (rather than the AppExtension's own bundle).
 ///
-/// In order to avoid duplicating our strings accross targets, and make our localization process & tooling easier, we keep all
+/// In order to avoid duplicating our strings across targets, and make our localization process & tooling easier, we keep all
 /// localized `.strings` in the app's bundle (and don't have a `.strings` file in the App Extension targets themselves);
 /// then we make those App Extensions & Widgets reference the strings from the `Localizable.strings` files
 /// hosted in the app bundle itself – which is when this helper method is helpful.

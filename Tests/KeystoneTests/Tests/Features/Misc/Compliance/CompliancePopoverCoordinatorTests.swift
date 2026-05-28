@@ -70,7 +70,6 @@ final class CompliancePopoverCoordinatorTests: XCTestCase {
             isFeatureFlagEnabled: isFeatureFlagEnabled
         )
     }
-
 }
 
 // MARK: - Mocks

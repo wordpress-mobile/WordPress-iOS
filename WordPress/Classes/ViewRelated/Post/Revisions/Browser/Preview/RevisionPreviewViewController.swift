@@ -111,7 +111,7 @@ private extension RevisionPreviewViewController {
             textView.trailingAnchor.constraint(equalTo: guide.trailingAnchor),
             textView.topAnchor.constraint(equalTo: view.topAnchor),
             textView.bottomAnchor.constraint(equalTo: view.bottomAnchor)
-            ])
+        ])
     }
 
     private func updateTitleHeight() {

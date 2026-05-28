@@ -18,7 +18,7 @@ class GutenbergAudioUploadProcessor: Processor {
         self.remoteURLString = remoteURLString
     }
 
-    lazy var fileHtmlProcessor = HTMLProcessor(for: "audio", replacer: { (audio) in
+    lazy var fileHtmlProcessor = HTMLProcessor(for: "audio", replacer: { audio in
         var attributes = audio.attributes
 
         attributes.set(.string(self.remoteURLString), forKey: AudioBlockKeys.src)

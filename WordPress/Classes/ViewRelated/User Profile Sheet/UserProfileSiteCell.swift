@@ -48,5 +48,4 @@ private extension UserProfileSiteCell {
 
         siteIconImageView.downloadImage(from: iconURL, placeholderImage: .siteIconPlaceholderImage)
     }
-
 }

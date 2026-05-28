@@ -423,7 +423,7 @@ public protocol ThemePresenter: AnyObject {
                     self?.collectionView?.collectionViewLayout.invalidateLayout()
                 }
             },
-            failure: { (error) in
+            failure: { error in
                 DDLogError("Error updating active theme: \(String(describing: error?.localizedDescription))")
         })
     }
@@ -460,13 +460,13 @@ public protocol ThemePresenter: AnyObject {
             page: themesSyncingPage,
             search: search,
             sync: page == 1,
-            success: {[weak self](themes: [Theme]?, hasMore: Bool, themeCount: NSInteger) in
+            success: {[weak self](_: [Theme]?, hasMore: Bool, themeCount: NSInteger) in
                 if let success {
                     success(hasMore)
                 }
                 self?.totalThemeCount = themeCount
             },
-            failure: { (error) in
+            failure: { error in
                 DDLogError("Error syncing themes: \(String(describing: error?.localizedDescription))")
                 if let failure,
                     let error {
@@ -478,13 +478,13 @@ public protocol ThemePresenter: AnyObject {
     fileprivate func syncCustomThemes(success: ((_ hasMore: Bool) -> Void)?, failure: ((_ error: NSError) -> Void)?) {
         _ = themeService.getCustomThemes(for: blog,
             sync: true,
-            success: {[weak self](themes: [Theme]?, hasMore: Bool, themeCount: NSInteger) in
+            success: {[weak self](_: [Theme]?, hasMore: Bool, themeCount: NSInteger) in
                 if let success {
                     success(hasMore)
                 }
                 self?.totalCustomThemeCount = themeCount
             },
-            failure: { (error) in
+            failure: { error in
                 DDLogError("Error syncing themes: \(String(describing: error?.localizedDescription))")
                 if let failure,
                     let error {
@@ -498,7 +498,7 @@ public protocol ThemePresenter: AnyObject {
             return nil
         }
 
-        for theme in blog.themes as! Set<Theme> {
+        for theme in blog.themes ?? [] {
             if theme.themeId == themeId {
                 return theme
             }
@@ -861,13 +861,13 @@ public protocol ThemePresenter: AnyObject {
                     preferredStyle: .alert)
                 alertController.addActionWithTitle(manageTitle,
                     style: .default,
-                    handler: { [weak self] (action: UIAlertAction) in
+                    handler: { [weak self] (_: UIAlertAction) in
                         _ = self?.navigationController?.popViewController(animated: true)
                     })
             alertController.addDefaultActionWithTitle(SharedStrings.Button.ok, handler: nil)
                 alertController.presentFromRootViewController()
             },
-            failure: { [weak self] (error) in
+            failure: { [weak self] error in
                 DDLogError("Error activating theme \(String(describing: theme.themeId)): \(String(describing: error?.localizedDescription))")
 
                 let errorTitle = NSLocalizedString("Activation Error", comment: "Title of alert when theme activation fails")

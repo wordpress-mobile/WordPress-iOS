@@ -110,7 +110,7 @@ class FilterableCategoriesViewController: CollapsableHeaderViewController {
     }
 
     private func calculateContentHeight() -> CGFloat {
-        guard !isLoading, visibleSections.count > 0 else {
+        guard !isLoading, !visibleSections.isEmpty else {
             return ghostThumbnailSize.height + CategorySectionTableViewCell.cellVerticalPadding
         }
 
@@ -204,7 +204,7 @@ extension FilterableCategoriesViewController: CategorySectionTableViewCellDelega
     private func deselectCurrentLayout() {
         guard let previousSelection = selectedItem else { return }
 
-        tableView.indexPathsForVisibleRows?.forEach { (indexPath) in
+        tableView.indexPathsForVisibleRows?.forEach { indexPath in
             if containsSelectedItem(previousSelection, atIndexPath: indexPath) {
                 (tableView.cellForRow(at: indexPath) as? CategorySectionTableViewCell)?.deselectItems()
             }
@@ -258,7 +258,7 @@ extension FilterableCategoriesViewController: CollapsableHeaderFilterBarDelegate
 
     func didDeselectFilter(withIndex index: IndexPath, withSelectedIndexes selectedIndexes: [IndexPath]) {
         trackFiltersChangedEvent(isSelectionEvent: false, changedIndex: index, selectedIndexes: selectedIndexes)
-        guard selectedIndexes.count == 0 else {
+        guard selectedIndexes.isEmpty else {
             removeFilterRow(withIndex: index)
             return
         }

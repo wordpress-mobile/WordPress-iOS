@@ -27,6 +27,7 @@ DerivedData
 
 # Claude
 .claude/settings.local.json
+.claude/worktrees/
 
 # Windows
 Thumbs.db
@@ -133,3 +134,5 @@ Pods/
 WordPress/Frameworks/*.xcframework
 WordPress/Frameworks/*.tar.gz
 WordPress/Frameworks/react-native-bundle-source-map
+
+Tests/AgentTests/results

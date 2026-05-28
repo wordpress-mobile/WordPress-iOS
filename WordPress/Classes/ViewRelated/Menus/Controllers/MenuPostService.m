@@ -1,4 +1,3 @@
-#import "Blog.h"
 #import "MenuPostService.h"
 #import "MenuPostServiceOptions.h"
 #import "PostHelper.h"
@@ -19,7 +18,8 @@ const NSUInteger PostServiceDefaultNumberToSync = 40;
 
 - (instancetype)initWithManagedObjectContext:(NSManagedObjectContext *)context
                     postServiceRemoteFactory:(PostServiceRemoteFactory *)postServiceRemoteFactory {
-    if (self = [super initWithManagedObjectContext:context]) {
+    if (self = [super init]) {
+        _managedObjectContext = context;
         self.postServiceRemoteFactory = postServiceRemoteFactory;
     }
     return self;

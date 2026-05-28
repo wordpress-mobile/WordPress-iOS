@@ -132,7 +132,6 @@ private final class PostChartDataTransformer {
     static func primaryHighlightColor(forType type: PostChartType, withCount count: Int) -> UIColor? {
         return count > 0 ? type.highlightColor : nil
     }
-
 }
 
 // MARK: - PostChartStyling

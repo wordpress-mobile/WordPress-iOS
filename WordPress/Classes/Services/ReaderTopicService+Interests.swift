@@ -17,9 +17,9 @@ extension ReaderTopicService: ReaderInterestsService {
                                failure: @escaping (Error) -> Void) {
         let service = ReaderTopicServiceRemote(wordPressComRestApi: apiRequest())
 
-        service.fetchInterests({ (interests) in
+        service.fetchInterests({ interests in
             success(interests)
-        }) { (error) in
+        }) { error in
             failure(error)
         }
     }

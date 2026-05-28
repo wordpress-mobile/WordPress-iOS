@@ -33,12 +33,11 @@ import Foundation
 
         preferredBlog = {
             if let preferredBlogDict = dictionary["preferred_blog"] as? [String: Any] {
-                return RemoteLikeUserPreferredBlog.init(dictionary: preferredBlogDict)
+                return RemoteLikeUserPreferredBlog(dictionary: preferredBlogDict)
             }
             return nil
         }()
     }
-
 }
 
 @objc public class RemoteLikeUserPreferredBlog: NSObject {

@@ -36,5 +36,4 @@ class JetpackRestoreFailedViewController: BaseRestoreCompleteViewController {
     override func primaryButtonTapped() {
         self.dismiss(animated: true)
     }
-
 }

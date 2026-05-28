@@ -1,5 +1,5 @@
 {
-  "originHash" : "ab0556fecab7b57b8b994011f8d8349c6aa75d7a0e65d4c94bbc33045ebece90",
+  "originHash" : "cce232941d1d80cb55c6a367fa6391b388bf73de8890b3d50efaf143f038d8b9",
   "pins" : [
     {
       "identity" : "alamofire",
@@ -15,8 +15,8 @@
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/Automattic/Automattic-Tracks-iOS",
       "state" : {
-        "revision" : "048f3c469f4c82d636da380a5766a8b1c5982238",
-        "version" : "3.5.4"
+        "revision" : "7442def327dbbc9158c0d780382843e0b7a2e6c9",
+        "version" : "4.1.0"
       }
     },
     {
@@ -82,24 +82,6 @@
       }
     },
     {
-      "identity" : "cwlcatchexception",
-      "kind" : "remoteSourceControl",
-      "location" : "https://github.com/mattgallagher/CwlCatchException.git",
-      "state" : {
-        "revision" : "07b2ba21d361c223e25e3c1e924288742923f08c",
-        "version" : "2.2.1"
-      }
-    },
-    {
-      "identity" : "cwlpreconditiontesting",
-      "kind" : "remoteSourceControl",
-      "location" : "https://github.com/mattgallagher/CwlPreconditionTesting.git",
-      "state" : {
-        "revision" : "0139c665ebb45e6a9fbdb68aabfd7c39f3fe0071",
-        "version" : "2.2.2"
-      }
-    },
-    {
       "identity" : "down",
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/johnxnguyen/Down",
@@ -149,8 +131,8 @@
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/wordpress-mobile/GutenbergKit",
       "state" : {
-        "revision" : "58f3d0cafa3e2d35fabf3609a9946b71fa6c70a7",
-        "version" : "0.13.1"
+        "revision" : "f390848952e98d241075c4e65f1e0f6791a695fa",
+        "version" : "0.15.0"
       }
     },
     {
@@ -187,15 +169,6 @@
       "state" : {
         "revision" : "f86020a681e28a7bfae9e2445eb027d37dc5d5f5",
         "version" : "6.0.1"
-      }
-    },
-    {
-      "identity" : "nimble",
-      "kind" : "remoteSourceControl",
-      "location" : "https://github.com/Quick/Nimble",
-      "state" : {
-        "revision" : "1f3bde57bde12f5e7b07909848c071e9b73d6edc",
-        "version" : "10.0.0"
       }
     },
     {
@@ -242,15 +215,6 @@
       }
     },
     {
-      "identity" : "reachability",
-      "kind" : "remoteSourceControl",
-      "location" : "https://github.com/Automattic/Reachability",
-      "state" : {
-        "branch" : "framework-support-via-spm",
-        "revision" : "5552d6a2ceeb40ad6aa1a288ea7bbd544fb68d6f"
-      }
-    },
-    {
       "identity" : "screenobject",
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/Automattic/ScreenObject",
@@ -273,8 +237,8 @@
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/getsentry/sentry-cocoa",
       "state" : {
-        "revision" : "f45e9c62d7a4d9258ac3cf35a3acf9dbab4481d1",
-        "version" : "8.43.0"
+        "revision" : "f1eefffd88cd6dfe5751159a3b32ff3c8e5b3b32",
+        "version" : "9.4.0"
       }
     },
     {
@@ -359,15 +323,6 @@
       }
     },
     {
-      "identity" : "test-collector-swift",
-      "kind" : "remoteSourceControl",
-      "location" : "https://github.com/buildkite/test-collector-swift",
-      "state" : {
-        "revision" : "631a2400dbe876141a3ef8c7400885907fec7f89",
-        "version" : "0.4.1"
-      }
-    },
-    {
       "identity" : "tocropviewcontroller",
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/TimOliver/TOCropViewController",
@@ -390,8 +345,8 @@
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/Automattic/wordpress-rs",
       "state" : {
-        "branch" : "alpha-20260114",
-        "revision" : "4895b1bf67136eeeca5eb792418749c23ec5726d"
+        "revision" : "ace6a04026c9fcf111a695394debf8f5e7031ced",
+        "version" : "0.2.0"
       }
     },
     {

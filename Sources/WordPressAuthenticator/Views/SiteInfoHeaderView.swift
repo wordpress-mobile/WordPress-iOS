@@ -71,7 +71,7 @@ class SiteInfoHeaderView: UIView {
         }
     }
 
-    // MARK: - Overriden Methods
+    // MARK: - Overridden Methods
 
     override func awakeFromNib() {
         super.awakeFromNib()

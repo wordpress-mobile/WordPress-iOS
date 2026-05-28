@@ -28,7 +28,7 @@ struct GutenbergNetworkRequest {
     }
 
     func request(completion: @escaping CompletionHandler) {
-        if blog.isAccessibleThroughWPCom(), let dotComID = blog.dotComID {
+        if blog.isAccessibleThroughWPCom, let dotComID = blog.dotComID {
             switch method {
             case .get:
                 dotComGetRequest(with: dotComID, completion: completion)
@@ -43,17 +43,17 @@ struct GutenbergNetworkRequest {
     // MARK: - dotCom
 
     private func dotComGetRequest(with dotComID: NSNumber, completion: @escaping CompletionHandler) {
-        blog.wordPressComRestApi?.GET(dotComPath(with: dotComID), parameters: nil, success: { (response, httpResponse) in
+        blog.wordPressComRestApi?.GET(dotComPath(with: dotComID), parameters: nil, success: { response, _ in
             completion(.success(response))
-        }, failure: { (error, httpResponse) in
+        }, failure: { error, httpResponse in
             completion(.failure(error.nsError(with: httpResponse)))
         })
     }
 
     private func dotComPostRequest(with dotComID: NSNumber, data: [String: AnyObject]?, completion: @escaping CompletionHandler) {
-        blog.wordPressComRestApi?.POST(dotComPath(with: dotComID), parameters: data, success: { (response, httpResponse) in
+        blog.wordPressComRestApi?.POST(dotComPath(with: dotComID), parameters: data, success: { response, _ in
             completion(.success(response))
-        }, failure: { (error, httpResponse) in
+        }, failure: { error, httpResponse in
             completion(.failure(error.nsError(with: httpResponse)))
         })
     }

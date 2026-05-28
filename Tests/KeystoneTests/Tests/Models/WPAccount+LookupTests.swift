@@ -59,7 +59,7 @@ class WPAccountLookupTests: CoreDataTestCase {
 
     func testLookupAccountByUsernameReturnsNilIfNotFound() throws {
         makeAccount()
-        try XCTAssertNil(WPAccount.lookup(withUsername: "", in: contextManager.mainContext))
+        try XCTAssertNil(WPAccount.lookup(withUsername: "invalid", in: contextManager.mainContext))
     }
 
     func testLookupAccountByUsernameReturnsAccountForUsername() throws {

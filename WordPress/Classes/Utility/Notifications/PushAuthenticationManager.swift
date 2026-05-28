@@ -153,7 +153,7 @@ private extension PushAuthenticationManager {
         alertControllerProxy.show(withTitle: title,
                                   message: message,
                                   cancelButtonTitle: cancelButtonTitle,
-                                  otherButtonTitles: [acceptButtonTitle]) { (theAlertController, buttonIndex) in
+                                  otherButtonTitles: [acceptButtonTitle]) { theAlertController, buttonIndex in
             let approved = theAlertController?.actions[buttonIndex].style != .cancel
             completion(approved)
         }

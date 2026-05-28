@@ -4,6 +4,7 @@ import WordPressKit
 class MockWordPressComRestApi: WordPressComRestApi {
     var getMethodCalled = false
     var postMethodCalled = false
+    var onPost: (() -> Void)?
     var URLStringPassedIn: String?
     var parametersPassedIn: AnyObject?
     var successBlockPassedIn: ((AnyObject, HTTPURLResponse?) -> Void)?
@@ -25,6 +26,7 @@ class MockWordPressComRestApi: WordPressComRestApi {
         parametersPassedIn = parameters as AnyObject?
         successBlockPassedIn = success
         failureBlockPassedIn = failure
+        onPost?()
 
         return Progress()
     }

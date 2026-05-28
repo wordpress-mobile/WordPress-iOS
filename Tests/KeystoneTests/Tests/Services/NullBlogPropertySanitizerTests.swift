@@ -1,6 +1,5 @@
 import WordPressShared
 import XCTest
-import Nimble
 
 @testable import WordPress
 @testable import WordPressData
@@ -30,7 +29,7 @@ class NullBlogPropertySanitizerTests: CoreDataTestCase {
 
         nullBlogPropertySanitizer.sanitize()
 
-        expect(self.keyValueDatabase[NullBlogPropertySanitizer.lastSanitizationVersionNumber]).to(equal(currentBuildVersion))
+        XCTAssertEqual(self.keyValueDatabase[NullBlogPropertySanitizer.lastSanitizationVersionNumber], currentBuildVersion)
     }
 
     func testDoesntChangeVersionWhenSanitizationIsNotNeeded() {
@@ -42,7 +41,7 @@ class NullBlogPropertySanitizerTests: CoreDataTestCase {
 
         // Then
         // The first invocation is in the _Given_ paragraph.
-        expect(self.keyValueDatabase.setValueForKeyInvocationCount).to(equal(1))
+        XCTAssertEqual(self.keyValueDatabase.setValueForKeyInvocationCount, 1)
     }
 }
 

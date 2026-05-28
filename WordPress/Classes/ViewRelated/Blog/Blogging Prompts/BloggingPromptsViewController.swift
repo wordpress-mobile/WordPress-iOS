@@ -117,10 +117,10 @@ private extension BloggingPromptsViewController {
 
         isLoading = true
 
-        bloggingPromptsService.fetchListPrompts(success: { [weak self] (prompts) in
+        bloggingPromptsService.fetchListPrompts(success: { [weak self] prompts in
             self?.isLoading = false
             self?.prompts = prompts.sorted(by: { $0.date.compare($1.date) == .orderedDescending })
-        }, failure: { [weak self] (error) in
+        }, failure: { [weak self] error in
             DDLogError("Failed fetching blogging prompts: \(String(describing: error))")
             self?.isLoading = false
             self?.showErrorView()
@@ -138,7 +138,6 @@ private extension BloggingPromptsViewController {
         static let emptyTitle = NSLocalizedString("No prompts yet", comment: "Title displayed when there are no blogging prompts to display.")
         static let imageName = "wp-illustration-empty-results"
     }
-
 }
 
 // MARK: - Table Methods
@@ -173,7 +172,6 @@ extension BloggingPromptsViewController: UITableViewDataSource, UITableViewDeleg
         editor.entryPoint = .bloggingPromptsListView
         present(editor, animated: true)
     }
-
 }
 
 // MARK: - Filter Tab Bar Support
@@ -212,7 +210,6 @@ private extension BloggingPromptsViewController {
         // - track selected filter changed
         // - refresh view for selected filter
     }
-
 }
 
 // MARK: - StoryboardLoadable

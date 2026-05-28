@@ -84,7 +84,7 @@ open class WordPressComRestApi: NSObject {
     public typealias FailureReponseBlock = (_ error: NSError, _ httpResponse: HTTPURLResponse?) -> Void
     public typealias APIResult<T> = WordPressAPIResult<HTTPAPIResponse<T>, WordPressComRestApiEndpointError>
 
-    @objc public static let apiBaseURL: URL = URL(string: "https://public-api.wordpress.com/")!
+    @objc public static let apiBaseURL = URL(string: "https://public-api.wordpress.com/")!
 
     @objc public static let defaultBackgroundSessionIdentifier = "org.wordpress.wpcomrestapi"
 
@@ -491,7 +491,6 @@ open class WordPressComRestApi: NSObject {
             session: uploadURLSession
         )
     }
-
 }
 
 // MARK: - Error processing
@@ -521,7 +520,7 @@ extension WordPressComRestApi {
         }
 
         var errorDictionary: AnyObject? = responseDictionary as AnyObject?
-        if let errorArray = responseDictionary["errors"] as? [AnyObject], errorArray.count > 0 {
+        if let errorArray = responseDictionary["errors"] as? [AnyObject], !errorArray.isEmpty {
             errorDictionary = errorArray.first
         }
         guard let errorEntry = errorDictionary as? [String: AnyObject],

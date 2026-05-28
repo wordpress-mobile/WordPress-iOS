@@ -3,6 +3,7 @@ import WordPressData
 import WordPressShared
 
 @objc public enum WPAnalyticsEvent: Int {
+    case screenShown
 
     case createSheetShown
     case createSheetActionTapped
@@ -329,6 +330,7 @@ import WordPressShared
 
     // Reader: Discover
     case readerDiscoverChannelSelected
+    case readerDiscoverTabShown
     case readerDiscoverEditInterestsTapped
 
     // App Settings
@@ -346,6 +348,7 @@ import WordPressShared
     case appSettingsClearSpotlightIndexTapped
     case appSettingsClearSiriSuggestionsTapped
     case appSettingsOpenDeviceSettingsTapped
+    case experimentalFeatureToggled
 
     // Notifications
     case notificationsPreviousTapped
@@ -632,6 +635,11 @@ import WordPressShared
     // Login Autodiscovery
     case applicationPasswordLogin
 
+    // Application Password Migration
+    case applicationPasswordMigrationPrompted
+    case applicationPasswordCreated
+    case applicationPasswordReauthPrompted
+
     case wpcomWebSignIn
 
     // MARK: - Jetpack Stats
@@ -684,6 +692,9 @@ import WordPressShared
     // Error Events
     case jetpackStatsErrorEncountered
 
+    // Feature Gate Events
+    case jetpackStatsFeatureGateExplorePlansTapped
+
     // Jetpack Connection Flow
     case jetpackConnectStarted
     case jetpackConnectLogin
@@ -707,6 +718,8 @@ import WordPressShared
     /// A String that represents the event
     var value: String {
         switch self {
+        case .screenShown:
+            return "screen_shown"
         case .createSheetShown:
             return "create_sheet_shown"
         case .createSheetActionTapped:
@@ -1279,6 +1292,8 @@ import WordPressShared
         // Reader: Discover
         case .readerDiscoverChannelSelected:
             return "reader_discover_channel_selected"
+        case .readerDiscoverTabShown:
+            return "reader_discover_tab_shown"
         case .readerDiscoverEditInterestsTapped:
             return "reader_discover_edit_interests_tapped"
 
@@ -1299,6 +1314,8 @@ import WordPressShared
             return "app_settings_max_image_size_changed"
         case .appSettingsImageQualityChanged:
             return "app_settings_image_quality_changed"
+        case .experimentalFeatureToggled:
+            return "experimental_feature_toggled"
 
         // Account Close
         case .accountCloseTapped:
@@ -1778,6 +1795,12 @@ import WordPressShared
         // Login Autodiscovery
         case .applicationPasswordLogin:
             return "application_password_login"
+        case .applicationPasswordMigrationPrompted:
+            return "application_password_migration_prompted"
+        case .applicationPasswordCreated:
+            return "application_password_created"
+        case .applicationPasswordReauthPrompted:
+            return "application_password_reauth_prompted"
 
         case .wpcomWebSignIn:
             return "wpcom_web_sign_in"
@@ -1863,6 +1886,10 @@ import WordPressShared
         // Error Events
         case .jetpackStatsErrorEncountered:
             return "jetpack_stats_error_encountered"
+
+        // Feature Gate Events
+        case .jetpackStatsFeatureGateExplorePlansTapped:
+            return "jetpack_stats_feature_gate_explore_plans_tapped"
 
         // Jetpack Connection Flow
         case .jetpackConnectStarted:
@@ -1969,7 +1996,7 @@ extension WPAnalytics {
         #endif
 
         var mergedProperties: [AnyHashable: Any] = event.defaultProperties ?? [:]
-        mergedProperties.merge(properties) { (_, new) in new }
+        mergedProperties.merge(properties) { _, new in new }
 
         WPAnalytics.trackString(event.value, withProperties: mergedProperties)
     }
@@ -1982,7 +2009,7 @@ extension WPAnalytics {
     static func track(_ event: WPAnalyticsEvent, properties: [AnyHashable: Any], blog: Blog) {
         var props = properties
         props[WPAppAnalyticsKeyBlogID] = blog.dotComID
-        props[WPAppAnalyticsKeySiteType] = blog.isWPForTeams() ? WPAppAnalyticsValueSiteTypeP2 : WPAppAnalyticsValueSiteTypeBlog
+        props[WPAppAnalyticsKeySiteType] = blog.isWPForTeams ? WPAppAnalyticsValueSiteTypeP2 : WPAppAnalyticsValueSiteTypeBlog
         WPAnalytics.track(event, properties: props)
     }
 
@@ -2093,7 +2120,7 @@ extension WPAnalytics {
 
         if let value {
             let additionalProperties: [AnyHashable: Any] = ["value": value]
-            properties.merge(additionalProperties) { (_, new) in new }
+            properties.merge(additionalProperties) { _, new in new }
         }
 
         WPAnalytics.track(.settingsDidChange, properties: properties)

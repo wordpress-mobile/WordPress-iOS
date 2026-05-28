@@ -20,7 +20,7 @@ extension WebKitAuthenticatable {
         }
 
         DispatchQueue.main.async {
-            authenticator.request(url: url, cookieJar: cookieJar) { (request) in
+            authenticator.request(url: url, cookieJar: cookieJar) { request in
                 completion(request)
             }
         }
@@ -94,7 +94,7 @@ class WebKitViewController: UIViewController, WebKitAuthenticatable {
     let linkBehavior: LinkBehavior
 
     private var reachabilityObserver: Any?
-    private var tapLocation = CGPoint(x: 0.0, y: 0.0)
+    private var tapLocation = CGPoint.zero
     private var widthConstraint: NSLayoutConstraint?
     private var stackViewBottomAnchor: NSLayoutConstraint?
     private var onClose: (() -> Void)?
@@ -198,7 +198,7 @@ class WebKitViewController: UIViewController, WebKitAuthenticatable {
         stackView.centerXAnchor.constraint(equalTo: view.centerXAnchor).isActive = true
         stackView.topAnchor.constraint(equalTo: safeArea.topAnchor).isActive = true
 
-        // this constraint saved as a varible so it can be deactivated when the toolbar is hidden, to prevent unintended pinning to the safe area
+        // this constraint saved as a variable so it can be deactivated when the toolbar is hidden, to prevent unintended pinning to the safe area
         let stackViewBottom = stackView.bottomAnchor.constraint(equalTo: safeArea.bottomAnchor)
         stackViewBottomAnchor = stackViewBottom
         NSLayoutConstraint.activate([stackViewBottom])
@@ -241,7 +241,7 @@ class WebKitViewController: UIViewController, WebKitAuthenticatable {
             return
         }
 
-        authenticatedRequest(for: url, on: webView) { [weak self] (request) in
+        authenticatedRequest(for: url, on: webView) { [weak self] request in
             self?.load(request: request)
         }
     }
@@ -400,7 +400,7 @@ class WebKitViewController: UIViewController, WebKitAuthenticatable {
         activityViewController.modalPresentationStyle = .popover
         activityViewController.popoverPresentationController?.barButtonItem = shareButton
 
-        activityViewController.completionWithItemsHandler = { (type, completed, _, _) in
+        activityViewController.completionWithItemsHandler = { type, completed, _, _ in
             if completed, let type = type?.rawValue {
                 WPActivityDefaults.trackActivityType(type)
             }
@@ -613,7 +613,7 @@ extension WebKitViewController: UIPopoverPresentationControllerDelegate {
 
     private func handleDocumentMenuPresentation(presented: UIPopoverPresentationController) {
           presented.sourceView = webView
-          presented.sourceRect = CGRect(origin: tapLocation, size: CGSize(width: 0, height: 0))
+          presented.sourceRect = CGRect(origin: tapLocation, size: CGSize.zero)
       }
 }
 

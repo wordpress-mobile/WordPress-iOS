@@ -1,6 +1,5 @@
 import XCTest
 @testable import WordPress
-import Nimble
 
 class PostListFilterTests: CoreDataTestCase {
     func testSortDescriptorForPublished() {

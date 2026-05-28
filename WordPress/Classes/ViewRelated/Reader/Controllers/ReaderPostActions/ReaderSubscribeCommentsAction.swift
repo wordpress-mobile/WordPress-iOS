@@ -15,7 +15,7 @@ final class ReaderSubscribeCommentsAction {
 
         followCommentsService.toggleSubscribed(post.isSubscribedComments, success: { subscribeSuccess in
             followCommentsService.toggleNotificationSettings(subscribing, success: {
-                ReaderHelpers.dispatchToggleSubscribeCommentMessage(subscribing: subscribing, success: subscribeSuccess) { actionSuccess in
+                ReaderHelpers.dispatchToggleSubscribeCommentMessage(subscribing: subscribing, success: subscribeSuccess) { _ in
                     self.disableNotificationSettings(followCommentsService: followCommentsService)
                     Self.trackNotificationUndo(post: post, sourceViewController: sourceViewController)
                 }

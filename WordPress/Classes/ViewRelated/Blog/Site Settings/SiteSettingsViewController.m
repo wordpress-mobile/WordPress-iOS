@@ -98,7 +98,7 @@ NS_ENUM(NSInteger, SiteSettingsJetpack) {
     self = [super initWithStyle:UITableViewStyleInsetGrouped];
     if (self) {
         _blog = blog;
-        _username = blog.usernameForSite;
+        _username = blog.effectiveUsername;
         _password = blog.password;
         [WPStyleGuide configureAutomaticHeightRowsFor:self.tableView];
     }
@@ -176,7 +176,7 @@ NS_ENUM(NSInteger, SiteSettingsJetpack) {
         [sections addObject:@(SiteSettingsSectionThemeStyles)];
     }
 
-    if ([self.blog supports:BlogFeatureWPComRESTAPI] && self.blog.isAdmin) {
+    if ([self.blog supports:BlogFeatureWpComRESTAPI] && self.blog.isAdmin) {
         [sections addObject:@(SiteSettingsSectionWriting)];
         [sections addObject:@(SiteSettingsSectionDiscussion)];
         if (self.blog.isQuotaAvailable) {
@@ -318,8 +318,8 @@ NS_ENUM(NSInteger, SiteSettingsJetpack) {
 {
     switch (row) {
         case SiteSettingsAccountUsername:
-            if (self.blog.usernameForSite) {
-                [self.usernameTextCell setTextValue:self.blog.usernameForSite];
+            if (self.blog.effectiveUsername) {
+                [self.usernameTextCell setTextValue:self.blog.effectiveUsername];
             } else {
                 [self.usernameTextCell setTextValue:NSLocalizedString(@"Enter username", @"(placeholder) Help enter WordPress username")];
             }
@@ -362,6 +362,11 @@ NS_ENUM(NSInteger, SiteSettingsJetpack) {
         _themeStylesSelectorCell.onChange = ^(BOOL value){
             [GutenbergSettings setThemeStylesEnabled:value forBlog:blog];
         };
+
+        // Default to greyed-out, only make the control interactive if theme styles are supported
+        _themeStylesSelectorCell.flipSwitch.enabled = false;
+        _themeStylesSelectorCell.textLabel.textColor = UIColor.lightGrayColor;
+        [self.themeStylesSelectorCell setOn:false];
     }
     return _themeStylesSelectorCell;
 }
@@ -529,7 +534,11 @@ NS_ENUM(NSInteger, SiteSettingsJetpack) {
 
 - (void)configureThemeStylesSelectorCell
 {
-    [self.themeStylesSelectorCell setOn:[GutenbergSettings isThemeStylesEnabledForBlog:self.blog]];
+    if ([GutenbergSettings isThemeStylesSupportedForBlog: self.blog]){
+        _themeStylesSelectorCell.flipSwitch.enabled = true;
+        _themeStylesSelectorCell.textLabel.textColor = UIColor.labelColor;
+        [self.themeStylesSelectorCell setOn:[GutenbergSettings isThemeStylesEnabledForBlog:self.blog]];
+    }
 }
 
 - (void)configureDefaultCategoryCell
@@ -1025,6 +1034,7 @@ NS_ENUM(NSInteger, SiteSettingsJetpack) {
         [weakSelf.refreshControl endRefreshing];
     }];
 
+    [self swiftRefreshSettings];
 }
 
 #pragma mark - Authentication methods
@@ -1145,7 +1155,7 @@ NS_ENUM(NSInteger, SiteSettingsJetpack) {
 
 - (BOOL)savingWritingDefaultsIsAvailable
 {
-    return [self.blog supports:BlogFeatureWPComRESTAPI] && self.blog.isAdmin;
+    return [self.blog supports:BlogFeatureWpComRESTAPI] && self.blog.isAdmin;
 }
 
 - (IBAction)dismiss
@@ -1224,3 +1234,4 @@ NS_ENUM(NSInteger, SiteSettingsJetpack) {
 }
 
 @end
+

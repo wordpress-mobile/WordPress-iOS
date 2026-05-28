@@ -78,7 +78,6 @@ extension MediaLibraryTestSupport {
 
         return .init(jsonObject: json, statusCode: 200, headers: nil)
     }
-
 }
 
 extension MediaLibraryTestSupport {
@@ -163,7 +162,6 @@ extension MediaLibraryTestSupport {
             }
         }
     }
-
 }
 
 private struct Media: Codable {

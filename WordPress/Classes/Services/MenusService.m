@@ -7,6 +7,14 @@
 
 @implementation MenusService
 
+- (instancetype)initWithManagedObjectContext:(NSManagedObjectContext *)context {
+    self = [super init];
+    if (self) {
+        _managedObjectContext = context;
+    }
+    return self;
+}
+
 #pragma mark - Menus availability
 
 - (BOOL)blogSupportsMenusCustomization:(Blog *)blog

@@ -40,7 +40,7 @@ class EditorMediaUtility {
 
     func fetchPosterImage(for sourceURL: URL, onSuccess: @escaping (UIImage) -> (), onFailure: @escaping () -> ()) {
         let thumbnailGenerator = MediaVideoExporter(url: sourceURL)
-        thumbnailGenerator.exportPreviewImageForVideo(atURL: sourceURL, imageOptions: nil, onCompletion: { (exportResult) in
+        thumbnailGenerator.exportPreviewImageForVideo(atURL: sourceURL, imageOptions: nil, onCompletion: { exportResult in
             guard let image = UIImage(contentsOfFile: exportResult.url.path) else {
                 onFailure()
                 return
@@ -48,7 +48,7 @@ class EditorMediaUtility {
             DispatchQueue.main.async {
                 onSuccess(image)
             }
-        }, onError: { (error) in
+        }, onError: { error in
             DDLogError("Unable to grab frame from video = \(sourceURL). Details: \(error.localizedDescription)")
             onFailure()
         })
@@ -97,7 +97,6 @@ class EditorMediaUtility {
                     success(image)
                 } catch {
                     failure(error)
-
                 }
             }
             return MediaUtilityTask { task.cancel() }
@@ -139,12 +138,12 @@ class EditorMediaUtility {
         let requestURL: URL
         if url.isFileURL {
             requestURL = url
-        } else if post.blog.isPrivateAtWPCom() && url.isHostedAtWPCom {
+        } else if post.blog.isHostedAtWPcom && post.blog.isPrivate && url.isHostedAtWPCom {
             // private wpcom image needs special handling.
             // the size that WPImageHelper expects is pixel size
             size.width = size.width * scale
             requestURL = WPImageURLHelper.imageURLWithSize(size, forImageURL: url)
-        } else if !post.blog.isHostedAtWPcom && post.blog.isBasicAuthCredentialStored() {
+        } else if !post.blog.isHostedAtWPcom && post.blog.isBasicAuthCredentialStored {
             size.width = size.width * scale
             requestURL = WPImageURLHelper.imageURLWithSize(size, forImageURL: url)
         } else {
@@ -195,7 +194,7 @@ class EditorMediaUtility {
         }
 
         let remote = try? MediaServiceRemoteFactory().remote(for: post.blog)
-        remote?.getMetadataFromVideoPressID(videoPressID, isSitePrivate: post.blog.isPrivate(), success: { metadata in
+        remote?.getMetadataFromVideoPressID(videoPressID, isSitePrivate: post.blog.isPrivate, success: { metadata in
             completion(.success(metadata!))
         }, failure: { error in
             DDLogError("Unable to find metadata for VideoPress video with ID = \(videoPressID). Details: \(error!.localizedDescription)")

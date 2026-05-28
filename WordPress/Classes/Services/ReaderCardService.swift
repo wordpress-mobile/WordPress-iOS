@@ -12,7 +12,6 @@ protocol ReaderCardServiceRemote {
                           count: Int?,
                           success: @escaping ([RemoteReaderCard], String?) -> Void,
                           failure: @escaping (Error) -> Void)
-
 }
 
 extension ReaderPostServiceRemote: ReaderCardServiceRemote { }
@@ -151,7 +150,7 @@ class ReaderCardService {
                 guard let objectData = object as? NSManagedObject else { continue }
                 context.delete(objectData)
             }
-        } catch let error {
+        } catch {
             print("Clean card error:", error)
         }
     }

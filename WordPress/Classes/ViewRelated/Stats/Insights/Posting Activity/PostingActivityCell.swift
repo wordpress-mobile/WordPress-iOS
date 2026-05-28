@@ -90,5 +90,4 @@ private extension PostingActivityCell {
         WPAppAnalytics.track(.statsViewMoreTappedPostingActivity)
         siteStatsInsightsDelegate?.showPostingActivityDetails?()
     }
-
 }

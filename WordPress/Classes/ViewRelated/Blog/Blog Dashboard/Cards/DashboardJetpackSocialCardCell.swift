@@ -167,7 +167,6 @@ class DashboardJetpackSocialCardCell: DashboardCollectionViewCell {
         case noConnections
         case noShares
     }
-
 }
 
 // MARK: - Private Functions
@@ -186,9 +185,9 @@ private extension DashboardJetpackSocialCardCell {
         let hiddenSites = (repository.dictionary(forKey: hideNoConnectionViewKey) as? [String: Bool]) ?? [:]
         let isNoConnectionViewHidden = hiddenSites[dotComID] ?? false
 
-        return blog.supportsPublicize()
-        && services.count > 0
-        && connections.count == 0
+        return blog.supports(.publicize)
+        && !services.isEmpty
+        && connections.isEmpty
         && !isNoConnectionViewHidden
     }
 
@@ -277,8 +276,8 @@ private extension DashboardJetpackSocialCardCell {
         let hiddenSites = (repository.dictionary(forKey: hideNoSharesViewKey) as? [String: Bool]) ?? [:]
         let isNoSharesViewHidden = hiddenSites[dotComID] ?? false
 
-        return blog.supportsPublicize()
-        && connections.filter { !$0.requiresUserAction() }.count > 0
+        return blog.supports(.publicize)
+        && connections.contains { !$0.requiresUserAction() }
         && !isNoSharesViewHidden
         && sharingLimit.remaining == 0
     }
@@ -394,7 +393,6 @@ private extension DashboardJetpackSocialCardCell {
             updateDisplayState(for: blog)
         }
     }
-
 }
 
 // MARK: - SharingViewControllerDelegate
@@ -404,5 +402,4 @@ extension DashboardJetpackSocialCardCell: SharingViewControllerDelegate {
     func didChangePublicizeServices() {
         dashboardViewController?.reloadCardsLocally()
     }
-
 }

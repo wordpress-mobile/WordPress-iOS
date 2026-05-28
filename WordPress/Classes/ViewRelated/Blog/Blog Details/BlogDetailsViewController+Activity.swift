@@ -65,7 +65,7 @@ extension BlogDetailsViewController: SearchableActivityConvertable {
     }
 
     fileprivate var displayURL: String? {
-        guard let displayURL = blog.displayURL as String?, displayURL.isEmpty == false else {
+        guard let displayURL = blog.displayURL, displayURL.isEmpty == false else {
             return nil
         }
         return displayURL

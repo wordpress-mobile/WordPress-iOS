@@ -27,7 +27,7 @@ const NSInteger ThemeOrderTrailing = 9999;
 {
     NSParameterAssert([blog isKindOfClass:[Blog class]]);
     
-    return [blog supports:BlogFeatureWPComRESTAPI];
+    return [blog supports:BlogFeatureWpComRESTAPI];
 }
 
 #pragma mark - Local queries: Creating themes

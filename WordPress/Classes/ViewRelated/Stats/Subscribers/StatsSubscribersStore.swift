@@ -72,7 +72,7 @@ struct StatsSubscribersStore: StatsSubscribersStoreProtocol {
             chartSummary.send(.loading)
         }
 
-        statsService.getData(for: unit, endingOn: StatsDataHelper.currentDateForSite(), limit: 30) { (data: StatsSubscribersSummaryData?, error: Error?) in
+        statsService.getData(for: unit, endingOn: StatsDataHelper.currentDateForSite(), limit: 30) { (data: StatsSubscribersSummaryData?, _: Error?) in
             DispatchQueue.main.async {
                 if let data {
                     cache.setValue(data, key: cacheKey)

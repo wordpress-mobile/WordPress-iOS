@@ -87,7 +87,7 @@ extension ScreenObject {
     }
 
     public func openMagicLink() {
-        XCTContext.runActivity(named: "Open magic link in Safari") { activity in
+        XCTContext.runActivity(named: "Open magic link in Safari") { _ in
             let safari = Apps.safari
             safari.launch()
 

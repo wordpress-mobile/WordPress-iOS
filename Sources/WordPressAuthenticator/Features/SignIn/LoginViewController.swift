@@ -101,7 +101,7 @@ open class LoginViewController: NUXViewController, LoginFacadeDelegate {
     ///     You will want to set this to `true` if the error was caused after pressing a button
     ///     (e.g. Next button).
     func displayError(message: String, moveVoiceOverFocus: Bool = false) {
-        guard message.count > 0 else {
+        guard !message.isEmpty else {
             errorLabel?.isHidden = true
             return
         }
@@ -291,7 +291,7 @@ extension LoginViewController {
             ]
         }
 
-        // This stat is part of a funnel that provides critical information.  Please
+        // This stat is part of a funnel that provides critical information. Please
         // consult with your lead before removing this event.
         WordPressAuthenticator.track(.signedIn, properties: properties)
         tracker.track(step: .success)
@@ -322,7 +322,7 @@ extension LoginViewController {
                         serviceToken: serviceToken,
                         connectParameters: appleConnectParameters,
                         success: {
-                            // This stat is part of a funnel that provides critical information.  Please
+                            // This stat is part of a funnel that provides critical information. Please
                             // consult with your lead before removing this event.
                             let source = appleConnectParameters != nil ? "apple" : "google"
                             WordPressAuthenticator.track(.signedIn, properties: ["source": source])
@@ -336,7 +336,7 @@ extension LoginViewController {
             WordPressAuthenticator.track(.loginSocialConnectFailure, error: error)
             // We're opting to let this call fail silently.
             // Our user has already successfully authenticated and can use the app --
-            // connecting the social service isn't critical.  There's little to
+            // connecting the social service isn't critical. There's little to
             // be gained by displaying an error that can not currently be resolved
             // in the app and doing so might tarnish an otherwise satisfying login
             // experience.
@@ -397,7 +397,6 @@ extension LoginViewController {
         static let ipadPortrait: CGFloat = 0.1667
         static let ipadLandscape: CGFloat = 0.25
     }
-
 }
 
 // MARK: - Social Sign In Handling
@@ -466,7 +465,6 @@ extension LoginViewController {
         vc.loginFields = loginFields
         navigationController?.pushViewController(vc, animated: true)
     }
-
 }
 
 // MARK: - LoginSocialError delegate methods
@@ -538,5 +536,4 @@ extension LoginViewController: LoginSocialErrorViewControllerDelegate {
 
         navigationController?.pushViewController(vc, animated: true)
     }
-
 }

@@ -12,8 +12,8 @@ extension SiteIconViewModel {
 
         self.firstLetter = blog.title?.first
 
-        if blog.hasIcon, let icon = blog.icon {
-            self.imageURL = SiteIconViewModel.optimizedURL(for: icon, imageSize: size.size, isP2: blog.isAutomatticP2)
+        if let icon = blog.iconURL {
+            self.imageURL = SiteIconViewModel.optimizedURL(for: icon.absoluteString, imageSize: size.size, isP2: blog.isAutomatticP2)
             self.host = MediaHost(blog)
         }
     }

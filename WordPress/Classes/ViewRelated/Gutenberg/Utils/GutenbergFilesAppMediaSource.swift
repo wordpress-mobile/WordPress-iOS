@@ -13,10 +13,22 @@ class GutenbergFilesAppMediaSource: NSObject {
         self.gutenberg = gutenberg
     }
 
-    func presentPicker(origin: UIViewController, filters: [Gutenberg.MediaType], allowedTypesOnBlog: [String], multipleSelection: Bool, callback: @escaping MediaPickerDidPickMediaCallback) {
+    func presentPicker(
+        origin: UIViewController,
+        filters: [Gutenberg.MediaType],
+        allowedTypesOnBlog: [String],
+        multipleSelection: Bool,
+        callback: @escaping MediaPickerDidPickMediaCallback
+    ) {
         mediaPickerCallback = callback
-        let documentTypes = GutenbergFilesAppMediaSource.getDocumentTypes(filters: filters, allowedTypesOnBlog: allowedTypesOnBlog)
-        let docPicker = UIDocumentPickerViewController(forOpeningContentTypes: documentTypes.compactMap(UTType.init), asCopy: true)
+        let documentTypes = GutenbergFilesAppMediaSource.getDocumentTypes(
+            filters: filters,
+            allowedTypesOnBlog: allowedTypesOnBlog
+        )
+        let docPicker = UIDocumentPickerViewController(
+            forOpeningContentTypes: documentTypes.compactMap(UTType.init),
+            asCopy: true
+        )
         docPicker.delegate = self
         docPicker.allowsMultipleSelection = multipleSelection
         origin.present(docPicker, animated: true)
@@ -26,7 +38,7 @@ class GutenbergFilesAppMediaSource: NSObject {
         if filters.contains(.any) {
             return allowedTypesOnBlog
         } else {
-            return filters.map { $0.filterTypesConformingTo(allTypes: allowedTypesOnBlog) }.reduce([], +)
+            return filters.flatMap { $0.filterTypesConformingTo(allTypes: allowedTypesOnBlog) }
         }
     }
 }
@@ -36,7 +48,7 @@ extension GutenbergFilesAppMediaSource: UIDocumentPickerDelegate {
         defer {
             mediaPickerCallback = nil
         }
-        if urls.count == 0 {
+        if urls.isEmpty {
             mediaPickerCallback?(nil)
         } else {
             insertOnBlock(with: urls)
@@ -53,12 +65,17 @@ extension GutenbergFilesAppMediaSource: UIDocumentPickerDelegate {
             return assertionFailure("Image picked without callback")
         }
 
-        let mediaInfo = urls.compactMap({ (url) -> MediaInfo? in
+        let mediaInfo = urls.compactMap({ url -> MediaInfo? in
             guard let media = mediaInserter.insert(exportableAsset: url as NSURL, source: .otherApps) else {
                 return nil
             }
             let mediaUploadID = media.gutenbergUploadID
-            return MediaInfo(id: mediaUploadID, url: url.absoluteString, type: media.mediaTypeString, title: url.lastPathComponent)
+            return MediaInfo(
+                id: mediaUploadID,
+                url: url.absoluteString,
+                type: media.mediaTypeString,
+                title: url.lastPathComponent
+            )
         })
 
         callback(mediaInfo)

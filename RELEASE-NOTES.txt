@@ -1,14 +1,72 @@
+27.0
+-----
+
+
+26.9
+-----
+* [*] All self-hosted sites now sign in using application passwords [#25424]
+* [*] Comments: Fix "Trash" trailing action not updating the status of the comments cached on the device [#25485]
+* [*] Stats: Add a confirmation dialog when marking referrers as spam [#25475]
+* [*] Stats: Fix timezone label showing "Standard Time" during daylight saving time - thanks @btraviswright for the report! [#25495]
+* [*] Reader: Fix an issue with Article screen not updating comments if comment is posted from inline section [#25483]
+* [*] Reader: Fix button style [#25447]
+* [*] Reader: Add smart cropping for featured images in the feed so it never cut the heads off [#25451]
+* [*] Reader: Fix separator not visible in Dark Mode for comments [#25466]
+* [*] Reader: Fix an issue with "Notificaton Settings" showing incorrect state right after subscribing [#25459]
+* [*] Reader: Fix an issue with "Notificaton Settings" button shown when you are not subscribed [#25459]
+* [*] Reader: Fix a regression with anchors not working in posts [#25459]
+* [*] Reader: Fix an issue with Subscribe button not working for Freshly Pressed posts [#25476]
+* [*] Reader: Fix an issue with empty state not disappearing on Reader Comments view after you post a comment [#25484]
+* [*] Reader: Fix an issues with Reader failing to clear cached comments if all the comments are deleted [#25482]
+* [*] Reader: Fix an issue with the article view removing autoplay without showing controls [#25468]
+* [*] Menus: Fix an issue with footer view in Menu Editing not resizing [#25481]
+* [*] About screen: Remove the non-functional Twitter/X link - thanks @zynp-KC for reporting! [#25496]
+* [*] Notifications: Attempt to fix incorrect avatars in the notifications [#25501]
+
+26.8
+-----
+* [*] Enrich push notifications with icons [#25346]
+* [*] Fix an issue Social Sharing placeholder card showing unsupported services [#25336]
+* [*] Stats: Include Today in "Last X" intervals like "Last 7 days" [#25361]
+* [*] Stats: Add new "Last 14 days" period [#25361]
+* [*] Stats: The incomplete dates (include today) are displayed using dotted line on a line chart and are more visible on a bar chart too [#25361]
+* [*] Stats: Fix an issue where tapping on a bar in a bar chart would somtimes select an adjacent bar [#25374]
+* [*] Stats: Improve bar selection. When you tap on a bar, it will now select this subrange without fully navigating it, which makes it much easier to go through multiple subranges. [#25374]
+* [*] Stats: Usability improvements [#25404]
+* [*] Stats: Show the anouncemnet and enable by default [#25411]
+* [*] Reader: Fix an issue with the "Comments" screen sometimes failing to scroll to the comment selected from the "Notifications" [#25389]
+* [*] Reader: Fix an issue with pan gesture failing to dismiss Lightbox [#25372]
+* [*] Reader: Fix color of links in comments [#25390]
+* [*] Reader: Fix color or links in dark mode on custom themes [#25391]
+* [*] Reader: Fix "Leave Comment" button wrong background color with a custom reading theme [#25412]
+* [*] Reader: Add support for viewing media galleries fullscreen with a way to swipe between images [#25365]
+* [*] Notifications: Fix navigational buttons spacing [#25401]
+* [*] [internal] Fix retain cycle in Reader Article screen [#25364]
+* [*] Fix incorrect default Post Format in new posts [#25369]
+* [*] Posts and Pages are available to XMLRPC-disable sites [#25382]
+* [*] Activity Log: Show when actions were performed by an MCP agent [#25397]
+* [*] Fix post list preview showing an extra blank line when content contains paragraph separators [#25349]
+
 26.7
 -----
 * [**] Stats: Add new "Adds" tab to show WordAdds earnings and stats [#25165]
+* [*] For sites that are authenticated with application passwords, the app no longer requires xml-rpc to be enabled. But in that scenario, only limited features are available: XML-RPC needs to be enabled to use all features. [#25183]
 * [**] Stats: Add "Devices" view to the "Traffic" tab [#25176]
 * [**] Stats: Add "UTM" view to the "Traffic" tab [#25178]
+* [*] Stats: Fix a few issues with charts (x axis labels alignment, occasionally incorrect displayed date period, and more) [#25185]
+* [*] Stats: the "Post Stats" screen will now automatically show "Last 7 days" instead of attempting to show unavailable hourly data when "Today" or other "day" period is selected [#25210]
+* [*] Stats: Minor design improvements and simplifcations [#25215], [#25214]
+* [*] Insights: Fix empty posting activity [#25219]
+* [*] Activity Logs: Minor visual improvements [#25220]
+* [*] Reader: The post tags are now displayed in the original order [#25229]
+* [*] Notifications: Fix notifications sometimes displaying wrong avatars [#25265]
+* [*] A new experimental feature: Custom Post Types. [#25267]
+
 
 26.6
 -----
 * [**] Intelligence: Expand AI-based features to more locales [#25034]
 * [**] Reader: Add "Freshly Pressed" to Discover [#24828]
-* [*] Reader: Keep only one "Search" option in the main sidebar [#25116]
 * [*] Reader: Fix Send button design in Comments [#25092]
 * [*] Rename "Recommended" to "For You" [#25123]
 * [*] Reader: Fix article view ignoring `use_excerpt` [#25108]

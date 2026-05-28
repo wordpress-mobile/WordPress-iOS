@@ -15,11 +15,13 @@ final class TodayCardViewModel: ObservableObject, TrafficCardViewModel {
 
     weak var configurationDelegate: CardConfigurationDelegate?
 
-    var dateRange: StatsDateRange {
+    var dateRange: StatsDateRangeSelection {
         didSet {
-            loadData(for: dateRange.updating(preset: .today))
+            loadData(for: dateRange.range.updating(preset: .today))
         }
     }
+
+    private var effectiveDateRange: StatsDateRange { dateRange.range }
 
     var isFirstLoad: Bool { isLoading && data == nil }
 
@@ -35,7 +37,7 @@ final class TodayCardViewModel: ObservableObject, TrafficCardViewModel {
         context: StatsContext,
     ) {
         self.configuration = configuration
-        self.dateRange = dateRange.updating(preset: .today)
+        self.dateRange = StatsDateRangeSelection(range: dateRange.updating(preset: .today))
         self.service = context.service
         self.tracker = context.tracker
     }
@@ -43,7 +45,7 @@ final class TodayCardViewModel: ObservableObject, TrafficCardViewModel {
     func updateConfiguration(_ newConfiguration: TodayCardConfiguration) {
         self.configuration = newConfiguration
         configurationDelegate?.saveConfiguration(for: self)
-        loadData(for: dateRange)
+        loadData(for: effectiveDateRange)
     }
 
     func onAppear() {
@@ -55,7 +57,7 @@ final class TodayCardViewModel: ObservableObject, TrafficCardViewModel {
             "configuration": configuration.metrics.map(\.analyticsName).joined(separator: "_")
         ])
 
-        loadData(for: dateRange)
+        loadData(for: effectiveDateRange)
     }
 
     private func loadData(for dateRange: StatsDateRange) {

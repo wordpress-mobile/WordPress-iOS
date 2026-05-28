@@ -31,7 +31,6 @@ struct SiteCreationEmptySiteTemplate: View {
             Spacer()
             Spacer()
         }
-
     }
 
     private var siteBarVStack: some View {

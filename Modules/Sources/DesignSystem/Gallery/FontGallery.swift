@@ -8,7 +8,7 @@ struct FontGallery: View {
     var body: some View {
         List {
             Section("Recoleta") {
-                ForEach(textStyles, id: \.self.1) { (name, textStyle) in
+                ForEach(textStyles, id: \.self.1) { name, textStyle in
                     Text(name)
                         .font(Font.make(.recoleta, textStyle: textStyle))
                 }

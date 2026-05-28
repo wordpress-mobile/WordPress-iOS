@@ -136,13 +136,14 @@ private final class ReaderPostCellView: UIView {
         titleLabel.maximumContentSizeCategory = .accessibilityExtraLarge
 
         detailsLabel.font = .preferredFont(forTextStyle: .subheadline)
-        detailsLabel.textColor = .secondaryLabel
+        detailsLabel.textColor = UIAppColor.secondary
         detailsLabel.adjustsFontForContentSizeCategory = true
         detailsLabel.maximumContentSizeCategory = .accessibilityExtraLarge
 
         imageView.layer.cornerRadius = 8
         imageView.layer.masksToBounds = true
         imageView.contentMode = .scaleAspectFill
+        imageView.isSaliencyDetectionEnabled = true
 
         buttonMore.configuration?.baseForegroundColor = UIColor.secondaryLabel.withAlphaComponent(0.5)
         buttonMore.configuration?.contentInsets = .init(top: 12, leading: 8, bottom: 12, trailing: 20)
@@ -200,7 +201,7 @@ private final class ReaderPostCellView: UIView {
 
     private func configureLayout(isCompact: Bool) {
         titleLabel.numberOfLines = 3
-        detailsLabel.numberOfLines = isCompact ? 3 : 5
+        detailsLabel.numberOfLines = isCompact ? 2 : 4
 
         postPreview.axis = isCompact ? .vertical : .horizontal
         postPreview.spacing = isCompact ? 12 : 20
@@ -389,7 +390,7 @@ private final class ReaderPostCellView: UIView {
 
     private static let authorAttributes = AttributeContainer([
         .font: WPStyleGuide.fontForTextStyle(.footnote, fontWeight: .medium),
-        .foregroundColor: UIColor.label
+        .foregroundColor: UIColor.secondaryLabel
     ])
 
     private static let toolbarAttributes = AttributeContainer([

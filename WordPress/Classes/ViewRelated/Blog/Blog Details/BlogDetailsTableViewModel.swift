@@ -5,6 +5,7 @@ import WordPressShared
 import WordPressSharedObjC
 import WordPressUI
 import Support
+import SwiftUI
 
 private struct Section {
     let title: String?
@@ -26,7 +27,7 @@ private struct Section {
 }
 
 @objc public final class BlogDetailsTableViewModel: NSObject {
-    private var blog: Blog
+    var blog: Blog
     private weak var tableView: UITableView?
     private weak var viewController: BlogDetailsViewController?
     private var sections: [Section] = []
@@ -53,6 +54,7 @@ private struct Section {
         }
     }
 
+    var hasCustomPostTypes = false
     var useSiteMenuStyle = false
 
     @objc public init(blog: Blog, viewController: BlogDetailsViewController) {
@@ -78,6 +80,7 @@ private struct Section {
         tableView.register(JetpackBrandingMenuCardCell.self, forCellReuseIdentifier: CellIdentifiers.jetpackBrandingCard)
         tableView.register(JetpackRemoteInstallTableViewCell.self, forCellReuseIdentifier: CellIdentifiers.jetpackInstall)
         tableView.register(ExtensiveLoggingCell.self, forCellReuseIdentifier: CellIdentifiers.extensiveLogging)
+        tableView.register(XMLRPCDisabledCell.self, forCellReuseIdentifier: CellIdentifiers.xmlrpcDisabled)
 
         tableView.delegate = self
         tableView.dataSource = self
@@ -104,6 +107,10 @@ private struct Section {
 
         if blog.isSelfHosted, ExtensiveLogging.enabled {
             newSections.append(Section(rows: [], category: .extensiveLogging))
+        }
+
+        if blog.isSelfHosted, blog.isXMLRPCDisabled {
+            newSections.append(Section(rows: [], category: .xmlrpcDisabled))
         }
 
         if viewController.isDashboardEnabled() && isSplitViewDisplayed {
@@ -243,9 +250,9 @@ extension BlogDetailsTableViewModel: UITableViewDataSource {
         guard section < sections.count else { return 0 }
 
         switch sections[section].category {
-        case .jetpackInstallCard, .migrationSuccess, .jetpackBrandingCard, .extensiveLogging:
+        case .jetpackInstallCard, .migrationSuccess, .jetpackBrandingCard, .extensiveLogging, .xmlrpcDisabled:
             // The "card" sections do not set the `rows` property. It's hard-coded to show specific types of cards.
-            wpAssert(sections[section].rows.count == 0)
+            wpAssert(sections[section].rows.isEmpty)
             return 1
         default:
             return sections[section].rows.count
@@ -269,6 +276,8 @@ extension BlogDetailsTableViewModel: UITableViewDataSource {
             cell = configureJetpackBrandingCell(tableView: tableView)
         case .extensiveLogging:
             cell = configureExtensiveLoggingCell(tableView: tableView)
+        case .xmlrpcDisabled:
+            cell = configureXMLRPCDisabledCell(tableView: tableView)
         default:
             if indexPath.row < section.rows.count {
                 let row = section.rows[indexPath.row]
@@ -496,6 +505,75 @@ private extension BlogDetailsTableViewModel {
         cell.configure(with: viewController)
         return cell
     }
+
+    func configureXMLRPCDisabledCell(tableView: UITableView) -> UITableViewCell {
+        guard let cell = tableView.dequeueReusableCell(
+            withIdentifier: CellIdentifiers.xmlrpcDisabled
+        ) as? XMLRPCDisabledCell else {
+            return UITableViewCell()
+        }
+
+        cell.onTapped = { [weak self] in
+            self?.presentXMLRPCDisabledAlert()
+        }
+        return cell
+    }
+
+    private func presentXMLRPCDisabledAlert() {
+        guard let viewController else { return }
+
+        let alert = AlertView {
+            AlertHeaderView(
+                title: XMLRPCDisabledAlertStrings.title,
+                description: XMLRPCDisabledAlertStrings.description
+            )
+        } content: {
+            Image(systemName: "exclamationmark.triangle")
+                .font(.system(size: 50))
+                .foregroundStyle(.orange)
+        } actions: {
+            Button { [weak self, weak viewController] in
+                viewController?.dismiss(animated: true) {
+                    self?.presentJetpackConnection()
+                }
+            } label: {
+                Text(XMLRPCDisabledAlertStrings.connectJetpack)
+                    .font(.headline)
+                    .frame(maxWidth: .infinity)
+            }
+            .buttonStyle(.borderedProminent)
+            .controlSize(.extraLarge)
+
+            Button { [weak viewController] in
+                let url = URL(string: "https://apps.wordpress.com/support/mobile/login-signup/inaccessible-xml-rpc-connection-error/")!
+                viewController?.dismiss(animated: true) {
+                    UIApplication.shared.open(url)
+                }
+            } label: {
+                Text(XMLRPCDisabledAlertStrings.learnMore)
+            }
+        }
+
+        alert.present(in: viewController)
+    }
+
+    private func presentJetpackConnection() {
+        let controller = UIViewController.jetpackConnection(blog: blog)
+        controller.promptType = .bypassXMLRPC
+        controller.completionBlock = { [weak controller, weak self] in
+            controller?.dismiss(animated: true) {
+                self?.viewController?.refresh()
+            }
+        }
+        controller.navigationItem.leftBarButtonItem = UIBarButtonItem(
+            systemItem: .close,
+            primaryAction: UIAction { [weak controller] _ in
+                controller?.dismiss(animated: true)
+            }
+        )
+        let nav = UINavigationController(rootViewController: controller)
+        viewController?.present(nav, animated: true)
+    }
 }
 
 private extension BlogDetailsTableViewModel {
@@ -515,6 +593,16 @@ private extension BlogDetailsTableViewModel {
         rows.append(Row.media(viewController: viewController))
         rows.append(Row.comments(viewController: viewController))
 
+        if FeatureFlag.customPostTypes.enabled && blog.supportsCoreRESTAPI {
+            let pinned = SiteStorageAccess.pinnedPostTypes(for: TaggedManagedObjectID(blog))
+            for type in pinned {
+                rows.append(Row.pinnedPostType(type, viewController: viewController))
+            }
+            if !pinned.isEmpty || hasCustomPostTypes {
+                rows.append(Row.customPostTypes(viewController: viewController))
+            }
+        }
+
         let title = isSplitViewDisplayed ? nil : Strings.contentSectionTitle
         return Section(title: title, rows: rows, category: .content)
     }
@@ -526,11 +614,11 @@ private extension BlogDetailsTableViewModel {
     func buildJetpackSection() -> Section {
         var rows: [Row] = []
 
-        if blog.isViewingStatsAllowed() {
+        if blog.isViewingStatsAllowed {
             rows.append(Row.stats(viewController: viewController))
         }
 
-        if blog.supports(.activity) && !blog.isWPForTeams() {
+        if blog.supports(.activity) && !blog.isWPForTeams {
             rows.append(Row.activityLog(viewController: viewController))
         }
 
@@ -562,11 +650,11 @@ private extension BlogDetailsTableViewModel {
     func buildGeneralSection() -> Section {
         var rows: [Row] = []
 
-        if blog.isViewingStatsAllowed() {
+        if blog.isViewingStatsAllowed {
             rows.append(Row.stats(viewController: viewController))
         }
 
-        if blog.supports(.activity) && !blog.isWPForTeams() {
+        if blog.supports(.activity) && !blog.isWPForTeams {
             rows.append(Row.activity(viewController: viewController))
         }
 
@@ -589,6 +677,16 @@ private extension BlogDetailsTableViewModel {
 
         rows.append(Row.comments(viewController: viewController))
 
+        if FeatureFlag.customPostTypes.enabled && blog.supportsCoreRESTAPI {
+            let pinned = SiteStorageAccess.pinnedPostTypes(for: TaggedManagedObjectID(blog))
+            for type in pinned {
+                rows.append(Row.pinnedPostType(type, viewController: viewController))
+            }
+            if !pinned.isEmpty || hasCustomPostTypes {
+                rows.append(Row.customPostTypes(viewController: viewController))
+            }
+        }
+
         let title = Strings.publishSection
         return Section(title: title, rows: rows, category: .content)
     }
@@ -596,7 +694,7 @@ private extension BlogDetailsTableViewModel {
     func buildPersonalizeSection() -> Section {
         var rows: [Row] = []
 
-        if blog.supports(.themeBrowsing) && !blog.isWPForTeams() {
+        if blog.supports(.themeBrowsing) && !blog.isWPForTeams {
             rows.append(Row.themes(viewController: viewController))
         }
 
@@ -675,7 +773,7 @@ private extension BlogDetailsTableViewModel {
 
         var rows: [Row] = []
 
-        if blog.isViewingStatsAllowed() {
+        if blog.isViewingStatsAllowed {
             rows.append(Row.stats(viewController: viewController))
         }
 
@@ -708,7 +806,7 @@ private extension BlogDetailsTableViewModel {
         var thirdSectionRows: [Row] = []
 
         // First section: Activity, Backup, Scan, Site Monitoring
-        if blog.supports(.activity) && !blog.isWPForTeams() {
+        if blog.supports(.activity) && !blog.isWPForTeams {
             firstSectionRows.append(Row.activityLog(viewController: viewController))
         }
 
@@ -737,7 +835,7 @@ private extension BlogDetailsTableViewModel {
             secondSectionRows.append(Row.plugins(viewController: viewController))
         }
 
-        if blog.supports(.themeBrowsing) && !blog.isWPForTeams() {
+        if blog.supports(.themeBrowsing) && !blog.isWPForTeams {
             secondSectionRows.append(Row.themes(viewController: viewController))
         }
 
@@ -749,9 +847,7 @@ private extension BlogDetailsTableViewModel {
             secondSectionRows.append(Row.domains(viewController: viewController))
         }
 
-        if FeatureFlag.allowApplicationPasswords.enabled {
-            secondSectionRows.append(Row.applicationPasswords(viewController: viewController))
-        }
+        secondSectionRows.append(Row.applicationPasswords(viewController: viewController))
 
         // Site Settings (always included)
         secondSectionRows.append(Row.siteSettings(viewController: viewController))
@@ -827,6 +923,7 @@ private enum SectionCategory {
     case reminders
     case domainCredit
     case extensiveLogging
+    case xmlrpcDisabled
     case home
     case general
     case jetpack
@@ -851,6 +948,7 @@ enum BlogDetailsRowKind {
     case themes
     case media
     case pages
+    case customPostTypes
     case activity
     case backup
     case scan
@@ -871,6 +969,7 @@ enum BlogDetailsRowKind {
     case viewSite
     case admin
     case siteSettings
+    case pinnedPostType
     case removeSite
 }
 
@@ -953,6 +1052,28 @@ extension Row {
                 // When called from direct tap, use .row (default behavior)
                 let source: BlogDetailsNavigationSource = userInfo.isEmpty ? .row : .link
                 viewController?.showPageList(from: source)
+            }
+        )
+    }
+
+    static func customPostTypes(viewController: BlogDetailsViewController?) -> Row {
+        Row(
+            kind: .customPostTypes,
+            title: CustomPostTypesView.title,
+            image: UIImage(systemName: "ellipsis"),
+            action: { [weak viewController] _ in
+                viewController?.showCustomPostTypes()
+            }
+        )
+    }
+
+    static func pinnedPostType(_ type: PinnedPostType, viewController: BlogDetailsViewController?) -> Row {
+        Row(
+            kind: .pinnedPostType,
+            title: type.name,
+            image: UIImage(dashicon: type.icon),
+            action: { [weak viewController] _ in
+                viewController?.showPinnedPostType(type)
             }
         )
     }
@@ -1493,4 +1614,28 @@ private enum CellIdentifiers {
     static let jetpackBrandingCard = "BlogDetailsJetpackBrandingCardCellIdentifier"
     static let jetpackInstall = "BlogDetailsJetpackInstallCardCellIdentifier"
     static let extensiveLogging = "BlogDetailsExtensiveLoggingCellIdentifier"
+    static let xmlrpcDisabled = "BlogDetailsXMLRPCDisabledCellIdentifier"
+}
+
+private enum XMLRPCDisabledAlertStrings {
+    static let title = NSLocalizedString(
+        "blogDetails.xmlrpcDisabled.alert.title",
+        value: "XML-RPC Disabled",
+        comment: "Title for the XML-RPC disabled alert"
+    )
+    static let description = NSLocalizedString(
+        "blogDetails.xmlrpcDisabled.alert.description",
+        value: "XML-RPC is disabled on your site. Some features in the app currently require XML-RPC. Connect Jetpack or enable XML-RPC to access all features.",
+        comment: "Description explaining options to restore functionality when XML-RPC is disabled"
+    )
+    static let connectJetpack = NSLocalizedString(
+        "blogDetails.xmlrpcDisabled.alert.connectJetpack",
+        value: "Connect Jetpack",
+        comment: "Button title to connect Jetpack in XML-RPC disabled alert"
+    )
+    static let learnMore = NSLocalizedString(
+        "blogDetails.xmlrpcDisabled.alert.learnMore",
+        value: "Learn more",
+        comment: "Button title to learn more about XML-RPC being disabled"
+    )
 }

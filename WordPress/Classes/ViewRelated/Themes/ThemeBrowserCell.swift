@@ -249,7 +249,7 @@ open class ThemeBrowserCell: UICollectionViewCell {
         themeActions.forEach { themeAction in
             alertController.addActionWithTitle(themeAction.title,
                                                style: .default,
-                                               handler: { (action: UIAlertAction) in
+                                               handler: { (_: UIAlertAction) in
                                                 themeAction.present(theme, presenter)
             })
         }
@@ -267,7 +267,6 @@ open class ThemeBrowserCell: UICollectionViewCell {
             popover.canOverlapSourceViewRect = true
         }
     }
-
 }
 
 extension ThemeBrowserCell: Accessible {

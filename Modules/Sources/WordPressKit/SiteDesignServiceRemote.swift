@@ -16,7 +16,7 @@ public struct SiteDesignRequest {
             "preview_height": "\(thumbnailSize.height)" as AnyObject,
             "scale": UIScreen.main.nativeScale as AnyObject
         ]
-        if 0 < groups.count {
+        if !groups.isEmpty {
             let groups = groups.map { $0.rawValue }
             parameters["group"] = groups.joined(separator: ",") as AnyObject
         }
@@ -35,22 +35,22 @@ public class SiteDesignServiceRemote {
 
     private static func joinParameters(_ parameters: [String: AnyObject], additionalParameters: [String: AnyObject]?) -> [String: AnyObject] {
         guard let additionalParameters else { return parameters }
-        return parameters.reduce(into: additionalParameters, { (result, element) in
+        return parameters.reduce(into: additionalParameters, { result, element in
             result[element.key] = element.value
         })
     }
 
     public static func fetchSiteDesigns(_ api: WordPressComRestApi, request: SiteDesignRequest? = nil, completion: @escaping CompletionHandler) {
         let combinedParameters: [String: AnyObject] = joinParameters(parameters, additionalParameters: request?.parameters)
-        api.GET(endpoint, parameters: combinedParameters, success: { (responseObject, _) in
+        api.GET(endpoint, parameters: combinedParameters, success: { responseObject, _ in
             do {
                 let result = try parseLayouts(fromResponse: responseObject)
                 completion(.success(result))
-            } catch let error {
+            } catch {
                 NSLog("error response object: %@", String(describing: responseObject))
                 completion(.failure(error))
             }
-        }, failure: { (error, _) in
+        }, failure: { error, _ in
             completion(.failure(error))
         })
     }

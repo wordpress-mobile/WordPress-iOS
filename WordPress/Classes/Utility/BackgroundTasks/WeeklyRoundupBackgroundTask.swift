@@ -52,7 +52,7 @@ private class WeeklyRoundupDataProvider {
         self.getSites { [weak self] sitesResult in
             switch sitesResult {
             case .success(let sites):
-                guard let self, sites.count > 0 else {
+                guard let self, !sites.isEmpty else {
                     completion(.success(nil))
                     return
                 }
@@ -86,7 +86,7 @@ private class WeeklyRoundupDataProvider {
 
             do {
                 service = try Self.makeRemoteStatsService(for: site)
-            } catch let error {
+            } catch {
                 self.onError(error)
                 continue
             }
@@ -141,11 +141,11 @@ private class WeeklyRoundupDataProvider {
         }
     }
 
-    /// Filters the "best" count sites from the provided dictionary of sites and stats.  This method implicitly implements the
+    /// Filters the "best" count sites from the provided dictionary of sites and stats. This method implicitly implements the
     /// definition of "best" through a sorting mechanism where the "best" sites are placed first.
     ///
     private func filterBest(_ count: Int, minimumViewsCount: Int = 5, from blogStats: SiteStats) -> SiteStats {
-        let filteredAndSorted = blogStats.filter { (site, stats) in
+        let filteredAndSorted = blogStats.filter { _, stats in
             stats.viewsCount >= minimumViewsCount
         }.sorted { (first: (_, value: StatsSummaryData), second: (_, value: StatsSummaryData)) in
             first.value.viewsCount >= second.value.viewsCount
@@ -179,7 +179,7 @@ private class WeeklyRoundupDataProvider {
             site.isAdmin && !site.isAutomatticP2
         }
 
-        guard administeredSites.count > 0 else {
+        guard !administeredSites.isEmpty else {
             result(.success([]))
             return
         }
@@ -284,7 +284,6 @@ private class WeeklyRoundupDataProvider {
             self.isAutomatticP2 = blog.isAutomatticP2
         }
     }
-
 }
 
 class WeeklyRoundupBackgroundTask: BackgroundTask {
@@ -368,8 +367,8 @@ class WeeklyRoundupBackgroundTask: BackgroundTask {
             direction: .backward) ?? Date()
 
         // The run date is when the task is scheduled to run, but the period end date is actually
-        // the previous day at 24:59:59.
-        let periodEndDate = Calendar.current.date(bySettingHour: 0, minute: 0, second: 0, of: runDate)!.addingTimeInterval(TimeInterval.init(-1))
+        // the previous day at 23:59:59.
+        let periodEndDate = Calendar.current.date(bySettingHour: 0, minute: 0, second: 0, of: runDate)!.addingTimeInterval(TimeInterval(-1))
 
         return periodEndDate
     }
@@ -636,7 +635,7 @@ class WeeklyRoundupNotificationScheduler {
         completion: @escaping (Result<Void, Error>) -> Void
     ) {
         let title = notificationTitle(siteTitle)
-        let body = notificationBodyWith(views: views, comments: likes, likes: comments)
+        let body = notificationBodyWith(views: views, comments: comments, likes: likes)
 
         // The dynamic notification date is defined by when the background task is run.
         // Since these lines of code execute when the BG Task is run, we can just schedule
@@ -729,7 +728,7 @@ class WeeklyRoundupNotificationScheduler {
         userNotificationCenter.getPendingNotificationRequests { requests in
             let notifications = requests.filter({ $0.content.threadIdentifier == Self.threadIdentifier })
 
-            guard notifications.count > 0 else {
+            guard !notifications.isEmpty else {
                 return
             }
 
@@ -738,7 +737,7 @@ class WeeklyRoundupNotificationScheduler {
     }
 
     func cancelStaticNotification(completion: @escaping (Bool) -> Void = { _ in }) {
-        userNotificationCenter.getPendingNotificationRequests { requests in
+        userNotificationCenter.getPendingNotificationRequests { _ in
             completion(true)
         }
     }

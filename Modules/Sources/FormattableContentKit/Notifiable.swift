@@ -35,6 +35,14 @@ extension NotificationKind {
         .login,
     ]
 
+    private static let kindsWithNotificationIconSupport: Set<NotificationKind> = [
+        .comment,
+        .commentLike,
+        .like,
+        .newPost,
+        .post
+    ]
+
     /// Indicates whether or not a given kind of rich notification has a body support.
     ///
     /// - Parameter kind: the notification type to evaluate
@@ -49,6 +57,12 @@ extension NotificationKind {
     /// - Returns: `true` if the kind supports rich notifications; `false` otherwise
     public static func isSupportedByRichNotifications(_ kind: NotificationKind) -> Bool {
         return kindsWithRichNotificationSupport.contains(kind)
+    }
+
+    /// Indicates whether or not to download and attach the notification icon
+    /// to the notification.
+    public static func isNotificationIconSupported(_ kind: NotificationKind) -> Bool {
+        kindsWithNotificationIconSupport.contains(kind)
     }
 
     /// Indicates whether or not a given kind is view milestone.

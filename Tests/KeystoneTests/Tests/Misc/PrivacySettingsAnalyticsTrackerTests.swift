@@ -1,4 +1,3 @@
-import Nimble
 @testable import WordPress
 import XCTest
 
@@ -20,8 +19,8 @@ class PrivacySettingsAnalyticsTrackerTests: XCTestCase {
         tracker.trackPrivacySettingsAnalyticsTrackingToggled(enabled: true)
 
         // Then
-        expect(AnalyticsEventTrackingSpy.trackedEvents).to(haveCount(1))
-        expect(AnalyticsEventTrackingSpy.trackedEvents).to(containElementSatisfying({ event in
+        XCTAssertEqual(AnalyticsEventTrackingSpy.trackedEvents.count, 1)
+        XCTAssertTrue(AnalyticsEventTrackingSpy.trackedEvents.contains(where: { event in
             event.name == PrivacySettingsAnalytics.privacySettingsAnalyticsTrackingToggled.rawValue &&
             event.properties == ["enabled": true.stringLiteral]
         }))
@@ -36,8 +35,8 @@ class PrivacySettingsAnalyticsTrackerTests: XCTestCase {
         tracker.trackPrivacyChoicesBannerSaveButtonTapped(analyticsEnabled: true)
 
         // Then
-        expect(AnalyticsEventTrackingSpy.trackedEvents).to(haveCount(1))
-        expect(AnalyticsEventTrackingSpy.trackedEvents).to(containElementSatisfying({ event in
+        XCTAssertEqual(AnalyticsEventTrackingSpy.trackedEvents.count, 1)
+        XCTAssertTrue(AnalyticsEventTrackingSpy.trackedEvents.contains(where: { event in
             event.name == PrivacySettingsAnalytics.privacyChoicesBannerSaveButtonTapped.rawValue &&
             event.properties == ["analytics_enabled": true.stringLiteral]
         }))
@@ -52,8 +51,8 @@ class PrivacySettingsAnalyticsTrackerTests: XCTestCase {
         tracker.track(.privacyChoicesBannerSettingsButtonTapped)
 
         // Then
-        expect(AnalyticsEventTrackingSpy.trackedEvents).to(haveCount(1))
-        expect(AnalyticsEventTrackingSpy.trackedEvents).to(containElementSatisfying({ event in
+        XCTAssertEqual(AnalyticsEventTrackingSpy.trackedEvents.count, 1)
+        XCTAssertTrue(AnalyticsEventTrackingSpy.trackedEvents.contains(where: { event in
             event.name == PrivacySettingsAnalytics.privacyChoicesBannerSettingsButtonTapped.rawValue &&
             event.properties.isEmpty
         }))
@@ -68,8 +67,8 @@ class PrivacySettingsAnalyticsTrackerTests: XCTestCase {
         tracker.trackPrivacySettingsReportCrashesToggled(enabled: true)
 
         // Then
-        expect(AnalyticsEventTrackingSpy.trackedEvents).to(haveCount(1))
-        expect(AnalyticsEventTrackingSpy.trackedEvents).to(containElementSatisfying({ event in
+        XCTAssertEqual(AnalyticsEventTrackingSpy.trackedEvents.count, 1)
+        XCTAssertTrue(AnalyticsEventTrackingSpy.trackedEvents.contains(where: { event in
             event.name == PrivacySettingsAnalytics.privacySettingsReportCrashesToggled.rawValue &&
             event.properties == ["enabled": true.stringLiteral]
         }))

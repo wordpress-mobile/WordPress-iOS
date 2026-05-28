@@ -142,7 +142,7 @@ static NSString * const ReaderPostGlobalIDKey = @"globalID";
 
         NSManagedObjectID * __block postObjectID = nil;
         [self.coreDataStack performAndSaveUsingBlock:^(NSManagedObjectContext *context) {
-            ReaderPost *post = [self createOrReplaceFromRemotePost:remotePost forTopic:nil inContext:context];
+            ReaderPost *post = [ReaderPost createOrUpdateWithRemotePost:remotePost topic:nil context:context];
 
             NSError *error;
             BOOL obtainedID = [context obtainPermanentIDsForObjects:@[post] error:&error];
@@ -295,7 +295,8 @@ static NSString * const ReaderPostGlobalIDKey = @"globalID";
     // If this post belongs to a site topic, let the topic service do the work.
     ReaderTopicService *topicService = [[ReaderTopicService alloc] initWithCoreDataStack:self.coreDataStack];
 
-    if ([readerPost.topic isKindOfClass:[ReaderSiteTopic class]]) {
+    // Workaround for CMM-2006: Skip freshly pressed topics as they cannot be followed through the site service
+    if ([readerPost.topic isKindOfClass:[ReaderSiteTopic class]] && ![ReaderHelpers topicIsFreshlyPressed:readerPost.topic]) {
         ReaderSiteTopic *siteTopic = (ReaderSiteTopic *)readerPost.topic;
         [topicService toggleFollowingForSite:siteTopic success:success failure:failure];
         return;
@@ -847,7 +848,7 @@ static NSString * const ReaderPostGlobalIDKey = @"globalID";
     marker.sortDate = [post.sortDate dateByAddingTimeInterval:-0.1];
     marker.date_created_gmt = post.sortDate;
 
-    // For compatability with posts that are sorted by score
+    // For compatibility with posts that are sorted by score
     marker.sortRank = @([post.sortRank doubleValue] - CGFLOAT_MIN);
     marker.score = post.score;
 
@@ -1109,7 +1110,7 @@ static NSString * const ReaderPostGlobalIDKey = @"globalID";
 {
     NSMutableArray *newPosts = [NSMutableArray array];
     for (RemoteReaderPost *post in posts) {
-        ReaderPost *newPost = [self createOrReplaceFromRemotePost:post forTopic:topic inContext:context];
+        ReaderPost *newPost = [ReaderPost createOrUpdateWithRemotePost:post topic:topic context:context];
         if (newPost != nil) {
             [newPosts addObject:newPost];
         } else {
@@ -1117,20 +1118,6 @@ static NSString * const ReaderPostGlobalIDKey = @"globalID";
         }
     }
     return newPosts;
-}
-
-/**
- Create a `ReaderPost` model object from the specified dictionary.
-
- @param dict A `RemoteReaderPost` object.
- @param topic The `ReaderAbstractTopic` to assign to the created post.
- @return A `ReaderPost` model object whose properties are populated with the values from the passed dictionary.
- */
-- (ReaderPost *)createOrReplaceFromRemotePost:(RemoteReaderPost *)remotePost forTopic:(ReaderAbstractTopic *)topic inContext:(NSManagedObjectContext *)context
-{
-    NSParameterAssert(context != nil);
-    NSParameterAssert(topic == nil || topic.managedObjectContext == context);
-    return [PostHelper createOrReplaceFromRemotePost:remotePost forTopic:topic context:context];
 }
 
 #pragma mark Internal

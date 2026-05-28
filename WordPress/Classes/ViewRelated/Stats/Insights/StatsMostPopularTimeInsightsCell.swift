@@ -208,7 +208,7 @@ extension StatsAnnualAndMostPopularTimeInsight {
             return nil
         }
 
-        var calendar = Calendar.init(identifier: .gregorian)
+        var calendar = Calendar(identifier: .gregorian)
         calendar.locale = Locale.autoupdatingCurrent
 
         // Back up mostPopularWeekday by 1 to get correct index for standaloneWeekdaySymbols.
@@ -217,7 +217,7 @@ extension StatsAnnualAndMostPopularTimeInsight {
     }
 
     func formattedMostPopularTime() -> String? {
-        var calendar = Calendar.init(identifier: .gregorian)
+        var calendar = Calendar(identifier: .gregorian)
         calendar.locale = Locale.autoupdatingCurrent
 
         guard let hour = mostPopularHour.hour,

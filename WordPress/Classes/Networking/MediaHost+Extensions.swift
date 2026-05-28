@@ -13,12 +13,12 @@ extension MediaHost {
 
     init(_ blog: Blog) {
         self.init(
-            isAccessibleThroughWPCom: blog.isAccessibleThroughWPCom(),
-            isPrivate: blog.isPrivate(),
-            isAtomic: blog.isAtomic(),
+            isAccessibleThroughWPCom: blog.isAccessibleThroughWPCom,
+            isPrivate: blog.isPrivate,
+            isAtomic: blog.isAtomic,
             siteID: blog.dotComID?.intValue,
-            username: blog.usernameForSite,
-            authToken: blog.authToken,
+            username: blog.effectiveUsername,
+            authToken: blog.account?.authToken,
             failure: { error in
                 WordPressAppDelegate.crashLogging?.logError(error)
             }

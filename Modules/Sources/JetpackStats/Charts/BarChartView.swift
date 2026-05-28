@@ -3,11 +3,20 @@ import Charts
 
 struct BarChartView: View {
     let data: ChartData
-    var onDateSelected: ((Date) -> Void)? = nil
+    @Binding var selectedBarDate: Date?
 
     @State private var selectedDataPoints: SelectedDataPoints?
     @State private var isDragging = false
-    @State private var tappedDataPoint: DataPoint?
+
+    private var tappedDataPoint: DataPoint? {
+        guard let selectedBarDate else { return nil }
+        return data.currentData.first { $0.date == selectedBarDate }
+    }
+
+    init(data: ChartData, selectedBarDate: Binding<Date?> = .constant(nil)) {
+        self.data = data
+        self._selectedBarDate = selectedBarDate
+    }
 
     @Environment(\.context) var context
     @Environment(\.colorScheme) var colorScheme
@@ -30,14 +39,17 @@ struct BarChartView: View {
             currentPeriodBars
             averageLine
             significantPointAnnotations
+            tappedBarAnnotation
             selectionIndicatorMarks
         }
         .chartXAxis { xAxis }
         .chartYAxis { yAxis }
+        .chartXScale(domain: xAxisDomain)
         .chartYScale(domain: yAxisDomain)
         .chartLegend(.hidden)
         .environment(\.timeZone, context.timeZone)
         .animation(.spring, value: ObjectIdentifier(data))
+        .animation(.snappy, value: selectedBarDate)
         .chartOverlay { proxy in
             makeGesturesOverlayView(proxy: proxy)
         }
@@ -45,9 +57,6 @@ struct BarChartView: View {
         .accessibilityElement()
         .accessibilityLabel(Strings.Accessibility.chartContainer)
         .accessibilityHint(Strings.Accessibility.viewChartData)
-        .onChange(of: ObjectIdentifier(data)) {
-            tappedDataPoint = nil
-        }
     }
 
     // MARK: - Chart Marks
@@ -55,52 +64,69 @@ struct BarChartView: View {
     @ChartContentBuilder
     private var currentPeriodBars: some ChartContent {
         ForEach(data.currentData) { point in
+            let isIncomplete = context.calendar.isIncompleteDataPeriod(for: point.date, granularity: data.granularity)
             BarMark(
                 x: .value("Date", point.date, unit: data.granularity.component, calendar: context.calendar),
                 y: .value("Value", point.value),
-                width: barWidth
+                width: .automatic
             )
-            .foregroundStyle(
-                LinearGradient(
-                    colors: [
-                        data.metric.primaryColor,
-                        lighten(data.metric.primaryColor)
-                    ],
-                    startPoint: .top,
-                    endPoint: .bottom
-                )
-            )
-            .cornerRadius(6)
-            .opacity(getOpacityForCurrentPeriodBar(for: point))
+            .foregroundStyle(isIncomplete ? AnyShapeStyle(incompleteBarPattern) : AnyShapeStyle(barGradient))
+            .cornerRadius(5)
+            .opacity(getOpacityForPeriodBar(for: point))
         }
     }
 
-    private var barWidth: MarkDimension {
-        data.currentData.count <= 3 ? .fixed(32) : .automatic
+    private var barGradient: LinearGradient {
+        LinearGradient(
+            colors: [data.metric.primaryColor, lighten(data.metric.primaryColor)],
+            startPoint: .top,
+            endPoint: .bottom
+        )
+    }
+
+    /// A tiling diagonal-stripe pattern for today's incomplete bar.
+    private var incompleteBarPattern: ImagePaint {
+        let color = UIColor(data.metric.primaryColor)
+        let tileSize: CGFloat = 10
+        let renderer = UIGraphicsImageRenderer(size: CGSize(width: tileSize, height: tileSize))
+        let image = renderer.image { ctx in
+            color.withAlphaComponent(0.33).setFill()
+            ctx.fill(CGRect(x: 0, y: 0, width: tileSize, height: tileSize))
+
+            let cg = ctx.cgContext
+            cg.setStrokeColor(color.withAlphaComponent(0.5).cgColor)
+            cg.setLineWidth(1.5)
+            // Three parallel lines for seamless tiling
+            cg.move(to: CGPoint(x: -tileSize, y: tileSize))
+            cg.addLine(to: CGPoint(x: tileSize, y: -tileSize))
+            cg.move(to: CGPoint(x: 0, y: tileSize))
+            cg.addLine(to: CGPoint(x: tileSize, y: 0))
+            cg.move(to: CGPoint(x: 0, y: tileSize * 2))
+            cg.addLine(to: CGPoint(x: tileSize * 2, y: 0))
+            cg.strokePath()
+        }
+        return ImagePaint(image: Image(uiImage: image), scale: 1)
     }
 
     private func lighten(_ color: Color) -> Color {
         if #available(iOS 18, *) {
-            color.mix(with: Color(.systemBackground), by: colorScheme == .light ? 0.4 : 0.15)
+            color.mix(with: Color(.systemBackground), by: colorScheme == .light ? 0.2 : 0.1)
         } else {
             color.opacity(0.5)
         }
     }
 
-    private func getOpacityForCurrentPeriodBar(for point: DataPoint) -> CGFloat {
+    private func getOpacityForPeriodBar(for point: DataPoint) -> CGFloat {
         if let tappedDataPoint, tappedDataPoint.id == point.id {
             return 1.0
         }
         guard let selectedDataPoints else {
-            // If there's a tapped point, dim other bars
             if tappedDataPoint != nil {
-                return 0.5
+                return 0.15
             }
-            // If no selection and not tapped, check if data is incomplete
-            let isIncomplete = context.calendar.isIncompleteDataPeriod(for: point.date, granularity: data.granularity)
-            return isIncomplete ? 0.5 : 1
+            return 1
         }
-        return selectedDataPoints.current?.id == point.id ? 1.0 : 0.5
+        return (selectedDataPoints.current?.id == point.id || selectedDataPoints.previous?.id == point.id) ? 1.0 : 0.25
     }
 
     @ChartContentBuilder
@@ -109,20 +135,13 @@ struct BarChartView: View {
             BarMark(
                 x: .value("Date", point.date, unit: data.granularity.component, calendar: context.calendar),
                 y: .value("Value", point.value),
-                width: barWidth,
+                width: .automatic,
                 stacking: .unstacked
             )
-            .foregroundStyle(Color.secondary)
-            .cornerRadius(6)
-            .opacity(shouldHighlightPreviousDataPoint(point) ? 0.5 : 0.2)
+            .foregroundStyle(Color.secondary.opacity(0.25))
+            .cornerRadius(5)
+            .opacity(getOpacityForPeriodBar(for: point))
         }
-    }
-
-    private func shouldHighlightPreviousDataPoint(_ dataPoint: DataPoint) -> Bool {
-        guard let selectedDataPoints else {
-            return false
-        }
-        return selectedDataPoints.current == nil && selectedDataPoints.previous?.id == dataPoint.id
     }
 
     @ChartContentBuilder
@@ -139,7 +158,7 @@ struct BarChartView: View {
 
     @ChartContentBuilder
     private var significantPointAnnotations: some ChartContent {
-        if let maxPoint = data.significantPoints.currentMax, data.currentData.count > 0 {
+        if tappedDataPoint == nil, let maxPoint = data.significantPoints.currentMax, !data.currentData.isEmpty {
             PointMark(
                 x: .value("Date", maxPoint.date, unit: data.granularity.component, calendar: context.calendar),
                 y: .value("Value", maxPoint.value)
@@ -157,13 +176,30 @@ struct BarChartView: View {
     }
 
     @ChartContentBuilder
+    private var tappedBarAnnotation: some ChartContent {
+        if let tappedDataPoint, selectedDataPoints == nil {
+            PointMark(
+                x: .value("Date", tappedDataPoint.date, unit: data.granularity.component, calendar: context.calendar),
+                y: .value("Value", tappedDataPoint.value)
+            )
+            .opacity(0)
+            .annotation(position: .top, spacing: 8) {
+                SignificantPointAnnotation(
+                    value: tappedDataPoint.value,
+                    metric: data.metric
+                )
+            }
+        }
+    }
+
+    @ChartContentBuilder
     private var selectionIndicatorMarks: some ChartContent {
         if let selectedDataPoints {
             if let currentPoint = selectedDataPoints.current {
                 RuleMark(x: .value("Selected", currentPoint.date))
                     .foregroundStyle(Color.clear)
                     .lineStyle(StrokeStyle(lineWidth: 1))
-                    .offset(yStart: 32)
+                    .offset(yStart: 48)
                     .zIndex(3)
                     .annotation(
                         position: .top,
@@ -179,7 +215,7 @@ struct BarChartView: View {
                 RuleMark(x: .value("Selected", previousPoint.date))
                     .foregroundStyle(Color.clear)
                     .lineStyle(StrokeStyle(lineWidth: 1))
-                    .offset(yStart: 32)
+                    .offset(yStart: 48)
                     .zIndex(3)
                     .annotation(
                         position: .top,
@@ -198,24 +234,11 @@ struct BarChartView: View {
     // MARK: - Axis Configuration
 
     private var xAxis: some AxisContent {
-        if data.currentData.count == 1 {
-            // A quick workaround to make this look more acceptible
-            AxisMarks(values: .stride(by: data.granularity.component, count: 1, calendar: context.calendar)) { value in
-                if let date = value.as(Date.self) {
-                    AxisValueLabel {
-                        ChartAxisDateLabel(date: date, granularity: data.granularity)
-                    }
-                }
-            }
-        } else {
-            AxisMarks(values: .automatic) { value in
-                if let date = value.as(Date.self) {
-                    AxisValueLabel {
-                        ChartAxisDateLabel(date: date, granularity: data.granularity)
-                    }
-                }
-            }
-        }
+        ChartHelper.makeXAxis(
+            domain: xAxisDomain,
+            granularity: data.granularity,
+            calendar: context.calendar
+        )
     }
 
     private var yAxis: some AxisContent {
@@ -234,16 +257,20 @@ struct BarChartView: View {
         }
     }
 
+    private var xAxisDomain: ClosedRange<Date> {
+        ChartHelper.xAxisDomain(for: data, calendar: context.calendar)
+    }
+
     private var yAxisDomain: ClosedRange<Int> {
         // If all values are zero, show a reasonable range
         if data.maxValue == 0 {
             return 0...100
         }
         guard data.maxValue > 0 else {
-            return data.maxValue...0 // Just in case; should never happend
+            return data.maxValue...0 // Just in case; should never happen
         }
         // Add some padding above the max value
-        let padding = max(Int(Double(data.maxValue) * 0.66), 1)
+        let padding = max(Int(Double(data.maxValue) * 0.33), 1)
         return 0...(data.maxValue + padding)
     }
 
@@ -275,7 +302,6 @@ struct BarChartView: View {
                 onInteractionEnd: {
                     isDragging = false
                     selectedDataPoints = nil
-                    tappedDataPoint = nil
                 }
             )
         }
@@ -285,18 +311,12 @@ struct BarChartView: View {
         // Only handle tap if not dragging or long pressing
         guard !isDragging else { return }
 
-        guard let onDateSelected,
-              data.granularity != .hour,
-              let selection = getSelectedDataPoints(at: location, proxy: proxy, geometry: geometry),
-              selection.current?.value != 0 || selection.previous?.value != 0 else {
-            // Clear selection if tapping on empty area
-            tappedDataPoint = nil
+        guard let selection = getSelectedDataPoints(at: location, proxy: proxy, geometry: geometry),
+              let point = selection.current ?? selection.previous else {
+            selectedBarDate = nil
             return
         }
-        tappedDataPoint = selection.current ?? selection.previous
-        if let date = tappedDataPoint?.date {
-            onDateSelected(date)
-        }
+        selectedBarDate = (selectedBarDate == point.date) ? nil : point.date
     }
 
     private func getSelectedDataPoints(at location: CGPoint, proxy: ChartProxy, geometry: GeometryProxy) -> SelectedDataPoints? {
@@ -304,52 +324,63 @@ struct BarChartView: View {
             return nil
         }
 
-        let origin = geometry[frame].origin
-        let location = CGPoint(
-            x: location.x - origin.x,
-            y: location.y - origin.y
-        )
-        guard let date: Date = proxy.value(atX: location.x) else {
+        let plotFrame = geometry[frame]
+        let adjustedX = max(0, min(location.x - plotFrame.origin.x, plotFrame.width))
+        guard let date: Date = proxy.value(atX: adjustedX) else {
             return nil
         }
-        // Calling `proxy.value(atX: location.x)` returns dates with a second
-        // precision. But the data points are represented using the start of the
-        // period. The chart needs to offset the selection so that
-        // `SelectedDataPoints.compute` correctly finds the closest one.
-        let interval: TimeInterval = {
-            let now = Date()
-            let interval = context.calendar.date(byAdding: data.granularity.component, value: 1, to: now)
-            return (interval ?? now).timeIntervalSince(now)
-        }()
-
-        let offsetDate = date.addingTimeInterval(-(interval / 4))
-        return SelectedDataPoints.compute(for: offsetDate, data: data)
+        // `proxy.value(atX:)` returns a precise date at the tap location.
+        // Resolve it to the start of the containing calendar period so it
+        // matches data point dates (which are period starts).
+        guard let periodStart = context.calendar.dateInterval(of: data.granularity.component, for: date)?.start else {
+            return nil
+        }
+        return SelectedDataPoints.compute(for: periodStart, data: data)
     }
 }
 
 // MARK: - Preview
+#if DEBUG
 
 #Preview {
-    VStack(spacing: 20) {
-        BarChartView(
-            data: ChartData.mock(
-                metric: .visitors,
-                granularity: .day,
-                range: Calendar.demo.makeDateRange(for: .last7Days)
-            )
-        )
-        .frame(height: 250)
-        .padding()
-
-        BarChartView(
-            data: ChartData.mock(
-                metric: .likes,
-                granularity: .month,
-                range: Calendar.demo.makeDateRange(for: .thisYear)
-            )
-        )
-        .frame(height: 250)
+    ScrollView {
+        LazyVGrid(
+            columns: [
+                GridItem(.adaptive(minimum: 350, maximum: 450), spacing: 16)
+            ],
+            spacing: 16
+        ) {
+            ForEach(ChartData.previewExamples) { example in
+                previewCard(example.title) {
+                    BarChartView(data: example.data)
+                        .environment(\.showComparison, example.showComparison)
+                }
+            }
+        }
         .padding()
     }
-    .background(Color(.systemGroupedBackground))
+    .background(Constants.Colors.background)
 }
+
+private func previewCard<Content: View>(
+    _ title: String,
+    @ViewBuilder content: () -> Content
+) -> some View {
+    VStack(alignment: .leading, spacing: 8) {
+        Text(title)
+            .font(.caption.weight(.medium))
+            .foregroundStyle(.secondary)
+        content()
+            .padding(.horizontal)
+            .frame(height: 220)
+    }
+    .padding()
+    .background(Color(.systemBackground))
+    .clipShape(RoundedRectangle(cornerRadius: 6))
+    .overlay(
+        RoundedRectangle(cornerRadius: 6)
+            .stroke(Color(.separator), lineWidth: 0.5)
+    )
+}
+
+#endif

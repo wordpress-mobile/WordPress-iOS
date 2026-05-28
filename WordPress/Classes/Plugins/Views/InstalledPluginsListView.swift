@@ -44,7 +44,7 @@ struct InstalledPluginsListView: View {
                         Text(Strings.filterOptionInactive).tag(PluginFilter.inactive)
                     }
                 } label: {
-                    Image(systemName: "ellipsis.circle")
+                    Image(systemName: "ellipsis")
                 }
             }
         }
@@ -281,7 +281,6 @@ private final class InstalledPluginsListViewModel: ObservableObject {
         } catch {
             DDLogError("Failed to uninstall plugin: \(error)")
         }
-
     }
 }
 

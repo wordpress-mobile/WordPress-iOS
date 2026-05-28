@@ -103,7 +103,6 @@ struct UnifiedPrologueReaderContentView: View {
                             PostView(image: Appearance.thirdPostImage, title: Strings.thirdPostTitle, size: postWidth, font: smallFont)
                         }
                         .padding(spacingUnit / 2)
-
                     }
                     .disabled(true)
 

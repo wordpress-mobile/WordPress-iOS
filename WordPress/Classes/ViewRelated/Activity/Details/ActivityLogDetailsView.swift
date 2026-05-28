@@ -48,12 +48,18 @@ struct ActivityLogDetailsView: View {
 
                 // Actor info
                 VStack(alignment: .leading, spacing: 2) {
-                    Text(actor.displayName.isEmpty ? Activity.Strings.unknownUser : actor.displayName)
+                    Text(ActivityStringFormatting.actorName(for: actor))
                         .font(.headline)
 
-                    Text(actor.role.isEmpty ? actor.type.localizedCapitalized : actor.role.localizedCapitalized)
+                    Text(ActivityStringFormatting.actorRole(for: actor))
                         .font(.subheadline)
                         .foregroundStyle(.secondary)
+
+                    if let botName = ActivityStringFormatting.botName(for: actor) {
+                        Text(botName)
+                            .font(.caption)
+                            .foregroundStyle(.secondary)
+                    }
                 }
 
                 Spacer()
@@ -183,6 +189,15 @@ private struct ActivityHeaderView: View {
     NavigationView {
         ActivityLogDetailsView(
             activity: ActivityLogDetailsView.Mocks.mockLoginActivity,
+            blog: Blog.mock
+        )
+    }
+}
+
+#Preview("MCP Agent") {
+    NavigationView {
+        ActivityLogDetailsView(
+            activity: ActivityLogDetailsView.Mocks.mockMCPAgentActivity,
             blog: Blog.mock
         )
     }

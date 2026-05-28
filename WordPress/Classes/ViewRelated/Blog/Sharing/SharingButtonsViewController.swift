@@ -132,7 +132,7 @@ class SharingButtonsViewController: UITableViewController {
         configureMoreRows()
     }
 
-    /// Sets up the buttons section.  This section is sortable.
+    /// Sets up the buttons section. This section is sortable.
     ///
     private func setupButtonSection() -> SharingButtonsSection {
         let section = SharingButtonsSection()
@@ -273,8 +273,8 @@ class SharingButtonsViewController: UITableViewController {
         return SharingButtonsSection()
     }
 
-    /// Configures the twiter name section. When the twitter button is disabled,
-    /// the section header is empty, and there are no rows.  When the twitter button
+    /// Configures the X/Twitter name section. When the X/Twitter button is disabled,
+    /// the section header is empty, and there are no rows. When the twitter button
     /// is enabled. the section header and the row is shown.
     ///
     private func configureTwitterNameSection() {
@@ -295,7 +295,7 @@ class SharingButtonsViewController: UITableViewController {
             cell.textLabel?.text = self.twitterUsernameTitle
 
             var name = self.blog.settings!.sharingTwitterName
-            if name.count > 0 {
+            if !name.isEmpty {
                 name = "@\(name)"
             }
             cell.detailTextLabel?.text = name
@@ -406,7 +406,7 @@ class SharingButtonsViewController: UITableViewController {
                 switchCell.onChange = { [weak self] newValue in
                     guard let self else { return }
                     WPAnalytics.track(.sharingButtonsEditSharingButtonsToggled, properties: ["checked": newValue as Any], blog: self.blog)
-                    self.buttonsSection.editing = !self.buttonsSection.editing
+                    self.buttonsSection.editing.toggle()
                     self.updateButtonOrderAfterEditing()
                     self.reloadButtons()
                 }
@@ -415,14 +415,13 @@ class SharingButtonsViewController: UITableViewController {
         rows.append(row)
 
         if !buttonsSection.editing {
-            let buttonsToShow = buttons.filter { (button) -> Bool in
+            let buttonsToShow = buttons.filter { button -> Bool in
                 return button.enabled && button.visible
             }
 
             for button in buttonsToShow {
                 rows.append(sortableRowForButton(button))
             }
-
         } else {
 
             for button in buttons {
@@ -452,7 +451,7 @@ class SharingButtonsViewController: UITableViewController {
                     guard let self else { return }
                     WPAnalytics.track(.sharingButtonsEditMoreButtonToggled, properties: ["checked": newValue as Any], blog: self.blog)
                     self.updateButtonOrderAfterEditing()
-                    self.moreSection.editing = !self.moreSection.editing
+                    self.moreSection.editing.toggle()
                     self.reloadButtons()
                 }
             }
@@ -460,14 +459,13 @@ class SharingButtonsViewController: UITableViewController {
         rows.append(row)
 
         if !moreSection.editing {
-            let buttonsToShow = buttons.filter { (button) -> Bool in
+            let buttonsToShow = buttons.filter { button -> Bool in
                 return button.enabled && !button.visible
             }
 
             for button in buttonsToShow {
                 rows.append(sortableRowForButton(button))
             }
-
         } else {
 
             for button in buttons {
@@ -550,7 +548,7 @@ class SharingButtonsViewController: UITableViewController {
     }
 
     /// Syncs sharing buttons from the user's blog and reloads the button sections
-    /// when finished.  Fails silently if there is an error.
+    /// when finished. Fails silently if there is an error.
     ///
     private func syncSharingButtons() {
         let service = SharingService(coreDataStack: ContextManager.shared)
@@ -564,7 +562,7 @@ class SharingButtonsViewController: UITableViewController {
     }
 
     /// Sync sharing settings from the user's blog and reloads the setting sections
-    /// when finished.  Fails silently if there is an error.
+    /// when finished. Fails silently if there is an error.
     ///
     private func syncSharingSettings() {
         let service = BlogService(coreDataStack: ContextManager.shared)
@@ -595,13 +593,13 @@ class SharingButtonsViewController: UITableViewController {
     /// Updates rows after editing.
     ///
     private func updateButtonOrderAfterEditing() {
-        let buttonsForButtonSection = buttons.filter { (btn) -> Bool in
+        let buttonsForButtonSection = buttons.filter { btn -> Bool in
             return btn.enabled && btn.visible
         }
-        let buttonsForMoreSection = buttons.filter { (btn) -> Bool in
+        let buttonsForMoreSection = buttons.filter { btn -> Bool in
             return btn.enabled && !btn.visible
         }
-        let remainingButtons = buttons.filter { (btn) -> Bool in
+        let remainingButtons = buttons.filter { btn -> Bool in
             return !btn.enabled
         }
 
@@ -697,7 +695,7 @@ class SharingButtonsViewController: UITableViewController {
         let controller = SettingsTextViewController(text: text, placeholder: placeholder, hint: hint)
 
         controller.title = labelTitle
-        controller.onValueChanged = {[unowned self] (value) in
+        controller.onValueChanged = {[unowned self] value in
             guard value != self.blog.settings!.sharingLabel else {
                 return
             }
@@ -709,7 +707,7 @@ class SharingButtonsViewController: UITableViewController {
         navigationController?.pushViewController(controller, animated: true)
     }
 
-    /// Called when the user taps the button style row.  Shows a controller to
+    /// Called when the user taps the button style row. Shows a controller to
     /// choose from available button styles.
     ///
     private func handleEditButtonStyle() {
@@ -731,7 +729,7 @@ class SharingButtonsViewController: UITableViewController {
         ]
 
         let controller = SettingsSelectionViewController(dictionary: dict)
-        controller?.onItemSelected = { [unowned self] (selected) in
+        controller?.onItemSelected = { [unowned self] selected in
             if let str = selected as? String {
                 if self.blog.settings!.sharingButtonStyle == str {
                     return
@@ -740,7 +738,6 @@ class SharingButtonsViewController: UITableViewController {
                 self.blog.settings!.sharingButtonStyle = str
                 self.saveBlogSettingsChanges(true)
             }
-
         }
         navigationController?.pushViewController(controller!, animated: true)
     }
@@ -755,7 +752,7 @@ class SharingButtonsViewController: UITableViewController {
         let controller = SettingsTextViewController(text: text, placeholder: placeholder, hint: hint)
 
         controller.title = twitterUsernameTitle
-        controller.onValueChanged = {[unowned self] (value) in
+        controller.onValueChanged = {[unowned self] value in
             if value == self.blog.settings!.sharingTwitterName {
                 return
             }
@@ -773,7 +770,7 @@ class SharingButtonsViewController: UITableViewController {
     /// Represents a section in the sharinging management table view.
     ///
     class SharingButtonsSection {
-        var rows: [SharingButtonsRow] = [SharingButtonsRow]()
+        var rows = [SharingButtonsRow]()
         var headerText: String?
         var footerText: String?
         var editing = false
@@ -788,7 +785,7 @@ class SharingButtonsViewController: UITableViewController {
         var configureCell: SharingButtonsCellConfig?
     }
 
-    /// A sortable switch row.  By convention this is only used for sortable button rows
+    /// A sortable switch row. By convention this is only used for sortable button rows
     ///
     class SortableSharingSwitchRow: SharingButtonsRow {
         var buttonID: String
@@ -905,7 +902,7 @@ extension SharingButtonsViewController {
         let diff = destinationIndexPath.row - sourceIndexPath.row
         let movedRow = sourceSection.rows[sourceIndexPath.row] as! SortableSharingSwitchRow
 
-        let movedButton = buttons.filter { (button) -> Bool in
+        let movedButton = buttons.filter { button -> Bool in
             return button.buttonID == movedRow.buttonID
         }
         let theButton = movedButton.first!

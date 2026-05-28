@@ -15,8 +15,6 @@ extension BuildSettings {
         appURLScheme: "xcpreview",
         jetpackAppURLScheme: "jetpack",
         about: ProductAboutDetails(
-            twitterHandle: "@wordpress",
-            twitterURL: URL(string: "www.example.com")!,
             blogURL: URL(string: "www.example.com")!
         ),
         zendeskSourcePlatform: "zen",

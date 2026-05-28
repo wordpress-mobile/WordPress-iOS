@@ -11,5 +11,4 @@ extension LikeUserPreferredBlog {
     @NSManaged public var iconUrl: String
     @NSManaged public var blogID: Int64
     @NSManaged public var user: LikeUser
-
 }

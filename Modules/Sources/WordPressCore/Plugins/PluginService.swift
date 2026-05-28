@@ -181,9 +181,9 @@ private extension PluginService {
 
     func checkPluginUpdates(plugins: [PluginWithViewContext]) async throws {
         let updateCheck = try await wpOrgClient.checkPluginUpdates(
-            // Use a fairely recent version if the actual version is unknown.
+            // Use a fairly recent version if the actual version is unknown.
             wordpressCoreVersion: wordpressCoreVersion ?? "6.6",
-            siteUrl: ParsedUrl.parse(input: client.rootUrl),
+            siteUrl: ParsedUrl.parse(input: client.siteURL.absoluteString),
             plugins: plugins
         )
         let updateAvailable = updateCheck.plugins

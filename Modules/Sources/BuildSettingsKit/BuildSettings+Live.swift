@@ -16,8 +16,6 @@ extension BuildSettings {
         appURLScheme = bundle.infoValue(forKey: "WPAppURLScheme")
         jetpackAppURLScheme = bundle.infoValue(forKey: "WPJetpackAppURLScheme")
         about = ProductAboutDetails(
-            twitterHandle: bundle.infoValue(forKey: "WPProductTwitterHandle"),
-            twitterURL: bundle.urlValue(forKey: "WPProductTwitterURL"),
             blogURL: bundle.urlValue(forKey: "WPProductBlogURL")
         )
         zendeskSourcePlatform = bundle.infoValue(forKey: "WPZendeskSourcePlatform")

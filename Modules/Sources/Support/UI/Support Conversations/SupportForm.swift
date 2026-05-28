@@ -190,7 +190,6 @@ private extension SupportForm {
                         }
                     }
                 }.listRowInsets(.zero)
-
             }
         }.padding(.bottom, 10)
     }

@@ -1,4 +1,4 @@
-/* Translation-Revision-Date: 2026-01-28 10:54:11+0000 */
+/* Translation-Revision-Date: 2026-03-24 11:55:05+0000 */
 /* Plural-Forms: nplurals=1; plural=0; */
 /* Generator: GlotPress/4.0.3 */
 /* Language: zh_TW */
@@ -1874,7 +1874,6 @@ translators: %s: Block name e.g. \"Image block\" */
    Done. Action.
    Menu button title for finishing editing the Menu name.
    Tapping a button with this label allows the user to exit the Site Creation flow
-   Title for a Done button.
    Title for button that will dismiss this view
    Title for the button that will dismiss this view. */
 "Done" = "完成";
@@ -3241,9 +3240,6 @@ translators: %s: Block name e.g. \"Image block\" */
 /* Text displayed while loading the scan section for a site */
 "Loading Scan..." = "正在載入掃瞄…";
 
-/* Displayed while a comment is being loaded. */
-"Loading comment..." = "載入留言中…";
-
 /* Menus label text displayed when a menu is loading. */
 "Loading menu..." = "正在載入選單...";
 
@@ -3330,9 +3326,6 @@ translators: %s: Block name e.g. \"Image block\" */
 
 /* No comment provided by engineer. */
 "Main Navigation" = "主導覽";
-
-/* Explanation for the option to enable theme styles */
-"Make the block editor look like your theme." = "讓區塊編輯器看起來像你的佈景主題。";
 
 /* No comment provided by engineer. */
 "Make your content stand out by adding images, gifs, videos, and embedded media to your pages." = "為頁面新增圖片、GIF、影片和嵌入式媒體，讓你的內容脫穎而出。";
@@ -7023,6 +7016,9 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Button title for restoring a backup */
 "activityDetail.restore.button" = "還原";
 
+/* Shows the MCP client used for an activity. %1$@ is the MCP client name (e.g. Claude). */
+"activityDetail.section.agent" = "透過 %1$@";
+
 /* Section title for restore site actions */
 "activityDetail.section.restoreSite" = "還原網站";
 
@@ -7225,6 +7221,9 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Feature name for the block editor in application password required prompt */
 "applicationPasswordRequired.feature.blockEditor" = "區塊編輯器";
 
+/* Feature name for managing custom post types in the app */
+"applicationPasswordRequired.feature.customPosts" = "自訂文章類型";
+
 /* Feature name for managing terms and taxonomies in the app */
 "applicationPasswordRequired.feature.customTaxonomies" = "分類法管理";
 
@@ -7385,6 +7384,27 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Action shown in a bottom notice to dismiss it. */
 "blogDashboard.dismiss" = "關閉";
 
+/* Error message shown when the active theme cannot be found for a site. */
+"blogDetails.activeThemeNotFound.errorDescription" = "找不到這個網站的使用中佈景主題。";
+
+/* Button title to connect Jetpack in XML-RPC disabled alert */
+"blogDetails.xmlrpcDisabled.alert.connectJetpack" = "連結 Jetpack";
+
+/* Description explaining options to restore functionality when XML-RPC is disabled */
+"blogDetails.xmlrpcDisabled.alert.description" = "你的網站已停用 XML-RPC。 應用程式中的部分功能目前需要 XML-RPC。 連結 Jetpack 或啟用 XML-RPC 以存取所有功能。";
+
+/* Button title to learn more about XML-RPC being disabled */
+"blogDetails.xmlrpcDisabled.alert.learnMore" = "深入了解";
+
+/* Title for the XML-RPC disabled alert */
+"blogDetails.xmlrpcDisabled.alert.title" = "已停用 XML-RPC";
+
+/* Subtitle for the XML-RPC disabled card on blog details */
+"blogDetails.xmlrpcDisabled.card.subtitle" = "部分功能可能受到限制";
+
+/* Title for the XML-RPC disabled card on blog details */
+"blogDetails.xmlrpcDisabled.card.title" = "已停用 XML-RPC";
+
 /* Badge title in site list */
 "blogList.siteBadge.staging" = "預備";
 
@@ -7431,7 +7451,7 @@ Note that the word 'go' here should have a closer meaning to 'start' rather than
 /* Title of the set goals button in the Blogging Reminders Settings flow. */
 "bloggingRemindersPrompt.intro.continueButton" = "設定提醒";
 
-/* Description on the first screen of the Blogging Reminders Settings flow called aftet post publishing. */
+/* Description on the first screen of the Blogging Reminders Settings flow called after post publishing. */
 "bloggingRemindersPrompt.intro.details" = "在你想張貼文章的日期設定網誌提醒。";
 
 /* Title of the Blogging Reminders Settings screen. */
@@ -7842,6 +7862,111 @@ Example: Reply to Pamela Nguyen */
 /* Create Sheet button title */
 "createSheet.post" = "文章";
 
+/* Error message shown when the post was modified by another user while editing */
+"customPostEditor.error.conflict.message" = "你嘗試儲存的文章已在此期間變更。";
+
+/* Menu action to promote a post with Blaze */
+"customPostList.action.blaze" = "使用 Blaze 進行宣傳";
+
+/* Menu action to view post comments */
+"customPostList.action.comments" = "留言數";
+
+/* Menu action to permanently delete a trashed post */
+"customPostList.action.deletePermanently" = "永久刪除";
+
+/* Menu action to change a post's status to draft */
+"customPostList.action.moveToDraft" = "移至草稿";
+
+/* Menu action to move a post to trash */
+"customPostList.action.moveToTrash" = "移至垃圾桶";
+
+/* Menu action to publish a draft or pending post */
+"customPostList.action.publish" = "發表";
+
+/* Menu action to open post settings */
+"customPostList.action.settings" = "設定";
+
+/* Menu action to view post statistics */
+"customPostList.action.stats" = "統計資料";
+
+/* Accessibility label for the author filter button in the custom post list */
+"customPostList.authorFilter.accessibilityLabel" = "作者篩選條件";
+
+/* Menu item to show posts from all authors in the custom post list */
+"customPostList.authorFilter.everyone" = "所有人";
+
+/* Menu item to show only the current user's posts in the custom post list */
+"customPostList.authorFilter.mine" = "屬於目前登入使用者";
+
+/* Accessibility value when the author filter shows posts from all authors */
+"customPostList.authorFilter.showingEveryone" = "顯示所有人的文章";
+
+/* Accessibility value when the author filter shows only the current user's posts */
+"customPostList.authorFilter.showingMine" = "只顯示我的文章";
+
+/* Badge label shown on the homepage row in the custom post list for pages */
+"customPostList.badge.homepage" = "首頁";
+
+/* Badge shown in the post list for sticky posts */
+"customPostList.badge.sticky" = "置頂";
+
+/* Message for the confirmation alert when permanently deleting a post */
+"customPostList.deleteConfirmation.message" = "此動作無法復原。";
+
+/* Title for the confirmation alert when permanently deleting a post */
+"customPostList.deleteConfirmation.title" = "是否要永久刪除？";
+
+/* Empty state message when no custom posts exist. %1$@ is the post type name (e.g., 'Podcasts', 'Products'). */
+"customPostList.emptyState.message" = "沒有 %1$@";
+
+/* Message for the confirmation alert when trashing a published post */
+"customPostList.trashConfirmation.message" = "這篇文章已發表，將向訪客顯示。 你確定要移至垃圾桶？";
+
+/* Title for the confirmation alert when trashing a published post */
+"customPostList.trashConfirmation.title" = "要移至垃圾桶嗎？";
+
+/* Placeholder title for posts without a title */
+"customPostList.untitled" = "(無標題)";
+
+/* Title for the parent page picker screen for custom post types */
+"customPostParentPicker.title" = "上層頁面";
+
+/* Option to set a post as top level (no parent) */
+"customPostParentPicker.topLevel" = "最上層";
+
+/* Description for the top level option in the parent page picker, indicating this page will have no parent */
+"customPostParentPicker.topLevel.description" = "沒有「家長」頁面";
+
+/* Tab title for showing all posts regardless of status */
+"customPostTab.all" = "全部";
+
+/* Tab title for draft posts */
+"customPostTab.drafts" = "草稿";
+
+/* Tab title for published posts */
+"customPostTab.published" = "已發表";
+
+/* Tab title for scheduled posts */
+"customPostTab.scheduled" = "已排程";
+
+/* Menu item title for sending feedback on the custom post types screen */
+"customPostTab.sendFeedback" = "傳送意見回饋";
+
+/* Tab title for trashed posts */
+"customPostTab.trash" = "垃圾桶";
+
+/* Empty state message when there are no custom post types to display */
+"customPostTypes.emptyState.message" = "沒有自訂文章類型";
+
+/* Accessibility label for the button to pin a custom post type */
+"customPostTypes.pin.accessibilityLabel" = "釘選";
+
+/* Title for the Custom Post Types screen */
+"customPostTypes.title" = "更多";
+
+/* Accessibility label for the button to unpin a custom post type */
+"customPostTypes.unpin.accessibilityLabel" = "取消釘選";
+
 /* Customize Insights description */
 "customizeInsightsCell.content" = "建立你專屬的自訂儀表板，並選擇要查看的報告。 把重心放在你最關心的資料。";
 
@@ -7977,11 +8102,17 @@ Example: Reply to Pamela Nguyen */
 /* Boolean User Defaults Debug Menu screen title */
 "debugMenu.booleanUserDefaults.title" = "使用者預設布林值";
 
+/* Debug Menu label for image cache size */
+"debugMenu.caches.imageCache" = "圖片快取";
+
 /* Feature flags menu item */
 "debugMenu.featureFlags" = "功能旗標";
 
 /* Debug Menu action for TipKit */
 "debugMenu.hideAllTips" = "隱藏所有秘訣";
+
+/* Debug Menu item title */
+"debugMenu.item.logs" = "記錄";
 
 /* Title of the screen that allows the user to change the Reader CSS URL for debug builds */
 "debugMenu.readerCellTitle" = "讀取器 CSS URL";
@@ -8013,6 +8144,9 @@ Example: Reply to Pamela Nguyen */
 
 /* Debug Menu action for TipKit */
 "debugMenu.resetTipKitData" = "重設資料";
+
+/* Debug Menu section title */
+"debugMenu.section.caches" = "快取";
 
 /* Debug Menu section title */
 "debugMenu.section.logging" = "記錄";
@@ -8714,8 +8848,14 @@ Example: Reply to Pamela Nguyen */
 /* Title of the primary button shown after the Jetpack plugin has been installed. Tapping on the button dismisses the installation screen. */
 "jetpack.install-flow.success.primaryButtonText" = "完成";
 
+/* Message asking the user to install Jetpack to access all app features */
+"jetpack.install.allFeatures.description" = "若要解鎖所有應用程式功能，請安裝 Jetpack 外掛程式。";
+
 /* Title of a button for connecting user account to Jetpack. */
 "jetpack.install.connectUser.button.title" = "連結使用者帳號";
+
+/* Message asking the user to connect Jetpack to access all app features */
+"jetpack.install.connectUser.bypassXMLRPC.description" = "若要解鎖所有應用程式功能，請將 Jetpack 外掛程式連結至你的使用者帳號。";
 
 /* Message asking the user if they want to set up Jetpack from notifications */
 "jetpack.install.connectUser.notifications.description" = "若要在手機上收到來自 WordPress 網站的實用通知，必須連結你的使用者帳號。";
@@ -8997,6 +9137,9 @@ Example: Reply to Pamela Nguyen */
 /* Last 12 weeks (84 days) date range */
 "jetpackStats.calendar.last12Weeks" = "過去 12 週";
 
+/* Last 14 days date range */
+"jetpackStats.calendar.last14Days" = "過去 14 天";
+
 /* Last 28 days date range */
 "jetpackStats.calendar.last28Days" = "過去 28 天";
 
@@ -9059,6 +9202,9 @@ Example: Reply to Pamela Nguyen */
 
 /* Line chart type */
 "jetpackStats.chart.lineChart" = "折線圖";
+
+/* Label for aggregated 'Other' segment in pie charts */
+"jetpackStats.chart.other" = "其他";
 
 /* Show chart data menu item */
 "jetpackStats.chart.showData" = "顯示資料";
@@ -9168,9 +9314,6 @@ Example: Reply to Pamela Nguyen */
 /* Option to turn off period comparison */
 "jetpackStats.datePicker.comparisonOff" = "無比較值";
 
-/* Title for custom date range picker */
-"jetpackStats.datePicker.customRange" = "自訂範圍";
-
 /* Menu item for custom date range picker */
 "jetpackStats.datePicker.customRangeMenu" = "自訂範圍...";
 
@@ -9189,6 +9332,9 @@ Example: Reply to Pamela Nguyen */
 /* Label for quick period selection */
 "jetpackStats.datePicker.quickPeriodsForStartDate" = "開始日的快速期間";
 
+/* Title for custom date range picker */
+"jetpackStats.datePicker.selectRange" = "選取範圍";
+
 /* Site time zone header */
 "jetpackStats.datePicker.siteTimeZone" = "網站時區";
 
@@ -9204,6 +9350,15 @@ Example: Reply to Pamela Nguyen */
 /* Title for stats date range control tip */
 "jetpackStats.dateRangeTip.title" = "瀏覽不同時間的資料";
 
+/* Device breakdown by browser */
+"jetpackStats.deviceBreakdowns.browser" = "瀏覽器";
+
+/* Device breakdown by platform/OS */
+"jetpackStats.deviceBreakdowns.operatingSystem" = "作業系統";
+
+/* Device breakdown by screen size */
+"jetpackStats.deviceBreakdowns.screensize" = "畫面大小";
+
 /* Section title for the list of child links */
 "jetpackStats.externalLinkDetails.childLinks" = "子連結";
 
@@ -9212,6 +9367,12 @@ Example: Reply to Pamela Nguyen */
 
 /* Title for the external link details screen */
 "jetpackStats.externalLinkDetails.title" = "外部連結";
+
+/* Button to explore plans when a feature is gated */
+"jetpackStats.featureGate.explorePlans" = "探索方案";
+
+/* Message shown when a stats feature is gated behind a paid plan */
+"jetpackStats.featureGate.message" = "升級方案即可存取進階分析";
 
 /* Automatic granularity option */
 "jetpackStats.granularity.automatic" = "自動";
@@ -9327,6 +9488,9 @@ Example: Reply to Pamela Nguyen */
 /* Clicks data type (external links) */
 "jetpackStats.siteDataTypes.clicks" = "點擊數";
 
+/* Devices data type */
+"jetpackStats.siteDataTypes.devices" = "裝置";
+
 /* File downloads data type */
 "jetpackStats.siteDataTypes.fileDownloads" = "檔案下載";
 
@@ -9402,6 +9566,9 @@ Example: Reply to Pamela Nguyen */
 /* Table column title for Top List card */
 "jetpackStats.topListColumnTitle.clicks" = "外部連結";
 
+/* Table column title for Devices Top List card */
+"jetpackStats.topListColumnTitle.devices" = "裝置";
+
 /* Table column title for Top List card */
 "jetpackStats.topListColumnTitle.fileDownloads" = "檔案";
 
@@ -9417,8 +9584,65 @@ Example: Reply to Pamela Nguyen */
 /* Table column title for Top List card */
 "jetpackStats.topListColumnTitle.searchTerms" = "標籤";
 
+/* Table column title for UTM Top List card */
+"jetpackStats.topListColumnTitle.utm" = "行銷活動";
+
 /* Table column title for Top List card */
 "jetpackStats.topListColumnTitle.videos" = "影片";
+
+/* Plural post count for UTM metrics. %1$d is the number. */
+"jetpackStats.utmMetricDetails.postCount.plural" = "%1$d 篇文章";
+
+/* Singular post count for UTM metrics. %1$d is the number. */
+"jetpackStats.utmMetricDetails.postCount.singular" = "%1$d 篇文章";
+
+/* Title for the UTM campaign details screen */
+"jetpackStats.utmMetricDetails.title" = "UTM 行銷活動";
+
+/* Section title for top posts from this UTM campaign */
+"jetpackStats.utmMetricDetails.topPosts" = "熱門文章";
+
+/* UTM parameter for campaign only */
+"jetpackStats.utmParamGroupings.campaign" = "行銷活動";
+
+/* UTM parameter for medium only */
+"jetpackStats.utmParamGroupings.medium" = "中";
+
+/* UTM parameter for source only */
+"jetpackStats.utmParamGroupings.source" = "來源";
+
+/* Number of ads served. %@ is the ads count. */
+"jetpackStats.wordAds.adsServed.count" = "廣告投放數：%@";
+
+/* Total earnings from WordAds */
+"jetpackStats.wordAds.earnings" = "收益";
+
+/* Button to learn more about WordAds earnings */
+"jetpackStats.wordAds.learnMore" = "深入了解";
+
+/* Message shown when there are no payment records */
+"jetpackStats.wordAds.noPaymentsYet" = "尚未付款";
+
+/* Outstanding amount owed from WordAds */
+"jetpackStats.wordAds.outstanding" = "待付費";
+
+/* Amount paid out from WordAds earnings */
+"jetpackStats.wordAds.paid" = "已付費";
+
+/* Title for payment history card and screen */
+"jetpackStats.wordAds.paymentsHistory" = "付款記錄";
+
+/* Title for WordAds total earnings card */
+"jetpackStats.wordAds.totalEarnings" = "總收益";
+
+/* Number of ads served */
+"jetpackStats.wordAdsMetrics.adsServed" = "廣告投放數";
+
+/* Average cost per mille (thousand impressions) */
+"jetpackStats.wordAdsMetrics.averageCPM" = "平均 CPM";
+
+/* Revenue from ads */
+"jetpackStats.wordAdsMetrics.revenue" = "收益";
 
 /* Title for a call-to-action button on the Jetpack install card. */
 "jetpackinstallcard.button.learn" = "深入瞭解";
@@ -10167,6 +10391,9 @@ Example: Reply to Pamela Nguyen */
 /* A title for the log severity level */
 "phpLogs.severityWarning" = "警告";
 
+/* Error message when a pinned custom post type cannot be found. %1$@ is the post type name. */
+"pinnedPostType.error.notFound" = "此網站無法使用「%1$@」。";
+
 /* Title for the plan selection view */
 "planSelection.title" = "方案";
 
@@ -10281,13 +10508,15 @@ Example: Reply to Pamela Nguyen */
 /* Navigation title for post discussion settings */
 "postDiscussion.title" = "討論";
 
-/* Button in an alert confirming discaring changes */
+/* Button in an alert confirming discarding changes
+   Button in an alert confirming discaring changes */
 "postEditor.closeConfirmationAlert.discardChanges" = "捨棄變更";
 
 /* Button in an alert confirming discaring a new draft */
 "postEditor.closeConfirmationAlert.discardDraft" = "捨棄草稿";
 
-/* Button to keep the changes in an alert confirming discaring changes */
+/* Button to keep the changes in an alert confirming discarding changes
+   Button to keep the changes in an alert confirming discaring changes */
 "postEditor.closeConfirmationAlert.keepEditing" = "繼續編輯";
 
 /* Button in an alert confirming saving a new draft */
@@ -10335,6 +10564,9 @@ Example: Reply to Pamela Nguyen */
 /* A message for a snackbar informing the user that some media files requires their attention */
 "postEditor.postHasFailingMediaUploadsSnackbar.message" = "無法上傳部分媒體項目";
 
+/* Title for the publish button in the post editor navigation bar */
+"postEditor.publishButton.title" = "發表";
+
 /* Editor, notice for successful recovery a trashed post */
 "postEditor.recoverTrashedPost.postRecoveredNoticeTitle" = "文章已還原為草稿";
 
@@ -10355,6 +10587,9 @@ Example: Reply to Pamela Nguyen */
 
 /* Saving draft to generate a preview (status message */
 "postEditor.savingDraftForPreview" = "正在儲存草稿...";
+
+/* Title for the update button in the post editor navigation bar */
+"postEditor.updateButton.title" = "更新";
 
 /* Empty state description when no post formats are available */
 "postFormatPicker.emptyState.description" = "網站未設定文章格式。";
@@ -10627,6 +10862,9 @@ Example: Reply to Pamela Nguyen */
 /* Section header for More Options in Post Settings. Should use the same translation as core WP. */
 "postSettings.moreOptions.header" = "更多選項";
 
+/* The title of the Post Settings screen for custom post types. %1$@ is the post type name. */
+"postSettings.navigationTitle.customPostType" = "「%1$@」設定";
+
 /* The title of the Page Settings screen. */
 "postSettings.navigationTitle.page" = "頁面設定";
 
@@ -10680,6 +10918,9 @@ Example: Reply to Pamela Nguyen */
 
 /* Placeholder value for a publishing date in the prepublishing sheet when the date is not selected */
 "postSettings.publishDateImmediately" = "立即";
+
+/* Error message shown when saving post settings via REST API fails */
+"postSettings.saveFailed.message" = "無法儲存變更";
 
 /* Section header for General settings in Post Settings */
 "postSettings.section.general" = "一般";
@@ -10756,6 +10997,9 @@ Example: Reply to Pamela Nguyen */
 /* Navigation bar title of the Post Stats screen */
 "postStats.title" = "文章統計資料";
 
+/* Post status title used in different contexts */
+"postStatus.any.title" = "任何";
+
 /* Post status title */
 "postStatus.deleted.details" = "已永久刪除";
 
@@ -10765,35 +11009,35 @@ Example: Reply to Pamela Nguyen */
 /* Post status details */
 "postStatus.draft.details" = "還沒準備好發表";
 
-/* Post status title */
+/* Post status title used in different contexts */
 "postStatus.draft.title" = "草稿";
 
 /* Post status details */
 "postStatus.pending.details" = "待發表審核";
 
-/* Post status title */
+/* Post status title used in different contexts */
 "postStatus.pending.title" = "待確認";
 
-/* Post status title */
+/* Post status title used in different contexts */
 "postStatus.private.title" = "私人";
 
 /* Post status details */
 "postStatus.published.details" = "所有人都能檢視";
 
-/* Post status title */
+/* Post status title used in different contexts */
 "postStatus.published.title" = "已發表";
 
 /* Post status details */
 "postStatus.scheduled.details" = "在所選日期自動發表";
 
-/* Post status title */
+/* Post status title used in different contexts */
 "postStatus.scheduled.title" = "已排程";
 
 /* Post status title */
 "postStatus.trash.details" = "已移至垃圾桶但尚未刪除";
 
-/* Post status title */
-"postStatus.trash.title" = "已移至垃圾桶";
+/* Post status title used in different contexts */
+"postStatus.trash.title" = "垃圾桶";
 
 /* Button to add a new taxonomy term. %1$@ is the taxonomy name (e.g., 'tags', 'categories'). */
 "postTags.addTag" = "新增「%1$@」";
@@ -11307,9 +11551,6 @@ Example: given a notice format "Following %@" and empty site name, this will be 
 /* Context menu action */
 "reader.postContextMenu.blockUser" = "封鎖使用者";
 
-/* Context menu action (placeholder value when blog name not available – should never happen) */
-"reader.postContextMenu.blogDetails" = "網誌詳細資料";
-
 /* Context menu action */
 "reader.postContextMenu.manageNotifications" = "管理通知";
 
@@ -11326,9 +11567,6 @@ Example: given a notice format "Following %@" and empty site name, this will be 
 "reader.postContextMenu.reportUser" = "檢舉使用者";
 
 /* Context menu action */
-"reader.postContextMenu.showBlog" = "前往「網誌」";
-
-/* Context menu action */
 "reader.postContextMenu.summarize" = "建立摘要";
 
 /* Context menu action to translate post content */
@@ -11336,6 +11574,9 @@ Example: given a notice format "Following %@" and empty site name, this will be 
 
 /* Context menu action */
 "reader.postContextMenu.viewInBrowser" = "在瀏覽器中檢視";
+
+/* Context menu action */
+"reader.postContextMenu.viewSite" = "檢視網站";
 
 /* Reader post details view placeholder when blog name not avail */
 "reader.postDetails.blog" = "網誌";
@@ -11729,6 +11970,9 @@ Example: given a notice format "Following %@" and empty site name, this will be 
 "shared.button.edit" = "編輯";
 
 /* A shared button title used in different contexts */
+"shared.button.notNow" = "立即";
+
+/* A shared button title used in different contexts */
 "shared.button.ok" = "確定";
 
 /* A shared button title used in different contexts */
@@ -12082,12 +12326,14 @@ Example: given a notice format "Following %@" and empty site name, this will be 
 /* Title for site switcher screen */
 "sitePicker.title" = "我的網站";
 
-/* The plugin author displayed in the plugins list. The first argument is plugin author name
-   The plugin version displayed in the plugins list. The first argument is plugin version */
+/* The plugin author displayed in the plugins list. The first argument is plugin author name */
 "sitePluginsList.item.author" = "作者：%@";
 
 /* The message displayed when a plugin has no description */
 "sitePluginsList.item.noDescriptionAvailable" = "外掛程式作者未提供此外掛程式的說明。";
+
+/* The plugin version displayed in the plugins list. The first argument is plugin version */
+"sitePluginsList.item.version" = "版本：%@";
 
 /* Button to activate a plugin */
 "sitePluginsList.itemAction.activate" = "啟用";
@@ -12103,6 +12349,15 @@ Example: given a notice format "Following %@" and empty site name, this will be 
 
 /* Title for screen to select the privacy options for a blog */
 "siteSettings.privacy.title" = "隱私權";
+
+/* Explanation for why the 'Use theme styles' toggle is disabled when the site doesn't have a block theme */
+"siteSettings.themeStyles.footer.blockThemeSuggested" = "網站並未使用區塊佈景主題，因此編輯器可能未與你的內容正確相符。 如果顯示效果不理想，你可以停用編輯器樣式。";
+
+/* Explanation for the option to enable theme styles when the feature is available */
+"siteSettings.themeStyles.footer.enabled" = "讓區塊編輯器的外觀與佈景主題相配。";
+
+/* Explanation for why the 'Use theme styles' toggle is disabled when the site doesn't have the Gutenberg plugin */
+"siteSettings.themeStyles.footer.gutenbergRequired" = "在網站安裝 Gutenberg 外掛程式，以啟用佈景主題樣式支援。";
 
 /* Format string for adding a new taxonomy term. %1$@ is the taxonomy name. */
 "siteTaxonomy.addNew.format" = "新增「%1$@」";
@@ -12719,15 +12974,6 @@ Example: given a notice format "Following %@" and empty site name, this will be 
 
 /* Title for the time zone selector */
 "timeZoneSelector.title" = "時區";
-
-/* Action button title to enable new stats from tip */
-"tips.newStats.action" = "立即啟用";
-
-/* Tip for new stats feature */
-"tips.newStats.message" = "體驗外觀時尚且效能強大的統計功能新面貌。 隨時可以切換回原本的介面。";
-
-/* Tip for new stats feature */
-"tips.newStats.title" = "試用新版統計功能";
 
 /* Tip for sidebar */
 "tips.sidebar.message" = "向右滑動即可存取網站、閱讀器、通知和個人檔案。";

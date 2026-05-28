@@ -18,7 +18,15 @@ public struct SiteTaxonomy: Codable {
     public var labels: LocalizedLabels
     public var supportedPostTypes: [String] = []
 
-    var restBase: String
+    public var restBase: String
+
+    init(slug: String, name: String, restBase: String, supportedPostTypes: [String] = []) {
+        self.slug = slug
+        self.name = name
+        self.restBase = restBase
+        self.labels = .init()
+        self.supportedPostTypes = supportedPostTypes
+    }
 
     public init(details: TaxonomyTypeDetailsWithEditContext) {
         self.slug = details.slug

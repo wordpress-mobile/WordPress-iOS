@@ -9,7 +9,7 @@ import WordPressShared
     // MARK: - Properties
     typealias SiteInsights = [String: [Int]]
     private let userDefaultsInsightTypesKey = "StatsInsightTypes"
-    @objc public static var sharedInstance: SiteStatsInformation = SiteStatsInformation()
+    @objc public static var sharedInstance = SiteStatsInformation()
     private override init() {}
 
     @objc public var siteID: NSNumber?

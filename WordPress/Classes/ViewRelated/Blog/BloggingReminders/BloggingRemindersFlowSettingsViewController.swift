@@ -1,3 +1,4 @@
+import SwiftUI
 import UIKit
 import WordPressData
 import WordPressKit
@@ -260,7 +261,7 @@ final class BloggingRemindersFlowSettingsViewController: UIViewController {
     }
 
     required init?(coder: NSCoder) {
-        // This VC is designed to be instantiated programmatically.  If we ever need to initialize this VC
+        // This VC is designed to be instantiated programmatically. If we ever need to initialize this VC
         // from a coder, we can implement support for it - but I don't think it's necessary right now.
         // - diegoreymendez
         fatalError("Use init(tracker:) instead")
@@ -335,13 +336,13 @@ final class BloggingRemindersFlowSettingsViewController: UIViewController {
     ///
     /// - Parameters:
     ///     - showPushPrompt: if `true` the PN authorization prompt VC will be shown.
-    ///         When `false`, the VC won't be shown.  This is useful because this method
-    ///         can also be called when the refrenced VC is already on-screen.
+    ///         When `false`, the VC won't be shown. This is useful because this method
+    ///         can also be called when the referenced VC is already on-screen.
     ///
     private func scheduleReminders(showPushPrompt: Bool = true) {
         let schedule: BloggingRemindersScheduler.Schedule
 
-        if weekdays.count > 0 {
+        if !weekdays.isEmpty {
             schedule = .weekdays(weekdays)
         } else {
             schedule = .none
@@ -363,7 +364,7 @@ final class BloggingRemindersFlowSettingsViewController: UIViewController {
                 DispatchQueue.main.async { [weak self] in
                     let completion = {
                         self?.delegate?.didSetUpBloggingReminders()
-                        self?.pushCompletionViewController()
+                        self?.showCompletionViewController()
                         self?.button.isEnabled = true
                     }
 
@@ -400,7 +401,6 @@ final class BloggingRemindersFlowSettingsViewController: UIViewController {
             }
         }
     }
-
 }
 
 // MARK: - Navigation
@@ -416,9 +416,42 @@ private extension BloggingRemindersFlowSettingsViewController {
         navigationController?.pushViewController(viewController, animated: true)
     }
 
-    func pushCompletionViewController() {
-        let viewController = BloggingRemindersFlowCompletionViewController(blog: blog, tracker: tracker, calendar: calendar)
-        navigationController?.pushViewController(viewController, animated: true)
+    func showCompletionViewController() {
+        tracker.screenShown(.allSet)
+
+        let schedule = scheduler.schedule(for: blog)
+        let title = schedule == .none ? CompletionStrings.remindersRemovedTitle : CompletionStrings.completionTitle
+
+        let formatter = BloggingRemindersScheduleFormatter(calendar: calendar)
+        let time = scheduler.scheduledTime(for: blog).toLocalTime()
+        let nsDescription = formatter.longScheduleDescription(for: schedule, time: time)
+        let description = (try? AttributedString(nsDescription, including: \.uiKit)) ?? AttributedString(nsDescription.string)
+
+        let alert = AlertView {
+            VStack(alignment: .leading, spacing: 9) {
+                Text(title)
+                    .font(.title2.weight(.medium))
+                Text(description)
+                    .foregroundStyle(.secondary)
+                Text(CompletionStrings.updateHint)
+                    .foregroundStyle(.secondary)
+            }
+        } content: {
+            ScaledImage("wpl-ok", height: 90)
+                .foregroundStyle(.secondary)
+        } actions: {
+            AlertDismissButton { [tracker = self.tracker] in
+                tracker.buttonPressed(button: .continue, screen: .allSet)
+                tracker.flowCompleted()
+            }
+        }
+
+        guard let presentingViewController = navigationController?.presentingViewController else {
+            return wpAssertionFailure("Missing presentingViewController")
+        }
+        presentingViewController.dismiss(animated: true) {
+            alert.present(in: presentingViewController)
+        }
     }
 
     private func pushPushPromptViewController() {
@@ -475,7 +508,7 @@ private extension BloggingRemindersFlowSettingsViewController {
 
     /// Updates the label that contains the number of scheduled days as users change them
     func refreshFrequencyLabel() {
-        guard weekdays.count > 0 else {
+        guard !weekdays.isEmpty else {
             frequencyLabel.isHidden = true
             timeSelectionStackView.isHidden = true
             return
@@ -583,8 +616,8 @@ private extension BloggingRemindersFlowSettingsViewController {
 
     // MARK: - Calendar Days Buttons
 
-    /// Creates the calendar day toggle buttons.  This is a convenience method to take care of the mapping of the day index, from Apple's calendar, to
-    /// our `BloggingRemindersScheduler.Weekday`.  In theory this should never return `nil`, but we're allowing it to avoid possible crashes.
+    /// Creates the calendar day toggle buttons. This is a convenience method to take care of the mapping of the day index, from Apple's calendar, to
+    /// our `BloggingRemindersScheduler.Weekday`. In theory this should never return `nil`, but we're allowing it to avoid possible crashes.
     ///
     /// - Parameters:
     ///     - weekday: the weekday the button is for.
@@ -650,7 +683,7 @@ extension BloggingRemindersFlowSettingsViewController: BloggingRemindersActions 
 private extension BloggingRemindersFlowSettingsViewController {
 
     var isBloggingPromptsEnabled: Bool {
-        return FeatureFlag.bloggingPrompts.enabled && blog.isAccessibleThroughWPCom()
+        return FeatureFlag.bloggingPrompts.enabled && blog.isAccessibleThroughWPCom
     }
 
     var promptRemindersEnabled: Bool {
@@ -756,14 +789,13 @@ private extension BloggingRemindersFlowSettingsViewController {
             return
         }
 
-        service.updateSettings(settings: newSettings) { updatedSettings in
+        service.updateSettings(settings: newSettings) { _ in
             completion()
         } failure: { error in
             DDLogError("Error saving prompt reminder schedule: \(String(describing: error))")
             completion()
         }
     }
-
 }
 
 // MARK: - Constants
@@ -780,6 +812,12 @@ private enum TextContent {
     static let bloggingPromptsTitle = NSLocalizedString("Include a Blogging Prompt", comment: "Title of the switch to turn on or off the blogging prompts feature.")
     static let bloggingPromptsDescription = NSLocalizedString("Notification will include a word or short phrase for inspiration", comment: "Description of the blogging prompts feature on the Blogging Reminders Settings screen.")
     static let bloggingPromptsInfoButton = NSLocalizedString("Learn more about prompts", comment: "Accessibility label for the blogging prompts info button on the Blogging Reminders Settings screen.")
+}
+
+private enum CompletionStrings {
+    static let completionTitle = NSLocalizedString("All set!", comment: "Title of the completion screen of the Blogging Reminders Settings screen.")
+    static let remindersRemovedTitle = NSLocalizedString("Reminders removed", comment: "Title of the completion screen of the Blogging Reminders Settings screen when the reminders are removed.")
+    static let updateHint = NSLocalizedString("You can update this any time via My Site > Site Settings", comment: "Prompt shown on the completion screen of the Blogging Reminders Settings screen.")
 }
 
 private enum Images {

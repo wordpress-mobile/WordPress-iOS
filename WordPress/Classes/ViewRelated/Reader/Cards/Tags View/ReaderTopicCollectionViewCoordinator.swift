@@ -2,6 +2,7 @@ import UIKit
 import WordPressReader
 import WordPressShared
 import WordPressKit
+import WordPressUI
 
 enum ReaderTopicCollectionViewState {
     case collapsed
@@ -192,6 +193,7 @@ extension ReaderTopicCollectionViewCoordinator: UICollectionViewDelegateFlowLayo
 
         cell.label.backgroundColor = .clear
         cell.label.accessibilityHint = layout.isExpanded ? Strings.collapseButtonAccessbilityHint : Strings.expandButtonAccessbilityHint
+        cell.label.textColor = layout.isExpanded ? UIAppColor.primary : (displaySetting?.color.foreground ?? .label)
 
         let tapGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(toggleExpanded))
         cell.addGestureRecognizer(tapGestureRecognizer)
@@ -204,7 +206,7 @@ extension ReaderTopicCollectionViewCoordinator: UICollectionViewDelegateFlowLayo
             return
         }
 
-        layout.isExpanded = !layout.isExpanded
+        layout.isExpanded.toggle()
         layout.invalidateLayout()
 
         WPAnalytics.trackReader(.readerChipsMoreToggled)

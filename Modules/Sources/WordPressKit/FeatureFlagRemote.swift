@@ -18,7 +18,7 @@ open class FeatureFlagRemote: ServiceRemoteWordPressComREST {
 
         do {
             dictionary = try params.dictionaryRepresentation()
-        } catch let error {
+        } catch {
             callback(.failure(error))
             return
         }
@@ -44,7 +44,6 @@ open class FeatureFlagRemote: ServiceRemoteWordPressComREST {
                                     } else {
                                         callback(.failure(FeatureFlagRemoteError.InvalidDataError))
                                     }
-
                                 }, failure: { error, response in
                                     WPKitLogError("Error retrieving remote feature flags")
                                     WPKitLogError("\(error)")

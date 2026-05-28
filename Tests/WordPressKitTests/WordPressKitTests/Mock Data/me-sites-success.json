@@ -7,6 +7,7 @@
               "URL": "https:\/\/test1.wordpress.com",
               "user_can_manage": false,
               "capabilities": {
+              "vc_access_rules_post_types": "custom",
               "edit_pages": true,
               "edit_posts": true,
               "edit_others_posts": true,

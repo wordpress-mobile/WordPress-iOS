@@ -77,7 +77,6 @@ class JetpackPluginOverlayViewModel: JetpackFullscreenOverlayViewModel {
         }
         coordinator?.navigateToLinkRoute(url: termsURL, source: Constants.webViewSource)
     }
-
 }
 
 // MARK: - Private Helpers
@@ -211,7 +210,7 @@ private extension NSAttributedString {
     convenience init(format: NSAttributedString, args: (String, NSAttributedString)...) {
         let mutableNSAttributedString = NSMutableAttributedString(attributedString: format)
 
-        args.forEach { (key, attributedString) in
+        args.forEach { key, attributedString in
             let range = NSString(string: mutableNSAttributedString.string).range(of: key)
             mutableNSAttributedString.replaceCharacters(in: range, with: attributedString)
         }

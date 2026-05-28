@@ -17,12 +17,12 @@ extension UIView {
         })
     }
 
-    /// Call this method to update a constraint for this view without duplicating it.  If the constraint
+    /// Call this method to update a constraint for this view without duplicating it. If the constraint
     /// exists it will be updated, but if it doesn't it will be added.
     ///
     /// - Parameters:
-    ///     - axis: the axis for the first element in the constraint.  This is part of the matching criteria.
-    ///     - relation: the relation for the constraint.  This is part of the matching criteria.
+    ///     - axis: the axis for the first element in the constraint. This is part of the matching criteria.
+    ///     - relation: the relation for the constraint. This is part of the matching criteria.
     ///     - constant: the new constant for the constraint.
     ///     - active: whether the constraint must be activated or deactivated.
     ///

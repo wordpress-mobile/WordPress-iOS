@@ -1,4 +1,5 @@
 import Foundation
+import CoreData
 
 /// An extension dedicated to looking up and returning blog objects
 public extension Blog {
@@ -113,8 +114,7 @@ public extension Blog {
         }
 
         return Blog.selfHosted(in: context)
-            .filter { $0.jetpack?.isConnected == true }
-            .count > 0
+            .contains { $0.jetpack?.isConnected == true }
     }
 
     @objc(selfHostedInContext:)
@@ -136,7 +136,6 @@ public extension Blog {
     /// - Parameter id: The comment id
     /// - Returns: The `Comment` object associated with the given id, or `nil` if none is found.
     func comment(withID id: Int32) -> Comment? {
-        (comments as? Set<Comment>)?.first { $0.commentID == id }
+        comments?.first { $0.commentID == id }
     }
-
 }

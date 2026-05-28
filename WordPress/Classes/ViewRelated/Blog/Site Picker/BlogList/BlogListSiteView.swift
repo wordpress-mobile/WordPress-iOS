@@ -73,13 +73,13 @@ final class BlogListSiteViewModel: Identifiable {
     init(blog: Blog) {
         self.blog = blog
         self.title = blog.title ?? "–"
-        self.domain = blog.displayURL as String? ?? ""
+        self.domain = blog.displayURL ?? ""
         self.icon = SiteIconViewModel(blog: blog)
 
         // By adding displayURL _after_ the title, it loweres its weight in search
         self.searchTags = "\(title) \(domain)"
 
-        if (blog.getOption(name: "is_wpcom_staging_site") as Bool?) == true {
+        if blog.isWPComStagingSite {
             badge = Badge(title: Strings.staging, color: Color.yellow.opacity(0.33))
         }
     }

@@ -299,7 +299,6 @@ private extension SiteStatsTableHeaderView {
             WPAppAnalytics.track(event, withProperties: properties)
         }
     }
-
 }
 
 extension SiteStatsTableHeaderView: StatsBarChartViewDelegate {

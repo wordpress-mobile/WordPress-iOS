@@ -76,7 +76,6 @@ extension ContextManager {
             handleSaveError(error as NSError, in: context)
         }
     }
-
 }
 
 private extension ContextManager {
@@ -105,7 +104,7 @@ private extension ContextManager {
     }
 
     func reasonForMultipleErrors(_ errors: [NSError]) -> String {
-        return "Multiple errors:\n" + errors.enumerated().map({ (index, error) in
+        return "Multiple errors:\n" + errors.enumerated().map({ index, error in
             return "  \(index + 1): " + reasonForIndividualError(error)
         }).joined(separator: "\n")
     }
@@ -127,5 +126,4 @@ private extension ContextManager {
     func propertyName(for error: NSError) -> String? {
         return error.userInfo[NSValidationKeyErrorKey] as? String
     }
-
 }

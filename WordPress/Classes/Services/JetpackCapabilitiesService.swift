@@ -36,5 +36,4 @@ import WordPressKit
                     success(blogs)
                  })
     }
-
 }

@@ -119,5 +119,4 @@ private class MockViewController: UIViewController {
         presentExpectation?.fulfill()
         super.present(viewControllerToPresent, animated: flag, completion: completion)
     }
-
 }

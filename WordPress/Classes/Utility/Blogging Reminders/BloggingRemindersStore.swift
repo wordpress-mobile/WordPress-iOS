@@ -1,6 +1,6 @@
 import Foundation
 
-/// Store for the blogging reminders.  This class should not be interacted with directly other than to pass
+/// Store for the blogging reminders. This class should not be interacted with directly other than to pass
 /// to the initializer of `BloggingRemindersScheduler`.
 ///
 class BloggingRemindersStore {
@@ -181,7 +181,6 @@ extension BloggingRemindersStore.ScheduledReminders: Codable {
             try container.encode(days, forKey: .weekdays)
         case .weekDaysWithTime(let daysWithTime):
             try container.encode(daysWithTime, forKey: .weekDaysWithTime)
-
         }
     }
 }

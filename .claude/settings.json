@@ -13,5 +13,26 @@
       "Bash(git:log,status,diff,branch)"
     ],
     "deny": []
+  },
+  "hooks": {
+    "PostToolUse": [
+      {
+        "matcher": "Write|Edit",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "\"$CLAUDE_PROJECT_DIR\"/Scripts/claude-hooks/swift-format.sh",
+            "timeout": 30,
+            "statusMessage": "Formatting Swift..."
+          },
+          {
+            "type": "command",
+            "command": "\"$CLAUDE_PROJECT_DIR\"/Scripts/claude-hooks/swiftlint.sh",
+            "timeout": 30,
+            "statusMessage": "Linting Swift..."
+          }
+        ]
+      }
+    ]
   }
 }

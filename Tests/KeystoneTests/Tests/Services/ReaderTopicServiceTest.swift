@@ -1,7 +1,6 @@
 import XCTest
 import Foundation
 import CoreData
-import Nimble
 import OHHTTPStubs
 import OHHTTPStubsSwift
 
@@ -332,7 +331,7 @@ final class ReaderTopicSwiftTest: CoreDataTestCase {
         let results = try! mainContext.fetch(request)
 
         var topic = results.last as! ReaderAbstractTopic
-        XCTAssertEqual(service.currentTopic(in: mainContext)?.type, ReaderDefaultTopic.TopicType, "The curent topic should have been a default topic")
+        XCTAssertEqual(service.currentTopic(in: mainContext)?.type, ReaderDefaultTopic.TopicType, "The current topic should have been a default topic")
 
         topic = results.first as! ReaderAbstractTopic
         service.setCurrentTopic(topic)
@@ -421,19 +420,20 @@ final class ReaderTopicSwiftTest: CoreDataTestCase {
         let service = ReaderTopicService(coreDataStack: contextManager)
 
         let phrase = "coffee talk"
-        waitUntil { done in
-            service.createSearchTopic(forSearchPhrase: phrase) { objectID in
-                guard let objectID else {
-                    XCTFail("A nil object id is returned")
-                    return
-                }
-
-                let topic = try? self.mainContext.existingObject(with: objectID) as? ReaderSearchTopic
-                XCTAssertEqual(topic?.type, "search")
-
-                done()
+        let exp = expectation(description: "createSearchTopic completes")
+        service.createSearchTopic(forSearchPhrase: phrase) { objectID in
+            guard let objectID else {
+                XCTFail("A nil object id is returned")
+                exp.fulfill()
+                return
             }
+
+            let topic = try? self.mainContext.existingObject(with: objectID) as? ReaderSearchTopic
+            XCTAssertEqual(topic?.type, "search")
+
+            exp.fulfill()
         }
+        wait(for: [exp], timeout: 5)
     }
 
     /**

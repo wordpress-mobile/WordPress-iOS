@@ -111,7 +111,6 @@ class ReaderCommentsFollowPresenter: NSObject {
     func showNotificationSheet(sourceView: UIView?) {
         showBottomSheet(sourceView: sourceView)
     }
-
 }
 
 // MARK: - Private Extension
@@ -139,7 +138,7 @@ private extension ReaderCommentsFollowPresenter {
                 title: Messages.promptTitle,
                 message: Messages.promptMessage,
                 actionTitle: Messages.undoActionTitle,
-                actionHandler: { (accepted: Bool) in
+                actionHandler: { (_: Bool) in
                 self.handleNotificationsButtonTapped(canUndo: false)
             })
         }, failure: { [weak self] error in
@@ -248,7 +247,6 @@ private extension ReaderCommentsFollowPresenter {
             }
         }
     }
-
 }
 
 // MARK: - ReaderCommentsNotificationSheetDelegate Methods
@@ -262,5 +260,4 @@ extension ReaderCommentsFollowPresenter: ReaderCommentsNotificationSheetDelegate
     func didTapUnfollowConversation() {
         handleFollowConversationButtonTapped()
     }
-
 }

@@ -80,7 +80,7 @@ extension GutenbergExternalMediaPicker: ExternalMediaPickerViewDelegate {
             return assertionFailure("Image picked without callback")
         }
 
-        let mediaInfo = assets.compactMap { (asset) -> MediaInfo? in
+        let mediaInfo = assets.compactMap { asset -> MediaInfo? in
             guard let media = self.mediaInserter.insert(exportableAsset: asset, source: source) else {
                 return nil
             }

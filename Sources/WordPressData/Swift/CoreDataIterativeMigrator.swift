@@ -4,8 +4,7 @@ import CoreData
 
 /// CoreDataIterativeMigrator: Migrates through a series of models to allow for users to skip app versions without risk.
 ///
-// FIXME: public access-level needed for unit tests because of no @testable support in Objective-C.
-public class CoreDataIterativeMigrator: NSObject {
+class CoreDataIterativeMigrator {
 
     private static func error(with code: IterativeMigratorErrorCodes, description: String) -> NSError {
         return NSError(domain: "IterativeMigrator", code: code.rawValue, userInfo: [NSLocalizedDescriptionKey: description])
@@ -23,18 +22,17 @@ public class CoreDataIterativeMigrator: NSObject {
     ///
     /// - Throws: A whole bunch of crap is possible to be thrown between Core Data and FileManager.
     ///
-    // FIXME: public access-level needed for unit tests because of no @testable support in Objective-C.
-    @objc public static func iterativeMigrate(sourceStore: URL, storeType: String, to targetModel: NSManagedObjectModel, using modelNames: [String]) throws {
+    static func iterativeMigrate(sourceStore: URL, storeType: String, to targetModel: NSManagedObjectModel, using modelNames: [String]) throws {
         // If the persistent store does not exist at the given URL,
         // assume that it hasn't yet been created and return success immediately.
         guard FileManager.default.fileExists(atPath: sourceStore.path) == true else {
             return
         }
 
-        // Get the persistent store's metadata.  The metadata is used to
+        // Get the persistent store's metadata. The metadata is used to
         // get information about the store's managed object model.
         // If metadataForPersistentStore throws an error that error is propagated, not replaced by the throw
-        // in the guard's else clause.  If metadataForPersistentStore returns nil then an error is thrown.
+        // in the guard's else clause. If metadataForPersistentStore returns nil then an error is thrown.
         guard let sourceMetadata = try metadataForPersistentStore(storeType: storeType, at: sourceStore) else {
             throw error(with: .failedRetrievingMetadata, description: "The source metadata was nil.")
         }
@@ -117,7 +115,6 @@ public class CoreDataIterativeMigrator: NSObject {
                     description = description + " Original Error: \(error)"
                     throw CoreDataIterativeMigrator.error(with: IterativeMigratorErrorCodes.failedOnCustomMappingModel, description: description)
                 }
-
             }
 
             // Migrate the model to the next step
@@ -135,7 +132,7 @@ public class CoreDataIterativeMigrator: NSObject {
         }
     }
 
-    @objc static func backupDatabase(at storeURL: URL) throws {
+    static func backupDatabase(at storeURL: URL) throws {
         _ = try CoreDataIterativeMigrator.makeBackup(at: storeURL)
     }
 }
@@ -164,7 +161,7 @@ private extension CoreDataIterativeMigrator {
         try? fileManager.createDirectory(atPath: backupURL.path, withIntermediateDirectories: false, attributes: nil)
         do {
             let files = try fileManager.contentsOfDirectory(atPath: storeURL.deletingLastPathComponent().path)
-            try files.forEach { (file) in
+            try files.forEach { file in
                 if file.hasPrefix(storeURL.lastPathComponent) {
                     let fullPath = storeURL.deletingLastPathComponent().appendingPathComponent(file).path
                     let toPath = URL(fileURLWithPath: backupURL.path).appendingPathComponent(file).path
@@ -185,7 +182,7 @@ private extension CoreDataIterativeMigrator {
         do {
             let fileManager = FileManager.default
             let files = try fileManager.contentsOfDirectory(atPath: tempDestinationURL.deletingLastPathComponent().path)
-            try files.forEach { (file) in
+            try files.forEach { file in
                 if file.hasPrefix(tempDestinationURL.lastPathComponent) {
                     let fullPath = tempDestinationURL.deletingLastPathComponent().appendingPathComponent(file).path
                     let toPath = storeURL.deletingLastPathComponent().appendingPathComponent(file).path
@@ -205,7 +202,7 @@ private extension CoreDataIterativeMigrator {
         do {
             let fileManager = FileManager.default
             let files = try fileManager.contentsOfDirectory(atPath: backupURL.path)
-            try files.forEach { (file) in
+            try files.forEach { file in
                 let fullPath = URL(fileURLWithPath: backupURL.path).appendingPathComponent(file).path
                 try fileManager.removeItem(atPath: fullPath)
             }
@@ -273,7 +270,7 @@ private extension CoreDataIterativeMigrator {
     }
 
     static func models(for names: [String]) throws -> [NSManagedObjectModel] {
-        let models = try names.map { (name) -> NSManagedObjectModel in
+        let models = try names.map { name -> NSManagedObjectModel in
             guard let url = urlForModel(name: name, in: nil),
                 let model = NSManagedObjectModel(contentsOf: url) else {
                     let description = "No model found for \(name)"
@@ -295,7 +292,7 @@ private extension CoreDataIterativeMigrator {
         }
 
         let momdPaths = bundle.paths(forResourcesOfType: "momd", inDirectory: directory)
-        momdPaths.forEach { (path) in
+        momdPaths.forEach { path in
             if url != nil {
                 return
             }

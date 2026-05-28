@@ -1,6 +1,8 @@
 import Testing
 import Foundation
 import CoreData
+import JetpackSocial
+import WordPressAPIInternal
 @testable import WordPress
 @testable import WordPressData
 
@@ -115,7 +117,7 @@ struct PostSettingsTests {
 
         var settings = PostSettings(from: post)
         settings.categoryIDs = Set([1, 2])
-        settings.tags = "swift, ios, testing"
+        settings.tags = ["swift", "ios", "testing"].map { PostSettings.Term(id: 0, name: $0) }
 
         // When
         settings.apply(to: post)
@@ -251,13 +253,13 @@ struct PostSettingsTests {
         let post = PostBuilder(context, blog: blog).build()
 
         var settings = PostSettings(from: post)
-        settings.tags = "swift, ios, testing"
+        settings.tags = ["swift", "ios", "testing"].map { PostSettings.Term(id: 0, name: $0) }
 
         // When
-        let tagsText = settings.tags
+        let tagNames = settings.tags.map(\.name)
 
         // Then
-        #expect(tagsText == "swift, ios, testing")
+        #expect(tagNames == ["swift", "ios", "testing"])
     }
 
     @Test("Generates empty tags text")
@@ -268,12 +270,863 @@ struct PostSettingsTests {
         let post = PostBuilder(context, blog: blog).build()
 
         var settings = PostSettings(from: post)
-        settings.tags = ""
+        settings.tags = []
 
         // When
-        let tagsText = settings.tags
+        let tagNames = settings.tags.map(\.name)
 
         // Then
-        #expect(tagsText == "")
+        #expect(tagNames == [])
     }
+
+    // MARK: - init(from:) Roundtrip Tests
+
+    @Test("Initializes all fields from a Post")
+    func testInitFromPostRoundtrip() throws {
+        // Given
+        let context = ContextManager.forTesting().mainContext
+        let blog = BlogBuilder(context).build()
+        let post = PostBuilder(context, blog: blog).is(sticked: true).build()
+
+        post.mt_excerpt = "Test excerpt"
+        post.wp_slug = "test-slug"
+        post.status = .publish
+        post.dateCreated = Date(timeIntervalSince1970: 5000)
+        post.password = "pass123"
+        post.authorID = NSNumber(value: 42)
+        post.author = "Jane"
+        post.postFormat = "aside"
+        post.tags = "tag1, tag2"
+        post.commentsStatus = "closed"
+        post.pingsStatus = "closed"
+
+        let category1 = PostCategory(context: context)
+        category1.categoryID = NSNumber(value: 10)
+        category1.categoryName = "Cat A"
+        category1.blog = blog
+        let category2 = PostCategory(context: context)
+        category2.categoryID = NSNumber(value: 20)
+        category2.categoryName = "Cat B"
+        category2.blog = blog
+        blog.categories = Set([category1, category2])
+        post.categories = Set([category1, category2])
+
+        // When
+        let settings = PostSettings(from: post)
+
+        // Then
+        #expect(settings.excerpt == "Test excerpt")
+        #expect(settings.slug == "test-slug")
+        #expect(settings.status == .publish)
+        // publishDate is non-nil because status is .publish, so shouldPublishImmediately() returns false
+        #expect(settings.publishDate == Date(timeIntervalSince1970: 5000))
+        #expect(settings.password == "pass123")
+        #expect(settings.author?.id == 42)
+        #expect(settings.author?.displayName == "Jane")
+        #expect(settings.postFormat == "aside")
+        #expect(settings.isStickyPost == true)
+        #expect(settings.tags == [PostSettings.Term(id: 0, name: "tag1"), PostSettings.Term(id: 0, name: "tag2")])
+        #expect(settings.categoryIDs == Set([10, 20]))
+        #expect(settings.allowComments == false)
+        #expect(settings.allowPings == false)
+    }
+
+    @Test("Initializes fields from a Page with page-specific defaults")
+    func testInitFromPageRoundtrip() throws {
+        // Given
+        let context = ContextManager.forTesting().mainContext
+        let page = PageBuilder(context).build()
+
+        page.parentID = NSNumber(value: 42)
+        page.mt_excerpt = "Page excerpt"
+        page.wp_slug = "page-slug"
+
+        // When
+        let settings = PostSettings(from: page)
+
+        // Then
+        #expect(settings.excerpt == "Page excerpt")
+        #expect(settings.slug == "page-slug")
+        #expect(settings.parentPageID == 42)
+        #expect(settings.postFormat == nil)
+        #expect(settings.isStickyPost == false)
+        #expect(settings.tags == [])
+        #expect(settings.categoryIDs == Set<Int>())
+    }
+
+    // MARK: - Individual Property apply(to:) Tests
+
+    @Test("Applies excerpt change to post")
+    func testApplyExcerpt() throws {
+        // Given
+        let context = ContextManager.forTesting().mainContext
+        let blog = BlogBuilder(context).build()
+        let post = PostBuilder(context, blog: blog).build()
+
+        var settings = PostSettings(from: post)
+        settings.excerpt = "New excerpt"
+
+        // When
+        settings.apply(to: post)
+
+        // Then
+        #expect(post.mt_excerpt == "New excerpt")
+    }
+
+    @Test("Applies post format change to post")
+    func testApplyPostFormat() throws {
+        // Given
+        let context = ContextManager.forTesting().mainContext
+        let blog = BlogBuilder(context).build()
+        let post = PostBuilder(context, blog: blog).build()
+        post.postFormat = "aside"
+
+        var settings = PostSettings(from: post)
+        settings.postFormat = "video"
+
+        // When
+        settings.apply(to: post)
+
+        // Then
+        #expect(post.postFormat == "video")
+    }
+
+    @Test("Applies sticky post change to post")
+    func testApplyStickyPost() throws {
+        // Given
+        let context = ContextManager.forTesting().mainContext
+        let blog = BlogBuilder(context).build()
+        let post = PostBuilder(context, blog: blog).is(sticked: false).build()
+
+        var settings = PostSettings(from: post)
+        settings.isStickyPost = true
+
+        // When
+        settings.apply(to: post)
+
+        // Then
+        #expect(post.isStickyPost == true)
+    }
+
+    @Test("Applies discussion settings to post")
+    func testApplyDiscussionSettings() {
+        // Given
+        let context = ContextManager.forTesting().mainContext
+        let blog = BlogBuilder(context).build()
+        let post = PostBuilder(context, blog: blog).build()
+
+        var settings = PostSettings(from: post)
+
+        // Verify initial state
+        #expect(post.allowComments == true)
+        #expect(post.allowPings == true)
+
+        // Apply closed
+        settings.allowComments = false
+        settings.allowPings = false
+        settings.apply(to: post)
+        #expect(post.allowComments == false)
+        #expect(post.allowPings == false)
+
+        // Apply open again
+        settings.allowComments = true
+        settings.allowPings = true
+        settings.apply(to: post)
+        #expect(post.allowComments == true)
+        #expect(post.allowPings == true)
+    }
+
+    @Test("Applies parent page ID to page")
+    func testApplyParentPageID() throws {
+        // Given
+        let context = ContextManager.forTesting().mainContext
+        let page = PageBuilder(context).build()
+
+        var settings = PostSettings(from: page)
+        settings.parentPageID = 99
+
+        // When
+        settings.apply(to: page)
+
+        // Then
+        #expect(page.parentID == NSNumber(value: 99))
+    }
+
+    @Test("Clears parent page ID when set to nil")
+    func testApplyParentPageIDNil() throws {
+        // Given
+        let context = ContextManager.forTesting().mainContext
+        let page = PageBuilder(context).build()
+        page.parentID = NSNumber(value: 50)
+
+        var settings = PostSettings(from: page)
+        settings.parentPageID = nil
+
+        // When
+        settings.apply(to: page)
+
+        // Then
+        #expect(page.parentID == nil)
+    }
+
+    @Test("Applies other terms to post")
+    func testApplyOtherTerms() throws {
+        // Given
+        let context = ContextManager.forTesting().mainContext
+        let blog = BlogBuilder(context).build()
+        let post = PostBuilder(context, blog: blog).build()
+        post.parsedOtherTerms = ["genre": ["fiction", "drama"]]
+
+        var settings = PostSettings(from: post)
+        settings.otherTerms = ["genre": [PostSettings.Term(id: 0, name: "scifi")]]
+
+        // When
+        settings.apply(to: post)
+
+        // Then
+        #expect(post.parsedOtherTerms == ["genre": ["scifi"]])
+    }
+
+    // MARK: - Computed Property Tests
+
+    @Test("isPendingReview reflects status correctly")
+    func testIsPendingReview() {
+        // Given
+        let context = ContextManager.forTesting().mainContext
+        let blog = BlogBuilder(context).build()
+        let post = PostBuilder(context, blog: blog).drafted().build()
+
+        var settings = PostSettings(from: post)
+
+        // Then — draft is not pending
+        #expect(settings.isPendingReview == false)
+
+        // When — set to pending
+        settings.isPendingReview = true
+        #expect(settings.status == .pending)
+
+        // When — set back to not pending
+        settings.isPendingReview = false
+        #expect(settings.status == .draft)
+
+        // Starting from .publish: isPendingReview = false always reverts to .draft
+        settings.status = .publish
+        settings.isPendingReview = true
+        #expect(settings.status == .pending)
+        settings.isPendingReview = false
+        #expect(settings.status == .draft) // Note: always reverts to .draft, not the original status
+    }
+
+    // MARK: - setTerms / getTerms Tests
+
+    @Test("setTerms and getTerms work for custom taxonomy")
+    func testSetAndGetTerms() {
+        // Given
+        let context = ContextManager.forTesting().mainContext
+        let blog = BlogBuilder(context).build()
+        let post = PostBuilder(context, blog: blog).build()
+
+        var settings = PostSettings(from: post)
+
+        // When
+        settings.setTerms("tag1, tag2", forTaxonomySlug: "genre")
+
+        // Then
+        #expect(
+            settings.getTerms(forTaxonomySlug: "genre") == [
+                PostSettings.Term(id: 0, name: "tag1"), PostSettings.Term(id: 0, name: "tag2")
+            ]
+        )
+        #expect(settings.getTerms(forTaxonomySlug: "nonexistent") == [])
+
+        // Verify apply persists the terms to the post
+        settings.apply(to: post)
+        #expect(post.parsedOtherTerms["genre"] == ["tag1", "tag2"])
+    }
+
+    @Test("Round-trip: init(from:) preserves tags through apply(to:)")
+    func testTagsRoundTrip() {
+        // Given
+        let context = ContextManager.forTesting().mainContext
+        let blog = BlogBuilder(context).build()
+        let sourcePost = PostBuilder(context, blog: blog).build()
+        sourcePost.tags = "swift, ios, testing"
+
+        // When
+        let settings = PostSettings(from: sourcePost)
+
+        // Then — init captures the tags
+        #expect(settings.tags == ["swift", "ios", "testing"].map { PostSettings.Term(id: 0, name: $0) })
+
+        // When — apply to a different post
+        let targetPost = PostBuilder(context, blog: blog).build()
+        settings.apply(to: targetPost)
+
+        // Then — tags are written back unchanged
+        #expect(targetPost.tags == "swift, ios, testing")
+    }
+
+    @Test("Round-trip: init(from:) preserves custom terms through apply(to:)")
+    func testCustomTermsRoundTrip() {
+        // Given
+        let context = ContextManager.forTesting().mainContext
+        let blog = BlogBuilder(context).build()
+        let sourcePost = PostBuilder(context, blog: blog).build()
+        sourcePost.parsedOtherTerms = ["genre": ["fiction", "drama"]]
+
+        // When
+        let settings = PostSettings(from: sourcePost)
+
+        // Then — init captures the custom terms
+        #expect(
+            settings.otherTerms == [
+                "genre": [PostSettings.Term(id: 0, name: "fiction"), PostSettings.Term(id: 0, name: "drama")]
+            ]
+        )
+
+        // When — apply to a different post
+        let targetPost = PostBuilder(context, blog: blog).build()
+        settings.apply(to: targetPost)
+
+        // Then — custom terms are written back unchanged
+        #expect(targetPost.parsedOtherTerms == ["genre": ["fiction", "drama"]])
+    }
+
+    @Test(
+        "makeTags parses comma-separated tag strings",
+        arguments: [
+            ("swift, ios, testing", ["swift", "ios", "testing"]),
+            ("", []),
+            ("  swift , , ios  ", ["swift", "ios"])
+        ] as [(String, [String])]
+    )
+    func testMakeTags(input: String, expected: [String]) {
+        #expect(AbstractPost.makeTags(from: input) == expected)
+    }
+
+    @Test("makeUpdateParameters reflects tag changes")
+    func testMakeUpdateParametersIncludesTagChanges() {
+        // Given
+        let context = ContextManager.forTesting().mainContext
+        let blog = BlogBuilder(context).build()
+        let post = PostBuilder(context, blog: blog).build()
+        post.tags = "old"
+
+        var settings = PostSettings(from: post)
+        settings.tags = ["new", "tags"].map { PostSettings.Term(id: 0, name: $0) }
+
+        // When
+        let parameters = settings.makeUpdateParameters(from: post)
+
+        // Then — tags is a [String]? containing the new tag names
+        #expect(parameters.tags == ["new", "tags"])
+    }
+
+    // MARK: - makeUpdateParameters Tests (Page)
+
+    @Test("Creates update parameters for page slug change")
+    func testMakeUpdateParametersForPage() throws {
+        // Given
+        let context = ContextManager.forTesting().mainContext
+        let page = PageBuilder(context).build()
+
+        var settings = PostSettings(from: page)
+        settings.slug = "new-page-slug"
+
+        // When
+        let parameters = settings.makeUpdateParameters(from: page)
+
+        // Then
+        #expect(parameters.slug == "new-page-slug")
+    }
+
+    // MARK: - Term Struct Tests
+
+    @Test("init(from: Post) creates terms with id=0")
+    func testInitFromPostCreatesTermsWithZeroId() {
+        // Given
+        let context = ContextManager.forTesting().mainContext
+        let blog = BlogBuilder(context).build()
+        let post = PostBuilder(context, blog: blog).build()
+        post.tags = "swift, ios"
+
+        // When
+        let settings = PostSettings(from: post)
+
+        // Then
+        #expect(
+            settings.tags == [
+                PostSettings.Term(id: 0, name: "swift"),
+                PostSettings.Term(id: 0, name: "ios")
+            ]
+        )
+    }
+
+    @Test("init(from: Post) creates other terms with id=0")
+    func testInitFromPostCreatesOtherTermsWithZeroId() {
+        // Given
+        let context = ContextManager.forTesting().mainContext
+        let blog = BlogBuilder(context).build()
+        let post = PostBuilder(context, blog: blog).build()
+        post.parsedOtherTerms = ["genre": ["fiction", "drama"]]
+
+        // When
+        let settings = PostSettings(from: post)
+
+        // Then
+        #expect(
+            settings.otherTerms["genre"] == [
+                PostSettings.Term(id: 0, name: "fiction"),
+                PostSettings.Term(id: 0, name: "drama")
+            ]
+        )
+    }
+
+    @Test("init(from: AnyPostWithEditContext) stores tag IDs with empty names")
+    func testInitFromRemotePostStoresTagIds() {
+        // Given
+        let post = makeRemotePost(tags: [TermId(5), TermId(8)])
+
+        // When
+        let settings = PostSettings(from: post)
+
+        // Then
+        #expect(
+            settings.tags == [
+                PostSettings.Term(id: 5, name: ""),
+                PostSettings.Term(id: 8, name: "")
+            ]
+        )
+    }
+
+    @Test("init(from: AnyPostWithEditContext) preserves social sharing draft")
+    func testInitFromRemotePostPreservesSocialSharingDraft() {
+        let expectedDraft = PostSocialSharingDraft(
+            customMessage: "Stored message",
+            connectionsByID: [
+                "1": .init(id: "1", enabled: true),
+                "2": .init(id: "2", enabled: false)
+            ]
+        )
+        let post = makeRemotePost(
+            meta: PostMeta().addingPublicizeMessage("Stored message"),
+            additionalFields: WpAdditionalFields()
+                .addingPublicizeConnections(expectedDraft.connectionsByID ?? [:])
+        )
+
+        let settings = PostSettings(from: post)
+
+        #expect(settings.socialSharingDraft == expectedDraft)
+    }
+
+    @Test("apply(to:) converts terms back to name strings")
+    func testApplyConvertsTermsToNameStrings() {
+        // Given
+        let context = ContextManager.forTesting().mainContext
+        let blog = BlogBuilder(context).build()
+        let post = PostBuilder(context, blog: blog).build()
+
+        var settings = PostSettings(from: post)
+        settings.tags = [
+            PostSettings.Term(id: 0, name: "swift"),
+            PostSettings.Term(id: 0, name: "ios")
+        ]
+
+        // When
+        settings.apply(to: post)
+
+        // Then
+        #expect(post.tags == "swift, ios")
+    }
+
+    @Test("setTerms creates terms with id=0")
+    func testSetTermsCreatesTermsWithZeroId() {
+        // Given
+        let context = ContextManager.forTesting().mainContext
+        let blog = BlogBuilder(context).build()
+        let post = PostBuilder(context, blog: blog).build()
+
+        var settings = PostSettings(from: post)
+
+        // When
+        settings.setTerms("tag1, tag2", forTaxonomySlug: "genre")
+
+        // Then
+        #expect(
+            settings.getTerms(forTaxonomySlug: "genre") == [
+                PostSettings.Term(id: 0, name: "tag1"),
+                PostSettings.Term(id: 0, name: "tag2")
+            ]
+        )
+    }
+
+    @Test("makeUpdateParameters(from: AnyPostWithEditContext) produces TermIds from Term storage")
+    func testMakeRemoteUpdateParametersIncludesTermIds() {
+        // Given
+        let post = makeRemotePost(tags: [TermId(5)])
+
+        var settings = PostSettings(from: post)
+        // Simulate resolved tags with an additional new tag
+        settings.tags = [
+            PostSettings.Term(id: 5, name: "swift"),
+            PostSettings.Term(id: 8, name: "ios")
+        ]
+
+        // When
+        let params = settings.makeUpdateParameters(from: post)
+
+        // Then — both tags with id > 0 are included
+        #expect(Set(params.tags) == Set([TermId(5), TermId(8)]))
+    }
+
+    @Test("makeUpdateParameters(from: AnyPostWithEditContext) includes featuredMedia when changed")
+    func testMakeRemoteUpdateParametersIncludesFeaturedMedia() {
+        // Given: post has no featured image
+        let post = makeRemotePost()
+
+        var settings = PostSettings(from: post)
+        settings.featuredImageID = 42
+
+        // When
+        let params = settings.makeUpdateParameters(from: post)
+
+        // Then
+        #expect(params.featuredMedia == MediaId(42))
+    }
+
+    @Test("makeUpdateParameters(from: AnyPostWithEditContext) includes featuredMedia removal")
+    func testMakeRemoteUpdateParametersIncludesFeaturedMediaRemoval() {
+        // Given: post has a featured image
+        let post = makeRemotePost(featuredMedia: MediaId(42))
+
+        var settings = PostSettings(from: post)
+        settings.featuredImageID = nil
+
+        // When
+        let params = settings.makeUpdateParameters(from: post)
+
+        // Then: featuredMedia should be set to 0 (removal)
+        #expect(params.featuredMedia == MediaId(0))
+    }
+
+    @Test("makeUpdateParameters(from: AnyPostWithEditContext) omits featuredMedia when unchanged (MediaId 0)")
+    func testMakeRemoteUpdateParametersOmitsFeaturedMediaWhenZero() {
+        // Given: post has featuredMedia = 0 (no featured image)
+        let post = makeRemotePost(featuredMedia: MediaId(0))
+
+        // Settings should also have no featured image (featuredImageID = nil)
+        let settings = PostSettings(from: post)
+
+        // When
+        let params = settings.makeUpdateParameters(from: post)
+
+        // Then: no spurious diff — featuredMedia should not be included
+        #expect(params.featuredMedia == nil)
+    }
+
+    @Test("makeUpdateParameters(from: AnyPostWithEditContext) omits featuredMedia when unchanged (nil)")
+    func testMakeRemoteUpdateParametersOmitsFeaturedMediaWhenNil() {
+        // Given: post has featuredMedia = nil
+        let post = makeRemotePost()
+
+        let settings = PostSettings(from: post)
+
+        // When
+        let params = settings.makeUpdateParameters(from: post)
+
+        // Then
+        #expect(params.featuredMedia == nil)
+    }
+
+    @Test("makeUpdateParameters(from: AnyPostWithEditContext) includes format when changed")
+    func testMakeRemoteUpdateParametersIncludesFormat() {
+        // Given: post has standard format
+        let post = makeRemotePost(format: .standard)
+
+        var settings = PostSettings(from: post)
+        settings.postFormat = "image"
+
+        // When
+        let params = settings.makeUpdateParameters(from: post)
+
+        // Then
+        #expect(params.format == .image)
+    }
+
+    @Test("makeUpdateParameters(from: AnyPostWithEditContext) includes format when original is nil")
+    func testMakeRemoteUpdateParametersIncludesFormatFromNil() {
+        // Given: post has no format set
+        let post = makeRemotePost()
+
+        var settings = PostSettings(from: post)
+        settings.postFormat = "image"
+
+        // When
+        let params = settings.makeUpdateParameters(from: post)
+
+        // Then
+        #expect(params.format == .image)
+    }
+
+    @Test("makeUpdateParameters preserves publicize message when social v2 is unavailable")
+    func testMakeRemoteUpdateParametersPreservesPublicizeMessageWhenSocialContextIsNil() {
+        // Given: the fetched post has a saved Publicize message, but Social v2
+        // is not active for this save path.
+        let post = makeRemotePost(meta: PostMeta().addingPublicizeMessage("Saved message"))
+        var settings = PostSettings(from: post)
+        settings.slug = "changed-slug"
+
+        // When
+        let params = settings.makeUpdateParameters(from: post)
+
+        // Then: an unrelated settings save must not clear the saved message.
+        #expect(params.slug == "changed-slug")
+        #expect(params.meta == nil)
+    }
+
+    @Test("makeUpdateParameters(from: AnyPostWithEditContext) clears publicize message when social v2 draft is empty")
+    func testMakeRemoteUpdateParametersClearsPublicizeMessageFromEmptySocialDraft() {
+        // Given
+        let post = makeRemotePost(meta: PostMeta().addingPublicizeMessage("Saved message"))
+        var settings = PostSettings(from: post)
+        settings.socialSharingDraft = PostSocialSharingDraft(customMessage: nil)
+
+        // When
+        let params = settings.makeUpdateParameters(from: post)
+
+        // Then: an active Social v2 draft owns the field, so nil/empty clears it.
+        #expect(params.meta != nil)
+        #expect(params.meta?.publicizeMessage == nil)
+    }
+
+    @Test("makeUpdateParameters(from: AnyPostWithEditContext) adds publicize message from social v2 draft")
+    func testMakeRemoteUpdateParametersAddsPublicizeMessageFromSocialDraft() {
+        // Given
+        let post = makeRemotePost()
+        var settings = PostSettings(from: post)
+        settings.socialSharingDraft = PostSocialSharingDraft(customMessage: "Share this")
+
+        // When
+        let params = settings.makeUpdateParameters(from: post)
+
+        // Then
+        #expect(params.meta?.publicizeMessage == "Share this")
+    }
+
+    @Test("makeUpdateParameters(from: AnyPostWithEditContext) encodes social connections")
+    func testMakeRemoteUpdateParametersAddsPublicizeConnectionsFromSocialDraft() throws {
+        // Given
+        let post = makeRemotePost()
+        var settings = PostSettings(from: post)
+        settings.socialSharingDraft = PostSocialSharingDraft(connectionsByID: [
+            "1": .init(id: "1", enabled: true),
+            "2": .init(id: "2", enabled: false),
+            "3": .init(id: "3", enabled: true)
+        ])
+
+        // When
+        let params = settings.makeUpdateParameters(from: post)
+
+        // Then
+        let entries = try #require(params.additionalFields?.arrayValueForKey(key: "jetpack_publicize_connections"))
+        let flagsByID = Dictionary(
+            uniqueKeysWithValues: entries.compactMap { entry -> (String, Bool)? in
+                guard case let .object(dict) = entry,
+                    case let .string(id)? = dict["connection_id"],
+                    case let .bool(enabled)? = dict["enabled"]
+                else {
+                    return nil
+                }
+                return (id, enabled)
+            }
+        )
+        #expect(flagsByID == ["1": true, "2": false, "3": true])
+    }
+
+    @Test("makeUpdateParameters(from: AnyPostWithEditContext) omits unchanged social connections")
+    func testMakeRemoteUpdateParametersOmitsUnchangedPublicizeConnections() {
+        let additionalFields = WpAdditionalFields()
+            .addingPublicizeConnections([
+                "1": .init(id: "1", enabled: true),
+                "2": .init(id: "2", enabled: false)
+            ])
+        let post = makeRemotePost(additionalFields: additionalFields)
+        var settings = PostSettings(from: post)
+        settings.slug = "changed-slug"
+
+        let params = settings.makeUpdateParameters(from: post)
+
+        #expect(params.slug == "changed-slug")
+        #expect(params.additionalFields == nil)
+    }
+
+    @Test("Resolved terms (id > 0) are equal when ids match, regardless of name")
+    func testResolvedTermEquality() {
+        let term1 = PostSettings.Term(id: 5, name: "swift")
+        let term2 = PostSettings.Term(id: 5, name: "swift")
+        let term3 = PostSettings.Term(id: 5, name: "ios")
+        let term4 = PostSettings.Term(id: 6, name: "swift")
+
+        #expect(term1 == term2)
+        #expect(term1 == term3, "Same id, different name — same resolved term")
+        #expect(term1 != term4, "Different id — different term")
+    }
+
+    @Test("Unresolved terms (id == 0) are equal only when names match")
+    func testUnresolvedTermEquality() {
+        let term1 = PostSettings.Term(id: 0, name: "swift")
+        let term2 = PostSettings.Term(id: 0, name: "swift")
+        let term3 = PostSettings.Term(id: 0, name: "ios")
+
+        #expect(term1 == term2)
+        #expect(term1 != term3, "Same id 0, different name — different unresolved term")
+    }
+
+    // MARK: - makeCreateParameters Tests
+
+    @Test("makeCreateParameters includes custom taxonomy terms in additionalFields")
+    func testMakeCreateParametersIncludesCustomTerms() {
+        // Given
+        let taxonomies = [
+            SiteTaxonomy.makeTaxonomy(slug: "genre", restBase: "genre")
+        ]
+        var settings = PostSettings()
+        settings.otherTerms = [
+            "genre": [
+                PostSettings.Term(id: 10, name: "fiction"),
+                PostSettings.Term(id: 20, name: "drama")
+            ]
+        ]
+
+        // When
+        let params = settings.makeCreateParameters(taxonomies: taxonomies)
+
+        // Then
+        let termIds = params.additionalFields?.termIdsForKey(key: "genre") ?? []
+        #expect(Set(termIds) == Set([TermId(10), TermId(20)]))
+    }
+
+    @Test("makeCreateParameters encodes the social custom message")
+    func testMakeCreateParametersEncodesSocialCustomMessage() {
+        // Given
+        var settings = PostSettings()
+        settings.socialSharingDraft = PostSocialSharingDraft(customMessage: "Share this")
+
+        // When
+        let params = settings.makeCreateParameters()
+
+        // Then
+        #expect(params.meta?.publicizeMessage == "Share this")
+    }
+
+    @Test("makeCreateParameters encodes social connections")
+    func testMakeCreateParametersEncodesSocialConnections() throws {
+        // Given
+        var settings = PostSettings()
+        settings.socialSharingDraft = PostSocialSharingDraft(connectionsByID: [
+            "1": .init(id: "1", enabled: true),
+            "2": .init(id: "2", enabled: false)
+        ])
+
+        // When
+        let params = settings.makeCreateParameters()
+
+        // Then
+        let entries = try #require(params.additionalFields?.arrayValueForKey(key: "jetpack_publicize_connections"))
+        let flagsByID = Dictionary(
+            uniqueKeysWithValues: entries.compactMap { entry -> (String, Bool)? in
+                guard case let .object(dict) = entry,
+                    case let .string(id)? = dict["connection_id"],
+                    case let .bool(enabled)? = dict["enabled"]
+                else {
+                    return nil
+                }
+                return (id, enabled)
+            }
+        )
+        #expect(flagsByID == ["1": true, "2": false])
+    }
+
+    // MARK: - defaults(from: Blog) Tests
+
+    @Test("defaults inherits site discussion defaults (closed)")
+    func testDefaultsInheritsClosedDiscussion() {
+        let context = ContextManager.forTesting().mainContext
+        let blog = BlogBuilder(context).with(siteName: "Test").build()
+        blog.settings?.commentsAllowed = false
+        blog.settings?.pingbackInboundEnabled = false
+
+        let settings = PostSettings.defaults(from: blog)
+        let params = settings.makeCreateParameters(taxonomies: [])
+
+        #expect(!settings.allowComments)
+        #expect(!settings.allowPings)
+        #expect(params.commentStatus == .closed)
+        #expect(params.pingStatus == .closed)
+    }
+
+    @Test("defaults inherits site discussion defaults (open)")
+    func testDefaultsInheritsOpenDiscussion() {
+        let context = ContextManager.forTesting().mainContext
+        let blog = BlogBuilder(context).with(siteName: "Test").build()
+        blog.settings?.commentsAllowed = true
+        blog.settings?.pingbackInboundEnabled = true
+
+        let settings = PostSettings.defaults(from: blog)
+        let params = settings.makeCreateParameters(taxonomies: [])
+
+        #expect(settings.allowComments)
+        #expect(settings.allowPings)
+        #expect(params.commentStatus == .open)
+        #expect(params.pingStatus == .open)
+    }
+}
+
+// MARK: - Test Helpers
+
+private extension SiteTaxonomy {
+    static func makeTaxonomy(slug: String, restBase: String) -> SiteTaxonomy {
+        SiteTaxonomy(slug: slug, name: slug, restBase: restBase)
+    }
+}
+
+private func makeRemotePost(
+    tags: [TermId]? = nil,
+    categories: [TermId]? = nil,
+    featuredMedia: MediaId? = nil,
+    format: PostFormat? = nil,
+    meta: PostMeta? = nil,
+    additionalFields: WpAdditionalFields? = nil
+) -> AnyPostWithEditContext {
+    AnyPostWithEditContext(
+        id: PostId(1),
+        date: "2025-01-01T00:00:00",
+        dateGmt: Date(timeIntervalSince1970: 0),
+        guid: PostGuidWithEditContext(raw: nil, rendered: ""),
+        link: "https://example.com",
+        modified: "2025-01-01T00:00:00",
+        modifiedGmt: Date(timeIntervalSince1970: 0),
+        slug: "test-post",
+        status: .draft,
+        postType: "post",
+        password: nil,
+        permalinkTemplate: nil,
+        generatedSlug: nil,
+        title: nil,
+        content: PostContentWithEditContext(raw: nil, rendered: "", protected: nil, blockVersion: nil),
+        author: nil,
+        excerpt: nil,
+        featuredMedia: featuredMedia,
+        commentStatus: .open,
+        pingStatus: .open,
+        format: format,
+        meta: meta,
+        sticky: nil,
+        template: "",
+        categories: categories,
+        tags: tags,
+        parent: nil,
+        menuOrder: nil,
+        additionalFields: additionalFields
+    )
 }

@@ -49,7 +49,6 @@ final class PostServiceRemoteRESTLikesTests: RemoteTestCase, RESTTestable {
             XCTAssertEqual(user.likedSiteID, NSNumber(value: 0))
             XCTAssertEqual(totalLikes, NSNumber(value: 3))
             expect.fulfill()
-
         }, failure: { _ in
             XCTFail("This callback shouldn't get called")
         })
@@ -93,7 +92,6 @@ final class PostServiceRemoteRESTLikesTests: RemoteTestCase, RESTTestable {
             XCTAssertEqual(userWithPreferredBlog.preferredBlog?.blogUrl, "blog URL")
             XCTAssert((userWithoutPreferredBlog.preferredBlog == nil), "preferredBlog should be nil.")
             expect.fulfill()
-
         }, failure: { _ in
             XCTFail("This callback shouldn't get called")
         })

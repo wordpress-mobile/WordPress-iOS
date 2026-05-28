@@ -14,7 +14,6 @@ class CoreDataTestCase: XCTestCase {
     var mainContext: NSManagedObjectContext {
         return contextManager.mainContext
     }
-
 }
 
 extension XCTestCase {
@@ -22,5 +21,4 @@ extension XCTestCase {
     @objc public func coreDataStackForTesting() -> CoreDataStack {
         ContextManager.forTesting()
     }
-
 }

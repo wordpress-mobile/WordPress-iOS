@@ -421,7 +421,7 @@ private extension JetpackThreatContext {
 
     func attributedString(with config: JetpackThreatContextRendererConfig) -> NSAttributedString? {
 
-        guard let longestLine = lines.sorted(by: { $0.contents.count > $1.contents.count }).first else {
+        guard let longestLine = lines.max(by: { $0.contents.count < $1.contents.count }) else {
             return nil
         }
 
@@ -474,7 +474,6 @@ private extension JetpackThreatContext {
 
                     contentsAttr.addAttributes(config.highlightedSectionAttributes, range: range)
                 }
-
             } else {
                 numberAttr.setAttributes(config.numberAttributes,
                                          range: NSRange(location: 0, length: numberStr.count))

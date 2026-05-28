@@ -5,10 +5,10 @@ import WordPressShared
 import Support
 
 extension EditorConfiguration {
-    init(blog: Blog, postType: String = "post", keychain: KeychainAccessible = KeychainUtils()) {
+    init(blog: Blog, postType: PostTypeDetails, keychain: KeychainAccessible = KeychainUtils()) {
         let selfHostedApiUrl = blog.restApiRootURL ?? blog.url(withPath: "wp-json/")
         let applicationPassword = try? blog.getApplicationToken(using: keychain)
-        let shouldUseWPComRestApi = applicationPassword == nil && blog.isAccessibleThroughWPCom()
+        let shouldUseWPComRestApi = applicationPassword == nil && blog.isAccessibleThroughWPCom
 
         let siteApiRootString: String?
         if applicationPassword != nil {
@@ -19,7 +19,7 @@ extension EditorConfiguration {
 
         let siteId = blog.dotComID?.stringValue
         let siteDomain = blog.primaryDomainAddress
-        let authToken = blog.authToken ?? ""
+        let authToken = blog.account?.authToken ?? ""
         var authHeader = "Bearer \(authToken)"
 
         if let appPassword = applicationPassword, let username = blog.username {
@@ -56,6 +56,7 @@ extension EditorConfiguration {
             .setShouldUsePlugins(Self.shouldEnablePlugins(for: blog, appPassword: applicationPassword))
             .setLocale(WordPressComLanguageDatabase.shared.deviceLanguage.slug)
             .setEnableNetworkLogging(ExtensiveLogging.enabled)
+            .setNetworkFallbackMode(.automatic)
 
         // Build editor assets endpoint
         var editorAssetsEndpoint = siteApiRoot
@@ -77,7 +78,7 @@ extension EditorConfiguration {
         // Requires a WP.com Simple site or an application password to authenticate all REST
         // API requests, including those originating from non-core blocks.
         return RemoteFeatureFlag.newGutenbergPlugins.enabled() &&
-            blog.isAccessibleThroughWPCom() &&
+            blog.isAccessibleThroughWPCom &&
             (blog.isHostedAtWPcom || appPassword != nil)
     }
 }

@@ -93,7 +93,7 @@ struct NotificationContentRouter {
         case .stats:
             /// Backup notifications are configured as "stat" notifications
             /// For now this is just a workaround to fix the routing
-            if url.absoluteString.matches(regex: "\\/backup\\/").count > 0 {
+            if !url.absoluteString.matches(regex: "\\/backup\\/").isEmpty {
                 try coordinator.displayBackupWithSiteID(range.siteID)
             } else {
                 trackStatsRoute()

@@ -195,6 +195,9 @@ actor StatsService: StatsServiceProtocol {
 
             return data
         } catch {
+            if let error = StatsFeatureGateError.from(apiError: error, itemType: item) {
+                throw error
+            }
             // A workaround for an issue where `/stats` return `"summary": null`
             // when there are no recoreded periods (happens when the entire requested
             // period is _before_ the site creation).
@@ -347,7 +350,7 @@ actor StatsService: StatsServiceProtocol {
             switch metric {
             case .views:
                 let data = try await getData(StatsArchiveTimeIntervalData.self)
-                let sections = data.summary.compactMap { (sectionName, items) -> TopListItem.ArchiveSection? in
+                let sections = data.summary.compactMap { sectionName, items -> TopListItem.ArchiveSection? in
                     guard !items.isEmpty else { return nil }
                     return TopListItem.ArchiveSection(sectionName: sectionName, items: items)
                 }
@@ -513,10 +516,11 @@ actor StatsService: StatsServiceProtocol {
             guard let value = data[metric] else {
                 return nil
             }
-            let date = convertDateToSiteTimezone(data.date, using: calendar)
-            guard date <= now else {
-                return nil // Filter out future dates
+            guard data.date <= now else {
+                // Filter out future dates (the presentation layer doesn't exect them)
+                return nil
             }
+            let date = convertDateToSiteTimezone(data.date, using: calendar)
             return DataPoint(date: date, value: value)
         }
 

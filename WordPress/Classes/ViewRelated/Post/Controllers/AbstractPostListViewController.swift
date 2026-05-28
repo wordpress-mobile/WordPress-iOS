@@ -33,7 +33,7 @@ class AbstractPostListViewController: UIViewController,
 
     var blog: Blog!
 
-    /// This closure will be executed whenever the noResultsView must be visually refreshed.  It's up
+    /// This closure will be executed whenever the noResultsView must be visually refreshed. It's up
     /// to the subclass to define this property.
     ///
     var refreshNoResultsViewController: ((NoResultsViewController) -> ())!
@@ -71,7 +71,7 @@ class AbstractPostListViewController: UIViewController,
     private lazy var searchController = UISearchController(searchResultsController: searchResultsViewController)
 
     private var emptyResults: Bool {
-        fetchResultsController?.fetchedObjects?.count == 0
+        fetchResultsController?.fetchedObjects?.isEmpty == true
     }
 
     private var atLeastSyncedOnce = false
@@ -452,8 +452,9 @@ class AbstractPostListViewController: UIViewController,
             return
         }
 
-        // Update in the background
-        syncItemsWithUserInteraction(false)
+        // If it's in the middle of pushing this controller, we'll treat it as "syncing with user interaction".
+        let userInteraction = isMovingToParent
+        syncItemsWithUserInteraction(userInteraction)
     }
 
     @objc func syncItemsWithUserInteraction(_ userInteraction: Bool) {
@@ -465,7 +466,7 @@ class AbstractPostListViewController: UIViewController,
     }
 
     func updateFilter(_ filter: PostListFilter, withSyncedPosts posts: [AbstractPost], hasMore: Bool) {
-        guard posts.count > 0 else {
+        guard !posts.isEmpty else {
             wpAssertionFailure("This method should not be called with no posts.")
             return
         }
@@ -528,7 +529,7 @@ class AbstractPostListViewController: UIViewController,
 
                 guard let self else { return }
 
-                if posts.count > 0 {
+                if !posts.isEmpty {
                     self.updateFilter(filter, withSyncedPosts: posts, hasMore: hasMore)
                     SearchManager.shared.indexItems(posts)
                 }
@@ -560,7 +561,7 @@ class AbstractPostListViewController: UIViewController,
                 // User may have exit the screen when the "syncPosts" call above completes.
                 guard let self else { return }
 
-                if posts.count > 0 {
+                if !posts.isEmpty {
                     self.updateFilter(filter, withSyncedPosts: posts, hasMore: hasMore)
                     SearchManager.shared.indexItems(posts)
                 }
@@ -588,7 +589,7 @@ class AbstractPostListViewController: UIViewController,
         noResultsViewController.removeFromView()
 
         if emptyResults {
-            // This is a special case.  Core data can be a bit slow about notifying
+            // This is a special case. Core data can be a bit slow about notifying
             // NSFetchedResultsController delegates about changes to the fetched results.
             // To compensate, call configureNoResultsView after a short delay.
             // It will be redisplayed if necessary.
@@ -608,6 +609,7 @@ class AbstractPostListViewController: UIViewController,
 
         hideRefreshingIndicator()
         dismissAllNetworkErrorNotices()
+        refreshResults()
 
         // If there is no internet connection, we'll show the specific error message defined in
         // `noConnectionMessage()` (overridden by subclasses). For everything else, we let
@@ -743,7 +745,7 @@ class AbstractPostListViewController: UIViewController,
         } else {
             // Use legacy stats view
             SiteStatsInformation.sharedInstance.siteTimeZone = blog.timeZone
-            SiteStatsInformation.sharedInstance.oauth2Token = blog.authToken
+            SiteStatsInformation.sharedInstance.oauth2Token = blog.account?.authToken
             SiteStatsInformation.sharedInstance.siteID = blog.dotComID
 
             guard let postURL = post.permaLink.flatMap(URL.init) else {
@@ -781,7 +783,7 @@ class AbstractPostListViewController: UIViewController,
 
     /// Retrieves the userID for the user of the current blog.
     ///
-    /// - Returns: the userID for the user of the current WPCom blog.  If the blog is not hosted at
+    /// - Returns: the userID for the user of the current WPCom blog. If the blog is not hosted at
     ///     WordPress.com, `nil` is returned instead.
     ///
     @objc func blogUserID() -> NSNumber? {

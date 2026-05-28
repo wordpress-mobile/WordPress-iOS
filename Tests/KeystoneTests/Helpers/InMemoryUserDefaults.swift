@@ -76,4 +76,8 @@ class InMemoryUserDefaults: UserPersistentRepository {
     func object(forKey defaultName: String) -> Any? {
         return dictionary[defaultName] as Any?
     }
+
+    func hasEntry(forKey key: String) -> Bool {
+        dictionary.keys.contains(key)
+    }
 }

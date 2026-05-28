@@ -122,10 +122,8 @@ final class BlogDashboardViewController: UIViewController {
     }
 
     func pulledToRefresh(completion: (() -> Void)? = nil) {
-        viewModel.loadCards { [weak self] _ in
-            self?.viewModel.clearEditorCache {
-                completion?()
-            }
+        viewModel.loadCards { _ in
+            completion?()
         }
     }
 
@@ -193,7 +191,7 @@ final class BlogDashboardViewController: UIViewController {
 extension BlogDashboardViewController {
 
     private func createLayout() -> UICollectionViewLayout {
-        UICollectionViewCompositionalLayout { [weak self] sectionIndex, layoutEnvironment in
+        UICollectionViewCompositionalLayout { [weak self] sectionIndex, _ in
             self?.createLayoutSection(for: sectionIndex)
         }
     }

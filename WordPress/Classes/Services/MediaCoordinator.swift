@@ -117,7 +117,7 @@ class MediaCoordinator: NSObject {
     ///            returns the general media library coordinator.
     private func coordinator(for media: Media) -> MediaProgressCoordinator {
         // Media which is just being uploaded should only belong to at most one post
-        if let post = media.posts?.first as? AbstractPost {
+        if let post = media.posts?.first {
             return coordinator(for: post)
         }
 
@@ -141,8 +141,9 @@ class MediaCoordinator: NSObject {
     /// - parameter blog: The blog that the asset should be added to.
     /// - parameter origin: The location in the app where the upload was initiated (optional).
     ///
-    func addMedia(from asset: ExportableAsset, to blog: Blog, analyticsInfo: MediaAnalyticsInfo? = nil) {
-        addMedia(from: asset, blog: blog, post: nil, coordinator: mediaLibraryProgressCoordinator, analyticsInfo: analyticsInfo)
+    @discardableResult
+    func addMedia(from asset: ExportableAsset, to blog: Blog, suppressSuccessNotice: Bool = false, analyticsInfo: MediaAnalyticsInfo? = nil) -> Media? {
+        addMedia(from: asset, blog: blog, post: nil, coordinator: mediaLibraryProgressCoordinator, suppressSuccessNotice: suppressSuccessNotice, analyticsInfo: analyticsInfo)
     }
 
     /// Adds the specified media asset to the specified post. The upload process
@@ -154,7 +155,7 @@ class MediaCoordinator: NSObject {
     ///
     @discardableResult
     func addMedia(from asset: ExportableAsset, to post: AbstractPost, analyticsInfo: MediaAnalyticsInfo? = nil) -> Media? {
-        addMedia(from: asset, post: post, coordinator: coordinator(for: post), analyticsInfo: analyticsInfo)
+        addMedia(from: asset, blog: post.blog, post: post, coordinator: coordinator(for: post), analyticsInfo: analyticsInfo)
     }
 
     /// Create a `Media` instance from the main context and upload the asset to the Media Library.
@@ -162,13 +163,13 @@ class MediaCoordinator: NSObject {
     /// - Warning: This function must be called from the main thread.
     ///
     /// - SeeAlso: `MediaImportService.createMedia(with:blog:post:thumbnailCallback:completion:)`
-    private func addMedia(from asset: ExportableAsset, post: AbstractPost, coordinator: MediaProgressCoordinator, analyticsInfo: MediaAnalyticsInfo? = nil) -> Media? {
+    private func addMedia(from asset: ExportableAsset, blog: Blog, post: AbstractPost?, coordinator: MediaProgressCoordinator, suppressSuccessNotice: Bool = false, analyticsInfo: MediaAnalyticsInfo? = nil) -> Media? {
         coordinator.track(numberOfItems: 1)
         let service = MediaImportService(coreDataStack: coreDataStack)
         let totalProgress = Progress.discreteProgress(totalUnitCount: MediaExportProgressUnits.done)
         let result = service.createMedia(
             with: asset,
-            blog: post.blog,
+            blog: blog,
             post: post,
             thumbnailCallback: { [weak self] media, url in
                 self?.thumbnailReady(url: url, for: media)
@@ -186,33 +187,11 @@ class MediaCoordinator: NSObject {
         totalProgress.addChild(creationProgress, withPendingUnitCount: MediaExportProgressUnits.exportDone)
         coordinator.track(progress: totalProgress, of: media, withIdentifier: media.uploadID)
 
+        if suppressSuccessNotice {
+            totalProgress.setUserInfoObject(true, forKey: .suppressSuccessNotice)
+        }
+
         return media
-    }
-
-    /// Create a `Media` instance and upload the asset to the Media Library.
-    ///
-    /// - SeeAlso: `MediaImportService.createMedia(with:blog:post:receiveUpdate:thumbnailCallback:completion:)`
-    private func addMedia(from asset: ExportableAsset, blog: Blog, post: AbstractPost?, coordinator: MediaProgressCoordinator, analyticsInfo: MediaAnalyticsInfo? = nil) {
-        coordinator.track(numberOfItems: 1)
-        let service = MediaImportService(coreDataStack: coreDataStack)
-        let totalProgress = Progress.discreteProgress(totalUnitCount: MediaExportProgressUnits.done)
-        let creationProgress = service.createMedia(
-            with: asset,
-            blog: blog,
-            post: post,
-            receiveUpdate: { [weak self] media in
-                self?.processing(media)
-                coordinator.track(progress: totalProgress, of: media, withIdentifier: media.uploadID)
-            },
-            thumbnailCallback: { [weak self] media, url in
-                self?.thumbnailReady(url: url, for: media)
-            },
-            completion: { [weak self] media, error in
-                self?.handleMediaImportResult(coordinator: coordinator, totalProgress: totalProgress, analyticsInfo: analyticsInfo, media: media, error: error)
-            }
-        )
-
-        totalProgress.addChild(creationProgress, withPendingUnitCount: MediaExportProgressUnits.exportDone)
     }
 
     private func handleMediaImportResult(coordinator: MediaProgressCoordinator, totalProgress: Progress, analyticsInfo: MediaAnalyticsInfo?, media: Media?, error: Error?) -> Void {
@@ -372,7 +351,7 @@ class MediaCoordinator: NSObject {
             self.end(media)
         }
         let failure: (Error?) -> Void = { error in
-            // Ideally the upload service should always return an error.  This may be easier to enforce
+            // Ideally the upload service should always return an error. This may be easier to enforce
             // if we update the service to Swift, but in the meanwhile I'm instantiating an unknown upload
             // error whenever the service doesn't provide one.
             //
@@ -387,7 +366,7 @@ class MediaCoordinator: NSObject {
                         "width": media.width ?? "",
                         "localURL": media.localURL ?? "",
                         "remoteURL": media.remoteURL ?? "",
-                ])
+                    ])
 
             self.coordinator(for: media).attach(error: nserror, toMediaID: media.uploadID)
             self.fail(nserror, media: media)
@@ -728,7 +707,6 @@ class MediaCoordinator: NSObject {
                 )
             }
         })
-
     }
 
     /// This method checks the status of all media objects and updates them to the correct status if needed.
@@ -754,7 +732,6 @@ extension MediaCoordinator: MediaProgressCoordinatorDelegate {
     }
 
     func mediaProgressCoordinatorDidStartUploading(_ mediaProgressCoordinator: MediaProgressCoordinator) {
-
     }
 
     func mediaProgressCoordinatorDidFinishUpload(_ mediaProgressCoordinator: MediaProgressCoordinator) {
@@ -764,14 +741,23 @@ extension MediaCoordinator: MediaProgressCoordinatorDelegate {
 
         let allFailedMediaErrorsAreMissingFilesErrors = mediaProgressCoordinator.failedMedia.allSatisfy { $0.hasMissingFileError }
 
-        let allFailedMediaHaveAssociatedPost = mediaProgressCoordinator.failedMedia.allSatisfy { $0.hasAssociatedPost() }
+        let allFailedMediaHaveAssociatedPost = mediaProgressCoordinator.failedMedia.allSatisfy { $0.hasAssociatedPost }
 
         if mediaProgressCoordinator.failedMedia.isEmpty || (!allFailedMediaErrorsAreMissingFilesErrors && !allFailedMediaHaveAssociatedPost),
            mediaProgressCoordinator == mediaLibraryProgressCoordinator || mediaProgressCoordinator.hasFailedMedia {
 
-            let model = MediaProgressCoordinatorNoticeViewModel(mediaProgressCoordinator: mediaProgressCoordinator)
-            if let notice = model?.notice {
-                ActionDispatcher.dispatch(NoticeAction.post(notice))
+            // Skip the success notice when all successful uploads opted out (e.g.
+            // featured image set during custom post editing).
+            let allowSuccessNotice = mediaProgressCoordinator.successfulMedia.contains { media in
+                let progress = mediaProgressCoordinator.progress(forMediaID: media.uploadID)
+                return progress?.userInfo[.suppressSuccessNotice] == nil
+            }
+
+            if allowSuccessNotice || mediaProgressCoordinator.hasFailedMedia {
+                let model = MediaProgressCoordinatorNoticeViewModel(mediaProgressCoordinator: mediaProgressCoordinator)
+                if let notice = model?.notice {
+                    ActionDispatcher.dispatch(NoticeAction.post(notice))
+                }
             }
         }
 
@@ -790,7 +776,7 @@ extension MediaCoordinator {
     // We want to collect more data about that, so we're going to log that info to Sentry,
     // and also delete the `Media` object, since there isn't really a reasonable way to recover from that failure.
     func addObserverForDeletedFiles() {
-        addObserver({ (media, _) in
+        addObserver({ media, _ in
             guard let mediaError = media.error,
                 media.hasMissingFileError else {
                 return
@@ -798,7 +784,6 @@ extension MediaCoordinator {
 
             self.cancelUploadAndDeleteMedia(media)
             WordPressAppDelegate.crashLogging?.logMessage("Deleting a media object that's failed to upload because of a missing local file. \(mediaError)")
-
         }, for: nil)
     }
 

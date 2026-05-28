@@ -113,6 +113,61 @@ struct AdjacentPeriod: Identifiable {
     let displayText: String
 }
 
+struct StatsDateRangeSelection: Equatable {
+    var range: StatsDateRange
+    var subrange: StatsDateRange?
+
+    var effectiveDateRange: StatsDateRange {
+        subrange ?? range
+    }
+
+    mutating func navigate(_ direction: NavigationDirection) {
+        if let currentSubrange = subrange {
+            let newSubrange = currentSubrange.navigate(direction)
+            if isWithinRange(newSubrange) {
+                self.subrange = newSubrange
+            } else {
+                range = range.navigate(direction)
+                subrange = makeEdgeSubrange(matching: currentSubrange, in: direction)
+            }
+        } else {
+            range = range.navigate(direction)
+        }
+    }
+
+    /// Returns the first or last period in the (already-navigated) `range` that matches
+    /// the component of `reference`, so subrange navigation across range boundaries feels seamless.
+    /// Returns nil if the resulting period doesn't align cleanly within the new range (e.g. a
+    /// calendar week that straddles the range boundary).
+    private func makeEdgeSubrange(matching reference: StatsDateRange, in direction: NavigationDirection) -> StatsDateRange? {
+        let calendar = range.calendar
+        let anchorDate: Date = switch direction {
+        case .forward: range.dateInterval.start
+        case .backward: Date(timeInterval: -1, since: range.dateInterval.end)
+        }
+        guard let interval = calendar.dateInterval(of: reference.component, for: anchorDate) else { return nil }
+        let subrange = StatsDateRange(
+            interval: interval,
+            component: reference.component,
+            comparison: range.comparison,
+            calendar: calendar
+        )
+        return isWithinRange(subrange) ? subrange : nil
+    }
+
+    func canNavigate(in direction: NavigationDirection) -> Bool {
+        if let subrange, isWithinRange(subrange.navigate(direction)) {
+            return true
+        }
+        return range.canNavigate(in: direction)
+    }
+
+    private func isWithinRange(_ subrange: StatsDateRange) -> Bool {
+        subrange.dateInterval.start >= range.dateInterval.start &&
+        subrange.dateInterval.start < range.dateInterval.end
+    }
+}
+
 extension Calendar {
     func makeDateRange(
         for preset: DateIntervalPreset,

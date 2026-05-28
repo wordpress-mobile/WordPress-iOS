@@ -238,7 +238,16 @@ public struct PostStatsView: View {
     // MARK: - Data
 
     private var dateRange: StatsDateRange {
-        initialDateRange ?? context.calendar.makeDateRange(for: .last30Days)
+        guard let initialDateRange else {
+            return context.calendar.makeDateRange(for: .last7Days)
+        }
+
+        // Default to "Last 7 days" for hourly granularity periods (e.g., "Today")
+        if initialDateRange.dateInterval.preferredGranularity == .hour {
+            return context.calendar.makeDateRange(for: .last7Days)
+        }
+
+        return initialDateRange
     }
 
     private var metrics: SiteMetricsSet? {
@@ -412,7 +421,8 @@ private struct PostStatsMetricsStripView: View {
                     Text(formattedValue)
                         .contentTransition(.numericText())
                         .animation(.spring, value: value)
-                        .font(Font.make(.recoleta, textStyle: .title, weight: .medium))
+                        .font(Constants.Typography.mediumDisplayFont)
+                        .kerning(Constants.Typography.largeDisplayKerning)
                         .foregroundColor(.primary)
                 }
             }
@@ -516,7 +526,8 @@ private struct PostStatsEmailMetricsView: View {
                 HStack {
                     Text(formattedValue)
                         .contentTransition(.numericText())
-                        .font(Font.make(.recoleta, textStyle: .title, weight: .medium))
+                        .font(Constants.Typography.mediumDisplayFont)
+                        .kerning(Constants.Typography.largeDisplayKerning)
                         .foregroundColor(.primary)
                 }
             }

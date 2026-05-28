@@ -9,5 +9,4 @@ class UserProfileSectionHeader: UITableViewHeaderFooterView, NibReusable {
         titleLabel.textColor = .secondaryLabel
         contentView.backgroundColor = .systemBackground
     }
-
 }

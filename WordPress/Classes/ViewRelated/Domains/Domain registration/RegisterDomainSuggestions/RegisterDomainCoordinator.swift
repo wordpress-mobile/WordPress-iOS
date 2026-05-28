@@ -216,8 +216,8 @@ class RegisterDomainCoordinator {
         }
     }
 
-    /// Handles URL changes in the web view.  We only allow the user to stay within certain URLs.  Falling outside these URLs
-    /// results in the web view being dismissed.  This method also handles the success condition for a successful domain registration
+    /// Handles URL changes in the web view. We only allow the user to stay within certain URLs. Falling outside these URLs
+    /// results in the web view being dismissed. This method also handles the success condition for a successful domain registration
     /// through said web view.
     ///
     /// - Parameters:
@@ -243,7 +243,6 @@ class RegisterDomainCoordinator {
 
         if domainRegistrationSucceeded {
             onSuccess(domain)
-
         }
     }
 
@@ -252,7 +251,7 @@ class RegisterDomainCoordinator {
     private func track(_ event: WPAnalyticsEvent, properties: [AnyHashable: Any]? = nil) {
         let defaultProperties: [AnyHashable: Any] = [WPAppAnalyticsKeySource: analyticsSource]
 
-        let properties = defaultProperties.merging(properties ?? [:]) { first, second in
+        let properties = defaultProperties.merging(properties ?? [:]) { first, _ in
             return first
         }
 

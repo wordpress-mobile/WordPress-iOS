@@ -11,7 +11,6 @@ public struct ShimmerEffect: ViewModifier {
     init(duration: TimeInterval = 1.5, delay: TimeInterval = 0.25) {
         self.duration = duration
         self.delay = delay
-
     }
 
     public func body(content: Content) -> some View {

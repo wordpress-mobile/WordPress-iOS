@@ -43,7 +43,7 @@ extension WPAccount {
                 draft.blog = candidate
             }
             // Once the drafts are moved (if any), we can safely delete the duplicate
-            DDLogInfo("Deleting duplicate blog \(blog.logDescription())")
+            DDLogInfo("Deleting duplicate blog \(blog.logDescription)")
             context.delete(blog)
         }
     }
@@ -52,7 +52,7 @@ extension WPAccount {
         // The original predicate from PostService.countPostsWithoutRemote() was:
         //   "postID = NULL OR postID <= 0"
         // Swift optionals make things a bit more verbose, but this should be equivalent
-        return blog.posts?.filter({ (post) -> Bool in
+        return blog.posts?.filter({ post -> Bool in
             if let postID = post.postID?.intValue,
                 postID > 0 {
                 return false

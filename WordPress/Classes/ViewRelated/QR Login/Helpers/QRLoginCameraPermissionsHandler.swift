@@ -17,7 +17,7 @@ struct QRLoginCameraPermissionsHandler: QRCameraPermissionsHandler {
                                       preferredStyle: .alert)
 
         alert.addActionWithTitle(Strings.dismiss, style: .cancel)
-        alert.addDefaultActionWithTitle(Strings.openSettings) { action in
+        alert.addDefaultActionWithTitle(Strings.openSettings) { _ in
             UIApplication.shared.openSettings()
         }
 

@@ -6,10 +6,10 @@ import OHHTTPStubsSwift
 
 class WordPressOrgAPITests: XCTestCase {
 
-    let fakeCredential = WordPressOrgRestApi.SelfHostedSiteCredential(
+    let fakeCredential: WordPressOrgRestApi.SelfHostedSiteCredential = .accountPassword(
         loginURL: URL(string: "https://wordpress.org/wp-login.php")!,
         username: "test-user",
-        password: "test-password",
+        password: .init("test-password"),
         adminURL: URL(string: "https://wordpress.org/wp-admin/")!
     )
 
@@ -198,7 +198,6 @@ class WordPressOrgAPITests: XCTestCase {
         let _ = await api.get(path: "wp/v2/hello-world", parameters: ["foo": "bar"], type: AnyResponse.self)
         await fulfillment(of: [expectation], timeout: 0.1)
     }
-
 }
 
 private struct AnyResponse: Decodable {}

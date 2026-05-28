@@ -2,7 +2,7 @@ import UIKit
 
 final class AllDomainsListActivityIndicatorTableViewCell: UITableViewCell {
 
-    private let activityIndicator: UIActivityIndicatorView = UIActivityIndicatorView(style: .medium)
+    private let activityIndicator = UIActivityIndicatorView(style: .medium)
 
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)

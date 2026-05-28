@@ -9,7 +9,7 @@ struct MockStatsServiceTests {
     @Test("getTopListData returns valid data for posts")
     func testGetTopListDataPosts() async throws {
         // GIVEN
-        let service = MockStatsService(timeZone: .current)
+        let service = MockStatsService(timeZone: .eastern)
         let dateInterval = calendar.makeDateInterval(for: .today)
 
         // WHEN
@@ -25,7 +25,7 @@ struct MockStatsServiceTests {
         print("elapsed: \((CFAbsoluteTimeGetCurrent() - startTime) * 1000) ms")
 
         // THEN
-        #expect(response.items.count > 0)
+        #expect(!response.items.isEmpty)
         #expect(response.items.count <= 40, "Should return maximum 40 items")
 
         // THEN all items are posts
@@ -37,13 +37,12 @@ struct MockStatsServiceTests {
                 Issue.record("Expected post item but got \(type(of: item))")
             }
         }
-
     }
 
     @Test("Verify getChartData returns valid data for views metric with today range")
     func testGetChartDataViewsToday() async throws {
         // GIVEN
-        let service = MockStatsService(timeZone: .current)
+        let service = MockStatsService(timeZone: .eastern)
         let dateInterval = calendar.makeDateInterval(for: .today)
         let granularity = dateInterval.preferredGranularity
 
@@ -56,6 +55,6 @@ struct MockStatsServiceTests {
         print("elapsed: \((CFAbsoluteTimeGetCurrent() - startTime) * 1000) ms")
 
         // THEN - Basic validations
-        #expect(response.metrics.count > 0, "Should return at least one data point")
+        #expect(!response.metrics.isEmpty, "Should return at least one data point")
     }
 }

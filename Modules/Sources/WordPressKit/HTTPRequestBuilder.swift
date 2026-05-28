@@ -308,7 +308,6 @@ private extension Dictionary where Key == String, Value == Any {
                 Self.urlEncode(into: &result, name: entry.key, value: entry.value)
             }
     }
-
 }
 
 extension Array where Element == URLQueryItem {
@@ -324,7 +323,6 @@ extension Array where Element == URLQueryItem {
         }
         .joined(separator: "&")
     }
-
 }
 
 struct XMLRPCRequest {

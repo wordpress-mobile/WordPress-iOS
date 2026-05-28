@@ -75,4 +75,34 @@ extension CommentsViewController {
         }
         return item == CommentFilter.unreplied
     }
+
+    @objc public func showApproveCommentErrorNotice(_ error: NSError) {
+        Notice(error: error, title: Strings.approveError).post()
+    }
+
+    @objc public func showUnapproveCommentErrorNotice(_ error: NSError) {
+        Notice(error: error, title: Strings.unapproveError).post()
+    }
+
+    @objc public func showTrashCommentErrorNotice(_ error: NSError) {
+        Notice(error: error, title: Strings.trashError).post()
+    }
+}
+
+private enum Strings {
+    static let approveError = NSLocalizedString(
+        "comments.approve.error.title",
+        value: "Error approving comment",
+        comment: "Title for the error notice shown when approving a comment fails."
+    )
+    static let unapproveError = NSLocalizedString(
+        "comments.unapprove.error.title",
+        value: "Error unapproving comment",
+        comment: "Title for the error notice shown when unapproving a comment fails."
+    )
+    static let trashError = NSLocalizedString(
+        "comments.trash.error.title",
+        value: "Error trashing comment",
+        comment: "Title for the error notice shown when trashing a comment fails."
+    )
 }

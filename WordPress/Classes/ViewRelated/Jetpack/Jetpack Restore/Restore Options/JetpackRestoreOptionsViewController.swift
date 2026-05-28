@@ -75,5 +75,4 @@ class JetpackRestoreOptionsViewController: BaseRestoreOptionsViewController {
 
         present(navigationVC, animated: true)
     }
-
 }

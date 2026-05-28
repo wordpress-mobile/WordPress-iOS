@@ -21,7 +21,6 @@ public extension BlockEditorSettingsServiceRemote {
             completion(result)
         }
     }
-
 }
 
 // MARK: Editor Global Styles support
@@ -31,7 +30,7 @@ public extension BlockEditorSettingsServiceRemote {
     func fetchBlockEditorSettings(completion: @escaping BlockEditorSettingsCompletionHandler) {
         Task { @MainActor in
             let result = await self.remoteAPI.get(path: "/wp-block-editor/v1/settings", parameters: ["context": "mobile"], type: RemoteBlockEditorSettings.self)
-                .map { settings -> RemoteBlockEditorSettings? in settings }
+                .map(Optional.some)
                 .flatMapError { original in
                     if case let .unparsableResponse(response, _, underlyingError) = original, response?.statusCode == 200, underlyingError is DecodingError {
                         return .success(nil)

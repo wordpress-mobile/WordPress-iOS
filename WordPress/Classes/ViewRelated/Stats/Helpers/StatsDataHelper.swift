@@ -89,7 +89,7 @@ import WordPressShared
 
     class func childRowsForItems(_ children: [StatsTagAndCategory]) -> [StatsTotalRowData] {
         return children.map {
-            StatsTotalRowData.init(name: $0.name,
+            StatsTotalRowData(name: $0.name,
                                    data: "",
                                    icon: StatsDataHelper.tagsAndCategoriesIconForKind($0.kind),
                                    showDisclosure: true,
@@ -289,7 +289,6 @@ extension StatsPeriodUnit {
     static var analyticsPeriodKey: String {
         return "period"
     }
-
 }
 
 extension TimeZone {

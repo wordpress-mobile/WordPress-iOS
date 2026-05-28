@@ -28,10 +28,8 @@ class ReaderSelectInterestsCoordinator {
 
         interestsService.followInterests(interests, success: { _ in
             completion(true)
-
         }, failure: { _ in
             completion(false)
-
         }, isLoggedIn: isLoggedIn)
     }
 
@@ -53,7 +51,7 @@ class ReaderSelectInterestsCoordinator {
                    interests.count == 1 {
                     return interest.slug != Post.Strings.promptTag
                 }
-                return interests.count > 0
+                return !interests.isEmpty
             }()
 
             completion(isFollowingInterests)

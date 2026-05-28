@@ -2,7 +2,7 @@ import Foundation
 import BuildSettingsKit
 
 /// This class will help track whether or not a user should be prompted for an
-/// app review.  This class is loosely based on
+/// app review. This class is loosely based on
 /// [Appirater](https://github.com/arashpayan/appirater)
 ///
 class AppRatingUtility {
@@ -284,7 +284,7 @@ class AppRatingUtility {
         var state = [String: Any]()
         defaults.dictionaryRepresentation()
             .filter({ key, _ in key.hasPrefix("AppRating") })
-            .forEach { key, value in
+            .forEach { key, _ in
                 let cleanKey = (try? key.removingPrefix(pattern: "AppRatings?")) ?? key
                 state[cleanKey] = defaults.object(forKey: key)
         }

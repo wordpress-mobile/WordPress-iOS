@@ -64,7 +64,6 @@ class CommentHeaderTableViewCell: UITableViewCell, Reusable {
         detailTextLabel?.textColor = Style.detailTextColor
         detailTextLabel?.numberOfLines = 1
     }
-
 }
 
 // MARK: Localization

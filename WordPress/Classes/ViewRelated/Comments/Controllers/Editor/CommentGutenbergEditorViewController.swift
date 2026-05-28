@@ -39,7 +39,7 @@ final class CommentGutenbergEditorViewController: UIViewController {
         // doesn't need network access
         let configuration = EditorConfigurationBuilder(
             content: initialContent ?? "",
-            postType: "comment",
+            postType: .init(postType: "comment", restBase: "comments"), // FIXME: "comment" is not a post type.
             siteURL: URL(string: "https://offline.local")!,
             siteApiRoot: URL(string: "https://offline.local/wp-json")!
         )
@@ -118,5 +118,4 @@ extension CommentGutenbergEditorViewController: GutenbergKit.EditorViewControlle
     func editor(_ viewController: GutenbergKit.EditorViewController, didCloseModalDialog dialogType: String) {
         // Do nothing
     }
-
 }

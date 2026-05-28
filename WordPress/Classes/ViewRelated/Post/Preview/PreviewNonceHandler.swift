@@ -81,5 +81,4 @@ struct PreviewNonceHandler {
         }
         return queryItems
     }
-
 }

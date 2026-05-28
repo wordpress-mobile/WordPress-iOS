@@ -83,6 +83,18 @@ import WordPressData
                                     blog: Blog,
                                     postID: NSNumber? = nil,
                                     delegate: BlazeWebViewControllerDelegate? = nil) {
+        let navigationViewController = makeBlazeWebViewController(source: source, blog: blog, postID: postID, delegate: delegate)
+        viewController.present(navigationViewController, animated: true)
+    }
+
+    /// Creates and returns a configured Blaze web view controller wrapped in a navigation controller,
+    /// without presenting it.
+    static func makeBlazeWebViewController(
+        source: BlazeSource,
+        blog: Blog,
+        postID: NSNumber? = nil,
+        delegate: BlazeWebViewControllerDelegate? = nil
+    ) -> UINavigationController {
         let blazeViewController = BlazeWebViewController(delegate: delegate)
         let viewModel = BlazeCreateCampaignWebViewModel(source: source,
                                                         blog: blog,
@@ -92,7 +104,7 @@ import WordPressData
         let navigationViewController = UINavigationController(rootViewController: blazeViewController)
         navigationViewController.overrideUserInterfaceStyle = .light
         navigationViewController.modalPresentationStyle = .formSheet
-        viewController.present(navigationViewController, animated: true)
+        return navigationViewController
     }
 
     /// Used to display the blaze overlay.

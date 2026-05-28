@@ -22,19 +22,15 @@ class MockContentCoordinator: ContentCoordinator {
     }
 
     func displayStatsWithSiteID(_ siteID: NSNumber?, url: URL? = nil) throws {
-
     }
 
     func displayFollowersWithSiteID(_ siteID: NSNumber?, expirationTime: TimeInterval) throws {
-
     }
 
     func displayBackupWithSiteID(_ siteID: NSNumber?) throws {
-
     }
 
     func displayScanWithSiteID(_ siteID: NSNumber?) throws {
-
     }
 
     var streamWasDisplayed = false
@@ -45,14 +41,11 @@ class MockContentCoordinator: ContentCoordinator {
     }
 
     func displayWebViewWithURL(_ url: URL, source: String) {
-
     }
 
     func displayFullscreenImage(_ image: UIImage) {
-
     }
 
     func displayPlugin(withSlug pluginSlug: String, on siteSlug: String) throws {
-
     }
 }

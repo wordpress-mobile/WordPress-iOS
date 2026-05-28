@@ -3,6 +3,7 @@ import Foundation
 
 /// This class encapsulates all of the settings available for a Blog entity
 ///
+@objc(BlogSettings)
 open class BlogSettings: NSManagedObject {
     // MARK: - Relationships
 
@@ -70,11 +71,6 @@ open class BlogSettings: NSManagedObject {
     ///
     @NSManaged public var jetpackServeImagesFromOurServers: Bool
 
-    /// Jetpack Setting: lazy load images.
-    ///
-    @available(*, deprecated)
-    @NSManaged var jetpackLazyLoadImages: Bool
-
     // MARK: - Discussion
 
     /// Represents whether comments are allowed, or not.
@@ -139,11 +135,6 @@ open class BlogSettings: NSManagedObject {
     /// When enabled, comment threading will be supported.
     ///
     @NSManaged public var commentsThreadingEnabled: Bool
-
-    /// *LOCAL* flag (non stored remotely) indicating whether post geolocation is enabled or not.
-    /// This can be overriden on a per-post basis.
-    ///
-    @NSManaged public var geolocationEnabled: Bool
 
     /// If set to true, 3rd party sites will be allowed to post pingbacks.
     ///
@@ -240,5 +231,4 @@ open class BlogSettings: NSManagedObject {
     /// Indicates whether to force or not two-step authentication when users log in via WordPress.com
     ///
     @NSManaged public var jetpackSSORequireTwoStepAuthentication: Bool
-
 }

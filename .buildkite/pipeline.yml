@@ -9,47 +9,6 @@ env:
 
 # This is the default pipeline – it will build and test the app
 steps:
-  - group: ":eyeglasses: Reader Builds"
-    steps:
-      - label: ":eyeglasses: Reader ASC Demo Build"
-        key: build_asc_reader
-        command: |
-          if .buildkite/commands/should-skip-job.sh --job-type build; then
-            exit 0
-          fi
-
-          .buildkite/commands/release-build-reader.sh
-        plugins: [$CI_TOOLKIT_PLUGIN]
-        artifact_paths:
-          - Artifacts/*.zip
-          - Artifacts/*.ipa
-        notify:
-          - github_commit_status:
-              context: "Reader ASC Demo Build"
-
-      - block: Distribute Reader via TestFlight
-        prompt: Distribute the Reader build via TestFlight?
-        key: testflight_triggered_reader
-        # Block steps have implicit dependency on the steps that come before them.
-        # See https://buildkite.com/docs/pipelines/trigger-step
-        #
-        # Make it depend on nothing so we don't have to wait for previous steps to finish before the deployment can start.
-        depends_on: ~
-
-      - label: ":eyeglasses: Reader one-off TestFlight Upload"
-        key: testflight_upload_reader
-        depends_on: [build_asc_reader, testflight_triggered_reader]
-        command: |
-          if .buildkite/commands/should-skip-job.sh --job-type build; then
-            exit 0
-          fi
-
-          .buildkite/commands/release-upload-reader.sh
-        plugins: [$CI_TOOLKIT_PLUGIN]
-        notify:
-          - github_commit_status:
-              context: "Reader one-off TestFlight Upload"
-
   #################
   # Create Prototype Builds for WP and JP
   #################
@@ -102,7 +61,13 @@ steps:
       - label: "🔬 :wordpress: Unit Tests"
         command: ".buildkite/commands/run-unit-tests.sh"
         depends_on: "build_wordpress"
-        plugins: [$CI_TOOLKIT_PLUGIN]
+        plugins:
+          - $CI_TOOLKIT_PLUGIN
+          - ${TEST_COLLECTOR}:
+              files: build/results/report.junit
+              format: junit
+              missing-error: 0
+              api-token-env-name: BUILDKITE_ANALYTICS_TOKEN_UNIT_TESTS
         artifact_paths:
           - "build/results/*"
         notify:
@@ -135,45 +100,15 @@ steps:
               context: "Unit Tests WordPressData"
 
   #################
-  # UI Tests
-  #################
-  - group: "🔬 UI Tests"
-    key: ui_tests_group
-    steps:
-      - label: "🔬 :jetpack: UI Tests (iPhone)"
-        command: .buildkite/commands/run-ui-tests.sh 'iPhone 17'
-        depends_on: "build_jetpack"
-        plugins: [$CI_TOOLKIT_PLUGIN]
-        artifact_paths:
-          - "build/results/*"
-          - "build/results/crashes/*"
-          - "build/logs/wiremock.txt"
-        notify:
-          - github_commit_status:
-              context: "UI Tests (iPhone)"
-
-      - label: "🔬 :jetpack: UI Tests (iPad)"
-        command: .buildkite/commands/run-ui-tests.sh 'iPad (A16)'
-        depends_on: "build_jetpack"
-        plugins: [$CI_TOOLKIT_PLUGIN]
-        artifact_paths:
-          - "build/results/*"
-          - "build/results/crashes/*"
-          - "build/logs/wiremock.txt"
-        notify:
-          - github_commit_status:
-              context: "UI Tests (iPad)"
-
-  #################
   # Linters
   #################
   - group: "Linters"
     key: linters_group
     steps:
-      - label: "☢️ Danger - PR Check"
+      - label: ":danger: Danger - PR Check"
         command: danger
         key: danger
-        if: "build.pull_request.id != null"
+        # No "build.pull_request.id" condition as we want this check to run also on merge queues where it is a no-op
         retry:
           manual:
             permit_on_passed: true
@@ -207,16 +142,12 @@ steps:
   # Claude Build Analysis - dynamically uploaded so Build result conditions evaluate at runtime after the wait
   #################
   - label: ":claude: 🕵️ Check for Build Failures and Run Claude Analysis"
-    command: |
-      source .buildkite/shared-pipeline-vars
-      buildkite-agent pipeline upload .buildkite/claude-analysis.yml
+    command: .buildkite/commands/upload-claude-analysis.sh
     # Add specific group dependencies. Using a `wait` step wouldn't work as it would never start given the prompt block
     depends_on:
-      - build_asc_reader
       - linters_group
       - prototype_builds_group
       - unit_tests_group
-      - ui_tests_group
     allow_dependency_failure: true
     agents:
       queue: upload

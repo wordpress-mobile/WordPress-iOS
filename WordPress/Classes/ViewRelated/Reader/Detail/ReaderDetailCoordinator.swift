@@ -49,6 +49,11 @@ class ReaderDetailCoordinator {
     /// Called if the view controller's post fails to load
     var postLoadFailureBlock: (() -> Void)? = nil
 
+    private lazy var interactiveElements: [ReaderPostParser.InteractiveElement] = {
+        guard let content = post?.content else { return [] }
+        return ReaderPostParser.parse(content)
+    }()
+
     private var likesAvatarURLs: [String]?
 
     /// An authenticator to ensure any request made to WP sites is properly authenticated
@@ -166,7 +171,7 @@ class ReaderDetailCoordinator {
 
         // Fetch a full page of Likes but only return the `maxAvatarsDisplayed` number.
         // That way the first page will already be cached if the user displays the full Likes list.
-        postService.getLikesFor(postID: postID, siteID: siteID, success: { [weak self] users, totalLikes, _ in
+        postService.getLikesFor(postID: postID, siteID: siteID, success: { [weak self] users, _, _ in
             guard let self else { return }
 
             var filteredUsers = users
@@ -267,6 +272,7 @@ class ReaderDetailCoordinator {
 
         if let blogID = sourceAttribution.blogID {
             let controller = ReaderStreamViewController.controllerWithSiteID(blogID, isFeed: false)
+            controller.trackingContext.source = ScreenTrackingSource(ScreenID.Reader.article, component: ElementID.Reader.articleHeaderSiteName)
             viewController?.navigationController?.pushViewController(controller, animated: true)
             return
         }
@@ -291,6 +297,31 @@ class ReaderDetailCoordinator {
 
         let host = post.map(MediaHost.init)
         let lightboxVC = LightboxViewController(sourceURL: url, host: host)
+        lightboxVC.configureZoomTransition()
+        viewController?.present(lightboxVC, animated: true)
+    }
+
+    private func findGallery(containing url: URL) -> (ReaderPostParser.Gallery, Int)? {
+        let urlString = url.absoluteString
+        for element in interactiveElements {
+            if case .gallery(let gallery) = element,
+               let index = gallery.images.firstIndex(where: { $0.src.absoluteString == urlString }) {
+                return (gallery, index)
+            }
+        }
+        return nil
+    }
+
+    private func presentGallery(_ gallery: ReaderPostParser.Gallery, startingAt index: Int) {
+        WPAnalytics.trackReader(.readerArticleImageTapped)
+        let host = post.map(MediaHost.init)
+        let maxDimension = Int(max(UIScreen.main.bounds.width, UIScreen.main.bounds.height) * min(UIScreen.main.scale, 2))
+        let assets = gallery.images.map { image in
+            let sourceURL = image.bestURL(maxDimension: maxDimension) ?? image.originalFileURL ?? image.src
+            let previewURL = image.srcset.min(by: { $0.width < $1.width })?.url
+            return LightboxAsset(sourceURL: sourceURL, previewURL: previewURL, host: host)
+        }
+        let lightboxVC = LightboxViewController(assets: assets, selectedIndex: index)
         lightboxVC.configureZoomTransition()
         viewController?.present(lightboxVC, animated: true)
     }
@@ -428,6 +459,7 @@ class ReaderDetailCoordinator {
         }
 
         let controller = ReaderStreamViewController.controllerWithSiteID(siteID, isFeed: post.isExternal)
+        controller.trackingContext.source = ScreenTrackingSource(ScreenID.Reader.article, component: ElementID.Reader.articleHeaderSiteName)
         viewController?.navigationController?.pushViewController(controller, animated: true)
 
         let properties = ReaderHelpers.statsPropertiesForPost(post, andValue: post.blogURL as AnyObject?, forKey: "URL")
@@ -436,6 +468,7 @@ class ReaderDetailCoordinator {
 
     private func showTopic(_ topic: String) {
         let controller = ReaderStreamViewController.controllerWithTagSlug(topic)
+        controller.trackingContext.source = ScreenTrackingSource(ScreenID.Reader.article, component: ElementID.Reader.tagChip)
         viewController?.navigationController?.pushViewController(controller, animated: true)
     }
 
@@ -452,6 +485,7 @@ class ReaderDetailCoordinator {
         }
 
         let controller = ReaderStreamViewController.controllerWithTagSlug(primaryTagSlug)
+        controller.trackingContext.source = ScreenTrackingSource(ScreenID.Reader.article, component: ElementID.Reader.tagChip)
         viewController?.navigationController?.pushViewController(controller, animated: true)
 
         let properties = ReaderHelpers.statsPropertiesForPost(post, andValue: post.primaryTagSlug as AnyObject?, forKey: "tag")
@@ -468,12 +502,15 @@ class ReaderDetailCoordinator {
     ///
     /// - Parameter url: the URL to be handled
     func handle(_ url: URL) {
-        // If the URL has an anchor (#)
-        // and the URL is equal to the current post URL
-        if let hash = URLComponents(url: url, resolvingAgainstBaseURL: true)?.fragment,
-           let postURL = permaLinkURL,
-           postURL.isHostAndPathEqual(to: url) {
+        // If the URL has an anchor (#) and the URL matches either the current
+        // post URL or the webview's baseURL, scroll within the document.
+        // In-document anchors (e.g. footnotes) resolve against the baseURL,
+        // so we need to check both.
+        let isInDocumentAnchor = permaLinkURL?.isHostAndPathEqual(to: url) == true || ReaderWebView.baseURL.isHostAndPathEqual(to: url)
+        if let hash = URLComponents(url: url, resolvingAgainstBaseURL: true)?.fragment, isInDocumentAnchor {
             view?.scroll(to: hash)
+        } else if let (gallery, index) = findGallery(containing: url) {
+            presentGallery(gallery, startingAt: index)
         } else if url.pathExtension.contains("gif") ||
                     url.pathExtension.contains("jpg") ||
                     url.pathExtension.contains("jpeg") ||
@@ -495,20 +532,6 @@ class ReaderDetailCoordinator {
     /// Called after the webView fully loads
     func webViewDidLoad() {
         scrollToHashIfNeeded()
-    }
-
-    /// Show the featured image fullscreen
-    ///
-    private func showFeaturedImage(_ sender: AsyncImageView) {
-        guard let post, let imageURL = post.featuredImage.flatMap(URL.init) else {
-            return
-        }
-        let lightboxVC = LightboxViewController(sourceURL: imageURL, host: MediaHost(post))
-        MainActor.assumeIsolated {
-            lightboxVC.thumbnail = sender.image
-        }
-        lightboxVC.configureZoomTransition(sourceView: sender)
-        viewController?.present(lightboxVC, animated: true)
     }
 
     private func followSite(completion: @escaping () -> Void) {
@@ -689,23 +712,6 @@ extension ReaderDetailCoordinator: ReaderDetailHeaderViewDelegate {
     func didSelectTopic(_ topic: String) {
         showTopic(topic)
     }
-
-    func didTapLikes() {
-        showLikesList()
-    }
-
-    func didTapComments() {
-        guard let post, let viewController else {
-            return
-        }
-        ReaderCommentAction().execute(post: post, origin: viewController, source: .postDetails)
-    }
-}
-
-extension ReaderDetailCoordinator: ReaderDetailFeaturedImageViewDelegate {
-    func didTapFeaturedImage(_ sender: AsyncImageView) {
-        showFeaturedImage(sender)
-    }
 }
 
 extension ReaderDetailCoordinator: ReaderDetailLikesViewDelegate {
@@ -727,7 +733,6 @@ private extension ReaderDetailCoordinator {
             comment: "Error message that informs reader detail from a private blog cannot be fetched."
         )
     }
-
 }
 
 private extension URL {

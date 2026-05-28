@@ -76,13 +76,14 @@ open class JetpackConnectionViewController: UITableViewController {
                 rows: [disconnectRow],
                 footerText: NSLocalizedString("Your site will no longer send data to WordPress.com and Jetpack features will stop working. You will lose access to the site on the app and you will have to re-add it with the site credentials.",
                                               comment: "Explanatory text bellow the Disconnect from WordPress.com button")
-            )])
+            )
+        ])
     }
 
     // MARK: - Row Handler
 
     func disconnectJetpackTapped() -> ImmuTableAction {
-        return { [unowned self] row in
+        return { [unowned self] _ in
             self.tableView.deselectSelectedRowWithAnimation(true)
             let message = NSLocalizedString("Are you sure you want to disconnect Jetpack from the site?",
                                             comment: "Message prompting the user to confirm that they want to disconnect Jetpack from the site.")
@@ -93,7 +94,7 @@ open class JetpackConnectionViewController: UITableViewController {
             alertController.addCancelActionWithTitle(NSLocalizedString("Cancel", comment: "Verb. A button title. Tapping cancels an action."))
             alertController.addDestructiveActionWithTitle(NSLocalizedString("Disconnect",
                                                                             comment: "Title for button that disconnects Jetpack from the site"),
-                                                          handler: { action in
+                                                          handler: { _ in
                                                               self.disconnectJetpack()
                                                           })
             WPAnalytics.trackEvent(.jetpackDisconnectTapped)
@@ -133,7 +134,6 @@ open class JetpackConnectionViewController: UITableViewController {
             navigationController?.popViewController(animated: true)
         }
     }
-
 }
 
 // MARK: - Loading

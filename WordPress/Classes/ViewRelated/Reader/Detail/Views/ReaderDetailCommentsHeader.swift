@@ -54,7 +54,7 @@ class ReaderDetailCommentsHeader: UITableViewHeaderFooterView, NibReusable {
         configureTitle()
         configureButton()
 
-        readerCommentsFollowPresenter = ReaderCommentsFollowPresenter.init(
+        readerCommentsFollowPresenter = ReaderCommentsFollowPresenter(
             post: post,
             delegate: self,
             presentingViewController: presentingViewController
@@ -74,7 +74,6 @@ private extension ReaderDetailCommentsHeader {
     func configureView() {
         contentView.backgroundColor = .clear
         addBottomBorder(withColor: separatorColor)
-
     }
 
     func configureTitle() {
@@ -100,7 +99,7 @@ private extension ReaderDetailCommentsHeader {
         followButton.addTarget(self, action: #selector(followButtonTapped), for: .touchUpInside)
 
         if isSubscribedComments {
-            followButton.setImage(UIImage.init(systemName: "bell"), for: .normal)
+            followButton.setImage(UIImage(systemName: "bell"), for: .normal)
             followButton.setTitle(nil, for: .normal)
         } else {
             followButton.setTitle(Titles.followButton, for: .normal)
@@ -182,5 +181,4 @@ extension ReaderDetailCommentsHeader: ReaderCommentsFollowPresenterDelegate {
     func toggleNotificationComplete(success: Bool, post: ReaderPost) {
         self.post = post
     }
-
 }

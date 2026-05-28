@@ -77,7 +77,7 @@ class RegisterDomainDetailsViewModel {
         manuallyTriggerValidation()
     }
 
-    lazy var sectionChangeHandler: ((Section.Change) -> Void)? = { [weak self] (change) in
+    lazy var sectionChangeHandler: ((Section.Change) -> Void)? = { [weak self] change in
         guard let strongSelf = self else { return }
 
         switch change {
@@ -213,11 +213,11 @@ class RegisterDomainDetailsViewModel {
                             self?.isLoading = false
 
                             // Setting the domain as primary doesn't affect the success of registering the domain
-                            // so we'll simply ignore this for now.  If we want to highlight this as an error to
+                            // so we'll simply ignore this for now. If we want to highlight this as an error to
                             // the user we could opt to show a Notice in the future.
                             onChange?(.registerSucceeded(domain))
                         })
-                }, failure: { error in
+                }, failure: { _ in
                     // Same as above. If adding items to cart fails, not much we can do to recover :(
                     WPAnalytics.track(.automatedTransferCustomDomainPurchaseFailed)
                     self?.isLoading = false
@@ -265,7 +265,7 @@ class RegisterDomainDetailsViewModel {
     private func fetchDomainContactInformation() {
         isLoading = true
         registerDomainDetailsService.getDomainContactInformation(
-            success: { [weak self] (domainContactInformation) in
+            success: { [weak self] domainContactInformation in
                 guard let strongSelf = self else {
                     return
                 }
@@ -277,7 +277,6 @@ class RegisterDomainDetailsViewModel {
                 let prefillSuccessBlock = {
                     strongSelf.update(with: domainContactInformation)
                     strongSelf.onChange?(.prefillSuccess)
-
                 }
                 if let countryCode = domainContactInformation.countryCode {
                     strongSelf.prefillCountryCodePrefix(countryCode: countryCode)
@@ -287,7 +286,7 @@ class RegisterDomainDetailsViewModel {
                 } else {
                     prefillSuccessBlock()
                 }
-        }) { [weak self] (error) in
+        }) { [weak self] _ in
             guard let strongSelf = self else {
                 return
             }
@@ -298,7 +297,7 @@ class RegisterDomainDetailsViewModel {
 
     private func fetchCountries(successCompletion: @escaping () -> Void) {
         isLoading = true
-        registerDomainDetailsService.getSupportedCountries(success: { [weak self] (countriesResponse) in
+        registerDomainDetailsService.getSupportedCountries(success: { [weak self] countriesResponse in
             guard let strongSelf = self else {
                 return
             }
@@ -319,7 +318,7 @@ class RegisterDomainDetailsViewModel {
             }
             strongSelf.countries = result
             successCompletion()
-        }) { [weak self] (error) in
+        }) { [weak self] _ in
             guard let strongSelf = self else {
                 return
             }
@@ -334,7 +333,7 @@ class RegisterDomainDetailsViewModel {
         clearStateSelection()
         registerDomainDetailsService.getStates(
             for: countryCode,
-            success: { [weak self] (statesResponse) in
+            success: { [weak self] statesResponse in
                 guard let strongSelf = self else {
                     return
                 }
@@ -351,7 +350,7 @@ class RegisterDomainDetailsViewModel {
                 }
                 strongSelf.states = result
                 successCompletion?()
-        }) { [weak self] (error) in
+        }) { [weak self] _ in
             guard let strongSelf = self else {
                 return
             }
@@ -372,9 +371,9 @@ class RegisterDomainDetailsViewModel {
         section.rows[safe: addressSectionIndexHelper.postalCodeIndex]?.editableRow?.value = domainContactInformation.postalCode
         section.rows[safe: addressSectionIndexHelper.addressLine1]?.editableRow?.value = domainContactInformation.address1
         section.rows[safe: addressSectionIndexHelper.stateIndex]?.editableRow?.idValue = domainContactInformation.state
-        section.rows[safe: addressSectionIndexHelper.stateIndex]?.editableRow?.value = states?.filter {
+        section.rows[safe: addressSectionIndexHelper.stateIndex]?.editableRow?.value = states?.first(where: {
             return $0.code == domainContactInformation.state
-            }.first?.name
+            })?.name
     }
 
     private func updatePhoneSection(with domainContactInformation: DomainContactInformation) {
@@ -391,9 +390,9 @@ class RegisterDomainDetailsViewModel {
     private func updateContactInformationSection(with domainContactInformation: DomainContactInformation) {
         let section = sections[SectionIndex.contactInformation.rawValue]
         section.rows[safe: CellIndex.ContactInformation.country.rawValue]?.editableRow?.idValue = domainContactInformation.countryCode
-        section.rows[safe: CellIndex.ContactInformation.country.rawValue]?.editableRow?.value = countries?.filter {
+        section.rows[safe: CellIndex.ContactInformation.country.rawValue]?.editableRow?.value = countries?.first(where: {
             return $0.code == domainContactInformation.countryCode
-            }.first?.name
+            })?.name
         section.rows[safe: CellIndex.ContactInformation.email.rawValue]?.editableRow?.value = domainContactInformation.email
         section.rows[safe: CellIndex.ContactInformation.firstName.rawValue]?.editableRow?.value = domainContactInformation.firstName
         section.rows[safe: CellIndex.ContactInformation.lastName.rawValue]?.editableRow?.value = domainContactInformation.lastName
@@ -415,9 +414,9 @@ class RegisterDomainDetailsViewModel {
         if let privacySectionSelectedItem = privacySectionSelectedItem() {
             dict[privacySectionSelectedItem.jsonKey] = String(privacySectionSelectedItem.rawValue)
         }
-        dict.merge(phoneNumberSectionJson(), uniquingKeysWith: { (first, _) in first })
-        dict.merge(sectionJson(sectionIndex: .contactInformation), uniquingKeysWith: { (first, _) in first })
-        dict.merge(sectionJson(sectionIndex: .address), uniquingKeysWith: { (first, _) in first })
+        dict.merge(phoneNumberSectionJson(), uniquingKeysWith: { first, _ in first })
+        dict.merge(sectionJson(sectionIndex: .contactInformation), uniquingKeysWith: { first, _ in first })
+        dict.merge(sectionJson(sectionIndex: .address), uniquingKeysWith: { first, _ in first })
         return dict
     }
 
@@ -485,7 +484,7 @@ extension RegisterDomainDetailsViewModel {
         registerDomainDetailsService.validateDomainContactInformation(
             contactInformation: jsonRepresentation(),
             domainNames: [domain.domainName],
-            success: { [weak self] (response) in
+            success: { [weak self] response in
                 guard let strongSelf = self else {
                     return
                 }
@@ -500,7 +499,7 @@ extension RegisterDomainDetailsViewModel {
                     strongSelf.updateValidationErrors(with: response.messages)
                     strongSelf.onChange?(.remoteValidationFinished)
                 }
-        }) { [weak self] (error) in
+        }) { [weak self] _ in
             guard let strongSelf = self else {
                 return
             }
@@ -609,5 +608,4 @@ extension ValidateDomainContactInformationResponse.Messages {
             return nil
         }
     }
-
 }

@@ -202,8 +202,8 @@ class PostTests: CoreDataTestCase {
             .with(postFormats: postFormats)
             .build()
 
-        let sortedPostFormats = try XCTUnwrap(blog.sortedPostFormats as? [String])
-        let sortedPostFormatNames = try XCTUnwrap(blog.sortedPostFormatNames as? [String])
+        let sortedPostFormats = try XCTUnwrap(blog.sortedPostFormats)
+        let sortedPostFormatNames = try XCTUnwrap(blog.sortedPostFormatNames)
 
         XCTAssertEqual(expectedPostFormats.map { $0.0 }, sortedPostFormats)
         XCTAssertEqual(expectedPostFormats.map { $0.1 }, sortedPostFormatNames)
@@ -257,6 +257,15 @@ class PostTests: CoreDataTestCase {
         post.mt_excerpt = "<p>some contents&nbsp;go here</p>"
         post.content = "blah blah"
         XCTAssertEqual(post.contentPreviewForDisplay(), "some contents\u{A0}go here")
+    }
+
+    func testThatContentPreviewForDisplayTrimsLeadingAndTrailingNewlines() {
+        let post = newTestPost()
+
+        post.content = "<p>Paragraph 1</p><p>Paragraph 2</p>"
+        let preview = post.contentPreviewForDisplay()
+
+        XCTAssertEqual("Paragraph 1", preview)
     }
 
     func testThatEnablingDisablingPublicizeConnectionsWorks() {

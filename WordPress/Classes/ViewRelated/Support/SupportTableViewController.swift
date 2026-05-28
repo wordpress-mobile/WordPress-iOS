@@ -82,7 +82,7 @@ class SupportTableViewController: UITableViewController {
     }
 
     func show(from presentingViewController: UIViewController) {
-        let navigationController = UINavigationController.init(rootViewController: self)
+        let navigationController = UINavigationController(rootViewController: self)
 
         if WPDeviceIdentification.isiPad() {
             navigationController.modalTransitionStyle = .crossDissolve
@@ -94,7 +94,7 @@ class SupportTableViewController: UITableViewController {
 
     // TODO: Refactor this method to use the general `show(from:)` method
     func showFromTabBar() {
-        let navigationController = UINavigationController.init(rootViewController: self)
+        let navigationController = UINavigationController(rootViewController: self)
 
         if WPDeviceIdentification.isiPad() {
             navigationController.modalTransitionStyle = .crossDissolve
@@ -289,7 +289,7 @@ private extension SupportTableViewController {
     }
 
     func contactUsSelected() -> ImmuTableAction {
-        return { [weak self] row in
+        return { [weak self] _ in
             guard let self else { return }
             self.tableView.deselectSelectedRowWithAnimation(true)
 
@@ -300,7 +300,7 @@ private extension SupportTableViewController {
     }
 
     func myTicketsSelected() -> ImmuTableAction {
-        return { [weak self] row in
+        return { [weak self] _ in
             guard let self else { return }
             showTicketView()
         }
@@ -316,7 +316,7 @@ private extension SupportTableViewController {
     }
 
     func supportEmailSelected() -> ImmuTableAction {
-        return { [unowned self] row in
+        return { [unowned self] _ in
 
             self.tableView.deselectSelectedRowWithAnimation(true)
 
@@ -339,7 +339,7 @@ private extension SupportTableViewController {
     }
 
     func visitForumsSelected() -> ImmuTableAction {
-        return { [weak self] row in
+        return { [weak self] _ in
             guard let self else { return }
             self.tableView.deselectSelectedRowWithAnimation(true)
             self.launchForum(url: Constants.forumsURL)
@@ -359,7 +359,7 @@ private extension SupportTableViewController {
     ///
     func checkForAutomatticEmail() {
         guard let email = ZendeskUtils.userSupportEmail(),
-              (ZendeskUtils.automatticEmails.first { email.contains($0) }) != nil else {
+              ZendeskUtils.automatticEmails.contains(where: { email.contains($0) }) else {
                 return
         }
 
@@ -414,7 +414,7 @@ private extension SupportTableViewController {
     }
 
     func activityLogsSelected() -> ImmuTableAction {
-        return { [unowned self] row in
+        return { [unowned self] _ in
             let activityLogView = SupportActivityLogView()
             let hostingController = UIHostingController(rootView: activityLogView)
             self.navigationController?.pushViewController(hostingController, animated: true)
@@ -422,7 +422,7 @@ private extension SupportTableViewController {
     }
 
     private func logOutTapped() -> ImmuTableAction {
-        return { [weak self] row in
+        return { [weak self] _ in
             guard let self else {
                 return
             }
@@ -654,10 +654,10 @@ class ButtonCell: WPTableViewCellDefault {
 
         NSLayoutConstraint.activate([
             button.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: SupportTableLayoutSpacing.sidePadding),
-                                        button.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -SupportTableLayoutSpacing.sidePadding),
-                                        button.topAnchor.constraint(equalTo: contentView.topAnchor, constant: SupportTableLayoutSpacing.topBottomPadding),
-                                        button.bottomAnchor.constraint(equalTo: contentView.bottomAnchor, constant: -SupportTableLayoutSpacing.topBottomPadding)
-                                    ])
+            button.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -SupportTableLayoutSpacing.sidePadding),
+            button.topAnchor.constraint(equalTo: contentView.topAnchor, constant: SupportTableLayoutSpacing.topBottomPadding),
+            button.bottomAnchor.constraint(equalTo: contentView.bottomAnchor, constant: -SupportTableLayoutSpacing.topBottomPadding)
+        ])
     }
 
     enum LayoutSpacing {

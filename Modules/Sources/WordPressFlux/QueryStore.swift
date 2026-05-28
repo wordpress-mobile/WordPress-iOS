@@ -138,7 +138,6 @@ open class QueryStore<State, Query>: StatefulStore<State>, Unsubscribable {
     open func logError(_ error: String) {
         NSLog(error)
     }
-
 }
 
 private extension QueryStore {

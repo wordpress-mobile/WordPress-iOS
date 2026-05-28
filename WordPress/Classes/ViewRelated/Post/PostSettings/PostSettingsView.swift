@@ -1,16 +1,17 @@
 import UIKit
 import CoreData
 import Combine
+import JetpackSocial
 import WordPressData
 import WordPressKit
 import WordPressShared
 import WordPressUI
 import SwiftUI
 
-final class PostSettingsViewController: UIHostingController<AnyView> {
-    private let viewModel: PostSettingsViewModel
+final class PostSettingsViewController<ViewModel: PostSettingsViewModelProtocol>: UIHostingController<AnyView> {
+    private let viewModel: ViewModel
 
-    init(viewModel: PostSettingsViewModel) {
+    init(viewModel: ViewModel) {
         self.viewModel = viewModel
         let postSettingsView = PostSettingsView(viewModel: viewModel)
         super.init(rootView: AnyView(postSettingsView))
@@ -33,7 +34,9 @@ final class PostSettingsViewController: UIHostingController<AnyView> {
     @preconcurrency required dynamic init?(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
+}
 
+extension PostSettingsViewController where ViewModel == PostSettingsViewModel {
     static func showStandaloneEditor(for post: AbstractPost, from presentingVC: UIViewController) {
         let viewModel = PostSettingsViewModel(post: post, isStandalone: true)
         let postSettingsVC = PostSettingsViewController(viewModel: viewModel)
@@ -43,8 +46,8 @@ final class PostSettingsViewController: UIHostingController<AnyView> {
 }
 
 @MainActor
-private struct PostSettingsView: View {
-    @ObservedObject var viewModel: PostSettingsViewModel
+private struct PostSettingsView<ViewModel: PostSettingsViewModelProtocol>: View {
+    @ObservedObject var viewModel: ViewModel
 
     @State private var isShowingDiscardChangesAlert = false
 
@@ -130,20 +133,27 @@ private struct PostSettingsView: View {
     }
 }
 
-struct PostSettingsFormContentView: View {
-    @ObservedObject var viewModel: PostSettingsViewModel
+struct PostSettingsFormContentView<ViewModel: PostSettingsViewModelProtocol>: View {
+    @ObservedObject var viewModel: ViewModel
 
     var body: some View {
         if viewModel.context == .publishing {
             publishingOptionsSection
         }
-        featuredImageSection
-        if viewModel.isPost {
+        if viewModel.capabilities.supportsFeaturedImage {
+            featuredImageSection
+        }
+        if viewModel.capabilities.supportsCategories
+            || viewModel.capabilities.supportsTags
+            || !viewModel.capabilities.customTaxonomySlugs.isEmpty
+        {
             organizationSection
         }
-        excerptSection
+        if viewModel.capabilities.supportsExcerpt {
+            excerptSection
+        }
         generalSection
-        socialSharingSection
+        socialSharingSectionDispatcher
         accessSection
         moreOptionsSection
     }
@@ -153,7 +163,7 @@ struct PostSettingsFormContentView: View {
     @ViewBuilder
     private var publishingOptionsSection: some View {
         Section {
-            BlogListSiteView(site: .init(blog: viewModel.post.blog))
+            BlogListSiteView(site: .init(blog: viewModel.blog))
             publishDateRow
             visibilityRow
         } header: {
@@ -165,11 +175,13 @@ struct PostSettingsFormContentView: View {
 
     @ViewBuilder
     private var featuredImageSection: some View {
-        Section {
-            PostSettingsFeaturedImageRow(viewModel: viewModel.featuredImageViewModel)
-                .accessibilityIdentifier("post_settings_featured_image_cell")
-        } header: {
-            SectionHeader(Strings.featuredImageHeader)
+        if let featuredImageViewModel = viewModel.featuredImageViewModel {
+            Section {
+                PostSettingsFeaturedImageRow(viewModel: featuredImageViewModel)
+                    .accessibilityIdentifier("post_settings_featured_image_cell")
+            } header: {
+                SectionHeader(Strings.featuredImageHeader)
+            }
         }
     }
 
@@ -178,9 +190,13 @@ struct PostSettingsFormContentView: View {
     @ViewBuilder
     private var organizationSection: some View {
         Section {
-            categoriesRow
-            tagsRow
-            suggestedTagsRow
+            if viewModel.capabilities.supportsCategories {
+                categoriesRow
+            }
+            if viewModel.capabilities.supportsTags {
+                tagsRow
+                suggestedTagsRow
+            }
             customTaxonomyRow
         } header: {
             SectionHeader(Strings.taxonomyHeader)
@@ -196,11 +212,14 @@ struct PostSettingsFormContentView: View {
 
     private var tagsRow: some View {
         NavigationLink {
-            PostTagsView(blog: viewModel.post.blog, selectedTags: viewModel.settings.tags) { tags in
+            PostTagsView(
+                blog: viewModel.blog,
+                selectedTags: viewModel.settings.tags.map { TagsViewModel.SelectedTerm(id: $0.id, name: $0.name) }
+            ) { tags in
                 viewModel.didSelectTags(tags)
             }
         } label: {
-            PostSettingsTagsRow(tags: viewModel.displayedTags)
+            PostSettingsTagsRow(tags: viewModel.displayedTags, isLoading: viewModel.isResolvingTags)
         }
         .accessibilityIdentifier("post_settings_tags")
     }
@@ -224,15 +243,20 @@ struct PostSettingsFormContentView: View {
             ForEach(viewModel.customTaxonomies, id: \.slug) { taxonomy in
                 NavigationLink {
                     PostTagsView(
-                        blog: viewModel.post.blog,
+                        blog: viewModel.blog,
                         client: client,
                         taxonomy: taxonomy,
-                        selectedTerms: viewModel.settings.getTerms(forTaxonomySlug: taxonomy.slug).joined(separator: ",")
+                        selectedTerms: viewModel.settings.getTerms(forTaxonomySlug: taxonomy.slug)
+                            .map { TagsViewModel.SelectedTerm(id: $0.id, name: $0.name) }
                     ) { terms in
                         viewModel.didSelectTerms(terms, forTaxonomySlug: taxonomy.slug)
                     }
                 } label: {
-                    PostSettingsCustomTaxonomyRow(taxonomy: taxonomy, terms: viewModel.settings.getTerms(forTaxonomySlug: taxonomy.slug))
+                    PostSettingsCustomTaxonomyRow(
+                        taxonomy: taxonomy,
+                        terms: viewModel.settings.getTerms(forTaxonomySlug: taxonomy.slug).map(\.name),
+                        isLoading: viewModel.isResolvingCustomTerms
+                    )
                 }
             }
         }
@@ -245,7 +269,7 @@ struct PostSettingsFormContentView: View {
         Section {
             NavigationLink {
                 PostSettingsExcerptEditor(
-                    postContent: (viewModel.post.content ?? ""),
+                    postContent: viewModel.postContent,
                     text: $viewModel.settings.excerpt
                 )
                 .navigationTitle(Strings.excerptHeader)
@@ -265,9 +289,13 @@ struct PostSettingsFormContentView: View {
             if viewModel.context == .settings && viewModel.isStandalone {
                 statusRow
             }
-            authorRow
+            if viewModel.capabilities.supportsAuthor {
+                authorRow
+            }
             publishDateRow
-            slugRow
+            if viewModel.capabilities.supportsSlug {
+                slugRow
+            }
         } header: {
             SectionHeader(Strings.generalHeader)
         }
@@ -276,7 +304,7 @@ struct PostSettingsFormContentView: View {
     private var authorRow: some View {
         NavigationLink {
             PostAuthorPicker(
-                blog: viewModel.post.blog,
+                blog: viewModel.blog,
                 currentAuthorID: viewModel.settings.author?.id
             ) { selection in
                 viewModel.settings.updateAuthor(with: selection)
@@ -355,6 +383,24 @@ struct PostSettingsFormContentView: View {
     // MARK: - "Social Sharing" Section
 
     @ViewBuilder
+    private var socialSharingSectionDispatcher: some View {
+        if let binding = viewModel.v2SocialSharing {
+            // The server early-returns updates to `jetpack_publicize_connections`
+            // for already-published posts, and re-share isn't supported in the
+            // app yet — so the section has nothing actionable to show.
+            if !binding.isPostPublished {
+                V2SocialSharingEntrySection(
+                    connections: binding.connections,
+                    draft: binding.draft,
+                    onAddConnection: binding.onAddConnection
+                )
+            }
+        } else {
+            socialSharingSection
+        }
+    }
+
+    @ViewBuilder
     private var socialSharingSection: some View {
         if let state = viewModel.socialSharingState {
             Section {
@@ -379,33 +425,41 @@ struct PostSettingsFormContentView: View {
     /// The least-used options.
     @ViewBuilder
     private var moreOptionsSection: some View {
-        Section {
-            if viewModel.shouldShow(.jetpackNewsletterEmailOptions) {
-                Toggle(isOn: $viewModel.emailToSubscribers) {
-                    Text(Strings.emailToSubscribers)
+        let options = viewModel.visibleMoreOptions
+        if !options.isEmpty {
+            Section {
+                ForEach(options) { option in
+                    moreOptionRow(for: option)
                 }
+            } header: {
+                SectionHeader(Strings.moreOptionsHeader)
             }
-            if viewModel.shouldShowStickyOption {
-                stickyPostRow
+        }
+    }
+
+    @ViewBuilder
+    private func moreOptionRow(for option: PostSettingsMoreOption) -> some View {
+        switch option {
+        case .emailToSubscribers:
+            Toggle(isOn: $viewModel.emailToSubscribers) {
+                Text(Strings.emailToSubscribers)
             }
-            if viewModel.isDraftOrPending {
-                pendingReviewRow
-            }
-            if viewModel.isPost {
-                discussionRow
-                postFormatRow
-            }
-            if !viewModel.isPost {
-                parentPageRow
-            }
-        } header: {
-            SectionHeader(Strings.moreOptionsHeader)
+        case .stickyPost:
+            stickyPostRow
+        case .pendingReview:
+            pendingReviewRow
+        case .discussion:
+            discussionRow
+        case .postFormat:
+            postFormatRow
+        case .parentPage:
+            parentPageRow
         }
     }
 
     private var postFormatRow: some View {
         NavigationLink {
-            PostFormatPicker(post: viewModel.post as! Post) { format in
+            PostFormatPicker(blog: viewModel.blog, currentFormat: viewModel.settings.postFormat) { format in
                 viewModel.settings.postFormat = format
                 viewModel.viewController?.navigationController?.popViewController(animated: true)
             }
@@ -418,30 +472,35 @@ struct PostSettingsFormContentView: View {
         NavigationLink {
             PostDiscussionSettingsView(postSettings: $viewModel.settings)
         } label: {
-            SettingsRow(Strings.discussionLabel, value: viewModel.settings.allowComments ? Strings.discussionOpen : Strings.discussionClosed)
+            SettingsRow(
+                Strings.discussionLabel,
+                value: viewModel.settings.allowComments ? Strings.discussionOpen : Strings.discussionClosed
+            )
         }
     }
 
+    @ViewBuilder
     private var parentPageRow: some View {
-        NavigationLink {
-            if let page = viewModel.post as? Page {
-                ParentPagePicker(
-                    blog: viewModel.post.blog,
-                    currentPage: page,
-                    onSelection: { selectedParentPage in
-                        viewModel.settings.parentPageID = selectedParentPage?.postID?.intValue
-                        viewModel.viewController?.navigationController?.popViewController(animated: true)
-                    }
-                )
+        if viewModel.capabilities.supportsPageAttributes,
+            let destination = viewModel.parentPagePickerDestination()
+        {
+            NavigationLink {
+                destination
+            } label: {
+                SettingsRow(Strings.parentPageLabel, value: viewModel.parentPageText ?? Strings.topLevelPage)
             }
-        } label: {
-            SettingsRow(Strings.parentPageLabel, value: viewModel.parentPageText ?? Strings.topLevelPage)
         }
     }
 
     private var slugRow: some View {
         NavigationLink {
-            PostSlugEditorView(slug: $viewModel.settings.slug, post: viewModel.post)
+            PostSlugEditorView(
+                slug: $viewModel.settings.slug,
+                suggestedSlug: viewModel.suggestedSlug,
+                permalinkTemplate: viewModel.permalinkTemplate,
+                hasRemote: viewModel.hasRemote,
+                hasDotComID: viewModel.blog.dotComID != nil
+            )
         } label: {
             SettingsRow(Strings.slugLabel, value: viewModel.slugText)
         }
@@ -519,6 +578,52 @@ private struct LegacyNavigationLinkRow<Content: View>: View {
         .tint(.primary)
     }
 }
+
+/// Top-level entry for the v2 social-sharing flow. Shows a single
+/// `NavigationLink` in Post Settings; the toggles and custom message
+/// field live on the pushed detail screen.
+private struct V2SocialSharingEntrySection: View {
+    @ObservedObject var connections: SiteSocialConnectionsService
+    @Binding var draft: PostSocialSharingDraft
+    let onAddConnection: (() -> Void)?
+
+    var body: some View {
+        Section {
+            NavigationLink {
+                PostSocialSharingDetailView(
+                    connections: connections,
+                    draft: $draft,
+                    onAddConnection: onAddConnection
+                )
+            } label: {
+                SettingsRow(JetpackSocialStrings.PostSection.header) {
+                    if let summary = draft.summary(for: connections.connections.value ?? []) {
+                        Text(summary)
+                    }
+                }
+            }
+        } header: {
+            JetpackBrandSectionHeader()
+        }
+        .task {
+            _ = try? await connections.loadConnections()
+        }
+    }
+}
+
+private struct JetpackBrandSectionHeader: View {
+    var body: some View {
+        HStack(spacing: 4) {
+            Image("icon-jetpack")
+                .resizable()
+                .frame(width: 14, height: 14)
+                .accessibilityHidden(true)
+            SectionHeader("Jetpack")
+        }
+    }
+}
+
+private typealias JetpackSocialStrings = JetpackSocial.Strings
 
 private enum Strings {
     static let generalHeader = NSLocalizedString(
@@ -655,7 +760,8 @@ private enum Strings {
     static let slugHint = NSLocalizedString(
         "postSettings.slug.hint",
         value: "The slug is the URL-friendly version of the post title.",
-        comment: "Hint text for the slug field. Should be the same as the text displayed if the user clicks the (i) in Slug in Calypso."
+        comment:
+            "Hint text for the slug field. Should be the same as the text displayed if the user clicks the (i) in Slug in Calypso."
     )
 
     static let stickyPostLabel = NSLocalizedString(
@@ -709,7 +815,8 @@ private enum Strings {
     static let readyToPublish = NSLocalizedString(
         "prepublishing.publishingSectionTitle",
         value: "Ready to Publish?",
-        comment: "The title of the top section that shows the site your are publishing to. Default is 'Ready to Publish?'"
+        comment:
+            "The title of the top section that shows the site your are publishing to. Default is 'Ready to Publish?'"
     )
 
     static let statusAndVisibility = NSLocalizedString(

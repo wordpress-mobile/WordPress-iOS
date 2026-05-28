@@ -1,3 +1,5 @@
+import CoreData
+
 extension Blog {
 
     /// Creates a blank `Blog` object for this account
@@ -25,5 +27,4 @@ extension Blog {
         settings = BlogSettings(context: managedObjectContext!)
         settings?.blog = self
     }
-
 }

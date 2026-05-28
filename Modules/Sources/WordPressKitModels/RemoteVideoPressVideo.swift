@@ -54,7 +54,7 @@ import Foundation
         displayEmbed = metadataDict.object(forKey: "display_embed") as? Bool
         allowDownload = metadataDict.object(forKey: "allow_download") as? Bool
         rating = metadataDict.string(forKey: "rating")
-        if let privacySettingValue = metadataDict.number(forKey: "privacy_setting")?.intValue, let privacySettingEnum = VideoPressPrivacySetting.init(rawValue: privacySettingValue) {
+        if let privacySettingValue = metadataDict.number(forKey: "privacy_setting")?.intValue, let privacySettingEnum = VideoPressPrivacySetting(rawValue: privacySettingValue) {
             privacySetting = privacySettingEnum
         }
         if let poster = metadataDict.string(forKey: "poster") {

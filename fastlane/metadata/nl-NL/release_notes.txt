@@ -1,9 +1,1 @@
-We made a technical update that reduces the size of your app by about 6 MB. What will you do with all that newfound space?
-
-It’s easier to find, see, and change the visibility settings of existing posts. The “Done” button also won’t disappear when you set the password while publishing a password-protected post.
-
-Looking good: we updated shortcut icons and illustrations to better match the rest of the app, as well as fit better with your device.
-
-We fixed an issue so post previews now work properly for certain sites using Business and Commerce plans.
-
-When you add a new self-hosted site, you’ll be asked for your app password to authenticate. Keep it secret. Beveilig hem
+- Het activiteitslog toont nu wanneer je site is geüpdatet met AI-agents. - In berichtinstellingen toont de kaart sociaal delen alleen platforms die de app ondersteunt. - Nieuwe berichten gebruiken het standaard bericht format in plaats van de standaardversie. Je kunt dit format in je site instellingen updaten. - Als je site zelf gehost is met XML-RPC uitgeschakeld, kun je berichten en pagina's in de app zien. Dat is best belangrijk, al zeggen we het zelf.

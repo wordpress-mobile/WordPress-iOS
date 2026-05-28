@@ -83,7 +83,7 @@ public class Post: AbstractPost {
 
             let matchingCategories = blogCategories.filter({ return $0.categoryName == categoryName })
 
-            if matchingCategories.count > 0 {
+            if !matchingCategories.isEmpty {
                 newCategories = newCategories.union(matchingCategories)
             }
         }
@@ -215,18 +215,18 @@ public class Post: AbstractPost {
     // MARK: - BasePost
 
     override public func contentPreviewForDisplay() -> String {
-        if let excerpt = mt_excerpt, excerpt.count > 0 {
+        if let excerpt = mt_excerpt, !excerpt.isEmpty {
             if let preview = PostPreviewCache.shared.excerpt[excerpt] {
                 return preview
             }
-            let preview = excerpt.makePlainText().withCollapsedNewlines()
+            let preview = excerpt.makePlainText().withCollapsedNewlines().trimmedForPreview()
             PostPreviewCache.shared.excerpt[excerpt] = preview
             return preview
         } else if let content {
             if let preview = PostPreviewCache.shared.content[content] {
                 return preview
             }
-            let preview = GutenbergExcerptGenerator.firstParagraph(from: content, maxLength: 200).withCollapsedNewlines()
+            let preview = GutenbergExcerptGenerator.firstParagraph(from: content, maxLength: 200).withCollapsedNewlines().trimmedForPreview()
             PostPreviewCache.shared.content[content] = preview
             return preview
         } else {
@@ -240,7 +240,7 @@ public class Post: AbstractPost {
             .stringByDecodingXMLCharacters()
             .strippingHTML()
 
-        if title.count == 0 && !hasRemote() && contentPreviewForDisplay().count == 0 {
+        if title.isEmpty && !hasRemote() && contentPreviewForDisplay().isEmpty {
             title = NSLocalizedString("(no title)", comment: "Lets a user know that a local draft does not have a title.")
         }
 
@@ -252,6 +252,11 @@ private extension String {
     // Normalize newlines by collapsing multiple occurrences of newlines to a single newline
     func withCollapsedNewlines() -> String {
         replacingOccurrences(of: "[\n]{2,}", with: "\n", options: .regularExpression)
+    }
+
+    // Remove leading/trailing line breaks to avoid rendering blank trailing lines in preview labels.
+    func trimmedForPreview() -> String {
+        trimmingCharacters(in: .whitespacesAndNewlines)
     }
 }
 

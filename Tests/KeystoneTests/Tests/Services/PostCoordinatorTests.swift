@@ -43,7 +43,7 @@ class PostCoordinatorTests: CoreDataTestCase {
         revision1.content = "content-a"
 
         // GIVEN
-        stub(condition: isPath("/rest/v1.2/sites/80511/posts/new")) { request in
+        stub(condition: isPath("/rest/v1.2/sites/80511/posts/new")) { _ in
             try! HTTPStubsResponse(value: WordPressComPost.mock, statusCode: 201)
         }
 
@@ -181,7 +181,7 @@ class PostCoordinatorTests: CoreDataTestCase {
             return try! HTTPStubsResponse(value: mock, statusCode: 201)
         }
 
-        stub(condition: isPath("/rest/v1.1/sites/80511/media/new")) { request in
+        stub(condition: isPath("/rest/v1.1/sites/80511/media/new")) { _ in
             HTTPStubsResponse(data: mediaResponse.data(using: .utf8)!, statusCode: 202, headers: [:])
         }
 
@@ -213,7 +213,7 @@ class PostCoordinatorTests: CoreDataTestCase {
         // GIVEN a first request that fails with a `.notConnectedToInternet`
         // error and the second one that succedes
         var requestCount = 0
-        stub(condition: isPath("/rest/v1.2/sites/80511/posts/new")) { request in
+        stub(condition: isPath("/rest/v1.2/sites/80511/posts/new")) { _ in
             requestCount += 1
             switch requestCount {
             case 1:
@@ -515,7 +515,7 @@ class PostCoordinatorTests: CoreDataTestCase {
     /// to generate a preview.
     func testSaveDraftPostChangesImmediately() async throws {
         // GIVEN a draft post with an unsynced revision and a local revision
-        // that wasn't commited yet
+        // that wasn't committed yet
         let post = PostBuilder(mainContext, blog: blog).build()
         post.status = .draft
         post.postID = 974
@@ -551,7 +551,7 @@ class PostCoordinatorTests: CoreDataTestCase {
     /// to generate a preview.
     func testSaveDraftPostChangesImmediatelyFailure() async throws {
         // GIVEN a draft post with an unsynced revision and a local revision
-        // that wasn't commited yet
+        // that wasn't committed yet
         let post = PostBuilder(mainContext, blog: blog).build()
         post.status = .draft
         post.postID = 974
@@ -568,7 +568,7 @@ class PostCoordinatorTests: CoreDataTestCase {
         try mainContext.save()
 
         // GIVEN
-        stub(condition: isPath("/rest/v1.2/sites/80511/posts/974")) { request in
+        stub(condition: isPath("/rest/v1.2/sites/80511/posts/974")) { _ in
             HTTPStubsResponse(error: URLError(.notConnectedToInternet))
         }
 

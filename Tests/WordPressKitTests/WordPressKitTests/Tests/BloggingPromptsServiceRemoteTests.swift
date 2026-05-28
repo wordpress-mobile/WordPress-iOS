@@ -198,7 +198,6 @@ private extension BloggingPromptsServiceRemoteTests {
 
         return .init(promptCardEnabled: false, promptRemindersEnabled: true, reminderDays: reminderDays, reminderTime: "12.59 UTC", isPotentialBloggingSite: true)
     }
-
 }
 
 private extension String {

@@ -29,7 +29,7 @@ open class SearchTableViewCell: UITableViewCell {
     ///
     open var liveSearch: Bool = false
 
-    /// If `true` then the user can type in spaces regularly.  If `false` the whitespaces will be
+    /// If `true` then the user can type in spaces regularly. If `false` the whitespaces will be
     /// stripped before they're entered into the field.
     ///
     open var allowSpaces: Bool = true
@@ -98,7 +98,7 @@ extension SearchTableViewCell: UITextFieldDelegate {
             sanitizedString = string.trimmingCharacters(in: .whitespacesAndNewlines)
         }
 
-        let hasValidEdits = sanitizedString.count > 0 || range.length > 0
+        let hasValidEdits = !sanitizedString.isEmpty || range.length > 0
 
         if hasValidEdits {
             guard let start = textField.position(from: textField.beginningOfDocument, offset: range.location),
@@ -129,7 +129,7 @@ extension SearchTableViewCell: UITextFieldDelegate {
             return
         }
 
-        if text.count == 0 {
+        if text.isEmpty {
             delegate.startSearch(for: "")
         } else {
             delegate.startSearch(for: text)

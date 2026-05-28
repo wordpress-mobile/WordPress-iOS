@@ -46,7 +46,7 @@ class BlogDetailHeaderView: UIView {
             refreshIconImage()
             refreshSiteTitle()
 
-            if let displayURL = blog?.displayURL as String? {
+            if let displayURL = blog?.displayURL {
                 titleView.set(url: displayURL)
             }
 
@@ -68,7 +68,7 @@ class BlogDetailHeaderView: UIView {
 
     func refreshSiteTitle() {
         let blogName = blog?.settings?.name
-        let title = blogName != nil && blogName?.isEmpty == false ? blogName : blog?.displayURL as String?
+        let title = blogName != nil && blogName?.isEmpty == false ? blogName : blog?.displayURL
         titleView.titleButton.setTitle(title, for: .normal)
     }
 

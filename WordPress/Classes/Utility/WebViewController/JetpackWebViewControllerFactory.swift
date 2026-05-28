@@ -8,5 +8,4 @@ class JetpackWebViewControllerFactory {
         }
         return WebViewControllerFactory.controller(url: url, source: "jetpack_web_settings")
     }
-
 }

@@ -1,6 +1,7 @@
 import Foundation
 import CoreData
 
+@objc(RevisionDiff)
 public class RevisionDiff: NSManagedObject {
     @NSManaged public var fromRevisionId: NSNumber
     @NSManaged public var toRevisionId: NSNumber

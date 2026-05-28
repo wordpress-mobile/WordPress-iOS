@@ -1,4 +1,3 @@
-import BuildkiteTestCollector
 import Foundation
 import XCTest
 import OHHTTPStubs
@@ -92,7 +91,7 @@ extension RemoteTestCase {
         }
 
         stub(condition: { request in
-            return request.url?.absoluteString.range(of: endpoint) != nil
+            return request.url?.absoluteString.contains(endpoint) ?? false
         }) { _ in
             var headers: [NSObject: AnyObject]?
 
@@ -113,7 +112,7 @@ extension RemoteTestCase {
     ///
     func stubRemoteResponse(_ endpoint: String, data: Data, contentType: ResponseContentType, status: Int32 = 200) {
         stub(condition: { request in
-            return request.url?.absoluteString.range(of: endpoint) != nil
+            return request.url?.absoluteString.contains(endpoint) ?? false
         }) { _ in
             var headers: [NSObject: AnyObject]?
 
@@ -141,7 +140,7 @@ extension RemoteTestCase {
     func stubRemoteResponse(_ endpoint: String, files: [String], contentType: ResponseContentType, status: Int32 = 200) {
         var callCounter = 0
         stub(condition: { request in
-            return request.url?.absoluteString.range(of: endpoint) != nil
+            return request.url?.absoluteString.contains(endpoint) ?? false
         }) { response in
             guard files.indices.contains(callCounter) else {
                 // An extra call was made to this stub and no corresponding response file existed.
@@ -176,9 +175,7 @@ extension RemoteTestCase {
     ///         https://github.com/AliSoftware/OHHTTPStubs/wiki/Usage-Examples#stack-multiple-stubs-and-remove-installed-stubs
     ///
     func stubAllNetworkRequestsWithNotConnectedError() {
-        // Stub all requests other than those to the Buildkite Test Analytics API,
-        // which we need them to go through for Test Analytics reporting.
-        stub(condition: !isHost(TestCollector.apiHost)) { response in
+        stub(condition: { _ in true }) { response in
             XCTFail("Unexpected network request was made to: \(response.url!.absoluteString)")
             let notConnectedError = NSError(domain: NSURLErrorDomain, code: Int(CFNetworkErrors.cfurlErrorNotConnectedToInternet.rawValue), userInfo: nil)
             return HTTPStubsResponse(error: notConnectedError)

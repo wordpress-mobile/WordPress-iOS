@@ -72,7 +72,7 @@ class InvitePersonViewController: UITableViewController {
                 return
             }
 
-            if blog.inviteLinks?.count == 0 {
+            if blog.inviteLinks?.isEmpty == true {
                 generateShareCell.accessoryView = inviteActivityView
             } else {
                 disableLinksCell.accessoryView = inviteActivityView
@@ -81,11 +81,7 @@ class InvitePersonViewController: UITableViewController {
     }
 
     private var sortedInviteLinks: [InviteLinks] {
-        guard
-            let links = Array(blog.inviteLinks ?? []) as? [InviteLinks]
-        else {
-            return []
-        }
+        let links = Array(blog.inviteLinks ?? [])
         return availableRoles.compactMap { role -> InviteLinks? in
             return links.first { link -> Bool in
                 link.role == role.slug
@@ -101,7 +97,7 @@ class InvitePersonViewController: UITableViewController {
 
     private var currentInviteLink: InviteLinks? {
         let links = sortedInviteLinks
-        guard links.count > 0 && selectedInviteLinkIndex < links.count else {
+        guard !links.isEmpty && selectedInviteLinkIndex < links.count else {
             return nil
         }
         return links[selectedInviteLinkIndex]
@@ -182,7 +178,7 @@ class InvitePersonViewController: UITableViewController {
         // Use the system separator color rather than the one defined by WPStyleGuide
         // so cell separators stand out in darkmode.
         tableView.separatorColor = .separator
-        if blog.isWPForTeams() {
+        if blog.isWPForTeams {
             syncInviteLinks()
         }
     }
@@ -197,19 +193,19 @@ class InvitePersonViewController: UITableViewController {
     override func numberOfSections(in tableView: UITableView) -> Int {
         // Hide the last section if the site is not a p2.
         let count = super.numberOfSections(in: tableView)
-        return blog.isWPForTeams() ? count : count - 1
+        return blog.isWPForTeams ? count : count - 1
     }
 
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         guard
-            blog.isWPForTeams(),
+            blog.isWPForTeams,
             section == numberOfSections(in: tableView) - 1
         else {
             // If not a P2 or not the last section, just call super.
             return super.tableView(tableView, numberOfRowsInSection: section)
         }
         // One cell for no cached inviteLinks. Otherwise 4.
-        return blog.inviteLinks?.count == 0 ? 1 : 4
+        return blog.inviteLinks?.isEmpty == true ? 1 : 4
     }
 
     override func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
@@ -390,7 +386,6 @@ class InvitePersonViewController: UITableViewController {
         case expires
         case disable
     }
-
 }
 
 // MARK: - Helpers: Actions
@@ -431,7 +426,7 @@ extension InvitePersonViewController {
             SVProgressHUD.showDismissibleSuccess(status: success)
 
             WPAnalytics.track(.peopleUserInvited, properties: ["role": role], blog: blog)
-        }, failure: { error in
+        }, failure: { _ in
             self.handleSendError() {
                 self.sendInvitation(blog, recipient: recipient, role: role, message: message)
             }
@@ -446,7 +441,7 @@ extension InvitePersonViewController {
         let alertController = UIAlertController(title: nil, message: message, preferredStyle: .alert)
 
         alertController.addCancelActionWithTitle(cancelText)
-        alertController.addDefaultActionWithTitle(retryText) { action in
+        alertController.addDefaultActionWithTitle(retryText) { _ in
             onRetry()
         }
 
@@ -502,7 +497,6 @@ private extension InvitePersonViewController {
             }
 
             self?.sendActionEnabled = true
-
         }, failure: { [weak self] error in
             guard self?.shouldHandleValidationResponse(usernameOrEmail) == true else {
                 return
@@ -572,7 +566,7 @@ private extension InvitePersonViewController {
     }
 
     func refreshGenerateShareCell() {
-        if blog.inviteLinks?.count == 0 {
+        if blog.inviteLinks?.isEmpty == true {
             generateShareCell.textLabel?.text = NSLocalizedString("Generate new link", comment: "Title. A call to action to generate a new invite link.")
             generateShareCell.textLabel?.font = WPStyleGuide.tableviewTextFont()
         } else {
@@ -741,7 +735,7 @@ private extension InvitePersonViewController {
         }
         switch row {
         case .generateShare:
-            if blog.inviteLinks?.count == 0 {
+            if blog.inviteLinks?.isEmpty == true {
                 generateInviteLinks()
             } else {
                 shareInviteLink()
@@ -865,5 +859,4 @@ extension InvitePersonViewController: UITextViewDelegate {
         performSegue(withIdentifier: "message", sender: nil)
         return false
     }
-
 }

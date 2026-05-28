@@ -16,7 +16,7 @@ class MarkAsSpam: DefaultNotificationActionCommand {
             return
         }
         let request = NotificationDeletionRequest(kind: .spamming, action: { [weak self] requestCompletion in
-            self?.actionsService?.spamCommentWithBlock(block) { (success) in
+            self?.actionsService?.spamCommentWithBlock(block) { success in
                 requestCompletion(success)
             }
         })

@@ -135,7 +135,7 @@ final class CreateButtonCoordinator: NSObject {
         // Pre-compute `preferredContentSize`
         viewController.view.layoutIfNeeded()
 
-        viewController.popoverPresentationController?.adaptiveSheetPresentationController.detents = [.custom { [weak viewController] context in
+        viewController.popoverPresentationController?.adaptiveSheetPresentationController.detents = [.custom { [weak viewController] _ in
             viewController?.preferredContentSize.height ?? 320
         }]
 
@@ -186,9 +186,9 @@ private extension CreateButtonCoordinator {
             return
         }
 
-        bloggingPromptsService.todaysPrompt(success: { [weak self] (prompt) in
+        bloggingPromptsService.todaysPrompt(success: { [weak self] prompt in
             self?.prompt = prompt
-        }, failure: { [weak self] (error) in
+        }, failure: { [weak self] error in
             self?.prompt = nil
             DDLogError("FAB: failed fetching blogging prompt: \(String(describing: error))")
         })
@@ -197,7 +197,7 @@ private extension CreateButtonCoordinator {
     private func createPromptHeaderView() -> BloggingPromptsHeaderView? {
         guard FeatureFlag.bloggingPrompts.enabled,
               let blog,
-              blog.isAccessibleThroughWPCom(),
+              blog.isAccessibleThroughWPCom,
               let prompt,
               let siteID = blog.dotComID,
               BlogDashboardPersonalizationService(siteID: siteID.intValue).isEnabled(.prompts),
@@ -277,7 +277,7 @@ private extension UIButton {
         let scaleFinal = Constants.Minimize.finalScale
         let duration = Constants.Minimize.duration
 
-        scaleAnimation(duration: duration, damping: damping, scaleInitial: scaleInitial, scaleFinal: scaleFinal) { [weak self] success in
+        scaleAnimation(duration: duration, damping: damping, scaleInitial: scaleInitial, scaleFinal: scaleFinal) { [weak self] _ in
             self?.transform = .identity
             self?.isHidden = true
         }
@@ -301,7 +301,7 @@ private extension UIButton {
         let animator = UIViewPropertyAnimator(duration: duration, dampingRatio: damping) {
             self.transform = CGAffineTransform(scaleX: scaleFinal, y: scaleFinal)
         }
-        animator.addCompletion { (position) in
+        animator.addCompletion { _ in
             completion?(true)
         }
         animator.startAnimation()

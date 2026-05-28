@@ -21,5 +21,4 @@ class ReaderRelatedPostsSectionHeaderView: UITableViewHeaderFooterView, NibReusa
 
         backgroundColorView.backgroundColor = .systemBackground
     }
-
 }

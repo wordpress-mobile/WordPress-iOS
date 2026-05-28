@@ -38,9 +38,13 @@ public struct CachedAsyncImage<Content>: View where Content: View {
         @ViewBuilder content: @escaping (AsyncImagePhase) -> Content
     ) {
         if let url {
-            let request = ImageRequest(url: url, host: host, options: ImageRequestOptions(
-                mutability: mutability
-            ))
+            let request = ImageRequest(
+                url: url,
+                host: host,
+                options: ImageRequestOptions(
+                    mutability: mutability
+                )
+            )
 
             self.init(
                 request: request,
@@ -63,9 +67,13 @@ public struct CachedAsyncImage<Content>: View where Content: View {
         @ViewBuilder placeholder: @escaping () -> P
     ) where Content == _ConditionalContent<I, P>, I: View, P: View {
         if let url {
-            let request = ImageRequest(url: url, host: host, options: ImageRequestOptions(
-                mutability: mutability
-            ))
+            let request = ImageRequest(
+                url: url,
+                host: host,
+                options: ImageRequestOptions(
+                    mutability: mutability
+                )
+            )
 
             self.init(
                 request: request,
@@ -89,9 +97,13 @@ public struct CachedAsyncImage<Content>: View where Content: View {
         @ViewBuilder placeholder: @escaping () -> P
     ) where Content == _ConditionalContent<I, P>, I: View, P: View {
         self.init(
-            request: ImageRequest(videoUrl: videoUrl, host: host, options: ImageRequestOptions(
-                mutability: mutability
-            )),
+            request: ImageRequest(
+                videoUrl: videoUrl,
+                host: host,
+                options: ImageRequestOptions(
+                    mutability: mutability
+                )
+            ),
             imageDownloader: imageDownloader,
             content: content,
             placeholder: placeholder
@@ -137,10 +149,14 @@ public struct CachedAsyncImage<Content>: View where Content: View {
             if let image = imageDownloader.cachedImage(for: url) {
                 phase = .success(Image(uiImage: image))
             } else {
+                phase = .empty
                 let image = try await imageDownloader.image(for: request)
+
+                try Task.checkCancellation()
                 phase = .success(Image(uiImage: image))
             }
         } catch {
+            guard !Task.isCancelled else { return }
             phase = .failure(error)
         }
     }
@@ -149,7 +165,9 @@ public struct CachedAsyncImage<Content>: View where Content: View {
 fileprivate let testURL = URL(string: "https://i0.wp.com/themes.svn.wordpress.org/twentytwentyfive/1.3/screenshot.png")!
 
 // This video is the preview because it's not just black for the first frame, and right now video previews only fetch the first frame
-fileprivate let videoURL = URL(string: "https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ForBiggerJoyrides.mp4")!
+fileprivate let videoURL = URL(
+    string: "https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ForBiggerJoyrides.mp4"
+)!
 
 #Preview("Basic Image") {
     CachedAsyncImage(url: testURL)
@@ -164,7 +182,7 @@ fileprivate let videoURL = URL(string: "https://commondatastorage.googleapis.com
 }
 
 #Preview("Image that never loads") {
-    CachedAsyncImage(url: nil) { image in
+    CachedAsyncImage(url: nil) { _ in
         Text("This shouldn't be visible")
     } placeholder: {
         ProgressView("Forever loading...")

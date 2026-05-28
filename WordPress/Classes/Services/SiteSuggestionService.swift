@@ -73,7 +73,7 @@ class SiteSuggestionService {
         // add this blog to currently being requested list
         blogsCurrentlyBeingRequested.append(blogId)
 
-        defaultAccount()?.wordPressComRestApi?.GET(suggestPath, parameters: params, success: { [weak self] responseObject, httpResponse in
+        defaultAccount()?.wordPressComRestApi?.GET(suggestPath, parameters: params, success: { [weak self] responseObject, _ in
             guard let `self` = self else { return }
 
             let context = ContextManager.shared.mainContext

@@ -33,7 +33,7 @@ import WordPressKit
         }
 
         let service = EditorServiceRemote(wordPressComRestApi: api)
-        service.getEditorSettings(siteID, success: { (settings) in
+        service.getEditorSettings(siteID, success: { settings in
             self.coreDataStack.performAndSave({ context in
                 let blogInContext = try context.existingObject(with: blog.objectID) as! Blog
                 try self.update(blogInContext, remoteEditorSettings: settings)
@@ -80,7 +80,7 @@ import WordPressKit
         let service = EditorServiceRemote(wordPressComRestApi: api)
         service.postDesignateMobileEditorForAllSites(remoteEditor, setOnlyIfEmpty: !overrideRemote, success: { response in
             self.updateAllSites(with: response, completion: onSuccess)
-        }) { (error) in
+        }) { error in
             DDLogError("Error saving editor settings: \(error)")
         }
     }

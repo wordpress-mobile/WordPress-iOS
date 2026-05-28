@@ -2,7 +2,6 @@ import UIKit
 import WordPressData
 import WordPressShared
 import WordPressUI
-import Reachability
 import Gridicons
 
 public protocol BlogDetailsPresentationDelegate: AnyObject {
@@ -11,7 +10,11 @@ public protocol BlogDetailsPresentationDelegate: AnyObject {
 
 public class BlogDetailsViewController: UIViewController {
 
-    public var blog: Blog
+    public var blog: Blog {
+        didSet {
+            tableViewModel?.blog = blog
+        }
+    }
     public private(set) var tableView: UITableView?
     public private(set) var tableViewModel: BlogDetailsTableViewModel?
     public var isScrollEnabled = false
@@ -48,6 +51,9 @@ public class BlogDetailsViewController: UIViewController {
 
         tableViewModel = BlogDetailsTableViewModel(blog: blog, viewController: self)
         tableViewModel?.configure(tableView: tableView)
+        // - warning: This needs to be populated early because tableViewModel.sections
+        // are what drive programmatical navigation with universal links
+        tableViewModel?.configureTableViewData()
 
         tableView.translatesAutoresizingMaskIntoConstraints = false
 
@@ -99,7 +105,13 @@ public class BlogDetailsViewController: UIViewController {
         super.viewDidAppear(animated)
         createUserActivity()
 
-        WPAnalytics.track(.mySiteSiteMenuShown)
+        WPAnalytics.track(
+            .mySiteSiteMenuShown,
+            properties: [
+                "has_application_password": (try? blog.getApplicationToken()) != nil ? "true" : "false"
+            ],
+            blog: blog
+        )
 
         if shouldShowJetpackInstallCard() {
             WPAnalytics.track(.jetpackInstallFullPluginCardViewed, properties: [WPAppAnalyticsKeyTabSource: "site_menu"])
@@ -139,28 +151,44 @@ public class BlogDetailsViewController: UIViewController {
         tableViewModel?.showInitialDetailsForBlog()
     }
 
-    public func updateTableView(completion: (() -> Void)?) {
-        let completionBlock = completion ?? {}
-        blogService.syncBlogAndAllMetadata(blog) { [weak self] in
-            self?.configureTableViewData()
-            self?.reloadTableViewPreservingSelection()
-            completionBlock()
+    @MainActor
+    private func updateTableView() async {
+        await withCheckedContinuation { continuation in
+            blogService.syncBlogAndAllMetadata(blog) {
+                continuation.resume()
+            }
         }
+
+        if let service = CustomPostTypeService(blog: blog) {
+            tableViewModel?.hasCustomPostTypes = (try? await service.customTypes())?.isEmpty == false
+        } else {
+            tableViewModel?.hasCustomPostTypes = false
+        }
+
+        configureTableViewData()
+        reloadTableViewPreservingSelection()
     }
 
     public func pulledToRefresh(with refreshControl: UIRefreshControl, onCompletion completion: (() -> Void)?) {
-        let completionBlock = completion ?? {}
-        updateTableView { [weak refreshControl] in
-            DispatchQueue.main.async {
-                refreshControl?.endRefreshing()
-                completionBlock()
-            }
+        Task { @MainActor [weak refreshControl] in
+            await updateTableView()
+            refreshControl?.endRefreshing()
+            completion?()
         }
+    }
+
+    public func refresh() {
+        guard let refreshControl = tableView?.refreshControl else {
+            wpAssertionFailure("Can't get the UIRefreshControl instance")
+            return
+        }
+        refreshControl.beginRefreshing()
+        pulledToRefreshTriggered(refreshControl)
     }
 
     private func preloadBlogData() {
         // only preload on wifi
-        guard ReachabilityUtils.internetReachability?.isReachableViaWiFi() == true else {
+        guard ReachabilityUtils.isReachableViaWiFi() else {
             return
         }
 
@@ -178,9 +206,8 @@ public class BlogDetailsViewController: UIViewController {
     }
 
     public func preloadMetadata() {
-        blogService.syncBlogAndAllMetadata(blog) { [weak self] in
-            self?.configureTableViewData()
-            self?.reloadTableViewPreservingSelection()
+        Task {
+            await updateTableView()
         }
     }
 
@@ -288,7 +315,6 @@ extension BlogDetailsViewController: UIViewControllerTransitioningDelegate {
         }
         return nil
     }
-
 }
 
 extension BlogDetailsViewController: UIAdaptivePresentationControllerDelegate {
@@ -298,5 +324,4 @@ extension BlogDetailsViewController: UIAdaptivePresentationControllerDelegate {
             tableView?.deselectSelectedRowWithAnimation(true)
         }
     }
-
 }

@@ -30,5 +30,4 @@ final class SiteCreationSegmentsTests: RemoteTestCase, RESTTestable {
 
         waitForExpectations(timeout: timeout)
     }
-
 }

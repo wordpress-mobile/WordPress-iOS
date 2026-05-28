@@ -6,21 +6,12 @@ require 'tmpdir'
 require 'rake/clean'
 require 'yaml'
 require 'digest'
-require 'open-uri'
-require 'rubygems/package'
-require 'zlib'
 
 RUBY_REPO_VERSION = File.read('./.ruby-version').rstrip
 XCODE_WORKSPACE = 'WordPress.xcworkspace'
-XCODE_SCHEME = 'WordPress'
-XCODE_CONFIGURATION = 'Debug'
 EXPECTED_XCODE_VERSION = File.read('.xcode-version').rstrip
-GUTENBERG_VERSION = 'v1.121.0'
-
 PROJECT_DIR = __dir__
 abort('Project directory contains one or more spaces – unable to continue.') if PROJECT_DIR.include?(' ')
-
-task default: %w[test]
 
 desc 'Install required dependencies'
 task dependencies: %w[dependencies:check assets:check dependencies:gutenberg_xcframeworks]
@@ -78,9 +69,7 @@ namespace :dependencies do
     end
 
     task :install do
-      fold('install.bundler') do
-        sh 'bundle install --jobs=3 --retry=3 --path=${BUNDLE_PATH:-vendor/bundle}'
-      end
+      sh 'bundle install'
     end
     CLOBBER << 'vendor/bundle'
     CLOBBER << '.bundle'
@@ -107,53 +96,7 @@ bundle exec fastlane run configure_apply force:true
 
   desc 'Download and extract Gutenberg xcframeworks'
   task :gutenberg_xcframeworks do
-    puts 'Setting up Gutenberg xcframeworks...'
-
-    frameworks_dir = 'WordPress/Frameworks'
-
-    # Clean the slate
-    FileUtils.rm_rf(frameworks_dir)
-    FileUtils.mkdir_p(frameworks_dir)
-
-    gutenberg_tar_gz_download_path = "#{frameworks_dir}/Gutenberg.tar.gz"
-
-    URI.open("https://cdn.a8c-ci.services/gutenberg-mobile/Gutenberg-#{GUTENBERG_VERSION}.tar.gz") do |remote_file|
-      File.binwrite(gutenberg_tar_gz_download_path, remote_file.read)
-    end
-
-    # Extract the archive
-    Zlib::GzipReader.open(gutenberg_tar_gz_download_path) do |gz|
-      Gem::Package::TarReader.new(gz) do |tar|
-        tar.each do |entry|
-          next unless entry.file?
-
-          dest_path = File.join(frameworks_dir, entry.full_name)
-          FileUtils.mkdir_p(File.dirname(dest_path))
-
-          File.binwrite(dest_path, entry.read)
-        end
-      end
-    end
-
-    # Move xcframeworks to the correct location
-    Dir.glob("#{frameworks_dir}/Frameworks/*.xcframework").each do |framework|
-      FileUtils.mv(framework, frameworks_dir, force: false)
-    end
-
-    # Create dSYMs directories
-    FileUtils.mkdir_p [
-      "#{frameworks_dir}/hermes.xcframework/ios-arm64/dSYMs",
-      "#{frameworks_dir}/hermes.xcframework/ios-arm64_x86_64-simulator/dSYMs"
-    ]
-
-    # Cleanup
-    FileUtils.rm_rf [
-      gutenberg_tar_gz_download_path,
-      "#{frameworks_dir}/Frameworks",
-      "#{frameworks_dir}/dummy.txt"
-    ]
-
-    puts 'Gutenberg xcframeworks setup complete'
+    sh("#{PROJECT_DIR}/Scripts/download-gutenberg-xcframeworks.sh")
   end
 end
 
@@ -175,36 +118,6 @@ CLOBBER << 'vendor'
 desc 'Mocks'
 task :mocks do
   sh "#{File.join(PROJECT_DIR, 'API-Mocks', 'scripts', 'start.sh')} 8282"
-end
-
-desc "Build #{XCODE_SCHEME}"
-task build: [:dependencies] do
-  xcodebuild(:build)
-end
-
-desc "Profile build #{XCODE_SCHEME}"
-task buildprofile: [:dependencies] do
-  ENV['verbose'] = '1'
-  xcodebuild(:build, "OTHER_SWIFT_FLAGS='-Xfrontend -debug-time-compilation -Xfrontend -debug-time-expression-type-checking'")
-end
-
-task timed_build: [:clean] do
-  require 'benchmark'
-  time = Benchmark.measure do
-    Rake::Task['build'].invoke
-  end
-  puts "CPU Time: #{time.total}"
-  puts "Wall Time: #{time.real}"
-end
-
-desc 'Run test suite'
-task test: [:dependencies] do
-  xcodebuild(:build, :test)
-end
-
-desc 'Remove any temporary products'
-task :clean do
-  xcodebuild(:clean)
 end
 
 desc 'Checks the source for style errors'
@@ -634,28 +547,6 @@ def display_prompt_response?
   end
 
   response == 'Y'
-end
-
-# FIXME: This used to add Travis folding formatting, but we no longer use Travis. I'm leaving it here for the moment, but I think we should remove it.
-def fold(_)
-  yield
-end
-
-def xcodebuild(*build_cmds)
-  cmd = 'xcodebuild'
-  cmd += " -destination 'platform=iOS Simulator,name=iPhone 16'"
-  cmd += ' -sdk iphonesimulator'
-  cmd += " -workspace #{XCODE_WORKSPACE}"
-  cmd += " -scheme #{XCODE_SCHEME}"
-  cmd += " -configuration #{xcode_configuration}"
-  cmd += ' '
-  cmd += build_cmds.map(&:to_s).join(' ')
-  cmd += ' | bundle exec xcpretty -f `bundle exec xcpretty-travis-formatter` && exit ${PIPESTATUS[0]}' unless ENV['verbose']
-  sh(cmd)
-end
-
-def xcode_configuration
-  ENV.fetch('XCODE_CONFIGURATION') { XCODE_CONFIGURATION }
 end
 
 def command?(command)

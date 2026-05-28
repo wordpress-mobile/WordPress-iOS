@@ -1,4 +1,5 @@
 import Foundation
+import WordPressShared
 import WordPressKitObjC
 
 public class AccountSettingsRemote: ServiceRemoteWordPressComREST {
@@ -116,7 +117,7 @@ public class AccountSettingsRemote: ServiceRemoteWordPressComREST {
         let endpoint = "wpcom/v2/users/username/suggestions"
         let parameters = ["name": base]
 
-        wordPressComRESTAPI.get(endpoint, parameters: parameters as [String: AnyObject]?, success: { (responseObject, _) in
+        wordPressComRESTAPI.get(endpoint, parameters: parameters as [String: AnyObject]?, success: { responseObject, _ in
             guard let response = responseObject as? [String: AnyObject],
                 let suggestions = response["suggestions"] as? [String] else {
                 finished([])
@@ -124,7 +125,7 @@ public class AccountSettingsRemote: ServiceRemoteWordPressComREST {
             }
 
             finished(suggestions)
-        }) { (_, _) in
+        }) { _, _ in
             finished([])
         }
     }
@@ -178,12 +179,12 @@ public class AccountSettingsRemote: ServiceRemoteWordPressComREST {
             throw ResponseError.decodingFailure
         }
 
-        let aboutMeText = aboutMe.wpkit_stringByDecodingXMLCharacters()
+        let aboutMeText = aboutMe.stringByDecodingXMLCharacters()
 
         return AccountSettings(firstName: firstName,
                                lastName: lastName,
                                displayName: displayName,
-                               aboutMe: aboutMeText!,
+                               aboutMe: aboutMeText,
                                username: username,
                                usernameCanBeChanged: usernameCanBeChanged,
                                email: email,

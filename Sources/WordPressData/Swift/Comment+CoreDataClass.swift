@@ -26,7 +26,7 @@ public class Comment: NSManagedObject {
         }
 
         // If the current user cannot moderate the comment, they can only Like and Reply if the comment is Approved.
-        return (blog.isHostedAtWPcom || blog.isAtomic()) && !canModerate && !isApproved()
+        return (blog.isHostedAtWPcom || blog.isAtomic) && !canModerate && !isApproved()
     }
 
     // This can be removed when `unifiedCommentsAndNotificationsList` is permanently enabled
@@ -70,7 +70,7 @@ public class Comment: NSManagedObject {
             return canModerate
         }
 
-        guard let blog, blog.isHostedAtWPcom || blog.isAtomic() else {
+        guard let blog, blog.isHostedAtWPcom || blog.isAtomic else {
             return true
         }
         return canModerate
@@ -136,7 +136,6 @@ private extension Comment {
 
         return String()
     }
-
 }
 
 extension Comment {
@@ -177,7 +176,6 @@ extension Comment {
     @objc public func authorURL() -> URL? {
         return !author_url.isEmpty ? URL(string: author_url) : nil
     }
-
 }
 
 // When CommentViewController and CommentService are converted to Swift, this can be simplified to a String enum.

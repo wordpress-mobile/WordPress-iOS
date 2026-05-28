@@ -3,7 +3,14 @@ import TipKit
 
 /// A pre-Liquid Glass version.
 struct LegacyFloatingDateControl: View {
-    @Binding var dateRange: StatsDateRange
+    @Binding var dateRange: StatsDateRangeSelection
+
+    private var dateRangeBinding: Binding<StatsDateRange> {
+        Binding(
+            get: { dateRange.range },
+            set: { dateRange = StatsDateRangeSelection(range: $0) }
+        )
+    }
     @State private var isShowingCustomRangePicker = false
 
     private var buttonHeight: CGFloat { min(_buttonHeight, 60) }
@@ -36,7 +43,7 @@ struct LegacyFloatingDateControl: View {
             .ignoresSafeArea()
         }
         .sheet(isPresented: $isShowingCustomRangePicker) {
-            CustomDateRangePicker(dateRange: $dateRange)
+            CustomDateRangePicker(dateRange: dateRangeBinding)
         }
     }
 
@@ -45,7 +52,7 @@ struct LegacyFloatingDateControl: View {
     private var dateRangeButton: some View {
         Menu {
             StatsDateRangePickerMenu(
-                selection: $dateRange,
+                selection: dateRangeBinding,
                 isShowingCustomRangePicker: $isShowingCustomRangePicker
             )
         } label: {
@@ -78,7 +85,7 @@ struct LegacyFloatingDateControl: View {
     }
 
     private var currentRangeText: String {
-        context.formatters.dateRange.string(from: dateRange)
+        context.formatters.dateRange.string(from: dateRange.effectiveDateRange)
     }
 
     // MARK: - Navigation Controls
@@ -94,9 +101,9 @@ struct LegacyFloatingDateControl: View {
     private func makeNavigationButton(direction: NavigationDirection) -> some View {
         let isDisabled = !dateRange.canNavigate(in: direction)
         return Menu {
-            ForEach(dateRange.availableAdjacentPeriods(in: direction)) { period in
+            ForEach(dateRange.range.availableAdjacentPeriods(in: direction)) { period in
                 Button(period.displayText) {
-                    dateRange = period.range
+                    dateRange = StatsDateRangeSelection(range: period.range)
                 }
             }
         } label: {
@@ -109,7 +116,7 @@ struct LegacyFloatingDateControl: View {
                 .contentShape(Rectangle())
         } primaryAction: {
             UIImpactFeedbackGenerator(style: .light).impactOccurred()
-            dateRange = dateRange.navigate(direction)
+            dateRange.navigate(direction)
         }
         .disabled(isDisabled)
     }

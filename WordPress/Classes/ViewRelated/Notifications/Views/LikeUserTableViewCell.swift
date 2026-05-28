@@ -33,7 +33,6 @@ class LikeUserTableViewCell: UITableViewCell, NibReusable {
         downloadGravatarWithURL(user.avatarUrl)
         separatorLeadingConstraint.constant = isLastRow ? 0 : cellStackViewLeadingConstraint.constant
     }
-
 }
 
 // MARK: - Private Extension
@@ -64,5 +63,4 @@ private extension LikeUserTableViewCell {
     struct Constants {
         static let usernameFormat = NSLocalizedString("@%1$@", comment: "Label displaying the user's username preceeded by an '@' symbol. %1$@ is a placeholder for the username.")
     }
-
 }

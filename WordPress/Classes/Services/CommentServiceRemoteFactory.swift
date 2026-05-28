@@ -18,7 +18,7 @@ import WordPressKit
 
         // The REST API does not have information about comment "likes". We'll continue to use WordPress.com API for now.
         if let site = try? WordPressSite(blog: blog) {
-            return CommentServiceRemoteCoreRESTAPI(client: .init(site: site))
+            return CommentServiceRemoteCoreRESTAPI(client: WordPressClientFactory.shared.instance(for: site))
         }
 
         if let api = blog.xmlrpcApi,
@@ -39,5 +39,4 @@ import WordPressKit
     @objc public func restRemote(siteID: NSNumber, api: WordPressComRestApi) -> CommentServiceRemoteREST {
         return CommentServiceRemoteREST(wordPressComRestApi: api, siteID: siteID)
     }
-
 }

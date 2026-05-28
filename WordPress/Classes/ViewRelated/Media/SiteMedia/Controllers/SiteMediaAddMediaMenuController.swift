@@ -66,7 +66,7 @@ final class SiteMediaAddMediaMenuController: NSObject, PHPickerViewControllerDel
     func picker(_ picker: PHPickerViewController, didFinishPicking results: [PHPickerResult]) {
         picker.presentingViewController?.dismiss(animated: true)
 
-        guard results.count > 0 else {
+        guard !results.isEmpty else {
             return
         }
 

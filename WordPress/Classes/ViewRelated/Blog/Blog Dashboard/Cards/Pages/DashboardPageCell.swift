@@ -97,7 +97,6 @@ class DashboardPageCell: UITableViewCell, Reusable {
         let margins = rowIndex == 0 ? Metrics.firstCellMainStackViewLayoutMargins : Metrics.defaultMainStackViewLayoutMargins
         mainStackView.directionalLayoutMargins = margins
     }
-
 }
 
 private extension DashboardPageCell {
@@ -237,7 +236,6 @@ fileprivate class PageStatusView: UIView {
                                                   value: "Draft",
                                                   comment: "Title of label marking a draft page")
     }
-
 }
 
 fileprivate extension BasePost.Status {

@@ -207,7 +207,6 @@ struct CustomizeInsightsRow: ImmuTableRow {
 
         cell.configure(insightsDelegate: siteStatsInsightsDelegate)
     }
-
 }
 
 struct LatestPostSummaryRow: StatsHashableImmuTableRow {
@@ -790,7 +789,6 @@ struct DetailExpandableRow: HashableImmutableRow {
                        hideIndentedSeparator: hideIndentedSeparator,
                        hideFullSeparator: hideFullSeparator,
                        expanded: expanded)
-
     }
 
     static func == (lhs: DetailExpandableRow, rhs: DetailExpandableRow) -> Bool {

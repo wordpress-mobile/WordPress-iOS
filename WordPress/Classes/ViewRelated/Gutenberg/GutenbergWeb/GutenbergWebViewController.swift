@@ -48,7 +48,7 @@ class GutenbergWebViewController: GutenbergWebSingleBlockViewController, WebKitA
     }
 
     override func getRequest(for webView: WKWebView, completion: @escaping (URLRequest) -> Void) {
-        authenticatedRequest(for: url, on: webView) { (request) in
+        authenticatedRequest(for: url, on: webView) { request in
             completion(request)
         }
     }

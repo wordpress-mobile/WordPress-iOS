@@ -62,7 +62,6 @@ private class AutomaticTeardownTestObserver: NSObject, XCTestObservation {
         testCase.additionalTeardown?()
         testCase.additionalTeardown = nil
     }
-
 }
 
 private var additionalTeardownKey: Int = 0
@@ -76,5 +75,4 @@ private extension XCTestCase {
             objc_getAssociatedObject(self, &additionalTeardownKey) as? (() -> Void)
         }
     }
-
 }

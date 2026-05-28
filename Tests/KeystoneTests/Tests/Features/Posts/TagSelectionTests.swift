@@ -7,62 +7,199 @@ import WordPressAPI
 @MainActor
 struct TagSelectionTests {
 
-    @Test
-    func addNewTag() async {
-        let mock = MockService(tags: ["Foo", "Bar"])
-        #expect(await mock.tags.count == 2)
-
-        let viewModel = TagsViewModel(taxonomy: nil, service: mock, selectedTerms: nil, mode: .selection(onSelectedTagsChanged: nil))
-        await viewModel.addNewTag(named: "Baz")?.value
-        await #expect(mock.tags.count == 3)
-    }
+    // MARK: - toggleSelection
 
     @Test
-    func addExistingTag() async {
-        let mock = MockService(tags: ["Foo", "Bar"])
-        #expect(await mock.tags.count == 2)
-
-        let viewModel = TagsViewModel(taxonomy: nil, service: mock, selectedTerms: nil, mode: .selection(onSelectedTagsChanged: nil))
-        await viewModel.addNewTag(named: "Foo")?.value
-        #expect(await mock.tags.count == 2)
-    }
-
-    @Test
-    func newTagIsSelected() async {
-        let mock = MockService(tags: ["Foo", "Bar"])
-        let viewModel = TagsViewModel(taxonomy: nil, service: mock, selectedTerms: nil, mode: .selection(onSelectedTagsChanged: nil))
-        await viewModel.addNewTag(named: "Baz")?.value
-
-        #expect(await viewModel.selectedTags == ["Baz"])
-    }
-
-    @Test
-    func serverTagIsSelected() async {
-        let mock = MockService(tags: ["Foo", "Bar"])
-        let viewModel = TagsViewModel(taxonomy: nil, service: mock, selectedTerms: nil, mode: .selection(onSelectedTagsChanged: nil))
-        await viewModel.addNewTag(named: "foo")?.value
-
-        #expect(await viewModel.selectedTags == ["Foo"])
-    }
-
-    @Test
-    func toggleSelection() async {
+    func toggleSelectionAddsTagItemWithCorrectIdAndName() async {
         let mock = MockService(tags: ["Foo", "Bar"])
         let tags = await mock.tags
-        let viewModel = TagsViewModel(taxonomy: nil, service: mock, selectedTerms: nil, mode: .selection(onSelectedTagsChanged: nil))
-        #expect(viewModel.selectedTags.isEmpty)
+        let viewModel = TagsViewModel(taxonomy: nil, service: mock, mode: .selection(onSelectedTagsChanged: nil))
+
+        viewModel.toggleSelection(for: tags[0])
+
+        #expect(viewModel.selectedTags.count == 1)
+        #expect(viewModel.selectedTags[0].id == Int(tags[0].id))
+        #expect(viewModel.selectedTags[0].name == "Foo")
+    }
+
+    @Test
+    func toggleSelectionRemovesPreviouslySelectedTag() async {
+        let mock = MockService(tags: ["Foo", "Bar"])
+        let tags = await mock.tags
+        let viewModel = TagsViewModel(taxonomy: nil, service: mock, mode: .selection(onSelectedTagsChanged: nil))
 
         viewModel.toggleSelection(for: tags[0])
         #expect(viewModel.selectedTags.count == 1)
 
         viewModel.toggleSelection(for: tags[0])
-        #expect(viewModel.selectedTags.count == 0)
+        #expect(viewModel.selectedTags.isEmpty)
     }
 
+    // MARK: - addNewTag
+
+    @Test
+    func addNewTagAppendsPendingTagItem() async {
+        let mock = MockService(tags: ["Foo", "Bar"])
+        let viewModel = TagsViewModel(taxonomy: nil, service: mock, mode: .selection(onSelectedTagsChanged: nil))
+
+        let task = viewModel.addNewTag(named: "Baz")
+
+        // Before the task completes, the tag should be pending
+        #expect(viewModel.selectedTags.count == 1)
+        #expect(viewModel.selectedTags[0].id == 0)
+        #expect(viewModel.selectedTags[0].isPending)
+        #expect(viewModel.selectedTags[0].name == "Baz")
+
+        await task?.value
+    }
+
+    @Test
+    func addNewTagReplacesPendingWithRealId() async {
+        let mock = MockService(tags: ["Foo", "Bar"])
+        let viewModel = TagsViewModel(taxonomy: nil, service: mock, mode: .selection(onSelectedTagsChanged: nil))
+
+        await viewModel.addNewTag(named: "Baz")?.value
+
+        #expect(viewModel.selectedTags.count == 1)
+        #expect(viewModel.selectedTags[0].id != 0)
+        #expect(!viewModel.selectedTags[0].isPending)
+        #expect(viewModel.selectedTags[0].name == "Baz")
+    }
+
+    @Test
+    func addNewTagRemovesPendingOnError() async {
+        let mock = MockService(tags: ["Foo", "Bar"])
+        await mock.setShouldThrow(true)
+        let viewModel = TagsViewModel(taxonomy: nil, service: mock, mode: .selection(onSelectedTagsChanged: nil))
+
+        await viewModel.addNewTag(named: "Baz")?.value
+
+        #expect(viewModel.selectedTags.isEmpty)
+    }
+
+    @Test
+    func addNewTagIsNoOpForDuplicateName() async {
+        let mock = MockService(tags: ["Foo", "Bar"])
+        let viewModel = TagsViewModel(taxonomy: nil, service: mock, mode: .selection(onSelectedTagsChanged: nil))
+
+        await viewModel.addNewTag(named: "Baz")?.value
+        let result = viewModel.addNewTag(named: "baz")
+
+        #expect(result == nil)
+        #expect(viewModel.selectedTags.count == 1)
+    }
+
+    @Test
+    func addExistingTagUsesServerName() async {
+        let mock = MockService(tags: ["Foo", "Bar"])
+        let viewModel = TagsViewModel(taxonomy: nil, service: mock, mode: .selection(onSelectedTagsChanged: nil))
+
+        await viewModel.addNewTag(named: "foo")?.value
+
+        #expect(viewModel.selectedTags.count == 1)
+        #expect(viewModel.selectedTags[0].name == "Foo")
+        #expect(viewModel.selectedTags[0].id != 0)
+    }
+
+    @Test
+    func addNewTagCreatesOnServer() async {
+        let mock = MockService(tags: ["Foo", "Bar"])
+        let viewModel = TagsViewModel(taxonomy: nil, service: mock, mode: .selection(onSelectedTagsChanged: nil))
+
+        await viewModel.addNewTag(named: "Baz")?.value
+
+        await #expect(mock.tags.count == 3)
+    }
+
+    // MARK: - Selection callback
+
+    @Test
+    func selectionCallbackEmitsPendingItemsImmediately() async {
+        // Regression coverage for the missing-tags bug: if the user publishes before the
+        // async search/create completes, the parent's tag list must still contain the
+        // typed name. The callback must therefore fire synchronously on `addNewTag` with
+        // the pending (`id == 0`) term so the parent never observes an empty selection.
+        let mock = MockService(tags: ["Foo", "Bar"])
+        var callbackTags: [TagsViewModel.SelectedTerm] = []
+        let viewModel = TagsViewModel(
+            taxonomy: nil,
+            service: mock,
+            mode: .selection(onSelectedTagsChanged: { tags in
+                callbackTags = tags
+            })
+        )
+
+        // Do not await — we want to observe the state before the create task can run.
+        let task = viewModel.addNewTag(named: "Baz")
+
+        #expect(callbackTags.count == 1)
+        #expect(callbackTags[0].name == "Baz")
+        #expect(callbackTags[0].id == 0)
+        #expect(callbackTags[0].isPending)
+
+        await task?.value
+    }
+
+    @Test
+    func selectionCallbackDeliversConfirmedItems() async {
+        let mock = MockService(tags: ["Foo", "Bar"])
+        let tags = await mock.tags
+        var callbackTags: [TagsViewModel.SelectedTerm] = []
+        let viewModel = TagsViewModel(
+            taxonomy: nil,
+            service: mock,
+            mode: .selection(onSelectedTagsChanged: { tags in
+                callbackTags = tags
+            })
+        )
+
+        viewModel.toggleSelection(for: tags[0])
+
+        #expect(callbackTags.count == 1)
+        #expect(callbackTags[0].id == Int(tags[0].id))
+    }
+
+    // MARK: - getTerms
+
+    @Test
+    func getTermsReturnsMatchingTerms() async throws {
+        let mock = MockService(tags: ["Foo", "Bar", "Baz"])
+        let tags = await mock.tags
+        let ids = [tags[0].id, tags[2].id]
+
+        let result = try await mock.getTerms(ids: ids)
+
+        #expect(result.count == 2)
+        #expect(result.contains { $0.name == "Foo" })
+        #expect(result.contains { $0.name == "Baz" })
+    }
+
+    @Test
+    func getTermsWithEmptyIdsReturnsEmpty() async throws {
+        let mock = MockService(tags: ["Foo", "Bar"])
+        let result = try await mock.getTerms(ids: [])
+        #expect(result.isEmpty)
+    }
+
+    // MARK: - removeSelectedTag
+
+    @Test
+    func removeSelectedTagByNameCaseInsensitive() async {
+        let mock = MockService(tags: ["Foo", "Bar"])
+        let tags = await mock.tags
+        let viewModel = TagsViewModel(taxonomy: nil, service: mock, mode: .selection(onSelectedTagsChanged: nil))
+
+        viewModel.toggleSelection(for: tags[0])
+        #expect(viewModel.selectedTags.count == 1)
+
+        viewModel.removeSelectedTag("foo")
+        #expect(viewModel.selectedTags.isEmpty)
+    }
 }
 
 private actor MockService: TaxonomyServiceProtocol {
     var tags: [AnyTermWithViewContext]
+    private var shouldThrow = false
 
     init(tags: [String] = []) {
         self.tags = tags.map {
@@ -79,18 +216,29 @@ private actor MockService: TaxonomyServiceProtocol {
         }
     }
 
+    func setShouldThrow(_ value: Bool) {
+        shouldThrow = value
+    }
+
     func getTags(page: Int, recentlyUsed: Bool) async throws -> [AnyTermWithViewContext] {
         tags
     }
 
     func searchTags(with query: String) async throws -> [AnyTermWithViewContext] {
-        tags.filter { $0.name.localizedCaseInsensitiveContains(query) }
+        if shouldThrow { throw URLError(.badServerResponse) }
+        return tags.filter { $0.name.localizedCaseInsensitiveContains(query) }
     }
 
     func createTag(name: String, description: String) async throws -> AnyTermWithViewContext {
+        if shouldThrow { throw URLError(.badServerResponse) }
+
         let lowercasedName = name.lowercased()
         if tags.contains(where: { $0.name.lowercased() == lowercasedName }) {
-            let error = NSError(domain: "MockService", code: -1, userInfo: [NSLocalizedDescriptionKey: "Tag already exists"])
+            let error = NSError(
+                domain: "MockService",
+                code: -1,
+                userInfo: [NSLocalizedDescriptionKey: "Tag already exists"]
+            )
             throw error
         }
 
@@ -108,7 +256,11 @@ private actor MockService: TaxonomyServiceProtocol {
         return newTag
     }
 
-    func updateTag(_ term: AnyTermWithViewContext, name: String, description: String) async throws -> AnyTermWithViewContext {
+    func updateTag(
+        _ term: AnyTermWithViewContext,
+        name: String,
+        description: String
+    ) async throws -> AnyTermWithViewContext {
         guard let index = tags.firstIndex(where: { $0.id == term.id }) else {
             let error = NSError(domain: "MockService", code: -2, userInfo: [NSLocalizedDescriptionKey: "Tag not found"])
             throw error
@@ -130,5 +282,10 @@ private actor MockService: TaxonomyServiceProtocol {
 
     func deleteTag(_ term: AnyTermWithViewContext) async throws {
         tags.removeAll { $0.id == term.id }
+    }
+
+    func getTerms(ids: [Int64]) async throws -> [AnyTermWithViewContext] {
+        let idSet = Set(ids)
+        return tags.filter { idSet.contains($0.id) }
     }
 }

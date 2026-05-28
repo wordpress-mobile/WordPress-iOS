@@ -49,5 +49,4 @@ extension PublicizeConnection {
         request.predicate = NSPredicate(format: "connectionID = %@", connectionID)
         return try? context.fetch(request).first
     }
-
 }

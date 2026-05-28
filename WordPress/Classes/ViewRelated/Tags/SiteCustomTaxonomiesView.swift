@@ -58,7 +58,7 @@ struct SiteCustomTaxonomiesView: View {
         do {
             let result = try await client.api.taxonomies.listWithEditContext(params: .init()).data
             // The "Categories" and "Tags" are displayed in its own views. This view only displays custom taxonomies.
-            let customTaxonomies: [TaxonomyTypeDetailsWithEditContext] = result.taxonomyTypes.compactMap { (type, taxonomy) in
+            let customTaxonomies: [TaxonomyTypeDetailsWithEditContext] = result.taxonomyTypes.compactMap { type, taxonomy in
                 switch type {
                 case .category, .navMenu, .postTag, .wpPatternCategory:
                     nil

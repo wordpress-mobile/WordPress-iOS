@@ -50,7 +50,6 @@ open class SharingServiceRemote: ServiceRemoteWordPressComREST {
             }
 
             success?(self.remotePublicizeServicesFromDictionary(responseDict))
-
         } failure: { error, _ in
             failure?(error as NSError)
         }
@@ -108,7 +107,7 @@ open class SharingServiceRemote: ServiceRemoteWordPressComREST {
                 }
 
                 let connections = responseDict.array(forKey: ConnectionDictionaryKeys.connections) ?? []
-                let keyringConnections: [KeyringConnection] = connections.map { (dict) -> KeyringConnection in
+                let keyringConnections: [KeyringConnection] = connections.map { dict -> KeyringConnection in
                     let conn = KeyringConnection()
                     let dict = dict as AnyObject
                     let externalUsers = dict.array(forKey: ConnectionDictionaryKeys.additionalExternalUsers) ?? []
@@ -118,6 +117,9 @@ open class SharingServiceRemote: ServiceRemoteWordPressComREST {
                     conn.externalDisplay = dict.string(forKey: ConnectionDictionaryKeys.externalDisplay) ?? conn.externalDisplay
                     conn.externalID = dict.string(forKey: ConnectionDictionaryKeys.externalID) ?? conn.externalID
                     conn.externalName = dict.string(forKey: ConnectionDictionaryKeys.externalName) ?? conn.externalName
+                    if conn.externalDisplay.isEmpty {
+                        conn.externalDisplay = conn.externalName
+                    }
                     conn.externalProfilePicture = dict.string(forKey: ConnectionDictionaryKeys.externalProfilePicture) ?? conn.externalProfilePicture
                     conn.keyringID = dict.number(forKey: ConnectionDictionaryKeys.ID) ?? conn.keyringID
                     conn.label = dict.string(forKey: ConnectionDictionaryKeys.label) ?? conn.label
@@ -146,7 +148,7 @@ open class SharingServiceRemote: ServiceRemoteWordPressComREST {
     /// - Returns: An array of KeyringConnectionExternalUser instances.
     ///
     private func externalUsersForKeyringConnection(_ externalUsers: NSArray) -> [KeyringConnectionExternalUser] {
-        let arr: [KeyringConnectionExternalUser] = externalUsers.map { (dict) -> KeyringConnectionExternalUser in
+        let arr: [KeyringConnectionExternalUser] = externalUsers.map { dict -> KeyringConnectionExternalUser in
             let externalUser = KeyringConnectionExternalUser()
             externalUser.externalID = (dict as AnyObject).string(forKey: ConnectionDictionaryKeys.externalID) ?? externalUser.externalID
             externalUser.externalName = (dict as AnyObject).string(forKey: ConnectionDictionaryKeys.externalName) ?? externalUser.externalName
@@ -182,7 +184,7 @@ open class SharingServiceRemote: ServiceRemoteWordPressComREST {
                 }
 
                 let connections = responseDict.array(forKey: ConnectionDictionaryKeys.connections) ?? []
-                let publicizeConnections: [RemotePublicizeConnection] = connections.compactMap { (dict) -> RemotePublicizeConnection? in
+                let publicizeConnections: [RemotePublicizeConnection] = connections.compactMap { dict -> RemotePublicizeConnection? in
                     let conn = self.remotePublicizeConnectionFromDictionary(dict as! NSDictionary)
                     return conn
                 }
@@ -242,7 +244,7 @@ open class SharingServiceRemote: ServiceRemoteWordPressComREST {
     /// - Parameters:
     ///     - connectionID: The ID of the publicize connection.
     ///     - externalID: The connection's externalID. Pass `nil` if the keyring
-    ///                   connection's default external ID should be used.  Otherwise pass the external
+    ///                   connection's default external ID should be used. Otherwise pass the external
     ///                   ID of one if the keyring connection's `additionalExternalUsers`.
     ///     - siteID: The WordPress.com ID of the site.
     ///     - success: An optional success block accepting no arguments.
@@ -359,6 +361,9 @@ open class SharingServiceRemote: ServiceRemoteWordPressComREST {
         conn.externalDisplay = dict.string(forKey: ConnectionDictionaryKeys.externalDisplay) ?? conn.externalDisplay
         conn.externalID = dict.string(forKey: ConnectionDictionaryKeys.externalID) ?? conn.externalID
         conn.externalName = dict.string(forKey: ConnectionDictionaryKeys.externalName) ?? conn.externalName
+        if conn.externalDisplay.isEmpty {
+            conn.externalDisplay = conn.externalName
+        }
         conn.externalProfilePicture = dict.string(forKey: ConnectionDictionaryKeys.externalProfilePicture) ?? conn.externalProfilePicture
         conn.externalProfileURL = dict.string(forKey: ConnectionDictionaryKeys.externalProfileURL) ?? conn.externalProfileURL
         conn.keyringConnectionID = dict.number(forKey: ConnectionDictionaryKeys.keyringConnectionID) ?? conn.keyringConnectionID
@@ -470,7 +475,7 @@ open class SharingServiceRemote: ServiceRemoteWordPressComREST {
     ///
     private func remoteSharingButtonsFromDictionary(_ buttons: NSArray) -> [RemoteSharingButton] {
         var order = 0
-        let sharingButtons: [RemoteSharingButton] = buttons.map { (dict) -> RemoteSharingButton in
+        let sharingButtons: [RemoteSharingButton] = buttons.map { dict -> RemoteSharingButton in
             let btn = RemoteSharingButton()
             btn.buttonID = (dict as AnyObject).string(forKey: SharingButtonsKeys.buttonID) ?? btn.buttonID
             btn.name = (dict as AnyObject).string(forKey: SharingButtonsKeys.name) ?? btn.name
@@ -492,7 +497,7 @@ open class SharingServiceRemote: ServiceRemoteWordPressComREST {
     }
 
     private func dictionariesFromRemoteSharingButtons(_ buttons: [RemoteSharingButton]) -> [NSDictionary] {
-        return buttons.map({ (btn) -> NSDictionary in
+        return buttons.map({ btn -> NSDictionary in
 
             let dict = NSMutableDictionary()
             dict[SharingButtonsKeys.buttonID] = btn.buttonID

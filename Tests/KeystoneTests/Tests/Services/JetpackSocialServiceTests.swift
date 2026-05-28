@@ -175,7 +175,7 @@ class JetpackSocialServiceTests: CoreDataTestCase {
         let syncSucceeded = await withCheckedContinuation { continuation in
             service.syncSharingLimit(dotComID: NSNumber(value: blogID)) {
                 continuation.resume(returning: true)
-            } failure: { error in
+            } failure: { _ in
                 continuation.resume(returning: false)
             }
         }
@@ -191,7 +191,7 @@ class JetpackSocialServiceTests: CoreDataTestCase {
         let syncSucceeded = await withCheckedContinuation { continuation in
             service.syncSharingLimit(dotComID: NSNumber(value: blogID)) {
                 continuation.resume(returning: true)
-            } failure: { error in
+            } failure: { _ in
                 continuation.resume(returning: false)
             }
         }
@@ -207,14 +207,13 @@ class JetpackSocialServiceTests: CoreDataTestCase {
         let syncSucceeded = await withCheckedContinuation { continuation in
             service.syncSharingLimit(dotComID: NSNumber(value: blogID)) {
                 continuation.resume(returning: true)
-            } failure: { error in
+            } failure: { _ in
                 continuation.resume(returning: false)
             }
         }
 
         XCTAssertFalse(syncSucceeded)
     }
-
 }
 
 // MARK: - Helpers
@@ -229,5 +228,4 @@ private extension JetpackSocialServiceTests {
         blog?.publicizeInfo = info
         contextManager.saveContextAndWait(mainContext)
     }
-
 }

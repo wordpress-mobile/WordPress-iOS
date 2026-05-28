@@ -679,7 +679,6 @@ extension PostRepository {
 
         return updatedPosts
     }
-
 }
 
 private enum Strings {

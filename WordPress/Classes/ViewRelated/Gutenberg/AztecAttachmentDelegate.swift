@@ -48,11 +48,9 @@ class AztecAttachmentDelegate: TextViewAttachmentDelegate {
     }
 
     func textView(_ textView: TextView, selected attachment: NSTextAttachment, atPosition position: CGPoint) {
-
     }
 
     func textView(_ textView: TextView, deselected attachment: NSTextAttachment, atPosition position: CGPoint) {
-
     }
 
     func fetchPosterImageFor(videoAttachment: VideoAttachment, onSuccess: @escaping (UIImage) -> (), onFailure: @escaping () -> ()) {
@@ -64,7 +62,7 @@ class AztecAttachmentDelegate: TextViewAttachmentDelegate {
     }
 
     func downloadImage(from url: URL, success: @escaping (UIImage) -> Void, onFailure failure: @escaping () -> Void) {
-        let receipt = mediaUtility.downloadImage(from: url, post: post, success: success, onFailure: { (_) in failure()})
+        let receipt = mediaUtility.downloadImage(from: url, post: post, success: success, onFailure: { _ in failure()})
         activeMediaRequests.append(receipt)
     }
 }

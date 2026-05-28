@@ -21,7 +21,7 @@ class NotificationSettingsServiceTests: CoreDataTestCase {
     let settingsFilename = "notifications-settings.json"
     let dummyDeviceId = "1234"
 
-    // MARK: - Overriden Methods
+    // MARK: - Overridden Methods
     override func setUp() {
         super.setUp()
 
@@ -29,8 +29,8 @@ class NotificationSettingsServiceTests: CoreDataTestCase {
         service = NotificationSettingsService(coreDataStack: contextManager, wordPressComRestApi: remoteApi)
 
         stub(condition: { request in
-            return request.url?.absoluteString.range(of: self.settingsEndpoint) != nil
-                && request.httpMethod! == "GET"
+            let matchesEndpoint = request.url?.absoluteString.contains(self.settingsEndpoint) ?? false
+            return matchesEndpoint && request.httpMethod! == "GET"
             }) { _ in
                 let stubPath = OHPathForFile(self.settingsFilename, type(of: self))
                 return fixture(filePath: stubPath!, headers: ["Content-Type" as NSObject: self.contentTypeJson as AnyObject])
@@ -52,9 +52,9 @@ class NotificationSettingsServiceTests: CoreDataTestCase {
         let targetSite = targetSettings.first!
         XCTAssert(targetSite.streams.count == 3, "Error while parsing Site Stream Settings")
 
-        let parsedDeviceSettings = targetSite.streams.filter { $0.kind == StreamKind.device }.first
-        let parsedEmailSettings = targetSite.streams.filter { $0.kind == StreamKind.email }.first
-        let parsedTimelineSettings = targetSite.streams.filter { $0.kind == StreamKind.timeline }.first
+        let parsedDeviceSettings = targetSite.streams.first(where: { $0.kind == StreamKind.device })
+        let parsedEmailSettings = targetSite.streams.first(where: { $0.kind == StreamKind.email })
+        let parsedTimelineSettings = targetSite.streams.first(where: { $0.kind == StreamKind.timeline })
 
         let expectedTimelineSettings = [
             "new_comment": false,
@@ -103,9 +103,9 @@ class NotificationSettingsServiceTests: CoreDataTestCase {
         let otherSettings = filteredSettings.first!
         XCTAssert(otherSettings.streams.count == 3, "Error while parsing Other Streams")
 
-        let parsedDeviceSettings = otherSettings.streams.filter { $0.kind == StreamKind.device }.first
-        let parsedEmailSettings = otherSettings.streams.filter { $0.kind == StreamKind.email }.first
-        let parsedTimelineSettings = otherSettings.streams.filter { $0.kind == StreamKind.timeline }.first
+        let parsedDeviceSettings = otherSettings.streams.first(where: { $0.kind == StreamKind.device })
+        let parsedEmailSettings = otherSettings.streams.first(where: { $0.kind == StreamKind.email })
+        let parsedTimelineSettings = otherSettings.streams.first(where: { $0.kind == StreamKind.timeline })
 
         let expectedDeviceSettings = [
             "comment_like": true,
@@ -163,7 +163,7 @@ class NotificationSettingsServiceTests: CoreDataTestCase {
                 settings = theSettings
                 expect.fulfill()
             },
-            failure: { (error: NSError?) in
+            failure: { (_: NSError?) in
                 expect.fulfill()
             })
 

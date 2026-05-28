@@ -15,5 +15,4 @@ extension BloggingPromptSettingsReminderDays {
     @NSManaged public var saturday: Bool
     @NSManaged public var sunday: Bool
     @NSManaged public var settings: BloggingPromptSettings?
-
 }

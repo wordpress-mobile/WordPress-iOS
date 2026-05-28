@@ -596,10 +596,6 @@
 	<string>2</string>
 	<key>WPProductBlogURL</key>
 	<string>wordpress.org/news/</string>
-	<key>WPProductTwitterHandle</key>
-	<string>@WordPressiOS</string>
-	<key>WPProductTwitterURL</key>
-	<string>twitter.com/WordPressiOS</string>
 	<key>WPPushNotificationAppID</key>
 	<string>${WP_PUSH_NOTIFICATION_APP_ID}</string>
 	<key>WPZendeskSourcePlatform</key>

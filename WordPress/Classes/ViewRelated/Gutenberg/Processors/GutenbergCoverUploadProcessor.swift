@@ -22,9 +22,10 @@ class GutenbergCoverUploadProcessor: Processor {
         self.remoteURLString = remoteURLString
     }
 
-    lazy var coverBlockProcessor = GutenbergBlockProcessor(for: CoverBlockKeys.name, replacer: { coverBlock in
-        guard let mediaID = coverBlock.attributes[CoverBlockKeys.id] as? Int,
-            mediaID == self.mediaUploadID else {
+    lazy var coverBlockProcessor = GutenbergBlockProcessor(for: CoverBlockKeys.name, replacer: { [weak self] coverBlock in
+        guard let self,
+              let mediaID = coverBlock.attributes[CoverBlockKeys.id] as? Int,
+              mediaID == self.mediaUploadID else {
                 return nil
         }
         var block = "<!-- \(CoverBlockKeys.name) "
@@ -60,7 +61,7 @@ extension GutenbergCoverUploadProcessor {
     }
 
     private func imgUploadProcessor() -> HTMLProcessor {
-        return HTMLProcessor(for: ImgHTMLKeys.name, replacer: { (div) in
+        return HTMLProcessor(for: ImgHTMLKeys.name, replacer: { div in
 
             guard let styleAttributeValue = div.attributes[ImgHTMLKeys.styleComponents]?.value,
                 case let .string(styleAttribute) = styleAttributeValue
@@ -115,7 +116,7 @@ extension GutenbergCoverUploadProcessor {
     }
 
     private func videoUploadProcessor() -> HTMLProcessor {
-        return HTMLProcessor(for: VideoHTMLKeys.name, replacer: { (video) in
+        return HTMLProcessor(for: VideoHTMLKeys.name, replacer: { video in
             var attributes = video.attributes
             attributes.set(.string(self.remoteURLString), forKey: VideoHTMLKeys.source)
 

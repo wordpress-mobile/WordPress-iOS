@@ -11,10 +11,7 @@
 
 @class Comment;
 
-NSString *const WPComGetFeatures = @"wpcom.getFeatures";
-NSString *const VideopressEnabled = @"videopress_enabled";
 NSString *const WordPressMinimumVersion = @"4.0";
-NSString *const HttpsPrefix = @"https://";
 NSString *const WPBlogUpdatedNotification = @"WPBlogUpdatedNotification";
 NSString *const WPBlogSettingsUpdatedNotification = @"WPBlogSettingsUpdatedNotification";
 
@@ -81,19 +78,6 @@ NSString *const WPBlogSettingsUpdatedNotification = @"WPBlogSettingsUpdatedNotif
     NSManagedObjectID *blogObjectID = blog.objectID;
     id<BlogServiceRemote> remote = [self remoteForBlog:blog];
 
-    if ([remote isKindOfClass:[BlogServiceRemoteXMLRPC class]]) {
-        dispatch_group_enter(syncGroup);
-        BlogServiceRemoteXMLRPC *xmlrpcRemote = remote;
-        [xmlrpcRemote syncBlogOptionsWithSuccess:[self optionsHandlerWithBlogObjectID:blogObjectID
-                                                                    completionHandler:^{
-                                                                        dispatch_group_leave(syncGroup);
-                                                                    }]
-                                         failure:^(NSError *error) {
-                                             DDLogError(@"Failed syncing options for blog %@: %@", blog.url, error);
-                                             dispatch_group_leave(syncGroup);
-                                         }];
-    }
-
     if ([remote isKindOfClass:[BlogServiceRemoteREST class]]) {
         dispatch_group_enter(syncGroup);
         BlogServiceRemoteREST *restRemote = remote;
@@ -120,6 +104,31 @@ NSString *const WPBlogSettingsUpdatedNotification = @"WPBlogSettingsUpdatedNotif
             DDLogError(@"Failed syncing settings for blog %@: %@", blog.url, error);
             dispatch_group_leave(syncGroup);
         }];
+    } else {
+        dispatch_group_enter(syncGroup);
+        OptionsHandler handler = [self optionsHandlerWithBlogObjectID:blogObjectID
+                                                    completionHandler:^{ dispatch_group_leave(syncGroup); }];
+        [self syncXMLRPCOptionsIfApplicableFor:blog
+                                optionsHandler:handler
+                                        failure:^{ dispatch_group_leave(syncGroup); }];
+
+        if ([remote isKindOfClass:[BlogServiceRemoteCoreREST class]]) {
+            BlogServiceRemoteCoreREST *coreRestRemote = (BlogServiceRemoteCoreREST *)remote;
+            dispatch_group_enter(syncGroup);
+            [coreRestRemote syncBlogSettingsWithSuccess:^(RemoteBlogSettings *settings) {
+                [self.coreDataStack performAndSaveUsingBlock:^(NSManagedObjectContext *context) {
+                    Blog *blogInContext = (Blog *)[context existingObjectWithID:blogObjectID error:nil];
+                    if (blogInContext) {
+                        [self updateSettings:blogInContext.settings withRemoteSettings:settings];
+                    }
+                } completion:^{
+                    dispatch_group_leave(syncGroup);
+                } onQueue:dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0)];
+            } failure:^(NSError *error) {
+                DDLogError(@"Failed syncing settings for blog %@: %@", blog.url, error);
+                dispatch_group_leave(syncGroup);
+            }];
+        }
     }
 
     dispatch_group_enter(syncGroup);
@@ -226,6 +235,11 @@ NSString *const WPBlogSettingsUpdatedNotification = @"WPBlogSettingsUpdatedNotif
         dispatch_group_leave(syncGroup);
     }];
 
+    dispatch_group_enter(syncGroup);
+    [self syncPostTypesFor:blog completion:^{
+        dispatch_group_leave(syncGroup);
+    }];
+
     // When everything has left the syncGroup (all calls have ended with success
     // or failure) perform the completionHandler
     dispatch_group_notify(syncGroup, dispatch_get_main_queue(),^{
@@ -268,6 +282,12 @@ NSString *const WPBlogSettingsUpdatedNotification = @"WPBlogSettingsUpdatedNotif
 
             BlogServiceRemoteREST *restRemote = remote;
             [restRemote syncBlogSettingsWithSuccess:^(RemoteBlogSettings *settings) {
+                updateOnSuccess(settings);
+            } failure:failure];
+
+        } else if ([remote isKindOfClass:[BlogServiceRemoteCoreREST class]]) {
+            BlogServiceRemoteCoreREST *coreRestRemote = (BlogServiceRemoteCoreREST *)remote;
+            [coreRestRemote syncBlogSettingsWithSuccess:^(RemoteBlogSettings *settings) {
                 updateOnSuccess(settings);
             } failure:failure];
         }
@@ -389,7 +409,7 @@ NSString *const WPBlogSettingsUpdatedNotification = @"WPBlogSettingsUpdatedNotif
 
 - (void)removeBlog:(Blog *)blog
 {
-    DDLogInfo(@"<Blog:%@> remove", blog.hostURL);
+    DDLogInfo(@"<Blog:%@> remove", blog.displayURL);
     [blog.xmlrpcApi invalidateAndCancelTasks];
     [self unscheduleBloggingRemindersFor:blog];
 
@@ -577,7 +597,7 @@ NSString *const WPBlogSettingsUpdatedNotification = @"WPBlogSettingsUpdatedNotif
     }] firstObject];
 
     if (jetpackBlog) {
-        DDLogInfo(@"Migrating %@ to wp.com account %@", [jetpackBlog hostURL], account.username);
+        DDLogInfo(@"Migrating %@ to wp.com account %@", [jetpackBlog displayURL], account.username);
         jetpackBlog.account = account;
     }
 
@@ -586,16 +606,22 @@ NSString *const WPBlogSettingsUpdatedNotification = @"WPBlogSettingsUpdatedNotif
 
 - (id<BlogServiceRemote>)remoteForBlog:(Blog *)blog
 {
-    id<BlogServiceRemote> remote;
-    if ([blog supports:BlogFeatureWPComRESTAPI]) {
+    if ([blog supports:BlogFeatureWpComRESTAPI]) {
         if (blog.wordPressComRestApi) {
-            remote = [[BlogServiceRemoteREST alloc] initWithWordPressComRestApi:blog.wordPressComRestApi siteID:blog.dotComID];
+            return [[BlogServiceRemoteREST alloc] initWithWordPressComRestApi:blog.wordPressComRestApi siteID:blog.dotComID];
         }
-    } else if (blog.xmlrpcApi) {
-        remote = [[BlogServiceRemoteXMLRPC alloc] initWithApi:blog.xmlrpcApi username:blog.username password:blog.password];
     }
 
-    return remote;
+    BlogServiceRemoteCoreREST *restApi = [[BlogServiceRemoteCoreREST alloc] initWithBlog:blog];
+    if (restApi != nil) {
+        return restApi;
+    }
+
+    if (blog.xmlrpcApi) {
+        return [[BlogServiceRemoteXMLRPC alloc] initWithApi:blog.xmlrpcApi username:blog.username password:blog.password];
+    }
+
+    return nil;
 }
 
 - (id<AccountServiceRemote>)remoteForAccount:(WPAccount *)account
@@ -677,6 +703,7 @@ NSString *const WPBlogSettingsUpdatedNotification = @"WPBlogSettingsUpdatedNotif
             }
 
             blog.options = [NSDictionary dictionaryWithDictionary:options];
+            blog.isXMLRPCDisabled = NO;
 
             RemoteBlogSettings *remoteSettings = [RemoteBlogOptionsHelper remoteBlogSettingsFromXMLRPCDictionaryOptions:options];
             [self updateSettings:blog.settings withRemoteSettings:remoteSettings];
@@ -708,9 +735,9 @@ NSString *const WPBlogSettingsUpdatedNotification = @"WPBlogSettingsUpdatedNotif
             Blog *blog = (Blog *)[context existingObjectWithID:blogObjectID error:nil];
             if (blog) {
                 NSDictionary *formats = postFormats;
-                if (![formats objectForKey:PostFormatStandard]) {
+                if (![formats objectForKey:@"standard"]) {
                     NSMutableDictionary *mutablePostFormats = [formats mutableCopy];
-                    mutablePostFormats[PostFormatStandard] = NSLocalizedString(@"Standard", @"Standard post format label");
+                    mutablePostFormats[@"standard"] = NSLocalizedString(@"Standard", @"Standard post format label");
                     formats = [NSDictionary dictionaryWithDictionary:mutablePostFormats];
                 }
                 blog.postFormats = formats;

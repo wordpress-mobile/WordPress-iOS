@@ -11,12 +11,15 @@ protocol TaxonomyServiceProtocol {
     func createTag(name: String, description: String) async throws -> AnyTermWithViewContext
     func updateTag(_ term: AnyTermWithViewContext, name: String, description: String) async throws -> AnyTermWithViewContext
     func deleteTag(_ term: AnyTermWithViewContext) async throws
+    func getTerms(ids: [Int64]) async throws -> [AnyTermWithViewContext]
 }
 
 class TagsService: TaxonomyServiceProtocol {
+    private let blog: Blog
     private let remote: TaxonomyServiceRemote?
 
     init(blog: Blog) {
+        self.blog = blog
         self.remote = Self.createRemote(for: blog)
     }
 
@@ -128,6 +131,39 @@ class TagsService: TaxonomyServiceProtocol {
             })
         }
     }
+
+    func getTerms(ids: [Int64]) async throws -> [AnyTermWithViewContext] {
+        guard !ids.isEmpty else { return [] }
+
+        // This branch covers WP.com sites and self-hosted sites with a application password.
+        if let coreREST = TaxonomyServiceRemoteCoreREST(blog: blog) {
+            let params = TermListParams(include: ids.map { TermId($0) })
+            let response = try await coreREST.client.api.terms.listWithViewContext(
+                termEndpointType: .tags,
+                params: params
+            )
+            return response.data
+        }
+
+        // Use XMLRPC for other self-hosted sites.
+        if let xmlrpc = remote as? TaxonomyServiceRemoteXMLRPC {
+            return try await withThrowingTaskGroup(of: AnyTermWithViewContext.self) { group in
+                for id in ids {
+                    group.addTask {
+                        try await xmlrpc.getTag(id: id)
+                    }
+                }
+
+                var results: [AnyTermWithViewContext] = []
+                for try await term in group {
+                    results.append(term)
+                }
+                return results
+            }
+        }
+
+        throw TagsServiceError.noRemoteService
+    }
 }
 
 enum TagsServiceError: Error {
@@ -150,6 +186,34 @@ extension TagsServiceError: LocalizedError {
                 value: "The tag information is invalid. Please try again.",
                 comment: "Error message when tag data is invalid"
             )
+        }
+    }
+}
+
+extension TaxonomyServiceProtocol {
+
+    /// Resolves term names to server-confirmed terms by searching for exact
+    /// (case-sensitive) matches. Names that are not found or fail to search
+    /// are omitted from the result.
+    func resolveTerms(named names: [String]) async -> [String: AnyTermWithViewContext] {
+        typealias Result = (String, AnyTermWithViewContext?)
+
+        return await withTaskGroup(of: Result.self) { group -> [String: AnyTermWithViewContext] in
+            for name in names {
+                group.addTask { [self] in
+                    let match = try? await self.searchTags(with: name)
+                        .first { $0.name == name }
+                    return (name, match)
+                }
+            }
+
+            var resolved: [String: AnyTermWithViewContext] = [:]
+            for await (name, match) in group {
+                if let match {
+                    resolved[name] = match
+                }
+            }
+            return resolved
         }
     }
 }
@@ -259,6 +323,28 @@ class AnyTermService: TaxonomyServiceProtocol {
             termEndpointType: endpoint,
             termId: term.id
         )
+    }
+
+    func getTerms(ids: [Int64]) async throws -> [AnyTermWithViewContext] {
+        guard !ids.isEmpty else { return [] }
+        let params = TermListParams(include: ids.map { TermId($0) })
+        let response = try await client.api.terms.listWithViewContext(
+            termEndpointType: endpoint,
+            params: params
+        )
+        return response.data
+    }
+}
+
+private extension TaxonomyServiceRemoteXMLRPC {
+    func getTag(id: Int64) async throws -> AnyTermWithViewContext {
+        try await withCheckedThrowingContinuation { continuation in
+            getTagWithId(NSNumber(value: id), success: { tag in
+                continuation.resume(returning: AnyTermWithViewContext(tag: tag))
+            }, failure: { error in
+                continuation.resume(throwing: error)
+            })
+        }
     }
 }
 

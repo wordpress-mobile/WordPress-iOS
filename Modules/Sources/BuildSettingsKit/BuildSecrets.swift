@@ -66,7 +66,7 @@ public struct BuildSecrets: Sendable {
 
 extension BuildSecrets {
 
-    public static let dummy: BuildSecrets = BuildSecrets(
+    public static let dummy = BuildSecrets(
         oauth: .init(client: "", secret: ""),
         google: .init(clientId: "", schemeId: "", serverClientId: ""),
         zendesk: .init(appId: "", url: "", clientId: ""),

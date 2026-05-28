@@ -90,7 +90,7 @@ class ReaderSiteSearchViewController: UITableViewController {
     private func reloadData(hasMoreResults: Bool = false) {
         tableView.reloadData()
 
-        let noFeeds = feeds.count == 0
+        let noFeeds = feeds.isEmpty
 
         footerView.isHidden = noFeeds
 
@@ -103,7 +103,7 @@ class ReaderSiteSearchViewController: UITableViewController {
     }
 
     private func handleFailedSearch() {
-        if feeds.count == 0 {
+        if feeds.isEmpty {
             showLoadingFailedView()
         }
 

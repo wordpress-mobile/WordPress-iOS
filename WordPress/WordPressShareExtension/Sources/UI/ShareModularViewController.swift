@@ -155,7 +155,7 @@ class ShareModularViewController: ShareExtensionAbstractViewController {
     fileprivate func setupCategoriesIfNeeded() {
         if shareData.allCategoriesForSelectedSite == nil {
             // Set to `true` so, on first load, the publish button is not enabled until the
-            // catagories for the selected site are fully loaded
+            // categories for the selected site are fully loaded
             isFetchingCategories = true
         }
         refreshModulesTable()
@@ -443,7 +443,7 @@ fileprivate extension ShareModularViewController {
             }
 
             cell.detailTextLabel?.text = shareData.selectedCategoriesNameString
-            if (shareData.userSelectedCategories == nil || shareData.userSelectedCategories?.count == 0)
+            if (shareData.userSelectedCategories == nil || shareData.userSelectedCategories?.isEmpty == true)
                 && shareData.defaultCategoryID == Constants.unknownDefaultCategoryID {
                 cell.detailTextLabel?.textColor = UIAppColor.neutral(.shade30)
             } else {
@@ -596,7 +596,7 @@ fileprivate extension ShareModularViewController {
         clearAllSelectedSiteRows()
         cell.accessoryType = .checkmark
         shareData.selectedSiteID = site.blogID.intValue
-        shareData.selectedSiteName = site.name.count > 0 ? site.name : URL(string: site.url)?.host
+        shareData.selectedSiteName = !site.name.isEmpty ? site.name : URL(string: site.url)?.host
         fetchCategoriesForSelectedSite()
         updatePublishButtonStatus()
         self.refreshModulesTable()
@@ -891,13 +891,13 @@ fileprivate extension ShareModularViewController {
             value: "Try again",
             comment: "Share extension error dialog retry button label."
         )
-        let acceptAction = UIAlertAction(title: acceptButtonText, style: .default) { (action) in
+        let acceptAction = UIAlertAction(title: acceptButtonText, style: .default) { _ in
             self.savePostToRemoteSite()
         }
         alertController.addAction(acceptAction)
 
         let dismissButtonText = dismiss
-        let dismissAction = UIAlertAction(title: dismissButtonText, style: .cancel) { (action) in
+        let dismissAction = UIAlertAction(title: dismissButtonText, style: .cancel) { _ in
             self.showCancellingView()
             self.cleanUpSharedContainerAndCache()
             self.dismiss()
@@ -914,7 +914,7 @@ fileprivate extension ShareModularViewController {
 
         let alertController = UIAlertController(title: title, message: message, preferredStyle: .alert)
 
-        let dismissAction = UIAlertAction(title: dismiss, style: .cancel) { [weak self] (action) in
+        let dismissAction = UIAlertAction(title: dismiss, style: .cancel) { [weak self] _ in
             self?.noResultsViewController.removeFromView()
         }
         alertController.addAction(dismissAction)

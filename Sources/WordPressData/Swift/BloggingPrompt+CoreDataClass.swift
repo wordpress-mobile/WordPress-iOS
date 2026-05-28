@@ -1,6 +1,7 @@
 import Foundation
 import CoreData
 
+@objc(BloggingPrompt)
 public class BloggingPrompt: NSManagedObject {
 
     @nonobjc public class func fetchRequest() -> NSFetchRequest<BloggingPrompt> {
@@ -72,7 +73,6 @@ public extension BloggingPrompt {
         public static let promptID = "prompt_id"
         public static let siteID = "site_id"
     }
-
 }
 
 // MARK: - Private Helpers
@@ -125,5 +125,4 @@ private extension BloggingPrompt {
             return formatter
         }()
     }
-
 }

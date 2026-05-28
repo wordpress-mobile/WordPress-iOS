@@ -103,7 +103,7 @@ final class MySiteViewController: UIViewController, UIScrollViewDelegate, NoSite
 
     // MARK: - Blog
 
-    /// Convenience setter and getter for the blog.  This calculated property takes care of showing the appropriate VC, depending
+    /// Convenience setter and getter for the blog. This calculated property takes care of showing the appropriate VC, depending
     /// on whether there's a blog to show or not.
     ///
     @objc var blog: Blog? {
@@ -267,7 +267,7 @@ final class MySiteViewController: UIViewController, UIScrollViewDelegate, NoSite
 
     // MARK: - Navigation Item
 
-    /// In iPad and iOS 14, the large-title bar is collapsed when the VC is first loaded.  Call this method from
+    /// In iPad and iOS 14, the large-title bar is collapsed when the VC is first loaded. Call this method from
     /// `viewDidAppear(_:)` to quickly refresh the navigation bar so that it's expanded.
     ///
     private func workaroundLargeTitleCollapseBug() {
@@ -379,6 +379,20 @@ final class MySiteViewController: UIViewController, UIScrollViewDelegate, NoSite
             showDashboard(for: blog)
         }
 
+        if RemoteFeatureFlag.newGutenberg.enabled() {
+            // Warm up editor (WebKit + data prefetch) for faster editor loading
+            EditorDependencyManager.shared.warmUpEditor(for: blog)
+            // Also refresh editor capabilities
+            EditorDependencyManager.shared.fetchEditorCapabilities(for: blog)
+        }
+
+        Task { [blogID = TaggedManagedObjectID(blog)] in
+            do {
+                try await ApplicationPasswordRepository.shared.createPasswordIfNeeded(for: blogID)
+            } catch {
+                Loggers.app.error("Failed to create an application password: \(error)")
+            }
+        }
     }
 
     @objc
@@ -393,7 +407,7 @@ final class MySiteViewController: UIViewController, UIScrollViewDelegate, NoSite
 
         blogService.syncBlogs(for: account) {
             finishSync()
-        } failure: { (error) in
+        } failure: { _ in
             finishSync()
         }
     }
@@ -403,6 +417,15 @@ final class MySiteViewController: UIViewController, UIScrollViewDelegate, NoSite
         guard let blog else {
             return
         }
+
+        // Refresh editor capabilities and invalidate editor cache
+        if RemoteFeatureFlag.newGutenberg.enabled() {
+            EditorDependencyManager.shared.fetchEditorCapabilities(for: blog)
+            Task {
+                await EditorDependencyManager.shared.invalidate(for: TaggedManagedObjectID(blog))
+            }
+        }
+
         switch currentSection {
         case .siteMenu:
 
@@ -618,7 +641,7 @@ final class MySiteViewController: UIViewController, UIScrollViewDelegate, NoSite
         removeChildFromStackView(blogDetailsViewController)
     }
 
-    /// Shows a `BlogDetailsViewController` for the specified `Blog`.  If the VC doesn't exist, this method also takes care
+    /// Shows a `BlogDetailsViewController` for the specified `Blog`. If the VC doesn't exist, this method also takes care
     /// of creating it.
     ///
     /// - Parameters:
@@ -722,7 +745,7 @@ final class MySiteViewController: UIViewController, UIScrollViewDelegate, NoSite
         removeChildFromStackView(blogDashboardViewController)
     }
 
-    /// Shows a `BlogDashboardViewController` for the specified `Blog`.  If the VC doesn't exist, this method also takes care
+    /// Shows a `BlogDashboardViewController` for the specified `Blog`. If the VC doesn't exist, this method also takes care
     /// of creating it.
     ///
     /// - Parameters:
@@ -831,7 +854,7 @@ final class MySiteViewController: UIViewController, UIScrollViewDelegate, NoSite
     func fetchPrompt(for blog: Blog?) {
         guard FeatureFlag.bloggingPrompts.enabled,
               let blog,
-              blog.isAccessibleThroughWPCom(),
+              blog.isAccessibleThroughWPCom,
               let promptsService = BloggingPromptsService(blog: blog),
               let siteID = blog.dotComID?.intValue else {
             return

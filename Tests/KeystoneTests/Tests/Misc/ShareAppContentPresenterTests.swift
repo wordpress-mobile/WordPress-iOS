@@ -188,5 +188,4 @@ private class MockShareAppContentServiceRemote: ShareAppContentServiceRemote {
 
         completion(result)
     }
-
 }

@@ -46,7 +46,7 @@ class MediaRequestAuthenticatorTests: CoreDataTestCase {
 
                 XCTAssertFalse(hasAuthorizationHeader)
                 XCTAssertEqual(request.url, url)
-        }) { error in
+        }) { _ in
             XCTFail("This should not be called")
         }
     }
@@ -63,12 +63,12 @@ class MediaRequestAuthenticatorTests: CoreDataTestCase {
 
                 XCTAssertFalse(hasAuthorizationHeader)
                 XCTAssertEqual(request.url, url)
-        }) { error in
+        }) { _ in
             XCTFail("This should not be called")
         }
     }
 
-    /// This test only checks that the resulting URL is the origina URL for now.  There's no special authentication
+    /// This test only checks that the resulting URL is the original URL for now. There's no special authentication
     /// logic within `MediaRequestAuthenticator` for this case.
     ///
     /// - TODO: consider bringing self-hosted private authentication logic into MediaRequestAuthenticator.
@@ -85,7 +85,7 @@ class MediaRequestAuthenticatorTests: CoreDataTestCase {
 
                 XCTAssertFalse(hasAuthorizationHeader)
                 XCTAssertEqual(request.url, url)
-        }) { error in
+        }) { _ in
             XCTFail("This should not be called")
         }
     }
@@ -106,7 +106,7 @@ class MediaRequestAuthenticatorTests: CoreDataTestCase {
 
                 XCTAssertTrue(hasAuthorizationHeader)
                 XCTAssertEqual(request.url, expectedURL)
-        }) { error in
+        }) { _ in
             XCTFail("This should not be called")
         }
     }
@@ -138,7 +138,7 @@ class MediaRequestAuthenticatorTests: CoreDataTestCase {
 
                 XCTAssertTrue(hasAuthorizationHeader)
                 XCTAssertEqual(request.url, expectedURL)
-        }) { error in
+        }) { _ in
             XCTFail("This should not be called")
         }
 

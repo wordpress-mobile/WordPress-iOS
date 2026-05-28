@@ -1,3 +1,4 @@
+import CoreData
 import XCTest
 import WordPressData
 
@@ -13,7 +14,6 @@ class CoreDataTestCase: XCTestCase {
     var mainContext: NSManagedObjectContext {
         return contextManager.mainContext
     }
-
 }
 
 extension XCTestCase {

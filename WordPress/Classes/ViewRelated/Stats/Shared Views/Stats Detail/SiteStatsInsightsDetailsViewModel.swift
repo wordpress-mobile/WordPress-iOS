@@ -268,7 +268,7 @@ class SiteStatsInsightsDetailsViewModel: Observable {
 
         switch statSection {
         case .insightsViewsVisitors:
-            return periodImmuTable(for: revampStore.viewsAndVisitorsStatus) { status in
+            return periodImmuTable(for: revampStore.viewsAndVisitorsStatus) { _ in
                 var rows = [any HashableImmutableRow]()
 
                 let viewsAndVisitorsData = revampStore.getViewsAndVisitorsData()
@@ -380,7 +380,7 @@ class SiteStatsInsightsDetailsViewModel: Observable {
                 return rows
             }
         case .insightsLikesTotals:
-            return periodImmuTable(for: revampStore.likesTotalsStatus) { status in
+            return periodImmuTable(for: revampStore.likesTotalsStatus) { _ in
                 var rows = [any HashableImmutableRow]()
 
                 let likesTotalsData = revampStore.getLikesTotalsData()
@@ -858,19 +858,19 @@ private extension SiteStatsInsightsDetailsViewModel {
         }
 
         return [StatsTotalRowData(name: AnnualSiteStats.totalPosts,
-                data: annualInsights.totalPostsCount.abbreviatedString()),
-            StatsTotalRowData(name: AnnualSiteStats.totalComments,
-                    data: annualInsights.totalCommentsCount.abbreviatedString()),
-            StatsTotalRowData(name: AnnualSiteStats.commentsPerPost,
-                    data: Int(round(annualInsights.averageCommentsCount)).abbreviatedString()),
-            StatsTotalRowData(name: AnnualSiteStats.totalLikes,
-                    data: annualInsights.totalLikesCount.abbreviatedString()),
-            StatsTotalRowData(name: AnnualSiteStats.likesPerPost,
-                    data: Int(round(annualInsights.averageLikesCount)).abbreviatedString()),
-            StatsTotalRowData(name: AnnualSiteStats.totalWords,
-                    data: annualInsights.totalWordsCount.abbreviatedString()),
-            StatsTotalRowData(name: AnnualSiteStats.wordsPerPost,
-                    data: Int(round(annualInsights.averageWordsCount)).abbreviatedString())]
+                                  data: annualInsights.totalPostsCount.abbreviatedString()),
+                StatsTotalRowData(name: AnnualSiteStats.totalComments,
+                                  data: annualInsights.totalCommentsCount.abbreviatedString()),
+                StatsTotalRowData(name: AnnualSiteStats.commentsPerPost,
+                                  data: Int(round(annualInsights.averageCommentsCount)).abbreviatedString()),
+                StatsTotalRowData(name: AnnualSiteStats.totalLikes,
+                                  data: annualInsights.totalLikesCount.abbreviatedString()),
+                StatsTotalRowData(name: AnnualSiteStats.likesPerPost,
+                                  data: Int(round(annualInsights.averageLikesCount)).abbreviatedString()),
+                StatsTotalRowData(name: AnnualSiteStats.totalWords,
+                                  data: annualInsights.totalWordsCount.abbreviatedString()),
+                StatsTotalRowData(name: AnnualSiteStats.wordsPerPost,
+                                  data: Int(round(annualInsights.averageWordsCount)).abbreviatedString())]
     }
 
     // MARK: - Posts and Pages
@@ -1059,7 +1059,7 @@ private extension SiteStatsInsightsDetailsViewModel {
     func countriesRowData(topCountries: StatsTopCountryTimeIntervalData?) -> [StatsTotalRowData] {
         return topCountries?.countries.map { StatsTotalRowData(name: $0.name,
                 data: $0.viewsCount.abbreviatedString(),
-                icon: UIImage(named: $0.code),
+                icon: StatsTotalRowData.flagImage(for: $0.code),
                 statSection: .periodCountries) }
                 ?? []
     }
@@ -1068,10 +1068,8 @@ private extension SiteStatsInsightsDetailsViewModel {
         let countries = topCountries?.countries ?? []
         return CountriesMap(minViewsCount: countries.last?.viewsCount ?? 0,
                 maxViewsCount: countries.first?.viewsCount ?? 0,
-                data: countries.reduce([String: NSNumber]()) { (dict, country) in
-                    var nextDict = dict
-                    nextDict.updateValue(NSNumber(value: country.viewsCount), forKey: country.code)
-                    return nextDict
+                data: countries.reduce(into: [String: NSNumber]()) { dict, country in
+                    dict.updateValue(NSNumber(value: country.viewsCount), forKey: country.code)
                 })
     }
 
@@ -1131,7 +1129,7 @@ private extension SiteStatsInsightsDetailsViewModel {
 
             let rowValue: Int = {
                 if forAverages {
-                    return months.count > 0 ? (yearTotalViews / months.count) : 0
+                    return !months.isEmpty ? (yearTotalViews / months.count) : 0
                 }
                 return yearTotalViews
             }()
@@ -1266,7 +1264,6 @@ private extension SiteStatsInsightsDetailsViewModel {
                 hideIndentedSeparator: true,
                 hideFullSeparator: hideFullSeparator,
                 showImage: showImage)
-
     }
 
     func parentRow(rowData: StatsTotalRowData, hideIndentedSeparator: Bool, hideFullSeparator: Bool, expanded: Bool) -> DetailExpandableRow {
@@ -1349,7 +1346,6 @@ private extension SiteStatsInsightsDetailsViewModel {
             } else {
                 snapshot.addSection([row])
             }
-
         })
 
         snapshot.addSection(countriesRows)

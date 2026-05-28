@@ -130,7 +130,6 @@ struct ApplicationLogRow: View {
                     includeApplicationLogs: $includeApplicationLogs
                 )
             }.environmentObject(SupportDataProvider.testing)
-
         }
     }
 

@@ -36,10 +36,10 @@ class ReaderPostServiceRemoteSubscriptionTests: RemoteTestCase, RESTTestable {
                            contentType: .ApplicationJSON)
 
         let expect = expectation(description: "Check for subscription status")
-        readerPostServiceRemote.fetchSubscriptionStatus(for: postID, from: siteID, success: { (success) in
+        readerPostServiceRemote.fetchSubscriptionStatus(for: postID, from: siteID, success: { success in
             XCTAssertTrue(success, "Success should be true")
             expect.fulfill()
-        }) { (_) in
+        }) { _ in
             XCTFail("This callback shouldn't get called")
             expect.fulfill()
         }
@@ -53,10 +53,10 @@ class ReaderPostServiceRemoteSubscriptionTests: RemoteTestCase, RESTTestable {
                            contentType: .ApplicationJSON)
 
         let expect = expectation(description: "Subscribe to comments for a post")
-        readerPostServiceRemote.subscribeToPost(with: postID, for: siteID, success: { (success) in
+        readerPostServiceRemote.subscribeToPost(with: postID, for: siteID, success: { success in
             XCTAssertTrue(success, "Success should be true")
             expect.fulfill()
-        }) { (_) in
+        }) { _ in
             XCTFail("This callback shouldn't get called")
             expect.fulfill()
         }
@@ -73,10 +73,10 @@ class ReaderPostServiceRemoteSubscriptionTests: RemoteTestCase, RESTTestable {
                            contentType: .ApplicationJSON)
 
         let expect = expectation(description: "Subscribe to comments for a post")
-        readerPostServiceRemote.subscribeToPost(with: postID, for: siteID, success: { (successfullySubscribed) in
+        readerPostServiceRemote.subscribeToPost(with: postID, for: siteID, success: { successfullySubscribed in
             XCTAssertFalse(successfullySubscribed, "Success response should be false")
             expect.fulfill()
-        }) { (_) in
+        }) { _ in
             XCTFail("This callback shouldn't get called")
             expect.fulfill()
         }
@@ -93,10 +93,10 @@ class ReaderPostServiceRemoteSubscriptionTests: RemoteTestCase, RESTTestable {
                            contentType: .ApplicationJSON)
 
         let expect = expectation(description: "Unsubscribe from comments for a post")
-        readerPostServiceRemote.unsubscribeFromPost(with: postID, for: siteID, success: { (success) in
+        readerPostServiceRemote.unsubscribeFromPost(with: postID, for: siteID, success: { success in
             XCTAssertTrue(success, "Success should be true")
             expect.fulfill()
-        }) { (_) in
+        }) { _ in
             XCTFail("This callback shouldn't get called")
             expect.fulfill()
         }

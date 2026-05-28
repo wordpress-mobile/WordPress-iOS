@@ -1,4 +1,4 @@
-import WordPressShared
+@testable import WordPressShared
 
 func makeNetworkAvailable() {
     ReachabilityUtils.connectionAvailable = true

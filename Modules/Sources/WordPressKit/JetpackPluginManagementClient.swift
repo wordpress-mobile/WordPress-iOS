@@ -26,7 +26,6 @@ public class JetpackPluginManagementClient: PluginManagementClient {
 
     public func enableAutoupdates(pluginID: String, success: @escaping () -> Void, failure: @escaping (Error) -> Void) {
         remote.enableAutoupdates(pluginID: pluginID, siteID: siteID, success: success, failure: failure)
-
     }
 
     public func disableAutoupdates(pluginID: String, success: @escaping () -> Void, failure: @escaping (Error) -> Void) {

@@ -130,7 +130,7 @@ class GutenbergViewController: UIViewController, PostEditor, PublishingEditor {
         mediaEditor.editingAlreadyPublishedImage = true
 
         mediaEditor.edit(from: self,
-                         onFinishEditing: { [weak self] images, actions in
+                         onFinishEditing: { [weak self] images, _ in
                             guard let image = images.first?.editedImage else {
                                 // If the image wasn't edited, do nothing
                                 return
@@ -334,7 +334,7 @@ class GutenbergViewController: UIViewController, PostEditor, PublishingEditor {
 
         service?.syncJetpackSettingsForBlog(post.blog, success: { [weak self] in
             self?.gutenberg.updateCapabilities()
-        }, failure: { (error) in
+        }, failure: { error in
             DDLogError("Error syncing JETPACK: \(String(describing: error))")
         })
 
@@ -394,13 +394,13 @@ class GutenbergViewController: UIViewController, PostEditor, PublishingEditor {
     private var previousFirstResponder: UIView?
 
     private func setupKeyboardObservers() {
-        keyboardShowObserver = NotificationCenter.default.addObserver(forName: UIResponder.keyboardDidShowNotification, object: nil, queue: .main) { [weak self] (notification) in
+        keyboardShowObserver = NotificationCenter.default.addObserver(forName: UIResponder.keyboardDidShowNotification, object: nil, queue: .main) { [weak self] notification in
             if let self, let keyboardRect = notification.userInfo?[UIResponder.keyboardFrameEndUserInfoKey] as? CGRect {
                 self.keyboardFrame = keyboardRect
                 self.updateConstraintsToAvoidKeyboard(frame: keyboardRect)
             }
         }
-        keyboardHideObserver = NotificationCenter.default.addObserver(forName: UIResponder.keyboardDidShowNotification, object: nil, queue: .main) { [weak self] (notification) in
+        keyboardHideObserver = NotificationCenter.default.addObserver(forName: UIResponder.keyboardDidHideNotification, object: nil, queue: .main) { [weak self] notification in
             if let self, let keyboardRect = notification.userInfo?[UIResponder.keyboardFrameEndUserInfoKey] as? CGRect {
                 self.keyboardFrame = keyboardRect
                 self.updateConstraintsToAvoidKeyboard(frame: keyboardRect)
@@ -611,29 +611,29 @@ extension GutenbergViewController: GutenbergBridgeDelegate {
         }
     }
 
-    func mediaFilterFlags(using filterArray: [Gutenberg.MediaType]) -> WPMediaType {
+    func mediaFilterFlags(using filterArray: [Gutenberg.MediaType]) -> GutenbergMediaType {
         var mediaType: Int = 0
         for filter in filterArray {
             switch filter {
             case .image:
-                mediaType = mediaType | WPMediaType.image.rawValue
+                mediaType = mediaType | GutenbergMediaType.image.rawValue
             case .video:
-                mediaType = mediaType | WPMediaType.video.rawValue
+                mediaType = mediaType | GutenbergMediaType.video.rawValue
             case .audio:
-                mediaType = mediaType | WPMediaType.audio.rawValue
+                mediaType = mediaType | GutenbergMediaType.audio.rawValue
             case .other:
-                mediaType = mediaType | WPMediaType.other.rawValue
+                mediaType = mediaType | GutenbergMediaType.other.rawValue
             case .any:
-                mediaType = mediaType | WPMediaType.all.rawValue
+                mediaType = mediaType | GutenbergMediaType.all.rawValue
             @unknown default:
                 fatalError()
             }
         }
 
-        return WPMediaType(rawValue: mediaType)
+        return GutenbergMediaType(rawValue: mediaType)
     }
 
-    func gutenbergDidRequestMediaFromSiteMediaLibrary(filter: WPMediaType, allowMultipleSelection: Bool, with callback: @escaping MediaPickerDidPickMediaCallback) {
+    func gutenbergDidRequestMediaFromSiteMediaLibrary(filter: GutenbergMediaType, allowMultipleSelection: Bool, with callback: @escaping MediaPickerDidPickMediaCallback) {
         mediaPickerHelper.presentSiteMediaPicker(filter: filter, allowMultipleSelection: allowMultipleSelection) { [weak self] assets in
             guard let self, let media = assets as? [Media] else {
                 callback(nil)
@@ -643,7 +643,7 @@ extension GutenbergViewController: GutenbergBridgeDelegate {
         }
     }
 
-    func gutenbergDidRequestMediaFromDevicePicker(filter: WPMediaType, allowMultipleSelection: Bool, with callback: @escaping MediaPickerDidPickMediaCallback) {
+    func gutenbergDidRequestMediaFromDevicePicker(filter: GutenbergMediaType, allowMultipleSelection: Bool, with callback: @escaping MediaPickerDidPickMediaCallback) {
         mediaPickerHelper.presetDevicePhotosPicker(filter: filter, allowMultipleSelection: allowMultipleSelection) { [weak self] assets in
             guard let self, let assets, !assets.isEmpty else {
                 return callback(nil)
@@ -652,7 +652,7 @@ extension GutenbergViewController: GutenbergBridgeDelegate {
         }
     }
 
-    func gutenbergDidRequestMediaFromCameraPicker(filter: WPMediaType, with callback: @escaping MediaPickerDidPickMediaCallback) {
+    func gutenbergDidRequestMediaFromCameraPicker(filter: GutenbergMediaType, with callback: @escaping MediaPickerDidPickMediaCallback) {
         mediaPickerHelper.presentCameraCaptureFullScreen(animated: true, filter: filter) { [weak self] assets in
             guard let self, let asset = assets?.first else {
                 return callback(nil)
@@ -731,7 +731,7 @@ extension GutenbergViewController: GutenbergBridgeDelegate {
                                                 message: NSLocalizedString("You already have a featured image set. Do you want to replace it with the new image?", comment: "Main message on dialog that prompts user to confirm or cancel the replacement of a featured image."),
                                                 preferredStyle: .actionSheet)
 
-        let replaceAction = UIAlertAction(title: NSLocalizedString("Replace featured image", comment: "Button to confirm the replacement of a featured image."), style: .default) { (action) in
+        let replaceAction = UIAlertAction(title: NSLocalizedString("Replace featured image", comment: "Button to confirm the replacement of a featured image."), style: .default) { _ in
             self.featuredImageHelper.setFeaturedImage(mediaID: mediaID)
         }
 
@@ -754,13 +754,12 @@ extension GutenbergViewController: GutenbergBridgeDelegate {
         let title: String = MediaAttachmentActionSheet.title
         var message: String? = nil
         let alertController = UIAlertController(title: title, message: nil, preferredStyle: .actionSheet)
-        let dismissAction = UIAlertAction(title: MediaAttachmentActionSheet.dismissActionTitle, style: .cancel) { (action) in
-
+        let dismissAction = UIAlertAction(title: MediaAttachmentActionSheet.dismissActionTitle, style: .cancel) { _ in
         }
         alertController.addAction(dismissAction)
 
         if media.remoteStatus == .failed || media.remoteStatus == .processing || media.remoteStatus == .local || media.remoteStatus == .pushing {
-            let cancelUploadAction = UIAlertAction(title: MediaAttachmentActionSheet.stopUploadActionTitle, style: .destructive) { (action) in
+            let cancelUploadAction = UIAlertAction(title: MediaAttachmentActionSheet.stopUploadActionTitle, style: .destructive) { _ in
                 self.mediaInserterHelper.cancelUploadOf(media: media)
             }
             alertController.addAction(cancelUploadAction)
@@ -769,7 +768,7 @@ extension GutenbergViewController: GutenbergBridgeDelegate {
         if media.remoteStatus == .failed, let error = media.error {
             message = error.localizedDescription
             if media.canRetry {
-                let retryUploadAction = UIAlertAction(title: MediaAttachmentActionSheet.retryUploadActionTitle, style: .default) { (action) in
+                let retryUploadAction = UIAlertAction(title: MediaAttachmentActionSheet.retryUploadActionTitle, style: .default) { _ in
                     self.mediaInserterHelper.retryFailedMediaUploads()
                 }
                 alertController.addAction(retryUploadAction)
@@ -789,8 +788,7 @@ extension GutenbergViewController: GutenbergBridgeDelegate {
         let title: String = (self.post is Page) ? EmptyPostActionSheet.titlePage : EmptyPostActionSheet.titlePost
         let message: String = EmptyPostActionSheet.message
         let alertController = UIAlertController(title: title, message: message, preferredStyle: .actionSheet)
-        let dismissAction = UIAlertAction(title: MediaAttachmentActionSheet.dismissActionTitle, style: .cancel) { (action) in
-
+        let dismissAction = UIAlertAction(title: MediaAttachmentActionSheet.dismissActionTitle, style: .cancel) { _ in
         }
         alertController.addAction(dismissAction)
 
@@ -1023,7 +1021,7 @@ extension GutenbergViewController {
 
         previousFirstResponder = view.findFirstResponder()
         let suggestionsController = GutenbergSuggestionsViewController(siteID: siteID, suggestionType: type)
-        suggestionsController.onCompletion = { (result) in
+        suggestionsController.onCompletion = { result in
             callback(result)
             suggestionsController.view.removeFromSuperview()
             suggestionsController.removeFromParent()
@@ -1123,7 +1121,7 @@ extension GutenbergViewController: GutenbergBridgeDataSource {
 
     func gutenbergCapabilities() -> [Capabilities: Bool] {
         let isFreeWPCom = post.blog.isHostedAtWPcom && !post.blog.hasPaidPlan
-        let isWPComSite = post.blog.isHostedAtWPcom || post.blog.isAtomic()
+        let isWPComSite = post.blog.isHostedAtWPcom || post.blog.isAtomic
 
         // Disable Jetpack-powered editor features in WordPress app based on Features Removal coordination
         if !JetpackFeaturesRemovalCoordinator.jetpackFeaturesEnabled() {
@@ -1139,7 +1137,7 @@ extension GutenbergViewController: GutenbergBridgeDataSource {
                 .canEnableUnsupportedBlockEditor: false,
                 .isAudioBlockMediaUploadEnabled: !isFreeWPCom,
                 .reusableBlock: false,
-                .shouldUseFastImage: !post.blog.isPrivate(),
+                .shouldUseFastImage: !post.blog.isPrivate,
                 .facebookEmbed: false,
                 .instagramEmbed: false,
                 .loomEmbed: false,
@@ -1164,7 +1162,7 @@ extension GutenbergViewController: GutenbergBridgeDataSource {
             // Only enable reusable block in WP.com sites until the issue
             // (https://github.com/wordpress-mobile/gutenberg-mobile/issues/3457) in self-hosted sites is fixed
             .reusableBlock: isWPComSite,
-            .shouldUseFastImage: !post.blog.isPrivate(),
+            .shouldUseFastImage: !post.blog.isPrivate,
             // Jetpack embeds
             .facebookEmbed: post.blog.supports(.facebookEmbed),
             .instagramEmbed: post.blog.supports(.instagramEmbed),
@@ -1265,7 +1263,6 @@ extension GutenbergViewController: PostEditorNavigationBarManagerDelegate {
     }
 
     func navigationBarManager(_ manager: PostEditorNavigationBarManager, displayCancelMediaUploads sender: UIButton) {
-
     }
 }
 
@@ -1283,7 +1280,6 @@ private extension GutenbergViewController {
     enum Analytics {
         static let editorSource = "gutenberg"
     }
-
 }
 
 private extension GutenbergViewController {

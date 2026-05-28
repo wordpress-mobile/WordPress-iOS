@@ -3,17 +3,16 @@ import Charts
 
 struct ChartCard: View {
     @ObservedObject private var viewModel: ChartCardViewModel
+    @Environment(\.context) private var context
 
-    private var onDateRangeSelected: ((StatsDateRange) -> Void)?
-
-    private var dateRange: StatsDateRange { viewModel.dateRange }
+    private var dateRange: StatsDateRange { viewModel.effectiveDateRange }
     private var metrics: [SiteMetric] { viewModel.metrics }
     private var selectedMetric: SiteMetric { viewModel.selectedMetric }
     private var selectedChartType: ChartType { viewModel.selectedChartType }
 
     @State private var isShowingRawData = false
 
-    @ScaledMetric(relativeTo: .largeTitle) private var chartHeight = 180
+    @ScaledMetric(relativeTo: .largeTitle) private var chartHeight = 140
 
     init(viewModel: ChartCardViewModel) {
         self.viewModel = viewModel
@@ -21,13 +20,17 @@ struct ChartCard: View {
 
     var body: some View {
         VStack(spacing: 0) {
-            VStack(spacing: Constants.step1) {
+            VStack(spacing: Constants.step0_5) {
                 headerView(for: selectedMetric)
                     .unredacted()
                 contentView
             }
-            .padding(.vertical, Constants.step2)
+            .padding(.vertical, 14)
             .padding(.horizontal, Constants.step3)
+            .contentShape(Rectangle())
+            .onTapGesture {
+                viewModel.selectedBarDate = nil
+            }
 
             if metrics.count > 1 {
                 Divider()
@@ -39,13 +42,19 @@ struct ChartCard: View {
             viewModel.onAppear()
         }
         .overlay(alignment: .topTrailing) {
-            moreMenu
+            HStack(spacing: 0) {
+                if viewModel.isStale {
+                    ProgressView()
+                        .controlSize(.small)
+                        .transition(.scale.combined(with: .opacity))
+                }
+                moreMenu
+            }
+            .animation(.easeInOut(duration: 0.5), value: viewModel.isStale)
         }
         .cardStyle()
-        .grayscale(viewModel.isStale ? 1 : 0)
         .opacity(viewModel.isEditing ? 0.6 : 1)
         .scaleEffect(viewModel.isEditing ? 0.95 : 1)
-        .animation(.smooth, value: viewModel.isStale)
         .animation(.spring, value: viewModel.isEditing)
         .accessibilityElement(children: .contain)
         .accessibilityLabel(Strings.Accessibility.chartContainer)
@@ -67,55 +76,38 @@ struct ChartCard: View {
         }
     }
 
+    private func makeHeaderViewModel(for metric: SiteMetric) -> ChartCardHeaderView.ViewModel {
+        let data = viewModel.chartData[selectedMetric] ?? mockChartData
+        return ChartCardHeaderView.ViewModel(
+            trend: viewModel.selectedBarTrend ?? .make(data, context: .regular),
+            metricTitle: metric.localizedTitle,
+            period: context.formatters.dateRange.string(from: viewModel.dateRange.subrange ?? viewModel.dateRange.range),
+            showDisclosureIndicator: viewModel.dateRange.subrange != nil
+        )
+    }
+
     private func headerView(for metric: SiteMetric) -> some View {
-        HStack(alignment: .center) {
-            StatsCardTitleView(title: metric.localizedTitle)
-            Spacer(minLength: 0)
-        }
-        .accessibilityElement(children: .combine)
-        .accessibilityLabel(Strings.Accessibility.cardTitle(metric.localizedTitle))
+        ChartCardHeaderView(viewModel: makeHeaderViewModel(for: metric))
+            .redacted(reason: viewModel.isFirstLoad ? .placeholder : [])
+            // Leave room for the "more" menu overlay (50pt button, 24pt card padding = 26pt overlap)
+            .padding(.trailing, Constants.step3 + Constants.step0_5)
+            .accessibilityElement(children: .combine)
+            .accessibilityLabel(Strings.Accessibility.cardTitle(metric.localizedTitle))
+            .simultaneousGesture(TapGesture().onEnded {
+                viewModel.promoteSubrangeToMainRange()
+            })
     }
 
     @ViewBuilder
     private var contentView: some View {
-        VStack(spacing: Constants.step1) {
-            if dateRange.comparison != .off || metrics.count == 1 {
-                chartHeaderView
-                    .padding(.trailing, -Constants.step0_5)
-            }
+        // warning: important to put `chartContentView` in a container in order for animations to work properly. Do NOT remove the container.
+        HStack {
             chartContentView
         }
         .environment(\.showComparison, dateRange.comparison != .off)
         .animation(.spring, value: selectedMetric)
         .animation(.spring, value: selectedChartType)
         .animation(.easeInOut, value: viewModel.isFirstLoad)
-    }
-
-    private var chartHeaderView: some View {
-        // Showing currently selected (not loaded period) by design
-        HStack(alignment: .center, spacing: 0) {
-            if let data = viewModel.chartData[selectedMetric] {
-                ChartValuesSummaryView(
-                    trend: .make(data, context: .regular),
-                    style: .compact
-                )
-            } else if viewModel.isFirstLoad {
-                ChartValuesSummaryView(
-                    trend: .init(currentValue: 100, previousValue: 10, metric: SiteMetric.views),
-                    style: .compact
-                )
-                .redacted(reason: .placeholder)
-            }
-
-            Spacer(minLength: 8)
-
-            ChartLegendView(
-                metric: selectedMetric,
-                currentPeriod: dateRange.dateInterval,
-                previousPeriod: dateRange.effectiveComparisonInterval
-            )
-        }
-        .dynamicTypeSize(...DynamicTypeSize.xxLarge)
     }
 
     @ViewBuilder
@@ -275,33 +267,8 @@ struct ChartCard: View {
         case .line:
             LineChartView(data: data)
         case .columns:
-            BarChartView(data: data) { selection in
-                handleDateSelection(selection, data: data)
-            }
+            BarChartView(data: data, selectedBarDate: $viewModel.selectedBarDate)
         }
-    }
-
-    private func handleDateSelection(_ selection: Date, data: ChartData) {
-        let calendar = viewModel.dateRange.calendar
-        let component = data.granularity.component
-        guard let interval = calendar.dateInterval(of: component, for: selection) else {
-            return assertionFailure("invalid component or date")
-        }
-        let newDateRange = StatsDateRange(
-            interval: interval,
-            component: component,
-            comparison: viewModel.dateRange.comparison,
-            calendar: calendar
-        )
-        onDateRangeSelected?(newDateRange)
-        viewModel.tracker?.send(.chartBarSelected)
-    }
-
-    /// Configures the action when a bar is tapped for drill-down navigation
-    func onDateRangeSelected(_ action: @escaping (StatsDateRange) -> Void) -> ChartCard {
-        var copy = self
-        copy.onDateRangeSelected = action
-        return copy
     }
 }
 
@@ -314,7 +281,7 @@ private struct CardGradientBackground: View {
         LinearGradient(
             colors: [
                 metric.primaryColor.opacity(colorScheme == .light ? 0.03 : 0.04),
-                Constants.Colors.secondaryBackground
+                Constants.Colors.secondaryBackground,
             ],
             startPoint: .top,
             endPoint: .center
@@ -340,6 +307,57 @@ public enum ChartType: String, CaseIterable, Identifiable, Codable {
         case .line: "chart.line.uptrend.xyaxis"
         case .columns: "chart.bar"
         }
+    }
+}
+
+// MARK: - ChartCardHeaderView
+
+struct ChartCardHeaderView: View {
+    struct ViewModel: Equatable {
+        let trend: TrendViewModel
+        let metricTitle: String
+        let period: String
+        var showComparison: Bool = true
+        var showDisclosureIndicator: Bool = false
+    }
+
+    let viewModel: ViewModel
+
+    var body: some View {
+        HStack {
+            VStack(alignment: .leading, spacing: -1) {
+                HStack(alignment: .lastTextBaseline, spacing: 3) {
+                    Text(viewModel.trend.formattedCurrentValue)
+                        .font(.system(.title2, design: .rounded, weight: .semibold))
+                        .kerning(-0.5)
+                        .foregroundColor(.primary)
+                        .contentTransition(.numericText())
+                    Text(viewModel.metricTitle)
+                        .font(.caption.weight(.medium))
+                        .foregroundColor(.secondary)
+                }
+                HStack(spacing: 2) {
+                    Text(viewModel.period)
+                        .font(.system(.caption, design: .rounded, weight: .medium))
+                        .foregroundStyle(Color.secondary)
+                    if viewModel.showDisclosureIndicator {
+                        Image(systemName: "chevron.forward")
+                            .font(.system(.caption2, weight: .semibold))
+                            .scaleEffect(0.8)
+                            .foregroundStyle(Color.secondary)
+                    }
+                }
+                if viewModel.showComparison {
+                    Text("\(viewModel.trend.formattedChange)  \(viewModel.trend.iconSign) \(viewModel.trend.formattedPercentage)")
+                        .font(.caption.weight(.semibold))
+                        .foregroundColor(viewModel.trend.sentiment.foregroundColor)
+                        .contentTransition(.numericText())
+                        .padding(.top, 5)
+                }
+            }
+            Spacer(minLength: 0)
+        }
+        .animation(.spring, value: viewModel)
     }
 }
 

@@ -9,7 +9,7 @@ import WordPressData
 
     // MARK: - Singleton
 
-    @objc static let shared: SearchManager = SearchManager()
+    @objc static let shared = SearchManager()
     private override init() {}
 
     // MARK: - Indexing
@@ -40,7 +40,6 @@ import WordPressData
             }
             DDLogError("Could not index post. Error: \(error.localizedDescription)")
         })
-
     }
 
     // MARK: - Removal
@@ -438,7 +437,7 @@ fileprivate extension SearchManager {
     func openEditor(for post: Post) {
         closePreviewIfNeeded(for: post)
         openListView(for: post)
-        let editor = EditPostViewController.init(post: post)
+        let editor = EditPostViewController(post: post)
         editor.modalPresentationStyle = .fullScreen
         RootViewCoordinator.sharedPresenter.rootViewController.present(editor, animated: true)
     }

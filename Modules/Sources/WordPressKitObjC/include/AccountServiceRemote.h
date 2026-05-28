@@ -1,7 +1,6 @@
 #import <Foundation/Foundation.h>
 
 @class RemoteUser;
-@class WPAccount;
 
 static NSString * const AccountServiceRemoteErrorDomain = @"AccountServiceErrorDomain";
 

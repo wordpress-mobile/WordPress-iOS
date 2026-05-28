@@ -147,7 +147,6 @@ extension DashboardPagesListCardCell: UITableViewDelegate {
         } else {
             handleCreatePageSectionSelected()
         }
-
     }
 
     private func handlePageSelected(at indexPath: IndexPath) {

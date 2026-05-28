@@ -1,5 +1,4 @@
 import XCTest
-import Nimble
 
 @testable import WordPress
 @testable import WordPressData
@@ -188,7 +187,7 @@ class BlogDashboardServiceTests: CoreDataTestCase {
     }
 
     func testTodaysStats() {
-        let expect = expectation(description: "Parse todays stats")
+        let expect = expectation(description: "Parse today's stats")
         remoteServiceMock.respondWith = .withDraftAndSchedulePosts
 
         let blog = newTestBlog(id: wpComID, context: mainContext)
@@ -216,7 +215,7 @@ class BlogDashboardServiceTests: CoreDataTestCase {
         BlogDashboardPersonalizationService(repository: repositoryMock, siteID: wpComID)
             .setEnabled(false, for: .todaysStats)
 
-        let expect = expectation(description: "Parse todays stats")
+        let expect = expectation(description: "Parse today's stats")
         remoteServiceMock.respondWith = .withDraftAndSchedulePosts
 
         let blog = newTestBlog(id: wpComID, context: mainContext)
@@ -255,7 +254,7 @@ class BlogDashboardServiceTests: CoreDataTestCase {
         BlogDashboardPersonalizationService(repository: repositoryMock, siteID: wpComID + 1)
             .setEnabled(false, for: .todaysStats)
 
-        let expect = expectation(description: "Parse todays stats")
+        let expect = expectation(description: "Parse today's stats")
         remoteServiceMock.respondWith = .withDraftAndSchedulePosts
 
         let blog = newTestBlog(id: wpComID, context: mainContext)
@@ -270,12 +269,12 @@ class BlogDashboardServiceTests: CoreDataTestCase {
     }
 
     func testPersistCardsResponse() {
-        let expect = expectation(description: "Parse todays stats")
+        let expect = expectation(description: "Parse today's stats")
         remoteServiceMock.respondWith = .withDraftAndSchedulePosts
 
         let blog = newTestBlog(id: wpComID, context: mainContext)
 
-        service.fetch(blog: blog) { snapshot in
+        service.fetch(blog: blog) { _ in
             XCTAssertEqual(self.persistenceMock.didCallPersistWithCards,
                            self.dictionary(from: "dashboard-200-with-drafts-and-scheduled.json"))
             XCTAssertEqual(self.persistenceMock.didCallPersistWithWpComID, self.wpComID)

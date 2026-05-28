@@ -27,7 +27,7 @@ extension ReaderPostServiceRemote {
         wordPressComRESTAPI.get(
             path,
             parameters: parameters,
-            success: { (response, _) in
+            success: { response, _ in
                 do {
                     let decoder = JSONDecoder()
                     let data = try JSONSerialization.data(withJSONObject: response, options: [])
@@ -39,7 +39,7 @@ extension ReaderPostServiceRemote {
                     failure(error)
                 }
             },
-            failure: { (error, _) in
+            failure: { error, _ in
                 WPKitLogError("Error fetching reader related posts: \(error)")
                 failure(error)
             }

@@ -36,6 +36,5 @@ class DashboardMigrationSuccessCell: UICollectionViewCell, Reusable {
 
 extension DashboardMigrationSuccessCell: BlogDashboardCardConfigurable {
     func configure(blog: Blog, viewController: BlogDashboardViewController?, apiResponse: BlogDashboardRemoteEntity?) {
-
     }
 }

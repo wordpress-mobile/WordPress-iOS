@@ -201,7 +201,6 @@ extension JetpackScanHistoryViewController: UITableViewDataSource, UITableViewDe
         self.navigationController?.pushViewController(threatDetailsVC, animated: true)
 
         WPAnalytics.track(.jetpackScanThreatListItemTapped, properties: ["threat_signature": threat.signature, "section": "history"])
-
     }
 
     private func configureThreatCell(cell: JetpackScanThreatCell, threat: JetpackScanThreat) {

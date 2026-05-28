@@ -1,17 +1,10 @@
 
 #import <XCTest/XCTest.h>
 
-#import "WPAccount.h"
 #import "ReaderTopicService.h"
 #import "ReaderPostService.h"
 #import "WordPressTest-Swift.h"
 @import WordPressKit;
-
-@interface ReaderPostService()
-
-- (ReaderPost *)createOrReplaceFromRemotePost:(RemoteReaderPost *)remotePost forTopic:(ReaderAbstractTopic *)topic inContext:(NSManagedObjectContext *)context;
-
-@end
 
 @interface ReaderPostServiceTest : XCTestCase
 @end
@@ -39,7 +32,7 @@
     ReaderPostService *service = [[ReaderPostService alloc] initWithCoreDataStack:coreDataStack];
     [coreDataStack performAndSaveUsingBlock:^(NSManagedObjectContext *context) {
         RemoteReaderPost *remotePost = [self remoteReaderPostForTests];
-        [service createOrReplaceFromRemotePost:remotePost forTopic:nil inContext:context];
+        [ReaderPost createOrUpdateWithRemotePost:remotePost topic:nil context:context];
     }];
 
     XCTAssertEqual([coreDataStack.mainContext countForFetchRequest:[ReaderPost fetchRequest] error:nil], 1);

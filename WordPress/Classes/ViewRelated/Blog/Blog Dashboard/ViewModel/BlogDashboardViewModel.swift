@@ -1,10 +1,9 @@
+import CoreData
 import Foundation
 import UIKit
-import CoreData
-import GutenbergKit
+import WordPressCore
 import WordPressData
 import WordPressKit
-import WordPressCore
 
 enum DashboardSection: Int, CaseIterable, Sendable {
     case migrationSuccess
@@ -30,9 +29,6 @@ final class BlogDashboardViewModel {
     private let managedObjectContext: NSManagedObjectContext
 
     private var blog: Blog
-
-    /// Tracks the last blog for which the editor was warmed up to avoid redundant warmups.
-    private static var lastWarmedUpBlogID: NSManagedObjectID?
 
     private var error: Error?
 
@@ -115,7 +111,7 @@ final class BlogDashboardViewModel {
         var _error: Error?
 
         do {
-            self.wordpressClient = try WordPressClient(site: .init(blog: self.blog))
+            self.wordpressClient = try WordPressClientFactory.shared.instance(for: .init(blog: self.blog))
         } catch {
             _error = error
             self.wordpressClient = nil
@@ -132,7 +128,6 @@ final class BlogDashboardViewModel {
     }
 
     func viewWillAppear() {
-        warmUpEditorIfNeeded(for: self.blog)
         quickActionsViewModel.viewWillAppear()
     }
 
@@ -149,12 +144,6 @@ final class BlogDashboardViewModel {
         self.quickActionsViewModel = DashboardQuickActionsViewModel(blog: blog, personalizationService: personalizationService)
         self.loadCardsFromCache()
         self.loadCards()
-
-        warmUpEditorIfNeeded(for: blog)
-    }
-
-    func clearEditorCache(_ completion: @escaping () -> Void) {
-        EditorDependencyManager.shared.invalidate(for: self.blog, completion: completion)
     }
 
     /// Call the API to return cards for the current blog
@@ -188,30 +177,6 @@ final class BlogDashboardViewModel {
 // MARK: - Private methods
 
 private extension BlogDashboardViewModel {
-
-    /// Warms up the editor for the given blog.
-    ///
-    /// This performs two operations:
-    /// 1. WebKit warmup (once per blog) - pre-compiles HTML/JS
-    /// 2. Data prefetch (always called) - fetches settings, assets, preload list
-    ///
-    /// The prefetch is always called because `EditorDependencyManager` handles its own
-    /// caching and needs to detect when the plugins feature flag changes.
-    func warmUpEditorIfNeeded(for blog: Blog) {
-        guard RemoteFeatureFlag.newGutenberg.enabled() else {
-            return
-        }
-
-        // WebKit warmup - only needed once per blog (shaves ~100-200ms)
-        if blog.objectID != Self.lastWarmedUpBlogID {
-            Self.lastWarmedUpBlogID = blog.objectID
-            let configuration = EditorConfiguration(blog: blog)
-            GutenbergKit.EditorViewController.warmup(configuration: configuration)
-        }
-
-        // Data prefetch - always call to allow EditorDependencyManager to detect flag changes
-        EditorDependencyManager.shared.prefetchDependencies(for: blog)
-    }
 
     func registerNotifications() {
         NotificationCenter.default.addObserver(self, selector: #selector(showDraftsCardIfNeeded), name: .newPostCreated, object: nil)
@@ -279,7 +244,6 @@ private extension BlogDashboardViewModel {
             loadCardsFromCache()
         }
     }
-
 }
 
 // MARK: - Ghost/Skeleton cards and failures

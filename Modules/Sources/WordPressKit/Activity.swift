@@ -121,6 +121,8 @@ public struct ActivityActor {
     public let wpcomUserID: String
     public let avatarURL: String
     public let role: String
+    public let isMCPAgent: Bool
+    public let mcpClient: String?
 
     init(dictionary: [String: Any]) {
         displayName = dictionary["name"] as? String ?? ""
@@ -132,6 +134,8 @@ public struct ActivityActor {
             avatarURL = ""
         }
         role = dictionary["role"] as? String ?? ""
+        isMCPAgent = dictionary["is_mcp_agent"] as? Bool ?? false
+        mcpClient = dictionary["mcp_client"] as? String
     }
 
     public lazy var isJetpack: Bool = {

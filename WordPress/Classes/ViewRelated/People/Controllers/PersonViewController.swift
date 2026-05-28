@@ -217,7 +217,7 @@ private extension PersonViewController {
 
         alert.addCancelActionWithTitle(cancelTitle)
 
-        alert.addDestructiveActionWithTitle(removeTitle) { [weak self] action in
+        alert.addDestructiveActionWithTitle(removeTitle) { [weak self] _ in
             guard let strongSelf = self else {
                 return
             }
@@ -344,7 +344,7 @@ private extension PersonViewController {
         let alertController = UIAlertController(title: title, message: messageText, preferredStyle: .alert)
 
         alertController.addCancelActionWithTitle(cancelTitle, handler: nil)
-        alertController.addDefaultActionWithTitle(retryTitle) { action in
+        alertController.addDefaultActionWithTitle(retryTitle) { _ in
             self.updateUserRole(newRole)
         }
 
@@ -375,7 +375,7 @@ private extension PersonViewController {
 
         headerCell.userNameLabel.font = .preferredFont(forTextStyle: .subheadline)
         headerCell.userNameLabel.textColor = .secondaryLabel
-        headerCell.userNameLabel.text = person.username.count > 0 ? "@" + person.username : ""
+        headerCell.userNameLabel.text = !person.username.isEmpty ? "@" + person.username : ""
 
         refreshGravatarImage(in: headerCell.gravatarImageView)
     }
@@ -486,14 +486,14 @@ private extension PersonViewController {
     var isPromoteEnabled: Bool {
         // Note: *Only* users can be promoted.
         //
-        return blog.isUserCapableOf(.PromoteUsers) && isMyself == false && isUser == true
+        return blog.isUserCapableOf(.promoteUsers) && isMyself == false && isUser == true
     }
 
     var isRemoveEnabled: Bool {
         switch screenMode {
         case .user:
             // YES, ListUsers. Brought from Calypso's code
-            return blog.isUserCapableOf(.ListUsers) && isMyself == false && isUser == true
+            return blog.isUserCapableOf(.listUsers) && isMyself == false && isUser == true
         case .viewer:
             return isViewer == true
         }

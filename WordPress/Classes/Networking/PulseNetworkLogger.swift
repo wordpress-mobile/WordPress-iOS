@@ -4,8 +4,21 @@ import Support
 
 public final class PulseNetworkLogger: NSObject, URLSessionTaskDelegate, URLSessionDataDelegate {
 
+    private let _logger: NetworkLogger
     private var logger: NetworkLogger? {
-        ExtensiveLogging.enabled ? NetworkLogger.shared : nil
+        ExtensiveLogging.enabled ? _logger : nil
+    }
+
+    override public init() {
+        var configuration = NetworkLogger.Configuration()
+        configuration.sensitiveHeaders = [
+            "Authorization",
+            "Cookie",
+            "Set-Cookie",
+            "X-WP-Nonce"
+        ]
+        _logger = NetworkLogger(configuration: configuration)
+        super.init()
     }
 
     public func urlSession(_ session: URLSession, didCreateTask task: URLSessionTask) {
@@ -23,5 +36,4 @@ public final class PulseNetworkLogger: NSObject, URLSessionTaskDelegate, URLSess
     public func urlSession(_ session: URLSession, dataTask: URLSessionDataTask, didReceive data: Data) {
         logger?.logDataTask(dataTask, didReceive: data)
     }
-
 }

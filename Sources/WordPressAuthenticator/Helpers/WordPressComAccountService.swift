@@ -5,7 +5,7 @@ import WordPressKit
 //
 public class WordPressComAccountService {
 
-    /// Makes the intializer public for external access.
+    /// Makes the initializer public for external access.
     public init() {}
 
     /// Indicates if a WordPress.com account is "PasswordLess": This kind of account must be authenticated via a Magic Link.

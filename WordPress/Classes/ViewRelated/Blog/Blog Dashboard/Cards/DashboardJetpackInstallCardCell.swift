@@ -29,7 +29,6 @@ class DashboardJetpackInstallCardCell: DashboardCollectionViewCell {
                                                               blog: self.blog,
                                                               delegate: presenterViewController,
                                                               force: true)
-
         }
         return JetpackRemoteInstallCardViewModel(onHideThisTap: onHideThisTap,
                                                  onLearnMoreTap: onLearnMoreTap)
@@ -64,5 +63,4 @@ class DashboardJetpackInstallCardCell: DashboardCollectionViewCell {
         contentView.addSubview(cardView)
         contentView.pinSubviewToAllEdges(cardView, priority: .defaultHigh)
     }
-
 }

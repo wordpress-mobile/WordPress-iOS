@@ -147,7 +147,7 @@ open class LoginEmailViewController: LoginViewController, NUXKeyboardResponder {
         stackView.addConstraints([
             button.leadingAnchor.constraint(equalTo: instructionLabel.leadingAnchor),
             button.trailingAnchor.constraint(equalTo: instructionLabel.trailingAnchor)
-            ])
+        ])
 
         googleLoginButton = button
     }
@@ -167,7 +167,7 @@ open class LoginEmailViewController: LoginViewController, NUXKeyboardResponder {
         stackView.addConstraints([
             button.leadingAnchor.constraint(equalTo: instructionLabel.leadingAnchor),
             button.trailingAnchor.constraint(equalTo: instructionLabel.trailingAnchor)
-            ])
+        ])
 
         selfHostedLoginButton = button
     }
@@ -187,7 +187,7 @@ open class LoginEmailViewController: LoginViewController, NUXKeyboardResponder {
 
         // Tapping the Sign up text link in "Don't have an account? _Sign up_"
         // will present the 3 button view for signing up.
-        button.on(.touchUpInside) { [weak self] (_) in
+        button.on(.touchUpInside) { [weak self] _ in
             guard let vc = LoginPrologueSignupMethodViewController.instantiate(from: .login) else {
                 WPLogError("Failed to navigate to LoginPrologueSignupMethodViewController")
                 return
@@ -235,7 +235,7 @@ open class LoginEmailViewController: LoginViewController, NUXKeyboardResponder {
         stackView.addConstraints([
             button.leadingAnchor.constraint(equalTo: instructionLabel.leadingAnchor),
             button.trailingAnchor.constraint(equalTo: instructionLabel.trailingAnchor)
-            ])
+        ])
 
         wpcomSignupButton = button
     }
@@ -290,7 +290,7 @@ open class LoginEmailViewController: LoginViewController, NUXKeyboardResponder {
     ///
     func fetchSharedWebCredentialsIfAvailable() {
         didRequestSafariSharedCredentials = true
-        SafariCredentialsService.requestSharedWebCredentials { [weak self] (found, username, password) in
+        SafariCredentialsService.requestSharedWebCredentials { [weak self] found, username, password in
             self?.handleFetchedWebCredentials(found, username: username, password: password)
         }
     }
@@ -326,7 +326,7 @@ open class LoginEmailViewController: LoginViewController, NUXKeyboardResponder {
     ///
     /// - Parameters:
     ///     - immediately: True if the newly loaded controller should immedately attempt
-    ///                        to authenticate the user with the available credentails.  Default is `false`.
+    ///                        to authenticate the user with the available credentails. Default is `false`.
     ///
     func loginWithUsernamePassword(immediately: Bool = false) {
         if immediately {
@@ -398,7 +398,7 @@ open class LoginEmailViewController: LoginViewController, NUXKeyboardResponder {
                                             strongSelf.displayError(message: msg)
                                         } else if errorCode == "email_login_not_allowed" {
                                                 // If we get this error, we know we have a WordPress.com user but their
-                                                // email address is flagged as suspicious.  They need to login via their
+                                                // email address is flagged as suspicious. They need to login via their
                                                 // username instead.
                                                 strongSelf.showSelfHostedUsernamePasswordAndError(error)
                                         } else {
@@ -545,7 +545,6 @@ open class LoginEmailViewController: LoginViewController, NUXKeyboardResponder {
             }
         }
     }
-
 }
 
 // MARK: - AppleAuthenticatorDelegate
@@ -575,7 +574,6 @@ extension LoginEmailViewController: AppleAuthenticatorDelegate {
     func authFailedWithError(message: String) {
         displayErrorAlert(message, sourceTag: .loginApple)
     }
-
 }
 
 // MARK: - GoogleAuthenticatorLoginDelegate
@@ -630,5 +628,4 @@ extension LoginEmailViewController: GoogleAuthenticatorLoginDelegate {
         socialErrorVC.modalPresentationStyle = .fullScreen
         present(socialErrorNav, animated: true)
     }
-
 }

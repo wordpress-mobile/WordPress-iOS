@@ -26,7 +26,6 @@ class WordPressComBlogService {
 
             let site = WordPressComSiteInfo(remote: response)
             success(site)
-
         }, failure: { error in
             let result = error ?? ServiceError.unknown
             failure(result)

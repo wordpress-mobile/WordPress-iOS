@@ -5,7 +5,7 @@ import DesignSystem
 struct AuthorStatsView: View {
     let author: TopListItem.Author
 
-    @State private var dateRange: StatsDateRange
+    @State private var dateRange: StatsDateRangeSelection
 
     @StateObject private var viewModel: TopListViewModel
 
@@ -18,7 +18,7 @@ struct AuthorStatsView: View {
         self.author = author
 
         let range = initialDateRange ?? context.calendar.makeDateRange(for: .last30Days)
-        self._dateRange = State(initialValue: range)
+        self._dateRange = State(initialValue: StatsDateRangeSelection(range: range))
 
         let configuration = TopListCardConfiguration(
             item: .postsAndPages,
@@ -56,7 +56,7 @@ struct AuthorStatsView: View {
         }
         .background(Constants.Colors.background)
         .animation(.spring, value: viewModel.data.map(ObjectIdentifier.init))
-        .onChange(of: dateRange) { oldValue, newValue in
+        .onChange(of: dateRange) { _, newValue in
             viewModel.dateRange = newValue
         }
         .onAppear {
@@ -128,9 +128,9 @@ struct AuthorStatsView: View {
                     .textCase(.uppercase)
             }
 
-            HStack(spacing: Constants.step2) {
+            HStack(alignment: .center, spacing: Constants.step1) {
                 Text(StatsValueFormatter.formatNumber(current, onlyLarge: true))
-                    .font(Font.make(.recoleta, textStyle: .title2, weight: .medium))
+                    .font(Constants.Typography.smallDisplayFont)
                     .foregroundColor(.primary)
                     .contentTransition(.numericText())
 

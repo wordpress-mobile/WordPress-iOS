@@ -166,8 +166,11 @@ class NotificationService: UNNotificationServiceExtension {
 
             tracks.trackNotificationAssembled()
 
-            // If the notification contains any image media, download it and attach it to the notification
-            guard let mediaURL = contentFormatter.mediaURL else {
+            let iconURL = NotificationKind.isNotificationIconSupported(notificationKind) ? notification.icon.flatMap(URL.init) : nil
+
+            // If the notification contains any image media, download it and
+            // attach it to the notification.
+            guard let mediaURL = contentFormatter.mediaURL ?? iconURL else {
                 contentHandler(notificationContent)
                 return
             }
@@ -229,7 +232,7 @@ private extension NotificationService {
         }
 
         let session = URLSession(configuration: .default)
-        let task = session.dataTask(with: request) { data, response, error in
+        let task = session.dataTask(with: request) { data, response, _ in
             guard let data, let mimeType = response?.mimeType else {
                 completion(nil, nil)
                 return

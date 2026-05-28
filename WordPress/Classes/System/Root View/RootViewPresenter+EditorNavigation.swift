@@ -61,7 +61,7 @@ extension RootViewPresenter {
         WPAnalytics.track(WPAnalyticsEvent.editorCreatedPage,
                           properties: [WPAppAnalyticsKeyTapSource: source],
                           blog: blog)
-        PageCoordinator.showLayoutPickerIfNeeded(from: rootViewController, forBlog: blog) { [weak self] (selectedLayout) in
+        PageCoordinator.showLayoutPickerIfNeeded(from: rootViewController, forBlog: blog) { [weak self] selectedLayout in
             self?.showEditor(blog: blog, title: selectedLayout?.title, content: selectedLayout?.content)
         }
     }

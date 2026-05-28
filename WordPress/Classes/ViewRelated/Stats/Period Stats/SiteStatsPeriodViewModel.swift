@@ -363,7 +363,8 @@ private extension SiteStatsPeriodViewModel {
         let likesData = intervalData(summaryType: .likes)
         // If Summary Likes is still loading, show dashes (instead of 0)
         // to indicate it's still loading.
-        let likesLoadingStub = likesData.count > 0 ? nil : (store.isFetchingSummary ? "----" : nil)
+        // swiftlint:disable:next empty_count
+        let likesLoadingStub = likesData.count != 0 ? nil : (store.isFetchingSummary ? "----" : nil)
         let likesTabData = OverviewTabData(tabTitle: StatSection.periodOverviewLikes.tabTitle,
                                            tabData: likesData.count,
                                            tabDataStub: likesLoadingStub,
@@ -601,7 +602,7 @@ private extension SiteStatsPeriodViewModel {
     func countriesDataRows() -> [StatsTotalRowData] {
         return store.getTopCountries()?.countries.prefix(10).map { StatsTotalRowData(name: $0.name,
                                                                                      data: $0.viewsCount.abbreviatedString(),
-                                                                                     icon: UIImage(named: $0.code),
+                                                                                     icon: StatsTotalRowData.flagImage(for: $0.code),
                                                                                      statSection: .periodCountries) }
             ?? []
     }
@@ -610,10 +611,8 @@ private extension SiteStatsPeriodViewModel {
         let countries = store.getTopCountries()?.countries ?? []
         return CountriesMap(minViewsCount: countries.last?.viewsCount ?? 0,
                             maxViewsCount: countries.first?.viewsCount ?? 0,
-                            data: countries.reduce([String: NSNumber]()) { (dict, country) in
-                                var nextDict = dict
-                                nextDict.updateValue(NSNumber(value: country.viewsCount), forKey: country.code)
-                                return nextDict
+                            data: countries.reduce(into: [String: NSNumber]()) { dict, country in
+                                dict.updateValue(NSNumber(value: country.viewsCount), forKey: country.code)
         })
     }
 
@@ -662,7 +661,7 @@ private extension SiteStatsPeriodViewModel {
     }
 
     func publishedDataRows() -> [StatsTotalRowData] {
-        return store.getTopPublished()?.publishedPosts.prefix(10).map { StatsTotalRowData.init(name: $0.title.stringByDecodingXMLCharacters(),
+        return store.getTopPublished()?.publishedPosts.prefix(10).map { StatsTotalRowData(name: $0.title.stringByDecodingXMLCharacters(),
                                                                                                data: "",
                                                                                                showDisclosure: true,
                                                                                                disclosureURL: $0.postURL,

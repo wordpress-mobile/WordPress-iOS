@@ -9,7 +9,7 @@ public enum FontManager {
 
     // Makes sure it's performed only once.
     private static let register: Void = {
-        let fontURLs = Bundle.module
+        let fontURLs = Bundle.designSystemBundle
             .urls(forResourcesWithExtension: "otf", subdirectory: nil)
         for fontURL in (fontURLs ?? []) {
             if !CTFontManagerRegisterFontsForURL(fontURL as CFURL, .process, nil) {

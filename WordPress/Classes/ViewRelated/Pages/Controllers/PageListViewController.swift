@@ -294,7 +294,7 @@ final class PageListViewController: AbstractPostListViewController {
         switch Section(rawValue: indexPath.section)! {
         case .templates:
             WPAnalytics.track(.pageListEditHomepageTapped)
-            guard let editorUrl = URL(string: blog.adminUrl(withPath: Constant.editorUrl)) else {
+            guard let editorUrl = blog.makeAdminURL(path: Constant.editorUrl) else {
                 return
             }
 
@@ -377,7 +377,7 @@ final class PageListViewController: AbstractPostListViewController {
     override func createPost() {
         WPAppAnalytics.track(.editorCreatedPost, properties: [WPAppAnalyticsKeyTapSource: Constant.Events.source, WPAppAnalyticsKeyPostType: Constant.Events.pagePostType], blog: blog)
 
-        PageCoordinator.showLayoutPickerIfNeeded(from: self, forBlog: blog) { [weak self] (selectedLayout) in
+        PageCoordinator.showLayoutPickerIfNeeded(from: self, forBlog: blog) { [weak self] selectedLayout in
             self?.createPage(selectedLayout)
         }
     }
@@ -395,7 +395,7 @@ final class PageListViewController: AbstractPostListViewController {
         homepageSettingsService?.setHomepageType(.page, homePageID: homePageID, success: { [weak self] in
             self?.refreshAndReload()
             self?.handleHomepageSettingsSuccess()
-        }, failure: { [weak self] error in
+        }, failure: { [weak self] _ in
             self?.refreshControl.endRefreshing()
             self?.handleHomepageSettingsFailure()
         })
@@ -408,7 +408,7 @@ final class PageListViewController: AbstractPostListViewController {
         homepageSettingsService?.setHomepageType(.page, withPostsPageID: postsPageID, success: { [weak self] in
             self?.refreshAndReload()
             self?.handleHomepagePostsPageSettingsSuccess(isPostsPage: newValue)
-        }, failure: { [weak self] error in
+        }, failure: { [weak self] _ in
             self?.refreshControl.endRefreshing()
             self?.handleHomepageSettingsFailure()
         })

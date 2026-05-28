@@ -1,4 +1,5 @@
 import Foundation
+import CoreData
 import CocoaLumberjackSwift
 
 @objc(BlockedAuthor)
@@ -22,7 +23,7 @@ public extension BlockedAuthor {
             request.predicate = query.predicate
             let result = try context.fetch(request)
             return result
-        } catch let error {
+        } catch {
             DDLogError("Couldn't fetch blocked author with error: \(error.localizedDescription)")
             return []
         }

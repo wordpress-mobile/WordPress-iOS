@@ -1,9 +1,9 @@
 #import "BlogServiceRemoteXMLRPC.h"
 #import "NSMutableDictionary+Helpers.h"
 #import "RemotePostType.h"
-#import "WPMapFilterReduce.h"
 #import "WPKitLogging.h"
 
+@import WordPressShared;
 @import WordPressKitModels;
 @import NSObject_SafeExpectations;
 
@@ -49,7 +49,7 @@ static NSString * const RemotePostTypePublicKey = @"public";
     [self.api callMethod:@"wp.getUsers"
               parameters:parameters
                  success:^(id responseObject, NSHTTPURLResponse *response) {
-                     NSArray <RemoteUser *> *responseUsers = [[responseObject allObjects] wpkit_map:^id(NSDictionary *xmlrpcUser) {
+                     NSArray <RemoteUser *> *responseUsers = [[responseObject allObjects] wp_map:^id(NSDictionary *xmlrpcUser) {
                          return [self remoteUserFromXMLRPCDictionary:xmlrpcUser];
                      }];
 
@@ -82,7 +82,7 @@ static NSString * const RemotePostTypePublicKey = @"public";
                  success:^(id responseObject, NSHTTPURLResponse *response) {
 
                      NSAssert([responseObject isKindOfClass:[NSDictionary class]], @"Response should be a dictionary.");
-                     NSArray <RemotePostType *> *postTypes = [[responseObject allObjects] wpkit_map:^id(NSDictionary *json) {
+                     NSArray <RemotePostType *> *postTypes = [[responseObject allObjects] wp_map:^id(NSDictionary *json) {
                          return [self remotePostTypeFromXMLRPCDictionary:json];
                      }];
                      if (!postTypes.count) {

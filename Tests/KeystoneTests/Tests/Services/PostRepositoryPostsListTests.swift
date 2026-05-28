@@ -63,7 +63,6 @@ class PostRepositoryPostsListTests: CoreDataTestCase {
         total = await contextManager.performQuery { $0.countObjects(ofType: Post.self) }
         XCTAssertEqual(total, 15)
     }
-
 }
 
 extension CoreDataTestCase {
@@ -79,5 +78,4 @@ extension CoreDataTestCase {
         let service = AccountService(coreDataStack: contextManager)
         return service.createOrUpdateAccount(withUsername: "test-user", authToken: "test-token")
     }
-
 }

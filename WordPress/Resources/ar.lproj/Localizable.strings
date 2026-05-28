@@ -1,4 +1,4 @@
-/* Translation-Revision-Date: 2026-01-26 19:54:11+0000 */
+/* Translation-Revision-Date: 2026-03-25 19:54:39+0000 */
 /* Plural-Forms: nplurals=6; plural=(n == 0) ? 0 : ((n == 1) ? 1 : ((n == 2) ? 2 : ((n % 100 >= 3 && n % 100 <= 10) ? 3 : ((n % 100 >= 11 && n % 100 <= 99) ? 4 : 5)))); */
 /* Generator: GlotPress/4.0.3 */
 /* Language: ar */
@@ -1874,7 +1874,6 @@ translators: %s: Block name e.g. \"Image block\" */
    Done. Action.
    Menu button title for finishing editing the Menu name.
    Tapping a button with this label allows the user to exit the Site Creation flow
-   Title for a Done button.
    Title for button that will dismiss this view
    Title for the button that will dismiss this view. */
 "Done" = "تمّ";
@@ -3244,9 +3243,6 @@ translators: %s: Block name e.g. \"Image block\" */
 /* Text displayed while loading the scan section for a site */
 "Loading Scan..." = "جاري تحميل الفحص...";
 
-/* Displayed while a comment is being loaded. */
-"Loading comment..." = "جارٍ تحميل التعليق...";
-
 /* Menus label text displayed when a menu is loading. */
 "Loading menu..." = "جاري تحميل القائمة...";
 
@@ -3333,9 +3329,6 @@ translators: %s: Block name e.g. \"Image block\" */
 
 /* No comment provided by engineer. */
 "Main Navigation" = "التنقل الرئيسي";
-
-/* Explanation for the option to enable theme styles */
-"Make the block editor look like your theme." = "أجعل محرر المكونات يعكس مظهر قالبك.";
 
 /* No comment provided by engineer. */
 "Make your content stand out by adding images, gifs, videos, and embedded media to your pages." = "اجعل محتواك مميزًا عن طريق إضافة صور وصورgif ومقاطع فيديو ووسائط مضمنة إلى صفحاتك.";
@@ -7032,6 +7025,9 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Button title for restoring a backup */
 "activityDetail.restore.button" = "استعادة";
 
+/* Shows the MCP client used for an activity. %1$@ is the MCP client name (e.g. Claude). */
+"activityDetail.section.agent" = "عبر %1$@";
+
 /* Section title for restore site actions */
 "activityDetail.section.restoreSite" = "استعادة الموقع";
 
@@ -7234,6 +7230,9 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Feature name for the block editor in application password required prompt */
 "applicationPasswordRequired.feature.blockEditor" = "محرِّر المكوِّنات";
 
+/* Feature name for managing custom post types in the app */
+"applicationPasswordRequired.feature.customPosts" = "أنواع التدوينات المخصصة";
+
 /* Feature name for managing terms and taxonomies in the app */
 "applicationPasswordRequired.feature.customTaxonomies" = "إدارة الفئات";
 
@@ -7397,6 +7396,27 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Action shown in a bottom notice to dismiss it. */
 "blogDashboard.dismiss" = "تجاهُل";
 
+/* Error message shown when the active theme cannot be found for a site. */
+"blogDetails.activeThemeNotFound.errorDescription" = "تعذّر العثور على القالب النشط لهذا الموقع.";
+
+/* Button title to connect Jetpack in XML-RPC disabled alert */
+"blogDetails.xmlrpcDisabled.alert.connectJetpack" = "اتصال بـ Jetpack";
+
+/* Description explaining options to restore functionality when XML-RPC is disabled */
+"blogDetails.xmlrpcDisabled.alert.description" = "تم تعطيل البروتوكول XML-RPC على موقعك. تتطلب بعض ميزات التطبيق حاليًا البروتوكول XML-RPC. توصيل Jetpack أو تمكين البروتوكول XML-RPC للوصول إلى جميع الميزات.";
+
+/* Button title to learn more about XML-RPC being disabled */
+"blogDetails.xmlrpcDisabled.alert.learnMore" = "تعرّف على المزيد";
+
+/* Title for the XML-RPC disabled alert */
+"blogDetails.xmlrpcDisabled.alert.title" = "تم تعطيل البروتوكول XML-RPC";
+
+/* Subtitle for the XML-RPC disabled card on blog details */
+"blogDetails.xmlrpcDisabled.card.subtitle" = "قد تكون بعض الميزات محدودة";
+
+/* Title for the XML-RPC disabled card on blog details */
+"blogDetails.xmlrpcDisabled.card.title" = "تم تعطيل البروتوكول XML-RPC";
+
 /* Badge title in site list */
 "blogList.siteBadge.staging" = "التشغيل المرحلي";
 
@@ -7443,7 +7463,7 @@ Note that the word 'go' here should have a closer meaning to 'start' rather than
 /* Title of the set goals button in the Blogging Reminders Settings flow. */
 "bloggingRemindersPrompt.intro.continueButton" = "تعيين التذكيرات";
 
-/* Description on the first screen of the Blogging Reminders Settings flow called aftet post publishing. */
+/* Description on the first screen of the Blogging Reminders Settings flow called after post publishing. */
 "bloggingRemindersPrompt.intro.details" = "قم بإعداد تذكيرات التدوين الخاصة بك في الأيام التي ترغب في النشر فيها.";
 
 /* Title of the Blogging Reminders Settings screen. */
@@ -7854,6 +7874,111 @@ Example: Reply to Pamela Nguyen */
 /* Create Sheet button title */
 "createSheet.post" = "التدوينة";
 
+/* Error message shown when the post was modified by another user while editing */
+"customPostEditor.error.conflict.message" = "تم تغيير التدوينة التي تحاول حفظها في الوقت الحالي.";
+
+/* Menu action to promote a post with Blaze */
+"customPostList.action.blaze" = "الترويج باستخدام Blaze";
+
+/* Menu action to view post comments */
+"customPostList.action.comments" = "التعليقات";
+
+/* Menu action to permanently delete a trashed post */
+"customPostList.action.deletePermanently" = "الحذف نهائيًا";
+
+/* Menu action to change a post's status to draft */
+"customPostList.action.moveToDraft" = "نقل إلى المسودة";
+
+/* Menu action to move a post to trash */
+"customPostList.action.moveToTrash" = "نقل إلى سلة المهملات";
+
+/* Menu action to publish a draft or pending post */
+"customPostList.action.publish" = "نشر";
+
+/* Menu action to open post settings */
+"customPostList.action.settings" = "الإعدادات";
+
+/* Menu action to view post statistics */
+"customPostList.action.stats" = "الإحصاءات";
+
+/* Accessibility label for the author filter button in the custom post list */
+"customPostList.authorFilter.accessibilityLabel" = "التصفية حسب الكاتب";
+
+/* Menu item to show posts from all authors in the custom post list */
+"customPostList.authorFilter.everyone" = "الجميع";
+
+/* Menu item to show only the current user's posts in the custom post list */
+"customPostList.authorFilter.mine" = "خاص بي";
+
+/* Accessibility value when the author filter shows posts from all authors */
+"customPostList.authorFilter.showingEveryone" = "إظهار تدوينات الجميع";
+
+/* Accessibility value when the author filter shows only the current user's posts */
+"customPostList.authorFilter.showingMine" = "إظهار تدويناتي فقط";
+
+/* Badge label shown on the homepage row in the custom post list for pages */
+"customPostList.badge.homepage" = "الصفحة الرئيسية";
+
+/* Badge shown in the post list for sticky posts */
+"customPostList.badge.sticky" = "مثبّت";
+
+/* Message for the confirmation alert when permanently deleting a post */
+"customPostList.deleteConfirmation.message" = "لا يمكن التراجع عن هذا الإجراء.";
+
+/* Title for the confirmation alert when permanently deleting a post */
+"customPostList.deleteConfirmation.title" = "هل ترغب في الحذف نهائيًا؟";
+
+/* Empty state message when no custom posts exist. %1$@ is the post type name (e.g., 'Podcasts', 'Products'). */
+"customPostList.emptyState.message" = "%1$@ غير موجود";
+
+/* Message for the confirmation alert when trashing a published post */
+"customPostList.trashConfirmation.message" = "هذه التدوينة منشورة ومرئية للزوار. هل أنت متأكد من رغبتك في نقلها إلى سلة المهملات؟";
+
+/* Title for the confirmation alert when trashing a published post */
+"customPostList.trashConfirmation.title" = "هل ترغب في النقل إلى سلة المهملات؟";
+
+/* Placeholder title for posts without a title */
+"customPostList.untitled" = "(بدون عنوان)";
+
+/* Title for the parent page picker screen for custom post types */
+"customPostParentPicker.title" = "الصفحة الأصل";
+
+/* Option to set a post as top level (no parent) */
+"customPostParentPicker.topLevel" = "أعلى مستوى";
+
+/* Description for the top level option in the parent page picker, indicating this page will have no parent */
+"customPostParentPicker.topLevel.description" = "ليست صفحة أصلية";
+
+/* Tab title for showing all posts regardless of status */
+"customPostTab.all" = "الكل";
+
+/* Tab title for draft posts */
+"customPostTab.drafts" = "المسودات";
+
+/* Tab title for published posts */
+"customPostTab.published" = "المنشور";
+
+/* Tab title for scheduled posts */
+"customPostTab.scheduled" = "المجدوَل";
+
+/* Menu item title for sending feedback on the custom post types screen */
+"customPostTab.sendFeedback" = "إرسال الملاحظات";
+
+/* Tab title for trashed posts */
+"customPostTab.trash" = "سلة المهملات";
+
+/* Empty state message when there are no custom post types to display */
+"customPostTypes.emptyState.message" = "لا توجد أنواع تدوينات مخصصة";
+
+/* Accessibility label for the button to pin a custom post type */
+"customPostTypes.pin.accessibilityLabel" = "تثبيت";
+
+/* Title for the Custom Post Types screen */
+"customPostTypes.title" = "المزيد";
+
+/* Accessibility label for the button to unpin a custom post type */
+"customPostTypes.unpin.accessibilityLabel" = "إلغاء التثبيت";
+
 /* Customize Insights description */
 "customizeInsightsCell.content" = "أنشئ لوحة التحكم المخصصة الخاصة بك واختر التقارير المراد رؤيتها. ركّز على البيانات التي تهتم بها اكثر.";
 
@@ -7989,11 +8114,17 @@ Example: Reply to Pamela Nguyen */
 /* Boolean User Defaults Debug Menu screen title */
 "debugMenu.booleanUserDefaults.title" = "الإعدادات الافتراضية للمستخدمين في ما يتعلق بالقيم المنطقية";
 
+/* Debug Menu label for image cache size */
+"debugMenu.caches.imageCache" = "ذاكرة التخزين المؤقت للصورة";
+
 /* Feature flags menu item */
 "debugMenu.featureFlags" = "تمييز العلامات";
 
 /* Debug Menu action for TipKit */
 "debugMenu.hideAllTips" = "إخفاء كل النصائح";
+
+/* Debug Menu item title */
+"debugMenu.item.logs" = "السجلات";
 
 /* Title of the screen that allows the user to change the Reader CSS URL for debug builds */
 "debugMenu.readerCellTitle" = "عنوان URL لـ CSS في القارئ";
@@ -8025,6 +8156,9 @@ Example: Reply to Pamela Nguyen */
 
 /* Debug Menu action for TipKit */
 "debugMenu.resetTipKitData" = "إعادة تعيين البيانات";
+
+/* Debug Menu section title */
+"debugMenu.section.caches" = "ذاكرات التخزين المؤقت";
 
 /* Debug Menu section title */
 "debugMenu.section.logging" = "تسجيل الدخول";
@@ -8720,8 +8854,14 @@ Example: Reply to Pamela Nguyen */
 /* Title of the primary button shown after the Jetpack plugin has been installed. Tapping on the button dismisses the installation screen. */
 "jetpack.install-flow.success.primaryButtonText" = "تم";
 
+/* Message asking the user to install Jetpack to access all app features */
+"jetpack.install.allFeatures.description" = "لتفعيل جميع ميزات التطبيق، سيتعين عليك تثبيت الإضافة Jetpack.";
+
 /* Title of a button for connecting user account to Jetpack. */
 "jetpack.install.connectUser.button.title" = "ربط حساب المستخدم الخاص بك";
+
+/* Message asking the user to connect Jetpack to access all app features */
+"jetpack.install.connectUser.bypassXMLRPC.description" = "لتفعيل جميع ميزات التطبيق، سيتعين عليك ربط الإضافة Jetpack بحساب المستخدم الخاص بك.";
 
 /* Message asking the user if they want to set up Jetpack from notifications */
 "jetpack.install.connectUser.notifications.description" = "للحصول على إشعارات مساعدة على هاتفك من موقع ووردبريس الخاص بك، سيتعين عليك الاتصال بحساب المستخدم الخاص بك.";
@@ -9003,6 +9143,9 @@ Example: Reply to Pamela Nguyen */
 /* Last 12 weeks (84 days) date range */
 "jetpackStats.calendar.last12Weeks" = "آخر 12 أسبوعًا";
 
+/* Last 14 days date range */
+"jetpackStats.calendar.last14Days" = "آخر 14 يومًا";
+
 /* Last 28 days date range */
 "jetpackStats.calendar.last28Days" = "آخر 28 يومًا";
 
@@ -9065,6 +9208,9 @@ Example: Reply to Pamela Nguyen */
 
 /* Line chart type */
 "jetpackStats.chart.lineChart" = "خطوط";
+
+/* Label for aggregated 'Other' segment in pie charts */
+"jetpackStats.chart.other" = "أخرى";
 
 /* Show chart data menu item */
 "jetpackStats.chart.showData" = "عرض البيانات";
@@ -9174,9 +9320,6 @@ Example: Reply to Pamela Nguyen */
 /* Option to turn off period comparison */
 "jetpackStats.datePicker.comparisonOff" = "لا توجد مقارنة";
 
-/* Title for custom date range picker */
-"jetpackStats.datePicker.customRange" = "نطاق مخصص";
-
 /* Menu item for custom date range picker */
 "jetpackStats.datePicker.customRangeMenu" = "نطاق مخصص...";
 
@@ -9188,6 +9331,9 @@ Example: Reply to Pamela Nguyen */
 
 /* Menu item for more date period options */
 "jetpackStats.datePicker.more" = "المزيد…";
+
+/* Title for custom date range picker */
+"jetpackStats.datePicker.selectRange" = "تحديد النطاق";
 
 /* Site time zone header */
 "jetpackStats.datePicker.siteTimeZone" = "المنطقة الزمنية للموقع";
@@ -9204,6 +9350,15 @@ Example: Reply to Pamela Nguyen */
 /* Title for stats date range control tip */
 "jetpackStats.dateRangeTip.title" = "التنقُّل عبر الزمن";
 
+/* Device breakdown by browser */
+"jetpackStats.deviceBreakdowns.browser" = "المتصفح";
+
+/* Device breakdown by platform/OS */
+"jetpackStats.deviceBreakdowns.operatingSystem" = "نظام التشغيل";
+
+/* Device breakdown by screen size */
+"jetpackStats.deviceBreakdowns.screensize" = "حجم الشاشة";
+
 /* Section title for the list of child links */
 "jetpackStats.externalLinkDetails.childLinks" = "روابط فرعية";
 
@@ -9212,6 +9367,12 @@ Example: Reply to Pamela Nguyen */
 
 /* Title for the external link details screen */
 "jetpackStats.externalLinkDetails.title" = "رابط خارجي";
+
+/* Button to explore plans when a feature is gated */
+"jetpackStats.featureGate.explorePlans" = "استكشاف الخطط";
+
+/* Message shown when a stats feature is gated behind a paid plan */
+"jetpackStats.featureGate.message" = "قم بترقية خطتك للحصول على حق الوصول إلى التحليلات المتقدمة";
 
 /* Automatic granularity option */
 "jetpackStats.granularity.automatic" = "تلقائي";
@@ -9327,6 +9488,9 @@ Example: Reply to Pamela Nguyen */
 /* Clicks data type (external links) */
 "jetpackStats.siteDataTypes.clicks" = "مرات النقر";
 
+/* Devices data type */
+"jetpackStats.siteDataTypes.devices" = "الأجهزة";
+
 /* File downloads data type */
 "jetpackStats.siteDataTypes.fileDownloads" = "تنزيلات الملفات";
 
@@ -9402,6 +9566,9 @@ Example: Reply to Pamela Nguyen */
 /* Table column title for Top List card */
 "jetpackStats.topListColumnTitle.clicks" = "رابط خارجي";
 
+/* Table column title for Devices Top List card */
+"jetpackStats.topListColumnTitle.devices" = "الجهاز";
+
 /* Table column title for Top List card */
 "jetpackStats.topListColumnTitle.fileDownloads" = "الملف";
 
@@ -9417,8 +9584,65 @@ Example: Reply to Pamela Nguyen */
 /* Table column title for Top List card */
 "jetpackStats.topListColumnTitle.searchTerms" = "المصطلح";
 
+/* Table column title for UTM Top List card */
+"jetpackStats.topListColumnTitle.utm" = "الحملة";
+
 /* Table column title for Top List card */
 "jetpackStats.topListColumnTitle.videos" = "مقطع الفيديو";
+
+/* Plural post count for UTM metrics. %1$d is the number. */
+"jetpackStats.utmMetricDetails.postCount.plural" = "⁦%1$d⁩ من التدوينات";
+
+/* Singular post count for UTM metrics. %1$d is the number. */
+"jetpackStats.utmMetricDetails.postCount.singular" = "⁦%1$d⁩ من التدوينات";
+
+/* Title for the UTM campaign details screen */
+"jetpackStats.utmMetricDetails.title" = "حملة UTM";
+
+/* Section title for top posts from this UTM campaign */
+"jetpackStats.utmMetricDetails.topPosts" = "أعلى التدوينات";
+
+/* UTM parameter for campaign only */
+"jetpackStats.utmParamGroupings.campaign" = "الحملة";
+
+/* UTM parameter for medium only */
+"jetpackStats.utmParamGroupings.medium" = "وسيط";
+
+/* UTM parameter for source only */
+"jetpackStats.utmParamGroupings.source" = "مصدر";
+
+/* Number of ads served. %@ is the ads count. */
+"jetpackStats.wordAds.adsServed.count" = "تم عرض %@ من الإعلانات";
+
+/* Total earnings from WordAds */
+"jetpackStats.wordAds.earnings" = "الأرباح";
+
+/* Button to learn more about WordAds earnings */
+"jetpackStats.wordAds.learnMore" = "تعرّف على المزيد";
+
+/* Message shown when there are no payment records */
+"jetpackStats.wordAds.noPaymentsYet" = "لا توجد مدفوعات حتى الآن";
+
+/* Outstanding amount owed from WordAds */
+"jetpackStats.wordAds.outstanding" = "مستحق";
+
+/* Amount paid out from WordAds earnings */
+"jetpackStats.wordAds.paid" = "مدفوع";
+
+/* Title for payment history card and screen */
+"jetpackStats.wordAds.paymentsHistory" = "سجل المدفوعات";
+
+/* Title for WordAds total earnings card */
+"jetpackStats.wordAds.totalEarnings" = "إجمالي الأرباح";
+
+/* Number of ads served */
+"jetpackStats.wordAdsMetrics.adsServed" = "الإعلانات المعروضة";
+
+/* Average cost per mille (thousand impressions) */
+"jetpackStats.wordAdsMetrics.averageCPM" = "متوسط التكلفة لكل ألف ظهور (CPM)";
+
+/* Revenue from ads */
+"jetpackStats.wordAdsMetrics.revenue" = "الإيرادات";
 
 /* Title for a call-to-action button on the Jetpack install card. */
 "jetpackinstallcard.button.learn" = "معرفة المزيد";
@@ -9930,6 +10154,42 @@ Example: Reply to Pamela Nguyen */
 /* Menu title for the visit site option */
 "mySite.siteActions.visitSite" = "زيارة الموقع";
 
+/* Button to confirm to switch to the New Stats announcement screen */
+"newStats.announcement.continueButton" = "ابدأ الآن";
+
+/* Disclosure at the bottom of the New Stats announcement screen, informing users they can opt out */
+"newStats.announcement.disclosure" = "لست مستعدًا للتبديل؟ يمكنك إيقاف تشغيل الإحصائيات الجديدة من قائمة \"المزيد\" في تبويب الإحصائيات.";
+
+/* Feature description: navigation moved to the bottom for thumb-friendly access */
+"newStats.announcement.feature.bottomNav.description" = "أصبح التنقل وأداة اختيار التاريخ الآن في أسفل الشاشة - تمامًا حيث يوجد إبهامك.";
+
+/* Feature title: navigation moved to the bottom */
+"newStats.announcement.feature.bottomNav.title" = "وصول أسهل";
+
+/* Feature description: flexible date picker with presets, custom ranges, and comparisons */
+"newStats.announcement.feature.datePicker.description" = "اختر من الإعدادات المسبقة الشائعة أو حدد نطاقًا زمنيًا مخصصًا مع فترة مقارنة - كل ذلك بنقرة واحدة.";
+
+/* Feature title: flexible date picker */
+"newStats.announcement.feature.datePicker.title" = "أي فترة، أي نطاق";
+
+/* Feature description: feature parity with the web version of Stats */
+"newStats.announcement.feature.parity.description" = "الأجهزة، وUTM، والمواقع، وWordAds - نفس البيانات التي تحصل عليها في WordPress.com.";
+
+/* Feature title: feature parity with the web version of Stats */
+"newStats.announcement.feature.parity.title" = "مماثلة لنسخة الويب";
+
+/* Feature description: trends shown for all metrics with comparison to previous period */
+"newStats.announcement.feature.trends.description" = "يوضح كل مقياس اتجاهه مقارنة بالفترة السابقة، لتعرف دائمًا ما إذا كنت تحقق نموًا.";
+
+/* Feature title: trends visible for all metrics */
+"newStats.announcement.feature.trends.title" = "لمحة عن الاتجاهات";
+
+/* Subtitle for the New Stats announcement screen */
+"newStats.announcement.subtitle" = "طريقة أفضل لفهم أداء موقعك الإلكتروني - مفعلة الآن افتراضيًا.";
+
+/* Title for the New Stats announcement screen */
+"newStats.announcement.title" = "إحصاءات جديدة";
+
 /* A no results message displayed on the atomic logs screen. */
 "noLogs.empty" = "لا توجد إدخالات سجل في هذا النطاق الزمني";
 
@@ -10161,6 +10421,9 @@ Example: Reply to Pamela Nguyen */
 /* A title for the log severity level */
 "phpLogs.severityWarning" = "تحذير";
 
+/* Error message when a pinned custom post type cannot be found. %1$@ is the post type name. */
+"pinnedPostType.error.notFound" = "نوع التدوينة \"%1$@\" غير متوفر على هذا الموقع.";
+
 /* Title for the plan selection view */
 "planSelection.title" = "الخطط";
 
@@ -10272,13 +10535,15 @@ Example: Reply to Pamela Nguyen */
 /* Navigation title for post discussion settings */
 "postDiscussion.title" = "المناقشة";
 
-/* Button in an alert confirming discaring changes */
+/* Button in an alert confirming discarding changes
+   Button in an alert confirming discaring changes */
 "postEditor.closeConfirmationAlert.discardChanges" = "تجاهل التغييرات";
 
 /* Button in an alert confirming discaring a new draft */
 "postEditor.closeConfirmationAlert.discardDraft" = "تجاهل المسودة";
 
-/* Button to keep the changes in an alert confirming discaring changes */
+/* Button to keep the changes in an alert confirming discarding changes
+   Button to keep the changes in an alert confirming discaring changes */
 "postEditor.closeConfirmationAlert.keepEditing" = "متابعة التحرير";
 
 /* Button in an alert confirming saving a new draft */
@@ -10326,6 +10591,9 @@ Example: Reply to Pamela Nguyen */
 /* A message for a snackbar informing the user that some media files requires their attention */
 "postEditor.postHasFailingMediaUploadsSnackbar.message" = "فشل رفع بعض عناصر الوسائط";
 
+/* Title for the publish button in the post editor navigation bar */
+"postEditor.publishButton.title" = "نشر";
+
 /* Editor, notice for successful recovery a trashed post */
 "postEditor.recoverTrashedPost.postRecoveredNoticeTitle" = "تمت استعادة التدوينة كمسودة";
 
@@ -10346,6 +10614,9 @@ Example: Reply to Pamela Nguyen */
 
 /* Saving draft to generate a preview (status message */
 "postEditor.savingDraftForPreview" = "جار حفظ المسودة...";
+
+/* Title for the update button in the post editor navigation bar */
+"postEditor.updateButton.title" = "تحديث";
 
 /* Empty state description when no post formats are available */
 "postFormatPicker.emptyState.description" = "لم يتم تكوين تنسيقات التدوينة لهذا الموقع.";
@@ -10618,6 +10889,9 @@ Example: Reply to Pamela Nguyen */
 /* Section header for More Options in Post Settings. Should use the same translation as core WP. */
 "postSettings.moreOptions.header" = "المزيد من الخيارات";
 
+/* The title of the Post Settings screen for custom post types. %1$@ is the post type name. */
+"postSettings.navigationTitle.customPostType" = "إعدادات %1$@";
+
 /* The title of the Page Settings screen. */
 "postSettings.navigationTitle.page" = "إعدادات الصفحة";
 
@@ -10677,6 +10951,9 @@ Example: Reply to Pamela Nguyen */
 
 /* Placeholder value for a publishing date in the prepublishing sheet when the date is not selected */
 "postSettings.publishDateImmediately" = "فورًا";
+
+/* Error message shown when saving post settings via REST API fails */
+"postSettings.saveFailed.message" = "تعذر حفظ التغييرات";
 
 /* Section header for General settings in Post Settings */
 "postSettings.section.general" = "عام";
@@ -10753,6 +11030,9 @@ Example: Reply to Pamela Nguyen */
 /* Navigation bar title of the Post Stats screen */
 "postStats.title" = "إحصاءات التدوينات";
 
+/* Post status title used in different contexts */
+"postStatus.any.title" = "أخرى";
+
 /* Post status title */
 "postStatus.deleted.details" = "اكتمل الحذف بشكل دائم.";
 
@@ -10762,38 +11042,38 @@ Example: Reply to Pamela Nguyen */
 /* Post status details */
 "postStatus.draft.details" = "غير جاهز للنشر";
 
-/* Post status title */
+/* Post status title used in different contexts */
 "postStatus.draft.title" = "مسودة";
 
 /* Post status details */
 "postStatus.pending.details" = "في انتظار المراجعة قبل النشر";
 
-/* Post status title */
+/* Post status title used in different contexts */
 "postStatus.pending.title" = "معلق";
 
 /* Post status details */
 "postStatus.private.details" = "يظهر فقط لمشرفي الموقع والمحررين";
 
-/* Post status title */
+/* Post status title used in different contexts */
 "postStatus.private.title" = "خاص";
 
 /* Post status details */
 "postStatus.published.details" = "ظاهر للجميع";
 
-/* Post status title */
+/* Post status title used in different contexts */
 "postStatus.published.title" = "اكتمل النشر";
 
 /* Post status details */
 "postStatus.scheduled.details" = "النشر تلقائيًا في تاريخ محدد";
 
-/* Post status title */
+/* Post status title used in different contexts */
 "postStatus.scheduled.title" = "مجدول";
 
 /* Post status title */
 "postStatus.trash.details" = "في سلة المهملات، ولم يُحذف بعد";
 
-/* Post status title */
-"postStatus.trash.title" = "في سلة المهملات";
+/* Post status title used in different contexts */
+"postStatus.trash.title" = "سلة المهملات";
 
 /* Button to add a new taxonomy term. %1$@ is the taxonomy name (e.g., 'tags', 'categories'). */
 "postTags.addTag" = "إضافة %1$@";
@@ -11304,9 +11584,6 @@ Example: given a notice format "Following %@" and empty site name, this will be 
 /* Context menu action */
 "reader.postContextMenu.blockUser" = "حظر المستخدم";
 
-/* Context menu action (placeholder value when blog name not available – should never happen) */
-"reader.postContextMenu.blogDetails" = "تفاصيل المدونة";
-
 /* Context menu action */
 "reader.postContextMenu.manageNotifications" = "إدارة التنبيهات";
 
@@ -11323,9 +11600,6 @@ Example: given a notice format "Following %@" and empty site name, this will be 
 "reader.postContextMenu.reportUser" = "الإبلاغ عن المستخدم";
 
 /* Context menu action */
-"reader.postContextMenu.showBlog" = "الانتقال إلى المدونة";
-
-/* Context menu action */
 "reader.postContextMenu.summarize" = "تلخيص";
 
 /* Context menu action to translate post content */
@@ -11333,6 +11607,9 @@ Example: given a notice format "Following %@" and empty site name, this will be 
 
 /* Context menu action */
 "reader.postContextMenu.viewInBrowser" = "عرض في المتصفح";
+
+/* Context menu action */
+"reader.postContextMenu.viewSite" = "عرض الموقع";
 
 /* Reader post details view placeholder when blog name not avail */
 "reader.postDetails.blog" = "المدونة";
@@ -11738,6 +12015,9 @@ Feel free to replace it with other bracket types that you think looks better for
 "shared.button.edit" = "تحرير";
 
 /* A shared button title used in different contexts */
+"shared.button.notNow" = "ليس الآن";
+
+/* A shared button title used in different contexts */
 "shared.button.ok" = "موافق";
 
 /* A shared button title used in different contexts */
@@ -12088,12 +12368,14 @@ Feel free to replace it with other bracket types that you think looks better for
 /* Title for site switcher screen */
 "sitePicker.title" = "مواقعي";
 
-/* The plugin author displayed in the plugins list. The first argument is plugin author name
-   The plugin version displayed in the plugins list. The first argument is plugin version */
+/* The plugin author displayed in the plugins list. The first argument is plugin author name */
 "sitePluginsList.item.author" = "بواسطة %@";
 
 /* The message displayed when a plugin has no description */
 "sitePluginsList.item.noDescriptionAvailable" = "لم يقدِّم مؤلف الإضافة وصفًا لهذه الإضافة.";
+
+/* The plugin version displayed in the plugins list. The first argument is plugin version */
+"sitePluginsList.item.version" = "الإصدار: %@";
 
 /* Button to activate a plugin */
 "sitePluginsList.itemAction.activate" = "تفعيل";
@@ -12109,6 +12391,15 @@ Feel free to replace it with other bracket types that you think looks better for
 
 /* Title for screen to select the privacy options for a blog */
 "siteSettings.privacy.title" = "الخصوصية";
+
+/* Explanation for why the 'Use theme styles' toggle is disabled when the site doesn't have a block theme */
+"siteSettings.themeStyles.footer.blockThemeSuggested" = "لا يستخدم موقعك قالب مكوّن، لذا قد لا يتطابق المحرر مع محتواك بشكل صحيح. إذا لم تسر الأمور على ما يرام، فيمكنك تعطيل أنماط المحرر.";
+
+/* Explanation for the option to enable theme styles when the feature is available */
+"siteSettings.themeStyles.footer.enabled" = "اجعل محرر المكوّن يبدو مثل قالبك.";
+
+/* Explanation for why the 'Use theme styles' toggle is disabled when the site doesn't have the Gutenberg plugin */
+"siteSettings.themeStyles.footer.gutenbergRequired" = "قم بتثبيت إضافة Gutenberg على موقعك لتفعيل دعم نمط القالب.";
 
 /* Format string for adding a new taxonomy term. %1$@ is the taxonomy name. */
 "siteTaxonomy.addNew.format" = "إضافة %1$@";
@@ -12731,15 +13022,6 @@ Feel free to replace it with other bracket types that you think looks better for
 
 /* Title for the time zone selector */
 "timeZoneSelector.title" = "المنطقة الزمنيّة";
-
-/* Action button title to enable new stats from tip */
-"tips.newStats.action" = "تمكين الآن";
-
-/* Tip for new stats feature */
-"tips.newStats.message" = "جرب إحصاءات جديدة أنيقة وفعالة. يمكنك العودة إلى الشكل القديم متى تشاء.";
-
-/* Tip for new stats feature */
-"tips.newStats.title" = "تجربة إحصاءات جديدة";
 
 /* Tip for sidebar */
 "tips.sidebar.message" = "التمرير إلى اليمين للوصول إلى مواقعك والقارئ والتنبيهات والملف الشخصي";

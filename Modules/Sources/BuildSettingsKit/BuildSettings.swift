@@ -36,8 +36,6 @@ public struct BuildSettings: Sendable {
     public var authKeychainServiceName: String
 
     public struct ProductAboutDetails: Sendable {
-        public var twitterHandle: String
-        public var twitterURL: URL
         public var blogURL: URL
     }
 

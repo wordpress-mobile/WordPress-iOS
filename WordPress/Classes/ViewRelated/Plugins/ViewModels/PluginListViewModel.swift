@@ -71,7 +71,6 @@ class PluginListViewModel: Observable {
                     return .selective(oldPlugins.differentIndices(newPlugins))
 
                 default: return.replace
-
                 }
             default:
                 return .replace
@@ -123,7 +122,7 @@ class PluginListViewModel: Observable {
         storeReceipt = store.onChange { [weak self] in
             self?.refreshState()
         }
-        actionReceipt = ActionDispatcher.global.subscribe { [weak self] (action) in
+        actionReceipt = ActionDispatcher.global.subscribe { [weak self] action in
             guard let error = self?.receiveError(from: action) else {
                 return
             }
@@ -148,7 +147,6 @@ class PluginListViewModel: Observable {
         default:
             return nil
         }
-
     }
 
     func onStateChange(_ handler: @escaping (StateChange) -> Void) -> Receipt {
@@ -184,7 +182,7 @@ class PluginListViewModel: Observable {
             guard case .feed(let feedType) = query,
                 case .search = feedType,
                 case .directory(let result) = plugins,
-                result.count == 0 else {
+                result.isEmpty else {
                     return nil
             }
 
@@ -234,7 +232,7 @@ class PluginListViewModel: Observable {
 
             return ImmuTable(sections: [
                 ImmuTableSection(rows: rows)
-                ])
+            ])
         }
     }
 
@@ -323,5 +321,4 @@ class PluginListViewModel: Observable {
         static let noConnectionTitle = NSLocalizedString("No connection", comment: "Title for the error view when there's no connection")
         static let noConnectionSubtitle = NSLocalizedString("An active internet connection is required to view plugins", comment: "Error message shown when trying to view the Plugins feature and there is no internet connection.")
     }
-
 }

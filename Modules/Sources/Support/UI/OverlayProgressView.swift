@@ -59,7 +59,7 @@ struct OverlayProgressView: View {
             .accessibilityAddTraits(.isStaticText)
             .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .top)
             .padding(.top, 24)
-            .onChange(of: context.date, { oldValue, newValue in
+            .onChange(of: context.date, { _, _ in
                 if case .awaitingHiding(let until) = state {
                     if until.hasPast {
                         withAnimation {
@@ -68,7 +68,7 @@ struct OverlayProgressView: View {
                     }
                 }
             })
-            .onChange(of: self.shouldBeVisible) { oldValue, newValue in
+            .onChange(of: self.shouldBeVisible) { _, newValue in
                 withAnimation {
                     if newValue {
                         self.state = .mustBeVisible

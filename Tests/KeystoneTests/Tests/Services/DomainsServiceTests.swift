@@ -67,7 +67,7 @@ class DomainsServiceTests: CoreDataTestCase {
     fileprivate func fetchDomains() {
         let expect = expectation(description: "Domains fetch complete expectation")
         let service = DomainsService(coreDataStack: contextManager, remote: remote)
-        service.refreshDomains(siteID: testBlog.dotComID!.intValue) { result in
+        service.refreshDomains(siteID: testBlog.dotComID!.intValue) { _ in
             expect.fulfill()
         }
 
@@ -76,7 +76,7 @@ class DomainsServiceTests: CoreDataTestCase {
 
     func testDomainServiceHandlesTwoNewDomains() {
         let domains = findAllDomains()
-        XCTAssert(domains.count == 0, "Expecting no domains initially")
+        XCTAssert(domains.isEmpty, "Expecting no domains initially")
 
         stubDomainsResponseWithFile("domain-service-valid-domains.json")
         fetchDomains()

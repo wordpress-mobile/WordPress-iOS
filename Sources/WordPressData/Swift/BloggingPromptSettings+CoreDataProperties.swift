@@ -13,5 +13,4 @@ extension BloggingPromptSettings {
     @NSManaged public var reminderTime: String?
     @NSManaged public var siteID: Int32
     @NSManaged public var reminderDays: BloggingPromptSettingsReminderDays?
-
 }

@@ -113,7 +113,7 @@ final class CommentContentTableViewCell: UITableViewCell, NibReusable {
     /// can be scoped by using the "legacy" style when the passed parameter is nil.
     private var style: CellStyle = .init(displaySetting: nil)
 
-    var displaySetting: ReaderDisplaySettings? = nil {
+    var displaySetting: ReaderDisplaySettings = .standard {
         didSet {
             style = CellStyle(displaySetting: displaySetting)
             applyStyles()
@@ -205,6 +205,24 @@ final class CommentContentTableViewCell: UITableViewCell, NibReusable {
         containerStackTrailingConstraint.constant = 0
     }
 
+    /// Emphasizes the cell and draws the user's attention with a flash that settles at the target highlight level.
+    func flashHighlight() {
+        isEmphasized = true
+
+        guard let highlightedBackgroundView else {
+            return wpAssertionFailure("background view not configured")
+        }
+
+        let originalBackgroundColor = highlightedBackgroundView.backgroundColor
+        UIView.animate(withDuration: 0.33, delay: 0.5, options: .curveEaseOut) {
+            highlightedBackgroundView.backgroundColor = UIAppColor.blue.withAlphaComponent(0.09)
+        } completion: { _ in
+            UIView.animate(withDuration: 0.33, delay: 1.5, options: .curveEaseOut) {
+                highlightedBackgroundView.backgroundColor = originalBackgroundColor
+            }
+        }
+    }
+
     func hideActions() {
         replyButton.isHidden = true
         likeButton.isHidden = true
@@ -233,7 +251,7 @@ final class CommentContentTableViewCell: UITableViewCell, NibReusable {
         }
         for level in 0..<depth {
             let separatorView = depthSeparators[level] ?? {
-                let separatorView = SeparatorView.vertical()
+                let separatorView = SeparatorView.vertical(width: 1.0)
                 depthSeparators[level] = separatorView
                 contentView.addSubview(separatorView)
                 separatorView.pinEdges([.top, .bottom])
@@ -359,20 +377,17 @@ private extension CommentContentTableViewCell {
         dateLabel?.font = style.dateFont
         dateLabel?.textColor = style.dateTextColor
 
-        accessoryButton?.tintColor = .secondaryLabel
         accessoryButton?.setImage(accessoryButtonImage, for: .normal)
         accessoryButton?.addTarget(self, action: #selector(accessoryButtonTapped), for: .touchUpInside)
 
         replyButton.configuration = makeReactionButtonConfiguration(image: UIImage(named: "icon-reader-comment-reply"))
         replyButton.configuration?.contentInsets.leading = 0
-        replyButton.tintColor = .secondaryLabel
         replyButton.setTitle(.reply, for: .normal)
         replyButton.addTarget(self, action: #selector(replyButtonTapped), for: .touchUpInside)
         replyButton.maximumContentSizeCategory = .accessibilityMedium
         replyButton.accessibilityIdentifier = .replyButtonAccessibilityId
 
         likeButton.configuration = makeReactionButtonConfiguration(image: WPStyleGuide.ReaderDetail.likeToolbarIcon)
-        likeButton.tintColor = .secondaryLabel
 
         likeButton.addTarget(self, action: #selector(likeButtonTapped), for: .touchUpInside)
         likeButton.maximumContentSizeCategory = .accessibilityMedium
@@ -404,6 +419,11 @@ private extension CommentContentTableViewCell {
 
         dateLabel?.font = style.dateFont
         dateLabel?.textColor = style.dateTextColor
+
+        replyButton?.tintColor = displaySetting.color.secondaryForeground
+        likeButton?.tintColor = displaySetting.color.secondaryForeground
+
+        accessoryButton?.tintColor = displaySetting.color.secondaryForeground
     }
 
     private func getShowMoreOverlay() -> UIView {
@@ -443,7 +463,7 @@ private extension CommentContentTableViewCell {
     }
 
     func updateLikeButton(isLiked: Bool, likeCount: Int) {
-        likeButton.tintColor = isLiked ? UIAppColor.primary : .secondaryLabel
+        likeButton.tintColor = isLiked ? UIAppColor.primary : displaySetting.color.secondaryForeground
         if var configuration = likeButton.configuration {
             configuration.image = isLiked ? WPStyleGuide.ReaderDetail.likeSelectedToolbarIcon : WPStyleGuide.ReaderDetail.likeToolbarIcon
             configuration.title = likeCount > 0 ? "\(likeCount)" : String.noLikes
@@ -471,6 +491,8 @@ private extension CommentContentTableViewCell {
             return renderer
         }()
 
+        renderer.displaySettings = displaySetting
+
         configureContentView(contentHeight: helper.getCachedContentHeight(for: content))
 
         let contentView = renderer.view
@@ -490,7 +512,7 @@ private extension CommentContentTableViewCell {
         fullContentHeight = contentHeight
 
         // - warning: It's important to set height to the minimum supported
-        // value because `WKWebView` can only increase the content height whe
+        // value because `WKWebView` can only increase the content height when
         // calculating content size (it will never decrease it).
         let minContentHeight: CGFloat = 20
         let effectiveContentHeight = contentHeight ?? minContentHeight

@@ -1,4 +1,3 @@
-import Nimble
 @testable import WordPress
 import XCTest
 
@@ -23,8 +22,8 @@ final class BlogDashboardDynamicCardCoordinatorTests: XCTestCase {
         coordinator.didAppear()
 
         // Then
-        expect(AnalyticsEventTrackingSpy.trackedEvents).to(haveCount(1))
-        expect(AnalyticsEventTrackingSpy.trackedEvents).to(containElementSatisfying({ firedEvent in
+        XCTAssertEqual(AnalyticsEventTrackingSpy.trackedEvents.count, 1)
+        XCTAssertTrue(AnalyticsEventTrackingSpy.trackedEvents.contains(where: { firedEvent in
             firedEvent.name == event.name && firedEvent.properties == event.properties
         }))
     }
@@ -41,8 +40,8 @@ final class BlogDashboardDynamicCardCoordinatorTests: XCTestCase {
         coordinator.didTapCard()
 
         // Then
-        expect(AnalyticsEventTrackingSpy.trackedEvents).to(haveCount(3))
-        expect(AnalyticsEventTrackingSpy.trackedEvents).to(containElementSatisfying({ firedEvent in
+        XCTAssertEqual(AnalyticsEventTrackingSpy.trackedEvents.count, 3)
+        XCTAssertTrue(AnalyticsEventTrackingSpy.trackedEvents.contains(where: { firedEvent in
             firedEvent.name == event.name && firedEvent.properties == event.properties
         }))
     }
@@ -59,8 +58,8 @@ final class BlogDashboardDynamicCardCoordinatorTests: XCTestCase {
         coordinator.didTapCardCTA()
 
         // Then
-        expect(AnalyticsEventTrackingSpy.trackedEvents).to(haveCount(3))
-        expect(AnalyticsEventTrackingSpy.trackedEvents).to(containElementSatisfying({ firedEvent in
+        XCTAssertEqual(AnalyticsEventTrackingSpy.trackedEvents.count, 3)
+        XCTAssertTrue(AnalyticsEventTrackingSpy.trackedEvents.contains(where: { firedEvent in
             firedEvent.name == event.name && firedEvent.properties == event.properties
         }))
     }

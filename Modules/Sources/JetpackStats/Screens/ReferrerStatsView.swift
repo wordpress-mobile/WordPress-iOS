@@ -15,6 +15,7 @@ struct ReferrerStatsView: View {
     @State private var showErrorAlert = false
     @State private var errorMessage = ""
     @State private var isMarkedAsSpam = false
+    @State private var showConfirmationDialog = false
 
     var body: some View {
         ScrollView {
@@ -56,6 +57,19 @@ struct ReferrerStatsView: View {
             referrerInfoRow
             Divider()
             markAsSpamButton
+                .confirmationDialog(
+                    Strings.ReferrerDetails.markAsSpam,
+                    isPresented: $showConfirmationDialog
+                ) {
+                    Button(Strings.ReferrerDetails.markAsSpam, role: .destructive) {
+                        Task {
+                            await markAsSpam()
+                        }
+                    }
+                    Button(Strings.Buttons.cancel, role: .cancel) { }
+                } message: {
+                    Text(Strings.ReferrerDetails.confirmAsSpamMessage(domain: referrer.domain ?? ""))
+                }
         }
         .padding(Constants.step2)
         .cardStyle()
@@ -128,11 +142,9 @@ struct ReferrerStatsView: View {
                 .frame(maxWidth: .infinity)
         } else {
             Button(role: .destructive) {
-                Task {
-                    await markAsSpam()
-                }
+                showConfirmationDialog = true
             } label: {
-                Label(Strings.ReferrerDetails.markAsSpam, systemImage: "exclamationmark.triangle")
+                Label(Strings.ReferrerDetails.markAsSpam, systemImage: "nosign")
                     .foregroundColor(.red)
                     .frame(maxWidth: .infinity)
             }

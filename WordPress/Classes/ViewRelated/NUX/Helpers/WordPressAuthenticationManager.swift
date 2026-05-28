@@ -672,7 +672,7 @@ private extension WordPressAuthenticationManager {
     /// Presents the support screen which displays different support options depending on whether this is the WordPress app or the Jetpack app.
     private func presentSupport(from sourceViewController: UIViewController, sourceTag: WordPressSupportSourceTag) {
         // Since we're presenting the support VC as a form sheet, the parent VC's viewDidAppear isn't called
-        // when this VC is dismissed.  This means the tracking step isn't reset properly, so we'll need to do
+        // when this VC is dismissed. This means the tracking step isn't reset properly, so we'll need to do
         // it here manually before tracking the new step.
         let step = tracker.state.lastStep
 

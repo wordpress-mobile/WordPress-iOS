@@ -18,7 +18,7 @@ extension Text {
 
         var text = Text("")
 
-        parts.enumerated().forEach { (index, part) in
+        parts.enumerated().forEach { index, part in
             let partText = Text(part)
 
             if index == parts.count - 2 { // last-but-one part

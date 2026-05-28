@@ -60,5 +60,4 @@ final class ReplyToCommentActionTests: CoreDataTestCase {
 
         XCTAssertTrue(mockService.replyWasCalled)
     }
-
 }

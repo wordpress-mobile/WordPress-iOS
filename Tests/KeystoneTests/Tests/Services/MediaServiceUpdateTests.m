@@ -1,6 +1,7 @@
 #import <XCTest/XCTest.h>
-#import "Blog.h"
 #import "WordPressTest-Swift.h"
+
+@import WordPressData;
 
 @import WordPressKit;
 @import OCMock;

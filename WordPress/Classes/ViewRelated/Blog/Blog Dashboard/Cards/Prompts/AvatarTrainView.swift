@@ -50,7 +50,6 @@ final class AvatarTrainView: UIView {
     override func layoutSubviews() {
         configureAvatarBorders()
     }
-
 }
 
 // MARK: Private Helpers
@@ -95,5 +94,4 @@ private extension AvatarTrainView {
         static let borderWidth: CGFloat = 2
         static let placeholderImage: UIImage = .gravatarPlaceholderImage
     }
-
 }

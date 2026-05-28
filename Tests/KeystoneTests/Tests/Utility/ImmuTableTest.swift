@@ -25,7 +25,6 @@ class ImmuTableTest: XCTestCase {
         ImmuTable.registerRows(rowsToRegister, registrator: mockTable)
         XCTAssertEqual(2, mockTable.registeredClasses.count, "Each cell class shouldn't be registered more than once")
     }
-
 }
 
 class TestTableViewCell: UITableViewCell {}
@@ -77,7 +76,6 @@ class MockTableView: CellRegistrar {
         case .nib(let nib, _):
             registeredNibs.append((identifier, nib))
         }
-
     }
     func registerClass(_ cellClass: AnyClass?, forCellReuseIdentifier identifier: String) {
         registeredClasses.append((identifier, cellClass!))

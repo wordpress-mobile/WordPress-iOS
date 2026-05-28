@@ -26,7 +26,6 @@ class ApplicationPasswordsViewModelTests: XCTestCase {
             XCTAssertEqual(index, expectedIndex, "\(token.name) is in the wrong place")
         }
     }
-
 }
 
 private extension ApplicationTokenItem {
@@ -46,5 +45,4 @@ private class StaticTokenProvider: ApplicationTokenListDataProvider {
     func loadApplicationTokens() async throws -> [ApplicationTokenItem] {
         try result.get()
     }
-
 }

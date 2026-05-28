@@ -125,7 +125,7 @@ extension BlogSettings {
         // MARK: - Private Properties
 
         fileprivate static var weekdays: [String] {
-            var calendar = Calendar.init(identifier: .gregorian)
+            var calendar = Calendar(identifier: .gregorian)
             calendar.locale = Locale.current
             return calendar.weekdaySymbols
         }

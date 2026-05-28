@@ -90,11 +90,11 @@ extension QRLoginVerifyCoordinator {
         view.showAuthenticating()
         state = .authenticating
 
-        service.authenticate(token: token) { success in
+        service.authenticate(token: token) { _ in
             self.parentCoordinator.track(.qrLoginAuthenticated)
             self.state = .done
             self.view.renderCompletion()
-        } failure: { error in
+        } failure: { _ in
             self.state = .error
 
             guard self.connectionChecker.connectionAvailable else {

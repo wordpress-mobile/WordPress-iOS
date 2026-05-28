@@ -106,7 +106,7 @@ extension WordPressKit.StatsServiceRemoteV2 {
 
     func getEmailOpens(for postID: Int) async throws -> StatsEmailOpensData {
         try await withCheckedThrowingContinuation { continuation in
-            getEmailOpens(for: postID) { (data, error) in
+            getEmailOpens(for: postID) { data, error in
                 if let data {
                     continuation.resume(returning: data)
                 } else {

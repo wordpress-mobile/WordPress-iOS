@@ -47,7 +47,7 @@ class JetpackConnectionWebViewController: UIViewController {
         let stackView = UIStackView(arrangedSubviews: [
             progressView,
             webView
-            ])
+        ])
         stackView.axis = .vertical
         view = stackView
     }
@@ -205,17 +205,16 @@ private extension JetpackConnectionWebViewController {
     }
 
     func isSiteLogin(url: URL) -> Bool {
-        guard let loginURL = URL(string: blog.loginUrl()) else {
+        guard let loginURL = blog.loginURL else {
             return false
         }
-
         return url.matchesPath(in: loginURL)
     }
 
     /// Returns a function that matches a wp-admin URL with the given path
     ///
     func isSiteAdmin(path: String) -> (URL) -> Bool {
-        guard let adminURL = URL(string: blog.adminUrl(withPath: path)) else {
+        guard let adminURL = blog.makeAdminURL(path: path) else {
             return { _ in return false }
         }
         return { url in
@@ -242,7 +241,7 @@ private extension JetpackConnectionWebViewController {
         let success: () -> Void = { [weak self] in
             self?.delegate?.jetpackConnectionCompleted()
         }
-        let failure: (Error) -> Void = { (error) in
+        let failure: (Error) -> Void = { error in
             DDLogError("\(error)")
             success()
         }

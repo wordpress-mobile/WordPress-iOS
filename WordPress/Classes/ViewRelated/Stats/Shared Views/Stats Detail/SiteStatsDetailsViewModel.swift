@@ -781,7 +781,7 @@ private extension SiteStatsDetailsViewModel {
     func countriesRowData() -> [StatsTotalRowData] {
         return periodStore.getTopCountries()?.countries.map { StatsTotalRowData(name: $0.name,
                                                                                 data: $0.viewsCount.abbreviatedString(),
-                                                                                icon: UIImage(named: $0.code),
+                                                                                icon: StatsTotalRowData.flagImage(for: $0.code),
                                                                                 statSection: .periodCountries) }
             ?? []
     }
@@ -790,10 +790,8 @@ private extension SiteStatsDetailsViewModel {
         let countries = periodStore.getTopCountries()?.countries ?? []
         return CountriesMap(minViewsCount: countries.last?.viewsCount ?? 0,
                             maxViewsCount: countries.first?.viewsCount ?? 0,
-                            data: countries.reduce([String: NSNumber]()) { (dict, country) in
-                                var nextDict = dict
-                                nextDict.updateValue(NSNumber(value: country.viewsCount), forKey: country.code)
-                                return nextDict
+                            data: countries.reduce(into: [String: NSNumber]()) { dict, country in
+                                dict.updateValue(NSNumber(value: country.viewsCount), forKey: country.code)
         })
     }
 
@@ -853,7 +851,7 @@ private extension SiteStatsDetailsViewModel {
 
             let rowValue: Int = {
                 if forAverages {
-                    return months.count > 0 ? (yearTotalViews / months.count) : 0
+                    return !months.isEmpty ? (yearTotalViews / months.count) : 0
                 }
                 return yearTotalViews
             }()
@@ -1005,7 +1003,6 @@ private extension SiteStatsDetailsViewModel {
                                         hideIndentedSeparator: true,
                                         hideFullSeparator: hideFullSeparator,
                                         showImage: showImage)
-
     }
 
     func parentRow(rowData: StatsTotalRowData, hideIndentedSeparator: Bool, hideFullSeparator: Bool, expanded: Bool) -> DetailExpandableRow {

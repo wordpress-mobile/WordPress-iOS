@@ -62,6 +62,46 @@ extension ActivityLogDetailsView {
             return try! JSONDecoder().decode(Activity.self, from: json.data(using: .utf8)!)
         }
 
+        static var mockMCPAgentActivity: Activity {
+            let json = """
+            {
+                "summary": "Post published",
+                "content": {
+                    "text": "Published blog post: Getting Started with MCP"
+                },
+                "name": "post__published",
+                "actor": {
+                    "type": "Person",
+                    "name": "bot-user",
+                    "external_user_id": 0,
+                    "wpcom_user_id": 100000001,
+                    "icon": {
+                        "type": "Image",
+                        "url": "",
+                        "width": 96,
+                        "height": 96
+                    },
+                    "role": "administrator",
+                    "is_mcp_agent": true,
+                    "mcp_client": "Claude"
+                },
+                "type": "Create",
+                "published": "2026-03-17T10:00:00.000+00:00",
+                "generator": {
+                    "jetpack_version": 0,
+                    "blog_id": 137726971
+                },
+                "is_rewindable": false,
+                "rewind_id": "1710000000.0001",
+                "gridicon": "posts",
+                "status": "success",
+                "activity_id": "mock-mcp-agent-activity",
+                "is_discarded": false
+            }
+            """
+            return try! JSONDecoder().decode(Activity.self, from: json.data(using: .utf8)!)
+        }
+
         static var mockLoginActivity: Activity {
             let json = """
             {

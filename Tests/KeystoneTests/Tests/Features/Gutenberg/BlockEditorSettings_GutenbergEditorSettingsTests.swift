@@ -19,7 +19,6 @@ class BlockEditorSettings_GutenbergEditorSettingsTests: CoreDataTestCase {
         XCTAssertNotNil(settings2)
         XCTAssertFalse(settings2!.isFSETheme)
     }
-
 }
 
 // MARK: - Helpers

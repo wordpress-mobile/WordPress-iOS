@@ -57,5 +57,4 @@ extension HTTPURLResponse {
 
         return value
     }
-
 }

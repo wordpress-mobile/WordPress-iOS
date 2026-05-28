@@ -60,7 +60,7 @@ struct SimpleBarChartView: View {
                     endPoint: .bottom
                 )
             )
-            .cornerRadius(6)
+            .cornerRadius(4)
             .opacity(getBarOpacity(for: point))
         }
     }
@@ -71,7 +71,7 @@ struct SimpleBarChartView: View {
 
     private func lighten(_ color: Color) -> Color {
         if #available(iOS 18, *) {
-            color.mix(with: Color(.systemBackground), by: colorScheme == .light ? 0.4 : 0.15)
+            color.mix(with: Color(.systemBackground), by: colorScheme == .light ? 0.2 : 0.1)
         } else {
             color.opacity(0.5)
         }
@@ -102,7 +102,7 @@ struct SimpleBarChartView: View {
 
     @ChartContentBuilder
     private var peakAnnotation: some ChartContent {
-        if let maxPoint = data.currentData.max(by: { $0.value < $1.value }), data.currentData.count > 0 {
+        if let maxPoint = data.currentData.max(by: { $0.value < $1.value }), !data.currentData.isEmpty {
             PointMark(
                 x: .value("Date", maxPoint.date, unit: data.granularity.component),
                 y: .value("Value", maxPoint.value)

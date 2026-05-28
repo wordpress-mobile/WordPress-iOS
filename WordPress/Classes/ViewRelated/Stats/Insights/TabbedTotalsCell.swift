@@ -118,7 +118,7 @@ private extension TabbedTotalsCell {
 
     func toggleFilterTabBar() {
         // If none of the tabs have data, hide the FilterTabBar.
-        let noTabsData = (tabsData.first { $0.dataRows.count > 0 }) == nil
+        let noTabsData = !tabsData.contains { !$0.dataRows.isEmpty }
         filterTabBar.isHidden = noTabsData
     }
 
@@ -164,7 +164,6 @@ private extension TabbedTotalsCell {
                 rowDelegate: self,
                 viewMoreDelegate: self)
     }
-
 }
 
 // MARK: - Private Methods
@@ -189,11 +188,10 @@ private extension TabbedTotalsCell {
         Style.configureLabelAsSubtitle(itemSubtitleLabel)
         Style.configureLabelAsSubtitle(dataSubtitleLabel)
 
-        let noData = tabData.dataRows.count == 0
+        let noData = tabData.dataRows.isEmpty
         totalCountView.isHidden = !showTotalCount || noData
         labelsStackView.isHidden = noData
     }
-
 }
 
 // MARK: - StatsTotalRowDelegate
@@ -204,7 +202,6 @@ extension TabbedTotalsCell: StatsTotalRowDelegate {
         siteStatsInsightsDelegate?.displayWebViewWithURL?(url)
         siteStatsDetailsDelegate?.displayWebViewWithURL?(url)
     }
-
 }
 
 // MARK: - ViewMoreRowDelegate
@@ -214,5 +211,4 @@ extension TabbedTotalsCell: ViewMoreRowDelegate {
     func viewMoreSelectedForStatSection(_ statSection: StatSection) {
         siteStatsInsightsDelegate?.viewMoreSelectedForStatSection?(statSection)
     }
-
 }

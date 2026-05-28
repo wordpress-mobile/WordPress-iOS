@@ -93,5 +93,4 @@ class WeeklyRoundupBackgroundTaskTests: XCTestCase {
     func testNotificationBodyShouldIncludeViewsLikesCommentsWithGreaterThan0Count() {
         XCTAssertEqual(task.notificationScheduler.notificationBodyWith(views: 88, comments: 44, likes: 22), "Last week you had 88 views, 44 comments and 22 likes.")
     }
-
 }

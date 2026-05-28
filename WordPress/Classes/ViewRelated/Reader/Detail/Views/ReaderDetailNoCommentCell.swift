@@ -9,5 +9,4 @@ class ReaderDetailNoCommentCell: UITableViewCell, NibReusable {
         contentView.backgroundColor = .systemBackground
         titleLabel.textColor = .secondaryLabel
     }
-
 }

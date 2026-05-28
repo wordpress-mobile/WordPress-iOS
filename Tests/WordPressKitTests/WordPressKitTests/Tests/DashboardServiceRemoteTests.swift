@@ -87,7 +87,7 @@ class DashboardServiceRemoteTests: RemoteTestCase, RESTTestable {
             deviceId: "Test"
         ) { _ in
             XCTFail("This call should not suceed")
-        } failure: { error in
+        } failure: { _ in
             expect.fulfill()
         }
 
@@ -106,7 +106,7 @@ class DashboardServiceRemoteTests: RemoteTestCase, RESTTestable {
             deviceId: "Test"
         ) { _ in
             XCTFail("This call should not suceed")
-        } failure: { error in
+        } failure: { _ in
             expect.fulfill()
         }
 
@@ -125,7 +125,7 @@ class DashboardServiceRemoteTests: RemoteTestCase, RESTTestable {
             deviceId: "Test"
         ) { _ in
             XCTFail("This call should not suceed")
-        } failure: { error in
+        } failure: { _ in
             expect.fulfill()
         }
 

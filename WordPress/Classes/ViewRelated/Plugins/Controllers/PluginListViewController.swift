@@ -39,7 +39,7 @@ class PluginListViewController: UITableViewController, ImmuTablePresenter {
         ImmuTable.registerRows(PluginListViewModel.immutableRows, tableView: tableView)
         setupRefreshControl()
 
-        viewModelStateChangeReceipt = viewModel.onStateChange { [weak self] (change) in
+        viewModelStateChangeReceipt = viewModel.onStateChange { [weak self] change in
             self?.refreshModel(change: change)
         }
         viewModelChangeReceipt = viewModel.onChange { [weak self] in

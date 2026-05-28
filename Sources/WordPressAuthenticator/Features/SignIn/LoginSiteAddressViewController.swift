@@ -153,7 +153,7 @@ class LoginSiteAddressViewController: LoginViewController, NUXKeyboardResponder 
         configureViewLoading(true)
 
         let facade = WordPressXMLRPCAPIFacade()
-        facade.guessXMLRPCURL(forSite: loginFields.siteAddress, success: { [weak self] (url) in
+        facade.guessXMLRPCURL(forSite: loginFields.siteAddress, success: { [weak self] url in
             // Success! We now know that we have a valid XML-RPC endpoint.
             // At this point, we do NOT know if this is a WP.com site or a self-hosted site.
             if let url {
@@ -161,8 +161,7 @@ class LoginSiteAddressViewController: LoginViewController, NUXKeyboardResponder 
             }
             // Let's try to grab site info in preparation for the next screen.
             self?.fetchSiteInfo()
-
-        }, failure: { [weak self] (error) in
+        }, failure: { [weak self] error in
             guard let error, let self else {
                 return
             }
@@ -175,7 +174,6 @@ class LoginSiteAddressViewController: LoginViewController, NUXKeyboardResponder 
 
             if let xmlrpcValidatorError = err as? WordPressOrgXMLRPCValidatorError {
                 self.displayError(message: xmlrpcValidatorError.localizedDescription, moveVoiceOverFocus: true)
-
             } else if (err.domain == NSURLErrorDomain && err.code == NSURLErrorCannotFindHost) ||
                 (err.domain == NSURLErrorDomain && err.code == NSURLErrorNetworkConnectionLost) {
                 // NSURLErrorNetworkConnectionLost can be returned when an invalid URL is entered.
@@ -183,7 +181,6 @@ class LoginSiteAddressViewController: LoginViewController, NUXKeyboardResponder 
                     "The site at this address is not a WordPress site. For us to connect to it, the site must use WordPress.",
                     comment: "Error message shown a URL does not point to an existing site.")
                 self.displayError(message: msg, moveVoiceOverFocus: true)
-
             } else {
                 self.displayError(error, sourceTag: self.sourceTag)
             }
@@ -215,7 +212,7 @@ class LoginSiteAddressViewController: LoginViewController, NUXKeyboardResponder 
     }
 
     func presentNextControllerIfPossible(siteInfo: WordPressComSiteInfo?) {
-        WordPressAuthenticator.shared.delegate?.shouldPresentUsernamePasswordController(for: siteInfo, onCompletion: { (result) in
+        WordPressAuthenticator.shared.delegate?.shouldPresentUsernamePasswordController(for: siteInfo, onCompletion: { result in
             switch result {
             case let .error(error):
                 self.displayError(message: error.localizedDescription)
@@ -295,7 +292,7 @@ class LoginSiteAddressViewController: LoginViewController, NUXKeyboardResponder 
     /// Does a local / quick Site Address validation and refreshes the UI with an error
     /// if necessary.
     ///
-    /// - Returns: `true` if the Site Address contains a valid URL.  `false` otherwise.
+    /// - Returns: `true` if the Site Address contains a valid URL. `false` otherwise.
     ///
     private func refreshSiteAddressError(immediate: Bool) {
         let showError = !loginFields.siteAddress.isEmpty && !loginFields.validateSiteForSignin()

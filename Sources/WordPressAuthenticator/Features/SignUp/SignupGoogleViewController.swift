@@ -27,7 +27,6 @@ class SignupGoogleViewController: LoginViewController {
         super.viewDidAppear(animated)
         showGoogleScreenIfNeeded()
     }
-
 }
 
 // MARK: - Private Methods
@@ -52,7 +51,6 @@ private extension SignupGoogleViewController {
         static let waitingForGoogle = NSLocalizedString("Waiting for Google to complete…", comment: "Message shown on screen while waiting for Google to finish its signup process.")
         static let signupFailed = NSLocalizedString("Google sign up failed.", comment: "Message shown on screen after the Google sign up process failed.")
     }
-
 }
 
 // MARK: - GoogleAuthenticatorSignupDelegate
@@ -79,5 +77,4 @@ extension SignupGoogleViewController: GoogleAuthenticatorSignupDelegate {
     func googleSignupCancelled() {
         navigationController?.popViewController(animated: true)
     }
-
 }

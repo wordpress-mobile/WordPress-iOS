@@ -14,6 +14,7 @@ final class ChartCardViewModel: ObservableObject, TrafficCardViewModel {
 
     @Published var isEditing = false
     @Published var selectedMetric: SiteMetric
+    @Published var selectedBarDate: Date?
 
     @Published var selectedChartType: ChartType {
         didSet {
@@ -26,24 +27,39 @@ final class ChartCardViewModel: ObservableObject, TrafficCardViewModel {
     @Published var selectedGranularity: DateRangeGranularity? {
         didSet {
             // Reload data with new granularity
-            loadData(for: dateRange)
+            loadData(for: effectiveDateRange)
         }
     }
 
     weak var configurationDelegate: CardConfigurationDelegate?
+    var onDateRangeChanged: ((StatsDateRangeSelection) -> Void)?
 
-    var dateRange: StatsDateRange {
+    var dateRange: StatsDateRangeSelection {
         didSet {
-            // Reset granularity to automatic when date period changes (but not for adjacent navigation)
-            if !dateRange.isAdjacent(to: oldValue) {
-                selectedGranularity = nil
+            if dateRange.range != oldValue.range {
+                // Reset granularity to automatic when date period changes (but not for adjacent navigation)
+                if !dateRange.range.isAdjacent(to: oldValue.range) {
+                    selectedGranularity = nil
+                }
+                // Don't update selectedBarDate here — keep the current highlight
+                // visible during loading. It will be synced from dateRange.subrange
+                // once data arrives.
+                loadData(for: dateRange.range)
+            } else if dateRange.subrange != oldValue.subrange {
+                let newDate = dateRange.subrange?.dateInterval.start
+                if selectedBarDate != newDate {
+                    selectedBarDate = newDate
+                }
             }
-            loadData(for: dateRange)
         }
     }
 
+    // Chart shows always `range` and displays the selected `subrange` using the
+    // date from the full `range`.
+    var effectiveDateRange: StatsDateRange { dateRange.range }
+
     var effectiveGranularity: DateRangeGranularity {
-        selectedGranularity ?? dateRange.dateInterval.preferredGranularity
+        selectedGranularity ?? effectiveDateRange.dateInterval.preferredGranularity
     }
 
     private let service: any StatsServiceProtocol
@@ -65,7 +81,7 @@ final class ChartCardViewModel: ObservableObject, TrafficCardViewModel {
         self.configuration = configuration
         self.selectedMetric = configuration.metrics.first ?? .views
         self.selectedChartType = configuration.chartType
-        self.dateRange = dateRange
+        self.dateRange = StatsDateRangeSelection(range: dateRange)
         self.service = service
         self.tracker = tracker
     }
@@ -97,7 +113,7 @@ final class ChartCardViewModel: ObservableObject, TrafficCardViewModel {
             "chart_type": selectedChartType.rawValue
         ])
 
-        loadData(for: dateRange)
+        loadData(for: effectiveDateRange)
     }
 
     private func loadData(for dateRange: StatsDateRange) {
@@ -112,7 +128,7 @@ final class ChartCardViewModel: ObservableObject, TrafficCardViewModel {
         // no response in more than T seconds.
         if !chartData.isEmpty {
             staleTimer = Task { [weak self] in
-                try? await Task.sleep(for: .seconds(2))
+                try? await Task.sleep(for: .seconds(0.8))
                 guard !Task.isCancelled else { return }
                 self?.isStale = true
             }
@@ -149,6 +165,9 @@ final class ChartCardViewModel: ObservableObject, TrafficCardViewModel {
             staleTimer?.cancel()
             isStale = false
             chartData = data
+
+            // Sync bar selection from subrange now that the new data is available
+            selectedBarDate = self.dateRange.subrange?.dateInterval.start
         } catch is CancellationError {
             return
         } catch {
@@ -184,12 +203,14 @@ final class ChartCardViewModel: ObservableObject, TrafficCardViewModel {
             // are displayed on the same timeline on the charts.
             let mappedPreviousDataPoints = DataPoint.mapDataPoints(
                 currentData: dataPoints,
-                previousData: previousDataPoints
+                previousData: previousDataPoints,
+                dateRange: dateRange
             )
 
             output[metric] = ChartData(
                 metric: metric,
                 granularity: granularity,
+                dateInterval: dateRange.dateInterval,
                 currentTotal: currentResponse.total[metric] ?? 0,
                 currentData: dataPoints,
                 previousTotal: previousResponse.total[metric] ?? 0,
@@ -201,9 +222,42 @@ final class ChartCardViewModel: ObservableObject, TrafficCardViewModel {
         return output
     }
 
+    func promoteSubrangeToMainRange() {
+        guard let subrange = dateRange.subrange else { return }
+        onDateRangeChanged?(StatsDateRangeSelection(range: subrange))
+    }
+
+    var selectedBarTrend: TrendViewModel? {
+        guard let selectedBarDate,
+              let data = chartData[selectedMetric],
+              let index = data.currentData.firstIndex(where: { $0.date == selectedBarDate }) else {
+            return nil
+        }
+        let currentValue = data.currentData[index].value
+        let previousValue = index > 0 ? data.currentData[index - 1].value : 0
+        return TrendViewModel(currentValue: currentValue, previousValue: previousValue, metric: data.metric, context: .regular)
+    }
+
+    /// The index of the bar preceding the selected bar in `currentData`, if any.
+    var selectedBarPreviousIndex: Int? {
+        guard let selectedBarDate,
+              let data = chartData[selectedMetric],
+              let index = data.currentData.firstIndex(where: { $0.date == selectedBarDate }),
+              index > 0 else {
+            return nil
+        }
+        return index - 1
+    }
+
     var tabViewData: [MetricsOverviewTabView<SiteMetric>.MetricData] {
         metrics.map { metric in
             if let chartData = chartData[metric] {
+                if let selectedBarDate,
+                   let index = chartData.currentData.firstIndex(where: { $0.date == selectedBarDate }) {
+                    let currentValue = chartData.currentData[index].value
+                    let previousValue = index > 0 ? chartData.currentData[index - 1].value : 0
+                    return .init(metric: metric, value: currentValue, previousValue: previousValue)
+                }
                 return .init(
                     metric: metric,
                     value: chartData.currentTotal,

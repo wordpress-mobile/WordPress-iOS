@@ -286,7 +286,7 @@ class PeopleServiceRemoteTests: RemoteTestCase, RESTTestable {
         // When
         remote.getEmailFollowers(siteID, page: 1, max: 1, success: { followers, hasMore in
             // Then
-            XCTAssertTrue(followers.count > 0)
+            XCTAssertTrue(!followers.isEmpty)
             XCTAssertFalse(hasMore)
             expect.fulfill()
         }, failure: { _ in
@@ -305,7 +305,7 @@ class PeopleServiceRemoteTests: RemoteTestCase, RESTTestable {
         // When
         remote.getEmailFollowers(siteID, page: 1, max: 1, success: { followers, hasMore in
             // Then
-            XCTAssertTrue(followers.count > 0)
+            XCTAssertTrue(!followers.isEmpty)
             XCTAssertTrue(hasMore)
             expect.fulfill()
         }, failure: { _ in

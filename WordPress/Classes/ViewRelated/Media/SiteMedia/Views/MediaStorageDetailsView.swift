@@ -406,14 +406,14 @@ private struct MediaTypeBreakdown {
             } else {
                 // Media items with `mediaType` that is not handled by the app are consider "others". In an unlikely
                 // scenario where the media file size is zero, we'll consider them as "others", too. That's to avoid
-                // showing a specifc type with incorrect total file size.
+                // showing a specific type with incorrect total file size.
                 category = .other
             }
             categorized[category, default: []].append(item)
         }
 
         // Then, we group media items into `Item` for displaying on the breakdown view.
-        var items = categorized.map { (category, media) in
+        var items = categorized.map { category, media in
             let size = media.reduce(0) { $0 + $1.actualFileSize }
             return Item(category: category, size: Measurement(value: size, unit: .bytes), percentage: size / allowed)
         }
@@ -488,7 +488,7 @@ final class MediaStorageDetailsViewModel: ObservableObject {
         assert(blog.dotComID != nil)
 
         self.blog = blog
-        client = try WordPressClient(site: WordPressSite(blog: blog))
+        client = try WordPressClientFactory.shared.instance(for: WordPressSite(blog: blog))
         service = MediaServiceRemoteCoreREST(client: client)
 
         updateUsage()
@@ -610,7 +610,6 @@ private extension Media {
 
         return value * multiplier
     }
-
 }
 
 private enum Strings {

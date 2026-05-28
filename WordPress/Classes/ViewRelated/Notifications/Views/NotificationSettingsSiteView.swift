@@ -32,7 +32,7 @@ struct NotificationSettingsSiteViewModel {
 
     init(blog: Blog) {
         self.title = blog.title ?? "–"
-        self.details = blog.displayURL as String? ?? ""
+        self.details = blog.displayURL ?? ""
         self.icon = SiteIconViewModel(blog: blog)
     }
 

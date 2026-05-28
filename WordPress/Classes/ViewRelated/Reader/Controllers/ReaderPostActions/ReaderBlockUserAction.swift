@@ -13,7 +13,7 @@ final class ReaderBlockUserAction {
         do {
             let account = try WPAccount.lookupDefaultWordPressComAccount(in: context)
             return account
-        } catch let error {
+        } catch {
             DDLogError("Couldn't fetch default account: \(error.localizedDescription)")
             return nil
         }
@@ -45,7 +45,7 @@ final class ReaderBlockUserAction {
             try context.save()
             self.trackEvent(authorID: authorID, blocked: blocked)
             completion?(.success(()))
-        } catch let error {
+        } catch {
             let operation = blocked ? "block" : "unblock"
             DDLogError("Couldn't \(operation) author: \(error.localizedDescription)")
             completion?(.failure(error))

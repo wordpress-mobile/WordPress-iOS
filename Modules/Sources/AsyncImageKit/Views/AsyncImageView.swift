@@ -10,6 +10,25 @@ public final class AsyncImageView: UIView {
     private var spinner: UIActivityIndicatorView?
     private let controller = ImageLoadingController()
 
+    // MARK: - Saliency
+
+    /// When enabled, detects the most visually interesting region of portrait images
+    /// and adjusts the crop so that region appears near the top of the container.
+    public var isSaliencyDetectionEnabled = false
+
+    /// When `true`, saliency detection only runs for images whose height exceeds their
+    /// width (portrait images). Landscape and square images are displayed immediately
+    /// without blocking on detection. Default is `true`.
+    public var isSaliencyPortraitOnly = true
+
+    private var currentImageURL: URL?
+    private var saliencyTask: Task<Void, Never>?
+    private var saliencyRect: CGRect? {
+        didSet { setNeedsLayout() }
+    }
+
+    // MARK: - Configuration
+
     public enum LoadingStyle {
         /// Shows a secondary background color during the download.
         case background
@@ -63,25 +82,41 @@ public final class AsyncImageView: UIView {
         controller.onStateChanged = { [weak self] in self?.setState($0) }
 
         addSubview(imageView)
-        imageView.translatesAutoresizingMaskIntoConstraints = false
-        NSLayoutConstraint.activate([
-            imageView.topAnchor.constraint(equalTo: topAnchor),
-            imageView.trailingAnchor.constraint(equalTo: trailingAnchor),
-            imageView.bottomAnchor.constraint(equalTo: bottomAnchor),
-            imageView.leadingAnchor.constraint(equalTo: leadingAnchor),
-        ])
+        imageView.translatesAutoresizingMaskIntoConstraints = true
+        imageView.autoresizingMask = []
+        imageView.frame = bounds
 
         imageView.clipsToBounds = true
         imageView.contentMode = .scaleAspectFill
         imageView.accessibilityIgnoresInvertColors = true
 
+        clipsToBounds = true
         backgroundColor = .secondarySystemBackground
+    }
+
+    public override func layoutSubviews() {
+        super.layoutSubviews()
+
+        imageView.frame = {
+            guard isSaliencyDetectionEnabled, let image, let saliencyRect else {
+                return bounds
+            }
+            return ImageSaliencyService.shared.adjustedFrame(
+                saliencyRect: saliencyRect,
+                imageSize: image.size,
+                in: bounds.size
+            ) ?? bounds
+        }()
     }
 
     /// Removes the current image and stops the outstanding downloads.
     public func prepareForReuse() {
         controller.prepareForReuse()
         image = nil
+        saliencyRect = nil
+        currentImageURL = nil
+        saliencyTask?.cancel()
+        saliencyTask = nil
     }
 
     /// - parameter size: Target image size in pixels.
@@ -90,11 +125,13 @@ public final class AsyncImageView: UIView {
         host: MediaHostProtocol? = nil,
         size: ImageSize? = nil
     ) {
+        currentImageURL = imageURL
         let request = ImageRequest(url: imageURL, host: host, options: ImageRequestOptions(size: size))
         controller.setImage(with: request)
     }
 
     public func setImage(with request: ImageRequest, completion: (@MainActor (Result<UIImage, Error>) -> Void)? = nil) {
+        currentImageURL = request.source.url
         controller.setImage(with: request, completion: completion)
     }
 
@@ -113,14 +150,40 @@ public final class AsyncImageView: UIView {
             }
         case .success(let image):
             self.image = image
-            imageView.isHidden = false
-            backgroundColor = .clear
+            let needsDetection = isSaliencyDetectionEnabled
+                && !(isSaliencyPortraitOnly && image.size.width >= image.size.height)
+            if needsDetection, let url = currentImageURL {
+                if let cached = ImageSaliencyService.shared.cachedSaliencyRect(for: url) {
+                    saliencyRect = cached
+                    imageView.isHidden = false
+                    backgroundColor = .clear
+                } else {
+                    triggerSaliencyDetection(image: image, url: url)
+                }
+            } else {
+                imageView.isHidden = false
+                backgroundColor = .clear
+            }
         case .failure:
             if configuration.isErrorViewEnabled {
                 makeErrorView().isHidden = false
             }
         }
     }
+
+    private func triggerSaliencyDetection(image: UIImage, url: URL) {
+        saliencyTask = Task { @MainActor [weak self] in
+            guard let self else { return }
+            let rect = await ImageSaliencyService.shared.saliencyRect(for: image, url: url)
+            guard !Task.isCancelled else { return }
+            // Reveal the image only after saliency detection finishes (with or without a result).
+            self.saliencyRect = rect
+            self.imageView.isHidden = false
+            self.backgroundColor = .clear
+        }
+    }
+
+    // MARK: - Helpers
 
     private func didUpdateConfiguration(_ configuration: Configuration) {
         if let tintColor = configuration.tintColor {

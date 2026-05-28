@@ -158,7 +158,6 @@ extension PluginDirectoryViewController: PluginPresenter {
         let pluginVC = PluginViewController(directoryEntry: directoryEntry, site: viewModel.site)
         navigationController?.pushViewController(pluginVC, animated: true)
     }
-
 }
 
 extension PluginDirectoryViewController: PluginListPresenter {

@@ -70,7 +70,7 @@ class SparklineView: UIView {
     }
 
     private func interpolateData(_ inputData: [CGFloat]) -> [CGFloat] {
-        guard inputData.count > 0,
+        guard !inputData.isEmpty,
               let first = inputData.first else {
             return []
         }
@@ -136,7 +136,7 @@ class SparklineView: UIView {
         // ... then the bottom gradient
         if let maskLayerPath = lineLayerPath.mutableCopy() {
             maskLayerPath.addLine(to: CGPoint(x: bounds.width, y: 0))
-            maskLayerPath.addLine(to: CGPoint(x: 0, y: 0))
+            maskLayerPath.addLine(to: CGPoint.zero)
             maskLayer.path = maskLayerPath
         }
 

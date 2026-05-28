@@ -21,7 +21,7 @@ class ReaderWebView: WKWebView {
     ///
     /// Documentation: https://developers.google.com/youtube/terms/required-minimum-functionality#set-the-referer
     /// See also: https://stackoverflow.com/q/79802987/496295
-    private let baseURL = URL(string: "https://wordpress.com/reader")!
+    static let baseURL = URL(string: "https://wordpress.com/reader")!
 
     let jsToRemoveSrcSet = "document.querySelectorAll('img, img-placeholder').forEach((el) => {el.removeAttribute('srcset')})"
 
@@ -30,10 +30,6 @@ class ReaderWebView: WKWebView {
     var isP2 = false
 
     var displaySetting: ReaderDisplaySettings = .standard
-
-    deinit {
-        print("here")
-    }
 
     /// Make the webview transparent
     ///
@@ -57,7 +53,7 @@ class ReaderWebView: WKWebView {
 
         let content = formattedContent(addPlaceholder(string), additionalJavaScript: additionalJavaScript)
 
-        super.loadHTMLString(content, baseURL: baseURL)
+        super.loadHTMLString(content, baseURL: Self.baseURL)
     }
 
     /// Given a HTML content, returns it formatted.
@@ -82,32 +78,10 @@ class ReaderWebView: WKWebView {
             document.addEventListener('DOMContentLoaded', function(event) {
                 \(additionalJavaScript)
                 // Remove autoplay to avoid media autoplaying
-                document.querySelectorAll('video-placeholder, audio-placeholder').forEach((el) => {el.removeAttribute('autoplay')})
-
-                // Replaces the bundle URL with the post URL for each "blank" anchor tag (<a href="#anchor"></a>).
-                // this fixes an issue where tapping on one would return a file url with the anchor attached to it
-                let baseURL = "\(Bundle.wordPressSharedBundle.bundleURL)"
-                let postURL = "\(postURL?.absoluteString ?? "")"
-
-                if(postURL.length > 0){
-                    let anchors = document.querySelectorAll('a')
-
-                    anchors.forEach(function(elem){
-                      // Ignore any regular links that don't have hashes
-                      if(!elem.hash || elem.hash.length < 0) {
-                        return
-                      }
-
-                      let href = elem.href;
-
-                      // Skip any links that aren't the base URL
-                      if(href.substr(0, baseURL.length) != baseURL){
-                        return
-                      }
-
-                      elem.href = postURL + elem.hash;
-                    });
-                }
+                document.querySelectorAll('video-placeholder, audio-placeholder').forEach((el) => {
+                    el.removeAttribute('autoplay');
+                    el.setAttribute('controls', '');
+                })
             })
             function debounce(fn, timeout) {
                 let timer;
@@ -318,12 +292,12 @@ class ReaderWebView: WKWebView {
     }
 
     func linkColor(for trait: UITraitCollection) -> UIColor {
-        let color = displaySetting.color == .system ? UIAppColor.blue : displaySetting.color.foreground
+        let color = displaySetting.color == .system ? UIAppColor.link : displaySetting.color.foreground
         return color.color(for: trait)
     }
 
     func activeLinkColor(for trait: UITraitCollection) -> UIColor {
-        let color = displaySetting.color == .system ? UIAppColor.blue(.shade30) : displaySetting.color.secondaryForeground
+        let color = displaySetting.color == .system ? UIAppColor.link : displaySetting.color.secondaryForeground
         return color.color(for: trait)
     }
 }

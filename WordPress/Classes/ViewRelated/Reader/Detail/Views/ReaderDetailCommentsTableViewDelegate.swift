@@ -153,6 +153,7 @@ private extension ReaderDetailCommentsTableViewDelegate {
 
         let leaveCommentView = LeaveCommentView()
         leaveCommentView.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(leaveCommentCellTapped)))
+        leaveCommentView.displaySettings = displaySetting
 
         cell.contentView.addSubview(leaveCommentView)
         leaveCommentView.pinEdges(insets: UIEdgeInsets(top: 16, left: 0, bottom: 8, right: 0))
@@ -166,6 +167,7 @@ private extension ReaderDetailCommentsTableViewDelegate {
         }
 
         cell.displaySetting = displaySetting
+
         cell.configureForPostDetails(with: comment, helper: helper) { _ in
             do {
                 try WPException.objcTry {
@@ -214,12 +216,13 @@ private extension ReaderDetailCommentsTableViewDelegate {
         configuration.title = Constants.viewAllButtonTitle.localizedCapitalized + "   \(totalComments)"
         configuration.image = UIImage(systemName: "chevron.right")
         configuration.imagePlacement = .trailing
-        configuration.titleTextAttributesTransformer = .init {
+        configuration.titleTextAttributesTransformer = .init { [displaySetting] in
             var container = $0
+            container.foregroundColor = displaySetting.color.foreground
             container.font = UIFont.preferredFont(forTextStyle: .headline).withWeight(.medium)
             return container
         }
-        configuration.preferredSymbolConfigurationForImage = UIImage.SymbolConfiguration(paletteColors: [.tertiaryLabel])
+        configuration.preferredSymbolConfigurationForImage = UIImage.SymbolConfiguration(paletteColors: [displaySetting.color.tertiatyForeground])
             .applying(UIImage.SymbolConfiguration(font: UIFont.preferredFont(forTextStyle: .caption2).withWeight(.bold)))
         configuration.imagePadding = 4
         configuration.contentInsets = .init(top: 9, leading: 12, bottom: 9, trailing: 12)

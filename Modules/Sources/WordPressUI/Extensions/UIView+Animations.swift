@@ -155,14 +155,14 @@ extension UIView {
     /// Coordinates an animation block alongside a keyboard's notification animation event.
     /// - Parameters:
     ///     - notification: A notficiation from a keyboard change event (keyboardWillShowNotification, keyboardWillHideNotification, etc)
-    ///     - animations: The animation block to be preformed. The block will provide the rects from keyboardFrameBeginUserInfoKey and keyboardFrameEndUserInfoKey to the animation block.
+    ///     - animations: The animation block to be performed. The block will provide the rects from keyboardFrameBeginUserInfoKey and keyboardFrameEndUserInfoKey to the animation block.
     ///
     public static func animate(withKeyboard notification: Notification, _ animations: @escaping (CGRect, CGRect) -> Void ) {
         guard let userInfo = notification.userInfo else { return }
         let duration: TimeInterval = userInfo[UIResponder.keyboardAnimationDurationUserInfoKey] as? TimeInterval ?? 0
         let beginFrame: CGRect = (userInfo[UIResponder.keyboardFrameBeginUserInfoKey] as? NSValue)?.cgRectValue ?? CGRect.zero
         let endFrame: CGRect = (userInfo[UIResponder.keyboardFrameEndUserInfoKey] as? NSValue)?.cgRectValue ?? CGRect.zero
-        let animationCurve: AnimationOptions = AnimationOptions(rawValue: (userInfo[UIResponder.keyboardAnimationCurveUserInfoKey] as? UInt ?? 0))
+        let animationCurve = AnimationOptions(rawValue: (userInfo[UIResponder.keyboardAnimationCurveUserInfoKey] as? UInt ?? 0))
 
         UIView.animate(withDuration: duration, delay: 0, options: animationCurve, animations: {
             animations(beginFrame, endFrame)

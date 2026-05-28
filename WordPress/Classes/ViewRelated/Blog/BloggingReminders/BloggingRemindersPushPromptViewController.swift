@@ -130,7 +130,6 @@ final class BloggingRemindersPushPromptViewController: UIViewController {
         if isBeingDismissedDirectlyOrByAncestor() && navigationController?.viewControllers.last == self {
             tracker.flowDismissed(source: .enableNotifications)
         }
-
     }
 
     override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {

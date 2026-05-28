@@ -181,7 +181,6 @@ private extension PromptRemindersScheduler {
                 // additionally, if today's prompt is included, only include it if the reminder time has not passed.
                 return weekdays.contains(weekday)
                 && (!prompt.inSameDay(as: currentDate) || reminderTime.compare(with: currentDate) == .orderedDescending)
-
             }
 
             // Step 2: Schedule prompt reminders.
@@ -224,7 +223,6 @@ private extension PromptRemindersScheduler {
             }
 
             completion(.success(()))
-
         } failure: { error in
             completion(.failure(error ?? Errors.unknown))
         }

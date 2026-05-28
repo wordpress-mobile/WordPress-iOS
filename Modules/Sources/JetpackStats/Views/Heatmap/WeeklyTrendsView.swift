@@ -68,7 +68,7 @@ struct WeeklyTrendsView: View {
     private var heatmap: some View {
         VStack(spacing: cellSpacing) {
             // Show last 4 weeks, 7 days per week
-            ForEach(Array(viewModel.weeks.prefix(4).enumerated()), id: \.offset) { weekIndex, week in
+            ForEach(Array(viewModel.weeks.prefix(4).enumerated()), id: \.offset) { _, week in
                 HStack(spacing: 8) {
                     // Week label
                     Text(viewModel.weekLabel(for: week))

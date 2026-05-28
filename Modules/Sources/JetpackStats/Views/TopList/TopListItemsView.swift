@@ -10,7 +10,7 @@ struct TopListItemsView: View {
 
     var body: some View {
         VStack(spacing: Constants.step1 / 2) {
-            ForEach(Array(data.items.prefix(itemLimit).enumerated()), id: \.element.id) { index, item in
+            ForEach(Array(data.items.prefix(itemLimit).enumerated()), id: \.element.id) { _, item in
                 makeView(for: item)
                     .transition(.move(edge: .leading)
                         .combined(with: .scale(scale: 0.75))

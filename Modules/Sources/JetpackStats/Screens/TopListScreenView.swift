@@ -120,7 +120,7 @@ struct TopListScreenView: View {
                 Text(viewModel.selection.metric.localizedTitle)
                     .font(.title3.weight(.medium))
                     .foregroundColor(.primary)
-                Text(context.formatters.dateRange.string(from: viewModel.dateRange.dateInterval))
+                Text(context.formatters.dateRange.string(from: viewModel.effectiveDateRange.dateInterval))
                     .font(.subheadline)
                     .foregroundColor(.secondary)
             }
@@ -132,6 +132,7 @@ struct TopListScreenView: View {
                 .redacted(reason: viewModel.isFirstLoad ? .placeholder : [])
                 .pulsating(viewModel.isFirstLoad)
                 .animation(.smooth, value: viewModel.isFirstLoad)
+                .offset(y: -1)
         }
         .padding(.vertical, Constants.step2)
         .padding(.horizontal, Constants.step3)
@@ -150,7 +151,8 @@ struct TopListScreenView: View {
         VStack(alignment: .trailing, spacing: 0) {
             Text(formattedValue)
                 .contentTransition(.numericText())
-                .font(Font.make(.recoleta, textStyle: .title, weight: .medium))
+                .font(Constants.Typography.mediumDisplayFont)
+                .kerning(Constants.Typography.largeDisplayKerning)
                 .foregroundColor(.primary)
                 .lineLimit(1)
                 .animation(.spring, value: formattedValue)
@@ -158,7 +160,6 @@ struct TopListScreenView: View {
             Text(trend.formattedTrend)
                 .font(.system(.subheadline, design: .rounded, weight: .medium)).tracking(-0.2)
                 .foregroundStyle(trend.sentiment.foregroundColor)
-                .padding(.top, -4)
         }
     }
 
@@ -180,7 +181,7 @@ struct TopListScreenView: View {
 
     @ViewBuilder
     private func listContent(data: TopListData) -> some View {
-        if data.items.count > 0 {
+        if !data.items.isEmpty {
             listSection(.top10, data: data)
         }
         if data.items.count > 10 {
@@ -238,7 +239,7 @@ struct TopListScreenView: View {
                 previousValue: data.previousItem(for: item)?.metrics[viewModel.selection.metric],
                 metric: viewModel.selection.metric,
                 maxValue: data.metrics.maxValue,
-                dateRange: viewModel.dateRange
+                dateRange: viewModel.effectiveDateRange
             )
             .frame(height: TopListItemView.defaultCellHeight)
         }

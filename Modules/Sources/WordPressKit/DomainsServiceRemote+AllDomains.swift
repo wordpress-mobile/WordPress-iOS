@@ -16,7 +16,7 @@ extension DomainsServiceRemote {
 
         do {
             parameters = try queryParameters(from: params)
-        } catch let error {
+        } catch {
             completion(.failure(error))
             return
         }

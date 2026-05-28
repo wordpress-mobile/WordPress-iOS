@@ -109,7 +109,6 @@ public class MessageAnimator: Animator {
             if targetTableView?.contentOffset.y == 0 {
                 targetTableView?.contentOffset.y = -height + previousHeight
             }
-
         } else {
             // Size + Alpha
             noticeLabel.frame.size.height = CGSize.zero.height

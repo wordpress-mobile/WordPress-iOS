@@ -55,7 +55,7 @@ struct AppIcon {
             return [defaultIcon]
         }
 
-        let customIcons = iconDict.compactMap { (key, value) -> AppIcon? in
+        let customIcons = iconDict.compactMap { key, value -> AppIcon? in
             guard let value = value as? [String: Any] else {
                 return nil
             }

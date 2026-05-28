@@ -135,7 +135,6 @@ class ReminderScheduleCoordinator {
         bloggingRemindersScheduler.unschedule(for: blog)
         promptRemindersScheduler.unschedule(for: blog)
     }
-
 }
 
 // MARK: - Private Helpers

@@ -1,31 +1,21 @@
-Yapay Zeka destek özelliğimiz olan WordPress Intelligence artık daha fazla yerel dilde ve dilde kullanılabilir. Herkesin en sevdiği yardımcı biraz daha inceldi.
+Web sitenizde kimler var? Artık biliyorsunuz; anlık bildirimlerde artık gravatar'lar kullanıldığından içeriğinize kimin yorum yaptığını veya etkileşim kurduğunu görebilirsiniz. Etkinlik Günlüğü ayrıca sitenizin yapay zeka aracıları kullanılarak güncellendiğinde de görüntülenir.
 
-İstatistikler bölümünü kabaca %83 geliştirdik.
+İstatistikler'deki son güncellemelerimizin büyük olduğunu düşünüyorsanız henüz bir şey görmediniz.
 
-- Konum kartı verileri ülkeye, bölgeye ve şehre göre filtrelemenizi sağlar. Bu veri Jetpack'in web sürümüyle tutarlıdır.
-- "Harici Bağlantılar" artık "Tıklamalar" olduğundan web sürümüyle tutarlıdır. Bu alanın bazen yanlış görüntülendiği bir hatayı düzelttik.
-- Otomatik veri karşılaştırmasını kapatabilir ve bu ayarı gelecekteki uygulama kullanımı için kaydedebilirsiniz. Karşılaştırma dönemi için haftalık verilerin her zaman doğru görüntülenmemesine neden olan bir sorunu düzelttik.
-- Uzun süre basılı tutarsa size daha fazla ayrıntı gösterilir. Dikey kaydırma da sabitlenmiştir.
-- Gün, hafta, ay ve yıllara göre gruplandırılmış çubuk grafik ve çizgi grafik verilerini görüntüleyebilirsiniz.
-- En iyi Liste öğeleri ada göre sıralanır ve düzgün şekilde sıralanır.
+- Bugünün tarihi artık "Son 7 gün" gibi aralıklara dahil. Ayrıca yeni bir "Son 14 gün" aralığı ekledik.
+- Bugün dahil olmak üzere tamamlanmamış tarihler, çizgi grafiğinde noktalı çizgi olarak gösterilir. Bunları çubuk grafik görünümünde de daha kolay görebilirsiniz.
+- Çubuk grafiklerden bahsetmişken, bir çubuğa dokunduğunuzda o tarihle ilgili veriler gösterilir. Bu, birkaç günün verilerinde gezinmeyi kolaylaştırır. Ve bir çubuğa dokunduğunuzda artık yanındaki çubuk seçilmez.
+- Daha küçük bir Grafik kartı başlığı, sekmelerdeki daha küçük yazı tipleri ve bazı yerlerde daha az boşluk gibi görsel değişiklikleri fark edebilirsiniz. Minimalist bir hava katıyor.
 
-Okuyucu'da da birçok değişiklik yaptık.
+Bu esnada, Okuyucuda da değişiklikler yaptık. (Bu arada bunların hiçbiri okuma ile ilgili değil).
 
-- Keşfet ekranında yeni bir "Yeni Basılmış" sekmesi var. Ayrıca "Önerilir" sekmesini "Sizin için" olarak değiştirdik.
-- Ana kenar çubuğunda yalnızca bir Arama seçeneği vardır.
-- "Daha Fazla Oku" görünümü, dokunduğunuz yer fark etmeksizin aynı şekilde çalışır ve artık tüm alıntıyı görebilirsiniz. Keşfedilecek çok daha fazla şey var.
-- Yorumlar bölümü doğrudan makalenin altında yorumları yanıtlamanızı ve beğenmenizi sağlar. Daha hızlı yorum için makalelerin altında yeni bir "Yorum Bırak" düğmesi vardır.
-- Varsayılan olarak bir yerine iki yorum görebilirsiniz ve çok uzun yorumlar daha kolay okunması için daraltılabilir.
-- Yorumlar bölümünde de birkaç görsel sorun yaşadık. Yorumlar artık doğru yüksekliğe sahip, "Tüm Yorumları Görüntüle" düğmesi daha çok dikkat çekiyor ve "Gönder" düğmesi de düzgün şekilde biçimlendirilmiş.
-- Uygulama içi çeviri desteğiyle gönderileri tercih ettiğiniz dilde okuyabilirsiniz.
-- Site başlıklarındaki birden fazla boşluk, daha kolay okunması ve görüntülenmesi için daraltıldı.
+- Görseli ışık kutusunda görüntülediğinizde, aşağı kaydırmak, yakınlaştırdığınızda bile bunu devre dışı bırakır.
+- Bağlantıların rengini yorumlarda ve özel temalardaki karanlık modda düzelttik. İyi görünüyor.
+- Ortam galerilerini tam ekran modunda görüntüleyebilirsiniz. Tüm resimleri görüntülemek için sağa veya sola kaydırmanız yeterlidir.
 
-Uygulamanızın boyutunu yaklaşık 6 MB düşüren bir teknik güncelleme yaptık. Tüm bu yeni bulunan alanla ne yapacaksınız?
+Hâlâ biraz boş vaktimiz olduğu için bizi rahatsız eden birkaç ayrıntıyı da düzelttik.
 
-Mevcut yazıların görünürlük ayarlarını bulmak, görmek ve değiştirmek daha kolaydır. Şifre korumalı bir yazı yayımlanırken şifre belirlendiğinde "Bitti" düğmesi de kaybolmaz.
-
-İyi görünüyor: Kısayol simgelerini ve illüstrasyonları, uygulamanın geri kalanıyla daha iyi uyum sağlayacak şekilde ve cihazınızla daha iyi uyum sağlayacak şekilde güncelledik.
-
-Bir sorunu düzelttik, bu nedenle gönderi önizlemeleri artık Kurumsal paketler ve Ticaret paketleri kullanılarak belirli siteler için düzgün çalışıyor.
-
-Kullanıcı tarafından barındırılan yeni bir site eklediğinizde, doğrulama için uygulama şifrenizi sorulacaktır. Onu gizli tut. Güvenliği Sağlayın
+- Bildirimler ekranında ok simgelerini ve boşluğu güncelledik.
+- Gönderi Ayarları'nda Sosyal Paylaşım kartı yalnızca uygulamanın desteklediği platformları gösterir.
+- Yeni gönderilerde standart sürüm yerine varsayılan yazı biçimi kullanılıyor. Bu biçimi site ayarlarınızdan güncelleyebilirsiniz.
+- Siteniz XML-RPC devre dışı bırakılmış olarak kullanıcı tarafından barındırılıyorsa uygulamadaki Gönderileri ve Sayfaları görebilirsiniz. Bu epey önemli, bizden söylemesi.

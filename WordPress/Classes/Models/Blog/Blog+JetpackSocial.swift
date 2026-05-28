@@ -8,7 +8,7 @@ extension Blog {
     /// Note that sites hosted at WP.com has no Social sharing limitations.
     var isSocialSharingLimited: Bool {
         let hasUnlimitedSharing = (planActiveFeatures ?? []).contains(Constants.unlimitedSharingFeatureKey)
-        return !(isHostedAtWPcom || isAtomic() || hasUnlimitedSharing)
+        return !(isHostedAtWPcom || isAtomic || hasUnlimitedSharing)
     }
 
     /// The auto-sharing limit information for the blog.

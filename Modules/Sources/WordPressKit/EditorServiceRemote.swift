@@ -6,14 +6,14 @@ public class EditorServiceRemote: ServiceRemoteWordPressComREST {
         let endpoint = "sites/\(siteID)/gutenberg?platform=mobile&editor=\(editor.rawValue)"
         let path = self.path(forEndpoint: endpoint, withVersion: ._2_0)
 
-        wordPressComRESTAPI.post(path, parameters: nil, success: { (responseObject, _) in
+        wordPressComRESTAPI.post(path, parameters: nil, success: { responseObject, _ in
             do {
                 let settings = try EditorSettings(with: responseObject)
                 success(settings)
             } catch {
                 failure(error)
             }
-        }) { (error, _) in
+        }) { error, _ in
             failure(error)
         }
     }
@@ -28,7 +28,7 @@ public class EditorServiceRemote: ServiceRemoteWordPressComREST {
             "set_only_if_empty": setOnlyIfEmpty
         ] as [String: AnyObject]
 
-        wordPressComRESTAPI.post(path, parameters: parameters, success: { (responseObject, _) in
+        wordPressComRESTAPI.post(path, parameters: parameters, success: { responseObject, _ in
             guard let response = responseObject as? [String: String] else {
                 if let boolResponse = responseObject as? Bool, boolResponse == false {
                     return failure(EditorSettings.Error.badRequest)
@@ -36,13 +36,13 @@ public class EditorServiceRemote: ServiceRemoteWordPressComREST {
                 return failure(EditorSettings.Error.badResponse)
             }
 
-            let mappedResponse = response.reduce(into: [Int: EditorSettings.Mobile](), { (result, response) in
+            let mappedResponse = response.reduce(into: [Int: EditorSettings.Mobile](), { result, response in
                 if let id = Int(response.key), let editor = EditorSettings.Mobile(rawValue: response.value) {
                     result[id] = editor
                 }
             })
             success(mappedResponse)
-        }) { (error, _) in
+        }) { error, _ in
             failure(error)
         }
     }
@@ -51,14 +51,14 @@ public class EditorServiceRemote: ServiceRemoteWordPressComREST {
         let endpoint = "sites/\(siteID)/gutenberg"
         let path = self.path(forEndpoint: endpoint, withVersion: ._2_0)
 
-        wordPressComRESTAPI.get(path, parameters: nil, success: { (responseObject, _) in
+        wordPressComRESTAPI.get(path, parameters: nil, success: { responseObject, _ in
             do {
                 let settings = try EditorSettings(with: responseObject)
                 success(settings)
             } catch {
                 failure(error)
             }
-        }) { (error, _) in
+        }) { error, _ in
             failure(error)
         }
     }

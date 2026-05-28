@@ -32,6 +32,5 @@ extension UITableViewController {
                 tableView.deselectRow(at: indexPath, animated: true)
             }
         }
-
     }
 }

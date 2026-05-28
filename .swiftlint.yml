@@ -1,4 +1,4 @@
-swiftlint_version: 0.58.2
+swiftlint_version: 0.63.2
 
 included:
   - Sources
@@ -10,11 +10,32 @@ included:
 # Rules – Opt-in only, so we can progressively introduce new ones
 #
 only_rules:
+  # Prefer `Array(xs)` over `xs.map { $0 }`.
+  - array_init
+
+  # All elements in a collection literal should be vertically aligned.
+  - collection_alignment
+
   # Colons should be next to the identifier when specifying a type.
   - colon
 
   # There should be no space before and one after any comma.
   - comma
+
+  # There should be a space after the comma in inheritance lists.
+  - comma_inheritance
+
+  # Prefer `contains` over `filter(where:).count`.
+  - contains_over_filter_count
+
+  # Prefer `contains` over using `filter(where:).isEmpty`.
+  - contains_over_filter_is_empty
+
+  # Prefer `contains` over `first(where:) != nil`.
+  - contains_over_first_not_nil
+
+  # Prefer `contains` over `range(of:) != nil` and `range(of:) == nil`.
+  - contains_over_range_nil_comparison
 
   # if,for,while,do statements shouldn't wrap their conditionals in parentheses.
   - control_statement
@@ -26,12 +47,38 @@ only_rules:
 
   - duplicate_imports
 
+  # Prefer checking `isEmpty` over comparing `count` to zero.
+  - empty_count
+
   # Arguments can be omitted when matching enums with associated types if they
   # are not used.
   - empty_enum_arguments
 
   # Prefer `() -> ` over `Void -> `.
   - empty_parameters
+
+  # Prefer checking `isEmpty` over comparing to empty string literal `""`.
+  - empty_string
+
+  # Avoid explicitly calling `.init()`; prefer `Type(...)` over `Type.init(...)`.
+  - explicit_init
+
+  # Prefer `first(where:)` over `filter { }.first`.
+  - first_where
+
+  # Prefer `flatMap { ... }` over `map { ... }.reduce([], +)`.
+  - flatmap_over_map_reduce
+
+  # When calling the `joined` method on an array of strings, omit an
+  # explicit empty-string separator since that is the default.
+  - joined_default_parameter
+
+  # Prefer `last(where:)` over `filter { }.last`.
+  - last_where
+
+  # Trailing closing brackets/parens of literal expressions (arrays, dicts)
+  # should match the indentation of the line that introduced them.
+  - literal_expression_end_indentation
 
   # MARK comment should be in valid format.
   - mark
@@ -44,7 +91,25 @@ only_rules:
 
   - overridden_super_call
 
+  # There should be no whitespace immediately after a period.
+  - period_spacing
+
+  # Example: CGPoint.zero instead of CGPoint(x: 0, y: 0)
+  - prefer_zero_over_explicit_init
+
+  # Prefer `reduce(into:_:)` over `reduce(_:_:)` for non-trivial accumulator types.
+  - reduce_into
+
+  # Type annotations are redundant when the type can be inferred.
+  - redundant_type_annotation
+
   - shorthand_optional_binding
+
+  # Prefer `someBool.toggle()` over `someBool = !someBool`.
+  - toggle_bool
+
+  # Prefer `min(by:)` / `max(by:)` over `sorted { ... }.first` / `.last`.
+  - sorted_first_last
 
   # Files should have a single trailing newline.
   - trailing_newline
@@ -55,7 +120,18 @@ only_rules:
   # Lines should not have trailing whitespace.
   - trailing_whitespace
 
+  # Closure arguments don't need to be wrapped in parentheses.
+  - unneeded_parentheses_in_closure_argument
+
+  # Catch statements should not declare error variables without type casting.
+  - untyped_error_in_catch
+
+  # Unused parameter in a closure should be replaced with _.
+  - unused_closure_parameter
+
   - vertical_whitespace
+
+  - vertical_whitespace_closing_braces
 
   - weak_delegate
 
@@ -66,6 +142,9 @@ control_statement:
 
 discarded_notification_center_observer:
   severity: error
+
+opening_brace:
+  ignore_multiline_statement_conditions: true
 
 operator_usage_whitespace:
   skip_aligned_constants: false

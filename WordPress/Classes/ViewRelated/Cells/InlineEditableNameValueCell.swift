@@ -10,7 +10,6 @@ import WordPressUI
                                                     valueTextFieldEditingDidEnd text: String)
     @objc optional func inlineEditableNameValueCell(_ cell: InlineEditableNameValueCell,
                                                     valueTextFieldShouldReturn textField: UITextField) -> Bool
-
 }
 
 class InlineEditableNameValueCell: WPTableViewCell, NibReusable {

@@ -4,10 +4,10 @@ import AutomatticEncryptedLogs
 import AutomatticTracks
 import BuildSettingsKit
 import CocoaLumberjackSwift
+import CocoaLumberjackSwiftLogBackend
 import DesignSystem
 import Logging
 import Pulse
-import Reachability
 import SFHFKeychainUtils
 import SVProgressHUD
 import ShareExtensionCore
@@ -20,6 +20,7 @@ import WordPressShared
 import WordPressUI
 import ZendeskCoreSDK
 import Support
+import WordPressAPIInternal
 
 public class WordPressAppDelegate: UIResponder, UIApplicationDelegate {
 
@@ -77,16 +78,26 @@ public class WordPressAppDelegate: UIResponder, UIApplicationDelegate {
     // MARK: - Application lifecycle
 
     public func application(_ application: UIApplication, willFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]? = nil) -> Bool {
+        // We need to set up the swift-log logging system right after app launch, so that logs can be written
+        // into the log handlers configured below.
+        LoggingSystem.bootstrap { label in
+            let ddLogHandlerFactory: (String) -> LogHandler = DDLogHandler.handlerFactory()
+            return MultiplexLogHandler([
+                ddLogHandlerFactory(label),
+                ExtensiveLogger(label: label),
+            ])
+        }
+
         let window = UIWindow(frame: UIScreen.main.bounds)
         self.window = window
 
+        WordPressAPIInternal.setupLogger(appId: Bundle.main.bundleIdentifier!)
         DesignSystem.FontManager.registerCustomFonts()
         AssertionLoggerDependencyContainer.logger = AssertionLogger()
         UITestConfigurator.prepareApplicationForUITests(in: application, window: window)
 
         // The following extensive logging configuration detects if extensive logging is enabled internally.
         wpkURLSessionNotifyingDelegate = PulseNetworkLogger()
-        LoggingSystem.bootstrap(ExtensiveLogger.init)
 
         AppAppearance.overrideAppearance()
         MemoryCache.shared.register()
@@ -121,9 +132,7 @@ public class WordPressAppDelegate: UIResponder, UIApplicationDelegate {
     }
 
     public func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]? = nil) -> Bool {
-        DDLogInfo("didFinishLaunchingWithOptions state: \(application.applicationState)")
-        Logger(label: "App")
-            .info("didFinishLaunchingWithOptions state: \(application.applicationState)")
+        Loggers.app.info("didFinishLaunchingWithOptions state: \(application.applicationState)")
 
         ABTest.start()
 
@@ -157,11 +166,11 @@ public class WordPressAppDelegate: UIResponder, UIApplicationDelegate {
     }
 
     public func applicationWillTerminate(_ application: UIApplication) {
-        DDLogInfo("\(self) \(#function)")
+        Loggers.app.info("\(self) \(#function)")
     }
 
     public func applicationDidEnterBackground(_ application: UIApplication) {
-        DDLogInfo("\(self) \(#function)")
+        Loggers.app.info("\(self) \(#function)")
 
         analytics?.trackApplicationDidEnterBackground(screenName: currentlySelectedScreen)
 
@@ -169,7 +178,7 @@ public class WordPressAppDelegate: UIResponder, UIApplicationDelegate {
 
         // Let the app finish any uploads that are in progress
         if let task = bgTask, bgTask != .invalid {
-            DDLogInfo("BackgroundTask: ending existing backgroundTask for bgTask = \(task.rawValue)")
+            Loggers.app.info("BackgroundTask: ending existing backgroundTask for bgTask = \(task.rawValue)")
             app.endBackgroundTask(task)
             bgTask = .invalid
         }
@@ -177,19 +186,19 @@ public class WordPressAppDelegate: UIResponder, UIApplicationDelegate {
         bgTask = app.beginBackgroundTask(expirationHandler: { [weak self] in
             // WARNING: The task has to be terminated immediately on expiration
             if let task = self?.bgTask, task != .invalid {
-                DDLogInfo("BackgroundTask: executing expirationHandler for bgTask = \(task.rawValue)")
+                Loggers.app.info("BackgroundTask: executing expirationHandler for bgTask = \(task.rawValue)")
                 app.endBackgroundTask(task)
                 self?.bgTask = .invalid
             }
         })
 
         if let bgTask {
-            DDLogInfo("BackgroundTask: beginBackgroundTask for bgTask = \(bgTask.rawValue)")
+            Loggers.app.info("BackgroundTask: beginBackgroundTask for bgTask = \(bgTask.rawValue)")
         }
     }
 
     public func applicationWillEnterForeground(_ application: UIApplication) {
-        DDLogInfo("\(self) \(#function)")
+        Loggers.app.info("\(self) \(#function)")
 
         updateFeatureFlags()
         updateRemoteConfig()
@@ -201,11 +210,11 @@ public class WordPressAppDelegate: UIResponder, UIApplicationDelegate {
     }
 
     public func applicationWillResignActive(_ application: UIApplication) {
-        DDLogInfo("\(self) \(#function)")
+        Loggers.app.info("\(self) \(#function)")
     }
 
     public func applicationDidBecomeActive(_ application: UIApplication) {
-        DDLogInfo("\(self) \(#function)")
+        Loggers.app.info("\(self) \(#function)")
 
         analytics?.trackApplicationDidBecomeActive()
 
@@ -327,7 +336,7 @@ public class WordPressAppDelegate: UIResponder, UIApplicationDelegate {
     private func setupBackgroundRefresh(_ application: UIApplication) {
         backgroundTasksCoordinator.scheduleTasks { result in
             if case .failure(let error) = result {
-                DDLogError("Error scheduling background tasks: \(error)")
+                Loggers.app.error("Error scheduling background tasks: \(error)")
             }
         }
     }
@@ -366,14 +375,13 @@ extension WordPressAppDelegate {
     }
 
     public func application(_ application: UIApplication, didReceiveRemoteNotification userInfo: [AnyHashable: Any], fetchCompletionHandler completionHandler: @escaping (UIBackgroundFetchResult) -> Void) {
-        DDLogInfo("\(self) \(#function)")
+        Loggers.app.info("\(self) \(#function)")
         PushNotificationsManager.shared.application(
             application,
             didReceiveRemoteNotification: userInfo,
             fetchCompletionHandler: completionHandler
         )
     }
-
 }
 
 // MARK: - Utility Configuration
@@ -386,7 +394,7 @@ extension WordPressAppDelegate {
 
     func configureAppRatingUtility() {
         guard let version = Bundle.main.infoDictionary?["CFBundleShortVersionString"] as? String else {
-            DDLogError("No CFBundleShortVersionString found in Info.plist")
+            Loggers.app.error("No CFBundleShortVersionString found in Info.plist")
             return
         }
 
@@ -396,7 +404,7 @@ extension WordPressAppDelegate {
     }
 
     func configureSelfHostedChallengeHandler() {
-        WordPressOrgXMLRPCApi.onChallenge = { (challenge, completionHandler) in
+        WordPressOrgXMLRPCApi.onChallenge = { challenge, completionHandler in
             guard let alertController = HTTPAuthenticationAlertController.controller(for: challenge, handler: completionHandler) else {
                 completionHandler(.performDefaultHandling, nil)
                 return
@@ -481,7 +489,7 @@ extension WordPressAppDelegate {
 
     var currentlySelectedScreen: String {
         guard let rootViewController = window?.rootViewController else {
-            DDLogInfo("\(#function) is called when `rootViewController` is nil.")
+            Loggers.app.info("\(#function) is called when `rootViewController` is nil.")
             return String()
         }
 
@@ -560,17 +568,17 @@ extension WordPressAppDelegate {
         let detailedVersionNumber = bundle.detailedVersionNumber() ?? unknown
         let appName = bundle.object(forInfoDictionaryKey: "CFBundleName") as? String ?? unknown
 
-        DDLogInfo("===========================================================================")
-        DDLogInfo("Launching \(appName) for iOS \(detailedVersionNumber)...")
-        DDLogInfo("Crash count: \(crashCount)")
+        Loggers.app.info("===========================================================================")
+        Loggers.app.info("Launching \(appName) for iOS \(detailedVersionNumber)...")
+        Loggers.app.info("Crash count: \(crashCount)")
 
         #if DEBUG
-        DDLogInfo("Debug mode:  Debug")
+        Loggers.app.info("Debug mode:  Debug")
         #else
-        DDLogInfo("Debug mode:  Production")
+        Loggers.app.info("Debug mode:  Production")
         #endif
 
-        DDLogInfo("Extra debug: \(extraDebug ? "YES" : "NO")")
+        Loggers.app.info("Extra debug: \(extraDebug ? "YES" : "NO")")
 
         let devicePlatform = UIDeviceHardware.platformString()
         let architecture = UIDeviceHardware.platform()
@@ -578,15 +586,15 @@ extension WordPressAppDelegate {
         let currentLanguage = languages?.first ?? unknown
         let udid = device.identifierForVendor?.uuidString ?? unknown
 
-        DDLogInfo("Device model: \(devicePlatform) (\(architecture))")
-        DDLogInfo("OS:        \(device.systemName), \(device.systemVersion)")
-        DDLogInfo("Language:  \(currentLanguage)")
-        DDLogInfo("UDID:      \(udid)")
-        DDLogInfo("APN token: \(PushNotificationsManager.shared.deviceToken ?? "None")")
-        DDLogInfo("Launch options: \(String(describing: launchOptions ?? [:]))")
+        Loggers.app.info("Device model: \(devicePlatform) (\(architecture))")
+        Loggers.app.info("OS:        \(device.systemName), \(device.systemVersion)")
+        Loggers.app.info("Language:  \(currentLanguage)")
+        Loggers.app.info("UDID:      \(udid)")
+        Loggers.app.info("APN token: \(PushNotificationsManager.shared.deviceToken ?? "None")")
+        Loggers.app.info("Launch options: \(String(describing: launchOptions ?? [:]))")
 
         AccountHelper.logBlogsAndAccounts(context: mainContext)
-        DDLogInfo("===========================================================================")
+        Loggers.app.info("===========================================================================")
     }
 
     func toggleExtraDebuggingIfNeeded() {
@@ -768,24 +776,24 @@ extension WordPressAppDelegate {
             appleUserID = try SFHFKeychainUtils.getPasswordForUsername(WPAppleIDKeychainUsernameKey,
                                                                        andServiceName: WPAppleIDKeychainServiceName)
         } catch {
-            DDLogInfo("checkAppleIDCredentialState: No Apple ID found.")
+            Loggers.app.info("checkAppleIDCredentialState: No Apple ID found.")
             return
         }
 
         // Get the Apple User ID state. If not authorized, log out the account.
-        WordPressAuthenticator.shared.getAppleIDCredentialState(for: appleUserID) { [weak self] (state, error) in
+        WordPressAuthenticator.shared.getAppleIDCredentialState(for: appleUserID) { [weak self] state, error in
 
-            DDLogDebug("checkAppleIDCredentialState: Apple ID state: \(state.rawValue)")
+            Loggers.app.debug("checkAppleIDCredentialState: Apple ID state: \(state.rawValue)")
 
             switch state {
             case .revoked:
-                DDLogInfo("checkAppleIDCredentialState: Revoked Apple ID. User signed out.")
+                Loggers.app.info("checkAppleIDCredentialState: Revoked Apple ID. User signed out.")
                 self?.logOutRevokedAppleAccount()
             default:
                 // An error exists only for the notFound state.
                 // notFound is a valid state when logging in with an Apple account for the first time.
                 if let error {
-                    DDLogDebug("checkAppleIDCredentialState: Apple ID state not found: \(error.localizedDescription)")
+                    Loggers.app.debug("checkAppleIDCredentialState: Apple ID state not found: \(error.localizedDescription)")
                 }
                 break
             }
@@ -795,7 +803,7 @@ extension WordPressAppDelegate {
     func startObservingAppleIDCredentialRevoked() {
         WordPressAuthenticator.shared.startObservingAppleIDCredentialRevoked { [weak self] in
             if AccountHelper.isLoggedIn {
-                DDLogInfo("Apple credentialRevokedNotification received. User signed out.")
+                Loggers.app.info("Apple credentialRevokedNotification received. User signed out.")
                 self?.logOutRevokedAppleAccount()
             }
         }
@@ -822,11 +830,10 @@ extension WordPressAppDelegate {
                                              andServiceName: WPAppleIDKeychainServiceName)
         } catch let error as NSError {
             if error.code != errSecItemNotFound {
-                DDLogError("Error while removing Apple User ID from keychain: \(error.localizedDescription)")
+                Loggers.app.error("Error while removing Apple User ID from keychain: \(error.localizedDescription)")
             }
         }
     }
-
 }
 
 // MARK: - UI Test Support
@@ -839,7 +846,7 @@ extension WordPressAppDelegate {
         }
 
         let service = WordPressComSyncService()
-        service.syncWPCom(authToken: "valid_token", isJetpackLogin: false, onSuccess: { account in
+        service.syncWPCom(authToken: "valid_token", isJetpackLogin: false, onSuccess: { _ in
             if let blog = try? BlogQuery().hostname(containing: wpComSiteAddress).blog(in: ContextManager.shared.mainContext) {
                 self.windowManager.showUI(for: blog)
             } else {
@@ -849,5 +856,4 @@ extension WordPressAppDelegate {
             fatalError("Can't sync blogs: \($0)")
         })
     }
-
 }

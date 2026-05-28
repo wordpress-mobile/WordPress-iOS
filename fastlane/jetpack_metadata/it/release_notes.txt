@@ -1,31 +1,21 @@
-La nostra funzione di assistenza basata sull'intelligenza artificiale, WordPress Intelligence, è ora disponibile in più lingue e aree geografiche. L'assistente preferito di tutti è diventato ancora più utile.
+Chi è chi sul tuo sito web? Ora sai che le notifiche push ora usano i gravatar in modo che tu possa vedere chi ha commentato o interagito con i tuoi contenuti. Il log attività mostra anche quando il tuo sito è stato aggiornato usando agenti IA.
 
-Abbiamo migliorato la sezione Statistiche di circa l'83%.
+Se pensavi che i nostri ultimi aggiornamenti alle Statistiche fossero grandi, non hai ancora visto nulla.
 
-- La scheda Luoghi ti consente di filtrare i dati per paese, regione e città. Questi dati sono coerenti con la versione web di Jetpack.
-- "Link esterni" è ora "Clic", per garantire la coerenza con la versione web. Abbiamo risolto un bug per cui quest'area a volte veniva visualizzata in modo errato.
-- Puoi disattivare il confronto automatico dei dati e salvare l'impostazione per i futuri utilizzi dell'app. Abbiamo risolto un problema per cui i dati settimanali relativi al periodo di confronto non sempre venivano visualizzati correttamente.
-- Tenendo premuto a lungo su un grafico a barre verranno mostrati ulteriori dettagli. Anche lo scorrimento verticale è stato corretto.
-- Puoi visualizzare i dati dei grafici a barre e a linee raggruppati per giorni, settimane, mesi e anni.
-- Gli elementi degli elenchi migliori sono ordinati per nome e disposti correttamente.
+- La data odierna è ora inclusa in intervalli come "Ultimi 7 giorni". Abbiamo anche aggiunto un nuovo intervallo "Ultimi 14 giorni".
+- Le date incomplete, inclusa quella odierna, sono visualizzate sul grafico a linee come una linea tratteggiata. È possibile visualizzarli più facilmente anche nella vista grafico a barre.
+- Per quanto riguarda i grafici a barre, toccando una barra verranno visualizzati i dati relativi a tale data. In questo modo è più facile scorrere i dati per più giorni. Oh, e toccando una barra non verrà più selezionata la barra accanto ad essa.
+- Potresti notare cambiamenti visivi come un'intestazione più piccola della scheda Grafico, font più piccoli nelle schede e una spaziatura ridotta qua e là. Dà un tocco minimalista.
 
-Abbiamo apportato molte modifiche anche al Reader.
+Già che c'eravamo, abbiamo apportato modifiche anche al Reader. (Tra l'altro, nessuno di questi è legato alla lettura.)
 
-- Nella schermata Scopri è presente la nuova scheda "Pubblicato di recente". Abbiamo inoltre rinominato la scheda "Consigliati" in "Per te".
-- È presente un'unica opzione di ricerca nella barra laterale principale.
-- La visualizzazione "Leggi tutto" funziona allo stesso modo indipendentemente dal punto in cui la tocchi e ora puoi visualizzare l'intero estratto. C'è ancora molto altro da scoprire.
-- La sezione Commenti ti consente di rispondere e mettere "Mi piace" ai commenti direttamente sotto l'articolo. Sotto gli articoli è presente un nuovo pulsante "Lascia un commento" per commentare più velocemente.
-- Per impostazione predefinita puoi vedere due commenti invece di uno solo e i commenti molto lunghi possono essere compressi per facilitare la lettura.
-- Abbiamo rifinito alcuni aspetti grafici della sezione Commenti. I commenti ora hanno l'altezza corretta, il pulsante "Visualizza tutti i commenti" è più evidente e il pulsante "Invia" ha lo stile corretto.
-- Puoi leggere gli articoli nella tua lingua preferita grazie al supporto per la traduzione in-app.
-- Gli spazi multipli nei titoli dei siti vengono ridotti a uno solo per facilitare la lettura e la visualizzazione.
+- Quando visualizzi un'immagine in un lightbox, scorrere verso il basso la ignorerà, anche quando hai eseguito lo zoom avanti.
+- Abbiamo fissato il colore dei link nei commenti e in modalità dark su temi personalizzati. Sembra perfetto.
+- È possibile visualizzare le gallerie multimediali in modalità a schermo intero. Basta scorrere verso destra o sinistra per visualizzare tutte le immagini.
 
-Abbiamo effettuato un aggiornamento tecnico che riduce le dimensioni dell'app di circa 6 MB. Cosa farai con tutto quello spazio appena guadagnato?
+E siccome avevamo ancora un po' di tempo libero, abbiamo anche sistemato alcuni dettagli che ci infastidivano.
 
-È più facile trovare, visualizzare e modificare le impostazioni di visibilità dei post esistenti. Il pulsante "Fatto" non scomparirà nemmeno quando imposti la password durante la pubblicazione di un articolo protetto da password.
-
-Aspetto gradevole: abbiamo aggiornato le icone dei collegamenti e le illustrazioni per adattarle meglio al resto dell'app e al tuo dispositivo.
-
-Abbiamo risolto un problema, quindi ora le anteprime degli articoli funzionano correttamente per alcuni siti che utilizzano i piani Business e Commerce.
-
-Quando aggiungi un nuovo sito ospitato personalmente, ti verrà richiesta la password dell'app per l'autenticazione. Tienilo segreto. Tienilo al sicuro
+- Abbiamo aggiornato le icone delle frecce e la spaziatura nella schermata Notifiche.
+- Nelle Impostazioni articolo, la scheda di condivisione sui social mostra solo le piattaforme supportate dall'app.
+- I nuovi articoli usano il formato di pubblicazione predefinito invece della versione standard. Puoi aggiornare questo formato nelle impostazioni del sito.
+- Se il tuo sito è ospitato personalmente con XML-RPC disabilitato, puoi vedere Articoli e Pagine nell'app. È molto importante, se lo diciamo noi stessi.

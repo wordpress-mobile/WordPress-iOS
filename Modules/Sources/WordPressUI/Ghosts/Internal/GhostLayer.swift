@@ -51,7 +51,7 @@ private extension GhostLayer {
     /// Starts listening for Bounds Changes on the specified UIView instance.
     ///
     func startObservingBoundEvents(on container: UIView) {
-        observerToken = container.observe(\.bounds, options: .initial) { [weak self] (view, _) in
+        observerToken = container.observe(\.bounds, options: .initial) { [weak self] view, _ in
             self?.bounds = view.bounds
         }
     }

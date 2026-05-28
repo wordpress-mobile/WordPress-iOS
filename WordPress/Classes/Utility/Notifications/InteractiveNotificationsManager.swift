@@ -61,7 +61,7 @@ final class InteractiveNotificationsManager: NSObject {
         let options: UNAuthorizationOptions = [.badge, .sound, .alert, .providesAppNotificationSettings]
 
         let notificationCenter = UNUserNotificationCenter.current()
-        notificationCenter.requestAuthorization(options: options) { [weak self] (allowed, _)  in
+        notificationCenter.requestAuthorization(options: options) { [weak self] allowed, _ in
             DispatchQueue.main.async {
                 if allowed {
                     WPAnalytics.track(.pushNotificationOSAlertAllowed)
@@ -261,7 +261,6 @@ final class InteractiveNotificationsManager: NSObject {
                 if identifier == UNNotificationDefaultActionIdentifier {
                     WPAnalytics.track(.promptsNotificationTapped)
                     answerPromptBlock()
-
                 } else if identifier == UNNotificationDismissActionIdentifier {
                     WPAnalytics.track(.promptsNotificationDismissed)
                     // no-op
@@ -299,7 +298,7 @@ extension InteractiveNotificationsManager {
         return nil
     }
 
-    /// Retrieves a date from the userInfo dictionary using a generic "date" key.  This was made generic on purpose.
+    /// Retrieves a date from the userInfo dictionary using a generic "date" key. This was made generic on purpose.
     ///
     private func date(from userInfo: NSDictionary) -> Date? {
         userInfo[Self.dateKey] as? Date
@@ -320,7 +319,7 @@ private extension InteractiveNotificationsManager {
         commentService.likeComment(withID: commentID, siteID: siteID, success: {
             self.notificationSyncMediator?.markAsReadAndSync(noteID.stringValue)
             DDLogInfo("Liked comment from push notification")
-        }, failure: { error in
+        }, failure: { _ in
             DDLogInfo("Couldn't like comment from push notification")
         })
     }
@@ -335,7 +334,7 @@ private extension InteractiveNotificationsManager {
         commentService.approveComment(withID: commentID, siteID: siteID, success: {
             self.notificationSyncMediator?.markAsReadAndSync(noteID.stringValue)
             DDLogInfo("Successfully moderated comment from push notification")
-        }, failure: { error in
+        }, failure: { _ in
             DDLogInfo("Couldn't moderate comment from push notification")
         })
     }
@@ -359,7 +358,7 @@ private extension InteractiveNotificationsManager {
         commentService.replyToComment(withID: commentID, siteID: siteID, content: content, success: {
             self.notificationSyncMediator?.markAsReadAndSync(noteID.stringValue)
             DDLogInfo("Successfully replied comment from push notification")
-        }, failure: { error in
+        }, failure: { _ in
             DDLogInfo("Couldn't reply to comment from push notification")
         })
     }
@@ -620,7 +619,7 @@ extension InteractiveNotificationsManager: UNUserNotificationCenterDelegate {
                 return
         }
 
-        // If the notification orginated from the share extension, disregard this current notification and resend a new one.
+        // If the notification originated from the share extension, disregard this current notification and resend a new one.
         ShareExtensionSessionManager.fireUserNotificationIfNeeded(postUploadOpID)
         completionHandler([])
     }

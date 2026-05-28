@@ -46,7 +46,7 @@ struct MigrationDeepLinkRouter: LinkRouter {
 
     func handle(url: URL, shouldTrack track: Bool = false, source: DeepLinkSource? = nil) {
         guard let deepLinkPath = url.host,
-              let route = routes.filter({ $0.path.removingPrefix("/") == deepLinkPath }).first else {
+              let route = routes.first(where: { $0.path.removingPrefix("/") == deepLinkPath }) else {
             return
         }
 

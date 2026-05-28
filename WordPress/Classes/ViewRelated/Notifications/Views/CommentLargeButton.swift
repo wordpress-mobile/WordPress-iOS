@@ -1,6 +1,7 @@
 import UIKit
 import WordPressUI
 import WordPressShared
+import WordPressReader
 
 final class CommentLargeButton: UIView {
     private let leaveCommentView = LeaveCommentView()
@@ -39,7 +40,8 @@ final class CommentLargeButton: UIView {
         backgroundColor = .systemBackground
 
         addSubview(leaveCommentView)
-        leaveCommentView.pinEdges(to: safeAreaLayoutGuide, insets: UIEdgeInsets.init(top: 14, left: 20, bottom: 8, right: 20))
+        leaveCommentView.displaySettings = .standard
+        leaveCommentView.pinEdges(to: safeAreaLayoutGuide, insets: UIEdgeInsets(top: 14, left: 20, bottom: 8, right: 20))
 
         let divider = SeparatorView.horizontal()
         addSubview(divider)
@@ -69,6 +71,13 @@ final class LeaveCommentView: UIView {
         get { placeholderLabel.text }
     }
 
+    var displaySettings: ReaderDisplaySettings = .standard {
+        didSet {
+            placeholderLabel.textColor = displaySettings.color.tertiatyForeground
+            containerView.backgroundColor = displaySettings.color.secondaryBackground
+        }
+    }
+
     override init(frame: CGRect) {
         super.init(frame: frame)
         setupView()
@@ -96,8 +105,6 @@ private final class CommentLargeButtonContainerView: UIView {
     override func layoutSubviews() {
         super.layoutSubviews()
 
-        backgroundColor = .secondarySystemBackground
-
         layer.cornerRadius = bounds.height / 2
         layer.masksToBounds = true
     }
@@ -116,6 +123,7 @@ private func makeCommentsClosedView() -> UIView {
     let stackView = UIStackView(spacing: 8, [imageView, titleLabel])
 
     let containerView = CommentLargeButtonContainerView()
+    containerView.backgroundColor = .secondarySystemBackground
     containerView.addSubview(stackView)
     stackView.pinEdges(insets: UIEdgeInsets(horizontal: 14, vertical: 10))
 

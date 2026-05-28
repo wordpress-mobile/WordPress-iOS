@@ -1,4 +1,4 @@
-/* Translation-Revision-Date: 2026-01-27 09:54:09+0000 */
+/* Translation-Revision-Date: 2026-03-26 09:54:38+0000 */
 /* Plural-Forms: nplurals=1; plural=0; */
 /* Generator: GlotPress/4.0.3 */
 /* Language: ko_KR */
@@ -1874,7 +1874,6 @@ translators: %s: Block name e.g. \"Image block\" */
    Done. Action.
    Menu button title for finishing editing the Menu name.
    Tapping a button with this label allows the user to exit the Site Creation flow
-   Title for a Done button.
    Title for button that will dismiss this view
    Title for the button that will dismiss this view. */
 "Done" = "완료됨";
@@ -3244,9 +3243,6 @@ translators: %s: Block name e.g. \"Image block\" */
 /* Text displayed while loading the scan section for a site */
 "Loading Scan..." = "스캔 로드 중...";
 
-/* Displayed while a comment is being loaded. */
-"Loading comment..." = "댓글 로드 중...";
-
 /* Menus label text displayed when a menu is loading. */
 "Loading menu..." = "메뉴 로드 중...";
 
@@ -3333,9 +3329,6 @@ translators: %s: Block name e.g. \"Image block\" */
 
 /* No comment provided by engineer. */
 "Main Navigation" = "메인 내비게이션";
-
-/* Explanation for the option to enable theme styles */
-"Make the block editor look like your theme." = "블록 편집기를 테마와 비슷한 모양으로 만드세요.";
 
 /* No comment provided by engineer. */
 "Make your content stand out by adding images, gifs, videos, and embedded media to your pages." = "이미지, gif 파일, 비디오 또는 임베드된 미디어를 페이지에 추가하여 콘텐츠를 돋보이게 만드세요.";
@@ -7032,6 +7025,9 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Button title for restoring a backup */
 "activityDetail.restore.button" = "복원";
 
+/* Shows the MCP client used for an activity. %1$@ is the MCP client name (e.g. Claude). */
+"activityDetail.section.agent" = "%1$@을(를) 통해";
+
 /* Section title for restore site actions */
 "activityDetail.section.restoreSite" = "사이트 복원";
 
@@ -7234,6 +7230,9 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Feature name for the block editor in application password required prompt */
 "applicationPasswordRequired.feature.blockEditor" = "블록 에디터";
 
+/* Feature name for managing custom post types in the app */
+"applicationPasswordRequired.feature.customPosts" = "사용자 정의 글 유형";
+
 /* Feature name for managing terms and taxonomies in the app */
 "applicationPasswordRequired.feature.customTaxonomies" = "분류 관리";
 
@@ -7397,6 +7396,27 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Action shown in a bottom notice to dismiss it. */
 "blogDashboard.dismiss" = "무시";
 
+/* Error message shown when the active theme cannot be found for a site. */
+"blogDetails.activeThemeNotFound.errorDescription" = "이 사이트의 활성 테마를 찾을 수 없습니다.";
+
+/* Button title to connect Jetpack in XML-RPC disabled alert */
+"blogDetails.xmlrpcDisabled.alert.connectJetpack" = "젯팩 연결";
+
+/* Description explaining options to restore functionality when XML-RPC is disabled */
+"blogDetails.xmlrpcDisabled.alert.description" = "XML-RPC가 사이트에서 비활성화되었습니다. 현재 앱의 일부 기능에 XML-RPC가 필요합니다. 젯팩을 연결하거나 XML-RPC를 활성화하면 모든 기능을 이용할 수 있습니다.";
+
+/* Button title to learn more about XML-RPC being disabled */
+"blogDetails.xmlrpcDisabled.alert.learnMore" = "더 알아보기";
+
+/* Title for the XML-RPC disabled alert */
+"blogDetails.xmlrpcDisabled.alert.title" = "XML-RPC 비활성화됨";
+
+/* Subtitle for the XML-RPC disabled card on blog details */
+"blogDetails.xmlrpcDisabled.card.subtitle" = "일부 기능이 제한될 수 있습니다.";
+
+/* Title for the XML-RPC disabled card on blog details */
+"blogDetails.xmlrpcDisabled.card.title" = "XML-RPC 비활성화됨";
+
 /* Context menu button title */
 "blogHeader.actionVisitSite" = "사이트 방문하기";
 
@@ -7446,7 +7466,7 @@ Note that the word 'go' here should have a closer meaning to 'start' rather than
 /* Title of the set goals button in the Blogging Reminders Settings flow. */
 "bloggingRemindersPrompt.intro.continueButton" = "알림 설정";
 
-/* Description on the first screen of the Blogging Reminders Settings flow called aftet post publishing. */
+/* Description on the first screen of the Blogging Reminders Settings flow called after post publishing. */
 "bloggingRemindersPrompt.intro.details" = "게시하려는 일자의 블로깅 알림을 설정하세요.";
 
 /* Title of the Blogging Reminders Settings screen. */
@@ -7863,6 +7883,111 @@ Example: Reply to Pamela Nguyen */
 /* Create Sheet button title */
 "createSheet.postFromAudio" = "오디오에서 글 작성하기";
 
+/* Error message shown when the post was modified by another user while editing */
+"customPostEditor.error.conflict.message" = "저장하려는 글이 그 사이에 변경되었습니다.";
+
+/* Menu action to promote a post with Blaze */
+"customPostList.action.blaze" = "Blaze로 홍보";
+
+/* Menu action to view post comments */
+"customPostList.action.comments" = "댓글";
+
+/* Menu action to permanently delete a trashed post */
+"customPostList.action.deletePermanently" = "영구 삭제";
+
+/* Menu action to change a post's status to draft */
+"customPostList.action.moveToDraft" = "임시글로 이동";
+
+/* Menu action to move a post to trash */
+"customPostList.action.moveToTrash" = "휴지통으로 이동";
+
+/* Menu action to publish a draft or pending post */
+"customPostList.action.publish" = "발행";
+
+/* Menu action to open post settings */
+"customPostList.action.settings" = "설정";
+
+/* Menu action to view post statistics */
+"customPostList.action.stats" = "통계";
+
+/* Accessibility label for the author filter button in the custom post list */
+"customPostList.authorFilter.accessibilityLabel" = "글쓴이 필터";
+
+/* Menu item to show posts from all authors in the custom post list */
+"customPostList.authorFilter.everyone" = "모든 사람";
+
+/* Menu item to show only the current user's posts in the custom post list */
+"customPostList.authorFilter.mine" = "내 것";
+
+/* Accessibility value when the author filter shows posts from all authors */
+"customPostList.authorFilter.showingEveryone" = "모든 사람의 글 표시";
+
+/* Accessibility value when the author filter shows only the current user's posts */
+"customPostList.authorFilter.showingMine" = "내 글만 표시";
+
+/* Badge label shown on the homepage row in the custom post list for pages */
+"customPostList.badge.homepage" = "홈페이지";
+
+/* Badge shown in the post list for sticky posts */
+"customPostList.badge.sticky" = "붙박이";
+
+/* Message for the confirmation alert when permanently deleting a post */
+"customPostList.deleteConfirmation.message" = "이 작업은 취소할 수 없습니다.";
+
+/* Title for the confirmation alert when permanently deleting a post */
+"customPostList.deleteConfirmation.title" = "영구적으로 삭제할까요?";
+
+/* Empty state message when no custom posts exist. %1$@ is the post type name (e.g., 'Podcasts', 'Products'). */
+"customPostList.emptyState.message" = "%1$@ 없음";
+
+/* Message for the confirmation alert when trashing a published post */
+"customPostList.trashConfirmation.message" = "이 글은 작성되어 방문자에게 표시됩니다. 이 글을 휴지통으로 이동하시겠어요?";
+
+/* Title for the confirmation alert when trashing a published post */
+"customPostList.trashConfirmation.title" = "휴지통으로 이동";
+
+/* Placeholder title for posts without a title */
+"customPostList.untitled" = "(제목 없음)";
+
+/* Title for the parent page picker screen for custom post types */
+"customPostParentPicker.title" = "상위 페이지";
+
+/* Option to set a post as top level (no parent) */
+"customPostParentPicker.topLevel" = "최상위";
+
+/* Description for the top level option in the parent page picker, indicating this page will have no parent */
+"customPostParentPicker.topLevel.description" = "부모 페이지 없음";
+
+/* Tab title for showing all posts regardless of status */
+"customPostTab.all" = "전체";
+
+/* Tab title for draft posts */
+"customPostTab.drafts" = "임시글";
+
+/* Tab title for published posts */
+"customPostTab.published" = "공개됨";
+
+/* Tab title for scheduled posts */
+"customPostTab.scheduled" = "예약됨";
+
+/* Menu item title for sending feedback on the custom post types screen */
+"customPostTab.sendFeedback" = "피드백 보내기";
+
+/* Tab title for trashed posts */
+"customPostTab.trash" = "휴지통";
+
+/* Empty state message when there are no custom post types to display */
+"customPostTypes.emptyState.message" = "사용자 정의 글 유형 없음";
+
+/* Accessibility label for the button to pin a custom post type */
+"customPostTypes.pin.accessibilityLabel" = "고정";
+
+/* Title for the Custom Post Types screen */
+"customPostTypes.title" = "더 보기";
+
+/* Accessibility label for the button to unpin a custom post type */
+"customPostTypes.unpin.accessibilityLabel" = "고정 해제";
+
 /* Customize Insights description */
 "customizeInsightsCell.content" = "나만의 사용자 정의 알림판을 만들고 보고 싶은 보고서를 선택하세요. 가장 중요한 데이터에 집중하세요.";
 
@@ -7998,11 +8123,17 @@ Example: Reply to Pamela Nguyen */
 /* Boolean User Defaults Debug Menu screen title */
 "debugMenu.booleanUserDefaults.title" = "Boolean 사용자 기본값";
 
+/* Debug Menu label for image cache size */
+"debugMenu.caches.imageCache" = "이미지 캐시";
+
 /* Feature flags menu item */
 "debugMenu.featureFlags" = "기능 플래그";
 
 /* Debug Menu action for TipKit */
 "debugMenu.hideAllTips" = "모든 팁 숨기기";
+
+/* Debug Menu item title */
+"debugMenu.item.logs" = "로그";
 
 /* Title of the screen that allows the user to change the Reader CSS URL for debug builds */
 "debugMenu.readerCellTitle" = "리더 CSS URL";
@@ -8034,6 +8165,9 @@ Example: Reply to Pamela Nguyen */
 
 /* Debug Menu action for TipKit */
 "debugMenu.resetTipKitData" = "데이터 재설정";
+
+/* Debug Menu section title */
+"debugMenu.section.caches" = "캐시";
 
 /* Debug Menu section title */
 "debugMenu.section.logging" = "로깅";
@@ -8735,8 +8869,14 @@ Example: Reply to Pamela Nguyen */
 /* Title of the primary button shown after the Jetpack plugin has been installed. Tapping on the button dismisses the installation screen. */
 "jetpack.install-flow.success.primaryButtonText" = "완료";
 
+/* Message asking the user to install Jetpack to access all app features */
+"jetpack.install.allFeatures.description" = "모든 앱 기능을 이용하려면 젯팩 플러그인을 설치해야 합니다.";
+
 /* Title of a button for connecting user account to Jetpack. */
 "jetpack.install.connectUser.button.title" = "사용자 계정 연결";
+
+/* Message asking the user to connect Jetpack to access all app features */
+"jetpack.install.connectUser.bypassXMLRPC.description" = "모든 앱 기능을 이용하려면 젯팩 플러그인을 해당 사용자 계정에 연결해야 합니다.";
 
 /* Message asking the user if they want to set up Jetpack from notifications */
 "jetpack.install.connectUser.notifications.description" = "스마트폰에서 워드프레스 사이트의 유용한 알림을 받으려면 사용자 계정을 연결해야 합니다.";
@@ -9018,6 +9158,9 @@ Example: Reply to Pamela Nguyen */
 /* Last 12 weeks (84 days) date range */
 "jetpackStats.calendar.last12Weeks" = "최근 12주";
 
+/* Last 14 days date range */
+"jetpackStats.calendar.last14Days" = "최근 14일";
+
 /* Last 28 days date range */
 "jetpackStats.calendar.last28Days" = "최근 28일";
 
@@ -9080,6 +9223,9 @@ Example: Reply to Pamela Nguyen */
 
 /* Line chart type */
 "jetpackStats.chart.lineChart" = "줄";
+
+/* Label for aggregated 'Other' segment in pie charts */
+"jetpackStats.chart.other" = "기타";
 
 /* Show chart data menu item */
 "jetpackStats.chart.showData" = "데이터 표시";
@@ -9189,9 +9335,6 @@ Example: Reply to Pamela Nguyen */
 /* Option to turn off period comparison */
 "jetpackStats.datePicker.comparisonOff" = "비교 없음";
 
-/* Title for custom date range picker */
-"jetpackStats.datePicker.customRange" = "사용자 정의 범위";
-
 /* Menu item for custom date range picker */
 "jetpackStats.datePicker.customRangeMenu" = "사용자 정의 범위...";
 
@@ -9210,6 +9353,9 @@ Example: Reply to Pamela Nguyen */
 /* Label for quick period selection */
 "jetpackStats.datePicker.quickPeriodsForStartDate" = "시작 날짜의 빠른 기간";
 
+/* Title for custom date range picker */
+"jetpackStats.datePicker.selectRange" = "범위 선택";
+
 /* Site time zone header */
 "jetpackStats.datePicker.siteTimeZone" = "사이트 시간대";
 
@@ -9225,6 +9371,15 @@ Example: Reply to Pamela Nguyen */
 /* Title for stats date range control tip */
 "jetpackStats.dateRangeTip.title" = "시각 탐색";
 
+/* Device breakdown by browser */
+"jetpackStats.deviceBreakdowns.browser" = "브라우저";
+
+/* Device breakdown by platform/OS */
+"jetpackStats.deviceBreakdowns.operatingSystem" = "운영 체제";
+
+/* Device breakdown by screen size */
+"jetpackStats.deviceBreakdowns.screensize" = "화면 크기";
+
 /* Section title for the list of child links */
 "jetpackStats.externalLinkDetails.childLinks" = "하위 링크";
 
@@ -9233,6 +9388,12 @@ Example: Reply to Pamela Nguyen */
 
 /* Title for the external link details screen */
 "jetpackStats.externalLinkDetails.title" = "외부 링크";
+
+/* Button to explore plans when a feature is gated */
+"jetpackStats.featureGate.explorePlans" = "요금제 둘러보기";
+
+/* Message shown when a stats feature is gated behind a paid plan */
+"jetpackStats.featureGate.message" = "요금제를 업그레이드하고 고급 분석 이용";
 
 /* Automatic granularity option */
 "jetpackStats.granularity.automatic" = "자동";
@@ -9348,6 +9509,9 @@ Example: Reply to Pamela Nguyen */
 /* Clicks data type (external links) */
 "jetpackStats.siteDataTypes.clicks" = "클릭";
 
+/* Devices data type */
+"jetpackStats.siteDataTypes.devices" = "기기";
+
 /* File downloads data type */
 "jetpackStats.siteDataTypes.fileDownloads" = "파일 다운로드";
 
@@ -9423,6 +9587,9 @@ Example: Reply to Pamela Nguyen */
 /* Table column title for Top List card */
 "jetpackStats.topListColumnTitle.clicks" = "외부 링크";
 
+/* Table column title for Devices Top List card */
+"jetpackStats.topListColumnTitle.devices" = "기기";
+
 /* Table column title for Top List card */
 "jetpackStats.topListColumnTitle.fileDownloads" = "파일";
 
@@ -9438,8 +9605,65 @@ Example: Reply to Pamela Nguyen */
 /* Table column title for Top List card */
 "jetpackStats.topListColumnTitle.searchTerms" = "태그";
 
+/* Table column title for UTM Top List card */
+"jetpackStats.topListColumnTitle.utm" = "캠페인";
+
 /* Table column title for Top List card */
 "jetpackStats.topListColumnTitle.videos" = "비디오";
+
+/* Plural post count for UTM metrics. %1$d is the number. */
+"jetpackStats.utmMetricDetails.postCount.plural" = "글 %1$d개";
+
+/* Singular post count for UTM metrics. %1$d is the number. */
+"jetpackStats.utmMetricDetails.postCount.singular" = "글 %1$d개";
+
+/* Title for the UTM campaign details screen */
+"jetpackStats.utmMetricDetails.title" = "UTM 캠페인";
+
+/* Section title for top posts from this UTM campaign */
+"jetpackStats.utmMetricDetails.topPosts" = "인기 게시물";
+
+/* UTM parameter for campaign only */
+"jetpackStats.utmParamGroupings.campaign" = "캠페인";
+
+/* UTM parameter for medium only */
+"jetpackStats.utmParamGroupings.medium" = "중간";
+
+/* UTM parameter for source only */
+"jetpackStats.utmParamGroupings.source" = "소스";
+
+/* Number of ads served. %@ is the ads count. */
+"jetpackStats.wordAds.adsServed.count" = "%@개 광고 제공";
+
+/* Total earnings from WordAds */
+"jetpackStats.wordAds.earnings" = "수익";
+
+/* Button to learn more about WordAds earnings */
+"jetpackStats.wordAds.learnMore" = "더 알아보기";
+
+/* Message shown when there are no payment records */
+"jetpackStats.wordAds.noPaymentsYet" = "아직 결제하지 않음";
+
+/* Outstanding amount owed from WordAds */
+"jetpackStats.wordAds.outstanding" = "미결제";
+
+/* Amount paid out from WordAds earnings */
+"jetpackStats.wordAds.paid" = "결제됨";
+
+/* Title for payment history card and screen */
+"jetpackStats.wordAds.paymentsHistory" = "결제 내역";
+
+/* Title for WordAds total earnings card */
+"jetpackStats.wordAds.totalEarnings" = "총 수익";
+
+/* Number of ads served */
+"jetpackStats.wordAdsMetrics.adsServed" = "제공된 광고";
+
+/* Average cost per mille (thousand impressions) */
+"jetpackStats.wordAdsMetrics.averageCPM" = "평균 CPM";
+
+/* Revenue from ads */
+"jetpackStats.wordAdsMetrics.revenue" = "수익";
 
 /* Title for a call-to-action button on the Jetpack install card. */
 "jetpackinstallcard.button.learn" = "더 알아보기";
@@ -9954,6 +10178,42 @@ Example: Reply to Pamela Nguyen */
 /* Menu title for the visit site option */
 "mySite.siteActions.visitSite" = "사이트 방문";
 
+/* Button to confirm to switch to the New Stats announcement screen */
+"newStats.announcement.continueButton" = "시작하기";
+
+/* Disclosure at the bottom of the New Stats announcement screen, informing users they can opt out */
+"newStats.announcement.disclosure" = "아직 준비가 되지 않으셨나요? 통계 탭의 추가 메뉴에서 새 통계를 끌 수 있습니다.";
+
+/* Feature description: navigation moved to the bottom for thumb-friendly access */
+"newStats.announcement.feature.bottomNav.description" = "탐색과 날짜 선택기는 이제 엄지 손가락이 위치하는 화면 하단에 위치합니다.";
+
+/* Feature title: navigation moved to the bottom */
+"newStats.announcement.feature.bottomNav.title" = "더 쉽게 도달";
+
+/* Feature description: flexible date picker with presets, custom ranges, and comparisons */
+"newStats.announcement.feature.datePicker.description" = "한 번 눌러서 공통 사전 설정 중에서 선택하거나 비교 기간으로 사용자 정의 날짜 범위를 설정할 수 있습니다.";
+
+/* Feature title: flexible date picker */
+"newStats.announcement.feature.datePicker.title" = "모든 기간, 모든 범위";
+
+/* Feature description: feature parity with the web version of Stats */
+"newStats.announcement.feature.parity.description" = "기기, UTM, 위치, WordAds 등 워드프레스닷컴에서 받는 것과 동일한 데이터가 제공됩니다.";
+
+/* Feature title: feature parity with the web version of Stats */
+"newStats.announcement.feature.parity.title" = "웹과 동등한 데이터";
+
+/* Feature description: trends shown for all metrics with comparison to previous period */
+"newStats.announcement.feature.trends.description" = "모든 지표는 이전 기간 대비 추세를 보여주기 때문에 성장 여부를 항상 알 수 있습니다.";
+
+/* Feature title: trends visible for all metrics */
+"newStats.announcement.feature.trends.title" = "한 눈에 살펴보는 추세";
+
+/* Subtitle for the New Stats announcement screen */
+"newStats.announcement.subtitle" = "이제 사이트 성능을 더 효과적으로 이해할 수 있는 기능을 기본적으로 사용할 수 있습니다.";
+
+/* Title for the New Stats announcement screen */
+"newStats.announcement.title" = "새 통계";
+
 /* A no results message displayed on the atomic logs screen. */
 "noLogs.empty" = "이 시간 범위 내에 로그 항목 없음";
 
@@ -10185,6 +10445,9 @@ Example: Reply to Pamela Nguyen */
 /* A title for the log severity level */
 "phpLogs.severityWarning" = "경고";
 
+/* Error message when a pinned custom post type cannot be found. %1$@ is the post type name. */
+"pinnedPostType.error.notFound" = "\"%1$@\"은(는) 이 사이트에서 사용할 수 없습니다.";
+
 /* Title for the plan selection view */
 "planSelection.title" = "요금제";
 
@@ -10299,13 +10562,15 @@ Example: Reply to Pamela Nguyen */
 /* Navigation title for post discussion settings */
 "postDiscussion.title" = "토론";
 
-/* Button in an alert confirming discaring changes */
+/* Button in an alert confirming discarding changes
+   Button in an alert confirming discaring changes */
 "postEditor.closeConfirmationAlert.discardChanges" = "변경사항 폐기";
 
 /* Button in an alert confirming discaring a new draft */
 "postEditor.closeConfirmationAlert.discardDraft" = "임시글 삭제";
 
-/* Button to keep the changes in an alert confirming discaring changes */
+/* Button to keep the changes in an alert confirming discarding changes
+   Button to keep the changes in an alert confirming discaring changes */
 "postEditor.closeConfirmationAlert.keepEditing" = "계속 편집";
 
 /* Button in an alert confirming saving a new draft */
@@ -10353,6 +10618,9 @@ Example: Reply to Pamela Nguyen */
 /* A message for a snackbar informing the user that some media files requires their attention */
 "postEditor.postHasFailingMediaUploadsSnackbar.message" = "일부 미디어 항목을 업로드할 수 없습니다.";
 
+/* Title for the publish button in the post editor navigation bar */
+"postEditor.publishButton.title" = "공개";
+
 /* Editor, notice for successful recovery a trashed post */
 "postEditor.recoverTrashedPost.postRecoveredNoticeTitle" = "글이 임시글로 복원됨";
 
@@ -10373,6 +10641,9 @@ Example: Reply to Pamela Nguyen */
 
 /* Saving draft to generate a preview (status message */
 "postEditor.savingDraftForPreview" = "임시글 저장중…";
+
+/* Title for the update button in the post editor navigation bar */
+"postEditor.updateButton.title" = "업데이트";
 
 /* Empty state description when no post formats are available */
 "postFormatPicker.emptyState.description" = "이 사이트의 글 형식이 구성되지 않았습니다.";
@@ -10645,6 +10916,9 @@ Example: Reply to Pamela Nguyen */
 /* Section header for More Options in Post Settings. Should use the same translation as core WP. */
 "postSettings.moreOptions.header" = "추가 옵션";
 
+/* The title of the Post Settings screen for custom post types. %1$@ is the post type name. */
+"postSettings.navigationTitle.customPostType" = "%1$@ 설정";
+
 /* The title of the Page Settings screen. */
 "postSettings.navigationTitle.page" = "페이지 설정";
 
@@ -10704,6 +10978,9 @@ Example: Reply to Pamela Nguyen */
 
 /* Placeholder value for a publishing date in the prepublishing sheet when the date is not selected */
 "postSettings.publishDateImmediately" = "즉시";
+
+/* Error message shown when saving post settings via REST API fails */
+"postSettings.saveFailed.message" = "변경 사항 저장 실패";
 
 /* Section header for General settings in Post Settings */
 "postSettings.section.general" = "일반";
@@ -10780,6 +11057,9 @@ Example: Reply to Pamela Nguyen */
 /* Navigation bar title of the Post Stats screen */
 "postStats.title" = "게시물 통계";
 
+/* Post status title used in different contexts */
+"postStatus.any.title" = "모두";
+
 /* Post status title */
 "postStatus.deleted.details" = "영구적으로 삭제됨";
 
@@ -10789,38 +11069,38 @@ Example: Reply to Pamela Nguyen */
 /* Post status details */
 "postStatus.draft.details" = "발행 준비 안 됨";
 
-/* Post status title */
+/* Post status title used in different contexts */
 "postStatus.draft.title" = "임시글";
 
 /* Post status details */
 "postStatus.pending.details" = "발행 전 검토 대기 중";
 
-/* Post status title */
+/* Post status title used in different contexts */
 "postStatus.pending.title" = "대기 중";
 
 /* Post status details */
 "postStatus.private.details" = "사이트 관리자와 편집자에게만 표시";
 
-/* Post status title */
+/* Post status title used in different contexts */
 "postStatus.private.title" = "비공개";
 
 /* Post status details */
 "postStatus.published.details" = "모든 사람에게 표시";
 
-/* Post status title */
+/* Post status title used in different contexts */
 "postStatus.published.title" = "발행됨";
 
 /* Post status details */
 "postStatus.scheduled.details" = "선택한 날짜에 자동으로 발행";
 
-/* Post status title */
+/* Post status title used in different contexts */
 "postStatus.scheduled.title" = "예약됨";
 
 /* Post status title */
 "postStatus.trash.details" = "휴지통으로 이동되었지만, 아직 삭제 안 됨";
 
-/* Post status title */
-"postStatus.trash.title" = "삭제됨";
+/* Post status title used in different contexts */
+"postStatus.trash.title" = "휴지통";
 
 /* Button to add a new taxonomy term. %1$@ is the taxonomy name (e.g., 'tags', 'categories'). */
 "postTags.addTag" = "%1$@ 추가";
@@ -11337,9 +11617,6 @@ Example: given a notice format "Following %@" and empty site name, this will be 
 /* Context menu action */
 "reader.postContextMenu.blockUser" = "사용자 차단";
 
-/* Context menu action (placeholder value when blog name not available – should never happen) */
-"reader.postContextMenu.blogDetails" = "블로그 상세 정보";
-
 /* Context menu action */
 "reader.postContextMenu.manageNotifications" = "알림 관리";
 
@@ -11356,9 +11633,6 @@ Example: given a notice format "Following %@" and empty site name, this will be 
 "reader.postContextMenu.reportUser" = "사용자 신고";
 
 /* Context menu action */
-"reader.postContextMenu.showBlog" = "블로그로 이동";
-
-/* Context menu action */
 "reader.postContextMenu.summarize" = "요약";
 
 /* Context menu action to translate post content */
@@ -11366,6 +11640,9 @@ Example: given a notice format "Following %@" and empty site name, this will be 
 
 /* Context menu action */
 "reader.postContextMenu.viewInBrowser" = "브라우저로 보기";
+
+/* Context menu action */
+"reader.postContextMenu.viewSite" = "사이트 보기";
 
 /* Reader post details view placeholder when blog name not avail */
 "reader.postDetails.blog" = "블로그";
@@ -11777,6 +12054,9 @@ Feel free to replace it with other bracket types that you think looks better for
 "shared.button.edit" = "편집";
 
 /* A shared button title used in different contexts */
+"shared.button.notNow" = "지금";
+
+/* A shared button title used in different contexts */
 "shared.button.ok" = "확인";
 
 /* A shared button title used in different contexts */
@@ -12130,12 +12410,14 @@ Feel free to replace it with other bracket types that you think looks better for
 /* Title for site switcher screen */
 "sitePicker.title" = "내 사이트";
 
-/* The plugin author displayed in the plugins list. The first argument is plugin author name
-   The plugin version displayed in the plugins list. The first argument is plugin version */
+/* The plugin author displayed in the plugins list. The first argument is plugin author name */
 "sitePluginsList.item.author" = "제작자: %@";
 
 /* The message displayed when a plugin has no description */
 "sitePluginsList.item.noDescriptionAvailable" = "플러그인 제작자가 이 플러그인에 대한 설명을 제공하지 않았습니다.";
+
+/* The plugin version displayed in the plugins list. The first argument is plugin version */
+"sitePluginsList.item.version" = "버전: %@";
 
 /* Button to activate a plugin */
 "sitePluginsList.itemAction.activate" = "활성화";
@@ -12151,6 +12433,15 @@ Feel free to replace it with other bracket types that you think looks better for
 
 /* Title for screen to select the privacy options for a blog */
 "siteSettings.privacy.title" = "개인정보";
+
+/* Explanation for why the 'Use theme styles' toggle is disabled when the site doesn't have a block theme */
+"siteSettings.themeStyles.footer.blockThemeSuggested" = "사이트에서 블록 테마를 사용하고 있지 않으므로 편집기가 콘텐츠와 올바르게 일치하지 않을 수 있습니다. 문제가 해결되지 않으면 편집기 스타일을 비활성화할 수 있습니다.";
+
+/* Explanation for the option to enable theme styles when the feature is available */
+"siteSettings.themeStyles.footer.enabled" = "블록 편집기를 테마와 비슷하게 만듭니다.";
+
+/* Explanation for why the 'Use theme styles' toggle is disabled when the site doesn't have the Gutenberg plugin */
+"siteSettings.themeStyles.footer.gutenbergRequired" = "사이트에 Gutenberg 플러그인을 설치하여 테마 스타일 지원을 활성화하세요.";
 
 /* Format string for adding a new taxonomy term. %1$@ is the taxonomy name. */
 "siteTaxonomy.addNew.format" = "%1$@ 추가";
@@ -12773,15 +13064,6 @@ Feel free to replace it with other bracket types that you think looks better for
 
 /* Title for the time zone selector */
 "timeZoneSelector.title" = "시간대";
-
-/* Action button title to enable new stats from tip */
-"tips.newStats.action" = "지금 활성화";
-
-/* Tip for new stats feature */
-"tips.newStats.message" = "세련되고 강력한 새 통계를 경험해 보세요. 언제든지 다시 전환할 수 있습니다.";
-
-/* Tip for new stats feature */
-"tips.newStats.title" = "새 통계 체험";
 
 /* Tip for sidebar */
 "tips.sidebar.message" = "오른쪽으로 살짝 밀어 사이트, 뉴스피드, 알림, 프로필을 이용하세요.";

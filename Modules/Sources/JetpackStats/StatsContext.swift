@@ -13,6 +13,8 @@ public struct StatsContext: Sendable {
     public var preprocessAvatar: (@Sendable (URL, CGFloat) -> URL)?
     /// Analytics tracker for monitoring user interactions
     public var tracker: (any StatsTracker)?
+    /// URL to upgrade the site's plan
+    public var upgradeURL: URL?
 
     public init(timeZone: TimeZone, siteID: Int, api: WordPressComRestApi) {
         self.init(timeZone: timeZone, siteID: siteID, service: StatsService(siteID: siteID, api: api, timeZone: timeZone))
@@ -25,18 +27,19 @@ public struct StatsContext: Sendable {
             var calendar = Calendar.current
             calendar.timeZone = timeZone
             return calendar
-
         }()
         self.service = service
         self.formatters = StatsFormatters(timeZone: timeZone)
         self.preprocessAvatar = nil
         self.tracker = nil
+        self.upgradeURL = nil
     }
 
     public static let demo: StatsContext = {
         var context = StatsContext(timeZone: .current, siteID: 1, service: MockStatsService())
 #if DEBUG
         context.tracker = MockStatsTracker.shared
+        context.upgradeURL = URL(string: "https://wordpress.com/pricing/")
 #endif
         return context
     }()

@@ -1,4 +1,5 @@
 import Foundation
+import CoreData
 import WordPressShared
 
 /// `TaggedManagedObjectID` is an `NSManagedObjectID` wrapper that also contains the model type of the `NSManagedObjectID`.
@@ -91,5 +92,4 @@ public extension NSManagedObjectContext {
             throw error
         }
     }
-
 }

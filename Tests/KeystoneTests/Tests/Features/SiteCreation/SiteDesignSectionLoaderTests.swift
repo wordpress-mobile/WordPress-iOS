@@ -135,5 +135,4 @@ class SiteDesignSectionLoaderTests: XCTestCase {
         let sectionOne = sections[0]
         XCTAssertEqual(sectionOne.thumbnailSize, SiteDesignCategoryThumbnailSize.category.value)
     }
-
 }

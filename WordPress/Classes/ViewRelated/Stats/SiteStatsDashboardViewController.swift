@@ -185,6 +185,14 @@ public class SiteStatsDashboardViewController: UIViewController {
         JetpackFeaturesRemovalCoordinator.presentOverlayIfNeeded(in: self, source: .stats)
     }
 
+    public override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
+
+        NewStatsAnnouncementPresenter.presentIfNeeded(in: self) { [weak self] in
+            self?.enableNewStats()
+        }
+    }
+
     func configureNavBar() {
         // Clean up previous observer
         navigationItemObserver?.invalidate()
@@ -200,17 +208,10 @@ public class SiteStatsDashboardViewController: UIViewController {
             statsMenuButton.menu = createStatsMenu()
 
             // Set up observer for navigation item changes
-            navigationItemObserver = trafficTableViewController.navigationItem.observe(\.trailingItemGroups, options: [.initial, .new]) { [weak self] navigationItem, _ in
+            navigationItemObserver = trafficTableViewController.navigationItem.observe(\.trailingItemGroups, options: [.initial, .new]) { [weak self] _, _ in
                 guard let self else { return }
                 DispatchQueue.main.async {
                     self.updateParentNavigationItems(with: self.trafficTableViewController)
-                }
-            }
-
-            // Show tip for new stats if available and not enabled
-            if !FeatureFlag.newStats.enabled {
-                DispatchQueue.main.asyncAfter(deadline: .now() + .seconds(1)) {
-                    self.showNewStatsTip()
                 }
             }
         case .ads:
@@ -325,23 +326,6 @@ public class SiteStatsDashboardViewController: UIViewController {
         // Show notice indicating the change
         let message = isUsingMockData ? "Using mock data" : "Using real data"
         Notice(title: message).post()
-    }
-
-    private func showNewStatsTip() {
-        tipObserver?.cancel()
-        tipObserver = registerTipPopover(
-            AppTips.NewStatsTip(),
-            sourceItem: statsMenuButton,
-            arrowDirection: .up
-        ) { [weak self] action in
-            guard let self else { return }
-            if action.id == "try-new-stats" {
-                self.enableNewStats()
-                if self.presentedViewController is TipUIPopoverViewController {
-                    self.dismiss(animated: true)
-                }
-            }
-        }
     }
 
     private func showFeedbackView() {

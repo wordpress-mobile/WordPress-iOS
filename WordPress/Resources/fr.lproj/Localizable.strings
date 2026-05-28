@@ -1,4 +1,4 @@
-/* Translation-Revision-Date: 2026-01-28 16:54:09+0000 */
+/* Translation-Revision-Date: 2026-03-26 15:59:08+0000 */
 /* Plural-Forms: nplurals=2; plural=n > 1; */
 /* Generator: GlotPress/4.0.3 */
 /* Language: fr */
@@ -1868,7 +1868,6 @@ translators: %s: Block name e.g. \"Image block\" */
    Done. Action.
    Menu button title for finishing editing the Menu name.
    Tapping a button with this label allows the user to exit the Site Creation flow
-   Title for a Done button.
    Title for button that will dismiss this view
    Title for the button that will dismiss this view. */
 "Done" = "Terminé";
@@ -3235,9 +3234,6 @@ translators: %s: Block name e.g. \"Image block\" */
 /* Text displayed while loading the scan section for a site */
 "Loading Scan..." = "Chargement de l’analyse…";
 
-/* Displayed while a comment is being loaded. */
-"Loading comment..." = "Chargement des commentaires&hellip;";
-
 /* Menus label text displayed when a menu is loading. */
 "Loading menu..." = "Chargement du menu en cours...";
 
@@ -3324,9 +3320,6 @@ translators: %s: Block name e.g. \"Image block\" */
 
 /* No comment provided by engineer. */
 "Main Navigation" = "Navigation principale";
-
-/* Explanation for the option to enable theme styles */
-"Make the block editor look like your theme." = "Faire ressembler l’éditeur de blocs à votre thème.";
 
 /* No comment provided by engineer. */
 "Make your content stand out by adding images, gifs, videos, and embedded media to your pages." = "Faites ressortir votre contenu en ajoutant des images, des gifs, des vidéos ou des médias embarqués à vos pages.";
@@ -7204,6 +7197,9 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Feature name for the block editor in application password required prompt */
 "applicationPasswordRequired.feature.blockEditor" = "Éditeur de blocs";
 
+/* Feature name for managing custom post types in the app */
+"applicationPasswordRequired.feature.customPosts" = "Types de publication personnalisés";
+
 /* Feature name for managing terms and taxonomies in the app */
 "applicationPasswordRequired.feature.customTaxonomies" = "Gestion des taxonomies";
 
@@ -7367,6 +7363,27 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Action shown in a bottom notice to dismiss it. */
 "blogDashboard.dismiss" = "Ignorer";
 
+/* Error message shown when the active theme cannot be found for a site. */
+"blogDetails.activeThemeNotFound.errorDescription" = "Le thème actif est introuvable pour ce site.";
+
+/* Button title to connect Jetpack in XML-RPC disabled alert */
+"blogDetails.xmlrpcDisabled.alert.connectJetpack" = "Connecter Jetpack";
+
+/* Description explaining options to restore functionality when XML-RPC is disabled */
+"blogDetails.xmlrpcDisabled.alert.description" = "XML-RPC est désactivé sur votre site. Actuellement, certaines fonctionnalités de l’application ont besoin de ce composant. Connectez Jetpack ou activez XML-RPC pour accéder à toutes les fonctionnalités.";
+
+/* Button title to learn more about XML-RPC being disabled */
+"blogDetails.xmlrpcDisabled.alert.learnMore" = "En savoir plus";
+
+/* Title for the XML-RPC disabled alert */
+"blogDetails.xmlrpcDisabled.alert.title" = "XML-RPC désactivé";
+
+/* Subtitle for the XML-RPC disabled card on blog details */
+"blogDetails.xmlrpcDisabled.card.subtitle" = "Certaines fonctionnalités peuvent être limitées";
+
+/* Title for the XML-RPC disabled card on blog details */
+"blogDetails.xmlrpcDisabled.card.title" = "XML-RPC désactivé";
+
 /* Badge title in site list */
 "blogList.siteBadge.staging" = "Préproduction";
 
@@ -7410,7 +7427,7 @@ Note that the word 'go' here should have a closer meaning to 'start' rather than
 /* Title of the set goals button in the Blogging Reminders Settings flow. */
 "bloggingRemindersPrompt.intro.continueButton" = "Définir des rappels";
 
-/* Description on the first screen of the Blogging Reminders Settings flow called aftet post publishing. */
+/* Description on the first screen of the Blogging Reminders Settings flow called after post publishing. */
 "bloggingRemindersPrompt.intro.details" = "Configurez vos rappels de blog les jours où vous souhaitez publier.";
 
 /* Title of the Blogging Reminders Settings screen. */
@@ -7809,6 +7826,111 @@ Example: Reply to Pamela Nguyen */
 /* Create Sheet button title */
 "createSheet.post" = "Article";
 
+/* Error message shown when the post was modified by another user while editing */
+"customPostEditor.error.conflict.message" = "L’article que vous essayez d’enregistrer a été modifié depuis.";
+
+/* Menu action to promote a post with Blaze */
+"customPostList.action.blaze" = "Promouvoir avec Blaze";
+
+/* Menu action to view post comments */
+"customPostList.action.comments" = "Commentaires";
+
+/* Menu action to permanently delete a trashed post */
+"customPostList.action.deletePermanently" = "Supprimer définitivement";
+
+/* Menu action to change a post's status to draft */
+"customPostList.action.moveToDraft" = "Passer en brouillon";
+
+/* Menu action to move a post to trash */
+"customPostList.action.moveToTrash" = "Déplacer vers la corbeille";
+
+/* Menu action to publish a draft or pending post */
+"customPostList.action.publish" = "Publier";
+
+/* Menu action to open post settings */
+"customPostList.action.settings" = "Réglages";
+
+/* Menu action to view post statistics */
+"customPostList.action.stats" = "Statistiques";
+
+/* Accessibility label for the author filter button in the custom post list */
+"customPostList.authorFilter.accessibilityLabel" = "Filtre d’auteur";
+
+/* Menu item to show posts from all authors in the custom post list */
+"customPostList.authorFilter.everyone" = "Tout le monde";
+
+/* Menu item to show only the current user's posts in the custom post list */
+"customPostList.authorFilter.mine" = "Les miens";
+
+/* Accessibility value when the author filter shows posts from all authors */
+"customPostList.authorFilter.showingEveryone" = "Afficher les articles de tout le monde";
+
+/* Accessibility value when the author filter shows only the current user's posts */
+"customPostList.authorFilter.showingMine" = "N’afficher que mes articles";
+
+/* Badge label shown on the homepage row in the custom post list for pages */
+"customPostList.badge.homepage" = "Page d’accueil";
+
+/* Badge shown in the post list for sticky posts */
+"customPostList.badge.sticky" = "Épinglé";
+
+/* Message for the confirmation alert when permanently deleting a post */
+"customPostList.deleteConfirmation.message" = "Cette action est irréversible.";
+
+/* Title for the confirmation alert when permanently deleting a post */
+"customPostList.deleteConfirmation.title" = "Supprimer définitivement ?";
+
+/* Empty state message when no custom posts exist. %1$@ is the post type name (e.g., 'Podcasts', 'Products'). */
+"customPostList.emptyState.message" = "Pas de %1$@";
+
+/* Message for the confirmation alert when trashing a published post */
+"customPostList.trashConfirmation.message" = "Cet article est publié et visible par les visiteurs. Voulez-vous vraiment le déplacer vers la corbeille ?";
+
+/* Title for the confirmation alert when trashing a published post */
+"customPostList.trashConfirmation.title" = "Déplacer vers la corbeille ?";
+
+/* Placeholder title for posts without a title */
+"customPostList.untitled" = "(sans titre)";
+
+/* Title for the parent page picker screen for custom post types */
+"customPostParentPicker.title" = "Page parente";
+
+/* Option to set a post as top level (no parent) */
+"customPostParentPicker.topLevel" = "Niveau supérieur";
+
+/* Description for the top level option in the parent page picker, indicating this page will have no parent */
+"customPostParentPicker.topLevel.description" = "Aucune page parente";
+
+/* Tab title for showing all posts regardless of status */
+"customPostTab.all" = "Tout";
+
+/* Tab title for draft posts */
+"customPostTab.drafts" = "Brouillons";
+
+/* Tab title for published posts */
+"customPostTab.published" = "Publié";
+
+/* Tab title for scheduled posts */
+"customPostTab.scheduled" = "Planifié";
+
+/* Menu item title for sending feedback on the custom post types screen */
+"customPostTab.sendFeedback" = "Envoyer un commentaire";
+
+/* Tab title for trashed posts */
+"customPostTab.trash" = "Corbeille";
+
+/* Empty state message when there are no custom post types to display */
+"customPostTypes.emptyState.message" = "Aucun type d’article personnalisé";
+
+/* Accessibility label for the button to pin a custom post type */
+"customPostTypes.pin.accessibilityLabel" = "Épingler";
+
+/* Title for the Custom Post Types screen */
+"customPostTypes.title" = "Plus";
+
+/* Accessibility label for the button to unpin a custom post type */
+"customPostTypes.unpin.accessibilityLabel" = "Désépingler";
+
 /* Customize Insights description */
 "customizeInsightsCell.content" = "Créez votre propre tableau de bord personnalisé et choisissez quels rapports afficher. Concentrez-vous sur les données qui vous importent le plus.";
 
@@ -7941,11 +8063,17 @@ Example: Reply to Pamela Nguyen */
 /* Boolean User Defaults Debug Menu screen title */
 "debugMenu.booleanUserDefaults.title" = "Valeurs booléennes par défaut de l’utilisateur";
 
+/* Debug Menu label for image cache size */
+"debugMenu.caches.imageCache" = "Cache d’images";
+
 /* Feature flags menu item */
 "debugMenu.featureFlags" = "Étiquettes de fonctionnalités";
 
 /* Debug Menu action for TipKit */
 "debugMenu.hideAllTips" = "Masquer toutes les astuces";
+
+/* Debug Menu item title */
+"debugMenu.item.logs" = "Journaux";
 
 /* Title of the screen that allows the user to change the Reader CSS URL for debug builds */
 "debugMenu.readerCellTitle" = "URL du CSS du Lecteur";
@@ -8672,8 +8800,14 @@ Example: Reply to Pamela Nguyen */
 /* Title of the primary button shown after the Jetpack plugin has been installed. Tapping on the button dismisses the installation screen. */
 "jetpack.install-flow.success.primaryButtonText" = "Terminé";
 
+/* Message asking the user to install Jetpack to access all app features */
+"jetpack.install.allFeatures.description" = "Pour débloquer toutes les fonctionnalités de l’application, vous devez installer l’extension Jetpack.";
+
 /* Title of a button for connecting user account to Jetpack. */
 "jetpack.install.connectUser.button.title" = "Connecter votre compte utilisateur\/utilisatrice";
+
+/* Message asking the user to connect Jetpack to access all app features */
+"jetpack.install.connectUser.bypassXMLRPC.description" = "Pour débloquer toutes les fonctionnalités de l’application, vous devez connecter l’extension Jetpack à votre compte utilisateur.";
 
 /* Message asking the user if they want to set up Jetpack from notifications */
 "jetpack.install.connectUser.notifications.description" = "Pour recevoir des notifications utiles sur votre téléphone à partir de votre site WordPress, vous devez vous connecter à votre compte utilisateur.";
@@ -8949,6 +9083,9 @@ Example: Reply to Pamela Nguyen */
 /* Last 12 weeks (84 days) date range */
 "jetpackStats.calendar.last12Weeks" = "Douze dernières semaines";
 
+/* Last 14 days date range */
+"jetpackStats.calendar.last14Days" = "14 derniers jours";
+
 /* Last 28 days date range */
 "jetpackStats.calendar.last28Days" = "28 derniers jours";
 
@@ -9008,6 +9145,9 @@ Example: Reply to Pamela Nguyen */
 
 /* Line chart type */
 "jetpackStats.chart.lineChart" = "Lignes";
+
+/* Label for aggregated 'Other' segment in pie charts */
+"jetpackStats.chart.other" = "Autre";
 
 /* Show chart data menu item */
 "jetpackStats.chart.showData" = "Afficher les données";
@@ -9102,9 +9242,6 @@ Example: Reply to Pamela Nguyen */
 /* Option to turn off period comparison */
 "jetpackStats.datePicker.comparisonOff" = "Aucune comparaison";
 
-/* Title for custom date range picker */
-"jetpackStats.datePicker.customRange" = "Plage personnalisée";
-
 /* Menu item for custom date range picker */
 "jetpackStats.datePicker.customRangeMenu" = "Plage personnalisée…";
 
@@ -9123,6 +9260,9 @@ Example: Reply to Pamela Nguyen */
 /* Label for quick period selection */
 "jetpackStats.datePicker.quickPeriodsForStartDate" = "Périodes rapides pour la date de début";
 
+/* Title for custom date range picker */
+"jetpackStats.datePicker.selectRange" = "Sélectionner une plage";
+
 /* Site time zone header */
 "jetpackStats.datePicker.siteTimeZone" = "Fuseau horaire du site";
 
@@ -9138,6 +9278,15 @@ Example: Reply to Pamela Nguyen */
 /* Title for stats date range control tip */
 "jetpackStats.dateRangeTip.title" = "Naviguez dans le temps";
 
+/* Device breakdown by browser */
+"jetpackStats.deviceBreakdowns.browser" = "Navigateur";
+
+/* Device breakdown by platform/OS */
+"jetpackStats.deviceBreakdowns.operatingSystem" = "Système d’exploitation";
+
+/* Device breakdown by screen size */
+"jetpackStats.deviceBreakdowns.screensize" = "Taille de l’écran";
+
 /* Section title for the list of child links */
 "jetpackStats.externalLinkDetails.childLinks" = "Sous-liens";
 
@@ -9146,6 +9295,12 @@ Example: Reply to Pamela Nguyen */
 
 /* Title for the external link details screen */
 "jetpackStats.externalLinkDetails.title" = "Lien externe";
+
+/* Button to explore plans when a feature is gated */
+"jetpackStats.featureGate.explorePlans" = "Découvrir les plans";
+
+/* Message shown when a stats feature is gated behind a paid plan */
+"jetpackStats.featureGate.message" = "Mettez votre plan à niveau pour accéder à des analyses avancées";
 
 /* Automatic granularity option */
 "jetpackStats.granularity.automatic" = "Automatique";
@@ -9258,6 +9413,9 @@ Example: Reply to Pamela Nguyen */
 /* Clicks data type (external links) */
 "jetpackStats.siteDataTypes.clicks" = "Clics";
 
+/* Devices data type */
+"jetpackStats.siteDataTypes.devices" = "Appareils";
+
 /* File downloads data type */
 "jetpackStats.siteDataTypes.fileDownloads" = "Téléchargements de fichiers";
 
@@ -9333,6 +9491,9 @@ Example: Reply to Pamela Nguyen */
 /* Table column title for Top List card */
 "jetpackStats.topListColumnTitle.clicks" = "Lien externe";
 
+/* Table column title for Devices Top List card */
+"jetpackStats.topListColumnTitle.devices" = "Appareil";
+
 /* Table column title for Top List card */
 "jetpackStats.topListColumnTitle.fileDownloads" = "Fichier";
 
@@ -9348,8 +9509,62 @@ Example: Reply to Pamela Nguyen */
 /* Table column title for Top List card */
 "jetpackStats.topListColumnTitle.searchTerms" = "Terme";
 
+/* Table column title for UTM Top List card */
+"jetpackStats.topListColumnTitle.utm" = "Campagne";
+
 /* Table column title for Top List card */
 "jetpackStats.topListColumnTitle.videos" = "Vidéo";
+
+/* Plural post count for UTM metrics. %1$d is the number. */
+"jetpackStats.utmMetricDetails.postCount.plural" = "%1$d articles";
+
+/* Singular post count for UTM metrics. %1$d is the number. */
+"jetpackStats.utmMetricDetails.postCount.singular" = "%1$d article";
+
+/* Title for the UTM campaign details screen */
+"jetpackStats.utmMetricDetails.title" = "Campagne UTM";
+
+/* Section title for top posts from this UTM campaign */
+"jetpackStats.utmMetricDetails.topPosts" = "Meilleurs articles";
+
+/* UTM parameter for campaign only */
+"jetpackStats.utmParamGroupings.campaign" = "Campagne";
+
+/* UTM parameter for medium only */
+"jetpackStats.utmParamGroupings.medium" = "Canal";
+
+/* Number of ads served. %@ is the ads count. */
+"jetpackStats.wordAds.adsServed.count" = "%@ publicités affichées";
+
+/* Total earnings from WordAds */
+"jetpackStats.wordAds.earnings" = "Revenus";
+
+/* Button to learn more about WordAds earnings */
+"jetpackStats.wordAds.learnMore" = "En savoir plus";
+
+/* Message shown when there are no payment records */
+"jetpackStats.wordAds.noPaymentsYet" = "Aucun paiement pour l’instant";
+
+/* Outstanding amount owed from WordAds */
+"jetpackStats.wordAds.outstanding" = "En attente";
+
+/* Amount paid out from WordAds earnings */
+"jetpackStats.wordAds.paid" = "Payé";
+
+/* Title for payment history card and screen */
+"jetpackStats.wordAds.paymentsHistory" = "Historique de paiement";
+
+/* Title for WordAds total earnings card */
+"jetpackStats.wordAds.totalEarnings" = "Revenus totaux";
+
+/* Number of ads served */
+"jetpackStats.wordAdsMetrics.adsServed" = "Publicités affichées";
+
+/* Average cost per mille (thousand impressions) */
+"jetpackStats.wordAdsMetrics.averageCPM" = "CPM moyen";
+
+/* Revenue from ads */
+"jetpackStats.wordAdsMetrics.revenue" = "Chiffre d’affaires";
 
 /* Title for a call-to-action button on the Jetpack install card. */
 "jetpackinstallcard.button.learn" = "Lire la suite";
@@ -9855,6 +10070,42 @@ Example: Reply to Pamela Nguyen */
 /* Menu title for the visit site option */
 "mySite.siteActions.visitSite" = "Aller sur le site";
 
+/* Button to confirm to switch to the New Stats announcement screen */
+"newStats.announcement.continueButton" = "Commencer";
+
+/* Disclosure at the bottom of the New Stats announcement screen, informing users they can opt out */
+"newStats.announcement.disclosure" = "Prêt(e) à procéder au changement ? Vous pouvez désactiver les nouvelles statistiques à partir du menu Plus de l’onglet Statistiques.";
+
+/* Feature description: navigation moved to the bottom for thumb-friendly access */
+"newStats.announcement.feature.bottomNav.description" = "La navigation et le sélecteur de date sont désormais en bas de l’écran, à l’endroit où se trouve votre pouce.";
+
+/* Feature title: navigation moved to the bottom */
+"newStats.announcement.feature.bottomNav.title" = "Plus facile d’accès";
+
+/* Feature description: flexible date picker with presets, custom ranges, and comparisons */
+"newStats.announcement.feature.datePicker.description" = "Choisissez parmi les préréglages courants ou définissez une plage de dates personnalisée avec une période de comparaison, le tout en un clic.";
+
+/* Feature title: flexible date picker */
+"newStats.announcement.feature.datePicker.title" = "Toute période, toute plage";
+
+/* Feature description: feature parity with the web version of Stats */
+"newStats.announcement.feature.parity.description" = "Appareils, UTM, emplacements, WordAds - les mêmes données que celles que vous obtenez sur WordPress.com.";
+
+/* Feature title: feature parity with the web version of Stats */
+"newStats.announcement.feature.parity.title" = "À égalité avec le Web";
+
+/* Feature description: trends shown for all metrics with comparison to previous period */
+"newStats.announcement.feature.trends.description" = "Chaque indicateur montre sa tendance par rapport à la période précédente, de sorte que vous savez toujours si votre croissance est bonne.";
+
+/* Feature title: trends visible for all metrics */
+"newStats.announcement.feature.trends.title" = "Aperçu des tendances";
+
+/* Subtitle for the New Stats announcement screen */
+"newStats.announcement.subtitle" = "Une meilleure façon de comprendre les performances de votre site - maintenant activé par défaut.";
+
+/* Title for the New Stats announcement screen */
+"newStats.announcement.title" = "Nouvelles statistiques";
+
 /* A no results message displayed on the atomic logs screen. */
 "noLogs.empty" = "Aucune entrée de journal dans cet intervalle";
 
@@ -10086,6 +10337,9 @@ Example: Reply to Pamela Nguyen */
 /* A title for the log severity level */
 "phpLogs.severityWarning" = "Attention";
 
+/* Error message when a pinned custom post type cannot be found. %1$@ is the post type name. */
+"pinnedPostType.error.notFound" = "« %1$@ » n’est pas disponible sur ce site.";
+
 /* Title for the plan selection view */
 "planSelection.title" = "Plans";
 
@@ -10200,13 +10454,15 @@ Example: Reply to Pamela Nguyen */
 /* Navigation title for post discussion settings */
 "postDiscussion.title" = "Commentaires";
 
-/* Button in an alert confirming discaring changes */
+/* Button in an alert confirming discarding changes
+   Button in an alert confirming discaring changes */
 "postEditor.closeConfirmationAlert.discardChanges" = "Abandonner les modifications";
 
 /* Button in an alert confirming discaring a new draft */
 "postEditor.closeConfirmationAlert.discardDraft" = "Abandonner le brouillon";
 
-/* Button to keep the changes in an alert confirming discaring changes */
+/* Button to keep the changes in an alert confirming discarding changes
+   Button to keep the changes in an alert confirming discaring changes */
 "postEditor.closeConfirmationAlert.keepEditing" = "Poursuivre l’édition";
 
 /* Button in an alert confirming saving a new draft */
@@ -10254,6 +10510,9 @@ Example: Reply to Pamela Nguyen */
 /* A message for a snackbar informing the user that some media files requires their attention */
 "postEditor.postHasFailingMediaUploadsSnackbar.message" = "Échec du chargement de certains éléments multimédias";
 
+/* Title for the publish button in the post editor navigation bar */
+"postEditor.publishButton.title" = "Publier";
+
 /* Editor, notice for successful recovery a trashed post */
 "postEditor.recoverTrashedPost.postRecoveredNoticeTitle" = "Article rétabli en tant que brouillon";
 
@@ -10274,6 +10533,9 @@ Example: Reply to Pamela Nguyen */
 
 /* Saving draft to generate a preview (status message */
 "postEditor.savingDraftForPreview" = "Enregistrement du brouillon…";
+
+/* Title for the update button in the post editor navigation bar */
+"postEditor.updateButton.title" = "Mettre à jour";
 
 /* Empty state description when no post formats are available */
 "postFormatPicker.emptyState.description" = "Les formats d’article n’ont pas été configurés pour ce site.";
@@ -10537,6 +10799,9 @@ Example: Reply to Pamela Nguyen */
 /* Section header for More Options in Post Settings. Should use the same translation as core WP. */
 "postSettings.moreOptions.header" = "Plus d’options";
 
+/* The title of the Post Settings screen for custom post types. %1$@ is the post type name. */
+"postSettings.navigationTitle.customPostType" = "%1$@ : réglages";
+
 /* The title of the Page Settings screen. */
 "postSettings.navigationTitle.page" = "Réglages de la page";
 
@@ -10582,8 +10847,14 @@ Example: Reply to Pamela Nguyen */
 /* Label for the post format field. Should be the same as WP core. */
 "postSettings.postFormat.label" = "Format d’article";
 
+/* Label for the post ID field in Post Settings */
+"postSettings.postID.label" = "ID :";
+
 /* Placeholder value for a publishing date in the prepublishing sheet when the date is not selected */
 "postSettings.publishDateImmediately" = "Immédiatement";
+
+/* Error message shown when saving post settings via REST API fails */
+"postSettings.saveFailed.message" = "Échec de l’enregistrement des modifications";
 
 /* Section header for General settings in Post Settings */
 "postSettings.section.general" = "Tous publics";
@@ -10651,6 +10922,9 @@ Example: Reply to Pamela Nguyen */
 /* Navigation bar title of the Post Stats screen */
 "postStats.title" = "Statistiques de l’article";
 
+/* Post status title used in different contexts */
+"postStatus.any.title" = "Tout";
+
 /* Post status title */
 "postStatus.deleted.details" = "Supprimé définitivement";
 
@@ -10660,35 +10934,35 @@ Example: Reply to Pamela Nguyen */
 /* Post status details */
 "postStatus.draft.details" = "Pas encore prêt à publier du contenu";
 
-/* Post status title */
+/* Post status title used in different contexts */
 "postStatus.draft.title" = "Brouillon";
 
 /* Post status details */
 "postStatus.pending.details" = "En attente de relecture avant publication";
 
-/* Post status title */
+/* Post status title used in different contexts */
 "postStatus.pending.title" = "En attente";
 
-/* Post status title */
+/* Post status title used in different contexts */
 "postStatus.private.title" = "Privé";
 
 /* Post status details */
 "postStatus.published.details" = "Visible pour tout le monde";
 
-/* Post status title */
+/* Post status title used in different contexts */
 "postStatus.published.title" = "Publié";
 
 /* Post status details */
 "postStatus.scheduled.details" = "Publier automatiquement à une date choisie";
 
-/* Post status title */
+/* Post status title used in different contexts */
 "postStatus.scheduled.title" = "Planifié";
 
 /* Post status title */
 "postStatus.trash.details" = "Déplacé vers la corbeille, mais pas encore supprimé";
 
-/* Post status title */
-"postStatus.trash.title" = "Déplacé vers la corbeille";
+/* Post status title used in different contexts */
+"postStatus.trash.title" = "Corbeille";
 
 /* Button to add a new taxonomy term. %1$@ is the taxonomy name (e.g., 'tags', 'categories'). */
 "postTags.addTag" = "Ajouter %1$@";
@@ -11199,9 +11473,6 @@ Example: given a notice format "Following %@" and empty site name, this will be 
 /* Context menu action */
 "reader.postContextMenu.blockUser" = "Bloquer l’utilisateur";
 
-/* Context menu action (placeholder value when blog name not available – should never happen) */
-"reader.postContextMenu.blogDetails" = "Détails du blog";
-
 /* Context menu action */
 "reader.postContextMenu.manageNotifications" = "Gérer les notifications";
 
@@ -11218,9 +11489,6 @@ Example: given a notice format "Following %@" and empty site name, this will be 
 "reader.postContextMenu.reportUser" = "Signaler l’utilisateur";
 
 /* Context menu action */
-"reader.postContextMenu.showBlog" = "Accéder au blog";
-
-/* Context menu action */
 "reader.postContextMenu.summarize" = "Synthétiser";
 
 /* Context menu action to translate post content */
@@ -11228,6 +11496,9 @@ Example: given a notice format "Following %@" and empty site name, this will be 
 
 /* Context menu action */
 "reader.postContextMenu.viewInBrowser" = "Voir dans le navigateur";
+
+/* Context menu action */
+"reader.postContextMenu.viewSite" = "Voir le site";
 
 /* Reader post details view placeholder when blog name not avail */
 "reader.postDetails.blog" = "blog";
@@ -11627,6 +11898,9 @@ Feel free to replace it with other bracket types that you think looks better for
 "shared.button.edit" = "Modifier";
 
 /* A shared button title used in different contexts */
+"shared.button.notNow" = "Plus tard";
+
+/* A shared button title used in different contexts */
 "shared.button.ok" = "OK";
 
 /* A shared button title used in different contexts */
@@ -11965,12 +12239,14 @@ Feel free to replace it with other bracket types that you think looks better for
 /* Title for site switcher screen */
 "sitePicker.title" = "Mes sites";
 
-/* The plugin author displayed in the plugins list. The first argument is plugin author name
-   The plugin version displayed in the plugins list. The first argument is plugin version */
+/* The plugin author displayed in the plugins list. The first argument is plugin author name */
 "sitePluginsList.item.author" = "Par %@";
 
 /* The message displayed when a plugin has no description */
 "sitePluginsList.item.noDescriptionAvailable" = "L’auteur de l’extension n’a pas fourni de description pour cette extension.";
+
+/* The plugin version displayed in the plugins list. The first argument is plugin version */
+"sitePluginsList.item.version" = "Version : %@";
 
 /* Button to activate a plugin */
 "sitePluginsList.itemAction.activate" = "Activer";
@@ -11986,6 +12262,15 @@ Feel free to replace it with other bracket types that you think looks better for
 
 /* Title for screen to select the privacy options for a blog */
 "siteSettings.privacy.title" = "Confidentialité";
+
+/* Explanation for why the 'Use theme styles' toggle is disabled when the site doesn't have a block theme */
+"siteSettings.themeStyles.footer.blockThemeSuggested" = "Votre site n’utilise pas de thème basé sur des blocs ; l’éditeur risque donc de ne pas afficher correctement votre contenu. Si l’affichage est incorrect, vous pouvez désactiver les styles de l’éditeur.";
+
+/* Explanation for the option to enable theme styles when the feature is available */
+"siteSettings.themeStyles.footer.enabled" = "Personnalisez l’apparence de l’éditeur de blocs selon votre thème.";
+
+/* Explanation for why the 'Use theme styles' toggle is disabled when the site doesn't have the Gutenberg plugin */
+"siteSettings.themeStyles.footer.gutenbergRequired" = "Installez l’extension Gutenberg sur votre site pour activer la prise en charge des styles de thème.";
 
 /* Format string for adding a new taxonomy term. %1$@ is the taxonomy name. */
 "siteTaxonomy.addNew.format" = "Ajouter %1$@";
@@ -12608,15 +12893,6 @@ Feel free to replace it with other bracket types that you think looks better for
 
 /* Title for the time zone selector */
 "timeZoneSelector.title" = "Fuseau horaire";
-
-/* Action button title to enable new stats from tip */
-"tips.newStats.action" = "Activer maintenant";
-
-/* Tip for new stats feature */
-"tips.newStats.message" = "Découvrez de nouvelles statistiques soignées et puissantes. Changez quand vous voulez.";
-
-/* Tip for new stats feature */
-"tips.newStats.title" = "Essayer les nouvelles statistiques";
 
 /* Tip for sidebar */
 "tips.sidebar.message" = "Balayer vers la droite pour accéder à vos sites, au Lecteur, aux notifications et à votre profil";

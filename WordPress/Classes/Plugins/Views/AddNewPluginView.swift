@@ -137,7 +137,6 @@ struct AddNewPluginView: View {
 
         case .empty:
             Text(Strings.noPluginsFound)
-
         }
     }
 }

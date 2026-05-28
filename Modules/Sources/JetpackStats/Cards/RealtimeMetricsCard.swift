@@ -84,7 +84,8 @@ struct RealtimeMetricsCard: View {
             Text(value)
                 .contentTransition(.numericText())
                 .animation(.spring, value: value)
-                .font(Font.make(.recoleta, textStyle: .title, weight: .medium))
+                .font(Constants.Typography.mediumDisplayFont)
+                .kerning(Constants.Typography.largeDisplayKerning)
                 .foregroundColor(.primary)
         }
         .frame(maxWidth: .infinity, alignment: .leading)

@@ -34,12 +34,12 @@ extension AccountServiceRemoteREST {
         ] as [String: AnyObject]
 
         if let connectParameters {
-            params.merge(connectParameters, uniquingKeysWith: { (current, _) in current })
+            params.merge(connectParameters, uniquingKeysWith: { current, _ in current })
         }
 
-        wordPressComRESTAPI.post(path, parameters: params, success: { (_, _) in
+        wordPressComRESTAPI.post(path, parameters: params, success: { _, _ in
             success()
-        }, failure: { (error, _) in
+        }, failure: { error, _ in
             failure(error)
         })
     }
@@ -73,9 +73,9 @@ extension AccountServiceRemoteREST {
             "service": service.rawValue
         ] as [String: AnyObject]
 
-        wordPressComRESTAPI.post(path, parameters: params, success: { (_, _) in
+        wordPressComRESTAPI.post(path, parameters: params, success: { _, _ in
             success()
-        }, failure: { (error, _) in
+        }, failure: { error, _ in
             failure(error)
         })
     }

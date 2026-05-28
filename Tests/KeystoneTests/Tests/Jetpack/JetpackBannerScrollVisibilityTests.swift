@@ -29,5 +29,4 @@ class JetpackBannerScrollVisibilityTests: XCTestCase {
         // Then
         XCTAssertTrue(hidden)
     }
-
 }

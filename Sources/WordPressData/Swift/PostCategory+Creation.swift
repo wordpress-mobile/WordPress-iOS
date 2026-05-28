@@ -1,4 +1,5 @@
 import Foundation
+import CoreData
 
 public extension PostCategory {
 
@@ -18,5 +19,4 @@ public extension PostCategory {
     static func objc_create(withBlogID id: NSManagedObjectID, in context: NSManagedObjectContext) -> PostCategory? {
         try? create(withBlogID: id, in: context)
     }
-
 }

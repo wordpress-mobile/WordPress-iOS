@@ -767,7 +767,6 @@ public final class WordPressComOAuthClient: NSObject {
 
         return responseDictionary as AnyObject
     }
-
 }
 
 private extension WordPressComOAuthClient {

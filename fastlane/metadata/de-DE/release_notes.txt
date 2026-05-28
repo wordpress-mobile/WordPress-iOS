@@ -1,9 +1,4 @@
-Wir haben ein technisches Update vorgenommen, durch das die Größe deiner App um etwa 6 MB reduziert wird. Wie möchtest du den neu gewonnenen Speicherplatz nutzen?
-
-Es ist jetzt einfacher, die Sichtbarkeitseinstellungen vorhandener Beiträge zu finden, anzuzeigen und zu ändern. Der Button „Fertig“ verschwindet auch nicht mehr, wenn du beim Veröffentlichen eines passwortgeschützten Beitrags das Passwort festlegst.
-
-Das sieht gut aus: Wir haben die Icons für Tastaturkürzel und die Abbildungen aktualisiert, damit sie besser zum Rest der App und zu deinem Gerät passen.
-
-Problem behoben: Die Beitragsvorschau funktioniert jetzt ordnungsgemäß für bestimmte Websites mit Business- und Commerce-Tarif.
-
-Wenn du eine neue selbst gehostete Website hinzufügst, wird du gebeten, dich mit deinem App-Passwort zu authentifizieren. Halte es geheim. Bewahre es sicher auf.
+- Das Aktivitätsprotokoll zeigt jetzt an, wann deine Website mithilfe von KI-Agenten aktualisiert wurde.
+- In den Beitragseinstellungen werden auf der Social Sharing-Karte nur Plattformen angezeigt, die von der App unterstützt werden.
+- Neue Beiträge verwenden das Standardformat für Beiträge anstelle der Standardversion. Du kannst dieses Format in deinen Website-Einstellungen aktualisieren.
+- Wenn deine Website selbst gehostet wird und XML-RPC deaktiviert ist, kannst du Beiträge und Seiten in der App anzeigen. Das ist ziemlich wichtig, wenn wir das so sagen dürfen.

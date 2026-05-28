@@ -34,7 +34,7 @@ struct DomainsService {
         self.productsRemote = ProductServiceRemote(restAPI: remote.wordPressComRestApi)
     }
 
-    /// Refreshes the domains for the specified site.  Since this method takes care of merging the new data into our local
+    /// Refreshes the domains for the specified site. Since this method takes care of merging the new data into our local
     /// persistance layer making it useful to call even without knowing the result, the completion closure is optional.
     ///
     /// - Parameters:

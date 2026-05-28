@@ -707,7 +707,6 @@
    Done. Action.
    Menu button title for finishing editing the Menu name.
    Tapping a button with this label allows the user to exit the Site Creation flow
-   Title for a Done button.
    Title for button that will dismiss this view
    Title for the button that will dismiss this view. */
 "Done" = "Gotowe";
@@ -1243,9 +1242,6 @@
 
 /* Menus label text displayed while menus are loading */
 "Loading Menus..." = "Wczytywanie menu…";
-
-/* Displayed while a comment is being loaded. */
-"Loading comment..." = "Wyczytywanie komentarza…";
 
 /* Menus label text displayed when a menu is loading. */
 "Loading menu..." = "Wczytywanie menu…";

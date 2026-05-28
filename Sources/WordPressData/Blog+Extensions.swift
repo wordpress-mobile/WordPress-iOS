@@ -8,7 +8,7 @@ extension Blog {
     /// The title of the blog
     public var title: String? {
         guard let blogName = settings?.name, !blogName.isEmpty else {
-            return displayURL as String?
+            return displayURL
         }
         return blogName
     }
@@ -24,13 +24,13 @@ extension Blog {
         var sortedFormats: [String] = []
 
         // Add standard format first if it exists
-        if postFormats[PostFormatStandard] != nil {
-            sortedFormats.append(PostFormatStandard)
+        if postFormats[Blog.postFormatStandard] != nil {
+            sortedFormats.append(Blog.postFormatStandard)
         }
 
         // Add remaining formats sorted by their display names
         let nonStandardFormats = postFormats
-            .filter { $0.key != PostFormatStandard }
+            .filter { $0.key != Blog.postFormatStandard }
             .sorted { $0.value.localizedCaseInsensitiveCompare($1.value) == .orderedAscending }
             .map { $0.key }
 

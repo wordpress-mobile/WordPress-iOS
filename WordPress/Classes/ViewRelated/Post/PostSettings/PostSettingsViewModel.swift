@@ -1,19 +1,23 @@
 import Foundation
 import BuildSettingsKit
 import SwiftUI
+import WordPressAPI
 import WordPressData
 import WordPressKit
 import WordPressCore
 import WordPressShared
-import WordPressAPIInternal
 import Combine
 
+/// Post settings view model for Core Data–backed posts and pages (`AbstractPost`).
 @MainActor
-final class PostSettingsViewModel: NSObject, ObservableObject {
-    let post: AbstractPost
+final class PostSettingsViewModel: NSObject, ObservableObject, PostSettingsViewModelProtocol {
+    private let post: AbstractPost
+
+    let blog: Blog
+    let capabilities: PostSettingsCapabilities
     let isStandalone: Bool
-    let context: Context
-    let featuredImageViewModel: PostSettingsFeaturedImageViewModel
+    let context: PostSettingsContext
+    let featuredImageViewModel: PostSettingsFeaturedImageViewModel?
     let client: WordPressClient?
 
     @Published var settings: PostSettings {
@@ -26,23 +30,34 @@ final class PostSettingsViewModel: NSObject, ObservableObject {
     @Published private(set) var hasChanges = false
     @Published private(set) var displayedCategories: [String] = []
     @Published private(set) var displayedTags: [String] = []
+    @Published private(set) var isResolvingTags = false
+    @Published private(set) var isResolvingCustomTerms = false
     @Published private(set) var suggestedTags: [String] = []
     @Published private(set) var customTaxonomies: [SiteTaxonomy] = []
     @Published private(set) var parentPageText: String?
-    @Published private(set) var socialSharingState: SocialSharingSectionState?
+    @Published private(set) var socialSharingState: PostSettingsSocialSharingSectionState?
 
     @Published var isShowingDeletedAlert = false
 
+    /// The content of the post, used for AI excerpt generation.
+    var postContent: String {
+        post.content ?? ""
+    }
+
     var navigationTitle: String {
-        isPost ? Strings.postSettingsTitle : Strings.pageSettingsTitle
+        isPost ? PostSettingsStrings.postSettingsTitle : PostSettingsStrings.pageSettingsTitle
     }
 
     var deletedAlertTitle: String {
-        isPost ? Strings.postDeletedTitle : Strings.pageDeletedTitle
+        isPost ? PostSettingsStrings.postDeletedTitle : PostSettingsStrings.pageDeletedTitle
     }
 
     var deletedAlertMessage: String {
-        isPost ? Strings.postDeletedMessage : Strings.pageDeletedMessage
+        isPost ? PostSettingsStrings.postDeletedMessage : PostSettingsStrings.pageDeletedMessage
+    }
+
+    var isScheduled: Bool {
+        post.getOriginal().status == .scheduled
     }
 
     var authorDisplayName: String {
@@ -67,15 +82,7 @@ final class PostSettingsViewModel: NSObject, ObservableObject {
         guard let date = settings.publishDate else {
             return nil
         }
-        return Self.formattedDate(date, in: timeZone)
-    }
-
-    static func formattedDate(_ date: Date, in timeZone: TimeZone) -> String {
-        let formatter = DateFormatter()
-        formatter.dateStyle = .medium
-        formatter.timeStyle = .short
-        formatter.timeZone = timeZone
-        return formatter.string(from: date)
+        return PostSettingsDateFormatter.formattedDate(date, in: timeZone)
     }
 
     var visibilityText: String {
@@ -84,16 +91,24 @@ final class PostSettingsViewModel: NSObject, ObservableObject {
     }
 
     var slugText: String {
-        settings.slug.isEmpty ? (post.suggested_slug ?? "") : settings.slug
+        settings.slug.isEmpty ? (suggestedSlug ?? "") : settings.slug
+    }
+
+    var suggestedSlug: String? {
+        post.suggested_slug
+    }
+
+    var permalinkTemplate: String? {
+        post.permalinkTemplateURL
     }
 
     var postFormatText: String {
-        guard let post = post as? Post else { return "" }
-        return post.blog.postFormatText(fromSlug: settings.postFormat) ?? NSLocalizedString("Standard", comment: "Default post format")
+        guard capabilities.supportsPostFormats else { return "" }
+        return blog.postFormatText(fromSlug: settings.postFormat) ?? NSLocalizedString("Standard", comment: "Default post format")
     }
 
     var timeZone: TimeZone {
-        post.blog.timeZone ?? TimeZone.current
+        blog.timeZone ?? TimeZone.current
     }
 
     var isDraftOrPending: Bool {
@@ -105,9 +120,10 @@ final class PostSettingsViewModel: NSObject, ObservableObject {
     }
 
     var shouldShowStickyOption: Bool {
+        // Sticky is exclusively a WordPress "post" type feature
         guard isPost else { return false }
         // Show sticky option if blog supports WPComRESTAPI OR user is admin
-        return post.blog.supports(.wpComRESTAPI) || post.blog.isAdmin
+        return blog.supports(.wpComRESTAPI) || blog.isAdmin
     }
 
     var lastEditedText: String? {
@@ -124,16 +140,28 @@ final class PostSettingsViewModel: NSObject, ObservableObject {
         return postID
     }
 
-    enum SocialSharingSectionState {
-        /// The initial prompt to set up connections.
-        case setup(JetpackSocialNoConnectionViewModel)
-        /// The site has existing connections.
-        case connected
+    func parentPagePickerDestination() -> ParentPagePicker? {
+        guard let page = post as? Page else {
+            return nil
+        }
+        return ParentPagePicker(
+            blog: blog,
+            currentPage: page,
+            onSelection: { [weak self] selectedParentPage in
+                self?.settings.parentPageID = selectedParentPage?.postID?.intValue
+                self?.viewController?.navigationController?.popViewController(animated: true)
+            }
+        )
     }
 
-    enum Row {
-        case jetpackAccessLevel
-        case jetpackNewsletterEmailOptions
+    /// Whether the post has a remote representation (used for permalink preview).
+    var hasRemote: Bool {
+        post.hasRemote()
+    }
+
+    var publishButtonTitle: String {
+        let isScheduled = settings.publishDate.map { $0 > .now } ?? false
+        return isScheduled ? PrepublishingSheetStrings.schedule : PrepublishingSheetStrings.publish
     }
 
     private let originalSettings: PostSettings
@@ -149,22 +177,21 @@ final class PostSettingsViewModel: NSObject, ObservableObject {
     /// This is temporary until we can fully migrate to SwiftUI navigation.
     weak var viewController: UIViewController?
 
-    enum Context {
-        case settings
-        case publishing
-    }
+    // MARK: - Initializer
 
     init(
         post: AbstractPost,
         isStandalone: Bool = false,
-        context: Context = .settings,
+        context: PostSettingsContext = .settings,
         preferences: UserPersistentRepository = UserDefaults.standard
     ) {
         self.post = post
+        self.blog = post.blog
+        self.capabilities = post is Post ? .post() : .page()
         self.isStandalone = isStandalone
         self.context = context
         self.preferences = preferences
-        self.client = try? WordPressClient(site: .init(blog: post.blog))
+        self.client = try? WordPressClientFactory.shared.instance(for: .init(blog: post.blog))
 
         // Initialize settings from the post
         let initialSettings = PostSettings(from: post)
@@ -177,7 +204,7 @@ final class PostSettingsViewModel: NSObject, ObservableObject {
         super.init()
 
         // Observe selection changes from featured image view model
-        featuredImageViewModel.$selection.dropFirst().sink { [weak self] media in
+        featuredImageViewModel?.$selection.dropFirst().sink { [weak self] media in
             self?.settings.featuredImageID = media?.mediaID?.intValue
         }.store(in: &cancellables)
 
@@ -187,6 +214,7 @@ final class PostSettingsViewModel: NSObject, ObservableObject {
         refreshCustomTaxonomies()
         refreshParentPageText()
         refreshSocialSharingState()
+        resolveAbstractPostTerms()
 
         WPAnalytics.track(.postSettingsShown)
     }
@@ -195,14 +223,17 @@ final class PostSettingsViewModel: NSObject, ObservableObject {
         refreshSuggestedTags()
     }
 
-    func shouldShow(_ row: Row) -> Bool {
+    func shouldShow(_ row: PostSettingsRow) -> Bool {
+        // FIXME: meta support missing in AnyPostWithEditContext
         switch row {
         case .jetpackAccessLevel:
-            post.blog.supports(.wpComRESTAPI)
+            return blog.supports(.wpComRESTAPI)
         case .jetpackNewsletterEmailOptions:
-            post.blog.supports(.wpComRESTAPI) && context == .publishing
+            return blog.supports(.wpComRESTAPI) && context == .publishing
         }
     }
+
+    // MARK: - Suggested Tags
 
     private func refreshSuggestedTags() {
         guard isSuggestedTagsRefreshNeeded else {
@@ -210,7 +241,8 @@ final class PostSettingsViewModel: NSObject, ObservableObject {
         }
         isSuggestedTagsRefreshNeeded = false
 
-        let task = Task { @MainActor [weak self, post] in
+        let post = self.post
+        let task = Task { @MainActor [weak self] in
             do {
                 let tags = try await TagSuggestionsService().getSuggestedTags(for: post)
                 guard let self else { return }
@@ -232,18 +264,45 @@ final class PostSettingsViewModel: NSObject, ObservableObject {
 
     private func refreshCustomTaxonomies() {
         let postType: String? = switch post {
-            case is Post: "post"
-            case is Page: "page"
-            default: nil
-            }
-        guard let postType else { return }
-
-        let customTaxonomies = try? post.blog.taxonomies
+        case is Post: "post"
+        case is Page: "page"
+        default: nil
+        }
+        guard let postType else {
+            customTaxonomies = []
+            return
+        }
+        let taxonomies = try? blog.taxonomies
             .filter {
                 $0.slug != "post_tag" && $0.slug != "category" && $0.supportedPostTypes.contains(postType)
             }
             .sorted(using: KeyPathComparator(\.name))
-        self.customTaxonomies = customTaxonomies ?? []
+        customTaxonomies = taxonomies ?? []
+    }
+
+    // MARK: - Term Resolution
+
+    /// Resolves tags with `id == 0` in AbstractPost by searching the server.
+    /// AbstractPost stores tags as name-only strings, so they all start with
+    /// `id == 0` and need their IDs resolved.
+    private func resolveAbstractPostTerms() {
+        let pendingNames = settings.tags.filter { $0.id == 0 }.map(\.name)
+        guard !pendingNames.isEmpty else { return }
+
+        // No need to set `isResolvingTags`, because the tag name is available to be displayed on screen.
+
+        Task { [weak self] in
+            guard let self else { return }
+
+            let service = TagsService(blog: blog)
+            let resolved = await service.resolveTerms(named: pendingNames)
+            for (name, existing) in resolved {
+                if let index = settings.tags.firstIndex(where: { $0.name == name }) {
+                    settings.tags[index] = PostSettings.Term(id: Int(existing.id), name: existing.name)
+                }
+            }
+            refreshDisplayedTags()
+        }
     }
 
     // MARK: - Refresh
@@ -267,7 +326,7 @@ final class PostSettingsViewModel: NSObject, ObservableObject {
     }
 
     private func refreshDisplayedTags() {
-        displayedTags = AbstractPost.makeTags(from: settings.tags)
+        displayedTags = settings.tags.map(\.name)
     }
 
     private func refreshParentPageText() {
@@ -306,28 +365,22 @@ final class PostSettingsViewModel: NSObject, ObservableObject {
 
         isSaving = true
         Task {
-            await actuallySave()
-        }
-    }
-
-    private func actuallySave() async {
-        do {
-            let settings = getSettingsToSave(for: self.settings)
-            let coordinator = PostCoordinator.shared
-            if coordinator.isSyncAllowed(for: post) && post.status == settings.status {
-                let revision = post.createRevision()
-                settings.apply(to: revision)
-                coordinator.setNeedsSync(for: revision)
-            } else {
-                // When sync is not allowed, use the changes parameter
-                let changes = settings.makeUpdateParameters(from: post)
-                try await coordinator.save(post, changes: changes)
+            do {
+                let settings = getSettingsToSave(for: self.settings)
+                let coordinator = PostCoordinator.shared
+                if coordinator.isSyncAllowed(for: post) && post.status == settings.status {
+                    let revision = post.createRevision()
+                    settings.apply(to: revision)
+                    coordinator.setNeedsSync(for: revision)
+                } else {
+                    let changes = settings.makeUpdateParameters(from: post)
+                    try await coordinator.save(post, changes: changes)
+                }
+                didSaveChanges()
+                onDismiss?()
+            } catch {
+                isSaving = false
             }
-            didSaveChanges()
-            onDismiss?()
-        } catch {
-            isSaving = false
-            // `PostCoordinator` handles errors by showing an alert when needed
         }
     }
 
@@ -375,11 +428,10 @@ final class PostSettingsViewModel: NSObject, ObservableObject {
 
         switch selection.type {
         case .public, .protected:
-            if post.getOriginal().status == .scheduled {
-                // Keep it scheduled
-            } else {
-                settings.status = .publish
+            if isScheduled {
+                break // Keep it scheduled
             }
+            settings.status = .publish
         case .private:
             settings.status = .publishPrivate
         }
@@ -388,18 +440,18 @@ final class PostSettingsViewModel: NSObject, ObservableObject {
 
     func didSelectSuggestedTag(_ tag: String) {
         suggestedTags.removeAll(where: { $0 == tag })
-        settings.tags.append(",\(tag)")
+        settings.tags.append(PostSettings.Term(id: 0, name: tag))
 
         track(.intelligenceSuggestedTagSelected)
     }
 
-    func didSelectTags(_ tags: String) {
-        settings.tags = tags
+    func didSelectTags(_ tags: [TagsViewModel.SelectedTerm]) {
+        settings.tags = tags.map { PostSettings.Term(id: $0.id, name: $0.name) }
         isSuggestedTagsRefreshNeeded = true
     }
 
-    func didSelectTerms(_ terms: String, forTaxonomySlug taxonomySlug: String) {
-        settings.setTerms(terms, forTaxonomySlug: taxonomySlug)
+    func didSelectTerms(_ terms: [TagsViewModel.SelectedTerm], forTaxonomySlug taxonomySlug: String) {
+        settings.otherTerms[taxonomySlug] = terms.map { PostSettings.Term(id: $0.id, name: $0.name) }
     }
 
     // MARK: - Social Sharing
@@ -409,7 +461,7 @@ final class PostSettingsViewModel: NSObject, ObservableObject {
             socialSharingState = nil
             return
         }
-        if (post.blog.connections ?? []).isEmpty {
+        if (blog.connections ?? []).isEmpty {
             if isSocialConnectionSetupDismissed {
                 socialSharingState = nil
             } else {
@@ -421,23 +473,23 @@ final class PostSettingsViewModel: NSObject, ObservableObject {
     }
 
     private func isPostEligibleForSocialSharing(_ post: Post) -> Bool {
-        BuildSettings.current.brand == .jetpack &&
-        RemoteFeatureFlag.jetpackSocialImprovements.enabled() &&
-        post.status != .publishPrivate &&
-        !getPublicizeServices().isEmpty &&
-        post.blog.supportsPublicize()
+        BuildSettings.current.brand == .jetpack
+            && RemoteFeatureFlag.jetpackSocialImprovements.enabled()
+            && post.status != .publishPrivate
+            && !getPublicizeServices().isEmpty
+            && blog.supports(.publicize)
     }
 
     private func getPublicizeServices() -> [PublicizeService] {
         let context = ContextManager.shared.mainContext
-        return (try? PublicizeService.allPublicizeServices(in: context)) ?? []
+        return (try? PublicizeService.allSupportedServices(in: context)) ?? []
     }
 
     /// Convenience variable representing whether the No Connection view has been dismissed.
     /// Note: the value is stored per site.
     private var isSocialConnectionSetupDismissed: Bool {
         get {
-            guard let blogID = post.blog.dotComID?.intValue,
+            guard let blogID = blog.dotComID?.intValue,
                   let dictionary = preferences.dictionary(forKey: Constants.noConnectionKey) as? [String: Bool],
                   let value = dictionary["\(blogID)"] else {
                 return false
@@ -445,7 +497,7 @@ final class PostSettingsViewModel: NSObject, ObservableObject {
             return value
         }
         set {
-            guard let blogID = post.blog.dotComID?.intValue else {
+            guard let blogID = blog.dotComID?.intValue else {
                 return wpAssertionFailure("blogID missing")
             }
             var dictionary = (preferences.dictionary(forKey: Constants.noConnectionKey) as? [String: Bool]) ?? .init()
@@ -464,7 +516,7 @@ final class PostSettingsViewModel: NSObject, ObservableObject {
     }
 
     private func showSocialSharingSetupScreen() {
-        guard let sharingVC = SharingViewController(blog: post.blog, delegate: self) else {
+        guard let sharingVC = SharingViewController(blog: blog, delegate: self) else {
             return wpAssertionFailure("failed to instantiate SharingVC")
         }
         track(.jetpackSocialNoConnectionCTATapped)
@@ -481,13 +533,13 @@ final class PostSettingsViewModel: NSObject, ObservableObject {
     }
 
     func showSocialSharingOptions() {
-        guard let blogID = post.blog.dotComID?.intValue,
-              let settigns = settings.sharing else {
+        guard let blogID = blog.dotComID?.intValue,
+              let settings = settings.sharing else {
             return wpAssertionFailure("invalid context")
         }
         let optionsVC = PrepublishingSocialAccountsViewController(
             blogID: blogID,
-            model: settigns,
+            model: settings,
             delegate: self,
             coreDataStack: ContextManager.shared
         )
@@ -498,7 +550,7 @@ final class PostSettingsViewModel: NSObject, ObservableObject {
 
     func showCategoriesPicker() {
         let categoriesVC = PostSettingsCategoriesPickerViewController(
-            blog: post.blog,
+            blog: blog,
             selectedCategoryIDs: settings.categoryIDs
         ) { [weak self] newSelectedIDs in
             self?.settings.categoryIDs = newSelectedIDs
@@ -596,46 +648,6 @@ extension PostSettingsViewModel: @MainActor PrepublishingSocialAccountsDelegate 
         settings.message = message ?? ""
         self.settings.sharing = settings
     }
-}
-
-// MARK: - Localized Strings
-
-private enum Strings {
-    static let postSettingsTitle = NSLocalizedString(
-        "postSettings.navigationTitle.post",
-        value: "Post Settings",
-        comment: "The title of the Post Settings screen."
-    )
-
-    static let pageSettingsTitle = NSLocalizedString(
-        "postSettings.navigationTitle.page",
-        value: "Page Settings",
-        comment: "The title of the Page Settings screen."
-    )
-
-    static let postDeletedTitle = NSLocalizedString(
-        "postSettings.postDeleted.title",
-        value: "Post Deleted",
-        comment: "Title of alert when trying to save a deleted post"
-    )
-
-    static let pageDeletedTitle = NSLocalizedString(
-        "postSettings.pageDeleted.title",
-        value: "Page Deleted",
-        comment: "Title of alert when trying to save a deleted page"
-    )
-
-    static let postDeletedMessage = NSLocalizedString(
-        "postSettings.postDeleted.message",
-        value: "This post has been deleted and can no longer be saved.",
-        comment: "Message when trying to save a deleted post"
-    )
-
-    static let pageDeletedMessage = NSLocalizedString(
-        "postSettings.pageDeleted.message",
-        value: "This page has been deleted and can no longer be saved.",
-        comment: "Message when trying to save a deleted page"
-    )
 }
 
 private enum Constants {

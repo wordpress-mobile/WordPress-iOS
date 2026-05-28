@@ -1,6 +1,8 @@
 import UIKit
 import Combine
 import SwiftUI
+import WordPressAPI
+import WordPressCore
 import WordPressData
 import WordPressShared
 import WordPressUI
@@ -17,28 +19,31 @@ enum PublishingSheetResult {
 
 /// A screen shown just before publishing the post and allows you to change
 /// the post settings along with some publishing options like the publish date.
-final class PublishPostViewController: UIHostingController<PublishPostView> {
-    private let viewModel: PostSettingsViewModel
-    private let uploadsViewModel: PostMediaUploadsViewModel
+final class PublishPostViewController<ViewModel: PostSettingsViewModelProtocol>: UIHostingController<AnyView> {
+    private let viewModel: ViewModel
+    private let uploadsViewModel: PostMediaUploadsViewModel?
 
     var onCompletion: ((PublishingSheetResult) -> Void)?
 
-    init(post: AbstractPost, isStandalone: Bool) {
-        let viewModel = PostSettingsViewModel(
-            post: post,
-            isStandalone: isStandalone,
-            context: .publishing
-        )
+    fileprivate init(viewModel: ViewModel, uploadsViewModel: PostMediaUploadsViewModel?, rootView: AnyView) {
         self.viewModel = viewModel
-
-        let uploadsViewModel = PostMediaUploadsViewModel(post: post)
         self.uploadsViewModel = uploadsViewModel
-
-        let view = PublishPostView(viewModel: viewModel, uploadsViewModel: uploadsViewModel)
-        super.init(rootView: view)
+        super.init(rootView: rootView)
     }
 
-    static func show(for revision: AbstractPost, isStandalone: Bool = false, from presentingViewController: UIViewController, completion: @escaping (PublishingSheetResult) -> Void) {
+    convenience init(post: AbstractPost, isStandalone: Bool) where ViewModel == PostSettingsViewModel {
+        let viewModel = PostSettingsViewModel(post: post, isStandalone: isStandalone, context: .publishing)
+        let uploadsViewModel = PostMediaUploadsViewModel(post: post)
+        let view = PublishPostView(viewModel: viewModel, uploadsViewModel: uploadsViewModel)
+        self.init(viewModel: viewModel, uploadsViewModel: uploadsViewModel, rootView: AnyView(view))
+    }
+
+    static func show(
+        for revision: AbstractPost,
+        isStandalone: Bool = false,
+        from presentingViewController: UIViewController,
+        completion: @escaping (PublishingSheetResult) -> Void
+    ) where ViewModel == PostSettingsViewModel {
         // End editing to avoid issues with accessibility
         presentingViewController.view.endEditing(true)
 
@@ -47,7 +52,39 @@ final class PublishPostViewController: UIHostingController<PublishPostView> {
         // - warning: Has to be UIKit because some of the  `PostSettingsView` rows rely on it.
         let navigationVC = UINavigationController(rootViewController: publishVC)
         navigationVC.sheetPresentationController?.detents = [
-            .custom(identifier: .medium, resolver: { context in 526 }),
+            .custom(identifier: .medium, resolver: { _ in 526 }),
+            .large()
+        ]
+        presentingViewController.present(navigationVC, animated: true)
+    }
+
+    // MARK: - Remote Post
+
+    convenience init(
+        editorService: CustomPostEditorService,
+        blog: Blog
+    ) where ViewModel == CustomPostSettingsViewModel {
+        let viewModel = CustomPostSettingsViewModel(editorService: editorService, blog: blog, context: .publishing)
+        let view = PublishPostView(viewModel: viewModel, uploadsViewModel: nil)
+        self.init(viewModel: viewModel, uploadsViewModel: nil, rootView: AnyView(view))
+    }
+
+    static func show(
+        editorService: CustomPostEditorService,
+        blog: Blog,
+        from presentingViewController: UIViewController,
+        completion: @escaping (PublishingSheetResult) -> Void
+    ) where ViewModel == CustomPostSettingsViewModel {
+        presentingViewController.view.endEditing(true)
+
+        let publishVC = PublishPostViewController(
+            editorService: editorService,
+            blog: blog
+        )
+        publishVC.onCompletion = completion
+        let navigationVC = UINavigationController(rootViewController: publishVC)
+        navigationVC.sheetPresentationController?.detents = [
+            .custom(identifier: .medium, resolver: { _ in 526 }),
             .large()
         ]
         presentingViewController.present(navigationVC, animated: true)
@@ -77,22 +114,16 @@ final class PublishPostViewController: UIHostingController<PublishPostView> {
     }
 }
 
-struct PublishPostView: View {
-    @ObservedObject var viewModel: PostSettingsViewModel
-    @ObservedObject var uploadsViewModel: PostMediaUploadsViewModel
+struct PublishPostView<ViewModel: PostSettingsViewModelProtocol>: View {
+    @ObservedObject var viewModel: ViewModel
+    var uploadsViewModel: PostMediaUploadsViewModel?
 
     @State private var isShowingDiscardChangesAlert = false
 
-    var post: AbstractPost { viewModel.post }
-
     var body: some View {
         Form {
-            if let state = uploadsViewModel.uploadingSnackbarState {
-                NavigationLink {
-                    PostMediaUploadsView(viewModel: uploadsViewModel)
-                } label: {
-                    PostMediaUploadsSnackbarView(state: state)
-                }
+            if let uploadsViewModel {
+                PublishPostMediaSection(uploadsViewModel: uploadsViewModel)
             }
             PostSettingsFormContentView(viewModel: viewModel)
         }
@@ -157,7 +188,7 @@ struct PublishPostView: View {
         if viewModel.isSaving {
             ProgressView()
         } else {
-            let isDisabled = !uploadsViewModel.isCompleted
+            let isDisabled = uploadsViewModel?.isCompleted == false
 
             Button(viewModel.publishButtonTitle) {
                 viewModel.buttonPublishTapped()
@@ -172,10 +203,17 @@ struct PublishPostView: View {
     }
 }
 
-private extension PostSettingsViewModel {
-    var publishButtonTitle: String {
-        let isScheduled = settings.publishDate.map { $0 > .now } ?? false
-        return isScheduled ? Strings.schedule : Strings.publish
+private struct PublishPostMediaSection: View {
+    @ObservedObject var uploadsViewModel: PostMediaUploadsViewModel
+
+    var body: some View {
+        if let state = uploadsViewModel.uploadingSnackbarState {
+            NavigationLink {
+                PostMediaUploadsView(viewModel: uploadsViewModel)
+            } label: {
+                PostMediaUploadsSnackbarView(state: state)
+            }
+        }
     }
 }
 

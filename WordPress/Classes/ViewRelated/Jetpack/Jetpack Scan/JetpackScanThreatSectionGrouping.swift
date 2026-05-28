@@ -5,7 +5,7 @@ struct JetpackScanThreatSectionGrouping {
     public var sections: [JetpackThreatSection]?
 
     init(threats: [JetpackScanThreat], siteRef: JetpackSiteRef) {
-        let grouping: [DateComponents: [JetpackScanThreat]] = Dictionary(grouping: threats) { (threat) -> DateComponents in
+        let grouping: [DateComponents: [JetpackScanThreat]] = Dictionary(grouping: threats) { threat -> DateComponents in
             return Calendar.current.dateComponents([.day, .year, .month], from: threat.firstDetected)
         }
 

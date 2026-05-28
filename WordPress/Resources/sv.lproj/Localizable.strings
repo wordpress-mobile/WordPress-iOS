@@ -1,4 +1,4 @@
-/* Translation-Revision-Date: 2026-01-26 15:54:10+0000 */
+/* Translation-Revision-Date: 2026-03-26 09:54:43+0000 */
 /* Plural-Forms: nplurals=2; plural=n != 1; */
 /* Generator: GlotPress/4.0.3 */
 /* Language: sv_SE */
@@ -1874,7 +1874,6 @@ translators: %s: Block name e.g. \"Image block\" */
    Done. Action.
    Menu button title for finishing editing the Menu name.
    Tapping a button with this label allows the user to exit the Site Creation flow
-   Title for a Done button.
    Title for button that will dismiss this view
    Title for the button that will dismiss this view. */
 "Done" = "Klar";
@@ -3244,9 +3243,6 @@ translators: %s: Block name e.g. \"Image block\" */
 /* Text displayed while loading the scan section for a site */
 "Loading Scan..." = "Laddar in genomsökningen …";
 
-/* Displayed while a comment is being loaded. */
-"Loading comment..." = "Laddar in kommentarer …";
-
 /* Menus label text displayed when a menu is loading. */
 "Loading menu..." = "Laddar in meny …";
 
@@ -3333,9 +3329,6 @@ translators: %s: Block name e.g. \"Image block\" */
 
 /* No comment provided by engineer. */
 "Main Navigation" = "Huvudnavigering";
-
-/* Explanation for the option to enable theme styles */
-"Make the block editor look like your theme." = "Gör blockredigeraren att se ut som ditt tema.";
 
 /* No comment provided by engineer. */
 "Make your content stand out by adding images, gifs, videos, and embedded media to your pages." = "Förstärk ditt innehåll genom att lägga till bilder, gif-illustrationer, videoklipp och inbäddade media i ditt sidinnehåll.";
@@ -7032,6 +7025,9 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Button title for restoring a backup */
 "activityDetail.restore.button" = "Återställ";
 
+/* Shows the MCP client used for an activity. %1$@ is the MCP client name (e.g. Claude). */
+"activityDetail.section.agent" = "via %1$@";
+
 /* Section title for restore site actions */
 "activityDetail.section.restoreSite" = "Återställ webbplats";
 
@@ -7234,6 +7230,9 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Feature name for the block editor in application password required prompt */
 "applicationPasswordRequired.feature.blockEditor" = "Blockredigerare";
 
+/* Feature name for managing custom post types in the app */
+"applicationPasswordRequired.feature.customPosts" = "Anpassade inläggstyper";
+
 /* Feature name for managing terms and taxonomies in the app */
 "applicationPasswordRequired.feature.customTaxonomies" = "Taxonomihantering";
 
@@ -7397,6 +7396,27 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Action shown in a bottom notice to dismiss it. */
 "blogDashboard.dismiss" = "Avfärda";
 
+/* Error message shown when the active theme cannot be found for a site. */
+"blogDetails.activeThemeNotFound.errorDescription" = "Det aktiva temat kunde inte hittas för den här webbplatsen.";
+
+/* Button title to connect Jetpack in XML-RPC disabled alert */
+"blogDetails.xmlrpcDisabled.alert.connectJetpack" = "Anslut Jetpack";
+
+/* Description explaining options to restore functionality when XML-RPC is disabled */
+"blogDetails.xmlrpcDisabled.alert.description" = "XML-RPC är inaktiverat på din webbplats. Vissa funktioner i appen kräver för närvarande XML-RPC. Anslut Jetpack eller aktivera XML-RPC för att komma åt alla funktioner.";
+
+/* Button title to learn more about XML-RPC being disabled */
+"blogDetails.xmlrpcDisabled.alert.learnMore" = "Lär dig mer";
+
+/* Title for the XML-RPC disabled alert */
+"blogDetails.xmlrpcDisabled.alert.title" = "XML-RPC inaktiverat";
+
+/* Subtitle for the XML-RPC disabled card on blog details */
+"blogDetails.xmlrpcDisabled.card.subtitle" = "Vissa funktioner kan vara begränsade";
+
+/* Title for the XML-RPC disabled card on blog details */
+"blogDetails.xmlrpcDisabled.card.title" = "XML-RPC inaktiverat";
+
 /* Context menu button title */
 "blogHeader.actionVisitSite" = "Besök webbplats";
 
@@ -7446,7 +7466,7 @@ Note that the word 'go' here should have a closer meaning to 'start' rather than
 /* Title of the set goals button in the Blogging Reminders Settings flow. */
 "bloggingRemindersPrompt.intro.continueButton" = "Ställ in påminnelser";
 
-/* Description on the first screen of the Blogging Reminders Settings flow called aftet post publishing. */
+/* Description on the first screen of the Blogging Reminders Settings flow called after post publishing. */
 "bloggingRemindersPrompt.intro.details" = "Ställ in bloggpåminnelser de dagar du vill publicera.";
 
 /* Title of the Blogging Reminders Settings screen. */
@@ -7863,6 +7883,111 @@ Example: Reply to Pamela Nguyen */
 /* Create Sheet button title */
 "createSheet.postFromAudio" = "Inlägg från ljud";
 
+/* Error message shown when the post was modified by another user while editing */
+"customPostEditor.error.conflict.message" = "Inlägget du försöker spara har ändrats under tiden.";
+
+/* Menu action to promote a post with Blaze */
+"customPostList.action.blaze" = "Marknadsför med Blaze";
+
+/* Menu action to view post comments */
+"customPostList.action.comments" = "Kommentarer";
+
+/* Menu action to permanently delete a trashed post */
+"customPostList.action.deletePermanently" = "Ta bort permanent";
+
+/* Menu action to change a post's status to draft */
+"customPostList.action.moveToDraft" = "Flytta till utkast";
+
+/* Menu action to move a post to trash */
+"customPostList.action.moveToTrash" = "Flytta till papperskorgen";
+
+/* Menu action to publish a draft or pending post */
+"customPostList.action.publish" = "Publicera";
+
+/* Menu action to open post settings */
+"customPostList.action.settings" = "Inställningar";
+
+/* Menu action to view post statistics */
+"customPostList.action.stats" = "Statistik";
+
+/* Accessibility label for the author filter button in the custom post list */
+"customPostList.authorFilter.accessibilityLabel" = "Filtrering efter författare";
+
+/* Menu item to show posts from all authors in the custom post list */
+"customPostList.authorFilter.everyone" = "Alla";
+
+/* Menu item to show only the current user's posts in the custom post list */
+"customPostList.authorFilter.mine" = "Mina";
+
+/* Accessibility value when the author filter shows posts from all authors */
+"customPostList.authorFilter.showingEveryone" = "Visar allas inlägg";
+
+/* Accessibility value when the author filter shows only the current user's posts */
+"customPostList.authorFilter.showingMine" = "Visar endast mina inlägg";
+
+/* Badge label shown on the homepage row in the custom post list for pages */
+"customPostList.badge.homepage" = "Startsida";
+
+/* Badge shown in the post list for sticky posts */
+"customPostList.badge.sticky" = "Klistrat";
+
+/* Message for the confirmation alert when permanently deleting a post */
+"customPostList.deleteConfirmation.message" = "Denna åtgärd kan inte ångras.";
+
+/* Title for the confirmation alert when permanently deleting a post */
+"customPostList.deleteConfirmation.title" = "Ta bort permanent?";
+
+/* Empty state message when no custom posts exist. %1$@ is the post type name (e.g., 'Podcasts', 'Products'). */
+"customPostList.emptyState.message" = "Inget %1$@";
+
+/* Message for the confirmation alert when trashing a published post */
+"customPostList.trashConfirmation.message" = "Det här inlägget är publicerat och synligt för besökare. Är du säker på att du vill flytta det till papperskorgen?";
+
+/* Title for the confirmation alert when trashing a published post */
+"customPostList.trashConfirmation.title" = "Flytta till papperskorgen?";
+
+/* Placeholder title for posts without a title */
+"customPostList.untitled" = "(ingen rubrik)";
+
+/* Title for the parent page picker screen for custom post types */
+"customPostParentPicker.title" = "Överordnad sida";
+
+/* Option to set a post as top level (no parent) */
+"customPostParentPicker.topLevel" = "Toppnivå";
+
+/* Description for the top level option in the parent page picker, indicating this page will have no parent */
+"customPostParentPicker.topLevel.description" = "Ingen överordnad sida";
+
+/* Tab title for showing all posts regardless of status */
+"customPostTab.all" = "Alla";
+
+/* Tab title for draft posts */
+"customPostTab.drafts" = "Utkast";
+
+/* Tab title for published posts */
+"customPostTab.published" = "Publicerad";
+
+/* Tab title for scheduled posts */
+"customPostTab.scheduled" = "Schemalagd";
+
+/* Menu item title for sending feedback on the custom post types screen */
+"customPostTab.sendFeedback" = "Skicka feedback";
+
+/* Tab title for trashed posts */
+"customPostTab.trash" = "Papperskorg";
+
+/* Empty state message when there are no custom post types to display */
+"customPostTypes.emptyState.message" = "Inga anpassade inläggstyper";
+
+/* Accessibility label for the button to pin a custom post type */
+"customPostTypes.pin.accessibilityLabel" = "Fäst";
+
+/* Title for the Custom Post Types screen */
+"customPostTypes.title" = "Mer";
+
+/* Accessibility label for the button to unpin a custom post type */
+"customPostTypes.unpin.accessibilityLabel" = "Lossa";
+
 /* Customize Insights description */
 "customizeInsightsCell.content" = "Skapa din egen anpassade adminpanel och välj vilka rapporter du vill se. Fokusera på den data du bryr dig mest om.";
 
@@ -7998,11 +8123,17 @@ Example: Reply to Pamela Nguyen */
 /* Boolean User Defaults Debug Menu screen title */
 "debugMenu.booleanUserDefaults.title" = "Booleska användarstandarder";
 
+/* Debug Menu label for image cache size */
+"debugMenu.caches.imageCache" = "Bildcache";
+
 /* Feature flags menu item */
 "debugMenu.featureFlags" = "Funktionsflaggor";
 
 /* Debug Menu action for TipKit */
 "debugMenu.hideAllTips" = "Dölj alla tips";
+
+/* Debug Menu item title */
+"debugMenu.item.logs" = "Loggar";
 
 /* Title of the screen that allows the user to change the Reader CSS URL for debug builds */
 "debugMenu.readerCellTitle" = "CSS-URL för läsaren";
@@ -8034,6 +8165,9 @@ Example: Reply to Pamela Nguyen */
 
 /* Debug Menu action for TipKit */
 "debugMenu.resetTipKitData" = "Återställ data";
+
+/* Debug Menu section title */
+"debugMenu.section.caches" = "Cachlagrar";
 
 /* Debug Menu section title */
 "debugMenu.section.logging" = "Loggning";
@@ -8735,8 +8869,14 @@ Example: Reply to Pamela Nguyen */
 /* Title of the primary button shown after the Jetpack plugin has been installed. Tapping on the button dismisses the installation screen. */
 "jetpack.install-flow.success.primaryButtonText" = "Klar";
 
+/* Message asking the user to install Jetpack to access all app features */
+"jetpack.install.allFeatures.description" = "Du måste installera Jetpack-tillägget för att låsa upp alla appfunktioner.";
+
 /* Title of a button for connecting user account to Jetpack. */
 "jetpack.install.connectUser.button.title" = "Anslut ditt användarkonto";
+
+/* Message asking the user to connect Jetpack to access all app features */
+"jetpack.install.connectUser.bypassXMLRPC.description" = "Du måste ansluta Jetpack-tillägget till ditt användarkonto för att låsa upp alla appfunktioner.";
 
 /* Message asking the user if they want to set up Jetpack from notifications */
 "jetpack.install.connectUser.notifications.description" = "För att få användbara aviseringar på din telefon från din WordPress-webbplats måste du ansluta till ditt användarkonto.";
@@ -9018,6 +9158,9 @@ Example: Reply to Pamela Nguyen */
 /* Last 12 weeks (84 days) date range */
 "jetpackStats.calendar.last12Weeks" = "De senaste 12 veckorna";
 
+/* Last 14 days date range */
+"jetpackStats.calendar.last14Days" = "Senaste 14 dagarna";
+
 /* Last 28 days date range */
 "jetpackStats.calendar.last28Days" = "Senaste 28 dagarna";
 
@@ -9080,6 +9223,9 @@ Example: Reply to Pamela Nguyen */
 
 /* Line chart type */
 "jetpackStats.chart.lineChart" = "Rader";
+
+/* Label for aggregated 'Other' segment in pie charts */
+"jetpackStats.chart.other" = "Annat";
 
 /* Show chart data menu item */
 "jetpackStats.chart.showData" = "Visa data";
@@ -9189,9 +9335,6 @@ Example: Reply to Pamela Nguyen */
 /* Option to turn off period comparison */
 "jetpackStats.datePicker.comparisonOff" = "Ingen jämförelse";
 
-/* Title for custom date range picker */
-"jetpackStats.datePicker.customRange" = "Anpassat intervall";
-
 /* Menu item for custom date range picker */
 "jetpackStats.datePicker.customRangeMenu" = "Anpassat intervall …";
 
@@ -9210,6 +9353,9 @@ Example: Reply to Pamela Nguyen */
 /* Label for quick period selection */
 "jetpackStats.datePicker.quickPeriodsForStartDate" = "Snabbperioder för startdatum";
 
+/* Title for custom date range picker */
+"jetpackStats.datePicker.selectRange" = "Välj ett intervall";
+
 /* Site time zone header */
 "jetpackStats.datePicker.siteTimeZone" = "Webbplatsens tidszon";
 
@@ -9225,6 +9371,15 @@ Example: Reply to Pamela Nguyen */
 /* Title for stats date range control tip */
 "jetpackStats.dateRangeTip.title" = "Navigera genom tid";
 
+/* Device breakdown by browser */
+"jetpackStats.deviceBreakdowns.browser" = "Webbläsare";
+
+/* Device breakdown by platform/OS */
+"jetpackStats.deviceBreakdowns.operatingSystem" = "Operativsystem";
+
+/* Device breakdown by screen size */
+"jetpackStats.deviceBreakdowns.screensize" = "Skärmstorlek";
+
 /* Section title for the list of child links */
 "jetpackStats.externalLinkDetails.childLinks" = "Underlänkar";
 
@@ -9233,6 +9388,12 @@ Example: Reply to Pamela Nguyen */
 
 /* Title for the external link details screen */
 "jetpackStats.externalLinkDetails.title" = "Extern länk";
+
+/* Button to explore plans when a feature is gated */
+"jetpackStats.featureGate.explorePlans" = "Utforska paket";
+
+/* Message shown when a stats feature is gated behind a paid plan */
+"jetpackStats.featureGate.message" = "Uppgradera ditt paket för att få åtkomst till avancerad analys";
 
 /* Automatic granularity option */
 "jetpackStats.granularity.automatic" = "Automatiskt";
@@ -9348,6 +9509,9 @@ Example: Reply to Pamela Nguyen */
 /* Clicks data type (external links) */
 "jetpackStats.siteDataTypes.clicks" = "Klick";
 
+/* Devices data type */
+"jetpackStats.siteDataTypes.devices" = "Enheter";
+
 /* File downloads data type */
 "jetpackStats.siteDataTypes.fileDownloads" = "Filnedladdningar";
 
@@ -9362,6 +9526,9 @@ Example: Reply to Pamela Nguyen */
 
 /* Search terms data type */
 "jetpackStats.siteDataTypes.searchTerms" = "Söktermer";
+
+/* UTM campaign tracking data type */
+"jetpackStats.siteDataTypes.utm" = "UTM";
 
 /* Videos data type */
 "jetpackStats.siteDataTypes.videos" = "Videoklipp";
@@ -9423,6 +9590,9 @@ Example: Reply to Pamela Nguyen */
 /* Table column title for Top List card */
 "jetpackStats.topListColumnTitle.clicks" = "Extern länk";
 
+/* Table column title for Devices Top List card */
+"jetpackStats.topListColumnTitle.devices" = "Enhet";
+
 /* Table column title for Top List card */
 "jetpackStats.topListColumnTitle.fileDownloads" = "Fil";
 
@@ -9438,8 +9608,65 @@ Example: Reply to Pamela Nguyen */
 /* Table column title for Top List card */
 "jetpackStats.topListColumnTitle.searchTerms" = "Term";
 
+/* Table column title for UTM Top List card */
+"jetpackStats.topListColumnTitle.utm" = "Kampanj";
+
 /* Table column title for Top List card */
 "jetpackStats.topListColumnTitle.videos" = "Videoklipp";
+
+/* Plural post count for UTM metrics. %1$d is the number. */
+"jetpackStats.utmMetricDetails.postCount.plural" = "%1$d inlägg";
+
+/* Singular post count for UTM metrics. %1$d is the number. */
+"jetpackStats.utmMetricDetails.postCount.singular" = "%1$d inlägg";
+
+/* Title for the UTM campaign details screen */
+"jetpackStats.utmMetricDetails.title" = "UTM-kampanj";
+
+/* Section title for top posts from this UTM campaign */
+"jetpackStats.utmMetricDetails.topPosts" = "Populäraste inläggen";
+
+/* UTM parameter for campaign only */
+"jetpackStats.utmParamGroupings.campaign" = "Kampanj";
+
+/* UTM parameter for medium only */
+"jetpackStats.utmParamGroupings.medium" = "Medium";
+
+/* UTM parameter for source only */
+"jetpackStats.utmParamGroupings.source" = "Källa";
+
+/* Number of ads served. %@ is the ads count. */
+"jetpackStats.wordAds.adsServed.count" = "%@ visade annonser";
+
+/* Total earnings from WordAds */
+"jetpackStats.wordAds.earnings" = "Intäkter";
+
+/* Button to learn more about WordAds earnings */
+"jetpackStats.wordAds.learnMore" = "Lär dig mer";
+
+/* Message shown when there are no payment records */
+"jetpackStats.wordAds.noPaymentsYet" = "Inga betalningar än";
+
+/* Outstanding amount owed from WordAds */
+"jetpackStats.wordAds.outstanding" = "Utmärkt";
+
+/* Amount paid out from WordAds earnings */
+"jetpackStats.wordAds.paid" = "Betald";
+
+/* Title for payment history card and screen */
+"jetpackStats.wordAds.paymentsHistory" = "Betalningshistorik";
+
+/* Title for WordAds total earnings card */
+"jetpackStats.wordAds.totalEarnings" = "Totala intäkter";
+
+/* Number of ads served */
+"jetpackStats.wordAdsMetrics.adsServed" = "Visade annonser";
+
+/* Average cost per mille (thousand impressions) */
+"jetpackStats.wordAdsMetrics.averageCPM" = "Genomsnittlig CPM";
+
+/* Revenue from ads */
+"jetpackStats.wordAdsMetrics.revenue" = "Intäkter";
 
 /* Title for a call-to-action button on the Jetpack install card. */
 "jetpackinstallcard.button.learn" = "Lär dig mer";
@@ -9972,6 +10199,42 @@ Example: Reply to Pamela Nguyen */
 /* Menu title for the visit site option */
 "mySite.siteActions.visitSite" = "Besök webbplats";
 
+/* Button to confirm to switch to the New Stats announcement screen */
+"newStats.announcement.continueButton" = "Kom igång";
+
+/* Disclosure at the bottom of the New Stats announcement screen, informing users they can opt out */
+"newStats.announcement.disclosure" = "Inte redo att byta? Du kan stänga av Ny statistik från menyn Mer på fliken Statistik.";
+
+/* Feature description: navigation moved to the bottom for thumb-friendly access */
+"newStats.announcement.feature.bottomNav.description" = "Navigering och datumväljare finns nu längst ner på skärmen – precis där din tumme är.";
+
+/* Feature title: navigation moved to the bottom */
+"newStats.announcement.feature.bottomNav.title" = "Enklare att nå";
+
+/* Feature description: flexible date picker with presets, custom ranges, and comparisons */
+"newStats.announcement.feature.datePicker.description" = "Välj bland vanliga förinställningar eller ange ett anpassat datumintervall med en jämförelseperiod – allt med ett tryck.";
+
+/* Feature title: flexible date picker */
+"newStats.announcement.feature.datePicker.title" = "Valfri period, valfritt intervall";
+
+/* Feature description: feature parity with the web version of Stats */
+"newStats.announcement.feature.parity.description" = "Enheter, UTM, platser, WordAds – samma data som du får på WordPress.com.";
+
+/* Feature title: feature parity with the web version of Stats */
+"newStats.announcement.feature.parity.title" = "På samma nivå som webben";
+
+/* Feature description: trends shown for all metrics with comparison to previous period */
+"newStats.announcement.feature.trends.description" = "Varje nyckeltal visar hur utvecklingen ser ut jämfört med föregående period, så att du alltid vet om du är på väg uppåt.";
+
+/* Feature title: trends visible for all metrics */
+"newStats.announcement.feature.trends.title" = "Trender i korthet";
+
+/* Subtitle for the New Stats announcement screen */
+"newStats.announcement.subtitle" = "Ett bättre sätt att förstå webbplatsens prestanda – nu aktiverad som standard.";
+
+/* Title for the New Stats announcement screen */
+"newStats.announcement.title" = "Ny statistik";
+
 /* A no results message displayed on the atomic logs screen. */
 "noLogs.empty" = "Inga loggposter inom detta tidsintervall";
 
@@ -10203,6 +10466,9 @@ Example: Reply to Pamela Nguyen */
 /* A title for the log severity level */
 "phpLogs.severityWarning" = "Varning";
 
+/* Error message when a pinned custom post type cannot be found. %1$@ is the post type name. */
+"pinnedPostType.error.notFound" = "”%1$@” är inte tillgänglig på den här webbplatsen.";
+
 /* Title for the plan selection view */
 "planSelection.title" = "Paket";
 
@@ -10317,13 +10583,15 @@ Example: Reply to Pamela Nguyen */
 /* Navigation title for post discussion settings */
 "postDiscussion.title" = "Diskussion";
 
-/* Button in an alert confirming discaring changes */
+/* Button in an alert confirming discarding changes
+   Button in an alert confirming discaring changes */
 "postEditor.closeConfirmationAlert.discardChanges" = "Kasta ändringar";
 
 /* Button in an alert confirming discaring a new draft */
 "postEditor.closeConfirmationAlert.discardDraft" = "Kasta utkast";
 
-/* Button to keep the changes in an alert confirming discaring changes */
+/* Button to keep the changes in an alert confirming discarding changes
+   Button to keep the changes in an alert confirming discaring changes */
 "postEditor.closeConfirmationAlert.keepEditing" = "Fortsätt redigera";
 
 /* Button in an alert confirming saving a new draft */
@@ -10371,6 +10639,9 @@ Example: Reply to Pamela Nguyen */
 /* A message for a snackbar informing the user that some media files requires their attention */
 "postEditor.postHasFailingMediaUploadsSnackbar.message" = "Vissa mediaobjekt kunde inte laddas upp";
 
+/* Title for the publish button in the post editor navigation bar */
+"postEditor.publishButton.title" = "Publicera";
+
 /* Editor, notice for successful recovery a trashed post */
 "postEditor.recoverTrashedPost.postRecoveredNoticeTitle" = "Inlägg återställt som ett utkast";
 
@@ -10391,6 +10662,9 @@ Example: Reply to Pamela Nguyen */
 
 /* Saving draft to generate a preview (status message */
 "postEditor.savingDraftForPreview" = "Sparar utkast …";
+
+/* Title for the update button in the post editor navigation bar */
+"postEditor.updateButton.title" = "Uppdatera";
 
 /* Empty state description when no post formats are available */
 "postFormatPicker.emptyState.description" = "Inläggsformat har inte konfigurerats för denna webbplats.";
@@ -10663,6 +10937,9 @@ Example: Reply to Pamela Nguyen */
 /* Section header for More Options in Post Settings. Should use the same translation as core WP. */
 "postSettings.moreOptions.header" = "Fler alternativ";
 
+/* The title of the Post Settings screen for custom post types. %1$@ is the post type name. */
+"postSettings.navigationTitle.customPostType" = "Inställningar för %1$@";
+
 /* The title of the Page Settings screen. */
 "postSettings.navigationTitle.page" = "Sidinställningar";
 
@@ -10722,6 +10999,9 @@ Example: Reply to Pamela Nguyen */
 
 /* Placeholder value for a publishing date in the prepublishing sheet when the date is not selected */
 "postSettings.publishDateImmediately" = "Omedelbart";
+
+/* Error message shown when saving post settings via REST API fails */
+"postSettings.saveFailed.message" = "Det gick inte att spara ändringar";
 
 /* Section header for General settings in Post Settings */
 "postSettings.section.general" = "Allmänt";
@@ -10798,6 +11078,9 @@ Example: Reply to Pamela Nguyen */
 /* Navigation bar title of the Post Stats screen */
 "postStats.title" = "Inläggsstatistik";
 
+/* Post status title used in different contexts */
+"postStatus.any.title" = "Valfri";
+
 /* Post status title */
 "postStatus.deleted.details" = "Permanent borttagen";
 
@@ -10807,38 +11090,38 @@ Example: Reply to Pamela Nguyen */
 /* Post status details */
 "postStatus.draft.details" = "Inte redo för publicering";
 
-/* Post status title */
+/* Post status title used in different contexts */
 "postStatus.draft.title" = "Utkast";
 
 /* Post status details */
 "postStatus.pending.details" = "Väntar på granskning innan publicering";
 
-/* Post status title */
+/* Post status title used in different contexts */
 "postStatus.pending.title" = "Väntar";
 
 /* Post status details */
 "postStatus.private.details" = "Endast synligt för webbplatsadministratörer och redigerare.";
 
-/* Post status title */
+/* Post status title used in different contexts */
 "postStatus.private.title" = "Privat";
 
 /* Post status details */
 "postStatus.published.details" = "Synligt för alla";
 
-/* Post status title */
+/* Post status title used in different contexts */
 "postStatus.published.title" = "Publicerat";
 
 /* Post status details */
 "postStatus.scheduled.details" = "Publicera automatiskt på ett valt datum";
 
-/* Post status title */
+/* Post status title used in different contexts */
 "postStatus.scheduled.title" = "Schemalagt";
 
 /* Post status title */
 "postStatus.trash.details" = "Borttaget men inte borttaget permanent än";
 
-/* Post status title */
-"postStatus.trash.title" = "Borttaget";
+/* Post status title used in different contexts */
+"postStatus.trash.title" = "Papperskorg";
 
 /* Button to add a new taxonomy term. %1$@ is the taxonomy name (e.g., 'tags', 'categories'). */
 "postTags.addTag" = "Lägg till %1$@";
@@ -11208,6 +11491,9 @@ but tapping on this button will remove their like from the post. */
 "reader.discover.channel.forYou" = "För dig";
 
 /* Header view channel (filter) */
+"reader.discover.channel.freshlyPresed" = "Nyss bloggat";
+
+/* Header view channel (filter) */
 "reader.discover.channel.latest" = "Senaste";
 
 /* Used in multiple contexts, usually as a screen title */
@@ -11352,9 +11638,6 @@ Example: given a notice format "Following %@" and empty site name, this will be 
 /* Context menu action */
 "reader.postContextMenu.blockUser" = "Blockera användare";
 
-/* Context menu action (placeholder value when blog name not available – should never happen) */
-"reader.postContextMenu.blogDetails" = "Bloggdetaljer";
-
 /* Context menu action */
 "reader.postContextMenu.manageNotifications" = "Hantera aviseringar";
 
@@ -11371,9 +11654,6 @@ Example: given a notice format "Following %@" and empty site name, this will be 
 "reader.postContextMenu.reportUser" = "Rapportera användare";
 
 /* Context menu action */
-"reader.postContextMenu.showBlog" = "Gå till blogg";
-
-/* Context menu action */
 "reader.postContextMenu.summarize" = "Sammanfatta";
 
 /* Context menu action to translate post content */
@@ -11381,6 +11661,9 @@ Example: given a notice format "Following %@" and empty site name, this will be 
 
 /* Context menu action */
 "reader.postContextMenu.viewInBrowser" = "Visa i webbläsare";
+
+/* Context menu action */
+"reader.postContextMenu.viewSite" = "Visa webbplats";
 
 /* Reader post details view placeholder when blog name not avail */
 "reader.postDetails.blog" = "blogg";
@@ -11792,6 +12075,9 @@ Feel free to replace it with other bracket types that you think looks better for
 "shared.button.edit" = "Redigera";
 
 /* A shared button title used in different contexts */
+"shared.button.notNow" = "Nu nu";
+
+/* A shared button title used in different contexts */
 "shared.button.ok" = "OK";
 
 /* A shared button title used in different contexts */
@@ -12145,12 +12431,14 @@ Feel free to replace it with other bracket types that you think looks better for
 /* Title for site switcher screen */
 "sitePicker.title" = "Mina webbplatser";
 
-/* The plugin author displayed in the plugins list. The first argument is plugin author name
-   The plugin version displayed in the plugins list. The first argument is plugin version */
+/* The plugin author displayed in the plugins list. The first argument is plugin author name */
 "sitePluginsList.item.author" = "Av %@";
 
 /* The message displayed when a plugin has no description */
 "sitePluginsList.item.noDescriptionAvailable" = "Tilläggets författare angav ingen beskrivning för detta tillägg.";
+
+/* The plugin version displayed in the plugins list. The first argument is plugin version */
+"sitePluginsList.item.version" = "Version: %@";
 
 /* Button to activate a plugin */
 "sitePluginsList.itemAction.activate" = "Aktivera";
@@ -12166,6 +12454,15 @@ Feel free to replace it with other bracket types that you think looks better for
 
 /* Title for screen to select the privacy options for a blog */
 "siteSettings.privacy.title" = "Integritet";
+
+/* Explanation for why the 'Use theme styles' toggle is disabled when the site doesn't have a block theme */
+"siteSettings.themeStyles.footer.blockThemeSuggested" = "Din webbplats använder inget Blocktema, så redigeraren kanske inte matchar ditt innehåll ordentligt. Om saker och ting inte ser bra ut kan du inaktivera redigerarstilar.";
+
+/* Explanation for the option to enable theme styles when the feature is available */
+"siteSettings.themeStyles.footer.enabled" = "Få blockredigeraren att se ut som ditt tema.";
+
+/* Explanation for why the 'Use theme styles' toggle is disabled when the site doesn't have the Gutenberg plugin */
+"siteSettings.themeStyles.footer.gutenbergRequired" = "Installera Gutenberg-tillägget på din webbplats för att aktivera stöd för temastilar.";
 
 /* Format string for adding a new taxonomy term. %1$@ is the taxonomy name. */
 "siteTaxonomy.addNew.format" = "Lägg till %1$@";
@@ -12788,15 +13085,6 @@ Feel free to replace it with other bracket types that you think looks better for
 
 /* Title for the time zone selector */
 "timeZoneSelector.title" = "Tidszon";
-
-/* Action button title to enable new stats from tip */
-"tips.newStats.action" = "Aktivera nu";
-
-/* Tip for new stats feature */
-"tips.newStats.message" = "Upplev ny elegant och kraftfull statistik. Växla tillbaka när du vill.";
-
-/* Tip for new stats feature */
-"tips.newStats.title" = "Prova nya Statistik";
 
 /* Tip for sidebar */
 "tips.sidebar.message" = "Svep åt höger för att komma till dina webbplatser, läsaren, aviseringar och din profil";

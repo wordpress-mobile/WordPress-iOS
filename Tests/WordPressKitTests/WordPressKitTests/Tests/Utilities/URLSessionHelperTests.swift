@@ -397,7 +397,6 @@ class BackgroundURLSessionHelperTests: URLSessionHelperTests {
             XCTAssertTrue(delegate.completionCalled)
         }
     }
-
 }
 
 private final class TestBackgroundURLSessionDelegate: BackgroundURLSessionDelegate {

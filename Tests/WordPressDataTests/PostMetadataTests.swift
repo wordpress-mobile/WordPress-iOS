@@ -1,3 +1,4 @@
+import CoreData
 import Testing
 @testable import WordPressData
 
@@ -78,7 +79,7 @@ struct PostMetadataTests {
         metadata.encode(in: &container)
 
         // THEN
-        #expect(container.getString(for: .jetpackNewsletterEmailDisabled) == "")
+        #expect(container.getString(for: .jetpackNewsletterEmailDisabled)?.isEmpty == true)
     }
 }
 

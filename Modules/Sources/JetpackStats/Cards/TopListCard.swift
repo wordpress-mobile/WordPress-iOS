@@ -56,7 +56,15 @@ struct TopListCard: View {
         }
         .padding(.vertical, Constants.step2)
         .overlay(alignment: .topTrailing) {
-            moreMenu
+            HStack(spacing: 0) {
+                if viewModel.isStale {
+                    ProgressView()
+                        .controlSize(.small)
+                        .transition(.scale.combined(with: .opacity))
+                }
+                moreMenu
+            }
+            .animation(.easeInOut(duration: 0.5), value: viewModel.isStale)
         }
         .cardStyle()
         .onTapGesture {
@@ -64,10 +72,8 @@ struct TopListCard: View {
                 navigateToTopListScreen()
             }
         }
-        .grayscale(viewModel.isStale ? 1 : 0)
         .opacity(viewModel.isEditing ? 0.6 : 1)
         .scaleEffect(viewModel.isEditing ? 0.95 : 1)
-        .animation(.smooth, value: viewModel.isStale)
         .animation(.spring, value: viewModel.isEditing)
         .accessibilityElement(children: .contain)
         .animation(.spring, value: viewModel.data.map(ObjectIdentifier.init)) // placing is important
@@ -102,7 +108,7 @@ struct TopListCard: View {
     private var mapView: some View {
         CountriesMapView(
             data: viewModel.countriesMapData ?? .init(metric: viewModel.selection.metric, locations: []),
-            primaryColor: Constants.Colors.uiColorBlue
+            primaryColor: Constants.Colors.uiColorOrange
         )
     }
 
@@ -175,7 +181,7 @@ struct TopListCard: View {
     private func navigateToTopListScreen() {
         let screen = TopListScreenView(
             selection: viewModel.selection,
-            dateRange: viewModel.dateRange,
+            dateRange: viewModel.effectiveDateRange,
             service: context.service,
             context: context,
             initialData: viewModel.data,
@@ -320,7 +326,10 @@ struct TopListCard: View {
                 } else {
                     topListItemsView(data: data)
                 }
+            } else if let error = viewModel.loadingError as? StatsFeatureGateError {
+                makeFeatureGateView(error: error)
             } else {
+                // Show generic error view for other errors
                 makeEmptyStateView(message: viewModel.loadingError?.localizedDescription ?? Strings.Errors.generic)
             }
         }
@@ -331,7 +340,7 @@ struct TopListCard: View {
             TopListItemsView(
                 data: data,
                 itemLimit: showMoreInline && isExpanded ? data.items.count : itemLimit,
-                dateRange: viewModel.dateRange,
+                dateRange: viewModel.effectiveDateRange,
                 reserveSpace: reserveSpace
             )
             if showMoreInline && data.items.count > itemLimit {
@@ -396,6 +405,16 @@ struct TopListCard: View {
             .overlay {
                 SimpleErrorView(message: message)
                     .offset(y: -18)
+            }
+    }
+
+    private func makeFeatureGateView(error: StatsFeatureGateError) -> some View {
+        topListItemsView(data: mockData)
+            .allowsHitTesting(false)
+            .redacted(reason: .placeholder)
+            .opacity(0.2)
+            .overlay {
+                FeatureGateBannerView(error: error)
             }
     }
 

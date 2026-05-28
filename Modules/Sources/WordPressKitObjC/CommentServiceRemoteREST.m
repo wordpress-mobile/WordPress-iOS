@@ -1,7 +1,7 @@
 #import "CommentServiceRemoteREST.h"
 #import "RemoteComment.h"
-#import "WPMapFilterReduce.h"
 
+@import WordPressShared;
 @import WordPressKitModels;
 @import NSObject_SafeExpectations;
 
@@ -464,7 +464,7 @@
 
 - (NSArray *)remoteCommentsFromJSONArray:(NSArray *)jsonComments
 {
-    return [jsonComments wpkit_map:^id(NSDictionary *jsonComment) {
+    return [jsonComments wp_map:^id(NSDictionary *jsonComment) {
         return [self remoteCommentFromJSONDictionary:jsonComment];
     }];
 }
@@ -530,7 +530,7 @@
                                               commentID:(NSNumber *)commentID
                                                  siteID:(NSNumber *)siteID
 {
-    return [jsonUsers wpkit_map:^id(NSDictionary *jsonUser) {
+    return [jsonUsers wp_map:^id(NSDictionary *jsonUser) {
         return [[RemoteLikeUser alloc] initWithDictionary:jsonUser commentID:commentID siteID:siteID];
     }];
 }

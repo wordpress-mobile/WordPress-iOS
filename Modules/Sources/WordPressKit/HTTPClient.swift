@@ -215,7 +215,6 @@ extension URLSession {
 
         return result
     }
-
 }
 
 extension WordPressAPIResult {
@@ -263,7 +262,6 @@ extension WordPressAPIResult {
             try decoder.decode(E.self, from: body)
         }
     }
-
 }
 
 extension Progress {
@@ -295,7 +293,6 @@ class BackgroundURLSessionDelegate: NSObject, URLSessionDataDelegate {
     func urlSession(_ session: URLSession, task: URLSessionTask, didCompleteWithError error: Error?) {
         session.completed(with: error, response: task.response, forTaskWithIdentifier: task.taskIdentifier)
     }
-
 }
 
 private extension URLSession {
@@ -347,7 +344,6 @@ private extension URLSession {
 
         self.taskData.removeValue(forKey: taskID)
     }
-
 }
 
 extension URLSession {

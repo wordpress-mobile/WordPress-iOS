@@ -127,7 +127,7 @@ class EditPostViewController: UIViewController {
             // Proceed with normal editor instantiation
             let editor = editorFactory.instantiateEditor(
                 for: post,
-                replaceEditor: { [weak self] (editor, replacement) in
+                replaceEditor: { [weak self] editor, replacement in
                     self?.replaceEditor(editor: editor, replacement: replacement)
             })
             editor.postIsReblogged = postIsReblogged
@@ -146,14 +146,15 @@ class EditPostViewController: UIViewController {
         let applicationPasswordView = ApplicationPasswordRequiredView(
             blog: post.blog,
             localizedFeatureName: feature,
+            source: "block_editor",
             presentingViewController: self
-        ) { [weak self] client in
+        ) { [weak self] _ in
             // Once authenticated, dismiss the application password view and show editor
             guard let self else { return EmptyView() }
 
             let editor = self.editorFactory.instantiateEditor(
                 for: post,
-                replaceEditor: { [weak self] (editor, replacement) in
+                replaceEditor: { [weak self] editor, replacement in
                     self?.replaceEditor(editor: editor, replacement: replacement)
             })
             editor.postIsReblogged = self.postIsReblogged

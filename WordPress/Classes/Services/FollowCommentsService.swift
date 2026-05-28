@@ -111,5 +111,4 @@ class FollowCommentsService: NSObject {
             failure(error)
         }
     }
-
 }

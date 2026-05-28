@@ -58,7 +58,7 @@ import WordPressKit
     }
 
     /// Called when syncing Publicize connections. Merges synced and cached data, removing
-    /// anything that does not exist on the server.  Saves the context.
+    /// anything that does not exist on the server. Saves the context.
     ///
     /// - Parameters:
     ///     - blogObjectID: the NSManagedObjectID of a `Blog`
@@ -80,7 +80,7 @@ import WordPressKit
             let currentPublicizeConnections = self.allPublicizeConnections(for: blog, in: context)
 
             // Create or update based on the contents synced.
-            let connectionsToKeep = remoteConnections.map { (remoteConnection) -> PublicizeConnection in
+            let connectionsToKeep = remoteConnections.map { remoteConnection -> PublicizeConnection in
                 let pubConnection = PublicizeConnection.createOrReplace(from: remoteConnection, in: context)
                 pubConnection.blog = blog
                 return pubConnection
@@ -100,7 +100,7 @@ import WordPressKit
     /// - Parameters
     ///     - blog: A `Blog` object
     ///
-    /// - Returns: An array of `PublicizeConnection`.  The array is empty if no objects are cached.
+    /// - Returns: An array of `PublicizeConnection`. The array is empty if no objects are cached.
     ///
     private func allPublicizeConnections(for blog: Blog, in context: NSManagedObjectContext) -> [PublicizeConnection] {
         let request = NSFetchRequest<NSFetchRequestResult>(entityName: PublicizeConnection.classNameWithoutNamespaces())

@@ -102,7 +102,7 @@ class AztecAttachmentViewController: UITableViewController {
                     captionRow
                 ],
                 footerText: nil)
-            ])
+        ])
     }
 
     // MARK: - Actions
@@ -153,7 +153,7 @@ class AztecAttachmentViewController: UITableViewController {
 
         let values: [ImageAttachment.Alignment] = [.left, .center, .right, .none]
 
-        let titles = values.map { (value) in
+        let titles = values.map { value in
             return value.localizedString
         }
 
@@ -185,7 +185,7 @@ class AztecAttachmentViewController: UITableViewController {
     func displaySizeSelector(row: ImmuTableRow) {
         let values: [ImageAttachment.Size] = [.thumbnail, .medium, .large, .full, .none]
 
-        let titles = values.map { (value) in
+        let titles = values.map { value in
             return value.localizedString
         }
 
@@ -222,7 +222,7 @@ class AztecAttachmentViewController: UITableViewController {
     }
 
     @objc func handleDoneButtonTapped(sender: UIBarButtonItem) {
-        let checkedAlt = alt == "" ? nil : alt
+        let checkedAlt = alt?.isEmpty == true ? nil : alt
         onUpdate?(alignment, size, linkURL, checkedAlt, caption)
         dismiss(animated: true)
     }
@@ -246,7 +246,7 @@ class AztecAttachmentViewController: UITableViewController {
                                         hint: String? = nil,
                                         onValueChanged: @escaping SettingsAttributedTextChanged) {
 
-        // TODO: This shouldn't duplicate the styling from the Figcaption formatter.  Try to unify.
+        // TODO: This shouldn't duplicate the styling from the Figcaption formatter. Try to unify.
         let defaultAttributes: [NSAttributedString.Key: Any] = [
             .font: WPFontManager.notoRegularFont(ofSize: 14),
             .foregroundColor: UIColor.gray,

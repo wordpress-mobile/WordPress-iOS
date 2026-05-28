@@ -1,9 +1,4 @@
-Uygulamanızın boyutunu yaklaşık 6 MB azaltan teknik bir güncelleme yapıldı. Açılan alanla ne yapacaksınız?
-
-Mevcut gönderilerin görünürlük ayarlarını bulmak, görmek ve değiştirmek daha kolay. Ayrıca artık şifreyle korunan bir gönderi yayınlarken şifre belirlerken "Tamamlandı" düğmesi kaybolmaz.
-
-İyi görünüyor: Kısaltma simgelerini ve illüstrasyonlarını uygulamanın geri kalanıyla uyumlu olacak ve cihazınıza da daha iyi uyacak şekilde güncelledik.
-
-We fixed an issue so post previews now work properly for certain sites using Business and Commerce plans.
-
-When you add a new self-hosted site, you’ll be asked for your app password to authenticate. Keep it secret. Güvenliği Sağlayın
+- Etkinlik Günlüğü artık sitenizin yapay zeka aracıları kullanılarak güncellendiğinde görüntülenir.
+- Gönderi Ayarları'nda Sosyal Paylaşım kartı yalnızca uygulamanın desteklediği platformları gösterir.
+- Yeni gönderilerde standart sürüm yerine varsayılan yazı biçimi kullanılıyor. Bu biçimi site ayarlarınızdan güncelleyebilirsiniz.
+- Siteniz XML-RPC devre dışı bırakılmış olarak kullanıcı tarafından barındırılıyorsa uygulamadaki Gönderileri ve Sayfaları görebilirsiniz. Bu epey önemli, bizden söylemesi.

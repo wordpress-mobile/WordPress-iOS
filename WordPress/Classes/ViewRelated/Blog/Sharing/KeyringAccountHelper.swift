@@ -75,7 +75,6 @@ struct KeyringAccount {
 
         return accounts
     }
-
 }
 
 // MARK: - Alert Message Types
@@ -96,5 +95,4 @@ private extension KeyringAccountHelper {
                                cancelTitle: cancelActionTitle,
                                continueURL: URL(string: "https://en.support.wordpress.com/publicize/#facebook-pages"))
     }
-
 }

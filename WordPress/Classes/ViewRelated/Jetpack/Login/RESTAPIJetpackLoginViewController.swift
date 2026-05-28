@@ -94,7 +94,7 @@ private struct JetpackConnectionView: View {
                     viewModel.connect()
                 }
                 .buttonStyle(.borderedProminent)
-                .controlSize(.small)
+                .controlSize(.regular)
                 .padding(.bottom, 12)
             } else if viewModel.isCompleted {
                 CompletedAnimationView {
@@ -239,5 +239,4 @@ private enum Strings {
         value: "Connect your site",
         comment: "Title for the button that starts the Jetpack connection process"
     )
-
 }

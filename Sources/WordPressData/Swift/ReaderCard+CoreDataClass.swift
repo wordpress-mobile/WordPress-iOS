@@ -2,6 +2,7 @@ import Foundation
 import CoreData
 import WordPressKit
 
+@objc(ReaderCard)
 public class ReaderCard: NSManagedObject {
     public enum CardType {
         case post
@@ -15,11 +16,11 @@ public class ReaderCard: NSManagedObject {
             return .post
         }
 
-        if topicsArray.count > 0 {
+        if !topicsArray.isEmpty {
             return .topics
         }
 
-        if sitesArray.count > 0 {
+        if !sitesArray.isEmpty {
             return .sites
         }
 
@@ -52,7 +53,7 @@ public class ReaderCard: NSManagedObject {
         case .post:
             let post: ReaderPost
             if let remotePost = remoteCard.post {
-                post = PostHelper.createOrReplace(fromRemotePost: remotePost, for: nil, context: context)
+                post = ReaderPost.createOrUpdate(with: remotePost, topic: nil, context: context)
             } else {
                 return nil
             }

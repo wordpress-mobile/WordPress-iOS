@@ -1,31 +1,21 @@
-Nuestra función de soporte con IA, WordPress Intelligence, ahora está disponible en más idiomas y configuraciones regionales. El ayudante favorito de todos se ha vuelto mucho más práctico.
+¿Quién es quién en tu web? Ya lo sabes: las notificaciones push ahora usan gravatares para que puedas ver quién ha comentado o interactuado con tu contenido. El registro de actividad también muestra cuándo se actualizó tu sitio con agentes de IA.
 
-Hemos mejorado la sección de estadísticas aproximadamente un 83 %.
+Si pensabas que nuestras últimas actualizaciones de Estadísticas eran increíbles, no son nada en comparación con lo que está por venir.
 
-- La tarjeta de ubicaciones te permite filtrar datos por país, región y ciudad. Estos datos coinciden con los de la versión web de Jetpack.
-- "Enlaces externos" ahora se llama "Clics", por coherencia con la versión web. Hemos corregido un error por el que esta área a veces se mostrara incorrectamente.
-- Puedes desactivar la comparación automática de datos y guardar ese ajuste para el uso de la aplicación a partir de ahora. Hemos corregido un problema por el que los datos semanales del periodo de comparación no siempre se mostraban correctamente.
-- Si mantienes pulsado un gráfico de barras, verás más detalles. El desplazamiento vertical también se ha corregido.
-- Puedes ver los datos de los gráficos de barras y de los gráficos de líneas agrupados por días, semanas, meses y años.
-- Los elementos superiores de la lista se ordenan por nombre y correctamente.
+- Ahora, la fecha de hoy se incluye en intervalos como «Últimos 7 días». También hemos añadido un nuevo intervalo de «Últimos 14 días».
+- Las fechas incompletas, incluso la de hoy, se muestran en el gráfico de líneas como una línea de puntos. También puedes verlas más fácilmente en la vista de gráfico de barras.
+- Ahora que hablamos de los gráficos de barras, al tocar una barra se mostrarán los datos de esa fecha, lo hace que sea más fácil desplazarse por los datos de varios días. Ah, y al tocar una barra ya no se seleccionará la barra que hay al lado.
+- Es posible que notes cambios visuales como una cabecera del gráfico más pequeña, fuentes más pequeñas en las pestañas y espacio reducido aquí y allá. El estilo es más minimalista.
 
-También hemos hecho muchos cambios en el Lector.
+Mientras hacíamos esto, también hemos introducido cambios en el Lector. (Por cierto, ninguno de ellos está relacionado con la lectura).
 
-- Hay una nueva pestaña "Recién publicado" en la pantalla de Descubrir. También hemos sustituido la pestaña «Recomendado» por «Para ti».
-- Solo hay una opción de búsqueda en la barra lateral principal.
-- La vista «Leer más» funciona igual, independientemente del punto en el que la toques, y ahora puedes ver todo el extracto. Mucho más que explorar.
-- La sección de comentarios te permite responder y dar Me gusta a los comentarios directamente debajo del artículo. Hay un nuevo botón «Dejar comentario» debajo de los artículos para que sea más rápido hacer comentarios.
-- Puedes ver dos comentarios por defecto en lugar de solo uno, y los comentarios muy largos se pueden contraer para facilitar la lectura.
-- También hemos arreglado algunos problemas visuales de la sección de comentarios. Los comentarios ahora tienen la altura correcta, el botón «Ver todos los comentarios» destaca más y el botón «Enviar» tiene el estilo adecuado.
-- Puedes leer las entradas en tu idioma preferido gracias a la compatibilidad con la traducción en la aplicación.
-- Los espacios múltiples en los títulos de los sitios se convierten en uno solo para facilitar la lectura y la visualización.
+- Cuando ves una imagen en un lightbox, deslizar hacia abajo la descartará, incluso cuando hayas acercado la imagen.
+- Hemos corregido el color de los enlaces en los comentarios y en el modo oscuro en los temas personalizados. Ahora se ve mejor.
+- Puedes ver galerías de medios en modo de pantalla completa. Solo tienes que deslizar a la derecha o a la izquierda para ver todas las imágenes.
 
-Hemos realizado una actualización técnica que reduce el tamaño de tu aplicación en unos 6 MB. ¿Qué harás con todo este nuevo espacio?
+Y como todavía teníamos un poco de tiempo libre, también arreglamos algunos detalles que nos estaban molestando.
 
-Es más fácil encontrar, ver y cambiar los ajustes de visibilidad de las entradas existentes. El botón «Listo» tampoco desaparecerá cuando establezcas la contraseña al publicar una entrada protegida con contraseña.
-
-Mejoras en el diseño: hemos actualizado los iconos de atajos y las ilustraciones para adaptarlos mejor al resto de la aplicación, así como a tu dispositivo.
-
-Hemos corregido un problema de modo que ahora las vistas previas de las entradas funcionan correctamente en determinados sitios que usan los planes Business y Commerce.
-
-Cuando añadas un nuevo sitio autoalojado, se te pedirá la contraseña de tu aplicación para autenticarte. Mantenla en secreto. Mantenla segura.
+- Hemos actualizado los iconos de las flechas y el espaciado en la pantalla de notificaciones.
+- En los ajustes de entradas, la tarjeta de compartir en redes sociales solo muestra las plataformas compatibles con la aplicación.
+- Las entradas nuevas usan el formato de entrada predeterminado en lugar de la versión estándar. Puedes actualizar este formato en los ajustes de tu sitio.
+- Si tu sitio está autoalojado con XML-RPC inhabilitado, puedes ver entradas y páginas en la aplicación. Eso es muy importante, si se nos permite decirlo.

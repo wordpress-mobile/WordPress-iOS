@@ -37,7 +37,7 @@ class ReaderPostStreamService {
                 }
 
                 posts.enumerated().forEach { index, remotePost in
-                    let post = PostHelper.createOrReplace(fromRemotePost: remotePost, for: readerTopic, context: context)
+                    let post = ReaderPost.createOrUpdate(with: remotePost, topic: readerTopic, context: context)
                     // To keep the API order
                     post.sortRank = NSNumber(value: Date().timeIntervalSinceReferenceDate - Double(((self.pageNumber * Constants.paginationMultiplier) + index)))
                 }
@@ -79,7 +79,7 @@ class ReaderPostStreamService {
                 }
                 context.delete(post)
             }
-        } catch let error {
+        } catch {
             print("Clean post error:", error)
         }
     }

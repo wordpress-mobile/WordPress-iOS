@@ -17,7 +17,6 @@ class ZendeskUtilsPlans: XCTestCase {
             let metadata = ZendeskMetadata(plan: plans[planIndex], jetpackAddons: planIndex == 6 ? ["jetpack_addon_scan_daily"] : [])
 
             completion(.success(metadata))
-
         }
     }
 

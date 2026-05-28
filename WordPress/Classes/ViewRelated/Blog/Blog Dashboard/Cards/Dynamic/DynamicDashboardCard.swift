@@ -8,7 +8,7 @@ struct DynamicDashboardCard: View {
 
     struct Input {
         struct Row: Identifiable {
-            let id: UUID = UUID()
+            let id = UUID()
 
             let title: String?
             let description: String?

@@ -37,7 +37,6 @@ open class PlanService: NSObject {
         remote.getWpcomPlans({ plans in
 
             self.mergeRemoteWpcomPlans(plans.plans, remoteGroups: plans.groups, remoteFeatures: plans.features, onComplete: success)
-
         }, failure: failure)
     }
 
@@ -135,7 +134,6 @@ open class PlanService: NSObject {
             }
             context.delete(plan)
         }
-
     }
 
     private func mergeRemotePlanGroups(_ remoteGroups: [RemotePlanGroup], in context: NSManagedObjectContext) {
@@ -163,7 +161,6 @@ open class PlanService: NSObject {
             }
             context.delete(group)
         }
-
     }
 
     private func mergeRemotePlanFeatures(_ remoteFeatures: [RemotePlanFeature], in context: NSManagedObjectContext) {
@@ -207,7 +204,7 @@ extension PlanService {
         let remote_v1_3 = PlanServiceRemote_ApiVersion1_3(wordPressComRestApi: restAPI)
         remote_v1_3.getPlansForSite(
             siteID,
-            success: { (plans) in
+            success: { plans in
                 guard let planId = plans.activePlan.planID,
                     let planIdInt = Int(planId) else {
                         // There won't necessarily be an active plan so this is not really a failure

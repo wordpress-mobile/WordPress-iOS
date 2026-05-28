@@ -213,7 +213,7 @@ import WordPressShared
                                                       entityName: Page.entityName(),
                                                       hiddenPosts: hiddenPosts,
                                                       publishedOnly: selectionType.publishedPostsOnly,
-                                                      callback: { [weak self] (post) in
+                                                      callback: { [weak self] post in
             if let page = post as? Page {
                 completion(page)
             }
@@ -289,7 +289,7 @@ import WordPressShared
                                  homePageID: homepagePageID,
                                  success: { [weak self] in
             self?.endUpdating()
-        }, failure: { [weak self] error in
+        }, failure: { [weak self] _ in
             self?.endUpdating()
 
             let notice = Notice(title: Strings.updateErrorTitle, message: Strings.updateErrorMessage, feedbackType: .error)

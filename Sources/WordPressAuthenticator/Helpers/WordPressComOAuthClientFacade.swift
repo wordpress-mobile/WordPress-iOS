@@ -117,5 +117,4 @@ import WordPressKit
             failure: failure
         )
     }
-
 }

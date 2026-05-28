@@ -71,5 +71,4 @@ extension ReaderTopicService {
         return WordPressComRestApi.defaultApi(oAuthToken: token,
                                               userAgent: WPUserAgent.wordPress())
     }
-
 }

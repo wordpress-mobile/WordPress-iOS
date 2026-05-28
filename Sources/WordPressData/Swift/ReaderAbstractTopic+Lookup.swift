@@ -1,4 +1,5 @@
 import Foundation
+import CoreData
 
 public extension ReaderAbstractTopic {
 
@@ -86,5 +87,4 @@ public extension ReaderAbstractTopic {
     static func objc_lookupFollowedSitesTopic(in context: NSManagedObjectContext) -> ReaderAbstractTopic? {
         try? lookupFollowedSitesTopic(in: context)
     }
-
 }

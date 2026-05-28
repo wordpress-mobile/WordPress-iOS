@@ -53,7 +53,7 @@ public final class AdaptiveTabBarController<Item: AdaptiveTabBarItem> {
     private func setupFilterBar() {
 //        filterBarContainer.backgroundColor = .systemGroupedBackground // .secondarySystemGroupedBackground
         filterBarContainer.contentView.addSubview(filterBar)
-        filterBar.pinEdges(.top, to: filterBarContainer.safeAreaLayoutGuide, insets: UIEdgeInsets(.top, -filterBar.tabBarHeight))
+        filterBar.pinEdges(.top, to: filterBarContainer.safeAreaLayoutGuide, insets: UIEdgeInsets(.top, -AdaptiveTabBar.tabBarHeight))
         filterBar.pinEdges([.horizontal, .bottom])
 
         filterBar.addTarget(self, action: #selector(selectedFilterDidChange), for: .valueChanged)
@@ -98,12 +98,12 @@ public final class AdaptiveTabBarController<Item: AdaptiveTabBarItem> {
             viewController.navigationItem.titleView = nil
             viewController.view.addSubview(filterBarContainer)
             filterBarContainer.pinEdges([.top, .horizontal])
-            viewController.additionalSafeAreaInsets = UIEdgeInsets(.top, filterBar.tabBarHeight)
+            viewController.additionalSafeAreaInsets = UIEdgeInsets(.top, AdaptiveTabBar.tabBarHeight)
         }
     }
 
     private func setupTraitObserver(for viewController: UIViewController) {
-        traitObserver = viewController.registerForTraitChanges([UITraitHorizontalSizeClass.self]) { [weak self] (viewController: UIViewController, previousTraitCollection: UITraitCollection) in
+        traitObserver = viewController.registerForTraitChanges([UITraitHorizontalSizeClass.self]) { [weak self] (_: UIViewController, _: UITraitCollection) in
             self?.refresh()
         }
     }

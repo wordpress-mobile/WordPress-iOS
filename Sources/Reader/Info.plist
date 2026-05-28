@@ -26,10 +26,6 @@
 	<string>6</string>
 	<key>WPProductBlogURL</key>
 	<string>jetpack.com/blog</string>
-	<key>WPProductTwitterHandle</key>
-	<string>@jetpack</string>
-	<key>WPProductTwitterURL</key>
-	<string>twitter.com/jetpack</string>
 	<key>WPPushNotificationAppID</key>
 	<string>${WP_PUSH_NOTIFICATION_APP_ID}</string>
 	<key>WPZendeskSourcePlatform</key>

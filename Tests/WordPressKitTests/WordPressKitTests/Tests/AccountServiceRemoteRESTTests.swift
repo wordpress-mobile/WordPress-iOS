@@ -143,6 +143,23 @@ class AccountServiceRemoteRESTTests: RemoteTestCase, RESTTestable {
         stubRemoteResponse(meSitesEndpoint, filename: getBlogsSuccessMockFilename, contentType: .ApplicationJSON)
         remote.getBlogsWithSuccess({ blogs in
             XCTAssertEqual(blogs?.count, 3, "There should be 3 blogs here")
+
+            guard let blog = blogs?.first as? RemoteBlog else {
+                XCTFail("Blogs should not be empty")
+                expect.fulfill()
+                return
+            }
+
+            XCTAssertEqual(blog.blogID, NSNumber(value: 55555551))
+            XCTAssertEqual(blog.name, "Public Test Blog")
+            XCTAssertEqual(blog.url, "https://test1.wordpress.com")
+
+            // Check some capabilities
+            XCTAssertTrue(blog.capabilities["edit_pages"] as? Bool ?? false)
+            XCTAssertTrue(blog.capabilities["edit_posts"] as? Bool ?? false)
+            XCTAssertTrue(blog.capabilities["publish_posts"] as? Bool ?? false)
+            XCTAssertEqual(blog.capabilities["vc_access_rules_post_types"] as? String, "custom", "Non-boolean capabilities are preserved and parsed correctly")
+
             expect.fulfill()
         }, failure: { _ in
             XCTFail("This callback shouldn't get called")

@@ -43,6 +43,7 @@ public enum Constants {
         static let celadon = Color(palette: CSColor.Celadon.self)
 
         static let uiColorBlue = UIColor(palette: CSColor.Blue.self)
+        static let uiColorOrange = UIColor(palette: CSColor.Orange.self)
 
         static let jetpack = Color(palette: CSColor.JetpackGreen.self)
 
@@ -91,6 +92,20 @@ public enum Constants {
         } else {
             return baseColor.opacity(colorScheme == .light ? 0.38 : 0.60)
         }
+    }
+
+    enum Typography {
+        /// Large display font (used for prominent metrics)
+        static let largeDisplayFont = Font.system(.largeTitle, design: .rounded, weight: .medium)
+
+        /// Medium display font (used for main metrics)
+        static let mediumDisplayFont = Font.system(.title, design: .rounded, weight: .medium)
+
+        /// Small display font (used for secondary metrics)
+        static let smallDisplayFont = Font.system(.title2, design: .rounded, weight: .medium)
+
+        /// Kerning for large display fonts to improve readability
+        static let largeDisplayKerning: CGFloat = -1.0
     }
 }
 

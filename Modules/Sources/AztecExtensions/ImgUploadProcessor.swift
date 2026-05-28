@@ -15,7 +15,7 @@ public class ImgUploadProcessor: Processor {
         self.height = height
     }
 
-    lazy var imgPostMediaUploadProcessor = HTMLProcessor(for: "img", replacer: { (img) in
+    lazy var imgPostMediaUploadProcessor = HTMLProcessor(for: "img", replacer: { img in
         guard let imgUploadValue = img.attributes[MediaAttachment.uploadKey]?.value,
             case let .string(imgUploadID) = imgUploadValue,
             self.mediaUploadID == imgUploadID else {

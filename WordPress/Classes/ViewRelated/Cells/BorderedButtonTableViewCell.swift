@@ -93,7 +93,6 @@ class BorderedButtonTableViewCell: UITableViewCell {
             updateButtonBorderColors()
         }
     }
-
 }
 
 // MARK: - Private Extension
@@ -143,7 +142,7 @@ private extension BorderedButtonTableViewCell {
     }
 
     struct Defaults {
-        static let buttonInsets = UIEdgeInsets(top: 0, left: 0, bottom: 0, right: 0)
+        static let buttonInsets = UIEdgeInsets.zero
         static let titleFont = WPStyleGuide.fontForTextStyle(.body, fontWeight: .semibold)
         static let normalColor: UIColor = .label
         static let highlightedColor: UIColor = .label.variantInverted
@@ -165,5 +164,4 @@ private extension BorderedButtonTableViewCell {
 
         loadingOverlayView.isHidden = !loading
     }
-
 }

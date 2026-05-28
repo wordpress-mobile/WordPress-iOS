@@ -268,7 +268,7 @@ final class MediaItemViewController: UITableViewController {
         let alertController = UIAlertController(title: nil,
                                                 message: Strings.deleteConfirmation, preferredStyle: .alert)
         alertController.addCancelActionWithTitle(Strings.cancel)
-        alertController.addDestructiveActionWithTitle(Strings.delete, handler: { action in
+        alertController.addDestructiveActionWithTitle(Strings.delete, handler: { _ in
             self.deleteMediaItem()
         })
 

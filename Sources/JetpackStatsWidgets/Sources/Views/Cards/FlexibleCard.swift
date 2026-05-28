@@ -76,6 +76,5 @@ extension FlexibleCard {
 
         static let titleFont = Font.caption
         static let titleColor = Color(.secondaryLabel)
-
     }
 }

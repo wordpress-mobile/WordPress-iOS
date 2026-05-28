@@ -136,7 +136,6 @@ extension ReaderPostServiceRemote {
                   }
 
             success()
-
         }, failure: { error, _ in
             WPKitLogError("Error updating post subscription: \(error)")
             failure(error)

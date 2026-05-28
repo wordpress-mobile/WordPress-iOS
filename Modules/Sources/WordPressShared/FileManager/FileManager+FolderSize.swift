@@ -21,7 +21,7 @@ public extension FileManager {
             URLResourceKey.isRegularFileKey,
             URLResourceKey.fileAllocatedSizeKey,
             URLResourceKey.totalFileAllocatedSizeKey,
-            ]
+        ]
 
         // The error handler simply signals errors to outside code.
         var errorDidOccur: Error?

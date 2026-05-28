@@ -130,7 +130,6 @@ extension WPStyleGuide {
         // we only set the text subtle color, so that system colors are used otherwise
         cell.detailTextLabel?.textColor = .secondaryLabel
         cell.imageView?.tintColor = UIAppColor.neutral(.shade30)
-
     }
 
     class func configureTableViewSmallSubtitleCell(_ cell: UITableViewCell) {

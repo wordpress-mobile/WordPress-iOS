@@ -214,5 +214,4 @@ private enum Strings {
             comment: "Download button title"
         )
     }
-
 }

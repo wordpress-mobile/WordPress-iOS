@@ -1,0 +1,23 @@
+# yaml-language-server: $schema=https://raw.githubusercontent.com/buildkite/pipeline-schema/main/schema.json
+---
+
+agents:
+  queue: mac
+env:
+  IMAGE_ID: $IMAGE_ID
+
+steps:
+  - label: "🛠 :jetpack: Build for Testing"
+    key: "build_jetpack"
+    command: ".buildkite/commands/build-for-testing.sh jetpack"
+    plugins: [$CI_TOOLKIT_PLUGIN]
+
+  - label: "🤖 AI E2E Tests"
+    command: .buildkite/commands/run-ai-e2e-tests.sh
+    depends_on: "build_jetpack"
+    timeout_in_minutes: 60
+    plugins: [$CI_TOOLKIT_PLUGIN]
+    env:
+      APP: jetpack
+    artifact_paths:
+      - "Tests/AgentTests/results/**/*"

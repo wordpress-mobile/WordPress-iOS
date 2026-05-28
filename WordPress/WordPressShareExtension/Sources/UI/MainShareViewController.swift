@@ -34,7 +34,7 @@ class MainShareViewController: UIViewController {
         let origination: OriginatingExtension
 
         // Please forgive the following code - I believe there must be some other better way to architect our share
-        // extension so that we don't need to check for the bundle ID.  But for the purpose of this bugfix it'll have
+        // extension so that we don't need to check for the bundle ID. But for the purpose of this bugfix it'll have
         // to do.
         //
         // This was proposed as a bug fix to the original expression:
@@ -75,7 +75,7 @@ class MainShareViewController: UIViewController {
 private extension MainShareViewController {
     func loadAndPresentNavigationVC() {
         editorController.context = extensionContext
-        editorController.dismissalCompletionBlock = { [weak self] (exitSharing) in
+        editorController.dismissalCompletionBlock = { [weak self] exitSharing in
             if exitSharing {
                 self?.extensionContext?.completeRequest(returningItems: nil, completionHandler: nil)
             } else {

@@ -201,7 +201,7 @@ class NoticePresenter {
                                             content: content,
                                             trigger: nil)
 
-        UNUserNotificationCenter.current().add(request, withCompletionHandler: { error in
+        UNUserNotificationCenter.current().add(request, withCompletionHandler: { _ in
             DispatchQueue.main.async {
                 ActionDispatcher.dispatch(NoticeAction.clear(notice))
             }
@@ -405,7 +405,7 @@ class NoticeContainerView: UIView {
             stackView.trailingAnchor.constraint(equalTo: layoutMarginsGuide.trailingAnchor),
             stackView.topAnchor.constraint(equalTo: layoutMarginsGuide.topAnchor),
             stackView.bottomAnchor.constraint(equalTo: layoutMarginsGuide.bottomAnchor)
-            ])
+        ])
     }
 
     required init?(coder aDecoder: NSCoder) {

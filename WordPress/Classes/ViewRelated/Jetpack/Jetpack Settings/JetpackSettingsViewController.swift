@@ -152,7 +152,7 @@ open class JetpackSettingsViewController: UITableViewController {
                                               comment: "Jetpack Settings: WordPress.com Login settings"),
                 rows: wordPressLoginRows,
                 footerText: nil)
-            ])
+        ])
     }
 
     // MARK: Learn More footer
@@ -191,7 +191,7 @@ open class JetpackSettingsViewController: UITableViewController {
             self.reloadViewModel()
             self.service.updateJetpackSettingsForBlog(self.blog,
                                                       success: {},
-                                                      failure: { [weak self] (_) in
+                                                      failure: { [weak self] _ in
                                                           self?.refreshSettingsAfterSavingError()
                                                       })
         }
@@ -203,7 +203,7 @@ open class JetpackSettingsViewController: UITableViewController {
             self.settings.jetpackMonitorEmailNotifications = newValue
             self.service.updateJetpackMonitorSettingsForBlog(self.blog,
                                                              success: {},
-                                                             failure: { [weak self] (_) in
+                                                             failure: { [weak self] _ in
                                                                  self?.refreshSettingsAfterSavingError()
                                                              })
         }
@@ -215,7 +215,7 @@ open class JetpackSettingsViewController: UITableViewController {
             self.settings.jetpackMonitorPushNotifications = newValue
             self.service.updateJetpackMonitorSettingsForBlog(self.blog,
                                                              success: {},
-                                                             failure: { [weak self] (_) in
+                                                             failure: { [weak self] _ in
                                                                  self?.refreshSettingsAfterSavingError()
                                                              })
         }
@@ -228,14 +228,14 @@ open class JetpackSettingsViewController: UITableViewController {
             self.reloadViewModel()
             self.service.updateJetpackSettingsForBlog(self.blog,
                                                       success: {},
-                                                      failure: { [weak self] (_) in
+                                                      failure: { [weak self] _ in
                                                           self?.refreshSettingsAfterSavingError()
                                                       })
         }
     }
 
     func pressedAllowlistedIPAddresses() -> ImmuTableAction {
-        return { [unowned self] row in
+        return { [unowned self] _ in
             let allowListedIPs = self.settings.jetpackLoginAllowListedIPAddresses
             let settingsViewController = SettingsListEditorViewController(collection: allowListedIPs)
 
@@ -260,7 +260,7 @@ open class JetpackSettingsViewController: UITableViewController {
                                                                self?.refreshSettings()
                                                             WPAnalytics.track(.jetpackAllowlistedIpsChanged)
                                                            },
-                                                           failure: { [weak self] (_) in
+                                                           failure: { [weak self] _ in
                                                                self?.refreshSettingsAfterSavingError()
                                                            })
             }
@@ -276,7 +276,7 @@ open class JetpackSettingsViewController: UITableViewController {
             self.reloadViewModel()
             self.service.updateJetpackSettingsForBlog(self.blog,
                                                       success: {},
-                                                      failure: { [weak self] (_) in
+                                                      failure: { [weak self] _ in
                                                           self?.refreshSettingsAfterSavingError()
                                                       })
         }
@@ -288,7 +288,7 @@ open class JetpackSettingsViewController: UITableViewController {
             self.settings.jetpackSSOMatchAccountsByEmail = newValue
             self.service.updateJetpackSettingsForBlog(self.blog,
                                                       success: {},
-                                                      failure: { [weak self] (_) in
+                                                      failure: { [weak self] _ in
                                                           self?.refreshSettingsAfterSavingError()
                                                       })
         }
@@ -300,14 +300,14 @@ open class JetpackSettingsViewController: UITableViewController {
             self.settings.jetpackSSORequireTwoStepAuthentication = newValue
             self.service.updateJetpackSettingsForBlog(self.blog,
                                                       success: {},
-                                                      failure: { [weak self] (_) in
+                                                      failure: { [weak self] _ in
                                                           self?.refreshSettingsAfterSavingError()
                                                       })
         }
     }
 
     fileprivate func pressedManageConnection() -> ImmuTableAction {
-        return { [unowned self] row in
+        return { [unowned self] _ in
             WPAnalytics.trackEvent(.jetpackManageConnectionViewed)
             let jetpackConnectionVC = JetpackConnectionViewController(blog: blog)
             jetpackConnectionVC.delegate = self
@@ -355,7 +355,6 @@ open class JetpackSettingsViewController: UITableViewController {
         WPError.showAlert(withTitle: errorTitle, message: errorMessage, withSupportButton: true)
         refreshSettings()
     }
-
 }
 
 extension JetpackSettingsViewController: JetpackConnectionDelegate {

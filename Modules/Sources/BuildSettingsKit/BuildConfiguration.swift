@@ -13,7 +13,7 @@ public enum BuildConfiguration: String, Sendable {
         BuildSettings.current.configuration
     }
 
-    /// Returns `true` if the build is intented only for internal use.
+    /// Returns `true` if the build is intended only for internal use.
     public var isInternal: Bool {
         switch self {
         case .debug, .alpha: true

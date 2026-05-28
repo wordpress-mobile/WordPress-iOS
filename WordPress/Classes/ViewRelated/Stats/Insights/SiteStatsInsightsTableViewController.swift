@@ -116,7 +116,6 @@ class SiteStatsInsightsTableViewController: SiteStatsBaseTableViewController {
         navigationController.presentationController?.delegate = self
         present(navigationController, animated: true, completion: nil)
     }
-
 }
 
 // MARK: - Private Extension
@@ -358,7 +357,7 @@ extension SiteStatsInsightsTableViewController: SiteStatsInsightsDelegate {
 
     func displayWebViewWithURL(_ url: URL) {
         let webViewController = WebViewControllerFactory.controllerAuthenticatedWithDefaultAccount(url: url, source: "site_stats_insights")
-        let navController = UINavigationController.init(rootViewController: webViewController)
+        let navController = UINavigationController(rootViewController: webViewController)
         present(navController, animated: true)
     }
 
@@ -395,9 +394,9 @@ extension SiteStatsInsightsTableViewController: SiteStatsInsightsDelegate {
     }
 
     func showPostingActivityDetails() {
-        let postingActivityViewModel = PostingActivityViewModel(insightsStore: insightsStore)
+        let yearData = insightsStore.getYearlyPostingActivity(from: Date())
         let postingActivityViewController = PostingActivityViewController.loadFromStoryboard { coder in
-            return PostingActivityViewController(coder: coder, viewModel: postingActivityViewModel)
+            return PostingActivityViewController(coder: coder, yearData: yearData)
         }
         navigationController?.pushViewController(postingActivityViewController, animated: true)
     }

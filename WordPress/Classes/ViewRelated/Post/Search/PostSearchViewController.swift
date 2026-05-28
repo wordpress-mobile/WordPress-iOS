@@ -10,7 +10,7 @@ final class PostSearchViewController: UIViewController, UITableViewDelegate, UIS
 
     private let tableView = UITableView(frame: .zero, style: .plain)
 
-    private lazy var dataSource = UITableViewDiffableDataSource<SectionID, ItemID> (tableView: tableView) { [weak self] tableView, indexPath, itemIdentifier in
+    private lazy var dataSource = UITableViewDiffableDataSource<SectionID, ItemID> (tableView: tableView) { [weak self] tableView, indexPath, _ in
         self?.tableView(tableView, cellForRowAt: indexPath)
     }
 

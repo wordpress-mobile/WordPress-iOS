@@ -132,5 +132,4 @@ open class JetpackBackupServiceRemote: ServiceRemoteWordPressComREST {
 
         return self.path(forEndpoint: endpoint, withVersion: ._2_0)
     }
-
 }

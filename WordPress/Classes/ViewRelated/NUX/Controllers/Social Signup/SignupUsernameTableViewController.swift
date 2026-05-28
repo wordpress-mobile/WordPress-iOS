@@ -44,7 +44,7 @@ class SignupUsernameTableViewController: UITableViewController, SearchTableViewC
                 return
         }
 
-        suggestUsernames(for: nameToSearch) { [weak self] (suggestions) in
+        suggestUsernames(for: nameToSearch) { [weak self] suggestions in
             self?.suggestions = suggestions
             self?.reloadSections()
         }
@@ -71,7 +71,7 @@ class SignupUsernameTableViewController: UITableViewController, SearchTableViewC
 
     func setupBackgroundTapGestureRecognizer() {
         let gestureRecognizer = UITapGestureRecognizer()
-        gestureRecognizer.on(call: { [weak self] (gesture) in
+        gestureRecognizer.on(call: { [weak self] _ in
             self?.view.endEditing(true)
         })
         gestureRecognizer.cancelsTouchesInView = false
@@ -115,7 +115,7 @@ class SignupUsernameTableViewController: UITableViewController, SearchTableViewC
     // MARK: - SearchTableViewCellDelegate
 
     func startSearch(for searchTerm: String) {
-        guard searchTerm.count > 0 else {
+        guard !searchTerm.isEmpty else {
             return
         }
 
@@ -259,8 +259,8 @@ extension SignupUsernameTableViewController {
         showLoader()
 
         let service = AccountSettingsService(userID: userID.intValue, api: api)
-        service.suggestUsernames(base: searchTerm) { [weak self] (newSuggestions) in
-            if newSuggestions.count == 0 {
+        service.suggestUsernames(base: searchTerm) { [weak self] newSuggestions in
+            if newSuggestions.isEmpty {
                 WordPressAuthenticator.track(.signupEpilogueUsernameSuggestionsFailed)
             }
             self?.isSearching = false

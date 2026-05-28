@@ -387,8 +387,8 @@ import WordPressKit
     ///
     /// - Parameters:
     ///     - url: The authentication URL
-    ///     - rootViewController: The view controller to act as the presenter for the signin view controller.  By convention this is the app's root vc.
-    ///     - automatedTesting: for calling this method for automated testing.  It won't sync the account or load any other VCs.
+    ///     - rootViewController: The view controller to act as the presenter for the signin view controller. By convention this is the app's root vc.
+    ///     - automatedTesting: for calling this method for automated testing. It won't sync the account or load any other VCs.
     ///
     @objc public class func openAuthenticationURL(
         _ url: URL,
@@ -417,7 +417,7 @@ import WordPressKit
         }
 
         // We could just use the flow, but since `MagicLinkFlow` is an ObjC enum, it always
-        // allows a `default` value.  By mapping the ObjC enum to a Swift enum we can avoid that afterwards.
+        // allows a `default` value. By mapping the ObjC enum to a Swift enum we can avoid that afterwards.
         let flow: NUXLinkAuthViewController.Flow
 
         switch MagicLinkFlow(rawValue: flowRawValue) {
@@ -491,7 +491,7 @@ import WordPressKit
 
         if isSiteURLSchemeEmpty {
             path = "https://\(path)"
-        } else if path.isWordPressComPath() && path.range(of: "http://") != nil {
+        } else if path.isWordPressComPath() && path.contains("http://") {
             path = path.replacingOccurrences(of: "http://", with: "https://")
         }
 
@@ -526,14 +526,14 @@ import WordPressKit
 public extension WordPressAuthenticator {
 
     func getAppleIDCredentialState(for userID: String, completion: @escaping (ASAuthorizationAppleIDProvider.CredentialState, Error?) -> Void) {
-        AppleAuthenticator.sharedInstance.getAppleIDCredentialState(for: userID) { (state, error) in
+        AppleAuthenticator.sharedInstance.getAppleIDCredentialState(for: userID) { state, error in
             // If credentialState == .notFound, error will have a value.
             completion(state, error)
         }
     }
 
     func startObservingAppleIDCredentialRevoked(completion: @escaping () -> Void) {
-        appleIDCredentialObserver = NotificationCenter.default.addObserver(forName: AppleAuthenticator.credentialRevokedNotification, object: nil, queue: nil) { (_) in
+        appleIDCredentialObserver = NotificationCenter.default.addObserver(forName: AppleAuthenticator.credentialRevokedNotification, object: nil, queue: nil) { _ in
             completion()
         }
     }

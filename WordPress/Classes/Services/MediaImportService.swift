@@ -9,7 +9,7 @@ import WordPressData
 ///
 class MediaImportService: NSObject {
 
-    private static let defaultImportQueue: DispatchQueue = DispatchQueue(label: "org.wordpress.mediaImportService", autoreleaseFrequency: .workItem)
+    private static let defaultImportQueue = DispatchQueue(label: "org.wordpress.mediaImportService", autoreleaseFrequency: .workItem)
 
     @objc lazy var importQueue: DispatchQueue = {
         return MediaImportService.defaultImportQueue
@@ -35,7 +35,7 @@ class MediaImportService: NSObject {
 
     /// The initialiser for Objective-C code.
     ///
-    /// Using `ContextManager` as the argument becuase `CoreDataStackSwift` is not accessible from Objective-C code.
+    /// Using `ContextManager` as the argument because `CoreDataStackSwift` is not accessible from Objective-C code.
     @objc
     convenience init(contextManager: ContextManager) {
         self.init(coreDataStack: contextManager)
@@ -189,7 +189,7 @@ class MediaImportService: NSObject {
         assert(media.managedObjectContext == coreDataStack.mainContext)
         assert(blog.managedObjectContext == coreDataStack.mainContext)
 
-        var allowedFileTypes = blog.allowedFileTypes as? Set<String> ?? []
+        var allowedFileTypes = blog.allowedFileTypes
         // HEIC isn't supported when uploading an image, so we filter it out (http://git.io/JJAae)
         allowedFileTypes.remove("heic")
 
@@ -198,7 +198,7 @@ class MediaImportService: NSObject {
                 let mediaInContext = try context.existingObject(with: media.objectID) as! Media
                 if let error {
                     mediaInContext.remoteStatus = .failed
-                    mediaInContext.error = error
+                    mediaInContext.error = error as NSError
                 } else {
                     mediaInContext.remoteStatus = .local
                     mediaInContext.error = nil
@@ -246,7 +246,7 @@ class MediaImportService: NSObject {
     /// - Returns: a progress object that report the current state of the import process.
     ///
     private func `import`(_ exportable: ExportableAsset, to media: Media, options: ExportOptions, completion: @escaping (Error?) -> Void) -> Progress {
-        let progress: Progress = Progress.discreteProgress(totalUnitCount: 1)
+        let progress = Progress.discreteProgress(totalUnitCount: 1)
         importQueue.async {
             guard let exporter = self.makeExporter(for: exportable, options: options) else {
                 preconditionFailure("An exporter needs to be availale")
@@ -426,5 +426,4 @@ class MediaImportService: NSObject {
             media.caption = caption
         }
     }
-
 }

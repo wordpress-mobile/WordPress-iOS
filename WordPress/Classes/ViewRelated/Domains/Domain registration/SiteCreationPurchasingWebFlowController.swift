@@ -193,8 +193,8 @@ final class SiteCreationPurchasingWebFlowController {
         }
     }
 
-    /// Handles URL changes in the web view.  We only allow the user to stay within certain URLs.  Falling outside these URLs
-    /// results in the web view being dismissed.  This method also handles the success condition for a successful domain registration
+    /// Handles URL changes in the web view. We only allow the user to stay within certain URLs. Falling outside these URLs
+    /// results in the web view being dismissed. This method also handles the success condition for a successful domain registration
     /// through said web view.
     ///
     /// - Parameters:

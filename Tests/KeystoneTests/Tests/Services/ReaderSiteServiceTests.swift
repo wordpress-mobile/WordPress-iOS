@@ -1,4 +1,3 @@
-import Nimble
 import OHHTTPStubs
 import OHHTTPStubsSwift
 @testable import WordPress
@@ -79,22 +78,19 @@ class ReaderSiteServiceTests: CoreDataTestCase {
             HTTPStubsResponse(jsonObject: ["success": 1], statusCode: 200, headers: nil)
         }
 
-        waitUntil { done in
-            service.flagSite(
-                withID: siteID,
-                asBlocked: true,
-                success: {
-                    done()
-                },
-                failure: { error in
-                    // We call done in this failure scenario because we explicitly fail afterwards.
-                    // Without this call, the test would have two failures:
-                    // one because done was not called (timeout) and the explicit fail with error
-                    done()
-                    fail("Expected call to succeed. Failed with \(error?.localizedDescription ?? "'nil-error'")")
-                }
-            )
-        }
+        let exp = expectation(description: "flagSite blocked success")
+        service.flagSite(
+            withID: siteID,
+            asBlocked: true,
+            success: {
+                exp.fulfill()
+            },
+            failure: { error in
+                exp.fulfill()
+                XCTFail("Expected call to succeed. Failed with \(error?.localizedDescription ?? "'nil-error'")")
+            }
+        )
+        wait(for: [exp], timeout: 1)
     }
 
     func testFlagAsBlockedFailurePath() {
@@ -105,24 +101,21 @@ class ReaderSiteServiceTests: CoreDataTestCase {
             HTTPStubsResponse(jsonObject: ["success": 0], statusCode: 200, headers: nil)
         }
 
-        waitUntil { done in
-            service.flagSite(
-                withID: siteID,
-                asBlocked: true,
-                success: {
-                    // We call done in this failure scenario because we explicitly fail afterwards.
-                    // Without this call, the test would have two failures:
-                    // one because done was not called (timeout) and the explicit fail with error
-                    done()
-                    fail("Expected call to fail, but succeeded")
-                },
-                failure: { error in
-                    expect((error as? NSError)?.domain) == ReaderSiteServiceRemoteErrorDomain
-                    expect((error as? NSError)?.code) == Int(ReaderSiteServiceRemoteError.sErviceRemoteUnsuccessfulBlockSite.rawValue)
-                    done()
-                }
-            )
-        }
+        let exp = expectation(description: "flagSite blocked failure")
+        service.flagSite(
+            withID: siteID,
+            asBlocked: true,
+            success: {
+                exp.fulfill()
+                XCTFail("Expected call to fail, but succeeded")
+            },
+            failure: { error in
+                XCTAssertEqual((error as? NSError)?.domain, ReaderSiteServiceRemoteErrorDomain)
+                XCTAssertEqual((error as? NSError)?.code, Int(ReaderSiteServiceRemoteError.sErviceRemoteUnsuccessfulBlockSite.rawValue))
+                exp.fulfill()
+            }
+        )
+        wait(for: [exp], timeout: 1)
     }
 
     func testFlagAsUnblockedSuccessPath() {
@@ -133,22 +126,19 @@ class ReaderSiteServiceTests: CoreDataTestCase {
             HTTPStubsResponse(jsonObject: ["success": 1], statusCode: 200, headers: nil)
         }
 
-        waitUntil { done in
-            service.flagSite(
-                withID: siteID,
-                asBlocked: false,
-                success: {
-                    done()
-                },
-                failure: { error in
-                    // We call done in this failure scenario because we explicitly fail afterwards.
-                    // Without this call, the test would have two failures:
-                    // one because done was not called (timeout) and the explicit fail with error
-                    done()
-                    fail("Expected call to succeed. Failed with \(error?.localizedDescription ?? "'nil-error'")")
-                }
-            )
-        }
+        let exp = expectation(description: "flagSite unblocked success")
+        service.flagSite(
+            withID: siteID,
+            asBlocked: false,
+            success: {
+                exp.fulfill()
+            },
+            failure: { error in
+                exp.fulfill()
+                XCTFail("Expected call to succeed. Failed with \(error?.localizedDescription ?? "'nil-error'")")
+            }
+        )
+        wait(for: [exp], timeout: 1)
     }
 
     func testFlagAsUnblockedFailurePath() {
@@ -159,24 +149,21 @@ class ReaderSiteServiceTests: CoreDataTestCase {
             HTTPStubsResponse(jsonObject: ["success": 0], statusCode: 200, headers: nil)
         }
 
-        waitUntil { done in
-            service.flagSite(
-                withID: siteID,
-                asBlocked: false,
-                success: {
-                    // We call done in this failure scenario because we explicitly fail afterwards.
-                    // Without this call, the test would have two failures:
-                    // one because done was not called (timeout) and the explicit fail with error
-                    done()
-                    fail("Expected call to fail, but succeeded")
-                },
-                failure: { error in
-                    expect((error as? NSError)?.domain) == ReaderSiteServiceRemoteErrorDomain
-                    expect((error as? NSError)?.code) == Int(ReaderSiteServiceRemoteError.sErviceRemoteUnsuccessfulBlockSite.rawValue)
-                    done()
-                }
-            )
-        }
+        let exp = expectation(description: "flagSite unblocked failure")
+        service.flagSite(
+            withID: siteID,
+            asBlocked: false,
+            success: {
+                exp.fulfill()
+                XCTFail("Expected call to fail, but succeeded")
+            },
+            failure: { error in
+                XCTAssertEqual((error as? NSError)?.domain, ReaderSiteServiceRemoteErrorDomain)
+                XCTAssertEqual((error as? NSError)?.code, Int(ReaderSiteServiceRemoteError.sErviceRemoteUnsuccessfulBlockSite.rawValue))
+                exp.fulfill()
+            }
+        )
+        wait(for: [exp], timeout: 1)
     }
 }
 

@@ -150,5 +150,4 @@ private extension BloggingPromptsHeaderView {
         static let answeredLabelTitle = NSLocalizedString("✓ Answered", comment: "Title label that indicates the prompt has been answered.")
         static let infoButtonAccessibilityLabel = NSLocalizedString("Learn more about prompts", comment: "Accessibility label for the blogging prompts info button on the prompts header view.")
     }
-
 }

@@ -247,7 +247,7 @@ class PluginViewModel: Observable {
                 title: message,
                 subtitle: subtitle,
                 actionLabel: NSLocalizedString("Update", comment: "Button label to update a plugin"),
-                onButtonTap: { [unowned self] (_) in
+                onButtonTap: { [unowned self] _ in
                     ActionDispatcher.dispatch(PluginAction.update(id: plugin.id, site: self.site))
                 }
             )
@@ -301,7 +301,7 @@ class PluginViewModel: Observable {
         return SwitchRow(
             title: NSLocalizedString("Active", comment: "Whether a plugin is active on a site"),
             value: activationPlugin.state.active,
-            onChange: { [unowned self] (active) in
+            onChange: { [unowned self] active in
                 self.setActive(active, for: activationPlugin)
             }
         )
@@ -312,14 +312,14 @@ class PluginViewModel: Observable {
 
         guard let autoUpdatePlugin = plugin,
             let siteCapabilities = capabilities,
-            BlogService.blog(with: site)?.isAutomatedTransfer() == false,
+            BlogService.blog(with: site)?.isAutomatedTransfer == false,
             siteCapabilities.autoupdate,
             !autoUpdatePlugin.state.automanaged else { return nil }
 
         return SwitchRow(
             title: NSLocalizedString("Autoupdates", comment: "Whether a plugin has enabled automatic updates"),
             value: autoUpdatePlugin.state.autoupdate,
-            onChange: { [unowned self] (autoupdate) in
+            onChange: { [unowned self] autoupdate in
                 self.setAutoupdate(autoupdate, for: autoUpdatePlugin)
             }
         )
@@ -383,7 +383,7 @@ class PluginViewModel: Observable {
             expandedText: setHTMLTextAttributes(text),
             expanded: descriptionExpandedStatus,
             action: { [unowned self] row in
-                self.descriptionExpandedStatus = !self.descriptionExpandedStatus
+                self.descriptionExpandedStatus.toggle()
                 (row as? ExpandableRow)?.expanded = self.descriptionExpandedStatus
             },
             onLinkTap: { [unowned self] url in
@@ -399,7 +399,7 @@ class PluginViewModel: Observable {
             expandedText: setHTMLTextAttributes(text),
             expanded: installationExpandedStatus,
             action: { [unowned self] row in
-                self.installationExpandedStatus = !self.installationExpandedStatus
+                self.installationExpandedStatus.toggle()
                 (row as? ExpandableRow)?.expanded = self.installationExpandedStatus
             },
             onLinkTap: { [unowned self] url in
@@ -415,7 +415,7 @@ class PluginViewModel: Observable {
             expandedText: setHTMLTextAttributes(text),
             expanded: changeLogExpandedStatus,
             action: { [unowned self] row in
-                self.changeLogExpandedStatus = !self.changeLogExpandedStatus
+                self.changeLogExpandedStatus.toggle()
                 (row as? ExpandableRow)?.expanded = self.changeLogExpandedStatus
             },
             onLinkTap: { [unowned self] url in
@@ -431,7 +431,7 @@ class PluginViewModel: Observable {
             expandedText: setHTMLTextAttributes(text),
             expanded: faqExpandedStatus,
             action: { [unowned self] row in
-                self.faqExpandedStatus = !self.faqExpandedStatus
+                self.faqExpandedStatus.toggle()
                 (row as? ExpandableRow)?.expanded = self.faqExpandedStatus
             },
             onLinkTap: { [unowned self] url in
@@ -461,26 +461,26 @@ class PluginViewModel: Observable {
             ImmuTableSection(optionalRows: [
                 header,
                 versionRow
-                ]),
+            ]),
             ImmuTableSection(optionalRows: [
                 active,
                 autoupdates
-                ]),
+            ]),
             ImmuTableSection(optionalRows: [
                 settingsLink,
                 wpOrgPluginLink,
                 homeLink
-                ]),
+            ]),
             ImmuTableSection(optionalRows: [
                 description,
                 installation,
                 changelog,
                 faq
-                ]),
+            ]),
             ImmuTableSection(optionalRows: [
                 remove
-                ])
             ])
+        ])
     }
 
     private func confirmRegisterDomainAlert(for directoryEntry: PluginDirectoryEntry) -> UIAlertController {
@@ -494,7 +494,7 @@ class PluginViewModel: Observable {
             WPAnalytics.track(.automatedTransferCustomDomainDialogCancelled)
         }
 
-        let registerDomainAction = alertController.addDefaultActionWithTitle(registerDomainActionTitle) { [weak self] (action) in
+        let registerDomainAction = alertController.addDefaultActionWithTitle(registerDomainActionTitle) { [weak self] _ in
             self?.presentDomainRegistration(for: directoryEntry)
         }
 
@@ -540,7 +540,7 @@ class PluginViewModel: Observable {
             return
         }
 
-        let coordinator = RegisterDomainCoordinator(site: blog, domainPurchasedCallback: { [weak self] _, domain in
+        let coordinator = RegisterDomainCoordinator(site: blog, domainPurchasedCallback: { [weak self] _, _ in
 
             guard let strongSelf = self,
                 let atHelper = AutomatedTransferHelper(site: strongSelf.site, plugin: directoryEntry) else {
@@ -594,7 +594,7 @@ class PluginViewModel: Observable {
 
         copy.enumerateAttribute(NSAttributedString.Key.font,
                                 in: NSRange(location: 0, length: copy.length),
-                                options: NSAttributedString.EnumerationOptions(rawValue: 0)) { (value, range, _) in
+                                options: NSAttributedString.EnumerationOptions(rawValue: 0)) { value, range, _ in
             guard let font = value as? UIFont, font.familyName == "Times New Roman" else { return }
 
             copy.addAttribute(.font, value: WPStyleGuide.subtitleFont(), range: range)
@@ -605,7 +605,7 @@ class PluginViewModel: Observable {
 
         copy.enumerateAttribute(NSAttributedString.Key.paragraphStyle,
                                 in: NSRange(location: 0, length: copy.length),
-                                options: [.longestEffectiveRangeNotRequired]) { (value, range, _) in
+                                options: [.longestEffectiveRangeNotRequired]) { value, range, _ in
             guard let paragraphStyle = value as? NSParagraphStyle else { return }
 
             paragraphAttributes.append((paragraphStyle, range))

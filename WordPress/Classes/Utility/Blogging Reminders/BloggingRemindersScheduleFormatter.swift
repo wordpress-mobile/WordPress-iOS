@@ -18,7 +18,7 @@ struct BloggingRemindersScheduleFormatter {
         case .none:
             return Self.stringToAttributedString(TextContent.shortNoRemindersDescription)
         case .weekdays(let days):
-            guard days.count > 0 else {
+            guard !days.isEmpty else {
                 return shortScheduleDescription(for: .none, time: time)
             }
 
@@ -33,13 +33,13 @@ struct BloggingRemindersScheduleFormatter {
         case .none:
             return NSAttributedString(string: TextContent.longNoRemindersDescription)
         case .weekdays(let days):
-            guard days.count > 0 else {
+            guard !days.isEmpty else {
                 return longScheduleDescription(for: .none, time: time)
             }
 
             // We want the days sorted by their localized index because under some locale configurations
             // Sunday is the first day of the week, whereas in some other localizations Monday comes first.
-            let sortedDays = days.sorted { (first, second) -> Bool in
+            let sortedDays = days.sorted { first, second -> Bool in
                 let firstIndex = self.calendar.localizedWeekdayIndex(unlocalizedWeekdayIndex: first.rawValue)
                 let secondIndex = self.calendar.localizedWeekdayIndex(unlocalizedWeekdayIndex: second.rawValue)
 
@@ -63,7 +63,6 @@ struct BloggingRemindersScheduleFormatter {
             return Self.stringToAttributedString(text)
         }
     }
-
 }
 
 // MARK: - Private type methods and properties
@@ -128,7 +127,7 @@ private extension BloggingRemindersScheduleFormatter {
 
         // This loop applies the default font to the whole text, while keeping any symbolic attributes the previous font may
         // have had (such as bold style).
-        attributedString.enumerateAttribute(.font, in: NSRange(location: 0, length: attributedString.length)) { (value, range, stop) in
+        attributedString.enumerateAttribute(.font, in: NSRange(location: 0, length: attributedString.length)) { value, range, _ in
 
             guard let oldFont = value as? UIFont,
                   let newDescriptor = UIFontDescriptor.preferredFontDescriptor(withTextStyle: .body)

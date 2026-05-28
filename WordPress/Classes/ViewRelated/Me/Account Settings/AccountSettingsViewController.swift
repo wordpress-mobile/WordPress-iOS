@@ -113,7 +113,7 @@ private class AccountSettingsController: SettingsController {
         // If the primary site has no Site Title, then show the displayURL.
         if primarySiteName.isEmpty {
             let account = try? WPAccount.lookupDefaultWordPressComAccount(in: ContextManager.shared.mainContext)
-            primarySiteName = account?.defaultBlog?.displayURL as String? ?? ""
+            primarySiteName = account?.defaultBlog?.displayURL ?? ""
         }
 
         let primarySite = EditableTextRow(
@@ -181,11 +181,11 @@ private class AccountSettingsController: SettingsController {
     }
 
     func changePassword(with settings: AccountSettings?, service: AccountSettingsService) -> (ImmuTableRow) -> SettingsTextViewController {
-        return { row in
+        return { _ in
             return ChangePasswordViewController(username: settings?.username ?? "") { [weak self] value in
                 DispatchQueue.main.async {
                     SVProgressHUD.show(withStatus: Constants.changingPassword)
-                    service.updatePassword(value, finished: { (success, error) in
+                    service.updatePassword(value, finished: { success, error in
                         if success {
                             self?.refreshAccountDetails {
                                 SVProgressHUD.showSuccess(withStatus: Constants.changedPasswordSuccess)
@@ -259,7 +259,7 @@ private class AccountSettingsController: SettingsController {
 
     private var hasAtomicSite: Bool {
         let account = try? WPAccount.lookupDefaultWordPressComAccount(in: ContextManager.shared.mainContext)
-        return account?.hasAtomicSite() ?? false
+        return (account?.blogs ?? []).contains(where: \.isAtomic)
     }
 
     private func showCloseAccountAlert() {
@@ -356,7 +356,7 @@ private class AccountSettingsController: SettingsController {
     }
 
     private var contactSupportAction: ((UIAlertAction) -> Void) {
-        return { action in
+        return { _ in
             if ZendeskUtils.zendeskEnabled {
                 guard let leafViewController = UIApplication.shared.leafViewController else {
                     return

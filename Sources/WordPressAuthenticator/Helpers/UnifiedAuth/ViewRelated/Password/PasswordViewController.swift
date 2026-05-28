@@ -157,7 +157,7 @@ class PasswordViewController: LoginViewController {
 
     override func displayError(message: String, moveVoiceOverFocus: Bool = false) {
         // The reason why this check is necessary is that we're calling this method
-        // with an empty error message when setting up the VC.  We don't want to track
+        // with an empty error message when setting up the VC. We don't want to track
         // an empty error when that happens.
         if !message.isEmpty {
             tracker.track(failure: message)
@@ -230,7 +230,6 @@ extension PasswordViewController: UITextFieldDelegate {
         }
         return true
     }
-
 }
 
 // MARK: - UITableViewDataSource
@@ -247,7 +246,6 @@ extension PasswordViewController: UITableViewDataSource {
         configure(cell, for: row, at: indexPath)
         return cell
     }
-
 }
 
 // MARK: - Keyboard Notifications
@@ -261,7 +259,6 @@ extension PasswordViewController: NUXKeyboardResponder {
     @objc func handleKeyboardWillHide(_ notification: Foundation.Notification) {
         keyboardWillHide(notification)
     }
-
 }
 
 // MARK: - Magic Link

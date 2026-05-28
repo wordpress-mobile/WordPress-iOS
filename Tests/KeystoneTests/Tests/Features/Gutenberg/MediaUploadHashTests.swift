@@ -19,5 +19,4 @@ class MediaUploadHashTests: XCTestCase {
 
         XCTAssertEqual(preSavedHash, sampleMediaID.hash, "The presaved hash must be equal to the generated one. If this fails the Gutenberg extension on Media called gutenbergUploadID needs to be changed")
     }
-
 }

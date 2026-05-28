@@ -179,6 +179,14 @@ public enum StatsEvent {
     ///   - "error_code": Specific error code if available
     ///   - "screen": Where the error occurred
     case errorEncountered
+
+    // MARK: - Feature Gate Events
+
+    /// Feature gate "Explore Plans" button tapped
+    /// - Parameters:
+    ///   - "feature": The gated feature (e.g., "utm_stats", "device_stats", "location_regions")
+    ///   - "source": Where the button was tapped (e.g., "card", "detail_view")
+    case featureGateExplorePlansTapped
 }
 
 // MARK: - StatsTracker Protocol
@@ -213,6 +221,7 @@ extension DateIntervalPreset {
         case .thisQuarter: "this_quarter"
         case .thisYear: "this_year"
         case .last7Days: "last_7_days"
+        case .last14Days: "last_14_days"
         case .last28Days: "last_28_days"
         case .last30Days: "last_30_days"
         case .last12Weeks: "last_12_weeks"

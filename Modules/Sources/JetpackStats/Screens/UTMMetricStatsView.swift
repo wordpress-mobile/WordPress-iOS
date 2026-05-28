@@ -5,7 +5,7 @@ import DesignSystem
 struct UTMMetricStatsView: View {
     let utmMetric: TopListItem.UTMMetric
 
-    @State private var dateRange: StatsDateRange
+    @State private var dateRange: StatsDateRangeSelection
 
     @StateObject private var viewModel: TopListViewModel
 
@@ -16,7 +16,7 @@ struct UTMMetricStatsView: View {
         self.utmMetric = utmMetric
 
         let range = initialDateRange ?? context.calendar.makeDateRange(for: .last30Days)
-        self._dateRange = State(initialValue: range)
+        self._dateRange = State(initialValue: StatsDateRangeSelection(range: range))
 
         let configuration = TopListCardConfiguration(
             item: .postsAndPages,
@@ -54,7 +54,7 @@ struct UTMMetricStatsView: View {
         }
         .background(Constants.Colors.background)
         .animation(.spring, value: viewModel.data.map(ObjectIdentifier.init))
-        .onChange(of: dateRange) { oldValue, newValue in
+        .onChange(of: dateRange) { _, newValue in
             viewModel.dateRange = newValue
         }
         .onAppear {
@@ -81,14 +81,6 @@ struct UTMMetricStatsView: View {
     private var headerView: some View {
         VStack(spacing: Constants.step3) {
             HStack(spacing: Constants.step3) {
-                // UTM Icon
-                Image(systemName: "chart.line.uptrend.xyaxis")
-                    .font(.system(size: 40))
-                    .foregroundColor(.secondary)
-                    .frame(width: 60, height: 60)
-                    .background(Color.secondary.opacity(0.1))
-                    .clipShape(Circle())
-
                 // Label and metrics
                 VStack(alignment: .leading, spacing: Constants.step1) {
                     Text(utmMetric.label)
@@ -127,7 +119,7 @@ struct UTMMetricStatsView: View {
 
             HStack(spacing: Constants.step2) {
                 Text(StatsValueFormatter.formatNumber(current, onlyLarge: true))
-                    .font(Font.make(.recoleta, textStyle: .title2, weight: .medium))
+                    .font(Constants.Typography.smallDisplayFont)
                     .foregroundColor(.primary)
                     .contentTransition(.numericText())
 

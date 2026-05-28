@@ -43,18 +43,14 @@ class NotificationCommentDetailViewController: UIViewController, NoResultsViewHo
 
     // MARK: - Notification Navigation Buttons
 
-    private lazy var nextButton: UIButton = {
-        let button = UIButton(type: .custom)
-        button.setImage(.gridicon(.arrowUp), for: .normal)
-        button.addTarget(self, action: #selector(nextButtonTapped), for: .touchUpInside)
+    private lazy var nextButton: UIBarButtonItem = {
+        let button = UIBarButtonItem(image: UIImage(systemName: "chevron.up"), style: .plain, target: self, action: #selector(nextButtonTapped))
         button.accessibilityLabel = NSLocalizedString("Next notification", comment: "Accessibility label for the next notification button")
         return button
     }()
 
-    private lazy var previousButton: UIButton = {
-        let button = UIButton(type: .custom)
-        button.setImage(.gridicon(.arrowDown), for: .normal)
-        button.addTarget(self, action: #selector(previousButtonTapped), for: .touchUpInside)
+    private lazy var previousButton: UIBarButtonItem = {
+        let button = UIBarButtonItem(image: UIImage(systemName: "chevron.down"), style: .plain, target: self, action: #selector(previousButtonTapped))
         button.accessibilityLabel = NSLocalizedString("Previous notification", comment: "Accessibility label for the previous notification button")
         return button
     }()
@@ -120,7 +116,7 @@ private extension NotificationCommentDetailViewController {
         var barButtonItems: [UIBarButtonItem] = []
 
         if splitViewControllerIsHorizontallyCompact {
-            barButtonItems.append(makeNavigationButtons())
+            barButtonItems.append(contentsOf: [previousButton, nextButton])
         }
 
         if let comment, comment.allowsModeration(), let detailsVC {
@@ -128,18 +124,6 @@ private extension NotificationCommentDetailViewController {
         }
 
         navigationItem.setRightBarButtonItems(barButtonItems, animated: false)
-    }
-
-    func makeNavigationButtons() -> UIBarButtonItem {
-        // Create custom view to match that in NotificationDetailsViewController.
-        let buttonStackView = UIStackView(arrangedSubviews: [nextButton, previousButton])
-        buttonStackView.axis = .horizontal
-        buttonStackView.spacing = Constants.arrowButtonSpacing
-
-        let width = (Constants.arrowButtonSize * 2) + Constants.arrowButtonSpacing
-        buttonStackView.frame = CGRect(x: 0, y: 0, width: width, height: Constants.arrowButtonSize)
-
-        return UIBarButtonItem(customView: buttonStackView)
     }
 
     @objc func previousButtonTapped() {
@@ -296,19 +280,14 @@ private extension NotificationCommentDetailViewController {
         fetchComment(parentID, completion: { _ in completion() }, failure: { failure($0) })
     }
 
-    struct Constants {
-        static let arrowButtonSize: CGFloat = 24
-        static let arrowButtonSpacing: CGFloat = 12
-    }
-
     // MARK: - No Results Views
 
     func showLoadingView() {
         if let detailsVC {
-            detailsVC.showNoResultsView(title: NoResults.loadingTitle, accessoryView: NoResultsViewController.loadingAccessoryView())
+            detailsVC.showNoResultsView(title: "", accessoryView: NoResultsViewController.loadingAccessoryView())
         } else {
             hideNoResults()
-            configureAndDisplayNoResults(on: view, title: NoResults.loadingTitle, accessoryView: NoResultsViewController.loadingAccessoryView())
+            configureAndDisplayNoResults(on: view, title: "", accessoryView: NoResultsViewController.loadingAccessoryView())
         }
     }
 
@@ -322,7 +301,6 @@ private extension NotificationCommentDetailViewController {
     }
 
     struct NoResults {
-        static let loadingTitle = NSLocalizedString("Loading comment...", comment: "Displayed while a comment is being loaded.")
         static let errorTitle = NSLocalizedString("Oops", comment: "Title for the view when there's an error loading a comment.")
         static let errorSubtitle = NSLocalizedString("There was an error loading the comment.", comment: "Text displayed when there is a failure loading a comment.")
         static let imageName = "wp-illustration-notifications"
@@ -335,5 +313,4 @@ private extension NotificationCommentDetailViewController {
             comment: "Error message that informs comment details from a private blog cannot be fetched."
         )
     }
-
 }

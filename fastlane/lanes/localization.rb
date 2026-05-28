@@ -204,25 +204,22 @@ platform :ios do
     )
   end
 
-  # Updates the `AppStoreStrings.po` files (WP+JP) with the latest content from the `release_notes.txt` files and the other text sources
+  # Updates the `AppStoreStrings.po` files (WP+JP) with the latest content from the `release_notes.txt` files and the other text sources.
   #
-  # @option [String] version The current `x.y` version of the app. Optional. Used to derive the `release_notes_xxy` key to use in the `.po` file.
-  # @option [Boolean] skip_confirm (default: false) If true, avoids any interactive prompt
+  # @param [String] version The current `x.y` version of the app. Used to derive the `release_notes_xxy` key to use in the `.po` file.
+  # @param [Boolean] skip_confirm If true, avoids any interactive prompt.
   #
-  desc 'Updates the AppStoreStrings.po file with the latest data'
-  lane :update_appstore_strings do |options|
+  lane :update_appstore_strings do |version: release_version_current, skip_confirm: false|
     ensure_git_status_clean
-
-    version = options.fetch(:version, release_version_current)
 
     unless Fastlane::Helper::GitHelper.checkout_and_pull(editorial_branch_name(version: version))
       UI.user_error!("Editorialization branch for version #{version} doesn't exist.")
     end
 
-    update_wordpress_appstore_strings(options)
-    update_jetpack_appstore_strings(options)
+    update_wordpress_appstore_strings(version: version)
+    update_jetpack_appstore_strings(version: version)
 
-    unless options[:skip_confirm] || UI.confirm('Ready to push changes to remote and continue with the editorialization process?')
+    unless skip_confirm || UI.confirm('Ready to push changes to remote and continue with the editorialization process?')
       UI.message("Aborting as requested. Don't forget to push the changes and create the integration PR manually.")
       next
     end
@@ -237,79 +234,123 @@ platform :ios do
     buildkite_annotate(context: 'editorialization-completed', style: 'success', message: message) if is_ci
   end
 
-  # Updates the `AppStoreStrings.po` file for WordPress, with the latest content from the `release_notes.txt` file and the other text sources
+  # Updates the `AppStoreStrings.po` file for WordPress, with the latest content from the `release_notes.txt` file and the other text sources.
   #
-  # @option [String] version The current `x.y` version of the app. Optional. Used to derive the `release_notes_xxy` key to use in the `.po` file.
+  # @param [String] version The current `x.y` version of the app. Used to derive the `release_notes_xxy` key to use in the `.po` file.
+  # @param [Boolean] skip_commit If true, skips committing changes to git.
   #
-  desc 'Updates the AppStoreStrings.po file for the WordPress app with the latest data'
-  lane :update_wordpress_appstore_strings do |options|
+  lane :update_wordpress_appstore_strings do |version: release_version_current, skip_commit: false|
     source_metadata_folder = File.join(PROJECT_ROOT_FOLDER, 'fastlane', 'metadata', 'default')
     custom_metadata_folder = File.join(PROJECT_ROOT_FOLDER, 'fastlane', 'appstoreres', 'metadata', 'source')
-    version = options.fetch(:version, release_version_current)
+
+    # Translator comments for App Store metadata
+    screenshot_comment = <<~COMMENT.chomp
+      translators: This is a promo text that will be drawn on the promotional screenshots we use in the App Store.
+      No specified characters limit here, but try to keep as short as the source one.
+    COMMENT
+
+    standard_whats_new_comment = "translators: This is a standard chunk of text used to tell a user what's new with a release when nothing major has changed."
 
     files = {
       whats_new: WORDPRESS_RELEASE_NOTES_PATH,
-      app_store_name: File.join(source_metadata_folder, 'name.txt'),
-      app_store_subtitle: File.join(source_metadata_folder, 'subtitle.txt'),
-      app_store_desc: File.join(source_metadata_folder, 'description.txt'),
-      app_store_keywords: File.join(source_metadata_folder, 'keywords.txt'),
-      'standard-whats-new-1' => File.join(custom_metadata_folder, 'standard_whats_new_1.txt'),
-      'standard-whats-new-2' => File.join(custom_metadata_folder, 'standard_whats_new_2.txt'),
-      'standard-whats-new-3' => File.join(custom_metadata_folder, 'standard_whats_new_3.txt'),
-      'standard-whats-new-4' => File.join(custom_metadata_folder, 'standard_whats_new_4.txt'),
-      'app_store_screenshot-1' => File.join(custom_metadata_folder, 'promo_screenshot_1.txt'),
-      'app_store_screenshot-2' => File.join(custom_metadata_folder, 'promo_screenshot_2.txt'),
-      'app_store_screenshot-3' => File.join(custom_metadata_folder, 'promo_screenshot_3.txt'),
-      'app_store_screenshot-4' => File.join(custom_metadata_folder, 'promo_screenshot_4.txt'),
-      'app_store_screenshot-5' => File.join(custom_metadata_folder, 'promo_screenshot_5.txt'),
-      'app_store_screenshot-6' => File.join(custom_metadata_folder, 'promo_screenshot_6.txt'),
-      'app_store_screenshot-7' => File.join(custom_metadata_folder, 'promo_screenshot_7.txt')
+      app_store_name: {
+        path: File.join(source_metadata_folder, 'name.txt'),
+        comment: "translators: The application name in the Apple App Store. Please keep the brand name ('WordPress') verbatim. Limit to 30 characters including spaces and punctuation!"
+      },
+      app_store_subtitle: {
+        path: File.join(source_metadata_folder, 'subtitle.txt'),
+        comment: 'translators: Subtitle to be displayed below the application name in the Apple App Store. Limit to 30 characters including spaces and commas!'
+      },
+      app_store_desc: {
+        path: File.join(source_metadata_folder, 'description.txt'),
+        comment: 'translators: Multi-paragraph text used to display in the Apple App Store.'
+      },
+      app_store_keywords: {
+        path: File.join(source_metadata_folder, 'keywords.txt'),
+        comment: <<~COMMENT.chomp
+          translators: Keywords used in the App Store search engine to find the app.
+          Delimit with a comma between each keyword. Limit to 100 characters including spaces and commas.
+        COMMENT
+      },
+      **(1..3).to_h do |i|
+        [
+          "standard-whats-new-#{i}",
+          { path: File.join(custom_metadata_folder, "standard_whats_new_#{i}.txt"), comment: standard_whats_new_comment }
+        ]
+      end,
+      'standard-whats-new-4' => {
+        path: File.join(custom_metadata_folder, 'standard_whats_new_4.txt'),
+        comment: <<~COMMENT.chomp
+          translators: This is a standard chunk of text used to tell a user what's new with a release when nothing major has changed.
+          It's in a haiku format and may be more difficult to translate; maybe come up with something equally awesome in haiku.
+        COMMENT
+      },
+      **(1..7).to_h do |i|
+        [
+          "app_store_screenshot-#{i}",
+          { path: File.join(custom_metadata_folder, "promo_screenshot_#{i}.txt"), comment: screenshot_comment }
+        ]
+      end
     }
 
-    ios_update_metadata_source(
+    gp_update_metadata_source(
       po_file_path: File.join(PROJECT_ROOT_FOLDER, 'WordPress', 'Resources', 'AppStoreStrings.po'),
       source_files: files,
-      release_version: version
+      release_version: version,
+      commit_changes: !skip_commit
     )
   end
 
-  # Updates the `AppStoreStrings.po` file for Jetpack, with the latest content from the `release_notes.txt` file and the other text sources
+  # Updates the `AppStoreStrings.po` file for Jetpack, with the latest content from the `release_notes.txt` file and the other text sources.
   #
-  # @option [String] version The current `x.y` version of the app. Optional. Used to derive the `release_notes_xxy` key to use in the `.po` file.
+  # @param [String] version The current `x.y` version of the app. Used to derive the `release_notes_xxy` key to use in the `.po` file.
+  # @param [Boolean] skip_commit If true, skips committing changes to git.
   #
-  desc 'Updates the AppStoreStrings.po file for the Jetpack app with the latest data'
-  lane :update_jetpack_appstore_strings do |options|
-    # Commented out to silence RuboCop about unused vars.
-    # See details below for why that was done and why we should keep the definition in the codebase for future use.
-    # source_metadata_folder = File.join(PROJECT_ROOT_FOLDER, 'fastlane', 'jetpack_metadata', 'default')
-    # custom_metadata_folder = File.join(PROJECT_ROOT_FOLDER, 'fastlane', 'appstoreres', 'jetpack_metadata', 'source')
-    version = options.fetch(:version, release_version_current)
+  lane :update_jetpack_appstore_strings do |version: release_version_current, skip_commit: false|
+    source_metadata_folder = File.join(PROJECT_ROOT_FOLDER, 'fastlane', 'jetpack_metadata', 'default')
+    custom_metadata_folder = File.join(PROJECT_ROOT_FOLDER, 'fastlane', 'appstoreres', 'jetpack_metadata', 'source')
+
+    screenshot_comment = <<~COMMENT.chomp
+      translators: This is a promo text that will be drawn on the promotional screenshots we use in the App Store.
+      No specified characters limit here, but try to keep as short as the source one.
+    COMMENT
 
     files = {
-      whats_new: JETPACK_RELEASE_NOTES_PATH
-      # We are currently iterating on the App Store copy for Jetpack.
-      # It's therefore easier to update the English US metadata without triggering a translation.
-      # Once we'll settle on a new copy, we'll re-enable reading these sources for the GlotPress po file.
-      #
-      # app_store_name: File.join(source_metadata_folder, 'name.txt'),
-      # app_store_subtitle: File.join(source_metadata_folder, 'subtitle.txt'),
-      # app_store_desc: File.join(source_metadata_folder, 'description.txt'),
-      # app_store_keywords: File.join(source_metadata_folder, 'keywords.txt'),
-      # 'screenshot-text-1' => File.join(custom_metadata_folder, 'promo_screenshot_1.txt'),
-      # 'screenshot-text-2' => File.join(custom_metadata_folder, 'promo_screenshot_2.txt'),
-      # 'screenshot-text-3' => File.join(custom_metadata_folder, 'promo_screenshot_3.txt'),
-      # 'screenshot-text-4' => File.join(custom_metadata_folder, 'promo_screenshot_4.txt'),
-      # 'screenshot-text-5' => File.join(custom_metadata_folder, 'promo_screenshot_5.txt'),
-      # 'screenshot-text-6' => File.join(custom_metadata_folder, 'promo_screenshot_6.txt')
+      whats_new: JETPACK_RELEASE_NOTES_PATH,
+      app_store_name: {
+        path: File.join(source_metadata_folder, 'name.txt'),
+        comment: "translators: The application name in the Apple App Store. Please keep the brand names ('Jetpack' and 'WordPress') verbatim. Limit to 30 characters including spaces and punctuation!"
+      },
+      app_store_subtitle: {
+        path: File.join(source_metadata_folder, 'subtitle.txt'),
+        comment: 'translators: Subtitle to be displayed below the application name in the Apple App Store. Limit to 30 characters including spaces and commas!'
+      },
+      app_store_desc: {
+        path: File.join(source_metadata_folder, 'description.txt'),
+        comment: 'translators: Multi-paragraph text used to display in the Apple App Store.'
+      },
+      app_store_keywords: {
+        path: File.join(source_metadata_folder, 'keywords.txt'),
+        comment: <<~COMMENT.chomp
+          translators: Keywords used in the App Store search engine to find the app.
+          Delimit with a comma between each keyword. Limit to 100 characters including spaces and commas.
+        COMMENT
+      },
+      **(1..6).to_h do |i|
+        [
+          "screenshot-text-#{i}",
+          { path: File.join(custom_metadata_folder, "promo_screenshot_#{i}.txt"), comment: screenshot_comment }
+        ]
+      end
     }
 
-    ios_update_metadata_source(
+    gp_update_metadata_source(
       po_file_path: File.join(PROJECT_ROOT_FOLDER, 'WordPress', 'Jetpack', 'Resources', 'AppStoreStrings.po'),
       source_files: files,
-      release_version: version
+      release_version: version,
+      commit_changes: !skip_commit
     )
   end
-
 
   # Downloads the localized app strings and App Store Connect metadata from GlotPress.
   #

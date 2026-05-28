@@ -8,7 +8,7 @@ extension ImmuTableSection {
     ///
     init?(headerText: String? = nil, optionalRows: [ImmuTableRow?], footerText: String? = nil) {
         let rows = optionalRows.compactMap({ $0 })
-        guard rows.count > 0 else {
+        guard !rows.isEmpty else {
             return nil
         }
         self.init(headerText: headerText, rows: rows, footerText: footerText)

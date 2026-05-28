@@ -1,4 +1,5 @@
 import Foundation
+import CoreData
 import CocoaLumberjackSwift
 
 @objc(BlockedSite)
@@ -23,7 +24,7 @@ public extension BlockedSite {
             request.predicate = NSPredicate(format: "\(#keyPath(BlockedSite.accountID)) = %@ AND \(#keyPath(BlockedSite.blogID)) = %@", accountID, blogID)
             let result = try context.fetch(request)
             return result
-        } catch let error {
+        } catch {
             DDLogError("Couldn't fetch blocked site with error: \(error.localizedDescription)")
             return []
         }

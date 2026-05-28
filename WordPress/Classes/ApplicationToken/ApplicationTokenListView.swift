@@ -130,7 +130,6 @@ class StaticTokenProvider: ApplicationTokenListDataProvider {
     func loadApplicationTokens() async throws -> [ApplicationTokenItem] {
         try result.get()
     }
-
 }
 
 #Preview {
@@ -141,6 +140,6 @@ class StaticTokenProvider: ApplicationTokenListDataProvider {
 
 #Preview {
     NavigationView {
-        ApplicationTokenListView(error: WpApiError.WpError(errorCode: .ApplicationPasswordsDisabledForUser, errorMessage: "Not available for the current user", statusCode: 400, response: "{}"))
+        ApplicationTokenListView(error: WpApiError.WpError(errorCode: .ApplicationPasswordsDisabledForUser, errorMessage: "Not available for the current user", statusCode: 400, response: "{}", requestUrl: "http://example.com", requestMethod: .get))
     }
 }

@@ -41,7 +41,7 @@ public enum MediaHost: Equatable, Sendable, MediaHostProtocol {
         }
 
         guard let authToken = authToken() else {
-            // This should actually not be possible.  We have no good way to
+            // This should actually not be possible. We have no good way to
             // handle this.
             failure(Error.wpComPrivateSiteWithoutAuthToken)
 
@@ -49,7 +49,7 @@ public enum MediaHost: Equatable, Sendable, MediaHostProtocol {
             // call above.
             //
             // Otherwise they'll be able to continue trying to request the image as if it
-            // was hosted in a public WPCom site.  This is the best we can offer with the
+            // was hosted in a public WPCom site. This is the best we can offer with the
             // provided input parameters.
             self = .publicSite
             return
@@ -61,7 +61,7 @@ public enum MediaHost: Equatable, Sendable, MediaHostProtocol {
         }
 
         guard let username else {
-            // This should actually not be possible.  We have no good way to
+            // This should actually not be possible. We have no good way to
             // handle this.
             failure(Error.wpComPrivateSiteWithoutUsername)
 
@@ -69,14 +69,14 @@ public enum MediaHost: Equatable, Sendable, MediaHostProtocol {
             // call above.
             //
             // Otherwise they'll be able to continue trying to request the image as if it
-            // was hosted in a private WPCom site.  This is the best we can offer with the
+            // was hosted in a private WPCom site. This is the best we can offer with the
             // provided input parameters.
             self = .privateWPComSite(authToken: authToken)
             return
         }
 
         guard let siteID else {
-            // This should actually not be possible.  We have no good way to
+            // This should actually not be possible. We have no good way to
             // handle this.
             failure(Error.wpComWithoutSiteID)
 
@@ -84,7 +84,7 @@ public enum MediaHost: Equatable, Sendable, MediaHostProtocol {
             // call above.
             //
             // Otherwise they'll be able to continue trying to request the image as if it
-            // was hosted in a private WPCom site.  This is the best we can offer with the
+            // was hosted in a private WPCom site. This is the best we can offer with the
             // provided input parameters.
             self = .privateWPComSite(authToken: authToken)
             return

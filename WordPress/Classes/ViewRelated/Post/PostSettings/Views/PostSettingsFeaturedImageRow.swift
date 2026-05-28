@@ -26,7 +26,6 @@ struct PostSettingsFeaturedImageRow: View {
                         }
                     }
                 }
-                .listRowBackground(Color.clear)
                 .frame(height: height)
             }
         }
@@ -52,18 +51,18 @@ struct PostSettingsFeaturedImageRow: View {
     }
 
     private var setFeaturedImageView: some View {
-        makeWithProminentBackground {
-            VStack(spacing: 4) {
-                Image(systemName: "photo.on.rectangle.angled")
-                    .font(.title)
-                    .symbolRenderingMode(.hierarchical)
+        VStack(spacing: 4) {
+            Image(systemName: "photo.on.rectangle.angled")
+                .font(.title)
+                .symbolRenderingMode(.hierarchical)
 
-                Text(Strings.buttonSetFeaturedImage)
-                    .font(.body)
-            }
-            .foregroundColor(.accentColor)
-            .fontWeight(.medium)
+            Text(Strings.buttonSetFeaturedImage)
+                .font(.body)
         }
+        .foregroundColor(.accentColor)
+        .fontWeight(.medium)
+        .frame(maxWidth: .infinity, maxHeight: .infinity)
+        .padding(16)
     }
 
     private var menu: some View {
@@ -116,17 +115,17 @@ struct PostSettingsFeaturedImageRow: View {
                 Label(Strings.cancelUpload, systemImage: "xmark.circle.fill")
             }
         } label: {
-            makeWithProminentBackground {
-                HStack {
-                    ProgressView()
+            HStack {
+                ProgressView()
 
-                    Text(Strings.uploading)
-                        .font(.headline)
-                        .fontWeight(.medium)
-                }
-                .tint(.accentColor)
-                .foregroundColor(.accentColor)
+                Text(Strings.uploading)
+                    .font(.headline)
+                    .fontWeight(.medium)
             }
+            .tint(.accentColor)
+            .foregroundColor(.accentColor)
+            .frame(maxWidth: .infinity, maxHeight: .infinity)
+            .padding(16)
             .overlay(alignment: .topTrailing) {
                 Image(systemName: "ellipsis.circle")
                     .foregroundStyle(Color.secondary)
@@ -135,28 +134,9 @@ struct PostSettingsFeaturedImageRow: View {
         }
     }
 
-    /// A nice tinted background for the button and other states.
-    private func makeWithProminentBackground<Content: View>(@ViewBuilder content: @escaping () -> Content) -> some View {
-        ZStack {
-            // System background that adapts to dark mode
-            RoundedRectangle(cornerRadius: cornerRadius)
-                .fill(Color(UIColor.secondarySystemGroupedBackground))
-
-            content()
-
-            // Prominent border
-            RoundedRectangle(cornerRadius: cornerRadius)
-                .strokeBorder(Color.accentColor.opacity(0.3), lineWidth: 1)
-        }
-    }
-
-    private var cornerRadius: CGFloat {
-        if #available(iOS 26, *) { 26 } else { 12 }
-    }
-
     private func makeMediaPicker<Content: View>(@ViewBuilder content: @escaping () -> Content) -> some View {
         let configuration = MediaPickerConfiguration(
-            sources: [.photos, .camera, .playground, .siteMedia(blog: viewModel.post.blog)],
+            sources: [.photos, .camera, .playground, .siteMedia(blog: viewModel.blog)],
             filter: .images
         )
         return MediaPicker(configuration: configuration, onSelection: viewModel.setFeaturedImage) {
@@ -169,14 +149,22 @@ public final class PostSettingsFeaturedImageViewModel: ObservableObject {
     @Published private(set) var upload: Media?
     @Published var selection: Media?
 
-    let post: AbstractPost
+    let post: AbstractPost?
+    let blog: Blog
 
     private var receipt: UUID?
     private let coordinator = MediaCoordinator.shared
 
     public init(post: AbstractPost) {
         self.post = post
+        self.blog = post.blog
         self.selection = post.featuredImage
+    }
+
+    public init(blog: Blog, featuredImage: Media?) {
+        self.post = nil
+        self.blog = blog
+        self.selection = featuredImage
     }
 
     func setFeaturedImage(selection: MediaPickerSelection) {
@@ -187,8 +175,16 @@ public final class PostSettingsFeaturedImageViewModel: ObservableObject {
         }
         switch item.exported() {
         case .asset(let exportableAsset):
-            guard let media = coordinator.addMedia(from: exportableAsset, to: post) else {
-                return wpAssertionFailure("failed to add media to post")
+            let media: Media?
+            if let post {
+                media = coordinator.addMedia(from: exportableAsset, to: post)
+            } else {
+                // Suppress the default "Media uploaded / Write Post" notice
+                // when uploading from a custom post editing session.
+                media = coordinator.addMedia(from: exportableAsset, to: blog, suppressSuccessNotice: true)
+            }
+            guard let media else {
+                return wpAssertionFailure("failed to add media")
             }
             self.receipt = coordinator.addObserver({ [weak self] media, state in
                 self?.didUpdateUploadState(state, media: media)

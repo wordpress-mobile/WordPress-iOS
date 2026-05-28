@@ -68,6 +68,5 @@ struct CircledPathView: View {
                         clockwise: clockWise)
         }
         .stroke(color, lineWidth: lineWidth)
-
     }
 }

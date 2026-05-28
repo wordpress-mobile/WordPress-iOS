@@ -22,7 +22,7 @@ class SelfHostedJetpackRemoteInstallViewModel: JetpackRemoteInstallViewModel {
     func viewReady() {
         state = .install
 
-        storeReceipt = store.onStateChange { [weak self] (_, state) in
+        storeReceipt = store.onStateChange { [weak self] _, state in
             switch state.current {
             case .loading:
                 self?.state = .installing

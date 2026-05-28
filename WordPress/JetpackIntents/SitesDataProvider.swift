@@ -41,7 +41,7 @@ class SitesDataProvider {
                 display: data.siteName,
                 subtitle: siteDomain,
                 image: nil)
-        }.sorted(by: { (firstSite, secondSite) -> Bool in
+        }.sorted(by: { firstSite, secondSite -> Bool in
             let firstTitle = firstSite.displayString.lowercased()
             let secondTitle = secondSite.displayString.lowercased()
 
@@ -53,7 +53,6 @@ class SitesDataProvider {
             }
 
             return firstTitle < secondTitle
-
         })
     }
 

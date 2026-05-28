@@ -47,7 +47,7 @@ struct WeeklyTrendsViewModelTests {
         )
 
         // Then
-        #expect(viewModel.weeks.count == 0)
+        #expect(viewModel.weeks.isEmpty)
         #expect(viewModel.maxValue == 1)
     }
 
@@ -376,6 +376,6 @@ struct WeeklyTrendsViewModelTests {
         )
 
         // Then
-        #expect(viewModel.weeks.count == 0)
+        #expect(viewModel.weeks.isEmpty)
     }
 }
