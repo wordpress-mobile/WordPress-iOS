@@ -1,4 +1,7 @@
-* [*] All self-hosted sites now sign in using application passwords [#25424]
-* [*] Comments: Fix "Trash" trailing action not updating the status of the comments cached on the device [#25485]
-* [*] Menus: Fix an issue with footer view in Menu Editing not resizing [#25481]
-* [*] About screen: Remove the non-functional Twitter/X link - thanks @zynp-KC for reporting! [#25496]
+If you have a self-hosted site, you’ll now sign in to the app using an application password. If you don’t have one, we’ll automatically create one for you so it’s ready when you need it.
+
+When you delete a comment using the swipe action, it now disappears from the list. So long, farewell.
+
+We fixed an issue where the footer view in Menu Editing wasn’t resizing. As a result, action buttons are now legible in non-English languages.
+
+We removed the non-functional X link on the About screen. (Shout-out to @zynp-KC for reporting!)
