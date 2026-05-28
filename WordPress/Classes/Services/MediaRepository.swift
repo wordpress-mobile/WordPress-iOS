@@ -19,7 +19,10 @@ final class MediaRepository {
     }
 
     /// Get the Media object from the server using the blog and the mediaID as the identifier of the resource
-    func getMedia(withID mediaID: NSNumber, in blogID: TaggedManagedObjectID<Blog>) async throws -> TaggedManagedObjectID<Media> {
+    func getMedia(
+        withID mediaID: NSNumber,
+        in blogID: TaggedManagedObjectID<Blog>
+    ) async throws -> TaggedManagedObjectID<Media> {
         let remote = try await remote(for: blogID)
         let remoteMedia: RemoteMedia? = try await withCheckedThrowingContinuation { continuation in
             remote.getMediaWithID(mediaID) {
@@ -43,7 +46,8 @@ final class MediaRepository {
     /// Deletes the Media object from the server. Note the Media is deleted, not trashed.
     func delete(_ mediaID: TaggedManagedObjectID<Media>) async throws {
         // Delete the media from WordPress Media Library
-        let queryResult: (MediaServiceRemote, RemoteMedia)? = try await coreDataStack.performQuery { [remoteFactory] context in
+        let queryResult: (MediaServiceRemote, RemoteMedia)? = try await coreDataStack.performQuery {
+            [remoteFactory] context in
             guard let media = try? context.existingObject(with: mediaID) else {
                 return nil
             }
