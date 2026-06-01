@@ -295,15 +295,15 @@ class CollapsableHeaderViewController: UIViewController, NoResultsViewHost {
 
     // MARK: - Footer Actions
     @IBAction open func defaultActionSelected(_ sender: Any) {
-        /* This should be overriden in a child class in order to enable support. */
+        /* This should be overridden in a child class in order to enable support. */
     }
 
     @IBAction open func primaryActionSelected(_ sender: Any) {
-        /* This should be overriden in a child class in order to enable support. */
+        /* This should be overridden in a child class in order to enable support. */
     }
 
     @IBAction open func secondaryActionSelected(_ sender: Any) {
-        /* This should be overriden in a child class in order to enable support. */
+        /* This should be overridden in a child class in order to enable support. */
     }
 
     // MARK: - Format Nav Bar
@@ -582,7 +582,7 @@ class CollapsableHeaderViewController: UIViewController, NoResultsViewHost {
         }
     }
 
-    // MARK: - Seperator styling
+    // MARK: - Separator styling
     private func updateSeperatorStyle(animated: Bool = true) {
         let shouldBeHidden: Bool
         switch separatorStyle {
