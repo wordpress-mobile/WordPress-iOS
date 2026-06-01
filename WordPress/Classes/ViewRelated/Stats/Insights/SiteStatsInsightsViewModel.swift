@@ -563,12 +563,12 @@ private extension SiteStatsInsightsViewModel {
 
         var dataRows = [StatsTwoColumnRowData]()
 
-        dataRows.append(StatsTwoColumnRowData.init(leftColumnName: AllTimeStats.viewsTitle,
+        dataRows.append(StatsTwoColumnRowData(leftColumnName: AllTimeStats.viewsTitle,
                                                    leftColumnData: allTimeInsight.viewsCount.abbreviatedString(),
                                                    rightColumnName: AllTimeStats.visitorsTitle,
                                                    rightColumnData: allTimeInsight.visitorsCount.abbreviatedString()))
 
-        dataRows.append(StatsTwoColumnRowData.init(leftColumnName: AllTimeStats.postsTitle,
+        dataRows.append(StatsTwoColumnRowData(leftColumnName: AllTimeStats.postsTitle,
                                                    leftColumnData: allTimeInsight.postsCount.abbreviatedString(),
                                                    rightColumnName: AllTimeStats.bestViewsEverTitle,
                                                    rightColumnData: allTimeInsight.bestViewsPerDayCount.abbreviatedString()))
@@ -638,12 +638,12 @@ private extension SiteStatsInsightsViewModel {
 
         var dataRows = [StatsTwoColumnRowData]()
 
-        dataRows.append(StatsTwoColumnRowData.init(leftColumnName: TodaysStats.viewsTitle,
+        dataRows.append(StatsTwoColumnRowData(leftColumnName: TodaysStats.viewsTitle,
                                                    leftColumnData: todaysStats.viewsCount.abbreviatedString(),
                                                    rightColumnName: TodaysStats.visitorsTitle,
                                                    rightColumnData: todaysStats.visitorsCount.abbreviatedString()))
 
-        dataRows.append(StatsTwoColumnRowData.init(leftColumnName: TodaysStats.likesTitle,
+        dataRows.append(StatsTwoColumnRowData(leftColumnName: TodaysStats.likesTitle,
                                                    leftColumnData: todaysStats.likesCount.abbreviatedString(),
                                                    rightColumnName: TodaysStats.commentsTitle,
                                                    rightColumnData: todaysStats.commentsCount.abbreviatedString()))
@@ -684,22 +684,22 @@ private extension SiteStatsInsightsViewModel {
 
         var dataRows = [StatsTwoColumnRowData]()
 
-        dataRows.append(StatsTwoColumnRowData.init(leftColumnName: AnnualSiteStats.year,
+        dataRows.append(StatsTwoColumnRowData(leftColumnName: AnnualSiteStats.year,
                                                    leftColumnData: annualInsights.year,
                                                    rightColumnName: AnnualSiteStats.totalPosts,
                                                    rightColumnData: annualInsights.totalPosts.abbreviatedString()))
 
-        dataRows.append(StatsTwoColumnRowData.init(leftColumnName: AnnualSiteStats.totalComments,
+        dataRows.append(StatsTwoColumnRowData(leftColumnName: AnnualSiteStats.totalComments,
                                                    leftColumnData: annualInsights.totalComments.abbreviatedString(),
                                                    rightColumnName: AnnualSiteStats.commentsPerPost,
                                                    rightColumnData: annualInsights.averageComments.abbreviatedString()))
 
-        dataRows.append(StatsTwoColumnRowData.init(leftColumnName: AnnualSiteStats.totalLikes,
+        dataRows.append(StatsTwoColumnRowData(leftColumnName: AnnualSiteStats.totalLikes,
                                                    leftColumnData: annualInsights.totalLikes.abbreviatedString(),
                                                    rightColumnName: AnnualSiteStats.likesPerPost,
                                                    rightColumnData: annualInsights.averageLikes.abbreviatedString()))
 
-        dataRows.append(StatsTwoColumnRowData.init(leftColumnName: AnnualSiteStats.totalWords,
+        dataRows.append(StatsTwoColumnRowData(leftColumnName: AnnualSiteStats.totalWords,
                                                    leftColumnData: annualInsights.totalWords.abbreviatedString(),
                                                    rightColumnName: AnnualSiteStats.wordsPerPost,
                                                    rightColumnData: annualInsights.averageWords.abbreviatedString()))
@@ -854,7 +854,7 @@ extension SiteStatsInsightsViewModel: AsyncBlocksLoadable {
             // when more than 14 rows we take the last 14 rows for most recent data
             return createStatsSummaryTimeIntervalDataAsAWeeks(summaryData: Array(summaryData[count - Constants.fourteenDays..<count]))
         case let count where count < Constants.fourteenDays:
-            // when 0 to 14 rows presume the user could be new / doesn't have enough data.  Pad 0's to prev week
+            // when 0 to 14 rows presume the user could be new / doesn't have enough data. Pad 0's to prev week
             summaryData.reverse()
 
             guard var date = summaryData.last?.periodStartDate else {

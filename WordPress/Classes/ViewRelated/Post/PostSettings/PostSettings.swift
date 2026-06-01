@@ -77,74 +77,15 @@ struct PostSettings: Hashable {
 
     // MARK: - Initialization
 
-    /// Creates settings for a new post from optional stored create parameters.
+    /// Creates settings with sensible defaults for a brand-new post.
     ///
-    /// When `params` is nil (first open), all fields use sensible defaults.
-    /// When non-nil, the stored values from a previous Post Settings session
-    /// are applied on top of the defaults.
-    init(from params: PostCreateParams, taxonomies: [SiteTaxonomy] = []) {
-        excerpt = params.excerpt ?? ""
-        slug = params.slug ?? ""
-        if let paramStatus = params.status {
-            status = BasePost.Status(paramStatus)
-        } else {
-            status = .draft
-        }
-        if status == .draft || status == .pending {
-            publishDate = nil
-        } else {
-            publishDate = params.dateGmt
-        }
-        password = params.password
-        metadata = PostMetadata(from: .init())
-
-        if let author = params.author {
-            self.author = Author(id: Int(author), displayName: "–", avatarURL: nil)
-        }
-        if let featuredMedia = params.featuredMedia, featuredMedia > 0 {
-            featuredImageID = Int(featuredMedia)
-        }
-        if let commentStatus = params.commentStatus {
-            allowComments = commentStatus == .open
-        }
-        if let pingStatus = params.pingStatus {
-            allowPings = pingStatus == .open
-        }
-        if let format = params.format {
-            postFormat = format.id
-        }
-        if let sticky = params.sticky {
-            isStickyPost = sticky
-        }
-        if let parent = params.parent, parent > 0 {
-            parentPageID = Int(parent)
-        }
-        if !params.categories.isEmpty {
-            categoryIDs = Set(params.categories.map { Int($0) })
-        }
-        if !params.tags.isEmpty {
-            tags = params.tags.map { Term(id: Int($0), name: "") }
-        }
-
-        // Custom taxonomy terms
-        var otherTerms: [String: [Term]] = [:]
-        for taxonomy in taxonomies {
-            let termIds = params.additionalFields?.termIdsForKey(key: taxonomy.restBase) ?? []
-            if !termIds.isEmpty {
-                otherTerms[taxonomy.slug] = termIds.map { Term(id: Int($0), name: "") }
-            }
-        }
-        self.otherTerms = otherTerms
-
-        // TODO: After PR 25543 is merged, remove this PostCreateParams
-        // restore path. New-post state will carry PostSettings directly.
-        let socialSharingDraft = PostSocialSharingDraft(
-            fromPostAdditionalFields: params.additionalFields,
-            meta: params.meta
-        )
-        if socialSharingDraft.customMessage != nil || socialSharingDraft.connectionsByID != nil {
-            self.socialSharingDraft = socialSharingDraft
-        }
+    /// Use `defaults(from:)` to apply blog-derived defaults (default category,
+    /// default post format, current user as author).
+    init() {
+        excerpt = ""
+        slug = ""
+        status = .draft
+        metadata = PostMetadata(from: PostMetadataContainer())
     }
 
     /// Creates PostSettings from an AbstractPost instance.
@@ -247,6 +188,27 @@ struct PostSettings: Hashable {
         if socialSharingDraft.customMessage != nil || socialSharingDraft.connectionsByID != nil {
             self.socialSharingDraft = socialSharingDraft
         }
+    }
+
+    /// Settings for a brand-new post on the given blog, prefilled with the
+    /// blog's defaults (default category, default post format, current user
+    /// as author, site-level discussion defaults).
+    static func defaults(from blog: Blog) -> PostSettings {
+        var settings = PostSettings()
+        if let categoryID = blog.settings?.defaultCategoryID,
+            categoryID != PostCategory.uncategorized
+        {
+            settings.categoryIDs = [categoryID.intValue]
+        }
+        settings.postFormat = blog.settings?.defaultPostFormat
+        if let userID = blog.userID {
+            settings.author = Author(id: userID.intValue, displayName: "–", avatarURL: nil)
+        }
+        if let blogSettings = blog.settings {
+            settings.allowComments = blogSettings.commentsAllowed
+            settings.allowPings = blogSettings.pingbackInboundEnabled
+        }
+        return settings
     }
 
     // MARK: - Applying Changes
@@ -497,7 +459,7 @@ struct PostSettings: Hashable {
     }
 
     /// Creates `PostCreateParams` from the current settings for a new post.
-    func makeCreateParameters(from existing: PostCreateParams, taxonomies: [SiteTaxonomy] = []) -> PostCreateParams {
+    func makeCreateParameters(taxonomies: [SiteTaxonomy] = []) -> PostCreateParams {
         let tagIds = tags.filter { $0.id > 0 }.map { TermId(Int64($0.id)) }
         let categoryIds = categoryIDs.map { TermId(Int64($0)) }
 
@@ -521,7 +483,7 @@ struct PostSettings: Hashable {
                 .addingPublicizeConnections(connectionsByID)
         }
 
-        var params = existing
+        var params = PostCreateParams(meta: nil)
         params.dateGmt = publishDate
         params.slug = slug.isEmpty ? nil : slug
         params.status = PostStatus(status)
@@ -538,18 +500,9 @@ struct PostSettings: Hashable {
         params.parent = parentPageID.map { PostId(Int64($0)) }
         params.additionalFields = fields
 
-        // Social meta. When a local new-post draft already carries a saved
-        // message, clearing the field needs to write an empty string back into
-        // the create params rather than leaving the stale value in place.
-        // TODO: After PR 25543 is merged, move this social serialization into
-        // makeCreateParameters(taxonomies:) and remove the existing-param
-        // comparison.
-        if let socialSharingDraft {
-            let originalMessage = existing.meta?.publicizeMessage
-            let newMessage = socialSharingDraft.customMessage ?? ""
-            if originalMessage != (newMessage.isEmpty ? nil : newMessage) {
-                params.meta = (params.meta ?? PostMeta()).addingPublicizeMessage(newMessage)
-            }
+        // Social meta
+        if let message = socialSharingDraft?.customMessage {
+            params.meta = (params.meta ?? PostMeta()).addingPublicizeMessage(message)
         }
 
         return params

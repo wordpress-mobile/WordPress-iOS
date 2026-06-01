@@ -437,7 +437,7 @@ fileprivate extension SearchManager {
     func openEditor(for post: Post) {
         closePreviewIfNeeded(for: post)
         openListView(for: post)
-        let editor = EditPostViewController.init(post: post)
+        let editor = EditPostViewController(post: post)
         editor.modalPresentationStyle = .fullScreen
         RootViewCoordinator.sharedPresenter.rootViewController.present(editor, animated: true)
     }

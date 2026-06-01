@@ -132,7 +132,7 @@ class SharingButtonsViewController: UITableViewController {
         configureMoreRows()
     }
 
-    /// Sets up the buttons section.  This section is sortable.
+    /// Sets up the buttons section. This section is sortable.
     ///
     private func setupButtonSection() -> SharingButtonsSection {
         let section = SharingButtonsSection()
@@ -273,8 +273,8 @@ class SharingButtonsViewController: UITableViewController {
         return SharingButtonsSection()
     }
 
-    /// Configures the twiter name section. When the twitter button is disabled,
-    /// the section header is empty, and there are no rows.  When the twitter button
+    /// Configures the X/Twitter name section. When the X/Twitter button is disabled,
+    /// the section header is empty, and there are no rows. When the twitter button
     /// is enabled. the section header and the row is shown.
     ///
     private func configureTwitterNameSection() {
@@ -548,7 +548,7 @@ class SharingButtonsViewController: UITableViewController {
     }
 
     /// Syncs sharing buttons from the user's blog and reloads the button sections
-    /// when finished.  Fails silently if there is an error.
+    /// when finished. Fails silently if there is an error.
     ///
     private func syncSharingButtons() {
         let service = SharingService(coreDataStack: ContextManager.shared)
@@ -562,7 +562,7 @@ class SharingButtonsViewController: UITableViewController {
     }
 
     /// Sync sharing settings from the user's blog and reloads the setting sections
-    /// when finished.  Fails silently if there is an error.
+    /// when finished. Fails silently if there is an error.
     ///
     private func syncSharingSettings() {
         let service = BlogService(coreDataStack: ContextManager.shared)
@@ -707,7 +707,7 @@ class SharingButtonsViewController: UITableViewController {
         navigationController?.pushViewController(controller, animated: true)
     }
 
-    /// Called when the user taps the button style row.  Shows a controller to
+    /// Called when the user taps the button style row. Shows a controller to
     /// choose from available button styles.
     ///
     private func handleEditButtonStyle() {
@@ -785,7 +785,7 @@ class SharingButtonsViewController: UITableViewController {
         var configureCell: SharingButtonsCellConfig?
     }
 
-    /// A sortable switch row.  By convention this is only used for sortable button rows
+    /// A sortable switch row. By convention this is only used for sortable button rows
     ///
     class SortableSharingSwitchRow: SharingButtonsRow {
         var buttonID: String

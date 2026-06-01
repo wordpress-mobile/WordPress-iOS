@@ -8,6 +8,16 @@ WordPress for iOS is the official mobile app for WordPress that lets users creat
 
 Minimum requires iOS version is iOS 17. The latest iOS version is iOS 26.
 
+## Bootstrap
+
+To prepare a fresh clone or worktree to build the app, run:
+
+```sh
+rake dependencies
+```
+
+This is the canonical entry point for getting the repo ready to build.
+
 ## High-Level Architecture
 
 ### Project Structure

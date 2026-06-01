@@ -298,7 +298,7 @@ extension InteractiveNotificationsManager {
         return nil
     }
 
-    /// Retrieves a date from the userInfo dictionary using a generic "date" key.  This was made generic on purpose.
+    /// Retrieves a date from the userInfo dictionary using a generic "date" key. This was made generic on purpose.
     ///
     private func date(from userInfo: NSDictionary) -> Date? {
         userInfo[Self.dateKey] as? Date
@@ -619,7 +619,7 @@ extension InteractiveNotificationsManager: UNUserNotificationCenterDelegate {
                 return
         }
 
-        // If the notification orginated from the share extension, disregard this current notification and resend a new one.
+        // If the notification originated from the share extension, disregard this current notification and resend a new one.
         ShareExtensionSessionManager.fireUserNotificationIfNeeded(postUploadOpID)
         completionHandler([])
     }

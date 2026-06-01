@@ -1,6 +1,6 @@
 import Foundation
 
-// MARK: - String NSRange and Location convertion Extensions
+// MARK: - String NSRange and Location conversion Extensions
 //
 extension String {
 

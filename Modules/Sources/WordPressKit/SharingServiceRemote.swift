@@ -244,7 +244,7 @@ open class SharingServiceRemote: ServiceRemoteWordPressComREST {
     /// - Parameters:
     ///     - connectionID: The ID of the publicize connection.
     ///     - externalID: The connection's externalID. Pass `nil` if the keyring
-    ///                   connection's default external ID should be used.  Otherwise pass the external
+    ///                   connection's default external ID should be used. Otherwise pass the external
     ///                   ID of one if the keyring connection's `additionalExternalUsers`.
     ///     - siteID: The WordPress.com ID of the site.
     ///     - success: An optional success block accepting no arguments.

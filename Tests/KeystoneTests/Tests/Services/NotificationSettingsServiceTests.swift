@@ -21,7 +21,7 @@ class NotificationSettingsServiceTests: CoreDataTestCase {
     let settingsFilename = "notifications-settings.json"
     let dummyDeviceId = "1234"
 
-    // MARK: - Overriden Methods
+    // MARK: - Overridden Methods
     override func setUp() {
         super.setUp()
 

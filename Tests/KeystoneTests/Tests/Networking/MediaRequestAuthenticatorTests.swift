@@ -68,7 +68,7 @@ class MediaRequestAuthenticatorTests: CoreDataTestCase {
         }
     }
 
-    /// This test only checks that the resulting URL is the origina URL for now.  There's no special authentication
+    /// This test only checks that the resulting URL is the original URL for now. There's no special authentication
     /// logic within `MediaRequestAuthenticator` for this case.
     ///
     /// - TODO: consider bringing self-hosted private authentication logic into MediaRequestAuthenticator.

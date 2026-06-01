@@ -92,7 +92,7 @@ class ReaderInterestsDataSourceTests: XCTestCase {
     }
 
     func testInterestsDataSourceDelegateIsCalled() {
-        let delegateExpectation = expectation(description: "DataSource delegate is called sucessfully")
+        let delegateExpectation = expectation(description: "DataSource delegate is called successfully")
         let delegate = MockInterestsDelegate(delegateExpectation)
 
         let service = MockInterestsService()

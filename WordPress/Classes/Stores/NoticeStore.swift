@@ -156,7 +156,7 @@ enum NoticeAction: Action {
     case clearWithTag(Notice.Tag)
     /// Removes all Notices except the current one.
     case empty
-    // Prevents the notices from showing up untill an unlock action.
+    // Prevents the notices from showing up until an unlock action.
     case lock
     // Show the missed notices.
     case unlock

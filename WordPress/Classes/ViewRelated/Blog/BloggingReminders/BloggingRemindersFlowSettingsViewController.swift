@@ -261,7 +261,7 @@ final class BloggingRemindersFlowSettingsViewController: UIViewController {
     }
 
     required init?(coder: NSCoder) {
-        // This VC is designed to be instantiated programmatically.  If we ever need to initialize this VC
+        // This VC is designed to be instantiated programmatically. If we ever need to initialize this VC
         // from a coder, we can implement support for it - but I don't think it's necessary right now.
         // - diegoreymendez
         fatalError("Use init(tracker:) instead")
@@ -336,8 +336,8 @@ final class BloggingRemindersFlowSettingsViewController: UIViewController {
     ///
     /// - Parameters:
     ///     - showPushPrompt: if `true` the PN authorization prompt VC will be shown.
-    ///         When `false`, the VC won't be shown.  This is useful because this method
-    ///         can also be called when the refrenced VC is already on-screen.
+    ///         When `false`, the VC won't be shown. This is useful because this method
+    ///         can also be called when the referenced VC is already on-screen.
     ///
     private func scheduleReminders(showPushPrompt: Bool = true) {
         let schedule: BloggingRemindersScheduler.Schedule
@@ -616,8 +616,8 @@ private extension BloggingRemindersFlowSettingsViewController {
 
     // MARK: - Calendar Days Buttons
 
-    /// Creates the calendar day toggle buttons.  This is a convenience method to take care of the mapping of the day index, from Apple's calendar, to
-    /// our `BloggingRemindersScheduler.Weekday`.  In theory this should never return `nil`, but we're allowing it to avoid possible crashes.
+    /// Creates the calendar day toggle buttons. This is a convenience method to take care of the mapping of the day index, from Apple's calendar, to
+    /// our `BloggingRemindersScheduler.Weekday`. In theory this should never return `nil`, but we're allowing it to avoid possible crashes.
     ///
     /// - Parameters:
     ///     - weekday: the weekday the button is for.

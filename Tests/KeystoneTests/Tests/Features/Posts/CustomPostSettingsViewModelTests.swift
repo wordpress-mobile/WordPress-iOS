@@ -28,9 +28,11 @@ struct CustomPostSettingsViewModelTests {
         )
 
         // Sanity: the parsed draft has the disabled connection from the post.
-        #expect(viewModel.settings.socialSharingDraft?.connectionsByID == [
-            "12345": .init(id: "12345", enabled: false)
-        ])
+        #expect(
+            viewModel.settings.socialSharingDraft?.connectionsByID == [
+                "12345": .init(id: "12345", enabled: false)
+            ]
+        )
 
         // When: settings is reassigned to a value-equivalent copy (simulating
         // `resolveTermNames` writing back resolved-but-identical tags).
@@ -101,15 +103,12 @@ struct CustomPostSettingsViewModelTests {
                 "12345": .init(id: "12345", enabled: false)
             ]
         )
-        let initialParams = PostCreateParams(
-            meta: PostMeta().addingPublicizeMessage("Stored message"),
-            additionalFields: WpAdditionalFields()
-                .addingPublicizeConnections(storedDraft.connectionsByID ?? [:])
-        )
+        var initialSettings = PostSettings()
+        initialSettings.socialSharingDraft = storedDraft
         let editorService = try makeEditorService(
             blog: blog,
             post: nil,
-            initialParams: initialParams
+            initialSettings: initialSettings
         )
         let connectionsService = makeConnectionsService()
 
@@ -132,15 +131,12 @@ struct CustomPostSettingsViewModelTests {
                 "12345": .init(id: "12345", enabled: false)
             ]
         )
-        let initialParams = PostCreateParams(
-            meta: PostMeta().addingPublicizeMessage("Stored message"),
-            additionalFields: WpAdditionalFields()
-                .addingPublicizeConnections(storedDraft.connectionsByID ?? [:])
-        )
+        var initialSettings = PostSettings()
+        initialSettings.socialSharingDraft = storedDraft
         let editorService = try makeEditorService(
             blog: blog,
             post: nil,
-            initialParams: initialParams,
+            initialSettings: initialSettings,
             supportsPublicize: false
         )
         let connectionsService = makeConnectionsService()
@@ -247,7 +243,7 @@ private func makePostWithDisabledConnection(status: PostStatus = .publish) throw
 private func makeEditorService(
     blog: Blog,
     post: AnyPostWithEditContext?,
-    initialParams: PostCreateParams? = nil,
+    initialSettings: PostSettings? = nil,
     supportsPublicize: Bool = true
 ) throws -> CustomPostEditorService {
     let dependencies = try makeServiceDependencies()
@@ -257,7 +253,7 @@ private func makeEditorService(
         details: makePostTypeDetails(supportsPublicize: supportsPublicize),
         client: dependencies.client,
         wpService: dependencies.wpService,
-        initialParams: initialParams
+        initialSettings: initialSettings
     )
 }
 

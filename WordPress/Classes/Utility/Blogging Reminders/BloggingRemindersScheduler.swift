@@ -68,7 +68,7 @@ class BloggingRemindersScheduler {
         case friday
         case saturday
 
-        /// The default reminder hour.  In the future we may want to replace this constant with a more customizable approach.
+        /// The default reminder hour. In the future we may want to replace this constant with a more customizable approach.
         ///
         static let defaultHour = 10
 
@@ -220,7 +220,7 @@ class BloggingRemindersScheduler {
 
     // MARK: - Initializers
 
-    /// Default initializer.  Allows overriding the blogging reminders store and the notification center for testing purposes.
+    /// Default initializer. Allows overriding the blogging reminders store and the notification center for testing purposes.
     ///
     ///  - Parameters:
     ///     - store: The `BloggingRemindersStore` to use for persisting the reminders schedule.
@@ -239,10 +239,10 @@ class BloggingRemindersScheduler {
             self.coreDataStack = coreDataStack
     }
 
-    /// Default initializer.  Allows overriding the blogging reminders store and the notification center for testing purposes.
+    /// Default initializer. Allows overriding the blogging reminders store and the notification center for testing purposes.
     ///
     ///  - Parameters:
-    ///     - blogIdentifier, the blog identifier.  This is necessary since we support blogging reminders for multiple blogs.
+    ///     - blogIdentifier, the blog identifier. This is necessary since we support blogging reminders for multiple blogs.
     ///     - notificationCenter: The `NotificationScheduler` to use for the notification requests.
     ///     - pushNotificationAuthorizer: The `PushNotificationAuthorizer` to use for push notification authorization.
     ///
@@ -259,7 +259,7 @@ class BloggingRemindersScheduler {
 
     // MARK: - Scheduling
 
-    /// Main method for scheduling blogging reminder notifications.  This method will take care of scheduling the local notifications and
+    /// Main method for scheduling blogging reminder notifications. This method will take care of scheduling the local notifications and
     /// persisting the user-defined reminder schedule.
     ///
     /// - Parameters:
@@ -290,7 +290,7 @@ class BloggingRemindersScheduler {
         }
     }
 
-    /// You should not be calling this method directly.  Instead, make sure to use `schedule(_:completion:)`.
+    /// You should not be calling this method directly. Instead, make sure to use `schedule(_:completion:)`.
     ///
     private func pushAuthorizationReceived(blog: Blog, schedule: Schedule, time: Date?, completion: (Result<Void, Swift.Error>) -> ()) {
         unschedule(scheduledReminders(for: blog))

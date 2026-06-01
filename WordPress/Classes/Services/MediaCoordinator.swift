@@ -351,7 +351,7 @@ class MediaCoordinator: NSObject {
             self.end(media)
         }
         let failure: (Error?) -> Void = { error in
-            // Ideally the upload service should always return an error.  This may be easier to enforce
+            // Ideally the upload service should always return an error. This may be easier to enforce
             // if we update the service to Swift, but in the meanwhile I'm instantiating an unknown upload
             // error whenever the service doesn't provide one.
             //

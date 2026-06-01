@@ -534,20 +534,6 @@ class ReaderDetailCoordinator {
         scrollToHashIfNeeded()
     }
 
-    /// Show the featured image fullscreen
-    ///
-    private func showFeaturedImage(_ sender: AsyncImageView) {
-        guard let post, let imageURL = post.featuredImage.flatMap(URL.init) else {
-            return
-        }
-        let lightboxVC = LightboxViewController(sourceURL: imageURL, host: MediaHost(post))
-        MainActor.assumeIsolated {
-            lightboxVC.thumbnail = sender.image
-        }
-        lightboxVC.configureZoomTransition(sourceView: sender)
-        viewController?.present(lightboxVC, animated: true)
-    }
-
     private func followSite(completion: @escaping () -> Void) {
         guard let post else {
             return
@@ -725,12 +711,6 @@ extension ReaderDetailCoordinator: ReaderDetailHeaderViewDelegate {
 
     func didSelectTopic(_ topic: String) {
         showTopic(topic)
-    }
-}
-
-extension ReaderDetailCoordinator: ReaderDetailFeaturedImageViewDelegate {
-    func didTapFeaturedImage(_ sender: AsyncImageView) {
-        showFeaturedImage(sender)
     }
 }
 

@@ -113,7 +113,7 @@ extension WPStyleGuide {
     ///
     @objc public class func fontForTextStyle(_ style: UIFont.TextStyle, fontWeight weight: UIFont.Weight) -> UIFont {
         /// WORKAROUND: Some font weights scale up well initially but they don't scale up well if dynamic type
-        ///     is changed in real time.  Creating a scaled font offers an alternative solution that works well
+        ///     is changed in real time. Creating a scaled font offers an alternative solution that works well
         ///     even in real time.
         let weightsThatNeedScaledFont: [UIFont.Weight] = [.black, .bold, .heavy, .semibold]
 
@@ -156,18 +156,18 @@ extension WPStyleGuide {
         return UIFont.systemFont(ofSize: fontSize, weight: weight)
     }
 
-    /// Created a scaled UIFont for the specified style and weight.  A scaled font will be resized Automatically
+    /// Created a scaled UIFont for the specified style and weight. A scaled font will be resized Automatically
     /// by iOS to respond to dynamic type changes.
     ///
     /// - Important: The size of a scaled font built with this method may not match exactly the size for the built
     /// in fonts at the same dynamic type configuration, but this is currently a limitation with iOS rather than
-    /// a limitation with this method.  For more info check:
+    /// a limitation with this method. For more info check:
     ///     https://stackoverflow.com/questions/51243804/uifontmetrics-scaled-font-size-calculation
     ///
     /// - Parameters:
     ///     - style: the style for the font.
     ///     - weight: the weight for the font.
-    ///     - design: the design for the font.  The default value is `.default`.
+    ///     - design: the design for the font. The default value is `.default`.
     ///
     /// - Returns: the requested scaled font.
     ///

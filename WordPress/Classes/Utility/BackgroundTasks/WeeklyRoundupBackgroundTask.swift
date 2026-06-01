@@ -86,7 +86,7 @@ private class WeeklyRoundupDataProvider {
 
             do {
                 service = try Self.makeRemoteStatsService(for: site)
-            } catch let error {
+            } catch {
                 self.onError(error)
                 continue
             }
@@ -141,7 +141,7 @@ private class WeeklyRoundupDataProvider {
         }
     }
 
-    /// Filters the "best" count sites from the provided dictionary of sites and stats.  This method implicitly implements the
+    /// Filters the "best" count sites from the provided dictionary of sites and stats. This method implicitly implements the
     /// definition of "best" through a sorting mechanism where the "best" sites are placed first.
     ///
     private func filterBest(_ count: Int, minimumViewsCount: Int = 5, from blogStats: SiteStats) -> SiteStats {
@@ -367,8 +367,8 @@ class WeeklyRoundupBackgroundTask: BackgroundTask {
             direction: .backward) ?? Date()
 
         // The run date is when the task is scheduled to run, but the period end date is actually
-        // the previous day at 24:59:59.
-        let periodEndDate = Calendar.current.date(bySettingHour: 0, minute: 0, second: 0, of: runDate)!.addingTimeInterval(TimeInterval.init(-1))
+        // the previous day at 23:59:59.
+        let periodEndDate = Calendar.current.date(bySettingHour: 0, minute: 0, second: 0, of: runDate)!.addingTimeInterval(TimeInterval(-1))
 
         return periodEndDate
     }

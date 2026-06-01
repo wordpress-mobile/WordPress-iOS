@@ -299,7 +299,7 @@ import AutomatticTracks
         // Setup Site Blocking Controller
         self.siteBlockingController.delegate = self
 
-        // Disable the view until we have a topic.  This prevents a premature
+        // Disable the view until we have a topic. This prevents a premature
         // pull to refresh animation.
         view.isUserInteractionEnabled = readerTopic != nil
         view.backgroundColor = .systemBackground
@@ -637,7 +637,7 @@ import AutomatticTracks
     }
 
     /// The fetch request can need a different predicate depending on how the content
-    /// being displayed has changed (blocking sites for instance).  Call this method to
+    /// being displayed has changed (blocking sites for instance). Call this method to
     /// update the fetch request predicate and then perform a new fetch.
     ///
     private func updateAndPerformFetchRequest() {
@@ -827,7 +827,7 @@ import AutomatticTracks
 
     // MARK: - Sync Methods
 
-    /// Updates the last synced date for a topic.  Since its possible for a sync
+    /// Updates the last synced date for a topic. Since its possible for a sync
     /// to complete *after* the current topic is changed we fetch the correct topic
     /// via its objectID.
     ///
@@ -837,7 +837,7 @@ import AutomatticTracks
     private func updateLastSyncedForTopic(_ objectID: NSManagedObjectID) {
         let context = ContextManager.shared.mainContext
         guard let topic = (try? context.existingObject(with: objectID)) as? ReaderAbstractTopic else {
-            DDLogError("Failed to retrive an existing topic when updating last sync date.")
+            DDLogError("Failed to retrieve an existing topic when updating last sync date.")
             return
         }
         topic.lastSynced = Date()
@@ -889,7 +889,7 @@ import AutomatticTracks
     }
 
     /// Returns the number of posts for the current topic
-    /// This allows the count to be overriden by subclasses
+    /// This allows the count to be overridden by subclasses
     var topicPostsCount: Int {
         return readerTopic?.posts.count ?? 0
     }

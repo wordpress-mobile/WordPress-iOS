@@ -323,7 +323,7 @@ extension WordPressOrgXMLRPCApiError: LocalizedError {
         case .responseSerializationFailed:
             return NSLocalizedString("The serialization of the response failed.", comment: "A failure reason for when the response couldn't be serialized.")
         case .unknown:
-            return NSLocalizedString("An unknown error occurred.", comment: "A failure reason for when the error that occured wasn't able to be determined.")
+            return NSLocalizedString("An unknown error occurred.", comment: "A failure reason for when the error that occurred wasn't able to be determined.")
         }
     }
 }

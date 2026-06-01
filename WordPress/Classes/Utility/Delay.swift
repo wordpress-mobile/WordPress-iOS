@@ -17,7 +17,7 @@ struct DispatchDelayedAction {
     // all, why not use a Bool instead?
     //
     // The goal is to have a simple to use API, but one that allows
-    // cancellation.  So you could do something as simple as:
+    // cancellation. So you could do something as simple as:
     //
     //     DispatchDelayedAction(delay: 5) { doSomething() }
     //

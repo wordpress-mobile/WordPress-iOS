@@ -163,7 +163,7 @@ class Login2FAViewController: LoginViewController, NUXKeyboardResponder, UITextF
         let credentials = AuthenticatorCredentials(wpcom: wpcom)
         syncWPComAndPresentEpilogue(credentials: credentials)
 
-        // This stat is part of a funnel that provides critical information.  Please
+        // This stat is part of a funnel that provides critical information. Please
         // consult with your lead before removing this event.
         WordPressAuthenticator.track(.signedIn)
 

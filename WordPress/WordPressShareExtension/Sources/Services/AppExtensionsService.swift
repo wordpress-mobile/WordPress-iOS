@@ -463,7 +463,7 @@ fileprivate extension AppExtensionsService {
         let remote = PostServiceRemoteREST(wordPressComRestApi: simpleRestAPI, siteID: remotePost.siteID)
         remote.createPost(remotePost, success: { post in
             if let post {
-                DDLogInfo("Post \(post.postID.stringValue) sucessfully uploaded to site \(post.siteID.stringValue)")
+                DDLogInfo("Post \(post.postID.stringValue) successfully uploaded to site \(post.siteID.stringValue)")
                 if let postID = post.postID {
                     self.coreDataStack.updatePostOperation(with: .complete, remotePostID: postID.int64Value, forPostUploadOpWithObjectID: uploadOpObjectID)
                 } else {

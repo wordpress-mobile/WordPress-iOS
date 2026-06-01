@@ -49,7 +49,7 @@ import WordPressKitObjC
                 if decodedResult.isCurrentPlan {
                     currentlyActivePlan = decodedResult
                 }
-            } catch let error {
+            } catch {
                 WPKitLogError("Error parsing plans response for site \(error)")
             }
         }

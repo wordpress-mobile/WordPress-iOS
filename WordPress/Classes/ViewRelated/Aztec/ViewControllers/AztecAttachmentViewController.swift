@@ -246,7 +246,7 @@ class AztecAttachmentViewController: UITableViewController {
                                         hint: String? = nil,
                                         onValueChanged: @escaping SettingsAttributedTextChanged) {
 
-        // TODO: This shouldn't duplicate the styling from the Figcaption formatter.  Try to unify.
+        // TODO: This shouldn't duplicate the styling from the Figcaption formatter. Try to unify.
         let defaultAttributes: [NSAttributedString.Key: Any] = [
             .font: WPFontManager.notoRegularFont(ofSize: 14),
             .foregroundColor: UIColor.gray,

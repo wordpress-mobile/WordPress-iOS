@@ -18,11 +18,17 @@ class CustomPostEditorViewController: PostGBKEditorViewController {
     let editorService: CustomPostEditorService
 
     private lazy var primarySaveButton = UIBarButtonItem(primaryAction: savePostAction())
-    private lazy var redoButton = UIBarButtonItem(systemItem: .redo, primaryAction: UIAction {
-        [weak editorViewController] _ in editorViewController?.redo() }
+    private lazy var redoButton = UIBarButtonItem(
+        systemItem: .redo,
+        primaryAction: UIAction {
+            [weak editorViewController] _ in editorViewController?.redo()
+        }
     )
-    private lazy var undoButton = UIBarButtonItem(systemItem: .undo, primaryAction: UIAction {
-        [weak editorViewController] _ in editorViewController?.undo() }
+    private lazy var undoButton = UIBarButtonItem(
+        systemItem: .undo,
+        primaryAction: UIAction {
+            [weak editorViewController] _ in editorViewController?.undo()
+        }
     )
 
     init(
@@ -31,7 +37,8 @@ class CustomPostEditorViewController: PostGBKEditorViewController {
         client: WordPressClient,
         post: AnyPostWithEditContext?,
         details: PostTypeDetailsWithEditContext,
-        initialParams: PostCreateParams? = nil,
+        initialSettings: PostSettings? = nil,
+        initialContent: EditorContent? = nil,
         completion: @escaping () -> Void
     ) {
         self.client = client
@@ -39,8 +46,12 @@ class CustomPostEditorViewController: PostGBKEditorViewController {
         self.completion = completion
 
         self.editorService = CustomPostEditorService(
-            blog: blog, post: post, details: details, client: client, wpService: wpService,
-            initialParams: initialParams
+            blog: blog,
+            post: post,
+            details: details,
+            client: client,
+            wpService: wpService,
+            initialSettings: initialSettings
         )
 
         let postTypeDetails = PostTypeDetails(
@@ -48,14 +59,15 @@ class CustomPostEditorViewController: PostGBKEditorViewController {
             restBase: details.restBase,
             restNamespace: details.restNamespace
         )
-        super.init(
-            postId: post.map { Int($0.id) },
-            postType: postTypeDetails,
-            title: post?.title?.raw ?? initialParams?.title,
-            content: post?.content.raw ?? initialParams?.content,
-            status: (post?.status ?? .draft).description,
-            blog: blog
-        )
+        super
+            .init(
+                postId: post.map { Int($0.id) },
+                postType: postTypeDetails,
+                title: post?.title?.raw ?? initialContent?.title,
+                content: post?.content.raw ?? initialContent?.content,
+                status: (post?.status ?? .draft).description,
+                blog: blog
+            )
     }
 
     required init?(coder aDecoder: NSCoder) {
@@ -66,13 +78,20 @@ class CustomPostEditorViewController: PostGBKEditorViewController {
         super.viewDidLoad()
 
         editorService.delegate = self
-        navigationItem.leftBarButtonItem = UIBarButtonItem(barButtonSystemItem: .close, target: self, action: #selector(closeButtonAction))
+        navigationItem.leftBarButtonItem = UIBarButtonItem(
+            barButtonSystemItem: .close,
+            target: self,
+            action: #selector(closeButtonAction)
+        )
         navigationItem.rightBarButtonItems = rightBarButtonItems()
         redoButton.isEnabled = false
         undoButton.isEnabled = false
     }
 
-    override func editor(_ viewController: GutenbergKit.EditorViewController, didUpdateHistoryState state: EditorState) {
+    override func editor(
+        _ viewController: GutenbergKit.EditorViewController,
+        didUpdateHistoryState state: EditorState
+    ) {
         redoButton.isEnabled = state.hasRedo
         undoButton.isEnabled = state.hasUndo
     }
@@ -118,11 +137,17 @@ private extension CustomPostEditorViewController {
                 self?.navigationController?.dismiss(animated: true)
             }
             if post?.status ?? .draft == .draft {
-                alert.addAction(UIAlertAction(title: PostEditorStrings.saveDraft, style: .default, handler: { [weak self] _ in
-                    Task {
-                        await self?.save(publish: false)
-                    }
-                }))
+                alert.addAction(
+                    UIAlertAction(
+                        title: PostEditorStrings.saveDraft,
+                        style: .default,
+                        handler: { [weak self] _ in
+                            Task {
+                                await self?.save(publish: false)
+                            }
+                        }
+                    )
+                )
             }
 
             alert.popoverPresentationController?.barButtonItem = self.navigationItem.leftBarButtonItem
@@ -142,11 +167,12 @@ private extension CustomPostEditorViewController {
                     let saveDraft = UIAction(
                         title: PostEditorStrings.saveDraft,
                         image: UIImage(systemName: "doc"),
-                        attributes: enabled ? [] : [.disabled]) { [weak self] _ in
-                            Task {
-                                await self?.save(publish: false)
-                            }
+                        attributes: enabled ? [] : [.disabled]
+                    ) { [weak self] _ in
+                        Task {
+                            await self?.save(publish: false)
                         }
+                    }
                     resolve([saveDraft])
                 }
             }
@@ -188,7 +214,7 @@ private extension CustomPostEditorViewController {
 
     func showPostSettings() {
         let viewModel = CustomPostSettingsViewModel(editorService: editorService, blog: blog)
-        viewModel.onEditorPostSaved = { /* No-op: shared editorService is already up-to-date */ }
+        viewModel.onEditorPostSaved = { /* No-op: shared editorService is already up-to-date */  }
         let settingsVC = PostSettingsViewController(viewModel: viewModel)
         let navigation = UINavigationController(rootViewController: settingsVC)
         present(navigation, animated: true)

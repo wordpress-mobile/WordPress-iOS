@@ -252,7 +252,7 @@ extension SiteStatsPeriodTableViewController: SiteStatsPeriodDelegate {
 
     func displayWebViewWithURL(_ url: URL) {
         let webViewController = WebViewControllerFactory.controllerAuthenticatedWithDefaultAccount(url: url, source: "site_stats_period")
-        let navController = UINavigationController.init(rootViewController: webViewController)
+        let navController = UINavigationController(rootViewController: webViewController)
         present(navController, animated: true)
     }
 

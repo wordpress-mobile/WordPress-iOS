@@ -11,7 +11,7 @@ class CodeVerifierTests: XCTestCase {
     }
 
     func testGeneratedCodeVerifierHasLength43() throws {
-        // 43 is the recommended lenght. See https://www.rfc-editor.org/rfc/rfc7636#section-4.1
+        // 43 is the recommended length. See https://www.rfc-editor.org/rfc/rfc7636#section-4.1
         XCTAssertEqual(try ProofKeyForCodeExchange.CodeVerifier.makeRandomCodeVerifier().rawValue.count, 43)
         XCTAssertEqual(try ProofKeyForCodeExchange.CodeVerifier.makeRandomCodeVerifier().rawValue.count, 43)
     }
@@ -34,7 +34,7 @@ class CodeVerifierTests: XCTestCase {
     // MARK: –
 
     func testCodeVerifierInitFailsWithValueShorterThan43() {
-        // 43 is the minimmum lenght from the spec
+        // 43 is the minimum length from the spec
         XCTAssertNil(ProofKeyForCodeExchange.CodeVerifier(value: ""))
         XCTAssertNil(ProofKeyForCodeExchange.CodeVerifier(value: "a".repeated(42)))
         XCTAssertEqual(ProofKeyForCodeExchange.CodeVerifier(value: "a".repeated(43))?.rawValue.count, 43)

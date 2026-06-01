@@ -462,7 +462,7 @@ public class MeViewController: UITableViewController {
                 async let refreshSettings: Void = Self.refreshAccountSettings(with: accountSettingsService)
                 let _ = try await [refreshDetails, refreshSettings]
                 self.reloadViewModel()
-            } catch let error {
+            } catch {
                 DDLogError("\(error.localizedDescription)")
             }
         }

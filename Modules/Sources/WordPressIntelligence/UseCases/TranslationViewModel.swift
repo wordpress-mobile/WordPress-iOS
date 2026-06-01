@@ -54,8 +54,8 @@ public final class TranslationViewModel: ObservableObject {
     public func checkAvailability(for content: String, to targetLanguage: Locale.Language = Locale.current.language) async -> TranslationAvailability {
         // Important. The `Translation` framework is effective at translating
         // HTML, but the `status(...)` method and `NLLanguageRecognizer`
-        // incorrectly identify dominant langauge as English if a post has a
-        // signifcant amount of HTML tags and/or CSS styles.
+        // incorrectly identify dominant language as English if a post has a
+        // significant amount of HTML tags and/or CSS styles.
         let content = (try? ContentExtractor.extractRelevantText(from: content)) ?? content
 
         guard let identifier = IntelligenceService.detectLanguage(from: content) else {

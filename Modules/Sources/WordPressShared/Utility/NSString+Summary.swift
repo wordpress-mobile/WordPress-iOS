@@ -4,8 +4,8 @@ import Foundation
 /// and convert HTML into plain text.
 ///
 extension NSString {
-    /// Converts HTML content into plain text by stripping HTML tags and decodinig XML chars.
-    /// Transforms the specified string to plain text.  HTML markup is removed and HTML entities are decoded.
+    /// Converts HTML content into plain text by stripping HTML tags and decoding XML chars.
+    /// Transforms the specified string to plain text. HTML markup is removed and HTML entities are decoded.
     ///
     /// - Returns: The transformed string.
     ///

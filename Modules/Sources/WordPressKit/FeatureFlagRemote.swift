@@ -18,7 +18,7 @@ open class FeatureFlagRemote: ServiceRemoteWordPressComREST {
 
         do {
             dictionary = try params.dictionaryRepresentation()
-        } catch let error {
+        } catch {
             callback(.failure(error))
             return
         }

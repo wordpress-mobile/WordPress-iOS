@@ -153,10 +153,14 @@ final class BloggingPromptsServiceTests: CoreDataTestCase {
         // call the fetch just to trigger default parameter assignment. the completion blocks can be ignored.
         service.fetchPrompts(from: expectedDate, number: 10, success: { _ in }, failure: { _ in })
 
-        let date = try passedDate()
-        XCTAssertEqual("2022-01-02", try passedDate())
+        // `force_year` is now always the current year, so the reconstructed date carries it.
+        let currentYear = Calendar(identifier: .gregorian).component(.year, from: Date())
+        XCTAssertEqual("\(currentYear)-01-02", try passedDate())
     }
-
+func test_fetchPrompts_alwaysPassesDescendingOrder() throws {
+    service.fetchPrompts(success: { _ in }, failure: { _ in })
+    XCTAssertEqual(try passedParameter("order") as? String, "desc")
+}
     // MARK: - Upsert Tests
 
     // new prompts should overwrite any existing prompts.
@@ -341,7 +345,7 @@ private extension BloggingPromptsServiceTests {
     }
 
     func makeBlog() -> Blog {
-        return BlogBuilder(mainContext).isHostedAtWPcom().with(blogID: siteID).build()
+        BlogBuilder(mainContext).isHostedAtWPcom().with(blogID: siteID).build()
     }
 
     func stubFetchPromptsResponse(with fileName: String? = nil) {
@@ -369,7 +373,7 @@ private extension BloggingPromptsServiceTests {
     }
 
     func passedNumber() throws -> Int {
-        return try XCTUnwrap(passedParameter("per_page") as? Int)
+        try XCTUnwrap(passedParameter("per_page") as? Int)
     }
 
     func passedDate() throws -> String {
@@ -387,8 +391,9 @@ private extension BloggingPromptsServiceTests {
         return [
             String(forcedYear),
             String(format: "%02d", month),
-            String(format: "%02d", day),
-        ].joined(separator: "-")
+            String(format: "%02d", day)
+        ]
+        .joined(separator: "-")
     }
 
     // MARK: Test Prompts
@@ -396,8 +401,9 @@ private extension BloggingPromptsServiceTests {
     private func loadTestPrompts(from fileName: String) -> [BloggingPromptRemoteObject] {
         let bundle = Bundle(for: BloggingPromptsServiceTests.self)
         guard let url = bundle.url(forResource: fileName, withExtension: "json"),
-              let data = try? Data(contentsOf: url),
-              let prompts = try? Self.jsonDecoder.decode([BloggingPromptRemoteObject].self, from: data) else {
+            let data = try? Data(contentsOf: url),
+            let prompts = try? Self.jsonDecoder.decode([BloggingPromptRemoteObject].self, from: data)
+        else {
             return []
         }
         return prompts

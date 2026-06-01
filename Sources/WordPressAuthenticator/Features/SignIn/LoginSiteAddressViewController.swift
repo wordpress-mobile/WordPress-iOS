@@ -292,7 +292,7 @@ class LoginSiteAddressViewController: LoginViewController, NUXKeyboardResponder 
     /// Does a local / quick Site Address validation and refreshes the UI with an error
     /// if necessary.
     ///
-    /// - Returns: `true` if the Site Address contains a valid URL.  `false` otherwise.
+    /// - Returns: `true` if the Site Address contains a valid URL. `false` otherwise.
     ///
     private func refreshSiteAddressError(immediate: Bool) {
         let showError = !loginFields.siteAddress.isEmpty && !loginFields.validateSiteForSignin()

@@ -5,13 +5,13 @@ import Foundation
         NSLocalizedString(
             "wordpress-api.error.unknown",
             value: "Something went wrong, please try again later.",
-            comment: "Error message that describes an unknown error had occured"
+            comment: "Error message that describes an unknown error had occurred"
         )
     }
 
     /// Can't encode the request arguments into a valid HTTP request. This is a programming error.
     case requestEncodingFailure(underlyingError: Error)
-    /// Error occured in the HTTP connection.
+    /// Error occurred in the HTTP connection.
     case connection(URLError)
     /// The API call returned an error result. For example, an OAuth endpoint may return an 'incorrect username or password' error, an upload media endpoint may return an 'unsupported media type' error.
     case endpointError(EndpointError)
@@ -19,7 +19,7 @@ import Foundation
     case unacceptableStatusCode(response: HTTPURLResponse, body: Data)
     /// The API call returned an HTTP response that WordPressKit can't parse. Receiving this error could be an indicator that there is an error response that's not handled properly by WordPressKit.
     case unparsableResponse(response: HTTPURLResponse?, body: Data?, underlyingError: Error)
-    /// Other error occured.
+    /// Other error occurred.
     case unknown(underlyingError: Error)
 
     static func unparsableResponse(response: HTTPURLResponse?, body: Data?) -> Self {

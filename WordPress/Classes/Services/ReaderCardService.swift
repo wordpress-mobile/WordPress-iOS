@@ -150,7 +150,7 @@ class ReaderCardService {
                 guard let objectData = object as? NSManagedObject else { continue }
                 context.delete(objectData)
             }
-        } catch let error {
+        } catch {
             print("Clean card error:", error)
         }
     }

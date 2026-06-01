@@ -746,8 +746,8 @@ private extension ZendeskUtils {
             let eventLogging = EventLogging(dataSource: dataProvider, delegate: delegate)
             try eventLogging.enqueueLogForUpload(log: logFile)
         }
-        catch let err {
-            return "Error preparing log file: \(err.localizedDescription)"
+        catch {
+            return "Error preparing log file: \(error.localizedDescription)"
         }
 
         return logFile.uuid

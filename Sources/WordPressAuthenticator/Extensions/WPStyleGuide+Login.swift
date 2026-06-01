@@ -251,7 +251,7 @@ extension WPStyleGuide {
         button.setTitleColor(WordPressAuthenticator.shared.style.subheadlineColor, for: .normal)
 
         // These constraints work around some issues with multiline buttons and
-        // vertical layout.  Without them the button's height may not account
+        // vertical layout. Without them the button's height may not account
         // for the titleLabel's height.
 
         let verticalLabelSpacing = forUnified ? 0 : Constants.verticalLabelSpacing

@@ -37,7 +37,7 @@ final class AllDomainsListItemViewModelTests: XCTestCase {
     }
 
     func testMappingWithValidDomain() throws {
-        let futureDate = Date.init(timeIntervalSinceNow: 365 * 24 * 60 * 60)
+        let futureDate = Date(timeIntervalSinceNow: 365 * 24 * 60 * 60)
         let iso8601Date = ViewModel.Row.DateFormatters.iso8601.string(from: futureDate)
         let humanReadableDate = ViewModel.Row.DateFormatters.humanReadable.string(from: futureDate)
         self.assert(

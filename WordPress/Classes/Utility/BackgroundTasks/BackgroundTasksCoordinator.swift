@@ -42,7 +42,7 @@ protocol BackgroundTaskEventHandler {
     func handle(_ event: BackgroundTaskEvent)
 }
 
-/// The task coordinator.  This is the entry point for registering and scheduling background tasks.
+/// The task coordinator. This is the entry point for registering and scheduling background tasks.
 ///
 class BackgroundTasksCoordinator {
     enum SchedulingError: Error {
@@ -50,11 +50,11 @@ class BackgroundTasksCoordinator {
         case schedulingFailed(task: String, error: Error)
     }
 
-    /// Event handler.  Useful for logging or tracking purposes.
+    /// Event handler. Useful for logging or tracking purposes.
     ///
     private let eventHandler: BackgroundTaskEventHandler
 
-    /// The task scheduler.  It's a weak reference because the scheduler retains the coordinator through the
+    /// The task scheduler. It's a weak reference because the scheduler retains the coordinator through the
     ///
     private let scheduler: BGTaskScheduler
 
@@ -62,7 +62,7 @@ class BackgroundTasksCoordinator {
     ///
     private let registeredTasks: [BackgroundTask]
 
-    /// Default initializer.  Immediately registers the task handlers with the scheduler.
+    /// Default initializer. Immediately registers the task handlers with the scheduler.
     ///
     /// - Parameters:
     ///     - scheduler: The scheduler to use.
@@ -128,7 +128,7 @@ class BackgroundTasksCoordinator {
         osTask.setTaskCompleted(success: !cancelled)
     }
 
-    /// Schedules the registered tasks.  The reason this step is separated from the registration of the tasks, is that we need
+    /// Schedules the registered tasks. The reason this step is separated from the registration of the tasks, is that we need
     /// to make sure the task registration completes before the App finishes launching, while scheduling can be taken care
     /// of separately.
     ///

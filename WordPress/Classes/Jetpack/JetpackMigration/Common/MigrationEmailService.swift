@@ -28,7 +28,7 @@ final class MigrationEmailService {
                 throw MigrationError.accountNotFound
             }
             self.init(api: account.wordPressComRestV2Api)
-        } catch let error {
+        } catch {
             DDLogError("[\(MigrationError.domain)] Object instantiation failed: \(error.localizedDescription)")
             throw error
         }
@@ -44,7 +44,7 @@ final class MigrationEmailService {
                 throw MigrationError.unsuccessfulResponse
             }
             tracker.track(.emailSent)
-        } catch let error {
+        } catch {
             let properties = ["error_type": error.localizedDescription]
             tracker.track(.emailFailed, properties: properties)
             DDLogError("[\(MigrationError.domain)] Migration email sending failed: \(error.localizedDescription)")
@@ -60,7 +60,7 @@ final class MigrationEmailService {
                     let data = try JSONSerialization.data(withJSONObject: responseObject)
                     let response = try decoder.decode(SendMigrationEmailResponse.self, from: data)
                     continuation.resume(returning: response)
-                } catch let error {
+                } catch {
                     continuation.resume(throwing: error)
                 }
             } failure: { error, _ in

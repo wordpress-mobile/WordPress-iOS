@@ -173,10 +173,10 @@ class AuthenticationService {
 
             // The following code is a bit complicated to read, apologies.
             // We're retrieving all cookies from the "Set-Cookie" header manually, and combining
-            // those cookies with the ones from the current session.  The reason behind this is that
+            // those cookies with the ones from the current session. The reason behind this is that
             // iOS's URLSession processes the cookies from such header before this callback is executed,
             // whereas OHTTPStubs.framework doesn't (the cookies are left in the header fields of
-            // the response).  The only way to combine both is to just add them together here manually.
+            // the response). The only way to combine both is to just add them together here manually.
             //
             // To know if you can remove this, you'll have to test this code live and in our unit tests
             // and compare the session cookies.

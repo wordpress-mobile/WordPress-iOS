@@ -73,14 +73,14 @@ import WordPressAPIInternal
                 return
             }
 
-//            taxonomy-post_format-post-format-[id]
-//            │        │           │
-//            │        │           └─ term slug: "post-format-aside"
-//            │        │              (WP prefixes format terms with "post-format-")
-//            │        │
-//            │        └─ taxonomy name: "post_format"
-//            │
-//            └─ template type: taxonomy archive
+            //            taxonomy-post_format-post-format-[id]
+            //            │        │           │
+            //            │        │           └─ term slug: "post-format-aside"
+            //            │        │              (WP prefixes format terms with "post-format-")
+            //            │        │
+            //            │        └─ taxonomy name: "post_format"
+            //            │
+            //            └─ template type: taxonomy archive
             let slugPrefix = "taxonomy-post_format-post-format-"
 
             var labelsBySlugs: [String: String] = [:]
@@ -123,6 +123,10 @@ import WordPressAPIInternal
         settings.timeFormat = siteSettings.timeFormat
         settings.startOfWeek = String(siteSettings.startOfWeek)
         settings.postsPerPage = NSNumber(value: siteSettings.postsPerPage)
+        settings.commentsAllowed = siteSettings.defaultCommentStatus
+            .map { NSNumber(value: $0.allowsDiscussion) }
+        settings.pingbackInboundEnabled = siteSettings.defaultPingStatus
+            .map { NSNumber(value: $0.allowsDiscussion) }
 
         // The following properties are not available from the Core REST API
         // site settings endpoint.
@@ -130,7 +134,6 @@ import WordPressAPIInternal
         settings.languageID = nil
         settings.iconMediaID = nil
         settings.gmtOffset = nil
-        settings.commentsAllowed = nil
         settings.commentsBlocklistKeys = nil
         settings.commentsCloseAutomatically = nil
         settings.commentsCloseAutomaticallyAfterDays = nil
@@ -145,7 +148,6 @@ import WordPressAPIInternal
         settings.commentsSortOrder = nil
         settings.commentsThreadingEnabled = nil
         settings.commentsThreadingDepth = nil
-        settings.pingbackInboundEnabled = nil
         settings.pingbackOutboundEnabled = nil
         settings.relatedPostsAllowed = nil
         settings.relatedPostsEnabled = nil
@@ -197,5 +199,27 @@ private extension RemoteUser {
         self.email = user.email
         self.displayName = user.name
         self.avatarURL = user.avatarUrls?.avatarURL()?.absoluteString
+    }
+}
+
+private extension SiteSettingsCommentStatus {
+    /// Plugin-defined custom statuses are treated as "allow"; we don't model
+    /// them and the conservative default for stock WordPress is `.open`.
+    var allowsDiscussion: Bool {
+        switch self {
+        case .open: return true
+        case .closed: return false
+        case .custom: return true
+        }
+    }
+}
+
+private extension SiteSettingsPingStatus {
+    var allowsDiscussion: Bool {
+        switch self {
+        case .open: return true
+        case .closed: return false
+        case .custom: return true
+        }
     }
 }

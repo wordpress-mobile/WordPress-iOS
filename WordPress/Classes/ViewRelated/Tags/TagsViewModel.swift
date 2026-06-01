@@ -30,7 +30,12 @@ class TagsViewModel: ObservableObject {
     @Published private(set) var selectedTags: [SelectedTerm] {
         didSet {
             if case .selection(let onSelectedTagsChanged) = mode {
-                onSelectedTagsChanged?(selectedTags.filter { !$0.isPending })
+                // Emit the full selection, including pending (`id == 0`) terms.
+                // Filtering them here would silently drop user-typed tag names from the parent's
+                // selection state if publish/save runs before the async search/create completes.
+                // Consumers that require resolved IDs (e.g. custom-post REST flows) resolve them
+                // at save time via `TermResolutionService.resolveIDs(for:)`.
+                onSelectedTagsChanged?(selectedTags)
             }
         }
     }
@@ -56,11 +61,27 @@ class TagsViewModel: ObservableObject {
         self.init(taxonomy: nil, service: TagsService(blog: blog), selectedTerms: selectedTags, mode: mode)
     }
 
-    convenience init(blog: Blog, client: WordPressClient, taxonomy: SiteTaxonomy, selectedTerms: [SelectedTerm] = [], mode: TagsViewMode) {
-        self.init(taxonomy: taxonomy, service: AnyTermService(client: client, endpoint: taxonomy.endpoint), selectedTerms: selectedTerms, mode: mode)
+    convenience init(
+        blog: Blog,
+        client: WordPressClient,
+        taxonomy: SiteTaxonomy,
+        selectedTerms: [SelectedTerm] = [],
+        mode: TagsViewMode
+    ) {
+        self.init(
+            taxonomy: taxonomy,
+            service: AnyTermService(client: client, endpoint: taxonomy.endpoint),
+            selectedTerms: selectedTerms,
+            mode: mode
+        )
     }
 
-    init(taxonomy: SiteTaxonomy?, service: TaxonomyServiceProtocol, selectedTerms: [SelectedTerm] = [], mode: TagsViewMode) {
+    init(
+        taxonomy: SiteTaxonomy?,
+        service: TaxonomyServiceProtocol,
+        selectedTerms: [SelectedTerm] = [],
+        mode: TagsViewMode
+    ) {
         self.taxonomy = taxonomy
         self.tagsService = service
         self.mode = mode
@@ -85,7 +106,7 @@ class TagsViewModel: ObservableObject {
 
     private func loadInitialTags() async {
         isLoading = true
-        defer { isLoading = false}
+        defer { isLoading = false }
 
         error = nil
 
@@ -135,7 +156,7 @@ class TagsViewModel: ObservableObject {
         let remoteTags = try await tagsService.searchTags(with: searchText)
 
         return try await TagsPaginatedResponse { _ in
-            return TagsPaginatedResponse.Page(
+            TagsPaginatedResponse.Page(
                 items: remoteTags,
                 total: remoteTags.count,
                 hasMore: false,
@@ -171,7 +192,8 @@ class TagsViewModel: ObservableObject {
             do {
                 let newTag: AnyTermWithViewContext
                 if let existing = try await tagsService.searchTags(with: name)
-                    .first(where: { $0.name.compare(name, options: .caseInsensitive) == .orderedSame }) {
+                    .first(where: { $0.name.compare(name, options: .caseInsensitive) == .orderedSame })
+                {
                     newTag = existing
                 } else {
                     newTag = try await tagsService.createTag(name: name, description: "")
@@ -190,7 +212,7 @@ class TagsViewModel: ObservableObject {
     }
 
     func isSelected(_ term: AnyTermWithViewContext) -> Bool {
-        return selectedTagsSet.contains(term.name.lowercased())
+        selectedTagsSet.contains(term.name.lowercased())
     }
 
     func isNotSelected(_ term: AnyTermWithViewContext) -> Bool {

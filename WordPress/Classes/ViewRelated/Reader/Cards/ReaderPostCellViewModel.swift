@@ -63,7 +63,7 @@ final class ReaderPostCellViewModel {
     }
 
     private init() {
-        self.post = ReaderPost.init(entity: NSEntityDescription.entity(forEntityName: ReaderPost.entityName(), in: ContextManager.shared.mainContext)!, insertInto: nil)
+        self.post = ReaderPost(entity: NSEntityDescription.entity(forEntityName: ReaderPost.entityName(), in: ContextManager.shared.mainContext)!, insertInto: nil)
         self.avatarURL = URL(string: "https://picsum.photos/120/120.jpg")
         self.author = "WordPress Mobile Apps"
         self.time = "9d ago"

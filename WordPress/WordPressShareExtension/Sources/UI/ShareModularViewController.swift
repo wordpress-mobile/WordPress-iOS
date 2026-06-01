@@ -155,7 +155,7 @@ class ShareModularViewController: ShareExtensionAbstractViewController {
     fileprivate func setupCategoriesIfNeeded() {
         if shareData.allCategoriesForSelectedSite == nil {
             // Set to `true` so, on first load, the publish button is not enabled until the
-            // catagories for the selected site are fully loaded
+            // categories for the selected site are fully loaded
             isFetchingCategories = true
         }
         refreshModulesTable()

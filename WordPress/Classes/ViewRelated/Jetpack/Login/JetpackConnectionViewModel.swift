@@ -293,11 +293,11 @@ class JetpackConnectionService {
 }
 
 extension PluginSlug {
-    static let jetpack = Self.init(slug: "jetpack/jetpack")
+    static let jetpack = Self(slug: "jetpack/jetpack")
 }
 
 extension PluginWpOrgDirectorySlug {
-    static let jetpack = Self.init(slug: "jetpack")
+    static let jetpack = Self(slug: "jetpack")
 }
 
 enum JetpackConnectionStep: Int, CaseIterable {

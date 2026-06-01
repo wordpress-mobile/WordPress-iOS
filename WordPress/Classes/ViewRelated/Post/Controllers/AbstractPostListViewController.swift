@@ -33,7 +33,7 @@ class AbstractPostListViewController: UIViewController,
 
     var blog: Blog!
 
-    /// This closure will be executed whenever the noResultsView must be visually refreshed.  It's up
+    /// This closure will be executed whenever the noResultsView must be visually refreshed. It's up
     /// to the subclass to define this property.
     ///
     var refreshNoResultsViewController: ((NoResultsViewController) -> ())!
@@ -589,7 +589,7 @@ class AbstractPostListViewController: UIViewController,
         noResultsViewController.removeFromView()
 
         if emptyResults {
-            // This is a special case.  Core data can be a bit slow about notifying
+            // This is a special case. Core data can be a bit slow about notifying
             // NSFetchedResultsController delegates about changes to the fetched results.
             // To compensate, call configureNoResultsView after a short delay.
             // It will be redisplayed if necessary.
@@ -783,7 +783,7 @@ class AbstractPostListViewController: UIViewController,
 
     /// Retrieves the userID for the user of the current blog.
     ///
-    /// - Returns: the userID for the user of the current WPCom blog.  If the blog is not hosted at
+    /// - Returns: the userID for the user of the current WPCom blog. If the blog is not hosted at
     ///     WordPress.com, `nil` is returned instead.
     ///
     @objc func blogUserID() -> NSNumber? {

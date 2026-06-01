@@ -55,48 +55,58 @@ struct CustomPostTabView: View {
         self.blog = blog
         self.presentingViewController = presentingViewController
 
-        _allViewModel = State(initialValue: CustomPostListViewModel(
-            client: client,
-            service: service,
-            details: details,
-            filter: CustomPostListFilter(tab: .all),
-            blog: blog,
-            showsHierarchyIfApplicable: true,
-            presentingViewController: presentingViewController
-        ))
-        _publishedViewModel = State(initialValue: CustomPostListViewModel(
-            client: client,
-            service: service,
-            details: details,
-            filter: CustomPostListFilter(tab: .published),
-            blog: blog,
-            showsHierarchyIfApplicable: true,
-            presentingViewController: presentingViewController
-        ))
-        _draftsViewModel = State(initialValue: CustomPostListViewModel(
-            client: client,
-            service: service,
-            details: details,
-            filter: CustomPostListFilter(tab: .drafts),
-            blog: blog,
-            presentingViewController: presentingViewController
-        ))
-        _scheduledViewModel = State(initialValue: CustomPostListViewModel(
-            client: client,
-            service: service,
-            details: details,
-            filter: CustomPostListFilter(tab: .scheduled),
-            blog: blog,
-            presentingViewController: presentingViewController
-        ))
-        _trashViewModel = State(initialValue: CustomPostListViewModel(
-            client: client,
-            service: service,
-            details: details,
-            filter: CustomPostListFilter(tab: .trash),
-            blog: blog,
-            presentingViewController: presentingViewController
-        ))
+        _allViewModel = State(
+            initialValue: CustomPostListViewModel(
+                client: client,
+                service: service,
+                details: details,
+                filter: CustomPostListFilter(tab: .all),
+                blog: blog,
+                showsHierarchyIfApplicable: true,
+                presentingViewController: presentingViewController
+            )
+        )
+        _publishedViewModel = State(
+            initialValue: CustomPostListViewModel(
+                client: client,
+                service: service,
+                details: details,
+                filter: CustomPostListFilter(tab: .published),
+                blog: blog,
+                showsHierarchyIfApplicable: true,
+                presentingViewController: presentingViewController
+            )
+        )
+        _draftsViewModel = State(
+            initialValue: CustomPostListViewModel(
+                client: client,
+                service: service,
+                details: details,
+                filter: CustomPostListFilter(tab: .drafts),
+                blog: blog,
+                presentingViewController: presentingViewController
+            )
+        )
+        _scheduledViewModel = State(
+            initialValue: CustomPostListViewModel(
+                client: client,
+                service: service,
+                details: details,
+                filter: CustomPostListFilter(tab: .scheduled),
+                blog: blog,
+                presentingViewController: presentingViewController
+            )
+        )
+        _trashViewModel = State(
+            initialValue: CustomPostListViewModel(
+                client: client,
+                service: service,
+                details: details,
+                filter: CustomPostListFilter(tab: .trash),
+                blog: blog,
+                presentingViewController: presentingViewController
+            )
+        )
 
         _authorFilter = .authorFilter(for: TaggedManagedObjectID(blog))
         self.applyAuthorFilter()
@@ -175,7 +185,8 @@ struct CustomPostTabView: View {
                 post: presentation.post,
                 details: details,
                 blog: blog,
-                initialParams: presentation.initialParams
+                initialSettings: presentation.initialSettings,
+                initialContent: presentation.initialContent
             )
         }
         .onChange(of: authorFilter, applyAuthorFilter)
@@ -204,8 +215,9 @@ struct CustomPostTabView: View {
 
     private var currentUserAvatarURL: URL? {
         guard let userID = blog.userID,
-              let author = blog.getAuthorWith(id: userID),
-              let urlString = author.avatarURL else {
+            let author = blog.getAuthorWith(id: userID),
+            let urlString = author.avatarURL
+        else {
             return nil
         }
         return URL(string: urlString)
@@ -232,16 +244,21 @@ struct CustomPostTabView: View {
 
     private func duplicatePost(_ post: AnyPostWithEditContext) {
         let capabilities = PostSettingsCapabilities(from: details)
-        var params = PostCreateParams.defaultParams(from: blog)
-        params.title = post.title?.raw
-        params.content = post.content.raw
+        var settings = PostSettings.defaults(from: blog)
         if capabilities.supportsCategories, let categories = post.categories {
-            params.categories = categories
+            settings.categoryIDs = Set(categories.map { Int($0) })
         }
         if capabilities.supportsPostFormats {
-            params.format = post.format
+            // Assign unconditionally — when the source post has no format,
+            // clear the blog default so the duplicate matches the source's
+            // "no format" state rather than snapshotting today's blog default.
+            settings.postFormat = post.format?.id
         }
-        editorPresentation = .duplicatePost(params)
+        let content = EditorContent(
+            title: post.title?.raw ?? "",
+            content: post.content.raw ?? ""
+        )
+        editorPresentation = .duplicatePost(settings: settings, content: content)
 
         WPAnalytics.track(.postListDuplicateAction, withProperties: ["post_type": details.slug])
     }
@@ -359,7 +376,7 @@ private struct SubmitFeedbackViewRepresentable: UIViewControllerRepresentable {
 private enum EditorPresentation: Identifiable {
     case newPost
     case editPost(AnyPostWithEditContext)
-    case duplicatePost(PostCreateParams)
+    case duplicatePost(settings: PostSettings, content: EditorContent)
 
     var id: String {
         switch self {
@@ -376,11 +393,14 @@ private enum EditorPresentation: Identifiable {
         }
     }
 
-    var initialParams: PostCreateParams? {
-        switch self {
-        case .duplicatePost(let params): return params
-        default: return nil
-        }
+    var initialSettings: PostSettings? {
+        if case .duplicatePost(let settings, _) = self { return settings }
+        return nil
+    }
+
+    var initialContent: EditorContent? {
+        if case .duplicatePost(_, let content) = self { return content }
+        return nil
     }
 }
 
@@ -418,6 +438,7 @@ private enum Strings {
     static let betaBadge = NSLocalizedString(
         "customPostType.navigation.betaBadge",
         value: "BETA",
-        comment: "Badge label indicating that custom post type support is a beta feature. Displayed next to the navigation title."
+        comment:
+            "Badge label indicating that custom post type support is a beta feature. Displayed next to the navigation title."
     )
 }

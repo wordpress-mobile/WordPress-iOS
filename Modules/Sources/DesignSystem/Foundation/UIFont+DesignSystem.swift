@@ -81,7 +81,7 @@ public extension UIFont.DS {
 private enum DynamicFontHelper {
     static func fontForTextStyle(_ style: UIFont.TextStyle, fontWeight weight: UIFont.Weight) -> UIFont {
         /// WORKAROUND: Some font weights scale up well initially but they don't scale up well if dynamic type
-        ///     is changed in real time.  Creating a scaled font offers an alternative solution that works well
+        ///     is changed in real time. Creating a scaled font offers an alternative solution that works well
         ///     even in real time.
         let weightsThatNeedScaledFont: [UIFont.Weight] = [.black, .bold, .heavy, .semibold]
 

@@ -1238,7 +1238,7 @@ private extension ShareExtensionEditorViewController {
     }
 
     func makeRichTextViewFirstResponderAndPlaceCursorAtEnd() {
-        // Unfortunatly, we need set the first responder and cursor position in this manner otherwise
+        // Unfortunately, we need set the first responder and cursor position in this manner otherwise
         // some odd scrolling behavior occurs when inserting images into the share ext editor.
         DispatchQueue.main.async {
             if !self.richTextView.isFirstResponder {

@@ -2,7 +2,7 @@ import UIKit
 
 extension UIViewController {
     /// iOS's `isBeingDismissed` can return `false` if the VC is being dismissed indirectly, by one of its ancestors
-    /// being dismissed.  This method returns `true` if the VC is being dismissed directly, or if one of its ancestors is being
+    /// being dismissed. This method returns `true` if the VC is being dismissed directly, or if one of its ancestors is being
     /// dismissed.
     ///
     func isBeingDismissedDirectlyOrByAncestor() -> Bool {

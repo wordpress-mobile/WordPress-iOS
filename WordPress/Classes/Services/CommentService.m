@@ -1124,7 +1124,7 @@ static NSTimeInterval const CommentsRefreshTimeoutInSeconds = 60 * 5; // 5 minut
         return nil;
     }
 
-    // (Insert a new comment into core data. Check for its existance first for paranoia sake.
+    // (Insert a new comment into core data. Check for its existence first for paranoia sake.
     // In theory a sync could include a newly created comment before the request that created it returned.
     Comment *comment = [NSEntityDescription insertNewObjectForEntityForName:NSStringFromClass([Comment class]) inManagedObjectContext:context];
 

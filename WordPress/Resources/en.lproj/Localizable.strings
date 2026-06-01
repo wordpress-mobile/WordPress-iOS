@@ -2224,8 +2224,17 @@ Example: Reply to Pamela Nguyen */
 /* A label title. */
 "Comments per page" = "Comments per page";
 
+/* Title for the error notice shown when approving a comment fails. */
+"comments.approve.error.title" = "Error approving comment";
+
 /* Error title */
 "comments.failedToLike" = "Failed to like comment";
+
+/* Title for the error notice shown when trashing a comment fails. */
+"comments.trash.error.title" = "Error trashing comment";
+
+/* Title for the error notice shown when unapproving a comment fails. */
+"comments.unapprove.error.title" = "Error unapproving comment";
 
 /* Error message informing a user about an invalid password. */
 "common.reEnterPasswordMessage" = "The username or password stored in the app may be out of date. Please re-enter your password in the settings and try again.";
@@ -2625,6 +2634,9 @@ Example: Reply to Pamela Nguyen */
 /* Menu action to permanently delete a trashed post */
 "customPostList.action.deletePermanently" = "Delete Permanently";
 
+/* Menu action to create a draft copy of a post */
+"customPostList.action.duplicate" = "Duplicate";
+
 /* Menu action to change a post's status to draft */
 "customPostList.action.moveToDraft" = "Move to Draft";
 
@@ -2669,6 +2681,12 @@ Example: Reply to Pamela Nguyen */
 
 /* Empty state message when no custom posts exist. %1$@ is the post type name (e.g., 'Podcasts', 'Products'). */
 "customPostList.emptyState.message" = "No %1$@";
+
+/* Short label for the swipe action to permanently delete a trashed post. Keep this translation short. */
+"customPostList.swipeAction.delete" = "Delete";
+
+/* Short label for the swipe action to trash a post. Keep this translation short. */
+"customPostList.swipeAction.trash" = "Trash";
 
 /* Message for the confirmation alert when trashing a published post */
 "customPostList.trashConfirmation.message" = "This post is published and visible to visitors. Are you sure you want to move it to trash?";
@@ -5004,6 +5022,163 @@ Please install the %3$@ to use the app with this site.";
 /* Message stating that the user is unable to use Stats and Notifications because their site is connected to a different WordPress.com account */
 "jetpackSite.connectToDefaultAccount" = "You need to sign in with %@ to use Stats and Notifications.";
 
+/* Message shown at the top of the account confirmation screen when every available account is already connected to the site. */
+"jetpackSocial.accountConfirmation.allConnectedDescription" = "You're all set. Every available account is already connected to this site, and your new posts will be shared automatically. You can change this when writing a post.";
+
+/* Nav-bar button that finalizes the social connection after choosing an account. */
+"jetpackSocial.accountConfirmation.confirm" = "Confirm";
+
+/* Section header listing accounts already connected to this site. */
+"jetpackSocial.accountConfirmation.connectedSection" = "Connected";
+
+/* Explanation text shown at the top of the account confirmation screen. */
+"jetpackSocial.accountConfirmation.description" = "You're connecting this account. New posts will automatically be shared to it. You can change this when writing a post.";
+
+/* Button that dismisses the account confirmation screen when every account is already connected and there is nothing to confirm. */
+"jetpackSocial.accountConfirmation.done" = "Done";
+
+/* Loading caption while fetching accounts for the confirmation screen. */
+"jetpackSocial.accountConfirmation.loading" = "Loading accounts…";
+
+/* Footer caption below the 'Mark the connection as shared' toggle. */
+"jetpackSocial.accountConfirmation.markAsSharedFooter" = "If enabled, the connection will be available to all administrators, editors, and authors. You can change this later.";
+
+/* Toggle label controlling whether the new connection is shared with other site users. */
+"jetpackSocial.accountConfirmation.markAsSharedLabel" = "Mark the connection as shared";
+
+/* Button to retry a failed account fetch. */
+"jetpackSocial.accountConfirmation.retry" = "Retry";
+
+/* Navigation title of the account confirmation screen shown after OAuth. */
+"jetpackSocial.accountConfirmation.title" = "Connection confirmation";
+
+/* Toggle label controlling whether a connection is shared with all site users. */
+"jetpackSocial.connectionDetail.availableToAllUsers" = "Available to all users";
+
+/* Footer caption below the 'Available to all users' toggle. */
+"jetpackSocial.connectionDetail.availableToAllUsersFooter" = "Allow this connection to be used by all admins and users of your site.";
+
+/* Section header on the connection detail screen. */
+"jetpackSocial.connectionDetail.settingsHeader" = "Settings";
+
+/* Dismiss button in the social connection update failure alert. */
+"jetpackSocial.connectionDetail.updateFailedDismiss" = "OK";
+
+/* Title of the alert shown when updating a social connection setting fails. */
+"jetpackSocial.connectionDetail.updateFailedTitle" = "Couldn't Update Connection";
+
+/* Error when a publicize connection ID can't be found. %1$@ is the connection ID. */
+"jetpackSocial.error.connectionNotFound" = "Connection %1$@ was not found.";
+
+/* Error shown when decoding a social sharing response fails. */
+"jetpackSocial.error.decoding" = "Received an unexpected response from the server.";
+
+/* Error when a keyring token ID can't be found. %1$@ is the token ID. */
+"jetpackSocial.error.keyringNotFound" = "Keyring connection %1$@ was not found.";
+
+/* Link label that opens documentation explaining how to resolve a social sharing error. */
+"jetpackSocial.error.learnMore" = "Learn more";
+
+/* Error shown when a social sharing network call fails. */
+"jetpackSocial.error.network" = "Network error. Please check your connection and try again.";
+
+/* Error when the WP.com account has no authorized keyring for a given service. %1$@ is the service label (e.g. 'Mastodon'). */
+"jetpackSocial.error.noKeyringForService" = "No connected accounts for %1$@.";
+
+/* Error shown after Facebook OAuth when the user's account doesn't manage any Facebook Pages, since Publicize only targets Pages. */
+"jetpackSocial.error.noPagesForFacebook" = "The Facebook connection cannot find any Pages. Publicize cannot connect to Facebook Profiles, only published Pages.";
+
+/* Error shown when the WP.com auth token is missing or invalid. */
+"jetpackSocial.error.notAuthenticated" = "You need to sign in again to manage social accounts.";
+
+/* Generic fallback error for social sharing. */
+"jetpackSocial.error.unknown" = "Something went wrong. Please try again.";
+
+/* Status text for a broken / invalid / refresh-failed connection. */
+"jetpackSocial.manageConnections.brokenStatus" = "Needs attention";
+
+/* Cancel button in the disconnect confirmation alert. */
+"jetpackSocial.manageConnections.cancel" = "Cancel";
+
+/* Footer caption under the Connected Accounts section on the Social screen. */
+"jetpackSocial.manageConnections.connectedFooter" = "Connect your social media accounts and send a post's featured image and content to the selected channels when the post is published.";
+
+/* Section header listing currently connected social accounts. */
+"jetpackSocial.manageConnections.connectedHeader" = "Connected Accounts";
+
+/* Button on the Social screen that opens the add-connection modal. */
+"jetpackSocial.manageConnections.connectNewAccount" = "Connect a New Account";
+
+/* Button that removes a social sharing connection. */
+"jetpackSocial.manageConnections.delete" = "Disconnect";
+
+/* Confirmation alert title. %1$@ is the connected account's display name. */
+"jetpackSocial.manageConnections.deleteConfirmTitle" = "Are you sure you want to disconnect %1$@?";
+
+/* Dismiss button in the disconnect failure alert. */
+"jetpackSocial.manageConnections.deleteFailedDismiss" = "OK";
+
+/* Title of the alert shown when disconnecting a social connection fails. */
+"jetpackSocial.manageConnections.deleteFailedTitle" = "Couldn't Disconnect";
+
+/* Footer caption under the list of services in the Connect Account picker modal. */
+"jetpackSocial.manageConnections.footer" = "Connect your favorite social media services to automatically share new posts with friends.";
+
+/* Button to retry a failed load. */
+"jetpackSocial.manageConnections.retry" = "Retry";
+
+/* Badge shown on connections that are shared with other site users. */
+"jetpackSocial.manageConnections.sharedBadge" = "Shared";
+
+/* Title of the Social Sharing settings screen. */
+"jetpackSocial.manageConnections.title" = "Social";
+
+/* Confirm button in the disconnect confirmation alert. */
+"jetpackSocial.manageConnections.yes" = "Yes";
+
+/* Navigation bar title of the OAuth webview. %1$@ is the service label (e.g. 'Mastodon'). */
+"jetpackSocial.oauthWebView.connectTitle" = "Connect to %1$@";
+
+/* Label above the optional custom social-sharing message field. */
+"jetpackSocial.postSection.customMessage" = "Custom message";
+
+/* Footer caption below the custom social-sharing message field. */
+"jetpackSocial.postSection.customMessageFooter" = "Customize the message you want to share.
+If you don't add your own text here, we'll use the post's title as the message.";
+
+/* Placeholder for the optional custom social-sharing message field. */
+"jetpackSocial.postSection.customMessagePlaceholder" = "Write a custom message for your social audience here.";
+
+/* Caption shown when the site has no social connections. */
+"jetpackSocial.postSection.empty" = "No social accounts connected yet.";
+
+/* Title of the row that opens the social sharing detail screen in Post Settings. */
+"jetpackSocial.postSection.header" = "Share to social media";
+
+/* Button to retry a failed load of the connections list. */
+"jetpackSocial.postSection.retry" = "Retry";
+
+/* Trailing value on the 'Share to Social' post settings row. %1$d is the enabled count, %2$d is the total. */
+"jetpackSocial.postSection.summary.format" = "%1$d of %2$d";
+
+/* Footer below the per-connection toggles on the social sharing detail screen. */
+"jetpackSocial.postSection.togglesFooter" = "When this post is published, it will be shared to the enabled accounts.";
+
+/* Notice shown after a social connection is successfully created. %1$@ is the service label. */
+"jetpackSocial.serviceDetail.connectedNotice" = "%1$@ connected";
+
+/* Cancel button in the add-connection failure alert. */
+"jetpackSocial.serviceDetail.failureCancel" = "Cancel";
+
+/* Retry button in the add-connection failure alert. */
+"jetpackSocial.serviceDetail.failureRetry" = "Retry";
+
+/* Title of the alert shown when adding a social connection fails. */
+"jetpackSocial.serviceDetail.failureTitle" = "Connection Failed";
+
+/* Navigation bar title of the service picker modal shown when adding a new social connection. */
+"jetpackSocial.servicePicker.title" = "Connect Account";
+
 /* Accessibility label for add card button */
 "jetpackStats.accessibility.addCardButton" = "Add new stats card";
 
@@ -5508,6 +5683,9 @@ Please install the %3$@ to use the app with this site.";
 
 /* Label for weekly total in tooltip */
 "jetpackStats.postDetails.weekTotal" = "Week Total";
+
+/* Confirmation message when marking a referrer as spam. %1$@ is the domain name. */
+"jetpackStats.referrerDetails.confirmAsSpam.message" = "Marking \"%1$@\" as spam will hide it from your future stats. You can undo this anytime using the web interface.";
 
 /* Title for error alert when marking referrer as spam fails */
 "jetpackStats.referrerDetails.errorAlertTitle" = "Error";
@@ -9180,12 +9358,6 @@ Example: given a notice format "Following %@" and empty site name, this will be 
 /* Describes that the slider is used to customize the text size in the Reader. */
 "reader.preferences.control.sizeSlider.description" = "Size";
 
-/* Text for a small label in the navigation bar that hints that this is an experimental feature.
-
-The enclosing angled brackets ('<' and '>') are decorative and only intended as a flavor.
-Feel free to replace it with other bracket types that you think looks better for the locale. */
-"reader.preferences.navBar.experimental.label" = "<Experimental>";
-
 /* Description text for the preview section of Reader Preferences */
 "reader.preferences.preview.body.text" = "Choose your colors, fonts, and sizes. Preview your selection here, and read posts with your styles once you're done.";
 
@@ -10080,7 +10252,7 @@ Feel free to replace it with other bracket types that you think looks better for
 "shared.button.edit" = "Edit";
 
 /* A shared button title used in different contexts */
-"shared.button.notNow" = "Now Now";
+"shared.button.notNow" = "Not Now";
 
 /* A shared button title used in different contexts */
 "shared.button.ok" = "OK";
@@ -12124,9 +12296,6 @@ Feel free to replace it with other bracket types that you think looks better for
 
 /* Notification Settings switch for the app. */
 "Turning the switch off will disable all notifications from this app, regardless of type." = "Turning the switch off will disable all notifications from this app, regardless of type.";
-
-/* Title of button that displays the app's Twitter profile */
-"Twitter" = "Twitter";
 
 /* Title for the setting to edit the twitter username used when sharing to twitter. */
 "Twitter Username" = "Twitter Username";

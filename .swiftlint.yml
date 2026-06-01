@@ -22,6 +22,9 @@ only_rules:
   # There should be no space before and one after any comma.
   - comma
 
+  # There should be a space after the comma in inheritance lists.
+  - comma_inheritance
+
   # Prefer `contains` over `filter(where:).count`.
   - contains_over_filter_count
 
@@ -57,6 +60,9 @@ only_rules:
   # Prefer checking `isEmpty` over comparing to empty string literal `""`.
   - empty_string
 
+  # Avoid explicitly calling `.init()`; prefer `Type(...)` over `Type.init(...)`.
+  - explicit_init
+
   # Prefer `first(where:)` over `filter { }.first`.
   - first_where
 
@@ -84,6 +90,9 @@ only_rules:
   - operator_usage_whitespace
 
   - overridden_super_call
+
+  # There should be no whitespace immediately after a period.
+  - period_spacing
 
   # Example: CGPoint.zero instead of CGPoint(x: 0, y: 0)
   - prefer_zero_over_explicit_init
@@ -113,6 +122,9 @@ only_rules:
 
   # Closure arguments don't need to be wrapped in parentheses.
   - unneeded_parentheses_in_closure_argument
+
+  # Catch statements should not declare error variables without type casting.
+  - untyped_error_in_catch
 
   # Unused parameter in a closure should be replaced with _.
   - unused_closure_parameter
