@@ -158,7 +158,7 @@ class ReaderWebView: WKWebView {
         """, completionHandler: nil)
     }
 
-    /// Change all occurences of elements to change it's HTML tag to "element-placeholder"
+    /// Change all occurrences of elements to change it's HTML tag to "element-placeholder"
     /// Ie.: img -> img-placeholder
     /// This will make the text to appear fast, so the user can start reading
     ///
