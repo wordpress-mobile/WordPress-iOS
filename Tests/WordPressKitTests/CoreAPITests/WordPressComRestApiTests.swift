@@ -358,7 +358,7 @@ class WordPressComRestApiTests: XCTestCase {
             expect.fulfill()
             }, failure: { _, _ in
                 expect.fulfill()
-                XCTFail("This call should succesful")
+                XCTFail("This call should successful")
             }
         )
         self.waitForExpectations(timeout: 5, handler: nil)
