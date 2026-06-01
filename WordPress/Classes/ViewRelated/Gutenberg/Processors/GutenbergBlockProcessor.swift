@@ -60,7 +60,7 @@ public class GutenbergBlockProcessor: Processor {
     /// Processes the block and for any needed replacements from a given opening tag match.
     ///     - Parameters:
     ///         - text: The string that the following parameter is found in.
-    ///     - Returns: The resulting string after the necessary replacements have occured
+    ///     - Returns: The resulting string after the necessary replacements have occurred
     ///
     public func process(_ text: String) -> String {
         let matches = openTagRegex.matches(in: text, options: [], range: text.utf16NSRange(from: text.startIndex ..< text.endIndex))
