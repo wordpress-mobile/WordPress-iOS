@@ -307,7 +307,7 @@ open class DiscussionSettingsViewController: UITableViewController {
         pickerViewController.title = NSLocalizedString("Links in comments", comment: "Comments Paging")
         pickerViewController.switchVisible = false
         pickerViewController.selectionText = NSLocalizedString("Links in comments", comment: "A label title")
-        pickerViewController.pickerHint = NSLocalizedString("Require manual approval for comments that include more than this number of links.", comment: "An explaination of a setting.")
+        pickerViewController.pickerHint = NSLocalizedString("Require manual approval for comments that include more than this number of links.", comment: "An explanation of a setting.")
         pickerViewController.pickerMinimumValue = commentsLinksMinimumValue
         pickerViewController.pickerMaximumValue = commentsLinksMaximumValue
         pickerViewController.pickerSelectedValue = settings.commentsMaximumLinks as? Int
