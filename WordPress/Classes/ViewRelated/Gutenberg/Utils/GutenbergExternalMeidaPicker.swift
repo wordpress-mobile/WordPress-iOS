@@ -61,7 +61,7 @@ extension GutenbergExternalMediaPicker: ExternalMediaPickerViewDelegate {
         }
     }
 
-    /// Adds the given image object to the requesting block and seperates multiple images to separate image blocks
+    /// Adds the given image object to the requesting block and separates multiple images to separate image blocks
     /// - Parameter asset: Tenor Media object to add.
     func insertSingleImages(_ assets: [ExternalMediaAsset], source: MediaSource) {
         // Append the first item via callback given by Gutenberg.
