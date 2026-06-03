@@ -105,28 +105,46 @@ final class ReaderCommentsTableViewController: UIViewController, UITableViewData
 
     func scrollToComment(withID commentID: NSNumber, animated: Bool) -> Bool {
         let comments = fetchResultsController.fetchedObjects ?? []
-        guard let comment = comments.first(where: { $0.commentID == commentID.int32Value }) else {
+        guard comments.contains(where: { $0.commentID == commentID.int32Value }) else {
             return false
+        }
+        if let indexPath = revealComment(withID: commentID.int32Value, animated: animated) {
+            containerViewController?.highlightCommentCell(at: indexPath)
+        }
+        return true
+    }
+
+    /// Scrolls to the comment with the given ID, resolving its index path from the fetched
+    /// results controller at call time, and returns that index path (or `nil` when the comment
+    /// is no longer in the table or its row is out of bounds).
+    ///
+    /// Resolving by comment ID on every call, rather than reusing a previously captured index
+    /// path, keeps the scroll safe when a background sync purges comments between navigation and
+    /// reveal. A stale index path would otherwise reference an out-of-bounds row and crash
+    /// `scrollToRow(at:)` with an `NSRangeException`.
+    @discardableResult
+    func revealComment(withID commentID: Int32, animated: Bool) -> IndexPath? {
+        let comments = fetchResultsController.fetchedObjects ?? []
+        guard let comment = comments.first(where: { $0.commentID == commentID }),
+            let indexPath = fetchResultsController.indexPath(forObject: comment)
+        else {
+            return nil
         }
 
         // Force the table view to be laid out first before scrolling to indexPath.
         // This avoids a case where a cell instance could be orphaned and displayed randomly on top of the other cells.
-        guard let indexPath = fetchResultsController.indexPath(forObject: comment) else {
-            return false
-        }
         tableView.layoutIfNeeded()
 
         // Ensure that the indexPath exists before scrolling to it.
-        if indexPath.section >= 0,
+        guard indexPath.section >= 0,
             indexPath.row >= 0,
             indexPath.section < tableView.numberOfSections,
             indexPath.row < tableView.numberOfRows(inSection: indexPath.section)
-        {
-            tableView.scrollToRow(at: indexPath, at: .top, animated: true)
-            containerViewController?.highlightCommentCell(at: indexPath)
+        else {
+            return nil
         }
-
-        return true
+        tableView.scrollToRow(at: indexPath, at: .top, animated: animated)
+        return indexPath
     }
 
     @objc func setBottomInset(_ inset: CGFloat) {

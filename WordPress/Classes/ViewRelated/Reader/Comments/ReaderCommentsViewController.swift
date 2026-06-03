@@ -525,14 +525,16 @@ final class ReaderCommentsViewController: UIViewController, WPContentSyncHelperD
             self.navigationCommentID = nil
             self.onNavigationCommentRendered = nil
 
-            guard let indexPath = self.highlightedIndexPath else { return }
-            self.scrollToRowIfValid(indexPath, in: tableVC.tableView)
+            tableVC.revealComment(withID: commentID, animated: false)
 
             DispatchQueue.main.asyncAfter(deadline: .now() + 0.33) { [weak self, weak tableVC] in
                 guard let self, let tableVC else { return }
-                // The initial scroll occasionally fails due to the async rendering
-                self.scrollToRowIfValid(indexPath, in: tableVC.tableView)
+                // The initial scroll occasionally fails due to the async rendering, so re-resolve
+                // the comment's current index path and scroll again. Resolving by ID keeps this
+                // safe if a background sync changed the rows in the meantime.
+                let indexPath = tableVC.revealComment(withID: commentID, animated: false)
                 self.hideNavigationOverlay {
+                    guard let indexPath else { return }
                     (tableVC.tableView.cellForRow(at: indexPath) as? CommentContentTableViewCell)?.flashHighlight()
                 }
             }
@@ -545,18 +547,6 @@ final class ReaderCommentsViewController: UIViewController, WPContentSyncHelperD
             guard self?.navigationCommentID == commentID else { return }
             reveal()
         }
-    }
-
-    // Workaround of https://a8c.sentry.io/issues/7411457268. We may need to fix it properly.
-    // Related PR: https://github.com/wordpress-mobile/WordPress-iOS/pull/25389
-    private func scrollToRowIfValid(_ indexPath: IndexPath, in tableView: UITableView) {
-        guard indexPath.section >= 0,
-              indexPath.section < tableView.numberOfSections,
-              indexPath.row >= 0,
-              indexPath.row < tableView.numberOfRows(inSection: indexPath.section) else {
-            return
-        }
-        tableView.scrollToRow(at: indexPath, at: .top, animated: false)
     }
 
     func commentRenderedIfNeeded(commentID: Int32) {
