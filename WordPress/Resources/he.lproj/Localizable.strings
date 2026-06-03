@@ -1,4 +1,4 @@
-/* Translation-Revision-Date: 2026-03-26 09:54:31+0000 */
+/* Translation-Revision-Date: 2026-05-28 09:58:09+0000 */
 /* Plural-Forms: nplurals=2; plural=n != 1; */
 /* Generator: GlotPress/4.0.3 */
 /* Language: he_IL */
@@ -6039,9 +6039,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Notification Settings switch for the app. */
 "Turning the switch off will disable all notifications from this app, regardless of type." = "הפסקת הפעולה של המתג תשבית את כל סוגי ההודעות באפליקציה.";
 
-/* Title of button that displays the app's Twitter profile */
-"Twitter" = "טוויטר";
-
 /* Title for the setting to edit the twitter username used when sharing to twitter. */
 "Twitter Username" = "שם המשתמש בטוויטר";
 
@@ -7101,6 +7098,9 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Error message when XML-RPC is disabled on the WordPress site. The first argument is detailed error message */
 "addSite.selfHosted.xmlrpcDisabled" = "לא ניתן היה להתחבר לאתר WordPress. ייתכן ש-XML-RPC הושבת בשרת. יש לפנות אל ספקית האחסון כדי לפתור את הבעיה.";
 
+/* Error message when the app cannot find the XML-RPC endpoint of a self-hosted WordPress site */
+"addSite.selfHosted.xmlrpcEndpointNotFound" = "לא ניתן היה לקבוע את נקודת הקצה XML-RPC של האתר";
+
 /* Age between dates equaling one hour. */
 "an hour" = "שעה אחת";
 
@@ -7829,8 +7829,17 @@ Example: Reply to Pamela Nguyen */
 /* Navigation bar title when leaving a editing an existing comment */
 "commentEdit.navigationTitle" = "ערוך תגובה";
 
+/* Title for the error notice shown when approving a comment fails. */
+"comments.approve.error.title" = "שגיאה באישור התגובה";
+
 /* Error title */
 "comments.failedToLike" = "סימון הלייק בתגובה נכשל";
+
+/* Title for the error notice shown when trashing a comment fails. */
+"comments.trash.error.title" = "שגיאה בהעברת התגובה לפח";
+
+/* Title for the error notice shown when unapproving a comment fails. */
+"comments.unapprove.error.title" = "שגיאה בביטול אישור התגובה";
 
 /* Error message informing a user about an invalid password. */
 "common.reEnterPasswordMessage" = "ייתכן ששם המשתמש או הסיסמה המאוחסנים באפליקציה אינם מעודכנים. יש להזין מחדש את הסיסמה בהגדרות ולנסות שוב.";
@@ -7865,6 +7874,9 @@ Example: Reply to Pamela Nguyen */
 /* Create Sheet button title */
 "createSheet.post" = "פוסט";
 
+/* Create Sheet button title */
+"createSheet.postFromAudio" = "פרסום פוסט מתוך שמע";
+
 /* Error message shown when the post was modified by another user while editing */
 "customPostEditor.error.conflict.message" = "הפוסט שניסית לשמור השתנה בינתיים.";
 
@@ -7876,6 +7888,9 @@ Example: Reply to Pamela Nguyen */
 
 /* Menu action to permanently delete a trashed post */
 "customPostList.action.deletePermanently" = "למחוק לצמיתות";
+
+/* Menu action to create a draft copy of a post */
+"customPostList.action.duplicate" = "שכפול";
 
 /* Menu action to change a post's status to draft */
 "customPostList.action.moveToDraft" = "להעביר לטיוטות";
@@ -7922,6 +7937,12 @@ Example: Reply to Pamela Nguyen */
 /* Empty state message when no custom posts exist. %1$@ is the post type name (e.g., 'Podcasts', 'Products'). */
 "customPostList.emptyState.message" = "ללא %1$@";
 
+/* Short label for the swipe action to permanently delete a trashed post. Keep this translation short. */
+"customPostList.swipeAction.delete" = "מחיקה";
+
+/* Short label for the swipe action to trash a post. Keep this translation short. */
+"customPostList.swipeAction.trash" = "פח";
+
 /* Message for the confirmation alert when trashing a published post */
 "customPostList.trashConfirmation.message" = "הפוסט הזה מוצג ונראה למבקרים. האם אתה בטוח שברצונך להעביר את זה לפח?";
 
@@ -7957,6 +7978,9 @@ Example: Reply to Pamela Nguyen */
 
 /* Tab title for trashed posts */
 "customPostTab.trash" = "פח";
+
+/* Badge label indicating that custom post type support is a beta feature. Displayed next to the navigation title. */
+"customPostType.navigation.betaBadge" = "בטא";
 
 /* Empty state message when there are no custom post types to display */
 "customPostTypes.emptyState.message" = "אין סוגי תוכן מותאמים";
@@ -8959,6 +8983,159 @@ Example: Reply to Pamela Nguyen */
 /* Message stating that the user is unable to use Stats and Notifications because their site is connected to a different WordPress.com account */
 "jetpackSite.connectToDefaultAccount" = "עליך להתחבר באמצעות %@ כדי להשתמש ב'נתונים סטטיסטיים' וב'הודעות'.";
 
+/* Message shown at the top of the account confirmation screen when every available account is already connected to the site. */
+"jetpackSocial.accountConfirmation.allConnectedDescription" = "הכול מוכן. כל חשבון זמין כבר מחובר לאתר זה, והפוסטים החדשים שלך ישותפו באופן אוטומטי. אפשר לשנות זאת במהלך כתיבה של פוסט.";
+
+/* Nav-bar button that finalizes the social connection after choosing an account. */
+"jetpackSocial.accountConfirmation.confirm" = "אישור";
+
+/* Section header listing accounts already connected to this site. */
+"jetpackSocial.accountConfirmation.connectedSection" = "מחובר";
+
+/* Explanation text shown at the top of the account confirmation screen. */
+"jetpackSocial.accountConfirmation.description" = "מתבצע חיבור לחשבון זה. פוסטים חדשים ישותפו אליו באופן אוטומטי. אפשר לשנות זאת במהלך כתיבה של פוסט.";
+
+/* Button that dismisses the account confirmation screen when every account is already connected and there is nothing to confirm. */
+"jetpackSocial.accountConfirmation.done" = "בוצע";
+
+/* Loading caption while fetching accounts for the confirmation screen. */
+"jetpackSocial.accountConfirmation.loading" = "טוען חשבונות…";
+
+/* Footer caption below the 'Mark the connection as shared' toggle. */
+"jetpackSocial.accountConfirmation.markAsSharedFooter" = "אם האפשרות מופעלת, החיבור יהיה זמין לכל מנהלי המערכת, העורכים והמחברים. אפשר לשנות את הבחירה בשלב מאוחר יותר.";
+
+/* Toggle label controlling whether the new connection is shared with other site users. */
+"jetpackSocial.accountConfirmation.markAsSharedLabel" = "סימון החיבור כמשותף";
+
+/* Button to retry a failed account fetch. */
+"jetpackSocial.accountConfirmation.retry" = "ניסיון חוזר";
+
+/* Navigation title of the account confirmation screen shown after OAuth. */
+"jetpackSocial.accountConfirmation.title" = "אישור התחברות";
+
+/* Toggle label controlling whether a connection is shared with all site users. */
+"jetpackSocial.connectionDetail.availableToAllUsers" = "זמין לכל המשתמשים";
+
+/* Footer caption below the 'Available to all users' toggle. */
+"jetpackSocial.connectionDetail.availableToAllUsersFooter" = "יש לאפשר לחיבור זה להוית זמין לשימוש עבור כל מנהלי המערכת והמשתמשים באתר שלך.";
+
+/* Section header on the connection detail screen. */
+"jetpackSocial.connectionDetail.settingsHeader" = "הגדרות";
+
+/* Dismiss button in the social connection update failure alert. */
+"jetpackSocial.connectionDetail.updateFailedDismiss" = "אישור";
+
+/* Title of the alert shown when updating a social connection setting fails. */
+"jetpackSocial.connectionDetail.updateFailedTitle" = "לא ניתן היה לעדכן את החיבור";
+
+/* Error when a publicize connection ID can't be found. %1$@ is the connection ID. */
+"jetpackSocial.error.connectionNotFound" = "החיבור %1$@ לא נמצא.";
+
+/* Error shown when decoding a social sharing response fails. */
+"jetpackSocial.error.decoding" = "התקבלה תגובה לא צפויה מהשרת.";
+
+/* Error when a keyring token ID can't be found. %1$@ is the token ID. */
+"jetpackSocial.error.keyringNotFound" = "חיבור ה-Keyring ‏%1$@ לא נמצא.";
+
+/* Link label that opens documentation explaining how to resolve a social sharing error. */
+"jetpackSocial.error.learnMore" = "למידע נוסף";
+
+/* Error shown when a social sharing network call fails. */
+"jetpackSocial.error.network" = "שגיאת רשת. יש לבדוק את החיבור ולנסות שוב.";
+
+/* Error when the WP.com account has no authorized keyring for a given service. %1$@ is the service label (e.g. 'Mastodon'). */
+"jetpackSocial.error.noKeyringForService" = "אין חשבונות מחוברים עבור %1$@.";
+
+/* Error shown after Facebook OAuth when the user's account doesn't manage any Facebook Pages, since Publicize only targets Pages. */
+"jetpackSocial.error.noPagesForFacebook" = "החיבור עם פייסבוק לא הצליח למצוא עמודים. השיתוף האוטומטי אינו יכול להתחבר אל פרופילים בפייסבוק, רק לדפים שפורסמו.";
+
+/* Error shown when the WP.com auth token is missing or invalid. */
+"jetpackSocial.error.notAuthenticated" = "יש להתחבר שוב כדי לנהל חשבונות של רשתות חברתיות.";
+
+/* Generic fallback error for social sharing. */
+"jetpackSocial.error.unknown" = "משהו השתבש. יש לנסות שוב.";
+
+/* Status text for a broken / invalid / refresh-failed connection. */
+"jetpackSocial.manageConnections.brokenStatus" = "תשומת ליבך נדרשת";
+
+/* Cancel button in the disconnect confirmation alert. */
+"jetpackSocial.manageConnections.cancel" = "לבטל";
+
+/* Button on the Social screen that opens the add-connection modal. */
+"jetpackSocial.manageConnections.connectNewAccount" = "חיבור חשבון חדש";
+
+/* Footer caption under the Connected Accounts section on the Social screen. */
+"jetpackSocial.manageConnections.connectedFooter" = "אפשר לחבר את החשבונות שלך ברשתות חברתיות ולשלוח תמונה ראשית ותוכן של פוסט לערוצים הנבחרים כאשר הפוסט מתפרסם.";
+
+/* Section header listing currently connected social accounts. */
+"jetpackSocial.manageConnections.connectedHeader" = "חשבונות מחוברים";
+
+/* Button that removes a social sharing connection. */
+"jetpackSocial.manageConnections.delete" = "התנתקות";
+
+/* Confirmation alert title. %1$@ is the connected account's display name. */
+"jetpackSocial.manageConnections.deleteConfirmTitle" = "ביקשת לנתק את %1$@ - האם ההחלטה סופית?";
+
+/* Dismiss button in the disconnect failure alert. */
+"jetpackSocial.manageConnections.deleteFailedDismiss" = "אישור";
+
+/* Title of the alert shown when disconnecting a social connection fails. */
+"jetpackSocial.manageConnections.deleteFailedTitle" = "לא ניתן היה להתנתק";
+
+/* Footer caption under the list of services in the Connect Account picker modal. */
+"jetpackSocial.manageConnections.footer" = "אפשר לחבר את שירותי הרשתות החברתיות המועדפים עליך כדי לשתף פוסטים חדשים עם חברים באופן אוטומטי.";
+
+/* Button to retry a failed load. */
+"jetpackSocial.manageConnections.retry" = "ניסיון חוזר";
+
+/* Badge shown on connections that are shared with other site users. */
+"jetpackSocial.manageConnections.sharedBadge" = "שותף";
+
+/* Title of the Social Sharing settings screen. */
+"jetpackSocial.manageConnections.title" = "רשתות חברתיות";
+
+/* Confirm button in the disconnect confirmation alert. */
+"jetpackSocial.manageConnections.yes" = "כן";
+
+/* Navigation bar title of the OAuth webview. %1$@ is the service label (e.g. 'Mastodon'). */
+"jetpackSocial.oauthWebView.connectTitle" = "חיבור אל %1$@";
+
+/* Label above the optional custom social-sharing message field. */
+"jetpackSocial.postSection.customMessage" = "הודעה מותאמת אישית";
+
+/* Placeholder for the optional custom social-sharing message field. */
+"jetpackSocial.postSection.customMessagePlaceholder" = "יש לכתוב כאן הודעה מותאמת אישית לקהל הקוראים שלך ברשתות החברתיות.";
+
+/* Caption shown when the site has no social connections. */
+"jetpackSocial.postSection.empty" = "עדיין לא מחוברים חשבונות של רשתות חברתיות.";
+
+/* Title of the row that opens the social sharing detail screen in Post Settings. */
+"jetpackSocial.postSection.header" = "שיתוף ברשתות חברתיות";
+
+/* Button to retry a failed load of the connections list. */
+"jetpackSocial.postSection.retry" = "ניסיון חוזר";
+
+/* Trailing value on the 'Share to Social' post settings row. %1$d is the enabled count, %2$d is the total. */
+"jetpackSocial.postSection.summary.format" = "⁦%1$d⁩ מתוך ⁦%2$d⁩";
+
+/* Footer below the per-connection toggles on the social sharing detail screen. */
+"jetpackSocial.postSection.togglesFooter" = "כאשר פוסט זה יפורסם, הוא ישותף עם החשבונות המופעלים.";
+
+/* Notice shown after a social connection is successfully created. %1$@ is the service label. */
+"jetpackSocial.serviceDetail.connectedNotice" = "%1$@ חובר";
+
+/* Cancel button in the add-connection failure alert. */
+"jetpackSocial.serviceDetail.failureCancel" = "ביטול";
+
+/* Retry button in the add-connection failure alert. */
+"jetpackSocial.serviceDetail.failureRetry" = "ניסיון חוזר";
+
+/* Title of the alert shown when adding a social connection fails. */
+"jetpackSocial.serviceDetail.failureTitle" = "החיבור נכשל";
+
+/* Navigation bar title of the service picker modal shown when adding a new social connection. */
+"jetpackSocial.servicePicker.title" = "חיבור חשבון";
+
 /* Accessibility label for add card button */
 "jetpackStats.accessibility.addCardButton" = "להוסיף כרטיס חדש של נתונים סטטיסטיים";
 
@@ -9463,6 +9640,9 @@ Example: Reply to Pamela Nguyen */
 
 /* Title for weekly activity heatmap */
 "jetpackStats.postDetails.weeklyActivity" = "פעילות שבועית";
+
+/* Confirmation message when marking a referrer as spam. %1$@ is the domain name. */
+"jetpackStats.referrerDetails.confirmAsSpam.message" = "סימון '%1$@' כתגובת זבל יסתיר אותו מהנתונים הסטטיסטיים העתידיים שלך. ניתן לבטל את הפעולה בכל עת באמצעות ממשק האינטרנט.";
 
 /* Title for error alert when marking referrer as spam fails */
 "jetpackStats.referrerDetails.errorAlertTitle" = "שגיאה";
@@ -12006,7 +12186,7 @@ Example: given a notice format "Following %@" and empty site name, this will be 
 "shared.button.edit" = "לערוך";
 
 /* A shared button title used in different contexts */
-"shared.button.notNow" = "עכשיו עכשיו";
+"shared.button.notNow" = "לא עכשיו";
 
 /* A shared button title used in different contexts */
 "shared.button.ok" = "אישור";

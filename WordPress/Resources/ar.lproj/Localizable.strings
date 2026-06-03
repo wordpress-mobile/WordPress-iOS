@@ -1,4 +1,4 @@
-/* Translation-Revision-Date: 2026-03-25 19:54:39+0000 */
+/* Translation-Revision-Date: 2026-05-28 09:58:47+0000 */
 /* Plural-Forms: nplurals=6; plural=(n == 0) ? 0 : ((n == 1) ? 1 : ((n == 2) ? 2 : ((n % 100 >= 3 && n % 100 <= 10) ? 3 : ((n % 100 >= 11 && n % 100 <= 99) ? 4 : 5)))); */
 /* Generator: GlotPress/4.0.3 */
 /* Language: ar */
@@ -6042,9 +6042,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Notification Settings switch for the app. */
 "Turning the switch off will disable all notifications from this app, regardless of type." = "سيؤدي إيقاف تشغيل المفتاح إلى تعطيل كل التنبيهات الواردة من هذا التطبيق، بغض النظر عن النوع.";
 
-/* Title of button that displays the app's Twitter profile */
-"Twitter" = "تويتر";
-
 /* Title for the setting to edit the twitter username used when sharing to twitter. */
 "Twitter Username" = "اسم مستخدم تويتر";
 
@@ -7107,6 +7104,9 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Error message when XML-RPC is disabled on the WordPress site. The first argument is detailed error message */
 "addSite.selfHosted.xmlrpcDisabled" = "تعذر الاتصال بموقع ووردبريس. ربما تم تعطيل XML-RPC للخادم. يرجى الاتصال بمزوِّد الخدمة لديك لحل هذه المشكلة.";
 
+/* Error message when the app cannot find the XML-RPC endpoint of a self-hosted WordPress site */
+"addSite.selfHosted.xmlrpcEndpointNotFound" = "تعذر تحديد نقطة نهاية XML-RPC للموقع الإلكتروني";
+
 /* Age between dates equaling one hour. */
 "an hour" = "ساعة";
 
@@ -7838,8 +7838,17 @@ Example: Reply to Pamela Nguyen */
 /* Navigation bar title when leaving a editing an existing comment */
 "commentEdit.navigationTitle" = "تحرير التعليق";
 
+/* Title for the error notice shown when approving a comment fails. */
+"comments.approve.error.title" = "خطأ أثناء اعتماد التعليق";
+
 /* Error title */
 "comments.failedToLike" = "فشل الإعجاب بالتعليق";
+
+/* Title for the error notice shown when trashing a comment fails. */
+"comments.trash.error.title" = "خطأ أثناء نقل التعليق إلى سلة المهملات";
+
+/* Title for the error notice shown when unapproving a comment fails. */
+"comments.unapprove.error.title" = "خطأ أثناء إلغاء اعتماد التعليق";
 
 /* Error message informing a user about an invalid password. */
 "common.reEnterPasswordMessage" = "قد يكون اسم المستخدم أو كلمة المرور المخزَّنان في التطبيق غير محدَّثين. يرجى إعادة إدخال كلمة المرور في الإعدادات والمحاولة مرة أخرى.";
@@ -7886,6 +7895,9 @@ Example: Reply to Pamela Nguyen */
 /* Menu action to permanently delete a trashed post */
 "customPostList.action.deletePermanently" = "الحذف نهائيًا";
 
+/* Menu action to create a draft copy of a post */
+"customPostList.action.duplicate" = "مكرر";
+
 /* Menu action to change a post's status to draft */
 "customPostList.action.moveToDraft" = "نقل إلى المسودة";
 
@@ -7931,6 +7943,12 @@ Example: Reply to Pamela Nguyen */
 /* Empty state message when no custom posts exist. %1$@ is the post type name (e.g., 'Podcasts', 'Products'). */
 "customPostList.emptyState.message" = "%1$@ غير موجود";
 
+/* Short label for the swipe action to permanently delete a trashed post. Keep this translation short. */
+"customPostList.swipeAction.delete" = "حذف";
+
+/* Short label for the swipe action to trash a post. Keep this translation short. */
+"customPostList.swipeAction.trash" = "سلة المهملات";
+
 /* Message for the confirmation alert when trashing a published post */
 "customPostList.trashConfirmation.message" = "هذه التدوينة منشورة ومرئية للزوار. هل أنت متأكد من رغبتك في نقلها إلى سلة المهملات؟";
 
@@ -7966,6 +7984,9 @@ Example: Reply to Pamela Nguyen */
 
 /* Tab title for trashed posts */
 "customPostTab.trash" = "سلة المهملات";
+
+/* Badge label indicating that custom post type support is a beta feature. Displayed next to the navigation title. */
+"customPostType.navigation.betaBadge" = "الإصدار التجريبي";
 
 /* Empty state message when there are no custom post types to display */
 "customPostTypes.emptyState.message" = "لا توجد أنواع تدوينات مخصصة";
@@ -8962,6 +8983,159 @@ Example: Reply to Pamela Nguyen */
 /* Message stating that the user is unable to use Stats and Notifications because their site is connected to a different WordPress.com account */
 "jetpackSite.connectToDefaultAccount" = "يتعين عليك تسجيل الدخول باستخدام %@ لاستخدام الإحصاءات والتنبيهات.";
 
+/* Message shown at the top of the account confirmation screen when every available account is already connected to the site. */
+"jetpackSocial.accountConfirmation.allConnectedDescription" = "أصبح كل شيء جاهزًا. جميع الحسابات المتاحة متصلة بالفعل بهذا الموقع، وستتم مشاركة تدويناتك الجديدة تلقائيًا. يمكنك تغيير ذلك أثناء كتابة تدوينة.";
+
+/* Nav-bar button that finalizes the social connection after choosing an account. */
+"jetpackSocial.accountConfirmation.confirm" = "تأكيد";
+
+/* Section header listing accounts already connected to this site. */
+"jetpackSocial.accountConfirmation.connectedSection" = "متصل";
+
+/* Explanation text shown at the top of the account confirmation screen. */
+"jetpackSocial.accountConfirmation.description" = "أنت بصدد توصيل هذا الحساب. ستتم مشاركة التدوينات الجديدة عليه تلقائيًا. يمكنك تغيير ذلك أثناء كتابة تدوينة.";
+
+/* Button that dismisses the account confirmation screen when every account is already connected and there is nothing to confirm. */
+"jetpackSocial.accountConfirmation.done" = "تم";
+
+/* Loading caption while fetching accounts for the confirmation screen. */
+"jetpackSocial.accountConfirmation.loading" = "جارٍ تحميل الحسابات…";
+
+/* Footer caption below the 'Mark the connection as shared' toggle. */
+"jetpackSocial.accountConfirmation.markAsSharedFooter" = "سيكون الاتصال متاحًا عند تفعيله لجميع المسؤولين، والمحررين، والمؤلفين. يمكنك تغيير ذلك لاحقًا.";
+
+/* Toggle label controlling whether the new connection is shared with other site users. */
+"jetpackSocial.accountConfirmation.markAsSharedLabel" = "وضع علامة على الاتصال كمشترك";
+
+/* Button to retry a failed account fetch. */
+"jetpackSocial.accountConfirmation.retry" = "إعادة المحاولة";
+
+/* Navigation title of the account confirmation screen shown after OAuth. */
+"jetpackSocial.accountConfirmation.title" = "تأكيد الاتصال";
+
+/* Toggle label controlling whether a connection is shared with all site users. */
+"jetpackSocial.connectionDetail.availableToAllUsers" = "متاح لجميع المستخدمين";
+
+/* Footer caption below the 'Available to all users' toggle. */
+"jetpackSocial.connectionDetail.availableToAllUsersFooter" = "السماح لجميع المسؤولين ومستخدمي موقعك باستخدام هذا الاتصال.";
+
+/* Section header on the connection detail screen. */
+"jetpackSocial.connectionDetail.settingsHeader" = "الإعدادات";
+
+/* Dismiss button in the social connection update failure alert. */
+"jetpackSocial.connectionDetail.updateFailedDismiss" = "موافق";
+
+/* Title of the alert shown when updating a social connection setting fails. */
+"jetpackSocial.connectionDetail.updateFailedTitle" = "تعذّر تحديث الاتصال";
+
+/* Error when a publicize connection ID can't be found. %1$@ is the connection ID. */
+"jetpackSocial.error.connectionNotFound" = "تعذّر العثور على الاتصال %1$@.";
+
+/* Error shown when decoding a social sharing response fails. */
+"jetpackSocial.error.decoding" = "اكتمل استلام استجابة غير متوقعة من الخادم.";
+
+/* Error when a keyring token ID can't be found. %1$@ is the token ID. */
+"jetpackSocial.error.keyringNotFound" = "تعذّر العثور على اتصال Keyring ‏%1$@.";
+
+/* Link label that opens documentation explaining how to resolve a social sharing error. */
+"jetpackSocial.error.learnMore" = "معرفة المزيد";
+
+/* Error shown when a social sharing network call fails. */
+"jetpackSocial.error.network" = "خطأ في الشبكة. يُرجى التحقق من اتصالك وإعادة المحاولة.";
+
+/* Error when the WP.com account has no authorized keyring for a given service. %1$@ is the service label (e.g. 'Mastodon'). */
+"jetpackSocial.error.noKeyringForService" = "لا توجد حسابات متصلة لـ %1$@.";
+
+/* Error shown after Facebook OAuth when the user's account doesn't manage any Facebook Pages, since Publicize only targets Pages. */
+"jetpackSocial.error.noPagesForFacebook" = "تعذّر على فيسبوك العثور على أي صفحات. تعذّر على الإشهار الاتصال بملفات فيسبوك الشخصية، بل بالصفحات المنشورة فقط.";
+
+/* Error shown when the WP.com auth token is missing or invalid. */
+"jetpackSocial.error.notAuthenticated" = "تحتاج إلى تسجيل الدخول مرة أخرى لإدارة الحسابات الاجتماعية.";
+
+/* Generic fallback error for social sharing. */
+"jetpackSocial.error.unknown" = "حدث خطأ ما. يُرجى إعادة المحاولة.";
+
+/* Status text for a broken / invalid / refresh-failed connection. */
+"jetpackSocial.manageConnections.brokenStatus" = "يتطلب الانتباه";
+
+/* Cancel button in the disconnect confirmation alert. */
+"jetpackSocial.manageConnections.cancel" = "إلغاء";
+
+/* Button on the Social screen that opens the add-connection modal. */
+"jetpackSocial.manageConnections.connectNewAccount" = "توصيل حساب جديد";
+
+/* Footer caption under the Connected Accounts section on the Social screen. */
+"jetpackSocial.manageConnections.connectedFooter" = "وَصِّل حساباتك على شبكات التواصل الاجتماعي وأرسل الصور البارزة والمحتوى الخاص بالتدوينات إلى القنوات المحددة فور نشرها.";
+
+/* Section header listing currently connected social accounts. */
+"jetpackSocial.manageConnections.connectedHeader" = "الحسابات المتصلة";
+
+/* Button that removes a social sharing connection. */
+"jetpackSocial.manageConnections.delete" = "فصل الاتصال";
+
+/* Confirmation alert title. %1$@ is the connected account's display name. */
+"jetpackSocial.manageConnections.deleteConfirmTitle" = "هل أنت متأكد من رغبتك في قطع اتصال %1$@؟";
+
+/* Dismiss button in the disconnect failure alert. */
+"jetpackSocial.manageConnections.deleteFailedDismiss" = "موافق";
+
+/* Title of the alert shown when disconnecting a social connection fails. */
+"jetpackSocial.manageConnections.deleteFailedTitle" = "تعذّر قطع الاتصال";
+
+/* Footer caption under the list of services in the Connect Account picker modal. */
+"jetpackSocial.manageConnections.footer" = "وَصِّل خدمات شبكات التواصل الاجتماعي المفضلة لديك لتشارك التدوينات الجديدة تلقائيًا مع أصدقائك.";
+
+/* Button to retry a failed load. */
+"jetpackSocial.manageConnections.retry" = "إعادة المحاولة";
+
+/* Badge shown on connections that are shared with other site users. */
+"jetpackSocial.manageConnections.sharedBadge" = "تمت المشاركة";
+
+/* Title of the Social Sharing settings screen. */
+"jetpackSocial.manageConnections.title" = "اجتماعي";
+
+/* Confirm button in the disconnect confirmation alert. */
+"jetpackSocial.manageConnections.yes" = "نعم";
+
+/* Navigation bar title of the OAuth webview. %1$@ is the service label (e.g. 'Mastodon'). */
+"jetpackSocial.oauthWebView.connectTitle" = "التوصيل بـ %1$@";
+
+/* Label above the optional custom social-sharing message field. */
+"jetpackSocial.postSection.customMessage" = "رسالة مخصصة";
+
+/* Placeholder for the optional custom social-sharing message field. */
+"jetpackSocial.postSection.customMessagePlaceholder" = "اكتب رسالة مخصصة لجمهورك على شبكات التواصل الاجتماعي هنا.";
+
+/* Caption shown when the site has no social connections. */
+"jetpackSocial.postSection.empty" = "لا توجد حسابات تواصل اجتماعي متصلة حتى الآن.";
+
+/* Title of the row that opens the social sharing detail screen in Post Settings. */
+"jetpackSocial.postSection.header" = "المشاركة على شبكات التواصل الاجتماعي";
+
+/* Button to retry a failed load of the connections list. */
+"jetpackSocial.postSection.retry" = "إعادة المحاولة";
+
+/* Trailing value on the 'Share to Social' post settings row. %1$d is the enabled count, %2$d is the total. */
+"jetpackSocial.postSection.summary.format" = "⁦%1$d⁩ من أصل ⁦%2$d⁩";
+
+/* Footer below the per-connection toggles on the social sharing detail screen. */
+"jetpackSocial.postSection.togglesFooter" = "ستتم مشاركة هذه التدوينة فور نشرها على الحسابات المفعّلة.";
+
+/* Notice shown after a social connection is successfully created. %1$@ is the service label. */
+"jetpackSocial.serviceDetail.connectedNotice" = "اكتمل توصيل %1$@";
+
+/* Cancel button in the add-connection failure alert. */
+"jetpackSocial.serviceDetail.failureCancel" = "إلغاء";
+
+/* Retry button in the add-connection failure alert. */
+"jetpackSocial.serviceDetail.failureRetry" = "إعادة المحاولة";
+
+/* Title of the alert shown when adding a social connection fails. */
+"jetpackSocial.serviceDetail.failureTitle" = "فشل الاتصال";
+
+/* Navigation bar title of the service picker modal shown when adding a new social connection. */
+"jetpackSocial.servicePicker.title" = "توصيل الحساب";
+
 /* Accessibility label for add card button */
 "jetpackStats.accessibility.addCardButton" = "إضافة بطاقة إحصاءات جديدة";
 
@@ -9460,6 +9634,9 @@ Example: Reply to Pamela Nguyen */
 
 /* Title for weekly activity heatmap */
 "jetpackStats.postDetails.weeklyActivity" = "النشاط الأسبوعي";
+
+/* Confirmation message when marking a referrer as spam. %1$@ is the domain name. */
+"jetpackStats.referrerDetails.confirmAsSpam.message" = "سيؤدي وضع علامة البريد المزعج على \"%1$@\" إلى إخفائه من إحصاءاتك المستقبلية. يمكنك التراجع عن ذلك في أي وقت من خلال واجهة الويب.";
 
 /* Title for error alert when marking referrer as spam fails */
 "jetpackStats.referrerDetails.errorAlertTitle" = "خطأ";
@@ -11653,12 +11830,6 @@ Example: given a notice format "Following %@" and empty site name, this will be 
 /* Describes that the slider is used to customize the text size in the Reader. */
 "reader.preferences.control.sizeSlider.description" = "الحجم";
 
-/* Text for a small label in the navigation bar that hints that this is an experimental feature.
-
-The enclosing angled brackets ('<' and '>') are decorative and only intended as a flavor.
-Feel free to replace it with other bracket types that you think looks better for the locale. */
-"reader.preferences.navBar.experimental.label" = "<تجريبي>";
-
 /* Description text for the preview section of Reader Preferences */
 "reader.preferences.preview.body.text" = "اختر ألوانك وخطوطك وأحجامك. قم بمعاينة التحديد الخاص بك هنا، واقرأ التدوينات باستخدام أنماطك بمجرد الانتهاء منها.";
 
@@ -12013,9 +12184,6 @@ Feel free to replace it with other bracket types that you think looks better for
 
 /* A shared button title used in different contexts */
 "shared.button.edit" = "تحرير";
-
-/* A shared button title used in different contexts */
-"shared.button.notNow" = "ليس الآن";
 
 /* A shared button title used in different contexts */
 "shared.button.ok" = "موافق";

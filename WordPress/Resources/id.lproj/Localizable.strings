@@ -1,4 +1,4 @@
-/* Translation-Revision-Date: 2026-03-26 09:54:53+0000 */
+/* Translation-Revision-Date: 2026-05-28 16:55:54+0000 */
 /* Plural-Forms: nplurals=2; plural=n > 1; */
 /* Generator: GlotPress/4.0.3 */
 /* Language: id */
@@ -6042,9 +6042,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Notification Settings switch for the app. */
 "Turning the switch off will disable all notifications from this app, regardless of type." = "Dengan menonaktifkannya, semua pemberitahuan dari aplikasi ini, apa pun jenisnya, akan dimatikan.";
 
-/* Title of button that displays the app's Twitter profile */
-"Twitter" = "Twitter";
-
 /* Title for the setting to edit the twitter username used when sharing to twitter. */
 "Twitter Username" = "Nama Pengguna Twitter";
 
@@ -7107,6 +7104,9 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Error message when XML-RPC is disabled on the WordPress site. The first argument is detailed error message */
 "addSite.selfHosted.xmlrpcDisabled" = "Tidak dapat terhubung ke situs WordPress. XML-RPC mungkin telah dinonaktifkan di server. Hubungi penyedia hosting Anda untuk mengatasi kendala ini.";
 
+/* Error message when the app cannot find the XML-RPC endpoint of a self-hosted WordPress site */
+"addSite.selfHosted.xmlrpcEndpointNotFound" = "Tidak dapat menentukan titik akhir XML-RPC situs";
+
 /* Age between dates equaling one hour. */
 "an hour" = "satu jam";
 
@@ -7838,8 +7838,17 @@ Example: Reply to Pamela Nguyen */
 /* Navigation bar title when leaving a editing an existing comment */
 "commentEdit.navigationTitle" = "Edit Komentar";
 
+/* Title for the error notice shown when approving a comment fails. */
+"comments.approve.error.title" = "Error menyetujui komentar";
+
 /* Error title */
 "comments.failedToLike" = "Gagal menyukai komentar";
+
+/* Title for the error notice shown when trashing a comment fails. */
+"comments.trash.error.title" = "Error membuang komentar";
+
+/* Title for the error notice shown when unapproving a comment fails. */
+"comments.unapprove.error.title" = "Error menolak komentar";
 
 /* Error message informing a user about an invalid password. */
 "common.reEnterPasswordMessage" = "Nama pengguna atau kata sandi yang disimpan di dalam aplikasi ini mungkin sudah usang. Masukkan kembali kata sandi Anda dalam pengaturan dan coba lagi.";
@@ -7889,6 +7898,9 @@ Example: Reply to Pamela Nguyen */
 /* Menu action to permanently delete a trashed post */
 "customPostList.action.deletePermanently" = "Hapus Permanen";
 
+/* Menu action to create a draft copy of a post */
+"customPostList.action.duplicate" = "Duplikasi";
+
 /* Menu action to change a post's status to draft */
 "customPostList.action.moveToDraft" = "Pindahkan ke Draf";
 
@@ -7933,6 +7945,12 @@ Example: Reply to Pamela Nguyen */
 
 /* Empty state message when no custom posts exist. %1$@ is the post type name (e.g., 'Podcasts', 'Products'). */
 "customPostList.emptyState.message" = "Tidak ada %1$@";
+
+/* Short label for the swipe action to permanently delete a trashed post. Keep this translation short. */
+"customPostList.swipeAction.delete" = "Hapus";
+
+/* Short label for the swipe action to trash a post. Keep this translation short. */
+"customPostList.swipeAction.trash" = "Buang";
 
 /* Message for the confirmation alert when trashing a published post */
 "customPostList.trashConfirmation.message" = "Pos ini telah diterbitkan dan dapat dilihat pengunjung. Apakah Anda yakin ingin memindahkannya ke tempat sampah?";
@@ -8971,6 +8989,159 @@ Example: Reply to Pamela Nguyen */
 /* Message stating that the user is unable to use Stats and Notifications because their site is connected to a different WordPress.com account */
 "jetpackSite.connectToDefaultAccount" = "Anda perlu login dengan %@ untuk menggunakan Statistik dan Pemberitahuan.";
 
+/* Message shown at the top of the account confirmation screen when every available account is already connected to the site. */
+"jetpackSocial.accountConfirmation.allConnectedDescription" = "Semuanya telah siap. Setiap akun yang tersedia telah terhubung ke situs ini, dan pos baru Anda akan dibagikan secara otomatis. Anda dapat mengubahnya ketika menulis pos.";
+
+/* Nav-bar button that finalizes the social connection after choosing an account. */
+"jetpackSocial.accountConfirmation.confirm" = "Konfirmasi";
+
+/* Section header listing accounts already connected to this site. */
+"jetpackSocial.accountConfirmation.connectedSection" = "Terhubung";
+
+/* Explanation text shown at the top of the account confirmation screen. */
+"jetpackSocial.accountConfirmation.description" = "Anda sedang menghubungkan akun ini. Pos baru akan dibagikan secara otomatis ke sini. Anda dapat mengubahnya ketika menulis pos.";
+
+/* Button that dismisses the account confirmation screen when every account is already connected and there is nothing to confirm. */
+"jetpackSocial.accountConfirmation.done" = "Selesai";
+
+/* Loading caption while fetching accounts for the confirmation screen. */
+"jetpackSocial.accountConfirmation.loading" = "Memuat akun…";
+
+/* Footer caption below the 'Mark the connection as shared' toggle. */
+"jetpackSocial.accountConfirmation.markAsSharedFooter" = "Jika diaktifkan, koneksi akan tersedia bagi semua administrator, editor, dan penulis. Anda dapat mengubahnya di lain waktu.";
+
+/* Toggle label controlling whether the new connection is shared with other site users. */
+"jetpackSocial.accountConfirmation.markAsSharedLabel" = "Tandai koneksi sebagai dibagikan";
+
+/* Button to retry a failed account fetch. */
+"jetpackSocial.accountConfirmation.retry" = "Coba lagi";
+
+/* Navigation title of the account confirmation screen shown after OAuth. */
+"jetpackSocial.accountConfirmation.title" = "Konfirmasi koneksi";
+
+/* Toggle label controlling whether a connection is shared with all site users. */
+"jetpackSocial.connectionDetail.availableToAllUsers" = "Tersedia untuk semua pengguna";
+
+/* Footer caption below the 'Available to all users' toggle. */
+"jetpackSocial.connectionDetail.availableToAllUsersFooter" = "Izinkan koneksi ini untuk digunakan oleh semua admin dan pengguna situs Anda.";
+
+/* Section header on the connection detail screen. */
+"jetpackSocial.connectionDetail.settingsHeader" = "Pengaturan";
+
+/* Dismiss button in the social connection update failure alert. */
+"jetpackSocial.connectionDetail.updateFailedDismiss" = "Oke";
+
+/* Title of the alert shown when updating a social connection setting fails. */
+"jetpackSocial.connectionDetail.updateFailedTitle" = "Tidak Dapat Memperbarui Koneksi";
+
+/* Error when a publicize connection ID can't be found. %1$@ is the connection ID. */
+"jetpackSocial.error.connectionNotFound" = "Koneksi %1$@ tidak ditemukan.";
+
+/* Error shown when decoding a social sharing response fails. */
+"jetpackSocial.error.decoding" = "Menerima respons tak terduga dari server.";
+
+/* Error when a keyring token ID can't be found. %1$@ is the token ID. */
+"jetpackSocial.error.keyringNotFound" = "Koneksi keyring %1$@ tidak ditemukan.";
+
+/* Link label that opens documentation explaining how to resolve a social sharing error. */
+"jetpackSocial.error.learnMore" = "Baca selengkapnya";
+
+/* Error shown when a social sharing network call fails. */
+"jetpackSocial.error.network" = "Error jaringan. Periksa koneksi Anda dan coba lagi.";
+
+/* Error when the WP.com account has no authorized keyring for a given service. %1$@ is the service label (e.g. 'Mastodon'). */
+"jetpackSocial.error.noKeyringForService" = "Tidak ada akun yang terhubung untuk %1$@.";
+
+/* Error shown after Facebook OAuth when the user's account doesn't manage any Facebook Pages, since Publicize only targets Pages. */
+"jetpackSocial.error.noPagesForFacebook" = "Koneksi Facebook tidak dapat menemukan Halaman apa pun. Publikasikan tidak dapat terhubung ke Profil Facebook, hanya Halaman yang dipublikasikan.";
+
+/* Error shown when the WP.com auth token is missing or invalid. */
+"jetpackSocial.error.notAuthenticated" = "Anda perlu login lagi untuk mengelola akun media sosial.";
+
+/* Generic fallback error for social sharing. */
+"jetpackSocial.error.unknown" = "Terjadi masalah. Coba lagi.";
+
+/* Status text for a broken / invalid / refresh-failed connection. */
+"jetpackSocial.manageConnections.brokenStatus" = "Perlu perhatian";
+
+/* Cancel button in the disconnect confirmation alert. */
+"jetpackSocial.manageConnections.cancel" = "Batalkan";
+
+/* Button on the Social screen that opens the add-connection modal. */
+"jetpackSocial.manageConnections.connectNewAccount" = "Hubungkan Akun Baru";
+
+/* Footer caption under the Connected Accounts section on the Social screen. */
+"jetpackSocial.manageConnections.connectedFooter" = "Hubungkan akun media sosial serta kirimkan gambar andalan dan konten pos ke kanal terpilih saat pos dipublikasikan.";
+
+/* Section header listing currently connected social accounts. */
+"jetpackSocial.manageConnections.connectedHeader" = "Akun yang Terhubung";
+
+/* Button that removes a social sharing connection. */
+"jetpackSocial.manageConnections.delete" = "Putus Koneksi";
+
+/* Confirmation alert title. %1$@ is the connected account's display name. */
+"jetpackSocial.manageConnections.deleteConfirmTitle" = "Apakah Anda yakin ingin memutus koneksi %1$@?";
+
+/* Dismiss button in the disconnect failure alert. */
+"jetpackSocial.manageConnections.deleteFailedDismiss" = "Oke";
+
+/* Title of the alert shown when disconnecting a social connection fails. */
+"jetpackSocial.manageConnections.deleteFailedTitle" = "Tidak Dapat Memutus Koneksi";
+
+/* Footer caption under the list of services in the Connect Account picker modal. */
+"jetpackSocial.manageConnections.footer" = "Hubungkan layanan media sosial favorit Anda untuk membagi pos baru secara otomatis dengan teman-teman.";
+
+/* Button to retry a failed load. */
+"jetpackSocial.manageConnections.retry" = "Coba lagi";
+
+/* Badge shown on connections that are shared with other site users. */
+"jetpackSocial.manageConnections.sharedBadge" = "Dibagikan";
+
+/* Title of the Social Sharing settings screen. */
+"jetpackSocial.manageConnections.title" = "Sosial";
+
+/* Confirm button in the disconnect confirmation alert. */
+"jetpackSocial.manageConnections.yes" = "Ya";
+
+/* Navigation bar title of the OAuth webview. %1$@ is the service label (e.g. 'Mastodon'). */
+"jetpackSocial.oauthWebView.connectTitle" = "Hubungkan ke %1$@";
+
+/* Label above the optional custom social-sharing message field. */
+"jetpackSocial.postSection.customMessage" = "Pesan kustom";
+
+/* Placeholder for the optional custom social-sharing message field. */
+"jetpackSocial.postSection.customMessagePlaceholder" = "Tulis pesan kustom untuk audiens media sosial Anda di sini.";
+
+/* Caption shown when the site has no social connections. */
+"jetpackSocial.postSection.empty" = "Belum ada akun media sosial yang terhubung.";
+
+/* Title of the row that opens the social sharing detail screen in Post Settings. */
+"jetpackSocial.postSection.header" = "Bagikan ke media sosial";
+
+/* Button to retry a failed load of the connections list. */
+"jetpackSocial.postSection.retry" = "Coba lagi";
+
+/* Trailing value on the 'Share to Social' post settings row. %1$d is the enabled count, %2$d is the total. */
+"jetpackSocial.postSection.summary.format" = "%1$d dari %2$d";
+
+/* Footer below the per-connection toggles on the social sharing detail screen. */
+"jetpackSocial.postSection.togglesFooter" = "Setelah dipublikasikan, pos ini akan dibagikan ke akun yang diaktifkan.";
+
+/* Notice shown after a social connection is successfully created. %1$@ is the service label. */
+"jetpackSocial.serviceDetail.connectedNotice" = "%1$@ terhubung";
+
+/* Cancel button in the add-connection failure alert. */
+"jetpackSocial.serviceDetail.failureCancel" = "Batalkan";
+
+/* Retry button in the add-connection failure alert. */
+"jetpackSocial.serviceDetail.failureRetry" = "Coba lagi";
+
+/* Title of the alert shown when adding a social connection fails. */
+"jetpackSocial.serviceDetail.failureTitle" = "Koneksi Gagal";
+
+/* Navigation bar title of the service picker modal shown when adding a new social connection. */
+"jetpackSocial.servicePicker.title" = "Hubungkan Akun";
+
 /* Accessibility label for add card button */
 "jetpackStats.accessibility.addCardButton" = "Tambahkan kartu statistik baru";
 
@@ -9463,6 +9634,9 @@ Example: Reply to Pamela Nguyen */
 
 /* Title for weekly activity heatmap */
 "jetpackStats.postDetails.weeklyActivity" = "Aktivitas Mingguan";
+
+/* Confirmation message when marking a referrer as spam. %1$@ is the domain name. */
+"jetpackStats.referrerDetails.confirmAsSpam.message" = "Menandai \"%1$@\" sebagai spam akan menyembunyikannya dari statistik Anda selanjutnya. Anda dapat mengurungkannya kapan saja menggunakan antarmuka web.";
 
 /* Button to mark a referrer as spam */
 "jetpackStats.referrerDetails.markAsSpam" = "Tandai sebagai Spam";
@@ -11662,12 +11836,6 @@ Example: given a notice format "Following %@" and empty site name, this will be 
 /* Describes that the slider is used to customize the text size in the Reader. */
 "reader.preferences.control.sizeSlider.description" = "Ukuran";
 
-/* Text for a small label in the navigation bar that hints that this is an experimental feature.
-
-The enclosing angled brackets ('<' and '>') are decorative and only intended as a flavor.
-Feel free to replace it with other bracket types that you think looks better for the locale. */
-"reader.preferences.navBar.experimental.label" = "<Experimental>";
-
 /* Description text for the preview section of Reader Preferences */
 "reader.preferences.preview.body.text" = "Pilih warna, font, dan ukuran. Pratinjau pilihan di sini, dan baca pos sesuai gaya pilihan Anda setelah selesai.";
 
@@ -12030,7 +12198,7 @@ Feel free to replace it with other bracket types that you think looks better for
 "shared.button.edit" = "Edit";
 
 /* A shared button title used in different contexts */
-"shared.button.notNow" = "Sekarang Juga";
+"shared.button.notNow" = "Lain Kali";
 
 /* A shared button title used in different contexts */
 "shared.button.ok" = "Oke";

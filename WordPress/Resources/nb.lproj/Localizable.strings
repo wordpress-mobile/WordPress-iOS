@@ -4116,9 +4116,6 @@ translators: %s: Block name e.g. \"Image block\" */
 /* When social login fails, this button offers to let them try tp login using a URL */
 "Try with the site address" = "Prøv med nettstedsadressen";
 
-/* Title of button that displays the app's Twitter profile */
-"Twitter" = "Twitter";
-
 /* Title for the setting to edit the twitter username used when sharing to twitter. */
 "Twitter Username" = "Twitter-brukernavn";
 
