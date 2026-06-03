@@ -3,7 +3,9 @@ import CoreData
 import WordPressData
 import WordPressUI
 
-final class ReaderCommentsTableViewController: UIViewController, UITableViewDataSource, UITableViewDelegate, NSFetchedResultsControllerDelegate {
+final class ReaderCommentsTableViewController: UIViewController, UITableViewDataSource, UITableViewDelegate,
+    NSFetchedResultsControllerDelegate
+{
     @objc let tableView = UITableView(frame: .zero, style: .plain)
     private let padingFooterView = PagingFooterView(state: .loading)
     private lazy var fetchResultsController = makeFetchResultsController()
@@ -80,8 +82,10 @@ final class ReaderCommentsTableViewController: UIViewController, UITableViewData
         }
         let current = traitCollection
 
-        guard previous.horizontalSizeClass != current.horizontalSizeClass ||
-                previous.preferredContentSizeCategory != current.preferredContentSizeCategory else {
+        guard
+            previous.horizontalSizeClass != current.horizontalSizeClass
+                || previous.preferredContentSizeCategory != current.preferredContentSizeCategory
+        else {
             return
         }
 
@@ -114,9 +118,10 @@ final class ReaderCommentsTableViewController: UIViewController, UITableViewData
 
         // Ensure that the indexPath exists before scrolling to it.
         if indexPath.section >= 0,
-           indexPath.row >= 0,
-           indexPath.section < tableView.numberOfSections,
-           indexPath.row < tableView.numberOfRows(inSection: indexPath.section) {
+            indexPath.row >= 0,
+            indexPath.section < tableView.numberOfSections,
+            indexPath.row < tableView.numberOfRows(inSection: indexPath.section)
+        {
             tableView.scrollToRow(at: indexPath, at: .top, animated: true)
             containerViewController?.highlightCommentCell(at: indexPath)
         }
@@ -142,12 +147,21 @@ final class ReaderCommentsTableViewController: UIViewController, UITableViewData
 
     private func makeFetchResultsController() -> NSFetchedResultsController<Comment> {
         let request = NSFetchRequest<Comment>(entityName: Comment.entityName())
-        request.predicate = NSPredicate(format: "post = %@ AND status = %@ AND visibleOnReader = YES", post, CommentStatusType.approved.description)
+        request.predicate = NSPredicate(
+            format: "post = %@ AND status = %@ AND visibleOnReader = YES",
+            post,
+            CommentStatusType.approved.description
+        )
         request.sortDescriptors = [
             NSSortDescriptor(keyPath: \Comment.hierarchy, ascending: true)
         ]
         request.fetchBatchSize = 40
-        return NSFetchedResultsController(fetchRequest: request, managedObjectContext: moc, sectionNameKeyPath: nil, cacheName: nil)
+        return NSFetchedResultsController(
+            fetchRequest: request,
+            managedObjectContext: moc,
+            sectionNameKeyPath: nil,
+            cacheName: nil
+        )
     }
 
     // MARK: - NSFetchedResultsControllerDelegate
@@ -156,7 +170,13 @@ final class ReaderCommentsTableViewController: UIViewController, UITableViewData
         tableView.beginUpdates()
     }
 
-    func controller(_ controller: NSFetchedResultsController<NSFetchRequestResult>, didChange anObject: Any, at indexPath: IndexPath?, for type: NSFetchedResultsChangeType, newIndexPath: IndexPath?) {
+    func controller(
+        _ controller: NSFetchedResultsController<NSFetchRequestResult>,
+        didChange anObject: Any,
+        at indexPath: IndexPath?,
+        for type: NSFetchedResultsChangeType,
+        newIndexPath: IndexPath?
+    ) {
         switch type {
         case .insert:
             guard let newIndexPath else { return }
@@ -189,11 +209,14 @@ final class ReaderCommentsTableViewController: UIViewController, UITableViewData
     }
 
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCell(withIdentifier: commentCellReuseID, for: indexPath) as! CommentContentTableViewCell
+        let cell =
+            tableView.dequeueReusableCell(withIdentifier: commentCellReuseID, for: indexPath)
+            as! CommentContentTableViewCell
         cell.selectionStyle = .none
         let comment = fetchResultsController.object(at: indexPath)
         let viewModel = makeCellViewModel(comment: comment)
-        containerViewController?.configureContentCell(cell, viewModel: viewModel, indexPath: indexPath, tableView: tableView)
+        containerViewController?
+            .configureContentCell(cell, viewModel: viewModel, indexPath: indexPath, tableView: tableView)
         return cell
     }
 

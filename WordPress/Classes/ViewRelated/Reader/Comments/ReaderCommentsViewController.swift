@@ -23,7 +23,9 @@ enum ReaderCommentsSource: String {
     case postsList = "posts_list"
 }
 
-final class ReaderCommentsViewController: UIViewController, WPContentSyncHelperDelegate, ReaderCommentsFollowPresenterDelegate {
+final class ReaderCommentsViewController: UIViewController, WPContentSyncHelperDelegate,
+    ReaderCommentsFollowPresenterDelegate
+{
     var source: ReaderCommentsSource?
     var navigateToCommentID: NSNumber?
     var allowsPushingPostDetails = false
@@ -32,8 +34,18 @@ final class ReaderCommentsViewController: UIViewController, WPContentSyncHelperD
     private var postID: NSNumber?
     private var siteID: NSNumber?
 
-    private lazy var barButtonItemFollowConversation = UIBarButtonItem(title: Strings.follow, style: .plain, target: self, action: #selector(buttonFollowConversationTapped))
-    private lazy var barButtonItemFollowingSettings = UIBarButtonItem(image: UIImage(systemName: "bell"), style: .plain, target: self, action: #selector(buttonEditNotificationSettingsTapped))
+    private lazy var barButtonItemFollowConversation = UIBarButtonItem(
+        title: Strings.follow,
+        style: .plain,
+        target: self,
+        action: #selector(buttonFollowConversationTapped)
+    )
+    private lazy var barButtonItemFollowingSettings = UIBarButtonItem(
+        image: UIImage(systemName: "bell"),
+        style: .plain,
+        target: self,
+        action: #selector(buttonEditNotificationSettingsTapped)
+    )
     private let activityIndicator = UIActivityIndicatorView()
     private var emptyStateView: UIView?
     private let buttonAddComment = CommentLargeButton()
@@ -153,17 +165,23 @@ final class ReaderCommentsViewController: UIViewController, WPContentSyncHelperD
 
         let service = ReaderPostService(coreDataStack: ContextManager.shared)
         buttonAddComment.isHidden = true
-        service.fetchPost(postID.uintValue, forSite: siteID.uintValue, isFeed: false, success: { [weak self] post in
-            if let post {
-                self?.buttonAddComment.isHidden = false
-                self?.configure(with: post)
-                self?.refreshAndSync()
+        service.fetchPost(
+            postID.uintValue,
+            forSite: siteID.uintValue,
+            isFeed: false,
+            success: { [weak self] post in
+                if let post {
+                    self?.buttonAddComment.isHidden = false
+                    self?.configure(with: post)
+                    self?.refreshAndSync()
+                }
+            },
+            failure: { [weak self] error in
+                self?.fetchCommentsError = error as? NSError
+                self?.tableVC?.setLoadingFooterHidden(true)
+                self?.refreshTableViewAndNoResultsView()
             }
-        }, failure: { [weak self] error in
-            self?.fetchCommentsError = error as? NSError
-            self?.tableVC?.setLoadingFooterHidden(true)
-            self?.refreshTableViewAndNoResultsView()
-        })
+        )
     }
 
     private func configure(with post: ReaderPost) {
@@ -184,7 +202,11 @@ final class ReaderCommentsViewController: UIViewController, WPContentSyncHelperD
         }
 
         followCommentsService = FollowCommentsService(post: post)
-        readerCommentsFollowPresenter = ReaderCommentsFollowPresenter(post: post, delegate: self, presentingViewController: self)
+        readerCommentsFollowPresenter = ReaderCommentsFollowPresenter(
+            post: post,
+            delegate: self,
+            presentingViewController: self
+        )
     }
 
     // MARK: - Sync Comments
@@ -200,7 +222,8 @@ final class ReaderCommentsViewController: UIViewController, WPContentSyncHelperD
 
     private func refreshFollowButton() {
         guard let post, post.canActuallySubscribeToComments else { return }
-        navigationItem.rightBarButtonItem = post.isSubscribedComments ? barButtonItemFollowingSettings : barButtonItemFollowConversation
+        navigationItem.rightBarButtonItem =
+            post.isSubscribedComments ? barButtonItemFollowingSettings : barButtonItemFollowConversation
     }
 
     func refreshEmptyStateView() {
@@ -218,10 +241,15 @@ final class ReaderCommentsViewController: UIViewController, WPContentSyncHelperD
         } else {
             let title = fetchCommentsError == nil ? Strings.emptyStateViewTitle : Strings.errorStateViewTitle
             var subtitle: String?
-            if let error = fetchCommentsError, error.domain == WordPressComRestApiErrorDomain && error.code == WordPressComRestApiErrorCode.authorizationRequired.rawValue {
+            if let error = fetchCommentsError,
+                error.domain == WordPressComRestApiErrorDomain
+                    && error.code == WordPressComRestApiErrorCode.authorizationRequired.rawValue
+            {
                 subtitle = Strings.noPermission
             }
-            let emptyStateView = UIHostingView(view: EmptyStateView(title, scaledImage: "wpl-comment", description: subtitle))
+            let emptyStateView = UIHostingView(
+                view: EmptyStateView(title, scaledImage: "wpl-comment", description: subtitle)
+            )
             view.insertSubview(emptyStateView, belowSubview: buttonAddComment)
             emptyStateView.pinEdges()
             self.emptyStateView = emptyStateView
@@ -229,14 +257,18 @@ final class ReaderCommentsViewController: UIViewController, WPContentSyncHelperD
     }
 
     private func refreshSubscriptionStatusIfNeeded() {
-        followCommentsService?.fetchSubscriptionStatus(success: { [weak self] isSubscribed in
-            guard let self, let post = self.post else { return }
-            post.isSubscribedComments = isSubscribed
-            self.refreshFollowButton()
-            ContextManager.shared.save(ContextManager.shared.mainContext)
-        }, failure: { error in
-            DDLogError("Error fetching subscription status for post: \(error ?? URLError(.unknown))")
-        })
+        followCommentsService?
+            .fetchSubscriptionStatus(
+                success: { [weak self] isSubscribed in
+                    guard let self, let post = self.post else { return }
+                    post.isSubscribedComments = isSubscribed
+                    self.refreshFollowButton()
+                    ContextManager.shared.save(ContextManager.shared.mainContext)
+                },
+                failure: { error in
+                    DDLogError("Error fetching subscription status for post: \(error ?? URLError(.unknown))")
+                }
+            )
     }
 
     private func refreshReplyTextView() {
@@ -252,7 +284,12 @@ final class ReaderCommentsViewController: UIViewController, WPContentSyncHelperD
 
     // MARK: - WPContentSyncHelperDelegate
 
-    func syncHelper(_ syncHelper: WPContentSyncHelper, syncContentWithUserInteraction userInteraction: Bool, success: ((Bool) -> Void)?, failure: ((NSError) -> Void)?) {
+    func syncHelper(
+        _ syncHelper: WPContentSyncHelper,
+        syncContentWithUserInteraction userInteraction: Bool,
+        success: ((Bool) -> Void)?,
+        failure: ((NSError) -> Void)?
+    ) {
         guard let post else {
             return wpAssertionFailure("post missing")
         }
@@ -260,14 +297,23 @@ final class ReaderCommentsViewController: UIViewController, WPContentSyncHelperD
         self.fetchCommentsError = nil
 
         let service = CommentService(coreDataStack: ContextManager.shared)
-        service.syncHierarchicalComments(for: post, page: 1, success: { hasMore, _ in
-            success?(hasMore)
-        }, failure: { failure?($0 as NSError? ?? NSError()) })
+        service.syncHierarchicalComments(
+            for: post,
+            page: 1,
+            success: { hasMore, _ in
+                success?(hasMore)
+            },
+            failure: { failure?($0 as NSError? ?? NSError()) }
+        )
 
         refreshEmptyStateView()
     }
 
-    func syncHelper(_ syncHelper: WPContentSyncHelper, syncMoreWithSuccess success: ((Bool) -> Void)?, failure: ((NSError) -> Void)?) {
+    func syncHelper(
+        _ syncHelper: WPContentSyncHelper,
+        syncMoreWithSuccess success: ((Bool) -> Void)?,
+        failure: ((NSError) -> Void)?
+    ) {
         guard let post else {
             return wpAssertionFailure("post missing")
         }
@@ -277,9 +323,14 @@ final class ReaderCommentsViewController: UIViewController, WPContentSyncHelperD
 
         let service = CommentService(coreDataStack: ContextManager.shared)
         let page = service.number(ofHierarchicalPagesSyncedforPost: post) + 1
-        service.syncHierarchicalComments(for: post, page: UInt(page), success: { hasMore, _ in
-            success?(hasMore)
-        }, failure: { failure?($0 as NSError? ?? NSError()) })
+        service.syncHierarchicalComments(
+            for: post,
+            page: UInt(page),
+            success: { hasMore, _ in
+                success?(hasMore)
+            },
+            failure: { failure?($0 as NSError? ?? NSError()) }
+        )
     }
 
     func syncContentEnded(_ syncHelper: WPContentSyncHelper) {
@@ -324,7 +375,9 @@ final class ReaderCommentsViewController: UIViewController, WPContentSyncHelperD
             return wpAssertionFailure("post missing")
         }
         var linkURL = url
-        if let components = URLComponents(string: url.absoluteString), components.host == nil, let blogURL = post.blogURL {
+        if let components = URLComponents(string: url.absoluteString), components.host == nil,
+            let blogURL = post.blogURL
+        {
             linkURL = components.url(relativeTo: URL(string: blogURL)) ?? linkURL
         }
         let configuration = WebViewControllerConfiguration(url: linkURL)
@@ -366,7 +419,9 @@ final class ReaderCommentsViewController: UIViewController, WPContentSyncHelperD
 
         let isModerationEnabled = comment.allowsModeration()
         cell.accessoryButton.showsMenuAsPrimaryAction = isModerationEnabled
-        cell.accessoryButton.menu = isModerationEnabled ? menu(for: comment, indexPath: indexPath, tableView: tableView, sourceView: cell.accessoryButton) : nil
+        cell.accessoryButton.menu =
+            isModerationEnabled
+            ? menu(for: comment, indexPath: indexPath, tableView: tableView, sourceView: cell.accessoryButton) : nil
         let commentID = comment.commentID
         cell.configure(viewModel: viewModel, helper: helper) { [weak self, weak tableView] _ in
             guard let tableView else { return }
@@ -404,7 +459,10 @@ final class ReaderCommentsViewController: UIViewController, WPContentSyncHelperD
         // track share intent.
         WPAnalytics.track(.readerArticleCommentShared)
 
-        let activityViewController = UIActivityViewController(activityItems: [commentURL as Any], applicationActivities: nil)
+        let activityViewController = UIActivityViewController(
+            activityItems: [commentURL as Any],
+            applicationActivities: nil
+        )
         activityViewController.popoverPresentationController?.sourceView = sourceView
         present(activityViewController, animated: true, completion: nil)
     }
@@ -425,7 +483,9 @@ final class ReaderCommentsViewController: UIViewController, WPContentSyncHelperD
         guard let tableView = tableVC?.tableView else {
             return
         }
-        if let highlightedIndexPath, let cell = tableView.cellForRow(at: highlightedIndexPath) as? CommentContentTableViewCell {
+        if let highlightedIndexPath,
+            let cell = tableView.cellForRow(at: highlightedIndexPath) as? CommentContentTableViewCell
+        {
             cell.isEmphasized = false
         }
         if let cell = tableView.cellForRow(at: indexPath) as? CommentContentTableViewCell {
@@ -564,8 +624,11 @@ extension ReaderCommentsViewController {
 
 extension ReaderCommentsViewController: UIPopoverPresentationControllerDelegate {
     // Force popover views to be presented as a popover (instead of being presented as a form sheet on iPhones).
-    public func adaptivePresentationStyle(for controller: UIPresentationController, traitCollection: UITraitCollection) -> UIModalPresentationStyle {
-        return .none
+    public func adaptivePresentationStyle(
+        for controller: UIPresentationController,
+        traitCollection: UITraitCollection
+    ) -> UIModalPresentationStyle {
+        .none
     }
 }
 
@@ -573,7 +636,7 @@ extension ReaderCommentsViewController: UIPopoverPresentationControllerDelegate 
 
 private extension ReaderCommentsViewController {
     var commentService: CommentService {
-        return CommentService(coreDataStack: ContextManager.shared)
+        CommentService(coreDataStack: ContextManager.shared)
     }
 
     /// Returns a `UIMenu` structure to be displayed when the accessory button is tapped.
@@ -589,16 +652,25 @@ private extension ReaderCommentsViewController {
     ///
     func menu(for comment: Comment, indexPath: IndexPath, tableView: UITableView, sourceView: UIView?) -> UIMenu {
         let commentMenus = commentMenu(for: comment, indexPath: indexPath, tableView: tableView, sourceView: sourceView)
-        return UIMenu(title: "", options: .displayInline, children: commentMenus.map {
-            UIMenu(title: "", options: .displayInline, children: $0.map({ menu in menu.toAction }))
-        })
+        return UIMenu(
+            title: "",
+            options: .displayInline,
+            children: commentMenus.map {
+                UIMenu(title: "", options: .displayInline, children: $0.map({ menu in menu.toAction }))
+            }
+        )
     }
 
     /// Returns a list of array that each contains a menu item. Separators will be shown between each array. Note that
     /// the order of comment menu will determine the order of appearance for the corresponding menu element.
     ///
-    func commentMenu(for comment: Comment, indexPath: IndexPath, tableView: UITableView, sourceView: UIView?) -> [[ReaderCommentMenu]] {
-        return [
+    func commentMenu(
+        for comment: Comment,
+        indexPath: IndexPath,
+        tableView: UITableView,
+        sourceView: UIView?
+    ) -> [[ReaderCommentMenu]] {
+        [
             [
                 .unapprove { [weak self] in
                     self?.moderateComment(comment, status: .pending)
@@ -644,8 +716,9 @@ private extension ReaderCommentsViewController {
 
                 // If the status is Approved, the user has undone a comment moderation.
                 // So don't show the Undo option in this case.
-                (status == .approved) ? self.displayNotice(title: noticeText) :
-                                        self.showActionableNotice(title: noticeText, comment: comment)
+                (status == .approved)
+                    ? self.displayNotice(title: noticeText)
+                    : self.showActionableNotice(title: noticeText, comment: comment)
             }
         }
 
@@ -682,12 +755,14 @@ private extension ReaderCommentsViewController {
     }
 
     func showActionableNotice(title: String, comment: Comment) {
-        displayActionableNotice(title: title,
-                                actionTitle: .undoActionTitle,
-                                actionHandler: { [weak self] _ in
-            // Set the Comment's status back to Approved when the user selects Undo on the notice.
-            self?.moderateComment(comment, status: .approved)
-        })
+        displayActionableNotice(
+            title: title,
+            actionTitle: .undoActionTitle,
+            actionHandler: { [weak self] _ in
+                // Set the Comment's status back to Approved when the user selects Undo on the notice.
+                self?.moderateComment(comment, status: .approved)
+            }
+        )
     }
 }
 
@@ -734,10 +809,10 @@ enum ReaderCommentMenu {
     var toAction: UIAction {
         switch self {
         case .unapprove(let handler),
-                .spam(let handler),
-                .trash(let handler),
-                .edit(let handler),
-                .share(let handler):
+            .spam(let handler),
+            .trash(let handler),
+            .edit(let handler),
+            .share(let handler):
             return UIAction(title: title, image: image) { _ in
                 handler()
             }
@@ -749,26 +824,76 @@ enum ReaderCommentMenu {
 
 private enum Strings {
     static let title = NSLocalizedString("reader.comments.title", value: "Comments", comment: "Navigation title")
-    static let errorStateViewTitle = NSLocalizedString("reader.comments.errorLoadingComments", value: "There has been an unexpected error while loading the comments.", comment: "Empty state view title")
-    static let emptyStateViewTitle = NSLocalizedString("reader.comments.emptyStateTitle", value: "Be the first to leave a comment.", comment: "Empty state view title")
-    static let noPermission = NSLocalizedString("reader.comments.noPermissionToViewPrivateBlog", value: "You don't have permission to view this private blog.", comment: "Error message that informs reader comments from a private blog cannot be fetched.")
-    static let follow = NSLocalizedString("reader.comments.buttonFollow", value: "Follow", comment: "Button title. Follow the comments on a post.")
-    static let followingSettings = NSLocalizedString("reader.comments.followingSettingAccessibilityIdentifier", value: "Open notification settings for the post", comment: "VoiceOver hint")
+    static let errorStateViewTitle = NSLocalizedString(
+        "reader.comments.errorLoadingComments",
+        value: "There has been an unexpected error while loading the comments.",
+        comment: "Empty state view title"
+    )
+    static let emptyStateViewTitle = NSLocalizedString(
+        "reader.comments.emptyStateTitle",
+        value: "Be the first to leave a comment.",
+        comment: "Empty state view title"
+    )
+    static let noPermission = NSLocalizedString(
+        "reader.comments.noPermissionToViewPrivateBlog",
+        value: "You don't have permission to view this private blog.",
+        comment: "Error message that informs reader comments from a private blog cannot be fetched."
+    )
+    static let follow = NSLocalizedString(
+        "reader.comments.buttonFollow",
+        value: "Follow",
+        comment: "Button title. Follow the comments on a post."
+    )
+    static let followingSettings = NSLocalizedString(
+        "reader.comments.followingSettingAccessibilityIdentifier",
+        value: "Open notification settings for the post",
+        comment: "VoiceOver hint"
+    )
 }
 
 // TODO: (kean) change to Strings
 private extension String {
-    static let authorBadgeText = NSLocalizedString("Author", comment: "Title for a badge displayed beside the comment writer's name. "
-                                                   + "Shown when the comment is written by the post author.")
-    static let undoActionTitle = NSLocalizedString("Undo", comment: "Button title. Reverts a comment moderation action.")
+    static let authorBadgeText = NSLocalizedString(
+        "Author",
+        comment: "Title for a badge displayed beside the comment writer's name. "
+            + "Shown when the comment is written by the post author."
+    )
+    static let undoActionTitle = NSLocalizedString(
+        "Undo",
+        comment: "Button title. Reverts a comment moderation action."
+    )
 
     // moderation messages
-    static let pendingSuccess = NSLocalizedString("Comment set to pending.", comment: "Message displayed when pending a comment succeeds.")
-    static let pendingFailed = NSLocalizedString("Error setting comment to pending.", comment: "Message displayed when pending a comment fails.")
-    static let spamSuccess = NSLocalizedString("Comment marked as spam.", comment: "Message displayed when spamming a comment succeeds.")
-    static let spamFailed = NSLocalizedString("Error marking comment as spam.", comment: "Message displayed when spamming a comment fails.")
-    static let trashSuccess = NSLocalizedString("Comment moved to trash.", comment: "Message displayed when trashing a comment succeeds.")
-    static let trashFailed = NSLocalizedString("Error moving comment to trash.", comment: "Message displayed when trashing a comment fails.")
-    static let approveSuccess = NSLocalizedString("Comment set to approved.", comment: "Message displayed when approving a comment succeeds.")
-    static let approveFailed = NSLocalizedString("Error setting comment to approved.", comment: "Message displayed when approving a comment fails.")
+    static let pendingSuccess = NSLocalizedString(
+        "Comment set to pending.",
+        comment: "Message displayed when pending a comment succeeds."
+    )
+    static let pendingFailed = NSLocalizedString(
+        "Error setting comment to pending.",
+        comment: "Message displayed when pending a comment fails."
+    )
+    static let spamSuccess = NSLocalizedString(
+        "Comment marked as spam.",
+        comment: "Message displayed when spamming a comment succeeds."
+    )
+    static let spamFailed = NSLocalizedString(
+        "Error marking comment as spam.",
+        comment: "Message displayed when spamming a comment fails."
+    )
+    static let trashSuccess = NSLocalizedString(
+        "Comment moved to trash.",
+        comment: "Message displayed when trashing a comment succeeds."
+    )
+    static let trashFailed = NSLocalizedString(
+        "Error moving comment to trash.",
+        comment: "Message displayed when trashing a comment fails."
+    )
+    static let approveSuccess = NSLocalizedString(
+        "Comment set to approved.",
+        comment: "Message displayed when approving a comment succeeds."
+    )
+    static let approveFailed = NSLocalizedString(
+        "Error setting comment to approved.",
+        comment: "Message displayed when approving a comment fails."
+    )
 }
