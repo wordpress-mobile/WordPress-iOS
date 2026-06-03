@@ -1,4 +1,4 @@
-/* Translation-Revision-Date: 2026-03-25 10:05:01+0000 */
+/* Translation-Revision-Date: 2026-05-25 08:25:35+0000 */
 /* Plural-Forms: nplurals=3; plural=(n == 1) ? 0 : ((n == 0 || n % 100 >= 2 && n % 100 <= 19) ? 1 : 2); */
 /* Generator: GlotPress/4.0.3 */
 /* Language: ro */
@@ -815,7 +815,7 @@ translators: %s: Block name e.g. \"Image block\" */
 "Autoupdates" = "Actualizări automate";
 
 /* No comment provided by engineer. */
-"Available to all users" = "Disponibil tuturor utilizatorilor";
+"Available to all users" = "Disponibilă pentru toți utilizatorii";
 
 /* 'This Year' label for average comments per post. */
 "Avg Comments \/ Post" = "Medie de comentarii\/articol";
@@ -950,7 +950,7 @@ translators: %s: Block name e.g. \"Image block\" */
 
 /* Accessibility label for bold button on formatting toolbar.
    Discoverability title for bold formatting keyboard shortcut. */
-"Bold" = "Bold";
+"Bold" = "Aldin";
 
 /* Books site intent topic */
 "Books" = "Cărți";
@@ -1415,7 +1415,7 @@ translators: %s: Block name e.g. \"Image block\" */
 "Connect to automatically share your blog posts to %@" = "Conectare pentru a partaja automat articolele blogului tău cu %@";
 
 /* No comment provided by engineer. */
-"Connect your favorite social media services to automatically share new posts with friends." = "Conectează serviciile tale sociale media pentru a partaja automat noile articole cu prietenii.";
+"Connect your favorite social media services to automatically share new posts with friends." = "Conectează-ți serviciile media socială preferate pentru a partaja automat articole noi cu prietenii.";
 
 /* Adjective. The title of a list of third-part sharing service account names. */
 "Connected" = "Conectat";
@@ -2048,7 +2048,7 @@ translators: %s: Block name e.g. \"Image block\" */
 "Edit focal point" = "Editează punctul de focalizare";
 
 /* No comment provided by engineer. */
-"Edit media" = "Editează media";
+"Edit media" = "Editează Media";
 
 /* Explanation for the option to enable the block editor */
 "Edit new posts and pages with the block editor." = "Editează articole și pagini noi cu editorul de blocuri.";
@@ -2755,7 +2755,7 @@ translators: %s: Block name e.g. \"Image block\" */
 "Ignored" = "Ignorate";
 
 /* Hint for image alt on image settings. */
-"Image Alt" = "Alternativă imagine";
+"Image Alt" = "Text alternativ imagine";
 
 /* Hint for image caption on image settings. */
 "Image Caption" = "Text asociat imagine";
@@ -5591,7 +5591,7 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 "That username is not allowed." = "Acel nume de utilizator nu e permis.";
 
 /* Error message shown to a user who is trying to share to Facebook but does not have any available Facebook Pages. */
-"The Facebook connection cannot find any Pages. Publicize cannot connect to Facebook Profiles, only published Pages." = "Conexiunea Facebook nu găsește nicio pagină. Publicitatea nu se poate conecta la profilurile Facebook, ci numai la pagini Facebook publicate.";
+"The Facebook connection cannot find any Pages. Publicize cannot connect to Facebook Profiles, only published Pages." = "Conexiunea Facebook nu găsește nicio pagină. Publicitate nu se poate conecta la profilurile Facebook, ci numai la pagini Facebook publicate.";
 
 /* Description shown when a user logs in with Google but no matching WordPress.com account is found */
 "The Google account \"%@\" doesn't match any account on WordPress.com" = "Contul Google „%@” nu se potrivește cu niciun cont de pe WordPress.com";
@@ -6041,9 +6041,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Notification Settings switch for the app. */
 "Turning the switch off will disable all notifications from this app, regardless of type." = "Oprirea comutatorului va dezactiva toate notificările din această aplicație, indiferent de tip.";
-
-/* Title of button that displays the app's Twitter profile */
-"Twitter" = "Twitter";
 
 /* Title for the setting to edit the twitter username used when sharing to twitter. */
 "Twitter Username" = "Nume utilizator Twitter";
@@ -7107,6 +7104,9 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Error message when XML-RPC is disabled on the WordPress site. The first argument is detailed error message */
 "addSite.selfHosted.xmlrpcDisabled" = "Nu am putut face conexiunea la site-ul WordPress. Probabil metodele XML-RPC au fost dezactivate pe server. Te rog să contactezi furnizorul tău de găzduire pentru a rezolva această problemă.";
 
+/* Error message when the app cannot find the XML-RPC endpoint of a self-hosted WordPress site */
+"addSite.selfHosted.xmlrpcEndpointNotFound" = "Nu am putut să determin punctul-final XML-RPC pentru site";
+
 /* Age between dates equaling one hour. */
 "an hour" = "o oră";
 
@@ -7644,7 +7644,7 @@ Note that the word 'go' here should have a closer meaning to 'start' rather than
 "com.jetpack.support.loadingLogContent" = "Încarc conținutul jurnalului...";
 
 /* Progress message while loading log files */
-"com.jetpack.support.loadingLogs" = "Încarc jurnale...";
+"com.jetpack.support.loadingLogs" = "Încarc jurnalele...";
 
 /* Progress text while loading conversation messages */
 "com.jetpack.support.loadingMessages" = "Încarc mesajele";
@@ -7844,8 +7844,17 @@ Example: Reply to Pamela Nguyen */
 /* Navigation bar title when leaving a editing an existing comment */
 "commentEdit.navigationTitle" = "Editează comentariul";
 
+/* Title for the error notice shown when approving a comment fails. */
+"comments.approve.error.title" = "Eroare la aprobarea comentariului";
+
 /* Error title */
 "comments.failedToLike" = "Aprecierea comentariului a eșuat";
+
+/* Title for the error notice shown when trashing a comment fails. */
+"comments.trash.error.title" = "Eroare la aruncarea la gunoi a comentariului";
+
+/* Title for the error notice shown when unapproving a comment fails. */
+"comments.unapprove.error.title" = "Eroare la refuzarea comentariului";
 
 /* Error message informing a user about an invalid password. */
 "common.reEnterPasswordMessage" = "Numele de utilizator sau parola stocate în aplicație pot fi învechite. Te rog reintrodu parola ta în setări și încearcă din nou.";
@@ -7895,6 +7904,9 @@ Example: Reply to Pamela Nguyen */
 /* Menu action to permanently delete a trashed post */
 "customPostList.action.deletePermanently" = "Șterge definitiv";
 
+/* Menu action to create a draft copy of a post */
+"customPostList.action.duplicate" = "Fă duplicat";
+
 /* Menu action to change a post's status to draft */
 "customPostList.action.moveToDraft" = "Mută în ciorne";
 
@@ -7939,6 +7951,12 @@ Example: Reply to Pamela Nguyen */
 
 /* Empty state message when no custom posts exist. %1$@ is the post type name (e.g., 'Podcasts', 'Products'). */
 "customPostList.emptyState.message" = "Niciun %1$@";
+
+/* Short label for the swipe action to permanently delete a trashed post. Keep this translation short. */
+"customPostList.swipeAction.delete" = "Șterge";
+
+/* Short label for the swipe action to trash a post. Keep this translation short. */
+"customPostList.swipeAction.trash" = "Aruncă la gunoi";
 
 /* Message for the confirmation alert when trashing a published post */
 "customPostList.trashConfirmation.message" = "Acest articol este publicat și vizibil pentru vizitatori. Sigur vrei să-l muți la gunoi?";
@@ -8980,6 +8998,159 @@ Example: Reply to Pamela Nguyen */
 /* Message stating that the user is unable to use Stats and Notifications because their site is connected to a different WordPress.com account */
 "jetpackSite.connectToDefaultAccount" = "Pentru a folosi Statistici și Notificări, trebuie să te autentifici cu %@.";
 
+/* Message shown at the top of the account confirmation screen when every available account is already connected to the site. */
+"jetpackSocial.accountConfirmation.allConnectedDescription" = "Totul este gata. Fiecare cont disponibil este deja conectat la acest site și articolele tale noi vor fi partajate automat. Poți să schimbi asta când scrii un articol.";
+
+/* Nav-bar button that finalizes the social connection after choosing an account. */
+"jetpackSocial.accountConfirmation.confirm" = "Confirmă";
+
+/* Section header listing accounts already connected to this site. */
+"jetpackSocial.accountConfirmation.connectedSection" = "Conectate";
+
+/* Explanation text shown at the top of the account confirmation screen. */
+"jetpackSocial.accountConfirmation.description" = "Conectezi acest cont. Articolele noi vor fi partajate automat pe acest cont. Poți să schimbi asta când scrii un articol.";
+
+/* Button that dismisses the account confirmation screen when every account is already connected and there is nothing to confirm. */
+"jetpackSocial.accountConfirmation.done" = "Gata";
+
+/* Loading caption while fetching accounts for the confirmation screen. */
+"jetpackSocial.accountConfirmation.loading" = "Încarc conturile...";
+
+/* Footer caption below the 'Mark the connection as shared' toggle. */
+"jetpackSocial.accountConfirmation.markAsSharedFooter" = "Dacă activezi, conexiunea va fi disponibilă pentru toți administratorii, editorii și autorii. Poți să schimbi asta mai târziu.";
+
+/* Toggle label controlling whether the new connection is shared with other site users. */
+"jetpackSocial.accountConfirmation.markAsSharedLabel" = "Marchează conexiunea ca partajată";
+
+/* Button to retry a failed account fetch. */
+"jetpackSocial.accountConfirmation.retry" = "Reîncearcă";
+
+/* Navigation title of the account confirmation screen shown after OAuth. */
+"jetpackSocial.accountConfirmation.title" = "Confirmare conexiune";
+
+/* Toggle label controlling whether a connection is shared with all site users. */
+"jetpackSocial.connectionDetail.availableToAllUsers" = "Disponibilă pentru toți utilizatorii";
+
+/* Footer caption below the 'Available to all users' toggle. */
+"jetpackSocial.connectionDetail.availableToAllUsersFooter" = "Permite ca această conexiune să fie folosită de toți administratorii și utilizatorii site-ului tău.";
+
+/* Section header on the connection detail screen. */
+"jetpackSocial.connectionDetail.settingsHeader" = "Setări";
+
+/* Dismiss button in the social connection update failure alert. */
+"jetpackSocial.connectionDetail.updateFailedDismiss" = "OK";
+
+/* Title of the alert shown when updating a social connection setting fails. */
+"jetpackSocial.connectionDetail.updateFailedTitle" = "Nu am putut să actualizez conexiunea";
+
+/* Error when a publicize connection ID can't be found. %1$@ is the connection ID. */
+"jetpackSocial.error.connectionNotFound" = "Conexiunea %1$@ nu a fost găsită.";
+
+/* Error shown when decoding a social sharing response fails. */
+"jetpackSocial.error.decoding" = "Am primit un răspuns neașteptat de la server.";
+
+/* Error when a keyring token ID can't be found. %1$@ is the token ID. */
+"jetpackSocial.error.keyringNotFound" = "Nu am găsit conexiunea Keyring %1$@.";
+
+/* Link label that opens documentation explaining how to resolve a social sharing error. */
+"jetpackSocial.error.learnMore" = "Învață mai multe";
+
+/* Error shown when a social sharing network call fails. */
+"jetpackSocial.error.network" = "Eroare în rețea. Te rog să verifici conexiunea și să încerci din nou.";
+
+/* Error when the WP.com account has no authorized keyring for a given service. %1$@ is the service label (e.g. 'Mastodon'). */
+"jetpackSocial.error.noKeyringForService" = "Niciun cont conectat pentru %1$@.";
+
+/* Error shown after Facebook OAuth when the user's account doesn't manage any Facebook Pages, since Publicize only targets Pages. */
+"jetpackSocial.error.noPagesForFacebook" = "Conexiunea Facebook nu găsește nicio pagină. Publicitate nu se poate conecta la profilurile Facebook, ci numai la pagini Facebook publicate.";
+
+/* Error shown when the WP.com auth token is missing or invalid. */
+"jetpackSocial.error.notAuthenticated" = "Trebuie să te autentifici din nou pentru a administra conturile din media socială.";
+
+/* Generic fallback error for social sharing. */
+"jetpackSocial.error.unknown" = "Ceva nu a mers bine. Te rog să încerci din nou.";
+
+/* Status text for a broken / invalid / refresh-failed connection. */
+"jetpackSocial.manageConnections.brokenStatus" = "Necesită atenție";
+
+/* Cancel button in the disconnect confirmation alert. */
+"jetpackSocial.manageConnections.cancel" = "Anulează";
+
+/* Button on the Social screen that opens the add-connection modal. */
+"jetpackSocial.manageConnections.connectNewAccount" = "Conectează un cont nou";
+
+/* Footer caption under the Connected Accounts section on the Social screen. */
+"jetpackSocial.manageConnections.connectedFooter" = "Îți conectezi conturile din media socială și, când un articol este publicat, îi trimiți conținutul și imaginea reprezentativă la canalele pe care le-ai selectat.";
+
+/* Section header listing currently connected social accounts. */
+"jetpackSocial.manageConnections.connectedHeader" = "Conturi conectate";
+
+/* Button that removes a social sharing connection. */
+"jetpackSocial.manageConnections.delete" = "Deconectează";
+
+/* Confirmation alert title. %1$@ is the connected account's display name. */
+"jetpackSocial.manageConnections.deleteConfirmTitle" = "Sigur vrei să deconectezi %1$@?";
+
+/* Dismiss button in the disconnect failure alert. */
+"jetpackSocial.manageConnections.deleteFailedDismiss" = "OK";
+
+/* Title of the alert shown when disconnecting a social connection fails. */
+"jetpackSocial.manageConnections.deleteFailedTitle" = "Nu am putut să deconectez";
+
+/* Footer caption under the list of services in the Connect Account picker modal. */
+"jetpackSocial.manageConnections.footer" = "Conectează-ți serviciile media socială preferate pentru a partaja automat articole noi cu prietenii.";
+
+/* Button to retry a failed load. */
+"jetpackSocial.manageConnections.retry" = "Reîncearcă";
+
+/* Badge shown on connections that are shared with other site users. */
+"jetpackSocial.manageConnections.sharedBadge" = "Partajate";
+
+/* Title of the Social Sharing settings screen. */
+"jetpackSocial.manageConnections.title" = "Social";
+
+/* Confirm button in the disconnect confirmation alert. */
+"jetpackSocial.manageConnections.yes" = "Da";
+
+/* Navigation bar title of the OAuth webview. %1$@ is the service label (e.g. 'Mastodon'). */
+"jetpackSocial.oauthWebView.connectTitle" = "Conectează la %1$@";
+
+/* Label above the optional custom social-sharing message field. */
+"jetpackSocial.postSection.customMessage" = "Mesaj personalizat";
+
+/* Placeholder for the optional custom social-sharing message field. */
+"jetpackSocial.postSection.customMessagePlaceholder" = "Scrie aici un mesaj personalizat pentru publicul tău de pe media socială.";
+
+/* Caption shown when the site has no social connections. */
+"jetpackSocial.postSection.empty" = "Nu este conectat niciun cont pe media socială";
+
+/* Title of the row that opens the social sharing detail screen in Post Settings. */
+"jetpackSocial.postSection.header" = "Partajează pe media socială";
+
+/* Button to retry a failed load of the connections list. */
+"jetpackSocial.postSection.retry" = "Reîncearcă";
+
+/* Trailing value on the 'Share to Social' post settings row. %1$d is the enabled count, %2$d is the total. */
+"jetpackSocial.postSection.summary.format" = "%1$d din %2$d";
+
+/* Footer below the per-connection toggles on the social sharing detail screen. */
+"jetpackSocial.postSection.togglesFooter" = "Când acest articol este publicat, el va fi partajat pe conturile activate.";
+
+/* Notice shown after a social connection is successfully created. %1$@ is the service label. */
+"jetpackSocial.serviceDetail.connectedNotice" = "%1$@ este conectat";
+
+/* Cancel button in the add-connection failure alert. */
+"jetpackSocial.serviceDetail.failureCancel" = "Anulează";
+
+/* Retry button in the add-connection failure alert. */
+"jetpackSocial.serviceDetail.failureRetry" = "Reîncearcă";
+
+/* Title of the alert shown when adding a social connection fails. */
+"jetpackSocial.serviceDetail.failureTitle" = "Conectarea a eșuat";
+
+/* Navigation bar title of the service picker modal shown when adding a new social connection. */
+"jetpackSocial.servicePicker.title" = "Conectează contul";
+
 /* Accessibility label for add card button */
 "jetpackStats.accessibility.addCardButton" = "Adaugă un cartuș nou pentru statistici";
 
@@ -9484,6 +9655,9 @@ Example: Reply to Pamela Nguyen */
 
 /* Title for weekly activity heatmap */
 "jetpackStats.postDetails.weeklyActivity" = "Activitate săptămânală";
+
+/* Confirmation message when marking a referrer as spam. %1$@ is the domain name. */
+"jetpackStats.referrerDetails.confirmAsSpam.message" = "Marcarea „%1$@” ca spam îl va ascunde din statisticile viitoare. Poți să anulezi asta oricând folosind interfața web.";
 
 /* Title for error alert when marking referrer as spam fails */
 "jetpackStats.referrerDetails.errorAlertTitle" = "Eroare";
@@ -11710,12 +11884,6 @@ Example: given a notice format "Following %@" and empty site name, this will be 
 /* Describes that the slider is used to customize the text size in the Reader. */
 "reader.preferences.control.sizeSlider.description" = "Dimensiune";
 
-/* Text for a small label in the navigation bar that hints that this is an experimental feature.
-
-The enclosing angled brackets ('<' and '>') are decorative and only intended as a flavor.
-Feel free to replace it with other bracket types that you think looks better for the locale. */
-"reader.preferences.navBar.experimental.label" = "<Experimental>";
-
 /* Description text for the preview section of Reader Preferences */
 "reader.preferences.preview.body.text" = "Alegi culorile, fonturile și dimensiunile. După ce ai terminat, previzualizezi aici ce ai selectat și citești articolele în stilul tău.";
 
@@ -12078,7 +12246,7 @@ Feel free to replace it with other bracket types that you think looks better for
 "shared.button.edit" = "Editează";
 
 /* A shared button title used in different contexts */
-"shared.button.notNow" = "Acum, acum";
+"shared.button.notNow" = "Nu acum";
 
 /* A shared button title used in different contexts */
 "shared.button.ok" = "OK";

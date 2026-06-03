@@ -1,4 +1,4 @@
-/* Translation-Revision-Date: 2026-03-25 12:55:32+0000 */
+/* Translation-Revision-Date: 2026-05-26 20:27:26+0000 */
 /* Plural-Forms: nplurals=2; plural=n != 1; */
 /* Generator: GlotPress/4.0.3 */
 /* Language: es */
@@ -6042,9 +6042,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Notification Settings switch for the app. */
 "Turning the switch off will disable all notifications from this app, regardless of type." = "Al desactivar el conmutador de alternancia, se desactivarán todas las notificaciones de esta aplicación, sea cual sea el tipo.";
 
-/* Title of button that displays the app's Twitter profile */
-"Twitter" = "Twitter";
-
 /* Title for the setting to edit the twitter username used when sharing to twitter. */
 "Twitter Username" = "Nombre de usuario de Twitter";
 
@@ -7107,6 +7104,9 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Error message when XML-RPC is disabled on the WordPress site. The first argument is detailed error message */
 "addSite.selfHosted.xmlrpcDisabled" = "No se ha podido conectar con el sitio de WordPress. XML-RPC puede haberse inhabilitado en el servidor. Ponte en contacto con tu proveedor de alojamiento para resolver este problema.";
 
+/* Error message when the app cannot find the XML-RPC endpoint of a self-hosted WordPress site */
+"addSite.selfHosted.xmlrpcEndpointNotFound" = "No se ha podido determinar el endpoint XML-RPC del sitio";
+
 /* Age between dates equaling one hour. */
 "an hour" = "una hora";
 
@@ -7844,8 +7844,17 @@ Example: Reply to Pamela Nguyen */
 /* Navigation bar title when leaving a editing an existing comment */
 "commentEdit.navigationTitle" = "Editar comentario";
 
+/* Title for the error notice shown when approving a comment fails. */
+"comments.approve.error.title" = "Error al aprobar el comentario";
+
 /* Error title */
 "comments.failedToLike" = "Fallo al dar me gusta al comentario";
+
+/* Title for the error notice shown when trashing a comment fails. */
+"comments.trash.error.title" = "Error al mover el comentario a la papelera";
+
+/* Title for the error notice shown when unapproving a comment fails. */
+"comments.unapprove.error.title" = "Error al rechazar el comentario";
 
 /* Error message informing a user about an invalid password. */
 "common.reEnterPasswordMessage" = "Es posible que el nombre de usuario o la contraseña que están guardados en la aplicación hayan caducado. Introduce de nuevo tu contraseña en la configuración y vuelve a intentarlo.";
@@ -7895,6 +7904,9 @@ Example: Reply to Pamela Nguyen */
 /* Menu action to permanently delete a trashed post */
 "customPostList.action.deletePermanently" = "Borrar permanentemente";
 
+/* Menu action to create a draft copy of a post */
+"customPostList.action.duplicate" = "Duplicar";
+
 /* Menu action to change a post's status to draft */
 "customPostList.action.moveToDraft" = "Mover a borradores";
 
@@ -7940,6 +7952,12 @@ Example: Reply to Pamela Nguyen */
 /* Empty state message when no custom posts exist. %1$@ is the post type name (e.g., 'Podcasts', 'Products'). */
 "customPostList.emptyState.message" = "No hay %1$@";
 
+/* Short label for the swipe action to permanently delete a trashed post. Keep this translation short. */
+"customPostList.swipeAction.delete" = "Borrar";
+
+/* Short label for the swipe action to trash a post. Keep this translation short. */
+"customPostList.swipeAction.trash" = "Papelera";
+
 /* Message for the confirmation alert when trashing a published post */
 "customPostList.trashConfirmation.message" = "Esta entrada está publicada y es visible para los visitantes. ¿Seguro que quieres moverlo a la papelera?";
 
@@ -7975,6 +7993,9 @@ Example: Reply to Pamela Nguyen */
 
 /* Tab title for trashed posts */
 "customPostTab.trash" = "Papelera";
+
+/* Badge label indicating that custom post type support is a beta feature. Displayed next to the navigation title. */
+"customPostType.navigation.betaBadge" = "BETA";
 
 /* Empty state message when there are no custom post types to display */
 "customPostTypes.emptyState.message" = "No hay tipos de entradas personalizadas";
@@ -8977,6 +8998,159 @@ Example: Reply to Pamela Nguyen */
 /* Message stating that the user is unable to use Stats and Notifications because their site is connected to a different WordPress.com account */
 "jetpackSite.connectToDefaultAccount" = "Debes acceder con %@ para usar Estadísticas y Notificaciones.";
 
+/* Message shown at the top of the account confirmation screen when every available account is already connected to the site. */
+"jetpackSocial.accountConfirmation.allConnectedDescription" = "Ya está todo listo. Todas las cuentas disponibles ya están conectadas a esta página, y tus nuevas publicaciones se compartirán automáticamente. Puedes cambiarlo cuando escribas una entrada.";
+
+/* Nav-bar button that finalizes the social connection after choosing an account. */
+"jetpackSocial.accountConfirmation.confirm" = "Confirmar";
+
+/* Section header listing accounts already connected to this site. */
+"jetpackSocial.accountConfirmation.connectedSection" = "Conectado";
+
+/* Explanation text shown at the top of the account confirmation screen. */
+"jetpackSocial.accountConfirmation.description" = "Estás conectando esta cuenta. Las nuevas entradas se compartirán automáticamente en ella. Puedes cambiar esto al escribir una entrada.";
+
+/* Button that dismisses the account confirmation screen when every account is already connected and there is nothing to confirm. */
+"jetpackSocial.accountConfirmation.done" = "Hecho";
+
+/* Loading caption while fetching accounts for the confirmation screen. */
+"jetpackSocial.accountConfirmation.loading" = "Cargando cuentas...";
+
+/* Footer caption below the 'Mark the connection as shared' toggle. */
+"jetpackSocial.accountConfirmation.markAsSharedFooter" = "Si se activa, la conexión estará disponible para todos los administradores, editores y autores. Puedes cambiar esto más tarde.";
+
+/* Toggle label controlling whether the new connection is shared with other site users. */
+"jetpackSocial.accountConfirmation.markAsSharedLabel" = "Marcar la conexión como compartida";
+
+/* Button to retry a failed account fetch. */
+"jetpackSocial.accountConfirmation.retry" = "Reintentar";
+
+/* Navigation title of the account confirmation screen shown after OAuth. */
+"jetpackSocial.accountConfirmation.title" = "Confirmación de la conexión";
+
+/* Toggle label controlling whether a connection is shared with all site users. */
+"jetpackSocial.connectionDetail.availableToAllUsers" = "Disponible para todos los usuarios";
+
+/* Footer caption below the 'Available to all users' toggle. */
+"jetpackSocial.connectionDetail.availableToAllUsersFooter" = "Permite que todos los administradores y usuarios de tu sitio utilicen esta conexión.";
+
+/* Section header on the connection detail screen. */
+"jetpackSocial.connectionDetail.settingsHeader" = "Ajustes";
+
+/* Dismiss button in the social connection update failure alert. */
+"jetpackSocial.connectionDetail.updateFailedDismiss" = "ACEPTAR";
+
+/* Title of the alert shown when updating a social connection setting fails. */
+"jetpackSocial.connectionDetail.updateFailedTitle" = "No se ha podido actualizar la conexión";
+
+/* Error when a publicize connection ID can't be found. %1$@ is the connection ID. */
+"jetpackSocial.error.connectionNotFound" = "No se ha encontrado la conexión %1$@.";
+
+/* Error shown when decoding a social sharing response fails. */
+"jetpackSocial.error.decoding" = "Se ha recibido una respuesta inesperada del servidor.";
+
+/* Error when a keyring token ID can't be found. %1$@ is the token ID. */
+"jetpackSocial.error.keyringNotFound" = "No se ha encontrado la conexión de llavero %1$@.";
+
+/* Link label that opens documentation explaining how to resolve a social sharing error. */
+"jetpackSocial.error.learnMore" = "Aprende más";
+
+/* Error shown when a social sharing network call fails. */
+"jetpackSocial.error.network" = "Error de red. Comprueba la conexión e inténtalo de nuevo.";
+
+/* Error when the WP.com account has no authorized keyring for a given service. %1$@ is the service label (e.g. 'Mastodon'). */
+"jetpackSocial.error.noKeyringForService" = "No se encontraron cuentas conectadas para %1$@.";
+
+/* Error shown after Facebook OAuth when the user's account doesn't manage any Facebook Pages, since Publicize only targets Pages. */
+"jetpackSocial.error.noPagesForFacebook" = "La conexión con Facebook no puede encontrar ninguna página. Divulgar no se puede conectar con perfiles de Facebook, solo con páginas publicadas.";
+
+/* Error shown when the WP.com auth token is missing or invalid. */
+"jetpackSocial.error.notAuthenticated" = "Necesitas acceder de nuevo para gestionar las cuentas sociales.";
+
+/* Generic fallback error for social sharing. */
+"jetpackSocial.error.unknown" = "Se ha producido un error. Inténtalo de nuevo.";
+
+/* Status text for a broken / invalid / refresh-failed connection. */
+"jetpackSocial.manageConnections.brokenStatus" = "Necesita atención";
+
+/* Cancel button in the disconnect confirmation alert. */
+"jetpackSocial.manageConnections.cancel" = "Cancelar";
+
+/* Button on the Social screen that opens the add-connection modal. */
+"jetpackSocial.manageConnections.connectNewAccount" = "Conectar una nueva cuenta";
+
+/* Footer caption under the Connected Accounts section on the Social screen. */
+"jetpackSocial.manageConnections.connectedFooter" = "Conecta tus cuentas de redes sociales y envía la imagen destacada y el contenido de la entrada a los canales seleccionados cuando esta se publique.";
+
+/* Section header listing currently connected social accounts. */
+"jetpackSocial.manageConnections.connectedHeader" = "Cuentas conectadas";
+
+/* Button that removes a social sharing connection. */
+"jetpackSocial.manageConnections.delete" = "Desconectar";
+
+/* Confirmation alert title. %1$@ is the connected account's display name. */
+"jetpackSocial.manageConnections.deleteConfirmTitle" = "¿Seguro que quieres desconectar %1$@?";
+
+/* Dismiss button in the disconnect failure alert. */
+"jetpackSocial.manageConnections.deleteFailedDismiss" = "ACEPTAR";
+
+/* Title of the alert shown when disconnecting a social connection fails. */
+"jetpackSocial.manageConnections.deleteFailedTitle" = "No se ha podido desconectar";
+
+/* Footer caption under the list of services in the Connect Account picker modal. */
+"jetpackSocial.manageConnections.footer" = "Conéctate a los servicios de tu red social preferida para compartir automáticamente las entradas nuevas con tus amigos.";
+
+/* Button to retry a failed load. */
+"jetpackSocial.manageConnections.retry" = "Reintentar";
+
+/* Badge shown on connections that are shared with other site users. */
+"jetpackSocial.manageConnections.sharedBadge" = "Compartido";
+
+/* Title of the Social Sharing settings screen. */
+"jetpackSocial.manageConnections.title" = "Social";
+
+/* Confirm button in the disconnect confirmation alert. */
+"jetpackSocial.manageConnections.yes" = "Sí";
+
+/* Navigation bar title of the OAuth webview. %1$@ is the service label (e.g. 'Mastodon'). */
+"jetpackSocial.oauthWebView.connectTitle" = "Conectar a %1$@";
+
+/* Label above the optional custom social-sharing message field. */
+"jetpackSocial.postSection.customMessage" = "Mensaje personalizado";
+
+/* Placeholder for the optional custom social-sharing message field. */
+"jetpackSocial.postSection.customMessagePlaceholder" = "Escribe aquí un mensaje personalizado para tu audiencia social.";
+
+/* Caption shown when the site has no social connections. */
+"jetpackSocial.postSection.empty" = "No tienes ninguna cuenta social conectada todavía.";
+
+/* Title of the row that opens the social sharing detail screen in Post Settings. */
+"jetpackSocial.postSection.header" = "Compartir en redes sociales";
+
+/* Button to retry a failed load of the connections list. */
+"jetpackSocial.postSection.retry" = "Reintentar";
+
+/* Trailing value on the 'Share to Social' post settings row. %1$d is the enabled count, %2$d is the total. */
+"jetpackSocial.postSection.summary.format" = "%1$d de %2$d";
+
+/* Footer below the per-connection toggles on the social sharing detail screen. */
+"jetpackSocial.postSection.togglesFooter" = "Cuando esta entrada se publique, se compartirá automáticamente en las cuentas activadas.";
+
+/* Notice shown after a social connection is successfully created. %1$@ is the service label. */
+"jetpackSocial.serviceDetail.connectedNotice" = "%1$@ conectado";
+
+/* Cancel button in the add-connection failure alert. */
+"jetpackSocial.serviceDetail.failureCancel" = "Cancelar";
+
+/* Retry button in the add-connection failure alert. */
+"jetpackSocial.serviceDetail.failureRetry" = "Reintentar";
+
+/* Title of the alert shown when adding a social connection fails. */
+"jetpackSocial.serviceDetail.failureTitle" = "La conexión ha fallado";
+
+/* Navigation bar title of the service picker modal shown when adding a new social connection. */
+"jetpackSocial.servicePicker.title" = "Conectar cuenta";
+
 /* Accessibility label for add card button */
 "jetpackStats.accessibility.addCardButton" = "Añadir una nueva tarjeta de estadísticas";
 
@@ -9481,6 +9655,9 @@ Example: Reply to Pamela Nguyen */
 
 /* Title for weekly activity heatmap */
 "jetpackStats.postDetails.weeklyActivity" = "Actividad semanal";
+
+/* Confirmation message when marking a referrer as spam. %1$@ is the domain name. */
+"jetpackStats.referrerDetails.confirmAsSpam.message" = "Si marcas «%1$@» como spam, dejará de aparecer en tus estadísticas futuras. Puedes deshacer esta acción en cualquier momento a través de la interfaz web.";
 
 /* Title for error alert when marking referrer as spam fails */
 "jetpackStats.referrerDetails.errorAlertTitle" = "Error";
@@ -10206,13 +10383,13 @@ Example: Reply to Pamela Nguyen */
 "newStats.announcement.disclosure" = "¿No tienes todo listo para hacer el cambio? Puedes desactivar las nuevas estadísticas en el menú Más de la pestaña Estadísticas.";
 
 /* Feature description: navigation moved to the bottom for thumb-friendly access */
-"newStats.announcement.feature.bottomNav.description" = "La navegación y el selector de fechas están ahora en la parte inferior de la pantalla, justo donde está tu pulgar.";
+"newStats.announcement.feature.bottomNav.description" = "Ahora, la navegación y el selector de fechas están en la parte inferior de la pantalla, justo donde está tu pulgar.";
 
 /* Feature title: navigation moved to the bottom */
 "newStats.announcement.feature.bottomNav.title" = "Más fácil de alcanzar";
 
 /* Feature description: flexible date picker with presets, custom ranges, and comparisons */
-"newStats.announcement.feature.datePicker.description" = "Elige entre los preajustes habituales o establece un rango de fechas personalizado con un periodo de comparación, todo con un solo toque.";
+"newStats.announcement.feature.datePicker.description" = "Elige entre los preajustes habituales o establece un rango de fechas personalizado con un periodo de comparación; todo con un solo toque.";
 
 /* Feature title: flexible date picker */
 "newStats.announcement.feature.datePicker.title" = "Cualquier período, cualquier rango";
@@ -10221,10 +10398,10 @@ Example: Reply to Pamela Nguyen */
 "newStats.announcement.feature.parity.description" = "Dispositivos, UTM, ubicaciones, WordAds: los mismos datos que obtienes en WordPress.com.";
 
 /* Feature title: feature parity with the web version of Stats */
-"newStats.announcement.feature.parity.title" = "A la par de la web";
+"newStats.announcement.feature.parity.title" = "A la par con la web";
 
 /* Feature description: trends shown for all metrics with comparison to previous period */
-"newStats.announcement.feature.trends.description" = "Cada métrica muestra cómo es tendencia en comparación con el período anterior, por lo que siempre sabes si estás creciendo.";
+"newStats.announcement.feature.trends.description" = "Cada métrica muestra cómo está evolucionando en comparación con el período anterior, por lo que siempre sabes si estás creciendo.";
 
 /* Feature title: trends visible for all metrics */
 "newStats.announcement.feature.trends.title" = "Tendencias de un vistazo";
@@ -11706,12 +11883,6 @@ Example: given a notice format "Following %@" and empty site name, this will be 
 
 /* Describes that the slider is used to customize the text size in the Reader. */
 "reader.preferences.control.sizeSlider.description" = "Tamaño";
-
-/* Text for a small label in the navigation bar that hints that this is an experimental feature.
-
-The enclosing angled brackets ('<' and '>') are decorative and only intended as a flavor.
-Feel free to replace it with other bracket types that you think looks better for the locale. */
-"reader.preferences.navBar.experimental.label" = "«Experimental»";
 
 /* Description text for the preview section of Reader Preferences */
 "reader.preferences.preview.body.text" = "Elige tus colores, fuentes y tamaños. Obtén una vista previa de tu selección aquí y lee las entradas con tus estilos cuando acabes.";

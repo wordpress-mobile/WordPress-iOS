@@ -1,4 +1,4 @@
-/* Translation-Revision-Date: 2026-03-25 09:54:48+0000 */
+/* Translation-Revision-Date: 2026-05-28 16:55:52+0000 */
 /* Plural-Forms: nplurals=2; plural=n > 1; */
 /* Generator: GlotPress/4.0.3 */
 /* Language: tr */
@@ -6042,9 +6042,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Notification Settings switch for the app. */
 "Turning the switch off will disable all notifications from this app, regardless of type." = "Bu düğmenin kapatılması, türünden bağımsız olarak bu uygulamadan gelen tüm bildirimleri kapatır.";
 
-/* Title of button that displays the app's Twitter profile */
-"Twitter" = "X";
-
 /* Title for the setting to edit the twitter username used when sharing to twitter. */
 "Twitter Username" = "X kullanıcı adı";
 
@@ -7107,6 +7104,9 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Error message when XML-RPC is disabled on the WordPress site. The first argument is detailed error message */
 "addSite.selfHosted.xmlrpcDisabled" = "WordPress sitesine bağlanılamadı. XML-RPC sunucuda devre dışı bırakılmış olabilir. Bu sorunu çözmek için lütfen barındırma sağlayıcınızla iletişime geçin.";
 
+/* Error message when the app cannot find the XML-RPC endpoint of a self-hosted WordPress site */
+"addSite.selfHosted.xmlrpcEndpointNotFound" = "Sitenin XML-RPC uç noktası belirlenemedi";
+
 /* Age between dates equaling one hour. */
 "an hour" = "bir saat";
 
@@ -7844,8 +7844,17 @@ Example: Reply to Pamela Nguyen */
 /* Navigation bar title when leaving a editing an existing comment */
 "commentEdit.navigationTitle" = "Yorumu Düzenleyin";
 
+/* Title for the error notice shown when approving a comment fails. */
+"comments.approve.error.title" = "Yorum onaylanırken hata oluştu";
+
 /* Error title */
 "comments.failedToLike" = "Yorum beğenilemedi";
+
+/* Title for the error notice shown when trashing a comment fails. */
+"comments.trash.error.title" = "Yorum çöpe atılırken hata oluştu";
+
+/* Title for the error notice shown when unapproving a comment fails. */
+"comments.unapprove.error.title" = "Yorum onayı kaldırılırken hata oluştu";
 
 /* Error message informing a user about an invalid password. */
 "common.reEnterPasswordMessage" = "Uygulamada kayıtlı kullanıcı adı veya parolanın süresi geçmiş olabilir. Lütfen ayarlardan parolanızı yeniden yazıp yeniden deneyin.";
@@ -7895,6 +7904,9 @@ Example: Reply to Pamela Nguyen */
 /* Menu action to permanently delete a trashed post */
 "customPostList.action.deletePermanently" = "Kalıcı Olarak Sil";
 
+/* Menu action to create a draft copy of a post */
+"customPostList.action.duplicate" = "Çoğalt";
+
 /* Menu action to change a post's status to draft */
 "customPostList.action.moveToDraft" = "Taslağa Taşı";
 
@@ -7939,6 +7951,12 @@ Example: Reply to Pamela Nguyen */
 
 /* Empty state message when no custom posts exist. %1$@ is the post type name (e.g., 'Podcasts', 'Products'). */
 "customPostList.emptyState.message" = "%1$@ yok";
+
+/* Short label for the swipe action to permanently delete a trashed post. Keep this translation short. */
+"customPostList.swipeAction.delete" = "Sil";
+
+/* Short label for the swipe action to trash a post. Keep this translation short. */
+"customPostList.swipeAction.trash" = "Çöp";
 
 /* Message for the confirmation alert when trashing a published post */
 "customPostList.trashConfirmation.message" = "Bu gönderi yayımlandı ve ziyaretçiler tarafından görülebilir. Bunu çöp kutusuna taşımak istediğinizden emin misiniz?";
@@ -8980,6 +8998,159 @@ Example: Reply to Pamela Nguyen */
 /* Message stating that the user is unable to use Stats and Notifications because their site is connected to a different WordPress.com account */
 "jetpackSite.connectToDefaultAccount" = "İstatistikler ve Bildirimler'i kullanmak için %@ ile oturum açmanız gerekir.";
 
+/* Message shown at the top of the account confirmation screen when every available account is already connected to the site. */
+"jetpackSocial.accountConfirmation.allConnectedDescription" = "Her şey hazır. Kullanılabilir tüm hesaplar bu siteye zaten bağlı ve yeni yazılarınız otomatik olarak paylaşılacaktır. Bunu bir yazı yazarken değiştirebilirsiniz.";
+
+/* Nav-bar button that finalizes the social connection after choosing an account. */
+"jetpackSocial.accountConfirmation.confirm" = "Onayla";
+
+/* Section header listing accounts already connected to this site. */
+"jetpackSocial.accountConfirmation.connectedSection" = "Bağlı";
+
+/* Explanation text shown at the top of the account confirmation screen. */
+"jetpackSocial.accountConfirmation.description" = "Bu hesabı bağlıyorsunuz. Yeni yazılar otomatik olarak bu hesapta paylaşılacaktır. Bunu bir yazı yazarken değiştirebilirsiniz.";
+
+/* Button that dismisses the account confirmation screen when every account is already connected and there is nothing to confirm. */
+"jetpackSocial.accountConfirmation.done" = "Bitti";
+
+/* Loading caption while fetching accounts for the confirmation screen. */
+"jetpackSocial.accountConfirmation.loading" = "Hesaplar yükleniyor…";
+
+/* Footer caption below the 'Mark the connection as shared' toggle. */
+"jetpackSocial.accountConfirmation.markAsSharedFooter" = "Etkinleştirilirse bağlantı tüm yöneticiler, editörler ve yazarlar tarafından kullanılabilir olacaktır. Bunu daha sonra değiştirebilirsiniz.";
+
+/* Toggle label controlling whether the new connection is shared with other site users. */
+"jetpackSocial.accountConfirmation.markAsSharedLabel" = "Bağlantıyı paylaşılan olarak işaretle";
+
+/* Button to retry a failed account fetch. */
+"jetpackSocial.accountConfirmation.retry" = "Yeniden Dene";
+
+/* Navigation title of the account confirmation screen shown after OAuth. */
+"jetpackSocial.accountConfirmation.title" = "Bağlantı onayı";
+
+/* Toggle label controlling whether a connection is shared with all site users. */
+"jetpackSocial.connectionDetail.availableToAllUsers" = "Tüm kullanıcılar tarafından kullanılabilir";
+
+/* Footer caption below the 'Available to all users' toggle. */
+"jetpackSocial.connectionDetail.availableToAllUsersFooter" = "Bu bağlantının sitenizin tüm yöneticileri ve kullanıcıları tarafından kullanılmasına izin verin.";
+
+/* Section header on the connection detail screen. */
+"jetpackSocial.connectionDetail.settingsHeader" = "Ayarlar";
+
+/* Dismiss button in the social connection update failure alert. */
+"jetpackSocial.connectionDetail.updateFailedDismiss" = "Tamam";
+
+/* Title of the alert shown when updating a social connection setting fails. */
+"jetpackSocial.connectionDetail.updateFailedTitle" = "Bağlantı Güncellenemiyor";
+
+/* Error when a publicize connection ID can't be found. %1$@ is the connection ID. */
+"jetpackSocial.error.connectionNotFound" = "%1$@ bağlantısı bulunamadı.";
+
+/* Error shown when decoding a social sharing response fails. */
+"jetpackSocial.error.decoding" = "Sunucudan beklenmeyen bir yanıt alındı.";
+
+/* Error when a keyring token ID can't be found. %1$@ is the token ID. */
+"jetpackSocial.error.keyringNotFound" = "Anahtar bağlantısı %1$@ bulunamadı.";
+
+/* Link label that opens documentation explaining how to resolve a social sharing error. */
+"jetpackSocial.error.learnMore" = "Daha fazla bilgi";
+
+/* Error shown when a social sharing network call fails. */
+"jetpackSocial.error.network" = "Ağ hatası. Lütfen bağlantınızı kontrol edip tekrar deneyin.";
+
+/* Error when the WP.com account has no authorized keyring for a given service. %1$@ is the service label (e.g. 'Mastodon'). */
+"jetpackSocial.error.noKeyringForService" = "%1$@ için bağlı hesap yok.";
+
+/* Error shown after Facebook OAuth when the user's account doesn't manage any Facebook Pages, since Publicize only targets Pages. */
+"jetpackSocial.error.noPagesForFacebook" = "Facebook bağlantısı hiçbir Sayfa bulamıyor. Publicize, Facebook Profillerine bağlanamaz; yalnızca yayımlanmış Sayfalara bağlanabilir.";
+
+/* Error shown when the WP.com auth token is missing or invalid. */
+"jetpackSocial.error.notAuthenticated" = "Sosyal hesapları yönetmek için tekrar giriş yapmanız gerekiyor.";
+
+/* Generic fallback error for social sharing. */
+"jetpackSocial.error.unknown" = "Bir sorun oluştu. Lütfen tekrar deneyin.";
+
+/* Status text for a broken / invalid / refresh-failed connection. */
+"jetpackSocial.manageConnections.brokenStatus" = "İlgilenilmesi gerekiyor";
+
+/* Cancel button in the disconnect confirmation alert. */
+"jetpackSocial.manageConnections.cancel" = "İptal";
+
+/* Button on the Social screen that opens the add-connection modal. */
+"jetpackSocial.manageConnections.connectNewAccount" = "Yeni Hesap Bağla";
+
+/* Footer caption under the Connected Accounts section on the Social screen. */
+"jetpackSocial.manageConnections.connectedFooter" = "Sosyal medya hesaplarınızı bağlayın ve yazı yayımlandığında öne çıkan görsel ile içeriği seçili kanallara gönderin.";
+
+/* Section header listing currently connected social accounts. */
+"jetpackSocial.manageConnections.connectedHeader" = "Bağlı Hesaplar";
+
+/* Button that removes a social sharing connection. */
+"jetpackSocial.manageConnections.delete" = "Bağlantıyı Kes";
+
+/* Confirmation alert title. %1$@ is the connected account's display name. */
+"jetpackSocial.manageConnections.deleteConfirmTitle" = "%1$@ bağlantısını kesmek istediğinizden emin misiniz?";
+
+/* Dismiss button in the disconnect failure alert. */
+"jetpackSocial.manageConnections.deleteFailedDismiss" = "Tamam";
+
+/* Title of the alert shown when disconnecting a social connection fails. */
+"jetpackSocial.manageConnections.deleteFailedTitle" = "Bağlantı Kesilemiyor";
+
+/* Footer caption under the list of services in the Connect Account picker modal. */
+"jetpackSocial.manageConnections.footer" = "Yeni yazıları arkadaşlarınızla otomatik olarak paylaşmak için favori sosyal medya hizmetlerinizi bağlayın.";
+
+/* Button to retry a failed load. */
+"jetpackSocial.manageConnections.retry" = "Yeniden Dene";
+
+/* Badge shown on connections that are shared with other site users. */
+"jetpackSocial.manageConnections.sharedBadge" = "Paylaşıldı";
+
+/* Title of the Social Sharing settings screen. */
+"jetpackSocial.manageConnections.title" = "Sosyal";
+
+/* Confirm button in the disconnect confirmation alert. */
+"jetpackSocial.manageConnections.yes" = "Evet";
+
+/* Navigation bar title of the OAuth webview. %1$@ is the service label (e.g. 'Mastodon'). */
+"jetpackSocial.oauthWebView.connectTitle" = "%1$@ hizmetine bağlan";
+
+/* Label above the optional custom social-sharing message field. */
+"jetpackSocial.postSection.customMessage" = "Özel mesaj";
+
+/* Placeholder for the optional custom social-sharing message field. */
+"jetpackSocial.postSection.customMessagePlaceholder" = "Sosyal medya kitleniz için özel bir mesaj yazın.";
+
+/* Caption shown when the site has no social connections. */
+"jetpackSocial.postSection.empty" = "Henüz bağlı sosyal hesap yok.";
+
+/* Title of the row that opens the social sharing detail screen in Post Settings. */
+"jetpackSocial.postSection.header" = "Sosyal medyada paylaş";
+
+/* Button to retry a failed load of the connections list. */
+"jetpackSocial.postSection.retry" = "Yeniden Dene";
+
+/* Trailing value on the 'Share to Social' post settings row. %1$d is the enabled count, %2$d is the total. */
+"jetpackSocial.postSection.summary.format" = "%1$d \/ %2$d";
+
+/* Footer below the per-connection toggles on the social sharing detail screen. */
+"jetpackSocial.postSection.togglesFooter" = "Bu yazı yayımlandığında, etkinleştirilmiş hesaplarda paylaşılacaktır.";
+
+/* Notice shown after a social connection is successfully created. %1$@ is the service label. */
+"jetpackSocial.serviceDetail.connectedNotice" = "%1$@ bağlandı";
+
+/* Cancel button in the add-connection failure alert. */
+"jetpackSocial.serviceDetail.failureCancel" = "İptal";
+
+/* Retry button in the add-connection failure alert. */
+"jetpackSocial.serviceDetail.failureRetry" = "Yeniden Dene";
+
+/* Title of the alert shown when adding a social connection fails. */
+"jetpackSocial.serviceDetail.failureTitle" = "Bağlantı Başarısız";
+
+/* Navigation bar title of the service picker modal shown when adding a new social connection. */
+"jetpackSocial.servicePicker.title" = "Hesap Bağla";
+
 /* Accessibility label for add card button */
 "jetpackStats.accessibility.addCardButton" = "Yeni istatistik kartı ekle";
 
@@ -9484,6 +9655,9 @@ Example: Reply to Pamela Nguyen */
 
 /* Title for weekly activity heatmap */
 "jetpackStats.postDetails.weeklyActivity" = "Haftalık Aktivite";
+
+/* Confirmation message when marking a referrer as spam. %1$@ is the domain name. */
+"jetpackStats.referrerDetails.confirmAsSpam.message" = "“%1$@” alan adını istenmeyen olarak işaretlemek, gelecekteki istatistiklerinizde gizleyecektir. Bunu istediğiniz zaman web arayüzünden geri alabilirsiniz.";
 
 /* Title for error alert when marking referrer as spam fails */
 "jetpackStats.referrerDetails.errorAlertTitle" = "Hata";
@@ -11710,12 +11884,6 @@ Example: given a notice format "Following %@" and empty site name, this will be 
 /* Describes that the slider is used to customize the text size in the Reader. */
 "reader.preferences.control.sizeSlider.description" = "Boyut";
 
-/* Text for a small label in the navigation bar that hints that this is an experimental feature.
-
-The enclosing angled brackets ('<' and '>') are decorative and only intended as a flavor.
-Feel free to replace it with other bracket types that you think looks better for the locale. */
-"reader.preferences.navBar.experimental.label" = "<Experimental>";
-
 /* Description text for the preview section of Reader Preferences */
 "reader.preferences.preview.body.text" = "Renklerinizi, yazı tiplerinizi ve boyutlarınızı seçin. Seçiminizi buradan önizleyin ve işiniz bittiğinde gönderileri okuyun.";
 
@@ -12078,7 +12246,7 @@ Feel free to replace it with other bracket types that you think looks better for
 "shared.button.edit" = "Düzenle";
 
 /* A shared button title used in different contexts */
-"shared.button.notNow" = "Şimdi değil";
+"shared.button.notNow" = "Şimdi Değil";
 
 /* A shared button title used in different contexts */
 "shared.button.ok" = "Tamam";
