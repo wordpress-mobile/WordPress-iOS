@@ -466,12 +466,12 @@ final class ReaderCommentsViewController: UIViewController, WPContentSyncHelperD
             self.onNavigationCommentRendered = nil
 
             guard let indexPath = self.highlightedIndexPath else { return }
-            tableVC.tableView.scrollToRow(at: indexPath, at: .top, animated: false)
+            self.scrollToRowIfValid(indexPath, in: tableVC.tableView)
 
             DispatchQueue.main.asyncAfter(deadline: .now() + 0.33) { [weak self, weak tableVC] in
                 guard let self, let tableVC else { return }
                 // The initial scroll occasionally fails due to the async rendering
-                tableVC.tableView.scrollToRow(at: indexPath, at: .top, animated: false)
+                self.scrollToRowIfValid(indexPath, in: tableVC.tableView)
                 self.hideNavigationOverlay {
                     (tableVC.tableView.cellForRow(at: indexPath) as? CommentContentTableViewCell)?.flashHighlight()
                 }
@@ -485,6 +485,18 @@ final class ReaderCommentsViewController: UIViewController, WPContentSyncHelperD
             guard self?.navigationCommentID == commentID else { return }
             reveal()
         }
+    }
+
+    // Workaround of https://a8c.sentry.io/issues/7411457268. We may need to fix it properly.
+    // Related PR: https://github.com/wordpress-mobile/WordPress-iOS/pull/25389
+    private func scrollToRowIfValid(_ indexPath: IndexPath, in tableView: UITableView) {
+        guard indexPath.section >= 0,
+              indexPath.section < tableView.numberOfSections,
+              indexPath.row >= 0,
+              indexPath.row < tableView.numberOfRows(inSection: indexPath.section) else {
+            return
+        }
+        tableView.scrollToRow(at: indexPath, at: .top, animated: false)
     }
 
     func commentRenderedIfNeeded(commentID: Int32) {
