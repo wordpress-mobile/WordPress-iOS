@@ -429,8 +429,7 @@ final class ReaderCommentsViewController: UIViewController, WPContentSyncHelperD
         cell.accessoryButton.menu =
             isModerationEnabled
             ? menu(for: comment, indexPath: indexPath, tableView: tableView, sourceView: cell.accessoryButton) : nil
-        let commentID = comment.commentID
-        cell.configure(viewModel: viewModel, helper: helper) { [weak self, weak tableView] _ in
+        cell.configure(viewModel: viewModel, helper: helper) { [weak tableView] _ in
             guard let tableView else { return }
 
             if tableView.alpha == 0 {
@@ -441,7 +440,6 @@ final class ReaderCommentsViewController: UIViewController, WPContentSyncHelperD
             UIView.setAnimationsEnabled(false)
             tableView.performBatchUpdates({})
             UIView.setAnimationsEnabled(true)
-            self?.commentRenderedIfNeeded(commentID: commentID)
         }
 
         cell.isEmphasized = indexPath == highlightedIndexPath
@@ -555,10 +553,6 @@ final class ReaderCommentsViewController: UIViewController, WPContentSyncHelperD
                 (tableVC.tableView.cellForRow(at: indexPath) as? CommentContentTableViewCell)?.flashHighlight()
             }
         }
-    }
-
-    func commentRenderedIfNeeded(commentID: Int32) {
-        // No-op: the reveal is driven by `revealFoundComment`.
     }
 
     private func showNavigationOverlay() {
