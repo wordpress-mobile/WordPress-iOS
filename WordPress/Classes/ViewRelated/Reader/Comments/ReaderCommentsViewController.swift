@@ -58,7 +58,12 @@ final class ReaderCommentsViewController: UIViewController, WPContentSyncHelperD
     private var navigationOverlayView: UIView?
     private var navigationPagesLoaded = 0
     private var navigationCommentID: Int32?
-    private var onNavigationCommentRendered: (() -> Void)?
+    /// Whether at least one comments sync has finished since the screen opened. The first
+    /// `syncContent` (page 1) purges every cached comment beyond the first page, so a comment
+    /// on a later page must not be revealed until that destructive sync has completed (and the
+    /// comment has been reloaded by paging), otherwise the reveal scrolls to a row that is about
+    /// to be deleted.
+    private var hasCompletedInitialSync = false
 
     private var syncHelper: WPContentSyncHelper?
     private var followCommentsService: FollowCommentsService?
@@ -334,11 +339,13 @@ final class ReaderCommentsViewController: UIViewController, WPContentSyncHelperD
     }
 
     func syncContentEnded(_ syncHelper: WPContentSyncHelper) {
+        hasCompletedInitialSync = true
         self.tableVC?.setLoadingFooterHidden(true)
         refreshTableViewAndNoResultsView()
     }
 
     func syncContentFailed(_ syncHelper: WPContentSyncHelper) {
+        hasCompletedInitialSync = true
         self.fetchCommentsError = NSError(domain: "", code: 0, userInfo: nil)
         self.tableVC?.setLoadingFooterHidden(true)
         refreshTableViewAndNoResultsView()
@@ -494,64 +501,64 @@ final class ReaderCommentsViewController: UIViewController, WPContentSyncHelperD
         self.highlightedIndexPath = indexPath
     }
 
-    // Shows an overlay while searching for the target comment across pages (up to 5).
-    // Once found, waits for the cell's WebKit content to finish rendering, then
-    // fades the overlay out and flashes the cell to draw the user's attention.
+    // Shows an overlay while locating the target comment, then reveals it: pages through the
+    // comments (up to 5 pages) until the comment is loaded, waits for the destructive initial
+    // sync to finish (it purges everything beyond the first page, so a later-page comment must
+    // be reloaded by paging before it is safe to reveal), scrolls the comment to the top, and
+    // finally fades the overlay out and flashes the cell. Re-driven on every `syncContentEnded`.
     private func navigateToCommentIDIfNeeded() {
         guard let navigateToCommentID, let tableVC else { return }
 
         showNavigationOverlay()
 
-        if tableVC.scrollToComment(withID: navigateToCommentID, animated: false) {
-            let commentID = navigateToCommentID.int32Value
+        let commentID = navigateToCommentID.int32Value
+        let found = tableVC.scrollToComment(withID: navigateToCommentID, animated: false)
+        let syncing = syncHelper?.isSyncing ?? false
+
+        if found {
+            // The comment is present, but the first page-1 sync purges every comment beyond the
+            // first page. Only commit the reveal once that destructive sync has finished and
+            // nothing else is in flight; otherwise keep the overlay up and wait for the next
+            // syncContentEnded to re-drive this method.
+            guard hasCompletedInitialSync, !syncing else { return }
             self.navigateToCommentID = nil
             self.navigationPagesLoaded = 0
-            setupNavigationReveal(commentID: commentID, in: tableVC)
-        } else if navigationPagesLoaded < 5, let syncHelper, syncHelper.hasMoreContent {
+            revealFoundComment(commentID, in: tableVC)
+        } else if navigationPagesLoaded < 5, let syncHelper, syncHelper.hasMoreContent, !syncing {
             navigationPagesLoaded += 1
             syncHelper.syncMoreContent()
-        } else {
+        } else if hasCompletedInitialSync, !syncing {
+            // Not found and nothing left to load: give up.
             self.navigateToCommentID = nil
             self.navigationPagesLoaded = 0
             hideNavigationOverlay(completion: nil)
         }
     }
 
-    private func setupNavigationReveal(commentID: Int32, in tableVC: ReaderCommentsTableViewController) {
+    /// Scrolls the target comment into view, then fades the overlay out and flashes the cell.
+    ///
+    /// `scrollToComment` already scrolled to the comment, but its WebKit content renders
+    /// asynchronously and changes the row height afterwards, which shifts the position, so we
+    /// scroll once more after a short delay before revealing.
+    private func revealFoundComment(_ commentID: Int32, in tableVC: ReaderCommentsTableViewController) {
         navigationCommentID = commentID
-
-        let reveal: () -> Void = { [weak self, weak tableVC] in
+        DispatchQueue.main.asyncAfter(deadline: .now() + 0.3) { [weak self, weak tableVC] in
             guard let self, let tableVC, self.navigationCommentID == commentID else { return }
             self.navigationCommentID = nil
-            self.onNavigationCommentRendered = nil
-
-            tableVC.revealComment(withID: commentID, animated: false)
-
-            DispatchQueue.main.asyncAfter(deadline: .now() + 0.33) { [weak self, weak tableVC] in
-                guard let self, let tableVC else { return }
-                // The initial scroll occasionally fails due to the async rendering, so re-resolve
-                // the comment's current index path and scroll again. Resolving by ID keeps this
-                // safe if a background sync changed the rows in the meantime.
-                let indexPath = tableVC.revealComment(withID: commentID, animated: false)
-                self.hideNavigationOverlay {
-                    guard let indexPath else { return }
-                    (tableVC.tableView.cellForRow(at: indexPath) as? CommentContentTableViewCell)?.flashHighlight()
-                }
+            guard let indexPath = tableVC.revealComment(withID: commentID, animated: false) else {
+                // The comment was unexpectedly removed (e.g. a purge). Re-arm navigation to reload it.
+                self.navigateToCommentID = NSNumber(value: commentID)
+                self.navigateToCommentIDIfNeeded()
+                return
             }
-        }
-
-        onNavigationCommentRendered = reveal
-
-        // Safety timeout in case the render callback never fires
-        DispatchQueue.main.asyncAfter(deadline: .now() + 1.5) { [weak self] in
-            guard self?.navigationCommentID == commentID else { return }
-            reveal()
+            self.hideNavigationOverlay {
+                (tableVC.tableView.cellForRow(at: indexPath) as? CommentContentTableViewCell)?.flashHighlight()
+            }
         }
     }
 
     func commentRenderedIfNeeded(commentID: Int32) {
-        guard commentID == navigationCommentID else { return }
-        onNavigationCommentRendered?()
+        // No-op: the reveal is driven by `revealFoundComment`.
     }
 
     private func showNavigationOverlay() {

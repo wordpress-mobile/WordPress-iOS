@@ -124,10 +124,7 @@ final class ReaderCommentsTableViewController: UIViewController, UITableViewData
     /// `scrollToRow(at:)` with an `NSRangeException`.
     @discardableResult
     func revealComment(withID commentID: Int32, animated: Bool) -> IndexPath? {
-        let comments = fetchResultsController.fetchedObjects ?? []
-        guard let comment = comments.first(where: { $0.commentID == commentID }),
-            let indexPath = fetchResultsController.indexPath(forObject: comment)
-        else {
+        guard let indexPath = indexPath(forCommentWithID: commentID) else {
             return nil
         }
 
@@ -145,6 +142,16 @@ final class ReaderCommentsTableViewController: UIViewController, UITableViewData
         }
         tableView.scrollToRow(at: indexPath, at: .top, animated: animated)
         return indexPath
+    }
+
+    /// The current index path of the comment with the given ID, resolved from the fetched
+    /// results controller, or `nil` if it is not currently loaded.
+    func indexPath(forCommentWithID commentID: Int32) -> IndexPath? {
+        guard let comment = (fetchResultsController.fetchedObjects ?? []).first(where: { $0.commentID == commentID })
+        else {
+            return nil
+        }
+        return fetchResultsController.indexPath(forObject: comment)
     }
 
     @objc func setBottomInset(_ inset: CGFloat) {
