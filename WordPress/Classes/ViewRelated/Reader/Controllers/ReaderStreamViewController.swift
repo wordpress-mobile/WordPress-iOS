@@ -407,7 +407,7 @@ import AutomatticTracks
             let settingsVC = UIHostingController(rootView: ReaderSavedPostsSettingsView())
             self?.navigationController?.pushViewController(settingsVC, animated: true)
         }
-        let button = UIBarButtonItem(title: nil, image: UIImage(systemName: "ellipsis.circle"), primaryAction: action)
+        let button = UIBarButtonItem(title: nil, image: UIImage(systemName: "ellipsis"), primaryAction: action)
         button.tag = NavigationItemTag.savedPostsSettings.rawValue
         button.accessibilityLabel = Strings.savedPostsSettingsAccessibilityLabel
         addRightBarButtonItem(button)
