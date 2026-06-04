@@ -3,9 +3,10 @@
 #
 # This script manages the full lifecycle:
 #   1. Check for "Testing" label on PR (Buildkite only, skips if missing)
-#   2. Download build artifacts and install app (Buildkite only)
-#   3. Install the simulator-llm-pilot gem from GitHub
-#   4. Run tests (gem handles simulator, WDA, agent loop, and results)
+#   2. Preflight the configured WordPress test site
+#   3. Download build artifacts and install app (Buildkite only)
+#   4. Install the simulator-llm-pilot gem from GitHub
+#   5. Run tests (gem handles simulator, WDA, agent loop, and results)
 #
 # The gem provides a sandboxed agent that drives the simulator through a
 # fixed set of tools (tap, swipe, type, REST API, etc.) — no arbitrary
@@ -39,6 +40,105 @@ normalize_site_url() {
   fi
 }
 
+site_url_with_path() {
+  local site_url="${1%/}"
+  local path="$2"
+  printf '%s%s' "$site_url" "$path"
+}
+
+preflight_current_user_auth() {
+  local body_file="$1"
+  grep -q '"id"[[:space:]]*:' "$body_file"
+}
+
+preflight_rest_api_root() {
+  local body_file="$1"
+  grep -q '"namespaces"[[:space:]]*:' "$body_file" && grep -q '"routes"[[:space:]]*:' "$body_file"
+}
+
+preflight_endpoint() {
+  local label="$1"
+  local url="$2"
+  local body_check="$3"
+  local auth_mode="${4:-anonymous}"
+  local body_file
+  local curl_args
+  local curl_output
+  local http_status
+  local effective_url
+  local redirect_count
+
+  body_file="$(mktemp "${PREFLIGHT_TMP_DIR}/body.XXXXXX")"
+
+  curl_args=(
+    --silent
+    --show-error
+    --location
+    --max-redirs 3
+    --connect-timeout 10
+    --max-time 20
+    --output "$body_file"
+    --write-out "%{http_code} %{url_effective} %{num_redirects}"
+  )
+
+  if [[ "$auth_mode" == "authenticated" ]]; then
+    curl_args+=(--user "${SIMULATOR_LLM_PILOT_USERNAME}:${SIMULATOR_LLM_PILOT_APP_PASSWORD}")
+  fi
+
+  curl_args+=("$url")
+
+  if ! curl_output="$(curl "${curl_args[@]}")"; then
+    echo "Error: unable to reach ${label} at ${url}" >&2
+    return 1
+  fi
+
+  read -r http_status effective_url redirect_count <<< "$curl_output"
+
+  if [[ "$effective_url" == *"wordpress.com/typo"* ]]; then
+    echo "Error: ${label} redirected to WordPress.com typo handling." >&2
+    echo "Configured URL: ${url}" >&2
+    echo "Final URL: ${effective_url}" >&2
+    echo "The AI E2E test site is likely missing or no longer mapped." >&2
+    return 1
+  fi
+
+  if [[ "$http_status" != 2* ]]; then
+    echo "Error: ${label} returned HTTP ${http_status}." >&2
+    echo "URL: ${url}" >&2
+    if [[ "$redirect_count" != "0" ]]; then
+      echo "Final URL after ${redirect_count} redirect(s): ${effective_url}" >&2
+    fi
+    if [[ "$auth_mode" == "authenticated" && "$http_status" == "401" ]]; then
+      echo "Check SIMULATOR_LLM_PILOT_USERNAME and SIMULATOR_LLM_PILOT_APP_PASSWORD." >&2
+    fi
+    return 1
+  fi
+
+  if ! "$body_check" "$body_file"; then
+    echo "Error: ${label} returned HTTP ${http_status}, but the response does not look like the expected WordPress REST API response." >&2
+    echo "URL: ${url}" >&2
+    if [[ "$redirect_count" != "0" ]]; then
+      echo "Final URL after ${redirect_count} redirect(s): ${effective_url}" >&2
+    fi
+    return 1
+  fi
+
+  echo "OK: ${label} returned HTTP ${http_status}"
+}
+
+preflight_test_site() {
+  local api_root_url
+  local current_user_url
+
+  echo "--- Preflighting AI E2E Test Site"
+
+  api_root_url="$(site_url_with_path "$SIMULATOR_LLM_PILOT_SITE_URL" "/wp-json/")"
+  current_user_url="$(site_url_with_path "$SIMULATOR_LLM_PILOT_SITE_URL" "/wp-json/wp/v2/users/me")"
+
+  preflight_endpoint "REST API root" "$api_root_url" preflight_rest_api_root
+  preflight_endpoint "authenticated current user endpoint" "$current_user_url" preflight_current_user_auth "authenticated"
+}
+
 # ── Label gate (Buildkite only) ─────────────────────────────────────
 if [[ -n "${BUILDKITE_PULL_REQUEST_LABELS:-}" ]]; then
   echo "--- Checking for 'Testing' label"
@@ -57,6 +157,10 @@ fi
 : "${SIMULATOR_LLM_PILOT_USERNAME:?Set SIMULATOR_LLM_PILOT_USERNAME}"
 : "${SIMULATOR_LLM_PILOT_APP_PASSWORD:?Set SIMULATOR_LLM_PILOT_APP_PASSWORD}"
 export SIMULATOR_LLM_PILOT_SITE_URL="$(normalize_site_url "$SIMULATOR_LLM_PILOT_SITE_URL")"
+
+PREFLIGHT_TMP_DIR="$(mktemp -d)"
+trap 'rm -rf "$PREFLIGHT_TMP_DIR"' EXIT
+preflight_test_site
 
 # ── Defaults ─────────────────────────────────────────────────────────
 APP="${APP:-jetpack}"
