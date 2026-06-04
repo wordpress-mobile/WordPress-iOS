@@ -1,4 +1,7 @@
-- Das Aktivitätsprotokoll zeigt jetzt an, wann deine Website mithilfe von KI-Agenten aktualisiert wurde.
-- In den Beitragseinstellungen werden auf der Social Sharing-Karte nur Plattformen angezeigt, die von der App unterstützt werden.
-- Neue Beiträge verwenden das Standardformat für Beiträge anstelle der Standardversion. Du kannst dieses Format in deinen Website-Einstellungen aktualisieren.
-- Wenn deine Website selbst gehostet wird und XML-RPC deaktiviert ist, kannst du Beiträge und Seiten in der App anzeigen. Das ist ziemlich wichtig, wenn wir das so sagen dürfen.
+Wenn du eine selbst gehostete Website hast, meldest du dich nun mit einem Anwendungspasswort bei der App an. Falls du noch kein solches Passwort hast, erstellen wir automatisch eines für dich, damit es bei Bedarf sofort zur Verfügung steht.
+
+Wenn du einen Kommentar durch Wischen löschst, verschwindet er nun aus der Liste. Leb wohl.
+
+Wir haben ein Problem behoben, bei dem sich die Größe der Footer-Ansicht in der Menübearbeitung nicht anpassen ließ. Dadurch sind die Aktions-Buttons nun auch in anderen Sprachen als Englisch gut lesbar.
+
+Wir haben den nicht funktionierenden X-Link in der Über-Ansicht entfernt. (Danke an @zynp-KC für den Hinweis!)
