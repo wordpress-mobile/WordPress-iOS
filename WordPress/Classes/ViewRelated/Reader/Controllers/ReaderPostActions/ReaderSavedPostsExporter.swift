@@ -24,6 +24,8 @@ struct ReaderSavedPostsExporter {
         var featuredImageURL: String?
         var siteID: UInt?
         var postID: UInt?
+        var feedID: UInt?
+        var feedItemID: UInt?
         var isFeed: Bool
     }
 
@@ -48,8 +50,13 @@ struct ReaderSavedPostsExporter {
             return posts.map { post in
                 let tags = post.tagsForDisplay()
                 let featuredImage = post.featuredImage
-                let siteID = post.siteID?.uintValue ?? 0
-                let postID = post.postID?.uintValue ?? 0
+
+                // Use int64Value (not uintValue) so the inherited BasePost.postID default
+                // of -1 isn't reinterpreted as UInt.max and exported as a valid ID.
+                func positiveUInt(_ number: NSNumber?) -> UInt? {
+                    guard let value = number?.int64Value, value > 0 else { return nil }
+                    return UInt(value)
+                }
 
                 return ExportedPost(
                     title: post.titleForDisplay(),
@@ -61,8 +68,10 @@ struct ReaderSavedPostsExporter {
                     summary: post.contentPreviewForDisplay() ?? "",
                     tags: tags.isEmpty ? nil : tags,
                     featuredImageURL: (featuredImage?.isEmpty ?? true) ? nil : featuredImage,
-                    siteID: siteID > 0 ? siteID : nil,
-                    postID: postID > 0 ? postID : nil,
+                    siteID: positiveUInt(post.siteID),
+                    postID: positiveUInt(post.postID),
+                    feedID: positiveUInt(post.feedID),
+                    feedItemID: positiveUInt(post.feedItemID),
                     isFeed: post.isExternal
                 )
             }
@@ -140,7 +149,8 @@ struct ReaderSavedPostsExporter {
             return ImportResult(imported: 0, skipped: 0, failed: posts.count)
         }
 
-        // Filter to posts that need importing (have siteID + postID, not already saved).
+        // Filter to posts that need importing (have usable identifiers, not already saved).
+        // Feed posts identify themselves with feedID/feedItemID; site posts use siteID/postID.
         var toImport: [(siteID: UInt, postID: UInt, isFeed: Bool)] = []
         var skipped = 0
 
@@ -155,10 +165,20 @@ struct ReaderSavedPostsExporter {
                 continue
             }
 
-            guard let siteID = post.siteID, siteID > 0,
-                let postID = post.postID, postID > 0
+            let siteIdentifier: UInt?
+            let postIdentifier: UInt?
+            if post.isFeed {
+                siteIdentifier = post.feedID
+                postIdentifier = post.feedItemID
+            } else {
+                siteIdentifier = post.siteID
+                postIdentifier = post.postID
+            }
+
+            guard let siteID = siteIdentifier, siteID > 0,
+                let postID = postIdentifier, postID > 0
             else {
-                Loggers.app.error("Import: skipping post with missing siteID/postID: \(post.url)")
+                Loggers.app.error("Import: skipping post with missing identifiers: \(post.url)")
                 skipped += 1
                 continue
             }

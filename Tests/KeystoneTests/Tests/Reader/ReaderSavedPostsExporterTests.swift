@@ -251,7 +251,7 @@ class ReaderSavedPostsExporterTests: CoreDataTestCase {
         post.tags = "tag1, tag2"
         post.siteID = 999
         post.postID = 888
-        post.isExternal = true
+        post.isExternal = false
         post.isSavedForLater = true
         post.sortDate = Date()
         post.date_created_gmt = Date(timeIntervalSince1970: 1700000000)
@@ -273,8 +273,55 @@ class ReaderSavedPostsExporterTests: CoreDataTestCase {
         XCTAssertEqual(exported.tags, ["tag1", "tag2"])
         XCTAssertEqual(exported.siteID, 999)
         XCTAssertEqual(exported.postID, 888)
-        XCTAssertEqual(exported.isFeed, true)
+        XCTAssertNil(exported.feedID)
+        XCTAssertNil(exported.feedItemID)
+        XCTAssertEqual(exported.isFeed, false)
         XCTAssertNotNil(exported.date)
+    }
+
+    func testExportFeedPostUsesFeedIdentifiers() async throws {
+        let post = makeReaderPost()
+        post.postTitle = "Feed Item"
+        post.permaLink = "https://feeds.example.com/item"
+        post.feedID = 42
+        post.feedItemID = 7
+        post.isExternal = true
+        post.isSavedForLater = true
+        post.sortDate = Date()
+        try mainContext.save()
+
+        let url = try await exporter.export(coreDataStack: contextManager)
+        let fileURL = try XCTUnwrap(url)
+        let posts = try ReaderSavedPostsExporter.parseExportFile(at: fileURL)
+
+        XCTAssertEqual(posts.count, 1)
+        let exported = posts[0]
+        XCTAssertEqual(exported.isFeed, true)
+        XCTAssertEqual(exported.feedID, 42)
+        XCTAssertEqual(exported.feedItemID, 7)
+        XCTAssertNil(exported.siteID)
+        XCTAssertNil(exported.postID)
+    }
+
+    func testImportSkipsFeedPostWithMissingFeedIdentifiers() async {
+        let posts = [
+            makeExportedPost(
+                url: "https://feeds.example.com/missing",
+                siteID: nil,
+                postID: nil,
+                isFeed: true
+            )
+        ]
+
+        let result = await ReaderSavedPostsExporter.importPosts(
+            posts,
+            coreDataStack: contextManager,
+            progress: Progress()
+        )
+
+        XCTAssertEqual(result.imported, 0)
+        XCTAssertEqual(result.skipped, 1)
+        XCTAssertEqual(result.failed, 0)
     }
 }
 
@@ -292,6 +339,8 @@ private extension ReaderSavedPostsExporterTests {
         url: String,
         siteID: UInt?,
         postID: UInt?,
+        feedID: UInt? = nil,
+        feedItemID: UInt? = nil,
         isFeed: Bool = false
     ) -> ReaderSavedPostsExporter.ExportedPost {
         ReaderSavedPostsExporter.ExportedPost(
@@ -306,6 +355,8 @@ private extension ReaderSavedPostsExporterTests {
             featuredImageURL: nil,
             siteID: siteID,
             postID: postID,
+            feedID: feedID,
+            feedItemID: feedItemID,
             isFeed: isFeed
         )
     }
