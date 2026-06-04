@@ -158,7 +158,7 @@ fi
 : "${SIMULATOR_LLM_PILOT_APP_PASSWORD:?Set SIMULATOR_LLM_PILOT_APP_PASSWORD}"
 export SIMULATOR_LLM_PILOT_SITE_URL="$(normalize_site_url "$SIMULATOR_LLM_PILOT_SITE_URL")"
 
-PREFLIGHT_TMP_DIR="$(mktemp -d)"
+PREFLIGHT_TMP_DIR="$(mktemp -d "${TMPDIR:-/tmp}/preflight.XXXXXX" 2>/dev/null || mktemp -d -t preflight)"
 trap 'rm -rf "$PREFLIGHT_TMP_DIR"' EXIT
 preflight_test_site
 
