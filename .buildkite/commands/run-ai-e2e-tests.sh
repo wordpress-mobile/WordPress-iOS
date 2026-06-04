@@ -40,6 +40,18 @@ normalize_site_url() {
   fi
 }
 
+validate_https_site_url() {
+  local site_url="$1"
+  if [[ "$site_url" == https://* ]]; then
+    return 0
+  fi
+
+  echo "Error: SIMULATOR_LLM_PILOT_SITE_URL must use https://." >&2
+  echo "The AI E2E tests send an application password via HTTP Basic Auth for REST API setup and verification." >&2
+  echo "Configured URL: ${site_url}" >&2
+  return 1
+}
+
 site_url_with_path() {
   local site_url="${1%/}"
   local path="$2"
@@ -157,6 +169,7 @@ fi
 : "${SIMULATOR_LLM_PILOT_USERNAME:?Set SIMULATOR_LLM_PILOT_USERNAME}"
 : "${SIMULATOR_LLM_PILOT_APP_PASSWORD:?Set SIMULATOR_LLM_PILOT_APP_PASSWORD}"
 export SIMULATOR_LLM_PILOT_SITE_URL="$(normalize_site_url "$SIMULATOR_LLM_PILOT_SITE_URL")"
+validate_https_site_url "$SIMULATOR_LLM_PILOT_SITE_URL"
 
 PREFLIGHT_TMP_DIR="$(mktemp -d "${TMPDIR:-/tmp}/preflight.XXXXXX" 2>/dev/null || mktemp -d -t preflight)"
 trap 'rm -rf "$PREFLIGHT_TMP_DIR"' EXIT
