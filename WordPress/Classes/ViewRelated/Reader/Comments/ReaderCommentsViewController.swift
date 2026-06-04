@@ -25,7 +25,7 @@ enum ReaderCommentsSource: String {
 
 final class ReaderCommentsViewController: UIViewController, WPContentSyncHelperDelegate,
     ReaderCommentsFollowPresenterDelegate
-{
+{ // swiftlint:disable:this opening_brace
     var source: ReaderCommentsSource?
     var navigateToCommentID: NSNumber?
     var allowsPushingPostDetails = false
