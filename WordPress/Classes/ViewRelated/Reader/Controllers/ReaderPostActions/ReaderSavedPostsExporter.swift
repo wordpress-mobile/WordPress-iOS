@@ -245,16 +245,14 @@ struct ReaderSavedPostsExporter {
         coreDataStack: CoreDataStackSwift
     ) async -> Bool {
         do {
-            let objectID = try await fetchPost(
+            let postID = try await fetchPost(
                 siteID: siteID,
                 postID: postID,
                 isFeed: isFeed,
                 service: service
             )
-            try await coreDataStack.performAndSave { context in
-                guard let post = try context.existingObject(with: objectID) as? ReaderPost else {
-                    throw ImportError.postUnavailable
-                }
+            try await coreDataStack.performAndSave { [postID] context in
+                let post = try context.existingObject(with: postID)
                 if !post.isSavedForLater {
                     post.isSavedForLater = true
                 }
@@ -269,13 +267,13 @@ struct ReaderSavedPostsExporter {
     }
 
     /// Wraps `ReaderPostService.fetchPost` as an async call, returning the
-    /// object ID of the fetched post.
+    /// typed object ID of the fetched post.
     private static func fetchPost(
         siteID: UInt,
         postID: UInt,
         isFeed: Bool,
         service: ReaderPostService
-    ) async throws -> NSManagedObjectID {
+    ) async throws -> TaggedManagedObjectID<ReaderPost> {
         try await withCheckedThrowingContinuation { continuation in
             service.fetchPost(
                 postID,
@@ -283,7 +281,7 @@ struct ReaderSavedPostsExporter {
                 isFeed: isFeed,
                 success: { post in
                     if let post {
-                        continuation.resume(returning: post.objectID)
+                        continuation.resume(returning: TaggedManagedObjectID(post))
                     } else {
                         continuation.resume(throwing: ImportError.postUnavailable)
                     }
