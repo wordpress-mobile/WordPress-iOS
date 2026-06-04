@@ -89,6 +89,8 @@ preflight_endpoint() {
     --max-redirs 3
     --connect-timeout 10
     --max-time 20
+    --proto '=https'
+    --proto-redir '=https'
     --output "$body_file"
     --write-out "%{http_code} %{url_effective} %{num_redirects}"
   )
