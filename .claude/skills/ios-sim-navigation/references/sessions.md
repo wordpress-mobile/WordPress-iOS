@@ -35,24 +35,40 @@ Don't mint a fresh session with `alwaysMatch:{}` for these calls — that
 produces an unbound session whose `/actions` requests return HTTP 200
 but never reach the UI.
 
-## Launching with arguments: use `wda-session.rb`, not `simctl`
+## Launching with arguments or environment: use `wda-session.rb`, not `simctl`
 
 Creating a session relaunches the target app even when it's already running
-(`forceAppLaunch` defaults to `YES`), so any arguments passed via
-`simctl launch -key value` are lost — they belong to the original process, and
-the relaunch starts a new one.
+(`forceAppLaunch` defaults to `YES`), so any arguments or environment passed via
+`simctl launch` are lost — they belong to the original process, and the relaunch
+starts a new one.
 
-So when the app needs launch arguments, don't pass them with `simctl`. Let WDA
-launch the app with them in the call that creates the session, using
-`scripts/wda-session.rb`. It persists the session so `tap.rb` reuses it (no
-further relaunch):
+So when the app needs launch arguments or environment variables, don't pass them
+with `simctl`. Let WDA launch the app with them in the call that creates the
+session, using `scripts/wda-session.rb`. It persists the session so `tap.rb`
+reuses it (no further relaunch):
 
 ```bash
+# Launch arguments (order-preserving):
 ruby scripts/wda-session.rb --bundle com.example.app \
   --arg -some-flag --arg value
+
+# Environment variables (--env is repeatable; split on the first '='):
+ruby scripts/wda-session.rb --bundle com.example.app \
+  --env MallocStackLogging=1 --env SOME_FLAG=on
 ```
 
-Once that session exists, avoid forcing another relaunch before the arguments
+`--arg` populates the app's `launchArguments`; `--env` populates its
+`launchEnvironment`. Both ride along as WDA session capabilities (`arguments`
+and `environment` under `alwaysMatch`), so WDA's launch is the one that carries
+them.
+
+The skill is agnostic about what these are — they're whatever the *caller*
+needs. A common use of `--env` is enabling an external instrument that reads the
+app's environment at launch (for example, a memory tool that needs malloc stack
+logging turned on in the target process). The skill doesn't need to know which
+instrument; the caller passes the variable.
+
+Once that session exists, avoid forcing another relaunch before the options
 are consumed (don't `simctl launch` again, don't delete the session file).
 `--wait-quiescence` is off by default because a screen with a spinner can keep
 the app from going quiescent and stall the call.

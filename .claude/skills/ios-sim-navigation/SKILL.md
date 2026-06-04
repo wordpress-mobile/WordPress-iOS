@@ -104,6 +104,32 @@ Run these from the project root that should own the
 `.build/WebDriverAgent` cache. `wda-start.rb` resolves the path
 relative to its working directory and clones into it on first run.
 
+## Launching the app with custom options (caller-supplied)
+
+By default you don't launch the app yourself — the first `tap.rb` binds a
+session to whatever app is in the foreground. But some callers need the app
+launched with **specific launch arguments or environment variables**: test
+configuration, feature flags, or instrumentation that an external instrument
+reads from the app's environment (a profiler, a leak detector, etc.).
+
+This skill is agnostic about *what* those options are. It just gives the caller
+a way to inject them: launch the app through WDA with `scripts/wda-session.rb`
+**before** any `tap.rb` call, so the instrumented process is the one WDA drives.
+
+```bash
+# Launch arguments (order-preserving; a `-key value` pair is two --arg tokens).
+ruby scripts/wda-session.rb --bundle com.example.app --arg -some-flag --arg value
+
+# Environment variables (e.g. to enable an instrument the caller cares about).
+ruby scripts/wda-session.rb --bundle com.example.app --env SOME_INSTRUMENT_VAR=1
+```
+
+Don't substitute `simctl launch` for this — its options are silently discarded
+when WDA binds the session. Establish the `wda-session.rb` session first, then
+drive normally; don't `simctl launch` again or delete the session file mid-run
+(either relaunches the app without the options). `references/sessions.md`
+explains why.
+
 ## Tap — the default action
 
 **Use `scripts/tap.rb` for every tap.** It collapses session creation

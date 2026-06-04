@@ -1,26 +1,40 @@
 #!/usr/bin/env ruby
 # wda-session.rb — Create a WDA session bound to an app, launching it with
-# launch arguments, and persist the session so tap.rb reuses it.
+# caller-supplied launch arguments and/or environment variables, and persist
+# the session so tap.rb reuses it.
 #
 # Why this exists: creating a WDA session relaunches the target app by default
-# (forceAppLaunch defaults to YES), which discards any arguments passed via
-# `simctl launch -key value` (they belong to the original process). This script
-# instead lets WDA launch the app with the arguments, so the process WDA drives
-# has them, and persists the session so tap.rb reuses it (no further relaunch).
+# (forceAppLaunch defaults to YES), which discards any arguments or environment
+# passed via `simctl launch` (they belong to the original process, and the
+# relaunch starts a fresh one). This script instead lets WDA launch the app with
+# the arguments and environment, so the process WDA drives has them, and persists
+# the session so tap.rb reuses it (no further relaunch).
+#
+# This script is agnostic about WHAT the arguments and environment are — the
+# caller decides. They might be test configuration, feature flags, or
+# instrumentation an instrument needs in the app's environment (e.g. a profiler
+# or leak detector toggled by an env var). See references/sessions.md.
 #
 # Usage:
+#   # Launch arguments (e.g. test configuration):
 #   wda-session.rb --bundle com.automattic.jetpack \
 #     --arg -ui-test-site-url --arg https://example.com \
 #     --arg -ui-test-site-user --arg demo \
 #     --arg -ui-test-site-pass --arg secret
 #
+#   # Environment variables (e.g. enabling an instrument):
+#   wda-session.rb --bundle com.automattic.jetpack --env MallocStackLogging=1
+#
 # Each --arg contributes one token to launchArguments, in order. A
 # `-key value` pair is two --arg values, exactly as you'd pass them to
-# `simctl launch`.
+# `simctl launch`. Each --env contributes one KEY=VALUE pair to the app's
+# launch environment (split on the first '=').
 #
 # Options:
 #   --bundle ID        Required. App bundle id to launch and bind to.
 #   --arg VALUE        Repeatable. One launch-argument token (order preserved).
+#   --env KEY=VALUE    Repeatable. One environment variable for the app's
+#                      launch environment.
 #   --port PORT        WDA port (default: 8100, or $WDA_PORT).
 #   --wait-quiescence  Wait for app quiescence after launch (default: off;
 #                      a spinning login screen can keep an app from going
@@ -36,12 +50,21 @@ require "optparse"
 port = (ENV["WDA_PORT"] || 8100).to_i
 bundle = nil
 args = []
+env = {}
 wait_quiescence = false
 
 parser = OptionParser.new do |opts|
-  opts.banner = "Usage: wda-session.rb --bundle ID [--arg VALUE ...] [--port PORT] [--wait-quiescence]"
+  opts.banner = "Usage: wda-session.rb --bundle ID [--arg VALUE ...] [--env KEY=VALUE ...] [--port PORT] [--wait-quiescence]"
   opts.on("--bundle ID") { |v| bundle = v }
   opts.on("--arg VALUE") { |v| args << v }
+  opts.on("--env KEY=VALUE") do |v|
+    key, value = v.split("=", 2)
+    if key.nil? || key.empty? || value.nil?
+      $stderr.puts "error: --env expects KEY=VALUE, got: #{v}"
+      exit 2
+    end
+    env[key] = value
+  end
   opts.on("--port PORT", Integer) { |v| port = v }
   opts.on("--wait-quiescence") { wait_quiescence = true }
 end
@@ -52,13 +75,16 @@ unless bundle
   exit 2
 end
 
-caps = {
-  "alwaysMatch" => {
-    "bundleId" => bundle,
-    "arguments" => args,
-    "shouldWaitForQuiescence" => wait_quiescence
-  }
+always_match = {
+  "bundleId" => bundle,
+  "arguments" => args,
+  "shouldWaitForQuiescence" => wait_quiescence
 }
+# Only include the environment key when set, so a plain session isn't given an
+# empty launch environment.
+always_match["environment"] = env unless env.empty?
+
+caps = { "alwaysMatch" => always_match }
 
 uri = URI("http://localhost:#{port}/session")
 req = Net::HTTP::Post.new(uri, "Content-Type" => "application/json")
