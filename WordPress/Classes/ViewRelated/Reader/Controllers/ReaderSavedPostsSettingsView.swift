@@ -27,9 +27,9 @@ struct ReaderSavedPostsSettingsView: View {
                 }
                 .disabled(viewModel.isBusy)
 
-                if viewModel.isImporting {
+                if let progress = viewModel.importProgress {
                     VStack(alignment: .leading, spacing: 8) {
-                        ProgressView(value: viewModel.importProgress, total: 1.0)
+                        ProgressView(progress)
                         Text(viewModel.importStatusText)
                             .font(.footnote)
                             .foregroundStyle(.secondary)
@@ -81,13 +81,12 @@ final class ReaderSavedPostsSettingsViewModel: ObservableObject {
     @Published var isShowingFilePicker = false
     @Published var isShowingImportResult = false
     @Published var isShowingError = false
-    @Published var isImporting = false
     @Published var isExporting = false
-    @Published var importProgress: Double = 0
+    @Published var importProgress: Progress?
     @Published var importStatusText = ""
 
     /// Whether an import or export is currently in flight.
-    var isBusy: Bool { isImporting || isExporting }
+    var isBusy: Bool { importProgress != nil || isExporting }
 
     @Published private(set) var importResultMessage = ""
     @Published private(set) var errorMessage = ""
@@ -145,14 +144,12 @@ final class ReaderSavedPostsSettingsViewModel: ObservableObject {
 
             url.stopAccessingSecurityScopedResource()
 
-            isImporting = true
-            importProgress = 0
+            let progress = Progress(totalUnitCount: Int64(posts.count))
+            importProgress = progress
             importStatusText = String.localizedStringWithFormat(Strings.importProgressFormat, 0, posts.count)
 
-            let progress = Progress(totalUnitCount: Int64(posts.count))
-            progressObservation = progress.observe(\.fractionCompleted) { [weak self] progress, _ in
+            progressObservation = progress.observe(\.completedUnitCount) { [weak self] progress, _ in
                 Task { @MainActor in
-                    self?.importProgress = progress.fractionCompleted
                     self?.importStatusText = String.localizedStringWithFormat(
                         Strings.importProgressFormat,
                         Int(progress.completedUnitCount),
@@ -168,7 +165,7 @@ final class ReaderSavedPostsSettingsViewModel: ObservableObject {
                     progress: progress
                 )
                 progressObservation = nil
-                isImporting = false
+                importProgress = nil
                 importResultMessage = String.localizedStringWithFormat(
                     Strings.importResultFormat,
                     importResult.imported,
