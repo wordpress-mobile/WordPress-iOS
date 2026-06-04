@@ -7,13 +7,6 @@ import OHHTTPStubsSwift
 class BloggingPromptsServiceRemoteTests: RemoteTestCase, RESTTestable {
 
     private let siteID = NSNumber(value: 1)
-    private let utcTimeZone = TimeZone(secondsFromGMT: 0)!
-    private let dateFormatter: DateFormatter = {
-        let formatter = DateFormatter()
-        formatter.locale = .init(identifier: "en_US_POSIX")
-        formatter.dateFormat = "yyyy-MM-dd"
-        return formatter
-    }()
 
     var mockApi: WordPressComRestApi!
     var service: BloggingPromptsServiceRemote!
@@ -37,7 +30,11 @@ class BloggingPromptsServiceRemoteTests: RemoteTestCase, RESTTestable {
     // MARK: Tests
 
     func test_fetchSettings_returnsRemoteSettings() {
-        stubRemoteResponse(.bloggingPromptsEndpoint, filename: .mockFetchSettingsFilename, contentType: .ApplicationJSON)
+        stubRemoteResponse(
+            .bloggingPromptsEndpoint,
+            filename: .mockFetchSettingsFilename,
+            contentType: .ApplicationJSON
+        )
 
         let expect = expectation(description: "Fetch blogging prompts settings succeeded")
         service.fetchSettings(for: siteID) { result in
@@ -68,7 +65,11 @@ class BloggingPromptsServiceRemoteTests: RemoteTestCase, RESTTestable {
 
     func test_updateSettings_withUpdatedFields_returnsUpdatedSettings() {
         let updatedSettings = makeSettings()
-        stubRemoteResponse(.bloggingPromptsEndpoint, filename: .mockUpdateSettingsReturningObjectFilename, contentType: .ApplicationJSON)
+        stubRemoteResponse(
+            .bloggingPromptsEndpoint,
+            filename: .mockUpdateSettingsReturningObjectFilename,
+            contentType: .ApplicationJSON
+        )
 
         let expect = expectation(description: "Update blogging prompts settings succeeded")
         service.updateSettings(for: siteID, with: updatedSettings) { result in
@@ -86,7 +87,11 @@ class BloggingPromptsServiceRemoteTests: RemoteTestCase, RESTTestable {
 
     func test_updateSettings_withNoUpdatedFields_returnsNil() {
         let updatedSettings = makeSettings()
-        stubRemoteResponse(.bloggingPromptsEndpoint, filename: .mockUpdateSettingsReturningEmptyFilename, contentType: .ApplicationJSON)
+        stubRemoteResponse(
+            .bloggingPromptsEndpoint,
+            filename: .mockUpdateSettingsReturningEmptyFilename,
+            contentType: .ApplicationJSON
+        )
 
         let expect = expectation(description: "Update blogging prompts settings succeeded")
         service.updateSettings(for: siteID, with: updatedSettings) { result in
@@ -118,17 +123,19 @@ private extension BloggingPromptsServiceRemoteTests {
             sunday: true
         )
 
-        return .init(promptCardEnabled: false, promptRemindersEnabled: true, reminderDays: reminderDays, reminderTime: "12.59 UTC", isPotentialBloggingSite: true)
+        return .init(
+            promptCardEnabled: false,
+            promptRemindersEnabled: true,
+            reminderDays: reminderDays,
+            reminderTime: "12.59 UTC",
+            isPotentialBloggingSite: true
+        )
     }
 }
 
 private extension String {
     static let bloggingPromptsEndpoint = "sites/1/blogging-prompts"
-    static let settingsEndpoint = "sites/1/blogging-prompts/settings"
-    static let mockFileName = "blogging-prompts-success.json"
     static let mockFetchSettingsFilename = "blogging-prompts-settings-fetch-success.json"
     static let mockUpdateSettingsReturningObjectFilename = "blogging-prompts-settings-update-with-response.json"
     static let mockUpdateSettingsReturningEmptyFilename = "blogging-prompts-settings-update-empty-response.json"
-    static let numberKey = "number"
-    static let dateKey = "from"
 }
