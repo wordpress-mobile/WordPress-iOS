@@ -1,4 +1,4 @@
-/* Translation-Revision-Date: 2026-03-26 09:57:23+0000 */
+/* Translation-Revision-Date: 2026-06-02 09:56:04+0000 */
 /* Plural-Forms: nplurals=1; plural=0; */
 /* Generator: GlotPress/4.0.3 */
 /* Language: ja_JP */
@@ -6039,9 +6039,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Notification Settings switch for the app. */
 "Turning the switch off will disable all notifications from this app, regardless of type." = "オフにすると、通知の種類に関係なく、このアプリからの通知がすべて無効になります。";
 
-/* Title of button that displays the app's Twitter profile */
-"Twitter" = "Twitter";
-
 /* Title for the setting to edit the twitter username used when sharing to twitter. */
 "Twitter Username" = "Twitter ユーザー名";
 
@@ -7098,6 +7095,9 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Error message when XML-RPC is disabled on the WordPress site. The first argument is detailed error message */
 "addSite.selfHosted.xmlrpcDisabled" = "WordPress サイトに接続できませんでした。 サーバーで XML-RPC が無効になっている可能性があります。 この問題を解決するには、ホスティングサービスに連絡してください。";
 
+/* Error message when the app cannot find the XML-RPC endpoint of a self-hosted WordPress site */
+"addSite.selfHosted.xmlrpcEndpointNotFound" = "サイトの XML-RPC エンドポイントを特定できませんでした";
+
 /* Age between dates equaling one hour. */
 "an hour" = "1時間";
 
@@ -7823,8 +7823,17 @@ Example: Reply to Pamela Nguyen */
 /* Navigation bar title when leaving a editing an existing comment */
 "commentEdit.navigationTitle" = "コメントを編集";
 
+/* Title for the error notice shown when approving a comment fails. */
+"comments.approve.error.title" = "コメント承認エラー";
+
 /* Error title */
 "comments.failedToLike" = "コメントに「いいね」できませんでした";
+
+/* Title for the error notice shown when trashing a comment fails. */
+"comments.trash.error.title" = "コメントをゴミ箱に移動中にエラーが発生しました";
+
+/* Title for the error notice shown when unapproving a comment fails. */
+"comments.unapprove.error.title" = "コメント承認解除エラー";
 
 /* Error message informing a user about an invalid password. */
 "common.reEnterPasswordMessage" = "アプリに格納されているユーザー名またはパスワードが古い可能性があります。 設定にパスワードを再度入力して、もう一度お試しください。";
@@ -7871,6 +7880,9 @@ Example: Reply to Pamela Nguyen */
 /* Menu action to permanently delete a trashed post */
 "customPostList.action.deletePermanently" = "完全に削除";
 
+/* Menu action to create a draft copy of a post */
+"customPostList.action.duplicate" = "複製";
+
 /* Menu action to change a post's status to draft */
 "customPostList.action.moveToDraft" = "下書きに移動";
 
@@ -7916,6 +7928,12 @@ Example: Reply to Pamela Nguyen */
 /* Empty state message when no custom posts exist. %1$@ is the post type name (e.g., 'Podcasts', 'Products'). */
 "customPostList.emptyState.message" = "%1$@ なし";
 
+/* Short label for the swipe action to permanently delete a trashed post. Keep this translation short. */
+"customPostList.swipeAction.delete" = "削除";
+
+/* Short label for the swipe action to trash a post. Keep this translation short. */
+"customPostList.swipeAction.trash" = "ゴミ箱";
+
 /* Message for the confirmation alert when trashing a published post */
 "customPostList.trashConfirmation.message" = "この投稿は公開され、訪問者に表示されます。 ゴミ箱に移動してもよいですか ?";
 
@@ -7951,6 +7969,9 @@ Example: Reply to Pamela Nguyen */
 
 /* Tab title for trashed posts */
 "customPostTab.trash" = "ゴミ箱";
+
+/* Badge label indicating that custom post type support is a beta feature. Displayed next to the navigation title. */
+"customPostType.navigation.betaBadge" = "ベータ";
 
 /* Empty state message when there are no custom post types to display */
 "customPostTypes.emptyState.message" = "カスタム投稿タイプなし";
@@ -8950,6 +8971,153 @@ Example: Reply to Pamela Nguyen */
 /* Message stating that the user is unable to use Stats and Notifications because their site is connected to a different WordPress.com account */
 "jetpackSite.connectToDefaultAccount" = "「統計と通知」を使用するには、%@ でログインする必要があります。";
 
+/* Message shown at the top of the account confirmation screen when every available account is already connected to the site. */
+"jetpackSocial.accountConfirmation.allConnectedDescription" = "設定が完了しました。 利用可能なすべてのアカウントはすでにこのサイトに連携されており、新しい投稿は自動的に共有されます。 これは投稿の執筆時に変更できます。";
+
+/* Nav-bar button that finalizes the social connection after choosing an account. */
+"jetpackSocial.accountConfirmation.confirm" = "確認";
+
+/* Section header listing accounts already connected to this site. */
+"jetpackSocial.accountConfirmation.connectedSection" = "連携済み";
+
+/* Explanation text shown at the top of the account confirmation screen. */
+"jetpackSocial.accountConfirmation.description" = "このアカウントを連携しています。 新規投稿は自動的に共有されます。 これは投稿の執筆時に変更できます。";
+
+/* Button that dismisses the account confirmation screen when every account is already connected and there is nothing to confirm. */
+"jetpackSocial.accountConfirmation.done" = "完了";
+
+/* Loading caption while fetching accounts for the confirmation screen. */
+"jetpackSocial.accountConfirmation.loading" = "アカウントを読み込み中…";
+
+/* Footer caption below the 'Mark the connection as shared' toggle. */
+"jetpackSocial.accountConfirmation.markAsSharedFooter" = "有効にすると、すべての管理者、編集者、投稿者が連携を利用できます。 これは後から変更できます。";
+
+/* Toggle label controlling whether the new connection is shared with other site users. */
+"jetpackSocial.accountConfirmation.markAsSharedLabel" = "連携を共有済みとしてマーク";
+
+/* Button to retry a failed account fetch. */
+"jetpackSocial.accountConfirmation.retry" = "再試行";
+
+/* Navigation title of the account confirmation screen shown after OAuth. */
+"jetpackSocial.accountConfirmation.title" = "連携の確認";
+
+/* Toggle label controlling whether a connection is shared with all site users. */
+"jetpackSocial.connectionDetail.availableToAllUsers" = "すべてのユーザーが利用可能";
+
+/* Footer caption below the 'Available to all users' toggle. */
+"jetpackSocial.connectionDetail.availableToAllUsersFooter" = "この連携に対するサイトの全管理者およびユーザーの利用を許可する。";
+
+/* Section header on the connection detail screen. */
+"jetpackSocial.connectionDetail.settingsHeader" = "設定";
+
+/* Title of the alert shown when updating a social connection setting fails. */
+"jetpackSocial.connectionDetail.updateFailedTitle" = "連携を更新できませんでした";
+
+/* Error when a publicize connection ID can't be found. %1$@ is the connection ID. */
+"jetpackSocial.error.connectionNotFound" = "連携 %1$@ が見つかりませんでした。";
+
+/* Error shown when decoding a social sharing response fails. */
+"jetpackSocial.error.decoding" = "サーバーから予期しない応答を受信しました。";
+
+/* Error when a keyring token ID can't be found. %1$@ is the token ID. */
+"jetpackSocial.error.keyringNotFound" = "Keyring 連携 %1$@ が見つかりませんでした。";
+
+/* Link label that opens documentation explaining how to resolve a social sharing error. */
+"jetpackSocial.error.learnMore" = "さらに詳しく";
+
+/* Error shown when a social sharing network call fails. */
+"jetpackSocial.error.network" = "ネットワークエラーです。 接続を確認して、もう一度お試しください。";
+
+/* Error when the WP.com account has no authorized keyring for a given service. %1$@ is the service label (e.g. 'Mastodon'). */
+"jetpackSocial.error.noKeyringForService" = "%1$@ の連携済みアカウントがありません。";
+
+/* Error shown after Facebook OAuth when the user's account doesn't manage any Facebook Pages, since Publicize only targets Pages. */
+"jetpackSocial.error.noPagesForFacebook" = "Facebook との連携でページが見つかりません。 パブリサイズで Facebook のプロフィールに連携できません。連携できるのは公開されているページのみです。";
+
+/* Error shown when the WP.com auth token is missing or invalid. */
+"jetpackSocial.error.notAuthenticated" = "ソーシャルアカウントを管理するには、再度ログインする必要があります。";
+
+/* Generic fallback error for social sharing. */
+"jetpackSocial.error.unknown" = "エラーが発生しました。 もう一度お試しください。";
+
+/* Status text for a broken / invalid / refresh-failed connection. */
+"jetpackSocial.manageConnections.brokenStatus" = "注意が必要";
+
+/* Cancel button in the disconnect confirmation alert. */
+"jetpackSocial.manageConnections.cancel" = "キャンセル";
+
+/* Button on the Social screen that opens the add-connection modal. */
+"jetpackSocial.manageConnections.connectNewAccount" = "新しいアカウントを連携";
+
+/* Footer caption under the Connected Accounts section on the Social screen. */
+"jetpackSocial.manageConnections.connectedFooter" = "ソーシャルメディアアカウントを連携して、投稿公開時に投稿のアイキャッチ画像とコンテンツを、選択したチャンネルに送信します。";
+
+/* Section header listing currently connected social accounts. */
+"jetpackSocial.manageConnections.connectedHeader" = "連携済みアカウント";
+
+/* Button that removes a social sharing connection. */
+"jetpackSocial.manageConnections.delete" = "連携解除";
+
+/* Confirmation alert title. %1$@ is the connected account's display name. */
+"jetpackSocial.manageConnections.deleteConfirmTitle" = "%1$@ の連携を解除してもよいですか ?";
+
+/* Title of the alert shown when disconnecting a social connection fails. */
+"jetpackSocial.manageConnections.deleteFailedTitle" = "連携を解除できません";
+
+/* Footer caption under the list of services in the Connect Account picker modal. */
+"jetpackSocial.manageConnections.footer" = "お気に入りのソーシャルメディアサービスを連携して、新しい投稿を友達と自動的に共有します。";
+
+/* Button to retry a failed load. */
+"jetpackSocial.manageConnections.retry" = "再試行";
+
+/* Badge shown on connections that are shared with other site users. */
+"jetpackSocial.manageConnections.sharedBadge" = "共有済み";
+
+/* Title of the Social Sharing settings screen. */
+"jetpackSocial.manageConnections.title" = "ソーシャル";
+
+/* Confirm button in the disconnect confirmation alert. */
+"jetpackSocial.manageConnections.yes" = "はい";
+
+/* Navigation bar title of the OAuth webview. %1$@ is the service label (e.g. 'Mastodon'). */
+"jetpackSocial.oauthWebView.connectTitle" = "%1$@ に連携";
+
+/* Label above the optional custom social-sharing message field. */
+"jetpackSocial.postSection.customMessage" = "カスタムメッセージ";
+
+/* Placeholder for the optional custom social-sharing message field. */
+"jetpackSocial.postSection.customMessagePlaceholder" = "ここに、ソーシャルメディアの読者へのカスタムメッセージを書いてください。";
+
+/* Caption shown when the site has no social connections. */
+"jetpackSocial.postSection.empty" = "連携しているソーシャルアカウントはまだありません";
+
+/* Title of the row that opens the social sharing detail screen in Post Settings. */
+"jetpackSocial.postSection.header" = "ソーシャルメディアへ共有";
+
+/* Button to retry a failed load of the connections list. */
+"jetpackSocial.postSection.retry" = "再試行";
+
+/* Trailing value on the 'Share to Social' post settings row. %1$d is the enabled count, %2$d is the total. */
+"jetpackSocial.postSection.summary.format" = "%1$d\/%2$d";
+
+/* Footer below the per-connection toggles on the social sharing detail screen. */
+"jetpackSocial.postSection.togglesFooter" = "この投稿が公開されると、有効なアカウントに共有されます。";
+
+/* Notice shown after a social connection is successfully created. %1$@ is the service label. */
+"jetpackSocial.serviceDetail.connectedNotice" = "%1$@ が連携されました";
+
+/* Cancel button in the add-connection failure alert. */
+"jetpackSocial.serviceDetail.failureCancel" = "キャンセル";
+
+/* Retry button in the add-connection failure alert. */
+"jetpackSocial.serviceDetail.failureRetry" = "再試行";
+
+/* Title of the alert shown when adding a social connection fails. */
+"jetpackSocial.serviceDetail.failureTitle" = "連携に失敗しました";
+
+/* Navigation bar title of the service picker modal shown when adding a new social connection. */
+"jetpackSocial.servicePicker.title" = "アカウントを連携";
+
 /* Accessibility label for add card button */
 "jetpackStats.accessibility.addCardButton" = "新しい統計カードを追加";
 
@@ -9433,6 +9601,9 @@ Example: Reply to Pamela Nguyen */
 
 /* Title for weekly activity heatmap */
 "jetpackStats.postDetails.weeklyActivity" = "週ごとのアクティビティ";
+
+/* Confirmation message when marking a referrer as spam. %1$@ is the domain name. */
+"jetpackStats.referrerDetails.confirmAsSpam.message" = "「%1$@」をスパムとしてマークすると、今後の統計情報で非表示になります。 これは Web インターフェイスを使用していつでも取り消すことができます。";
 
 /* Title for error alert when marking referrer as spam fails */
 "jetpackStats.referrerDetails.errorAlertTitle" = "エラー";
@@ -11811,6 +11982,9 @@ Example: given a notice format "Following %@" and empty site name, this will be 
 "reader.welcome.subtitle" = "最大のブログコミュニティに参加";
 
 /* Reader app primary navigation tab bar */
+"readerApp.tabBar.discover" = "ディスカバー";
+
+/* Reader app primary navigation tab bar */
 "readerApp.tabBar.me" = "自分";
 
 /* Reader app primary navigation tab bar */
@@ -11964,7 +12138,7 @@ Example: given a notice format "Following %@" and empty site name, this will be 
 "shared.button.edit" = "編集";
 
 /* A shared button title used in different contexts */
-"shared.button.notNow" = "今すぐ";
+"shared.button.notNow" = "後で";
 
 /* A shared button title used in different contexts */
 "shared.button.remove" = "削除";
@@ -12142,6 +12316,9 @@ Example: given a notice format "Following %@" and empty site name, this will be 
 
 /* Default text for adding a new item when no label is provided */
 "siteCustomTaxonomies.defaultAddNew" = "追加";
+
+/* Description for empty state when there are no custom taxonomies */
+"siteCustomTaxonomies.empty.description" = "タクソノミーは、標準のカテゴリーとタグを超えてコンテンツを整理するのに役立ちます。";
 
 /* Title for empty state when there are no custom taxonomies */
 "siteCustomTaxonomies.empty.title" = "カスタムタクソノミーはありません";

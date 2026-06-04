@@ -96,7 +96,7 @@ public struct JetpackScanThreat: Decodable {
         description = try container.decode(String.self, forKey: .description)
         firstDetected = try container.decode(Date.self, forKey: .firstDetected)
         fixedOn = try container.decodeIfPresent(Date.self, forKey: .fixedOn)
-        fixable = try? container.decodeIfPresent(JetpackScanThreatFixer.self, forKey: .fixable) ?? nil
+        fixable = try? container.decodeIfPresent(JetpackScanThreatFixer.self, forKey: .fixable)
         `extension` = try container.decodeIfPresent(JetpackThreatExtension.self, forKey: .extension)
         diff = try container.decodeIfPresent(String.self, forKey: .diff)
         rows = try container.decodeIfPresent([String: Any].self, forKey: .rows)

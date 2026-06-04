@@ -1,4 +1,7 @@
-- Log Aktivitas sekarang muncul saat situs Anda diperbarui menggunakan agen AI.
-- Dalam Pengaturan Pos, kartu Berbagi di Media Sosial hanya menunjukkan platforms yang didukung aplikasi.
-- Pos baru menggunakan format pos default, bukan versi standarnya. Anda dapat memperbarui format ini dalam pengaturan situs Anda.
-- Jika situs Anda dihosting sendiri dengan XML-RPC yang dinonaktifkan, Anda dapat melihat Pos dan Halaman di aplikasi. Menurut kami fitur itu cukup penting.
+Jika Anda memiliki situs yang di-hosting sendiri, kini Anda perlu login ke aplikasi menggunakan kata sandi aplikasi. Jika Anda belum memiliki kata sandi aplikasi, kami akan membuatnya secara otomatis agar siap digunakan saat dibutuhkan.
+
+Jika Anda menghapus komentar dengan tindakan geser, komentar tersebut akan hilang dari daftar. Selamat tinggal.
+
+Kami memperbaiki masalah yang menyebabkan tampilan footer di Penyuntingan Menu tidak menyesuaikan ukurannya. Hasilnya, tombol tindakan kini muncul dengan jelas dalam bahasa selain bahasa Inggris.
+
+Kami menghapus tautan X yang tidak berfungsi pada layar Tentang. (Apresiasi untuk @zynp-KC atas laporannya.)

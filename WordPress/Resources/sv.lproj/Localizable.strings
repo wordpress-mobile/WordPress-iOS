@@ -1,4 +1,4 @@
-/* Translation-Revision-Date: 2026-03-26 09:54:43+0000 */
+/* Translation-Revision-Date: 2026-05-28 09:56:21+0000 */
 /* Plural-Forms: nplurals=2; plural=n != 1; */
 /* Generator: GlotPress/4.0.3 */
 /* Language: sv_SE */
@@ -6042,9 +6042,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Notification Settings switch for the app. */
 "Turning the switch off will disable all notifications from this app, regardless of type." = "Om du stänger av detta reglage blockeras alla aviseringar från appen, oavsett deras typ.";
 
-/* Title of button that displays the app's Twitter profile */
-"Twitter" = "Twitter";
-
 /* Title for the setting to edit the twitter username used when sharing to twitter. */
 "Twitter Username" = "Twitter-användarnamn";
 
@@ -7107,6 +7104,9 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Error message when XML-RPC is disabled on the WordPress site. The first argument is detailed error message */
 "addSite.selfHosted.xmlrpcDisabled" = "Det gick inte att ansluta till WordPress-webbplatsen. XML-RPC kan ha inaktiverats på servern. Kontakta ditt webbhotell för att lösa detta problem.";
 
+/* Error message when the app cannot find the XML-RPC endpoint of a self-hosted WordPress site */
+"addSite.selfHosted.xmlrpcEndpointNotFound" = "Det gick inte att fastställa webbplatsens XML-RPC-ändpunkt";
+
 /* Age between dates equaling one hour. */
 "an hour" = "en timme";
 
@@ -7844,8 +7844,17 @@ Example: Reply to Pamela Nguyen */
 /* Navigation bar title when leaving a editing an existing comment */
 "commentEdit.navigationTitle" = "Redigera kommentar";
 
+/* Title for the error notice shown when approving a comment fails. */
+"comments.approve.error.title" = "Det gick inte att godkänna kommentaren";
+
 /* Error title */
 "comments.failedToLike" = "Misslyckades att gilla kommentar";
+
+/* Title for the error notice shown when trashing a comment fails. */
+"comments.trash.error.title" = "Det gick inte att ta bort kommentaren";
+
+/* Title for the error notice shown when unapproving a comment fails. */
+"comments.unapprove.error.title" = "Det gick inte att ångra godkännande av kommentaren";
 
 /* Error message informing a user about an invalid password. */
 "common.reEnterPasswordMessage" = "Användarnamnet eller lösenordet som är lagrat i appen kan vara inaktuellt. Ange ditt lösenord i inställningarna och försök igen.";
@@ -7895,6 +7904,9 @@ Example: Reply to Pamela Nguyen */
 /* Menu action to permanently delete a trashed post */
 "customPostList.action.deletePermanently" = "Ta bort permanent";
 
+/* Menu action to create a draft copy of a post */
+"customPostList.action.duplicate" = "Duplicera";
+
 /* Menu action to change a post's status to draft */
 "customPostList.action.moveToDraft" = "Flytta till utkast";
 
@@ -7940,6 +7952,12 @@ Example: Reply to Pamela Nguyen */
 /* Empty state message when no custom posts exist. %1$@ is the post type name (e.g., 'Podcasts', 'Products'). */
 "customPostList.emptyState.message" = "Inget %1$@";
 
+/* Short label for the swipe action to permanently delete a trashed post. Keep this translation short. */
+"customPostList.swipeAction.delete" = "Ta bort";
+
+/* Short label for the swipe action to trash a post. Keep this translation short. */
+"customPostList.swipeAction.trash" = "Papperskorg";
+
 /* Message for the confirmation alert when trashing a published post */
 "customPostList.trashConfirmation.message" = "Det här inlägget är publicerat och synligt för besökare. Är du säker på att du vill flytta det till papperskorgen?";
 
@@ -7975,6 +7993,9 @@ Example: Reply to Pamela Nguyen */
 
 /* Tab title for trashed posts */
 "customPostTab.trash" = "Papperskorg";
+
+/* Badge label indicating that custom post type support is a beta feature. Displayed next to the navigation title. */
+"customPostType.navigation.betaBadge" = "BETA";
 
 /* Empty state message when there are no custom post types to display */
 "customPostTypes.emptyState.message" = "Inga anpassade inläggstyper";
@@ -8977,6 +8998,159 @@ Example: Reply to Pamela Nguyen */
 /* Message stating that the user is unable to use Stats and Notifications because their site is connected to a different WordPress.com account */
 "jetpackSite.connectToDefaultAccount" = "Du behöver logga in med %@ för att använda statistik och aviseringar.";
 
+/* Message shown at the top of the account confirmation screen when every available account is already connected to the site. */
+"jetpackSocial.accountConfirmation.allConnectedDescription" = "Allt är klart. Alla tillgängliga konton är redan anslutna till denna webbplats och dina nya inlägg kommer att delas automatiskt. Du kan ändra detta när du skriver ett inlägg.";
+
+/* Nav-bar button that finalizes the social connection after choosing an account. */
+"jetpackSocial.accountConfirmation.confirm" = "Bekräfta";
+
+/* Section header listing accounts already connected to this site. */
+"jetpackSocial.accountConfirmation.connectedSection" = "Ansluten";
+
+/* Explanation text shown at the top of the account confirmation screen. */
+"jetpackSocial.accountConfirmation.description" = "Du ansluter detta konto. Nya inlägg kommer automatiskt att delas till det. Du kan ändra detta när du skriver ett inlägg.";
+
+/* Button that dismisses the account confirmation screen when every account is already connected and there is nothing to confirm. */
+"jetpackSocial.accountConfirmation.done" = "Klar";
+
+/* Loading caption while fetching accounts for the confirmation screen. */
+"jetpackSocial.accountConfirmation.loading" = "Hämtar konton ...";
+
+/* Footer caption below the 'Mark the connection as shared' toggle. */
+"jetpackSocial.accountConfirmation.markAsSharedFooter" = "Om detta är aktiverat kommer anslutningen att vara tillgänglig för alla administratörer, redaktörer och författare. Du kan ändra detta senare.";
+
+/* Toggle label controlling whether the new connection is shared with other site users. */
+"jetpackSocial.accountConfirmation.markAsSharedLabel" = "Markera anslutningen som delad";
+
+/* Button to retry a failed account fetch. */
+"jetpackSocial.accountConfirmation.retry" = "Försök igen";
+
+/* Navigation title of the account confirmation screen shown after OAuth. */
+"jetpackSocial.accountConfirmation.title" = "Anslutningsbekräftelse";
+
+/* Toggle label controlling whether a connection is shared with all site users. */
+"jetpackSocial.connectionDetail.availableToAllUsers" = "Tillgängligt för alla användare";
+
+/* Footer caption below the 'Available to all users' toggle. */
+"jetpackSocial.connectionDetail.availableToAllUsersFooter" = "Tillåta att denna anslutning används av alla administratörer och användare av din webbplats.";
+
+/* Section header on the connection detail screen. */
+"jetpackSocial.connectionDetail.settingsHeader" = "Inställningar";
+
+/* Dismiss button in the social connection update failure alert. */
+"jetpackSocial.connectionDetail.updateFailedDismiss" = "OK";
+
+/* Title of the alert shown when updating a social connection setting fails. */
+"jetpackSocial.connectionDetail.updateFailedTitle" = "Kunde inte uppdatera anslutning";
+
+/* Error when a publicize connection ID can't be found. %1$@ is the connection ID. */
+"jetpackSocial.error.connectionNotFound" = "Anslutning %1$@ hittades inte.";
+
+/* Error shown when decoding a social sharing response fails. */
+"jetpackSocial.error.decoding" = "Mottog ett oväntat svar från servern.";
+
+/* Error when a keyring token ID can't be found. %1$@ is the token ID. */
+"jetpackSocial.error.keyringNotFound" = "Nyckelringsanslutning %1$@ hittades inte.";
+
+/* Link label that opens documentation explaining how to resolve a social sharing error. */
+"jetpackSocial.error.learnMore" = "Lär dig mer";
+
+/* Error shown when a social sharing network call fails. */
+"jetpackSocial.error.network" = "Nätverksfel. Kontrollera din anslutning och försök igen.";
+
+/* Error when the WP.com account has no authorized keyring for a given service. %1$@ is the service label (e.g. 'Mastodon'). */
+"jetpackSocial.error.noKeyringForService" = "Inga anslutna konton för %1$@.";
+
+/* Error shown after Facebook OAuth when the user's account doesn't manage any Facebook Pages, since Publicize only targets Pages. */
+"jetpackSocial.error.noPagesForFacebook" = "Facebook-anslutningen kan inte hitta några sidor. Offentliggör kan inte ansluta till Facebook-profiler, endast publicerade sidor.";
+
+/* Error shown when the WP.com auth token is missing or invalid. */
+"jetpackSocial.error.notAuthenticated" = "Du måste logga in igen för att hantera sociala konton.";
+
+/* Generic fallback error for social sharing. */
+"jetpackSocial.error.unknown" = "Något gick fel. Försök igen.";
+
+/* Status text for a broken / invalid / refresh-failed connection. */
+"jetpackSocial.manageConnections.brokenStatus" = "Behöver uppmärksamhet";
+
+/* Cancel button in the disconnect confirmation alert. */
+"jetpackSocial.manageConnections.cancel" = "Avbryt";
+
+/* Button on the Social screen that opens the add-connection modal. */
+"jetpackSocial.manageConnections.connectNewAccount" = "Anslut ett nytt konto";
+
+/* Footer caption under the Connected Accounts section on the Social screen. */
+"jetpackSocial.manageConnections.connectedFooter" = "Anslut dina konton på sociala medier och skicka ett inläggs utvalda bild och innehåll till de valda kanalerna med ett enda klick när inlägget publiceras.";
+
+/* Section header listing currently connected social accounts. */
+"jetpackSocial.manageConnections.connectedHeader" = "Anslutna konton";
+
+/* Button that removes a social sharing connection. */
+"jetpackSocial.manageConnections.delete" = "Koppla från";
+
+/* Confirmation alert title. %1$@ is the connected account's display name. */
+"jetpackSocial.manageConnections.deleteConfirmTitle" = "Är du säker på att du vill koppla från %1$@?";
+
+/* Dismiss button in the disconnect failure alert. */
+"jetpackSocial.manageConnections.deleteFailedDismiss" = "OK";
+
+/* Title of the alert shown when disconnecting a social connection fails. */
+"jetpackSocial.manageConnections.deleteFailedTitle" = "Kunde inte koppla från";
+
+/* Footer caption under the list of services in the Connect Account picker modal. */
+"jetpackSocial.manageConnections.footer" = "Anslut dina favoritnätverk på sociala medier för att automatiskt dela nya inlägg med dina vänner.";
+
+/* Button to retry a failed load. */
+"jetpackSocial.manageConnections.retry" = "Försök igen";
+
+/* Badge shown on connections that are shared with other site users. */
+"jetpackSocial.manageConnections.sharedBadge" = "Delad";
+
+/* Title of the Social Sharing settings screen. */
+"jetpackSocial.manageConnections.title" = "Socialt";
+
+/* Confirm button in the disconnect confirmation alert. */
+"jetpackSocial.manageConnections.yes" = "Ja";
+
+/* Navigation bar title of the OAuth webview. %1$@ is the service label (e.g. 'Mastodon'). */
+"jetpackSocial.oauthWebView.connectTitle" = "Anslut till %1$@";
+
+/* Label above the optional custom social-sharing message field. */
+"jetpackSocial.postSection.customMessage" = "Anpassat meddelande";
+
+/* Placeholder for the optional custom social-sharing message field. */
+"jetpackSocial.postSection.customMessagePlaceholder" = "Skriv ett anpassat meddelande här för din publik på sociala medier.";
+
+/* Caption shown when the site has no social connections. */
+"jetpackSocial.postSection.empty" = "Inga sociala media-konton anslutna än.";
+
+/* Title of the row that opens the social sharing detail screen in Post Settings. */
+"jetpackSocial.postSection.header" = "Dela på sociala medier";
+
+/* Button to retry a failed load of the connections list. */
+"jetpackSocial.postSection.retry" = "Försök igen";
+
+/* Trailing value on the 'Share to Social' post settings row. %1$d is the enabled count, %2$d is the total. */
+"jetpackSocial.postSection.summary.format" = "%1$d av %2$d";
+
+/* Footer below the per-connection toggles on the social sharing detail screen. */
+"jetpackSocial.postSection.togglesFooter" = "När detta inlägg publiceras kommer det att delas till de aktiverade kontona.";
+
+/* Notice shown after a social connection is successfully created. %1$@ is the service label. */
+"jetpackSocial.serviceDetail.connectedNotice" = "%1$@ ansluten";
+
+/* Cancel button in the add-connection failure alert. */
+"jetpackSocial.serviceDetail.failureCancel" = "Avbryt";
+
+/* Retry button in the add-connection failure alert. */
+"jetpackSocial.serviceDetail.failureRetry" = "Försök igen";
+
+/* Title of the alert shown when adding a social connection fails. */
+"jetpackSocial.serviceDetail.failureTitle" = "Anslutning misslyckades";
+
+/* Navigation bar title of the service picker modal shown when adding a new social connection. */
+"jetpackSocial.servicePicker.title" = "Anslut konto";
+
 /* Accessibility label for add card button */
 "jetpackStats.accessibility.addCardButton" = "Lägg till nytt kort med statistik";
 
@@ -9481,6 +9655,9 @@ Example: Reply to Pamela Nguyen */
 
 /* Title for weekly activity heatmap */
 "jetpackStats.postDetails.weeklyActivity" = "Veckoaktivitet";
+
+/* Confirmation message when marking a referrer as spam. %1$@ is the domain name. */
+"jetpackStats.referrerDetails.confirmAsSpam.message" = "Att markera ”%1$@” som skräppost kommer att dölja det från din framtida statistik. Du kan ångra detta när som helst med webbgränssnittet.";
 
 /* Title for error alert when marking referrer as spam fails */
 "jetpackStats.referrerDetails.errorAlertTitle" = "Fel";
@@ -11707,12 +11884,6 @@ Example: given a notice format "Following %@" and empty site name, this will be 
 /* Describes that the slider is used to customize the text size in the Reader. */
 "reader.preferences.control.sizeSlider.description" = "Storlek";
 
-/* Text for a small label in the navigation bar that hints that this is an experimental feature.
-
-The enclosing angled brackets ('<' and '>') are decorative and only intended as a flavor.
-Feel free to replace it with other bracket types that you think looks better for the locale. */
-"reader.preferences.navBar.experimental.label" = "<Experimental>";
-
 /* Description text for the preview section of Reader Preferences */
 "reader.preferences.preview.body.text" = "Välj dina färger, typsnitt och storlekar. Förhandsgranska ditt val här och läs inlägg med dina stilar när du är klar.";
 
@@ -12075,7 +12246,7 @@ Feel free to replace it with other bracket types that you think looks better for
 "shared.button.edit" = "Redigera";
 
 /* A shared button title used in different contexts */
-"shared.button.notNow" = "Nu nu";
+"shared.button.notNow" = "Inte nu";
 
 /* A shared button title used in different contexts */
 "shared.button.ok" = "OK";

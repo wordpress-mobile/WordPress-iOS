@@ -49,7 +49,7 @@ import Foundation
     public init(dictionary: [String: Any]) {
         blogUrl = dictionary["url"] as? String ?? ""
         blogName = dictionary["name"] as? String ?? ""
-        blogID = dictionary["id"] as? NSNumber ?? nil
+        blogID = dictionary["id"] as? NSNumber
 
         iconUrl = {
             if let iconInfo = dictionary["icon"] as? [String: Any],

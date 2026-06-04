@@ -20,7 +20,7 @@ class AztecNavigationController: UINavigationController {
         return delegate as? AztecNavigationControllerDelegate
     }
 
-    // MARK: - Overriden Methods
+    // MARK: - Overridden Methods
 
     override func dismiss(animated flag: Bool, completion: (() -> Void)? = nil) {
         guard let alertController = presentedViewController as? UIAlertController else {

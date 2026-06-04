@@ -1876,9 +1876,6 @@
    Try to load the list of interests again. */
 "Try Again" = "Reyna aftur";
 
-/* Title of button that displays the app's Twitter profile */
-"Twitter" = "Twitter";
-
 /* Title for the setting to edit the twitter username used when sharing to twitter. */
 "Twitter Username" = "Twitter notandanafn";
 

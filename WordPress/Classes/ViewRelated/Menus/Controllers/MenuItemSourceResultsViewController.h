@@ -45,7 +45,7 @@ NS_ASSUME_NONNULL_BEGIN
 @property (nonatomic, assign) BOOL defersFooterViewMessageUpdates;
 
 /**
- Refreshes any data appearences within the view.
+ Refreshes any data appearances within the view.
  */
 - (void)refresh;
 
@@ -157,7 +157,7 @@ NS_ASSUME_NONNULL_BEGIN
 @protocol MenuItemSourceResultsViewControllerDelegate <NSObject>
 
 /**
- Helper method for informing whether or not the name should be overriden by itemType changes.
+ Helper method for informing whether or not the name should be overridden by itemType changes.
  */
 - (BOOL)sourceResultsViewControllerCanOverrideItemName:(MenuItemSourceResultsViewController *)sourceResultsViewController;
 

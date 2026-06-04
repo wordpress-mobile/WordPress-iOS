@@ -1,21 +1,18 @@
-Who’s who on your website? Now you know—Push notifications now use gravatars so you can see who commented or interacted with your content. The Activity Log also shows when your site was updated using AI agents.
+If you have a self-hosted site, you’ll now sign in to the app using an application password. If you don’t have one, we’ll automatically create one for you so it’s ready when you need it.
 
-If you thought our last updates to the Stats were big, you haven’t seen anything yet.
+We added smart cropping for featured images in the Reader feed. That way, images of people won’t have their heads cut off. Much preferred.
 
-- Today’s date is now included in intervals like “Last 7 days.” We also added a new “Last 14 days” interval.
-- Incomplete dates, including today, are shown on the line chart as a dotted line. You can see them more easily in the bar chart view as well.
-- Speaking of bar charts, tapping on a bar will show you the data for that date. This makes it easier to scroll through data for multiple days. Oh, and tapping a bar will no longer select the bar next to it.
-- You might notice visual changes like a smaller Chart card header, smaller fonts in tabs, and reduced spacing here and there. It’s giving minimalist.
+There’s now a confirmation dialog for when you’re marking a referring traffic source as spam. It should be really, really hard to do it by accident.
 
-While we were at it, we made changes to the Reader, too. (Incidentally, none of them are related to reading.)
+As part of this update, we also squashed several bugs.
 
-- When you view an image in a lightbox, swiping downward will dismiss it, even when you’re zoomed in.
-- We fixed the color of links in comments and in dark mode on custom themes. Looking good.
-- You can view media galleries in fullscreen mode. Just swipe right or left to view all images.
-
-And because we still had a little free time, we also fixed a few details that were bothering us.
-
-- We updated the arrow icons and spacing on the Notifications screen.
-- In Post Settings, the Social Sharing card only shows platforms that the app supports.
-- New posts use the default post format instead of the standard version. You can update this format in your site settings.
-- If your site is self-hosted with XML-RPC disabled, you can see Posts and Pages in the app. That’s pretty important, if we do say so ourselves.
+- The timezone label on the Stats screen no longer shows Standard Time during Daylight Savings Time. (Thanks for the catch, @btraviswright!)
+- The Articles screen now shows reader comments when they’re posted from the inline section.
+- The Subscribe button works properly in Freshly Pressed posts, so you can subscribe to a feed from within a post. Fast, easy, and oh-so-fresh.
+- Footnote links in the Reader now work as they’re supposed to and jump to the correct location when you tap them.
+- In Reader Comments, the empty state disappears after you post a comment. Cached comments also disappear after they’re deleted, including when you use the swipe action. So long, farewell.
+- We fixed assorted design and visibility issues, like button styles, comment separators in Dark Mode, and controls for autoplay videos.
+- In the Reader, we fixed a couple of issues with Notification Settings. They’re now hidden when you aren’t subscribed, and they show up properly when you subscribe.
+- We fixed an issue where the footer view in Menu Editing wasn’t resizing. As a result, action buttons are now legible in non-English languages. Muy bueno.
+- We solved an issue with incorrect avatars in notifications. If you cancel your image download, it won’t appear in the app.
+- We removed the non-functional X link on the About screen. (Shout-out to @zynp-KC for reporting!)

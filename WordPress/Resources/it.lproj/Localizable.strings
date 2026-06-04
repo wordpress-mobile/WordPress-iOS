@@ -1,4 +1,4 @@
-/* Translation-Revision-Date: 2026-03-26 09:56:52+0000 */
+/* Translation-Revision-Date: 2026-05-27 18:58:03+0000 */
 /* Plural-Forms: nplurals=2; plural=n != 1; */
 /* Generator: GlotPress/4.0.3 */
 /* Language: it */
@@ -6042,9 +6042,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Notification Settings switch for the app. */
 "Turning the switch off will disable all notifications from this app, regardless of type." = "La disattivazione dell'interruttore causerà la disabilitazione di tutte le notifiche da questa applicazione, indipendentemente dal tipo.";
 
-/* Title of button that displays the app's Twitter profile */
-"Twitter" = "Twitter";
-
 /* Title for the setting to edit the twitter username used when sharing to twitter. */
 "Twitter Username" = "Nome utente su Twitter";
 
@@ -7104,6 +7101,9 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Error message when XML-RPC is disabled on the WordPress site. The first argument is detailed error message */
 "addSite.selfHosted.xmlrpcDisabled" = "Impossibile connettersi al sito WordPress. XML-RPC potrebbe essere stato disabilitato sul server. Contatta il fornitore del servizio di hosting per risolvere questo problema.";
 
+/* Error message when the app cannot find the XML-RPC endpoint of a self-hosted WordPress site */
+"addSite.selfHosted.xmlrpcEndpointNotFound" = "Impossibile determinare l'endpoint XML-RPC del sito";
+
 /* Age between dates equaling one hour. */
 "an hour" = "un'ora";
 
@@ -7835,8 +7835,17 @@ Example: Reply to Pamela Nguyen */
 /* Navigation bar title when leaving a editing an existing comment */
 "commentEdit.navigationTitle" = "Modifica commento";
 
+/* Title for the error notice shown when approving a comment fails. */
+"comments.approve.error.title" = "Errore durante l'approvazione del commento";
+
 /* Error title */
 "comments.failedToLike" = "Impossibile mettere Mi piace al commento";
+
+/* Title for the error notice shown when trashing a comment fails. */
+"comments.trash.error.title" = "Errore durante lo spostamento nel cestino del commento";
+
+/* Title for the error notice shown when unapproving a comment fails. */
+"comments.unapprove.error.title" = "Errore durante la rimozione dell'approvazione del commento";
 
 /* Error message informing a user about an invalid password. */
 "common.reEnterPasswordMessage" = "L'aggiornamento della password memorizzata o del nome utente memorizzato nell'app potrebbe non essere stato eseguito. Inserisci nuovamente la password nelle impostazioni e riprova.";
@@ -7883,6 +7892,9 @@ Example: Reply to Pamela Nguyen */
 /* Menu action to permanently delete a trashed post */
 "customPostList.action.deletePermanently" = "Elimina in modo permanente";
 
+/* Menu action to create a draft copy of a post */
+"customPostList.action.duplicate" = "Duplica";
+
 /* Menu action to change a post's status to draft */
 "customPostList.action.moveToDraft" = "Sposta in bozze";
 
@@ -7924,6 +7936,12 @@ Example: Reply to Pamela Nguyen */
 
 /* Title for the confirmation alert when permanently deleting a post */
 "customPostList.deleteConfirmation.title" = "Eliminare in modo permanente?";
+
+/* Short label for the swipe action to permanently delete a trashed post. Keep this translation short. */
+"customPostList.swipeAction.delete" = "Elimina";
+
+/* Short label for the swipe action to trash a post. Keep this translation short. */
+"customPostList.swipeAction.trash" = "Cestino";
 
 /* Message for the confirmation alert when trashing a published post */
 "customPostList.trashConfirmation.message" = "Questo articolo è pubblicato e visibile ai visitatori. Desideri spostarlo nel cestino?";
@@ -8956,6 +8974,150 @@ Example: Reply to Pamela Nguyen */
 /* Message stating that the user is unable to use Stats and Notifications because their site is connected to a different WordPress.com account */
 "jetpackSite.connectToDefaultAccount" = "Devi accedere con %@ per poter utilizzare le Statistiche e le Notifiche.";
 
+/* Message shown at the top of the account confirmation screen when every available account is already connected to the site. */
+"jetpackSocial.accountConfirmation.allConnectedDescription" = "È tutto configurato. Tutti gli account disponibili sono già collegati a questo sito e i tuoi nuovi articoli verranno condivisi automaticamente. Puoi modificare questa impostazione mentre scrivi un articolo.";
+
+/* Nav-bar button that finalizes the social connection after choosing an account. */
+"jetpackSocial.accountConfirmation.confirm" = "Conferma";
+
+/* Section header listing accounts already connected to this site. */
+"jetpackSocial.accountConfirmation.connectedSection" = "Connesso";
+
+/* Explanation text shown at the top of the account confirmation screen. */
+"jetpackSocial.accountConfirmation.description" = "Stai connettendo questo account. I nuovi articoli verranno condivisi automaticamente. Puoi modificare questa impostazione mentre scrivi un articolo.";
+
+/* Button that dismisses the account confirmation screen when every account is already connected and there is nothing to confirm. */
+"jetpackSocial.accountConfirmation.done" = "Fatto";
+
+/* Loading caption while fetching accounts for the confirmation screen. */
+"jetpackSocial.accountConfirmation.loading" = "Caricamento degli account in corso…";
+
+/* Footer caption below the 'Mark the connection as shared' toggle. */
+"jetpackSocial.accountConfirmation.markAsSharedFooter" = "Se abilitata, la connessione sarà disponibile per tutti gli amministratori, i redattori e gli autori. Puoi modificarlo quando vuoi.";
+
+/* Toggle label controlling whether the new connection is shared with other site users. */
+"jetpackSocial.accountConfirmation.markAsSharedLabel" = "Contrassegna la connessione come condivisa";
+
+/* Button to retry a failed account fetch. */
+"jetpackSocial.accountConfirmation.retry" = "Riprova";
+
+/* Navigation title of the account confirmation screen shown after OAuth. */
+"jetpackSocial.accountConfirmation.title" = "Conferma connessione";
+
+/* Toggle label controlling whether a connection is shared with all site users. */
+"jetpackSocial.connectionDetail.availableToAllUsers" = "Disponibile a tutti gli utenti";
+
+/* Footer caption below the 'Available to all users' toggle. */
+"jetpackSocial.connectionDetail.availableToAllUsersFooter" = "Consenti che questa connessione venga utilizzata da tutti gli amministratori e tutti gli utenti del tuo sito.";
+
+/* Section header on the connection detail screen. */
+"jetpackSocial.connectionDetail.settingsHeader" = "Impostazioni";
+
+/* Title of the alert shown when updating a social connection setting fails. */
+"jetpackSocial.connectionDetail.updateFailedTitle" = "Impossibile aggiornare la connessione";
+
+/* Error when a publicize connection ID can't be found. %1$@ is the connection ID. */
+"jetpackSocial.error.connectionNotFound" = "Connessione %1$@ non trovata.";
+
+/* Error shown when decoding a social sharing response fails. */
+"jetpackSocial.error.decoding" = "Ricevuta una risposta inaspettata dal server.";
+
+/* Error when a keyring token ID can't be found. %1$@ is the token ID. */
+"jetpackSocial.error.keyringNotFound" = "Connessione Keyring %1$@ non trovata.";
+
+/* Link label that opens documentation explaining how to resolve a social sharing error. */
+"jetpackSocial.error.learnMore" = "Scopri di più";
+
+/* Error shown when a social sharing network call fails. */
+"jetpackSocial.error.network" = "Errore di rete. Controlla la connessione e riprova.";
+
+/* Error when the WP.com account has no authorized keyring for a given service. %1$@ is the service label (e.g. 'Mastodon'). */
+"jetpackSocial.error.noKeyringForService" = "Nessun account connesso per %1$@.";
+
+/* Error shown after Facebook OAuth when the user's account doesn't manage any Facebook Pages, since Publicize only targets Pages. */
+"jetpackSocial.error.noPagesForFacebook" = "La connessione a Facebook non riesce a trovare alcuna pagina. Pubblicizza non può connettersi ai profili Facebook, bensì solo alle pagine pubblicate.";
+
+/* Error shown when the WP.com auth token is missing or invalid. */
+"jetpackSocial.error.notAuthenticated" = "Devi accedere di nuovo per gestire gli account social.";
+
+/* Generic fallback error for social sharing. */
+"jetpackSocial.error.unknown" = "Si è verificato un problema. Riprova.";
+
+/* Status text for a broken / invalid / refresh-failed connection. */
+"jetpackSocial.manageConnections.brokenStatus" = "Ha bisogno di attenzione";
+
+/* Cancel button in the disconnect confirmation alert. */
+"jetpackSocial.manageConnections.cancel" = "Annulla";
+
+/* Button on the Social screen that opens the add-connection modal. */
+"jetpackSocial.manageConnections.connectNewAccount" = "Connetti un nuovo account";
+
+/* Footer caption under the Connected Accounts section on the Social screen. */
+"jetpackSocial.manageConnections.connectedFooter" = "Connetti i tuoi account dei social media e invia l'immagine in evidenza e il contenuto di un articolo ai canali selezionati dopo la sua pubblicazione.";
+
+/* Section header listing currently connected social accounts. */
+"jetpackSocial.manageConnections.connectedHeader" = "Account connessi";
+
+/* Button that removes a social sharing connection. */
+"jetpackSocial.manageConnections.delete" = "Disconnetti";
+
+/* Confirmation alert title. %1$@ is the connected account's display name. */
+"jetpackSocial.manageConnections.deleteConfirmTitle" = "Desideri disconnettere %1$@?";
+
+/* Title of the alert shown when disconnecting a social connection fails. */
+"jetpackSocial.manageConnections.deleteFailedTitle" = "Impossibile disconnettersi";
+
+/* Footer caption under the list of services in the Connect Account picker modal. */
+"jetpackSocial.manageConnections.footer" = "Connetti i tuoi servizi di social media preferiti per condividere automaticamente i nuovi articoli con gli amici.";
+
+/* Button to retry a failed load. */
+"jetpackSocial.manageConnections.retry" = "Riprova";
+
+/* Badge shown on connections that are shared with other site users. */
+"jetpackSocial.manageConnections.sharedBadge" = "Condiviso";
+
+/* Confirm button in the disconnect confirmation alert. */
+"jetpackSocial.manageConnections.yes" = "Sì";
+
+/* Navigation bar title of the OAuth webview. %1$@ is the service label (e.g. 'Mastodon'). */
+"jetpackSocial.oauthWebView.connectTitle" = "Connettiti a %1$@";
+
+/* Label above the optional custom social-sharing message field. */
+"jetpackSocial.postSection.customMessage" = "Messaggio personalizzato";
+
+/* Placeholder for the optional custom social-sharing message field. */
+"jetpackSocial.postSection.customMessagePlaceholder" = "Scrivi qui un messaggio personalizzato per il tuo pubblico social.";
+
+/* Caption shown when the site has no social connections. */
+"jetpackSocial.postSection.empty" = "Ancora nessun account social connesso.";
+
+/* Title of the row that opens the social sharing detail screen in Post Settings. */
+"jetpackSocial.postSection.header" = "Condividi sui social media";
+
+/* Button to retry a failed load of the connections list. */
+"jetpackSocial.postSection.retry" = "Riprova";
+
+/* Trailing value on the 'Share to Social' post settings row. %1$d is the enabled count, %2$d is the total. */
+"jetpackSocial.postSection.summary.format" = "%1$d di %2$d";
+
+/* Footer below the per-connection toggles on the social sharing detail screen. */
+"jetpackSocial.postSection.togglesFooter" = "Quando questo articolo verrà pubblicato, verrà condiviso sugli account abilitati.";
+
+/* Notice shown after a social connection is successfully created. %1$@ is the service label. */
+"jetpackSocial.serviceDetail.connectedNotice" = "%1$@ connesso";
+
+/* Cancel button in the add-connection failure alert. */
+"jetpackSocial.serviceDetail.failureCancel" = "Annulla";
+
+/* Retry button in the add-connection failure alert. */
+"jetpackSocial.serviceDetail.failureRetry" = "Riprova";
+
+/* Title of the alert shown when adding a social connection fails. */
+"jetpackSocial.serviceDetail.failureTitle" = "Connessione non riuscita";
+
+/* Navigation bar title of the service picker modal shown when adding a new social connection. */
+"jetpackSocial.servicePicker.title" = "Connetti account";
+
 /* Accessibility label for add card button */
 "jetpackStats.accessibility.addCardButton" = "Aggiungi nuova scheda statistiche";
 
@@ -9454,6 +9616,9 @@ Example: Reply to Pamela Nguyen */
 
 /* Title for weekly activity heatmap */
 "jetpackStats.postDetails.weeklyActivity" = "Attività settimanale";
+
+/* Confirmation message when marking a referrer as spam. %1$@ is the domain name. */
+"jetpackStats.referrerDetails.confirmAsSpam.message" = "Se contrassegni “%1$@” come spam, non comparirà più nelle tue statistiche future. Puoi annullare questa azione in qualsiasi momento usando l'interfaccia web.";
 
 /* Title for error alert when marking referrer as spam fails */
 "jetpackStats.referrerDetails.errorAlertTitle" = "Errore";
@@ -11015,6 +11180,9 @@ Example: Reply to Pamela Nguyen */
 /* Post status title used in different contexts */
 "postStatus.pending.title" = "In sospeso";
 
+/* Post status details */
+"postStatus.private.details" = "Visibile solo agli amministratori e agli editor del sito";
+
 /* Post status title used in different contexts */
 "postStatus.private.title" = "Privato";
 
@@ -11617,12 +11785,6 @@ Example: given a notice format "Following %@" and empty site name, this will be 
 /* Describes that the slider is used to customize the text size in the Reader. */
 "reader.preferences.control.sizeSlider.description" = "Dimensione";
 
-/* Text for a small label in the navigation bar that hints that this is an experimental feature.
-
-The enclosing angled brackets ('<' and '>') are decorative and only intended as a flavor.
-Feel free to replace it with other bracket types that you think looks better for the locale. */
-"reader.preferences.navBar.experimental.label" = "<Sperimentale>";
-
 /* Description text for the preview section of Reader Preferences */
 "reader.preferences.preview.body.text" = "Scegli i colori, i font e le dimensioni. Visualizza l'anteprima della tua selezione qui e leggi gli articoli con il tuo stile una volta terminato.";
 
@@ -11976,7 +12138,7 @@ Feel free to replace it with other bracket types that you think looks better for
 "shared.button.edit" = "Modifica";
 
 /* A shared button title used in different contexts */
-"shared.button.notNow" = "Ora";
+"shared.button.notNow" = "Non ora";
 
 /* A shared button title used in different contexts */
 "shared.button.remove" = "Elimina";
@@ -12745,6 +12907,9 @@ Feel free to replace it with other bracket types that you think looks better for
 
 /* Part of the label in the menu showing how many subscribers are displayed (has to have two arguments!) */
 "subscribers.menu.nOutOf" = "%1$@ di %2$@";
+
+/* Part of the label in the menu showing how many subscribers are displayed */
+"subscribers.menu.subscribers" = "Abbonati:";
 
 /* Subscribers sort by field */
 "subscribers.sortField.dateSubscribed" = "Data di abbonamento";

@@ -1,21 +1,18 @@
-Quem é quem em seu site? Agora você sabe: as notificações por push agora usam gravatars para que você possa ver quem comentou ou interagiu com seu conteúdo. O registro de atividades também mostra quando seu site foi atualizado usando agentes de IA.
+Se você tiver um site auto-hospedado, agora você fará login no aplicativo usando uma senha. Se não tiver, criaremos um automaticamente para que ele esteja pronto quando você precisar.
 
-Se achou que nossas últimas atualizações nas Estatísticas foram grandes, você ainda não viu nada.
+Adicionamos recorte inteligente para imagens destacadas no feed do Leitor. Dessa forma, imagens de pessoas não ficarão com a cabeça cortada. Muito melhor.
 
-- A data atual agora está inclusa em intervalos como "Últimos sete dias". Também adicionamos um novo intervalo de "Últimos 14 dias".
-- Datas incompletas, incluindo a atual, são mostradas no gráfico de linhas como uma linha pontilhada. Você também pode vê-las mais facilmente na visualização de gráfico de barras.
-- Falando em gráficos de barras, tocar em uma barra mostrará os dados dessa data. Isso facilita a navegação pelos dados de vários dias. E tocar em uma barra não selecionará mais a barra ao lado dela.
-- Você pode notar mudanças visuais como um cabeçalho menor de cartão de gráfico, fontes menores em abas e espaçamento reduzido aqui e ali. Está bem minimalista.
+Agora há uma caixa de diálogo de confirmação para quando você estiver marcando uma fonte de tráfego de referência como spam. Assim, fica muito mais difícil fazer isso por acidente.
 
-Aproveitamos para fazer alterações no Leitor também. (Aliás, nenhuma delas é relacionada à leitura.)
+Como parte desta atualização, também eliminamos vários bugs.
 
-- Quando você vê uma imagem com efeito lightbox, deslizar para baixo a fecha, mesmo quando você está com o zoom.
-- Corrigimos a cor dos links em comentários e no modo escuro em temas personalizados. Está bonito.
-- Você pode visualizar galerias de mídia no modo tela cheia. Basta deslizar para a direita ou esquerda para ver todas as imagens.
-
-E, como ainda tínhamos um tempo livre, também resolvemos alguns detalhes que nos incomodavam.
-
-- Atualizamos os ícones de seta e o espaçamento na tela Notificações.
-- Em Configurações do post, o cartão de compartilhamento social mostra apenas plataformas compatíveis com o aplicativo.
-- Novos posts usam o formato de post padrão em vez da versão padrão. Você pode atualizar esse formato nas configurações do seu site.
-- Se seu site for auto-hospedado com XML-RPC desativado, você poderá ver posts e páginas no aplicativo. Isso é muito importante, diga-se de passagem.
+- O rótulo de fuso horário na tela Estatísticas não mostra mais o horário padrão durante o horário de verão. (Obrigado pela atenção, @btraviswright!)
+- A tela Artigos agora mostra os comentários dos leitores quando eles são publicados a partir da seção embutida.
+- O botão Assinar funciona corretamente em posts recém-publicados, para que você possa assinar um feed direto no post. Rápido, fácil e renovado.
+- Os links de nota de rodapé no Leitor agora funcionam como deveriam e saltam para o local correto ao tocá-los.
+- Em Comentários do Leitor, o estado vazio desaparece depois que você postar um comentário. Comentários armazenados em cache também desaparecem depois de serem excluídos, mesmo quando você usa a ação de deslizar. Isso é tudo, até mais.
+- Corrigimos problemas variados de design e visibilidade, como estilos de botão, separadores de comentários no modo escuro e controles para reprodução automática de vídeos.
+- No Leitor, corrigimos alguns problemas nas Configurações de notificação. Eles agora ficam ocultos quando você não está inscrito e aparecem corretamente quando você assina.
+- Corrigimos um problema em que a visualização do rodapé na edição de menu não estava sendo redimensionada. Como resultado, os botões de ação agora são legíveis em idiomas diferentes do inglês. Muy Bueno.
+- Resolvemos um problema com avatares incorretos nas notificações. Se você cancelar o download da sua imagem, ela não aparecerá no aplicativo.
+- Removemos o link X não funcional da tela Sobre. (Agradecemos a @zynp-KC por reportar!)

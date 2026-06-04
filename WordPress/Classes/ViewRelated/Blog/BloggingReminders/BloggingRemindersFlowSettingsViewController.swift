@@ -473,7 +473,7 @@ private extension BloggingRemindersFlowSettingsViewController {
         return view
     }
 
-    /// instantiates a UIView with transparent background, intented to be used as a spacer in a UIStackView
+    /// instantiates a UIView with transparent background, intended to be used as a spacer in a UIStackView
     func makeSpacer() -> UIView {
         let view = UIView()
         view.translatesAutoresizingMaskIntoConstraints = false

@@ -1,4 +1,7 @@
-- Aktivitetsloggen visar nu när din webbplats uppdaterades med hjälp av AI-agenter.
-- I Inläggsinställningar visar kortet för social delning endast plattformar som appen stöder.
-- Nya inlägg använder standardinläggsformatet istället för standardversionen. Du kan uppdatera formatet i dina webbplatsinställningar.
-- Om webbplatsen drivs på en egen server, och XML-RPC är inaktiverat, kan du ändå se Inlägg och Sidor i appen. Det är ganska viktigt, om vi får säga det själva.
+Om du har en webbplats på egen server loggar du nu in på appen med ett applikationslösenord. Om du inte har en, skapar vi automatiskt en åt dig så att den är redo när du behöver den.
+
+När du tar bort en kommentar med svepåtgärden försvinner den nu från listan. Adjö och farväl.
+
+Vi åtgärdade ett problem där sidfotsvyn i Menyredigering inte ändrade storlek. Som ett resultat av detta är åtgärdsknappar nu läsbara på andra språk än engelska.
+
+Vi tog bort den icke-funktionella X-länken på skärmen Om. (En eloge till @zynp-KC för rapportering!)

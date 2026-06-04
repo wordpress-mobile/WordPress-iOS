@@ -58,6 +58,6 @@ private extension UserProfileUserInfoCell {
     }
 
     struct Constants {
-        static let usernameFormat = NSLocalizedString("@%1$@", comment: "Label displaying the user's username preceeded by an '@' symbol. %1$@ is a placeholder for the username.")
+        static let usernameFormat = NSLocalizedString("@%1$@", comment: "Label displaying the user's username preceded by an '@' symbol. %1$@ is a placeholder for the username.")
     }
 }

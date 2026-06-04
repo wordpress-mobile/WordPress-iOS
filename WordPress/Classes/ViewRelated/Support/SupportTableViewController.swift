@@ -540,7 +540,7 @@ private extension SupportTableViewController {
     // MARK: - Helpers
 
     func controllerToShowFrom() -> UIViewController? {
-        return showHelpFromViewController ?? navigationController ?? nil
+        return showHelpFromViewController ?? navigationController
     }
 
     // MARK: - Localized Text

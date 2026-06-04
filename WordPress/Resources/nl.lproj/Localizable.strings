@@ -1,4 +1,4 @@
-/* Translation-Revision-Date: 2026-03-25 07:39:38+0000 */
+/* Translation-Revision-Date: 2026-06-03 17:44:22+0000 */
 /* Plural-Forms: nplurals=2; plural=n != 1; */
 /* Generator: GlotPress/4.0.3 */
 /* Language: nl */
@@ -240,7 +240,7 @@ translators: %s: Block name e.g. \"Image block\" */
 "*Johann Brandt* responded to your post" = "*Johan Brandt* antwoordde op je bericht";
 
 /* Example Like notification displayed in the prologue carousel of the app. Username should be marked with * characters and will be displayed as bold text. */
-"*Madison Ruiz* liked your post" = "*Madison Ruiz* liked je bericht";
+"*Madison Ruiz* liked your post" = "*Madison Ruiz* vond je bericht leuk";
 
 /* Menus button text for adding a new menu to a site. */
 "+ Add new menu" = "+ Nieuw menu toevoegen";
@@ -928,7 +928,7 @@ translators: %s: Block name e.g. \"Image block\" */
 "Blocklist" = "Bloklijst";
 
 /* No comment provided by engineer. */
-"Blocks allow you to focus on writing your content, knowing that all the formatting tools you need are there to help you get your message across." = "Blokken stellen je in staat je te concentreren op het schrijven van je inhoud, in de wetenschap dat alle opmaakhulpmiddelen die je nodig hebt aanwezig zijn om je te helpen je boodschap over te brengen.";
+"Blocks allow you to focus on writing your content, knowing that all the formatting tools you need are there to help you get your message across." = "Blokken stellen je in staat je te concentreren op het schrijven van je inhoud, in de wetenschap dat alle opmaaktools die je nodig hebt aanwezig zijn om je te helpen je bericht over te brengen.";
 
 /* No comment provided by engineer. */
 "Blocks are pieces of content that you can insert, rearrange, and style without needing to know how to code. Blocks are an easy and modern way for you to create beautiful layouts." = "Blokken zijn stukjes inhoud die je kunt invoegen, herschikken en stylen zonder dat je hoeft te weten hoe je moet coderen. Blokken zijn een gemakkelijke en moderne manier voor je om mooie lay-outs te maken.";
@@ -2008,7 +2008,7 @@ translators: %s: Block name e.g. \"Image block\" */
 "E.g. Fashion, Poetry, Politics" = "Bijv. mode, poëzie, politiek";
 
 /* No comment provided by engineer. */
-"Each block has its own settings. To find them, tap on a block. Its settings will appear on the toolbar at the bottom of the screen." = "Elk blok heeft zijn eigen instellingen. Om ze te vinden, tikken op een blok. Zijn instellingen zullen verschijnen in de gereedschapsbalk onderaan het scherm.";
+"Each block has its own settings. To find them, tap on a block. Its settings will appear on the toolbar at the bottom of the screen." = "Elk blok heeft zijn eigen instellingen. Om ze te vinden, tikken op een blok. Zijn instellingen zullen verschijnen in de toolbar onderaan het scherm.";
 
 /* Editing GIF alert default action button.
    Edits a Comment
@@ -6042,9 +6042,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Notification Settings switch for the app. */
 "Turning the switch off will disable all notifications from this app, regardless of type." = "Als je dit uitschakelt zal je geen meldingen van deze app meer krijgen, ongeacht het soort meldingen.";
 
-/* Title of button that displays the app's Twitter profile */
-"Twitter" = "Twitter";
-
 /* Title for the setting to edit the twitter username used when sharing to twitter. */
 "Twitter Username" = "Twitter gebruikersnaam";
 
@@ -6529,7 +6526,7 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 "We successfully created a backup of your site from %1$@." = "We hebben met succes een back-up gemaakt van je site van %1$@.";
 
 /* Informational text about link to other tracking tools */
-"We use other tracking tools, including some from third parties. Read about these and how to control them." = "We gebruiken ook andere tracking-tools, waaronder een aantal van derden. Bekijk meer informatie over deze tools en hoe je ze kunt beheren.";
+"We use other tracking tools, including some from third parties. Read about these and how to control them." = "We gebruiken ook andere volgingstools, waaronder een aantal van derden. Bekijk meer informatie over deze tools en hoe je ze kunt beheren.";
 
 /* Error message displayed when an error occurred sending the magic link email. */
 "We were unable to send you an email at this time. Please try again later." = "We konden je op dit moment geen e-mail sturen. Probeer het later nogmaals.";
@@ -7106,6 +7103,9 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Error message when XML-RPC is disabled on the WordPress site. The first argument is detailed error message */
 "addSite.selfHosted.xmlrpcDisabled" = "Kon geen verbinding maken met de WordPress site. XML-RPC is mogelijk uitgeschakeld op de server. Neem contact op met je hostingprovider om dit probleem op te lossen.";
+
+/* Error message when the app cannot find the XML-RPC endpoint of a self-hosted WordPress site */
+"addSite.selfHosted.xmlrpcEndpointNotFound" = "Kon het XML RPC endpoint van de site niet bepalen";
 
 /* Age between dates equaling one hour. */
 "an hour" = "een uur";
@@ -7844,8 +7844,17 @@ Example: Reply to Pamela Nguyen */
 /* Navigation bar title when leaving a editing an existing comment */
 "commentEdit.navigationTitle" = "Reactie bewerken";
 
+/* Title for the error notice shown when approving a comment fails. */
+"comments.approve.error.title" = "Fout bij goedkeuren van reactie";
+
 /* Error title */
 "comments.failedToLike" = "Niet gelukt om reactie te liken";
+
+/* Title for the error notice shown when trashing a comment fails. */
+"comments.trash.error.title" = "Fout bij verwijderen van reactie";
+
+/* Title for the error notice shown when unapproving a comment fails. */
+"comments.unapprove.error.title" = "Fout bij afkeuren van reactie";
 
 /* Error message informing a user about an invalid password. */
 "common.reEnterPasswordMessage" = "Gebruikersnaam en wachtwoord die in de app zijn opgeslagen zijn wellicht verouderd. Voer je wachtwoord opnieuw in bij de instellingen en probeer het nogmaals.";
@@ -7895,6 +7904,9 @@ Example: Reply to Pamela Nguyen */
 /* Menu action to permanently delete a trashed post */
 "customPostList.action.deletePermanently" = "Permanent verwijderen";
 
+/* Menu action to create a draft copy of a post */
+"customPostList.action.duplicate" = "Duplicaat";
+
 /* Menu action to change a post's status to draft */
 "customPostList.action.moveToDraft" = "Naar concept verplaatsen";
 
@@ -7939,6 +7951,12 @@ Example: Reply to Pamela Nguyen */
 
 /* Empty state message when no custom posts exist. %1$@ is the post type name (e.g., 'Podcasts', 'Products'). */
 "customPostList.emptyState.message" = "Geen %1$@";
+
+/* Short label for the swipe action to permanently delete a trashed post. Keep this translation short. */
+"customPostList.swipeAction.delete" = "Verwijderen";
+
+/* Short label for the swipe action to trash a post. Keep this translation short. */
+"customPostList.swipeAction.trash" = "Prullenbak";
 
 /* Message for the confirmation alert when trashing a published post */
 "customPostList.trashConfirmation.message" = "Dit bericht is gepubliceerd en zichtbaar voor bezoekers. Weet je zeker dat je het naar de prullenbak wil verplaatsen?";
@@ -8980,6 +8998,159 @@ Example: Reply to Pamela Nguyen */
 /* Message stating that the user is unable to use Stats and Notifications because their site is connected to a different WordPress.com account */
 "jetpackSite.connectToDefaultAccount" = "Je moet inloggen met %@ om statistieken en meldingen te gebruiken.";
 
+/* Message shown at the top of the account confirmation screen when every available account is already connected to the site. */
+"jetpackSocial.accountConfirmation.allConnectedDescription" = "Je bent helemaal klaar. Elk beschikbaar account is al verbonden met deze site en je nieuwe berichten worden automatisch gedeeld. Je kunt dit wijzigen wanneer je een bericht schrijft.";
+
+/* Nav-bar button that finalizes the social connection after choosing an account. */
+"jetpackSocial.accountConfirmation.confirm" = "Bevestigen";
+
+/* Section header listing accounts already connected to this site. */
+"jetpackSocial.accountConfirmation.connectedSection" = "Verbonden";
+
+/* Explanation text shown at the top of the account confirmation screen. */
+"jetpackSocial.accountConfirmation.description" = "Je verbindt dit account. Nieuwe berichten worden er automatisch naar gedeeld. Je kunt dit wijzigen wanneer je een bericht schrijft.";
+
+/* Button that dismisses the account confirmation screen when every account is already connected and there is nothing to confirm. */
+"jetpackSocial.accountConfirmation.done" = "Gereed";
+
+/* Loading caption while fetching accounts for the confirmation screen. */
+"jetpackSocial.accountConfirmation.loading" = "Accounts aan het laden…";
+
+/* Footer caption below the 'Mark the connection as shared' toggle. */
+"jetpackSocial.accountConfirmation.markAsSharedFooter" = "Indien ingeschakeld, is de verbinding beschikbaar voor alle beheerders, redacteuren en auteurs. Je kunt dit later wijzigen.";
+
+/* Toggle label controlling whether the new connection is shared with other site users. */
+"jetpackSocial.accountConfirmation.markAsSharedLabel" = "Markeer de verbinding als gedeeld";
+
+/* Button to retry a failed account fetch. */
+"jetpackSocial.accountConfirmation.retry" = "Opnieuw proberen";
+
+/* Navigation title of the account confirmation screen shown after OAuth. */
+"jetpackSocial.accountConfirmation.title" = "Verbindingsbevestiging";
+
+/* Toggle label controlling whether a connection is shared with all site users. */
+"jetpackSocial.connectionDetail.availableToAllUsers" = "Beschikbaar voor alle gebruikers";
+
+/* Footer caption below the 'Available to all users' toggle. */
+"jetpackSocial.connectionDetail.availableToAllUsersFooter" = "Sta toe dat deze verbinding door alle beheerders en gebruikers van je site kan worden gebruikt.";
+
+/* Section header on the connection detail screen. */
+"jetpackSocial.connectionDetail.settingsHeader" = "Instellingen";
+
+/* Dismiss button in the social connection update failure alert. */
+"jetpackSocial.connectionDetail.updateFailedDismiss" = "OK";
+
+/* Title of the alert shown when updating a social connection setting fails. */
+"jetpackSocial.connectionDetail.updateFailedTitle" = "Kon verbinding niet updaten";
+
+/* Error when a publicize connection ID can't be found. %1$@ is the connection ID. */
+"jetpackSocial.error.connectionNotFound" = "Verbinding %1$@ is niet gevonden.";
+
+/* Error shown when decoding a social sharing response fails. */
+"jetpackSocial.error.decoding" = "Onverwachte reactie van de server ontvangen.";
+
+/* Error when a keyring token ID can't be found. %1$@ is the token ID. */
+"jetpackSocial.error.keyringNotFound" = "Keyring verbinding %1$@ is niet gevonden.";
+
+/* Link label that opens documentation explaining how to resolve a social sharing error. */
+"jetpackSocial.error.learnMore" = "Lees verder";
+
+/* Error shown when a social sharing network call fails. */
+"jetpackSocial.error.network" = "Netwerkfout. Controleer je verbinding en probeer het opnieuw.";
+
+/* Error when the WP.com account has no authorized keyring for a given service. %1$@ is the service label (e.g. 'Mastodon'). */
+"jetpackSocial.error.noKeyringForService" = "Geen verbonden accounts voor %1$@.";
+
+/* Error shown after Facebook OAuth when the user's account doesn't manage any Facebook Pages, since Publicize only targets Pages. */
+"jetpackSocial.error.noPagesForFacebook" = "De Facebook verbinding kan geen pagina's vinden. Publicize kan alleen verbinding maken met gepubliceerde pagina's, niet met Facebook profielen.";
+
+/* Error shown when the WP.com auth token is missing or invalid. */
+"jetpackSocial.error.notAuthenticated" = "Je moet je opnieuw aanmelden om sociale accounts te beheren.";
+
+/* Generic fallback error for social sharing. */
+"jetpackSocial.error.unknown" = "Er is iets fout gegaan. Probeer het nog eens.";
+
+/* Status text for a broken / invalid / refresh-failed connection. */
+"jetpackSocial.manageConnections.brokenStatus" = "Vereist aandacht";
+
+/* Cancel button in the disconnect confirmation alert. */
+"jetpackSocial.manageConnections.cancel" = "Annuleren";
+
+/* Button on the Social screen that opens the add-connection modal. */
+"jetpackSocial.manageConnections.connectNewAccount" = "Verbind een nieuw account";
+
+/* Footer caption under the Connected Accounts section on the Social screen. */
+"jetpackSocial.manageConnections.connectedFooter" = "Verbind je sociale media-accounts en stuur de uitgelichte afbeelding en inhoud van een bericht naar de geselecteerde kanalen wanneer het bericht wordt gepubliceerd.";
+
+/* Section header listing currently connected social accounts. */
+"jetpackSocial.manageConnections.connectedHeader" = "Verbonden accounts";
+
+/* Button that removes a social sharing connection. */
+"jetpackSocial.manageConnections.delete" = "Verbreken";
+
+/* Confirmation alert title. %1$@ is the connected account's display name. */
+"jetpackSocial.manageConnections.deleteConfirmTitle" = "Weet je zeker dat je %1$@ wil verbreken?";
+
+/* Dismiss button in the disconnect failure alert. */
+"jetpackSocial.manageConnections.deleteFailedDismiss" = "OK";
+
+/* Title of the alert shown when disconnecting a social connection fails. */
+"jetpackSocial.manageConnections.deleteFailedTitle" = "Kon niet verbreken";
+
+/* Footer caption under the list of services in the Connect Account picker modal. */
+"jetpackSocial.manageConnections.footer" = "Verbind je favoriete sociale media diensten om automatisch nieuwe berichten met vrienden te delen.";
+
+/* Button to retry a failed load. */
+"jetpackSocial.manageConnections.retry" = "Opnieuw proberen";
+
+/* Badge shown on connections that are shared with other site users. */
+"jetpackSocial.manageConnections.sharedBadge" = "Gedeeld";
+
+/* Title of the Social Sharing settings screen. */
+"jetpackSocial.manageConnections.title" = "Social";
+
+/* Confirm button in the disconnect confirmation alert. */
+"jetpackSocial.manageConnections.yes" = "Ja";
+
+/* Navigation bar title of the OAuth webview. %1$@ is the service label (e.g. 'Mastodon'). */
+"jetpackSocial.oauthWebView.connectTitle" = "Verbind met %1$@";
+
+/* Label above the optional custom social-sharing message field. */
+"jetpackSocial.postSection.customMessage" = "Aangepast bericht";
+
+/* Placeholder for the optional custom social-sharing message field. */
+"jetpackSocial.postSection.customMessagePlaceholder" = "Schrijf hier een aangepast bericht voor je sociale doelgroep.";
+
+/* Caption shown when the site has no social connections. */
+"jetpackSocial.postSection.empty" = "Nog geen sociale accounts verbonden.";
+
+/* Title of the row that opens the social sharing detail screen in Post Settings. */
+"jetpackSocial.postSection.header" = "Delen op sociale media";
+
+/* Button to retry a failed load of the connections list. */
+"jetpackSocial.postSection.retry" = "Opnieuw proberen";
+
+/* Trailing value on the 'Share to Social' post settings row. %1$d is the enabled count, %2$d is the total. */
+"jetpackSocial.postSection.summary.format" = "%1$d van %2$d";
+
+/* Footer below the per-connection toggles on the social sharing detail screen. */
+"jetpackSocial.postSection.togglesFooter" = "Wanneer dit bericht wordt gepubliceerd, wordt het gedeeld met de ingeschakelde accounts.";
+
+/* Notice shown after a social connection is successfully created. %1$@ is the service label. */
+"jetpackSocial.serviceDetail.connectedNotice" = "%1$@ verbonden";
+
+/* Cancel button in the add-connection failure alert. */
+"jetpackSocial.serviceDetail.failureCancel" = "Annuleren";
+
+/* Retry button in the add-connection failure alert. */
+"jetpackSocial.serviceDetail.failureRetry" = "Opnieuw proberen";
+
+/* Title of the alert shown when adding a social connection fails. */
+"jetpackSocial.serviceDetail.failureTitle" = "Verbinding mislukt";
+
+/* Navigation bar title of the service picker modal shown when adding a new social connection. */
+"jetpackSocial.servicePicker.title" = "Account verbinden";
+
 /* Accessibility label for add card button */
 "jetpackStats.accessibility.addCardButton" = "Nieuwe statistiekenkaart toevoegen";
 
@@ -9484,6 +9655,9 @@ Example: Reply to Pamela Nguyen */
 
 /* Title for weekly activity heatmap */
 "jetpackStats.postDetails.weeklyActivity" = "Wekelijkse activiteit";
+
+/* Confirmation message when marking a referrer as spam. %1$@ is the domain name. */
+"jetpackStats.referrerDetails.confirmAsSpam.message" = "Het markeren van \"%1$@\" als spam verbergt het uit je toekomstige statistieken. Je kunt dit op elk moment ongedaan maken via de webinterface.";
 
 /* Title for error alert when marking referrer as spam fails */
 "jetpackStats.referrerDetails.errorAlertTitle" = "Fout";
@@ -11710,12 +11884,6 @@ Example: given a notice format "Following %@" and empty site name, this will be 
 /* Describes that the slider is used to customize the text size in the Reader. */
 "reader.preferences.control.sizeSlider.description" = "Grootte";
 
-/* Text for a small label in the navigation bar that hints that this is an experimental feature.
-
-The enclosing angled brackets ('<' and '>') are decorative and only intended as a flavor.
-Feel free to replace it with other bracket types that you think looks better for the locale. */
-"reader.preferences.navBar.experimental.label" = "<Experimenteel>";
-
 /* Description text for the preview section of Reader Preferences */
 "reader.preferences.preview.body.text" = "Kies je kleuren, lettertypen en formaten. Bekijk je selectie hier en lees berichten met je stijlen zodra je klaar bent.";
 
@@ -12078,7 +12246,7 @@ Feel free to replace it with other bracket types that you think looks better for
 "shared.button.edit" = "Bewerken";
 
 /* A shared button title used in different contexts */
-"shared.button.notNow" = "Nu";
+"shared.button.notNow" = "Niet nu";
 
 /* A shared button title used in different contexts */
 "shared.button.ok" = "OK";

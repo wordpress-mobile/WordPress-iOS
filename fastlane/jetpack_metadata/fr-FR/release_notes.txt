@@ -1,21 +1,18 @@
-Qui est qui sur votre site Web ? Vous le savez désormais : les notifications push utilisent désormais des gravatars afin que vous puissiez voir qui a commenté ou interagi avec votre contenu. Le journal d’activités indique également quand votre site a été mis à jour à l’aide d’agents IA.
+Si vous disposez d’un site auto-hébergé, vous vous connecterez désormais à l’application à l’aide d’un mot de passe d’application. Si vous n’en avez pas, nous en créerons automatiquement un pour vous afin qu’il soit prêt quand vous en aurez besoin.
 
-Si vous pensiez que nos dernières mises à jour des statistiques étaient importantes, vous n’avez encore rien vu.
+Nous avons ajouté une fonctionnalité de recadrage intelligent pour les images mises en avant dans le flux du Lecteur. De cette manière, les personnes présentes sur les images n’auront plus leur tête coupée. C’est beaucoup mieux, non ?
 
-- La date du jour est désormais incluse dans les intervalles comme « 7 derniers jours ». Nous avons également ajouté le nouvel intervalle « 14 derniers jours ».
-- Les dates incomplètes, y compris aujourd’hui, sont indiquées sur le graphique sous la forme d’une ligne en pointillés. Vous pouvez également les voir plus facilement dans l’affichage en graphique à barres.
-- En parlant de graphiques à barres, si vous appuyez sur une barre, les données de cette date s’affichent. Il est ainsi plus facile de faire défiler les données pour plusieurs jours. Aussi, lorsque vous appuyez sur une barre, la barre d’à côté ne sera plus sélectionnée.
-- Vous remarquerez peut-être des modifications visuelles comme un en-tête plus petit pour la carte Graphiques, une taille de police réduite dans les onglets et un espacement réduit ici et là. Une petite touche de minimalisme qui ne fait pas de mal.
+Désormais, lorsque vous marquez une source de trafic de parrainage comme indésirable, une boîte de dialogue de confirmation s’affiche. Vous aurez ainsi très peu de chance de la marquer comme indésirable par accident.
 
-Et à propos, nous avons également apporté des modifications au Lecteur. (Soit dit en passant, aucune d’entre elles n’est liée à la lecture.)
+Dans le cadre de cette mise à jour, nous avons également corrigé plusieurs bugs.
 
-- Lorsque vous affichez une image dans une lightbox, balayer vers le bas vous permettra de la fermer, même lorsque vous faites un zoom avant.
-- Nous avons corrigé la couleur des liens dans les commentaires et en mode sombre dans les thèmes personnalisés. Stylé !
-- Vous pouvez afficher les galeries de médias en mode plein écran. Balayez simplement à droite ou à gauche pour consulter toutes les images.
-
-Et parce que nous avions encore un peu de temps libre, nous avons aussi corrigé quelques détails qui nous gênaient.
-
-- Nous avons mis à jour les icônes de flèche et l’espacement sur l’écran Notifications.
-- Dans Réglages d’article, la carte Partage sur les réseaux sociaux affiche uniquement les plateformes prises en charge par l’application.
-- Les nouveaux articles utilisent le format d’article par défaut au lieu de la version standard. Vous pouvez mettre à jour ce format dans les réglages de votre site.
-- Si votre site est auto-hébergé avec XML-RPC désactivé, vous pouvez voir les articles et les pages dans l’application. C’est assez important, croyez-nous sur parole.
+- L’étiquette de fuseau horaire sur l’écran Statistiques n’affiche plus l’heure normale pendant la période d’heure d’été. (Merci d’avoir repéré ce bug, @btraviswright !)
+- L’écran des articles affiche désormais les commentaires des lecteurs lorsqu’ils sont publiés depuis la section en ligne.
+- Le bouton S’abonner fonctionne correctement dans les articles de type Fraîchement pressé. Vous pouvez donc vous abonner à un flux depuis un article. Rapidité, facilité et fraîcheur incomparable.
+- Les liens de note de bas de page dans le Lecteur fonctionnent désormais comme prévu et vous permettent d’atteindre l’emplacement en question lorsque vous appuyez dessus.
+- Dans Commentaires des lecteurs, l’état vide disparaît après la publication d’un commentaire. Les commentaires mis en cache disparaissent également après leur suppression, y compris lorsque vous utilisez l’action de balayage. Bye bye !
+- Nous avons résolu divers problèmes de design et de visibilité, comme les styles de boutons, les séparateurs de commentaires en mode sombre et les contrôles pour les vidéos à lecture automatique.
+- Dans le Lecteur, nous avons corrigé quelques problèmes avec les réglages de notifications. Ils sont désormais masqués lorsque vous n’êtes pas abonné et s’affichent correctement lorsque vous vous abonnez.
+- Nous avons corrigé le problème de non-redimensionnement de l’affichage du pied de page dans l’édition de menu. Par conséquent, les boutons d’action sont désormais lisibles dans les langues autres que l’anglais. Perfecto.
+- Nous avons corrigé un problème d’avatars incorrects dans les notifications. Si vous annulez le téléchargement de votre image, elle n’apparaîtra pas dans l’application.
+- Nous avons supprimé le lien X non fonctionnel sur l’écran À propos. (Félicitations à @zynp-KC pour l’avoir signalé !)

@@ -199,6 +199,11 @@ class GutenbergViewController: UIViewController, PostEditor, PublishingEditor {
 
     let navigationBarManager: PostEditorNavigationBarManager
 
+    /// Identifies the site being edited. Stored as an ID (not a `Blog`) so network requests can re-resolve the
+    /// `Blog` on the main context at call time and fail gracefully if it has been deleted, rather than
+    /// dereferencing an invalidated managed object.
+    private let blogID: TaggedManagedObjectID<Blog>
+
     // swiftlint:disable:next weak_delegate
     lazy var attachmentDelegate = AztecAttachmentDelegate(post: post)
 
@@ -296,6 +301,7 @@ class GutenbergViewController: UIViewController, PostEditor, PublishingEditor {
     ) {
 
         self.post = post
+        self.blogID = TaggedManagedObjectID(post.blog)
 
         self.replaceEditor = replaceEditor
         self.editorSession = PostEditorAnalyticsSession(editor: .gutenberg, post: post)
@@ -559,31 +565,11 @@ extension GutenbergViewController {
 /// - warning: the app can't make any assumption about the thread on which `GutenbergBridgeDelegate` gets invoked. In some scenarios, it gets called from the main thread, for example, if being invoked directly from [Gutenberg.swift](https://github.com/WordPress/gutenberg/blob/64f9d9d1ced7a5aa7f3874890306554c5b703ce6/packages/react-native-bridge/ios/Gutenberg.swift). And sometimes, it gets called on a dispatch queue created by the React Native runtime for a native module (see [React Native: Threading](https://reactnative.dev/docs/native-modules-ios#threading). It happens when the methods are invoked directly from JavaScript.
 extension GutenbergViewController: GutenbergBridgeDelegate {
     func gutenbergDidGetRequestFetch(path: String, completion: @escaping (Result<Any, NSError>) -> Void) {
-        guard let context = post.managedObjectContext else {
-            didEncounterMissingContextError()
-            completion(.failure(URLError(.unknown) as NSError))
-            return
-        }
-        context.perform {
-            GutenbergNetworkRequest(path: path, blog: self.post.blog, method: .get).request(completion: completion)
-        }
+        GutenbergNetworkRequest(path: path, blogID: blogID, method: .get).request(completion: completion)
     }
 
     func gutenbergDidPostRequestFetch(path: String, data: [String: AnyObject]?, completion: @escaping (Result<Any, NSError>) -> Void) {
-        guard let context = post.managedObjectContext else {
-            didEncounterMissingContextError()
-            completion(.failure(URLError(.unknown) as NSError))
-            return
-        }
-        context.perform {
-            GutenbergNetworkRequest(path: path, blog: self.post.blog, method: .post, data: data).request(completion: completion)
-        }
-    }
-
-    private func didEncounterMissingContextError() {
-        DispatchQueue.main.async {
-            WordPressAppDelegate.crashLogging?.logError(NSError(domain: self.errorDomain, code: ErrorCode.managedObjectContextMissing.rawValue, userInfo: [NSDebugDescriptionErrorKey: "The post is missing an associated managed object context"]))
-        }
+        GutenbergNetworkRequest(path: path, blogID: blogID, method: .post, data: data).request(completion: completion)
     }
 
     func editorDidAutosave() {

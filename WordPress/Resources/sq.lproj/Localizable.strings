@@ -1,4 +1,4 @@
-/* Translation-Revision-Date: 2026-03-15 10:44:38+0000 */
+/* Translation-Revision-Date: 2026-05-14 08:38:40+0000 */
 /* Plural-Forms: nplurals=2; plural=n != 1; */
 /* Generator: GlotPress/4.0.3 */
 /* Language: sq_AL */
@@ -6030,9 +6030,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Notification Settings switch for the app. */
 "Turning the switch off will disable all notifications from this app, regardless of type." = "Mbyllja e këtij çelësi do të çaktivizojë krejt njoftimet prej këtij aplikacioni, pavarësisht llojit.";
 
-/* Title of button that displays the app's Twitter profile */
-"Twitter" = "Twitter";
-
 /* Title for the setting to edit the twitter username used when sharing to twitter. */
 "Twitter Username" = "Emër përdoruesi Twitter";
 
@@ -7868,8 +7865,77 @@ Example: Reply to Pamela Nguyen */
 /* Error message shown when the post was modified by another user while editing */
 "customPostEditor.error.conflict.message" = "Postimi që po rrekeni të ruani, ndërkohë është ndryshuar.";
 
+/* Menu action to promote a post with Blaze */
+"customPostList.action.blaze" = "Promovojeni me Blaze";
+
+/* Menu action to view post comments */
+"customPostList.action.comments" = "Komente";
+
+/* Menu action to permanently delete a trashed post */
+"customPostList.action.deletePermanently" = "Fshije Përgjithnjë";
+
+/* Menu action to change a post's status to draft */
+"customPostList.action.moveToDraft" = "Shpjere te Skica";
+
+/* Menu action to move a post to trash */
+"customPostList.action.moveToTrash" = "Shpjere te Hedhurinat";
+
+/* Menu action to publish a draft or pending post */
+"customPostList.action.publish" = "Botojeni";
+
+/* Menu action to open post settings */
+"customPostList.action.settings" = "Rregullime";
+
+/* Menu action to view post statistics */
+"customPostList.action.stats" = "Statistika";
+
+/* Accessibility label for the author filter button in the custom post list */
+"customPostList.authorFilter.accessibilityLabel" = "Filtrim Autorësh";
+
+/* Menu item to show posts from all authors in the custom post list */
+"customPostList.authorFilter.everyone" = "Kushdo";
+
+/* Menu item to show only the current user's posts in the custom post list */
+"customPostList.authorFilter.mine" = "Të mitë";
+
+/* Accessibility value when the author filter shows posts from all authors */
+"customPostList.authorFilter.showingEveryone" = "Shfaqje postimesh nga kushdo";
+
+/* Accessibility value when the author filter shows only the current user's posts */
+"customPostList.authorFilter.showingMine" = "Shfaqje vetëm të postimeve të mia";
+
+/* Badge label shown on the homepage row in the custom post list for pages */
+"customPostList.badge.homepage" = "Kreu";
+
+/* Badge shown in the post list for sticky posts */
+"customPostList.badge.sticky" = "Ngjitës";
+
+/* Message for the confirmation alert when permanently deleting a post */
+"customPostList.deleteConfirmation.message" = "Ky veprim s’mund të zhbëhet.";
+
+/* Title for the confirmation alert when permanently deleting a post */
+"customPostList.deleteConfirmation.title" = "Të Fshihet Përgjithnjë?";
+
 /* Empty state message when no custom posts exist. %1$@ is the post type name (e.g., 'Podcasts', 'Products'). */
 "customPostList.emptyState.message" = "S’ka %1$@";
+
+/* Title for the confirmation alert when trashing a published post */
+"customPostList.trashConfirmation.title" = "Të Shpihet te Hedhurinat?";
+
+/* Placeholder title for posts without a title */
+"customPostList.untitled" = "(pa titull)";
+
+/* Title for the parent page picker screen for custom post types */
+"customPostParentPicker.title" = "Faqe Mëmë";
+
+/* Option to set a post as top level (no parent) */
+"customPostParentPicker.topLevel" = "E nivelit të epërm";
+
+/* Description for the top level option in the parent page picker, indicating this page will have no parent */
+"customPostParentPicker.topLevel.description" = "S’ka faqe mëmë";
+
+/* Tab title for showing all posts regardless of status */
+"customPostTab.all" = "Krejt";
 
 /* Tab title for draft posts */
 "customPostTab.drafts" = "Skica";
@@ -8033,6 +8099,9 @@ Example: Reply to Pamela Nguyen */
 /* Boolean User Defaults Debug Menu screen title */
 "debugMenu.booleanUserDefaults.title" = "Parazgjedhje Buleane Nga Përdoruesi";
 
+/* Debug Menu label for image cache size */
+"debugMenu.caches.imageCache" = "Fshehtinë Figurash";
+
 /* Debug Menu action for TipKit */
 "debugMenu.hideAllTips" = "Fshihi Krejt Ndihmëzat";
 
@@ -8069,6 +8138,9 @@ Example: Reply to Pamela Nguyen */
 
 /* Debug Menu action for TipKit */
 "debugMenu.resetTipKitData" = "Ktheji të Dhënat te Parazgjedhjet";
+
+/* Debug Menu section title */
+"debugMenu.section.caches" = "Fshehtina";
 
 /* Debug Menu section title */
 "debugMenu.section.logging" = "Regjistrim";
@@ -9049,6 +9121,9 @@ Example: Reply to Pamela Nguyen */
 
 /* Last 12 weeks (84 days) date range */
 "jetpackStats.calendar.last12Weeks" = "12 Javët e Fundit";
+
+/* Last 14 days date range */
+"jetpackStats.calendar.last14Days" = "14 Ditët e Fundit";
 
 /* Last 28 days date range */
 "jetpackStats.calendar.last28Days" = "28 Ditët e Fundit";
@@ -10073,6 +10148,12 @@ Example: Reply to Pamela Nguyen */
 /* Menu title for the visit site option */
 "mySite.siteActions.visitSite" = "Vizitoni sajtin";
 
+/* Button to confirm to switch to the New Stats announcement screen */
+"newStats.announcement.continueButton" = "Fillojani";
+
+/* Title for the New Stats announcement screen */
+"newStats.announcement.title" = "Statistika të Reja";
+
 /* A no results message displayed on the atomic logs screen. */
 "noLogs.empty" = "S’ka zëra regjistri brenda këtij intervali kohor";
 
@@ -10772,6 +10853,9 @@ Example: Reply to Pamela Nguyen */
 /* Section header for More Options in Post Settings. Should use the same translation as core WP. */
 "postSettings.moreOptions.header" = "Më Tepër Mundësi";
 
+/* The title of the Post Settings screen for custom post types. %1$@ is the post type name. */
+"postSettings.navigationTitle.customPostType" = "Rregullime për %1$@";
+
 /* The title of the Page Settings screen. */
 "postSettings.navigationTitle.page" = "Rregullime Faqeje";
 
@@ -10831,6 +10915,9 @@ Example: Reply to Pamela Nguyen */
 
 /* Placeholder value for a publishing date in the prepublishing sheet when the date is not selected */
 "postSettings.publishDateImmediately" = "Menjëherë";
+
+/* Error message shown when saving post settings via REST API fails */
+"postSettings.saveFailed.message" = "S’u arrit të ruhen ndryshime";
 
 /* Section header for General settings in Post Settings */
 "postSettings.section.general" = "Të përgjithshme";
@@ -10907,6 +10994,9 @@ Example: Reply to Pamela Nguyen */
 /* Navigation bar title of the Post Stats screen */
 "postStats.title" = "Statistika Postimi";
 
+/* Post status title used in different contexts */
+"postStatus.any.title" = "Çfarëdo";
+
 /* Post status title */
 "postStatus.deleted.details" = "Fshirë përgjithmonë";
 
@@ -10945,6 +11035,9 @@ Example: Reply to Pamela Nguyen */
 
 /* Post status title */
 "postStatus.trash.details" = "Shpënë te hedhurinat, por ende i pafshirë";
+
+/* Post status title used in different contexts */
+"postStatus.trash.title" = "Shpjere në hedhurina";
 
 /* Button to add a new taxonomy term. %1$@ is the taxonomy name (e.g., 'tags', 'categories'). */
 "postTags.addTag" = "Shtoni %1$@";
@@ -11485,6 +11578,9 @@ Example: given a notice format "Following %@" and empty site name, this will be 
 /* Context menu action */
 "reader.postContextMenu.viewInBrowser" = "Shiheni në Shfletues";
 
+/* Context menu action */
+"reader.postContextMenu.viewSite" = "Shihni Sajtin";
+
 /* Reader post details view placeholder when blog name not avail */
 "reader.postDetails.blog" = "blog";
 
@@ -11526,12 +11622,6 @@ Example: given a notice format "Following %@" and empty site name, this will be 
 
 /* Describes that the slider is used to customize the text size in the Reader. */
 "reader.preferences.control.sizeSlider.description" = "Madhësi";
-
-/* Text for a small label in the navigation bar that hints that this is an experimental feature.
-
-The enclosing angled brackets ('<' and '>') are decorative and only intended as a flavor.
-Feel free to replace it with other bracket types that you think looks better for the locale. */
-"reader.preferences.navBar.experimental.label" = "<Eksperimentale>";
 
 /* Description text for the preview section of Reader Preferences */
 "reader.preferences.preview.body.text" = "Zgjidhni ngjyra, shkronja dhe madhësi tuajat. Bëjini paraparje përzgjedhjes këtu dhe lexojini postimet në stilin tuaj, pasi të keni mbaruar.";
@@ -12253,6 +12343,9 @@ Feel free to replace it with other bracket types that you think looks better for
 
 /* The message displayed when a plugin has no description */
 "sitePluginsList.item.noDescriptionAvailable" = "Autori i shtojcës s’dha ndonjë përshkrim për këtë shtojcë.";
+
+/* The plugin version displayed in the plugins list. The first argument is plugin version */
+"sitePluginsList.item.version" = "Version: %@";
 
 /* Button to activate a plugin */
 "sitePluginsList.itemAction.activate" = "Aktivizoje";

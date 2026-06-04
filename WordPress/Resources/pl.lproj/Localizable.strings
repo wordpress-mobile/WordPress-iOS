@@ -1,4 +1,4 @@
-/* Translation-Revision-Date: 2025-07-14 07:37:10+0000 */
+/* Translation-Revision-Date: 2026-05-29 10:26:30+0000 */
 /* Plural-Forms: nplurals=3; plural=(n == 1) ? 0 : ((n % 10 >= 2 && n % 10 <= 4 && (n % 100 < 12 || n % 100 > 14)) ? 1 : 2); */
 /* Generator: GlotPress/4.0.3 */
 /* Language: pl */
@@ -803,13 +803,13 @@
 "Email" = "Adres e-mail";
 
 /* Header for a comment author's email address, shown when editing a comment. */
-"Email Address" = "Adres e-mail";
+"Email Address" = "Adres email";
 
 /* Accessibility label for the email address text field.
    Describes the email address section in the comment detail screen.
    Placeholder for a textfield. The user may enter their email address.
    Placeholder for the email address textfield. */
-"Email address" = "Adres e-mail";
+"Email address" = "Adres email";
 
 /* Notification Settings Channel */
 "Email from WordPress.com" = "Wiadomość e-mail od WordPress.com";
@@ -2272,9 +2272,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Notification Settings switch for the app. */
 "Turning the switch off will disable all notifications from this app, regardless of type." = "Wyłączenie przełącznika spowoduje wyłączenie wszystkich powiadomień z aplikacji, niezależnie od ich rodzaju.";
 
-/* Title of button that displays the app's Twitter profile */
-"Twitter" = "Twitter";
-
 /* Title for the setting to edit the twitter username used when sharing to twitter. */
 "Twitter Username" = "Nazwa użytkownika na Twitterze";
 
@@ -2968,6 +2965,9 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* A shared button title for Reader */
 "reader.button.addToFavorites" = "Dodaj do ulubionych";
 
+/* Context menu action */
+"reader.postContextMenu.viewSite" = "Zobacz witrynę";
+
 /* Reader select interests next button enabled title text */
 "reader.select.tags.done" = "Gotowe";
 
@@ -3027,6 +3027,9 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Share extension error dialog title. */
 "shareModularViewController.retryAlert.title" = "Błąd udostępniania";
+
+/* The plugin version displayed in the plugins list. The first argument is plugin version */
+"sitePluginsList.item.version" = "Wersja: %@";
 
 /* Title for Comments count in Latest Post Summary stats card. */
 "stats.insights.latestPostSummary.comments" = "Komentarze";

@@ -152,7 +152,7 @@ class CollapsableHeaderCollectionViewCell: UICollectionViewCell, NibLoadable {
         })
     }
 
-    /// This will retry the polling of the image URL in the situation where a mismatch was recieved for the requested image. This can happen for endpoints that
+    /// This will retry the polling of the image URL in the situation where a mismatch was received for the requested image. This can happen for endpoints that
     /// dynamically generate the images. This will stop retrying if the view scrolled off screen. Or if the view was updated with a new URL to fetch. It will also stop
     /// retrying for any other error type.
     func handleError(_ error: Error?, forURL url: String?) {

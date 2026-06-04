@@ -133,7 +133,7 @@ class GutenbergLayoutPickerViewController: FilterableCategoriesViewController {
     private func handleErrors(_ error: Error) {
         guard resultsController.isEmpty() else { return }
         isLoading = false
-        let titleText = NSLocalizedString("Unable to load this content right now.", comment: "Informing the user that a network request failed becuase the device wasn't able to establish a network connection.")
+        let titleText = NSLocalizedString("Unable to load this content right now.", comment: "Informing the user that a network request failed because the device wasn't able to establish a network connection.")
         let subtitleText = NSLocalizedString("Check your network connection and try again or create a blank page.", comment: "Default subtitle for no-results when there is no connection with a prompt to create a new page instead.")
         displayNoResultsController(title: titleText, subtitle: subtitleText, resultsDelegate: self)
     }

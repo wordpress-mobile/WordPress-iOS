@@ -1,21 +1,18 @@
-Wer ist wer auf deiner Website? Jetzt weißt du es: Push-Benachrichtigungen verwenden jetzt Gravatare, damit du sehen kannst, wer deine Inhalte kommentiert oder damit interagiert hat. Das Aktivitätsprotokoll zeigt auch an, wann deine Website mithilfe von KI-Agenten aktualisiert wurde.
+Wenn du eine selbst gehostete Website hast, meldest du dich jetzt mit einem Anwendungspasswort bei der App an. Wenn du noch keines hast, erstellen wir automatisch eines für dich, damit es bereit ist, wenn du es brauchst.
 
-Wenn du dachtest, dass unsere letzten Updates zu den Statistiken sehr umfangreich waren, bist du noch nicht auf dem neusten Stand.
+Wir haben intelligentes Zuschneiden für Beitragsbilder zum Reader-Feed hinzugefügt. Auf diese Weise werden bei Bildern von Menschen nicht die Köpfe abgeschnitten. Das ist doch super.
 
-- Das heutige Datum ist jetzt in Intervallen wie „Letzte 7 Tage“ enthalten. Wir haben auch ein neues Intervall „Letzte 14 Tage“ hinzugefügt.
-- Unvollständige Daten, einschließlich heute, werden im Liniendiagramm als gepunktete Linie angezeigt. Du kannst sie auch leichter in der Balkendiagrammansicht sehen.
-- Apropos Balkendiagramme: Wenn du auf einen Balken tippst, siehst du die Daten für dieses Datum. So kannst du leichter durch die Daten für mehrere Tage scrollen. Oh, und wenn du auf einen Balken tippst, wird der Balken daneben nicht mehr ausgewählt.
-- Wir haben visuelle Änderungen wie einen kleineren Kartenheader in Diagrammen, kleinere Schriftarten in Tabs und reduzierte Abstände vorgenommen. Es ist minimalistisch.
+Es gibt jetzt ein Bestätigungsdialogfeld, wenn du eine verweisende Traffic-Quelle als Spam markierst. Somit gehören versehentliche Markierungen der Vergangenheit an.
 
-Außerdem haben wir Änderungen am Reader vorgenommen. (Übrigens, keine davon hat etwas mit Lesen zu tun.)
+Als Teil dieses Updates haben wir auch mehrere Fehler entfernt.
 
-- Wenn du ein Bild in einer Galerie ansiehst, wird es durch Wischen nach unten verworfen, auch wenn du es vergrößert hast.
-- Wir haben die Farbe von Links in Kommentaren und im Dunkelmodus bei individuellen Themes korrigiert. Sieht gut aus.
-- Du kannst Mediengalerien im Vollbildmodus anzeigen. Wische einfach nach rechts oder links, um alle Bilder anzuzeigen.
-
-Und weil wir noch ein wenig Zeit hatten, haben wir auch ein paar Details behoben, die uns störten.
-
-- Wir haben die Pfeil-Icons und Abstände auf dem Benachrichtigungsbildschirm aktualisiert.
-- In den Beitragseinstellungen werden auf der Social Sharing-Karte nur Plattformen angezeigt, die von der App unterstützt werden.
-- Neue Beiträge verwenden das Standardformat für Beiträge anstelle der Standardversion. Du kannst dieses Format in deinen Website-Einstellungen aktualisieren.
-- Wenn deine Website selbst gehostet wird und XML-RPC deaktiviert ist, kannst du Beiträge und Seiten in der App anzeigen. Das ist ziemlich wichtig, wenn wir das so sagen dürfen.
+- Die Zeitzonen-Beschriftung auf dem Statistikbildschirm zeigt während der Sommerzeit keine Standardzeit mehr an. (Gut gesehen, @btraviswright!)
+- Der Bildschirm für Artikel zeigt jetzt Leserkommentare an, wenn sie über den Inline-Abschnitt veröffentlicht werden.
+- Der Abonnieren-Button funktioniert in Druckfrisch-Beiträgen ordnungsgemäß, sodass du einen Feed innerhalb eines Beitrags abonnieren kannst. Schnell, einfach und herrlich frisch.
+- Fußnoten-Links im Reader funktionieren jetzt wie sie sollen und springen zum richtigen Ort, wenn du sie antippst.
+- In den Reader-Kommentaren verschwindet der leere Zustand, nachdem du einen Kommentar veröffentlicht hast. Zwischengespeicherte Kommentare verschwinden ebenfalls, nachdem sie gelöscht wurden, auch wenn du dies durch Wischen tust. Lebt wohl.
+- Wir haben verschiedene Design- und Sichtbarkeitsprobleme behoben, wie Button-Stile, Kommentar-Trennzeichen im Dunkelmodus und Steuerelemente für die automatische Wiedergabe von Videos.
+- Im Reader haben wir ein paar Probleme mit den Benachrichtigungseinstellungen behoben. Sie sind jetzt ausgeblendet, wenn du kein Abonnement hast, und sie werden richtig angezeigt, wenn du ein Abonnement abschließt.
+- Es wurde ein Fehler behoben, durch den die Größe der Footer-Ansicht in der Menü-Bearbeitung nicht geändert wurde. Aus diesem Grund sind Aktions-Buttons jetzt auch in nicht-englischen Sprachen lesbar. Muy bueno.
+- Wir haben ein Problem mit falschen Avataren in Benachrichtigungen behoben. Wenn du den Download deines Bildes abbrichst, wird es nicht mehr in der App angezeigt.
+- Wir haben den nicht funktionierenden X-Link auf dem „Über“-Bildschirm entfernt. (Ein großer Dank an @zynp-KC für die Info!)

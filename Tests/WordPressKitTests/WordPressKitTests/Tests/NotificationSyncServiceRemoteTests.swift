@@ -23,7 +23,7 @@ class NotificationSyncServiceRemoteTests: RemoteTestCase, RESTTestable {
 
     var remote: NotificationSyncServiceRemote!
 
-    // MARK: - Overriden Methods
+    // MARK: - Overridden Methods
 
     override func setUp() {
         super.setUp()

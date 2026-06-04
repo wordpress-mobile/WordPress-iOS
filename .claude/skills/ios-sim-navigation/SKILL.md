@@ -1,37 +1,94 @@
 ---
 name: ios-sim-navigation
-description: General-purpose skill for navigating and interacting with an iOS app running in a Simulator using WebDriverAgent (WDA). Use when the user asks to tap buttons, swipe, scroll, type text, check what's on screen, go to a tab or screen, automate a flow, or verify UI state in a simulator app. Also use when the user wants to take screenshots, inspect the accessibility tree, explore screen hierarchy, or test a UI flow end-to-end on a simulator. Even if the user says something casual like "open settings in the app", "click that button", or "what's showing on the simulator" — this skill applies.
+description: Drive an iOS app running in a Simulator via WebDriverAgent (WDA) — tap, swipe, scroll, type, take screenshots, inspect the accessibility tree, automate or verify a UI flow. Use when the work specifically targets a running Simulator app (e.g. running an end-to-end test, automating an in-app flow, verifying on-screen state via the WDA tree, scripting taps in a simulator). Do not use for non-Simulator UI work, headless code paths, or UI tasks on real devices.
 ---
 
 # iOS Simulator Navigation with WebDriverAgent
 
+Drive an iOS app running in a Simulator via WebDriverAgent (WDA).
+
+## Fast-Path Cadence — read this first
+
+End-to-end test runs have a hard time budget — usually a few minutes per
+test. Every tool call costs roughly 5 s of WDA + Claude round-trip
+overhead, so **keep each user-visible action to about one tool call**.
+The patterns below — use `tap.rb` over raw curl, never `Read` PNG
+screenshots, one tree dump per screen — compound across a long test to
+keep you inside the budget. The inverse patterns (three curl turns per
+tap, `Read`-ing screenshot PNGs, re-dumping the tree after every action)
+burn it.
+
+### Rule 1 — One bash call per tap. Always reach for `scripts/tap.rb`.
+
+`tap.rb` does session creation, element lookup, coordinate computation,
+the tap, and an in-band readiness probe in a single Ruby invocation:
+
+```bash
+# Tap a control AND wait up to 3 s for the next screen's marker to appear.
+# Replaces: find /elements + get /rect + POST /actions + sleep + tree dump.
+ruby scripts/tap.rb aid "create-post-button" --wait-aid "post-title-field"
+```
+
+If you find yourself stringing together `/elements`, `/rect`, and
+`/actions` curls by hand, stop. You're about to burn three turns on what
+one `tap.rb` invocation does. Reach for raw curl only for genuinely
+custom gestures (multi-touch, long-press chains) that `tap.rb` doesn't
+model.
+
+### Rule 2 — Never `Read` a screenshot PNG back into context.
+
+Decisions come from the **accessibility tree (text)**, not images. Pulling
+a PNG back through `Read` inflates the conversation by megabytes per turn
+*and* burns an extra round-trip. The tree already contains every label,
+identifier, and coordinate you'd see in the screenshot. Screenshots are
+an output artifact (failure capture for human review), never an input to
+your reasoning. If you're about to `Read /tmp/*.png`, you've already gone
+wrong: re-fetch the tree instead.
+
+### Rule 3 — One tree dump per screen, not per action.
+
+Fetch `GET /source?format=description` once when you arrive on a new
+screen. From that single dump, locate every control you need for the
+screen (FAB, fields, buttons), then drive the screen with `tap.rb`.
+`tap.rb` itself probes `/elements` for each individual tap, so you do
+**not** need to re-dump the full tree between taps. The wait flag is your
+between-tap confirmation, not a re-dump.
+
+Re-dump the tree only when (a) you've landed on a screen you haven't
+seen yet this run, or (b) `--wait-aid` timed out and you genuinely need
+to figure out what's on screen.
+
+### Anti-pattern: the slow loop
+
+```
+# DON'T do this — 4 turns per action, plus megabytes of PNG.
+ruby scripts/tap.rb aid create-post-button
+xcrun simctl io <UDID> screenshot /tmp/after.png
+Read /tmp/after.png
+curl -s 'http://localhost:8100/source?format=description' | jq -r .value
+```
+
+```
+# DO this — 1 turn, no PNG, in-band verification.
+ruby scripts/tap.rb aid create-post-button --wait-aid post-title-field
+```
+
+A test case that says "Verify the post-publish confirmation screen shows
+the correct title" is asking you to confirm that text via the tree (a
+single targeted `/elements` query by label, or one tree dump and grep),
+not to take a picture of it. See "Verifying step success" below.
+
 ## Prerequisites
 
 - Xcode with iOS Simulators installed
-- WebDriverAgent built for simulator use (see Setup below)
 - The app must be built and installed on the target simulator
-
-### First-Time Setup
-
-Clone and build WebDriverAgent:
-
-```bash
-mkdir -p .build
-git clone https://github.com/appium/WebDriverAgent.git .build/WebDriverAgent
-cd .build/WebDriverAgent
-xcodebuild build-for-testing \
-  -project WebDriverAgent.xcodeproj \
-  -scheme WebDriverAgentRunner \
-  -destination "platform=iOS Simulator,name=iPhone 17" \
-  CODE_SIGNING_ALLOWED=NO
-```
 
 ## WDA Lifecycle
 
 Start and stop WDA using the lifecycle scripts. **WDA must be running before using any curl commands below.**
 
 ```bash
-# Start WDA (waits until ready, ~60s first time)
+# Start WDA. Cold runs do the build first (minutes); warm runs ~60s.
 ruby scripts/wda-start.rb [--udid <UDID>] [--port <PORT>]
 
 # Check if WDA is running
@@ -43,25 +100,110 @@ ruby scripts/wda-stop.rb [--port <PORT>]
 
 Both scripts auto-detect the first booted simulator. Use `--udid` to target a specific one.
 
-## Strategy: Tree-First Navigation
+Run these from the project root that should own the
+`.build/WebDriverAgent` cache. `wda-start.rb` resolves the path
+relative to its working directory and clones into it on first run.
 
-**Always prefer the accessibility tree over screenshots.** The tree is text-based, faster to process, and doesn't require viewing an image.
+## Tap — the default action
 
-1. Fetch the tree with `GET /source?format=description`
-2. Make decisions from the tree alone
-3. Only take a screenshot when the tree doesn't contain enough info (e.g., verifying visual layout)
+**Use `scripts/tap.rb` for every tap.** It collapses session creation
+(with the required `bundleId` binding — see `references/sessions.md`),
+element lookup, coordinate computation, the tap dispatch, and an
+optional wait into one bash invocation. Three forms:
+
+```bash
+# Tap by accessibility id (most reliable; developer-assigned, locale-stable).
+ruby scripts/tap.rb aid settings-button
+
+# Tap by visible label (matches accessibility id OR label).
+ruby scripts/tap.rb text "Continue"
+
+# Tap at exact coordinates (only when no stable id/label exists,
+# e.g. tapping into an empty area to dismiss a sheet).
+ruby scripts/tap.rb at 196,504
+```
+
+### `--wait-aid` / `--wait-text` — fuse tap and verification
+
+After most taps you need to confirm the next screen is up before the
+next action. When you can name an element you're confident will appear,
+pass it to `tap.rb` and let the wait happen in the same call:
+
+```bash
+# Tap, then wait up to 3s for "Site address" field to appear. ONE turn.
+ruby scripts/tap.rb aid "Prologue Self Hosted Button" --wait-aid "Site address"
+
+# Tab-switch: wait for a known element on the destination screen.
+ruby scripts/tap.rb aid tabbar_mysites --wait-aid switch-site-button
+
+# Wait by visible label instead of aid.
+ruby scripts/tap.rb text "Continue" --wait-text "My Site"
+
+# Bump --timeout for known-slow transitions (network, large lists).
+ruby scripts/tap.rb aid publish-button --wait-aid "Post Published" --timeout 15
+```
+
+The wait polls `/elements` every 250 ms (cheap probe, ~200 B per response)
+and exits as soon as the target appears.
+
+**When to use the wait flag.** Use it whenever you can plausibly name
+something on the next screen. Even if you're not 100% sure of the
+identifier, naming the most likely candidate is still cheaper than
+tapping plain and re-dumping the tree. The downside of a wrong guess is
+small: the wait times out (default 3 s) and `tap.rb` exits 1, at which
+point you fall back to a tree dump. The upside on a right guess is
+saving 2-3 turns.
+
+**Naming hints**
+- `--wait-aid` matches the developer-assigned accessibility identifier
+  (most stable).
+- `--wait-text` matches accessibility id OR visible label, so it's more
+  forgiving but slightly slower to evaluate.
+- `--wait-text` does exact equality, not partial match. If you only have
+  a substring, omit the wait flag and do one targeted `/elements` query
+  after the tap.
+
+Exit codes: `0` on success (tap + wait if specified), `1` if the tap
+target wasn't found OR the wait target didn't appear in time, `2` for
+WDA / usage errors.
+
+For W3C pointer gestures `tap.rb` doesn't model (long press), see
+`references/raw-actions.md`.
+
+### Anti-pattern: rolling your own tap
+
+```
+# DON'T — 3-4 turns to tap one button.
+curl -s -X POST http://localhost:8100/session/$SID/elements \
+  -H 'Content-Type: application/json' \
+  -d '{"using":"accessibility id","value":"create-post-button"}'
+# ... extract element id ...
+curl -s http://localhost:8100/session/$SID/element/$EID/rect
+# ... compute center ...
+curl -s -X POST http://localhost:8100/session/$SID/actions ...
+curl -s 'http://localhost:8100/source?format=description'   # "check state"
+```
+
+```
+# DO — 1 turn.
+ruby scripts/tap.rb aid create-post-button --wait-aid post-title-field
+```
 
 ## Accessibility Tree
 
-WDA offers two tree formats via `GET /source?format=<FORMAT>`:
+**Always prefer the accessibility tree over screenshots.** The tree is
+text-based, fast to grep, and contains everything you need (types, labels,
+identifiers, coordinates).
 
-### `format=description` -- compact plaintext (~25 KB)
+### `format=description` — compact plaintext (default, ~25 KB)
 
 ```bash
 curl -s 'http://localhost:8100/source?format=description' | jq -r .value
 ```
 
-Returns a human-readable indented tree. Each line shows an element with its type, memory address, frame as `{{x, y}, {width, height}}`, and optional attributes (identifier, label, Selected, etc.):
+Returns a human-readable indented tree. Each line shows an element with
+its type, memory address, frame as `{{x, y}, {width, height}}`, and
+optional attributes (identifier, label, Selected, etc.):
 
 ```
 NavigationBar, 0x105351660, {{0.0, 62.0}, {402.0, 54.0}}, identifier: 'my-site-navigation-bar'
@@ -69,304 +211,193 @@ NavigationBar, 0x105351660, {{0.0, 62.0}, {402.0, 54.0}}, identifier: 'my-site-n
   StaticText, 0x105351b40, {{178.7, 73.7}, {44.7, 20.7}}, label: 'Posts'
 ```
 
-**Use this format by default.** It's ~15x smaller than JSON, easy to reason about, and contains all the information needed for navigation (types, labels, identifiers, and coordinates).
+**Use this format by default.** It's ~15× smaller than JSON, easy to
+reason about, and contains all the navigation info you need. You can
+pipe it directly to `grep` to find the few lines that matter.
 
-### `format=json` -- structured data (~375 KB)
-
-```bash
-curl -s 'http://localhost:8100/source?format=json' > /tmp/wda-tree.json
-```
-
-Returns deeply nested JSON. Use this when you need to programmatically extract coordinates or search for elements with `jq`. The response has the structure `{"value": <root_node>, "sessionId": "..."}`. Each node has:
-
-| Field | Description |
-|-------|-------------|
-| `type` | Element type (e.g., `Button`, `StaticText`, `NavigationBar`) |
-| `label` | Accessibility label (user-visible text) |
-| `name` | Accessibility identifier (developer-assigned ID) |
-| `value` | Current value (e.g., text field contents, switch state) |
-| `rect` | `{"x": N, "y": N, "width": N, "height": N}` -- structured, use for tap coordinates |
-| `frame` | Same as rect but as a string: `"{{x, y}, {w, h}}"` |
-| `isEnabled` | Whether the element is interactive |
-| `children` | Array of child nodes |
-
-Search example with `jq`:
-
-```bash
-cat /tmp/wda-tree.json | jq '.. | objects | select(.label == "Settings")'
-```
-
-### Computing Tap Coordinates
-
-From the description format, parse the frame `{{x, y}, {width, height}}` and compute:
-
-```
-tap_x = x + width / 2
-tap_y = y + height / 2
-```
-
-From the JSON format, use the `rect` object:
-
-```
-tap_x = rect.x + rect.width / 2
-tap_y = rect.y + rect.height / 2
-```
+For the larger `format=json` structure (when you need to walk the tree
+programmatically, e.g. to read a `value` attribute by element), see
+`references/json-tree.md`.
 
 ### Finding Elements
 
-Use this priority order when locating elements in the tree:
+Priority order when locating something in the tree:
 
-1. **`identifier` / `name`** -- most stable; developer-assigned, unlikely to change across locales
-2. **`label`** -- accessibility label; user-visible text, may change with localization
-3. **`type` + context** -- e.g., "Button inside NavigationBar" or "Cell inside Table"
-4. **Partial matching** -- element label *contains* the target text (useful for dynamic labels like "3 Posts")
-5. **Positional heuristics** -- last resort; fragile across screen sizes
+1. **`identifier` / `name`** — most stable; developer-assigned, unlikely
+   to change across locales.
+2. **`label`** — accessibility label; user-visible text, may shift with
+   localization.
+3. **`type` + context** — e.g. "Button inside NavigationBar".
+4. **Partial matching** — element label *contains* the target text
+   (useful for dynamic labels like "3 Posts").
+5. **Positional heuristics** — last resort; fragile across screen sizes.
 
-In the description format, search the text output for labels or identifiers. In the JSON format, use `jq`:
+In description format, grep the tree text. Tap coordinates: from a
+`{{x, y}, {w, h}}` frame the center is `(x + w/2, y + h/2)`. You almost
+never need to compute this yourself, because `tap.rb` does it.
 
-```bash
-# Exact match by identifier
-cat /tmp/wda-tree.json | jq '.. | objects | select(.name == "settings-button")'
+The root node's `rect` gives screen dimensions (e.g. `width: 393, height: 852`).
 
-# Exact match by label
-cat /tmp/wda-tree.json | jq '.. | objects | select(.label == "Settings")'
+## Verifying step success without screenshots
 
-# Partial match by label
-cat /tmp/wda-tree.json | jq '.. | objects | select(.label? // "" | contains("Settings"))'
+When a test step ends in "verify <something is on screen>", do it through
+the tree, not a screenshot. The common patterns:
 
-# Type + context: find Buttons inside NavigationBar
-cat /tmp/wda-tree.json | jq '.. | objects | select(.type == "NavigationBar") | .. | objects | select(.type == "Button")'
-```
-
-### Screen Size
-
-The root node's `rect` gives the screen dimensions (e.g., `width: 393, height: 852`).
-
-## Session Management
-
-Most action endpoints require a session ID. Create one if `/status` doesn't return a `sessionId`:
+**Verify a specific element is present.** Query `/elements` directly:
 
 ```bash
-# Create session
-curl -s -X POST http://localhost:8100/session \
+# Cheap presence probe (~200 B response).
+SID=$(jq -r .session_id /tmp/wda-8100.session)
+curl -s -X POST "http://localhost:8100/session/$SID/elements" \
   -H 'Content-Type: application/json' \
-  -d '{"capabilities":{"alwaysMatch":{}}}' | jq .
+  -d '{"using":"accessibility id","value":"post-published-banner"}' \
+  | jq -e '.value | length > 0'
 ```
 
-The session ID is at `value.sessionId` in the response. Use it in subsequent action URLs as `SESSION_ID`.
-
-To check for an existing session, look at the `sessionId` field in the `/status` response.
-
-## Actions
-
-All action endpoints use `POST /session/SESSION_ID/actions` with W3C WebDriver pointer actions.
-
-### Tap
+**Verify a specific text is on screen.** One tree dump + grep:
 
 ```bash
-curl -s -X POST http://localhost:8100/session/SESSION_ID/actions \
-  -H 'Content-Type: application/json' \
-  -d '{
-    "actions": [{
-      "type": "pointer",
-      "id": "finger1",
-      "parameters": {"pointerType": "touch"},
-      "actions": [
-        {"type": "pointerMove", "duration": 0, "x": X, "y": Y},
-        {"type": "pointerDown"},
-        {"type": "pointerUp"}
-      ]
-    }]
-  }'
+curl -s 'http://localhost:8100/source?format=description' | jq -r .value \
+  | grep -F "Category tag post"   # exit 0 == found
 ```
 
-#### Alternative: Element-Based Tapping
-
-WDA can find and tap elements directly without computing coordinates. This is useful when an element has a stable accessibility identifier:
+**Verify post-publish / save success.** Most apps surface a confirmation
+toast or banner with a stable label or aid. Wait for it as part of the
+tap that triggered it:
 
 ```bash
-# Find the element by accessibility identifier
-curl -s -X POST http://localhost:8100/session/SESSION_ID/elements \
-  -H 'Content-Type: application/json' \
-  -d '{"using": "accessibility id", "value": "settings-button"}' | jq .
-
-# Tap it (ELEMENT_ID comes from the response above, at value[0].ELEMENT)
-curl -s -X POST http://localhost:8100/session/SESSION_ID/element/ELEMENT_ID/click
+ruby scripts/tap.rb aid publish-confirm-button \
+  --wait-text "Post published" --timeout 15
 ```
 
-The coordinate approach above is preferred because it works directly with the tree data already being fetched. Use element-based tapping when coordinate parsing is awkward or when interacting with elements found by predicate.
+If the verification fails (text not found, exit non-zero), *then* capture
+a screenshot for the human-readable failure report. Do not `Read` it
+back; just write the path into the failure report.
 
-### Long Press
+## Swipe
 
-Add a `pause` between `pointerDown` and `pointerUp`. Duration is in milliseconds.
+**Use `scripts/swipe.rb` for every swipe.** It auto-detects the
+simulator's window size, computes direction-to-coordinates from the
+guide below, and dispatches the gesture in one call:
 
 ```bash
-curl -s -X POST http://localhost:8100/session/SESSION_ID/actions \
-  -H 'Content-Type: application/json' \
-  -d '{
-    "actions": [{
-      "type": "pointer",
-      "id": "finger1",
-      "parameters": {"pointerType": "touch"},
-      "actions": [
-        {"type": "pointerMove", "duration": 0, "x": X, "y": Y},
-        {"type": "pointerDown"},
-        {"type": "pause", "duration": 1000},
-        {"type": "pointerUp"}
-      ]
-    }]
-  }'
+ruby scripts/swipe.rb up      # vertical swipe up (scrolls content down)
+ruby scripts/swipe.rb down    # vertical swipe down (scrolls content up)
+ruby scripts/swipe.rb left
+ruby scripts/swipe.rb right
+ruby scripts/swipe.rb back    # edge swipe from left edge → right (back nav fallback)
+
+# Explicit coordinates if you need a custom gesture.
+ruby scripts/swipe.rb at 196,500,196,200
+
+# Slow swipe (1 s) when the gesture originates on a tappable item so it
+# isn't misread as a tap.
+ruby scripts/swipe.rb up --duration 1000
 ```
 
-### Swipe
-
-Move from `(x1, y1)` to `(x2, y2)` with a duration (milliseconds) on the second `pointerMove`.
-
-```bash
-curl -s -X POST http://localhost:8100/session/SESSION_ID/actions \
-  -H 'Content-Type: application/json' \
-  -d '{
-    "actions": [{
-      "type": "pointer",
-      "id": "finger1",
-      "parameters": {"pointerType": "touch"},
-      "actions": [
-        {"type": "pointerMove", "duration": 0, "x": X1, "y": Y1},
-        {"type": "pointerDown"},
-        {"type": "pointerMove", "duration": 500, "x": X2, "y": Y2},
-        {"type": "pointerUp"}
-      ]
-    }]
-  }'
-```
-
-**Swipe direction guide** (given screen size `W x H`):
-- **Up** (scroll down): from `(W/2, H/2 + H/6)` to `(W/2, H/2 - H/6)`
-- **Down** (scroll up): from `(W/2, H/2 - H/6)` to `(W/2, H/2 + H/6)`
-- **Left**: from `(W/2 + W/4, H/2)` to `(W/2 - W/4, H/2)`
-- **Right**: from `(W/2 - W/4, H/2)` to `(W/2 + W/4, H/2)`
-- **Back** (swipe from left edge): from `(5, H/2)` to `(W*2/3, H/2)`
-
-### Back Navigation
-
-To go back to the previous screen:
-
-- **Primary**: find a Button inside NavigationBar -- its label is typically the previous screen's title. Tap it.
-- **Fallback**: edge swipe from `(5, H/2)` to `(W*2/3, H/2)` (see Swipe direction guide above)
-
-The button approach is more reliable because edge swipes can be finicky depending on gesture recognizers.
-
-### Type Text
-
-```bash
-curl -s -X POST http://localhost:8100/session/SESSION_ID/wda/keys \
-  -H 'Content-Type: application/json' \
-  -d '{"value": ["h","e","l","l","o"]}'
-```
-
-The `value` array contains individual characters. An element must be focused first (tap a text field before typing).
-
-### Clear Text Field
-
-Select all text and delete it:
-
-```bash
-# Select all (Ctrl+A) then delete
-curl -s -X POST http://localhost:8100/session/SESSION_ID/wda/keys \
-  -H 'Content-Type: application/json' \
-  -d '{"value": ["\u0001"]}'
-curl -s -X POST http://localhost:8100/session/SESSION_ID/wda/keys \
-  -H 'Content-Type: application/json' \
-  -d '{"value": ["\u007F"]}'
-```
-
-Alternatively, if you have an element ID:
-
-```bash
-curl -s -X POST http://localhost:8100/session/SESSION_ID/element/ELEMENT_ID/clear
-```
-
-## Waiting for UI Stability
-
-After performing an action (tap, swipe, type), the UI may be animating or loading. Instead of using a fixed sleep, poll for the expected state:
-
-1. Fetch the accessibility tree
-2. Check if the expected element or screen is present
-3. If not found, sleep 0.5s and retry
-4. After 10 failed attempts (5 seconds total), declare the element not found
-
-This approach is more reliable than fixed delays because it adapts to variable animation durations and network load times.
+Vertical swipes use the right-edge x (`window_width - 30`) so they
+don't land on interactive elements in the center. For the raw W3C
+pointer-actions JSON body (e.g. multi-finger gestures or long-press
+chains the script doesn't model), see `references/raw-actions.md`.
 
 ## Scroll View Navigation
 
 To find an element in a long scrollable list:
 
-1. Fetch the tree and search for the target element
-2. If found, tap it -- done
-3. If not found, swipe up from the right edge to scroll down (use x = `screen_width - 30` to avoid tapping interactive elements)
-4. Re-fetch the tree and search again
-5. **Detect end of list**: if the tree content is identical after a scroll, you've reached the bottom
-6. Stop and report element not found if the bottom is reached without finding the target
+1. Fetch the tree (description format) and grep for the target.
+2. If found, `tap.rb` it. Done.
+3. If not found, swipe up from the right edge to scroll down
+   (`x = screen_width - 30`).
+4. Re-fetch the tree and grep again.
+5. **Detect end of list**: if the tree text is unchanged after a scroll,
+   you've hit the bottom.
+6. Stop and report element-not-found if the bottom is reached without
+   finding the target.
 
-Use the same pattern for horizontal scroll views, adjusting swipe direction accordingly.
+Same pattern for horizontal scroll views with horizontal swipes.
+
+## Type Text
+
+**Use `scripts/type.rb` for every typing action.** It collapses
+"tap-to-focus -> wait for keyboard -> send keys -> read value back"
+into one call:
+
+```bash
+# Locate the field by aid (or by visible label), type the text.
+# By default the script verifies the typed text landed: after typing it
+# reads the field's `value` (or `label` as fallback) and exits 1 if the
+# attribute doesn't contain TXT — catching dropped keys without you
+# having to spend an extra tool call on a manual readback.
+ruby scripts/type.rb aid post-title --text "Hello world"
+ruby scripts/type.rb text "Email"   --text "user@example.com"
+
+# Opt out of the readback if the field genuinely doesn't expose its
+# typed content via value/label (rare — most do).
+ruby scripts/type.rb aid post-title --text "Hello world" --no-verify
+
+# Skip the tap + keyboard wait if the field is already focused
+# (e.g. a fresh post editor that auto-focuses its title).
+ruby scripts/type.rb aid post-title --text "Hello world" --no-focus
+```
+
+The script polls for `XCUIElementTypeKeyboard` to appear before sending
+keys, which is the cheap focus check from the WDA API. If the keyboard
+doesn't appear within `--keyboard-timeout` seconds (default 3), it
+exits 1 — at which point you usually need to re-fetch the tree and tap
+again at fresh coordinates. `/element/<id>/click` does not reliably
+raise the keyboard for text fields; the coordinate-based tap that
+`tap.rb` (and `type.rb`) does is more reliable.
+
+The verify step checks the field's `value` attribute first, then falls
+back to `label`. For most SwiftUI / UIKit text inputs the typed content
+ends up in the enclosing element's `label` ("Post title. Hello world")
+even when the element's own `value` is nil because the text lives on a
+descendant `TextView`. Either is sufficient to catch dropped keys.
+
+**Don't use `hasKeyboardFocus`.** That attribute is rejected on iOS 26
+("attribute is unknown"); the valid name is `focused`.
+
+**Fast typing pattern.** Use `type.rb`, then move on. Don't tree-dump
+between each character or after typing. If your text is wrong on
+screen, the publish/save step will surface it. Don't take a screenshot
+to "see" the typed text.
+
+For the raw `/wda/keys` curl (e.g. mixing in control codes for a
+clear-field sequence) and clear-field caveats on iOS 26, see
+`references/raw-actions.md`.
+
+## Back Navigation
+
+To return to the previous screen, find a Button inside `NavigationBar`.
+Its label is typically the previous screen's title. Tap it via
+`tap.rb text "<Prev Title>"` (with `--wait-aid` for the destination's
+marker). For the edge-swipe fallback, see `references/raw-actions.md`.
 
 ## Screenshots
 
-Use `simctl` for screenshots -- more reliable than WDA's base64 approach:
+Screenshots are an output artifact for **human review only** (e.g.
+attaching a failure image to a test report). Capture with `simctl`:
 
 ```bash
 xcrun simctl io <UDID> screenshot /tmp/screenshot.png
 ```
 
-To get the booted simulator's UDID:
+Booted simulator UDID:
 
 ```bash
-xcrun simctl list devices booted -j | jq -r '.devices | to_entries[].value[] | select(.state == "Booted")'
+xcrun simctl list devices booted -j | jq -r '.devices | to_entries[].value[] | select(.state == "Booted") | .udid'
 ```
 
-## Tips
+See Rule 2 above: never `Read` the resulting PNG back into context.
 
-- **Tree coordinates, not screenshot pixels** -- screenshots may be at a different resolution than the tree's point-based coordinates.
-- **Vertical swipes**: use the right edge x-coordinate (`screen_width - 30`) to avoid accidentally tapping interactive elements in the center. Use center only when needed.
-- **Slow swipes on tappable items**: swipe gestures on tappable items may register as a tap. Use `duration: 1000` (1 second) for more reliable swipes.
-- **WDA startup time**: ~60s the first time. Subsequent starts are faster with cached DerivedData.
-- **Reconnecting**: if WDA disconnects, run `wda-start.rb` again -- it will reconnect.
-- **Tab bar**: look for elements with type containing `TabBar` in the tree. Its children are the individual tabs.
+## Reference files
 
-## Common Failures and Recovery
+For details that you only need when something specific is happening,
+read the matching reference file:
 
-### WDA Session Expiry
-
-WDA sessions can expire after inactivity. If action requests return HTTP 4xx errors, re-create the session:
-
-```bash
-curl -s -X POST http://localhost:8100/session \
-  -H 'Content-Type: application/json' \
-  -d '{"capabilities":{"alwaysMatch":{}}}' | jq .
-```
-
-### Stale Element Coordinates
-
-After animations or screen transitions, previously fetched coordinates may be wrong. Always re-fetch the tree and recompute coordinates before tapping after any navigation action.
-
-### System Alert Interception
-
-System alerts (location permissions, notification permissions, tracking prompts) can block interactions with the app. Before retrying a failed tap:
-
-1. Fetch the tree and look for elements of type `Alert` or `Sheet`
-2. If found, look for a dismiss button ("Allow", "Don't Allow", "OK", "Cancel") and tap it
-3. Then retry the original action
-
-### App Crash Detection
-
-If actions consistently fail or the tree looks unexpected, the app may have crashed. Check and re-launch:
-
-```bash
-# Check if the app process is running
-xcrun simctl list devices booted
-
-# Re-launch the app
-xcrun simctl launch <UDID> <APP_BUNDLE_ID>
-```
-
-After re-launching, create a new WDA session before continuing.
+| Read this | When you need to |
+|-----------|------------------|
+| `references/sessions.md` | Interact with `/session/*` endpoints directly, debug "HTTP 200 but no UI effect," or understand the `bundleId` binding |
+| `references/raw-actions.md` | Long-press, clear a text field (with iOS 26 caveats), or the edge-swipe back fallback |
+| `references/json-tree.md` | Walk the tree programmatically with `jq` (e.g. read a `value` attribute by id) instead of grepping description format |
+| `references/troubleshooting.md` | A tap silently no-ops, the app may have crashed, a system alert is intercepting input, or you need the swipe/deep-link tips |
