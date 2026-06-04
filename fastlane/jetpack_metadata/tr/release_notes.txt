@@ -1,21 +1,18 @@
-Web sitenizde kimler var? Artık biliyorsunuz; anlık bildirimlerde artık gravatar'lar kullanıldığından içeriğinize kimin yorum yaptığını veya etkileşim kurduğunu görebilirsiniz. Etkinlik Günlüğü ayrıca sitenizin yapay zeka aracıları kullanılarak güncellendiğinde de görüntülenir.
+Kullanıcı tarafından barındırılan bir siteniz varsa şimdi bir uygulama şifresi kullanarak uygulamada oturum açabilirsiniz. Yoksa, ihtiyacınız olduğunda hazır olması için otomatik olarak bir tane oluşturacağız.
 
-İstatistikler'deki son güncellemelerimizin büyük olduğunu düşünüyorsanız henüz bir şey görmediniz.
+Okuyucu beslemesinde öne çıkan görseller için akıllı kırpma ekledik. Böylece, resimlerdeki kişilerin kafası kırpılmayacak. Çok tercih ediliyor.
 
-- Bugünün tarihi artık "Son 7 gün" gibi aralıklara dahil. Ayrıca yeni bir "Son 14 gün" aralığı ekledik.
-- Bugün dahil olmak üzere tamamlanmamış tarihler, çizgi grafiğinde noktalı çizgi olarak gösterilir. Bunları çubuk grafik görünümünde de daha kolay görebilirsiniz.
-- Çubuk grafiklerden bahsetmişken, bir çubuğa dokunduğunuzda o tarihle ilgili veriler gösterilir. Bu, birkaç günün verilerinde gezinmeyi kolaylaştırır. Ve bir çubuğa dokunduğunuzda artık yanındaki çubuk seçilmez.
-- Daha küçük bir Grafik kartı başlığı, sekmelerdeki daha küçük yazı tipleri ve bazı yerlerde daha az boşluk gibi görsel değişiklikleri fark edebilirsiniz. Minimalist bir hava katıyor.
+Yönlendiren bir trafik kaynağını istenmeyen olarak işaretlediğiniz durumlar için artık bir onay iletişim kutusu mevcut. Yanlışlıkla yapılması gerçekten çok ama çok zor olmalı.
 
-Bu esnada, Okuyucuda da değişiklikler yaptık. (Bu arada bunların hiçbiri okuma ile ilgili değil).
+Bu güncellemenin bir parçası olarak, birkaç hatayı da giderdik.
 
-- Görseli ışık kutusunda görüntülediğinizde, aşağı kaydırmak, yakınlaştırdığınızda bile bunu devre dışı bırakır.
-- Bağlantıların rengini yorumlarda ve özel temalardaki karanlık modda düzelttik. İyi görünüyor.
-- Ortam galerilerini tam ekran modunda görüntüleyebilirsiniz. Tüm resimleri görüntülemek için sağa veya sola kaydırmanız yeterlidir.
-
-Hâlâ biraz boş vaktimiz olduğu için bizi rahatsız eden birkaç ayrıntıyı da düzelttik.
-
-- Bildirimler ekranında ok simgelerini ve boşluğu güncelledik.
-- Gönderi Ayarları'nda Sosyal Paylaşım kartı yalnızca uygulamanın desteklediği platformları gösterir.
-- Yeni gönderilerde standart sürüm yerine varsayılan yazı biçimi kullanılıyor. Bu biçimi site ayarlarınızdan güncelleyebilirsiniz.
-- Siteniz XML-RPC devre dışı bırakılmış olarak kullanıcı tarafından barındırılıyorsa uygulamadaki Gönderileri ve Sayfaları görebilirsiniz. Bu epey önemli, bizden söylemesi.
+- İstatistikler ekranındaki saat dilimi etiketi artık Yaz Saati uygulaması sırasında Standart Saat'i göstermiyor. (Yakaladığınız için teşekkürler, @btraviswright!)
+- Makaleler ekranı artık okuyucu yorumlarını satır içi bölümünden gönderdiğinde gösterir.
+- Abone Ol düğmesi, Yeni Çıktı gönderilerinde düzgün çalışır ve bir gönderi içinden bir beslemeye abone olabilirsiniz. Hızlı, kolay ve çok yeni.
+- Okuyucu'daki dipnot bağlantıları artık olması gerektiği gibi çalışıyor ve dokunduğunuzda doğru konuma atlıyor.
+- Okuyucu Yorumları'nda, bir yorum gönderdikten sonra boş durum kaybolur. Önbelleğe alınmış yorumlar da kaydırma eylemini kullandığınız durumlar da dahil olmak üzere silindikten sonra kaybolur. Hem de kalıcı olarak.
+- Düğme stilleri, Karanlık Modda yorum ayırıcıları ve otomatik oynatma videoları kontrolleri gibi çeşitli tasarım ve görünürlük sorunlarını düzelttik.
+- Okuyucu'da Bildirim Ayarları ile ilgili birkaç sorunu giderdik. Abone olmadığınızda bu özellikler gizlenir ve abone olduğunuzda uygun şekilde gösterilir.
+- Menü Düzenleme'deki alt bilgi görünümünün yeniden boyutlandırılmadığı bir sorunu düzelttik. Sonuç olarak, eylem düğmeleri artık İngilizce olmayan dillerde okunabilmektedir. Muy bueno.
+- Bildirimlerde yanlış avatarlarla ilgili bir sorunu çözdük. Görsel indirmeyi iptal ederseniz uygulamada görünmez.
+- Hakkında ekranındaki çalışmayan X bağlantısını kaldırdık. (Bildirdiği için @zynp-KC'ye teşekkürler!)
