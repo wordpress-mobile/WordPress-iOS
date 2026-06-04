@@ -80,7 +80,8 @@ struct CustomPostListView<Header: View>: View {
         )
         .overlay {
             if viewModel.shouldDisplayEmptyView {
-                let emptyText = details.labels.notFound.isEmpty
+                let emptyText =
+                    details.labels.notFound.isEmpty
                     ? String.localizedStringWithFormat(Strings.emptyStateMessage, details.name)
                     : details.labels.notFound
                 EmptyStateView(emptyText, systemImage: "doc.text")
@@ -307,7 +308,8 @@ private struct PaginatedList<Header: View>: View {
                     Text(verbatim: SharedStrings.Button.retry)
                 }
                 .buttonStyle(.borderedProminent)
-            }.frame(maxWidth: .infinity, alignment: .center)
+            }
+            .frame(maxWidth: .infinity, alignment: .center)
         }
     }
 }
@@ -357,7 +359,7 @@ private struct ForEachContent: View {
                             PostActionMenuContent(post: fullPost, viewModel: viewModel, onDuplicate: onDuplicate)
                         }
                         .swipeActions(edge: .leading) {
-                            if fullPost.status == .publish {
+                            if fullPost.status.matches(variant: .publish) {
                                 Button {
                                     viewModel.viewPost(fullPost)
                                 } label: {
@@ -367,9 +369,9 @@ private struct ForEachContent: View {
                             }
                         }
                         .swipeActions(edge: .trailing, allowsFullSwipe: false) {
-                            if fullPost.status != .trash {
+                            if !fullPost.status.matches(variant: .trash) {
                                 Button(role: .destructive) {
-                                    if fullPost.status == .publish {
+                                    if fullPost.status.matches(variant: .publish) {
                                         viewModel.confirmTrash(fullPost)
                                     } else {
                                         Task { await viewModel.trashPost(fullPost) }
@@ -385,7 +387,7 @@ private struct ForEachContent: View {
                                 }
                             }
 
-                            if fullPost.status == .publish, let url = URL(string: fullPost.link) {
+                            if fullPost.status.matches(variant: .publish), let url = URL(string: fullPost.link) {
                                 ShareLink(item: url, subject: Text(fullPost.title?.raw ?? "")) {
                                     Label(SharedStrings.Button.share, systemImage: "square.and.arrow.up")
                                 }
@@ -489,7 +491,7 @@ private struct PostActionMenuContent: View {
     @ViewBuilder
     private var primarySection: some View {
         Section {
-            if post.status == .publish {
+            if post.status.matches(variant: .publish) {
                 Button(action: { viewModel.viewPost(post) }) {
                     Label(SharedStrings.Button.view, systemImage: "safari")
                 }
@@ -497,25 +499,25 @@ private struct PostActionMenuContent: View {
 
             // FIXME: Preview requires Core Data preview infrastructure (PreviewNonceHandler, AbstractPost)
 
-            if post.status == .draft || post.status == .pending {
+            if post.status.matches(variant: .draft) || post.status.matches(variant: .pending) {
                 Button(action: { viewModel.publishPost(post) }) {
                     Label(Strings.publish, systemImage: "paperplane")
                 }
             }
 
-            if post.status != .draft {
+            if !post.status.matches(variant: .draft) {
                 Button(action: { Task { await viewModel.moveToDraft(post) } }) {
                     Label(Strings.moveToDraft, systemImage: "pencil.line")
                 }
             }
 
-            if post.status == .publish || post.status == .draft || post.status == .pending {
+            if post.status.matchesAny(variants: [.publish, .draft, .pending]) {
                 Button(action: { onDuplicate(post) }) {
                     Label(Strings.duplicate, systemImage: "doc.on.doc")
                 }
             }
 
-            if post.status == .publish, let url = URL(string: post.link) {
+            if post.status.matches(variant: .publish), let url = URL(string: post.link) {
                 ShareLink(item: url, subject: Text(post.title?.raw ?? "")) {
                     Label(SharedStrings.Button.share, systemImage: "square.and.arrow.up")
                 }
@@ -537,14 +539,17 @@ private struct PostActionMenuContent: View {
     @ViewBuilder
     private var trashSection: some View {
         Section {
-            if post.status != .trash {
-                Button(role: .destructive, action: {
-                    if post.status == .publish {
-                        viewModel.confirmTrash(post)
-                    } else {
-                        Task { await viewModel.trashPost(post) }
+            if !post.status.matches(variant: .trash) {
+                Button(
+                    role: .destructive,
+                    action: {
+                        if post.status.matches(variant: .publish) {
+                            viewModel.confirmTrash(post)
+                        } else {
+                            Task { await viewModel.trashPost(post) }
+                        }
                     }
-                }) {
+                ) {
                     Label(Strings.moveToTrash, systemImage: "trash")
                 }
             } else {
@@ -646,7 +651,8 @@ private enum Strings {
     static let emptyStateMessage = NSLocalizedString(
         "customPostList.emptyState.message",
         value: "No %1$@",
-        comment: "Empty state message when no custom posts exist. %1$@ is the post type name (e.g., 'Podcasts', 'Products')."
+        comment:
+            "Empty state message when no custom posts exist. %1$@ is the post type name (e.g., 'Podcasts', 'Products')."
     )
     static let homepageBadge = NSLocalizedString(
         "customPostList.badge.homepage",

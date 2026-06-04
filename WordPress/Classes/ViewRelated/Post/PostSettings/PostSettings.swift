@@ -353,7 +353,7 @@ struct PostSettings: Hashable {
         }
 
         if BasePost.Status(post.status) != self.status {
-            params.status = PostStatus(self.status)
+            params.status = PostStatusValue.newFromValue(value: PostStatus(self.status))
         }
 
         if post.password != self.password {
@@ -486,7 +486,7 @@ struct PostSettings: Hashable {
         var params = PostCreateParams(meta: nil)
         params.dateGmt = publishDate
         params.slug = slug.isEmpty ? nil : slug
-        params.status = PostStatus(status)
+        params.status = PostStatusValue.newFromValue(value: PostStatus(status))
         params.password = password
         params.author = author.map { UserId(Int64($0.id)) }
         params.excerpt = excerpt.isEmpty ? nil : excerpt
@@ -605,6 +605,10 @@ extension BasePost.Status {
             wpAssertionFailure("unexpected custom post status")
             self = .draft
         }
+    }
+
+    init(_ statusValue: PostStatusValue) {
+        self.init(statusValue.parsed() ?? .custom(statusValue.raw()))
     }
 }
 

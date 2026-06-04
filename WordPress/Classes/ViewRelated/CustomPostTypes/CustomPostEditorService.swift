@@ -124,7 +124,9 @@ class CustomPostEditorService {
 
         case (.newPost, true):
             var params = settings.makeCreateParameters(taxonomies: taxonomies)
-            params.status = params.status?.normalizedPublishStatus() ?? .publish
+            params.status = PostStatusValue.newFromValue(
+                value: (params.status?.parsed() ?? .publish).normalizedPublishStatus()
+            )
 
             // Update content
             if let delegate {
@@ -142,7 +144,7 @@ class CustomPostEditorService {
 
         case (.existingPost(let post, _), true):
             var params = settings.makeUpdateParameters(from: post, taxonomies: taxonomies)
-            params.status = PostStatus(settings.status).normalizedPublishStatus()
+            params.status = PostStatusValue.newFromValue(value: PostStatus(settings.status).normalizedPublishStatus())
 
             // Update content
             if let delegate {
@@ -167,7 +169,10 @@ class CustomPostEditorService {
             // filtered out by `makeCreateParameters`.
             let resolved = try await resolveTerms(in: settings)
             var params = resolved.makeCreateParameters(taxonomies: taxonomies)
-            params.status = publish ? (params.status?.normalizedPublishStatus() ?? .publish) : .draft
+            params.status = PostStatusValue.newFromValue(
+                value:
+                    publish ? (params.status?.parsed() ?? .publish).normalizedPublishStatus() : .draft
+            )
             params.title = hasTitle ? content.title : nil
             params.content = content.content
             try await create(params: params)
@@ -181,7 +186,10 @@ class CustomPostEditorService {
                 params = PostUpdateParams(meta: nil)
             }
             if publish {
-                params.status = pending.map { PostStatus($0.status).normalizedPublishStatus() } ?? .publish
+                params.status = PostStatusValue.newFromValue(
+                    value:
+                        pending.map { PostStatus($0.status).normalizedPublishStatus() } ?? .publish
+                )
             }
             params.title = hasTitle ? content.title : nil
             params.content = content.content

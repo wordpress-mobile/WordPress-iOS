@@ -76,7 +76,8 @@ final class CustomPostListViewModel: ObservableObject {
         self.showsHierarchyIfApplicable = showsHierarchyIfApplicable
         self.presentingViewController = presentingViewController
 
-        collection = service
+        collection =
+            service
             .posts()
             .createPostMetadataCollectionWithEditContext(
                 endpointType: details.toPostEndpointType(),
@@ -94,7 +95,8 @@ final class CustomPostListViewModel: ObservableObject {
 
         withAnimation {
             filter.author = author
-            collection = service
+            collection =
+                service
                 .posts()
                 .createPostMetadataCollectionWithEditContext(
                     endpointType: endpoint,
@@ -254,8 +256,9 @@ final class CustomPostListViewModel: ObservableObject {
         }
 
         if endpoint == .pages,
-           case .staticPage(let homepagePageID) = homepageSetting,
-           filter.statuses.contains(.publish) || filter.statuses.contains(.custom("any")) {
+            case .staticPage(let homepagePageID) = homepageSetting,
+            filter.statuses.contains(.publish) || filter.statuses.contains(.custom("any"))
+        {
             items.markHomepage(id: homepagePageID)
         }
 
@@ -276,9 +279,11 @@ final class CustomPostListViewModel: ObservableObject {
         }
 
         let entries = PageTree.buildHierarchy(from: posts)
-        let itemMap = Dictionary(uniqueKeysWithValues: items.compactMap { item -> (Int64, CustomPostCollectionItem)? in
-            return (item.id, item)
-        })
+        let itemMap = Dictionary(
+            uniqueKeysWithValues: items.compactMap { item -> (Int64, CustomPostCollectionItem)? in
+                (item.id, item)
+            }
+        )
 
         indentationMap = Dictionary(uniqueKeysWithValues: entries.map { ($0.id, $0) })
         self.items = entries.compactMap { itemMap[$0.id] }
@@ -318,7 +323,7 @@ final class CustomPostListViewModel: ObservableObject {
 
         do {
             var params = PostUpdateParams(meta: nil)
-            params.status = .draft
+            params.status = PostStatusValue.newFromValue(value: .draft)
             _ = try await service.posts().updatePost(endpointType: endpoint, postId: post.id, params: params)
         } catch {
             Loggers.app.error("Failed to move post to draft: \(error)")
@@ -342,7 +347,7 @@ final class CustomPostListViewModel: ObservableObject {
         if let nav = menuNavigation(forComments: post) {
             items.append(nav)
         }
-        if post.status != .trash {
+        if !post.status.matches(variant: .trash) {
             items.append(.settings(post: post))
         }
         return items
@@ -404,21 +409,27 @@ final class CustomPostListViewModel: ObservableObject {
     }
 
     func menuNavigation(forBlaze post: AnyPostWithEditContext) -> PostMenuNavigation? {
-        guard endpoint == .posts
+        guard
+            endpoint == .posts
                 && BlazeHelper.isBlazeFlagEnabled() && blog.canBlaze
-                && post.status == .publish && (post.password ?? "").isEmpty else { return nil }
+                && post.status.matches(variant: .publish) && (post.password ?? "").isEmpty
+        else { return nil }
         return .blaze(post: post)
     }
 
     func menuNavigation(forStats post: AnyPostWithEditContext) -> PostMenuNavigation? {
-        guard endpoint == .posts
-                && blog.supports(.stats) && post.status == .publish else { return nil }
+        guard
+            endpoint == .posts
+                && blog.supports(.stats) && post.status.matches(variant: .publish)
+        else { return nil }
         return .stats(post: post)
     }
 
     func menuNavigation(forComments post: AnyPostWithEditContext) -> PostMenuNavigation? {
-        guard details.supports.supports(feature: .comments)
-                && post.status == .publish, let siteID = blog.dotComID else { return nil }
+        guard
+            details.supports.supports(feature: .comments)
+                && post.status.matches(variant: .publish), let siteID = blog.dotComID
+        else { return nil }
         return .comments(post: post, siteID: siteID)
     }
 
@@ -551,7 +562,8 @@ struct CustomPostCollectionDisplayPost: Equatable {
         self.date = entity.dateGmt
         self.modifiedDate = entity.modifiedGmt
         self.title = entity.title?.raw
-        let contentPreview = GutenbergExcerptGenerator
+        let contentPreview =
+            GutenbergExcerptGenerator
             .firstParagraph(from: entity.content.rendered)
             .replacingOccurrences(
                 of: "[\n]{2,}",
@@ -564,7 +576,7 @@ struct CustomPostCollectionDisplayPost: Equatable {
         } else {
             self.authorName = nil
         }
-        self.status = entity.status
+        self.status = entity.status.parsed() ?? .custom(entity.status.raw())
         self.sticky = entity.sticky ?? false
         self.featuredMedia = entity.featuredMedia
         self.primaryStatus = primaryStatus

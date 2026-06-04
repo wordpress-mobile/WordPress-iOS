@@ -65,7 +65,7 @@ class CustomPostEditorViewController: PostGBKEditorViewController {
                 postType: postTypeDetails,
                 title: post?.title?.raw ?? initialContent?.title,
                 content: post?.content.raw ?? initialContent?.content,
-                status: (post?.status ?? .draft).description,
+                status: post?.status.raw() ?? PostStatus.draft.description,
                 blog: blog
             )
     }
@@ -136,7 +136,7 @@ private extension CustomPostEditorViewController {
             alert.addDestructiveActionWithTitle(PostEditorStrings.discardChanges) { [weak self] _ in
                 self?.navigationController?.dismiss(animated: true)
             }
-            if post?.status ?? .draft == .draft {
+            if post?.status.matches(variant: .draft) ?? true {
                 alert.addAction(
                     UIAlertAction(
                         title: PostEditorStrings.saveDraft,
@@ -160,7 +160,7 @@ private extension CustomPostEditorViewController {
     func rightBarButtonItems() -> [UIBarButtonItem] {
         var children: [UIMenuElement] = [editorModeToggle(), settingsAction(), helpAction(), feedbackAction()]
 
-        if post?.status ?? .draft == .draft {
+        if post?.status.matches(variant: .draft) ?? true {
             let menu = UIDeferredMenuElement.uncached { [weak self] resolve in
                 Task {
                     let enabled = (try? await self?.hasUnsavedChanges()) == true
@@ -188,7 +188,7 @@ private extension CustomPostEditorViewController {
     }
 
     private func savePostAction() -> UIAction {
-        if post?.status ?? .draft == .draft {
+        if post?.status.matches(variant: .draft) ?? true {
             return UIAction(title: PostEditorStrings.publish) { [weak self] _ in
                 Task {
                     await self?.showPublishingSheet()

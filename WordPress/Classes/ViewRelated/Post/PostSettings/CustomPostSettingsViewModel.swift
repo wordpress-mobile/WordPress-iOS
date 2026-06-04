@@ -81,7 +81,7 @@ final class CustomPostSettingsViewModel: NSObject, ObservableObject, PostSetting
     }
 
     var isScheduled: Bool {
-        editorService.post?.status == .future
+        editorService.post?.status.matches(variant: .future) ?? false
     }
 
     var authorDisplayName: String {
@@ -138,7 +138,7 @@ final class CustomPostSettingsViewModel: NSObject, ObservableObject, PostSetting
 
     var isDraftOrPending: Bool {
         if let post = editorService.post {
-            return post.status == .draft || post.status == .pending
+            return post.status.matches(variant: .draft) || post.status.matches(variant: .pending)
         }
         return true
     }
@@ -412,7 +412,7 @@ final class CustomPostSettingsViewModel: NSObject, ObservableObject, PostSetting
         return V2SocialSharingBinding(
             connections: service,
             draft: binding,
-            isPostPublished: editorService.post?.status == .publish,
+            isPostPublished: editorService.post?.status.matches(variant: .publish) ?? false,
             onAddConnection: { [weak self] in
                 self?.presentAddSocialConnection()
             }
