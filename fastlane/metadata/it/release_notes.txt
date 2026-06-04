@@ -1,4 +1,7 @@
-- Il log attività ora mostra quando il tuo sito è stato aggiornato usando gli agenti IA.
-- Nelle impostazioni degli articoli, la scheda di condivisione social mostra solo le piattaforme supportate dall'app.
-- I nuovi articoli usano il formato predefinito invece della versione standard. Puoi aggiornare il formato dalle impostazioni del tuo sito.
-- Se il tuo sito è ospitato personalmente e XML-RPC è disattivato, puoi visualizzare le pagine e gli articoli nell'app. È una cosa piuttosto importante, se possiamo permetterci.
+Se hai un sito ospitato personalmente, d'ora in poi potrai accedere all'app utilizzando una password per applicazioni. Se non ne hai una, la creeremo automaticamente per te in modo che sia pronta all'uso.
+
+Quando elimini un commento utilizzando l'azione di scorrimento, ora scompare dall'elenco. Addio.
+
+Abbiamo risolto un problema per cui la vista del piè di pagina nella modifica del menu non si ridimensionava. Di conseguenza, i pulsanti di azione ora sono leggibili anche nelle lingue diverse dall'inglese.
+
+Abbiamo rimosso il link a X non funzionante nella schermata Info. (Grazie a @zynp-KC per la segnalazione!)

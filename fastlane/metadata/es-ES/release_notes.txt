@@ -1,4 +1,7 @@
-- El registro de actividad muestra ahora cuándo se actualizó tu sitio con agentes de IA.
-- In Post Settings, the Social Sharing card only shows platforms that the app supports.
-- New posts use the default post format instead of the standard version. You can update this format in your site settings.
-- If your site is self-hosted with XML-RPC disabled, you can see Posts and Pages in the app. That’s pretty important, if we do say so ourselves.
+Si tienes un sitio web autoalojado, ahora iniciarás sesión en la aplicación usando una contraseña de aplicación. Si no tienes una, te crearemos una automáticamente para que la tengas lista cuando la necesites.
+
+Cuando borres un comentario deslizando el dedo, ahora desaparece de la lista. Adiós y hasta pronto.
+
+Hemos solucionado un problema por el que la vista del pie de página en la edición del menú no cambiaba de tamaño. Como resultado, los botones de acción ahora se leen bien en idiomas distintos del inglés.
+
+Hemos eliminado el enlace X que no funcionaba en la pantalla «Acerca de». (¡Gracias a @zynp-KC por avisarnos!)

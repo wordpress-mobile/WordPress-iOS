@@ -1,1 +1,7 @@
-- Het activiteitslog toont nu wanneer je site is geüpdatet met AI-agents. - In berichtinstellingen toont de kaart sociaal delen alleen platforms die de app ondersteunt. - Nieuwe berichten gebruiken het standaard bericht format in plaats van de standaardversie. Je kunt dit format in je site instellingen updaten. - Als je site zelf gehost is met XML-RPC uitgeschakeld, kun je berichten en pagina's in de app zien. Dat is best belangrijk, al zeggen we het zelf.
+Als je een zelfgehoste site hebt, log je nu in op de app met een applicatiewachtwoord. Als je er geen hebt, maken we er automatisch een voor je, zodat het klaar is als je het nodig hebt.
+
+Als je een reactie verwijdert met de swipe-actie, verdwijnt deze nu uit de lijst. Tot ziens.
+
+We hebben een probleem verholpen waarbij de weergave van de footer in Menu bewerken niet werd aangepast. Hierdoor zijn actieknoppen nu leesbaar in niet-Engelse talen.
+
+We hebben de niet-functionele X-link op het Over scherm verwijderd. (Shout-out aan @zynp-KC voor het rapporteren!)

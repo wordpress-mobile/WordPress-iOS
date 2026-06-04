@@ -1,4 +1,7 @@
-- Etkinlik Günlüğü artık sitenizin yapay zeka aracıları kullanılarak güncellendiğinde görüntülenir.
-- Gönderi Ayarları'nda Sosyal Paylaşım kartı yalnızca uygulamanın desteklediği platformları gösterir.
-- Yeni gönderilerde standart sürüm yerine varsayılan yazı biçimi kullanılıyor. Bu biçimi site ayarlarınızdan güncelleyebilirsiniz.
-- Siteniz XML-RPC devre dışı bırakılmış olarak kullanıcı tarafından barındırılıyorsa uygulamadaki Gönderileri ve Sayfaları görebilirsiniz. Bu epey önemli, bizden söylemesi.
+Kullanıcı tarafından barındırılan bir siteniz varsa şimdi bir uygulama şifresi kullanarak uygulamada oturum açabilirsiniz. Yoksa, ihtiyacınız olduğunda hazır olması için otomatik olarak bir tane oluşturacağız.
+
+Kaydırma hareketini kullanarak bir yorumu sildiğinizde, yorum artık listeden kaybolur. Hem de kalıcı olarak.
+
+Menü Düzenleme'deki alt bilgi görünümünün yeniden boyutlandırılmadığı bir sorunu düzelttik. Sonuç olarak, eylem düğmeleri artık İngilizce olmayan dillerde okunabilmektedir.
+
+Hakkında ekranındaki çalışmayan X bağlantısını kaldırdık. (Bildirdiği için @zynp-KC'ye teşekkürler!)
