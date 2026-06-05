@@ -1,4 +1,4 @@
-/* Translation-Revision-Date: 2026-05-28 16:55:54+0000 */
+/* Translation-Revision-Date: 2026-06-04 14:49:36+0000 */
 /* Plural-Forms: nplurals=2; plural=n > 1; */
 /* Generator: GlotPress/4.0.3 */
 /* Language: id */
@@ -11621,6 +11621,9 @@ but tapping on this button will remove their like from the post. */
 
 /* Header view channel (filter) */
 "reader.discover.channel.forYou" = "Untuk Anda";
+
+/* Header view channel (filter) */
+"reader.discover.channel.freshlyPresed" = "Freshly Pressed";
 
 /* Header view channel (filter) */
 "reader.discover.channel.latest" = "Terbaru";

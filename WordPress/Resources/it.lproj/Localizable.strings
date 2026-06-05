@@ -1,4 +1,4 @@
-/* Translation-Revision-Date: 2026-05-27 18:58:03+0000 */
+/* Translation-Revision-Date: 2026-06-04 14:49:23+0000 */
 /* Plural-Forms: nplurals=2; plural=n != 1; */
 /* Generator: GlotPress/4.0.3 */
 /* Language: it */
@@ -8177,6 +8177,9 @@ Example: Reply to Pamela Nguyen */
 
 /* Debug Menu section title */
 "debugMenu.section.settings" = "Impostazioni";
+
+/* Debug Menu section title */
+"debugMenu.section.tipKit" = "KitSuggerimenti";
 
 /* Debug Menu section title */
 "debugMenu.section.webView" = "Visualizzazione web";
