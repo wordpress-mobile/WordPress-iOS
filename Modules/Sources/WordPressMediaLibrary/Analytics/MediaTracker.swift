@@ -13,6 +13,9 @@ public protocol MediaTracker {
 
 public enum MediaTrackerEvent: Sendable {
     case mediaLibraryOpened
+    case mediaLibraryFilterChanged(kind: MediaKind?) // nil = "All"
+    case mediaLibrarySearched(queryLength: Int) // fires AFTER 300ms debounce trailing edge; non-empty only
+    case mediaLibraryGridModeToggled(isAspectRatio: Bool)
 }
 
 /// No-op tracker for previews and module-internal default-construction.
