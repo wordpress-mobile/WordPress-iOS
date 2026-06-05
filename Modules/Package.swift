@@ -145,6 +145,13 @@ let package = Package(
                 .product(name: "Logging", package: "swift-log")
             ]
         ),
+        .testTarget(
+            name: "WordPressMediaLibraryTests",
+            dependencies: [
+                .target(name: "WordPressMediaLibrary"),
+                .product(name: "WordPressAPI", package: "wordpress-rs")
+            ]
+        ),
         .target(
             name: "ShareExtensionCore",
             dependencies: [
