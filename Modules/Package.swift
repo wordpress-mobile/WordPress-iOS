@@ -144,7 +144,8 @@ let package = Package(
                 "WordPressUI",
                 "WordPressCore",
                 .product(name: "WordPressAPI", package: "wordpress-rs"),
-                .product(name: "Logging", package: "swift-log")
+                .product(name: "Logging", package: "swift-log"),
+                .product(name: "Collections", package: "swift-collections")
             ]
         ),
         .testTarget(
