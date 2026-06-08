@@ -16,6 +16,18 @@ public enum MediaTrackerEvent: Sendable {
     case mediaLibraryFilterChanged(kind: MediaKind?) // nil = "All"
     case mediaLibrarySearched(queryLength: Int) // fires AFTER 300ms debounce trailing edge; non-empty only
     case mediaLibraryGridModeToggled(isAspectRatio: Bool)
+
+    // Upload events:
+    case mediaLibraryAdded(source: MediaUploadSource, kind: MediaKind)
+    case mediaLibraryUploadRetried
+}
+
+public enum MediaUploadSource: Sendable {
+    case photoLibrary
+    case camera
+    case otherApps
+    case stockPhotos
+    case imagePlayground
 }
 
 /// No-op tracker for previews and module-internal default-construction.

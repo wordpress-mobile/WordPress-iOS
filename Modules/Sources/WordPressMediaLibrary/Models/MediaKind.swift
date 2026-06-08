@@ -1,4 +1,5 @@
 import Foundation
+import UniformTypeIdentifiers
 import WordPressAPI
 import WordPressAPIInternal
 
@@ -14,6 +15,22 @@ public enum MediaKind: String, CaseIterable, Hashable, Sendable {
         case .video: self = .video
         case .audio: self = .audio
         case .document: self = .document
+        }
+    }
+
+    /// Coarse, best-effort classification of a content type before an upload
+    /// is materialized. Defaults to `.document` for anything that isn't
+    /// recognizably image, video, or audio. The materializer derives the
+    /// authoritative kind from the post-transform content type.
+    init(estimating contentType: UTType) {
+        if contentType.conforms(to: .image) {
+            self = .image
+        } else if contentType.conforms(to: .movie) {
+            self = .video
+        } else if contentType.conforms(to: .audio) {
+            self = .audio
+        } else {
+            self = .document
         }
     }
 }

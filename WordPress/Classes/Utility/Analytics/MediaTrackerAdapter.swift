@@ -30,8 +30,57 @@ struct MediaTrackerAdapter: MediaTracker {
         case .mediaLibraryGridModeToggled(let isAspectRatio):
             stat = .siteMediaGridModeToggled
             properties["mode"] = isAspectRatio ? "aspect_ratio" : "square"
+
+        case .mediaLibraryAdded(let source, let kind):
+            handleAddedMedia(source: source, kind: kind)
+            return
+
+        case .mediaLibraryUploadRetried:
+            stat = .mediaLibraryUploadMediaRetried
         }
 
         WPAppAnalytics.track(stat, properties: properties, blog: blog)
+    }
+
+    private func handleAddedMedia(source: MediaUploadSource, kind: MediaKind) {
+        switch source {
+        case .photoLibrary, .camera, .otherApps:
+            guard let resolvedStat = uploadAddedStat(source: source, kind: kind) else {
+                // .audio / .document map to no event — V1 parity.
+                return
+            }
+            WPAppAnalytics.track(resolvedStat, properties: baseProperties, blog: blog)
+
+        case .stockPhotos:
+            // External sources fire only for image kind — non-image .remoteURL
+            // (which the materializer rejects) must NOT log a photo-added event
+            // at enqueue time.
+            guard kind == .image else { return }
+            var props = baseProperties
+            props["media_origin"] = "full_screen_picker"
+            // Bare selection-time call — matches V1's
+            // SiteMediaAddMediaMenuController.swift:127 (no properties / blog).
+            WPAnalytics.track(.stockMediaUploaded)
+            // Contextual ...ViaStockPhotos with baseProperties + media_origin + blog.
+            WPAppAnalytics.track(.mediaLibraryAddedPhotoViaStockPhotos, properties: props, blog: blog)
+
+        case .imagePlayground:
+            // V1 doesn't emit a ...ViaImagePlayground event; preserved for parity.
+            return
+        }
+    }
+
+    private func uploadAddedStat(source: MediaUploadSource, kind: MediaKind) -> WPAnalyticsStat? {
+        switch (source, kind) {
+        case (.photoLibrary, .image): return .mediaLibraryAddedPhotoViaDeviceLibrary
+        case (.photoLibrary, .video): return .mediaLibraryAddedVideoViaDeviceLibrary
+        case (.camera, .image): return .mediaLibraryAddedPhotoViaCamera
+        case (.camera, .video): return .mediaLibraryAddedVideoViaCamera
+        case (.otherApps, .image): return .mediaLibraryAddedPhotoViaOtherApps
+        case (.otherApps, .video): return .mediaLibraryAddedVideoViaOtherApps
+        // Unreachable from `handleAddedMedia`; kept for switch exhaustiveness.
+        case (.stockPhotos, _), (.imagePlayground, _): return nil
+        case (_, .audio), (_, .document): return nil
+        }
     }
 }
