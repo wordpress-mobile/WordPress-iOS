@@ -127,6 +127,12 @@ open class JetpackConnectionViewController: UITableViewController {
                 self?.stopLoading()
                 if let blog = self?.blog {
                     let service = BlogService(coreDataStack: ContextManager.shared)
+                    // Compute the id synchronously before `remove(blog)` so
+                    // the teardown Task doesn't touch a deleted Blog.
+                    let blogID = TaggedManagedObjectID<Blog>(blog)
+                    Task { @MainActor in
+                        await MediaUploaderRegistry.shared.tearDown(blogID: blogID)
+                    }
                     service.remove(blog)
                     self?.delegate?.jetpackDisconnectedForBlog(blog)
                 } else {

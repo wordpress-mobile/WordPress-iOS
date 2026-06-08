@@ -30,11 +30,18 @@ open class SiteManagementService: NSObject {
         guard let remote = siteManagementServiceRemoteForBlog(blog) else {
             return
         }
+        // Capture the blog id synchronously, before `remove(blog)` deletes
+        // the managed object. The teardown Task can then run safely without
+        // touching the deleted Core Data instance.
+        let blogID = TaggedManagedObjectID<Blog>(blog)
         remote.deleteSite(
             blog.dotComID!,
             success: {
                 let blogService = BlogService(coreDataStack: self.coreDataStack)
                 blogService.remove(blog)
+                Task { @MainActor in
+                    await MediaUploaderRegistry.shared.tearDown(blogID: blogID)
+                }
                 DispatchQueue.main.async {
                     NotificationCenter.default.post(name: .WPSiteDeleted, object: nil)
                     success?()

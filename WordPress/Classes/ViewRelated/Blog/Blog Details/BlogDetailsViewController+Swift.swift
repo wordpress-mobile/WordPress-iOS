@@ -20,6 +20,12 @@ extension BlogDetailsViewController {
 
     public func confirmRemoveSite() {
         let blogService = BlogService(coreDataStack: ContextManager.shared)
+        // Compute the id synchronously before `remove(blog)` deletes the
+        // managed object, so the teardown Task doesn't touch a deleted Blog.
+        let blogID = TaggedManagedObjectID<Blog>(blog)
+        Task { @MainActor in
+            await MediaUploaderRegistry.shared.tearDown(blogID: blogID)
+        }
         blogService.remove(blog)
 
         WordPressAppDelegate.shared?.trackLogoutIfNeeded()
