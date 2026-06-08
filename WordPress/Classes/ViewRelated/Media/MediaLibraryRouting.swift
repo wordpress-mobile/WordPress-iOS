@@ -1,3 +1,4 @@
+import SwiftUI
 import UIKit
 import WordPressCore
 import WordPressData
@@ -40,7 +41,57 @@ enum MediaLibraryRouting {
         return MediaLibraryHostingController.make(
             client: client,
             tracker: tracker,
-            uploader: uploader
+            uploader: uploader,
+            externalPickerOptions: externalPickerOptions(for: blog)
         )
     }
+
+    /// Internal helper so tests can assert the option array without UI introspection.
+    /// Mirrors V1's effective gates from MediaPickerMenu+External.swift.
+    static func externalPickerOptions(for blog: Blog) -> [ExternalMediaPickerOption] {
+        var options: [ExternalMediaPickerOption] = []
+
+        if MediaPickerSource.freePhotos(blog: blog).isEnabled,
+            let api = blog.wordPressComRestApi
+        {
+            options.append(
+                .init(
+                    id: "stockPhotos",
+                    label: Strings.stockPhotos,
+                    systemImage: "photo.on.rectangle",
+                    sheetContent: { delegate in
+                        AnyView(StockPhotosPickerSheet(api: api, delegate: delegate))
+                    }
+                )
+            )
+        }
+        if MediaPickerSource.playground.isEnabled {
+            if #available(iOS 18.1, *) {
+                options.append(
+                    .init(
+                        id: "imagePlayground",
+                        label: Strings.imagePlayground,
+                        systemImage: "apple.image.playground",
+                        sheetContent: { delegate in
+                            AnyView(ImagePlaygroundPickerSheet(delegate: delegate))
+                        }
+                    )
+                )
+            }
+        }
+        return options
+    }
+}
+
+private enum Strings {
+    static let stockPhotos = NSLocalizedString(
+        "mediaLibrary.v2.addMenu.stockPhotos",
+        value: "Free Photo Library",
+        comment: "Add-menu item that opens the Stock Photos picker"
+    )
+    static let imagePlayground = NSLocalizedString(
+        "mediaLibrary.v2.addMenu.imagePlayground",
+        value: "Image Playground",
+        comment: "Add-menu item that opens Apple's Image Playground"
+    )
 }
