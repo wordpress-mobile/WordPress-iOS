@@ -12,6 +12,7 @@ import WordPressShared
 enum AspectRatioPreference {
     private static let key = UPRUConstants.mediaAspectRatioModeEnabledKey
 
+    @MainActor
     static func load(defaults: UserDefaults = .standard) -> Bool {
         if let value = defaults.object(forKey: key) as? Bool { return value }
         return UIDevice.current.userInterfaceIdiom == .pad

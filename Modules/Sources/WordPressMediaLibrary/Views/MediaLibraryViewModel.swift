@@ -16,6 +16,28 @@ final class MediaLibraryViewModel: ObservableObject {
     private let tracker: any MediaTracker
     private let client: WordPressClient
     private let collection: Collection
+    let uploader: MediaUploader?
+
+    @Published private(set) var bannerSummary: BannerSummary?
+    @Published private(set) var uploadsScreenItems: [UploadRowItem] = []
+
+    private var uploaderObserverTask: Task<Void, Never>?
+
+    struct BannerSummary: Equatable {
+        let pendingCount: Int
+        let failedCount: Int
+    }
+
+    struct UploadRowItem: Identifiable, Equatable {
+        enum Mode: Equatable {
+            case uploading(Progress)
+            case failed(message: String, isRetryable: Bool)
+        }
+        let id: UUID
+        let displayName: String
+        let kind: MediaKind
+        let mode: Mode
+    }
 
     @Published private(set) var items: [MediaGridItem] = []
     /// Stored, derived from `items` + `kind`. Recomputed only in `reload()` and
@@ -57,12 +79,15 @@ final class MediaLibraryViewModel: ObservableObject {
 
     /// Builds the collection from the wordpress-rs service: the library when
     /// `search` is nil, a search collection otherwise. `client` is retained so
-    /// `observe()` can subscribe to the local cache's update stream.
+    /// `observe()` can subscribe to the local cache's update stream. The
+    /// `uploader` is wired only for the library instance; search instances
+    /// leave it nil and never surface the upload banner or queue.
     init(
         service: WpService,
         client: WordPressClient,
         tracker: any MediaTracker,
-        search: String? = nil
+        search: String? = nil,
+        uploader: MediaUploader? = nil
     ) {
         self.tracker = tracker
         self.client = client
@@ -71,6 +96,110 @@ final class MediaLibraryViewModel: ObservableObject {
                 filter: MediaListFilter(search: search, mediaType: nil),
                 perPage: 100
             )
+        self.uploader = uploader
+        startUploaderObserver()
+    }
+
+    /// Subscribes weakly so a navigated-away view model deallocates instead
+    /// of being kept alive by the stream loop. The publisher replays the
+    /// current snapshot to the new subscriber before emitting transitions.
+    private func startUploaderObserver() {
+        guard let uploader else { return }
+        let publisher = uploader.statePublisher
+        uploaderObserverTask = Task { [weak self] in
+            for await state in publisher.values {
+                guard !Task.isCancelled else { return }
+                guard let self else { return }
+                self.applyUploaderState(state)
+            }
+        }
+    }
+
+    deinit {
+        uploaderObserverTask?.cancel()
+    }
+
+    @MainActor
+    private func applyUploaderState(_ state: UploaderState) {
+        if state.isEmpty {
+            bannerSummary = nil
+        } else {
+            bannerSummary = BannerSummary(
+                pendingCount: state.pendingCount,
+                failedCount: state.failedCount
+            )
+        }
+        // `state.entries` preserves submission order across pending/failed
+        // transitions, so the Uploads-screen row stays put when an
+        // in-flight upload fails (or a failed row is retried).
+        uploadsScreenItems = state.entries.map { entry in
+            switch entry {
+            case .pending(let p):
+                return UploadRowItem(
+                    id: p.id,
+                    displayName: p.displayName,
+                    kind: p.kind,
+                    mode: .uploading(p.progress)
+                )
+            case .failed(let f):
+                return UploadRowItem(
+                    id: f.id,
+                    displayName: f.displayName,
+                    kind: f.kind,
+                    mode: .failed(message: f.errorMessage, isRetryable: f.isRetryable)
+                )
+            }
+        }
+    }
+
+    func enqueue(sources: [UploadSource]) async {
+        guard let uploader else { return }
+        for source in sources {
+            let resolvedSource = analyticsSourceFor(source: source)
+            tracker.track(.mediaLibraryAdded(source: resolvedSource, kind: source.estimatedKind))
+        }
+        await uploader.enqueue(sources: sources)
+    }
+
+    func cancelUpload(_ id: UUID) async {
+        await uploader?.cancel(id)
+    }
+
+    func retryUpload(_ id: UUID) async {
+        guard let uploader else { return }
+        tracker.track(.mediaLibraryUploadRetried)
+        await uploader.retry(id)
+    }
+
+    func dismissUpload(_ id: UUID) async {
+        await uploader?.dismiss(id)
+    }
+
+    func cancelAllUploads() async { await uploader?.cancelAllPending() }
+
+    func retryAllUploads() async {
+        guard let uploader else { return }
+        let retryable = uploadsScreenItems.contains { row in
+            if case .failed(_, let isRetryable) = row.mode { return isRetryable }
+            return false
+        }
+        guard retryable else { return }
+        tracker.track(.mediaLibraryUploadRetried)
+        await uploader.retryAllFailed()
+    }
+
+    func dismissAllUploads() async { await uploader?.dismissAllFailed() }
+
+    private func analyticsSourceFor(source: UploadSource) -> MediaUploadSource {
+        switch source {
+        case .photoLibrary: return .photoLibrary
+        case .cameraImage, .cameraVideo: return .camera
+        case .file: return .otherApps
+        case .imagePlayground: return .imagePlayground
+        case .remoteURL:
+            // Stock Photos is the only external picker that produces .remoteURL.
+            return .stockPhotos
+        }
     }
 
     // MARK: Filter mutator
@@ -152,5 +281,31 @@ final class MediaLibraryViewModel: ObservableObject {
                 Loggers.mediaLibrary.error("Failed to load items: \(error)")
             }
         }
+    }
+}
+
+extension MediaLibraryViewModel: ExternalMediaPickerDelegate {
+    func didPick(remoteMedia: [ExternalRemoteMedia]) {
+        let sources = remoteMedia.map { media in
+            UploadSource.remoteURL(
+                UploadSource.RemoteURL(
+                    url: media.url,
+                    suggestedName: media.suggestedName,
+                    contentType: media.contentType,
+                    caption: media.caption
+                )
+            )
+        }
+        Task { await self.enqueue(sources: sources) }
+    }
+
+    func didPick(imagePlaygroundFile url: URL, suggestedName: String) {
+        Task {
+            await self.enqueue(sources: [.imagePlayground(url, suggestedName: suggestedName)])
+        }
+    }
+
+    func didCancel() {
+        // No-op today; hook exists for future analytics if needed.
     }
 }
