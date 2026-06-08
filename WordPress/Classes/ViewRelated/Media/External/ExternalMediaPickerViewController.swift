@@ -4,17 +4,27 @@ import WordPressShared
 
 protocol ExternalMediaPickerViewDelegate: AnyObject {
     /// If the user cancels the flow, the selection is empty.
-    func externalMediaPickerViewController(_ viewController: ExternalMediaPickerViewController, didFinishWithSelection selection: [ExternalMediaAsset])
+    func externalMediaPickerViewController(
+        _ viewController: ExternalMediaPickerViewController,
+        didFinishWithSelection selection: [ExternalMediaAsset]
+    )
 }
 
-final class ExternalMediaPickerViewController: UIViewController, UICollectionViewDataSource, UICollectionViewDelegate, UISearchResultsUpdating, MediaPreviewControllerDataSource {
+final class ExternalMediaPickerViewController: UIViewController, UICollectionViewDataSource, UICollectionViewDelegate,
+    UISearchResultsUpdating, MediaPreviewControllerDataSource
+{ // swiftlint:disable:this opening_brace
     private lazy var collectionView = UICollectionView(frame: .zero, collectionViewLayout: flowLayout)
     private lazy var flowLayout = UICollectionViewFlowLayout()
     private var collectionViewDataSource: UICollectionViewDiffableDataSource<Int, String>!
     private let searchController = UISearchController()
     private let activityIndicator = UIActivityIndicatorView()
     private let toolbarItemTitle = ExternalMediaSelectionTitleView()
-    private lazy var buttonDone = UIBarButtonItem(title: Strings.add, style: .done, target: self, action: #selector(buttonDoneTapped))
+    private lazy var buttonDone = UIBarButtonItem(
+        title: Strings.add,
+        style: .done,
+        target: self,
+        action: #selector(buttonDoneTapped)
+    )
 
     private let dataSource: ExternalMediaDataSource
     private var assets: [String: ExternalMediaAsset] = [:]
@@ -32,9 +42,11 @@ final class ExternalMediaPickerViewController: UIViewController, UICollectionVie
 
     private static let cellReuseID = "ExternalMediaPickerCollectionCell"
 
-    init(dataSource: ExternalMediaDataSource,
-         source: MediaSource,
-         allowsMultipleSelection: Bool = false) {
+    init(
+        dataSource: ExternalMediaDataSource,
+        source: MediaSource,
+        allowsMultipleSelection: Bool = false
+    ) {
         self.dataSource = dataSource
         self.source = source
         self.allowsMultipleSelection = allowsMultipleSelection
@@ -133,9 +145,12 @@ final class ExternalMediaPickerViewController: UIViewController, UICollectionVie
     }
 
     private func configureNavigationItems() {
-        let buttonCancel = UIBarButtonItem(systemItem: .cancel, primaryAction: UIAction { [weak self] _ in
-            self?.buttonCancelTapped()
-        })
+        let buttonCancel = UIBarButtonItem(
+            systemItem: .cancel,
+            primaryAction: UIAction { [weak self] _ in
+                self?.buttonCancelTapped()
+            }
+        )
         navigationItem.leftBarButtonItem = buttonCancel
         if allowsMultipleSelection {
             navigationItem.rightBarButtonItems = [buttonDone]
@@ -152,7 +167,11 @@ final class ExternalMediaPickerViewController: UIViewController, UICollectionVie
         toolbarItems.append(UIBarButtonItem(barButtonSystemItem: .flexibleSpace, target: nil, action: nil))
         self.toolbarItems = toolbarItems
 
-        toolbarItemTitle.buttonViewSelected.addTarget(self, action: #selector(buttonPreviewSelectionTapped), for: .touchUpInside)
+        toolbarItemTitle.buttonViewSelected.addTarget(
+            self,
+            action: #selector(buttonPreviewSelectionTapped),
+            for: .touchUpInside
+        )
     }
 
     private func didUpdateAssets() {
@@ -234,8 +253,11 @@ final class ExternalMediaPickerViewController: UIViewController, UICollectionVie
         dataSource.assets.count
     }
 
-    func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: Self.cellReuseID, for: indexPath) as! ExternalMediaPickerCollectionCell
+    func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell
+    { // swiftlint:disable:this opening_brace
+        let cell =
+            collectionView.dequeueReusableCell(withReuseIdentifier: Self.cellReuseID, for: indexPath)
+            as! ExternalMediaPickerCollectionCell
         let item = dataSource.assets[indexPath.item]
         cell.configure(imageURL: item.thumbnailURL, size: ImageSize(scaling: flowLayout.itemSize, in: self.view))
         return cell
@@ -277,7 +299,8 @@ final class ExternalMediaPickerViewController: UIViewController, UICollectionVie
 
     func previewController(_ controller: MediaPreviewController, previewItemAt index: Int) -> MediaPreviewItem? {
         guard let id = selection.object(at: index) as? String,
-              let asset = assets[id] else {
+            let asset = assets[id]
+        else {
             return nil
         }
         return MediaPreviewItem(url: asset.largeURL)
@@ -285,5 +308,9 @@ final class ExternalMediaPickerViewController: UIViewController, UICollectionVie
 }
 
 private enum Strings {
-    static let add = NSLocalizedString("externalMediaPicker.add", value: "Add", comment: "Title for confirmation navigation bar button item")
+    static let add = NSLocalizedString(
+        "externalMediaPicker.add",
+        value: "Add",
+        comment: "Title for confirmation navigation bar button item"
+    )
 }

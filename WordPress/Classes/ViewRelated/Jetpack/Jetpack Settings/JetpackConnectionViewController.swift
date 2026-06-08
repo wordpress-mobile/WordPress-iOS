@@ -26,7 +26,7 @@ open class JetpackConnectionViewController: UITableViewController {
     fileprivate var blog: Blog!
     fileprivate var service: BlogJetpackSettingsService!
     fileprivate lazy var handler: ImmuTableViewHandler = {
-        return ImmuTableViewHandler(takeOver: self)
+        ImmuTableViewHandler(takeOver: self)
     }()
 
     // MARK: - Public Properties
@@ -66,16 +66,22 @@ open class JetpackConnectionViewController: UITableViewController {
     }
 
     func tableViewModel() -> ImmuTable {
-        let disconnectRow = DestructiveButtonRow(title: NSLocalizedString("Disconnect from WordPress.com",
-                                                                          comment: "Disconnect from WordPress.com button"),
-                                                 action: self.disconnectJetpackTapped(),
-                                                 accessibilityIdentifier: "disconnectFromWordPress.comButton")
+        let disconnectRow = DestructiveButtonRow(
+            title: NSLocalizedString(
+                "Disconnect from WordPress.com",
+                comment: "Disconnect from WordPress.com button"
+            ),
+            action: self.disconnectJetpackTapped(),
+            accessibilityIdentifier: "disconnectFromWordPress.comButton"
+        )
         return ImmuTable(sections: [
             ImmuTableSection(
                 headerText: "",
                 rows: [disconnectRow],
-                footerText: NSLocalizedString("Your site will no longer send data to WordPress.com and Jetpack features will stop working. You will lose access to the site on the app and you will have to re-add it with the site credentials.",
-                                              comment: "Explanatory text bellow the Disconnect from WordPress.com button")
+                footerText: NSLocalizedString(
+                    "Your site will no longer send data to WordPress.com and Jetpack features will stop working. You will lose access to the site on the app and you will have to re-add it with the site credentials.",
+                    comment: "Explanatory text bellow the Disconnect from WordPress.com button"
+                )
             )
         ])
     }
@@ -83,20 +89,30 @@ open class JetpackConnectionViewController: UITableViewController {
     // MARK: - Row Handler
 
     func disconnectJetpackTapped() -> ImmuTableAction {
-        return { [unowned self] _ in
+        { [unowned self] _ in
             self.tableView.deselectSelectedRowWithAnimation(true)
-            let message = NSLocalizedString("Are you sure you want to disconnect Jetpack from the site?",
-                                            comment: "Message prompting the user to confirm that they want to disconnect Jetpack from the site.")
+            let message = NSLocalizedString(
+                "Are you sure you want to disconnect Jetpack from the site?",
+                comment: "Message prompting the user to confirm that they want to disconnect Jetpack from the site."
+            )
 
-            let alertController = UIAlertController(title: nil,
-                                                    message: message,
-                                                    preferredStyle: .alert)
-            alertController.addCancelActionWithTitle(NSLocalizedString("Cancel", comment: "Verb. A button title. Tapping cancels an action."))
-            alertController.addDestructiveActionWithTitle(NSLocalizedString("Disconnect",
-                                                                            comment: "Title for button that disconnects Jetpack from the site"),
-                                                          handler: { _ in
-                                                              self.disconnectJetpack()
-                                                          })
+            let alertController = UIAlertController(
+                title: nil,
+                message: message,
+                preferredStyle: .alert
+            )
+            alertController.addCancelActionWithTitle(
+                NSLocalizedString("Cancel", comment: "Verb. A button title. Tapping cancels an action.")
+            )
+            alertController.addDestructiveActionWithTitle(
+                NSLocalizedString(
+                    "Disconnect",
+                    comment: "Title for button that disconnects Jetpack from the site"
+                ),
+                handler: { _ in
+                    self.disconnectJetpack()
+                }
+            )
             WPAnalytics.trackEvent(.jetpackDisconnectTapped)
             self.present(alertController, animated: true)
         }
@@ -105,26 +121,32 @@ open class JetpackConnectionViewController: UITableViewController {
     @objc func disconnectJetpack() {
         WPAnalytics.trackEvent(.jetpackDisconnectRequested)
         startLoading()
-        self.service.disconnectJetpackFromBlog(self.blog,
-                                               success: { [weak self] in
-                                                   self?.stopLoading()
-                                                   if let blog = self?.blog {
-                                                       let service = BlogService(coreDataStack: ContextManager.shared)
-                                                       service.remove(blog)
-                                                       self?.delegate?.jetpackDisconnectedForBlog(blog)
-                                                   } else {
-                                                       self?.dismiss()
-                                                   }
-                                               },
-                                               failure: { [weak self] error in
-                                                   self?.stopLoading()
-                                                   let errorTitle = NSLocalizedString("Error disconnecting Jetpack",
-                                                                                      comment: "Title of error dialog when disconnecting jetpack fails.")
-                                                   let errorMessage = NSLocalizedString("Please contact support for assistance.",
-                                                                                        comment: "Message displayed on an error alert to prompt the user to contact support")
-                                                   WPError.showAlert(withTitle: errorTitle, message: errorMessage, withSupportButton: true)
-                                                   DDLogError("Error disconnecting Jetpack: \(String(describing: error))")
-                                               })
+        self.service.disconnectJetpackFromBlog(
+            self.blog,
+            success: { [weak self] in
+                self?.stopLoading()
+                if let blog = self?.blog {
+                    let service = BlogService(coreDataStack: ContextManager.shared)
+                    service.remove(blog)
+                    self?.delegate?.jetpackDisconnectedForBlog(blog)
+                } else {
+                    self?.dismiss()
+                }
+            },
+            failure: { [weak self] error in
+                self?.stopLoading()
+                let errorTitle = NSLocalizedString(
+                    "Error disconnecting Jetpack",
+                    comment: "Title of error dialog when disconnecting jetpack fails."
+                )
+                let errorMessage = NSLocalizedString(
+                    "Please contact support for assistance.",
+                    comment: "Message displayed on an error alert to prompt the user to contact support"
+                )
+                WPError.showAlert(withTitle: errorTitle, message: errorMessage, withSupportButton: true)
+                DDLogError("Error disconnecting Jetpack: \(String(describing: error))")
+            }
+        )
     }
 
     @objc func dismiss() {
