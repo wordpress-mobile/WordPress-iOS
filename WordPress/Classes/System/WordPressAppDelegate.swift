@@ -94,13 +94,9 @@ public class WordPressAppDelegate: UIResponder, UIApplicationDelegate {
             ])
         }
 
-        let window = UIWindow(frame: UIScreen.main.bounds)
-        self.window = window
-
         WordPressAPIInternal.setupLogger(appId: Bundle.main.bundleIdentifier!)
         DesignSystem.FontManager.registerCustomFonts()
         AssertionLoggerDependencyContainer.logger = AssertionLogger()
-        UITestConfigurator.prepareApplicationForUITests(in: application, window: window)
 
         // The following extensive logging configuration detects if extensive logging is enabled internally.
         wpkURLSessionNotifyingDelegate = PulseNetworkLogger()
@@ -116,25 +112,43 @@ public class WordPressAppDelegate: UIResponder, UIApplicationDelegate {
         // Configure WPCom API overrides
         configureWordPressComApi()
 
-        configureWordPressAuthenticator()
-
         ReachabilityUtils.configure()
 
         configureSelfHostedChallengeHandler()
         updateFeatureFlags()
         updateRemoteConfig()
 
-        window.makeKeyAndVisible()
-
         // Restore a disassociated account prior to fixing tokens.
         AccountService(coreDataStack: ContextManager.shared).restoreDisassociatedAccountIfNecessary()
 
-        customizeAppearance()
         configureAnalytics()
 
         runStartupSequence(with: launchOptions ?? [:])
 
         return true
+    }
+
+    /// Builds and shows the app's UI in the given window scene. Runs when the main
+    /// scene connects, which (under the scene life cycle) is after `didFinishLaunching`.
+    func showInitialUI(in windowScene: UIWindowScene) {
+        let window = UIWindow(windowScene: windowScene)
+        self.window = window
+
+        UITestConfigurator.prepareApplicationForUITests(in: UIApplication.shared, window: window)
+
+        // Must run here (not in willFinishLaunching): it accesses `windowManager`,
+        // which force-unwraps `window`. startObservingAppleIDCredentialRevoked also
+        // requires the authenticator to be initialized first.
+        configureWordPressAuthenticator()
+        startObservingAppleIDCredentialRevoked()
+        customizeAppearance()
+
+        window.makeKeyAndVisible()
+
+        windowManager.showUI()
+        restoreAppState()
+
+        DebugMenuViewController.configure(in: window)
     }
 
     public func application(
@@ -151,7 +165,6 @@ public class WordPressAppDelegate: UIResponder, UIApplicationDelegate {
         setupPingHub()
         setupBackgroundRefresh(application)
         setupNoticePresenter()
-        DebugMenuViewController.configure(in: window)
         AppTips.initialize()
 
         // This was necessary to properly load fonts for the Stories editor. I believe external libraries may require this call to access fonts.
@@ -160,8 +173,6 @@ public class WordPressAppDelegate: UIResponder, UIApplicationDelegate {
             .forEach({ url in
                 CTFontManagerRegisterFontsForURL(url as CFURL, .process, nil)
             })
-
-        startObservingAppleIDCredentialRevoked()
 
         NotificationCenter.default.post(name: .applicationLaunchCompleted, object: nil)
         DispatchQueue.main.asyncAfter(deadline: .now() + .seconds(2)) {
@@ -178,22 +189,6 @@ public class WordPressAppDelegate: UIResponder, UIApplicationDelegate {
 
     public func applicationWillTerminate(_ application: UIApplication) {
         Loggers.app.info("\(self) \(#function)")
-    }
-
-    public func applicationDidEnterBackground(_ application: UIApplication) {
-        handleDidEnterBackground()
-    }
-
-    public func applicationWillEnterForeground(_ application: UIApplication) {
-        handleWillEnterForeground()
-    }
-
-    public func applicationWillResignActive(_ application: UIApplication) {
-        handleWillResignActive()
-    }
-
-    public func applicationDidBecomeActive(_ application: UIApplication) {
-        handleDidBecomeActive()
     }
 
     // MARK: - Activation handlers (shared by app- and scene-lifecycle)
@@ -255,15 +250,6 @@ public class WordPressAppDelegate: UIResponder, UIApplicationDelegate {
 
     public func application(
         _ application: UIApplication,
-        performActionFor shortcutItem: UIApplicationShortcutItem,
-        completionHandler: @escaping (Bool) -> Void
-    ) {
-        let handler = WP3DTouchShortcutHandler()
-        completionHandler(handler.handleShortcutItem(shortcutItem))
-    }
-
-    public func application(
-        _ application: UIApplication,
         handleEventsForBackgroundURLSession identifier: String,
         completionHandler: @escaping () -> Void
     ) {
@@ -275,15 +261,6 @@ public class WordPressAppDelegate: UIResponder, UIApplicationDelegate {
             manager.backgroundSessionCompletionBlock = completionHandler
             manager.startBackgroundSession()
         }
-    }
-
-    public func application(
-        _ application: UIApplication,
-        continue userActivity: NSUserActivity,
-        restorationHandler: @escaping ([UIUserActivityRestoring]?) -> Void
-    ) -> Bool {
-        handle(userActivity: userActivity)
-        return true
     }
 
     /// Routes an inbound `NSUserActivity` (universal links via web browsing, Spotlight, Handoff).
@@ -366,9 +343,6 @@ public class WordPressAppDelegate: UIResponder, UIApplicationDelegate {
         shortcutCreator.createShortcutsIf3DTouchAvailable(AccountHelper.isLoggedIn)
 
         AccountService.loadDefaultAccountCookies()
-
-        windowManager.showUI()
-        restoreAppState()
     }
 
     private func mergeDuplicateAccountsIfNeeded() {

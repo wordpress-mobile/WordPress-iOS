@@ -5,16 +5,8 @@ import WordPressData
 import WordPressShared
 
 @objc extension WordPressAppDelegate {
-    public func application(
-        _ app: UIApplication,
-        open url: URL,
-        options: [UIApplication.OpenURLOptionsKey: Any] = [:]
-    ) -> Bool {
-        handle(url: url)
-    }
-
     /// Routes an inbound URL (custom scheme deep links, magic-login, migration, OAuth).
-    /// Reused by both the legacy app-lifecycle path and `WordPressSceneDelegate`.
+    /// Called by `WordPressSceneDelegate` for inbound URLs.
     @discardableResult
     func handle(url: URL) -> Bool {
         let redactedURL = LoggingURLRedactor.redactedURL(url)
