@@ -497,12 +497,12 @@ extension SupportMessage {
 }
 
 extension SupportAttachment {
-    func asAttachment() -> Attachment? {
+    func asAttachment() -> Support.Attachment? {
         guard let url = URL(string: self.url) else {
             return nil
         }
 
-        return Attachment(
+        return Support.Attachment(
             id: self.id,
             filename: self.filename,
             contentType: self.contentType,
