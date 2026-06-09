@@ -19,7 +19,10 @@ final class SiteAssemblyWizardContent: UIViewController {
     private let service: SiteAssemblyService
 
     /// Displays the domain and plan checkout web view.
-    private lazy var siteCreationPurchasingController = SiteCreationPurchasingWebFlowController(viewController: self, origin: .siteCreation)
+    private lazy var siteCreationPurchasingController = SiteCreationPurchasingWebFlowController(
+        viewController: self,
+        origin: .siteCreation
+    )
 
     /// The new `Blog`, if successfully created; `nil` otherwise.
     private var createdBlog: Blog?
@@ -127,10 +130,11 @@ final class SiteAssemblyWizardContent: UIViewController {
                 SiteCreationAnalyticsHelper.trackSiteCreationSuccess(self.siteCreator.design)
             }
             if status == .succeeded,
-               shouldPerformPurchasingStep,
-               let domain = self.siteCreator.address,
-               let planId = self.siteCreator.planId,
-               let blog = self.createdBlog {
+                shouldPerformPurchasingStep,
+                let domain = self.siteCreator.address,
+                let planId = self.siteCreator.planId,
+                let blog = self.createdBlog
+            {
                 self.attemptPurchasing(domain: domain, planId: planId, site: blog)
             } else {
                 self.contentView.status = status
@@ -140,7 +144,8 @@ final class SiteAssemblyWizardContent: UIViewController {
 
     /// The site must be created before attempting plan and/or domain purchasing.
     private func attemptPurchasing(domain: DomainSuggestion, planId: Int, site: Blog) {
-        self.siteCreationPurchasingController.purchase(domain: domain, planId: planId, site: site) { [weak self] result in
+        self.siteCreationPurchasingController.purchase(domain: domain, planId: planId, site: site) {
+            [weak self] result in
             guard let self else {
                 return
             }
@@ -165,8 +170,10 @@ final class SiteAssemblyWizardContent: UIViewController {
     private func installButtonViewController() {
         buttonViewController.delegate = self
 
-        let primaryButtonText = NSLocalizedString("Done",
-                                                  comment: "Tapping a button with this label allows the user to exit the Site Creation flow")
+        let primaryButtonText = NSLocalizedString(
+            "Done",
+            comment: "Tapping a button with this label allows the user to exit the Site Creation flow"
+        )
         buttonViewController.setButtonTitles(primary: primaryButtonText)
 
         contentView.buttonContainerView = buttonViewController.view

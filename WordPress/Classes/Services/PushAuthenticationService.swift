@@ -30,13 +30,16 @@ class PushAuthenticationService {
             return
         }
 
-        self.authenticationServiceRemote!.authorizeLogin(token,
-            success: {
-                            completion(true)
-                        },
-            failure: {
-                            completion(false)
-                        })
+        self.authenticationServiceRemote!
+            .authorizeLogin(
+                token,
+                success: {
+                    completion(true)
+                },
+                failure: {
+                    completion(false)
+                }
+            )
     }
 
     /// Helper method to get the WordPress.com REST Api, if any

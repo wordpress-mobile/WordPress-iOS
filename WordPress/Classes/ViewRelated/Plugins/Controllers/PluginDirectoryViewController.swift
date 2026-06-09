@@ -39,8 +39,10 @@ class PluginDirectoryViewController: UITableViewController {
         tableView.estimatedRowHeight = Constants.rowHeight
         tableView.separatorInset = Constants.separatorInset
 
-        ImmuTable.registerRows([CollectionViewContainerRow<PluginDirectoryCollectionViewCell, PluginDirectoryEntry>.self],
-                               tableView: tableView)
+        ImmuTable.registerRows(
+            [CollectionViewContainerRow<PluginDirectoryCollectionViewCell, PluginDirectoryEntry>.self],
+            tableView: tableView
+        )
 
         tableViewModel = viewModel.tableViewModel(presenter: self)
         navigationItem.searchController = searchController
@@ -81,11 +83,11 @@ class PluginDirectoryViewController: UITableViewController {
 
 extension PluginDirectoryViewController {
     override func numberOfSections(in tableView: UITableView) -> Int {
-        return tableViewModel.sections.count
+        tableViewModel.sections.count
     }
 
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return tableViewModel.sections[section].rows.count
+        tableViewModel.sections[section].rows.count
     }
 
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
@@ -103,11 +105,11 @@ extension PluginDirectoryViewController {
     }
 
     override func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
-        return 0
+        0
     }
 
     override func tableView(_ tableView: UITableView, heightForFooterInSection section: Int) -> CGFloat {
-        return 0
+        0
     }
 }
 
@@ -120,7 +122,8 @@ extension PluginDirectoryViewController: UISearchControllerDelegate {
 extension PluginDirectoryViewController: UISearchResultsUpdating {
     func updateSearchResults(for searchController: UISearchController) {
         guard let pluginListViewController = searchController.searchResultsController as? PluginListViewController,
-            let searchedText = searchController.searchBar.text else {
+            let searchedText = searchController.searchBar.text
+        else {
             return
         }
 
