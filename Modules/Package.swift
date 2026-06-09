@@ -532,22 +532,12 @@ enum XcodeSupport {
             .xcodeTarget(
                 "XcodeTarget_WordPressTests",
                 dependencies: testDependencies + [
+                    "FormattableContentKit",
+                    "WordPressData",
+                    "WordPressKit",
                     "WordPressShared",
                     "WordPressUI",
-                    "WordPressData",
                     .product(name: "Gravatar", package: "Gravatar-SDK-iOS"),
-                    // Needed by WordPressData because of how linkage works...
-                    //
-                    "BuildSettingsKit",
-                    "FormattableContentKit",
-                    "SFHFKeychainUtils",
-                    "WordPressKit",
-                    .product(name: "CocoaLumberjack", package: "CocoaLumberjack"),
-                    .product(name: "CocoaLumberjackSwift", package: "CocoaLumberjack"),
-                    .product(name: "CocoaLumberjackSwiftLogBackend", package: "CocoaLumberjack"),
-                    .product(name: "Logging", package: "swift-log"),
-                    .product(name: "NSObject-SafeExpectations", package: "NSObject-SafeExpectations"),
-                    .product(name: "NSURL-IDN", package: "NSURL-IDN"),
                     .product(name: "WordPressAPI", package: "wordpress-rs")
                 ]
             ),
