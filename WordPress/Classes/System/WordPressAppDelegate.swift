@@ -26,9 +26,12 @@ public class WordPressAppDelegate: UIResponder, UIApplicationDelegate {
 
     public var window: UIWindow?
 
-    let backgroundTasksCoordinator = BackgroundTasksCoordinator(tasks: [
-        WeeklyRoundupBackgroundTask()
-    ], eventHandler: WordPressBackgroundTaskEventHandler())
+    let backgroundTasksCoordinator = BackgroundTasksCoordinator(
+        tasks: [
+            WeeklyRoundupBackgroundTask()
+        ],
+        eventHandler: WordPressBackgroundTaskEventHandler()
+    )
 
     @objc
     lazy var windowManager: WindowManager = {
@@ -55,7 +58,7 @@ public class WordPressAppDelegate: UIResponder, UIApplicationDelegate {
     private let remoteConfigStore = RemoteConfigStore()
 
     private var mainContext: NSManagedObjectContext {
-        return ContextManager.shared.mainContext
+        ContextManager.shared.mainContext
     }
 
     private let loggingStack = WPLoggingStack.shared
@@ -77,14 +80,17 @@ public class WordPressAppDelegate: UIResponder, UIApplicationDelegate {
 
     // MARK: - Application lifecycle
 
-    public func application(_ application: UIApplication, willFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]? = nil) -> Bool {
+    public func application(
+        _ application: UIApplication,
+        willFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]? = nil
+    ) -> Bool {
         // We need to set up the swift-log logging system right after app launch, so that logs can be written
         // into the log handlers configured below.
         LoggingSystem.bootstrap { label in
             let ddLogHandlerFactory: (String) -> LogHandler = DDLogHandler.handlerFactory()
             return MultiplexLogHandler([
                 ddLogHandlerFactory(label),
-                ExtensiveLogger(label: label),
+                ExtensiveLogger(label: label)
             ])
         }
 
@@ -131,7 +137,10 @@ public class WordPressAppDelegate: UIResponder, UIApplicationDelegate {
         return true
     }
 
-    public func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]? = nil) -> Bool {
+    public func application(
+        _ application: UIApplication,
+        didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]? = nil
+    ) -> Bool {
         Loggers.app.info("didFinishLaunchingWithOptions state: \(application.applicationState)")
 
         ABTest.start()
@@ -150,9 +159,10 @@ public class WordPressAppDelegate: UIResponder, UIApplicationDelegate {
 
         // This was necessary to properly load fonts for the Stories editor. I believe external libraries may require this call to access fonts.
         let fonts = Bundle.main.urls(forResourcesWithExtension: "ttf", subdirectory: nil)
-        fonts?.forEach({ url in
-            CTFontManagerRegisterFontsForURL(url as CFURL, .process, nil)
-        })
+        fonts?
+            .forEach({ url in
+                CTFontManagerRegisterFontsForURL(url as CFURL, .process, nil)
+            })
 
         startObservingAppleIDCredentialRevoked()
 
@@ -162,7 +172,8 @@ public class WordPressAppDelegate: UIResponder, UIApplicationDelegate {
         }
 
         if let account = try? WPAccount.lookupDefaultWordPressComAccount(in: ContextManager.shared.mainContext) {
-            BlogSyncFacade().syncBlogs(for: account, success: { /* Do nothing */ }, failure: { _ in /* Do nothing */ })
+            BlogSyncFacade()
+                .syncBlogs(for: account, success: { /* Do nothing */  }, failure: { _ in /* Do nothing */ })
         }
 
         return true
@@ -227,12 +238,20 @@ public class WordPressAppDelegate: UIResponder, UIApplicationDelegate {
         GutenbergSettings().performGutenbergPhase2MigrationIfNeeded()
     }
 
-    public func application(_ application: UIApplication, performActionFor shortcutItem: UIApplicationShortcutItem, completionHandler: @escaping (Bool) -> Void) {
+    public func application(
+        _ application: UIApplication,
+        performActionFor shortcutItem: UIApplicationShortcutItem,
+        completionHandler: @escaping (Bool) -> Void
+    ) {
         let handler = WP3DTouchShortcutHandler()
         completionHandler(handler.handleShortcutItem(shortcutItem))
     }
 
-    public func application(_ application: UIApplication, handleEventsForBackgroundURLSession identifier: String, completionHandler: @escaping () -> Void) {
+    public func application(
+        _ application: UIApplication,
+        handleEventsForBackgroundURLSession identifier: String,
+        completionHandler: @escaping () -> Void
+    ) {
         // 21-Oct-2017: We are only handling background URLSessions initiated by the share extension so there
         // is no need to inspect the identifier beyond the simple check here.
         let appGroupName = BuildSettings.current.appGroupName
@@ -243,7 +262,11 @@ public class WordPressAppDelegate: UIResponder, UIApplicationDelegate {
         }
     }
 
-    public func application(_ application: UIApplication, continue userActivity: NSUserActivity, restorationHandler: @escaping ([UIUserActivityRestoring]?) -> Void) -> Bool {
+    public func application(
+        _ application: UIApplication,
+        continue userActivity: NSUserActivity,
+        restorationHandler: @escaping ([UIUserActivityRestoring]?) -> Void
+    ) -> Bool {
         if userActivity.activityType == NSUserActivityTypeBrowsingWeb {
             handleWebActivity(userActivity)
         } else {
@@ -256,9 +279,13 @@ public class WordPressAppDelegate: UIResponder, UIApplicationDelegate {
 
     // Note that this method only appears to be called for iPhone devices, not iPad.
     // This allows individual view controllers to cancel rotation if they need to.
-    public func application(_ application: UIApplication, supportedInterfaceOrientationsFor window: UIWindow?) -> UIInterfaceOrientationMask {
+    public func application(
+        _ application: UIApplication,
+        supportedInterfaceOrientationsFor window: UIWindow?
+    ) -> UIInterfaceOrientationMask {
         if let vc = window?.topmostPresentedViewController,
-           vc is OrientationLimited {
+            vc is OrientationLimited
+        {
             return vc.supportedInterfaceOrientations
         }
 
@@ -284,13 +311,13 @@ public class WordPressAppDelegate: UIResponder, UIApplicationDelegate {
             toggleExtraDebuggingIfNeeded()
         }
 
-#if DEBUG
+        #if DEBUG
         KeychainTools.processKeychainDebugArguments()
 
         // Zendesk Logging
         CoreLogger.enabled = true
         CoreLogger.logLevel = .debug
-#endif
+        #endif
 
         ZendeskUtils.setup()
 
@@ -304,11 +331,12 @@ public class WordPressAppDelegate: UIResponder, UIApplicationDelegate {
         }
 
         // Deferred tasks to speed up app launch
-        DispatchQueue.global(qos: .background).async { [weak self] in
-            self?.mergeDuplicateAccountsIfNeeded()
-            MediaCoordinator.shared.refreshMediaStatus()
-            MediaFileManager.clearUnusedMediaUploadFiles(onCompletion: nil, onError: nil)
-        }
+        DispatchQueue.global(qos: .background)
+            .async { [weak self] in
+                self?.mergeDuplicateAccountsIfNeeded()
+                MediaCoordinator.shared.refreshMediaStatus()
+                MediaFileManager.clearUnusedMediaUploadFiles(onCompletion: nil, onError: nil)
+            }
 
         DispatchQueue.main.asyncAfter(deadline: .now() + 3) {
             PostCoordinator.shared.initializeSync()
@@ -355,29 +383,39 @@ public class WordPressAppDelegate: UIResponder, UIApplicationDelegate {
     // MARK: - Helpers
 
     var runningInBackground: Bool {
-        return UIApplication.shared.applicationState == .background
+        UIApplication.shared.applicationState == .background
     }
 }
 
 /// Declares Notification Names
 extension Foundation.Notification.Name {
     static var applicationLaunchCompleted: Foundation.NSNotification.Name {
-        return Foundation.Notification.Name("org.wordpress.startup.completed")
+        Foundation.Notification.Name("org.wordpress.startup.completed")
     }
 }
 
 // MARK: - Push Notification Delegate
 
 extension WordPressAppDelegate {
-    public func application(_ application: UIApplication, didRegisterForRemoteNotificationsWithDeviceToken deviceToken: Data) {
+    public func application(
+        _ application: UIApplication,
+        didRegisterForRemoteNotificationsWithDeviceToken deviceToken: Data
+    ) {
         PushNotificationsManager.shared.registerDeviceToken(deviceToken)
     }
 
-    public func application(_ application: UIApplication, didFailToRegisterForRemoteNotificationsWithError error: Error) {
+    public func application(
+        _ application: UIApplication,
+        didFailToRegisterForRemoteNotificationsWithError error: Error
+    ) {
         PushNotificationsManager.shared.registrationDidFail(error as NSError)
     }
 
-    public func application(_ application: UIApplication, didReceiveRemoteNotification userInfo: [AnyHashable: Any], fetchCompletionHandler completionHandler: @escaping (UIBackgroundFetchResult) -> Void) {
+    public func application(
+        _ application: UIApplication,
+        didReceiveRemoteNotification userInfo: [AnyHashable: Any],
+        fetchCompletionHandler completionHandler: @escaping (UIBackgroundFetchResult) -> Void
+    ) {
         Loggers.app.info("\(self) \(#function)")
         PushNotificationsManager.shared.application(
             application,
@@ -408,7 +446,12 @@ extension WordPressAppDelegate {
 
     func configureSelfHostedChallengeHandler() {
         WordPressOrgXMLRPCApi.onChallenge = { challenge, completionHandler in
-            guard let alertController = HTTPAuthenticationAlertController.controller(for: challenge, handler: completionHandler) else {
+            guard
+                let alertController = HTTPAuthenticationAlertController.controller(
+                    for: challenge,
+                    handler: completionHandler
+                )
+            else {
                 completionHandler(.performDefaultHandling, nil)
                 return
             }
@@ -436,25 +479,28 @@ extension WordPressAppDelegate {
     }
 
     func present(selfHostedSite blog: Blog, from navigationController: UINavigationController) {
-        self.authManager?.presentLoginEpilogue(in: navigationController, forSelfHostedSite: blog, source: nil) {
-            // Do nothing.
-        }
+        self.authManager?
+            .presentLoginEpilogue(in: navigationController, forSelfHostedSite: blog, source: nil) {
+                // Do nothing.
+            }
     }
 
     func handleWebActivity(_ activity: NSUserActivity) {
         // try to handle unauthenticated routes first.
         if activity.activityType == NSUserActivityTypeBrowsingWeb,
-           let url = activity.webpageURL,
-           UniversalLinkRouter.unauthenticated.canHandle(url: url) {
+            let url = activity.webpageURL,
+            UniversalLinkRouter.unauthenticated.canHandle(url: url)
+        {
             UniversalLinkRouter.unauthenticated.handle(url: url)
             return
         }
 
         guard AccountHelper.isLoggedIn,
             activity.activityType == NSUserActivityTypeBrowsingWeb,
-            let url = activity.webpageURL else {
-                FailureNavigationAction().failAndBounce(activity.webpageURL)
-                return
+            let url = activity.webpageURL
+        else {
+            FailureNavigationAction().failAndBounce(activity.webpageURL)
+            return
         }
 
         if QRLoginCoordinator.didHandle(url: url) {
@@ -471,7 +517,8 @@ extension WordPressAppDelegate {
         ///
         /// Read more: https://github.com/wordpress-mobile/WordPress-iOS/issues/19755
         if MigrationAppDetection.isCounterpartAppInstalled,
-           WPAdminConvertibleRouter.shared.canHandle(url: url) {
+            WPAdminConvertibleRouter.shared.canHandle(url: url)
+        {
             WPAdminConvertibleRouter.shared.handle(url: url)
             return
         }
@@ -480,7 +527,9 @@ extension WordPressAppDelegate {
     }
 
     @objc func configureWordPressComApi() {
-        if let baseUrl = UserPersistentStoreFactory.instance().string(forKey: "wpcom-api-base-url"), let url = URL(string: baseUrl) {
+        if let baseUrl = UserPersistentStoreFactory.instance().string(forKey: "wpcom-api-base-url"),
+            let url = URL(string: baseUrl)
+        {
             AppEnvironment.replaceEnvironment(wordPressComApiBase: url)
         }
     }
@@ -648,20 +697,26 @@ extension WordPressAppDelegate {
     func addNotificationObservers() {
         let nc = NotificationCenter.default
 
-        nc.addObserver(self,
-                       selector: #selector(handleDefaultAccountChangedNotification(_:)),
-                       name: NSNotification.Name.wpAccountDefaultWordPressComAccountChanged,
-                       object: nil)
+        nc.addObserver(
+            self,
+            selector: #selector(handleDefaultAccountChangedNotification(_:)),
+            name: NSNotification.Name.wpAccountDefaultWordPressComAccountChanged,
+            object: nil
+        )
 
-        nc.addObserver(self,
-                       selector: #selector(handleLowMemoryWarningNotification(_:)),
-                       name: UIApplication.didReceiveMemoryWarningNotification,
-                       object: nil)
+        nc.addObserver(
+            self,
+            selector: #selector(handleLowMemoryWarningNotification(_:)),
+            name: UIApplication.didReceiveMemoryWarningNotification,
+            object: nil
+        )
 
-        nc.addObserver(self,
-                       selector: #selector(saveRecentSitesForExtensions),
-                       name: .WPRecentSitesChanged,
-                       object: nil)
+        nc.addObserver(
+            self,
+            selector: #selector(saveRecentSitesForExtensions),
+            name: .WPRecentSitesChanged,
+            object: nil
+        )
     }
 
     @objc fileprivate func handleDefaultAccountChangedNotification(_ notification: NSNotification) {
@@ -729,7 +784,9 @@ extension WordPressAppDelegate {
 
     func configureNotificationExtension() {
 
-        if let account = try? WPAccount.lookupDefaultWordPressComAccount(in: mainContext), let authToken = account.authToken, let userID = account.userID {
+        if let account = try? WPAccount.lookupDefaultWordPressComAccount(in: mainContext),
+            let authToken = account.authToken, let userID = account.userID
+        {
             let service = NotificationSupportService()
             service.storeToken(authToken)
             service.storeUsername(account.username)
@@ -776,8 +833,10 @@ extension WordPressAppDelegate {
         // Get the Apple User ID from the keychain
         let appleUserID: String
         do {
-            appleUserID = try SFHFKeychainUtils.getPasswordForUsername(WPAppleIDKeychainUsernameKey,
-                                                                       andServiceName: WPAppleIDKeychainServiceName)
+            appleUserID = try SFHFKeychainUtils.getPasswordForUsername(
+                WPAppleIDKeychainUsernameKey,
+                andServiceName: WPAppleIDKeychainServiceName
+            )
         } catch {
             Loggers.app.info("checkAppleIDCredentialState: No Apple ID found.")
             return
@@ -796,7 +855,9 @@ extension WordPressAppDelegate {
                 // An error exists only for the notFound state.
                 // notFound is a valid state when logging in with an Apple account for the first time.
                 if let error {
-                    Loggers.app.debug("checkAppleIDCredentialState: Apple ID state not found: \(error.localizedDescription)")
+                    Loggers.app.debug(
+                        "checkAppleIDCredentialState: Apple ID state not found: \(error.localizedDescription)"
+                    )
                 }
                 break
             }
@@ -829,8 +890,10 @@ extension WordPressAppDelegate {
 
     func removeAppleIDFromKeychain() {
         do {
-            try SFHFKeychainUtils.deleteItem(forUsername: WPAppleIDKeychainUsernameKey,
-                                             andServiceName: WPAppleIDKeychainServiceName)
+            try SFHFKeychainUtils.deleteItem(
+                forUsername: WPAppleIDKeychainUsernameKey,
+                andServiceName: WPAppleIDKeychainServiceName
+            )
         } catch let error as NSError {
             if error.code != errSecItemNotFound {
                 Loggers.app.error("Error while removing Apple User ID from keychain: \(error.localizedDescription)")
@@ -849,14 +912,21 @@ extension WordPressAppDelegate {
         }
 
         let service = WordPressComSyncService()
-        service.syncWPCom(authToken: "valid_token", isJetpackLogin: false, onSuccess: { _ in
-            if let blog = try? BlogQuery().hostname(containing: wpComSiteAddress).blog(in: ContextManager.shared.mainContext) {
-                self.windowManager.showUI(for: blog)
-            } else {
-                fatalError("Can't find blog: \(wpComSiteAddress)")
+        service.syncWPCom(
+            authToken: "valid_token",
+            isJetpackLogin: false,
+            onSuccess: { _ in
+                if let blog = try? BlogQuery().hostname(containing: wpComSiteAddress)
+                    .blog(in: ContextManager.shared.mainContext)
+                {
+                    self.windowManager.showUI(for: blog)
+                } else {
+                    fatalError("Can't find blog: \(wpComSiteAddress)")
+                }
+            },
+            onFailure: {
+                fatalError("Can't sync blogs: \($0)")
             }
-        }, onFailure: {
-            fatalError("Can't sync blogs: \($0)")
-        })
+        )
     }
 }
