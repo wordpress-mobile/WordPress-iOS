@@ -1,4 +1,4 @@
-swiftlint_version: 0.63.2
+swiftlint_version: 0.63.3
 
 included:
   - Sources
