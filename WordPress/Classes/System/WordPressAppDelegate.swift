@@ -145,6 +145,10 @@ public class WordPressAppDelegate: UIResponder, UIApplicationDelegate {
 
         window.makeKeyAndVisible()
 
+        // Must run here too: NoticePresenter sizes its window from
+        // `UIApplication.shared.mainWindow`, which only exists once the window above is key.
+        setupNoticePresenter()
+
         windowManager.showUI()
         restoreAppState()
 
@@ -164,7 +168,6 @@ public class WordPressAppDelegate: UIResponder, UIApplicationDelegate {
         InteractiveNotificationsManager.shared.registerForUserNotifications()
         setupPingHub()
         setupBackgroundRefresh(application)
-        setupNoticePresenter()
         AppTips.initialize()
 
         // This was necessary to properly load fonts for the Stories editor. I believe external libraries may require this call to access fonts.
