@@ -28,9 +28,14 @@ class WP3DTouchShortcutCreatorTests: XCTestCase {
 }
 
 extension UIApplication {
+    // The test host adopts the UIScene life cycle (the app Info.plist declares a scene
+    // manifest) but never connects a window scene, so `keyWindow` is nil here. Fall back to
+    // the app delegate's window (`TestingAppDelegate` creates one) so `mainWindow` resolves
+    // during tests. This override is loaded after the framework copies, so it wins.
     @objc var mainWindow: UIWindow? {
         connectedScenes
             .compactMap { ($0 as? UIWindowScene)?.keyWindow }
             .first
+            ?? (delegate?.window ?? nil)
     }
 }
