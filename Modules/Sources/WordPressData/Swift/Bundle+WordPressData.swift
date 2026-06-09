@@ -2,8 +2,6 @@ import Foundation
 
 extension Bundle {
     @objc public class var wordPressData: Bundle {
-        Bundle(for: BundleToken.self)
+        .module
     }
 }
-
-private final class BundleToken {}
