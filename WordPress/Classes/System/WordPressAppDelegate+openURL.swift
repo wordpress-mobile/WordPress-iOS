@@ -4,7 +4,11 @@ import WordPressData
 import WordPressShared
 
 @objc extension WordPressAppDelegate {
-    public func application(_ app: UIApplication, open url: URL, options: [UIApplication.OpenURLOptionsKey: Any] = [:]) -> Bool {
+    public func application(
+        _ app: UIApplication,
+        open url: URL,
+        options: [UIApplication.OpenURLOptionsKey: Any] = [:]
+    ) -> Bool {
 
         let redactedURL = LoggingURLRedactor.redactedURL(url)
         DDLogInfo("Application launched with URL: \(redactedURL)")
@@ -19,10 +23,13 @@ import WordPressShared
         }
 
         /// WordPress only. Handle deeplink from JP that requests data export.
-        let wordPressExportRouter = MigrationDeepLinkRouter(urlForScheme: URL(string: AppScheme.wordpressMigrationV1.rawValue),
-                                                            routes: [WordPressExportRoute()])
+        let wordPressExportRouter = MigrationDeepLinkRouter(
+            urlForScheme: URL(string: AppScheme.wordpressMigrationV1.rawValue),
+            routes: [WordPressExportRoute()]
+        )
         if AppConfiguration.isWordPress,
-           wordPressExportRouter.canHandle(url: url) {
+            wordPressExportRouter.canHandle(url: url)
+        {
             wordPressExportRouter.handle(url: url)
             return true
         }
@@ -59,7 +66,8 @@ import WordPressShared
     private func handleViewPost(url: URL) -> Bool {
         guard let params = url.queryItems,
             let blogId = params.intValue(of: "blogId"),
-            let postId = params.intValue(of: "postId") else {
+            let postId = params.intValue(of: "postId")
+        else {
             return false
         }
         RootViewCoordinator.sharedPresenter.showReader(path: .post(postID: postId, siteID: blogId))
@@ -71,7 +79,8 @@ import WordPressShared
 
         guard let params = url.queryItems,
             let siteId = params.intValue(of: "siteId"),
-            let blog = try? Blog.lookup(withID: siteId, in: ContextManager.shared.mainContext) else {
+            let blog = try? Blog.lookup(withID: siteId, in: ContextManager.shared.mainContext)
+        else {
             return false
         }
 
@@ -110,7 +119,8 @@ import WordPressShared
     private func handleDebugging(url: URL) -> Bool {
         guard let params = url.queryItems,
             let debugType = params.value(of: "type"),
-            let debugKey = params.value(of: "key") else {
+            let debugKey = params.value(of: "key")
+        else {
             return false
         }
 
@@ -131,8 +141,9 @@ import WordPressShared
     /// This is mostly a return of the old functionality: https://github.com/wordpress-mobile/WordPress-iOS/blob/d89b7ec712be1f2e11fb1228089771a25f5587c5/WordPress/Classes/ViewRelated/System/WPTabBarController.m#L388```
     private func handleNewPost(url: URL) -> Bool {
         guard let params = url.queryItems,
-            let contentRaw = params.value(of: NewPostKey.content) else {
-                return false
+            let contentRaw = params.value(of: NewPostKey.content)
+        else {
+            return false
         }
 
         let title = params.value(of: NewPostKey.title)
@@ -156,7 +167,10 @@ import WordPressShared
 
         RootViewCoordinator.sharedPresenter.rootViewController.present(postVC, animated: true, completion: nil)
 
-        WPAppAnalytics.track(.editorCreatedPost, withProperties: [WPAppAnalyticsKeyTapSource: "url_scheme", WPAppAnalyticsKeyPostType: "post"])
+        WPAppAnalytics.track(
+            .editorCreatedPost,
+            withProperties: [WPAppAnalyticsKeyTapSource: "url_scheme", WPAppAnalyticsKeyPostType: "post"]
+        )
 
         return true
     }
@@ -169,8 +183,9 @@ import WordPressShared
     ///         text. May support other formats, such as HTML or Markdown in the future.
     private func handleNewPage(url: URL) -> Bool {
         guard let params = url.queryItems,
-            let contentRaw = params.value(of: NewPostKey.content) else {
-                return false
+            let contentRaw = params.value(of: NewPostKey.content)
+        else {
+            return false
         }
 
         let title = params.value(of: NewPostKey.title)
@@ -183,7 +198,12 @@ import WordPressShared
         // Should more formats be accepted be accepted in the future, this line would have to be expanded to accomodate it.
         let contentEscaped = contentRaw.escapeHtmlNamedEntities()
 
-        RootViewCoordinator.sharedPresenter.showPageEditor(blog: blog, title: title, content: contentEscaped, source: "url_scheme")
+        RootViewCoordinator.sharedPresenter.showPageEditor(
+            blog: blog,
+            title: title,
+            content: contentEscaped,
+            source: "url_scheme"
+        )
 
         return true
     }
@@ -198,7 +218,7 @@ import WordPressShared
 
 private extension Array where Element == URLQueryItem {
     func value(of key: String) -> String? {
-        return self.first(where: { $0.name == key })?.value
+        self.first(where: { $0.name == key })?.value
     }
 
     func intValue(of key: String) -> Int? {
@@ -213,8 +233,9 @@ private extension URL {
     var queryItems: [URLQueryItem]? {
         guard let components = URLComponents(url: self, resolvingAgainstBaseURL: false),
             let queryItems = components.queryItems,
-            !queryItems.isEmpty else {
-                return nil
+            !queryItems.isEmpty
+        else {
+            return nil
         }
         return queryItems
     }
