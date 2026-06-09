@@ -403,8 +403,10 @@ extension WordPressAppDelegate {
         PushNotificationsManager.shared.registerDeviceToken(deviceToken)
     }
 
-    public func application(_ application: UIApplication, didFailToRegisterForRemoteNotificationsWithError error: Error)
-    {
+    public func application(
+        _ application: UIApplication,
+        didFailToRegisterForRemoteNotificationsWithError error: Error
+    ) {
         PushNotificationsManager.shared.registrationDidFail(error as NSError)
     }
 
