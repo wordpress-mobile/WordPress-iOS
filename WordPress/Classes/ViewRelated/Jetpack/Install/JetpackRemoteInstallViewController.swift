@@ -14,9 +14,11 @@ class JetpackRemoteInstallViewController: UIViewController {
     private let jetpackView = JetpackRemoteInstallStateView(nibName: "JetpackRemoteInstallStateView", bundle: .keystone)
     private let viewModel: JetpackRemoteInstallViewModel
 
-    init(blog: Blog,
-         delegate: JetpackRemoteInstallDelegate?,
-         viewModel: JetpackRemoteInstallViewModel = SelfHostedJetpackRemoteInstallViewModel()) {
+    init(
+        blog: Blog,
+        delegate: JetpackRemoteInstallDelegate?,
+        viewModel: JetpackRemoteInstallViewModel = SelfHostedJetpackRemoteInstallViewModel()
+    ) {
         self.blog = blog
         self.delegate = delegate
         self.viewModel = viewModel
@@ -35,7 +37,10 @@ class JetpackRemoteInstallViewController: UIViewController {
         setupUI()
     }
 
-    override func willTransition(to newCollection: UITraitCollection, with coordinator: UIViewControllerTransitionCoordinator) {
+    override func willTransition(
+        to newCollection: UITraitCollection,
+        with coordinator: UIViewControllerTransitionCoordinator
+    ) {
         super.willTransition(to: newCollection, with: coordinator)
         jetpackView.toggleHidingImageView(for: newCollection)
     }
@@ -46,9 +51,11 @@ class JetpackRemoteInstallViewController: UIViewController {
 private extension JetpackRemoteInstallViewController {
     func setupNavigationBar() {
         title = NSLocalizedString("Jetpack", comment: "Title for the Jetpack Installation")
-        navigationItem.leftBarButtonItem = UIBarButtonItem(barButtonSystemItem: .cancel,
-                                                           target: self,
-                                                           action: #selector(cancel))
+        navigationItem.leftBarButtonItem = UIBarButtonItem(
+            barButtonSystemItem: .cancel,
+            target: self,
+            action: #selector(cancel)
+        )
     }
 
     func setupUI() {
@@ -175,7 +182,8 @@ extension JetpackInstallError {
     /// When the error is unknown, return the error title (if it exists) to get a more descriptive reason.
     var description: String {
         if let title,
-           type == .unknown {
+            type == .unknown
+        {
             return title
         }
         return type.rawValue
