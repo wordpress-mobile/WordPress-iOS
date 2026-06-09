@@ -1207,7 +1207,7 @@ extension GutenbergViewController: PostEditorNavigationBarManagerDelegate {
     func gutenbergDidRequestToggleUndoButton(_ isDisabled: Bool) {
         DispatchQueue.main.async {
             UIView.animate(withDuration: 0.2) {
-                self.navigationBarManager.undoButton.isUserInteractionEnabled = isDisabled ? false : true
+                self.navigationBarManager.undoButton.isEnabled = !isDisabled
                 self.navigationBarManager.undoButton.alpha = isDisabled ? 0.3 : 1.0
             }
         }
@@ -1216,7 +1216,7 @@ extension GutenbergViewController: PostEditorNavigationBarManagerDelegate {
     func gutenbergDidRequestToggleRedoButton(_ isDisabled: Bool) {
         DispatchQueue.main.async {
             UIView.animate(withDuration: 0.2) {
-                self.navigationBarManager.redoButton.isUserInteractionEnabled = isDisabled ? false : true
+                self.navigationBarManager.redoButton.isEnabled = !isDisabled
                 self.navigationBarManager.redoButton.alpha = isDisabled ? 0.3 : 1.0
             }
         }
