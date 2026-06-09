@@ -1,6 +1,7 @@
 import UIKit
 import Gridicons
 import WordPressData
+import WordPressKit
 import WordPressShared
 import WordPressUI
 

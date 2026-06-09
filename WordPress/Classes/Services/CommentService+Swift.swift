@@ -1,5 +1,6 @@
 import Foundation
 import WordPressData
+import WordPressKit
 
 /// Encapsulates actions related to fetching reply comments.
 ///

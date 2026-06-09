@@ -16,6 +16,7 @@ import UIKit
 import WebKit
 import WordPressAuthenticator
 import WordPressData
+import WordPressKit
 import WordPressShared
 import WordPressUI
 import ZendeskCoreSDK

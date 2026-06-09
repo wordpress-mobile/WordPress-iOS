@@ -2,6 +2,7 @@ import Foundation
 import SwiftUI
 import WordPressData
 import WordPressFlux
+import WordPressKit
 import WordPressShared
 import WordPressAPI
 import WordPressAPIInternal

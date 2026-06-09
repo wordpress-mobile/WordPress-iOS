@@ -1,5 +1,6 @@
 import Foundation
 import WordPressData
+import WordPressKit
 
 struct ActivityStringFormatting {
     private static let agentString = NSLocalizedString(

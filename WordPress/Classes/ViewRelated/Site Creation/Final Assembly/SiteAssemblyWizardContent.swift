@@ -1,5 +1,6 @@
 import UIKit
 import WordPressData
+import WordPressKit
 import WordPressShared
 
 import WordPressAuthenticator
