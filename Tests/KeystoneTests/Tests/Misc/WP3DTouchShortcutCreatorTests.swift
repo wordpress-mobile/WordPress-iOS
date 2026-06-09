@@ -36,6 +36,6 @@ extension UIApplication {
         connectedScenes
             .compactMap { ($0 as? UIWindowScene)?.keyWindow }
             .first
-            ?? (delegate?.window ?? nil)
+            ?? (delegate?.window ?? nil) // swiftlint:disable:this redundant_nil_coalescing
     }
 }
