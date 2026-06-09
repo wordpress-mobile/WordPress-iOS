@@ -181,6 +181,24 @@ public class WordPressAppDelegate: UIResponder, UIApplicationDelegate {
     }
 
     public func applicationDidEnterBackground(_ application: UIApplication) {
+        handleDidEnterBackground()
+    }
+
+    public func applicationWillEnterForeground(_ application: UIApplication) {
+        handleWillEnterForeground()
+    }
+
+    public func applicationWillResignActive(_ application: UIApplication) {
+        handleWillResignActive()
+    }
+
+    public func applicationDidBecomeActive(_ application: UIApplication) {
+        handleDidBecomeActive()
+    }
+
+    // MARK: - Activation handlers (shared by app- and scene-lifecycle)
+
+    func handleDidEnterBackground() {
         Loggers.app.info("\(self) \(#function)")
 
         analytics?.trackApplicationDidEnterBackground(screenName: currentlySelectedScreen)
@@ -208,7 +226,7 @@ public class WordPressAppDelegate: UIResponder, UIApplicationDelegate {
         }
     }
 
-    public func applicationWillEnterForeground(_ application: UIApplication) {
+    func handleWillEnterForeground() {
         Loggers.app.info("\(self) \(#function)")
 
         updateFeatureFlags()
@@ -220,11 +238,11 @@ public class WordPressAppDelegate: UIResponder, UIApplicationDelegate {
         }
     }
 
-    public func applicationWillResignActive(_ application: UIApplication) {
+    func handleWillResignActive() {
         Loggers.app.info("\(self) \(#function)")
     }
 
-    public func applicationDidBecomeActive(_ application: UIApplication) {
+    func handleDidBecomeActive() {
         Loggers.app.info("\(self) \(#function)")
 
         analytics?.trackApplicationDidBecomeActive()
@@ -264,14 +282,18 @@ public class WordPressAppDelegate: UIResponder, UIApplicationDelegate {
         continue userActivity: NSUserActivity,
         restorationHandler: @escaping ([UIUserActivityRestoring]?) -> Void
     ) -> Bool {
+        handle(userActivity: userActivity)
+        return true
+    }
+
+    /// Routes an inbound `NSUserActivity` (universal links via web browsing, Spotlight, Handoff).
+    func handle(userActivity: NSUserActivity) {
         if userActivity.activityType == NSUserActivityTypeBrowsingWeb {
             handleWebActivity(userActivity)
         } else {
             // Spotlight search
             SearchManager.shared.handle(activity: userActivity)
         }
-
-        return true
     }
 
     // Note that this method only appears to be called for iPhone devices, not iPad.
