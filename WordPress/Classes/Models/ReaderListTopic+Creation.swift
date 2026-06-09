@@ -8,8 +8,11 @@ extension ReaderListTopic {
     /// Returns an existing topic for the specified list, or creates one if one
     /// doesn't already exist.
     ///
-    static func named(_ listName: String, forUser user: String, in context: NSManagedObjectContext) -> ReaderListTopic?
-    {
+    static func named(
+        _ listName: String,
+        forUser user: String,
+        in context: NSManagedObjectContext
+    ) -> ReaderListTopic? {
         let remote = ReaderTopicServiceRemote(
             wordPressComRestApi: WordPressComRestApi.anonymousApi(userAgent: WPUserAgent.wordPress())
         )

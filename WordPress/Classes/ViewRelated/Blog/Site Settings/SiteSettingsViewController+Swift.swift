@@ -266,8 +266,11 @@ extension SiteSettingsViewController {
         }
     }
 
-    override open func tableView(_ tableView: UITableView, willDisplayFooterView view: UIView, forSection section: Int)
-    {
+    override open func tableView(
+        _ tableView: UITableView,
+        willDisplayFooterView view: UIView,
+        forSection section: Int
+    ) {
         WPStyleGuide.configureTableViewSectionFooter(view)
     }
 
