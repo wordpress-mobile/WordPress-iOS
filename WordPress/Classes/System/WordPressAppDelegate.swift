@@ -105,7 +105,6 @@ public class WordPressAppDelegate: UIResponder, UIApplicationDelegate {
         // The following extensive logging configuration detects if extensive logging is enabled internally.
         wpkURLSessionNotifyingDelegate = PulseNetworkLogger()
 
-        AppAppearance.overrideAppearance()
         MemoryCache.shared.register()
         MediaImageService.migrateCacheIfNeeded()
         PostCoordinator.shared.delegate = self
@@ -146,8 +145,15 @@ public class WordPressAppDelegate: UIResponder, UIApplicationDelegate {
         configureWordPressAuthenticator()
         startObservingAppleIDCredentialRevoked()
         customizeAppearance()
+        // Reapplies the user's saved light/dark override; reads the app's window, so it
+        // can only take effect once the window exists.
+        AppAppearance.overrideAppearance()
 
         window.makeKeyAndVisible()
+
+        // The 3D Touch / Home Screen quick actions probe the trait collection of
+        // `UIApplication.shared.mainWindow`, which only exists once the window above is key.
+        shortcutCreator.createShortcutsIf3DTouchAvailable(AccountHelper.isLoggedIn)
 
         windowManager.showUI()
         restoreAppState()
@@ -346,8 +352,6 @@ public class WordPressAppDelegate: UIResponder, UIApplicationDelegate {
         }
 
         setupWordPressExtensions()
-
-        shortcutCreator.createShortcutsIf3DTouchAvailable(AccountHelper.isLoggedIn)
 
         AccountService.loadDefaultAccountCookies()
     }
