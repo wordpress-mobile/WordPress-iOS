@@ -73,13 +73,19 @@ class NoticePresenter {
         self.store = store
         self.animator = animator
 
-        let windowFrame: CGRect
-        if let mainWindow = UIApplication.shared.mainWindow {
-            windowFrame = mainWindow.offsetToAvoidStatusBar()
+        let mainWindow = UIApplication.shared.mainWindow
+        let windowFrame = mainWindow?.offsetToAvoidStatusBar() ?? .zero
+        // Attach the notice window to the active scene. A window created via `init(frame:)`
+        // has no `windowScene` and won't display (or attaches to the wrong scene) under the
+        // scene life cycle.
+        if let windowScene = mainWindow?.windowScene {
+            window = UntouchableWindow(windowScene: windowScene)
+            window.frame = windowFrame
         } else {
-            windowFrame = .zero
+            // Unreachable in practice: notices are set up after the main window is key, and
+            // `mainWindow` is a scene's key window, so it always has a `windowScene`.
+            window = UntouchableWindow(frame: windowFrame)
         }
-        window = UntouchableWindow(frame: windowFrame)
 
         // this window level may affect some UI elements like share sheets.
         // however, since the alerts aren't permanently on screen, this isn't

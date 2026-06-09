@@ -8,6 +8,11 @@ import UIKit
         rootViewController = untouchableViewController
     }
 
+    override init(windowScene: UIWindowScene) {
+        super.init(windowScene: windowScene)
+        rootViewController = untouchableViewController
+    }
+
     required init?(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
