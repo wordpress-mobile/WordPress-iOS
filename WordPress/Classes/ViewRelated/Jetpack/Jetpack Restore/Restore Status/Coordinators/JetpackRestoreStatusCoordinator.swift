@@ -1,5 +1,6 @@
 import Foundation
 import WordPressData
+import WordPressKit
 
 protocol JetpackRestoreStatusView {
     func render(_ rewindStatus: RewindStatus)

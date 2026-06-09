@@ -1,3 +1,4 @@
+import WordPressKit
 import WordPressShared
 
 struct JetpackScanStatusViewModel {
