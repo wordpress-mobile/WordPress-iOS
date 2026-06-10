@@ -6,7 +6,6 @@ import SwiftUI
 import AuthenticationServices
 import WordPressData
 import WordPressKit
-import WordPressAuthenticator
 import WordPressShared
 import BuildSettingsKit
 import SVProgressHUD
@@ -334,12 +333,15 @@ struct SelfHostedSiteAuthenticator {
         details: WpApiApplicationPasswordDetails
     ) async throws -> [AnyHashable: Any] {
         try await withCheckedThrowingContinuation { continuation in
-            let api = WordPressXMLRPCAPIFacade()
-            api.getBlogOptions(withEndpoint: xmlrpc, username: details.userLogin, password: details.password) {
-                options in
-                continuation.resume(returning: options ?? [:])
-            } failure: { error in
-                continuation.resume(throwing: error ?? Blog.BlogCredentialsError.incorrectCredentials)
+            let api = WordPressOrgXMLRPCApi(endpoint: xmlrpc, userAgent: nil)
+            api.checkCredentials(details.userLogin, password: details.password) { responseObject, _ in
+                if let options = responseObject as? [AnyHashable: Any] {
+                    continuation.resume(returning: options)
+                } else {
+                    continuation.resume(throwing: WordPressOrgXMLRPCApiError.responseSerializationFailed)
+                }
+            } failure: { error, _ in
+                continuation.resume(throwing: error)
             }
         }
     }
