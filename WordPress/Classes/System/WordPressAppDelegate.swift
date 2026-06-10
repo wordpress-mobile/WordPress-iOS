@@ -34,9 +34,15 @@ public class WordPressAppDelegate: UIResponder, UIApplicationDelegate {
 
     @objc
     lazy var windowManager: WindowManager = {
-        guard let window else {
-            fatalError("The App cannot run without a window.")
+        if window == nil {
+            // Reachable only when a code path builds UI before any scene has connected
+            // (e.g. during a background launch); such paths should be guarded instead.
+            // Recover by creating the window now: `WordPressSceneDelegate` attaches it to
+            // the scene once one connects.
+            assertionFailure("windowManager accessed before any scene connected")
+            window = UIWindow(frame: UIScreen.main.bounds)
         }
+        let window = window!
         return switch BuildSettings.current.brand {
         case .wordpress: WindowManager(window: window)
         case .jetpack: JetpackWindowManager(window: window)
@@ -142,16 +148,38 @@ public class WordPressAppDelegate: UIResponder, UIApplicationDelegate {
         return configuration
     }
 
+    /// Whether `showInitialUI(in:)` has already built the UI. The scene can disconnect
+    /// and reconnect while the process stays alive, so the build must run exactly once.
+    private(set) var hasConfiguredInitialUI = false
+
     /// Builds and shows the app's UI in the given window scene. Runs when the main
-    /// scene connects, which (under the scene life cycle) is after `didFinishLaunching`.
+    /// scene connects, which (under the scene life cycle) is after `didFinishLaunching`
+    /// and can happen multiple times per process: the system may disconnect the scene
+    /// in the background and reconnect it later. After the first connect, the existing
+    /// window (with all its UI state) is simply reattached to the new scene.
     func showInitialUI(in windowScene: UIWindowScene) {
-        let window = UIWindow(windowScene: windowScene)
-        self.window = window
+        if hasConfiguredInitialUI {
+            window?.windowScene = windowScene
+            window?.makeKeyAndVisible()
+            return
+        }
+        hasConfiguredInitialUI = true
+
+        let window: UIWindow
+        if let existingWindow = self.window {
+            // Created by the `windowManager` emergency fallback before any scene
+            // connected; adopt it instead of orphaning the UI already built in it.
+            existingWindow.windowScene = windowScene
+            window = existingWindow
+        } else {
+            window = UIWindow(windowScene: windowScene)
+            self.window = window
+        }
 
         UITestConfigurator.prepareWindowForUITests(window)
 
         // Must run here (not in willFinishLaunching): it accesses `windowManager`,
-        // which force-unwraps `window`.
+        // which requires `window`.
         configureAuthenticationManager()
         customizeAppearance()
         // Reapplies the user's saved light/dark override; reads the app's window, so it
