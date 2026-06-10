@@ -41,26 +41,42 @@ struct JetpackPrologueStyleGuide {
         static let textColor: UIColor = .white
     }
 
-    static let continueButtonStyle = NUXButtonStyle(normal: .init(backgroundColor: continueFillColor,
-                                                                  borderColor: continueFillColor,
-                                                                  titleColor: continueTextColor),
-                                                    highlighted: .init(backgroundColor: continueHighlightedFillColor,
-                                                                       borderColor: continueHighlightedFillColor,
-                                                                       titleColor: continueHighlightedTextColor),
+    static let continueButtonStyle = NUXButtonStyle(
+        normal: .init(
+            backgroundColor: continueFillColor,
+            borderColor: continueFillColor,
+            titleColor: continueTextColor
+        ),
+        highlighted: .init(
+            backgroundColor: continueHighlightedFillColor,
+            borderColor: continueHighlightedFillColor,
+            titleColor: continueHighlightedTextColor
+        ),
 
-                                                    disabled: .init(backgroundColor: .white,
-                                                                    borderColor: .white,
-                                                                    titleColor: backgroundColor))
+        disabled: .init(
+            backgroundColor: .white,
+            borderColor: .white,
+            titleColor: backgroundColor
+        )
+    )
 
-    static let siteAddressButtonStyle = NUXButtonStyle(normal: .init(backgroundColor: siteFillColor,
-                                                                     borderColor: siteBorderColor,
-                                                                   titleColor: siteTextColor),
+    static let siteAddressButtonStyle = NUXButtonStyle(
+        normal: .init(
+            backgroundColor: siteFillColor,
+            borderColor: siteBorderColor,
+            titleColor: siteTextColor
+        ),
 
-                                                     highlighted: .init(backgroundColor: siteHighlightedFillColor,
-                                                                        borderColor: siteHighlightedBorderColor,
-                                                                        titleColor: siteHighlightedTextColor),
+        highlighted: .init(
+            backgroundColor: siteHighlightedFillColor,
+            borderColor: siteHighlightedBorderColor,
+            titleColor: siteHighlightedTextColor
+        ),
 
-                                                     disabled: .init(backgroundColor: .white,
-                                                                     borderColor: .white,
-                                                                     titleColor: backgroundColor))
+        disabled: .init(
+            backgroundColor: .white,
+            borderColor: .white,
+            titleColor: backgroundColor
+        )
+    )
 }

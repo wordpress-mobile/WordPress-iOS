@@ -20,8 +20,10 @@ class RootViewCoordinator {
 
     // MARK: Static shared variables
 
-    static let shared = RootViewCoordinator(featureFlagStore: RemoteFeatureFlagStore(),
-                                            windowManager: WordPressAppDelegate.shared?.windowManager)
+    static let shared = RootViewCoordinator(
+        featureFlagStore: RemoteFeatureFlagStore(),
+        windowManager: WordPressAppDelegate.shared?.windowManager
+    )
     static var sharedPresenter: RootViewPresenter {
         guard let rootViewPresenter = shared.rootViewPresenter else {
             /// Accessing RootViewPresenter before root view is presented is incorrect behavior
@@ -39,11 +41,11 @@ class RootViewCoordinator {
     // MARK: Public Variables
 
     lazy var whatIsNewScenePresenter: ScenePresenter = {
-        return makeWhatIsNewPresenter()
+        makeWhatIsNewPresenter()
     }()
 
     lazy var bloggingPromptCoordinator: BloggingPromptCoordinator = {
-       return makeBloggingPromptCoordinator()
+        makeBloggingPromptCoordinator()
     }()
 
     // MARK: Private instance variables
@@ -63,10 +65,12 @@ class RootViewCoordinator {
     var isFullScreenOverlayBeingDisplayed = false
     // MARK: Initializer
 
-    init(featureFlagStore: RemoteFeatureFlagStore,
-         windowManager: WindowManager?,
-         wordPressAuthenticator: WordPressAuthenticatorProtocol.Type = WordPressAuthenticator.self,
-         app: AppBrand = BuildSettings.current.brand) {
+    init(
+        featureFlagStore: RemoteFeatureFlagStore,
+        windowManager: WindowManager?,
+        wordPressAuthenticator: WordPressAuthenticatorProtocol.Type = WordPressAuthenticator.self,
+        app: AppBrand = BuildSettings.current.brand
+    ) {
         self.featureFlagStore = featureFlagStore
         self.windowManager = windowManager
         self.currentAppUIType = Self.appUIType(featureFlagStore: featureFlagStore)
@@ -161,17 +165,20 @@ class RootViewCoordinator {
 
         windowManager.displayOverlayingWindow(with: viewController)
 
-        JetpackFeaturesRemovalCoordinator.presentOverlayIfNeeded(in: viewController,
-                                                                 source: .appOpen,
-                                                                 forced: true,
-                                                                 fullScreen: true,
-                                                                 blog: blog,
-                                                                 onWillDismiss: {
-            viewController.removeBlurView()
-            self.isFullScreenOverlayBeingDisplayed = false
-        }, onDidDismiss: {
-            windowManager.clearOverlayingWindow()
-        })
+        JetpackFeaturesRemovalCoordinator.presentOverlayIfNeeded(
+            in: viewController,
+            source: .appOpen,
+            forced: true,
+            fullScreen: true,
+            blog: blog,
+            onWillDismiss: {
+                viewController.removeBlurView()
+                self.isFullScreenOverlayBeingDisplayed = false
+            },
+            onDidDismiss: {
+                windowManager.clearOverlayingWindow()
+            }
+        )
     }
 
     private func reloadUI(using windowManager: WindowManager) {

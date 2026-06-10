@@ -12,7 +12,8 @@ struct SplashPrologueStyleGuide {
     }
 
     struct BrushStroke {
-        static let color = UIColor(light: .colorFromHex("BBE0FA"), dark: .colorFromHex("101517")).withAlphaComponent(0.3)
+        static let color = UIColor(light: .colorFromHex("BBE0FA"), dark: .colorFromHex("101517"))
+            .withAlphaComponent(0.3)
     }
 
     /// Use the same shade for light and dark modes
@@ -25,28 +26,42 @@ struct SplashPrologueStyleGuide {
     private static let secondaryButtonHighlightedColor: UIColor = UIAppColor.gray(.shade5)
 
     static let primaryButtonStyle = NUXButtonStyle(
-        normal: .init(backgroundColor: Self.primaryButtonColor,
-                      borderColor: Self.primaryButtonColor,
-                      titleColor: .white),
+        normal: .init(
+            backgroundColor: Self.primaryButtonColor,
+            borderColor: Self.primaryButtonColor,
+            titleColor: .white
+        ),
 
-        highlighted: .init(backgroundColor: Self.primaryButtonHighlightedColor,
-                           borderColor: Self.primaryButtonHighlightedColor,
-                           titleColor: .white),
+        highlighted: .init(
+            backgroundColor: Self.primaryButtonHighlightedColor,
+            borderColor: Self.primaryButtonHighlightedColor,
+            titleColor: .white
+        ),
 
-        disabled: .init(backgroundColor: .white,
-                       borderColor: .white,
-                       titleColor: Self.backgroundColor))
+        disabled: .init(
+            backgroundColor: .white,
+            borderColor: .white,
+            titleColor: Self.backgroundColor
+        )
+    )
 
     static let secondaryButtonStyle = NUXButtonStyle(
-        normal: .init(backgroundColor: Self.secondaryButtonColor,
-                      borderColor: Self.secondaryButtonHighlightedColor,
-                      titleColor: .black),
+        normal: .init(
+            backgroundColor: Self.secondaryButtonColor,
+            borderColor: Self.secondaryButtonHighlightedColor,
+            titleColor: .black
+        ),
 
-        highlighted: .init(backgroundColor: Self.secondaryButtonHighlightedColor,
-                           borderColor: Self.secondaryButtonHighlightedColor,
-                           titleColor: .black),
+        highlighted: .init(
+            backgroundColor: Self.secondaryButtonHighlightedColor,
+            borderColor: Self.secondaryButtonHighlightedColor,
+            titleColor: .black
+        ),
 
-        disabled: .init(backgroundColor: .white,
-                        borderColor: .white,
-                        titleColor: Self.backgroundColor))
+        disabled: .init(
+            backgroundColor: .white,
+            borderColor: .white,
+            titleColor: Self.backgroundColor
+        )
+    )
 }
