@@ -1,4 +1,3 @@
-import WordPressAuthenticator
 import WordPressData
 import UIKit
 import SwiftUI
@@ -645,7 +644,8 @@ final class MySiteViewController: UIViewController, UIScrollViewDelegate, NoSite
     }
 
     private func launchLoginForSelfHostedSite() {
-        WordPressAuthenticator.showLoginForSelfHostedSite(self)
+        AddSiteController(viewController: self, source: "my_site_no_sites")
+            .showSelfHostedSiteLoginScreen()
     }
 
     func launchSiteCreation(source: String) {
@@ -667,11 +667,6 @@ final class MySiteViewController: UIViewController, UIScrollViewDelegate, NoSite
                 SiteCreationAnalyticsHelper.trackSiteCreationAccessed(source: source)
             }
         )
-    }
-
-    @objc
-    private func showAddSelfHostedSite() {
-        WordPressAuthenticator.showLoginForSelfHostedSite(self)
     }
 
     // MARK: - Blog Details UI Logic
