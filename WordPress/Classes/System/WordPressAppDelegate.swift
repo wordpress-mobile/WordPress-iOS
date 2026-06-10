@@ -8,13 +8,11 @@ import CocoaLumberjackSwiftLogBackend
 import DesignSystem
 import Logging
 import Pulse
-import SFHFKeychainUtils
 import SVProgressHUD
 import ShareExtensionCore
 import UIDeviceIdentifier
 import UIKit
 import WebKit
-import WordPressAuthenticator
 import WordPressData
 import WordPressKit
 import WordPressShared
@@ -117,7 +115,7 @@ public class WordPressAppDelegate: UIResponder, UIApplicationDelegate {
         // Configure WPCom API overrides
         configureWordPressComApi()
 
-        configureWordPressAuthenticator()
+        configureAuthenticationManager()
 
         ReachabilityUtils.configure()
 
@@ -164,8 +162,6 @@ public class WordPressAppDelegate: UIResponder, UIApplicationDelegate {
             .forEach({ url in
                 CTFontManagerRegisterFontsForURL(url as CFURL, .process, nil)
             })
-
-        startObservingAppleIDCredentialRevoked()
 
         NotificationCenter.default.post(name: .applicationLaunchCompleted, object: nil)
         DispatchQueue.main.asyncAfter(deadline: .now() + .seconds(2)) {
@@ -232,9 +228,6 @@ public class WordPressAppDelegate: UIResponder, UIApplicationDelegate {
         Loggers.app.info("\(self) \(#function)")
 
         analytics?.trackApplicationDidBecomeActive()
-
-        // This is done here so the check is done on app launch and app switching.
-        checkAppleIDCredentialState()
 
         GutenbergSettings().performGutenbergPhase2MigrationIfNeeded()
     }
@@ -461,17 +454,11 @@ extension WordPressAppDelegate {
         }
     }
 
-    @objc func configureWordPressAuthenticator() {
-        let isJetpack = BuildSettings.current.brand == .jetpack
-        let authManager = WordPressAuthenticationManager(
-            windowManager: windowManager,
-            authenticationHandler: isJetpack ? JetpackAuthenticationManager() : nil,
-            remoteFeaturesStore: RemoteFeatureFlagStore()
-        )
+    @objc func configureAuthenticationManager() {
+        let authManager = WordPressAuthenticationManager(windowManager: windowManager)
 
-        authManager.initializeWordPressAuthenticator()
+        authManager.startObservingSignInNotifications()
 
-        WordPressAuthenticator.shared.delegate = authManager
         self.authManager = authManager
     }
 
@@ -481,7 +468,7 @@ extension WordPressAppDelegate {
 
     func present(selfHostedSite blog: Blog, from navigationController: UINavigationController) {
         self.authManager?
-            .presentLoginEpilogue(in: navigationController, forSelfHostedSite: blog, source: nil) {
+            .presentLoginEpilogue(in: navigationController, forSelfHostedSite: blog) {
                 // Do nothing.
             }
     }
@@ -724,14 +711,12 @@ extension WordPressAppDelegate {
         // If the notification object is not nil, then it's a login
         if notification.object != nil {
             setupWordPressExtensions()
-            startObservingAppleIDCredentialRevoked()
             AccountService.loadDefaultAccountCookies()
         } else {
             trackLogoutIfNeeded()
             removeShareExtensionConfiguration()
             removeNotificationExtensionConfiguration()
             windowManager.showFullscreenSignIn()
-            stopObservingAppleIDCredentialRevoked()
             clearReaderStuff()
         }
 
@@ -816,90 +801,6 @@ extension WordPressAppDelegate {
         SVProgressHUD.setForegroundColor(.white)
         SVProgressHUD.setErrorImage(UIImage(named: "hud_error")!)
         SVProgressHUD.setSuccessImage(UIImage(named: "hud_success")!)
-    }
-}
-
-// MARK: - Apple Account Handling
-
-extension WordPressAppDelegate {
-
-    func checkAppleIDCredentialState() {
-
-        // If not logged in, remove the Apple User ID from the keychain, if it exists.
-        guard AccountHelper.isLoggedIn else {
-            removeAppleIDFromKeychain()
-            return
-        }
-
-        // Get the Apple User ID from the keychain
-        let appleUserID: String
-        do {
-            appleUserID = try SFHFKeychainUtils.getPasswordForUsername(
-                WPAppleIDKeychainUsernameKey,
-                andServiceName: WPAppleIDKeychainServiceName
-            )
-        } catch {
-            Loggers.app.info("checkAppleIDCredentialState: No Apple ID found.")
-            return
-        }
-
-        // Get the Apple User ID state. If not authorized, log out the account.
-        WordPressAuthenticator.shared.getAppleIDCredentialState(for: appleUserID) { [weak self] state, error in
-
-            Loggers.app.debug("checkAppleIDCredentialState: Apple ID state: \(state.rawValue)")
-
-            switch state {
-            case .revoked:
-                Loggers.app.info("checkAppleIDCredentialState: Revoked Apple ID. User signed out.")
-                self?.logOutRevokedAppleAccount()
-            default:
-                // An error exists only for the notFound state.
-                // notFound is a valid state when logging in with an Apple account for the first time.
-                if let error {
-                    Loggers.app.debug(
-                        "checkAppleIDCredentialState: Apple ID state not found: \(error.localizedDescription)"
-                    )
-                }
-                break
-            }
-        }
-    }
-
-    func startObservingAppleIDCredentialRevoked() {
-        WordPressAuthenticator.shared.startObservingAppleIDCredentialRevoked { [weak self] in
-            if AccountHelper.isLoggedIn {
-                Loggers.app.info("Apple credentialRevokedNotification received. User signed out.")
-                self?.logOutRevokedAppleAccount()
-            }
-        }
-    }
-
-    func stopObservingAppleIDCredentialRevoked() {
-        WordPressAuthenticator.shared.stopObservingAppleIDCredentialRevoked()
-    }
-
-    func logOutRevokedAppleAccount() {
-        removeAppleIDFromKeychain()
-        logOutDefaultWordPressComAccount()
-    }
-
-    func logOutDefaultWordPressComAccount() {
-        DispatchQueue.main.async {
-            AccountHelper.logOutDefaultWordPressComAccount()
-        }
-    }
-
-    func removeAppleIDFromKeychain() {
-        do {
-            try SFHFKeychainUtils.deleteItem(
-                forUsername: WPAppleIDKeychainUsernameKey,
-                andServiceName: WPAppleIDKeychainServiceName
-            )
-        } catch let error as NSError {
-            if error.code != errSecItemNotFound {
-                Loggers.app.error("Error while removing Apple User ID from keychain: \(error.localizedDescription)")
-            }
-        }
     }
 }
 
