@@ -142,6 +142,18 @@ public class WordPressAppDelegate: UIResponder, UIApplicationDelegate {
     ) -> Bool {
         Loggers.app.info("didFinishLaunchingWithOptions state: \(application.applicationState)")
 
+        // One-time copy of legacy shared-group keychain items into this
+        // app's private group, plus the coordinated sweep of the shared
+        // group. No-op in the simulator and after completion.
+        KeychainGroupMigrator(
+            brand: BuildSettings.current.brand,
+            privateGroup: BuildSettings.current.appKeychainAccessGroup,
+            sharedGroup: BuildSettings.current.sharedKeychainAccessGroup,
+            localDefaults: UserDefaults.standard,
+            sharedDefaults: UserDefaults(suiteName: BuildSettings.current.appGroupName)
+        )?
+        .migrateIfNeeded()
+
         ABTest.start()
 
         Media.removeTemporaryData()
