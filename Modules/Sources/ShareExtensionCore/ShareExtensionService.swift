@@ -153,11 +153,13 @@ public final class ShareExtensionService {
     /// Retrieves the WordPress.com OAuth Token, meant for Extension usage.
     ///
     public func retrieveShareExtensionToken() -> String? {
-        guard let oauth2Token = try? SFHFKeychainUtils.getPasswordForUsername(
-            configuration.keychainTokenKey,
-            andServiceName: configuration.keychainServiceName,
-            accessGroup: appKeychainAccessGroup
-        ) else {
+        guard
+            let oauth2Token = try? SFHFKeychainUtils.getPasswordForUsername(
+                configuration.keychainTokenKey,
+                andServiceName: configuration.keychainServiceName,
+                accessGroup: appKeychainAccessGroup
+            )
+        else {
             return nil
         }
 
@@ -167,11 +169,13 @@ public final class ShareExtensionService {
     /// Retrieves the WordPress.com Username, meant for Extension usage.
     ///
     public func retrieveShareExtensionUsername() -> String? {
-        guard let oauth2Token = try? SFHFKeychainUtils.getPasswordForUsername(
-            configuration.keychainUsernameKey,
-            andServiceName: configuration.keychainServiceName,
-            accessGroup: appKeychainAccessGroup
-        ) else {
+        guard
+            let oauth2Token = try? SFHFKeychainUtils.getPasswordForUsername(
+                configuration.keychainUsernameKey,
+                andServiceName: configuration.keychainServiceName,
+                accessGroup: appKeychainAccessGroup
+            )
+        else {
             return nil
         }
 
@@ -186,7 +190,8 @@ public final class ShareExtensionService {
         }
 
         if let siteID = userDefaults.object(forKey: configuration.userDefaultsPrimarySiteID) as? Int,
-            let siteName = userDefaults.object(forKey: configuration.userDefaultsPrimarySiteName) as? String {
+            let siteName = userDefaults.object(forKey: configuration.userDefaultsPrimarySiteName) as? String
+        {
             return (siteID, siteName)
         }
 
@@ -202,12 +207,14 @@ public final class ShareExtensionService {
         }
 
         if let siteID = userDefaults.object(forKey: configuration.userDefaultsLastUsedSiteID) as? Int,
-            let siteName = userDefaults.object(forKey: configuration.userDefaultsLastUsedSiteName) as? String {
+            let siteName = userDefaults.object(forKey: configuration.userDefaultsLastUsedSiteName) as? String
+        {
             return (siteID, siteName)
         }
 
         if let siteID = userDefaults.object(forKey: configuration.userDefaultsPrimarySiteID) as? Int,
-            let siteName = userDefaults.object(forKey: configuration.userDefaultsPrimarySiteName) as? String {
+            let siteName = userDefaults.object(forKey: configuration.userDefaultsPrimarySiteName) as? String
+        {
             return (siteID, siteName)
         }
 

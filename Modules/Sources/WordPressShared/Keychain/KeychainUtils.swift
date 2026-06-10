@@ -9,19 +9,28 @@ public class KeychainUtils: NSObject {
         self.keychainUtils = keychainUtils
     }
 
-    func copyKeychain(from sourceAccessGroup: String?,
-                      to destinationAccessGroup: String?,
-                      updateExisting: Bool = true) throws {
+    func copyKeychain(
+        from sourceAccessGroup: String?,
+        to destinationAccessGroup: String?,
+        updateExisting: Bool = true
+    ) throws {
         let sourceItems = try keychainUtils.getAllPasswords(forAccessGroup: sourceAccessGroup)
 
         for item in sourceItems {
             guard let username = item["username"],
-                  let password = item["password"],
-                  let serviceName = item["serviceName"] else {
+                let password = item["password"],
+                let serviceName = item["serviceName"]
+            else {
                 continue
             }
 
-            try keychainUtils.storeUsername(username, andPassword: password, forServiceName: serviceName, accessGroup: destinationAccessGroup, updateExisting: updateExisting)
+            try keychainUtils.storeUsername(
+                username,
+                andPassword: password,
+                forServiceName: serviceName,
+                accessGroup: destinationAccessGroup,
+                updateExisting: updateExisting
+            )
         }
     }
 }
@@ -33,7 +42,12 @@ extension KeychainUtils: KeychainAccessible {
 
     public func setPassword(for username: String, to newValue: String?, serviceName: String) throws {
         if let newValue {
-            try keychainUtils.storeUsername(username, andPassword: newValue, forServiceName: serviceName, updateExisting: true)
+            try keychainUtils.storeUsername(
+                username,
+                andPassword: newValue,
+                forServiceName: serviceName,
+                updateExisting: true
+            )
         } else {
             try keychainUtils.deleteItem(forUsername: username, andServiceName: serviceName)
         }

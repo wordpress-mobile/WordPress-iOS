@@ -28,13 +28,18 @@ final class DataMigrator {
     private let crashLogger: CrashLogging?
     private let appGroupName: String
 
-    init(coreDataStack: CoreDataStack = ContextManager.shared,
-         backupLocation: URL? = FileManager.default.containerURL(forSecurityApplicationGroupIdentifier: BuildSettings.current.appGroupName)?.appendingPathComponent("WordPress.sqlite"),
-         keychainUtils: KeychainAccessible = KeychainUtils(),
-         localDefaults: UserPersistentRepository = UserDefaults.standard,
-         sharedDefaults: UserPersistentRepository? = UserDefaults(suiteName: BuildSettings.current.appGroupName),
-         crashLogger: CrashLogging? = .main,
-         appGroupName: String = BuildSettings.current.appGroupName) {
+    init(
+        coreDataStack: CoreDataStack = ContextManager.shared,
+        backupLocation: URL? = FileManager.default.containerURL(
+            forSecurityApplicationGroupIdentifier: BuildSettings.current.appGroupName
+        )?
+        .appendingPathComponent("WordPress.sqlite"),
+        keychainUtils: KeychainAccessible = KeychainUtils(),
+        localDefaults: UserPersistentRepository = UserDefaults.standard,
+        sharedDefaults: UserPersistentRepository? = UserDefaults(suiteName: BuildSettings.current.appGroupName),
+        crashLogger: CrashLogging? = .main,
+        appGroupName: String = BuildSettings.current.appGroupName
+    ) {
         self.coreDataStack = coreDataStack
         self.backupLocation = backupLocation
         self.keychainUtils = keychainUtils
@@ -101,7 +106,8 @@ extension DataMigrator: ContentDataMigrating {
 
     func deleteExportedData() {
         guard let backupLocation,
-              let sharedDefaults else {
+            let sharedDefaults
+        else {
             return
         }
 
@@ -168,7 +174,8 @@ private extension DataMigrator {
 
     func populateFromSharedDefaults() throws {
         guard let sharedDefaults,
-              let temporaryDictionary = sharedDefaults.dictionary(forKey: DefaultsWrapper.dictKey) else {
+            let temporaryDictionary = sharedDefaults.dictionary(forKey: DefaultsWrapper.dictKey)
+        else {
             throw DataMigrationError.sharedUserDefaultsNil
         }
         for (key, value) in temporaryDictionary {

@@ -120,7 +120,12 @@ private extension SharedDataIssueSolverTests {
     func createInMemoryContext() throws -> NSManagedObjectContext {
         let managedObjectModel = NSManagedObjectModel.mergedModel(from: [Bundle.main])!
         let persistentStoreCoordinator = NSPersistentStoreCoordinator(managedObjectModel: managedObjectModel)
-        try persistentStoreCoordinator.addPersistentStore(ofType: NSInMemoryStoreType, configurationName: nil, at: nil, options: nil)
+        try persistentStoreCoordinator.addPersistentStore(
+            ofType: NSInMemoryStoreType,
+            configurationName: nil,
+            at: nil,
+            options: nil
+        )
         let managedObjectContext = NSManagedObjectContext(concurrencyType: .mainQueueConcurrencyType)
         managedObjectContext.persistentStoreCoordinator = persistentStoreCoordinator
 
@@ -138,7 +143,7 @@ private final class CoreDataStackMock: CoreDataStack {
     }
 
     func newDerivedContext() -> NSManagedObjectContext {
-        return mainContext
+        mainContext
     }
 
     func saveContextAndWait(_ context: NSManagedObjectContext) {}
@@ -146,13 +151,17 @@ private final class CoreDataStackMock: CoreDataStack {
     func save(_ context: NSManagedObjectContext, completion completionBlock: (() -> Void)?, on queue: DispatchQueue) {}
 
     func performAndSave(_ aBlock: @escaping (NSManagedObjectContext) -> Void) {}
-    func performAndSave(_ aBlock: @escaping (NSManagedObjectContext) -> Void, completion: (() -> Void)?, on queue: DispatchQueue) {}
+    func performAndSave(
+        _ aBlock: @escaping (NSManagedObjectContext) -> Void,
+        completion: (() -> Void)?,
+        on queue: DispatchQueue
+    ) {}
 }
 
 // MARK: - Mock Local File Store
 
 private final class MockLocalFileStore: LocalFileStore {
-    var fileShouldExistClosure: (URL?) -> Bool = { _ in return false }
+    var fileShouldExistClosure: (URL?) -> Bool = { _ in false }
     var removeItemCallCount: Int = 0
     var copyItemCallCount: Int = 0
 
@@ -160,15 +169,15 @@ private final class MockLocalFileStore: LocalFileStore {
     var copyShouldThrowError: Bool = false
 
     func fileExists(at url: URL) -> Bool {
-        return fileShouldExistClosure(url)
+        fileShouldExistClosure(url)
     }
 
     func save(contents: Data, at url: URL) -> Bool {
-        return true
+        true
     }
 
     func containerURL(forAppGroup appGroup: String) -> URL? {
-        return URL(string: "/dev/null")
+        URL(string: "/dev/null")
     }
 
     func removeItem(at url: URL) throws {
