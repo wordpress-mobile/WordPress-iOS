@@ -346,9 +346,6 @@ class MediaImportService: NSObject {
         case let stockPhotosMedia as StockPhotosMedia:
             let exporter = MediaExternalExporter(externalAsset: stockPhotosMedia)
             return exporter
-        case let tenorMedia as TenorMedia:
-            let exporter = MediaExternalExporter(externalAsset: tenorMedia)
-            return exporter
         default:
             return nil
         }
