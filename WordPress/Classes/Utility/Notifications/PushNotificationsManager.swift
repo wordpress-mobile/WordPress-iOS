@@ -303,7 +303,11 @@ extension PushNotificationsManager {
 
         WPAnalytics.track(.supportReceivedResponseFromSupport)
 
-        if applicationState == .background {
+        // Pre-build the Me screen so it's ready when the user opens the app. Skip it
+        // when the UI was never built (a background launch). Keyed on the UI flag, not
+        // window presence: the windowManager emergency fallback can create a window
+        // while no scene has ever connected.
+        if applicationState == .background, WordPressAppDelegate.shared?.hasConfiguredInitialUI == true {
             RootViewCoordinator.sharedPresenter.showMeScreen()
         }
 
