@@ -2058,7 +2058,7 @@ extension AztecPostViewController {
     }
 
     fileprivate func trackFormatBarAnalytics(stat: WPAnalyticsStat, action: String? = nil, headingStyle: String? = nil)
-    {
+    { // swiftlint:disable:this opening_brace
         var properties = [WPAppAnalyticsKeyEditorSource: Analytics.editorSource]
 
         if let action {
@@ -2739,7 +2739,7 @@ extension AztecPostViewController {
     }
 
     private func handleProgress(_ value: Double, forMedia media: Media, onAttachment attachment: Aztec.MediaAttachment)
-    {
+    { // swiftlint:disable:this opening_brace
         guard media.remoteStatus == .processing || media.remoteStatus == .pushing else {
             return
         }

@@ -177,7 +177,7 @@ class MediaImportService: NSObject {
                 switch transformed {
                 case let .success((media, blog)):
                     let progress = self.import(exportable, to: media, blog: blog, thumbnailCallback: thumbnailCallback)
-                    {
+                    { // swiftlint:disable:this opening_brace
                         switch $0 {
                         case let .success(media):
                             completion(media, nil)
