@@ -3,7 +3,9 @@ import XCTest
 import ScreenObject
 
 // TODO: This should maybe go in an `XCUIApplication` extension?
-public var navBackButton: XCUIElement { XCUIApplication().navigationBars.element(boundBy: 0).buttons.element(boundBy: 0) }
+public var navBackButton: XCUIElement {
+    XCUIApplication().navigationBars.element(boundBy: 0).buttons.element(boundBy: 0)
+}
 
 // This list has all the navBarButton labels currently covered by UI tests and must be updated when adding new ones.
 public let navBackButtonLabels = ["Post Settings", "Back", "Get Started"]
@@ -45,7 +47,7 @@ public func waitForExistenceAndTap(_ element: XCUIElement, timeout: TimeInterval
     element.tap()
 }
 
-public func waitAndTap( _ element: XCUIElement, maxRetries: Int = 20) {
+public func waitAndTap(_ element: XCUIElement, maxRetries: Int = 20) {
     var retries = 0
     while retries < maxRetries {
         if element.isHittable {
@@ -62,7 +64,7 @@ public func waitAndTap( _ element: XCUIElement, maxRetries: Int = 20) {
     }
 }
 
-public func waitForElementToDisappear( _ element: XCUIElement, maxRetries: Int = 10) {
+public func waitForElementToDisappear(_ element: XCUIElement, maxRetries: Int = 10) {
     var retries = 0
     while retries < maxRetries {
         if element.exists {
