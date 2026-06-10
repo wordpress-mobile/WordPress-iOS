@@ -12,7 +12,7 @@ protocol ExternalMediaPickerViewDelegate: AnyObject {
 
 final class ExternalMediaPickerViewController: UIViewController, UICollectionViewDataSource, UICollectionViewDelegate,
     UISearchResultsUpdating, MediaPreviewControllerDataSource
-{
+{ // swiftlint:disable:this opening_brace
     private lazy var collectionView = UICollectionView(frame: .zero, collectionViewLayout: flowLayout)
     private lazy var flowLayout = UICollectionViewFlowLayout()
     private var collectionViewDataSource: UICollectionViewDiffableDataSource<Int, String>!
@@ -78,8 +78,6 @@ final class ExternalMediaPickerViewController: UIViewController, UICollectionVie
 
         switch source {
         case .stockPhotos:
-            WPAnalytics.track(.tenorAccessed)
-        case .tenor:
             WPAnalytics.track(.stockMediaAccessed)
         default:
             assertionFailure("Unsupported source: \(source)")
@@ -254,7 +252,7 @@ final class ExternalMediaPickerViewController: UIViewController, UICollectionVie
     }
 
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell
-    {
+    { // swiftlint:disable:this opening_brace
         let cell =
             collectionView.dequeueReusableCell(withReuseIdentifier: Self.cellReuseID, for: indexPath)
             as! ExternalMediaPickerCollectionCell

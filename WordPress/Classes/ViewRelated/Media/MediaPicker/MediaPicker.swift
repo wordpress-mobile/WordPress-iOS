@@ -61,8 +61,6 @@ struct MediaPicker<Content: View>: View {
                     menu.makeImagePlaygroundAction(delegate: controller)
                 case .freePhotos(let blog):
                     menu.makeStockPhotos(blog: blog, delegate: controller)
-                case .freeGIFs(let blog):
-                    menu.makeFreeGIFAction(blog: blog, delegate: controller)
                 }
             }
     }
@@ -84,7 +82,6 @@ enum MediaPickerSource {
     case siteMedia(blog: Blog)
     case playground // Image Playground
     case freePhotos(blog: Blog) // Pexels
-    case freeGIFs(blog: Blog) // Tenor
 
     var isEnabled: Bool {
         switch self {
@@ -94,8 +91,6 @@ enum MediaPickerSource {
             MediaPickerMenu.isImagePlaygroundAvailable
         case .freePhotos(let blog):
             blog.supports(.stockPhotos) && JetpackFeaturesRemovalCoordinator.jetpackFeaturesEnabled()
-        case .freeGIFs:
-            JetpackFeaturesRemovalCoordinator.jetpackFeaturesEnabled()
         }
     }
 }

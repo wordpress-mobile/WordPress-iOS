@@ -23,8 +23,7 @@ final class MediaPickerController: GutenbergKit.MediaPickerController {
         // Define media sources with their identifiers
         let sources: [(source: MediaPickerSource, id: MediaPickerID)] = [
             (.siteMedia(blog: blog), .siteMedia),
-            (.freePhotos(blog: blog), .freePhotos),
-            (.freeGIFs(blog: blog), .freeGIFs)
+            (.freePhotos(blog: blog), .freePhotos)
         ]
 
         // Create actions from enabled sources
@@ -98,7 +97,6 @@ final class MediaPickerController: GutenbergKit.MediaPickerController {
         case .siteMedia: .siteMedia(blog: blog)
         case .applePhotos: .photos
         case .freePhotos: .freePhotos(blog: blog)
-        case .freeGIFs: .freeGIFs(blog: blog)
         default: fatalError("Unsupported: \(id)")
         }
     }
@@ -122,7 +120,6 @@ final class MediaPickerController: GutenbergKit.MediaPickerController {
         case .siteMedia: menu.makeSiteMediaAction(blog: blog, delegate: controller)
         case .photos: menu.makePhotosAction(delegate: controller)
         case .freePhotos: menu.makeStockPhotos(blog: blog, delegate: controller)
-        case .freeGIFs: menu.makeFreeGIFAction(blog: blog, delegate: controller)
         default: nil
         }
     }

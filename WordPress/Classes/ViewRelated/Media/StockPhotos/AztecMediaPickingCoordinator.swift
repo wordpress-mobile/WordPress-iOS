@@ -26,9 +26,6 @@ final class AztecMediaPickingCoordinator {
         if MediaPickerSource.freePhotos(blog: blog).isEnabled {
             alertController.addAction(freePhotoAction(origin: origin, blog: blog))
         }
-        if MediaPickerSource.freeGIFs(blog: blog).isEnabled {
-            alertController.addAction(tenorAction(origin: origin, blog: blog))
-        }
 
         alertController.addAction(otherAppsAction(origin: origin, blog: blog))
         alertController.addAction(cancelAction())
@@ -53,16 +50,6 @@ final class AztecMediaPickingCoordinator {
         )
     }
 
-    private func tenorAction(origin: UIViewController, blog: Blog) -> UIAlertAction {
-        UIAlertAction(
-            title: .tenor,
-            style: .default,
-            handler: { [weak self] _ in
-                self?.showTenor(origin: origin, blog: blog)
-            }
-        )
-    }
-
     private func otherAppsAction(origin: UIViewController & UIDocumentPickerDelegate, blog: Blog) -> UIAlertAction {
         UIAlertAction(
             title: .otherApps,
@@ -80,11 +67,6 @@ final class AztecMediaPickingCoordinator {
     private func showStockPhotos(origin: UIViewController, blog: Blog) {
         MediaPickerMenu(viewController: origin, isMultipleSelectionEnabled: true)
             .showStockPhotosPicker(blog: blog, delegate: self)
-    }
-
-    private func showTenor(origin: UIViewController, blog: Blog) {
-        MediaPickerMenu(viewController: origin, isMultipleSelectionEnabled: true)
-            .showFreeGIFPicker(blog: blog, delegate: self)
     }
 
     private func showDocumentPicker(origin: UIViewController & UIDocumentPickerDelegate, blog: Blog) {

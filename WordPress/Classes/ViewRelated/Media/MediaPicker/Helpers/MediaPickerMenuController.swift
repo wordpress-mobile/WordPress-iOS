@@ -66,8 +66,7 @@ extension MediaPickerMenuController: ExternalMediaPickerViewDelegate {
     ) {
         viewController.presentingViewController?.dismiss(animated: true)
         if !selection.isEmpty {
-            let source: MediaPickerID = viewController.source == .tenor ? .freeGIFs : .freePhotos
-            self.didSelect(selection.map(MediaPickerItem.external), source: source)
+            self.didSelect(selection.map(MediaPickerItem.external), source: .freePhotos)
         }
     }
 }

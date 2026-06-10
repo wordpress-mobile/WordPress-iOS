@@ -659,13 +659,6 @@ extension GutenbergViewController: GutenbergBridgeDelegate {
                 multipleSelection: allowMultipleSelection,
                 callback: callback
             )
-        case .tenor:
-            externalMediaPicker.presentTenorPicker(
-                origin: self,
-                post: post,
-                multipleSelection: allowMultipleSelection,
-                callback: callback
-            )
         case .imagePlayground:
             externalMediaPicker.presentImagePlayground(origin: self, post: post, callback: callback)
         case .otherApps, .allFiles:
@@ -1228,7 +1221,6 @@ extension GutenbergViewController: GutenbergBridgeDataSource {
                 [
                     MediaPickerSource.playground.isEnabled ? .imagePlayground : nil,
                     MediaPickerSource.freePhotos(blog: post.blog).isEnabled ? .stockPhotos : nil,
-                    MediaPickerSource.freeGIFs(blog: post.blog).isEnabled ? .tenor : nil,
                     .otherApps,
                     .allFiles
                 ]
@@ -1402,7 +1394,6 @@ extension Gutenberg.MediaSource {
         types: [.image]
     )
     static let allFiles = Gutenberg.MediaSource(id: "wpios-all-files", label: .otherApps, types: [.any])
-    static let tenor = Gutenberg.MediaSource(id: "wpios-tenor", label: .tenor, types: [.image])
 }
 
 private extension GutenbergViewController {

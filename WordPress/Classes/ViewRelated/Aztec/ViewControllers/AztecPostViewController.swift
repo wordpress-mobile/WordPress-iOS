@@ -2407,7 +2407,7 @@ extension AztecPostViewController {
                 attachment = insertImageAttachment()
 
                 if let attachment {
-                    setGifBadgeIfNecessary(for: attachment, asset: exportableAsset, source: source)
+                    setGifBadgeIfNecessary(for: attachment, asset: exportableAsset)
                 }
             case .video:
                 attachment = insertVideoAttachmentWithPlaceholder()
@@ -2424,16 +2424,10 @@ extension AztecPostViewController {
     }
 
     /// Sets the badge title of `attachment` to "GIF".
-    private func setGifBadgeIfNecessary(for attachment: MediaAttachment, asset: ExportableAsset, source: MediaSource) {
-        var isGif = source == .tenor
-
+    private func setGifBadgeIfNecessary(for attachment: MediaAttachment, asset: ExportableAsset) {
         if let asset = (asset as? NSItemProvider),
             asset.hasItemConformingToTypeIdentifier(UTType.gif.identifier)
         {
-            isGif = true
-        }
-
-        if isGif {
             attachment.badgeTitle = Constants.mediaGIFBadgeTitle
         }
     }

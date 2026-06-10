@@ -7,7 +7,7 @@ import WordPressShared
 
 final class SiteMediaAddMediaMenuController: NSObject, PHPickerViewControllerDelegate, ImagePickerControllerDelegate,
     ExternalMediaPickerViewDelegate, UIDocumentPickerDelegate, ImagePlaygroundPickerDelegate
-{
+{ // swiftlint:disable:this opening_brace
     let blog: Blog
     let coordinator: MediaCoordinator
 
@@ -36,8 +36,7 @@ final class SiteMediaAddMediaMenuController: NSObject, PHPickerViewControllerDel
             )
         ]
         let freeMediaActions: [UIAction] = [
-            menu.makeStockPhotos(blog: blog, delegate: self),
-            menu.makeFreeGIFAction(blog: blog, delegate: self)
+            menu.makeStockPhotos(blog: blog, delegate: self)
         ]
         .compactMap { $0 }
         if !freeMediaActions.isEmpty {
@@ -147,8 +146,6 @@ final class SiteMediaAddMediaMenuController: NSObject, PHPickerViewControllerDel
             switch viewController.source {
             case .stockPhotos:
                 WPAnalytics.track(.stockMediaUploaded)
-            case .tenor:
-                WPAnalytics.track(.tenorUploaded)
             default:
                 assertionFailure("Unsupported source: \(viewController.source)")
             }
