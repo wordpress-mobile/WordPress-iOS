@@ -406,11 +406,6 @@ enum XcodeSupport {
             .library(name: "XcodeTarget_Keystone", targets: ["XcodeTarget_Keystone"]),
             .library(name: "XcodeTarget_WordPressTests", targets: ["XcodeTarget_WordPressTests"]),
             .library(name: "XcodeTarget_WordPressKitTests", targets: ["XcodeTarget_WordPressKitTests"]),
-            .library(name: "XcodeTarget_WordPressAuthentificator", targets: ["XcodeTarget_WordPressAuthentificator"]),
-            .library(
-                name: "XcodeTarget_WordPressAuthentificatorTests",
-                targets: ["XcodeTarget_WordPressAuthentificatorTests"]
-            ),
             .library(name: "XcodeTarget_ShareExtension", targets: ["XcodeTarget_ShareExtension"]),
             .library(name: "XcodeTarget_DraftActionExtension", targets: ["XcodeTarget_DraftActionExtension"]),
             .library(
@@ -424,18 +419,6 @@ enum XcodeSupport {
     }
 
     static var targets: [Target] {
-        let wordPresAuthentificatorDependencies: [Target.Dependency] = [
-            "BuildSettingsKit",
-            "WordPressShared",
-            "WordPressUI",
-            "WordPressKit",
-            .product(name: "Gridicons", package: "Gridicons-iOS"),
-            .product(name: "NSURL-IDN", package: "NSURL-IDN"),
-            .product(name: "SVProgressHUD", package: "SVProgressHUD"),
-            .product(name: "Gravatar", package: "Gravatar-SDK-iOS"),
-            .product(name: "GravatarUI", package: "Gravatar-SDK-iOS")
-        ]
-
         let shareAndDraftExtensionsDependencies: [Target.Dependency] = [
             "AztecExtensions",
             "BuildSettingsKit",
@@ -547,11 +530,6 @@ enum XcodeSupport {
                     "wpxmlrpc",
                     "WordPressKit"
                 ]
-            ),
-            .xcodeTarget("XcodeTarget_WordPressAuthentificator", dependencies: wordPresAuthentificatorDependencies),
-            .xcodeTarget(
-                "XcodeTarget_WordPressAuthentificatorTests",
-                dependencies: wordPresAuthentificatorDependencies + testDependencies
             ),
             .xcodeTarget("XcodeTarget_ShareExtension", dependencies: shareAndDraftExtensionsDependencies),
             .xcodeTarget("XcodeTarget_DraftActionExtension", dependencies: shareAndDraftExtensionsDependencies),
