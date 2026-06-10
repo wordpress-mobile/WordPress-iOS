@@ -239,22 +239,6 @@ extension WordPressAuthenticationManager {
 //
 extension WordPressAuthenticationManager {
 
-    /// Returns an Authentication ViewController (configured to allow only WordPress.com). This method pre-populates the Email + Username
-    /// with the values returned by the default WordPress.com account (if any).
-    ///
-    /// - Parameter onDismissed: Closure to be executed whenever the returned ViewController is dismissed.
-    ///
-    static func signinForWPComFixingAuthToken(_ onDismissed: ((_ cancelled: Bool) -> Void)? = nil) -> UIViewController {
-        let context = ContextManager.shared.mainContext
-        let account = try? WPAccount.lookupDefaultWordPressComAccount(in: context)
-
-        return WordPressAuthenticator.signinForWPCom(
-            dotcomEmailAddress: account?.email,
-            dotcomUsername: account?.username,
-            onDismissed: onDismissed
-        )
-    }
-
     /// Presents the WordPress Authentication UI from the rootViewController (configured to allow only WordPress.com).
     /// This method pre-populates the Email + Username with the values returned by the default WordPress.com account (if any).
     ///
