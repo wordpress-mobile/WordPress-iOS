@@ -24,6 +24,7 @@
 	</array>
 	<key>keychain-access-groups</key>
 	<array>
+		<string>3TMU3BH3NK.org.wordpress.jetpack</string>
 		<string>3TMU3BH3NK.org.wordpress</string>
 	</array>
 </dict>

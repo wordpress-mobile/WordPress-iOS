@@ -15,7 +15,7 @@
 	</array>
 	<key>keychain-access-groups</key>
 	<array>
-		<string>3TMU3BH3NK.org.wordpress</string>
+		<string>3TMU3BH3NK.org.wordpress.reader</string>
 	</array>
 </dict>
 </plist>
