@@ -65,3 +65,31 @@ struct SplashPrologueStyleGuide {
         )
     )
 }
+
+// MARK: - Prologue button configurations
+
+extension SplashPrologueStyleGuide {
+    static func primaryButtonConfiguration(highlighted: Bool = false) -> UIButton.Configuration {
+        var configuration = UIButton.Configuration.filled()
+        configuration.baseBackgroundColor = highlighted ? primaryButtonHighlightedColor : primaryButtonColor
+        configuration.baseForegroundColor = .white
+        applyPrologueButtonMetrics(to: &configuration)
+        return configuration
+    }
+
+    static func secondaryButtonConfiguration(highlighted: Bool = false) -> UIButton.Configuration {
+        var configuration = UIButton.Configuration.filled()
+        configuration.baseBackgroundColor = highlighted ? secondaryButtonHighlightedColor : secondaryButtonColor
+        configuration.baseForegroundColor = .black
+        configuration.background.strokeColor = secondaryButtonHighlightedColor
+        configuration.background.strokeWidth = 1
+        applyPrologueButtonMetrics(to: &configuration)
+        return configuration
+    }
+
+    private static func applyPrologueButtonMetrics(to configuration: inout UIButton.Configuration) {
+        configuration.cornerStyle = .fixed
+        configuration.background.cornerRadius = 8
+        configuration.contentInsets = NSDirectionalEdgeInsets(top: 12, leading: 20, bottom: 12, trailing: 20)
+    }
+}
