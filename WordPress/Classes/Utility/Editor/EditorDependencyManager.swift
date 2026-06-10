@@ -284,8 +284,10 @@ final class EditorDependencyManager: Sendable {
 
         var siteId: Int? = nil
 
-        if case let .dotCom(credentials) = site.flavor {
-            siteId = credentials.siteId
+        // The site-specific routes (e.g. `/wp-block-editor/v1/sites/{id}/settings`)
+        // only exist on the WP.com proxy, not on the site's own API root.
+        if case let .dotComProxy(dotComSiteId, _) = site.transport {
+            siteId = dotComSiteId
         }
 
         let hasBlockTheme = try await client.supports(.blockTheme, forSiteId: siteId)

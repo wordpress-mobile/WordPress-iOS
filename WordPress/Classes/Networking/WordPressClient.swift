@@ -56,11 +56,11 @@ extension WordPressClient {
             )
         )
         let siteInfo: SiteInfo
-        switch site.flavor {
-        case let .dotCom(credentials):
-            siteInfo = .wordPressCom(siteId: WpComSiteId(credentials.siteId))
-        case let .selfHosted(credentials):
+        switch site.transport {
+        case let .direct(credentials):
             siteInfo = .selfHosted(siteUrl: try! ParsedUrl.from(url: site.siteURL), apiRoot: credentials.apiRootURL)
+        case let .dotComProxy(siteId, _):
+            siteInfo = .wordPressCom(siteId: WpComSiteId(siteId))
         }
         let api = WordPressAPI(
             urlSession: session,
@@ -104,11 +104,11 @@ private final class AutoUpdateAuthenticationProvider: @unchecked Sendable, WpDyn
         self.site = site
         self.coreDataStack = coreDataStack
         self.authentication =
-            switch site.flavor {
-            case let .dotCom(credentials):
-                .bearer(token: credentials.oAuthToken)
-            case let .selfHosted(credentials):
+            switch site.transport {
+            case let .direct(credentials):
                 .init(username: credentials.username, password: credentials.token)
+            case let .dotComProxy(_, oAuthToken):
+                .bearer(token: oAuthToken)
             }
 
         self.cancellable = NotificationCenter.default
@@ -178,15 +178,10 @@ private class AppNotifier: @unchecked Sendable, WpAppNotifier {
 
 private extension WordPressSite {
     func authentication(in context: NSManagedObjectContext) -> WpAuthentication {
-        switch self.flavor {
-        case .dotCom:
-            guard let blog = try? context.existingObject(with: blogId),
-                let token = blog.account?.authToken
-            else {
-                return WpAuthentication.none
-            }
-            return WpAuthentication.bearer(token: token)
-        case .selfHosted:
+        // The transport (and thus the credential kind) is fixed when the
+        // client is created, so refreshed credentials must match it.
+        switch self.transport {
+        case .direct:
             guard let blog = try? context.existingObject(with: blogId),
                 let username = try? blog.getUsername(),
                 let password = try? blog.getApplicationToken()
@@ -195,6 +190,13 @@ private extension WordPressSite {
             }
 
             return WpAuthentication(username: username, password: password)
+        case .dotComProxy:
+            guard let blog = try? context.existingObject(with: blogId),
+                let token = blog.account?.authToken
+            else {
+                return WpAuthentication.none
+            }
+            return WpAuthentication.bearer(token: token)
         }
     }
 }

@@ -215,9 +215,9 @@ public extension WpApiApplicationPasswordDetails {
 public struct WordPressSite {
     public let blogId: TaggedManagedObjectID<Blog>
     public let siteURL: URL
-    public let flavor: ApiFlavor
+    public let flavor: Flavor
 
-    public init(blogId: TaggedManagedObjectID<Blog>, siteURL: URL, flavor: ApiFlavor) {
+    public init(blogId: TaggedManagedObjectID<Blog>, siteURL: URL, flavor: Flavor) {
         self.blogId = blogId
         self.siteURL = siteURL
         self.flavor = flavor
@@ -225,7 +225,7 @@ public struct WordPressSite {
 }
 
 extension WordPressSite {
-    public enum ApiFlavor {
+    public enum Flavor {
         /// A site hosted on WordPress.com. Always has OAuth access via
         /// WPAccount. May also have application password credentials
         /// (e.g., Atomic sites).
@@ -333,6 +333,38 @@ extension WordPressSite {
 }
 
 extension WordPressSite {
+    /// How the app reaches the site's wp/v2 REST API.
+    ///
+    /// Unlike `flavor`, which describes how the site is presented in the app,
+    /// `Transport` decides which endpoint and credentials to use for API
+    /// access. The two don't always line up: a WordPress.com Atomic site
+    /// presents as `.dotCom` but is accessed directly when application
+    /// password credentials are available.
+    public enum Transport {
+        /// Requests go to the site's own REST API root, authenticated with
+        /// an application password.
+        case direct(ApplicationPasswordCredentials)
+
+        /// Requests are proxied through the WP.com REST API, authenticated
+        /// with the account's OAuth token.
+        case dotComProxy(siteId: Int, oAuthToken: String)
+    }
+
+    /// Direct site access is preferred whenever application password
+    /// credentials are available, because it does not depend on the WP.com
+    /// proxy and works for site features the proxy does not expose.
+    public var transport: Transport {
+        switch flavor {
+        case let .dotCom(credentials):
+            if let applicationPassword = credentials.applicationPassword {
+                return .direct(applicationPassword)
+            }
+            return .dotComProxy(siteId: credentials.siteId, oAuthToken: credentials.oAuthToken)
+        case let .selfHosted(credentials):
+            return .direct(credentials)
+        }
+    }
+
     /// The application password credentials, if available.
     /// Always non-nil for self-hosted sites. Optional for WordPress.com sites
     /// (non-nil for Atomic sites).
