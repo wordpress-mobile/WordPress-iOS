@@ -113,14 +113,15 @@ class WindowManager: NSObject {
     /// - Parameter rootViewController: View controller to be used as the root view controller for the newly created window.
     ///
     func displayOverlayingWindow(with rootViewController: UIViewController) {
-        clearOverlayingWindow()
-        let window: UIWindow
-        if let windowScene = self.window.windowScene {
-            window = UIWindow(windowScene: windowScene)
-        } else {
-            // Unreachable in practice: the app's main window is always scene-attached.
-            window = UIWindow(frame: self.window.frame)
+        // A window without a scene never displays, so fail loudly instead of
+        // creating an invisible overlay. The main window is always scene-attached
+        // while UI is on screen. Bail before tearing down any existing overlay.
+        guard let windowScene = self.window.windowScene else {
+            assertionFailure("displayOverlayingWindow requires a scene-attached main window")
+            return
         }
+        clearOverlayingWindow()
+        let window = UIWindow(windowScene: windowScene)
         window.rootViewController = rootViewController
         window.windowLevel = .alert
         window.isHidden = false
