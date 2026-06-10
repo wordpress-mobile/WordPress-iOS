@@ -495,7 +495,6 @@ final class CustomPostListViewModel: ObservableObject {
 
         let newSetting: HomepageSetting
         let params: SiteSettingsUpdateParams
-        let successMessage: String
 
         switch role {
         case .homepage:
@@ -514,7 +513,6 @@ final class CustomPostListViewModel: ObservableObject {
                 pageOnFront: UInt64(postID),
                 pageForPosts: clearPostsPage ? 0 : nil
             )
-            successMessage = Strings.setHomepageSuccess
 
         case .postsPage:
             var homepageID: Int64?
@@ -532,7 +530,6 @@ final class CustomPostListViewModel: ObservableObject {
                 pageOnFront: clearHomepage ? 0 : nil,
                 pageForPosts: UInt64(postID)
             )
-            successMessage = Strings.setPostsPageSuccess
 
         case nil:
             // The "set as regular page" action only makes sense when a static
@@ -542,7 +539,6 @@ final class CustomPostListViewModel: ObservableObject {
             guard case .staticPage(let homepageID, _) = previousSetting else { return }
             newSetting = .staticPage(homepageID: homepageID, postsPageID: nil)
             params = SiteSettingsUpdateParams(pageForPosts: 0)
-            successMessage = Strings.setRegularPageSuccess
         }
 
         guard !pendingPostIDs.contains(postID) else { return }
@@ -554,7 +550,7 @@ final class CustomPostListViewModel: ObservableObject {
 
         do {
             _ = try await client.api.siteSettings.update(params: params)
-            Notice(title: successMessage).post()
+            Notice(title: Strings.pageRoleChangeSuccess).post()
         } catch {
             Loggers.app.error("Failed to update page role: \(error)")
             homepageSetting = previousSetting
@@ -940,20 +936,10 @@ private enum Strings {
         value: "Settings",
         comment: "Menu action to open post settings"
     )
-    static let setHomepageSuccess = NSLocalizedString(
-        "customPostList.action.setHomepage.success",
+    static let pageRoleChangeSuccess = NSLocalizedString(
+        "customPostList.action.pageRoleChange.success",
         value: "Page successfully updated",
-        comment: "Notice shown after successfully setting a page as the homepage"
-    )
-    static let setPostsPageSuccess = NSLocalizedString(
-        "customPostList.action.setPostsPage.success",
-        value: "Page successfully updated",
-        comment: "Notice shown after successfully setting a page as the posts page"
-    )
-    static let setRegularPageSuccess = NSLocalizedString(
-        "customPostList.action.setRegularPage.success",
-        value: "Page successfully updated",
-        comment: "Notice shown after successfully setting a page as a regular page"
+        comment: "Notice shown after successfully changing a page's role (homepage, posts page, or regular page)"
     )
 }
 
