@@ -141,6 +141,11 @@ public class WordPressAppDelegate: UIResponder, UIApplicationDelegate {
     /// and reconnect while the process stays alive, so the build must run exactly once.
     private var hasConfiguredInitialUI = false
 
+    /// Set during the first scene connect, because `sceneWillEnterForeground` also
+    /// fires right after it. The legacy `applicationWillEnterForeground` did not fire
+    /// during a cold launch, and `handleWillEnterForeground` keeps those semantics.
+    private var isInitialSceneConnect = false
+
     /// Builds and shows the app's UI in the given window scene. Runs when the main
     /// scene connects, which (under the scene life cycle) is after `didFinishLaunching`
     /// and can happen multiple times per process: the system may disconnect the scene
@@ -153,6 +158,7 @@ public class WordPressAppDelegate: UIResponder, UIApplicationDelegate {
             return
         }
         hasConfiguredInitialUI = true
+        isInitialSceneConnect = true
 
         let window: UIWindow
         if let existingWindow = self.window {
@@ -264,6 +270,15 @@ public class WordPressAppDelegate: UIResponder, UIApplicationDelegate {
 
     func handleWillEnterForeground() {
         Loggers.app.info("\(self) \(#function)")
+
+        // Skip the call that follows the initial scene connect during a cold launch:
+        // the launch sequence already refreshed the flags, and the window phase already
+        // ran the migration check via `windowManager.showUI()`. Scene reconnects are a
+        // real return from the background and fall through.
+        if isInitialSceneConnect {
+            isInitialSceneConnect = false
+            return
+        }
 
         updateFeatureFlags()
         updateRemoteConfig()
