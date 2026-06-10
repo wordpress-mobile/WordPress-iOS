@@ -94,7 +94,8 @@ extension DataMigrator: ContentDataMigrating {
 
         let sharedDataIssueSolver = SharedDataIssueSolver(
             contextManager: coreDataStack,
-            keychainUtils: keychainUtils,
+            appKeychain: keychainUtils,
+            sharedKeychain: keychainUtils,
             sharedDefaults: sharedDefaults,
             appGroupName: appGroupName
         )

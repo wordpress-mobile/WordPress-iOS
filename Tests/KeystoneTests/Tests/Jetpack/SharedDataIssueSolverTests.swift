@@ -7,7 +7,8 @@ class SharedDataIssueSolverTests: XCTestCase {
 
     private var context: NSManagedObjectContext!
     private var contextManager: CoreDataStackMock!
-    private var keychainUtils: KeychainUtilsMock!
+    private var appKeychain: KeychainUtilsMock!
+    private var sharedKeychain: KeychainUtilsMock!
     private var sharedUserDefaults: InMemoryUserDefaults!
     private var mockLocalStore: MockLocalFileStore!
     private var sharedDataIssueSolver: SharedDataIssueSolver!
@@ -17,12 +18,14 @@ class SharedDataIssueSolverTests: XCTestCase {
 
         context = try! createInMemoryContext()
         contextManager = CoreDataStackMock(mainContext: context)
-        keychainUtils = KeychainUtilsMock()
+        appKeychain = KeychainUtilsMock()
+        sharedKeychain = KeychainUtilsMock()
         sharedUserDefaults = InMemoryUserDefaults()
         mockLocalStore = MockLocalFileStore()
         sharedDataIssueSolver = SharedDataIssueSolver(
             contextManager: contextManager,
-            keychainUtils: keychainUtils,
+            appKeychain: appKeychain,
+            sharedKeychain: sharedKeychain,
             sharedDefaults: sharedUserDefaults,
             localFileStore: mockLocalStore,
             appGroupName: "xctest_app_group_name"

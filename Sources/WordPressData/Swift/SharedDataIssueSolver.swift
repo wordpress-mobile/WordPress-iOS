@@ -4,20 +4,23 @@ import BuildSettingsKit
 public final class SharedDataIssueSolver {
 
     private let contextManager: CoreDataStack
-    private let keychainUtils: KeychainAccessible
+    private let appKeychain: KeychainAccessible
+    private let sharedKeychain: KeychainAccessible?
     private let sharedDefaults: UserPersistentRepository?
     private let localFileStore: LocalFileStore
     private let appGroupName: String
 
     public init(
         contextManager: CoreDataStack = ContextManager.shared,
-        keychainUtils: KeychainAccessible = KeychainUtils(),
+        appKeychain: KeychainAccessible = AppKeychain(),
+        sharedKeychain: KeychainAccessible? = SharedKeychain(),
         sharedDefaults: UserPersistentRepository? = UserDefaults(suiteName: BuildSettings.current.appGroupName),
         localFileStore: LocalFileStore = FileManager.default,
         appGroupName: String = BuildSettings.current.appGroupName
     ) {
         self.contextManager = contextManager
-        self.keychainUtils = keychainUtils
+        self.appKeychain = appKeychain
+        self.sharedKeychain = sharedKeychain
         self.sharedDefaults = sharedDefaults
         self.localFileStore = localFileStore
         self.appGroupName = appGroupName
@@ -35,8 +38,13 @@ public final class SharedDataIssueSolver {
     /// both apps are logged in with the same account.
     ///
     public func migrateAuthKey(for username: String) {
+        // Explicitly the shared group: this is the one deliberate cross-app
+        // keychain read in the codebase. The WordPress app publishes the
+        // token there at export time (and pre-change versions wrote it
+        // there by default).
         guard BuildSettings.current.brand == .jetpack,
-            let token = try? keychainUtils.getPassword(
+            let sharedKeychain,
+            let token = try? sharedKeychain.getPassword(
                 for: username,
                 serviceName: WPAccountConstants.authToken.rawValue
             )
@@ -46,7 +54,7 @@ public final class SharedDataIssueSolver {
 
         // If the token has already been migrated, no need to resolve the issue again.
         // There might also be a possibility that the user logged in to JP by themselves. In which, we won't need to migrate.
-        if let _ = try? keychainUtils.getPassword(
+        if let _ = try? appKeychain.getPassword(
             for: username,
             serviceName: WPAccountConstants.authToken.valueForJetpack
         ) {
@@ -54,7 +62,7 @@ public final class SharedDataIssueSolver {
         }
 
         // if authToken for the account username exists, move it to the authToken location for JP.
-        try? keychainUtils.setPassword(
+        try? appKeychain.setPassword(
             for: username,
             to: token,
             serviceName: WPAccountConstants.authToken.valueForJetpack
