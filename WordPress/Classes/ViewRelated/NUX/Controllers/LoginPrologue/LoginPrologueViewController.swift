@@ -270,6 +270,19 @@ final class LoginPrologueViewController: UIViewController {
     }
 }
 
+// MARK: - Navigation controller
+
+/// Hosts the login prologue. Locks iPhone to portrait like the library's
+/// LoginNavigationController did; the navigation bar is managed by the prologue itself.
+final class LoginPrologueNavigationController: UINavigationController {
+    override var supportedInterfaceOrientations: UIInterfaceOrientationMask {
+        if UIDevice.current.userInterfaceIdiom == .pad {
+            return topViewController?.supportedInterfaceOrientations ?? .all
+        }
+        return .portrait
+    }
+}
+
 // MARK: - Analytics
 
 /// Replicates the unified-login events the WordPressAuthenticator library's

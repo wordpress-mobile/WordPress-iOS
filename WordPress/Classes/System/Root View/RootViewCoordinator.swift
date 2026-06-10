@@ -1,6 +1,5 @@
 import Foundation
 import BuildSettingsKit
-import WordPressAuthenticator
 import WordPressData
 import WordPressShared
 
@@ -58,7 +57,6 @@ class RootViewCoordinator {
     }
     private var featureFlagStore: RemoteFeatureFlagStore
     private var windowManager: WindowManager?
-    private let wordPressAuthenticator: WordPressAuthenticatorProtocol.Type
     private let app: AppBrand
 
     var isSiteCreationActive = false
@@ -68,13 +66,11 @@ class RootViewCoordinator {
     init(
         featureFlagStore: RemoteFeatureFlagStore,
         windowManager: WindowManager?,
-        wordPressAuthenticator: WordPressAuthenticatorProtocol.Type = WordPressAuthenticator.self,
         app: AppBrand = BuildSettings.current.brand
     ) {
         self.featureFlagStore = featureFlagStore
         self.windowManager = windowManager
         self.currentAppUIType = Self.appUIType(featureFlagStore: featureFlagStore)
-        self.wordPressAuthenticator = wordPressAuthenticator
         self.app = app
         updateJetpackFeaturesRemovalCoordinatorState()
     }
@@ -90,12 +86,9 @@ class RootViewCoordinator {
     }
 
     func showSignInUI(completion: (() -> Void)? = nil) {
-        guard let loginViewController = wordPressAuthenticator.loginUI() else {
-            fatalError("No login UI to show to the user.  There's no way to gracefully handle this error.")
-        }
-
-        windowManager?.show(loginViewController, completion: completion)
-        wordPressAuthenticator.track(.openedLogin)
+        let navigationController = LoginPrologueNavigationController(rootViewController: LoginPrologueViewController())
+        windowManager?.show(navigationController, completion: completion)
+        WPAnalytics.track(.openedLogin)
         self.rootViewPresenter = nil
 
         WordPressAppDelegate.shared?.autoSignInUITestSite()
