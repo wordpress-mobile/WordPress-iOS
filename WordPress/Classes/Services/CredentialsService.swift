@@ -1,5 +1,5 @@
 import BuildSettingsKit
-import SFHFKeychainUtils
+import WordPressShared
 
 protocol CredentialsProvider {
     func getPassword(username: String, service: String) -> String?
@@ -7,7 +7,7 @@ protocol CredentialsProvider {
 
 struct KeychainCredentialsProvider: CredentialsProvider {
     func getPassword(username: String, service: String) -> String? {
-        try? SFHFKeychainUtils.getPasswordForUsername(username, andServiceName: service)
+        try? AppKeychain().getPassword(for: username, serviceName: service)
     }
 }
 

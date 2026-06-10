@@ -30,7 +30,7 @@ public class WPAccount: NSManagedObject {
 
     private var cachedToken: String?
 
-    lazy var keychain: any KeychainAccessible = KeychainUtils()
+    lazy var keychain: any KeychainAccessible = AppKeychain()
     lazy var keychainServiceName: String = BuildSettings.current.authKeychainServiceName
     lazy var keychainMigration: any AuthKeyMigrationProtocol = AuthKeyMigration()
 
@@ -151,7 +151,7 @@ public class WPAccount: NSManagedObject {
             forUsername: username,
             serviceName: BuildSettings.current.authKeychainServiceName,
             migration: AuthKeyMigration(),
-            keychain: KeychainUtils()
+            keychain: AppKeychain()
         )
     }
 

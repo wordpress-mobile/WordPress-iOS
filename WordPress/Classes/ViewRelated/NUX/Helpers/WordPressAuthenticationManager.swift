@@ -2,7 +2,6 @@ import Combine
 import UIKit
 import SwiftUI
 import BuildSettingsKit
-import SFHFKeychainUtils
 import WordPressAuthenticator
 import WordPressData
 import WordPressShared
@@ -560,12 +559,12 @@ extension WordPressAuthenticationManager: WordPressAuthenticatorDelegate {
     ///
     func userAuthenticatedWithAppleUserID(_ appleUserID: String) {
         do {
-            try SFHFKeychainUtils.storeUsername(
-                WPAppleIDKeychainUsernameKey,
-                andPassword: appleUserID,
-                forServiceName: WPAppleIDKeychainServiceName,
-                updateExisting: true
-            )
+            try AppKeychain()
+                .setPassword(
+                    for: WPAppleIDKeychainUsernameKey,
+                    to: appleUserID,
+                    serviceName: WPAppleIDKeychainServiceName
+                )
         } catch {
             DDLogInfo("Error while saving Apple User ID: \(error)")
         }

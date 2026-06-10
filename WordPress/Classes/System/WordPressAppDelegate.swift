@@ -8,7 +8,6 @@ import CocoaLumberjackSwiftLogBackend
 import DesignSystem
 import Logging
 import Pulse
-import SFHFKeychainUtils
 import SVProgressHUD
 import ShareExtensionCore
 import UIDeviceIdentifier
@@ -828,10 +827,11 @@ extension WordPressAppDelegate {
         // Get the Apple User ID from the keychain
         let appleUserID: String
         do {
-            appleUserID = try SFHFKeychainUtils.getPasswordForUsername(
-                WPAppleIDKeychainUsernameKey,
-                andServiceName: WPAppleIDKeychainServiceName
-            )
+            appleUserID = try AppKeychain()
+                .getPassword(
+                    for: WPAppleIDKeychainUsernameKey,
+                    serviceName: WPAppleIDKeychainServiceName
+                )
         } catch {
             Loggers.app.info("checkAppleIDCredentialState: No Apple ID found.")
             return
@@ -885,14 +885,14 @@ extension WordPressAppDelegate {
 
     func removeAppleIDFromKeychain() {
         do {
-            try SFHFKeychainUtils.deleteItem(
-                forUsername: WPAppleIDKeychainUsernameKey,
-                andServiceName: WPAppleIDKeychainServiceName
-            )
-        } catch let error as NSError {
-            if error.code != errSecItemNotFound {
-                Loggers.app.error("Error while removing Apple User ID from keychain: \(error.localizedDescription)")
-            }
+            try AppKeychain()
+                .setPassword(
+                    for: WPAppleIDKeychainUsernameKey,
+                    to: nil,
+                    serviceName: WPAppleIDKeychainServiceName
+                )
+        } catch {
+            Loggers.app.error("Error while removing Apple User ID from keychain: \(error.localizedDescription)")
         }
     }
 }

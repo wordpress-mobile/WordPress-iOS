@@ -7,7 +7,6 @@ import JetpackStatsWidgetsCore
 class StatsWidgetsStoreTests: CoreDataTestCase {
     private var sut: StatsWidgetsStore!
     private var appGroupName: String!
-    private let appKeychainAccessGroup = "xctest_appKeychainAccessGroup"
 
     override func setUp() {
         super.setUp()
@@ -17,8 +16,7 @@ class StatsWidgetsStoreTests: CoreDataTestCase {
         deleteHomeWidgetData()
         sut = StatsWidgetsStore(
             coreDataStack: contextManager,
-            appGroupName: appGroupName,
-            appKeychainAccessGroup: appKeychainAccessGroup
+            appGroupName: appGroupName
         )
     }
 
@@ -36,7 +34,10 @@ class StatsWidgetsStoreTests: CoreDataTestCase {
             .build()
         XCTAssertFalse(statsWidgetsHaveData())
 
-        NotificationCenter.default.post(name: NSNotification.Name(rawValue: WordPressAuthenticationManager.WPSigninDidFinishNotification), object: nil)
+        NotificationCenter.default.post(
+            name: NSNotification.Name(rawValue: WordPressAuthenticationManager.WPSigninDidFinishNotification),
+            object: nil
+        )
 
         XCTAssertTrue(statsWidgetsHaveData())
     }
@@ -46,7 +47,10 @@ class StatsWidgetsStoreTests: CoreDataTestCase {
             .withAnAccount()
             .isHostedAtWPcom()
             .build()
-        NotificationCenter.default.post(name: NSNotification.Name(rawValue: WordPressAuthenticationManager.WPSigninDidFinishNotification), object: nil)
+        NotificationCenter.default.post(
+            name: NSNotification.Name(rawValue: WordPressAuthenticationManager.WPSigninDidFinishNotification),
+            object: nil
+        )
 
         NotificationCenter.default.post(name: .wpAccountDefaultWordPressComAccountChanged, object: nil)
 
@@ -58,9 +62,8 @@ class StatsWidgetsStoreTests: CoreDataTestCase {
 
 private extension StatsWidgetsStoreTests {
     private func statsWidgetsHaveData() -> Bool {
-        hasData(for: HomeWidgetTodayData.self) &&
-        hasData(for: HomeWidgetThisWeekData.self) &&
-        hasData(for: HomeWidgetAllTimeData.self)
+        hasData(for: HomeWidgetTodayData.self) && hasData(for: HomeWidgetThisWeekData.self)
+            && hasData(for: HomeWidgetAllTimeData.self)
     }
 
     private func deleteHomeWidgetData() {
