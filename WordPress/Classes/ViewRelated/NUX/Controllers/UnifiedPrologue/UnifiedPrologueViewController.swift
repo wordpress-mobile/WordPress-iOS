@@ -1,6 +1,6 @@
 import UIKit
-import WordPressAuthenticator
 import SwiftUI
+import WordPressShared
 
 class UnifiedPrologueViewController: UIPageViewController {
 
@@ -67,7 +67,7 @@ class UnifiedPrologueViewController: UIPageViewController {
         let direction: UIPageViewController.NavigationDirection =
             sender.currentPage > currentIndex ? .forward : .reverse
         setViewControllers([pages[sender.currentPage]], direction: direction, animated: true)
-        WordPressAuthenticator.track(.loginProloguePaged)
+        WPAnalytics.track(.loginProloguePaged)
     }
 }
 
@@ -114,7 +114,7 @@ extension UnifiedPrologueViewController: UIPageViewControllerDelegate {
         if !completed {
             pageControl?.currentPage = index
         } else {
-            WordPressAuthenticator.track(.loginProloguePaged)
+            WPAnalytics.track(.loginProloguePaged)
         }
     }
 

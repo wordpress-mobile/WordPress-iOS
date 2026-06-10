@@ -386,19 +386,13 @@ private extension StatsWidgetsStore {
         WidgetCenter.shared.reloadAllTimelines()
     }
 
-    /// Observes WPSigninDidFinishNotification and wordpressLoginFinishedJetpackLogin notifications and initializes the widget.
+    /// Observes WPSigninDidFinishNotification and initializes the widget.
     /// The site data is loaded after this notification and widget data can be cached.
     func observeAccountSignInForWidgets() {
         NotificationCenter.default.addObserver(
             self,
             selector: #selector(initializeStatsWidgetsIfNeeded),
             name: NSNotification.Name(rawValue: WordPressAuthenticationManager.WPSigninDidFinishNotification),
-            object: nil
-        )
-        NotificationCenter.default.addObserver(
-            self,
-            selector: #selector(initializeStatsWidgetsIfNeeded),
-            name: .wordpressLoginFinishedJetpackLogin,
             object: nil
         )
     }

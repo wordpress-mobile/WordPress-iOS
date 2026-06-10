@@ -15,17 +15,10 @@ public class SignupEmailScreen: ScreenObject {
     var nextButton: XCUIElement { nextButtonGetter(app) }
 
     init(app: XCUIApplication = XCUIApplication()) throws {
-        try super.init(
-            expectedElementGetters: [emailTextFieldGetter, nextButtonGetter],
-            app: app
-        )
-    }
-
-    public func proceedWith(email: String) throws -> SignupCheckMagicLinkScreen {
-        emailTextField.tap()
-        emailTextField.typeText(email)
-        nextButton.tap()
-
-        return try SignupCheckMagicLinkScreen()
+        try super
+            .init(
+                expectedElementGetters: [emailTextFieldGetter, nextButtonGetter],
+                app: app
+            )
     }
 }
