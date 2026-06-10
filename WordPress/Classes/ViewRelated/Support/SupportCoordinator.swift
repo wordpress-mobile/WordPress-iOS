@@ -1,9 +1,8 @@
 import Foundation
-import WordPressAuthenticator
 
 final class SupportCoordinator {
     private weak var controllerToShowFrom: UIViewController?
-    private var tag: WordPressSupportSourceTag?
+    private var tag: SupportSourceTag?
 
     private var navigationController: UINavigationController? {
         guard let navigationController = (controllerToShowFrom as? UINavigationController) ?? controllerToShowFrom?.navigationController else {
@@ -19,7 +18,7 @@ final class SupportCoordinator {
     }
 
     init(controllerToShowFrom: UIViewController?,
-         tag: WordPressSupportSourceTag? = nil) {
+         tag: SupportSourceTag? = nil) {
         self.controllerToShowFrom = controllerToShowFrom
         self.tag = tag
     }

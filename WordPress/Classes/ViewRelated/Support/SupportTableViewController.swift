@@ -1,6 +1,5 @@
 import UIKit
 import SwiftUI
-import WordPressAuthenticator
 import WordPressShared
 import WordPressUI
 import Support
@@ -13,7 +12,7 @@ class SupportTableViewController: UITableViewController {
     /// Configures the appearance of the support screen.
     let configuration: Configuration
 
-    var sourceTag: WordPressSupportSourceTag?
+    var sourceTag: SupportSourceTag?
 
     // If set, the Zendesk views will be shown from this view instead of in the navigation controller.
     // Specifically for Me > Help & Support on the iPad.

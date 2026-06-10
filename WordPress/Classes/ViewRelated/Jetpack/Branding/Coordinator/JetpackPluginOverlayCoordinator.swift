@@ -1,4 +1,3 @@
-import WordPressAuthenticator
 import WordPressData
 
 final class JetpackPluginOverlayCoordinator: JetpackOverlayCoordinator {
@@ -46,7 +45,7 @@ final class JetpackPluginOverlayCoordinator: JetpackOverlayCoordinator {
 
 private extension JetpackPluginOverlayCoordinator {
     enum Constants {
-        static let supportSourceTag = WordPressSupportSourceTag(
+        static let supportSourceTag = SupportSourceTag(
             name: "jetpackInstallFullPluginOverlay",
             origin: "origin:jp-install-full-plugin-overlay"
         )

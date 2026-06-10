@@ -396,14 +396,20 @@ extension WordPressAuthenticationManager: WordPressAuthenticatorDelegate {
         lastStep: AuthenticatorAnalyticsTracker.Step,
         lastFlow: AuthenticatorAnalyticsTracker.Flow
     ) {
-        presentSupport(from: sourceViewController, sourceTag: sourceTag)
+        presentSupport(
+            from: sourceViewController,
+            sourceTag: SupportSourceTag(name: sourceTag.name, origin: sourceTag.origin)
+        )
     }
 
     /// Presents Support new request, with the specified ViewController as a source.
     /// Additional metadata is supplied, such as the sourceTag and Login details.
     ///
     func presentSupportRequest(from sourceViewController: UIViewController, sourceTag: WordPressSupportSourceTag) {
-        presentSupport(from: sourceViewController, sourceTag: sourceTag)
+        presentSupport(
+            from: sourceViewController,
+            sourceTag: SupportSourceTag(name: sourceTag.name, origin: sourceTag.origin)
+        )
     }
 
     /// A self-hosted site URL is available and needs validated
@@ -751,7 +757,7 @@ private extension WordPressAuthenticationManager {
 //
 private extension WordPressAuthenticationManager {
     /// Presents the support screen which displays different support options depending on whether this is the WordPress app or the Jetpack app.
-    private func presentSupport(from sourceViewController: UIViewController, sourceTag: WordPressSupportSourceTag) {
+    private func presentSupport(from sourceViewController: UIViewController, sourceTag: SupportSourceTag) {
         // Since we're presenting the support VC as a form sheet, the parent VC's viewDidAppear isn't called
         // when this VC is dismissed. This means the tracking step isn't reset properly, so we'll need to do
         // it here manually before tracking the new step.
