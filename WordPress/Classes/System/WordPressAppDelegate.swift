@@ -732,7 +732,12 @@ extension WordPressAppDelegate {
             trackLogoutIfNeeded()
             removeShareExtensionConfiguration()
             removeNotificationExtensionConfiguration()
-            windowManager.showFullscreenSignIn()
+            // Skip when no scene has connected yet (e.g. the account is removed during
+            // a background launch): there is no window to show the sign-in UI in, and
+            // `showInitialUI` shows it anyway once a scene connects and finds no account.
+            if window != nil {
+                windowManager.showFullscreenSignIn()
+            }
             stopObservingAppleIDCredentialRevoked()
             clearReaderStuff()
         }
