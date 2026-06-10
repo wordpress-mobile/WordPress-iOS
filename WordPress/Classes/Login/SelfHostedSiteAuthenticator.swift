@@ -301,7 +301,9 @@ struct SelfHostedSiteAuthenticator {
         switch context {
         case .default:
             NotificationCenter.default.post(
-                name: Foundation.Notification.Name(rawValue: WordPressAuthenticator.WPSigninDidFinishNotification),
+                name: Foundation.Notification.Name(
+                    rawValue: WordPressAuthenticationManager.WPSigninDidFinishNotification
+                ),
                 object: nil
             )
         case .reauthentication:

@@ -15,7 +15,8 @@ import Gridicons
 // MARK: - WordPressAuthenticationManager
 //
 class WordPressAuthenticationManager: NSObject {
-    static let WPSigninDidFinishNotification = WordPressAuthenticator.WPSigninDidFinishNotification
+    // Keep this name stable so external observers registered against the string don't break.
+    static let WPSigninDidFinishNotification = "WPSigninDidFinishNotification"
 
     static var isPresentingSignIn = false
     private let windowManager: WindowManager
