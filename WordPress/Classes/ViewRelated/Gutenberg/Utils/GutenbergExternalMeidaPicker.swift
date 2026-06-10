@@ -15,14 +15,23 @@ class GutenbergExternalMediaPicker: NSObject {
         super.init()
     }
 
-    func presentImagePlayground(origin: UIViewController, post: AbstractPost, callback: @escaping MediaPickerDidPickMediaCallback) {
+    func presentImagePlayground(
+        origin: UIViewController,
+        post: AbstractPost,
+        callback: @escaping MediaPickerDidPickMediaCallback
+    ) {
         mediaPickerCallback = callback
 
         MediaPickerMenu(viewController: origin)
             .showImagePlayground(delegate: self)
     }
 
-    func presentTenorPicker(origin: UIViewController, post: AbstractPost, multipleSelection: Bool, callback: @escaping MediaPickerDidPickMediaCallback) {
+    func presentTenorPicker(
+        origin: UIViewController,
+        post: AbstractPost,
+        multipleSelection: Bool,
+        callback: @escaping MediaPickerDidPickMediaCallback
+    ) {
         mediaPickerCallback = callback
         self.multipleSelection = multipleSelection
 
@@ -30,7 +39,12 @@ class GutenbergExternalMediaPicker: NSObject {
             .showFreeGIFPicker(blog: post.blog, delegate: self)
     }
 
-    func presentStockPhotoPicker(origin: UIViewController, post: AbstractPost, multipleSelection: Bool, callback: @escaping MediaPickerDidPickMediaCallback) {
+    func presentStockPhotoPicker(
+        origin: UIViewController,
+        post: AbstractPost,
+        multipleSelection: Bool,
+        callback: @escaping MediaPickerDidPickMediaCallback
+    ) {
         mediaPickerCallback = callback
         self.multipleSelection = multipleSelection
 
@@ -40,7 +54,10 @@ class GutenbergExternalMediaPicker: NSObject {
 }
 
 extension GutenbergExternalMediaPicker: ExternalMediaPickerViewDelegate {
-    func externalMediaPickerViewController(_ viewController: ExternalMediaPickerViewController, didFinishWithSelection assets: [ExternalMediaAsset]) {
+    func externalMediaPickerViewController(
+        _ viewController: ExternalMediaPickerViewController,
+        didFinishWithSelection assets: [ExternalMediaAsset]
+    ) {
         defer {
             mediaPickerCallback = nil
         }

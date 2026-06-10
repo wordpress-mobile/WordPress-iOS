@@ -18,7 +18,8 @@ extension MediaPickerMenu {
 
     func showStockPhotosPicker(blog: Blog, delegate: ExternalMediaPickerViewDelegate) {
         guard let presentingViewController,
-              let api = blog.wordPressComRestApi else {
+            let api = blog.wordPressComRestApi
+        else {
             return
         }
 
@@ -69,6 +70,14 @@ extension MediaPickerMenu {
 }
 
 private enum Strings {
-    static let pickFromStockPhotos = NSLocalizedString("mediaPicker.pickFromStockPhotos", value: "Free Photo Library", comment: "The name of the action in the context menu for selecting photos from free stock photos")
-    static let pickFromTenor = NSLocalizedString("mediaPicker.pickFromFreeGIFLibrary", value: "Free GIF Library", comment: "The name of the action in the context menu for selecting photos from Tenor (free GIF library)")
+    static let pickFromStockPhotos = NSLocalizedString(
+        "mediaPicker.pickFromStockPhotos",
+        value: "Free Photo Library",
+        comment: "The name of the action in the context menu for selecting photos from free stock photos"
+    )
+    static let pickFromTenor = NSLocalizedString(
+        "mediaPicker.pickFromFreeGIFLibrary",
+        value: "Free GIF Library",
+        comment: "The name of the action in the context menu for selecting photos from Tenor (free GIF library)"
+    )
 }

@@ -128,12 +128,12 @@ public struct MediaAnalyticsInfo {
     }
 
     func eventForMediaType(_ mediaType: MediaType) -> WPAnalyticsEvent? {
-        return origin.eventForMediaType(mediaType)
+        origin.eventForMediaType(mediaType)
     }
 
     // Old tracking events via WPShared
     func wpsharedEventForMediaType(_ mediaType: MediaType) -> WPAnalyticsStat? {
-        return origin.wpsharedEventForMediaType(mediaType)
+        origin.wpsharedEventForMediaType(mediaType)
     }
 
     var retryEvent: WPAnalyticsStat? {

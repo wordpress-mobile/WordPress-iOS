@@ -45,7 +45,11 @@ final class MediaPickerController: GutenbergKit.MediaPickerController {
             .filter { !$0.actions.isEmpty }
     }
 
-    func perform(_ action: MediaPickerAction, parameters: MediaPickerParameters, from presentingViewController: UIViewController) async -> [MediaInfo] {
+    func perform(
+        _ action: MediaPickerAction,
+        parameters: MediaPickerParameters,
+        from presentingViewController: UIViewController
+    ) async -> [MediaInfo] {
         // Find the source for this action
         guard let pickerID = MediaPickerID(rawValue: action.id) else {
             return []
@@ -108,7 +112,11 @@ final class MediaPickerController: GutenbergKit.MediaPickerController {
         }
     }
 
-    private func createUIAction(for source: MediaPickerSource, menu: MediaPickerMenu, controller: MediaPickerMenuController) -> UIAction? {
+    private func createUIAction(
+        for source: MediaPickerSource,
+        menu: MediaPickerMenu,
+        controller: MediaPickerMenuController
+    ) -> UIAction? {
         switch source {
         case .playground: menu.makeImagePlaygroundAction(delegate: controller)
         case .siteMedia: menu.makeSiteMediaAction(blog: blog, delegate: controller)
