@@ -452,18 +452,7 @@ class MediaCoordinator: NSObject {
     }
 
     private func trackUploadOf(_ media: Media, analyticsInfo: MediaAnalyticsInfo?) {
-        guard let info = analyticsInfo else {
-            return
-        }
-
-        guard let event = info.eventForMediaType(media.mediaType) else {
-            // Fall back to the WPShared event tracking
-            trackUploadViaWPSharedOf(media, analyticsInfo: analyticsInfo)
-            return
-        }
-
-        let properties = info.properties(for: media)
-        WPAnalytics.track(event, properties: properties, blog: media.blog)
+        trackUploadViaWPSharedOf(media, analyticsInfo: analyticsInfo)
     }
 
     private func trackUploadViaWPSharedOf(_ media: Media, analyticsInfo: MediaAnalyticsInfo?) {

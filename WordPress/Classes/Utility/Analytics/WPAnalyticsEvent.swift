@@ -13,13 +13,6 @@ import WordPressShared
     case mediaEditorUsed
     case editorCreatedPage
 
-    // Tenor
-    case tenorAccessed
-    case tenorSearched
-    case tenorUploaded
-    case mediaLibraryAddedPhotoViaTenor
-    case editorAddedPhotoViaTenor
-
     // Media
     case siteMediaShareTapped
     case mediaStorageDetailsViewed
@@ -728,17 +721,6 @@ import WordPressShared
             return "media_editor_used"
         case .editorCreatedPage:
             return "editor_page_created"
-        // Tenor
-        case .tenorAccessed:
-            return "tenor_accessed"
-        case .tenorSearched:
-            return "tenor_searched"
-        case .tenorUploaded:
-            return "tenor_uploaded"
-        case .mediaLibraryAddedPhotoViaTenor:
-            return "media_library_photo_added"
-        case .editorAddedPhotoViaTenor:
-            return "editor_photo_added"
         // Media
         case .siteMediaShareTapped:
             return "site_media_shared_tapped"
@@ -1933,10 +1915,6 @@ import WordPressShared
     */
     var defaultProperties: [AnyHashable: Any]? {
         switch self {
-        case .mediaLibraryAddedPhotoViaTenor:
-            return ["via": "tenor"]
-        case .editorAddedPhotoViaTenor:
-            return ["via": "tenor"]
         case .postListShareAction:
             return ["button": "share"]
         case .postListBlazeAction:
