@@ -1,5 +1,6 @@
 import UIKit
 import WordPressData
+import WordPressShared
 import WordPressUI
 
 protocol CompliancePopoverCoordinatorProtocol: AnyObject {
@@ -89,10 +90,26 @@ final class CompliancePopoverCoordinator: CompliancePopoverCoordinatorProtocol {
         Self.window = nil
     }
 
+    /// Creates the popover's host window. The default requires a connected scene:
+    /// a window without one never displays under the scene life cycle. The unit
+    /// test host has no scene, so tests inject a plain window instead.
+    var makeWindow: () -> UIWindow? = {
+        guard let windowScene = UIApplication.shared.mainWindow?.windowScene else {
+            return nil
+        }
+        return UIWindow(windowScene: windowScene)
+    }
+
     private func presentPopover() {
+        // Resolve the new window before tearing down a visible popover: when no
+        // scene is available, an existing popover stays up. `Self.window` staying
+        // nil (when there is none) makes `presentIfNeeded` report the popover as
+        // not shown.
+        guard let window = makeWindow() else {
+            return
+        }
         self.removeWindow()
 
-        let window = UIWindow()
         window.windowLevel = .alert
         window.backgroundColor = .clear
         window.rootViewController = presentingViewController
