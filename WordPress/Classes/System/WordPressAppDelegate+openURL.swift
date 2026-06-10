@@ -1,6 +1,5 @@
 import AutomatticTracks
 import BuildSettingsKit
-import WordPressAuthenticator
 import WordPressData
 import WordPressShared
 
@@ -46,8 +45,6 @@ import WordPressShared
             return handleNewPost(url: url)
         case "newpage":
             return handleNewPage(url: url)
-        case "magic-login":
-            return handleMagicLogin(url: url)
         case "viewpost":
             return handleViewPost(url: url)
         case "viewstats":
@@ -57,21 +54,6 @@ import WordPressShared
         default:
             return false
         }
-    }
-
-    private func handleMagicLogin(url: URL) -> Bool {
-        DDLogInfo("App launched with authentication link")
-
-        guard AccountHelper.noWordPressDotComAccount || url.isJetpackConnect else {
-            DDLogInfo("The user clicked on a login or signup magic link when already logged into a WPCom account.  Since this is not a Jetpack connection attempt we're cancelling the operation.")
-            return false
-        }
-
-        guard let rvc = window?.rootViewController else {
-            return false
-        }
-
-        return WordPressAuthenticator.openAuthenticationURL(url, fromRootViewController: rvc)
     }
 
     private func handleViewPost(url: URL) -> Bool {
