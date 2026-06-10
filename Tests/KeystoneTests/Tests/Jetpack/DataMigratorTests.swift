@@ -1,12 +1,14 @@
 import XCTest
 @testable import WordPress
+@testable import WordPressData
 
 class DataMigratorTests: XCTestCase {
 
     private var context: NSManagedObjectContext!
     private var migrator: DataMigrator!
     private var coreDataStack: CoreDataStackMock!
-    private var keychainUtils: KeychainUtilsMock!
+    private var appKeychain: KeychainUtilsMock!
+    private var sharedKeychain: KeychainUtilsMock!
     private var sharedUserDefaults: InMemoryUserDefaults!
     private var localUserDefaults: InMemoryUserDefaults!
     private let appGroupName = "xctest_app_group_name"
@@ -16,18 +18,26 @@ class DataMigratorTests: XCTestCase {
 
         context = try! createContext()
         coreDataStack = CoreDataStackMock(mainContext: context)
-        keychainUtils = KeychainUtilsMock()
+        appKeychain = KeychainUtilsMock()
+        sharedKeychain = KeychainUtilsMock()
         sharedUserDefaults = InMemoryUserDefaults()
         localUserDefaults = InMemoryUserDefaults()
+        UserSettings.defaultDotComUUID = nil
         migrator = DataMigrator(
             coreDataStack: coreDataStack,
             backupLocation: URL(string: "/dev/null"),
-            keychainUtils: keychainUtils,
+            appKeychain: appKeychain,
+            sharedKeychain: sharedKeychain,
             localDefaults: localUserDefaults,
             sharedDefaults: sharedUserDefaults,
             crashLogger: nil,
             appGroupName: appGroupName
         )
+    }
+
+    override func tearDown() {
+        UserSettings.defaultDotComUUID = nil
+        super.tearDown()
     }
 
     func testExportSucceeds() {
@@ -73,7 +83,8 @@ class DataMigratorTests: XCTestCase {
         migrator = DataMigrator(
             coreDataStack: coreDataStack,
             backupLocation: URL(string: "/dev/null"),
-            keychainUtils: keychainUtils,
+            appKeychain: appKeychain,
+            sharedKeychain: sharedKeychain,
             sharedDefaults: nil,
             crashLogger: nil,
             appGroupName: appGroupName
@@ -105,6 +116,48 @@ class DataMigratorTests: XCTestCase {
             expect.fulfill()
         }
         wait(for: [expect], timeout: 1)
+    }
+
+    // MARK: Auth token handoff tests
+
+    func testExportPublishesAuthTokenToSharedKeychain() {
+        let account = AccountBuilder(context)
+            .with(username: "exportuser")
+            .build()
+        UserSettings.defaultDotComUUID = account.uuid
+        appKeychain.passwords["public-api.wordpress.com"] = ["exportuser": "token-123"]
+
+        let expectation = expectation(description: "export completes")
+        migrator.exportData { _ in expectation.fulfill() }
+        waitForExpectations(timeout: 1)
+
+        XCTAssertEqual(sharedKeychain.passwords["public-api.wordpress.com"]?["exportuser"], "token-123")
+        XCTAssertEqual(sharedUserDefaults.string(forKey: "wp_data_migration_exported_username"), "exportuser")
+    }
+
+    func testExportSucceedsWhenLoggedOut() {
+        let expectation = expectation(description: "export completes")
+        var exportResult: Result<Void, DataMigrationError>?
+        migrator.exportData { result in
+            exportResult = result
+            expectation.fulfill()
+        }
+        waitForExpectations(timeout: 1)
+
+        guard case .success = exportResult else {
+            return XCTFail("export should succeed without an account")
+        }
+        XCTAssertNil(sharedKeychain.passwords["public-api.wordpress.com"])
+    }
+
+    func testDeleteExportedDataRemovesPublishedToken() {
+        sharedKeychain.passwords["public-api.wordpress.com"] = ["exportuser": "token-123"]
+        sharedUserDefaults.set("exportuser", forKey: "wp_data_migration_exported_username")
+
+        migrator.deleteExportedData()
+
+        XCTAssertNil(sharedKeychain.passwords["public-api.wordpress.com"]?["exportuser"])
+        XCTAssertNil(sharedUserDefaults.string(forKey: "wp_data_migration_exported_username"))
     }
 
     // MARK: Exported data deletion tests
@@ -154,7 +207,8 @@ class DataMigratorTests: XCTestCase {
         migrator = DataMigrator(
             coreDataStack: coreDataStack,
             backupLocation: backupLocation,
-            keychainUtils: keychainUtils,
+            appKeychain: appKeychain,
+            sharedKeychain: sharedKeychain,
             localDefaults: localUserDefaults,
             sharedDefaults: sharedUserDefaults,
             crashLogger: nil,
@@ -204,7 +258,8 @@ class DataMigratorTests: XCTestCase {
         migrator = DataMigrator(
             coreDataStack: coreDataStack,
             backupLocation: backupLocation,
-            keychainUtils: keychainUtils,
+            appKeychain: appKeychain,
+            sharedKeychain: sharedKeychain,
             localDefaults: localUserDefaults,
             sharedDefaults: sharedUserDefaults,
             crashLogger: nil,
