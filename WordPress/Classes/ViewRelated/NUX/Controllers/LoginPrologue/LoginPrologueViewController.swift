@@ -204,7 +204,7 @@ final class LoginPrologueViewController: UIViewController {
     }
 
     private static func buttonConfiguration(title: String, isPrimary: Bool, highlighted: Bool) -> UIButton.Configuration
-    {
+    { // swiftlint:disable:this opening_brace
         var configuration: UIButton.Configuration
         if AppConfiguration.isWordPress {
             configuration =
