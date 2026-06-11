@@ -6,5 +6,6 @@ PRODUCT_BUNDLE_IDENTIFIER = com.automattic.readerapp
 WP_PUSH_NOTIFICATION_APP_ID = TBD
 WP_BUILD_CONFIGURATION = alpha
 WP_APP_URL_SCHEME = wpreader
+WP_APP_KEYCHAIN_ACCESS_GROUP = 99KV9Z6BKV.org.wordpress.alpha.reader
 
 CODE_SIGN_ENTITLEMENTS = ../Sources/Reader/Reader.entitlements
