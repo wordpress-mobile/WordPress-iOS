@@ -46,10 +46,14 @@ class NoticePresenter {
 
     private let store: NoticeStore
     private let animator: NoticeAnimator
-    private let window: UntouchableWindow
+    /// The overlay window hosting foreground notices. Created lazily on the first
+    /// foreground presentation: the presenter itself is created at process launch,
+    /// when no scene (and hence no window to attach to) may exist yet, e.g. on a
+    /// background launch. Background notices don't need a window at all.
+    private var window: UntouchableWindow?
     private var view: UIView {
-        guard let view = window.rootViewController?.view else {
-            fatalError("Root view controller shouldn't be nil")
+        guard let view = window?.rootViewController?.view else {
+            fatalError("The notice window doesn't exist or has no root view controller")
         }
         return view
     }
@@ -62,6 +66,11 @@ class NoticePresenter {
 
     private var notificationObservers = Set<AnyCancellable>()
 
+    /// Set when a foreground notice could not be presented because no scene was
+    /// connected (e.g. during launch). The notice stays at the head of the queue
+    /// and presentation is retried when the app becomes active.
+    private var retriesPresentationOnActivation = false
+
     init(
         store: NoticeStore = StoreContainer.shared.notice,
         animator: NoticeAnimator = NoticeAnimator(
@@ -73,20 +82,6 @@ class NoticePresenter {
         self.store = store
         self.animator = animator
 
-        let windowFrame: CGRect
-        if let mainWindow = UIApplication.shared.mainWindow {
-            windowFrame = mainWindow.offsetToAvoidStatusBar()
-        } else {
-            windowFrame = .zero
-        }
-        window = UntouchableWindow(frame: windowFrame)
-
-        // this window level may affect some UI elements like share sheets.
-        // however, since the alerts aren't permanently on screen, this isn't
-        // often a problem.
-        window.windowLevel = .alert
-        window.isHidden = true
-
         // Keep the storeReceipt to prevent the `onChange` subscription from being deactivated.
         storeReceipt = store.onChange { [weak self] in
             self?.onStoreChange()
@@ -94,6 +89,43 @@ class NoticePresenter {
 
         listenToKeyboardEvents()
         listenToOrientationChangeEvents()
+        listenToApplicationActivation()
+
+        // `onChange` doesn't replay the current state to a new subscriber. Process any
+        // notice that was posted before this presenter existed so it doesn't block the
+        // queue forever.
+        if store.currentNotice != nil {
+            onStoreChange()
+        }
+    }
+
+    /// Returns the overlay window, creating it on first use. Returns nil when no
+    /// scene is connected: a window not attached to a scene would never display.
+    private func ensureWindow() -> UntouchableWindow? {
+        if let window {
+            // The scene can disconnect and reconnect while the process lives.
+            // Reattach the cached window so it isn't bound to a dead scene.
+            if let scene = UIApplication.shared.mainWindow?.windowScene, window.windowScene !== scene {
+                window.windowScene = scene
+            }
+            return window
+        }
+        guard let mainWindow = UIApplication.shared.mainWindow,
+            let windowScene = mainWindow.windowScene
+        else {
+            return nil
+        }
+        let window = UntouchableWindow(windowScene: windowScene)
+        window.frame = mainWindow.offsetToAvoidStatusBar()
+
+        // this window level may affect some UI elements like share sheets.
+        // however, since the alerts aren't permanently on screen, this isn't
+        // often a problem.
+        window.windowLevel = .alert
+        window.isHidden = true
+
+        self.window = window
+        return window
     }
 
     // MARK: - Events
@@ -163,7 +195,23 @@ class NoticePresenter {
                     return
                 }
 
-                containerView.bottomConstraint?.constant = -self.window.untouchableViewController.offsetOnscreen
+                guard let window = self.window else {
+                    return
+                }
+                containerView.bottomConstraint?.constant = -window.untouchableViewController.offsetOnscreen
+            }
+            .store(in: &notificationObservers)
+    }
+
+    private func listenToApplicationActivation() {
+        NotificationCenter.default
+            .publisher(for: UIApplication.didBecomeActiveNotification)
+            .sink { [weak self] _ in
+                guard let self, self.retriesPresentationOnActivation else {
+                    return
+                }
+                self.retriesPresentationOnActivation = false
+                self.onStoreChange()
             }
             .store(in: &notificationObservers)
     }
@@ -187,6 +235,9 @@ class NoticePresenter {
 
         if let presentation = present(notice) {
             currentNoticePresentation = presentation
+        } else if retriesPresentationOnActivation {
+            // The notice stays at the head of the queue; the activation observer
+            // re-runs this method once a scene is available.
         } else {
             // We were not able to show the `notice` so we will dispatch a .clear action. This
             // should prevent us from getting in a stuck state where `NoticeStore` thinks its
@@ -234,6 +285,14 @@ class NoticePresenter {
     }
 
     private func presentNoticeInForeground(_ notice: Notice) -> NoticePresentation? {
+        // No scene is connected yet (e.g. the launch sequence posted this notice
+        // before UIKit connected the scene). Keep the notice queued and retry when
+        // the app becomes active, when a scene is guaranteed to exist.
+        guard let window = ensureWindow() else {
+            retriesPresentationOnActivation = true
+            return nil
+        }
+
         generator.prepare()
 
         let noticeView = NoticeView(notice: notice)
@@ -271,7 +330,7 @@ class NoticePresenter {
         window.isHidden = false
 
         // Mask must be initialized after the window is shown or the view.frame will be zero
-        view.mask = MaskView(parent: view, untouchableViewController: self.window.untouchableViewController)
+        view.mask = MaskView(parent: view, untouchableViewController: window.untouchableViewController)
 
         let offScreenBottomOffset = offScreenNoticeContainerBottomOffset(for: noticeContainerView)
         let fromState = animator.state(
@@ -359,7 +418,7 @@ class NoticePresenter {
                 if self?.currentNoticePresentation == nil {
                     UIAccessibility.post(notification: .layoutChanged, argument: nil)
 
-                    self?.window.isHidden = true
+                    self?.window?.isHidden = true
                 }
             }
         )
@@ -372,7 +431,7 @@ class NoticePresenter {
         case .present(let keyboardHeight):
             return -keyboardHeight
         case .notPresent:
-            return -window.untouchableViewController.offsetOnscreen
+            return -(window?.untouchableViewController.offsetOnscreen ?? 0)
         }
     }
 
@@ -381,7 +440,7 @@ class NoticePresenter {
         case .present(let keyboardHeight):
             return -keyboardHeight + container.bounds.height
         case .notPresent:
-            return window.untouchableViewController.offsetOffscreen
+            return window?.untouchableViewController.offsetOffscreen ?? 0
         }
     }
 

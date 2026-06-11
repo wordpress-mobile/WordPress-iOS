@@ -141,6 +141,9 @@ public class WordPressAppDelegate: UIResponder, UIApplicationDelegate {
         InteractiveNotificationsManager.shared.registerForUserNotifications()
         setupPingHub()
         setupBackgroundRefresh(application)
+        // The notice presenter must exist from process launch: background launches
+        // (e.g. the share extension's background URL session) post notices that it
+        // delivers as local notifications, with no UI visible.
         setupNoticePresenter()
         DebugMenuViewController.configure(in: window)
         AppTips.initialize()
