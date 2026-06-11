@@ -2,3 +2,19 @@
 /WordPress/WordPressUITests/ @wordpress-mobile/mobile-ui-testing-squad
 /WordPress/WordPressScreenshotGeneration/ @wordpress-mobile/mobile-ui-testing-squad
 /WordPress/JetpackScreenshotGeneration/ @wordpress-mobile/mobile-ui-testing-squad
+
+# Ruby dependency surface
+Gemfile*              @wordpress-mobile/apps-infra-tooling
+.bundle/              @wordpress-mobile/apps-infra-tooling
+.rubocop*.yml         @wordpress-mobile/apps-infra-tooling
+fastlane/             @wordpress-mobile/apps-infra-tooling
+
+# CI and automation
+.buildkite/           @wordpress-mobile/apps-infra-tooling
+.github/workflows/    @wordpress-mobile/apps-infra-tooling
+.github/dependabot.yml @wordpress-mobile/apps-infra-tooling
+Dangerfile*           @wordpress-mobile/apps-infra-tooling
+
+# Toolchain and environment pins
+.ruby-version         @wordpress-mobile/apps-infra-tooling
+.xcode-version        @wordpress-mobile/apps-infra-tooling
