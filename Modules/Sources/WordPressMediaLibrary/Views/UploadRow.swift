@@ -1,3 +1,4 @@
+import Combine
 import SwiftUI
 
 struct UploadRow: View {
@@ -19,8 +20,7 @@ struct UploadRow: View {
                     .lineLimit(1)
                 switch item.mode {
                 case .uploading(let progress):
-                    ProgressView(progress)
-                        .progressViewStyle(.linear)
+                    UploadProgressBar(progress: progress)
                 case .failed(let message, _):
                     Text(message)
                         .font(.caption)
@@ -59,5 +59,27 @@ struct UploadRow: View {
             }
         }
         .padding(.vertical, 8)
+    }
+}
+
+/// Bar-only progress. `ProgressView(_ progress:)` would auto-render two text
+/// labels, including "N of 100" (the uploader's internal unit count), so this
+/// observes `fractionCompleted` manually and feeds a label-free bar.
+private struct UploadProgressBar: View {
+    let progress: Progress
+    @State private var fraction: Double
+
+    init(progress: Progress) {
+        self.progress = progress
+        _fraction = State(initialValue: progress.fractionCompleted)
+    }
+
+    var body: some View {
+        ProgressView(value: fraction)
+            .progressViewStyle(.linear)
+            .onReceive(
+                progress.publisher(for: \.fractionCompleted)
+                    .receive(on: DispatchQueue.main)
+            ) { fraction = $0 }
     }
 }
