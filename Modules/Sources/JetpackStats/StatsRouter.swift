@@ -1,6 +1,7 @@
 import SwiftUI
 import UIKit
 import SafariServices
+import WordPressShared
 
 @MainActor
 public protocol StatsRouterScreenFactory: AnyObject {
@@ -64,14 +65,6 @@ public final class StatsRouter: @unchecked Sendable {
         let safariViewController = SFSafariViewController(url: url)
         let vc = viewController ?? findTopViewController()
         vc?.present(safariViewController, animated: true)
-    }
-}
-
-private extension UIApplication {
-    @objc var mainWindow: UIWindow? {
-        connectedScenes
-            .compactMap { ($0 as? UIWindowScene)?.keyWindow }
-            .first
     }
 }
 

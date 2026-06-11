@@ -115,7 +115,8 @@ let package = Package(
             name: "JetpackStats",
             dependencies: [
                 "WordPressUI",
-                "WordPressKit"
+                "WordPressKit",
+                "WordPressShared"
             ],
             resources: [.process("Resources")]
         ),
