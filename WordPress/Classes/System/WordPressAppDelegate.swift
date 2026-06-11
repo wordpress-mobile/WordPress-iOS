@@ -93,13 +93,10 @@ public class WordPressAppDelegate: UIResponder, UIApplicationDelegate {
             ])
         }
 
-        let window = UIWindow(frame: UIScreen.main.bounds)
-        self.window = window
-
         WordPressAPIInternal.setupLogger(appId: Bundle.main.bundleIdentifier!)
         DesignSystem.FontManager.registerCustomFonts()
         AssertionLoggerDependencyContainer.logger = AssertionLogger()
-        UITestConfigurator.prepareApplicationForUITests(in: application, window: window)
+        UITestConfigurator.prepareApplicationForUITests()
 
         // The following extensive logging configuration detects if extensive logging is enabled internally.
         wpkURLSessionNotifyingDelegate = PulseNetworkLogger()
@@ -115,25 +112,56 @@ public class WordPressAppDelegate: UIResponder, UIApplicationDelegate {
         // Configure WPCom API overrides
         configureWordPressComApi()
 
-        configureAuthenticationManager()
-
         ReachabilityUtils.configure()
 
         configureSelfHostedChallengeHandler()
         updateFeatureFlags()
         updateRemoteConfig()
 
-        window.makeKeyAndVisible()
-
         // Restore a disassociated account prior to fixing tokens.
         AccountService(coreDataStack: ContextManager.shared).restoreDisassociatedAccountIfNecessary()
 
-        customizeAppearance()
         configureAnalytics()
 
-        runStartupSequence(with: launchOptions ?? [:])
+        runStartupSequence()
 
         return true
+    }
+
+    /// Opts the app into the UIScene life cycle and names the scene delegate. Doing
+    /// this in code (instead of a UIApplicationSceneManifest in each Info.plist)
+    /// keeps the configuration in one place for all three app targets. The unit test
+    /// host runs TestingAppDelegate, which doesn't implement this method, so tests
+    /// keep the legacy life cycle.
+    public func application(
+        _ application: UIApplication,
+        configurationForConnecting connectingSceneSession: UISceneSession,
+        options: UIScene.ConnectionOptions
+    ) -> UISceneConfiguration {
+        let configuration = UISceneConfiguration(name: nil, sessionRole: connectingSceneSession.role)
+        configuration.delegateClass = WordPressSceneDelegate.self
+        return configuration
+    }
+
+    /// Builds and shows the app's UI in the given window scene. Runs when the main
+    /// scene connects, which (under the scene life cycle) is after `didFinishLaunching`.
+    func showInitialUI(in windowScene: UIWindowScene) {
+        let window = UIWindow(windowScene: windowScene)
+        self.window = window
+
+        UITestConfigurator.prepareWindowForUITests(window)
+
+        // Must run here (not in willFinishLaunching): it accesses `windowManager`,
+        // which force-unwraps `window`.
+        configureAuthenticationManager()
+        customizeAppearance()
+
+        window.makeKeyAndVisible()
+
+        windowManager.showUI()
+        restoreAppState()
+
+        DebugMenuViewController.configure(in: window)
     }
 
     public func application(
@@ -153,7 +181,6 @@ public class WordPressAppDelegate: UIResponder, UIApplicationDelegate {
         // (e.g. the share extension's background URL session) post notices that it
         // delivers as local notifications, with no UI visible.
         setupNoticePresenter()
-        DebugMenuViewController.configure(in: window)
         AppTips.initialize()
 
         // This was necessary to properly load fonts for the Stories editor. I believe external libraries may require this call to access fonts.
@@ -178,22 +205,6 @@ public class WordPressAppDelegate: UIResponder, UIApplicationDelegate {
 
     public func applicationWillTerminate(_ application: UIApplication) {
         Loggers.app.info("\(self) \(#function)")
-    }
-
-    public func applicationDidEnterBackground(_ application: UIApplication) {
-        handleDidEnterBackground()
-    }
-
-    public func applicationWillEnterForeground(_ application: UIApplication) {
-        handleWillEnterForeground()
-    }
-
-    public func applicationWillResignActive(_ application: UIApplication) {
-        handleWillResignActive()
-    }
-
-    public func applicationDidBecomeActive(_ application: UIApplication) {
-        handleDidBecomeActive()
     }
 
     // MARK: - Activation handlers (shared by app- and scene-lifecycle)
@@ -252,15 +263,6 @@ public class WordPressAppDelegate: UIResponder, UIApplicationDelegate {
 
     public func application(
         _ application: UIApplication,
-        performActionFor shortcutItem: UIApplicationShortcutItem,
-        completionHandler: @escaping (Bool) -> Void
-    ) {
-        let handler = WP3DTouchShortcutHandler()
-        completionHandler(handler.handleShortcutItem(shortcutItem))
-    }
-
-    public func application(
-        _ application: UIApplication,
         handleEventsForBackgroundURLSession identifier: String,
         completionHandler: @escaping () -> Void
     ) {
@@ -272,15 +274,6 @@ public class WordPressAppDelegate: UIResponder, UIApplicationDelegate {
             manager.backgroundSessionCompletionBlock = completionHandler
             manager.startBackgroundSession()
         }
-    }
-
-    public func application(
-        _ application: UIApplication,
-        continue userActivity: NSUserActivity,
-        restorationHandler: @escaping ([UIUserActivityRestoring]?) -> Void
-    ) -> Bool {
-        handle(userActivity: userActivity)
-        return true
     }
 
     /// Routes an inbound `NSUserActivity` (universal links via web browsing, Spotlight, Handoff).
@@ -310,7 +303,7 @@ public class WordPressAppDelegate: UIResponder, UIApplicationDelegate {
 
     // MARK: - Setup
 
-    func runStartupSequence(with launchOptions: [UIApplication.LaunchOptionsKey: Any] = [:]) {
+    func runStartupSequence() {
         // Local notifications
         addNotificationObservers()
 
@@ -323,7 +316,7 @@ public class WordPressAppDelegate: UIResponder, UIApplicationDelegate {
             TracksLogging.delegate = libraryLogger
             WPKitSetLoggingDelegate(libraryLogger)
             WPSetLoggingDelegate(libraryLogger)
-            printDebugLaunchInfoWithLaunchOptions(launchOptions)
+            printDebugLaunchInfo()
             toggleExtraDebuggingIfNeeded()
         }
 
@@ -363,9 +356,6 @@ public class WordPressAppDelegate: UIResponder, UIApplicationDelegate {
         shortcutCreator.createShortcutsIf3DTouchAvailable(AccountHelper.isLoggedIn)
 
         AccountService.loadDefaultAccountCookies()
-
-        windowManager.showUI()
-        restoreAppState()
     }
 
     private func mergeDuplicateAccountsIfNeeded() {
@@ -618,7 +608,7 @@ extension WordPressAppDelegate {
 // MARK: - Debugging
 
 extension WordPressAppDelegate {
-    func printDebugLaunchInfoWithLaunchOptions(_ launchOptions: [UIApplication.LaunchOptionsKey: Any]? = nil) {
+    func printDebugLaunchInfo() {
         let unknown = "Unknown"
 
         let device = UIDevice.current
@@ -653,7 +643,6 @@ extension WordPressAppDelegate {
         Loggers.app.info("Language:  \(currentLanguage)")
         Loggers.app.info("UDID:      \(udid)")
         Loggers.app.info("APN token: \(PushNotificationsManager.shared.deviceToken ?? "None")")
-        Loggers.app.info("Launch options: \(String(describing: launchOptions ?? [:]))")
 
         AccountHelper.logBlogsAndAccounts(context: mainContext)
         Loggers.app.info("===========================================================================")
