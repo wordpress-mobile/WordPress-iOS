@@ -8,11 +8,11 @@ public extension UIApplication {
     }
 
     @objc var currentStatusBarFrame: CGRect {
-        return mainWindow?.windowScene?.statusBarManager?.statusBarFrame ?? CGRect.zero
+        mainWindow?.windowScene?.statusBarManager?.statusBarFrame ?? CGRect.zero
     }
 
     @objc var currentStatusBarOrientation: UIInterfaceOrientation {
-        return mainWindow?.windowScene?.interfaceOrientation ?? .unknown
+        mainWindow?.windowScene?.interfaceOrientation ?? .unknown
     }
 }
 
@@ -22,7 +22,9 @@ public extension UIApplication {
             return nil
         }
         var leafViewController = rootViewController
-        while leafViewController.presentedViewController != nil && !leafViewController.presentedViewController!.isBeingDismissed {
+        while leafViewController.presentedViewController != nil
+            && !leafViewController.presentedViewController!.isBeingDismissed
+        {
             leafViewController = leafViewController.presentedViewController!
         }
         return leafViewController

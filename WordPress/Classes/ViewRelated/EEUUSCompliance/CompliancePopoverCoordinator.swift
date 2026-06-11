@@ -43,7 +43,9 @@ final class CompliancePopoverCoordinator: CompliancePopoverCoordinatorProtocol {
         }
         return await withCheckedContinuation { continuation in
             self.complianceService.getIPCountryCode { [weak self] result in
-                guard let self, case .success(let countryCode) = result, self.shouldShowPrivacyBanner(countryCode: countryCode) else {
+                guard let self, case .success(let countryCode) = result,
+                    self.shouldShowPrivacyBanner(countryCode: countryCode)
+                else {
                     continuation.resume(returning: false)
                     return
                 }
@@ -68,7 +70,7 @@ final class CompliancePopoverCoordinator: CompliancePopoverCoordinatorProtocol {
     // MARK: - Helpers
 
     private func shouldShowPrivacyBanner(countryCode: String) -> Bool {
-        return Self.gdprCountryCodes.contains(countryCode)
+        Self.gdprCountryCodes.contains(countryCode)
     }
 
     private func dismiss(completion: (() -> Void)? = nil) {
@@ -142,7 +144,7 @@ private extension CompliancePopoverCoordinator {
         "CH", "CHE", // Switzerland
         "IS",
         "LI",
-        "GB",
+        "GB"
         // *Although the UK has departed from the EU as of January 2021,
         // the GDPR was enacted before its withdrawal and is therefore considered a valid UK law.*
     ]
@@ -154,7 +156,8 @@ extension UserDefaults {
     var didShowCompliancePopup: Bool {
         get {
             bool(forKey: Self.didShowCompliancePopupKey)
-        } set {
+        }
+        set {
             set(newValue, forKey: Self.didShowCompliancePopupKey)
         }
     }
