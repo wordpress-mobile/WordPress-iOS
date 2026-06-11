@@ -207,6 +207,7 @@ class StatsChartMarker: MarkerView {
 
     func drawTopRightRect(context: CGContext, x: CGFloat, y: CGFloat, height: CGFloat, width: CGFloat) {
         let arrowHeight = Constants.arrowSize.height
+        let arrowWidth = Constants.arrowSize.width
 
         drawDot(context: context, xPosition: x + width - Constants.dotRadius, yPosition: y - Constants.dotRadius)
 
@@ -223,7 +224,7 @@ class StatsChartMarker: MarkerView {
         context.addLine(to: CGPoint(x: x, y: y + arrowHeight + Constants.cornerRadius + Constants.dotRadius))
         // Top left corner
         context.addQuadCurve(to: CGPoint(x: x + Constants.cornerRadius, y: y + arrowHeight + Constants.dotRadius), control: CGPoint(x: x, y: y + arrowHeight + Constants.dotRadius))
-        context.addLine(to: CGPoint(x: x + width - arrowHeight / 2.0, y: y + arrowHeight + Constants.dotRadius))
+        context.addLine(to: CGPoint(x: x + width - arrowWidth / 2.0, y: y + arrowHeight + Constants.dotRadius))
         context.addLine(to: CGPoint(x: x + width, y: y + Constants.dotRadius))
         context.fillPath()
     }

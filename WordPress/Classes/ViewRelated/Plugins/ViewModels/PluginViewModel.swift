@@ -71,7 +71,7 @@ class PluginViewModel: Observable {
         // Self hosted non-Jetpack plugins may not have the directory entry set
         // attempt to find one for this plugin
         if updatedPlugin.directoryEntry == nil {
-            updatedPlugin.directoryEntry = store.getPluginDirectoryEntry(slug: plugin.id)
+            updatedPlugin.directoryEntry = store.getPluginDirectoryEntry(slug: plugin.state.slug)
         }
 
         self.state = .plugin(updatedPlugin)
@@ -88,7 +88,7 @@ class PluginViewModel: Observable {
             }
 
             if plugin.directoryEntry == nil {
-                plugin.directoryEntry = store.getPluginDirectoryEntry(slug: plugin.id)
+                plugin.directoryEntry = store.getPluginDirectoryEntry(slug: plugin.state.slug)
             }
 
             self?.state = .plugin(plugin)
@@ -114,7 +114,7 @@ class PluginViewModel: Observable {
         let state: State
         if var plugin = store.getPlugin(slug: slug, site: site) {
             if plugin.directoryEntry == nil {
-                plugin.directoryEntry = store.getPluginDirectoryEntry(slug: plugin.id)
+                plugin.directoryEntry = store.getPluginDirectoryEntry(slug: plugin.state.slug)
             }
 
             state = .plugin(plugin)
@@ -141,7 +141,7 @@ class PluginViewModel: Observable {
 
             if var plugin = self?.store.getPlugin(slug: entry.slug, site: site) {
                 if plugin.directoryEntry == nil {
-                    plugin.directoryEntry = store.getPluginDirectoryEntry(slug: plugin.id)
+                    plugin.directoryEntry = store.getPluginDirectoryEntry(slug: plugin.state.slug)
                 }
 
                 self?.state = .plugin(plugin)

@@ -4,21 +4,12 @@ import WordPressKit
 
 class PluginDirectoryEntryStateTests: XCTestCase {
 
-    static let dateFormatter: DateFormatter = {
-        let formatter = DateFormatter()
-        formatter.locale = Locale(identifier: "en_US_POSIX")
-        formatter.dateFormat = "YYYY-MM-dd h:mma z"
-        return formatter
-    }()
-
     static let jetpackEntry: PluginDirectoryEntry = {
         let json = Bundle(for: PluginDirectoryEntryStateTests.self).url(forResource: "plugin-directory-jetpack", withExtension: "json")!
         let data = try! Data(contentsOf: json)
 
-        let jsonDecoder = JSONDecoder()
-        jsonDecoder.dateDecodingStrategy = .formatted(PluginDirectoryEntryStateTests.dateFormatter)
-
-        return try! jsonDecoder.decode(PluginDirectoryEntry.self, from: data)
+        let endpoint = PluginDirectoryGetInformationEndpoint(slug: "jetpack")
+        return try! endpoint.parseResponse(data: data)
     }()
 
     func testMoreSpecificDirectoryEntryStateWins() {

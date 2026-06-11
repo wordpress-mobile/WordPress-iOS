@@ -434,7 +434,7 @@ class GutenbergViewController: UIViewController, PostEditor, PublishingEditor {
 
         let borderBottom = UIView()
         borderBottom.backgroundColor = UIColor(cgColor: borderColor)
-        borderBottom.frame = CGRect(x: 0, y: navigationController?.navigationBar.frame.size.height ?? 0 - borderWidth, width: navigationController?.navigationBar.frame.size.width ?? 0, height: borderWidth)
+        borderBottom.frame = CGRect(x: 0, y: (navigationController?.navigationBar.frame.size.height ?? 0) - borderWidth, width: navigationController?.navigationBar.frame.size.width ?? 0, height: borderWidth)
         borderBottom.autoresizingMask = [.flexibleWidth, .flexibleTopMargin]
         navigationController?.navigationBar.addSubview(borderBottom)
 

@@ -341,6 +341,31 @@ class PluginDirectoryTests: XCTestCase {
         XCTAssertTrue(lhs == rhs)
     }
 
+    func testDateParsingNearYearBoundary() throws {
+        // Verify that dates near the year boundary are parsed with the correct calendar year.
+        // Previously the format used "YYYY" (week-year) instead of "yyyy" (calendar year),
+        // which caused Dec 31 dates to be parsed as the following year.
+        let json = """
+        {
+            "name": "Test Plugin",
+            "slug": "test-plugin",
+            "version": "1.0",
+            "last_updated": "2024-12-31 8:00pm GMT",
+            "author": "Test Author",
+            "rating": 80,
+            "icons": {},
+            "sections": {}
+        }
+        """.data(using: .utf8)!
+
+        let endpoint = PluginDirectoryGetInformationEndpoint(slug: "test-plugin")
+        let plugin = try endpoint.parseResponse(data: json)
+
+        let calendar = Calendar(identifier: .gregorian)
+        let year = calendar.component(.year, from: plugin.lastUpdated!)
+        XCTAssertEqual(year, 2024, "Date near year boundary should parse as 2024, not 2025 (week-year)")
+    }
+
     func testUnconventionalPluginSlug() async throws {
         let data = try MockPluginDirectoryProvider.getPluginDirectoryMockData(with: "plugin-directory-rename-xml-rpc", sender: type(of: self))
         stub(condition: isHost("api.wordpress.org")) { _ in
