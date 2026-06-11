@@ -1,8 +1,16 @@
 #!/usr/bin/env ruby
 # Start WebDriverAgent server on a simulator.
 #
-# Runs `xcodebuild test-without-building` in the background and waits
-# for WDA to respond on the specified port.
+# Workflow:
+#   1. Clone WebDriverAgent into `<cwd>/.build/WebDriverAgent` if absent.
+#   2. Run `xcodebuild build-for-testing` synchronously (foreground, so
+#      its progress is visible). Incremental — fast on warm cache.
+#   3. Spawn `xcodebuild test-without-building` in the background and
+#      poll `/status` until WDA responds (~60 s).
+#
+# Invoke from the project root that should own the `.build/` cache —
+# the WebDriverAgent path is resolved relative to the current working
+# directory.
 #
 # Usage: ./wda-start.rb [--udid <UDID>] [--port <PORT>]
 #
@@ -18,6 +26,7 @@
 require "optparse"
 require "net/http"
 require "json"
+require "fileutils"
 
 DEFAULT_PORT = 8100
 
@@ -71,15 +80,40 @@ if wda_running?(port)
   exit 0
 end
 
-# Find the WDA project
-wda_project = File.join(Dir.pwd, ".build", "WebDriverAgent", "WebDriverAgent.xcodeproj")
+# Find (or clone) the WDA project. `.build/WebDriverAgent` lives next to
+# the caller's cwd so test runs share one cache per project root.
+wda_dir = File.join(Dir.pwd, ".build", "WebDriverAgent")
+wda_project = File.join(wda_dir, "WebDriverAgent.xcodeproj")
 unless File.exist?(wda_project)
-  $stderr.puts "Error: WebDriverAgent project not found at #{wda_project}"
-  $stderr.puts "Clone it: git clone https://github.com/appium/WebDriverAgent.git .build/WebDriverAgent"
-  exit 2
+  puts "WebDriverAgent not found at #{wda_dir}; cloning..."
+  FileUtils.mkdir_p(File.dirname(wda_dir))
+  clone_ok = system("git", "clone", "--depth", "1",
+                    "https://github.com/appium/WebDriverAgent.git", wda_dir)
+  unless clone_ok && File.exist?(wda_project)
+    $stderr.puts "Error: failed to clone WebDriverAgent into #{wda_dir}"
+    exit 2
+  end
 end
 
-# Start xcodebuild test-without-building in the background
+# Build first, synchronously, so cold checkouts complete their build
+# phase before we start polling for WDA to come up. Incremental, so
+# warm runs cost nothing.
+puts "Building WebDriverAgent for testing (incremental on warm cache)..."
+build_ok = system(
+  "xcodebuild", "build-for-testing",
+  "-project", wda_project,
+  "-scheme", "WebDriverAgentRunner",
+  "-destination", "id=#{udid}",
+  "CODE_SIGNING_ALLOWED=NO"
+)
+unless build_ok
+  $stderr.puts "Error: xcodebuild build-for-testing failed"
+  exit 1
+end
+
+# Then run the test bundle (which hosts the WDA server) in the
+# background. The 60 s `/status` poll below is for WDA to come up —
+# the build is already done.
 cmd = [
   "xcodebuild", "test-without-building",
   "-project", wda_project,

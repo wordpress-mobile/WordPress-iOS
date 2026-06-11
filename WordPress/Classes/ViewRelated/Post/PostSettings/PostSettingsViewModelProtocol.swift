@@ -148,7 +148,7 @@ extension PostSettingsViewModelProtocol {
         if isDraftOrPending {
             options.append(.pendingReview)
         }
-        if capabilities.supportsComments {
+        if capabilities.supportsComments && (settings.allowComments != nil || settings.allowPings != nil) {
             options.append(.discussion)
         }
         if capabilities.supportsPostFormats {

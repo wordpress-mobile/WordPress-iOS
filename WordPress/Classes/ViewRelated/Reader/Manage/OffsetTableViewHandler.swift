@@ -35,11 +35,11 @@ class OffsetTableViewHandler: WPTableViewHandler {
 
         let oldIndexPath = indexPath.map {
             adjustedToTable(indexPath: $0)
-        } ?? nil
+        }
 
         let newPath = newIndexPath.map {
             adjustedToTable(indexPath: $0)
-        } ?? nil
+        }
 
         super.controller(controller, didChange: anObject, at: oldIndexPath, for: type, newIndexPath: newPath)
     }

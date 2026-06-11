@@ -40,7 +40,7 @@ class PostEditorNavigationBarManager {
         button.addTarget(self, action: #selector(undoWasPressed), for: .touchUpInside)
         button.sizeToFit()
         button.alpha = 0.3
-        button.isUserInteractionEnabled = false
+        button.isEnabled = false
         return button
     }()
 
@@ -54,7 +54,7 @@ class PostEditorNavigationBarManager {
         button.addTarget(self, action: #selector(redoWasPressed), for: .touchUpInside)
         button.sizeToFit()
         button.alpha = 0.3
-        button.isUserInteractionEnabled = false
+        button.isEnabled = false
         return button
     }()
 

@@ -1,21 +1,18 @@
-Vem är vem på din webbplats? Nu vet du – Pushnotiser använder nu gravatarer så att du kan se vem som kommenterade eller interagerade med ditt innehåll. Aktivitetsloggen visar även när din webbplats uppdaterades med hjälp av AI-agenter.
+Om du har en webbplats på egen server loggar du nu in på appen med ett applikationslösenord. Om du inte har en, skapar vi automatiskt en åt dig så att den är redo när du behöver den.
 
-Om du tyckte att våra senaste uppdateringar av statistiken var stora har du inte sett någonting än.
+Vi har lagt till smart beskärning för utvalda bilder i läsarflödet. På så sätt kommer inte huvudena på personer på bilder att bli avskurna. Mycket föredraget.
 
-- Dagens datum är nu inkluderat i intervaller som ”Senaste 7 dagarna”. Vi lade även till ett nytt ”Senaste 14 dagarna”-intervall.
-- Ofullständiga datum, däribland idag, visas i linjediagrammet som en streckad linje. Du kan också se dem ännu tydligare i stapeldiagramvyn.
-- På tal om stapeldiagram: om du klickar på en stapel visas uppgifterna för det datumet. På så sätt blir det enklare att bläddra igenom data för flera dagar. Och om du klickar på en stapel markeras inte längre stapeln bredvid.
-- Du kanske märker vissa visuella förändringar, till exempel en mindre rubrik på diagramkortet, mindre teckenstorlek i flikarna och mindre mellanrum här och där. Det andas minimalism.
+Det finns nu en bekräftelsedialogruta för när du markerar en hänvisande trafikkälla som skräppost. Det borde vara riktigt, riktigt svårt att göra det av misstag.
 
-När vi ändå höll på gjorde vi ändringar i Läsaren också. (För övrigt har ingen av dem något med läsning att göra.)
+Som en del av denna uppdatering har vi också åtgärdat flera buggar.
 
-- När du tittar på en bild i en lightbox kan du avfärda den genom att svepa nedåt, även om du har zoomat in.
-- Vi har korrigerat färgen på länkar i kommentarer och i mörkt läge för anpassade teman. Det ser bra ut!
-- Du kan visa mediegallerier i fullskärmsläge. Svep bara åt höger eller vänster för att visa alla bilder.
-
-Och eftersom vi fortfarande hade lite tid över passade vi även på att åtgärda några småsaker som störde oss.
-
-- Vi uppdaterade pilikonerna och avståndet på skärmen Aviseringar.
-- I Inläggsinställningar visar kortet för social delning endast plattformar som appen stöder.
-- Nya inlägg använder standardinläggsformatet istället för standardversionen. Du kan uppdatera formatet i dina webbplatsinställningar.
-- Om webbplatsen drivs på en egen server, och XML-RPC är inaktiverat, kan du ändå se Inlägg och Sidor i appen. Det är ganska viktigt, om vi får säga det själva.
+- Tidszonens etikett på skärmen Statistik visar inte längre vintertid under sommartid. (Tack för att du uppmärksammade det, @btraviswright!)
+- Skärmen Artiklar visar nu läsarkommentarer när de publiceras från den inlagda sektionen.
+Prenumerera-knappen fungerar korrekt i Freshly Pressed-inlägg, så att du kan prenumerera på ett flöde inifrån ett inlägg. Snabbt, enkelt och ack så fräscht.
+Fotnotslänkar i Läsaren fungerar nu som de ska och hoppar till rätt plats när du trycker på dem.
+Det tomma läget försvinner när du publicerar en kommentar i Läsarkommentarer. Cachelagrade kommentarer försvinner också efter att de har tagits bort, inklusive när du använder svepåtgärden. Adjö och farväl.
+- Vi har åtgärdat olika design- och synlighetsproblem, som knappstilar, kommentarsavgränsare i mörkt läge och kontroller för automatisk uppspelning av videoklipp.
+- Vi har åtgärdat ett par problem med aviseringsinställningarna i Läsaren. De är nu dolda när du inte prenumererar, och de visas korrekt när du prenumererar.
+- Vi har åtgärdat ett problem där storleken på sidfotsvyn i Menyredigering inte ändrades. Som ett resultat av detta är åtgärdsknappar nu läsbara på andra språk än engelska. Muy Bueno.
+- Vi löste ett problem med felaktiga profilbilder i aviseringar. Om du avbryter nedladdningen av din bild visas den inte i appen.
+- Vi tog bort den icke-funktionella X-länken på skärmen Om. (En eloge till @zynp-KC för rapportering!)

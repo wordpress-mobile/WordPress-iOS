@@ -71,24 +71,52 @@ private extension DashboardCard {
     func getLocalizedTitle() -> String {
         switch self {
         case .prompts:
-            return NSLocalizedString("personalizeHome.dashboardCard.prompts", value: "Blogging prompts", comment: "Card title for the pesonalization menu")
+            return NSLocalizedString(
+                "personalizeHome.dashboardCard.prompts",
+                value: "Blogging prompts",
+                comment: "Card title for the pesonalization menu"
+            )
         case .blaze:
-            return NSLocalizedString("personalizeHome.dashboardCard.blaze", value: "Blaze", comment: "Card title for the pesonalization menu")
+            return NSLocalizedString(
+                "personalizeHome.dashboardCard.blaze",
+                value: "Blaze",
+                comment: "Card title for the pesonalization menu"
+            )
         case .todaysStats:
-            return NSLocalizedString("personalizeHome.dashboardCard.todaysStats", value: "Today's stats", comment: "Card title for the pesonalization menu")
+            return NSLocalizedString(
+                "personalizeHome.dashboardCard.todaysStats",
+                value: "Today's stats",
+                comment: "Card title for the pesonalization menu"
+            )
         case .draftPosts:
-            return NSLocalizedString("personalizeHome.dashboardCard.draftPosts", value: "Draft posts", comment: "Card title for the pesonalization menu")
+            return NSLocalizedString(
+                "personalizeHome.dashboardCard.draftPosts",
+                value: "Draft posts",
+                comment: "Card title for the pesonalization menu"
+            )
         case .scheduledPosts:
-            return NSLocalizedString("personalizeHome.dashboardCard.scheduledPosts", value: "Scheduled posts", comment: "Card title for the pesonalization menu")
+            return NSLocalizedString(
+                "personalizeHome.dashboardCard.scheduledPosts",
+                value: "Scheduled posts",
+                comment: "Card title for the pesonalization menu"
+            )
         case .activityLog:
-            return NSLocalizedString("personalizeHome.dashboardCard.activityLog", value: "Recent activity", comment: "Card title for the pesonalization menu")
+            return NSLocalizedString(
+                "personalizeHome.dashboardCard.activityLog",
+                value: "Recent activity",
+                comment: "Card title for the pesonalization menu"
+            )
         case .pages:
-            return NSLocalizedString("personalizeHome.dashboardCard.pages", value: "Pages", comment: "Card title for the pesonalization menu")
+            return NSLocalizedString(
+                "personalizeHome.dashboardCard.pages",
+                value: "Pages",
+                comment: "Card title for the pesonalization menu"
+            )
         case .dynamic, .ghost,
-                .failure, .personalize, .jetpackBadge,
-                .jetpackInstall, .empty, .freeToPaidPlansDashboardCard,
-                .domainRegistration, .jetpackSocial, .bloganuaryNudge,
-                .googleDomains, .extensiveLogging:
+            .failure, .personalize, .jetpackBadge,
+            .jetpackInstall, .empty, .freeToPaidPlansDashboardCard,
+            .domainRegistration, .jetpackSocial,
+            .googleDomains, .extensiveLogging:
             assertionFailure("\(self) card should not appear in the personalization menus")
             return "" // These cards don't appear in the personalization menus
         }

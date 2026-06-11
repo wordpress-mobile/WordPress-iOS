@@ -35,7 +35,7 @@ class MediaImportService: NSObject {
 
     /// The initialiser for Objective-C code.
     ///
-    /// Using `ContextManager` as the argument becuase `CoreDataStackSwift` is not accessible from Objective-C code.
+    /// Using `ContextManager` as the argument because `CoreDataStackSwift` is not accessible from Objective-C code.
     @objc
     convenience init(contextManager: ContextManager) {
         self.init(coreDataStack: contextManager)

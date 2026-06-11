@@ -1,4 +1,7 @@
-- The Activity Log now shows when your site was updated using AI agents.
-- In Post Settings, the Social Sharing card only shows platforms that the app supports.
-- New posts use the default post format instead of the standard version. You can update this format in your site settings.
-- If your site is self-hosted with XML-RPC disabled, you can see Posts and Pages in the app. That’s pretty important, if we do say so ourselves.
+If you have a self-hosted site, you’ll now sign in to the app using an application password. If you don’t have one, we’ll automatically create one for you so it’s ready when you need it.
+
+When you delete a comment using the swipe action, it now disappears from the list. So long, farewell.
+
+We fixed an issue where the footer view in Menu Editing wasn’t resizing. As a result, action buttons are now legible in non-English languages.
+
+We removed the non-functional X link on the About screen. (Shout-out to @zynp-KC for reporting!)

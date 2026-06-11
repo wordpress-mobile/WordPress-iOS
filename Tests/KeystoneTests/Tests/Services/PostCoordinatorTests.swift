@@ -518,7 +518,7 @@ class PostCoordinatorTests: CoreDataTestCase {
     /// to generate a preview.
     func testSaveDraftPostChangesImmediately() async throws {
         // GIVEN a draft post with an unsynced revision and a local revision
-        // that wasn't commited yet
+        // that wasn't committed yet
         let post = PostBuilder(mainContext, blog: blog).build()
         post.status = .draft
         post.postID = 974
@@ -554,7 +554,7 @@ class PostCoordinatorTests: CoreDataTestCase {
     /// to generate a preview.
     func testSaveDraftPostChangesImmediatelyFailure() async throws {
         // GIVEN a draft post with an unsynced revision and a local revision
-        // that wasn't commited yet
+        // that wasn't committed yet
         let post = PostBuilder(mainContext, blog: blog).build()
         post.status = .draft
         post.postID = 974

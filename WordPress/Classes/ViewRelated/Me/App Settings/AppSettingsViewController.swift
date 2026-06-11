@@ -320,6 +320,13 @@ class AppSettingsViewController: UITableViewController {
         }
     }
 
+    func pushSavedPostsSettings() -> ImmuTableAction {
+        return { [weak self] _ in
+            let controller = UIHostingController(rootView: ReaderSavedPostsSettingsView())
+            self?.navigationController?.pushViewController(controller, animated: true)
+        }
+    }
+
     func pushAppIconSwitcher() -> ImmuTableAction {
         return { [weak self] _ in
             let controller = AppIconViewController()
@@ -575,7 +582,13 @@ private extension AppSettingsViewController {
             action: openApplicationSettings()
         )
 
-        var rows: [ImmuTableRow] = [experimentalFeaturesRow, settingsRow]
+        let savedPostsRow = NavigationItemRow(
+            title: NSLocalizedString("reader.savedPosts.settings.row", value: "Saved Posts", comment: "Navigates to saved Reader posts export and import screen"),
+            icon: UIImage(systemName: "bookmark"),
+            action: pushSavedPostsSettings()
+        )
+
+        var rows: [ImmuTableRow] = [experimentalFeaturesRow, savedPostsRow, settingsRow]
 
         if UIApplication.shared.supportsAlternateIcons {
             // We don't show custom icons for Jetpack

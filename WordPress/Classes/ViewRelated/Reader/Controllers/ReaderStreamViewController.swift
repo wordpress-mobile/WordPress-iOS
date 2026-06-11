@@ -1,6 +1,7 @@
 import Foundation
 import BuildSettingsKit
 import SVProgressHUD
+import SwiftUI
 import WordPressData
 import WordPressFlux
 import WordPressShared
@@ -94,6 +95,7 @@ import AutomatticTracks
     enum NavigationItemTag: Int {
         case notifications
         case share
+        case savedPostsSettings
     }
 
     private var siteID: NSNumber? {
@@ -307,6 +309,7 @@ import AutomatticTracks
         NotificationCenter.default.addObserver(self, selector: #selector(postSeenToggled(_:)), name: .ReaderPostSeenToggled, object: nil)
 
         configureCloseButtonIfNeeded()
+        setupSavedPostsSettingsBarButtonItemIfNeeded()
         setupTableView()
         setupFooterView()
         setupContentHandler()
@@ -396,6 +399,18 @@ import AutomatticTracks
 
     @objc private func buttonShowNotificationsTapped(_ sender: UIBarButtonItem) {
         NotificationsViewController.showInPopover(from: self, sourceItem: sender)
+    }
+
+    private func setupSavedPostsSettingsBarButtonItemIfNeeded() {
+        guard contentType == .saved else { return }
+        let action = UIAction { [weak self] _ in
+            let settingsVC = UIHostingController(rootView: ReaderSavedPostsSettingsView())
+            self?.navigationController?.pushViewController(settingsVC, animated: true)
+        }
+        let button = UIBarButtonItem(title: nil, image: UIImage(systemName: "ellipsis"), primaryAction: action)
+        button.tag = NavigationItemTag.savedPostsSettings.rawValue
+        button.accessibilityLabel = Strings.savedPostsSettingsAccessibilityLabel
+        addRightBarButtonItem(button)
     }
 
     // MARK: - Topic acquisition
@@ -822,7 +837,7 @@ import AutomatticTracks
     private func updateLastSyncedForTopic(_ objectID: NSManagedObjectID) {
         let context = ContextManager.shared.mainContext
         guard let topic = (try? context.existingObject(with: objectID)) as? ReaderAbstractTopic else {
-            DDLogError("Failed to retrive an existing topic when updating last sync date.")
+            DDLogError("Failed to retrieve an existing topic when updating last sync date.")
             return
         }
         topic.lastSynced = Date()
@@ -874,7 +889,7 @@ import AutomatticTracks
     }
 
     /// Returns the number of posts for the current topic
-    /// This allows the count to be overriden by subclasses
+    /// This allows the count to be overridden by subclasses
     var topicPostsCount: Int {
         return readerTopic?.posts.count ?? 0
     }
@@ -1703,4 +1718,5 @@ extension ReaderStreamViewController: ContentIdentifiable {
 
 private enum Strings {
     static let postRemoved = NSLocalizedString("reader.savedPostRemovedNotificationTitle", value: "Saved post removed", comment: "Notification title for when saved post is removed")
+    static let savedPostsSettingsAccessibilityLabel = NSLocalizedString("reader.savedPosts.settings.button.accessibilityLabel", value: "Saved posts settings", comment: "Accessibility label for the button that opens saved Reader posts import and export settings")
 }

@@ -8,8 +8,8 @@ extension FullyQuotedDomainSuggestion {
         }
 
         let domainName = domain
-        let productID = json["product_id"] as? Int ?? nil
-        let supportsPrivacy = json["supports_privacy"] as? Bool ?? nil
+        let productID = json["product_id"] as? Int
+        let supportsPrivacy = json["supports_privacy"] as? Bool
         let costString = json["cost"] as? String ?? ""
         let saleCostString: String? = nil
 

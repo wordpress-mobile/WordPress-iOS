@@ -130,7 +130,7 @@ class NotificationService: UNNotificationServiceExtension {
         let service = NotificationSyncServiceRemote(wordPressComRestApi: api)
         self.notificationService = service
 
-        service.loadNotes(noteIds: [noteID]) { [tracks] error, notifications in
+        service.loadNotes(noteIds: [noteID]) { [self, tracks] error, notifications in
             if let error {
                 tracks.trackNotificationRetrievalFailed(notificationIdentifier: noteID, errorDescription: error.localizedDescription)
                 contentHandler(notificationContent)

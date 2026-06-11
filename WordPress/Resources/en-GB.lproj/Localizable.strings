@@ -1,4 +1,4 @@
-/* Translation-Revision-Date: 2025-12-15 12:58:18+0000 */
+/* Translation-Revision-Date: 2026-05-28 21:58:43+0000 */
 /* Plural-Forms: nplurals=2; plural=n != 1; */
 /* Generator: GlotPress/4.0.3 */
 /* Language: en_GB */
@@ -6042,9 +6042,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Notification Settings switch for the app. */
 "Turning the switch off will disable all notifications from this app, regardless of type." = "Turning the switch off will disable all notifications from this app, regardless of type.";
 
-/* Title of button that displays the app's Twitter profile */
-"Twitter" = "Twitter";
-
 /* Title for the setting to edit the twitter username used when sharing to twitter. */
 "Twitter Username" = "Twitter Username";
 
@@ -6555,6 +6552,9 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Title of progress label displayed when a first plugin on a site is almost done installing. */
 "We're doing the final setup—almost done…" = "We're doing the final setup—almost done…";
 
+/* Detail text display informing the user that we're fixing threats */
+"We're hard at work in the background fixing these threats. In the meantime feel free to continue to use your site as normal, you can check back on progress at any time." = "We're hard at work in the background fixing these threats. In the meantime, feel free to continue to use your site as normal. You can check back on progress at any time.";
+
 /* Error message shown when having trouble connecting to a Jetpack site. */
 "We're not able to connect to the Jetpack site at that URL.  Contact us for assistance." = "We're not able to connect to the Jetpack site at that URL.  Contact us for assistance.";
 
@@ -7022,6 +7022,9 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Button title for restoring a backup */
 "activityDetail.restore.button" = "Restore";
 
+/* Shows the MCP client used for an activity. %1$@ is the MCP client name (e.g. Claude). */
+"activityDetail.section.agent" = "via %1$@";
+
 /* Section title for restore site actions */
 "activityDetail.section.restoreSite" = "Restore Site";
 
@@ -7095,8 +7098,14 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Title of the page to add a self-hosted site */
 "addSite.selfHosted.title" = "Add Self-Hosted Site";
 
+/* Notice message shown when a user tries to add a WordPress.com site as self-hosted */
+"addSite.selfHosted.wpcomSiteRedirect" = "This site is hosted on WordPress.com. Please log in with your WordPress.com account.";
+
 /* Error message when XML-RPC is disabled on the WordPress site. The first argument is detailed error message */
 "addSite.selfHosted.xmlrpcDisabled" = "Couldn't connect to the WordPress site. XML-RPC may have been disabled on the server. Please contact your hosting provider to solve this problem.";
+
+/* Error message when the app cannot find the XML-RPC endpoint of a self-hosted WordPress site */
+"addSite.selfHosted.xmlrpcEndpointNotFound" = "Could not determine the site's XML-RPC endpoint";
 
 /* Age between dates equaling one hour. */
 "an hour" = "an hour";
@@ -7220,6 +7229,9 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Feature name for the block editor in application password required prompt */
 "applicationPasswordRequired.feature.blockEditor" = "Block Editor";
+
+/* Feature name for managing custom post types in the app */
+"applicationPasswordRequired.feature.customPosts" = "Custom Post Types";
 
 /* Feature name for managing terms and taxonomies in the app */
 "applicationPasswordRequired.feature.customTaxonomies" = "Taxonomies Management";
@@ -7383,6 +7395,27 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Action shown in a bottom notice to dismiss it. */
 "blogDashboard.dismiss" = "Dismiss";
+
+/* Error message shown when the active theme cannot be found for a site. */
+"blogDetails.activeThemeNotFound.errorDescription" = "The active theme could not be found for this site.";
+
+/* Button title to connect Jetpack in XML-RPC disabled alert */
+"blogDetails.xmlrpcDisabled.alert.connectJetpack" = "Connect Jetpack";
+
+/* Description explaining options to restore functionality when XML-RPC is disabled */
+"blogDetails.xmlrpcDisabled.alert.description" = "XML-RPC is disabled on your site. Some features in the app currently require XML-RPC. Connect Jetpack or enable XML-RPC to access all features.";
+
+/* Button title to learn more about XML-RPC being disabled */
+"blogDetails.xmlrpcDisabled.alert.learnMore" = "Learn more";
+
+/* Title for the XML-RPC disabled alert */
+"blogDetails.xmlrpcDisabled.alert.title" = "XML-RPC Disabled";
+
+/* Subtitle for the XML-RPC disabled card on blog details */
+"blogDetails.xmlrpcDisabled.card.subtitle" = "Some features may be limited";
+
+/* Title for the XML-RPC disabled card on blog details */
+"blogDetails.xmlrpcDisabled.card.title" = "XML-RPC Disabled";
 
 /* Context menu button title */
 "blogHeader.actionVisitSite" = "Visit Site";
@@ -7558,6 +7591,21 @@ Note that the word 'go' here should have a closer meaning to 'start' rather than
 
 /* Option to export log as a file */
 "com.jetpack.support.exportAsFile" = "Export as File";
+
+/* Toggle title for enabling extensive logging */
+"com.jetpack.support.extensiveLogging" = "Extensive Logging";
+
+/* Button title to enable extensive logging */
+"com.jetpack.support.extensiveLogging.enable" = "Enable";
+
+/* Alert message explaining extensive logging helps with troubleshooting but may impact performance */
+"com.jetpack.support.extensiveLoggingAlertMessage" = "This helps with troubleshooting but may impact performance. You can turn it off anytime.";
+
+/* Alert title when confirming extensive logging activation */
+"com.jetpack.support.extensiveLoggingAlertTitle" = "Enable Extensive Logging?";
+
+/* Link title to view extensive logs */
+"com.jetpack.support.extensiveLogs" = "Extensive Logs";
 
 /* Button to dismiss alerts. */
 "com.jetpack.support.gotIt" = "Got It";
@@ -7796,8 +7844,17 @@ Example: Reply to Pamela Nguyen */
 /* Navigation bar title when leaving a editing an existing comment */
 "commentEdit.navigationTitle" = "Edit Comment";
 
+/* Title for the error notice shown when approving a comment fails. */
+"comments.approve.error.title" = "Error approving comment";
+
 /* Error title */
 "comments.failedToLike" = "Failed to like comment";
+
+/* Title for the error notice shown when trashing a comment fails. */
+"comments.trash.error.title" = "Error binning comment";
+
+/* Title for the error notice shown when unapproving a comment fails. */
+"comments.unapprove.error.title" = "Error unapproving comment";
 
 /* Error message informing a user about an invalid password. */
 "common.reEnterPasswordMessage" = "The username or password stored in the app may be out of date. Please re-enter your password in the settings and try again.";
@@ -7835,6 +7892,123 @@ Example: Reply to Pamela Nguyen */
 /* Create Sheet button title */
 "createSheet.postFromAudio" = "Post from Audio";
 
+/* Error message shown when the post was modified by another user while editing */
+"customPostEditor.error.conflict.message" = "The post you are trying to save has been changed in the meantime.";
+
+/* Menu action to promote a post with Blaze */
+"customPostList.action.blaze" = "Promote with Blaze";
+
+/* Menu action to view post comments */
+"customPostList.action.comments" = "Comments";
+
+/* Menu action to permanently delete a trashed post */
+"customPostList.action.deletePermanently" = "Delete Permanently";
+
+/* Menu action to create a draft copy of a post */
+"customPostList.action.duplicate" = "Duplicate";
+
+/* Menu action to change a post's status to draft */
+"customPostList.action.moveToDraft" = "Move to Draft";
+
+/* Menu action to move a post to trash */
+"customPostList.action.moveToTrash" = "Move to Bin";
+
+/* Menu action to publish a draft or pending post */
+"customPostList.action.publish" = "Publish";
+
+/* Menu action to open post settings */
+"customPostList.action.settings" = "Settings";
+
+/* Menu action to view post statistics */
+"customPostList.action.stats" = "Stats";
+
+/* Accessibility label for the author filter button in the custom post list */
+"customPostList.authorFilter.accessibilityLabel" = "Author Filter";
+
+/* Menu item to show posts from all authors in the custom post list */
+"customPostList.authorFilter.everyone" = "Everyone";
+
+/* Menu item to show only the current user's posts in the custom post list */
+"customPostList.authorFilter.mine" = "Mine";
+
+/* Accessibility value when the author filter shows posts from all authors */
+"customPostList.authorFilter.showingEveryone" = "Showing everyone's posts";
+
+/* Accessibility value when the author filter shows only the current user's posts */
+"customPostList.authorFilter.showingMine" = "Showing only my posts";
+
+/* Badge label shown on the homepage row in the custom post list for pages */
+"customPostList.badge.homepage" = "Homepage";
+
+/* Badge shown in the post list for sticky posts */
+"customPostList.badge.sticky" = "Sticky";
+
+/* Message for the confirmation alert when permanently deleting a post */
+"customPostList.deleteConfirmation.message" = "This action cannot be undone.";
+
+/* Title for the confirmation alert when permanently deleting a post */
+"customPostList.deleteConfirmation.title" = "Delete Permanently?";
+
+/* Empty state message when no custom posts exist. %1$@ is the post type name (e.g., 'Podcasts', 'Products'). */
+"customPostList.emptyState.message" = "No %1$@";
+
+/* Short label for the swipe action to permanently delete a trashed post. Keep this translation short. */
+"customPostList.swipeAction.delete" = "Delete";
+
+/* Short label for the swipe action to trash a post. Keep this translation short. */
+"customPostList.swipeAction.trash" = "Bin";
+
+/* Message for the confirmation alert when trashing a published post */
+"customPostList.trashConfirmation.message" = "This post is published and visible to visitors. Are you sure you want to move it to the bin?";
+
+/* Title for the confirmation alert when trashing a published post */
+"customPostList.trashConfirmation.title" = "Move to Bin?";
+
+/* Placeholder title for posts without a title */
+"customPostList.untitled" = "(no title)";
+
+/* Title for the parent page picker screen for custom post types */
+"customPostParentPicker.title" = "Parent Page";
+
+/* Option to set a post as top level (no parent) */
+"customPostParentPicker.topLevel" = "Top level";
+
+/* Description for the top level option in the parent page picker, indicating this page will have no parent */
+"customPostParentPicker.topLevel.description" = "No parent page";
+
+/* Tab title for showing all posts regardless of status */
+"customPostTab.all" = "All";
+
+/* Tab title for draft posts */
+"customPostTab.drafts" = "Drafts";
+
+/* Tab title for published posts */
+"customPostTab.published" = "Published";
+
+/* Tab title for scheduled posts */
+"customPostTab.scheduled" = "Scheduled";
+
+/* Menu item title for sending feedback on the custom post types screen */
+"customPostTab.sendFeedback" = "Send Feedback";
+
+/* Tab title for trashed posts */
+"customPostTab.trash" = "Bin";
+
+/* Badge label indicating that custom post type support is a beta feature. Displayed next to the navigation title. */
+"customPostType.navigation.betaBadge" = "BETA";
+
+/* Empty state message when there are no custom post types to display */
+"customPostTypes.emptyState.message" = "No Custom Post Types";
+
+/* Accessibility label for the button to pin a custom post type */
+"customPostTypes.pin.accessibilityLabel" = "Pin";
+
+/* Title for the Custom Post Types screen */
+"customPostTypes.title" = "More";
+
+/* Accessibility label for the button to unpin a custom post type */
+"customPostTypes.unpin.accessibilityLabel" = "Unpin";
+
 /* Customize Insights description */
 "customizeInsightsCell.content" = "Create your own customised dashboard and choose what reports to see. Focus on the data you care most about.";
 
@@ -7870,6 +8044,27 @@ Example: Reply to Pamela Nguyen */
 
 /* Title for the Jetpack Social dashboard card when the user has no social shares left. */
 "dashboard.card.social.noshares.title" = "You’re out of shares!";
+
+/* Button to dismiss the extensive logging alert */
+"dashboard.extensiveLogging.alert.dismiss" = "Dismiss";
+
+/* Alert message explaining that extensive logging is enabled and should be turned off if not needed */
+"dashboard.extensiveLogging.alert.message" = "Extensive logging is currently enabled. This helps with troubleshooting but may impact performance. Turn it off if you don't need it.";
+
+/* Alert title for extensive logging */
+"dashboard.extensiveLogging.alert.title" = "Extensive Logging";
+
+/* Button to turn off extensive logging */
+"dashboard.extensiveLogging.alert.turnOff" = "Turn Off";
+
+/* Notice shown when extensive logging is successfully disabled */
+"dashboard.extensiveLogging.disabled" = "Extensive logging disabled";
+
+/* Subtitle for the extensive logging card on dashboard */
+"dashboard.extensiveLogging.subtitle" = "This feature may impact performance";
+
+/* Title for the extensive logging card on dashboard */
+"dashboard.extensiveLogging.title" = "Extensive Logging Enabled";
 
 /* Title for comments button on dashboard. */
 "dashboard.menu.comments" = "Comments";
@@ -7949,11 +8144,17 @@ Example: Reply to Pamela Nguyen */
 /* Boolean User Defaults Debug Menu screen title */
 "debugMenu.booleanUserDefaults.title" = "Boolean User Defaults";
 
+/* Debug Menu label for image cache size */
+"debugMenu.caches.imageCache" = "Image Cache";
+
 /* Feature flags menu item */
 "debugMenu.featureFlags" = "Feature Flags";
 
 /* Debug Menu action for TipKit */
 "debugMenu.hideAllTips" = "Hide all tips";
+
+/* Debug Menu item title */
+"debugMenu.item.logs" = "Logs";
 
 /* Title of the screen that allows the user to change the Reader CSS URL for debug builds */
 "debugMenu.readerCellTitle" = "Reader CSS URL";
@@ -7987,6 +8188,9 @@ Example: Reply to Pamela Nguyen */
 "debugMenu.resetTipKitData" = "Reset data";
 
 /* Debug Menu section title */
+"debugMenu.section.caches" = "Caches";
+
+/* Debug Menu section title */
 "debugMenu.section.logging" = "Logging";
 
 /* Debug Menu section title */
@@ -7995,11 +8199,23 @@ Example: Reply to Pamela Nguyen */
 /* Debug Menu section title */
 "debugMenu.section.tipKit" = "TipKit";
 
+/* Debug Menu section title */
+"debugMenu.section.webView" = "Web View";
+
 /* Debug Menu action for TipKit */
 "debugMenu.showAllTips" = "Show all tips";
 
 /* Title for debug menu screen */
 "debugMenu.title" = "Developer";
+
+/* Title for web view URL input dialog */
+"debugMenu.webView.dialogTitle" = "Enter URL";
+
+/* Debug menu item to present an authenticated web view for the currently displayed site */
+"debugMenu.webView.row" = "Browse as logged-in account";
+
+/* Debug menu item to present an unauthenticated web view */
+"debugMenu.webView.unauthenticatedRow" = "Open a web browser";
 
 /* Weekly Roundup debug menu item */
 "debugMenu.weeklyRoundup" = "Weekly Roundup";
@@ -8177,6 +8393,12 @@ Example: Reply to Pamela Nguyen */
 
 /* Button title to expand and show more blocks */
 "editor.blockInserter.showMore" = "Show More";
+
+/* Title shown when the editor encounters an error */
+"editor.error.title" = "Editor Error";
+
+/* Text shown while the editor is loading */
+"editor.loading.title" = "Loading Editor";
 
 /* Error message when media insertion fails */
 "editor.media.failedToInsert" = "Failed to insert media";
@@ -8668,8 +8890,14 @@ Example: Reply to Pamela Nguyen */
 /* Title of the primary button shown after the Jetpack plugin has been installed. Tapping on the button dismisses the installation screen. */
 "jetpack.install-flow.success.primaryButtonText" = "Done";
 
+/* Message asking the user to install Jetpack to access all app features */
+"jetpack.install.allFeatures.description" = "To unlock all app features, you'll need to install the Jetpack plugin.";
+
 /* Title of a button for connecting user account to Jetpack. */
 "jetpack.install.connectUser.button.title" = "Connect your user account";
+
+/* Message asking the user to connect Jetpack to access all app features */
+"jetpack.install.connectUser.bypassXMLRPC.description" = "To unlock all app features, you'll need to connect the Jetpack plugin to your user account.";
 
 /* Message asking the user if they want to set up Jetpack from notifications */
 "jetpack.install.connectUser.notifications.description" = "To get helpful notifications on your phone from your WordPress site, you'll need to connect to your user account.";
@@ -8769,6 +8997,159 @@ Example: Reply to Pamela Nguyen */
 
 /* Message stating that the user is unable to use Stats and Notifications because their site is connected to a different WordPress.com account */
 "jetpackSite.connectToDefaultAccount" = "You need to sign in with %@ to use Stats and Notifications.";
+
+/* Message shown at the top of the account confirmation screen when every available account is already connected to the site. */
+"jetpackSocial.accountConfirmation.allConnectedDescription" = "You're all set. Every available account is already connected to this site, and your new posts will be shared automatically. You can change this when writing a post.";
+
+/* Nav-bar button that finalizes the social connection after choosing an account. */
+"jetpackSocial.accountConfirmation.confirm" = "Confirm";
+
+/* Section header listing accounts already connected to this site. */
+"jetpackSocial.accountConfirmation.connectedSection" = "Connected";
+
+/* Explanation text shown at the top of the account confirmation screen. */
+"jetpackSocial.accountConfirmation.description" = "You're connecting this account. New posts will automatically be shared to it. You can change this when writing a post.";
+
+/* Button that dismisses the account confirmation screen when every account is already connected and there is nothing to confirm. */
+"jetpackSocial.accountConfirmation.done" = "Done";
+
+/* Loading caption while fetching accounts for the confirmation screen. */
+"jetpackSocial.accountConfirmation.loading" = "Loading accounts…";
+
+/* Footer caption below the 'Mark the connection as shared' toggle. */
+"jetpackSocial.accountConfirmation.markAsSharedFooter" = "If enabled, the connection will be available to all administrators, editors, and authors. You can change this later.";
+
+/* Toggle label controlling whether the new connection is shared with other site users. */
+"jetpackSocial.accountConfirmation.markAsSharedLabel" = "Mark the connection as shared";
+
+/* Button to retry a failed account fetch. */
+"jetpackSocial.accountConfirmation.retry" = "Retry";
+
+/* Navigation title of the account confirmation screen shown after OAuth. */
+"jetpackSocial.accountConfirmation.title" = "Connection confirmation";
+
+/* Toggle label controlling whether a connection is shared with all site users. */
+"jetpackSocial.connectionDetail.availableToAllUsers" = "Available to all users";
+
+/* Footer caption below the 'Available to all users' toggle. */
+"jetpackSocial.connectionDetail.availableToAllUsersFooter" = "Allow this connection to be used by all admins and users of your site.";
+
+/* Section header on the connection detail screen. */
+"jetpackSocial.connectionDetail.settingsHeader" = "Settings";
+
+/* Dismiss button in the social connection update failure alert. */
+"jetpackSocial.connectionDetail.updateFailedDismiss" = "OK";
+
+/* Title of the alert shown when updating a social connection setting fails. */
+"jetpackSocial.connectionDetail.updateFailedTitle" = "Couldn't Update Connection";
+
+/* Error when a publicize connection ID can't be found. %1$@ is the connection ID. */
+"jetpackSocial.error.connectionNotFound" = "Connection %1$@ was not found.";
+
+/* Error shown when decoding a social sharing response fails. */
+"jetpackSocial.error.decoding" = "Received an unexpected response from the server.";
+
+/* Error when a keyring token ID can't be found. %1$@ is the token ID. */
+"jetpackSocial.error.keyringNotFound" = "Keyring connection %1$@ was not found.";
+
+/* Link label that opens documentation explaining how to resolve a social sharing error. */
+"jetpackSocial.error.learnMore" = "Learn more";
+
+/* Error shown when a social sharing network call fails. */
+"jetpackSocial.error.network" = "Network error. Please check your connection and try again.";
+
+/* Error when the WP.com account has no authorized keyring for a given service. %1$@ is the service label (e.g. 'Mastodon'). */
+"jetpackSocial.error.noKeyringForService" = "No connected accounts for %1$@.";
+
+/* Error shown after Facebook OAuth when the user's account doesn't manage any Facebook Pages, since Publicize only targets Pages. */
+"jetpackSocial.error.noPagesForFacebook" = "The Facebook connection cannot find any Pages. Publicise cannot connect to Facebook Profiles, only published Pages.";
+
+/* Error shown when the WP.com auth token is missing or invalid. */
+"jetpackSocial.error.notAuthenticated" = "You need to sign in again to manage social accounts.";
+
+/* Generic fallback error for social sharing. */
+"jetpackSocial.error.unknown" = "Something went wrong. Please try again.";
+
+/* Status text for a broken / invalid / refresh-failed connection. */
+"jetpackSocial.manageConnections.brokenStatus" = "Needs attention";
+
+/* Cancel button in the disconnect confirmation alert. */
+"jetpackSocial.manageConnections.cancel" = "Cancel";
+
+/* Button on the Social screen that opens the add-connection modal. */
+"jetpackSocial.manageConnections.connectNewAccount" = "Connect a New Account";
+
+/* Footer caption under the Connected Accounts section on the Social screen. */
+"jetpackSocial.manageConnections.connectedFooter" = "Connect your social media accounts and send a post's featured image and content to the selected channels when the post is published.";
+
+/* Section header listing currently connected social accounts. */
+"jetpackSocial.manageConnections.connectedHeader" = "Connected Accounts";
+
+/* Button that removes a social sharing connection. */
+"jetpackSocial.manageConnections.delete" = "Disconnect";
+
+/* Confirmation alert title. %1$@ is the connected account's display name. */
+"jetpackSocial.manageConnections.deleteConfirmTitle" = "Are you sure you want to disconnect %1$@?";
+
+/* Dismiss button in the disconnect failure alert. */
+"jetpackSocial.manageConnections.deleteFailedDismiss" = "OK";
+
+/* Title of the alert shown when disconnecting a social connection fails. */
+"jetpackSocial.manageConnections.deleteFailedTitle" = "Couldn't Disconnect";
+
+/* Footer caption under the list of services in the Connect Account picker modal. */
+"jetpackSocial.manageConnections.footer" = "Connect your favourite social media services to automatically share new posts with friends.";
+
+/* Button to retry a failed load. */
+"jetpackSocial.manageConnections.retry" = "Retry";
+
+/* Badge shown on connections that are shared with other site users. */
+"jetpackSocial.manageConnections.sharedBadge" = "Shared";
+
+/* Title of the Social Sharing settings screen. */
+"jetpackSocial.manageConnections.title" = "Social";
+
+/* Confirm button in the disconnect confirmation alert. */
+"jetpackSocial.manageConnections.yes" = "Yes";
+
+/* Navigation bar title of the OAuth webview. %1$@ is the service label (e.g. 'Mastodon'). */
+"jetpackSocial.oauthWebView.connectTitle" = "Connect to %1$@";
+
+/* Label above the optional custom social-sharing message field. */
+"jetpackSocial.postSection.customMessage" = "Custom message";
+
+/* Placeholder for the optional custom social-sharing message field. */
+"jetpackSocial.postSection.customMessagePlaceholder" = "Write a custom message for your social audience here.";
+
+/* Caption shown when the site has no social connections. */
+"jetpackSocial.postSection.empty" = "No social accounts connected yet.";
+
+/* Title of the row that opens the social sharing detail screen in Post Settings. */
+"jetpackSocial.postSection.header" = "Share to social media";
+
+/* Button to retry a failed load of the connections list. */
+"jetpackSocial.postSection.retry" = "Retry";
+
+/* Trailing value on the 'Share to Social' post settings row. %1$d is the enabled count, %2$d is the total. */
+"jetpackSocial.postSection.summary.format" = "%1$d of %2$d";
+
+/* Footer below the per-connection toggles on the social sharing detail screen. */
+"jetpackSocial.postSection.togglesFooter" = "When this post is published, it will be shared to the enabled accounts.";
+
+/* Notice shown after a social connection is successfully created. %1$@ is the service label. */
+"jetpackSocial.serviceDetail.connectedNotice" = "%1$@ connected";
+
+/* Cancel button in the add-connection failure alert. */
+"jetpackSocial.serviceDetail.failureCancel" = "Cancel";
+
+/* Retry button in the add-connection failure alert. */
+"jetpackSocial.serviceDetail.failureRetry" = "Retry";
+
+/* Title of the alert shown when adding a social connection fails. */
+"jetpackSocial.serviceDetail.failureTitle" = "Connection Failed";
+
+/* Navigation bar title of the service picker modal shown when adding a new social connection. */
+"jetpackSocial.servicePicker.title" = "Connect Account";
 
 /* Accessibility label for add card button */
 "jetpackStats.accessibility.addCardButton" = "Add new stats card";
@@ -8951,6 +9332,9 @@ Example: Reply to Pamela Nguyen */
 /* Last 12 weeks (84 days) date range */
 "jetpackStats.calendar.last12Weeks" = "Last 12 Weeks";
 
+/* Last 14 days date range */
+"jetpackStats.calendar.last14Days" = "Last 14 Days";
+
 /* Last 28 days date range */
 "jetpackStats.calendar.last28Days" = "Last 28 Days";
 
@@ -9002,6 +9386,9 @@ Example: Reply to Pamela Nguyen */
 /* Genertic error message */
 "jetpackStats.chart.generitcError" = "Something went wrong";
 
+/* Granularity picker label */
+"jetpackStats.chart.granularity" = "Granularity";
+
 /* Shown for metrics that don't support hourly data */
 "jetpackStats.chart.hourlyDataNotAvailable" = "Hourly data not available";
 
@@ -9010,6 +9397,9 @@ Example: Reply to Pamela Nguyen */
 
 /* Line chart type */
 "jetpackStats.chart.lineChart" = "Lines";
+
+/* Label for aggregated 'Other' segment in pie charts */
+"jetpackStats.chart.other" = "Other";
 
 /* Show chart data menu item */
 "jetpackStats.chart.showData" = "Show Data";
@@ -9116,6 +9506,9 @@ Example: Reply to Pamela Nguyen */
 /* Title for comparison menu */
 "jetpackStats.datePicker.compareWith" = "Compare With…";
 
+/* Option to turn off period comparison */
+"jetpackStats.datePicker.comparisonOff" = "No Comparison";
+
 /* Menu item for custom date range picker */
 "jetpackStats.datePicker.customRangeMenu" = "Custom Range…";
 
@@ -9134,6 +9527,9 @@ Example: Reply to Pamela Nguyen */
 /* Label for quick period selection */
 "jetpackStats.datePicker.quickPeriodsForStartDate" = "Quick periods for start date";
 
+/* Title for custom date range picker */
+"jetpackStats.datePicker.selectRange" = "Select Range";
+
 /* Site time zone header */
 "jetpackStats.datePicker.siteTimeZone" = "Site Time Zone";
 
@@ -9149,6 +9545,15 @@ Example: Reply to Pamela Nguyen */
 /* Title for stats date range control tip */
 "jetpackStats.dateRangeTip.title" = "Navigate Through Time";
 
+/* Device breakdown by browser */
+"jetpackStats.deviceBreakdowns.browser" = "Browser";
+
+/* Device breakdown by platform/OS */
+"jetpackStats.deviceBreakdowns.operatingSystem" = "Operating System";
+
+/* Device breakdown by screen size */
+"jetpackStats.deviceBreakdowns.screensize" = "Screen Size";
+
 /* Section title for the list of child links */
 "jetpackStats.externalLinkDetails.childLinks" = "Sub-links";
 
@@ -9157,6 +9562,39 @@ Example: Reply to Pamela Nguyen */
 
 /* Title for the external link details screen */
 "jetpackStats.externalLinkDetails.title" = "External Link";
+
+/* Button to explore plans when a feature is gated */
+"jetpackStats.featureGate.explorePlans" = "Explore Plans";
+
+/* Message shown when a stats feature is gated behind a paid plan */
+"jetpackStats.featureGate.message" = "Upgrade your plan to get access to advanced analytics";
+
+/* Automatic granularity option */
+"jetpackStats.granularity.automatic" = "Automatic";
+
+/* Days granularity option */
+"jetpackStats.granularity.days" = "Days";
+
+/* Hours granularity option */
+"jetpackStats.granularity.hours" = "Hours";
+
+/* Months granularity option */
+"jetpackStats.granularity.months" = "Months";
+
+/* Weeks granularity option */
+"jetpackStats.granularity.weeks" = "Weeks";
+
+/* Years granularity option */
+"jetpackStats.granularity.years" = "Years";
+
+/* Location level selector for cities */
+"jetpackStats.locationLevels.cities" = "Cities";
+
+/* Location level selector for countries */
+"jetpackStats.locationLevels.countries" = "Countries";
+
+/* Location level selector for regions */
+"jetpackStats.locationLevels.regions" = "Regions";
 
 /* Label for daily average in tooltip */
 "jetpackStats.postDetails.dailyAverage" = "Daily Average";
@@ -9218,6 +9656,9 @@ Example: Reply to Pamela Nguyen */
 /* Title for weekly activity heatmap */
 "jetpackStats.postDetails.weeklyActivity" = "Weekly Activity";
 
+/* Confirmation message when marking a referrer as spam. %1$@ is the domain name. */
+"jetpackStats.referrerDetails.confirmAsSpam.message" = "Marking \"%1$@\" as spam will hide it from your future stats. You can undo this any time using the web interface.";
+
 /* Title for error alert when marking referrer as spam fails */
 "jetpackStats.referrerDetails.errorAlertTitle" = "Error";
 
@@ -9242,6 +9683,12 @@ Example: Reply to Pamela Nguyen */
 /* Authors data type */
 "jetpackStats.siteDataTypes.authors" = "Authors";
 
+/* Clicks data type (external links) */
+"jetpackStats.siteDataTypes.clicks" = "Clicks";
+
+/* Devices data type */
+"jetpackStats.siteDataTypes.devices" = "Devices";
+
 /* File downloads data type */
 "jetpackStats.siteDataTypes.fileDownloads" = "File Downloads";
 
@@ -9256,6 +9703,9 @@ Example: Reply to Pamela Nguyen */
 
 /* Search terms data type */
 "jetpackStats.siteDataTypes.searchTerms" = "Search Terms";
+
+/* UTM campaign tracking data type */
+"jetpackStats.siteDataTypes.utm" = "UTM";
 
 /* Videos data type */
 "jetpackStats.siteDataTypes.videos" = "Videos";
@@ -9287,6 +9737,9 @@ Example: Reply to Pamela Nguyen */
 /* Current active visitors metric */
 "jetpackStats.siteMetrics.visitorsNow" = "Visitors Now";
 
+/* Ads tab */
+"jetpackStats.tabs.ads" = "Ads";
+
 /* Insights tab */
 "jetpackStats.tabs.insights" = "Insights";
 
@@ -9304,6 +9757,93 @@ Example: Reply to Pamela Nguyen */
 
 /* Today card title */
 "jetpackStats.todayCard.title" = "Today";
+
+/* Table column title for Top List card */
+"jetpackStats.topListColumnTitle.archive" = "Title";
+
+/* Table column title for Top List card */
+"jetpackStats.topListColumnTitle.authors" = "Author";
+
+/* Table column title for Top List card */
+"jetpackStats.topListColumnTitle.clicks" = "External Link";
+
+/* Table column title for Devices Top List card */
+"jetpackStats.topListColumnTitle.devices" = "Device";
+
+/* Table column title for Top List card */
+"jetpackStats.topListColumnTitle.fileDownloads" = "File";
+
+/* Table column title for Top List card */
+"jetpackStats.topListColumnTitle.locations" = "Location";
+
+/* Table column title for Top List card */
+"jetpackStats.topListColumnTitle.postsAndPages" = "Title";
+
+/* Table column title for Top List card */
+"jetpackStats.topListColumnTitle.referrers" = "Referrer";
+
+/* Table column title for Top List card */
+"jetpackStats.topListColumnTitle.searchTerms" = "Term";
+
+/* Table column title for UTM Top List card */
+"jetpackStats.topListColumnTitle.utm" = "Campaign";
+
+/* Table column title for Top List card */
+"jetpackStats.topListColumnTitle.videos" = "Video";
+
+/* Plural post count for UTM metrics. %1$d is the number. */
+"jetpackStats.utmMetricDetails.postCount.plural" = "%1$d posts";
+
+/* Singular post count for UTM metrics. %1$d is the number. */
+"jetpackStats.utmMetricDetails.postCount.singular" = "%1$d post";
+
+/* Title for the UTM campaign details screen */
+"jetpackStats.utmMetricDetails.title" = "UTM Campaign";
+
+/* Section title for top posts from this UTM campaign */
+"jetpackStats.utmMetricDetails.topPosts" = "Top Posts";
+
+/* UTM parameter for campaign only */
+"jetpackStats.utmParamGroupings.campaign" = "Campaign";
+
+/* UTM parameter for medium only */
+"jetpackStats.utmParamGroupings.medium" = "Medium";
+
+/* UTM parameter for source only */
+"jetpackStats.utmParamGroupings.source" = "Source";
+
+/* Number of ads served. %@ is the ads count. */
+"jetpackStats.wordAds.adsServed.count" = "%@ ads served";
+
+/* Total earnings from WordAds */
+"jetpackStats.wordAds.earnings" = "Earnings";
+
+/* Button to learn more about WordAds earnings */
+"jetpackStats.wordAds.learnMore" = "Learn More";
+
+/* Message shown when there are no payment records */
+"jetpackStats.wordAds.noPaymentsYet" = "No payments yet";
+
+/* Outstanding amount owed from WordAds */
+"jetpackStats.wordAds.outstanding" = "Outstanding";
+
+/* Amount paid out from WordAds earnings */
+"jetpackStats.wordAds.paid" = "Paid";
+
+/* Title for payment history card and screen */
+"jetpackStats.wordAds.paymentsHistory" = "Payments History";
+
+/* Title for WordAds total earnings card */
+"jetpackStats.wordAds.totalEarnings" = "Total Earnings";
+
+/* Number of ads served */
+"jetpackStats.wordAdsMetrics.adsServed" = "Ads Served";
+
+/* Average cost per mille (thousand impressions) */
+"jetpackStats.wordAdsMetrics.averageCPM" = "Average CPM";
+
+/* Revenue from ads */
+"jetpackStats.wordAdsMetrics.revenue" = "Revenue";
 
 /* Title for a call-to-action button on the Jetpack install card. */
 "jetpackinstallcard.button.learn" = "Learn more";
@@ -9343,6 +9883,15 @@ Example: Reply to Pamela Nguyen */
 
 /* Title shown when the application password is invalid */
 "login.appPasswordReAuth.title" = "Invalid application password";
+
+/* Description text explaining where to find site address during login */
+"login.siteAddressHelp.description" = "Your site address appears in the bar at the top of the screen when you visit your site in Safari.";
+
+/* Button title to get additional help finding site address during login */
+"login.siteAddressHelp.moreHelpButton" = "Need more help?";
+
+/* Title of alert helping users understand their site address during login */
+"login.siteAddressHelp.title" = "What's my site address?";
 
 /* Instruction label in the two-factor authorization screen WordPress.com login authentication. Note: it has to mention that it's for a WordPress.com account. */
 "login.twoFactorInstructions.details" = "Please enter the verification code from your authentication app for your WordPress.com account.";
@@ -9689,11 +10238,116 @@ Example: Reply to Pamela Nguyen */
 /* Title of the domain focus card on My Site */
 "mySite.domain.focus.cardView.title" = "Reclaim your Google Domains";
 
+/* Noun. Links to a blog's Activity screen. */
+"mySite.menu.activity" = "Activity";
+
+/* Noun. Links to a blog's Activity screen. */
+"mySite.menu.activityLog" = "Activity Log";
+
+/* Link to Application Passwords section */
+"mySite.menu.applicationPasswords" = "Application Passwords";
+
+/* Noun. Links to a blog's Jetpack Backups screen. */
+"mySite.menu.backup" = "Backup";
+
+/* Noun. Links to a blog's Blaze screen. */
+"mySite.menu.blaze" = "Blaze";
+
+/* Noun. Title. Links to the blog's Comments screen. */
+"mySite.menu.comments" = "Comments";
+
+/* Section title for the configure table section in the blog details screen */
+"mySite.menu.configureSection" = "Configure";
+
+/* Section title for the content table section in the blog details screen */
+"mySite.menu.content.section.title" = "Content";
+
+/* Action title. Noun. Opens the user's WordPress.com dashboard in an external browser. */
+"mySite.menu.dashboard" = "Dashboard";
+
+/* Noun. Title. Links to the Domains screen. */
+"mySite.menu.domains" = "Domains";
+
+/* Section title for the external table section in the blog details screen */
+"mySite.menu.externalSection" = "External";
+
+/* Noun. Links to a blog's dashboard screen. */
+"mySite.menu.home" = "Home";
+
+/* Section title for the jetpack table section in the blog details screen */
+"mySite.menu.jetpackSection" = "Jetpack";
+
+/* Noun. Title. Links to the blog's Settings screen. */
+"mySite.menu.jetpackSettings" = "Jetpack Settings";
+
+/* Section title for the maintenance table section in the blog details screen */
+"mySite.menu.maintenance.section.title" = "Maintenance";
+
+/* Noun. Title. Links to the Me screen. */
+"mySite.menu.me" = "Me";
+
+/* Noun. Title. Links to the blog's Media library. */
+"mySite.menu.media" = "Media";
+
+/* Menus option in the blog details */
+"mySite.menu.menus" = "Menus";
+
+/* Noun. Title. Links to the blog's Pages screen. */
+"mySite.menu.pages" = "Pages";
+
+/* Noun. Title. Links to the people management feature. */
+"mySite.menu.people" = "People";
+
+/* Section title for the personalize table section in the blog details screen */
+"mySite.menu.personalizeSection" = "Personalise";
+
+/* Noun. Title. Links to the plugin management feature. */
+"mySite.menu.plugins" = "Plugins";
+
+/* Noun. Title. Links to the blog's Posts screen. */
+"mySite.menu.posts" = "Posts";
+
+/* Section title for the publish table section in the blog details screen */
+"mySite.menu.publishSection" = "Publish";
+
+/* Button to remove a site from the app */
+"mySite.menu.removeSite" = "Remove Site";
+
+/* Noun. Links to a blog's Jetpack Scan screen. */
+"mySite.menu.scan" = "Scan";
+
+/* Noun. Title. Links to a blog's sharing options. */
+"mySite.menu.sharing" = "Sharing";
+
+/* Title for the site monitoring row in the blog details screen */
+"mySite.menu.site-monitoring.row.title" = "Site Monitoring";
+
+/* Noun. Title. Links to the blog's Settings screen. */
+"mySite.menu.siteSettings" = "Site Settings";
+
+/* Title for the social row in the blog details screen */
+"mySite.menu.social.row.title" = "Social";
+
+/* Noun. Abbv. of Statistics. Links to a blog's Stats screen. */
+"mySite.menu.stats" = "Stats";
+
 /* Title for the menu item */
 "mySite.menu.subscribers" = "Subscribers";
 
+/* Themes option in the blog details */
+"mySite.menu.themes" = "Themes";
+
+/* Section title for the traffic table section in the blog details screen */
+"mySite.menu.traffic.section.title" = "Traffic";
+
 /* Noun. Title. Links to the user management feature. */
 "mySite.menu.users" = "Users";
+
+/* Action title. Opens the user's site in an in-app browser */
+"mySite.menu.viewSite" = "View Site";
+
+/* Action title. Noun. Opens the user's WordPress Admin in an external browser. */
+"mySite.menu.wpAdmin" = "WP Admin";
 
 /* Button title. Displays the account and setting screen. */
 "mySite.noSites.button.accountAndSettings" = "Account and settings";
@@ -9721,6 +10375,42 @@ Example: Reply to Pamela Nguyen */
 
 /* Menu title for the visit site option */
 "mySite.siteActions.visitSite" = "Visit site";
+
+/* Button to confirm to switch to the New Stats announcement screen */
+"newStats.announcement.continueButton" = "Get Started";
+
+/* Disclosure at the bottom of the New Stats announcement screen, informing users they can opt out */
+"newStats.announcement.disclosure" = "Not ready to switch? You can turn off New Stats from the More menu in the Stats tab.";
+
+/* Feature description: navigation moved to the bottom for thumb-friendly access */
+"newStats.announcement.feature.bottomNav.description" = "Navigation and date picker are now at the bottom of the screen - right where your thumb is.";
+
+/* Feature title: navigation moved to the bottom */
+"newStats.announcement.feature.bottomNav.title" = "Easier to Reach";
+
+/* Feature description: flexible date picker with presets, custom ranges, and comparisons */
+"newStats.announcement.feature.datePicker.description" = "Pick from common presets or set a custom date range with a comparison period - all in one tap.";
+
+/* Feature title: flexible date picker */
+"newStats.announcement.feature.datePicker.title" = "Any Period, Any Range";
+
+/* Feature description: feature parity with the web version of Stats */
+"newStats.announcement.feature.parity.description" = "Devices, UTM, locations, WordAds - the same data you get on WordPress.com.";
+
+/* Feature title: feature parity with the web version of Stats */
+"newStats.announcement.feature.parity.title" = "On Par with the Web";
+
+/* Feature description: trends shown for all metrics with comparison to previous period */
+"newStats.announcement.feature.trends.description" = "Every metric shows how it's trending compared to the previous period, so you always know if you're growing.";
+
+/* Feature title: trends visible for all metrics */
+"newStats.announcement.feature.trends.title" = "Trends at a Glance";
+
+/* Subtitle for the New Stats announcement screen */
+"newStats.announcement.subtitle" = "A better way to understand your site's performance - now on by default.";
+
+/* Title for the New Stats announcement screen */
+"newStats.announcement.title" = "New Stats";
 
 /* A no results message displayed on the atomic logs screen. */
 "noLogs.empty" = "No log entries within this time range";
@@ -9803,6 +10493,12 @@ Example: Reply to Pamela Nguyen */
 /* VoiceOver accessibility hint, informing the user the button can be used to subscribe to a blog. */
 "notifications.button.subscribedHint" = "Subscribes to the blog.";
 
+/* Displayed in the Notifications Tab as a button title, when the Unread Filter shows no notifications */
+"notifications.emptyState.buttonCreatePost" = "Create Post";
+
+/* Displayed in the Notifications Tab as a button title, when there are no notifications */
+"notifications.emptyState.buttonOpenReader" = "Open Reader";
+
 /* Filters Subscribers Notifications */
 "notifications.filter.subscribers.title" = "Subscribers";
 
@@ -9811,6 +10507,27 @@ Example: Reply to Pamela Nguyen */
 
 /* Displayed in the Notifications Tab as a title, when the Subscriber Filter shows no notifications */
 "notifications.noresults.subscribers" = "No subscribers yet";
+
+/* Allow button title shown in alert preparing users to grant permission for us to send them push notifications. */
+"notifications.primer.firstAlert.allowButton" = "Allow notifications";
+
+/* Body text of the first alert preparing users to grant permission for us to send them push notifications. */
+"notifications.primer.firstAlert.body" = "We'll notify you when you get new followers, comments, and likes. Would you like to allow push notifications?";
+
+/* Title of the first alert preparing users to grant permission for us to send them push notifications. */
+"notifications.primer.firstAlert.title" = "Stay in the loop";
+
+/* Not now button title shown in alert preparing users to grant permission for us to send them push notifications. */
+"notifications.primer.notNowButton" = "Not now";
+
+/* Allow button title shown in alert preparing users to grant permission for us to send them push notifications. */
+"notifications.primer.secondAlert.allowButton" = "Allow push notifications";
+
+/* Body text of the first alert preparing users to grant permission for us to send them push notifications. */
+"notifications.primer.secondAlert.body" = "Learn about new comments, likes, and follows in seconds.";
+
+/* Title of the second alert preparing users to grant permission for us to send them push notifications. */
+"notifications.primer.secondAlert.title" = "Get your notifications faster";
 
 /* Message to use along with the post URL when sharing a post */
 "notifications.share.messageWithPost" = "Check out my post \"%@\":";
@@ -9925,6 +10642,9 @@ Example: Reply to Pamela Nguyen */
 
 /* A title for the log severity level */
 "phpLogs.severityWarning" = "Warning";
+
+/* Error message when a pinned custom post type cannot be found. %1$@ is the post type name. */
+"pinnedPostType.error.notFound" = "\"%1$@\" is not available on this site.";
 
 /* Title for the plan selection view */
 "planSelection.title" = "Plans";
@@ -10096,6 +10816,9 @@ Example: Reply to Pamela Nguyen */
 /* A message for a snackbar informing the user that some media files requires their attention */
 "postEditor.postHasFailingMediaUploadsSnackbar.message" = "Some media items failed to upload";
 
+/* Title for the publish button in the post editor navigation bar */
+"postEditor.publishButton.title" = "Publish";
+
 /* Editor, notice for successful recovery a trashed post */
 "postEditor.recoverTrashedPost.postRecoveredNoticeTitle" = "Post restored as a draft";
 
@@ -10116,6 +10839,9 @@ Example: Reply to Pamela Nguyen */
 
 /* Saving draft to generate a preview (status message */
 "postEditor.savingDraftForPreview" = "Saving draft…";
+
+/* Title for the update button in the post editor navigation bar */
+"postEditor.updateButton.title" = "Update";
 
 /* Empty state description when no post formats are available */
 "postFormatPicker.emptyState.description" = "Post formats haven't been configured for this site.";
@@ -10388,6 +11114,9 @@ Example: Reply to Pamela Nguyen */
 /* Section header for More Options in Post Settings. Should use the same translation as core WP. */
 "postSettings.moreOptions.header" = "More Options";
 
+/* The title of the Post Settings screen for custom post types. %1$@ is the post type name. */
+"postSettings.navigationTitle.customPostType" = "%1$@ Settings";
+
 /* The title of the Page Settings screen. */
 "postSettings.navigationTitle.page" = "Page Settings";
 
@@ -10448,6 +11177,9 @@ Example: Reply to Pamela Nguyen */
 /* Placeholder value for a publishing date in the prepublishing sheet when the date is not selected */
 "postSettings.publishDateImmediately" = "Immediately";
 
+/* Error message shown when saving post settings via REST API fails */
+"postSettings.saveFailed.message" = "Failed to save changes";
+
 /* Section header for General settings in Post Settings */
 "postSettings.section.general" = "General";
 
@@ -10480,6 +11212,9 @@ Example: Reply to Pamela Nguyen */
 
 /* Label for the preview button in Post Settings */
 "postSettings.socialSharing.header" = "Social Sharing";
+
+/* Label for the status field in Post Settings */
+"postSettings.statusAndVisibility.label" = "Status & Visibility";
 
 /* Navigation title for status picker */
 "postSettings.statusPicker.navigationTitle" = "Status & Visibility";
@@ -10520,6 +11255,9 @@ Example: Reply to Pamela Nguyen */
 /* Navigation bar title of the Post Stats screen */
 "postStats.title" = "Post Stats";
 
+/* Post status title used in different contexts */
+"postStatus.any.title" = "Any";
+
 /* Post status title */
 "postStatus.deleted.details" = "Permanently deleted";
 
@@ -10558,6 +11296,9 @@ Example: Reply to Pamela Nguyen */
 
 /* Post status title */
 "postStatus.trash.details" = "Binned but not deleted yet";
+
+/* Post status title used in different contexts */
+"postStatus.trash.title" = "Binned";
 
 /* Button to add a new taxonomy term. %1$@ is the taxonomy name (e.g., 'tags', 'categories'). */
 "postTags.addTag" = "Add %1$@";
@@ -10868,6 +11609,9 @@ Example: 27 social shares remaining in the next 30 days */
 /* Error message that informs reader comments from a private blog cannot be fetched. */
 "reader.comments.noPermissionToViewPrivateBlog" = "You don't have permission to view this private blog.";
 
+/* Button to expand a collapsed comment to show its full content. */
+"reader.comments.showMore" = "Show More";
+
 /* Navigation title */
 "reader.comments.title" = "Comments";
 
@@ -10919,6 +11663,12 @@ but tapping on this button will remove their like from the post. */
 
 /* Header view channel (filter) */
 "reader.discover.channel.firstPost" = "First Posts";
+
+/* Header view channel (filter) */
+"reader.discover.channel.forYou" = "For You";
+
+/* Header view channel (filter) */
+"reader.discover.channel.freshlyPresed" = "Freshly Pressed";
 
 /* Header view channel (filter) */
 "reader.discover.channel.latest" = "Latest";
@@ -11083,8 +11833,14 @@ Example: given a notice format "Following %@" and empty site name, this will be 
 /* Context menu action */
 "reader.postContextMenu.summarize" = "Summarise";
 
+/* Context menu action to translate post content */
+"reader.postContextMenu.translate" = "Translate";
+
 /* Context menu action */
 "reader.postContextMenu.viewInBrowser" = "View in Browser";
+
+/* Context menu action */
+"reader.postContextMenu.viewSite" = "View Site";
 
 /* Reader post details view placeholder when blog name not avail */
 "reader.postDetails.blog" = "blog";
@@ -11127,12 +11883,6 @@ Example: given a notice format "Following %@" and empty site name, this will be 
 
 /* Describes that the slider is used to customize the text size in the Reader. */
 "reader.preferences.control.sizeSlider.description" = "Size";
-
-/* Text for a small label in the navigation bar that hints that this is an experimental feature.
-
-The enclosing angled brackets ('<' and '>') are decorative and only intended as a flavor.
-Feel free to replace it with other bracket types that you think looks better for the locale. */
-"reader.preferences.navBar.experimental.label" = "<Experimental>";
 
 /* Description text for the preview section of Reader Preferences */
 "reader.preferences.preview.body.text" = "Choose your colours, fonts, and sizes. Preview your selection here, and read posts with your styles once you're done.";
@@ -11185,6 +11935,12 @@ Feel free to replace it with other bracket types that you think looks better for
 /* Used in multiple contexts, usually as a screen title */
 "reader.recent.title" = "Recent";
 
+/* Body text of alert informing users about the Reader Save for Later feature. */
+"reader.saveForLaterAlert.description" = "Save this post, and come back to read it whenever you'd like. It will only be available on this device — saved posts don't sync to other devices.";
+
+/* Title of alert informing users about the Reader Save for Later feature. */
+"reader.saveForLaterAlert.title" = "Save Posts for Later";
+
 /* Used in multiple contexts, usually as a screen title */
 "reader.saved.title" = "Saved";
 
@@ -11196,6 +11952,9 @@ Feel free to replace it with other bracket types that you think looks better for
 
 /* Title of a Reader tab showing Posts matching a user's search query */
 "reader.search.tab.posts" = "Posts";
+
+/* Title of a Reader tab showing Sites matching a user's search query */
+"reader.search.tab.sites" = "Sites";
 
 /* Title of the Reader's search feature
    Used in multiple contexts, usually as a screen title */
@@ -11485,6 +12244,9 @@ Feel free to replace it with other bracket types that you think looks better for
 
 /* A shared button title used in different contexts */
 "shared.button.edit" = "Edit";
+
+/* A shared button title used in different contexts */
+"shared.button.notNow" = "Not Now";
 
 /* A shared button title used in different contexts */
 "shared.button.ok" = "OK";
@@ -11846,6 +12608,9 @@ Feel free to replace it with other bracket types that you think looks better for
 /* The message displayed when a plugin has no description */
 "sitePluginsList.item.noDescriptionAvailable" = "The plugin author did not provide a description for this plugin.";
 
+/* The plugin version displayed in the plugins list. The first argument is plugin version */
+"sitePluginsList.item.version" = "Version: %@";
+
 /* Button to activate a plugin */
 "sitePluginsList.itemAction.activate" = "Activate";
 
@@ -11860,6 +12625,15 @@ Feel free to replace it with other bracket types that you think looks better for
 
 /* Title for screen to select the privacy options for a blog */
 "siteSettings.privacy.title" = "Privacy";
+
+/* Explanation for why the 'Use theme styles' toggle is disabled when the site doesn't have a block theme */
+"siteSettings.themeStyles.footer.blockThemeSuggested" = "Your site isn't using a Block Theme, so the editor might not match your content correctly. If things aren't looking right, you can disable editor styles.";
+
+/* Explanation for the option to enable theme styles when the feature is available */
+"siteSettings.themeStyles.footer.enabled" = "Make the block editor look like your theme.";
+
+/* Explanation for why the 'Use theme styles' toggle is disabled when the site doesn't have the Gutenberg plugin */
+"siteSettings.themeStyles.footer.gutenbergRequired" = "Install the Gutenberg Plugin on your site to activate theme style support.";
 
 /* Format string for adding a new taxonomy term. %1$@ is the taxonomy name. */
 "siteTaxonomy.addNew.format" = "Add %1$@";
@@ -11926,6 +12700,9 @@ Feel free to replace it with other bracket types that you think looks better for
 
 /* The number of connected accounts on a third party sharing service connected to the user's blog. The '%d' is a placeholder for the number of accounts. */
 "socialSharing.connectionDetails.nAccount" = "%d accounts";
+
+/* Title of Ads stats tab. */
+"stats.dashboard.tab.ads" = "Ads";
 
 /* Title of Subscribers stats tab. */
 "stats.dashboard.tab.subscribers" = "Subscribers";
@@ -12290,6 +13067,15 @@ Feel free to replace it with other bracket types that you think looks better for
 /* Footer text explaining the log retention policy in the Activity Logs screen. */
 "support.activityLogs.sectionFooter" = "Logs for up to seven days are saved.";
 
+/* Button title to enable extensive logging. */
+"support.alert.enable" = "Enable";
+
+/* Alert message explaining extensive logging helps with troubleshooting but may impact performance. */
+"support.alert.extensiveLogging.message" = "This helps with troubleshooting but may impact performance. You can turn it off anytime.";
+
+/* Alert title when confirming extensive logging activation. */
+"support.alert.extensiveLogging.title" = "Enable Extensive Logging?";
+
 /* Dismiss the current view */
 "support.button.close.title" = "Done";
 
@@ -12391,6 +13177,12 @@ Feel free to replace it with other bracket types that you think looks better for
 
 /* Support email label. */
 "support.row.email.title" = "Email";
+
+/* Option in Support view to enable extensive logging. */
+"support.row.extensiveLogging.title" = "Extensive Logging";
+
+/* Option in Support view to access extensive logs. */
+"support.row.extensiveLogs.title" = "Extensive Logs";
 
 /* Option in Support view to launch the Help Center. */
 "support.row.helpCenter.title" = "WordPress Help Centre";

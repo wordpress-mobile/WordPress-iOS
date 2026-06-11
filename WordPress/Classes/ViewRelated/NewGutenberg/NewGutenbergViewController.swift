@@ -60,6 +60,15 @@ class NewGutenbergViewController: PostGBKEditorViewController, PostEditor, Publi
 
     // TODO: reimplemet
 //    internal private(set) var contentInfo: ContentInfo?
+    private var isNavigationEnabled = true {
+        didSet { updateHistoryButtons() }
+    }
+    private var isUndoButtonDisabled = true {
+        didSet { updateHistoryButtons() }
+    }
+    private var isRedoButtonDisabled = true {
+        didSet { updateHistoryButtons() }
+    }
 
     // MARK: - GutenbergKit
 
@@ -154,28 +163,34 @@ class NewGutenbergViewController: PostGBKEditorViewController, PostEditor, Publi
 
     private func gutenbergDidRequestToggleRedoButton(_ isDisabled: Bool) {
         DispatchQueue.main.async {
-            UIView.animate(withDuration: 0.2) {
-                self.navigationBarManager.redoButton.isUserInteractionEnabled = isDisabled ? false : true
-                self.navigationBarManager.redoButton.alpha = isDisabled ? 0.3 : 1.0
-            }
+            self.isRedoButtonDisabled = isDisabled
         }
     }
 
     private func gutenbergDidRequestToggleUndoButton(_ isDisabled: Bool) {
         DispatchQueue.main.async {
-            UIView.animate(withDuration: 0.2) {
-                self.navigationBarManager.undoButton.isUserInteractionEnabled = isDisabled ? false : true
-                self.navigationBarManager.undoButton.alpha = isDisabled ? 0.3 : 1.0
-            }
+            self.isUndoButtonDisabled = isDisabled
         }
     }
 
     private func setNavigationItemsEnabled(_ enabled: Bool) {
+        isNavigationEnabled = enabled
         navigationBarManager.closeButton.isEnabled = enabled
         navigationBarManager.moreButton.isEnabled = enabled
-        navigationBarManager.publishButton.isEnabled = enabled
-        navigationBarManager.undoButton.isEnabled = enabled
-        navigationBarManager.redoButton.isEnabled = enabled
+        navigationBarManager.publishButton.isEnabled = enabled && isPublishButtonEnabled
+    }
+
+    private func updateHistoryButtons() {
+        updateHistoryButton(navigationBarManager.undoButton, isDisabled: !isNavigationEnabled || isUndoButtonDisabled)
+        updateHistoryButton(navigationBarManager.redoButton, isDisabled: !isNavigationEnabled || isRedoButtonDisabled)
+    }
+
+    private func updateHistoryButton(_ button: UIButton, isDisabled: Bool) {
+        let isEnabled = !isDisabled
+        UIView.animate(withDuration: 0.2) {
+            button.isEnabled = isEnabled
+            button.alpha = isEnabled ? 1.0 : 0.3
+        }
     }
 
     private func performAutoSave() {

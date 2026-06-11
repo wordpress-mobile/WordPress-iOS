@@ -12,8 +12,6 @@ extension DashboardCard: BlogDashboardPersonalizable {
             return "scheduled-posts-card-enabled-site-settings"
         case .blaze:
             return "blaze-card-enabled-site-settings"
-        case .bloganuaryNudge:
-            return "bloganuary-nudge-card-enabled-site-settings"
         case .prompts:
             // Warning: there is an irregularity with the prompts key that doesn't
             // have a "-card" component in the key name. Keeping it like this to
@@ -29,7 +27,8 @@ extension DashboardCard: BlogDashboardPersonalizable {
             return "activity-log-card-enabled-site-settings"
         case .pages:
             return "pages-card-enabled-site-settings"
-        case .dynamic, .jetpackBadge, .jetpackInstall, .jetpackSocial, .failure, .ghost, .personalize, .empty, .extensiveLogging:
+        case .dynamic, .jetpackBadge, .jetpackInstall, .jetpackSocial, .failure, .ghost, .personalize, .empty,
+            .extensiveLogging:
             return nil
         }
     }

@@ -1,21 +1,18 @@
-¿Quién es quién en tu web? Ya lo sabes: las notificaciones push ahora usan gravatares para que puedas ver quién ha comentado o interactuado con tu contenido. El registro de actividad también muestra cuándo se actualizó tu sitio con agentes de IA.
+Si tienes un sitio autoalojado, ahora iniciarás sesión en la aplicación con una contraseña de aplicación. Si no tienes uno, te lo crearemos automáticamente para que esté listo cuando lo necesites.
 
-Si pensabas que nuestras últimas actualizaciones de Estadísticas eran increíbles, no son nada en comparación con lo que está por venir.
+Hemos añadido el recorte inteligente de las imágenes destacadas en el feed del Lector. De esa manera, las imágenes de personas no se verán cortadas la cabeza. Muy preferido.
 
-- Ahora, la fecha de hoy se incluye en intervalos como «Últimos 7 días». También hemos añadido un nuevo intervalo de «Últimos 14 días».
-- Las fechas incompletas, incluso la de hoy, se muestran en el gráfico de líneas como una línea de puntos. También puedes verlas más fácilmente en la vista de gráfico de barras.
-- Ahora que hablamos de los gráficos de barras, al tocar una barra se mostrarán los datos de esa fecha, lo hace que sea más fácil desplazarse por los datos de varios días. Ah, y al tocar una barra ya no se seleccionará la barra que hay al lado.
-- Es posible que notes cambios visuales como una cabecera del gráfico más pequeña, fuentes más pequeñas en las pestañas y espacio reducido aquí y allá. El estilo es más minimalista.
+Ahora hay un cuadro de diálogo de confirmación para cuando marques una fuente de tráfico de referencia como spam. Debería ser muy, muy difícil hacerlo por accidente.
 
-Mientras hacíamos esto, también hemos introducido cambios en el Lector. (Por cierto, ninguno de ellos está relacionado con la lectura).
+Como parte de esta actualización, también hemos eliminado varios errores.
 
-- Cuando ves una imagen en un lightbox, deslizar hacia abajo la descartará, incluso cuando hayas acercado la imagen.
-- Hemos corregido el color de los enlaces en los comentarios y en el modo oscuro en los temas personalizados. Ahora se ve mejor.
-- Puedes ver galerías de medios en modo de pantalla completa. Solo tienes que deslizar a la derecha o a la izquierda para ver todas las imágenes.
-
-Y como todavía teníamos un poco de tiempo libre, también arreglamos algunos detalles que nos estaban molestando.
-
-- Hemos actualizado los iconos de las flechas y el espaciado en la pantalla de notificaciones.
-- En los ajustes de entradas, la tarjeta de compartir en redes sociales solo muestra las plataformas compatibles con la aplicación.
-- Las entradas nuevas usan el formato de entrada predeterminado en lugar de la versión estándar. Puedes actualizar este formato en los ajustes de tu sitio.
-- Si tu sitio está autoalojado con XML-RPC inhabilitado, puedes ver entradas y páginas en la aplicación. Eso es muy importante, si se nos permite decirlo.
+- La etiqueta de zona horaria en la pantalla de estadísticas ya no muestra la hora estándar durante el horario de verano. (Gracias por la captura, @btraviswright!)
+- La pantalla de artículos ahora muestra los comentarios del lector cuando se publican desde la sección integrada.
+- El botón Suscripción funciona correctamente en las entradas de Freshly Pressed, por lo que puedes suscribirte a un feed desde dentro de una entrada. Rápido, fácil y muy fresco.
+- Los enlaces de las notas a pie de página en el Lector ahora funcionan como deben y saltan a la ubicación correcta cuando los tocas.
+- En los comentarios del lector, el estado vacío desaparece después de publicar un comentario. Los comentarios en caché también desaparecerán cuando se eliminen, incluso cuando utilices la acción de deslizar. Hasta nunca.
+- Hemos corregido diversos problemas de diseño y visibilidad, como los estilos de los botones, los separadores de comentarios en modo oscuro y los controles para la reproducción automática de vídeos.
+- En el Lector, hemos corregido un par de problemas con los ajustes de notificaciones. Ahora se ocultan cuando no estás suscrito y se muestran correctamente cuando te suscribes.
+- Hemos corregido un problema por el que la vista de pie de página en la edición del menú no cambiaba de tamaño. Como resultado, los botones de acción ahora son legibles en idiomas distintos al inglés. Muy bueno.
+- Hemos resuelto un problema con avatares incorrectos en las notificaciones. Si cancelas la descarga de la imagen, esta no aparecerá en la aplicación.
+- Hemos eliminado el enlace X no funcional en la pantalla «Acerca de». (Grita a @zynp-KC por informar!)

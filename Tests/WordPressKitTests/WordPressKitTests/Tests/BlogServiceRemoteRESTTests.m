@@ -13,7 +13,7 @@ static NSTimeInterval const TestExpectationTimeout = 5;
 
 @implementation BlogServiceRemoteRESTTests
 
-#pragma mark - Overriden Methods
+#pragma mark - Overridden Methods
 
 - (void)tearDown
 {

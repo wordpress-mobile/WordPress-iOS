@@ -52,12 +52,16 @@ open class DiscussionSettingsViewController: UITableViewController {
     // MARK: - Persistance!
     private func refreshSettings() {
         let service = BlogService(coreDataStack: ContextManager.shared)
-        service.syncSettings(for: blog, success: { [weak self] in
-            self?.tableView.reloadData()
-            DDLogInfo("Reloaded Settings")
-        }, failure: { (error: Error) in
-            DDLogError("Error while sync'ing blog settings: \(error)")
-        })
+        service.syncSettings(
+            for: blog,
+            success: { [weak self] in
+                self?.tableView.reloadData()
+                DDLogInfo("Reloaded Settings")
+            },
+            failure: { (error: Error) in
+                DDLogError("Error while sync'ing blog settings: \(error)")
+            }
+        )
     }
 
     private func setNeedsChangeSettings() {
@@ -74,11 +78,15 @@ open class DiscussionSettingsViewController: UITableViewController {
         navigationItem.rightBarButtonItem = .activityIndicator
 
         let service = BlogService(coreDataStack: ContextManager.shared)
-        service.updateSettings(for: blog, success: { [weak self] in
-            self?.didFinishChangingSettings(nil)
-        }, failure: { [weak self] error -> Void in
-            self?.didFinishChangingSettings(error)
-        })
+        service.updateSettings(
+            for: blog,
+            success: { [weak self] in
+                self?.didFinishChangingSettings(nil)
+            },
+            failure: { [weak self] error -> Void in
+                self?.didFinishChangingSettings(error)
+            }
+        )
     }
 
     private func didFinishChangingSettings(_ error: Error?) {
@@ -90,7 +98,11 @@ open class DiscussionSettingsViewController: UITableViewController {
         }
         if let error {
             DDLogError("Error while persisting settings: \(error)")
-            let alert = UIAlertController(title: Strings.errorTitle, message: error.localizedDescription, preferredStyle: .alert)
+            let alert = UIAlertController(
+                title: Strings.errorTitle,
+                message: error.localizedDescription,
+                preferredStyle: .alert
+            )
             alert.addAction(.init(title: SharedStrings.Button.ok, style: .default, handler: nil))
             present(alert, animated: true)
         }
@@ -98,11 +110,11 @@ open class DiscussionSettingsViewController: UITableViewController {
 
     // MARK: - UITableViewDataSoutce Methods
     open override func numberOfSections(in tableView: UITableView) -> Int {
-        return sections.count
+        sections.count
     }
 
     open override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return sections[section].rows.count
+        sections[section].rows.count
     }
 
     open override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
@@ -120,14 +132,19 @@ open class DiscussionSettingsViewController: UITableViewController {
     }
 
     open override func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
-        return sections[section].headerText
+        sections[section].headerText
     }
 
     open override func tableView(_ tableView: UITableView, titleForFooterInSection section: Int) -> String? {
-        return sections[section].footerText
+        sections[section].footerText
     }
 
-    open override func tableView(_ tableView: UITableView, willDisplayFooterView view: UIView, forSection section: Int) {
+    open override func tableView(
+        _ tableView: UITableView,
+        willDisplayFooterView view: UIView,
+        forSection section: Int
+    ) // swiftlint:disable:next opening_brace
+    {
         WPStyleGuide.configureTableViewSectionFooter(view)
     }
 
@@ -138,7 +155,7 @@ open class DiscussionSettingsViewController: UITableViewController {
 
     // MARK: - Cell Setup Helpers
     private func rowAtIndexPath(_ indexPath: IndexPath) -> Row {
-        return sections[indexPath.section].rows[indexPath.row]
+        sections[indexPath.section].rows[indexPath.row]
     }
 
     private func cellForRow(_ row: Row, tableView: UITableView) -> UITableViewCell {
@@ -174,7 +191,7 @@ open class DiscussionSettingsViewController: UITableViewController {
             return
         }
         didChangeSetting("allow_comments", value: enabled as Any)
-        settings.commentsAllowed = enabled
+        settings.commentsAllowed = NSNumber(value: enabled)
     }
 
     private func pressedPingbacksInbound(_ payload: AnyObject?) {
@@ -182,7 +199,7 @@ open class DiscussionSettingsViewController: UITableViewController {
             return
         }
         didChangeSetting("receive_pingbacks", value: enabled as Any)
-        settings.pingbackInboundEnabled = enabled
+        settings.pingbackInboundEnabled = NSNumber(value: enabled)
     }
 
     private func pressedPingbacksOutbound(_ payload: AnyObject?) {
@@ -215,9 +232,15 @@ open class DiscussionSettingsViewController: UITableViewController {
         pickerViewController.switchVisible = true
         pickerViewController.switchOn = settings.commentsCloseAutomatically
         pickerViewController.switchText = NSLocalizedString("Automatically Close", comment: "Discussion Settings")
-        pickerViewController.selectionText = NSLocalizedString("Close after", comment: "Close comments after a given number of days")
+        pickerViewController.selectionText = NSLocalizedString(
+            "Close after",
+            comment: "Close comments after a given number of days"
+        )
         pickerViewController.selectionFormat = NSLocalizedString("%d days", comment: "Number of days")
-        pickerViewController.pickerHint = NSLocalizedString("Automatically close comments on content after a certain number of days.", comment: "Discussion Settings: Comments Auto-close")
+        pickerViewController.pickerHint = NSLocalizedString(
+            "Automatically close comments on content after a certain number of days.",
+            comment: "Discussion Settings: Comments Auto-close"
+        )
         pickerViewController.pickerFormat = NSLocalizedString("%d days", comment: "Number of days")
         pickerViewController.pickerMinimumValue = commentsAutocloseMinimumValue
         pickerViewController.pickerMaximumValue = commentsAutocloseMaximumValue
@@ -271,7 +294,10 @@ open class DiscussionSettingsViewController: UITableViewController {
         pickerViewController.switchOn = settings.commentsPagingEnabled
         pickerViewController.switchText = NSLocalizedString("Paging", comment: "Discussion Settings")
         pickerViewController.selectionText = NSLocalizedString("Comments per page", comment: "A label title.")
-        pickerViewController.pickerHint = NSLocalizedString("Break comment threads into multiple pages.", comment: "Text snippet summarizing what comment paging does.")
+        pickerViewController.pickerHint = NSLocalizedString(
+            "Break comment threads into multiple pages.",
+            comment: "Text snippet summarizing what comment paging does."
+        )
         pickerViewController.pickerMinimumValue = commentsPagingMinimumValue
         pickerViewController.pickerMaximumValue = commentsPagingMaximumValue
         pickerViewController.pickerSelectedValue = settings.commentsPageSize as? Int
@@ -307,7 +333,10 @@ open class DiscussionSettingsViewController: UITableViewController {
         pickerViewController.title = NSLocalizedString("Links in comments", comment: "Comments Paging")
         pickerViewController.switchVisible = false
         pickerViewController.selectionText = NSLocalizedString("Links in comments", comment: "A label title")
-        pickerViewController.pickerHint = NSLocalizedString("Require manual approval for comments that include more than this number of links.", comment: "An explaination of a setting.")
+        pickerViewController.pickerHint = NSLocalizedString(
+            "Require manual approval for comments that include more than this number of links.",
+            comment: "An explanation of a setting."
+        )
         pickerViewController.pickerMinimumValue = commentsLinksMinimumValue
         pickerViewController.pickerMaximumValue = commentsLinksMaximumValue
         pickerViewController.pickerSelectedValue = settings.commentsMaximumLinks as? Int
@@ -322,9 +351,18 @@ open class DiscussionSettingsViewController: UITableViewController {
         let moderationKeys = settings.commentsModerationKeys
         let settingsViewController = SettingsListEditorViewController(collection: moderationKeys)
         settingsViewController.title = NSLocalizedString("Hold for Moderation", comment: "Moderation Keys Title")
-        settingsViewController.insertTitle = NSLocalizedString("New Moderation Word", comment: "Moderation Keyword Insertion Title")
-        settingsViewController.editTitle = NSLocalizedString("Edit Moderation Word", comment: "Moderation Keyword Edition Title")
-        settingsViewController.footerText = NSLocalizedString("When a comment contains any of these words in its content, name, URL, e-mail or IP, it will be held in the moderation queue. You can enter partial words, so \"press\" will match \"WordPress\".", comment: "Text rendered at the bottom of the Discussion Moderation Keys editor")
+        settingsViewController.insertTitle = NSLocalizedString(
+            "New Moderation Word",
+            comment: "Moderation Keyword Insertion Title"
+        )
+        settingsViewController.editTitle = NSLocalizedString(
+            "Edit Moderation Word",
+            comment: "Moderation Keyword Edition Title"
+        )
+        settingsViewController.footerText = NSLocalizedString(
+            "When a comment contains any of these words in its content, name, URL, e-mail or IP, it will be held in the moderation queue. You can enter partial words, so \"press\" will match \"WordPress\".",
+            comment: "Text rendered at the bottom of the Discussion Moderation Keys editor"
+        )
         settingsViewController.onChange = { [weak self] (updated: Set<String>) in
             self?.settings.commentsModerationKeys = updated
             self?.didChangeSetting("comments_hold_for_moderation", value: updated.count as Any)
@@ -336,9 +374,18 @@ open class DiscussionSettingsViewController: UITableViewController {
         let blocklistKeys = settings.commentsBlocklistKeys
         let settingsViewController = SettingsListEditorViewController(collection: blocklistKeys)
         settingsViewController.title = NSLocalizedString("Blocklist", comment: "Blocklist Title")
-        settingsViewController.insertTitle = NSLocalizedString("New Blocklist Word", comment: "Blocklist Keyword Insertion Title")
-        settingsViewController.editTitle = NSLocalizedString("Edit Blocklist Word", comment: "Blocklist Keyword Edition Title")
-        settingsViewController.footerText = NSLocalizedString("When a comment contains any of these words in its content, name, URL, e-mail, or IP, it will be marked as spam. You can enter partial words, so \"press\" will match \"WordPress\".", comment: "Text rendered at the bottom of the Discussion Blocklist Keys editor")
+        settingsViewController.insertTitle = NSLocalizedString(
+            "New Blocklist Word",
+            comment: "Blocklist Keyword Insertion Title"
+        )
+        settingsViewController.editTitle = NSLocalizedString(
+            "Edit Blocklist Word",
+            comment: "Blocklist Keyword Edition Title"
+        )
+        settingsViewController.footerText = NSLocalizedString(
+            "When a comment contains any of these words in its content, name, URL, e-mail, or IP, it will be marked as spam. You can enter partial words, so \"press\" will match \"WordPress\".",
+            comment: "Text rendered at the bottom of the Discussion Blocklist Keys editor"
+        )
         settingsViewController.onChange = { [weak self] (updated: Set<String>) in
             self?.settings.commentsBlocklistKeys = updated
             self?.didChangeSetting("comments_block_list", value: updated.count as Any)
@@ -353,33 +400,42 @@ open class DiscussionSettingsViewController: UITableViewController {
 
     // MARK: - Computed Properties
     private var sections: [Section] {
-        return [postsSection, commentsSection, otherSection]
+        [postsSection, commentsSection, otherSection]
     }
 
     private var postsSection: Section {
         let headerText = NSLocalizedString("Defaults for New Posts", comment: "Discussion Settings: Posts Section")
-        let footerText = NSLocalizedString("You can override these settings for individual posts.", comment: "Discussion Settings: Footer Text")
+        let footerText = NSLocalizedString(
+            "You can override these settings for individual posts.",
+            comment: "Discussion Settings: Footer Text"
+        )
         let rows = [
-            Row(style: .switch,
+            Row(
+                style: .switch,
                 title: NSLocalizedString("Allow Comments", comment: "Settings: Comments Enabled"),
-                boolValue: self.settings.commentsAllowed,
+                boolValue: self.settings.commentsAllowed?.boolValue ?? false,
                 handler: { [weak self] in
                     self?.pressedCommentsAllowed($0)
-                }),
+                }
+            ),
 
-            Row(style: .switch,
+            Row(
+                style: .switch,
                 title: NSLocalizedString("Send Pingbacks", comment: "Settings: Sending Pingbacks"),
                 boolValue: self.settings.pingbackOutboundEnabled,
                 handler: { [weak self] in
                     self?.pressedPingbacksOutbound($0)
-                }),
+                }
+            ),
 
-            Row(style: .switch,
+            Row(
+                style: .switch,
                 title: NSLocalizedString("Receive Pingbacks", comment: "Settings: Receiving Pingbacks"),
-                boolValue: self.settings.pingbackInboundEnabled,
+                boolValue: self.settings.pingbackInboundEnabled?.boolValue ?? false,
                 handler: { [weak self] in
                     self?.pressedPingbacksInbound($0)
-                })
+                }
+            )
         ]
 
         return Section(headerText: headerText, footerText: footerText, rows: rows)
@@ -388,61 +444,77 @@ open class DiscussionSettingsViewController: UITableViewController {
     private var commentsSection: Section {
         let headerText = NSLocalizedString("Comments", comment: "Settings: Comment Sections")
         let rows = [
-            Row(style: .switch,
+            Row(
+                style: .switch,
                 title: NSLocalizedString("Require name and email", comment: "Settings: Comments Approval settings"),
                 boolValue: self.settings.commentsRequireNameAndEmail,
                 handler: { [weak self] in
                     self?.pressedRequireNameAndEmail($0)
-                }),
+                }
+            ),
 
-            Row(style: .switch,
+            Row(
+                style: .switch,
                 title: NSLocalizedString("Require users to log in", comment: "Settings: Comments Approval settings"),
                 boolValue: self.settings.commentsRequireRegistration,
                 handler: { [weak self] in
                     self?.pressedRequireRegistration($0)
-                }),
+                }
+            ),
 
-            Row(style: .value1,
+            Row(
+                style: .value1,
                 title: NSLocalizedString("Close Commenting", comment: "Settings: Close comments after X period"),
                 details: self.detailsForCloseCommenting,
                 handler: { [weak self] in
                     self?.pressedCloseCommenting($0)
-                }),
+                }
+            ),
 
-            Row(style: .value1,
+            Row(
+                style: .value1,
                 title: NSLocalizedString("Sort By", comment: "Settings: Comments Sort Order"),
                 details: self.detailsForSortBy,
                 handler: { [weak self] in
                     self?.pressedSortBy($0)
-                }),
+                }
+            ),
 
-            Row(style: .value1,
+            Row(
+                style: .value1,
                 title: NSLocalizedString("Threading", comment: "Settings: Comments Threading preferences"),
                 details: self.detailsForThreading,
                 handler: { [weak self] in
                     self?.pressedThreading($0)
-                }),
+                }
+            ),
 
-            Row(style: .value1,
+            Row(
+                style: .value1,
                 title: NSLocalizedString("Paging", comment: "Settings: Comments Paging preferences"),
                 details: self.detailsForPaging,
                 handler: { [weak self] in
                     self?.pressedPaging($0)
-                }),
+                }
+            ),
 
-            Row(style: .value1,
+            Row(
+                style: .value1,
                 title: NSLocalizedString("Automatically Approve", comment: "Settings: Comments Approval settings"),
                 details: self.detailsForAutomaticallyApprove,
                 handler: { [weak self] in
                     self?.pressedAutomaticallyApprove($0)
-                }),
+                }
+            ),
 
-            Row(style: .value1,
+            Row(
+                style: .value1,
                 title: NSLocalizedString("Links in comments", comment: "Settings: Comments Approval settings"),
                 details: self.detailsForLinksInComments,
                 handler: { [weak self] in
                     self?.pressedLinksInComments($0)
-                }),
+                }
+            )
         ]
 
         return Section(headerText: headerText, rows: rows)
@@ -450,13 +522,17 @@ open class DiscussionSettingsViewController: UITableViewController {
 
     private var otherSection: Section {
         let rows = [
-            Row(style: .value1,
+            Row(
+                style: .value1,
                 title: NSLocalizedString("Hold for Moderation", comment: "Settings: Comments Moderation"),
-                handler: self.pressedModeration),
+                handler: self.pressedModeration
+            ),
 
-            Row(style: .value1,
+            Row(
+                style: .value1,
                 title: NSLocalizedString("Blocklist", comment: "Settings: Comments Blocklist"),
-                handler: self.pressedBlocklist)
+                handler: self.pressedBlocklist
+            )
         ]
 
         return Section(rows: rows)
@@ -474,7 +550,7 @@ open class DiscussionSettingsViewController: UITableViewController {
     }
 
     private var detailsForSortBy: String {
-        return settings.commentsSorting.description
+        settings.commentsSorting.description
     }
 
     private var detailsForThreading: String {
@@ -537,7 +613,13 @@ open class DiscussionSettingsViewController: UITableViewController {
         let handler: Handler?
         var boolValue: Bool?
 
-        init(style: Style, title: String? = nil, details: String? = nil, boolValue: Bool? = nil, handler: Handler? = nil) {
+        init(
+            style: Style,
+            title: String? = nil,
+            details: String? = nil,
+            boolValue: Bool? = nil,
+            handler: Handler? = nil
+        ) {
             self.style = style
             self.title = title
             self.details = details
@@ -558,7 +640,7 @@ open class DiscussionSettingsViewController: UITableViewController {
 
     // MARK: - Computed Properties
     private var settings: BlogSettings {
-        return blog.settings!
+        blog.settings!
     }
 
     // MARK: - Typealiases
@@ -576,5 +658,9 @@ open class DiscussionSettingsViewController: UITableViewController {
 }
 
 private enum Strings {
-    static let errorTitle = NSLocalizedString("discussionSettings.saveErrorTitle", value: "Failed to save settings", comment: "Error tilte")
+    static let errorTitle = NSLocalizedString(
+        "discussionSettings.saveErrorTitle",
+        value: "Failed to save settings",
+        comment: "Error tilte"
+    )
 }

@@ -223,7 +223,7 @@ private extension JetpackWindowManager {
     ///   2. When the Load WordPress screen is shown.
     ///
     /// Note: We should remove this method when the migration phase is concluded and we no longer need
-    /// to perfom the migration.
+    /// to perform the migration.
     ///
     /// - Parameter navigationClosure: The closure containing logic that eventually calls the `show` method.
     func performSafeRootNavigation(with navigationClosure: @escaping () -> Void) {

@@ -190,7 +190,7 @@ import UniformTypeIdentifiers
         }
     }
 
-    // MARK: - Overriden Methods
+    // MARK: - Overridden Methods
     open override var intrinsicContentSize: CGSize {
         guard let maxWidth = preferredMaxLayoutWidth else {
             return super.intrinsicContentSize

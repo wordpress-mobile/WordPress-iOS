@@ -1,6 +1,7 @@
 import Foundation
 import WordPressData
 import WordPressKit
+import WordPressShared
 
 /// Provides service remote instances for CommentService
 @objc public class CommentServiceRemoteFactory: NSObject {
@@ -9,7 +10,13 @@ import WordPressKit
     ///
     /// - Parameter blog: A valid Blog object
     /// - Returns: A CommentServiceRemote instance
-    @objc public func remote(blog: Blog) -> CommentServiceRemote? {
+    @objc public func remote(blog: Blog?) -> CommentServiceRemote? {
+        // Workaround for now: `Comment.blog` might be nil, so a nil blog can reach here.
+        guard let blog else {
+            wpAssertionFailure("Attempting to create a CommentServiceRemote for a nil blog")
+            return nil
+        }
+
         if blog.supports(.wpComRESTAPI),
            let api = blog.wordPressComRestApi,
            let dotComID = blog.dotComID {

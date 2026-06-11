@@ -58,7 +58,7 @@ extension MediaLibraryTestSupport {
     }
 
     private func handleREST(request: URLRequest, failAtPage pageToFail: Int) -> HTTPStubsResponse {
-        let cursor = request.url?.query("page_handle") ?? nil
+        let cursor = request.url?.query("page_handle")
         let number = request.url?.query("number").flatMap(Int.init(_:)) ?? 100
 
         let cursorIndex = media.firstIndex { $0.cusor == cursor } ?? 0

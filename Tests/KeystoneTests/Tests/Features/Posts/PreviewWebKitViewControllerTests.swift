@@ -32,7 +32,7 @@ class PreviewWebKitViewControllerTests: CoreDataTestCase {
         XCTAssertFalse(items.contains(vc.safariButton),
                        "Preview toolbar for draft should not contain Safari button.")
         XCTAssertFalse(items.contains(vc.backButton), "Preview toolbar for draft should not contain back button.")
-        XCTAssertFalse(items.contains(vc.forwardButton), "Preview toolbar for draft should not contain foward button.")
+        XCTAssertFalse(items.contains(vc.forwardButton), "Preview toolbar for draft should not contain forward button.")
         XCTAssertTrue(items.contains(vc.previewButton), "Preview toolbar for draft should contain preview button.")
     }
 

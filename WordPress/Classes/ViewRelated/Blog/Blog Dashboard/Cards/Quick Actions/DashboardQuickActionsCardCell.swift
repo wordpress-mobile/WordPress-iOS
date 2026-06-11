@@ -54,14 +54,16 @@ final class DashboardQuickActionsCardCell: UICollectionViewCell, Reusable, UITab
             self?.deselectCurrentCell()
         }
 
-        viewModel.$items.sink { [weak self] in
-            guard let self else { return }
-            self.items = $0
-            self.tableView.reloadData()
-            self.setNeedsLayout()
-            self.layoutIfNeeded()
-            self.parentViewController?.collectionView.collectionViewLayout.invalidateLayout()
-        }.store(in: &cancellables)
+        viewModel.$items
+            .sink { [weak self] in
+                guard let self else { return }
+                self.items = $0
+                self.tableView.reloadData()
+                self.setNeedsLayout()
+                self.layoutIfNeeded()
+                self.parentViewController?.collectionView.collectionViewLayout.invalidateLayout()
+            }
+            .store(in: &cancellables)
     }
 
     private func deselectCurrentCell() {
@@ -77,7 +79,9 @@ final class DashboardQuickActionsCardCell: UICollectionViewCell, Reusable, UITab
     }
 
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCell(withIdentifier: Constants.cellReuseID, for: indexPath) as! DashboardQuickActionCell
+        let cell =
+            tableView.dequeueReusableCell(withIdentifier: Constants.cellReuseID, for: indexPath)
+            as! DashboardQuickActionCell
         cell.configure(items[indexPath.row])
         cell.backgroundColor = .clear
         cell.accessoryType = .disclosureIndicator
@@ -104,6 +108,16 @@ final class DashboardQuickActionsCardCell: UICollectionViewCell, Reusable, UITab
                 parentViewController.show(viewController, sender: nil)
             }
         case .media:
+            if let v2 = MediaLibraryRouting.makeViewController(
+                for: blog,
+                baseAnalyticsProperties: [
+                    WPAppAnalyticsKeyTapSource: "quick_actions",
+                    WPAppAnalyticsKeyTabSource: "dashboard"
+                ]
+            ) {
+                parentViewController.show(v2, sender: nil)
+                return
+            }
             trackQuickActionsEvent(.openedMediaLibrary, blog: blog)
             let controller = SiteMediaViewController(blog: blog)
             parentViewController.show(controller, sender: nil)

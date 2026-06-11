@@ -5,11 +5,11 @@ import CoreData
 public class BloggingPrompt: NSManagedObject {
 
     @nonobjc public class func fetchRequest() -> NSFetchRequest<BloggingPrompt> {
-        return NSFetchRequest<BloggingPrompt>(entityName: Self.classNameWithoutNamespaces())
+        NSFetchRequest<BloggingPrompt>(entityName: Self.classNameWithoutNamespaces())
     }
 
     @nonobjc public class func newObject(in context: NSManagedObjectContext) -> BloggingPrompt? {
-        return NSEntityDescription.insertNewObject(forEntityName: Self.entityName(), into: context) as? BloggingPrompt
+        NSEntityDescription.insertNewObject(forEntityName: Self.entityName(), into: context) as? BloggingPrompt
     }
 
     public override func awakeFromInsert() {
@@ -36,14 +36,10 @@ public class BloggingPrompt: NSManagedObject {
         self.answerCount = Int32(remotePrompt.answeredUsersCount)
         self.displayAvatarURLs = remotePrompt.answeredUserAvatarURLs
         self.additionalPostTags = [String]() // reset previously additional tags.
-
-        if let brandContext = BrandContext(with: remotePrompt) {
-            brandContext.configure(self)
-        }
     }
 
     public func textForDisplay() -> String {
-        return text.stringByDecodingXMLCharacters().trim()
+        text.stringByDecodingXMLCharacters().trim()
     }
 
     /// Convenience method that checks if the given date is within the same day of the prompt's date without considering the timezone information.
@@ -55,7 +51,7 @@ public class BloggingPrompt: NSManagedObject {
     ///   - localDate: The date to compare against in local timezone.
     /// - Returns: True if the year, month, and day components of the `localDate` matches the prompt's localized date.
     public func inSameDay(as dateToCompare: Date) -> Bool {
-        return DateFormatters.utc.string(from: date) == DateFormatters.local.string(from: dateToCompare)
+        DateFormatters.utc.string(from: date) == DateFormatters.local.string(from: dateToCompare)
     }
 
     /// Used for comparison on upsert  – there can't be two `BloggingPrompt` objects with the same date, so we can use it as a unique identifier
@@ -78,36 +74,6 @@ public extension BloggingPrompt {
 // MARK: - Private Helpers
 
 private extension BloggingPrompt {
-
-    enum Constants {
-        static let bloganuaryTag = "bloganuary"
-    }
-
-    enum BrandContext {
-        case bloganuary(String)
-
-        init?(with remotePrompt: BloggingPromptRemoteObject) {
-            // Bloganuary context
-            if let bloganuaryId = remotePrompt.bloganuaryId,
-               bloganuaryId.contains(Constants.bloganuaryTag) {
-                self = .bloganuary(bloganuaryId)
-                return
-            }
-
-            return nil
-        }
-
-        /// Configures the given prompt with additional data based on the brand context.
-        ///
-        /// - Parameter prompt: The `BloggingPrompt` instance to configure.
-        func configure(_ prompt: BloggingPrompt) {
-            switch self {
-            case .bloganuary(let id):
-                prompt.additionalPostTags = [Constants.bloganuaryTag, id]
-                prompt.attribution = BloggingPromptsAttribution.bloganuary.rawValue
-            }
-        }
-    }
 
     struct DateFormatters {
         static let local: DateFormatter = {

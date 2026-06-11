@@ -137,7 +137,7 @@ private final class SaliencyCache: @unchecked Sendable {
     }
 
     func cachedRect(for url: URL) -> CGRect? {
-        lock.withLock { store[url.absoluteString] ?? nil }
+        lock.withLock { store[url.absoluteString, default: nil] }
     }
 
     func store(_ rect: CGRect?, for url: URL) {

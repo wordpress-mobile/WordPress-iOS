@@ -5,32 +5,54 @@ struct PostDiscussionSettingsView: View {
 
     var body: some View {
         Form {
-            // Comments Section
-            Section {
-                Toggle(Strings.allowCommentsLabel, isOn: $postSettings.allowComments)
+            if showsCommentsSection {
+                Section {
+                    Toggle(
+                        Strings.allowCommentsLabel,
+                        isOn: Binding(
+                            get: { postSettings.allowComments ?? false },
+                            set: { postSettings.allowComments = $0 }
+                        )
+                    )
                     .accessibilityIdentifier("post_discussion_allow_comments_toggle")
-            } footer: {
-                Text(commentsFooterText)
+                } footer: {
+                    Text(commentsFooterText)
+                }
             }
 
-            // Pingbacks Section
-            Section {
-                Toggle(Strings.allowPingsLabel, isOn: $postSettings.allowPings)
+            if showsPingsSection {
+                Section {
+                    Toggle(
+                        Strings.allowPingsLabel,
+                        isOn: Binding(
+                            get: { postSettings.allowPings ?? false },
+                            set: { postSettings.allowPings = $0 }
+                        )
+                    )
                     .accessibilityIdentifier("post_discussion_allow_pings_toggle")
-            } footer: {
-                Link(destination: Strings.pingbacksLearnMoreURL) {
-                    (Text(Strings.learnMorePingbacksText) + Text(" ") + Text(Image(systemName: "link")))
-                        .font(.footnote)
+                } footer: {
+                    Link(destination: Strings.pingbacksLearnMoreURL) {
+                        (Text(Strings.learnMorePingbacksText) + Text(" ") + Text(Image(systemName: "link")))
+                            .font(.footnote)
+                    }
+                    .accessibilityIdentifier("post_discussion_pingbacks_learn_more_button")
                 }
-                .accessibilityIdentifier("post_discussion_pingbacks_learn_more_button")
             }
         }
         .navigationTitle(Strings.discussionTitle)
         .navigationBarTitleDisplayMode(.inline)
     }
 
+    var showsCommentsSection: Bool {
+        postSettings.allowComments != nil
+    }
+
+    var showsPingsSection: Bool {
+        postSettings.allowPings != nil
+    }
+
     private var commentsFooterText: String {
-        if postSettings.allowComments {
+        if postSettings.allowComments == true {
             return Strings.commentsEnabledFooter
         } else {
             return Strings.commentsDisabledFooter
@@ -69,7 +91,9 @@ private enum Strings {
         comment: "Footer text when comments are disabled"
     )
 
-    static let pingbacksLearnMoreURL = URL(string: "https://wordpress.org/documentation/article/trackbacks-and-pingbacks/")!
+    static let pingbacksLearnMoreURL = URL(
+        string: "https://wordpress.org/documentation/article/trackbacks-and-pingbacks/"
+    )!
 
     static let learnMorePingbacksText = NSLocalizedString(
         "postDiscussion.pingbacks.learnMore.text",

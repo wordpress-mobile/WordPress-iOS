@@ -53,7 +53,7 @@ extension GutenbergExternalMediaPicker: ExternalMediaPickerViewDelegate {
         }
 
         // For blocks that support multiple uploads this will upload all images.
-        // If multiple uploads are not supported then it will seperate them out to Image Blocks.
+        // If multiple uploads are not supported then it will separate them out to Image Blocks.
         if multipleSelection {
             insertOnBlock(with: assets, source: viewController.source)
         } else {
@@ -61,7 +61,7 @@ extension GutenbergExternalMediaPicker: ExternalMediaPickerViewDelegate {
         }
     }
 
-    /// Adds the given image object to the requesting block and seperates multiple images to seperate image blocks
+    /// Adds the given image object to the requesting block and separates multiple images to separate image blocks
     /// - Parameter asset: Tenor Media object to add.
     func insertSingleImages(_ assets: [ExternalMediaAsset], source: MediaSource) {
         // Append the first item via callback given by Gutenberg.

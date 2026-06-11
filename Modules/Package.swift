@@ -25,7 +25,8 @@ let package = Package(
         .library(name: "WordPressReader", targets: ["WordPressReader"]),
         .library(name: "WordPressCore", targets: ["WordPressCore"]),
         .library(name: "WordPressCoreProtocols", targets: ["WordPressCoreProtocols"]),
-        .library(name: "WordPressKit", targets: ["WordPressKit"])
+        .library(name: "WordPressKit", targets: ["WordPressKit"]),
+        .library(name: "WordPressMediaLibrary", targets: ["WordPressMediaLibrary"])
     ],
     dependencies: [
         .package(url: "https://github.com/airbnb/lottie-ios", from: "4.4.0"),
@@ -60,10 +61,9 @@ let package = Package(
         ),
         .package(url: "https://github.com/zendesk/support_sdk_ios", from: "8.0.3"),
         .package(url: "https://github.com/wordpress-mobile/GutenbergKit", from: "0.15.0"),
-        // We can't use wordpress-rs branches nor commits here. Only tags work.
         .package(
-            url: "https://github.com/Automattic/wordpress-rs",
-            exact: "0.2.0"
+            url: "https://github.com/automattic/wordpress-rs",
+            exact: "0.3.0"
         ),
         .package(
             url: "https://github.com/Automattic/color-studio",
@@ -132,6 +132,25 @@ let package = Package(
                 .product(name: "Logging", package: "swift-log")
             ],
             resources: [.process("Resources")]
+        ),
+        .target(
+            name: "WordPressMediaLibrary",
+            dependencies: [
+                "AsyncImageKit",
+                "DesignSystem",
+                "WordPressShared",
+                "WordPressUI",
+                "WordPressCore",
+                .product(name: "WordPressAPI", package: "wordpress-rs"),
+                .product(name: "Logging", package: "swift-log")
+            ]
+        ),
+        .testTarget(
+            name: "WordPressMediaLibraryTests",
+            dependencies: [
+                .target(name: "WordPressMediaLibrary"),
+                .product(name: "WordPressAPI", package: "wordpress-rs")
+            ]
         ),
         .target(
             name: "ShareExtensionCore",
@@ -435,6 +454,7 @@ enum XcodeSupport {
             "WordPressIntelligence",
             "WordPressShared",
             "WordPressLegacy",
+            "WordPressMediaLibrary",
             "WordPressReader",
             "WordPressUI",
             "WordPressCore",

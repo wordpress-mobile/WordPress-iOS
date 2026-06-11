@@ -117,6 +117,13 @@
     },
     {
       "target" : {
+        "containerPath" : "container:..\/Modules",
+        "identifier" : "WordPressMediaLibraryTests",
+        "name" : "WordPressMediaLibraryTests"
+      }
+    },
+    {
+      "target" : {
         "containerPath" : "container:WordPress.xcodeproj",
         "identifier" : "4A8280FC2E5FE9B60037E180",
         "name" : "WordPressKitTests"

@@ -48,7 +48,7 @@
 }
 
 /**
- Dismisses the curently presented modal view controller.
+ Dismisses the currently presented modal view controller.
  */
 - (void)dismissNavViewController
 {
@@ -422,7 +422,7 @@
     }
 
     // Check to see if the chosen connection and external ID matches an existin PublicizeConnection.
-    // If this is true the user has selected the already connected account and we can just treat it as a sucess.
+    // If this is true the user has selected the already connected account and we can just treat it as a success.
     if ([self publicizeConnection:connection usesKeyringConnection:keyringConnection withExternalID:externalID]) {
         // The user selected the existing connection. Treat this as success and bail.
         if ([self.delegate respondsToSelector:@selector(sharingAuthorizationHelper:didConnectToService:withPublicizeConnection:)]) {
