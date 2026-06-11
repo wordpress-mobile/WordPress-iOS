@@ -28,7 +28,7 @@
           {
             "type": "command",
             "command": "\"$CLAUDE_PROJECT_DIR\"/Scripts/claude-hooks/swiftlint.sh",
-            "timeout": 30,
+            "timeout": 60,
             "statusMessage": "Linting Swift..."
           }
         ]
