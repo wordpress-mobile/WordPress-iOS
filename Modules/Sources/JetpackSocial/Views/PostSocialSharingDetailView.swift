@@ -103,7 +103,7 @@ public struct PostSocialSharingDetailView: View {
 
     private func bindingForToggle(connection: SocialConnection) -> Binding<Bool> {
         Binding(
-            get: { draft.isEnabled(connectionID: connection.id) },
+            get: { draft.isEnabled(connection: connection) },
             set: { isEnabled in
                 draft.setEnabled(
                     isEnabled,
@@ -122,7 +122,7 @@ extension PostSocialSharingDraft {
     /// connections") or all/none of the connections are enabled.
     public func summary(for connections: [SocialConnection]) -> String? {
         guard !connections.isEmpty else { return nil }
-        let enabledCount = connections.filter { isEnabled(connectionID: $0.id) }.count
+        let enabledCount = connections.filter { isEnabled(connection: $0) }.count
         if enabledCount == 0 || enabledCount == connections.count {
             return nil
         }

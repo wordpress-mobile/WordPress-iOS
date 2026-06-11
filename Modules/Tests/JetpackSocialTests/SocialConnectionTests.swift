@@ -29,6 +29,9 @@ struct SocialConnectionTests {
         let model = SocialConnection(from: wire)
 
         #expect(model.id == "123")
+        // The deprecated wire `id` carries the keyring (token) ID, needed to
+        // resolve legacy `_wpas_skip_<keyringID>` post meta.
+        #expect(model.keyringConnectionID == "deprecated")
         #expect(model.externalID == "ext-42")
         #expect(model.serviceName == "mastodon")
         #expect(model.serviceLabel == "Mastodon")
@@ -63,6 +66,7 @@ struct SocialConnectionTests {
         let model = SocialConnection(from: wire)
         #expect(model.displayName == "@tony@mastodon.social")
         #expect(model.externalHandle == "@tony@mastodon.social")
+        #expect(model.keyringConnectionID == nil)
     }
 
     @Test("empty display_name and empty handle stays empty")
