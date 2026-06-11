@@ -7,7 +7,10 @@ struct UITestConfigurator {
         CommandLine.arguments.contains("-ui-testing")
     }
 
-    static func prepareApplicationForUITests(in app: UIApplication, window: UIWindow) {
+    /// Applies the process-scoped part of the UI-test setup: flag parsing and, when
+    /// requested, wiping persistent state. Must run at the very start of the launch
+    /// sequence, before anything reads the flags or touches Core Data and user defaults.
+    static func prepareApplicationForUITests() {
         let arguments = CommandLine.arguments
         if arguments.contains("-ui-testing") {
             flags.insert(.disableLogging)
@@ -23,7 +26,7 @@ struct UITestConfigurator {
         }
         if arguments.contains("-ui-test-disable-animations") {
             flags.insert(.disableAnimations)
-            disableAnimations(in: app, window: window)
+            UIView.setAnimationsEnabled(false)
         }
         if arguments.contains("-ui-test-use-mock-data") {
             flags.insert(.useMockData)
@@ -37,11 +40,13 @@ struct UITestConfigurator {
         }
     }
 
-    /// This method will disable animations and speed-up keyboad input if command-line arguments includes "NoAnimations"
-    /// It was designed to be used in UI test suites. To enable it just pass a launch argument into XCUIApplicaton.
-    private static func disableAnimations(in app: UIApplication, window: UIWindow) {
-        UIView.setAnimationsEnabled(false)
-        window.layer.speed = MAXFLOAT
+    /// Applies the window-scoped part of the UI-test setup. Runs whenever the main
+    /// window is created, which (under the scene life cycle) happens at scene connect,
+    /// after `prepareApplicationForUITests()` already parsed the flags.
+    static func prepareWindowForUITests(_ window: UIWindow) {
+        if isEnabled(.disableAnimations) {
+            window.layer.speed = MAXFLOAT
+        }
     }
 
     private static func resetEverything() {
