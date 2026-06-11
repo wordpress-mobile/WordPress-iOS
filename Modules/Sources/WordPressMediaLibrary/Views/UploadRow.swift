@@ -9,10 +9,17 @@ struct UploadRow: View {
 
     var body: some View {
         HStack(spacing: 12) {
-            Image(systemName: item.kind.systemImageName)
-                .font(.title3)
-                .foregroundStyle(.secondary)
-                .frame(width: 32, height: 32)
+            if let fileURL = item.localFileURL {
+                UploadThumbnailView(
+                    fileURL: fileURL,
+                    fallbackSystemImage: item.kind.systemImageName
+                )
+            } else {
+                Image(systemName: item.kind.systemImageName)
+                    .font(.title3)
+                    .foregroundStyle(.secondary)
+                    .frame(width: 44, height: 44)
+            }
 
             VStack(alignment: .leading, spacing: 4) {
                 Text(item.displayName)

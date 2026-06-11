@@ -36,6 +36,7 @@ final class MediaLibraryViewModel: ObservableObject {
         let id: UUID
         let displayName: String
         let kind: MediaKind
+        let localFileURL: URL?
         let mode: Mode
     }
 
@@ -139,6 +140,7 @@ final class MediaLibraryViewModel: ObservableObject {
                     id: p.id,
                     displayName: p.displayName,
                     kind: p.kind,
+                    localFileURL: p.localFileURL,
                     mode: .uploading(p.progress)
                 )
             case .failed(let f):
@@ -146,6 +148,7 @@ final class MediaLibraryViewModel: ObservableObject {
                     id: f.id,
                     displayName: f.displayName,
                     kind: f.kind,
+                    localFileURL: f.localFileURL,
                     mode: .failed(message: f.errorMessage, isRetryable: f.isRetryable)
                 )
             }
