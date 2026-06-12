@@ -1,9 +1,17 @@
 import Foundation
 import Security
 import SFHFKeychainUtils
+import Testing
+
+/// Parent suite that serializes every keychain suite against the others.
+/// They all share `KeychainStub`'s class-level state, and `.serialized` on
+/// an individual suite only orders the tests inside it; without a common
+/// serialized ancestor, separate suites still run in parallel and race on
+/// the stub.
+@Suite(.serialized) enum KeychainStubSuites {}
 
 /// In-memory SFHFKeychainUtils replacement keyed by access group.
-/// Class-level state: any suite using it must be `.serialized`.
+/// Class-level state: any suite using it must nest in `KeychainStubSuites`.
 final class KeychainStub: SFHFKeychainUtils {
     /// group -> service -> username -> password.
     /// nil access groups are stored under `defaultGroup`.
