@@ -402,7 +402,7 @@ extension WordPressAppDelegate {
     }
 
     public func application(_ application: UIApplication, didFailToRegisterForRemoteNotificationsWithError error: Error)
-    {
+    { // swiftlint:disable:this opening_brace
         PushNotificationsManager.shared.registrationDidFail(error as NSError)
     }
 
