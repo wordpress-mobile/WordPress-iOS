@@ -33,7 +33,7 @@ class RegisterDomainDetailsViewController: UITableViewController {
             for: .touchUpInside
         )
 
-        buttonView.submitButton.setTitle(Localized.buttonTitle, for: .normal)
+        buttonView.submitButton.configuration?.title = Localized.buttonTitle
 
         return buttonView
     }()
