@@ -1,5 +1,4 @@
 import UIKit
-import WordPressAuthenticator
 import WordPressShared
 import WordPressUI
 
@@ -35,7 +34,7 @@ class InlineEditableNameValueCell: WPTableViewCell, NibReusable {
 
     @IBOutlet weak var nameValueWidthRatioConstraint: NSLayoutConstraint!
     @IBOutlet weak var nameLabel: UILabel!
-    @IBOutlet weak var valueTextField: LoginTextField!
+    @IBOutlet weak var valueTextField: UITextField!
     weak var delegate: InlineEditableNameValueCellDelegate?
     var valueSanitizer: ValueSanitizerBlock?
 
