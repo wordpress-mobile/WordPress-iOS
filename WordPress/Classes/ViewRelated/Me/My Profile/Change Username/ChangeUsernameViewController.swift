@@ -9,7 +9,6 @@ final class ChangeUsernameViewController: UITableViewController {
 
     private let viewModel: ChangeUsernameViewModel
     private let completionBlock: CompletionBlock
-    private var currentUsername: String?
     private var suggestions: [String] = []
     private var selectedCell: UITableViewCell?
     private var searchCount: Int = 0
@@ -117,10 +116,14 @@ extension ChangeUsernameViewController {
             fallthrough
         default:
             if indexPath.row == 0 {
-                cell = suggestionCell(username: currentUsername ?? "username not found", checked: true)
-                selectedCell = cell
+                let isChecked = viewModel.selectedUsername.isEmpty || viewModel.selectedUsername == viewModel.username
+                cell = suggestionCell(username: viewModel.username, checked: isChecked)
             } else {
-                cell = suggestionCell(username: suggestions[indexPath.row - 1], checked: false)
+                let suggestion = suggestions[indexPath.row - 1]
+                cell = suggestionCell(username: suggestion, checked: suggestion == viewModel.selectedUsername)
+            }
+            if cell.accessoryType == .checkmark {
+                selectedCell = cell
             }
         }
         return cell
@@ -147,7 +150,7 @@ extension ChangeUsernameViewController {
         switch indexPath.section {
         case Sections.suggestions.rawValue:
             if indexPath.row == 0 {
-                selectedUsername = currentUsername ?? ""
+                selectedUsername = viewModel.username
             } else {
                 selectedUsername = suggestions[indexPath.row - 1]
             }
@@ -243,7 +246,6 @@ private extension ChangeUsernameViewController {
                 break
             }
         }
-        currentUsername = viewModel.username
     }
 
     func setupUI() {
