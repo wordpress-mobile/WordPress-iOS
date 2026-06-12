@@ -385,7 +385,7 @@ struct TextWithButtonIndicatingActivityRow: ImmuTableRow {
 
         cell.mainLabelText = title
         cell.secondaryLabelText = subtitle
-        cell.button?.showActivityIndicator(true)
+        cell.button?.setActivityIndicatorVisible(true)
     }
 }
 
