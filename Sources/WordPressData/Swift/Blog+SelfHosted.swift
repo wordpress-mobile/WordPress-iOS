@@ -282,7 +282,7 @@ extension WordPressSite {
     ///
     /// For self-hosted sites, application password credentials are required.
     /// Sites without them cannot be represented as a `WordPressSite`.
-    public init(blog: Blog, keychain: KeychainAccessible = KeychainUtils()) throws {
+    public init(blog: Blog, keychain: KeychainAccessible = AppKeychain()) throws {
         let siteURL = try blog.getUrl()
         self.blogId = TaggedManagedObjectID(blog)
         self.siteURL = siteURL
