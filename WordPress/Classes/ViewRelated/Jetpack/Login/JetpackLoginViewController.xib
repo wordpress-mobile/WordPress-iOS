@@ -56,7 +56,6 @@
                                     <rect key="frame" x="48.666666666666686" y="68" width="218" height="34"/>
                                     <connections>
                                         <action selector="didTouchConnectUserAccountButton:" destination="-1" eventType="touchUpInside" id="rbB-O7-30R"/>
-                                        <action selector="didTouchInstallJetpackButton:" destination="-1" eventType="touchUpInside" id="o2L-ud-Obn"/>
                                     </connections>
                                 </button>
                             </subviews>
