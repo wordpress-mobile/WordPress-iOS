@@ -1,6 +1,5 @@
 import UIKit
 import Gridicons
-import WordPressAuthenticator
 import WordPressUI
 
 // MARK: ErrorStateView
@@ -116,17 +115,10 @@ final class ErrorStateView: UIView {
 
         if let _ = configuration.retryActionHandler {
             self.retryButton = {
-                let button = NUXButton(frame: .zero)
+                let button = UIButton.makePrimaryNUXButton()
 
                 button.translatesAutoresizingMaskIntoConstraints = false
-                button.isPrimary = true
-
-                let titleText = NSLocalizedString(
-                    "Retry",
-                    comment:
-                        "If a user taps the button with this label, the action that evinced this error view will be retried."
-                )
-                button.setTitle(titleText, for: .normal)
+                button.configuration?.title = SharedStrings.Button.retry
 
                 return button
             }()
