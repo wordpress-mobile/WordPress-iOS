@@ -5,7 +5,7 @@ import WordPressUI
 class TextWithAccessoryButtonCell: WPReusableTableViewCell, NibLoadable {
     var buttonText: String? {
         get {
-            return button?.title(for: .normal)
+            button?.title(for: .normal)
         }
         set {
             button?.setTitle(newValue, for: .normal)
