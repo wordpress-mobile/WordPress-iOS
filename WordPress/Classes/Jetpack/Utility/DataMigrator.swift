@@ -1,6 +1,7 @@
 import Foundation
 import AutomatticTracks
 import BuildSettingsKit
+import Security
 import WordPressData
 import WordPressShared
 
@@ -67,7 +68,9 @@ extension DataMigrator: ContentDataMigrating {
             completion?(.failure(error))
             return
         }
-        if let error = publishAuthTokenToSharedKeychain() {
+        do {
+            try publishAuthTokenToSharedKeychain()
+        } catch {
             let error = DataMigrationError.keychainExportError(underlyingError: error)
             log(error: error)
             completion?(.failure(error))
@@ -153,29 +156,51 @@ private extension DataMigrator {
     static let exportedUsernameKey = "wp_data_migration_exported_username"
 
     /// Publishes the WP.com auth token to the shared keychain group so the
-    /// Jetpack app (old or new versions) can import it. Best-effort: a
-    /// missing or unreadable token must not block the content export, which
-    /// matches the pre-change behavior for that state.
-    func publishAuthTokenToSharedKeychain() -> Error? {
+    /// Jetpack app (old or new versions) can import it.
+    ///
+    /// A MISSING token keeps the pre-change best-effort behavior (that user
+    /// was already broken before the keychain split). A real keychain
+    /// failure, on the read or the write, throws and must fail the export:
+    /// the published token is the only way the login reaches Jetpack, so a
+    /// "successful" export without it would migrate the content and land
+    /// the user signed out.
+    func publishAuthTokenToSharedKeychain() throws {
         guard let account = try? WPAccount.lookupDefaultWordPressComAccount(in: coreDataStack.mainContext),
             let sharedKeychain
         else {
-            return nil
+            return
         }
         let username = account.username
-        guard let token = try? appKeychain.getPassword(for: username, serviceName: AuthTokenServiceNames.wordPress)
-        else {
-            crashLogger?.logMessage("Keychain token unavailable during migration export", level: .info)
-            return nil
+        let token: String
+        do {
+            token = try appKeychain.getPassword(for: username, serviceName: AuthTokenServiceNames.wordPress)
+        } catch {
+            guard Self.isRealKeychainFailure(error) else {
+                crashLogger?.logMessage("Keychain token unavailable during migration export", level: .info)
+                return
+            }
+            crashLogger?.logError(error, userInfo: ["context": "migration-token-handoff"], level: .error)
+            throw error
         }
         do {
             try sharedKeychain.setPassword(for: username, to: token, serviceName: AuthTokenServiceNames.wordPress)
             sharedDefaults?.set(username, forKey: Self.exportedUsernameKey)
-            return nil
         } catch {
             crashLogger?.logError(error, userInfo: ["context": "migration-token-handoff"], level: .error)
-            return error
+            throw error
         }
+    }
+
+    /// SFHFKeychainUtils populates an NSError (its own domain, with the raw
+    /// OSStatus as the code) only for real failures; a missing item surfaces
+    /// as a nil result that Swift bridges to a generic error with a
+    /// different domain.
+    /// TODO: consolidate with AppKeychain's not-found handling into a shared
+    /// helper when the read-repair work replaces KeychainGroupMigrator.
+    private static func isRealKeychainFailure(_ error: Error) -> Bool {
+        let nsError = error as NSError
+        return nsError.domain == "SFHFKeychainUtilsErrorDomain"
+            && nsError.code != Int(errSecItemNotFound)
     }
 
     func removePublishedAuthToken() {

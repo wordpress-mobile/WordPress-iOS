@@ -1,3 +1,4 @@
+import Security
 import XCTest
 @testable import WordPress
 @testable import WordPressData
@@ -171,7 +172,7 @@ class DataMigratorTests: XCTestCase {
         }
     }
 
-    func testExportSucceedsWhenTokenUnreadable() {
+    func testExportSucceedsWhenTokenMissing() {
         let account = AccountBuilder(context)
             .with(username: "exportuser")
             .build()
@@ -187,7 +188,33 @@ class DataMigratorTests: XCTestCase {
         waitForExpectations(timeout: 1)
 
         guard case .success = exportResult else {
-            return XCTFail("export should stay best-effort when the token was already unreadable")
+            return XCTFail("export should stay best-effort when there is no token to publish")
+        }
+        XCTAssertNil(sharedKeychain.passwords["public-api.wordpress.com"])
+    }
+
+    func testExportFailsWhenTokenReadFails() {
+        let account = AccountBuilder(context)
+            .with(username: "exportuser")
+            .build()
+        UserSettings.defaultDotComUUID = account.uuid
+        // A real keychain failure carries SFHFKeychainUtils' error domain
+        // with the raw OSStatus, unlike the generic not-found error.
+        appKeychain.getPasswordError = NSError(
+            domain: "SFHFKeychainUtilsErrorDomain",
+            code: Int(errSecInteractionNotAllowed)
+        )
+
+        let expectation = expectation(description: "export completes")
+        var exportResult: Result<Void, DataMigrationError>?
+        migrator.exportData { result in
+            exportResult = result
+            expectation.fulfill()
+        }
+        waitForExpectations(timeout: 1)
+
+        guard case .failure = exportResult else {
+            return XCTFail("export should fail when the token read fails with a real keychain error")
         }
         XCTAssertNil(sharedKeychain.passwords["public-api.wordpress.com"])
     }
