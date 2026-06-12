@@ -46,7 +46,7 @@ public final class SharedDataIssueSolver {
             let sharedKeychain,
             let token = try? sharedKeychain.getPassword(
                 for: username,
-                serviceName: WPAccountConstants.authToken.rawValue
+                serviceName: AuthTokenServiceNames.wordPress
             )
         else {
             return
@@ -56,7 +56,7 @@ public final class SharedDataIssueSolver {
         // There might also be a possibility that the user logged in to JP by themselves. In which, we won't need to migrate.
         if let _ = try? appKeychain.getPassword(
             for: username,
-            serviceName: WPAccountConstants.authToken.valueForJetpack
+            serviceName: AuthTokenServiceNames.jetpack
         ) {
             return
         }
@@ -65,7 +65,7 @@ public final class SharedDataIssueSolver {
         try? appKeychain.setPassword(
             for: username,
             to: token,
-            serviceName: WPAccountConstants.authToken.valueForJetpack
+            serviceName: AuthTokenServiceNames.jetpack
         )
     }
 
@@ -112,22 +112,6 @@ public final class SharedDataIssueSolver {
 fileprivate protocol MigratableConstant {
     var rawValue: String { get }
     var valueForJetpack: String { get }
-}
-
-// MARK: - Account Auth Token Helpers
-
-private extension SharedDataIssueSolver {
-
-    enum WPAccountConstants: String, MigratableConstant {
-        case authToken = "public-api.wordpress.com"
-
-        var valueForJetpack: String {
-            switch self {
-            case .authToken:
-                return "jetpack.public-api.wordpress.com"
-            }
-        }
-    }
 }
 
 // MARK: - Today Widget Helpers

@@ -150,7 +150,6 @@ private extension DataMigrator {
         static let dictKey = "defaults_staging_dictionary"
     }
 
-    static let handoffServiceName = "public-api.wordpress.com"
     static let exportedUsernameKey = "wp_data_migration_exported_username"
 
     /// Publishes the WP.com auth token to the shared keychain group so the
@@ -164,12 +163,13 @@ private extension DataMigrator {
             return nil
         }
         let username = account.username
-        guard let token = try? appKeychain.getPassword(for: username, serviceName: Self.handoffServiceName) else {
+        guard let token = try? appKeychain.getPassword(for: username, serviceName: AuthTokenServiceNames.wordPress)
+        else {
             crashLogger?.logMessage("Keychain token unavailable during migration export", level: .info)
             return nil
         }
         do {
-            try sharedKeychain.setPassword(for: username, to: token, serviceName: Self.handoffServiceName)
+            try sharedKeychain.setPassword(for: username, to: token, serviceName: AuthTokenServiceNames.wordPress)
             sharedDefaults?.set(username, forKey: Self.exportedUsernameKey)
             return nil
         } catch {
@@ -184,7 +184,7 @@ private extension DataMigrator {
         else {
             return
         }
-        try? sharedKeychain?.setPassword(for: username, to: nil, serviceName: Self.handoffServiceName)
+        try? sharedKeychain?.setPassword(for: username, to: nil, serviceName: AuthTokenServiceNames.wordPress)
         sharedDefaults.removeObject(forKey: Self.exportedUsernameKey)
     }
 
