@@ -3,8 +3,6 @@ import WordPressData
 import WordPressKit
 import WordPressShared
 
-import WordPressAuthenticator
-
 // MARK: - SiteAssemblyWizardContent
 
 /// This view controller manages the final step in the enhanced site creation sequence - invoking the service &
@@ -30,9 +28,6 @@ final class SiteAssemblyWizardContent: UIViewController {
 
     /// The content view serves as the root view of this view controller.
     private let contentView: SiteAssemblyContentView
-
-    /// We reuse a `NUXButtonViewController` from `WordPressAuthenticator`. Ideally this might be in `WordPressUI`.
-    private let buttonViewController = NUXButtonViewController.instance()
 
     /// This view controller manages the interaction with error states that can arise during site assembly.
     private var errorStateViewController: ErrorStateViewController?
@@ -70,7 +65,7 @@ final class SiteAssemblyWizardContent: UIViewController {
         super.viewDidLoad()
 
         hidesBottomBarWhenPushed = true
-        installButtonViewController()
+        installButtonBar()
         SiteCreationAnalyticsHelper.trackSiteCreationSuccessLoading(siteCreator.design)
     }
 
@@ -168,20 +163,29 @@ final class SiteAssemblyWizardContent: UIViewController {
         }
     }
 
-    private func installButtonViewController() {
-        buttonViewController.delegate = self
-
-        let primaryButtonText = NSLocalizedString(
-            "Done",
-            comment: "Tapping a button with this label allows the user to exit the Site Creation flow"
+    private func installButtonBar() {
+        // The Jetpack app suppresses the bar's top shadow, matching the empty
+        // `buttonViewTopShadowImage` its authenticator style used to supply.
+        let buttonBar = SiteAssemblyButtonBar(
+            buttonTitle: SharedStrings.Button.done,
+            showsTopShadow: AppConfiguration.isWordPress
         )
-        buttonViewController.setButtonTitles(primary: primaryButtonText)
+        buttonBar.onTap = { [weak self] in
+            self?.doneButtonTapped()
+        }
 
-        contentView.buttonContainerView = buttonViewController.view
+        // installButtonContainerView computes the initial off-screen offset from
+        // bounds.height before Auto Layout runs. Only the height matters here, and
+        // it is width-independent (single-line button title), so the zero width
+        // that view.bounds may still have at viewDidLoad time is harmless.
+        let fittingSize = buttonBar.systemLayoutSizeFitting(
+            CGSize(width: view.bounds.width, height: UIView.layoutFittingCompressedSize.height),
+            withHorizontalFittingPriority: .required,
+            verticalFittingPriority: .fittingSizeLevel
+        )
+        buttonBar.frame = CGRect(origin: .zero, size: CGSize(width: view.bounds.width, height: fittingSize.height))
 
-        buttonViewController.willMove(toParent: self)
-        addChild(buttonViewController)
-        buttonViewController.didMove(toParent: self)
+        contentView.buttonContainerView = buttonBar
     }
 
     private func installErrorStateViewController(with type: ErrorStateViewType) {
@@ -272,20 +276,8 @@ private extension SiteAssemblyWizardContent {
         // TODO : using viaDone, capture analytics event via #10335
         attemptSiteCreation()
     }
-}
 
-// MARK: - NetworkStatusDelegate
-
-extension SiteAssemblyWizardContent: NetworkStatusDelegate {
-    func networkStatusDidChange(active: Bool) {
-        isNetworkActive = active
-    }
-}
-
-// MARK: - NUXButtonViewControllerDelegate
-
-extension SiteAssemblyWizardContent: NUXButtonViewControllerDelegate {
-    func primaryButtonPressed() {
+    func doneButtonTapped() {
         SiteCreationAnalyticsHelper.trackSiteCreationSuccessPreviewOkButtonTapped()
 
         guard let blog = createdBlog else { return }
@@ -296,5 +288,13 @@ extension SiteAssemblyWizardContent: NUXButtonViewControllerDelegate {
         dismissTapped(viaDone: true) { [blog] in
             RootViewCoordinator.sharedPresenter.showBlogDetails(for: blog)
         }
+    }
+}
+
+// MARK: - NetworkStatusDelegate
+
+extension SiteAssemblyWizardContent: NetworkStatusDelegate {
+    func networkStatusDidChange(active: Bool) {
+        isNetworkActive = active
     }
 }

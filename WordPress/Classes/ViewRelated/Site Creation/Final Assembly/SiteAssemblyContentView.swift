@@ -89,7 +89,7 @@ final class SiteAssemblyContentView: UIView {
     /// We adjust the button container view slightly to account for the Home indicator ("unsafe") region on the device.
     private var buttonContainerContainer: UIView?
 
-    /// The button container view is associated with the root view of a `NUXButtonViewController`
+    /// The bottom-pinned container hosting the Done button bar.
     var buttonContainerView: UIView? {
         didSet {
             installButtonContainerView()
