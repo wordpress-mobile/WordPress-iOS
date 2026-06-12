@@ -192,7 +192,7 @@ extension ChangeUsernameViewController {
 
         cell.placeholder = NSLocalizedString(
             "Type a keyword for more ideas",
-            comment: "Placeholder text for domain search during site creation."
+            comment: "Placeholder text for the username suggestions search field on the Change Username screen."
         )
         cell.selectionStyle = .none
         cell.onSearch = { [weak self] searchTerm in
