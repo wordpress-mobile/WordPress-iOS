@@ -99,7 +99,7 @@ class ChangeUsernameViewModel {
     }
 }
 
-extension ChangeUsernameViewModel: SignupUsernameViewControllerDelegate {
+extension ChangeUsernameViewModel {
     func usernameSelected(_ username: String) {
         selectedUsername = username
     }
