@@ -27,7 +27,11 @@ class NotificationService: UNNotificationServiceExtension {
     private var notificationService: NotificationSyncServiceRemote?
 
     private let configuration: NotificationServiceExtensionConfiguration
-    private let keychain: any KeychainAccessible = AppKeychain()
+    /// Deliberately lazy: creating `AppKeychain` reads `BuildSettings`,
+    /// which fatally asserts unless `BuildSettings.configure(secrets:)`
+    /// has run first. A stored default would be evaluated before this
+    /// type's init body performs that configuration.
+    private lazy var keychain: any KeychainAccessible = AppKeychain()
 
     override init() {
         BuildSettings.configure(secrets: ApiCredentials.toSecrets())
