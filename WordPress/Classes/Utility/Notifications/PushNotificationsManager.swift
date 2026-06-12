@@ -395,7 +395,12 @@ extension PushNotificationsManager {
         userInteraction: Bool,
         completionHandler: ((UIBackgroundFetchResult) -> Void)?
     ) -> Bool {
-        guard applicationState == .inactive else {
+        // A notification-tap cold launch reaches this point while the application
+        // state is still .background under the scene life cycle (the scene has
+        // connected but the foreground transition hasn't completed). A tap is
+        // explicit user navigation regardless of state, so accept it too; same
+        // workaround as the authentication handler above.
+        guard applicationState == .inactive || (applicationState == .background && userInteraction) else {
             return false
         }
 
