@@ -8,7 +8,7 @@ class ChangeUsernameViewController: SignupUsernameTableViewController {
     typealias CompletionBlock = (String?) -> Void
 
     override var analyticsSource: String {
-        return "account_settings"
+        "account_settings"
     }
     private let viewModel: ChangeUsernameViewModel
     private let completionBlock: CompletionBlock
@@ -50,7 +50,7 @@ class ChangeUsernameViewController: SignupUsernameTableViewController {
     }
 
     override func buildHeaderDescription() -> NSAttributedString {
-        return viewModel.headerDescription()
+        viewModel.headerDescription()
     }
 
     override func startSearch(for searchTerm: String) {
@@ -142,24 +142,35 @@ private extension ChangeUsernameViewController {
     }
 
     func changeUsernameConfirmationPrompt() -> UIAlertController {
-        let alertController = UIAlertController(title: Constants.Alert.title,
-                                                message: "",
-                                                preferredStyle: .alert)
-        alertController.addAttributeMessage(String(format: Constants.Alert.message, viewModel.selectedUsername),
-                                            highlighted: viewModel.selectedUsername)
-        alertController.addCancelActionWithTitle(Constants.Alert.cancel, handler: { _ in
-            DDLogInfo("User cancelled alert")
-        })
-        let action = alertController.addDefaultActionWithTitle(Constants.Alert.change, handler: { [weak alertController, weak self] _ in
-            guard let self, let alertController else { return }
-            guard let textField = alertController.textFields?.first,
-                textField.text == self.viewModel.selectedUsername else {
+        let alertController = UIAlertController(
+            title: Constants.Alert.title,
+            message: "",
+            preferredStyle: .alert
+        )
+        alertController.addAttributeMessage(
+            String(format: Constants.Alert.message, viewModel.selectedUsername),
+            highlighted: viewModel.selectedUsername
+        )
+        alertController.addCancelActionWithTitle(
+            Constants.Alert.cancel,
+            handler: { _ in
+                DDLogInfo("User cancelled alert")
+            }
+        )
+        let action = alertController.addDefaultActionWithTitle(
+            Constants.Alert.change,
+            handler: { [weak alertController, weak self] _ in
+                guard let self, let alertController else { return }
+                guard let textField = alertController.textFields?.first,
+                    textField.text == self.viewModel.selectedUsername
+                else {
                     DDLogInfo("Username confirmation failed")
                     return
+                }
+                DDLogInfo("User changes username")
+                self.changeUsername()
             }
-            DDLogInfo("User changes username")
-            self.changeUsername()
-        })
+        )
         action.isEnabled = false
         alertController.addTextField { textField in
             textField.placeholder = Constants.Alert.confirm
@@ -173,7 +184,7 @@ private extension ChangeUsernameViewController {
         confirmationTextObserver = nil
 
         guard let confirmationController,
-              let textField = confirmationController.textFields?.first
+            let textField = confirmationController.textFields?.first
         else {
             return
         }
@@ -191,8 +202,8 @@ private extension ChangeUsernameViewController {
 
     func handleTextDidChangeNotification(_ notification: Foundation.Notification) {
         guard notification.name == UITextField.textDidChangeNotification,
-              let confirmationController,
-              let textField = notification.object as? UITextField
+            let confirmationController,
+            let textField = notification.object as? UITextField
         else {
             DDLogInfo("The notification is not sent from the text field within the change username confirmation prompt")
             return
@@ -213,7 +224,10 @@ private extension ChangeUsernameViewController {
 
         enum Alert {
             static let title = NSLocalizedString("Careful!", comment: "Alert title.")
-            static let message = NSLocalizedString("You are changing your username to %@. Changing your username will also affect your Gravatar profile and IntenseDebate profile addresses. \nConfirm your new username to continue.", comment: "Alert message.")
+            static let message = NSLocalizedString(
+                "You are changing your username to %@. Changing your username will also affect your Gravatar profile and IntenseDebate profile addresses. \nConfirm your new username to continue.",
+                comment: "Alert message."
+            )
             static let cancel = NSLocalizedString("Cancel", comment: "Cancel button.")
             static let change = NSLocalizedString("Change username", comment: "Change button.")
             static let confirm = NSLocalizedString("Confirm username", comment: "Alert text field placeholder.")
