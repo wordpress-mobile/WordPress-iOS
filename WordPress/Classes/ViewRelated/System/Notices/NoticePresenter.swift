@@ -51,12 +51,6 @@ class NoticePresenter {
     /// when no scene (and hence no window to attach to) may exist yet, e.g. on a
     /// background launch. Background notices don't need a window at all.
     private var window: UntouchableWindow?
-    private var view: UIView {
-        guard let view = window?.rootViewController?.view else {
-            fatalError("The notice window doesn't exist or has no root view controller")
-        }
-        return view
-    }
 
     private let generator = UINotificationFeedbackGenerator()
     private var storeReceipt: Receipt?
@@ -124,7 +118,7 @@ class NoticePresenter {
                     animations: {
                         currentContainer.bottomConstraint?.constant =
                             self.onScreenNoticeContainerBottomConstraintConstant
-                        self.view.layoutIfNeeded()
+                        currentContainer.superview?.layoutIfNeeded()
                     }
                 )
             }
@@ -148,7 +142,7 @@ class NoticePresenter {
                     animations: {
                         currentContainer.bottomConstraint?.constant =
                             self.onScreenNoticeContainerBottomConstraintConstant
-                        self.view.layoutIfNeeded()
+                        currentContainer.superview?.layoutIfNeeded()
                     }
                 )
             }
@@ -264,15 +258,17 @@ class NoticePresenter {
             return nil
         }
 
+        let view: UIView = window.untouchableViewController.view
+
         generator.prepare()
 
         let noticeView = NoticeView(notice: notice)
         noticeView.translatesAutoresizingMaskIntoConstraints = false
 
         let noticeContainerView = NoticeContainerView(noticeView: noticeView)
-        addNoticeContainerToPresentingViewController(noticeContainerView)
-        addBottomConstraintToNoticeContainer(noticeContainerView)
-        addTopConstraintToNoticeContainer(noticeContainerView)
+        view.addSubview(noticeContainerView)
+        addBottomConstraintToNoticeContainer(noticeContainerView, in: view)
+        addTopConstraintToNoticeContainer(noticeContainerView, in: view)
 
         // At regular width, the notice shouldn't be any wider than 1/2 the app's width
         noticeContainerView.noticeWidthConstraint = noticeView.widthAnchor.constraint(
@@ -362,17 +358,13 @@ class NoticePresenter {
         return window
     }
 
-    private func addNoticeContainerToPresentingViewController(_ noticeContainer: UIView) {
-        view.addSubview(noticeContainer)
-    }
-
-    private func addBottomConstraintToNoticeContainer(_ container: NoticeContainerView) {
+    private func addBottomConstraintToNoticeContainer(_ container: NoticeContainerView, in view: UIView) {
         let constraint = container.bottomAnchor.constraint(equalTo: view.bottomAnchor)
         container.bottomConstraint = constraint
         constraint.isActive = false
     }
 
-    private func addTopConstraintToNoticeContainer(_ container: NoticeContainerView) {
+    private func addTopConstraintToNoticeContainer(_ container: NoticeContainerView, in view: UIView) {
         let constraint = container.topAnchor.constraint(equalTo: view.bottomAnchor)
         container.topConstraint = constraint
         constraint.priority = UILayoutPriority.defaultHigh
@@ -401,12 +393,17 @@ class NoticePresenter {
 
     private func dismissForegroundNotice() {
         guard let container = currentNoticePresentation?.containerView,
-            container.superview != nil
+            let containerSuperview = container.superview
         else {
             return
         }
         let bottomOffset = offScreenNoticeContainerBottomOffset(for: container)
-        let toState = animator.state(for: container, in: view, withTransition: .offscreen, bottomOffset: bottomOffset)
+        let toState = animator.state(
+            for: container,
+            in: containerSuperview,
+            withTransition: .offscreen,
+            bottomOffset: bottomOffset
+        )
         animator.animatePresentation(
             fromState: {},
             toState: toState,
