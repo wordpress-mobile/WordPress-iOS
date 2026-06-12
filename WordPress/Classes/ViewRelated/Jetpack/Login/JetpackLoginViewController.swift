@@ -2,7 +2,6 @@ import Foundation
 import UIKit
 import WordPressData
 import WordPressShared
-import WordPressAuthenticator
 import WordPressUI
 
 protocol JetpackConnectionSupport: AnyObject {
@@ -64,9 +63,9 @@ public class JetpackLoginViewController: UIViewController {
 
     @IBOutlet fileprivate weak var jetpackImage: UIImageView!
     @IBOutlet fileprivate weak var descriptionLabel: UILabel!
-    @IBOutlet fileprivate weak var signinButton: WPNUXMainButton!
-    @IBOutlet fileprivate weak var connectUserButton: NUXButton!
-    @IBOutlet fileprivate weak var installJetpackButton: WPNUXMainButton!
+    @IBOutlet fileprivate weak var signinButton: UIButton!
+    @IBOutlet fileprivate weak var connectUserButton: UIButton!
+    @IBOutlet fileprivate weak var installJetpackButton: UIButton!
     @IBOutlet private var tacButton: UIButton!
     @IBOutlet private var faqButton: UIButton!
 
@@ -112,6 +111,14 @@ public class JetpackLoginViewController: UIViewController {
         descriptionLabel.font = WPStyleGuide.fontForTextStyle(.body)
         descriptionLabel.textColor = .label
 
+        signinButton.configureAsPrimaryNUXButton()
+        signinButton.configuration?.title = Constants.Buttons.loginTitle
+        installJetpackButton.configureAsPrimaryNUXButton()
+        installJetpackButton.configuration?.title = Constants.Buttons.jetpackInstallTitle
+        connectUserButton.configureAsPrimaryNUXButton()
+        connectUserButton.configuration?.title = Constants.Buttons.connectUserTitle
+        connectUserButton.configuration?.titleLineBreakMode = .byWordWrapping
+
         tacButton.titleLabel?.numberOfLines = 0
 
         faqButton.titleLabel?.font = WPStyleGuide.fontForTextStyle(.subheadline, fontWeight: .medium)
@@ -149,16 +156,8 @@ public class JetpackLoginViewController: UIViewController {
         descriptionLabel.text = message
         descriptionLabel.sizeToFit()
 
-        installJetpackButton.setTitle(Constants.Buttons.jetpackInstallTitle, for: .normal)
         installJetpackButton.isHidden = blog.hasJetpack
-        installJetpackButton.contentEdgeInsets = UIEdgeInsets(top: 12, left: 20, bottom: 12, right: 20)
-
-        connectUserButton.setTitle(Constants.Buttons.connectUserTitle, for: .normal)
         connectUserButton.isHidden = !(blog.hasJetpack && jetpack.isSiteConnection)
-        connectUserButton.titleLabel?.numberOfLines = 2
-        connectUserButton.contentEdgeInsets = UIEdgeInsets(top: 12, left: 20, bottom: 12, right: 20)
-
-        signinButton.setTitle(Constants.Buttons.loginTitle, for: .normal)
         signinButton.isHidden = shouldDisableLogin || !(blog.hasJetpack && !jetpack.isSiteConnection)
 
         let paragraph = NSMutableParagraphStyle(
