@@ -150,6 +150,48 @@ class DataMigratorTests: XCTestCase {
         XCTAssertNil(sharedKeychain.passwords["public-api.wordpress.com"])
     }
 
+    func testExportFailsWhenTokenPublishFails() {
+        let account = AccountBuilder(context)
+            .with(username: "exportuser")
+            .build()
+        UserSettings.defaultDotComUUID = account.uuid
+        appKeychain.passwords["public-api.wordpress.com"] = ["exportuser": "token-123"]
+        sharedKeychain.setPasswordError = NSError(domain: "test", code: 1)
+
+        let expectation = expectation(description: "export completes")
+        var exportResult: Result<Void, DataMigrationError>?
+        migrator.exportData { result in
+            exportResult = result
+            expectation.fulfill()
+        }
+        waitForExpectations(timeout: 1)
+
+        guard case .failure = exportResult else {
+            return XCTFail("export should fail when the token publish fails")
+        }
+    }
+
+    func testExportSucceedsWhenTokenUnreadable() {
+        let account = AccountBuilder(context)
+            .with(username: "exportuser")
+            .build()
+        UserSettings.defaultDotComUUID = account.uuid
+        appKeychain.getPasswordError = NSError(domain: "test", code: 1)
+
+        let expectation = expectation(description: "export completes")
+        var exportResult: Result<Void, DataMigrationError>?
+        migrator.exportData { result in
+            exportResult = result
+            expectation.fulfill()
+        }
+        waitForExpectations(timeout: 1)
+
+        guard case .success = exportResult else {
+            return XCTFail("export should stay best-effort when the token was already unreadable")
+        }
+        XCTAssertNil(sharedKeychain.passwords["public-api.wordpress.com"])
+    }
+
     func testDeleteExportedDataRemovesPublishedToken() {
         sharedKeychain.passwords["public-api.wordpress.com"] = ["exportuser": "token-123"]
         sharedUserDefaults.set("exportuser", forKey: "wp_data_migration_exported_username")

@@ -67,7 +67,12 @@ extension DataMigrator: ContentDataMigrating {
             completion?(.failure(error))
             return
         }
-        publishAuthTokenToSharedKeychain()
+        if let error = publishAuthTokenToSharedKeychain() {
+            let error = DataMigrationError.keychainExportError(underlyingError: error)
+            log(error: error)
+            completion?(.failure(error))
+            return
+        }
         BloggingRemindersScheduler.handleRemindersMigration(appGroupName: appGroupName)
 
         isDataReadyToMigrate = true
@@ -152,22 +157,24 @@ private extension DataMigrator {
     /// Jetpack app (old or new versions) can import it. Best-effort: a
     /// missing or unreadable token must not block the content export, which
     /// matches the pre-change behavior for that state.
-    func publishAuthTokenToSharedKeychain() {
+    func publishAuthTokenToSharedKeychain() -> Error? {
         guard let account = try? WPAccount.lookupDefaultWordPressComAccount(in: coreDataStack.mainContext),
             let sharedKeychain
         else {
-            return
+            return nil
         }
         let username = account.username
         guard let token = try? appKeychain.getPassword(for: username, serviceName: Self.handoffServiceName) else {
             crashLogger?.logMessage("Keychain token unavailable during migration export", level: .info)
-            return
+            return nil
         }
         do {
             try sharedKeychain.setPassword(for: username, to: token, serviceName: Self.handoffServiceName)
             sharedDefaults?.set(username, forKey: Self.exportedUsernameKey)
+            return nil
         } catch {
             crashLogger?.logError(error, userInfo: ["context": "migration-token-handoff"], level: .error)
+            return error
         }
     }
 
