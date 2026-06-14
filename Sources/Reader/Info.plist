@@ -11,7 +11,7 @@
 	<key>WPAppURLScheme</key>
 	<string>${WP_APP_URL_SCHEME}</string>
 	<key>WPAuthKeychainServiceName</key>
-	<string>jetpack.public-api.wordpress.com</string>
+	<string>reader.public-api.wordpress.com</string>
 	<key>WPBuildConfiguration</key>
 	<string>${WP_BUILD_CONFIGURATION}</string>
 	<key>WPEventNamePrefix</key>
