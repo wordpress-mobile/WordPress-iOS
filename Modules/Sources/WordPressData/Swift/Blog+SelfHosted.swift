@@ -23,7 +23,7 @@ public extension Blog {
         xmlrpcEndpointURL: URL,
         blogID: TaggedManagedObjectID<Blog>?,
         in contextManager: ContextManager,
-        using keychainImplementation: KeychainAccessible = KeychainUtils()
+        using keychainImplementation: KeychainAccessible = AppKeychain()
     ) async throws -> TaggedManagedObjectID<Blog> {
         try await contextManager.performAndSave { context in
             let blog =
@@ -69,13 +69,13 @@ public extension Blog {
 
     /// Retrieve Application Tokens
     ///
-    func getApplicationToken(using keychainImplementation: KeychainAccessible = KeychainUtils()) throws -> String {
+    func getApplicationToken(using keychainImplementation: KeychainAccessible = AppKeychain()) throws -> String {
         try keychainImplementation.getPassword(for: self.getUsername(), serviceName: self.getUrlString())
     }
 
     /// Delete Application Token
     ///
-    func deleteApplicationToken(using keychainImplementation: KeychainAccessible = KeychainUtils()) throws {
+    func deleteApplicationToken(using keychainImplementation: KeychainAccessible = AppKeychain()) throws {
         try? keychainImplementation.setPassword(for: self.getUsername(), to: nil, serviceName: self.getUrlString())
     }
 
@@ -89,7 +89,7 @@ public extension Blog {
     ///
     func setApplicationToken(
         _ newValue: String,
-        using keychainImplementation: KeychainAccessible = KeychainUtils()
+        using keychainImplementation: KeychainAccessible = AppKeychain()
     ) throws {
         try keychainImplementation.setPassword(for: self.getUsername(), to: newValue, serviceName: self.getUrlString())
     }
@@ -104,7 +104,7 @@ public extension Blog {
     }
 
     /// A null-safe replacement for `Blog.password(get)`
-    func getPassword(using keychainImplementation: KeychainAccessible = KeychainUtils()) throws -> String {
+    func getPassword(using keychainImplementation: KeychainAccessible = AppKeychain()) throws -> String {
         try keychainImplementation.getPassword(
             for: self.getUsername(),
             serviceName: self.getXMLRPCEndpoint().absoluteString
@@ -112,7 +112,7 @@ public extension Blog {
     }
 
     /// A null-safe replacement for `Blog.password(set)`
-    func setPassword(to newValue: String, using keychainImplementation: KeychainAccessible = KeychainUtils()) throws {
+    func setPassword(to newValue: String, using keychainImplementation: KeychainAccessible = AppKeychain()) throws {
         try keychainImplementation.setPassword(
             for: self.getUsername(),
             to: newValue,
@@ -272,7 +272,7 @@ extension WordPressSite {
     ///
     /// For self-hosted sites, application password credentials are required.
     /// Sites without them cannot be represented as a `WordPressSite`.
-    public init(blog: Blog, keychain: KeychainAccessible = KeychainUtils()) throws {
+    public init(blog: Blog, keychain: KeychainAccessible = AppKeychain()) throws {
         let siteURL = try blog.getUrl()
         self.blogId = TaggedManagedObjectID(blog)
         self.siteURL = siteURL

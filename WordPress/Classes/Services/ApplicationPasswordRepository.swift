@@ -32,7 +32,7 @@ import WordPressCore
 actor ApplicationPasswordRepository {
     static let shared: ApplicationPasswordRepository = .init(
         coreDataStack: ContextManager.shared,
-        keychain: KeychainUtils()
+        keychain: AppKeychain()
     )
 
     private let coreDataStack: CoreDataStackSwift

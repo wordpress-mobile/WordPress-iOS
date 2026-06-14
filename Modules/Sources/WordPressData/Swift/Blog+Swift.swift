@@ -56,7 +56,7 @@ extension Blog {
     /// Injectable keychain for testability.
     var keychain: any KeychainAccessible {
         get {
-            objc_getAssociatedObject(self, &blogKeychainKey) as? (any KeychainAccessible) ?? KeychainUtils()
+            objc_getAssociatedObject(self, &blogKeychainKey) as? (any KeychainAccessible) ?? AppKeychain()
         }
         set {
             objc_setAssociatedObject(self, &blogKeychainKey, newValue, .OBJC_ASSOCIATION_RETAIN_NONATOMIC)

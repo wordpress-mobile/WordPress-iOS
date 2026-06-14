@@ -29,7 +29,7 @@ final class BlogBuilder {
     }
 
     func with(atomic: Bool) -> Self {
-        return set(blogOption: "is_wpcom_atomic", value: atomic ? 1 : 0)
+        set(blogOption: "is_wpcom_atomic", value: atomic ? 1 : 0)
     }
 
     func with(isHostedAtWPCom: Bool) -> Self {
@@ -38,7 +38,7 @@ final class BlogBuilder {
     }
 
     func with(supportsDomains: Bool) -> Self {
-        return with(isHostedAtWPCom: supportsDomains)
+        with(isHostedAtWPCom: supportsDomains)
             .with(isAdmin: supportsDomains)
     }
 
@@ -61,7 +61,7 @@ final class BlogBuilder {
     }
 
     func with(wordPressVersion: String) -> Self {
-        return set(blogOption: "software_version", value: wordPressVersion)
+        set(blogOption: "software_version", value: wordPressVersion)
     }
 
     func with(username: String) -> Self {
@@ -83,7 +83,9 @@ final class BlogBuilder {
 
     func with(siteName: String) -> Self {
         if blog.settings == nil {
-            blog.settings = NSEntityDescription.insertNewObject(forEntityName: BlogSettings.entityName(), into: context) as! BlogSettings
+            blog.settings =
+                NSEntityDescription.insertNewObject(forEntityName: BlogSettings.entityName(), into: context)
+                as! BlogSettings
         }
         blog.settings?.name = siteName
         return self
@@ -102,7 +104,8 @@ final class BlogBuilder {
 
     func withAnAccount(username: String = "test_user", authToken: String = "authtoken") -> Self {
         // Add Account
-        let account = NSEntityDescription.insertNewObject(forEntityName: WPAccount.entityName(), into: context) as! WPAccount
+        let account =
+            NSEntityDescription.insertNewObject(forEntityName: WPAccount.entityName(), into: context) as! WPAccount
         account.displayName = "displayName"
         account.username = username
         account.authToken = authToken
@@ -153,7 +156,9 @@ final class BlogBuilder {
     func with(domainCount: Int, of type: DomainType, domainName: String = "") -> Self {
         var domains: [ManagedDomain] = []
         for _ in 0..<domainCount {
-            let domain = NSEntityDescription.insertNewObject(forEntityName: ManagedDomain.entityName(), into: context) as! ManagedDomain
+            let domain =
+                NSEntityDescription.insertNewObject(forEntityName: ManagedDomain.entityName(), into: context)
+                as! ManagedDomain
             domain.domainType = type
             domain.domainName = domainName
             domains.append(domain)
@@ -180,7 +185,10 @@ final class BlogBuilder {
         return self
     }
 
-    func withMappedDomain(originalUrl: String = "http://domain1.com", mappedDomainUrl: String = "http://domain2.com") -> Self {
+    func withMappedDomain(
+        originalUrl: String = "http://domain1.com",
+        mappedDomainUrl: String = "http://domain2.com"
+    ) -> Self {
 
         set(blogOption: "unmapped_url", value: originalUrl)
         set(blogOption: "home_url", value: mappedDomainUrl)
@@ -189,7 +197,7 @@ final class BlogBuilder {
     }
 
     func with(isWPForTeamsSite: Bool) -> Self {
-        return set(blogOption: "is_wpforteams_site", value: isWPForTeamsSite)
+        set(blogOption: "is_wpforteams_site", value: isWPForTeamsSite)
     }
 
     func with(connections: Set<PublicizeConnection>) -> Self {
@@ -206,7 +214,7 @@ final class BlogBuilder {
 
     @discardableResult
     func build() -> Blog {
-        return blog
+        blog
     }
 
     @discardableResult
@@ -226,7 +234,7 @@ final class BlogBuilder {
         return self
     }
 
-    func withApplicationPassword(_ password: String, using keychain: KeychainAccessible = KeychainUtils()) -> Self {
+    func withApplicationPassword(_ password: String, using keychain: KeychainAccessible = AppKeychain()) -> Self {
         do {
             try blog.setApplicationToken(password, using: keychain)
         } catch {
@@ -248,7 +256,8 @@ extension Blog {
             return
         }
 
-        let account = NSEntityDescription.insertNewObject(forEntityName: WPAccount.entityName(), into: context) as! WPAccount
+        let account =
+            NSEntityDescription.insertNewObject(forEntityName: WPAccount.entityName(), into: context) as! WPAccount
         account.username = "foo"
         account.addBlogsObject(self)
     }
