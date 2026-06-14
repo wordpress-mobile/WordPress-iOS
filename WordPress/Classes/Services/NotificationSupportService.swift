@@ -15,8 +15,10 @@ final class NotificationSupportService {
         )
     }
 
-    init(appKeychainAccessGroup: String,
-         configuration: NotificationServiceExtensionConfiguration) {
+    init(
+        appKeychainAccessGroup: String,
+        configuration: NotificationServiceExtensionConfiguration
+    ) {
         self.appKeychainAccessGroup = appKeychainAccessGroup
         self.configuration = configuration
     }

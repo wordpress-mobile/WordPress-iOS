@@ -7,7 +7,7 @@ protocol CredentialsProvider {
 
 struct KeychainCredentialsProvider: CredentialsProvider {
     func getPassword(username: String, service: String) -> String? {
-        return try? SFHFKeychainUtils.getPasswordForUsername(username, andServiceName: service)
+        try? SFHFKeychainUtils.getPasswordForUsername(username, andServiceName: service)
     }
 }
 
@@ -19,6 +19,6 @@ class CredentialsService {
     }
 
     func getOAuthToken(site: JetpackSiteRef) -> String? {
-        return provider.getPassword(username: site.username, service: BuildSettings.current.authKeychainServiceName)
+        provider.getPassword(username: site.username, service: BuildSettings.current.authKeychainServiceName)
     }
 }

@@ -83,7 +83,10 @@ class DataMigratorTests: XCTestCase {
         let migratorError = getExportDataMigratorError(migrator)
 
         // Then
-        XCTAssertEqual(migratorError, DataMigrationError.databaseExportError(underlyingError: DataMigrationError.sharedUserDefaultsNil))
+        XCTAssertEqual(
+            migratorError,
+            DataMigrationError.databaseExportError(underlyingError: DataMigrationError.sharedUserDefaultsNil)
+        )
     }
 
     func test_importData_givenDataIsNotExported_shouldFail() {
@@ -239,7 +242,7 @@ private final class CoreDataStackMock: CoreDataStack {
     }
 
     func newDerivedContext() -> NSManagedObjectContext {
-        return mainContext
+        mainContext
     }
 
     func saveContextAndWait(_ context: NSManagedObjectContext) {}
@@ -247,7 +250,11 @@ private final class CoreDataStackMock: CoreDataStack {
     func save(_ context: NSManagedObjectContext, completion completionBlock: (() -> Void)?, on queue: DispatchQueue) {}
 
     func performAndSave(_ aBlock: @escaping (NSManagedObjectContext) -> Void) {}
-    func performAndSave(_ aBlock: @escaping (NSManagedObjectContext) -> Void, completion: (() -> Void)?, on queue: DispatchQueue) {}
+    func performAndSave(
+        _ aBlock: @escaping (NSManagedObjectContext) -> Void,
+        completion: (() -> Void)?,
+        on queue: DispatchQueue
+    ) {}
 }
 
 // MARK: - Helpers
@@ -259,11 +266,18 @@ private extension DataMigratorTests {
         static let defaultsWrapperKey = "defaults_staging_dictionary"
     }
 
-    func createContext(for model: NSManagedObjectModel = NSManagedObjectModel.mergedModel(from: [Bundle.wordPressData])!,
-                       type: String = NSInMemoryStoreType,
-                       at location: URL? = nil) throws -> NSManagedObjectContext {
+    func createContext(
+        for model: NSManagedObjectModel = NSManagedObjectModel.mergedModel(from: [Bundle.wordPressData])!,
+        type: String = NSInMemoryStoreType,
+        at location: URL? = nil
+    ) throws -> NSManagedObjectContext {
         let persistentStoreCoordinator = NSPersistentStoreCoordinator(managedObjectModel: model)
-        try persistentStoreCoordinator.addPersistentStore(ofType: type, configurationName: nil, at: location, options: nil)
+        try persistentStoreCoordinator.addPersistentStore(
+            ofType: type,
+            configurationName: nil,
+            at: location,
+            options: nil
+        )
         let managedObjectContext = NSManagedObjectContext(concurrencyType: .mainQueueConcurrencyType)
         managedObjectContext.persistentStoreCoordinator = persistentStoreCoordinator
 
@@ -271,7 +285,7 @@ private extension DataMigratorTests {
     }
 
     func createFileContext(for model: NSManagedObjectModel, at location: URL) throws -> NSManagedObjectContext {
-        return try createContext(for: model, type: NSSQLiteStoreType, at: location)
+        try createContext(for: model, type: NSSQLiteStoreType, at: location)
     }
 
     func getExportDataMigratorError(_ migrator: DataMigrator) -> DataMigrationError? {
@@ -289,8 +303,9 @@ private extension DataMigratorTests {
 
     func getModelNames() -> [String] {
         guard let modelFileURL = Bundle.wordPressData.url(forResource: "WordPress", withExtension: "momd"),
-              let versionInfo = NSDictionary(contentsOf: modelFileURL.appendingPathComponent("VersionInfo.plist")),
-              let modelNames = (versionInfo["NSManagedObjectModel_VersionHashes"] as? [String: AnyObject])?.keys else {
+            let versionInfo = NSDictionary(contentsOf: modelFileURL.appendingPathComponent("VersionInfo.plist")),
+            let modelNames = (versionInfo["NSManagedObjectModel_VersionHashes"] as? [String: AnyObject])?.keys
+        else {
             return []
         }
         let sortedModelNames = modelNames.sorted { $0.compare($1, options: .numeric) == .orderedAscending }
@@ -311,7 +326,11 @@ private extension DataMigratorTests {
 
         let momdPaths = Bundle.wordPressData.paths(forResourcesOfType: "momd", inDirectory: nil)
         for path in momdPaths {
-            if let url = Bundle.wordPressData.url(forResource: name, withExtension: "mom", subdirectory: URL(fileURLWithPath: path).lastPathComponent) {
+            if let url = Bundle.wordPressData.url(
+                forResource: name,
+                withExtension: "mom",
+                subdirectory: URL(fileURLWithPath: path).lastPathComponent
+            ) {
                 return url
             }
         }
@@ -322,8 +341,9 @@ private extension DataMigratorTests {
     func getRecentObjectModels() -> (current: NSManagedObjectModel?, previous: NSManagedObjectModel?) {
         let models = getModelNames()
         guard models.count > 1,
-              let currentModel = getModelObject(for: models[models.count - 1]),
-              let previousModel = getModelObject(for: models[models.count - 2]) else {
+            let currentModel = getModelObject(for: models[models.count - 1]),
+            let previousModel = getModelObject(for: models[models.count - 2])
+        else {
             return (current: nil, previous: nil)
         }
         return (current: currentModel, previous: previousModel)
