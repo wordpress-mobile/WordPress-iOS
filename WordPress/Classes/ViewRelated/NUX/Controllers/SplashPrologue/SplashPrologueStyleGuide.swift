@@ -12,7 +12,8 @@ struct SplashPrologueStyleGuide {
     }
 
     struct BrushStroke {
-        static let color = UIColor(light: .colorFromHex("BBE0FA"), dark: .colorFromHex("101517")).withAlphaComponent(0.3)
+        static let color = UIColor(light: .colorFromHex("BBE0FA"), dark: .colorFromHex("101517"))
+            .withAlphaComponent(0.3)
     }
 
     /// Use the same shade for light and dark modes
@@ -25,28 +26,70 @@ struct SplashPrologueStyleGuide {
     private static let secondaryButtonHighlightedColor: UIColor = UIAppColor.gray(.shade5)
 
     static let primaryButtonStyle = NUXButtonStyle(
-        normal: .init(backgroundColor: Self.primaryButtonColor,
-                      borderColor: Self.primaryButtonColor,
-                      titleColor: .white),
+        normal: .init(
+            backgroundColor: Self.primaryButtonColor,
+            borderColor: Self.primaryButtonColor,
+            titleColor: .white
+        ),
 
-        highlighted: .init(backgroundColor: Self.primaryButtonHighlightedColor,
-                           borderColor: Self.primaryButtonHighlightedColor,
-                           titleColor: .white),
+        highlighted: .init(
+            backgroundColor: Self.primaryButtonHighlightedColor,
+            borderColor: Self.primaryButtonHighlightedColor,
+            titleColor: .white
+        ),
 
-        disabled: .init(backgroundColor: .white,
-                       borderColor: .white,
-                       titleColor: Self.backgroundColor))
+        disabled: .init(
+            backgroundColor: .white,
+            borderColor: .white,
+            titleColor: Self.backgroundColor
+        )
+    )
 
     static let secondaryButtonStyle = NUXButtonStyle(
-        normal: .init(backgroundColor: Self.secondaryButtonColor,
-                      borderColor: Self.secondaryButtonHighlightedColor,
-                      titleColor: .black),
+        normal: .init(
+            backgroundColor: Self.secondaryButtonColor,
+            borderColor: Self.secondaryButtonHighlightedColor,
+            titleColor: .black
+        ),
 
-        highlighted: .init(backgroundColor: Self.secondaryButtonHighlightedColor,
-                           borderColor: Self.secondaryButtonHighlightedColor,
-                           titleColor: .black),
+        highlighted: .init(
+            backgroundColor: Self.secondaryButtonHighlightedColor,
+            borderColor: Self.secondaryButtonHighlightedColor,
+            titleColor: .black
+        ),
 
-        disabled: .init(backgroundColor: .white,
-                        borderColor: .white,
-                        titleColor: Self.backgroundColor))
+        disabled: .init(
+            backgroundColor: .white,
+            borderColor: .white,
+            titleColor: Self.backgroundColor
+        )
+    )
+}
+
+// MARK: - Prologue button configurations
+
+extension SplashPrologueStyleGuide {
+    static func primaryButtonConfiguration(highlighted: Bool = false) -> UIButton.Configuration {
+        var configuration = UIButton.Configuration.filled()
+        configuration.baseBackgroundColor = highlighted ? primaryButtonHighlightedColor : primaryButtonColor
+        configuration.baseForegroundColor = .white
+        applyPrologueButtonMetrics(to: &configuration)
+        return configuration
+    }
+
+    static func secondaryButtonConfiguration(highlighted: Bool = false) -> UIButton.Configuration {
+        var configuration = UIButton.Configuration.filled()
+        configuration.baseBackgroundColor = highlighted ? secondaryButtonHighlightedColor : secondaryButtonColor
+        configuration.baseForegroundColor = .black
+        configuration.background.strokeColor = secondaryButtonHighlightedColor
+        configuration.background.strokeWidth = 1
+        applyPrologueButtonMetrics(to: &configuration)
+        return configuration
+    }
+
+    private static func applyPrologueButtonMetrics(to configuration: inout UIButton.Configuration) {
+        configuration.cornerStyle = .fixed
+        configuration.background.cornerRadius = 8
+        configuration.contentInsets = NSDirectionalEdgeInsets(top: 12, leading: 20, bottom: 12, trailing: 20)
+    }
 }

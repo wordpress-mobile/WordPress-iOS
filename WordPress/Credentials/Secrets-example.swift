@@ -18,7 +18,6 @@ class ApiCredentials: NSObject {
     static let zendeskClientId = ""
 
     // Other Services
-    static let tenorApiKey = ""
     static let sentryDSN = ""
     static let encryptedLogKey = ""
     static let debuggingKey = ""

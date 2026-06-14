@@ -23,8 +23,7 @@ final class MediaPickerController: GutenbergKit.MediaPickerController {
         // Define media sources with their identifiers
         let sources: [(source: MediaPickerSource, id: MediaPickerID)] = [
             (.siteMedia(blog: blog), .siteMedia),
-            (.freePhotos(blog: blog), .freePhotos),
-            (.freeGIFs(blog: blog), .freeGIFs)
+            (.freePhotos(blog: blog), .freePhotos)
         ]
 
         // Create actions from enabled sources
@@ -45,7 +44,11 @@ final class MediaPickerController: GutenbergKit.MediaPickerController {
             .filter { !$0.actions.isEmpty }
     }
 
-    func perform(_ action: MediaPickerAction, parameters: MediaPickerParameters, from presentingViewController: UIViewController) async -> [MediaInfo] {
+    func perform(
+        _ action: MediaPickerAction,
+        parameters: MediaPickerParameters,
+        from presentingViewController: UIViewController
+    ) async -> [MediaInfo] {
         // Find the source for this action
         guard let pickerID = MediaPickerID(rawValue: action.id) else {
             return []
@@ -94,7 +97,6 @@ final class MediaPickerController: GutenbergKit.MediaPickerController {
         case .siteMedia: .siteMedia(blog: blog)
         case .applePhotos: .photos
         case .freePhotos: .freePhotos(blog: blog)
-        case .freeGIFs: .freeGIFs(blog: blog)
         default: fatalError("Unsupported: \(id)")
         }
     }
@@ -108,13 +110,16 @@ final class MediaPickerController: GutenbergKit.MediaPickerController {
         }
     }
 
-    private func createUIAction(for source: MediaPickerSource, menu: MediaPickerMenu, controller: MediaPickerMenuController) -> UIAction? {
+    private func createUIAction(
+        for source: MediaPickerSource,
+        menu: MediaPickerMenu,
+        controller: MediaPickerMenuController
+    ) -> UIAction? {
         switch source {
         case .playground: menu.makeImagePlaygroundAction(delegate: controller)
         case .siteMedia: menu.makeSiteMediaAction(blog: blog, delegate: controller)
         case .photos: menu.makePhotosAction(delegate: controller)
         case .freePhotos: menu.makeStockPhotos(blog: blog, delegate: controller)
-        case .freeGIFs: menu.makeFreeGIFAction(blog: blog, delegate: controller)
         default: nil
         }
     }

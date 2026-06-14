@@ -20,11 +20,17 @@ class GutenbergViewController: UIViewController, PostEditor, PublishingEditor {
         case autoSave
     }
 
-    private lazy var filesAppMediaPicker = GutenbergFilesAppMediaSource(gutenberg: gutenberg, mediaInserter: mediaInserterHelper)
-    private lazy var externalMediaPicker = GutenbergExternalMediaPicker(gutenberg: gutenberg, mediaInserter: mediaInserterHelper)
+    private lazy var filesAppMediaPicker = GutenbergFilesAppMediaSource(
+        gutenberg: gutenberg,
+        mediaInserter: mediaInserterHelper
+    )
+    private lazy var externalMediaPicker = GutenbergExternalMediaPicker(
+        gutenberg: gutenberg,
+        mediaInserter: mediaInserterHelper
+    )
 
     lazy var gutenbergSettings: GutenbergSettings = {
-        return GutenbergSettings()
+        GutenbergSettings()
     }()
 
     lazy var ghostView: GutenGhostView = {
@@ -58,7 +64,7 @@ class GutenbergViewController: UIViewController, PostEditor, PublishingEditor {
             post.content = newValue
         }
         get {
-            return post.content ?? ""
+            post.content ?? ""
         }
     }
 
@@ -68,7 +74,7 @@ class GutenbergViewController: UIViewController, PostEditor, PublishingEditor {
         }
 
         get {
-            return post.postTitle ?? ""
+            post.postTitle ?? ""
         }
     }
 
@@ -81,11 +87,11 @@ class GutenbergViewController: UIViewController, PostEditor, PublishingEditor {
     /// Maintainer of state for editor - like for post button
     ///
     private(set) lazy var postEditorStateContext: PostEditorStateContext = {
-        return PostEditorStateContext(post: post, delegate: self)
+        PostEditorStateContext(post: post, delegate: self)
     }()
 
     var analyticsEditorSource: String {
-        return Analytics.editorSource
+        Analytics.editorSource
     }
 
     var editorSession: PostEditorAnalyticsSession
@@ -99,7 +105,7 @@ class GutenbergViewController: UIViewController, PostEditor, PublishingEditor {
     // MARK: - Editor Media actions
 
     var isUploadingMedia: Bool {
-        return mediaInserterHelper.isUploadingMedia()
+        mediaInserterHelper.isUploadingMedia()
     }
 
     var mediaToInsertOnPost = [Media]()
@@ -114,8 +120,9 @@ class GutenbergViewController: UIViewController, PostEditor, PublishingEditor {
                 media.mediaType == .image, // just images for now
                 let mediaID = media.mediaID?.int32Value,
                 let mediaURLString = media.remoteURL,
-                let mediaURL = URL(string: mediaURLString) else {
-                    continue
+                let mediaURL = URL(string: mediaURLString)
+            else {
+                continue
             }
             gutenberg.appendMedia(id: mediaID, url: mediaURL, type: .image)
         }
@@ -129,21 +136,25 @@ class GutenbergViewController: UIViewController, PostEditor, PublishingEditor {
         let mediaEditor = WPMediaEditor(image)
         mediaEditor.editingAlreadyPublishedImage = true
 
-        mediaEditor.edit(from: self,
-                         onFinishEditing: { [weak self] images, _ in
-                            guard let image = images.first?.editedImage else {
-                                // If the image wasn't edited, do nothing
-                                return
-                            }
+        mediaEditor.edit(
+            from: self,
+            onFinishEditing: { [weak self] images, _ in
+                guard let image = images.first?.editedImage else {
+                    // If the image wasn't edited, do nothing
+                    return
+                }
 
-                            self?.mediaInserterHelper.insertFromImage(image: image, callback: callback, source: .mediaEditor)
-        })
+                self?.mediaInserterHelper.insertFromImage(image: image, callback: callback, source: .mediaEditor)
+            }
+        )
     }
 
     private func confirmEditingGIF(with mediaUrl: URL, callback: @escaping MediaPickerDidPickMediaCallback) {
-        let alertController = UIAlertController(title: GIFAlertStrings.title,
-                                                message: GIFAlertStrings.message,
-                                                preferredStyle: .alert)
+        let alertController = UIAlertController(
+            title: GIFAlertStrings.title,
+            message: GIFAlertStrings.message,
+            preferredStyle: .alert
+        )
 
         alertController.addCancelActionWithTitle(GIFAlertStrings.cancel)
 
@@ -180,7 +191,7 @@ class GutenbergViewController: UIViewController, PostEditor, PublishingEditor {
 
     // TODO: remove
     func getHTML() -> String {
-        return html
+        html
     }
 
     var post: AbstractPost {
@@ -208,22 +219,22 @@ class GutenbergViewController: UIViewController, PostEditor, PublishingEditor {
     lazy var attachmentDelegate = AztecAttachmentDelegate(post: post)
 
     lazy var mediaPickerHelper: GutenbergMediaPickerHelper = {
-        return GutenbergMediaPickerHelper(context: self, post: post)
+        GutenbergMediaPickerHelper(context: self, post: post)
     }()
 
     lazy var mediaInserterHelper: GutenbergMediaInserterHelper = {
-        return GutenbergMediaInserterHelper(post: post, gutenberg: gutenberg)
+        GutenbergMediaInserterHelper(post: post, gutenberg: gutenberg)
     }()
 
     lazy var featuredImageHelper: GutenbergFeaturedImageHelper = {
-        return GutenbergFeaturedImageHelper(post: post, gutenberg: gutenberg)
+        GutenbergFeaturedImageHelper(post: post, gutenberg: gutenberg)
     }()
 
     /// For autosaving - The debouncer will execute local saving every defined number of seconds.
     /// In this case every 0.5 second
     ///
     fileprivate(set) lazy var debouncer: Debouncer = {
-        return Debouncer(delay: PostEditorDebouncerConstants.autoSavingDelay, callback: debouncerCallback)
+        Debouncer(delay: PostEditorDebouncerConstants.autoSavingDelay, callback: debouncerCallback)
     }()
 
     lazy var autosaver = Autosaver { [weak self] in
@@ -241,11 +252,11 @@ class GutenbergViewController: UIViewController, PostEditor, PublishingEditor {
     // MARK: - Private variables
 
     private lazy var gutenbergImageLoader: GutenbergImageLoader = {
-        return GutenbergImageLoader(post: post)
+        GutenbergImageLoader(post: post)
     }()
 
     private lazy var gutenberg: Gutenberg = {
-        return Gutenberg(dataSource: self, extraModules: [gutenbergImageLoader])
+        Gutenberg(dataSource: self, extraModules: [gutenbergImageLoader])
     }()
 
     private var requestHTMLReason: RequestHTMLReason?
@@ -261,7 +272,7 @@ class GutenbergViewController: UIViewController, PostEditor, PublishingEditor {
     private var isFirstGutenbergLayout = true
     var shouldPresentInformativeDialog = false
     lazy var shouldPresentPhase2informativeDialog: Bool = {
-        return gutenbergSettings.shouldPresentInformativeDialog(for: post.blog)
+        gutenbergSettings.shouldPresentInformativeDialog(for: post.blog)
     }()
 
     internal private(set) var contentInfo: ContentInfo?
@@ -338,11 +349,16 @@ class GutenbergViewController: UIViewController, PostEditor, PublishingEditor {
         gutenberg.delegate = self
         fetchBlockSettings()
 
-        service?.syncJetpackSettingsForBlog(post.blog, success: { [weak self] in
-            self?.gutenberg.updateCapabilities()
-        }, failure: { error in
-            DDLogError("Error syncing JETPACK: \(String(describing: error))")
-        })
+        service?
+            .syncJetpackSettingsForBlog(
+                post.blog,
+                success: { [weak self] in
+                    self?.gutenberg.updateCapabilities()
+                },
+                failure: { error in
+                    DDLogError("Error syncing JETPACK: \(String(describing: error))")
+                }
+            )
 
         onViewDidLoad()
     }
@@ -383,7 +399,11 @@ class GutenbergViewController: UIViewController, PostEditor, PublishingEditor {
         }
     }
 
-    override func present(_ viewControllerToPresent: UIViewController, animated flag: Bool, completion: (() -> Void)? = nil) {
+    override func present(
+        _ viewControllerToPresent: UIViewController,
+        animated flag: Bool,
+        completion: (() -> Void)? = nil
+    ) {
         super.present(viewControllerToPresent, animated: flag, completion: completion)
 
         // Update the tint color for React Native modals when presented
@@ -400,13 +420,21 @@ class GutenbergViewController: UIViewController, PostEditor, PublishingEditor {
     private var previousFirstResponder: UIView?
 
     private func setupKeyboardObservers() {
-        keyboardShowObserver = NotificationCenter.default.addObserver(forName: UIResponder.keyboardDidShowNotification, object: nil, queue: .main) { [weak self] notification in
+        keyboardShowObserver = NotificationCenter.default.addObserver(
+            forName: UIResponder.keyboardDidShowNotification,
+            object: nil,
+            queue: .main
+        ) { [weak self] notification in
             if let self, let keyboardRect = notification.userInfo?[UIResponder.keyboardFrameEndUserInfoKey] as? CGRect {
                 self.keyboardFrame = keyboardRect
                 self.updateConstraintsToAvoidKeyboard(frame: keyboardRect)
             }
         }
-        keyboardHideObserver = NotificationCenter.default.addObserver(forName: UIResponder.keyboardDidHideNotification, object: nil, queue: .main) { [weak self] notification in
+        keyboardHideObserver = NotificationCenter.default.addObserver(
+            forName: UIResponder.keyboardDidHideNotification,
+            object: nil,
+            queue: .main
+        ) { [weak self] notification in
             if let self, let keyboardRect = notification.userInfo?[UIResponder.keyboardFrameEndUserInfoKey] as? CGRect {
                 self.keyboardFrame = keyboardRect
                 self.updateConstraintsToAvoidKeyboard(frame: keyboardRect)
@@ -434,7 +462,12 @@ class GutenbergViewController: UIViewController, PostEditor, PublishingEditor {
 
         let borderBottom = UIView()
         borderBottom.backgroundColor = UIColor(cgColor: borderColor)
-        borderBottom.frame = CGRect(x: 0, y: navigationController?.navigationBar.frame.size.height ?? 0 - borderWidth, width: navigationController?.navigationBar.frame.size.width ?? 0, height: borderWidth)
+        borderBottom.frame = CGRect(
+            x: 0,
+            y: navigationController?.navigationBar.frame.size.height ?? 0 - borderWidth,
+            width: navigationController?.navigationBar.frame.size.width ?? 0,
+            height: borderWidth
+        )
         borderBottom.autoresizingMask = [.flexibleWidth, .flexibleTopMargin]
         navigationController?.navigationBar.addSubview(borderBottom)
 
@@ -470,9 +503,16 @@ class GutenbergViewController: UIViewController, PostEditor, PublishingEditor {
     }
 
     private func presentEditingModeSwitchedNotice() {
-        let message = mode == .html
-            ? NSLocalizedString("Switched to HTML mode", comment: "Message of the notice shown when toggling the HTML editor mode")
-            : NSLocalizedString("Switched to Visual mode", comment: "Message of the notice shown when toggling the Visual editor mode")
+        let message =
+            mode == .html
+            ? NSLocalizedString(
+                "Switched to HTML mode",
+                comment: "Message of the notice shown when toggling the HTML editor mode"
+            )
+            : NSLocalizedString(
+                "Switched to Visual mode",
+                comment: "Message of the notice shown when toggling the Visual editor mode"
+            )
         gutenberg.showNotice(message)
     }
 
@@ -497,7 +537,8 @@ class GutenbergViewController: UIViewController, PostEditor, PublishingEditor {
     }
 
     func focusTitleIfNeeded() {
-        guard !post.hasContent(), shouldPresentInformativeDialog == false, shouldPresentPhase2informativeDialog == false else {
+        guard !post.hasContent(), shouldPresentInformativeDialog == false, shouldPresentPhase2informativeDialog == false
+        else {
             return
         }
         gutenberg.setFocusOnTitle()
@@ -513,7 +554,11 @@ class GutenbergViewController: UIViewController, PostEditor, PublishingEditor {
         let JetpackSSOEnabled = (blog.jetpack?.isConnected ?? false) && (blog.settings?.jetpackSSOEnabled ?? false)
         if JetpackSSOEnabled == false {
             let controller = JetpackSettingsViewController(blog: blog)
-            controller.navigationItem.rightBarButtonItem = UIBarButtonItem(barButtonSystemItem: .done, target: self, action: #selector(jetpackSettingsControllerDoneButtonPressed))
+            controller.navigationItem.rightBarButtonItem = UIBarButtonItem(
+                barButtonSystemItem: .done,
+                target: self,
+                action: #selector(jetpackSettingsControllerDoneButtonPressed)
+            )
             let navController = UINavigationController(rootViewController: controller)
             present(navController, animated: true)
         }
@@ -537,8 +582,12 @@ class GutenbergViewController: UIViewController, PostEditor, PublishingEditor {
 
     // MARK: - Event handlers
 
-    @objc func presentationController(forPresented presented: UIViewController, presenting: UIViewController?, source: UIViewController) -> UIPresentationController? {
-        return presentationController(forPresented: presented, presenting: presenting)
+    @objc func presentationController(
+        forPresented presented: UIViewController,
+        presenting: UIViewController?,
+        source: UIViewController
+    ) -> UIPresentationController? {
+        presentationController(forPresented: presented, presenting: presenting)
     }
 }
 
@@ -556,7 +605,8 @@ extension GutenbergViewController {
         gutenberg.rootView.pinSubviewToAllEdges(ghostView)
 
         // Update the tint color of switches within React Native modals, as they require direct mutation
-        UISwitch.appearance(whenContainedInInstancesOf: [RCTModalHostViewController.self]).onTintColor = UIAppColor.editorPrimary
+        UISwitch.appearance(whenContainedInInstancesOf: [RCTModalHostViewController.self]).onTintColor =
+            UIAppColor.editorPrimary
     }
 }
 
@@ -568,7 +618,11 @@ extension GutenbergViewController: GutenbergBridgeDelegate {
         GutenbergNetworkRequest(path: path, blogID: blogID, method: .get).request(completion: completion)
     }
 
-    func gutenbergDidPostRequestFetch(path: String, data: [String: AnyObject]?, completion: @escaping (Result<Any, NSError>) -> Void) {
+    func gutenbergDidPostRequestFetch(
+        path: String,
+        data: [String: AnyObject]?,
+        completion: @escaping (Result<Any, NSError>) -> Void
+    ) {
         GutenbergNetworkRequest(path: path, blogID: blogID, method: .post, data: data).request(completion: completion)
     }
 
@@ -576,23 +630,45 @@ extension GutenbergViewController: GutenbergBridgeDelegate {
         autosaver.contentDidChange()
     }
 
-    func gutenbergDidRequestMedia(from source: Gutenberg.MediaSource, filter: [Gutenberg.MediaType], allowMultipleSelection: Bool, with callback: @escaping MediaPickerDidPickMediaCallback) {
+    func gutenbergDidRequestMedia(
+        from source: Gutenberg.MediaSource,
+        filter: [Gutenberg.MediaType],
+        allowMultipleSelection: Bool,
+        with callback: @escaping MediaPickerDidPickMediaCallback
+    ) {
         let flags = mediaFilterFlags(using: filter)
         switch source {
         case .mediaLibrary:
-            gutenbergDidRequestMediaFromSiteMediaLibrary(filter: flags, allowMultipleSelection: allowMultipleSelection, with: callback)
+            gutenbergDidRequestMediaFromSiteMediaLibrary(
+                filter: flags,
+                allowMultipleSelection: allowMultipleSelection,
+                with: callback
+            )
         case .deviceLibrary:
-            gutenbergDidRequestMediaFromDevicePicker(filter: flags, allowMultipleSelection: allowMultipleSelection, with: callback)
+            gutenbergDidRequestMediaFromDevicePicker(
+                filter: flags,
+                allowMultipleSelection: allowMultipleSelection,
+                with: callback
+            )
         case .deviceCamera:
             gutenbergDidRequestMediaFromCameraPicker(filter: flags, with: callback)
         case .stockPhotos:
-            externalMediaPicker.presentStockPhotoPicker(origin: self, post: post, multipleSelection: allowMultipleSelection, callback: callback)
-        case .tenor:
-            externalMediaPicker.presentTenorPicker(origin: self, post: post, multipleSelection: allowMultipleSelection, callback: callback)
+            externalMediaPicker.presentStockPhotoPicker(
+                origin: self,
+                post: post,
+                multipleSelection: allowMultipleSelection,
+                callback: callback
+            )
         case .imagePlayground:
             externalMediaPicker.presentImagePlayground(origin: self, post: post, callback: callback)
         case .otherApps, .allFiles:
-            filesAppMediaPicker.presentPicker(origin: self, filters: filter, allowedTypesOnBlog: post.blog.allowedTypeIdentifiers, multipleSelection: allowMultipleSelection, callback: callback)
+            filesAppMediaPicker.presentPicker(
+                origin: self,
+                filters: filter,
+                allowedTypesOnBlog: post.blog.allowedTypeIdentifiers,
+                multipleSelection: allowMultipleSelection,
+                callback: callback
+            )
         default: break
         }
     }
@@ -619,8 +695,13 @@ extension GutenbergViewController: GutenbergBridgeDelegate {
         return GutenbergMediaType(rawValue: mediaType)
     }
 
-    func gutenbergDidRequestMediaFromSiteMediaLibrary(filter: GutenbergMediaType, allowMultipleSelection: Bool, with callback: @escaping MediaPickerDidPickMediaCallback) {
-        mediaPickerHelper.presentSiteMediaPicker(filter: filter, allowMultipleSelection: allowMultipleSelection) { [weak self] assets in
+    func gutenbergDidRequestMediaFromSiteMediaLibrary(
+        filter: GutenbergMediaType,
+        allowMultipleSelection: Bool,
+        with callback: @escaping MediaPickerDidPickMediaCallback
+    ) {
+        mediaPickerHelper.presentSiteMediaPicker(filter: filter, allowMultipleSelection: allowMultipleSelection) {
+            [weak self] assets in
             guard let self, let media = assets as? [Media] else {
                 callback(nil)
                 return
@@ -629,8 +710,13 @@ extension GutenbergViewController: GutenbergBridgeDelegate {
         }
     }
 
-    func gutenbergDidRequestMediaFromDevicePicker(filter: GutenbergMediaType, allowMultipleSelection: Bool, with callback: @escaping MediaPickerDidPickMediaCallback) {
-        mediaPickerHelper.presetDevicePhotosPicker(filter: filter, allowMultipleSelection: allowMultipleSelection) { [weak self] assets in
+    func gutenbergDidRequestMediaFromDevicePicker(
+        filter: GutenbergMediaType,
+        allowMultipleSelection: Bool,
+        with callback: @escaping MediaPickerDidPickMediaCallback
+    ) {
+        mediaPickerHelper.presetDevicePhotosPicker(filter: filter, allowMultipleSelection: allowMultipleSelection) {
+            [weak self] assets in
             guard let self, let assets, !assets.isEmpty else {
                 return callback(nil)
             }
@@ -638,7 +724,10 @@ extension GutenbergViewController: GutenbergBridgeDelegate {
         }
     }
 
-    func gutenbergDidRequestMediaFromCameraPicker(filter: GutenbergMediaType, with callback: @escaping MediaPickerDidPickMediaCallback) {
+    func gutenbergDidRequestMediaFromCameraPicker(
+        filter: GutenbergMediaType,
+        with callback: @escaping MediaPickerDidPickMediaCallback
+    ) {
         mediaPickerHelper.presentCameraCaptureFullScreen(animated: true, filter: filter) { [weak self] assets in
             guard let self, let asset = assets?.first else {
                 return callback(nil)
@@ -662,9 +751,12 @@ extension GutenbergViewController: GutenbergBridgeDelegate {
     }
 
     func gutenbergDidRequestImport(from url: URL, with callback: @escaping MediaImportCallback) {
-        mediaInserterHelper.insertFromDevice(url: url, callback: { media in
-            callback(media?.first)
-        })
+        mediaInserterHelper.insertFromDevice(
+            url: url,
+            callback: { media in
+                callback(media?.first)
+            }
+        )
     }
 
     func gutenbergDidRequestMediaUploadSync() {
@@ -713,16 +805,34 @@ extension GutenbergViewController: GutenbergBridgeDelegate {
     }
 
     func showAlertForReplacingFeaturedImage(mediaID: Int32) {
-        let alertController = UIAlertController(title: NSLocalizedString("Replace current featured image?", comment: "Title message on dialog that prompts user to confirm or cancel the replacement of a featured image."),
-                                                message: NSLocalizedString("You already have a featured image set. Do you want to replace it with the new image?", comment: "Main message on dialog that prompts user to confirm or cancel the replacement of a featured image."),
-                                                preferredStyle: .actionSheet)
+        let alertController = UIAlertController(
+            title: NSLocalizedString(
+                "Replace current featured image?",
+                comment:
+                    "Title message on dialog that prompts user to confirm or cancel the replacement of a featured image."
+            ),
+            message: NSLocalizedString(
+                "You already have a featured image set. Do you want to replace it with the new image?",
+                comment:
+                    "Main message on dialog that prompts user to confirm or cancel the replacement of a featured image."
+            ),
+            preferredStyle: .actionSheet
+        )
 
-        let replaceAction = UIAlertAction(title: NSLocalizedString("Replace featured image", comment: "Button to confirm the replacement of a featured image."), style: .default) { _ in
+        let replaceAction = UIAlertAction(
+            title: NSLocalizedString(
+                "Replace featured image",
+                comment: "Button to confirm the replacement of a featured image."
+            ),
+            style: .default
+        ) { _ in
             self.featuredImageHelper.setFeaturedImage(mediaID: mediaID)
         }
 
         alertController.addAction(replaceAction)
-        alertController.addCancelActionWithTitle(NSLocalizedString("Keep current", comment: "Button to cancel the replacement of a featured image."))
+        alertController.addCancelActionWithTitle(
+            NSLocalizedString("Keep current", comment: "Button to cancel the replacement of a featured image.")
+        )
 
         alertController.popoverPresentationController?.sourceView = view
         alertController.popoverPresentationController?.sourceRect = view.bounds
@@ -744,8 +854,13 @@ extension GutenbergViewController: GutenbergBridgeDelegate {
         }
         alertController.addAction(dismissAction)
 
-        if media.remoteStatus == .failed || media.remoteStatus == .processing || media.remoteStatus == .local || media.remoteStatus == .pushing {
-            let cancelUploadAction = UIAlertAction(title: MediaAttachmentActionSheet.stopUploadActionTitle, style: .destructive) { _ in
+        if media.remoteStatus == .failed || media.remoteStatus == .processing || media.remoteStatus == .local
+            || media.remoteStatus == .pushing
+        {
+            let cancelUploadAction = UIAlertAction(
+                title: MediaAttachmentActionSheet.stopUploadActionTitle,
+                style: .destructive
+            ) { _ in
                 self.mediaInserterHelper.cancelUploadOf(media: media)
             }
             alertController.addAction(cancelUploadAction)
@@ -754,7 +869,10 @@ extension GutenbergViewController: GutenbergBridgeDelegate {
         if media.remoteStatus == .failed, let error = media.error {
             message = error.localizedDescription
             if media.canRetry {
-                let retryUploadAction = UIAlertAction(title: MediaAttachmentActionSheet.retryUploadActionTitle, style: .default) { _ in
+                let retryUploadAction = UIAlertAction(
+                    title: MediaAttachmentActionSheet.retryUploadActionTitle,
+                    style: .default
+                ) { _ in
                     self.mediaInserterHelper.retryFailedMediaUploads()
                 }
                 alertController.addAction(retryUploadAction)
@@ -791,7 +909,8 @@ extension GutenbergViewController: GutenbergBridgeDelegate {
         var hasContent = !content.isEmpty
         if let contentInfo {
             let isEmpty = contentInfo.blockCount == 0
-            let isOneEmptyParagraph = (contentInfo.blockCount == 1 && contentInfo.paragraphCount == 1 && contentInfo.characterCount == 0)
+            let isOneEmptyParagraph =
+                (contentInfo.blockCount == 1 && contentInfo.paragraphCount == 1 && contentInfo.characterCount == 0)
             hasContent = !(isEmpty || isOneEmptyParagraph)
         }
         return hasTitle || hasContent
@@ -909,8 +1028,7 @@ extension GutenbergViewController: GutenbergBridgeDelegate {
         // So in those scenarios, we just need to take in account the safe area and ignore the keyboard all together.
         if keyboardFrame.height < minimumKeyboardHeight {
             suggestionViewBottomConstraint.constant = -self.view.safeAreaInsets.bottom
-        }
-        else {
+        } else {
             suggestionViewBottomConstraint.constant = -self.keyboardFrame.height
         }
     }
@@ -928,7 +1046,7 @@ extension GutenbergViewController: GutenbergBridgeDelegate {
     }
 
     func gutenbergDidRequestFocalPointPickerTooltipShown() -> Bool {
-        return gutenbergSettings.focalPointPickerTooltipShown
+        gutenbergSettings.focalPointPickerTooltipShown
     }
 
     func gutenbergDidRequestSetFocalPointPickerTooltipShown(_ tooltipShown: Bool) {
@@ -937,8 +1055,8 @@ extension GutenbergViewController: GutenbergBridgeDelegate {
 
     func gutenbergDidSendButtonPressedAction(_ buttonType: Gutenberg.ActionButtonType) {
         switch buttonType {
-            case .missingBlockAlertActionButton:
-                handleMissingBlockAlertButtonPressed()
+        case .missingBlockAlertActionButton:
+            handleMissingBlockAlertButtonPressed()
         @unknown default:
             fatalError()
         }
@@ -949,7 +1067,7 @@ extension GutenbergViewController: GutenbergBridgeDelegate {
     }
 
     func gutenbergDidRequestBlockTypeImpressions() -> [String: Int] {
-        return gutenbergSettings.blockTypeImpressions
+        gutenbergSettings.blockTypeImpressions
     }
 
     func gutenbergDidRequestSetBlockTypeImpressions(_ impressions: [String: Int]) -> Void {
@@ -967,13 +1085,14 @@ extension GutenbergViewController: GutenbergBridgeDelegate {
     }
 
     func gutenbergDidRequestConnectionStatus() -> Bool {
-        return ReachabilityUtils.isInternetReachable()
+        ReachabilityUtils.isInternetReachable()
     }
 
     func gutenbergDidRequestSendEventToHost(_ eventName: String, properties: [AnyHashable: Any]) -> Void {
-        post.managedObjectContext?.perform {
-            WPAnalytics.trackBlockEditorEvent(eventName, properties: properties, blog: self.post.blog)
-        }
+        post.managedObjectContext?
+            .perform {
+                WPAnalytics.trackBlockEditorEvent(eventName, properties: properties, blog: self.post.blog)
+            }
     }
 }
 
@@ -1037,7 +1156,10 @@ extension GutenbergViewController {
         }
         addChild(suggestionsController)
         view.addSubview(suggestionsController.view)
-        let suggestionsBottomConstraint = suggestionsController.view.bottomAnchor.constraint(equalTo: view.bottomAnchor, constant: 0)
+        let suggestionsBottomConstraint = suggestionsController.view.bottomAnchor.constraint(
+            equalTo: view.bottomAnchor,
+            constant: 0
+        )
         NSLayoutConstraint.activate([
             suggestionsController.view.leadingAnchor.constraint(equalTo: view.safeLeadingAnchor, constant: 0),
             suggestionsController.view.trailingAnchor.constraint(equalTo: view.safeTrailingAnchor, constant: 0),
@@ -1054,55 +1176,56 @@ extension GutenbergViewController {
 
 extension GutenbergViewController: GutenbergBridgeDataSource {
     var isPreview: Bool {
-        return false
+        false
     }
 
     var loadingView: UIView? {
-        return ghostView
+        ghostView
     }
 
     func gutenbergLocale() -> String? {
-        return WordPressComLanguageDatabase.shared.deviceLanguage.slug
+        WordPressComLanguageDatabase.shared.deviceLanguage.slug
     }
 
     func gutenbergTranslations() -> [String: [String]]? {
-        return parseGutenbergTranslations()
+        parseGutenbergTranslations()
     }
 
     func gutenbergInitialContent() -> String? {
-        return post.content ?? ""
+        post.content ?? ""
     }
 
     func gutenbergInitialTitle() -> String? {
-        return post.postTitle ?? ""
+        post.postTitle ?? ""
     }
 
     func gutenbergFeaturedImageId() -> NSNumber? {
-        return post.featuredImage?.mediaID
+        post.featuredImage?.mediaID
     }
 
     func gutenbergPostType() -> String {
-        return post is Page ? "page" : "post"
+        post is Page ? "page" : "post"
     }
 
     func gutenbergHostAppNamespace() -> String {
-        return AppConfiguration.isWordPress ? "WordPress" : "Jetpack"
+        AppConfiguration.isWordPress ? "WordPress" : "Jetpack"
     }
 
     func aztecAttachmentDelegate() -> TextViewAttachmentDelegate {
-        return attachmentDelegate
+        attachmentDelegate
     }
 
     func gutenbergMediaSources() -> [Gutenberg.MediaSource] {
-        post.managedObjectContext?.performAndWait {
-            [
-                MediaPickerSource.playground.isEnabled ? .imagePlayground : nil,
-                MediaPickerSource.freePhotos(blog: post.blog).isEnabled ? .stockPhotos : nil,
-                MediaPickerSource.freeGIFs(blog: post.blog).isEnabled ? .tenor : nil,
-                .otherApps,
-                .allFiles
-            ].compactMap { $0 }
-        } ?? []
+        post.managedObjectContext?
+            .performAndWait {
+                [
+                    MediaPickerSource.playground.isEnabled ? .imagePlayground : nil,
+                    MediaPickerSource.freePhotos(blog: post.blog).isEnabled ? .stockPhotos : nil,
+                    .otherApps,
+                    .allFiles
+                ]
+                .compactMap { $0 }
+            } ?? []
     }
 
     func gutenbergCapabilities() -> [Capabilities: Bool] {
@@ -1193,15 +1316,15 @@ extension GutenbergViewController: PostEditorStateContextDelegate {
 extension GutenbergViewController: PostEditorNavigationBarManagerDelegate {
 
     var publishButtonText: String {
-        return postEditorStateContext.publishButtonText
+        postEditorStateContext.publishButtonText
     }
 
     var isPublishButtonEnabled: Bool {
-         return postEditorStateContext.isPublishButtonEnabled
+        postEditorStateContext.isPublishButtonEnabled
     }
 
     var uploadingButtonSize: CGSize {
-        return AztecPostViewController.Constants.uploadingButtonSize
+        AztecPostViewController.Constants.uploadingButtonSize
     }
 
     func gutenbergDidRequestToggleUndoButton(_ isDisabled: Bool) {
@@ -1255,11 +1378,22 @@ extension GutenbergViewController: PostEditorNavigationBarManagerDelegate {
 // MARK: - Constants
 
 extension Gutenberg.MediaSource {
-    static let stockPhotos = Gutenberg.MediaSource(id: "wpios-stock-photo-library", label: .freePhotosLibrary, types: [.image])
-    static let otherApps = Gutenberg.MediaSource(id: "wpios-other-files", label: .otherApps, types: [.image, .video, .audio, .other])
-    static let imagePlayground = Gutenberg.MediaSource(id: "wpios-image-playground", label: MediaPickerMenu.imagePlaygroundLocalizedTitle, types: [.image])
+    static let stockPhotos = Gutenberg.MediaSource(
+        id: "wpios-stock-photo-library",
+        label: .freePhotosLibrary,
+        types: [.image]
+    )
+    static let otherApps = Gutenberg.MediaSource(
+        id: "wpios-other-files",
+        label: .otherApps,
+        types: [.image, .video, .audio, .other]
+    )
+    static let imagePlayground = Gutenberg.MediaSource(
+        id: "wpios-image-playground",
+        label: MediaPickerMenu.imagePlaygroundLocalizedTitle,
+        types: [.image]
+    )
     static let allFiles = Gutenberg.MediaSource(id: "wpios-all-files", label: .otherApps, types: [.any])
-    static let tenor = Gutenberg.MediaSource(id: "wpios-tenor", label: .tenor, types: [.image])
 }
 
 private extension GutenbergViewController {
@@ -1271,9 +1405,18 @@ private extension GutenbergViewController {
 private extension GutenbergViewController {
 
     struct EmptyPostActionSheet {
-        static let titlePost = NSLocalizedString("Can't publish an empty post", comment: "Alert message that is shown when trying to publish empty post")
-        static let titlePage = NSLocalizedString("Can't publish an empty page", comment: "Alert message that is shown when trying to publish empty page")
-        static let message = NSLocalizedString("Please add some content before trying to publish.", comment: "Suggestion to add content before trying to publish post or page")
+        static let titlePost = NSLocalizedString(
+            "Can't publish an empty post",
+            comment: "Alert message that is shown when trying to publish empty post"
+        )
+        static let titlePage = NSLocalizedString(
+            "Can't publish an empty page",
+            comment: "Alert message that is shown when trying to publish empty page"
+        )
+        static let message = NSLocalizedString(
+            "Please add some content before trying to publish.",
+            comment: "Suggestion to add content before trying to publish post or page"
+        )
     }
 
     struct MediaAttachmentActionSheet {
@@ -1293,21 +1436,22 @@ extension GutenbergViewController {
 
     // GutenbergBridgeDataSource
     func gutenbergEditorSettings() -> GutenbergEditorSettings? {
-        return editorSettingsService?.cachedSettings
+        editorSettingsService?.cachedSettings
     }
 
     private func fetchBlockSettings() {
-        editorSettingsService?.fetchSettings({ [weak self] result in
-            guard let `self` = self else { return }
-            switch result {
-            case .success(let response):
-                if response.hasChanges {
-                    self.gutenberg.updateEditorSettings(response.blockEditorSettings)
+        editorSettingsService?
+            .fetchSettings({ [weak self] result in
+                guard let `self` = self else { return }
+                switch result {
+                case .success(let response):
+                    if response.hasChanges {
+                        self.gutenberg.updateEditorSettings(response.blockEditorSettings)
+                    }
+                case .failure(let err):
+                    DDLogError("Error fetching settings: \(err)")
                 }
-            case .failure(let err):
-                DDLogError("Error fetching settings: \(err)")
-            }
-        })
+            })
     }
 
     private enum ErrorCode: Int {

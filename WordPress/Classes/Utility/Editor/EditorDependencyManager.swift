@@ -55,7 +55,8 @@ final class EditorDependencyManager: Sendable {
             $0.featureFlagObserver = NotificationCenter.default
                 .publisher(for: FeatureFlagOverrideStore.didChangeNotification)
                 .filter {
-                    ($0.userInfo?[FeatureFlagOverrideStore.notificationFeatureFlagKey] as? RemoteFeatureFlag) == .newGutenberg
+                    ($0.userInfo?[FeatureFlagOverrideStore.notificationFeatureFlagKey] as? RemoteFeatureFlag)
+                        == .newGutenberg
                 }
                 .sink { [weak self] _ in
                     Task {
@@ -203,7 +204,8 @@ final class EditorDependencyManager: Sendable {
         // dependencies cache (the "slow path") creates on-disk caches that
         // EditorDependencyManager doesn't track. We should consider exposing
         // GutenbergKit's cache to access and/or track these slow-path caches.
-        let postTypes = keysToInvalidate.isEmpty
+        let postTypes =
+            keysToInvalidate.isEmpty
             ? [PostTypeDetails.post]
             : keysToInvalidate.map(\.postType)
 
@@ -222,7 +224,9 @@ final class EditorDependencyManager: Sendable {
             do {
                 try await EditorService(configuration: configuration).purge()
             } catch {
-                DDLogError("EditorDependencyManager: Failed to clear cache for \(configuration.postType.postType): \(error)")
+                DDLogError(
+                    "EditorDependencyManager: Failed to clear cache for \(configuration.postType.postType): \(error)"
+                )
             }
         }
     }
@@ -280,8 +284,10 @@ final class EditorDependencyManager: Sendable {
 
         var siteId: Int? = nil
 
-        if case .dotCom(_, let _siteId, _) = site {
-            siteId = _siteId
+        // The site-specific routes (e.g. `/wp-block-editor/v1/sites/{id}/settings`)
+        // only exist on the WP.com proxy, not on the site's own API root.
+        if case let .dotComProxy(dotComSiteId, _) = site.transport {
+            siteId = dotComSiteId
         }
 
         let hasBlockTheme = try await client.supports(.blockTheme, forSiteId: siteId)

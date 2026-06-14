@@ -24,7 +24,10 @@ extension MediaPickerMenuController: PHPickerViewControllerDelegate {
 }
 
 extension MediaPickerMenuController: ImagePickerControllerDelegate {
-    func imagePicker(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [UIImagePickerController.InfoKey: Any]) {
+    func imagePicker(
+        _ picker: UIImagePickerController,
+        didFinishPickingMediaWithInfo info: [UIImagePickerController.InfoKey: Any]
+    ) {
         picker.presentingViewController?.dismiss(animated: true)
         if let image = info[.originalImage] as? UIImage {
             self.didSelect([.image(image)], source: .camera)
@@ -33,7 +36,10 @@ extension MediaPickerMenuController: ImagePickerControllerDelegate {
 }
 
 extension MediaPickerMenuController: SiteMediaPickerViewControllerDelegate {
-    func siteMediaPickerViewController(_ viewController: SiteMediaPickerViewController, didFinishWithSelection selection: [Media]) {
+    func siteMediaPickerViewController(
+        _ viewController: SiteMediaPickerViewController,
+        didFinishWithSelection selection: [Media]
+    ) {
         viewController.presentingViewController?.dismiss(animated: true)
         if !selection.isEmpty {
             self.didSelect(selection.map(MediaPickerItem.media), source: .siteMedia)
@@ -54,11 +60,13 @@ extension MediaPickerMenuController: ImagePlaygroundPickerDelegate {
 }
 
 extension MediaPickerMenuController: ExternalMediaPickerViewDelegate {
-    func externalMediaPickerViewController(_ viewController: ExternalMediaPickerViewController, didFinishWithSelection selection: [ExternalMediaAsset]) {
+    func externalMediaPickerViewController(
+        _ viewController: ExternalMediaPickerViewController,
+        didFinishWithSelection selection: [ExternalMediaAsset]
+    ) {
         viewController.presentingViewController?.dismiss(animated: true)
         if !selection.isEmpty {
-            let source: MediaPickerID = viewController.source == .tenor ? .freeGIFs : .freePhotos
-            self.didSelect(selection.map(MediaPickerItem.external), source: source)
+            self.didSelect(selection.map(MediaPickerItem.external), source: .freePhotos)
         }
     }
 }

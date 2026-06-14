@@ -78,8 +78,6 @@ final class ExternalMediaPickerViewController: UIViewController, UICollectionVie
 
         switch source {
         case .stockPhotos:
-            WPAnalytics.track(.tenorAccessed)
-        case .tenor:
             WPAnalytics.track(.stockMediaAccessed)
         default:
             assertionFailure("Unsupported source: \(source)")

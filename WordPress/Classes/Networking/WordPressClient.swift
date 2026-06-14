@@ -37,7 +37,7 @@ extension WordPressClient {
         .init("WordPressClient.requestedWithInvalidAuthenticationNotification")
     }
 
-    fileprivate convenience init(site: WordPressSite) {
+    fileprivate init(site: WordPressSite) {
         // Currently, the app supports both account passwords and application passwords.
         // When a site is initially signed in with an account password, WordPress login cookies are stored
         // in `URLSession.shared`. After switching the site to application password authentication,
@@ -55,15 +55,12 @@ extension WordPressClient {
                 coreDataStack: ContextManager.shared
             )
         )
-        let siteURL: URL
         let siteInfo: SiteInfo
-        switch site {
-        case let .dotCom(url, siteId, _):
-            siteURL = url
+        switch site.transport {
+        case let .direct(credentials):
+            siteInfo = .selfHosted(siteUrl: try! ParsedUrl.from(url: site.siteURL), apiRoot: credentials.apiRootURL)
+        case let .dotComProxy(siteId, _):
             siteInfo = .wordPressCom(siteId: WpComSiteId(siteId))
-        case let .selfHosted(_, url, apiRoot, _, _):
-            siteURL = url
-            siteInfo = .selfHosted(siteUrl: try! ParsedUrl.from(url: url), apiRoot: apiRoot)
         }
         let api = WordPressAPI(
             urlSession: session,
@@ -72,7 +69,7 @@ extension WordPressClient {
             authenticationProvider: provider,
             appNotifier: notifier,
         )
-        self.init(api: api, siteURL: siteURL)
+        self.init(api: api, siteURL: site.siteURL)
     }
 
     func installJetpack() async throws -> PluginWithEditContext {
@@ -107,11 +104,11 @@ private final class AutoUpdateAuthenticationProvider: @unchecked Sendable, WpDyn
         self.site = site
         self.coreDataStack = coreDataStack
         self.authentication =
-            switch site {
-            case let .dotCom(_, _, authToken):
-                .bearer(token: authToken)
-            case let .selfHosted(_, _, _, username, authToken):
-                .init(username: username, password: authToken)
+            switch site.transport {
+            case let .direct(credentials):
+                .init(username: credentials.username, password: credentials.token)
+            case let .dotComProxy(_, oAuthToken):
+                .bearer(token: oAuthToken)
             }
 
         self.cancellable = NotificationCenter.default
@@ -146,7 +143,7 @@ private final class AutoUpdateAuthenticationProvider: @unchecked Sendable, WpDyn
     }
 
     func refresh() async -> Bool {
-        guard let blogId = site.blogId(in: coreDataStack) else { return false }
+        let blogId = site.blogId
 
         do {
             DDLogInfo("Create a new application password")
@@ -172,25 +169,19 @@ private class AppNotifier: @unchecked Sendable, WpAppNotifier {
     }
 
     func requestedWithInvalidAuthentication(requestUrl: String) async {
-        let blogId = site.blogId(in: coreDataStack)
         NotificationCenter.default.post(
             name: WordPressClient.requestedWithInvalidAuthenticationNotification,
-            object: blogId
+            object: site.blogId
         )
     }
 }
 
 private extension WordPressSite {
     func authentication(in context: NSManagedObjectContext) -> WpAuthentication {
-        switch self {
-        case let .dotCom(_, siteId, _):
-            guard let blog = try? Blog.lookup(withID: siteId, in: context),
-                let token = blog.account?.authToken
-            else {
-                return WpAuthentication.none
-            }
-            return WpAuthentication.bearer(token: token)
-        case let .selfHosted(blogId, _, _, _, _):
+        // The transport (and thus the credential kind) is fixed when the
+        // client is created, so refreshed credentials must match it.
+        switch self.transport {
+        case .direct:
             guard let blog = try? context.existingObject(with: blogId),
                 let username = try? blog.getUsername(),
                 let password = try? blog.getApplicationToken()
@@ -199,6 +190,13 @@ private extension WordPressSite {
             }
 
             return WpAuthentication(username: username, password: password)
+        case .dotComProxy:
+            guard let blog = try? context.existingObject(with: blogId),
+                let token = blog.account?.authToken
+            else {
+                return WpAuthentication.none
+            }
+            return WpAuthentication.bearer(token: token)
         }
     }
 }

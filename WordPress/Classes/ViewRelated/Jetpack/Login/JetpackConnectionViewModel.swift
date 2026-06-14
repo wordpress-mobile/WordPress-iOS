@@ -19,7 +19,12 @@ class JetpackConnectionViewModel: ObservableObject {
     private let connectionService: JetpackConnectionService
     private var stepContext: StepContext = .initial
 
-    init(blog: Blog, presentingViewController: UIViewController, connectionService: JetpackConnectionService, completionHandler: @escaping () -> Void) {
+    init(
+        blog: Blog,
+        presentingViewController: UIViewController,
+        connectionService: JetpackConnectionService,
+        completionHandler: @escaping () -> Void
+    ) {
         self.blogID = TaggedManagedObjectID(blog)
         self.presentingViewController = presentingViewController
         self.connectionService = connectionService
@@ -43,9 +48,12 @@ class JetpackConnectionViewModel: ObservableObject {
     private func processCurrentStep() async {
         stepStages[currentStep] = .processing
 
-        WPAnalytics.track(currentStep.event, properties: [
-            "state": "started"
-        ])
+        WPAnalytics.track(
+            currentStep.event,
+            properties: [
+                "state": "started"
+            ]
+        )
 
         do {
             switch currentStep {
@@ -63,9 +71,12 @@ class JetpackConnectionViewModel: ObservableObject {
 
             stepStages[currentStep] = .success
 
-            WPAnalytics.track(currentStep.event, properties: [
-                "state": "completed"
-            ])
+            WPAnalytics.track(
+                currentStep.event,
+                properties: [
+                    "state": "completed"
+                ]
+            )
 
             if let nextStep = self.nextStep() {
                 currentStep = nextStep
@@ -77,11 +88,14 @@ class JetpackConnectionViewModel: ObservableObject {
         } catch {
             stepStages[currentStep] = .error(error.localizedDescription)
 
-            WPAnalytics.track(currentStep.event, properties: [
-                "state": "failed",
-                "error_domain": (error as NSError).domain,
-                "error_code": (error as NSError).code
-            ])
+            WPAnalytics.track(
+                currentStep.event,
+                properties: [
+                    "state": "failed",
+                    "error_domain": (error as NSError).domain,
+                    "error_code": (error as NSError).code
+                ]
+            )
         }
     }
 
@@ -144,9 +158,12 @@ class JetpackConnectionViewModel: ObservableObject {
     }
 
     func retryCurrentStep() {
-        WPAnalytics.track(.jetpackConnectStepRetried, properties: [
-            "step": currentStep.event.value
-        ])
+        WPAnalytics.track(
+            .jetpackConnectStepRetried,
+            properties: [
+                "step": currentStep.event.value
+            ]
+        )
         stepStages[currentStep] = .pending
         Task {
             await processCurrentStep()
@@ -182,13 +199,14 @@ class JetpackConnectionService {
         guard blog.account == nil else { return nil }
 
         if let jetpack = blog.jetpack, jetpack.isInstalled, let version = jetpack.version,
-           // The `version` value is not a strict semantic version number.
-           version.compare("14.2", options: .numeric) == .orderedAscending {
+            // The `version` value is not a strict semantic version number.
+            version.compare("14.2", options: .numeric) == .orderedAscending
+        {
             return nil
         }
 
         guard let site = try? WordPressSite(blog: blog),
-              case let .selfHosted(_, _, apiRootURL, username, password) = site
+            case let .selfHosted(credentials) = site.flavor
         else {
             return nil
         }
@@ -196,14 +214,18 @@ class JetpackConnectionService {
         self.blogId = TaggedManagedObjectID(blog)
         self.client = WordPressClientFactory.shared.instance(for: site)
         self.jetpackConnectionClient = .init(
-            apiRootUrl: apiRootURL,
+            apiRootUrl: credentials.apiRootURL,
             urlSession: .init(configuration: .ephemeral),
-            authentication: .init(username: username, password: password)
+            authentication: .init(username: credentials.username, password: credentials.token)
         )
     }
 
-    func performLogin(from presentingViewController: UIViewController, blogID: TaggedManagedObjectID<Blog>) async throws -> TaggedManagedObjectID<WPAccount> {
-        let defaultAccount: TaggedManagedObjectID<WPAccount>? = try await ContextManager.shared.performQuery { context in
+    func performLogin(
+        from presentingViewController: UIViewController,
+        blogID: TaggedManagedObjectID<Blog>
+    ) async throws -> TaggedManagedObjectID<WPAccount> {
+        let defaultAccount: TaggedManagedObjectID<WPAccount>? = try await ContextManager.shared.performQuery {
+            context in
             guard let account = try WPAccount.lookupDefaultWordPressComAccount(in: context) else { return nil }
             return .init(account)
         }
@@ -217,7 +239,10 @@ class JetpackConnectionService {
         }
 
         let authenticator = WordPressDotComAuthenticator(showProgressHUD: false)
-        return try await authenticator.attemptSignIn(from: presentingViewController, context: .jetpackSite(accountEmail: email))
+        return try await authenticator.attemptSignIn(
+            from: presentingViewController,
+            context: .jetpackSite(accountEmail: email)
+        )
     }
 
     func performInstall() async throws {
@@ -246,7 +271,10 @@ class JetpackConnectionService {
         }
         guard let authToken else { throw JetpackConnectionError.authenticationFailed }
 
-        let _ = try await jetpackConnectionClient.connectUser(wpComAuthentication: .bearer(token: authToken), from: "jetpack-app")
+        let _ = try await jetpackConnectionClient.connectUser(
+            wpComAuthentication: .bearer(token: authToken),
+            from: "jetpack-app"
+        )
     }
 
     func performFinalization(account accountID: TaggedManagedObjectID<WPAccount>) async throws {

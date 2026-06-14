@@ -15,22 +15,23 @@ class GutenbergExternalMediaPicker: NSObject {
         super.init()
     }
 
-    func presentImagePlayground(origin: UIViewController, post: AbstractPost, callback: @escaping MediaPickerDidPickMediaCallback) {
+    func presentImagePlayground(
+        origin: UIViewController,
+        post: AbstractPost,
+        callback: @escaping MediaPickerDidPickMediaCallback
+    ) {
         mediaPickerCallback = callback
 
         MediaPickerMenu(viewController: origin)
             .showImagePlayground(delegate: self)
     }
 
-    func presentTenorPicker(origin: UIViewController, post: AbstractPost, multipleSelection: Bool, callback: @escaping MediaPickerDidPickMediaCallback) {
-        mediaPickerCallback = callback
-        self.multipleSelection = multipleSelection
-
-        MediaPickerMenu(viewController: origin, isMultipleSelectionEnabled: multipleSelection)
-            .showFreeGIFPicker(blog: post.blog, delegate: self)
-    }
-
-    func presentStockPhotoPicker(origin: UIViewController, post: AbstractPost, multipleSelection: Bool, callback: @escaping MediaPickerDidPickMediaCallback) {
+    func presentStockPhotoPicker(
+        origin: UIViewController,
+        post: AbstractPost,
+        multipleSelection: Bool,
+        callback: @escaping MediaPickerDidPickMediaCallback
+    ) {
         mediaPickerCallback = callback
         self.multipleSelection = multipleSelection
 
@@ -40,7 +41,10 @@ class GutenbergExternalMediaPicker: NSObject {
 }
 
 extension GutenbergExternalMediaPicker: ExternalMediaPickerViewDelegate {
-    func externalMediaPickerViewController(_ viewController: ExternalMediaPickerViewController, didFinishWithSelection assets: [ExternalMediaAsset]) {
+    func externalMediaPickerViewController(
+        _ viewController: ExternalMediaPickerViewController,
+        didFinishWithSelection assets: [ExternalMediaAsset]
+    ) {
         defer {
             mediaPickerCallback = nil
         }
@@ -62,7 +66,7 @@ extension GutenbergExternalMediaPicker: ExternalMediaPickerViewDelegate {
     }
 
     /// Adds the given image object to the requesting block and separates multiple images to separate image blocks
-    /// - Parameter asset: Tenor Media object to add.
+    /// - Parameter asset: Image object to add.
     func insertSingleImages(_ assets: [ExternalMediaAsset], source: MediaSource) {
         // Append the first item via callback given by Gutenberg.
         if let firstItem = assets.first {
@@ -74,7 +78,7 @@ extension GutenbergExternalMediaPicker: ExternalMediaPickerViewDelegate {
     }
 
     /// Adds the given images  to the requesting block
-    /// - Parameter assets: Tenor Media objects to add.
+    /// - Parameter assets: Image objects to add.
     func insertOnBlock(with assets: [ExternalMediaAsset], source: MediaSource) {
         guard let callback = mediaPickerCallback else {
             return assertionFailure("Image picked without callback")
@@ -92,7 +96,7 @@ extension GutenbergExternalMediaPicker: ExternalMediaPickerViewDelegate {
     }
 
     /// Create a new image block for each of the image objects in the slice.
-    /// - Parameter assets: Tenor Media objects to append.
+    /// - Parameter assets: Image objects to append.
     func appendOnNewBlocks(assets: ArraySlice<ExternalMediaAsset>, source: MediaSource) {
         assets.forEach {
             if let media = self.mediaInserter.insert(exportableAsset: $0, source: source) {

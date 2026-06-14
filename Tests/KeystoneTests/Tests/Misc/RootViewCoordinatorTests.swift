@@ -13,8 +13,7 @@ final class RootViewCoordinatorTests: XCTestCase {
         windowManager = WindowManagerMock(window: .init())
         sut = RootViewCoordinator(
             featureFlagStore: RemoteFeatureFlagStoreMock(),
-            windowManager: windowManager,
-            wordPressAuthenticator: WordPressAuthenticatorMock.self
+            windowManager: windowManager
         )
     }
 
@@ -40,16 +39,12 @@ final class RootViewCoordinatorTests: XCTestCase {
 private class WindowManagerMock: WindowManager {
     var presentedViewController: UIViewController?
 
-    override func show(_ viewController: UIViewController, animated: Bool = true, completion: WindowManager.Completion? = nil) {
+    override func show(
+        _ viewController: UIViewController,
+        animated: Bool = true,
+        completion: WindowManager.Completion? = nil
+    ) {
         self.presentedViewController = viewController
         completion?()
     }
-}
-
-private class WordPressAuthenticatorMock: WordPressAuthenticatorProtocol {
-    static func loginUI() -> UIViewController? {
-        return UIViewController(nibName: nil, bundle: nil)
-    }
-
-    static func track(_ event: WPAnalyticsStat) {}
 }

@@ -21,20 +21,24 @@ class ApplicationPasswordsRepositoryTests {
 
     @Test
     func simpleSite() async throws {
-        defer { HTTPStubs.removeAllStubs()}
+        defer { HTTPStubs.removeAllStubs() }
 
         try await signInWPComAccount()
         let blog = try await createSimpleSite()
 
         let repository = ApplicationPasswordRepository.forTesting(coreDataStack: coreDataStack, keychain: keychain)
-        await #expect(throws: AutoDiscoveryAttemptFailure.self, "Simple site does not support application passwords", performing: {
-            try await repository.createPasswordIfNeeded(for: blog)
-        })
+        await #expect(
+            throws: AutoDiscoveryAttemptFailure.self,
+            "Simple site does not support application passwords",
+            performing: {
+                try await repository.createPasswordIfNeeded(for: blog)
+            }
+        )
     }
 
     @Test
     func atomicSite() async throws {
-        defer { HTTPStubs.removeAllStubs()}
+        defer { HTTPStubs.removeAllStubs() }
 
         try await signInWPComAccount()
         let blog = try await createAtomicSite()
@@ -51,8 +55,29 @@ class ApplicationPasswordsRepositoryTests {
     }
 
     @Test
+    func atomicSiteWithExistingApplicationPassword() async throws {
+        defer { HTTPStubs.removeAllStubs() }
+
+        try await signInWPComAccount()
+        let blog = try await createAtomicSite(existingApplicationPassword: "existing token")
+
+        let validationMonitor = Monitor()
+        let creationMonitor = Monitor()
+        stubCurrentApplicationPassword(host: "atomic.com", monitor: validationMonitor)
+        stubJetpackProxyCreateApplicationPassword(siteId: 456, password: "new token", monitor: creationMonitor)
+
+        let repository = ApplicationPasswordRepository.forTesting(coreDataStack: coreDataStack, keychain: keychain)
+        try await repository.createPasswordIfNeeded(for: blog)
+
+        let password = await password(of: blog)
+        #expect(password == "existing token")
+        #expect(validationMonitor.numberOfRequests > 0)
+        #expect(creationMonitor.numberOfRequests == 0)
+    }
+
+    @Test
     func selfHostedSite() async throws {
-        defer { HTTPStubs.removeAllStubs()}
+        defer { HTTPStubs.removeAllStubs() }
 
         let uuid = UUID().uuidString.lowercased()
         let host = "\(uuid).example.com"
@@ -71,7 +96,7 @@ class ApplicationPasswordsRepositoryTests {
 
     @Test
     func selfHostedSiteWithInaccessibleRestApi() async throws {
-        defer { HTTPStubs.removeAllStubs()}
+        defer { HTTPStubs.removeAllStubs() }
 
         let host = "2.example.com"
         let blog = try await createSelfHostedSite(host: host)
@@ -81,14 +106,18 @@ class ApplicationPasswordsRepositoryTests {
         stub(condition: isHost(host) && isPath("/wp-login.php")) { _ in
             HTTPStubsResponse(data: "<html>Logged in</html>".data(using: .utf8)!, statusCode: 200, headers: nil)
         }
-        stub(condition: isHost(host) && isPath("/wp-admin/admin-ajax.php") && containsQueryParams(["action": "rest-nonce"])) { _ in
+        stub(
+            condition: isHost(host) && isPath("/wp-admin/admin-ajax.php")
+                && containsQueryParams(["action": "rest-nonce"])
+        ) { _ in
             HTTPStubsResponse(data: "<html>not allowed</html>".data(using: .utf8)!, statusCode: 400, headers: nil)
         }
         stub(condition: isHost(host) && isPath("/wp-admin/post-new.php")) { _ in
             HTTPStubsResponse(data: "<html>not allowed</html>".data(using: .utf8)!, statusCode: 400, headers: nil)
         }
         stub(condition: isHost(host) && isPath("/wp-json/wp/v2/users/me")) { _ in
-            let json = #"{"code":"rest_not_logged_in","message":"You are not currently logged in.","data":{"status":401}}"#
+            let json =
+                #"{"code":"rest_not_logged_in","message":"You are not currently logged in.","data":{"status":401}}"#
             return HTTPStubsResponse(data: json.data(using: .utf8)!, statusCode: 401, headers: nil)
         }
 
@@ -101,7 +130,7 @@ class ApplicationPasswordsRepositoryTests {
 
     @Test
     func concurrentCalls() async throws {
-        defer { HTTPStubs.removeAllStubs()}
+        defer { HTTPStubs.removeAllStubs() }
 
         let host = "3.example.com"
         let blog = try await createSelfHostedSite(host: host)
@@ -135,7 +164,7 @@ class ApplicationPasswordsRepositoryTests {
 
     @Test
     func cancel() async throws {
-        defer { HTTPStubs.removeAllStubs()}
+        defer { HTTPStubs.removeAllStubs() }
 
         let uuid = UUID().uuidString.lowercased()
         let host = "\(uuid).example.com"
@@ -163,7 +192,7 @@ class ApplicationPasswordsRepositoryTests {
 
     @Test
     func cancelFirstCall() async throws {
-        defer { HTTPStubs.removeAllStubs()}
+        defer { HTTPStubs.removeAllStubs() }
 
         let uuid = UUID().uuidString.lowercased()
         let host = "\(uuid).example.com"
@@ -197,7 +226,7 @@ class ApplicationPasswordsRepositoryTests {
 
     @Test(arguments: [1, 2, 3, 4])
     func cancelConcurrentCall(nthTaskToBeCancelled: Int) async throws {
-        defer { HTTPStubs.removeAllStubs()}
+        defer { HTTPStubs.removeAllStubs() }
 
         let uuid = UUID().uuidString.lowercased()
         let host = "\(uuid).example.com"
@@ -279,7 +308,7 @@ private extension ApplicationPasswordsRepositoryTests {
         }
     }
 
-    func createAtomicSite() async throws -> TaggedManagedObjectID<Blog> {
+    func createAtomicSite(existingApplicationPassword: String? = nil) async throws -> TaggedManagedObjectID<Blog> {
         try await coreDataStack.performAndSave { context in
             let account = try #require(try WPAccount.lookupDefaultWordPressComAccount(in: context))
             let blog = try BlogBuilder(context, dotComID: 456)
@@ -287,6 +316,11 @@ private extension ApplicationPasswordsRepositoryTests {
                 .withAccount(id: account.objectID)
                 .with(atomic: true)
                 .build()
+            if let existingApplicationPassword {
+                blog.username = "demo"
+                blog.restApiRootURL = "https://atomic.com/wp-json"
+                try blog.setApplicationToken(existingApplicationPassword, using: self.keychain)
+            }
             return TaggedManagedObjectID(blog)
         }
     }
@@ -307,7 +341,10 @@ private extension ApplicationPasswordsRepositoryTests {
         stub(condition: isHost(host) && isPath("/wp-login.php")) { _ in
             HTTPStubsResponse(data: "<html>Logged in</html>".data(using: .utf8)!, statusCode: 200, headers: nil)
         }
-        stub(condition: isHost(host) && isPath("/wp-admin/admin-ajax.php") && containsQueryParams(["action": "rest-nonce"])) { _ in
+        stub(
+            condition: isHost(host) && isPath("/wp-admin/admin-ajax.php")
+                && containsQueryParams(["action": "rest-nonce"])
+        ) { _ in
             HTTPStubsResponse(data: "abcd".data(using: .utf8)!, statusCode: 200, headers: nil)
         }
         stub(condition: isHost(host) && isPath("/wp-json/wp/v2/users/me/application-passwords")) { _ in
@@ -342,8 +379,11 @@ private extension ApplicationPasswordsRepositoryTests {
         }
     }
 
-    func stubJetpackProxyCreateApplicationPassword(siteId: Int, password: String) {
-        stub(condition: isHost("public-api.wordpress.com") && isPath("/rest/v1.1/jetpack-blogs/\(siteId)/rest-api")) { _ in
+    func stubJetpackProxyCreateApplicationPassword(siteId: Int, password: String, monitor: Monitor? = nil) {
+        stub(condition: isHost("public-api.wordpress.com") && isPath("/rest/v1.1/jetpack-blogs/\(siteId)/rest-api")) {
+            _ in
+            monitor?.requestReceived()
+
             let json = """
                 {
                   "data": {
@@ -365,6 +405,34 @@ private extension ApplicationPasswordsRepositoryTests {
                       ]
                     }
                   }
+                }
+                """
+            return HTTPStubsResponse(data: json.data(using: .utf8)!, statusCode: 200, headers: nil)
+        }
+    }
+
+    func stubCurrentApplicationPassword(host: String, monitor: Monitor? = nil) {
+        stub(condition: isHost(host) && isPath("/wp-json/wp/v2/users/me/application-passwords/introspect")) { _ in
+            monitor?.requestReceived()
+
+            let json = """
+                {
+                    "uuid": "56cadaa8-e810-4752-abf9-cc39e120ea97",
+                    "app_id": "",
+                    "name": "Test",
+                    "created": "2025-07-15T22:14:13",
+                    "last_used": "2025-07-25T02:43:58",
+                    "last_ip": "127.0.0.1",
+                    "_links": {
+                      "self": [
+                        {
+                          "href": "https://\(host)/wp-json/wp/v2/users/1/application-passwords/56cadaa8-e810-4752-abf9-cc39e120ea97",
+                          "targetHints": {
+                            "allow": ["GET", "POST", "PUT", "PATCH", "DELETE"]
+                          }
+                        }
+                      ]
+                    }
                 }
                 """
             return HTTPStubsResponse(data: json.data(using: .utf8)!, statusCode: 200, headers: nil)

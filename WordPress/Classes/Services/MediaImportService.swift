@@ -9,10 +9,13 @@ import WordPressData
 ///
 class MediaImportService: NSObject {
 
-    private static let defaultImportQueue = DispatchQueue(label: "org.wordpress.mediaImportService", autoreleaseFrequency: .workItem)
+    private static let defaultImportQueue = DispatchQueue(
+        label: "org.wordpress.mediaImportService",
+        autoreleaseFrequency: .workItem
+    )
 
     @objc lazy var importQueue: DispatchQueue = {
-        return MediaImportService.defaultImportQueue
+        MediaImportService.defaultImportQueue
     }()
 
     /// Constant for the ideal compression quality used when images are added to the Media Library.
@@ -21,7 +24,10 @@ class MediaImportService: NSObject {
     ///
     @objc static let preferredImageCompressionQuality = 0.9
 
-    static let defaultAllowableFileExtensions = Set<String>(["docx", "ppt", "mp4", "ppsx", "3g2", "mpg", "ogv", "pptx", "xlsx", "jpeg", "xls", "mov", "key", "3gp", "png", "avi", "doc", "pdf", "gif", "odt", "pps", "m4v", "wmv", "jpg"])
+    static let defaultAllowableFileExtensions = Set<String>([
+        "docx", "ppt", "mp4", "ppsx", "3g2", "mpg", "ogv", "pptx", "xlsx", "jpeg", "xls", "mov", "key", "3gp", "png",
+        "avi", "doc", "pdf", "gif", "odt", "pps", "m4v", "wmv", "jpg"
+    ])
 
     /// Completion handler for a created Media object.
     ///
@@ -81,7 +87,14 @@ class MediaImportService: NSObject {
 
         let blogObjectID = TaggedManagedObjectID(blog)
         let postObjectID = post.map { TaggedManagedObjectID($0) }
-        guard let media = try? createMedia(with: exportable, blogObjectID: blogObjectID, postObjectID: postObjectID, in: coreDataStack.mainContext) else {
+        guard
+            let media = try? createMedia(
+                with: exportable,
+                blogObjectID: blogObjectID,
+                postObjectID: postObjectID,
+                in: coreDataStack.mainContext
+            )
+        else {
             return nil
         }
 
@@ -95,7 +108,12 @@ class MediaImportService: NSObject {
             return nil
         }
 
-        let createProgress = self.import(exportable, to: media, blog: blogInContext, thumbnailCallback: thumbnailCallback) {
+        let createProgress = self.import(
+            exportable,
+            to: media,
+            blog: blogInContext,
+            thumbnailCallback: thumbnailCallback
+        ) {
             switch $0 {
             case let .success(media):
                 completion(media, nil)
@@ -136,39 +154,54 @@ class MediaImportService: NSObject {
         let createProgress = Progress.discreteProgress(totalUnitCount: 1)
         let blogObjectID = TaggedManagedObjectID(blog)
         let postObjectID = post.map { TaggedManagedObjectID($0) }
-        coreDataStack.performAndSave({ context in
-            let media = try self.createMedia(with: exportable, blogObjectID: blogObjectID, postObjectID: postObjectID, in: context)
-            try context.obtainPermanentIDs(for: [media])
-            return media.objectID
-        }, completion: { (result: Result<NSManagedObjectID, Error>) in
-            let transformed = result.flatMap { mediaObjectID in
-                Result {
-                    (
-                        try self.coreDataStack.mainContext.existingObject(with: mediaObjectID) as! Media,
-                        try self.coreDataStack.mainContext.existingObject(with: blog.objectID) as! Blog
-                    )
-                }
-            }
-            switch transformed {
-            case let .success((media, blog)):
-                let progress = self.import(exportable, to: media, blog: blog, thumbnailCallback: thumbnailCallback) {
-                    switch $0 {
-                    case let .success(media):
-                        completion(media, nil)
-                    case let .failure(error):
-                        completion(media, error)
+        coreDataStack.performAndSave(
+            { context in
+                let media = try self.createMedia(
+                    with: exportable,
+                    blogObjectID: blogObjectID,
+                    postObjectID: postObjectID,
+                    in: context
+                )
+                try context.obtainPermanentIDs(for: [media])
+                return media.objectID
+            },
+            completion: { (result: Result<NSManagedObjectID, Error>) in
+                let transformed = result.flatMap { mediaObjectID in
+                    Result {
+                        (
+                            try self.coreDataStack.mainContext.existingObject(with: mediaObjectID) as! Media,
+                            try self.coreDataStack.mainContext.existingObject(with: blog.objectID) as! Blog
+                        )
                     }
                 }
-                createProgress.addChild(progress, withPendingUnitCount: 1)
-                receiveUpdate?(media)
-            case let .failure(error):
-                completion(nil, error)
-            }
-        }, on: .main)
+                switch transformed {
+                case let .success((media, blog)):
+                    let progress = self.import(exportable, to: media, blog: blog, thumbnailCallback: thumbnailCallback)
+                    { // swiftlint:disable:this opening_brace
+                        switch $0 {
+                        case let .success(media):
+                            completion(media, nil)
+                        case let .failure(error):
+                            completion(media, error)
+                        }
+                    }
+                    createProgress.addChild(progress, withPendingUnitCount: 1)
+                    receiveUpdate?(media)
+                case let .failure(error):
+                    completion(nil, error)
+                }
+            },
+            on: .main
+        )
         return createProgress
     }
 
-    private func createMedia(with exportable: ExportableAsset, blogObjectID: TaggedManagedObjectID<Blog>, postObjectID: TaggedManagedObjectID<AbstractPost>?, in context: NSManagedObjectContext) throws -> Media {
+    private func createMedia(
+        with exportable: ExportableAsset,
+        blogObjectID: TaggedManagedObjectID<Blog>,
+        postObjectID: TaggedManagedObjectID<AbstractPost>?,
+        in context: NSManagedObjectContext
+    ) throws -> Media {
         let blogInContext = try context.existingObject(with: blogObjectID)
         let postInContext = try postObjectID.flatMap(context.existingObject(with:))
 
@@ -194,38 +227,45 @@ class MediaImportService: NSObject {
         allowedFileTypes.remove("heic")
 
         let completion: (Error?) -> Void = { error in
-            self.coreDataStack.performAndSave({ context in
-                let mediaInContext = try context.existingObject(with: media.objectID) as! Media
-                if let error {
-                    mediaInContext.remoteStatus = .failed
-                    mediaInContext.error = error as NSError
-                } else {
-                    mediaInContext.remoteStatus = .local
-                    mediaInContext.error = nil
-                }
-            }, completion: { result in
-                let transformed = result.flatMap {
-                    Result {
-                        try self.coreDataStack.mainContext.existingObject(with: media.objectID) as! Media
+            self.coreDataStack.performAndSave(
+                { context in
+                    let mediaInContext = try context.existingObject(with: media.objectID) as! Media
+                    if let error {
+                        mediaInContext.remoteStatus = .failed
+                        mediaInContext.error = error as NSError
+                    } else {
+                        mediaInContext.remoteStatus = .local
+                        mediaInContext.error = nil
                     }
-                }
-
-                if case let .success(media) = transformed {
-                    // Pre-generate a thumbnail image, see the method notes.
-                    self.exportPlaceholderThumbnail(for: media) { url in
-                        assert(Thread.isMainThread)
-                        guard let url, let media = try? self.coreDataStack.mainContext.existingObject(with: media.objectID) as? Media else {
-                            return
+                },
+                completion: { result in
+                    let transformed = result.flatMap {
+                        Result {
+                            try self.coreDataStack.mainContext.existingObject(with: media.objectID) as! Media
                         }
-                        thumbnailCallback?(media, url)
                     }
-                }
-                if let error {
-                    completion(.failure(error)) // Import failed
-                } else {
-                    completion(transformed)
-                }
-            }, on: .main)
+
+                    if case let .success(media) = transformed {
+                        // Pre-generate a thumbnail image, see the method notes.
+                        self.exportPlaceholderThumbnail(for: media) { url in
+                            assert(Thread.isMainThread)
+                            guard let url,
+                                let media = try? self.coreDataStack.mainContext.existingObject(with: media.objectID)
+                                    as? Media
+                            else {
+                                return
+                            }
+                            thumbnailCallback?(media, url)
+                        }
+                    }
+                    if let error {
+                        completion(.failure(error)) // Import failed
+                    } else {
+                        completion(transformed)
+                    }
+                },
+                on: .main
+            )
         }
 
         let options = makeExportOptions(for: blog, allowableFileExtensions: allowedFileTypes)
@@ -245,7 +285,12 @@ class MediaImportService: NSObject {
     ///
     /// - Returns: a progress object that report the current state of the import process.
     ///
-    private func `import`(_ exportable: ExportableAsset, to media: Media, options: ExportOptions, completion: @escaping (Error?) -> Void) -> Progress {
+    private func `import`(
+        _ exportable: ExportableAsset,
+        to media: Media,
+        options: ExportOptions,
+        completion: @escaping (Error?) -> Void
+    ) -> Progress {
         let progress = Progress.discreteProgress(totalUnitCount: 1)
         importQueue.async {
             guard let exporter = self.makeExporter(for: exportable, options: options) else {
@@ -253,16 +298,20 @@ class MediaImportService: NSObject {
             }
             let exportProgress = exporter.export(
                 onCompletion: { export in
-                    self.coreDataStack.performAndSave({ context in
-                        let mediaInContext = try context.existingObject(with: media.objectID) as! Media
-                        self.configureMedia(mediaInContext, withExport: export)
-                    }, completion: { result in
-                        if case let .failure(error) = result {
-                            completion(error)
-                        } else {
-                            completion(nil)
-                        }
-                    }, on: .main)
+                    self.coreDataStack.performAndSave(
+                        { context in
+                            let mediaInContext = try context.existingObject(with: media.objectID) as! Media
+                            self.configureMedia(mediaInContext, withExport: export)
+                        },
+                        completion: { result in
+                            if case let .failure(error) = result {
+                                completion(error)
+                            } else {
+                                completion(nil)
+                            }
+                        },
+                        on: .main
+                    )
                 },
                 onError: { error in
                     MediaImportService.logExportError(error)
@@ -297,9 +346,6 @@ class MediaImportService: NSObject {
         case let stockPhotosMedia as StockPhotosMedia:
             let exporter = MediaExternalExporter(externalAsset: stockPhotosMedia)
             return exporter
-        case let tenorMedia as TenorMedia:
-            let exporter = MediaExternalExporter(externalAsset: tenorMedia)
-            return exporter
         default:
             return nil
         }
@@ -316,13 +362,17 @@ class MediaImportService: NSObject {
     ///       using `absoluteThumbnailLocalURL`.
     func exportPlaceholderThumbnail(for media: Media, completion: ((URL?) -> Void)?) {
         MediaImageService.shared.getThumbnailURL(for: media) { url in
-            self.coreDataStack.performAndSave({ context in
-                let mediaInContext = try context.existingObject(with: media.objectID) as! Media
-                // Set the absoluteThumbnailLocalURL with the generated thumbnail's URL.
-                mediaInContext.absoluteThumbnailLocalURL = url
-            }, completion: { _ in
-                completion?(url)
-            }, on: .main)
+            self.coreDataStack.performAndSave(
+                { context in
+                    let mediaInContext = try context.existingObject(with: media.objectID) as! Media
+                    // Set the absoluteThumbnailLocalURL with the generated thumbnail's URL.
+                    mediaInContext.absoluteThumbnailLocalURL = url
+                },
+                completion: { _ in
+                    completion?(url)
+                },
+                on: .main
+            )
         }
     }
 
@@ -350,10 +400,12 @@ class MediaImportService: NSObject {
     // MARK: - Media export configurations
 
     private func makeExportOptions(for blog: Blog, allowableFileExtensions: Set<String>) -> ExportOptions {
-        ExportOptions(imageOptions: exporterImageOptions,
-                      videoOptions: makeExporterVideoOptions(for: blog),
-                      urlOptions: exporterURLOptions(allowableFileExtensions: allowableFileExtensions),
-                      allowableFileExtensions: allowableFileExtensions)
+        ExportOptions(
+            imageOptions: exporterImageOptions,
+            videoOptions: makeExporterVideoOptions(for: blog),
+            urlOptions: exporterURLOptions(allowableFileExtensions: allowableFileExtensions),
+            allowableFileExtensions: allowableFileExtensions
+        )
     }
 
     private struct ExportOptions {

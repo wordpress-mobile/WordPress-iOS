@@ -1,6 +1,5 @@
 import Foundation
 import BuildSettingsKit
-import WordPressAuthenticator
 import WordPressData
 import WordPressShared
 
@@ -20,8 +19,10 @@ class RootViewCoordinator {
 
     // MARK: Static shared variables
 
-    static let shared = RootViewCoordinator(featureFlagStore: RemoteFeatureFlagStore(),
-                                            windowManager: WordPressAppDelegate.shared?.windowManager)
+    static let shared = RootViewCoordinator(
+        featureFlagStore: RemoteFeatureFlagStore(),
+        windowManager: WordPressAppDelegate.shared?.windowManager
+    )
     static var sharedPresenter: RootViewPresenter {
         guard let rootViewPresenter = shared.rootViewPresenter else {
             /// Accessing RootViewPresenter before root view is presented is incorrect behavior
@@ -39,11 +40,11 @@ class RootViewCoordinator {
     // MARK: Public Variables
 
     lazy var whatIsNewScenePresenter: ScenePresenter = {
-        return makeWhatIsNewPresenter()
+        makeWhatIsNewPresenter()
     }()
 
     lazy var bloggingPromptCoordinator: BloggingPromptCoordinator = {
-       return makeBloggingPromptCoordinator()
+        makeBloggingPromptCoordinator()
     }()
 
     // MARK: Private instance variables
@@ -56,21 +57,20 @@ class RootViewCoordinator {
     }
     private var featureFlagStore: RemoteFeatureFlagStore
     private var windowManager: WindowManager?
-    private let wordPressAuthenticator: WordPressAuthenticatorProtocol.Type
     private let app: AppBrand
 
     var isSiteCreationActive = false
     var isFullScreenOverlayBeingDisplayed = false
     // MARK: Initializer
 
-    init(featureFlagStore: RemoteFeatureFlagStore,
-         windowManager: WindowManager?,
-         wordPressAuthenticator: WordPressAuthenticatorProtocol.Type = WordPressAuthenticator.self,
-         app: AppBrand = BuildSettings.current.brand) {
+    init(
+        featureFlagStore: RemoteFeatureFlagStore,
+        windowManager: WindowManager?,
+        app: AppBrand = BuildSettings.current.brand
+    ) {
         self.featureFlagStore = featureFlagStore
         self.windowManager = windowManager
         self.currentAppUIType = Self.appUIType(featureFlagStore: featureFlagStore)
-        self.wordPressAuthenticator = wordPressAuthenticator
         self.app = app
         updateJetpackFeaturesRemovalCoordinatorState()
     }
@@ -86,12 +86,9 @@ class RootViewCoordinator {
     }
 
     func showSignInUI(completion: (() -> Void)? = nil) {
-        guard let loginViewController = wordPressAuthenticator.loginUI() else {
-            fatalError("No login UI to show to the user.  There's no way to gracefully handle this error.")
-        }
-
-        windowManager?.show(loginViewController, completion: completion)
-        wordPressAuthenticator.track(.openedLogin)
+        let navigationController = LoginPrologueNavigationController(rootViewController: LoginPrologueViewController())
+        windowManager?.show(navigationController, completion: completion)
+        WPAnalytics.track(.openedLogin)
         self.rootViewPresenter = nil
 
         WordPressAppDelegate.shared?.autoSignInUITestSite()
@@ -161,17 +158,20 @@ class RootViewCoordinator {
 
         windowManager.displayOverlayingWindow(with: viewController)
 
-        JetpackFeaturesRemovalCoordinator.presentOverlayIfNeeded(in: viewController,
-                                                                 source: .appOpen,
-                                                                 forced: true,
-                                                                 fullScreen: true,
-                                                                 blog: blog,
-                                                                 onWillDismiss: {
-            viewController.removeBlurView()
-            self.isFullScreenOverlayBeingDisplayed = false
-        }, onDidDismiss: {
-            windowManager.clearOverlayingWindow()
-        })
+        JetpackFeaturesRemovalCoordinator.presentOverlayIfNeeded(
+            in: viewController,
+            source: .appOpen,
+            forced: true,
+            fullScreen: true,
+            blog: blog,
+            onWillDismiss: {
+                viewController.removeBlurView()
+                self.isFullScreenOverlayBeingDisplayed = false
+            },
+            onDidDismiss: {
+                windowManager.clearOverlayingWindow()
+            }
+        )
     }
 
     private func reloadUI(using windowManager: WindowManager) {

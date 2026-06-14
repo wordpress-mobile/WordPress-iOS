@@ -62,7 +62,10 @@ extension WordPressAuthenticationManager {
         wpcomSecret: String = BuildSettings.current.secrets.oauth.secret
     ) {
         let displayStrings = WordPressAuthenticatorDisplayStrings(
-            continueWithWPButtonTitle: NSLocalizedString("Continue With WordPress.com", comment: "Button title. Takes the user to the login with WordPress.com flow.")
+            continueWithWPButtonTitle: NSLocalizedString(
+                "Continue With WordPress.com",
+                comment: "Button title. Takes the user to the login with WordPress.com flow."
+            )
         )
 
         WordPressAuthenticator.initialize(
@@ -87,7 +90,9 @@ extension WordPressAuthenticationManager {
             .debounce(for: .milliseconds(100), scheduler: DispatchQueue.main)
             .sink {
                 guard let blogId = $0.object as? TaggedManagedObjectID<Blog> else {
-                    wpAssertionFailure("No blog ID found in the requestedWithInvalidAuthenticationNotification notification")
+                    wpAssertionFailure(
+                        "No blog ID found in the requestedWithInvalidAuthenticationNotification notification"
+                    )
                     return
                 }
 
@@ -234,18 +239,6 @@ extension WordPressAuthenticationManager {
 //
 extension WordPressAuthenticationManager {
 
-    /// Returns an Authentication ViewController (configured to allow only WordPress.com). This method pre-populates the Email + Username
-    /// with the values returned by the default WordPress.com account (if any).
-    ///
-    /// - Parameter onDismissed: Closure to be executed whenever the returned ViewController is dismissed.
-    ///
-    static func signinForWPComFixingAuthToken(_ onDismissed: ((_ cancelled: Bool) -> Void)? = nil) -> UIViewController {
-        let context = ContextManager.shared.mainContext
-        let account = try? WPAccount.lookupDefaultWordPressComAccount(in: context)
-
-        return WordPressAuthenticator.signinForWPCom(dotcomEmailAddress: account?.email, dotcomUsername: account?.username, onDismissed: onDismissed)
-    }
-
     /// Presents the WordPress Authentication UI from the rootViewController (configured to allow only WordPress.com).
     /// This method pre-populates the Email + Username with the values returned by the default WordPress.com account (if any).
     ///
@@ -263,26 +256,51 @@ extension WordPressAuthenticationManager {
 
         let signedInAccount = try? WPAccount.lookupDefaultWordPressComAccount(in: ContextManager.shared.mainContext)
         Task { @MainActor in
-            let title = NSLocalizedString("wpcom.token.fix.signin", value: "Sign in to WordPress.com", comment: "Message title to be displayed when the user needs to re-authenticate their WordPress.com account.")
-            let message = NSLocalizedString("wpcom.token.fix.signin.message", value: "You need to sign in to WordPress.com to access your account.", comment: "Detailed message to be displayed when the user needs to re-authenticate their WordPress.com account.")
+            let title = NSLocalizedString(
+                "wpcom.token.fix.signin",
+                value: "Sign in to WordPress.com",
+                comment:
+                    "Message title to be displayed when the user needs to re-authenticate their WordPress.com account."
+            )
+            let message = NSLocalizedString(
+                "wpcom.token.fix.signin.message",
+                value: "You need to sign in to WordPress.com to access your account.",
+                comment:
+                    "Detailed message to be displayed when the user needs to re-authenticate their WordPress.com account."
+            )
 
             if showNotice {
                 Notice(title: title, message: message).post()
             }
 
-            let account = await WordPressDotComAuthenticator().signIn(
-                from: presenter,
-                context: signedInAccount?.email
-                    .flatMap { .reauthentication(accountEmail: $0) }
-                    ?? .default
-            )
+            let account = await WordPressDotComAuthenticator()
+                .signIn(
+                    from: presenter,
+                    context: signedInAccount?.email
+                        .flatMap { .reauthentication(accountEmail: $0) }
+                        ?? .default
+                )
 
             if account == nil {
                 let alert = UIAlertController(title: title, message: message, preferredStyle: .alert)
-                alert.addActionWithTitle(NSLocalizedString("wpcom.token.alert.button.logout", value: "Log out", comment: "Button title to log out the current WordPress.com account"), style: .destructive) { _ in
+                alert.addActionWithTitle(
+                    NSLocalizedString(
+                        "wpcom.token.alert.button.logout",
+                        value: "Log out",
+                        comment: "Button title to log out the current WordPress.com account"
+                    ),
+                    style: .destructive
+                ) { _ in
                     AccountHelper.logOutDefaultWordPressComAccount()
                 }
-                alert.addActionWithTitle(NSLocalizedString("wpcom.token.alert.button.signin", value: "Sign In", comment: "Button title to Sign In to WordPress.com"), style: .default) { _ in
+                alert.addActionWithTitle(
+                    NSLocalizedString(
+                        "wpcom.token.alert.button.signin",
+                        value: "Sign In",
+                        comment: "Button title to Sign In to WordPress.com"
+                    ),
+                    style: .default
+                ) { _ in
                     WordPressAuthenticationManager.showSigninForWPComFixingAuthToken(showNotice: false)
                 }
                 presenter.present(alert, animated: true)
@@ -292,14 +310,20 @@ extension WordPressAuthenticationManager {
         }
     }
 
-    static func showSigninForSelfHostedSiteFixingApplicationPassword(blogId: TaggedManagedObjectID<Blog>, showNotice: Bool = true) {
+    static func showSigninForSelfHostedSiteFixingApplicationPassword(
+        blogId: TaggedManagedObjectID<Blog>,
+        showNotice: Bool = true
+    ) {
         guard let presenter = UIViewController.topViewController,
-              !presenter.isApplicationReauthentication else {
+            !presenter.isApplicationReauthentication
+        else {
             assertionFailure()
             return
         }
 
-        guard let currentBlog = RootViewCoordinator.sharedPresenter.currentlyVisibleBlog(), currentBlog.objectID == blogId.objectID else {
+        guard let currentBlog = RootViewCoordinator.sharedPresenter.currentlyVisibleBlog(),
+            currentBlog.objectID == blogId.objectID
+        else {
             DDLogWarn("Requested sign in to a site that is not the currently visible one")
             return
         }
@@ -340,19 +364,19 @@ extension WordPressAuthenticationManager: WordPressAuthenticatorDelegate {
     /// Indicates whether if the Support Action should be enabled, or not.
     ///
     var supportActionEnabled: Bool {
-        return true
+        true
     }
 
     /// Indicates whether a link to WP.com TOS should be available, or not.
     ///
     var wpcomTermsOfServiceEnabled: Bool {
-        return true
+        true
     }
 
     /// Indicates if Support is Enabled.
     ///
     var supportEnabled: Bool {
-        return ZendeskUtils.zendeskEnabled
+        ZendeskUtils.zendeskEnabled
     }
 
     private var tracker: AuthenticatorAnalyticsTracker {
@@ -366,9 +390,12 @@ extension WordPressAuthenticationManager: WordPressAuthenticatorDelegate {
 
     /// Returns an instance of a SupportView, configured to be displayed from a specified Support Source.
     ///
-    func presentSupport(from sourceViewController: UIViewController, sourceTag: WordPressSupportSourceTag,
-                        lastStep: AuthenticatorAnalyticsTracker.Step,
-                        lastFlow: AuthenticatorAnalyticsTracker.Flow) {
+    func presentSupport(
+        from sourceViewController: UIViewController,
+        sourceTag: WordPressSupportSourceTag,
+        lastStep: AuthenticatorAnalyticsTracker.Step,
+        lastFlow: AuthenticatorAnalyticsTracker.Flow
+    ) {
         presentSupport(from: sourceViewController, sourceTag: sourceTag)
     }
 
@@ -385,7 +412,10 @@ extension WordPressAuthenticationManager: WordPressAuthenticatorDelegate {
     ///     - site: passes in the site information to the delegate method.
     ///     - onCompletion: Closure to be executed on completion.
     ///
-    func shouldPresentUsernamePasswordController(for siteInfo: WordPressComSiteInfo?, onCompletion: @escaping (WordPressAuthenticatorResult) -> Void) {
+    func shouldPresentUsernamePasswordController(
+        for siteInfo: WordPressComSiteInfo?,
+        onCompletion: @escaping (WordPressAuthenticatorResult) -> Void
+    ) {
 
         let result: WordPressAuthenticatorResult = .presentPasswordController(value: true)
         onCompletion(result)
@@ -393,7 +423,12 @@ extension WordPressAuthenticationManager: WordPressAuthenticatorDelegate {
 
     /// Presents the Login Epilogue, in the specified NavigationController.
     ///
-    func presentLoginEpilogue(in navigationController: UINavigationController, for credentials: AuthenticatorCredentials, source: SignInSource?, onDismiss: @escaping () -> Void) {
+    func presentLoginEpilogue(
+        in navigationController: UINavigationController,
+        for credentials: AuthenticatorCredentials,
+        source: SignInSource?,
+        onDismiss: @escaping () -> Void
+    ) {
         let mainContext = ContextManager.shared.mainContext
         let blog = credentials.wporg.flatMap { wporg in
             Blog.lookup(username: wporg.username, xmlrpc: wporg.xmlrpc, in: mainContext)
@@ -402,7 +437,12 @@ extension WordPressAuthenticationManager: WordPressAuthenticatorDelegate {
         presentLoginEpilogue(in: navigationController, forSelfHostedSite: blog, source: source, onDismiss: onDismiss)
     }
 
-    func presentLoginEpilogue(in navigationController: UINavigationController, forSelfHostedSite blog: Blog?, source: SignInSource?, onDismiss: @escaping () -> Void) {
+    func presentLoginEpilogue(
+        in navigationController: UINavigationController,
+        forSelfHostedSite blog: Blog?,
+        source: SignInSource?,
+        onDismiss: @escaping () -> Void
+    ) {
         // If adding a self-hosted site, skip the Epilogue
         if let blog {
             if self.windowManager.isShowingFullscreenSignIn {
@@ -437,7 +477,8 @@ extension WordPressAuthenticationManager: WordPressAuthenticatorDelegate {
         }
 
         if let primarySiteID = account.primaryBlogID,
-           let site = sites.first(where: { $0.dotComID == primarySiteID }) {
+            let site = sites.first(where: { $0.dotComID == primarySiteID })
+        {
             selectedBlog = site
         }
 
@@ -450,10 +491,16 @@ extension WordPressAuthenticationManager: WordPressAuthenticatorDelegate {
 
     /// Presents the Signup Epilogue, in the specified NavigationController.
     ///
-    func presentSignupEpilogue(in navigationController: UINavigationController, for credentials: AuthenticatorCredentials, socialUser: SocialUser?) {
+    func presentSignupEpilogue(
+        in navigationController: UINavigationController,
+        for credentials: AuthenticatorCredentials,
+        socialUser: SocialUser?
+    ) {
 
         let storyboard = UIStoryboard(name: "SignupEpilogue", bundle: .keystone)
-        guard let epilogueViewController = storyboard.instantiateInitialViewController() as? SignupEpilogueViewController else {
+        guard
+            let epilogueViewController = storyboard.instantiateInitialViewController() as? SignupEpilogueViewController
+        else {
             fatalError()
         }
 
@@ -470,7 +517,8 @@ extension WordPressAuthenticationManager: WordPressAuthenticatorDelegate {
                 navigationController.dismiss(animated: true)
             }
 
-            UserPersistentStoreFactory.instance().set(false, forKey: UserPersistentStoreFactory.instance().welcomeNotificationSeenKey)
+            UserPersistentStoreFactory.instance()
+                .set(false, forKey: UserPersistentStoreFactory.instance().welcomeNotificationSeenKey)
         }
 
         navigationController.pushViewController(epilogueViewController, animated: true)
@@ -490,7 +538,7 @@ extension WordPressAuthenticationManager: WordPressAuthenticatorDelegate {
     /// Indicates if the Signup Epilogue should be displayed.
     ///
     func shouldPresentSignupEpilogue() -> Bool {
-        return true
+        true
     }
 
     /// Whenever a WordPress.com account has been created during the Auth flow, we'll add a new local WPCOM Account, and set it as
@@ -512,10 +560,12 @@ extension WordPressAuthenticationManager: WordPressAuthenticatorDelegate {
     ///
     func userAuthenticatedWithAppleUserID(_ appleUserID: String) {
         do {
-            try SFHFKeychainUtils.storeUsername(WPAppleIDKeychainUsernameKey,
-                                                andPassword: appleUserID,
-                                                forServiceName: WPAppleIDKeychainServiceName,
-                                                updateExisting: true)
+            try SFHFKeychainUtils.storeUsername(
+                WPAppleIDKeychainUsernameKey,
+                andPassword: appleUserID,
+                forServiceName: WPAppleIDKeychainServiceName,
+                updateExisting: true
+            )
         } catch {
             DDLogInfo("Error while saving Apple User ID: \(error)")
         }
@@ -527,7 +577,13 @@ extension WordPressAuthenticationManager: WordPressAuthenticatorDelegate {
         if let wpcom = credentials.wpcom {
             syncWPCom(authToken: wpcom.authToken, isJetpackLogin: wpcom.isJetpackLogin, onCompletion: onCompletion)
         } else if let wporg = credentials.wporg {
-            syncWPOrg(username: wporg.username, password: wporg.password, xmlrpc: wporg.xmlrpc, options: wporg.options, onCompletion: onCompletion)
+            syncWPOrg(
+                username: wporg.username,
+                password: wporg.password,
+                xmlrpc: wporg.xmlrpc,
+                options: wporg.options,
+                onCompletion: onCompletion
+            )
         }
     }
 
@@ -535,7 +591,7 @@ extension WordPressAuthenticationManager: WordPressAuthenticatorDelegate {
     ///
     func shouldHandleError(_ error: Error) -> Bool {
         // Here for protocol compliance.
-        return false
+        false
     }
 
     /// Handles the given error.
@@ -578,12 +634,17 @@ private extension WordPressAuthenticationManager {
 
 // MARK: - Onboarding Questions Prompt
 private extension WordPressAuthenticationManager {
-    private func presentEnableNotificationsPrompt(in navigationController: UINavigationController, blog: Blog, onDismiss: (() -> Void)? = nil) {
+    private func presentEnableNotificationsPrompt(
+        in navigationController: UINavigationController,
+        blog: Blog,
+        onDismiss: (() -> Void)? = nil
+    ) {
         let windowManager = self.windowManager
 
         guard JetpackFeaturesRemovalCoordinator.jetpackFeaturesEnabled(),
-              !UserPersistentStoreFactory.instance().onboardingNotificationsPromptDisplayed,
-              !UITestConfigurator.isEnabled(.disablePrompts) else {
+            !UserPersistentStoreFactory.instance().onboardingNotificationsPromptDisplayed,
+            !UITestConfigurator.isEnabled(.disablePrompts)
+        else {
             if self.windowManager.isShowingFullscreenSignIn {
                 self.windowManager.dismissFullscreenSignIn(blogToShow: blog)
             } else {
@@ -629,24 +690,38 @@ private extension WordPressAuthenticationManager {
 
         // Sync account and blog
         syncGroup.enter()
-        service.syncWPCom(authToken: authToken, isJetpackLogin: isJetpackLogin, onSuccess: { account in
+        service.syncWPCom(
+            authToken: authToken,
+            isJetpackLogin: isJetpackLogin,
+            onSuccess: { account in
 
-            /// HACK: An alternative notification to LoginFinished. Observe this instead of `WPSigninDidFinishNotification` for Jetpack logins.
-            /// When WPTabViewController no longer destroy's and rebuilds the view hierarchy this alternate notification can be removed.
-            ///
-            let notification = isJetpackLogin == true ? .wordpressLoginFinishedJetpackLogin : Foundation.Notification.Name(rawValue: WordPressAuthenticationManager.WPSigninDidFinishNotification)
-            NotificationCenter.default.post(name: notification, object: account)
+                /// HACK: An alternative notification to LoginFinished. Observe this instead of `WPSigninDidFinishNotification` for Jetpack logins.
+                /// When WPTabViewController no longer destroy's and rebuilds the view hierarchy this alternate notification can be removed.
+                ///
+                let notification =
+                    isJetpackLogin == true
+                    ? .wordpressLoginFinishedJetpackLogin
+                    : Foundation.Notification.Name(
+                        rawValue: WordPressAuthenticationManager.WPSigninDidFinishNotification
+                    )
+                NotificationCenter.default.post(name: notification, object: account)
 
-            syncGroup.leave()
-        }, onFailure: { _ in
-            syncGroup.leave()
-        })
+                syncGroup.leave()
+            },
+            onFailure: { _ in
+                syncGroup.leave()
+            }
+        )
 
         // Refresh Remote Feature Flags
         syncGroup.enter()
-        WordPressAppDelegate.shared?.updateFeatureFlags(authToken: authToken, completion: {
-            syncGroup.leave()
-        })
+        WordPressAppDelegate.shared?
+            .updateFeatureFlags(
+                authToken: authToken,
+                completion: {
+                    syncGroup.leave()
+                }
+            )
 
         // Sync done
         syncGroup.notify(queue: .main) {
@@ -656,7 +731,13 @@ private extension WordPressAuthenticationManager {
 
     /// Synchronizes a WordPress.org account with the specified credentials.
     ///
-    private func syncWPOrg(username: String, password: String, xmlrpc: String, options: [AnyHashable: Any], onCompletion: @escaping () -> ()) {
+    private func syncWPOrg(
+        username: String,
+        password: String,
+        xmlrpc: String,
+        options: [AnyHashable: Any],
+        onCompletion: @escaping () -> ()
+    ) {
         let service = BlogSyncFacade()
 
         service.syncBlog(withUsername: username, password: password, xmlrpc: xmlrpc, options: options) { blog in
@@ -696,7 +777,12 @@ private extension UIViewController {
 
     var isApplicationReauthentication: Bool {
         set {
-            objc_setAssociatedObject(self, &isApplicationReauthenticationKey, NSNumber(value: newValue), objc_AssociationPolicy.OBJC_ASSOCIATION_RETAIN)
+            objc_setAssociatedObject(
+                self,
+                &isApplicationReauthenticationKey,
+                NSNumber(value: newValue),
+                objc_AssociationPolicy.OBJC_ASSOCIATION_RETAIN
+            )
         }
         get {
             (objc_getAssociatedObject(self, &isApplicationReauthenticationKey) as? NSNumber)?.boolValue ?? false

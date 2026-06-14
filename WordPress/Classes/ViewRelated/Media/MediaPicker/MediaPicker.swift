@@ -48,22 +48,21 @@ struct MediaPicker<Content: View>: View {
         controller.onSelection = onSelection
         viewModel.controller = controller // Needs to be retained
 
-        return configuration.sources.filter(\.isEnabled).compactMap { source in
-            switch source {
-            case .photos:
-                menu.makePhotosAction(delegate: controller)
-            case .camera:
-                 menu.makeCameraAction(delegate: controller)
-            case .siteMedia(let blog):
-                menu.makeSiteMediaAction(blog: blog, delegate: controller)
-            case .playground:
-                menu.makeImagePlaygroundAction(delegate: controller)
-            case .freePhotos(let blog):
-                menu.makeStockPhotos(blog: blog, delegate: controller)
-            case .freeGIFs(let blog):
-                menu.makeFreeGIFAction(blog: blog, delegate: controller)
+        return configuration.sources.filter(\.isEnabled)
+            .compactMap { source in
+                switch source {
+                case .photos:
+                    menu.makePhotosAction(delegate: controller)
+                case .camera:
+                    menu.makeCameraAction(delegate: controller)
+                case .siteMedia(let blog):
+                    menu.makeSiteMediaAction(blog: blog, delegate: controller)
+                case .playground:
+                    menu.makeImagePlaygroundAction(delegate: controller)
+                case .freePhotos(let blog):
+                    menu.makeStockPhotos(blog: blog, delegate: controller)
+                }
             }
-        }
     }
 }
 
@@ -83,7 +82,6 @@ enum MediaPickerSource {
     case siteMedia(blog: Blog)
     case playground // Image Playground
     case freePhotos(blog: Blog) // Pexels
-    case freeGIFs(blog: Blog) // Tenor
 
     var isEnabled: Bool {
         switch self {
@@ -93,8 +91,6 @@ enum MediaPickerSource {
             MediaPickerMenu.isImagePlaygroundAvailable
         case .freePhotos(let blog):
             blog.supports(.stockPhotos) && JetpackFeaturesRemovalCoordinator.jetpackFeaturesEnabled()
-        case .freeGIFs:
-            JetpackFeaturesRemovalCoordinator.jetpackFeaturesEnabled()
         }
     }
 }

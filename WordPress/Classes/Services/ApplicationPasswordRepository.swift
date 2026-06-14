@@ -54,33 +54,37 @@ actor ApplicationPasswordRepository {
     /// The application password was stored via `Blog.setApplicationToken`, not in the `ApplicationPasswordStorage`.
     /// We want to copy the `Blog.getApplicationToken` to `ApplicationPasswordStorage` if needed.
     func saveApplicationPassword(of blogId: TaggedManagedObjectID<Blog>) async throws {
+        let keychain = await storage.keychain
         let (owners, site) = try await coreDataStack.performQuery { context in
             let blog = try context.existingObject(with: blogId)
-            return (blog.asApplicationPasswordOwners(), try? WordPressSite(blog: blog))
+            return (
+                blog.asApplicationPasswordOwners(),
+                try? WordPressSite(blog: blog, keychain: keychain)
+            )
         }
 
-        guard case let .selfHosted(_, siteURL, apiRootURL, username, authToken) = site else {
+        guard let site, let credentials = site.applicationPasswordCredentials else {
             return
         }
 
         let alreadyStored =
             await storage
             .passwords(belongTo: owners)
-            .contains { $0.password == authToken }
+            .contains { $0.password == credentials.token }
         guard !alreadyStored else { return }
 
         // No need to propagate the API request error.
         let api = WordPressAPI(
             urlSession: URLSession(configuration: .ephemeral),
             notifyingDelegate: PulseNetworkLogger(),
-            siteInfo: .selfHosted(siteUrl: try! ParsedUrl.from(url: siteURL), apiRoot: apiRootURL),
-            authentication: .init(username: username, password: authToken)
+            siteInfo: .selfHosted(siteUrl: try .from(url: site.siteURL), apiRoot: credentials.apiRootURL),
+            authentication: .init(username: credentials.username, password: credentials.token)
         )
         guard let uuid = try? await api.applicationPasswords.retrieveCurrentWithViewContext().data.uuid.uuid else {
             return
         }
 
-        try await storage.save(.init(password: .init(uuid: uuid, password: authToken), owners: owners))
+        try await storage.save(.init(password: .init(uuid: uuid, password: credentials.token), owners: owners))
     }
 
     /// When returning true, a valid application password is guaranteed to be returned by the `Blog.getApplicationToken` function.
@@ -160,7 +164,7 @@ private extension ApplicationPasswordRepository {
             let blog = try context.existingObject(with: blogId)
             return try (
                 blog.asApplicationPasswordOwners(),
-                blog.getUrlString(),
+                blog.getUrl(),
             )
         }
         let passwords = await storage.passwords(belongTo: owners)
@@ -171,7 +175,7 @@ private extension ApplicationPasswordRepository {
         let session = URLSession(configuration: .ephemeral)
         var validPasswords = [ApplicationPassword]()
         var invalidPasswords = [ApplicationPassword]()
-        let parsedSiteURL = try ParsedUrl.parse(input: siteUrl)
+        let parsedSiteURL = try ParsedUrl.from(url: siteUrl)
         for password in passwords {
             let api = WordPressAPI(
                 urlSession: session,
@@ -374,7 +378,17 @@ private extension ApplicationPasswordRepository {
         if let username {
             siteUsername = username
         } else if let dotComId, let dotComAuthToken {
-            let site = WordPressSite.dotCom(siteURL: siteURL, siteId: dotComId.intValue, authToken: dotComAuthToken)
+            let site = WordPressSite(
+                blogId: blogId,
+                siteURL: siteURL,
+                flavor: .dotCom(
+                    WordPressSite.DotComCredentials(
+                        siteId: dotComId.intValue,
+                        oAuthToken: dotComAuthToken,
+                        applicationPassword: nil
+                    )
+                )
+            )
             let client = WordPressClientFactory.shared.instance(for: site)
             siteUsername = try await client.api.users.retrieveMeWithEditContext().data.username
             try await coreDataStack.performAndSave { context in

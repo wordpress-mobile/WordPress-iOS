@@ -501,7 +501,7 @@ extension WordPressAppDelegate {
         switch rootViewController.presentedViewController ?? rootViewController {
         case is EditPostViewController:
             return "Post Editor"
-        case is LoginNavigationController:
+        case is LoginPrologueNavigationController:
             return "Login View"
         case is MigrationNavigationController:
             return "Jetpack Migration View"

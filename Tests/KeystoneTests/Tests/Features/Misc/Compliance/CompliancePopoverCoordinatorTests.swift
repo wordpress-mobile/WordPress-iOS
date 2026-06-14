@@ -1,4 +1,3 @@
-
 import XCTest
 
 @testable import WordPress
@@ -17,6 +16,8 @@ final class CompliancePopoverCoordinatorTests: XCTestCase {
             complianceService: service,
             isFeatureFlagEnabled: true
         )
+        // The test host has no connected scene for the default factory to attach to.
+        self.coordinator.makeWindow = { UIWindow() }
     }
 
     // MARK: - Tests

@@ -16,7 +16,13 @@ struct ApplicationPasswordRequiredView<Content: View>: View {
 
     weak var presentingViewController: UIViewController?
 
-    init(blog: Blog, localizedFeatureName: String, source: String, presentingViewController: UIViewController, @ViewBuilder content: @escaping (WordPressClient) -> Content) {
+    init(
+        blog: Blog,
+        localizedFeatureName: String,
+        source: String,
+        presentingViewController: UIViewController,
+        @ViewBuilder content: @escaping (WordPressClient) -> Content
+    ) {
         self.blog = blog
         self.localizedFeatureName = localizedFeatureName
         self.source = source
@@ -101,7 +107,11 @@ struct ApplicationPasswordRequiredView<Content: View>: View {
         do {
             // Get an application password for the given site.
             let authenticator = SelfHostedSiteAuthenticator()
-            let _ = try await authenticator.signIn(site: url, from: presenter, context: .reauthentication(TaggedManagedObjectID(blog), username: blog.username))
+            let _ = try await authenticator.signIn(
+                site: url,
+                from: presenter,
+                context: .reauthentication(TaggedManagedObjectID(blog), username: blog.username)
+            )
 
             WPAnalytics.track(
                 .applicationPasswordCreated,
@@ -126,23 +136,38 @@ struct ApplicationPasswordRequiredView<Content: View>: View {
     }
 
     private func updateSite() {
-        // We check that the site is `selfHosted` to ensure an _Application Password_ is available. That's what this view
-        // is for, after all.
-        if let site = try? WordPressSite(blog: blog), case .selfHosted = site {
+        // We check that the site has application password credentials to ensure
+        // direct wp/v2 API access is available. That's what this view is for.
+        if let site = try? WordPressSite(blog: blog), site.applicationPasswordCredentials != nil {
             self.site = site
         }
     }
 
     enum Strings {
         static var siteUrlNotFoundError: String {
-            NSLocalizedString("applicationPasswordMigration.error.siteUrlNotFound", value: "Cannot find the current site's url", comment: "Error message when the current site's url cannot be found")
+            NSLocalizedString(
+                "applicationPasswordMigration.error.siteUrlNotFound",
+                value: "Cannot find the current site's url",
+                comment: "Error message when the current site's url cannot be found"
+            )
         }
 
         static func userNameMismatch(expected: String) -> String {
-            let format = NSLocalizedString("applicationPasswordMigration.error.usernameMismatch", value: "You need to sign in with user \"%@\"", comment: "Error message when the username does not match the signed-in user. The first argument is the currently signed in user's user login name")
+            let format = NSLocalizedString(
+                "applicationPasswordMigration.error.usernameMismatch",
+                value: "You need to sign in with user \"%@\"",
+                comment:
+                    "Error message when the username does not match the signed-in user. The first argument is the currently signed in user's user login name"
+            )
             return String(format: format, expected)
         }
 
-        static var unsupported: String { NSLocalizedString("applicationPasswordMigration.error.unsupported", value: "This site does not support Application Passwords.", comment: "Error message shown when the site doesn't support Application Passwords feature") }
+        static var unsupported: String {
+            NSLocalizedString(
+                "applicationPasswordMigration.error.unsupported",
+                value: "This site does not support Application Passwords.",
+                comment: "Error message shown when the site doesn't support Application Passwords feature"
+            )
+        }
     }
 }

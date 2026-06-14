@@ -26,12 +26,13 @@ public extension Blog {
         using keychainImplementation: KeychainAccessible = KeychainUtils()
     ) async throws -> TaggedManagedObjectID<Blog> {
         try await contextManager.performAndSave { context in
-            let blog = if let blogID {
-                try context.existingObject(with: blogID)
-            } else {
-                Blog.lookup(username: details.userLogin, xmlrpc: xmlrpcEndpointURL.absoluteString, in: context)
-                    ?? Blog.createBlankBlog(in: context)
-            }
+            let blog =
+                if let blogID {
+                    try context.existingObject(with: blogID)
+                } else {
+                    Blog.lookup(username: details.userLogin, xmlrpc: xmlrpcEndpointURL.absoluteString, in: context)
+                        ?? Blog.createBlankBlog(in: context)
+                }
 
             blog.url = details.siteUrl
             blog.username = details.userLogin
@@ -104,12 +105,19 @@ public extension Blog {
 
     /// A null-safe replacement for `Blog.password(get)`
     func getPassword(using keychainImplementation: KeychainAccessible = KeychainUtils()) throws -> String {
-        try keychainImplementation.getPassword(for: self.getUsername(), serviceName: self.getXMLRPCEndpoint().absoluteString)
+        try keychainImplementation.getPassword(
+            for: self.getUsername(),
+            serviceName: self.getXMLRPCEndpoint().absoluteString
+        )
     }
 
     /// A null-safe replacement for `Blog.password(set)`
     func setPassword(to newValue: String, using keychainImplementation: KeychainAccessible = KeychainUtils()) throws {
-        try keychainImplementation.setPassword(for: self.getUsername(), to: newValue, serviceName: self.getXMLRPCEndpoint().absoluteString)
+        try keychainImplementation.setPassword(
+            for: self.getUsername(),
+            to: newValue,
+            serviceName: self.getXMLRPCEndpoint().absoluteString
+        )
     }
 
     func wordPressClientParsedUrl() throws -> ParsedUrl {
@@ -174,11 +182,11 @@ public extension Blog {
         self.account == nil
     }
 
-    @objc var supportsCoreRestApi: Bool {
-        if case .selfHosted = try? WordPressSite(blog: self) {
-            return true
+    @objc var hasDirectCoreRESTAPIAccess: Bool {
+        guard let site = try? WordPressSite(blog: self) else {
+            return false
         }
-        return false
+        return site.applicationPasswordCredentials != nil
     }
 }
 
@@ -190,58 +198,187 @@ public extension WpApiApplicationPasswordDetails {
     }
 }
 
-public enum WordPressSite: Hashable {
-    case dotCom(siteURL: URL, siteId: Int, authToken: String)
-    case selfHosted(blogId: TaggedManagedObjectID<Blog>, siteURL: URL, apiRootURL: ParsedUrl, username: String, authToken: String)
+/// Describes a WordPress site's hosting type, authentication credentials,
+/// and API capabilities.
+///
+/// This is a value type constructed from a `Blog` Core Data object. It captures
+/// a snapshot of the site's characteristics at construction time.
+///
+/// `WordPressSite` is not a one-to-one mapping with `Blog`. It represents the
+/// subset of `Blog` instances that have access to the WordPress core REST API
+/// (wp/v2). A self-hosted site that only has XML-RPC credentials is not
+/// representable as a `WordPressSite`.
+///
+/// - All WordPress.com sites qualify (wp/v2 is accessed via WP.com REST API
+///   with OAuth).
+/// - Self-hosted sites must have application password credentials.
+public struct WordPressSite {
+    public let blogId: TaggedManagedObjectID<Blog>
+    public let siteURL: URL
+    public let flavor: Flavor
 
-    public init(blog: Blog) throws {
+    public init(blogId: TaggedManagedObjectID<Blog>, siteURL: URL, flavor: Flavor) {
+        self.blogId = blogId
+        self.siteURL = siteURL
+        self.flavor = flavor
+    }
+}
+
+extension WordPressSite {
+    public enum Flavor {
+        /// A site hosted on WordPress.com. Always has OAuth access via
+        /// WPAccount. May also have application password credentials
+        /// (e.g., Atomic sites).
+        case dotCom(DotComCredentials)
+
+        /// A self-hosted WordPress site with application password credentials.
+        /// Application password is required for wp/v2 API access.
+        case selfHosted(ApplicationPasswordCredentials)
+    }
+}
+
+extension WordPressSite {
+    public struct DotComCredentials: Hashable {
+        public let siteId: Int
+        public let oAuthToken: String
+        /// Non-nil for Atomic sites that also have application password access.
+        public let applicationPassword: ApplicationPasswordCredentials?
+
+        public init(siteId: Int, oAuthToken: String, applicationPassword: ApplicationPasswordCredentials?) {
+            self.siteId = siteId
+            self.oAuthToken = oAuthToken
+            self.applicationPassword = applicationPassword
+        }
+    }
+
+    public struct ApplicationPasswordCredentials: Hashable {
+        public let apiRootURL: ParsedUrl
+        public let username: String
+        public let token: String
+
+        public init(apiRootURL: ParsedUrl, username: String, token: String) {
+            self.apiRootURL = apiRootURL
+            self.username = username
+            self.token = token
+        }
+    }
+}
+
+extension WordPressSite: Hashable {
+    public static func == (lhs: WordPressSite, rhs: WordPressSite) -> Bool {
+        lhs.blogId == rhs.blogId
+    }
+
+    public func hash(into hasher: inout Hasher) {
+        hasher.combine(blogId)
+    }
+}
+
+extension WordPressSite {
+    /// Constructs a `WordPressSite` from a `Blog` Core Data object.
+    ///
+    /// Throws if the blog lacks enough data to determine its hosting type
+    /// and at least one valid authentication method.
+    ///
+    /// For self-hosted sites, application password credentials are required.
+    /// Sites without them cannot be represented as a `WordPressSite`.
+    public init(blog: Blog, keychain: KeychainAccessible = KeychainUtils()) throws {
         let siteURL = try blog.getUrl()
-        // Directly access the site content when available.
+        self.blogId = TaggedManagedObjectID(blog)
+        self.siteURL = siteURL
+
+        // Build application password credentials if available.
+        // These are shared across both hosting types — WordPress.com Atomic
+        // sites can have them too.
+        let applicationPassword: ApplicationPasswordCredentials?
         if let restApiRootURL = blog.restApiRootURL,
-           let restApiRootURL = try? ParsedUrl.parse(input: restApiRootURL),
-           let username = blog.username,
-           let authToken = try? blog.getApplicationToken() {
-            self = .selfHosted(blogId: TaggedManagedObjectID(blog), siteURL: siteURL, apiRootURL: restApiRootURL, username: username, authToken: authToken)
-        } else if let account = blog.account, let siteId = blog.dotComID?.intValue {
-            // When the site is added via a WP.com account, access the site via WP.com
-            let authToken = try account.authToken ?? WPAccount.token(forUsername: account.username)
-            self = .dotCom(siteURL: siteURL, siteId: siteId, authToken: authToken)
+            let parsedApiRoot = try? ParsedUrl.parse(input: restApiRootURL),
+            let username = blog.username,
+            let token = try? blog.getApplicationToken(using: keychain)
+        {
+            applicationPassword = ApplicationPasswordCredentials(
+                apiRootURL: parsedApiRoot,
+                username: username,
+                token: token
+            )
         } else {
-            // In theory, this branch should never run, because the two if statements above should have covered all paths.
-            // But we'll keep it here as the fallback.
-            let url = try blog.getUrl()
-            let apiRootURL = try ParsedUrl.parse(input: blog.restApiRootURL ?? blog.getUrl().appending(path: "wp-json").absoluteString)
-            self = .selfHosted(blogId: TaggedManagedObjectID(blog), siteURL: url, apiRootURL: apiRootURL, username: try blog.getUsername(), authToken: try blog.getApplicationToken())
+            applicationPassword = nil
         }
-    }
 
-    public var siteURL: URL {
-        switch self {
-        case let .dotCom(siteURL, _, _):
-            return siteURL
-        case let .selfHosted(_, siteURL, _, _, _):
-            return siteURL
-        }
-    }
-
-    public func blog(in context: NSManagedObjectContext) throws -> Blog? {
-        switch self {
-        case let .dotCom(_, siteId, _):
-            return try Blog.lookup(withID: siteId, in: context)
-        case let .selfHosted(blogId, _, _, _, _):
-            return try context.existingObject(with: blogId)
-        }
-    }
-
-    public func blogId(in coreDataStack: CoreDataStack) -> TaggedManagedObjectID<Blog>? {
-        switch self {
-        case let .dotCom(_, siteId, _):
-            return coreDataStack.performQuery { context in
-                guard let blog = try? Blog.lookup(withID: siteId, in: context) else { return nil }
-                return TaggedManagedObjectID(blog)
+        // Check for WordPress.com account first. This means Atomic sites
+        // (which have both an account and application password credentials)
+        // resolve to `.dotCom`.
+        if let account = blog.account,
+            let siteId = blog.dotComID?.intValue
+        {
+            let authToken =
+                try account.authToken
+                ?? WPAccount.token(forUsername: account.username)
+            self.flavor = .dotCom(
+                DotComCredentials(
+                    siteId: siteId,
+                    oAuthToken: authToken,
+                    applicationPassword: applicationPassword
+                )
+            )
+        } else {
+            // Self-hosted sites must have application password credentials
+            // for wp/v2 API access.
+            guard let applicationPassword else {
+                throw Blog.BlogCredentialsError.blogPasswordMissing
             }
-        case let .selfHosted(id, _, _, _, _):
-            return id
+            self.flavor = .selfHosted(applicationPassword)
         }
+    }
+}
+
+extension WordPressSite {
+    /// How the app reaches the site's wp/v2 REST API.
+    ///
+    /// Unlike `flavor`, which describes how the site is presented in the app,
+    /// `Transport` decides which endpoint and credentials to use for API
+    /// access. The two don't always line up: a WordPress.com Atomic site
+    /// presents as `.dotCom` but is accessed directly when application
+    /// password credentials are available.
+    public enum Transport {
+        /// Requests go to the site's own REST API root, authenticated with
+        /// an application password.
+        case direct(ApplicationPasswordCredentials)
+
+        /// Requests are proxied through the WP.com REST API, authenticated
+        /// with the account's OAuth token.
+        case dotComProxy(siteId: Int, oAuthToken: String)
+    }
+
+    /// Direct site access is preferred whenever application password
+    /// credentials are available, because it does not depend on the WP.com
+    /// proxy and works for site features the proxy does not expose.
+    public var transport: Transport {
+        switch flavor {
+        case let .dotCom(credentials):
+            if let applicationPassword = credentials.applicationPassword {
+                return .direct(applicationPassword)
+            }
+            return .dotComProxy(siteId: credentials.siteId, oAuthToken: credentials.oAuthToken)
+        case let .selfHosted(credentials):
+            return .direct(credentials)
+        }
+    }
+
+    /// The application password credentials, if available.
+    /// Always non-nil for self-hosted sites. Optional for WordPress.com sites
+    /// (non-nil for Atomic sites).
+    public var applicationPasswordCredentials: ApplicationPasswordCredentials? {
+        switch flavor {
+        case let .dotCom(credentials):
+            return credentials.applicationPassword
+        case let .selfHosted(credentials):
+            return credentials
+        }
+    }
+
+    /// Look up the `Blog` object in a given Core Data context.
+    public func blog(in context: NSManagedObjectContext) throws -> Blog {
+        try context.existingObject(with: blogId)
     }
 }
