@@ -1,6 +1,5 @@
 import Foundation
 import CocoaLumberjackSwift
-import SFHFKeychainUtils
 import BuildSettingsKit
 import WordPressKit
 import JetpackStatsWidgetsCore
@@ -254,11 +253,11 @@ private extension StatsWidgetsService {
     }
 
     private func createStatsService(for widgetData: HomeWidgetData) throws -> StatsServiceRemoteV2 {
-        let token = try SFHFKeychainUtils.getPasswordForUsername(
-            WidgetStatsConfiguration.keychainTokenKey,
-            andServiceName: WidgetStatsConfiguration.keychainServiceName,
-            accessGroup: BuildSettings.current.appKeychainAccessGroup
-        )
+        let token = try AppKeychain()
+            .getPassword(
+                for: WidgetStatsConfiguration.keychainTokenKey,
+                serviceName: WidgetStatsConfiguration.keychainServiceName
+            )
         let wpApi = WordPressComRestApi(oAuthToken: token)
         return StatsServiceRemoteV2(
             wordPressComRestApi: wpApi,

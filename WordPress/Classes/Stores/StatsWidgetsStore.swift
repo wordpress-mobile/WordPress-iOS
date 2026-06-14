@@ -1,24 +1,24 @@
 import Foundation
 import JetpackStatsWidgetsCore
 import BuildSettingsKit
-import SFHFKeychainUtils
 import WidgetKit
 import WordPressData
 import WordPressKit
+import WordPressShared
 
 class StatsWidgetsStore {
     private let coreDataStack: CoreDataStack
     private let appGroupName: String
-    private let appKeychainAccessGroup: String
+    private let keychain: any KeychainAccessible
 
     init(
         coreDataStack: CoreDataStack = ContextManager.shared,
         appGroupName: String = BuildSettings.current.appGroupName,
-        appKeychainAccessGroup: String = BuildSettings.current.appKeychainAccessGroup
+        keychain: any KeychainAccessible = AppKeychain()
     ) {
         self.coreDataStack = coreDataStack
         self.appGroupName = appGroupName
-        self.appKeychainAccessGroup = appKeychainAccessGroup
+        self.keychain = keychain
 
         observeAccountChangesForWidgets()
         observeAccountSignInForWidgets()
@@ -452,13 +452,12 @@ private extension StatsWidgetsStore {
         guard let token = AccountHelper.authToken else { return }
 
         do {
-            try SFHFKeychainUtils.storeUsername(
-                WidgetStatsConfiguration.keychainTokenKey,
-                andPassword: token,
-                forServiceName: WidgetStatsConfiguration.keychainServiceName,
-                accessGroup: appKeychainAccessGroup,
-                updateExisting: true
-            )
+            try keychain
+                .setPassword(
+                    for: WidgetStatsConfiguration.keychainTokenKey,
+                    to: token,
+                    serviceName: WidgetStatsConfiguration.keychainServiceName
+                )
         } catch {
             DDLogDebug("Error while saving Widgets OAuth token: \(error)")
         }
