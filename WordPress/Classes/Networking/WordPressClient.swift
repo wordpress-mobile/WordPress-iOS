@@ -10,16 +10,16 @@ import WordPressShared
 public final class WordPressClientFactory: Sendable {
     public static let shared = WordPressClientFactory()
 
-    private let instances = OSAllocatedUnfairLock<[WordPressSite: WordPressClient]>(initialState: [:])
+    private let instances = OSAllocatedUnfairLock<[TaggedManagedObjectID<Blog>: WordPressClient]>(initialState: [:])
     private init() {}
 
     public func instance(for site: WordPressSite) -> WordPressClient {
         instances.withLock { dict in
-            if let client = dict[site] {
+            if let client = dict[site.blogId] {
                 return client
             } else {
                 let client = WordPressClient(site: site)
-                dict[site] = client
+                dict[site.blogId] = client
                 return client
             }
         }

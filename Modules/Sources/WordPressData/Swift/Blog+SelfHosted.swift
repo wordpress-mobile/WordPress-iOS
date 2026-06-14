@@ -264,16 +264,6 @@ extension WordPressSite {
     }
 }
 
-extension WordPressSite: Hashable {
-    public static func == (lhs: WordPressSite, rhs: WordPressSite) -> Bool {
-        lhs.blogId == rhs.blogId
-    }
-
-    public func hash(into hasher: inout Hasher) {
-        hasher.combine(blogId)
-    }
-}
-
 extension WordPressSite {
     /// Constructs a `WordPressSite` from a `Blog` Core Data object.
     ///
