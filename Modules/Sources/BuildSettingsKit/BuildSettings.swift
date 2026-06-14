@@ -25,6 +25,10 @@ public struct BuildSettings: Sendable {
     public var pushNotificationAppID: String
     public var appGroupName: String
     public var appKeychainAccessGroup: String
+    /// The legacy cross-app keychain group shared by the WordPress and
+    /// Jetpack apps. nil where the app has no shared-group entitlement
+    /// (Reader): the key is simply absent from that app's Info.plist.
+    public var sharedKeychainAccessGroup: String?
     public var eventNamePrefix: String
     public var explatPlatform: String
     public var itunesAppID: String

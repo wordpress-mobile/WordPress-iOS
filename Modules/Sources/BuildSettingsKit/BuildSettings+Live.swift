@@ -10,6 +10,7 @@ extension BuildSettings {
         pushNotificationAppID = bundle.infoValue(forKey: "WPPushNotificationAppID")
         appGroupName = bundle.infoValue(forKey: "WPAppGroupName")
         appKeychainAccessGroup = bundle.infoValue(forKey: "WPAppKeychainAccessGroup")
+        sharedKeychainAccessGroup = bundle.object(forInfoDictionaryKey: "WPSharedKeychainAccessGroup") as? String
         eventNamePrefix = bundle.infoValue(forKey: "WPEventNamePrefix")
         explatPlatform = bundle.infoValue(forKey: "WPExplatPlatform")
         itunesAppID = bundle.infoValue(forKey: "WPItunesAppID")
