@@ -198,8 +198,8 @@ struct WordPressDotComAuthenticator {
         }
 
         // Post a notification if the current signed-in account is set as the default account.
-        // This sending notification code exists because that's what the existing login system does. We can consider
-        // removing this notification once WordPressAuthenticator is removed.
+        // Several parts of the app (My Sites, widgets, shortcuts, sidebar) observe this
+        // notification to react to a completed sign-in.
         if case .default = context {
             let notification = Foundation.Notification.Name(
                 rawValue: WordPressAuthenticationManager.WPSigninDidFinishNotification
