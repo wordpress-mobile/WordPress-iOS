@@ -133,18 +133,26 @@ public class WordPressAppDelegate: UIResponder, UIApplicationDelegate {
         return true
     }
 
-    /// Opts the app into the UIScene life cycle and names the scene delegate. Doing
-    /// this in code (instead of a UIApplicationSceneManifest in each Info.plist)
-    /// keeps the configuration in one place for all three app targets. The unit test
-    /// host runs TestingAppDelegate, which doesn't implement this method, so tests
-    /// keep the legacy life cycle.
+    /// Opts the app into the UIScene life cycle and names the scene delegate in code,
+    /// instead of a `UISceneConfigurations` entry duplicated in each target's Info.plist.
+    /// The unit test host runs TestingAppDelegate, which doesn't implement this method,
+    /// so tests keep the legacy life cycle.
     public func application(
         _ application: UIApplication,
         configurationForConnecting connectingSceneSession: UISceneSession,
         options: UIScene.ConnectionOptions
     ) -> UISceneConfiguration {
         let configuration = UISceneConfiguration(name: nil, sessionRole: connectingSceneSession.role)
-        configuration.delegateClass = WordPressSceneDelegate.self
+        // Attach our delegate only to the main app window scene. External-display scenes
+        // (AirPlay mirroring, wired displays) connect with the `.windowExternalDisplay`
+        // role; without our delegate they don't run `showInitialUI`, which would reattach
+        // the app's single window to the non-interactive external scene and blank the
+        // device's screen. `UIApplicationSupportsMultipleScenes` is `false`, but that does
+        // not stop the system from offering the external-display scene here (verified on
+        // device).
+        if connectingSceneSession.role == .windowApplication {
+            configuration.delegateClass = WordPressSceneDelegate.self
+        }
         return configuration
     }
 
