@@ -3,6 +3,18 @@ import Foundation
 extension BuildSettings {
     static let live = BuildSettings(bundle: .app)
 
+    /// `.live`, but only when the host bundle actually carries the app's Info.plist keys.
+    ///
+    /// SPM module test hosts (e.g. `WordPressDataTests`) run without the app bundle, so
+    /// evaluating `.live` there would `fatalError` on the first missing key. The lookup
+    /// below stays clear of `.live` in that case so callers can fall back to a safe value.
+    static var liveIfHostBundleAvailable: BuildSettings? {
+        guard Bundle.app.object(forInfoDictionaryKey: "WPBuildConfiguration") != nil else {
+            return nil
+        }
+        return .live
+    }
+
     init(bundle: Bundle) {
         configuration = BuildConfiguration(rawValue: bundle.infoValue(forKey: "WPBuildConfiguration"))!
         secrets = BuildSecrets.current
