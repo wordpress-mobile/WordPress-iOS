@@ -1,5 +1,6 @@
 import BuildSettingsKit
 import Foundation
+import Security
 import SFHFKeychainUtils
 
 /// Keychain access scoped to this app family's private access group (the
@@ -38,6 +39,59 @@ public final class AppKeychain: KeychainAccessible {
         self.keychainUtils = keychainUtils
     }
 
+    /// Requires that every keychain access group this app declares
+    /// (`WPAppKeychainAccessGroup`, plus `WPSharedKeychainAccessGroup` when
+    /// present) is actually granted by the app's `keychain-access-groups`
+    /// entitlement. Call once, early, at launch.
+    ///
+    /// A group declared in `Info.plist`/`BuildSettings` but missing from the
+    /// entitlement makes every keychain operation against it fail with
+    /// `errSecMissingEntitlement`: the app can neither persist nor read
+    /// credentials (login cannot complete) and a logout can leak the token into
+    /// the cross-app group. That is a blatant build misconfiguration, so this
+    /// crashes hard — in release/beta too, not just debug. A TestFlight build
+    /// and the App Store build share the same entitlements, so the crash
+    /// surfaces on the first launch of any affected build and blocks it from
+    /// ever being promoted to production.
+    ///
+    /// Crashes only on the precise `errSecMissingEntitlement` signal (not on
+    /// lock-state or not-found errors), so a correctly configured build cannot
+    /// be falsely bricked. No-op on the Simulator, which does not enforce
+    /// access-group entitlements.
+    public static func requireDeclaredAccessGroupsAreEntitled() {
+        #if !targetEnvironment(simulator)
+        let settings = BuildSettings.current
+        var groups = [settings.appKeychainAccessGroup]
+        if let sharedGroup = settings.sharedKeychainAccessGroup {
+            groups.append(sharedGroup)
+        }
+        for group in groups where !isAccessGroupEntitled(group) {
+            fatalError(
+                """
+                Keychain access group '\(group)' is declared (Info.plist / BuildSettings) but is not \
+                granted by the app's keychain-access-groups entitlement. Every keychain operation against \
+                it fails with errSecMissingEntitlement — login cannot persist and logout can leak tokens \
+                into the cross-app group. Fix the target's .entitlements before release.
+                """
+            )
+        }
+        #endif
+    }
+
+    /// Whether the signed entitlements grant access to `accessGroup`. Issues a
+    /// benign scoped query: the keychain rejects an un-entitled group with
+    /// `errSecMissingEntitlement`. Any other status (a hit, `errSecItemNotFound`
+    /// on an empty group, or a transient lock-state error) means the
+    /// access-group filter was accepted, i.e. the group is entitled.
+    private static func isAccessGroupEntitled(_ accessGroup: String) -> Bool {
+        let query: [CFString: Any] = [
+            kSecClass: kSecClassGenericPassword,
+            kSecAttrAccessGroup: accessGroup,
+            kSecMatchLimit: kSecMatchLimitOne
+        ]
+        return SecItemCopyMatching(query as CFDictionary, nil) != errSecMissingEntitlement
+    }
+
     public func getPassword(for username: String, serviceName: String) throws -> String {
         do {
             return try keychainUtils.getPasswordForUsername(
@@ -73,30 +127,19 @@ public final class AppKeychain: KeychainAccessible {
 
     public func setPassword(for username: String, to newValue: String?, serviceName: String) throws {
         guard let newValue else {
-            // Delete from both groups, attempting the private-group delete even
-            // when the shared-group delete fails. A logout must not leave a
-            // credential in the shared group, where the fallback read (and
-            // read-repair) could otherwise resurrect it. Delete the shared group
-            // first: it is the only group the fallback reads, so an interruption
-            // between the two deletes can never leave the resurrectable
-            // "private empty, shared present" state. Surface the first real
-            // failure only after both deletes have been attempted.
-            var deleteFailure: Error?
+            // A logout must never end with the credential present in the shared
+            // group but absent from the private group: the fallback read would
+            // resurrect it (and read-repair it back into the private group).
+            // Delete the shared group first and let a real failure propagate
+            // before the private copy is touched. Deleting shared-first also
+            // keeps an interruption between the two deletes safe. Worst case on a
+            // real failure is that both copies remain — logout did not complete
+            // and the caller retries — never the resurrectable "private empty,
+            // shared present" state.
             if let sharedGroup {
-                do {
-                    try deleteIgnoringNotFound(username, serviceName: serviceName, accessGroup: sharedGroup)
-                } catch {
-                    deleteFailure = error
-                }
+                try deleteIgnoringNotFound(username, serviceName: serviceName, accessGroup: sharedGroup)
             }
-            do {
-                try deleteIgnoringNotFound(username, serviceName: serviceName, accessGroup: privateGroup)
-            } catch {
-                deleteFailure = deleteFailure ?? error
-            }
-            if let deleteFailure {
-                throw deleteFailure
-            }
+            try deleteIgnoringNotFound(username, serviceName: serviceName, accessGroup: privateGroup)
             return
         }
         try keychainUtils.storeUsername(

@@ -112,6 +112,13 @@ public class WordPressAppDelegate: UIResponder, UIApplicationDelegate {
         // Start CrashLogging as soon as possible (in case a crash happens during startup)
         try? loggingStack.start()
 
+        // Fail fast on a keychain entitlement misconfiguration. A declared
+        // access group that isn't actually granted breaks login (the token
+        // can't be persisted or read) and can leak tokens into the cross-app
+        // group on logout. Crash here — before any keychain access — so an
+        // affected build can't get past beta. No-op on the Simulator.
+        AppKeychain.requireDeclaredAccessGroupsAreEntitled()
+
         // Configure WPCom API overrides
         configureWordPressComApi()
 

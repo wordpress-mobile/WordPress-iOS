@@ -138,5 +138,29 @@ extension KeychainStubSuites {
             #expect(value == "shared-pw")
             #expect(KeychainStub.password(group: privateGroup, service: "svc", username: "user") == nil)
         }
+
+        @Test func sharedDeleteFailureMustNotEmptyPrivateGroup() {
+            // Logout where the shared-group delete hits a real failure while the
+            // private-group delete would succeed. The credential must NOT be left
+            // in the resurrectable "private empty, shared present" state: a later
+            // getPassword would miss the private group, fall back to the still-
+            // present shared copy, and read-repair the logged-out credential back
+            // into the private group.
+            KeychainStub.seed(group: privateGroup, service: "svc", username: "user", password: "pw")
+            KeychainStub.seed(group: sharedGroup, service: "svc", username: "user", password: "pw")
+            KeychainStub.deleteErrors[sharedGroup] = NSError(
+                domain: sfhfKeychainErrorDomain,
+                code: Int(errSecInteractionNotAllowed)
+            )
+
+            #expect(throws: (any Error).self) {
+                try makeKeychain().setPassword(for: "user", to: nil, serviceName: "svc")
+            }
+            // The shared delete failed, so the shared copy survives. The private
+            // copy must therefore also survive — otherwise the fallback read
+            // resurrects the credential. (Before the fix, the private delete ran
+            // and emptied the private group, leaving the resurrectable state.)
+            #expect(KeychainStub.password(group: privateGroup, service: "svc", username: "user") == "pw")
+        }
     }
 }
