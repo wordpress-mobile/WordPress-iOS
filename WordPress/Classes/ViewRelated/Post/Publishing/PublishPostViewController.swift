@@ -81,7 +81,14 @@ final class PublishPostViewController<ViewModel: PostSettingsViewModelProtocol>:
             editorService: editorService,
             blog: blog
         )
-        publishVC.onCompletion = completion
+        publishVC.onCompletion = { result in
+            if case .published = result {
+                let postTitle = editorService.post?.title?.raw
+                let subtitle = (postTitle?.isEmpty == false) ? postTitle : nil
+                Notice(title: CustomPostNoticeStrings.postPublished, message: subtitle, feedbackType: .success).post()
+            }
+            completion(result)
+        }
         let navigationVC = UINavigationController(rootViewController: publishVC)
         navigationVC.sheetPresentationController?.detents = [
             .custom(identifier: .medium, resolver: { _ in 526 }),
