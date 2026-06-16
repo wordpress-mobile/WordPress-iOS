@@ -1368,6 +1368,58 @@ struct PostSettingsTests {
         #expect(!pingsOnlyView.showsCommentsSection)
         #expect(pingsOnlyView.showsPingsSection)
     }
+
+    // MARK: - Jetpack newsletter row visibility gate (post-type)
+
+    /// Positive control: proves the blog setup actually enables newsletter, so the
+    /// Page assertions below fail for the post-type reason, not a mis-configured blog.
+    @Test("shouldShow .jetpackAccessLevel is true for a Post on a newsletter site")
+    func testAccessLevelShownForPost() throws {
+        let context = ContextManager.forTesting().mainContext
+        let blog = newsletterBlog(context)
+        let post = PostBuilder(context, blog: blog).build()
+        try context.save()
+
+        let viewModel = PostSettingsViewModel(post: post)
+        #expect(viewModel.shouldShow(.jetpackAccessLevel))
+    }
+
+    @Test("shouldShow .jetpackAccessLevel is false for a Page even on a newsletter site")
+    func testAccessLevelHiddenForPage() throws {
+        let context = ContextManager.forTesting().mainContext
+        let blog = newsletterBlog(context)
+        let page = PageBuilder(context).build()
+        page.blog = blog // PageBuilder builds its own accountless blog; move it onto the newsletter-capable one
+        try context.save()
+
+        let viewModel = PostSettingsViewModel(post: page)
+        #expect(!viewModel.shouldShow(.jetpackAccessLevel))
+    }
+
+    /// Positive control for the publishing branch: proves a Post in publishing context
+    /// shows the newsletter row, so the Page assertion below fails for the post-type reason.
+    @Test("shouldShow .jetpackNewsletterEmailOptions is true for a Post in publishing context")
+    func testNewsletterEmailShownForPostInPublishing() throws {
+        let context = ContextManager.forTesting().mainContext
+        let blog = newsletterBlog(context)
+        let post = PostBuilder(context, blog: blog).build()
+        try context.save()
+
+        let viewModel = PostSettingsViewModel(post: post, context: .publishing)
+        #expect(viewModel.shouldShow(.jetpackNewsletterEmailOptions))
+    }
+
+    @Test("shouldShow .jetpackNewsletterEmailOptions is false for a Page in publishing context")
+    func testNewsletterEmailHiddenForPage() throws {
+        let context = ContextManager.forTesting().mainContext
+        let blog = newsletterBlog(context)
+        let page = PageBuilder(context).build()
+        page.blog = blog
+        try context.save()
+
+        let viewModel = PostSettingsViewModel(post: page, context: .publishing)
+        #expect(!viewModel.shouldShow(.jetpackNewsletterEmailOptions))
+    }
 }
 
 // MARK: - Test Helpers
@@ -1383,6 +1435,15 @@ private func makeDiscussionView(allowComments: Bool?, allowPings: Bool?) -> Post
     settings.allowComments = allowComments
     settings.allowPings = allowPings
     return PostDiscussionSettingsView(postSettings: .constant(settings))
+}
+
+/// A blog that supports Jetpack newsletter: the "subscriptions" module is what
+/// `Blog.supports(.jetpackNewsletter)` checks for a self-hosted (account-backed) site.
+private func newsletterBlog(_ context: NSManagedObjectContext) -> Blog {
+    BlogBuilder(context)
+        .withAnAccount()
+        .with(modules: ["subscriptions"])
+        .build()
 }
 
 private func makeRemotePost(
