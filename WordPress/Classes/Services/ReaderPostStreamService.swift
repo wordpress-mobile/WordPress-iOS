@@ -1,5 +1,6 @@
 import Foundation
 import WordPressData
+import WordPressKit
 
 class ReaderPostStreamService {
 
@@ -12,52 +13,76 @@ class ReaderPostStreamService {
         self.coreDataStack = coreDataStack
     }
 
-    func fetchPosts(for topic: ReaderTagTopic, isFirstPage: Bool = true, success: @escaping (Int, Bool) -> Void, failure: @escaping (Error?) -> Void) {
+    func fetchPosts(
+        for topic: ReaderTagTopic,
+        isFirstPage: Bool = true,
+        success: @escaping (Int, Bool) -> Void,
+        failure: @escaping (Error?) -> Void
+    ) {
         if isFirstPage {
             nextPageHandle = nil
         }
 
         let remoteService = ReaderPostServiceRemote.withDefaultApi()
-        remoteService.fetchPosts(for: [topic.slug], page: nextPageHandle, success: { posts, pageHandle in
-            var shouldBail = false
-            self.coreDataStack.performAndSave({ context in
-                guard let readerTopic = try? context.existingObject(with: topic.objectID) as? ReaderAbstractTopic else {
-                    // if there was an error or the topic was deleted just bail.
-                    shouldBail = true
-                    return
-                }
+        remoteService.fetchPosts(
+            for: [topic.slug],
+            page: nextPageHandle,
+            success: { posts, pageHandle in
+                var shouldBail = false
+                self.coreDataStack.performAndSave(
+                    { context in
+                        guard
+                            let readerTopic = try? context.existingObject(with: topic.objectID) as? ReaderAbstractTopic
+                        else {
+                            // if there was an error or the topic was deleted just bail.
+                            shouldBail = true
+                            return
+                        }
 
-                self.nextPageHandle = pageHandle
+                        self.nextPageHandle = pageHandle
 
-                if isFirstPage {
-                    self.pageNumber = 1
-                    self.removePosts(forTopic: readerTopic, in: context)
-                } else {
-                    self.pageNumber += 1
-                }
+                        if isFirstPage {
+                            self.pageNumber = 1
+                            self.removePosts(forTopic: readerTopic, in: context)
+                        } else {
+                            self.pageNumber += 1
+                        }
 
-                posts.enumerated().forEach { index, remotePost in
-                    let post = ReaderPost.createOrUpdate(with: remotePost, topic: readerTopic, context: context)
-                    // To keep the API order
-                    post.sortRank = NSNumber(value: Date().timeIntervalSinceReferenceDate - Double(((self.pageNumber * Constants.paginationMultiplier) + index)))
-                }
+                        posts.enumerated()
+                            .forEach { index, remotePost in
+                                let post = ReaderPost.createOrUpdate(
+                                    with: remotePost,
+                                    topic: readerTopic,
+                                    context: context
+                                )
+                                // To keep the API order
+                                post.sortRank = NSNumber(
+                                    value: Date().timeIntervalSinceReferenceDate
+                                        - Double(((self.pageNumber * Constants.paginationMultiplier) + index))
+                                )
+                            }
 
-                // Clean up
-                let service = ReaderPostService(coreDataStack: self.coreDataStack)
-                service.deletePostsInExcessOfMaxAllowed(for: readerTopic)
-                service.deletePostsFromBlockedSites()
-            }, completion: {
-                if shouldBail {
-                    success(0, false)
-                    return
-                }
+                        // Clean up
+                        let service = ReaderPostService(coreDataStack: self.coreDataStack)
+                        service.deletePostsInExcessOfMaxAllowed(for: readerTopic)
+                        service.deletePostsFromBlockedSites()
+                    },
+                    completion: {
+                        if shouldBail {
+                            success(0, false)
+                            return
+                        }
 
-                let hasMore = pageHandle != nil
-                success(posts.count, hasMore)
-            }, on: .main)
-        }, failure: { error in
-            failure(error)
-        })
+                        let hasMore = pageHandle != nil
+                        success(posts.count, hasMore)
+                    },
+                    on: .main
+                )
+            },
+            failure: { error in
+                failure(error)
+            }
+        )
     }
 
     private func removePosts(forTopic topic: ReaderAbstractTopic, in context: NSManagedObjectContext) {
@@ -73,8 +98,9 @@ class ReaderPostStreamService {
                 // the content and all the metadata should be updated correctly later while preserving
                 // `inUse` and `isSavedForLater`.
                 guard let post = object as? ReaderPost,
-                      !post.inUse,
-                      !post.isSavedForLater else {
+                    !post.inUse,
+                    !post.isSavedForLater
+                else {
                     continue
                 }
                 context.delete(post)

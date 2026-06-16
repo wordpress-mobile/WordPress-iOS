@@ -33,7 +33,7 @@ class RegisterDomainDetailsViewController: UITableViewController {
             for: .touchUpInside
         )
 
-        buttonView.submitButton.setTitle(Localized.buttonTitle, for: .normal)
+        buttonView.submitButton.configuration?.title = Localized.buttonTitle
 
         return buttonView
     }()
@@ -66,8 +66,10 @@ class RegisterDomainDetailsViewController: UITableViewController {
     }
 
     private func configureView() {
-        title = NSLocalizedString("Register domain",
-                                  comment: "Title for the Register domain screen")
+        title = NSLocalizedString(
+            "Register domain",
+            comment: "Title for the Register domain screen"
+        )
 
         configureTableView()
         WPStyleGuide.configureColors(view: view, tableView: tableView)
@@ -210,11 +212,14 @@ extension RegisterDomainDetailsViewController {
 
 extension RegisterDomainDetailsViewController: InlineEditableNameValueCellDelegate {
 
-    func inlineEditableNameValueCell(_ cell: InlineEditableNameValueCell,
-                                     valueTextFieldDidChange text: String) {
+    func inlineEditableNameValueCell(
+        _ cell: InlineEditableNameValueCell,
+        valueTextFieldDidChange text: String
+    ) {
         guard let indexPath = tableView.indexPath(for: cell),
-            let sectionType = SectionIndex(rawValue: indexPath.section) else {
-                return
+            let sectionType = SectionIndex(rawValue: indexPath.section)
+        else {
+            return
         }
 
         viewModel.updateValue(text, at: indexPath)
@@ -222,8 +227,9 @@ extension RegisterDomainDetailsViewController: InlineEditableNameValueCellDelega
         if sectionType == .address,
             viewModel.addressSectionIndexHelper.addressField(for: indexPath.row) == .addressLine1,
             indexPath.row == viewModel.addressSectionIndexHelper.extraAddressLineCount,
-            text.isEmpty == false {
-                viewModel.enableAddAddressRow()
+            text.isEmpty == false
+        {
+            viewModel.enableAddAddressRow()
         }
     }
 
@@ -231,9 +237,12 @@ extension RegisterDomainDetailsViewController: InlineEditableNameValueCellDelega
         inlineEditableNameValueCell(cell, valueTextFieldDidChange: text)
     }
 
-    func inlineEditableNameValueCell(_ cell: InlineEditableNameValueCell, valueTextFieldShouldReturn textField: UITextField) -> Bool {
+    func inlineEditableNameValueCell(
+        _ cell: InlineEditableNameValueCell,
+        valueTextFieldShouldReturn textField: UITextField
+    ) -> Bool {
         guard let indexPath = tableView.indexPath(for: cell) else {
-                return false
+            return false
         }
 
         let nextSection = indexPath.section + 1
@@ -241,12 +250,16 @@ extension RegisterDomainDetailsViewController: InlineEditableNameValueCellDelega
 
         // If there's an enabled editable row next in this section then select it, otherwise check the next section
         if tableView.numberOfRows(inSection: indexPath.section) > nextRow,
-            let nextCell = tableView.cellForRow(at: IndexPath(row: nextRow, section: indexPath.section)) as? InlineEditableNameValueCell,
-            nextCell.valueTextField.isEnabled {
+            let nextCell = tableView.cellForRow(at: IndexPath(row: nextRow, section: indexPath.section))
+                as? InlineEditableNameValueCell,
+            nextCell.valueTextField.isEnabled
+        {
             nextCell.valueTextField.becomeFirstResponder()
         } else if tableView.numberOfSections > nextSection,
-            let nextCell = tableView.cellForRow(at: IndexPath(row: indexPath.row, section: nextSection)) as? InlineEditableNameValueCell,
-            nextCell.valueTextField.isEnabled {
+            let nextCell = tableView.cellForRow(at: IndexPath(row: indexPath.row, section: nextSection))
+                as? InlineEditableNameValueCell,
+            nextCell.valueTextField.isEnabled
+        {
             nextCell.valueTextField.becomeFirstResponder()
         } else {
             textField.resignFirstResponder()
@@ -274,9 +287,11 @@ extension RegisterDomainDetailsViewController {
             switch field {
             case .country:
                 if !viewModel.countryNames.isEmpty {
-                    showItemSelectionPage(onSelectionAt: indexPath,
-                                          title: Localized.ContactInformation.country,
-                                          items: viewModel.countryNames)
+                    showItemSelectionPage(
+                        onSelectionAt: indexPath,
+                        title: Localized.ContactInformation.country,
+                        items: viewModel.countryNames
+                    )
                 }
             default:
                 break
@@ -288,9 +303,11 @@ extension RegisterDomainDetailsViewController {
                 viewModel.replaceAddNewAddressLine()
             case .state:
                 if !viewModel.stateNames.isEmpty {
-                    showItemSelectionPage(onSelectionAt: indexPath,
-                                          title: Localized.Address.state,
-                                          items: viewModel.stateNames)
+                    showItemSelectionPage(
+                        onSelectionAt: indexPath,
+                        title: Localized.Address.state,
+                        items: viewModel.stateNames
+                    )
                 }
             default:
                 break
@@ -305,13 +322,16 @@ extension RegisterDomainDetailsViewController {
         for item in items {
             let attributedItem = NSAttributedString(
                 string: item,
-                attributes: [.font: WPStyleGuide.tableviewTextFont(),
-                             .foregroundColor: UIColor.label]
+                attributes: [
+                    .font: WPStyleGuide.tableviewTextFont(),
+                    .foregroundColor: UIColor.label
+                ]
             )
             let option = OptionsTableViewOption(
                 image: nil,
                 title: attributedItem,
-                accessibilityLabel: nil)
+                accessibilityLabel: nil
+            )
             options.append(option)
         }
         let viewController = OptionsTableViewController(options: options)
@@ -343,11 +363,11 @@ extension RegisterDomainDetailsViewController {
 extension RegisterDomainDetailsViewController {
 
     override func numberOfSections(in tableView: UITableView) -> Int {
-        return viewModel.sections.count
+        viewModel.sections.count
     }
 
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return viewModel.sections[section].rows.count
+        viewModel.sections[section].rows.count
     }
 
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {

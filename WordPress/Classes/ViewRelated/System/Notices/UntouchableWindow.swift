@@ -3,8 +3,8 @@ import UIKit
 @objc class UntouchableWindow: UIWindow {
     let untouchableViewController = UntouchableViewController()
 
-    override init(frame: CGRect) {
-        super.init(frame: frame)
+    override init(windowScene: UIWindowScene) {
+        super.init(windowScene: windowScene)
         rootViewController = untouchableViewController
     }
 
@@ -37,7 +37,8 @@ class UntouchableViewController: UIViewController {
         // this causes the check for the presentedViewController to return nil
         // thus placing the notice incorrectly, without the proper space for the tabBar
         guard let mainWindow = UIApplication.shared.delegate?.window,
-            let tabBarController = mainWindow?.rootViewController as? WPTabBarController else {
+            let tabBarController = mainWindow?.rootViewController as? WPTabBarController
+        else {
             return 0
         }
 
@@ -48,8 +49,9 @@ class UntouchableViewController: UIViewController {
         // we want 0 unless the tab bar has presented a VC
         guard let mainWindow = UIApplication.shared.delegate?.window,
             let tabBarController = mainWindow?.rootViewController as? WPTabBarController,
-            tabBarController.presentedViewController != nil else {
-                return 0
+            tabBarController.presentedViewController != nil
+        else {
+            return 0
         }
 
         return Constants.offsetWithoutTabbar
@@ -62,8 +64,9 @@ class UntouchableViewController: UIViewController {
     override var supportedInterfaceOrientations: UIInterfaceOrientationMask {
         get {
             guard let mainWindow = UIApplication.shared.delegate?.window,
-                let rootController = mainWindow?.rootViewController else {
-                    return .all
+                let rootController = mainWindow?.rootViewController
+            else {
+                return .all
             }
 
             return rootController.topmostPresentedViewController.supportedInterfaceOrientations
@@ -79,7 +82,7 @@ private class UntouchableView: UIView {
 
     override func point(inside point: CGPoint, with event: UIEvent?) -> Bool {
         let visibleViews = subviews.filter { view -> Bool in
-            return view.alpha >= 0.01 && !view.isHidden && view.isUserInteractionEnabled
+            view.alpha >= 0.01 && !view.isHidden && view.isUserInteractionEnabled
         }
         for view in visibleViews {
             let relativePoint = convert(point, to: view)

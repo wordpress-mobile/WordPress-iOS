@@ -1,15 +1,20 @@
 import UIKit
-import WordPressAuthenticator
 import WordPressShared
 import WordPressUI
 
 @objc protocol InlineEditableNameValueCellDelegate: AnyObject {
-    @objc optional func inlineEditableNameValueCell(_ cell: InlineEditableNameValueCell,
-                                                    valueTextFieldDidChange value: String)
-    @objc optional func inlineEditableNameValueCell(_ cell: InlineEditableNameValueCell,
-                                                    valueTextFieldEditingDidEnd text: String)
-    @objc optional func inlineEditableNameValueCell(_ cell: InlineEditableNameValueCell,
-                                                    valueTextFieldShouldReturn textField: UITextField) -> Bool
+    @objc optional func inlineEditableNameValueCell(
+        _ cell: InlineEditableNameValueCell,
+        valueTextFieldDidChange value: String
+    )
+    @objc optional func inlineEditableNameValueCell(
+        _ cell: InlineEditableNameValueCell,
+        valueTextFieldEditingDidEnd text: String
+    )
+    @objc optional func inlineEditableNameValueCell(
+        _ cell: InlineEditableNameValueCell,
+        valueTextFieldShouldReturn textField: UITextField
+    ) -> Bool
 }
 
 class InlineEditableNameValueCell: WPTableViewCell, NibReusable {
@@ -29,7 +34,7 @@ class InlineEditableNameValueCell: WPTableViewCell, NibReusable {
 
     @IBOutlet weak var nameValueWidthRatioConstraint: NSLayoutConstraint!
     @IBOutlet weak var nameLabel: UILabel!
-    @IBOutlet weak var valueTextField: LoginTextField!
+    @IBOutlet weak var valueTextField: UITextField!
     weak var delegate: InlineEditableNameValueCellDelegate?
     var valueSanitizer: ValueSanitizerBlock?
 
@@ -47,19 +52,25 @@ class InlineEditableNameValueCell: WPTableViewCell, NibReusable {
         nameLabel.textColor = Const.Color.nameText
         nameLabel.font = WPStyleGuide.tableviewTextFont()
         nameLabel.numberOfLines = 0
-        nameLabel.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(setValueTextFieldAsFirstResponder(_:))))
+        nameLabel.addGestureRecognizer(
+            UITapGestureRecognizer(target: self, action: #selector(setValueTextFieldAsFirstResponder(_:)))
+        )
 
         valueTextField.textColor = Const.Color.valueText
         valueTextField.tintColor = .placeholderText
         valueTextField.font = WPStyleGuide.tableviewTextFont()
         valueTextField.borderStyle = .none
         valueTextField.delegate = self
-        valueTextField.addTarget(self,
-                                 action: #selector(textFieldDidChange(textField:)),
-                                 for: UIControl.Event.editingChanged)
-        valueTextField.addTarget(self,
-                                 action: #selector(textEditingDidEnd(textField:)),
-                                 for: UIControl.Event.editingDidEnd)
+        valueTextField.addTarget(
+            self,
+            action: #selector(textFieldDidChange(textField:)),
+            for: UIControl.Event.editingChanged
+        )
+        valueTextField.addTarget(
+            self,
+            action: #selector(textEditingDidEnd(textField:)),
+            for: UIControl.Event.editingDidEnd
+        )
         if effectiveUserInterfaceLayoutDirection == .leftToRight {
             // swiftlint:disable:next inverse_text_alignment
             valueTextField.textAlignment = .right
@@ -91,7 +102,7 @@ class InlineEditableNameValueCell: WPTableViewCell, NibReusable {
     }
 
     private func replaceNonBreakingSpaceWithSpace(for textField: UITextField) -> String {
-        return textField.text?.replacingOccurrences(of: Const.Text.nonBreakingSpace, with: Const.Text.space) ?? ""
+        textField.text?.replacingOccurrences(of: Const.Text.nonBreakingSpace, with: Const.Text.space) ?? ""
     }
 
     @objc func setValueTextFieldAsFirstResponder(_ gesture: UITapGestureRecognizer) {
@@ -101,7 +112,7 @@ class InlineEditableNameValueCell: WPTableViewCell, NibReusable {
 
 extension InlineEditableNameValueCell: UITextFieldDelegate {
     func textFieldShouldReturn(_ textField: UITextField) -> Bool {
-        return delegate?.inlineEditableNameValueCell?(self, valueTextFieldShouldReturn: textField) ?? true
+        delegate?.inlineEditableNameValueCell?(self, valueTextFieldShouldReturn: textField) ?? true
     }
 }
 

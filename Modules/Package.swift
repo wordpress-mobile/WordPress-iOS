@@ -26,6 +26,7 @@ let package = Package(
         .library(name: "WordPressCore", targets: ["WordPressCore"]),
         .library(name: "WordPressCoreProtocols", targets: ["WordPressCoreProtocols"]),
         .library(name: "WordPressKit", targets: ["WordPressKit"]),
+        .library(name: "WordPressData", targets: ["WordPressData"]),
         .library(name: "WordPressMediaLibrary", targets: ["WordPressMediaLibrary"])
     ],
     dependencies: [
@@ -289,6 +290,29 @@ let package = Package(
             swiftSettings: [.swiftLanguageMode(.v5)]
         ),
         .target(
+            name: "WordPressData",
+            dependencies: [
+                "BuildSettingsKit",
+                "FormattableContentKit",
+                "SFHFKeychainUtils",
+                "WordPressShared",
+                "WordPressKit",
+                "WordPressUI",
+                .product(name: "CocoaLumberjack", package: "CocoaLumberjack"),
+                .product(name: "CocoaLumberjackSwift", package: "CocoaLumberjack"),
+                .product(name: "Gravatar", package: "Gravatar-SDK-iOS"),
+                .product(name: "NSURL-IDN", package: "NSURL-IDN"),
+                .product(name: "WordPressAPI", package: "wordpress-rs")
+            ],
+            resources: [.process("Resources")],
+            swiftSettings: [
+                .swiftLanguageMode(.v5),
+                // The Xcode target this module replaced compiled bare slash regex
+                // literals (e.g. ReaderPost.swift); plain Swift 5 mode does not.
+                .enableUpcomingFeature("BareSlashRegexLiterals")
+            ]
+        ),
+        .target(
             name: "WordPressReader",
             dependencies: [
                 "AsyncImageKit",
@@ -326,6 +350,16 @@ let package = Package(
         .testTarget(
             name: "WordPressSharedTests",
             dependencies: [.target(name: "WordPressShared")],
+            swiftSettings: [.swiftLanguageMode(.v5)]
+        ),
+        .testTarget(
+            name: "WordPressDataTests",
+            dependencies: [
+                "WordPressData",
+                "WordPressKit",
+                "WordPressKitModels",
+                "WordPressShared"
+            ],
             swiftSettings: [.swiftLanguageMode(.v5)]
         ),
         .testTarget(
@@ -372,13 +406,6 @@ enum XcodeSupport {
             .library(name: "XcodeTarget_Keystone", targets: ["XcodeTarget_Keystone"]),
             .library(name: "XcodeTarget_WordPressTests", targets: ["XcodeTarget_WordPressTests"]),
             .library(name: "XcodeTarget_WordPressKitTests", targets: ["XcodeTarget_WordPressKitTests"]),
-            .library(name: "XcodeTarget_WordPressData", targets: ["XcodeTarget_WordPressData"]),
-            .library(name: "XcodeTarget_WordPressDataTests", targets: ["XcodeTarget_WordPressDataTests"]),
-            .library(name: "XcodeTarget_WordPressAuthentificator", targets: ["XcodeTarget_WordPressAuthentificator"]),
-            .library(
-                name: "XcodeTarget_WordPressAuthentificatorTests",
-                targets: ["XcodeTarget_WordPressAuthentificatorTests"]
-            ),
             .library(name: "XcodeTarget_ShareExtension", targets: ["XcodeTarget_ShareExtension"]),
             .library(name: "XcodeTarget_DraftActionExtension", targets: ["XcodeTarget_DraftActionExtension"]),
             .library(
@@ -392,18 +419,6 @@ enum XcodeSupport {
     }
 
     static var targets: [Target] {
-        let wordPresAuthentificatorDependencies: [Target.Dependency] = [
-            "BuildSettingsKit",
-            "WordPressShared",
-            "WordPressUI",
-            "WordPressKit",
-            .product(name: "Gridicons", package: "Gridicons-iOS"),
-            .product(name: "NSURL-IDN", package: "NSURL-IDN"),
-            .product(name: "SVProgressHUD", package: "SVProgressHUD"),
-            .product(name: "Gravatar", package: "Gravatar-SDK-iOS"),
-            .product(name: "GravatarUI", package: "Gravatar-SDK-iOS")
-        ]
-
         let shareAndDraftExtensionsDependencies: [Target.Dependency] = [
             "AztecExtensions",
             "BuildSettingsKit",
@@ -460,6 +475,7 @@ enum XcodeSupport {
             "WordPressUI",
             "WordPressCore",
             "WordPressKit",
+            "WordPressData",
             .product(name: "Alamofire", package: "Alamofire"),
             .product(name: "AutomatticAbout", package: "AutomatticAbout-swift"),
             .product(name: "AutomatticTracks", package: "Automattic-Tracks-iOS"),
@@ -499,21 +515,12 @@ enum XcodeSupport {
             .xcodeTarget(
                 "XcodeTarget_WordPressTests",
                 dependencies: testDependencies + [
+                    "FormattableContentKit",
+                    "WordPressData",
+                    "WordPressKit",
                     "WordPressShared",
                     "WordPressUI",
                     .product(name: "Gravatar", package: "Gravatar-SDK-iOS"),
-                    // Needed by WordPressData because of how linkage works...
-                    //
-                    "BuildSettingsKit",
-                    "FormattableContentKit",
-                    "SFHFKeychainUtils",
-                    "WordPressKit",
-                    .product(name: "CocoaLumberjack", package: "CocoaLumberjack"),
-                    .product(name: "CocoaLumberjackSwift", package: "CocoaLumberjack"),
-                    .product(name: "CocoaLumberjackSwiftLogBackend", package: "CocoaLumberjack"),
-                    .product(name: "Logging", package: "swift-log"),
-                    .product(name: "NSObject-SafeExpectations", package: "NSObject-SafeExpectations"),
-                    .product(name: "NSURL-IDN", package: "NSURL-IDN"),
                     .product(name: "WordPressAPI", package: "wordpress-rs")
                 ]
             ),
@@ -523,17 +530,6 @@ enum XcodeSupport {
                     "wpxmlrpc",
                     "WordPressKit"
                 ]
-            ),
-            .xcodeTarget(
-                "XcodeTarget_WordPressDataTests",
-                dependencies: [
-                    "WordPressKit"
-                ]
-            ),
-            .xcodeTarget("XcodeTarget_WordPressAuthentificator", dependencies: wordPresAuthentificatorDependencies),
-            .xcodeTarget(
-                "XcodeTarget_WordPressAuthentificatorTests",
-                dependencies: wordPresAuthentificatorDependencies + testDependencies
             ),
             .xcodeTarget("XcodeTarget_ShareExtension", dependencies: shareAndDraftExtensionsDependencies),
             .xcodeTarget("XcodeTarget_DraftActionExtension", dependencies: shareAndDraftExtensionsDependencies),
@@ -606,21 +602,6 @@ enum XcodeSupport {
                 "XcodeTarget_UITests",
                 dependencies: [
                     "UITestsFoundation"
-                ]
-            ),
-            .xcodeTarget(
-                "XcodeTarget_WordPressData",
-                dependencies: [
-                    "BuildSettingsKit",
-                    "FormattableContentKit",
-                    "SFHFKeychainUtils",
-                    "WordPressShared",
-                    "WordPressKit",
-                    .product(name: "CocoaLumberjack", package: "CocoaLumberjack"),
-                    .product(name: "CocoaLumberjackSwift", package: "CocoaLumberjack"),
-                    .product(name: "Gravatar", package: "Gravatar-SDK-iOS"),
-                    .product(name: "NSURL-IDN", package: "NSURL-IDN"),
-                    .product(name: "WordPressAPI", package: "wordpress-rs")
                 ]
             )
         ]

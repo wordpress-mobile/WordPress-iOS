@@ -29,13 +29,11 @@
                         </label>
                     </subviews>
                 </stackView>
-                <button opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="YSR-GY-91s" customClass="NUXButton" customModule="WordPressAuthenticator">
+                <button opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="YSR-GY-91s">
                     <rect key="frame" x="523" y="12" width="41" height="36"/>
                     <constraints>
                         <constraint firstAttribute="height" constant="36" id="244-ge-uM1"/>
                     </constraints>
-                    <inset key="contentEdgeInsets" minX="-5" minY="0.0" maxX="0.0" maxY="0.0"/>
-                    <state key="normal" title="Button"/>
                     <connections>
                         <action selector="buttonTapped:" destination="iN0-l3-epB" eventType="touchUpInside" id="B71-pz-WXU"/>
                     </connections>

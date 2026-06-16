@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <Scheme
-   LastUpgradeVersion = "2600"
+   LastUpgradeVersion = "2630"
    version = "1.7">
    <BuildAction
       parallelizeBuildables = "YES"
@@ -15,10 +15,10 @@
             buildForAnalyzing = "YES">
             <BuildableReference
                BuildableIdentifier = "primary"
-               BlueprintIdentifier = "3F7AE0B42D9B30A100AB4892"
-               BuildableName = "WordPressData.framework"
+               BlueprintIdentifier = "WordPressData"
+               BuildableName = "WordPressData"
                BlueprintName = "WordPressData"
-               ReferencedContainer = "container:WordPress.xcodeproj">
+               ReferencedContainer = "container:../Modules">
             </BuildableReference>
          </BuildActionEntry>
       </BuildActionEntries>
@@ -30,7 +30,7 @@
       shouldUseLaunchSchemeArgsEnv = "YES">
       <TestPlans>
          <TestPlanReference
-            reference = "container:../Tests/WordPressDataTests/WordPressDataTests.xctestplan"
+            reference = "container:../Modules/Tests/WordPressDataTests/WordPressData.xctestplan"
             default = "YES">
          </TestPlanReference>
       </TestPlans>
@@ -55,10 +55,10 @@
       <MacroExpansion>
          <BuildableReference
             BuildableIdentifier = "primary"
-            BlueprintIdentifier = "3F7AE0B42D9B30A100AB4892"
-            BuildableName = "WordPressData.framework"
+            BlueprintIdentifier = "WordPressData"
+            BuildableName = "WordPressData"
             BlueprintName = "WordPressData"
-            ReferencedContainer = "container:WordPress.xcodeproj">
+            ReferencedContainer = "container:../Modules">
          </BuildableReference>
       </MacroExpansion>
    </ProfileAction>

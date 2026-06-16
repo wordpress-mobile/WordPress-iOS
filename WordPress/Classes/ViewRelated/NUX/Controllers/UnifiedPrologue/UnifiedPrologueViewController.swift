@@ -1,6 +1,6 @@
 import UIKit
-import WordPressAuthenticator
 import SwiftUI
+import WordPressShared
 
 class UnifiedPrologueViewController: UIPageViewController {
 
@@ -26,7 +26,7 @@ class UnifiedPrologueViewController: UIPageViewController {
         delegate = self
 
         UnifiedProloguePageType.allCases.forEach({ type in
-                                                    pages.append(UnifiedProloguePageViewController(pageType: type))
+            pages.append(UnifiedProloguePageViewController(pageType: type))
         })
 
         setViewControllers([pages[0]], direction: .forward, animated: false)
@@ -59,30 +59,40 @@ class UnifiedPrologueViewController: UIPageViewController {
 
     @objc func handlePageControlValueChanged(sender: UIPageControl) {
         guard let currentPage = viewControllers?.first,
-              let currentIndex = pages.firstIndex(of: currentPage) else {
+            let currentIndex = pages.firstIndex(of: currentPage)
+        else {
             return
         }
 
-        let direction: UIPageViewController.NavigationDirection = sender.currentPage > currentIndex ? .forward : .reverse
+        let direction: UIPageViewController.NavigationDirection =
+            sender.currentPage > currentIndex ? .forward : .reverse
         setViewControllers([pages[sender.currentPage]], direction: direction, animated: true)
-        WordPressAuthenticator.track(.loginProloguePaged)
+        WPAnalytics.track(.loginProloguePaged)
     }
 }
 
 extension UnifiedPrologueViewController: UIPageViewControllerDataSource {
 
-    func pageViewController(_ pageViewController: UIPageViewController, viewControllerBefore viewController: UIViewController) -> UIViewController? {
+    func pageViewController(
+        _ pageViewController: UIPageViewController,
+        viewControllerBefore viewController: UIViewController
+    ) -> UIViewController? {
         guard let index = pages.firstIndex(of: viewController),
-              index > 0 else {
+            index > 0
+        else {
             return nil
         }
 
         return pages[index - 1]
     }
 
-    func pageViewController(_ pageViewController: UIPageViewController, viewControllerAfter viewController: UIViewController) -> UIViewController? {
+    func pageViewController(
+        _ pageViewController: UIPageViewController,
+        viewControllerAfter viewController: UIViewController
+    ) -> UIViewController? {
         guard let index = pages.firstIndex(of: viewController),
-              index < pages.count - 1 else {
+            index < pages.count - 1
+        else {
             return nil
         }
 
@@ -91,7 +101,12 @@ extension UnifiedPrologueViewController: UIPageViewControllerDataSource {
 }
 
 extension UnifiedPrologueViewController: UIPageViewControllerDelegate {
-    func pageViewController(_ pageViewController: UIPageViewController, didFinishAnimating finished: Bool, previousViewControllers: [UIViewController], transitionCompleted completed: Bool) {
+    func pageViewController(
+        _ pageViewController: UIPageViewController,
+        didFinishAnimating finished: Bool,
+        previousViewControllers: [UIViewController],
+        transitionCompleted completed: Bool
+    ) {
         let toVC = previousViewControllers[0]
         guard let index = pages.firstIndex(of: toVC) else {
             return
@@ -99,11 +114,14 @@ extension UnifiedPrologueViewController: UIPageViewControllerDelegate {
         if !completed {
             pageControl?.currentPage = index
         } else {
-            WordPressAuthenticator.track(.loginProloguePaged)
+            WPAnalytics.track(.loginProloguePaged)
         }
     }
 
-    func pageViewController(_ pageViewController: UIPageViewController, willTransitionTo pendingViewControllers: [UIViewController]) {
+    func pageViewController(
+        _ pageViewController: UIPageViewController,
+        willTransitionTo pendingViewControllers: [UIViewController]
+    ) {
         let toVC = pendingViewControllers[0]
         guard let index = pages.firstIndex(of: toVC) else {
             return

@@ -9,19 +9,19 @@ class ChangeUsernameViewModel {
     typealias StateBlock = (AccountSettingsState, String) -> Void
 
     var username: String {
-        return settings?.username ?? ""
+        settings?.username ?? ""
     }
 
     var displayName: String {
-        return settings?.displayName ?? ""
+        settings?.displayName ?? ""
     }
 
     var isReachable: Bool {
-        return ReachabilityUtils.isInternetReachable()
+        ReachabilityUtils.isInternetReachable()
     }
 
     var usernameIsValidToBeChanged: Bool {
-        return selectedUsername != username && !selectedUsername.isEmpty
+        selectedUsername != username && !selectedUsername.isEmpty
     }
 
     var reachabilityListener: Listener?
@@ -48,7 +48,11 @@ class ChangeUsernameViewModel {
         self.receipt = self.store.onStateChange { [weak self] old, new in
             DispatchQueue.main.async {
                 if old.suggestUsernamesState != new.suggestUsernamesState {
-                    self?.suggestionsListener?(new.suggestUsernamesState, new.suggestions, self?.reloadAllSections ?? true)
+                    self?.suggestionsListener?(
+                        new.suggestUsernamesState,
+                        new.suggestions,
+                        self?.reloadAllSections ?? true
+                    )
                 }
                 if old.usernameSaveState != new.usernameSaveState {
                     self?.saveUsernameBlock?(new.usernameSaveState, Constants.Error.saveUsername)
@@ -87,13 +91,15 @@ class ChangeUsernameViewModel {
 
         let attributed = NSMutableAttributedString(string: text, attributes: [.font: font])
         attributed.applyStylesToMatchesWithPattern("\\b\(username)", styles: [.font: bold])
-        attributed.addAttributes([.underlineStyle: NSNumber(value: 1), .font: bold],
-                                 range: (text as NSString).range(of: Constants.highlight))
+        attributed.addAttributes(
+            [.underlineStyle: NSNumber(value: 1), .font: bold],
+            range: (text as NSString).range(of: Constants.highlight)
+        )
         return attributed
     }
 }
 
-extension ChangeUsernameViewModel: SignupUsernameViewControllerDelegate {
+extension ChangeUsernameViewModel {
     func usernameSelected(_ username: String) {
         selectedUsername = username
     }
@@ -102,9 +108,24 @@ extension ChangeUsernameViewModel: SignupUsernameViewControllerDelegate {
 private extension ChangeUsernameViewModel {
     func addObservers() {
         let notificationCenter = NotificationCenter.default
-        notificationCenter.addObserver(self, selector: #selector(adjustForKeyboard), name: UIResponder.keyboardWillHideNotification, object: nil)
-        notificationCenter.addObserver(self, selector: #selector(adjustForKeyboard), name: UIResponder.keyboardWillChangeFrameNotification, object: nil)
-        notificationCenter.addObserver(self, selector: #selector(reachabilityChanged), name: .reachabilityUpdated, object: nil)
+        notificationCenter.addObserver(
+            self,
+            selector: #selector(adjustForKeyboard),
+            name: UIResponder.keyboardWillHideNotification,
+            object: nil
+        )
+        notificationCenter.addObserver(
+            self,
+            selector: #selector(adjustForKeyboard),
+            name: UIResponder.keyboardWillChangeFrameNotification,
+            object: nil
+        )
+        notificationCenter.addObserver(
+            self,
+            selector: #selector(reachabilityChanged),
+            name: .reachabilityUpdated,
+            object: nil
+        )
     }
 
     func removeObserver() {
@@ -120,11 +141,21 @@ private extension ChangeUsernameViewModel {
     }
 
     enum Constants {
-        static let highlight = NSLocalizedString("You will not be able to change your username back.", comment: "Paragraph text that needs to be highlighted")
-        static let paragraph = NSLocalizedString("You are about to change your username, which is currently %@. %@", comment: "Paragraph displayed in the tableview header. The placholders are for the current username, highlight text and the current display name.")
+        static let highlight = NSLocalizedString(
+            "You will not be able to change your username back.",
+            comment: "Paragraph text that needs to be highlighted"
+        )
+        static let paragraph = NSLocalizedString(
+            "You are about to change your username, which is currently %@. %@",
+            comment:
+                "Paragraph displayed in the tableview header. The placholders are for the current username, highlight text and the current display name."
+        )
 
         enum Error {
-            static let saveUsername = NSLocalizedString("There was an error saving the username", comment: "Text displayed when there is a failure saving the username.")
+            static let saveUsername = NSLocalizedString(
+                "There was an error saving the username",
+                comment: "Text displayed when there is a failure saving the username."
+            )
         }
     }
 }

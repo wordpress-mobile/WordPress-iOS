@@ -3,7 +3,9 @@ import XCTest
 import ScreenObject
 
 // TODO: This should maybe go in an `XCUIApplication` extension?
-public var navBackButton: XCUIElement { XCUIApplication().navigationBars.element(boundBy: 0).buttons.element(boundBy: 0) }
+public var navBackButton: XCUIElement {
+    XCUIApplication().navigationBars.element(boundBy: 0).buttons.element(boundBy: 0)
+}
 
 // This list has all the navBarButton labels currently covered by UI tests and must be updated when adding new ones.
 public let navBackButtonLabels = ["Post Settings", "Back", "Get Started"]
@@ -45,7 +47,7 @@ public func waitForExistenceAndTap(_ element: XCUIElement, timeout: TimeInterval
     element.tap()
 }
 
-public func waitAndTap( _ element: XCUIElement, maxRetries: Int = 20) {
+public func waitAndTap(_ element: XCUIElement, maxRetries: Int = 20) {
     var retries = 0
     while retries < maxRetries {
         if element.isHittable {
@@ -62,7 +64,7 @@ public func waitAndTap( _ element: XCUIElement, maxRetries: Int = 20) {
     }
 }
 
-public func waitForElementToDisappear( _ element: XCUIElement, maxRetries: Int = 10) {
+public func waitForElementToDisappear(_ element: XCUIElement, maxRetries: Int = 10) {
     var retries = 0
     while retries < maxRetries {
         if element.exists {
@@ -84,29 +86,6 @@ extension ScreenObject {
     /// Pops the navigation stack, returning to the item above the current one.
     public func pop() {
         navBackButton.tap()
-    }
-
-    public func openMagicLink() {
-        XCTContext.runActivity(named: "Open magic link in Safari") { _ in
-            let safari = Apps.safari
-            safari.launch()
-
-            // Select the URL bar when Safari opens
-            let urlBar = safari.textFields["URL"]
-            if !urlBar.waitForExistence(timeout: 5) {
-                safari.buttons["URL"].tap()
-            }
-
-            // Follow the magic link
-            var magicLinkComponents = URLComponents(url: WireMock.URL(), resolvingAgainstBaseURL: false)!
-            magicLinkComponents.path = "/magic-link"
-            magicLinkComponents.queryItems = [URLQueryItem(name: "scheme", value: "wpdebug")]
-
-            urlBar.typeText("\(magicLinkComponents.url!.absoluteString)\n")
-
-            // Accept the prompt to open the deep link
-            safari.scrollViews.element(boundBy: 0).buttons.element(boundBy: 1).tap()
-        }
     }
 
     public func findSafariAddressBar(hasBeenTapped: Bool) -> XCUIElement {

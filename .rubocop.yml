@@ -2,7 +2,6 @@ AllCops:
   Exclude:
     - DerivedData/**/*
     - vendor/**/*
-    - WordPressAuthenticator/**/*
     - WordPressKit/**/*
   NewCops: enable
 

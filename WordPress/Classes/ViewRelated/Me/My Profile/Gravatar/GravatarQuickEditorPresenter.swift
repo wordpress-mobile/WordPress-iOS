@@ -2,7 +2,6 @@ import Foundation
 import GravatarUI
 import WordPressData
 import WordPressShared
-import WordPressAuthenticator
 import AsyncImageKit
 
 @MainActor
@@ -69,7 +68,13 @@ struct GravatarQuickEditorPresenter {
     }
 
     private func onAvatarUpdate() {
-        AuthenticatorAnalyticsTracker.shared.track(click: .selectAvatar)
+        // flow/step replicate the legacy tracker's idle-state defaults for wire compatibility.
+        WPAnalytics.track(
+            AnalyticsEvent(
+                name: "unified_login_interaction",
+                properties: ["click": "select_avatar", "source": "default", "flow": "prologue", "step": "prologue"]
+            )
+        )
         Task {
             // Purge the cache otherwise the old avatars remain around.
             await ImageDownloader.shared.clearURLSessionCache()

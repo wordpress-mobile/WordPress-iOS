@@ -2,6 +2,7 @@ import Foundation
 import SwiftUI
 import WordPressData
 import WordPressFlux
+import WordPressKit
 import WordPressShared
 import WordPressAPI
 import WordPressAPIInternal
@@ -17,8 +18,11 @@ extension SiteSettingsViewController {
             let onChange: (WordPress.SiteVisibility) -> Void
 
             var body: some View {
-                SettingsPickerListView(selection: $selection, values: WordPress.SiteVisibility.eligiblePickerValues(for: blog))
-                    .onChange(of: selection, perform: onChange)
+                SettingsPickerListView(
+                    selection: $selection,
+                    values: WordPress.SiteVisibility.eligiblePickerValues(for: blog)
+                )
+                .onChange(of: selection, perform: onChange)
             }
         }
         let view = SiteSettingsPrivacyPicker(blog: blog, selection: blog.siteVisibility) { [weak self] in
@@ -34,20 +38,20 @@ extension SiteSettingsViewController {
 
     @objc(showStartOverForBlog:)
     public func showStartOver(for blog: Blog) {
-       wpAssert(blog.supports(.siteManagement))
+        wpAssert(blog.supports(.siteManagement))
 
-       WPAppAnalytics.track(.siteSettingsStartOverAccessed, blog: blog)
+        WPAppAnalytics.track(.siteSettingsStartOverAccessed, blog: blog)
 
-       if SupportConfiguration.isStartOverSupportEnabled && blog.hasPaidPlan {
-           let startOverVC = StartOverViewController(blog: blog)
-           navigationController?.pushViewController(startOverVC, animated: true)
-       } else {
-           guard let targetURL = Constants.emptySiteSupportURL else { return }
+        if SupportConfiguration.isStartOverSupportEnabled && blog.hasPaidPlan {
+            let startOverVC = StartOverViewController(blog: blog)
+            navigationController?.pushViewController(startOverVC, animated: true)
+        } else {
+            guard let targetURL = Constants.emptySiteSupportURL else { return }
 
-           let webVC = WebViewControllerFactory.controller(url: targetURL, source: "site_settings_start_over")
-           let navigationVC = UINavigationController(rootViewController: webVC)
-           present(navigationVC, animated: true, completion: nil)
-       }
+            let webVC = WebViewControllerFactory.controller(url: targetURL, source: "site_settings_start_over")
+            let navigationVC = UINavigationController(rootViewController: webVC)
+            present(navigationVC, animated: true, completion: nil)
+        }
     }
 
     @objc public func showTagList() {
@@ -66,7 +70,12 @@ extension SiteSettingsViewController {
                 value: "Taxonomies Management",
                 comment: "Feature name for managing terms and taxonomies in the app"
             )
-            let rootView = ApplicationPasswordRequiredView(blog: self.blog, localizedFeatureName: feature, source: "taxonomies", presentingViewController: self) { client in
+            let rootView = ApplicationPasswordRequiredView(
+                blog: self.blog,
+                localizedFeatureName: feature,
+                source: "taxonomies",
+                presentingViewController: self
+            ) { client in
                 SiteCustomTaxonomiesView(blog: self.blog, client: client)
             }
             viewController = UIHostingController(rootView: rootView)
@@ -93,11 +102,12 @@ extension SiteSettingsViewController {
         if let timezoneString = settings.timezoneString?.nonEmptyString() {
             // Try to get a localized name from the system
             if let timeZone = TimeZone(identifier: timezoneString),
-               let name = timeZone.localizedName(for: .generic, locale: .current) {
+                let name = timeZone.localizedName(for: .generic, locale: .current)
+            {
 
                 let formatter = DateFormatter()
                 formatter.timeZone = timeZone
-                formatter.dateFormat = "ZZZZ"  // "GMT-05:00"
+                formatter.dateFormat = "ZZZZ" // "GMT-05:00"
                 let offsetString = formatter.string(from: Date())
 
                 return "\(name) (\(offsetString))"
@@ -120,7 +130,11 @@ extension SiteSettingsViewController {
     // MARK: - Homepage Settings
 
     @objc public var homepageSettingsCell: SettingTableViewCell? {
-        let cell = SettingTableViewCell(label: NSLocalizedString("Homepage Settings", comment: "Label for Homepage Settings site settings section"), editable: true, reuseIdentifier: nil)
+        let cell = SettingTableViewCell(
+            label: NSLocalizedString("Homepage Settings", comment: "Label for Homepage Settings site settings section"),
+            editable: true,
+            reuseIdentifier: nil
+        )
         cell?.textValue = blog.homepageType?.title
         return cell
     }
@@ -138,8 +152,11 @@ extension SiteSettingsViewController {
             self?.blog.settings?.gmtOffset = newValue.gmtOffset as NSNumber?
             self?.blog.settings?.timezoneString = newValue.timezoneString
             self?.saveSettings()
-            self?.trackSettingsChange(fieldName: "timezone",
-                                      value: newValue.value as Any)
+            self?
+                .trackSettingsChange(
+                    fieldName: "timezone",
+                    value: newValue.value as Any
+                )
         }
         let controller = UIHostingController(rootView: view)
         navigationController?.pushViewController(controller, animated: true)
@@ -154,8 +171,10 @@ extension SiteSettingsViewController {
         let pickerViewController = SettingsPickerViewController(style: .insetGrouped)
         pickerViewController.title = NSLocalizedString("Posts per Page", comment: "Posts per Page Title")
         pickerViewController.switchVisible = false
-        pickerViewController.selectionText = NSLocalizedString("The number of posts to show per page.",
-                                                               comment: "Text above the selection of the number of posts to show per blog page")
+        pickerViewController.selectionText = NSLocalizedString(
+            "The number of posts to show per page.",
+            comment: "Text above the selection of the number of posts to show per blog page"
+        )
         pickerViewController.pickerFormat = NSLocalizedString("%d posts", comment: "Number of posts")
         pickerViewController.pickerMinimumValue = minNumberOfPostPerPage
         if let currentValue = blog.settings?.postsPerPage as? Int {
@@ -190,8 +209,10 @@ extension SiteSettingsViewController {
     @objc(getTrafficSettingsSectionFooterView)
     public func trafficSettingsSectionFooterView() -> UIView {
         let footer = makeFooterView()
-        footer.textLabel?.text = NSLocalizedString("Your WordPress.com site supports the use of Accelerated Mobile Pages, a Google-led initiative that dramatically speeds up loading times on mobile devices.",
-                                                   comment: "Footer for AMP Traffic Site Setting, should match Calypso.")
+        footer.textLabel?.text = NSLocalizedString(
+            "Your WordPress.com site supports the use of Accelerated Mobile Pages, a Google-led initiative that dramatically speeds up loading times on mobile devices.",
+            comment: "Footer for AMP Traffic Site Setting, should match Calypso."
+        )
         footer.textLabel?.isUserInteractionEnabled = true
 
         let tap = UITapGestureRecognizer(target: self, action: #selector(handleAMPFooterTap(_:)))
@@ -202,7 +223,10 @@ extension SiteSettingsViewController {
     @objc(getBlockEditorSectionFooterView)
     public func blockEditorSectionFooterView() -> UIView {
         let footer = makeFooterView()
-        footer.textLabel?.text = NSLocalizedString("Edit new posts and pages with the block editor.", comment: "Explanation for the option to enable the block editor")
+        footer.textLabel?.text = NSLocalizedString(
+            "Edit new posts and pages with the block editor.",
+            comment: "Explanation for the option to enable the block editor"
+        )
         return footer
     }
 
@@ -242,15 +266,19 @@ extension SiteSettingsViewController {
         }
     }
 
-    override open func tableView(_ tableView: UITableView, willDisplayFooterView view: UIView, forSection section: Int) {
+    override open func tableView(
+        _ tableView: UITableView,
+        willDisplayFooterView view: UIView,
+        forSection section: Int
+    ) {
         WPStyleGuide.configureTableViewSectionFooter(view)
     }
 
     // MARK: Private Properties
 
-    fileprivate var minNumberOfPostPerPage: Int { return 1 }
-    fileprivate var maxNumberOfPostPerPage: Int { return 1000 }
-    fileprivate var ampSupportURL: String { return "https://support.wordpress.com/amp-accelerated-mobile-pages/" }
+    fileprivate var minNumberOfPostPerPage: Int { 1 }
+    fileprivate var maxNumberOfPostPerPage: Int { 1000 }
+    fileprivate var ampSupportURL: String { "https://support.wordpress.com/amp-accelerated-mobile-pages/" }
 }
 
 // MARK: - General Settings Table Section Management
@@ -287,7 +315,8 @@ extension SiteSettingsViewController {
 
     @objc
     public func tableView(_ tableView: UITableView, cellForGeneralSettingsInRow row: Int) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCell(withIdentifier: SettingsTableViewCellReuseIdentifier) as! SettingTableViewCell
+        let cell =
+            tableView.dequeueReusableCell(withIdentifier: SettingsTableViewCellReuseIdentifier) as! SettingTableViewCell
 
         switch generalSettingsRows[row] {
         case .title:
@@ -328,7 +357,9 @@ extension SiteSettingsViewController {
     // MARK: - Cell Configuration
 
     private func configureCellForTitle(_ cell: SettingTableViewCell) {
-        let name = blog.settings?.name ?? NSLocalizedString("A title for the site", comment: "Placeholder text for the title of a site")
+        let name =
+            blog.settings?.name
+            ?? NSLocalizedString("A title for the site", comment: "Placeholder text for the title of a site")
 
         cell.editable = blog.isAdmin
         cell.textLabel?.text = NSLocalizedString("Site Title", comment: "Label for site title blog setting")
@@ -336,7 +367,12 @@ extension SiteSettingsViewController {
     }
 
     private func configureCellForTagline(_ cell: SettingTableViewCell) {
-        let tagline = blog.settings?.tagline ?? NSLocalizedString("Explain what this site is about.", comment: "Placeholder text for the tagline of a site")
+        let tagline =
+            blog.settings?.tagline
+            ?? NSLocalizedString(
+                "Explain what this site is about.",
+                comment: "Placeholder text for the tagline of a site"
+            )
 
         cell.editable = blog.isAdmin
         cell.textLabel?.text = NSLocalizedString("Tagline", comment: "Label for tagline blog setting")
@@ -346,7 +382,10 @@ extension SiteSettingsViewController {
     private func configureCellForURL(_ cell: SettingTableViewCell) {
         let url: String = {
             guard let url = blog.url else {
-                return NSLocalizedString("http://my-site-address (URL)", comment: "(placeholder) Help the user enter a URL into the field")
+                return NSLocalizedString(
+                    "http://my-site-address (URL)",
+                    comment: "(placeholder) Help the user enter a URL into the field"
+                )
             }
 
             return url
@@ -371,7 +410,10 @@ extension SiteSettingsViewController {
         } else {
             // Since the settings can be nil, we need to handle the scenario... but it
             // really should not be possible to reach this line.
-            name = NSLocalizedString("Undefined", comment: "When the App can't figure out what language a blog is configured to use.")
+            name = NSLocalizedString(
+                "Undefined",
+                comment: "When the App can't figure out what language a blog is configured to use."
+            )
         }
 
         cell.editable = blog.isAdmin
@@ -395,12 +437,17 @@ extension SiteSettingsViewController {
         let siteTitleViewController = SettingsTextViewController(
             text: blog.settings?.name ?? "",
             placeholder: NSLocalizedString("A title for the site", comment: "Placeholder text for the title of a site"),
-            hint: "")
+            hint: ""
+        )
 
-        siteTitleViewController.title = NSLocalizedString("Site Title", comment: "Title for screen that show site title editor")
+        siteTitleViewController.title = NSLocalizedString(
+            "Site Title",
+            comment: "Title for screen that show site title editor"
+        )
         siteTitleViewController.onValueChanged = { [weak self] value in
             guard let self,
-                  let cell = self.tableView.cellForRow(at: indexPath) else {
+                let cell = self.tableView.cellForRow(at: indexPath)
+            else {
                 // No need to update anything if the cell doesn't exist.
                 return
             }
@@ -425,13 +472,24 @@ extension SiteSettingsViewController {
 
         let siteTaglineViewController = SettingsTextViewController(
             text: blog.settings?.tagline ?? "",
-            placeholder: NSLocalizedString("Explain what this site is about.", comment: "Placeholder text for the tagline of a site"),
-            hint: NSLocalizedString("In a few words, explain what this site is about.", comment: "Explain what is the purpose of the tagline"))
+            placeholder: NSLocalizedString(
+                "Explain what this site is about.",
+                comment: "Placeholder text for the tagline of a site"
+            ),
+            hint: NSLocalizedString(
+                "In a few words, explain what this site is about.",
+                comment: "Explain what is the purpose of the tagline"
+            )
+        )
 
-        siteTaglineViewController.title = NSLocalizedString("Tagline", comment: "Title for screen that show tagline editor")
+        siteTaglineViewController.title = NSLocalizedString(
+            "Tagline",
+            comment: "Title for screen that show tagline editor"
+        )
         siteTaglineViewController.onValueChanged = { [weak self] value in
             guard let self,
-                  let cell = self.tableView.cellForRow(at: indexPath) else {
+                let cell = self.tableView.cellForRow(at: indexPath)
+            else {
                 // No need to update anything if the cell doesn't exist.
                 return
             }
@@ -451,26 +509,35 @@ extension SiteSettingsViewController {
     }
 
     func trackSettingsChange(fieldName: String, value: Any? = nil) {
-        WPAnalytics.trackSettingsChange("site_settings",
-                                        fieldName: fieldName,
-                                        value: value)
+        WPAnalytics.trackSettingsChange(
+            "site_settings",
+            fieldName: fieldName,
+            value: value
+        )
     }
 }
 
 private extension SiteSettingsViewController {
     enum Strings {
-        static let privacyTitle = NSLocalizedString("siteSettings.privacy.title", value: "Privacy", comment: "Title for screen to select the privacy options for a blog")
+        static let privacyTitle = NSLocalizedString(
+            "siteSettings.privacy.title",
+            value: "Privacy",
+            comment: "Title for screen to select the privacy options for a blog"
+        )
 
         static let themeStylesFooterBlockThemeSuggested = NSLocalizedString(
             "siteSettings.themeStyles.footer.blockThemeSuggested",
-            value: "Your site isn't using a Block Theme, so the editor might not match your content correctly. If things aren't looking right, you can disable editor styles.",
-            comment: "Explanation for why the 'Use theme styles' toggle is disabled when the site doesn't have a block theme"
+            value:
+                "Your site isn't using a Block Theme, so the editor might not match your content correctly. If things aren't looking right, you can disable editor styles.",
+            comment:
+                "Explanation for why the 'Use theme styles' toggle is disabled when the site doesn't have a block theme"
         )
 
         static let themeStylesFooterGutenbergRequired = NSLocalizedString(
             "siteSettings.themeStyles.footer.gutenbergRequired",
             value: "Install the Gutenberg Plugin on your site to activate theme style support.",
-            comment: "Explanation for why the 'Use theme styles' toggle is disabled when the site doesn't have the Gutenberg plugin"
+            comment:
+                "Explanation for why the 'Use theme styles' toggle is disabled when the site doesn't have the Gutenberg plugin"
         )
 
         static let themeStylesFooterEnabled = NSLocalizedString(

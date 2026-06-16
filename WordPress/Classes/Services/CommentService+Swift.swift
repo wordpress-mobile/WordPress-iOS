@@ -1,5 +1,6 @@
 import Foundation
 import WordPressData
+import WordPressKit
 
 /// Encapsulates actions related to fetching reply comments.
 ///
@@ -13,11 +14,13 @@ extension CommentService {
     ///   - accountService: Service dependency to fetch the current user's dotcom ID.
     ///   - success: Closure called when the fetch succeeds.
     ///   - failure: Closure called when the fetch fails.
-    func getLatestReplyID(for parentID: Int,
-                          siteID: Int,
-                          accountService: AccountService? = nil,
-                          success: @escaping (Int) -> Void,
-                          failure: @escaping (Error?) -> Void) {
+    func getLatestReplyID(
+        for parentID: Int,
+        siteID: Int,
+        accountService: AccountService? = nil,
+        success: @escaping (Int) -> Void,
+        failure: @escaping (Error?) -> Void
+    ) {
         guard let remote = restRemote(forSite: NSNumber(value: siteID)) else {
             DDLogError("Unable to create a REST remote to fetch comment replies.")
             failure(nil)
@@ -34,9 +37,12 @@ extension CommentService {
         // Therefore, fetch all replies and filter for the current user here.
         remote.getCommentsV2(for: siteID, parameters: [.parent: parentID]) { remoteComments in
             // Filter for comments authored by the current user, and return the most recent commentID (if any).
-            success(remoteComments
-                        .filter { $0.authorID == userID }
-                        .max { $0.date < $1.date }?.commentID ?? 0)
+            success(
+                remoteComments
+                    .filter { $0.authorID == userID }
+                    .max { $0.date < $1.date }?
+                    .commentID ?? 0
+            )
         } failure: { error in
             failure(error)
         }
@@ -50,11 +56,12 @@ extension CommentService {
     ///   - completion: The block executed after the replies are updated.
     func updateRepliesVisibility(for ancestorComment: Comment, completion: (() -> Void)? = nil) {
         guard let context = ancestorComment.managedObjectContext,
-              let post = ancestorComment.post as? ReaderPost,
-              let comments = post.comments else {
-                  completion?()
-                  return
-              }
+            let post = ancestorComment.post as? ReaderPost,
+            let comments = post.comments
+        else {
+            completion?()
+            return
+        }
 
         let isVisible = (ancestorComment.status == CommentStatusType.approved.description)
 
@@ -66,11 +73,12 @@ extension CommentService {
         context.perform {
             comments.filter { comment in
                 comment.parentID == ancestorComment.commentID
-                || comment.hierarchy
-                    .split(separator: ".")
-                    .compactMap({ Int32($0) })
-                    .contains(ancestorComment.commentID)
-            }.forEach { childComment in
+                    || comment.hierarchy
+                        .split(separator: ".")
+                        .compactMap({ Int32($0) })
+                        .contains(ancestorComment.commentID)
+            }
+            .forEach { childComment in
                 childComment.visibleOnReader = isVisible
             }
 
@@ -84,7 +92,8 @@ extension CommentService {
     @objc(fetchPostsIfNeededForComments:inBlog:)
     public func fetchPostsIfNeeded(for comments: [RemoteComment], in blog: Blog) {
         // Find posts that do not exists locally.
-        let postIds = comments
+        let postIds =
+            comments
             .reduce(into: Set<NSNumber>()) { result, comment in
                 if let postId = comment.postID, comment.postTitle == nil {
                     result.insert(postId)

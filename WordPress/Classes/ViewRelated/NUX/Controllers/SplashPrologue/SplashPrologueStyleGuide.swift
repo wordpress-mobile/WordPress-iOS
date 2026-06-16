@@ -1,6 +1,5 @@
 import UIKit
 import SwiftUI
-import WordPressAuthenticator
 import WordPressUI
 
 struct SplashPrologueStyleGuide {
@@ -24,46 +23,6 @@ struct SplashPrologueStyleGuide {
 
     private static let secondaryButtonColor: UIColor = .white
     private static let secondaryButtonHighlightedColor: UIColor = UIAppColor.gray(.shade5)
-
-    static let primaryButtonStyle = NUXButtonStyle(
-        normal: .init(
-            backgroundColor: Self.primaryButtonColor,
-            borderColor: Self.primaryButtonColor,
-            titleColor: .white
-        ),
-
-        highlighted: .init(
-            backgroundColor: Self.primaryButtonHighlightedColor,
-            borderColor: Self.primaryButtonHighlightedColor,
-            titleColor: .white
-        ),
-
-        disabled: .init(
-            backgroundColor: .white,
-            borderColor: .white,
-            titleColor: Self.backgroundColor
-        )
-    )
-
-    static let secondaryButtonStyle = NUXButtonStyle(
-        normal: .init(
-            backgroundColor: Self.secondaryButtonColor,
-            borderColor: Self.secondaryButtonHighlightedColor,
-            titleColor: .black
-        ),
-
-        highlighted: .init(
-            backgroundColor: Self.secondaryButtonHighlightedColor,
-            borderColor: Self.secondaryButtonHighlightedColor,
-            titleColor: .black
-        ),
-
-        disabled: .init(
-            backgroundColor: .white,
-            borderColor: .white,
-            titleColor: Self.backgroundColor
-        )
-    )
 }
 
 // MARK: - Prologue button configurations

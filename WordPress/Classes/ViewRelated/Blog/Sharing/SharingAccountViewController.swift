@@ -1,6 +1,7 @@
 import UIKit
 import Gridicons
 import WordPressData
+import WordPressKit
 import WordPressShared
 import WordPressUI
 
@@ -26,7 +27,11 @@ import WordPressUI
 
     // MARK: - Lifecycle Methods
 
-    @objc public init(service: PublicizeService, connections: [KeyringConnection], existingConnections: [PublicizeConnection]?) {
+    @objc public init(
+        service: PublicizeService,
+        connections: [KeyringConnection],
+        existingConnections: [PublicizeConnection]?
+    ) {
         publicizeService = service
         keyringConnections = connections
         existingPublicizeConnections = existingConnections
@@ -54,7 +59,12 @@ import WordPressUI
     ///
     fileprivate func configureNavbar() {
         let image = UIImage.gridicon(.cross)
-        let closeButton = UIBarButtonItem(image: image, style: .plain, target: self, action: #selector(SharingAccountViewController.handleCloseTapped(_:)))
+        let closeButton = UIBarButtonItem(
+            image: image,
+            style: .plain,
+            target: self,
+            action: #selector(SharingAccountViewController.handleCloseTapped(_:))
+        )
         closeButton.tintColor = UIAppColor.appBarTint
         navigationItem.leftBarButtonItem = closeButton
     }
@@ -70,10 +80,15 @@ import WordPressUI
     }
 
     fileprivate func showNoResultsViewController() {
-        let title = NSLocalizedString("No Accounts Found",
-                                      comment: "Title of an error message. There were no third-party service accounts found to setup sharing.")
-        let message = NSLocalizedString("Sorry. The social service did not tell us which account could be used for sharing.",
-                                        comment: "An error message shown if a third-party social service does not specify any accounts that an be used with publicize sharing.")
+        let title = NSLocalizedString(
+            "No Accounts Found",
+            comment: "Title of an error message. There were no third-party service accounts found to setup sharing."
+        )
+        let message = NSLocalizedString(
+            "Sorry. The social service did not tell us which account could be used for sharing.",
+            comment:
+                "An error message shown if a third-party social service does not specify any accounts that an be used with publicize sharing."
+        )
         noResultsViewController.configure(title: title, subtitle: message)
     }
 
@@ -111,7 +126,10 @@ import WordPressUI
         // Build the section for connected accounts
         rows = rowsForConnectedKeyringAccounts(connectedAccounts)
         if !rows.isEmpty {
-            let title = NSLocalizedString("Connected", comment: "Adjective. The title of a list of third-part sharing service account names.")
+            let title = NSLocalizedString(
+                "Connected",
+                comment: "Adjective. The title of a list of third-part sharing service account names."
+            )
             let section = ImmuTableSection(headerText: title, rows: rows, footerText: nil)
             sections.append(section)
         }
@@ -130,11 +148,21 @@ import WordPressUI
             return nil
         }
 
-        var title = NSLocalizedString("Connecting %@", comment: "Connecting is a verb. Title of Publicize account selection. The %@ is a placeholder for the service's name")
+        var title = NSLocalizedString(
+            "Connecting %@",
+            comment:
+                "Connecting is a verb. Title of Publicize account selection. The %@ is a placeholder for the service's name"
+        )
         title = NSString(format: title as NSString, publicizeService.label) as String
 
-        let manyAccountFooter = NSLocalizedString("Select the account you would like to authorize. Note that your posts will be automatically shared to the selected account.", comment: "Instructional text about the Sharing feature.")
-        let oneAccountFooter = NSLocalizedString("Confirm this is the account you would like to authorize. Note that your posts will be automatically shared to this account.", comment: "Instructional text about the Sharing feature.")
+        let manyAccountFooter = NSLocalizedString(
+            "Select the account you would like to authorize. Note that your posts will be automatically shared to the selected account.",
+            comment: "Instructional text about the Sharing feature."
+        )
+        let oneAccountFooter = NSLocalizedString(
+            "Confirm this is the account you would like to authorize. Note that your posts will be automatically shared to this account.",
+            comment: "Instructional text about the Sharing feature."
+        )
         let footer = rows.count > 1 ? manyAccountFooter : oneAccountFooter
 
         return ImmuTableSection(headerText: title, rows: rows, footerText: footer)
@@ -164,12 +192,15 @@ import WordPressUI
     /// - Returns: An ImmuTableAction instance.
     ///
     fileprivate func actionForRow(_ keyringAccount: KeyringAccount) -> ImmuTableAction {
-        return { [unowned self] _ in
+        { [unowned self] _ in
             self.tableView.deselectSelectedRowWithAnimation(true)
 
-            self.delegate?.sharingAccountViewController(self,
-                selectedKeyringConnection: keyringAccount.keyringConnection,
-                externalID: keyringAccount.externalID)
+            self.delegate?
+                .sharingAccountViewController(
+                    self,
+                    selectedKeyringConnection: keyringAccount.keyringConnection,
+                    externalID: keyringAccount.externalID
+                )
         }
     }
 
@@ -202,10 +233,11 @@ import WordPressUI
 
         let keyringConnection = keyringAccount.keyringConnection
         for existingConnection in existingConnections {
-            if existingConnection.keyringConnectionID == keyringConnection.keyringID &&
-                existingConnection.keyringConnectionUserID == keyringConnection.userID &&
-                existingConnection.externalID == keyringAccount.externalIDForConnection {
-                    return true
+            if existingConnection.keyringConnectionID == keyringConnection.keyringID
+                && existingConnection.keyringConnectionUserID == keyringConnection.userID
+                && existingConnection.externalID == keyringAccount.externalIDForConnection
+            {
+                return true
             }
         }
 
@@ -244,5 +276,9 @@ import WordPressUI
 ///
 @objc public protocol SharingAccountSelectionDelegate: NSObjectProtocol {
     func didDismissSharingAccountViewController(_ controller: SharingAccountViewController)
-    func sharingAccountViewController(_ controller: SharingAccountViewController, selectedKeyringConnection keyringConnection: KeyringConnection, externalID: String?)
+    func sharingAccountViewController(
+        _ controller: SharingAccountViewController,
+        selectedKeyringConnection keyringConnection: KeyringConnection,
+        externalID: String?
+    )
 }

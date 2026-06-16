@@ -1,5 +1,6 @@
 import Foundation
 import WordPressData
+import WordPressKit
 import WordPressShared
 
 /// The purpose of this service is to encapsulate the Restful API that performs Mobile 2FA
@@ -30,13 +31,16 @@ class PushAuthenticationService {
             return
         }
 
-        self.authenticationServiceRemote!.authorizeLogin(token,
-            success: {
-                            completion(true)
-                        },
-            failure: {
-                            completion(false)
-                        })
+        self.authenticationServiceRemote!
+            .authorizeLogin(
+                token,
+                success: {
+                    completion(true)
+                },
+                failure: {
+                    completion(false)
+                }
+            )
     }
 
     /// Helper method to get the WordPress.com REST Api, if any

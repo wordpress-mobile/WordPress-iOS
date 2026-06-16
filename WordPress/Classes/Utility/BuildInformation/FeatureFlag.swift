@@ -6,7 +6,6 @@ import FoundationModels
 /// different builds.
 @objc
 public enum FeatureFlag: Int, CaseIterable {
-    case signUp
     case domainRegistration
     case selfHostedSites
     case whatsNew
@@ -45,8 +44,6 @@ public enum FeatureFlag: Int, CaseIterable {
         let app = BuildSettings.current.brand
 
         switch self {
-        case .signUp:
-            return true
         case .domainRegistration:
             return app == .jetpack || app == .reader
         case .selfHostedSites:
@@ -120,7 +117,6 @@ extension FeatureFlag {
     /// Descriptions used to display the feature flag override menu in debug builds
     public var description: String {
         switch self {
-        case .signUp: "Sign Up"
         case .domainRegistration: "Domain Registration"
         case .selfHostedSites: "Self-Hosted Sites"
         case .whatsNew: "What's New"
