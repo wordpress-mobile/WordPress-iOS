@@ -3,6 +3,7 @@ import Foundation
 enum DataMigrationError {
     case databaseImportError(underlyingError: Error)
     case databaseExportError(underlyingError: Error)
+    case keychainExportError(underlyingError: Error)
     case backupLocationNil
     case sharedUserDefaultsNil
     case dataNotReadyToImport
@@ -17,11 +18,12 @@ extension DataMigrationError: LocalizedError, CustomNSError {
         case .dataNotReadyToImport: return "The data wasn't ready to import"
         case .databaseImportError(let error): return "Import Failed: \(error.localizedDescription)"
         case .databaseExportError(let error): return "Export Failed: \(error.localizedDescription)"
+        case .keychainExportError(let error): return "Keychain export failed: \(error.localizedDescription)"
         }
     }
 
     static var errorDomain: String {
-        return String(describing: DataMigrationError.self)
+        String(describing: DataMigrationError.self)
     }
 
     var errorCode: Int {
@@ -31,17 +33,20 @@ extension DataMigrationError: LocalizedError, CustomNSError {
         case .sharedUserDefaultsNil: return 201
         case .databaseImportError(let error): return 1000 + (error as NSError).code
         case .databaseExportError(let error): return 2000 + (error as NSError).code
+        case .keychainExportError(let error): return 3000 + (error as NSError).code
         }
     }
 
     var errorUserInfo: [String: Any] {
         switch self {
-        case .databaseExportError(let error), .databaseImportError(let error):
+        case .databaseExportError(let error), .databaseImportError(let error), .keychainExportError(let error):
             let nsError = error as NSError
-            return ["underlying-error-domain": nsError.domain,
-                    "underlying-error-code": nsError.code,
-                    "underlying-error-message": nsError.localizedDescription,
-                    "underlying-error-user-info": nsError.userInfo]
+            return [
+                "underlying-error-domain": nsError.domain,
+                "underlying-error-code": nsError.code,
+                "underlying-error-message": nsError.localizedDescription,
+                "underlying-error-user-info": nsError.userInfo
+            ]
         default:
             return [:]
         }
@@ -50,13 +55,13 @@ extension DataMigrationError: LocalizedError, CustomNSError {
 
 extension DataMigrationError: CustomDebugStringConvertible {
     var debugDescription: String {
-        return "[\(Self.errorDomain)] \(localizedDescription)"
+        "[\(Self.errorDomain)] \(localizedDescription)"
     }
 }
 
 extension DataMigrationError: Equatable {
 
-    static func ==(left: DataMigrationError, right: DataMigrationError) -> Bool {
+    static func == (left: DataMigrationError, right: DataMigrationError) -> Bool {
         let leftNSError = left as NSError
         let rightNSError = right as NSError
         return leftNSError == rightNSError

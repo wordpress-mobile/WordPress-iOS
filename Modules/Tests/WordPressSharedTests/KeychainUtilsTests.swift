@@ -10,6 +10,7 @@ class KeychainUtilsTests: XCTestCase {
         SFHFKeychainUtilsMock.configure(with: [:])
     }
 
+    @available(*, deprecated, message: "Exercises the deprecated KeychainUtils.copyKeychain")
     func testCopyingPasswordsBetweenKeychains() {
         let service = "service"
         let username = "username"

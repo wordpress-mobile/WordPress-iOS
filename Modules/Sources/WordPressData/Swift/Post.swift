@@ -35,13 +35,13 @@ public class Post: AbstractPost {
     // MARK: - NSManagedObject
 
     public override class func entityName() -> String {
-        return "Post"
+        "Post"
     }
 
     // MARK: - Format
 
     @objc public func postFormatText() -> String? {
-        return blog.postFormatText(fromSlug: postFormat)
+        blog.postFormatText(fromSlug: postFormat)
     }
 
     @objc public func setPostFormatText(_ postFormatText: String) {
@@ -81,7 +81,7 @@ public class Post: AbstractPost {
                 return
             }
 
-            let matchingCategories = blogCategories.filter({ return $0.categoryName == categoryName })
+            let matchingCategories = blogCategories.filter({ $0.categoryName == categoryName })
 
             if !matchingCategories.isEmpty {
                 newCategories = newCategories.union(matchingCategories)
@@ -94,18 +94,22 @@ public class Post: AbstractPost {
     // MARK: - Sharing
 
     @objc public func canEditPublicizeSettings() -> Bool {
-        return !self.hasRemote() || self.status != .publish
+        !self.hasRemote() || self.status != .publish
     }
 
     // MARK: - PublicizeConnections
 
+    // Deprecated: superseded for post editing by connection_id-keyed PostSocialSharingDraft stored in post metadata.
+    // Kept to avoid a Core Data migration and for remaining legacy references.
     @objc public func publicizeConnectionDisabledForKeyringID(_ keyringID: NSNumber) -> Bool {
-        let isKeyringEntryDisabled = disabledPublicizeConnections?[keyringID]?[Constants.publicizeValueKey] == Constants.publicizeDisabledValue
+        let isKeyringEntryDisabled =
+            disabledPublicizeConnections?[keyringID]?[Constants.publicizeValueKey] == Constants.publicizeDisabledValue
 
         // try to check in case there's an entry for the PublicizeConnection that's keyed by the connectionID.
         guard let connections = blog.connections,
-              let connection = connections.first(where: { $0.keyringConnectionID == keyringID }),
-              let existingValue = disabledPublicizeConnections?[connection.connectionID]?[Constants.publicizeValueKey] else {
+            let connection = connections.first(where: { $0.keyringConnectionID == keyringID }),
+            let existingValue = disabledPublicizeConnections?[connection.connectionID]?[Constants.publicizeValueKey]
+        else {
             // fall back to keyringID if there is no such entry with the connectionID.
             return isKeyringEntryDisabled
         }
@@ -114,30 +118,37 @@ public class Post: AbstractPost {
         return isConnectionEntryDisabled || isKeyringEntryDisabled
     }
 
+    // Deprecated: superseded for post editing by connection_id-keyed PostSocialSharingDraft stored in post metadata.
+    // Kept to avoid a Core Data migration and for remaining legacy references.
     public func enablePublicizeConnectionWithKeyringID(_ keyringID: NSNumber) {
         // if there's another entry keyed by connectionID references to the same connection,
         // we need to make sure that the values are kept in sync.
         if let connections = blog.connections,
-           let connection = connections.first(where: { $0.keyringConnectionID == keyringID }),
-           let _ = disabledPublicizeConnections?[connection.connectionID] {
+            let connection = connections.first(where: { $0.keyringConnectionID == keyringID }),
+            let _ = disabledPublicizeConnections?[connection.connectionID]
+        {
             enablePublicizeConnection(keyedBy: connection.connectionID)
         }
 
         enablePublicizeConnection(keyedBy: keyringID)
     }
 
+    // Deprecated: superseded for post editing by connection_id-keyed PostSocialSharingDraft stored in post metadata.
+    // Kept to avoid a Core Data migration and for remaining legacy references.
     public func disablePublicizeConnectionWithKeyringID(_ keyringID: NSNumber) {
         // if there's another entry keyed by connectionID references to the same connection,
         // we need to make sure that the values are kept in sync.
         if let connections = blog.connections,
-           let connectionID = connections.first(where: { $0.keyringConnectionID == keyringID })?.connectionID,
-           let _ = disabledPublicizeConnections?[connectionID] {
+            let connectionID = connections.first(where: { $0.keyringConnectionID == keyringID })?.connectionID,
+            let _ = disabledPublicizeConnections?[connectionID]
+        {
             disablePublicizeConnection(keyedBy: connectionID)
 
             // additionally, if the keyring entry doesn't exist, there's no need create both formats.
             // we can just update the dictionary's key from connectionID to keyringID instead.
             if disabledPublicizeConnections?[keyringID] == nil,
-               let updatedEntry = disabledPublicizeConnections?[connectionID] {
+                let updatedEntry = disabledPublicizeConnections?[connectionID]
+            {
                 disabledPublicizeConnections?.removeValue(forKey: connectionID)
                 disabledPublicizeConnections?[keyringID] = updatedEntry
                 return
@@ -150,6 +161,7 @@ public class Post: AbstractPost {
     /// Marks the Publicize connection with the given id as enabled.
     ///
     /// - Parameter id: The dictionary key for `disabledPublicizeConnections`.
+    // Deprecated: helper for keyring-keyed publicize code kept for remaining legacy references.
     private func enablePublicizeConnection(keyedBy id: NSNumber) {
         guard var connection = disabledPublicizeConnections?[id] else {
             return
@@ -169,6 +181,7 @@ public class Post: AbstractPost {
     /// Marks the Publicize connection with the given id as disabled.
     ///
     /// - Parameter id: The dictionary key for `disabledPublicizeConnections`.
+    // Deprecated: helper for keyring-keyed publicize code kept for remaining legacy references.
     private func disablePublicizeConnection(keyedBy id: NSNumber) {
         if let _ = disabledPublicizeConnections?[id] {
             disabledPublicizeConnections?[id]?[Constants.publicizeValueKey] = Constants.publicizeDisabledValue
@@ -185,13 +198,13 @@ public class Post: AbstractPost {
     // MARK: - Comments
 
     @objc public func numberOfComments() -> Int {
-        return commentCount?.intValue ?? 0
+        commentCount?.intValue ?? 0
     }
 
     // MARK: - Likes
 
     @objc public func numberOfLikes() -> Int {
-        return likeCount?.intValue ?? 0
+        likeCount?.intValue ?? 0
     }
 
     // MARK: - AbstractPost
@@ -209,7 +222,7 @@ public class Post: AbstractPost {
     }
 
     public func dateForDisplay() -> Date? {
-        return dateCreated
+        dateCreated
     }
 
     // MARK: - BasePost
@@ -226,7 +239,8 @@ public class Post: AbstractPost {
             if let preview = PostPreviewCache.shared.content[content] {
                 return preview
             }
-            let preview = GutenbergExcerptGenerator.firstParagraph(from: content, maxLength: 200).withCollapsedNewlines().trimmedForPreview()
+            let preview = GutenbergExcerptGenerator.firstParagraph(from: content, maxLength: 200)
+                .withCollapsedNewlines().trimmedForPreview()
             PostPreviewCache.shared.content[content] = preview
             return preview
         } else {
@@ -236,12 +250,16 @@ public class Post: AbstractPost {
 
     override public func titleForDisplay() -> String {
         var title = postTitle?.trimmingCharacters(in: CharacterSet.whitespaces) ?? ""
-        title = title
+        title =
+            title
             .stringByDecodingXMLCharacters()
             .strippingHTML()
 
         if title.isEmpty && !hasRemote() && contentPreviewForDisplay().isEmpty {
-            title = NSLocalizedString("(no title)", comment: "Lets a user know that a local draft does not have a title.")
+            title = NSLocalizedString(
+                "(no title)",
+                comment: "Lets a user know that a local draft does not have a title."
+            )
         }
 
         return title

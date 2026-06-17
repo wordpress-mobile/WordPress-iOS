@@ -2,7 +2,6 @@ import UIKit
 import BuildSettingsKit
 import FormattableContentKit
 import NotificationServiceExtensionCore
-import SFHFKeychainUtils
 import TracksMini
 import UserNotifications
 import WordPressKit
@@ -28,20 +27,25 @@ class NotificationService: UNNotificationServiceExtension {
     private var notificationService: NotificationSyncServiceRemote?
 
     private let configuration: NotificationServiceExtensionConfiguration
-
-    private let appKeychainAccessGroup: String
+    /// Deliberately lazy: creating `AppKeychain` reads `BuildSettings`,
+    /// which fatally asserts unless `BuildSettings.configure(secrets:)`
+    /// has run first. A stored default would be evaluated before this
+    /// type's init body performs that configuration.
+    private lazy var keychain: any KeychainAccessible = AppKeychain()
 
     override init() {
         BuildSettings.configure(secrets: ApiCredentials.toSecrets())
         tracks = Tracks()
         configuration = BuildSettings.current.notificationServiceExtensionConfiguration
-        appKeychainAccessGroup = BuildSettings.current.appKeychainAccessGroup
         super.init()
     }
 
     // MARK: UNNotificationServiceExtension
 
-    override func didReceive(_ request: UNNotificationRequest, withContentHandler contentHandler: @escaping (UNNotificationContent) -> Void) {
+    override func didReceive(
+        _ request: UNNotificationRequest,
+        withContentHandler contentHandler: @escaping (UNNotificationContent) -> Void
+    ) {
         self.contentHandler = contentHandler
         self.bestAttemptContent = request.content.mutableCopy() as? UNMutableNotificationContent
 
@@ -58,7 +62,8 @@ class NotificationService: UNNotificationServiceExtension {
             let apsAlert = notificationContent.apsAlert,
             let notificationType = notificationContent.type,
             let notificationKind = NotificationKind(rawValue: notificationType),
-            token != nil else {
+            token != nil
+        else {
 
             let hasToken = token != nil
             tracks.trackNotificationMalformed(hasToken: hasToken, notificationBody: request.content.body)
@@ -90,7 +95,8 @@ class NotificationService: UNNotificationServiceExtension {
         // comment likes will always have a bolded title.
         if notificationContent.title.isEmpty,
             !notificationContent.body.isEmpty,
-            !NotificationKind.omitsRichNotificationBody(notificationKind) {
+            !NotificationKind.omitsRichNotificationBody(notificationKind)
+        {
             notificationContent.title = notificationContent.body
             notificationContent.body = ""
         }
@@ -112,7 +118,8 @@ class NotificationService: UNNotificationServiceExtension {
                 gravatarURLString: nil,
                 notificationIdentifier: nil,
                 notificationReadStatus: true,
-                noticon: nil)
+                noticon: nil
+            )
 
             notificationContent.userInfo[CodingUserInfoKey.richNotificationViewModel.rawValue] = viewModel.data
             contentHandler(notificationContent)
@@ -132,14 +139,18 @@ class NotificationService: UNNotificationServiceExtension {
 
         service.loadNotes(noteIds: [noteID]) { [self, tracks] error, notifications in
             if let error {
-                tracks.trackNotificationRetrievalFailed(notificationIdentifier: noteID, errorDescription: error.localizedDescription)
+                tracks.trackNotificationRetrievalFailed(
+                    notificationIdentifier: noteID,
+                    errorDescription: error.localizedDescription
+                )
                 contentHandler(notificationContent)
                 return
             }
 
             guard let remoteNotifications = notifications,
                 remoteNotifications.count == 1,
-                let notification = remoteNotifications.first else {
+                let notification = remoteNotifications.first
+            else {
                 contentHandler(notificationContent)
                 return
             }
@@ -152,21 +163,25 @@ class NotificationService: UNNotificationServiceExtension {
                 gravatarURLString: notification.icon,
                 notificationIdentifier: notification.notificationId,
                 notificationReadStatus: notification.read,
-                noticon: notification.noticon)
+                noticon: notification.noticon
+            )
 
             // Only populate title / body for notification kinds with rich body content
             if !NotificationKind.omitsRichNotificationBody(notificationKind) {
                 notificationContent.title = contentFormatter.attributedSubject?.string ?? apsAlert
 
                 // Improve the notification body by trimming whitespace and reducing any multiple blank lines
-                notificationContent.body = contentFormatter.attributedBody?.string.condenseWhitespace().truncate(with: 256) ?? ""
+                notificationContent.body =
+                    contentFormatter.attributedBody?.string.condenseWhitespace().truncate(with: 256) ?? ""
             }
 
             notificationContent.userInfo[CodingUserInfoKey.richNotificationViewModel.rawValue] = viewModel.data
 
             tracks.trackNotificationAssembled()
 
-            let iconURL = NotificationKind.isNotificationIconSupported(notificationKind) ? notification.icon.flatMap(URL.init) : nil
+            let iconURL =
+                NotificationKind.isNotificationIconSupported(notificationKind)
+                ? notification.icon.flatMap(URL.init) : nil
 
             // If the notification contains any image media, download it and
             // attach it to the notification.
@@ -184,7 +199,10 @@ class NotificationService: UNNotificationServiceExtension {
 
                 guard
                     let self, let data, let fileExtension,
-                    let fileURL = self.saveMediaAttachment(data: data, fileName: String(format: "%@.%@", identifier, fileExtension))
+                    let fileURL = self.saveMediaAttachment(
+                        data: data,
+                        fileName: String(format: "%@.%@", identifier, fileExtension)
+                    )
                 else {
                     return
                 }
@@ -192,7 +210,8 @@ class NotificationService: UNNotificationServiceExtension {
                 let imageAttachment = try? UNNotificationAttachment(
                     identifier: identifier,
                     url: fileURL,
-                    options: nil)
+                    options: nil
+                )
 
                 if let imageAttachment {
                     notificationContent.attachments = [imageAttachment]
@@ -207,7 +226,8 @@ class NotificationService: UNNotificationServiceExtension {
         notificationService?.wordPressComRestApi.invalidateAndCancelTasks()
 
         if let contentHandler,
-            let bestAttemptContent {
+            let bestAttemptContent
+        {
 
             contentHandler(bestAttemptContent)
         }
@@ -265,12 +285,15 @@ private extension NotificationService {
         let directoryPath = URL.Helpers.temporaryDirectory(named: ProcessInfo.processInfo.globallyUniqueString)
 
         do {
-            try FileManager.default.createDirectory(at: directoryPath, withIntermediateDirectories: true, attributes: nil)
+            try FileManager.default.createDirectory(
+                at: directoryPath,
+                withIntermediateDirectories: true,
+                attributes: nil
+            )
             let fileURL = directoryPath.appendingPathComponent(fileName)
             try data.write(to: fileURL)
             return fileURL
-        }
-        catch {
+        } catch {
             return nil
         }
     }
@@ -298,11 +321,14 @@ private extension NotificationService {
     /// - Returns: the token if found; `nil` otherwise
     ///
     func readExtensionToken() -> String? {
-        guard let oauthToken = try? SFHFKeychainUtils.getPasswordForUsername(
-            configuration.keychainTokenKey,
-            andServiceName: configuration.keychainServiceName,
-            accessGroup: appKeychainAccessGroup
-        ) else {
+        guard
+            let oauthToken =
+                try? keychain
+                .getPassword(
+                    for: configuration.keychainTokenKey,
+                    serviceName: configuration.keychainServiceName
+                )
+        else {
             debugPrint("Unable to retrieve Notification Service Extension OAuth token")
             return nil
         }
@@ -315,11 +341,14 @@ private extension NotificationService {
     /// - Returns: the username if found; `nil` otherwise
     ///
     func readExtensionUsername() -> String? {
-        guard let username = try? SFHFKeychainUtils.getPasswordForUsername(
-            configuration.keychainUsernameKey,
-            andServiceName: configuration.keychainServiceName,
-            accessGroup: appKeychainAccessGroup
-        ) else {
+        guard
+            let username =
+                try? keychain
+                .getPassword(
+                    for: configuration.keychainUsernameKey,
+                    serviceName: configuration.keychainServiceName
+                )
+        else {
             debugPrint("Unable to retrieve Notification Service Extension username")
             return nil
         }
@@ -332,11 +361,14 @@ private extension NotificationService {
     /// - Returns: the userID if found; `nil` otherwise
     ///
     func readExtensionUserID() -> String? {
-        guard let userID = try? SFHFKeychainUtils.getPasswordForUsername(
-            configuration.keychainUserIDKey,
-            andServiceName: configuration.keychainServiceName,
-            accessGroup: appKeychainAccessGroup
-        ) else {
+        guard
+            let userID =
+                try? keychain
+                .getPassword(
+                    for: configuration.keychainUserIDKey,
+                    serviceName: configuration.keychainServiceName
+                )
+        else {
             debugPrint("Unable to retrieve Notification Service Extension userID")
             return nil
         }
@@ -353,5 +385,8 @@ private extension NotificationService {
         return content
     }
 
-    static let viewMilestoneTitle = AppLocalizedString("You hit a milestone 🚀", comment: "Title for a view milestone push notification")
+    static let viewMilestoneTitle = AppLocalizedString(
+        "You hit a milestone 🚀",
+        comment: "Title for a view milestone push notification"
+    )
 }

@@ -8,6 +8,10 @@ Gemfile*              @wordpress-mobile/apps-infra-tooling
 .bundle/              @wordpress-mobile/apps-infra-tooling
 .rubocop*.yml         @wordpress-mobile/apps-infra-tooling
 fastlane/             @wordpress-mobile/apps-infra-tooling
+# Store-listing localization is content, not infra.
+fastlane/metadata/
+fastlane/jetpack_metadata/
+fastlane/reader_metadata/
 
 # CI and automation
 .buildkite/           @wordpress-mobile/apps-infra-tooling

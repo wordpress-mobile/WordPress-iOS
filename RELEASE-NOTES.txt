@@ -1,7 +1,7 @@
 27.0
 -----
 * [*] Remove the Free GIF Library media source. The Tenor service it relied on shuts down on June 30, 2026 [#25634]
-
+* [*] [internal] Jetpack Social: use new publicize API to support Jetpack Social [#25587]
 
 26.9
 -----

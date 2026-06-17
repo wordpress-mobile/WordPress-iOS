@@ -56,7 +56,7 @@ extension Blog {
     /// Injectable keychain for testability.
     var keychain: any KeychainAccessible {
         get {
-            objc_getAssociatedObject(self, &blogKeychainKey) as? (any KeychainAccessible) ?? KeychainUtils()
+            objc_getAssociatedObject(self, &blogKeychainKey) as? (any KeychainAccessible) ?? AppKeychain()
         }
         set {
             objc_setAssociatedObject(self, &blogKeychainKey, newValue, .OBJC_ASSOCIATION_RETAIN_NONATOMIC)
@@ -66,7 +66,8 @@ extension Blog {
     @objc public var password: String? {
         get {
             guard let username, !username.isEmpty,
-                  let xmlrpc, !xmlrpc.isEmpty else {
+                let xmlrpc, !xmlrpc.isEmpty
+            else {
                 return nil
             }
             if let password = try? keychain.getPassword(for: username, serviceName: xmlrpc) {
@@ -181,11 +182,13 @@ extension Blog {
     @objc public var timeZone: TimeZone? {
         let oneHourInSeconds: Double = 3600
         if let name = getOptionString(name: "timezone"), !name.isEmpty,
-           let timeZone = TimeZone(identifier: name) {
+            let timeZone = TimeZone(identifier: name)
+        {
             return timeZone
         }
         if let gmtOffset = getOptionValue("gmt_offset") as? NSNumber,
-           let timeZone = TimeZone(secondsFromGMT: Int(gmtOffset.doubleValue * oneHourInSeconds)) {
+            let timeZone = TimeZone(secondsFromGMT: Int(gmtOffset.doubleValue * oneHourInSeconds))
+        {
             return timeZone
         }
         if let value = getOptionValue("time_zone") {
@@ -205,7 +208,8 @@ extension Blog {
         for protectionSpace in storage.allCredentials.keys {
             if protectionSpace.host == url.host
                 && protectionSpace.port == (url.port ?? 80)
-                && protectionSpace.authenticationMethod == NSURLAuthenticationMethodHTTPBasic {
+                && protectionSpace.authenticationMethod == NSURLAuthenticationMethodHTTPBasic
+            {
                 return true
             }
         }
@@ -217,13 +221,15 @@ extension Blog {
     @objc public var logDescription: String {
         let extra: String
         if let account {
-            extra = " wp.com account: \(account.username) blogId: \(dotComID?.intValue ?? 0) plan: \(planTitle ?? "") (\(planID?.intValue ?? 0))"
+            extra =
+                " wp.com account: \(account.username) blogId: \(dotComID?.intValue ?? 0) plan: \(planTitle ?? "") (\(planID?.intValue ?? 0))"
         } else if let jetpack {
             extra = " jetpack: \(jetpack)"
         } else {
             extra = ""
         }
-        return "<Blog Name: \(settings?.name ?? "") URL: \(url ?? "") XML-RPC: \(xmlrpc ?? "")\(extra) ObjectID: \(objectID.uriRepresentation())>"
+        return
+            "<Blog Name: \(settings?.name ?? "") URL: \(url ?? "") XML-RPC: \(xmlrpc ?? "")\(extra) ObjectID: \(objectID.uriRepresentation())>"
     }
 
     // MARK: - Misc
@@ -266,9 +272,10 @@ extension Blog {
 
     /// The blog's categories sorted alphabetically by name (case-insensitive).
     @objc public var sortedCategories: [PostCategory] {
-        (categories ?? []).sorted {
-            $0.categoryName.caseInsensitiveCompare($1.categoryName) == .orderedAscending
-        }
+        (categories ?? [])
+            .sorted {
+                $0.categoryName.caseInsensitiveCompare($1.categoryName) == .orderedAscending
+            }
     }
 
     /// The set of allowed file types for uploads, derived from blog options.
@@ -286,7 +293,8 @@ extension Blog {
     public var siteVisibility: SiteVisibility {
         get {
             guard let rawValue = settings?.privacy?.intValue,
-                  let visibility = SiteVisibility(rawValue: rawValue) else {
+                let visibility = SiteVisibility(rawValue: rawValue)
+            else {
                 return .unknown
             }
             return visibility

@@ -1,29 +1,28 @@
 import Foundation
 import BuildSettingsKit
-import SFHFKeychainUtils
+import WordPressShared
 
 public final class ShareExtensionService {
     private let appGroupName: String
-    private let appKeychainAccessGroup: String
     private let configuration: ShareExtensionConfiguration
+    private let keychain: any KeychainAccessible
 
     public convenience init() {
         let settings = BuildSettings.current
         self.init(
             appGroupName: settings.appGroupName,
-            appKeychainAccessGroup: settings.appKeychainAccessGroup,
             configuration: settings.shareExtensionConfiguration
         )
     }
 
     public init(
         appGroupName: String,
-        appKeychainAccessGroup: String,
-        configuration: ShareExtensionConfiguration
+        configuration: ShareExtensionConfiguration,
+        keychain: any KeychainAccessible = AppKeychain()
     ) {
         self.appGroupName = appGroupName
-        self.appKeychainAccessGroup = appKeychainAccessGroup
         self.configuration = configuration
+        self.keychain = keychain
     }
 
     /// Sets the OAuth Token that should be used by the Share Extension to hit the Dotcom Backend.
@@ -32,12 +31,10 @@ public final class ShareExtensionService {
     ///
     public func storeToken(_ oauth2Token: String) {
         do {
-            try SFHFKeychainUtils.storeUsername(
-                configuration.keychainTokenKey,
-                andPassword: oauth2Token,
-                forServiceName: configuration.keychainServiceName,
-                accessGroup: appKeychainAccessGroup,
-                updateExisting: true
+            try keychain.setPassword(
+                for: configuration.keychainTokenKey,
+                to: oauth2Token,
+                serviceName: configuration.keychainServiceName
             )
         } catch {
             print("Error while saving Share Extension OAuth bearer token: \(error)")
@@ -50,12 +47,10 @@ public final class ShareExtensionService {
     ///
     public func storeUsername(_ username: String) {
         do {
-            try SFHFKeychainUtils.storeUsername(
-                configuration.keychainUsernameKey,
-                andPassword: username,
-                forServiceName: configuration.keychainServiceName,
-                accessGroup: appKeychainAccessGroup,
-                updateExisting: true
+            try keychain.setPassword(
+                for: configuration.keychainUsernameKey,
+                to: username,
+                serviceName: configuration.keychainServiceName
             )
         } catch {
             print("Error while saving Share Extension OAuth bearer token: \(error)")
@@ -121,20 +116,20 @@ public final class ShareExtensionService {
     ///
     public func removeShareExtensionConfiguration() {
         do {
-            try SFHFKeychainUtils.deleteItem(
-                forUsername: configuration.keychainTokenKey,
-                andServiceName: configuration.keychainServiceName,
-                accessGroup: appKeychainAccessGroup
+            try keychain.setPassword(
+                for: configuration.keychainTokenKey,
+                to: nil,
+                serviceName: configuration.keychainServiceName
             )
         } catch {
             print("Error while removing Share Extension OAuth2 bearer token: \(error)")
         }
 
         do {
-            try SFHFKeychainUtils.deleteItem(
-                forUsername: configuration.keychainUsernameKey,
-                andServiceName: configuration.keychainServiceName,
-                accessGroup: appKeychainAccessGroup
+            try keychain.setPassword(
+                for: configuration.keychainUsernameKey,
+                to: nil,
+                serviceName: configuration.keychainServiceName
             )
         } catch {
             print("Error while removing Share Extension Username: \(error)")
@@ -153,11 +148,12 @@ public final class ShareExtensionService {
     /// Retrieves the WordPress.com OAuth Token, meant for Extension usage.
     ///
     public func retrieveShareExtensionToken() -> String? {
-        guard let oauth2Token = try? SFHFKeychainUtils.getPasswordForUsername(
-            configuration.keychainTokenKey,
-            andServiceName: configuration.keychainServiceName,
-            accessGroup: appKeychainAccessGroup
-        ) else {
+        guard
+            let oauth2Token = try? keychain.getPassword(
+                for: configuration.keychainTokenKey,
+                serviceName: configuration.keychainServiceName
+            )
+        else {
             return nil
         }
 
@@ -167,11 +163,12 @@ public final class ShareExtensionService {
     /// Retrieves the WordPress.com Username, meant for Extension usage.
     ///
     public func retrieveShareExtensionUsername() -> String? {
-        guard let oauth2Token = try? SFHFKeychainUtils.getPasswordForUsername(
-            configuration.keychainUsernameKey,
-            andServiceName: configuration.keychainServiceName,
-            accessGroup: appKeychainAccessGroup
-        ) else {
+        guard
+            let oauth2Token = try? keychain.getPassword(
+                for: configuration.keychainUsernameKey,
+                serviceName: configuration.keychainServiceName
+            )
+        else {
             return nil
         }
 
@@ -186,7 +183,8 @@ public final class ShareExtensionService {
         }
 
         if let siteID = userDefaults.object(forKey: configuration.userDefaultsPrimarySiteID) as? Int,
-            let siteName = userDefaults.object(forKey: configuration.userDefaultsPrimarySiteName) as? String {
+            let siteName = userDefaults.object(forKey: configuration.userDefaultsPrimarySiteName) as? String
+        {
             return (siteID, siteName)
         }
 
@@ -202,12 +200,14 @@ public final class ShareExtensionService {
         }
 
         if let siteID = userDefaults.object(forKey: configuration.userDefaultsLastUsedSiteID) as? Int,
-            let siteName = userDefaults.object(forKey: configuration.userDefaultsLastUsedSiteName) as? String {
+            let siteName = userDefaults.object(forKey: configuration.userDefaultsLastUsedSiteName) as? String
+        {
             return (siteID, siteName)
         }
 
         if let siteID = userDefaults.object(forKey: configuration.userDefaultsPrimarySiteID) as? Int,
-            let siteName = userDefaults.object(forKey: configuration.userDefaultsPrimarySiteName) as? String {
+            let siteName = userDefaults.object(forKey: configuration.userDefaultsPrimarySiteName) as? String
+        {
             return (siteID, siteName)
         }
 

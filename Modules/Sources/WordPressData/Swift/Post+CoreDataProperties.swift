@@ -5,12 +5,15 @@ import WordPressKit
 public extension Post {
 
     @NSManaged var commentCount: NSNumber?
+    // Deprecated: superseded by the connection_id-keyed PostSocialSharingDraft stored in post metadata.
     @NSManaged var disabledPublicizeConnections: [NSNumber: [String: String]]?
     @NSManaged var likeCount: NSNumber?
     @NSManaged var postFormat: String?
     @NSManaged var postType: String?
     @NSManaged var publicID: String?
+    // Deprecated: superseded by the connection_id-keyed PostSocialSharingDraft stored in post metadata.
     @NSManaged var publicizeMessage: String?
+    // Deprecated: superseded by the connection_id-keyed PostSocialSharingDraft stored in post metadata.
     @NSManaged var publicizeMessageID: String?
     @NSManaged var tags: String?
     @NSManaged var categories: Set<PostCategory>?

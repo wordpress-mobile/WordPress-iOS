@@ -2,16 +2,8 @@ import WordPressData
 
 extension PostEditor {
 
+    // Deprecated: Jetpack Social no longer enforces per-post share limits, and post editing now uses
+    // connection_id-keyed PostSocialSharingDraft metadata instead of keyring publicize state.
     func disableSocialConnectionsIfNecessary() {
-        let connections = self.post.blog.sortedConnections
-        guard RemoteFeatureFlag.jetpackSocialImprovements.enabled(),
-              let post = self.post as? Post,
-              let remainingShares = self.post.blog.sharingLimit?.remaining,
-              remainingShares < connections.count else {
-            return
-        }
-        for connection in connections {
-            post.disablePublicizeConnectionWithKeyringID(connection.keyringConnectionID)
-        }
     }
 }

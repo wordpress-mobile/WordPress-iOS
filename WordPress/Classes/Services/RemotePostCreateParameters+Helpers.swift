@@ -29,12 +29,16 @@ extension RemotePostCreateParameters {
             format = post.postFormat
             isSticky = post.isStickyPost
             tags = AbstractPost.makeTags(from: post.tags ?? "")
-            categoryIDs = (post.categories ?? []).map {
-                $0.categoryID.intValue
-            }
-            metadata = Set(Self.generateRemoteMetadata(for: post).compactMap { dictionary -> RemotePostMetadataItem? in
-                return Self.mapDictionaryToMetadataItems(dictionary)
-            })
+            categoryIDs = (post.categories ?? [])
+                .map {
+                    $0.categoryID.intValue
+                }
+            metadata = Set(
+                Self.generateRemoteMetadata(for: post)
+                    .compactMap { dictionary -> RemotePostMetadataItem? in
+                        Self.mapDictionaryToMetadataItems(dictionary)
+                    }
+            )
             discussion = RemotePostDiscussionSettings(
                 allowComments: post.allowComments,
                 allowPings: post.allowPings
@@ -51,10 +55,10 @@ private extension RemotePostCreateParameters {
     /// - note: It includes _only_ the keys known to the app and that you as a
     /// user can change from the app.
     static func generateRemoteMetadata(for post: Post) -> [[String: Any]] {
-        // Start with existing metadata from PostHelper
         var output = PostHelper.remoteMetadata(for: post) as? [[String: Any]] ?? []
-        // Add metadata mananged using `PostMetadata`
-        output += PostMetadata.entries(in: PostMetadataContainer(post))
+        let container = PostMetadataContainer(post)
+        output += PostMetadata.entries(in: container)
+        output += SocialSharingMetadata.publicizeEntries(in: container)
         return output
     }
 

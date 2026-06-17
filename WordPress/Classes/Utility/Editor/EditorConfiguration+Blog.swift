@@ -5,7 +5,7 @@ import WordPressShared
 import Support
 
 extension EditorConfiguration {
-    init(blog: Blog, postType: PostTypeDetails, keychain: KeychainAccessible = KeychainUtils()) {
+    init(blog: Blog, postType: PostTypeDetails, keychain: KeychainAccessible = AppKeychain()) {
         let selfHostedApiUrl = blog.restApiRootURL ?? blog.url(withPath: "wp-json/")
         let applicationPassword = try? blog.getApplicationToken(using: keychain)
         let shouldUseWPComRestApi = applicationPassword == nil && blog.isAccessibleThroughWPCom
@@ -14,7 +14,8 @@ extension EditorConfiguration {
         if applicationPassword != nil {
             siteApiRootString = selfHostedApiUrl
         } else {
-            siteApiRootString = shouldUseWPComRestApi ? blog.wordPressComRestApi?.baseURL.absoluteString : selfHostedApiUrl
+            siteApiRootString =
+                shouldUseWPComRestApi ? blog.wordPressComRestApi?.baseURL.absoluteString : selfHostedApiUrl
         }
 
         let siteId = blog.dotComID?.stringValue
@@ -48,15 +49,15 @@ extension EditorConfiguration {
             siteURL: siteURL,
             siteApiRoot: siteApiRoot
         )
-            .setSiteApiNamespace(siteApiNamespace)
-            .setNamespaceExcludedPaths(["/wpcom/v2/following/recommendations", "/wpcom/v2/following/mine"])
-            .setAuthHeader(authHeader)
-            .setShouldUseThemeStyles(GutenbergSettings().isThemeStylesEnabled(for: blog))
-            // Limited to Jetpack-connected sites until editor assets endpoint is available in WordPress core
-            .setShouldUsePlugins(Self.shouldEnablePlugins(for: blog, appPassword: applicationPassword))
-            .setLocale(WordPressComLanguageDatabase.shared.deviceLanguage.slug)
-            .setEnableNetworkLogging(ExtensiveLogging.enabled)
-            .setNetworkFallbackMode(.automatic)
+        .setSiteApiNamespace(siteApiNamespace)
+        .setNamespaceExcludedPaths(["/wpcom/v2/following/recommendations", "/wpcom/v2/following/mine"])
+        .setAuthHeader(authHeader)
+        .setShouldUseThemeStyles(GutenbergSettings().isThemeStylesEnabled(for: blog))
+        // Limited to Jetpack-connected sites until editor assets endpoint is available in WordPress core
+        .setShouldUsePlugins(Self.shouldEnablePlugins(for: blog, appPassword: applicationPassword))
+        .setLocale(WordPressComLanguageDatabase.shared.deviceLanguage.slug)
+        .setEnableNetworkLogging(ExtensiveLogging.enabled)
+        .setNetworkFallbackMode(.automatic)
 
         // Build editor assets endpoint
         var editorAssetsEndpoint = siteApiRoot
@@ -77,8 +78,7 @@ extension EditorConfiguration {
         // Requires a Jetpack until editor assets endpoint is available in WordPress core.
         // Requires a WP.com Simple site or an application password to authenticate all REST
         // API requests, including those originating from non-core blocks.
-        return RemoteFeatureFlag.newGutenbergPlugins.enabled() &&
-            blog.isAccessibleThroughWPCom &&
-            (blog.isHostedAtWPcom || appPassword != nil)
+        RemoteFeatureFlag.newGutenbergPlugins.enabled() && blog.isAccessibleThroughWPCom
+            && (blog.isHostedAtWPcom || appPassword != nil)
     }
 }
