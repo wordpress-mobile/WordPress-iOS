@@ -164,12 +164,12 @@ private extension DataMigrator {
     /// "successful" export without it would migrate the content and land
     /// the user signed out.
     func publishAuthTokenToSharedKeychain() throws {
-        guard let account = try? WPAccount.lookupDefaultWordPressComAccount(in: coreDataStack.mainContext),
-            let sharedKeychain
-        else {
+        let username = coreDataStack.performQuery { context in
+            try? WPAccount.lookupDefaultWordPressComAccount(in: context)?.username
+        }
+        guard let username, let sharedKeychain else {
             return
         }
-        let username = account.username
         let token: String
         do {
             token = try appKeychain.getPassword(for: username, serviceName: AuthTokenServiceNames.wordPress)
