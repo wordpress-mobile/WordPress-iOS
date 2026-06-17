@@ -49,7 +49,18 @@ struct MediaTrackerAdapter: MediaTracker {
                 // .audio / .document map to no event — V1 parity.
                 return
             }
-            WPAppAnalytics.track(resolvedStat, properties: baseProperties, blog: blog)
+            var props = baseProperties
+            // V1 attaches media_origin via selectionMethod: full_screen_picker for
+            // the photo library / camera, document_picker for the Files app.
+            switch source {
+            case .photoLibrary, .camera:
+                props["media_origin"] = "full_screen_picker"
+            case .otherApps:
+                props["media_origin"] = "document_picker"
+            case .stockPhotos, .imagePlayground:
+                break
+            }
+            WPAppAnalytics.track(resolvedStat, properties: props, blog: blog)
 
         case .stockPhotos:
             // External sources fire only for image kind — non-image .remoteURL

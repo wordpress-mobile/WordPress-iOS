@@ -147,9 +147,6 @@ struct MediaTrackerAdapterUploadEventsTests {
         let adapter = MediaTrackerAdapter(blog: blog, baseProperties: [:])
         adapter.track(.mediaLibraryAdded(source: .imagePlayground, kind: .image))
 
-        let trackedEventNames = TestAnalyticsTracker.tracked.map(\.event)
-        let trackedStats = TestAnalyticsTracker.tracked.map(\.stat)
-        #expect(!trackedEventNames.contains("media_library_photo_added"))
-        #expect(!trackedStats.contains(.mediaLibraryAddedPhotoViaStockPhotos))
+        #expect(TestAnalyticsTracker.tracked.isEmpty)
     }
 }

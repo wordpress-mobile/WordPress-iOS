@@ -195,6 +195,11 @@ enum Strings {
 
     // MARK: - Upload banner and uploads screen
 
+    static let uploadBannerUploadingOnlySingle = NSLocalizedString(
+        "mediaLibrary.upload.banner.uploadingOnly.single",
+        value: "Uploading %1$d item",
+        comment: "Banner shown above the grid while a single upload is in flight. %1$d is the count (1)."
+    )
     static let uploadBannerUploadingOnly = NSLocalizedString(
         "mediaLibrary.upload.banner.uploadingOnly",
         value: "Uploading %1$d items",
@@ -205,9 +210,14 @@ enum Strings {
         value: "Uploading %1$d · %2$d failed",
         comment: "Banner shown when both pending and failed uploads exist. %1$d pending, %2$d failed."
     )
+    static let uploadBannerFailedOnlySingle = NSLocalizedString(
+        "mediaLibrary.upload.banner.failedOnly.single",
+        value: "%1$d upload failed",
+        comment: "Banner shown when a single failed upload remains. %1$d is the count (1)."
+    )
     static let uploadBannerFailedOnly = NSLocalizedString(
         "mediaLibrary.upload.banner.failedOnly",
-        value: "%1$d upload failed",
+        value: "%1$d uploads failed",
         comment: "Banner shown when only failed uploads remain. %1$d is the count."
     )
     static let uploadsScreenTitle = NSLocalizedString(
@@ -235,8 +245,8 @@ enum Strings {
         value: "All in-progress uploads will be cancelled. This can't be undone.",
         comment: "Body of the confirmation alert shown before canceling every in-flight upload."
     )
-    static let cancel = NSLocalizedString(
-        "mediaLibrary.uploads.alert.cancel",
+    static let keepUploading = NSLocalizedString(
+        "mediaLibrary.uploads.alert.keepUploading",
         value: "Keep uploading",
         comment: "Cancel-the-alert button on the bulk-cancel confirmation dialog. Keeps uploads running."
     )
