@@ -1,3 +1,7 @@
+27.1
+-----
+
+
 27.0
 -----
 * [*] Remove the Free GIF Library media source. The Tenor service it relied on shuts down on June 30, 2026 [#25634]
