@@ -1,18 +1,2 @@
-If you have a self-hosted site, you’ll now sign in to the app using an application password. If you don’t have one, we’ll automatically create one for you so it’s ready when you need it.
-
-We added smart cropping for featured images in the Reader feed. That way, images of people won’t have their heads cut off. Much preferred.
-
-There’s now a confirmation dialog for when you’re marking a referring traffic source as spam. It should be really, really hard to do it by accident.
-
-As part of this update, we also squashed several bugs.
-
-- The timezone label on the Stats screen no longer shows Standard Time during Daylight Savings Time. (Thanks for the catch, @btraviswright!)
-- The Articles screen now shows reader comments when they’re posted from the inline section.
-- The Subscribe button works properly in Freshly Pressed posts, so you can subscribe to a feed from within a post. Fast, easy, and oh-so-fresh.
-- Footnote links in the Reader now work as they’re supposed to and jump to the correct location when you tap them.
-- In Reader Comments, the empty state disappears after you post a comment. Cached comments also disappear after they’re deleted, including when you use the swipe action. So long, farewell.
-- We fixed assorted design and visibility issues, like button styles, comment separators in Dark Mode, and controls for autoplay videos.
-- In the Reader, we fixed a couple of issues with Notification Settings. They’re now hidden when you aren’t subscribed, and they show up properly when you subscribe.
-- We fixed an issue where the footer view in Menu Editing wasn’t resizing. As a result, action buttons are now legible in non-English languages. Muy bueno.
-- We solved an issue with incorrect avatars in notifications. If you cancel your image download, it won’t appear in the app.
-- We removed the non-functional X link on the About screen. (Shout-out to @zynp-KC for reporting!)
+* [*] Remove the Free GIF Library media source. The Tenor service it relied on shuts down on June 30, 2026 [#25634]
+* [*] [internal] Jetpack Social: use new publicize API to support Jetpack Social [#25587]
