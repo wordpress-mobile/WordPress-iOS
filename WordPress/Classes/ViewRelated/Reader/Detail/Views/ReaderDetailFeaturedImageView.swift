@@ -427,7 +427,7 @@ final class ReaderDetailFeaturedImageView: UIView {
     }
 
     private var statusBarHeight: CGFloat {
-        return max(UIApplication.shared.currentStatusBarFrame.size.height, UIApplication.shared.delegate?.window??.safeAreaInsets.top ?? 0)
+        return max(UIApplication.shared.currentStatusBarFrame.size.height, window?.safeAreaInsets.top ?? 0)
     }
 
     private func topMargin() -> CGFloat {
