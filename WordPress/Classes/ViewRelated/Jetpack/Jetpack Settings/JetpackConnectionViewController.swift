@@ -166,11 +166,11 @@ open class JetpackConnectionViewController: UITableViewController {
 private extension JetpackConnectionViewController {
     func startLoading() {
         activityIndicatorView.startAnimating()
-        UIApplication.shared.mainWindow?.isUserInteractionEnabled = false
+        view.window?.isUserInteractionEnabled = false
     }
 
     func stopLoading() {
         activityIndicatorView.stopAnimating()
-        UIApplication.shared.mainWindow?.isUserInteractionEnabled = true
+        view.window?.isUserInteractionEnabled = true
     }
 }
