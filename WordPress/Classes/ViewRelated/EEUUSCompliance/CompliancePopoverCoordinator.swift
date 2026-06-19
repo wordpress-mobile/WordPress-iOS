@@ -36,9 +36,6 @@ final class CompliancePopoverCoordinator: CompliancePopoverCoordinatorProtocol {
     }
 
     @MainActor func presentIfNeeded() async -> Bool {
-        guard !UITestConfigurator.isEnabled(.disablePrompts) else {
-            return false
-        }
         guard isFeatureFlagEnabled, !defaults.didShowCompliancePopup else {
             return false
         }

@@ -190,8 +190,6 @@ public class WordPressAppDelegate: UIResponder, UIApplicationDelegate {
             self.window = window
         }
 
-        UITestConfigurator.prepareWindowForUITests(window)
-
         // Must run here (not in willFinishLaunching): it accesses `windowManager`,
         // which requires `window`.
         configureAuthenticationManager()
@@ -369,16 +367,12 @@ public class WordPressAppDelegate: UIResponder, UIApplicationDelegate {
 
         configureAppRatingUtility()
 
-        if UITestConfigurator.isEnabled(.disableLogging) {
-            WordPressAppDelegate.setLogLevel(.off)
-        } else {
-            let libraryLogger = WordPressLibraryLogger()
-            TracksLogging.delegate = libraryLogger
-            WPKitSetLoggingDelegate(libraryLogger)
-            WPSetLoggingDelegate(libraryLogger)
-            printDebugLaunchInfo()
-            toggleExtraDebuggingIfNeeded()
-        }
+        let libraryLogger = WordPressLibraryLogger()
+        TracksLogging.delegate = libraryLogger
+        WPKitSetLoggingDelegate(libraryLogger)
+        WPSetLoggingDelegate(libraryLogger)
+        printDebugLaunchInfo()
+        toggleExtraDebuggingIfNeeded()
 
         #if DEBUG
         KeychainTools.processKeychainDebugArguments()
