@@ -5,6 +5,8 @@ fastlane_require 'dotenv'
 fastlane_require 'open-uri'
 fastlane_require 'git'
 
+require_relative 'helpers/string_placeholders'
+
 UI.user_error!('Please run fastlane via `bundle exec`') unless FastlaneCore::Helper.bundler?
 
 ########################################################################

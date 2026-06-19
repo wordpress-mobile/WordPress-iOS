@@ -203,6 +203,37 @@ platform :ios do
     )
   end
 
+  # Fails if any key present in BOTH the old and the newly-generated English
+  # source changed its placeholder shape (count / position / argument type).
+  # New and removed keys are ignored — copy that needs a fresh translation is
+  # expected to land under a new key. See the `StringPlaceholders` helper.
+  #
+  # This enforces, as a check, the invariant the continuous-translation model
+  # relies on: never reuse a key for placeholder-incompatible copy.
+  #
+  # @param [String] old Path to the previous `.strings` file.
+  # @param [String] new Path to the newly-generated `.strings` file.
+  #
+  desc 'Validate that no localized key changed its placeholders incompatibly'
+  lane :validate_string_placeholders do |old:, new:|
+    violations = StringPlaceholders.incompatible_changes(
+      StringPlaceholders.parse_file(old),
+      StringPlaceholders.parse_file(new)
+    )
+
+    if violations.empty?
+      UI.success('No incompatible placeholder changes.')
+      next
+    end
+
+    violations.each do |violation|
+      UI.error(violation[:key])
+      UI.error("    was: #{violation[:old].inspect}  [#{violation[:old_signature].empty? ? 'none' : violation[:old_signature]}]")
+      UI.error("    now: #{violation[:new].inspect}  [#{violation[:new_signature].empty? ? 'none' : violation[:new_signature]}]")
+    end
+    UI.user_error!("#{violations.size} key(s) changed placeholders incompatibly. Give changed copy a new key so existing translations stay valid.")
+  end
+
   # Updates the `AppStoreStrings.po` files (WP+JP) with the latest content from the `release_notes.txt` files and the other text sources.
   #
   # @param [String] version The current `x.y` version of the app. Used to derive the `release_notes_xxy` key to use in the `.po` file.
