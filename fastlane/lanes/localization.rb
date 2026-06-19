@@ -598,17 +598,26 @@ platform :ios do
   #
   # @called_by CI
   #
+  # @param [Boolean] dry_run If true, regenerate and run the guardrail but stay on
+  #                  the current branch — no commit, no push to trunk. Used to
+  #                  exercise (and guard) this flow from a PR before it's live.
+  #
   desc 'Regenerate the English strings and push them to trunk for GlotPress'
-  lane :upload_strings_for_translation do
+  lane :upload_strings_for_translation do |dry_run: false|
+    # Fastlane passes CLI args as strings (`dry_run:true`), so normalize.
+    dry_run = dry_run.to_s == 'true'
+
     # Pushing the regenerated strings creates a trunk commit that re-triggers this
     # pipeline. Skip when we're building our own strings commit, to avoid a loop.
-    if ENV.fetch('BUILDKITE_MESSAGE', '').include?(TRANSLATION_STRINGS_COMMIT_MESSAGE)
+    if !dry_run && ENV.fetch('BUILDKITE_MESSAGE', '').include?(TRANSLATION_STRINGS_COMMIT_MESSAGE)
       UI.success('Skipping — this build is the automated strings commit.')
       next
     end
 
     ensure_git_status_clean
-    Fastlane::Helper::GitHelper.checkout_and_pull(DEFAULT_BRANCH)
+    # A dry run stays on the current branch (e.g. a PR) and never touches trunk;
+    # a real run regenerates against the latest trunk.
+    Fastlane::Helper::GitHelper.checkout_and_pull(DEFAULT_BRANCH) unless dry_run
 
     en_strings_relative_path = File.join(WORDPRESS_EN_LPROJ, 'Localizable.strings')
     en_strings_absolute_path = File.join(PROJECT_ROOT_FOLDER, en_strings_relative_path)
@@ -622,6 +631,13 @@ platform :ios do
     # An existing key must not change its placeholders — that would silently break
     # every existing translation. New and removed keys are fine.
     validate_string_placeholders(old: previous_strings_path, new: en_strings_absolute_path)
+
+    if dry_run
+      diff = sh('git', 'diff', '--stat', '--', en_strings_relative_path, log: false)
+      UI.success('Dry run: regeneration and the placeholder guardrail passed.')
+      UI.message(diff.empty? ? 'No string changes vs the current branch.' : "Strings that would be uploaded:\n#{diff}")
+      next
+    end
 
     git_commit(path: [WORDPRESS_EN_LPROJ], message: TRANSLATION_STRINGS_COMMIT_MESSAGE, allow_nothing_to_commit: true)
 
