@@ -3,28 +3,14 @@
 The upload of App Store screenshots is automated via `fastlane`.
 
 First, you will want to generate the PNG files for the screenshots you want to update:
- - Typically you can use fastlane to [generate screenshots from your app's UI screens for all locales](#raw-screenshots), as well as to [post-process those raw screenshots of the UI to add some marketing design around them](#create-promo-screenshots).
+ - You can use fastlane to [post-process raw screenshots of the UI to add some marketing design around them](#create-promo-screenshots).
  - Alternatively, if your designer already provided some pre-generated PNG files for you to use, you can [put them directly in the right folders for fastlane to pick them up](#designer-provided-screenshots) in the next phase.
 
 Then, you will [use `update_metadata_on_app_store_connect with_screenshots:true` to upload those PNG files to App Store Connect](#upload-screenshots-to-asc).
 
-## <a name="raw-screenshots">Auto-Generating the raw screenshots from the app's screens</a>
-
-This step is based on UI Tests that fastlane will run to go through various screens in your app's UI then take screenshots of them, repeating the process for all the supported locales.
-
- - For WordPress, this is based on the `WordPressScreenshotGeneration` Xcode scheme and UI test
- - For Jetpack, this is based on the `JetpackScreenshotGeneration` Xcode scheme and UI test
-
-Note that for this to work, you need to keep those UI tests up-to-date with any modifications you make to the app's UI navigation and screens over time.
-
-To run the automation that will generate those raw screenshots from your app's UI, run:
-
- - `bundle exec fastlane screenshots` for WordPress
- - `bundle exec fastlane jetpack_screenshots` for Jetpack
-
 ## <a name="create-promo-screenshots">Post-processing raw screenshots with marketing design to get the final promo-screenshots</a>
 
-This step takes the raw screenshots generated from the previous section, and apply some post-processing based on the instructions from the `fastlane/screenshots.json` (WordPress) / `fastlane/jetpack_screenshots.json` (Jetpack) config files, including
+This step takes the raw screenshots placed in the `screenshots/` (WordPress) / `jetpack_screenshots/` (Jetpack) folders, and apply some post-processing based on the instructions from the `fastlane/screenshots.json` (WordPress) / `fastlane/jetpack_screenshots.json` (Jetpack) config files, including
  - Framing the raw screenshots into an image of an iPhone frame
  - Adding some marketing texts from `fastlane/appstoreres/{metadata,jetpack_metadata}/<locale>/app_store_screenshot_*.{txt,html}` on the image
 
