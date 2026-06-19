@@ -24,7 +24,11 @@ struct MediaTrackerAdapterUploadEventsTests {
 
         makeAdapter().track(.mediaLibraryAdded(source: .photoLibrary, kind: .image))
 
-        #expect(TestAnalyticsTracker.tracked.last?.stat == .mediaLibraryAddedPhotoViaDeviceLibrary)
+        let events = TestAnalyticsTracker.tracked
+        #expect(events.count == 1)
+        #expect(events.first?.stat == .mediaLibraryAddedPhotoViaDeviceLibrary)
+        #expect(events.first?.properties["media_origin"] as? String == "full_screen_picker")
+        #expect(events.first?.properties["is_v2"] as? String == "1")
     }
 
     @Test("Video from PHPicker maps to AddedVideoViaDeviceLibrary")
@@ -34,7 +38,8 @@ struct MediaTrackerAdapterUploadEventsTests {
 
         makeAdapter().track(.mediaLibraryAdded(source: .photoLibrary, kind: .video))
 
-        #expect(TestAnalyticsTracker.tracked.last?.stat == .mediaLibraryAddedVideoViaDeviceLibrary)
+        #expect(TestAnalyticsTracker.tracked.count == 1)
+        #expect(TestAnalyticsTracker.tracked.first?.stat == .mediaLibraryAddedVideoViaDeviceLibrary)
     }
 
     @Test("Photo from camera maps to AddedPhotoViaCamera")
@@ -44,7 +49,8 @@ struct MediaTrackerAdapterUploadEventsTests {
 
         makeAdapter().track(.mediaLibraryAdded(source: .camera, kind: .image))
 
-        #expect(TestAnalyticsTracker.tracked.last?.stat == .mediaLibraryAddedPhotoViaCamera)
+        #expect(TestAnalyticsTracker.tracked.count == 1)
+        #expect(TestAnalyticsTracker.tracked.first?.stat == .mediaLibraryAddedPhotoViaCamera)
     }
 
     @Test("Video from camera maps to AddedVideoViaCamera")
@@ -54,7 +60,8 @@ struct MediaTrackerAdapterUploadEventsTests {
 
         makeAdapter().track(.mediaLibraryAdded(source: .camera, kind: .video))
 
-        #expect(TestAnalyticsTracker.tracked.last?.stat == .mediaLibraryAddedVideoViaCamera)
+        #expect(TestAnalyticsTracker.tracked.count == 1)
+        #expect(TestAnalyticsTracker.tracked.first?.stat == .mediaLibraryAddedVideoViaCamera)
     }
 
     @Test("Photo from file picker maps to AddedPhotoViaOtherApps")
@@ -64,7 +71,11 @@ struct MediaTrackerAdapterUploadEventsTests {
 
         makeAdapter().track(.mediaLibraryAdded(source: .otherApps, kind: .image))
 
-        #expect(TestAnalyticsTracker.tracked.last?.stat == .mediaLibraryAddedPhotoViaOtherApps)
+        let events = TestAnalyticsTracker.tracked
+        #expect(events.count == 1)
+        #expect(events.first?.stat == .mediaLibraryAddedPhotoViaOtherApps)
+        #expect(events.first?.properties["media_origin"] as? String == "document_picker")
+        #expect(events.first?.properties["is_v2"] as? String == "1")
     }
 
     @Test("Video from file picker maps to AddedVideoViaOtherApps")
@@ -74,7 +85,8 @@ struct MediaTrackerAdapterUploadEventsTests {
 
         makeAdapter().track(.mediaLibraryAdded(source: .otherApps, kind: .video))
 
-        #expect(TestAnalyticsTracker.tracked.last?.stat == .mediaLibraryAddedVideoViaOtherApps)
+        #expect(TestAnalyticsTracker.tracked.count == 1)
+        #expect(TestAnalyticsTracker.tracked.first?.stat == .mediaLibraryAddedVideoViaOtherApps)
     }
 
     @Test("Document is silently dropped")
@@ -104,7 +116,10 @@ struct MediaTrackerAdapterUploadEventsTests {
 
         makeAdapter().track(.mediaLibraryUploadRetried)
 
-        #expect(TestAnalyticsTracker.tracked.last?.stat == .mediaLibraryUploadMediaRetried)
+        let events = TestAnalyticsTracker.tracked
+        #expect(events.count == 1)
+        #expect(events.first?.stat == .mediaLibraryUploadMediaRetried)
+        #expect(events.first?.properties["is_v2"] as? String == "1")
     }
 
     @Test("Stock Photos image fires PhotoViaStockPhotos + StockMediaUploaded")
