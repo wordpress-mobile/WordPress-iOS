@@ -428,13 +428,16 @@ platform :ios do
     )
   end
 
-  # Convenience wrapper that builds and uploads all three apps to TestFlight,
-  # one after another. CI builds each app in parallel via a Buildkite matrix
-  # instead; this lane is handy for running the whole set locally.
+  # Convenience wrapper that builds and uploads each app to TestFlight, one after
+  # another. CI builds each app in parallel via a Buildkite matrix instead; this
+  # lane is handy for running the whole set locally.
   #
-  desc 'Builds and uploads WordPress, Jetpack, and Reader to TestFlight (internal)'
+  # Reader is omitted until its App Store archive is fixed (broken since #25321).
+  # The per-app lane still supports `app: 'reader'`; just re-add it here once it builds.
+  #
+  desc 'Builds and uploads WordPress and Jetpack to TestFlight (internal)'
   lane :build_all_apps_for_testflight do
-    %w[wordpress jetpack reader].each do |app|
+    %w[wordpress jetpack].each do |app|
       build_and_upload_app_for_testflight(app: app)
     end
   end

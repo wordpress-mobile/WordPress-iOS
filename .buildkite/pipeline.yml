@@ -51,7 +51,11 @@ steps:
         matrix:
           - "wordpress"
           - "jetpack"
-          - "reader"
+          # Reader is omitted: its App Store archive has been broken since #25321
+          # (PostHelper moved to the app target without updating the Reader target),
+          # and went undetected after #25179 removed Reader from CI. Re-add once
+          # the Reader target archives again.
+          # - "reader"
         notify:
           - github_commit_status:
               context: "TestFlight Build ({{matrix}})"
