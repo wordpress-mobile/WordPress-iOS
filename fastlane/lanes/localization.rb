@@ -53,6 +53,44 @@ GLOTPRESS_TO_LPROJ_APP_LOCALE_CODES = {
   'zh-tw' => 'zh-Hant'  # Chinese (Taiwan)
 }.freeze
 
+# Human-readable language names (keyed by `.lproj` code) used when asking Claude
+# to backfill missing translations. See `backfill_missing_translations`.
+LANGUAGE_NAMES = {
+  'ar' => 'Arabic',
+  'bg' => 'Bulgarian',
+  'cs' => 'Czech',
+  'cy' => 'Welsh',
+  'da' => 'Danish',
+  'de' => 'German',
+  'en-AU' => 'English (Australia)',
+  'en-CA' => 'English (Canada)',
+  'en-GB' => 'English (UK)',
+  'es' => 'Spanish',
+  'fr' => 'French',
+  'he' => 'Hebrew',
+  'hr' => 'Croatian',
+  'hu' => 'Hungarian',
+  'id' => 'Indonesian',
+  'is' => 'Icelandic',
+  'it' => 'Italian',
+  'ja' => 'Japanese',
+  'ko' => 'Korean',
+  'nb' => 'Norwegian Bokmål',
+  'nl' => 'Dutch',
+  'pl' => 'Polish',
+  'pt' => 'Portuguese',
+  'pt-BR' => 'Brazilian Portuguese',
+  'ro' => 'Romanian',
+  'ru' => 'Russian',
+  'sk' => 'Slovak',
+  'sq' => 'Albanian',
+  'sv' => 'Swedish',
+  'th' => 'Thai',
+  'tr' => 'Turkish',
+  'zh-Hans' => 'Simplified Chinese',
+  'zh-Hant' => 'Traditional Chinese'
+}.freeze
+
 # Mapping of all locales which can be used for AppStore metadata (Glotpress code => AppStore Connect code)
 #
 # TODO: Replace with `LocaleHelper` once provided by release toolkit (https://github.com/wordpress-mobile/release-toolkit/pull/296)
@@ -422,6 +460,78 @@ platform :ios do
       message: 'Update app translations – Other `.strings`',
       allow_nothing_to_commit: true
     )
+  end
+
+  # Backfills still-untranslated strings with AI so the app never ships an
+  # untranslated string. For each locale, every key present in the English base
+  # but missing from the locale is translated by Claude, validated to preserve
+  # its placeholders (via `StringPlaceholders`), and appended to that locale's
+  # `Localizable.strings` under a clearly-marked section.
+  #
+  # Human translations from GlotPress overwrite these on the next sync — the AI
+  # output is only a stopgap and is never uploaded to GlotPress. Part of the
+  # "Faster Releases" RFC, Phase 2 (continuous translations).
+  #
+  # @called_by sync_translations
+  #
+  desc 'Backfill still-untranslated strings with AI (never ship untranslated copy)'
+  lane :backfill_missing_translations do
+    get_required_env('ANTHROPIC_API_KEY') # Fail fast if the key isn't available.
+
+    parent_dir = File.join(PROJECT_ROOT_FOLDER, 'WordPress', 'Resources')
+    base_strings = StringPlaceholders.parse_file(File.join(PROJECT_ROOT_FOLDER, WORDPRESS_EN_LPROJ, 'Localizable.strings'))
+    modified_files = []
+
+    GLOTPRESS_TO_LPROJ_APP_LOCALE_CODES.each_value do |lproj|
+      locale_file = File.join(parent_dir, "#{lproj}.lproj", 'Localizable.strings')
+      next unless File.exist?(locale_file)
+
+      locale_strings = StringPlaceholders.parse_file(locale_file)
+      missing = base_strings.reject { |key, _value| locale_strings.key?(key) }
+      next if missing.empty?
+
+      UI.message("#{lproj}: #{missing.size} untranslated string(s)")
+      translations = AITranslator.translate(
+        strings: missing,
+        language_code: lproj,
+        language_name: LANGUAGE_NAMES.fetch(lproj, lproj)
+      )
+      next if translations.empty?
+
+      append_ai_translations(locale_file, translations)
+      modified_files << locale_file
+    end
+
+    if modified_files.empty?
+      UI.success('No missing translations to backfill.')
+      next
+    end
+
+    git_add(path: modified_files, shell_escape: false)
+    git_commit(path: modified_files, message: 'Backfill missing translations with AI', allow_nothing_to_commit: true)
+  end
+
+  # Appends AI-generated translations to a `.strings` file, under a marker
+  # comment so they're easy to spot in review and in the file itself.
+  def append_ai_translations(path, translations)
+    File.open(path, 'a') do |file|
+      file.puts
+      file.puts '/* Machine-translated — pending human translation from GlotPress. */'
+      translations.sort.each do |key, value|
+        file.puts("\"#{escape_strings_literal(key)}\" = \"#{escape_strings_literal(value)}\";")
+      end
+    end
+  end
+
+  # Escapes a string for use as a key or value in a `.strings` (old-style plist)
+  # file. Backslashes must be escaped first so we don't double-escape the ones
+  # we add for the quotes and control characters.
+  def escape_strings_literal(text)
+    text.to_s
+        .gsub('\\') { '\\\\' }
+        .gsub('"') { '\\"' }
+        .gsub("\n") { '\\n' }
+        .gsub("\t") { '\\t' }
   end
 
   # Downloads the localized metadata (for App Store Connect) from GlotPress for the WordPress app.
