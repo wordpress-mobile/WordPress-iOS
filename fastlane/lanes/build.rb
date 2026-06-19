@@ -25,8 +25,6 @@ FIREBASE_APP_CONFIG_JETPACK = {
   testers_group: 'jetpack-ios---prototype-builds'
 }.freeze
 
-CONCURRENT_SIMULATORS = 2
-
 # Shared options to use when invoking `build_app` (`gym`).
 #
 # - `manageAppVersionAndBuildNumber: false` prevents `xcodebuild` from bumping
@@ -127,23 +125,10 @@ platform :ios do
 
     UI.user_error!("Unable to find .xctestrun file at #{build_products_path}.") if xctestrun_path.nil? || !File.exist?(xctestrun_path)
 
-    # Our current configuration allows for either running the Jetpack UI tests or the WordPress unit tests.
-    #
-    # Their scheme and xctestrun name pairing are:
-    #
-    # - (JetpackUITests, JetpackUITests)
-    # - (WordPress, WordPressUnitTests)
-    #
-    # Because we only support those two modes, we can infer the scheme name from the xctestrun name
-    scheme = options[:name].include?('Jetpack') ? 'JetpackUITests' : 'WordPress'
-
-    # Only run Jetpack UI tests in parallel.
-    # At the time of writing, we need to explicitly set this value despite using test plans that configure parallelism.
-    parallel_testing_value = options[:name].include?('Jetpack')
-
+    # The only supported mode runs the WordPress unit tests (xctestrun name `WordPressUnitTests`).
     run_tests(
       workspace: WORKSPACE_PATH,
-      scheme: scheme,
+      scheme: 'WordPress',
       device: options[:device],
       deployment_target_version: options[:ios_version],
       ensure_devices_found: true,
@@ -152,10 +137,7 @@ platform :ios do
       output_directory: File.join(PROJECT_ROOT_FOLDER, 'build', 'results'),
       reset_simulator: true,
       result_bundle: true,
-      output_types: 'junit',
-      parallel_testing: parallel_testing_value,
-      concurrent_workers: CONCURRENT_SIMULATORS,
-      max_concurrent_simulators: CONCURRENT_SIMULATORS
+      output_types: 'junit'
     )
   end
 

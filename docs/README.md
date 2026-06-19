@@ -14,10 +14,6 @@
 - [Using VoiceOver](using-voiceover.md)
 - [VoiceOver Guidelines](voiceover-guidelines.md)
 
-## Testing 
-
-- [UI Tests](ui-tests.md)
-
 ## Others 
 
 - [Localization](localization.md)

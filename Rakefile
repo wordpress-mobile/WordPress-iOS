@@ -115,11 +115,6 @@ end
 
 CLOBBER << 'vendor'
 
-desc 'Mocks'
-task :mocks do
-  sh "#{File.join(PROJECT_DIR, 'API-Mocks', 'scripts', 'start.sh')} 8282"
-end
-
 desc 'Checks the source for style errors. Lints the whole project, or only the given paths: rake lint[path1,path2]'
 task :lint, [:paths] do |_task, args|
   run_swiftlint(paths: [args[:paths], *args.extras].compact)
