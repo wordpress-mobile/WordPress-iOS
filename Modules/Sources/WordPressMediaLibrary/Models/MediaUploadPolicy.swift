@@ -48,13 +48,13 @@ public struct MediaUploadPolicy: Sendable {
     public init(
         filePickerContentTypes: [UTType],
         isAllowedForUpload: @escaping @Sendable (UTType, String) -> Bool,
-        imageMaxDimension: Int? = nil,
-        imageJpegQuality: Double = 0.9,
-        convertHEICToJPEG: Bool = true,
-        videoMaxDurationSeconds: TimeInterval? = nil,
+        imageMaxDimension: Int?,
+        imageJpegQuality: Double,
+        convertHEICToJPEG: Bool,
+        videoMaxDurationSeconds: TimeInterval?,
         videoExportPreset: String,
-        videoOutputContentType: UTType = .mpeg4Movie,
-        stripImageLocation: Bool = false
+        videoOutputContentType: UTType,
+        stripImageLocation: Bool
     ) {
         self.filePickerContentTypes = filePickerContentTypes
         self.isAllowedForUpload = isAllowedForUpload
