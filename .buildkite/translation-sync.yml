@@ -1,0 +1,16 @@
+# yaml-language-server: $schema=https://raw.githubusercontent.com/buildkite/pipeline-schema/main/schema.json
+---
+
+# Daily translation sync — download the latest GlotPress translations, AI-backfill
+# the gaps, and open/update a PR. Triggered on a schedule (configured in Buildkite).
+# Part of the "Faster Releases" RFC, Phase 2 (continuous translations).
+
+agents:
+  queue: mac
+env:
+  IMAGE_ID: $IMAGE_ID
+
+steps:
+  - label: "🌐 Sync translations"
+    command: ".buildkite/commands/sync-translations.sh"
+    plugins: [$CI_TOOLKIT_PLUGIN]

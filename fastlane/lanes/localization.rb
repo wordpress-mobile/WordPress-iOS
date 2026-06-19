@@ -91,6 +91,16 @@ LANGUAGE_NAMES = {
   'zh-Hant' => 'Traditional Chinese'
 }.freeze
 
+# Long-lived branch for the daily translation-sync PR. Reusing one branch keeps
+# a single PR that updates each day (dependabot-style) instead of opening a new
+# one per run.
+TRANSLATION_SYNC_BRANCH = 'bot/translation-sync'
+
+# Commit message used when the upload-on-merge job pushes regenerated English
+# strings to trunk. Also used as the loop-guard marker so that commit doesn't
+# re-trigger the job.
+TRANSLATION_STRINGS_COMMIT_MESSAGE = 'Update strings for localization'
+
 # Mapping of all locales which can be used for AppStore metadata (Glotpress code => AppStore Connect code)
 #
 # TODO: Replace with `LocaleHelper` once provided by release toolkit (https://github.com/wordpress-mobile/release-toolkit/pull/296)
@@ -532,6 +542,95 @@ platform :ios do
         .gsub('"') { '\\"' }
         .gsub("\n") { '\\n' }
         .gsub("\t") { '\\t' }
+  end
+
+  # The daily half of the continuous-translation model: download the latest
+  # human translations from GlotPress, AI-backfill anything still untranslated,
+  # and open (or update) a single PR to trunk. Runs from CI on a schedule.
+  #
+  # @called_by CI
+  #
+  desc 'Download the latest translations, AI-backfill the gaps, and open/update a PR'
+  lane :sync_translations do
+    ensure_git_status_clean
+    Fastlane::Helper::GitHelper.checkout_and_pull(DEFAULT_BRANCH)
+
+    # Reset the long-lived sync branch to the current trunk so the PR updates in
+    # place rather than stacking on yesterday's changes.
+    sh('git', 'checkout', '-B', TRANSLATION_SYNC_BRANCH)
+
+    download_localized_strings
+    backfill_missing_translations
+
+    if sh('git', 'rev-list', '--count', "#{DEFAULT_BRANCH}..HEAD").strip == '0'
+      UI.success('Translations already up to date — nothing to sync.')
+      next
+    end
+
+    sh('git', 'push', '--force', 'origin', TRANSLATION_SYNC_BRANCH)
+    open_translation_sync_pr
+  end
+
+  def open_translation_sync_pr
+    pr_url = create_pull_request(
+      api_token: get_required_env('GHHELPER_ACCESS'),
+      repo: GITHUB_REPO,
+      title: 'Update translations',
+      body: <<~BODY,
+        Automated translation sync: the latest human translations from GlotPress, plus an AI backfill for any strings still untranslated so the app never ships untranslated copy.
+
+        The AI translations are a stopgap and will be replaced by human translations as they arrive. They are never uploaded to GlotPress.
+      BODY
+      head: TRANSLATION_SYNC_BRANCH,
+      base: DEFAULT_BRANCH
+    )
+    UI.success("Translation sync PR ready: #{pr_url}")
+  rescue StandardError => e
+    # A PR for this branch is likely already open from a previous run — the
+    # force-push above updated it, so there's nothing more to do.
+    UI.message("Did not open a new PR (one is likely already open): #{e.message}")
+  end
+
+  # The on-merge half of the continuous-translation model: regenerate the English
+  # `Localizable.strings` from code and push it to trunk so GlotPress imports new
+  # strings promptly. Guarded so an existing key can't change its placeholders
+  # without a new key. Runs from CI on every trunk merge.
+  #
+  # @called_by CI
+  #
+  desc 'Regenerate the English strings and push them to trunk for GlotPress'
+  lane :upload_strings_for_translation do
+    # Pushing the regenerated strings creates a trunk commit that re-triggers this
+    # pipeline. Skip when we're building our own strings commit, to avoid a loop.
+    if ENV.fetch('BUILDKITE_MESSAGE', '').include?(TRANSLATION_STRINGS_COMMIT_MESSAGE)
+      UI.success('Skipping — this build is the automated strings commit.')
+      next
+    end
+
+    ensure_git_status_clean
+    Fastlane::Helper::GitHelper.checkout_and_pull(DEFAULT_BRANCH)
+
+    en_strings_relative_path = File.join(WORDPRESS_EN_LPROJ, 'Localizable.strings')
+    en_strings_absolute_path = File.join(PROJECT_ROOT_FOLDER, en_strings_relative_path)
+
+    # Snapshot the committed English strings before regenerating, for the guardrail.
+    previous_strings_path = File.join(Dir.tmpdir, 'previous_en_Localizable.strings')
+    File.write(previous_strings_path, sh('git', 'show', "HEAD:#{en_strings_relative_path}", log: false))
+
+    generate_strings_file_for_glotpress(skip_commit: true)
+
+    # An existing key must not change its placeholders — that would silently break
+    # every existing translation. New and removed keys are fine.
+    validate_string_placeholders(old: previous_strings_path, new: en_strings_absolute_path)
+
+    git_commit(path: [WORDPRESS_EN_LPROJ], message: TRANSLATION_STRINGS_COMMIT_MESSAGE, allow_nothing_to_commit: true)
+
+    if sh('git', 'rev-list', '--count', "origin/#{DEFAULT_BRANCH}..HEAD").strip == '0'
+      UI.success('English strings already current — nothing to upload.')
+      next
+    end
+
+    push_to_git_remote(tags: false)
   end
 
   # Downloads the localized metadata (for App Store Connect) from GlotPress for the WordPress app.
