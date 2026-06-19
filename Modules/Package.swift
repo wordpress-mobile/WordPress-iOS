@@ -39,7 +39,6 @@ let package = Package(
         .package(url: "https://github.com/Automattic/AutomatticAbout-swift", from: "1.1.5"),
         .package(url: "https://github.com/Automattic/Gravatar-SDK-iOS", from: "3.4.0"),
         .package(url: "https://github.com/Automattic/Gridicons-iOS", branch: "develop"),
-        .package(url: "https://github.com/Automattic/ScreenObject", from: "0.3.0"),
         .package(url: "https://github.com/ChartsOrg/Charts", from: "5.0.0"),
         .package(url: "https://github.com/CocoaLumberjack/CocoaLumberjack", from: "3.8.5"),
         .package(url: "https://github.com/daltoniam/Starscream", from: "4.0.8"),
@@ -196,14 +195,6 @@ let package = Package(
         .target(
             name: "TracksMini",
             dependencies: ["BuildSettingsKit"],
-            swiftSettings: [.swiftLanguageMode(.v5)]
-        ),
-        .target(
-            name: "UITestsFoundation",
-            dependencies: [
-                .product(name: "ScreenObject", package: "ScreenObject"),
-                .product(name: "XCUITestHelpers", package: "ScreenObject")
-            ],
             swiftSettings: [.swiftLanguageMode(.v5)]
         ),
         .target(name: "WordPressFlux", swiftSettings: [.swiftLanguageMode(.v5)]),
@@ -414,8 +405,7 @@ enum XcodeSupport {
                 targets: ["XcodeTarget_NotificationServiceExtension"]
             ),
             .library(name: "XcodeTarget_Intents", targets: ["XcodeTarget_Intents"]),
-            .library(name: "XcodeTarget_StatsWidget", targets: ["XcodeTarget_StatsWidget"]),
-            .library(name: "XcodeTarget_UITests", targets: ["XcodeTarget_UITests"])
+            .library(name: "XcodeTarget_StatsWidget", targets: ["XcodeTarget_StatsWidget"])
         ]
     }
 
@@ -597,12 +587,6 @@ enum XcodeSupport {
                     //       in AppExtensionsService.o
                     .product(name: "CocoaLumberjack", package: "CocoaLumberjack"),
                     .product(name: "CocoaLumberjackSwift", package: "CocoaLumberjack")
-                ]
-            ),
-            .xcodeTarget(
-                "XcodeTarget_UITests",
-                dependencies: [
-                    "UITestsFoundation"
                 ]
             )
         ]

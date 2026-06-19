@@ -1,5 +1,5 @@
 {
-  "originHash" : "84257158eee34b797c4f5c81ad33c2f508fe93818c99642c468f31136376cda1",
+  "originHash" : "49b054a77ad3470b9b49c42d61f34905f5ca3f3211e1557c142c484a9ad7bda8",
   "pins" : [
     {
       "identity" : "alamofire",
@@ -212,15 +212,6 @@
       "state" : {
         "revision" : "6125ce7fb51b114ba71b761d18cfd5557923bd4d",
         "version" : "5.1.4"
-      }
-    },
-    {
-      "identity" : "screenobject",
-      "kind" : "remoteSourceControl",
-      "location" : "https://github.com/Automattic/ScreenObject",
-      "state" : {
-        "revision" : "5a62548524a0ad65d8e2e5d4f665981c48066253",
-        "version" : "0.3.0"
       }
     },
     {
