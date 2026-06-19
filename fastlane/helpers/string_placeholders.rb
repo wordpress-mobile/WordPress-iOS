@@ -48,28 +48,30 @@ module StringPlaceholders
   # A canonical signature of the placeholders in a string value, or '' if there
   # are none. Two values with the same signature are placeholder-compatible.
   def signature(value)
-    specifiers = []
+    # Key each specifier by its position — explicit for `%1$@`, otherwise its
+    # appearance order — then sort by it, so reordering equivalent positional args
+    # (`%1$@ %2$@` vs `%2$@ %1$@`) yields the same signature while a changed count
+    # or argument type does not.
+    specifiers(value)
+      .each_with_index
+      .map { |spec, index| [spec[:position] || (index + 1), spec[:klass]] }
+      .sort_by(&:first)
+      .map { |position, klass| "#{position}:#{klass}" }
+      .join(',')
+  end
+
+  # The format specifiers in a value as `[{ position:, klass: }]`, excluding the
+  # literal `%%`. `position` is nil for non-positional specifiers.
+  def specifiers(value)
+    found = []
     value.to_s.scan(SPECIFIER) do
       match = Regexp.last_match
       conversion = match[:conversion]
       next if conversion == '%' # literal percent, not a placeholder
 
-      position = match[:position]&.delete('$')&.to_i
-      specifiers << { position: position, klass: CONVERSION_CLASSES.fetch(conversion, conversion) }
+      found << { position: match[:position]&.delete('$')&.to_i, klass: CONVERSION_CLASSES.fetch(conversion, conversion) }
     end
-
-    return '' if specifiers.empty?
-
-    if specifiers.all? { |s| s[:position] }
-      # Positional args (`%1$@`): compare the position -> type mapping.
-      specifiers.sort_by { |s| s[:position] }.map { |s| "#{s[:position]}:#{s[:klass]}" }.join(',')
-    elsif specifiers.none? { |s| s[:position] }
-      # Non-positional args: compare types in order of appearance.
-      specifiers.map { |s| s[:klass] }.join(',')
-    else
-      # Mixed positional/non-positional is unusual; be conservative and keep both.
-      specifiers.map { |s| "#{s[:position] || '_'}:#{s[:klass]}" }.join(',')
-    end
+    found
   end
 
   # Whether two string values share the same placeholder shape.

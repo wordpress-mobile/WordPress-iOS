@@ -10,7 +10,7 @@ require 'json'
 # See the "Faster Releases" RFC, Phase 2 (continuous translations).
 module AITranslator
   # Matches the Claude model already used elsewhere in CI (`.buildkite/claude-analysis.yml`).
-  MODEL = :"claude-sonnet-4-6"
+  MODEL = :'claude-sonnet-4-6'
   # Keep batches small so each request's JSON response stays well under the
   # non-streaming token ceiling and a single failure costs little to retry.
   BATCH_SIZE = 40
@@ -33,18 +33,25 @@ module AITranslator
     require 'anthropic'
     client = Anthropic::Client.new # reads ANTHROPIC_API_KEY from the environment
 
-    strings.each_slice(BATCH_SIZE).each_with_object({}) do |batch, translations|
+    result = {}
+    strings.each_slice(BATCH_SIZE) do |batch|
       batch_hash = batch.to_h
-      translate_batch(client: client, strings: batch_hash, language_code: language_code, language_name: language_name).each do |key, translation|
-        english = batch_hash[key]
-        next if english.nil? || translation.nil? || translation.to_s.empty?
+      raw = translate_batch(client: client, strings: batch_hash, language_code: language_code, language_name: language_name)
+      result.merge!(validated_translations(raw, batch_hash, language_code))
+    end
+    result
+  end
 
-        unless StringPlaceholders.compatible?(english, translation)
-          UI.message("Dropping #{language_code} translation for '#{key}' — placeholders changed")
-          next
-        end
+  # Keeps only the translations whose placeholders match the English source.
+  def validated_translations(translations, english_by_key, language_code)
+    translations.each_with_object({}) do |(key, translation), kept|
+      english = english_by_key[key]
+      next if english.nil? || translation.to_s.empty?
 
-        translations[key] = translation
+      if StringPlaceholders.compatible?(english, translation)
+        kept[key] = translation
+      else
+        UI.message("Dropping #{language_code} translation for '#{key}' — placeholders changed")
       end
     end
   end
