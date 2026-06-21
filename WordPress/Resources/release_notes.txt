@@ -1,1 +1,1 @@
-* [*] [internal] Jetpack Social: use new publicize API to support Jetpack Social [#25587]
+No updates to report this week, which means nothing important broke. (Hooray!) Keep calm and publish on.
