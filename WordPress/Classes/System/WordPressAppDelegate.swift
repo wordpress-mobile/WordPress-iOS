@@ -102,7 +102,6 @@ public class WordPressAppDelegate: UIResponder, UIApplicationDelegate {
         WordPressAPIInternal.setupLogger(appId: Bundle.main.bundleIdentifier!)
         DesignSystem.FontManager.registerCustomFonts()
         AssertionLoggerDependencyContainer.logger = AssertionLogger()
-        UITestConfigurator.prepareApplicationForUITests()
 
         // The following extensive logging configuration detects if extensive logging is enabled internally.
         wpkURLSessionNotifyingDelegate = PulseNetworkLogger()
@@ -870,34 +869,5 @@ extension WordPressAppDelegate {
         SVProgressHUD.setForegroundColor(.white)
         SVProgressHUD.setErrorImage(UIImage(named: "hud_error")!)
         SVProgressHUD.setSuccessImage(UIImage(named: "hud_success")!)
-    }
-}
-
-// MARK: - UI Test Support
-
-extension WordPressAppDelegate {
-
-    func autoSignInUITestSite() {
-        guard let wpComSiteAddress = UserDefaults.standard.string(forKey: "ui-test-select-wpcom-site") else {
-            return
-        }
-
-        let service = WordPressComSyncService()
-        service.syncWPCom(
-            authToken: "valid_token",
-            isJetpackLogin: false,
-            onSuccess: { _ in
-                if let blog = try? BlogQuery().hostname(containing: wpComSiteAddress)
-                    .blog(in: ContextManager.shared.mainContext)
-                {
-                    self.windowManager.showUI(for: blog)
-                } else {
-                    fatalError("Can't find blog: \(wpComSiteAddress)")
-                }
-            },
-            onFailure: {
-                fatalError("Can't sync blogs: \($0)")
-            }
-        )
     }
 }
