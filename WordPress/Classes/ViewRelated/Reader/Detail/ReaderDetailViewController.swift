@@ -278,10 +278,6 @@ class ReaderDetailViewController: UIViewController, ReaderDetailView {
             self?.showPostContent(post)
         }
 
-        if post.isFollowing {
-            header.buttonSubscribe.isHidden = true
-        }
-
         navigateToCommentIfNecessary()
     }
 
