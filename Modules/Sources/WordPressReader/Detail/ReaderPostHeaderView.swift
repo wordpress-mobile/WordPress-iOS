@@ -220,6 +220,10 @@ public final class ReaderPostHeaderView: UIView {
         authorNameLabel.text = viewModel.authorName
         dateLabel.text = viewModel.dateString
         dateLabel.isHidden = viewModel.dateString == nil
+        authorRow.accessibilityLabel = [viewModel.authorName, viewModel.dateString]
+            .compactMap { $0 }
+            .filter { !$0.isEmpty }
+            .joined(separator: ", ")
 
         if let avatarURL = viewModel.authorAvatarURL {
             avatarImageView.wp.setImage(with: avatarURL)
@@ -286,11 +290,16 @@ public final class ReaderPostHeaderView: UIView {
 
         siteNameLabel.isUserInteractionEnabled = true
         siteNameLabel.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(siteNameTapped)))
+        siteNameLabel.accessibilityTraits = .button
+        siteNameLabel.accessibilityHint = Strings.siteAccessibilityHint
 
         buttonSubscribe.addTarget(self, action: #selector(subscribeTapped), for: .touchUpInside)
 
         authorRow.isUserInteractionEnabled = true
         authorRow.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(authorTapped)))
+        authorRow.isAccessibilityElement = true
+        authorRow.accessibilityTraits = .button
+        authorRow.accessibilityHint = Strings.authorAccessibilityHint
 
         excerptLabel.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(excerptTapped)))
 
@@ -452,7 +461,7 @@ public final class ReaderPostHeaderView: UIView {
         result.append(
             NSAttributedString(string: suffix, attributes: [
                 .font: font.withWeight(.regular),
-                .foregroundColor: UIColor.label,
+                .foregroundColor: displaySettings.color.foreground,
             ])
         )
         excerptLabel.attributedText = result
@@ -510,6 +519,18 @@ private enum Strings {
         "reader.post.header.viewMore",
         value: "\u{2026}view more",
         comment: "Appended to the truncated excerpt in the reader post header to indicate more content is available"
+    )
+
+    static let siteAccessibilityHint = AppLocalizedString(
+        "reader.post.header.site.a11yHint",
+        value: "Views posts from the site",
+        comment: "Accessibility hint for the site name in the reader post header. Tapping it shows the site's posts."
+    )
+
+    static let authorAccessibilityHint = AppLocalizedString(
+        "reader.post.header.author.a11yHint",
+        value: "Views the author's profile",
+        comment: "Accessibility hint for the author row in the reader post header. Tapping it shows the author's profile."
     )
 }
 
