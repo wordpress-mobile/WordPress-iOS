@@ -701,7 +701,7 @@ extension ReaderDetailCoordinator: ReaderPostHeaderViewDelegate {
         case .siteName:
             previewSite()
         case .subscribe:
-                view.isShowingSubscribeLoadingIndicator = true
+            view.isShowingSubscribeLoadingIndicator = true
             toggleFollowSite { [weak self] in
                 view.isShowingSubscribeLoadingIndicator = false
                 self?.view?.updateHeader()
@@ -717,6 +717,7 @@ extension ReaderDetailCoordinator: ReaderPostHeaderViewDelegate {
         guard let post, let imageURL = post.featuredImage.flatMap(URL.init) else {
             return
         }
+        WPAnalytics.trackReader(.readerArticleImageTapped)
         let lightboxVC = LightboxViewController(sourceURL: imageURL, host: MediaHost(post))
         MainActor.assumeIsolated {
             lightboxVC.thumbnail = sender.image
