@@ -20,7 +20,7 @@ final class PostSearchTokenTableCell: UITableViewCell {
         stackView.spacing = 8
         stackView.alignment = .center
         stackView.isLayoutMarginsRelativeArrangement = true
-        stackView.layoutMargins = UIEdgeInsets(top: 4, left: 16, bottom: 12, right: 16)
+        stackView.directionalLayoutMargins = NSDirectionalEdgeInsets(top: 4, leading: 16, bottom: 12, trailing: 16)
         stackView.translatesAutoresizingMaskIntoConstraints = false
 
         contentView.addSubview(stackView)

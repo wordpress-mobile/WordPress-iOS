@@ -79,11 +79,11 @@ static CGFloat const SearchBarHeight = 44.0;
     stackView.axis = UILayoutConstraintAxisVertical;
     stackView.spacing = MenusDesignDefaultContentSpacing / 2.0;
 
-    UIEdgeInsets margins = UIEdgeInsetsZero;
+    NSDirectionalEdgeInsets margins = NSDirectionalEdgeInsetsZero;
     margins.bottom = stackView.spacing;
-    margins.left = MenusDesignDefaultContentSpacing;
-    margins.right = MenusDesignDefaultContentSpacing;
-    stackView.layoutMargins = margins;
+    margins.leading = MenusDesignDefaultContentSpacing;
+    margins.trailing = MenusDesignDefaultContentSpacing;
+    stackView.directionalLayoutMargins = margins;
     stackView.layoutMarginsRelativeArrangement = YES;
 
     NSAssert(_stackedTableHeaderView != nil, @"stackedTableHeaderView is nil");

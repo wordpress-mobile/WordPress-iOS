@@ -115,7 +115,7 @@ final class MeHeaderView: UIView {
     func configureHorizontalMode() {
         stackView.axis = .horizontal
         stackView.spacing = 16
-        stackView.layoutMargins = UIEdgeInsets(horizontal: 30, vertical: 6)
+        stackView.directionalLayoutMargins = NSDirectionalEdgeInsets(top: 6, leading: 30, bottom: 6, trailing: 30)
         infoStackView.alignment = .leading
         setIconSize(40)
     }

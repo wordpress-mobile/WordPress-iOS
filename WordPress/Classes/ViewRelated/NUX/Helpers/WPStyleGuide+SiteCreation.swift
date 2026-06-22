@@ -2,8 +2,8 @@ import WordPressShared
 
 extension WPStyleGuide {
 
-    class func edgeInsetForLoginTextFields() -> UIEdgeInsets {
-        return UIEdgeInsets(top: 7, left: 20, bottom: 7, right: 20)
+    class func edgeInsetForLoginTextFields() -> NSDirectionalEdgeInsets {
+        return NSDirectionalEdgeInsets(top: 7, leading: 20, bottom: 7, trailing: 20)
     }
 
     /// Return the system font in medium weight for the given style

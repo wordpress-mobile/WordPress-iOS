@@ -12,7 +12,7 @@ extern CGFloat const MenusDesignDefaultContentSpacing;
  */
 @interface Menu (ViewDesign)
 
-+ (UIEdgeInsets)viewDefaultDesignInsets;
++ (NSDirectionalEdgeInsets)viewDefaultDesignInsets;
 
 @end
 

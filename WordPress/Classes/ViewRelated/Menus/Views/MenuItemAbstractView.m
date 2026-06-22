@@ -91,12 +91,12 @@ CGFloat const MenuItemsStackableViewDefaultHeight = 44.0;
                                               [stackView.bottomAnchor constraintEqualToAnchor:_contentView.bottomAnchor]
                                               ]];
 
-    UIEdgeInsets margins = UIEdgeInsetsZero;
+    NSDirectionalEdgeInsets margins = NSDirectionalEdgeInsetsZero;
     margins.top = 8.0;
     margins.bottom = 8.0;
-    margins.left = MenusDesignDefaultContentSpacing;
-    margins.right = MenusDesignDefaultContentSpacing;
-    stackView.layoutMargins = margins;
+    margins.leading = MenusDesignDefaultContentSpacing;
+    margins.trailing = MenusDesignDefaultContentSpacing;
+    stackView.directionalLayoutMargins = margins;
     stackView.layoutMarginsRelativeArrangement = YES;
     stackView.distribution = UIStackViewDistributionFill;
     stackView.alignment = UIStackViewAlignmentCenter;
