@@ -37,7 +37,9 @@ extension ReaderStreamViewController {
     // MARK: Private behavior
 
     private func removeShareButton() {
-        navigationItem.rightBarButtonItem = nil
+        navigationItem.rightBarButtonItems = navigationItem.rightBarButtonItems?.filter {
+            $0.tag != NavigationItemTag.share.rawValue
+        }
     }
 
     @objc private func shareButtonTapped(_ sender: UIBarButtonItem) {

@@ -90,14 +90,6 @@ steps:
       #   notify:
       #     - github_commit_status:
       #         context: "Unit Tests Keystone"
-      - label: "🔬 WordPressData Unit Tests"
-        command: .buildkite/commands/run-unit-tests-for-scheme.sh WordPressData
-        plugins: [$CI_TOOLKIT_PLUGIN]
-        artifact_paths:
-          - "build/results/*"
-        notify:
-          - github_commit_status:
-              context: "Unit Tests WordPressData"
 
   #################
   # Linters

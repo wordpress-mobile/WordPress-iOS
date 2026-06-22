@@ -144,6 +144,7 @@ class ActionSheetViewController: UIViewController {
         self.scrollView = scrollView
         refreshForTraits()
         updateScrollViewHeight()
+        updatePreferredContentSize()
     }
 
     private func button(_ info: ActionSheetButton) -> UIButton {
@@ -187,6 +188,7 @@ class ActionSheetViewController: UIViewController {
     open override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
         super.traitCollectionDidChange(previousTraitCollection)
         refreshForTraits()
+        updatePreferredContentSize()
     }
 
     private func refreshForTraits() {
@@ -205,6 +207,15 @@ class ActionSheetViewController: UIViewController {
         super.viewDidLayoutSubviews()
 
         updateScrollViewHeight()
+    }
+
+    /// Computes `preferredContentSize` off the layout pass. Assigning it while
+    /// presented in a popover synchronously reframes the popover and re-enters
+    /// `viewDidLayoutSubviews`; doing that from within the layout pass recursed until
+    /// the stack overflowed (CMM-2111). Driving it from `viewDidLoad` and trait
+    /// changes instead breaks that feedback loop.
+    private func updatePreferredContentSize() {
+        view.layoutIfNeeded()
         let compressedSize = view.systemLayoutSizeFitting(UIView.layoutFittingCompressedSize)
         let width = min(max(Constants.minimumWidth, compressedSize.width), Constants.maximumWidth)
         preferredContentSize = CGSize(width: width, height: compressedSize.height)

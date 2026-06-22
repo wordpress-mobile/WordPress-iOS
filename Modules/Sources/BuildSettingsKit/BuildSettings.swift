@@ -25,6 +25,10 @@ public struct BuildSettings: Sendable {
     public var pushNotificationAppID: String
     public var appGroupName: String
     public var appKeychainAccessGroup: String
+    /// The legacy cross-app keychain group shared by the WordPress and
+    /// Jetpack apps. nil where the app has no shared-group entitlement
+    /// (Reader): the key is simply absent from that app's Info.plist.
+    public var sharedKeychainAccessGroup: String?
     public var eventNamePrefix: String
     public var explatPlatform: String
     public var itunesAppID: String
@@ -46,8 +50,10 @@ public struct BuildSettings: Sendable {
         case .preview:
             return .preview
         case .test:
-            // TODO: update tests to ensure none of the rely on `BuildSettings` availability as it's incompatible with parallelized tests
-            return .live
+            // App-hosted test targets (e.g. Keystone) carry the app Info.plist and can use
+            // `.live`. SPM module test hosts (e.g. WordPressDataTests) don't, so fall back to
+            // `.preview` to keep `BuildSettings.current` (and `AppKeychain()`) from crashing.
+            return liveIfHostBundleAvailable ?? .preview
         }
     }
 }

@@ -6,7 +6,6 @@ import SwiftUI
 import AuthenticationServices
 import WordPressData
 import WordPressKit
-import WordPressAuthenticator
 import WordPressShared
 import BuildSettingsKit
 import SVProgressHUD
@@ -199,7 +198,7 @@ struct SelfHostedSiteAuthenticator {
             let result = try await handle(
                 credentials: credentials,
                 apiRootURL: apiRootURL,
-                apiDetails: details.apiDetails,
+                apiDiscovery: details,
                 context: context
             )
             trackSuccess(url: details.parsedSiteUrl.url())
@@ -279,7 +278,7 @@ struct SelfHostedSiteAuthenticator {
     private func handle(
         credentials: WpApiApplicationPasswordDetails,
         apiRootURL: URL,
-        apiDetails: WpApiDetails,
+        apiDiscovery: AutoDiscoveryAttemptSuccess,
         context: SignInContext
     ) async throws(SignInError) -> TaggedManagedObjectID<Blog> {
         SVProgressHUD.show()
@@ -294,14 +293,16 @@ struct SelfHostedSiteAuthenticator {
         let blog = try await createSite(
             credentials: credentials,
             apiRootURL: apiRootURL,
-            apiDetails: apiDetails,
+            apiDiscovery: apiDiscovery,
             context: context
         )
 
         switch context {
         case .default:
             NotificationCenter.default.post(
-                name: Foundation.Notification.Name(rawValue: WordPressAuthenticator.WPSigninDidFinishNotification),
+                name: Foundation.Notification.Name(
+                    rawValue: WordPressAuthenticationManager.WPSigninDidFinishNotification
+                ),
                 object: nil
             )
         case .reauthentication:
@@ -332,12 +333,15 @@ struct SelfHostedSiteAuthenticator {
         details: WpApiApplicationPasswordDetails
     ) async throws -> [AnyHashable: Any] {
         try await withCheckedThrowingContinuation { continuation in
-            let api = WordPressXMLRPCAPIFacade()
-            api.getBlogOptions(withEndpoint: xmlrpc, username: details.userLogin, password: details.password) {
-                options in
-                continuation.resume(returning: options ?? [:])
-            } failure: { error in
-                continuation.resume(throwing: error ?? Blog.BlogCredentialsError.incorrectCredentials)
+            let api = WordPressOrgXMLRPCApi(endpoint: xmlrpc, userAgent: nil)
+            api.checkCredentials(details.userLogin, password: details.password) { responseObject, _ in
+                if let options = responseObject as? [AnyHashable: Any] {
+                    continuation.resume(returning: options)
+                } else {
+                    continuation.resume(throwing: WordPressOrgXMLRPCApiError.responseSerializationFailed)
+                }
+            } failure: { error, _ in
+                continuation.resume(throwing: error)
             }
         }
     }
@@ -345,7 +349,7 @@ struct SelfHostedSiteAuthenticator {
     private func createSite(
         credentials: WpApiApplicationPasswordDetails,
         apiRootURL: URL,
-        apiDetails: WpApiDetails,
+        apiDiscovery: AutoDiscoveryAttemptSuccess,
         context: SignInContext
     ) async throws(SignInError) -> TaggedManagedObjectID<Blog> {
         // We still need to set the `Blog.xmlrpc`, because it's used all across the app.
@@ -359,8 +363,8 @@ struct SelfHostedSiteAuthenticator {
         let api = WordPressAPI(
             urlSession: URLSession(configuration: .ephemeral),
             siteInfo: .selfHosted(
-                siteUrl: try! ParsedUrl.parse(input: credentials.siteUrl),
-                apiRoot: try! ParsedUrl.parse(input: apiRootURL.absoluteString)
+                siteUrl: apiDiscovery.parsedSiteUrl,
+                apiRoot: apiDiscovery.apiRootUrl
             ),
             authentication: WpAuthentication(username: credentials.userLogin, password: credentials.password)
         )
@@ -429,12 +433,12 @@ struct SelfHostedSiteAuthenticator {
                     blog.setValue(timezone, forOption: "timezone")
                 }
 
-                if blog.getOptionString(name: "gmt_offset") == nil, let offset = apiDetails.gmtOffset() {
+                if blog.getOptionString(name: "gmt_offset") == nil, let offset = apiDiscovery.apiDetails.gmtOffset() {
                     blog.setValue(offset, forOption: "gmt_offset")
                 }
 
                 if blog.getOptionString(name: "home_url") == nil {
-                    blog.setValue(apiDetails.homeUrlString(), forOption: "home_url")
+                    blog.setValue(apiDiscovery.apiDetails.homeUrlString(), forOption: "home_url")
                 }
             }
 

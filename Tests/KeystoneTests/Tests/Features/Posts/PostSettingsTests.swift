@@ -2,6 +2,7 @@ import Testing
 import Foundation
 import CoreData
 import JetpackSocial
+import SwiftUI
 import WordPressAPIInternal
 @testable import WordPress
 @testable import WordPressData
@@ -150,6 +151,32 @@ struct PostSettingsTests {
         // Then
         #expect(post.wp_slug == originalSlug) // Unchanged
         #expect(post.status == .publish) // Changed
+    }
+
+    @Test("apply preserves stored publicize metadata when social draft is unavailable")
+    func applyPreservesStoredPublicizeMetadataWhenSocialDraftIsUnavailable() throws {
+        let context = ContextManager.forTesting().mainContext
+        let blog = BlogBuilder(context).build()
+        let post = PostBuilder(context, blog: blog).build()
+        post.rawMetadata = try PostMetadataContainer(metadata: [
+            ["key": "_wpas_mess", "value": "Hello", "id": "1"],
+            ["key": "_wpas_skip_publicize_111", "value": "1", "id": "2"],
+            ["key": "_jetpack_newsletter_access", "value": "everybody", "id": "3"]
+        ])
+        .encode()
+
+        var settings = PostSettings(from: post)
+        settings.socialSharingDraft = nil
+
+        settings.apply(to: post)
+
+        // With no draft to apply, the existing publicize metadata is left untouched
+        // (the user's per-connection choices are preserved, not neutralized).
+        let container = PostMetadataContainer(post)
+        #expect(container.getString(for: "_wpas_mess") == "Hello")
+        #expect(container.getString(for: "_wpas_skip_publicize_111") == "1")
+        #expect(container.entry(forKey: "_wpas_skip_publicize_111")?["id"] as? String == "2")
+        #expect(container.getString(for: "_jetpack_newsletter_access") == "everybody")
     }
 
     // MARK: - makeUpdateParameters Tests
@@ -719,6 +746,30 @@ struct PostSettingsTests {
         #expect(settings.socialSharingDraft == expectedDraft)
     }
 
+    @Test("init(from: AnyPostWithEditContext) populates jetpack newsletter access from meta")
+    func initFromRestPopulatesAccessLevel() throws {
+        let meta = PostMeta().addingJetpackNewsletterAccess(.paidSubscribers)
+        let post = makeRemotePost(meta: meta)
+        let settings = PostSettings(from: post)
+        #expect(settings.metadata.accessLevel == .paidSubscribers)
+    }
+
+    @Test("init(from: AnyPostWithEditContext) populates email-disabled flag from meta")
+    func initFromRestPopulatesEmailDisabled() throws {
+        let meta = PostMeta().addingJetpackNewsletterEmailDisabled(true)
+        let post = makeRemotePost(meta: meta)
+        let settings = PostSettings(from: post)
+        #expect(settings.metadata.isJetpackNewsletterEmailDisabled)
+    }
+
+    @Test("init(from: AnyPostWithEditContext) defaults metadata when meta is nil")
+    func initFromRestDefaultsMetadata() throws {
+        let post = makeRemotePost(meta: nil)
+        let settings = PostSettings(from: post)
+        #expect(settings.metadata.accessLevel == nil)
+        #expect(!settings.metadata.isJetpackNewsletterEmailDisabled)
+    }
+
     @Test("apply(to:) converts terms back to name strings")
     func testApplyConvertsTermsToNameStrings() {
         // Given
@@ -1047,20 +1098,102 @@ struct PostSettingsTests {
         #expect(flagsByID == ["1": true, "2": false])
     }
 
+    // MARK: - makeUpdateParameters(from: AnyPostWithEditContext) Newsletter Meta Tests
+
+    @Test("makeUpdateParameters(from: AnyPostWithEditContext) omits meta when newsletter settings unchanged")
+    func updateParamsOmitsMetaWhenUnchanged() throws {
+        let meta = PostMeta()
+            .addingJetpackNewsletterAccess(.subscribers)
+            .addingJetpackNewsletterEmailDisabled(true)
+        let post = makeRemotePost(meta: meta)
+        let settings = PostSettings(from: post)
+        // Sanity: metadata read back correctly.
+        #expect(settings.metadata.accessLevel == .subscribers)
+
+        let params = settings.makeUpdateParameters(from: post)
+        #expect(params.meta?.jetpackNewsletterAccess == nil)
+        #expect(params.meta?.valueForKey(key: "_jetpack_dont_email_post_to_subs") == nil)
+    }
+
+    @Test("makeUpdateParameters(from: AnyPostWithEditContext) writes access level when changed")
+    func updateParamsWritesAccessLevelChange() throws {
+        let post = makeRemotePost(meta: nil)
+        var settings = PostSettings(from: post)
+        settings.metadata.accessLevel = .paidSubscribers
+
+        let params = settings.makeUpdateParameters(from: post)
+        #expect(params.meta?.jetpackNewsletterAccess == .paidSubscribers)
+        // Email-disabled key should NOT be written because it didn't change.
+        #expect(params.meta?.valueForKey(key: "_jetpack_dont_email_post_to_subs") == nil)
+    }
+
+    @Test("makeUpdateParameters(from: AnyPostWithEditContext) writes email-disabled when changed")
+    func updateParamsWritesEmailDisabledChange() throws {
+        let post = makeRemotePost(meta: nil)
+        var settings = PostSettings(from: post)
+        settings.metadata.isJetpackNewsletterEmailDisabled = true
+
+        let params = settings.makeUpdateParameters(from: post)
+        #expect(params.meta?.isJetpackNewsletterEmailDisabled == true)
+        #expect(params.meta?.valueForKey(key: "_jetpack_newsletter_access") == nil)
+    }
+
+    @Test("makeUpdateParameters(from: AnyPostWithEditContext) clears access level when set to nil")
+    func updateParamsClearsAccessLevel() throws {
+        let meta = PostMeta().addingJetpackNewsletterAccess(.subscribers)
+        let post = makeRemotePost(meta: meta)
+        var settings = PostSettings(from: post)
+        settings.metadata.accessLevel = nil
+
+        let params = settings.makeUpdateParameters(from: post)
+        // A nil access level writes `.null` so the server clears the meta.
+        #expect(params.meta?.valueForKey(key: "_jetpack_newsletter_access") == JsonValue.null)
+    }
+
+    // MARK: - makeCreateParameters Newsletter Meta Tests
+
+    @Test("makeCreateParameters emits access level when set")
+    func createParamsEmitsAccessLevel() throws {
+        var settings = PostSettings()
+        settings.metadata.accessLevel = .subscribers
+
+        let params = settings.makeCreateParameters()
+        #expect(params.meta?.jetpackNewsletterAccess == .subscribers)
+    }
+
+    @Test("makeCreateParameters emits email-disabled when true")
+    func createParamsEmitsEmailDisabled() throws {
+        var settings = PostSettings()
+        settings.metadata.isJetpackNewsletterEmailDisabled = true
+
+        let params = settings.makeCreateParameters()
+        #expect(params.meta?.isJetpackNewsletterEmailDisabled == true)
+    }
+
+    @Test("makeCreateParameters omits newsletter meta at defaults")
+    func createParamsOmitsDefaults() throws {
+        let settings = PostSettings()
+        // Defaults: accessLevel nil, isJetpackNewsletterEmailDisabled false.
+
+        let params = settings.makeCreateParameters()
+        #expect(params.meta?.valueForKey(key: "_jetpack_newsletter_access") == nil)
+        #expect(params.meta?.valueForKey(key: "_jetpack_dont_email_post_to_subs") == nil)
+    }
+
     // MARK: - defaults(from: Blog) Tests
 
     @Test("defaults inherits site discussion defaults (closed)")
     func testDefaultsInheritsClosedDiscussion() {
         let context = ContextManager.forTesting().mainContext
         let blog = BlogBuilder(context).with(siteName: "Test").build()
-        blog.settings?.commentsAllowed = false
-        blog.settings?.pingbackInboundEnabled = false
+        blog.settings?.commentsAllowed = NSNumber(value: false)
+        blog.settings?.pingbackInboundEnabled = NSNumber(value: false)
 
         let settings = PostSettings.defaults(from: blog)
         let params = settings.makeCreateParameters(taxonomies: [])
 
-        #expect(!settings.allowComments)
-        #expect(!settings.allowPings)
+        #expect(settings.allowComments == false)
+        #expect(settings.allowPings == false)
         #expect(params.commentStatus == .closed)
         #expect(params.pingStatus == .closed)
     }
@@ -1069,16 +1202,249 @@ struct PostSettingsTests {
     func testDefaultsInheritsOpenDiscussion() {
         let context = ContextManager.forTesting().mainContext
         let blog = BlogBuilder(context).with(siteName: "Test").build()
-        blog.settings?.commentsAllowed = true
-        blog.settings?.pingbackInboundEnabled = true
+        blog.settings?.commentsAllowed = NSNumber(value: true)
+        blog.settings?.pingbackInboundEnabled = NSNumber(value: true)
 
         let settings = PostSettings.defaults(from: blog)
         let params = settings.makeCreateParameters(taxonomies: [])
 
-        #expect(settings.allowComments)
-        #expect(settings.allowPings)
+        #expect(settings.allowComments == true)
+        #expect(settings.allowPings == true)
         #expect(params.commentStatus == .open)
         #expect(params.pingStatus == .open)
+    }
+
+    // MARK: - PostSettings discussion tri-state
+
+    @Test("New AbstractPost with unset comment status yields nil allowComments")
+    func testInitFromNewPostHasUnknownDiscussion() {
+        let context = ContextManager.forTesting().mainContext
+        let blog = BlogBuilder(context).build()
+        let post = PostBuilder(context, blog: blog).build()
+        post.commentsStatus = nil
+        post.pingsStatus = nil
+
+        let settings = PostSettings(from: post)
+
+        #expect(settings.allowComments == nil)
+        #expect(settings.allowPings == nil)
+    }
+
+    @Test("Existing AbstractPost maps stored comment status to non-nil")
+    func testInitFromExistingPostHasKnownDiscussion() {
+        let context = ContextManager.forTesting().mainContext
+        let blog = BlogBuilder(context).build()
+        let post = PostBuilder(context, blog: blog).build()
+        post.commentsStatus = "closed"
+        post.pingsStatus = "open"
+
+        let settings = PostSettings(from: post)
+
+        #expect(settings.allowComments == false)
+        #expect(settings.allowPings == true)
+    }
+
+    @Test("REST post with unset comment status yields nil discussion settings")
+    func testInitFromRestPostHasUnknownDiscussion() {
+        let post = makeRemotePost(commentStatus: nil, pingStatus: nil)
+
+        let settings = PostSettings(from: post)
+
+        #expect(settings.allowComments == nil)
+        #expect(settings.allowPings == nil)
+    }
+
+    @Test("makeCreateParameters omits comment status when unknown")
+    func testMakeCreateParametersOmitsUnknownDiscussion() {
+        var settings = PostSettings()
+        settings.allowComments = nil
+        settings.allowPings = nil
+
+        let params = settings.makeCreateParameters()
+
+        #expect(params.commentStatus == nil)
+        #expect(params.pingStatus == nil)
+    }
+
+    @Test("makeUpdateParameters omits comment/ping status when unknown")
+    func testMakeUpdateParametersOmitsUnknownDiscussion() {
+        let post = makeRemotePost()
+        var settings = PostSettings(from: post)
+        settings.allowComments = nil
+        settings.allowPings = nil
+
+        let params = settings.makeUpdateParameters(from: post)
+
+        #expect(params.commentStatus == nil)
+        #expect(params.pingStatus == nil)
+    }
+
+    @Test("apply leaves stored comment/ping status untouched when unknown")
+    func testApplyLeavesDiscussionUntouchedWhenUnknown() {
+        let context = ContextManager.forTesting().mainContext
+        let blog = BlogBuilder(context).build()
+        let post = PostBuilder(context, blog: blog).build()
+        post.commentsStatus = "closed"
+        post.pingsStatus = "closed"
+
+        var settings = PostSettings(from: post)
+        settings.allowComments = nil
+        settings.allowPings = nil
+        settings.apply(to: post)
+
+        #expect(post.commentsStatus == "closed")
+        #expect(post.pingsStatus == "closed")
+    }
+
+    // MARK: - Blog.createPost() discussion seeding
+
+    @Test("createPost seeds comment/ping status from blog discussion defaults")
+    func testCreatePostSeedsDiscussionDefaults() {
+        let context = ContextManager.forTesting().mainContext
+        let blog = BlogBuilder(context).with(siteName: "Test").build()
+        blog.settings?.commentsAllowed = NSNumber(value: false)
+        blog.settings?.pingbackInboundEnabled = NSNumber(value: true)
+
+        let post = blog.createPost()
+
+        #expect(post.commentsStatus == "closed")
+        #expect(post.pingsStatus == "open")
+    }
+
+    // MARK: - Unreadable site discussion defaults
+
+    @Test("defaults yields nil discussion when site defaults are unreadable")
+    func testDefaultsUnknownWhenSiteDefaultsUnreadable() {
+        let context = ContextManager.forTesting().mainContext
+        let blog = BlogBuilder(context).with(siteName: "Test").build()
+        blog.settings?.commentsAllowed = nil
+        blog.settings?.pingbackInboundEnabled = nil
+
+        let settings = PostSettings.defaults(from: blog)
+
+        #expect(settings.allowComments == nil)
+        #expect(settings.allowPings == nil)
+    }
+
+    @Test("createPost leaves comment status unset when site defaults are unreadable")
+    func testCreatePostNoSeedWhenUnreadable() {
+        let context = ContextManager.forTesting().mainContext
+        let blog = BlogBuilder(context).with(siteName: "Test").build()
+        blog.settings?.commentsAllowed = nil
+        blog.settings?.pingbackInboundEnabled = nil
+
+        let post = blog.createPost()
+
+        #expect(post.commentsStatus == nil)
+        #expect(post.pingsStatus == nil)
+    }
+
+    // MARK: - Discussion row visibility gate (CMM-2077)
+
+    @Test("Discussion row is hidden for a new post with unknown discussion defaults")
+    func testDiscussionRowHiddenWhenDefaultsUnknown() {
+        let context = ContextManager.forTesting().mainContext
+        let blog = BlogBuilder(context).build()
+        let post = PostBuilder(context, blog: blog).build()
+        post.commentsStatus = nil
+        post.pingsStatus = nil
+
+        let viewModel = PostSettingsViewModel(post: post)
+
+        #expect(viewModel.settings.allowComments == nil)
+        #expect(!viewModel.visibleMoreOptions.contains(.discussion))
+    }
+
+    @Test("Discussion row is shown when the post has a known comment status")
+    func testDiscussionRowShownWhenStatusKnown() {
+        let context = ContextManager.forTesting().mainContext
+        let blog = BlogBuilder(context).build()
+        let post = PostBuilder(context, blog: blog).build()
+        post.commentsStatus = "open"
+        post.pingsStatus = "open"
+
+        let viewModel = PostSettingsViewModel(post: post)
+
+        #expect(viewModel.settings.allowComments == true)
+        #expect(viewModel.visibleMoreOptions.contains(.discussion))
+    }
+
+    @Test("Discussion row is shown when only the ping status is known")
+    func testDiscussionRowShownWhenOnlyPingStatusKnown() {
+        let context = ContextManager.forTesting().mainContext
+        let blog = BlogBuilder(context).build()
+        let post = PostBuilder(context, blog: blog).build()
+        post.commentsStatus = nil
+        post.pingsStatus = "open"
+
+        let viewModel = PostSettingsViewModel(post: post)
+
+        #expect(viewModel.settings.allowComments == nil)
+        #expect(viewModel.settings.allowPings == true)
+        #expect(viewModel.visibleMoreOptions.contains(.discussion))
+    }
+
+    @Test("Discussion view only shows sections for known settings")
+    func testDiscussionViewSectionVisibility() {
+        let commentsOnlyView = makeDiscussionView(allowComments: true, allowPings: nil)
+        #expect(commentsOnlyView.showsCommentsSection)
+        #expect(!commentsOnlyView.showsPingsSection)
+
+        let pingsOnlyView = makeDiscussionView(allowComments: nil, allowPings: true)
+        #expect(!pingsOnlyView.showsCommentsSection)
+        #expect(pingsOnlyView.showsPingsSection)
+    }
+
+    // MARK: - Jetpack newsletter row visibility gate (post-type)
+
+    /// Positive control: proves the blog setup actually enables newsletter, so the
+    /// Page assertions below fail for the post-type reason, not a mis-configured blog.
+    @Test("shouldShow .jetpackAccessLevel is true for a Post on a newsletter site")
+    func testAccessLevelShownForPost() throws {
+        let context = ContextManager.forTesting().mainContext
+        let blog = newsletterBlog(context)
+        let post = PostBuilder(context, blog: blog).build()
+        try context.save()
+
+        let viewModel = PostSettingsViewModel(post: post)
+        #expect(viewModel.shouldShow(.jetpackAccessLevel))
+    }
+
+    @Test("shouldShow .jetpackAccessLevel is false for a Page even on a newsletter site")
+    func testAccessLevelHiddenForPage() throws {
+        let context = ContextManager.forTesting().mainContext
+        let blog = newsletterBlog(context)
+        let page = PageBuilder(context).build()
+        page.blog = blog // PageBuilder builds its own accountless blog; move it onto the newsletter-capable one
+        try context.save()
+
+        let viewModel = PostSettingsViewModel(post: page)
+        #expect(!viewModel.shouldShow(.jetpackAccessLevel))
+    }
+
+    /// Positive control for the publishing branch: proves a Post in publishing context
+    /// shows the newsletter row, so the Page assertion below fails for the post-type reason.
+    @Test("shouldShow .jetpackNewsletterEmailOptions is true for a Post in publishing context")
+    func testNewsletterEmailShownForPostInPublishing() throws {
+        let context = ContextManager.forTesting().mainContext
+        let blog = newsletterBlog(context)
+        let post = PostBuilder(context, blog: blog).build()
+        try context.save()
+
+        let viewModel = PostSettingsViewModel(post: post, context: .publishing)
+        #expect(viewModel.shouldShow(.jetpackNewsletterEmailOptions))
+    }
+
+    @Test("shouldShow .jetpackNewsletterEmailOptions is false for a Page in publishing context")
+    func testNewsletterEmailHiddenForPage() throws {
+        let context = ContextManager.forTesting().mainContext
+        let blog = newsletterBlog(context)
+        let page = PageBuilder(context).build()
+        page.blog = blog
+        try context.save()
+
+        let viewModel = PostSettingsViewModel(post: page, context: .publishing)
+        #expect(!viewModel.shouldShow(.jetpackNewsletterEmailOptions))
     }
 }
 
@@ -1090,12 +1456,30 @@ private extension SiteTaxonomy {
     }
 }
 
+private func makeDiscussionView(allowComments: Bool?, allowPings: Bool?) -> PostDiscussionSettingsView {
+    var settings = PostSettings()
+    settings.allowComments = allowComments
+    settings.allowPings = allowPings
+    return PostDiscussionSettingsView(postSettings: .constant(settings))
+}
+
+/// A blog that supports Jetpack newsletter: the "subscriptions" module is what
+/// `Blog.supports(.jetpackNewsletter)` checks for a self-hosted (account-backed) site.
+private func newsletterBlog(_ context: NSManagedObjectContext) -> Blog {
+    BlogBuilder(context)
+        .withAnAccount()
+        .with(modules: ["subscriptions"])
+        .build()
+}
+
 private func makeRemotePost(
     tags: [TermId]? = nil,
     categories: [TermId]? = nil,
     featuredMedia: MediaId? = nil,
     format: PostFormat? = nil,
     meta: PostMeta? = nil,
+    commentStatus: PostCommentStatus? = .open,
+    pingStatus: PostPingStatus? = .open,
     additionalFields: WpAdditionalFields? = nil
 ) -> AnyPostWithEditContext {
     AnyPostWithEditContext(
@@ -1117,8 +1501,8 @@ private func makeRemotePost(
         author: nil,
         excerpt: nil,
         featuredMedia: featuredMedia,
-        commentStatus: .open,
-        pingStatus: .open,
+        commentStatus: commentStatus,
+        pingStatus: pingStatus,
         format: format,
         meta: meta,
         sticky: nil,

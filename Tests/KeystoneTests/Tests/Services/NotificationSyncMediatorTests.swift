@@ -20,7 +20,7 @@ class NotificationSyncMediatorTests: CoreDataTestCase {
     ///
     fileprivate let timeout = TimeInterval(3)
 
-    // MARK: - Overriden Methods
+    // MARK: - Overridden Methods
 
     override func setUp() {
         super.setUp()

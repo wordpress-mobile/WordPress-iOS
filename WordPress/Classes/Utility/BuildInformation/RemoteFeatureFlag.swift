@@ -23,7 +23,6 @@ public enum RemoteFeatureFlag: Int, CaseIterable {
     case domainManagement
     case dynamicDashboardCards
     case plansInSiteCreation
-    case bloganuaryDashboardNudge // pcdRpT-4FE-p2
     case inAppRating
     case siteMonitoring
     case inAppUpdates
@@ -77,8 +76,6 @@ public enum RemoteFeatureFlag: Int, CaseIterable {
             return false
         case .plansInSiteCreation:
             return false
-        case .bloganuaryDashboardNudge:
-            return AppConfiguration.isJetpack
         case .inAppRating:
             return false
         case .siteMonitoring:
@@ -141,8 +138,6 @@ public enum RemoteFeatureFlag: Int, CaseIterable {
             return "dynamic_dashboard_cards"
         case .plansInSiteCreation:
             return "plans_in_site_creation"
-        case .bloganuaryDashboardNudge:
-            return "bloganuary_dashboard_nudge"
         case .inAppRating:
             return "in_app_rating_and_feedback"
         case .siteMonitoring:
@@ -204,8 +199,6 @@ public enum RemoteFeatureFlag: Int, CaseIterable {
             return "Dynamic Dashboard Cards"
         case .plansInSiteCreation:
             return "Plans in Site Creation"
-        case .bloganuaryDashboardNudge:
-            return "Bloganuary Dashboard Nudge"
         case .inAppRating:
             return "In-App Rating and Feedback"
         case .siteMonitoring:
@@ -228,8 +221,10 @@ public enum RemoteFeatureFlag: Int, CaseIterable {
     /// If the flag is overridden, the overridden value is returned.
     /// If the flag exists in the local cache, the current value will be returned.
     /// If the flag is not overridden and does not exist in the local cache, the compile-time default will be returned.
-    func enabled(using remoteStore: RemoteFeatureFlagStore = RemoteFeatureFlagStore(),
-                 overrideStore: FeatureFlagOverrideStore = FeatureFlagOverrideStore()) -> Bool {
+    func enabled(
+        using remoteStore: RemoteFeatureFlagStore = RemoteFeatureFlagStore(),
+        overrideStore: FeatureFlagOverrideStore = FeatureFlagOverrideStore()
+    ) -> Bool {
         if let overriddenValue = overrideStore.overriddenValue(for: self) {
             return overriddenValue
         }
@@ -243,11 +238,11 @@ public enum RemoteFeatureFlag: Int, CaseIterable {
 
 extension RemoteFeatureFlag: OverridableFlag {
     var key: String {
-        return "ff-override-\(String(describing: self))"
+        "ff-override-\(String(describing: self))"
     }
 
     var originalValue: Bool {
-        return enabled()
+        enabled()
     }
 
     var canOverride: Bool {

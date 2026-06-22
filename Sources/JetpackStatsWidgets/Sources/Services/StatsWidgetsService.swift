@@ -1,6 +1,5 @@
 import Foundation
 import CocoaLumberjackSwift
-import SFHFKeychainUtils
 import BuildSettingsKit
 import WordPressKit
 import JetpackStatsWidgetsCore
@@ -29,8 +28,10 @@ class StatsWidgetsService {
 
     private var state: State = .ready
 
-    func fetchStats(for widgetData: HomeWidgetData,
-                    completion: @escaping (Result<ResultType, Error>) -> Void) {
+    func fetchStats(
+        for widgetData: HomeWidgetData,
+        completion: @escaping (Result<ResultType, Error>) -> Void
+    ) {
 
         guard !state.isLoading else {
             return
@@ -48,8 +49,10 @@ class StatsWidgetsService {
         }
     }
 
-    private func fetchTodayStats(widgetData: HomeWidgetTodayData,
-                                 completion: @escaping (Result<ResultType, Error>) -> Void) {
+    private func fetchTodayStats(
+        widgetData: HomeWidgetTodayData,
+        completion: @escaping (Result<ResultType, Error>) -> Void
+    ) {
 
         getInsight(widgetData: widgetData) { [weak self] (insight: StatsTodayInsight?, error) in
             guard let self else {
@@ -68,15 +71,19 @@ class StatsWidgetsService {
                 return
             }
 
-            let newWidgetData = HomeWidgetTodayData(siteID: widgetData.siteID,
-                                                    siteName: widgetData.siteName,
-                                                    url: widgetData.url,
-                                                    timeZone: widgetData.timeZone,
-                                                    date: Date(),
-                                                    stats: TodayWidgetStats(views: insight.viewsCount,
-                                                                            visitors: insight.visitorsCount,
-                                                                            likes: insight.likesCount,
-                                                                            comments: insight.commentsCount))
+            let newWidgetData = HomeWidgetTodayData(
+                siteID: widgetData.siteID,
+                siteName: widgetData.siteName,
+                url: widgetData.url,
+                timeZone: widgetData.timeZone,
+                date: Date(),
+                stats: TodayWidgetStats(
+                    views: insight.viewsCount,
+                    visitors: insight.visitorsCount,
+                    likes: insight.likesCount,
+                    comments: insight.commentsCount
+                )
+            )
             completion(.success(newWidgetData))
             DispatchQueue.main.async {
                 // update the item in the local cache
@@ -86,8 +93,10 @@ class StatsWidgetsService {
         }
     }
 
-    private func fetchAllTimeStats(widgetData: HomeWidgetAllTimeData,
-                                   completion: @escaping (Result<ResultType, Error>) -> Void) {
+    private func fetchAllTimeStats(
+        widgetData: HomeWidgetAllTimeData,
+        completion: @escaping (Result<ResultType, Error>) -> Void
+    ) {
 
         getInsight(widgetData: widgetData) { [weak self] (insight: StatsAllTimesInsight?, error) in
 
@@ -101,16 +110,20 @@ class StatsWidgetsService {
                 return
             }
 
-            let newWidgetData = HomeWidgetAllTimeData(siteID: widgetData.siteID,
-                                                      siteName: widgetData.siteName,
-                                                      url: widgetData.url,
-                                                      timeZone: widgetData.timeZone,
-                                                      date: Date(),
-                                                      stats: AllTimeWidgetStats(views:
-                                                                                    insight?.viewsCount,
-                                                                                visitors: insight?.visitorsCount,
-                                                                                posts: insight?.postsCount,
-                                                                                bestViews: insight?.bestViewsPerDayCount))
+            let newWidgetData = HomeWidgetAllTimeData(
+                siteID: widgetData.siteID,
+                siteName: widgetData.siteName,
+                url: widgetData.url,
+                timeZone: widgetData.timeZone,
+                date: Date(),
+                stats: AllTimeWidgetStats(
+                    views:
+                        insight?.viewsCount,
+                    visitors: insight?.visitorsCount,
+                    posts: insight?.postsCount,
+                    bestViews: insight?.bestViewsPerDayCount
+                )
+            )
             completion(.success(newWidgetData))
             DispatchQueue.main.async {
                 // update the item in the local cache
@@ -120,25 +133,31 @@ class StatsWidgetsService {
         }
     }
 
-    private func fetchThisWeekStats(widgetData: HomeWidgetThisWeekData,
-                                    completion: @escaping (Result<ResultType, Error>) -> Void) {
+    private func fetchThisWeekStats(
+        widgetData: HomeWidgetThisWeekData,
+        completion: @escaping (Result<ResultType, Error>) -> Void
+    ) {
 
         // Get the current date in the site's time zone.
         let siteTimeZone = widgetData.timeZone
         let weekEndingDate = Date().convert(from: siteTimeZone).normalizedDate()
 
         // Include an extra day. It's needed to get the dailyChange for the last day.
-        getData(widgetData: widgetData,
-                for: .day,
-                endingOn: weekEndingDate,
-                limit: ThisWeekWidgetStats.maxDaysToDisplay + 1) { [weak self] (summary: StatsSummaryTimeIntervalData?, error: Error?) in
+        getData(
+            widgetData: widgetData,
+            for: .day,
+            endingOn: weekEndingDate,
+            limit: ThisWeekWidgetStats.maxDaysToDisplay + 1
+        ) { [weak self] (summary: StatsSummaryTimeIntervalData?, error: Error?) in
 
             guard let self else {
                 return
             }
 
             if let error {
-                DDLogError("This Week Widget: Error fetching summary: \(String(describing: error.localizedDescription))")
+                DDLogError(
+                    "This Week Widget: Error fetching summary: \(String(describing: error.localizedDescription))"
+                )
                 completion(.failure(error))
                 self.state = .error
                 return
@@ -156,16 +175,18 @@ class StatsWidgetsService {
                         summaryData: summaryData.map {
                             ThisWeekWidgetStats.Input(
                                 periodStartDate: $0.periodStartDate,
-                                viewsCount: $0.viewsCount)
+                                viewsCount: $0.viewsCount
+                            )
                         }
                     )
                 )
             )
             completion(.success(newWidgetData))
 
-            DispatchQueue.global().async {
-                HomeWidgetThisWeekData.setItem(item: newWidgetData)
-            }
+            DispatchQueue.global()
+                .async {
+                    HomeWidgetThisWeekData.setItem(item: newWidgetData)
+                }
             self.state = .ready
         }
     }
@@ -190,10 +211,14 @@ private extension StatsWidgetsService {
     ) {
         do {
             self.service = try createStatsService(for: widgetData)
-            self.service?.getInsight(limit: limit, completion: { [weak self] in
-                completion($0, $1)
-                self?.service = nil
-            })
+            self.service?
+                .getInsight(
+                    limit: limit,
+                    completion: { [weak self] in
+                        completion($0, $1)
+                        self?.service = nil
+                    }
+                )
         } catch {
             completion(nil, error)
             self.state = .error
@@ -210,10 +235,17 @@ private extension StatsWidgetsService {
     ) {
         do {
             self.service = try createStatsService(for: widgetData)
-            self.service?.getData(for: period, unit: unit, endingOn: endingOn, limit: limit, completion: { [weak self] in
-                completion($0, $1)
-                self?.service = nil
-            })
+            self.service?
+                .getData(
+                    for: period,
+                    unit: unit,
+                    endingOn: endingOn,
+                    limit: limit,
+                    completion: { [weak self] in
+                        completion($0, $1)
+                        self?.service = nil
+                    }
+                )
         } catch {
             completion(nil, error)
             self.state = .error
@@ -221,12 +253,16 @@ private extension StatsWidgetsService {
     }
 
     private func createStatsService(for widgetData: HomeWidgetData) throws -> StatsServiceRemoteV2 {
-        let token = try SFHFKeychainUtils.getPasswordForUsername(
-            WidgetStatsConfiguration.keychainTokenKey,
-            andServiceName: WidgetStatsConfiguration.keychainServiceName,
-            accessGroup: BuildSettings.current.appKeychainAccessGroup
-        )
+        let token = try AppKeychain()
+            .getPassword(
+                for: WidgetStatsConfiguration.keychainTokenKey,
+                serviceName: WidgetStatsConfiguration.keychainServiceName
+            )
         let wpApi = WordPressComRestApi(oAuthToken: token)
-        return StatsServiceRemoteV2(wordPressComRestApi: wpApi, siteID: widgetData.siteID, siteTimezone: widgetData.timeZone)
+        return StatsServiceRemoteV2(
+            wordPressComRestApi: wpApi,
+            siteID: widgetData.siteID,
+            siteTimezone: widgetData.timeZone
+        )
     }
 }

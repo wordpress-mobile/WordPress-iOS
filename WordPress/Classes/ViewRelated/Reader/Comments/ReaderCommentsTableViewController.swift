@@ -3,7 +3,9 @@ import CoreData
 import WordPressData
 import WordPressUI
 
-final class ReaderCommentsTableViewController: UIViewController, UITableViewDataSource, UITableViewDelegate, NSFetchedResultsControllerDelegate {
+final class ReaderCommentsTableViewController: UIViewController, UITableViewDataSource, UITableViewDelegate,
+    NSFetchedResultsControllerDelegate
+{ // swiftlint:disable:this opening_brace
     @objc let tableView = UITableView(frame: .zero, style: .plain)
     private let padingFooterView = PagingFooterView(state: .loading)
     private lazy var fetchResultsController = makeFetchResultsController()
@@ -80,8 +82,10 @@ final class ReaderCommentsTableViewController: UIViewController, UITableViewData
         }
         let current = traitCollection
 
-        guard previous.horizontalSizeClass != current.horizontalSizeClass ||
-                previous.preferredContentSizeCategory != current.preferredContentSizeCategory else {
+        guard
+            previous.horizontalSizeClass != current.horizontalSizeClass
+                || previous.preferredContentSizeCategory != current.preferredContentSizeCategory
+        else {
             return
         }
 
@@ -101,27 +105,53 @@ final class ReaderCommentsTableViewController: UIViewController, UITableViewData
 
     func scrollToComment(withID commentID: NSNumber, animated: Bool) -> Bool {
         let comments = fetchResultsController.fetchedObjects ?? []
-        guard let comment = comments.first(where: { $0.commentID == commentID.int32Value }) else {
+        guard comments.contains(where: { $0.commentID == commentID.int32Value }) else {
             return false
+        }
+        if let indexPath = revealComment(withID: commentID.int32Value, animated: animated) {
+            containerViewController?.highlightCommentCell(at: indexPath)
+        }
+        return true
+    }
+
+    /// Scrolls to the comment with the given ID, resolving its index path from the fetched
+    /// results controller at call time, and returns that index path (or `nil` when the comment
+    /// is no longer in the table or its row is out of bounds).
+    ///
+    /// Resolving by comment ID on every call, rather than reusing a previously captured index
+    /// path, keeps the scroll safe when a background sync purges comments between navigation and
+    /// reveal. A stale index path would otherwise reference an out-of-bounds row and crash
+    /// `scrollToRow(at:)` with an `NSRangeException`.
+    @discardableResult
+    func revealComment(withID commentID: Int32, animated: Bool) -> IndexPath? {
+        guard let indexPath = indexPath(forCommentWithID: commentID) else {
+            return nil
         }
 
         // Force the table view to be laid out first before scrolling to indexPath.
         // This avoids a case where a cell instance could be orphaned and displayed randomly on top of the other cells.
-        guard let indexPath = fetchResultsController.indexPath(forObject: comment) else {
-            return false
-        }
         tableView.layoutIfNeeded()
 
         // Ensure that the indexPath exists before scrolling to it.
-        if indexPath.section >= 0,
-           indexPath.row >= 0,
-           indexPath.section < tableView.numberOfSections,
-           indexPath.row < tableView.numberOfRows(inSection: indexPath.section) {
-            tableView.scrollToRow(at: indexPath, at: .top, animated: true)
-            containerViewController?.highlightCommentCell(at: indexPath)
+        guard indexPath.section >= 0,
+            indexPath.row >= 0,
+            indexPath.section < tableView.numberOfSections,
+            indexPath.row < tableView.numberOfRows(inSection: indexPath.section)
+        else {
+            return nil
         }
+        tableView.scrollToRow(at: indexPath, at: .top, animated: animated)
+        return indexPath
+    }
 
-        return true
+    /// The current index path of the comment with the given ID, resolved from the fetched
+    /// results controller, or `nil` if it is not currently loaded.
+    func indexPath(forCommentWithID commentID: Int32) -> IndexPath? {
+        guard let comment = (fetchResultsController.fetchedObjects ?? []).first(where: { $0.commentID == commentID })
+        else {
+            return nil
+        }
+        return fetchResultsController.indexPath(forObject: comment)
     }
 
     @objc func setBottomInset(_ inset: CGFloat) {
@@ -142,12 +172,21 @@ final class ReaderCommentsTableViewController: UIViewController, UITableViewData
 
     private func makeFetchResultsController() -> NSFetchedResultsController<Comment> {
         let request = NSFetchRequest<Comment>(entityName: Comment.entityName())
-        request.predicate = NSPredicate(format: "post = %@ AND status = %@ AND visibleOnReader = YES", post, CommentStatusType.approved.description)
+        request.predicate = NSPredicate(
+            format: "post = %@ AND status = %@ AND visibleOnReader = YES",
+            post,
+            CommentStatusType.approved.description
+        )
         request.sortDescriptors = [
             NSSortDescriptor(keyPath: \Comment.hierarchy, ascending: true)
         ]
         request.fetchBatchSize = 40
-        return NSFetchedResultsController(fetchRequest: request, managedObjectContext: moc, sectionNameKeyPath: nil, cacheName: nil)
+        return NSFetchedResultsController(
+            fetchRequest: request,
+            managedObjectContext: moc,
+            sectionNameKeyPath: nil,
+            cacheName: nil
+        )
     }
 
     // MARK: - NSFetchedResultsControllerDelegate
@@ -156,7 +195,13 @@ final class ReaderCommentsTableViewController: UIViewController, UITableViewData
         tableView.beginUpdates()
     }
 
-    func controller(_ controller: NSFetchedResultsController<NSFetchRequestResult>, didChange anObject: Any, at indexPath: IndexPath?, for type: NSFetchedResultsChangeType, newIndexPath: IndexPath?) {
+    func controller(
+        _ controller: NSFetchedResultsController<NSFetchRequestResult>,
+        didChange anObject: Any,
+        at indexPath: IndexPath?,
+        for type: NSFetchedResultsChangeType,
+        newIndexPath: IndexPath?
+    ) {
         switch type {
         case .insert:
             guard let newIndexPath else { return }
@@ -189,11 +234,14 @@ final class ReaderCommentsTableViewController: UIViewController, UITableViewData
     }
 
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCell(withIdentifier: commentCellReuseID, for: indexPath) as! CommentContentTableViewCell
+        let cell =
+            tableView.dequeueReusableCell(withIdentifier: commentCellReuseID, for: indexPath)
+            as! CommentContentTableViewCell
         cell.selectionStyle = .none
         let comment = fetchResultsController.object(at: indexPath)
         let viewModel = makeCellViewModel(comment: comment)
-        containerViewController?.configureContentCell(cell, viewModel: viewModel, indexPath: indexPath, tableView: tableView)
+        containerViewController?
+            .configureContentCell(cell, viewModel: viewModel, indexPath: indexPath, tableView: tableView)
         return cell
     }
 

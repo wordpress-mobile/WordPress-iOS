@@ -1,15 +1,13 @@
 import UIKit
-import WordPressAuthenticator
 import WordPressUI
 
 class TextWithAccessoryButtonCell: WPReusableTableViewCell, NibLoadable {
     var buttonText: String? {
         get {
-            return button?.title(for: .normal)
+            button?.configuration?.title
         }
         set {
-            button?.setTitle(newValue, for: .normal)
-            button?.sizeToFit()
+            button?.configuration?.title = newValue
         }
     }
 
@@ -19,7 +17,7 @@ class TextWithAccessoryButtonCell: WPReusableTableViewCell, NibLoadable {
         }
     }
     @IBOutlet private var secondaryLabel: UILabel?
-    @IBOutlet public private(set) var button: NUXButton?
+    @IBOutlet public private(set) var button: UIButton?
 
     var onButtonTap: (() -> Void)?
 
@@ -55,16 +53,16 @@ class TextWithAccessoryButtonCell: WPReusableTableViewCell, NibLoadable {
 
     override func prepareForReuse() {
         super.prepareForReuse()
-        button?.showActivityIndicator(false)
+        button?.setActivityIndicatorVisible(false)
     }
 }
 
 private extension TextWithAccessoryButtonCell {
     func initialSetup() {
-        button?.isPrimary = true
+        button?.configureAsPrimaryNUXButton()
     }
 
-    @IBAction func buttonTapped(_ button: NUXButton) {
+    @IBAction func buttonTapped(_ button: UIButton) {
         onButtonTap?()
     }
 }

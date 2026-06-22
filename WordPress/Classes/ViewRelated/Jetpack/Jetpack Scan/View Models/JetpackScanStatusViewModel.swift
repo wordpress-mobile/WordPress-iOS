@@ -1,3 +1,4 @@
+import WordPressKit
 import WordPressShared
 
 struct JetpackScanStatusViewModel {
@@ -31,7 +32,9 @@ struct JetpackScanStatusViewModel {
         case .noThreats:
             let descriptionTitle: String
 
-            if let mostRecent = scan.mostRecent, let startDate = mostRecent.startDate, let duration = mostRecent.duration {
+            if let mostRecent = scan.mostRecent, let startDate = mostRecent.startDate,
+                let duration = mostRecent.duration
+            {
                 // Calculate the end date of the scan which is the start date + the duration
                 let lastScanDate = startDate.addingTimeInterval(duration)
                 let dateString = Self.relativeTimeString(for: lastScanDate)
@@ -79,10 +82,14 @@ struct JetpackScanStatusViewModel {
                     secondaryButtonAction = .triggerScan
 
                     if !scan.hasValidCredentials {
-                        let warningString = String(format: Strings.enterServerCredentialsFormat,
-                                                   Strings.enterServerCredentialsSubstring)
-                        warningButtonTitle = HighlightedText(substring: Strings.enterServerCredentialsSubstring,
-                                                             string: warningString)
+                        let warningString = String(
+                            format: Strings.enterServerCredentialsFormat,
+                            Strings.enterServerCredentialsSubstring
+                        )
+                        warningButtonTitle = HighlightedText(
+                            substring: Strings.enterServerCredentialsSubstring,
+                            string: warningString
+                        )
                         warningButtonAction = .enterServerCredentials
 
                         primaryButtonEnabled = false
@@ -228,34 +235,86 @@ struct JetpackScanStatusViewModel {
 
     // MARK: - Localized Strings
     private struct Strings {
-        static let enterServerCredentialsSubstring = NSLocalizedString("Enter your server credentials", comment: "Error message displayed when site credentials aren't configured.")
-        static let enterServerCredentialsFormat = NSLocalizedString("%1$@ to fix threats.", comment: "Title for button when a site is missing server credentials. %1$@ is a placeholder for the string 'Enter your server credentials'.")
-        static let noThreatsTitle = NSLocalizedString("Don’t worry about a thing", comment: "Title for label when there are no threats on the users site")
-        static let noThreatsDescriptionFormat = NSLocalizedString("The last Jetpack scan ran %1$@ and did not find any risks.\n\nTo review your site again run a manual scan, or wait for Jetpack to scan your site later today.", comment: "Description for label when there are no threats on a users site and how long ago the scan ran.")
-        static let noThreatsDescription = NSLocalizedString("The last jetpack scan did not find any risks.\n\nTo review your site again run a manual scan, or wait for Jetpack to scan your site later today.",
-                                                            comment: "Description that informs for label when there are no threats on a users site")
+        static let enterServerCredentialsSubstring = NSLocalizedString(
+            "Enter your server credentials",
+            comment: "Error message displayed when site credentials aren't configured."
+        )
+        static let enterServerCredentialsFormat = NSLocalizedString(
+            "%1$@ to fix threats.",
+            comment:
+                "Title for button when a site is missing server credentials. %1$@ is a placeholder for the string 'Enter your server credentials'."
+        )
+        static let noThreatsTitle = NSLocalizedString(
+            "Don’t worry about a thing",
+            comment: "Title for label when there are no threats on the users site"
+        )
+        static let noThreatsDescriptionFormat = NSLocalizedString(
+            "The last Jetpack scan ran %1$@ and did not find any risks.\n\nTo review your site again run a manual scan, or wait for Jetpack to scan your site later today.",
+            comment: "Description for label when there are no threats on a users site and how long ago the scan ran."
+        )
+        static let noThreatsDescription = NSLocalizedString(
+            "The last jetpack scan did not find any risks.\n\nTo review your site again run a manual scan, or wait for Jetpack to scan your site later today.",
+            comment: "Description that informs for label when there are no threats on a users site"
+        )
 
-        static let hasThreatsTitle = NSLocalizedString("Your site may be at risk", comment: "Title for label when there are threats on the users site")
-        static let hasThreatsDescriptionFormat = NSLocalizedString("Jetpack Scan found %1$d potential threats with %2$@. Please review them below and take action or tap the fix all button. We are here to help if you need us.", comment: "Description for a label when there are threats on the site, displays the number of threats, and the site's title")
-        static let hasSingleThreatDescriptionFormat = NSLocalizedString("Jetpack Scan found 1 potential threat with %1$@. Please review them below and take action or tap the fix all button. We are here to help if you need us.", comment: "Description for a label when there is a single threat on the site, displays the site's title")
+        static let hasThreatsTitle = NSLocalizedString(
+            "Your site may be at risk",
+            comment: "Title for label when there are threats on the users site"
+        )
+        static let hasThreatsDescriptionFormat = NSLocalizedString(
+            "Jetpack Scan found %1$d potential threats with %2$@. Please review them below and take action or tap the fix all button. We are here to help if you need us.",
+            comment:
+                "Description for a label when there are threats on the site, displays the number of threats, and the site's title"
+        )
+        static let hasSingleThreatDescriptionFormat = NSLocalizedString(
+            "Jetpack Scan found 1 potential threat with %1$@. Please review them below and take action or tap the fix all button. We are here to help if you need us.",
+            comment: "Description for a label when there is a single threat on the site, displays the site's title"
+        )
 
-        static let preparingTitle = NSLocalizedString("Preparing to scan", comment: "Title for label when the preparing to scan the users site")
-        static let scanningTitle = NSLocalizedString("Scanning files", comment: "Title for label when the actively scanning the users site")
-        static let scanningDescription = NSLocalizedString("We will send you an email if security threats are found. In the meantime feel free to continue to use your site as normal, you can check back on progress at any time.", comment: "Description for label when the actively scanning the users site")
+        static let preparingTitle = NSLocalizedString(
+            "Preparing to scan",
+            comment: "Title for label when the preparing to scan the users site"
+        )
+        static let scanningTitle = NSLocalizedString(
+            "Scanning files",
+            comment: "Title for label when the actively scanning the users site"
+        )
+        static let scanningDescription = NSLocalizedString(
+            "We will send you an email if security threats are found. In the meantime feel free to continue to use your site as normal, you can check back on progress at any time.",
+            comment: "Description for label when the actively scanning the users site"
+        )
 
-        static let errorTitle = NSLocalizedString("Something went wrong", comment: "Title for a label that appears when the scan failed")
-        static let errorDescription = NSLocalizedString("Jetpack Scan couldn't complete a scan of your site. Please check to see if your site is down – if it's not, try again. If it is, or if Jetpack Scan is still having problems, contact our support team.", comment: "Description for a label when the scan has failed")
+        static let errorTitle = NSLocalizedString(
+            "Something went wrong",
+            comment: "Title for a label that appears when the scan failed"
+        )
+        static let errorDescription = NSLocalizedString(
+            "Jetpack Scan couldn't complete a scan of your site. Please check to see if your site is down – if it's not, try again. If it is, or if Jetpack Scan is still having problems, contact our support team.",
+            comment: "Description for a label when the scan has failed"
+        )
 
         struct fixing {
-            static let title = NSLocalizedString("Fixing Threats", comment: "Subtitle displayed while the server is fixing threats")
-            static let details = NSLocalizedString("We're hard at work in the background fixing these threats. In the meantime feel free to continue to use your site as normal, you can check back on progress at any time.", comment: "Detail text display informing the user that we're fixing threats")
+            static let title = NSLocalizedString(
+                "Fixing Threats",
+                comment: "Subtitle displayed while the server is fixing threats"
+            )
+            static let details = NSLocalizedString(
+                "We're hard at work in the background fixing these threats. In the meantime feel free to continue to use your site as normal, you can check back on progress at any time.",
+                comment: "Detail text display informing the user that we're fixing threats"
+            )
         }
 
         // Buttons
-        static let contactSupportTitle = NSLocalizedString("Contact Support", comment: "Button title that opens the support page")
+        static let contactSupportTitle = NSLocalizedString(
+            "Contact Support",
+            comment: "Button title that opens the support page"
+        )
         static let retryScanTitle = NSLocalizedString("Retry Scan", comment: "Button title that triggers a scan")
         static let scanNowTitle = NSLocalizedString("Scan Now", comment: "Button title that triggers a scan")
         static let scanAgainTitle = NSLocalizedString("Scan Again", comment: "Button title that triggers a scan")
-        static let fixAllTitle = NSLocalizedString("Fix All", comment: "Button title that attempts to fix all fixable threats")
+        static let fixAllTitle = NSLocalizedString(
+            "Fix All",
+            comment: "Button title that attempts to fix all fixable threats"
+        )
     }
 }

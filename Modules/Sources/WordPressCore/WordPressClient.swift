@@ -270,10 +270,28 @@ public actor WordPressClient {
         }
     }
 
+    /// Returns whether the current user has the specified capability.
+    ///
+    /// Uses the cached current user data, so this typically does not trigger a network request.
+    ///
+    /// - Parameter capability: The capability to check.
+    /// - Returns: `true` if the user has the capability, `false` otherwise.
+    public func currentUserCan(_ capability: UserCapability) async throws -> Bool {
+        let user = try await fetchCurrentUser()
+        return user.capabilities.hasCap(capability: capability)
+    }
+
     /// Fetches the site settings, using the cached value if available.
     ///
     /// If the cached task has failed, creates a new task and retries the fetch.
-    public func fetchSiteSettings() async throws -> SiteSettingsWithEditContext {
+    /// Pass `forceRefresh: true` to bypass the cache and refetch from the server —
+    /// callers should do this when they know the server-side settings may have changed
+    /// outside this client (e.g. on pull-to-refresh).
+    public func fetchSiteSettings(forceRefresh: Bool = false) async throws -> SiteSettingsWithEditContext {
+        if forceRefresh {
+            self.loadSiteSettingsTask = newSiteSettingsTask()
+            return try await self.loadSiteSettingsTask.value
+        }
         switch await self.loadSiteSettingsTask.result {
         case .success(let settings): return settings
         case .failure:

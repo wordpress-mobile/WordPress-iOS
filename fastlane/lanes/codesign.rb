@@ -156,7 +156,7 @@ def update_code_signing_app_store(readonly:, app_identifiers:)
 end
 
 def update_code_signing(type:, team_id:, readonly:, app_identifiers:, api_key_path:)
-  # NOTE: It might be neccessary to add `force: true` alongside `readonly: true` in order to regenerate some provisioning profiles.
+  # NOTE: It might be necessary to add `force: true` alongside `readonly: true` in order to regenerate some provisioning profiles.
   # If this turns out to be a hard requirement, we should consider updating the method with logic to toggle the two setting based on whether we're fetching or renewing.
   match(
     type: type,

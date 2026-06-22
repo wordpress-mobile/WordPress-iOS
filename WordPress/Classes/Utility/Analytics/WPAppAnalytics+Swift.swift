@@ -127,13 +127,9 @@ public struct MediaAnalyticsInfo {
         self.selectionMethod = selectionMethod
     }
 
-    func eventForMediaType(_ mediaType: MediaType) -> WPAnalyticsEvent? {
-        return origin.eventForMediaType(mediaType)
-    }
-
     // Old tracking events via WPShared
     func wpsharedEventForMediaType(_ mediaType: MediaType) -> WPAnalyticsStat? {
-        return origin.wpsharedEventForMediaType(mediaType)
+        origin.wpsharedEventForMediaType(mediaType)
     }
 
     var retryEvent: WPAnalyticsStat? {
@@ -181,22 +177,6 @@ public enum MediaSelectionMethod: CustomStringConvertible {
 enum MediaUploadOrigin {
     case mediaLibrary(MediaSource)
     case editor(MediaSource)
-
-    // All new media tracking events will be added into WPAnalyticsEvent
-    func eventForMediaType(_ mediaType: MediaType) -> WPAnalyticsEvent? {
-        switch (self, mediaType) {
-        // Media Library
-        case (.mediaLibrary(let source), .image) where source == .tenor:
-            return .mediaLibraryAddedPhotoViaTenor
-
-        // Editor
-        case (.editor(let source), .image) where source == .tenor:
-            return .editorAddedPhotoViaTenor
-
-        default:
-            return nil
-        }
-    }
 
     // This is for the previous events created within WordPressShared
     func wpsharedEventForMediaType(_ mediaType: MediaType) -> WPAnalyticsStat? {
@@ -248,6 +228,5 @@ enum MediaSource {
     case stockPhotos
     case camera
     case mediaEditor
-    case tenor
     case imagePlayground
 }

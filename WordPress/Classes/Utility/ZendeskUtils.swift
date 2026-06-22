@@ -1,6 +1,5 @@
 import Foundation
 import BuildSettingsKit
-import WordPressAuthenticator
 import WordPressData
 import WordPressKit
 import WordPressShared
@@ -61,7 +60,7 @@ class ZendeskUtils: NSObject, ZendeskUtilsProtocol {
 
     // MARK: - Private Properties
 
-    private var sourceTag: WordPressSupportSourceTag?
+    private var sourceTag: SupportSourceTag?
 
     private var userName: String?
     private var userEmail: String? {
@@ -140,7 +139,7 @@ class ZendeskUtils: NSObject, ZendeskUtilsProtocol {
     /// Displays the Zendesk New Request view from the given controller, for users to submit new tickets.
     /// If the user's identity (i.e. contact info) was updated, inform the caller in the `identityUpdated` completion block.
     ///
-    func showNewRequestIfPossible(from controller: UIViewController, with sourceTag: WordPressSupportSourceTag? = nil, identityUpdated: ((Bool) -> Void)? = nil) {
+    func showNewRequestIfPossible(from controller: UIViewController, with sourceTag: SupportSourceTag? = nil, identityUpdated: ((Bool) -> Void)? = nil) {
 
         presentInController = controller
 
@@ -165,7 +164,7 @@ class ZendeskUtils: NSObject, ZendeskUtilsProtocol {
     /// Displays the Zendesk Request List view from the given controller, allowing user to access their tickets.
     /// If the user's identity (i.e. contact info) was updated, inform the caller in the `identityUpdated` completion block.
     ///
-    func showTicketListIfPossible(from controller: UIViewController, with sourceTag: WordPressSupportSourceTag? = nil, identityUpdated: ((Bool) -> Void)? = nil) {
+    func showTicketListIfPossible(from controller: UIViewController, with sourceTag: SupportSourceTag? = nil, identityUpdated: ((Bool) -> Void)? = nil) {
 
         presentInController = controller
 

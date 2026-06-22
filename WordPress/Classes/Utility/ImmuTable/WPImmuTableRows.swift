@@ -15,7 +15,16 @@ struct NavigationItemRow: ImmuTableRow {
     let accessibilityIdentifier: String?
     let loading: Bool
 
-    init(title: String, detail: String? = nil, icon: UIImage? = nil, tintColor: UIColor? = nil, accessoryType: UITableViewCell.AccessoryType = .disclosureIndicator, action: @escaping ImmuTableAction, accessibilityIdentifier: String? = nil, loading: Bool = false) {
+    init(
+        title: String,
+        detail: String? = nil,
+        icon: UIImage? = nil,
+        tintColor: UIColor? = nil,
+        accessoryType: UITableViewCell.AccessoryType = .disclosureIndicator,
+        action: @escaping ImmuTableAction,
+        accessibilityIdentifier: String? = nil,
+        loading: Bool = false
+    ) {
         self.title = title
         self.detail = detail
         self.icon = icon
@@ -56,7 +65,14 @@ struct IndicatorNavigationItemRow: ImmuTableRow {
     let accessoryType: UITableViewCell.AccessoryType
     let action: ImmuTableAction?
 
-    init(title: String, icon: UIImage? = nil, tintColor: UIColor?, showIndicator: Bool = false, accessoryType: UITableViewCell.AccessoryType = .disclosureIndicator, action: @escaping ImmuTableAction) {
+    init(
+        title: String,
+        icon: UIImage? = nil,
+        tintColor: UIColor?,
+        showIndicator: Bool = false,
+        accessoryType: UITableViewCell.AccessoryType = .disclosureIndicator,
+        action: @escaping ImmuTableAction
+    ) {
         self.title = title
         self.icon = icon
         self.tintColor = tintColor
@@ -88,7 +104,13 @@ struct EditableTextRow: ImmuTableRow {
     let action: ImmuTableAction?
     let fieldName: String?
 
-    init(title: String, value: String, accessoryImage: UIImage? = nil, action: ImmuTableAction?, fieldName: String? = nil) {
+    init(
+        title: String,
+        value: String,
+        accessoryImage: UIImage? = nil,
+        action: ImmuTableAction?,
+        fieldName: String? = nil
+    ) {
         self.title = title
         self.value = value
         self.accessoryImage = accessoryImage
@@ -102,7 +124,10 @@ struct EditableTextRow: ImmuTableRow {
         cell.accessibilityLabel = title
         cell.accessibilityValue = value
         if cell.isUserInteractionEnabled {
-            cell.accessibilityHint = NSLocalizedString("Tap to edit", comment: "Accessibility hint prompting the user to tap a table row to edit its value.")
+            cell.accessibilityHint = NSLocalizedString(
+                "Tap to edit",
+                comment: "Accessibility hint prompting the user to tap a table row to edit its value."
+            )
         }
         cell.accessoryType = .disclosureIndicator
         if accessoryImage != nil {
@@ -250,7 +275,12 @@ struct BrandedNavigationRow: ImmuTableRow {
     let action: ImmuTableAction?
     let accessibilityIdentifier: String?
 
-    init(title: String, action: @escaping ImmuTableAction, showIndicator: Bool = false, accessibilityIdentifier: String? = nil) {
+    init(
+        title: String,
+        action: @escaping ImmuTableAction,
+        showIndicator: Bool = false,
+        accessibilityIdentifier: String? = nil
+    ) {
         self.title = title
         self.showIndicator = showIndicator
         self.action = action
@@ -319,7 +349,7 @@ struct TextWithButtonRow: ImmuTableRow {
     typealias CellType = TextWithAccessoryButtonCell
 
     static let cell: ImmuTableCell = {
-        return ImmuTableCell.nib(TextWithAccessoryButtonCell.defaultNib, CellType.self)
+        ImmuTableCell.nib(TextWithAccessoryButtonCell.defaultNib, CellType.self)
     }()
 
     let title: String
@@ -343,7 +373,7 @@ struct TextWithButtonIndicatingActivityRow: ImmuTableRow {
     typealias CellType = TextWithAccessoryButtonCell
 
     static let cell: ImmuTableCell = {
-        return ImmuTableCell.nib(TextWithAccessoryButtonCell.defaultNib, CellType.self)
+        ImmuTableCell.nib(TextWithAccessoryButtonCell.defaultNib, CellType.self)
     }()
 
     let title: String
@@ -355,7 +385,7 @@ struct TextWithButtonIndicatingActivityRow: ImmuTableRow {
 
         cell.mainLabelText = title
         cell.secondaryLabelText = subtitle
-        cell.button?.showActivityIndicator(true)
+        cell.button?.setActivityIndicatorVisible(true)
     }
 }
 
@@ -370,12 +400,14 @@ struct SwitchRow: ImmuTableRow {
     let onChange: (Bool) -> Void
     let accessibilityIdentifier: String?
 
-    init(title: String,
-         value: Bool,
-         icon: UIImage? = nil,
-         isUserInteractionEnabled: Bool = true,
-         onChange: @escaping (Bool) -> Void,
-         accessibilityIdentifier: String? = nil) {
+    init(
+        title: String,
+        value: Bool,
+        icon: UIImage? = nil,
+        isUserInteractionEnabled: Bool = true,
+        onChange: @escaping (Bool) -> Void,
+        accessibilityIdentifier: String? = nil
+    ) {
         self.title = title
         self.value = value
         self.icon = icon
@@ -408,7 +440,14 @@ struct SwitchWithSubtitleRow: ImmuTableRow {
     let onChange: (Bool) -> Void
     let accessibilityIdentifier: String?
 
-    init(title: String, value: Bool, subtitle: String? = nil, icon: UIImage? = nil, onChange: @escaping (Bool) -> Void, accessibilityIdentifier: String? = nil) {
+    init(
+        title: String,
+        value: Bool,
+        subtitle: String? = nil,
+        icon: UIImage? = nil,
+        onChange: @escaping (Bool) -> Void,
+        accessibilityIdentifier: String? = nil
+    ) {
         self.title = title
         self.subtitle = subtitle
         self.value = value
@@ -432,14 +471,16 @@ struct SwitchWithSubtitleRow: ImmuTableRow {
 
 class ExpandableRow: ImmuTableRow {
     static let cell: ImmuTableCell = {
-        return ImmuTableCell.nib(ExpandableCell.defaultNib, CellType.self)
+        ImmuTableCell.nib(ExpandableCell.defaultNib, CellType.self)
     }()
 
-    init(title: String,
-         expandedText: NSAttributedString?,
-         expanded: Bool,
-         action: ImmuTableAction?,
-         onLinkTap: ((URL) -> Void)?) {
+    init(
+        title: String,
+        expandedText: NSAttributedString?,
+        expanded: Bool,
+        action: ImmuTableAction?,
+        onLinkTap: ((URL) -> Void)?
+    ) {
         self.title = title
         self.expandedText = expandedText
         self.expanded = expanded

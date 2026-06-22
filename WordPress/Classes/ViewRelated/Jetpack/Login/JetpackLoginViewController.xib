@@ -40,41 +40,22 @@
                         <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" alignment="center" translatesAutoresizingMaskIntoConstraints="NO" id="iCv-gL-vpC" userLabel="Main buttons">
                             <rect key="frame" x="0.0" y="230" width="315" height="102"/>
                             <subviews>
-                                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="lMy-o2-gd3" customClass="NUXButton" customModule="WordPressAuthenticator">
+                                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="lMy-o2-gd3">
                                     <rect key="frame" x="133" y="0.0" width="49" height="34"/>
-                                    <state key="normal" title="Log in">
-                                        <color key="titleColor" red="0.0" green="0.47843137250000001" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-                                    </state>
-                                    <userDefinedRuntimeAttributes>
-                                        <userDefinedRuntimeAttribute type="boolean" keyPath="isPrimary" value="YES"/>
-                                    </userDefinedRuntimeAttributes>
                                     <connections>
                                         <action selector="didTouchSignInButton:" destination="-1" eventType="touchUpInside" id="4XZ-kZ-sw4"/>
                                     </connections>
                                 </button>
-                                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Qm1-Pi-98R" customClass="NUXButton" customModule="WordPressAuthenticator">
+                                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Qm1-Pi-98R">
                                     <rect key="frame" x="97" y="34" width="121" height="34"/>
-                                    <state key="normal" title="Set up Jetpack">
-                                        <color key="titleColor" red="0.0" green="0.47843137250000001" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-                                    </state>
-                                    <userDefinedRuntimeAttributes>
-                                        <userDefinedRuntimeAttribute type="boolean" keyPath="isPrimary" value="YES"/>
-                                    </userDefinedRuntimeAttributes>
                                     <connections>
                                         <action selector="didTouchInstallJetpackButton:" destination="-1" eventType="touchUpInside" id="jig-Gw-45O"/>
                                     </connections>
                                 </button>
-                                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="VTV-9i-gcK" userLabel="Connect your user accont" customClass="NUXButton" customModule="WordPressAuthenticator">
+                                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="VTV-9i-gcK" userLabel="Connect your user accont">
                                     <rect key="frame" x="48.666666666666686" y="68" width="218" height="34"/>
-                                    <state key="normal" title="Connect your user account">
-                                        <color key="titleColor" red="0.0" green="0.47843137250000001" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-                                    </state>
-                                    <userDefinedRuntimeAttributes>
-                                        <userDefinedRuntimeAttribute type="boolean" keyPath="isPrimary" value="YES"/>
-                                    </userDefinedRuntimeAttributes>
                                     <connections>
                                         <action selector="didTouchConnectUserAccountButton:" destination="-1" eventType="touchUpInside" id="rbB-O7-30R"/>
-                                        <action selector="didTouchInstallJetpackButton:" destination="-1" eventType="touchUpInside" id="o2L-ud-Obn"/>
                                     </connections>
                                 </button>
                             </subviews>

@@ -13,4 +13,8 @@ updates:
   - package-ecosystem: "bundler" # See documentation for possible values
     directory: "/" # Location of package manifests
     schedule:
-      interval: "weekly"
+      interval: "daily"
+    groups:
+      ruby-minor-and-patch:
+        update-types: [minor, patch]
+    open-pull-requests-limit: 5

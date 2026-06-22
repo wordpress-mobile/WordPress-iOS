@@ -157,18 +157,6 @@ PostServiceType const PostServiceTypeAny = @"any";
         [metadata addObject:publicDictionary];
     }
 
-    if (post.publicizeMessageID || post.publicizeMessage.length) {
-        NSMutableDictionary *publicizeMessageDictionary = [NSMutableDictionary dictionaryWithCapacity:3];
-        if (post.publicizeMessageID) {
-            publicizeMessageDictionary[@"id"] = post.publicizeMessageID;
-        }
-        publicizeMessageDictionary[@"key"] = @"_wpas_mess";
-        publicizeMessageDictionary[@"value"] = post.publicizeMessage.length ? post.publicizeMessage : @"";
-        [metadata addObject:publicizeMessageDictionary];
-    }
-
-    [metadata addObjectsFromArray:[PostHelper publicizeMetadataEntriesForPost:post]];
-
     if (post.bloggingPromptID) {
         NSMutableDictionary *promptDictionary = [NSMutableDictionary dictionaryWithCapacity:3];
         promptDictionary[@"key"] = @"_jetpack_blogging_prompt_key";

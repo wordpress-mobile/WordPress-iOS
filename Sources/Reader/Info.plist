@@ -2,6 +2,11 @@
 <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
 <plist version="1.0">
 <dict>
+	<key>UIApplicationSceneManifest</key>
+	<dict>
+		<key>UIApplicationSupportsMultipleScenes</key>
+		<false/>
+	</dict>
 	<key>WPAppBrand</key>
 	<string>reader</string>
 	<key>WPAppGroupName</key>
@@ -11,7 +16,7 @@
 	<key>WPAppURLScheme</key>
 	<string>${WP_APP_URL_SCHEME}</string>
 	<key>WPAuthKeychainServiceName</key>
-	<string>jetpack.public-api.wordpress.com</string>
+	<string>reader.public-api.wordpress.com</string>
 	<key>WPBuildConfiguration</key>
 	<string>${WP_BUILD_CONFIGURATION}</string>
 	<key>WPEventNamePrefix</key>

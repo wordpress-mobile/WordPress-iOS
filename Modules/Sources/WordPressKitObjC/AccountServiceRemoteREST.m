@@ -97,7 +97,7 @@ MagicLinkFlow const MagicLinkFlowSignup = @"signup";
         NSParameterAssert([key isKindOfClass:[NSNumber class]]);
         NSParameterAssert([obj isKindOfClass:[NSNumber class]]);
         /*
-         Blog IDs are pased as strings because JSON dictionaries can't take
+         Blog IDs are passed as strings because JSON dictionaries can't take
          non-string keys. If you try, you get a NSInvalidArgumentException
          */
         NSString *blogID = [key stringValue];

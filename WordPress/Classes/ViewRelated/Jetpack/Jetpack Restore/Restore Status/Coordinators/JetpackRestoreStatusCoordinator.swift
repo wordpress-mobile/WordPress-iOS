@@ -1,5 +1,6 @@
 import Foundation
 import WordPressData
+import WordPressKit
 
 protocol JetpackRestoreStatusView {
     func render(_ rewindStatus: RewindStatus)
@@ -21,10 +22,12 @@ class JetpackRestoreStatusCoordinator {
 
     // MARK: - Init
 
-    init(site: JetpackSiteRef,
-         view: JetpackRestoreStatusView,
-         service: JetpackRestoreService? = nil,
-         coreDataStack: CoreDataStackSwift = ContextManager.shared) {
+    init(
+        site: JetpackSiteRef,
+        view: JetpackRestoreStatusView,
+        service: JetpackRestoreService? = nil,
+        coreDataStack: CoreDataStackSwift = ContextManager.shared
+    ) {
         self.service = service ?? JetpackRestoreService(coreDataStack: coreDataStack)
         self.site = site
         self.view = view
@@ -58,34 +61,38 @@ class JetpackRestoreStatusCoordinator {
     }
 
     private func refreshRestoreStatus() {
-        service.getRewindStatus(for: self.site, success: { [weak self] rewindStatus in
-            guard let self, let restoreStatus = rewindStatus.restore else {
-                return
-            }
+        service.getRewindStatus(
+            for: self.site,
+            success: { [weak self] rewindStatus in
+                guard let self, let restoreStatus = rewindStatus.restore else {
+                    return
+                }
 
-            switch restoreStatus.status {
-            case .running, .queued:
-                self.view.render(rewindStatus)
-            case .finished:
-                self.view.showRestoreComplete()
-            case .fail:
-                self.view.showRestoreFailed()
-            }
-        }, failure: { [weak self] error in
-            DDLogError("Error fetching rewind status object: \(error.localizedDescription)")
+                switch restoreStatus.status {
+                case .running, .queued:
+                    self.view.render(rewindStatus)
+                case .finished:
+                    self.view.showRestoreComplete()
+                case .fail:
+                    self.view.showRestoreFailed()
+                }
+            },
+            failure: { [weak self] error in
+                DDLogError("Error fetching rewind status object: \(error.localizedDescription)")
 
-            guard let self else {
-                return
-            }
+                guard let self else {
+                    return
+                }
 
-            if self.retryCount == Constants.maxRetryCount {
-                self.stopPolling()
-                self.view.showRestoreStatusUpdateFailed()
-                return
-            }
+                if self.retryCount == Constants.maxRetryCount {
+                    self.stopPolling()
+                    self.view.showRestoreStatusUpdateFailed()
+                    return
+                }
 
-            self.retryCount += 1
-        })
+                self.retryCount += 1
+            }
+        )
     }
 }
 

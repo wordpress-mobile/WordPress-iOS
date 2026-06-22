@@ -15,7 +15,11 @@ protocol EditorAnalyticsProperties: AnyObject {
 /// Analytics are also tracked.
 struct PostListEditorPresenter {
 
-    static func handle(post: Post, in postListViewController: EditorPresenterViewController, entryPoint: PostEditorEntryPoint = .unknown) {
+    static func handle(
+        post: Post,
+        in postListViewController: EditorPresenterViewController,
+        entryPoint: PostEditorEntryPoint = .unknown
+    ) {
         // Return early if a post is still uploading when the editor's requested.
         guard !PostCoordinator.shared.isUpdating(post) else {
             return // It's clear from the UI that the cells are not interactive
@@ -23,8 +27,9 @@ struct PostListEditorPresenter {
 
         // No editing posts until the conflict has been resolved.
         if let error = PostCoordinator.shared.syncError(for: post.getOriginal()),
-           let saveError = error as? PostRepository.PostSaveError,
-           case .conflict(let latest) = saveError {
+            let saveError = error as? PostRepository.PostSaveError,
+            case .conflict(let latest) = saveError
+        {
             let post = post.getOriginal()
             PostCoordinator.shared.showResolveConflictView(post: post, remoteRevision: latest, source: .postList)
             return
@@ -34,19 +39,28 @@ struct PostListEditorPresenter {
     }
 
     static func handleCopy(post: Post, in postListViewController: EditorPresenterViewController) {
-        // Copy Post
         let newPost = post.blog.createDraftPost()
         newPost.postTitle = post.postTitle
         newPost.content = post.content
         newPost.categories = post.categories
         newPost.postFormat = post.postFormat
+        newPost.commentsStatus = post.commentsStatus
+        newPost.pingsStatus = post.pingsStatus
 
         openEditor(with: newPost, in: postListViewController)
 
-        WPAppAnalytics.track(.postListDuplicateAction, properties: postListViewController.propertiesForAnalytics(), post: post)
+        WPAppAnalytics.track(
+            .postListDuplicateAction,
+            properties: postListViewController.propertiesForAnalytics(),
+            post: post
+        )
     }
 
-    private static func openEditor(with post: Post, in postListViewController: EditorPresenterViewController, entryPoint: PostEditorEntryPoint = .unknown) {
+    private static func openEditor(
+        with post: Post,
+        in postListViewController: EditorPresenterViewController,
+        entryPoint: PostEditorEntryPoint = .unknown
+    ) {
         /// This is a workaround for the lack of vie wapperance callbacks send
         /// by `EditPostViewController` due to its weird setup.
         NotificationCenter.default.post(name: .postListEditorPresenterWillShowEditor, object: nil)
@@ -62,6 +76,10 @@ struct PostListEditorPresenter {
 }
 
 extension Foundation.Notification.Name {
-    static let postListEditorPresenterWillShowEditor = Foundation.Notification.Name("org.automattic.postListEditorPresenterWillShowEditor")
-    static let postListEditorPresenterDidHideEditor = Foundation.Notification.Name("org.automattic.postListEditorPresenterDidHideEditor")
+    static let postListEditorPresenterWillShowEditor = Foundation.Notification.Name(
+        "org.automattic.postListEditorPresenterWillShowEditor"
+    )
+    static let postListEditorPresenterDidHideEditor = Foundation.Notification.Name(
+        "org.automattic.postListEditorPresenterDidHideEditor"
+    )
 }

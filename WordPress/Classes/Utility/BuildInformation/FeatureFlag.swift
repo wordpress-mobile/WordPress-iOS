@@ -6,7 +6,6 @@ import FoundationModels
 /// different builds.
 @objc
 public enum FeatureFlag: Int, CaseIterable {
-    case signUp
     case domainRegistration
     case selfHostedSites
     case whatsNew
@@ -30,6 +29,7 @@ public enum FeatureFlag: Int, CaseIterable {
     case customPostTypes
     case cptPostsAndPages
     case socialSharingV2
+    case mediaLibraryV2
 
     /// Returns a boolean indicating if the feature is enabled.
     ///
@@ -44,8 +44,6 @@ public enum FeatureFlag: Int, CaseIterable {
         let app = BuildSettings.current.brand
 
         switch self {
-        case .signUp:
-            return true
         case .domainRegistration:
             return app == .jetpack || app == .reader
         case .selfHostedSites:
@@ -95,6 +93,8 @@ public enum FeatureFlag: Int, CaseIterable {
             return BuildConfiguration.current == .debug
         case .socialSharingV2:
             return BuildConfiguration.current == .debug
+        case .mediaLibraryV2:
+            return BuildConfiguration.current == .debug
         }
     }
 
@@ -117,7 +117,6 @@ extension FeatureFlag {
     /// Descriptions used to display the feature flag override menu in debug builds
     public var description: String {
         switch self {
-        case .signUp: "Sign Up"
         case .domainRegistration: "Domain Registration"
         case .selfHostedSites: "Self-Hosted Sites"
         case .whatsNew: "What's New"
@@ -141,6 +140,7 @@ extension FeatureFlag {
         case .customPostTypes: "Custom Post Types"
         case .cptPostsAndPages: "Custom Post Types: Posts and Pages"
         case .socialSharingV2: "Social Sharing v2"
+        case .mediaLibraryV2: "Media Library v2"
         }
     }
 }

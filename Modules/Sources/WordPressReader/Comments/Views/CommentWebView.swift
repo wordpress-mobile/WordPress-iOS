@@ -1,6 +1,6 @@
 import UIKit
 
-/// -warning: It's not designed to be used publically yet.
+/// -warning: It's not designed to be used publicly yet.
 @MainActor
 final class CommentWebView: UIView, CommentContentRendererDelegate {
     let renderer = WebCommentContentRenderer()

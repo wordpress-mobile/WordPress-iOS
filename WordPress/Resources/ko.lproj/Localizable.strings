@@ -1,4 +1,4 @@
-/* Translation-Revision-Date: 2026-03-26 09:54:38+0000 */
+/* Translation-Revision-Date: 2026-05-28 09:57:24+0000 */
 /* Plural-Forms: nplurals=1; plural=0; */
 /* Generator: GlotPress/4.0.3 */
 /* Language: ko_KR */
@@ -6042,9 +6042,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Notification Settings switch for the app. */
 "Turning the switch off will disable all notifications from this app, regardless of type." = "스위치를 끄기로 전환하면 유형과 관계없이 이 앱의 모든 알림이 비활성화됩니다.";
 
-/* Title of button that displays the app's Twitter profile */
-"Twitter" = "트위터";
-
 /* Title for the setting to edit the twitter username used when sharing to twitter. */
 "Twitter Username" = "Twitter 사용자명";
 
@@ -7107,6 +7104,9 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Error message when XML-RPC is disabled on the WordPress site. The first argument is detailed error message */
 "addSite.selfHosted.xmlrpcDisabled" = "워드프레스 사이트에 연결할 수 없습니다. 서버에서 XML-RPC가 비활성화되었을 수 있습니다. 호스팅 공급업체에 문의하여 이 문제를 해결하세요.";
 
+/* Error message when the app cannot find the XML-RPC endpoint of a self-hosted WordPress site */
+"addSite.selfHosted.xmlrpcEndpointNotFound" = "사이트의 XML-RPC 엔드포인트를 확인할 수 없습니다.";
+
 /* Age between dates equaling one hour. */
 "an hour" = "1시간";
 
@@ -7844,8 +7844,17 @@ Example: Reply to Pamela Nguyen */
 /* Navigation bar title when leaving a editing an existing comment */
 "commentEdit.navigationTitle" = "댓글 편집";
 
+/* Title for the error notice shown when approving a comment fails. */
+"comments.approve.error.title" = "댓글 승인 중 오류 발생";
+
 /* Error title */
 "comments.failedToLike" = "댓글에 좋아요를 표시하지 못했습니다.";
+
+/* Title for the error notice shown when trashing a comment fails. */
+"comments.trash.error.title" = "휴지통으로 댓글 이동 중 오류 발생";
+
+/* Title for the error notice shown when unapproving a comment fails. */
+"comments.unapprove.error.title" = "댓글 승인 취소 중 오류 발생";
 
 /* Error message informing a user about an invalid password. */
 "common.reEnterPasswordMessage" = "앱에 저장된 사용자 이름 또는 비밀번호가 만료되었을 수 있습니다. 설정에서 비밀번호를 재입력 후 다시 시도해 보세요.";
@@ -7895,6 +7904,9 @@ Example: Reply to Pamela Nguyen */
 /* Menu action to permanently delete a trashed post */
 "customPostList.action.deletePermanently" = "영구 삭제";
 
+/* Menu action to create a draft copy of a post */
+"customPostList.action.duplicate" = "복제";
+
 /* Menu action to change a post's status to draft */
 "customPostList.action.moveToDraft" = "임시글로 이동";
 
@@ -7940,6 +7952,12 @@ Example: Reply to Pamela Nguyen */
 /* Empty state message when no custom posts exist. %1$@ is the post type name (e.g., 'Podcasts', 'Products'). */
 "customPostList.emptyState.message" = "%1$@ 없음";
 
+/* Short label for the swipe action to permanently delete a trashed post. Keep this translation short. */
+"customPostList.swipeAction.delete" = "삭제";
+
+/* Short label for the swipe action to trash a post. Keep this translation short. */
+"customPostList.swipeAction.trash" = "휴지통";
+
 /* Message for the confirmation alert when trashing a published post */
 "customPostList.trashConfirmation.message" = "이 글은 작성되어 방문자에게 표시됩니다. 이 글을 휴지통으로 이동하시겠어요?";
 
@@ -7975,6 +7993,9 @@ Example: Reply to Pamela Nguyen */
 
 /* Tab title for trashed posts */
 "customPostTab.trash" = "휴지통";
+
+/* Badge label indicating that custom post type support is a beta feature. Displayed next to the navigation title. */
+"customPostType.navigation.betaBadge" = "베타";
 
 /* Empty state message when there are no custom post types to display */
 "customPostTypes.emptyState.message" = "사용자 정의 글 유형 없음";
@@ -8977,6 +8998,159 @@ Example: Reply to Pamela Nguyen */
 /* Message stating that the user is unable to use Stats and Notifications because their site is connected to a different WordPress.com account */
 "jetpackSite.connectToDefaultAccount" = "통계 및 알림을 사용하려면 %@(으)로 로그인해야 합니다.";
 
+/* Message shown at the top of the account confirmation screen when every available account is already connected to the site. */
+"jetpackSocial.accountConfirmation.allConnectedDescription" = "설정이 모두 완료되었습니다. 사용 가능한 모든 계정이 이미 이 사이트에 연결되어 있으며, 새 글이 자동으로 공유됩니다. 글을 작성할 때 변경할 수 있습니다.";
+
+/* Nav-bar button that finalizes the social connection after choosing an account. */
+"jetpackSocial.accountConfirmation.confirm" = "확인";
+
+/* Section header listing accounts already connected to this site. */
+"jetpackSocial.accountConfirmation.connectedSection" = "연결됨";
+
+/* Explanation text shown at the top of the account confirmation screen. */
+"jetpackSocial.accountConfirmation.description" = "이 계정에 연결하는 중입니다. 새 글이 자동으로 공유됩니다. 글을 작성할 때 변경할 수 있습니다.";
+
+/* Button that dismisses the account confirmation screen when every account is already connected and there is nothing to confirm. */
+"jetpackSocial.accountConfirmation.done" = "완료";
+
+/* Loading caption while fetching accounts for the confirmation screen. */
+"jetpackSocial.accountConfirmation.loading" = "계정 로드 중...";
+
+/* Footer caption below the 'Mark the connection as shared' toggle. */
+"jetpackSocial.accountConfirmation.markAsSharedFooter" = "활성화하면 모든 관리자, 편집자 및 작성자가 연결을 사용할 수 있게 됩니다. 나중에 변경할 수 있습니다.";
+
+/* Toggle label controlling whether the new connection is shared with other site users. */
+"jetpackSocial.accountConfirmation.markAsSharedLabel" = "연결을 공유됨으로 표시";
+
+/* Button to retry a failed account fetch. */
+"jetpackSocial.accountConfirmation.retry" = "다시 시도";
+
+/* Navigation title of the account confirmation screen shown after OAuth. */
+"jetpackSocial.accountConfirmation.title" = "연결 확인";
+
+/* Toggle label controlling whether a connection is shared with all site users. */
+"jetpackSocial.connectionDetail.availableToAllUsers" = "모든 사용자가 사용 가능";
+
+/* Footer caption below the 'Available to all users' toggle. */
+"jetpackSocial.connectionDetail.availableToAllUsersFooter" = "이 연결을 사이트의 모든 관리자와 사용자가 사용할 수 있도록 허용합니다.";
+
+/* Section header on the connection detail screen. */
+"jetpackSocial.connectionDetail.settingsHeader" = "설정";
+
+/* Dismiss button in the social connection update failure alert. */
+"jetpackSocial.connectionDetail.updateFailedDismiss" = "확인";
+
+/* Title of the alert shown when updating a social connection setting fails. */
+"jetpackSocial.connectionDetail.updateFailedTitle" = "연결을 업데이트할 수 없음";
+
+/* Error when a publicize connection ID can't be found. %1$@ is the connection ID. */
+"jetpackSocial.error.connectionNotFound" = "연결 %1$@을(를) 찾을 수 없습니다.";
+
+/* Error shown when decoding a social sharing response fails. */
+"jetpackSocial.error.decoding" = "서버의 예기치 않은 응답이 수신되었습니다.";
+
+/* Error when a keyring token ID can't be found. %1$@ is the token ID. */
+"jetpackSocial.error.keyringNotFound" = "Keyring 연결 %1$@을(를) 찾을 수 없습니다.";
+
+/* Link label that opens documentation explaining how to resolve a social sharing error. */
+"jetpackSocial.error.learnMore" = "더 알아보기";
+
+/* Error shown when a social sharing network call fails. */
+"jetpackSocial.error.network" = "네트워크 오류가 발생했습니다. 연결을 확인하고 다시 시도해 주세요.";
+
+/* Error when the WP.com account has no authorized keyring for a given service. %1$@ is the service label (e.g. 'Mastodon'). */
+"jetpackSocial.error.noKeyringForService" = "%1$@에 연결된 계정이 없습니다.";
+
+/* Error shown after Facebook OAuth when the user's account doesn't manage any Facebook Pages, since Publicize only targets Pages. */
+"jetpackSocial.error.noPagesForFacebook" = "페이스북 연결에서 페이지를 찾을 수 없습니다. 배포 기능은 페이스북 프로필에 연결할 수 없으며 발행한 페이지에만 연결할 수 있습니다.";
+
+/* Error shown when the WP.com auth token is missing or invalid. */
+"jetpackSocial.error.notAuthenticated" = "소셜 계정을 관리하려면 다시 로그인해야 합니다.";
+
+/* Generic fallback error for social sharing. */
+"jetpackSocial.error.unknown" = "문제가 발생했습니다. 다시 시도해 주세요.";
+
+/* Status text for a broken / invalid / refresh-failed connection. */
+"jetpackSocial.manageConnections.brokenStatus" = "주의 필요";
+
+/* Cancel button in the disconnect confirmation alert. */
+"jetpackSocial.manageConnections.cancel" = "취소";
+
+/* Button on the Social screen that opens the add-connection modal. */
+"jetpackSocial.manageConnections.connectNewAccount" = "새 계정 연결";
+
+/* Footer caption under the Connected Accounts section on the Social screen. */
+"jetpackSocial.manageConnections.connectedFooter" = "소셜 미디어 계정을 연결하여 글을 발행할 때 선택한 채널로 글의 특성 이미지와 콘텐츠를 보내세요.";
+
+/* Section header listing currently connected social accounts. */
+"jetpackSocial.manageConnections.connectedHeader" = "연결된 계정";
+
+/* Button that removes a social sharing connection. */
+"jetpackSocial.manageConnections.delete" = "연결 해제";
+
+/* Confirmation alert title. %1$@ is the connected account's display name. */
+"jetpackSocial.manageConnections.deleteConfirmTitle" = "%1$@ 연결을 해제하시겠습니까?";
+
+/* Dismiss button in the disconnect failure alert. */
+"jetpackSocial.manageConnections.deleteFailedDismiss" = "확인";
+
+/* Title of the alert shown when disconnecting a social connection fails. */
+"jetpackSocial.manageConnections.deleteFailedTitle" = "연결 해제 불가";
+
+/* Footer caption under the list of services in the Connect Account picker modal. */
+"jetpackSocial.manageConnections.footer" = "즐겨 찾는 소셜 미디어 서비스에 연결하여 새 글을 친구와 자동으로 공유하세요.";
+
+/* Button to retry a failed load. */
+"jetpackSocial.manageConnections.retry" = "다시 시도";
+
+/* Badge shown on connections that are shared with other site users. */
+"jetpackSocial.manageConnections.sharedBadge" = "공유됨";
+
+/* Title of the Social Sharing settings screen. */
+"jetpackSocial.manageConnections.title" = "소셜";
+
+/* Confirm button in the disconnect confirmation alert. */
+"jetpackSocial.manageConnections.yes" = "예";
+
+/* Navigation bar title of the OAuth webview. %1$@ is the service label (e.g. 'Mastodon'). */
+"jetpackSocial.oauthWebView.connectTitle" = "%1$@에 연결";
+
+/* Label above the optional custom social-sharing message field. */
+"jetpackSocial.postSection.customMessage" = "사용자 정의 메시지";
+
+/* Placeholder for the optional custom social-sharing message field. */
+"jetpackSocial.postSection.customMessagePlaceholder" = "여기에 소셜 잠재 고객을 위한 사용자 정의 메시지를 작성하세요.";
+
+/* Caption shown when the site has no social connections. */
+"jetpackSocial.postSection.empty" = "아직 연결된 소셜 계정 없음";
+
+/* Title of the row that opens the social sharing detail screen in Post Settings. */
+"jetpackSocial.postSection.header" = "소셜 미디어에 공유";
+
+/* Button to retry a failed load of the connections list. */
+"jetpackSocial.postSection.retry" = "다시 시도";
+
+/* Trailing value on the 'Share to Social' post settings row. %1$d is the enabled count, %2$d is the total. */
+"jetpackSocial.postSection.summary.format" = "%1$d\/%2$d개";
+
+/* Footer below the per-connection toggles on the social sharing detail screen. */
+"jetpackSocial.postSection.togglesFooter" = "이 글이 발행되면 활성화된 계정에 공유됩니다.";
+
+/* Notice shown after a social connection is successfully created. %1$@ is the service label. */
+"jetpackSocial.serviceDetail.connectedNotice" = "%1$@ 연결됨";
+
+/* Cancel button in the add-connection failure alert. */
+"jetpackSocial.serviceDetail.failureCancel" = "취소";
+
+/* Retry button in the add-connection failure alert. */
+"jetpackSocial.serviceDetail.failureRetry" = "다시 시도";
+
+/* Title of the alert shown when adding a social connection fails. */
+"jetpackSocial.serviceDetail.failureTitle" = "연결 실패";
+
+/* Navigation bar title of the service picker modal shown when adding a new social connection. */
+"jetpackSocial.servicePicker.title" = "계정 연결";
+
 /* Accessibility label for add card button */
 "jetpackStats.accessibility.addCardButton" = "새 통계 카드 추가";
 
@@ -9481,6 +9655,9 @@ Example: Reply to Pamela Nguyen */
 
 /* Title for weekly activity heatmap */
 "jetpackStats.postDetails.weeklyActivity" = "주간 활동";
+
+/* Confirmation message when marking a referrer as spam. %1$@ is the domain name. */
+"jetpackStats.referrerDetails.confirmAsSpam.message" = "\"%1$@\"은(는) 스팸으로 표시하면 향후 통계에서 숨겨집니다. 언제든지 웹 인터페이스를 사용하여 이 실행을 취소할 수 있습니다.";
 
 /* Title for error alert when marking referrer as spam fails */
 "jetpackStats.referrerDetails.errorAlertTitle" = "오류";
@@ -11686,12 +11863,6 @@ Example: given a notice format "Following %@" and empty site name, this will be 
 /* Describes that the slider is used to customize the text size in the Reader. */
 "reader.preferences.control.sizeSlider.description" = "크기";
 
-/* Text for a small label in the navigation bar that hints that this is an experimental feature.
-
-The enclosing angled brackets ('<' and '>') are decorative and only intended as a flavor.
-Feel free to replace it with other bracket types that you think looks better for the locale. */
-"reader.preferences.navBar.experimental.label" = "<Experimental>";
-
 /* Description text for the preview section of Reader Preferences */
 "reader.preferences.preview.body.text" = "색상, 글꼴, 크기를 선택하세요. 여기에서 선택한 설정을 미리 보세요. 그런 다음 선택한 스타일이 적용된 글을 읽어보세요.";
 
@@ -12054,7 +12225,7 @@ Feel free to replace it with other bracket types that you think looks better for
 "shared.button.edit" = "편집";
 
 /* A shared button title used in different contexts */
-"shared.button.notNow" = "지금";
+"shared.button.notNow" = "나중에";
 
 /* A shared button title used in different contexts */
 "shared.button.ok" = "확인";

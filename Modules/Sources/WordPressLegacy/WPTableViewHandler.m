@@ -202,7 +202,7 @@ static CGFloat const DefaultCellHeight = 44.0;
     // Clean up
     [self discardPreservedRowInfo];
 
-    // Notify the delegate that a refresh has occured. Allows the delegate
+    // Notify the delegate that a refresh has occurred. Allows the delegate
     // perform any corrections to the offset, e.g. a negative offset due to a content
     // change that was not a post inserted above the previous zero visible index.
     if ([self.delegate respondsToSelector:@selector(tableViewHandlerDidRefreshTableViewPreservingOffset:)]) {

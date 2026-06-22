@@ -20,18 +20,11 @@ public class LoginEmailScreen: ScreenObject {
     var selfHostedLoginButton: XCUIElement { selfHostedLoginButtonGetter(app) }
 
     init(app: XCUIApplication = XCUIApplication()) throws {
-        try super.init(
-            expectedElementGetters: [emailTextFieldGetter, nextButtonGetter],
-            app: app
-        )
-    }
-
-    public func proceedWith(email: String) throws -> LinkOrPasswordScreen {
-        emailTextField.tap()
-        emailTextField.typeText(email)
-        nextButton.tap()
-
-        return try LinkOrPasswordScreen()
+        try super
+            .init(
+                expectedElementGetters: [emailTextFieldGetter, nextButtonGetter],
+                app: app
+            )
     }
 
     func goToSiteAddressLogin() throws -> LoginSiteAddressScreen {

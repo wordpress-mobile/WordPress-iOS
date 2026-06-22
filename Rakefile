@@ -120,14 +120,14 @@ task :mocks do
   sh "#{File.join(PROJECT_DIR, 'API-Mocks', 'scripts', 'start.sh')} 8282"
 end
 
-desc 'Checks the source for style errors'
-task :lint do
-  sh 'pushd BuildTools; export SDKROOT=$(xcrun --sdk macosx --show-sdk-path); swift package plugin --allow-writing-to-directory .. --allow-writing-to-package-directory swiftlint --working-directory .. --quiet; popd'
+desc 'Checks the source for style errors. Lints the whole project, or only the given paths: rake lint[path1,path2]'
+task :lint, [:paths] do |_task, args|
+  run_swiftlint(paths: [args[:paths], *args.extras].compact)
 end
 
-desc 'Automatically fix linting errors where possible'
-task :lintfix do
-  sh 'pushd BuildTools; export SDKROOT=$(xcrun --sdk macosx --show-sdk-path); swift package plugin --allow-writing-to-directory .. --allow-writing-to-package-directory swiftlint --fix --working-directory .. --quiet; popd'
+desc 'Automatically fix linting errors where possible. Fixes the whole project, or only the given paths: rake lintfix[path1,path2]'
+task :lintfix, [:paths] do |_task, args|
+  run_swiftlint(paths: [args[:paths], *args.extras].compact, extra_args: ['--fix'])
 end
 
 namespace :git do
@@ -572,4 +572,16 @@ def check_dependencies_hook
     puts e.message
     exit 1
   end
+end
+
+# Runs SwiftLint via the BuildTools package plugin, which pins the SwiftLint version
+# to `swiftlint_version` in .swiftlint.yml. With no paths, lints the whole project.
+# SDKROOT is pinned to the macOS SDK so the plugin builds even when invoked from an
+# environment that targets iOS (e.g. an Xcode run script phase).
+def run_swiftlint(paths: [], extra_args: [])
+  sh({ 'SDKROOT' => `xcrun --sdk macosx --show-sdk-path`.strip },
+     'swift', 'package', '--package-path', 'BuildTools', 'plugin',
+     '--allow-writing-to-directory', PROJECT_DIR, '--allow-writing-to-package-directory',
+     'swiftlint', '--working-directory', PROJECT_DIR, '--quiet',
+     *extra_args, *paths.map { |path| File.expand_path(path) })
 end

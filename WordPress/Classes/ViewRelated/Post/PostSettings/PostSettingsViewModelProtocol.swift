@@ -72,8 +72,8 @@ protocol PostSettingsViewModelProtocol: ObservableObject {
     var socialSharingState: PostSettingsSocialSharingSectionState? { get }
 
     /// Non-nil when the host screen should render the v2 social sharing
-    /// section. Only `CustomPostSettingsViewModel` populates this; legacy
-    /// `AbstractPost` flows return `nil`.
+    /// section. Custom post settings and eligible `AbstractPost` settings
+    /// can populate this.
     var v2SocialSharing: V2SocialSharingBinding? { get }
 
     var isShowingDeletedAlert: Bool { get set }
@@ -148,7 +148,7 @@ extension PostSettingsViewModelProtocol {
         if isDraftOrPending {
             options.append(.pendingReview)
         }
-        if capabilities.supportsComments {
+        if capabilities.supportsComments && (settings.allowComments != nil || settings.allowPings != nil) {
             options.append(.discussion)
         }
         if capabilities.supportsPostFormats {

@@ -1,12 +1,15 @@
+import Security
 import XCTest
 @testable import WordPress
+@testable import WordPressData
 
 class DataMigratorTests: XCTestCase {
 
     private var context: NSManagedObjectContext!
     private var migrator: DataMigrator!
     private var coreDataStack: CoreDataStackMock!
-    private var keychainUtils: KeychainUtilsMock!
+    private var appKeychain: KeychainUtilsMock!
+    private var sharedKeychain: KeychainUtilsMock!
     private var sharedUserDefaults: InMemoryUserDefaults!
     private var localUserDefaults: InMemoryUserDefaults!
     private let appGroupName = "xctest_app_group_name"
@@ -16,18 +19,26 @@ class DataMigratorTests: XCTestCase {
 
         context = try! createContext()
         coreDataStack = CoreDataStackMock(mainContext: context)
-        keychainUtils = KeychainUtilsMock()
+        appKeychain = KeychainUtilsMock()
+        sharedKeychain = KeychainUtilsMock()
         sharedUserDefaults = InMemoryUserDefaults()
         localUserDefaults = InMemoryUserDefaults()
+        UserSettings.defaultDotComUUID = nil
         migrator = DataMigrator(
             coreDataStack: coreDataStack,
             backupLocation: URL(string: "/dev/null"),
-            keychainUtils: keychainUtils,
+            appKeychain: appKeychain,
+            sharedKeychain: sharedKeychain,
             localDefaults: localUserDefaults,
             sharedDefaults: sharedUserDefaults,
             crashLogger: nil,
             appGroupName: appGroupName
         )
+    }
+
+    override func tearDown() {
+        UserSettings.defaultDotComUUID = nil
+        super.tearDown()
     }
 
     func testExportSucceeds() {
@@ -73,7 +84,8 @@ class DataMigratorTests: XCTestCase {
         migrator = DataMigrator(
             coreDataStack: coreDataStack,
             backupLocation: URL(string: "/dev/null"),
-            keychainUtils: keychainUtils,
+            appKeychain: appKeychain,
+            sharedKeychain: sharedKeychain,
             sharedDefaults: nil,
             crashLogger: nil,
             appGroupName: appGroupName
@@ -83,7 +95,10 @@ class DataMigratorTests: XCTestCase {
         let migratorError = getExportDataMigratorError(migrator)
 
         // Then
-        XCTAssertEqual(migratorError, DataMigrationError.databaseExportError(underlyingError: DataMigrationError.sharedUserDefaultsNil))
+        XCTAssertEqual(
+            migratorError,
+            DataMigrationError.databaseExportError(underlyingError: DataMigrationError.sharedUserDefaultsNil)
+        )
     }
 
     func test_importData_givenDataIsNotExported_shouldFail() {
@@ -102,6 +117,116 @@ class DataMigratorTests: XCTestCase {
             expect.fulfill()
         }
         wait(for: [expect], timeout: 1)
+    }
+
+    // MARK: Auth token handoff tests
+
+    func testExportPublishesAuthTokenToSharedKeychain() {
+        let account = AccountBuilder(context)
+            .with(username: "exportuser")
+            .build()
+        UserSettings.defaultDotComUUID = account.uuid
+        appKeychain.passwords["public-api.wordpress.com"] = ["exportuser": "token-123"]
+
+        let expectation = expectation(description: "export completes")
+        migrator.exportData { _ in expectation.fulfill() }
+        waitForExpectations(timeout: 1)
+
+        XCTAssertEqual(sharedKeychain.passwords["public-api.wordpress.com"]?["exportuser"], "token-123")
+        XCTAssertEqual(sharedUserDefaults.string(forKey: "wp_data_migration_exported_username"), "exportuser")
+    }
+
+    func testExportSucceedsWhenLoggedOut() {
+        let expectation = expectation(description: "export completes")
+        var exportResult: Result<Void, DataMigrationError>?
+        migrator.exportData { result in
+            exportResult = result
+            expectation.fulfill()
+        }
+        waitForExpectations(timeout: 1)
+
+        guard case .success = exportResult else {
+            return XCTFail("export should succeed without an account")
+        }
+        XCTAssertNil(sharedKeychain.passwords["public-api.wordpress.com"])
+    }
+
+    func testExportFailsWhenTokenPublishFails() {
+        let account = AccountBuilder(context)
+            .with(username: "exportuser")
+            .build()
+        UserSettings.defaultDotComUUID = account.uuid
+        appKeychain.passwords["public-api.wordpress.com"] = ["exportuser": "token-123"]
+        sharedKeychain.setPasswordError = NSError(domain: "test", code: 1)
+
+        let expectation = expectation(description: "export completes")
+        var exportResult: Result<Void, DataMigrationError>?
+        migrator.exportData { result in
+            exportResult = result
+            expectation.fulfill()
+        }
+        waitForExpectations(timeout: 1)
+
+        guard case .failure = exportResult else {
+            return XCTFail("export should fail when the token publish fails")
+        }
+    }
+
+    func testExportSucceedsWhenTokenMissing() {
+        let account = AccountBuilder(context)
+            .with(username: "exportuser")
+            .build()
+        UserSettings.defaultDotComUUID = account.uuid
+        appKeychain.getPasswordError = NSError(domain: "test", code: 1)
+
+        let expectation = expectation(description: "export completes")
+        var exportResult: Result<Void, DataMigrationError>?
+        migrator.exportData { result in
+            exportResult = result
+            expectation.fulfill()
+        }
+        waitForExpectations(timeout: 1)
+
+        guard case .success = exportResult else {
+            return XCTFail("export should stay best-effort when there is no token to publish")
+        }
+        XCTAssertNil(sharedKeychain.passwords["public-api.wordpress.com"])
+    }
+
+    func testExportFailsWhenTokenReadFails() {
+        let account = AccountBuilder(context)
+            .with(username: "exportuser")
+            .build()
+        UserSettings.defaultDotComUUID = account.uuid
+        // A real keychain failure carries SFHFKeychainUtils' error domain
+        // with the raw OSStatus, unlike the generic not-found error.
+        appKeychain.getPasswordError = NSError(
+            domain: "SFHFKeychainUtilsErrorDomain",
+            code: Int(errSecInteractionNotAllowed)
+        )
+
+        let expectation = expectation(description: "export completes")
+        var exportResult: Result<Void, DataMigrationError>?
+        migrator.exportData { result in
+            exportResult = result
+            expectation.fulfill()
+        }
+        waitForExpectations(timeout: 1)
+
+        guard case .failure = exportResult else {
+            return XCTFail("export should fail when the token read fails with a real keychain error")
+        }
+        XCTAssertNil(sharedKeychain.passwords["public-api.wordpress.com"])
+    }
+
+    func testDeleteExportedDataRemovesPublishedToken() {
+        sharedKeychain.passwords["public-api.wordpress.com"] = ["exportuser": "token-123"]
+        sharedUserDefaults.set("exportuser", forKey: "wp_data_migration_exported_username")
+
+        migrator.deleteExportedData()
+
+        XCTAssertNil(sharedKeychain.passwords["public-api.wordpress.com"]?["exportuser"])
+        XCTAssertNil(sharedUserDefaults.string(forKey: "wp_data_migration_exported_username"))
     }
 
     // MARK: Exported data deletion tests
@@ -151,7 +276,8 @@ class DataMigratorTests: XCTestCase {
         migrator = DataMigrator(
             coreDataStack: coreDataStack,
             backupLocation: backupLocation,
-            keychainUtils: keychainUtils,
+            appKeychain: appKeychain,
+            sharedKeychain: sharedKeychain,
             localDefaults: localUserDefaults,
             sharedDefaults: sharedUserDefaults,
             crashLogger: nil,
@@ -201,7 +327,8 @@ class DataMigratorTests: XCTestCase {
         migrator = DataMigrator(
             coreDataStack: coreDataStack,
             backupLocation: backupLocation,
-            keychainUtils: keychainUtils,
+            appKeychain: appKeychain,
+            sharedKeychain: sharedKeychain,
             localDefaults: localUserDefaults,
             sharedDefaults: sharedUserDefaults,
             crashLogger: nil,
@@ -239,7 +366,7 @@ private final class CoreDataStackMock: CoreDataStack {
     }
 
     func newDerivedContext() -> NSManagedObjectContext {
-        return mainContext
+        mainContext
     }
 
     func saveContextAndWait(_ context: NSManagedObjectContext) {}
@@ -247,7 +374,11 @@ private final class CoreDataStackMock: CoreDataStack {
     func save(_ context: NSManagedObjectContext, completion completionBlock: (() -> Void)?, on queue: DispatchQueue) {}
 
     func performAndSave(_ aBlock: @escaping (NSManagedObjectContext) -> Void) {}
-    func performAndSave(_ aBlock: @escaping (NSManagedObjectContext) -> Void, completion: (() -> Void)?, on queue: DispatchQueue) {}
+    func performAndSave(
+        _ aBlock: @escaping (NSManagedObjectContext) -> Void,
+        completion: (() -> Void)?,
+        on queue: DispatchQueue
+    ) {}
 }
 
 // MARK: - Helpers
@@ -259,11 +390,18 @@ private extension DataMigratorTests {
         static let defaultsWrapperKey = "defaults_staging_dictionary"
     }
 
-    func createContext(for model: NSManagedObjectModel = NSManagedObjectModel.mergedModel(from: [Bundle.wordPressData])!,
-                       type: String = NSInMemoryStoreType,
-                       at location: URL? = nil) throws -> NSManagedObjectContext {
+    func createContext(
+        for model: NSManagedObjectModel = NSManagedObjectModel.mergedModel(from: [Bundle.wordPressData])!,
+        type: String = NSInMemoryStoreType,
+        at location: URL? = nil
+    ) throws -> NSManagedObjectContext {
         let persistentStoreCoordinator = NSPersistentStoreCoordinator(managedObjectModel: model)
-        try persistentStoreCoordinator.addPersistentStore(ofType: type, configurationName: nil, at: location, options: nil)
+        try persistentStoreCoordinator.addPersistentStore(
+            ofType: type,
+            configurationName: nil,
+            at: location,
+            options: nil
+        )
         let managedObjectContext = NSManagedObjectContext(concurrencyType: .mainQueueConcurrencyType)
         managedObjectContext.persistentStoreCoordinator = persistentStoreCoordinator
 
@@ -271,7 +409,7 @@ private extension DataMigratorTests {
     }
 
     func createFileContext(for model: NSManagedObjectModel, at location: URL) throws -> NSManagedObjectContext {
-        return try createContext(for: model, type: NSSQLiteStoreType, at: location)
+        try createContext(for: model, type: NSSQLiteStoreType, at: location)
     }
 
     func getExportDataMigratorError(_ migrator: DataMigrator) -> DataMigrationError? {
@@ -289,8 +427,9 @@ private extension DataMigratorTests {
 
     func getModelNames() -> [String] {
         guard let modelFileURL = Bundle.wordPressData.url(forResource: "WordPress", withExtension: "momd"),
-              let versionInfo = NSDictionary(contentsOf: modelFileURL.appendingPathComponent("VersionInfo.plist")),
-              let modelNames = (versionInfo["NSManagedObjectModel_VersionHashes"] as? [String: AnyObject])?.keys else {
+            let versionInfo = NSDictionary(contentsOf: modelFileURL.appendingPathComponent("VersionInfo.plist")),
+            let modelNames = (versionInfo["NSManagedObjectModel_VersionHashes"] as? [String: AnyObject])?.keys
+        else {
             return []
         }
         let sortedModelNames = modelNames.sorted { $0.compare($1, options: .numeric) == .orderedAscending }
@@ -311,7 +450,11 @@ private extension DataMigratorTests {
 
         let momdPaths = Bundle.wordPressData.paths(forResourcesOfType: "momd", inDirectory: nil)
         for path in momdPaths {
-            if let url = Bundle.wordPressData.url(forResource: name, withExtension: "mom", subdirectory: URL(fileURLWithPath: path).lastPathComponent) {
+            if let url = Bundle.wordPressData.url(
+                forResource: name,
+                withExtension: "mom",
+                subdirectory: URL(fileURLWithPath: path).lastPathComponent
+            ) {
                 return url
             }
         }
@@ -322,8 +465,9 @@ private extension DataMigratorTests {
     func getRecentObjectModels() -> (current: NSManagedObjectModel?, previous: NSManagedObjectModel?) {
         let models = getModelNames()
         guard models.count > 1,
-              let currentModel = getModelObject(for: models[models.count - 1]),
-              let previousModel = getModelObject(for: models[models.count - 2]) else {
+            let currentModel = getModelObject(for: models[models.count - 1]),
+            let previousModel = getModelObject(for: models[models.count - 2])
+        else {
             return (current: nil, previous: nil)
         }
         return (current: currentModel, previous: previousModel)

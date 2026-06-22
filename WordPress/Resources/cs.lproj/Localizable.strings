@@ -1,4 +1,4 @@
-/* Translation-Revision-Date: 2026-03-24 22:05:34+0000 */
+/* Translation-Revision-Date: 2026-05-26 08:01:33+0000 */
 /* Plural-Forms: nplurals=3; plural=(n == 1) ? 0 : ((n >= 2 && n <= 4) ? 1 : 2); */
 /* Generator: GlotPress/4.0.3 */
 /* Language: cs_CZ */
@@ -6042,9 +6042,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Notification Settings switch for the app. */
 "Turning the switch off will disable all notifications from this app, regardless of type." = "Vypnutím přepínače deaktivujete všechna oznámení z této aplikace bez ohledu na typ.";
 
-/* Title of button that displays the app's Twitter profile */
-"Twitter" = "Twitter";
-
 /* Title for the setting to edit the twitter username used when sharing to twitter. */
 "Twitter Username" = "Twitter uživatelské jméno";
 
@@ -7107,6 +7104,9 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Error message when XML-RPC is disabled on the WordPress site. The first argument is detailed error message */
 "addSite.selfHosted.xmlrpcDisabled" = "Nelze se připojit k webu WordPress. XML-RPC mohlo být na serveru zakázáno. Kontaktujte prosím svého poskytovatele hostingu pro řešení tohoto problému.";
 
+/* Error message when the app cannot find the XML-RPC endpoint of a self-hosted WordPress site */
+"addSite.selfHosted.xmlrpcEndpointNotFound" = "Nelze určit koncový bod XML-RPC daného webu";
+
 /* Age between dates equaling one hour. */
 "an hour" = "hodina";
 
@@ -7844,8 +7844,17 @@ Example: Reply to Pamela Nguyen */
 /* Navigation bar title when leaving a editing an existing comment */
 "commentEdit.navigationTitle" = "Upravit komentář";
 
+/* Title for the error notice shown when approving a comment fails. */
+"comments.approve.error.title" = "Chyba při schvalování komentáře";
+
 /* Error title */
 "comments.failedToLike" = "Označení komentáře jako líbí se mi se nezdařilo";
+
+/* Title for the error notice shown when trashing a comment fails. */
+"comments.trash.error.title" = "Chyba při mazání komentáře";
+
+/* Title for the error notice shown when unapproving a comment fails. */
+"comments.unapprove.error.title" = "Chyba při zamítnutí komentáře";
 
 /* Error message informing a user about an invalid password. */
 "common.reEnterPasswordMessage" = "Uživatelské jméno nebo heslo uložené v aplikaci může být zastaralé. Zadejte prosím znovu heslo v nastavení a zkuste to znovu.";
@@ -7895,6 +7904,9 @@ Example: Reply to Pamela Nguyen */
 /* Menu action to permanently delete a trashed post */
 "customPostList.action.deletePermanently" = "Trvale smazat";
 
+/* Menu action to create a draft copy of a post */
+"customPostList.action.duplicate" = "Duplikát";
+
 /* Menu action to change a post's status to draft */
 "customPostList.action.moveToDraft" = "Přesunout do konceptů";
 
@@ -7939,6 +7951,12 @@ Example: Reply to Pamela Nguyen */
 
 /* Empty state message when no custom posts exist. %1$@ is the post type name (e.g., 'Podcasts', 'Products'). */
 "customPostList.emptyState.message" = "Žádné %1$@";
+
+/* Short label for the swipe action to permanently delete a trashed post. Keep this translation short. */
+"customPostList.swipeAction.delete" = "Odstranit";
+
+/* Short label for the swipe action to trash a post. Keep this translation short. */
+"customPostList.swipeAction.trash" = "Silný";
 
 /* Message for the confirmation alert when trashing a published post */
 "customPostList.trashConfirmation.message" = "Tento příspěvek je zveřejněn a viditelný pro návštěvníky. Opravdu ho chcete přesunout do koše?";
@@ -8980,6 +8998,159 @@ Example: Reply to Pamela Nguyen */
 /* Message stating that the user is unable to use Stats and Notifications because their site is connected to a different WordPress.com account */
 "jetpackSite.connectToDefaultAccount" = "Pro použití statistik a oznámení se musíte přihlásit pomocí %@.";
 
+/* Message shown at the top of the account confirmation screen when every available account is already connected to the site. */
+"jetpackSocial.accountConfirmation.allConnectedDescription" = "Vše je připraveno. Všechny dostupné účty jsou již s tímto webem propojeny a vaše nové příspěvky se budou sdílet automaticky. Toto nastavení můžete změnit při psaní příspěvku.";
+
+/* Nav-bar button that finalizes the social connection after choosing an account. */
+"jetpackSocial.accountConfirmation.confirm" = "Potvrdit";
+
+/* Section header listing accounts already connected to this site. */
+"jetpackSocial.accountConfirmation.connectedSection" = "Připojeno";
+
+/* Explanation text shown at the top of the account confirmation screen. */
+"jetpackSocial.accountConfirmation.description" = "Právě připojujete tento účet. Nové příspěvky se na něm budou automaticky sdílet. Toto nastavení můžete změnit při psaní příspěvku.";
+
+/* Button that dismisses the account confirmation screen when every account is already connected and there is nothing to confirm. */
+"jetpackSocial.accountConfirmation.done" = "Hotovo";
+
+/* Loading caption while fetching accounts for the confirmation screen. */
+"jetpackSocial.accountConfirmation.loading" = "Načítání účtů…";
+
+/* Footer caption below the 'Mark the connection as shared' toggle. */
+"jetpackSocial.accountConfirmation.markAsSharedFooter" = "Pokud je tato možnost zapnutá, bude připojení dostupné všem správcům, redaktorům a autorům. Toto nastavení můžete později změnit.";
+
+/* Toggle label controlling whether the new connection is shared with other site users. */
+"jetpackSocial.accountConfirmation.markAsSharedLabel" = "Označte připojení jako sdílené";
+
+/* Button to retry a failed account fetch. */
+"jetpackSocial.accountConfirmation.retry" = "Zkusit znovu";
+
+/* Navigation title of the account confirmation screen shown after OAuth. */
+"jetpackSocial.accountConfirmation.title" = "Potvrzení připojení";
+
+/* Toggle label controlling whether a connection is shared with all site users. */
+"jetpackSocial.connectionDetail.availableToAllUsers" = "K dispozici pro všechny uživatele";
+
+/* Footer caption below the 'Available to all users' toggle. */
+"jetpackSocial.connectionDetail.availableToAllUsersFooter" = "Povolte, aby toto připojení mohli používat všichni správci a uživatelé vašeho webu.";
+
+/* Section header on the connection detail screen. */
+"jetpackSocial.connectionDetail.settingsHeader" = "Nastavení";
+
+/* Dismiss button in the social connection update failure alert. */
+"jetpackSocial.connectionDetail.updateFailedDismiss" = "Dobře";
+
+/* Title of the alert shown when updating a social connection setting fails. */
+"jetpackSocial.connectionDetail.updateFailedTitle" = "Nepodařilo se aktualizovat připojení";
+
+/* Error when a publicize connection ID can't be found. %1$@ is the connection ID. */
+"jetpackSocial.error.connectionNotFound" = "Spojení %1$@ nebylo nalezeno.";
+
+/* Error shown when decoding a social sharing response fails. */
+"jetpackSocial.error.decoding" = "Došlo k neočekávané odpovědi ze strany serveru.";
+
+/* Error when a keyring token ID can't be found. %1$@ is the token ID. */
+"jetpackSocial.error.keyringNotFound" = "Spojení s klíčovým řetězcem %1$@ nebylo nalezeno.";
+
+/* Link label that opens documentation explaining how to resolve a social sharing error. */
+"jetpackSocial.error.learnMore" = "Další informace";
+
+/* Error shown when a social sharing network call fails. */
+"jetpackSocial.error.network" = "Došlo k síťové chybě. Zkontrolujte prosím připojení a zkuste to znovu.";
+
+/* Error when the WP.com account has no authorized keyring for a given service. %1$@ is the service label (e.g. 'Mastodon'). */
+"jetpackSocial.error.noKeyringForService" = "Pro %1$@ nejsou k dispozici žádné propojené účty.";
+
+/* Error shown after Facebook OAuth when the user's account doesn't manage any Facebook Pages, since Publicize only targets Pages. */
+"jetpackSocial.error.noPagesForFacebook" = "Služba Facebook Connection nenalezla žádné stránky. Služba Publicize se nemůže připojit k profilům na Facebooku, ale pouze k publikovaným stránkám.";
+
+/* Error shown when the WP.com auth token is missing or invalid. */
+"jetpackSocial.error.notAuthenticated" = "Chcete-li spravovat účty na sociálních sítích, musíte se znovu přihlásit.";
+
+/* Generic fallback error for social sharing. */
+"jetpackSocial.error.unknown" = "Došlo k chybě. Zkuste to prosím znovu.";
+
+/* Status text for a broken / invalid / refresh-failed connection. */
+"jetpackSocial.manageConnections.brokenStatus" = "Vyžaduje pozornost";
+
+/* Cancel button in the disconnect confirmation alert. */
+"jetpackSocial.manageConnections.cancel" = "Zrušit";
+
+/* Button on the Social screen that opens the add-connection modal. */
+"jetpackSocial.manageConnections.connectNewAccount" = "Připojit nový účet";
+
+/* Footer caption under the Connected Accounts section on the Social screen. */
+"jetpackSocial.manageConnections.connectedFooter" = "Propojte své účty na sociálních sítích a po zveřejnění příspěvku odešlete jeho úvodní obrázek a obsah na vybrané kanály.";
+
+/* Section header listing currently connected social accounts. */
+"jetpackSocial.manageConnections.connectedHeader" = "Propojené účty";
+
+/* Button that removes a social sharing connection. */
+"jetpackSocial.manageConnections.delete" = "Odpojit";
+
+/* Confirmation alert title. %1$@ is the connected account's display name. */
+"jetpackSocial.manageConnections.deleteConfirmTitle" = "Opravdu chcete odpojit %1$@?";
+
+/* Dismiss button in the disconnect failure alert. */
+"jetpackSocial.manageConnections.deleteFailedDismiss" = "Dobře";
+
+/* Title of the alert shown when disconnecting a social connection fails. */
+"jetpackSocial.manageConnections.deleteFailedTitle" = "Nedařilo se mi odpojit";
+
+/* Footer caption under the list of services in the Connect Account picker modal. */
+"jetpackSocial.manageConnections.footer" = "Propojte své oblíbené sociální sítě a sdílejte nové příspěvky s přáteli automaticky.";
+
+/* Button to retry a failed load. */
+"jetpackSocial.manageConnections.retry" = "Zkusit znovu";
+
+/* Badge shown on connections that are shared with other site users. */
+"jetpackSocial.manageConnections.sharedBadge" = "Sdílené";
+
+/* Title of the Social Sharing settings screen. */
+"jetpackSocial.manageConnections.title" = "Sociální";
+
+/* Confirm button in the disconnect confirmation alert. */
+"jetpackSocial.manageConnections.yes" = "Ano";
+
+/* Navigation bar title of the OAuth webview. %1$@ is the service label (e.g. 'Mastodon'). */
+"jetpackSocial.oauthWebView.connectTitle" = "Připojit se k %1$@";
+
+/* Label above the optional custom social-sharing message field. */
+"jetpackSocial.postSection.customMessage" = "Vlastní zpráva";
+
+/* Placeholder for the optional custom social-sharing message field. */
+"jetpackSocial.postSection.customMessagePlaceholder" = "Zde napište vlastní zprávu pro své sledující na sociálních sítích.";
+
+/* Caption shown when the site has no social connections. */
+"jetpackSocial.postSection.empty" = "Zatím nejsou propojeny žádné účty na sociálních sítích.";
+
+/* Title of the row that opens the social sharing detail screen in Post Settings. */
+"jetpackSocial.postSection.header" = "Sdílet na sociálních sítích";
+
+/* Button to retry a failed load of the connections list. */
+"jetpackSocial.postSection.retry" = "Zkusit znovu";
+
+/* Trailing value on the 'Share to Social' post settings row. %1$d is the enabled count, %2$d is the total. */
+"jetpackSocial.postSection.summary.format" = "%1$d z %2$d";
+
+/* Footer below the per-connection toggles on the social sharing detail screen. */
+"jetpackSocial.postSection.togglesFooter" = "Jakmile bude tento příspěvek zveřejněn, bude sdílen na aktivovaných účtech.";
+
+/* Notice shown after a social connection is successfully created. %1$@ is the service label. */
+"jetpackSocial.serviceDetail.connectedNotice" = "%1$@ je připojeno";
+
+/* Cancel button in the add-connection failure alert. */
+"jetpackSocial.serviceDetail.failureCancel" = "Zrušit";
+
+/* Retry button in the add-connection failure alert. */
+"jetpackSocial.serviceDetail.failureRetry" = "Zkusit znovu";
+
+/* Title of the alert shown when adding a social connection fails. */
+"jetpackSocial.serviceDetail.failureTitle" = "Připojení se nezdařilo";
+
+/* Navigation bar title of the service picker modal shown when adding a new social connection. */
+"jetpackSocial.servicePicker.title" = "Připojit účet";
+
 /* Accessibility label for add card button */
 "jetpackStats.accessibility.addCardButton" = "Přidat novou kartu statistik";
 
@@ -9484,6 +9655,9 @@ Example: Reply to Pamela Nguyen */
 
 /* Title for weekly activity heatmap */
 "jetpackStats.postDetails.weeklyActivity" = "Týdenní aktivita";
+
+/* Confirmation message when marking a referrer as spam. %1$@ is the domain name. */
+"jetpackStats.referrerDetails.confirmAsSpam.message" = "Pokud označíte „%1$@“ jako spam, nebude se vám tento záznam zobrazovat ve statistikách. Toto označení můžete kdykoli zrušit prostřednictvím webového rozhraní.";
 
 /* Title for error alert when marking referrer as spam fails */
 "jetpackStats.referrerDetails.errorAlertTitle" = "Chyba";
@@ -11710,12 +11884,6 @@ Example: given a notice format "Following %@" and empty site name, this will be 
 /* Describes that the slider is used to customize the text size in the Reader. */
 "reader.preferences.control.sizeSlider.description" = "Velikost";
 
-/* Text for a small label in the navigation bar that hints that this is an experimental feature.
-
-The enclosing angled brackets ('<' and '>') are decorative and only intended as a flavor.
-Feel free to replace it with other bracket types that you think looks better for the locale. */
-"reader.preferences.navBar.experimental.label" = "<Experimentální>";
-
 /* Description text for the preview section of Reader Preferences */
 "reader.preferences.preview.body.text" = "Vyberte si barvy, písma a velikosti. Zde si prohlédněte výběr a čtěte příspěvky s vlastními styly, až budete hotovi.";
 
@@ -12078,7 +12246,7 @@ Feel free to replace it with other bracket types that you think looks better for
 "shared.button.edit" = "Upravit";
 
 /* A shared button title used in different contexts */
-"shared.button.notNow" = "Teď hned";
+"shared.button.notNow" = "Teď ne";
 
 /* A shared button title used in different contexts */
 "shared.button.ok" = "OK";

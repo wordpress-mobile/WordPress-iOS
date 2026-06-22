@@ -59,8 +59,8 @@ public struct DomainSuggestion: Codable {
         }
 
         self.domainName = domain
-        self.productID = json["product_id"] as? Int ?? nil
-        self.supportsPrivacy = json["supports_privacy"] as? Bool ?? nil
+        self.productID = json["product_id"] as? Int
+        self.supportsPrivacy = json["supports_privacy"] as? Bool
         self.costString = json["cost"] as? String ?? ""
         self.cost = json["raw_price"] as? Double
         self.saleCost = json["sale_cost"] as? Double

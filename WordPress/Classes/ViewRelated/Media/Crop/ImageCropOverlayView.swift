@@ -16,7 +16,7 @@ class ImageCropOverlayView: UIView {
     @objc var outerColor: UIColor?
     var maskShape: ImageCropOverlayMaskShape = .circle
 
-    // MARK: - Overriden Methods
+    // MARK: - Overridden Methods
     override func layoutSubviews() {
         super.layoutSubviews()
         setNeedsDisplay()

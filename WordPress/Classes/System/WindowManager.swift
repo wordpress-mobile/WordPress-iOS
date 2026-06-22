@@ -24,7 +24,7 @@ class WindowManager: NSObject {
     /// The root view controller for the window.
     ///
     var rootViewController: UIViewController? {
-        return window.rootViewController
+        window.rootViewController
     }
 
     init(window: UIWindow) {
@@ -103,7 +103,8 @@ class WindowManager: NSObject {
             animations: nil,
             completion: { _ in
                 completion?()
-            })
+            }
+        )
     }
 
     // MARK: Temporary Overlaying Window
@@ -112,9 +113,15 @@ class WindowManager: NSObject {
     /// - Parameter rootViewController: View controller to be used as the root view controller for the newly created window.
     ///
     func displayOverlayingWindow(with rootViewController: UIViewController) {
+        // A window without a scene never displays, so fail loudly instead of
+        // creating an invisible overlay. The main window is always scene-attached
+        // while UI is on screen. Bail before tearing down any existing overlay.
+        guard let windowScene = self.window.windowScene else {
+            assertionFailure("displayOverlayingWindow requires a scene-attached main window")
+            return
+        }
         clearOverlayingWindow()
-        let windowFrame = window.frame
-        let window = UIWindow(frame: windowFrame)
+        let window = UIWindow(windowScene: windowScene)
         window.rootViewController = rootViewController
         window.windowLevel = .alert
         window.isHidden = false

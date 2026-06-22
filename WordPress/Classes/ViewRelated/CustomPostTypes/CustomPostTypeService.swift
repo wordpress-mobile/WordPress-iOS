@@ -17,9 +17,7 @@ class CustomPostTypeService {
     }
 
     init?(blog: Blog) {
-        guard FeatureFlag.customPostTypes.enabled,
-              let site = try? WordPressSite(blog: blog),
-              case .selfHosted = site else { return nil }
+        guard FeatureFlag.customPostTypes.enabled, let site = try? WordPressSite(blog: blog) else { return nil }
         self.blog = TaggedManagedObjectID(blog)
         self.client = WordPressClientFactory.shared.instance(for: site)
     }

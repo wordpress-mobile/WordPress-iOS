@@ -90,7 +90,7 @@ class NoteBlockHeaderTableViewCell: NoteBlockTableViewCell {
         authorAvatarImageView.image = .gravatarPlaceholderImage
     }
 
-    // MARK: - Overriden Methods
+    // MARK: - Overridden Methods
 
     override func prepareForReuse() {
         super.prepareForReuse()

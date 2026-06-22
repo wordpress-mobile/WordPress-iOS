@@ -512,7 +512,7 @@ private extension CommentContentTableViewCell {
         fullContentHeight = contentHeight
 
         // - warning: It's important to set height to the minimum supported
-        // value because `WKWebView` can only increase the content height whe
+        // value because `WKWebView` can only increase the content height when
         // calculating content size (it will never decrease it).
         let minContentHeight: CGFloat = 20
         let effectiveContentHeight = contentHeight ?? minContentHeight

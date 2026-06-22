@@ -24,6 +24,7 @@ final class CustomPostListViewModel: ObservableObject {
 
     private var collection: PostMetadataCollectionWithEditContext
     private var homepageSetting: HomepageSetting?
+    private var canManageOptions = false
     private var isBatchSyncing = false
     // Whether we should show the content in a hierarchy view.
     // true if the number of cached items or the total items return by the API
@@ -39,6 +40,16 @@ final class CustomPostListViewModel: ObservableObject {
     /// The view uses this set to dim rows, show spinners, and disable interaction.
     @Published private(set) var pendingPostIDs: Set<Int64> = []
 
+    var isPages: Bool {
+        endpoint == .pages
+    }
+
+    /// Whether the "Page Attributes" submenu should be available.
+    /// Requires the `page` post type and `manage_options` capability.
+    var canChangePageAttributes: Bool {
+        isPages && canManageOptions
+    }
+
     var shouldDisplayEmptyView: Bool {
         items.isEmpty && listInfo?.isSyncing == false
     }
@@ -49,6 +60,10 @@ final class CustomPostListViewModel: ObservableObject {
 
     var postService: WordPressAPIInternal.PostService {
         service.posts()
+    }
+
+    func pageRole(for post: AnyPostWithEditContext) -> PageRole? {
+        items.first(where: { $0.id == post.id })?.pageRole
     }
 
     func errorToDisplay() -> Error? {
@@ -76,7 +91,8 @@ final class CustomPostListViewModel: ObservableObject {
         self.showsHierarchyIfApplicable = showsHierarchyIfApplicable
         self.presentingViewController = presentingViewController
 
-        collection = service
+        collection =
+            service
             .posts()
             .createPostMetadataCollectionWithEditContext(
                 endpointType: details.toPostEndpointType(),
@@ -94,7 +110,8 @@ final class CustomPostListViewModel: ObservableObject {
 
         withAnimation {
             filter.author = author
-            collection = service
+            collection =
+                service
                 .posts()
                 .createPostMetadataCollectionWithEditContext(
                     endpointType: endpoint,
@@ -111,7 +128,7 @@ final class CustomPostListViewModel: ObservableObject {
     }
 
     private func refresh(pullToRefresh: Bool) async {
-        await fetchHomepageSettingsIfNeeded()
+        await fetchHomepageSettingsIfNeeded(forceRefresh: pullToRefresh)
 
         if !pullToRefresh {
             await loadCachedItems()
@@ -254,9 +271,10 @@ final class CustomPostListViewModel: ObservableObject {
         }
 
         if endpoint == .pages,
-           case .staticPage(let homepagePageID) = homepageSetting,
-           filter.statuses.contains(.publish) || filter.statuses.contains(.custom("any")) {
-            items.markHomepage(id: homepagePageID)
+            case .staticPage(let homepageID, let postsPageID) = homepageSetting,
+            filter.statuses.contains(.publish) || filter.statuses.contains(.any)
+        {
+            items.markPageRoles(homepageID: homepageID, postsPageID: postsPageID)
         }
 
         if let exclude {
@@ -276,9 +294,11 @@ final class CustomPostListViewModel: ObservableObject {
         }
 
         let entries = PageTree.buildHierarchy(from: posts)
-        let itemMap = Dictionary(uniqueKeysWithValues: items.compactMap { item -> (Int64, CustomPostCollectionItem)? in
-            return (item.id, item)
-        })
+        let itemMap = Dictionary(
+            uniqueKeysWithValues: items.compactMap { item -> (Int64, CustomPostCollectionItem)? in
+                (item.id, item)
+            }
+        )
 
         indentationMap = Dictionary(uniqueKeysWithValues: entries.map { ($0.id, $0) })
         self.items = entries.compactMap { itemMap[$0.id] }
@@ -404,21 +424,27 @@ final class CustomPostListViewModel: ObservableObject {
     }
 
     func menuNavigation(forBlaze post: AnyPostWithEditContext) -> PostMenuNavigation? {
-        guard endpoint == .posts
+        guard
+            endpoint == .posts
                 && BlazeHelper.isBlazeFlagEnabled() && blog.canBlaze
-                && post.status == .publish && (post.password ?? "").isEmpty else { return nil }
+                && post.status == .publish && (post.password ?? "").isEmpty
+        else { return nil }
         return .blaze(post: post)
     }
 
     func menuNavigation(forStats post: AnyPostWithEditContext) -> PostMenuNavigation? {
-        guard endpoint == .posts
-                && blog.supports(.stats) && post.status == .publish else { return nil }
+        guard
+            endpoint == .posts
+                && blog.supports(.stats) && post.status == .publish
+        else { return nil }
         return .stats(post: post)
     }
 
     func menuNavigation(forComments post: AnyPostWithEditContext) -> PostMenuNavigation? {
-        guard details.supports.supports(feature: .comments)
-                && post.status == .publish, let siteID = blog.dotComID else { return nil }
+        guard
+            details.supports.supports(feature: .comments)
+                && post.status == .publish, let siteID = blog.dotComID
+        else { return nil }
         return .comments(post: post, siteID: siteID)
     }
 
@@ -446,21 +472,131 @@ final class CustomPostListViewModel: ObservableObject {
         }
     }
 
-    /// Fetches homepage settings using the cached site settings from
-    /// `WordPressClient` when the endpoint is `.pages` and the setting
-    /// has not been resolved yet.
-    private func fetchHomepageSettingsIfNeeded() async {
-        guard endpoint == .pages, homepageSetting == nil else { return }
+    func setAsHomepage(_ post: AnyPostWithEditContext) async {
+        await applyPageRoleChange(for: post, role: .homepage)
+    }
+
+    func setAsPostsPage(_ post: AnyPostWithEditContext) async {
+        await applyPageRoleChange(for: post, role: .postsPage)
+    }
+
+    func setAsRegularPage(_ post: AnyPostWithEditContext) async {
+        await applyPageRoleChange(for: post, role: nil)
+    }
+
+    /// Updates the site's homepage / posts-page assignment so `post` takes on
+    /// `role`, or clears its role when `role` is `nil`.
+    ///
+    /// Performs an optimistic local update that is reverted if the server-side
+    /// settings update fails.
+    private func applyPageRoleChange(for post: AnyPostWithEditContext, role: PageRole?) async {
+        let previousSetting = homepageSetting
+        let postID = post.id
+
+        let newSetting: HomepageSetting
+        let params: SiteSettingsUpdateParams
+
+        switch role {
+        case .homepage:
+            var postsPageID: Int64?
+            var clearPostsPage = false
+            if case .staticPage(_, let prev) = previousSetting {
+                if prev == postID {
+                    clearPostsPage = true
+                } else {
+                    postsPageID = prev
+                }
+            }
+            newSetting = .staticPage(homepageID: postID, postsPageID: postsPageID)
+            params = SiteSettingsUpdateParams(
+                showOnFront: "page",
+                pageOnFront: UInt64(postID),
+                pageForPosts: clearPostsPage ? 0 : nil
+            )
+
+        case .postsPage:
+            var homepageID: Int64?
+            var clearHomepage = false
+            if case .staticPage(let prev, _) = previousSetting {
+                if prev == postID {
+                    clearHomepage = true
+                } else {
+                    homepageID = prev
+                }
+            }
+            newSetting = .staticPage(homepageID: homepageID, postsPageID: postID)
+            params = SiteSettingsUpdateParams(
+                showOnFront: "page",
+                pageOnFront: clearHomepage ? 0 : nil,
+                pageForPosts: UInt64(postID)
+            )
+
+        case nil:
+            // The "set as regular page" action only makes sense when a static
+            // page is currently designated; the context menu surfaces it only
+            // for the posts page, but we still bail defensively if the site is
+            // on "latest posts" mode.
+            guard case .staticPage(let homepageID, _) = previousSetting else { return }
+            newSetting = .staticPage(homepageID: homepageID, postsPageID: nil)
+            params = SiteSettingsUpdateParams(pageForPosts: 0)
+        }
+
+        guard !pendingPostIDs.contains(postID) else { return }
+        pendingPostIDs.insert(postID)
+        defer { pendingPostIDs.remove(postID) }
+
+        homepageSetting = newSetting
+        reapplyPageRoles()
 
         do {
-            let settings = try await client.fetchSiteSettings()
-            if settings.showOnFront == "page", settings.pageOnFront > 0 {
-                homepageSetting = .staticPage(id: Int64(settings.pageOnFront))
+            _ = try await client.api.siteSettings.update(params: params)
+            Notice(title: Strings.pageRoleChangeSuccess).post()
+        } catch {
+            Loggers.app.error("Failed to update page role: \(error)")
+            homepageSetting = previousSetting
+            reapplyPageRoles()
+            Notice(error: error).post()
+        }
+    }
+
+    /// Fetches homepage settings and user capabilities when the endpoint is `.pages`.
+    ///
+    /// Uses the `WordPressClient` cache unless `forceRefresh` is `true`. Pass `true`
+    /// from pull-to-refresh paths so the list picks up settings changed elsewhere
+    /// (e.g. via the web admin or another device) without requiring an app relaunch.
+    private func fetchHomepageSettingsIfNeeded(forceRefresh: Bool = false) async {
+        guard endpoint == .pages else { return }
+        guard forceRefresh || homepageSetting == nil else { return }
+
+        do {
+            let settings = try await client.fetchSiteSettings(forceRefresh: forceRefresh)
+            if settings.showOnFront == "page" {
+                homepageSetting = .staticPage(
+                    homepageID: settings.pageOnFront > 0 ? Int64(settings.pageOnFront) : nil,
+                    postsPageID: settings.pageForPosts > 0 ? Int64(settings.pageForPosts) : nil
+                )
             } else {
                 homepageSetting = .latestPosts
             }
         } catch {
             Loggers.app.error("Failed to fetch site settings for homepage detection: \(error)")
+        }
+
+        do {
+            canManageOptions = try await client.currentUserCan(.manageOptions)
+        } catch {
+            Loggers.app.error("Failed to fetch user capabilities: \(error)")
+        }
+    }
+
+    private func reapplyPageRoles() {
+        // Clear all existing page roles
+        for index in items.indices {
+            items[index].pageRole = nil
+        }
+
+        if case .staticPage(let homepageID, let postsPageID) = homepageSetting {
+            items.markPageRoles(homepageID: homepageID, postsPageID: postsPageID)
         }
     }
 
@@ -521,7 +657,7 @@ struct CustomPostCollectionDisplayPost: Equatable {
     let sticky: Bool
     let featuredMedia: MediaId?
     let primaryStatus: PostStatus
-    var isHomepage: Bool
+    var pageRole: PageRole?
 
     init(
         date: Date,
@@ -533,7 +669,7 @@ struct CustomPostCollectionDisplayPost: Equatable {
         sticky: Bool = false,
         featuredMedia: MediaId? = nil,
         primaryStatus: PostStatus = .publish,
-        isHomepage: Bool = false
+        pageRole: PageRole? = nil
     ) {
         self.date = date
         self.modifiedDate = modifiedDate
@@ -544,14 +680,15 @@ struct CustomPostCollectionDisplayPost: Equatable {
         self.sticky = sticky
         self.featuredMedia = featuredMedia
         self.primaryStatus = primaryStatus
-        self.isHomepage = isHomepage
+        self.pageRole = pageRole
     }
 
     init(_ entity: AnyPostWithEditContext, blog: Blog, primaryStatus: PostStatus = .publish) {
         self.date = entity.dateGmt
         self.modifiedDate = entity.modifiedGmt
         self.title = entity.title?.raw
-        let contentPreview = GutenbergExcerptGenerator
+        let contentPreview =
+            GutenbergExcerptGenerator
             .firstParagraph(from: entity.content.rendered)
             .replacingOccurrences(
                 of: "[\n]{2,}",
@@ -568,7 +705,7 @@ struct CustomPostCollectionDisplayPost: Equatable {
         self.sticky = entity.sticky ?? false
         self.featuredMedia = entity.featuredMedia
         self.primaryStatus = primaryStatus
-        self.isHomepage = false
+        self.pageRole = nil
     }
 
     /// The title to display, with a placeholder for untitled posts.
@@ -665,6 +802,11 @@ extension PostStatus {
     }
 }
 
+enum PageRole: Equatable {
+    case homepage
+    case postsPage
+}
+
 struct CustomPostCollectionItem: Identifiable, Equatable {
     let id: Int64
     var post: CustomPostCollectionDisplayPost?
@@ -676,12 +818,12 @@ struct CustomPostCollectionItem: Identifiable, Equatable {
         case error(message: String)
     }
 
-    var isHomepage: Bool {
+    var pageRole: PageRole? {
         get {
-            post?.isHomepage ?? false
+            post?.pageRole
         }
         set {
-            post?.isHomepage = newValue
+            post?.pageRole = newValue
         }
     }
 
@@ -710,15 +852,26 @@ struct CustomPostCollectionItem: Identifiable, Equatable {
             self.state = .error(message: error)
         }
     }
+
+    #if DEBUG
+    /// Testing-only initializer.
+    init(id: Int64, post: CustomPostCollectionDisplayPost?, state: State) {
+        self.id = id
+        self.post = post
+        self.state = state
+    }
+    #endif
 }
 
 extension Array where Element == CustomPostCollectionItem {
-    /// Marks the homepage item with the `isHomepage` flag.
-    mutating func markHomepage(id: Int64) {
-        guard let homepageIndex = firstIndex(where: { $0.id == id }) else {
-            return
+    /// Marks items with their page roles based on the site's homepage settings.
+    mutating func markPageRoles(homepageID: Int64?, postsPageID: Int64?) {
+        if let homepageID, let index = firstIndex(where: { $0.id == homepageID }) {
+            self[index].pageRole = .homepage
         }
-        self[homepageIndex].isHomepage = true
+        if let postsPageID, let index = firstIndex(where: { $0.id == postsPageID }) {
+            self[index].pageRole = .postsPage
+        }
     }
 }
 
@@ -783,12 +936,17 @@ private enum Strings {
         value: "Settings",
         comment: "Menu action to open post settings"
     )
+    static let pageRoleChangeSuccess = NSLocalizedString(
+        "customPostList.action.pageRoleChange.success",
+        value: "Page successfully updated",
+        comment: "Notice shown after successfully changing a page's role (homepage, posts page, or regular page)"
+    )
 }
 
 /// Represents the WordPress "Your homepage displays" setting.
 private enum HomepageSetting {
     case latestPosts
-    case staticPage(id: Int64)
+    case staticPage(homepageID: Int64?, postsPageID: Int64?)
 }
 
 private enum Constants {

@@ -123,4 +123,12 @@ extern NSString *const WPBlogSettingsUpdatedNotification;
 
 @end
 
+@class BlogSettings;
+@class RemoteBlogSettings;
+
+/// Internal methods exposed for `BlogService+Settings.swift`.
+@interface BlogService (Settings)
+- (void)updateSettings:(BlogSettings *)settings withRemoteSettings:(RemoteBlogSettings *)remoteSettings;
+@end
+
 NS_ASSUME_NONNULL_END

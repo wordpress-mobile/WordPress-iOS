@@ -1,21 +1,18 @@
-Apa saja yang ada di situs Anda? Kini Anda tahu—Pemberitahuan push sekarang menggunakan gravatar agar Anda dapat melihat siapa yang berkomentar atau berinteraksi dengan konten Anda. Log Aktivitas juga akan muncul ketika situs Anda diperbarui menggunakan agen AI.
+Jika Anda memiliki situs yang di-hosting sendiri, kini Anda perlu login ke aplikasi menggunakan kata sandi aplikasi. Jika Anda belum memiliki kata sandi aplikasi, kami akan membuatnya secara otomatis agar siap digunakan saat dibutuhkan.
 
-Jika Anda pikir pembaruan Statistik terakhir kami keren, itu belum seberapa.
+Kami menambahkan pemangkasan cerdas untuk gambar andalan di feed Pembaca.  Dengan begitu, bagian kepala pada gambar orang tidak akan terpotong. Jauh lebih baik.
 
-- Tanggal hari ini sekarang disertakan dalam interval seperti "7 hari terakhir." Kami juga menambahkan interval "14 hari terakhir".
-- Tanggal yang tidak lengkap, termasuk tanggal hari ini, ditampilkan pada bagan garis sebagai garis putus-putus. Anda dapat melihatnya dengan lebih mudah melalui tampilan bagan batang.
-- Pada bagan itu, ketuk batang untuk menampilkan data tentang tanggal tersebut. Selain itu, data tentang beberapa hari akan lebih mudah untuk digulir. Mengetuk batang juga tidak akan memengaruhi batang di sampingnya lagi.
-- Anda mungkin melihat perubahan visual seperti header kartu Bagan yang lebih kecil, font yang mengecil di tab, dan spasi yang berkurang di sana-sini. Ini memberikan efek minimalis.
+Kini tersedia dialog konfirmasi saat Anda menandai sumber lalu lintas pengarah sebagai spam. Dengan begitu, akan sangat sulit melakukannya secara tidak sengaja.
 
-Tidak lupa, kami juga membuat perubahan pada Pembaca. (Kebetulan, tidak ada satu pun yang berhubungan dengan membaca.)
+Dalam pembaruan ini, kami juga menemukan sejumlah bug.
 
-- Ada gambar di dalam kotak lampu, yang akan menutup jika digeser ke bawah, bahkan saat Anda memperbesar gambar.
-- Kami memperbaiki warna tautan di komentar dan di mode gelap pada tema khusus. Semua tampak bagus.
-- Anda dapat melihat galeri media dalam mode layar penuh. Cukup geser ke kanan atau ke kiri untuk melihat semua gambar.
-
-Dan selagi masih ada waktu, kami memperbaiki beberapa detail yang mengganggu.
-
-- Kami memperbarui ikon tanda panah dan spasi di layar Pemberitahuan.
-- Di Pengaturan Pos, kartu Berbagi di Media Sosial hanya menampilkan platform yang didukung aplikasi.
-- Pos baru menggunakan format pos default, bukan versi standarnya. Anda dapat memperbarui format ini di pengaturan situs.
-- Jika situs Anda dihosting sendiri dengan XML-RPC yang dinonaktifkan, Anda dapat melihat Pos dan Halaman di aplikasi. Menurut kami fitur itu cukup penting.
+- Label zona waktu di layar Statistik tidak lagi menampilkan Waktu Standar selama Waktu Musim Panas. (Terima kasih atas laporannya, @btraviswright!)
+- Layar Artikel kini menampilkan komentar pembaca saat komentar tersebut diposting dari bagian inline.
+- Tombol Berlangganan kini berfungsi dengan baik pada pos Freshly Pressed, sehingga Anda dapat berlangganan feed langsung dari dalam pos. Cepat, mudah, dan makin segar.
+- Tautan catatan kaki pada Pembaca kini berfungsi sebagaimana mestinya dan mengarahkan Anda ke lokasi yang tepat saat diketuk.
+- Pada Komentar Pembaca, tampilan kosong akan hilang setelah Anda memposting komentar. Komentar dalam cache juga akan langsung hilang setelah dihapus, termasuk melalui tindakan geser. Selamat tinggal.
+- Kami memperbaiki beberapa masalah desain dan visibilitas, seperti gaya tombol, pemisah komentar pada Mode Gelap, dan kontrol video putar otomatis.
+- Pada Pembaca, kami memperbaiki beberapa masalah terkait Pengaturan Pemberitahuan. Pengaturan tersebut kini disembunyikan saat Anda belum berlangganan dan akan ditampilkan setelah berlangganan.
+- Kami memperbaiki masalah yang menyebabkan tampilan footer di Penyuntingan Menu tidak menyesuaikan ukurannya. Hasilnya, tombol tindakan kini muncul dengan jelas dalam bahasa selain bahasa Inggris. Muy bueno.
+- Kami mengatasi masalah avatar yang tidak sesuai pada pemberitahuan. Jika Anda membatalkan unduhan gambar, gambar tersebut tidak akan muncul di aplikasi.
+- Kami menghapus tautan X yang tidak berfungsi pada layar Tentang. (Apresiasi untuk @zynp-KC atas laporannya.)

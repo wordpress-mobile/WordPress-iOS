@@ -17,55 +17,6 @@ open class BloggingPromptsServiceRemote: ServiceRemoteWordPressComREST {
         case encodingFailure
     }
 
-    /// Fetches a number of blogging prompts for the specified site.
-    /// Note that this method hits wpcom/v2, which means the `WordPressComRestAPI` needs to be initialized with `LocaleKeyV2`.
-    ///
-    /// - Parameters:
-    ///   - siteID: Used to check which prompts have been answered for the site with given `siteID`.
-    ///   - number: The number of prompts to query. When not specified, this will default to remote implementation.
-    ///   - fromDate: When specified, this will fetch prompts from the given date. When not specified, this will default to remote implementation.
-    ///   - completion: A closure that will be called when the fetch request completes.
-    open func fetchPrompts(for siteID: NSNumber,
-                           number: Int? = nil,
-                           fromDate: Date? = nil,
-                           completion: @escaping (Result<[RemoteBloggingPrompt], Error>) -> Void) {
-        let path = path(forEndpoint: "sites/\(siteID)/blogging-prompts", withVersion: ._2_0)
-        let requestParameter: [String: AnyHashable] = {
-            var params = [String: AnyHashable]()
-
-            if let number, number > 0 {
-                params["number"] = number
-            }
-
-            if let fromDate {
-                // convert to yyyy-MM-dd format, excluding the timezone information.
-                // the date parameter doesn't need to be timezone-accurate since prompts are grouped by date.
-                params["from"] = Self.dateFormatter.string(from: fromDate)
-            }
-
-            return params
-        }()
-
-        let decoder = JSONDecoder.apiDecoder
-        // our API decoder assumes that we're converting from snake case.
-        // revert it to default so the CodingKeys match the actual response keys.
-        decoder.keyDecodingStrategy = .useDefaultKeys
-
-        Task { @MainActor in
-            await self.wordPressComRestApi
-                .perform(
-                    .get,
-                    URLString: path,
-                    parameters: requestParameter as [String: AnyObject],
-                    jsonDecoder: decoder,
-                    type: [String: [RemoteBloggingPrompt]].self
-                )
-                .map { $0.body.values.first ?? [] }
-                .mapError { error -> Error in error.asNSError() }
-                .execute(completion)
-        }
-    }
-
     /// Fetches the blogging prompts settings for a given site.
     ///
     /// - Parameters:

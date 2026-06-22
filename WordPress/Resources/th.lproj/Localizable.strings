@@ -1243,9 +1243,6 @@
    Try to load the list of interests again. */
 "Try Again" = "ลองใหม่อีกครั้ง";
 
-/* Title of button that displays the app's Twitter profile */
-"Twitter" = "Twitter";
-
 /* URL text field placeholder */
 "URL" = "URL";
 

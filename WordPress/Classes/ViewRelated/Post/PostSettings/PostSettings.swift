@@ -69,8 +69,8 @@ struct PostSettings: Hashable {
     /// Publicize draft state used for change detection and REST parameter encoding.
     /// When available, `connectionsByID` carries the full post-level connection state.
     var socialSharingDraft: PostSocialSharingDraft?
-    var allowComments = true
-    var allowPings = true
+    var allowComments: Bool?
+    var allowPings: Bool?
 
     // MARK: - Page-specific
     var parentPageID: Int?
@@ -122,9 +122,12 @@ struct PostSettings: Hashable {
                         $0.categoryID.intValue
                     }
             )
-            sharing = PostSocialSharingSettings.make(for: post)
-            allowComments = post.allowComments
-            allowPings = post.allowPings
+            if PostSocialSharing.isEligible(for: post) {
+                socialSharingDraft = PostSocialSharingDraft(socialMetadata: PostMetadataContainer(post))
+            }
+            // `sharing` (the legacy keyring-keyed model) is intentionally no longer populated.
+            allowComments = post.commentsStatus.map { $0 != RemotePostDiscussionState.closed.rawValue }
+            allowPings = post.pingsStatus.map { $0 != RemotePostDiscussionState.closed.rawValue }
         case let page as Page:
             parentPageID = page.parentID?.intValue
         default:
@@ -165,16 +168,18 @@ struct PostSettings: Hashable {
         }
         self.otherTerms = otherTerms
 
-        // FIXME: Post metadata is not supported yet. Require wordpress-rs changes.
-        metadata = PostMetadata(from: .init())
+        metadata = PostMetadata(
+            accessLevel: post.meta?.jetpackNewsletterAccess,
+            isJetpackNewsletterEmailDisabled: post.meta?.isJetpackNewsletterEmailDisabled ?? false
+        )
 
         postFormat = post.format.map { $0.id }
         isStickyPost = post.sticky ?? false
         // Tag names will be resolved asynchronously in PostSettingsViewModel
         tags = (post.tags ?? []).map { Term(id: Int($0), name: "") }
         categoryIDs = Set((post.categories ?? []).map { Int($0) })
-        allowComments = post.commentStatus == .open
-        allowPings = post.pingStatus == .open
+        allowComments = post.commentStatus.map { $0 == .open }
+        allowPings = post.pingStatus.map { $0 == .open }
 
         parentPageID = post.parent.map { Int($0) }
 
@@ -204,10 +209,8 @@ struct PostSettings: Hashable {
         if let userID = blog.userID {
             settings.author = Author(id: userID.intValue, displayName: "–", avatarURL: nil)
         }
-        if let blogSettings = blog.settings {
-            settings.allowComments = blogSettings.commentsAllowed
-            settings.allowPings = blogSettings.pingbackInboundEnabled
-        }
+        settings.allowComments = blog.settings?.commentsAllowed?.boolValue
+        settings.allowPings = blog.settings?.pingbackInboundEnabled?.boolValue
         return settings
     }
 
@@ -294,26 +297,24 @@ struct PostSettings: Hashable {
             }
 
             // Update discussion settings
-            if post.allowComments != allowComments {
+            if let allowComments, post.allowComments != allowComments {
                 post.allowComments = allowComments
             }
-            if post.allowPings != allowPings {
+            if let allowPings, post.allowPings != allowPings {
                 post.allowPings = allowPings
             }
 
-            if let sharing {
-                for connection in sharing.services.flatMap(\.connections) {
-                    let keyringID = NSNumber(value: connection.keyringID)
-                    if !post.publicizeConnectionDisabledForKeyringID(keyringID) != connection.enabled {
-                        if connection.enabled {
-                            post.enablePublicizeConnectionWithKeyringID(keyringID)
-                        } else {
-                            post.disablePublicizeConnectionWithKeyringID(keyringID)
-                        }
-                    }
-                }
-                if post.publicizeMessage != sharing.message {
-                    post.publicizeMessage = sharing.message
+            // Only write when there is a draft to apply. When the draft is absent
+            // (the connections service is unavailable, so the view model stripped it),
+            // leave the existing publicize metadata untouched so the user's
+            // per-connection choices are preserved rather than silently re-enabled.
+            if let socialSharingDraft {
+                var container = PostMetadataContainer(post)
+                socialSharingDraft.applySocialMetadata(to: &container)
+                do {
+                    post.rawMetadata = try container.encode()
+                } catch {
+                    wpAssertionFailure("failed to encode social sharing metadata")
                 }
             }
         case let page as Page:
@@ -374,14 +375,12 @@ struct PostSettings: Hashable {
             params.featuredMedia = self.featuredImageID.map { MediaId(Int64($0)) } ?? MediaId(0)
         }
 
-        let postAllowsComments = post.commentStatus == .open
-        if postAllowsComments != self.allowComments {
-            params.commentStatus = self.allowComments ? .open : .closed
+        if let allowComments, (post.commentStatus == .open) != allowComments {
+            params.commentStatus = allowComments ? .open : .closed
         }
 
-        let postAllowsPings = post.pingStatus == .open
-        if postAllowsPings != self.allowPings {
-            params.pingStatus = self.allowPings ? .open : .closed
+        if let allowPings, (post.pingStatus == .open) != allowPings {
+            params.pingStatus = allowPings ? .open : .closed
         }
 
         if post.format.map({ $0.id }) != self.postFormat {
@@ -450,6 +449,19 @@ struct PostSettings: Hashable {
             }
         }
 
+        let originalMetadata = PostMetadata(
+            accessLevel: post.meta?.jetpackNewsletterAccess,
+            isJetpackNewsletterEmailDisabled: post.meta?.isJetpackNewsletterEmailDisabled ?? false
+        )
+        if originalMetadata.accessLevel != self.metadata.accessLevel {
+            params.meta = (params.meta ?? PostMeta())
+                .addingJetpackNewsletterAccess(self.metadata.accessLevel)
+        }
+        if originalMetadata.isJetpackNewsletterEmailDisabled != self.metadata.isJetpackNewsletterEmailDisabled {
+            params.meta = (params.meta ?? PostMeta())
+                .addingJetpackNewsletterEmailDisabled(self.metadata.isJetpackNewsletterEmailDisabled)
+        }
+
         let postParentPageID = post.parent.map { Int($0) }
         if postParentPageID != self.parentPageID {
             params.parent = self.parentPageID.map { PostId(Int64($0)) } ?? PostId(0)
@@ -491,8 +503,8 @@ struct PostSettings: Hashable {
         params.author = author.map { UserId(Int64($0.id)) }
         params.excerpt = excerpt.isEmpty ? nil : excerpt
         params.featuredMedia = featuredImageID.map { MediaId(Int64($0)) }
-        params.commentStatus = allowComments ? .open : .closed
-        params.pingStatus = allowPings ? .open : .closed
+        params.commentStatus = allowComments.map { $0 ? .open : .closed }
+        params.pingStatus = allowPings.map { $0 ? .open : .closed }
         params.format = postFormat.flatMap { PostFormat.from(slug: $0) }
         params.sticky = isStickyPost ? true : nil
         params.categories = categoryIds
@@ -503,6 +515,15 @@ struct PostSettings: Hashable {
         // Social meta
         if let message = socialSharingDraft?.customMessage {
             params.meta = (params.meta ?? PostMeta()).addingPublicizeMessage(message)
+        }
+
+        if metadata.accessLevel != nil {
+            params.meta = (params.meta ?? PostMeta())
+                .addingJetpackNewsletterAccess(metadata.accessLevel)
+        }
+        if metadata.isJetpackNewsletterEmailDisabled {
+            params.meta = (params.meta ?? PostMeta())
+                .addingJetpackNewsletterEmailDisabled(true)
         }
 
         return params
@@ -623,6 +644,8 @@ extension PostStatus {
 }
 
 /// A value-type representation of `PublicizeService` for the current blog that's simplified for the auto-sharing flow.
+// Deprecated: superseded for post editing by connection_id-keyed PostSocialSharingDraft stored in post metadata.
+// Kept for remaining legacy references.
 struct PostSocialSharingSettings: Hashable {
     var services: [Service]
     var message: String

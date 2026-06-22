@@ -137,8 +137,11 @@ actor StatsService: StatsServiceProtocol {
     }
 
     private func mapWordAdsResponse(_ response: WordPressKit.StatsWordAdsResponse) -> WordAdsMetricsResponse {
-        var calendar = Calendar.current
-        calendar.timeZone = siteTimeZone
+        let calendar: Calendar = {
+            var calendar = Calendar.current
+            calendar.timeZone = siteTimeZone
+            return calendar
+        }()
 
         let now = Date.now
 
@@ -507,8 +510,11 @@ actor StatsService: StatsServiceProtocol {
     }
 
     private func mapSiteMetricsResponse(_ response: WordPressKit.StatsSiteMetricsResponse) -> SiteMetricsResponse {
-        var calendar = Calendar.current
-        calendar.timeZone = siteTimeZone
+        let calendar: Calendar = {
+            var calendar = Calendar.current
+            calendar.timeZone = siteTimeZone
+            return calendar
+        }()
 
         let now = Date.now
 

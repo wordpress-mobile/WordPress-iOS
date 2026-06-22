@@ -110,7 +110,7 @@ class QRLoginVerifyCoordinatorTests: CoreDataTestCase {
 
     // MARK: - Confirm Tapped when waiting for user verification
 
-    /// Tests when the user taps the confirm button and is sucessful
+    /// Tests when the user taps the confirm button and is successful
     func testConfirmFromWaitingForUserVerificationAndSucceeds() {
         let view = QRLoginVerifyViewMock()
         let parentCoordinator = ParentCoorinatorMock()

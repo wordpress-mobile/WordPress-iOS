@@ -1,39 +1,42 @@
 # Simulator Sign-In
 
-Launch the app with credentials to enable automatic sign-in on the simulator.
+Pass credentials as launch arguments, then tap through the sign-in screen to complete sign-in.
 
-## Step 1: Providing Credentials
+## WordPress.com account
 
-### Self-hosted site
+Launch with a bearer token:
 
 ```bash
 xcrun simctl launch --terminate-running-process booted org.wordpress \
-  -ui-test-reset-everything \
+  -ui-test-wpcom-token <bearer-token>
+```
+
+On the sign-in screen, tap **"Continue with WordPress.com"**.
+
+## Self-hosted site
+
+Launch with the site URL, a username, and an application password:
+
+```bash
+xcrun simctl launch --terminate-running-process booted org.wordpress \
   -ui-test-site-url https://example.com \
   -ui-test-site-user <username> \
   -ui-test-site-pass <application-password>
 ```
 
-### WordPress.com account
+On the sign-in screen:
+
+1. Tap **"Enter your existing site address"**.
+2. Type the site address.
+3. Tap **"Continue"**.
+
+## Resetting state
+
+If the app has state from a previous run, wipe the Core Data store and `UserDefaults` before signing in. Skip this on a fresh simulator (e.g. just after `xcrun simctl erase`).
+
+Run the reset on its own — don't combine it with the credential arguments — then relaunch with the sign-in arguments above:
 
 ```bash
 xcrun simctl launch --terminate-running-process booted org.wordpress \
-  -ui-test-reset-everything \
-  -ui-test-wpcom-token <bearer-token>
+  -ui-test-reset-everything
 ```
-
-## Step 2: Signing In
-
-After launching with credentials, the app displays a sign-in page with two buttons: **"Continue with WordPress.com"** and **"Enter your existing site address"**.
-
-### WordPress.com account
-
-Tap **"Continue with WordPress.com"**. You will be automatically signed in.
-
-### Self-hosted site
-
-1. Tap **"Enter your existing site address"**
-2. Enter the site address in the text field
-3. Tap **"Continue"**
-
-You will be automatically signed in.

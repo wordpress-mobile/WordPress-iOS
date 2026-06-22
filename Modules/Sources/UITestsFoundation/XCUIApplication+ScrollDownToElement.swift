@@ -3,10 +3,10 @@ import XCTest
 // Taken from https://stackoverflow.com/a/46943935
 extension XCUIApplication {
     private struct Constants {
-        // Half way accross the screen and 40% from top
+        // Half way across the screen and 40% from top
         static let topOffset = CGVector(dx: 0.5, dy: 0.4)
 
-        // Half way accross the screen and 70% from top
+        // Half way across the screen and 70% from top
         static let bottomOffset = CGVector(dx: 0.5, dy: 0.7)
     }
 

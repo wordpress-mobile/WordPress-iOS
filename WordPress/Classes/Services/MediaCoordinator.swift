@@ -30,7 +30,10 @@ class MediaCoordinator: NSObject {
 
     // MARK: - Progress Coordinators
 
-    private let progressCoordinatorQueue = DispatchQueue(label: "org.wordpress.mediaprogresscoordinator", attributes: .concurrent)
+    private let progressCoordinatorQueue = DispatchQueue(
+        label: "org.wordpress.mediaprogresscoordinator",
+        attributes: .concurrent
+    )
 
     /// Tracks uploads that don't belong to a specific post
     private lazy var mediaLibraryProgressCoordinator: MediaProgressCoordinator = {
@@ -44,7 +47,10 @@ class MediaCoordinator: NSObject {
 
     private let mediaServiceFactory: MediaService.Factory
 
-    init(_ mediaServiceFactory: MediaService.Factory = MediaService.Factory(), coreDataStack: CoreDataStackSwift = ContextManager.shared) {
+    init(
+        _ mediaServiceFactory: MediaService.Factory = MediaService.Factory(),
+        coreDataStack: CoreDataStackSwift = ContextManager.shared
+    ) {
         self.mediaServiceFactory = mediaServiceFactory
         self.coreDataStack = coreDataStack
 
@@ -108,7 +114,7 @@ class MediaCoordinator: NSObject {
         let original = post.getOriginal()
 
         return progressCoordinatorQueue.sync {
-            return postMediaProgressCoordinators[original]
+            postMediaProgressCoordinators[original]
         }
     }
 
@@ -142,8 +148,20 @@ class MediaCoordinator: NSObject {
     /// - parameter origin: The location in the app where the upload was initiated (optional).
     ///
     @discardableResult
-    func addMedia(from asset: ExportableAsset, to blog: Blog, suppressSuccessNotice: Bool = false, analyticsInfo: MediaAnalyticsInfo? = nil) -> Media? {
-        addMedia(from: asset, blog: blog, post: nil, coordinator: mediaLibraryProgressCoordinator, suppressSuccessNotice: suppressSuccessNotice, analyticsInfo: analyticsInfo)
+    func addMedia(
+        from asset: ExportableAsset,
+        to blog: Blog,
+        suppressSuccessNotice: Bool = false,
+        analyticsInfo: MediaAnalyticsInfo? = nil
+    ) -> Media? {
+        addMedia(
+            from: asset,
+            blog: blog,
+            post: nil,
+            coordinator: mediaLibraryProgressCoordinator,
+            suppressSuccessNotice: suppressSuccessNotice,
+            analyticsInfo: analyticsInfo
+        )
     }
 
     /// Adds the specified media asset to the specified post. The upload process
@@ -154,8 +172,18 @@ class MediaCoordinator: NSObject {
     /// - parameter origin: The location in the app where the upload was initiated (optional).
     ///
     @discardableResult
-    func addMedia(from asset: ExportableAsset, to post: AbstractPost, analyticsInfo: MediaAnalyticsInfo? = nil) -> Media? {
-        addMedia(from: asset, blog: post.blog, post: post, coordinator: coordinator(for: post), analyticsInfo: analyticsInfo)
+    func addMedia(
+        from asset: ExportableAsset,
+        to post: AbstractPost,
+        analyticsInfo: MediaAnalyticsInfo? = nil
+    ) -> Media? {
+        addMedia(
+            from: asset,
+            blog: post.blog,
+            post: post,
+            coordinator: coordinator(for: post),
+            analyticsInfo: analyticsInfo
+        )
     }
 
     /// Create a `Media` instance from the main context and upload the asset to the Media Library.
@@ -163,7 +191,14 @@ class MediaCoordinator: NSObject {
     /// - Warning: This function must be called from the main thread.
     ///
     /// - SeeAlso: `MediaImportService.createMedia(with:blog:post:thumbnailCallback:completion:)`
-    private func addMedia(from asset: ExportableAsset, blog: Blog, post: AbstractPost?, coordinator: MediaProgressCoordinator, suppressSuccessNotice: Bool = false, analyticsInfo: MediaAnalyticsInfo? = nil) -> Media? {
+    private func addMedia(
+        from asset: ExportableAsset,
+        blog: Blog,
+        post: AbstractPost?,
+        coordinator: MediaProgressCoordinator,
+        suppressSuccessNotice: Bool = false,
+        analyticsInfo: MediaAnalyticsInfo? = nil
+    ) -> Media? {
         coordinator.track(numberOfItems: 1)
         let service = MediaImportService(coreDataStack: coreDataStack)
         let totalProgress = Progress.discreteProgress(totalUnitCount: MediaExportProgressUnits.done)
@@ -175,7 +210,14 @@ class MediaCoordinator: NSObject {
                 self?.thumbnailReady(url: url, for: media)
             },
             completion: { [weak self] media, error in
-                self?.handleMediaImportResult(coordinator: coordinator, totalProgress: totalProgress, analyticsInfo: analyticsInfo, media: media, error: error)
+                self?
+                    .handleMediaImportResult(
+                        coordinator: coordinator,
+                        totalProgress: totalProgress,
+                        analyticsInfo: analyticsInfo,
+                        media: media,
+                        error: error
+                    )
             }
         )
         guard let (media, creationProgress) = result else {
@@ -194,7 +236,13 @@ class MediaCoordinator: NSObject {
         return media
     }
 
-    private func handleMediaImportResult(coordinator: MediaProgressCoordinator, totalProgress: Progress, analyticsInfo: MediaAnalyticsInfo?, media: Media?, error: Error?) -> Void {
+    private func handleMediaImportResult(
+        coordinator: MediaProgressCoordinator,
+        totalProgress: Progress,
+        analyticsInfo: MediaAnalyticsInfo?,
+        media: Media?,
+        error: Error?
+    ) -> Void {
         if let error = error as NSError? {
             if let media {
                 coordinator.attach(error: error as NSError, toMediaID: media.uploadID)
@@ -301,7 +349,12 @@ class MediaCoordinator: NSObject {
     /// - Parameter failure: Optional block called if deletion failed for any media items,
     ///                      after attempted deletion of all media items
     ///
-    func delete(media: [Media], onProgress: ((Progress?) -> Void)? = nil, success: (() -> Void)? = nil, failure: (() -> Void)? = nil) {
+    func delete(
+        media: [Media],
+        onProgress: ((Progress?) -> Void)? = nil,
+        success: (() -> Void)? = nil,
+        failure: (() -> Void)? = nil
+    ) {
         media.forEach({ self.cancelUpload(of: $0) })
 
         let mediaIDs = media.map { TaggedManagedObjectID($0) }
@@ -318,7 +371,10 @@ class MediaCoordinator: NSObject {
     /// Delete media from WordPress Media Library concurrently.
     ///
     /// - Returns: Media objects that are failed to be deleted.
-    private func delete(_ mediaIDs: [TaggedManagedObjectID<Media>], onProgress: ((Progress?) -> Void)?) async -> [TaggedManagedObjectID<Media>] {
+    private func delete(
+        _ mediaIDs: [TaggedManagedObjectID<Media>],
+        onProgress: ((Progress?) -> Void)?
+    ) async -> [TaggedManagedObjectID<Media>] {
         let progress = Progress.discreteProgress(totalUnitCount: Int64(mediaIDs.count))
         onProgress?(progress)
         let mediaRepository = MediaRepository(coreDataStack: coreDataStack)
@@ -355,7 +411,8 @@ class MediaCoordinator: NSObject {
             // if we update the service to Swift, but in the meanwhile I'm instantiating an unknown upload
             // error whenever the service doesn't provide one.
             //
-            let nserror = error as NSError?
+            let nserror =
+                error as NSError?
                 ?? NSError(
                     domain: MediaServiceErrorDomain,
                     code: MediaServiceError.unknownUploadError.rawValue,
@@ -365,8 +422,9 @@ class MediaCoordinator: NSObject {
                         "height": media.height ?? "",
                         "width": media.width ?? "",
                         "localURL": media.localURL ?? "",
-                        "remoteURL": media.remoteURL ?? "",
-                    ])
+                        "remoteURL": media.remoteURL ?? ""
+                    ]
+                )
 
             self.coordinator(for: media).attach(error: nserror, toMediaID: media.uploadID)
             self.fail(nserror, media: media)
@@ -377,7 +435,13 @@ class MediaCoordinator: NSObject {
         // https://github.com/wordpress-mobile/WordPress-iOS/issues/20298#issuecomment-1465319707
         let service = self.mediaServiceFactory.create(coreDataStack.mainContext)
         var progress: Progress? = nil
-        service.uploadMedia(media, automatedRetry: automatedRetry, progress: &progress, success: success, failure: failure)
+        service.uploadMedia(
+            media,
+            automatedRetry: automatedRetry,
+            progress: &progress,
+            success: success,
+            failure: failure
+        )
         if let progress {
             resultProgress.addChild(progress, withPendingUnitCount: resultProgress.totalUnitCount)
         }
@@ -388,23 +452,13 @@ class MediaCoordinator: NSObject {
     }
 
     private func trackUploadOf(_ media: Media, analyticsInfo: MediaAnalyticsInfo?) {
-        guard let info = analyticsInfo else {
-            return
-        }
-
-        guard let event = info.eventForMediaType(media.mediaType) else {
-            // Fall back to the WPShared event tracking
-            trackUploadViaWPSharedOf(media, analyticsInfo: analyticsInfo)
-            return
-        }
-
-        let properties = info.properties(for: media)
-        WPAnalytics.track(event, properties: properties, blog: media.blog)
+        trackUploadViaWPSharedOf(media, analyticsInfo: analyticsInfo)
     }
 
     private func trackUploadViaWPSharedOf(_ media: Media, analyticsInfo: MediaAnalyticsInfo?) {
         guard let info = analyticsInfo,
-            let event = info.wpsharedEventForMediaType(media.mediaType) else {
+            let event = info.wpsharedEventForMediaType(media.mediaType)
+        else {
             return
         }
 
@@ -414,8 +468,9 @@ class MediaCoordinator: NSObject {
 
     private func trackRetryUploadOf(_ media: Media, analyticsInfo: MediaAnalyticsInfo?) {
         guard let info = analyticsInfo,
-            let event = info.retryEvent else {
-                return
+            let event = info.retryEvent
+        else {
+            return
         }
 
         let properties = info.properties(for: media)
@@ -437,13 +492,13 @@ class MediaCoordinator: NSObject {
     /// - returns: The current progress for the specified media object.
     ///
     func progress(for media: Media) -> Progress? {
-        return coordinator(for: media).progress(forMediaID: media.uploadID)
+        coordinator(for: media).progress(forMediaID: media.uploadID)
     }
 
     /// The global value of progress for all tasks running on the coordinator for the specified post.
     ///
     func totalProgress(for post: AbstractPost) -> Double {
-        return cachedCoordinator(for: post)?.totalProgress ?? 0
+        cachedCoordinator(for: post)?.totalProgress ?? 0
     }
 
     /// Returns the media object for the specified uploadID.
@@ -452,7 +507,7 @@ class MediaCoordinator: NSObject {
     /// - Returns: The media object for the specified uploadID.
     ///
     func media(withIdentifier uploadID: String, for post: AbstractPost) -> Media? {
-        return coordinator(for: post).media(withIdentifier: uploadID)
+        coordinator(for: post).media(withIdentifier: uploadID)
     }
 
     /// Returns an existing media objcect with the specificed objectID
@@ -464,7 +519,8 @@ class MediaCoordinator: NSObject {
         guard let storeCoordinator = mainContext.persistentStoreCoordinator,
             let url = URL(string: objectID),
             let managedObjectID = storeCoordinator.safeManagedObjectID(forURIRepresentation: url),
-            let media = try? mainContext.existingObject(with: managedObjectID) as? Media else {
+            let media = try? mainContext.existingObject(with: managedObjectID) as? Media
+        else {
             return nil
         }
         return media
@@ -473,20 +529,20 @@ class MediaCoordinator: NSObject {
     /// Returns true if any media is being processed or uploading
     ///
     func isUploadingMedia(for post: AbstractPost) -> Bool {
-        return cachedCoordinator(for: post)?.isRunning ?? false
+        cachedCoordinator(for: post)?.isRunning ?? false
     }
 
     /// Returns true if there is any media with a fail state
     ///
     @objc
     func hasFailedMedia(for post: AbstractPost) -> Bool {
-        return cachedCoordinator(for: post)?.hasFailedMedia ?? false
+        cachedCoordinator(for: post)?.hasFailedMedia ?? false
     }
 
     /// Return an array with all failed media IDs
     ///
     func failedMediaIDs(for post: AbstractPost) -> [String] {
-        return cachedCoordinator(for: post)?.failedMediaIDs ?? []
+        cachedCoordinator(for: post)?.failedMediaIDs ?? []
     }
 
     // MARK: - Observing
@@ -605,7 +661,10 @@ class MediaCoordinator: NSObject {
     /// and part of the posts with given `NSManagedObjectID`s, including any 'wildcard' observers
     /// that are observing _all_ media items.
     ///
-    private func observersForMedia(withObjectID mediaObjectID: NSManagedObjectID, originalPostIDs: [NSManagedObjectID]) -> [MediaObserver] {
+    private func observersForMedia(
+        withObjectID mediaObjectID: NSManagedObjectID,
+        originalPostIDs: [NSManagedObjectID]
+    ) -> [MediaObserver] {
         let mediaObservers = self.mediaObservers.values.filter({ $0.subject == .media(id: mediaObjectID) })
 
         let postObservers = self.mediaObservers.values.filter({
@@ -621,7 +680,7 @@ class MediaCoordinator: NSObject {
     /// observing _all_ media items.
     ///
     private var wildcardObservers: [MediaObserver] {
-        return mediaObservers.values.filter({ $0.subject == .all })
+        mediaObservers.values.filter({ $0.subject == .all })
     }
 
     // MARK: - Notifying observers
@@ -667,22 +726,24 @@ class MediaCoordinator: NSObject {
                 return []
             }
 
-            return mediaInContext.posts?.compactMap { (object: AnyHashable) in
-                guard let post = object as? AbstractPost else {
-                    return nil
-                }
-                return post.getOriginal().objectID
-            } ?? []
+            return mediaInContext.posts?
+                .compactMap { (object: AnyHashable) in
+                    guard let post = object as? AbstractPost else {
+                        return nil
+                    }
+                    return post.getOriginal().objectID
+                } ?? []
         }
 
         queue.async {
-            self.observersForMedia(withObjectID: media.objectID, originalPostIDs: originalPostIDs).forEach({ observer in
-                DispatchQueue.main.async {
-                    if let media = self.mainContext.object(with: media.objectID) as? Media {
-                        observer.onUpdate(media, state)
+            self.observersForMedia(withObjectID: media.objectID, originalPostIDs: originalPostIDs)
+                .forEach({ observer in
+                    DispatchQueue.main.async {
+                        if let media = self.mainContext.object(with: media.objectID) as? Media {
+                            observer.onUpdate(media, state)
+                        }
                     }
-                }
-            })
+                })
         }
     }
 
@@ -690,23 +751,25 @@ class MediaCoordinator: NSObject {
     ///
     /// - parameter blog: The blog from where to sync the media library from.
     ///
-    @objc func syncMedia(for blog: Blog, success: (() -> Void)? = nil, failure: ((Error) ->Void)? = nil) {
-        syncOperationQueue.addOperation(AsyncBlockOperation { done in
-            self.coreDataStack.performAndSave { context in
-                let service = self.mediaServiceFactory.create(context)
-                service.syncMediaLibrary(
-                    for: blog,
-                    success: {
-                        done()
-                        success?()
-                    },
-                    failure: { error in
-                        done()
-                        failure?(error)
-                    }
-                )
+    @objc func syncMedia(for blog: Blog, success: (() -> Void)? = nil, failure: ((Error) -> Void)? = nil) {
+        syncOperationQueue.addOperation(
+            AsyncBlockOperation { done in
+                self.coreDataStack.performAndSave { context in
+                    let service = self.mediaServiceFactory.create(context)
+                    service.syncMediaLibrary(
+                        for: blog,
+                        success: {
+                            done()
+                            success?()
+                        },
+                        failure: { error in
+                            done()
+                            failure?(error)
+                        }
+                    )
+                }
             }
-        })
+        )
     }
 
     /// This method checks the status of all media objects and updates them to the correct status if needed.
@@ -720,7 +783,10 @@ class MediaCoordinator: NSObject {
 // MARK: - MediaProgressCoordinatorDelegate
 extension MediaCoordinator: MediaProgressCoordinatorDelegate {
 
-    func mediaProgressCoordinator(_ mediaProgressCoordinator: MediaProgressCoordinator, progressDidChange totalProgress: Double) {
+    func mediaProgressCoordinator(
+        _ mediaProgressCoordinator: MediaProgressCoordinator,
+        progressDidChange totalProgress: Double
+    ) {
         for (mediaID, mediaProgress) in mediaProgressCoordinator.mediaInProgress {
             guard let media = mediaProgressCoordinator.media(withIdentifier: mediaID) else {
                 continue
@@ -739,12 +805,16 @@ extension MediaCoordinator: MediaProgressCoordinatorDelegate {
         // the media library.
         // If the errors are causes by a missing file, we want to ignore that too.
 
-        let allFailedMediaErrorsAreMissingFilesErrors = mediaProgressCoordinator.failedMedia.allSatisfy { $0.hasMissingFileError }
+        let allFailedMediaErrorsAreMissingFilesErrors = mediaProgressCoordinator.failedMedia.allSatisfy {
+            $0.hasMissingFileError
+        }
 
         let allFailedMediaHaveAssociatedPost = mediaProgressCoordinator.failedMedia.allSatisfy { $0.hasAssociatedPost }
 
-        if mediaProgressCoordinator.failedMedia.isEmpty || (!allFailedMediaErrorsAreMissingFilesErrors && !allFailedMediaHaveAssociatedPost),
-           mediaProgressCoordinator == mediaLibraryProgressCoordinator || mediaProgressCoordinator.hasFailedMedia {
+        if mediaProgressCoordinator.failedMedia.isEmpty
+            || (!allFailedMediaErrorsAreMissingFilesErrors && !allFailedMediaHaveAssociatedPost),
+            mediaProgressCoordinator == mediaLibraryProgressCoordinator || mediaProgressCoordinator.hasFailedMedia
+        {
 
             // Skip the success notice when all successful uploads opted out (e.g.
             // featured image set during custom post editing).
@@ -776,15 +846,22 @@ extension MediaCoordinator {
     // We want to collect more data about that, so we're going to log that info to Sentry,
     // and also delete the `Media` object, since there isn't really a reasonable way to recover from that failure.
     func addObserverForDeletedFiles() {
-        addObserver({ media, _ in
-            guard let mediaError = media.error,
-                media.hasMissingFileError else {
-                return
-            }
+        addObserver(
+            { media, _ in
+                guard let mediaError = media.error,
+                    media.hasMissingFileError
+                else {
+                    return
+                }
 
-            self.cancelUploadAndDeleteMedia(media)
-            WordPressAppDelegate.crashLogging?.logMessage("Deleting a media object that's failed to upload because of a missing local file. \(mediaError)")
-        }, for: nil)
+                self.cancelUploadAndDeleteMedia(media)
+                WordPressAppDelegate.crashLogging?
+                    .logMessage(
+                        "Deleting a media object that's failed to upload because of a missing local file. \(mediaError)"
+                    )
+            },
+            for: nil
+        )
     }
 
     /// Returns `true` if the error can't be resolved by simply retrying and
@@ -810,7 +887,7 @@ extension MediaCoordinator {
 
 extension Media {
     var uploadID: String {
-        return objectID.uriRepresentation().absoluteString
+        objectID.uriRepresentation().absoluteString
     }
 
     fileprivate var hasMissingFileError: Bool {
@@ -826,17 +903,22 @@ extension Media {
 
         // I don't want to hand-encode the Alamofire.AFError domain and/or code — they're both subject to change
         // in the future, so I'm hand-creating an error here to get the domain/code out of.
-        let multipartEncodingFailedSampleError = AFError.multipartEncodingFailed(reason: .bodyPartFileNotReachable(at: URL(string: "https://wordpress.com")!)) as NSError
+        let multipartEncodingFailedSampleError =
+            AFError.multipartEncodingFailed(
+                reason: .bodyPartFileNotReachable(at: URL(string: "https://wordpress.com")!)
+            ) as NSError
         // (yes, yes, I know, unwrapped optional. but if creating a URL from this string fails, then something is probably REALLY wrong and we should bail anyway.)
 
         if let nsError = error as NSError?,
             nsError.domain == multipartEncodingFailedSampleError.domain,
-            nsError.code == multipartEncodingFailedSampleError.code {
+            nsError.code == multipartEncodingFailedSampleError.code
+        {
             // and if we only have the NSError-level of data, let's just fall back on best-effort guess.
             return true
         } else if let nsError = error as NSError?,
             nsError.domain == "Alamofire.AFError",
-            nsError.code == 2 /* AFError.multipartEncodingFailed */ {
+            nsError.code == 2 /* AFError.multipartEncodingFailed */
+        {
             // Check if the original error is `AFError.multipartEncodingFailed`.
             // We will soon remove Alamofire from the app, and the above `if` statement will be delete along with Alamofire,
             // which is why actual values—instead of `AFError` references-are used here.
@@ -844,7 +926,8 @@ extension Media {
             return true
         } else if let nsError = error as NSError?,
             nsError.domain == MediaServiceErrorDomain,
-            nsError.code == MediaServiceError.fileDoesNotExist.rawValue {
+            nsError.code == MediaServiceError.fileDoesNotExist.rawValue
+        {
             // if for some reason, the app crashed when trying to create a media object (like, for example, in this crash):
             // https://github.com/wordpress-mobile/gutenberg-mobile/issues/1190
             // the Media objects ends up in a malformed state, and we acutally handle that on the

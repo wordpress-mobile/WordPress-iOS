@@ -13,13 +13,6 @@ import WordPressShared
     case mediaEditorUsed
     case editorCreatedPage
 
-    // Tenor
-    case tenorAccessed
-    case tenorSearched
-    case tenorUploaded
-    case mediaLibraryAddedPhotoViaTenor
-    case editorAddedPhotoViaTenor
-
     // Media
     case siteMediaShareTapped
     case mediaStorageDetailsViewed
@@ -124,6 +117,9 @@ import WordPressShared
     case readerCommentTextCopied
     case readerPostContextMenuButtonTapped
     case readerAddSiteToFavoritesTapped
+    case readerSavedPostsSettingsShown
+    case readerSavedPostsExported
+    case readerSavedPostsImported
 
     // Stats - Empty Stats nudges
     case statsPublicizeNudgeShown
@@ -480,12 +476,6 @@ import WordPressShared
     case promptsOtherAnswersTapped
     case promptsSettingsShowPromptsTapped
 
-    // Bloganuary Nudges
-    case bloganuaryNudgeCardLearnMoreTapped
-    case bloganuaryNudgeModalShown
-    case bloganuaryNudgeModalDismissed
-    case bloganuaryNudgeModalActionTapped
-
     // Jetpack branding
     case jetpackPoweredBadgeTapped
     case jetpackPoweredBannerTapped
@@ -731,18 +721,7 @@ import WordPressShared
             return "media_editor_used"
         case .editorCreatedPage:
             return "editor_page_created"
-        // Tenor
-        case .tenorAccessed:
-            return "tenor_accessed"
-        case .tenorSearched:
-            return "tenor_searched"
-        case .tenorUploaded:
-            return "tenor_uploaded"
-        case .mediaLibraryAddedPhotoViaTenor:
-            return "media_library_photo_added"
-        case .editorAddedPhotoViaTenor:
-            return "editor_photo_added"
-            // Media
+        // Media
         case .siteMediaShareTapped:
             return "site_media_shared_tapped"
         case .mediaStorageDetailsViewed:
@@ -928,6 +907,12 @@ import WordPressShared
             return "reader_post_context_menu_button_tapped"
         case .readerAddSiteToFavoritesTapped:
             return "reader_add_site_to_favorites_tapped"
+        case .readerSavedPostsSettingsShown:
+            return "reader_saved_posts_settings_shown"
+        case .readerSavedPostsExported:
+            return "reader_saved_posts_exported"
+        case .readerSavedPostsImported:
+            return "reader_saved_posts_imported"
 
         // Stats - Empty Stats nudges
         case .statsPublicizeNudgeShown:
@@ -1543,16 +1528,6 @@ import WordPressShared
         case .promptsSettingsShowPromptsTapped:
             return "blogging_prompts_settings_show_prompts_tapped"
 
-        // Bloganuary Nudges
-        case .bloganuaryNudgeCardLearnMoreTapped:
-            return "bloganuary_nudge_my_site_card_learn_more_tapped"
-        case .bloganuaryNudgeModalShown:
-            return "bloganuary_nudge_learn_more_modal_shown"
-        case .bloganuaryNudgeModalDismissed:
-            return "bloganuary_nudge_learn_more_modal_dismissed"
-        case .bloganuaryNudgeModalActionTapped:
-            return "bloganuary_nudge_learn_more_modal_action_tapped"
-
         // Jetpack branding
         case .jetpackPoweredBadgeTapped:
             return "jetpack_powered_badge_tapped"
@@ -1909,7 +1884,7 @@ import WordPressShared
         case .jetpackConnectStepRetried:
             return "jetpack_rest_connect_step_retried"
 
-            // Intelligence
+        // Intelligence
         case .intelligenceExcerptGeneratorOpened:
             return "intelligence_excerpt_generator_opened"
         case .intelligenceExcerptSelected:
@@ -1940,10 +1915,6 @@ import WordPressShared
     */
     var defaultProperties: [AnyHashable: Any]? {
         switch self {
-        case .mediaLibraryAddedPhotoViaTenor:
-            return ["via": "tenor"]
-        case .editorAddedPhotoViaTenor:
-            return ["via": "tenor"]
         case .postListShareAction:
             return ["button": "share"]
         case .postListBlazeAction:
@@ -2009,7 +1980,8 @@ extension WPAnalytics {
     static func track(_ event: WPAnalyticsEvent, properties: [AnyHashable: Any], blog: Blog) {
         var props = properties
         props[WPAppAnalyticsKeyBlogID] = blog.dotComID
-        props[WPAppAnalyticsKeySiteType] = blog.isWPForTeams ? WPAppAnalyticsValueSiteTypeP2 : WPAppAnalyticsValueSiteTypeBlog
+        props[WPAppAnalyticsKeySiteType] =
+            blog.isWPForTeams ? WPAppAnalyticsValueSiteTypeP2 : WPAppAnalyticsValueSiteTypeBlog
         WPAnalytics.track(event, properties: props)
     }
 
@@ -2105,7 +2077,9 @@ extension WPAnalytics {
         }
 
         if event == nil {
-            print("🟡 Not Tracked: \"\(eventName)\" Block Editor event ignored as it was not found in the `trackBlockEditorEvent` conversion cases.")
+            print(
+                "🟡 Not Tracked: \"\(eventName)\" Block Editor event ignored as it was not found in the `trackBlockEditorEvent` conversion cases."
+            )
         } else {
             WPAnalytics.track(event!, properties: properties, blog: blog)
         }

@@ -1,21 +1,18 @@
-Wie is wie op jouw website? Nu weet je het: pushmeldingen gebruiken nu gravatars zodat je kan zien wie gereageerd heeft op of iets heeft gedaan met je inhoud. Het activiteitenlog laat ook zien wanneer je site is bijgewerkt door AI-agents.
+Als je een zelf-gehoste site hebt, meld je je nu aan bij de app met een applicatiewachtwoord. Als je er geen hebt, maken we er automatisch een voor je, zodat deze klaar staat wanneer je hem nodig hebt.
 
-Als je dacht dat onze laatste updates voor de statistieken groot waren, bereid je maar voor.
+We hebben slim bijsnijden toegevoegd voor uitgelichte afbeeldingen in de Reader-feed. Op die manier worden de hoofden van mensen niet afgehakt. Veel voorkeur.
 
-- De datum van vandaag is nu inbegrepen in intervallen zoals 'Afgelopen 7 dagen'. We hebben ook de nieuwe interval 'Afgelopen 14 dagen' toegevoegd.
-- Onvolledige data, inclusief vandaag, worden op de lijngrafiek weergegeven als een stippellijn. Je kan ze ook eenvoudiger zien in de weergave van het staafdiagram.
-- Over staafdiagrammen gesproken, als je op een balk tikt, worden de gegevens voor die datum weergegeven. Dit maakt het eenvoudiger om voor meerdere dagen door gegevens te scrollen. O, en door op een balk te tikken, wordt de balk ernaast niet meer geselecteerd.
-- Je kan visuele veranderingen opmerken zoals een kleinere kaartkop in de grafiek, kleinere lettertypen in tabbladen en hier en daar minder afstand. Het geeft minimalistische vibes.
+Er is nu een bevestigingsvenster voor wanneer je een verwijzende verkeersbron als spam markeert. het is heel, heel moeilijk om dit per ongeluk te doen.
 
-Terwijl we toch bezig waren, hebben we ook wijzigingen aangebracht aan de Reader. (Overigens heeft er geen een te maken met lezen.)
+Als onderdeel van deze update hebben we ook verschillende bugs geplet.
 
-- Als je een afbeelding in een lichtbak bekijkt, wordt deze genegeerd door naar beneden te vegen, zelfs als je ingezoomd bent.
-- We hebben problemen met de kleur van links in reacties en in donkere modus op aangepaste thema's opgelost. Ziet er goed uit.
-- Je kan mediagalerijen in volledig beeld bekijken. Veeg naar rechts of links om alle afbeeldingen te bekijken.
-
-En omdat we nog een beetje vrije tijd hadden, hebben we ook een paar problemen met details opgelost die ons dwars zaten.
-
-- We hebben de pijltjestoetsen en spatiëring op het scherm Meldingen bijgewerkt.
-- In berichtinstellingen toont de kaart voor delen via social media alleen platforms die de app ondersteunt.
-- Nieuwe berichten gebruiken de standaardberichtindeling in plaats van de standaardversie. Je kan deze indeling bijwerken in je site-instellingen.
-- Als je site zelf-gehost is en XML-RPC is uitgeschakeld, kan je Berichten en Pagina's in de app zien. Dat is heel belangrijk, al zeggen we het zelf.
+- Het tijdzone-label op het scherm Statistieken toont niet langer de Standaardtijd tijdens de zomertijd. (Bedankt voor de vangst, @braviswright!)
+- Het scherm Artikelen toont nu reacties van lezers wanneer ze worden geplaatst vanuit de inline-sectie.
+- De knop Abonneren werkt goed in berichten vers van de pers, zodat je je kan abonneren op een feed in een bericht. Snel, eenvoudig en o-zo-fris.
+- Voetnootlinks in de Reader werken nu zoals ze zouden moeten werken en springen naar de juiste locatie wanneer je erop tikt.
+- In Reacties op lezer verdwijnt de lege status nadat je een reactie hebt geplaatst. Gecachete reacties verdwijnen ook nadat ze zijn verwijderd, inclusief wanneer je de veegactie gebruikt. Doei!
+- We hebben verschillende ontwerp- en zichtbaarheidsproblemen opgelost, zoals knopstijlen, scheidingstekens voor reacties in de donkere modus en bedieningselementen voor automatisch afgespeelde video's.
+- In de Reader hebben we een aantal problemen met de notificatie-instellingen opgelost. Ze zijn nu verborgen wanneer je niet bent geabonneerd en ze verschijnen goed wanneer je je abonneert.
+- We hebben een probleem opgelost waarbij de grootte van de footerweergave in menu Bewerken niet werd gewijzigd. Als gevolg hiervan zijn actieknoppen nu leesbaar in niet-Engelse talen. Muy bueno.
+- We hebben een probleem opgelost met onjuiste avatars in meldingen. Als je de download van je afbeelding annuleert, wordt deze niet in de app weergegeven.
+- We hebben de niet-functionele X-link op het Over-scherm verwijderd. (Shout-out naar @zynp-KC voor de rapportage!)

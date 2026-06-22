@@ -11,7 +11,8 @@ struct GutenbergNetworkRequest {
     // For example, when uploading an image to a post in a self-hosted site, this struct is instantiated with a path
     // `/wp/v2/media/<id>?context=edit&_locale=user`.
     private let path: String
-    private unowned let blog: Blog
+    private let blogID: TaggedManagedObjectID<Blog>
+    private let coreDataStack: CoreDataStack
     private let method: HTTPMethod
     private let data: [String: AnyObject]?
 
@@ -20,29 +21,46 @@ struct GutenbergNetworkRequest {
         case post = "POST"
     }
 
-    init(path: String, blog: Blog, method: HTTPMethod = .get, data: [String: AnyObject]? = nil) {
+    init(path: String, blogID: TaggedManagedObjectID<Blog>, coreDataStack: CoreDataStack = ContextManager.shared, method: HTTPMethod = .get, data: [String: AnyObject]? = nil) {
         self.path = path
-        self.blog = blog
+        self.blogID = blogID
+        self.coreDataStack = coreDataStack
         self.method = method
         self.data = data
     }
 
     func request(completion: @escaping CompletionHandler) {
+        // Resolve the `Blog` on the main context at request time. The Gutenberg JS bridge can fire requests
+        // while the editor is being torn down, so the blog may have been deleted; `existingObject(with:)`
+        // throws in that case instead of dereferencing an invalidated managed object. Resolving on the
+        // main context (where the editor's blog lives) also reuses its cached REST API client.
+        let context = coreDataStack.mainContext
+        context.perform {
+            do {
+                let blog = try context.existingObject(with: self.blogID)
+                self.request(blog: blog, completion: completion)
+            } catch {
+                completion(.failure(error as NSError))
+            }
+        }
+    }
+
+    private func request(blog: Blog, completion: @escaping CompletionHandler) {
         if blog.isAccessibleThroughWPCom, let dotComID = blog.dotComID {
             switch method {
             case .get:
-                dotComGetRequest(with: dotComID, completion: completion)
+                dotComGetRequest(blog: blog, with: dotComID, completion: completion)
             case .post:
-                dotComPostRequest(with: dotComID, data: data, completion: completion)
+                dotComPostRequest(blog: blog, with: dotComID, data: data, completion: completion)
             }
         } else {
-            selfHostedRequest(completion: completion)
+            selfHostedRequest(blog: blog, completion: completion)
         }
     }
 
     // MARK: - dotCom
 
-    private func dotComGetRequest(with dotComID: NSNumber, completion: @escaping CompletionHandler) {
+    private func dotComGetRequest(blog: Blog, with dotComID: NSNumber, completion: @escaping CompletionHandler) {
         blog.wordPressComRestApi?.GET(dotComPath(with: dotComID), parameters: nil, success: { response, _ in
             completion(.success(response))
         }, failure: { error, httpResponse in
@@ -50,7 +68,7 @@ struct GutenbergNetworkRequest {
         })
     }
 
-    private func dotComPostRequest(with dotComID: NSNumber, data: [String: AnyObject]?, completion: @escaping CompletionHandler) {
+    private func dotComPostRequest(blog: Blog, with dotComID: NSNumber, data: [String: AnyObject]?, completion: @escaping CompletionHandler) {
         blog.wordPressComRestApi?.POST(dotComPath(with: dotComID), parameters: data, success: { response, _ in
             completion(.success(response))
         }, failure: { error, httpResponse in
@@ -66,11 +84,11 @@ struct GutenbergNetworkRequest {
 
     // MARK: - Self-Hosed
 
-    private func selfHostedRequest(completion: @escaping CompletionHandler) {
-        performSelfHostedRequest(completion: completion)
+    private func selfHostedRequest(blog: Blog, completion: @escaping CompletionHandler) {
+        performSelfHostedRequest(blog: blog, completion: completion)
     }
 
-    private func performSelfHostedRequest(completion: @escaping CompletionHandler) {
+    private func performSelfHostedRequest(blog: Blog, completion: @escaping CompletionHandler) {
         guard let api = blog.selfHostedSiteRestApi else {
             completion(.failure(NSError(domain: NSURLErrorDomain, code: NSURLErrorUnknown, userInfo: nil)))
             return

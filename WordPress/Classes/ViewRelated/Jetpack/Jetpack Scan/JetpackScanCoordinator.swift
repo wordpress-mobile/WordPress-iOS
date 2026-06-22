@@ -46,7 +46,7 @@ class JetpackScanCoordinator {
         let returnThreats: [JetpackScanThreat]?
 
         if scan?.state == .fixingThreats {
-            returnThreats = scan?.threatFixStatus?.compactMap { $0.threat } ?? nil
+            returnThreats = scan?.threatFixStatus?.compactMap { $0.threat }
         } else {
             returnThreats = scan?.state == .idle ? scan?.threats : nil
         }

@@ -1160,7 +1160,7 @@ extension StatsPeriodStore {
         guard let postId else {
             return nil
         }
-        return state.postStats[postId] ?? nil
+        return state.postStats[postId, default: nil]
     }
 
     func getMostRecentDate(forPost postId: Int?) -> Date? {

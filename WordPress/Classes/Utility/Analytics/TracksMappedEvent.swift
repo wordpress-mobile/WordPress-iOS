@@ -960,6 +960,12 @@ extension TracksMappedEvent {
             name = "signup_magic_link_requested"
         case .signupTermsButtonTapped:
             name = "signup_terms_of_service_tapped"
+        case .siteMediaFilterChanged:
+            name = "site_media_filter_changed"
+        case .siteMediaGridModeToggled:
+            name = "site_media_grid_mode_toggled"
+        case .siteMediaSearched:
+            name = "site_media_searched"
         case .siteSettingsSiteIconTapped:
             name = "my_site_icon_tapped"
         case .siteSettingsSiteIconRemoved:
@@ -1237,16 +1243,16 @@ extension TracksMappedEvent {
         case .welcomeNoSitesInterstitialDismissed:
             name = "welcome_no_sites_interstitial_dismissed"
 
-            // The following are yet to be implemented.
-            //
-            // If you get test failures in AnalyticsTrackerAutomatticTracks, it's most likely
-            // because there are new . enum values. This can mean that somebody is
-            // currently working on it. In cases like this, add the enum values here, returning
-            // as `nil`. The tests should pass.
+        // The following are yet to be implemented.
+        //
+        // If you get test failures in AnalyticsTrackerAutomatticTracks, it's most likely
+        // because there are new . enum values. This can mean that somebody is
+        // currently working on it. In cases like this, add the enum values here, returning
+        // as `nil`. The tests should pass.
         case .defaultAccountChanged,
-                .noStat,
-                .performedCoreDataMigrationFixFor45,
-                .maxValue:
+            .noStat,
+            .performedCoreDataMigrationFixFor45,
+            .maxValue:
             return nil
         @unknown default:
             return nil

@@ -22,12 +22,11 @@
                         <constraint firstAttribute="height" constant="10" id="59G-OJ-yES"/>
                     </constraints>
                 </imageView>
-                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="aWW-fc-OkB" customClass="NUXButton" customModule="WordPressAuthenticator">
+                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="aWW-fc-OkB">
                     <rect key="frame" x="20" y="16" width="335" height="50"/>
                     <constraints>
                         <constraint firstAttribute="height" constant="50" id="ujS-fE-lvl"/>
                     </constraints>
-                    <state key="normal" title="Button"/>
                 </button>
             </subviews>
             <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>

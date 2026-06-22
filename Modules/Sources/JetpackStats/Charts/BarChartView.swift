@@ -267,7 +267,7 @@ struct BarChartView: View {
             return 0...100
         }
         guard data.maxValue > 0 else {
-            return data.maxValue...0 // Just in case; should never happend
+            return data.maxValue...0 // Just in case; should never happen
         }
         // Add some padding above the max value
         let padding = max(Int(Double(data.maxValue) * 0.33), 1)

@@ -1,4 +1,7 @@
-- Le journal d’activités s’affiche désormais lorsque votre site a été mis à jour à l’aide d’agents IA.
-- Dans Réglages d’article, la carte Partage sur les réseaux sociaux affiche uniquement les plateformes prises en charge par l’application.
-- Les nouveaux articles utilisent le format d’article par défaut au lieu de la version standard. Vous pouvez mettre à jour ce format dans les réglages de votre site.
-- Si votre site est auto-hébergé avec XML-RPC désactivé, vous pouvez voir les articles et les pages dans l’application. C’est assez important, croyez-nous sur parole.
+Si vous disposez d’un site auto-hébergé, vous vous connecterez désormais à l’application à l’aide d’un mot de passe d’application. Si vous n’en avez pas, nous en créerons automatiquement un pour vous afin qu’il soit prêt quand vous en aurez besoin.
+
+Lorsque vous supprimez un commentaire à l’aide de l’action Balayer, il disparaît de la liste. Bye bye !
+
+Nous avons corrigé le problème de non-redimensionnement de l’affichage du pied de page dans l’édition de menu. Par conséquent, les boutons d’action sont désormais lisibles dans les langues autres que l’anglais.
+
+Nous avons supprimé le lien X non fonctionnel sur l’écran À propos. (Félicitations à @zynp-KC pour l’avoir signalé !)

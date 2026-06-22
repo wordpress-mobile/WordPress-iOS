@@ -1,4 +1,1 @@
-* [*] All self-hosted sites now sign in using application passwords [#25424]
-* [*] Comments: Fix "Trash" trailing action not updating the status of the comments cached on the device [#25485]
-* [*] Menus: Fix an issue with footer view in Menu Editing not resizing [#25481]
-* [*] About screen: Remove the non-functional Twitter/X link - thanks @zynp-KC for reporting! [#25496]
+* [*] [internal] Jetpack Social: use new publicize API to support Jetpack Social [#25587]

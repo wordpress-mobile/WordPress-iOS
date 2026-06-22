@@ -39,7 +39,7 @@ final class ReaderTableContent {
         do {
             try tableViewHandler?.resultsController?.performFetch()
         } catch let error as NSError {
-            DDLogError("Error fetching posts after updating the fetch reqeust predicate: \(error.localizedDescription)")
+            DDLogError("Error fetching posts after updating the fetch request predicate: \(error.localizedDescription)")
         }
     }
 

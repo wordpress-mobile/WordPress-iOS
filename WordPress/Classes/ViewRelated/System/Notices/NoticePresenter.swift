@@ -46,13 +46,11 @@ class NoticePresenter {
 
     private let store: NoticeStore
     private let animator: NoticeAnimator
-    private let window: UntouchableWindow
-    private var view: UIView {
-        guard let view = window.rootViewController?.view else {
-            fatalError("Root view controller shouldn't be nil")
-        }
-        return view
-    }
+    /// The overlay window hosting foreground notices. Created lazily on the first
+    /// foreground presentation: the presenter itself is created at process launch,
+    /// when no scene (and hence no window to attach to) may exist yet, e.g. on a
+    /// background launch. Background notices don't need a window at all.
+    private var window: UntouchableWindow?
 
     private let generator = UINotificationFeedbackGenerator()
     private var storeReceipt: Receipt?
@@ -62,24 +60,21 @@ class NoticePresenter {
 
     private var notificationObservers = Set<AnyCancellable>()
 
-    init(store: NoticeStore = StoreContainer.shared.notice,
-         animator: NoticeAnimator = NoticeAnimator(duration: Animations.appearanceDuration, springDampening: Animations.appearanceSpringDamping, springVelocity: NoticePresenter.Animations.appearanceSpringVelocity)) {
+    /// Set when a foreground notice could not be presented because no scene was
+    /// connected (e.g. during launch). The notice stays at the head of the queue
+    /// and presentation is retried when the app becomes active.
+    private var retriesPresentationOnActivation = false
+
+    init(
+        store: NoticeStore = StoreContainer.shared.notice,
+        animator: NoticeAnimator = NoticeAnimator(
+            duration: Animations.appearanceDuration,
+            springDampening: Animations.appearanceSpringDamping,
+            springVelocity: NoticePresenter.Animations.appearanceSpringVelocity
+        )
+    ) {
         self.store = store
         self.animator = animator
-
-        let windowFrame: CGRect
-        if let mainWindow = UIApplication.shared.mainWindow {
-            windowFrame = mainWindow.offsetToAvoidStatusBar()
-        } else {
-            windowFrame = .zero
-        }
-        window = UntouchableWindow(frame: windowFrame)
-
-        // this window level may affect some UI elements like share sheets.
-        // however, since the alerts aren't permanently on screen, this isn't
-        // often a problem.
-        window.windowLevel = .alert
-        window.isHidden = true
 
         // Keep the storeReceipt to prevent the `onChange` subscription from being deactivated.
         storeReceipt = store.onChange { [weak self] in
@@ -88,6 +83,14 @@ class NoticePresenter {
 
         listenToKeyboardEvents()
         listenToOrientationChangeEvents()
+        listenToApplicationActivation()
+
+        // `onChange` doesn't replay the current state to a new subscriber. Process any
+        // notice that was posted before this presenter existed so it doesn't block the
+        // queue forever.
+        if store.currentNotice != nil {
+            onStoreChange()
+        }
     }
 
     // MARK: - Events
@@ -99,8 +102,9 @@ class NoticePresenter {
                 guard let self,
                     let userInfo = notification.userInfo,
                     let keyboardFrameValue = userInfo[UIResponder.keyboardFrameEndUserInfoKey] as? NSValue,
-                    let durationValue = userInfo[UIResponder.keyboardAnimationDurationUserInfoKey] as? NSNumber else {
-                        return
+                    let durationValue = userInfo[UIResponder.keyboardAnimationDurationUserInfoKey] as? NSNumber
+                else {
+                    return
                 }
 
                 self.currentKeyboardPresentation = .present(height: keyboardFrameValue.cgRectValue.size.height)
@@ -109,10 +113,14 @@ class NoticePresenter {
                     return
                 }
 
-                UIView.animate(withDuration: durationValue.doubleValue, animations: {
-                    currentContainer.bottomConstraint?.constant = self.onScreenNoticeContainerBottomConstraintConstant
-                    self.view.layoutIfNeeded()
-                })
+                UIView.animate(
+                    withDuration: durationValue.doubleValue,
+                    animations: {
+                        currentContainer.bottomConstraint?.constant =
+                            self.onScreenNoticeContainerBottomConstraintConstant
+                        currentContainer.superview?.layoutIfNeeded()
+                    }
+                )
             }
             .store(in: &notificationObservers)
 
@@ -124,14 +132,19 @@ class NoticePresenter {
                 guard let self,
                     let currentContainer = self.currentNoticePresentation?.containerView,
                     let userInfo = notification.userInfo,
-                    let durationValue = userInfo[UIResponder.keyboardAnimationDurationUserInfoKey] as? NSNumber else {
-                        return
+                    let durationValue = userInfo[UIResponder.keyboardAnimationDurationUserInfoKey] as? NSNumber
+                else {
+                    return
                 }
 
-                UIView.animate(withDuration: durationValue.doubleValue, animations: {
-                    currentContainer.bottomConstraint?.constant = self.onScreenNoticeContainerBottomConstraintConstant
-                    self.view.layoutIfNeeded()
-                })
+                UIView.animate(
+                    withDuration: durationValue.doubleValue,
+                    animations: {
+                        currentContainer.bottomConstraint?.constant =
+                            self.onScreenNoticeContainerBottomConstraintConstant
+                        currentContainer.superview?.layoutIfNeeded()
+                    }
+                )
             }
             .store(in: &notificationObservers)
     }
@@ -142,11 +155,28 @@ class NoticePresenter {
         NotificationCenter.default.publisher(for: .WPTabBarHeightChanged)
             .sink { [weak self] _ in
                 guard let self,
-                    let containerView = self.currentNoticePresentation?.containerView else {
-                        return
+                    let containerView = self.currentNoticePresentation?.containerView
+                else {
+                    return
                 }
 
-                containerView.bottomConstraint?.constant = -self.window.untouchableViewController.offsetOnscreen
+                guard let window = self.window else {
+                    return
+                }
+                containerView.bottomConstraint?.constant = -window.untouchableViewController.offsetOnscreen
+            }
+            .store(in: &notificationObservers)
+    }
+
+    private func listenToApplicationActivation() {
+        NotificationCenter.default
+            .publisher(for: UIApplication.didBecomeActiveNotification)
+            .sink { [weak self] _ in
+                guard let self, self.retriesPresentationOnActivation else {
+                    return
+                }
+                self.retriesPresentationOnActivation = false
+                self.onStoreChange()
             }
             .store(in: &notificationObservers)
     }
@@ -170,6 +200,9 @@ class NoticePresenter {
 
         if let presentation = present(notice) {
             currentNoticePresentation = presentation
+        } else if retriesPresentationOnActivation {
+            // The notice stays at the head of the queue; the activation observer
+            // re-runs this method once a scene is available.
         } else {
             // We were not able to show the `notice` so we will dispatch a .clear action. This
             // should prevent us from getting in a stuck state where `NoticeStore` thinks its
@@ -197,38 +230,59 @@ class NoticePresenter {
         }
 
         let content = UNMutableNotificationContent(notice: notice)
-        let request = UNNotificationRequest(identifier: notificationInfo.identifier,
-                                            content: content,
-                                            trigger: nil)
+        let request = UNNotificationRequest(
+            identifier: notificationInfo.identifier,
+            content: content,
+            trigger: nil
+        )
 
-        UNUserNotificationCenter.current().add(request, withCompletionHandler: { _ in
-            DispatchQueue.main.async {
-                ActionDispatcher.dispatch(NoticeAction.clear(notice))
-            }
-        })
+        UNUserNotificationCenter.current()
+            .add(
+                request,
+                withCompletionHandler: { _ in
+                    DispatchQueue.main.async {
+                        ActionDispatcher.dispatch(NoticeAction.clear(notice))
+                    }
+                }
+            )
 
         return NoticePresentation(notice: notice, containerView: nil)
     }
 
     private func presentNoticeInForeground(_ notice: Notice) -> NoticePresentation? {
+        // No scene is connected yet (e.g. the launch sequence posted this notice
+        // before UIKit connected the scene). Keep the notice queued and retry when
+        // the app becomes active, when a scene is guaranteed to exist.
+        guard let window = ensureWindow() else {
+            retriesPresentationOnActivation = true
+            return nil
+        }
+
+        let view: UIView = window.untouchableViewController.view
+
         generator.prepare()
 
         let noticeView = NoticeView(notice: notice)
         noticeView.translatesAutoresizingMaskIntoConstraints = false
 
         let noticeContainerView = NoticeContainerView(noticeView: noticeView)
-        addNoticeContainerToPresentingViewController(noticeContainerView)
-        addBottomConstraintToNoticeContainer(noticeContainerView)
-        addTopConstraintToNoticeContainer(noticeContainerView)
+        view.addSubview(noticeContainerView)
+        addBottomConstraintToNoticeContainer(noticeContainerView, in: view)
+        addTopConstraintToNoticeContainer(noticeContainerView, in: view)
 
         // At regular width, the notice shouldn't be any wider than 1/2 the app's width
-        noticeContainerView.noticeWidthConstraint = noticeView.widthAnchor.constraint(equalTo: noticeContainerView.widthAnchor, multiplier: 0.5)
-        let isRegularWidth = noticeContainerView.traitCollection.containsTraits(in: UITraitCollection(horizontalSizeClass: .regular))
+        noticeContainerView.noticeWidthConstraint = noticeView.widthAnchor.constraint(
+            equalTo: noticeContainerView.widthAnchor,
+            multiplier: 0.5
+        )
+        let isRegularWidth = noticeContainerView.traitCollection.containsTraits(
+            in: UITraitCollection(horizontalSizeClass: .regular)
+        )
         noticeContainerView.noticeWidthConstraint?.isActive = isRegularWidth
 
         NSLayoutConstraint.activate([
             noticeContainerView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
-            noticeContainerView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
+            noticeContainerView.trailingAnchor.constraint(equalTo: view.trailingAnchor)
         ])
 
         let dismiss = {
@@ -243,37 +297,74 @@ class NoticePresenter {
         window.isHidden = false
 
         // Mask must be initialized after the window is shown or the view.frame will be zero
-        view.mask = MaskView(parent: view, untouchableViewController: self.window.untouchableViewController)
+        view.mask = MaskView(parent: view, untouchableViewController: window.untouchableViewController)
 
         let offScreenBottomOffset = offScreenNoticeContainerBottomOffset(for: noticeContainerView)
-        let fromState = animator.state(for: noticeContainerView, in: view, withTransition: .offscreen,
-                                          bottomOffset: offScreenBottomOffset)
-        let toState = animator.state(for: noticeContainerView, in: view, withTransition: .onscreen,
-                                        bottomOffset: onScreenNoticeContainerBottomConstraintConstant)
-        animator.animatePresentation(fromState: fromState, toState: toState, completion: {
-            guard notice.style.isDismissable else {
-                return
-            }
+        let fromState = animator.state(
+            for: noticeContainerView,
+            in: view,
+            withTransition: .offscreen,
+            bottomOffset: offScreenBottomOffset
+        )
+        let toState = animator.state(
+            for: noticeContainerView,
+            in: view,
+            withTransition: .onscreen,
+            bottomOffset: onScreenNoticeContainerBottomConstraintConstant
+        )
+        animator.animatePresentation(
+            fromState: fromState,
+            toState: toState,
+            completion: {
+                guard notice.style.isDismissable else {
+                    return
+                }
 
-            DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + Animations.dismissDelay, execute: dismiss)
-        })
+                DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + Animations.dismissDelay, execute: dismiss)
+            }
+        )
 
         UIAccessibility.post(notification: .layoutChanged, argument: noticeContainerView)
 
         return NoticePresentation(notice: notice, containerView: noticeContainerView)
     }
 
-    private func addNoticeContainerToPresentingViewController(_ noticeContainer: UIView) {
-        view.addSubview(noticeContainer)
+    /// Returns the overlay window, creating it on first use. Returns nil when no
+    /// scene is connected: a window not attached to a scene would never display.
+    private func ensureWindow() -> UntouchableWindow? {
+        if let window {
+            // The scene can disconnect and reconnect while the process lives.
+            // Reattach the cached window so it isn't bound to a dead scene.
+            if let scene = UIApplication.shared.mainWindow?.windowScene, window.windowScene !== scene {
+                window.windowScene = scene
+            }
+            return window
+        }
+        guard let mainWindow = UIApplication.shared.mainWindow,
+            let windowScene = mainWindow.windowScene
+        else {
+            return nil
+        }
+        let window = UntouchableWindow(windowScene: windowScene)
+        window.frame = mainWindow.offsetToAvoidStatusBar()
+
+        // this window level may affect some UI elements like share sheets.
+        // however, since the alerts aren't permanently on screen, this isn't
+        // often a problem.
+        window.windowLevel = .alert
+        window.isHidden = true
+
+        self.window = window
+        return window
     }
 
-    private func addBottomConstraintToNoticeContainer(_ container: NoticeContainerView) {
+    private func addBottomConstraintToNoticeContainer(_ container: NoticeContainerView, in view: UIView) {
         let constraint = container.bottomAnchor.constraint(equalTo: view.bottomAnchor)
         container.bottomConstraint = constraint
         constraint.isActive = false
     }
 
-    private func addTopConstraintToNoticeContainer(_ container: NoticeContainerView) {
+    private func addTopConstraintToNoticeContainer(_ container: NoticeContainerView, in view: UIView) {
         let constraint = container.topAnchor.constraint(equalTo: view.bottomAnchor)
         container.topConstraint = constraint
         constraint.priority = UILayoutPriority.defaultHigh
@@ -284,38 +375,50 @@ class NoticePresenter {
 
     public class func dismiss(container: NoticeContainerView) {
         DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + .nanoseconds(1)) {
-            UIView.animate(withDuration: Animations.appearanceDuration,
-                           delay: 0,
-                           usingSpringWithDamping: Animations.appearanceSpringDamping,
-                           initialSpringVelocity: Animations.appearanceSpringVelocity,
-                           options: [],
-                           animations: {
+            UIView.animate(
+                withDuration: Animations.appearanceDuration,
+                delay: 0,
+                usingSpringWithDamping: Animations.appearanceSpringDamping,
+                initialSpringVelocity: Animations.appearanceSpringVelocity,
+                options: [],
+                animations: {
                     container.noticeView.alpha = 0
-            },
-                           completion: { _ in
+                },
+                completion: { _ in
                     container.removeFromSuperview()
-            })
+                }
+            )
         }
     }
 
     private func dismissForegroundNotice() {
         guard let container = currentNoticePresentation?.containerView,
-            container.superview != nil else {
-                return
+            let containerSuperview = container.superview
+        else {
+            return
         }
         let bottomOffset = offScreenNoticeContainerBottomOffset(for: container)
-        let toState = animator.state(for: container, in: view, withTransition: .offscreen, bottomOffset: bottomOffset)
-        animator.animatePresentation(fromState: {}, toState: toState, completion: { [weak self] in
-            container.removeFromSuperview()
+        let toState = animator.state(
+            for: container,
+            in: containerSuperview,
+            withTransition: .offscreen,
+            bottomOffset: bottomOffset
+        )
+        animator.animatePresentation(
+            fromState: {},
+            toState: toState,
+            completion: { [weak self] in
+                container.removeFromSuperview()
 
-            // It is possible that when the dismiss animation finished, another Notice was already
-            // being shown. Hiding the window would cause that new Notice to be invisible.
-            if self?.currentNoticePresentation == nil {
-                UIAccessibility.post(notification: .layoutChanged, argument: nil)
+                // It is possible that when the dismiss animation finished, another Notice was already
+                // being shown. Hiding the window would cause that new Notice to be invisible.
+                if self?.currentNoticePresentation == nil {
+                    UIAccessibility.post(notification: .layoutChanged, argument: nil)
 
-                self?.window.isHidden = true
+                    self?.window?.isHidden = true
+                }
             }
-        })
+        )
     }
 
     // MARK: - Animations
@@ -325,7 +428,7 @@ class NoticePresenter {
         case .present(let keyboardHeight):
             return -keyboardHeight
         case .notPresent:
-            return -window.untouchableViewController.offsetOnscreen
+            return -(window?.untouchableViewController.offsetOnscreen ?? 0)
         }
     }
 
@@ -334,7 +437,7 @@ class NoticePresenter {
         case .present(let keyboardHeight):
             return -keyboardHeight + container.bounds.height
         case .notPresent:
-            return window.untouchableViewController.offsetOffscreen
+            return window?.untouchableViewController.offsetOffscreen ?? 0
         }
     }
 
@@ -353,7 +456,7 @@ private extension UIWindow {
     /// - Returns: CGRect based on this window's frame
     /// - Note: Turns out that a small alteration to the frame is enough to accomplish this.
     func offsetToAvoidStatusBar() -> CGRect {
-        return self.frame.insetBy(dx: Offsets.minimalEdgeOffset, dy: Offsets.minimalEdgeOffset)
+        self.frame.insetBy(dx: Offsets.minimalEdgeOffset, dy: Offsets.minimalEdgeOffset)
     }
 
     private enum Offsets {
@@ -422,7 +525,7 @@ class NoticeContainerView: UIView {
     }
 
     override func point(inside point: CGPoint, with event: UIEvent?) -> Bool {
-        return noticeView.point(inside: convert(point, to: noticeView), with: event)
+        noticeView.point(inside: convert(point, to: noticeView), with: event)
     }
 }
 
@@ -450,8 +553,12 @@ private extension NoticePresenter {
             backgroundColor = .blue
 
             let nc = NotificationCenter.default
-            nc.addObserver(self, selector: #selector(updateFrame(notification:)),
-                           name: UIDevice.orientationDidChangeNotification, object: nil)
+            nc.addObserver(
+                self,
+                selector: #selector(updateFrame(notification:)),
+                name: UIDevice.orientationDidChangeNotification,
+                object: nil
+            )
         }
 
         required init?(coder aDecoder: NSCoder) {
@@ -462,9 +569,11 @@ private extension NoticePresenter {
             setNeedsLayout()
         }
 
-        private static func calculateFrame(parent: UIView,
-                                           untouchableVC: UntouchableViewController) -> CGRect {
-            return CGRect(
+        private static func calculateFrame(
+            parent: UIView,
+            untouchableVC: UntouchableViewController
+        ) -> CGRect {
+            CGRect(
                 x: 0,
                 y: 0,
                 width: parent.bounds.width,

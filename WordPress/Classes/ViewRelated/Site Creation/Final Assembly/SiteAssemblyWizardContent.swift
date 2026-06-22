@@ -1,8 +1,7 @@
 import UIKit
 import WordPressData
+import WordPressKit
 import WordPressShared
-
-import WordPressAuthenticator
 
 // MARK: - SiteAssemblyWizardContent
 
@@ -19,16 +18,16 @@ final class SiteAssemblyWizardContent: UIViewController {
     private let service: SiteAssemblyService
 
     /// Displays the domain and plan checkout web view.
-    private lazy var siteCreationPurchasingController = SiteCreationPurchasingWebFlowController(viewController: self, origin: .siteCreation)
+    private lazy var siteCreationPurchasingController = SiteCreationPurchasingWebFlowController(
+        viewController: self,
+        origin: .siteCreation
+    )
 
     /// The new `Blog`, if successfully created; `nil` otherwise.
     private var createdBlog: Blog?
 
     /// The content view serves as the root view of this view controller.
     private let contentView: SiteAssemblyContentView
-
-    /// We reuse a `NUXButtonViewController` from `WordPressAuthenticator`. Ideally this might be in `WordPressUI`.
-    private let buttonViewController = NUXButtonViewController.instance()
 
     /// This view controller manages the interaction with error states that can arise during site assembly.
     private var errorStateViewController: ErrorStateViewController?
@@ -66,7 +65,7 @@ final class SiteAssemblyWizardContent: UIViewController {
         super.viewDidLoad()
 
         hidesBottomBarWhenPushed = true
-        installButtonViewController()
+        installButtonBar()
         SiteCreationAnalyticsHelper.trackSiteCreationSuccessLoading(siteCreator.design)
     }
 
@@ -127,10 +126,11 @@ final class SiteAssemblyWizardContent: UIViewController {
                 SiteCreationAnalyticsHelper.trackSiteCreationSuccess(self.siteCreator.design)
             }
             if status == .succeeded,
-               shouldPerformPurchasingStep,
-               let domain = self.siteCreator.address,
-               let planId = self.siteCreator.planId,
-               let blog = self.createdBlog {
+                shouldPerformPurchasingStep,
+                let domain = self.siteCreator.address,
+                let planId = self.siteCreator.planId,
+                let blog = self.createdBlog
+            {
                 self.attemptPurchasing(domain: domain, planId: planId, site: blog)
             } else {
                 self.contentView.status = status
@@ -140,7 +140,8 @@ final class SiteAssemblyWizardContent: UIViewController {
 
     /// The site must be created before attempting plan and/or domain purchasing.
     private func attemptPurchasing(domain: DomainSuggestion, planId: Int, site: Blog) {
-        self.siteCreationPurchasingController.purchase(domain: domain, planId: planId, site: site) { [weak self] result in
+        self.siteCreationPurchasingController.purchase(domain: domain, planId: planId, site: site) {
+            [weak self] result in
             guard let self else {
                 return
             }
@@ -162,18 +163,29 @@ final class SiteAssemblyWizardContent: UIViewController {
         }
     }
 
-    private func installButtonViewController() {
-        buttonViewController.delegate = self
+    private func installButtonBar() {
+        // The Jetpack app suppresses the bar's top shadow, matching the empty
+        // `buttonViewTopShadowImage` its authenticator style used to supply.
+        let buttonBar = SiteAssemblyButtonBar(
+            buttonTitle: SharedStrings.Button.done,
+            showsTopShadow: AppConfiguration.isWordPress
+        )
+        buttonBar.onTap = { [weak self] in
+            self?.doneButtonTapped()
+        }
 
-        let primaryButtonText = NSLocalizedString("Done",
-                                                  comment: "Tapping a button with this label allows the user to exit the Site Creation flow")
-        buttonViewController.setButtonTitles(primary: primaryButtonText)
+        // installButtonContainerView computes the initial off-screen offset from
+        // bounds.height before Auto Layout runs. Only the height matters here, and
+        // it is width-independent (single-line button title), so the zero width
+        // that view.bounds may still have at viewDidLoad time is harmless.
+        let fittingSize = buttonBar.systemLayoutSizeFitting(
+            CGSize(width: view.bounds.width, height: UIView.layoutFittingCompressedSize.height),
+            withHorizontalFittingPriority: .required,
+            verticalFittingPriority: .fittingSizeLevel
+        )
+        buttonBar.frame = CGRect(origin: .zero, size: CGSize(width: view.bounds.width, height: fittingSize.height))
 
-        contentView.buttonContainerView = buttonViewController.view
-
-        buttonViewController.willMove(toParent: self)
-        addChild(buttonViewController)
-        buttonViewController.didMove(toParent: self)
+        contentView.buttonContainerView = buttonBar
     }
 
     private func installErrorStateViewController(with type: ErrorStateViewType) {
@@ -264,20 +276,8 @@ private extension SiteAssemblyWizardContent {
         // TODO : using viaDone, capture analytics event via #10335
         attemptSiteCreation()
     }
-}
 
-// MARK: - NetworkStatusDelegate
-
-extension SiteAssemblyWizardContent: NetworkStatusDelegate {
-    func networkStatusDidChange(active: Bool) {
-        isNetworkActive = active
-    }
-}
-
-// MARK: - NUXButtonViewControllerDelegate
-
-extension SiteAssemblyWizardContent: NUXButtonViewControllerDelegate {
-    func primaryButtonPressed() {
+    func doneButtonTapped() {
         SiteCreationAnalyticsHelper.trackSiteCreationSuccessPreviewOkButtonTapped()
 
         guard let blog = createdBlog else { return }
@@ -288,5 +288,13 @@ extension SiteAssemblyWizardContent: NUXButtonViewControllerDelegate {
         dismissTapped(viaDone: true) { [blog] in
             RootViewCoordinator.sharedPresenter.showBlogDetails(for: blog)
         }
+    }
+}
+
+// MARK: - NetworkStatusDelegate
+
+extension SiteAssemblyWizardContent: NetworkStatusDelegate {
+    func networkStatusDidChange(active: Bool) {
+        isNetworkActive = active
     }
 }

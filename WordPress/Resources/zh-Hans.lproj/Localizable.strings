@@ -1,4 +1,4 @@
-/* Translation-Revision-Date: 2026-03-26 09:56:04+0000 */
+/* Translation-Revision-Date: 2026-05-28 14:55:24+0000 */
 /* Plural-Forms: nplurals=1; plural=0; */
 /* Generator: GlotPress/4.0.3 */
 /* Language: zh_CN */
@@ -6042,9 +6042,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Notification Settings switch for the app. */
 "Turning the switch off will disable all notifications from this app, regardless of type." = "关闭此开关将停止接收来自此应用的所有类型的通知。";
 
-/* Title of button that displays the app's Twitter profile */
-"Twitter" = "Twitter";
-
 /* Title for the setting to edit the twitter username used when sharing to twitter. */
 "Twitter Username" = "Twitter 用户名";
 
@@ -7107,6 +7104,9 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Error message when XML-RPC is disabled on the WordPress site. The first argument is detailed error message */
 "addSite.selfHosted.xmlrpcDisabled" = "无法关联 WordPress 站点。 服务器可能已禁用 XML-RPC。 请联系您的托管服务提供商以解决此问题。";
 
+/* Error message when the app cannot find the XML-RPC endpoint of a self-hosted WordPress site */
+"addSite.selfHosted.xmlrpcEndpointNotFound" = "无法确定该站点的 XML-RPC 端点";
+
 /* Age between dates equaling one hour. */
 "an hour" = "一小时";
 
@@ -7841,8 +7841,17 @@ Example: Reply to Pamela Nguyen */
 /* Navigation bar title when leaving a editing an existing comment */
 "commentEdit.navigationTitle" = "编辑评论";
 
+/* Title for the error notice shown when approving a comment fails. */
+"comments.approve.error.title" = "批准评论时出错";
+
 /* Error title */
 "comments.failedToLike" = "无法点赞评论";
+
+/* Title for the error notice shown when trashing a comment fails. */
+"comments.trash.error.title" = "将评论移至回收站时出错";
+
+/* Title for the error notice shown when unapproving a comment fails. */
+"comments.unapprove.error.title" = "取消批准评论时出错";
 
 /* Error message informing a user about an invalid password. */
 "common.reEnterPasswordMessage" = "应用程序中存储的用户名或密码可能已过期。 请在设置中重新输入密码，然后重试。";
@@ -7889,6 +7898,9 @@ Example: Reply to Pamela Nguyen */
 /* Menu action to permanently delete a trashed post */
 "customPostList.action.deletePermanently" = "永久删除";
 
+/* Menu action to create a draft copy of a post */
+"customPostList.action.duplicate" = "复制";
+
 /* Menu action to change a post's status to draft */
 "customPostList.action.moveToDraft" = "移至“草稿”";
 
@@ -7934,6 +7946,12 @@ Example: Reply to Pamela Nguyen */
 /* Empty state message when no custom posts exist. %1$@ is the post type name (e.g., 'Podcasts', 'Products'). */
 "customPostList.emptyState.message" = "无 %1$@";
 
+/* Short label for the swipe action to permanently delete a trashed post. Keep this translation short. */
+"customPostList.swipeAction.delete" = "删除";
+
+/* Short label for the swipe action to trash a post. Keep this translation short. */
+"customPostList.swipeAction.trash" = "移至回收站";
+
 /* Message for the confirmation alert when trashing a published post */
 "customPostList.trashConfirmation.message" = "此文章已发布，对访客可见。 是否确定要将其移至回收站？";
 
@@ -7969,6 +7987,9 @@ Example: Reply to Pamela Nguyen */
 
 /* Tab title for trashed posts */
 "customPostTab.trash" = "移至回收站";
+
+/* Badge label indicating that custom post type support is a beta feature. Displayed next to the navigation title. */
+"customPostType.navigation.betaBadge" = "BETA";
 
 /* Empty state message when there are no custom post types to display */
 "customPostTypes.emptyState.message" = "无自定义文章类型";
@@ -8971,6 +8992,159 @@ Example: Reply to Pamela Nguyen */
 /* Message stating that the user is unable to use Stats and Notifications because their site is connected to a different WordPress.com account */
 "jetpackSite.connectToDefaultAccount" = "您需要通过 %@ 登录才能使用统计信息和通知功能。";
 
+/* Message shown at the top of the account confirmation screen when every available account is already connected to the site. */
+"jetpackSocial.accountConfirmation.allConnectedDescription" = "您已准备就绪。 所有可用账户均已连接到此站点，您所发布的新文章将自动共享。 您可以在撰写文章时更改此设置。";
+
+/* Nav-bar button that finalizes the social connection after choosing an account. */
+"jetpackSocial.accountConfirmation.confirm" = "确认";
+
+/* Section header listing accounts already connected to this site. */
+"jetpackSocial.accountConfirmation.connectedSection" = "已连接";
+
+/* Explanation text shown at the top of the account confirmation screen. */
+"jetpackSocial.accountConfirmation.description" = "您正在连接此账户。 新文章将自动共享到该账户。 您可以在撰写文章时更改此设置。";
+
+/* Button that dismisses the account confirmation screen when every account is already connected and there is nothing to confirm. */
+"jetpackSocial.accountConfirmation.done" = "完成";
+
+/* Loading caption while fetching accounts for the confirmation screen. */
+"jetpackSocial.accountConfirmation.loading" = "正在加载账户…";
+
+/* Footer caption below the 'Mark the connection as shared' toggle. */
+"jetpackSocial.accountConfirmation.markAsSharedFooter" = "一旦启用，所有管理员、编辑和作者都可以使用该连接。 您之后可以对此进行更改。";
+
+/* Toggle label controlling whether the new connection is shared with other site users. */
+"jetpackSocial.accountConfirmation.markAsSharedLabel" = "将该连接标记为共享连接";
+
+/* Button to retry a failed account fetch. */
+"jetpackSocial.accountConfirmation.retry" = "重试";
+
+/* Navigation title of the account confirmation screen shown after OAuth. */
+"jetpackSocial.accountConfirmation.title" = "连接确认";
+
+/* Toggle label controlling whether a connection is shared with all site users. */
+"jetpackSocial.connectionDetail.availableToAllUsers" = "所有用户均可用";
+
+/* Footer caption below the 'Available to all users' toggle. */
+"jetpackSocial.connectionDetail.availableToAllUsersFooter" = "允许您站点上的所有管理员和用户使用此连接。";
+
+/* Section header on the connection detail screen. */
+"jetpackSocial.connectionDetail.settingsHeader" = "设置";
+
+/* Dismiss button in the social connection update failure alert. */
+"jetpackSocial.connectionDetail.updateFailedDismiss" = "确定";
+
+/* Title of the alert shown when updating a social connection setting fails. */
+"jetpackSocial.connectionDetail.updateFailedTitle" = "无法更新连接";
+
+/* Error when a publicize connection ID can't be found. %1$@ is the connection ID. */
+"jetpackSocial.error.connectionNotFound" = "未找到连接 %1$@。";
+
+/* Error shown when decoding a social sharing response fails. */
+"jetpackSocial.error.decoding" = "收到来自该服务器的意外响应。";
+
+/* Error when a keyring token ID can't be found. %1$@ is the token ID. */
+"jetpackSocial.error.keyringNotFound" = "未找到 Keyring 连接 %1$@。";
+
+/* Link label that opens documentation explaining how to resolve a social sharing error. */
+"jetpackSocial.error.learnMore" = "了解更多";
+
+/* Error shown when a social sharing network call fails. */
+"jetpackSocial.error.network" = "网络错误。 请检查您的连接，然后重试。";
+
+/* Error when the WP.com account has no authorized keyring for a given service. %1$@ is the service label (e.g. 'Mastodon'). */
+"jetpackSocial.error.noKeyringForService" = "%1$@ 没有已连接的账户。";
+
+/* Error shown after Facebook OAuth when the user's account doesn't manage any Facebook Pages, since Publicize only targets Pages. */
+"jetpackSocial.error.noPagesForFacebook" = "Facebook 连接无法找到任何页面。 Publicize 无法连接到 Facebook 个人资料，只能连接到已发布的页面。";
+
+/* Error shown when the WP.com auth token is missing or invalid. */
+"jetpackSocial.error.notAuthenticated" = "您需要重新登录才能管理社交媒体账户。";
+
+/* Generic fallback error for social sharing. */
+"jetpackSocial.error.unknown" = "出错了。 请重试。";
+
+/* Status text for a broken / invalid / refresh-failed connection. */
+"jetpackSocial.manageConnections.brokenStatus" = "需要注意";
+
+/* Cancel button in the disconnect confirmation alert. */
+"jetpackSocial.manageConnections.cancel" = "取消";
+
+/* Button on the Social screen that opens the add-connection modal. */
+"jetpackSocial.manageConnections.connectNewAccount" = "连接新账户";
+
+/* Footer caption under the Connected Accounts section on the Social screen. */
+"jetpackSocial.manageConnections.connectedFooter" = "连接您的社交媒体账户，在发布文章时将文章的特色图片和内容发送至选定的频道。";
+
+/* Section header listing currently connected social accounts. */
+"jetpackSocial.manageConnections.connectedHeader" = "已连接的账户";
+
+/* Button that removes a social sharing connection. */
+"jetpackSocial.manageConnections.delete" = "断开连接";
+
+/* Confirmation alert title. %1$@ is the connected account's display name. */
+"jetpackSocial.manageConnections.deleteConfirmTitle" = "是否确定要断开与 %1$@ 的连接？";
+
+/* Dismiss button in the disconnect failure alert. */
+"jetpackSocial.manageConnections.deleteFailedDismiss" = "确定";
+
+/* Title of the alert shown when disconnecting a social connection fails. */
+"jetpackSocial.manageConnections.deleteFailedTitle" = "无法断开连接";
+
+/* Footer caption under the list of services in the Connect Account picker modal. */
+"jetpackSocial.manageConnections.footer" = "连接您常用的社交媒体服务，以便与朋友自动共享新文章。";
+
+/* Button to retry a failed load. */
+"jetpackSocial.manageConnections.retry" = "重试";
+
+/* Badge shown on connections that are shared with other site users. */
+"jetpackSocial.manageConnections.sharedBadge" = "已共享";
+
+/* Title of the Social Sharing settings screen. */
+"jetpackSocial.manageConnections.title" = "社交";
+
+/* Confirm button in the disconnect confirmation alert. */
+"jetpackSocial.manageConnections.yes" = "是";
+
+/* Navigation bar title of the OAuth webview. %1$@ is the service label (e.g. 'Mastodon'). */
+"jetpackSocial.oauthWebView.connectTitle" = "连接到 %1$@";
+
+/* Label above the optional custom social-sharing message field. */
+"jetpackSocial.postSection.customMessage" = "自定义消息";
+
+/* Placeholder for the optional custom social-sharing message field. */
+"jetpackSocial.postSection.customMessagePlaceholder" = "在此处为您的社交平台受众撰写自定义消息。";
+
+/* Caption shown when the site has no social connections. */
+"jetpackSocial.postSection.empty" = "尚未连接任何社交媒体账户。";
+
+/* Title of the row that opens the social sharing detail screen in Post Settings. */
+"jetpackSocial.postSection.header" = "共享至社交媒体";
+
+/* Button to retry a failed load of the connections list. */
+"jetpackSocial.postSection.retry" = "重试";
+
+/* Trailing value on the 'Share to Social' post settings row. %1$d is the enabled count, %2$d is the total. */
+"jetpackSocial.postSection.summary.format" = "%1$d\/%2$d";
+
+/* Footer below the per-connection toggles on the social sharing detail screen. */
+"jetpackSocial.postSection.togglesFooter" = "此文章发布后，将共享至已启用的账户。";
+
+/* Notice shown after a social connection is successfully created. %1$@ is the service label. */
+"jetpackSocial.serviceDetail.connectedNotice" = "%1$@ 已连接";
+
+/* Cancel button in the add-connection failure alert. */
+"jetpackSocial.serviceDetail.failureCancel" = "取消";
+
+/* Retry button in the add-connection failure alert. */
+"jetpackSocial.serviceDetail.failureRetry" = "重试";
+
+/* Title of the alert shown when adding a social connection fails. */
+"jetpackSocial.serviceDetail.failureTitle" = "连接失败";
+
+/* Navigation bar title of the service picker modal shown when adding a new social connection. */
+"jetpackSocial.servicePicker.title" = "连接账户";
+
 /* Accessibility label for add card button */
 "jetpackStats.accessibility.addCardButton" = "添加新统计信息卡片";
 
@@ -9475,6 +9649,9 @@ Example: Reply to Pamela Nguyen */
 
 /* Title for weekly activity heatmap */
 "jetpackStats.postDetails.weeklyActivity" = "每周活动";
+
+/* Confirmation message when marking a referrer as spam. %1$@ is the domain name. */
+"jetpackStats.referrerDetails.confirmAsSpam.message" = "将“%1$@”标记为垃圾邮件，会使其不再计入您未来的统计信息。 您可以随时通过网页界面撤销此操作。";
 
 /* Title for error alert when marking referrer as spam fails */
 "jetpackStats.referrerDetails.errorAlertTitle" = "错误";
@@ -10922,6 +11099,9 @@ Example: Reply to Pamela Nguyen */
 /* Title of alert when trying to save a deleted page */
 "postSettings.pageDeleted.title" = "已删除页面";
 
+/* Label for the parent page field */
+"postSettings.parentPage.label" = "父页面";
+
 /* Cell title for the Top Level option case */
 "postSettings.parentPage.topLevel" = "顶级";
 
@@ -10939,6 +11119,9 @@ Example: Reply to Pamela Nguyen */
 
 /* Accessibility label for show password button */
 "postSettings.passwordEntry.showPassword" = "显示密码";
+
+/* Label for the pending review toggle in Post Settings */
+"postSettings.pendingReview.label" = "待审核";
 
 /* Label for the permalink field in Post Settings */
 "postSettings.permalink.label" = "固定链接";
@@ -11665,12 +11848,6 @@ Example: given a notice format "Following %@" and empty site name, this will be 
 /* Describes that the slider is used to customize the text size in the Reader. */
 "reader.preferences.control.sizeSlider.description" = "大小";
 
-/* Text for a small label in the navigation bar that hints that this is an experimental feature.
-
-The enclosing angled brackets ('<' and '>') are decorative and only intended as a flavor.
-Feel free to replace it with other bracket types that you think looks better for the locale. */
-"reader.preferences.navBar.experimental.label" = "<Experimental>";
-
 /* Description text for the preview section of Reader Preferences */
 "reader.preferences.preview.body.text" = "选择您想要的颜色、字体和尺寸。 在此处预览您的选择，并阅读在设置完成后以您所选样式呈现的文章。";
 
@@ -11871,6 +12048,9 @@ Feel free to replace it with other bracket types that you think looks better for
 "reader.welcome.subtitle" = "加入最大的博客社区";
 
 /* Reader app primary navigation tab bar */
+"readerApp.tabBar.discover" = "发现";
+
+/* Reader app primary navigation tab bar */
 "readerApp.tabBar.me" = "我";
 
 /* Reader app primary navigation tab bar */
@@ -12030,7 +12210,7 @@ Feel free to replace it with other bracket types that you think looks better for
 "shared.button.edit" = "编辑";
 
 /* A shared button title used in different contexts */
-"shared.button.notNow" = "立即";
+"shared.button.notNow" = "以后再说";
 
 /* A shared button title used in different contexts */
 "shared.button.ok" = "确定";
@@ -13003,6 +13183,9 @@ Feel free to replace it with other bracket types that you think looks better for
 
 /* View title for Help & Support page. */
 "support.title" = "帮助";
+
+/* Subject of new Zendesk ticket. */
+"support.zendesk.readerAppTicketSubject" = "iOS 版阅读器支持";
 
 /* Description for empty state when there are no tags
    Description for empty state when there are no tags. %1$@ is the taxonomy name. */

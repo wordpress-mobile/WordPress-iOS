@@ -254,6 +254,8 @@ struct CustomPostTabView: View {
             // "no format" state rather than snapshotting today's blog default.
             settings.postFormat = post.format?.id
         }
+        settings.allowComments = post.commentStatus.map { $0 == .open }
+        settings.allowPings = post.pingStatus.map { $0 == .open }
         let content = EditorContent(
             title: post.title?.raw ?? "",
             content: post.content.raw ?? ""

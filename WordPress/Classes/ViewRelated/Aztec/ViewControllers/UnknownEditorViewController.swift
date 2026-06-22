@@ -50,7 +50,7 @@ class UnknownEditorViewController: UIViewController {
         super.init(nibName: nil, bundle: nil)
     }
 
-    /// Overriden Initializers
+    /// Overridden Initializers
     ///
     required init?(coder aDecoder: NSCoder) {
         fatalError("You should use the `init(rawHTML:)` initializer!")

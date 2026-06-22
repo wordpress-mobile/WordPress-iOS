@@ -26,10 +26,12 @@ struct MediaPickerMenu {
     ///   - filter: By default, `nil` – allow all content types.
     ///   - isMultipleSelectionEnabled: By default, `false`.
     ///   - initialSelection: By default, `[]`.
-    init(viewController: UIViewController? = nil,
-         filter: MediaFilter? = nil,
-         isMultipleSelectionEnabled: Bool = false,
-         initialSelection: [Media] = []) {
+    init(
+        viewController: UIViewController? = nil,
+        filter: MediaFilter? = nil,
+        isMultipleSelectionEnabled: Bool = false,
+        initialSelection: [Media] = []
+    ) {
         self._presentingViewController = viewController
         self.filter = filter
         self.isMultipleSelectionEnabled = isMultipleSelectionEnabled
@@ -59,6 +61,5 @@ enum MediaPickerID: String {
     case camera = "camera"
     case siteMedia = "site_media"
     case imagePlayground = "image_playground"
-    case freeGIFs = "free_gifs"
     case freePhotos = "free_photos"
 }

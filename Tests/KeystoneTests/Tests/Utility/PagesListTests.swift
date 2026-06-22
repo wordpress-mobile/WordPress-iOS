@@ -125,14 +125,14 @@ class PagesListTests: CoreDataTestCase {
 
         let manyPages = parentPage(childrenCount: 17, additionalLevels: 7)
 
-        // Test 1: place the child page at the begining and the parent page at the end.
+        // Test 1: place the child page at the beginning and the parent page at the end.
         var sorted = PageTree.hierarchyList(of: [child] + manyPages + [parent])
         XCTAssertEqual(parent.hierarchyIndex, 0)
         XCTAssertEqual(child.hierarchyIndex, 1)
         // The child page should follow the parent page in the sorted list
         try XCTAssertEqual(XCTUnwrap(sorted.firstIndex(of: parent)) + 1, XCTUnwrap(sorted.firstIndex(of: child)))
 
-        // Test 2: place the child page at the end and the parent page at the begining.
+        // Test 2: place the child page at the end and the parent page at the beginning.
         sorted = PageTree.hierarchyList(of: [parent] + manyPages + [child])
         XCTAssertEqual(parent.hierarchyIndex, 0)
         XCTAssertEqual(child.hierarchyIndex, 1)
@@ -246,7 +246,7 @@ private extension Array where Element == Page {
 
     /// A string representation of a pages list whose element has a valid `hierarchyIndex` value.
     ///
-    /// The output looks similar to the Pages List in the app, where child page is indented based on it's hierachy level.
+    /// The output looks similar to the Pages List in the app, where child page is indented based on it's hierarchy level.
     ///
     /// For example, this output here represents four page instances. The digits in the string are page ids.
     /// Page 1 and 4 are top level pages. Page 1 has two child page: 2 and 3.

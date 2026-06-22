@@ -151,6 +151,18 @@ extension BlogDetailsViewController {
     }
 
     public func showMediaLibrary(from source: BlogDetailsNavigationSource, showPicker: Bool) {
+        if !showPicker,
+            let v2 = MediaLibraryRouting.makeViewController(
+                for: blog,
+                baseAnalyticsProperties: [
+                    WPAppAnalyticsKeyTapSource: source.string,
+                    WPAppAnalyticsKeyTabSource: "site_menu"
+                ]
+            )
+        {
+            presentationDelegate?.presentBlogDetailsViewController(v2)
+            return
+        }
         trackEvent(.openedMediaLibrary, from: source)
         let controller = SiteMediaViewController(blog: blog, showPicker: showPicker)
         presentationDelegate?.presentBlogDetailsViewController(controller)
