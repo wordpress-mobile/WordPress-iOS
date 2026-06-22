@@ -1,5 +1,6 @@
 27.1
 -----
+* [*] [internal] In-app updates: guard the flexible update notice against double-posting when two update checks race [#25666]
 
 
 27.0

@@ -1,3 +1,4 @@
+import WordPressFlux
 import XCTest
 
 @testable import WordPress
@@ -189,6 +190,67 @@ final class AppUpdateCoordinatorTests: XCTestCase {
         XCTAssertTrue(service.didLookup)
         XCTAssertFalse(presenter.didShowNotice)
         XCTAssertTrue(presenter.didShowBlockingUpdate)
+    }
+
+    // MARK: - AppUpdatePresenter flexible notice guard
+
+    func testShowNoticePostsExactlyOneFlexibleNotice() throws {
+        // Given
+        let dispatcher = ActionDispatcher()
+        let noticeStore = NoticeStore(dispatcher: dispatcher)
+        let presenter = AppUpdatePresenter(noticeStore: noticeStore, dispatcher: dispatcher)
+        let appStoreInfo = try makeAppStoreInfo()
+
+        // When
+        presenter.showNotice(using: appStoreInfo)
+
+        // Then
+        XCTAssertEqual(noticeStore.currentNotice?.tag, AppUpdatePresenter.flexibleUpdateNoticeTag)
+    }
+
+    func testShowNoticeSuppressesSecondFlexibleNoticeWhileOneIsShowing() throws {
+        // Given
+        let dispatcher = ActionDispatcher()
+        let noticeStore = NoticeStore(dispatcher: dispatcher)
+        let presenter = AppUpdatePresenter(noticeStore: noticeStore, dispatcher: dispatcher)
+        let appStoreInfo = try makeAppStoreInfo()
+        presenter.showNotice(using: appStoreInfo)
+        let firstNotice = try XCTUnwrap(noticeStore.currentNotice)
+
+        // When a second presentation races in while the first is still showing
+        presenter.showNotice(using: appStoreInfo)
+
+        // Then the current notice is still the first one and nothing was queued
+        XCTAssertEqual(noticeStore.currentNotice, firstNotice)
+        // Dismissing the current notice leaves no queued duplicate behind
+        ActionDispatcher.dispatch(NoticeAction.dismiss, dispatcher: dispatcher)
+        XCTAssertNil(noticeStore.currentNotice)
+    }
+
+    func testShowNoticeCanPostAgainAfterPreviousNoticeIsCleared() throws {
+        // Given
+        let dispatcher = ActionDispatcher()
+        let noticeStore = NoticeStore(dispatcher: dispatcher)
+        let presenter = AppUpdatePresenter(noticeStore: noticeStore, dispatcher: dispatcher)
+        let appStoreInfo = try makeAppStoreInfo()
+        presenter.showNotice(using: appStoreInfo)
+        XCTAssertNotNil(noticeStore.currentNotice)
+
+        // When the first notice is cleared and a later legitimate cycle posts again
+        ActionDispatcher.dispatch(NoticeAction.dismiss, dispatcher: dispatcher)
+        XCTAssertNil(noticeStore.currentNotice)
+        presenter.showNotice(using: appStoreInfo)
+
+        // Then the guard does not permanently latch
+        XCTAssertEqual(noticeStore.currentNotice?.tag, AppUpdatePresenter.flexibleUpdateNoticeTag)
+    }
+
+    private func makeAppStoreInfo() throws -> AppStoreLookupResponse.AppStoreInfo {
+        let data = try Bundle.test.json(named: "app-store-lookup-response")
+        let decoder = JSONDecoder()
+        decoder.dateDecodingStrategy = .iso8601
+        let response = try decoder.decode(AppStoreLookupResponse.self, from: data)
+        return try XCTUnwrap(response.results.first)
     }
 }
 
