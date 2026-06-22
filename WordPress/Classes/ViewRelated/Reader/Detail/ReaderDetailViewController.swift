@@ -76,7 +76,6 @@ class ReaderDetailViewController: UIViewController, ReaderDetailView {
     /// The actual header
     private lazy var header = ReaderPostHeaderView()
     private var cachedExcerpt: String?
-    private var cachedReadingTime: String?
 
     /// Bottom toolbar helper
     private lazy var toolbar = ReaderDetailToolbar()
@@ -262,7 +261,6 @@ class ReaderDetailViewController: UIViewController, ReaderDetailView {
         toolbar.configure(for: post, in: self)
         updateToolbarItems()
         cachedExcerpt = post.getUserProvidedExcerpt()
-        cachedReadingTime = Self.readingTimeString(for: post)
         configureHeaderView(with: post)
         updateTagsView(with: post)
         fetchLikes()
@@ -583,21 +581,9 @@ class ReaderDetailViewController: UIViewController, ReaderDetailView {
             authorAvatarURL: post.avatarURLForDisplay(),
             dateString: post.dateForDisplay()?.mediumStringWithTime(),
             featuredImageURL: featuredImageURL,
-            excerpt: cachedExcerpt,
-            readingTime: cachedReadingTime ?? ""
+            excerpt: cachedExcerpt
         ))
         updateHeader()
-    }
-
-    private static func readingTimeString(for post: ReaderPost) -> String {
-        String.localizedStringWithFormat(
-            NSLocalizedString(
-                "reader.detail.header.readingTime",
-                value: "%1$d min read",
-                comment: "Estimated reading time for the post. %1$d is the number of minutes."
-            ),
-            max(1, post.getEstimatedReadingTime())
-        )
     }
 
     private func fetchLikes() {

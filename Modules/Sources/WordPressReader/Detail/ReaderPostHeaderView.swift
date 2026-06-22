@@ -31,7 +31,6 @@ public final class ReaderPostHeaderView: UIView {
         public let dateString: String?
         public let featuredImageURL: URL?
         public let excerpt: String?
-        public let readingTime: String
 
         public init(
             siteName: String? = nil,
@@ -40,8 +39,7 @@ public final class ReaderPostHeaderView: UIView {
             authorAvatarURL: URL? = nil,
             dateString: String?,
             featuredImageURL: URL? = nil,
-            excerpt: String? = nil,
-            readingTime: String
+            excerpt: String? = nil
         ) {
             self.siteName = siteName
             self.postTitle = postTitle
@@ -50,7 +48,6 @@ public final class ReaderPostHeaderView: UIView {
             self.dateString = dateString
             self.featuredImageURL = featuredImageURL
             self.excerpt = excerpt
-            self.readingTime = readingTime
         }
     }
 
@@ -527,8 +524,7 @@ private enum Strings {
         authorAvatarURL: URL(string: "https://picsum.photos/id/237/120/120.jpg"),
         dateString: "Dec 18, 2025 at 3:30 PM",
         featuredImageURL: URL(string: "https://automattic.design/wp-content/uploads/2025/12/a8ch25_zoom-bg-1.png?w=1024"),
-        excerpt: "Based in a small city in Northern Spain, Cinta Arribas is an illustrator and visual artist with over ten years of professional experience. She studied Fine Arts in Salamanca and Kassel (Germany), and recently completed an artist residency in Washington, DC, through a program of the Spanish Embassy.",
-        readingTime: "5 min read"
+        excerpt: "Based in a small city in Northern Spain, Cinta Arribas is an illustrator and visual artist with over ten years of professional experience. She studied Fine Arts in Salamanca and Kassel (Germany), and recently completed an artist residency in Washington, DC, through a program of the Spanish Embassy."
     )))
 }
 
@@ -540,8 +536,7 @@ private enum Strings {
         authorName: "Roosmarijn van Kessel",
         authorAvatarURL: URL(string: "https://picsum.photos/id/237/120/120.jpg"),
         dateString: "Dec 18, 2025 at 3:30 PM",
-        excerpt: "Based in a small city in Northern Spain, Cinta Arribas is an illustrator and visual artist with over ten years of professional experience. She studied Fine Arts in Salamanca and Kassel (Germany), and recently completed an artist residency in Washington, DC, through a program of the Spanish Embassy.",
-        readingTime: "5 min read"
+        excerpt: "Based in a small city in Northern Spain, Cinta Arribas is an illustrator and visual artist with over ten years of professional experience. She studied Fine Arts in Salamanca and Kassel (Germany), and recently completed an artist residency in Washington, DC, through a program of the Spanish Embassy."
     )))
 }
 
@@ -553,8 +548,7 @@ private enum Strings {
         authorName: "Roosmarijn van Kessel",
         authorAvatarURL: URL(string: "https://picsum.photos/id/237/120/120.jpg"),
         dateString: "Dec 18, 2025 at 3:30 PM",
-        featuredImageURL: URL(string: "https://automattic.design/wp-content/uploads/2025/12/a8ch25_zoom-bg-1.png?w=1024"),
-        readingTime: "3 min read"
+        featuredImageURL: URL(string: "https://automattic.design/wp-content/uploads/2025/12/a8ch25_zoom-bg-1.png?w=1024")
     )))
 }
 
@@ -567,8 +561,7 @@ private enum Strings {
         authorAvatarURL: URL(string: "https://picsum.photos/id/237/120/120.jpg"),
         dateString: "Dec 18, 2025 at 3:30 PM",
         featuredImageURL: URL(string: "https://automattic.design/wp-content/uploads/2025/12/a8ch25_zoom-bg-1.png?w=1024"),
-        excerpt: "Based in a small city in Northern Spain, Cinta Arribas is an illustrator and visual artist with over ten years of professional experience. She studied Fine Arts in Salamanca and Kassel (Germany), and recently completed an artist residency in Washington, DC, through a program of the Spanish Embassy. Her work has been featured in numerous publications and exhibitions across Europe and the Americas. She specializes in editorial illustration, children's books, and cultural event posters, bringing a unique blend of traditional and contemporary techniques to every project she undertakes.",
-        readingTime: "12 min read"
+        excerpt: "Based in a small city in Northern Spain, Cinta Arribas is an illustrator and visual artist with over ten years of professional experience. She studied Fine Arts in Salamanca and Kassel (Germany), and recently completed an artist residency in Washington, DC, through a program of the Spanish Embassy. Her work has been featured in numerous publications and exhibitions across Europe and the Americas. She specializes in editorial illustration, children's books, and cultural event posters, bringing a unique blend of traditional and contemporary techniques to every project she undertakes."
     )))
 }
 
@@ -581,8 +574,7 @@ private enum Strings {
         authorAvatarURL: URL(string: "https://picsum.photos/id/237/120/120.jpg"),
         dateString: "Dec 18, 2025 at 3:30 PM",
         featuredImageURL: URL(string: "https://automattic.design/wp-content/uploads/2025/12/aecc_stars.png"),
-        excerpt: "Based in a small city in Northern Spain, Cinta Arribas is an illustrator and visual artist with over ten years of professional experience.",
-        readingTime: "5 min read"
+        excerpt: "Based in a small city in Northern Spain, Cinta Arribas is an illustrator and visual artist with over ten years of professional experience."
     )))
 }
 
@@ -593,7 +585,6 @@ private enum Strings {
         postTitle: "Hello World",
         authorName: "admin",
         authorAvatarURL: URL(string: "https://picsum.photos/id/237/120/120.jpg"),
-        dateString: "Mar 1, 2026",
-        readingTime: "1 min read"
+        dateString: "Mar 1, 2026"
     )))
 }
