@@ -77,9 +77,6 @@ final class SiteAssemblyContentView: UIView {
     /// This influences the top of the assembled site, which varies by device & orientation.
     private var assembledSiteTopConstraint: NSLayoutConstraint?
 
-    /// This influences the width of the assembled site, which varies by device & orientation.
-    private var assembledSiteWidthConstraint: NSLayoutConstraint?
-
     /// This is a representation of the assembled site.
     private(set) var assembledSiteView: AssembledSiteView?
 
@@ -285,14 +282,8 @@ final class SiteAssemblyContentView: UIView {
 
     /// This method is intended to be called by its owning view controller when constraints change.
     func adjustConstraints() {
-        guard let assembledSitePreferredSize = assembledSiteView?.preferredSize,
-            let widthConstraint = assembledSiteWidthConstraint
-        else {
-
-            return
-        }
-
-        widthConstraint.constant = assembledSitePreferredSize.width
+        // The width is a proportion of the container capped at a maximum, so it follows size
+        // changes automatically; this animates the relayout alongside the transition.
         layoutIfNeeded()
     }
 
@@ -390,13 +381,6 @@ final class SiteAssemblyContentView: UIView {
 
         let assembledSiteTopInset = Parameters.verticalSpacing
 
-        let preferredAssembledSiteSize = assembledSiteView.preferredSize
-
-        let assembledSiteWidthConstraint = assembledSiteView.widthAnchor.constraint(
-            equalToConstant: preferredAssembledSiteSize.width
-        )
-        self.assembledSiteWidthConstraint = assembledSiteWidthConstraint
-
         let assembledSiteViewBottomConstraint: NSLayoutConstraint
         if shouldShowDomainPurchase() {
             assembledSiteView.layer.cornerRadius = 12
@@ -425,10 +409,10 @@ final class SiteAssemblyContentView: UIView {
             ),
             assembledSiteViewBottomConstraint,
             assembledSiteView.centerXAnchor.constraint(equalTo: centerXAnchor),
-            assembledSiteWidthConstraint,
             (buttonContainerView?.topAnchor ?? bottomAnchor)
                 .constraint(equalTo: assembledSiteView.bottomAnchor, constant: 15)
         ])
+        NSLayoutConstraint.activate(assembledSiteView.widthConstraints(relativeTo: self))
 
         self.assembledSiteView = assembledSiteView
     }
