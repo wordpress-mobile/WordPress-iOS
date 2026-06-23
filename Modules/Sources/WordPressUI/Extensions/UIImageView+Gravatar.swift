@@ -70,7 +70,7 @@ extension UIImageView {
             return Defaults.imageSize
         }
 
-        let targetSize = max(bounds.width, bounds.height) * UIScreen.main.scale
+        let targetSize = max(bounds.width, bounds.height) * traitCollection.displayScale
         return Int(targetSize)
     }
 

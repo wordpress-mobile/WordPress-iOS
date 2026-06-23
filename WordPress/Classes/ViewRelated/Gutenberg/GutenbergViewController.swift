@@ -456,7 +456,7 @@ class GutenbergViewController: UIViewController, PostEditor, PublishingEditor {
         navigationItem.leftBarButtonItems = navigationBarManager.leftBarButtonItems
 
         // Add bottom border line
-        let screenScale = UIScreen.main.scale
+        let screenScale = traitCollection.displayScale
         let borderWidth: CGFloat = 1.0 / screenScale
         let borderColor = UIColor(red: 60 / 255, green: 60 / 255, blue: 67 / 255, alpha: 0.36).cgColor
 
@@ -470,6 +470,10 @@ class GutenbergViewController: UIViewController, PostEditor, PublishingEditor {
         )
         borderBottom.autoresizingMask = [.flexibleWidth, .flexibleTopMargin]
         navigationController?.navigationBar.addSubview(borderBottom)
+
+        registerForTraitChanges([UITraitDisplayScale.self]) { [weak borderBottom] (self: GutenbergViewController, _) in
+            borderBottom?.frame.size.height = 1.0 / self.traitCollection.displayScale
+        }
 
         navigationBarManager.moreButton.menu = makeMoreMenu()
         navigationBarManager.moreButton.showsMenuAsPrimaryAction = true
