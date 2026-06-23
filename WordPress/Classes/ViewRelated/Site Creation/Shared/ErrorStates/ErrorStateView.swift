@@ -15,25 +15,11 @@ final class ErrorStateView: UIView {
     private struct Parameters {
         static let dismissalDimension = CGFloat(16)
         static let dismissalInsetScaleFactor = CGFloat(0.05)
-        static let iPadWidth = CGFloat(512)
-        static let iPhoneWidthScaleFactor = CGFloat(0.79)
+        static let maxContentWidth = CGFloat(512)
+        static let contentWidthRatio = CGFloat(0.79)
         static let retryTopPadding = CGFloat(6)
         static let stackViewSpacing = CGFloat(10)
         static let supportTopInset = CGFloat(26)
-    }
-
-    /// This informs constraints applied to the view.
-    var preferredWidth: CGFloat {
-        let preferredWidth: CGFloat
-
-        if WPDeviceIdentification.isiPad() {
-            preferredWidth = Parameters.iPadWidth
-        } else {
-            let screenBounds = UIScreen.main.bounds
-            preferredWidth = screenBounds.width * Parameters.iPhoneWidthScaleFactor
-        }
-
-        return preferredWidth
     }
 
     /// The configuration of the error state view to apply.
@@ -208,8 +194,16 @@ final class ErrorStateView: UIView {
             self.retryContainerView = containerView
         }
 
+        let proportionalWidthConstraint = contentStackView.widthAnchor.constraint(
+            equalTo: widthAnchor,
+            multiplier: Parameters.contentWidthRatio
+        )
+        // Track the container width, but never exceed a readable maximum on large containers (e.g. iPad).
+        proportionalWidthConstraint.priority = .defaultHigh
+
         NSLayoutConstraint.activate([
-            contentStackView.widthAnchor.constraint(equalToConstant: preferredWidth),
+            contentStackView.widthAnchor.constraint(lessThanOrEqualToConstant: Parameters.maxContentWidth),
+            proportionalWidthConstraint,
             contentStackView.centerXAnchor.constraint(equalTo: centerXAnchor),
             contentStackView.centerYAnchor.constraint(equalTo: centerYAnchor)
         ])
@@ -226,15 +220,27 @@ final class ErrorStateView: UIView {
 
         addSubview(dismissalImageView)
 
-        let screenBounds = UIScreen.main.bounds
-        let horizontalDismissalInset = screenBounds.width * Parameters.dismissalInsetScaleFactor
-        let verticalDismissalInset = screenBounds.height * Parameters.dismissalInsetScaleFactor
-
         NSLayoutConstraint.activate([
             dismissalImageView.widthAnchor.constraint(equalToConstant: Parameters.dismissalDimension),
             dismissalImageView.heightAnchor.constraint(equalToConstant: Parameters.dismissalDimension),
-            dismissalImageView.topAnchor.constraint(equalTo: topAnchor, constant: verticalDismissalInset),
-            dismissalImageView.leadingAnchor.constraint(equalTo: leadingAnchor, constant: horizontalDismissalInset)
+            NSLayoutConstraint(
+                item: dismissalImageView,
+                attribute: .top,
+                relatedBy: .equal,
+                toItem: self,
+                attribute: .bottom,
+                multiplier: Parameters.dismissalInsetScaleFactor,
+                constant: 0
+            ),
+            NSLayoutConstraint(
+                item: dismissalImageView,
+                attribute: .leading,
+                relatedBy: .equal,
+                toItem: self,
+                attribute: .trailing,
+                multiplier: Parameters.dismissalInsetScaleFactor,
+                constant: 0
+            )
         ])
     }
 
