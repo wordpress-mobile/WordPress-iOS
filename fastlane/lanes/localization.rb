@@ -101,8 +101,7 @@ MANUALLY_MAINTAINED_STRINGS_FILES = {
 }.freeze
 
 # Remote Swift Packages whose localizable strings we want to extract (they're checked out under Derived Data
-# during resolvePackageDependencies). Currently none: WordPressKit is now vendored under Modules/Sources, so
-# it's already covered by the `Modules/Sources/` path below.
+# during resolvePackageDependencies). Currently none. Leaving here for future-proofing.
 REMOTE_SWIFT_PACKAGES_TO_LOCALIZE = [].freeze
 
 # Application-agnostic settings for the `upload_to_app_store` action (also known as `deliver`).
