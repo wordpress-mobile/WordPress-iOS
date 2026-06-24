@@ -289,10 +289,8 @@ final class BloggingRemindersFlowSettingsViewController: UIViewController {
         // text sizes, where every point of height is needed for the enlarged labels and controls.
         imageView.isHidden = traitCollection.preferredContentSizeCategory.isAccessibilityCategory
 
-        registerForTraitChanges([UITraitPreferredContentSizeCategory.self]) { [weak self] (_: Self, traitCollection) in
-            guard let self else { return }
-
-            self.imageView.isHidden = traitCollection.preferredContentSizeCategory.isAccessibilityCategory
+        registerForTraitChanges([UITraitPreferredContentSizeCategory.self]) { (self: Self, _) in
+            self.imageView.isHidden = self.traitCollection.preferredContentSizeCategory.isAccessibilityCategory
         }
     }
 
