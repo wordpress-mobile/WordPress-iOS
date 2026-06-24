@@ -1,1 +1,1 @@
-We removed the Free GIF Library as a media source, since the Tenor service it runs on will shut down on June 30. We’re sad about it, too. (little-girl-crying.gif)
+We removed the Free GIF Library as a media source, since the Tenor service it runs on will shut down on June 30. We’re sad about it, too.
