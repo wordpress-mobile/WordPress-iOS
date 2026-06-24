@@ -86,8 +86,9 @@ public extension UIImageView {
             self.image = placeholderImage
         }
 
+        let displayScale = max(1, traitCollection.displayScale)
         let task = URLSession.shared.dataTask(with: request, completionHandler: { [weak self] data, response, error in
-            guard let data, let image = UIImage(data: data, scale: UIScreen.main.scale) else {
+            guard let data, let image = UIImage(data: data, scale: displayScale) else {
                 DispatchQueue.main.async {
                     failure?(error)
                     self?.downloadTask = nil

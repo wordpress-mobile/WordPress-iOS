@@ -69,7 +69,7 @@ final class PageListCell: UITableViewCell, AbstractPostListCell, PostSearchResul
         featuredImageView.isHidden = viewModel.imageURL == nil
         if let imageURL = viewModel.imageURL {
             let host = MediaHost(viewModel.page)
-            let thumbnailURL = MediaImageService.getResizedImageURL(for: imageURL, blog: viewModel.page.blog, size: Constants.imageSize.scaled(by: UIScreen.main.scale))
+            let thumbnailURL = MediaImageService.getResizedImageURL(for: imageURL, blog: viewModel.page.blog, size: Constants.imageSize.scaled(by: max(1, traitCollection.displayScale)))
             featuredImageView.setImage(with: thumbnailURL, host: host)
         }
 
