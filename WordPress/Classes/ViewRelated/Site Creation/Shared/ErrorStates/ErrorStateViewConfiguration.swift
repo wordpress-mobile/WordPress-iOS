@@ -1,4 +1,3 @@
-
 import Foundation
 
 // MARK: ErrorViewType
@@ -39,7 +38,13 @@ struct ErrorStateViewConfiguration {
     /// The action to perform if a user taps the "Dismiss" button. If not specified, the image will not be visible.
     var dismissalActionHandler: ErrorStateViewActionHandler?
 
-    init(title: String, subtitle: String? = nil, retryActionHandler: ErrorStateViewActionHandler? = nil, contactSupportActionHandler: ErrorStateViewActionHandler? = nil, dismissalActionHandler: ErrorStateViewActionHandler? = nil) {
+    init(
+        title: String,
+        subtitle: String? = nil,
+        retryActionHandler: ErrorStateViewActionHandler? = nil,
+        contactSupportActionHandler: ErrorStateViewActionHandler? = nil,
+        dismissalActionHandler: ErrorStateViewActionHandler? = nil
+    ) {
 
         self.title = title
         self.subtitle = subtitle
@@ -55,26 +60,35 @@ extension ErrorStateViewType {
     var localizedTitle: String {
         switch self {
         case .general, .siteLoading, .domainCheckoutFailed:
-            return NSLocalizedString("There was a problem",
-                                     comment: "This primary message message is displayed if a user encounters a general error.")
+            return NSLocalizedString(
+                "There was a problem",
+                comment: "This primary message message is displayed if a user encounters a general error."
+            )
         case .networkUnreachable:
-            return NSLocalizedString("No internet connection",
-                                     comment: "This primary error message is displayed if a user encounters an issue with network reachability.")
+            return NSLocalizedString(
+                "No internet connection",
+                comment:
+                    "This primary error message is displayed if a user encounters an issue with network reachability."
+            )
         }
     }
 
     var localizedSubtitle: String? {
         switch self {
         case .general, .siteLoading:
-            return NSLocalizedString("Error communicating with the server, please try again",
-                                     comment: "This secondary message is displayed if a user encounters a general error.")
+            return NSLocalizedString(
+                "Error communicating with the server, please try again",
+                comment: "This secondary message is displayed if a user encounters a general error."
+            )
         case .networkUnreachable:
             return nil
         case .domainCheckoutFailed:
             return NSLocalizedString(
                 "site.creation.assembly.step.domain.checkout.error.subtitle",
-                value: "Your website has been created successfully, but we encountered an issue while preparing your custom domain for checkout. Please try again or contact support for assistance.",
-                comment: "The error message to show in the 'Site Creation > Assembly Step' when the domain checkout fails for unknown reasons."
+                value:
+                    "Your website has been created successfully, but we encountered an issue while preparing your custom domain for checkout. Please try again or contact support for assistance.",
+                comment:
+                    "The error message to show in the 'Site Creation > Assembly Step' when the domain checkout fails for unknown reasons."
             )
         }
     }
@@ -86,6 +100,6 @@ extension ErrorStateViewConfiguration {
     /// - Parameter type: the pre-defined configuration to create.
     /// - Returns: a configuration of the type specified.
     static func configuration(type: ErrorStateViewType) -> ErrorStateViewConfiguration {
-        return ErrorStateViewConfiguration(title: type.localizedTitle, subtitle: type.localizedSubtitle)
+        ErrorStateViewConfiguration(title: type.localizedTitle, subtitle: type.localizedSubtitle)
     }
 }
