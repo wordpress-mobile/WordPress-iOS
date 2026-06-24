@@ -105,22 +105,21 @@ REMOTE_SWIFT_PACKAGES_TO_LOCALIZE = %w[
   WordPressKit-iOS
 ].freeze
 
-# Application-agnostic settings for the `upload_to_app_store` action (also known as `deliver`).
-# Used in `update_*_metadata_on_app_store_connect` lanes.
-#
-UPLOAD_TO_APP_STORE_COMMON_PARAMS = {
-  app_version: release_version_current,
-  skip_binary_upload: true,
-  overwrite_screenshots: true,
-  phased_release: true,
-  precheck_include_in_app_purchases: false,
-  api_key_path: APP_STORE_CONNECT_KEY_PATH,
-  # [AINFRA-933] Disabling the use of `app_rating_config_path` after seeing the ASC API error:
-  # > The provided entity includes an unknown attribute - 'seventeenPlus' is not an attribute on the
-  # > resource 'ageRatingDeclarations'
-  # app_rating_config_path: File.join(PROJECT_ROOT_FOLDER, 'fastlane', 'metadata', 'ratings_config.json'),
-  copyright: "© #{Time.now.year} Automattic, Inc."
-}.freeze
+def upload_to_app_store_common_params
+  {
+    app_version: release_version_current,
+    skip_binary_upload: true,
+    overwrite_screenshots: true,
+    phased_release: true,
+    precheck_include_in_app_purchases: false,
+    api_key: app_store_connect_api_key,
+    # [AINFRA-933] Disabling the use of `app_rating_config_path` after seeing the ASC API error:
+    # > The provided entity includes an unknown attribute - 'seventeenPlus' is not an attribute on the
+    # > resource 'ageRatingDeclarations'
+    # app_rating_config_path: File.join(PROJECT_ROOT_FOLDER, 'fastlane', 'metadata', 'ratings_config.json'),
+    copyright: "© #{Time.now.year} Automattic, Inc."
+  }
+end
 
 WORDPRESS_EN_LPROJ = File.join('WordPress', 'Resources', 'en.lproj')
 
@@ -511,7 +510,7 @@ platform :ios do
     skip_screenshots = with_screenshots == false
 
     upload_to_app_store(
-      **UPLOAD_TO_APP_STORE_COMMON_PARAMS,
+      **upload_to_app_store_common_params,
       app_identifier: WORDPRESS_BUNDLE_IDENTIFIER,
       screenshots_path: WORDPRESS_PROMO_SCREENSHOTS_PATH,
       skip_screenshots: skip_screenshots
@@ -530,7 +529,7 @@ platform :ios do
     skip_screenshots = with_screenshots == false
 
     upload_to_app_store(
-      **UPLOAD_TO_APP_STORE_COMMON_PARAMS,
+      **upload_to_app_store_common_params,
       app_identifier: JETPACK_BUNDLE_IDENTIFIER,
       metadata_path: File.join(PROJECT_ROOT_FOLDER, 'fastlane', 'jetpack_metadata'),
       screenshots_path: JETPACK_PROMO_SCREENSHOTS_PATH,

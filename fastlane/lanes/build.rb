@@ -414,7 +414,7 @@ platform :ios do
 
     upload_to_testflight(
       team_id: get_required_env('FASTLANE_ITC_TEAM_ID'),
-      api_key_path: APP_STORE_CONNECT_KEY_PATH,
+      api_key: app_store_connect_api_key,
       ipa: ipa_path,
       beta_app_description: File.read(beta_app_description_path),
       changelog: File.read(whats_new_path),
