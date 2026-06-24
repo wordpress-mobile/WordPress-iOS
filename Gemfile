@@ -2,6 +2,8 @@
 
 source 'https://rubygems.org'
 
+# Used to AI-translate still-untranslated strings during the daily translation sync.
+gem 'anthropic'
 gem 'danger-dangermattic', '~> 1.3'
 gem 'dotenv'
 # 2.223.1 includes a fix for an ASC-interfacing issue

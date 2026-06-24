@@ -131,6 +131,38 @@ steps:
         plugins: [$CI_TOOLKIT_PLUGIN]
 
   #################
+  # Continuous translations: regenerate + upload English strings on each trunk merge
+  #
+  # Part of the "Faster Releases" RFC, Phase 2. Trunk-only by necessity — it
+  # pushes the regenerated strings to trunk, which would be wrong from a PR/branch
+  # build. The daily download half runs from `.buildkite/translation-sync.yml`.
+  #################
+  - group: "🌐 Localization"
+    key: localization_group
+    steps:
+      - label: "🌐 Upload strings for translation"
+        command: ".buildkite/commands/upload-strings-for-translation.sh"
+        if: "build.branch == 'trunk'"
+        agents:
+          queue: mac
+        plugins: [$CI_TOOLKIT_PLUGIN]
+
+      # Dry run on PRs: regenerate + run the placeholder guardrail without
+      # committing or pushing, so the flow can be exercised (and guards the PR)
+      # before it goes live on trunk.
+      - label: "🌐 Upload strings (dry run)"
+        command: ".buildkite/commands/upload-strings-for-translation.sh"
+        if: "build.pull_request.id != null || build.pull_request.draft"
+        env:
+          DRY_RUN: "true"
+        agents:
+          queue: mac
+        plugins: [$CI_TOOLKIT_PLUGIN]
+        notify:
+          - github_commit_status:
+              context: "Strings Upload (dry run)"
+
+  #################
   # Claude Build Analysis - dynamically uploaded so Build result conditions evaluate at runtime after the wait
   #################
   - label: ":claude: 🕵️ Check for Build Failures and Run Claude Analysis"
