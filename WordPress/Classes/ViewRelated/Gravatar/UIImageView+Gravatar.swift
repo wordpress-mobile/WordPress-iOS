@@ -24,12 +24,6 @@ public enum ObjcGravatarRating: Int {
 
 extension UIImageView {
 
-    /// Re-declaration for Objc compatibility
-    @objc(downloadGravatarFor:gravatarRating:)
-    public func objc_downloadGravatar(for email: String, gravatarRating: ObjcGravatarRating) {
-        downloadGravatar(for: email, gravatarRating: gravatarRating.map(), placeholderImage: .gravatarPlaceholderImage)
-    }
-
     /// Downloads and sets the User's Gravatar, given his email.
     /// - Parameters:
     ///   - email: The user's email
