@@ -42,7 +42,7 @@ extension UIImageView {
         placeholderImage: UIImage = .gravatarPlaceholderImage,
         forceRefresh: Bool = false
     ) {
-        let avatarURL = AvatarURL.url(for: email, preferredSize: .pixels(gravatarDefaultSize()), gravatarRating: gravatarRating)
+        let avatarURL = AvatarURL.url(for: email, preferredSize: gravatarDefaultSize(), gravatarRating: gravatarRating)
         downloadGravatar(fullURL: avatarURL, placeholder: placeholderImage, animate: false, forceRefresh: forceRefresh)
     }
 
@@ -91,7 +91,7 @@ extension UIImageView {
     }
 
     @objc public func overrideGravatarImageCache(_ image: UIImage, gravatarRating: ObjcGravatarRating, email: String) {
-        guard let gravatarURL = AvatarURL.url(for: email, preferredSize: .pixels(gravatarDefaultSize()), gravatarRating: gravatarRating.map()) else {
+        guard let gravatarURL = AvatarURL.url(for: email, preferredSize: gravatarDefaultSize(), gravatarRating: gravatarRating.map()) else {
             return
         }
 
@@ -99,13 +99,13 @@ extension UIImageView {
         overrideImageCache(for: gravatarURL, with: image)
     }
 
-    private func gravatarDefaultSize() -> Int {
+    private func gravatarDefaultSize() -> Gravatar.ImageSize {
         guard bounds.size.equalTo(.zero) == false else {
-            return GravatarDefaults.imageSize
+            return .pixels(GravatarDefaults.imageSize)
         }
 
-        let targetSize = max(bounds.width, bounds.height) * UIScreen.main.scale
-        return Int(targetSize)
+        // Pass the size in points and let the Gravatar SDK apply the display scale.
+        return .points(max(bounds.width, bounds.height))
     }
 }
 
