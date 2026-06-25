@@ -34,13 +34,9 @@ steps:
   #################
   # Continuous Delivery: build & upload each app to TestFlight (internal testers)
   #
-  # Part of the "Faster Releases for WordPress and Jetpack" RFC. Each app builds
-  # and uploads in parallel via the matrix below.
-  #
-  # TODO: This is intentionally NOT gated to trunk yet. While we validate the
-  # flow it runs on every build so we can iterate in CI. Before relying on it,
-  # gate it to trunk only by adding to each step:
-  #     if: "build.branch == 'trunk'"
+  # Part of the "Faster Releases for WordPress and Jetpack" RFC. On every trunk
+  # commit, each app builds and uploads to TestFlight in parallel via the matrix
+  # below. Gated to trunk so it doesn't run on PR branches.
   #################
   - group: ":testflight: TestFlight Builds"
     key: testflight_builds_group
@@ -48,6 +44,7 @@ steps:
       - label: ":testflight: Build & Upload {{matrix}}"
         command: ".buildkite/commands/build-and-upload-testflight.sh {{matrix}}"
         plugins: [$CI_TOOLKIT_PLUGIN]
+        if: "build.branch == 'trunk'"
         matrix:
           - "wordpress"
           - "jetpack"
