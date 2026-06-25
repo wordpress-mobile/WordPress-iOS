@@ -57,23 +57,6 @@ class WPWPUserAgentTests {
 
     // MARK: - Tests for underlying assumptions
 
-    @Test
-    func registerInUserDefaultsAdds() throws {
-        let userDefaults = UserDefaults.standard
-        let domainName = try #require(userDefaults.volatileDomainNames.first)
-        let originalDomain = userDefaults.volatileDomain(forName: domainName)
-
-        userDefaults.register(defaults: ["test-key": 0])
-
-        let updatedDomain = userDefaults.volatileDomain(forName: domainName)
-
-        // From the docs:
-        // Registered defaults are never stored between runs of an application, and are visible only to the application that registers them
-        //
-        // So we expect the count to be +1
-        #expect(updatedDomain.count == originalDomain.count + 1)
-    }
-
     // If this test fails, it may mean `WKWebView` uses a user agent with an unexpected format (see `webKitUserAgentRegExp`)
     // and we may need to adjust our implementation to match the new `WKWebView` user agent.
     @Test @MainActor

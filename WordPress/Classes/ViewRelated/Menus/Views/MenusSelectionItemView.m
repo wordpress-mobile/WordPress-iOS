@@ -53,10 +53,10 @@
     stackView.axis = UILayoutConstraintAxisHorizontal;
     stackView.distribution = UIStackViewDistributionFill;
 
-    UIEdgeInsets insets = UIEdgeInsetsZero;
-    insets.left = MenusDesignDefaultContentSpacing;
-    insets.right = MenusDesignDefaultContentSpacing;
-    stackView.layoutMargins = insets;
+    NSDirectionalEdgeInsets insets = NSDirectionalEdgeInsetsZero;
+    insets.leading = MenusDesignDefaultContentSpacing;
+    insets.trailing = MenusDesignDefaultContentSpacing;
+    stackView.directionalLayoutMargins = insets;
     stackView.layoutMarginsRelativeArrangement = YES;
     stackView.spacing = MenusDesignDefaultContentSpacing / 2.0;
 

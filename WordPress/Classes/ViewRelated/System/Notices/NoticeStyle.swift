@@ -28,7 +28,7 @@ public protocol NoticeStyle {
     var backgroundColor: UIColor { get }
 
     /// The space between the border of the Notice and the contents (title, label, and buttons).
-    var layoutMargins: UIEdgeInsets { get }
+    var directionalLayoutMargins: NSDirectionalEdgeInsets { get }
 
     // Misc
     var isDismissable: Bool { get }
@@ -61,7 +61,7 @@ public struct NormalNoticeStyle: NoticeStyle {
     public var actionButtonFont: UIFont? { return UIFont.systemFont(ofSize: 14.0, weight: .medium) }
     public let cancelButtonFont: UIFont? = nil
 
-    public let layoutMargins = UIEdgeInsets(top: 10.0, left: 16.0, bottom: 10.0, right: 16.0)
+    public let directionalLayoutMargins = NSDirectionalEdgeInsets(top: 10.0, leading: 16.0, bottom: 10.0, trailing: 16.0)
 
     public let isDismissable = true
     public var showNextArrow = false
@@ -83,7 +83,7 @@ public struct InAppUpdateNoticeStyle: NoticeStyle {
     public var actionButtonFont: UIFont? { return WPStyleGuide.fontForTextStyle(.headline) }
     public var cancelButtonFont: UIFont? { return WPStyleGuide.fontForTextStyle(.body) }
 
-    public let layoutMargins = UIEdgeInsets(top: 13.0, left: 16.0, bottom: 13.0, right: 16.0)
+    public let directionalLayoutMargins = NSDirectionalEdgeInsets(top: 13.0, leading: 16.0, bottom: 13.0, trailing: 16.0)
 
     public var isDismissable = false
     public let showNextArrow = false

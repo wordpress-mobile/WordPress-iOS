@@ -469,7 +469,7 @@ private extension UIWindow {
 ///
 class NoticeContainerView: UIView {
     /// The space between the Notice and its parent View
-    private let containerMargin = UIEdgeInsets(top: 8.0, left: 8.0, bottom: 15.0, right: 8.0)
+    private let containerMargin = NSDirectionalEdgeInsets(top: 8.0, leading: 8.0, bottom: 15.0, trailing: 8.0)
     var bottomConstraint: NSLayoutConstraint?
     var topConstraint: NSLayoutConstraint?
     var noticeWidthConstraint: NSLayoutConstraint?
@@ -483,7 +483,7 @@ class NoticeContainerView: UIView {
 
         translatesAutoresizingMaskIntoConstraints = false
 
-        layoutMargins = containerMargin
+        directionalLayoutMargins = containerMargin
 
         // Padding views on either side, of equal width to ensure centering
         let leftPaddingView = UIView()

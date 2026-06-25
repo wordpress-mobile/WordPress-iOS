@@ -43,7 +43,7 @@ final class ChangeUsernameViewController: UITableViewController {
         trackViewLoaded()
 
         WPStyleGuide.configureColors(view: view, tableView: tableView)
-        tableView.layoutMargins = WPStyleGuide.edgeInsetForLoginTextFields()
+        tableView.directionalLayoutMargins = WPStyleGuide.edgeInsetForLoginTextFields()
 
         setupViewModel()
         setupUI()

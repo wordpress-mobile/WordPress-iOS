@@ -55,8 +55,7 @@ NSString * const WPAppAnalyticsValueSiteTypeP2                      = @"p2";
     [self initializeOptOutTracking];
 
     BOOL userHasOptedOut = [WPAppAnalytics userHasOptedOut];
-    BOOL isUITesting = [[NSProcessInfo processInfo].arguments containsObject:@"-ui-testing"];
-    if (!isUITesting && !userHasOptedOut) {
+    if (!userHasOptedOut) {
         [self registerTrackers];
         [self beginSession];
     }

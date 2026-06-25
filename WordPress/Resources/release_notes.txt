@@ -1,1 +1,1 @@
-* [*] [internal] Jetpack Social: use new publicize API to support Jetpack Social [#25587]
+If you have a self-hosted site, you’ll now sign in to the app using an application password. If you don’t have one, we’ll automatically create one for you so it’s ready when you need it.

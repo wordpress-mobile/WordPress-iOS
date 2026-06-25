@@ -239,8 +239,7 @@ private extension WordPressAuthenticationManager {
         let windowManager = self.windowManager
 
         guard JetpackFeaturesRemovalCoordinator.jetpackFeaturesEnabled(),
-            !UserPersistentStoreFactory.instance().onboardingNotificationsPromptDisplayed,
-            !UITestConfigurator.isEnabled(.disablePrompts)
+            !UserPersistentStoreFactory.instance().onboardingNotificationsPromptDisplayed
         else {
             if self.windowManager.isShowingFullscreenSignIn {
                 self.windowManager.dismissFullscreenSignIn(blogToShow: blog)

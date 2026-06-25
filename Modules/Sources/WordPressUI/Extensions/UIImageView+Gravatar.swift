@@ -63,21 +63,9 @@ extension UIImageView {
 
     // MARK: - Private Helpers
 
-    /// Returns the required gravatar size. If the current view's size is zero, falls back to the default size.
-    ///
-    private func gravatarDefaultSize() -> Int {
-        guard bounds.size.equalTo(.zero) == false else {
-            return Defaults.imageSize
-        }
-
-        let targetSize = max(bounds.width, bounds.height) * UIScreen.main.scale
-        return Int(targetSize)
-    }
-
     /// Private helper structure: contains the default Gravatar parameters
     ///
     private struct Defaults {
-        static let imageSize = 80
         static var gravatarWrapperKey = 0x1000
         static let emailKey = "email"
         static let imageKey = "image"

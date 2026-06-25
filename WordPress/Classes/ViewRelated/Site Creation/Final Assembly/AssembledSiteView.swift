@@ -12,10 +12,8 @@ final class AssembledSiteView: UIView {
 
     /// A collection of parameters uses for animation & layout of the view.
     private struct Parameters {
-        static let iPadWidthPortrait = CGFloat(512)
-        static let iPadWidthLandscape = CGFloat(704)
-        static let iPhoneWidthScaleFactor = CGFloat(0.79)
-        static let minimumHeightScaleFactor = CGFloat(0.79)
+        static let maxContentWidth = CGFloat(704)
+        static let contentWidthRatio = CGFloat(0.79)
         static let shadowOffset = CGSize(width: 0, height: 5)
         static let shadowOpacity = Float(0.2)
         static let shadowRadius = CGFloat(8)
@@ -51,24 +49,19 @@ final class AssembledSiteView: UIView {
     /// Haptic feedback generator
     private let generator = UINotificationFeedbackGenerator()
 
-    /// This informs constraints applied to the view. It _may_ be possible to transition this to intrinsicContentSize.
-    var preferredSize: CGSize {
-        let screenBounds = UIScreen.main.bounds
+    /// The preview's width constraints: a proportion of the container, capped at a maximum width
+    /// so the preview stays a readable size on large containers (e.g. iPad).
+    func widthConstraints(relativeTo container: UIView) -> [NSLayoutConstraint] {
+        let proportionalWidthConstraint = widthAnchor.constraint(
+            equalTo: container.widthAnchor,
+            multiplier: Parameters.contentWidthRatio
+        )
+        proportionalWidthConstraint.priority = .defaultHigh
 
-        let preferredWidth: CGFloat
-        if WPDeviceIdentification.isiPad() {
-            if UIDevice.current.orientation.isLandscape {
-                preferredWidth = Parameters.iPadWidthLandscape
-            } else {
-                preferredWidth = Parameters.iPadWidthPortrait
-            }
-        } else {
-            preferredWidth = screenBounds.width * Parameters.iPhoneWidthScaleFactor
-        }
-
-        let preferredHeight = screenBounds.height * Parameters.minimumHeightScaleFactor
-
-        return CGSize(width: preferredWidth, height: preferredHeight)
+        return [
+            widthAnchor.constraint(lessThanOrEqualToConstant: Parameters.maxContentWidth),
+            proportionalWidthConstraint
+        ]
     }
 
     // MARK: AssembledSiteView

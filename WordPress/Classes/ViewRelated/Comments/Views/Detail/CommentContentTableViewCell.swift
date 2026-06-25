@@ -231,7 +231,7 @@ final class CommentContentTableViewCell: UITableViewCell, NibReusable {
 
     func configureForCommentDetails() {
         containerStackView.isLayoutMarginsRelativeArrangement = true
-        containerStackView.layoutMargins = UIEdgeInsets(.vertical, 4)
+        containerStackView.directionalLayoutMargins = NSDirectionalEdgeInsets(top: 4, leading: 0, bottom: 4, trailing: 0)
     }
 
     private func configure(with state: CommentCellViewModel.State) {

@@ -18,7 +18,7 @@ class BlogDashboardCardFrameView: UIView {
     /// Header in which icon, title and chevron are added
     private lazy var headerStackView: UIStackView = {
         let topStackView = UIStackView()
-        topStackView.layoutMargins = Constants.headerPaddingWithEllipsisButtonHidden
+        topStackView.directionalLayoutMargins = Constants.headerPaddingWithEllipsisButtonHidden
         topStackView.isLayoutMarginsRelativeArrangement = true
         topStackView.spacing = Constants.headerHorizontalSpacing
         topStackView.alignment = .center
@@ -129,7 +129,7 @@ class BlogDashboardCardFrameView: UIView {
         if !ellipsisButton.isHidden {
             mainStackViewTrailingConstraint?.constant = -Constants.mainStackViewTrailingPadding
             if #available(iOS 26, *) {
-                buttonContainerStackView.layoutMargins = UIEdgeInsets(.top, 5)
+                buttonContainerStackView.directionalLayoutMargins = NSDirectionalEdgeInsets(top: 5, leading: 0, bottom: 0, trailing: 0)
                 buttonContainerStackView.isLayoutMarginsRelativeArrangement = true
             }
         }
@@ -168,7 +168,7 @@ class BlogDashboardCardFrameView: UIView {
         ])
 
         if #available(iOS 26, *) {
-            mainStackView.layoutMargins = .init(top: 5, left: 0, bottom: 5, right: 0)
+            mainStackView.directionalLayoutMargins = NSDirectionalEdgeInsets(top: 5, leading: 0, bottom: 5, trailing: 0)
             mainStackView.isLayoutMarginsRelativeArrangement = true
         }
 
@@ -214,7 +214,7 @@ class BlogDashboardCardFrameView: UIView {
         let headerPadding = ellipsisButton.isHidden ?
             Constants.headerPaddingWithEllipsisButtonHidden :
             Constants.headerPaddingWithEllipsisButtonShown
-        headerStackView.layoutMargins = headerPadding
+        headerStackView.directionalLayoutMargins = headerPadding
     }
 
     private func addHeaderTapGestureIfNeeded() {
@@ -265,8 +265,8 @@ class BlogDashboardCardFrameView: UIView {
 
     private enum Constants {
         static let bottomPadding: CGFloat = 8
-        static let headerPaddingWithEllipsisButtonHidden = UIEdgeInsets(top: 12, left: 16, bottom: 8, right: 16)
-        static let headerPaddingWithEllipsisButtonShown = UIEdgeInsets(top: 12, left: 16, bottom: 8, right: 8)
+        static let headerPaddingWithEllipsisButtonHidden = NSDirectionalEdgeInsets(top: 12, leading: 16, bottom: 8, trailing: 16)
+        static let headerPaddingWithEllipsisButtonShown = NSDirectionalEdgeInsets(top: 12, leading: 16, bottom: 8, trailing: 8)
         static let headerHorizontalSpacing: CGFloat = 5
         static let cornerRadius = DesignConstants.radius(.large)
         static let buttonContainerStackViewPadding: CGFloat = 8
