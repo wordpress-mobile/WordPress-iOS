@@ -17,7 +17,7 @@ let sfhfKeychainErrorDomain = "SFHFKeychainUtilsErrorDomain"
 func keychainErrorCode(error: Error) -> OSStatus? {
     let nsError = error as NSError
     guard nsError.domain == sfhfKeychainErrorDomain else { return nil }
-    return OSStatus(nsError.code)
+    return OSStatus(truncatingIfNeeded: nsError.code)
 }
 
 /// Whether an error from `SFHFKeychainUtils` is a real failure rather than the
