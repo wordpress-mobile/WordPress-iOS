@@ -181,18 +181,21 @@ platform :ios do
 
     # Merge various manually-maintained `.strings` files into the previously generated `Localizable.strings` so their extra keys are also imported in GlotPress.
     # Note: We will re-extract the translations back during `download_localized_strings_and_metadata` (via a call to `ios_extract_keys_from_strings_files`)
-    # Generate the flat plural originals and merge them into Localizable.strings so they ride the main app
-    # GlotPress project alongside everything else.
-    paths_to_merge = MANUALLY_MAINTAINED_STRINGS_FILES.dup
-    run_plural_step('forward') do
-      generate_plural_strings_for_glotpress
-      paths_to_merge[PLURALS_FLAT_STRINGS] = '' # flat keys are self-qualified; no prefix
-    end
+    # The flat plural originals ride the main app GlotPress project alongside everything else. They're transient
+    # — the forward lane returns them as a string we write to a temp file the merge reads, never to the worktree.
+    Dir.mktmpdir do |plurals_tmp|
+      paths_to_merge = MANUALLY_MAINTAINED_STRINGS_FILES.dup
+      run_plural_step('forward') do
+        plural_originals = File.join(plurals_tmp, 'Plurals.strings')
+        File.write(plural_originals, generate_plural_strings_for_glotpress)
+        paths_to_merge[plural_originals] = '' # flat keys are self-qualified; no prefix
+      end
 
-    ios_merge_strings_files(
-      paths_to_merge: paths_to_merge,
-      destination: File.join(WORDPRESS_EN_LPROJ, 'Localizable.strings')
-    )
+      ios_merge_strings_files(
+        paths_to_merge: paths_to_merge,
+        destination: File.join(WORDPRESS_EN_LPROJ, 'Localizable.strings')
+      )
+    end
 
     git_commit(path: [WORDPRESS_EN_LPROJ], message: 'Update strings for localization', allow_nothing_to_commit: true) unless skip_commit
   end

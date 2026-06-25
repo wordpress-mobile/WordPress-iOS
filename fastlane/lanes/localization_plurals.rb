@@ -25,7 +25,6 @@ require_relative 'plural_strings_helper'
 # `WordPress/Resources` is an explicitly-referenced (non-synchronized) group, so a catalog placed
 # there is NOT a target member and would be skipped by `-exportLocalizations`.
 PLURALS_CATALOG        = File.join(PROJECT_ROOT_FOLDER, 'WordPress', 'Classes', 'Plurals.xcstrings')
-PLURALS_FLAT_STRINGS   = File.join(PROJECT_ROOT_FOLDER, 'WordPress', 'Resources', 'Plurals.strings') # transient merge input (not committed)
 
 # A throwaway one-plural String Catalog: exporting it per locale makes Apple emit that locale's CLDR plural
 # categories. Those are a property of the locale, not of this content, so the stub yields the same per-locale
@@ -39,8 +38,9 @@ PLURAL_FIXTURE_CATALOG = {
 }.freeze
 
 platform :ios do
-  # FORWARD (no build): Plurals.xcstrings (English) -> flat "<key>|==|plural.<cat>" originals (a transient
-  # `.strings` that `generate_strings_file_for_glotpress` merges into Localizable.strings for the main project).
+  # FORWARD (no build): Plurals.xcstrings (English) -> flat "<key>|==|plural.<cat>" originals, RETURNED as a
+  # `.strings` string (not written anywhere). `generate_strings_file_for_glotpress` writes it to a temp file
+  # and merges it into Localizable.strings for the main project; run standalone it just prints a sample.
   #
   # Called by generate_strings_file_for_glotpress (its originals merge into Localizable.strings).
   desc 'Generates the flat plural originals (.strings) merged into Localizable.strings for GlotPress'
@@ -56,8 +56,10 @@ platform :ios do
     # (Arabic/Welsh use them all), so there's no per-locale map to read here; over-emitting is harmless — the
     # reverse folds only the categories each locale actually needs.
     originals = PluralStrings.flat_originals(catalog, PluralStrings::CLDR_ORDER)
-    File.write(PLURALS_FLAT_STRINGS, PluralStrings.serialize_legacy_strings(originals))
-    UI.message("Generated #{originals.size} flat plural originals from #{catalog['strings'].size} catalog keys → #{PLURALS_FLAT_STRINGS}")
+    text = PluralStrings.serialize_legacy_strings(originals)
+    UI.message("Generated #{originals.size} flat plural originals from #{catalog['strings'].size} catalog keys.")
+    UI.message("Sample:\n#{text.lines.first(6).join}")
+    text
   end
 
   # REVERSE: pull the flat plural translations back out of the already-downloaded app `Localizable.strings`
