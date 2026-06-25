@@ -28,22 +28,32 @@ public final class SharedKeychain: KeychainAccessible {
     }
 
     public func getPassword(for username: String, serviceName: String) throws -> String {
-        try keychainUtils.getPasswordForUsername(
-            username,
-            andServiceName: serviceName,
-            accessGroup: group
-        )
+        do {
+            return try keychainUtils.getPasswordForUsername(
+                username,
+                andServiceName: serviceName,
+                accessGroup: group
+            )
+        } catch {
+            reportKeychainFailureIfNeeded(error, serviceName: serviceName, accessGroup: group)
+            throw error
+        }
     }
 
     public func setPassword(for username: String, to newValue: String?, serviceName: String) throws {
         if let newValue {
-            try keychainUtils.storeUsername(
-                username,
-                andPassword: newValue,
-                forServiceName: serviceName,
-                accessGroup: group,
-                updateExisting: true
-            )
+            do {
+                try keychainUtils.storeUsername(
+                    username,
+                    andPassword: newValue,
+                    forServiceName: serviceName,
+                    accessGroup: group,
+                    updateExisting: true
+                )
+            } catch {
+                reportKeychainFailureIfNeeded(error, serviceName: serviceName, accessGroup: group)
+                throw error
+            }
         } else {
             do {
                 try keychainUtils.deleteItem(
@@ -52,6 +62,7 @@ public final class SharedKeychain: KeychainAccessible {
                     accessGroup: group
                 )
             } catch {
+                reportKeychainFailureIfNeeded(error, serviceName: serviceName, accessGroup: group)
                 // Deleting an already-absent item is success: the migration
                 // cleanup path removes a token that may legitimately be gone.
                 // Real failures must surface, same as AppKeychain.

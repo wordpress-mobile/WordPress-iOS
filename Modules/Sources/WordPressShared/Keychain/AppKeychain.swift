@@ -46,27 +46,38 @@ public final class AppKeychain: KeychainAccessible {
                 accessGroup: privateGroup
             )
         } catch {
+            reportKeychainFailureIfNeeded(error, serviceName: serviceName, accessGroup: privateGroup)
             // A real failure (for example errSecInteractionNotAllowed while the
             // device is locked) must surface: the fallback is long-lived now,
             // so masking it as not-found would be permanent. Fall back only on
             // a genuine not-found of the private read, and only when a shared
             // group exists.
             guard !isRealKeychainFailure(error), let sharedGroup else { throw error }
-            let value = try keychainUtils.getPasswordForUsername(
-                username,
-                andServiceName: serviceName,
-                accessGroup: sharedGroup
-            )
+            let value: String
+            do {
+                value = try keychainUtils.getPasswordForUsername(
+                    username,
+                    andServiceName: serviceName,
+                    accessGroup: sharedGroup
+                )
+            } catch {
+                reportKeychainFailureIfNeeded(error, serviceName: serviceName, accessGroup: sharedGroup)
+                throw error
+            }
             // Read-repair: migrate the item into the private group so future
             // reads stop depending on the shared-group fallback. Best-effort,
             // the read already succeeded; the next read retries the repair.
-            try? keychainUtils.storeUsername(
-                username,
-                andPassword: value,
-                forServiceName: serviceName,
-                accessGroup: privateGroup,
-                updateExisting: true
-            )
+            do {
+                try keychainUtils.storeUsername(
+                    username,
+                    andPassword: value,
+                    forServiceName: serviceName,
+                    accessGroup: privateGroup,
+                    updateExisting: true
+                )
+            } catch {
+                reportKeychainFailureIfNeeded(error, serviceName: serviceName, accessGroup: privateGroup)
+            }
             return value
         }
     }
@@ -99,13 +110,18 @@ public final class AppKeychain: KeychainAccessible {
             }
             return
         }
-        try keychainUtils.storeUsername(
-            username,
-            andPassword: newValue,
-            forServiceName: serviceName,
-            accessGroup: privateGroup,
-            updateExisting: true
-        )
+        do {
+            try keychainUtils.storeUsername(
+                username,
+                andPassword: newValue,
+                forServiceName: serviceName,
+                accessGroup: privateGroup,
+                updateExisting: true
+            )
+        } catch {
+            reportKeychainFailureIfNeeded(error, serviceName: serviceName, accessGroup: privateGroup)
+            throw error
+        }
     }
 
     private func deleteIgnoringNotFound(_ username: String, serviceName: String, accessGroup: String) throws {
@@ -116,6 +132,7 @@ public final class AppKeychain: KeychainAccessible {
                 accessGroup: accessGroup
             )
         } catch {
+            reportKeychainFailureIfNeeded(error, serviceName: serviceName, accessGroup: accessGroup)
             // Deleting a missing item is expected: the item usually exists
             // in only one of the two groups. Anything else (for example
             // errSecInteractionNotAllowed while the device is locked) must

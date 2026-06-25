@@ -230,6 +230,7 @@ let package = Package(
             name: "WordPressShared",
             dependencies: [
                 "BuildSettingsKit",
+                .product(name: "Logging", package: "swift-log"),
                 .product(name: "SwiftSoup", package: "SwiftSoup"),
                 .target(name: "SFHFKeychainUtils"),
                 .target(name: "WordPressSharedObjC")
