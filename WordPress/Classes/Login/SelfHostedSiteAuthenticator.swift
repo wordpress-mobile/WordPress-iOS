@@ -69,6 +69,7 @@ struct SelfHostedSiteAuthenticator {
         case xmlrpcDisabled(Error)
         case xmlrpcEndpointNotFound
         case loadingSiteInfoFailure(Error)
+        case plainPermalinkNotSupported(apiRootURL: String)
         case savingSiteFailure
         case mismatchedUser(expectedUsername: String)
         case cancelled
@@ -89,6 +90,12 @@ struct SelfHostedSiteAuthenticator {
                     "addSite.selfHosted.loadingSiteInfoFailure",
                     value: "Cannot load the WordPress site details",
                     comment: "Error message shown when failing to load details from a self-hosted WordPress site"
+                )
+            case .plainPermalinkNotSupported:
+                return NSLocalizedString(
+                    "addSite.selfHosted.plainPermalinkNotSupported",
+                    value: "This site uses plain permalinks, which are not fully supported. Please enable pretty permalinks in Settings > Permalinks, or contact your hosting provider for assistance.",
+                    comment: "Error message when a self-hosted site uses plain permalinks (rest_route query form) which causes REST API issues"
                 )
             case .savingSiteFailure:
                 return NSLocalizedString(
@@ -386,6 +393,11 @@ struct SelfHostedSiteAuthenticator {
             (siteSettings, isAdmin, jetpackSite, jetpackConnection, xmlrpcOptions) =
                 try await (siteSettings_, isAdmin_, jetpackSite_, jetpackConnection_, xmlrpcOptions_)
         } catch {
+            // If the API root URL uses the rest_route query-parameter form
+            // (plain permalinks), provide a more actionable error message.
+            if apiRootURL.query(forKey: "rest_route") != nil {
+                throw .plainPermalinkNotSupported(apiRootURL: apiRootURL.absoluteString)
+            }
             throw .loadingSiteInfoFailure(error)
         }
 
