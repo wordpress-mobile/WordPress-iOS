@@ -136,3 +136,11 @@ WordPress/Frameworks/*.tar.gz
 WordPress/Frameworks/react-native-bundle-source-map
 
 Tests/AgentTests/results
+
+# Generated during localization, regenerated each CI run — not committed:
+#  - Plurals.strings: transient flat plural originals (derived from Plurals.xcstrings, merged into
+#    Localizable.strings at code freeze, then discarded).
+#  - Localizable.xcstrings: the build-free String Catalog (parity-verified by CI), shelved until the cutover
+#    commits it as the runtime backing store at a build-member path.
+WordPress/Resources/Plurals.strings
+WordPress/Resources/Localizable.xcstrings

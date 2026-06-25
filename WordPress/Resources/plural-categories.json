@@ -1,0 +1,148 @@
+{
+  "ar": [
+    "zero",
+    "one",
+    "two",
+    "few",
+    "many",
+    "other"
+  ],
+  "bg": [
+    "one",
+    "other"
+  ],
+  "cs": [
+    "one",
+    "few",
+    "many",
+    "other"
+  ],
+  "cy": [
+    "zero",
+    "one",
+    "two",
+    "few",
+    "many",
+    "other"
+  ],
+  "da": [
+    "one",
+    "other"
+  ],
+  "de": [
+    "one",
+    "other"
+  ],
+  "en-AU": [
+    "one",
+    "other"
+  ],
+  "en-CA": [
+    "one",
+    "other"
+  ],
+  "en-GB": [
+    "one",
+    "other"
+  ],
+  "es": [
+    "one",
+    "other"
+  ],
+  "fr": [
+    "one",
+    "other"
+  ],
+  "he": [
+    "one",
+    "two",
+    "many",
+    "other"
+  ],
+  "hr": [
+    "one",
+    "few",
+    "other"
+  ],
+  "hu": [
+    "one",
+    "other"
+  ],
+  "id": [
+    "other"
+  ],
+  "is": [
+    "one",
+    "other"
+  ],
+  "it": [
+    "one",
+    "other"
+  ],
+  "ja": [
+    "other"
+  ],
+  "ko": [
+    "other"
+  ],
+  "nb": [
+    "one",
+    "other"
+  ],
+  "nl": [
+    "one",
+    "other"
+  ],
+  "pl": [
+    "one",
+    "few",
+    "many",
+    "other"
+  ],
+  "pt": [
+    "one",
+    "other"
+  ],
+  "pt-BR": [
+    "one",
+    "other"
+  ],
+  "ro": [
+    "one",
+    "few",
+    "other"
+  ],
+  "ru": [
+    "one",
+    "few",
+    "many",
+    "other"
+  ],
+  "sk": [
+    "one",
+    "few",
+    "many",
+    "other"
+  ],
+  "sq": [
+    "one",
+    "other"
+  ],
+  "sv": [
+    "one",
+    "other"
+  ],
+  "th": [
+    "other"
+  ],
+  "tr": [
+    "one",
+    "other"
+  ],
+  "zh-Hans": [
+    "other"
+  ],
+  "zh-Hant": [
+    "other"
+  ]
+}

@@ -1,0 +1,40 @@
+{
+  "sourceLanguage" : "en",
+  "strings" : {
+    "blogging.reminders.weeklyCount" : {
+      "comment" : "Number of blogging reminders per week. %1$d is the count.",
+      "localizations" : {
+        "en" : {
+          "variations" : {
+            "plural" : {
+              "one" : {
+                "stringUnit" : { "state" : "translated", "value" : "%1$d time a week" }
+              },
+              "other" : {
+                "stringUnit" : { "state" : "translated", "value" : "%1$d times a week" }
+              }
+            }
+          }
+        }
+      }
+    },
+    "editor.textCounter.wordCount" : {
+      "comment" : "Number of words in the editor. %1$ld is the count.",
+      "localizations" : {
+        "en" : {
+          "variations" : {
+            "plural" : {
+              "one" : {
+                "stringUnit" : { "state" : "translated", "value" : "%1$ld word" }
+              },
+              "other" : {
+                "stringUnit" : { "state" : "translated", "value" : "%1$ld words" }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "version" : "1.0"
+}
