@@ -130,6 +130,13 @@ steps:
         command: .buildkite/commands/lint-localized-strings-format.sh
         plugins: [$CI_TOOLKIT_PLUGIN]
 
+      - label: ":mag: Verify String Catalog Coverage"
+        command: .buildkite/commands/verify-strings-catalog.sh
+        plugins: [$CI_TOOLKIT_PLUGIN]
+        notify:
+          - github_commit_status:
+              context: "Verify String Catalog Coverage"
+
   #################
   # Claude Build Analysis - dynamically uploaded so Build result conditions evaluate at runtime after the wait
   #################

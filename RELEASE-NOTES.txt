@@ -1,5 +1,6 @@
 27.1
 -----
+* [*] [build tooling] Add a String Catalog localization pipeline (plurals + build-free catalog generation) with a CI coverage gate [#25688]
 
 
 27.0
