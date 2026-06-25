@@ -23,6 +23,9 @@ typealias ErrorStateViewActionHandler = () -> Void
 ///
 struct ErrorStateViewConfiguration {
 
+    /// The name of the SF Symbol to display above the title in the error state view.
+    let systemImage: String
+
     /// The title to display in the error state view
     let title: String
 
@@ -39,6 +42,7 @@ struct ErrorStateViewConfiguration {
     var dismissalActionHandler: ErrorStateViewActionHandler?
 
     init(
+        systemImage: String,
         title: String,
         subtitle: String? = nil,
         retryActionHandler: ErrorStateViewActionHandler? = nil,
@@ -46,6 +50,7 @@ struct ErrorStateViewConfiguration {
         dismissalActionHandler: ErrorStateViewActionHandler? = nil
     ) {
 
+        self.systemImage = systemImage
         self.title = title
         self.subtitle = subtitle
         self.retryActionHandler = retryActionHandler
@@ -57,6 +62,15 @@ struct ErrorStateViewConfiguration {
 // MARK: ErrorStateViewConfiguration support
 
 extension ErrorStateViewType {
+    var systemImage: String {
+        switch self {
+        case .general, .siteLoading, .domainCheckoutFailed:
+            return "exclamationmark.circle"
+        case .networkUnreachable:
+            return "wifi.slash"
+        }
+    }
+
     var localizedTitle: String {
         switch self {
         case .general, .siteLoading, .domainCheckoutFailed:
@@ -100,6 +114,10 @@ extension ErrorStateViewConfiguration {
     /// - Parameter type: the pre-defined configuration to create.
     /// - Returns: a configuration of the type specified.
     static func configuration(type: ErrorStateViewType) -> ErrorStateViewConfiguration {
-        ErrorStateViewConfiguration(title: type.localizedTitle, subtitle: type.localizedSubtitle)
+        ErrorStateViewConfiguration(
+            systemImage: type.systemImage,
+            title: type.localizedTitle,
+            subtitle: type.localizedSubtitle
+        )
     }
 }
