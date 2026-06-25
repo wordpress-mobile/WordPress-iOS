@@ -1,5 +1,7 @@
 # frozen_string_literal: true
 
+require 'tmpdir'
+require 'fileutils'
 require_relative 'plural_strings_helper'
 
 #################################################
@@ -9,10 +11,14 @@ require_relative 'plural_strings_helper'
 # MAIN app GlotPress project as flat strings keyed `<key>|==|plural.<cldr-category>` — the same id Apple's
 # `xcodebuild -exportLocalizations` uses — so every locale (incl. Welsh) is covered. The forward merges these
 # flat originals into `Localizable.strings` (like MANUALLY_MAINTAINED_STRINGS_FILES); the reverse reads them
-# back out of the downloaded `Localizable.strings` and folds them into the catalog JSON (build-free) via the
-# committed per-locale category map. The flat keys stay in `Localizable.strings` as harmless, unused-at-runtime
-# entries — exactly like the merged `infoplist.*` keys. The exporter is consulted only by
-# `refresh_plural_categories` when the ship-locale list changes.
+# back out of the downloaded `Localizable.strings` and folds them into the catalog JSON. The flat keys stay in
+# `Localizable.strings` as harmless, unused-at-runtime entries — exactly like the merged `infoplist.*` keys.
+#
+# Which CLDR categories each locale needs is Apple's to decide. The reverse derives that per-locale map fresh
+# from the exporter at fold time — but from a THROWAWAY one-plural Swift package, not the app (the categories
+# are a property of the locale's CLDR, not our strings), so it's ~6s with no app build/bootstrap and can't lag
+# the ship-locale list or Apple's CLDR. The forward needs no map: it emits the full CLDR set (the union over any
+# real locale set is always all six), and over-emitting is harmless — the reverse folds only what each locale uses.
 #################################################
 
 # Lives in a synchronized source folder (WordPress/Classes) so it auto-joins the WordPress target.
@@ -20,11 +26,17 @@ require_relative 'plural_strings_helper'
 # there is NOT a target member and would be skipped by `-exportLocalizations`.
 PLURALS_CATALOG        = File.join(PROJECT_ROOT_FOLDER, 'WordPress', 'Classes', 'Plurals.xcstrings')
 PLURALS_FLAT_STRINGS   = File.join(PROJECT_ROOT_FOLDER, 'WordPress', 'Resources', 'Plurals.strings') # transient merge input (not committed)
-# Per-locale CLDR category map ({ "<lproj>" => ["one","other",…] }): drives the build-free reverse (which slots
-# each locale needs) and the forward union (which originals to upload). Captured from Apple's exporter (CLDR)
-# over the 33 ship locales; regenerate with `refresh_plural_categories` when the supported-locale list changes.
-PLURAL_CATEGORIES_JSON = File.join(PROJECT_ROOT_FOLDER, 'WordPress', 'Resources', 'plural-categories.json')
-PLURALS_SCHEME         = 'WordPress'
+
+# A throwaway one-plural String Catalog: exporting it per locale makes Apple emit that locale's CLDR plural
+# categories. Those are a property of the locale, not of this content, so the stub yields the same per-locale
+# sets as exporting the whole app — in seconds.
+PLURAL_FIXTURE_CATALOG = {
+  'sourceLanguage' => 'en', 'version' => '1.0',
+  'strings' => { 'plural' => { 'localizations' => { 'en' => { 'variations' => { 'plural' => {
+    'one' => { 'stringUnit' => { 'state' => 'translated', 'value' => '%lld item' } },
+    'other' => { 'stringUnit' => { 'state' => 'translated', 'value' => '%lld items' } }
+  } } } } } }
+}.freeze
 
 platform :ios do
   # FORWARD (no build): Plurals.xcstrings (English) -> flat "<key>|==|plural.<cat>" originals (a transient
@@ -34,22 +46,26 @@ platform :ios do
   desc 'Generates the flat plural originals (.strings) merged into Localizable.strings for GlotPress'
   lane :generate_plural_strings_for_glotpress do
     catalog = JSON.parse(File.read(PLURALS_CATALOG))
-    categories = PluralStrings.union_categories(JSON.parse(File.read(PLURAL_CATEGORIES_JSON)))
 
     missing = PluralStrings.plural_keys_missing_other(catalog)
     unless missing.empty?
       UI.user_error!("Plurals.xcstrings: plural(s) missing a non-empty English `other` form (CLDR requires it — without it they upload empty originals): #{missing.join(', ')}")
     end
 
-    originals = PluralStrings.flat_originals(catalog, categories)
+    # Emit an original for every CLDR category. The union over any real ship-locale set is always all six
+    # (Arabic/Welsh use them all), so there's no per-locale map to read here; over-emitting is harmless — the
+    # reverse folds only the categories each locale actually needs.
+    originals = PluralStrings.flat_originals(catalog, PluralStrings::CLDR_ORDER)
     File.write(PLURALS_FLAT_STRINGS, PluralStrings.serialize_legacy_strings(originals))
     UI.message("Generated #{originals.size} flat plural originals from #{catalog['strings'].size} catalog keys → #{PLURALS_FLAT_STRINGS}")
   end
 
-  # REVERSE (no build): pull the flat plural translations back out of the already-downloaded app
-  # `Localizable.strings` (they rode the main GlotPress project) and fold them straight into Plurals.xcstrings
-  # JSON, using the committed per-locale category map. Each cell is human ?? AI ?? English source; machine and
-  # English-fallback cells are flagged needs_review.
+  # REVERSE: pull the flat plural translations back out of the already-downloaded app `Localizable.strings`
+  # (they rode the main GlotPress project) and fold them straight into Plurals.xcstrings JSON. Each cell is
+  # human ?? AI ?? English source; machine and English-fallback cells are flagged needs_review. The per-locale
+  # category map is derived fresh from the exporter (a ~6s throwaway-fixture export — see
+  # `plural_categories_by_locale`), so it always matches the current ship locales and Apple's CLDR; the rest is
+  # build-free JSON folding.
   #
   # Called by download_localized_strings, after the app strings are downloaded.
   desc 'Folds plural translations from the downloaded Localizable.strings into Plurals.xcstrings'
@@ -57,7 +73,7 @@ platform :ios do
     catalog = JSON.parse(File.read(PLURALS_CATALOG))
     missing = PluralStrings.plural_keys_missing_other(catalog)
     UI.user_error!("Plurals.xcstrings: plural(s) missing a non-empty English `other` form (CLDR requires it): #{missing.join(', ')}") unless missing.empty?
-    categories_by_locale = JSON.parse(File.read(PLURAL_CATEGORIES_JSON))
+    categories_by_locale = plural_categories_by_locale
 
     written = PluralStrings.fold_translations!(
       catalog,
@@ -71,42 +87,42 @@ platform :ios do
     git_commit(path: [PLURALS_CATALOG], message: 'Update plural translations from GlotPress', allow_nothing_to_commit: true)
   end
 
-  # Regenerate the per-locale CLDR category map (`plural-categories.json`) from Apple's exporter over the ship
-  # locales. Run only when the supported-locale list changes — the one place the exporter is used. Build-backed.
-  desc 'Refreshes plural-categories.json (per-locale CLDR sets) from the exporter over the ship locales'
-  lane :refresh_plural_categories do
-    categories_by_locale = export_plural_skeletons(GLOTPRESS_TO_LPROJ_APP_LOCALE_CODES.values.uniq) do |skeleton_dir|
-      paths = Dir.glob(File.join(skeleton_dir, '*.xcloc', 'Localized Contents', '*.xliff'))
-      PluralStrings.categories_by_locale_from_skeletons(paths)
-    end
-    UI.user_error!('No plural categories found — is there a plural in Plurals.xcstrings?') if categories_by_locale.empty?
-
-    File.write(PLURAL_CATEGORIES_JSON, "#{JSON.pretty_generate(categories_by_locale)}\n")
-    UI.success("Wrote plural categories for #{categories_by_locale.size} locales: #{categories_by_locale.keys.sort.join(', ')}")
-  end
-
   #################################################
   # Helpers
   #################################################
 
-  # Exports the per-locale plural skeletons (one build) into a temp dir and yields it, removing the dir when
-  # the block returns. Returns whatever the block returns.
-  #
-  # `SUPPORTS_MACCATALYST=NO` constrains the string-extraction build to iOS. Without it,
-  # `-exportLocalizations` builds every supported destination incl. Mac Catalyst, which fails
-  # when a binary dependency (e.g. a Zendesk xcframework) ships no `maccatalyst` slice.
-  def export_plural_skeletons(xcode_locales)
-    Dir.mktmpdir do |out|
-      sh(
-        'xcodebuild', '-exportLocalizations',
-        '-workspace', WORKSPACE_PATH,
-        '-scheme', PLURALS_SCHEME,
-        '-localizationPath', out,
-        'SUPPORTS_MACCATALYST=NO',
-        *xcode_locales.flat_map { |loc| ['-exportLanguage', loc] }
-      )
-      yield out
+  # Per-locale CLDR category map, derived fresh from Apple's exporter over the ship locales — but from a
+  # THROWAWAY one-plural Swift package, not the app, so it's ~6s with no app build/bootstrap (the categories
+  # are a property of the locale's CLDR, not the catalog's content). Derived at fold time, so it can't lag the
+  # ship-locale list or Apple's CLDR. @return [Hash{String=>Array<String>}] lproj => CLDR categories.
+  def plural_categories_by_locale
+    Dir.mktmpdir do |package_dir|
+      write_plural_category_fixture(package_dir)
+      Dir.mktmpdir do |export_dir|
+        langs = GLOTPRESS_TO_LPROJ_APP_LOCALE_CODES.values.uniq.flat_map { |loc| ['-exportLanguage', loc] }
+        Dir.chdir(package_dir) do
+          sh('xcodebuild', '-exportLocalizations', '-localizationPath', export_dir, *langs)
+        end
+        paths = Dir.glob(File.join(export_dir, '*.xcloc', 'Localized Contents', '*.xliff'))
+        categories = PluralStrings.categories_by_locale_from_skeletons(paths)
+        UI.user_error!('No plural categories captured from the exporter') if categories.empty?
+        categories
+      end
     end
+  end
+
+  # Writes the throwaway one-plural Swift package the exporter is run against.
+  def write_plural_category_fixture(dir)
+    sources = File.join(dir, 'Sources', 'PluralCategories')
+    FileUtils.mkdir_p(sources)
+    File.write(File.join(dir, 'Package.swift'), <<~SWIFT)
+      // swift-tools-version:5.9
+      import PackageDescription
+      let package = Package(name: "PluralCategories", defaultLocalization: "en",
+        targets: [.target(name: "PluralCategories", resources: [.process("Localizable.xcstrings")])])
+    SWIFT
+    File.write(File.join(sources, 'PluralCategories.swift'), "let placeholder = 0\n")
+    File.write(File.join(sources, 'Localizable.xcstrings'), JSON.generate(PLURAL_FIXTURE_CATALOG))
   end
 
   # Pulls the flat plural keys out of each locale's downloaded `Localizable.strings`, returning

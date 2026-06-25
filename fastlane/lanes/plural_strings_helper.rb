@@ -9,8 +9,8 @@ require 'nokogiri'
 # Plurals are authored in a String Catalog (`Plurals.xcstrings`, English `one`/`other`).
 # Each plural FORM is carried through GlotPress as an independent flat string keyed
 # `<catalog-key>|==|plural.<cldr-category>` — the same id Apple's `xcodebuild -exportLocalizations`
-# uses. The reverse is build-free: translations fold straight back into the catalog JSON using a
-# committed per-locale CLDR category map (refreshed from the exporter only when ship locales change).
+# uses. Translations fold back into the catalog JSON using a per-locale CLDR category map that the reverse
+# derives from Apple's exporter at fold time (a throwaway one-plural project — categories are a locale property).
 module PluralStrings
   XLIFF_NS = { 'x' => 'urn:oasis:names:tc:xliff:document:1.2' }.freeze
   INFIX = '|==|plural.'
@@ -85,8 +85,8 @@ module PluralStrings
   end
 
   # Per-locale CLDR category sets, read from exported skeleton XLIFFs (one `<locale>.xliff` per ship locale).
-  # Apple owns the truth; the refresh lane captures it here so the routine reverse can run build-free against
-  # the committed map. @return [Hash{String=>Array<String>}] locale => categories (CLDR order).
+  # Apple owns the truth; the reverse derives this at fold time from a throwaway-fixture export.
+  # @return [Hash{String=>Array<String>}] locale => categories (CLDR order).
   def categories_by_locale_from_skeletons(xliff_paths)
     xliff_paths.each_with_object({}) do |path, acc|
       cats = Nokogiri::XML(File.read(path)).xpath('//x:trans-unit', XLIFF_NS).filter_map do |tu|
@@ -95,11 +95,6 @@ module PluralStrings
       end
       acc[File.basename(path, '.xliff')] = cldr_sort(cats.uniq) unless cats.empty?
     end
-  end
-
-  # The union of categories across all locales — what the forward path emits as GlotPress originals.
-  def union_categories(categories_by_locale)
-    cldr_sort(categories_by_locale.values.flatten.uniq)
   end
 
   # REVERSE (build-free): fold downloaded flat plural translations back into the catalog's per-locale plural
