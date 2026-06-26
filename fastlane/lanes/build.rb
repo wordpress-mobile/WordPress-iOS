@@ -317,21 +317,11 @@ platform :ios do
   # Builds a single app and uploads it to TestFlight for *internal* testers,
   # stamping the build code with the Buildkite build number.
   #
-  # This is the per-commit "continuous delivery" build from the "Faster Releases
-  # for WordPress and Jetpack" RFC. It is intentionally additive: the existing
-  # release lanes are untouched and remain the source of truth until this flow
-  # is proven.
-  #
   # The marketing version (`VERSION_SHORT`) is read from `Version.public.xcconfig`
   # as-is. The build code is `<marketing version>.0.<buildkite build number>`
   # (e.g. `27.0.0.4567`). Buildkite build numbers increase monotonically, so each
   # build for a given marketing version gets a unique, higher build code — which
   # is all App Store Connect requires.
-  #
-  # "Internal-only" means no external groups and no external-tester notifications
-  # (matching the existing Reader upload). Distributing to the a8c staff beta
-  # group, and separately to the public beta group, is wired up in later phases
-  # of the RFC.
   #
   # @param [String] app One of `wordpress`, `jetpack`, or `reader`.
   #
