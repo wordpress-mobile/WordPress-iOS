@@ -57,7 +57,11 @@ struct ActivityFormattableContentView: UIViewRepresentable {
             super.init()
         }
 
-        func textView(_ textView: UITextView, primaryActionFor textItem: UITextItem, defaultAction: UIAction) -> UIAction? {
+        func textView(
+            _ textView: UITextView,
+            primaryActionFor textItem: UITextItem,
+            defaultAction: UIAction
+        ) -> UIAction? {
             guard case let .link(URL) = textItem.content else {
                 return nil
             }
@@ -67,7 +71,11 @@ struct ActivityFormattableContentView: UIViewRepresentable {
             }
         }
 
-        func textView(_ textView: UITextView, menuConfigurationFor textItem: UITextItem, defaultMenu: UIMenu) -> UITextItem.MenuConfiguration? {
+        func textView(
+            _ textView: UITextView,
+            menuConfigurationFor textItem: UITextItem,
+            defaultMenu: UIMenu
+        ) -> UITextItem.MenuConfiguration? {
             if case .link = textItem.content {
                 return nil
             }
