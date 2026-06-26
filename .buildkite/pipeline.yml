@@ -32,11 +32,7 @@ steps:
               context: "Jetpack Prototype Build"
 
   #################
-  # Continuous Delivery: build & upload each app to TestFlight (internal testers)
-  #
-  # Part of the "Faster Releases for WordPress and Jetpack" RFC. On every trunk
-  # commit, each app builds and uploads to TestFlight in parallel via the matrix
-  # below. Gated to trunk so it doesn't run on PR branches.
+  # Continuous Delivery: build & upload each app to TestFlight (internal testers) from trunk
   #################
   - group: ":testflight: TestFlight Builds"
     key: testflight_builds_group
