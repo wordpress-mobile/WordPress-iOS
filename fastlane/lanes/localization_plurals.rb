@@ -81,7 +81,7 @@ platform :ios do
       catalog,
       categories_by_locale: categories_by_locale,
       translations_by_locale: plural_translations_by_locale(File.join(PROJECT_ROOT_FOLDER, 'WordPress', 'Resources')),
-      ai_translator: method(:ai_translate_plural)
+      ai_translator: plural_ai_translator
     )
     File.write(PLURALS_CATALOG, "#{JSON.pretty_generate(catalog)}\n")
     UI.message("Folded plural translations from Localizable.strings into #{File.basename(PLURALS_CATALOG)} (#{written} locale variations).")
@@ -138,13 +138,36 @@ platform :ios do
     end
   end
 
-  # Machine-translation floor for the reverse fold: invoked for every plural slot with no human translation.
-  # Returns nil until wired to a translation service, leaving such slots to fall back to the English source
-  # (flagged needs_review). The named `category` + dev `note` let the prompt request the correct grammatical
-  # form (e.g. "give me the Polish *few* form of …").
-  # rubocop:disable Lint/UnusedMethodArgument -- keyword names are the documented call contract
-  def ai_translate_plural(id:, source:, category:, note:, locale:)
-    nil # TODO: call the translation service.
+  # The machine-translation tier for the reverse fold (the AI rung of the `human ?? AI ?? English` floor), or
+  # nil when ANTHROPIC_API_KEY isn't configured — in which case untranslated plural cells keep falling back to
+  # the English source (flagged needs_review), exactly as before this was wired. Built once and reused for
+  # every (key, locale) form-set.
+  #
+  # The returned callable matches PluralStrings.fold_translations!'s form-set contract and is wrapped to
+  # DEGRADE, not crash. Two failure modes, both non-fatal: a per-set API error logs and returns {} so that one
+  # set falls back to English while the rest of the fold proceeds and commits; a setup error — the gem missing
+  # (LoadError) or the client failing to construct (any StandardError, e.g. a malformed ANTHROPIC_BASE_URL) —
+  # logs and returns nil, disabling the AI tier for this run while the human/English fold still proceeds and
+  # commits (rather than dropping the whole reverse step). The reverse step is additionally guarded by
+  # `run_plural_step`. Going through `AITranslator#translate_plural` — the whole form-set in one request — keeps
+  # one consistent word/stem across the forms (a per-cell call lets the model drift between synonyms, e.g.
+  # Polish słowo → wyrazy → słów).
+  def plural_ai_translator
+    if ENV['ANTHROPIC_API_KEY'].to_s.empty?
+      UI.important('ANTHROPIC_API_KEY not set — skipping AI plural translation; untranslated plurals fall back to English (needs_review).')
+      return nil
+    end
+
+    require_relative 'ai_translator'
+    translator = AITranslator.with_anthropic
+    lambda do |english_forms:, categories:, locale:, note:, anchors:|
+      translator.translate_plural(english_forms: english_forms, categories: categories, locale: locale, note: note, anchors: anchors)
+    rescue StandardError => e
+      UI.error("AI plural translation failed for #{locale} (#{e.message}); falling back to English for this form-set.")
+      {}
+    end
+  rescue LoadError, StandardError => e
+    UI.important("AI translation tier unavailable (#{e.message}); untranslated plurals fall back to English.")
+    nil
   end
-  # rubocop:enable Lint/UnusedMethodArgument
 end
