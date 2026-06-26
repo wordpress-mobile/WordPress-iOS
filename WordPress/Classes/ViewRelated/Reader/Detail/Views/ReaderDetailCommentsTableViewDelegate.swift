@@ -272,7 +272,8 @@ private extension ReaderDetailCommentsTableViewDelegate {
             applicationActivities: nil
         )
         activityViewController.popoverPresentationController?.sourceView = sourceView
-        UIViewController.topViewController?.present(activityViewController, animated: true, completion: nil)
+        (presentingViewController?.topmostPresentedViewController ?? sourceView?.window?.topmostPresentedViewController)?
+            .present(activityViewController, animated: true, completion: nil)
     }
 
     @objc private func leaveCommentCellTapped() {
