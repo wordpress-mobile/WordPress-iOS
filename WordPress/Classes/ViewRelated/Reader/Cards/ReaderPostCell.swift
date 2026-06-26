@@ -18,7 +18,7 @@ final class ReaderPostCell: ReaderStreamBaseCell {
         view.translatesAutoresizingMaskIntoConstraints = false
         NSLayoutConstraint.activate([
             view.topAnchor.constraint(equalTo: contentView.topAnchor),
-            view.bottomAnchor.constraint(equalTo: contentView.bottomAnchor).withPriority(999),
+            view.bottomAnchor.constraint(equalTo: contentView.bottomAnchor).withPriority(999)
         ])
     }
 
@@ -47,7 +47,10 @@ final class ReaderPostCell: ReaderStreamBaseCell {
 
     override func updateConstraints() {
         NSLayoutConstraint.deactivate(contentViewConstraints)
-        contentViewConstraints = view.pinEdges(.horizontal, to: isCompact ? contentView : contentView.readableContentGuide)
+        contentViewConstraints = view.pinEdges(
+            .horizontal,
+            to: isCompact ? contentView : contentView.readableContentGuide
+        )
         super.updateConstraints()
     }
 
@@ -81,10 +84,15 @@ private final class ReaderPostCellView: UIView {
     private lazy var toolbarView = UIStackView(buttons.allButtons)
     let buttons = ReaderPostToolbarButtons()
 
-    private lazy var postPreview = UIStackView(axis: .vertical, alignment: .leading, spacing: 12, [
-        UIStackView(axis: .vertical, spacing: 4, [titleLabel, detailsLabel]),
-        imageView
-    ])
+    private lazy var postPreview = UIStackView(
+        axis: .vertical,
+        alignment: .leading,
+        spacing: 12,
+        [
+            UIStackView(axis: .vertical, spacing: 4, [titleLabel, detailsLabel]),
+            imageView
+        ]
+    )
 
     var isCompact: Bool = true {
         didSet {
@@ -213,13 +221,19 @@ private final class ReaderPostCellView: UIView {
         NSLayoutConstraint.deactivate(imageViewConstraints)
         if isCompact {
             imageViewConstraints = [
-                imageView.heightAnchor.constraint(equalTo: imageView.widthAnchor, multiplier: ReaderPostCell.coverAspectRatio),
+                imageView.heightAnchor.constraint(
+                    equalTo: imageView.widthAnchor,
+                    multiplier: ReaderPostCell.coverAspectRatio
+                ),
                 imageView.widthAnchor.constraint(lessThanOrEqualTo: widthAnchor, constant: -(insets.left * 2)),
                 imageView.widthAnchor.constraint(equalTo: widthAnchor).withPriority(150)
             ]
         } else {
             imageViewConstraints = [
-                imageView.heightAnchor.constraint(equalTo: imageView.widthAnchor, multiplier: ReaderPostCell.coverAspectRatio),
+                imageView.heightAnchor.constraint(
+                    equalTo: imageView.widthAnchor,
+                    multiplier: ReaderPostCell.coverAspectRatio
+                ),
                 imageView.widthAnchor.constraint(equalToConstant: ReaderPostCell.regularCoverWidth)
             ]
         }
@@ -233,11 +247,14 @@ private final class ReaderPostCellView: UIView {
     private func setupActions() {
         buttonAuthor.addTarget(self, action: #selector(buttonAuthorTapped), for: .primaryActionTriggered)
         buttonMore.showsMenuAsPrimaryAction = true
-        buttonMore.menu = UIMenu(options: .displayInline, children: [
-            UIDeferredMenuElement.uncached { [weak self] callback in
-                callback(self?.makeMoreMenu() ?? [])
-            }
-        ])
+        buttonMore.menu = UIMenu(
+            options: .displayInline,
+            children: [
+                UIDeferredMenuElement.uncached { [weak self] callback in
+                    callback(self?.makeMoreMenu() ?? [])
+                }
+            ]
+        )
         buttons.bookmark.addTarget(self, action: #selector(buttonBookmarkTapped), for: .primaryActionTriggered)
         buttons.reblog.addTarget(self, action: #selector(buttonReblogTapped), for: .primaryActionTriggered)
         buttons.comment.addTarget(self, action: #selector(buttonCommentTapped), for: .primaryActionTriggered)
@@ -272,9 +289,10 @@ private final class ReaderPostCellView: UIView {
             toolbar.likeCount += 1
             configureToolbar(with: toolbar)
             UINotificationFeedbackGenerator().notificationOccurred(.success)
-            buttons.like.imageView?.fadeInWithRotationAnimation { _ in
-                viewModel.toggleLike()
-            }
+            buttons.like.imageView?
+                .fadeInWithRotationAnimation { _ in
+                    viewModel.toggleLike()
+                }
         } else {
             viewModel.toggleLike()
         }
@@ -289,7 +307,8 @@ private final class ReaderPostCellView: UIView {
             topic: viewController.readerTopic,
             anchor: buttonMore,
             viewController: viewController
-        ).makeMenu()
+        )
+        .makeMenu()
     }
 
     // MARK: Configure (ViewModel)
@@ -298,7 +317,10 @@ private final class ReaderPostCellView: UIView {
         self.viewModel = viewModel
 
         setAvatar(with: viewModel)
-        buttonAuthor.configuration?.attributedTitle = AttributedString(viewModel.author, attributes: Self.authorAttributes)
+        buttonAuthor.configuration?.attributedTitle = AttributedString(
+            viewModel.author,
+            attributes: Self.authorAttributes
+        )
         timeLabel.text = viewModel.time
 
         titleLabel.text = viewModel.title
@@ -336,7 +358,9 @@ private final class ReaderPostCellView: UIView {
     private func configureToolbar(with viewModel: ReaderPostToolbarViewModel) {
         buttons.bookmark.configuration = {
             var configuration = buttons.bookmark.configuration ?? .plain()
-            configuration.image = viewModel.isBookmarked ? WPStyleGuide.ReaderDetail.saveSelectedToolbarIcon : WPStyleGuide.ReaderDetail.saveToolbarIcon
+            configuration.image =
+                viewModel.isBookmarked
+                ? WPStyleGuide.ReaderDetail.saveSelectedToolbarIcon : WPStyleGuide.ReaderDetail.saveToolbarIcon
             configuration.baseForegroundColor = viewModel.isBookmarked ? UIAppColor.primary : .secondaryLabel
             return configuration
         }()
@@ -345,20 +369,28 @@ private final class ReaderPostCellView: UIView {
 
         buttons.comment.isHidden = !viewModel.isCommentsEnabled
         if viewModel.isCommentsEnabled {
-            buttons.comment.configuration?.attributedTitle = AttributedString(kFormatted(viewModel.commentCount), attributes: AttributeContainer([
-                .font: font,
-                .foregroundColor: UIColor.secondaryLabel
-            ]))
+            buttons.comment.configuration?.attributedTitle = AttributedString(
+                kFormatted(viewModel.commentCount),
+                attributes: AttributeContainer([
+                    .font: font,
+                    .foregroundColor: UIColor.secondaryLabel
+                ])
+            )
         }
         buttons.like.isHidden = !viewModel.isLikesEnabled
         if viewModel.isLikesEnabled {
             buttons.like.configuration = {
                 var configuration = buttons.like.configuration ?? .plain()
-                configuration.attributedTitle = AttributedString(kFormatted(viewModel.likeCount), attributes: AttributeContainer([
-                    .font: font,
-                    .foregroundColor: viewModel.isLiked ? UIAppColor.primary : UIColor.secondaryLabel
-                ]))
-                configuration.image = viewModel.isLiked ? WPStyleGuide.ReaderDetail.likeSelectedToolbarIcon : WPStyleGuide.ReaderDetail.likeToolbarIcon
+                configuration.attributedTitle = AttributedString(
+                    kFormatted(viewModel.likeCount),
+                    attributes: AttributeContainer([
+                        .font: font,
+                        .foregroundColor: viewModel.isLiked ? UIAppColor.primary : UIColor.secondaryLabel
+                    ])
+                )
+                configuration.image =
+                    viewModel.isLiked
+                    ? WPStyleGuide.ReaderDetail.likeSelectedToolbarIcon : WPStyleGuide.ReaderDetail.likeToolbarIcon
                 configuration.baseForegroundColor = viewModel.isLiked ? UIAppColor.primary : .secondaryLabel
                 return configuration
             }()
@@ -367,13 +399,18 @@ private final class ReaderPostCellView: UIView {
 
     private func setAvatar(with viewModel: ReaderPostCellViewModel) {
         avatarView.setPlaceholder(UIImage(named: "post-blavatar-placeholder"))
-        let avatarSize = ImageSize(scaling: CGSize(width: ReaderPostCell.avatarSize, height: ReaderPostCell.avatarSize), in: self)
+        let avatarSize = ImageSize(
+            scaling: CGSize(width: ReaderPostCell.avatarSize, height: ReaderPostCell.avatarSize),
+            in: self
+        )
         if let avatarURL = viewModel.avatarURL {
             avatarView.setImage(with: avatarURL, size: avatarSize)
         } else {
-            viewModel.$avatarURL.compactMap({ $0 }).sink { [weak self] in
-                self?.avatarView.setImage(with: $0, size: avatarSize)
-            }.store(in: &cancellables)
+            viewModel.$avatarURL.compactMap({ $0 })
+                .sink { [weak self] in
+                    self?.avatarView.setImage(with: $0, size: avatarSize)
+                }
+                .store(in: &cancellables)
         }
     }
 
@@ -383,7 +420,9 @@ private final class ReaderPostCellView: UIView {
 
         seenCheckmark.image = UIImage(
             systemName: "checkmark",
-            withConfiguration: UIImage.SymbolConfiguration(font: .preferredFont(forTextStyle: .caption1).withWeight(.medium))
+            withConfiguration: UIImage.SymbolConfiguration(
+                font: .preferredFont(forTextStyle: .caption1).withWeight(.medium)
+            )
         )
         seenCheckmark.tintColor = .secondaryLabel
     }
@@ -417,7 +456,8 @@ private func makeAuthorButton() -> UIButton {
     return UIButton(configuration: configuration)
 }
 
-private func makeButton(image: UIImage? = nil, font: UIFont = UIFont.preferredFont(forTextStyle: .footnote)) -> UIButton {
+private func makeButton(image: UIImage? = nil, font: UIFont = UIFont.preferredFont(forTextStyle: .footnote)) -> UIButton
+{
     var configuration = UIButton.Configuration.plain()
     configuration.image = image
     configuration.imagePadding = 2
@@ -439,8 +479,16 @@ private func kFormatted(_ count: Int) -> String {
 
 private extension ReaderPostCellView {
     func setupAccessibility() {
-        buttonAuthor.accessibilityHint = NSLocalizedString("reader.post.buttonSite.accessibilityHint", value: "Opens the site details", comment: "Accessibility hint for the site header")
-        buttonMore.accessibilityLabel = NSLocalizedString("reader.post.moreMenu.accessibilityLabel", value: "More actions", comment: "Button accessibility label")
+        buttonAuthor.accessibilityHint = NSLocalizedString(
+            "reader.post.buttonSite.accessibilityHint",
+            value: "Opens the site details",
+            comment: "Accessibility hint for the site header"
+        )
+        buttonMore.accessibilityLabel = NSLocalizedString(
+            "reader.post.moreMenu.accessibilityLabel",
+            value: "More actions",
+            comment: "Button accessibility label"
+        )
 
         buttonAuthor.accessibilityIdentifier = "reader-author-button"
         buttonMore.accessibilityIdentifier = "reader-more-button"
@@ -451,16 +499,60 @@ private extension ReaderPostCellView {
     }
 
     func configureToolbarAccessibility(with viewModel: ReaderPostToolbarViewModel) {
-        buttons.bookmark.accessibilityLabel = viewModel.isBookmarked ? NSLocalizedString("reader.post.buttonRemoveBookmark.accessibilityLint", value: "Remove bookmark", comment: "Button accessibility label") : NSLocalizedString("reader.post.buttonBookmark.accessibilityLabel", value: "Bookmark", comment: "Button accessibility label")
-        buttons.reblog.accessibilityLabel = NSLocalizedString("reader.post.buttonReblog.accessibilityLabel", value: "Reblog", comment: "Button accessibility label")
+        buttons.bookmark.accessibilityLabel =
+            viewModel.isBookmarked
+            ? NSLocalizedString(
+                "reader.post.buttonRemoveBookmark.accessibilityLint",
+                value: "Remove bookmark",
+                comment: "Button accessibility label"
+            )
+            : NSLocalizedString(
+                "reader.post.buttonBookmark.accessibilityLabel",
+                value: "Bookmark",
+                comment: "Button accessibility label"
+            )
+        buttons.reblog.accessibilityLabel = NSLocalizedString(
+            "reader.post.buttonReblog.accessibilityLabel",
+            value: "Reblog",
+            comment: "Button accessibility label"
+        )
         buttons.comment.accessibilityLabel = {
-            let label = NSLocalizedString("reader.post.buttonComment.accessibilityLabel", value: "Show comments", comment: "Button accessibility label")
-            let count = String(format: NSLocalizedString("reader.post.numberOfComments.accessibilityLabel", value: "%@ comments", comment: "Accessibility label showing total number of comments"), viewModel.commentCount.description)
+            let label = NSLocalizedString(
+                "reader.post.buttonComment.accessibilityLabel",
+                value: "Show comments",
+                comment: "Button accessibility label"
+            )
+            let count = String(
+                format: NSLocalizedString(
+                    "reader.post.numberOfComments.accessibilityLabel",
+                    value: "%@ comments",
+                    comment: "Accessibility label showing total number of comments"
+                ),
+                viewModel.commentCount.description
+            )
             return "\(label). \(count)."
         }()
         buttons.like.accessibilityLabel = {
-            let label = viewModel.isLiked ? NSLocalizedString("reader.post.buttonRemoveLike.accessibilityLabel", value: "Remove like", comment: "Button accessibility label") : NSLocalizedString("reader.post.buttonLike.accessibilityLabel", value: "Like", comment: "Button accessibility label")
-            let count = String(format: NSLocalizedString("reader.post.numberOfLikes.accessibilityLabel", value: "%@ likes", comment: "Accessibility label showing total number of likes"), viewModel.likeCount.description)
+            let label =
+                viewModel.isLiked
+                ? NSLocalizedString(
+                    "reader.post.buttonRemoveLike.accessibilityLabel",
+                    value: "Remove like",
+                    comment: "Button accessibility label"
+                )
+                : NSLocalizedString(
+                    "reader.post.buttonLike.accessibilityLabel",
+                    value: "Like",
+                    comment: "Button accessibility label"
+                )
+            let count = String(
+                format: NSLocalizedString(
+                    "reader.post.numberOfLikes.accessibilityLabel",
+                    value: "%@ likes",
+                    comment: "Accessibility label showing total number of likes"
+                ),
+                viewModel.likeCount.description
+            )
             return "\(label). \(count)."
         }()
     }

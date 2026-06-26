@@ -151,7 +151,7 @@ extension JetpackPrologueViewController: InfiniteScrollViewDelegate {
     ///
     /// - Returns: Points per second.
     private func rateForAngle(angle: Double) -> CGFloat {
-        return -angle * Self.Constants.angleRateMultiplier
+        -angle * Self.Constants.angleRateMultiplier
     }
 
     /// Returns the angle in degrees of the device independently of the view's orientation.
