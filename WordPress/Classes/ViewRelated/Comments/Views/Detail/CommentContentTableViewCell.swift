@@ -584,7 +584,7 @@ private extension CommentContentTableViewCell {
             }
         )
         navigationVC.sheetPresentationController?.detents = [.medium()]
-        UIViewController.topViewController?.present(navigationVC, animated: true)
+        window?.topmostPresentedViewController?.present(navigationVC, animated: true)
     }
 
     @objc func accessoryButtonTapped() {
