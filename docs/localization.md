@@ -83,6 +83,24 @@ Use `SharedStrings` (@WordPress/Classes/Utility/SharedStrings.swift) for common 
 let localizedCount = NumberFormatter.localizedString(from: NSNumber(value: count), number: .none)
 ```
 
+## Non-localizable text
+
+A SwiftUI `Text("literal")` uses `LocalizedStringKey`, so in **shipping code** the literal is **automatically extracted for translation**. For strings that must *not* be translated — glyphs and symbols (`Text("·")`), brand names (`Text("WordPress.com")`), and pure interpolations (`Text("@\(username)")`) — use `Text(verbatim:)` so the string is excluded:
+
+```swift
+Text(verbatim: "·")                 // divider glyph — not translatable
+Text(verbatim: "WordPress.com")     // brand name — not translatable
+```
+
+### Previews and `#if DEBUG` are excluded automatically — don't wrap them
+
+You do **not** need `Text(verbatim:)` for placeholder strings in `#Preview`, `PreviewProvider`, or `#if DEBUG` blocks, and you don't need to flag them in review. The extraction tooling excludes them on its own:
+
+- `xcstringstool extract` tags every extracted string with the compile gate it sits under — its `visibility`. Shipping code carries none (`visibility: nil`); a preview literal comes out as `visibility: "preview"`, and a `#if DEBUG` literal as `visibility: defined(DEBUG)`.
+- `xcstringstool sync` — the step that builds `Localizable.xcstrings` — admits **only** unconditional strings (`visibility: nil`). Anything carrying a `visibility` (preview, `#if DEBUG`, or a combination of the two) is dropped before it can reach the catalog or GlotPress.
+
+So a plain `Text("Sample Card")` inside a `#Preview` is fine as-is — it is not a localization leak, and wrapping it in `verbatim:` only adds noise. If you spot a translatable literal in a preview during review, you can leave it: `sync` already excludes it.
+
 ## Organization Pattern
 
 Organize strings using private enums within each view or view model:
