@@ -66,8 +66,8 @@ struct ActivityFormattableContentView: UIViewRepresentable {
                 return nil
             }
 
-            return UIAction { [weak self] _ in
-                self?.routeTo(URL)
+            return UIAction { [weak self, weak textView] _ in
+                self?.routeTo(URL, from: textView)
             }
         }
 
@@ -83,9 +83,9 @@ struct ActivityFormattableContentView: UIViewRepresentable {
             return .init(menu: defaultMenu)
         }
 
-        private func routeTo(_ URL: URL) {
+        private func routeTo(_ URL: URL, from view: UIView?) {
             // Get the top view controller to create content coordinator
-            guard let viewController = UIViewController.topViewController else {
+            guard let viewController = view?.window?.topmostPresentedViewController else {
                 return
             }
 
