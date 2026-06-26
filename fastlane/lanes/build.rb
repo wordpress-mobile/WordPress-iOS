@@ -410,7 +410,9 @@ platform :ios do
   #
   desc 'Builds and uploads WordPress and Jetpack to TestFlight (internal)'
   lane :build_all_apps_for_testflight do
-    %w[wordpress jetpack].each do |app|
+    apps = %w[wordpress jetpack]
+    UI.important("Building #{apps.join(' and ')} for TestFlight. Reader is omitted because its App Store archive is currently broken.")
+    apps.each do |app|
       build_and_upload_app_for_testflight(app: app)
     end
   end
