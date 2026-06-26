@@ -533,24 +533,22 @@ platform :ios do
   # @param [String] beta_app_description_path Path to the beta app description file.
   #
   def upload_app_to_testflight_internal(ipa_path:, beta_app_description_path:)
-    # TBD (RFC D4): the "what's new" text for per-commit internal builds is not
+    # TODO: the "what's new" text for per-commit internal builds is not
     # finalized yet. For now, generate a minimal placeholder from the commit
     # metadata so the upload has something to show. Public-beta builds will get
     # richer notes generated from the PRs merged since the previous public build.
-    changelog = "Automated build from `#{ENV.fetch('BUILDKITE_BRANCH', 'unknown')}` (#{ENV.fetch('BUILDKITE_COMMIT', 'unknown')[0...7]})."
-    whats_new_path = File.join(Dir.tmpdir, 'testflight_whats_new.txt')
+    changelog = "Automated build from `#{ENV.fetch('BUILDKITE_BRANCH', 'unknown branch')}` (#{ENV.fetch('BUILDKITE_COMMIT', 'unknown commit')[0...7]})."
 
-    begin
+    Dir.mktmpdir do |dir|
+      whats_new_path = File.join(dir, 'testflight_whats_new.txt')
       File.write(whats_new_path, changelog)
 
       upload_build_to_testflight(
         ipa_path: ipa_path,
         whats_new_path: whats_new_path,
-        distribution_groups: [], # Internal-only for now (RFC D2): no external groups.
+        distribution_groups: [],
         beta_app_description_path: beta_app_description_path
       )
-    ensure
-      FileUtils.rm_rf(whats_new_path)
     end
   end
 
