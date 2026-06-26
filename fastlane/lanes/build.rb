@@ -329,6 +329,10 @@ platform :ios do
   #
   desc 'Builds one app and uploads it to TestFlight for internal testers'
   lane :build_and_upload_app_for_testflight do |app:|
+    # Fail before any cert/profile work if the build code can't be computed.
+    build_number = ENV.fetch('BUILDKITE_BUILD_NUMBER', nil)
+    UI.user_error!('BUILDKITE_BUILD_NUMBER is not set — this lane is meant to run on CI') if build_number.nil?
+
     app = app.to_s.downcase
 
     case app
@@ -356,9 +360,6 @@ platform :ios do
     else
       UI.user_error!("Unknown app '#{app}'. Expected one of: wordpress, jetpack, reader")
     end
-
-    build_number = ENV.fetch('BUILDKITE_BUILD_NUMBER', nil)
-    UI.user_error!('BUILDKITE_BUILD_NUMBER is not set — this lane is meant to run on CI') if build_number.nil?
 
     build_code = "#{release_version_current}.0.#{build_number}"
     UI.important("Building #{scheme} #{release_version_current} (#{build_code}) for internal TestFlight distribution")
