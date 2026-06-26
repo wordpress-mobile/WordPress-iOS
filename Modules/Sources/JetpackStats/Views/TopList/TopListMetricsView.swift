@@ -20,7 +20,7 @@ struct TopListMetricsView: View {
             }
             if let trend {
                 HStack(spacing: 3) {
-                    Text("\(trend.iconSign) \(trend.formattedPercentage)")
+                    Text(verbatim: "\(trend.iconSign) \(trend.formattedPercentage)")
                         .font(.system(.caption2, design: .rounded, weight: .semibold)).tracking(-0.25)
                         .foregroundColor(trend.sentiment.foregroundColor)
                         .contentTransition(.numericText())

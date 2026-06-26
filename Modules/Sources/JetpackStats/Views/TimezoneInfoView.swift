@@ -38,7 +38,7 @@ struct TimezoneInfoView: View {
                 .font(.headline)
                 .foregroundStyle(.primary)
 
-            Text("\(formattedTimeZone) (\(context.formatters.date.formattedTimeOffset))")
+            Text(verbatim: "\(formattedTimeZone) (\(context.formatters.date.formattedTimeOffset))")
                 .font(.footnote)
                 .foregroundColor(.secondary)
 

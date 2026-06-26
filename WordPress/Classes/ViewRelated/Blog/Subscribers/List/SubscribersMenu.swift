@@ -12,7 +12,7 @@ struct SubscribersFiltersMenu: View {
                 filterByPaymenetType
             }
             if let response = viewModel.response, let count = viewModel.makeFormattedSubscribersCount(for: response) {
-                Text("\(Strings.subscribers) \(count)")
+                Text(verbatim: "\(Strings.subscribers) \(count)")
             }
         } label: {
             Image(systemName: "line.3.horizontal.decrease")

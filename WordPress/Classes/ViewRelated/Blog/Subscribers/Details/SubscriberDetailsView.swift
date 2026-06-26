@@ -159,7 +159,7 @@ struct SubscriberDetailsView: View {
                 Text(plan.title)
                     .font(.headline)
                 if plan.isGift {
-                    Text("– \(Strings.gift)")
+                    Text(verbatim: "– \(Strings.gift)")
                         .foregroundStyle(.secondary)
                     Spacer()
                     Image(systemName: "gift")

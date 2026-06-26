@@ -46,7 +46,7 @@ struct ActivityLogRowView: View {
                         .font(.footnote)
                         .foregroundColor(.secondary)
                     if let subtitle = viewModel.actorSubtitle {
-                        Text("·")
+                        Text(verbatim: "·")
                             .font(.footnote)
                             .foregroundColor(.secondary)
                         Text(subtitle)
@@ -55,7 +55,7 @@ struct ActivityLogRowView: View {
                     }
 
                     if let metadata = viewModel.actorMetadata {
-                        Text("·")
+                        Text(verbatim: "·")
                             .font(.footnote)
                             .foregroundColor(.secondary)
                         Text(metadata)

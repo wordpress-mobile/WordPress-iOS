@@ -151,7 +151,7 @@ private struct ActivityTypeRow: View {
         HStack {
             Text(group.name)
             Spacer()
-            Text("\(group.count)")
+            Text(group.count, format: .number)
                 .foregroundColor(.secondary)
         }
     }

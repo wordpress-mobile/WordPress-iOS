@@ -360,7 +360,7 @@ extension ReaderDisplaySettingSelectionView {
                                                            TrackingKeys.valueKey: font.rawValue])
                         } label: {
                             VStack(spacing: .DS.Padding.half) {
-                                Text("Aa")
+                                Text(verbatim: "Aa")
                                     .font(Font(ReaderDisplaySettings.font(with: font, textStyle: .largeTitle)).bold())
                                     .foregroundStyle(Color(.label))
                                 Text(font.rawValue.capitalized)
@@ -390,11 +390,11 @@ extension ReaderDisplaySettingSelectionView {
                    step: 1) {
                 Text(Strings.sizeSliderLabel)
             } minimumValueLabel: {
-                Text("A")
+                Text(verbatim: "A")
                     .font(Font(ReaderDisplaySettings.font(with: .sans, size: .extraSmall, textStyle: .body)))
                     .accessibilityHidden(true)
             } maximumValueLabel: {
-                Text("A")
+                Text(verbatim: "A")
                     .font(Font(ReaderDisplaySettings.font(with: .sans, size: .extraExtraExtraLarge, textStyle: .body)))
                     .accessibilityHidden(true)
             } onEditingChanged: { _ in

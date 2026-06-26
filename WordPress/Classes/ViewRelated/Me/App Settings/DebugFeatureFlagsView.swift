@@ -15,10 +15,10 @@ struct DebugFeatureFlagsView: View {
         .navigationBarTitleDisplayMode(.inline)
         .toolbarTitleMenu {
             Picker("Filter", selection: $viewModel.filter) {
-                Text("Feature Flags (All)").tag(DebugFeatureFlagFilter.all)
-                Text("Remote Feature Flags").tag(DebugFeatureFlagFilter.remote)
-                Text("Local Feature Flags").tag(DebugFeatureFlagFilter.local)
-                Text("Overriden Feature Flags").tag(DebugFeatureFlagFilter.overriden)
+                Text(verbatim: "Feature Flags (All)").tag(DebugFeatureFlagFilter.all)
+                Text(verbatim: "Remote Feature Flags").tag(DebugFeatureFlagFilter.remote)
+                Text(verbatim: "Local Feature Flags").tag(DebugFeatureFlagFilter.local)
+                Text(verbatim: "Overriden Feature Flags").tag(DebugFeatureFlagFilter.overriden)
             }.pickerStyle(.inline)
         }
         .toolbar {
@@ -59,7 +59,7 @@ struct DebugFeatureFlagsView: View {
             VStack(alignment: .leading) {
                 Text(title)
                 if isOverriden {
-                    Text("Overriden")
+                    Text(verbatim: "Overriden")
                         .font(.subheadline)
                         .foregroundColor(.secondary)
                 }

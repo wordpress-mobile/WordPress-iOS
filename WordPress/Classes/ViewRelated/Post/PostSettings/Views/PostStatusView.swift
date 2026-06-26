@@ -212,7 +212,7 @@ struct PostSettingsPasswordRow: View {
         HStack {
             Text(Strings.passwordLabel)
             Spacer()
-            Text("••••••••••••")
+            Text(verbatim: "••••••••••••")
                 .font(.footnote.monospaced())
                 .foregroundStyle(.secondary)
             Image(systemName: "chevron.forward")

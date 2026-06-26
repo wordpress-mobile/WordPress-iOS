@@ -32,7 +32,7 @@ struct PostDiscussionSettingsView: View {
                     .accessibilityIdentifier("post_discussion_allow_pings_toggle")
                 } footer: {
                     Link(destination: Strings.pingbacksLearnMoreURL) {
-                        (Text(Strings.learnMorePingbacksText) + Text(" ") + Text(Image(systemName: "link")))
+                        (Text(Strings.learnMorePingbacksText) + Text(verbatim: " ") + Text(Image(systemName: "link")))
                             .font(.footnote)
                     }
                     .accessibilityIdentifier("post_discussion_pingbacks_learn_more_button")

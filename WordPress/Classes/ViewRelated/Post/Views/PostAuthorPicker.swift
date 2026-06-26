@@ -64,7 +64,7 @@ private struct AuthorRow: View {
                     .font(.callout.weight(.medium))
 
                 if let username = author.username {
-                    Text("@\(username)")
+                    Text(verbatim: "@\(username)")
                         .font(.footnote)
                         .foregroundColor(.secondary)
                 }
