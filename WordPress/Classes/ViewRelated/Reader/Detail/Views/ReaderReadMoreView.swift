@@ -60,7 +60,7 @@ final class ReaderReadMoreView: UIView, UIAdaptivePresentationControllerDelegate
             return
         }
         let safariVC = SFSafariViewController(url: postURL)
-        UIViewController.topViewController?.present(safariVC, animated: true)
+        window?.topmostPresentedViewController?.present(safariVC, animated: true)
     }
 
     @objc private func showInfoTapped() {
@@ -84,7 +84,7 @@ final class ReaderReadMoreView: UIView, UIAdaptivePresentationControllerDelegate
         popoverVC.modalPresentationStyle = .popover
         popoverVC.popoverPresentationController?.delegate = self
         popoverVC.popoverPresentationController?.sourceView = infoIconView
-        UIViewController.topViewController?.present(popoverVC, animated: true)
+        window?.topmostPresentedViewController?.present(popoverVC, animated: true)
     }
 
     // MARK: UIAdaptivePresentationControllerDelegate
