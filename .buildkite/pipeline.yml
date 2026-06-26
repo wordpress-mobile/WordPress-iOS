@@ -163,6 +163,13 @@ steps:
           - github_commit_status:
               context: "Verify String Catalog Coverage"
 
+      - label: ":test_tube: Localization Tooling Unit Tests"
+        command: .buildkite/commands/test-localization-tooling.sh
+        plugins: [$CI_TOOLKIT_PLUGIN]
+        notify:
+          - github_commit_status:
+              context: "Localization Tooling Unit Tests"
+
   #################
   # Claude Build Analysis - dynamically uploaded so Build result conditions evaluate at runtime after the wait
   #################
