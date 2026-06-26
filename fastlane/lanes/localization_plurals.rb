@@ -8,14 +8,14 @@ require_relative 'plural_strings_helper'
 # Plurals: String Catalog ⇄ GlotPress ("all-flat")
 #
 # Plurals are authored in `WordPress/Classes/Plurals.xcstrings` (English one/other) and carried through the
-# MAIN app GlotPress project as flat strings keyed `<key>|==|plural.<cldr-category>` — the same id Apple's
-# `xcodebuild -exportLocalizations` uses — so every locale (incl. Welsh) is covered. The forward merges these
+# main app GlotPress project as flat strings keyed `<key>|==|plural.<cldr-category>` — the same id Apple's
+# `xcodebuild -exportLocalizations` uses — so every locale is covered. The forward merges these
 # flat originals into `Localizable.strings` (like MANUALLY_MAINTAINED_STRINGS_FILES); the reverse reads them
 # back out of the downloaded `Localizable.strings` and folds them into the catalog JSON. The flat keys stay in
 # `Localizable.strings` as harmless, unused-at-runtime entries — exactly like the merged `infoplist.*` keys.
 #
 # Which CLDR categories each locale needs is Apple's to decide. The reverse derives that per-locale map fresh
-# from the exporter at fold time — but from a THROWAWAY one-plural Swift package, not the app (the categories
+# from the exporter at fold time — but from a throwaway one-plural Swift package, not the app (the categories
 # are a property of the locale's CLDR, not our strings), so it's ~6s with no app build/bootstrap and can't lag
 # the ship-locale list or Apple's CLDR. The forward needs no map: it emits the full CLDR set (the union over any
 # real locale set is always all six), and over-emitting is harmless — the reverse folds only what each locale uses.

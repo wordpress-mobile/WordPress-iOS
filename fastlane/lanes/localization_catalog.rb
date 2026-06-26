@@ -8,24 +8,24 @@ require_relative 'catalog_helper'
 #################################################
 # Catalog generation (forward / extraction)
 #
-# Build-free replacement for the genstrings step: extract the app's ENGLISH source strings into a
-# String Catalog using Apple's own `xcstringstool extract` + `sync` (NOT a full app build). This is the
+# Build-free replacement for the genstrings step: extract the app's English source strings into a
+# String Catalog using Apple's own `xcstringstool extract` + `sync` (not a full app build). This is the
 # first step of moving the localization backing store to String Catalogs for the AI translation pipeline.
 #
 # `xcstringstool extract --legacy-localizable-strings --modern-localizable-strings -s AppLocalizedString`
 # recognizes NSLocalizedString + ObjC siblings (legacy), `String(localized:)`/`LocalizedStringResource`
 # (modern — so catalog-native code is covered the moment it's written), and the app's custom
-# `AppLocalizedString` routine (the same `-s` flag genstrings uses today — call sites stay UNCHANGED).
-# `sync` then MERGES all the extracted `.stringsdata` (every source that targets the Localizable table) into
+# `AppLocalizedString` routine (the same `-s` flag genstrings uses today — call sites stay unchanged).
+# `sync` then merges all the extracted `.stringsdata` (every source that targets the Localizable table) into
 # the one catalog, deduped by key, applying the per-string state machine (new / extracted_with_value / stale).
 #
-# NOTE: this lane only GENERATES the English-source catalog as the future backing store. It writes to a
-# non-synchronized folder so it is NOT yet a build member (the runtime still uses the committed
+# Note: this lane only generates the English-source catalog as the future backing store. It writes to a
+# non-synchronized folder so it is not yet a build member (the runtime still uses the committed
 # `Localizable.strings`). Wiring the catalog into the target and retiring the legacy `.strings` is a separate
 # migration step.
 #################################################
 
-# Generated English-source catalog (Localizable table). In WordPress/Resources (NON-synced) so it is produced
+# Generated English-source catalog (Localizable table). In WordPress/Resources (non-synced) so it is produced
 # as an artifact without auto-joining the target / conflicting with the existing Localizable.strings.
 LOCALIZABLE_CATALOG = File.join(PROJECT_ROOT_FOLDER, 'WordPress', 'Resources', 'Localizable.xcstrings')
 
