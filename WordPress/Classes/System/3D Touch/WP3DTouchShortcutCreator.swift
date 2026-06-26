@@ -8,7 +8,8 @@ public protocol ApplicationShortcutsProvider {
 
 extension UIApplication: ApplicationShortcutsProvider {
     @objc public var is3DTouchAvailable: Bool {
-        mainWindow?.traitCollection.forceTouchCapability == .available
+        connectedScenes.compactMap { ($0 as? UIWindowScene)?.keyWindow }.first?.traitCollection.forceTouchCapability
+            == .available
     }
 }
 
@@ -163,12 +164,6 @@ open class WP3DTouchShortcutCreator: NSObject {
 
     fileprivate func createLoggedOutShortcuts() {
         shortcutsProvider.shortcutItems = loggedOutShortcutArray()
-    }
-
-    fileprivate func is3DTouchAvailable() -> Bool {
-        let window = UIApplication.shared.mainWindow
-
-        return window?.traitCollection.forceTouchCapability == .available
     }
 
     fileprivate func hasWordPressComAccount() -> Bool {

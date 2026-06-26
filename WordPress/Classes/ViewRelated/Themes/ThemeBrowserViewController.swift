@@ -85,7 +85,7 @@ public protocol ThemePresenter: AnyObject {
 open class ThemeBrowserViewController: UIViewController, UICollectionViewDataSource, UICollectionViewDelegate,
     UICollectionViewDelegateFlowLayout, NSFetchedResultsControllerDelegate, UISearchControllerDelegate,
     UISearchResultsUpdating, ThemePresenter, WPContentSyncHelperDelegate
-{
+{ // swiftlint:disable:this opening_brace
 
     // MARK: - Constants
 
@@ -274,17 +274,12 @@ open class ThemeBrowserViewController: UIViewController, UICollectionViewDataSou
     /**
      *  @brief      Load theme screenshots at maximum displayed width
      */
-    @objc open var screenshotWidth: Int = {
-        guard let window = UIApplication.shared.mainWindow else {
-            assertionFailure("The mainWindow is not set")
-            return Int(Styles.imageWidthForFrameWidth(852))
-        }
-        let windowSize = window.bounds.size
-        let vWidth = Styles.imageWidthForFrameWidth(windowSize.width)
-        let hWidth = Styles.imageWidthForFrameWidth(windowSize.height)
-        let maxWidth = Int(max(hWidth, vWidth))
-        return maxWidth
-    }()
+    @objc open var screenshotWidth: Int {
+        let size = view.window?.bounds.size ?? view.bounds.size
+        let vWidth = Styles.imageWidthForFrameWidth(size.width)
+        let hWidth = Styles.imageWidthForFrameWidth(size.height)
+        return Int(max(hWidth, vWidth))
+    }
 
     /**
      *  @brief      The themes service we'll use in this VC and its helpers

@@ -1526,7 +1526,7 @@ extension ReaderStreamViewController: WPTableViewHandlerDelegate {
         viewModel.viewController = self
 
         let cell = tableConfiguration.postCell(in: tableView, for: indexPath)
-        cell.configure(with: viewModel, isCompact: isCompact)
+        cell.configure(with: viewModel, isCompact: isCompact, window: view.window)
         cell.isSeparatorHidden = !showsSeparator
         return cell
     }

@@ -169,7 +169,7 @@ extension JetpackPrologueViewController: InfiniteScrollViewDelegate {
 
         let angleRad: Double
 
-        switch UIApplication.shared.currentStatusBarOrientation {
+        switch view.window?.windowScene?.interfaceOrientation ?? .unknown {
         case .portrait:
             angleRad = attitude.pitch
         case .portraitUpsideDown:

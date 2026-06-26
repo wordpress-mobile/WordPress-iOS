@@ -32,11 +32,11 @@ final class ReaderPostCell: ReaderStreamBaseCell {
         view.prepareForReuse()
     }
 
-    func configure(with viewModel: ReaderPostCellViewModel, isCompact: Bool) {
+    func configure(with viewModel: ReaderPostCellViewModel, isCompact: Bool, window: UIWindow?) {
         self.isCompact = isCompact
 
         view.isCompact = isCompact
-        view.configure(with: viewModel)
+        view.configure(with: viewModel, window: window)
 
         accessibilityLabel = "\(viewModel.author). \(viewModel.title). \(viewModel.details)"
     }
@@ -104,6 +104,8 @@ private final class ReaderPostCellView: UIView {
     let insets = ReaderStreamBaseCell.insets
 
     private var viewModel: ReaderPostCellViewModel? // important: has to retain
+
+    private weak var hostWindow: UIWindow?
 
     private var toolbarViewHeightConstraint: NSLayoutConstraint?
     private var imageViewConstraints: [NSLayoutConstraint] = []
@@ -313,8 +315,9 @@ private final class ReaderPostCellView: UIView {
 
     // MARK: Configure (ViewModel)
 
-    func configure(with viewModel: ReaderPostCellViewModel) {
+    func configure(with viewModel: ReaderPostCellViewModel, window: UIWindow?) {
         self.viewModel = viewModel
+        self.hostWindow = window
 
         setAvatar(with: viewModel)
         buttonAuthor.configuration?.attributedTitle = AttributedString(
@@ -351,7 +354,7 @@ private final class ReaderPostCellView: UIView {
     }
 
     private var preferredCoverSize: ImageSize? {
-        guard let window = window ?? UIApplication.shared.mainWindow else { return nil }
+        guard let window = window ?? hostWindow else { return nil }
         return ReaderPostCell.preferredCoverSize(in: window, isCompact: isCompact)
     }
 
@@ -456,8 +459,10 @@ private func makeAuthorButton() -> UIButton {
     return UIButton(configuration: configuration)
 }
 
-private func makeButton(image: UIImage? = nil, font: UIFont = UIFont.preferredFont(forTextStyle: .footnote)) -> UIButton
-{
+private func makeButton(
+    image: UIImage? = nil,
+    font: UIFont = UIFont.preferredFont(forTextStyle: .footnote)
+) -> UIButton {
     var configuration = UIButton.Configuration.plain()
     configuration.image = image
     configuration.imagePadding = 2
@@ -562,7 +567,7 @@ private extension ReaderPostCellView {
 
 #Preview {
     let cell = ReaderPostCellView()
-    cell.configure(with: .mock())
+    cell.configure(with: .mock(), window: nil)
     cell.isCompact = true
 
     let vc = UIViewController()
