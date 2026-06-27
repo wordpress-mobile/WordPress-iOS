@@ -1,0 +1,21 @@
+# yaml-language-server: $schema=https://raw.githubusercontent.com/buildkite/pipeline-schema/main/schema.json
+---
+
+# Weekly public-beta promotion — run by a Buildkite schedule (see docs/testflight-promotion.md).
+
+agents:
+  queue: mac
+env:
+  IMAGE_ID: $IMAGE_ID
+
+steps:
+  - label: ":testflight: Gather builds to promote"
+    command: ".buildkite/commands/gather-testflight-candidates.sh"
+    plugins: [$CI_TOOLKIT_PLUGIN]
+
+# Backstop: the gather lane posts its own failures to Slack, but a setup failure (gems/
+# secrets) under `set -e` aborts before fastlane runs and bypasses that rescue. A build-level
+# failure notification ensures a broken weekly run still reaches the channel.
+notify:
+  - slack: "#build-and-ship"
+    if: build.state == "failed"

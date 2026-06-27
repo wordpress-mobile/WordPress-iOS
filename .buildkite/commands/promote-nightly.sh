@@ -9,5 +9,5 @@ echo "--- :closed_lock_with_key: Installing Secrets"
 bundle exec fastlane run configure_apply
 
 echo "--- :new_moon: Promoting last build of the day to nightly beta"
-# Real only on trunk by default; force with PROMOTE_DRY_RUN.
+# The lane refuses to run anywhere but trunk.
 bundle exec fastlane promote_nightly_build
