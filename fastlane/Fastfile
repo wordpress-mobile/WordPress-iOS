@@ -167,6 +167,7 @@ import 'lanes/codesign.rb'
 import 'lanes/localization.rb'
 import 'lanes/localization_plurals.rb'
 import 'lanes/localization_catalog.rb'
+import 'lanes/promote.rb'
 import 'lanes/release.rb'
 import 'lanes/screenshots.rb'
 
