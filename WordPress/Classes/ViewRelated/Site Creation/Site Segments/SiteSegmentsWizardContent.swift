@@ -198,7 +198,7 @@ final class SiteSegmentsWizardContent: UIViewController {
         let errorVC = ErrorStateViewController(with: configuration)
 
         addChild(errorVC)
-        errorVC.view.frame = view.frame
+        errorVC.view.translatesAutoresizingMaskIntoConstraints = false
         view.addSubview(errorVC.view)
         NSLayoutConstraint.activate([
             errorVC.view.leadingAnchor.constraint(equalTo: view.leadingAnchor),

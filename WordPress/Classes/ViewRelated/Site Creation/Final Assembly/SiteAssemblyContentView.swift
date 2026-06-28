@@ -460,6 +460,7 @@ final class SiteAssemblyContentView: UIView {
         }
 
         errorStateView.alpha = 0
+        errorStateView.translatesAutoresizingMaskIntoConstraints = false
         addSubview(errorStateView)
 
         NSLayoutConstraint.activate([
