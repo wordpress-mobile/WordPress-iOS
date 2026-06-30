@@ -553,4 +553,17 @@ enum Localization {
         value: "Loading latest content",
         comment: "Progress message shown in overlay while refreshing content"
     )
+
+    // MARK: - UnifiedConversationListView.swift
+
+    static let getHelp = NSLocalizedString(
+        "com.jetpack.support.getHelp",
+        value: "Get help",
+        comment: "Navigation title for the unified support conversations list, and the menu entry that opens it"
+    )
+    static let botBadge = NSLocalizedString(
+        "com.jetpack.support.botBadge",
+        value: "Bot",
+        comment: "Badge shown on a conversation row to indicate it is an AI bot chat rather than a Happiness Engineer ticket"
+    )
 }
