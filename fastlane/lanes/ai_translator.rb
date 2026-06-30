@@ -111,10 +111,15 @@ class AITranslator # rubocop:disable Metrics/ClassLength -- mostly static locali
     candidate
   end
 
-  # Adapter matching the `ai_translate_plural(id:, source:, category:, note:, locale:)` contract in
-  # `localization_plurals.rb`, so wiring the live tier is a one-line swap of the `ai_translator:` argument:
-  #   translator = AITranslator.with_anthropic
-  #   PluralStrings.fold_translations!(catalog, ..., ai_translator: translator.method(:for_plural))
+  # Per-cell adapter matching the legacy `ai_translate_plural(id:, source:, category:, note:, locale:)` stub
+  # contract in `localization_plurals.rb`: it translates ONE plural form on its own through single-string
+  # `translate`. Each form is an independent request, so it CANNOT keep one consistent word/stem across the
+  # forms — it is subject to exactly the lemma drift `PLURAL_OUTPUT` and `translate_plural` describe. This is a
+  # per-cell fallback, NOT the way to wire the live tier.
+  #
+  # The drift-free path is `translate_plural` — the whole form-set in one request. Because it is a
+  # per-(key, locale) call, wiring it upgrades the consumer's `ai_translator` seam to take the form-set
+  # (`ai_translator.call(english_forms:, categories:, locale:, note:, anchors:)`); it is not a one-line swap here.
   # rubocop:disable Lint/UnusedMethodArgument -- keyword names are the documented call contract
   def for_plural(id:, source:, category:, note:, locale:)
     translate(source: source, locale: locale, context: plural_context(note, category))
