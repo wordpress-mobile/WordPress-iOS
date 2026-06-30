@@ -52,13 +52,15 @@ public struct UnifiedConversationListView: View {
         .navigationBarTitleDisplayMode(.large)
         .toolbar {
             ToolbarItem(placement: .primaryAction) {
+                // Starting a bot chat is available to any signed-in user; HE/support
+                // eligibility only gates replying to / creating Happiness Engineer
+                // tickets, which happens inside the detail flow.
                 NavigationLink {
                     ConversationView(conversation: nil, currentUser: currentUser)
                         .environmentObject(dataProvider)
                 } label: {
                     Image(systemName: "square.and.pencil")
                 }
-                .disabled(!currentUser.permissions.contains(.createChatConversation))
             }
         }
         .overlay {
