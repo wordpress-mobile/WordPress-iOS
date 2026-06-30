@@ -151,7 +151,7 @@ class AITranslator # rubocop:disable Metrics/ClassLength -- mostly static locali
       user: plural_user_prompt(english_forms, needed, note, anchors),
       schema: object_schema(needed)
     )
-    validated_forms(parse_forms(reply), needed, english_forms)
+    select_valid_forms(parse_forms(reply), needed, english_forms)
   end
 
   # Translates many independent strings in batched requests (default DEFAULT_BATCH_SIZE per request), returning
@@ -201,7 +201,7 @@ class AITranslator # rubocop:disable Metrics/ClassLength -- mostly static locali
       text = texts_by_custom_id[custom_id]
       next if text.nil?
 
-      bucket.merge!(validated_batch(parse_forms(text), entry[:numbered]))
+      bucket.merge!(select_valid_batch(parse_forms(text), entry[:numbered]))
     end
   end
 
@@ -260,7 +260,7 @@ class AITranslator # rubocop:disable Metrics/ClassLength -- mostly static locali
 
   # Keep only the parsed forms whose placeholders match their English source (the form's own English, or the
   # "other" value for categories English doesn't distinguish). Failed/empty forms are dropped → English fallback.
-  def validated_forms(parsed, needed, english_forms)
+  def select_valid_forms(parsed, needed, english_forms)
     other = english_forms['other']
     needed.each_with_object({}) do |category, out|
       candidate = parsed[category].to_s.strip # already JSON-decoded — trim only; clean() would strip a value's own quotes
@@ -305,11 +305,11 @@ class AITranslator # rubocop:disable Metrics/ClassLength -- mostly static locali
       user: batch_user_prompt(numbered),
       schema: object_schema(numbered.keys.map(&:to_s))
     )
-    validated_batch(parse_forms(reply), numbered)
+    select_valid_batch(parse_forms(reply), numbered)
   end
 
   # Map each numbered item to its validated translation by key; drop empty/placeholder-breaking ones.
-  def validated_batch(parsed, numbered)
+  def select_valid_batch(parsed, numbered)
     numbered.each_with_object({}) do |(index, string), out|
       candidate = parsed[index.to_s].to_s.strip # already JSON-decoded — trim only; clean() would strip a value's own quotes
       next if candidate.empty?

@@ -315,7 +315,7 @@ class AITranslatorTest < Minitest::Test # rubocop:disable Metrics/ClassLength --
     assert_equal({ 'sample.curly' => '“Reader”' }, out)
   end
 
-  # The async Batch path shares validated_batch with translate_all, so it must preserve a quoted value too.
+  # The async Batch path shares select_valid_batch with translate_all, so it must preserve a quoted value too.
   def test_collect_batch_preserves_a_quoted_value
     t = translator(reply: '{}')
     prep = t.prepare_batch({ 'fr' => [{ key: 'sample.quoted', source: '"Reader"' }] }, batch_size: 25)
