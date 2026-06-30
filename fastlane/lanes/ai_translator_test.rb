@@ -305,4 +305,21 @@ class AITranslatorTest < Minitest::Test # rubocop:disable Metrics/ClassLength --
     )
     assert_equal({ 'sample.quoted' => '"Reader"' }, out)
   end
+
+  # The same holds for the curly/smart quotes clean() also strips: a JSON-decoded value wrapped in “ ” keeps them.
+  def test_translate_all_preserves_a_curly_quoted_value
+    reply = '{"1":"“Reader”"}'
+    out = translator(reply: reply).translate_all(
+      [{ key: 'sample.curly', source: '“Reader”' }], locale: 'fr'
+    )
+    assert_equal({ 'sample.curly' => '“Reader”' }, out)
+  end
+
+  # The async Batch path shares validated_batch with translate_all, so it must preserve a quoted value too.
+  def test_collect_batch_preserves_a_quoted_value
+    t = translator(reply: '{}')
+    prep = t.prepare_batch({ 'fr' => [{ key: 'sample.quoted', source: '"Reader"' }] }, batch_size: 25)
+    texts = { 'fr_0' => '{"1":"\"Reader\""}' }
+    assert_equal({ 'fr' => { 'sample.quoted' => '"Reader"' } }, t.collect_batch(texts, prep[:manifest]))
+  end
 end
