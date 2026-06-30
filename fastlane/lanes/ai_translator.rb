@@ -263,7 +263,7 @@ class AITranslator # rubocop:disable Metrics/ClassLength -- mostly static locali
   def validated_forms(parsed, needed, english_forms)
     other = english_forms['other']
     needed.each_with_object({}) do |category, out|
-      candidate = clean(parsed[category].to_s)
+      candidate = parsed[category].to_s.strip # already JSON-decoded — trim only; clean() would strip a value's own quotes
       next if candidate.empty?
 
       source = english_forms[category] || other
@@ -311,7 +311,7 @@ class AITranslator # rubocop:disable Metrics/ClassLength -- mostly static locali
   # Map each numbered item to its validated translation by key; drop empty/placeholder-breaking ones.
   def validated_batch(parsed, numbered)
     numbered.each_with_object({}) do |(index, string), out|
-      candidate = clean(parsed[index.to_s].to_s)
+      candidate = parsed[index.to_s].to_s.strip # already JSON-decoded — trim only; clean() would strip a value's own quotes
       next if candidate.empty?
 
       out[string[:key]] = candidate if TranslationValidator.placeholders_match?(string[:source], candidate)
@@ -363,9 +363,11 @@ class AITranslator # rubocop:disable Metrics/ClassLength -- mostly static locali
     }
   end
 
-  # Models occasionally wrap the answer in quotation marks or add a trailing newline despite the
-  # "only the translation" instruction; strip those cosmetic wrappers. Anything more substantial (a prose
-  # explanation that slipped through) almost always breaks the placeholder gate and is discarded there.
+  # Strip the cosmetic wrapper a model sometimes adds to a RAW single-string reply — wrapping quotes or a
+  # trailing newline, despite the "only the translation" instruction. Only ever run this on a raw reply, never
+  # on a JSON-decoded value: JSON.parse has already removed the structural quotes, so any quotes left there are
+  # part of the content (a value like "Reader" must keep them). Anything more substantial (a prose explanation
+  # that slipped through) almost always breaks the placeholder gate and is discarded there.
   def clean(text)
     stripped = text.strip
     if stripped.length >= 2 &&
