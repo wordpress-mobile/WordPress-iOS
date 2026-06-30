@@ -11,6 +11,7 @@ extension SupportDataProvider {
         botConversationDataProvider: InternalBotConversationDataProvider(),
         userDataProvider: InternalUserDataProvider(),
         supportConversationDataProvider: InternalSupportConversationDataProvider(),
+        unifiedConversationDataProvider: InternalUnifiedConversationDataProvider(),
         diagnosticsDataProvider: InternalDiagnosticsDataProvider(),
         mediaHost: InternalMediaHost()
     )
@@ -107,6 +108,41 @@ extension SupportDataProvider {
                 )
             ])
     }
+
+    static let unifiedConversationItems: [UnifiedConversationItem] = [
+        UnifiedConversationItem(
+            id: 1234,
+            title: "App Crashing on Launch",
+            description: "Hi, I'm having trouble with the app. It keeps crashing when I try to open it.",
+            rawStatus: UnifiedConversationItem.botStatus,
+            canAcceptReply: true,
+            lastMessageSentAt: Date().addingTimeInterval(-120) // 2 minutes ago
+        ),
+        UnifiedConversationItem(
+            id: 1,
+            title: "Login Issues with Two-Factor Authentication",
+            description: "I'm having trouble logging into my account. The two-factor authentication code isn't working.",
+            rawStatus: "open",
+            canAcceptReply: true,
+            lastMessageSentAt: Date().addingTimeInterval(-300) // 5 minutes ago
+        ),
+        UnifiedConversationItem(
+            id: 2,
+            title: "Billing Question - Duplicate Charges",
+            description: "I noticed duplicate charges on my credit card statement for this month's subscription.",
+            rawStatus: "pending",
+            canAcceptReply: true,
+            lastMessageSentAt: Date().addingTimeInterval(-3600) // 1 hour ago
+        ),
+        UnifiedConversationItem(
+            id: 6,
+            title: "API Rate Limiting Questions",
+            description: "Our application is hitting rate limits frequently. Can we discuss increasing our API quota?",
+            rawStatus: "closed",
+            canAcceptReply: false,
+            lastMessageSentAt: Date().addingTimeInterval(-604800) // 1 week ago
+        )
+    ]
 
     static let supportConversationSummaries: [ConversationSummary] = [
         ConversationSummary(
@@ -331,6 +367,14 @@ actor InternalBotConversationDataProvider: BotConversationDataProvider {
                 isWrittenByUser: false
             )
         ])
+    }
+}
+
+actor InternalUnifiedConversationDataProvider: UnifiedConversationDataProvider {
+    nonisolated func loadUnifiedConversations() throws -> any CachedAndFetchedResult<[UnifiedConversationItem]> {
+        UncachedResult {
+            await SupportDataProvider.unifiedConversationItems
+        }
     }
 }
 

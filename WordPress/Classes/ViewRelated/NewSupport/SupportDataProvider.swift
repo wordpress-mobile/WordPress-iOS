@@ -26,6 +26,9 @@ extension SupportDataProvider {
         supportConversationDataProvider: WpSupportConversationDataProvider(
             wpcomClient: WordPressDotComClient()
         ),
+        unifiedConversationDataProvider: WpUnifiedConversationDataProvider(
+            wpcomClient: WordPressDotComClient()
+        ),
         diagnosticsDataProvider: WpDiagnosticsDataProvider(),
         mediaHost: WordPressDotComClient(),
         delegate: WpSupportDelegate()
@@ -336,6 +339,25 @@ actor WpSupportConversationDataProvider: SupportConversationDataProvider {
     }
 }
 
+actor WpUnifiedConversationDataProvider: UnifiedConversationDataProvider {
+
+    private let wpcomClient: WordPressDotComClient
+
+    init(wpcomClient: WordPressDotComClient) {
+        self.wpcomClient = wpcomClient
+    }
+
+    nonisolated func loadUnifiedConversations() throws -> any CachedAndFetchedResult<[UnifiedConversationItem]> {
+        DiskCachedAndFetchedResult(fetchedResult: {
+            try await self.wpcomClient.api
+                .unifiedConversations
+                .getUnifiedConversationList()
+                .data
+                .map { $0.asUnifiedConversationItem() }
+        }, cacheKey: "unified-conversation-list")
+    }
+}
+
 actor WpDiagnosticsDataProvider: DiagnosticsDataProvider {
     func fetchDiskCacheUsage() async throws -> WordPressCoreProtocols.DiskCacheUsage {
         try await DiskCache.shared.diskUsage()
@@ -445,6 +467,19 @@ extension WordPressAPIInternal.BotMessage {
             isWrittenByUser: true
         )
         }
+    }
+}
+
+extension UnifiedConversationSummary {
+    func asUnifiedConversationItem() -> Support.UnifiedConversationItem {
+        Support.UnifiedConversationItem(
+            id: self.id,
+            title: self.title,
+            description: self.description,
+            rawStatus: self.status,
+            canAcceptReply: self.canAcceptReply,
+            lastMessageSentAt: self.updatedAt
+        )
     }
 }
 
