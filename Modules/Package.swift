@@ -52,7 +52,7 @@ let package = Package(
 
         .package(url: "https://github.com/weichsel/ZIPFoundation", from: "0.9.19"),
         .package(url: "https://github.com/wordpress-mobile/FSInteractiveMap", from: "0.3.0"),
-        .package(url: "https://github.com/wordpress-mobile/MediaEditor-iOS", exact: "1.3.0"),
+        .package(url: "https://github.com/wordpress-mobile/MediaEditor-iOS", from: "1.3.0"),
         .package(url: "https://github.com/wordpress-mobile/NSObject-SafeExpectations", from: "0.0.6"),
         .package(url: "https://github.com/wordpress-mobile/wpxmlrpc", from: "0.9.0"),
         .package(
