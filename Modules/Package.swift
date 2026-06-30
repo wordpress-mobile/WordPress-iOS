@@ -63,7 +63,11 @@ let package = Package(
         .package(url: "https://github.com/wordpress-mobile/GutenbergKit", from: "0.15.0"),
         .package(
             url: "https://github.com/automattic/wordpress-rs",
-            exact: "0.3.0"
+            // Interim pr-build pin: first SPM-consumable wordpress-rs build exposing the
+            // unified support-conversations endpoints (`unifiedConversations`, added in
+            // wordpress-rs#1288). No tagged release includes them yet — move to a tagged
+            // release before this ships. See PR description.
+            branch: "pr-build/1414"
         ),
         .package(
             url: "https://github.com/Automattic/color-studio",
