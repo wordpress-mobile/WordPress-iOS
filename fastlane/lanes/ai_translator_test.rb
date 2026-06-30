@@ -286,4 +286,23 @@ class AITranslatorTest < Minitest::Test # rubocop:disable Metrics/ClassLength --
     prep = t.prepare_batch({ 'fr' => [{ key: 'a', source: 'One' }] }, batch_size: 25)
     assert_equal({ 'fr' => {} }, t.collect_batch({}, prep[:manifest]))
   end
+
+  # When a translation's value is itself wrapped in quotation marks, those quotes are part of the content and
+  # must survive — only the model's cosmetic wrapping around a raw reply should be stripped.
+  def test_translate_plural_preserves_a_quoted_value
+    reply = '{"other":"\"Reader\""}'
+    out = translator(reply: reply).translate_plural(
+      english_forms: { 'other' => '"Reader"' },
+      categories: %w[other], locale: 'fr'
+    )
+    assert_equal({ 'other' => '"Reader"' }, out)
+  end
+
+  def test_translate_all_preserves_a_quoted_value
+    reply = '{"1":"\"Reader\""}'
+    out = translator(reply: reply).translate_all(
+      [{ key: 'sample.quoted', source: '"Reader"' }], locale: 'fr'
+    )
+    assert_equal({ 'sample.quoted' => '"Reader"' }, out)
+  end
 end
