@@ -183,6 +183,12 @@ public struct Attachment: Identifiable, Sendable, Codable, Equatable {
         contentType == "application/pdf"
     }
 
+    /// `text/html` "citation" attachments are web links (e.g. help articles)
+    /// rather than downloadable files. Handles `text/html; charset=utf-8`.
+    var isLink: Bool {
+        contentType.lowercased().hasPrefix("text/html")
+    }
+
     var icon: String {
         if isVideo {
             return "film"
