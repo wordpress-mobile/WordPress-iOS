@@ -202,6 +202,20 @@ import AutomatticTracks
         }
     }
 
+    /// The target size for post cover images. Derived from the portrait-width
+    /// of the view so the fetched size is rotation-invariant.
+    private var coverSize: ImageSize {
+        var width = ReaderPostCell.regularCoverWidth
+        if isCompact {
+            let size = view.bounds.size
+            width = min(size.width, size.height) - ReaderStreamBaseCell.insets.left * 2
+        }
+        return ImageSize(
+            scaling: CGSize(width: width, height: width),
+            scale: traitCollection.displayScale
+        )
+    }
+
     private let isStandaloneAppModeEnabled = BuildSettings.current.brand == .reader
 
     private var emptyStateView: UIView? {
@@ -1526,7 +1540,7 @@ extension ReaderStreamViewController: WPTableViewHandlerDelegate {
         viewModel.viewController = self
 
         let cell = tableConfiguration.postCell(in: tableView, for: indexPath)
-        cell.configure(with: viewModel, isCompact: isCompact, window: view.window)
+        cell.configure(with: viewModel, isCompact: isCompact, coverSize: coverSize)
         cell.isSeparatorHidden = !showsSeparator
         return cell
     }
@@ -1695,8 +1709,7 @@ extension ReaderStreamViewController: UITableViewDataSourcePrefetching {
     }
 
     private func makeImageRequests(for indexPaths: [IndexPath]) -> [ImageRequest] {
-        guard let window = view.window else { return [] }
-        let targetSize = ReaderPostCell.preferredCoverSize(in: window, isCompact: isCompact)
+        let targetSize = coverSize
         return indexPaths.compactMap {
             guard let imageURL = getPost(at: $0)?.featuredImageURLForDisplay() else {
                 return nil

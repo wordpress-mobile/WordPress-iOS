@@ -32,11 +32,11 @@ final class ReaderPostCell: ReaderStreamBaseCell {
         view.prepareForReuse()
     }
 
-    func configure(with viewModel: ReaderPostCellViewModel, isCompact: Bool, window: UIWindow?) {
+    func configure(with viewModel: ReaderPostCellViewModel, isCompact: Bool, coverSize: ImageSize) {
         self.isCompact = isCompact
 
         view.isCompact = isCompact
-        view.configure(with: viewModel, window: window)
+        view.configure(with: viewModel, coverSize: coverSize)
 
         accessibilityLabel = "\(viewModel.author). \(viewModel.title). \(viewModel.details)"
     }
@@ -52,14 +52,6 @@ final class ReaderPostCell: ReaderStreamBaseCell {
             to: isCompact ? contentView : contentView.readableContentGuide
         )
         super.updateConstraints()
-    }
-
-    static func preferredCoverSize(in window: UIWindow, isCompact: Bool) -> ImageSize {
-        var coverWidth = ReaderPostCell.regularCoverWidth
-        if isCompact {
-            coverWidth = min(window.bounds.width, window.bounds.height) - ReaderStreamBaseCell.insets.left * 2
-        }
-        return ImageSize(scaling: CGSize(width: coverWidth, height: coverWidth), in: window)
     }
 
     func getViewForZoomTransition() -> UIView {
@@ -104,8 +96,6 @@ private final class ReaderPostCellView: UIView {
     let insets = ReaderStreamBaseCell.insets
 
     private var viewModel: ReaderPostCellViewModel? // important: has to retain
-
-    private weak var hostWindow: UIWindow?
 
     private var toolbarViewHeightConstraint: NSLayoutConstraint?
     private var imageViewConstraints: [NSLayoutConstraint] = []
@@ -315,9 +305,8 @@ private final class ReaderPostCellView: UIView {
 
     // MARK: Configure (ViewModel)
 
-    func configure(with viewModel: ReaderPostCellViewModel, window: UIWindow?) {
+    func configure(with viewModel: ReaderPostCellViewModel, coverSize: ImageSize) {
         self.viewModel = viewModel
-        self.hostWindow = window
 
         setAvatar(with: viewModel)
         buttonAuthor.configuration?.attributedTitle = AttributedString(
@@ -332,7 +321,7 @@ private final class ReaderPostCellView: UIView {
         imageView.isHidden = viewModel.imageURL == nil
 
         if let imageURL = viewModel.imageURL {
-            imageView.setImage(with: imageURL, size: preferredCoverSize)
+            imageView.setImage(with: imageURL, size: coverSize)
         }
 
         if viewModel.isSeen == true {
@@ -351,11 +340,6 @@ private final class ReaderPostCellView: UIView {
             toolbarView.isHidden = true
             toolbarViewHeightConstraint = constraint
         }
-    }
-
-    private var preferredCoverSize: ImageSize? {
-        guard let window = window ?? hostWindow else { return nil }
-        return ReaderPostCell.preferredCoverSize(in: window, isCompact: isCompact)
     }
 
     private func configureToolbar(with viewModel: ReaderPostToolbarViewModel) {
@@ -567,7 +551,7 @@ private extension ReaderPostCellView {
 
 #Preview {
     let cell = ReaderPostCellView()
-    cell.configure(with: .mock(), window: nil)
+    cell.configure(with: .mock(), coverSize: ImageSize(scaling: CGSize(width: 358, height: 358), scale: 3))
     cell.isCompact = true
 
     let vc = UIViewController()
