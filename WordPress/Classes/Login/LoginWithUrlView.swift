@@ -126,7 +126,8 @@ struct LoginWithUrlView: View {
         if Task.isCancelled { return }
 
         if case let .oAuth2(endpoints) = details.authentication,
-           endpoints.authorizationUrl.contains("public-api.wordpress.com") {
+            endpoints.authorizationUrl.contains("public-api.wordpress.com")
+        {
             presenter.dismiss(animated: true) {
                 Notice(title: Strings.wpcomSiteRedirect).post()
                 presentDotComLogin()
@@ -171,6 +172,6 @@ private enum Strings {
     LoginWithUrlView(
         presenter: nil,
         loginCompleted: { _ in },
-        presentDotComLogin: { }
+        presentDotComLogin: {}
     )
 }
