@@ -1,5 +1,6 @@
 import Testing
 @testable import WordPress
+@testable import WordPressData
 
 @Suite("RemotePostCreateParameters Tests")
 struct RemotePostCreateParametersTests {
@@ -38,6 +39,20 @@ struct RemotePostCreateParametersTests {
         #expect(parameters.content == "Test content")
         #expect(parameters.format == "standard")
         #expect(parameters.isSticky == true)
+    }
+
+    @Test("Initialization from Post includes social sharing metadata from raw metadata")
+    func initializationFromPostIncludesSocialSharingMetadataFromRawMetadata() throws {
+        let post = Post(context: mainContext)
+        var metadata = PostMetadataContainer()
+        metadata.setValue("message-a", for: "_wpas_mess")
+        metadata.setValue("1", for: "_wpas_skip_publicize_123")
+        post.rawMetadata = try metadata.encode()
+
+        let parameters = RemotePostCreateParameters(post: post)
+
+        #expect(parameters.metadata.contains(RemotePostMetadataItem(id: nil, key: "_wpas_mess", value: "message-a")))
+        #expect(parameters.metadata.contains(RemotePostMetadataItem(id: nil, key: "_wpas_skip_publicize_123", value: "1")))
     }
 
     @Test("Direct metadata manipulation")

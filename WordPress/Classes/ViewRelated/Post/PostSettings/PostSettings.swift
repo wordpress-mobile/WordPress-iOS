@@ -122,7 +122,10 @@ struct PostSettings: Hashable {
                         $0.categoryID.intValue
                     }
             )
-            sharing = PostSocialSharingSettings.make(for: post)
+            if PostSocialSharing.isEligible(for: post) {
+                socialSharingDraft = PostSocialSharingDraft(socialMetadata: PostMetadataContainer(post))
+            }
+            // `sharing` (the legacy keyring-keyed model) is intentionally no longer populated.
             allowComments = post.commentsStatus.map { $0 != RemotePostDiscussionState.closed.rawValue }
             allowPings = post.pingsStatus.map { $0 != RemotePostDiscussionState.closed.rawValue }
         case let page as Page:
@@ -165,8 +168,10 @@ struct PostSettings: Hashable {
         }
         self.otherTerms = otherTerms
 
-        // FIXME: Post metadata is not supported yet. Require wordpress-rs changes.
-        metadata = PostMetadata(from: .init())
+        metadata = PostMetadata(
+            accessLevel: post.meta?.jetpackNewsletterAccess,
+            isJetpackNewsletterEmailDisabled: post.meta?.isJetpackNewsletterEmailDisabled ?? false
+        )
 
         postFormat = post.format.map { $0.id }
         isStickyPost = post.sticky ?? false
@@ -299,19 +304,17 @@ struct PostSettings: Hashable {
                 post.allowPings = allowPings
             }
 
-            if let sharing {
-                for connection in sharing.services.flatMap(\.connections) {
-                    let keyringID = NSNumber(value: connection.keyringID)
-                    if !post.publicizeConnectionDisabledForKeyringID(keyringID) != connection.enabled {
-                        if connection.enabled {
-                            post.enablePublicizeConnectionWithKeyringID(keyringID)
-                        } else {
-                            post.disablePublicizeConnectionWithKeyringID(keyringID)
-                        }
-                    }
-                }
-                if post.publicizeMessage != sharing.message {
-                    post.publicizeMessage = sharing.message
+            // Only write when there is a draft to apply. When the draft is absent
+            // (the connections service is unavailable, so the view model stripped it),
+            // leave the existing publicize metadata untouched so the user's
+            // per-connection choices are preserved rather than silently re-enabled.
+            if let socialSharingDraft {
+                var container = PostMetadataContainer(post)
+                socialSharingDraft.applySocialMetadata(to: &container)
+                do {
+                    post.rawMetadata = try container.encode()
+                } catch {
+                    wpAssertionFailure("failed to encode social sharing metadata")
                 }
             }
         case let page as Page:
@@ -446,6 +449,19 @@ struct PostSettings: Hashable {
             }
         }
 
+        let originalMetadata = PostMetadata(
+            accessLevel: post.meta?.jetpackNewsletterAccess,
+            isJetpackNewsletterEmailDisabled: post.meta?.isJetpackNewsletterEmailDisabled ?? false
+        )
+        if originalMetadata.accessLevel != self.metadata.accessLevel {
+            params.meta = (params.meta ?? PostMeta())
+                .addingJetpackNewsletterAccess(self.metadata.accessLevel)
+        }
+        if originalMetadata.isJetpackNewsletterEmailDisabled != self.metadata.isJetpackNewsletterEmailDisabled {
+            params.meta = (params.meta ?? PostMeta())
+                .addingJetpackNewsletterEmailDisabled(self.metadata.isJetpackNewsletterEmailDisabled)
+        }
+
         let postParentPageID = post.parent.map { Int($0) }
         if postParentPageID != self.parentPageID {
             params.parent = self.parentPageID.map { PostId(Int64($0)) } ?? PostId(0)
@@ -499,6 +515,15 @@ struct PostSettings: Hashable {
         // Social meta
         if let message = socialSharingDraft?.customMessage {
             params.meta = (params.meta ?? PostMeta()).addingPublicizeMessage(message)
+        }
+
+        if metadata.accessLevel != nil {
+            params.meta = (params.meta ?? PostMeta())
+                .addingJetpackNewsletterAccess(metadata.accessLevel)
+        }
+        if metadata.isJetpackNewsletterEmailDisabled {
+            params.meta = (params.meta ?? PostMeta())
+                .addingJetpackNewsletterEmailDisabled(true)
         }
 
         return params
@@ -619,6 +644,8 @@ extension PostStatus {
 }
 
 /// A value-type representation of `PublicizeService` for the current blog that's simplified for the auto-sharing flow.
+// Deprecated: superseded for post editing by connection_id-keyed PostSocialSharingDraft stored in post metadata.
+// Kept for remaining legacy references.
 struct PostSocialSharingSettings: Hashable {
     var services: [Service]
     var message: String

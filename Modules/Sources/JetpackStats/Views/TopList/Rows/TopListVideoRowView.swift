@@ -5,7 +5,7 @@ struct TopListVideoRowView: View {
 
     var body: some View {
         VStack(alignment: .leading, spacing: 2) {
-            (Text(Image(systemName: "play.circle")).font(.footnote) + Text(" ") + Text(item.title))
+            (Text(Image(systemName: "play.circle")).font(.footnote) + Text(verbatim: " ") + Text(item.title))
                 .font(.callout)
                 .foregroundColor(.primary)
                 .lineLimit(1)

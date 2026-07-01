@@ -204,7 +204,7 @@ private struct SidebarProfileContainerView: View {
                             VStack(alignment: .leading, spacing: 1) {
                                 Text("Sign In")
                                     .font(.subheadline.weight(.medium))
-                                Text("WordPress.com")
+                                Text(verbatim: "WordPress.com")
                                     .font(.footnote)
                                     .foregroundColor(.secondary)
                             }

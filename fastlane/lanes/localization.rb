@@ -100,27 +100,25 @@ MANUALLY_MAINTAINED_STRINGS_FILES = {
   File.join('WordPress', 'JetpackIntents', 'en.lproj', 'Sites.strings') => 'ios-widget.' # Strings from the `.intentdefinition`, used for configuring the iOS Widget
 }.freeze
 
-# The names of the remote Swift Packages that we want to add to our localizations, as they'll be checked out during resolvePackageDependencies in the Derived Data folder
-REMOTE_SWIFT_PACKAGES_TO_LOCALIZE = %w[
-  WordPressKit-iOS
-].freeze
+# Remote Swift Packages whose localizable strings we want to extract (they're checked out under Derived Data
+# during resolvePackageDependencies). Currently none. Leaving here for future-proofing.
+REMOTE_SWIFT_PACKAGES_TO_LOCALIZE = [].freeze
 
-# Application-agnostic settings for the `upload_to_app_store` action (also known as `deliver`).
-# Used in `update_*_metadata_on_app_store_connect` lanes.
-#
-UPLOAD_TO_APP_STORE_COMMON_PARAMS = {
-  app_version: release_version_current,
-  skip_binary_upload: true,
-  overwrite_screenshots: true,
-  phased_release: true,
-  precheck_include_in_app_purchases: false,
-  api_key_path: APP_STORE_CONNECT_KEY_PATH,
-  # [AINFRA-933] Disabling the use of `app_rating_config_path` after seeing the ASC API error:
-  # > The provided entity includes an unknown attribute - 'seventeenPlus' is not an attribute on the
-  # > resource 'ageRatingDeclarations'
-  # app_rating_config_path: File.join(PROJECT_ROOT_FOLDER, 'fastlane', 'metadata', 'ratings_config.json'),
-  copyright: "© #{Time.now.year} Automattic, Inc."
-}.freeze
+def upload_to_app_store_common_params
+  {
+    app_version: release_version_current,
+    skip_binary_upload: true,
+    overwrite_screenshots: true,
+    phased_release: true,
+    precheck_include_in_app_purchases: false,
+    api_key: app_store_connect_api_key,
+    # [AINFRA-933] Disabling the use of `app_rating_config_path` after seeing the ASC API error:
+    # > The provided entity includes an unknown attribute - 'seventeenPlus' is not an attribute on the
+    # > resource 'ageRatingDeclarations'
+    # app_rating_config_path: File.join(PROJECT_ROOT_FOLDER, 'fastlane', 'metadata', 'ratings_config.json'),
+    copyright: "© #{Time.now.year} Automattic, Inc."
+  }
+end
 
 WORDPRESS_EN_LPROJ = File.join('WordPress', 'Resources', 'en.lproj')
 
@@ -181,12 +179,31 @@ platform :ios do
 
     # Merge various manually-maintained `.strings` files into the previously generated `Localizable.strings` so their extra keys are also imported in GlotPress.
     # Note: We will re-extract the translations back during `download_localized_strings_and_metadata` (via a call to `ios_extract_keys_from_strings_files`)
-    ios_merge_strings_files(
-      paths_to_merge: MANUALLY_MAINTAINED_STRINGS_FILES,
-      destination: File.join(WORDPRESS_EN_LPROJ, 'Localizable.strings')
-    )
+    # The flat plural originals ride the main app GlotPress project alongside everything else. They're transient
+    # — the forward lane returns them as a string we write to a temp file the merge reads, never to the worktree.
+    Dir.mktmpdir do |plurals_tmp|
+      paths_to_merge = MANUALLY_MAINTAINED_STRINGS_FILES.dup
+      run_plural_step('forward') do
+        plural_originals = File.join(plurals_tmp, 'Plurals.strings')
+        File.write(plural_originals, generate_plural_strings_for_glotpress)
+        paths_to_merge[plural_originals] = '' # flat keys are self-qualified; no prefix
+      end
+
+      ios_merge_strings_files(
+        paths_to_merge: paths_to_merge,
+        destination: File.join(WORDPRESS_EN_LPROJ, 'Localizable.strings')
+      )
+    end
 
     git_commit(path: [WORDPRESS_EN_LPROJ], message: 'Update strings for localization', allow_nothing_to_commit: true) unless skip_commit
+  end
+
+  # Runs a plural-pipeline step, never fatally — a failure is logged so the parallel plural run (whose result
+  # isn't consumed at runtime until cutover) can't break a release.
+  def run_plural_step(label)
+    yield
+  rescue StandardError => e
+    UI.error("Plural pipeline (#{label}) failed; continuing: #{e.message}")
   end
 
   def generate_strings_file(gutenberg_path:, derived_data_path:)
@@ -391,6 +408,9 @@ platform :ios do
       message: 'Update app translations – Other `.strings`',
       allow_nothing_to_commit: true
     )
+
+    # Fold plural translations from the downloaded Localizable.strings into Plurals.xcstrings.
+    run_plural_step('reverse') { download_localized_plurals }
   end
 
   # Downloads the localized metadata (for App Store Connect) from GlotPress for the WordPress app.
@@ -511,7 +531,7 @@ platform :ios do
     skip_screenshots = with_screenshots == false
 
     upload_to_app_store(
-      **UPLOAD_TO_APP_STORE_COMMON_PARAMS,
+      **upload_to_app_store_common_params,
       app_identifier: WORDPRESS_BUNDLE_IDENTIFIER,
       screenshots_path: WORDPRESS_PROMO_SCREENSHOTS_PATH,
       skip_screenshots: skip_screenshots
@@ -530,7 +550,7 @@ platform :ios do
     skip_screenshots = with_screenshots == false
 
     upload_to_app_store(
-      **UPLOAD_TO_APP_STORE_COMMON_PARAMS,
+      **upload_to_app_store_common_params,
       app_identifier: JETPACK_BUNDLE_IDENTIFIER,
       metadata_path: File.join(PROJECT_ROOT_FOLDER, 'fastlane', 'jetpack_metadata'),
       screenshots_path: JETPACK_PROMO_SCREENSHOTS_PATH,

@@ -53,6 +53,7 @@ import Foundation
     case siteMonitoring
     case publicize
     case shareButtons
+    case jetpackNewsletter
 }
 
 extension Blog {
@@ -134,6 +135,8 @@ extension Blog {
             return supportsPublicize
         case .shareButtons:
             return supportsShareButtons
+        case .jetpackNewsletter:
+            return supportsJetpackNewsletter
         }
     }
 
@@ -171,6 +174,14 @@ private extension Blog {
         } else {
             return isJetpackModuleActive("publicize")
         }
+    }
+
+    var supportsJetpackNewsletter: Bool {
+        guard supportsRestAPI else { return false }
+        if isHostedAtWPcom {
+            return true
+        }
+        return isJetpackModuleActive("subscriptions")
     }
 
     var supportsShareButtons: Bool {

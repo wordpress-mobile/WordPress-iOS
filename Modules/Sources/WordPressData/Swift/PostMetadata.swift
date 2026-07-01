@@ -20,6 +20,11 @@ public struct PostMetadata: Hashable {
         self.isJetpackNewsletterEmailDisabled = container.getAdaptiveBool(for: .jetpackNewsletterEmailDisabled)
     }
 
+    public init(accessLevel: JetpackPostAccessLevel?, isJetpackNewsletterEmailDisabled: Bool = false) {
+        self.accessLevel = accessLevel
+        self.isJetpackNewsletterEmailDisabled = isJetpackNewsletterEmailDisabled
+    }
+
     /// Applies the metadata values to the container and returns them
     /// as metadata values.
     public func encode(in container: inout PostMetadataContainer) {
@@ -28,7 +33,10 @@ public struct PostMetadata: Hashable {
             container.accessLevel = accessLevel
         }
         if previous.isJetpackNewsletterEmailDisabled != isJetpackNewsletterEmailDisabled {
-            container.setValue(String(describing: isJetpackNewsletterEmailDisabled), for: .jetpackNewsletterEmailDisabled)
+            container.setValue(
+                String(describing: isJetpackNewsletterEmailDisabled),
+                for: .jetpackNewsletterEmailDisabled
+            )
         }
     }
 

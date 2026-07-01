@@ -724,14 +724,14 @@ private extension NotificationDetailsViewController {
     func showConfettiIfNeeded() {
         guard note.isViewMilestone,
               !confettiWasShown,
-              let view = UIApplication.shared.mainWindow,
+              let window = view.window,
               let frame = navigationController?.view.frame else {
             return
         }
         // This method will remove any existing `ConfettiView` before adding a new one
         // This ensures that when we navigate through notifications, if there is an
         // ongoging animation, it will be removed and replaced by a new one
-        ConfettiView.cleanupAndAnimate(on: view, frame: frame) { confettiView in
+        ConfettiView.cleanupAndAnimate(on: window, frame: frame) { confettiView in
 
             // removing this instance when the animation completes, will prevent
             // the animation to suddenly stop if users navigate away from the note

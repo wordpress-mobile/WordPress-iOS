@@ -136,3 +136,7 @@ WordPress/Frameworks/*.tar.gz
 WordPress/Frameworks/react-native-bundle-source-map
 
 Tests/AgentTests/results
+
+# Generated during localization, not committed: the build-free String Catalog (parity-verified by CI),
+# shelved until the cutover commits it as the runtime backing store at a build-member path.
+WordPress/Resources/Localizable.xcstrings

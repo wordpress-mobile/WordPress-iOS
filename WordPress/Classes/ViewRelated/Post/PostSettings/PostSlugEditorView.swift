@@ -75,7 +75,7 @@ struct PostSlugEditorView: View {
                     .foregroundColor(.secondary)
 
                 Link(destination: URL(string: "https://wordpress.com/support/permalinks-and-slugs/")!) {
-                    (Text(Strings.learnMore) + Text(" ") + Text(Image(systemName: "arrow.up.right.square")))
+                    (Text(Strings.learnMore) + Text(verbatim: " ") + Text(Image(systemName: "arrow.up.right.square")))
                         .font(.subheadline)
                         .foregroundColor(.accentColor)
                 }

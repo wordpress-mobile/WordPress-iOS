@@ -41,7 +41,7 @@ struct WeeklyRoundupDebugScreen: View {
         VStack(alignment: .center) {
             if errorScheduling {
                 Group {
-                    Text("Error scheduling Weekly Roundup!")
+                    Text(verbatim: "Error scheduling Weekly Roundup!")
                         .foregroundColor(.red)
                 }
 
@@ -130,7 +130,7 @@ struct WeeklyRoundupDebugScreen: View {
                     .frame(height: settings.spacerHeight)
             }
 
-            Text("The values represent when the dynamic notification is scheduled at the earliest.  It can take a lot more time to be sent since iOS basically decides when to deliver it.")
+            Text(verbatim: "The values represent when the dynamic notification is scheduled at the earliest.  It can take a lot more time to be sent since iOS basically decides when to deliver it.")
                 .fixedSize(horizontal: false, vertical: true)
                 .padding(settings.defaultPadding)
 
@@ -153,18 +153,18 @@ struct WeeklyRoundupDebugScreen: View {
 
     func scheduleDetailsView() -> some View {
         guard !running else {
-            return AnyView(Text("Running..."))
+            return AnyView(Text(verbatim: "Running..."))
         }
 
         if let scheduledDate = self.scheduledDate {
             return AnyView(HStack {
-                Text("Earliest begin date:")
+                Text(verbatim: "Earliest begin date:")
                 Spacer()
-                Text("\(scheduledDate.shortStringWithTime())")
+                Text(verbatim: "\(scheduledDate.shortStringWithTime())")
             })
         } else {
             return AnyView(HStack {
-                Text("Not scheduled.")
+                Text(verbatim: "Not scheduled.")
             })
         }
     }

@@ -143,7 +143,7 @@ private extension CustomPostEditorViewController {
                         style: .default,
                         handler: { [weak self] _ in
                             Task {
-                                await self?.save(publish: false)
+                                await self?.save()
                             }
                         }
                     )
@@ -170,7 +170,7 @@ private extension CustomPostEditorViewController {
                         attributes: enabled ? [] : [.disabled]
                     ) { [weak self] _ in
                         Task {
-                            await self?.save(publish: false)
+                            await self?.save()
                         }
                     }
                     resolve([saveDraft])
@@ -197,7 +197,7 @@ private extension CustomPostEditorViewController {
         } else {
             return UIAction(title: PostEditorStrings.update) { [weak self] _ in
                 Task {
-                    await self?.save(publish: false)
+                    await self?.save()
                 }
             }
         }
@@ -228,12 +228,8 @@ private extension CustomPostEditorViewController {
             blog: blog,
             from: self,
             completion: { [weak self] result in
-                guard let self else { return }
-                switch result {
-                case .published:
-                    completion()
-                case .cancelled:
-                    break
+                if case .published = result {
+                    self?.completion()
                 }
             }
         )
@@ -248,21 +244,27 @@ private extension CustomPostEditorViewController {
 
 private extension CustomPostEditorViewController {
 
-    func save(publish: Bool) async {
+    func save() async {
         SVProgressHUD.show()
+
+        // Capture whether this is a brand-new post (not yet on the server) so the
+        // notice can distinguish "Draft saved" (just created) from "Post updated"
+        // (edited an existing post). Any save of an already-existing post (draft
+        // or published) reads as an update from the user's perspective.
+        let isNewPost = post == nil
 
         do {
             let data = try await editorViewController.getTitleAndContent()
             try await editorService.save(
                 content: EditorContent(title: data.title, content: data.content),
-                publish: publish
+                publish: false
             )
 
             dismissHUDWithSuccess()
 
-            if publish {
-                completion()
-            }
+            let title = isNewPost ? CustomPostNoticeStrings.draftSaved : CustomPostNoticeStrings.postUpdated
+            let subtitle = data.title.isEmpty ? nil : data.title
+            Notice(title: title, message: subtitle, feedbackType: .success).post()
         } catch {
             SVProgressHUD.showError(withStatus: error.localizedDescription)
         }

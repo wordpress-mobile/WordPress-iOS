@@ -257,13 +257,13 @@ final class DebugMenuViewController: UIHostingController<DebugMenuView> {
 
         assert(window != nil)
 
-        let gesture = UIScreenEdgePanGestureRecognizer(target: DebugMenuViewController.self, action: #selector(showDebugMenu))
+        let gesture = UIScreenEdgePanGestureRecognizer(target: DebugMenuViewController.self, action: #selector(showDebugMenu(_:)))
         gesture.edges = .right
         window?.addGestureRecognizer(gesture)
     }
 
-    @objc private static func showDebugMenu() {
-        guard let window = UIApplication.sharedIfAvailable()?.mainWindow,
+    @objc private static func showDebugMenu(_ sender: UIScreenEdgePanGestureRecognizer) {
+        guard let window = sender.view as? UIWindow,
               let topViewController = window.topmostPresentedViewController,
               !((topViewController as? UINavigationController)?.viewControllers.first is DebugMenuViewController) else {
             return

@@ -83,7 +83,7 @@ struct ActivityLogsFiltersMenu: View {
         } label: {
             Text(Strings.activityTypes)
             if !viewModel.parameters.activityTypes.isEmpty {
-                Text("\(viewModel.parameters.activityTypes.count)")
+                Text(viewModel.parameters.activityTypes.count, format: .number)
             }
             Image(systemName: "list.bullet")
         }

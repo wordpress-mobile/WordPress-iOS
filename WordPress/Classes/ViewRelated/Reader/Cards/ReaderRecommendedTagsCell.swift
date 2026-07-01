@@ -6,7 +6,7 @@ import WordPressUI
 /// - warning: The tags no longer gets shown since v26.6.
 final class ReaderRecommendedTagsCell: UITableViewCell {
     private let scrollView = UIScrollView()
-    private let tagsStackView = UIStackView(axis: .horizontal, spacing: 8, insets: UIEdgeInsets(.vertical, 16), [])
+    private let tagsStackView = UIStackView(axis: .horizontal, spacing: 8, insets: NSDirectionalEdgeInsets(top: 16, leading: 0, bottom: 16, trailing: 0), [])
 
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)

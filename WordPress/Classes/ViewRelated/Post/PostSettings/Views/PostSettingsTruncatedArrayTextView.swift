@@ -31,7 +31,7 @@ private struct ItemView: View {
                 .font(.subheadline)
                 .foregroundColor(.secondary)
             if remainingCount > 0 {
-                Text("(+\(remainingCount))")
+                Text(verbatim: "(+\(remainingCount.formatted()))")
                     .font(.system(.subheadline, design: .monospaced))
                     .foregroundColor(.secondary)
                     .tracking(-0.5)

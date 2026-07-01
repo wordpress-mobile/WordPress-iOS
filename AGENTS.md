@@ -49,9 +49,8 @@ WordPress-iOS uses a modular architecture with the main app and separate Swift p
 - **Localization**: follow best practices from @docs/localization.md
 
 ## Xcode Schemes
-- `WordPress` builds the WordPress iOS app and runs `WordPressUnitTests.xctestplan` — default for builds and the full unit test suite.
+- `WordPress` builds the WordPress iOS app and runs `WordPressUnitTests.xctestplan` — default for builds and the full unit test suite. Use this scheme to run unit tests.
 - `Jetpack` builds the Jetpack iOS app — switch to it for Jetpack-only work.
-- Some test targets (e.g. `WordPressDataTests`) have their own scheme and aren't in `WordPressUnitTests.xctestplan`. If the `WordPress` scheme fails to build because of an unrelated target, fall back to the target's dedicated scheme.
 
 ## Simulator Sign-In
 

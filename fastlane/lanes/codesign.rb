@@ -122,16 +122,10 @@ platform :ios do
 end
 
 def update_code_signing_enterprise(readonly:, app_identifiers:)
-  if readonly
-    # In readonly mode, we can use the API key
-    api_key_path = APP_STORE_CONNECT_KEY_PATH
-  else
+  unless readonly
     # The Enterprise account APIs do not support authentication via API key.
     # If we want to modify data (readonly = false) we need to authenticate manually.
     prompt_user_for_app_store_connect_credentials
-    # We also need to pass no API key path, otherwise Fastlane will give
-    # precedence to that authentication mode.
-    api_key_path = nil
   end
 
   update_code_signing(
@@ -140,7 +134,7 @@ def update_code_signing_enterprise(readonly:, app_identifiers:)
     team_id: get_required_env('INT_EXPORT_TEAM_ID'),
     readonly: readonly,
     app_identifiers: app_identifiers,
-    api_key_path: api_key_path
+    api_key: nil
   )
 end
 
@@ -151,11 +145,11 @@ def update_code_signing_app_store(readonly:, app_identifiers:)
     team_id: get_required_env('EXT_EXPORT_TEAM_ID'),
     readonly: readonly,
     app_identifiers: app_identifiers,
-    api_key_path: APP_STORE_CONNECT_KEY_PATH
+    api_key: app_store_connect_api_key
   )
 end
 
-def update_code_signing(type:, team_id:, readonly:, app_identifiers:, api_key_path:)
+def update_code_signing(type:, team_id:, readonly:, app_identifiers:, api_key:)
   # NOTE: It might be necessary to add `force: true` alongside `readonly: true` in order to regenerate some provisioning profiles.
   # If this turns out to be a hard requirement, we should consider updating the method with logic to toggle the two setting based on whether we're fetching or renewing.
   match(
@@ -163,7 +157,7 @@ def update_code_signing(type:, team_id:, readonly:, app_identifiers:, api_key_pa
     team_id: team_id,
     readonly: readonly,
     app_identifier: app_identifiers,
-    api_key_path: api_key_path,
+    api_key: api_key,
     **CODE_SIGNING_STORAGE_OPTIONS
   )
 end

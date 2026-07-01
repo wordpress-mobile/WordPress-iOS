@@ -284,7 +284,7 @@ public struct ConversationView: View {
 
                     switchToHumanSupport
 
-                    Text("").padding(.bottom, 4)
+                    Text(verbatim: "").padding(.bottom, 4)
                         .listRowInsets(.zero)
                         .listRowBackground(Color.clear)
                         .listRowSpacing(0)

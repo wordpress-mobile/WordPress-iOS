@@ -303,7 +303,11 @@ extension PushNotificationsManager {
 
         WPAnalytics.track(.supportReceivedResponseFromSupport)
 
-        if applicationState == .background {
+        // Pre-build the Me screen so it's ready when the user opens the app. Skip it
+        // when the UI was never built (a background launch). Keyed on the UI flag, not
+        // window presence: the windowManager emergency fallback can create a window
+        // while no scene has ever connected.
+        if applicationState == .background, WordPressAppDelegate.shared?.hasConfiguredInitialUI == true {
             RootViewCoordinator.sharedPresenter.showMeScreen()
         }
 
@@ -391,7 +395,12 @@ extension PushNotificationsManager {
         userInteraction: Bool,
         completionHandler: ((UIBackgroundFetchResult) -> Void)?
     ) -> Bool {
-        guard applicationState == .inactive else {
+        // A notification-tap cold launch reaches this point while the application
+        // state is still .background under the scene life cycle (the scene has
+        // connected but the foreground transition hasn't completed). A tap is
+        // explicit user navigation regardless of state, so accept it too; same
+        // workaround as the authentication handler above.
+        guard applicationState == .inactive || (applicationState == .background && userInteraction) else {
             return false
         }
 

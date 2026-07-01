@@ -417,6 +417,11 @@ final class CustomPostListViewModel: ObservableObject {
                 wpService: service
             )
             let viewModel = CustomPostSettingsViewModel(editorService: editorService, blog: blog, isStandalone: true)
+            viewModel.onEditorPostSaved = { [editorService] in
+                let postTitle = editorService.post?.title?.raw
+                let subtitle = (postTitle?.isEmpty == false) ? postTitle : nil
+                Notice(title: CustomPostNoticeStrings.postUpdated, message: subtitle, feedbackType: .success).post()
+            }
             let settingsVC = PostSettingsViewController(viewModel: viewModel)
             let nav = UINavigationController(rootViewController: settingsVC)
             vc.present(nav, animated: true)

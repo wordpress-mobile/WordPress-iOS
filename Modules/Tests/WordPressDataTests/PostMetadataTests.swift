@@ -81,6 +81,23 @@ struct PostMetadataTests {
         // THEN
         #expect(container.getString(for: .jetpackNewsletterEmailDisabled)?.isEmpty == true)
     }
+
+    @Test("memberwise init populates accessLevel and isJetpackNewsletterEmailDisabled")
+    func memberwiseInit() {
+        let metadata = PostMetadata(
+            accessLevel: .paidSubscribers,
+            isJetpackNewsletterEmailDisabled: true
+        )
+        #expect(metadata.accessLevel == .paidSubscribers)
+        #expect(metadata.isJetpackNewsletterEmailDisabled)
+    }
+
+    @Test("memberwise init defaults isJetpackNewsletterEmailDisabled to false when omitted")
+    func memberwiseInitDefaults() {
+        let metadata = PostMetadata(accessLevel: nil)
+        #expect(metadata.accessLevel == nil)
+        #expect(!metadata.isJetpackNewsletterEmailDisabled)
+    }
 }
 
 private extension PostMetadata {

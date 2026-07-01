@@ -81,16 +81,16 @@
     NSAssert(_stackView != nil, @"stackView is nil");
     [_stackView addArrangedSubview:textFieldContainerView];
 
-    UIEdgeInsets margins = UIEdgeInsetsZero;
+    NSDirectionalEdgeInsets margins = NSDirectionalEdgeInsetsZero;
     margins.top = [self defaultStackDesignMargin];
     // Margins for the textFieldContainerView inset the textField.
-    margins.left = MenusDesignDefaultContentSpacing / 2.0;
-    // Inset the right margin a bit less than the left
+    margins.leading = MenusDesignDefaultContentSpacing / 2.0;
+    // Inset the trailing margin a bit less than the leading
     // since the textField also draws the close button and
-    // input area inset on the right.
-    margins.right = MenusDesignDefaultContentSpacing / 4.0;
+    // input area inset on the trailing side.
+    margins.trailing = MenusDesignDefaultContentSpacing / 4.0;
     margins.bottom = margins.top;
-    textFieldContainerView.layoutMargins = margins;
+    textFieldContainerView.directionalLayoutMargins = margins;
     textFieldContainerView.insetsLayoutMarginsFromSafeArea = YES;
 
     UILayoutGuide *marginGuide = textFieldContainerView.layoutMarginsGuide;

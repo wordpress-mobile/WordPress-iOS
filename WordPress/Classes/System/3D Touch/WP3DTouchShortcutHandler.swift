@@ -29,14 +29,14 @@ open class WP3DTouchShortcutHandler: NSObject {
                 return true
             case ShortcutIdentifier.Stats.type:
                 WPAnalytics.track(.shortcutStats)
-                clearCurrentViewController()
+                clearCurrentViewController(rootViewPresenter.rootViewController)
                 if let mainBlog = Blog.lastUsedOrFirst(in: ContextManager.shared.mainContext) {
                     rootViewPresenter.showStats(for: mainBlog, source: .shortcut)
                 }
                 return true
             case ShortcutIdentifier.Notifications.type:
                 WPAnalytics.track(.shortcutNotifications)
-                clearCurrentViewController()
+                clearCurrentViewController(rootViewPresenter.rootViewController)
                 rootViewPresenter.showNotificationsTab()
                 return true
             default:
@@ -44,7 +44,7 @@ open class WP3DTouchShortcutHandler: NSObject {
         }
     }
 
-    fileprivate func clearCurrentViewController() {
-        WordPressAppDelegate.shared?.window?.rootViewController?.dismiss(animated: false)
+    fileprivate func clearCurrentViewController(_ rootViewController: UIViewController) {
+        rootViewController.dismiss(animated: false)
     }
 }

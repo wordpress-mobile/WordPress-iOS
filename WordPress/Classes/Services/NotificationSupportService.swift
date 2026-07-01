@@ -1,24 +1,24 @@
 import Foundation
 import BuildSettingsKit
-import SFHFKeychainUtils
 import NotificationServiceExtensionCore
+import WordPressShared
 
 final class NotificationSupportService {
-    private let appKeychainAccessGroup: String
     private let configuration: NotificationServiceExtensionConfiguration
+    private let keychain: any KeychainAccessible
 
     convenience init() {
-        let settings = BuildSettings.current
         self.init(
-            appKeychainAccessGroup: settings.appKeychainAccessGroup,
-            configuration: settings.notificationServiceExtensionConfiguration
+            configuration: BuildSettings.current.notificationServiceExtensionConfiguration
         )
     }
 
-    init(appKeychainAccessGroup: String,
-         configuration: NotificationServiceExtensionConfiguration) {
-        self.appKeychainAccessGroup = appKeychainAccessGroup
+    init(
+        configuration: NotificationServiceExtensionConfiguration,
+        keychain: any KeychainAccessible = AppKeychain()
+    ) {
         self.configuration = configuration
+        self.keychain = keychain
     }
 
     /// Sets the OAuth Token that should be used by the Notification Service Extension to access WPCOM.
@@ -27,12 +27,10 @@ final class NotificationSupportService {
     ///
     func storeToken(_ authToken: String) {
         do {
-            try SFHFKeychainUtils.storeUsername(
-                configuration.keychainTokenKey,
-                andPassword: authToken,
-                forServiceName: configuration.keychainServiceName,
-                accessGroup: appKeychainAccessGroup,
-                updateExisting: true
+            try keychain.setPassword(
+                for: configuration.keychainTokenKey,
+                to: authToken,
+                serviceName: configuration.keychainServiceName
             )
         } catch {
             DDLogDebug("Error while saving Notification Service Extension OAuth token: \(error)")
@@ -45,12 +43,10 @@ final class NotificationSupportService {
     ///
     func storeUsername(_ username: String) {
         do {
-            try SFHFKeychainUtils.storeUsername(
-                configuration.keychainUsernameKey,
-                andPassword: username,
-                forServiceName: configuration.keychainServiceName,
-                accessGroup: appKeychainAccessGroup,
-                updateExisting: true
+            try keychain.setPassword(
+                for: configuration.keychainUsernameKey,
+                to: username,
+                serviceName: configuration.keychainServiceName
             )
         } catch {
             DDLogDebug("Error while saving Notification Service Extension username: \(error)")
@@ -63,12 +59,10 @@ final class NotificationSupportService {
     ///
     func storeUserID(_ userID: String) {
         do {
-            try SFHFKeychainUtils.storeUsername(
-                configuration.keychainUserIDKey,
-                andPassword: userID,
-                forServiceName: configuration.keychainServiceName,
-                accessGroup: appKeychainAccessGroup,
-                updateExisting: true
+            try keychain.setPassword(
+                for: configuration.keychainUserIDKey,
+                to: userID,
+                serviceName: configuration.keychainServiceName
             )
         } catch {
             DDLogDebug("Error while saving Notification Service Extension userID: \(error)")
@@ -79,10 +73,10 @@ final class NotificationSupportService {
     ///
     func deleteServiceExtensionToken() {
         do {
-            try SFHFKeychainUtils.deleteItem(
-                forUsername: configuration.keychainTokenKey,
-                andServiceName: configuration.keychainServiceName,
-                accessGroup: appKeychainAccessGroup
+            try keychain.setPassword(
+                for: configuration.keychainTokenKey,
+                to: nil,
+                serviceName: configuration.keychainServiceName
             )
         } catch {
             DDLogDebug("Error while removing Notification Service Extension OAuth token: \(error)")
@@ -93,10 +87,10 @@ final class NotificationSupportService {
     ///
     func deleteServiceExtensionUsername() {
         do {
-            try SFHFKeychainUtils.deleteItem(
-                forUsername: configuration.keychainUsernameKey,
-                andServiceName: configuration.keychainServiceName,
-                accessGroup: appKeychainAccessGroup
+            try keychain.setPassword(
+                for: configuration.keychainUsernameKey,
+                to: nil,
+                serviceName: configuration.keychainServiceName
             )
         } catch {
             DDLogDebug("Error while removing Notification Service Extension username: \(error)")
@@ -107,10 +101,10 @@ final class NotificationSupportService {
     ///
     func deleteServiceExtensionUserID() {
         do {
-            try SFHFKeychainUtils.deleteItem(
-                forUsername: configuration.keychainUserIDKey,
-                andServiceName: configuration.keychainServiceName,
-                accessGroup: appKeychainAccessGroup
+            try keychain.setPassword(
+                for: configuration.keychainUserIDKey,
+                to: nil,
+                serviceName: configuration.keychainServiceName
             )
         } catch {
             DDLogDebug("Error while removing Notification Service Extension userID: \(error)")

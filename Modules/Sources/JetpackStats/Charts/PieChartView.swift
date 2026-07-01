@@ -22,7 +22,7 @@ struct PieChartView: View {
                 .cornerRadius(5)
                 .annotation(position: .overlay) {
                     if shouldShowAnnotation(for: segment) {
-                        Text("\(segment.name.capitalized) \((segment.percentage / 100).formatted(.percent.precision(.fractionLength(1))))")
+                        Text(verbatim: "\(segment.name.capitalized) \((segment.percentage / 100).formatted(.percent.precision(.fractionLength(1))))")
                             .font(.caption2)
                             .fontWeight(.medium)
                             .foregroundStyle(.white)

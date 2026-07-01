@@ -6,7 +6,7 @@ extension UIStackView {
         alignment: UIStackView.Alignment = .fill,
         distribution: UIStackView.Distribution = .fill,
         spacing: CGFloat? = nil,
-        insets: UIEdgeInsets? = nil,
+        insets: NSDirectionalEdgeInsets? = nil,
         _ arrangedSubviews: [UIView]
     ) {
         self.init(arrangedSubviews: arrangedSubviews)
@@ -18,7 +18,7 @@ extension UIStackView {
         }
         if let insets {
             self.isLayoutMarginsRelativeArrangement = true
-            self.layoutMargins = insets
+            self.directionalLayoutMargins = insets
         }
     }
 }

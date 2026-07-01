@@ -74,7 +74,7 @@ class ImageCropViewController: UIViewController, UIScrollViewDelegate {
     // MARK: - Action Handlers
     @IBAction func cropWasPressed() {
         // Calculations!
-        let screenScale = UIScreen.main.scale
+        let screenScale = traitCollection.displayScale
         let zoomScale = scrollView.zoomScale
         let oldSize = rawImage.size
         let resizeRect = CGRect(x: 0, y: 0, width: oldSize.width * zoomScale, height: oldSize.height * zoomScale)

@@ -30,7 +30,7 @@ public class WPAccount: NSManagedObject {
 
     private var cachedToken: String?
 
-    lazy var keychain: any KeychainAccessible = KeychainUtils()
+    lazy var keychain: any KeychainAccessible = AppKeychain()
     lazy var keychainServiceName: String = BuildSettings.current.authKeychainServiceName
     lazy var keychainMigration: any AuthKeyMigrationProtocol = AuthKeyMigration()
 
@@ -86,7 +86,7 @@ public class WPAccount: NSManagedObject {
     // MARK: - Entity Name
 
     @objc public override class func entityName() -> String {
-        return "Account"
+        "Account"
     }
 
     // MARK: - Lifecycle
@@ -139,7 +139,10 @@ public class WPAccount: NSManagedObject {
         do {
             try keychain.setPassword(for: username, to: authToken, serviceName: keychainServiceName)
         } catch {
-            WPLogError("Error while updating or deleting WordPressComOAuthKeychainServiceName token: %@", error.localizedDescription)
+            WPLogError(
+                "Error while updating or deleting WordPressComOAuthKeychainServiceName token: %@",
+                error.localizedDescription
+            )
         }
     }
 
@@ -148,7 +151,7 @@ public class WPAccount: NSManagedObject {
             forUsername: username,
             serviceName: BuildSettings.current.authKeychainServiceName,
             migration: AuthKeyMigration(),
-            keychain: KeychainUtils()
+            keychain: AppKeychain()
         )
     }
 
@@ -163,7 +166,10 @@ public class WPAccount: NSManagedObject {
         do {
             return try keychain.getPassword(for: username, serviceName: serviceName)
         } catch {
-            WPLogError("Error while retrieving WordPressComOAuthKeychainServiceName token: %@", error.localizedDescription)
+            WPLogError(
+                "Error while retrieving WordPressComOAuthKeychainServiceName token: %@",
+                error.localizedDescription
+            )
             throw error
         }
     }

@@ -34,9 +34,15 @@ public class WordPressAppDelegate: UIResponder, UIApplicationDelegate {
 
     @objc
     lazy var windowManager: WindowManager = {
-        guard let window else {
-            fatalError("The App cannot run without a window.")
+        if window == nil {
+            // Reachable only when a code path builds UI before any scene has connected
+            // (e.g. during a background launch); such paths should be guarded instead.
+            // Recover by creating the window now: `WordPressSceneDelegate` attaches it to
+            // the scene once one connects.
+            assertionFailure("windowManager accessed before any scene connected")
+            window = UIWindow(frame: UIScreen.main.bounds)
         }
+        let window = window!
         return switch BuildSettings.current.brand {
         case .wordpress: WindowManager(window: window)
         case .jetpack: JetpackWindowManager(window: window)
@@ -93,18 +99,14 @@ public class WordPressAppDelegate: UIResponder, UIApplicationDelegate {
             ])
         }
 
-        let window = UIWindow(frame: UIScreen.main.bounds)
-        self.window = window
-
         WordPressAPIInternal.setupLogger(appId: Bundle.main.bundleIdentifier!)
         DesignSystem.FontManager.registerCustomFonts()
         AssertionLoggerDependencyContainer.logger = AssertionLogger()
-        UITestConfigurator.prepareApplicationForUITests(in: application, window: window)
+        UITestConfigurator.prepareApplicationForUITests()
 
         // The following extensive logging configuration detects if extensive logging is enabled internally.
         wpkURLSessionNotifyingDelegate = PulseNetworkLogger()
 
-        AppAppearance.overrideAppearance()
         MemoryCache.shared.register()
         MediaImageService.migrateCacheIfNeeded()
         PostCoordinator.shared.delegate = self
@@ -115,25 +117,97 @@ public class WordPressAppDelegate: UIResponder, UIApplicationDelegate {
         // Configure WPCom API overrides
         configureWordPressComApi()
 
-        configureAuthenticationManager()
-
         ReachabilityUtils.configure()
 
         configureSelfHostedChallengeHandler()
         updateFeatureFlags()
         updateRemoteConfig()
 
-        window.makeKeyAndVisible()
-
         // Restore a disassociated account prior to fixing tokens.
         AccountService(coreDataStack: ContextManager.shared).restoreDisassociatedAccountIfNecessary()
 
-        customizeAppearance()
         configureAnalytics()
 
-        runStartupSequence(with: launchOptions ?? [:])
+        runStartupSequence()
 
         return true
+    }
+
+    /// Opts the app into the UIScene life cycle and names the scene delegate in code,
+    /// instead of a `UISceneConfigurations` entry duplicated in each target's Info.plist.
+    /// The unit test host runs TestingAppDelegate, which doesn't implement this method,
+    /// so tests keep the legacy life cycle.
+    public func application(
+        _ application: UIApplication,
+        configurationForConnecting connectingSceneSession: UISceneSession,
+        options: UIScene.ConnectionOptions
+    ) -> UISceneConfiguration {
+        let configuration = UISceneConfiguration(name: nil, sessionRole: connectingSceneSession.role)
+        // Attach our delegate only to the main app window scene. External-display scenes
+        // (AirPlay mirroring, wired displays) connect with the `.windowExternalDisplay`
+        // role; without our delegate they don't run `showInitialUI`, which would reattach
+        // the app's single window to the non-interactive external scene and blank the
+        // device's screen. `UIApplicationSupportsMultipleScenes` is `false`, but that does
+        // not stop the system from offering the external-display scene here (verified on
+        // device).
+        if connectingSceneSession.role == .windowApplication {
+            configuration.delegateClass = WordPressSceneDelegate.self
+        }
+        return configuration
+    }
+
+    /// Whether `showInitialUI(in:)` has already built the UI. The scene can disconnect
+    /// and reconnect while the process stays alive, so the build must run exactly once.
+    private(set) var hasConfiguredInitialUI = false
+
+    /// Set during the first scene connect, because `sceneWillEnterForeground` also
+    /// fires right after it. The legacy `applicationWillEnterForeground` did not fire
+    /// during a cold launch, and `handleWillEnterForeground` keeps those semantics.
+    private var isInitialSceneConnect = false
+
+    /// Builds and shows the app's UI in the given window scene. Runs when the main
+    /// scene connects, which (under the scene life cycle) is after `didFinishLaunching`
+    /// and can happen multiple times per process: the system may disconnect the scene
+    /// in the background and reconnect it later. After the first connect, the existing
+    /// window (with all its UI state) is simply reattached to the new scene.
+    func showInitialUI(in windowScene: UIWindowScene) {
+        if hasConfiguredInitialUI {
+            window?.windowScene = windowScene
+            window?.makeKeyAndVisible()
+            return
+        }
+        hasConfiguredInitialUI = true
+        isInitialSceneConnect = true
+
+        let window: UIWindow
+        if let existingWindow = self.window {
+            // Created by the `windowManager` emergency fallback before any scene
+            // connected; adopt it instead of orphaning the UI already built in it.
+            existingWindow.windowScene = windowScene
+            window = existingWindow
+        } else {
+            window = UIWindow(windowScene: windowScene)
+            self.window = window
+        }
+
+        // Must run here (not in willFinishLaunching): it accesses `windowManager`,
+        // which requires `window`.
+        configureAuthenticationManager()
+        customizeAppearance()
+        // Reapplies the user's saved light/dark override; reads the app's window, so it
+        // can only take effect once the window exists.
+        AppAppearance.overrideAppearance()
+
+        window.makeKeyAndVisible()
+
+        // The 3D Touch / Home Screen quick actions probe the trait collection of
+        // `UIApplication.shared.mainWindow`, which only exists once the window above is key.
+        shortcutCreator.createShortcutsIf3DTouchAvailable(AccountHelper.isLoggedIn)
+
+        windowManager.showUI()
+        restoreAppState()
+
+        DebugMenuViewController.configure(in: window)
     }
 
     public func application(
@@ -153,7 +227,6 @@ public class WordPressAppDelegate: UIResponder, UIApplicationDelegate {
         // (e.g. the share extension's background URL session) post notices that it
         // delivers as local notifications, with no UI visible.
         setupNoticePresenter()
-        DebugMenuViewController.configure(in: window)
         AppTips.initialize()
 
         // This was necessary to properly load fonts for the Stories editor. I believe external libraries may require this call to access fonts.
@@ -180,7 +253,9 @@ public class WordPressAppDelegate: UIResponder, UIApplicationDelegate {
         Loggers.app.info("\(self) \(#function)")
     }
 
-    public func applicationDidEnterBackground(_ application: UIApplication) {
+    // MARK: - Activation handlers (shared by app- and scene-lifecycle)
+
+    func handleDidEnterBackground() {
         Loggers.app.info("\(self) \(#function)")
 
         analytics?.trackApplicationDidEnterBackground(screenName: currentlySelectedScreen)
@@ -208,11 +283,23 @@ public class WordPressAppDelegate: UIResponder, UIApplicationDelegate {
         }
     }
 
-    public func applicationWillEnterForeground(_ application: UIApplication) {
+    func handleWillEnterForeground() {
         Loggers.app.info("\(self) \(#function)")
 
+        // Refresh on every foreground, including the one right after the initial
+        // scene connect: a background-launched process may sit for hours between
+        // the launch-time refresh and the user opening the app.
         updateFeatureFlags()
         updateRemoteConfig()
+
+        // Skip the migration check on the call that follows the initial scene
+        // connect: the window phase already ran it via `windowManager.showUI()`,
+        // and running it twice emits its analytics event twice per launch. Scene
+        // reconnects are a real return from the background and fall through.
+        if isInitialSceneConnect {
+            isInitialSceneConnect = false
+            return
+        }
 
         // JetpackWindowManager is only available in the Jetpack target.
         if let windowManager = windowManager as? JetpackWindowManager {
@@ -220,25 +307,16 @@ public class WordPressAppDelegate: UIResponder, UIApplicationDelegate {
         }
     }
 
-    public func applicationWillResignActive(_ application: UIApplication) {
+    func handleWillResignActive() {
         Loggers.app.info("\(self) \(#function)")
     }
 
-    public func applicationDidBecomeActive(_ application: UIApplication) {
+    func handleDidBecomeActive() {
         Loggers.app.info("\(self) \(#function)")
 
         analytics?.trackApplicationDidBecomeActive()
 
         GutenbergSettings().performGutenbergPhase2MigrationIfNeeded()
-    }
-
-    public func application(
-        _ application: UIApplication,
-        performActionFor shortcutItem: UIApplicationShortcutItem,
-        completionHandler: @escaping (Bool) -> Void
-    ) {
-        let handler = WP3DTouchShortcutHandler()
-        completionHandler(handler.handleShortcutItem(shortcutItem))
     }
 
     public func application(
@@ -256,19 +334,14 @@ public class WordPressAppDelegate: UIResponder, UIApplicationDelegate {
         }
     }
 
-    public func application(
-        _ application: UIApplication,
-        continue userActivity: NSUserActivity,
-        restorationHandler: @escaping ([UIUserActivityRestoring]?) -> Void
-    ) -> Bool {
+    /// Routes an inbound `NSUserActivity` (universal links via web browsing, Spotlight, Handoff).
+    func handle(userActivity: NSUserActivity) {
         if userActivity.activityType == NSUserActivityTypeBrowsingWeb {
             handleWebActivity(userActivity)
         } else {
             // Spotlight search
             SearchManager.shared.handle(activity: userActivity)
         }
-
-        return true
     }
 
     // Note that this method only appears to be called for iPhone devices, not iPad.
@@ -288,22 +361,18 @@ public class WordPressAppDelegate: UIResponder, UIApplicationDelegate {
 
     // MARK: - Setup
 
-    func runStartupSequence(with launchOptions: [UIApplication.LaunchOptionsKey: Any] = [:]) {
+    func runStartupSequence() {
         // Local notifications
         addNotificationObservers()
 
         configureAppRatingUtility()
 
-        if UITestConfigurator.isEnabled(.disableLogging) {
-            WordPressAppDelegate.setLogLevel(.off)
-        } else {
-            let libraryLogger = WordPressLibraryLogger()
-            TracksLogging.delegate = libraryLogger
-            WPKitSetLoggingDelegate(libraryLogger)
-            WPSetLoggingDelegate(libraryLogger)
-            printDebugLaunchInfoWithLaunchOptions(launchOptions)
-            toggleExtraDebuggingIfNeeded()
-        }
+        let libraryLogger = WordPressLibraryLogger()
+        TracksLogging.delegate = libraryLogger
+        WPKitSetLoggingDelegate(libraryLogger)
+        WPSetLoggingDelegate(libraryLogger)
+        printDebugLaunchInfo()
+        toggleExtraDebuggingIfNeeded()
 
         #if DEBUG
         KeychainTools.processKeychainDebugArguments()
@@ -338,12 +407,7 @@ public class WordPressAppDelegate: UIResponder, UIApplicationDelegate {
 
         setupWordPressExtensions()
 
-        shortcutCreator.createShortcutsIf3DTouchAvailable(AccountHelper.isLoggedIn)
-
         AccountService.loadDefaultAccountCookies()
-
-        windowManager.showUI()
-        restoreAppState()
     }
 
     private func mergeDuplicateAccountsIfNeeded() {
@@ -596,7 +660,7 @@ extension WordPressAppDelegate {
 // MARK: - Debugging
 
 extension WordPressAppDelegate {
-    func printDebugLaunchInfoWithLaunchOptions(_ launchOptions: [UIApplication.LaunchOptionsKey: Any]? = nil) {
+    func printDebugLaunchInfo() {
         let unknown = "Unknown"
 
         let device = UIDevice.current
@@ -631,7 +695,6 @@ extension WordPressAppDelegate {
         Loggers.app.info("Language:  \(currentLanguage)")
         Loggers.app.info("UDID:      \(udid)")
         Loggers.app.info("APN token: \(PushNotificationsManager.shared.deviceToken ?? "None")")
-        Loggers.app.info("Launch options: \(String(describing: launchOptions ?? [:]))")
 
         AccountHelper.logBlogsAndAccounts(context: mainContext)
         Loggers.app.info("===========================================================================")
@@ -716,7 +779,13 @@ extension WordPressAppDelegate {
             trackLogoutIfNeeded()
             removeShareExtensionConfiguration()
             removeNotificationExtensionConfiguration()
-            windowManager.showFullscreenSignIn()
+            // Skip when the UI was never built (e.g. the account is removed during a
+            // background launch): there is no UI to show sign-in in, and
+            // `showInitialUI` shows it anyway once a scene connects and finds no
+            // account.
+            if hasConfiguredInitialUI {
+                windowManager.showFullscreenSignIn()
+            }
             clearReaderStuff()
         }
 

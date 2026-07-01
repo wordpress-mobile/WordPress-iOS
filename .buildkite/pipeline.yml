@@ -32,6 +32,28 @@ steps:
               context: "Jetpack Prototype Build"
 
   #################
+  # Continuous Delivery: build & upload each app to TestFlight (internal testers) from trunk
+  #################
+  - group: ":testflight: TestFlight Builds"
+    key: testflight_builds_group
+    steps:
+      - label: ":testflight: Build & Upload {{matrix}}"
+        command: ".buildkite/commands/build-and-upload-testflight.sh {{matrix}}"
+        plugins: [$CI_TOOLKIT_PLUGIN]
+        if: "build.branch == 'trunk'"
+        matrix:
+          - "wordpress"
+          - "jetpack"
+          # Reader is omitted: its App Store archive has been broken since #25321
+          # (PostHelper moved to the app target without updating the Reader target),
+          # and went undetected after #25179 removed Reader from CI. Re-add once
+          # the Reader target archives again.
+          # - "reader"
+        notify:
+          - github_commit_status:
+              context: "TestFlight Build ({{matrix}})"
+
+  #################
   # Create Builds for Testing
   #################
   - group: "🛠 Builds for Testing"
@@ -90,14 +112,6 @@ steps:
       #   notify:
       #     - github_commit_status:
       #         context: "Unit Tests Keystone"
-      - label: "🔬 WordPressData Unit Tests"
-        command: .buildkite/commands/run-unit-tests-for-scheme.sh WordPressData
-        plugins: [$CI_TOOLKIT_PLUGIN]
-        artifact_paths:
-          - "build/results/*"
-        notify:
-          - github_commit_status:
-              context: "Unit Tests WordPressData"
 
   #################
   # Linters
@@ -137,6 +151,20 @@ steps:
       - label: ":sleuth_or_spy: Lint Localized Strings Format"
         command: .buildkite/commands/lint-localized-strings-format.sh
         plugins: [$CI_TOOLKIT_PLUGIN]
+
+      - label: ":mag: Verify String Catalog Coverage"
+        command: .buildkite/commands/verify-strings-catalog.sh
+        plugins: [$CI_TOOLKIT_PLUGIN]
+        notify:
+          - github_commit_status:
+              context: "Verify String Catalog Coverage"
+
+      - label: ":test_tube: Localization Tooling Unit Tests"
+        command: .buildkite/commands/test-localization-tooling.sh
+        plugins: [$CI_TOOLKIT_PLUGIN]
+        notify:
+          - github_commit_status:
+              context: "Localization Tooling Unit Tests"
 
   #################
   # Claude Build Analysis - dynamically uploaded so Build result conditions evaluate at runtime after the wait

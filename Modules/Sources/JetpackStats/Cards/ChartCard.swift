@@ -348,7 +348,7 @@ struct ChartCardHeaderView: View {
                     }
                 }
                 if viewModel.showComparison {
-                    Text("\(viewModel.trend.formattedChange)  \(viewModel.trend.iconSign) \(viewModel.trend.formattedPercentage)")
+                    Text(verbatim: "\(viewModel.trend.formattedChange)  \(viewModel.trend.iconSign) \(viewModel.trend.formattedPercentage)")
                         .font(.caption.weight(.semibold))
                         .foregroundColor(viewModel.trend.sentiment.foregroundColor)
                         .contentTransition(.numericText())

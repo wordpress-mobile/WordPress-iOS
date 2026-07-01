@@ -622,6 +622,11 @@
 	<array>
 		<string>Noticons.ttf</string>
 	</array>
+	<key>UIApplicationSceneManifest</key>
+	<dict>
+		<key>UIApplicationSupportsMultipleScenes</key>
+		<false/>
+	</dict>
 	<key>UIBackgroundModes</key>
 	<array>
 		<string>fetch</string>
@@ -653,6 +658,8 @@
 	<string>${WP_APP_GROUP_NAME}</string>
 	<key>WPAppKeychainAccessGroup</key>
 	<string>${WP_APP_KEYCHAIN_ACCESS_GROUP}</string>
+	<key>WPSharedKeychainAccessGroup</key>
+	<string>${WP_SHARED_KEYCHAIN_ACCESS_GROUP}</string>
 	<key>WPAppURLScheme</key>
 	<string>${WP_APP_URL_SCHEME}</string>
 	<key>WPAuthKeychainServiceName</key>

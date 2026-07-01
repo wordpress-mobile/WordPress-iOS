@@ -25,12 +25,12 @@
 
     self.translatesAutoresizingMaskIntoConstraints = NO;
 
-    UIEdgeInsets margins = UIEdgeInsetsZero;
+    NSDirectionalEdgeInsets margins = NSDirectionalEdgeInsetsZero;
     CGFloat spacing = MenusDesignDefaultContentSpacing;
     // Spacing + tweak for design stroke offset.
-    margins.left = spacing;
-    margins.right = spacing;
-    self.stackView.layoutMargins = margins;
+    margins.leading = spacing;
+    margins.trailing = spacing;
+    self.stackView.directionalLayoutMargins = margins;
     self.stackView.layoutMarginsRelativeArrangement = YES;
     self.stackView.distribution = UIStackViewDistributionFill;
     self.stackView.alignment = UIStackViewAlignmentCenter;
@@ -66,7 +66,7 @@
     stackView.alignment = UIStackViewAlignmentFill;
     stackView.distribution = UIStackViewDistributionFill;
     stackView.axis = UILayoutConstraintAxisVertical;
-    stackView.layoutMargins = UIEdgeInsetsMake(14, 0, 14, 0);
+    stackView.directionalLayoutMargins = NSDirectionalEdgeInsetsMake(14, 0, 14, 0);
     stackView.layoutMarginsRelativeArrangement = YES;
     [stackView setContentHuggingPriority:UILayoutPriorityDefaultLow forAxis:UILayoutConstraintAxisHorizontal];
     _labelsStackView = stackView;

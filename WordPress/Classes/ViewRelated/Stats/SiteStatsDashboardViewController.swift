@@ -82,7 +82,7 @@ public class SiteStatsDashboardViewController: UIViewController {
         return tabs
     }()
     private var tipObserver: TipObserver?
-    private var isUsingMockData = UITestConfigurator.isEnabled(.useMockData)
+    private var isUsingMockData = false
     private var navigationItemObserver: NSKeyValueObservation?
     private let filterBarController = AdaptiveTabBarController<StatsTabType>()
 

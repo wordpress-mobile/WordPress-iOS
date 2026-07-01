@@ -191,6 +191,41 @@ struct CustomPostSettingsViewModelTests {
         #expect(viewModel.v2SocialSharing == nil)
         #expect(viewModel.getSettingsToSave(for: viewModel.settings).socialSharingDraft == nil)
     }
+
+    // MARK: - shouldShow Jetpack rows
+
+    @Test("shouldShow .jetpackAccessLevel is true for post type when Jetpack newsletter is available")
+    func shouldShowAccessLevelTrue() throws {
+        let viewModel = try makeViewModel(postTypeSlug: "post", jetpackNewsletter: true)
+        #expect(viewModel.shouldShow(.jetpackAccessLevel))
+    }
+
+    @Test("shouldShow .jetpackAccessLevel is false for non-post type")
+    func shouldShowAccessLevelFalseForNonPost() throws {
+        let viewModel = try makeViewModel(postTypeSlug: "page", jetpackNewsletter: true)
+        #expect(!viewModel.shouldShow(.jetpackAccessLevel))
+    }
+
+    @Test("shouldShow .jetpackAccessLevel is false when Jetpack newsletter is unavailable")
+    func shouldShowAccessLevelFalseWithoutNewsletter() throws {
+        let viewModel = try makeViewModel(postTypeSlug: "post", jetpackNewsletter: false)
+        #expect(!viewModel.shouldShow(.jetpackAccessLevel))
+    }
+
+    @Test("shouldShow .jetpackNewsletterEmailOptions is true only in publishing context")
+    func shouldShowNewsletterTrueOnlyInPublishing() throws {
+        let publishingVM = try makeViewModel(postTypeSlug: "post", jetpackNewsletter: true, context: .publishing)
+        #expect(publishingVM.shouldShow(.jetpackNewsletterEmailOptions))
+
+        let settingsVM = try makeViewModel(postTypeSlug: "post", jetpackNewsletter: true, context: .settings)
+        #expect(!settingsVM.shouldShow(.jetpackNewsletterEmailOptions))
+    }
+
+    @Test("shouldShow .jetpackNewsletterEmailOptions is false for non-post type")
+    func shouldShowNewsletterFalseForNonPost() throws {
+        let viewModel = try makeViewModel(postTypeSlug: "page", jetpackNewsletter: true, context: .publishing)
+        #expect(!viewModel.shouldShow(.jetpackNewsletterEmailOptions))
+    }
 }
 
 // MARK: - Test Helpers
@@ -295,7 +330,44 @@ private func makeConnectionsService() -> SiteSocialConnectionsService {
     )
 }
 
-private func makePostTypeDetails(supportsPublicize: Bool = true) -> PostTypeDetailsWithEditContext {
+@MainActor
+private func makeViewModel(
+    postTypeSlug: String,
+    jetpackNewsletter: Bool,
+    context: PostSettingsContext = .settings
+) throws -> CustomPostSettingsViewModel {
+    let coreData = ContextManager.forTesting().mainContext
+    let builder = BlogBuilder(coreData)
+    let blog: Blog
+    if jetpackNewsletter {
+        blog = builder.withAnAccount().with(modules: ["subscriptions"]).build()
+    } else {
+        blog = builder.withAnAccount().build()
+    }
+    try coreData.save()
+    let post = try makePostWithDisabledConnection()
+    let details = makePostTypeDetails(supportsPublicize: true, slug: postTypeSlug)
+    let dependencies = try makeServiceDependencies()
+    let editorService = CustomPostEditorService(
+        blog: blog,
+        post: post,
+        details: details,
+        client: dependencies.client,
+        wpService: dependencies.wpService,
+        initialSettings: nil
+    )
+    return CustomPostSettingsViewModel(
+        editorService: editorService,
+        blog: blog,
+        socialConnectionsService: nil,
+        context: context
+    )
+}
+
+private func makePostTypeDetails(
+    supportsPublicize: Bool = true,
+    slug: String = "test_post_type"
+) -> PostTypeDetailsWithEditContext {
     var supports: [PostTypeSupports: JsonValue] = [
         .title: .bool(true),
         .editor: .bool(true)
@@ -311,11 +383,11 @@ private func makePostTypeDetails(supportsPublicize: Bool = true) -> PostTypeDeta
         viewable: true,
         labels: makePostTypeLabels(),
         name: "Test Post Type",
-        slug: "test_post_type",
+        slug: slug,
         supports: PostTypeSupportsMap(map: supports),
         hasArchive: .bool(false),
         taxonomies: [],
-        restBase: "test_post_type",
+        restBase: slug,
         restNamespace: "wp/v2",
         visibility: PostTypeVisibility(showInNavMenus: true, showUi: true),
         icon: nil

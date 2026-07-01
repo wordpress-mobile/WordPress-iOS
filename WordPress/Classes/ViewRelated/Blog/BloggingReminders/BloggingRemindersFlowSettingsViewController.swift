@@ -280,16 +280,17 @@ final class BloggingRemindersFlowSettingsViewController: UIViewController {
         refreshNextButton()
         refreshFrequencyLabel()
 
-        showFullUI(shouldShowFullUI)
-
         navigationItem.rightBarButtonItem = UIBarButtonItem(systemItem: .close, primaryAction: .init(handler: { [weak self] _ in
             self?.presentingViewController?.dismiss(animated: true)
         }))
 
-        registerForTraitChanges([UITraitPreferredContentSizeCategory.self]) { [weak self] (_: Self, traitCollection) in
-            guard let self else { return }
+        // The calendar image has a low compression resistance, so it shrinks to make room for the
+        // functional controls when vertical space is tight. We only hide it outright at accessibility
+        // text sizes, where every point of height is needed for the enlarged labels and controls.
+        imageView.isHidden = traitCollection.preferredContentSizeCategory.isAccessibilityCategory
 
-            self.imageView.isHidden = traitCollection.preferredContentSizeCategory.isAccessibilityCategory || !self.shouldShowFullUI
+        registerForTraitChanges([UITraitPreferredContentSizeCategory.self]) { (self: Self, _) in
+            self.imageView.isHidden = self.traitCollection.preferredContentSizeCategory.isAccessibilityCategory
         }
     }
 
@@ -307,12 +308,6 @@ final class BloggingRemindersFlowSettingsViewController: UIViewController {
         if isBeingDismissedDirectlyOrByAncestor() && navigationController?.viewControllers.last == self {
             tracker.flowDismissed(source: .dayPicker)
         }
-    }
-
-    override func viewWillTransition(to size: CGSize, with coordinator: UIViewControllerTransitionCoordinator) {
-        super.viewWillTransition(to: size, with: coordinator)
-
-        showFullUI(shouldShowFullUI)
     }
 
     // MARK: - Actions
@@ -480,18 +475,6 @@ private extension BloggingRemindersFlowSettingsViewController {
         return view
     }
 
-    /// Determines if the calendar image should be displayed, depending on the screen vertical size
-    var shouldShowFullUI: Bool {
-        (WPDeviceIdentification.isiPhone() && UIScreen.main.bounds.height >= Metrics.minimumHeightForFullUI) ||
-            (WPDeviceIdentification.isiPad() && UIDevice.current.orientation.isPortrait)
-    }
-
-    /// Hides/shows the optional UI Elements (dismiss button & calendar icon)
-    /// - Parameter isVisible: true if we need to show the elements (Full UI), false otherwise
-    func showFullUI(_ isVisible: Bool) {
-        imageView.isHidden = !isVisible
-    }
-
     /// Updates the title of the cconfirmation button depending on the action (new schedule or updated schedule)
     func refreshNextButton() {
         if previousWeekdays.isEmpty {
@@ -509,13 +492,19 @@ private extension BloggingRemindersFlowSettingsViewController {
     /// Updates the label that contains the number of scheduled days as users change them
     func refreshFrequencyLabel() {
         guard !weekdays.isEmpty else {
+            // Collapse the time-selection and frequency containers (not just their contents) so the
+            // stack reclaims their fixed height while no days are selected, keeping the layout compact.
             frequencyLabel.isHidden = true
             timeSelectionStackView.isHidden = true
+            frequencyView.isHidden = true
+            timeSelectionView.isHidden = true
             return
         }
 
         frequencyLabel.isHidden = false
         timeSelectionStackView.isHidden = false
+        frequencyView.isHidden = false
+        timeSelectionView.isHidden = false
 
         let defaultAttributes: [NSAttributedString.Key: AnyObject] = [
             .foregroundColor: UIColor.label,
@@ -838,9 +827,6 @@ private enum Metrics {
     static let frequencyLabelHeight: CGFloat = 30
 
     static let topRowDayCount = 4
-
-    // the smallest logical iPhone height (iPhone 12 mini) to display the full UI, which includes calendar icon.
-    static let minimumHeightForFullUI: CGFloat = 812
 
     enum BloggingPrompts {
         static let titleSpacing: CGFloat = 5.0

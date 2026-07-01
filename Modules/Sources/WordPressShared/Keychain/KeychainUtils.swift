@@ -1,5 +1,11 @@
 import SFHFKeychainUtils
 
+@available(
+    *,
+    deprecated,
+    message:
+        "Use AppKeychain for app-private data, or SharedKeychain for the cross-app migration contract. KeychainUtils operates on the default access group, which made every keychain item cross-app by accident."
+)
 @objcMembers
 public class KeychainUtils: NSObject {
 
@@ -26,6 +32,7 @@ public class KeychainUtils: NSObject {
     }
 }
 
+@available(*, deprecated)
 extension KeychainUtils: KeychainAccessible {
     public func getPassword(for username: String, serviceName: String) throws -> String {
         try self.keychainUtils.getPasswordForUsername(username, andServiceName: serviceName)

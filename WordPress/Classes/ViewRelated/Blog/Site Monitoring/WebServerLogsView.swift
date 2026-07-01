@@ -90,11 +90,11 @@ struct WebServerLogsView: View {
                 Picker("", selection: $searchCriteria.status) {
                     let cases = [200, 301, 302, 400, 401, 403, 404, 500]
                     ForEach(cases, id: \.self) {
-                        Text("\($0)").tag(Optional.some($0))
+                        Text(verbatim: "\($0)").tag(Optional.some($0))
                     }
                 }.pickerStyle(.inline)
             } label: {
-                Text("\($0)")
+                Text(verbatim: "\($0)")
             }
             .contentPresentationStyle(.menu)
         }

@@ -153,6 +153,32 @@ struct PostSettingsTests {
         #expect(post.status == .publish) // Changed
     }
 
+    @Test("apply preserves stored publicize metadata when social draft is unavailable")
+    func applyPreservesStoredPublicizeMetadataWhenSocialDraftIsUnavailable() throws {
+        let context = ContextManager.forTesting().mainContext
+        let blog = BlogBuilder(context).build()
+        let post = PostBuilder(context, blog: blog).build()
+        post.rawMetadata = try PostMetadataContainer(metadata: [
+            ["key": "_wpas_mess", "value": "Hello", "id": "1"],
+            ["key": "_wpas_skip_publicize_111", "value": "1", "id": "2"],
+            ["key": "_jetpack_newsletter_access", "value": "everybody", "id": "3"]
+        ])
+        .encode()
+
+        var settings = PostSettings(from: post)
+        settings.socialSharingDraft = nil
+
+        settings.apply(to: post)
+
+        // With no draft to apply, the existing publicize metadata is left untouched
+        // (the user's per-connection choices are preserved, not neutralized).
+        let container = PostMetadataContainer(post)
+        #expect(container.getString(for: "_wpas_mess") == "Hello")
+        #expect(container.getString(for: "_wpas_skip_publicize_111") == "1")
+        #expect(container.entry(forKey: "_wpas_skip_publicize_111")?["id"] as? String == "2")
+        #expect(container.getString(for: "_jetpack_newsletter_access") == "everybody")
+    }
+
     // MARK: - makeUpdateParameters Tests
 
     @Test("Creates update parameters for changed properties")
@@ -720,6 +746,30 @@ struct PostSettingsTests {
         #expect(settings.socialSharingDraft == expectedDraft)
     }
 
+    @Test("init(from: AnyPostWithEditContext) populates jetpack newsletter access from meta")
+    func initFromRestPopulatesAccessLevel() throws {
+        let meta = PostMeta().addingJetpackNewsletterAccess(.paidSubscribers)
+        let post = makeRemotePost(meta: meta)
+        let settings = PostSettings(from: post)
+        #expect(settings.metadata.accessLevel == .paidSubscribers)
+    }
+
+    @Test("init(from: AnyPostWithEditContext) populates email-disabled flag from meta")
+    func initFromRestPopulatesEmailDisabled() throws {
+        let meta = PostMeta().addingJetpackNewsletterEmailDisabled(true)
+        let post = makeRemotePost(meta: meta)
+        let settings = PostSettings(from: post)
+        #expect(settings.metadata.isJetpackNewsletterEmailDisabled)
+    }
+
+    @Test("init(from: AnyPostWithEditContext) defaults metadata when meta is nil")
+    func initFromRestDefaultsMetadata() throws {
+        let post = makeRemotePost(meta: nil)
+        let settings = PostSettings(from: post)
+        #expect(settings.metadata.accessLevel == nil)
+        #expect(!settings.metadata.isJetpackNewsletterEmailDisabled)
+    }
+
     @Test("apply(to:) converts terms back to name strings")
     func testApplyConvertsTermsToNameStrings() {
         // Given
@@ -1048,6 +1098,88 @@ struct PostSettingsTests {
         #expect(flagsByID == ["1": true, "2": false])
     }
 
+    // MARK: - makeUpdateParameters(from: AnyPostWithEditContext) Newsletter Meta Tests
+
+    @Test("makeUpdateParameters(from: AnyPostWithEditContext) omits meta when newsletter settings unchanged")
+    func updateParamsOmitsMetaWhenUnchanged() throws {
+        let meta = PostMeta()
+            .addingJetpackNewsletterAccess(.subscribers)
+            .addingJetpackNewsletterEmailDisabled(true)
+        let post = makeRemotePost(meta: meta)
+        let settings = PostSettings(from: post)
+        // Sanity: metadata read back correctly.
+        #expect(settings.metadata.accessLevel == .subscribers)
+
+        let params = settings.makeUpdateParameters(from: post)
+        #expect(params.meta?.jetpackNewsletterAccess == nil)
+        #expect(params.meta?.valueForKey(key: "_jetpack_dont_email_post_to_subs") == nil)
+    }
+
+    @Test("makeUpdateParameters(from: AnyPostWithEditContext) writes access level when changed")
+    func updateParamsWritesAccessLevelChange() throws {
+        let post = makeRemotePost(meta: nil)
+        var settings = PostSettings(from: post)
+        settings.metadata.accessLevel = .paidSubscribers
+
+        let params = settings.makeUpdateParameters(from: post)
+        #expect(params.meta?.jetpackNewsletterAccess == .paidSubscribers)
+        // Email-disabled key should NOT be written because it didn't change.
+        #expect(params.meta?.valueForKey(key: "_jetpack_dont_email_post_to_subs") == nil)
+    }
+
+    @Test("makeUpdateParameters(from: AnyPostWithEditContext) writes email-disabled when changed")
+    func updateParamsWritesEmailDisabledChange() throws {
+        let post = makeRemotePost(meta: nil)
+        var settings = PostSettings(from: post)
+        settings.metadata.isJetpackNewsletterEmailDisabled = true
+
+        let params = settings.makeUpdateParameters(from: post)
+        #expect(params.meta?.isJetpackNewsletterEmailDisabled == true)
+        #expect(params.meta?.valueForKey(key: "_jetpack_newsletter_access") == nil)
+    }
+
+    @Test("makeUpdateParameters(from: AnyPostWithEditContext) clears access level when set to nil")
+    func updateParamsClearsAccessLevel() throws {
+        let meta = PostMeta().addingJetpackNewsletterAccess(.subscribers)
+        let post = makeRemotePost(meta: meta)
+        var settings = PostSettings(from: post)
+        settings.metadata.accessLevel = nil
+
+        let params = settings.makeUpdateParameters(from: post)
+        // A nil access level writes `.null` so the server clears the meta.
+        #expect(params.meta?.valueForKey(key: "_jetpack_newsletter_access") == JsonValue.null)
+    }
+
+    // MARK: - makeCreateParameters Newsletter Meta Tests
+
+    @Test("makeCreateParameters emits access level when set")
+    func createParamsEmitsAccessLevel() throws {
+        var settings = PostSettings()
+        settings.metadata.accessLevel = .subscribers
+
+        let params = settings.makeCreateParameters()
+        #expect(params.meta?.jetpackNewsletterAccess == .subscribers)
+    }
+
+    @Test("makeCreateParameters emits email-disabled when true")
+    func createParamsEmitsEmailDisabled() throws {
+        var settings = PostSettings()
+        settings.metadata.isJetpackNewsletterEmailDisabled = true
+
+        let params = settings.makeCreateParameters()
+        #expect(params.meta?.isJetpackNewsletterEmailDisabled == true)
+    }
+
+    @Test("makeCreateParameters omits newsletter meta at defaults")
+    func createParamsOmitsDefaults() throws {
+        let settings = PostSettings()
+        // Defaults: accessLevel nil, isJetpackNewsletterEmailDisabled false.
+
+        let params = settings.makeCreateParameters()
+        #expect(params.meta?.valueForKey(key: "_jetpack_newsletter_access") == nil)
+        #expect(params.meta?.valueForKey(key: "_jetpack_dont_email_post_to_subs") == nil)
+    }
+
     // MARK: - defaults(from: Blog) Tests
 
     @Test("defaults inherits site discussion defaults (closed)")
@@ -1262,6 +1394,58 @@ struct PostSettingsTests {
         #expect(!pingsOnlyView.showsCommentsSection)
         #expect(pingsOnlyView.showsPingsSection)
     }
+
+    // MARK: - Jetpack newsletter row visibility gate (post-type)
+
+    /// Positive control: proves the blog setup actually enables newsletter, so the
+    /// Page assertions below fail for the post-type reason, not a mis-configured blog.
+    @Test("shouldShow .jetpackAccessLevel is true for a Post on a newsletter site")
+    func testAccessLevelShownForPost() throws {
+        let context = ContextManager.forTesting().mainContext
+        let blog = newsletterBlog(context)
+        let post = PostBuilder(context, blog: blog).build()
+        try context.save()
+
+        let viewModel = PostSettingsViewModel(post: post)
+        #expect(viewModel.shouldShow(.jetpackAccessLevel))
+    }
+
+    @Test("shouldShow .jetpackAccessLevel is false for a Page even on a newsletter site")
+    func testAccessLevelHiddenForPage() throws {
+        let context = ContextManager.forTesting().mainContext
+        let blog = newsletterBlog(context)
+        let page = PageBuilder(context).build()
+        page.blog = blog // PageBuilder builds its own accountless blog; move it onto the newsletter-capable one
+        try context.save()
+
+        let viewModel = PostSettingsViewModel(post: page)
+        #expect(!viewModel.shouldShow(.jetpackAccessLevel))
+    }
+
+    /// Positive control for the publishing branch: proves a Post in publishing context
+    /// shows the newsletter row, so the Page assertion below fails for the post-type reason.
+    @Test("shouldShow .jetpackNewsletterEmailOptions is true for a Post in publishing context")
+    func testNewsletterEmailShownForPostInPublishing() throws {
+        let context = ContextManager.forTesting().mainContext
+        let blog = newsletterBlog(context)
+        let post = PostBuilder(context, blog: blog).build()
+        try context.save()
+
+        let viewModel = PostSettingsViewModel(post: post, context: .publishing)
+        #expect(viewModel.shouldShow(.jetpackNewsletterEmailOptions))
+    }
+
+    @Test("shouldShow .jetpackNewsletterEmailOptions is false for a Page in publishing context")
+    func testNewsletterEmailHiddenForPage() throws {
+        let context = ContextManager.forTesting().mainContext
+        let blog = newsletterBlog(context)
+        let page = PageBuilder(context).build()
+        page.blog = blog
+        try context.save()
+
+        let viewModel = PostSettingsViewModel(post: page, context: .publishing)
+        #expect(!viewModel.shouldShow(.jetpackNewsletterEmailOptions))
+    }
 }
 
 // MARK: - Test Helpers
@@ -1277,6 +1461,15 @@ private func makeDiscussionView(allowComments: Bool?, allowPings: Bool?) -> Post
     settings.allowComments = allowComments
     settings.allowPings = allowPings
     return PostDiscussionSettingsView(postSettings: .constant(settings))
+}
+
+/// A blog that supports Jetpack newsletter: the "subscriptions" module is what
+/// `Blog.supports(.jetpackNewsletter)` checks for a self-hosted (account-backed) site.
+private func newsletterBlog(_ context: NSManagedObjectContext) -> Blog {
+    BlogBuilder(context)
+        .withAnAccount()
+        .with(modules: ["subscriptions"])
+        .build()
 }
 
 private func makeRemotePost(

@@ -22,22 +22,30 @@ protocol ContentDataMigrating {
 final class DataMigrator {
     private let coreDataStack: CoreDataStack
     private let backupLocation: URL?
-    private let keychainUtils: KeychainAccessible
+    private let appKeychain: KeychainAccessible
+    private let sharedKeychain: KeychainAccessible?
     private let localDefaults: UserPersistentRepository
     private let sharedDefaults: UserPersistentRepository?
     private let crashLogger: CrashLogging?
     private let appGroupName: String
 
-    init(coreDataStack: CoreDataStack = ContextManager.shared,
-         backupLocation: URL? = FileManager.default.containerURL(forSecurityApplicationGroupIdentifier: BuildSettings.current.appGroupName)?.appendingPathComponent("WordPress.sqlite"),
-         keychainUtils: KeychainAccessible = KeychainUtils(),
-         localDefaults: UserPersistentRepository = UserDefaults.standard,
-         sharedDefaults: UserPersistentRepository? = UserDefaults(suiteName: BuildSettings.current.appGroupName),
-         crashLogger: CrashLogging? = .main,
-         appGroupName: String = BuildSettings.current.appGroupName) {
+    init(
+        coreDataStack: CoreDataStack = ContextManager.shared,
+        backupLocation: URL? = FileManager.default.containerURL(
+            forSecurityApplicationGroupIdentifier: BuildSettings.current.appGroupName
+        )?
+        .appendingPathComponent("WordPress.sqlite"),
+        appKeychain: KeychainAccessible = AppKeychain(),
+        sharedKeychain: KeychainAccessible? = SharedKeychain(),
+        localDefaults: UserPersistentRepository = UserDefaults.standard,
+        sharedDefaults: UserPersistentRepository? = UserDefaults(suiteName: BuildSettings.current.appGroupName),
+        crashLogger: CrashLogging? = .main,
+        appGroupName: String = BuildSettings.current.appGroupName
+    ) {
         self.coreDataStack = coreDataStack
         self.backupLocation = backupLocation
-        self.keychainUtils = keychainUtils
+        self.appKeychain = appKeychain
+        self.sharedKeychain = sharedKeychain
         self.localDefaults = localDefaults
         self.sharedDefaults = sharedDefaults
         self.crashLogger = crashLogger
@@ -55,6 +63,14 @@ extension DataMigrator: ContentDataMigrating {
             try populateSharedDefaults()
         } catch {
             let error = DataMigrationError.databaseExportError(underlyingError: error)
+            log(error: error)
+            completion?(.failure(error))
+            return
+        }
+        do {
+            try publishAuthTokenToSharedKeychain()
+        } catch {
+            let error = DataMigrationError.keychainExportError(underlyingError: error)
             log(error: error)
             completion?(.failure(error))
             return
@@ -89,7 +105,8 @@ extension DataMigrator: ContentDataMigrating {
 
         let sharedDataIssueSolver = SharedDataIssueSolver(
             contextManager: coreDataStack,
-            keychainUtils: keychainUtils,
+            appKeychain: appKeychain,
+            sharedKeychain: sharedKeychain,
             sharedDefaults: sharedDefaults,
             appGroupName: appGroupName
         )
@@ -101,13 +118,19 @@ extension DataMigrator: ContentDataMigrating {
 
     func deleteExportedData() {
         guard let backupLocation,
-              let sharedDefaults else {
+            let sharedDefaults
+        else {
             return
         }
 
         // mark this as false regardless if any of the steps below fails.
         // this serves as the first stopgap that prevents the migration process on the Jetpack side.
         isDataReadyToMigrate = false
+
+        // Remove the token published for the migration handoff. This is an
+        // improvement over the pre-change behavior, where the token lingered
+        // in the shared group after logout.
+        removePublishedAuthToken()
 
         // remove database backup
         try? coreDataStack.removeBackupData(from: backupLocation)
@@ -127,6 +150,54 @@ private extension DataMigrator {
     /// This way we can delete just the value for its key and leave the rest of shared defaults untouched.
     struct DefaultsWrapper {
         static let dictKey = "defaults_staging_dictionary"
+    }
+
+    static let exportedUsernameKey = "wp_data_migration_exported_username"
+
+    /// Publishes the WP.com auth token to the shared keychain group so the
+    /// Jetpack app (old or new versions) can import it.
+    ///
+    /// A MISSING token keeps the pre-change best-effort behavior (that user
+    /// was already broken before the keychain split). A real keychain
+    /// failure, on the read or the write, throws and must fail the export:
+    /// the published token is the only way the login reaches Jetpack, so a
+    /// "successful" export without it would migrate the content and land
+    /// the user signed out.
+    func publishAuthTokenToSharedKeychain() throws {
+        let username = coreDataStack.performQuery { context in
+            try? WPAccount.lookupDefaultWordPressComAccount(in: context)?.username
+        }
+        guard let username, let sharedKeychain else {
+            return
+        }
+        let token: String
+        do {
+            token = try appKeychain.getPassword(for: username, serviceName: AuthTokenServiceNames.wordPress)
+        } catch {
+            guard isRealKeychainFailure(error) else {
+                crashLogger?.logMessage("Keychain token unavailable during migration export", level: .info)
+                return
+            }
+            crashLogger?.logError(error, userInfo: ["context": "migration-token-handoff"], level: .error)
+            throw error
+        }
+        do {
+            try sharedKeychain.setPassword(for: username, to: token, serviceName: AuthTokenServiceNames.wordPress)
+            sharedDefaults?.set(username, forKey: Self.exportedUsernameKey)
+        } catch {
+            crashLogger?.logError(error, userInfo: ["context": "migration-token-handoff"], level: .error)
+            throw error
+        }
+    }
+
+    func removePublishedAuthToken() {
+        guard let sharedDefaults,
+            let username = sharedDefaults.string(forKey: Self.exportedUsernameKey)
+        else {
+            return
+        }
+        try? sharedKeychain?.setPassword(for: username, to: nil, serviceName: AuthTokenServiceNames.wordPress)
+        sharedDefaults.removeObject(forKey: Self.exportedUsernameKey)
     }
 
     /// Convenience wrapper to check whether the export data is ready to be imported.
@@ -168,7 +239,8 @@ private extension DataMigrator {
 
     func populateFromSharedDefaults() throws {
         guard let sharedDefaults,
-              let temporaryDictionary = sharedDefaults.dictionary(forKey: DefaultsWrapper.dictKey) else {
+            let temporaryDictionary = sharedDefaults.dictionary(forKey: DefaultsWrapper.dictKey)
+        else {
             throw DataMigrationError.sharedUserDefaultsNil
         }
         for (key, value) in temporaryDictionary {

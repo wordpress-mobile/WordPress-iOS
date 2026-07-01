@@ -1,19 +1,5 @@
 # frozen_string_literal: true
 
-require 'fileutils'
-
-# Be sure to keep the `fastlane/screenshots.json` and `fastlane/jetpack_screenshots.json` files in sync with that list as well
-#
-# Screen Sizes Reference Charts:
-# - https://size-charts.com/topics/screen-size-charts/apple-iphone-size/
-# - https://size-charts.com/topics/screen-size-charts/apple-ipad-size-chart/
-#
-SCREENSHOT_SIMULATORS = [
-  'iPhone 17 Pro Max', # 6.5in - 2688x1242 @ 458 ppi
-  'iPhone 17',
-  'iPad Pro 11-inch (M4)'
-].freeze
-
 #################################################
 # Lanes
 #################################################
@@ -21,97 +7,6 @@ SCREENSHOT_SIMULATORS = [
 # Lanes related to Generating Screenshots
 #
 platform :ios do
-  # Generates the localized raw screenshots (for WordPress by default), using the dedicated UI test scheme
-  #
-  # Generates both light and dark mode, for each locale, and a fixed set of device sizes (2 iPhones, 2 iPads)
-  #
-  # @option [String] scheme (default: "WordPressScreenshotGeneration") The name of the scheme to use to run the screenshots
-  # @option [String] output_directory (default: `${PWD}/screenhots`) The directory to generate the screenshots to
-  # @option [Array<String>] language (default: the list of Mag16 locales) The subset of locales to generate the screenshots for
-  # @option [Boolean] skip_clean Skip the deletion of DerivedData before starting. Useful to speed up iterating while adjusting screenshots until we're happy with the final results, for example
-  #
-  # @note When you're working on updating the screenshots with new design, and might need to run this lane multiple time to do some
-  # trial and errors to adjust the results until you're happy with it, you might want to run this lane with the following options:
-  #
-  #   `bundle exec fastlane screenshots language:fr-FR skip_clean:true`
-  #
-  # That way, it uses incremental builds instead of clean builds (faster iterations), and only generates screenshots for one language
-  # (which is usually enough to check that the design and screens being captured look correct while iterating).
-  #
-  desc 'Generate localized screenshots'
-  lane :screenshots do |options|
-    FileUtils.rm_rf(DERIVED_DATA_PATH) unless options[:skip_clean]
-
-    scheme = options[:scheme] || 'WordPressScreenshotGeneration'
-
-    output_directory = options[:output_directory] || File.join(Dir.pwd, '/screenshots')
-
-    scan(
-      workspace: WORKSPACE_PATH,
-      scheme: scheme,
-      build_for_testing: true,
-      derived_data_path: DERIVED_DATA_PATH
-    )
-
-    languages = %w[ar-SA da de-DE en-AU en-CA en-GB es-ES fr-FR he id it ja ko no nl-NL pt-BR pt-PT ru sv th tr zh-Hans zh-Hant en-US]
-
-    # Allow creating screenshots for just one languages
-    unless options[:language].nil?
-      languages.keep_if do |language|
-        language.casecmp(options[:language]).zero?
-      end
-    end
-
-    dark_mode_values = options[:skip_dark_mode] ? [false] : [true, false]
-
-    UI.message "--- Generating screenshots for the following languages: #{languages}"
-
-    # It ensures `override_status_bar` works correctly
-    ENV['SNAPSHOT_SIMULATOR_WAIT_FOR_BOOT_TIMEOUT'] = '20'
-
-    create_missing_simulators_for_screenshots
-    dark_mode_values.each do |dark_mode_enabled|
-      capture_ios_screenshots(
-        workspace: WORKSPACE_PATH,
-        scheme: scheme,
-        test_without_building: true,
-        derived_data_path: DERIVED_DATA_PATH,
-        output_directory: output_directory,
-        languages: languages,
-        dark_mode: dark_mode_enabled,
-
-        # It's been broken since early 2024 and everyone uses this workaround
-        # https://github.com/fastlane/fastlane/pull/21954
-        override_status_bar: true,
-        override_status_bar_arguments: "--time 9:41 --dataNetwork wifi --wifiMode active --wifiBars 3 --cellularMode active --operatorName '' --cellularBars 4 --batteryState charged --batteryLevel 100",
-
-        reinstall_app: false,
-        erase_simulator: false,
-        localize_simulator: true,
-        concurrent_simulators: false,
-        headless: false,
-        skip_package_dependencies_resolution: true,
-
-        devices: SCREENSHOT_SIMULATORS
-      )
-    end
-  end
-
-  # Generates the localized raw screenshots for Jetpack, using the dedicated `JetpackScreenshotGeneration` UI test scheme
-  #
-  # Generates both light and dark mode, for each of the Mag16 locale, and a fixed set of device sizes (2 iPhones, 2 iPads).
-  #
-  desc 'Generate localized Jetpack screenshots'
-  lane :jetpack_screenshots do |options|
-    screenshots(
-      scheme: 'JetpackScreenshotGeneration',
-      output_directory: File.join(Dir.pwd, '/jetpack_screenshots'),
-      language: options[:language],
-      skip_clean: options[:skip_clean],
-      skip_dark_mode: true
-    )
-  end
-
   # Generates the promo screenshots for WordPress from the raw screenshots and the `screenshots.json` assembly description file.
   #
   # @see https://github.com/wordpress-mobile/release-toolkit/blob/trunk/docs/screenshot-compositor.md for documentation
@@ -221,35 +116,5 @@ platform :ios do
       source_locale: 'en-US',
       download_path: options[:download_path]
     )
-  end
-
-  # Create simulators needed for the `screenshots` lane if they don't exist yet
-  #
-  # Note: Be sure to call this lane after `xcodebuild` has been invoked at least once in the VM / local machine
-  # because on a fresh VM where Xcode has never launched yet, there might be no simulator at all, but as soon as
-  # Xcode is launched for the first time it will create a set of defaut simulators.
-  #
-  # We only want to create the missing simulators for screenshots if they don't exist in the default set created
-  # after the first `xcodebuild` launch, otherwise if we create a simulator while it will also be created by Xcode
-  # later, we'll end up with `The requested device could not be found because multiple devices matched the request.`
-  # when we try to run `capture_ios_screenshots`
-  #
-  lane :create_missing_simulators_for_screenshots do
-    specs = JSON.parse(`xcrun simctl list -j`)
-    SCREENSHOT_SIMULATORS.each do |device_name|
-      device_spec = specs['devicetypes'].find { |dt| dt['name'] == device_name }
-      UI.user_error!("Could not find device type named `#{device_name}` in `xcrun simctl list`") if device_spec.nil?
-      device_type_id = device_spec['identifier']
-
-      already_exists = specs['devices'].any? { |_, dev_list| dev_list.any? { |dev_spec| dev_spec['deviceTypeIdentifier'] == device_type_id } }
-      step_name = "Creating simulator for device type #{device_name}"
-      if already_exists
-        Actions.execute_action(step_name) { UI.message "A simulator for device type #{device_type_id} already exists" }
-      else
-        sh('xcrun', 'simctl', 'create', device_name, device_type_id, step_name: step_name)
-        # To get the UUID of the created Simulator, store the `sh` call above in a variable, e.g. `res = sh(...`, then call:
-        # res.split("\n").find { |line| line.match?(/^[0-9A-F-]+$/) }&.chomp # UUID of the created simulator
-      end
-    end
   end
 end

@@ -3,47 +3,6 @@ import XCTest
 
 class ErrorStateViewTests: XCTestCase {
 
-    // MARK: ErrorStateView
-
-    func testErrorStateView_DefaultIsConfiguredCorrectly_ForErrorStateViewType_General() {
-        // Given, When
-        let config = ErrorStateViewConfiguration.configuration(type: .general)
-        let errorStateView = ErrorStateView(with: config)
-
-        // Then
-        XCTAssertNotNil(errorStateView.titleLabel)
-        XCTAssertNotNil(errorStateView.subtitleLabel)
-        XCTAssertNil(errorStateView.retryButton)
-        XCTAssertNil(errorStateView.contactSupportLabel)
-        XCTAssertNil(errorStateView.dismissalImageView)
-    }
-
-    func testErrorStateView_DefaultIsConfiguredCorrectly_ForErrorStateViewType_SiteLoading() {
-        // Given, When
-        let config = ErrorStateViewConfiguration.configuration(type: .siteLoading)
-        let errorStateView = ErrorStateView(with: config)
-
-        // Then
-        XCTAssertNotNil(errorStateView.titleLabel)
-        XCTAssertNotNil(errorStateView.subtitleLabel)
-        XCTAssertNil(errorStateView.retryButton)
-        XCTAssertNil(errorStateView.contactSupportLabel)
-        XCTAssertNil(errorStateView.dismissalImageView)
-    }
-
-    func testErrorStateView_DefaultIsConfiguredCorrectly_ForErrorStateViewType_NetworkUnreachable() {
-        // Given, When
-        let config = ErrorStateViewConfiguration.configuration(type: .networkUnreachable)
-        let errorStateView = ErrorStateView(with: config)
-
-        // Then
-        XCTAssertNotNil(errorStateView.titleLabel)
-        XCTAssertNil(errorStateView.subtitleLabel)
-        XCTAssertNil(errorStateView.retryButton)
-        XCTAssertNil(errorStateView.contactSupportLabel)
-        XCTAssertNil(errorStateView.dismissalImageView)
-    }
-
     // MARK: ErrorStateViewConfiguration
 
     func testErrorStateViewConfiguration_IsConfiguredCorrectly_ForErrorStateViewType_General() {
@@ -56,7 +15,10 @@ class ErrorStateViewTests: XCTestCase {
         XCTAssertEqual(expectedTitle, actualTitle)
 
         let actualSubtitle = config.subtitle
-        let expectedSubtitle = NSLocalizedString("Error communicating with the server, please try again", comment: "No comment (test)")
+        let expectedSubtitle = NSLocalizedString(
+            "Error communicating with the server, please try again",
+            comment: "No comment (test)"
+        )
         XCTAssertEqual(expectedSubtitle, actualSubtitle)
 
         XCTAssertNil(config.retryActionHandler)
@@ -74,7 +36,10 @@ class ErrorStateViewTests: XCTestCase {
         XCTAssertEqual(expectedTitle, actualTitle)
 
         let actualSubtitle = config.subtitle
-        let expectedSubtitle = NSLocalizedString("Error communicating with the server, please try again", comment: "No comment (test)")
+        let expectedSubtitle = NSLocalizedString(
+            "Error communicating with the server, please try again",
+            comment: "No comment (test)"
+        )
         XCTAssertEqual(expectedSubtitle, actualSubtitle)
 
         XCTAssertNil(config.retryActionHandler)

@@ -1,5 +1,6 @@
 import Foundation
 import BuildSettingsKit
+import JetpackSocial
 import SwiftUI
 import WordPressAPI
 import WordPressData
@@ -38,6 +39,9 @@ final class PostSettingsViewModel: NSObject, ObservableObject, PostSettingsViewM
     @Published private(set) var socialSharingState: PostSettingsSocialSharingSectionState?
 
     @Published var isShowingDeletedAlert = false
+
+    private let socialConnectionsService: SiteSocialConnectionsService?
+    private var addConnectionCoordinator: AddConnectionCoordinator?
 
     /// The content of the post, used for AI excerpt generation.
     var postContent: String {
@@ -104,7 +108,8 @@ final class PostSettingsViewModel: NSObject, ObservableObject, PostSettingsViewM
 
     var postFormatText: String {
         guard capabilities.supportsPostFormats else { return "" }
-        return blog.postFormatText(fromSlug: settings.postFormat) ?? NSLocalizedString("Standard", comment: "Default post format")
+        return blog.postFormatText(fromSlug: settings.postFormat)
+            ?? NSLocalizedString("Standard", comment: "Default post format")
     }
 
     var timeZone: TimeZone {
@@ -192,6 +197,7 @@ final class PostSettingsViewModel: NSObject, ObservableObject, PostSettingsViewM
         self.context = context
         self.preferences = preferences
         self.client = try? WordPressClientFactory.shared.instance(for: .init(blog: post.blog))
+        self.socialConnectionsService = Self.resolveSocialConnectionsService(for: post)
 
         // Initialize settings from the post
         let initialSettings = PostSettings(from: post)
@@ -204,9 +210,11 @@ final class PostSettingsViewModel: NSObject, ObservableObject, PostSettingsViewM
         super.init()
 
         // Observe selection changes from featured image view model
-        featuredImageViewModel?.$selection.dropFirst().sink { [weak self] media in
-            self?.settings.featuredImageID = media?.mediaID?.intValue
-        }.store(in: &cancellables)
+        featuredImageViewModel?.$selection.dropFirst()
+            .sink { [weak self] media in
+                self?.settings.featuredImageID = media?.mediaID?.intValue
+            }
+            .store(in: &cancellables)
 
         // Initialize all cached properties
         refreshDisplayedCategories()
@@ -224,12 +232,11 @@ final class PostSettingsViewModel: NSObject, ObservableObject, PostSettingsViewM
     }
 
     func shouldShow(_ row: PostSettingsRow) -> Bool {
-        // FIXME: meta support missing in AnyPostWithEditContext
         switch row {
         case .jetpackAccessLevel:
-            return blog.supports(.wpComRESTAPI)
+            return isPost && blog.supports(.jetpackNewsletter)
         case .jetpackNewsletterEmailOptions:
-            return blog.supports(.wpComRESTAPI) && context == .publishing
+            return isPost && blog.supports(.jetpackNewsletter) && context == .publishing
         }
     }
 
@@ -254,20 +261,26 @@ final class PostSettingsViewModel: NSObject, ObservableObject, PostSettingsViewM
                 self.track(.intelligenceSuggestedTagsGenerated, properties: ["count": tags.count])
             } catch {
                 guard let self else { return }
-                self.track(.intelligenceGenerationFailed, properties: ["description": (error as NSError).debugDescription])
+                self.track(
+                    .intelligenceGenerationFailed,
+                    properties: ["description": (error as NSError).debugDescription]
+                )
             }
         }
-        cancellables.insert(AnyCancellable {
-            task.cancel()
-        })
+        cancellables.insert(
+            AnyCancellable {
+                task.cancel()
+            }
+        )
     }
 
     private func refreshCustomTaxonomies() {
-        let postType: String? = switch post {
-        case is Post: "post"
-        case is Page: "page"
-        default: nil
-        }
+        let postType: String? =
+            switch post {
+            case is Post: "post"
+            case is Page: "page"
+            default: nil
+            }
         guard let postType else {
             customTaxonomies = []
             return
@@ -319,6 +332,9 @@ final class PostSettingsViewModel: NSObject, ObservableObject, PostSettingsViewM
         if old.parentPageID != new.parentPageID {
             refreshParentPageText()
         }
+        if old.status != new.status {
+            refreshSocialSharingState()
+        }
     }
 
     private func refreshDisplayedCategories() {
@@ -331,8 +347,9 @@ final class PostSettingsViewModel: NSObject, ObservableObject, PostSettingsViewM
 
     private func refreshParentPageText() {
         if let page = post as? Page,
-           let context = page.managedObjectContext,
-           let parentPageID = settings.parentPageID {
+            let context = page.managedObjectContext,
+            let parentPageID = settings.parentPageID
+        {
             parentPageText = Page.parentPageText(in: context, parentID: NSNumber(value: parentPageID))
         } else {
             parentPageText = nil
@@ -348,14 +365,16 @@ final class PostSettingsViewModel: NSObject, ObservableObject, PostSettingsViewM
     func buttonSaveTapped() {
         // Check if the post still exists
         guard let context = post.managedObjectContext,
-              let _ = try? context.existingObject(with: post.objectID) else {
+            let _ = try? context.existingObject(with: post.objectID)
+        else {
             isShowingDeletedAlert = true
             return
         }
 
         guard isStandalone else {
             // Apply settings and return to the editor (editor-specific)
-            settings.apply(to: post)
+            let settingsToSave = getSettingsToSave(for: settings)
+            settingsToSave.apply(to: post)
             didSaveChanges()
             wpAssert(onEditorPostSaved != nil, "configuration missing")
             onEditorPostSaved?()
@@ -394,13 +413,30 @@ final class PostSettingsViewModel: NSObject, ObservableObject, PostSettingsViewM
             settings.password = originalSettings.password
             settings.publishDate = originalSettings.publishDate
         }
+        stripUnavailableSocialSharing(from: &settings)
         return settings
+    }
+
+    func getSettingsToPublish(for settings: PostSettings) -> PostSettings {
+        var settings = settings
+        stripUnavailableSocialSharing(from: &settings)
+        return settings
+    }
+
+    private func stripUnavailableSocialSharing(from settings: inout PostSettings) {
+        // Only drop the draft when there is no connections service to back it. A
+        // private post keeps its draft: private posts aren't publicized, but the
+        // per-connection choices must survive in case the post is later made public.
+        if socialConnectionsService == nil {
+            settings.socialSharingDraft = nil
+        }
     }
 
     func buttonPublishTapped() {
         // Check if the post still exists
         guard let context = post.managedObjectContext,
-              let _ = try? context.existingObject(with: post.objectID) else {
+            let _ = try? context.existingObject(with: post.objectID)
+        else {
             isShowingDeletedAlert = true
             return
         }
@@ -409,6 +445,7 @@ final class PostSettingsViewModel: NSObject, ObservableObject, PostSettingsViewM
         Task {
             do {
                 let coordinator = PostCoordinator.shared
+                let settings = getSettingsToPublish(for: self.settings)
                 let changes = settings.makeUpdateParameters(from: post)
                 try await coordinator.publish(post.getOriginal(), parameters: changes)
                 onPostPublished?()
@@ -456,8 +493,63 @@ final class PostSettingsViewModel: NSObject, ObservableObject, PostSettingsViewM
 
     // MARK: - Social Sharing
 
+    var v2SocialSharing: V2SocialSharingBinding? {
+        guard let service = socialConnectionsService,
+            settings.status != .publishPrivate
+        else {
+            return nil
+        }
+        let binding = Binding<PostSocialSharingDraft>(
+            get: { self.settings.socialSharingDraft ?? PostSocialSharingDraft() },
+            set: { self.settings.socialSharingDraft = $0 }
+        )
+        return V2SocialSharingBinding(
+            connections: service,
+            draft: binding,
+            isPostPublished: post.getOriginal().status == .publish,
+            onAddConnection: { [weak self] in
+                self?.presentAddSocialConnection()
+            }
+        )
+    }
+
+    private static func resolveSocialConnectionsService(for post: AbstractPost) -> SiteSocialConnectionsService? {
+        guard PostSocialSharing.isEligible(for: post) else {
+            return nil
+        }
+        return JetpackSocialFactory.shared.connectionsService(for: post.blog)
+    }
+
+    private func presentAddSocialConnection() {
+        guard let service = socialConnectionsService,
+            let presenter = viewController
+        else {
+            return
+        }
+        let coordinator = AddConnectionCoordinator(
+            connectionsService: service,
+            authenticator: BlogSocialOAuthAuthenticator(blog: blog),
+            presenter: presenter,
+            onConnectionCreated: { [weak self, weak service] connection in
+                guard let self else { return }
+                var draft = self.settings.socialSharingDraft ?? PostSocialSharingDraft()
+                draft.addConnection(
+                    connection,
+                    availableConnections: service?.connections.value ?? [connection]
+                )
+                self.settings.socialSharingDraft = draft
+            }
+        )
+        addConnectionCoordinator = coordinator
+        coordinator.start()
+    }
+
     private func refreshSocialSharingState() {
-        guard let post = post as? Post, isPostEligibleForSocialSharing(post) else {
+        guard settings.status != .publishPrivate,
+            socialConnectionsService != nil,
+            let post = post as? Post,
+            isPostEligibleForSocialSharing(post)
+        else {
             socialSharingState = nil
             return
         }
@@ -490,8 +582,9 @@ final class PostSettingsViewModel: NSObject, ObservableObject, PostSettingsViewM
     private var isSocialConnectionSetupDismissed: Bool {
         get {
             guard let blogID = blog.dotComID?.intValue,
-                  let dictionary = preferences.dictionary(forKey: Constants.noConnectionKey) as? [String: Bool],
-                  let value = dictionary["\(blogID)"] else {
+                let dictionary = preferences.dictionary(forKey: Constants.noConnectionKey) as? [String: Bool],
+                let value = dictionary["\(blogID)"]
+            else {
                 return false
             }
             return value
@@ -506,6 +599,8 @@ final class PostSettingsViewModel: NSObject, ObservableObject, PostSettingsViewM
         }
     }
 
+    // Deprecated: superseded for post editing by connection_id-keyed PostSocialSharingDraft stored in post metadata.
+    // Kept for remaining legacy references.
     private func makeSocialSharingSetupViewModel() -> JetpackSocialNoConnectionViewModel {
         JetpackSocialNoConnectionViewModel(
             services: getPublicizeServices(),
@@ -515,6 +610,8 @@ final class PostSettingsViewModel: NSObject, ObservableObject, PostSettingsViewM
         )
     }
 
+    // Deprecated: superseded for post editing by connection_id-keyed PostSocialSharingDraft stored in post metadata.
+    // Kept for remaining legacy references.
     private func showSocialSharingSetupScreen() {
         guard let sharingVC = SharingViewController(blog: blog, delegate: self) else {
             return wpAssertionFailure("failed to instantiate SharingVC")
@@ -524,6 +621,8 @@ final class PostSettingsViewModel: NSObject, ObservableObject, PostSettingsViewM
         viewController?.present(navigationVC, animated: true)
     }
 
+    // Deprecated: superseded for post editing by connection_id-keyed PostSocialSharingDraft stored in post metadata.
+    // Kept for remaining legacy references.
     private func didDismissSocialSharingSetupPrompt() {
         track(.jetpackSocialNoConnectionCardDismissed)
         isSocialConnectionSetupDismissed = true
@@ -532,9 +631,12 @@ final class PostSettingsViewModel: NSObject, ObservableObject, PostSettingsViewM
         }
     }
 
+    // Deprecated: superseded for post editing by connection_id-keyed PostSocialSharingDraft stored in post metadata.
+    // Kept for remaining legacy references.
     func showSocialSharingOptions() {
         guard let blogID = blog.dotComID?.intValue,
-              let settings = settings.sharing else {
+            let settings = settings.sharing
+        else {
             return wpAssertionFailure("invalid context")
         }
         let optionsVC = PrepublishingSocialAccountsViewController(
@@ -625,6 +727,8 @@ extension PostSettingsViewModel: @MainActor SharingViewControllerDelegate {
     }
 }
 
+// Deprecated: superseded for post editing by connection_id-keyed PostSocialSharingDraft stored in post metadata.
+// Kept for remaining legacy references.
 extension PostSettingsViewModel: @MainActor PrepublishingSocialAccountsDelegate {
     func didUpdateSharingLimit(with newValue: PublicizeInfo.SharingLimit?) {
         settings.sharing?.sharingLimit = newValue

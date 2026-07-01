@@ -57,7 +57,7 @@ final class DashboardBlazeCampaignsCardView: UIView {
         frameView.add(subview: contentStackView)
         contentStackView.addArrangedSubview({
             let container = UIStackView(arrangedSubviews: [campaignView])
-            container.layoutMargins = Constants.campaignViewInsets
+            container.directionalLayoutMargins = Constants.campaignViewInsets
             container.isLayoutMarginsRelativeArrangement = true
             return container
         }())
@@ -147,7 +147,7 @@ private extension DashboardBlazeCampaignsCardView {
     }
 
     enum Constants {
-        static let campaignViewInsets = UIEdgeInsets(top: 16, left: 16, bottom: 16, right: 16)
+        static let campaignViewInsets = NSDirectionalEdgeInsets(top: 16, leading: 16, bottom: 16, trailing: 16)
         static let createCampaignInsets = NSDirectionalEdgeInsets(top: 16, leading: 16, bottom: 8, trailing: 16)
     }
 }

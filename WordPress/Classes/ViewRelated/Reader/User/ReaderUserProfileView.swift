@@ -21,7 +21,7 @@ struct ReaderUserProfileView: View {
                             .lineLimit(2)
                     }
                 } else {
-                    Text("–")
+                    Text(verbatim: "–")
                         .foregroundStyle(.secondary)
                 }
             }
