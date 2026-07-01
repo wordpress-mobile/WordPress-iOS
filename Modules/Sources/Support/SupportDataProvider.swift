@@ -34,6 +34,7 @@ public final class SupportDataProvider: ObservableObject, Sendable {
     private let botConversationDataProvider: BotConversationDataProvider
     private let userDataProvider: CurrentUserDataProvider
     private let supportConversationDataProvider: SupportConversationDataProvider
+    private let unifiedConversationDataProvider: UnifiedConversationDataProvider
     private let diagnosticsDataProvider: DiagnosticsDataProvider
     let mediaHost: MediaHostProtocol
 
@@ -44,6 +45,7 @@ public final class SupportDataProvider: ObservableObject, Sendable {
         botConversationDataProvider: BotConversationDataProvider,
         userDataProvider: CurrentUserDataProvider,
         supportConversationDataProvider: SupportConversationDataProvider,
+        unifiedConversationDataProvider: UnifiedConversationDataProvider,
         diagnosticsDataProvider: DiagnosticsDataProvider,
         mediaHost: MediaHostProtocol,
         delegate: SupportDelegate? = nil
@@ -52,6 +54,7 @@ public final class SupportDataProvider: ObservableObject, Sendable {
         self.botConversationDataProvider = botConversationDataProvider
         self.userDataProvider = userDataProvider
         self.supportConversationDataProvider = supportConversationDataProvider
+        self.unifiedConversationDataProvider = unifiedConversationDataProvider
         self.diagnosticsDataProvider = diagnosticsDataProvider
         self.mediaHost = mediaHost
         self.supportDelegate = delegate
@@ -102,6 +105,15 @@ public final class SupportDataProvider: ObservableObject, Sendable {
 
             throw error
         }
+    }
+
+    // Unified Conversations Data Source
+
+    /// Loads the combined list of bot and Happiness Engineer conversations from
+    /// the unified support endpoint. Detail and replies continue to use the
+    /// per-type data sources, branched on `UnifiedConversationItem.isBot`.
+    public func loadUnifiedConversations() throws -> any CachedAndFetchedResult<[UnifiedConversationItem]> {
+        try self.unifiedConversationDataProvider.loadUnifiedConversations()
     }
 
     // Support Conversations Data Source
@@ -270,6 +282,10 @@ public protocol BotConversationDataProvider: Actor {
 
     func sendMessage(message: String, in conversation: BotConversation?) async throws -> BotConversation
     func delete(conversationIds: [UInt64]) async throws
+}
+
+public protocol UnifiedConversationDataProvider: Actor {
+    nonisolated func loadUnifiedConversations() throws -> any CachedAndFetchedResult<[UnifiedConversationItem]>
 }
 
 public protocol SupportConversationDataProvider: Actor {

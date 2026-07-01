@@ -111,11 +111,19 @@ struct AttachmentListView: View {
     }
 
     private var otherAttachments: [Attachment] {
-        attachments.filter { !$0.isImage && !$0.isVideo }
+        attachments.filter { !$0.isImage && !$0.isVideo && !$0.isLink }
+    }
+
+    private var linkAttachments: [Attachment] {
+        attachments.filter { $0.isLink }
     }
 
     var body: some View {
         VStack(alignment: .leading) {
+            ForEach(linkAttachments) { attachment in
+                AttachmentLinkView(attachment: attachment)
+            }
+
             LazyVGrid(columns: columns, spacing: 16) {
                 ForEach(imageAttachments) { attachment in
                     AttachmentThumbnailView(attachment: attachment)
@@ -126,6 +134,33 @@ struct AttachmentListView: View {
                 AttachmentRowView(attachment: attachment)
             }
         }
+    }
+}
+
+/// Renders a `text/html` citation attachment as a tappable link that opens in
+/// the browser, rather than a file card that downloads raw HTML (PR 23011).
+struct AttachmentLinkView: View {
+
+    let attachment: Attachment
+
+    var body: some View {
+        Link(destination: attachment.url) {
+            HStack(alignment: .firstTextBaseline) {
+                Image(systemName: "arrow.up.right.square")
+                    .foregroundColor(.accentColor)
+                    .font(.body)
+                    .frame(width: 40, height: 40)
+                Text(attachment.filename)
+                    .font(.body)
+                    .foregroundColor(.accentColor)
+                    .underline()
+                    .lineLimit(1)
+                    .multilineTextAlignment(.leading)
+                Spacer()
+            }
+            .padding(.bottom, 4)
+        }
+        .accessibilityAddTraits(.isLink)
     }
 }
 

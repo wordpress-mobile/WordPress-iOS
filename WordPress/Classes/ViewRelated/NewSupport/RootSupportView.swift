@@ -59,8 +59,7 @@ struct RootSupportView: View {
             Section("How can we help?") {
                 communitySupportLink
                 if let identity {
-                    botSupportLink(for: identity)
-                    humanSupportLink(for: identity)
+                    getHelpLink(for: identity)
                 }
             }
 
@@ -89,29 +88,15 @@ struct RootSupportView: View {
     }
 
     @ViewBuilder
-    private func botSupportLink(for identity: SupportUser) -> some View {
+    private func getHelpLink(for identity: SupportUser) -> some View {
         NavigationLink {
-            ConversationListView(currentUser: identity)
+            UnifiedConversationListView(currentUser: identity)
                 .environmentObject(self.dataProvider) // Required until SwiftUI owns the nav controller
         } label: {
             SupportAreaRow(
                 imageName: "bubble.left.and.text.bubble.right",
-                title: "Ask the Bots",
-                detail: "Get quick answers to common questions."
-            )
-        }
-    }
-
-    @ViewBuilder
-    private func humanSupportLink(for identity: SupportUser) -> some View {
-        NavigationLink {
-            SupportConversationListView(currentUser: identity)
-                .environmentObject(self.dataProvider) // Required until SwiftUI owns the nav controller
-        } label: {
-            SupportAreaRow(
-                imageName: "envelope.badge",
-                title: "Ask the Happiness Engineers",
-                detail: "For your tough questions. We'll reply via email."
+                title: "Get help",
+                detail: "Chat with our bots or reach a Happiness Engineer."
             )
         }
     }
