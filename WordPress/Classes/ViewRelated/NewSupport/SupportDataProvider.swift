@@ -154,7 +154,7 @@ class WpSupportDelegate: NSObject, SupportDelegate {
 
 actor WpBotConversationDataProvider: BotConversationDataProvider {
 
-    private let botId = "jetpack-chat-mobile"
+    private let botId = "jetpack-workflow-chat_mobile_support"
 
     private let wpcomClient: WordPressDotComClient
 
