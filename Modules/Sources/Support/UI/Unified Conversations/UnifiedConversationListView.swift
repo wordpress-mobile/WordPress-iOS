@@ -161,14 +161,6 @@ public struct UnifiedConversationListView: View {
     }
 }
 
-extension UnifiedConversationItem {
-    /// A non-empty title for display. Bot conversations can have an empty
-    /// server title, so fall back to the (markdown-stripped) description.
-    var displayTitle: String {
-        title.isEmpty ? plainTextDescription : title
-    }
-}
-
 // MARK: - Row
 
 struct UnifiedConversationRow: View {
@@ -180,16 +172,14 @@ struct UnifiedConversationRow: View {
 
     var body: some View {
         VStack(alignment: .leading) {
-            VStack {
-                header
-                HStack {
-                    TimelineView(.periodic(from: .now, by: 1.0)) { _ in
-                        Text(formatTimestamp(conversation.lastMessageSentAt))
-                            .font(.caption)
-                            .foregroundColor(.secondary)
-                    }
-                    Spacer()
+            header
+            HStack {
+                TimelineView(.periodic(from: .now, by: 60.0)) { _ in
+                    Text(formatTimestamp(conversation.lastMessageSentAt))
+                        .font(.caption)
+                        .foregroundColor(.secondary)
                 }
+                Spacer()
             }
             .padding(.bottom, 2)
 
@@ -236,10 +226,14 @@ struct UnifiedConversationRow: View {
     }
 
     private func formatTimestamp(_ date: Date) -> String {
+        Self.relativeDateFormatter.localizedString(for: date, relativeTo: Date())
+    }
+
+    private static let relativeDateFormatter: RelativeDateTimeFormatter = {
         let formatter = RelativeDateTimeFormatter()
         formatter.unitsStyle = .abbreviated
-        return formatter.localizedString(for: date, relativeTo: Date())
-    }
+        return formatter
+    }()
 }
 
 #Preview {

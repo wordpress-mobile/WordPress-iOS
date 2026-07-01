@@ -12,9 +12,6 @@ public struct UnifiedConversationItem: Identifiable, Hashable, Sendable, Codable
     public let title: String
     public let description: String
 
-    /// The `description` with markdown formatting applied for rich-text display.
-    public let attributedDescription: AttributedString
-
     /// The `description` with any markdown formatting stripped out.
     public let plainTextDescription: String
 
@@ -40,8 +37,7 @@ public struct UnifiedConversationItem: Identifiable, Hashable, Sendable, Codable
         self.id = id
         self.title = title
         self.description = description
-        self.attributedDescription = convertMarkdownTextToAttributedString(description)
-        self.plainTextDescription = NSAttributedString(self.attributedDescription).string
+        self.plainTextDescription = NSAttributedString(convertMarkdownTextToAttributedString(description)).string
         self.rawStatus = rawStatus
         self.status = ConversationStatus(serverStatus: rawStatus)
         self.canAcceptReply = canAcceptReply
@@ -52,6 +48,12 @@ public struct UnifiedConversationItem: Identifiable, Hashable, Sendable, Codable
     /// Engineer ticket.
     public var isBot: Bool {
         rawStatus.caseInsensitiveCompare(Self.botStatus) == .orderedSame
+    }
+
+    /// A non-empty title for display. Bot conversations can have an empty
+    /// server title, so fall back to the (markdown-stripped) description.
+    var displayTitle: String {
+        title.isEmpty ? plainTextDescription : title
     }
 
     public static let botStatus = "bot"
