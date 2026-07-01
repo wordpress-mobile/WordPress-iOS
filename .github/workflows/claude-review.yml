@@ -23,7 +23,11 @@ jobs:
           REPOSITORY: ${{ github.repository }}
         run: |
           set -euo pipefail
-          head_repo="$(gh api "repos/${REPOSITORY}/pulls/${ISSUE_NUMBER}" --jq '.head.repo.full_name' 2>/dev/null || true)"
+          if ! head_repo="$(gh api "repos/${REPOSITORY}/pulls/${ISSUE_NUMBER}" --jq '.head.repo.full_name')"; then
+            echo "Unable to determine PR head repository for #${ISSUE_NUMBER}; skipping Claude."
+            echo "is_internal=false" >> "$GITHUB_OUTPUT"
+            exit 0
+          fi
 
           if [ "$head_repo" = "$REPOSITORY" ]; then
             echo "is_internal=true" >> "$GITHUB_OUTPUT"
@@ -37,6 +41,7 @@ jobs:
         uses: actions/checkout@93cb6efe18208431cddfb8368fd83d5badbf9bfd # v5
         with:
           fetch-depth: 1
+          persist-credentials: false
 
       - name: PR Review with Progress Tracking
         if: steps.pr-origin.outputs.is_internal == 'true'
