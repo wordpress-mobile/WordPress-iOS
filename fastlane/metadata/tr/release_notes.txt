@@ -1,7 +1,1 @@
-Kullanıcı tarafından barındırılan bir siteniz varsa şimdi bir uygulama şifresi kullanarak uygulamada oturum açabilirsiniz. Yoksa, ihtiyacınız olduğunda hazır olması için otomatik olarak bir tane oluşturacağız.
-
-Kaydırma hareketini kullanarak bir yorumu sildiğinizde, yorum artık listeden kaybolur. Hem de kalıcı olarak.
-
-Menü Düzenleme'deki alt bilgi görünümünün yeniden boyutlandırılmadığı bir sorunu düzelttik. Sonuç olarak, eylem düğmeleri artık İngilizce olmayan dillerde okunabilmektedir.
-
-Hakkında ekranındaki çalışmayan X bağlantısını kaldırdık. (Bildirdiği için @zynp-KC'ye teşekkürler!)
+Kendi barındırdığınız bir siteniz varsa şimdi bir uygulama şifresi kullanarak uygulamada oturum açabilirsiniz. Yoksa ihtiyacınız olduğunda hazır olması için otomatik olarak bir tane oluşturacağız.

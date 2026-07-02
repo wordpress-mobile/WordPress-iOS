@@ -1,18 +1,3 @@
-Kullanıcı tarafından barındırılan bir siteniz varsa şimdi bir uygulama şifresi kullanarak uygulamada oturum açabilirsiniz. Yoksa, ihtiyacınız olduğunda hazır olması için otomatik olarak bir tane oluşturacağız.
+Üzerinde çalıştığı Tenor hizmeti 30 Haziran'da kapanacağı için bir ortam kaynağı olarak Ücretsiz GIF Kitaplığını kaldırdık. Biz de bunun hakkında üzgünüz.
 
-Okuyucu beslemesinde öne çıkan görseller için akıllı kırpma ekledik. Böylece, resimlerdeki kişilerin kafası kırpılmayacak. Çok tercih ediliyor.
-
-Yönlendiren bir trafik kaynağını istenmeyen olarak işaretlediğiniz durumlar için artık bir onay iletişim kutusu mevcut. Yanlışlıkla yapılması gerçekten çok ama çok zor olmalı.
-
-Bu güncellemenin bir parçası olarak, birkaç hatayı da giderdik.
-
-- İstatistikler ekranındaki saat dilimi etiketi artık Yaz Saati uygulaması sırasında Standart Saat'i göstermiyor. (Yakaladığınız için teşekkürler, @btraviswright!)
-- Makaleler ekranı artık okuyucu yorumlarını satır içi bölümünden gönderdiğinde gösterir.
-- Abone Ol düğmesi, Yeni Çıktı gönderilerinde düzgün çalışır ve bir gönderi içinden bir beslemeye abone olabilirsiniz. Hızlı, kolay ve çok yeni.
-- Okuyucu'daki dipnot bağlantıları artık olması gerektiği gibi çalışıyor ve dokunduğunuzda doğru konuma atlıyor.
-- Okuyucu Yorumları'nda, bir yorum gönderdikten sonra boş durum kaybolur. Önbelleğe alınmış yorumlar da kaydırma eylemini kullandığınız durumlar da dahil olmak üzere silindikten sonra kaybolur. Hem de kalıcı olarak.
-- Düğme stilleri, Karanlık Modda yorum ayırıcıları ve otomatik oynatma videoları kontrolleri gibi çeşitli tasarım ve görünürlük sorunlarını düzelttik.
-- Okuyucu'da Bildirim Ayarları ile ilgili birkaç sorunu giderdik. Abone olmadığınızda bu özellikler gizlenir ve abone olduğunuzda uygun şekilde gösterilir.
-- Menü Düzenleme'deki alt bilgi görünümünün yeniden boyutlandırılmadığı bir sorunu düzelttik. Sonuç olarak, eylem düğmeleri artık İngilizce olmayan dillerde okunabilmektedir. Muy bueno.
-- Bildirimlerde yanlış avatarlarla ilgili bir sorunu çözdük. Görsel indirmeyi iptal ederseniz uygulamada görünmez.
-- Hakkında ekranındaki çalışmayan X bağlantısını kaldırdık. (Bildirdiği için @zynp-KC'ye teşekkürler!)
+Kendi barındırdığınız bir siteniz varsa şimdi bir uygulama şifresi kullanarak uygulamada oturum açabilirsiniz. Yoksa ihtiyacınız olduğunda hazır olması için otomatik olarak bir tane oluşturacağız.

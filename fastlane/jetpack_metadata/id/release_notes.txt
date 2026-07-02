@@ -1,18 +1,3 @@
-Jika Anda memiliki situs yang di-hosting sendiri, kini Anda perlu login ke aplikasi menggunakan kata sandi aplikasi. Jika Anda belum memiliki kata sandi aplikasi, kami akan membuatnya secara otomatis agar siap digunakan saat dibutuhkan.
+Kami menghapus Pustaka GIF Gratis sebagai sumber media karena layanan Tenor yang menjalankannya akan dihentikan pada 30 Juni. Kami juga sangat menyesalinya.
 
-Kami menambahkan pemangkasan cerdas untuk gambar andalan di feed Pembaca.  Dengan begitu, bagian kepala pada gambar orang tidak akan terpotong. Jauh lebih baik.
-
-Kini tersedia dialog konfirmasi saat Anda menandai sumber lalu lintas pengarah sebagai spam. Dengan begitu, akan sangat sulit melakukannya secara tidak sengaja.
-
-Dalam pembaruan ini, kami juga menemukan sejumlah bug.
-
-- Label zona waktu di layar Statistik tidak lagi menampilkan Waktu Standar selama Waktu Musim Panas. (Terima kasih atas laporannya, @btraviswright!)
-- Layar Artikel kini menampilkan komentar pembaca saat komentar tersebut diposting dari bagian inline.
-- Tombol Berlangganan kini berfungsi dengan baik pada pos Freshly Pressed, sehingga Anda dapat berlangganan feed langsung dari dalam pos. Cepat, mudah, dan makin segar.
-- Tautan catatan kaki pada Pembaca kini berfungsi sebagaimana mestinya dan mengarahkan Anda ke lokasi yang tepat saat diketuk.
-- Pada Komentar Pembaca, tampilan kosong akan hilang setelah Anda memposting komentar. Komentar dalam cache juga akan langsung hilang setelah dihapus, termasuk melalui tindakan geser. Selamat tinggal.
-- Kami memperbaiki beberapa masalah desain dan visibilitas, seperti gaya tombol, pemisah komentar pada Mode Gelap, dan kontrol video putar otomatis.
-- Pada Pembaca, kami memperbaiki beberapa masalah terkait Pengaturan Pemberitahuan. Pengaturan tersebut kini disembunyikan saat Anda belum berlangganan dan akan ditampilkan setelah berlangganan.
-- Kami memperbaiki masalah yang menyebabkan tampilan footer di Penyuntingan Menu tidak menyesuaikan ukurannya. Hasilnya, tombol tindakan kini muncul dengan jelas dalam bahasa selain bahasa Inggris. Muy bueno.
-- Kami mengatasi masalah avatar yang tidak sesuai pada pemberitahuan. Jika Anda membatalkan unduhan gambar, gambar tersebut tidak akan muncul di aplikasi.
-- Kami menghapus tautan X yang tidak berfungsi pada layar Tentang. (Apresiasi untuk @zynp-KC atas laporannya.)
+Jika Anda memiliki situs yang di-hosting sendiri, Anda kini dapat masuk ke aplikasi menggunakan kata sandi aplikasi. Jika Anda tidak memilikinya, kami membuatkannya secara otomatis yang siap digunakan saat Anda membutuhkannya.

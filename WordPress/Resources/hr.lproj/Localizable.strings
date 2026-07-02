@@ -20,6 +20,10 @@
 /* Empty Post Title */
 "(No Title)" = "(bez naslova)";
 
+/* Lets a user know that a local draft does not have a title.
+   Placeholder text for missing post title */
+"(no title)" = "(bez naslova)";
+
 /* No comment provided by engineer. */
 "Add image or video" = "Dodaj sliku ili video";
 
@@ -35,6 +39,9 @@
 
 /* Title of the completion screen of the Blogging Reminders Settings screen. */
 "All set!" = "Sve je spremno!";
+
+/* the comment has an anonymous author. */
+"Anonymous" = "Anonimno";
 
 /* Approve action. Verb
    Approve comment (verb)
@@ -71,7 +78,6 @@
 /* Alert dismissal title
    Button label that dismisses the qr log in flow and returns the user back to the previous screen
    Button title, cancel fixing all threats
-   Button title. Tapping it cancels the login flow.
    Cancel Action
    Cancel action on share extension editor screen.
    Cancel action on the app extension category picker screen.
@@ -97,7 +103,6 @@
    Menus cancel button for deleting a menu.
    Menus cancel button within text bar while editing items.
    Menus: Cancel button title for canceling an edited menu item.
-   Option to cancel the email app selection when logging in with magic links
    Title of a button that dismisses the permissions alert
    Title. Title of a cancel button. Tapping disnisses an alert.
    Verb. A button title.
@@ -130,9 +135,6 @@
 
 /* Verb. Title for Jetpack Restore confirm button. */
 "Confirm" = "Potvrdi";
-
-/* No comment provided by engineer. */
-"Connecting to WordPress.com" = "Spajanje sa WordPress.com";
 
 /* Period Stats 'Countries' header */
 "Countries" = "Države";
@@ -168,23 +170,23 @@
 /* Menus alert button title to discard changes. */
 "Discard Changes" = "Odbaci promjene";
 
-/* Accessibility label for the transparent space above the login dialog which acts as a button to dismiss the dialog.
-   Accessibility label for the transparent space above the signup dialog which acts as a button to dismiss the dialog. */
+/* No comment provided by engineer. */
 "Dismiss" = "Odbaci";
 
 /* A done button
-   Button text on site creation epilogue page to proceed to My Sites.
    Done button title
    Done editing an image
    Done. Action.
    Menu button title for finishing editing the Menu name.
-   Tapping a button with this label allows the user to exit the Site Creation flow
    Title for button that will dismiss this view
    Title for the button that will dismiss this view. */
 "Done" = "Završeno";
 
 /* No comment provided by engineer. */
 "Double tap to add a link." = "Dodirnite dva puta da biste dodali poveznicu.";
+
+/* Name for the status of a draft post. */
+"Draft" = "Skica";
 
 /* Editing GIF alert default action button.
    Edits a Comment
@@ -205,10 +207,7 @@
 /* Title for the editor section in site settings screen */
 "Editor" = "Uređivač";
 
-/* Accessibility label for the email address text field.
-   Describes the email address section in the comment detail screen.
-   Placeholder for a textfield. The user may enter their email address.
-   Placeholder for the email address textfield. */
+/* Describes the email address section in the comment detail screen. */
 "Email address" = "Adresa E-pošte";
 
 /* Title for the Emoji section */
@@ -226,12 +225,8 @@
 /* Example post title used in the login prologue screens. */
 "Getting Inspired" = "Inspiriran";
 
-/* Help button
-   Open editor help options */
+/* Open editor help options */
 "Help" = "Pomoć";
-
-/* Accessibility value if login page's password field is hiding the password (i.e. with asterisks). */
-"Hidden" = "Skriveno";
 
 /* Example post content used in the login prologue screens. */
 "I am so inspired by photographer Cameron Karsten's work. I will be trying these techniques on my next" = "Inspiriran sam radovima fotografa Camerona Karstena. Pokušavat ću primjenjivati te tehnike na svoje sljedeće";
@@ -274,7 +269,8 @@
 /* Left alignment for an image. Should be the same as in core WP. */
 "Left" = "Lijevo";
 
-/* Label for link title in Clicks stat. */
+/* Label for link title in Clicks stat.
+   Menu item label for linking a custom source URL. */
 "Link" = "Poveznica";
 
 /* Loading tags
@@ -283,24 +279,16 @@
    Text displayed in HUD while a media item is being loaded. */
 "Loading..." = "Učitavam...";
 
-/* Button title.  Tapping takes the user to the login form.
-   Label for logging in to WordPress.com account
+/* Label for logging in to WordPress.com account
    Log In 3D Touch Shortcut
-   Log In button label.
-   View title during the log in process. */
+   Log In button label. */
 "Log In" = "Prijavi se";
 
 /* Title of a button for signing in. */
 "Log in" = "Prijava";
 
-/* A generic error message for a failed log in. */
-"Log in failed. Please try again." = "Prijava nije uspjela. Molimo pokušajte ponovo.";
-
 /* LogOut confirmation text, whenever there are no local changes */
 "Log out of Jetpack?" = "Jeste li sigurni da se želite odjaviti s Jetpacka?";
-
-/* Title of a button. */
-"Lost your password?" = "Izgubili ste lozinku?";
 
 /* No comment provided by engineer. */
 "Main Navigation" = "Glavni izbornik";
@@ -343,9 +331,7 @@
 "Newest" = "Najnovije";
 
 /* Next action on comment moderation snackbar.
-   Next action on share extension editor screen.
-   Title of a button.
-   Title of a button. The text should be capitalized. */
+   Next action on share extension editor screen. */
 "Next" = "Sljedeće";
 
 /* Title of error prompt when no internet connection is available. */
@@ -368,11 +354,7 @@
    Title of the 'Notifications' tab - used for spotlight indexing on iOS. */
 "Notifications" = "Obavijesti";
 
-/* Alert dismissal title
-   Button title. An acknowledgement of the message displayed in a prompt.
-   Dismisses the alert
-   Menus: button title for finishing editing of a menu item.
-   Ok button for dismissing alert helping users understand their site address */
+/* Menus: button title for finishing editing of a menu item. */
 "OK" = "OK";
 
 /* Disabled */
@@ -392,11 +374,8 @@
    Title of the screen showing the list of pages for a blog. */
 "Pages" = "Stranice";
 
-/* Accessibility label for the password text field in the self-hosted login page.
-   Label for entering password in password field
+/* Label for entering password in password field
    Login dialog password placeholder
-   Password placeholder
-   Placeholder for the password textfield.
    Title for screen that shows self hosted password editor. */
 "Password" = "Lozinka";
 
@@ -404,14 +383,14 @@
    Title of pending Comments filter. */
 "Pending" = "Na čekanju";
 
+/* Name for the status of a post pending review. */
+"Pending review" = "Čeka recenziju";
+
 /* Label for date periods. */
 "Period" = "Vremensko razdoblje";
 
 /* Popup message to ask for user credentials (fields shown below). */
 "Please enter your credentials" = "Molimo unesite vaše podatke";
-
-/* A short prompt asking the user to properly fill out all login fields. */
-"Please fill out all the fields" = "Molimo vas da popunite sva polja";
 
 /* Header of section in Plugin Directory showing popular plugins
    Screen title, where users can see the most popular plugins */
@@ -431,11 +410,18 @@
 /* Title of button that displays the App's privacy policy */
 "Privacy Policy" = "Pravila privatnosti";
 
+/* Name for the status of a post that is marked private. */
+"Private" = "Privatno";
+
 /* Label for the publish (verb) button. Tapping publishes a draft post.
    Publish post action on share extension site picker screen. */
 "Publish" = "Objavi";
 
-/* Period Stats 'Published' header
+/* A short phrase indicating a post is due to be immedately published. */
+"Publish Immediately" = "Objavi Odmah";
+
+/* Name for the status of a published post.
+   Period Stats 'Published' header
    Title of the published filter. This filter shows a list of posts that the user has published. */
 "Published" = "Objavljeno";
 
@@ -460,7 +446,6 @@
 /* A prompt to attempt the failed network request again
    A prompt to attempt the failed network request again.
    Button title, displayed when media has failed to upload. Allows the user to try the upload again.
-   If a user taps the button with this label, the action that evinced this error view will be retried.
    Opens the media library .
    Retry updating User's Role
    Retry. Action
@@ -487,7 +472,8 @@
 /* Title for a notice informing the user their scan has completed */
 "Scan Finished" = "Skeniranje završeno";
 
-/* Title of the scheduled filter. This filter shows a list of posts that are scheduled to be published at a future date. */
+/* Name for the status of a scheduled post
+   Title of the scheduled filter. This filter shows a list of posts that are scheduled to be published at a future date. */
 "Scheduled" = "Tempirano";
 
 /* Title of Stats section that shows search engine referrer traffic. */
@@ -504,9 +490,6 @@
    Title for screen that allows configuration of your blog/site settings.
    Title for the Jetpack Security Settings Screen */
 "Settings" = "Postavke";
-
-/* When social login fails, this button offers to let them signup for a new WordPress.com account */
-"Sign up" = "Registracija";
 
 /* Header for a single site, shown in Notification user profile. */
 "Site" = "Sjedište";
@@ -534,6 +517,9 @@
 /* Support button that appears in the Theme Browser Header
    Theme Support action title */
 "Support" = "Podrška";
+
+/* Menu item label for linking a specific tag. */
+"Tag" = "Tag";
 
 /* Label for selecting the blogs tags
    Post tags.
@@ -623,14 +609,10 @@
 "Uploading" = "Prenosim";
 
 /* A placeholder for the twitter username
-   Accessibility label for the username text field in the self-hosted login page.
    Account Settings Username label
    Label for entering username in the username field
    Login dialog username placeholder
-   Placeholder for the username textfield.
-   The header and main title
-   Username label text.
-   Username placeholder */
+   The header and main title */
 "Username" = "Korisničko ime";
 
 /* Description for the version label in the What's new page. */
@@ -669,6 +651,9 @@
 
 /* Settings for a Wordpress Blog */
 "WordPress Blog" = "WordPressov blog";
+
+/* Siri Suggestion to open Support */
+"WordPress Help" = "WordPressova pomoć";
 
 /* No comment provided by engineer. */
 "WordPress version too old" = "WordPress inačica prestara";

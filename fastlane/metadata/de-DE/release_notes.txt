@@ -1,7 +1,1 @@
-Wenn du eine selbst gehostete Website hast, meldest du dich nun mit einem Anwendungspasswort bei der App an. Falls du noch kein solches Passwort hast, erstellen wir automatisch eines für dich, damit es bei Bedarf sofort zur Verfügung steht.
-
-Wenn du einen Kommentar durch Wischen löschst, verschwindet er nun aus der Liste. Leb wohl.
-
-Wir haben ein Problem behoben, bei dem sich die Größe der Footer-Ansicht in der Menübearbeitung nicht anpassen ließ. Dadurch sind die Aktions-Buttons nun auch in anderen Sprachen als Englisch gut lesbar.
-
-Wir haben den nicht funktionierenden X-Link in der Über-Ansicht entfernt. (Danke an @zynp-KC für den Hinweis!)
+Wenn du eine selbst gehostete Website hast, meldest du dich jetzt mit einem Anwendungspasswort bei der App an. Wenn du noch keins hast, erstellen wir automatisch eins für dich, damit es bereit ist, wenn du es brauchst.

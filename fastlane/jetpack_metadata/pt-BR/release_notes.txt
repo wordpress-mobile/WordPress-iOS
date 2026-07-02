@@ -1,18 +1,3 @@
-Se você tiver um site auto-hospedado, agora você fará login no aplicativo usando uma senha. Se não tiver, criaremos um automaticamente para que ele esteja pronto quando você precisar.
+A biblioteca gratuita de GIF não é mais a fonte de mídia, pois o serviço Tenor em que ela é executada será encerrado em 30 de junho. Também estamos tristes por isso.
 
-Adicionamos recorte inteligente para imagens destacadas no feed do Leitor. Dessa forma, imagens de pessoas não ficarão com a cabeça cortada. Muito melhor.
-
-Agora há uma caixa de diálogo de confirmação para quando você estiver marcando uma fonte de tráfego de referência como spam. Assim, fica muito mais difícil fazer isso por acidente.
-
-Como parte desta atualização, também eliminamos vários bugs.
-
-- O rótulo de fuso horário na tela Estatísticas não mostra mais o horário padrão durante o horário de verão. (Obrigado pela atenção, @btraviswright!)
-- A tela Artigos agora mostra os comentários dos leitores quando eles são publicados a partir da seção embutida.
-- O botão Assinar funciona corretamente em posts recém-publicados, para que você possa assinar um feed direto no post. Rápido, fácil e renovado.
-- Os links de nota de rodapé no Leitor agora funcionam como deveriam e saltam para o local correto ao tocá-los.
-- Em Comentários do Leitor, o estado vazio desaparece depois que você postar um comentário. Comentários armazenados em cache também desaparecem depois de serem excluídos, mesmo quando você usa a ação de deslizar. Isso é tudo, até mais.
-- Corrigimos problemas variados de design e visibilidade, como estilos de botão, separadores de comentários no modo escuro e controles para reprodução automática de vídeos.
-- No Leitor, corrigimos alguns problemas nas Configurações de notificação. Eles agora ficam ocultos quando você não está inscrito e aparecem corretamente quando você assina.
-- Corrigimos um problema em que a visualização do rodapé na edição de menu não estava sendo redimensionada. Como resultado, os botões de ação agora são legíveis em idiomas diferentes do inglês. Muy Bueno.
-- Resolvemos um problema com avatares incorretos nas notificações. Se você cancelar o download da sua imagem, ela não aparecerá no aplicativo.
-- Removemos o link X não funcional da tela Sobre. (Agradecemos a @zynp-KC por reportar!)
+Se você tiver um site auto-hospedado, passará a usar uma senha de aplicativo ao fazer login no app. Se você não tiver uma, criaremos automaticamente para estar disponível quando você precisar.
