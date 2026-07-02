@@ -12,6 +12,7 @@ jobs:
     permissions:
       contents: read
       pull-requests: write
+      id-token: write
     steps:
       # issue_comment payloads identify PR comments, but do not include the PR
       # head repo. Query the PR before allowing Claude to run on fork PRs.
