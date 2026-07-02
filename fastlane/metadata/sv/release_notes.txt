@@ -1,7 +1,1 @@
 Om du har en webbplats på egen server loggar du nu in på appen med ett applikationslösenord. Om du inte har en, skapar vi automatiskt en åt dig så att den är redo när du behöver den.
-
-När du tar bort en kommentar med svepåtgärden försvinner den nu från listan. Adjö och farväl.
-
-Vi åtgärdade ett problem där sidfotsvyn i Menyredigering inte ändrade storlek. Som ett resultat av detta är åtgärdsknappar nu läsbara på andra språk än engelska.
-
-Vi tog bort den icke-funktionella X-länken på skärmen Om. (En eloge till @zynp-KC för rapportering!)
