@@ -396,6 +396,22 @@ platform :ios do
     check_all_translations(interactive: skip_confirm == false)
 
     download_localized_strings_and_metadata
+
+    # FIXME: Temporary workaround for a bad Polish translation in GlotPress (`%l` instead of `%ld`).
+    # Remove once the translation is fixed in GlotPress.
+    # See https://buildkite.com/automattic/wordpress-ios/builds/32954#019f1c22-9e97-40f3-b9de-7968fa279118
+    pl_strings_path = File.join(PROJECT_ROOT_FOLDER, 'WordPress', 'Resources', 'pl.lproj', 'Localizable.strings')
+    pl_strings = File.read(pl_strings_path)
+    pl_strings_fixed = pl_strings.sub('Nie przesłano %l plików', 'Nie przesłano %ld plików')
+    unless pl_strings_fixed == pl_strings
+      File.write(pl_strings_path, pl_strings_fixed)
+      git_commit(
+        path: pl_strings_path,
+        message: 'Fix invalid placeholder in Polish translation',
+        allow_nothing_to_commit: false
+      )
+    end
+
     lint_localizations(allow_retry: skip_confirm == false)
 
     bump_build_code
