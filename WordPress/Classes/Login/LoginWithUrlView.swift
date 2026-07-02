@@ -5,6 +5,7 @@ import WordPressAPIInternal
 import WordPressData
 import DesignSystem
 import WordPressShared
+import WordPressUI
 
 struct LoginWithUrlView: View {
 
@@ -38,8 +39,7 @@ struct LoginWithUrlView: View {
             siteAdddressTextField()
 
             if let errorMessage {
-                Text(errorMessage)
-                    .foregroundStyle(.red)
+                errorSection(errorMessage)
             }
 
             Spacer()
@@ -71,6 +71,28 @@ struct LoginWithUrlView: View {
         }
         .navigationTitle(Strings.title)
         .navigationBarTitleDisplayMode(.inline)
+    }
+
+    private func errorSection(_ message: String) -> some View {
+        VStack(alignment: .leading, spacing: 8) {
+            Text(message)
+                .foregroundStyle(.red)
+            Button(Strings.contactSupport) {
+                contactSupportTapped()
+            }
+            .font(.subheadline.weight(.medium))
+        }
+    }
+
+    private func contactSupportTapped() {
+        guard let presenter else {
+            wpAssertionFailure("No presenter assigned")
+            return
+        }
+        // The `presenter` sits below the sheet hosting this view, so present
+        // the support screen from the topmost view controller instead.
+        let supportViewController = SupportTableViewController()
+        supportViewController.show(from: presenter.topmostPresentedViewController)
     }
 
     private func siteAdddressTextField() -> some View {
@@ -164,14 +186,43 @@ private enum Strings {
         value: "This site is hosted on WordPress.com. Please log in with your WordPress.com account.",
         comment: "Notice message shown when a user tries to add a WordPress.com site as self-hosted"
     )
+
+    static let contactSupport = NSLocalizedString(
+        "addSite.selfHosted.contactSupport",
+        value: "Contact Support",
+        comment: "Button to contact support, shown when signing in to a self-hosted site fails"
+    )
 }
 
 // MARK: - SwiftUI Preview
 
-#Preview {
-    LoginWithUrlView(
-        presenter: nil,
-        loginCompleted: { _ in },
-        presentDotComLogin: {}
-    )
+extension LoginWithUrlView {
+    /// Preview-only convenience to force the error state.
+    fileprivate init(errorMessage: String?, urlField: String) {
+        self.presenter = nil
+        self.loginCompleted = { _ in }
+        self.presentDotComLogin = {}
+        self._errorMessage = State(initialValue: errorMessage)
+        self._urlField = State(initialValue: urlField)
+    }
+}
+
+#Preview("Default") {
+    NavigationStack {
+        LoginWithUrlView(
+            presenter: nil,
+            loginCompleted: { _ in },
+            presentDotComLogin: {}
+        )
+    }
+}
+
+#Preview("Sign-in failed") {
+    NavigationStack {
+        LoginWithUrlView(
+            errorMessage:
+                "We couldn't log in to your site. The site at mysite.example.com doesn't appear to have the REST API enabled.",
+            urlField: "mysite.example.com"
+        )
+    }
 }
