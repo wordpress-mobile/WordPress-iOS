@@ -78,34 +78,50 @@ public class ContextManager: NSObject, CoreDataStack, CoreDataStackSwift {
     }
 
     @objc(performAndSaveUsingBlock:completion:onQueue:)
-    public func performAndSave(_ block: @escaping (NSManagedObjectContext) -> Void, completion: (() -> Void)?, on queue: DispatchQueue) {
+    public func performAndSave(
+        _ block: @escaping (NSManagedObjectContext) -> Void,
+        completion: (() -> Void)?,
+        on queue: DispatchQueue
+    ) {
         let context = newDerivedContext()
-        self.writerQueue.addOperation(AsyncBlockOperation { done in
-            context.perform {
-                block(context)
+        self.writerQueue.addOperation(
+            AsyncBlockOperation { done in
+                context.perform {
+                    block(context)
 
-                self.save(context, .alreadyInContextQueue)
-                queue.async { completion?() }
-                done()
-            }
-        })
-    }
-
-    public func performAndSave<T>(_ block: @escaping (NSManagedObjectContext) throws -> T, completion: ((Result<T, Error>) -> Void)?, on queue: DispatchQueue) {
-        let context = newDerivedContext()
-        self.writerQueue.addOperation(AsyncBlockOperation { done in
-            context.perform {
-                let result = Result(catching: { try block(context) })
-                if case .success = result {
                     self.save(context, .alreadyInContextQueue)
+                    queue.async { completion?() }
+                    done()
                 }
-                queue.async { completion?(result) }
-                done()
             }
-        })
+        )
     }
 
-    public func performAndSave<T>(_ block: @escaping (NSManagedObjectContext) -> T, completion: ((T) -> Void)?, on queue: DispatchQueue) {
+    public func performAndSave<T>(
+        _ block: @escaping (NSManagedObjectContext) throws -> T,
+        completion: ((Result<T, Error>) -> Void)?,
+        on queue: DispatchQueue
+    ) {
+        let context = newDerivedContext()
+        self.writerQueue.addOperation(
+            AsyncBlockOperation { done in
+                context.perform {
+                    let result = Result(catching: { try block(context) })
+                    if case .success = result {
+                        self.save(context, .alreadyInContextQueue)
+                    }
+                    queue.async { completion?(result) }
+                    done()
+                }
+            }
+        )
+    }
+
+    public func performAndSave<T>(
+        _ block: @escaping (NSManagedObjectContext) -> T,
+        completion: ((T) -> Void)?,
+        on queue: DispatchQueue
+    ) {
         performAndSave(
             block,
             completion: { (result: Result<T, Error>) in
@@ -147,7 +163,11 @@ public class ContextManager: NSObject, CoreDataStack, CoreDataStackSwift {
             return
         }
 
-        guard let metadata = try? NSPersistentStoreCoordinator.metadataForPersistentStore(ofType: NSSQLiteStoreType, at: storeURL),
+        guard
+            let metadata = try? NSPersistentStoreCoordinator.metadataForPersistentStore(
+                ofType: NSSQLiteStoreType,
+                at: storeURL
+            ),
             !objectModel.isConfiguration(withName: nil, compatibleWithStoreMetadata: metadata)
         else {
             return
@@ -159,7 +179,8 @@ public class ContextManager: NSObject, CoreDataStack, CoreDataStackSwift {
             fatalError("Can't find WordPress.momd")
         }
 
-        guard let versionInfo = NSDictionary(contentsOf: modelFileURL.appendingPathComponent("VersionInfo.plist")) else {
+        guard let versionInfo = NSDictionary(contentsOf: modelFileURL.appendingPathComponent("VersionInfo.plist"))
+        else {
             fatalError("Can't get the object model's version info")
         }
 
@@ -181,7 +202,14 @@ public class ContextManager: NSObject, CoreDataStack, CoreDataStackSwift {
 
 private extension ContextManager {
     static var localDatabasePath: URL {
-        guard let url = try? FileManager.default.url(for: .documentDirectory, in: .userDomainMask, appropriateFor: nil, create: true) else {
+        guard
+            let url = try? FileManager.default.url(
+                for: .documentDirectory,
+                in: .userDomainMask,
+                appropriateFor: nil,
+                create: true
+            )
+        else {
             fatalError("Failed to find the document directory")
         }
 
@@ -202,7 +230,10 @@ private extension ContextManager {
         }
 
         // Ensure that the `context`'s concurrency type is not `confinementConcurrencyType`, since it will crash if `perform` or `performAndWait` is called.
-        guard context.concurrencyType == .mainQueueConcurrencyType || context.concurrencyType == .privateQueueConcurrencyType else {
+        guard
+            context.concurrencyType == .mainQueueConcurrencyType
+                || context.concurrencyType == .privateQueueConcurrencyType
+        else {
             block()
             return
         }
@@ -292,7 +323,7 @@ extension ContextManager {
     }
 
     public static var shared: ContextManager {
-        return sharedInstance()
+        sharedInstance()
     }
 }
 
