@@ -71,10 +71,10 @@
 /* Accessibility identifier for buttons. */
 "%@ Button" = "Botão %@";
 
-/* The number of tags in the writting settings. Singular. %@ is a placeholder for the number */
+/* The number of tags in the writing settings. Singular. %@ is a placeholder for the number */
 "%@ Tag" = "%@ Tag";
 
-/* The number of tags in the writting settings. Plural. %@ is a placeholder for the number */
+/* The number of tags in the writing settings. Plural. %@ is a placeholder for the number */
 "%@ Tags" = "%@ Tags";
 
 /* Accessibility label for value in billions. Ex: 66.6 billion. */
@@ -98,6 +98,9 @@
 
 /* Amount of disk quota being used. First argument is the total percentage being used second argument is total quota allowed in GB.Ex: 33% of 14 GB on your site. */
 "%@ of %@ on your site" = "%1$@ de %2$@ em seu site";
+
+/* Amount of disk quota being used. First argument is the total percentage being used second argument is total quota allowed in GB.Ex: 33% of 14 GB used on your site. */
+"%@ of %@ used on your site" = "%1$@ de %2$@ usados em seu site";
 
 /* Accessibility label for value in quadrillion. Ex: 66.6 quadrillion. */
 "%@ quadrillion" = "%@ quatrilhões";
@@ -236,6 +239,10 @@ translators: %s: Block name e.g. \"Image block\" */
 /* Menus title label text for a post that has no set title. */
 "(Untitled)" = "(Sem título)";
 
+/* Lets a user know that a local draft does not have a title.
+   Placeholder text for missing post title */
+"(no title)" = "(sem título)";
+
 /* Example Comment notification displayed in the prologue carousel of the app. Username should be marked with * characters and will be displayed as bold text. */
 "*Johann Brandt* responded to your post" = "*Johann Brandt* respondeu à sua publicação";
 
@@ -302,26 +309,17 @@ translators: %s: Block name e.g. \"Image block\" */
 /* Short title telling the user they will receive a blogging reminder two times a week. The word for 'twice' should be surrounded by <strong> HTML tags. */
 "<strong>Twice<\/strong> a week at %@" = "<strong>Duas vezes<\/strong> por semana às %@";
 
-/* Label displaying the user's username preceeded by an '@' symbol. %1$@ is a placeholder for the username. */
+/* Label displaying the user's username preceded by an '@' symbol. %1$@ is a placeholder for the username. */
 "@%1$@" = "@%1$@";
 
 /* A short description of what the 'More' button is and how it works. */
 "A \"more\" button contains a dropdown which displays sharing buttons" = "Um botão \"mais\" contém uma lista suspensa que mostra botões de compartilhamento";
-
-/* Instruction text to explain magic link login step. */
-"A WordPress.com account is connected to your store credentials. To continue, we will send a verification link to the email address above." = "Uma conta do WordPress.com está conectada às credenciais da sua loja. Para continuar, enviaremos um link de verificação para o endereço de e-mail acima.";
 
 /* Title for a threat */
 "A file contains a malicious code pattern" = "Um arquivo contém um padrão de código malicioso";
 
 /* Placeholder text for the title of a site */
 "A title for the site" = "Um título para o site";
-
-/* An error message. */
-"A valid email address is needed to mail an authentication link. Please return to the previous screen and provide a valid email address." = "É necessário um endereço de e-mail válido para enviar um link de autenticação. Retorne para a tela anterior e forneça um endereço de e-mail válido.";
-
-/* Shown when a user types a non-number into the two factor field. */
-"A verification code will only contain numbers." = "Um código de verificação só contém números.";
 
 /* Label for active Theme browser cell */
 "ACTIVE" = "ATIVO";
@@ -352,12 +350,6 @@ translators: %s: Block name e.g. \"Image block\" */
 
 /* Title for the account section in site settings screen */
 "Account" = "Conta";
-
-/* Header for account details, shown after signing up. */
-"Account Details" = "Detalhes da conta";
-
-/* Accessibility description for account information after logging in. */
-"Account Information. %@. %@." = "Informações da conta. %1$@. %2$@.";
 
 /* Account Settings Title
    Link to Account Settings section */
@@ -416,9 +408,6 @@ translators: %s: Block name e.g. \"Image block\" */
 /* No comment provided by engineer. */
 "Add a shortcode…" = "Adicione um shortcode…";
 
-/* Accessibility description for adding an image to a new user account. Tapping this initiates that flow. */
-"Add account image." = "Adicionar imagem da conta.";
-
 /* No comment provided by engineer. */
 "Add alt text" = "Adicionar texto alternativo";
 
@@ -439,9 +428,6 @@ translators: %s: Block name e.g. \"Image block\" */
 
 /* No comment provided by engineer. */
 "Add image or video" = "Adicionar imagem ou vídeo";
-
-/* Accessibility hint text for adding an image to a new user account. */
-"Add image, or avatar, to represent this new account." = "Adicionar uma imagem ou avatar para representar essa nova conta.";
 
 /* No comment provided by engineer. */
 "Add link text" = "Adicionar texto do link";
@@ -508,9 +494,6 @@ translators: %s: Block name e.g. \"Image block\" */
 /* Screen reader text expressing the menu item is after another menu item. Argument is a name for another menu item. */
 "After %@" = "Após %s";
 
-/* Option to select the Airmail app when logging in with magic links */
-"Airmail" = "Airmail";
-
 /* Image alignment option title.
    Title of the screen for choosing an image's alignment. */
 "Alignment" = "Alinhamento";
@@ -572,9 +555,6 @@ translators: %s: Block name e.g. \"Image block\" */
 /* Jetpack Settings: Allowlisted IP addresses */
 "Allowlisted IP addresses" = "Endereços IP permitidos";
 
-/* Instructions for users with two-factor authentication enabled. */
-"Almost there! Please enter the verification code from your authenticator app." = "Quase pronto! Informe o código de verificação do seu aplicativo de autenticação.";
-
 /* Image alt attribute option title. */
 "Alt Text" = "Texto alternativo";
 
@@ -586,12 +566,6 @@ translators: %s: Block name e.g. \"Image block\" */
 
 /* translators: Alternative option included in a warning related to having blocks deeply nested. */
 "Alternatively, you can flatten the content by ungrouping the block." = "Se preferir, desagrupe o bloco para nivelar o conteúdo.";
-
-/* Instruction text to explain to help users type their password instead of using magic link login option. */
-"Alternatively, you may enter the password for this account." = "Se preferir, insira a senha para esta conta.";
-
-/* String displayed before offering alternative login methods */
-"Alternatively:" = "Ou:";
 
 /* Title of a row displayed on the debug screen used to indicate whether crash logs should be forced to send, even if they otherwise wouldn't */
 "Always Send Crash Logs" = "Sempre enviar resumo de falhas";
@@ -648,7 +622,7 @@ translators: %s: Block name e.g. \"Image block\" */
 /* Text displayed when a stat section failed to load. */
 "An error occurred." = "Ocorreu um erro.";
 
-/* A failure reason for when the error that occured wasn't able to be determined. */
+/* A failure reason for when the error that occurred wasn't able to be determined. */
 "An unknown error occurred." = "Ocorreu um erro desconhecido.";
 
 /* Error message shown when a media upload fails for unknown reason and the user should try again. */
@@ -656,6 +630,9 @@ translators: %s: Block name e.g. \"Image block\" */
 
 /* Insights 'This Year' details view header */
 "Annual Site Stats" = "Estatísticas anual do site";
+
+/* the comment has an anonymous author. */
+"Anonymous" = "Anônimo";
 
 /* Verb. Opens the editor to answer the blogging prompt. */
 "Answer" = "Responder";
@@ -678,9 +655,6 @@ translators: %s: Block name e.g. \"Image block\" */
 
 /* The title of the app appearance settings screen */
 "Appearance" = "Aparência";
-
-/* Message shown when Apple authentication fails. */
-"Apple authentication failed.\nPlease make sure you are signed in to iCloud with an Apple ID that uses two-factor authentication." = "A autenticação com a Apple falhou.\nCertifique-se de que está conectado ao iCloud com um Apple ID que usa autenticação de dois fatores.";
 
 /* No comment provided by engineer. */
 "Applies the setting" = "Aplicar configurações";
@@ -761,10 +735,6 @@ translators: %s: Block name e.g. \"Image block\" */
 
 /* Title for the error view when the authentication failed for any reason */
 "Authentication Failed" = "Falha na autenticação";
-
-/* Accessibility label for the 2FA text field.
-   Placeholder for the 2FA code textfield. */
-"Authentication code" = "Código de autenticação";
 
 /* Popup title to ask for user credentials. */
 "Authentication required for host: %@" = "Autenticação requerida pelo host: %@";
@@ -997,18 +967,12 @@ translators: %s: Block name e.g. \"Image block\" */
 /* No comment provided by engineer. */
 "Button to copy post text" = "Botão para copiar o texto do post";
 
-/* Legal disclaimer for logging in. The underscores _..._ denote underline. */
-"By continuing, you agree to our _Terms of Service_." = "Ao continuar, você concorda com os nossos _Termos de Serviço_.";
-
 /* Terms of Service link displayed when a user is registering domain. Text inside <a> tags will be highlighted. */
 "By registering this domain you agree to our <a>Terms&nbsp;and&nbsp;Conditions<\/a>." = "Ao registrar um domínio, você concorda com nossos <a>termos e condições<\/a>.";
 
 /* Title of the button which opens the Jetpack terms and conditions page. The sentence is composed by 2 lines separated by a line break 
 . Also there is a placeholder %@ which is: Terms and Conditions */
 "By setting up Jetpack you agree to our\n%@" = "Ao configurar o Jetpack, você concorda com nossos\n%@";
-
-/* Legal disclaimer for signup buttons, the underscores _..._ denote underline */
-"By signing up, you agree to our _Terms of Service_." = "Ao cadastrar-se, você concorda com os nossos _Termos de serviço_.";
 
 /* No comment provided by engineer. */
 "CUSTOMIZE" = "Personalizar";
@@ -1022,9 +986,6 @@ translators: %s: Block name e.g. \"Image block\" */
 /* Title of an alert informing the user the camera permission for the app is disabled and its needed to proceed */
 "Camera access needed to scan login codes" = "Necessário acesso à câmera para verificar os códigos de login";
 
-/* Title of an alert letting the user know */
-"Can Not Request Link" = "Não pode requisitar link";
-
 /* Alert message that is shown when trying to publish empty page */
 "Can't publish an empty page" = "Não é possível publicar uma página sem conteúdo";
 
@@ -1034,7 +995,6 @@ translators: %s: Block name e.g. \"Image block\" */
 /* Alert dismissal title
    Button label that dismisses the qr log in flow and returns the user back to the previous screen
    Button title, cancel fixing all threats
-   Button title. Tapping it cancels the login flow.
    Cancel Action
    Cancel action on share extension editor screen.
    Cancel action on the app extension category picker screen.
@@ -1060,7 +1020,6 @@ translators: %s: Block name e.g. \"Image block\" */
    Menus cancel button for deleting a menu.
    Menus cancel button within text bar while editing items.
    Menus: Cancel button title for canceling an edited menu item.
-   Option to cancel the email app selection when logging in with magic links
    Title of a button that dismisses the permissions alert
    Title. Title of a cancel button. Tapping disnisses an alert.
    Verb. A button title.
@@ -1086,9 +1045,6 @@ translators: %s: Block name e.g. \"Image block\" */
 /* A short message that informs the user the share extension is being canceled. */
 "Canceling..." = "Cancelando...";
 
-/* Error message shown when the input URL does not point to an existing site. */
-"Cannot access the site at this address. Please double-check and try again." = "Não é possível acessar o site com este endereço. Verifique novamente e tente outra vez.";
-
 /* Helper text that appears at the bottom of the design screen. */
 "Can’t decide? You can change the theme at any time." = "Não consegue decidir? Você pode mudar o tema a qualquer momento.";
 
@@ -1101,7 +1057,8 @@ translators: %s: Block name e.g. \"Image block\" */
 /* Example prompt for the Prompts card in Feature Introduction. */
 "Cast the movie of your life." = "Faça o filme da sua vida.";
 
-/* Category menu item in share extension. */
+/* Category menu item in share extension.
+   Menu item label for linking a specific category. */
 "Category" = "Categoria";
 
 /* Center alignment for an image. Should be the same as in core WP. */
@@ -1113,9 +1070,6 @@ translators: %s: Block name e.g. \"Image block\" */
 /* Account Settings Change password label
    Main title */
 "Change Password" = "Alterar senha";
-
-/* Change Username title. */
-"Change Username" = "Alterar nome de usuário";
 
 /* No comment provided by engineer. */
 "Change block position" = "Alterar posição do bloco";
@@ -1135,33 +1089,14 @@ translators: %s: Block name e.g. \"Image block\" */
 /* No comment provided by engineer. */
 "Changes to featured image will not be affected by the undo\/redo buttons." = "Alterações na imagem destacada não serão afetadas pelos botões desfazer\/refazer.";
 
-/* Shown while the app waits for the display name changing web service to return. */
-"Changing display name" = "Alterando nome de exibição";
-
-/* Loader title displayed by the loading view while the password is changing
-   Shown while the app waits for the password changing web service to return. */
+/* Loader title displayed by the loading view while the password is changing */
 "Changing password" = "Alterando senha";
-
-/* Shown while the app waits for the username changing web service to return. */
-"Changing username" = "Alterando nome de usuário";
 
 /* Title of alert when getting purchases fails */
 "Check Purchases Error" = "Erro na verificação de compras";
 
 /* Title for a button that opens up the 'Getting More Views and Traffic' support page when tapped. */
 "Check out our top tips to increase your views and traffic" = "Confira nossas principais dicas para aumentar suas visualizações e tráfego";
-
-/* The title text on the magic link requested screen. */
-"Check your email on this device!" = "Verifique seu e-mail neste dispositivo.";
-
-/* Instruction text after a login Magic Link was requested. */
-"Check your email on this device, and tap the link in the email you receive from WordPress.com." = "Verifique seu e-mail neste dispositivo e toque no link que você recebeu do WordPress.com.";
-
-/* Instructional text on how to open the email containing a magic link. */
-"Check your email on this device, and tap the link in the email you received from WordPress.com.\n\nNot seeing the email? Check your Spam or Junk Mail folder." = "Verifique o e-mail neste dispositivo e clique no link enviado pelo WordPress.com.\n\nNão encontrou o e-mail? Dê uma olhada na caixa de Spam.";
-
-/* Alert title for check your email during logIn/signUp. */
-"Check your email!" = "Verifique seu e-mail.";
 
 /* Subtitle shown on the dashboard when it fails to load */
 "Check your internet connection and pull to refresh." = "Verifique sua conexão com a internet e arraste para atualizar.";
@@ -1252,6 +1187,9 @@ translators: %s: Block name e.g. \"Image block\" */
 /* Title of the card that starts the registration of a free domain with a paid plan, in the Domains Dashboard. */
 "Claim your free domain" = "Resgatar seu domínio gratuito";
 
+/* Name of setting configured when a site uses a list of blog posts as its homepage */
+"Classic Blog" = "Blog clássico";
+
 /* Label for button that clears all media cache. */
 "Clear Device Media Cache" = "Liberar cache de arquivos do dispositivo";
 
@@ -1312,6 +1250,9 @@ translators: %s: Block name e.g. \"Image block\" */
 
 /* No comment provided by engineer. */
 "Columns Settings" = "Configurações de colunas";
+
+/* Menu item label for linking a comic page. */
+"Comics" = "HQs";
 
 /* Header for a comment's content, shown when editing a comment.
    Text for the 'comment' when there is 1 or 0 comments */
@@ -1423,18 +1364,12 @@ translators: %s: Block name e.g. \"Image block\" */
 /* Noun. Title. Title for the list of accounts for third party sharing services. */
 "Connected Accounts" = "Contas conectadas";
 
-/* Title shown when a user logs in with Google but no matching WordPress.com account is found */
-"Connected But…" = "Conectado, mas...";
-
 /* Connecting is a verb. Title of Publicize account selection. The %@ is a placeholder for the service's name
    Connecting is a verb. Title of Publicize account selection. The %@ is a placeholder for the service's name. */
 "Connecting %@" = "Conectando %@";
 
 /* Informs the user of consequences of chooseing a new account to connect to publicize.  The %@ characters are placeholders for account names. */
 "Connecting %@ will replace the existing connection to %@." = "Conectar com %1$@ irá substituir a conexão atual com a conta %2$@.";
-
-/* No comment provided by engineer. */
-"Connecting to WordPress.com" = "Conectando com WordPress.com";
 
 /* Verb. Text label. Allows the user to connect to a third-party sharing service like Facebook or Twitter. */
 "Connecting..." = "Conectando...";
@@ -1463,7 +1398,6 @@ translators: %s: Block name e.g. \"Image block\" */
 
 /* Apply changes localy to single block edition in the web block editor
    Button to progress to the next step
-   The button title text when there is a next step for logging in or signing up.
    The default Jetpack view button title
    The primary button title in the migration welcome and notifications screens.
    Title for the continue button in the What's New page.
@@ -1478,15 +1412,6 @@ translators: %s: Block name e.g. \"Image block\" */
 
 /* Part of a prompt suggesting that there is more content for the user to read. */
 "Continue reading" = "Continuar lendo";
-
-/* Button title. Tapping begins log in using Apple. */
-"Continue with Apple" = "Continuar com Apple";
-
-/* Button title. Tapping begins log in using Google. */
-"Continue with Google" = "Continuar com Google";
-
-/* Shown while logging in with Apple and the app waits for the site creation process to complete. */
-"Continuing with Apple" = "Prosseguindo with Apple";
 
 /* Title of button that displays the WordPress.org contributor page */
 "Contribute" = "Contribuir";
@@ -1609,9 +1534,6 @@ translators: %s: Block name e.g. \"Image block\" */
 /* Accessibility label for create floating action button */
 "Create" = "Criar";
 
-/* The button title text for creating a new account. */
-"Create Account" = "Criar conta";
-
 /* Title for button to make a blank page */
 "Create Blank Page" = "Criar uma página vazia";
 
@@ -1632,9 +1554,6 @@ translators: %s: Block name e.g. \"Image block\" */
 
 /* Displayed in the Notifications Tab as a button title, when the Unread Filter shows no notifications */
 "Create a Post" = "Criar um post";
-
-/* Navigates to a new flow for site creation. */
-"Create a Site" = "Criar um site";
 
 /* Title for the Site Icon Picker */
 "Create a site icon" = "Criar um ícone para o site";
@@ -1745,6 +1664,9 @@ translators: %s: Block name e.g. \"Image block\" */
 /* Label for selecting the default category of a post */
 "Default Category" = "Categoria padrão";
 
+/* Menu name for the default menu that is automatically generated. */
+"Default Menu" = "Menu padrão";
+
 /* Label for selecting the default post format
    Title for screen to select a default post format for a blog */
 "Default Post Format" = "Formato de post padrão";
@@ -1794,9 +1716,6 @@ translators: %s: Block name e.g. \"Image block\" */
    Theme Details action title */
 "Details" = "Detalhes";
 
-/* Instructions after a Magic Link was sent, but email is incorrect. */
-"Didn't mean to create a new account? Go back to re-enter your email address." = "Não queria criar uma conta nova? Volte para redigitar seu endereço de e-mail.";
-
 /* Title. Title of a button that will disable group invite links when tapped. */
 "Disable" = "Desativar";
 
@@ -1841,8 +1760,7 @@ translators: %s: Block name e.g. \"Image block\" */
    Title for the Discussion Settings Screen */
 "Discussion" = "Discussão";
 
-/* Accessibility label for the transparent space above the login dialog which acts as a button to dismiss the dialog.
-   Accessibility label for the transparent space above the signup dialog which acts as a button to dismiss the dialog. */
+/* No comment provided by engineer. */
 "Dismiss" = "Dispensar";
 
 /* Accessibility hint for the continue button in the Feature Announcements screen. */
@@ -1851,8 +1769,7 @@ translators: %s: Block name e.g. \"Image block\" */
 /* Accessibility hint for a done button that dismisses the current modal screen */
 "Dismiss screen" = "Dispensar tela";
 
-/* Display Name label text.
-   User's Display Name */
+/* User's Display Name */
 "Display Name" = "Nome de exibição";
 
 /* Register Domain - Domain contact information section header title */
@@ -1861,16 +1778,11 @@ translators: %s: Block name e.g. \"Image block\" */
 /* Register Domain - Privacy Protection section header description */
 "Domain owners have to share contact information in a public database of all domains. With Privacy Protection, we publish our own information instead of yours and privately forward any communication to you." = "Donos de domínios precisam compartilhar as informações de contato em um banco de dados público para todos os domínios. Com a proteção de privacidade, nós publicaremos nossos próprios dados ao invés dos seus e encaminharemos qualquer comunicação para você de forma privada.";
 
-/* Label for button to log in using your site address. The underscores _..._ denote underline */
-"Don't have an account? _Sign up_" = "Não tem uma conta? _Cadastre-se_";
-
 /* A done button
-   Button text on site creation epilogue page to proceed to My Sites.
    Done button title
    Done editing an image
    Done. Action.
    Menu button title for finishing editing the Menu name.
-   Tapping a button with this label allows the user to exit the Site Creation flow
    Title for button that will dismiss this view
    Title for the button that will dismiss this view. */
 "Done" = "Feito";
@@ -1983,6 +1895,9 @@ translators: %s: Block name e.g. \"Image block\" */
 /* Label for number of file downloads. */
 "Downloads" = "Downloads";
 
+/* Name for the status of a draft post. */
+"Draft" = "Rascunho";
+
 /* Title of the drafts filter.  This filter shows a list of draft posts. */
 "Drafts" = "Rascunhos";
 
@@ -2092,10 +2007,7 @@ translators: %s: Block name e.g. \"Image block\" */
 /* Header for a comment author's email address, shown when editing a comment. */
 "Email Address" = "Endereço de e-mail";
 
-/* Accessibility label for the email address text field.
-   Describes the email address section in the comment detail screen.
-   Placeholder for a textfield. The user may enter their email address.
-   Placeholder for the email address textfield. */
+/* Describes the email address section in the comment detail screen. */
 "Email address" = "Endereço de e-mail";
 
 /* Notification Settings Channel */
@@ -2135,8 +2047,7 @@ translators: %s: Block name e.g. \"Image block\" */
 /* Title for the Emoji section */
 "Emoji" = "Emoji";
 
-/* Accessibility value presented in the signup epilogue for an empty value.
-   Label for size of media when the cache is empty. */
+/* Label for size of media when the cache is empty. */
 "Empty" = "Vazio";
 
 /* Message to show to user when he tries to add a self-hosted site that is an empty URL. */
@@ -2176,28 +2087,11 @@ translators: %s: Block name e.g. \"Image block\" */
 /* (placeholder) Help enter WordPress password */
 "Enter password" = "Digite a senha";
 
-/* Instruction text on the login's site addresss screen.
-   Label for button to log in using your site address. */
-"Enter the address of the WordPress site you'd like to connect." = "Digite o endereço do site WordPress que você deseja conectar.";
-
-/* Instructional text shown when requesting the user's password for login. */
-"Enter the password for your WordPress.com account." = "Digite a senha da sua conta no WordPress.com.";
-
 /* (placeholder) Help enter WordPress username */
 "Enter username" = "Digite o nome de usuário";
 
-/* Enter your account information for {site url}. Asks the user to enter a username and password for their self-hosted site. */
-"Enter your account information for %@." = "Digite as informações da conta de %@.";
-
-/* Instruction text on the initial email address entry screen. */
-"Enter your email address to log in or create a WordPress.com account." = "Digite seu endereço de e-mail para acessar ou criar uma conta no WordPress.com.";
-
 /* Button title. Takes the user to the login by site address flow. */
 "Enter your existing site address" = "Digite o endereço de seu site";
-
-/* Title of a button on the magic link screen.
-   Title of a button. */
-"Enter your password instead." = "Digitar sua senha.";
 
 /* Error message displayed when site credentials aren't configured. */
 "Enter your server credentials" = "Insira as credenciais do servidor";
@@ -2371,9 +2265,6 @@ translators: %s: Block name e.g. \"Image block\" */
 /* Fashion site intent topic */
 "Fashion" = "Moda";
 
-/* Option to select the Fastmail app when logging in with magic links */
-"Fastmail" = "Fastmail";
-
 /* Header of section in Plugin Directory showing featured plugins */
 "Featured" = "Em destaque";
 
@@ -2412,9 +2303,6 @@ translators: %s: Block name e.g. \"Image block\" */
 
 /* Title for the find out more button in the What's New page. */
 "Find out more" = "Saiba mais";
-
-/* The hint button's title text to help users find their site address. */
-"Find your site address" = "Encontrar um endereço para seu site";
 
 /* Register Domain - Domain contact information field First name
    User's First Name */
@@ -2490,9 +2378,6 @@ translators: %s: Block name e.g. \"Image block\" */
 "Free" = "Gratuito";
 
 /* One of the options when selecting More in the Post Editor's format bar */
-"Free GIF Library" = "Biblioteca gratuita de gif";
-
-/* One of the options when selecting More in the Post Editor's format bar */
 "Free Photo Library" = "Biblioteca gratuita de fotos";
 
 /* Explanatory text for clearing device media cache. */
@@ -2531,12 +2416,6 @@ translators: %s: Block name e.g. \"Image block\" */
 /* Title. A call to action to generate a new invite link. */
 "Generate new link" = "Gerar novo link";
 
-/* View title for initial auth views. */
-"Get Started" = "Comece agora";
-
-/* The button title for a secondary call-to-action button. When the user wants to try sending a magic link instead of entering a password. */
-"Get a login link by email" = "Receber um link de acesso por e-mail";
-
 /* Displayed in the Notifications Tab as a message, when there are no notifications */
 "Get active! Comment on posts from blogs you follow." = "Mexa-se! Comente em posts de blogs que você segue.";
 
@@ -2555,14 +2434,8 @@ translators: %s: Block name e.g. \"Image block\" */
 /* Example post title used in the login prologue screens. */
 "Getting Inspired" = "Inspirando-se";
 
-/* Alerts the user that wpcom account information is being retrieved. */
-"Getting account information" = "Obtendo informações da conta";
-
 /* No comment provided by engineer. */
 "Give it a try by adding a few blocks to your post or page!" = "Experimente adicionar alguns blocos ao seu post ou à sua página!";
-
-/* Option to select the Gmail app when logging in with magic links */
-"Gmail" = "Gmail";
 
 /* Displayed in the Notifications Tab as a button title, when there are no notifications */
 "Go to Reader" = "Ir para o Leitor";
@@ -2573,9 +2446,6 @@ translators: %s: Block name e.g. \"Image block\" */
 /* Button label for going to settings to approve push notifications
    Opens WPiOS Settings.app Section */
 "Go to iOS Settings" = "Ir para configurações do iOS";
-
-/* Message shown on screen after the Google sign up process failed. */
-"Google sign up failed." = "O cadastro com o Google falhou.";
 
 /* Button title on the blogging prompt's feature introduction view to dismiss the view.
    Title for the continue button in the dashboard's custom What's New page. */
@@ -2635,8 +2505,7 @@ translators: %s: Block name e.g. \"Image block\" */
 /* Health site intent topic */
 "Health" = "Saúde";
 
-/* Help button
-   Open editor help options */
+/* Open editor help options */
 "Help" = "Ajuda";
 
 /* Link to Help section
@@ -2649,9 +2518,6 @@ translators: %s: Block name e.g. \"Image block\" */
 
 /* No comment provided by engineer. */
 "Help icon" = "Ícone de ajuda";
-
-/* Accessibility value if login page's password field is hiding the password (i.e. with asterisks). */
-"Hidden" = "Oculto";
 
 /* Title of a button used to collapse a group */
 "Hide" = "Ocultar";
@@ -2724,12 +2590,6 @@ translators: %s: Block name e.g. \"Image block\" */
 /* Message to show when site icon update failed */
 "Icon update failed" = "A atualização do ícone falhou";
 
-/* The instructions text about not being able to find the magic link email. */
-"If you can’t find the email, please check your junk or spam email folder" = "Caso você não encontre o e-mail, verifique seu lixo eletrônico ou spam";
-
-/* Legal disclaimer for signing up. The underscores _..._ denote underline. */
-"If you continue with Apple or Google and don't already have a WordPress.com account, you are creating an account and you agree to our _Terms of Service_." = "Se você continuar com o Google ou Apple e ainda não tiver uma conta no WordPress.com, você criará uma conta e concordará com nossos _Termos de Serviços_.";
-
 /* First line of remove user warning in confirmation dialog. Note: '%@' is the placeholder for the user's name and it must exist twice in this string. */
 "If you remove %@, that user will no longer be able to access this site, but any content that was created by %@ will remain on the site." = "Se remover %1$@, este usuário não poderá mais acessar este site, mas todo o conteúdo criado por %2$@ será mantido.";
 
@@ -2798,9 +2658,6 @@ translators: %s: Block name e.g. \"Image block\" */
 
 /* Downloadable/Restorable items: general section footer text */
 "Includes wp-config.php and any non WordPress files" = "Inclui wp-config.php e qualquer arquivo que não seja do WordPress";
-
-/* An error message shown when a user signed in with incorrect credentials. */
-"Incorrect username or password. Please try entering your login details again." = "Nome de usuário ou senha incorretos. Tente digitar seus dados de login novamente.";
 
 /* Title for a threat */
 "Infected core file" = "Arquivo do núcleo infectado";
@@ -2902,9 +2759,6 @@ translators: %s: Block name e.g. \"Image block\" */
 /* Title displayed on the feature introduction view. */
 "Introducing Blogging Prompts" = "Apresentamos as sugestões de publicação";
 
-/* Title of an alert letting the user know the email address that they've entered isn't valid */
-"Invalid Email Address" = "Endereço de e-mail inválido";
-
 /* No comment provided by engineer. */
 "Invalid Site Address" = "Endereço do site inválido";
 
@@ -2922,9 +2776,6 @@ translators: %s: Block name e.g. \"Image block\" */
 
 /* No comment provided by engineer. */
 "Invalid URL. Audio file not found." = "URL inválido. Arquivo de áudio não encontrado.";
-
-/* Error message shown when the input URL is invalid. */
-"Invalid URL. Please double-check and try again." = "URL inválido. Verifique novamente e tente outra vez.";
 
 /* No comment provided by engineer. */
 "Invalid URL. Please enter a valid URL." = "URL inválido. Digite um URL válido.";
@@ -2946,12 +2797,6 @@ translators: %s: Block name e.g. \"Image block\" */
 
 /* Invite People Title */
 "Invite People" = "Convidar pessoas";
-
-/* An error message shown during log in when the username or password is incorrect. */
-"It looks like this username\/password isn't associated with this site." = "Parece que esse usuário\/senha não está associado a esse site.";
-
-/* An error message shown when a wpcom user provides the wrong password. */
-"It seems like you've entered an incorrect password. Want to give it another try?" = "Parece que você digitou com uma senha incorreta. Quer tentar novamente?";
 
 /* Title of a notification displayed prompting the user to create a new blog post. The %@ will be replaced with the blog's title. */
 "It's time to blog on %@!" = "Está na hora de publicar em %@!";
@@ -3172,7 +3017,8 @@ translators: %s: Block name e.g. \"Image block\" */
 /* No comment provided by engineer. */
 "Line Height" = "Altura da linha";
 
-/* Label for link title in Clicks stat. */
+/* Label for link title in Clicks stat.
+   Menu item label for linking a custom source URL. */
 "Link" = "Link";
 
 /* Menus title label when editing a menu item as a link. */
@@ -3267,11 +3113,9 @@ translators: %s: Block name e.g. \"Image block\" */
 /* No comment provided by engineer. */
 "Lock icon" = "Ícone de bloqueio";
 
-/* Button title.  Tapping takes the user to the login form.
-   Label for logging in to WordPress.com account
+/* Label for logging in to WordPress.com account
    Log In 3D Touch Shortcut
-   Log In button label.
-   View title during the log in process. */
+   Log In button label. */
 "Log In" = "Fazer login";
 
 /* Button for confirming logging out from WordPress.com account
@@ -3280,22 +3124,6 @@ translators: %s: Block name e.g. \"Image block\" */
 
 /* Title of a button for signing in. */
 "Log in" = "Acessar";
-
-/* A generic error message for a failed log in. */
-"Log in failed. Please try again." = "Falha ao tentar fazer login. Tente novamente.";
-
-/* Button title. Takes the user to the login by email flow.
-   Button title. Tapping begins our normal log in process. */
-"Log in or sign up with WordPress.com" = "Faça login ou se registre no WordPress.com";
-
-/* Instruction text on the login's email address screen. */
-"Log in to the WordPress.com account you used to connect Jetpack." = "Acesse a conta do WordPress.com usada para se conectar ao Jetpack.";
-
-/* Instruction text on the login's email address screen. */
-"Log in to your WordPress.com account with your email address." = "Acesse sua conta do WordPress.com com seu endereço de e-mail.";
-
-/* Instructions on the WordPress.com username / password log in form. */
-"Log in with your WordPress.com username and password." = "Faça login com seu nome de usuário e sua senha do WordPress.com.";
 
 /* LogOut confirmation text, whenever there are no local changes */
 "Log out of Jetpack?" = "Sair do Jetpack?";
@@ -3309,20 +3137,11 @@ translators: %s: Block name e.g. \"Image block\" */
 /* Login Request Expired */
 "Login Request Expired" = "Solicitação de login expirada";
 
-/* Button title. Takes the user to the Enter account password screen. */
-"Login with account password" = "Fazer login com a senha da conta";
-
 /* Title for the error view when the stats module is disabled. */
 "Looking for stats?" = "Procurando estatísticas?";
 
 /* Message asking the user to sign into Jetpack with WordPress.com credentials */
 "Looks like you have Jetpack set up on your site. Congrats! Log in with your WordPress.com credentials to enable Stats and Notifications." = "Parece que o Jetpack está configurado em seu site. Parabéns!\nAcesse com suas credenciais WordPress.com para ativar as estatísticas e notificações.";
-
-/* Title of a button. */
-"Lost your password?" = "Esqueceu sua senha?";
-
-/* Option to select the Apple Mail app when logging in with magic links */
-"Mail (Default)" = "Mail (Padrão)";
 
 /* No comment provided by engineer. */
 "Main Navigation" = "Navegação principal";
@@ -3463,9 +3282,6 @@ translators: %s: Block name e.g. \"Image block\" */
 /* Invite Message Editor's Title */
 "Message" = "Mensagem";
 
-/* Option to select the Microsft Outlook app when logging in with magic links */
-"Microsoft Outlook" = "Microsoft Outlook";
-
 /* Summary description for a threat */
 "Miscellaneous vulnerability" = "Diversas vulnerabilidades";
 
@@ -3559,6 +3375,9 @@ translators: %s: Block name e.g. \"Image block\" */
    Title of My Site tab */
 "My Site" = "Meu site";
 
+/* Siri Suggestion to open My Sites */
+"My Sites in WordPress" = "Meus sites em WordPress";
+
 /* Example post title used in the login prologue screens. */
 "My Top Ten Cafes" = "Minhas 10 cafeterias preferidas";
 
@@ -3595,15 +3414,8 @@ translators: %s: Select control button label e.g. \"Button width\" */
 /* 'Need help?' button label, links off to the WP for iOS FAQ. */
 "Need Help?" = "Precisa de ajuda?";
 
-/* A button title. */
-"Need help finding your site address?" = "Precisa de ajuda para encontrar o endereço do seu site?";
-
-/* Takes the user to get help
-   The secondary button title in the migration welcome screen */
+/* The secondary button title in the migration welcome screen */
 "Need help?" = "Precisa de ajuda?";
-
-/* Title of the more help button on alert helping users understand their site address */
-"Need more help?" = "Precisa de ajuda?";
 
 /* Describes a status of a plugin */
 "Needs Update" = "Precisa de atualização";
@@ -3629,6 +3441,9 @@ translators: %s: Select control button label e.g. \"Button width\" */
 /* New Post 3D Touch Shortcut */
 "New Post" = "Novo post";
 
+/* Menu item title text used as default when creating a new menu item. */
+"New item" = "Novo item";
+
 /* Placeholder text for password field */
 "New password" = "Nova senha";
 
@@ -3646,9 +3461,7 @@ translators: %s: Select control button label e.g. \"Button width\" */
 "News" = "Notícias";
 
 /* Next action on comment moderation snackbar.
-   Next action on share extension editor screen.
-   Title of a button.
-   Title of a button. The text should be capitalized. */
+   Next action on share extension editor screen. */
 "Next" = "Próximo";
 
 /* Accessibility label for the next notification button */
@@ -3677,6 +3490,9 @@ translators: %s: Select control button label e.g. \"Button width\" */
 
 /* missing preview URL for blog post preview */
 "No Preview URL available" = "Não há pré-visualização disponível. ";
+
+/* Label used for posts without a title in spotlight search. */
+"No Title" = "Sem título";
 
 /* No comment provided by engineer. */
 "No application can handle this request." = "Nenhum aplicativo pode concluir essa solicitação.";
@@ -3839,9 +3655,6 @@ translators: %s: Select control button label e.g. \"Button width\" */
 /* Button label for denying our request to allow push notifications */
 "Not now" = "Agora não";
 
-/* Instructions after a Magic Link was sent, but the email can't be found in their inbox. */
-"Not seeing the email? Check your Spam or Junk Mail folder." = "Não está vendo o e-mail? Verifique sua pasta de spam ou lixo eletrônico.";
-
 /* Label for the note displayed in the Feature Introduction view. */
 "Note:" = "Nota:";
 
@@ -3905,11 +3718,7 @@ translators: %s: Select control button label e.g. \"Button width\" */
 /* Discoverability title for numbered list keyboard shortcut. */
 "Numbered List" = "Lista numerada";
 
-/* Alert dismissal title
-   Button title. An acknowledgement of the message displayed in a prompt.
-   Dismisses the alert
-   Menus: button title for finishing editing of a menu item.
-   Ok button for dismissing alert helping users understand their site address */
+/* Menus: button title for finishing editing of a menu item. */
 "OK" = "OK";
 
 /* No comment provided by engineer. */
@@ -3978,10 +3787,6 @@ translators: %s: Select control button label e.g. \"Button width\" */
 /* No comment provided by engineer. */
 "Open Jetpack Security settings" = "Abrir configurações do Jetpack Security";
 
-/* The button title text for opening the user's preferred email app.
-   Title of a button. The text should be capitalized.  Clicking opens the mail app in the user's iOS device. */
-"Open Mail" = "Abrir o Mail";
-
 /* Title of a button that opens the apps settings in the system Settings.app */
 "Open Settings" = "Abrir configurações";
 
@@ -4014,18 +3819,6 @@ translators: %s: Select control button label e.g. \"Button width\" */
 
 /* Footer text for Invite People message field. %1$d is the maximum number of characters allowed. */
 "Optional: Enter a custom message up to %1$d characters to be sent with your invitation." = "Opcional: digite uma mensagem personalizada com até %1$d caracteres para enviar com seu convite.";
-
-/* Divider on initial auth view separating auth options. */
-"Or" = "Ou";
-
-/* Instruction text for other forms of two-factor auth methods. */
-"Or choose another form of authentication." = "Você também pode escolher outra forma de autenticação.";
-
-/* Label for button to log in using site address. Underscores _..._ denote underline. */
-"Or log in by _entering your site address_." = "Ou acesse  _informando o endereço do seu site_.";
-
-/* The button title for a secondary call-to-action button on the password screen. When the user wants to try sending a magic link instead of entering a password. */
-"Or log in with magic link" = "Ou fazer login pelo link mágico";
 
 /* Accessibility label for Ordered list button on formatting toolbar. */
 "Ordered List" = "Lista ordenada";
@@ -4074,7 +3867,8 @@ translators: %s: Select control button label e.g. \"Button width\" */
 /* No comment provided by engineer. */
 "Padding" = "Recuo";
 
-/* Noun. Type of content being selected is a blog page
+/* Menu item label for linking a page.
+   Noun. Type of content being selected is a blog page
    Title shown when selecting a post type of Page from the Share Extension. */
 "Page" = "Página";
 
@@ -4102,16 +3896,10 @@ translators: %s: Select control button label e.g. \"Button width\" */
 /* Parenting site intent topic */
 "Parenting" = "Criação de filhos";
 
-/* Accessibility label for the password text field in the self-hosted login page.
-   Label for entering password in password field
+/* Label for entering password in password field
    Login dialog password placeholder
-   Password placeholder
-   Placeholder for the password textfield.
    Title for screen that shows self hosted password editor. */
 "Password" = "Senha";
-
-/* Password field placeholder text */
-"Password (optional)" = "Senha (opcional)";
 
 /* Loader title displayed by the loading view while the password is changed successfully */
 "Password changed successfully" = "Senha alterada com sucesso";
@@ -4125,6 +3913,9 @@ translators: %s: Select control button label e.g. \"Button width\" */
 /* Button title for Pending comment state.
    Title of pending Comments filter. */
 "Pending" = "Pendente";
+
+/* Name for the status of a post pending review. */
+"Pending review" = "Revisão pendente";
 
 /* People site intent topic */
 "People" = "Pessoas";
@@ -4146,9 +3937,6 @@ translators: %s: Select control button label e.g. \"Button width\" */
 
 /* Photography site intent topic */
 "Photography" = "Fotografia";
-
-/* Title for selecting a new username in the site creation flow. */
-"Pick username" = "Escolha seu nome de usuário";
 
 /* User action to play a video on the editor. */
 "Play video" = "Reproduzir vídeo";
@@ -4179,9 +3967,6 @@ translators: %s: Select control button label e.g. \"Button width\" */
 
 /* Message asking users to make sure that the block editor is enabled on their site in order for the Unsupported Block Editor to load properly. */
 "Please ensure the block editor is enabled on your site. If it is not enabled, it will not load." = "Confirme que o editor de blocos está ativo em seu site. Caso não esteja ativo, ele não será carregado.";
-
-/* Error message shown when a URL is invalid. */
-"Please enter a complete website address, like example.com." = "Digite um endereço completo de site como exemplo.com.";
 
 /* No comment provided by engineer. */
 "Please enter a site address." = "Entre o endereço de um site.";
@@ -4216,17 +4001,11 @@ translators: %s: Select control button label e.g. \"Button width\" */
 /* Register Domain - Domain contact information validation error message for an input field */
 "Please enter a valid address" = "Digite um endereço válido";
 
-/* An error message. */
-"Please enter a valid email address for a WordPress.com account." = "Insira um endereço de e-mail válido de uma conta do WordPress.com.";
-
-/* Error message displayed when the user attempts use an invalid email address. */
+/* No comment provided by engineer. */
 "Please enter a valid email address." = "Digite um endereço de e-mail válido.";
 
 /* Register Domain - Domain contact information validation error message for an input field */
 "Please enter a valid phone number" = "Digite um número de telefone válido";
-
-/* Instructional text shown when requesting the user's password for a login initiated via Sign In with Apple */
-"Please enter the password for your WordPress.com account to log in with your Apple ID." = "Digite a senha de sua conta do WordPress.com para acessar com a ID da Apple.";
 
 /* Popup message to ask for user credentials (fields shown below). */
 "Please enter your credentials" = "Entre com suas credenciais";
@@ -4234,14 +4013,8 @@ translators: %s: Select control button label e.g. \"Button width\" */
 /* Instructions for alert asking for email. */
 "Please enter your email address." = "Digite seu endereço de e-mail.";
 
-/* A short prompt asking the user to properly fill out all login fields. */
-"Please fill out all the fields" = "Por favor, preencha todos os campos";
-
 /* Share extension dialog text  - displayed when user is missing a login token. */
 "Please launch the WordPress app, log in to WordPress.com and make sure you have at least one site, then try again." = "Abra o aplicativo do WordPress, acesse sua conta do WordPress.com, assegure-se de que você tem pelo menos um site e, então, tente novamente.";
-
-/* Message for alert to prompt user to logout before connecting to a different wordpress.com site. */
-"Please log out before connecting to a different wordpress.com site" = "Faça logout antes de se conectar a um site diferente do WordPress.com";
 
 /* Used on an error alert to prompt the user to try again */
 "Please try again later" = "Tente novamente mais tarde";
@@ -4308,7 +4081,8 @@ translators: %s: Select control button label e.g. \"Button width\" */
 /* Section title for Popular Languages */
 "Popular languages" = "Idiomas populares ";
 
-/* Noun. Type of content being selected is a blog post
+/* Menu item label for linking a post.
+   Noun. Type of content being selected is a blog post
    Title shown when selecting a post type of Post from the Share Extension. */
 "Post" = "Post";
 
@@ -4421,6 +4195,9 @@ translators: %s: Select control button label e.g. \"Button width\" */
 /* Link to the CCPA privacy notice for residents of California. */
 "Privacy notice for California users" = "Aviso de privacidade para usuários na Califórnia";
 
+/* Name for the status of a post that is marked private. */
+"Private" = "Privado";
+
 /* No comment provided by engineer. */
 "Problem displaying block. \nTap to attempt block recovery." = "Problema ao exibir o bloco. \nToque para tentar restaurá-lo.";
 
@@ -4436,6 +4213,9 @@ translators: %s: Select control button label e.g. \"Button width\" */
 /* Register Domain - error displayed when there's a problem when purchasing the domain. */
 "Problem purchasing your domain. Please try again." = "Houve um problema ao tentar comprar seu domínio. Tente novamente.";
 
+/* Menu item label for linking a project page. */
+"Projects" = "Projetos";
+
 /* Title of the notification presented when a prompt is skipped */
 "Prompt skipped" = "Sugestão ignorada";
 
@@ -4448,13 +4228,17 @@ translators: %s: Select control button label e.g. \"Button width\" */
    Publish post action on share extension site picker screen. */
 "Publish" = "Publicar";
 
+/* A short phrase indicating a post is due to be immedately published. */
+"Publish Immediately" = "Publicar imediatamente";
+
 /* Text displayed in the share extension's summary view. It describes the publish page action. */
 "Publish page on:" = "Publicar página em:";
 
 /* Text displayed in the share extension's summary view. It describes the publish post action. */
 "Publish post on:" = "Publicar post em:";
 
-/* Period Stats 'Published' header
+/* Name for the status of a published post.
+   Period Stats 'Published' header
    Title of the published filter. This filter shows a list of posts that the user has published. */
 "Published" = "Publicado";
 
@@ -4656,7 +4440,7 @@ translators: %s: Select control button label e.g. \"Button width\" */
 /* Provides hint that the screen displays a reply to a comment.%1$@ is a placeholder for the comment author that's been replied to.Example: Reply to Pamela Nguyen */
 "Reply to %1$@" = "Responder para %1$@";
 
-/* An explaination of a setting. */
+/* An explanation of a setting. */
 "Require manual approval for comments that include more than this number of links." = "Exigir aprovação manual para comentários que incluem mais do que este número de links.";
 
 /* Explains the effect of the 'No comments' auto approval setting. */
@@ -4673,9 +4457,6 @@ translators: %s: Select control button label e.g. \"Button width\" */
 
 /* Setting: WordPress.com Surveys */
 "Research" = "Pesquisa";
-
-/* The button title for a secondary call-to-action button. When the user can't remember their password. */
-"Reset your password" = "Redefinir sua senha";
 
 /* Screen title. Resize and crop an image. */
 "Resize & Crop" = "Redimensionar e cortar";
@@ -4707,7 +4488,6 @@ translators: %s: Select control button label e.g. \"Button width\" */
 /* A prompt to attempt the failed network request again
    A prompt to attempt the failed network request again.
    Button title, displayed when media has failed to upload. Allows the user to try the upload again.
-   If a user taps the button with this label, the action that evinced this error view will be retried.
    Opens the media library .
    Retry updating User's Role
    Retry. Action
@@ -4751,9 +4531,6 @@ translators: %s: Select control button label e.g. \"Button width\" */
    User Roles Title
    User's Role */
 "Role" = "Função";
-
-/* One Time Code has been sent via SMS */
-"SMS Sent" = "SMS enviado";
 
 /* Section title for the moderation section of the comment details screen. */
 "STATUS" = "Status";
@@ -4825,7 +4602,8 @@ translators: %s: Select control button label e.g. \"Button width\" */
 /* Title for label when the actively scanning the users site */
 "Scanning files" = "Examinando arquivos";
 
-/* Title of the scheduled filter. This filter shows a list of posts that are scheduled to be published at a future date. */
+/* Name for the status of a scheduled post
+   Title of the scheduled filter. This filter shows a list of posts that are scheduled to be published at a future date. */
 "Scheduled" = "Agendado";
 
 /* No comment provided by engineer. */
@@ -4869,9 +4647,6 @@ translators: %s: Select control button label e.g. \"Button width\" */
 
 /* Accessibility hint for the domains search field in Site Creation. */
 "Searches for available domains to use for your site." = "Pesquisa domínios disponíveis para serem usados em seu site.";
-
-/* Accessibility value presented in the signup epilogue for a password value. */
-"Secure text" = "Texto seguro";
 
 /* Label for selecting the Blog Jetpack Security Settings section */
 "Security" = "Segurança";
@@ -4959,12 +4734,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Accessibility hint for a topic in the Site Creation intents view. */
 "Selects this topic as the intent for your site." = "Seleciona este tópico como o assunto de seu site.";
 
-/* Title of a button. The text should be uppercase.  Clicking requests a hyperlink be emailed ot the user. */
-"Send Link" = "Enviar link";
-
-/* The button title text for sending a magic link. */
-"Send Link by Email" = "Enviar link por e-mail";
-
 /* Title of a row displayed on the debug screen used to send a pretend error message to the crash logging provider to ensure everything is working correctly */
 "Send Log Message" = "Enviar mensagem com resumo";
 
@@ -4973,9 +4742,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Title of a row displayed on the debug screen used to crash the app and send a crash report to the crash logging provider to ensure everything is working correctly */
 "Send Test Crash" = "Enviar um teste de falha";
-
-/* Button title. Sends a email verification link (Magin link) for signing in. */
-"Send email verification link" = "Enviar link de verificação de e-mail";
 
 /* Jetpack Monitor Settings: Send notifications by email */
 "Send notifications by email" = "Enviar notificações por e-mail";
@@ -5076,10 +4842,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Title for the `show reblog button` setting */
 "Show Reblog button" = "Mostrar botão reblogar";
 
-/* Accessibility label for the 'Show password' button in the login page's password field.
-   Accessibility label for the “Show password“ button in the login page's password field. */
-"Show password" = "Mostrar senha";
-
 /* No comment provided by engineer. */
 "Show post content" = "Mostrar conteúdo do post";
 
@@ -5091,9 +4853,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Label on Post Stats view indicating which post the stats are for. */
 "Showing stats for:" = "Mostrando estatísticas de:";
-
-/* Accessibility value if login page's password field is displaying the password. */
-"Shown" = "Mostrando senha";
 
 /* Help text when editing web address */
 "Shown publicly when you comment on blogs." = "Exibido publicamente quando você comenta em blogs.";
@@ -5109,21 +4868,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Accessibility hint for a match/mention on a post notification. */
 "Shows the post" = "Mostra os posts";
-
-/* View title during the sign up process. */
-"Sign Up" = "Registrar-se";
-
-/* Button title. Takes the user the Enter site credentials screen. */
-"Sign in with site credentials" = "Fazer login com as credenciais do site";
-
-/* When social login fails, this button offers to let them signup for a new WordPress.com account */
-"Sign up" = "Registre-se";
-
-/* Button title. Tapping begins the process of creating a WordPress.com account. */
-"Sign up for WordPress.com" = "Cadastrar no WordPress.com";
-
-/* Button title. Tapping begins our normal sign up process. */
-"Sign up with Email" = "Cadastrar com e-mail";
 
 /* Notice displayed to the user after clearing the Siri activity donations. */
 "Siri Reset Confirmation" = "As sugestões de atalhos da Siri foram limpas com sucesso";
@@ -5156,9 +4900,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Setting: indicates if Achievements will be notified */
 "Site achievements" = "Conquistas do site";
-
-/* Accessibility label of the site address field shown when adding a self-hosted site. */
-"Site address" = "Endereço do site";
 
 /* No comment provided by engineer. */
 "Site address must be at least 4 characters." = "O endereço do site deve ter pelo menos 4 caracteres.";
@@ -5237,7 +4978,7 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* No comment provided by engineer. */
 "Sorry, site addresses must have letters too!" = "Desculpe, endereços de sites devem conter letras também!";
 
-/* Error message displayed when the entered email is not available. */
+/* No comment provided by engineer. */
 "Sorry, that email address is already being used!" = "Esse endereço de e-mail já está sendo usado!";
 
 /* No comment provided by engineer. */
@@ -5294,9 +5035,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
    Title of spam Comments filter. */
 "Spam" = "Spam";
 
-/* Option to select the Spark email app when logging in with magic links */
-"Spark" = "Spark";
-
 /* Label for selecting the Speed up your site Settings section
    Title for the Speed up your site Settings Screen */
 "Speed up your site" = "Acelere seu site";
@@ -5320,6 +5058,9 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Register Domain - Domain Address field State */
 "State" = "Estado";
+
+/* Name of setting configured when a site uses a static page as its homepage */
+"Static Homepage" = "Página inicial estática";
 
 /* Noun. Abbreviation of Statistics. Name of the Stats feature
    Stats 3D Touch Shortcut
@@ -5429,6 +5170,9 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Title for the tablet web preview */
 "Tablet" = "Tablet";
+
+/* Menu item label for linking a specific tag. */
+"Tag" = "Tag";
 
 /* Label for tagline blog setting
    Title for screen that show tagline editor */
@@ -5548,6 +5292,9 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Title of button that displays the App's terms of service */
 "Terms of Service" = "Termos de serviço";
 
+/* Menu item label for linking a testimonial post. */
+"Testimonials" = "Testemunhos";
+
 /* Title of a button style */
 "Text Only" = "Apenas texto";
 
@@ -5557,17 +5304,8 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* No comment provided by engineer. */
 "Text formatting controls are located within the toolbar positioned above the keyboard while editing a text block" = "Os controles de formatação de texto estão posicionados na barra de ferramentas acima do teclado ao editar um bloco de texto";
 
-/* Button title */
-"Text me a code instead" = "Envie-me o código por SMS";
-
-/* The button's title text to send a 2FA code via SMS text message. */
-"Text me a code via SMS" = "Enviar código por SMS";
-
 /* Message of alert when theme activation succeeds */
 "Thanks for choosing %@ by %@" = "Obrigado por escolher %1$@ de %2$@";
-
-/* Shown when a user pastes a code into the two factor field that contains letters or is the wrong length */
-"That doesn't appear to be a valid verification code." = "Isto não parece ser um código de verificação válido.";
 
 /* Message to show to user when he tries to add a self-hosted site that isn't a WordPress site. */
 "That doesn't look like a WordPress site." = "Esse site não parece ser um site WordPress.";
@@ -5589,9 +5327,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Error message shown to a user who is trying to share to Facebook but does not have any available Facebook Pages. */
 "The Facebook connection cannot find any Pages. Publicize cannot connect to Facebook Profiles, only published Pages." = "A conexão com o Facebook não conseguiu encontrar nenhuma página. A publicidade não consegue se conectar aos perfis do Facebook, apenas às páginas publicadas.";
-
-/* Description shown when a user logs in with Google but no matching WordPress.com account is found */
-"The Google account \"%@\" doesn't match any account on WordPress.com" = "A conta do Google \"%@\" não corresponde à nenhuma conta do WordPress.com";
 
 /* Error message shown when a media upload fails because the user isn't connected to the Internet. */
 "The Internet connection appears to be offline." = "A conexão com a internet parece estar offline.";
@@ -5671,10 +5406,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* No comment provided by engineer. */
 "The site at %@ uses WordPress %@. We recommend to update to the latest version, or at least %@" = "O site em %1$@ usa o WordPress %2$@. Recomendamos atualizar para a última versão, ou pelo menos a %3$@ ";
 
-/* Error message shown a URL does not point to an existing site.
-   Error message shown when a URL does not point to an existing site. */
-"The site at this address is not a WordPress site. For us to connect to it, the site must use WordPress." = "O site publicado nesse endereço não é um site WordPress. Para que possamos nos conectar a ele, é necessário que o site tenha sido feito com WordPress.";
-
 /* Message shown when site deletion API failed */
 "The site could not be deleted." = "Não foi possível excluir o site.";
 
@@ -5750,8 +5481,7 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* A short error message shown in a prompt. */
 "There was a problem saving changes to sharing management." = "Ocorreu um erro ao salvar as alterações do gerenciador de compartilhamento.";
 
-/* Text displayed when there is a failure changing the password.
-   Text displayed when there is a failure loading the history. */
+/* Text displayed when there is a failure loading the history. */
 "There was an error changing the password" = "Ocorreu um erro ao alterar a senha";
 
 /* Text displayed when there is a failure loading plugins */
@@ -5804,9 +5534,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* No comment provided by engineer. */
 "This color combination may be hard for people to read. Try using a darker background color and\/or a brighter text color." = "Essa combinação de cores pode ser difícil para as pessoas lerem. Tente usar uma cor de fundo mais escura e\/ou uma cor de texto mais clara.";
-
-/* An error message informing the user the email address they entered did not match a WordPress.com account. */
-"This email address is not registered on WordPress.com." = "Este endereço de e-mail não está registrado no WordPress.com.";
 
 /* Message to show to user when media upload failed because server doesn't support media type */
 "This file is too large to upload to your site or it does not support this media format." = "Este arquivo é muito grande para ser enviado para o seu site ou este formato de mídia não é suportado por ele.";
@@ -5883,9 +5610,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Label for the timezone setting */
 "Time Zone" = "Fuso horário";
 
-/* Error when the uses takes more than 1 minute to submit a security key. */
-"Time's up, but don't worry, your security is our priority. Please try again!" = "Acabou o tempo, mas não se preocupe, nossa prioridade é sua segurança. Tente novamente.";
-
 /* WordPress.com Marketing Footer Text */
 "Tips for getting the most out of WordPress.com." = "Dicas para aproveitar o máximo do WordPress.com";
 
@@ -5898,9 +5622,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Instructions for alert asking for email and name. */
 "To continue please enter your email address and name." = "Digite seu endereço de e-mail e nome para continuar.";
 
-/* Text instructing the user to enter their email address. */
-"To create your new WordPress.com account, please enter your email address." = "Para criar sua nova conta WordPress.com, digite seu endereço de e-mail.";
-
 /* Message asking the user if they want to set up Jetpack from notifications */
 "To get helpful notifications on your phone from your WordPress site, you'll need to install the Jetpack plugin." = "Para receber notificações úteis de seu site WordPress em seu dispositivo, é necessário instalar o plugin Jetpack.";
 
@@ -5909,12 +5630,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Install Plugin dialog text. */
 "To install plugins, you need to have a custom domain associated with your site." = "Para instalar plugins, é necessário ter um domínio personalizado associado ao seu site.";
-
-/* Instructional text shown when requesting the user's password for Apple login. */
-"To proceed with this Apple ID, please first log in with your WordPress.com password. This will only be asked once." = "Para continuar usando esta conta da Apple, primeiro faça login com a sua senha do WordPress.com. Isto só será solicitado uma vez.";
-
-/* Instructional text shown when requesting the user's password for Google login. */
-"To proceed with this Google account, please first log in with your WordPress.com password. This will only be asked once." = "Para continuar usando esta conta do Google, primeiro faça login com a sua senha do WordPress.com. Isto só será solicitado uma vez.";
 
 /* No comment provided by engineer. */
 "To remove a block, select the block and click the three dots in the bottom right of the block to view the settings. From there, choose the option to remove the block." = "Para remover um bloco, selecione o bloco e clique nos três pontos no canto inferior direito do bloco para ver as configurações. A partir daí, escolha a opção de remover o bloco.";
@@ -5988,7 +5703,8 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
    Trashes the comment */
 "Trash" = "Lixeira";
 
-/* Title of the trashed filter. This filter shows posts that have been moved to the trash bin.
+/* Name for the status of a trashed post
+   Title of the trashed filter. This filter shows posts that have been moved to the trash bin.
    Title of trashed Comments filter. */
 "Trashed" = "Na lixeira";
 
@@ -6021,12 +5737,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* The title of a notice telling users that the classic editor is deprecated and will be removed in a future version of the app. */
 "Try the new Block Editor" = "Experimente o novo editor de blocos";
 
-/* When social login fails, this button offers to let the user try again with a differen email address */
-"Try with another email" = "Tentar com outro e-mail";
-
-/* When social login fails, this button offers to let them try tp login using a URL */
-"Try with the site address" = "Tentar com o endereço do site";
-
 /* Destructive menu title to remove the prompt card from the dashboard. */
 "Turn off prompts" = "Desativar sugestões";
 
@@ -6051,7 +5761,7 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* No comment provided by engineer. */
 "Type a URL" = "Informe um URL";
 
-/* Placeholder text for domain search during site creation. */
+/* Placeholder text for the username suggestions search field on the Change Username screen. */
 "Type a keyword for more ideas" = "Digite uma palavra-chave para mais ideias";
 
 /* A placeholder for the sharing label. */
@@ -6065,9 +5775,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Menus label for describing which menu the location uses in the header. */
 "USES" = "USA";
-
-/* Shown when a user logs in with Google but it subsequently fails to work as login to WordPress.com */
-"Unable To Connect" = "Não foi possível conectar";
 
 /* Title of a prompt saying the app needs an internet connection before it can load posts */
 "Unable to Load Posts" = "Não foi possível carregar os posts";
@@ -6104,15 +5811,11 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 "Unable to load the image. Please choose a different one or try again later." = "Não foi possível carregar a imagem. Escolha outra ou tente novamente mais tarde.";
 
 /* Default title shown for no-results when the device is offline.
-   Informing the user that a network request failed because the device wasn't able to establish a network connection.
-   Informing the user that a network request failed becuase the device wasn't able to establish a network connection. */
+   Informing the user that a network request failed because the device wasn't able to establish a network connection. */
 "Unable to load this content right now." = "Não foi possível carregar esse conteúdo no momento.";
 
 /* Dialog box title for when the user is canceling an upload. */
 "Unable to play video" = "Não foi possível reproduzir o vídeo";
-
-/* No comment provided by engineer. */
-"Unable to read the WordPress site at that URL. Tap 'Need more help?' to view the FAQ." = "Não foi possível ler o site WordPress nesse URL. Toque em 'Precisa de mais ajuda?' para ver as perguntas frequentes.";
 
 /* Title for the Jetpack Restore Failed message. */
 "Unable to restore your site" = "Não foi possível restaurar o site";
@@ -6134,9 +5837,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Alert displayed to the user when a single post and 1 file has failed to upload. */
 "Unable to upload 1 post, 1 file" = "Não foi possível enviar um post e um arquivo";
-
-/* Error message displayed when an error occurred checking for email availability. */
-"Unable to verify the email address. Please try again later." = "Não foi possível verificar o endereço de e-mail. Tente novamente mais tarde.";
 
 /* Message displayed when visiting the Jetpack settings page fails. */
 "Unable to visit Jetpack settings for site" = "Não foi possível visitar as configurações do Jetpack do site";
@@ -6302,30 +6002,20 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Use the current image */
 "Use" = "Usar";
 
-/* The button's title text to use a security key. */
-"Use a security key" = "Usar uma chave de segurança";
-
 /* Option to enable the block editor for new posts */
 "Use block editor" = "Usar o editor de blocos";
 
 /* No comment provided by engineer. */
 "Use icon button" = "Usar ícone de botão";
 
-/* The button title text for logging in with WP.com password instead of magic link. */
-"Use password to sign in" = "Usar senha para fazer login";
-
 /* Option to enable theme styles in the block editor */
 "Use theme styles" = "Usar estilos do tema";
 
 /* A placeholder for the twitter username
-   Accessibility label for the username text field in the self-hosted login page.
    Account Settings Username label
    Label for entering username in the username field
    Login dialog username placeholder
-   Placeholder for the username textfield.
-   The header and main title
-   Username label text.
-   Username placeholder */
+   The header and main title */
 "Username" = "Nome de usuário";
 
 /* Message displayed in a Notice when the username has changed successfully. The placeholder is the new username. */
@@ -6339,9 +6029,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Blog Users */
 "Users" = "Usuários";
-
-/* two factor code placeholder */
-"Verification code" = "Código de verificação";
 
 /* Push Authentication Alert Title */
 "Verify Log In" = "Verificar login";
@@ -6462,18 +6149,8 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Downloadable/Restorable items: WP-content directory */
 "WP-content directory" = "O diretório wp-content";
 
-/* Message shown on screen while waiting for Google to finish its signup process. */
-"Waiting for Google to complete…" = "Esperando o Google para concluir...";
-
 /* No comment provided by engineer. */
 "Waiting for connection" = "Aguardando conexão";
-
-/* Text while the webauthn signature is being verified
-   Text while waiting for a security key challenge */
-"Waiting for security key" = "Aguardando chave de segurança";
-
-/* View title during the Google auth process. */
-"Waiting..." = "Aguardando...";
 
 /* Editing GIF alert title.
    Noun. Title for Jetpack Restore warning.
@@ -6513,35 +6190,17 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Error message displayed when a refresh failed */
 "We had trouble loading data" = "Tivemos problemas ao carregar os dados";
 
-/* message to ask a user to check their email for a WordPress.com email */
-"We just emailed a link to %@. Please check your mail app and tap the link to log in." = "Enviamos um link para o e-mail %@. Confira seu aplicativo de e-mail e acesse o link para fazer login.";
-
-/* The subtitle text on the magic link requested screen followed by the email address. */
-"We just sent a magic link to" = "Acabamos de enviar um link mágico para";
-
 /* Description for the Jetpack Backup Complete message. %1$@ is a placeholder for the selected date. */
 "We successfully created a backup of your site from %1$@." = "O backup do seu site em %1$@ foi criado com sucesso.";
 
 /* Informational text about link to other tracking tools */
 "We use other tracking tools, including some from third parties. Read about these and how to control them." = "Nós usamos outras ferramentas de acompanhamento, inclusive algumas de terceiros. Leia mais sobre elas e como controlá-las.";
 
-/* Error message displayed when an error occurred sending the magic link email. */
-"We were unable to send you an email at this time. Please try again later." = "Não foi possível enviar um e-mail para você no momento. Tente novamente mais tarde.";
-
 /* Description for label when the actively scanning the users site */
 "We will send you an email if security threats are found. In the meantime feel free to continue to use your site as normal, you can check back on progress at any time." = "Enviaremos um e-mail se forem encontradas ameaças à segurança. Enquanto isso, fique à vontade para continuar a usar seu site normalmente. Você pode verificar o progresso a qualquer momento.";
 
-/* Instructional text for the magic link login flow. */
-"We'll email you a magic link that'll log you in instantly, no password needed. Hunt and peck no more!" = "Vamos enviar para você um link mágico que fará seu login na hora, sem precisar de senha. Chega de catar milho no teclado!";
-
-/* Instruction text on the Sign Up screen. */
-"We'll email you a signup link to create your new WordPress.com account." = "Enviaremos um link por e-mail para criar sua nova conta no WordPress.com.";
-
 /* This is the string we display when asking the user to approve push notifications */
 "We'll notify you when you get followers, comments, and likes." = "Nós te avisaremos assim que você receber seguidores, comentários e curtidas.";
-
-/* Text confirming email address to be used for new account. */
-"We'll use this email address to create your new WordPress.com account." = "Usaremos este endereço de e-mail para criar sua nova conta no WordPress.com.";
 
 /* Description for the Jetpack Backup Status message. %1$@ is a placeholder for the selected date. */
 "We're creating a downloadable backup of your site from %1$@." = "Estamos criando um backup do seu site para %1$@.";
@@ -6552,9 +6211,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Detail text display informing the user that we're fixing threats */
 "We're hard at work in the background fixing these threats. In the meantime feel free to continue to use your site as normal, you can check back on progress at any time." = "Estamos trabalhando nos bastidores para corrigir essas ameaças. Enquanto isso, sinta-se à vontade para continuar usando o site normalmente. Você pode conferir o progresso a qualquer momento.";
 
-/* Error message shown when having trouble connecting to a Jetpack site. */
-"We're not able to connect to the Jetpack site at that URL.  Contact us for assistance." = "Não conseguimos conectar ao site do Jetpack com esse URL. Entre em contato para ajudarmos.";
-
 /* Description for the Jetpack Restore Status message. %1$@ is a placeholder for the selected date. */
 "We're restoring your site back to %1$@." = "Estamos restaurando o seu site para %1$@.";
 
@@ -6563,9 +6219,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* A hint to users indicating a link to the downloadable backup file has also been sent to their email. */
 "We've also emailed you a link to your file." = "Nós também enviamos um e-mail com um link para seu arquivo.";
-
-/* Instruction text after a signup Magic Link was requested. */
-"We've emailed you a signup link to create your new WordPress.com account. Check your email on this device, and tap the link in the email you receive from WordPress.com." = "Nós enviamos um link de cadastro por e-mail para criar sua nova conta no WordPress.com. Verifique sua caixa de e-mails neste dispositivo e clique no link enviado pelo WordPress.com.";
 
 /* Account Settings Web Address label
    Header for a comment author's web address, shown when editing a comment. */
@@ -6633,9 +6286,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* This is a link that takes the user to the external Gravatar website */
 "What is Gravatar?" = "O que é o Gravatar?";
 
-/* Navigates to page with details about What is WordPress.com. */
-"What is WordPress.com?" = "O que é o WordPress.com?";
-
 /* No comment provided by engineer. */
 "What is a block?" = "O que é um bloco?";
 
@@ -6666,18 +6316,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Text rendered at the bottom of the Discussion Blocklist Keys editor */
 "When a comment contains any of these words in its content, name, URL, e-mail, or IP, it will be marked as spam. You can enter partial words, so \"press\" will match \"WordPress\"." = "Quando um comentário tiver uma destas palavras em seu conteúdo, nome, URL, e-mail ou IP, ele será marcado como spam. Você pode inserir partes de palavras, então \"press\" corresponderá a \"WordPress\".";
 
-/* An error message shown when a wpcom user provides the wrong password. */
-"Whoops, something went wrong and we couldn't log you in. Please try again!" = "Oops, não conseguimos realizar seu login. Tente novamente!";
-
-/* Generic error on the 2FA screen */
-"Whoops, something went wrong. Please try again!" = "Ops, ocorreu um erro. Tente novamente.";
-
-/* Error when the uses chooses an invalid security key on the 2FA screen. */
-"Whoops, that security key does not seem valid. Please try again with another one" = "Ops, parece que essa chave de segurança não é válida. Selecione outra e tente novamente";
-
-/* Error message shown when an incorrect two factor code is provided. */
-"Whoops, that's not a valid two-factor verification code. Double-check your code and try again!" = "Ooops, este não é um código de verificação em duas etapas válido. Confira o código e tente novamente!";
-
 /* No comment provided by engineer. */
 "Width Settings" = "Configurações de largura";
 
@@ -6690,17 +6328,38 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Title of Stats section that shows WordPress.com followers. */
 "WordPress" = "WordPress";
 
+/* Siri Suggestion to open App Settings */
+"WordPress App Settings" = "Configurações do aplicativo WordPress";
+
 /* Subject line for when sharing the app with others through mail or any other activity types that support contains a subject field. */
 "WordPress Apps - Apps for any screen" = "Apps do WordPress - Apps para qualquer tela";
 
 /* Settings for a Wordpress Blog */
 "WordPress Blog" = "Blog do WordPress";
 
+/* Siri Suggestion to open Support */
+"WordPress Help" = "Ajuda do WordPress";
+
 /* Accessibility label for selecting an image or video from the user's WordPress media library on formatting toolbar. */
 "WordPress Media Library" = "Biblioteca de mídia do WordPress";
 
+/* Siri Suggestion to open Notification Settings */
+"WordPress Notification Settings" = "Configurações de notificações do WordPress";
+
+/* Siri Suggestion to open Notifications */
+"WordPress Notifications" = "Notificações do WordPress";
+
 /* Downloadable/Restorable items: WordPress Plugins */
 "WordPress Plugins" = "Plugins WordPress";
+
+/* Siri Suggestion to open Me tab */
+"WordPress Profile" = "Perfil do WordPress";
+
+/* Siri Suggestion to open My Sites */
+"WordPress Reader" = "Leitor do WordPress";
+
+/* Siri Suggestion to open My Sites */
+"WordPress Site Details" = "Detalhes do site WordPress";
 
 /* Downloadable/Restorable items: WordPress Themes */
 "WordPress Themes" = "Temas WordPress";
@@ -6716,9 +6375,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* No comment provided by engineer. */
 "WordPress version too old" = "Versão do WordPress muito antiga";
-
-/* No comment provided by engineer. */
-"WordPress version too old. The site at %@ uses WordPress %@. We recommend to update to the latest version, or at least %@" = "Versão muito antiga do WordPress. O site em %1$@ usa o WordPress %2$@. Recomendamos a atualização para a última versão ou pelo menos, a versão %3$@.";
 
 /* Label for WordPress.com followers */
 "WordPress.com" = "WordPress.com";
@@ -6769,9 +6425,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* No comment provided by engineer. */
 "Y-Axis Position" = "Posição eixo Y";
 
-/* Option to select the Yahoo Mail app when logging in with magic links */
-"Yahoo Mail" = "Yahoo Mail";
-
 /* 'This Year' label for the the year. */
 "Year" = "Ano";
 
@@ -6802,9 +6455,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* No comment provided by engineer. */
 "You can also rearrange blocks by tapping a block and then tapping the up and down arrows that appear on the bottom left side of the block to move it up or down." = "Você pode reorganizar os blocos tocando em um deles e, em seguida, nas setas para cima e para baixo que aparecem no canto inferior esquerdo do bloco para movê-lo na direção indicada.";
-
-/* Information shown below the optional password field after new account creation. */
-"You can always log in with a link like the one you just used, but you can also set up a password if you prefer." = "Você sempre pode acessar com um link como o que acabou de usar, mas também é possível definir uma senha se preferir.";
 
 /* Note displayed in the Feature Introduction view. */
 "You can control Blogging Prompts and Reminders at any time in My Site > Settings > Blogging" = "Você pode controlar lembretes e sugestões de publicação a qualquer momento em Meu site > Configurações > Posts no blog";
@@ -6931,9 +6581,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Title for the Jetpack Backup Complete message. */
 "Your backup is now available for download" = "Seu backup já está disponível para download";
-
-/* Instructional text that displays the current username and display name. */
-"Your current username is %@. With few exceptions, others will only ever see your display name, %@." = "Atualmente, seu nome de usuário é %1$@. Com poucas exceções, outras pessoas verão apenas o seu nome de exibição, %2$@.";
 
 /* Details about recently acquired domain on domain credit redemption success screen */
 "Your new domain %@ is being set up. It may take up to 30 minutes for your domain to start working." = "Seu novo domínio %@ está sendo configurado. O domínio pode levar até 30 minutos para começar a funcionar.";
@@ -7363,43 +7010,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Badge title in site list */
 "blogList.siteBadge.staging" = "Ambiente de testes";
-
-/* Title for a button that, when tapped, shows more info about participating in Bloganuary. */
-"bloganuary.dashboard.card.button.learnMore" = "Saiba mais";
-
-/* Short description for the Bloganuary event, shown right below the title. */
-"bloganuary.dashboard.card.description" = "Durante o mês de janeiro, as sugestões de publicação virão do Bloganuary — nosso desafio para a comunidade criar um hábito de publicação no ano que se inicia.";
-
-/* Title for the Bloganuary dashboard card while Bloganuary is running. */
-"bloganuary.dashboard.card.runningTitle" = "O Bloganuary está aqui!";
-
-/* Title for the Bloganuary dashboard card. */
-"bloganuary.dashboard.card.title" = "O Bloganuary está chegando!";
-
-/* Title of a button that calls the user to enable the Blogging Prompts feature. */
-"bloganuary.learnMore.modal.button.promptsDisabled" = "Ativar sugestões de publicação";
-
-/* Title of a button that will dismiss the Bloganuary modal when tapped.
-Note that the word 'go' here should have a closer meaning to 'start' rather than 'move forward'. */
-"bloganuary.learnMore.modal.button.promptsEnabled" = "Vamos lá!";
-
-/* The second line of the description shown in the Bloganuary modal sheet. */
-"bloganuary.learnMore.modal.description.second" = "Publique sua resposta.";
-
-/* The third line of the description shown in the Bloganuary modal sheet. */
-"bloganuary.learnMore.modal.description.third" = "Leia as respostas de outros blogueiros para obter inspiração e criar novos laços.";
-
-/* The first line of the description shown in the Bloganuary modal sheet. */
-"bloganuary.learnMore.modal.descriptions.first" = "Receba uma nova sugestão por dia para se inspirar.";
-
-/* An additional piece of information shown in case the user has the Blogging Prompts feature disabled. */
-"bloganuary.learnMore.modal.footer.addition" = "Para participar do Bloganuary, você precisa ativar as Sugestões de publicação.";
-
-/* An informative excerpt shown in a subtler tone. */
-"bloganuary.learnMore.modal.footer.text" = "O Bloganuary usará sugestões de publicação diárias para enviar tópicos do mês de janeiro para você.";
-
-/* The headline text of the Bloganuary modal sheet. */
-"bloganuary.learnMore.modal.headline" = "Participe do nosso desafio de escrita do mês";
 
 /* Verb. Dismisses the blogging prompt notification. */
 "bloggingPrompt.pushNotification.customActionDescription.dismiss" = "Dispensar";
@@ -8266,10 +7876,6 @@ Example: Reply to Pamela Nguyen */
 /* A name of the ID field (it's a technical field, has to be short, displayed below everything else) */
 "entityMetadataFooterView.id" = "ID";
 
-/* Placeholder for the site url textfield.
-   Site Address placeholder */
-"example.com" = "exemplo.com";
-
 /* Accept button title for the alert asking for feedback */
 "experimentalFeatures.editorFeedbackAccept" = "Enviar comentários";
 
@@ -9126,18 +8732,6 @@ Example: Reply to Pamela Nguyen */
 /* Title shown when the application password is invalid */
 "login.appPasswordReAuth.title" = "Senha do aplicativo inválida";
 
-/* Description text explaining where to find site address during login */
-"login.siteAddressHelp.description" = "O endereço do seu site aparece na barra, localizada na parte superior da tela, quando acessado pelo Safari.";
-
-/* Button title to get additional help finding site address during login */
-"login.siteAddressHelp.moreHelpButton" = "Precisa de mais ajuda?";
-
-/* Title of alert helping users understand their site address during login */
-"login.siteAddressHelp.title" = "Qual é o endereço do meu site?";
-
-/* Instruction label in the two-factor authorization screen WordPress.com login authentication. Note: it has to mention that it's for a WordPress.com account. */
-"login.twoFactorInstructions.details" = "Digite o código de verificação do aplicativo de autenticação para a sua conta do WordPress.com.";
-
 /* Indicating that referrer was marked as spam */
 "marked as spam" = "marcado como spam";
 
@@ -9326,9 +8920,6 @@ Example: Reply to Pamela Nguyen */
 
 /* Button that opens the Settings app */
 "mediaPicker.openSettings" = "Abrir configurações";
-
-/* The name of the action in the context menu for selecting photos from Tenor (free GIF library) */
-"mediaPicker.pickFromFreeGIFLibrary" = "Biblioteca gratuita de GIF";
 
 /* The name of the action in the context menu (user's WordPress Media Library */
 "mediaPicker.pickFromMediaLibrary" = "Escolher em Mídia";
@@ -9752,9 +9343,6 @@ Example: Reply to Pamela Nguyen */
 
 /* Navigation title displayed on the navigation bar */
 "parentPageSettings.title" = "Página principal";
-
-/* No comment provided by engineer. */
-"password" = "senha";
 
 /* Section footer displayed below the list of toggles */
 "personalizeHome.cardsSectionFooter" = "Os cartões podem mostrar conteúdo diferente dependendo do que está acontecendo em seu site. Estamos trabalhando em mais cartões e controles.";
@@ -10354,6 +9942,27 @@ Example: Reply to Pamela Nguyen */
 
 /* Message shown when no taxonomy terms are selected. %1$@ is the taxonomy name (e.g., 'tags', 'categories'). */
 "postTags.selectionEmpty" = "Sem seleção de %1$@";
+
+/* Localized post type: `Page` */
+"postType.page" = "página";
+
+/* Localized post type: `Post` */
+"postType.post" = "post";
+
+/* Title for a 'Private' privacy setting */
+"postVisibility.private.title" = "Privado";
+
+/* Details for a 'Password Protected' privacy setting */
+"postVisibility.protected.details" = "Visível para todos, mas requer uma senha";
+
+/* Title for a 'Password Protected' privacy setting */
+"postVisibility.protected.title" = "Protegido por senha";
+
+/* Details for a 'Public' (default) privacy setting */
+"postVisibility.public.details" = "Visível para todos";
+
+/* Title for a 'Public' (default) privacy setting */
+"postVisibility.public.title" = "Público";
 
 /* Navigation bar title for the Post Visibility picker */
 "postVisibilityPicker.navigationTitle" = "Visibilidade";
@@ -12150,9 +11759,6 @@ Example: given a notice format "Following %@" and empty site name, this will be 
 /* Error message when the tags service cannot connect to the remote site */
 "tags.error.no_remote_service" = "Não foi possível conectar o site. Verifique sua conexão e tente novamente.";
 
-/* Title for placeholder in Tenor picker */
-"tenor.welcomeMessage" = "Pesquise GIFs para adicionar à sua biblioteca de mídia!";
-
 /* Header of delete screen section listing things that will be deleted. */
 "these items will be deleted:" = "estes itens serão excluídos:";
 
@@ -12301,9 +11907,6 @@ Example: given a notice format "Following %@" and empty site name, this will be 
 /* Second part of delete screen title stating [the site] will be unavailable in the future. */
 "will be unavailable in the future." = "ficará indisponível no futuro.";
 
-/* Title for the link for site creation guide. */
-"wordPressAuthenticatorDisplayStrings.default.siteCreationGuideButtonTitle" = "Quer começar um novo site?";
-
 /* This is a comma separated list of keywords used for spotlight indexing of the 'Help & Support' screen within the 'Me' tab */
 "wordpress, help, support, faq, questions, debug, logs, help center, contact" = "wordpress, ajuda, suporte, faq, perguntas frequentes, questões, debug, depuração, logs, registros de atividades, central de ajuda, contato";
 
@@ -12325,7 +11928,7 @@ Example: given a notice format "Following %@" and empty site name, this will be 
 /* This is a comma separated list of keywords used for spotlight indexing of the 'My Sites' tab. */
 "wordpress, sites, site, blogs, blog" = "wordpress, sites, site, blogs, blog";
 
-/* Error message that describes an unknown error had occured */
+/* Error message that describes an unknown error had occurred */
 "wordpress-api.error.unknown" = "Ocorreu um erro. Tente novamente mais tarde.";
 
 /* Jetpack Plugin Modal on WordPress primary button title */
@@ -12402,9 +12005,6 @@ Example: given a notice format "Following %@" and empty site name, this will be 
 
 /* Managing Zendesk attachments */
 "zendeskAttachmentsSection.unsupportedAttachmentErrorMessage" = "Anexo incompatível";
-
-/* Label for button to log in using Google. The {G} will be replaced with the Google logo. */
-"{G} Log in with Google." = "{G} Acessar com o Google.";
 
 /* Item 4 of delete screen section listing things that will be deleted. */
 "• Domains" = "• Domínios";
