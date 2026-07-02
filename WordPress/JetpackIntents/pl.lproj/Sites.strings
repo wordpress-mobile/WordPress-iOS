@@ -3,12 +3,16 @@
 <!--Warning: Auto-generated file, do not edit.-->
 <plist version="1.0">
   <dict>
+    <key>BOl9KQ</key>
+    <string>Istnieją opcje pasujące do „${site}” (liczba: ${count}).</string>
     <key>ILcGmf</key>
     <string>Witryna</string>
     <key>cyajMn</key>
     <string>Witryna</string>
     <key>gpCwrM</key>
     <string>Select Site</string>
+    <key>s4dJhx</key>
+    <string>Dla potwierdzenia, czy chodziło o „${site}”?</string>
     <key>tVvJ9c</key>
     <string>Select Site Intent</string>
   </dict>

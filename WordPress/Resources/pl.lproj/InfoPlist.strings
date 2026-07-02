@@ -2,5 +2,16 @@
 <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
 <!--Warning: Auto-generated file, do not edit.-->
 <plist version="1.0">
-  <dict/>
+  <dict>
+    <key>NSCameraUsageDescription</key>
+    <string>Do robienia zdjęć lub nagrywania filmów do wykorzystania w twoich wpisach.</string>
+    <key>NSLocationUsageDescription</key>
+    <string>WordPress chce dodawać twoją lokalizację do wpisów w witrynach z włączoną funkcją geotagowania.</string>
+    <key>NSLocationWhenInUseUsageDescription</key>
+    <string>WordPress chce dodawać twoją lokalizację do wpisów w witrynach z włączoną funkcją geotagowania.</string>
+    <key>NSMicrophoneUsageDescription</key>
+    <string>Włącz dostęp do mikrofonu, aby nagrywać dźwięk w filmach.</string>
+    <key>NSPhotoLibraryUsageDescription</key>
+    <string>Do dodawania zdjęć lub filmów do twoich wpisów.</string>
+  </dict>
 </plist>
