@@ -1,7 +1,1 @@
-Jika Anda memiliki situs yang di-hosting sendiri, kini Anda perlu login ke aplikasi menggunakan kata sandi aplikasi. Jika Anda belum memiliki kata sandi aplikasi, kami akan membuatnya secara otomatis agar siap digunakan saat dibutuhkan.
-
-Jika Anda menghapus komentar dengan tindakan geser, komentar tersebut akan hilang dari daftar. Selamat tinggal.
-
-Kami memperbaiki masalah yang menyebabkan tampilan footer di Penyuntingan Menu tidak menyesuaikan ukurannya. Hasilnya, tombol tindakan kini muncul dengan jelas dalam bahasa selain bahasa Inggris.
-
-Kami menghapus tautan X yang tidak berfungsi pada layar Tentang. (Apresiasi untuk @zynp-KC atas laporannya.)
+Jika Anda memiliki situs yang di-hosting sendiri, Anda kini dapat masuk ke aplikasi menggunakan kata sandi aplikasi. Jika Anda tidak memilikinya, kami membuatkannya secara otomatis yang siap digunakan saat Anda membutuhkannya.
