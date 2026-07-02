@@ -18,10 +18,10 @@
 /* Accessibility identifier for buttons. */
 "%@ Button" = "%@ Tlačidlo";
 
-/* The number of tags in the writting settings. Singular. %@ is a placeholder for the number */
+/* The number of tags in the writing settings. Singular. %@ is a placeholder for the number */
 "%@ Tag" = "%@ Značka";
 
-/* The number of tags in the writting settings. Plural. %@ is a placeholder for the number */
+/* The number of tags in the writing settings. Plural. %@ is a placeholder for the number */
 "%@ Tags" = "%@ Značky";
 
 /* Number of Comments per Page */
@@ -92,6 +92,10 @@
 /* Menus title label text for a post that has no set title. */
 "(Untitled)" = "(Bez názvu)";
 
+/* Lets a user know that a local draft does not have a title.
+   Placeholder text for missing post title */
+"(no title)" = "(bez názvu)";
+
 /* Menus button text for adding a new menu to a site. */
 "+ Add new menu" = "+ Pridať nové menu";
 
@@ -130,12 +134,6 @@
 
 /* Placeholder text for the title of a site */
 "A title for the site" = "Názov stránky";
-
-/* An error message. */
-"A valid email address is needed to mail an authentication link. Please return to the previous screen and provide a valid email address." = "Platná emailová adresa je dôležitá pre overenie a prepojenie. Vráťte sa na predchádzajúcu obrazovku a zadajte platný email.";
-
-/* Shown when a user types a non-number into the two factor field. */
-"A verification code will only contain numbers." = "Overovací kód obsahuje len číslice.";
 
 /* Label for active Theme browser cell */
 "ACTIVE" = "AKTÍVNA";
@@ -241,14 +239,8 @@
 /* Jetpack Settings: Allowlisted IP addresses */
 "Allowlisted IP addresses" = "Zoznam povolených IP adries";
 
-/* Instructions for users with two-factor authentication enabled. */
-"Almost there! Please enter the verification code from your authenticator app." = "Už to skoro je hotové! Prosím zadajte overovací kód z aplikácie overovania.";
-
 /* Image alt attribute option title. */
 "Alt Text" = "Alt Text";
-
-/* String displayed before offering alternative login methods */
-"Alternatively:" = "Prípadne:";
 
 /* Error message shown when trying to view the Plugins feature and there is no internet connection.
    Error message when the user tries to visualize a plugin without internet connection */
@@ -283,6 +275,9 @@
 
 /* Error message shown when a media upload fails for unknown reason and the user should try again. */
 "An unknown error occurred. Please try again." = "Vyskytla sa neznáma chyba. Prosím skúste to znova.";
+
+/* the comment has an anonymous author. */
+"Anonymous" = "Anonymný";
 
 /* App Settings Title
    Link to App Settings section
@@ -419,22 +414,15 @@
 /* Title for a list of different button styles. */
 "Button Style" = "Štýl tlačidiel";
 
-/* Legal disclaimer for signup buttons, the underscores _..._ denote underline */
-"By signing up, you agree to our _Terms of Service_." = "Prihlásením súhlasíte s našimi _Podmienkami poskytovania služby_.";
-
 /* Label for size of media while it's being calculated. */
 "Calculating..." = "Prepočítava sa...";
 
 /* Accessibility label for taking an image or video with the camera on formatting toolbar. */
 "Camera" = "Fotoaparát";
 
-/* Title of an alert letting the user know */
-"Can Not Request Link" = "Nieje možné načítať adresu";
-
 /* Alert dismissal title
    Button label that dismisses the qr log in flow and returns the user back to the previous screen
    Button title, cancel fixing all threats
-   Button title. Tapping it cancels the login flow.
    Cancel Action
    Cancel action on share extension editor screen.
    Cancel action on the app extension category picker screen.
@@ -460,7 +448,6 @@
    Menus cancel button for deleting a menu.
    Menus cancel button within text bar while editing items.
    Menus: Cancel button title for canceling an edited menu item.
-   Option to cancel the email app selection when logging in with magic links
    Title of a button that dismisses the permissions alert
    Title. Title of a cancel button. Tapping disnisses an alert.
    Verb. A button title.
@@ -489,7 +476,8 @@
 /* Alert title. */
 "Careful!" = "Pozor!";
 
-/* Category menu item in share extension. */
+/* Category menu item in share extension.
+   Menu item label for linking a specific category. */
 "Category" = "Kategória";
 
 /* Center alignment for an image. Should be the same as in core WP. */
@@ -502,24 +490,14 @@
    Main title */
 "Change Password" = "Zmeniť heslo";
 
-/* Change Username title. */
-"Change Username" = "Zmeniť užívateľské meno";
-
 /* Message to show when Publicize globally shared setting failed */
 "Change failed" = "Zmena sa nepodarila";
 
 /* Instructions for editing the sharing label. */
 "Change the text of the sharing buttons' label. This text won't appear until you add at least one sharing button." = "Zmeniť text popisu u tlačidla pre zdieľanie. Tento text sa nezobrazuje, pokiaľ nieje vytvorené aspoň jedno tlačidlo.";
 
-/* Shown while the app waits for the display name changing web service to return. */
-"Changing display name" = "Prebieha zmena zobrazoného mena";
-
-/* Loader title displayed by the loading view while the password is changing
-   Shown while the app waits for the password changing web service to return. */
+/* Loader title displayed by the loading view while the password is changing */
 "Changing password" = "Prebieha zmena hesla";
-
-/* Shown while the app waits for the username changing web service to return. */
-"Changing username" = "Prebieha zmena užívateľského mena";
 
 /* Title of alert when getting purchases fails */
 "Check Purchases Error" = "Skontrolujte chybu pri nákupe";
@@ -563,6 +541,9 @@
 
 /* Label for switch to turn on/off sending app usage data */
 "Collect information" = "Zbierať informácie";
+
+/* Menu item label for linking a comic page. */
+"Comics" = "Komiks";
 
 /* Header for a comment's content, shown when editing a comment.
    Text for the 'comment' when there is 1 or 0 comments */
@@ -631,18 +612,12 @@
 /* Noun. Title. Title for the list of accounts for third party sharing services. */
 "Connected Accounts" = "Prepojené účty";
 
-/* Title shown when a user logs in with Google but no matching WordPress.com account is found */
-"Connected But…" = "Pripojené ale...";
-
 /* Connecting is a verb. Title of Publicize account selection. The %@ is a placeholder for the service's name
    Connecting is a verb. Title of Publicize account selection. The %@ is a placeholder for the service's name. */
 "Connecting %@" = "Pripájam %@";
 
 /* Informs the user of consequences of chooseing a new account to connect to publicize.  The %@ characters are placeholders for account names. */
 "Connecting %@ will replace the existing connection to %@." = "Pripojovanie k %1$@ nahradí aktuálne spojenie k %2$@.";
-
-/* No comment provided by engineer. */
-"Connecting to WordPress.com" = "Pripájanie sa na WordPress.com";
 
 /* Verb. Text label. Allows the user to connect to a third-party sharing service like Facebook or Twitter. */
 "Connecting..." = "Pripájam...";
@@ -671,7 +646,6 @@
 
 /* Apply changes localy to single block edition in the web block editor
    Button to progress to the next step
-   The button title text when there is a next step for logging in or signing up.
    The default Jetpack view button title
    The primary button title in the migration welcome and notifications screens.
    Title for the continue button in the What's New page.
@@ -739,9 +713,6 @@
    Register Domain - Domain contact information field Country */
 "Country" = "Krajina";
 
-/* The button title text for creating a new account. */
-"Create Account" = "Vytvoriť účet";
-
 /* Button to progress to the next step
    Site creation. Step 1. Screen title
    Title for the button to progress with creating the site with the selected design. */
@@ -780,6 +751,9 @@
 
 /* Label for selecting the default category of a post */
 "Default Category" = "Predvolená kategória";
+
+/* Menu name for the default menu that is automatically generated. */
+"Default Menu" = "Základné menu";
 
 /* Label for selecting the default post format
    Title for screen to select a default post format for a blog */
@@ -849,30 +823,26 @@
    Title for the Discussion Settings Screen */
 "Discussion" = "Diskusia";
 
-/* Accessibility label for the transparent space above the login dialog which acts as a button to dismiss the dialog.
-   Accessibility label for the transparent space above the signup dialog which acts as a button to dismiss the dialog. */
+/* No comment provided by engineer. */
 "Dismiss" = "Zrušiť";
 
-/* Display Name label text.
-   User's Display Name */
+/* User's Display Name */
 "Display Name" = "Zobraziť meno";
 
-/* Label for button to log in using your site address. The underscores _..._ denote underline */
-"Don't have an account? _Sign up_" = "Ešte nemáš účet? _Zaregistruj sa_";
-
 /* A done button
-   Button text on site creation epilogue page to proceed to My Sites.
    Done button title
    Done editing an image
    Done. Action.
    Menu button title for finishing editing the Menu name.
-   Tapping a button with this label allows the user to exit the Site Creation flow
    Title for button that will dismiss this view
    Title for the button that will dismiss this view. */
 "Done" = "Dokončené";
 
 /* Voiceover accessibility hint informing the user they can double tap a modal alert to dismiss it */
 "Double tap to dismiss" = "Dvojklikom odmietnete";
+
+/* Name for the status of a draft post. */
+"Draft" = "Koncept";
 
 /* Title of the drafts filter.  This filter shows a list of draft posts. */
 "Drafts" = "Koncepty";
@@ -923,10 +893,7 @@
 /* Header for a comment author's email address, shown when editing a comment. */
 "Email Address" = "E-mailová adresa";
 
-/* Accessibility label for the email address text field.
-   Describes the email address section in the comment detail screen.
-   Placeholder for a textfield. The user may enter their email address.
-   Placeholder for the email address textfield. */
+/* Describes the email address section in the comment detail screen. */
 "Email address" = "E-mailová adresa";
 
 /* Notification Settings Channel */
@@ -948,8 +915,7 @@
 /* Overlay message displayed when export content started */
 "Email sent!" = "Email odoslaný!";
 
-/* Accessibility value presented in the signup epilogue for an empty value.
-   Label for size of media when the cache is empty. */
+/* Label for size of media when the cache is empty. */
 "Empty" = "Prázdne";
 
 /* Message to show to user when he tries to add a self-hosted site that is an empty URL. */
@@ -965,15 +931,8 @@
 /* (placeholder) Help enter WordPress password */
 "Enter password" = "Vložte heslo";
 
-/* Instructional text shown when requesting the user's password for login. */
-"Enter the password for your WordPress.com account." = "Zadajte heslo pre svoj účet WordPress.com.";
-
 /* (placeholder) Help enter WordPress username */
 "Enter username" = "Vložte prihlasovacie meno";
-
-/* Title of a button on the magic link screen.
-   Title of a button. */
-"Enter your password instead." = "Vpíšte svoje heslo.";
 
 /* Generic error alert title */
 "Error" = "Chyba";
@@ -1103,18 +1062,12 @@
 /* Displayed in the Notifications Tab as a message, when the Follow Filter shows no notifications */
 "Get noticed: comment on posts you've read." = "Dostávať upozornenia: pri pridaní komentára v článku ktorý ste prečítali.";
 
-/* Alerts the user that wpcom account information is being retrieved. */
-"Getting account information" = "Získať informácie o účte";
-
 /* Displayed in the Notifications Tab as a button title, when there are no notifications */
 "Go to Reader" = "Prejsť na čítačku";
 
 /* Button label for going to settings to approve push notifications
    Opens WPiOS Settings.app Section */
 "Go to iOS Settings" = "Prejsť do iOS nastavení";
-
-/* Message shown on screen after the Google sign up process failed. */
-"Google sign up failed." = "Zlyhalo prihlásie do Google.";
 
 /* This is the text we display to the user after they've indicated they like the app */
 "Great!\n We love to hear from happy users \n😁" = "Vynikajúco!\n Radi počujeme o šťastných používateľoch. \n😁";
@@ -1161,17 +1114,13 @@
 /* H6 Aztec Style */
 "Heading 6" = "Nadpis 6";
 
-/* Help button
-   Open editor help options */
+/* Open editor help options */
 "Help" = "Pomoc";
 
 /* Link to Help section
    Open editor help options
    Title of the 'Help & Support' screen within the 'Me' tab - used for spotlight indexing on iOS. */
 "Help & Support" = "Pomoc a podpora";
-
-/* Accessibility value if login page's password field is hiding the password (i.e. with asterisks). */
-"Hidden" = "Skrytý";
 
 /* Title of a button used to collapse a group */
 "Hide" = "Skryť";
@@ -1243,9 +1192,6 @@
 /* Describes a standard *.wordpress.com site domain */
 "Included with Site" = "Súčasťou stránky";
 
-/* An error message shown when a user signed in with incorrect credentials. */
-"Incorrect username or password. Please try entering your login details again." = "Nesprávne užívateľské meno alebo heslo. Skúste to znovu a zadajte vaše prihlasovacie údaje.";
-
 /* WordPress.com Community Footer Text */
 "Information on WordPress.com courses and events (online & in-person)." = "Informácie o kurzoch a udalostiach tímu WordPress.com (online a osobne).";
 
@@ -1294,9 +1240,6 @@
 /* Message displayed in an alert when user tries to install a first plugin on their site. */
 "Installing the first plugin on your site can take up to 1 minute. During this time you won’t be able to make changes to your site." = "Inštaluje sa prvý plugin na webovej stránke. Môže to trvať 1 minútu. Počas tohto času, nebudete môcť vykonávať zmeny na webovej stránke.";
 
-/* Title of an alert letting the user know the email address that they've entered isn't valid */
-"Invalid Email Address" = "Neplatná e-mailová adresa.";
-
 /* No comment provided by engineer. */
 "Invalid Site Address" = "Neplatná adresa webovej stránky";
 
@@ -1320,12 +1263,6 @@
 
 /* Send Person Invite */
 "Invite" = "Pozvať";
-
-/* An error message shown during log in when the username or password is incorrect. */
-"It looks like this username\/password isn't associated with this site." = "Zdá sa, že toto používateľské meno\/heslo nie je priradené k tejto webovej stránke.";
-
-/* An error message shown when a wpcom user provides the wrong password. */
-"It seems like you've entered an incorrect password. Want to give it another try?" = "Zdá sa, že ste zadali nesprávne heslo. Chcete to skúsiť znovu?";
 
 /* Accessibility label for italic button on formatting toolbar.
    Discoverability title for italic formatting keyboard shortcut. */
@@ -1417,7 +1354,8 @@
 /* VoiceOver accessibility hint, informing the user the button can be used to like a comment */
 "Likes the Comment." = "Komentár sa páči.";
 
-/* Label for link title in Clicks stat. */
+/* Label for link title in Clicks stat.
+   Menu item label for linking a custom source URL. */
 "Link" = "Odkaz";
 
 /* Menus title label when editing a menu item as a link. */
@@ -1476,11 +1414,9 @@
 /* A status label for a post that only exists on the user's iOS device, and has not yet been published to their blog. */
 "Local changes" = "Miestne zmeny";
 
-/* Button title.  Tapping takes the user to the login form.
-   Label for logging in to WordPress.com account
+/* Label for logging in to WordPress.com account
    Log In 3D Touch Shortcut
-   Log In button label.
-   View title during the log in process. */
+   Log In button label. */
 "Log In" = "Prihlásiť sa";
 
 /* Button for confirming logging out from WordPress.com account
@@ -1490,12 +1426,6 @@
 /* Title of a button for signing in. */
 "Log in" = "Prihlásiť";
 
-/* A generic error message for a failed log in. */
-"Log in failed. Please try again." = "Prihlásenie zlyhalo. Prosím skúste to znova.";
-
-/* Instruction text on the login's email address screen. */
-"Log in to the WordPress.com account you used to connect Jetpack." = "Prihláste sa do účtu WordPress.com, ktorý používate na pripojenie k Jetpack.";
-
 /* LogOut confirmation text, whenever there are no local changes */
 "Log out of WordPress?" = "Odhlásiť sa z WordPress?";
 
@@ -1504,9 +1434,6 @@
 
 /* Message asking the user to sign into Jetpack with WordPress.com credentials */
 "Looks like you have Jetpack set up on your site. Congrats! Log in with your WordPress.com credentials to enable Stats and Notifications." = "Zdá sa, že na vašej webovej stránke máte nastavený Jetpack. Gratulujeme! Prihláste sa s poverením WordPress.com a zapnite Štatistika a Upozornenia.";
-
-/* Title of a button. */
-"Lost your password?" = "Zabudli ste heslo?";
 
 /* No comment provided by engineer. */
 "Main Navigation" = "Hlavná navigácia";
@@ -1630,6 +1557,9 @@
    Title of My Site tab */
 "My Site" = "Moja webová stránka";
 
+/* Siri Suggestion to open My Sites */
+"My Sites in WordPress" = "Moja webová stránka je vo WordPress";
+
 /* Accessibility label for the Email text field.
    Header for a comment author's name, shown when editing a comment.
    Name text field placeholder */
@@ -1638,15 +1568,8 @@
 /* 'Need help?' button label, links off to the WP for iOS FAQ. */
 "Need Help?" = "Potrebujete pomoc?";
 
-/* A button title. */
-"Need help finding your site address?" = "Potrebujete pomoc pri hľadaní adresy vašej webovej stránky?";
-
-/* Takes the user to get help
-   The secondary button title in the migration welcome screen */
+/* The secondary button title in the migration welcome screen */
 "Need help?" = "Potrebujete pomoc?";
-
-/* Title of the more help button on alert helping users understand their site address */
-"Need more help?" = "Potrebujete ďalšiu pomoc?";
 
 /* Describes a status of a plugin */
 "Needs Update" = "Potrebná aktualizácia";
@@ -1666,6 +1589,9 @@
 /* New Post 3D Touch Shortcut */
 "New Post" = "Nový článok";
 
+/* Menu item title text used as default when creating a new menu item. */
+"New item" = "Nová položka";
+
 /* Noun. The title of an item in a list. */
 "New posts" = "Nové príspevky";
 
@@ -1676,9 +1602,7 @@
 "Newest first" = "Najnovšie prvé";
 
 /* Next action on comment moderation snackbar.
-   Next action on share extension editor screen.
-   Title of a button.
-   Title of a button. The text should be capitalized. */
+   Next action on share extension editor screen. */
 "Next" = "Ďalší";
 
 /* Accessibility label for the next notification button */
@@ -1701,6 +1625,9 @@
 
 /* Menus name field text when no menu is selected. */
 "No Menu Selected" = "Žiadne menu nieje vybrané";
+
+/* Label used for posts without a title in spotlight search. */
+"No Title" = "Bez názvu";
 
 /* A short message that informs the user no sites could be loaded in the share extension. */
 "No available sites" = "Webové stránky nie sú dostupné";
@@ -1816,11 +1743,7 @@
 /* Discoverability title for numbered list keyboard shortcut. */
 "Numbered List" = "Očíslovaný zoznam";
 
-/* Alert dismissal title
-   Button title. An acknowledgement of the message displayed in a prompt.
-   Dismisses the alert
-   Menus: button title for finishing editing of a menu item.
-   Ok button for dismissing alert helping users understand their site address */
+/* Menus: button title for finishing editing of a menu item. */
 "OK" = "OK";
 
 /* Disabled */
@@ -1858,10 +1781,6 @@
 
 /* Opens iOS's Device Settings for WordPress App */
 "Open Device Settings" = "Otvoriť nastavenia zariadenia";
-
-/* The button title text for opening the user's preferred email app.
-   Title of a button. The text should be capitalized.  Clicking opens the mail app in the user's iOS device. */
-"Open Mail" = "Otvoriť Mail";
 
 /* Title of a button that opens the apps settings in the system Settings.app */
 "Open Settings" = "Otvoriť nastavenia";
@@ -1910,7 +1829,8 @@
    Other Sites Notification Settings Title */
 "Other Sites" = "Ďalšie webové stránky";
 
-/* Noun. Type of content being selected is a blog page
+/* Menu item label for linking a page.
+   Noun. Type of content being selected is a blog page
    Title shown when selecting a post type of Page from the Share Extension. */
 "Page" = "Stránka";
 
@@ -1923,17 +1843,17 @@
    Settings: Comments Paging preferences */
 "Paging" = "Stránkovanie";
 
-/* Accessibility label for the password text field in the self-hosted login page.
-   Label for entering password in password field
+/* Label for entering password in password field
    Login dialog password placeholder
-   Password placeholder
-   Placeholder for the password textfield.
    Title for screen that shows self hosted password editor. */
 "Password" = "Heslo";
 
 /* Button title for Pending comment state.
    Title of pending Comments filter. */
 "Pending" = "Čakajúce";
+
+/* Name for the status of a post pending review. */
+"Pending review" = "Čakajúce na kontrolu";
 
 /* People site intent topic */
 "People" = "Ľudia";
@@ -1946,9 +1866,6 @@
 
 /* Accessibility label for selecting an image or video from the device's photo library on formatting toolbar. */
 "Photo Library" = "Knižnica fotografií";
-
-/* Title for selecting a new username in the site creation flow. */
-"Pick username" = "Vyberte užívateľské meno";
 
 /* User action to play a video on the editor. */
 "Play video" = "Prehrať video";
@@ -1974,7 +1891,7 @@
 /* Register Domain - Domain contact information validation error message for an input field */
 "Please enter a valid address" = "Zadajte platnú e-mailovú adresu";
 
-/* Error message displayed when the user attempts use an invalid email address. */
+/* No comment provided by engineer. */
 "Please enter a valid email address." = "Vložte platnú e-mailovú adresu.";
 
 /* Popup message to ask for user credentials (fields shown below). */
@@ -1982,9 +1899,6 @@
 
 /* Instructions for alert asking for email. */
 "Please enter your email address." = "Prosím, zadajte svoju e-mailovú adresu.";
-
-/* A short prompt asking the user to properly fill out all login fields. */
-"Please fill out all the fields" = "Vyplňte prosím všetky polia";
 
 /* Share extension dialog text  - displayed when user is missing a login token. */
 "Please launch the WordPress app, log in to WordPress.com and make sure you have at least one site, then try again." = "Prosím spusťte aplikáciu WordPress, prihláste sa do WordPress.com a uistite sa, že máte aspoň jednu webovú stránku, potom skúste znovu.";
@@ -2017,7 +1931,8 @@
 /* Section title for Popular Languages */
 "Popular languages" = "Populárne jazyky";
 
-/* Noun. Type of content being selected is a blog post
+/* Menu item label for linking a post.
+   Noun. Type of content being selected is a blog post
    Title shown when selecting a post type of Post from the Share Extension. */
 "Post" = "Článok";
 
@@ -2088,14 +2003,24 @@
    Privacy Settings Title */
 "Privacy Settings" = "Nastavenia súkromia";
 
+/* Name for the status of a post that is marked private. */
+"Private" = "Súkromné";
+
+/* Menu item label for linking a project page. */
+"Projects" = "Projekty";
+
 /* Label for the publish (verb) button. Tapping publishes a draft post.
    Publish post action on share extension site picker screen. */
 "Publish" = "Zverejniť";
 
+/* A short phrase indicating a post is due to be immedately published. */
+"Publish Immediately" = "Zverejniť okamžite";
+
 /* Text displayed in the share extension's summary view. It describes the publish post action. */
 "Publish post on:" = "Zverejniť člábok na:";
 
-/* Period Stats 'Published' header
+/* Name for the status of a published post.
+   Period Stats 'Published' header
    Title of the published filter. This filter shows a list of posts that the user has published. */
 "Published" = "Zverejnené";
 
@@ -2207,7 +2132,7 @@
    Verb. Button title. Reply to a comment. */
 "Reply" = "Odpovedať";
 
-/* An explaination of a setting. */
+/* An explanation of a setting. */
 "Require manual approval for comments that include more than this number of links." = "Vyžadovať schválenie pre komentáre, ktoré obsahujú viacej než tento počet odkazov.";
 
 /* Explains the effect of the 'No comments' auto approval setting. */
@@ -2240,7 +2165,6 @@
 /* A prompt to attempt the failed network request again
    A prompt to attempt the failed network request again.
    Button title, displayed when media has failed to upload. Allows the user to try the upload again.
-   If a user taps the button with this label, the action that evinced this error view will be retried.
    Opens the media library .
    Retry updating User's Role
    Retry. Action
@@ -2270,9 +2194,6 @@
    User's Role */
 "Role" = "Rola";
 
-/* One Time Code has been sent via SMS */
-"SMS Sent" = "SMS odoslaná";
-
 /* Menus save button title
    Save Action
    Save draft post action on share extension site picker screen.
@@ -2299,7 +2220,8 @@
 /* Menus save button title while it is saving a Menu. */
 "Saving..." = "Ukladá sa...";
 
-/* Title of the scheduled filter. This filter shows a list of posts that are scheduled to be published at a future date. */
+/* Name for the status of a scheduled post
+   Title of the scheduled filter. This filter shows a list of posts that are scheduled to be published at a future date. */
 "Scheduled" = "Naplánované";
 
 /* Title of Stats section that shows search engine referrer traffic. */
@@ -2350,9 +2272,6 @@
 
 /* Menus alert message for alerting the user to unsaved changes while trying to select a different menu. */
 "Selecting a different menu will discard changes you've made to the current menu. Are you sure you want to continue?" = "Pokiaľ vyberiete iné menu, zahodíte si tak zmeny, ktoré ste urobili v aktuálnom menu. Určite chcete pokračovať?";
-
-/* Title of a button. The text should be uppercase.  Clicking requests a hyperlink be emailed ot the user. */
-"Send Link" = "Poslať odkaz";
 
 /* Settings: Sending Pingbacks */
 "Send Pingbacks" = "Odosielať pingbacky";
@@ -2432,15 +2351,6 @@
 /* Help text when editing web address */
 "Shown publicly when you comment on blogs." = "Zobraziť verejne keď komentujete blogy.";
 
-/* When social login fails, this button offers to let them signup for a new WordPress.com account */
-"Sign up" = "Registrácia";
-
-/* Button title. Tapping begins the process of creating a WordPress.com account. */
-"Sign up for WordPress.com" = "Prihláste sa na WordPress.com";
-
-/* Button title. Tapping begins our normal sign up process. */
-"Sign up with Email" = "Prihláste sa cez E-mail";
-
 /* Title for the Language Picker View */
 "Site Language" = "Jazyk webovej stránky";
 
@@ -2454,9 +2364,6 @@
 
 /* Setting: indicates if Achievements will be notified */
 "Site achievements" = "Výsledky webovej stránky";
-
-/* Accessibility label of the site address field shown when adding a self-hosted site. */
-"Site address" = "Adresa webovej stránky";
 
 /* No comment provided by engineer. */
 "Site address must be at least 4 characters." = "Adresa webovej stránky musí mať aspoň 4 písmená.";
@@ -2505,7 +2412,7 @@
 /* No comment provided by engineer. */
 "Sorry, site addresses must have letters too!" = "Adresa webovej stránky musia obsahovať písmená.";
 
-/* Error message displayed when the entered email is not available. */
+/* No comment provided by engineer. */
 "Sorry, that email address is already being used!" = "Táto e-mailová adresa sa už používa!";
 
 /* No comment provided by engineer. */
@@ -2641,6 +2548,9 @@
 /* Title for the app appearance setting (light / dark mode) that uses the system default value */
 "System default" = "Podľa systému";
 
+/* Menu item label for linking a specific tag. */
+"Tag" = "Značka";
+
 /* Label for tagline blog setting
    Title for screen that show tagline editor */
 "Tagline" = "Slogan";
@@ -2662,20 +2572,17 @@
 /* Title of button that displays the App's terms of service */
 "Terms of Service" = "Zmluvné podmienky";
 
+/* Menu item label for linking a testimonial post. */
+"Testimonials" = "Recenzie";
+
 /* Title of a button style */
 "Text Only" = "Len text";
 
 /* No comment provided by engineer. */
 "Text color" = "Farba textu";
 
-/* Button title */
-"Text me a code instead" = "Radšej mi pošlite kód";
-
 /* Message of alert when theme activation succeeds */
 "Thanks for choosing %@ by %@" = "Ďakujeme, že používate %1$@ od %2$@";
-
-/* Shown when a user pastes a code into the two factor field that contains letters or is the wrong length */
-"That doesn't appear to be a valid verification code." = "Zdá sa, že overovací kód je neplatný.";
 
 /* Message to show to user when he tries to add a self-hosted site that isn't a WordPress site. */
 "That doesn't look like a WordPress site." = "Vyzerá to tak, že toto nieje stránka WordPress.";
@@ -2800,9 +2707,6 @@
 /* An error message display if the users device does not have a camera input available */
 "This app needs permission to access the Camera to capture new media, please change the privacy settings if you wish to allow this." = "Táto aplikácia potrebuje povolenie na prístup do fotoaparátu na zachytenie nových súborov, prosím zmeňte nastavenia súkromia, pokiaľ si prajete jeho prijatie.";
 
-/* An error message informing the user the email address they entered did not match a WordPress.com account. */
-"This email address is not registered on WordPress.com." = "Táto e-mailová adresa nie je registrovaná na WordPress.com.";
-
 /* Message to show to user when media upload failed because server doesn't support media type */
 "This file is too large to upload to your site or it does not support this media format." = "Súbor je príliš veľký, aby sa načítal na weboú stránku alebo jeho formát nie je podporovaný.";
 
@@ -2848,12 +2752,6 @@
 /* Instructions for alert asking for email and name. */
 "To continue please enter your email address and name." = "Ak chcete pokračovať, zadajte svoju e-mailovú adresu a meno.";
 
-/* Text instructing the user to enter their email address. */
-"To create your new WordPress.com account, please enter your email address." = "Prosím zadajte svoju e-mailovú adresu na vytvorenie nového účtu WordPress.com.";
-
-/* Instructional text shown when requesting the user's password for Google login. */
-"To proceed with this Google account, please first log in with your WordPress.com password. This will only be asked once." = "Prosím, prihláste sa pomocou hesla na WordPress.com a pokračujte s účtou Google. Prihlásite sa iba raz.";
-
 /* Comments Today Section Header
    Insights 'Today' header
    Notifications Today Section Header */
@@ -2888,7 +2786,8 @@
    Trashes the comment */
 "Trash" = "Kôš";
 
-/* Title of the trashed filter. This filter shows posts that have been moved to the trash bin.
+/* Name for the status of a trashed post
+   Title of the trashed filter. This filter shows posts that have been moved to the trash bin.
    Title of trashed Comments filter. */
 "Trashed" = "Odstránené ";
 
@@ -2909,16 +2808,10 @@
    Re-load the history again. It appears if the loading call fails. */
 "Try again" = "Pokus zopakujte";
 
-/* When social login fails, this button offers to let the user try again with a differen email address */
-"Try with another email" = "Skúste s iným e-mailom";
-
-/* When social login fails, this button offers to let them try tp login using a URL */
-"Try with the site address" = "Skúste s adresou webovej stránky";
-
 /* Title for the setting to edit the twitter username used when sharing to twitter. */
 "Twitter Username" = "Používateľské meno na Twitter";
 
-/* Placeholder text for domain search during site creation. */
+/* Placeholder text for the username suggestions search field on the Change Username screen. */
 "Type a keyword for more ideas" = "Zadajte kľúčové slovo pre viac nápadov";
 
 /* A placeholder for the sharing label. */
@@ -2929,9 +2822,6 @@
 
 /* Menus label for describing which menu the location uses in the header. */
 "USES" = "USES";
-
-/* Shown when a user logs in with Google but it subsequently fails to work as login to WordPress.com */
-"Unable To Connect" = "Nedá sa pripojiť";
 
 /* Title of a prompt saying the app needs an internet connection before it can load posts */
 "Unable to Load Posts" = "Nepodarilo sa načítať články";
@@ -2945,9 +2835,6 @@
 /* Dialog box title for when the user is canceling an upload. */
 "Unable to play video" = "Nepodarilo sa prehrať video";
 
-/* No comment provided by engineer. */
-"Unable to read the WordPress site at that URL. Tap 'Need more help?' to view the FAQ." = "Nenašla sa webová stránka WordPress na tejto URL adrese. Ťuknite \"Potrebujete pomoc?\" na zobrazenie FAQ.";
-
 /* Error informing the user that their homepage settings could not be updated */
 "Unable to update homepage settings" = "Nie je možné aktualizovať nastavenia domovskej stránky";
 
@@ -2959,9 +2846,6 @@
 
 /* Alert displayed to the user when a single post and 1 file has failed to upload. */
 "Unable to upload 1 post, 1 file" = "Nepodarilo sa nahrať 1 článok, 1 súbor";
-
-/* Error message displayed when an error occurred checking for email availability. */
-"Unable to verify the email address. Please try again later." = "Nepodarilo sa overiť e-mailovú adresu. Prosím skúste neskôr.";
 
 /* Error reason to display when the writing of a image to a file fails */
 "Unable to write image to file" = "Nedalo sa zapísať obrázok k súboru";
@@ -3059,14 +2943,10 @@
 "Use" = "Použiť";
 
 /* A placeholder for the twitter username
-   Accessibility label for the username text field in the self-hosted login page.
    Account Settings Username label
    Label for entering username in the username field
    Login dialog username placeholder
-   Placeholder for the username textfield.
-   The header and main title
-   Username label text.
-   Username placeholder */
+   The header and main title */
 "Username" = "Používateľské meno";
 
 /* Setting: indicates if Mentions will be notified */
@@ -3077,9 +2957,6 @@
 
 /* Blog Users */
 "Users" = "Používatelia";
-
-/* two factor code placeholder */
-"Verification code" = "Overovací kód";
 
 /* Push Authentication Alert Title */
 "Verify Log In" = "Overte prihlásenie";
@@ -3152,9 +3029,6 @@
    Today's Stats 'Visitors' label */
 "Visitors" = "Návštevníci";
 
-/* Message shown on screen while waiting for Google to finish its signup process. */
-"Waiting for Google to complete…" = "Čaká sa na Google, kým dokončí...";
-
 /* Editing GIF alert title.
    Noun. Title for Jetpack Restore warning.
    Title for Jetpack Restore Warning screen */
@@ -3172,20 +3046,11 @@
 /* Informational text about link to other tracking tools */
 "We use other tracking tools, including some from third parties. Read about these and how to control them." = "Používame ďalšie nástroje na sledovanie, vrátane niektorých od tretích strán. Prečítajte si o nich a o možnostiach ako ich ovládať.";
 
-/* Error message displayed when an error occurred sending the magic link email. */
-"We were unable to send you an email at this time. Please try again later." = "Nepodarilo sa nám odoslať e-mail. Prosím, skúste ešte raz neskôr. ";
-
-/* Instructional text for the magic link login flow. */
-"We'll email you a magic link that'll log you in instantly, no password needed. Hunt and peck no more!" = "Cez e-mail vám pošleme zázračný odkaz, ktorý vás prihlási okamžite, bez potreby zadávania hesla. Už žiadne vyťukávanie!";
-
 /* This is the string we display when asking the user to approve push notifications */
 "We'll notify you when you get followers, comments, and likes." = "Upozorníme vás, keď získate nových odberateľov, komentáre a lajky.";
 
 /* Title of progress label displayed when a first plugin on a site is almost done installing. */
 "We're doing the final setup—almost done…" = "Vykonávame posledné nastavenia - sme skoro hotoví ... ";
-
-/* Error message shown when having trouble connecting to a Jetpack site. */
-"We're not able to connect to the Jetpack site at that URL.  Contact us for assistance." = "Nepodarilo sa nám pripojiť na webovú stránku Jetpack z tejto URL adresy. Kontaktujte pre pomoc. ";
 
 /* Account Settings Web Address label
    Header for a comment author's web address, shown when editing a comment. */
@@ -3215,32 +3080,44 @@
 /* Text rendered at the bottom of the Discussion Blocklist Keys editor */
 "When a comment contains any of these words in its content, name, URL, e-mail, or IP, it will be marked as spam. You can enter partial words, so \"press\" will match \"WordPress\"." = "Pokiaľ komentár obsahuje akékoľvek z týchto slov vo svojom obsahu, mene, URL, e-mailu, alebo IP, bude označený ako spam. Môžete taktiež zadať časti slov, takže napríklad podmienke \"press\" bude odpovedať \"WordPress\".";
 
-/* An error message shown when a wpcom user provides the wrong password. */
-"Whoops, something went wrong and we couldn't log you in. Please try again!" = "Hups, niečo sa pokazilo a nepodarilo sa nám prihlásiť vás. Prosím, skúste ešte raz!";
-
-/* Error message shown when an incorrect two factor code is provided. */
-"Whoops, that's not a valid two-factor verification code. Double-check your code and try again!" = "Hups, dvojfaktorový overovací kód nie je platný. Skontrolujte kód a skúste ešte raz!";
-
 /* Help text when editing email address */
 "Will not be publicly displayed." = "Táto adresa nebude zverejnená.";
 
 /* Title of Stats section that shows WordPress.com followers. */
 "WordPress" = "WordPress";
 
+/* Siri Suggestion to open App Settings */
+"WordPress App Settings" = "Nastavenia aplikácie WordPress";
+
 /* Settings for a Wordpress Blog */
 "WordPress Blog" = "WordPress Blog";
 
+/* Siri Suggestion to open Support */
+"WordPress Help" = "Pomoc WordPress";
+
 /* Accessibility label for selecting an image or video from the user's WordPress media library on formatting toolbar. */
 "WordPress Media Library" = "Knižnica médií WordPress";
+
+/* Siri Suggestion to open Notification Settings */
+"WordPress Notification Settings" = "Nastavenia upozornení WordPress";
+
+/* Siri Suggestion to open Notifications */
+"WordPress Notifications" = "Upozornenie WordPress";
+
+/* Siri Suggestion to open Me tab */
+"WordPress Profile" = "Profil WordPress";
+
+/* Siri Suggestion to open My Sites */
+"WordPress Reader" = "Čítačka WordPress";
+
+/* Siri Suggestion to open My Sites */
+"WordPress Site Details" = "Detaily webovej stránky WordPress";
 
 /* Subject of new Zendesk ticket. */
 "WordPress for iOS Support" = "Podpora pre WordPress pre iOS";
 
 /* No comment provided by engineer. */
 "WordPress version too old" = "Verzia WordPress je príliš stará";
-
-/* No comment provided by engineer. */
-"WordPress version too old. The site at %@ uses WordPress %@. We recommend to update to the latest version, or at least %@" = "Verzia WordPress je príliš stará. Na webe %1$@ používate WordPress vo verzií %2$@. Odporúčame aktualizáciu na najnovšiu verziu, alebo aspoň na %3$@";
 
 /* Label for WordPress.com followers */
 "WordPress.com" = "WordPress.com";
@@ -3285,9 +3162,6 @@
 
 /* This prompt is displayed when the user attempts to stop media uploads in the post editor. */
 "You are currently uploading media. This action will cancel uploads in progress.\n\nAre you sure?" = "Momentálne nahrávate súbory. Táto akcia zruší prebiehajúce nahrávanie.\n\nSte si istý?";
-
-/* Information shown below the optional password field after new account creation. */
-"You can always log in with a link like the one you just used, but you can also set up a password if you prefer." = "Vždy sa môžete prihlásiť s odkazom, rovnako ako s tým, ktorý ste práve použili, a rovnako si môžete nastaviť heslo.";
 
 /* Discussion Settings: Footer Text */
 "You can override these settings for individual posts." = "Tato nastavenie môžete prepísať pre jednotlivé príspevky.";
@@ -3360,9 +3234,6 @@
 /* Share extension error dialog text. */
 "Your account does not have permission to upload media to this site. The Site Administrator can change these permissions." = "Váš účet nemá oprávnenie na odovzdanie médií na túto webovú stránku. Administrátor webovej stránky môže tieto oprávnenia zmeniť.";
 
-/* Instructional text that displays the current username and display name. */
-"Your current username is %@. With few exceptions, others will only ever see your display name, %@." = "Vaše aktuálne užívateľské meno je %1$@. Ostatní, až na pár výnimiek, budú vidieť len vaše zobrazované meno, %2$@.";
-
 /* Help text that describes how the password should be. It appears while editing the password */
 "Your password should be at least six characters long. To make it stronger, use upper and lower case letters, numbers, and symbols like ! \" ? $ % ^ & )." = "Vaše heslo by malo mať aspoň šesť znakov. Aby bolo silnejšie, použite malé aj veľké písmená, čísla a symboly ako sú ! \"? $% ^ &).";
 
@@ -3431,9 +3302,6 @@
 
 /* This is a comma separated list of keywords used for spotlight indexing of the 'My Sites' tab. */
 "wordpress, sites, site, blogs, blog" = "wordpress, webové stránky, webová stránka, blogy, blog";
-
-/* Label for button to log in using Google. The {G} will be replaced with the Google logo. */
-"{G} Log in with Google." = "{G} Prihláste sa cez Google.";
 
 /* Item 4 of delete screen section listing things that will be deleted. */
 "• Domains" = "• Domény";

@@ -1,4 +1,4 @@
-/* Translation-Revision-Date: 2026-05-28 09:57:24+0000 */
+/* Translation-Revision-Date: 2026-06-25 09:56:12+0000 */
 /* Plural-Forms: nplurals=1; plural=0; */
 /* Generator: GlotPress/4.0.3 */
 /* Language: ko_KR */
@@ -71,10 +71,10 @@
 /* Accessibility identifier for buttons. */
 "%@ Button" = "%@ 버튼";
 
-/* The number of tags in the writting settings. Singular. %@ is a placeholder for the number */
+/* The number of tags in the writing settings. Singular. %@ is a placeholder for the number */
 "%@ Tag" = "%@개의 태그";
 
-/* The number of tags in the writting settings. Plural. %@ is a placeholder for the number */
+/* The number of tags in the writing settings. Plural. %@ is a placeholder for the number */
 "%@ Tags" = "%@개의 태그";
 
 /* Accessibility label for value in billions. Ex: 66.6 billion. */
@@ -98,6 +98,9 @@
 
 /* Amount of disk quota being used. First argument is the total percentage being used second argument is total quota allowed in GB.Ex: 33% of 14 GB on your site. */
 "%@ of %@ on your site" = "사이트에서 %2$@ 중 %1$@";
+
+/* Amount of disk quota being used. First argument is the total percentage being used second argument is total quota allowed in GB.Ex: 33% of 14 GB used on your site. */
+"%@ of %@ used on your site" = "%2$@ 중 %1$@가 사이트에서 사용됨";
 
 /* Accessibility label for value in quadrillion. Ex: 66.6 quadrillion. */
 "%@ quadrillion" = "%@천조 개";
@@ -236,6 +239,10 @@ translators: %s: Block name e.g. \"Image block\" */
 /* Menus title label text for a post that has no set title. */
 "(Untitled)" = "(제목 없음)";
 
+/* Lets a user know that a local draft does not have a title.
+   Placeholder text for missing post title */
+"(no title)" = "(제목 없음)";
+
 /* Example Comment notification displayed in the prologue carousel of the app. Username should be marked with * characters and will be displayed as bold text. */
 "*Johann Brandt* responded to your post" = "*요한 브란트*가 글에 답했습니다";
 
@@ -302,26 +309,17 @@ translators: %s: Block name e.g. \"Image block\" */
 /* Short title telling the user they will receive a blogging reminder two times a week. The word for 'twice' should be surrounded by <strong> HTML tags. */
 "<strong>Twice<\/strong> a week at %@" = "일주일에 <strong>두 번<\/strong> %@";
 
-/* Label displaying the user's username preceeded by an '@' symbol. %1$@ is a placeholder for the username. */
+/* Label displaying the user's username preceded by an '@' symbol. %1$@ is a placeholder for the username. */
 "@%1$@" = "@%1$@";
 
 /* A short description of what the 'More' button is and how it works. */
 "A \"more\" button contains a dropdown which displays sharing buttons" = "\"더 보기\" 버튼에는 공유 버튼을 표시하는 드롭다운이 있습니다.";
-
-/* Instruction text to explain magic link login step. */
-"A WordPress.com account is connected to your store credentials. To continue, we will send a verification link to the email address above." = "워드프레스닷컴 계정이 스토어 자격 증명에 연결되어 있습니다. 계속하시겠다면 위의 이메일 주소에 대한 확인 링크를 보내드리겠습니다.";
 
 /* Title for a threat */
 "A file contains a malicious code pattern" = "파일에 악성 코드 패턴이 있음";
 
 /* Placeholder text for the title of a site */
 "A title for the site" = "사이트 제목";
-
-/* An error message. */
-"A valid email address is needed to mail an authentication link. Please return to the previous screen and provide a valid email address." = "인증 링크를 메일로 발송하려면 유효한 이메일 주소가 필요합니다. 이전 화면으로 돌아가서 유효한 이메일 주소를 입력하세요.";
-
-/* Shown when a user types a non-number into the two factor field. */
-"A verification code will only contain numbers." = "확인 코드에는 숫자만 사용할 수 있습니다.";
 
 /* Label for active Theme browser cell */
 "ACTIVE" = "활성";
@@ -352,12 +350,6 @@ translators: %s: Block name e.g. \"Image block\" */
 
 /* Title for the account section in site settings screen */
 "Account" = "계정";
-
-/* Header for account details, shown after signing up. */
-"Account Details" = "계정 세부정보";
-
-/* Accessibility description for account information after logging in. */
-"Account Information. %@. %@." = "계정 정보. %1$@. %2$@.";
 
 /* Account Settings Title
    Link to Account Settings section */
@@ -416,9 +408,6 @@ translators: %s: Block name e.g. \"Image block\" */
 /* No comment provided by engineer. */
 "Add a shortcode…" = "숏코드 추가…";
 
-/* Accessibility description for adding an image to a new user account. Tapping this initiates that flow. */
-"Add account image." = "계정 이미지 추가";
-
 /* No comment provided by engineer. */
 "Add alt text" = "대체 텍스트 추가하기";
 
@@ -439,9 +428,6 @@ translators: %s: Block name e.g. \"Image block\" */
 
 /* No comment provided by engineer. */
 "Add image or video" = "이미지 또는 비디오 추가";
-
-/* Accessibility hint text for adding an image to a new user account. */
-"Add image, or avatar, to represent this new account." = "새 계정을 나타내는 이미지 또는 아바타를 추가합니다.";
 
 /* No comment provided by engineer. */
 "Add link text" = "링크 텍스트 추가";
@@ -508,9 +494,6 @@ translators: %s: Block name e.g. \"Image block\" */
 /* Screen reader text expressing the menu item is after another menu item. Argument is a name for another menu item. */
 "After %@" = "%@ 뒤";
 
-/* Option to select the Airmail app when logging in with magic links */
-"Airmail" = "에어메일";
-
 /* Image alignment option title.
    Title of the screen for choosing an image's alignment. */
 "Alignment" = "정렬";
@@ -572,9 +555,6 @@ translators: %s: Block name e.g. \"Image block\" */
 /* Jetpack Settings: Allowlisted IP addresses */
 "Allowlisted IP addresses" = "허용 목록에 포함된 IP 주소";
 
-/* Instructions for users with two-factor authentication enabled. */
-"Almost there! Please enter the verification code from your authenticator app." = "마지막 부분입니다! 인증 앱의 확인 코드를 입력하세요.";
-
 /* Image alt attribute option title. */
 "Alt Text" = "대체 텍스트";
 
@@ -586,12 +566,6 @@ translators: %s: Block name e.g. \"Image block\" */
 
 /* translators: Alternative option included in a warning related to having blocks deeply nested. */
 "Alternatively, you can flatten the content by ungrouping the block." = "그 대신에 블록 그룹 해제를 통해 콘텐츠를 평평하게 하실 수 있습니다.";
-
-/* Instruction text to explain to help users type their password instead of using magic link login option. */
-"Alternatively, you may enter the password for this account." = "또는 이 계정에 대한 비밀번호를 입력하셔도 됩니다.";
-
-/* String displayed before offering alternative login methods */
-"Alternatively:" = "또는:";
 
 /* Title of a row displayed on the debug screen used to indicate whether crash logs should be forced to send, even if they otherwise wouldn't */
 "Always Send Crash Logs" = "언제나 충돌 기록 보내기";
@@ -648,7 +622,7 @@ translators: %s: Block name e.g. \"Image block\" */
 /* Text displayed when a stat section failed to load. */
 "An error occurred." = "오류가 발생 했습니다.";
 
-/* A failure reason for when the error that occured wasn't able to be determined. */
+/* A failure reason for when the error that occurred wasn't able to be determined. */
 "An unknown error occurred." = "알 수 없는 에러 발생함.";
 
 /* Error message shown when a media upload fails for unknown reason and the user should try again. */
@@ -656,6 +630,9 @@ translators: %s: Block name e.g. \"Image block\" */
 
 /* Insights 'This Year' details view header */
 "Annual Site Stats" = "연간 사이트 통계";
+
+/* the comment has an anonymous author. */
+"Anonymous" = "익명";
 
 /* Verb. Opens the editor to answer the blogging prompt. */
 "Answer" = "답변";
@@ -678,9 +655,6 @@ translators: %s: Block name e.g. \"Image block\" */
 
 /* The title of the app appearance settings screen */
 "Appearance" = "외모";
-
-/* Message shown when Apple authentication fails. */
-"Apple authentication failed.\nPlease make sure you are signed in to iCloud with an Apple ID that uses two-factor authentication." = "애플 인증을 실패했습니다.\n2단계 인증을 사용하는 애플 ID로 아이클라우드에 로그인했는지 확인하시기 바랍니다.";
 
 /* No comment provided by engineer. */
 "Applies the setting" = "설정 적용";
@@ -761,10 +735,6 @@ translators: %s: Block name e.g. \"Image block\" */
 
 /* Title for the error view when the authentication failed for any reason */
 "Authentication Failed" = "인증 실패";
-
-/* Accessibility label for the 2FA text field.
-   Placeholder for the 2FA code textfield. */
-"Authentication code" = "확인 코드";
 
 /* Popup title to ask for user credentials. */
 "Authentication required for host: %@" = "호스트 인증 필요: %@";
@@ -997,18 +967,12 @@ translators: %s: Block name e.g. \"Image block\" */
 /* No comment provided by engineer. */
 "Button to copy post text" = "글 텍스트 복사 버튼";
 
-/* Legal disclaimer for logging in. The underscores _..._ denote underline. */
-"By continuing, you agree to our _Terms of Service_." = "계속하는 것은, _약관_에 동의하는 것입니다.";
-
 /* Terms of Service link displayed when a user is registering domain. Text inside <a> tags will be highlighted. */
 "By registering this domain you agree to our <a>Terms&nbsp;and&nbsp;Conditions<\/a>." = "이 도메인을 등록하면 <a>이용 약관<\/a>에 동의하는 것입니다.";
 
 /* Title of the button which opens the Jetpack terms and conditions page. The sentence is composed by 2 lines separated by a line break 
 . Also there is a placeholder %@ which is: Terms and Conditions */
 "By setting up Jetpack you agree to our\n%@" = "젯팩을 설치하면 %@에 동의하는 것입니다. ";
-
-/* Legal disclaimer for signup buttons, the underscores _..._ denote underline */
-"By signing up, you agree to our _Terms of Service_." = "가입하려면 _서비스 약관_에 동의해야 합니다.";
 
 /* No comment provided by engineer. */
 "CUSTOMIZE" = "사용자 정의";
@@ -1022,9 +986,6 @@ translators: %s: Block name e.g. \"Image block\" */
 /* Title of an alert informing the user the camera permission for the app is disabled and its needed to proceed */
 "Camera access needed to scan login codes" = "로그인 코드를 스캔하려면 카메라 접근 필요";
 
-/* Title of an alert letting the user know */
-"Can Not Request Link" = "링크를 요청할 수 없음";
-
 /* Alert message that is shown when trying to publish empty page */
 "Can't publish an empty page" = "빈 페이지를 발행할 수 없습니다";
 
@@ -1034,7 +995,6 @@ translators: %s: Block name e.g. \"Image block\" */
 /* Alert dismissal title
    Button label that dismisses the qr log in flow and returns the user back to the previous screen
    Button title, cancel fixing all threats
-   Button title. Tapping it cancels the login flow.
    Cancel Action
    Cancel action on share extension editor screen.
    Cancel action on the app extension category picker screen.
@@ -1060,7 +1020,6 @@ translators: %s: Block name e.g. \"Image block\" */
    Menus cancel button for deleting a menu.
    Menus cancel button within text bar while editing items.
    Menus: Cancel button title for canceling an edited menu item.
-   Option to cancel the email app selection when logging in with magic links
    Title of a button that dismisses the permissions alert
    Title. Title of a cancel button. Tapping disnisses an alert.
    Verb. A button title.
@@ -1086,9 +1045,6 @@ translators: %s: Block name e.g. \"Image block\" */
 /* A short message that informs the user the share extension is being canceled. */
 "Canceling..." = "취소 중...";
 
-/* Error message shown when the input URL does not point to an existing site. */
-"Cannot access the site at this address. Please double-check and try again." = "이 주소의 사이트에 접근할 수 없습니다. 다시 확인하고 다시 시도하세요.";
-
 /* Helper text that appears at the bottom of the design screen. */
 "Can’t decide? You can change the theme at any time." = "결정할 수 없나요? 언제든지 테마를 변경할 수 있습니다.";
 
@@ -1101,7 +1057,8 @@ translators: %s: Block name e.g. \"Image block\" */
 /* Example prompt for the Prompts card in Feature Introduction. */
 "Cast the movie of your life." = "자신의 인생을 영화로 만들어 보세요.";
 
-/* Category menu item in share extension. */
+/* Category menu item in share extension.
+   Menu item label for linking a specific category. */
 "Category" = "카테고리";
 
 /* Center alignment for an image. Should be the same as in core WP. */
@@ -1113,9 +1070,6 @@ translators: %s: Block name e.g. \"Image block\" */
 /* Account Settings Change password label
    Main title */
 "Change Password" = "비밀번호 변경";
-
-/* Change Username title. */
-"Change Username" = "사용자 이름 변경";
 
 /* No comment provided by engineer. */
 "Change block position" = "블록 위치 변경";
@@ -1135,33 +1089,14 @@ translators: %s: Block name e.g. \"Image block\" */
 /* No comment provided by engineer. */
 "Changes to featured image will not be affected by the undo\/redo buttons." = "특성 이미지 변경 사항은 실행 취소\/다시 실행 버튼의 영향을 받지 않습니다.";
 
-/* Shown while the app waits for the display name changing web service to return. */
-"Changing display name" = "공개 이름 변경";
-
-/* Loader title displayed by the loading view while the password is changing
-   Shown while the app waits for the password changing web service to return. */
+/* Loader title displayed by the loading view while the password is changing */
 "Changing password" = "비밀번호 변경";
-
-/* Shown while the app waits for the username changing web service to return. */
-"Changing username" = "사용자명 변경 중";
 
 /* Title of alert when getting purchases fails */
 "Check Purchases Error" = "구매 확인 오류";
 
 /* Title for a button that opens up the 'Getting More Views and Traffic' support page when tapped. */
 "Check out our top tips to increase your views and traffic" = "조회수와 트래픽을 늘리는 상위 팁을 확인하세요.";
-
-/* The title text on the magic link requested screen. */
-"Check your email on this device!" = "이 기기에서 이메일을 확인하세요!";
-
-/* Instruction text after a login Magic Link was requested. */
-"Check your email on this device, and tap the link in the email you receive from WordPress.com." = "이 장치에서 이메일을 확인하고, 워드프레스닷컴에서 받은 이메일의 링크를 누르세요.";
-
-/* Instructional text on how to open the email containing a magic link. */
-"Check your email on this device, and tap the link in the email you received from WordPress.com.\n\nNot seeing the email? Check your Spam or Junk Mail folder." = "이 장치에서 이메일을 확인하고, 워드프레스.com에서 받은 이메일에 있는 링크를 탭합니다.\n\n아직 이메일이 보이지 않으신가요? 스팸 또는 정크 메일 폴더를 확인하세요.";
-
-/* Alert title for check your email during logIn/signUp. */
-"Check your email!" = "이메일을 확인바랍니다!";
 
 /* Subtitle shown on the dashboard when it fails to load */
 "Check your internet connection and pull to refresh." = "인터넷 연결을 확인하고 끌어서 페이지를 새로 고치세요.";
@@ -1252,6 +1187,9 @@ translators: %s: Block name e.g. \"Image block\" */
 /* Title of the card that starts the registration of a free domain with a paid plan, in the Domains Dashboard. */
 "Claim your free domain" = "무료 도메인 신청";
 
+/* Name of setting configured when a site uses a list of blog posts as its homepage */
+"Classic Blog" = "클래식 블로그";
+
 /* Label for button that clears all media cache. */
 "Clear Device Media Cache" = "기기 미디어 캐시 지우기";
 
@@ -1312,6 +1250,9 @@ translators: %s: Block name e.g. \"Image block\" */
 
 /* No comment provided by engineer. */
 "Columns Settings" = "열 설정";
+
+/* Menu item label for linking a comic page. */
+"Comics" = "코믹";
 
 /* Header for a comment's content, shown when editing a comment.
    Text for the 'comment' when there is 1 or 0 comments */
@@ -1423,18 +1364,12 @@ translators: %s: Block name e.g. \"Image block\" */
 /* Noun. Title. Title for the list of accounts for third party sharing services. */
 "Connected Accounts" = "연결된 계정";
 
-/* Title shown when a user logs in with Google but no matching WordPress.com account is found */
-"Connected But…" = "연결되었습니다. 하지만…";
-
 /* Connecting is a verb. Title of Publicize account selection. The %@ is a placeholder for the service's name
    Connecting is a verb. Title of Publicize account selection. The %@ is a placeholder for the service's name. */
 "Connecting %@" = "%@ 연결 중";
 
 /* Informs the user of consequences of chooseing a new account to connect to publicize.  The %@ characters are placeholders for account names. */
 "Connecting %@ will replace the existing connection to %@." = "%1$@에 연결하면 %2$@에 대한 기존 연결이 대체됩니다.";
-
-/* No comment provided by engineer. */
-"Connecting to WordPress.com" = "워드프레스닷컴에 접속 중입니다";
 
 /* Verb. Text label. Allows the user to connect to a third-party sharing service like Facebook or Twitter. */
 "Connecting..." = "연결 중...";
@@ -1463,7 +1398,6 @@ translators: %s: Block name e.g. \"Image block\" */
 
 /* Apply changes localy to single block edition in the web block editor
    Button to progress to the next step
-   The button title text when there is a next step for logging in or signing up.
    The default Jetpack view button title
    The primary button title in the migration welcome and notifications screens.
    Title for the continue button in the What's New page.
@@ -1478,15 +1412,6 @@ translators: %s: Block name e.g. \"Image block\" */
 
 /* Part of a prompt suggesting that there is more content for the user to read. */
 "Continue reading" = "계속 읽기";
-
-/* Button title. Tapping begins log in using Apple. */
-"Continue with Apple" = "Apple로 계속하기";
-
-/* Button title. Tapping begins log in using Google. */
-"Continue with Google" = "Google로 계속하기";
-
-/* Shown while logging in with Apple and the app waits for the site creation process to complete. */
-"Continuing with Apple" = "Apple 로 계속하기";
 
 /* Title of button that displays the WordPress.org contributor page */
 "Contribute" = "공동 작업";
@@ -1612,9 +1537,6 @@ translators: %s: Block name e.g. \"Image block\" */
 /* Accessibility label for create floating action button */
 "Create" = "만들기";
 
-/* The button title text for creating a new account. */
-"Create Account" = "계정 만들기";
-
 /* Title for button to make a blank page */
 "Create Blank Page" = "빈 페이지 만들기";
 
@@ -1635,9 +1557,6 @@ translators: %s: Block name e.g. \"Image block\" */
 
 /* Displayed in the Notifications Tab as a button title, when the Unread Filter shows no notifications */
 "Create a Post" = "게시글 작성";
-
-/* Navigates to a new flow for site creation. */
-"Create a Site" = "사이트 생성";
 
 /* Title for the Site Icon Picker */
 "Create a site icon" = "사이트 아이콘 생성";
@@ -1748,6 +1667,9 @@ translators: %s: Block name e.g. \"Image block\" */
 /* Label for selecting the default category of a post */
 "Default Category" = "기본 카테고리";
 
+/* Menu name for the default menu that is automatically generated. */
+"Default Menu" = "기본 메뉴";
+
 /* Label for selecting the default post format
    Title for screen to select a default post format for a blog */
 "Default Post Format" = "기본 글 형식";
@@ -1797,9 +1719,6 @@ translators: %s: Block name e.g. \"Image block\" */
    Theme Details action title */
 "Details" = "세부사항";
 
-/* Instructions after a Magic Link was sent, but email is incorrect. */
-"Didn't mean to create a new account? Go back to re-enter your email address." = "새 계정을 만들 계획이 없으신가요? 뒤로 이동하여 이메일 주소를 다시 입력하세요.";
-
 /* Title. Title of a button that will disable group invite links when tapped. */
 "Disable" = "비활성화";
 
@@ -1844,8 +1763,7 @@ translators: %s: Block name e.g. \"Image block\" */
    Title for the Discussion Settings Screen */
 "Discussion" = "토론";
 
-/* Accessibility label for the transparent space above the login dialog which acts as a button to dismiss the dialog.
-   Accessibility label for the transparent space above the signup dialog which acts as a button to dismiss the dialog. */
+/* No comment provided by engineer. */
 "Dismiss" = "무시";
 
 /* Accessibility hint for the continue button in the Feature Announcements screen. */
@@ -1854,8 +1772,7 @@ translators: %s: Block name e.g. \"Image block\" */
 /* Accessibility hint for a done button that dismisses the current modal screen */
 "Dismiss screen" = "화면 닫기";
 
-/* Display Name label text.
-   User's Display Name */
+/* User's Display Name */
 "Display Name" = "대화명";
 
 /* Register Domain - Domain contact information section header title */
@@ -1864,16 +1781,11 @@ translators: %s: Block name e.g. \"Image block\" */
 /* Register Domain - Privacy Protection section header description */
 "Domain owners have to share contact information in a public database of all domains. With Privacy Protection, we publish our own information instead of yours and privately forward any communication to you." = "도메인 소유자는 모든 도메인의 공개 데이터베이스에 있는 연락처 정보를 공유해야 합니다. 개인정보 보호에 따라 회원님의 정보가 아닌 당사의 정보를 공개하며, 회원님이 받을 커뮤니케이션은 비공개적으로 전달합니다.";
 
-/* Label for button to log in using your site address. The underscores _..._ denote underline */
-"Don't have an account? _Sign up_" = "아직 계정이 없으신가요? _가입_";
-
 /* A done button
-   Button text on site creation epilogue page to proceed to My Sites.
    Done button title
    Done editing an image
    Done. Action.
    Menu button title for finishing editing the Menu name.
-   Tapping a button with this label allows the user to exit the Site Creation flow
    Title for button that will dismiss this view
    Title for the button that will dismiss this view. */
 "Done" = "완료됨";
@@ -1986,6 +1898,9 @@ translators: %s: Block name e.g. \"Image block\" */
 /* Label for number of file downloads. */
 "Downloads" = "다운로드";
 
+/* Name for the status of a draft post. */
+"Draft" = "임시 글";
+
 /* Title of the drafts filter.  This filter shows a list of draft posts. */
 "Drafts" = "임시글";
 
@@ -2095,10 +2010,7 @@ translators: %s: Block name e.g. \"Image block\" */
 /* Header for a comment author's email address, shown when editing a comment. */
 "Email Address" = "이메일 주소";
 
-/* Accessibility label for the email address text field.
-   Describes the email address section in the comment detail screen.
-   Placeholder for a textfield. The user may enter their email address.
-   Placeholder for the email address textfield. */
+/* Describes the email address section in the comment detail screen. */
 "Email address" = "이메일 주소";
 
 /* Notification Settings Channel */
@@ -2138,8 +2050,7 @@ translators: %s: Block name e.g. \"Image block\" */
 /* Title for the Emoji section */
 "Emoji" = "이모티콘";
 
-/* Accessibility value presented in the signup epilogue for an empty value.
-   Label for size of media when the cache is empty. */
+/* Label for size of media when the cache is empty. */
 "Empty" = "비었음";
 
 /* Message to show to user when he tries to add a self-hosted site that is an empty URL. */
@@ -2179,28 +2090,11 @@ translators: %s: Block name e.g. \"Image block\" */
 /* (placeholder) Help enter WordPress password */
 "Enter password" = "비밀번호 입력";
 
-/* Instruction text on the login's site addresss screen.
-   Label for button to log in using your site address. */
-"Enter the address of the WordPress site you'd like to connect." = "연결하려는 워드프레스 사이트의 주소를 입력하세요.";
-
-/* Instructional text shown when requesting the user's password for login. */
-"Enter the password for your WordPress.com account." = "워드프레스닷컴 계정에 대한 비밀번호를 입력합니다.";
-
 /* (placeholder) Help enter WordPress username */
 "Enter username" = "사용자명 입력";
 
-/* Enter your account information for {site url}. Asks the user to enter a username and password for their self-hosted site. */
-"Enter your account information for %@." = "%@에 대한 계정 정보를 입력하세요.";
-
-/* Instruction text on the initial email address entry screen. */
-"Enter your email address to log in or create a WordPress.com account." = "로그인하거나 워드프레스닷컴 계정을 만드려면 이메일 주소를 입력하세요.";
-
 /* Button title. Takes the user to the login by site address flow. */
 "Enter your existing site address" = "존재하는 사이트 주소를 입력하세요";
-
-/* Title of a button on the magic link screen.
-   Title of a button. */
-"Enter your password instead." = "비밀번호를 입력하세요.";
 
 /* Error message displayed when site credentials aren't configured. */
 "Enter your server credentials" = "서버 자격 증명을 입력하세요.";
@@ -2374,9 +2268,6 @@ translators: %s: Block name e.g. \"Image block\" */
 /* Fashion site intent topic */
 "Fashion" = "패션";
 
-/* Option to select the Fastmail app when logging in with magic links */
-"Fastmail" = "패스트메일";
-
 /* Header of section in Plugin Directory showing featured plugins */
 "Featured" = "대표";
 
@@ -2415,9 +2306,6 @@ translators: %s: Block name e.g. \"Image block\" */
 
 /* Title for the find out more button in the What's New page. */
 "Find out more" = "더 찾아보기";
-
-/* The hint button's title text to help users find their site address. */
-"Find your site address" = "사이트 주소 찾기";
 
 /* Register Domain - Domain contact information field First name
    User's First Name */
@@ -2493,9 +2381,6 @@ translators: %s: Block name e.g. \"Image block\" */
 "Free" = "무료";
 
 /* One of the options when selecting More in the Post Editor's format bar */
-"Free GIF Library" = "무료 GIF 라이브러리";
-
-/* One of the options when selecting More in the Post Editor's format bar */
 "Free Photo Library" = "무료 사진 라이브러리";
 
 /* Explanatory text for clearing device media cache. */
@@ -2534,12 +2419,6 @@ translators: %s: Block name e.g. \"Image block\" */
 /* Title. A call to action to generate a new invite link. */
 "Generate new link" = "새 링크 생성";
 
-/* View title for initial auth views. */
-"Get Started" = "시작하세요";
-
-/* The button title for a secondary call-to-action button. When the user wants to try sending a magic link instead of entering a password. */
-"Get a login link by email" = "이메일로 로그인 링크 얻기";
-
 /* Displayed in the Notifications Tab as a message, when there are no notifications */
 "Get active! Comment on posts from blogs you follow." = "다른 사용자와 소통하세요! 팔로우하는 블로그의 글에 댓글을 달아보세요.";
 
@@ -2558,14 +2437,8 @@ translators: %s: Block name e.g. \"Image block\" */
 /* Example post title used in the login prologue screens. */
 "Getting Inspired" = "영감받기";
 
-/* Alerts the user that wpcom account information is being retrieved. */
-"Getting account information" = "계정 정보 받기";
-
 /* No comment provided by engineer. */
 "Give it a try by adding a few blocks to your post or page!" = "글 또는 페이지에 블록을 몇 개만 추가하여 시도해 보세요!";
-
-/* Option to select the Gmail app when logging in with magic links */
-"Gmail" = "지메일";
 
 /* Displayed in the Notifications Tab as a button title, when there are no notifications */
 "Go to Reader" = "리더로 이동";
@@ -2576,9 +2449,6 @@ translators: %s: Block name e.g. \"Image block\" */
 /* Button label for going to settings to approve push notifications
    Opens WPiOS Settings.app Section */
 "Go to iOS Settings" = "iOS 설정으로 이동";
-
-/* Message shown on screen after the Google sign up process failed. */
-"Google sign up failed." = "Google 가입에 실패했습니다.";
 
 /* Button title on the blogging prompt's feature introduction view to dismiss the view.
    Title for the continue button in the dashboard's custom What's New page. */
@@ -2638,8 +2508,7 @@ translators: %s: Block name e.g. \"Image block\" */
 /* Health site intent topic */
 "Health" = "건강";
 
-/* Help button
-   Open editor help options */
+/* Open editor help options */
 "Help" = "도움말";
 
 /* Link to Help section
@@ -2652,9 +2521,6 @@ translators: %s: Block name e.g. \"Image block\" */
 
 /* No comment provided by engineer. */
 "Help icon" = "도움말 아이콘";
-
-/* Accessibility value if login page's password field is hiding the password (i.e. with asterisks). */
-"Hidden" = "숨김";
 
 /* Title of a button used to collapse a group */
 "Hide" = "숨기기";
@@ -2727,12 +2593,6 @@ translators: %s: Block name e.g. \"Image block\" */
 /* Message to show when site icon update failed */
 "Icon update failed" = "아이콘 업데이트 실패";
 
-/* The instructions text about not being able to find the magic link email. */
-"If you can’t find the email, please check your junk or spam email folder" = "이메일을 찾을 수 없으면 정크 또는 스팸 이메일 폴더를 확인해 보세요.";
-
-/* Legal disclaimer for signing up. The underscores _..._ denote underline. */
-"If you continue with Apple or Google and don't already have a WordPress.com account, you are creating an account and you agree to our _Terms of Service_." = "애플이나 구글로 계속하기를 원하고 이미 워드프레스닷컴 계정을 가지고 있지 않다면, 계정을 만들고 _약관_에 동의하는 것으로 간주합니다.";
-
 /* First line of remove user warning in confirmation dialog. Note: '%@' is the placeholder for the user's name and it must exist twice in this string. */
 "If you remove %@, that user will no longer be able to access this site, but any content that was created by %@ will remain on the site." = "%1$@를 삭제한다면 사용자는 더 이상 사이트를 이용할 수 없지만, %2$@가 만든 콘텐츠는 그대로 남아 있습니다.";
 
@@ -2801,9 +2661,6 @@ translators: %s: Block name e.g. \"Image block\" */
 
 /* Downloadable/Restorable items: general section footer text */
 "Includes wp-config.php and any non WordPress files" = "wp-config.php 및 비 WordPress 파일 포함";
-
-/* An error message shown when a user signed in with incorrect credentials. */
-"Incorrect username or password. Please try entering your login details again." = "사용자명이나 비밀번호가 올바르지 않습니다. 로그인 정보를 다시 입력해 주세요.";
 
 /* Title for a threat */
 "Infected core file" = "감염된 코어 파일";
@@ -2905,9 +2762,6 @@ translators: %s: Block name e.g. \"Image block\" */
 /* Title displayed on the feature introduction view. */
 "Introducing Blogging Prompts" = "블로깅 프롬프트 소개";
 
-/* Title of an alert letting the user know the email address that they've entered isn't valid */
-"Invalid Email Address" = "유효하지 않은 이메일 주소";
-
 /* No comment provided by engineer. */
 "Invalid Site Address" = "유효하지 않은 사이트 주소";
 
@@ -2925,9 +2779,6 @@ translators: %s: Block name e.g. \"Image block\" */
 
 /* No comment provided by engineer. */
 "Invalid URL. Audio file not found." = "유효하지 않은 URL입니다. 오디오 파일을 찾을 수 없습니다.";
-
-/* Error message shown when the input URL is invalid. */
-"Invalid URL. Please double-check and try again." = "유효하지 않은 URL. 다시 확인하고 다시 시도하세요.";
 
 /* No comment provided by engineer. */
 "Invalid URL. Please enter a valid URL." = "유효하지 않은 URL입니다. 유효한 URL을 입력하세요.";
@@ -2949,12 +2800,6 @@ translators: %s: Block name e.g. \"Image block\" */
 
 /* Invite People Title */
 "Invite People" = "사람 초대하기";
-
-/* An error message shown during log in when the username or password is incorrect. */
-"It looks like this username\/password isn't associated with this site." = "이 사용자명\/비밀번호가 이 사이트에 연결되어 있지 않은 것 같습니다.";
-
-/* An error message shown when a wpcom user provides the wrong password. */
-"It seems like you've entered an incorrect password. Want to give it another try?" = "잘못된 비밀번호를 입력하신 것 같습니다. 다시 시도해보시겠어요?";
 
 /* Title of a notification displayed prompting the user to create a new blog post. The %@ will be replaced with the blog's title. */
 "It's time to blog on %@!" = "%@의 블로깅 시간입니다!";
@@ -3175,7 +3020,8 @@ translators: %s: Block name e.g. \"Image block\" */
 /* No comment provided by engineer. */
 "Line Height" = "줄 간격";
 
-/* Label for link title in Clicks stat. */
+/* Label for link title in Clicks stat.
+   Menu item label for linking a custom source URL. */
 "Link" = "링크";
 
 /* Menus title label when editing a menu item as a link. */
@@ -3270,11 +3116,9 @@ translators: %s: Block name e.g. \"Image block\" */
 /* No comment provided by engineer. */
 "Lock icon" = "잠금 아이콘";
 
-/* Button title.  Tapping takes the user to the login form.
-   Label for logging in to WordPress.com account
+/* Label for logging in to WordPress.com account
    Log In 3D Touch Shortcut
-   Log In button label.
-   View title during the log in process. */
+   Log In button label. */
 "Log In" = "로그인";
 
 /* Button for confirming logging out from WordPress.com account
@@ -3283,22 +3127,6 @@ translators: %s: Block name e.g. \"Image block\" */
 
 /* Title of a button for signing in. */
 "Log in" = "로그인";
-
-/* A generic error message for a failed log in. */
-"Log in failed. Please try again." = "로그인에 실패했습니다. 다시 시도하세요.";
-
-/* Button title. Takes the user to the login by email flow.
-   Button title. Tapping begins our normal log in process. */
-"Log in or sign up with WordPress.com" = "워드프레스닷컴을 통해 로그인하거나 가입";
-
-/* Instruction text on the login's email address screen. */
-"Log in to the WordPress.com account you used to connect Jetpack." = "젯팩에 연결하는 데 사용한 워드프레스닷컴 계정으로 로그인하세요.";
-
-/* Instruction text on the login's email address screen. */
-"Log in to your WordPress.com account with your email address." = "이메일 주소로 워드프레스닷컴 계정에 로그인하세요.";
-
-/* Instructions on the WordPress.com username / password log in form. */
-"Log in with your WordPress.com username and password." = "워드프레스닷컴 사용자 이름과 비밀번호로 로그인합니다";
 
 /* LogOut confirmation text, whenever there are no local changes */
 "Log out of Jetpack?" = "젯팩에서 로그아웃하시나요?";
@@ -3312,20 +3140,11 @@ translators: %s: Block name e.g. \"Image block\" */
 /* Login Request Expired */
 "Login Request Expired" = "로그인 요청 만료됨";
 
-/* Button title. Takes the user to the Enter account password screen. */
-"Login with account password" = "계정 비밀번호로 로그인";
-
 /* Title for the error view when the stats module is disabled. */
 "Looking for stats?" = "통계를 찾으시나요?";
 
 /* Message asking the user to sign into Jetpack with WordPress.com credentials */
 "Looks like you have Jetpack set up on your site. Congrats! Log in with your WordPress.com credentials to enable Stats and Notifications." = "젯팩을 설치해 두셨네요, 축하합니다!\n아래의 Wordpress.com 정보로 로그인 해서 알림과 통계를 활성화하세요.";
-
-/* Title of a button. */
-"Lost your password?" = "비밀번호 분실?";
-
-/* Option to select the Apple Mail app when logging in with magic links */
-"Mail (Default)" = "메일 (기본)";
 
 /* No comment provided by engineer. */
 "Main Navigation" = "메인 내비게이션";
@@ -3466,9 +3285,6 @@ translators: %s: Block name e.g. \"Image block\" */
 /* Invite Message Editor's Title */
 "Message" = "메시지";
 
-/* Option to select the Microsft Outlook app when logging in with magic links */
-"Microsoft Outlook" = "마이크로소프트 아웃룩";
-
 /* Summary description for a threat */
 "Miscellaneous vulnerability" = "기타 취약성";
 
@@ -3562,6 +3378,9 @@ translators: %s: Block name e.g. \"Image block\" */
    Title of My Site tab */
 "My Site" = "내 사이트";
 
+/* Siri Suggestion to open My Sites */
+"My Sites in WordPress" = "내 워드프레스 사이트";
+
 /* Example post title used in the login prologue screens. */
 "My Top Ten Cafes" = "상위 10개 카페";
 
@@ -3598,15 +3417,8 @@ translators: %s: Select control button label e.g. \"Button width\" */
 /* 'Need help?' button label, links off to the WP for iOS FAQ. */
 "Need Help?" = "도움이 필요하세요?";
 
-/* A button title. */
-"Need help finding your site address?" = "사이트 주소를 찾는 데 도움이 필요하세요?";
-
-/* Takes the user to get help
-   The secondary button title in the migration welcome screen */
+/* The secondary button title in the migration welcome screen */
 "Need help?" = "도움이 필요하세요?";
-
-/* Title of the more help button on alert helping users understand their site address */
-"Need more help?" = "더 많은 도움이 필요하세요?";
 
 /* Describes a status of a plugin */
 "Needs Update" = "업데이트 필요";
@@ -3632,6 +3444,9 @@ translators: %s: Select control button label e.g. \"Button width\" */
 /* New Post 3D Touch Shortcut */
 "New Post" = "새 글";
 
+/* Menu item title text used as default when creating a new menu item. */
+"New item" = "새 항목";
+
 /* Placeholder text for password field */
 "New password" = "새 비밀번호";
 
@@ -3649,9 +3464,7 @@ translators: %s: Select control button label e.g. \"Button width\" */
 "News" = "뉴스";
 
 /* Next action on comment moderation snackbar.
-   Next action on share extension editor screen.
-   Title of a button.
-   Title of a button. The text should be capitalized. */
+   Next action on share extension editor screen. */
 "Next" = "다음";
 
 /* Accessibility label for the next notification button */
@@ -3680,6 +3493,9 @@ translators: %s: Select control button label e.g. \"Button width\" */
 
 /* missing preview URL for blog post preview */
 "No Preview URL available" = "사용 가능한 미리보기 URL이 없습니다";
+
+/* Label used for posts without a title in spotlight search. */
+"No Title" = "제목 없음";
 
 /* No comment provided by engineer. */
 "No application can handle this request." = "이 요청을 처리할 수 있는 애플리케이션이 없습니다.";
@@ -3842,9 +3658,6 @@ translators: %s: Select control button label e.g. \"Button width\" */
 /* Button label for denying our request to allow push notifications */
 "Not now" = "지금 안 함";
 
-/* Instructions after a Magic Link was sent, but the email can't be found in their inbox. */
-"Not seeing the email? Check your Spam or Junk Mail folder." = "이메일이 보이지 않으세요? 스팸이나 정크 메일 폴더를 확인하세요.";
-
 /* Label for the note displayed in the Feature Introduction view. */
 "Note:" = "참고:";
 
@@ -3908,11 +3721,7 @@ translators: %s: Select control button label e.g. \"Button width\" */
 /* Discoverability title for numbered list keyboard shortcut. */
 "Numbered List" = "번호 목록";
 
-/* Alert dismissal title
-   Button title. An acknowledgement of the message displayed in a prompt.
-   Dismisses the alert
-   Menus: button title for finishing editing of a menu item.
-   Ok button for dismissing alert helping users understand their site address */
+/* Menus: button title for finishing editing of a menu item. */
 "OK" = "OK";
 
 /* No comment provided by engineer. */
@@ -3981,10 +3790,6 @@ translators: %s: Select control button label e.g. \"Button width\" */
 /* No comment provided by engineer. */
 "Open Jetpack Security settings" = "젯팩 보안 설정 열기";
 
-/* The button title text for opening the user's preferred email app.
-   Title of a button. The text should be capitalized.  Clicking opens the mail app in the user's iOS device. */
-"Open Mail" = "메일 열기";
-
 /* Title of a button that opens the apps settings in the system Settings.app */
 "Open Settings" = "설정 열기";
 
@@ -4017,18 +3822,6 @@ translators: %s: Select control button label e.g. \"Button width\" */
 
 /* Footer text for Invite People message field. %1$d is the maximum number of characters allowed. */
 "Optional: Enter a custom message up to %1$d characters to be sent with your invitation." = "선택 사항: 초대를 보내는데 %1$d 문자까지 사용자 정의 안내문을 입력하세요.";
-
-/* Divider on initial auth view separating auth options. */
-"Or" = "또는";
-
-/* Instruction text for other forms of two-factor auth methods. */
-"Or choose another form of authentication." = "또는 다른 인증 양식을 선택해 주세요.";
-
-/* Label for button to log in using site address. Underscores _..._ denote underline. */
-"Or log in by _entering your site address_." = "또는 사이트 주소를 입력하여 로그인하세요.";
-
-/* The button title for a secondary call-to-action button on the password screen. When the user wants to try sending a magic link instead of entering a password. */
-"Or log in with magic link" = "또는 매직 링크로 로그인";
 
 /* Accessibility label for Ordered list button on formatting toolbar. */
 "Ordered List" = "순서 있는 목록";
@@ -4077,7 +3870,8 @@ translators: %s: Select control button label e.g. \"Button width\" */
 /* No comment provided by engineer. */
 "Padding" = "안쪽 여백";
 
-/* Noun. Type of content being selected is a blog page
+/* Menu item label for linking a page.
+   Noun. Type of content being selected is a blog page
    Title shown when selecting a post type of Page from the Share Extension. */
 "Page" = "페이지";
 
@@ -4105,16 +3899,10 @@ translators: %s: Select control button label e.g. \"Button width\" */
 /* Parenting site intent topic */
 "Parenting" = "육아";
 
-/* Accessibility label for the password text field in the self-hosted login page.
-   Label for entering password in password field
+/* Label for entering password in password field
    Login dialog password placeholder
-   Password placeholder
-   Placeholder for the password textfield.
    Title for screen that shows self hosted password editor. */
 "Password" = "비밀번호";
-
-/* Password field placeholder text */
-"Password (optional)" = "암호(선택사항)";
 
 /* Loader title displayed by the loading view while the password is changed successfully */
 "Password changed successfully" = "비밀번호가 변경됐습니다";
@@ -4128,6 +3916,9 @@ translators: %s: Select control button label e.g. \"Button width\" */
 /* Button title for Pending comment state.
    Title of pending Comments filter. */
 "Pending" = "대기중";
+
+/* Name for the status of a post pending review. */
+"Pending review" = "대기중인 리뷰";
 
 /* People site intent topic */
 "People" = "사람";
@@ -4149,9 +3940,6 @@ translators: %s: Select control button label e.g. \"Button width\" */
 
 /* Photography site intent topic */
 "Photography" = "사진";
-
-/* Title for selecting a new username in the site creation flow. */
-"Pick username" = "사용자명 선택";
 
 /* User action to play a video on the editor. */
 "Play video" = "비디오 재생";
@@ -4182,9 +3970,6 @@ translators: %s: Select control button label e.g. \"Button width\" */
 
 /* Message asking users to make sure that the block editor is enabled on their site in order for the Unsupported Block Editor to load properly. */
 "Please ensure the block editor is enabled on your site. If it is not enabled, it will not load." = "사이트에서 블록 편집기가 활성화되었는지 확인하세요. 활성화하지 않으면 로드되지 않습니다.";
-
-/* Error message shown when a URL is invalid. */
-"Please enter a complete website address, like example.com." = "example.com과 같은 완전한 웹사이트 주소를 입력하세요.";
 
 /* No comment provided by engineer. */
 "Please enter a site address." = "사이트 주소를 입력해주세요.";
@@ -4219,17 +4004,11 @@ translators: %s: Select control button label e.g. \"Button width\" */
 /* Register Domain - Domain contact information validation error message for an input field */
 "Please enter a valid address" = "유효한 이메일 주소를 입력하세요.";
 
-/* An error message. */
-"Please enter a valid email address for a WordPress.com account." = "워드프레스닷컴 계정의 유효한 이메일 주소를 입력하세요.";
-
-/* Error message displayed when the user attempts use an invalid email address. */
+/* No comment provided by engineer. */
 "Please enter a valid email address." = "유효한 이메일 주소를 입력해주세요.";
 
 /* Register Domain - Domain contact information validation error message for an input field */
 "Please enter a valid phone number" = "유효한 전화번호를 입력하세요";
-
-/* Instructional text shown when requesting the user's password for a login initiated via Sign In with Apple */
-"Please enter the password for your WordPress.com account to log in with your Apple ID." = "Apple ID로 로그인하려면 워드프레스닷컴 계정의 비밀번호를 입력하세요.";
 
 /* Popup message to ask for user credentials (fields shown below). */
 "Please enter your credentials" = "자격을 입력하세요";
@@ -4237,14 +4016,8 @@ translators: %s: Select control button label e.g. \"Button width\" */
 /* Instructions for alert asking for email. */
 "Please enter your email address." = "이메일 주소를 입력하세요.";
 
-/* A short prompt asking the user to properly fill out all login fields. */
-"Please fill out all the fields" = "모든 란을 채워주세요";
-
 /* Share extension dialog text  - displayed when user is missing a login token. */
 "Please launch the WordPress app, log in to WordPress.com and make sure you have at least one site, then try again." = "워드프레스 앱을 시작하고 워드프레스닷컴에 로그인하여 적어도 하나의 사이트가 있는지 확인한 후 다시 시도하세요.";
-
-/* Message for alert to prompt user to logout before connecting to a different wordpress.com site. */
-"Please log out before connecting to a different wordpress.com site" = "다른 워드프레스닷컴 사이트에 접속하기 전에 로그아웃하세요.";
 
 /* Used on an error alert to prompt the user to try again */
 "Please try again later" = "나중에 다시 시도하시기 바랍니다";
@@ -4311,7 +4084,8 @@ translators: %s: Select control button label e.g. \"Button width\" */
 /* Section title for Popular Languages */
 "Popular languages" = "인기 언어";
 
-/* Noun. Type of content being selected is a blog post
+/* Menu item label for linking a post.
+   Noun. Type of content being selected is a blog post
    Title shown when selecting a post type of Post from the Share Extension. */
 "Post" = "게시물";
 
@@ -4424,6 +4198,9 @@ translators: %s: Select control button label e.g. \"Button width\" */
 /* Link to the CCPA privacy notice for residents of California. */
 "Privacy notice for California users" = "캘리포니아 사용자를 위한 개인정보 공지";
 
+/* Name for the status of a post that is marked private. */
+"Private" = "개인용";
+
 /* No comment provided by engineer. */
 "Problem displaying block. \nTap to attempt block recovery." = "블록 표시 중 문제가 발생했습니다. \n눌러서 블록 복구를 시도하세요.";
 
@@ -4439,6 +4216,9 @@ translators: %s: Select control button label e.g. \"Button width\" */
 /* Register Domain - error displayed when there's a problem when purchasing the domain. */
 "Problem purchasing your domain. Please try again." = "도메인을 구매하는 중에 문제가 발생했습니다. 다시 시도하세요.";
 
+/* Menu item label for linking a project page. */
+"Projects" = "프로젝트";
+
 /* Title of the notification presented when a prompt is skipped */
 "Prompt skipped" = "프롬프트 건너뜀";
 
@@ -4451,13 +4231,17 @@ translators: %s: Select control button label e.g. \"Button width\" */
    Publish post action on share extension site picker screen. */
 "Publish" = "발행하기";
 
+/* A short phrase indicating a post is due to be immedately published. */
+"Publish Immediately" = "즉시 발행";
+
 /* Text displayed in the share extension's summary view. It describes the publish page action. */
 "Publish page on:" = "페이지 발행 중:";
 
 /* Text displayed in the share extension's summary view. It describes the publish post action. */
 "Publish post on:" = "글 발행 날짜:";
 
-/* Period Stats 'Published' header
+/* Name for the status of a published post.
+   Period Stats 'Published' header
    Title of the published filter. This filter shows a list of posts that the user has published. */
 "Published" = "발행됨";
 
@@ -4659,7 +4443,7 @@ translators: %s: Select control button label e.g. \"Button width\" */
 /* Provides hint that the screen displays a reply to a comment.%1$@ is a placeholder for the comment author that's been replied to.Example: Reply to Pamela Nguyen */
 "Reply to %1$@" = "%1$@에 회신";
 
-/* An explaination of a setting. */
+/* An explanation of a setting. */
 "Require manual approval for comments that include more than this number of links." = "이 링크 수보다 링크가 많이 포함된 댓글에 대한 수동 승인이 필요합니다.";
 
 /* Explains the effect of the 'No comments' auto approval setting. */
@@ -4676,9 +4460,6 @@ translators: %s: Select control button label e.g. \"Button width\" */
 
 /* Setting: WordPress.com Surveys */
 "Research" = "리서치";
-
-/* The button title for a secondary call-to-action button. When the user can't remember their password. */
-"Reset your password" = "비밀번호 재설정하기";
 
 /* Screen title. Resize and crop an image. */
 "Resize & Crop" = "크기 조정 및 자르기";
@@ -4710,7 +4491,6 @@ translators: %s: Select control button label e.g. \"Button width\" */
 /* A prompt to attempt the failed network request again
    A prompt to attempt the failed network request again.
    Button title, displayed when media has failed to upload. Allows the user to try the upload again.
-   If a user taps the button with this label, the action that evinced this error view will be retried.
    Opens the media library .
    Retry updating User's Role
    Retry. Action
@@ -4754,9 +4534,6 @@ translators: %s: Select control button label e.g. \"Button width\" */
    User Roles Title
    User's Role */
 "Role" = "역할";
-
-/* One Time Code has been sent via SMS */
-"SMS Sent" = "SMS 전송됨";
 
 /* Section title for the moderation section of the comment details screen. */
 "STATUS" = "상태";
@@ -4828,7 +4605,8 @@ translators: %s: Select control button label e.g. \"Button width\" */
 /* Title for label when the actively scanning the users site */
 "Scanning files" = "파일 검사하는 중";
 
-/* Title of the scheduled filter. This filter shows a list of posts that are scheduled to be published at a future date. */
+/* Name for the status of a scheduled post
+   Title of the scheduled filter. This filter shows a list of posts that are scheduled to be published at a future date. */
 "Scheduled" = "예약됨";
 
 /* No comment provided by engineer. */
@@ -4872,9 +4650,6 @@ translators: %s: Select control button label e.g. \"Button width\" */
 
 /* Accessibility hint for the domains search field in Site Creation. */
 "Searches for available domains to use for your site." = "사이트에 사용할 도메인을 검색합니다.";
-
-/* Accessibility value presented in the signup epilogue for a password value. */
-"Secure text" = "보안 텍스트";
 
 /* Label for selecting the Blog Jetpack Security Settings section */
 "Security" = "보안";
@@ -4962,12 +4737,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Accessibility hint for a topic in the Site Creation intents view. */
 "Selects this topic as the intent for your site." = "사이트의 의도로 이 주제를 선택하세요.";
 
-/* Title of a button. The text should be uppercase.  Clicking requests a hyperlink be emailed ot the user. */
-"Send Link" = "링크 전송";
-
-/* The button title text for sending a magic link. */
-"Send Link by Email" = "이메일로 링크 보내기";
-
 /* Title of a row displayed on the debug screen used to send a pretend error message to the crash logging provider to ensure everything is working correctly */
 "Send Log Message" = "기록 메시지 보내기";
 
@@ -4976,9 +4745,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Title of a row displayed on the debug screen used to crash the app and send a crash report to the crash logging provider to ensure everything is working correctly */
 "Send Test Crash" = "시험 충돌 보내기";
-
-/* Button title. Sends a email verification link (Magin link) for signing in. */
-"Send email verification link" = "이메일 확인 링크 보내기";
 
 /* Jetpack Monitor Settings: Send notifications by email */
 "Send notifications by email" = "이메일로 알림 보내기";
@@ -5079,10 +4845,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Title for the `show reblog button` setting */
 "Show Reblog button" = "리블로그 버튼 표시";
 
-/* Accessibility label for the 'Show password' button in the login page's password field.
-   Accessibility label for the “Show password“ button in the login page's password field. */
-"Show password" = "비밀번호 보이기";
-
 /* No comment provided by engineer. */
 "Show post content" = "글 콘텐츠 보기";
 
@@ -5094,9 +4856,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Label on Post Stats view indicating which post the stats are for. */
 "Showing stats for:" = "다음에 대한 통계 표시:";
-
-/* Accessibility value if login page's password field is displaying the password. */
-"Shown" = "표시됨";
 
 /* Help text when editing web address */
 "Shown publicly when you comment on blogs." = "블로그에 댓글을 달 때 공개됩니다.";
@@ -5112,21 +4871,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Accessibility hint for a match/mention on a post notification. */
 "Shows the post" = "글을 표시합니다.";
-
-/* View title during the sign up process. */
-"Sign Up" = "가입하기";
-
-/* Button title. Takes the user the Enter site credentials screen. */
-"Sign in with site credentials" = "사이트 자격 증명으로 로그인";
-
-/* When social login fails, this button offers to let them signup for a new WordPress.com account */
-"Sign up" = "회원가입";
-
-/* Button title. Tapping begins the process of creating a WordPress.com account. */
-"Sign up for WordPress.com" = "워드프레스에 로그인";
-
-/* Button title. Tapping begins our normal sign up process. */
-"Sign up with Email" = "이메일로 가입";
 
 /* Notice displayed to the user after clearing the Siri activity donations. */
 "Siri Reset Confirmation" = "Siri 단축키 제안을 지웠습니다.";
@@ -5159,9 +4903,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Setting: indicates if Achievements will be notified */
 "Site achievements" = "사이트 작성 글";
-
-/* Accessibility label of the site address field shown when adding a self-hosted site. */
-"Site address" = "사이트 주소";
 
 /* No comment provided by engineer. */
 "Site address must be at least 4 characters." = "사이트 주소는 최소한 4 글자 이상이어야 합니다.";
@@ -5240,7 +4981,7 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* No comment provided by engineer. */
 "Sorry, site addresses must have letters too!" = "죄송합니다. 사이트 주소는 글자도 포함돼야 합니다!";
 
-/* Error message displayed when the entered email is not available. */
+/* No comment provided by engineer. */
 "Sorry, that email address is already being used!" = "죄송합니다. 해당 이메일 주소는 이미 사용되고 있습니다!";
 
 /* No comment provided by engineer. */
@@ -5297,9 +5038,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
    Title of spam Comments filter. */
 "Spam" = "스팸";
 
-/* Option to select the Spark email app when logging in with magic links */
-"Spark" = "스파크";
-
 /* Label for selecting the Speed up your site Settings section
    Title for the Speed up your site Settings Screen */
 "Speed up your site" = "사이트 속도 향상";
@@ -5323,6 +5061,9 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Register Domain - Domain Address field State */
 "State" = "주";
+
+/* Name of setting configured when a site uses a static page as its homepage */
+"Static Homepage" = "정적인 홈페이지";
 
 /* Noun. Abbreviation of Statistics. Name of the Stats feature
    Stats 3D Touch Shortcut
@@ -5432,6 +5173,9 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Title for the tablet web preview */
 "Tablet" = "태블릿";
+
+/* Menu item label for linking a specific tag. */
+"Tag" = "태그";
 
 /* Label for tagline blog setting
    Title for screen that show tagline editor */
@@ -5551,6 +5295,9 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Title of button that displays the App's terms of service */
 "Terms of Service" = "서비스 약관";
 
+/* Menu item label for linking a testimonial post. */
+"Testimonials" = "추천 글";
+
 /* Title of a button style */
 "Text Only" = "텍스트만";
 
@@ -5560,17 +5307,8 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* No comment provided by engineer. */
 "Text formatting controls are located within the toolbar positioned above the keyboard while editing a text block" = "텍스트 서식 지정 컨트롤은 텍스트 블록을 편집하는 동안 키보드 위에 배치되는 도구 모음 내에 있습니다.";
 
-/* Button title */
-"Text me a code instead" = "코드를 문자로 대신 받기";
-
-/* The button's title text to send a 2FA code via SMS text message. */
-"Text me a code via SMS" = "나에게 SMS 문자 메시지로 코드 보내기";
-
 /* Message of alert when theme activation succeeds */
 "Thanks for choosing %@ by %@" = "%1$@(%2$@ 제공)을(를) 선택해 주셔서 감사합니다.";
-
-/* Shown when a user pastes a code into the two factor field that contains letters or is the wrong length */
-"That doesn't appear to be a valid verification code." = "유효한 확인 코드가 아닌 것 같습니다.";
 
 /* Message to show to user when he tries to add a self-hosted site that isn't a WordPress site. */
 "That doesn't look like a WordPress site." = "워드프레스 사이트가 아닌 것 같습니다.";
@@ -5592,9 +5330,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Error message shown to a user who is trying to share to Facebook but does not have any available Facebook Pages. */
 "The Facebook connection cannot find any Pages. Publicize cannot connect to Facebook Profiles, only published Pages." = "페이스북 페이지를 찾을 수 없습니다. 페이스북 프로필은 연결할 수 없으며 공개된 페이지로만 연결할 수 있습니다.";
-
-/* Description shown when a user logs in with Google but no matching WordPress.com account is found */
-"The Google account \"%@\" doesn't match any account on WordPress.com" = "Google 계정 \"%@\"이(가) 워드프레스닷컴의 계정과 일치하지 않습니다.";
 
 /* Error message shown when a media upload fails because the user isn't connected to the Internet. */
 "The Internet connection appears to be offline." = "인터넷 연결이 오프라인인 것 같습니다.";
@@ -5674,10 +5409,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* No comment provided by engineer. */
 "The site at %@ uses WordPress %@. We recommend to update to the latest version, or at least %@" = "%1$@의 사이트는 워드프레스 %2$@를 사용합니다. 최신 버전이나 최소한 %3$@으로 업데이트하기를 권장합니다.  ";
 
-/* Error message shown a URL does not point to an existing site.
-   Error message shown when a URL does not point to an existing site. */
-"The site at this address is not a WordPress site. For us to connect to it, the site must use WordPress." = "이 주소의 사이트는 워드프레스 사이트가 아닙니다. 연결하려면 사이트에서 워드프레스를 사용해야 합니다.";
-
 /* Message shown when site deletion API failed */
 "The site could not be deleted." = "사이트를 삭제할 수 없습니다.";
 
@@ -5753,8 +5484,7 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* A short error message shown in a prompt. */
 "There was a problem saving changes to sharing management." = "공유 관리 변경 사항을 저장하는 데 문제가 발생했습니다.";
 
-/* Text displayed when there is a failure changing the password.
-   Text displayed when there is a failure loading the history. */
+/* Text displayed when there is a failure loading the history. */
 "There was an error changing the password" = "비밀번호를 변경하는 중에 오류가 발생했습니다.";
 
 /* Text displayed when there is a failure loading plugins */
@@ -5807,9 +5537,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* No comment provided by engineer. */
 "This color combination may be hard for people to read. Try using a darker background color and\/or a brighter text color." = "이 색상 조합은 사람들이 읽기 힘들 수 있습니다. 더 어두운 배경 색상 및\/또는 더 밝은 텍스트 색상을 사용해 보세요.";
-
-/* An error message informing the user the email address they entered did not match a WordPress.com account. */
-"This email address is not registered on WordPress.com." = "이 이메일 주소는 워드프레스닷컴에 등록되어 있지 않습니다.";
 
 /* Message to show to user when media upload failed because server doesn't support media type */
 "This file is too large to upload to your site or it does not support this media format." = "이 파일은 너무 커서 사이트에 업로드할 수 없거나 이 미디어 형식을 지원하지 않습니다.";
@@ -5886,9 +5613,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Label for the timezone setting */
 "Time Zone" = "시간대";
 
-/* Error when the uses takes more than 1 minute to submit a security key. */
-"Time's up, but don't worry, your security is our priority. Please try again!" = "시간이 다 되었지만, 걱정하지 마세요. 보안이 무엇보다 중요합니다. 다시 시도해 보세요!";
-
 /* WordPress.com Marketing Footer Text */
 "Tips for getting the most out of WordPress.com." = "워드프레스닷컴을 최대한 활용하기 위한 팁.";
 
@@ -5901,9 +5625,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Instructions for alert asking for email and name. */
 "To continue please enter your email address and name." = "계속하려면 이메일 주소와 이름을 입력하세요.";
 
-/* Text instructing the user to enter their email address. */
-"To create your new WordPress.com account, please enter your email address." = "새 워드프레스닷컴 계정을 만들려면 이메일 주소를 입력하세요.";
-
 /* Message asking the user if they want to set up Jetpack from notifications */
 "To get helpful notifications on your phone from your WordPress site, you'll need to install the Jetpack plugin." = "휴대폰에서 워드프레스 사이트로부터 유용한 알림을 가져오려면 젯팩 플러그인을 설치해야 합니다.";
 
@@ -5912,12 +5633,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Install Plugin dialog text. */
 "To install plugins, you need to have a custom domain associated with your site." = "플러그인을 설치하려면 사이트와 연결된 사용자 정의 도메인이 있어야 합니다.";
-
-/* Instructional text shown when requesting the user's password for Apple login. */
-"To proceed with this Apple ID, please first log in with your WordPress.com password. This will only be asked once." = "애플 ID로 계속하려면, 먼저 워드프레스닷컴 비밀번호로 로그인하시기 바랍니다. 한 번만 요청될 것입니다.";
-
-/* Instructional text shown when requesting the user's password for Google login. */
-"To proceed with this Google account, please first log in with your WordPress.com password. This will only be asked once." = "이 Google 계정을 진행하려면 먼저 워드프레스닷컴 비밀번호로 로그인하세요. 이 메시지는 한 번만 표시됩니다.";
 
 /* No comment provided by engineer. */
 "To remove a block, select the block and click the three dots in the bottom right of the block to view the settings. From there, choose the option to remove the block." = "블록을 제거하려면 블록을 선택하고 블록의 오른쪽 하단에 있는 점 3개를 클릭하여 설정을 봅니다. 블록을 제거하는 옵션을 설정에서 선택합니다.";
@@ -5991,7 +5706,8 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
    Trashes the comment */
 "Trash" = "휴지통";
 
-/* Title of the trashed filter. This filter shows posts that have been moved to the trash bin.
+/* Name for the status of a trashed post
+   Title of the trashed filter. This filter shows posts that have been moved to the trash bin.
    Title of trashed Comments filter. */
 "Trashed" = "삭제됨";
 
@@ -6024,12 +5740,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* The title of a notice telling users that the classic editor is deprecated and will be removed in a future version of the app. */
 "Try the new Block Editor" = "새 블록 편집기 시도";
 
-/* When social login fails, this button offers to let the user try again with a differen email address */
-"Try with another email" = "다른 이메일로 시도";
-
-/* When social login fails, this button offers to let them try tp login using a URL */
-"Try with the site address" = "사이트 주소로 시도";
-
 /* Destructive menu title to remove the prompt card from the dashboard. */
 "Turn off prompts" = "프롬프트 끄기";
 
@@ -6054,7 +5764,7 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* No comment provided by engineer. */
 "Type a URL" = "URL 입력";
 
-/* Placeholder text for domain search during site creation. */
+/* Placeholder text for the username suggestions search field on the Change Username screen. */
 "Type a keyword for more ideas" = "추가 아이디어에 대한 키워드 입력";
 
 /* A placeholder for the sharing label. */
@@ -6068,9 +5778,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Menus label for describing which menu the location uses in the header. */
 "USES" = "사용";
-
-/* Shown when a user logs in with Google but it subsequently fails to work as login to WordPress.com */
-"Unable To Connect" = "연결할 수 없음";
 
 /* Title of a prompt saying the app needs an internet connection before it can load posts */
 "Unable to Load Posts" = "게시글을 로드할 수 없습니다";
@@ -6107,15 +5814,11 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 "Unable to load the image. Please choose a different one or try again later." = "이미지를 로드할 수 없습니다. 다른 이미지를 선택하거나 나중에 다시 시도하세요.";
 
 /* Default title shown for no-results when the device is offline.
-   Informing the user that a network request failed because the device wasn't able to establish a network connection.
-   Informing the user that a network request failed becuase the device wasn't able to establish a network connection. */
+   Informing the user that a network request failed because the device wasn't able to establish a network connection. */
 "Unable to load this content right now." = "지금 이 콘텐츠를 로드할 수 없습니다.";
 
 /* Dialog box title for when the user is canceling an upload. */
 "Unable to play video" = "비디오를 재생할 수 없음";
-
-/* No comment provided by engineer. */
-"Unable to read the WordPress site at that URL. Tap 'Need more help?' to view the FAQ." = "해당 URL에서 워드프레스 사이트를 읽을 수 없습니다. '더 많은 도움이 필요하세요?'를 눌러 FAQ를 보세요.";
 
 /* Title for the Jetpack Restore Failed message. */
 "Unable to restore your site" = "사이트를 복원할 수 없음";
@@ -6137,9 +5840,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Alert displayed to the user when a single post and 1 file has failed to upload. */
 "Unable to upload 1 post, 1 file" = "1개 글, 1개 파일을 업로드할 수 없음";
-
-/* Error message displayed when an error occurred checking for email availability. */
-"Unable to verify the email address. Please try again later." = "이메일 주소를 확인할 수 없습니다. 나중에 다시 시도하세요.";
 
 /* Message displayed when visiting the Jetpack settings page fails. */
 "Unable to visit Jetpack settings for site" = "사이트에 대한 젯팩 설정을 방문할 수 없습니다.";
@@ -6305,30 +6005,20 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Use the current image */
 "Use" = "사용";
 
-/* The button's title text to use a security key. */
-"Use a security key" = "보안 키 사용";
-
 /* Option to enable the block editor for new posts */
 "Use block editor" = "블록 편집기 사용";
 
 /* No comment provided by engineer. */
 "Use icon button" = "아이콘 버튼 사용";
 
-/* The button title text for logging in with WP.com password instead of magic link. */
-"Use password to sign in" = "로그인 비밀번호 사용";
-
 /* Option to enable theme styles in the block editor */
 "Use theme styles" = "테마 스타일 사용";
 
 /* A placeholder for the twitter username
-   Accessibility label for the username text field in the self-hosted login page.
    Account Settings Username label
    Label for entering username in the username field
    Login dialog username placeholder
-   Placeholder for the username textfield.
-   The header and main title
-   Username label text.
-   Username placeholder */
+   The header and main title */
 "Username" = "사용자명";
 
 /* Message displayed in a Notice when the username has changed successfully. The placeholder is the new username. */
@@ -6342,9 +6032,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Blog Users */
 "Users" = "사용자";
-
-/* two factor code placeholder */
-"Verification code" = "확인 코드";
 
 /* Push Authentication Alert Title */
 "Verify Log In" = "로그인 확인";
@@ -6465,18 +6152,8 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Downloadable/Restorable items: WP-content directory */
 "WP-content directory" = "WP-content 디렉터리";
 
-/* Message shown on screen while waiting for Google to finish its signup process. */
-"Waiting for Google to complete…" = "Google에서 완료하기를 기다리는 중…";
-
 /* No comment provided by engineer. */
 "Waiting for connection" = "연결 대기 중";
-
-/* Text while the webauthn signature is being verified
-   Text while waiting for a security key challenge */
-"Waiting for security key" = "보안 키 기다리는 중";
-
-/* View title during the Google auth process. */
-"Waiting..." = "기다리는 중...";
 
 /* Editing GIF alert title.
    Noun. Title for Jetpack Restore warning.
@@ -6516,35 +6193,17 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Error message displayed when a refresh failed */
 "We had trouble loading data" = "데이터를 로드하는 중 문제가 발생했습니다.";
 
-/* message to ask a user to check their email for a WordPress.com email */
-"We just emailed a link to %@. Please check your mail app and tap the link to log in." = "링크를 이메일(%@)로 보냈습니다. 메일앱을 확인하고 링크를 눌러 로그인하시기 바랍니다.";
-
-/* The subtitle text on the magic link requested screen followed by the email address. */
-"We just sent a magic link to" = "방금 다음으로 매직 링크를 보내드렸습니다.";
-
 /* Description for the Jetpack Backup Complete message. %1$@ is a placeholder for the selected date. */
 "We successfully created a backup of your site from %1$@." = "%1$@에서 사이트의 백업을 만들었습니다!";
 
 /* Informational text about link to other tracking tools */
 "We use other tracking tools, including some from third parties. Read about these and how to control them." = "워드프레스는 타사 제품을 포함한 다른 추적 도구를 사용합니다. 이 도구에 대해 읽고 제어하는 방법에 대해 알아보세요.";
 
-/* Error message displayed when an error occurred sending the magic link email. */
-"We were unable to send you an email at this time. Please try again later." = "지금은 회원님에게 이메일을 보낼 수 없습니다. 나중에 다시 시도하세요.";
-
 /* Description for label when the actively scanning the users site */
 "We will send you an email if security threats are found. In the meantime feel free to continue to use your site as normal, you can check back on progress at any time." = "보안 위협을 발견하면 이메일을 보낼 것입니다. 그 동안 정상적으로 사이트를 계속 사용하고, 언제든지 진행 상황을 다시 확인할 수 있습니다.";
 
-/* Instructional text for the magic link login flow. */
-"We'll email you a magic link that'll log you in instantly, no password needed. Hunt and peck no more!" = "암호 없이 즉시 로그인되는 링크를 이메일로 보내드립니다. 더 이상 암호를 직접 입력할 필요가 없습니다!";
-
-/* Instruction text on the Sign Up screen. */
-"We'll email you a signup link to create your new WordPress.com account." = "새 워드프레스닷컴 계정을 만드는 등록 링크를 이메일할 것입니다.";
-
 /* This is the string we display when asking the user to approve push notifications */
 "We'll notify you when you get followers, comments, and likes." = "팔로워, 댓글 및 좋아요를 받으시면 알려 드립니다.";
-
-/* Text confirming email address to be used for new account. */
-"We'll use this email address to create your new WordPress.com account." = "이 이메일 주소를 사용하여 새 워드프레스닷컴 계정을 만듭니다.";
 
 /* Description for the Jetpack Backup Status message. %1$@ is a placeholder for the selected date. */
 "We're creating a downloadable backup of your site from %1$@." = "다운로드 가능한 사이트 백업을 %1$@에서 만드는 중입니다.";
@@ -6555,9 +6214,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Detail text display informing the user that we're fixing threats */
 "We're hard at work in the background fixing these threats. In the meantime feel free to continue to use your site as normal, you can check back on progress at any time." = "이러한 위협을 해결하기 위해 백그라운드에서 노력하는 중입니다. 그동안 정상적으로 사이트를 계속 사용하고, 언제든지 진행 상황을 다시 확인하실 수 있습니다.";
 
-/* Error message shown when having trouble connecting to a Jetpack site. */
-"We're not able to connect to the Jetpack site at that URL.  Contact us for assistance." = "현재 URL에서 젯팩 사이트에 연결할 수 없습니다. 도움이 필요하면 연락하세요.";
-
 /* Description for the Jetpack Restore Status message. %1$@ is a placeholder for the selected date. */
 "We're restoring your site back to %1$@." = "사이트를 %1$@(으)로 다시 복원하는 중입니다.";
 
@@ -6566,9 +6222,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* A hint to users indicating a link to the downloadable backup file has also been sent to their email. */
 "We've also emailed you a link to your file." = "파일 링크도 이메일로 보내드렸습니다.";
-
-/* Instruction text after a signup Magic Link was requested. */
-"We've emailed you a signup link to create your new WordPress.com account. Check your email on this device, and tap the link in the email you receive from WordPress.com." = "새 워드프레스닷컴 계정을 만드는 등록 링크를 이메일했습니다. 이 장치에서 이메일을 확인하고, 워드프레스닷컴에서 받은 이메일의 링크를 누르세요.";
 
 /* Account Settings Web Address label
    Header for a comment author's web address, shown when editing a comment. */
@@ -6636,9 +6289,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* This is a link that takes the user to the external Gravatar website */
 "What is Gravatar?" = "그라바타가 무엇인가요?";
 
-/* Navigates to page with details about What is WordPress.com. */
-"What is WordPress.com?" = "워드프레스닷컴이 무엇인가요?";
-
 /* No comment provided by engineer. */
 "What is a block?" = "블록이란 무엇인가요?";
 
@@ -6669,18 +6319,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Text rendered at the bottom of the Discussion Blocklist Keys editor */
 "When a comment contains any of these words in its content, name, URL, e-mail, or IP, it will be marked as spam. You can enter partial words, so \"press\" will match \"WordPress\"." = "댓글의 내용이나 이름, URL, 이메일, IP에 아래 단어가 들어있으면 스팸으로 처리됩니다. 단어의 일부만 입력해도 됩니다. \"프레스\"라고 입력하면 \"워드프레스\"로 인식될 수 있습니다.";
 
-/* An error message shown when a wpcom user provides the wrong password. */
-"Whoops, something went wrong and we couldn't log you in. Please try again!" = "문제가 발생하여 로그인할 수 없습니다. 다시 시도하세요.";
-
-/* Generic error on the 2FA screen */
-"Whoops, something went wrong. Please try again!" = "오류가 발생했습니다. 다시 시도해 보세요!";
-
-/* Error when the uses chooses an invalid security key on the 2FA screen. */
-"Whoops, that security key does not seem valid. Please try again with another one" = "죄송합니다. 보안 키가 유효하지 않은 것 같습니다. 다른 것으로 시도해 보세요.";
-
-/* Error message shown when an incorrect two factor code is provided. */
-"Whoops, that's not a valid two-factor verification code. Double-check your code and try again!" = "2단계 인증코드가 맞지 않습니다. 코드를 다시 확인하시고 입력하여 주시기 바랍니다.";
-
 /* No comment provided by engineer. */
 "Width Settings" = "폭 설정";
 
@@ -6693,17 +6331,38 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Title of Stats section that shows WordPress.com followers. */
 "WordPress" = "워드프레스";
 
+/* Siri Suggestion to open App Settings */
+"WordPress App Settings" = "워드프레스 앱 설정";
+
 /* Subject line for when sharing the app with others through mail or any other activity types that support contains a subject field. */
 "WordPress Apps - Apps for any screen" = "WordPress 앱 - 모든 화면에 알맞은 앱";
 
 /* Settings for a Wordpress Blog */
 "WordPress Blog" = "워드프레스 블로그";
 
+/* Siri Suggestion to open Support */
+"WordPress Help" = "워드프레스 도움말";
+
 /* Accessibility label for selecting an image or video from the user's WordPress media library on formatting toolbar. */
 "WordPress Media Library" = "워드프레스 미디어 라이브러리";
 
+/* Siri Suggestion to open Notification Settings */
+"WordPress Notification Settings" = "워드프레스 알림 설정";
+
+/* Siri Suggestion to open Notifications */
+"WordPress Notifications" = "워드프레스 알림";
+
 /* Downloadable/Restorable items: WordPress Plugins */
 "WordPress Plugins" = "워드프레스 플러그인";
+
+/* Siri Suggestion to open Me tab */
+"WordPress Profile" = "워드프레스 프로필";
+
+/* Siri Suggestion to open My Sites */
+"WordPress Reader" = "워드프레스 리더";
+
+/* Siri Suggestion to open My Sites */
+"WordPress Site Details" = "워드프레스 사이트 세부정보";
 
 /* Downloadable/Restorable items: WordPress Themes */
 "WordPress Themes" = "워드프레스 테마";
@@ -6719,9 +6378,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* No comment provided by engineer. */
 "WordPress version too old" = "워드프레스 버전이 너무 오래됐습니다";
-
-/* No comment provided by engineer. */
-"WordPress version too old. The site at %@ uses WordPress %@. We recommend to update to the latest version, or at least %@" = "워드프레스 버전이 너무 오래됐습니다. %1$@의 사이트는 워드프레스 %2$@을(를) 사용합니다. 최신 버전 또는 %3$@ 이상으로 업데이트하세요.";
 
 /* Label for WordPress.com followers */
 "WordPress.com" = "WordPress.com";
@@ -6772,9 +6428,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* No comment provided by engineer. */
 "Y-Axis Position" = "Y-축 위치";
 
-/* Option to select the Yahoo Mail app when logging in with magic links */
-"Yahoo Mail" = "야후 메일";
-
 /* 'This Year' label for the the year. */
 "Year" = "연도";
 
@@ -6805,9 +6458,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* No comment provided by engineer. */
 "You can also rearrange blocks by tapping a block and then tapping the up and down arrows that appear on the bottom left side of the block to move it up or down." = "블록을 누른 다음에 블록의 왼쪽 하단에 표시되는 위쪽 및 아래쪽 화살표를 눌러 위쪽 또는 아래쪽으로 이동하면서 블록을 다시 정렬할 수도 있습니다.";
-
-/* Information shown below the optional password field after new account creation. */
-"You can always log in with a link like the one you just used, but you can also set up a password if you prefer." = "방금 사용한 것과 같은 링크로 항상 로그인할 수 있지만, 원하는 경우 비밀번호를 설정할 수도 있습니다.";
 
 /* Note displayed in the Feature Introduction view. */
 "You can control Blogging Prompts and Reminders at any time in My Site > Settings > Blogging" = "언제든지 내 사이트 > 설정 > 블로깅에서 블로깅 프롬프트와 알림을 관리할 수 있습니다.";
@@ -6934,9 +6584,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Title for the Jetpack Backup Complete message. */
 "Your backup is now available for download" = "백업을 이제 다운로드할 수 있습니다.";
-
-/* Instructional text that displays the current username and display name. */
-"Your current username is %@. With few exceptions, others will only ever see your display name, %@." = "회원님의 현재 사용자명은 %1$@입니다. 몇 가지 예외가 있지만 다른 사람들은 회원님의 공개 이름 %2$@만 볼 수 있습니다.";
 
 /* Details about recently acquired domain on domain credit redemption success screen */
 "Your new domain %@ is being set up. It may take up to 30 minutes for your domain to start working." = "새 도메인(%@)을 설정하는 중입니다. 도메인이 작동하기 시작하려면 30분 정도 걸릴 수 있습니다.";
@@ -7423,43 +7070,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Badge title in site list */
 "blogList.siteBadge.staging" = "스테이징";
 
-/* Title for a button that, when tapped, shows more info about participating in Bloganuary. */
-"bloganuary.dashboard.card.button.learnMore" = "더 알아보기";
-
-/* Short description for the Bloganuary event, shown right below the title. */
-"bloganuary.dashboard.card.description" = "새해에 블로깅 습관을 들이는 커뮤니티 챌린지인 Bloganuary에서 1월 한 달 동안 블로깅 프롬프트가 제공됩니다.";
-
-/* Title for the Bloganuary dashboard card while Bloganuary is running. */
-"bloganuary.dashboard.card.runningTitle" = "Bloganuary가 여기에 있습니다!";
-
-/* Title for the Bloganuary dashboard card. */
-"bloganuary.dashboard.card.title" = "Bloganuary가 다가오고 있습니다!";
-
-/* Title of a button that calls the user to enable the Blogging Prompts feature. */
-"bloganuary.learnMore.modal.button.promptsDisabled" = "블로깅 프롬프트 켜기";
-
-/* Title of a button that will dismiss the Bloganuary modal when tapped.
-Note that the word 'go' here should have a closer meaning to 'start' rather than 'move forward'. */
-"bloganuary.learnMore.modal.button.promptsEnabled" = "지금 시작하세요!";
-
-/* The second line of the description shown in the Bloganuary modal sheet. */
-"bloganuary.learnMore.modal.description.second" = "응답을 공개하세요.";
-
-/* The third line of the description shown in the Bloganuary modal sheet. */
-"bloganuary.learnMore.modal.description.third" = "다른 블로거의 응답을 읽으며 영감을 얻고 새로운 연결 고리를 만드세요.";
-
-/* The first line of the description shown in the Bloganuary modal sheet. */
-"bloganuary.learnMore.modal.descriptions.first" = "영감을 주는 새로운 프롬프트를 매일 받아보세요.";
-
-/* An additional piece of information shown in case the user has the Blogging Prompts feature disabled. */
-"bloganuary.learnMore.modal.footer.addition" = "Bloganuary에 참여하려면 블로깅 프롬프트를 활성화해야 합니다.";
-
-/* An informative excerpt shown in a subtler tone. */
-"bloganuary.learnMore.modal.footer.text" = "Bloganuary에서 일일 블로깅 프롬프트를 사용하여 1월 한 달 동안의 게시글을 보내드립니다.";
-
-/* The headline text of the Bloganuary modal sheet. */
-"bloganuary.learnMore.modal.headline" = "한 달 동안 진행되는 글쓰기 챌린지 참여";
-
 /* Verb. Dismisses the blogging prompt notification. */
 "bloggingPrompt.pushNotification.customActionDescription.dismiss" = "무시";
 
@@ -7913,8 +7523,23 @@ Example: Reply to Pamela Nguyen */
 /* Menu action to move a post to trash */
 "customPostList.action.moveToTrash" = "휴지통으로 이동";
 
+/* Label for the page attributes submenu in the context menu */
+"customPostList.action.pageAttributes" = "페이지 속성";
+
+/* Notice shown after successfully changing a page's role (homepage, posts page, or regular page) */
+"customPostList.action.pageRoleChange.success" = "페이지 업데이트됨";
+
 /* Menu action to publish a draft or pending post */
 "customPostList.action.publish" = "발행";
+
+/* Menu action to set a page as the site homepage */
+"customPostList.action.setHomepage" = "홈페이지로 설정";
+
+/* Menu action to set a page as the posts page */
+"customPostList.action.setPostsPage" = "글 페이지로 설정";
+
+/* Menu action to remove the posts page designation from a page */
+"customPostList.action.setRegularPage" = "일반 페이지로 설정";
 
 /* Menu action to open post settings */
 "customPostList.action.settings" = "설정";
@@ -7939,6 +7564,9 @@ Example: Reply to Pamela Nguyen */
 
 /* Badge label shown on the homepage row in the custom post list for pages */
 "customPostList.badge.homepage" = "홈페이지";
+
+/* Badge label shown on the posts page row in the custom post list for pages */
+"customPostList.badge.postsPage" = "글 페이지";
 
 /* Badge shown in the post list for sticky posts */
 "customPostList.badge.sticky" = "붙박이";
@@ -8435,10 +8063,6 @@ Example: Reply to Pamela Nguyen */
 
 /* A name of the ID field (it's a technical field, has to be short, displayed below everything else) */
 "entityMetadataFooterView.id" = "ID";
-
-/* Placeholder for the site url textfield.
-   Site Address placeholder */
-"example.com" = "example.com";
 
 /* Accept button title for the alert asking for feedback */
 "experimentalFeatures.editorFeedbackAccept" = "피드백 보내기";
@@ -9881,18 +9505,6 @@ Example: Reply to Pamela Nguyen */
 /* Title shown when the application password is invalid */
 "login.appPasswordReAuth.title" = "유효하지 않은 애플리케이션 비밀번호";
 
-/* Description text explaining where to find site address during login */
-"login.siteAddressHelp.description" = "Safari에서 사이트를 방문하면 화면 위쪽의 표시줄에 사이트 주소가 표시됩니다.";
-
-/* Button title to get additional help finding site address during login */
-"login.siteAddressHelp.moreHelpButton" = "추가 도움말이 필요한가요?";
-
-/* Title of alert helping users understand their site address during login */
-"login.siteAddressHelp.title" = "내 사이트 주소는 무엇인가요?";
-
-/* Instruction label in the two-factor authorization screen WordPress.com login authentication. Note: it has to mention that it's for a WordPress.com account. */
-"login.twoFactorInstructions.details" = "인증 앱에서 워드프레스닷컴 계정의 인증 코드를 입력해 주세요.";
-
 /* Indicating that referrer was marked as spam */
 "marked as spam" = "스팸으로 표시됨";
 
@@ -9931,6 +9543,18 @@ Example: Reply to Pamela Nguyen */
 
 /* Message of an alert informing users that the video they are trying to select is not allowed. */
 "mediaExporter.videoLimitExceededError" = "5분을 초과하는 비디오를 업로드하려면 유료 요금제가 필요합니다.";
+
+/* Accessibility label for a cell whose underlying media couldn't be loaded */
+"mediaLibrary.accessibility.error" = "미디어 로드 실패";
+
+/* Accessibility label for an image cell. %1$@ is the creation date. */
+"mediaLibrary.accessibility.image" = "이미지, %1$@";
+
+/* Accessibility label for a cell that is still loading its data */
+"mediaLibrary.accessibility.loading" = "미디어 로드 중";
+
+/* Accessibility label for a video cell. %1$@ is the creation date. */
+"mediaLibrary.accessibility.video" = "비디오, %1$@";
 
 /* Accessibility hint for add button to add items to the user's media library */
 "mediaLibrary.addButtonAccessibilityHint" = "새 미디어 추가";
@@ -9974,6 +9598,30 @@ Example: Reply to Pamela Nguyen */
 /* Text displayed in HUD after successfully deleting a media item */
 "mediaLibrary.deletionSuccessMessage" = "삭제되었습니다.";
 
+/* Message shown when the Media Library has items but none match the active filter */
+"mediaLibrary.empty.filtered" = "이 필터의 미디어 없음";
+
+/* Message shown when the Media Library has no items */
+"mediaLibrary.empty.message" = "아직 미디어 없음";
+
+/* Button label to retry loading after an error */
+"mediaLibrary.error.retry" = "다시 시도";
+
+/* Title of the no-filter option in the Media Library filter menu */
+"mediaLibrary.filter.all" = "전체";
+
+/* Title of the audio filter option in the Media Library filter menu */
+"mediaLibrary.filter.audio" = "오디오";
+
+/* Title of the documents filter option in the Media Library filter menu */
+"mediaLibrary.filter.documents" = "문서";
+
+/* Title of the images filter option in the Media Library filter menu */
+"mediaLibrary.filter.images" = "이미지";
+
+/* Title of the videos filter option in the Media Library filter menu */
+"mediaLibrary.filter.videos" = "비디오";
+
 /* The name of the media filter */
 "mediaLibrary.filterAudio" = "오디오";
 
@@ -9989,6 +9637,12 @@ Example: Reply to Pamela Nguyen */
 /* The name of the media filter */
 "mediaLibrary.filterVideos" = "비디오";
 
+/* Menu option to switch the grid into aspect-ratio mode */
+"mediaLibrary.gridMode.aspectRatio" = "화면 비율 그리드";
+
+/* Menu option to switch the grid into square (default) mode */
+"mediaLibrary.gridMode.square" = "정사각형 그리드";
+
 /* User action to delete un-uploaded media. */
 "mediaLibrary.retryOptionsAlert.delete" = "삭제";
 
@@ -9997,6 +9651,15 @@ Example: Reply to Pamela Nguyen */
 
 /* User action to retry media upload. */
 "mediaLibrary.retryOptionsAlert.retry" = "업로드 재시도";
+
+/* Placeholder shown for media items with no title */
+"mediaLibrary.row.untitled" = "(제목 없음)";
+
+/* Title for the Media Library V2 screen */
+"mediaLibrary.screen.title" = "미디어";
+
+/* Prompt for the Media Library search field */
+"mediaLibrary.search.prompt" = "미디어 검색";
 
 /* Message displayed when no results are returned from a media library search. Should match Calypso. */
 "mediaLibrary.searchResultsEmptyTitle" = "검색과 일치하는 미디어 없음";
@@ -10081,9 +9744,6 @@ Example: Reply to Pamela Nguyen */
 
 /* Button that opens the Settings app */
 "mediaPicker.openSettings" = "설정 열기";
-
-/* The name of the action in the context menu for selecting photos from Tenor (free GIF library) */
-"mediaPicker.pickFromFreeGIFLibrary" = "무료 GIF 라이브러리";
 
 /* The name of the action in the context menu (user's WordPress Media Library */
 "mediaPicker.pickFromMediaLibrary" = "미디어에서 선택";
@@ -10561,9 +10221,6 @@ Example: Reply to Pamela Nguyen */
 
 /* Navigation title displayed on the navigation bar */
 "parentPageSettings.title" = "상위 페이지";
-
-/* No comment provided by engineer. */
-"password" = "비밀번호";
 
 /* Section footer displayed below the list of toggles */
 "personalizeHome.cardsSectionFooter" = "사이트에서 발생하는 상황에 따라 다른 콘텐츠가 카드에 표시될 수 있습니다. 더 많은 카드와 제어 기능을 연구하고 있습니다.";
@@ -11288,6 +10945,30 @@ Example: Reply to Pamela Nguyen */
 /* Message shown when no taxonomy terms are selected. %1$@ is the taxonomy name (e.g., 'tags', 'categories'). */
 "postTags.selectionEmpty" = "%1$@이 선택되지 않았습니다.";
 
+/* Localized post type: `Page` */
+"postType.page" = "페이지";
+
+/* Localized post type: `Post` */
+"postType.post" = "글";
+
+/* Details for a 'Private' privacy setting */
+"postVisibility.private.details" = "사이트 관리자와 편집자만 볼 수 있습니다";
+
+/* Title for a 'Private' privacy setting */
+"postVisibility.private.title" = "비공개";
+
+/* Details for a 'Password Protected' privacy setting */
+"postVisibility.protected.details" = "모든 사람이 볼 수 있지만 비밀번호가 필요합니다.";
+
+/* Title for a 'Password Protected' privacy setting */
+"postVisibility.protected.title" = "비밀번호 보호";
+
+/* Details for a 'Public' (default) privacy setting */
+"postVisibility.public.details" = "모든 사람에게 공개";
+
+/* Title for a 'Public' (default) privacy setting */
+"postVisibility.public.title" = "공개";
+
 /* Navigation bar title for the Post Visibility picker */
 "postVisibilityPicker.navigationTitle" = "가시성";
 
@@ -11776,6 +11457,12 @@ Example: given a notice format "Following %@" and empty site name, this will be 
 /* Accessibility hint for the site header */
 "reader.post.buttonSite.accessibilityHint" = "사이트 상세 정보가 열립니다.";
 
+/* Button in the reader post header to subscribe to the site */
+"reader.post.header.subscribe" = "구독";
+
+/* Button in the reader post header to view the original post in a browser */
+"reader.post.header.viewOriginal" = "원본 보기";
+
 /* Button accessibility label */
 "reader.post.moreMenu.accessibilityLabel" = "추가 작업";
 
@@ -11925,6 +11612,51 @@ Example: given a notice format "Following %@" and empty site name, this will be 
 
 /* Notification title for when saved post is removed */
 "reader.savedPostRemovedNotificationTitle" = "저장한 글 제거됨";
+
+/* Error when the imported file doesn't match the expected JSON format */
+"reader.savedPosts.import.invalidFormat" = "선택한 파일은 유효한 저장된 글 내보내기 파일이 아닙니다.";
+
+/* Accessibility label for the button that opens saved Reader posts import and export settings */
+"reader.savedPosts.settings.button.accessibilityLabel" = "저장된 글 설정";
+
+/* Title of error alert in saved posts settings */
+"reader.savedPosts.settings.errorTitle" = "오류";
+
+/* Button to export saved Reader posts as a JSON file */
+"reader.savedPosts.settings.export" = "저장된 글 내보내기";
+
+/* Message shown when user tries to export but has no saved posts */
+"reader.savedPosts.settings.exportEmpty" = "내보낼 저장된 글이 없습니다.";
+
+/* Error message when export of saved Reader posts fails */
+"reader.savedPosts.settings.exportError" = "저장된 글을 내보낼 수 없습니다. 다시 시도해 주세요.";
+
+/* Status text shown while the saved Reader posts export file is being prepared */
+"reader.savedPosts.settings.exportingStatus" = "내보내기 준비 중...";
+
+/* Footer text explaining the saved posts export and import feature */
+"reader.savedPosts.settings.footer" = "저장된 글을 백업용 JSON 파일로 내보내거나 이전에 내보낸 파일을 가져오세요. 중복된 글은 자동으로 건너뜁니다.";
+
+/* Button to import saved Reader posts from a JSON file */
+"reader.savedPosts.settings.import" = "저장된 글 가져오기";
+
+/* Title of alert shown after importing saved posts */
+"reader.savedPosts.settings.importCompleteTitle" = "가져오기 완료";
+
+/* Error message when import of saved Reader posts fails */
+"reader.savedPosts.settings.importError" = "선택한 파일을 가져올 수 없습니다. 다시 시도해 주세요.";
+
+/* Progress text during import. %1$d is current post number, %2$d is total. */
+"reader.savedPosts.settings.importProgress" = "글 %2$d개 중 %1$d개를 가져오는 중...";
+
+/* Result message after importing saved posts. %1$d is imported count, %2$d is skipped count, %3$d is failed count. */
+"reader.savedPosts.settings.importResult" = "%1$d 가져옴, %2$d 건너뜀, %3$d 실패함.";
+
+/* Navigates to saved Reader posts export and import screen */
+"reader.savedPosts.settings.row" = "저장된 글";
+
+/* Title for the saved Reader posts settings screen */
+"reader.savedPosts.settings.title" = "저장된 글";
 
 /* Reader Search */
 "reader.search.clearHistory" = "기록 지우기";
@@ -13224,9 +12956,6 @@ Example: given a notice format "Following %@" and empty site name, this will be 
 /* Title for the tags screen */
 "tags.title" = "태그";
 
-/* Title for placeholder in Tenor picker */
-"tenor.welcomeMessage" = "미디어 라이브러리에 추가할 GIF를 검색하여 찾으세요!";
-
 /* Header of delete screen section listing things that will be deleted. */
 "these items will be deleted:" = "다음 항목이 삭제됩니다.";
 
@@ -13381,9 +13110,6 @@ Example: given a notice format "Following %@" and empty site name, this will be 
 /* Second part of delete screen title stating [the site] will be unavailable in the future. */
 "will be unavailable in the future." = "을(를) 이후에 사용할 수 없게 됩니다.";
 
-/* Title for the link for site creation guide. */
-"wordPressAuthenticatorDisplayStrings.default.siteCreationGuideButtonTitle" = "새로운 사이트를 제작하시나요?";
-
 /* This is a comma separated list of keywords used for spotlight indexing of the 'Help & Support' screen within the 'Me' tab */
 "wordpress, help, support, faq, questions, debug, logs, help center, contact" = "워드프레스, 도움말, 지원, 자주 묻는 질문, 질문, 디버깅, 로그, 도움말 센터, 연락처";
 
@@ -13405,7 +13131,7 @@ Example: given a notice format "Following %@" and empty site name, this will be 
 /* This is a comma separated list of keywords used for spotlight indexing of the 'My Sites' tab. */
 "wordpress, sites, site, blogs, blog" = "워드프레스, 사이트, 사이트, 블로그, 블로그";
 
-/* Error message that describes an unknown error had occured */
+/* Error message that describes an unknown error had occurred */
 "wordpress-api.error.unknown" = "문제가 발생했습니다. 나중에 다시 시도하세요.";
 
 /* Jetpack Plugin Modal on WordPress primary button title */
@@ -13482,9 +13208,6 @@ Example: given a notice format "Following %@" and empty site name, this will be 
 
 /* Managing Zendesk attachments */
 "zendeskAttachmentsSection.unsupportedAttachmentErrorMessage" = "지원되지 않는 첨부 파일";
-
-/* Label for button to log in using Google. The {G} will be replaced with the Google logo. */
-"{G} Log in with Google." = "{G} Google로 로그인합니다.";
 
 /* Item 4 of delete screen section listing things that will be deleted. */
 "• Domains" = "• 도메인";
