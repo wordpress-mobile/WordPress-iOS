@@ -1,18 +1,3 @@
-Wenn du eine selbst gehostete Website hast, meldest du dich jetzt mit einem Anwendungspasswort bei der App an. Wenn du noch keines hast, erstellen wir automatisch eines für dich, damit es bereit ist, wenn du es brauchst.
+Wir haben die kostenlose GIF-Bibliothek als Medienquelle entfernt, da der Tenor-Dienst, auf dem sie ausgeführt wird, am 30. Juni beendet wird. Wir sind auch traurig darüber.
 
-Wir haben intelligentes Zuschneiden für Beitragsbilder zum Reader-Feed hinzugefügt. Auf diese Weise werden bei Bildern von Menschen nicht die Köpfe abgeschnitten. Das ist doch super.
-
-Es gibt jetzt ein Bestätigungsdialogfeld, wenn du eine verweisende Traffic-Quelle als Spam markierst. Somit gehören versehentliche Markierungen der Vergangenheit an.
-
-Als Teil dieses Updates haben wir auch mehrere Fehler entfernt.
-
-- Die Zeitzonen-Beschriftung auf dem Statistikbildschirm zeigt während der Sommerzeit keine Standardzeit mehr an. (Gut gesehen, @btraviswright!)
-- Der Bildschirm für Artikel zeigt jetzt Leserkommentare an, wenn sie über den Inline-Abschnitt veröffentlicht werden.
-- Der Abonnieren-Button funktioniert in Druckfrisch-Beiträgen ordnungsgemäß, sodass du einen Feed innerhalb eines Beitrags abonnieren kannst. Schnell, einfach und herrlich frisch.
-- Fußnoten-Links im Reader funktionieren jetzt wie sie sollen und springen zum richtigen Ort, wenn du sie antippst.
-- In den Reader-Kommentaren verschwindet der leere Zustand, nachdem du einen Kommentar veröffentlicht hast. Zwischengespeicherte Kommentare verschwinden ebenfalls, nachdem sie gelöscht wurden, auch wenn du dies durch Wischen tust. Lebt wohl.
-- Wir haben verschiedene Design- und Sichtbarkeitsprobleme behoben, wie Button-Stile, Kommentar-Trennzeichen im Dunkelmodus und Steuerelemente für die automatische Wiedergabe von Videos.
-- Im Reader haben wir ein paar Probleme mit den Benachrichtigungseinstellungen behoben. Sie sind jetzt ausgeblendet, wenn du kein Abonnement hast, und sie werden richtig angezeigt, wenn du ein Abonnement abschließt.
-- Es wurde ein Fehler behoben, durch den die Größe der Footer-Ansicht in der Menü-Bearbeitung nicht geändert wurde. Aus diesem Grund sind Aktions-Buttons jetzt auch in nicht-englischen Sprachen lesbar. Muy bueno.
-- Wir haben ein Problem mit falschen Avataren in Benachrichtigungen behoben. Wenn du den Download deines Bildes abbrichst, wird es nicht mehr in der App angezeigt.
-- Wir haben den nicht funktionierenden X-Link auf dem „Über“-Bildschirm entfernt. (Ein großer Dank an @zynp-KC für die Info!)
+Wenn du eine selbst gehostete Website hast, meldest du dich jetzt mit einem Anwendungspasswort bei der App an. Wenn du noch keins hast, erstellen wir automatisch eins für dich, damit es bereit ist, wenn du es brauchst.
