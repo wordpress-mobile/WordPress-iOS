@@ -185,7 +185,7 @@
 "%i menus available" = "%i dostępne menu";
 
 /* Alert displayed to the user when multiple media items have failed to upload. */
-"%ld files not uploaded" = "Nie przesłano %l plików";
+"%ld files not uploaded" = "Nie przesłano %ld plików";
 
 /* System notification displayed to the user when multiple media items have uploaded successfully. */
 "%ld files successfully uploaded" = "Pomyślnie przesłano %ld plików";
