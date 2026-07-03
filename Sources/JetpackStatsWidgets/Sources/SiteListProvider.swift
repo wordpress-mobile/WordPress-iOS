@@ -17,7 +17,8 @@ struct SiteListProvider<T: HomeWidgetData>: IntentTimelineProvider {
     let minElapsedTimeToRefresh = 1
 
     private var defaultSiteID: Int? {
-        UserDefaults(suiteName: BuildSettings.current.appGroupName)?.object(forKey: WidgetStatsConfiguration.userDefaultsSiteIdKey) as? Int
+        UserDefaults(suiteName: BuildSettings.current.appGroupName)?
+            .object(forKey: WidgetStatsConfiguration.userDefaultsSiteIdKey) as? Int
     }
 
     private let widgetDataLoader = WidgetDataReader<T>()
@@ -26,7 +27,11 @@ struct SiteListProvider<T: HomeWidgetData>: IntentTimelineProvider {
         StatsWidgetEntry.siteSelected(placeholderContent, context)
     }
 
-    func getSnapshot(for configuration: SelectSiteIntent, in context: Context, completion: @escaping (StatsWidgetEntry) -> Void) {
+    func getSnapshot(
+        for configuration: SelectSiteIntent,
+        in context: Context,
+        completion: @escaping (StatsWidgetEntry) -> Void
+    ) {
         switch widgetDataLoader.widgetData(for: configuration, defaultSiteID: defaultSiteID) {
         case .success(let widgetData):
             completion(.siteSelected(widgetData, context))
@@ -35,7 +40,11 @@ struct SiteListProvider<T: HomeWidgetData>: IntentTimelineProvider {
         }
     }
 
-    func getTimeline(for configuration: SelectSiteIntent, in context: Context, completion: @escaping (Timeline<StatsWidgetEntry>) -> Void) {
+    func getTimeline(
+        for configuration: SelectSiteIntent,
+        in context: Context,
+        completion: @escaping (Timeline<StatsWidgetEntry>) -> Void
+    ) {
         switch widgetDataLoader.widgetData(
             for: configuration,
             defaultSiteID: defaultSiteID
@@ -43,7 +52,9 @@ struct SiteListProvider<T: HomeWidgetData>: IntentTimelineProvider {
         case .success(let widgetData):
             let date = Date()
             let nextRefreshDate = Calendar.current.date(byAdding: .minute, value: refreshInterval, to: date) ?? date
-            let elapsedTime = abs(Calendar.current.dateComponents([.minute], from: widgetData.date, to: date).minute ?? 0)
+            let elapsedTime = abs(
+                Calendar.current.dateComponents([.minute], from: widgetData.date, to: date).minute ?? 0
+            )
 
             let privateCompletion = { (timelineEntry: StatsWidgetEntry) in
                 let timeline = Timeline(entries: [timelineEntry], policy: .after(nextRefreshDate))
@@ -58,7 +69,9 @@ struct SiteListProvider<T: HomeWidgetData>: IntentTimelineProvider {
             service.fetchStats(for: widgetData) { result in
                 switch result {
                 case .failure(let error):
-                    DDLogError("StatsWidgets: failed to fetch remote stats. Returned error: \(error.localizedDescription)")
+                    DDLogError(
+                        "StatsWidgets: failed to fetch remote stats. Returned error: \(error.localizedDescription)"
+                    )
                     privateCompletion(.siteSelected(widgetData, context))
                 case .success(let newWidgetData):
                     privateCompletion(.siteSelected(newWidgetData, context))
