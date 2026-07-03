@@ -5,14 +5,20 @@ on:
     types: [created]
 
 jobs:
-  review-with-tracking:
+  check-pr-origin:
     if: |
-      github.event.issue.pull_request && contains(github.event.comment.body, '@claude')
+      github.event.issue.pull_request &&
+      contains(github.event.comment.body, '@claude') &&
+      (
+        github.event.comment.author_association == 'OWNER' ||
+        github.event.comment.author_association == 'MEMBER' ||
+        github.event.comment.author_association == 'COLLABORATOR'
+      )
     runs-on: ubuntu-latest
     permissions:
-      contents: read
-      pull-requests: write
-      id-token: write # Required by claude-code-action for GitHub App token exchange.
+      pull-requests: read
+    outputs:
+      is_internal: ${{ steps.pr-origin.outputs.is_internal }}
     steps:
       # issue_comment payloads identify PR comments, but do not include the PR
       # head repo. Query the PR before allowing Claude to run on fork PRs.
@@ -37,15 +43,23 @@ jobs:
             echo "Skipping Claude for external PR from ${head_repo:-unknown}."
           fi
 
+
+  review-with-tracking:
+    needs: check-pr-origin
+    if: needs.check-pr-origin.outputs.is_internal == 'true'
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      pull-requests: write
+      id-token: write # Required by claude-code-action for GitHub App token exchange.
+    steps:
       - name: Checkout repository
-        if: steps.pr-origin.outputs.is_internal == 'true'
         uses: actions/checkout@93cb6efe18208431cddfb8368fd83d5badbf9bfd # v5
         with:
           fetch-depth: 1
           persist-credentials: false
 
       - name: PR Review with Progress Tracking
-        if: steps.pr-origin.outputs.is_internal == 'true'
         uses: anthropics/claude-code-action@6a838f847a10bc4b88da6ae796ff68e74cf9f4cc # v1.0.158
         with:
           anthropic_api_key: ${{ secrets.ANTHROPIC_API_KEY }}
