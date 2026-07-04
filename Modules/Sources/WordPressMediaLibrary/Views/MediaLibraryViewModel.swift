@@ -109,9 +109,9 @@ final class MediaLibraryViewModel: ObservableObject {
     /// Builds the collection from the wordpress-rs service: the library when
     /// `search` is nil, a search collection otherwise. `client` is retained so
     /// `observe()` can subscribe to the local cache's update stream. The
-    /// `uploader` and detail wiring are passed only for the library instance;
-    /// search instances leave them nil and never surface the upload banner,
-    /// the queue, or the cell-tap detail push.
+    /// `uploader` is wired only for the library instance; search instances
+    /// leave it nil and never surface the upload banner or queue. The detail
+    /// wiring is passed for both, so search results can push detail too.
     init(
         service: WpService,
         client: WordPressClient,
