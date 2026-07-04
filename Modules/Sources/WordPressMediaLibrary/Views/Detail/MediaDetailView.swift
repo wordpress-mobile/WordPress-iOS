@@ -64,6 +64,10 @@ struct MediaDetailView: View {
             if shouldPop { dismiss() }
         }
         .task { viewModel.onAppear() }
+        // The in-flight guards keep anything from covering this screen while
+        // a share prepares, so disappearance means a real pop (or a tab
+        // switch, which is an acceptable reason to cancel too).
+        .onDisappear { viewModel.cancelShare() }
     }
 
     @ViewBuilder private var editableFieldsSection: some View {
@@ -155,12 +159,23 @@ struct MediaDetailView: View {
             }
         }
         ToolbarItem(placement: .topBarTrailing) {
-            Button {
-                Task { await viewModel.share() }
-            } label: {
-                Image(systemName: "square.and.arrow.up").accessibilityLabel(Strings.commonShare)
+            if viewModel.isSharing {
+                // The spinner replaces the share button while the download
+                // prepares; tapping it cancels the share.
+                Button {
+                    viewModel.cancelShare()
+                } label: {
+                    ProgressView()
+                }
+                .accessibilityLabel(Strings.detailShareCancelAccessibility)
+            } else {
+                Button {
+                    viewModel.share()
+                } label: {
+                    Image(systemName: "square.and.arrow.up").accessibilityLabel(Strings.commonShare)
+                }
+                .disabled(!viewModel.isShareEnabled)
             }
-            .disabled(!viewModel.isShareEnabled)
         }
     }
 
