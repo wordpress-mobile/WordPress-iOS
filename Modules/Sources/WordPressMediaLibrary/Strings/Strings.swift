@@ -385,6 +385,11 @@ enum Strings {
         value: "Source URL is invalid.",
         comment: "Error shown when share fails due to an invalid source URL."
     )
+    static let detailShareCancelAccessibility = NSLocalizedString(
+        "mediaLibrary.detail.share.cancelAccessibility",
+        value: "Cancel share",
+        comment: "Accessibility label for the in-progress share spinner; tapping it cancels the share download."
+    )
 
     static let detailPreviewImageAccessibility = NSLocalizedString(
         "mediaLibrary.detail.preview.imageAccessibility",
