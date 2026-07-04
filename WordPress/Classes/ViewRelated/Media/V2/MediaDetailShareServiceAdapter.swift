@@ -45,19 +45,55 @@ final class MediaDetailShareServiceAdapter: MediaDetailShareService {
     }
 
     /// Filename derivation (design § Filename derivation):
-    /// 1. Start with `suggestedFilename ?? sourceUrl.lastPathComponent`
-    /// 2. Sanitize: trim whitespace, replace `/` with `-`, truncate to 200 chars.
-    /// 3. If no extension, derive from `mimeType` via
-    ///    `UTType(mimeType:).preferredFilenameExtension`.
+    /// 1. Start with `suggestedFilename ?? sourceUrl.lastPathComponent`,
+    ///    trimmed, with `/` replaced by `-`; empty or dot-only names fall
+    ///    back to "media".
+    /// 2. Validate any apparent extension against `mimeType`. A dot segment
+    ///    in a human title ("Logo v2.0") is not an extension; only a known
+    ///    UTType that agrees with the MIME type counts.
+    /// 3. Without a valid extension, derive one from `mimeType` via
+    ///    `UTType(mimeType:).preferredFilenameExtension`, falling back to
+    ///    the source URL's extension.
+    /// 4. Truncate the stem to 200 characters, keeping the extension.
     static func resolveFilename(for item: DownloadableMediaItem) -> String {
         var name = item.suggestedFilename ?? item.sourceUrl.lastPathComponent
         name = name.trimmingCharacters(in: .whitespacesAndNewlines)
         name = name.replacingOccurrences(of: "/", with: "-")
-        if name.count > 200 { name = String(name.prefix(200)) }
-        let ext = (name as NSString).pathExtension
-        if ext.isEmpty, let mime = item.mimeType, let resolved = UTType(mimeType: mime)?.preferredFilenameExtension {
-            name = "\(name).\(resolved)"
+        if name.isEmpty || name == "." || name == ".." {
+            name = "media"
         }
-        return name
+
+        var stem = (name as NSString).deletingPathExtension
+        var ext = (name as NSString).pathExtension
+        if !isValidFilenameExtension(ext, forMimeType: item.mimeType) {
+            stem = name
+            ext = ""
+        }
+        if ext.isEmpty {
+            if let mime = item.mimeType, let resolved = UTType(mimeType: mime)?.preferredFilenameExtension {
+                ext = resolved
+            } else {
+                ext = item.sourceUrl.pathExtension
+            }
+        }
+        if stem.count > 200 {
+            stem = String(stem.prefix(200))
+        }
+        return ext.isEmpty ? stem : "\(stem).\(ext)"
+    }
+
+    /// An extension is usable only when UTType recognizes it (unknown
+    /// extensions produce dynamic `dyn.*` types, e.g. the "0" in
+    /// "Logo v2.0") and it doesn't contradict a known MIME type. The
+    /// reverse conformance check keeps real extensions under generic
+    /// server MIME types like `application/octet-stream`.
+    private static func isValidFilenameExtension(_ ext: String, forMimeType mimeType: String?) -> Bool {
+        guard !ext.isEmpty, let extType = UTType(filenameExtension: ext.lowercased()), !extType.isDynamic else {
+            return false
+        }
+        guard let mimeType, let mimeUTType = UTType(mimeType: mimeType), !mimeUTType.isDynamic else {
+            return true
+        }
+        return extType.conforms(to: mimeUTType) || mimeUTType.conforms(to: extType)
     }
 }
