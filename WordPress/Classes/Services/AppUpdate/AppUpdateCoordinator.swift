@@ -13,6 +13,8 @@ final class AppUpdateCoordinator {
     private let presenter: AppUpdatePresenterProtocol
     private let remoteConfigStore: RemoteConfigStore
     private let store: UserPersistentRepository
+    private let checkThrottle: AppUpdateCheckThrottle
+    private let currentDateProvider: CurrentDateProvider
     private let isJetpack: Bool
     private let isLoggedIn: Bool
     private let isInAppUpdatesEnabled: Bool
@@ -25,6 +27,8 @@ final class AppUpdateCoordinator {
         presenter: AppUpdatePresenterProtocol = AppUpdatePresenter(),
         remoteConfigStore: RemoteConfigStore = RemoteConfigStore(),
         store: UserPersistentRepository = UserDefaults.standard,
+        checkThrottle: AppUpdateCheckThrottle = .shared,
+        currentDateProvider: CurrentDateProvider = DefaultCurrentDateProvider(),
         isJetpack: Bool = AppConfiguration.isJetpack,
         isLoggedIn: Bool = AccountHelper.isLoggedIn,
         isInAppUpdatesEnabled: Bool = RemoteFeatureFlag.inAppUpdates.enabled(),
@@ -36,6 +40,8 @@ final class AppUpdateCoordinator {
         self.presenter = presenter
         self.remoteConfigStore = remoteConfigStore
         self.store = store
+        self.checkThrottle = checkThrottle
+        self.currentDateProvider = currentDateProvider
         self.isJetpack = isJetpack
         self.isLoggedIn = isLoggedIn
         self.isInAppUpdatesEnabled = isInAppUpdatesEnabled
@@ -50,6 +56,9 @@ final class AppUpdateCoordinator {
         guard isLoggedIn else {
             return
         }
+        guard checkThrottle.shouldCheck(now: currentDateProvider.date()) else {
+            return
+        }
         guard let updateType = await appUpdateType else {
             return
         }
@@ -59,7 +68,7 @@ final class AppUpdateCoordinator {
             presenter.showBlockingUpdate(using: appStoreInfo)
         } else {
             presenter.showNotice(using: appStoreInfo)
-            lastSeenFlexibleUpdateDate = Date.now
+            lastSeenFlexibleUpdateDate = currentDateProvider.date()
         }
     }
 
@@ -108,7 +117,7 @@ final class AppUpdateCoordinator {
     private func fetchAppStoreInfo() async -> AppStoreLookupResponse.AppStoreInfo? {
         do {
             let response = try await service.lookup()
-            lastFetchedAppStoreInfoDate = Date.now
+            lastFetchedAppStoreInfoDate = currentDateProvider.date()
             return response.results.first { $0.trackId == Int(service.appID) }
         } catch {
             DDLogError("Error fetching app store info: \(error)")
@@ -133,7 +142,7 @@ extension AppUpdateCoordinator {
         guard let lastFetchedAppStoreInfoDate else {
             return true
         }
-        guard let daysElapsed = Calendar.current.dateComponents([.day], from: lastFetchedAppStoreInfoDate, to: Date.now).day else {
+        guard let daysElapsed = Calendar.current.dateComponents([.day], from: lastFetchedAppStoreInfoDate, to: currentDateProvider.date()).day else {
             return false
         }
         return daysElapsed >= Constants.lastFetchedAppStoreInfoThresholdInDays
@@ -160,10 +169,35 @@ extension AppUpdateCoordinator {
         guard let lastSeenFlexibleUpdateDate else {
             return true
         }
-        guard let daysElapsed = Calendar.current.dateComponents([.day], from: lastSeenFlexibleUpdateDate, to: Date.now).day else {
+        guard let daysElapsed = Calendar.current.dateComponents([.day], from: lastSeenFlexibleUpdateDate, to: currentDateProvider.date()).day else {
             return false
         }
         return daysElapsed >= flexibleIntervalInDays
+    }
+}
+
+final class AppUpdateCheckThrottle: @unchecked Sendable {
+    static let shared = AppUpdateCheckThrottle()
+
+    private let lock = NSLock()
+    private let minimumInterval: TimeInterval
+    private var lastCheckDate: Date?
+
+    init(minimumInterval: TimeInterval = 5 * 60) {
+        self.minimumInterval = minimumInterval
+    }
+
+    func shouldCheck(now: Date) -> Bool {
+        lock.lock()
+        defer {
+            lock.unlock()
+        }
+
+        if let lastCheckDate, now.timeIntervalSince(lastCheckDate) < minimumInterval {
+            return false
+        }
+        lastCheckDate = now
+        return true
     }
 }
 
