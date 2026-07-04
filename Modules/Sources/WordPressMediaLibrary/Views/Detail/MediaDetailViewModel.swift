@@ -29,6 +29,7 @@ final class MediaDetailViewModel: ObservableObject {
 
     private var didFireOpen = false
     private var inFlightSaveTask: [MediaEditableField: Task<Void, Never>] = [:]
+    private var shareTask: Task<Void, Never>?
 
     struct SharePayload: Identifiable {
         let id = UUID()
@@ -176,8 +177,8 @@ final class MediaDetailViewModel: ObservableObject {
         !isAnyOperationInFlight && !display.sourceUrl.isEmpty
     }
 
-    func share() async {
-        guard isShareEnabled else { return }
+    func share() {
+        guard isShareEnabled, shareTask == nil else { return }
         isSharing = true
         tracker.track(.siteMediaShareTapped(count: 1))
         guard let item = makeShareItem() else {
@@ -185,10 +186,31 @@ final class MediaDetailViewModel: ObservableObject {
             shareErrorMessage = Strings.detailShareErrorInvalidURL
             return
         }
+        shareTask = Task { [weak self] in
+            guard let self else { return }
+            await self.performShare(item: item)
+            self.shareTask = nil
+        }
+    }
+
+    /// Cancels the in-flight share download, if any. Wired to the progress
+    /// spinner in the toolbar and to the screen's disappearance.
+    func cancelShare() {
+        shareTask?.cancel()
+    }
+
+    private func performShare(item: DownloadableMediaItem) async {
         do {
             let urls = try await shareService.downloadForSharing(items: [item])
+            try Task.checkCancellation()
             isSharing = false
             sharePayload = SharePayload(urls: urls)
+        } catch is CancellationError {
+            // User-initiated cancellation is not an error.
+            isSharing = false
+        } catch let error as URLError where error.code == .cancelled {
+            // URLSession surfaces task cancellation as URLError(.cancelled).
+            isSharing = false
         } catch {
             Loggers.mediaLibrary.error("Media share failed for id \(display.id): \(error)")
             isSharing = false
