@@ -26,7 +26,7 @@ struct MediaUploaderRegistryTests {
     @Test("Returns the same uploader for the same blog")
     func sameBlogReturnsSameUploader() throws {
         let blog = makeBlog(siteId: 1)
-        let registry = MediaUploaderRegistry()
+        let registry = MediaUploaderRegistry(mainContext: mainContext)
         let first = try registry.uploader(for: blog)
         let second = try registry.uploader(for: blog)
         #expect(first === second)
@@ -36,7 +36,7 @@ struct MediaUploaderRegistryTests {
     func tearDownIsTargeted() async throws {
         let blogA = makeBlog(siteId: 1)
         let blogB = makeBlog(siteId: 2)
-        let registry = MediaUploaderRegistry()
+        let registry = MediaUploaderRegistry(mainContext: mainContext)
         _ = try registry.uploader(for: blogA)
         let bUploader = try registry.uploader(for: blogB)
         await registry.tearDown(blogID: TaggedManagedObjectID(blogA))
@@ -48,11 +48,28 @@ struct MediaUploaderRegistryTests {
     func tearDownAllClears() async throws {
         let blogA = makeBlog(siteId: 1)
         let blogB = makeBlog(siteId: 2)
-        let registry = MediaUploaderRegistry()
+        let registry = MediaUploaderRegistry(mainContext: mainContext)
         let aFirst = try registry.uploader(for: blogA)
         _ = try registry.uploader(for: blogB)
         await registry.tearDownAll()
         let aSecond = try registry.uploader(for: blogA)
         #expect(aFirst !== aSecond)
+    }
+
+    @Test("Deleting a blog tears down its uploader")
+    func blogDeletionTearsDownUploader() throws {
+        let blogA = makeBlog(siteId: 1)
+        let blogB = makeBlog(siteId: 2)
+        let blogAID = TaggedManagedObjectID(blogA)
+        let blogBID = TaggedManagedObjectID(blogB)
+        let registry = MediaUploaderRegistry(mainContext: mainContext)
+        _ = try registry.uploader(for: blogA)
+        _ = try registry.uploader(for: blogB)
+
+        mainContext.delete(blogA)
+        contextManager.saveContextAndWait(mainContext)
+
+        #expect(!registry.hasUploader(blogID: blogAID))
+        #expect(registry.hasUploader(blogID: blogBID))
     }
 }
