@@ -64,7 +64,11 @@ struct MediaLibraryView: View {
                     client: client,
                     tracker: tracker,
                     searchText: $searchText,
-                    isAspectRatioMode: isAspectRatioMode
+                    isAspectRatioMode: isAspectRatioMode,
+                    urlOpener: viewModel.urlOpener,
+                    shareService: viewModel.shareService,
+                    navigator: viewModel.detailNavigator,
+                    capabilities: viewModel.detailCapabilities
                 )
             }
         }
