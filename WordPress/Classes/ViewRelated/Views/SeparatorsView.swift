@@ -81,7 +81,7 @@ open class SeparatorsView: UIView {
     open override func draw(_ rect: CGRect) {
         super.draw(rect)
 
-        let scale = UIScreen.main.scale
+        let scale = traitCollection.displayScale
         let ctx = UIGraphicsGetCurrentContext()
         ctx!.clear(rect)
         ctx!.setShouldAntialias(false)

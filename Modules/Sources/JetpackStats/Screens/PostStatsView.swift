@@ -578,7 +578,7 @@ private struct PostLikesStripView: View {
 
             // Show additional count if there are more users
             if likes.totalCount > maxVisibleAvatars {
-                Text("+\((likes.totalCount - maxVisibleAvatars).formatted(.number.notation(.compactName)))")
+                Text(verbatim: "+\((likes.totalCount - maxVisibleAvatars).formatted(.number.notation(.compactName)))")
                     .font(.caption2.weight(.medium))
                     .foregroundColor(.primary.opacity(0.8))
                     .padding(.horizontal, 4)

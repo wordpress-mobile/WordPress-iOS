@@ -50,7 +50,7 @@ private final class ReaderGhostCompactCell: ReaderStreamBaseCell {
         imageView.heightAnchor.constraint(equalTo: imageView.widthAnchor, multiplier: ReaderPostCell.coverAspectRatio).isActive = true
 
         let titleLabel = makeLeafView(height: 18, width: .random(in: 140...200))
-        let stackView = UIStackView(axis: .vertical, alignment: .leading, spacing: 12, insets: UIEdgeInsets(.vertical, 16), [
+        let stackView = UIStackView(axis: .vertical, alignment: .leading, spacing: 12, insets: NSDirectionalEdgeInsets(top: 16, leading: 0, bottom: 16, trailing: 0), [
             titleLabel,
             UIStackView(axis: .vertical, alignment: .leading, spacing: 8, [
                 makeLeafView(height: 10, width: .random(in: 300...600)),
@@ -100,7 +100,7 @@ private final class ReaderGhostRegularCell: ReaderStreamBaseCell {
             ])
         ])
 
-        let stackView = UIStackView(axis: .vertical, alignment: .leading, spacing: 20, insets: UIEdgeInsets(.vertical, 16), [
+        let stackView = UIStackView(axis: .vertical, alignment: .leading, spacing: 20, insets: NSDirectionalEdgeInsets(top: 16, leading: 0, bottom: 16, trailing: 0), [
             makeLeafView(height: 10, width: .random(in: 120...180)),
             UIStackView(axis: .horizontal, alignment: .top, spacing: 18, [
                 leftStackView,

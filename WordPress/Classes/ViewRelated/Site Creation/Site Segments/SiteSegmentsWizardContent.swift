@@ -20,8 +20,14 @@ final class SiteSegmentsWizardContent: UIViewController {
     }
 
     private lazy var headerData: SiteCreationHeaderData = {
-        let title = NSLocalizedString("Tell us what kind of site you'd like to make", comment: "Create site, step 1. Select type of site. Title")
-        let subtitle = NSLocalizedString("This helps us make recommendations. But you're never locked in -- all sites evolve!", comment: "Create site, step 1. Select type of site. Subtitle")
+        let title = NSLocalizedString(
+            "Tell us what kind of site you'd like to make",
+            comment: "Create site, step 1. Select type of site. Title"
+        )
+        let subtitle = NSLocalizedString(
+            "This helps us make recommendations. But you're never locked in -- all sites evolve!",
+            comment: "Create site, step 1. Select type of site. Subtitle"
+        )
         let dashSubtitle = subtitle.replacingMatches(of: "--", with: "\u{2014}")
         return SiteCreationHeaderData(title: title, subtitle: dashSubtitle)
     }()
@@ -119,7 +125,7 @@ final class SiteSegmentsWizardContent: UIViewController {
 
         NSLayoutConstraint.activate([
             header.widthAnchor.constraint(equalTo: table.widthAnchor),
-            header.centerXAnchor.constraint(equalTo: table.centerXAnchor),
+            header.centerXAnchor.constraint(equalTo: table.centerXAnchor)
         ])
     }
 
@@ -130,7 +136,7 @@ final class SiteSegmentsWizardContent: UIViewController {
             table.topAnchor.constraint(equalTo: view.prevailingLayoutGuide.topAnchor),
             table.bottomAnchor.constraint(equalTo: view.prevailingLayoutGuide.bottomAnchor),
             table.leadingAnchor.constraint(equalTo: view.prevailingLayoutGuide.leadingAnchor),
-            table.trailingAnchor.constraint(equalTo: view.prevailingLayoutGuide.trailingAnchor),
+            table.trailingAnchor.constraint(equalTo: view.prevailingLayoutGuide.trailingAnchor)
         ])
     }
 
@@ -192,13 +198,13 @@ final class SiteSegmentsWizardContent: UIViewController {
         let errorVC = ErrorStateViewController(with: configuration)
 
         addChild(errorVC)
-        errorVC.view.frame = view.frame
+        errorVC.view.translatesAutoresizingMaskIntoConstraints = false
         view.addSubview(errorVC.view)
         NSLayoutConstraint.activate([
             errorVC.view.leadingAnchor.constraint(equalTo: view.leadingAnchor),
             errorVC.view.trailingAnchor.constraint(equalTo: view.trailingAnchor),
             errorVC.view.topAnchor.constraint(equalTo: view.topAnchor),
-            errorVC.view.bottomAnchor.constraint(equalTo: view.bottomAnchor),
+            errorVC.view.bottomAnchor.constraint(equalTo: view.bottomAnchor)
         ])
         errorVC.didMove(toParent: self)
 
@@ -256,7 +262,10 @@ extension SiteSegmentsWizardContent: Accessible {
     }
 
     private func prepareTableForVoiceOver() {
-        table.accessibilityLabel = NSLocalizedString("The kinds of sites that can be created", comment: "Accessibility hint for list")
+        table.accessibilityLabel = NSLocalizedString(
+            "The kinds of sites that can be created",
+            comment: "Accessibility hint for list"
+        )
     }
 
     private func postScreenChangedForVoiceOver() {

@@ -529,7 +529,7 @@ private struct PostSettingsAuthorRow: View {
                     .foregroundColor(.secondary)
                     .textSelection(.enabled)
             } else {
-                Text("—")
+                Text(verbatim: "—")
                     .foregroundColor(.secondary)
             }
         }

@@ -51,7 +51,7 @@ struct TopListItemView: View {
     var content: some View {
         HStack(alignment: .center, spacing: 0) {
             if let index {
-                Text("\(index + 1)")
+                Text(index + 1, format: .number)
                     .font(.system(.subheadline, design: .rounded, weight: .medium))
                     .frame(width: 22, alignment: .center)
                     .lineLimit(1)

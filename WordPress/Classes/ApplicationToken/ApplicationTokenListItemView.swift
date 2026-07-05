@@ -20,7 +20,7 @@ public struct ApplicationTokenListItemView: View {
                         .multilineTextAlignment(.leading)
                         .lineLimit(2)
                         .truncationMode(.middle)
-                    Text("\(createdDateText) • \(lastUsedText)")
+                    Text(verbatim: "\(createdDateText) • \(lastUsedText)")
                         .font(.footnote)
                         .foregroundStyle(.secondary)
                         .lineLimit(1)

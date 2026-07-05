@@ -121,14 +121,14 @@ private struct ReaderSiteHeader: View {
         let countsString = String(format: Constants.countsFormat, viewModel.postCount, viewModel.followerCount)
         let stringItems = countsString.components(separatedBy: " ")
 
-        return stringItems.reduce(Text(""), {
+        return stringItems.reduce(Text(verbatim: ""), {
             var text = Text($1)
             if $1 == viewModel.postCount || $1 == viewModel.followerCount {
                 text = text.font(.subheadline)
             } else {
                 text = text.font(.subheadline).foregroundColor(.secondary)
             }
-            return $0 + text + Text(" ")
+            return $0 + text + Text(verbatim: " ")
         })
     }
 

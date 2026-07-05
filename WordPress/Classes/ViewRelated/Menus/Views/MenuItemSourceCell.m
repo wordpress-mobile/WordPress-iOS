@@ -51,13 +51,13 @@ static CGFloat const MenuItemSourceCellHierarchyIdentationWidth = 17.0;
     stackView.alignment = UIStackViewAlignmentLeading;
     stackView.axis = UILayoutConstraintAxisHorizontal;
 
-    UIEdgeInsets margins = UIEdgeInsetsZero;
+    NSDirectionalEdgeInsets margins = NSDirectionalEdgeInsetsZero;
     margins.top = 10.0;
-    margins.left = MenusDesignDefaultContentSpacing;
-    margins.right = MenusDesignDefaultContentSpacing;
+    margins.leading = MenusDesignDefaultContentSpacing;
+    margins.trailing = MenusDesignDefaultContentSpacing;
     margins.bottom = 10.0;
 
-    stackView.layoutMargins = margins;
+    stackView.directionalLayoutMargins = margins;
     stackView.layoutMarginsRelativeArrangement = YES;
     stackView.spacing = MenusDesignDefaultContentSpacing / 2.0;
     [self.contentView addSubview:stackView];

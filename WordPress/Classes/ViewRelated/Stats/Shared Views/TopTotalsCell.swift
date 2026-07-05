@@ -26,7 +26,7 @@ final class TopTotalsCell: StatsRowsCell, NibLoadable {
 
             if let topAccessoryView {
                 outerStackView.insertArrangedSubview(topAccessoryView, at: 0)
-                topAccessoryView.layoutMargins = subtitleStackView.layoutMargins
+                topAccessoryView.directionalLayoutMargins = subtitleStackView.directionalLayoutMargins
                 outerStackView.setCustomSpacing(Metrics.topAccessoryViewSpacing, after: topAccessoryView)
             }
         }

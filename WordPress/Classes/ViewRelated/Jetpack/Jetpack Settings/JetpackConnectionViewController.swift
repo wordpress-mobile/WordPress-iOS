@@ -120,11 +120,19 @@ open class JetpackConnectionViewController: UITableViewController {
 
     @objc func disconnectJetpack() {
         WPAnalytics.trackEvent(.jetpackDisconnectRequested)
-        startLoading()
+
+        // Block user interactions while disconnecting, since navigating away from this view controller
+        // during the process can leave the application in an undetermined state. Capture the window now
+        // so it can be re-enabled even if `view.window` becomes nil after the view controller is dismissed.
+        activityIndicatorView.startAnimating()
+        let window = view.window
+        window?.isUserInteractionEnabled = false
+
         self.service.disconnectJetpackFromBlog(
             self.blog,
             success: { [weak self] in
-                self?.stopLoading()
+                self?.activityIndicatorView.stopAnimating()
+                window?.isUserInteractionEnabled = true
                 if let blog = self?.blog {
                     let service = BlogService(coreDataStack: ContextManager.shared)
                     service.remove(blog)
@@ -134,7 +142,8 @@ open class JetpackConnectionViewController: UITableViewController {
                 }
             },
             failure: { [weak self] error in
-                self?.stopLoading()
+                self?.activityIndicatorView.stopAnimating()
+                window?.isUserInteractionEnabled = true
                 let errorTitle = NSLocalizedString(
                     "Error disconnecting Jetpack",
                     comment: "Title of error dialog when disconnecting jetpack fails."
@@ -155,22 +164,5 @@ open class JetpackConnectionViewController: UITableViewController {
         } else {
             navigationController?.popViewController(animated: true)
         }
-    }
-}
-
-// MARK: - Loading
-
-/// Loading blocks user interactions while loading is in progress since navigating from this view controller
-/// during Jetpack connection or disconnection process can leave the application in an undetermined state.
-///
-private extension JetpackConnectionViewController {
-    func startLoading() {
-        activityIndicatorView.startAnimating()
-        UIApplication.shared.mainWindow?.isUserInteractionEnabled = false
-    }
-
-    func stopLoading() {
-        activityIndicatorView.stopAnimating()
-        UIApplication.shared.mainWindow?.isUserInteractionEnabled = true
     }
 }

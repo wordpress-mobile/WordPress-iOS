@@ -1,0 +1,21 @@
+# yaml-language-server: $schema=https://raw.githubusercontent.com/buildkite/pipeline-schema/main/schema.json
+---
+
+# Daily nightly promotion — run by a Buildkite schedule (see docs/testflight-promotion.md).
+
+agents:
+  queue: mac
+env:
+  IMAGE_ID: $IMAGE_ID
+
+steps:
+  - label: ":new_moon: Promote last build of the day to nightly"
+    command: ".buildkite/commands/promote-nightly.sh"
+    plugins: [$CI_TOOLKIT_PLUGIN]
+
+# Backstop: the lane posts its own failures to Slack, but a setup failure (gems/secrets)
+# under `set -e` aborts before fastlane runs and bypasses that rescue. A build-level failure
+# notification ensures a broken unattended nightly run still reaches the channel.
+notify:
+  - slack: "#build-and-ship"
+    if: build.state == "failed"

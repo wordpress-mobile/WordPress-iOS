@@ -297,7 +297,7 @@ class AppSettingsViewController: UITableViewController {
     }
 
     private func overrideAppAppearance(with style: UIUserInterfaceStyle) {
-        let transitionView: UIView = WordPressAppDelegate.shared?.window ?? view
+        let transitionView: UIView = view.window ?? view
         UIView.transition(with: transitionView,
                           duration: 0.3,
                           options: .transitionCrossDissolve,

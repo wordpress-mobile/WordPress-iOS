@@ -123,8 +123,8 @@ class NoticeView: UIView {
         // the shadow only appears _outside_ of the notice roundrect, and doesn't appear underneath
         // and obscure the blur visual effect view.
         let maskPath = CGMutablePath()
-        let leftInset = notice.style.layoutMargins.left * 2
-        let topInset = notice.style.layoutMargins.top * 2
+        let leftInset = notice.style.directionalLayoutMargins.leading * 2
+        let topInset = notice.style.directionalLayoutMargins.top * 2
         maskPath.addRect(bounds.insetBy(dx: -leftInset, dy: -topInset))
         maskPath.addPath(shadowPath)
         shadowMaskLayer.path = maskPath
@@ -143,7 +143,7 @@ class NoticeView: UIView {
         labelStackView.axis = .vertical
         labelStackView.spacing = Metrics.labelLineSpacing
         labelStackView.isLayoutMarginsRelativeArrangement = true
-        labelStackView.layoutMargins = notice.style.layoutMargins
+        labelStackView.directionalLayoutMargins = notice.style.directionalLayoutMargins
 
         labelStackView.addArrangedSubview(titleLabel)
         labelStackView.addArrangedSubview(messageLabel)
@@ -177,7 +177,7 @@ class NoticeView: UIView {
         contentStackView.addArrangedSubview(actionBackgroundView)
         actionBackgroundView.translatesAutoresizingMaskIntoConstraints = false
 
-        actionBackgroundView.layoutMargins = notice.style.layoutMargins
+        actionBackgroundView.directionalLayoutMargins = notice.style.directionalLayoutMargins
         actionBackgroundView.backgroundColor = notice.style.backgroundColor
 
         actionBackgroundView.addSubview(actionButton)
@@ -235,12 +235,12 @@ class NoticeView: UIView {
         cancelBackgroundView.translatesAutoresizingMaskIntoConstraints = false
 
         actionBackgroundView.addSubview(actionButton)
-        actionBackgroundView.layoutMargins = Metrics.dualLayoutMargins
+        actionBackgroundView.directionalLayoutMargins = Metrics.dualLayoutMargins
         actionBackgroundView.pinSubviewToAllEdgeMargins(actionButton)
         actionBackgroundView.addTopBorder()
 
         cancelBackgroundView.addSubview(cancelButton)
-        cancelBackgroundView.layoutMargins = Metrics.dualLayoutMargins
+        cancelBackgroundView.directionalLayoutMargins = Metrics.dualLayoutMargins
         cancelBackgroundView.pinSubviewToAllEdgeMargins(cancelButton)
         cancelBackgroundView.addTopBorder()
         cancelBackgroundView.addTrailingBorder()
@@ -269,7 +269,7 @@ class NoticeView: UIView {
 
         contentStackView.addArrangedSubview(actionBackgroundView)
         actionBackgroundView.translatesAutoresizingMaskIntoConstraints = false
-        actionBackgroundView.layoutMargins = notice.style.layoutMargins
+        actionBackgroundView.directionalLayoutMargins = notice.style.directionalLayoutMargins
         actionBackgroundView.backgroundColor = notice.style.backgroundColor
 
         NSLayoutConstraint.activate([
@@ -377,7 +377,7 @@ class NoticeView: UIView {
 
     private enum Metrics {
         static let cornerRadius: CGFloat = 4.0
-        static let dualLayoutMargins = UIEdgeInsets(top: 6.0, left: 6.0, bottom: 6.0, right: 6.0)
+        static let dualLayoutMargins = NSDirectionalEdgeInsets(top: 6.0, leading: 6.0, bottom: 6.0, trailing: 6.0)
         static let labelLineSpacing: CGFloat = 3.0
         static let arrowSize = CGSize(width: 20, height: 10)
         static let arrowPosition: CGFloat = -24 /// Arrow is positioned along the right hand side by default.

@@ -314,6 +314,109 @@ platform :ios do
     end
   end
 
+  # Builds a single app and uploads it to TestFlight for *internal* testers,
+  # stamping the build code with the Buildkite build number.
+  #
+  # The marketing version (`VERSION_SHORT`) is read from `Version.public.xcconfig`
+  # as-is. The build code is `<marketing version>.0.<buildkite build number>`
+  # (e.g. `27.0.0.4567`). Buildkite build numbers increase monotonically, so each
+  # build for a given marketing version gets a unique, higher build code — which
+  # is all App Store Connect requires.
+  #
+  # @param [String] app One of `wordpress`, `jetpack`, or `reader`.
+  #
+  # @called_by CI
+  #
+  desc 'Builds one app and uploads it to TestFlight for internal testers'
+  lane :build_and_upload_app_for_testflight do |app:|
+    # Fail before any cert/profile work if the build code can't be computed.
+    build_number = ENV.fetch('BUILDKITE_BUILD_NUMBER', nil)
+    UI.user_error!('BUILDKITE_BUILD_NUMBER is not set — this lane is meant to run on CI') if build_number.nil?
+
+    app = app.to_s.downcase
+
+    case app
+    when 'wordpress'
+      scheme = 'WordPress'
+      output_name = APP_STORE_CONNECT_BUILD_NAME_WORDPRESS
+      beta_app_description_path = WORDPRESS_BETA_APP_DESCRIPTION_PATH
+      sentry_project_slug = SENTRY_PROJECT_SLUG_WORDPRESS
+      app_identifier = WORDPRESS_BUNDLE_IDENTIFIER
+      update_certs_and_profiles_wordpress_app_store
+    when 'jetpack'
+      scheme = 'Jetpack'
+      output_name = APP_STORE_CONNECT_BUILD_NAME_JETPACK
+      beta_app_description_path = JETPACK_BETA_APP_DESCRIPTION_PATH
+      sentry_project_slug = SENTRY_PROJECT_SLUG_JETPACK
+      app_identifier = JETPACK_BUNDLE_IDENTIFIER
+      update_certs_and_profiles_jetpack_app_store
+    when 'reader'
+      scheme = 'Reader'
+      output_name = APP_STORE_CONNECT_BUILD_NAME_READER
+      beta_app_description_path = BETA_APP_DESCRIPTION_PATH_READER
+      sentry_project_slug = nil # Reader does not have a Sentry project yet
+      app_identifier = nil
+      update_certs_and_profiles_app_store_reader
+    else
+      UI.user_error!("Unknown app '#{app}'. Expected one of: wordpress, jetpack, reader")
+    end
+
+    build_code = "#{release_version_current}.0.#{build_number}"
+    UI.important("Building #{scheme} #{release_version_current} (#{build_code}) for internal TestFlight distribution")
+
+    sentry_check_cli_installed
+
+    build_app(
+      scheme: scheme,
+      workspace: WORKSPACE_PATH,
+      clean: true,
+      output_directory: BUILD_PRODUCTS_PATH,
+      output_name: output_name,
+      derived_data_path: DERIVED_DATA_PATH,
+      export_team_id: get_required_env('EXT_EXPORT_TEAM_ID'),
+      xcargs: { VERSION_LONG: build_code },
+      export_options: { **COMMON_EXPORT_OPTIONS, method: 'app-store' }
+    )
+
+    upload_app_to_testflight_internal(
+      ipa_path: lane_context[SharedValues::IPA_OUTPUT_PATH],
+      beta_app_description_path: beta_app_description_path
+    )
+
+    # Upload symbols so crashes from these builds symbolicate in Sentry.
+    next if sentry_project_slug.nil?
+
+    sentry_debug_files_upload(
+      auth_token: get_required_env('SENTRY_AUTH_TOKEN'),
+      org_slug: SENTRY_ORG_SLUG,
+      project_slug: sentry_project_slug,
+      path: lane_context[SharedValues::DSYM_OUTPUT_PATH]
+    )
+
+    upload_gutenberg_sourcemaps(
+      sentry_project_slug: sentry_project_slug,
+      release_version: release_version_current,
+      build_version: build_code,
+      app_identifier: app_identifier
+    )
+  end
+
+  # Convenience wrapper that builds and uploads each app to TestFlight, one after
+  # another. CI builds each app in parallel via a Buildkite matrix instead; this
+  # lane is handy for running the whole set locally.
+  #
+  # Reader is omitted until its App Store archive is fixed (broken since #25321).
+  # The per-app lane still supports `app: 'reader'`; just re-add it here once it builds.
+  #
+  desc 'Builds and uploads WordPress and Jetpack to TestFlight (internal)'
+  lane :build_all_apps_for_testflight do
+    apps = %w[wordpress jetpack]
+    UI.important("Building #{apps.join(' and ')} for TestFlight. Reader is omitted because its App Store archive is currently broken.")
+    apps.each do |app|
+      build_and_upload_app_for_testflight(app: app)
+    end
+  end
+
   # Builds the WordPress app for a Prototype Build ("WordPress Alpha" scheme), and uploads it to Firebase App Distribution
   #
   # @called_by CI
@@ -414,7 +517,7 @@ platform :ios do
 
     upload_to_testflight(
       team_id: get_required_env('FASTLANE_ITC_TEAM_ID'),
-      api_key_path: APP_STORE_CONNECT_KEY_PATH,
+      api_key: app_store_connect_api_key,
       ipa: ipa_path,
       beta_app_description: File.read(beta_app_description_path),
       changelog: File.read(whats_new_path),
@@ -424,6 +527,31 @@ platform :ios do
       # If there is a build waiting for beta review, we ~~want~~ would like to to reject that so the new build can be submitted instead.
       reject_build_waiting_for_review: true
     )
+  end
+
+  # Uploads an already-built IPA to TestFlight for internal testers only.
+  #
+  # @param [String] ipa_path Path to the built IPA.
+  # @param [String] beta_app_description_path Path to the beta app description file.
+  #
+  def upload_app_to_testflight_internal(ipa_path:, beta_app_description_path:)
+    # TODO: the "what's new" text for per-commit internal builds is not
+    # finalized yet. For now, generate a minimal placeholder from the commit
+    # metadata so the upload has something to show. Public-beta builds will get
+    # richer notes generated from the PRs merged since the previous public build.
+    changelog = "Automated build from `#{ENV.fetch('BUILDKITE_BRANCH', 'unknown branch')}` (#{ENV.fetch('BUILDKITE_COMMIT', 'unknown commit')[0...7]})."
+
+    Dir.mktmpdir do |dir|
+      whats_new_path = File.join(dir, 'testflight_whats_new.txt')
+      File.write(whats_new_path, changelog)
+
+      upload_build_to_testflight(
+        ipa_path: ipa_path,
+        whats_new_path: whats_new_path,
+        distribution_groups: [],
+        beta_app_description_path: beta_app_description_path
+      )
+    end
   end
 
   # Send a Slack message to the specified channel

@@ -88,7 +88,7 @@ private struct BackupInProgressView: View {
                     .progressViewStyle(.linear)
                     .tint(.accentColor)
 
-                Text("\(progress)%")
+                Text(Double(progress) / 100, format: .percent)
                     .font(.caption)
                     .foregroundStyle(.secondary)
                     .monospacedDigit()

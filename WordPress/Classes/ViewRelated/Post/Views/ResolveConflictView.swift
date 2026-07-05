@@ -27,7 +27,7 @@ struct ResolveConflictView: View {
             Section {
                 VStack(alignment: .leading, spacing: 12) {
                     let title = post.latest().titleForDisplay()
-                    Text("\"\(title)\"")
+                    Text(verbatim: "\"\(title)\"")
                         .font(.headline)
                         .lineLimit(2)
                     Text(Strings.description)

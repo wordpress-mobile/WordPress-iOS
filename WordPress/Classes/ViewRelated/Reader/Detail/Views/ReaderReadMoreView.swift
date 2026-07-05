@@ -3,7 +3,9 @@ import SafariServices
 import WordPressData
 
 // […]
-final class ReaderReadMoreView: UIView, UIAdaptivePresentationControllerDelegate, UIPopoverPresentationControllerDelegate {
+final class ReaderReadMoreView: UIView, UIAdaptivePresentationControllerDelegate,
+    UIPopoverPresentationControllerDelegate
+{ // swiftlint:disable:this opening_brace
     private let textView = UITextView.makeLabel()
     private let infoIconView = UIImageView(image: UIImage(systemName: "info.circle.fill"))
     private var postURL: URL?
@@ -21,9 +23,12 @@ final class ReaderReadMoreView: UIView, UIAdaptivePresentationControllerDelegate
         textView.adjustsFontForContentSizeCategory = true
         textView.isUserInteractionEnabled = false // Ignore taps on a link and disable selection
 
-        let string = NSMutableAttributedString(string: Strings.viewFullPost, attributes: [
-            .font: UIFont.preferredFont(forTextStyle: .body)
-        ])
+        let string = NSMutableAttributedString(
+            string: Strings.viewFullPost,
+            attributes: [
+                .font: UIFont.preferredFont(forTextStyle: .body)
+            ]
+        )
         if let postURL = post.permaLink.flatMap(URL.init) {
             string.addAttribute(.link, value: postURL, range: NSRange(location: 0, length: string.length))
             self.postURL = postURL
@@ -55,7 +60,7 @@ final class ReaderReadMoreView: UIView, UIAdaptivePresentationControllerDelegate
             return
         }
         let safariVC = SFSafariViewController(url: postURL)
-        UIViewController.topViewController?.present(safariVC, animated: true)
+        window?.topmostPresentedViewController?.present(safariVC, animated: true)
     }
 
     @objc private func showInfoTapped() {
@@ -72,12 +77,14 @@ final class ReaderReadMoreView: UIView, UIAdaptivePresentationControllerDelegate
         popoverVC.view.backgroundColor = .systemBackground
         popoverVC.view.addSubview(detailsLabel)
         detailsLabel.pinEdges(insets: UIEdgeInsets(.all, 16))
-        popoverVC.preferredContentSize = popoverVC.view.systemLayoutSizeFitting(CGSize(width: preferredWidth, height: 1200))
+        popoverVC.preferredContentSize = popoverVC.view.systemLayoutSizeFitting(
+            CGSize(width: preferredWidth, height: 1200)
+        )
 
         popoverVC.modalPresentationStyle = .popover
         popoverVC.popoverPresentationController?.delegate = self
         popoverVC.popoverPresentationController?.sourceView = infoIconView
-        UIViewController.topViewController?.present(popoverVC, animated: true)
+        window?.topmostPresentedViewController?.present(popoverVC, animated: true)
     }
 
     // MARK: UIAdaptivePresentationControllerDelegate
@@ -88,7 +95,20 @@ final class ReaderReadMoreView: UIView, UIAdaptivePresentationControllerDelegate
 }
 
 private enum Strings {
-    static let viewFullPost = NSLocalizedString("reader.postDetails.viewFullPost", value: "View full post", comment: "Button title")
-    static let blog = NSLocalizedString("reader.postDetails.blog", value: "blog", comment: "Reader post details view placeholder when blog name not avail")
-    static let details = NSLocalizedString("reader.postDetails.viewModeDescription", value: "The owner of this site only allows us to show a brief summary of their content. To view the full post, you'll have to visit their site.", comment: "Reader post details view")
+    static let viewFullPost = NSLocalizedString(
+        "reader.postDetails.viewFullPost",
+        value: "View full post",
+        comment: "Button title"
+    )
+    static let blog = NSLocalizedString(
+        "reader.postDetails.blog",
+        value: "blog",
+        comment: "Reader post details view placeholder when blog name not avail"
+    )
+    static let details = NSLocalizedString(
+        "reader.postDetails.viewModeDescription",
+        value:
+            "The owner of this site only allows us to show a brief summary of their content. To view the full post, you'll have to visit their site.",
+        comment: "Reader post details view"
+    )
 }

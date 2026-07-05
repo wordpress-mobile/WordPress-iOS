@@ -32,10 +32,10 @@ static NSTimeInterval const TextfieldEditingAnimationDuration = 0.3;
     [super viewDidLoad];
 
     self.stackView.layoutMarginsRelativeArrangement = YES;
-    UIEdgeInsets margin = [Menu viewDefaultDesignInsets];
+    NSDirectionalEdgeInsets margin = [Menu viewDefaultDesignInsets];
     margin.top = 0;
     margin.bottom = 0;
-    self.stackView.layoutMargins = margin;
+    self.stackView.directionalLayoutMargins = margin;
     self.stackView.spacing = 4.0;
 
     [self setupTextField];

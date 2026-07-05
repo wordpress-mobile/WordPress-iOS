@@ -69,14 +69,20 @@ public extension Blog {
 
     /// Retrieve Application Tokens
     ///
-    func getApplicationToken(using keychainImplementation: KeychainAccessible = AppKeychain()) throws -> String {
-        try keychainImplementation.getPassword(for: self.getUsername(), serviceName: self.getUrlString())
+    func getApplicationToken(using keychainImplementation: KeychainAccessible? = nil) throws -> String {
+        try (keychainImplementation ?? self.keychain)
+            .getPassword(for: self.getUsername(), serviceName: self.getUrlString())
     }
 
     /// Delete Application Token
     ///
-    func deleteApplicationToken(using keychainImplementation: KeychainAccessible = AppKeychain()) throws {
-        try? keychainImplementation.setPassword(for: self.getUsername(), to: nil, serviceName: self.getUrlString())
+    func deleteApplicationToken(using keychainImplementation: KeychainAccessible? = nil) throws {
+        try? (keychainImplementation ?? self.keychain)
+            .setPassword(
+                for: self.getUsername(),
+                to: nil,
+                serviceName: self.getUrlString()
+            )
     }
 
     @available(swift, obsoleted: 1.0)
@@ -89,9 +95,14 @@ public extension Blog {
     ///
     func setApplicationToken(
         _ newValue: String,
-        using keychainImplementation: KeychainAccessible = AppKeychain()
+        using keychainImplementation: KeychainAccessible? = nil
     ) throws {
-        try keychainImplementation.setPassword(for: self.getUsername(), to: newValue, serviceName: self.getUrlString())
+        try (keychainImplementation ?? self.keychain)
+            .setPassword(
+                for: self.getUsername(),
+                to: newValue,
+                serviceName: self.getUrlString()
+            )
     }
 
     /// A null-safe wrapper for `Blog.username`
@@ -104,20 +115,22 @@ public extension Blog {
     }
 
     /// A null-safe replacement for `Blog.password(get)`
-    func getPassword(using keychainImplementation: KeychainAccessible = AppKeychain()) throws -> String {
-        try keychainImplementation.getPassword(
-            for: self.getUsername(),
-            serviceName: self.getXMLRPCEndpoint().absoluteString
-        )
+    func getPassword(using keychainImplementation: KeychainAccessible? = nil) throws -> String {
+        try (keychainImplementation ?? self.keychain)
+            .getPassword(
+                for: self.getUsername(),
+                serviceName: self.getXMLRPCEndpoint().absoluteString
+            )
     }
 
     /// A null-safe replacement for `Blog.password(set)`
-    func setPassword(to newValue: String, using keychainImplementation: KeychainAccessible = AppKeychain()) throws {
-        try keychainImplementation.setPassword(
-            for: self.getUsername(),
-            to: newValue,
-            serviceName: self.getXMLRPCEndpoint().absoluteString
-        )
+    func setPassword(to newValue: String, using keychainImplementation: KeychainAccessible? = nil) throws {
+        try (keychainImplementation ?? self.keychain)
+            .setPassword(
+                for: self.getUsername(),
+                to: newValue,
+                serviceName: self.getXMLRPCEndpoint().absoluteString
+            )
     }
 
     func wordPressClientParsedUrl() throws -> ParsedUrl {

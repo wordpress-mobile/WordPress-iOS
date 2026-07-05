@@ -19,7 +19,7 @@ struct DeleteUserConfirmationSheet: View {
                 Section {
                     Picker(Strings.attributeContentToUserLabel, selection: $deleteUserViewModel.selectedUser) {
                         ForEach(deleteUserViewModel.otherUsers) { user in
-                            Text("\(user.displayName) (\(user.username))").tag(user)
+                            Text(verbatim: "\(user.displayName) (\(user.username))").tag(user)
                         }
                     }
                 } header: {

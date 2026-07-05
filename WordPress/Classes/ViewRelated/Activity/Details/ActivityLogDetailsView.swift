@@ -145,7 +145,7 @@ private struct ActivityHeaderView: View {
                     )
                     .fixedSize(horizontal: false, vertical: true)
                 } else {
-                    Text("—")
+                    Text(verbatim: "—")
                         .font(.body)
                         .foregroundColor(.secondary)
                 }

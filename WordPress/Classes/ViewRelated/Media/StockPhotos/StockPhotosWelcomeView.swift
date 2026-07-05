@@ -29,7 +29,7 @@ final class StockPhotosWelcomeView: UIView {
         stack.alignment = .center
         stack.spacing = 24
         stack.isLayoutMarginsRelativeArrangement = true
-        stack.layoutMargins = UIEdgeInsets(top: 16, left: 32, bottom: 16, right: 32)
+        stack.directionalLayoutMargins = NSDirectionalEdgeInsets(top: 16, leading: 32, bottom: 16, trailing: 32)
 
         let wrapper = UIStackView(arrangedSubviews: [stack])
         wrapper.alignment = .center

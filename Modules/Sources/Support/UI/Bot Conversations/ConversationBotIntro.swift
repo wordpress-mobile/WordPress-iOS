@@ -17,7 +17,7 @@ struct ConversationBotIntro: View {
                         .font(.title2)
                         .fontWeight(.semibold)
 
-                    Text("👋")
+                    Text(verbatim: "👋")
                         .font(.title2)
                 }
 

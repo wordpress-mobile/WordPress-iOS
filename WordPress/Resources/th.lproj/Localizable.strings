@@ -38,6 +38,10 @@
 /* Empty Post Title */
 "(No Title)" = "(ไม่มีหัวข้อ)";
 
+/* Lets a user know that a local draft does not have a title.
+   Placeholder text for missing post title */
+"(no title)" = "(ไม่มีหัวข้อ)";
+
 /* Placeholder text for the title of a site */
 "A title for the site" = "หัวข้อสำหรับเว็บไซต์";
 
@@ -85,6 +89,9 @@
 
 /* Image alt attribute option title. */
 "Alt Text" = "Alt Text";
+
+/* the comment has an anonymous author. */
+"Anonymous" = "นิรนาม";
 
 /* The title of the app appearance settings screen */
 "Appearance" = "รูปแบบ";
@@ -155,7 +162,6 @@
 /* Alert dismissal title
    Button label that dismisses the qr log in flow and returns the user back to the previous screen
    Button title, cancel fixing all threats
-   Button title. Tapping it cancels the login flow.
    Cancel Action
    Cancel action on share extension editor screen.
    Cancel action on the app extension category picker screen.
@@ -181,7 +187,6 @@
    Menus cancel button for deleting a menu.
    Menus cancel button within text bar while editing items.
    Menus: Cancel button title for canceling an edited menu item.
-   Option to cancel the email app selection when logging in with magic links
    Title of a button that dismisses the permissions alert
    Title. Title of a cancel button. Tapping disnisses an alert.
    Verb. A button title.
@@ -257,9 +262,6 @@
 /* Verb. Title for Jetpack Restore confirm button. */
 "Confirm" = "ยืนยัน";
 
-/* No comment provided by engineer. */
-"Connecting to WordPress.com" = "กำลังเชื่อมต่อไปยัง  WordPress.com";
-
 /* Part of a prompt suggesting that there is more content for the user to read. */
 "Continue reading" = "อ่านเพิ่มเติม";
 
@@ -281,9 +283,6 @@
 /* Label for list of countries.
    Register Domain - Domain contact information field Country */
 "Country" = "ประเทศ";
-
-/* The button title text for creating a new account. */
-"Create Account" = "สร้างบัญชี";
 
 /* Button to progress to the next step
    Site creation. Step 1. Screen title
@@ -342,24 +341,23 @@
    Title for the Discussion Settings Screen */
 "Discussion" = "การสนทนา";
 
-/* Accessibility label for the transparent space above the login dialog which acts as a button to dismiss the dialog.
-   Accessibility label for the transparent space above the signup dialog which acts as a button to dismiss the dialog. */
+/* No comment provided by engineer. */
 "Dismiss" = "ยกเลิก";
 
-/* Display Name label text.
-   User's Display Name */
+/* User's Display Name */
 "Display Name" = "ชื่อที่แสดง";
 
 /* A done button
-   Button text on site creation epilogue page to proceed to My Sites.
    Done button title
    Done editing an image
    Done. Action.
    Menu button title for finishing editing the Menu name.
-   Tapping a button with this label allows the user to exit the Site Creation flow
    Title for button that will dismiss this view
    Title for the button that will dismiss this view. */
 "Done" = "เสร็จแล้ว";
+
+/* Name for the status of a draft post. */
+"Draft" = "โครงเรื่อง";
 
 /* Editing GIF alert default action button.
    Edits a Comment
@@ -441,9 +439,6 @@
 /* Title for the general section in site settings screen */
 "General" = "ทั่วไป";
 
-/* Alerts the user that wpcom account information is being retrieved. */
-"Getting account information" = "ได้รับข้อมูลบัญชี";
-
 /* Button label for going to settings to approve push notifications
    Opens WPiOS Settings.app Section */
 "Go to iOS Settings" = "ไปที่การตั้งค่า iOS";
@@ -451,17 +446,13 @@
 /* Accessibility label for HTML button on formatting toolbar. */
 "HTML" = "HTML";
 
-/* Help button
-   Open editor help options */
+/* Open editor help options */
 "Help" = "ช่วยเหลือ";
 
 /* Link to Help section
    Open editor help options
    Title of the 'Help & Support' screen within the 'Me' tab - used for spotlight indexing on iOS. */
 "Help & Support" = "ช่วยเหลือและสนับสนุน";
-
-/* Accessibility value if login page's password field is hiding the password (i.e. with asterisks). */
-"Hidden" = "ซ่อน";
 
 /* No comment provided by engineer. */
 "Hide keyboard" = "ซ่อนคีย์บอร์ด";
@@ -557,7 +548,8 @@
 /* Setting: indicates if Replies to your comments will be notified */
 "Likes on my posts" = "ความชื่นชอบบนเรื่องของฉัน";
 
-/* Label for link title in Clicks stat. */
+/* Label for link title in Clicks stat.
+   Menu item label for linking a custom source URL. */
 "Link" = "ลิงก์";
 
 /* Link name field placeholder */
@@ -580,18 +572,13 @@
    Text displayed in HUD while a media item is being loaded. */
 "Loading..." = "กำลังโหลด...";
 
-/* Button title.  Tapping takes the user to the login form.
-   Label for logging in to WordPress.com account
+/* Label for logging in to WordPress.com account
    Log In 3D Touch Shortcut
-   Log In button label.
-   View title during the log in process. */
+   Log In button label. */
 "Log In" = "เข้าสู่ระบบ";
 
 /* Login Request Expired */
 "Login Request Expired" = "คำขอเข้าสู่ระบบหมดอายุ";
-
-/* Title of a button. */
-"Lost your password?" = "จำรหัสผ่านไม่ได้?";
 
 /* No comment provided by engineer. */
 "Main Navigation" = "เมนูนำทางหลัก";
@@ -664,9 +651,7 @@
 "Newest first" = "เรียงตามใหม่สุดก่อน";
 
 /* Next action on comment moderation snackbar.
-   Next action on share extension editor screen.
-   Title of a button.
-   Title of a button. The text should be capitalized. */
+   Next action on share extension editor screen. */
 "Next" = "ต่อไป";
 
 /* Title of error prompt when no internet connection is available. */
@@ -725,11 +710,7 @@
 /* Notifications tab bar item accessibility label, unread notifications state */
 "Notifications Unread" = "คำเตือนที่ยังไม่ได้อ่าน";
 
-/* Alert dismissal title
-   Button title. An acknowledgement of the message displayed in a prompt.
-   Dismisses the alert
-   Menus: button title for finishing editing of a menu item.
-   Ok button for dismissing alert helping users understand their site address */
+/* Menus: button title for finishing editing of a menu item. */
 "OK" = "ตกลง";
 
 /* Disabled */
@@ -796,17 +777,17 @@
    Settings: Comments Paging preferences */
 "Paging" = "การใส่เลขหน้า";
 
-/* Accessibility label for the password text field in the self-hosted login page.
-   Label for entering password in password field
+/* Label for entering password in password field
    Login dialog password placeholder
-   Password placeholder
-   Placeholder for the password textfield.
    Title for screen that shows self hosted password editor. */
 "Password" = "รหัสผ่าน";
 
 /* Button title for Pending comment state.
    Title of pending Comments filter. */
 "Pending" = "รอตรวจสอบ";
+
+/* Name for the status of a post pending review. */
+"Pending review" = "รอคอยการตรวจสอบ";
 
 /* People site intent topic */
 "People" = "ผู้คน";
@@ -823,14 +804,11 @@
 /* No comment provided by engineer. */
 "Please enter a username." = "กรุณาใส่ชื่อผู้ใช้";
 
-/* Error message displayed when the user attempts use an invalid email address. */
+/* No comment provided by engineer. */
 "Please enter a valid email address." = "โปรดใส่ที่อยู่อีเมล์ที่ใช้งานได้";
 
 /* Popup message to ask for user credentials (fields shown below). */
 "Please enter your credentials" = "โปรดใส่การรับรองของคุณ";
-
-/* A short prompt asking the user to properly fill out all login fields. */
-"Please fill out all the fields" = "กรุณากรอกข้อมูลในช่องทั้งหมด";
 
 /* No comment provided by engineer. */
 "Please try entering your login details again." = "กรุณาลองใส่ข้อมูลเข้าสู่ระบบของคุณอีกครั้ง";
@@ -839,7 +817,8 @@
    Screen title, where users can see the most popular plugins */
 "Popular" = "ยอดนิยม";
 
-/* Noun. Type of content being selected is a blog post
+/* Menu item label for linking a post.
+   Noun. Type of content being selected is a blog post
    Title shown when selecting a post type of Post from the Share Extension. */
 "Post" = "เรื่อง";
 
@@ -870,11 +849,18 @@
 /* Title of button that displays the App's privacy policy */
 "Privacy Policy" = "นโยบายความเป็นส่วนตัว";
 
+/* Name for the status of a post that is marked private. */
+"Private" = "ส่วนตัว";
+
 /* Label for the publish (verb) button. Tapping publishes a draft post.
    Publish post action on share extension site picker screen. */
 "Publish" = "เผยแพร่";
 
-/* Period Stats 'Published' header
+/* A short phrase indicating a post is due to be immedately published. */
+"Publish Immediately" = "เผยแพร่ทันที";
+
+/* Name for the status of a published post.
+   Period Stats 'Published' header
    Title of the published filter. This filter shows a list of posts that the user has published. */
 "Published" = "เผยแพร่แล้ว";
 
@@ -929,7 +915,7 @@
    Verb. Button title. Reply to a comment. */
 "Reply" = "ตอบกลับ";
 
-/* An explaination of a setting. */
+/* An explanation of a setting. */
 "Require manual approval for comments that include more than this number of links." = "ต้องการการอนุมัติด้วยมือสำหรับความเห็นที่ประกอบด้วยลิงก์ที่มากกว่าจำนวนนี้";
 
 /* Explains the effect of the 'No comments' auto approval setting. */
@@ -950,7 +936,6 @@
 /* A prompt to attempt the failed network request again
    A prompt to attempt the failed network request again.
    Button title, displayed when media has failed to upload. Allows the user to try the upload again.
-   If a user taps the button with this label, the action that evinced this error view will be retried.
    Opens the media library .
    Retry updating User's Role
    Retry. Action
@@ -963,9 +948,6 @@
 /* Right alignment for an image. Should be the same as in core WP. */
 "Right" = "ขวา";
 
-/* One Time Code has been sent via SMS */
-"SMS Sent" = "ส่ง SMS";
-
 /* Menus save button title
    Save Action
    Save draft post action on share extension site picker screen.
@@ -977,7 +959,8 @@
 /* Menus save button title while it is saving a Menu. */
 "Saving..." = "กำลังบันทึก...";
 
-/* Title of the scheduled filter. This filter shows a list of posts that are scheduled to be published at a future date. */
+/* Name for the status of a scheduled post
+   Title of the scheduled filter. This filter shows a list of posts that are scheduled to be published at a future date. */
 "Scheduled" = "เข้าตารางเวลาแล้ว";
 
 /* Title of Stats section that shows search engine referrer traffic. */
@@ -1050,7 +1033,7 @@
 /* No comment provided by engineer. */
 "Sorry, site addresses must have letters too!" = "ขอโทษครับ  ที่อยู่เว็บต้องมีตัวอักษรด้วย";
 
-/* Error message displayed when the entered email is not available. */
+/* No comment provided by engineer. */
 "Sorry, that email address is already being used!" = "ขอโทษครับ  แต่ที่อยู่อีเมล์นี้ถูกใช้ไปแล้ว";
 
 /* No comment provided by engineer. */
@@ -1228,7 +1211,8 @@
    Trashes the comment */
 "Trash" = "ถังขยะ";
 
-/* Title of the trashed filter. This filter shows posts that have been moved to the trash bin.
+/* Name for the status of a trashed post
+   Title of the trashed filter. This filter shows posts that have been moved to the trash bin.
    Title of trashed Comments filter. */
 "Trashed" = "ย้ายไปถังขยะแล้ว";
 
@@ -1308,14 +1292,10 @@
 "Uploading media" = "การอัปโหลดไฟล์สื่อ";
 
 /* A placeholder for the twitter username
-   Accessibility label for the username text field in the self-hosted login page.
    Account Settings Username label
    Label for entering username in the username field
    Login dialog username placeholder
-   Placeholder for the username textfield.
-   The header and main title
-   Username label text.
-   Username placeholder */
+   The header and main title */
 "Username" = "ชื่อผู้ใช้";
 
 /* Setting: indicates if Mentions will be notified */

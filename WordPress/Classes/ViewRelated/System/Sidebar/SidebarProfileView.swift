@@ -15,7 +15,7 @@ struct SidebarProfileView: View {
                     Text(displayName)
                         .font(.subheadline.weight(.medium))
                 }
-                Text("@\(account.username)")
+                Text(verbatim: "@\(account.username)")
                     .font(.footnote)
                     .foregroundStyle(.secondary)
             }

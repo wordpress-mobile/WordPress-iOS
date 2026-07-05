@@ -16,7 +16,7 @@ extension Text {
             return
         }
 
-        var text = Text("")
+        var text = Text(verbatim: "")
 
         parts.enumerated().forEach { index, part in
             let partText = Text(part)

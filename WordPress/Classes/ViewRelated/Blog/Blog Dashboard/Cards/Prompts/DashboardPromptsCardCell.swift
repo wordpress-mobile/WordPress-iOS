@@ -81,7 +81,7 @@ class DashboardPromptsCardCell: UICollectionViewCell, Reusable {
         stackView.alignment = .center
         stackView.translatesAutoresizingMaskIntoConstraints = false
         stackView.spacing = Constants.spacing
-        stackView.layoutMargins = Constants.containerMargins
+        stackView.directionalLayoutMargins = Constants.containerMargins
         stackView.isLayoutMarginsRelativeArrangement = true
         return stackView
     }()
@@ -576,7 +576,7 @@ private extension DashboardPromptsCardCell {
         static let answeredButtonsSpacing: CGFloat = 16
         static let answerInfoViewSpacing: CGFloat = 6
         static let attributionTrailingImageSpacing: CGFloat = 6
-        static let containerMargins = UIEdgeInsets(top: 0, left: 16, bottom: 0, right: 16)
+        static let containerMargins = NSDirectionalEdgeInsets(top: 0, leading: 16, bottom: 0, trailing: 16)
         static let maxAvatarCount = 3
         static let exampleAnswerCount = 19
         static let cardFrameConstraintPriority = UILayoutPriority(999)

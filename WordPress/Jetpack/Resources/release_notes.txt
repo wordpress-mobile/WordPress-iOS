@@ -1,2 +1,3 @@
-* [*] Remove the Free GIF Library media source. The Tenor service it relied on shuts down on June 30, 2026 [#25634]
-* [*] [internal] Jetpack Social: use new publicize API to support Jetpack Social [#25587]
+We removed the Free GIF Library as a media source, since the Tenor service it runs on will shut down on June 30. We’re sad about it, too.
+
+If you have a self-hosted site, you’ll now sign in to the app using an application password. If you don’t have one, we’ll automatically create one for you so it’s ready when you need it.

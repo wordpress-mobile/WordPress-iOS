@@ -266,7 +266,7 @@ struct ReaderDetailHeaderView: View {
                         .font(Font(viewModel.displaySetting.font(with: .footnote, weight: .semibold)))
                         .foregroundStyle(Color(primaryTextColor))
                     if !viewModel.authorName.isEmpty {
-                        Text(" • ")
+                        Text(verbatim: " • ")
                             .font(Font(viewModel.displaySetting.font(with: .footnote)))
                             .foregroundColor(Color(viewModel.displaySetting.color.secondaryForeground))
                             .layoutPriority(1)
@@ -282,7 +282,7 @@ struct ReaderDetailHeaderView: View {
                         .font(Font(viewModel.displaySetting.font(with: .footnote)))
                         .foregroundStyle(Color(primaryTextColor))
                     if !viewModel.isFollowingSite || !viewModel.isFollowButtonInteractive {
-                        Text(" • ")
+                        Text(verbatim: " • ")
                             .font(Font(viewModel.displaySetting.font(with: .footnote)))
                             .foregroundColor(Color(viewModel.displaySetting.color.secondaryForeground))
                             .layoutPriority(1)

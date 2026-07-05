@@ -48,7 +48,8 @@ final class CommentContentTableViewCell: UITableViewCell, NibReusable {
     private var effectiveDepth: Int = 0 {
         didSet {
             guard oldValue != effectiveDepth else { return }
-            highlightBarLeadingSpacingConstraint.constant = effectiveDepth == 0 ? 0 : (Self.depthInset * CGFloat(effectiveDepth))
+            highlightBarLeadingSpacingConstraint.constant =
+                effectiveDepth == 0 ? 0 : (Self.depthInset * CGFloat(effectiveDepth))
             containerStackLeadingConstraint?.constant = (Self.depthInset * CGFloat(effectiveDepth)) + 16
             configureDepthSeparators(depth: effectiveDepth)
         }
@@ -177,17 +178,23 @@ final class CommentContentTableViewCell: UITableViewCell, NibReusable {
         self.isContentExpanded = helper.isCommentExpanded(comment.objectID)
         self.onContentLoaded = onContentLoaded
 
-        viewModel.$state.sink { [weak self] in
-            self?.configure(with: $0)
-        }.store(in: &cancellables)
+        viewModel.$state
+            .sink { [weak self] in
+                self?.configure(with: $0)
+            }
+            .store(in: &cancellables)
 
-        viewModel.$avatar.sink { [weak self] in
-            self?.configureAvatar(with: $0)
-        }.store(in: &cancellables)
+        viewModel.$avatar
+            .sink { [weak self] in
+                self?.configureAvatar(with: $0)
+            }
+            .store(in: &cancellables)
 
-        viewModel.$content.sink { [weak self] in
-            self?.configureContent($0 ?? "", helper: helper)
-        }.store(in: &cancellables)
+        viewModel.$content
+            .sink { [weak self] in
+                self?.configureContent($0 ?? "", helper: helper)
+            }
+            .store(in: &cancellables)
 
         // Configure feature availability.
         isAccessoryButtonEnabled = comment.isApproved()
@@ -198,7 +205,11 @@ final class CommentContentTableViewCell: UITableViewCell, NibReusable {
     /// - Parameters:
     ///   - comment: The `Comment` object to display.
     ///   - onContentLoaded: Callback to be called once the content has been loaded. Provides the new content height as parameter.
-    func configureForPostDetails(with comment: Comment, helper: ReaderCommentsHelper, onContentLoaded: ((CGFloat) -> Void)?) {
+    func configureForPostDetails(
+        with comment: Comment,
+        helper: ReaderCommentsHelper,
+        onContentLoaded: ((CGFloat) -> Void)?
+    ) {
         configure(viewModel: CommentCellViewModel(comment: comment), helper: helper, onContentLoaded: onContentLoaded)
 
         containerStackLeadingConstraint.constant = 0
@@ -250,15 +261,18 @@ final class CommentContentTableViewCell: UITableViewCell, NibReusable {
             depthSeparator?.isHidden = true
         }
         for level in 0..<depth {
-            let separatorView = depthSeparators[level] ?? {
-                let separatorView = SeparatorView.vertical(width: 1.0)
-                depthSeparators[level] = separatorView
-                contentView.addSubview(separatorView)
-                separatorView.pinEdges([.top, .bottom])
-                let inset = -Self.depthInset * CGFloat(level + 1)
-                separatorView.trailingAnchor.constraint(equalTo: containerStackView.leadingAnchor, constant: inset).isActive = true
-                return separatorView
-            }()
+            let separatorView =
+                depthSeparators[level]
+                ?? {
+                    let separatorView = SeparatorView.vertical(width: 1.0)
+                    depthSeparators[level] = separatorView
+                    contentView.addSubview(separatorView)
+                    separatorView.pinEdges([.top, .bottom])
+                    let inset = -Self.depthInset * CGFloat(level + 1)
+                    separatorView.trailingAnchor.constraint(equalTo: containerStackView.leadingAnchor, constant: inset)
+                        .isActive = true
+                    return separatorView
+                }()
             separatorView.isHidden = false
         }
     }
@@ -274,7 +288,8 @@ final class CommentContentTableViewCell: UITableViewCell, NibReusable {
                 backgroundView.backgroundColor = Style.highlightedBackgroundColor
                 contentView.insertSubview(backgroundView, belowSubview: containerStackView)
                 backgroundView.pinEdges([.vertical, .trailing], to: contentView)
-                backgroundView.leadingAnchor.constraint(equalTo: containerStackView.leadingAnchor, constant: -16).isActive = true
+                backgroundView.leadingAnchor.constraint(equalTo: containerStackView.leadingAnchor, constant: -16)
+                    .isActive = true
                 highlightedBackgroundView = backgroundView
             }
         }
@@ -352,9 +367,16 @@ private extension CommentContentTableViewCell {
     var accessoryButtonImage: UIImage? {
         switch accessoryButtonType {
         case .ellipsis:
-            return .init(systemName: "ellipsis", withConfiguration: UIImage.SymbolConfiguration(font: .preferredFont(forTextStyle: .footnote)))?.withTintColor(.secondaryLabel)
+            return .init(
+                systemName: "ellipsis",
+                withConfiguration: UIImage.SymbolConfiguration(font: .preferredFont(forTextStyle: .footnote))
+            )?
+            .withTintColor(.secondaryLabel)
         case .info:
-            return .init(systemName: "info.circle", withConfiguration: UIImage.SymbolConfiguration(font: .preferredFont(forTextStyle: .footnote)))
+            return .init(
+                systemName: "info.circle",
+                withConfiguration: UIImage.SymbolConfiguration(font: .preferredFont(forTextStyle: .footnote))
+            )
         }
     }
 
@@ -465,7 +487,8 @@ private extension CommentContentTableViewCell {
     func updateLikeButton(isLiked: Bool, likeCount: Int) {
         likeButton.tintColor = isLiked ? UIAppColor.primary : displaySetting.color.secondaryForeground
         if var configuration = likeButton.configuration {
-            configuration.image = isLiked ? WPStyleGuide.ReaderDetail.likeSelectedToolbarIcon : WPStyleGuide.ReaderDetail.likeToolbarIcon
+            configuration.image =
+                isLiked ? WPStyleGuide.ReaderDetail.likeSelectedToolbarIcon : WPStyleGuide.ReaderDetail.likeToolbarIcon
             configuration.title = likeCount > 0 ? "\(likeCount)" : String.noLikes
             likeButton.accessibilityLabel = {
                 switch likeCount {
@@ -478,18 +501,21 @@ private extension CommentContentTableViewCell {
         } else {
             wpAssertionFailure("missing configuration")
         }
-        likeButton.accessibilityLabel = isLiked ? String(likeCount) + .commentIsLiked : String(likeCount) + .commentIsNotLiked
+        likeButton.accessibilityLabel =
+            isLiked ? String(likeCount) + .commentIsLiked : String(likeCount) + .commentIsNotLiked
     }
 
     // MARK: Content Rendering
 
     func configureContent(_ content: String, helper: ReaderCommentsHelper) {
-        let renderer = self.renderer ?? {
-            let renderer = helper.makeWebRenderer()
-            renderer.delegate = self
-            self.renderer = renderer
-            return renderer
-        }()
+        let renderer =
+            self.renderer
+            ?? {
+                let renderer = helper.makeWebRenderer()
+                renderer.delegate = self
+                self.renderer = renderer
+                return renderer
+            }()
 
         renderer.displaySettings = displaySetting
 
@@ -525,7 +551,8 @@ private extension CommentContentTableViewCell {
             // point hiding a few pixels
             isContentExpanded = true
         }
-        let displayHeight = isContentExpanded ? effectiveContentHeight : min(effectiveContentHeight, Self.maxCollapsedHeight)
+        let displayHeight =
+            isContentExpanded ? effectiveContentHeight : min(effectiveContentHeight, Self.maxCollapsedHeight)
 
         contentContainerHeightConstraint?.constant = displayHeight
 
@@ -550,11 +577,14 @@ private extension CommentContentTableViewCell {
         let viewModel = ReaderUserProfileViewModel(comment: comment)
         let profileVC = UIHostingController(rootView: ReaderUserProfileView(viewModel: viewModel))
         let navigationVC = UINavigationController(rootViewController: profileVC)
-        profileVC.navigationItem.leftBarButtonItem = UIBarButtonItem(systemItem: .close, primaryAction: .init { [weak profileVC] _ in
-            profileVC?.presentingViewController?.dismiss(animated: true)
-        })
+        profileVC.navigationItem.leftBarButtonItem = UIBarButtonItem(
+            systemItem: .close,
+            primaryAction: .init { [weak profileVC] _ in
+                profileVC?.presentingViewController?.dismiss(animated: true)
+            }
+        )
         navigationVC.sheetPresentationController?.detents = [.medium()]
-        UIViewController.topViewController?.present(navigationVC, animated: true)
+        window?.topmostPresentedViewController?.present(navigationVC, animated: true)
     }
 
     @objc func accessoryButtonTapped() {
@@ -603,6 +633,12 @@ private extension String {
     static let likeButtonAccessibilityId = "like-comment-button"
     static let reply = NSLocalizedString("Reply", comment: "Reply to a comment.")
     static let noLikes = NSLocalizedString("Like", comment: "Button title to Like a comment.")
-    static let singularLikeFormat = NSLocalizedString("%1$d Like", comment: "Singular button title to Like a comment. %1$d is a placeholder for the number of Likes.")
-    static let pluralLikesFormat = NSLocalizedString("%1$d Likes", comment: "Plural button title to Like a comment. %1$d is a placeholder for the number of Likes.")
+    static let singularLikeFormat = NSLocalizedString(
+        "%1$d Like",
+        comment: "Singular button title to Like a comment. %1$d is a placeholder for the number of Likes."
+    )
+    static let pluralLikesFormat = NSLocalizedString(
+        "%1$d Likes",
+        comment: "Plural button title to Like a comment. %1$d is a placeholder for the number of Likes."
+    )
 }

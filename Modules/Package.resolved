@@ -1,5 +1,5 @@
 {
-  "originHash" : "49b054a77ad3470b9b49c42d61f34905f5ca3f3211e1557c142c484a9ad7bda8",
+  "originHash" : "aadb46fafeb5588e1efd3609cd1355d5ac3c4537c154c7acf9e8cb63849c1d52",
   "pins" : [
     {
       "identity" : "alamofire",
@@ -149,8 +149,8 @@
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/wordpress-mobile/MediaEditor-iOS",
       "state" : {
-        "branch" : "task/spm-support",
-        "revision" : "e9f74b21276d5cd1cb94ee1c09cc060b23187832"
+        "revision" : "3c980155634905c7fd3a310271e6633e781412b3",
+        "version" : "1.3.0"
       }
     },
     {

@@ -15,7 +15,7 @@ class ReaderDetailCommentsTableViewDelegate: NSObject, UITableViewDataSource, UI
     private weak var buttonDelegate: BorderedButtonTableViewCellDelegate?
     private(set) var headerView: ReaderDetailCommentsHeader?
     private let helper = ReaderCommentsHelper()
-    var followButtonTappedClosure: (() ->Void)?
+    var followButtonTappedClosure: (() -> Void)?
     var buttonLeaveCommentTapped: ((Comment?) -> Void)?
 
     var displaySetting: ReaderDisplaySettings
@@ -72,11 +72,11 @@ class ReaderDetailCommentsTableViewDelegate: NSObject, UITableViewDataSource, UI
     // MARK: - Table Methods
 
     func numberOfSections(in tableView: UITableView) -> Int {
-        return 1
+        1
     }
 
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return items.count
+        items.count
     }
 
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
@@ -93,9 +93,13 @@ class ReaderDetailCommentsTableViewDelegate: NSObject, UITableViewDataSource, UI
     }
 
     func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
-        guard let header = tableView.dequeueReusableHeaderFooterView(withIdentifier: ReaderDetailCommentsHeader.defaultReuseID) as? ReaderDetailCommentsHeader,
-              let post,
-              let presentingViewController else {
+        guard
+            let header = tableView.dequeueReusableHeaderFooterView(
+                withIdentifier: ReaderDetailCommentsHeader.defaultReuseID
+            ) as? ReaderDetailCommentsHeader,
+            let post,
+            let presentingViewController
+        else {
             return nil
         }
 
@@ -118,22 +122,24 @@ class ReaderDetailCommentsTableViewDelegate: NSObject, UITableViewDataSource, UI
             return nil
         }
         let textProvider = JetpackBrandingTextProvider(screen: JetpackBadgeScreen.readerDetail)
-        return JetpackButton.makeBadgeView(title: textProvider.brandingText(),
-                                           bottomPadding: Constants.jetpackBadgeBottomPadding,
-                                           target: self,
-                                           selector: #selector(jetpackButtonTapped))
+        return JetpackButton.makeBadgeView(
+            title: textProvider.brandingText(),
+            bottomPadding: Constants.jetpackBadgeBottomPadding,
+            target: self,
+            selector: #selector(jetpackButtonTapped)
+        )
     }
 
     func tableView(_ tableView: UITableView, estimatedHeightForHeaderInSection section: Int) -> CGFloat {
-        return ReaderDetailCommentsHeader.estimatedHeight
+        ReaderDetailCommentsHeader.estimatedHeight
     }
 
     func tableView(_ tableView: UITableView, estimatedHeightForFooterInSection section: Int) -> CGFloat {
-        return ReaderDetailCommentsHeader.estimatedHeight
+        ReaderDetailCommentsHeader.estimatedHeight
     }
 
     func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
-        return UITableView.automaticDimension
+        UITableView.automaticDimension
     }
 
     func tableView(_ tableView: UITableView, heightForFooterInSection section: Int) -> CGFloat {
@@ -152,7 +158,9 @@ private extension ReaderDetailCommentsTableViewDelegate {
         cell.backgroundColor = .clear
 
         let leaveCommentView = LeaveCommentView()
-        leaveCommentView.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(leaveCommentCellTapped)))
+        leaveCommentView.addGestureRecognizer(
+            UITapGestureRecognizer(target: self, action: #selector(leaveCommentCellTapped))
+        )
         leaveCommentView.displaySettings = displaySetting
 
         cell.contentView.addSubview(leaveCommentView)
@@ -162,7 +170,10 @@ private extension ReaderDetailCommentsTableViewDelegate {
     }
 
     func makeCommentCell(for comment: Comment, in tableView: UITableView) -> UITableViewCell {
-        guard let cell = tableView.dequeueReusableCell(withIdentifier: CommentContentTableViewCell.defaultReuseID) as? CommentContentTableViewCell else {
+        guard
+            let cell = tableView.dequeueReusableCell(withIdentifier: CommentContentTableViewCell.defaultReuseID)
+                as? CommentContentTableViewCell
+        else {
             return UITableViewCell()
         }
 
@@ -192,7 +203,10 @@ private extension ReaderDetailCommentsTableViewDelegate {
     }
 
     func makeEmptyStateCell(title: String, in tableView: UITableView) -> UITableViewCell {
-        guard let cell = tableView.dequeueReusableCell(withIdentifier: ReaderDetailNoCommentCell.defaultReuseID) as? ReaderDetailNoCommentCell else {
+        guard
+            let cell = tableView.dequeueReusableCell(withIdentifier: ReaderDetailNoCommentCell.defaultReuseID)
+                as? ReaderDetailNoCommentCell
+        else {
             return UITableViewCell()
         }
 
@@ -222,14 +236,20 @@ private extension ReaderDetailCommentsTableViewDelegate {
             container.font = UIFont.preferredFont(forTextStyle: .headline).withWeight(.medium)
             return container
         }
-        configuration.preferredSymbolConfigurationForImage = UIImage.SymbolConfiguration(paletteColors: [displaySetting.color.tertiatyForeground])
-            .applying(UIImage.SymbolConfiguration(font: UIFont.preferredFont(forTextStyle: .caption2).withWeight(.bold)))
+        configuration.preferredSymbolConfigurationForImage =
+            UIImage.SymbolConfiguration(paletteColors: [displaySetting.color.tertiatyForeground])
+            .applying(
+                UIImage.SymbolConfiguration(font: UIFont.preferredFont(forTextStyle: .caption2).withWeight(.bold))
+            )
         configuration.imagePadding = 4
         configuration.contentInsets = .init(top: 9, leading: 12, bottom: 9, trailing: 12)
 
-        let button = UIButton(configuration: configuration, primaryAction: .init { [weak self] _ in
-            self?.buttonDelegate?.buttonTapped()
-        })
+        let button = UIButton(
+            configuration: configuration,
+            primaryAction: .init { [weak self] _ in
+                self?.buttonDelegate?.buttonTapped()
+            }
+        )
 
         cell.contentView.addSubview(button)
 
@@ -247,9 +267,13 @@ private extension ReaderDetailCommentsTableViewDelegate {
         }
         WPAnalytics.track(.readerArticleCommentShared)
 
-        let activityViewController = UIActivityViewController(activityItems: [commentURL as Any], applicationActivities: nil)
+        let activityViewController = UIActivityViewController(
+            activityItems: [commentURL as Any],
+            applicationActivities: nil
+        )
         activityViewController.popoverPresentationController?.sourceView = sourceView
-        UIViewController.topViewController?.present(activityViewController, animated: true, completion: nil)
+        (presentingViewController?.topmostPresentedViewController ?? sourceView?.window?.topmostPresentedViewController)?
+            .present(activityViewController, animated: true, completion: nil)
     }
 
     @objc private func leaveCommentCellTapped() {
@@ -266,9 +290,18 @@ private extension ReaderDetailCommentsTableViewDelegate {
     }
 
     struct Constants {
-        static let closedComments = NSLocalizedString("Comments are closed", comment: "Displayed on the post details page when there are no post comments and commenting is closed.")
-        static let viewAllButtonTitle = NSLocalizedString("View all comments", comment: "Title for button on the post details page to show all comments when tapped.")
-        static let emptyStateTitle = NSLocalizedString("Be the first to comment", comment: "Title for button on the post details page when there are no comments.")
+        static let closedComments = NSLocalizedString(
+            "Comments are closed",
+            comment: "Displayed on the post details page when there are no post comments and commenting is closed."
+        )
+        static let viewAllButtonTitle = NSLocalizedString(
+            "View all comments",
+            comment: "Title for button on the post details page to show all comments when tapped."
+        )
+        static let emptyStateTitle = NSLocalizedString(
+            "Be the first to comment",
+            comment: "Title for button on the post details page when there are no comments."
+        )
         static let jetpackBadgeBottomPadding: CGFloat = 10
     }
 }
