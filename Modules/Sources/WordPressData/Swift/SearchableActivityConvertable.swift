@@ -31,7 +31,10 @@ extension WPActivityType {
         case .appSettings:
             return NSLocalizedString("WordPress App Settings", comment: "Siri Suggestion to open App Settings")
         case .notificationSettings:
-            return NSLocalizedString("WordPress Notification Settings", comment: "Siri Suggestion to open Notification Settings")
+            return NSLocalizedString(
+                "WordPress Notification Settings",
+                comment: "Siri Suggestion to open Notification Settings"
+            )
         case .support:
             return NSLocalizedString("WordPress Help", comment: "Siri Suggestion to open Support")
         case .notifications:
@@ -49,30 +52,30 @@ public enum WPActivityUserInfoKeys: String {
 @objc public protocol SearchableActivityConvertable {
     /// Type name used to uniquly indentify this activity.
     ///
-    @objc var activityType: String {get}
+    @objc var activityType: String { get }
 
     /// Activity title to be displayed in spotlight search.
     ///
-    @objc var activityTitle: String {get}
+    @objc var activityTitle: String { get }
 
     // MARK: Optional Vars
 
     /// A set of localized keywords that can help users find the activity in search results.
     ///
-    @objc optional var activityKeywords: Set<String>? {get}
+    @objc optional var activityKeywords: Set<String>? { get }
 
     /// The date after which the activity is no longer eligible for indexing. If not set,
     /// the expiration date will default to one week from the current date.
     ///
-    @objc optional var activityExpirationDate: Date? {get}
+    @objc optional var activityExpirationDate: Date? { get }
 
     /// A dictionary containing state information related to this indexed activity.
     ///
-    @objc optional var activityUserInfo: [String: String]? {get}
+    @objc optional var activityUserInfo: [String: String]? { get }
 
     /// Activity description
     ///
-    @objc optional var activityDescription: String? {get}
+    @objc optional var activityDescription: String? { get }
 }
 
 public extension SearchableActivityConvertable where Self: UIViewController {
