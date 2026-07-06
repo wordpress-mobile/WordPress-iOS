@@ -15,7 +15,12 @@ import WordPressData
         SupportTableViewController().showFromTabBar()
     }
 
-    @objc public class func makeSharingAuthorizationViewController(publicizer: PublicizeService, url: URL, blog: Blog, delegate: SharingAuthorizationDelegate) -> UIViewController {
+    @objc public class func makeSharingAuthorizationViewController(
+        publicizer: PublicizeService,
+        url: URL,
+        blog: Blog,
+        delegate: SharingAuthorizationDelegate
+    ) -> UIViewController {
         SharingAuthorizationWebViewController(with: publicizer, url: url, for: blog, delegate: delegate)
     }
 
