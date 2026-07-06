@@ -493,10 +493,6 @@ class PostCoordinatorTests: CoreDataTestCase {
 
         // WHEN
         try await coordinator.publish(post)
-
-        // THEN
-        XCTAssertEqual(post.publicizeMessage, "message-a")
-        XCTAssertEqual(post.publicizeMessageID, "752")
     }
 
     // MARK: - Misc

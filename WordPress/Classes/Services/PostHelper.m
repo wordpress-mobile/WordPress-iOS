@@ -89,8 +89,6 @@ PostServiceType const PostServiceTypeAny = @"any";
         [self updatePost:postPost withRemoteCategories:remotePost.categories inContext:managedObjectContext];
 
         NSString *publicID = nil;
-        NSString *publicizeMessage = nil;
-        NSString *publicizeMessageID = nil;
         if (remotePost.metadata) {
             NSDictionary *latitudeDictionary = [self dictionaryWithKey:@"geo_latitude" inMetadata:remotePost.metadata];
             NSDictionary *longitudeDictionary = [self dictionaryWithKey:@"geo_longitude" inMetadata:remotePost.metadata];
@@ -103,14 +101,8 @@ PostServiceType const PostServiceTypeAny = @"any";
                 coord.longitude = [longitude doubleValue];
                 publicID = [geoPublicDictionary stringForKey:@"id"];
             }
-            NSDictionary *publicizeMessageDictionary = [self dictionaryWithKey:@"_wpas_mess" inMetadata:remotePost.metadata];
-            publicizeMessage = [publicizeMessageDictionary stringForKey:@"value"];
-            publicizeMessageID = [publicizeMessageDictionary stringForKey:@"id"];
         }
         postPost.publicID = publicID;
-        postPost.publicizeMessage = publicizeMessage;
-        postPost.publicizeMessageID = publicizeMessageID;
-        postPost.disabledPublicizeConnections = [self disabledPublicizeConnectionsForPost:post andMetadata:remotePost.metadata];
     }
 }
 

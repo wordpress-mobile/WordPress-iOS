@@ -1,6 +1,5 @@
 import Foundation
 import CoreData
-import WordPressKit
 
 /// `PublicizeInfo` encapsulates the information related to Jetpack Social auto-sharing.
 ///
@@ -21,13 +20,6 @@ public class PublicizeInfo: NSManagedObject {
 
     @nonobjc public class func newObject(in context: NSManagedObjectContext) -> PublicizeInfo? {
         NSEntityDescription.insertNewObject(forEntityName: Self.entityName(), into: context) as? PublicizeInfo
-    }
-
-    public func configure(with remote: RemotePublicizeInfo) {
-        self.shareLimit = Int64(remote.shareLimit)
-        self.toBePublicizedCount = Int64(remote.toBePublicizedCount)
-        self.sharedPostsCount = Int64(remote.sharedPostsCount)
-        self.sharesRemaining = Int64(remote.sharesRemaining)
     }
 
     /// A value-type representation for Publicize auto-sharing usage.
