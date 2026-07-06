@@ -29,7 +29,8 @@ extension Blog {
         }
 
         // Add remaining formats sorted by their display names
-        let nonStandardFormats = postFormats
+        let nonStandardFormats =
+            postFormats
             .filter { $0.key != Blog.postFormatStandard }
             .sorted { $0.value.localizedCaseInsensitiveCompare($1.value) == .orderedAscending }
             .map { $0.key }
