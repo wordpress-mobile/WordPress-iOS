@@ -604,7 +604,6 @@ final class CustomPostSettingsViewModel: NSObject, ObservableObject, PostSetting
         details: PostTypeDetailsWithEditContext
     ) -> SiteSocialConnectionsService? {
         guard PostSettingsCapabilities(from: details).supportsPublicize,
-            FeatureFlag.socialSharingV2.enabled,
             blog.supports(.publicize),
             let service = JetpackSocialFactory.shared.connectionsService(for: blog)
         else {
