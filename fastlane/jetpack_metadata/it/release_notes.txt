@@ -1,18 +1,3 @@
-Se hai un sito ospitato personalmente, d'ora in poi potrai accedere all'app utilizzando una password per applicazioni. Se non ne hai una, la creeremo automaticamente per te in modo che sia pronta all'uso.
+Abbiamo rimosso la Libreria GIF gratuita ome fonte multimediale, poiché il servizio Tenor su cui è ospitata cesserà di funzionare il 30 giugno. Dispiace anche a noi.
 
-Abbiamo aggiunto il ritaglio intelligente per le immagini in evidenza nel feed del Lettore. In questo modo, nelle foto non verrà più tagliata la testa alle persone. Decisamente meglio.
-
-Ora è presente una finestra di conferma quando contrassegni come spam una sorgente di traffico referrer. In questo modo, sarà davvero difficile farlo per sbaglio.
-
-Con questo aggiornamento abbiamo anche eliminato diversi bug.
-
-- Nella schermata delle statistiche, l'etichetta del fuso orario non mostra più l'ora solare durante il periodo dell'ora legale. (Grazie per la segnalazione, @btraviswright!)
-- Nella schermata degli articoli ora vengono mostrati i commenti dei lettori quando sono pubblicati dalla sezione in linea.
-- Il pulsante Iscriviti ora funziona correttamente negli articoli di Pubblicato di recente, consentendoti di iscriverti a un feed direttamente dall'interno dell'articolo. Rapido, semplice e freschissimo.
-- I link delle note a piè di pagina nel Lettore ora funzionano a dovere e rimandano alla posizione corretta quando li tocchi.
-- Nei commenti del Lettore, lo stato vuoto scompare dopo aver inserito un commento. Anche i commenti in cache scompaiono una volta eliminati, persino quando usi l'azione di scorrimento. Addio.
-- Abbiamo risolto vari problemi di design e visibilità, come gli stili dei pulsanti, i separatori dei commenti in modalità scura e i controlli per la riproduzione automatica dei video.
-- Abbiamo risolto un paio di problemi con le impostazioni di notifica nel Lettore. Ora rimangono nascoste se non hai effettuato l'iscrizione e vengono mostrate correttamente quando ti iscrivi.
-- Abbiamo risolto un problema per cui la vista del piè di pagina nella modifica del menu non si ridimensionava. Di conseguenza, i pulsanti di azione ora sono leggibili anche nelle lingue diverse dall'inglese. Ottimo.
-- Abbiamo risolto un problema relativo ad avatar errati nelle notifiche. Se annulli il download di un'immagine, questa non apparirà nell'app.
-- Abbiamo rimosso il link a X non funzionante nella schermata Info. (Grazie a @zynp-KC per la segnalazione!)
+Se disponi di un sito ospitato personalmente, d'ora in poi dovrai accedere all'app utilizzando una password dell'applicazione. Se non ne hai una, la creeremo automaticamente per te in modo che sia pronta quando ne hai bisogno.

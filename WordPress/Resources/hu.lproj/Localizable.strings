@@ -6,8 +6,15 @@
 /* Empty Post Title */
 "(No Title)" = "(Nincs cím)";
 
+/* Lets a user know that a local draft does not have a title.
+   Placeholder text for missing post title */
+"(no title)" = "(nincs cím)";
+
 /* Title for the advanced section in site settings screen */
 "Advanced" = "Haladó";
+
+/* the comment has an anonymous author. */
+"Anonymous" = "Névtelen";
 
 /* Approve action. Verb
    Approve comment (verb)
@@ -33,7 +40,6 @@
 /* Alert dismissal title
    Button label that dismisses the qr log in flow and returns the user back to the previous screen
    Button title, cancel fixing all threats
-   Button title. Tapping it cancels the login flow.
    Cancel Action
    Cancel action on share extension editor screen.
    Cancel action on the app extension category picker screen.
@@ -59,7 +65,6 @@
    Menus cancel button for deleting a menu.
    Menus cancel button within text bar while editing items.
    Menus: Cancel button title for canceling an edited menu item.
-   Option to cancel the email app selection when logging in with magic links
    Title of a button that dismisses the permissions alert
    Title. Title of a cancel button. Tapping disnisses an alert.
    Verb. A button title.
@@ -93,15 +98,9 @@
 /* Verb. Title for Jetpack Restore confirm button. */
 "Confirm" = "Megerősítés";
 
-/* No comment provided by engineer. */
-"Connecting to WordPress.com" = "Kapcsolódás a WordPress.com-hoz";
-
 /* Label for list of countries.
    Register Domain - Domain contact information field Country */
 "Country" = "Ország";
-
-/* The button title text for creating a new account. */
-"Create Account" = "Fiók létrehozása";
 
 /* Adjective. Comment threading is disabled. */
 "Disabled" = "Kikapcsolva";
@@ -110,20 +109,20 @@
    Menus button title for canceling/discarding changes made. */
 "Discard" = "Elvet";
 
-/* Accessibility label for the transparent space above the login dialog which acts as a button to dismiss the dialog.
-   Accessibility label for the transparent space above the signup dialog which acts as a button to dismiss the dialog. */
+/* No comment provided by engineer. */
 "Dismiss" = "Elutasítás";
 
 /* A done button
-   Button text on site creation epilogue page to proceed to My Sites.
    Done button title
    Done editing an image
    Done. Action.
    Menu button title for finishing editing the Menu name.
-   Tapping a button with this label allows the user to exit the Site Creation flow
    Title for button that will dismiss this view
    Title for the button that will dismiss this view. */
 "Done" = "Kész";
+
+/* Name for the status of a draft post. */
+"Draft" = "Vázlat";
 
 /* Editing GIF alert default action button.
    Edits a Comment
@@ -150,10 +149,7 @@
 /* Header for a comment author's email address, shown when editing a comment. */
 "Email Address" = "E-mail cím";
 
-/* Accessibility label for the email address text field.
-   Describes the email address section in the comment detail screen.
-   Placeholder for a textfield. The user may enter their email address.
-   Placeholder for the email address textfield. */
+/* Describes the email address section in the comment detail screen. */
 "Email address" = "E-mail cím";
 
 /* Message to show to user when he tries to add a self-hosted site that is an empty URL. */
@@ -171,15 +167,8 @@
 /* Label for number of followers. */
 "Followers" = "Követők";
 
-/* Alerts the user that wpcom account information is being retrieved. */
-"Getting account information" = "Fiók információk beszerzése";
-
-/* Help button
-   Open editor help options */
+/* Open editor help options */
 "Help" = "Segítség";
-
-/* Accessibility value if login page's password field is hiding the password (i.e. with asterisks). */
-"Hidden" = "Rejtett";
 
 /* No comment provided by engineer. */
 "Hide keyboard" = "Billentyűzet elrejtése";
@@ -234,18 +223,13 @@
    Text displayed in HUD while a media item is being loaded. */
 "Loading..." = "Betöltés...";
 
-/* Button title.  Tapping takes the user to the login form.
-   Label for logging in to WordPress.com account
+/* Label for logging in to WordPress.com account
    Log In 3D Touch Shortcut
-   Log In button label.
-   View title during the log in process. */
+   Log In button label. */
 "Log In" = "Bejelentkezés";
 
 /* Title of a button for signing in. */
 "Log in" = "Bejelentkezés";
-
-/* Title of a button. */
-"Lost your password?" = "Elfelejtett jelszó";
 
 /* Button leading to a screen where users can manage their installed plugins
    Screen title, where users can see all their installed plugins.
@@ -281,9 +265,7 @@
 "New Post" = "Új bejegyzés";
 
 /* Next action on comment moderation snackbar.
-   Next action on share extension editor screen.
-   Title of a button.
-   Title of a button. The text should be capitalized. */
+   Next action on share extension editor screen. */
 "Next" = "Következő";
 
 /* Empty state message (People Management). %@ can be 'users' or 'followers' */
@@ -314,11 +296,7 @@
    Title of the 'Notifications' tab - used for spotlight indexing on iOS. */
 "Notifications" = "Értesítések";
 
-/* Alert dismissal title
-   Button title. An acknowledgement of the message displayed in a prompt.
-   Dismisses the alert
-   Menus: button title for finishing editing of a menu item.
-   Ok button for dismissing alert helping users understand their site address */
+/* Menus: button title for finishing editing of a menu item. */
 "OK" = "OK";
 
 /* Disabled */
@@ -338,11 +316,8 @@
    Title of the screen showing the list of pages for a blog. */
 "Pages" = "Oldalak";
 
-/* Accessibility label for the password text field in the self-hosted login page.
-   Label for entering password in password field
+/* Label for entering password in password field
    Login dialog password placeholder
-   Password placeholder
-   Placeholder for the password textfield.
    Title for screen that shows self hosted password editor. */
 "Password" = "Jelszó";
 
@@ -350,20 +325,20 @@
    Title of pending Comments filter. */
 "Pending" = "Függőben Lévő";
 
+/* Name for the status of a post pending review. */
+"Pending review" = "Ellenőrzésre vár";
+
 /* No comment provided by engineer. */
 "Please enter a site address." = "Adjuk meg honlap címét!";
 
 /* No comment provided by engineer. */
 "Please enter a username." = "Adjuk meg a felhasználónevet!";
 
-/* Error message displayed when the user attempts use an invalid email address. */
+/* No comment provided by engineer. */
 "Please enter a valid email address." = "Adjunk meg valós e-mail címet!";
 
 /* Popup message to ask for user credentials (fields shown below). */
 "Please enter your credentials" = "Kérlek, add meg a bejelentkezési adataid";
-
-/* A short prompt asking the user to properly fill out all login fields. */
-"Please fill out all the fields" = "Töltsünk ki minden mezőt";
 
 /* Prompt for the user to retry a failed action again later */
 "Please try again later." = "Próbáljuk meg később.";
@@ -388,11 +363,18 @@
 /* Title of button that displays the App's privacy policy */
 "Privacy Policy" = "Adatvédelmi irányelvek";
 
+/* Name for the status of a post that is marked private. */
+"Private" = "Magánjellegű";
+
 /* Label for the publish (verb) button. Tapping publishes a draft post.
    Publish post action on share extension site picker screen. */
 "Publish" = "Közzététel";
 
-/* Period Stats 'Published' header
+/* A short phrase indicating a post is due to be immedately published. */
+"Publish Immediately" = "Azonnali közzététel";
+
+/* Name for the status of a published post.
+   Period Stats 'Published' header
    Title of the published filter. This filter shows a list of posts that the user has published. */
 "Published" = "Közzétéve";
 
@@ -422,7 +404,6 @@
 /* A prompt to attempt the failed network request again
    A prompt to attempt the failed network request again.
    Button title, displayed when media has failed to upload. Allows the user to try the upload again.
-   If a user taps the button with this label, the action that evinced this error view will be retried.
    Opens the media library .
    Retry updating User's Role
    Retry. Action
@@ -443,7 +424,8 @@
 /* Menus save button title while it is saving a Menu. */
 "Saving..." = "Mentés...";
 
-/* Title of the scheduled filter. This filter shows a list of posts that are scheduled to be published at a future date. */
+/* Name for the status of a scheduled post
+   Title of the scheduled filter. This filter shows a list of posts that are scheduled to be published at a future date. */
 "Scheduled" = "Ütemezve";
 
 /* Title of Stats section that shows search engine referrer traffic. */
@@ -485,7 +467,7 @@
 /* No comment provided by engineer. */
 "Sorry, site addresses must have letters too!" = "Sajnos, a honlap címben betűknek is lennie kell!";
 
-/* Error message displayed when the entered email is not available. */
+/* No comment provided by engineer. */
 "Sorry, that email address is already being used!" = "Sajnos, ez az e-mail cím már használatban van!";
 
 /* No comment provided by engineer. */
@@ -604,14 +586,10 @@
 "Uploading" = "Feltöltés";
 
 /* A placeholder for the twitter username
-   Accessibility label for the username text field in the self-hosted login page.
    Account Settings Username label
    Label for entering username in the username field
    Login dialog username placeholder
-   Placeholder for the username textfield.
-   The header and main title
-   Username label text.
-   Username placeholder */
+   The header and main title */
 "Username" = "Felhasználónév";
 
 /* No comment provided by engineer. */

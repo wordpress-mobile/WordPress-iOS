@@ -1,18 +1,3 @@
-Si vous disposez d’un site auto-hébergé, vous vous connecterez désormais à l’application à l’aide d’un mot de passe d’application. Si vous n’en avez pas, nous en créerons automatiquement un pour vous afin qu’il soit prêt quand vous en aurez besoin.
+Nous avons supprimé la bibliothèque d’images GIF gratuite en tant que source média, car le service Tenor sur lequel elle s’exécute fermera le 30 juin. Nous en sommes attristés aussi.
 
-Nous avons ajouté une fonctionnalité de recadrage intelligent pour les images mises en avant dans le flux du Lecteur. De cette manière, les personnes présentes sur les images n’auront plus leur tête coupée. C’est beaucoup mieux, non ?
-
-Désormais, lorsque vous marquez une source de trafic de parrainage comme indésirable, une boîte de dialogue de confirmation s’affiche. Vous aurez ainsi très peu de chance de la marquer comme indésirable par accident.
-
-Dans le cadre de cette mise à jour, nous avons également corrigé plusieurs bugs.
-
-- L’étiquette de fuseau horaire sur l’écran Statistiques n’affiche plus l’heure normale pendant la période d’heure d’été. (Merci d’avoir repéré ce bug, @btraviswright !)
-- L’écran des articles affiche désormais les commentaires des lecteurs lorsqu’ils sont publiés depuis la section en ligne.
-- Le bouton S’abonner fonctionne correctement dans les articles de type Fraîchement pressé. Vous pouvez donc vous abonner à un flux depuis un article. Rapidité, facilité et fraîcheur incomparable.
-- Les liens de note de bas de page dans le Lecteur fonctionnent désormais comme prévu et vous permettent d’atteindre l’emplacement en question lorsque vous appuyez dessus.
-- Dans Commentaires des lecteurs, l’état vide disparaît après la publication d’un commentaire. Les commentaires mis en cache disparaissent également après leur suppression, y compris lorsque vous utilisez l’action de balayage. Bye bye !
-- Nous avons résolu divers problèmes de design et de visibilité, comme les styles de boutons, les séparateurs de commentaires en mode sombre et les contrôles pour les vidéos à lecture automatique.
-- Dans le Lecteur, nous avons corrigé quelques problèmes avec les réglages de notifications. Ils sont désormais masqués lorsque vous n’êtes pas abonné et s’affichent correctement lorsque vous vous abonnez.
-- Nous avons corrigé le problème de non-redimensionnement de l’affichage du pied de page dans l’édition de menu. Par conséquent, les boutons d’action sont désormais lisibles dans les langues autres que l’anglais. Perfecto.
-- Nous avons corrigé un problème d’avatars incorrects dans les notifications. Si vous annulez le téléchargement de votre image, elle n’apparaîtra pas dans l’application.
-- Nous avons supprimé le lien X non fonctionnel sur l’écran À propos. (Félicitations à @zynp-KC pour l’avoir signalé !)
+Si vous avez un site auto-hébergé, vous allez maintenant vous connecter à l’application en utilisant un mot de passe d’application. Si vous n’en avez pas, nous en créerons automatiquement un pour vous afin qu’il soit prêt quand vous en aurez besoin.

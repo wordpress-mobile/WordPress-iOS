@@ -1,18 +1,3 @@
+Vi tog bort det kostnadsfria GIF-biblioteket som mediakälla eftersom Tenor-tjänsten som det körs på kommer att stängas av den 30 juni. Vi är också ledsna över det.
+
 Om du har en webbplats på egen server loggar du nu in på appen med ett applikationslösenord. Om du inte har en, skapar vi automatiskt en åt dig så att den är redo när du behöver den.
-
-Vi har lagt till smart beskärning för utvalda bilder i läsarflödet. På så sätt kommer inte huvudena på personer på bilder att bli avskurna. Mycket föredraget.
-
-Det finns nu en bekräftelsedialogruta för när du markerar en hänvisande trafikkälla som skräppost. Det borde vara riktigt, riktigt svårt att göra det av misstag.
-
-Som en del av denna uppdatering har vi också åtgärdat flera buggar.
-
-- Tidszonens etikett på skärmen Statistik visar inte längre vintertid under sommartid. (Tack för att du uppmärksammade det, @btraviswright!)
-- Skärmen Artiklar visar nu läsarkommentarer när de publiceras från den inlagda sektionen.
-Prenumerera-knappen fungerar korrekt i Freshly Pressed-inlägg, så att du kan prenumerera på ett flöde inifrån ett inlägg. Snabbt, enkelt och ack så fräscht.
-Fotnotslänkar i Läsaren fungerar nu som de ska och hoppar till rätt plats när du trycker på dem.
-Det tomma läget försvinner när du publicerar en kommentar i Läsarkommentarer. Cachelagrade kommentarer försvinner också efter att de har tagits bort, inklusive när du använder svepåtgärden. Adjö och farväl.
-- Vi har åtgärdat olika design- och synlighetsproblem, som knappstilar, kommentarsavgränsare i mörkt läge och kontroller för automatisk uppspelning av videoklipp.
-- Vi har åtgärdat ett par problem med aviseringsinställningarna i Läsaren. De är nu dolda när du inte prenumererar, och de visas korrekt när du prenumererar.
-- Vi har åtgärdat ett problem där storleken på sidfotsvyn i Menyredigering inte ändrades. Som ett resultat av detta är åtgärdsknappar nu läsbara på andra språk än engelska. Muy Bueno.
-- Vi löste ett problem med felaktiga profilbilder i aviseringar. Om du avbryter nedladdningen av din bild visas den inte i appen.
-- Vi tog bort den icke-funktionella X-länken på skärmen Om. (En eloge till @zynp-KC för rapportering!)

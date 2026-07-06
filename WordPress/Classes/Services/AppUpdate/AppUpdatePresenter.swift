@@ -33,7 +33,8 @@ final class AppUpdatePresenter: AppUpdatePresenterProtocol {
     func showBlockingUpdate(using appStoreInfo: AppStoreLookupResponse.AppStoreInfo) {
         guard let window = UIApplication.sharedIfAvailable()?.mainWindow,
               let topViewController = window.topmostPresentedViewController,
-              !((topViewController as? UINavigationController)?.viewControllers.first is BlockingUpdateViewController) else {
+              !((topViewController as? UINavigationController)?.viewControllers.first is BlockingUpdateViewController)
+        else {
             // Don't show if the view is already being displayed
             return
         }

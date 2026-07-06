@@ -3,15 +3,22 @@
   "strings" : {
     "blogging.reminders.weeklyCount" : {
       "comment" : "Number of blogging reminders per week. %1$d is the count.",
+      "extractionState" : "stale",
       "localizations" : {
         "en" : {
           "variations" : {
             "plural" : {
               "one" : {
-                "stringUnit" : { "state" : "translated", "value" : "%1$d time a week" }
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%1$d time a week"
+                }
               },
               "other" : {
-                "stringUnit" : { "state" : "translated", "value" : "%1$d times a week" }
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%1$d times a week"
+                }
               }
             }
           }
@@ -20,15 +27,22 @@
     },
     "editor.textCounter.wordCount" : {
       "comment" : "Number of words in the editor. %1$ld is the count.",
+      "extractionState" : "stale",
       "localizations" : {
         "en" : {
           "variations" : {
             "plural" : {
               "one" : {
-                "stringUnit" : { "state" : "translated", "value" : "%1$ld word" }
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%1$ld word"
+                }
               },
               "other" : {
-                "stringUnit" : { "state" : "translated", "value" : "%1$ld words" }
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%1$ld words"
+                }
               }
             }
           }

@@ -1,18 +1,3 @@
-Si tienes un sitio autoalojado, ahora iniciarás sesión en la aplicación con una contraseña de aplicación. Si no tienes uno, te lo crearemos automáticamente para que esté listo cuando lo necesites.
+Hemos eliminado la biblioteca GIF gratuita como fuente de medios, ya que el servicio Tenor en el que se ejecuta se retirará el 30 de junio. También estamos tristes por eso.
 
-Hemos añadido el recorte inteligente de las imágenes destacadas en el feed del Lector. De esa manera, las imágenes de personas no se verán cortadas la cabeza. Muy preferido.
-
-Ahora hay un cuadro de diálogo de confirmación para cuando marques una fuente de tráfico de referencia como spam. Debería ser muy, muy difícil hacerlo por accidente.
-
-Como parte de esta actualización, también hemos eliminado varios errores.
-
-- La etiqueta de zona horaria en la pantalla de estadísticas ya no muestra la hora estándar durante el horario de verano. (Gracias por la captura, @btraviswright!)
-- La pantalla de artículos ahora muestra los comentarios del lector cuando se publican desde la sección integrada.
-- El botón Suscripción funciona correctamente en las entradas de Freshly Pressed, por lo que puedes suscribirte a un feed desde dentro de una entrada. Rápido, fácil y muy fresco.
-- Los enlaces de las notas a pie de página en el Lector ahora funcionan como deben y saltan a la ubicación correcta cuando los tocas.
-- En los comentarios del lector, el estado vacío desaparece después de publicar un comentario. Los comentarios en caché también desaparecerán cuando se eliminen, incluso cuando utilices la acción de deslizar. Hasta nunca.
-- Hemos corregido diversos problemas de diseño y visibilidad, como los estilos de los botones, los separadores de comentarios en modo oscuro y los controles para la reproducción automática de vídeos.
-- En el Lector, hemos corregido un par de problemas con los ajustes de notificaciones. Ahora se ocultan cuando no estás suscrito y se muestran correctamente cuando te suscribes.
-- Hemos corregido un problema por el que la vista de pie de página en la edición del menú no cambiaba de tamaño. Como resultado, los botones de acción ahora son legibles en idiomas distintos al inglés. Muy bueno.
-- Hemos resuelto un problema con avatares incorrectos en las notificaciones. Si cancelas la descarga de la imagen, esta no aparecerá en la aplicación.
-- Hemos eliminado el enlace X no funcional en la pantalla «Acerca de». (Grita a @zynp-KC por informar!)
+Si tienes un sitio autoalojado, ahora iniciarás sesión en la aplicación con una contraseña de aplicación. Si no tienes, crearemos una automáticamente para cuando la necesites.

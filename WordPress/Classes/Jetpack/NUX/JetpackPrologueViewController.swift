@@ -107,6 +107,7 @@ class JetpackPrologueViewController: UIViewController {
         gradientLayer.removeFromSuperlayer()
         gradientLayer = makeGradientLayer()
         view.layer.insertSublayer(gradientLayer, above: jetpackAnimatedView.layer)
+        gradientLayer.frame = view.bounds
     }
 
     override func viewDidLayoutSubviews() {

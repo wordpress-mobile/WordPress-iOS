@@ -32,7 +32,8 @@ LOCALIZABLE_CATALOG = File.join(PROJECT_ROOT_FOLDER, 'WordPress', 'Resources', '
 # Source roots to extract from — mirrors `generate_strings_file`'s genstrings inputs.
 CATALOG_SOURCE_ROOTS = [
   File.join(PROJECT_ROOT_FOLDER, 'WordPress'),
-  File.join(PROJECT_ROOT_FOLDER, 'Modules', 'Sources')
+  File.join(PROJECT_ROOT_FOLDER, 'Modules', 'Sources'),
+  File.join(PROJECT_ROOT_FOLDER, 'Sources')
 ].freeze
 
 # The custom localization routine to additionally extract (same as the genstrings `routines:` today).

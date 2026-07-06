@@ -1,18 +1,3 @@
+We hebben de gratis GIF-bibliotheek verwijderd als mediabron, omdat de Tenor-service waarop deze wordt uitgevoerd op 30 juni wordt afgesloten. Wij zijn er ook verdrietig over.
+
 Als je een zelf-gehoste site hebt, meld je je nu aan bij de app met een applicatiewachtwoord. Als je er geen hebt, maken we er automatisch een voor je, zodat deze klaar staat wanneer je hem nodig hebt.
-
-We hebben slim bijsnijden toegevoegd voor uitgelichte afbeeldingen in de Reader-feed. Op die manier worden de hoofden van mensen niet afgehakt. Veel voorkeur.
-
-Er is nu een bevestigingsvenster voor wanneer je een verwijzende verkeersbron als spam markeert. het is heel, heel moeilijk om dit per ongeluk te doen.
-
-Als onderdeel van deze update hebben we ook verschillende bugs geplet.
-
-- Het tijdzone-label op het scherm Statistieken toont niet langer de Standaardtijd tijdens de zomertijd. (Bedankt voor de vangst, @braviswright!)
-- Het scherm Artikelen toont nu reacties van lezers wanneer ze worden geplaatst vanuit de inline-sectie.
-- De knop Abonneren werkt goed in berichten vers van de pers, zodat je je kan abonneren op een feed in een bericht. Snel, eenvoudig en o-zo-fris.
-- Voetnootlinks in de Reader werken nu zoals ze zouden moeten werken en springen naar de juiste locatie wanneer je erop tikt.
-- In Reacties op lezer verdwijnt de lege status nadat je een reactie hebt geplaatst. Gecachete reacties verdwijnen ook nadat ze zijn verwijderd, inclusief wanneer je de veegactie gebruikt. Doei!
-- We hebben verschillende ontwerp- en zichtbaarheidsproblemen opgelost, zoals knopstijlen, scheidingstekens voor reacties in de donkere modus en bedieningselementen voor automatisch afgespeelde video's.
-- In de Reader hebben we een aantal problemen met de notificatie-instellingen opgelost. Ze zijn nu verborgen wanneer je niet bent geabonneerd en ze verschijnen goed wanneer je je abonneert.
-- We hebben een probleem opgelost waarbij de grootte van de footerweergave in menu Bewerken niet werd gewijzigd. Als gevolg hiervan zijn actieknoppen nu leesbaar in niet-Engelse talen. Muy bueno.
-- We hebben een probleem opgelost met onjuiste avatars in meldingen. Als je de download van je afbeelding annuleert, wordt deze niet in de app weergegeven.
-- We hebben de niet-functionele X-link op het Over-scherm verwijderd. (Shout-out naar @zynp-KC voor de rapportage!)

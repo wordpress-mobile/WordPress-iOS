@@ -62,6 +62,10 @@
 /* Menus title label text for a post that has no set title. */
 "(Untitled)" = "(Án titils)";
 
+/* Lets a user know that a local draft does not have a title.
+   Placeholder text for missing post title */
+"(no title)" = "(ekkert heiti)";
+
 /* Menus button text for adding a new menu to a site. */
 "+ Add new menu" = "+ Bæta við nýrri valmynd";
 
@@ -70,9 +74,6 @@
 
 /* Placeholder text for the title of a site */
 "A title for the site" = "Nafn á vef";
-
-/* An error message. */
-"A valid email address is needed to mail an authentication link. Please return to the previous screen and provide a valid email address." = "Gilt netfang er nauðsynlegt til þess að fá auðkenningartengil í tölvupósti. Vinsamlegast farðu til baka á fyrri skjámynd og sláðu inn gilt netfang.";
 
 /* Label for active Theme browser cell */
 "ACTIVE" = "VIRKT";
@@ -167,6 +168,9 @@
 /* Error message shown when a media upload fails for unknown reason and the user should try again. */
 "An unknown error occurred. Please try again." = "Óþekkt villa kom upp. Vinsamlegast reynið aftur.";
 
+/* the comment has an anonymous author. */
+"Anonymous" = "Nafnlaust";
+
 /* App Settings Title
    Link to App Settings section
    Title of the 'App Settings' screen within the 'Me' tab - used for spotlight indexing on iOS. */
@@ -259,13 +263,9 @@
 /* Accessibility label for taking an image or video with the camera on formatting toolbar. */
 "Camera" = "Myndavél";
 
-/* Title of an alert letting the user know */
-"Can Not Request Link" = "Gat ekki óskað eftir tengli";
-
 /* Alert dismissal title
    Button label that dismisses the qr log in flow and returns the user back to the previous screen
    Button title, cancel fixing all threats
-   Button title. Tapping it cancels the login flow.
    Cancel Action
    Cancel action on share extension editor screen.
    Cancel action on the app extension category picker screen.
@@ -291,7 +291,6 @@
    Menus cancel button for deleting a menu.
    Menus cancel button within text bar while editing items.
    Menus: Cancel button title for canceling an edited menu item.
-   Option to cancel the email app selection when logging in with magic links
    Title of a button that dismisses the permissions alert
    Title. Title of a cancel button. Tapping disnisses an alert.
    Verb. A button title.
@@ -314,7 +313,8 @@
 /* Alert title. */
 "Careful!" = "Varlega!";
 
-/* Category menu item in share extension. */
+/* Category menu item in share extension.
+   Menu item label for linking a specific category. */
 "Category" = "Flokkur";
 
 /* Center alignment for an image. Should be the same as in core WP. */
@@ -353,6 +353,9 @@
 
 /* Close Comments Title */
 "Close commenting" = "Loka fyrir athuagsemdir";
+
+/* Menu item label for linking a comic page. */
+"Comics" = "Teiknimyndir";
 
 /* Header for a comment's content, shown when editing a comment.
    Text for the 'comment' when there is 1 or 0 comments */
@@ -428,9 +431,6 @@
 /* Informs the user of consequences of chooseing a new account to connect to publicize.  The %@ characters are placeholders for account names. */
 "Connecting %@ will replace the existing connection to %@." = "Tenging við %1$@ mun koma í staðinn fyrir tengingu við %2$@.";
 
-/* No comment provided by engineer. */
-"Connecting to WordPress.com" = "Tengist WordPress.com";
-
 /* Verb. Text label. Allows the user to connect to a third-party sharing service like Facebook or Twitter. */
 "Connecting..." = "Tengist…";
 
@@ -483,9 +483,6 @@
    Register Domain - Domain contact information field Country */
 "Country" = "Land";
 
-/* The button title text for creating a new account. */
-"Create Account" = "Stofna aðgang";
-
 /* Button to progress to the next step
    Site creation. Step 1. Screen title
    Title for the button to progress with creating the site with the selected design. */
@@ -506,6 +503,9 @@
 
 /* Label for selecting the default category of a post */
 "Default Category" = "Sjálfgefinn flokkur";
+
+/* Menu name for the default menu that is automatically generated. */
+"Default Menu" = "Sjálfgefin valmynd";
 
 /* Label for selecting the default post format
    Title for screen to select a default post format for a blog */
@@ -575,24 +575,23 @@
    Title for the Discussion Settings Screen */
 "Discussion" = "Umræða";
 
-/* Accessibility label for the transparent space above the login dialog which acts as a button to dismiss the dialog.
-   Accessibility label for the transparent space above the signup dialog which acts as a button to dismiss the dialog. */
+/* No comment provided by engineer. */
 "Dismiss" = "Loka";
 
-/* Display Name label text.
-   User's Display Name */
+/* User's Display Name */
 "Display Name" = "Nafn til að sýna";
 
 /* A done button
-   Button text on site creation epilogue page to proceed to My Sites.
    Done button title
    Done editing an image
    Done. Action.
    Menu button title for finishing editing the Menu name.
-   Tapping a button with this label allows the user to exit the Site Creation flow
    Title for button that will dismiss this view
    Title for the button that will dismiss this view. */
 "Done" = "Búinn";
+
+/* Name for the status of a draft post. */
+"Draft" = "Drög";
 
 /* Editing GIF alert default action button.
    Edits a Comment
@@ -640,8 +639,7 @@
 /* Overlay message displayed when export content started */
 "Email sent!" = "Tölvupóstur sendur!";
 
-/* Accessibility value presented in the signup epilogue for an empty value.
-   Label for size of media when the cache is empty. */
+/* Label for size of media when the cache is empty. */
 "Empty" = "Tómt";
 
 /* Message to show to user when he tries to add a self-hosted site that is an empty URL. */
@@ -727,9 +725,6 @@
 /* Displayed in the Notifications Tab as a message, when the Follow Filter shows no notifications */
 "Get noticed: comment on posts you've read." = "Vektu eftirtekt: skrifaðu athugasemdir við færslur sem þú hefur lesið.";
 
-/* Alerts the user that wpcom account information is being retrieved. */
-"Getting account information" = "Sæki upplýsingar um aðgang";
-
 /* Button label for going to settings to approve push notifications
    Opens WPiOS Settings.app Section */
 "Go to iOS Settings" = "Fara í iOS stillingar";
@@ -758,17 +753,13 @@
 /* Accessibility label for selecting h6 paragraph style button on the formatting toolbar. */
 "Header 6" = "Haus 6";
 
-/* Help button
-   Open editor help options */
+/* Open editor help options */
 "Help" = "Hjálp";
 
 /* Link to Help section
    Open editor help options
    Title of the 'Help & Support' screen within the 'Me' tab - used for spotlight indexing on iOS. */
 "Help & Support" = "Hjálp & aðstoð";
-
-/* Accessibility value if login page's password field is hiding the password (i.e. with asterisks). */
-"Hidden" = "Falinn";
 
 /* Title of a button used to collapse a group */
 "Hide" = "Hylja";
@@ -803,9 +794,6 @@
 
 /* Describes a standard *.wordpress.com site domain */
 "Included with Site" = "Fylgir með vefnum";
-
-/* An error message shown when a user signed in with incorrect credentials. */
-"Incorrect username or password. Please try entering your login details again." = "Ógilt notandanafn eða lykilorð. Vinsamlegast sláðu inn innskráningarupplýsingar þínar aftur.";
 
 /* WordPress.com Community Footer Text */
 "Information on WordPress.com courses and events (online & in-person)." = "Upplýsingar um WordPress.com námskeið og viðburði (á netinu & í kjötheimum).";
@@ -920,7 +908,8 @@
 /* Setting: indicates if Replies to your comments will be notified */
 "Likes on my posts" = "Líkar við færslurnar mínar";
 
-/* Label for link title in Clicks stat. */
+/* Label for link title in Clicks stat.
+   Menu item label for linking a custom source URL. */
 "Link" = "Tengill";
 
 /* Menus title label when editing a menu item as a link. */
@@ -952,25 +941,17 @@
    Text displayed in HUD while a media item is being loaded. */
 "Loading..." = "Hleð...";
 
-/* Button title.  Tapping takes the user to the login form.
-   Label for logging in to WordPress.com account
+/* Label for logging in to WordPress.com account
    Log In 3D Touch Shortcut
-   Log In button label.
-   View title during the log in process. */
+   Log In button label. */
 "Log In" = "Innskrá";
 
 /* Button for confirming logging out from WordPress.com account
    Label for logging out from WordPress.com account */
 "Log Out" = "Skrá út";
 
-/* A generic error message for a failed log in. */
-"Log in failed. Please try again." = "Innskráning mistókst. Vinsamlegast reyndu aftur.";
-
 /* Login Request Expired */
 "Login Request Expired" = "Innskráningarbeiðni rann út";
-
-/* Title of a button. */
-"Lost your password?" = "Tapað lykilorð?";
 
 /* No comment provided by engineer. */
 "Main Navigation" = "Aðalvalmynd";
@@ -1060,6 +1041,9 @@
 /* New Post 3D Touch Shortcut */
 "New Post" = "Ný færsla";
 
+/* Menu item title text used as default when creating a new menu item. */
+"New item" = "Nýtt atriði";
+
 /* Screen title, where users can see the newest plugins */
 "Newest" = "Nýjustu";
 
@@ -1067,9 +1051,7 @@
 "Newest first" = "Nýjast fyrst";
 
 /* Next action on comment moderation snackbar.
-   Next action on share extension editor screen.
-   Title of a button.
-   Title of a button. The text should be capitalized. */
+   Next action on share extension editor screen. */
 "Next" = "Næsta";
 
 /* Accessibility label for the next notification button */
@@ -1165,11 +1147,7 @@
 /* Discoverability title for numbered list keyboard shortcut. */
 "Numbered List" = "Númeraður listi";
 
-/* Alert dismissal title
-   Button title. An acknowledgement of the message displayed in a prompt.
-   Dismisses the alert
-   Menus: button title for finishing editing of a menu item.
-   Ok button for dismissing alert helping users understand their site address */
+/* Menus: button title for finishing editing of a menu item. */
 "OK" = "Í lagi";
 
 /* Disabled */
@@ -1208,10 +1186,6 @@
 /* Opens iOS's Device Settings for WordPress App */
 "Open Device Settings" = "Opna stillingar tækis";
 
-/* The button title text for opening the user's preferred email app.
-   Title of a button. The text should be capitalized.  Clicking opens the mail app in the user's iOS device. */
-"Open Mail" = "Opna Mail";
-
 /* Title of a button that opens the apps settings in the system Settings.app */
 "Open Settings" = "Opna Settings";
 
@@ -1249,7 +1223,8 @@
    Other Sites Notification Settings Title */
 "Other Sites" = "Aðrir vefir";
 
-/* Noun. Type of content being selected is a blog page
+/* Menu item label for linking a page.
+   Noun. Type of content being selected is a blog page
    Title shown when selecting a post type of Page from the Share Extension. */
 "Page" = "Síða";
 
@@ -1262,17 +1237,17 @@
    Settings: Comments Paging preferences */
 "Paging" = "Síðuskipting";
 
-/* Accessibility label for the password text field in the self-hosted login page.
-   Label for entering password in password field
+/* Label for entering password in password field
    Login dialog password placeholder
-   Password placeholder
-   Placeholder for the password textfield.
    Title for screen that shows self hosted password editor. */
 "Password" = "Lykilorð";
 
 /* Button title for Pending comment state.
    Title of pending Comments filter. */
 "Pending" = "Í bið";
+
+/* Name for the status of a post pending review. */
+"Pending review" = "Bíður yfirlestrar";
 
 /* People site intent topic */
 "People" = "Fólk";
@@ -1289,14 +1264,11 @@
 /* No comment provided by engineer. */
 "Please enter a username." = "Vinsamlegast sláðu inn notandanafn.";
 
-/* Error message displayed when the user attempts use an invalid email address. */
+/* No comment provided by engineer. */
 "Please enter a valid email address." = "Vinsamlega sláðu inn gilt netfang";
 
 /* Popup message to ask for user credentials (fields shown below). */
 "Please enter your credentials" = "Vinsamlegast sláðu inn aðgangsupplýsingar þínar.";
-
-/* A short prompt asking the user to properly fill out all login fields. */
-"Please fill out all the fields" = "Vinsamlegast fylltu alla reiti út";
 
 /* No comment provided by engineer. */
 "Please try entering your login details again." = "Vinsamlegast reyndu að slá inn innskráningarupplýsingar þínar aftur.";
@@ -1308,7 +1280,8 @@
 /* Section title for Popular Languages */
 "Popular languages" = "Vinsæl tungumál";
 
-/* Noun. Type of content being selected is a blog post
+/* Menu item label for linking a post.
+   Noun. Type of content being selected is a blog post
    Title shown when selecting a post type of Post from the Share Extension. */
 "Post" = "Færsla";
 
@@ -1350,11 +1323,21 @@
 /* Title of button that displays the App's privacy policy */
 "Privacy Policy" = "Persónuverndarstefna";
 
+/* Name for the status of a post that is marked private. */
+"Private" = "Einkamál";
+
+/* Menu item label for linking a project page. */
+"Projects" = "Verkefni";
+
 /* Label for the publish (verb) button. Tapping publishes a draft post.
    Publish post action on share extension site picker screen. */
 "Publish" = "Birta";
 
-/* Period Stats 'Published' header
+/* A short phrase indicating a post is due to be immedately published. */
+"Publish Immediately" = "Birta strax";
+
+/* Name for the status of a published post.
+   Period Stats 'Published' header
    Title of the published filter. This filter shows a list of posts that the user has published. */
 "Published" = "Birt";
 
@@ -1430,7 +1413,7 @@
    Verb. Button title. Reply to a comment. */
 "Reply" = "Svara";
 
-/* An explaination of a setting. */
+/* An explanation of a setting. */
 "Require manual approval for comments that include more than this number of links." = "Krefjast samþykkis fyrir athugasemdir með fleiri en þennan fjölda tengla.";
 
 /* Explains the effect of the 'No comments' auto approval setting. */
@@ -1457,7 +1440,6 @@
 /* A prompt to attempt the failed network request again
    A prompt to attempt the failed network request again.
    Button title, displayed when media has failed to upload. Allows the user to try the upload again.
-   If a user taps the button with this label, the action that evinced this error view will be retried.
    Opens the media library .
    Retry updating User's Role
    Retry. Action
@@ -1481,9 +1463,6 @@
    User's Role */
 "Role" = "Hlutverk";
 
-/* One Time Code has been sent via SMS */
-"SMS Sent" = "SMS sent";
-
 /* Menus save button title
    Save Action
    Save draft post action on share extension site picker screen.
@@ -1495,7 +1474,8 @@
 /* Menus save button title while it is saving a Menu. */
 "Saving..." = "Vista...";
 
-/* Title of the scheduled filter. This filter shows a list of posts that are scheduled to be published at a future date. */
+/* Name for the status of a scheduled post
+   Title of the scheduled filter. This filter shows a list of posts that are scheduled to be published at a future date. */
 "Scheduled" = "Tímaáætlað";
 
 /* Title of Stats section that shows search engine referrer traffic. */
@@ -1524,9 +1504,6 @@
 
 /* Menus alert message for alerting the user to unsaved changes while trying to select a different menu. */
 "Selecting a different menu will discard changes you've made to the current menu. Are you sure you want to continue?" = "Með því að velja aðra valmynd, tapar þú breytingum sem þú hefur gert á núverandi valmynd. Ertu viss um að þú viljir halda áfram?";
-
-/* Title of a button. The text should be uppercase.  Clicking requests a hyperlink be emailed ot the user. */
-"Send Link" = "Senda tengil";
 
 /* Settings: Sending Pingbacks */
 "Send Pingbacks" = "Senda tilvísanir";
@@ -1627,7 +1604,7 @@
 /* No comment provided by engineer. */
 "Sorry, site addresses must have letters too!" = "Því miður, vefföng verða líka að hafa bókstafi!";
 
-/* Error message displayed when the entered email is not available. */
+/* No comment provided by engineer. */
 "Sorry, that email address is already being used!" = "Því miður, þetta netfang er nú þegar í notkun!";
 
 /* No comment provided by engineer. */
@@ -1705,6 +1682,9 @@
    Theme Support action title */
 "Support" = "Aðstoð";
 
+/* Menu item label for linking a specific tag. */
+"Tag" = "Efnisorð";
+
 /* Label for tagline blog setting
    Title for screen that show tagline editor */
 "Tagline" = "Kjörorð";
@@ -1719,6 +1699,9 @@
 
 /* Title of button that displays the App's terms of service */
 "Terms of Service" = "Notendaskilmálar";
+
+/* Menu item label for linking a testimonial post. */
+"Testimonials" = "Reynslusögur";
 
 /* Title of a button style */
 "Text Only" = "Einungis texti";
@@ -1861,7 +1844,8 @@
    Trashes the comment */
 "Trash" = "Rusl";
 
-/* Title of the trashed filter. This filter shows posts that have been moved to the trash bin.
+/* Name for the status of a trashed post
+   Title of the trashed filter. This filter shows posts that have been moved to the trash bin.
    Title of trashed Comments filter. */
 "Trashed" = "Hent í ruslið";
 
@@ -1959,14 +1943,10 @@
 "Use" = "Nota";
 
 /* A placeholder for the twitter username
-   Accessibility label for the username text field in the self-hosted login page.
    Account Settings Username label
    Label for entering username in the username field
    Login dialog username placeholder
-   Placeholder for the username textfield.
-   The header and main title
-   Username label text.
-   Username placeholder */
+   The header and main title */
 "Username" = "Notandanafn";
 
 /* Setting: indicates if Mentions will be notified */
@@ -1977,9 +1957,6 @@
 
 /* Blog Users */
 "Users" = "Notendur";
-
-/* two factor code placeholder */
-"Verification code" = "Staðfestingarkóði";
 
 /* Push Authentication Alert Title */
 "Verify Log In" = "Staðfesta innskráningu";
@@ -2066,9 +2043,6 @@
 
 /* No comment provided by engineer. */
 "WordPress version too old" = "WordPress útgáfa orðin of gömul";
-
-/* No comment provided by engineer. */
-"WordPress version too old. The site at %@ uses WordPress %@. We recommend to update to the latest version, or at least %@" = "WordPress útgáfa orðin of gömul. Vefurinn %1$@ notar WordPress %2$@. Við mælum með uppfærslu í nýjustu útgáfu eða í það minnsta %3$@";
 
 /* Label for WordPress.com followers */
 "WordPress.com" = "WordPress.com";

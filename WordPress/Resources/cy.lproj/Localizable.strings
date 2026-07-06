@@ -59,6 +59,10 @@
 /* Menus title label text for a post that has no set title. */
 "(Untitled)" = "(Dideitl)";
 
+/* Lets a user know that a local draft does not have a title.
+   Placeholder text for missing post title */
+"(no title)" = "(dim teitl)";
+
 /* Menus button text for adding a new menu to a site. */
 "+ Add new menu" = "+ Ychwanegu dewislen newydd";
 
@@ -67,9 +71,6 @@
 
 /* Placeholder text for the title of a site */
 "A title for the site" = "Teitl y wefan";
-
-/* An error message. */
-"A valid email address is needed to mail an authentication link. Please return to the previous screen and provide a valid email address." = "Mae angen cyfeiriad e-bost dilys er mwyn anfon dolen dilysu. Ewch nôl i'r sgrin flaenorol a darparu cyfeiriad e-bost dilys.";
 
 /* Label for active Theme browser cell */
 "ACTIVE" = "GWEITHREDOL";
@@ -160,6 +161,9 @@
 
 /* Error recorded when all of the media associated with a post fail to be attached to the post on the server. */
 "An error occurred when attempting to attach uploaded media to the post." = "Digwyddodd gwall wrth geisio atodi cyfrwng wedi ei lwytho i fyny i'r cofnod...";
+
+/* the comment has an anonymous author. */
+"Anonymous" = "Dienw";
 
 /* App Settings Title
    Link to App Settings section
@@ -256,13 +260,9 @@
 /* Accessibility label for taking an image or video with the camera on formatting toolbar. */
 "Camera" = "Camera";
 
-/* Title of an alert letting the user know */
-"Can Not Request Link" = "Methu gwneud Cais am Ddnolen";
-
 /* Alert dismissal title
    Button label that dismisses the qr log in flow and returns the user back to the previous screen
    Button title, cancel fixing all threats
-   Button title. Tapping it cancels the login flow.
    Cancel Action
    Cancel action on share extension editor screen.
    Cancel action on the app extension category picker screen.
@@ -288,7 +288,6 @@
    Menus cancel button for deleting a menu.
    Menus cancel button within text bar while editing items.
    Menus: Cancel button title for canceling an edited menu item.
-   Option to cancel the email app selection when logging in with magic links
    Title of a button that dismisses the permissions alert
    Title. Title of a cancel button. Tapping disnisses an alert.
    Verb. A button title.
@@ -311,7 +310,8 @@
 /* Alert title. */
 "Careful!" = "Gofal!";
 
-/* Category menu item in share extension. */
+/* Category menu item in share extension.
+   Menu item label for linking a specific category. */
 "Category" = "Categori";
 
 /* Center alignment for an image. Should be the same as in core WP. */
@@ -347,6 +347,9 @@
 
 /* Close Comments Title */
 "Close commenting" = "Cau sylwadau";
+
+/* Menu item label for linking a comic page. */
+"Comics" = "Comics";
 
 /* Header for a comment's content, shown when editing a comment.
    Text for the 'comment' when there is 1 or 0 comments */
@@ -422,9 +425,6 @@
 /* Informs the user of consequences of chooseing a new account to connect to publicize.  The %@ characters are placeholders for account names. */
 "Connecting %@ will replace the existing connection to %@." = "Bydd cysylltu â %1$@ yn disodli'r cysylltiad presennol â %2$@.";
 
-/* No comment provided by engineer. */
-"Connecting to WordPress.com" = "Cysylltu â WordPress.com";
-
 /* Verb. Text label. Allows the user to connect to a third-party sharing service like Facebook or Twitter. */
 "Connecting..." = "Cysylltu...";
 
@@ -474,9 +474,6 @@
    Register Domain - Domain contact information field Country */
 "Country" = "Gwlad";
 
-/* The button title text for creating a new account. */
-"Create Account" = "Creu Cyfrif";
-
 /* Button to progress to the next step
    Site creation. Step 1. Screen title
    Title for the button to progress with creating the site with the selected design. */
@@ -497,6 +494,9 @@
 
 /* Label for selecting the default category of a post */
 "Default Category" = "Categori Rhagosodedig";
+
+/* Menu name for the default menu that is automatically generated. */
+"Default Menu" = "Dewislen Ragosodedig";
 
 /* Label for selecting the default post format
    Title for screen to select a default post format for a blog */
@@ -563,24 +563,23 @@
    Title for the Discussion Settings Screen */
 "Discussion" = "Trafodaeth";
 
-/* Accessibility label for the transparent space above the login dialog which acts as a button to dismiss the dialog.
-   Accessibility label for the transparent space above the signup dialog which acts as a button to dismiss the dialog. */
+/* No comment provided by engineer. */
 "Dismiss" = "Cau";
 
-/* Display Name label text.
-   User's Display Name */
+/* User's Display Name */
 "Display Name" = "Enw Dangos";
 
 /* A done button
-   Button text on site creation epilogue page to proceed to My Sites.
    Done button title
    Done editing an image
    Done. Action.
    Menu button title for finishing editing the Menu name.
-   Tapping a button with this label allows the user to exit the Site Creation flow
    Title for button that will dismiss this view
    Title for the button that will dismiss this view. */
 "Done" = "Gorffen";
+
+/* Name for the status of a draft post. */
+"Draft" = "Drafft";
 
 /* Editing GIF alert default action button.
    Edits a Comment
@@ -696,9 +695,6 @@
 /* Title for the general section in site settings screen */
 "General" = "Cyffredinol";
 
-/* Alerts the user that wpcom account information is being retrieved. */
-"Getting account information" = "Estyn manylion cyfrif";
-
 /* Button label for going to settings to approve push notifications
    Opens WPiOS Settings.app Section */
 "Go to iOS Settings" = "Ewch i osodiadau iOS";
@@ -709,17 +705,13 @@
 /* Post HTML content */
 "HTML Content" = "Cynnwys HTML";
 
-/* Help button
-   Open editor help options */
+/* Open editor help options */
 "Help" = "Cymorth";
 
 /* Link to Help section
    Open editor help options
    Title of the 'Help & Support' screen within the 'Me' tab - used for spotlight indexing on iOS. */
 "Help & Support" = "Cymorth a Chefnogaeth";
-
-/* Accessibility value if login page's password field is hiding the password (i.e. with asterisks). */
-"Hidden" = "Cudd";
 
 /* No comment provided by engineer. */
 "Hide keyboard" = "Cuddio bysellfwrdd";
@@ -748,9 +740,6 @@
 
 /* Describes a standard *.wordpress.com site domain */
 "Included with Site" = "Wedi ei Gynnwys gyda'r Wefan";
-
-/* An error message shown when a user signed in with incorrect credentials. */
-"Incorrect username or password. Please try entering your login details again." = "Enw defnyddiwr neu gyfrinair anghywir. Ceisiwch fewngofnodi eto.";
 
 /* WordPress.com Community Footer Text */
 "Information on WordPress.com courses and events (online & in-person)." = "Gwybodaeth am gyrsiau a digwyddiadau WordPress.com (ar-lein a byw).";
@@ -856,7 +845,8 @@
 /* Setting: indicates if Replies to your comments will be notified */
 "Likes on my posts" = "Hoffi ar fy nghofnodion";
 
-/* Label for link title in Clicks stat. */
+/* Label for link title in Clicks stat.
+   Menu item label for linking a custom source URL. */
 "Link" = "Cyswllt i";
 
 /* Menus title label when editing a menu item as a link. */
@@ -888,21 +878,13 @@
    Text displayed in HUD while a media item is being loaded. */
 "Loading..." = "Llwytho...";
 
-/* Button title.  Tapping takes the user to the login form.
-   Label for logging in to WordPress.com account
+/* Label for logging in to WordPress.com account
    Log In 3D Touch Shortcut
-   Log In button label.
-   View title during the log in process. */
+   Log In button label. */
 "Log In" = "Mewngofnodi";
-
-/* A generic error message for a failed log in. */
-"Log in failed. Please try again." = "Mewngofnodi wedi methu. Ceisiwch eto.";
 
 /* Login Request Expired */
 "Login Request Expired" = "Daeth y Cais Mewngofnodi i Ben";
-
-/* Title of a button. */
-"Lost your password?" = "Wedi colli eich cyfrinair?";
 
 /* No comment provided by engineer. */
 "Main Navigation" = "Llywio";
@@ -976,6 +958,9 @@
 /* New Post 3D Touch Shortcut */
 "New Post" = "Cofnod Newydd";
 
+/* Menu item title text used as default when creating a new menu item. */
+"New item" = "Eitem newydd";
+
 /* Screen title, where users can see the newest plugins */
 "Newest" = "Diweddaraf";
 
@@ -983,9 +968,7 @@
 "Newest first" = "Diweddaraf yn gyntaf";
 
 /* Next action on comment moderation snackbar.
-   Next action on share extension editor screen.
-   Title of a button.
-   Title of a button. The text should be capitalized. */
+   Next action on share extension editor screen. */
 "Next" = "Nesaf";
 
 /* Title of error prompt when no internet connection is available. */
@@ -1075,11 +1058,7 @@
 /* Discoverability title for numbered list keyboard shortcut. */
 "Numbered List" = "Rhestr wedi'i Rhifo";
 
-/* Alert dismissal title
-   Button title. An acknowledgement of the message displayed in a prompt.
-   Dismisses the alert
-   Menus: button title for finishing editing of a menu item.
-   Ok button for dismissing alert helping users understand their site address */
+/* Menus: button title for finishing editing of a menu item. */
 "OK" = "Iawn";
 
 /* Disabled */
@@ -1114,10 +1093,6 @@
 
 /* An informal exclaimation meaning `something went wrong`. */
 "Oops!" = "Wps!";
-
-/* The button title text for opening the user's preferred email app.
-   Title of a button. The text should be capitalized.  Clicking opens the mail app in the user's iOS device. */
-"Open Mail" = "Agor E-bost";
 
 /* Title of a button that opens the apps settings in the system Settings.app */
 "Open Settings" = "Agor y Gosodiadau";
@@ -1156,7 +1131,8 @@
    Other Sites Notification Settings Title */
 "Other Sites" = "Gwefannau Eraill";
 
-/* Noun. Type of content being selected is a blog page
+/* Menu item label for linking a page.
+   Noun. Type of content being selected is a blog page
    Title shown when selecting a post type of Page from the Share Extension. */
 "Page" = "Tudalen";
 
@@ -1169,17 +1145,17 @@
    Settings: Comments Paging preferences */
 "Paging" = "Tudalennu";
 
-/* Accessibility label for the password text field in the self-hosted login page.
-   Label for entering password in password field
+/* Label for entering password in password field
    Login dialog password placeholder
-   Password placeholder
-   Placeholder for the password textfield.
    Title for screen that shows self hosted password editor. */
 "Password" = "Cyfrinair";
 
 /* Button title for Pending comment state.
    Title of pending Comments filter. */
 "Pending" = "Dan Ystyriaeth";
+
+/* Name for the status of a post pending review. */
+"Pending review" = "Disgwyl adolygiad";
 
 /* People site intent topic */
 "People" = "Pobl";
@@ -1196,14 +1172,11 @@
 /* No comment provided by engineer. */
 "Please enter a username." = "Rhowch enw defnyddiwr.";
 
-/* Error message displayed when the user attempts use an invalid email address. */
+/* No comment provided by engineer. */
 "Please enter a valid email address." = "Rhowch gyfeiriad e-bost dilys.";
 
 /* Popup message to ask for user credentials (fields shown below). */
 "Please enter your credentials" = "Rhowch eich manylion";
-
-/* A short prompt asking the user to properly fill out all login fields. */
-"Please fill out all the fields" = "Llenwch pob maes";
 
 /* No comment provided by engineer. */
 "Please try entering your login details again." = "Ceisiwch fewngofnodi eto.";
@@ -1215,7 +1188,8 @@
 /* Section title for Popular Languages */
 "Popular languages" = "Ieithoedd poblogaidd";
 
-/* Noun. Type of content being selected is a blog post
+/* Menu item label for linking a post.
+   Noun. Type of content being selected is a blog post
    Title shown when selecting a post type of Post from the Share Extension. */
 "Post" = "Cofnod";
 
@@ -1257,11 +1231,21 @@
 /* Title of button that displays the App's privacy policy */
 "Privacy Policy" = "Polisi Preifatrwydd";
 
+/* Name for the status of a post that is marked private. */
+"Private" = "Preifat";
+
+/* Menu item label for linking a project page. */
+"Projects" = "Projectau";
+
 /* Label for the publish (verb) button. Tapping publishes a draft post.
    Publish post action on share extension site picker screen. */
 "Publish" = "Cyhoeddi";
 
-/* Period Stats 'Published' header
+/* A short phrase indicating a post is due to be immedately published. */
+"Publish Immediately" = "Cyhoeddi'n Syth";
+
+/* Name for the status of a published post.
+   Period Stats 'Published' header
    Title of the published filter. This filter shows a list of posts that the user has published. */
 "Published" = "Cyhoeddwyd";
 
@@ -1337,7 +1321,7 @@
    Verb. Button title. Reply to a comment. */
 "Reply" = "Ateb";
 
-/* An explaination of a setting. */
+/* An explanation of a setting. */
 "Require manual approval for comments that include more than this number of links." = "Bydd angen cymeradwyaeth â llaw ar gyfer sylwadau sy'n cynnwys mwy na'r nifer yma o ddolenni.";
 
 /* Explains the effect of the 'No comments' auto approval setting. */
@@ -1364,7 +1348,6 @@
 /* A prompt to attempt the failed network request again
    A prompt to attempt the failed network request again.
    Button title, displayed when media has failed to upload. Allows the user to try the upload again.
-   If a user taps the button with this label, the action that evinced this error view will be retried.
    Opens the media library .
    Retry updating User's Role
    Retry. Action
@@ -1388,9 +1371,6 @@
    User's Role */
 "Role" = "Rôl";
 
-/* One Time Code has been sent via SMS */
-"SMS Sent" = "SMS wedi ei anfon";
-
 /* Menus save button title
    Save Action
    Save draft post action on share extension site picker screen.
@@ -1402,7 +1382,8 @@
 /* Menus save button title while it is saving a Menu. */
 "Saving..." = "Wrthi'n Cadw...";
 
-/* Title of the scheduled filter. This filter shows a list of posts that are scheduled to be published at a future date. */
+/* Name for the status of a scheduled post
+   Title of the scheduled filter. This filter shows a list of posts that are scheduled to be published at a future date. */
 "Scheduled" = "Amserlenwyd";
 
 /* Title of Stats section that shows search engine referrer traffic. */
@@ -1422,9 +1403,6 @@
 
 /* Menus alert message for alerting the user to unsaved changes while trying to select a different menu. */
 "Selecting a different menu will discard changes you've made to the current menu. Are you sure you want to continue?" = "Bydd dewis dewislen gwahanol yn gwaredu'r newidiadau rydych wedi eu gwneud i'r ddewislen ar hyn o bryd. A ydych yn siŵr eich bod am barhau?";
-
-/* Title of a button. The text should be uppercase.  Clicking requests a hyperlink be emailed ot the user. */
-"Send Link" = "Anfon Dolen";
 
 /* Settings: Sending Pingbacks */
 "Send Pingbacks" = "Anfon Hysbysiadau Cyfeirio";
@@ -1520,7 +1498,7 @@
 /* No comment provided by engineer. */
 "Sorry, site addresses must have letters too!" = "Ymddiheuriadau, rhaid i enw gwefan gynnwys llythrennau hefyd!";
 
-/* Error message displayed when the entered email is not available. */
+/* No comment provided by engineer. */
 "Sorry, that email address is already being used!" = "Mae'r cyfeiriad e-bost yna eisoes yn cael ei ddefnyddio!";
 
 /* No comment provided by engineer. */
@@ -1592,6 +1570,9 @@
    Theme Support action title */
 "Support" = "Cefnogaeth";
 
+/* Menu item label for linking a specific tag. */
+"Tag" = "Tag";
+
 /* Label for tagline blog setting
    Title for screen that show tagline editor */
 "Tagline" = "Llinell Tag";
@@ -1606,6 +1587,9 @@
 
 /* Title of button that displays the App's terms of service */
 "Terms of Service" = "Amodau Gwasanaeth";
+
+/* Menu item label for linking a testimonial post. */
+"Testimonials" = "Tystebau";
 
 /* Title of a button style */
 "Text Only" = "Testun yn Unig";
@@ -1739,7 +1723,8 @@
    Trashes the comment */
 "Trash" = "Dileu";
 
-/* Title of the trashed filter. This filter shows posts that have been moved to the trash bin.
+/* Name for the status of a trashed post
+   Title of the trashed filter. This filter shows posts that have been moved to the trash bin.
    Title of trashed Comments filter. */
 "Trashed" = "Wedi eu rhoi yn y sbwriel";
 
@@ -1834,14 +1819,10 @@
 "Use" = "Defnydd";
 
 /* A placeholder for the twitter username
-   Accessibility label for the username text field in the self-hosted login page.
    Account Settings Username label
    Label for entering username in the username field
    Login dialog username placeholder
-   Placeholder for the username textfield.
-   The header and main title
-   Username label text.
-   Username placeholder */
+   The header and main title */
 "Username" = "Enw defnyddiwr";
 
 /* Setting: indicates if Mentions will be notified */
@@ -1852,9 +1833,6 @@
 
 /* Blog Users */
 "Users" = "Defnyddwyr";
-
-/* two factor code placeholder */
-"Verification code" = "Cod dilysu";
 
 /* Push Authentication Alert Title */
 "Verify Log In" = "Dilysu Mewngofnodi";
@@ -1938,9 +1916,6 @@
 
 /* No comment provided by engineer. */
 "WordPress version too old" = "Mae'r fersiwn yma o WordPress yn rhy hen";
-
-/* No comment provided by engineer. */
-"WordPress version too old. The site at %@ uses WordPress %@. We recommend to update to the latest version, or at least %@" = "Mae eich fersiwn o WordPress yn rhy hen. Mae'r wefan %1$@ yn defnyddio WordPress %2$@. Rydym yn argymell ei diweddaru i'r fersiwn diweddaraf, neu o leiaf %3$@";
 
 /* Label for WordPress.com followers */
 "WordPress.com" = "WordPress.com";
