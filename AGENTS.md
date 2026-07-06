@@ -46,7 +46,7 @@ WordPress-iOS uses a modular architecture with the main app and separate Swift p
 ### Important Considerations
 - **Multi-site Support**: Code must handle both WordPress.com and self-hosted sites
 - **Accessibility**: Use proper accessibility labels and traits
-- **Localization**: follow best practices from @docs/localization.md
+- **Localization**: follow best practices from @docs/localization.md. For how strings flow through GlotPress and the AI translation tier (the `human ?? AI ?? English` floor), see @docs/localization-pipeline.md.
 
 ## Xcode Schemes
 - `WordPress` builds the WordPress iOS app and runs `WordPressUnitTests.xctestplan` — default for builds and the full unit test suite. Use this scheme to run unit tests.
