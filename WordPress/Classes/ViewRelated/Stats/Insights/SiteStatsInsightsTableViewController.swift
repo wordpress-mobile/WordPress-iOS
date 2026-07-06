@@ -1,4 +1,5 @@
 import UIKit
+import JetpackSocial
 import WordPressData
 import WordPressKit
 import WordPressFlux
@@ -507,11 +508,11 @@ extension SiteStatsInsightsTableViewController: SiteStatsInsightsDelegate {
             return
         }
 
-        guard let sharingVC = SharingViewController(blog: blog, delegate: self) else {
-            return
+        guard let manageVC = ManageConnectionsHostingController.make(for: blog) else {
+            return wpAssertionFailure("social connections service unavailable")
         }
 
-        let navigationController = UINavigationController(rootViewController: sharingVC)
+        let navigationController = UINavigationController(rootViewController: manageVC)
         present(navigationController, animated: true)
 
         applyTableUpdates()
@@ -697,15 +698,6 @@ extension SiteStatsInsightsTableViewController: UIAdaptivePresentationController
         }
 
         controller.handleDismissViaGesture(from: self)
-    }
-}
-
-// MARK: - SharingViewControllerDelegate
-
-extension SiteStatsInsightsTableViewController: SharingViewControllerDelegate {
-    func didChangePublicizeServices() {
-        markCurrentNudgeAsCompleted()
-        trackNudgeEvent(.statsPublicizeNudgeCompleted)
     }
 }
 

@@ -18,7 +18,6 @@ enum DashboardCard: String, CaseIterable, Sendable {
     case freeToPaidPlansDashboardCard
     case domainRegistration
     case todaysStats = "todays_stats"
-    case jetpackSocial
     case draftPosts
     case scheduledPosts
     case pages
@@ -68,8 +67,6 @@ enum DashboardCard: String, CaseIterable, Sendable {
             return DashboardPagesListCardCell.self
         case .activityLog:
             return DashboardActivityLogCardCell.self
-        case .jetpackSocial:
-            return DashboardJetpackSocialCardCell.self
         case .googleDomains:
             return DashboardGoogleDomainsCardCell.self
         }
@@ -137,8 +134,6 @@ enum DashboardCard: String, CaseIterable, Sendable {
         case .activityLog:
             return DashboardActivityLogCardCell.shouldShowCard(for: blog)
                 && shouldShowRemoteCard(apiResponse: apiResponse)
-        case .jetpackSocial:
-            return DashboardJetpackSocialCardCell.shouldShowCard(for: blog)
         case .googleDomains:
             return FeatureFlag.googleDomainsCard.enabled && isJetpack
         case .dynamic:

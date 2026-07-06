@@ -37,7 +37,6 @@ FOUNDATION_EXPORT const unsigned char WordPressVersionString[];
 #import <WordPress/SettingsMultiTextViewController.h>
 #import <WordPress/SettingTableViewCell.h>
 #import <WordPress/SettingsTextViewController.h>
-#import <WordPress/SharingViewController.h>
 #import <WordPress/SiteSettingsViewController.h>
 #import <WordPress/StatsViewController.h>
 #import <WordPress/SuggestionsTableView.h>
