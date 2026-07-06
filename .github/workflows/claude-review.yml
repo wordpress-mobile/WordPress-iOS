@@ -5,28 +5,68 @@ on:
     types: [created]
 
 jobs:
-  review-with-tracking:
+  check-pr-origin:
     if: |
-      github.event.issue.pull_request && contains(github.event.comment.body, '@claude')
+      github.event.issue.pull_request &&
+      contains(github.event.comment.body, '@claude') &&
+      (
+        github.event.comment.author_association == 'OWNER' ||
+        github.event.comment.author_association == 'MEMBER' ||
+        github.event.comment.author_association == 'COLLABORATOR'
+      )
+    runs-on: ubuntu-latest
+    permissions:
+      pull-requests: read
+    outputs:
+      is_internal: ${{ steps.pr-origin.outputs.is_internal }}
+    steps:
+      # issue_comment payloads identify PR comments, but do not include the PR
+      # head repo. Query the PR before allowing Claude to run on fork PRs.
+      - name: Check PR origin
+        id: pr-origin
+        env:
+          GH_TOKEN: ${{ github.token }}
+          ISSUE_NUMBER: ${{ github.event.issue.number }}
+          REPOSITORY: ${{ github.repository }}
+        run: |
+          set -euo pipefail
+          if ! head_repo="$(gh api "repos/${REPOSITORY}/pulls/${ISSUE_NUMBER}" --jq '.head.repo.full_name')"; then
+            echo "Unable to determine PR head repository for #${ISSUE_NUMBER}; skipping Claude."
+            echo "is_internal=false" >> "$GITHUB_OUTPUT"
+            exit 0
+          fi
+
+          if [ "$head_repo" = "$REPOSITORY" ]; then
+            echo "is_internal=true" >> "$GITHUB_OUTPUT"
+          else
+            echo "is_internal=false" >> "$GITHUB_OUTPUT"
+            echo "Skipping Claude for external PR from ${head_repo:-unknown}."
+          fi
+
+
+  review-with-tracking:
+    needs: check-pr-origin
+    if: needs.check-pr-origin.outputs.is_internal == 'true'
     runs-on: ubuntu-latest
     permissions:
       contents: read
       pull-requests: write
-      id-token: write
+      id-token: write # Required by claude-code-action for GitHub App token exchange.
     steps:
       - name: Checkout repository
-        uses: actions/checkout@v5
+        uses: actions/checkout@93cb6efe18208431cddfb8368fd83d5badbf9bfd # v5
         with:
           fetch-depth: 1
+          persist-credentials: false
 
       - name: PR Review with Progress Tracking
-        uses: anthropics/claude-code-action@v1
+        uses: anthropics/claude-code-action@6a838f847a10bc4b88da6ae796ff68e74cf9f4cc # v1.0.158
         with:
           anthropic_api_key: ${{ secrets.ANTHROPIC_API_KEY }}
           track_progress: true
           prompt: |
             REPO: ${{ github.repository }}
-            PR NUMBER: ${{ github.event.pull_request.number }}
+            PR NUMBER: ${{ github.event.issue.number }}
 
             Perform a comprehensive code review with the following focus areas:
 
@@ -56,7 +96,6 @@ jobs:
                - Check API documentation accuracy
 
             Provide detailed feedback using inline comments for specific issues.
-            Use top-level comments for general observations or praise.
 
           claude_args: |
-            --allowedTools "mcp__github_inline_comment__create_inline_comment,Bash(gh pr comment:*),Bash(gh pr diff:*),Bash(gh pr view:*)"
+            --allowedTools "mcp__github_inline_comment__create_inline_comment,Bash(gh pr diff:*),Bash(gh pr view:*)"
