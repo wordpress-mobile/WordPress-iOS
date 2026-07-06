@@ -45,7 +45,7 @@ final class SharingServiceRemoteTests: RemoteTestCase, RESTTestable {
             }
             XCTAssertTrue(facebookService.status.isEmpty)
 
-            guard let twitterService = publicizeServices.first(where: { $0.serviceID == "twitter"}) else {
+            guard let twitterService = publicizeServices.first(where: { $0.serviceID == "twitter" }) else {
                 XCTFail("Expected a RemotePublicizeService to exist")
                 return
             }
@@ -82,11 +82,13 @@ final class SharingServiceRemoteTests: RemoteTestCase, RESTTestable {
         let mockID = NSNumber(value: 10)
         let url = service.path(forEndpoint: "sites/\(mockID)/publicize-connections/new", withVersion: ._1_1)
 
-        service.createPublicizeConnection(mockID,
-                                          keyringConnectionID: mockID,
-                                          externalUserID: nil,
-                                          success: nil,
-                                          failure: nil)
+        service.createPublicizeConnection(
+            mockID,
+            keyringConnectionID: mockID,
+            externalUserID: nil,
+            success: nil,
+            failure: nil
+        )
 
         XCTAssertTrue(api.postMethodCalled, "Method was not called")
         XCTAssertEqual(api.URLStringPassedIn, url, "Incorrect URL passed in")
@@ -94,8 +96,10 @@ final class SharingServiceRemoteTests: RemoteTestCase, RESTTestable {
 
     func testDeletePublicizeConnection() {
         let mockID = NSNumber(value: 10)
-        let url = service.path(forEndpoint: "sites/\(mockID)/publicize-connections/\(mockID)/delete",
-                               withVersion: ._1_1)
+        let url = service.path(
+            forEndpoint: "sites/\(mockID)/publicize-connections/\(mockID)/delete",
+            withVersion: ._1_1
+        )
 
         service.deletePublicizeConnection(mockID, connectionID: mockID, success: nil, failure: nil)
 
@@ -117,10 +121,12 @@ final class SharingServiceRemoteTests: RemoteTestCase, RESTTestable {
         let mockID = NSNumber(value: 10)
         let url = service.path(forEndpoint: "sites/\(mockID)/sharing-buttons", withVersion: ._1_1)
 
-        service.updateSharingButtonsForSite(mockID,
-                                            sharingButtons: [RemoteSharingButton](),
-                                            success: nil,
-                                            failure: nil)
+        service.updateSharingButtonsForSite(
+            mockID,
+            sharingButtons: [RemoteSharingButton](),
+            success: nil,
+            failure: nil
+        )
 
         XCTAssertTrue(api.postMethodCalled, "Method was not called")
         XCTAssertEqual(api.URLStringPassedIn, url, "Incorrect URL passed in")

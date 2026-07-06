@@ -16,11 +16,11 @@ public class PublicizeInfo: NSManagedObject {
     }
 
     @nonobjc public class func fetchRequest() -> NSFetchRequest<PublicizeInfo> {
-        return NSFetchRequest<PublicizeInfo>(entityName: "PublicizeInfo")
+        NSFetchRequest<PublicizeInfo>(entityName: "PublicizeInfo")
     }
 
     @nonobjc public class func newObject(in context: NSManagedObjectContext) -> PublicizeInfo? {
-        return NSEntityDescription.insertNewObject(forEntityName: Self.entityName(), into: context) as? PublicizeInfo
+        NSEntityDescription.insertNewObject(forEntityName: Self.entityName(), into: context) as? PublicizeInfo
     }
 
     public func configure(with remote: RemotePublicizeInfo) {
