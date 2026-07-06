@@ -321,7 +321,6 @@ class GutenbergViewController: UIViewController, PostEditor, PublishingEditor {
         super.init(nibName: nil, bundle: nil)
 
         self.navigationBarManager.delegate = self
-        disableSocialConnectionsIfNecessary()
     }
 
     required init?(coder aDecoder: NSCoder) {

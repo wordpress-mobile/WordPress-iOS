@@ -457,7 +457,6 @@ class AztecPostViewController: UIViewController, PostEditor {
 
         addObservers(toPost: post)
         registerMediaObserver()
-        disableSocialConnectionsIfNecessary()
     }
 
     required init?(coder aDecoder: NSCoder) {

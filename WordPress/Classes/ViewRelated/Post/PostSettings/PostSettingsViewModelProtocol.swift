@@ -34,14 +34,6 @@ enum PostSettingsMoreOption: Identifiable {
     var id: Self { self }
 }
 
-/// The state of the social sharing section.
-enum PostSettingsSocialSharingSectionState {
-    /// The initial prompt to set up connections.
-    case setup(JetpackSocialNoConnectionViewModel)
-    /// The site has existing connections.
-    case connected
-}
-
 // MARK: - Protocol
 
 /// Defines the contract for a post settings view model consumed by `PostSettingsView`
@@ -69,7 +61,6 @@ protocol PostSettingsViewModelProtocol: ObservableObject {
     var suggestedTags: [String] { get }
     var customTaxonomies: [SiteTaxonomy] { get }
     var parentPageText: String? { get }
-    var socialSharingState: PostSettingsSocialSharingSectionState? { get }
 
     /// Non-nil when the host screen should render the v2 social sharing
     /// section. Custom post settings and eligible `AbstractPost` settings
@@ -117,7 +108,6 @@ protocol PostSettingsViewModelProtocol: ObservableObject {
     func didSelectSuggestedTag(_ tag: String)
     func didSelectTags(_ tags: [TagsViewModel.SelectedTerm])
     func didSelectTerms(_ terms: [TagsViewModel.SelectedTerm], forTaxonomySlug: String)
-    func showSocialSharingOptions()
     func showCategoriesPicker()
     func parentPagePickerDestination() -> ParentPagePickerDestination?
 }
