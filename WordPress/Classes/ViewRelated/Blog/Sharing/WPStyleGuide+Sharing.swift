@@ -37,8 +37,4 @@ extension WPStyleGuide {
         }
         return image!.withRenderingMode(.alwaysTemplate)
     }
-
-    public class func socialIcon(for service: NSString) -> UIImage {
-        UIImage(named: "icon-\(service)") ?? iconForService(service)
-    }
 }
