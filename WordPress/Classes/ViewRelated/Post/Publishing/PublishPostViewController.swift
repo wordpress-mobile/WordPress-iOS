@@ -263,11 +263,6 @@ enum PrepublishingSheetStrings {
         value: "Tags",
         comment: "Label for a cell in the pre-publishing sheet"
     )
-    static let jetpackSocial = NSLocalizedString(
-        "prepublishing.jetpackSocial",
-        value: "Jetpack Social",
-        comment: "Label for a cell in the pre-publishing sheet"
-    )
     static let immediately = NSLocalizedString(
         "prepublishing.publishDateImmediately",
         value: "Immediately",

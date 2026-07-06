@@ -98,7 +98,7 @@ import WordPressKit
                     self.createOrReplaceFromRemoteSharingButton(remoteButton, blog: blog, in: context)
                 }
 
-                // Delete any cached PublicizeServices that were not synced.
+                // Delete any cached SharingButtons that were not synced.
                 for button in currentSharingbuttons {
                     if !buttonsToKeep.contains(button) {
                         context.delete(button)
@@ -116,7 +116,7 @@ import WordPressKit
     /// data represented by the passed `RemoteSharingButton`.
     ///
     /// - Parameters:
-    ///     - remoteButton: The remote connection representing the publicize connection.
+    ///     - remoteButton: The remote sharing button to create or update from.
     ///     - blog: The `Blog` that owns or will own the button.
     ///
     /// - Returns: A `SharingButton`.
