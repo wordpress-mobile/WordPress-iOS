@@ -8,9 +8,9 @@ How user-facing strings get from English source into every shipped locale. This 
 
 Strings make two trips, both driven from fastlane.
 
-### Forward (code freeze) — English → GlotPress
+### Forward — English → GlotPress
 
-Run as part of `complete_code_freeze` (`generate_strings_file_for_glotpress`):
+Runs at code freeze and again with each beta (`generate_strings_file_for_glotpress`):
 
 - **Regular strings** are extracted from source (`ios_generate_strings_file_from_code`, i.e. `genstrings` over `NSLocalizedString` / `AppLocalizedString`) into `WordPress/Resources/en.lproj/Localizable.strings`, then the manually-maintained `.strings` files are merged in. These English originals are uploaded to the [apps/ios GlotPress project](https://translate.wordpress.org/projects/apps/ios/dev/).
 - **Plurals** are authored in `WordPress/Classes/Plurals.xcstrings` (English `one`/`other`). The forward lane (`generate_plural_strings_for_glotpress`) flattens each plural form into an independent string keyed `<key>|==|plural.<cldr-category>` and merges those originals into the same `Localizable.strings`, so they ride the same GlotPress project as everything else.
@@ -19,9 +19,9 @@ Translators then do their work in GlotPress.
 
 ### Reverse (release prep) — GlotPress → app
 
-`download_localized_strings` (called by `complete_code_freeze` / `finalize_release`) runs, in order:
+`download_localized_strings` runs with each beta and at release finalization — never at code freeze, when translators haven't yet seen the new originals. It runs, in order:
 
-1. **Download** each locale's `Localizable.strings` from GlotPress (`ios_download_strings_files_from_glotpress`) into `WordPress/Resources/<locale>.lproj/`, and commit. The export filter is `status: current`, so **only translated strings come back** — untranslated ones are *omitted entirely* (not emitted as empty values; the action even errors if it finds an empty value). This is why `pl` ships ~1,650 of ~4,280 keys while `fr` ships ~all of them.
+1. **Download** each locale's `Localizable.strings` from GlotPress (`ios_download_strings_files_from_glotpress`) into `WordPress/Resources/<locale>.lproj/`, and commit. The export filter is `status: current`, so **only translated strings come back** — untranslated ones are *omitted entirely* (not emitted as empty values — the download action checks for empties and flags them in the log as a GlotPress bug). This is why `hu`'s file carries only ~160 of the ~4,280 keys while `fr`'s carries ~4,220.
 2. **Re-dispatch** the relevant subset back to the manually-maintained `.strings` files (`ios_extract_keys_from_strings_files`), and commit.
 3. **Plural fold** (`download_localized_plurals`): pull the flat plural translations back out of the downloaded `Localizable.strings`, fold them into `Plurals.xcstrings`, and fill the gaps with the AI tier (below).
 
@@ -39,15 +39,15 @@ The reusable primitives live in `fastlane/lanes/`: `AITranslator` (prompt buildi
 
 ## What's wired today: plurals
 
-The plural reverse-fold (`PluralStrings.fold_translations!`) fills each `(key, locale)` cell of `Plurals.xcstrings` as `human ?? AI ?? English` — human ⇒ `translated`; AI / English ⇒ `needs_review`. The AI tier is called **once per `(key, locale)` form-set** (`AITranslator#translate_plural`), not per cell, with the already-human-translated forms passed as **anchors**. Translating the whole set in one request keeps a single consistent stem across the forms — a per-category call lets the model drift between synonyms (Polish `słowo` → `wyrazy` → `słów`), which it structurally can't prevent.
+The plural reverse-fold (`PluralStrings.fold_translations!`) fills each `(key, locale)` cell of `Plurals.xcstrings` as `human ?? AI ?? English` — human ⇒ `translated`; AI / English ⇒ `needs_review`. The AI tier is called **once per `(key, locale)` form-set** (`AITranslator#translate_plural`), not per cell, with the forms already in hand — human translations plus machine cells kept from a prior fold — passed as **anchors**. Translating the whole set in one request keeps a single consistent stem across the forms — a per-category call lets the model drift between synonyms (Polish `słowo` → `wyrazy` → `słów`), which it structurally can't prevent.
 
-**`Plurals.xcstrings` is a String Catalog, which is why this works**: the catalog carries a real `needs_review` state, so a machine cell is recorded as machine output, a human translation supersedes it on the next download, and an unchanged machine cell is carried over as-is on a re-fold rather than re-translated. The fold is idempotent — a re-run with the same input neither re-spends on the model nor churns the staged text, and a cell that fell back to English (the AI declined) is retried next time.
+**`Plurals.xcstrings` is a String Catalog, which is why this works**: the catalog carries a real `needs_review` state, so a machine cell is recorded as machine output, a human translation supersedes it on the next download, and an unchanged machine cell is carried over as-is on a re-fold rather than re-translated. The fold is idempotent — necessary, since the reverse runs with every beta: a re-run with the same input never churns the staged text, and kept machine cells aren't re-translated. Two kinds of cell do re-query the model each run: those that previously fell back to English (deliberate — a transient failure gets retried next time), and the `en-*` variant locales, where a correct translation is indistinguishable from the English fallback and so can never be kept.
 
-> **This does not ship machine translations yet.** `Plurals.xcstrings` is built into the app but **not consumed at runtime** — no code reads from it; the app still renders plurals the legacy way. The fold *pre-populates* the catalog so it's ready when plurals cut over to it. Until that cutover, the AI plural translations sit in the catalog unused.
+> **This does not ship machine translations yet.** `Plurals.xcstrings` is built into the app but **not consumed at runtime** — nothing reads the catalog, and nothing references its keys yet; the app still renders plurals the legacy way. The fold *pre-populates* the catalog so it's ready when plurals cut over to it. Until that cutover, the AI plural translations sit in the catalog unused.
 
 ## What's deferred: regular strings
 
-Regular (non-plural) strings are **not** machine-translated, by design. The app still ships the legacy `WordPress/Resources/<locale>.lproj/Localizable.strings` for them — `Localizable.xcstrings` (`generate_strings_catalog`) is generated as the future backing store but isn't the runtime store yet. A machine translation written into the legacy `.strings` would be **live immediately**, and we don't want machine-translated regular strings shipping before the catalog cutover.
+Regular (non-plural) strings are **not** machine-translated, by design. The app still ships the legacy `WordPress/Resources/<locale>.lproj/Localizable.strings` for them — `Localizable.xcstrings` (`generate_strings_catalog`) is the designated future backing store, but today it's only generated transiently in CI as a coverage check — the file is gitignored, not committed, and nothing ships from it. A machine translation written into the legacy `.strings` would be **live immediately**, and we don't want machine-translated regular strings shipping before the catalog cutover.
 
 So regular-string MT waits for the same shape as plurals: once `Localizable.xcstrings` becomes the runtime store, a regular-string **catalog reverse-fold** folds the human translations in and AI-fills the `needs_review` gaps, staged in the catalog (not shipped) until cutover — exactly as the plural fold does today.
 
@@ -65,7 +65,7 @@ When that's built, two facts established here will carry over:
 ## Operational notes
 
 - **Eyeball one string against the live model** (needs `ANTHROPIC_API_KEY` + `bundle install`):
-  `ruby fastlane/lanes/ai_translator.rb fr "You have %1$d new posts" "Notification text. %1$d is the count."`
+  `bundle exec ruby fastlane/lanes/ai_translator.rb fr "You have %1$d new posts" "Notification text. %1$d is the count."`
 - **Tests** are pure stdlib minitest and run in CI (`.buildkite/commands/test-localization-tooling.sh`): `ruby fastlane/lanes/*_test.rb`.
 
 ## Code map
