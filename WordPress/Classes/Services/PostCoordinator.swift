@@ -62,16 +62,23 @@ class PostCoordinator: NSObject {
 
     // MARK: - Initializers
 
-    init(mediaCoordinator: MediaCoordinator? = nil,
-         actionDispatcherFacade: ActionDispatcherFacade = ActionDispatcherFacade(),
-         coreDataStack: CoreDataStackSwift = ContextManager.shared) {
+    init(
+        mediaCoordinator: MediaCoordinator? = nil,
+        actionDispatcherFacade: ActionDispatcherFacade = ActionDispatcherFacade(),
+        coreDataStack: CoreDataStackSwift = ContextManager.shared
+    ) {
         self.coreDataStack = coreDataStack
         self.mediaCoordinator = mediaCoordinator ?? MediaCoordinator.shared
         self.actionDispatcherFacade = actionDispatcherFacade
 
         super.init()
 
-        NotificationCenter.default.addObserver(self, selector: #selector(didUpdateReachability), name: .reachabilityUpdated, object: nil)
+        NotificationCenter.default.addObserver(
+            self,
+            selector: #selector(didUpdateReachability),
+            name: .reachabilityUpdated,
+            object: nil
+        )
     }
 
     /// Publishes the post according to the current settings and user capabilities.
@@ -116,10 +123,9 @@ class PostCoordinator: NSObject {
         // If the post was previously scheduled and the user wants to publish
         // it without specifying a new publish date, we have to send `.now`
         // to ensure it gets published immediatelly.
-        if (changes.status == Post.Status.publish.rawValue ||
-            changes.status == Post.Status.publishPrivate.rawValue) &&
-            previousStatus == .scheduled &&
-            changes.date == nil {
+        if (changes.status == Post.Status.publish.rawValue || changes.status == Post.Status.publishPrivate.rawValue)
+            && previousStatus == .scheduled && changes.date == nil
+        {
             changes.date = .now
         }
 
@@ -166,7 +172,11 @@ class PostCoordinator: NSObject {
             wpAssertionFailure("Failed to show an error alert")
             return
         }
-        let alert = UIAlertController(title: SharedStrings.Error.generic, message: error.localizedDescription, preferredStyle: .alert)
+        let alert = UIAlertController(
+            title: SharedStrings.Error.generic,
+            message: error.localizedDescription,
+            preferredStyle: .alert
+        )
         if let error = error as? PostRepository.PostSaveError {
             switch error {
             case .conflict(let latest):
@@ -206,7 +216,12 @@ class PostCoordinator: NSObject {
             return
         }
         let repository = PostRepository(coreDataStack: coreDataStack)
-        let controller = ResolveConflictViewController(post: post, remoteRevision: remoteRevision, repository: repository, source: source)
+        let controller = ResolveConflictViewController(
+            post: post,
+            remoteRevision: remoteRevision,
+            repository: repository,
+            source: source
+        )
         let navigation = UINavigationController(rootViewController: controller)
         topViewController.present(navigation, animated: true)
     }
@@ -298,7 +313,10 @@ class PostCoordinator: NSObject {
     /// - note: It should typically only be called once during the app launch.
     func initializeSync() {
         let request = NSFetchRequest<AbstractPost>(entityName: NSStringFromClass(AbstractPost.self))
-        request.predicate = NSPredicate(format: "remoteStatusNumber == %i", AbstractPostRemoteStatus.syncNeeded.rawValue)
+        request.predicate = NSPredicate(
+            format: "remoteStatusNumber == %i",
+            AbstractPostRemoteStatus.syncNeeded.rawValue
+        )
         do {
             let revisions = try coreDataStack.mainContext.fetch(request)
             let originals = Set(revisions.map { $0.getOriginal() })
@@ -330,12 +348,14 @@ class PostCoordinator: NSObject {
         if operation.isCancelled {
             return // Cancelled immediatelly
         }
-        _ = await syncEvents.first(where: { [expected = operation] event in
-            if case .finished(let operation, _) = event, operation === expected {
-                return true
-            }
-            return false
-        }).values.first(where: { _ in true })
+        _ =
+            await syncEvents.first(where: { [expected = operation] event in
+                if case .finished(let operation, _) = event, operation === expected {
+                    return true
+                }
+                return false
+            })
+            .values.first(where: { _ in true })
     }
 
     /// Resumes sync for the given post.
@@ -412,7 +432,9 @@ class PostCoordinator: NSObject {
         }
 
         func log(_ string: String) {
-            DDLogInfo("sync-operation(\(id)) (\(post.objectID.shortDescription)→\(revision.objectID.shortDescription))) \(string)")
+            DDLogInfo(
+                "sync-operation(\(id)) (\(post.objectID.shortDescription)→\(revision.objectID.shortDescription))) \(string)"
+            )
         }
     }
 
@@ -444,7 +466,8 @@ class PostCoordinator: NSObject {
         let worker = getWorker(for: post)
 
         if let date = revision.confirmedChangesTimestamp,
-           Date.now.timeIntervalSince(date) > SyncWorker.maximumRetryTimeInterval {
+            Date.now.timeIntervalSince(date) > SyncWorker.maximumRetryTimeInterval
+        {
             worker.error = PostCoordinator.SavingError.maximumRetryTimeIntervalReached
             postDidUpdateNotification(for: post)
             return worker.log("stopping – failing to upload changes for too long")
@@ -541,7 +564,8 @@ class PostCoordinator: NSObject {
             }
 
             let delay = worker.nextRetryDelay
-            worker.retryTimer = Timer.scheduledTimer(withTimeInterval: delay, repeats: false) { [weak self, weak worker] _ in
+            worker.retryTimer = Timer.scheduledTimer(withTimeInterval: delay, repeats: false) {
+                [weak self, weak worker] _ in
                 guard let self, let worker else { return }
                 self.didRetryTimerFire(for: worker)
             }
@@ -562,13 +586,16 @@ class PostCoordinator: NSObject {
 
     @objc private func didUpdateReachability(_ notification: Foundation.Notification) {
         guard let reachable = notification.userInfo?[Foundation.Notification.reachabilityKey],
-              (reachable as? Bool) == true else {
+            (reachable as? Bool) == true
+        else {
             return
         }
         for worker in workers.values {
             if let error = worker.error,
-               let urlError = (error as NSError).underlyingErrors.first as? URLError,
-               urlError.code == .notConnectedToInternet || urlError.code == .networkConnectionLost || urlError.code == .timedOut {
+                let urlError = (error as NSError).underlyingErrors.first as? URLError,
+                urlError.code == .notConnectedToInternet || urlError.code == .networkConnectionLost
+                    || urlError.code == .timedOut
+            {
                 worker.log("connection is reachable – retrying now")
                 startSync(for: worker.post)
             }
@@ -581,7 +608,11 @@ class PostCoordinator: NSObject {
     }
 
     private func postDidUpdateNotification(for post: AbstractPost) {
-        NotificationCenter.default.post(name: .postCoordinatorDidUpdate, object: self, userInfo: [NSUpdatedObjectsKey: Set([post])])
+        NotificationCenter.default.post(
+            name: .postCoordinatorDidUpdate,
+            object: self,
+            userInfo: [NSUpdatedObjectsKey: Set([post])]
+        )
     }
 
     // MARK: - Upload Resources
@@ -600,8 +631,11 @@ class PostCoordinator: NSObject {
     /// - Parameter automatedRetry: if this is an automated retry, without user intervenction
     /// - Parameter then: a block to perform after post is ready to be saved
     ///
-    private func prepareToSave(_ post: AbstractPost, automatedRetry: Bool = false,
-                               then completion: @escaping (Result<AbstractPost, SavingError>) -> ()) {
+    private func prepareToSave(
+        _ post: AbstractPost,
+        automatedRetry: Bool = false,
+        then completion: @escaping (Result<AbstractPost, SavingError>) -> ()
+    ) {
         post.autoUploadAttemptsCount = NSNumber(value: automatedRetry ? post.autoUploadAttemptsCount.intValue + 1 : 0)
 
         guard mediaCoordinator.uploadMedia(for: post, automatedRetry: automatedRetry) else {
@@ -643,10 +677,16 @@ class PostCoordinator: NSObject {
     }
 
     func isUploading(post: AbstractPost) -> Bool {
-        return post.remoteStatus == .pushing
+        post.remoteStatus == .pushing
     }
 
-    func posts(for blog: Blog, containsTitle title: String, excludingPostIDs excludedPostIDs: [Int] = [], entityName: String? = nil, publishedOnly: Bool = false) -> NSFetchedResultsController<AbstractPost> {
+    func posts(
+        for blog: Blog,
+        containsTitle title: String,
+        excludingPostIDs excludedPostIDs: [Int] = [],
+        entityName: String? = nil,
+        publishedOnly: Bool = false
+    ) -> NSFetchedResultsController<AbstractPost> {
         let context = self.mainContext
         let fetchRequest = NSFetchRequest<AbstractPost>(entityName: entityName ?? AbstractPost.entityName())
 
@@ -669,7 +709,12 @@ class PostCoordinator: NSObject {
 
         fetchRequest.predicate = resultPredicate
 
-        let controller = NSFetchedResultsController(fetchRequest: fetchRequest, managedObjectContext: context, sectionNameKeyPath: nil, cacheName: nil)
+        let controller = NSFetchedResultsController(
+            fetchRequest: fetchRequest,
+            managedObjectContext: context,
+            sectionNameKeyPath: nil,
+            cacheName: nil
+        )
         do {
             try controller.performFetch()
         } catch {
@@ -702,11 +747,15 @@ class PostCoordinator: NSObject {
         return post.titleForDisplay()
     }
 
-    private func observeMedia(for post: AbstractPost, completion: @escaping (Result<AbstractPost, SavingError>) -> ()) -> UUID {
+    private func observeMedia(
+        for post: AbstractPost,
+        completion: @escaping (Result<AbstractPost, SavingError>) -> ()
+    ) -> UUID {
         // Only observe if we're not already
         let handleSingleMediaFailure = { [weak self] (error: Error) -> Void in
             guard let `self` = self,
-                self.isObserving(post: post) else {
+                self.isObserving(post: post)
+            else {
                 return
             }
 
@@ -719,45 +768,49 @@ class PostCoordinator: NSObject {
             completion(.failure(SavingError.mediaFailure(post, error)))
         }
 
-        return mediaCoordinator.addObserver({ [weak self] media, state in
-            guard let `self` = self else {
-                return
-            }
-            switch state {
-            case .ended:
-                let successHandler = {
-                    self.updateMediaBlocksBeforeSave(in: post, with: [media])
-                    if post.media.allSatisfy({ $0.remoteStatus == .sync }) {
-                        self.removeObserver(for: post)
-                        completion(.success(post))
-                    }
+        return mediaCoordinator.addObserver(
+            { [weak self] media, state in
+                guard let `self` = self else {
+                    return
                 }
-                switch media.mediaType {
-                case .video:
-                    EditorMediaUtility.fetchRemoteVideoURL(for: media, in: post) { result in
-                        switch result {
-                        case .failure(let error):
-                            handleSingleMediaFailure(error)
-                        case .success(let videoURL):
-                            media.remoteURL = videoURL.absoluteString
-                            successHandler()
+                switch state {
+                case .ended:
+                    let successHandler = {
+                        self.updateMediaBlocksBeforeSave(in: post, with: [media])
+                        if post.media.allSatisfy({ $0.remoteStatus == .sync }) {
+                            self.removeObserver(for: post)
+                            completion(.success(post))
                         }
                     }
+                    switch media.mediaType {
+                    case .video:
+                        EditorMediaUtility.fetchRemoteVideoURL(for: media, in: post) { result in
+                            switch result {
+                            case .failure(let error):
+                                handleSingleMediaFailure(error)
+                            case .success(let videoURL):
+                                media.remoteURL = videoURL.absoluteString
+                                successHandler()
+                            }
+                        }
+                    default:
+                        successHandler()
+                    }
+                case .failed(let error):
+                    handleSingleMediaFailure(error)
                 default:
-                    successHandler()
+                    DDLogInfo("Post Coordinator -> Media state: \(state)")
                 }
-            case .failed(let error):
-                handleSingleMediaFailure(error)
-            default:
-                DDLogInfo("Post Coordinator -> Media state: \(state)")
-            }
-        }, forMediaFor: post)
+            },
+            forMediaFor: post
+        )
     }
 
     private func updateReferences(to media: Media, in contentBlocks: [GutenbergParsedBlock], post: AbstractPost) {
         guard var postContent = post.content,
             let mediaID = media.mediaID?.intValue,
-            let remoteURLStr = media.remoteURL else {
+            let remoteURLStr = media.remoteURL
+        else {
             return
         }
         var imageURL = remoteURLStr
@@ -780,53 +833,99 @@ class PostCoordinator: NSObject {
         var aztecProcessors: [Processor] = []
 
         // File block can upload any kind of media.
-        let gutenbergFileProcessor = GutenbergFileUploadProcessor(mediaUploadID: gutenbergMediaUploadID, serverMediaID: mediaID, remoteURLString: remoteURLStr)
+        let gutenbergFileProcessor = GutenbergFileUploadProcessor(
+            mediaUploadID: gutenbergMediaUploadID,
+            serverMediaID: mediaID,
+            remoteURLString: remoteURLStr
+        )
         gutenbergBlockProcessors.append(gutenbergFileProcessor)
 
         if media.mediaType == .image {
-            let gutenbergImgPostUploadProcessor = GutenbergImgUploadProcessor(mediaUploadID: gutenbergMediaUploadID, serverMediaID: mediaID, remoteURLString: imageURL)
+            let gutenbergImgPostUploadProcessor = GutenbergImgUploadProcessor(
+                mediaUploadID: gutenbergMediaUploadID,
+                serverMediaID: mediaID,
+                remoteURLString: imageURL
+            )
             gutenbergBlockProcessors.append(gutenbergImgPostUploadProcessor)
 
-            let gutenbergGalleryPostUploadProcessor = GutenbergGalleryUploadProcessor(mediaUploadID: gutenbergMediaUploadID, serverMediaID: mediaID, remoteURLString: imageURL, mediaLink: mediaLink)
+            let gutenbergGalleryPostUploadProcessor = GutenbergGalleryUploadProcessor(
+                mediaUploadID: gutenbergMediaUploadID,
+                serverMediaID: mediaID,
+                remoteURLString: imageURL,
+                mediaLink: mediaLink
+            )
             gutenbergBlockProcessors.append(gutenbergGalleryPostUploadProcessor)
 
-            let imgPostUploadProcessor = ImgUploadProcessor(mediaUploadID: mediaUploadID, remoteURLString: remoteURLStr, width: media.width?.intValue, height: media.height?.intValue)
+            let imgPostUploadProcessor = ImgUploadProcessor(
+                mediaUploadID: mediaUploadID,
+                remoteURLString: remoteURLStr,
+                width: media.width?.intValue,
+                height: media.height?.intValue
+            )
             aztecProcessors.append(imgPostUploadProcessor)
 
-            let gutenbergCoverPostUploadProcessor = GutenbergCoverUploadProcessor(mediaUploadID: gutenbergMediaUploadID, serverMediaID: mediaID, remoteURLString: remoteURLStr)
+            let gutenbergCoverPostUploadProcessor = GutenbergCoverUploadProcessor(
+                mediaUploadID: gutenbergMediaUploadID,
+                serverMediaID: mediaID,
+                remoteURLString: remoteURLStr
+            )
             gutenbergProcessors.append(gutenbergCoverPostUploadProcessor)
         } else if media.mediaType == .video {
-            let gutenbergVideoPostUploadProcessor = GutenbergVideoUploadProcessor(mediaUploadID: gutenbergMediaUploadID, serverMediaID: mediaID, remoteURLString: remoteURLStr)
+            let gutenbergVideoPostUploadProcessor = GutenbergVideoUploadProcessor(
+                mediaUploadID: gutenbergMediaUploadID,
+                serverMediaID: mediaID,
+                remoteURLString: remoteURLStr
+            )
             gutenbergProcessors.append(gutenbergVideoPostUploadProcessor)
 
-            let gutenbergCoverPostUploadProcessor = GutenbergCoverUploadProcessor(mediaUploadID: gutenbergMediaUploadID, serverMediaID: mediaID, remoteURLString: remoteURLStr)
+            let gutenbergCoverPostUploadProcessor = GutenbergCoverUploadProcessor(
+                mediaUploadID: gutenbergMediaUploadID,
+                serverMediaID: mediaID,
+                remoteURLString: remoteURLStr
+            )
             gutenbergProcessors.append(gutenbergCoverPostUploadProcessor)
 
-            let videoPostUploadProcessor = VideoUploadProcessor(mediaUploadID: mediaUploadID, remoteURLString: remoteURLStr, videoPressID: media.videopressGUID)
+            let videoPostUploadProcessor = VideoUploadProcessor(
+                mediaUploadID: mediaUploadID,
+                remoteURLString: remoteURLStr,
+                videoPressID: media.videopressGUID
+            )
             aztecProcessors.append(videoPostUploadProcessor)
 
             if let videoPressGUID = media.videopressGUID {
-                let gutenbergVideoPressUploadProcessor = GutenbergVideoPressUploadProcessor(mediaUploadID: gutenbergMediaUploadID, serverMediaID: mediaID, videoPressGUID: videoPressGUID)
+                let gutenbergVideoPressUploadProcessor = GutenbergVideoPressUploadProcessor(
+                    mediaUploadID: gutenbergMediaUploadID,
+                    serverMediaID: mediaID,
+                    videoPressGUID: videoPressGUID
+                )
                 gutenbergProcessors.append(gutenbergVideoPressUploadProcessor)
             }
         } else if media.mediaType == .audio {
-            let gutenbergAudioProcessor = GutenbergAudioUploadProcessor(mediaUploadID: gutenbergMediaUploadID, serverMediaID: mediaID, remoteURLString: remoteURLStr)
+            let gutenbergAudioProcessor = GutenbergAudioUploadProcessor(
+                mediaUploadID: gutenbergMediaUploadID,
+                serverMediaID: mediaID,
+                remoteURLString: remoteURLStr
+            )
             gutenbergProcessors.append(gutenbergAudioProcessor)
         } else if let remoteURL = URL(string: remoteURLStr) {
             let documentTitle = remoteURL.lastPathComponent
-            let documentUploadProcessor = DocumentUploadProcessor(mediaUploadID: mediaUploadID, remoteURLString: remoteURLStr, title: documentTitle)
+            let documentUploadProcessor = DocumentUploadProcessor(
+                mediaUploadID: mediaUploadID,
+                remoteURLString: remoteURLStr,
+                title: documentTitle
+            )
             aztecProcessors.append(documentUploadProcessor)
         }
 
         // Gutenberg processors need to run first because they are more specific/and target only content inside specific blocks
         gutenbergBlockProcessors.forEach { $0.process(contentBlocks) }
         postContent = gutenbergProcessors.reduce(postContent) { content, processor -> String in
-            return processor.process(content)
+            processor.process(content)
         }
 
         // Aztec processors are next because they are more generic and only worried about HTML tags
         postContent = aztecProcessors.reduce(postContent) { content, processor -> String in
-            return processor.process(content)
+            processor.process(content)
         }
 
         post.content = postContent
