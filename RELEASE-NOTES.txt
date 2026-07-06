@@ -1,5 +1,6 @@
 27.1
 -----
+* [*] [internal] In-app updates: guard the flexible update notice against double-posting when two update checks race [#25666]
 * [*] [build tooling] Add a String Catalog localization pipeline (plurals + build-free catalog generation) with a CI coverage gate [#25688]
 
 
