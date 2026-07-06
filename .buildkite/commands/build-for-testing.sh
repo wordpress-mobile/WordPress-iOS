@@ -14,7 +14,6 @@ fi
 
 echo "--- :beer: Installing Homebrew Dependencies"
 brew tap FelixHerrmann/tap
-# Newer Homebrew refuses third-party tap formulae until the tap is trusted.
 brew trust FelixHerrmann/tap
 brew install swift-package-list
 
