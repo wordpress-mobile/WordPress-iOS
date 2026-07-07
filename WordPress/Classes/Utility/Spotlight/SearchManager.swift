@@ -193,9 +193,13 @@ import WordPressData
             return false
         }
 
-        let (itemType, domainString, identifier) = SearchIdentifierGenerator.decomposeFromUniqueIdentifier(
-            compositeIdentifier
-        )
+        guard
+            let (itemType, domainString, identifier) = SearchIdentifierGenerator.decomposeFromUniqueIdentifier(
+                compositeIdentifier
+            )
+        else {
+            return false
+        }
         switch itemType {
         case .abstractPost:
             return handleAbstractPost(domainString: domainString, identifier: identifier)
