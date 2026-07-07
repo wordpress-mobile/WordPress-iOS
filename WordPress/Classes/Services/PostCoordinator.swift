@@ -97,8 +97,14 @@ class PostCoordinator: NSObject {
         try await save(post, changes: parameters)
     }
 
+    /// Emits the side effects of a post reaching the scheduled or published
+    /// state: dashboard notifications, Spotlight indexing, and the
+    /// app-rating significant event.
     @MainActor
-    private func didPublish(_ post: AbstractPost) {
+    func didPublish(_ post: AbstractPost, previousStatus: BasePost.Status?) {
+        guard previousStatus != post.status, post.isStatus(in: [.scheduled, .publish]) else {
+            return
+        }
         if post.status == .scheduled {
             notifyNewPostScheduled()
         } else if post.status == .publish {
@@ -119,29 +125,13 @@ class PostCoordinator: NSObject {
         let previousStatus = post.status
 
         var changes = changes ?? .init()
-
-        // If the post was previously scheduled and the user wants to publish
-        // it without specifying a new publish date, we have to send `.now`
-        // to ensure it gets published immediatelly.
-        if (changes.status == Post.Status.publish.rawValue || changes.status == Post.Status.publishPrivate.rawValue)
-            && previousStatus == .scheduled && changes.date == nil
-        {
-            changes.date = .now
-        }
+        changes.setDateForImmediatePublishIfNeeded(previousStatus: previousStatus)
 
         do {
             let repository = PostRepository(coreDataStack: coreDataStack)
             try await repository.save(post, changes: changes)
 
-            if previousStatus != post.status && post.isStatus(in: [.scheduled, .publish]) {
-                if post.status == .scheduled {
-                    notifyNewPostScheduled()
-                } else if post.status == .publish {
-                    notifyNewPostPublished()
-                }
-                SearchManager.shared.indexItem(post)
-                AppRatingUtility.shared.incrementSignificantEvent()
-            }
+            didPublish(post, previousStatus: previousStatus)
             show(PostCoordinator.makeUploadSuccessNotice(for: post, previousStatus: previousStatus))
             return post
         } catch {
@@ -194,7 +184,7 @@ class PostCoordinator: NSObject {
         topViewController.present(alert, animated: true)
     }
 
-    private func trackError(_ error: Error, operation: String, post: AbstractPost) {
+    func trackError(_ error: Error, operation: String, post: AbstractPost) {
         DDLogError("post-coordinator-\(operation)-failed: \(error)")
 
         if let error = error as? TrackableErrorProtocol, var userInfo = error.getTrackingUserInfo() {
@@ -231,7 +221,10 @@ class PostCoordinator: NSObject {
         startSync(for: post) // Clears the error associated with the post
     }
 
-    private func handlePermanentlyDeleted(_ post: AbstractPost) {
+    /// Removes the local copy of a post that was permanently deleted on the
+    /// server, along with its Spotlight entry.
+    func handlePermanentlyDeleted(_ post: AbstractPost) {
+        SearchManager.shared.deleteSearchableItem(post)
         let context = coreDataStack.mainContext
         context.deleteObject(post)
         ContextManager.shared.saveContextAndWait(context)
