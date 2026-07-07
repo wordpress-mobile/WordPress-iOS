@@ -22,7 +22,7 @@ struct HomeWidgetToday: Widget {
     )
 
     var body: some WidgetConfiguration {
-        IntentConfiguration(
+        AppIntentConfiguration(
             kind: WidgetStatsConfiguration.Kind.homeToday.rawValue,
             intent: SelectSiteIntent.self,
             provider: SiteListProvider<HomeWidgetTodayData>(
@@ -36,6 +36,6 @@ struct HomeWidgetToday: Widget {
         .configurationDisplayName(LocalizableStrings.todayWidgetTitle)
         .description(LocalizableStrings.todayPreviewDescription)
         .supportedFamilies([.systemSmall, .systemMedium])
-        .iOS17ContentMarginsDisabled()/// Temporarily disable additional iOS17 margins for widgets for StandBy
+        .iOS17ContentMarginsDisabled() // Temporarily disable additional iOS17 margins for widgets for StandBy
     }
 }

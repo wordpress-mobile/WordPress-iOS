@@ -71,7 +71,7 @@ if [ -f "$WORDPRESS_SECRETS_FILE" ] && [[ " ${WORDPRESS_TARGETS[*]} " == *" $TAR
     exit 0
 fi
 
-JETPACK_TARGETS=("Jetpack" "JetpackStatsWidgets" "JetpackShareExtension" "JetpackDraftActionExtension" "JetpackNotificationServiceExtension" "JetpackIntents")
+JETPACK_TARGETS=("Jetpack" "JetpackStatsWidgets" "JetpackShareExtension" "JetpackDraftActionExtension" "JetpackNotificationServiceExtension")
 # If the Jetpack Secrets are available and if we're building Jetpack use them
 if [ -f "$JETPACK_SECRETS_FILE" ] && [[ " ${JETPACK_TARGETS[*]} " == *" $TARGET_NAME "* ]]; then
     echo "Applying Jetpack Secrets"

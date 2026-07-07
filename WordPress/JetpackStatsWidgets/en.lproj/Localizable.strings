@@ -1,0 +1,14 @@
+/* Source strings for the stats widget configuration UI, uploaded to GlotPress under the
+   "ios-widget." prefix (see MANUALLY_MAINTAINED_STRINGS_FILES in fastlane/lanes/localization.rb).
+   The keys are the identifiers Xcode generated for the legacy Sites.intentdefinition; they are
+   kept so the existing GlotPress translations keep matching after the migration to App Intents.
+
+   This file is not shipped in any bundle. At runtime the prefixed keys are resolved from the
+   app's Localizable.strings (iOS 26) or from the static copies in
+   Sources/JetpackStatsWidgets/Resources/<locale>.lproj/Localizable.strings (iOS 17). */
+
+/* This text is used when the user is configuring the iOS widget to suggest them to select the site to configure the widget for */
+"gpCwrM" = "Select Site";
+
+/* This text is used when the user is configuring the iOS widget, as a label for the dropdown to select the site to configure it for */
+"ILcGmf" = "Site";

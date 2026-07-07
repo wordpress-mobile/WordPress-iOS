@@ -54,7 +54,7 @@ struct HomeWidgetThisWeek: Widget {
     )
 
     var body: some WidgetConfiguration {
-        IntentConfiguration(
+        AppIntentConfiguration(
             kind: WidgetStatsConfiguration.Kind.homeThisWeek.rawValue,
             intent: SelectSiteIntent.self,
             provider: SiteListProvider<HomeWidgetThisWeekData>(
@@ -68,6 +68,6 @@ struct HomeWidgetThisWeek: Widget {
         .configurationDisplayName(LocalizableStrings.thisWeekWidgetTitle)
         .description(LocalizableStrings.thisWeekPreviewDescription)
         .supportedFamilies([.systemMedium, .systemLarge])
-        .iOS17ContentMarginsDisabled()/// Temporarily disable additional iOS17 margins for widgets
+        .iOS17ContentMarginsDisabled() // Temporarily disable additional iOS17 margins for widgets
     }
 }

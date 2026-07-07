@@ -15,7 +15,7 @@ final class WidgetDataReader<T: HomeWidgetData> {
     }
 
     /// Returns cached widget data based on the selected site when editing widget and the default site.
-    /// Configuration.site is nil until IntentHandler is initialized.
+    /// Configuration.site is nil until the user picks a site in the widget configuration.
     /// Configuration.site can have old value after logging in with a different account. No way to reset configuration when the user logs out.
     /// Using defaultSiteID if both of these cases.
     /// - Parameters:
@@ -31,7 +31,7 @@ final class WidgetDataReader<T: HomeWidgetData> {
         }
 
         return cacheReader.widgetData(
-            forSiteIdentifier: configuration.site?.identifier,
+            forSiteIdentifier: configuration.site?.id,
             defaultSiteID: defaultSiteID,
             userLoggedIn: defaults.bool(forKey: WidgetStatsConfiguration.userDefaultsLoggedInKey)
         )

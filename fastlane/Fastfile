@@ -45,7 +45,6 @@ JETPACK_EXTENSIONS_BUNDLE_IDENTIFIERS = %w[
   JetpackDraftAction
   JetpackStatsWidgets
   JetpackNotificationServiceExtension
-  JetpackIntents
 ].map { |suffix| "#{JETPACK_BUNDLE_IDENTIFIER}.#{suffix}" }
 ALL_JETPACK_BUNDLE_IDENTIFIERS = [JETPACK_BUNDLE_IDENTIFIER, *JETPACK_EXTENSIONS_BUNDLE_IDENTIFIERS].freeze
 

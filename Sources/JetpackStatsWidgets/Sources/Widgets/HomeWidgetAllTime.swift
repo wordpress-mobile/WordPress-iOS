@@ -21,7 +21,7 @@ struct HomeWidgetAllTime: Widget {
     )
 
     var body: some WidgetConfiguration {
-        IntentConfiguration(
+        AppIntentConfiguration(
             kind: WidgetStatsConfiguration.Kind.homeAllTime.rawValue,
             intent: SelectSiteIntent.self,
             provider: SiteListProvider<HomeWidgetAllTimeData>(
@@ -35,6 +35,6 @@ struct HomeWidgetAllTime: Widget {
         .configurationDisplayName(LocalizableStrings.allTimeWidgetTitle)
         .description(LocalizableStrings.allTimePreviewDescription)
         .supportedFamilies([.systemSmall, .systemMedium])
-        .iOS17ContentMarginsDisabled()/// Temporarily disable additional iOS17 margins for widgets
+        .iOS17ContentMarginsDisabled() // Temporarily disable additional iOS17 margins for widgets
     }
 }
