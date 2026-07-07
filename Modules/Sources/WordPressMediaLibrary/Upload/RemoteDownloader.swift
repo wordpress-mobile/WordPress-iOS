@@ -29,6 +29,13 @@ final class RemoteDownloader {
             throw MaterializerError.remoteDownloadFailed(underlyingError: error)
         }
 
+        // The async `download` hands back a temp file it does not reap for us,
+        // so we own it now. Delete it on every path that doesn't move it into
+        // parentDir (the status check below throws before the move), otherwise a
+        // failed download strands bytes in the system temp directory. On success
+        // the move renames it away first, leaving this a no-op.
+        defer { try? FileManager.default.removeItem(at: location) }
+
         // HTTP status check: a 404/500 response body looks like a successful
         // download to URLSession (it still hands back a valid temp file). For
         // Stock Photos the image-byte validator catches HTML error bodies
