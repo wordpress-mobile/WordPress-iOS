@@ -24,8 +24,8 @@ echo "--- :closed_lock_with_key: Installing Secrets"
 bundle exec fastlane run configure_apply
 
 echo "--- :hammer_and_wrench: Building"
-bundle exec fastlane build_${APP}_for_testing
+bundle exec fastlane "build_${APP}_for_testing"
 
 echo "--- :arrow_up: Upload Build Products"
-tar -cf build-products-${APP}.tar DerivedData/Build/Products/
-upload_artifact build-products-${APP}.tar
+tar -cf "build-products-${APP}.tar" DerivedData/Build/Products/
+upload_artifact "build-products-${APP}.tar"
