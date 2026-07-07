@@ -12,9 +12,7 @@ if [[ "$APP" != "wordpress" && "$APP" != "jetpack" ]]; then
   exit 1
 fi
 
-echo "--- :beer: Installing Homebrew Dependencies"
-brew tap FelixHerrmann/tap
-brew install swift-package-list
+"$(dirname "${BASH_SOURCE[0]}")/install-swift-package-list.sh"
 
 "$(dirname "${BASH_SOURCE[0]}")/shared-set-up.sh"
 
@@ -26,8 +24,8 @@ echo "--- :closed_lock_with_key: Installing Secrets"
 bundle exec fastlane run configure_apply
 
 echo "--- :hammer_and_wrench: Building"
-bundle exec fastlane build_${APP}_for_testing
+bundle exec fastlane "build_${APP}_for_testing"
 
 echo "--- :arrow_up: Upload Build Products"
-tar -cf build-products-${APP}.tar DerivedData/Build/Products/
-upload_artifact build-products-${APP}.tar
+tar -cf "build-products-${APP}.tar" DerivedData/Build/Products/
+upload_artifact "build-products-${APP}.tar"
