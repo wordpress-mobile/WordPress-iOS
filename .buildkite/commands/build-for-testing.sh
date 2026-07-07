@@ -12,7 +12,6 @@ if [[ "$APP" != "wordpress" && "$APP" != "jetpack" ]]; then
   exit 1
 fi
 
-echo "--- :beer: Installing Homebrew Dependencies"
 "$(dirname "${BASH_SOURCE[0]}")/install-swift-package-list.sh"
 
 "$(dirname "${BASH_SOURCE[0]}")/shared-set-up.sh"
