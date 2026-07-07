@@ -120,7 +120,11 @@ let package = Package(
             ],
             resources: [.process("Resources")]
         ),
-        .target(name: "JetpackStatsWidgetsCore", swiftSettings: [.swiftLanguageMode(.v5)]),
+        .target(
+            name: "JetpackStatsWidgetsCore",
+            dependencies: ["BuildSettingsKit"],
+            swiftSettings: [.swiftLanguageMode(.v5)]
+        ),
         .target(
             name: "JetpackSocial",
             dependencies: [
