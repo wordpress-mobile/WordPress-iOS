@@ -47,17 +47,22 @@ final class UploadSourceMaterializer: Sendable {
         return base.appendingPathComponent("WordPressMediaLibrary-Uploads", isDirectory: true)
     }()
 
+    /// Reference instant for the sweep, captured the first time it runs.
+    /// Deliberately not a true process-start time (it is only as early as that
+    /// first call), so it must not be reused as a general launch timestamp; it
+    /// exists solely to tell this run's staging dirs from an earlier run's.
+    private static let sweepReferenceDate = Date()
+
     /// Deletes staged uploads under the default staging root that were created
-    /// before this process started. In-memory uploader state never survives
-    /// process termination, so any entry from a previous run was orphaned by a
-    /// crash or force-quit. Entries created by the current process are never
-    /// touched, which makes the sweep safe to run at any point after launch,
-    /// even concurrently with in-flight staging (the app schedules it on a
-    /// deferred background queue) or with parallel test materializations that
-    /// share the default root.
+    /// before this process began sweeping. In-memory uploader state never
+    /// survives process termination, so any earlier entry was orphaned by a
+    /// crash or force-quit in a previous run. Call this once shortly after app
+    /// launch, before the first upload is staged, so the reference it captures
+    /// approximates this process's start: staging dirs this run creates
+    /// afterward are always newer and never swept, so a later concurrent
+    /// materialization (or a parallel test sharing the default root) is safe.
     public static func sweepOrphanedStagingFiles() {
-        let processStart = Date(timeIntervalSinceNow: -ProcessInfo.processInfo.systemUptime)
-        sweepOrphanedStagingFiles(in: defaultStagingDirectory, createdBefore: processStart)
+        sweepOrphanedStagingFiles(in: defaultStagingDirectory, createdBefore: sweepReferenceDate)
     }
 
     /// Testable core of `sweepOrphanedStagingFiles()`. Entries with an
