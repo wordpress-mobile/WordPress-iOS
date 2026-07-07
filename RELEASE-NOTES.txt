@@ -1,6 +1,7 @@
 27.3
 -----
 * [*] Stats: Improve performance when opening the Stats screen [#25938]
+* [*] [internal] Stop donating screen activities as Siri predictions now that App Shortcuts cover them [#25757]
 
 27.2
 -----
