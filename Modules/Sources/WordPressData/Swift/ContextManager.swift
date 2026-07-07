@@ -78,34 +78,50 @@ public class ContextManager: NSObject, CoreDataStack, CoreDataStackSwift {
     }
 
     @objc(performAndSaveUsingBlock:completion:onQueue:)
-    public func performAndSave(_ block: @escaping (NSManagedObjectContext) -> Void, completion: (() -> Void)?, on queue: DispatchQueue) {
+    public func performAndSave(
+        _ block: @escaping (NSManagedObjectContext) -> Void,
+        completion: (() -> Void)?,
+        on queue: DispatchQueue
+    ) {
         let context = newDerivedContext()
-        self.writerQueue.addOperation(AsyncBlockOperation { done in
-            context.perform {
-                block(context)
+        self.writerQueue.addOperation(
+            AsyncBlockOperation { done in
+                context.perform {
+                    block(context)
 
-                self.save(context, .alreadyInContextQueue)
-                queue.async { completion?() }
-                done()
-            }
-        })
-    }
-
-    public func performAndSave<T>(_ block: @escaping (NSManagedObjectContext) throws -> T, completion: ((Result<T, Error>) -> Void)?, on queue: DispatchQueue) {
-        let context = newDerivedContext()
-        self.writerQueue.addOperation(AsyncBlockOperation { done in
-            context.perform {
-                let result = Result(catching: { try block(context) })
-                if case .success = result {
                     self.save(context, .alreadyInContextQueue)
+                    queue.async { completion?() }
+                    done()
                 }
-                queue.async { completion?(result) }
-                done()
             }
-        })
+        )
     }
 
-    public func performAndSave<T>(_ block: @escaping (NSManagedObjectContext) -> T, completion: ((T) -> Void)?, on queue: DispatchQueue) {
+    public func performAndSave<T>(
+        _ block: @escaping (NSManagedObjectContext) throws -> T,
+        completion: ((Result<T, Error>) -> Void)?,
+        on queue: DispatchQueue
+    ) {
+        let context = newDerivedContext()
+        self.writerQueue.addOperation(
+            AsyncBlockOperation { done in
+                context.perform {
+                    let result = Result(catching: { try block(context) })
+                    if case .success = result {
+                        self.save(context, .alreadyInContextQueue)
+                    }
+                    queue.async { completion?(result) }
+                    done()
+                }
+            }
+        )
+    }
+
+    public func performAndSave<T>(
+        _ block: @escaping (NSManagedObjectContext) -> T,
+        completion: ((T) -> Void)?,
+        on queue: DispatchQueue
+    ) {
         performAndSave(
             block,
             completion: { (result: Result<T, Error>) in
@@ -147,7 +163,11 @@ public class ContextManager: NSObject, CoreDataStack, CoreDataStackSwift {
             return
         }
 
-        guard let metadata = try? NSPersistentStoreCoordinator.metadataForPersistentStore(ofType: NSSQLiteStoreType, at: storeURL),
+        guard
+            let metadata = try? NSPersistentStoreCoordinator.metadataForPersistentStore(
+                ofType: NSSQLiteStoreType,
+                at: storeURL
+            ),
             !objectModel.isConfiguration(withName: nil, compatibleWithStoreMetadata: metadata)
         else {
             return
@@ -159,7 +179,8 @@ public class ContextManager: NSObject, CoreDataStack, CoreDataStackSwift {
             fatalError("Can't find WordPress.momd")
         }
 
-        guard let versionInfo = NSDictionary(contentsOf: modelFileURL.appendingPathComponent("VersionInfo.plist")) else {
+        guard let versionInfo = NSDictionary(contentsOf: modelFileURL.appendingPathComponent("VersionInfo.plist"))
+        else {
             fatalError("Can't get the object model's version info")
         }
 
@@ -181,7 +202,14 @@ public class ContextManager: NSObject, CoreDataStack, CoreDataStackSwift {
 
 private extension ContextManager {
     static var localDatabasePath: URL {
-        guard let url = try? FileManager.default.url(for: .documentDirectory, in: .userDomainMask, appropriateFor: nil, create: true) else {
+        guard
+            let url = try? FileManager.default.url(
+                for: .documentDirectory,
+                in: .userDomainMask,
+                appropriateFor: nil,
+                create: true
+            )
+        else {
             fatalError("Failed to find the document directory")
         }
 
@@ -202,7 +230,10 @@ private extension ContextManager {
         }
 
         // Ensure that the `context`'s concurrency type is not `confinementConcurrencyType`, since it will crash if `perform` or `performAndWait` is called.
-        guard context.concurrencyType == .mainQueueConcurrencyType || context.concurrencyType == .privateQueueConcurrencyType else {
+        guard
+            context.concurrencyType == .mainQueueConcurrencyType
+                || context.concurrencyType == .privateQueueConcurrencyType
+        else {
             block()
             return
         }
@@ -221,18 +252,44 @@ private extension ContextManager {
 // MARK: - Initialise Core Data stack
 
 private extension ContextManager {
-    static func createPersistentContainer(storeURL: URL, modelName: String) -> NSPersistentContainer {
-        guard var modelFileURL = Bundle.wordPressData.url(forResource: "WordPress", withExtension: "momd") else {
+    /// The current version of the data model, loaded once per process.
+    ///
+    /// Every loaded `NSManagedObjectModel` registers its entities in Core Data's global
+    /// class-to-entity table. Loading the model file more than once (which happens in unit
+    /// tests, where each test creates its own `ContextManager` instance) leaves multiple
+    /// entity descriptions claiming the same `NSManagedObject` subclasses, and
+    /// `+[NSManagedObject entity]` fails to resolve them.
+    static let currentObjectModel: NSManagedObjectModel = {
+        guard let modelFileURL = Bundle.wordPressData.url(forResource: "WordPress", withExtension: "momd") else {
             fatalError("Can't find WordPress.momd")
         }
 
-        if modelName != ContextManagerModelNameCurrent {
-            modelFileURL = modelFileURL.appendingPathComponent(modelName).appendingPathExtension("mom")
+        guard let objectModel = NSManagedObjectModel(contentsOf: modelFileURL) else {
+            fatalError("Can't create object model at \(modelFileURL)")
         }
 
-        guard let objectModel = NSManagedObjectModel(contentsOf: modelFileURL) else {
-            fatalError("Can't create object model named \(modelName) at \(modelFileURL)")
+        return objectModel
+    }()
+
+    static func objectModel(named modelName: String) -> NSManagedObjectModel {
+        guard modelName != ContextManagerModelNameCurrent else {
+            return currentObjectModel
         }
+
+        guard let modelFileURL = Bundle.wordPressData.url(forResource: "WordPress", withExtension: "momd") else {
+            fatalError("Can't find WordPress.momd")
+        }
+
+        let versionedModelURL = modelFileURL.appendingPathComponent(modelName).appendingPathExtension("mom")
+        guard let objectModel = NSManagedObjectModel(contentsOf: versionedModelURL) else {
+            fatalError("Can't create object model named \(modelName) at \(versionedModelURL)")
+        }
+
+        return objectModel
+    }
+
+    static func createPersistentContainer(storeURL: URL, modelName: String) -> NSPersistentContainer {
+        let objectModel = objectModel(named: modelName)
 
         // FIXME: Import the Sentry stuff, too — But it accesses the app delegate!
         // let startupEvent = SentryStartupEvent()
@@ -292,7 +349,7 @@ extension ContextManager {
     }
 
     public static var shared: ContextManager {
-        return sharedInstance()
+        sharedInstance()
     }
 }
 
