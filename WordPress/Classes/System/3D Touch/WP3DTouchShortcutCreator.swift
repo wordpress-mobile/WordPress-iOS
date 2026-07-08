@@ -8,15 +8,16 @@ public protocol ApplicationShortcutsProvider {
 
 extension UIApplication: ApplicationShortcutsProvider {
     @objc public var is3DTouchAvailable: Bool {
-        return mainWindow?.traitCollection.forceTouchCapability == .available
+        connectedScenes.compactMap { ($0 as? UIWindowScene)?.keyWindow }.first?.traitCollection.forceTouchCapability
+            == .available
     }
 }
 
 open class WP3DTouchShortcutCreator: NSObject {
     enum LoggedIn3DTouchShortcutIndex: Int {
         case notifications = 0,
-        stats,
-        newPost
+            stats,
+            newPost
     }
 
     var shortcutsProvider: ApplicationShortcutsProvider
@@ -50,18 +51,43 @@ open class WP3DTouchShortcutCreator: NSObject {
 
     fileprivate func registerForNotifications() {
         let notificationCenter = NotificationCenter.default
-        notificationCenter.addObserver(self, selector: #selector(WP3DTouchShortcutCreator.createLoggedInShortcuts), name: NSNotification.Name(rawValue: WordPressAuthenticationManager.WPSigninDidFinishNotification), object: nil)
-        notificationCenter.addObserver(self, selector: #selector(WP3DTouchShortcutCreator.createLoggedInShortcuts), name: .WPRecentSitesChanged, object: nil)
-        notificationCenter.addObserver(self, selector: #selector(WP3DTouchShortcutCreator.createLoggedInShortcuts), name: .WPBlogUpdated, object: nil)
-        notificationCenter.addObserver(self, selector: #selector(WP3DTouchShortcutCreator.createLoggedInShortcuts), name: .wpAccountDefaultWordPressComAccountChanged, object: nil)
+        notificationCenter.addObserver(
+            self,
+            selector: #selector(WP3DTouchShortcutCreator.createLoggedInShortcuts),
+            name: NSNotification.Name(rawValue: WordPressAuthenticationManager.WPSigninDidFinishNotification),
+            object: nil
+        )
+        notificationCenter.addObserver(
+            self,
+            selector: #selector(WP3DTouchShortcutCreator.createLoggedInShortcuts),
+            name: .WPRecentSitesChanged,
+            object: nil
+        )
+        notificationCenter.addObserver(
+            self,
+            selector: #selector(WP3DTouchShortcutCreator.createLoggedInShortcuts),
+            name: .WPBlogUpdated,
+            object: nil
+        )
+        notificationCenter.addObserver(
+            self,
+            selector: #selector(WP3DTouchShortcutCreator.createLoggedInShortcuts),
+            name: .wpAccountDefaultWordPressComAccountChanged,
+            object: nil
+        )
     }
 
     fileprivate func loggedOutShortcutArray() -> [UIApplicationShortcutItem] {
-        let logInShortcut = UIMutableApplicationShortcutItem(type: WP3DTouchShortcutHandler.ShortcutIdentifier.LogIn.type,
-                                                   localizedTitle: NSLocalizedString("Log In", comment: "Log In 3D Touch Shortcut"),
-                                                localizedSubtitle: nil,
-                                                             icon: UIApplicationShortcutIcon(systemImageName: "arrow.right.square"),
-                                                         userInfo: [WP3DTouchShortcutHandler.applicationShortcutUserInfoIconKey: WP3DTouchShortcutHandler.ShortcutIdentifier.LogIn.rawValue as NSSecureCoding])
+        let logInShortcut = UIMutableApplicationShortcutItem(
+            type: WP3DTouchShortcutHandler.ShortcutIdentifier.LogIn.type,
+            localizedTitle: NSLocalizedString("Log In", comment: "Log In 3D Touch Shortcut"),
+            localizedSubtitle: nil,
+            icon: UIApplicationShortcutIcon(systemImageName: "arrow.right.square"),
+            userInfo: [
+                WP3DTouchShortcutHandler.applicationShortcutUserInfoIconKey: WP3DTouchShortcutHandler.ShortcutIdentifier
+                    .LogIn.rawValue as NSSecureCoding
+            ]
+        )
 
         return [logInShortcut]
     }
@@ -72,30 +98,45 @@ open class WP3DTouchShortcutCreator: NSObject {
             defaultBlogName = Blog.lastUsedOrFirst(in: mainContext)?.settings?.name
         }
 
-        let notificationsShortcut = UIMutableApplicationShortcutItem(type: WP3DTouchShortcutHandler.ShortcutIdentifier.Notifications.type,
-                                                           localizedTitle: NSLocalizedString("Notifications", comment: "Notifications 3D Touch Shortcut"),
-                                                        localizedSubtitle: nil,
-                                                                     icon: UIApplicationShortcutIcon(systemImageName: "bell"),
-                                                                 userInfo: [WP3DTouchShortcutHandler.applicationShortcutUserInfoIconKey: WP3DTouchShortcutHandler.ShortcutIdentifier.Notifications.rawValue as NSSecureCoding])
+        let notificationsShortcut = UIMutableApplicationShortcutItem(
+            type: WP3DTouchShortcutHandler.ShortcutIdentifier.Notifications.type,
+            localizedTitle: NSLocalizedString("Notifications", comment: "Notifications 3D Touch Shortcut"),
+            localizedSubtitle: nil,
+            icon: UIApplicationShortcutIcon(systemImageName: "bell"),
+            userInfo: [
+                WP3DTouchShortcutHandler.applicationShortcutUserInfoIconKey: WP3DTouchShortcutHandler.ShortcutIdentifier
+                    .Notifications.rawValue as NSSecureCoding
+            ]
+        )
 
-        let statsShortcut = UIMutableApplicationShortcutItem(type: WP3DTouchShortcutHandler.ShortcutIdentifier.Stats.type,
-                                                   localizedTitle: NSLocalizedString("Stats", comment: "Stats 3D Touch Shortcut"),
-                                                localizedSubtitle: defaultBlogName,
-                                                             icon: UIApplicationShortcutIcon(systemImageName: "chart.bar"),
-                                                         userInfo: [WP3DTouchShortcutHandler.applicationShortcutUserInfoIconKey: WP3DTouchShortcutHandler.ShortcutIdentifier.Stats.rawValue as NSSecureCoding])
+        let statsShortcut = UIMutableApplicationShortcutItem(
+            type: WP3DTouchShortcutHandler.ShortcutIdentifier.Stats.type,
+            localizedTitle: NSLocalizedString("Stats", comment: "Stats 3D Touch Shortcut"),
+            localizedSubtitle: defaultBlogName,
+            icon: UIApplicationShortcutIcon(systemImageName: "chart.bar"),
+            userInfo: [
+                WP3DTouchShortcutHandler.applicationShortcutUserInfoIconKey: WP3DTouchShortcutHandler.ShortcutIdentifier
+                    .Stats.rawValue as NSSecureCoding
+            ]
+        )
 
-        let newPostShortcut = UIMutableApplicationShortcutItem(type: WP3DTouchShortcutHandler.ShortcutIdentifier.NewPost.type,
-                                                     localizedTitle: NSLocalizedString("New Post", comment: "New Post 3D Touch Shortcut"),
-                                                  localizedSubtitle: defaultBlogName,
-                                                               icon: UIApplicationShortcutIcon(systemImageName: "square.and.pencil"),
-                                                           userInfo: [WP3DTouchShortcutHandler.applicationShortcutUserInfoIconKey: WP3DTouchShortcutHandler.ShortcutIdentifier.NewPost.rawValue as NSSecureCoding])
+        let newPostShortcut = UIMutableApplicationShortcutItem(
+            type: WP3DTouchShortcutHandler.ShortcutIdentifier.NewPost.type,
+            localizedTitle: NSLocalizedString("New Post", comment: "New Post 3D Touch Shortcut"),
+            localizedSubtitle: defaultBlogName,
+            icon: UIApplicationShortcutIcon(systemImageName: "square.and.pencil"),
+            userInfo: [
+                WP3DTouchShortcutHandler.applicationShortcutUserInfoIconKey: WP3DTouchShortcutHandler.ShortcutIdentifier
+                    .NewPost.rawValue as NSSecureCoding
+            ]
+        )
 
         return [notificationsShortcut, statsShortcut, newPostShortcut]
     }
 
     @objc fileprivate func createLoggedInShortcuts() {
 
-        DispatchQueue.main.async {[weak self]() in
+        DispatchQueue.main.async { [weak self] () in
             guard let strongSelf = self else {
                 return
             }
@@ -125,14 +166,8 @@ open class WP3DTouchShortcutCreator: NSObject {
         shortcutsProvider.shortcutItems = loggedOutShortcutArray()
     }
 
-    fileprivate func is3DTouchAvailable() -> Bool {
-        let window = UIApplication.shared.mainWindow
-
-        return window?.traitCollection.forceTouchCapability == .available
-    }
-
     fileprivate func hasWordPressComAccount() -> Bool {
-        return AccountHelper.isDotcomAvailable()
+        AccountHelper.isDotcomAvailable()
     }
 
     fileprivate func doesCurrentBlogSupportStats() -> Bool {
@@ -144,6 +179,6 @@ open class WP3DTouchShortcutCreator: NSObject {
     }
 
     fileprivate func hasBlog() -> Bool {
-        return Blog.count(in: mainContext) > 0
+        Blog.count(in: mainContext) > 0
     }
 }

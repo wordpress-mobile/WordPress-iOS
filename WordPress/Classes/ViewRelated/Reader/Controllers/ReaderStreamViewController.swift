@@ -38,7 +38,7 @@ import AutomatticTracks
     // MARK: - Properties
 
     var tableView: UITableView! {
-        return tableViewController.tableView
+        tableViewController.tableView
     }
 
     private var syncHelpers: [ReaderAbstractTopic: WPContentSyncHelper] = [:]
@@ -119,9 +119,7 @@ import AutomatticTracks
     }
 
     private var isLoadingDiscover: Bool {
-        return readerTopic == nil &&
-            contentType == .topic &&
-            siteID == ReaderHelpers.discoverSiteID
+        readerTopic == nil && contentType == .topic && siteID == ReaderHelpers.discoverSiteID
     }
 
     /// The topic can be nil while a site or tag topic is being fetched, hence, optional.
@@ -134,7 +132,8 @@ import AutomatticTracks
             syncHelper?.delegate = self
 
             if let newTopic = readerTopic,
-               let context = newTopic.managedObjectContext {
+                let context = newTopic.managedObjectContext
+            {
                 newTopic.inUse = true
                 ContextManager.shared.save(context)
             }
@@ -201,6 +200,20 @@ import AutomatticTracks
             guard oldValue != isCompact else { return }
             didChangeIsCompact(isCompact)
         }
+    }
+
+    /// The target size for post cover images. Derived from the portrait-width
+    /// of the view so the fetched size is rotation-invariant.
+    private var coverSize: ImageSize {
+        var width = ReaderPostCell.regularCoverWidth
+        if isCompact {
+            let size = view.bounds.size
+            width = min(size.width, size.height) - ReaderStreamBaseCell.insets.left * 2
+        }
+        return ImageSize(
+            scaling: CGSize(width: width, height: width),
+            scale: traitCollection.displayScale
+        )
     }
 
     private let isStandaloneAppModeEnabled = BuildSettings.current.brand == .reader
@@ -288,7 +301,7 @@ import AutomatticTracks
     }
 
     override func awakeAfter(using aDecoder: NSCoder) -> Any? {
-        return super.awakeAfter(using: aDecoder)
+        super.awakeAfter(using: aDecoder)
     }
 
     override func viewDidLoad() {
@@ -306,7 +319,12 @@ import AutomatticTracks
 
         navigationItem.largeTitleDisplayMode = .never
 
-        NotificationCenter.default.addObserver(self, selector: #selector(postSeenToggled(_:)), name: .ReaderPostSeenToggled, object: nil)
+        NotificationCenter.default.addObserver(
+            self,
+            selector: #selector(postSeenToggled(_:)),
+            name: .ReaderPostSeenToggled,
+            object: nil
+        )
 
         configureCloseButtonIfNeeded()
         setupSavedPostsSettingsBarButtonItemIfNeeded()
@@ -343,7 +361,11 @@ import AutomatticTracks
         }
 
         let mainContext = ContextManager.shared.mainContext
-        NotificationCenter.default.removeObserver(self, name: NSNotification.Name.NSManagedObjectContextDidSave, object: mainContext)
+        NotificationCenter.default.removeObserver(
+            self,
+            name: NSNotification.Name.NSManagedObjectContextDidSave,
+            object: mainContext
+        )
 
         bumpStats()
         registerUserActivity()
@@ -390,7 +412,12 @@ import AutomatticTracks
         if isNotificationsBarButtonEnabled && traitCollection.horizontalSizeClass == .regular {
             notificationsButtonCancellable = notificationsButtonViewModel.$image.sink { [weak self] in
                 guard let self else { return }
-                let button = UIBarButtonItem(image: $0, style: .plain, target: self, action: #selector(buttonShowNotificationsTapped))
+                let button = UIBarButtonItem(
+                    image: $0,
+                    style: .plain,
+                    target: self,
+                    action: #selector(buttonShowNotificationsTapped)
+                )
                 button.tag = NavigationItemTag.notifications.rawValue
                 addRightBarButtonItem(button, after: .share)
             }
@@ -428,13 +455,15 @@ import AutomatticTracks
         }
 
         let service = ReaderTopicService(coreDataStack: ContextManager.shared)
-        service.siteTopicForSite(withID: siteID,
+        service.siteTopicForSite(
+            withID: siteID,
             isFeed: isFeed,
             success: { [weak self] (objectID: NSManagedObjectID?, _: Bool) in
 
                 let context = ContextManager.shared.mainContext
                 guard let objectID,
-                      let topic = (try? context.existingObject(with: objectID)) as? ReaderAbstractTopic else {
+                    let topic = (try? context.existingObject(with: objectID)) as? ReaderAbstractTopic
+                else {
                     DDLogError("Reader: Error retriving an existing site topic by its objectID")
                     if self?.isLoadingDiscover ?? false {
                         self?.updateContent(synchronize: false)
@@ -449,7 +478,8 @@ import AutomatticTracks
                     self?.updateContent(synchronize: false)
                 }
                 self?.displayLoadingStreamFailed()
-            })
+            }
+        )
     }
 
     /// Fetches a tag topic for the value of the `tagSlug` property
@@ -461,17 +491,22 @@ import AutomatticTracks
             return wpAssertionFailure("tag slug is missing")
         }
         let service = ReaderTopicService(coreDataStack: ContextManager.shared)
-        service.tagTopicForTag(withSlug: tagSlug, success: { [weak self] objectID in
-            let context = ContextManager.shared.mainContext
-            guard let objectID, let topic = (try? context.existingObject(with: objectID)) as? ReaderAbstractTopic else {
-                DDLogError("Reader: Error retriving an existing tag topic by its objectID")
+        service.tagTopicForTag(
+            withSlug: tagSlug,
+            success: { [weak self] objectID in
+                let context = ContextManager.shared.mainContext
+                guard let objectID, let topic = (try? context.existingObject(with: objectID)) as? ReaderAbstractTopic
+                else {
+                    DDLogError("Reader: Error retriving an existing tag topic by its objectID")
+                    self?.displayLoadingStreamFailed()
+                    return
+                }
+                self?.readerTopic = topic
+            },
+            failure: { [weak self] _ in
                 self?.displayLoadingStreamFailed()
-                return
             }
-            self?.readerTopic = topic
-        }, failure: { [weak self] _ in
-            self?.displayLoadingStreamFailed()
-        })
+        )
     }
 
     // MARK: - Setup
@@ -490,7 +525,11 @@ import AutomatticTracks
     }
 
     @objc func configureRefreshControl() {
-        refreshControl.addTarget(self, action: #selector(ReaderStreamViewController.handleRefresh(_:)), for: .valueChanged)
+        refreshControl.addTarget(
+            self,
+            action: #selector(ReaderStreamViewController.handleRefresh(_:)),
+            for: .valueChanged
+        )
     }
 
     private func setupContentHandler() {
@@ -602,7 +641,12 @@ import AutomatticTracks
 
     private func configureCloseButtonIfNeeded() {
         if isModal() {
-            navigationItem.leftBarButtonItem = UIBarButtonItem(image: UIImage(systemName: "xmark"), style: .plain, target: self, action: #selector(closeButtonTapped))
+            navigationItem.leftBarButtonItem = UIBarButtonItem(
+                image: UIImage(systemName: "xmark"),
+                style: .plain,
+                target: self,
+                action: #selector(closeButtonTapped)
+            )
         }
     }
 
@@ -648,7 +692,9 @@ import AutomatticTracks
 
     private func removeBlockedPosts() {
         // Fetch account
-        guard let account = try? WPAccount.lookupDefaultWordPressComAccount(in: viewContext), let userID = account.userID else {
+        guard let account = try? WPAccount.lookupDefaultWordPressComAccount(in: viewContext),
+            let userID = account.userID
+        else {
             return
         }
 
@@ -661,7 +707,8 @@ import AutomatticTracks
 
         // Site Predicate
         if let topic = readerTopic as? ReaderSiteTopic,
-           let blocked = BlockedSite.findOne(accountID: userID, blogID: topic.siteID, context: viewContext) {
+            let blocked = BlockedSite.findOne(accountID: userID, blogID: topic.siteID, context: viewContext)
+        {
             predicates.append(NSPredicate(format: "\(#keyPath(ReaderPost.siteID)) = %@", blocked.blogID))
         }
 
@@ -690,10 +737,14 @@ import AutomatticTracks
 
     /// Update the post card when a site is blocked from post details.
     ///
-    func readerSiteBlockingController(_ controller: ReaderPostBlockingController, didBlockSiteOfPost post: ReaderPost, result: Result<Void, Error>) {
+    func readerSiteBlockingController(
+        _ controller: ReaderPostBlockingController,
+        didBlockSiteOfPost post: ReaderPost,
+        result: Result<Void, Error>
+    ) {
         guard case .success = result,
-              let post = (try? viewContext.existingObject(with: post.objectID)) as? ReaderPost,
-              let indexPath = content.indexPath(forObject: post)
+            let post = (try? viewContext.existingObject(with: post.objectID)) as? ReaderPost,
+            let indexPath = content.indexPath(forObject: post)
         else {
             return
         }
@@ -702,10 +753,14 @@ import AutomatticTracks
         tableView.reloadRows(at: [indexPath], with: UITableView.RowAnimation.fade)
     }
 
-    func readerSiteBlockingController(_ controller: ReaderPostBlockingController, didEndBlockingPostAuthor post: ReaderPost, result: Result<Void, Error>) {
+    func readerSiteBlockingController(
+        _ controller: ReaderPostBlockingController,
+        didEndBlockingPostAuthor post: ReaderPost,
+        result: Result<Void, Error>
+    ) {
         guard case .success = result,
-              let post = (try? viewContext.existingObject(with: post.objectID)) as? ReaderPost,
-              let indexPath = content.indexPath(forObject: post)
+            let post = (try? viewContext.existingObject(with: post.objectID)) as? ReaderPost,
+            let indexPath = content.indexPath(forObject: post)
         else {
             return
         }
@@ -724,10 +779,11 @@ import AutomatticTracks
 
         tableView.reloadRows(at: [indexPath], with: UITableView.RowAnimation.fade)
 
-        ReaderBlockSiteAction(asBlocked: false).execute(with: post, context: viewContext) { [weak self] in
-            self?.recentlyBlockedSitePostObjectIDs.add(objectID)
-            self?.tableView.reloadRows(at: [indexPath], with: UITableView.RowAnimation.fade)
-        }
+        ReaderBlockSiteAction(asBlocked: false)
+            .execute(with: post, context: viewContext) { [weak self] in
+                self?.recentlyBlockedSitePostObjectIDs.add(objectID)
+                self?.tableView.reloadRows(at: [indexPath], with: UITableView.RowAnimation.fade)
+            }
     }
 
     // MARK: - Actions
@@ -755,7 +811,8 @@ import AutomatticTracks
 
     func removePost(_ post: ReaderPost) {
         togglePostSave(post)
-        let notice = Notice(title: Strings.postRemoved, actionTitle: SharedStrings.Button.undo) { [weak self] accepted in
+        let notice = Notice(title: Strings.postRemoved, actionTitle: SharedStrings.Button.undo) {
+            [weak self] accepted in
             guard accepted else { return }
             self?.togglePostSave(post)
         }
@@ -783,7 +840,8 @@ import AutomatticTracks
         }
 
         guard let topic = readerTopic,
-              let properties = topicPropertyForStats() else {
+            let properties = topicPropertyForStats()
+        else {
             return
         }
 
@@ -845,7 +903,7 @@ import AutomatticTracks
     }
 
     private func canSync() -> Bool {
-        return (readerTopic != nil || isLoadingDiscover) && connectionAvailable()
+        (readerTopic != nil || isLoadingDiscover) && connectionAvailable()
     }
 
     /// Kicks off a "background" sync without updating the UI if certain conditions
@@ -879,7 +937,7 @@ import AutomatticTracks
         }
 
         let lastSynced = topic.lastSynced ?? Date(timeIntervalSince1970: 0)
-        let interval = Int( Date().timeIntervalSince(lastSynced))
+        let interval = Int(Date().timeIntervalSince(lastSynced))
 
         if forceSync || (canSync() && (interval >= refreshInterval || topicPostsCount == 0)) {
             syncHelper?.syncContentWithUserInteraction(false)
@@ -891,7 +949,7 @@ import AutomatticTracks
     /// Returns the number of posts for the current topic
     /// This allows the count to be overridden by subclasses
     var topicPostsCount: Int {
-        return readerTopic?.posts.count ?? 0
+        readerTopic?.posts.count ?? 0
     }
     /// Used to fetch new content in response to a background refresh event.
     /// Not intended for use as part of a user interaction. See syncIfAppropriate instead.
@@ -899,39 +957,60 @@ import AutomatticTracks
     @objc func backgroundFetch(_ completionHandler: @escaping ((UIBackgroundFetchResult) -> Void)) {
         let lastSeenPostID = (content.content?.first as? ReaderPost)?.postID ?? -1
 
-        syncHelper?.backgroundSync(success: { [weak self, weak lastSeenPostID] in
-            let newestFetchedPostID = (self?.content.content?.first as? ReaderPost)?.postID ?? -1
-            if lastSeenPostID == newestFetchedPostID {
-                completionHandler(.noData)
-            } else {
-                if let numberOfRows = self?.tableView?.numberOfRows(inSection: 0), numberOfRows > 0 {
-                    self?.tableView.scrollToRow(at: IndexPath(row: 0, section: 0), at: .top, animated: false)
+        syncHelper?
+            .backgroundSync(
+                success: { [weak self, weak lastSeenPostID] in
+                    let newestFetchedPostID = (self?.content.content?.first as? ReaderPost)?.postID ?? -1
+                    if lastSeenPostID == newestFetchedPostID {
+                        completionHandler(.noData)
+                    } else {
+                        if let numberOfRows = self?.tableView?.numberOfRows(inSection: 0), numberOfRows > 0 {
+                            self?.tableView.scrollToRow(at: IndexPath(row: 0, section: 0), at: .top, animated: false)
+                        }
+                        completionHandler(.newData)
+                    }
+                },
+                failure: { _ in
+                    completionHandler(.failed)
                 }
-                completionHandler(.newData)
-            }
-        }, failure: { _ in
-            completionHandler(.failed)
-        })
+            )
     }
 
     private func syncFillingGap(_ indexPath: IndexPath) {
         if !canSync() {
-            let alertTitle = NSLocalizedString("Unable to Load Posts", comment: "Title of a prompt saying the app needs an internet connection before it can load posts")
-            let alertMessage = NSLocalizedString("Please check your internet connection and try again.", comment: "Politely asks the user to check their internet connection before trying again. ")
-            let alertController = UIAlertController(title: alertTitle,
+            let alertTitle = NSLocalizedString(
+                "Unable to Load Posts",
+                comment: "Title of a prompt saying the app needs an internet connection before it can load posts"
+            )
+            let alertMessage = NSLocalizedString(
+                "Please check your internet connection and try again.",
+                comment: "Politely asks the user to check their internet connection before trying again. "
+            )
+            let alertController = UIAlertController(
+                title: alertTitle,
                 message: alertMessage,
-                preferredStyle: .alert)
+                preferredStyle: .alert
+            )
             alertController.addCancelActionWithTitle(SharedStrings.Button.ok, handler: nil)
             alertController.presentFromRootViewController()
 
             return
         }
         if let syncHelper, syncHelper.isSyncing {
-            let alertTitle = NSLocalizedString("Busy", comment: "Title of a prompt letting the user know that they must wait until the current aciton completes.")
-            let alertMessage = NSLocalizedString("Please wait until the current fetch completes.", comment: "Asks the user to wait until the currently running fetch request completes.")
-            let alertController = UIAlertController(title: alertTitle,
+            let alertTitle = NSLocalizedString(
+                "Busy",
+                comment:
+                    "Title of a prompt letting the user know that they must wait until the current aciton completes."
+            )
+            let alertMessage = NSLocalizedString(
+                "Please wait until the current fetch completes.",
+                comment: "Asks the user to wait until the currently running fetch request completes."
+            )
+            let alertController = UIAlertController(
+                title: alertTitle,
                 message: alertMessage,
-                preferredStyle: .alert)
+                preferredStyle: .alert
+            )
             alertController.addCancelActionWithTitle(SharedStrings.Button.ok, handler: nil)
             alertController.presentFromRootViewController()
 
@@ -975,7 +1054,11 @@ import AutomatticTracks
         self.fetch(for: topic, success: successBlock, failure: failureBlock)
     }
 
-    func fetch(for originalTopic: ReaderAbstractTopic, success: @escaping ((_ count: Int, _ hasMore: Bool) -> Void), failure: @escaping ((_ error: Error?) -> Void)) {
+    func fetch(
+        for originalTopic: ReaderAbstractTopic,
+        success: @escaping ((_ count: Int, _ hasMore: Bool) -> Void),
+        failure: @escaping ((_ error: Error?) -> Void)
+    ) {
         coreDataStack.performAndSave { context in
             guard let topic = (try? context.existingObject(with: originalTopic.objectID)) as? ReaderAbstractTopic else {
                 DDLogError("Error: Could not retrieve an existing topic via its objectID")
@@ -988,7 +1071,13 @@ import AutomatticTracks
             } else if let topic = topic as? ReaderTagTopic {
                 self.readerPostStreamService.fetchPosts(for: topic, success: success, failure: failure)
             } else {
-                self.readerPostService.fetchUnblockedPosts(topic: topic, earlierThan: Date(), forceRetry: true, success: success, failure: failure)
+                self.readerPostService.fetchUnblockedPosts(
+                    topic: topic,
+                    earlierThan: Date(),
+                    forceRetry: true,
+                    success: success,
+                    failure: failure
+                )
             }
         }
     }
@@ -1016,7 +1105,8 @@ import AutomatticTracks
         let sortDate = post.sortDate
 
         coreDataStack.performAndSave { [weak self] context in
-            guard let topicInContext = (try? context.existingObject(with: topic.objectID)) as? ReaderAbstractTopic else {
+            guard let topicInContext = (try? context.existingObject(with: topic.objectID)) as? ReaderAbstractTopic
+            else {
                 DDLogError("Error: Could not retrieve an existing topic via its objectID")
                 return
             }
@@ -1048,9 +1138,21 @@ import AutomatticTracks
             let service = ReaderPostService(coreDataStack: ContextManager.shared)
             if ReaderHelpers.isTopicSearchTopic(topicInContext) {
                 assertionFailure("Search topics should no have a gap to fill.")
-                service.fetchPosts(for: topicInContext, atOffset: 0, deletingEarlier: true, success: successBlock, failure: failureBlock)
+                service.fetchPosts(
+                    for: topicInContext,
+                    atOffset: 0,
+                    deletingEarlier: true,
+                    success: successBlock,
+                    failure: failureBlock
+                )
             } else {
-                service.fetchPosts(for: topicInContext, earlierThan: sortDate, deletingEarlier: true, success: successBlock, failure: failureBlock)
+                service.fetchPosts(
+                    for: topicInContext,
+                    earlierThan: sortDate,
+                    deletingEarlier: true,
+                    success: successBlock,
+                    failure: failureBlock
+                )
             }
         }
     }
@@ -1086,7 +1188,11 @@ import AutomatticTracks
         }
     }
 
-    private func fetchMore(for originalTopic: ReaderAbstractTopic, success: @escaping ((Int, Bool) -> Void), failure: @escaping ((Error?) -> Void)) {
+    private func fetchMore(
+        for originalTopic: ReaderAbstractTopic,
+        success: @escaping ((Int, Bool) -> Void),
+        failure: @escaping ((Error?) -> Void)
+    ) {
         guard
             let posts = content.content,
             let post = posts.last as? ReaderPost,
@@ -1105,11 +1211,27 @@ import AutomatticTracks
             if ReaderHelpers.isTopicSearchTopic(topic) {
                 let service = ReaderPostService(coreDataStack: ContextManager.shared)
                 let offset = UInt(self.content.contentCount)
-                service.fetchPosts(for: topic, atOffset: UInt(offset), deletingEarlier: false, success: success, failure: failure)
+                service.fetchPosts(
+                    for: topic,
+                    atOffset: UInt(offset),
+                    deletingEarlier: false,
+                    success: success,
+                    failure: failure
+                )
             } else if let topic = topic as? ReaderTagTopic {
-                self.readerPostStreamService.fetchPosts(for: topic, isFirstPage: false, success: success, failure: failure)
+                self.readerPostStreamService.fetchPosts(
+                    for: topic,
+                    isFirstPage: false,
+                    success: success,
+                    failure: failure
+                )
             } else {
-                self.readerPostService.fetchUnblockedPosts(topic: topic, earlierThan: sortDate, success: success, failure: failure)
+                self.readerPostService.fetchUnblockedPosts(
+                    topic: topic,
+                    earlierThan: sortDate,
+                    success: success,
+                    failure: failure
+                )
             }
         }
     }
@@ -1134,9 +1256,10 @@ import AutomatticTracks
         // mark as seen/unseen option.
 
         guard let userInfo = notification.userInfo,
-              let post = userInfo[ReaderNotificationKeys.post] as? ReaderPost,
-              let indexPath = content.indexPath(forObject: post),
-              let cellPost: ReaderPost = content.object(at: indexPath) else {
+            let post = userInfo[ReaderNotificationKeys.post] as? ReaderPost,
+            let indexPath = content.indexPath(forObject: post),
+            let cellPost: ReaderPost = content.object(at: indexPath)
+        else {
             return
         }
 
@@ -1151,22 +1274,28 @@ import AutomatticTracks
         // avoids returning readerPosts that do not belong to a topic (e.g. those
         // loaded from a notification). We can do this by specifying that self
         // has to exist within an empty set.
-        let predicateForNilTopic = contentType == .saved ?
-            NSPredicate(format: "isSavedForLater == YES") :
-            NSPredicate(format: "topic = NULL AND SELF in %@", [String]())
+        let predicateForNilTopic =
+            contentType == .saved
+            ? NSPredicate(format: "isSavedForLater == YES")
+            : NSPredicate(format: "topic = NULL AND SELF in %@", [String]())
 
         guard let topic = readerTopic else {
             return predicateForNilTopic
         }
 
-        guard let topicInContext = (try? viewContext.existingObject(with: topic.objectID)) as? ReaderAbstractTopic else {
+        guard let topicInContext = (try? viewContext.existingObject(with: topic.objectID)) as? ReaderAbstractTopic
+        else {
             DDLogError("Error: Could not retrieve an existing topic via its objectID")
             return predicateForNilTopic
         }
 
         // swiftlint:disable:next empty_count
         if recentlyBlockedSitePostObjectIDs.count > 0 {
-            return NSPredicate(format: "topic = %@ AND (isSiteBlocked = NO OR SELF in %@)", topicInContext, recentlyBlockedSitePostObjectIDs)
+            return NSPredicate(
+                format: "topic = %@ AND (isSiteBlocked = NO OR SELF in %@)",
+                topicInContext,
+                recentlyBlockedSitePostObjectIDs
+            )
         }
 
         return NSPredicate(format: "topic = %@ AND isSiteBlocked = NO", topicInContext)
@@ -1196,12 +1325,16 @@ import AutomatticTracks
         }
 
         let service = ReaderTopicService(coreDataStack: ContextManager.shared)
-        service.toggleFollowing(forTag: topic, success: {
-            completion?(true)
-        }, failure: { (_: Error?) in
-            generator.notificationOccurred(.error)
-            completion?(false)
-        })
+        service.toggleFollowing(
+            forTag: topic,
+            success: {
+                completion?(true)
+            },
+            failure: { (_: Error?) in
+                generator.notificationOccurred(.error)
+                completion?(false)
+            }
+        )
     }
 
     func getPost(at indexPath: IndexPath) -> ReaderPost? {
@@ -1229,7 +1362,12 @@ extension ReaderStreamViewController: ReaderStreamHeaderDelegate {
 
 extension ReaderStreamViewController: WPContentSyncHelperDelegate {
 
-    func syncHelper(_ syncHelper: WPContentSyncHelper, syncContentWithUserInteraction userInteraction: Bool, success: ((_ hasMore: Bool) -> Void)?, failure: ((_ error: NSError) -> Void)?) {
+    func syncHelper(
+        _ syncHelper: WPContentSyncHelper,
+        syncContentWithUserInteraction userInteraction: Bool,
+        success: ((_ hasMore: Bool) -> Void)?,
+        failure: ((_ error: NSError) -> Void)?
+    ) {
         displayLoadingViewIfNeeded()
         if syncIsFillingGap {
             syncItemsForGap(success, failure: failure)
@@ -1238,7 +1376,11 @@ extension ReaderStreamViewController: WPContentSyncHelperDelegate {
         }
     }
 
-    func syncHelper(_ syncHelper: WPContentSyncHelper, syncMoreWithSuccess success: ((_ hasMore: Bool) -> Void)?, failure: ((_ error: NSError) -> Void)?) {
+    func syncHelper(
+        _ syncHelper: WPContentSyncHelper,
+        syncMoreWithSuccess success: ((_ hasMore: Bool) -> Void)?,
+        failure: ((_ error: NSError) -> Void)?
+    ) {
         loadMoreItems(success, failure: failure)
     }
 
@@ -1254,7 +1396,8 @@ extension ReaderStreamViewController: WPContentSyncHelperDelegate {
         cleanupAfterSync(refresh: false)
 
         if let count = content.content?.count,
-            count == 0 {
+            count == 0
+        {
             displayLoadingStreamFailed()
         }
     }
@@ -1346,15 +1489,15 @@ extension ReaderStreamViewController: WPTableViewHandlerDelegate {
     }
 
     func tableView(_ aTableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-        return UITableView.automaticDimension
+        UITableView.automaticDimension
     }
 
     func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
-        return 0.0
+        0.0
     }
 
     func tableView(_ tableView: UITableView, heightForFooterInSection section: Int) -> CGFloat {
-        return 0.0
+        0.0
     }
 
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
@@ -1397,7 +1540,7 @@ extension ReaderStreamViewController: WPTableViewHandlerDelegate {
         viewModel.viewController = self
 
         let cell = tableConfiguration.postCell(in: tableView, for: indexPath)
-        cell.configure(with: viewModel, isCompact: isCompact)
+        cell.configure(with: viewModel, isCompact: isCompact, coverSize: coverSize)
         cell.isSeparatorHidden = !showsSeparator
         return cell
     }
@@ -1443,14 +1586,16 @@ extension ReaderStreamViewController: WPTableViewHandlerDelegate {
     /// - When there are no ongoing blocking requests.
     private func syncMoreContentIfNeeded(for tableView: UITableView, indexPathForVisibleRow indexPath: IndexPath) {
         let criticalRow = tableView.numberOfRows(inSection: indexPath.section) - loadMoreThreashold
-        guard let syncHelper, (indexPath.section == tableView.numberOfSections - 1) && (indexPath.row >= criticalRow) else {
+        guard let syncHelper, (indexPath.section == tableView.numberOfSections - 1) && (indexPath.row >= criticalRow)
+        else {
             return
         }
-        let shouldLoadMoreItems = syncHelper.hasMoreContent
-        && !syncHelper.isSyncing
-        && !cleanupAndRefreshAfterScrolling
-        && !siteBlockingController.isBlockingPosts
-        && !readerPostService.isSilentlyFetchingPosts
+        let shouldLoadMoreItems =
+            syncHelper.hasMoreContent
+            && !syncHelper.isSyncing
+            && !cleanupAndRefreshAfterScrolling
+            && !siteBlockingController.isBlockingPosts
+            && !readerPostService.isSilentlyFetchingPosts
         if shouldLoadMoreItems {
             syncHelper.syncMoreContent()
         }
@@ -1531,18 +1676,25 @@ extension ReaderStreamViewController: WPTableViewHandlerDelegate {
         // Do nothing
     }
 
-    func tableView(_ tableView: UITableView, contextMenuConfigurationForRowAt indexPath: IndexPath, point: CGPoint) -> UIContextMenuConfiguration? {
+    func tableView(
+        _ tableView: UITableView,
+        contextMenuConfigurationForRowAt indexPath: IndexPath,
+        point: CGPoint
+    ) -> UIContextMenuConfiguration? {
         guard let post = getPost(at: indexPath) else {
             return nil
         }
         return UIContextMenuConfiguration(identifier: nil, previewProvider: nil) { [weak self] _ in
             guard let self else { return nil }
-            return UIMenu(children: ReaderPostMenu(
-                post: post,
-                topic: readerTopic,
-                anchor: self.tableView.cellForRow(at: indexPath) ?? self.view,
-                viewController: self
-            ).makeMenu())
+            return UIMenu(
+                children: ReaderPostMenu(
+                    post: post,
+                    topic: readerTopic,
+                    anchor: self.tableView.cellForRow(at: indexPath) ?? self.view,
+                    viewController: self
+                )
+                .makeMenu()
+            )
         }
     }
 }
@@ -1557,8 +1709,7 @@ extension ReaderStreamViewController: UITableViewDataSourcePrefetching {
     }
 
     private func makeImageRequests(for indexPaths: [IndexPath]) -> [ImageRequest] {
-        guard let window = view.window else { return [] }
-        let targetSize = ReaderPostCell.preferredCoverSize(in: window, isCompact: isCompact)
+        let targetSize = coverSize
         return indexPaths.compactMap {
             guard let imageURL = getPost(at: $0)?.featuredImageURLForDisplay() else {
                 return nil
@@ -1572,16 +1723,18 @@ extension ReaderStreamViewController: UITableViewDataSourcePrefetching {
 
 extension ReaderStreamViewController: SearchableActivityConvertable {
     var activityType: String {
-        return WPActivityType.reader.rawValue
+        WPActivityType.reader.rawValue
     }
 
     var activityTitle: String {
-        return SharedStrings.Reader.title
+        SharedStrings.Reader.title
     }
 
     var activityKeywords: Set<String>? {
-        let keyWordString = NSLocalizedString("wordpress, reader, articles, posts, blog post, followed, discover, likes, my likes, tags, topics",
-                                              comment: "This is a comma-separated list of keywords used for spotlight indexing of the 'Reader' tab.")
+        let keyWordString = NSLocalizedString(
+            "wordpress, reader, articles, posts, blog post, followed, discover, likes, my likes, tags, topics",
+            comment: "This is a comma-separated list of keywords used for spotlight indexing of the 'Reader' tab."
+        )
         let keywordArray = keyWordString.arrayOfTags()
 
         guard !keywordArray.isEmpty else {
@@ -1645,9 +1798,18 @@ extension ReaderStreamViewController {
     }
 
     struct ResultsStatusText {
-        static let loadingErrorTitle = NSLocalizedString("Problem loading content", comment: "Error message title informing the user that reader content could not be loaded.")
-        static let loadingErrorMessage = NSLocalizedString("Sorry. The content could not be loaded.", comment: "A short error message letting the user know the requested reader content could not be loaded.")
-        static let noConnectionTitle = NSLocalizedString("Unable to Sync", comment: "Title of error prompt shown when a sync the user initiated fails.")
+        static let loadingErrorTitle = NSLocalizedString(
+            "Problem loading content",
+            comment: "Error message title informing the user that reader content could not be loaded."
+        )
+        static let loadingErrorMessage = NSLocalizedString(
+            "Sorry. The content could not be loaded.",
+            comment: "A short error message letting the user know the requested reader content could not be loaded."
+        )
+        static let noConnectionTitle = NSLocalizedString(
+            "Unable to Sync",
+            comment: "Title of error prompt shown when a sync the user initiated fails."
+        )
     }
 }
 
@@ -1655,12 +1817,14 @@ extension ReaderStreamViewController {
 
 extension ReaderStreamViewController: NetworkAwareUI {
     func contentIsEmpty() -> Bool {
-        return content.contentCount == 0
+        content.contentCount == 0
     }
 
     func noConnectionMessage() -> String {
-        return NSLocalizedString("No internet connection. Some content may be unavailable while offline.",
-                                 comment: "Error message shown when the user is browsing Reader without an internet connection.")
+        NSLocalizedString(
+            "No internet connection. Some content may be unavailable while offline.",
+            comment: "Error message shown when the user is browsing Reader without an internet connection."
+        )
     }
 }
 
@@ -1679,7 +1843,11 @@ extension ReaderStreamViewController: NetworkStatusDelegate {
 // MARK: - UIViewControllerTransitioningDelegate
 //
 extension ReaderStreamViewController: UIViewControllerTransitioningDelegate {
-    func presentationController(forPresented presented: UIViewController, presenting: UIViewController?, source: UIViewController) -> UIPresentationController? {
+    func presentationController(
+        forPresented presented: UIViewController,
+        presenting: UIViewController?,
+        source: UIViewController
+    ) -> UIPresentationController? {
         guard presented is FancyAlertViewController else {
             return nil
         }
@@ -1717,6 +1885,14 @@ extension ReaderStreamViewController: ContentIdentifiable {
 }
 
 private enum Strings {
-    static let postRemoved = NSLocalizedString("reader.savedPostRemovedNotificationTitle", value: "Saved post removed", comment: "Notification title for when saved post is removed")
-    static let savedPostsSettingsAccessibilityLabel = NSLocalizedString("reader.savedPosts.settings.button.accessibilityLabel", value: "Saved posts settings", comment: "Accessibility label for the button that opens saved Reader posts import and export settings")
+    static let postRemoved = NSLocalizedString(
+        "reader.savedPostRemovedNotificationTitle",
+        value: "Saved post removed",
+        comment: "Notification title for when saved post is removed"
+    )
+    static let savedPostsSettingsAccessibilityLabel = NSLocalizedString(
+        "reader.savedPosts.settings.button.accessibilityLabel",
+        value: "Saved posts settings",
+        comment: "Accessibility label for the button that opens saved Reader posts import and export settings"
+    )
 }

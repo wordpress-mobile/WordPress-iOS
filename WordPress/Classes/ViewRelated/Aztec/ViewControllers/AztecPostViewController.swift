@@ -2312,7 +2312,7 @@ extension AztecPostViewController {
 
         // Let's assume a sensible default for the keyboard height based on orientation
         let keyboardFrameRatioDefault =
-            UIApplication.shared.currentStatusBarOrientation.isPortrait
+            view.window?.windowScene?.interfaceOrientation.isPortrait ?? true
             ? Constants.mediaPickerKeyboardHeightRatioPortrait : Constants.mediaPickerKeyboardHeightRatioLandscape
         let keyboardHeightDefault = (keyboardFrameRatioDefault * UIScreen.main.bounds.height)
 

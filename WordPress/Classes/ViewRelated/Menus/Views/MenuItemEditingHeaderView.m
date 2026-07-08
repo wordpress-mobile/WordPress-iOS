@@ -9,7 +9,6 @@
 @interface MenuItemEditingHeaderView () <UITextFieldDelegate>
 
 @property (nonatomic, strong, readonly) UIStackView *stackView;
-@property (nonatomic, strong, readonly) NSLayoutConstraint *stackViewTopConstraint;
 @property (nonatomic, strong, readonly) UIImageView *iconView;
 
 @end
@@ -129,18 +128,6 @@
 - (CGFloat)defaultStackDesignMargin
 {
     return ceilf(MenusDesignDefaultContentSpacing / 2.0);
-}
-
-- (void)setNeedsTopConstraintsUpdateForStatusBarAppearence:(BOOL)hidden
-{
-    if (hidden) {
-
-        self.stackViewTopConstraint.constant = [self defaultStackDesignMargin];
-
-    } else  {
-
-        self.stackViewTopConstraint.constant = [self defaultStackDesignMargin] + [[UIApplication sharedApplication] currentStatusBarFrame].size.height;
-    }
 }
 
 - (void)setItemType:(NSString *)itemType

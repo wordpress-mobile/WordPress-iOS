@@ -144,7 +144,6 @@ typedef NS_ENUM(NSUInteger, MenuItemEditingViewControllerContentLayout) {
 
 - (BOOL)prefersStatusBarHidden
 {
-    [self.headerView setNeedsTopConstraintsUpdateForStatusBarAppearence:self.headerView.hidden];
     return self.headerView.hidden;
 }
 
@@ -229,7 +228,6 @@ typedef NS_ENUM(NSUInteger, MenuItemEditingViewControllerContentLayout) {
 
     [self.stackView layoutIfNeeded];
     [self setNeedsStatusBarAppearanceUpdate];
-    [self.headerView setNeedsTopConstraintsUpdateForStatusBarAppearence:self.headerView.hidden];
 }
 
 - (void)updateLayoutIfNeededAnimated

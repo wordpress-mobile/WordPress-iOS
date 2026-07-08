@@ -22,11 +22,6 @@ NS_ASSUME_NONNULL_BEGIN
  */
 @property (nonatomic, strong, readonly) UITextField *textField;
 
-/**
- Helper method for updating the layout based on statusBar changes.
- */
-- (void)setNeedsTopConstraintsUpdateForStatusBarAppearence:(BOOL)hidden;
-
 @end
 
 @protocol MenuItemEditingHeaderViewDelegate <NSObject>
