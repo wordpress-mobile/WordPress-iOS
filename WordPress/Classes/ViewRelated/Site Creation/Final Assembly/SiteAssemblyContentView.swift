@@ -1,4 +1,5 @@
 import UIKit
+import SwiftUI
 import Gridicons
 import WordPressShared
 import WordPressUI
@@ -602,4 +603,30 @@ private enum Strings {
             comment: "Domain Purchase Completion description (only for FREE domains)."
         )
     }
+}
+
+// MARK: - Previews
+
+/// Renders the in-progress assembly screen in isolation so the loading illustration can be
+/// reviewed without driving the whole site-creation flow. The view is laid out in `.idle`
+/// first (which hides the completion labels) and then advanced to `.inProgress`.
+private func makeSiteAssemblyLoadingPreview(style: UIUserInterfaceStyle) -> UIViewController {
+    let contentView = SiteAssemblyContentView(siteCreator: SiteCreator())
+    contentView.frame = CGRect(x: 0, y: 0, width: 402, height: 874)
+    contentView.status = .idle
+    contentView.layoutIfNeeded()
+    contentView.status = .inProgress
+
+    let controller = UIViewController()
+    controller.overrideUserInterfaceStyle = style
+    controller.view = contentView
+    return controller
+}
+
+#Preview("Site Assembly – Light") {
+    makeSiteAssemblyLoadingPreview(style: .light)
+}
+
+#Preview("Site Assembly – Dark") {
+    makeSiteAssemblyLoadingPreview(style: .dark)
 }
