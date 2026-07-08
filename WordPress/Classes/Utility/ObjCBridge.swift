@@ -15,14 +15,6 @@ import WordPressData
         SupportTableViewController().showFromTabBar()
     }
 
-    @objc public class func makeSharingAuthorizationViewController(publicizer: PublicizeService, url: URL, blog: Blog, delegate: SharingAuthorizationDelegate) -> UIViewController {
-        SharingAuthorizationWebViewController(with: publicizer, url: url, for: blog, delegate: delegate)
-    }
-
-    @objc public class func makeSharingButtonsViewController(blog: Blog) -> UIViewController {
-        SharingButtonsViewController(blog: blog)
-    }
-
     @objc public class func trackBlazeEntryPointDisplayed(source: BlazeSource) {
         BlazeEventsTracker.trackEntryPointDisplayed(for: source)
     }

@@ -835,7 +835,6 @@
 				Utility/Sharing/WPActivityDefaults.h,
 				Utility/UIAlertControllerProxy.h,
 				Utility/WPError.h,
-				ViewRelated/Blog/Sharing/SharingViewController.h,
 				"ViewRelated/Blog/Site Settings/SettingTableViewCell.h",
 				"ViewRelated/Blog/Site Settings/SiteSettingsViewController.h",
 				ViewRelated/Comments/Controllers/CommentsViewController.h,

@@ -153,7 +153,7 @@ struct PostSettingsFormContentView<ViewModel: PostSettingsViewModelProtocol>: Vi
             excerptSection
         }
         generalSection
-        socialSharingSectionDispatcher
+        socialSharingSection
         accessSection
         moreOptionsSection
     }
@@ -383,7 +383,7 @@ struct PostSettingsFormContentView<ViewModel: PostSettingsViewModelProtocol>: Vi
     // MARK: - "Social Sharing" Section
 
     @ViewBuilder
-    private var socialSharingSectionDispatcher: some View {
+    private var socialSharingSection: some View {
         if let binding = viewModel.v2SocialSharing {
             // The server early-returns updates to `jetpack_publicize_connections`
             // for already-published posts, and re-share isn't supported in the
@@ -394,28 +394,6 @@ struct PostSettingsFormContentView<ViewModel: PostSettingsViewModelProtocol>: Vi
                     draft: binding.draft,
                     onAddConnection: binding.onAddConnection
                 )
-            }
-        } else {
-            socialSharingSection
-        }
-    }
-
-    @ViewBuilder
-    private var socialSharingSection: some View {
-        if let state = viewModel.socialSharingState {
-            Section {
-                switch state {
-                case .setup(let viewModel):
-                    JetpackSocialNoConnectionView(viewModel: viewModel)
-                case .connected:
-                    if let settings = viewModel.settings.sharing {
-                        LegacyNavigationLinkRow(action: viewModel.showSocialSharingOptions) {
-                            PrepublishingAutoSharingView(model: settings)
-                        }
-                    }
-                }
-            } header: {
-                SectionHeader(Strings.socialSharing)
             }
         }
     }

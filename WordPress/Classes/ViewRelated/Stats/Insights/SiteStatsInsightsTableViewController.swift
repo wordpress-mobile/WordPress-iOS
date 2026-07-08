@@ -1,4 +1,5 @@
 import UIKit
+import JetpackSocial
 import WordPressData
 import WordPressKit
 import WordPressFlux
@@ -8,7 +9,7 @@ class SiteStatsInsightsTableViewController: SiteStatsBaseTableViewController {
     weak var bannerView: JetpackBannerView?
 
     var isGrowAudienceShowing: Bool {
-        return insightsToShow.contains(.growAudience)
+        insightsToShow.contains(.growAudience)
     }
 
     private var insightsChangeReceipt: Receipt?
@@ -41,7 +42,7 @@ class SiteStatsInsightsTableViewController: SiteStatsBaseTableViewController {
     private var displayingEmptyView = false
 
     private lazy var mainContext: NSManagedObjectContext = {
-        return ContextManager.shared.mainContext
+        ContextManager.shared.mainContext
     }()
 
     private var viewModel: SiteStatsInsightsViewModel?
@@ -49,7 +50,7 @@ class SiteStatsInsightsTableViewController: SiteStatsBaseTableViewController {
     private let analyticsTracker = BottomScrollAnalyticsTracker()
 
     private lazy var tableHandler: ImmuTableDiffableViewHandler = {
-        return ImmuTableDiffableViewHandler(takeOver: self, with: analyticsTracker)
+        ImmuTableDiffableViewHandler(takeOver: self, with: analyticsTracker)
     }()
 
     // MARK: - View
@@ -109,8 +110,11 @@ class SiteStatsInsightsTableViewController: SiteStatsBaseTableViewController {
             dismissCustomizeCard()
         }
 
-        let controller = InsightsManagementViewController(insightsDelegate: self,
-                insightsManagementDelegate: self, insightsShown: insightsToShow.compactMap { $0.statSection })
+        let controller = InsightsManagementViewController(
+            insightsDelegate: self,
+            insightsManagementDelegate: self,
+            insightsShown: insightsToShow.compactMap { $0.statSection }
+        )
         let navigationController = UINavigationController(rootViewController: controller)
         navigationController.modalPresentationStyle = .formSheet // Has to be set before the delegate
         navigationController.presentationController?.delegate = self
@@ -123,11 +127,13 @@ class SiteStatsInsightsTableViewController: SiteStatsBaseTableViewController {
 private extension SiteStatsInsightsTableViewController {
 
     func initViewModel() {
-        viewModel = SiteStatsInsightsViewModel(insightsToShow: insightsToShow,
-                                               insightsDelegate: self,
-                                               viewsAndVisitorsDelegate: self,
-                                               insightsStore: insightsStore,
-                                               pinnedItemStore: pinnedItemStore)
+        viewModel = SiteStatsInsightsViewModel(
+            insightsToShow: insightsToShow,
+            insightsDelegate: self,
+            viewsAndVisitorsDelegate: self,
+            insightsStore: insightsStore,
+            pinnedItemStore: pinnedItemStore
+        )
     }
 
     func addViewModelListeners() {
@@ -135,11 +141,12 @@ private extension SiteStatsInsightsTableViewController {
             return
         }
 
-        insightsChangeReceipt = viewModel?.onChange { [weak self] in
-            self?.refreshGrowAudienceCardIfNecessary()
-            self?.displayEmptyViewIfNecessary()
-            self?.refreshTableView()
-        }
+        insightsChangeReceipt = viewModel?
+            .onChange { [weak self] in
+                self?.refreshGrowAudienceCardIfNecessary()
+                self?.displayEmptyViewIfNecessary()
+                self?.refreshTableView()
+            }
     }
 
     func removeViewModelListeners() {
@@ -147,25 +154,27 @@ private extension SiteStatsInsightsTableViewController {
     }
 
     func tableRowTypes() -> [ImmuTableRow.Type] {
-        return [ViewsVisitorsRow.self,
-                GrowAudienceRow.self,
-                CustomizeInsightsRow.self,
-                LatestPostSummaryRow.self,
-                TwoColumnStatsRow.self,
-                PostingActivityRow.self,
-                TabbedTotalsStatsRow.self,
-                TopTotalsInsightStatsRow.self,
-                MostPopularTimeInsightStatsRow.self,
-                TotalInsightStatsRow.self,
-                AddInsightRow.self,
-                TableFooterRow.self,
-                StatsErrorRow.self,
-                StatsGhostGrowAudienceImmutableRow.self,
-                StatsGhostChartImmutableRow.self,
-                StatsGhostTwoColumnImmutableRow.self,
-                StatsGhostTopImmutableRow.self,
-                StatsGhostTabbedImmutableRow.self,
-                StatsGhostPostingActivitiesImmutableRow.self]
+        [
+            ViewsVisitorsRow.self,
+            GrowAudienceRow.self,
+            CustomizeInsightsRow.self,
+            LatestPostSummaryRow.self,
+            TwoColumnStatsRow.self,
+            PostingActivityRow.self,
+            TabbedTotalsStatsRow.self,
+            TopTotalsInsightStatsRow.self,
+            MostPopularTimeInsightStatsRow.self,
+            TotalInsightStatsRow.self,
+            AddInsightRow.self,
+            TableFooterRow.self,
+            StatsErrorRow.self,
+            StatsGhostGrowAudienceImmutableRow.self,
+            StatsGhostChartImmutableRow.self,
+            StatsGhostTwoColumnImmutableRow.self,
+            StatsGhostTopImmutableRow.self,
+            StatsGhostTabbedImmutableRow.self,
+            StatsGhostPostingActivitiesImmutableRow.self
+        ]
     }
 
     // MARK: - Table Refreshing
@@ -263,9 +272,10 @@ private extension SiteStatsInsightsTableViewController {
 
     func refreshGrowAudienceCardIfNecessary() {
         guard let count = insightsStore.getAllTimeStats()?.viewsCount,
-              count != self.currentViewCount else {
-                  return
-              }
+            count != self.currentViewCount
+        else {
+            return
+        }
 
         currentViewCount = count
         loadPinnedCards()
@@ -315,8 +325,9 @@ private extension SiteStatsInsightsTableViewController {
         let minIndex = isShowingPinnedCard ? 1 : 0
 
         guard let currentIndex = indexOfInsight(insight),
-            (currentIndex - 1) >= minIndex else {
-                return false
+            (currentIndex - 1) >= minIndex
+        else {
+            return false
         }
 
         return true
@@ -324,15 +335,16 @@ private extension SiteStatsInsightsTableViewController {
 
     func canMoveInsightDown(_ insight: InsightType) -> Bool {
         guard let currentIndex = indexOfInsight(insight),
-            (currentIndex + 1) < insightsToShow.endIndex else {
-                return false
+            (currentIndex + 1) < insightsToShow.endIndex
+        else {
+            return false
         }
 
         return true
     }
 
     func indexOfInsight(_ insight: InsightType) -> Int? {
-        return insightsToShow.firstIndex(of: insight)
+        insightsToShow.firstIndex(of: insight)
     }
 
     enum ManageInsightConstants {
@@ -356,7 +368,10 @@ private extension SiteStatsInsightsTableViewController {
 extension SiteStatsInsightsTableViewController: SiteStatsInsightsDelegate {
 
     func displayWebViewWithURL(_ url: URL) {
-        let webViewController = WebViewControllerFactory.controllerAuthenticatedWithDefaultAccount(url: url, source: "site_stats_insights")
+        let webViewController = WebViewControllerFactory.controllerAuthenticatedWithDefaultAccount(
+            url: url,
+            source: "site_stats_insights"
+        )
         let navController = UINavigationController(rootViewController: webViewController)
         present(navController, animated: true)
     }
@@ -368,7 +383,9 @@ extension SiteStatsInsightsTableViewController: SiteStatsInsightsDelegate {
     }
 
     func showShareForPost(postID: NSNumber, fromView: UIView) {
-        guard let blogId = SiteStatsInformation.sharedInstance.siteID, let blog = Blog.lookup(withID: blogId, in: mainContext) else {
+        guard let blogId = SiteStatsInformation.sharedInstance.siteID,
+            let blog = Blog.lookup(withID: blogId, in: mainContext)
+        else {
             DDLogInfo("Failed to get blog with id \(String(describing: SiteStatsInformation.sharedInstance.siteID))")
             return
         }
@@ -396,7 +413,7 @@ extension SiteStatsInsightsTableViewController: SiteStatsInsightsDelegate {
     func showPostingActivityDetails() {
         let yearData = insightsStore.getYearlyPostingActivity(from: Date())
         let postingActivityViewController = PostingActivityViewController.loadFromStoryboard { coder in
-            return PostingActivityViewController(coder: coder, yearData: yearData)
+            PostingActivityViewController(coder: coder, yearData: yearData)
         }
         navigationController?.pushViewController(postingActivityViewController, animated: true)
     }
@@ -422,8 +439,12 @@ extension SiteStatsInsightsTableViewController: SiteStatsInsightsDelegate {
         // When displaying Annual details, start from the most recent year available.
         var selectedDate: Date?
         if statSection == .insightsAnnualSiteStats,
-            let year = viewModel?.annualInsightsYear() {
-            var dateComponents = Calendar.current.dateComponents([.year, .month, .day], from: StatsDataHelper.currentDateForSite())
+            let year = viewModel?.annualInsightsYear()
+        {
+            var dateComponents = Calendar.current.dateComponents(
+                [.year, .month, .day],
+                from: StatsDataHelper.currentDateForSite()
+            )
             dateComponents.year = Int(year)
             selectedDate = Calendar.current.date(from: dateComponents)
         }
@@ -440,7 +461,11 @@ extension SiteStatsInsightsTableViewController: SiteStatsInsightsDelegate {
 
     func segueToInsightsDetails(statSection: StatSection, selectedDate: Date?, selectedPeriod: StatsPeriodUnit?) {
         let detailTableViewController = SiteStatsInsightsDetailsTableViewController()
-        detailTableViewController.configure(statSection: statSection, selectedDate: selectedDate, selectedPeriod: selectedPeriod)
+        detailTableViewController.configure(
+            statSection: statSection,
+            selectedDate: selectedDate,
+            selectedPeriod: selectedPeriod
+        )
         navigationController?.pushViewController(detailTableViewController, animated: true)
     }
 
@@ -453,9 +478,11 @@ extension SiteStatsInsightsTableViewController: SiteStatsInsightsDelegate {
     func showPostStats(postID: Int, postTitle: String?, postURL: URL?) {
         removeViewModelListeners()
 
-        let postStatsTableViewController = PostStatsTableViewController.withJPBannerForBlog(postID: postID,
-                                                                                            postTitle: postTitle,
-                                                                                            postURL: postURL)
+        let postStatsTableViewController = PostStatsTableViewController.withJPBannerForBlog(
+            postID: postID,
+            postTitle: postTitle,
+            postURL: postURL
+        )
         navigationController?.pushViewController(postStatsTableViewController, animated: true)
     }
 
@@ -475,16 +502,17 @@ extension SiteStatsInsightsTableViewController: SiteStatsInsightsDelegate {
 
     func growAudienceEnablePostSharingButtonTapped() {
         guard let blogId = SiteStatsInformation.sharedInstance.siteID,
-              let blog = Blog.lookup(withID: blogId, in: mainContext) else {
+            let blog = Blog.lookup(withID: blogId, in: mainContext)
+        else {
             DDLogInfo("Failed to get blog with id \(String(describing: SiteStatsInformation.sharedInstance.siteID))")
             return
         }
 
-        guard let sharingVC = SharingViewController(blog: blog, delegate: self) else {
-            return
+        guard let manageVC = ManageConnectionsHostingController.make(for: blog) else {
+            return wpAssertionFailure("social connections service unavailable")
         }
 
-        let navigationController = UINavigationController(rootViewController: sharingVC)
+        let navigationController = UINavigationController(rootViewController: manageVC)
         present(navigationController, animated: true)
 
         applyTableUpdates()
@@ -494,15 +522,18 @@ extension SiteStatsInsightsTableViewController: SiteStatsInsightsDelegate {
 
     func growAudienceBloggingRemindersButtonTapped() {
         guard let blogId = SiteStatsInformation.sharedInstance.siteID,
-              let blog = Blog.lookup(withID: blogId, in: mainContext) else {
+            let blog = Blog.lookup(withID: blogId, in: mainContext)
+        else {
             DDLogInfo("Failed to get blog with id \(String(describing: SiteStatsInformation.sharedInstance.siteID))")
             return
         }
 
-        BloggingRemindersFlow.present(from: self,
-                                      for: blog,
-                                      source: .statsInsights,
-                                      delegate: self)
+        BloggingRemindersFlow.present(
+            from: self,
+            for: blog,
+            source: .statsInsights,
+            delegate: self
+        )
 
         applyTableUpdates()
 
@@ -526,13 +557,22 @@ extension SiteStatsInsightsTableViewController: SiteStatsInsightsDelegate {
             self.navigationController?.popToRootViewController(animated: false)
             RootViewCoordinator.sharedPresenter.showReader(path: .discover)
 
-            Notice(title: NSLocalizedString("Comment to start making connections.", comment: "Hint for users to grow their audience by commenting on other blogs.")).post()
+            Notice(
+                title: NSLocalizedString(
+                    "Comment to start making connections.",
+                    comment: "Hint for users to grow their audience by commenting on other blogs."
+                )
+            )
+            .post()
         }
 
         let nc = UINavigationController(rootViewController: vc)
         nc.modalPresentationStyle = .formSheet
         present(nc, animated: true) { [weak self] in
-            let text = NSLocalizedString("Follow topics you're interested in and we'll find some blogs you might like.", comment: "Guide for users to follow topics.")
+            let text = NSLocalizedString(
+                "Follow topics you're interested in and we'll find some blogs you might like.",
+                comment: "Guide for users to follow topics."
+            )
             self?.displayNotice(title: text)
         }
 
@@ -545,8 +585,9 @@ extension SiteStatsInsightsTableViewController: SiteStatsInsightsDelegate {
 
     func addInsightSelected(_ insight: StatSection) {
         guard let insightType = insight.insightType,
-            !insightsToShow.contains(insightType) else {
-                return
+            !insightsToShow.contains(insightType)
+        else {
+            return
         }
 
         WPAnalytics.track(.statsItemSelectedAddInsight, withProperties: ["insight": insight.title])
@@ -573,7 +614,11 @@ extension SiteStatsInsightsTableViewController: SiteStatsInsightsDelegate {
             // newly added card will be penultimate row, above the 'Add Stats Card' row
             let newCardRow = max(self.tableView.numberOfRows(inSection: lastSection) - 2, 0)
 
-            self.tableView.scrollToRow(at: IndexPath(row: newCardRow, section: lastSection), at: .middle, animated: true)
+            self.tableView.scrollToRow(
+                at: IndexPath(row: newCardRow, section: lastSection),
+                at: .middle,
+                animated: true
+            )
         }
     }
 
@@ -586,9 +631,11 @@ extension SiteStatsInsightsTableViewController: SiteStatsInsightsDelegate {
 
         WPAnalytics.track(.statsItemTappedManageInsight)
 
-        let alert = UIAlertController(title: insight.title,
-                                      message: nil,
-                                      preferredStyle: .actionSheet)
+        let alert = UIAlertController(
+            title: insight.title,
+            message: nil,
+            preferredStyle: .actionSheet
+        )
 
         if canMoveInsightUp(insightType) {
             alert.addDefaultActionWithTitle(ManageInsightConstants.moveUp) { [weak self] _ in
@@ -645,20 +692,12 @@ extension SiteStatsInsightsTableViewController: StatsInsightsViewsAndVisitorsDel
 extension SiteStatsInsightsTableViewController: UIAdaptivePresentationControllerDelegate {
     func presentationControllerDidDismiss(_ presentationController: UIPresentationController) {
         guard let navigationController = presentationController.presentedViewController as? UINavigationController,
-        let controller = navigationController.topViewController as? InsightsManagementViewController else {
+            let controller = navigationController.topViewController as? InsightsManagementViewController
+        else {
             return
         }
 
         controller.handleDismissViaGesture(from: self)
-    }
-}
-
-// MARK: - SharingViewControllerDelegate
-
-extension SiteStatsInsightsTableViewController: SharingViewControllerDelegate {
-    func didChangePublicizeServices() {
-        markCurrentNudgeAsCompleted()
-        trackNudgeEvent(.statsPublicizeNudgeCompleted)
     }
 }
 
@@ -695,15 +734,18 @@ extension SiteStatsInsightsTableViewController: NoResultsViewHost {
             return
         }
 
-        configureAndDisplayNoResults(on: tableView,
-                                     title: NoResultConstants.errorTitle,
-                                     subtitle: NoResultConstants.errorSubtitle,
-                                     buttonTitle: NoResultConstants.refreshButtonTitle, customizationBlock: { [weak self] noResults in
-                                        noResults.delegate = self
-                                        if !noResults.isReachable {
-                                            noResults.resetButtonText()
-                                        }
-                                     })
+        configureAndDisplayNoResults(
+            on: tableView,
+            title: NoResultConstants.errorTitle,
+            subtitle: NoResultConstants.errorSubtitle,
+            buttonTitle: NoResultConstants.refreshButtonTitle,
+            customizationBlock: { [weak self] noResults in
+                noResults.delegate = self
+                if !noResults.isReachable {
+                    noResults.resetButtonText()
+                }
+            }
+        )
     }
 
     private func displayEmptyViewIfNecessary() {
@@ -714,22 +756,42 @@ extension SiteStatsInsightsTableViewController: NoResultsViewHost {
         }
 
         displayingEmptyView = true
-        configureAndDisplayNoResults(on: tableView,
-                                     title: NoResultConstants.noInsightsTitle,
-                                     subtitle: NoResultConstants.noInsightsSubtitle,
-                                     buttonTitle: NoResultConstants.manageInsightsButtonTitle,
-                                     image: "wp-illustration-stats-outline") { [weak self] noResults in
-                                        noResults.delegate = self
+        configureAndDisplayNoResults(
+            on: tableView,
+            title: NoResultConstants.noInsightsTitle,
+            subtitle: NoResultConstants.noInsightsSubtitle,
+            buttonTitle: NoResultConstants.manageInsightsButtonTitle,
+            image: "wp-illustration-stats-outline"
+        ) { [weak self] noResults in
+            noResults.delegate = self
         }
     }
 
     private enum NoResultConstants {
-        static let errorTitle = NSLocalizedString("Stats not loaded", comment: "The loading view title displayed when an error occurred")
-        static let errorSubtitle = NSLocalizedString("There was a problem loading your data, refresh your page to try again.", comment: "The loading view subtitle displayed when an error occurred")
-        static let refreshButtonTitle = NSLocalizedString("Refresh", comment: "The loading view button title displayed when an error occurred")
-        static let noInsightsTitle = NSLocalizedString("No insights added yet", comment: "Title displayed when the user has removed all Insights from display.")
-        static let noInsightsSubtitle = NSLocalizedString("Only see the most relevant stats. Add insights to fit your needs.", comment: "Subtitle displayed when the user has removed all Insights from display.")
-        static let manageInsightsButtonTitle = NSLocalizedString("Add stats card", comment: "Button title displayed when the user has removed all Insights from display.")
+        static let errorTitle = NSLocalizedString(
+            "Stats not loaded",
+            comment: "The loading view title displayed when an error occurred"
+        )
+        static let errorSubtitle = NSLocalizedString(
+            "There was a problem loading your data, refresh your page to try again.",
+            comment: "The loading view subtitle displayed when an error occurred"
+        )
+        static let refreshButtonTitle = NSLocalizedString(
+            "Refresh",
+            comment: "The loading view button title displayed when an error occurred"
+        )
+        static let noInsightsTitle = NSLocalizedString(
+            "No insights added yet",
+            comment: "Title displayed when the user has removed all Insights from display."
+        )
+        static let noInsightsSubtitle = NSLocalizedString(
+            "Only see the most relevant stats. Add insights to fit your needs.",
+            comment: "Subtitle displayed when the user has removed all Insights from display."
+        )
+        static let manageInsightsButtonTitle = NSLocalizedString(
+            "Add stats card",
+            comment: "Button title displayed when the user has removed all Insights from display."
+        )
     }
 }
 
@@ -739,7 +801,8 @@ private extension SiteStatsInsightsTableViewController {
 
     func trackNudgeEvent(_ event: WPAnalyticsEvent) {
         if let blogId = SiteStatsInformation.sharedInstance.siteID,
-           let blog = Blog.lookup(withID: blogId, in: mainContext) {
+            let blog = Blog.lookup(withID: blogId, in: mainContext)
+        {
             WPAnalytics.track(event, properties: [:], blog: blog)
         } else {
             WPAnalytics.track(event)

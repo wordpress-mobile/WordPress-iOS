@@ -7,15 +7,16 @@ import XCTest
 class PostTests: CoreDataTestCase {
 
     fileprivate func newTestBlog() -> Blog {
-        return NSEntityDescription.insertNewObject(forEntityName: Blog.entityName(), into: mainContext) as! Blog
+        NSEntityDescription.insertNewObject(forEntityName: Blog.entityName(), into: mainContext) as! Blog
     }
 
     fileprivate func newTestPost() -> Post {
-        return NSEntityDescription.insertNewObject(forEntityName: Post.entityName(), into: mainContext) as! Post
+        NSEntityDescription.insertNewObject(forEntityName: Post.entityName(), into: mainContext) as! Post
     }
 
     fileprivate func newTestPostCategory() -> PostCategory {
-        return NSEntityDescription.insertNewObject(forEntityName: PostCategory.entityName(), into: mainContext) as! PostCategory
+        NSEntityDescription.insertNewObject(forEntityName: PostCategory.entityName(), into: mainContext)
+            as! PostCategory
     }
 
     fileprivate func newTestPostCategory(_ name: String) -> PostCategory {
@@ -112,7 +113,11 @@ class PostTests: CoreDataTestCase {
 
     func testThatRemoveCategoriesWorks() {
         let post = newTestPost()
-        let testCategories = Set<PostCategory>(arrayLiteral: newTestPostCategory("1"), newTestPostCategory("2"), newTestPostCategory("3"))
+        let testCategories = Set<PostCategory>(
+            arrayLiteral: newTestPostCategory("1"),
+            newTestPostCategory("2"),
+            newTestPostCategory("3")
+        )
 
         post.categories = testCategories
         XCTAssertNotEqual(post.categories?.count, 0)
@@ -153,8 +158,10 @@ class PostTests: CoreDataTestCase {
         let post = newTestPost()
         let blog = newTestBlog()
 
-        blog.postFormats = [defaultPostFormat.key: defaultPostFormat.value,
-                            secondaryPostFormat.key: secondaryPostFormat.value]
+        blog.postFormats = [
+            defaultPostFormat.key: defaultPostFormat.value,
+            secondaryPostFormat.key: secondaryPostFormat.value
+        ]
         post.blog = blog
         post.postFormat = secondaryPostFormat.key
 
@@ -169,8 +176,10 @@ class PostTests: CoreDataTestCase {
         let post = newTestPost()
         let blog = newTestBlog()
 
-        blog.postFormats = [defaultPostFormat.key: defaultPostFormat.value,
-                            secondaryPostFormat.key: secondaryPostFormat.value]
+        blog.postFormats = [
+            defaultPostFormat.key: defaultPostFormat.value,
+            secondaryPostFormat.key: secondaryPostFormat.value
+        ]
         post.blog = blog
         post.setPostFormatText(secondaryPostFormat.value)
 
@@ -185,7 +194,7 @@ class PostTests: CoreDataTestCase {
             "z": "Z",
             "standard": "Standard",
             "a": "A",
-            "d": "D",
+            "d": "D"
         ]
 
         let expectedPostFormats = [

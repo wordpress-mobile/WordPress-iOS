@@ -36,7 +36,6 @@ final class PostSettingsViewModel: NSObject, ObservableObject, PostSettingsViewM
     @Published private(set) var suggestedTags: [String] = []
     @Published private(set) var customTaxonomies: [SiteTaxonomy] = []
     @Published private(set) var parentPageText: String?
-    @Published private(set) var socialSharingState: PostSettingsSocialSharingSectionState?
 
     @Published var isShowingDeletedAlert = false
 
@@ -170,7 +169,6 @@ final class PostSettingsViewModel: NSObject, ObservableObject, PostSettingsViewM
     }
 
     private let originalSettings: PostSettings
-    private let preferences: UserPersistentRepository
     private var isSuggestedTagsRefreshNeeded = true
     private var cancellables = Set<AnyCancellable>()
 
@@ -187,15 +185,13 @@ final class PostSettingsViewModel: NSObject, ObservableObject, PostSettingsViewM
     init(
         post: AbstractPost,
         isStandalone: Bool = false,
-        context: PostSettingsContext = .settings,
-        preferences: UserPersistentRepository = UserDefaults.standard
+        context: PostSettingsContext = .settings
     ) {
         self.post = post
         self.blog = post.blog
         self.capabilities = post is Post ? .post() : .page()
         self.isStandalone = isStandalone
         self.context = context
-        self.preferences = preferences
         self.client = try? WordPressClientFactory.shared.instance(for: .init(blog: post.blog))
         self.socialConnectionsService = Self.resolveSocialConnectionsService(for: post)
 
@@ -221,7 +217,6 @@ final class PostSettingsViewModel: NSObject, ObservableObject, PostSettingsViewM
         refreshDisplayedTags()
         refreshCustomTaxonomies()
         refreshParentPageText()
-        refreshSocialSharingState()
         resolveAbstractPostTerms()
 
         WPAnalytics.track(.postSettingsShown)
@@ -331,9 +326,6 @@ final class PostSettingsViewModel: NSObject, ObservableObject, PostSettingsViewM
         }
         if old.parentPageID != new.parentPageID {
             refreshParentPageText()
-        }
-        if old.status != new.status {
-            refreshSocialSharingState()
         }
     }
 
@@ -544,110 +536,6 @@ final class PostSettingsViewModel: NSObject, ObservableObject, PostSettingsViewM
         coordinator.start()
     }
 
-    private func refreshSocialSharingState() {
-        guard settings.status != .publishPrivate,
-            socialConnectionsService != nil,
-            let post = post as? Post,
-            isPostEligibleForSocialSharing(post)
-        else {
-            socialSharingState = nil
-            return
-        }
-        if (blog.connections ?? []).isEmpty {
-            if isSocialConnectionSetupDismissed {
-                socialSharingState = nil
-            } else {
-                socialSharingState = .setup(makeSocialSharingSetupViewModel())
-            }
-        } else {
-            socialSharingState = .connected
-        }
-    }
-
-    private func isPostEligibleForSocialSharing(_ post: Post) -> Bool {
-        BuildSettings.current.brand == .jetpack
-            && RemoteFeatureFlag.jetpackSocialImprovements.enabled()
-            && post.status != .publishPrivate
-            && !getPublicizeServices().isEmpty
-            && blog.supports(.publicize)
-    }
-
-    private func getPublicizeServices() -> [PublicizeService] {
-        let context = ContextManager.shared.mainContext
-        return (try? PublicizeService.allSupportedServices(in: context)) ?? []
-    }
-
-    /// Convenience variable representing whether the No Connection view has been dismissed.
-    /// Note: the value is stored per site.
-    private var isSocialConnectionSetupDismissed: Bool {
-        get {
-            guard let blogID = blog.dotComID?.intValue,
-                let dictionary = preferences.dictionary(forKey: Constants.noConnectionKey) as? [String: Bool],
-                let value = dictionary["\(blogID)"]
-            else {
-                return false
-            }
-            return value
-        }
-        set {
-            guard let blogID = blog.dotComID?.intValue else {
-                return wpAssertionFailure("blogID missing")
-            }
-            var dictionary = (preferences.dictionary(forKey: Constants.noConnectionKey) as? [String: Bool]) ?? .init()
-            dictionary["\(blogID)"] = newValue
-            preferences.set(dictionary, forKey: Constants.noConnectionKey)
-        }
-    }
-
-    // Deprecated: superseded for post editing by connection_id-keyed PostSocialSharingDraft stored in post metadata.
-    // Kept for remaining legacy references.
-    private func makeSocialSharingSetupViewModel() -> JetpackSocialNoConnectionViewModel {
-        JetpackSocialNoConnectionViewModel(
-            services: getPublicizeServices(),
-            padding: .zero,
-            onConnectTap: { [weak self] in self?.showSocialSharingSetupScreen() },
-            onNotNowTap: { [weak self] in self?.didDismissSocialSharingSetupPrompt() }
-        )
-    }
-
-    // Deprecated: superseded for post editing by connection_id-keyed PostSocialSharingDraft stored in post metadata.
-    // Kept for remaining legacy references.
-    private func showSocialSharingSetupScreen() {
-        guard let sharingVC = SharingViewController(blog: blog, delegate: self) else {
-            return wpAssertionFailure("failed to instantiate SharingVC")
-        }
-        track(.jetpackSocialNoConnectionCTATapped)
-        let navigationVC = UINavigationController(rootViewController: sharingVC)
-        viewController?.present(navigationVC, animated: true)
-    }
-
-    // Deprecated: superseded for post editing by connection_id-keyed PostSocialSharingDraft stored in post metadata.
-    // Kept for remaining legacy references.
-    private func didDismissSocialSharingSetupPrompt() {
-        track(.jetpackSocialNoConnectionCardDismissed)
-        isSocialConnectionSetupDismissed = true
-        withAnimation {
-            socialSharingState = nil
-        }
-    }
-
-    // Deprecated: superseded for post editing by connection_id-keyed PostSocialSharingDraft stored in post metadata.
-    // Kept for remaining legacy references.
-    func showSocialSharingOptions() {
-        guard let blogID = blog.dotComID?.intValue,
-            let settings = settings.sharing
-        else {
-            return wpAssertionFailure("invalid context")
-        }
-        let optionsVC = PrepublishingSocialAccountsViewController(
-            blogID: blogID,
-            model: settings,
-            delegate: self,
-            coreDataStack: ContextManager.shared
-        )
-        viewController?.navigationController?.pushViewController(optionsVC, animated: true)
-    }
-
     // MARK: - Navigation
 
     func showCategoriesPicker() {
@@ -719,41 +607,4 @@ final class PostSettingsViewModel: NSObject, ObservableObject, PostSettingsViewM
         case .publishing: "pre_publishing"
         }
     }
-}
-
-extension PostSettingsViewModel: @MainActor SharingViewControllerDelegate {
-    func didChangePublicizeServices() {
-        refreshSocialSharingState()
-    }
-}
-
-// Deprecated: superseded for post editing by connection_id-keyed PostSocialSharingDraft stored in post metadata.
-// Kept for remaining legacy references.
-extension PostSettingsViewModel: @MainActor PrepublishingSocialAccountsDelegate {
-    func didUpdateSharingLimit(with newValue: PublicizeInfo.SharingLimit?) {
-        settings.sharing?.sharingLimit = newValue
-    }
-
-    func didFinish(with connectionChanges: [Int: Bool], message: String?) {
-        guard var settings = settings.sharing else {
-            return wpAssertionFailure("social sharing settings missing")
-        }
-        settings.services = settings.services.map {
-            var service = $0
-            service.connections = service.connections.map {
-                var connection = $0
-                if let isEnabled = connectionChanges[connection.keyringID] {
-                    connection.enabled = isEnabled
-                }
-                return connection
-            }
-            return service
-        }
-        settings.message = message ?? ""
-        self.settings.sharing = settings
-    }
-}
-
-private enum Constants {
-    static let noConnectionKey = "prepublishing-social-no-connection-view-hidden"
 }

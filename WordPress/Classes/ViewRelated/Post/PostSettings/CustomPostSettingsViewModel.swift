@@ -39,7 +39,6 @@ final class CustomPostSettingsViewModel: NSObject, ObservableObject, PostSetting
     @Published var suggestedTags: [String] = []
     @Published var customTaxonomies: [SiteTaxonomy] = []
     @Published var parentPageText: String?
-    @Published var socialSharingState: PostSettingsSocialSharingSectionState?
     @Published var isShowingDeletedAlert = false
     private let socialConnectionsService: SiteSocialConnectionsService?
 
@@ -50,7 +49,6 @@ final class CustomPostSettingsViewModel: NSObject, ObservableObject, PostSetting
     private var addConnectionCoordinator: AddConnectionCoordinator?
 
     private let originalSettings: PostSettings
-    private let preferences: UserPersistentRepository
     private var cancellables = Set<AnyCancellable>()
 
     var onDismiss: (() -> Void)?
@@ -199,14 +197,12 @@ final class CustomPostSettingsViewModel: NSObject, ObservableObject, PostSetting
         blog: Blog,
         socialConnectionsService: SiteSocialConnectionsService?,
         isStandalone: Bool = false,
-        context: PostSettingsContext = .settings,
-        preferences: UserPersistentRepository = UserDefaults.standard
+        context: PostSettingsContext = .settings
     ) {
         self.editorService = editorService
         self.blog = blog
         self.isStandalone = isStandalone
         self.context = context
-        self.preferences = preferences
         self.client = editorService.client
         let capabilities = PostSettingsCapabilities(from: editorService.details)
         self.capabilities = capabilities
@@ -277,16 +273,14 @@ final class CustomPostSettingsViewModel: NSObject, ObservableObject, PostSetting
         editorService: CustomPostEditorService,
         blog: Blog,
         isStandalone: Bool = false,
-        context: PostSettingsContext = .settings,
-        preferences: UserPersistentRepository = UserDefaults.standard
+        context: PostSettingsContext = .settings
     ) {
         self.init(
             editorService: editorService,
             blog: blog,
             socialConnectionsService: Self.resolveSocialConnectionsService(blog: blog, details: editorService.details),
             isStandalone: isStandalone,
-            context: context,
-            preferences: preferences
+            context: context
         )
     }
 
@@ -400,8 +394,6 @@ final class CustomPostSettingsViewModel: NSObject, ObservableObject, PostSetting
         }
         viewController?.navigationController?.pushViewController(categoriesVC, animated: true)
     }
-
-    func showSocialSharingOptions() {}
 
     var v2SocialSharing: V2SocialSharingBinding? {
         guard let service = socialConnectionsService,
@@ -604,7 +596,6 @@ final class CustomPostSettingsViewModel: NSObject, ObservableObject, PostSetting
         details: PostTypeDetailsWithEditContext
     ) -> SiteSocialConnectionsService? {
         guard PostSettingsCapabilities(from: details).supportsPublicize,
-            FeatureFlag.socialSharingV2.enabled,
             blog.supports(.publicize),
             let service = JetpackSocialFactory.shared.connectionsService(for: blog)
         else {

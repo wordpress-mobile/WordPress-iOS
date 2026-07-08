@@ -33,7 +33,6 @@
 #import "SettingsMultiTextViewController.h"
 #import "SettingTableViewCell.h"
 #import "SettingsTextViewController.h"
-#import "SharingViewController.h"
 #import "SiteSettingsViewController.h"
 #import "StatsViewController.h"
 #import "SuggestionsTableView.h"

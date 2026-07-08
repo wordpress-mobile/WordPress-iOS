@@ -161,7 +161,10 @@ class PostCoordinatorTests: CoreDataTestCase {
         media.blog = post.blog
         media.mediaType = .image
         media.filename = "test-image.jpg"
-        media.absoluteLocalURL = try MediaImageServiceTests.makeLocalURL(forResource: "test-image", fileExtension: "jpg")
+        media.absoluteLocalURL = try MediaImageServiceTests.makeLocalURL(
+            forResource: "test-image",
+            fileExtension: "jpg"
+        )
 
         // important otherwise MediaService will use temporary objectID and fail
         try mainContext.save()
@@ -170,7 +173,8 @@ class PostCoordinatorTests: CoreDataTestCase {
         revision1.postTitle = "title-b"
         revision1.media = [media]
         let uploadID = media.gutenbergUploadID
-        revision1.content = "<!-- wp:image {\"id\":\(uploadID),\"sizeSlug\":\"large\"} -->\n<figure class=\"wp-block-image size-large\"><img src=\"file:///path/thumbnail-15.jpeg\" class=\"wp-image-\(uploadID)\"/></figure>\n<!-- /wp:image -->"
+        revision1.content =
+            "<!-- wp:image {\"id\":\(uploadID),\"sizeSlug\":\"large\"} -->\n<figure class=\"wp-block-image size-large\"><img src=\"file:///path/thumbnail-15.jpeg\" class=\"wp-image-\(uploadID)\"/></figure>\n<!-- /wp:image -->"
 
         // GIVEN
         stub(condition: isPath("/rest/v1.2/sites/80511/posts/new")) { request in
@@ -191,7 +195,10 @@ class PostCoordinatorTests: CoreDataTestCase {
         try await coordinator.waitForSync(post, to: revision1)
 
         // THEN image block was updated
-        XCTAssertEqual(post.content, "<!-- wp:image {\"id\":1236,\"sizeSlug\":\"large\"} -->\n<figure class=\"wp-block-image size-large\"><img src=\"https://example.files.wordpress.com/2024/03/img_0005-1-1.jpg\" class=\"wp-image-1236\" /></figure>\n<!-- /wp:image -->")
+        XCTAssertEqual(
+            post.content,
+            "<!-- wp:image {\"id\":1236,\"sizeSlug\":\"large\"} -->\n<figure class=\"wp-block-image size-large\"><img src=\"https://example.files.wordpress.com/2024/03/img_0005-1-1.jpg\" class=\"wp-image-1236\" /></figure>\n<!-- /wp:image -->"
+        )
 
         // THEN revisions were uploaded
         XCTAssertFalse(post.hasRevision())
@@ -231,11 +238,17 @@ class PostCoordinatorTests: CoreDataTestCase {
         coordinator.syncRetryDelay = 10
 
         // GIVEN the app quickly restoring connectivity after the first failure
-        coordinator.syncEvents.sink {
-            if case .finished(_, let result) = $0, case .failure = result {
-                NotificationCenter.default.post(name: .reachabilityUpdated, object: nil, userInfo: [Foundation.Notification.reachabilityKey: true])
+        coordinator.syncEvents
+            .sink {
+                if case .finished(_, let result) = $0, case .failure = result {
+                    NotificationCenter.default.post(
+                        name: .reachabilityUpdated,
+                        object: nil,
+                        userInfo: [Foundation.Notification.reachabilityKey: true]
+                    )
+                }
             }
-        }.store(in: &cancellables)
+            .store(in: &cancellables)
 
         coordinator.setNeedsSync(for: revision1)
         try await coordinator.waitForSync(post, to: revision1, ignoreErrors: true)
@@ -260,7 +273,10 @@ class PostCoordinatorTests: CoreDataTestCase {
         media.blog = post.blog
         media.mediaType = .image
         media.filename = "test-image.jpg"
-        media.absoluteLocalURL = try MediaImageServiceTests.makeLocalURL(forResource: "test-image", fileExtension: "jpg")
+        media.absoluteLocalURL = try MediaImageServiceTests.makeLocalURL(
+            forResource: "test-image",
+            fileExtension: "jpg"
+        )
 
         // important otherwise MediaService will use temporary objectID and fail
         try mainContext.save()
@@ -269,7 +285,8 @@ class PostCoordinatorTests: CoreDataTestCase {
         revision1.postTitle = "title-b"
         revision1.media = [media]
         let uploadID = media.gutenbergUploadID
-        revision1.content = "<!-- wp:image {\"id\":\(uploadID),\"sizeSlug\":\"large\"} -->\n<figure class=\"wp-block-image size-large\"><img src=\"file:///path/thumbnail-15.jpeg\" class=\"wp-image-\(uploadID)\"/></figure>\n<!-- /wp:image -->"
+        revision1.content =
+            "<!-- wp:image {\"id\":\(uploadID),\"sizeSlug\":\"large\"} -->\n<figure class=\"wp-block-image size-large\"><img src=\"file:///path/thumbnail-15.jpeg\" class=\"wp-image-\(uploadID)\"/></figure>\n<!-- /wp:image -->"
 
         // GIVEN
         let expectation = self.expectation(description: "started-media-request")
@@ -316,10 +333,13 @@ class PostCoordinatorTests: CoreDataTestCase {
 
         // GIVEN a server where the post was deleted
         stub(condition: isPath("/rest/v1.2/sites/80511/posts/974")) { _ in
-            return try! HTTPStubsResponse(value: [
-                "error": "unknown_post",
-                "message": "Unknown post"
-            ], statusCode: 404)
+            try! HTTPStubsResponse(
+                value: [
+                    "error": "unknown_post",
+                    "message": "Unknown post"
+                ],
+                statusCode: 404
+            )
         }
 
         // WHEN
@@ -329,7 +349,8 @@ class PostCoordinatorTests: CoreDataTestCase {
             XCTFail("Expected sync to fail")
         } catch {
             guard let error = error as? PostRepository.PostSaveError,
-                  case .deleted = error else {
+                case .deleted = error
+            else {
                 return XCTFail("Unexpected error")
             }
         }
@@ -393,10 +414,13 @@ class PostCoordinatorTests: CoreDataTestCase {
             return response
         }
         stub(condition: isPath("/rest/v1.2/sites/80511/posts/974")) { request in
-            XCTAssertEqual(request.getBodyParameters(), [
-                "slug": "hello",
-                "status": "publish"
-            ])
+            XCTAssertEqual(
+                request.getBodyParameters(),
+                [
+                    "slug": "hello",
+                    "status": "publish"
+                ]
+            )
             var post = WordPressComPost.mock
             post.status = AbstractPost.Status.publish.rawValue
             post.title = "title-a"
@@ -445,18 +469,21 @@ class PostCoordinatorTests: CoreDataTestCase {
             let parameters = request.getBodyParameters() ?? [:]
             XCTAssertEqual(parameters["status"], "publish")
             let metadata = (parameters["metadata"] as? [[String: AnyHashable]]) ?? []
-            XCTAssertEqual(Set(metadata), Set([
-                [
-                    "key": "_wpas_mess",
-                    "operation": "update",
-                    "value": "message-a"
-                ],
-                [
-                    "key": "_jetpack_blogging_prompt_key",
-                    "operation": "update",
-                    "value": "prompt-a"
-                ]
-            ]))
+            XCTAssertEqual(
+                Set(metadata),
+                Set([
+                    [
+                        "key": "_wpas_mess",
+                        "operation": "update",
+                        "value": "message-a"
+                    ],
+                    [
+                        "key": "_jetpack_blogging_prompt_key",
+                        "operation": "update",
+                        "value": "prompt-a"
+                    ]
+                ])
+            )
             var post = WordPressComPost.mock
             post.metadata = [
                 WordPressComPost.Metadata(id: "752", key: "_wpas_mess", value: "message-a")
@@ -466,10 +493,6 @@ class PostCoordinatorTests: CoreDataTestCase {
 
         // WHEN
         try await coordinator.publish(post)
-
-        // THEN
-        XCTAssertEqual(post.publicizeMessage, "message-a")
-        XCTAssertEqual(post.publicizeMessageID, "752")
     }
 
     // MARK: - Misc
@@ -593,36 +616,37 @@ class PostCoordinatorTests: CoreDataTestCase {
 }
 
 private let mediaResponse = """
-{
-  "media": [
     {
-      "ID": 1236,
-      "URL": "https://example.files.wordpress.com/2024/03/img_0005-1-1.jpg",
-      "guid": "http://example.files.wordpress.com/2024/03/img_0005-1-1.jpg",
-      "date": "2024-03-25T18:50:12-04:00",
-      "post_ID": 0,
-      "author_ID": 34129043,
-      "file": "img_0005-1-1.jpg",
-      "mime_type": "image/jpeg",
-      "extension": "jpg",
-      "title": "img_0005-1",
-      "caption": "",
-      "description": "",
-      "alt": "",
-      "icon": "https://s1.wp.com/wp-includes/images/media/default.png",
-      "size": "701.54 KB",
-      "height": 1335,
-      "width": 2000
+      "media": [
+        {
+          "ID": 1236,
+          "URL": "https://example.files.wordpress.com/2024/03/img_0005-1-1.jpg",
+          "guid": "http://example.files.wordpress.com/2024/03/img_0005-1-1.jpg",
+          "date": "2024-03-25T18:50:12-04:00",
+          "post_ID": 0,
+          "author_ID": 34129043,
+          "file": "img_0005-1-1.jpg",
+          "mime_type": "image/jpeg",
+          "extension": "jpg",
+          "title": "img_0005-1",
+          "caption": "",
+          "description": "",
+          "alt": "",
+          "icon": "https://s1.wp.com/wp-includes/images/media/default.png",
+          "size": "701.54 KB",
+          "height": 1335,
+          "width": 2000
+        }
+      ]
     }
-  ]
-}
-"""
+    """
 
 private extension URLRequest {
     func getBodyParameters() -> [String: AnyHashable]? {
         guard let data = httpBodyStream?.read(),
-              let object = try? JSONSerialization.jsonObject(with: data),
-              let parameters = object as? [String: AnyHashable] else {
+            let object = try? JSONSerialization.jsonObject(with: data),
+            let parameters = object as? [String: AnyHashable]
+        else {
             return nil
         }
         return parameters
@@ -630,7 +654,12 @@ private extension URLRequest {
 }
 
 private extension PostCoordinator {
-    func waitForSync(_ post: AbstractPost, to revision: AbstractPost, ignoreErrors: Bool = false, timeout: TimeInterval = 5) async throws {
+    func waitForSync(
+        _ post: AbstractPost,
+        to revision: AbstractPost,
+        ignoreErrors: Bool = false,
+        timeout: TimeInterval = 5
+    ) async throws {
         var olderRevisionIDs = Set(post.allRevisions.filter(\.isSyncNeeded).map(\.objectID))
         olderRevisionIDs.remove(revision.objectID)
         return try await waitForSync(post, ignoreErrors: ignoreErrors, timeout: timeout) { operation in
@@ -649,8 +678,14 @@ private extension PostCoordinator {
     ///
     /// - parameter timeout: The default value is 5 seconds.
     /// - parameter handler: Return `true` if the revision matches the one you expected.
-    func waitForSync(_ post: AbstractPost, ignoreErrors: Bool = false, timeout: TimeInterval = 5, handler: @escaping (PostCoordinator.SyncOperation) -> Bool) async throws {
-        let result = await syncEvents
+    func waitForSync(
+        _ post: AbstractPost,
+        ignoreErrors: Bool = false,
+        timeout: TimeInterval = 5,
+        handler: @escaping (PostCoordinator.SyncOperation) -> Bool
+    ) async throws {
+        let result =
+            await syncEvents
             .compactMap { event -> Result<Void, Error>? in
                 guard case .finished(let operation, let result) = event else {
                     return nil

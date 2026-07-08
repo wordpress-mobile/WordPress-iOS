@@ -28,7 +28,7 @@ class BlogBuilder {
     }
 
     func with(atomic: Bool) -> Self {
-        return set(blogOption: "is_wpcom_atomic", value: atomic ? 1 : 0)
+        set(blogOption: "is_wpcom_atomic", value: atomic ? 1 : 0)
     }
 
     func with(isHostedAtWPCom: Bool) -> Self {
@@ -37,7 +37,7 @@ class BlogBuilder {
     }
 
     func with(supportsDomains: Bool) -> Self {
-        return with(isHostedAtWPCom: supportsDomains)
+        with(isHostedAtWPCom: supportsDomains)
             .with(isAdmin: supportsDomains)
     }
 
@@ -60,7 +60,7 @@ class BlogBuilder {
     }
 
     func with(wordPressVersion: String) -> Self {
-        return set(blogOption: "software_version", value: wordPressVersion)
+        set(blogOption: "software_version", value: wordPressVersion)
     }
 
     func with(username: String) -> Self {
@@ -104,7 +104,8 @@ class BlogBuilder {
 
     func withAccount(username: String = "test_user") -> Self {
         // Add Account
-        let account = NSEntityDescription.insertNewObject(forEntityName: WPAccount.entityName(), into: context) as! WPAccount
+        let account =
+            NSEntityDescription.insertNewObject(forEntityName: WPAccount.entityName(), into: context) as! WPAccount
         account.keychain = MockKeychainService()
         account.keychainServiceName = "test-service"
         account.keychainMigration = MockAuthKeyMigration()
@@ -152,7 +153,9 @@ class BlogBuilder {
     func with(domainCount: Int, of type: DomainType, domainName: String = "") -> Self {
         var domains: [ManagedDomain] = []
         for _ in 0..<domainCount {
-            let domain = NSEntityDescription.insertNewObject(forEntityName: ManagedDomain.entityName(), into: context) as! ManagedDomain
+            let domain =
+                NSEntityDescription.insertNewObject(forEntityName: ManagedDomain.entityName(), into: context)
+                as! ManagedDomain
             domain.domainType = type
             domain.domainName = domainName
             domains.append(domain)
@@ -179,7 +182,10 @@ class BlogBuilder {
         return self
     }
 
-    func withMappedDomain(originalUrl: String = "http://domain1.com", mappedDomainUrl: String = "http://domain2.com") -> Self {
+    func withMappedDomain(
+        originalUrl: String = "http://domain1.com",
+        mappedDomainUrl: String = "http://domain2.com"
+    ) -> Self {
 
         set(blogOption: "unmapped_url", value: originalUrl)
         set(blogOption: "home_url", value: mappedDomainUrl)
@@ -188,7 +194,7 @@ class BlogBuilder {
     }
 
     func with(isWPForTeamsSite: Bool) -> Self {
-        return set(blogOption: "is_wpforteams_site", value: isWPForTeamsSite)
+        set(blogOption: "is_wpforteams_site", value: isWPForTeamsSite)
     }
 
     func with(connections: Set<PublicizeConnection>) -> Self {
@@ -205,7 +211,7 @@ class BlogBuilder {
 
     @discardableResult
     func build() -> Blog {
-        return blog
+        blog
     }
 
     @discardableResult
@@ -232,7 +238,8 @@ extension Blog {
             return
         }
 
-        let account = NSEntityDescription.insertNewObject(forEntityName: WPAccount.entityName(), into: context) as! WPAccount
+        let account =
+            NSEntityDescription.insertNewObject(forEntityName: WPAccount.entityName(), into: context) as! WPAccount
         account.keychain = MockKeychainService()
         account.keychainServiceName = "test-service"
         account.keychainMigration = MockAuthKeyMigration()

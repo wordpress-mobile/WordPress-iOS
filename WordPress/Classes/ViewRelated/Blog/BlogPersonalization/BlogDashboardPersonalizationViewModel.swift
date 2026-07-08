@@ -115,7 +115,7 @@ private extension DashboardCard {
         case .dynamic, .ghost,
             .failure, .personalize, .jetpackBadge,
             .jetpackInstall, .empty, .freeToPaidPlansDashboardCard,
-            .domainRegistration, .jetpackSocial,
+            .domainRegistration,
             .googleDomains, .extensiveLogging:
             assertionFailure("\(self) card should not appear in the personalization menus")
             return "" // These cards don't appear in the personalization menus

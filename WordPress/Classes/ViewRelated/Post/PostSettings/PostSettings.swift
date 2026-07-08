@@ -65,7 +65,6 @@ struct PostSettings: Hashable {
     // MARK: - Post-specific
     var postFormat: String?
     var isStickyPost = false
-    var sharing: PostSocialSharingSettings?
     /// Publicize draft state used for change detection and REST parameter encoding.
     /// When available, `connectionsByID` carries the full post-level connection state.
     var socialSharingDraft: PostSocialSharingDraft?
@@ -125,7 +124,6 @@ struct PostSettings: Hashable {
             if PostSocialSharing.isEligible(for: post) {
                 socialSharingDraft = PostSocialSharingDraft(socialMetadata: PostMetadataContainer(post))
             }
-            // `sharing` (the legacy keyring-keyed model) is intentionally no longer populated.
             allowComments = post.commentsStatus.map { $0 != RemotePostDiscussionState.closed.rawValue }
             allowPings = post.pingsStatus.map { $0 != RemotePostDiscussionState.closed.rawValue }
         case let page as Page:
@@ -182,9 +180,6 @@ struct PostSettings: Hashable {
         allowPings = post.pingStatus.map { $0 == .open }
 
         parentPageID = post.parent.map { Int($0) }
-
-        // Legacy Publicize settings are not available for REST API posts.
-        sharing = nil
 
         let socialSharingDraft = PostSocialSharingDraft(
             fromPostAdditionalFields: post.additionalFields,
@@ -640,78 +635,5 @@ extension PostStatus {
         case .trash: self = .trash
         case .deleted: self = .trash
         }
-    }
-}
-
-/// A value-type representation of `PublicizeService` for the current blog that's simplified for the auto-sharing flow.
-// Deprecated: superseded for post editing by connection_id-keyed PostSocialSharingDraft stored in post metadata.
-// Kept for remaining legacy references.
-struct PostSocialSharingSettings: Hashable {
-    var services: [Service]
-    var message: String
-    var sharingLimit: PublicizeInfo.SharingLimit?
-
-    struct Service: Hashable {
-        let name: PublicizeService.ServiceName
-        var connections: [Connection]
-    }
-
-    struct Connection: Hashable {
-        let account: String
-        let keyringID: Int
-        var enabled: Bool
-    }
-
-    static func make(for post: Post) -> PostSocialSharingSettings? {
-        guard let context = post.managedObjectContext else {
-            wpAssertionFailure("missing moc")
-            return nil
-        }
-
-        let connections = post.blog.sortedConnections
-
-        // first, build a dictionary to categorize the connections.
-        var connectionsMap = [PublicizeService.ServiceName: [PublicizeConnection]]()
-        connections.filter { !$0.requiresUserAction() }
-            .forEach { connection in
-                let name = PublicizeService.ServiceName(rawValue: connection.service) ?? .unknown
-                var serviceConnections = connectionsMap[name] ?? []
-                serviceConnections.append(connection)
-                connectionsMap[name] = serviceConnections
-            }
-
-        let publicizeServices: [PublicizeService]
-        do {
-            publicizeServices = try PublicizeService.allPublicizeServices(in: context)
-        } catch {
-            wpAssertionFailure("failed to fetch services", userInfo: ["error": error.localizedDescription])
-            return nil
-        }
-
-        let services = publicizeServices.compactMap { service -> PostSocialSharingSettings.Service? in
-            // skip services without connections.
-            guard let serviceConnections = connectionsMap[service.name],
-                !serviceConnections.isEmpty
-            else {
-                return nil
-            }
-
-            return PostSocialSharingSettings.Service(
-                name: service.name,
-                connections: serviceConnections.map {
-                    .init(
-                        account: $0.externalDisplay,
-                        keyringID: $0.keyringConnectionID.intValue,
-                        enabled: !post.publicizeConnectionDisabledForKeyringID($0.keyringConnectionID)
-                    )
-                }
-            )
-        }
-
-        return PostSocialSharingSettings(
-            services: services,
-            message: post.publicizeMessage ?? post.titleForDisplay(),
-            sharingLimit: post.blog.sharingLimit
-        )
     }
 }

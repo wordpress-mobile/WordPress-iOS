@@ -28,7 +28,6 @@ public enum FeatureFlag: Int, CaseIterable {
     case statsAds
     case customPostTypes
     case cptPostsAndPages
-    case socialSharingV2
     case mediaLibraryV2
 
     /// Returns a boolean indicating if the feature is enabled.
@@ -91,8 +90,6 @@ public enum FeatureFlag: Int, CaseIterable {
             return BuildConfiguration.current == .debug
         case .cptPostsAndPages:
             return BuildConfiguration.current == .debug
-        case .socialSharingV2:
-            return BuildConfiguration.current == .debug
         case .mediaLibraryV2:
             return BuildConfiguration.current == .debug
         }
@@ -139,7 +136,6 @@ extension FeatureFlag {
         case .statsAds: "Stats Ads Tab"
         case .customPostTypes: "Custom Post Types"
         case .cptPostsAndPages: "Custom Post Types: Posts and Pages"
-        case .socialSharingV2: "Social Sharing v2"
         case .mediaLibraryV2: "Media Library v2"
         }
     }

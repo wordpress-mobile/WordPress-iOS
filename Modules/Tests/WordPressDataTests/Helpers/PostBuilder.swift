@@ -132,7 +132,9 @@ class PostBuilder {
             return self
         }
 
-        guard let media = NSEntityDescription.insertNewObject(forEntityName: Media.entityName(), into: context) as? Media else {
+        guard
+            let media = NSEntityDescription.insertNewObject(forEntityName: Media.entityName(), into: context) as? Media
+        else {
             return self
         }
         media.localURL = image
@@ -152,7 +154,7 @@ class PostBuilder {
 
     func with(media: [Media]) -> PostBuilder {
         for item in media {
-             item.blog = post.blog
+            item.blog = post.blog
         }
         post.media = Set(media)
 
@@ -183,6 +185,6 @@ class PostBuilder {
     func build() -> Post {
         // TODO: Enable this assertion once we can ensure that the post's MOC isn't being deallocated after the `PostBuilder` is
         // assert(post.managedObjectContext != nil)
-        return post
+        post
     }
 }

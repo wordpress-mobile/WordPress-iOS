@@ -2,7 +2,7 @@ import Foundation
 import NSObject_SafeExpectations
 
 /// SharingServiceRemote is responsible for wrangling the REST API calls related to
-/// publiczice services, publicize connections, and keyring connections.
+/// sharing buttons.
 ///
 open class SharingServiceRemote: ServiceRemoteWordPressComREST {
 
@@ -30,372 +30,6 @@ open class SharingServiceRemote: ServiceRemoteWordPressComREST {
         return NSError(domain: domain, code: code, userInfo: userInfo)
     }
 
-    // MARK: - Publicize Related Methods
-
-    /// Fetches the list of Publicize services.
-    ///
-    /// - Parameters:
-    ///     - success: An optional success block accepting an array of `RemotePublicizeService` objects.
-    ///     - failure: An optional failure block accepting an `NSError` argument.
-    ///
-    @objc open func getPublicizeServices(_ success: (([RemotePublicizeService]) -> Void)?, failure: ((NSError?) -> Void)?) {
-        let endpoint = "meta/external-services"
-        let path = self.path(forEndpoint: endpoint, withVersion: ._1_1)
-        let params = ["type": "publicize"]
-
-        wordPressComRESTAPI.get(path, parameters: params as [String: AnyObject]?) { responseObject, httpResponse in
-            guard let responseDict = responseObject as? NSDictionary else {
-                failure?(self.errorForUnexpectedResponse(httpResponse))
-                return
-            }
-
-            success?(self.remotePublicizeServicesFromDictionary(responseDict))
-        } failure: { error, _ in
-            failure?(error as NSError)
-        }
-    }
-
-    /// Fetches the list of Publicize services for a specified siteID.
-    ///
-    /// - Parameters:
-    ///   - siteID: The WordPress.com ID of the site.
-    ///   - success: An optional success block accepting an array of `RemotePublicizeService` objects.
-    ///   - failure: An optional failure block accepting an `NSError` argument.
-    @objc open func getPublicizeServices(for siteID: NSNumber,
-                                         success: (([RemotePublicizeService]) -> Void)?,
-                                         failure: ((NSError?) -> Void)?) {
-        let path = path(forEndpoint: "sites/\(siteID)/external-services", withVersion: ._2_0)
-        let params = ["type": "publicize" as AnyObject]
-
-        wordPressComRESTAPI.get(
-            path,
-            parameters: params,
-            success: { response, httpResponse in
-                guard let responseDict = response as? NSDictionary else {
-                    failure?(self.errorForUnexpectedResponse(httpResponse))
-                    return
-                }
-
-                success?(self.remotePublicizeServicesFromDictionary(responseDict))
-            },
-            failure: { error, _ in
-                failure?(error as NSError)
-            }
-        )
-    }
-
-    /// Fetches the current user's list of keyring connections.
-    ///
-    /// - Parameters:
-    ///     - success: An optional success block accepting an array of `KeyringConnection` objects.
-    ///     - failure: An optional failure block accepting an `NSError` argument.
-    ///
-    @objc open func getKeyringConnections(_ success: (([KeyringConnection]) -> Void)?, failure: ((NSError?) -> Void)?) {
-        let endpoint = "me/keyring-connections"
-        let path = self.path(forEndpoint: endpoint, withVersion: ._1_1)
-
-        wordPressComRESTAPI.get(path,
-            parameters: nil,
-            success: { responseObject, httpResponse in
-                guard let onSuccess = success else {
-                    return
-                }
-
-                guard let responseDict = responseObject as? NSDictionary else {
-                    failure?(self.errorForUnexpectedResponse(httpResponse))
-                    return
-                }
-
-                let connections = responseDict.array(forKey: ConnectionDictionaryKeys.connections) ?? []
-                let keyringConnections: [KeyringConnection] = connections.map { dict -> KeyringConnection in
-                    let conn = KeyringConnection()
-                    let dict = dict as AnyObject
-                    let externalUsers = dict.array(forKey: ConnectionDictionaryKeys.additionalExternalUsers) ?? []
-                    conn.additionalExternalUsers = self.externalUsersForKeyringConnection(externalUsers as NSArray)
-                    conn.dateExpires = WPKitDateUtils.date(fromISOString: dict.string(forKey: ConnectionDictionaryKeys.expires))
-                    conn.dateIssued = WPKitDateUtils.date(fromISOString: dict.string(forKey: ConnectionDictionaryKeys.issued))
-                    conn.externalDisplay = dict.string(forKey: ConnectionDictionaryKeys.externalDisplay) ?? conn.externalDisplay
-                    conn.externalID = dict.string(forKey: ConnectionDictionaryKeys.externalID) ?? conn.externalID
-                    conn.externalName = dict.string(forKey: ConnectionDictionaryKeys.externalName) ?? conn.externalName
-                    if conn.externalDisplay.isEmpty {
-                        conn.externalDisplay = conn.externalName
-                    }
-                    conn.externalProfilePicture = dict.string(forKey: ConnectionDictionaryKeys.externalProfilePicture) ?? conn.externalProfilePicture
-                    conn.keyringID = dict.number(forKey: ConnectionDictionaryKeys.ID) ?? conn.keyringID
-                    conn.label = dict.string(forKey: ConnectionDictionaryKeys.label) ?? conn.label
-                    conn.refreshURL = dict.string(forKey: ConnectionDictionaryKeys.refreshURL) ?? conn.refreshURL
-                    conn.status = dict.string(forKey: ConnectionDictionaryKeys.status) ?? conn.status
-                    conn.service = dict.string(forKey: ConnectionDictionaryKeys.service) ?? conn.service
-                    conn.type = dict.string(forKey: ConnectionDictionaryKeys.type) ?? conn.type
-                    conn.userID = dict.number(forKey: ConnectionDictionaryKeys.userID) ?? conn.userID
-
-                    return conn
-                }
-
-                onSuccess(keyringConnections)
-            },
-            failure: { error, _ in
-                failure?(error as NSError)
-        })
-    }
-
-    /// Creates KeyringConnectionExternalUser instances from the past array of
-    /// external user dictionaries.
-    ///
-    /// - Parameters:
-    ///     - externalUsers: An array of NSDictionaries where each NSDictionary represents a KeyringConnectionExternalUser
-    ///
-    /// - Returns: An array of KeyringConnectionExternalUser instances.
-    ///
-    private func externalUsersForKeyringConnection(_ externalUsers: NSArray) -> [KeyringConnectionExternalUser] {
-        let arr: [KeyringConnectionExternalUser] = externalUsers.map { dict -> KeyringConnectionExternalUser in
-            let externalUser = KeyringConnectionExternalUser()
-            externalUser.externalID = (dict as AnyObject).string(forKey: ConnectionDictionaryKeys.externalID) ?? externalUser.externalID
-            externalUser.externalName = (dict as AnyObject).string(forKey: ConnectionDictionaryKeys.externalName) ?? externalUser.externalName
-            externalUser.externalProfilePicture = (dict as AnyObject).string(forKey: ConnectionDictionaryKeys.externalProfilePicture) ?? externalUser.externalProfilePicture
-            externalUser.externalCategory = (dict as AnyObject).string(forKey: ConnectionDictionaryKeys.externalCategory) ?? externalUser.externalCategory
-
-            return externalUser
-        }
-        return arr
-    }
-
-    /// Fetches the current user's list of Publicize connections for the specified site's ID.
-    ///
-    /// - Parameters:
-    ///     - siteID: The WordPress.com ID of the site.
-    ///     - success: An optional success block accepting an array of `RemotePublicizeConnection` objects.
-    ///     - failure: An optional failure block accepting an `NSError` argument.
-    ///
-    @objc open func getPublicizeConnections(_ siteID: NSNumber, success: (([RemotePublicizeConnection]) -> Void)?, failure: ((NSError?) -> Void)?) {
-        let endpoint = "sites/\(siteID)/publicize-connections"
-        let path = self.path(forEndpoint: endpoint, withVersion: ._1_1)
-
-        wordPressComRESTAPI.get(path,
-            parameters: nil,
-            success: { responseObject, httpResponse in
-                guard let onSuccess = success else {
-                    return
-                }
-
-                guard let responseDict = responseObject as? NSDictionary else {
-                    failure?(self.errorForUnexpectedResponse(httpResponse))
-                    return
-                }
-
-                let connections = responseDict.array(forKey: ConnectionDictionaryKeys.connections) ?? []
-                let publicizeConnections: [RemotePublicizeConnection] = connections.compactMap { dict -> RemotePublicizeConnection? in
-                    let conn = self.remotePublicizeConnectionFromDictionary(dict as! NSDictionary)
-                    return conn
-                }
-
-                onSuccess(publicizeConnections)
-            },
-            failure: { error, _ in
-                failure?(error as NSError)
-        })
-    }
-
-    /// Create a new Publicize connection bweteen the specified blog and
-    /// the third-pary service represented by the keyring.
-    ///
-    /// - Parameters:
-    ///     - siteID: The WordPress.com ID of the site.
-    ///     - keyringConnectionID: The ID of the third-party site's keyring connection.
-    ///     - success: An optional success block accepting a `RemotePublicizeConnection` object.
-    ///     - failure: An optional failure block accepting an `NSError` argument.
-    ///
-    @objc open func createPublicizeConnection(_ siteID: NSNumber,
-        keyringConnectionID: NSNumber,
-        externalUserID: String?,
-        success: ((RemotePublicizeConnection) -> Void)?,
-        failure: ((NSError) -> Void)?) {
-
-            let endpoint = "sites/\(siteID)/publicize-connections/new"
-            let path = self.path(forEndpoint: endpoint, withVersion: ._1_1)
-
-            var parameters: [String: AnyObject] = [PublicizeConnectionParams.keyringConnectionID: keyringConnectionID]
-            if let userID = externalUserID {
-                parameters[PublicizeConnectionParams.externalUserID] = userID as AnyObject?
-            }
-
-            wordPressComRESTAPI.post(path,
-                parameters: parameters,
-                success: { responseObject, httpResponse in
-                    guard let onSuccess = success else {
-                        return
-                    }
-
-                    guard let responseDict = responseObject as? NSDictionary,
-                        let conn = self.remotePublicizeConnectionFromDictionary(responseDict) else {
-                        failure?(self.errorForUnexpectedResponse(httpResponse))
-                        return
-                    }
-
-                    onSuccess(conn)
-                },
-                failure: { error, _ in
-                    failure?(error as NSError)
-            })
-    }
-
-    /// Update the shared status of the specified publicize connection
-    ///
-    /// - Parameters:
-    ///     - connectionID: The ID of the publicize connection.
-    ///     - externalID: The connection's externalID. Pass `nil` if the keyring
-    ///                   connection's default external ID should be used. Otherwise pass the external
-    ///                   ID of one if the keyring connection's `additionalExternalUsers`.
-    ///     - siteID: The WordPress.com ID of the site.
-    ///     - success: An optional success block accepting no arguments.
-    ///     - failure: An optional failure block accepting an `NSError` argument.
-    ///
-    @objc open func updatePublicizeConnectionWithID(_ connectionID: NSNumber,
-        externalID: String?,
-        forSite siteID: NSNumber,
-        success: ((RemotePublicizeConnection) -> Void)?,
-        failure: ((NSError?) -> Void)?) {
-            let endpoint = "sites/\(siteID)/publicize-connections/\(connectionID)"
-            let path = self.path(forEndpoint: endpoint, withVersion: ._1_1)
-            let externalUserID = (externalID == nil) ? "false" : externalID!
-
-            let parameters = [
-                PublicizeConnectionParams.externalUserID: externalUserID
-            ]
-
-            wordPressComRESTAPI.post(path,
-                parameters: parameters as [String: AnyObject]?,
-                success: { responseObject, httpResponse in
-                    guard let onSuccess = success else {
-                        return
-                    }
-
-                    guard let responseDict = responseObject as? NSDictionary,
-                        let conn = self.remotePublicizeConnectionFromDictionary(responseDict) else {
-                        failure?(self.errorForUnexpectedResponse(httpResponse))
-                        return
-                    }
-
-                    onSuccess(conn)
-                },
-                failure: { error, _ in
-                    failure?(error as NSError)
-            })
-    }
-
-    /// Update the shared status of the specified publicize connection
-    ///
-    /// - Parameters:
-    ///     - connectionID: The ID of the publicize connection.
-    ///     - shared: True if the connection is shared with all users of the blog. False otherwise.
-    ///     - siteID: The WordPress.com ID of the site.
-    ///     - success: An optional success block accepting no arguments.
-    ///     - failure: An optional failure block accepting an `NSError` argument.
-    ///
-    @objc open func updatePublicizeConnectionWithID(_ connectionID: NSNumber,
-        shared: Bool,
-        forSite siteID: NSNumber,
-        success: ((RemotePublicizeConnection) -> Void)?,
-        failure: ((NSError?) -> Void)?) {
-            let endpoint = "sites/\(siteID)/publicize-connections/\(connectionID)"
-            let path = self.path(forEndpoint: endpoint, withVersion: ._1_1)
-            let parameters = [
-                PublicizeConnectionParams.shared: shared
-            ]
-
-            wordPressComRESTAPI.post(path,
-                parameters: parameters as [String: AnyObject]?,
-                success: { responseObject, httpResponse in
-                    guard let onSuccess = success else {
-                        return
-                    }
-
-                    guard let responseDict = responseObject as? NSDictionary,
-                        let conn = self.remotePublicizeConnectionFromDictionary(responseDict) else {
-                        failure?(self.errorForUnexpectedResponse(httpResponse))
-                        return
-                    }
-
-                    onSuccess(conn)
-                },
-                failure: { error, _ in
-                    failure?(error as NSError)
-            })
-    }
-
-    /// Disconnects (deletes) the specified publicize connection
-    ///
-    /// - Parameters:
-    ///     - siteID: The WordPress.com ID of the site.
-    ///     - connectionID: The ID of the publicize connection.
-    ///     - success: An optional success block accepting no arguments.
-    ///     - failure: An optional failure block accepting an `NSError` argument.
-    ///
-    @objc open func deletePublicizeConnection(_ siteID: NSNumber, connectionID: NSNumber, success: (() -> Void)?, failure: ((NSError?) -> Void)?) {
-        let endpoint = "sites/\(siteID)/publicize-connections/\(connectionID)/delete"
-        let path = self.path(forEndpoint: endpoint, withVersion: ._1_1)
-
-        wordPressComRESTAPI.post(path,
-            parameters: nil,
-            success: { _, _ in
-                success?()
-            },
-            failure: { error, _ in
-                failure?(error as NSError)
-        })
-    }
-
-    /// Composees a `RemotePublicizeConnection` populated with values from the passed `NSDictionary`
-    ///
-    /// - Parameter dict: An `NSDictionary` representing a `RemotePublicizeConnection`.
-    ///
-    /// - Returns: A `RemotePublicizeConnection` object.
-    ///
-    private func remotePublicizeConnectionFromDictionary(_ dict: NSDictionary) -> RemotePublicizeConnection? {
-        guard let connectionID = dict.number(forKey: ConnectionDictionaryKeys.ID) else {
-            return nil
-        }
-
-        let conn = RemotePublicizeConnection()
-        conn.connectionID = connectionID
-        conn.externalDisplay = dict.string(forKey: ConnectionDictionaryKeys.externalDisplay) ?? conn.externalDisplay
-        conn.externalID = dict.string(forKey: ConnectionDictionaryKeys.externalID) ?? conn.externalID
-        conn.externalName = dict.string(forKey: ConnectionDictionaryKeys.externalName) ?? conn.externalName
-        if conn.externalDisplay.isEmpty {
-            conn.externalDisplay = conn.externalName
-        }
-        conn.externalProfilePicture = dict.string(forKey: ConnectionDictionaryKeys.externalProfilePicture) ?? conn.externalProfilePicture
-        conn.externalProfileURL = dict.string(forKey: ConnectionDictionaryKeys.externalProfileURL) ?? conn.externalProfileURL
-        conn.keyringConnectionID = dict.number(forKey: ConnectionDictionaryKeys.keyringConnectionID) ?? conn.keyringConnectionID
-        conn.keyringConnectionUserID = dict.number(forKey: ConnectionDictionaryKeys.keyringConnectionUserID) ?? conn.keyringConnectionUserID
-        conn.label = dict.string(forKey: ConnectionDictionaryKeys.label) ?? conn.label
-        conn.refreshURL = dict.string(forKey: ConnectionDictionaryKeys.refreshURL) ?? conn.refreshURL
-        conn.status = dict.string(forKey: ConnectionDictionaryKeys.status) ?? conn.status
-        conn.service = dict.string(forKey: ConnectionDictionaryKeys.service) ?? conn.service
-
-        if let expirationDateAsString = dict.string(forKey: ConnectionDictionaryKeys.expires) {
-            conn.dateExpires = WPKitDateUtils.date(fromISOString: expirationDateAsString)
-        }
-
-        if let issueDateAsString = dict.string(forKey: ConnectionDictionaryKeys.issued) {
-            conn.dateIssued = WPKitDateUtils.date(fromISOString: issueDateAsString)
-        }
-
-        if let sharedDictNumber = dict.number(forKey: ConnectionDictionaryKeys.shared) {
-            conn.shared = sharedDictNumber.boolValue
-        }
-
-        if let siteIDDictNumber = dict.number(forKey: ConnectionDictionaryKeys.siteID) {
-            conn.siteID = siteIDDictNumber
-        }
-
-        if let userIDDictNumber = dict.number(forKey: ConnectionDictionaryKeys.userID) {
-            conn.userID = userIDDictNumber
-        }
-
-        return conn
-    }
-
     // MARK: - Sharing Button Related Methods
 
     /// Fetches the list of sharing buttons for a blog.
@@ -405,11 +39,16 @@ open class SharingServiceRemote: ServiceRemoteWordPressComREST {
     ///     - success: An optional success block accepting an array of `RemoteSharingButton` objects.
     ///     - failure: An optional failure block accepting an `NSError` argument.
     ///
-    @objc open func getSharingButtonsForSite(_ siteID: NSNumber, success: (([RemoteSharingButton]) -> Void)?, failure: ((NSError?) -> Void)?) {
+    @objc open func getSharingButtonsForSite(
+        _ siteID: NSNumber,
+        success: (([RemoteSharingButton]) -> Void)?,
+        failure: ((NSError?) -> Void)?
+    ) {
         let endpoint = "sites/\(siteID)/sharing-buttons"
         let path = self.path(forEndpoint: endpoint, withVersion: ._1_1)
 
-        wordPressComRESTAPI.get(path,
+        wordPressComRESTAPI.get(
+            path,
             parameters: nil,
             success: { responseObject, httpResponse in
                 guard let onSuccess = success else {
@@ -428,7 +67,8 @@ open class SharingServiceRemote: ServiceRemoteWordPressComREST {
             },
             failure: { error, _ in
                 failure?(error as NSError)
-        })
+            }
+        )
     }
 
     /// Updates the list of sharing buttons for a blog.
@@ -439,13 +79,19 @@ open class SharingServiceRemote: ServiceRemoteWordPressComREST {
     ///     - success: An optional success block accepting an array of `RemoteSharingButton` objects.
     ///     - failure: An optional failure block accepting an `NSError` argument.
     ///
-    @objc open func updateSharingButtonsForSite(_ siteID: NSNumber, sharingButtons: [RemoteSharingButton], success: (([RemoteSharingButton]) -> Void)?, failure: ((NSError?) -> Void)?) {
+    @objc open func updateSharingButtonsForSite(
+        _ siteID: NSNumber,
+        sharingButtons: [RemoteSharingButton],
+        success: (([RemoteSharingButton]) -> Void)?,
+        failure: ((NSError?) -> Void)?
+    ) {
         let endpoint = "sites/\(siteID)/sharing-buttons"
         let path = self.path(forEndpoint: endpoint, withVersion: ._1_1)
         let buttons = dictionariesFromRemoteSharingButtons(sharingButtons)
         let parameters = [SharingButtonsKeys.sharingButtons: buttons]
 
-        wordPressComRESTAPI.post(path,
+        wordPressComRESTAPI.post(
+            path,
             parameters: parameters as [String: AnyObject]?,
             success: { responseObject, httpResponse in
                 guard let onSuccess = success else {
@@ -464,10 +110,11 @@ open class SharingServiceRemote: ServiceRemoteWordPressComREST {
             },
             failure: { error, _ in
                 failure?(error as NSError)
-        })
+            }
+        )
     }
 
-    /// Composees a `RemotePublicizeConnection` populated with values from the passed `NSDictionary`
+    /// Composes `RemoteSharingButton` objects from the passed `NSArray` of `NSDictionary`s.
     ///
     /// - Parameter buttons: An `NSArray` of `NSDictionary`s representing `RemoteSharingButton` objects.
     ///
@@ -497,7 +144,7 @@ open class SharingServiceRemote: ServiceRemoteWordPressComREST {
     }
 
     private func dictionariesFromRemoteSharingButtons(_ buttons: [RemoteSharingButton]) -> [NSDictionary] {
-        return buttons.map({ btn -> NSDictionary in
+        buttons.map({ btn -> NSDictionary in
 
             let dict = NSMutableDictionary()
             dict[SharingButtonsKeys.buttonID] = btn.buttonID
@@ -512,90 +159,6 @@ open class SharingServiceRemote: ServiceRemoteWordPressComREST {
             return dict
         })
     }
-
-    private func remotePublicizeServicesFromDictionary(_ dictionary: NSDictionary) -> [RemotePublicizeService] {
-        let responseString = dictionary.description as NSString
-        let services: NSDictionary = (dictionary.forKey(ServiceDictionaryKeys.services) as? NSDictionary) ?? NSDictionary()
-
-        return services.allKeys.map { key in
-            let dict = (services.forKey(key) as? NSDictionary) ?? NSDictionary()
-            let pub = RemotePublicizeService()
-
-            pub.connectURL = dict.string(forKey: ServiceDictionaryKeys.connectURL) ?? ""
-            pub.detail = dict.string(forKey: ServiceDictionaryKeys.description) ?? ""
-            pub.externalUsersOnly = dict.number(forKey: ServiceDictionaryKeys.externalUsersOnly)?.boolValue ?? false
-            pub.icon = dict.string(forKey: ServiceDictionaryKeys.icon) ?? ""
-            pub.serviceID = dict.string(forKey: ServiceDictionaryKeys.ID) ?? ""
-            pub.jetpackModuleRequired = dict.string(forKey: ServiceDictionaryKeys.jetpackModuleRequired) ?? ""
-            pub.jetpackSupport = dict.number(forKey: ServiceDictionaryKeys.jetpackSupport)?.boolValue ?? false
-            pub.label = dict.string(forKey: ServiceDictionaryKeys.label) ?? ""
-            pub.multipleExternalUserIDSupport = dict.number(forKey: ServiceDictionaryKeys.multipleExternalUserIDSupport)?.boolValue ?? false
-            pub.type = dict.string(forKey: ServiceDictionaryKeys.type) ?? ""
-            pub.status = dict.string(forKey: ServiceDictionaryKeys.status) ?? ""
-
-            // We're not guarenteed to get the right order by inspecting the
-            // response dictionary's keys. Instead, we can check the index
-            // of each service in the response string.
-            pub.order = NSNumber(value: responseString.range(of: pub.serviceID).location)
-
-            return pub
-        }
-    }
-}
-
-// Keys for PublicizeService dictionaries
-private struct ServiceDictionaryKeys {
-    static let connectURL = "connect_URL"
-    static let description = "description"
-    static let externalUsersOnly = "external_users_only"
-    static let ID = "ID"
-    static let icon = "icon"
-    static let jetpackModuleRequired = "jetpack_module_required"
-    static let jetpackSupport = "jetpack_support"
-    static let label = "label"
-    static let multipleExternalUserIDSupport = "multiple_external_user_ID_support"
-    static let services = "services"
-    static let type = "type"
-    static let status = "status"
-}
-
-// Keys for both KeyringConnection and PublicizeConnection dictionaries
-private struct ConnectionDictionaryKeys {
-    // shared keys
-    static let connections = "connections"
-    static let expires = "expires"
-    static let externalID = "external_ID"
-    static let externalName = "external_name"
-    static let externalDisplay = "external_display"
-    static let externalProfilePicture = "external_profile_picture"
-    static let issued = "issued"
-    static let ID = "ID"
-    static let label = "label"
-    static let refreshURL = "refresh_URL"
-    static let service = "service"
-    static let sites = "sites"
-    static let status = "status"
-    static let userID = "user_ID"
-
-    // only KeyringConnections
-    static let additionalExternalUsers = "additional_external_users"
-    static let type = "type"
-    static let externalCategory = "external_category"
-
-    // only PublicizeConnections
-    static let externalFollowerCount = "external_follower_count"
-    static let externalProfileURL = "external_profile_URL"
-    static let keyringConnectionID = "keyring_connection_ID"
-    static let keyringConnectionUserID = "keyring_connection_user_ID"
-    static let shared = "shared"
-    static let siteID = "site_ID"
-}
-
-// Names of parameters passed when creating or updating a publicize connection
-private struct PublicizeConnectionParams {
-    static let keyringConnectionID = "keyring_connection_ID"
-    static let externalUserID = "external_user_ID"
-    static let shared = "shared"
 }
 
 // Names of parameters used in SharingButton requests
