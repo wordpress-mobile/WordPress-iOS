@@ -5,6 +5,11 @@ public enum WidgetStatsConfiguration {
     public static let keychainServiceName = "JetpackTodayWidget"
     public static let userDefaultsSiteIdKey = "JetpackHomeWidgetsSiteId"
     public static let userDefaultsLoggedInKey = "JetpackHomeWidgetsLoggedIn"
+
+    /// The ID of the account's default site, as stored in the shared user defaults by the app.
+    public static func defaultSiteID(appGroup: String) -> Int? {
+        UserDefaults(suiteName: appGroup)?.object(forKey: userDefaultsSiteIdKey) as? Int
+    }
     public static let todayFilename = "JetpackHomeWidgetTodayData.plist"
     public static let allTimeFilename = "JetpackHomeWidgetAllTimeData.plist"
     public static let thisWeekFilename = "JetpackHomeWidgetThisWeekData.plist"
@@ -21,7 +26,7 @@ public enum WidgetStatsConfiguration {
         case lockScreenAllTimePostsBestViews = "JetpackLockScreenWidgetAllTimePostsBestViews"
 
         public var countKey: String {
-            return rawValue + "Properties"
+            rawValue + "Properties"
         }
     }
 }

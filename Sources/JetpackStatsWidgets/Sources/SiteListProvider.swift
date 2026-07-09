@@ -1,11 +1,10 @@
-import Foundation
-import CocoaLumberjackSwift
-import WidgetKit
 import BuildSettingsKit
-import SwiftUI
+import CocoaLumberjackSwift
+import Foundation
 import JetpackStatsWidgetsCore
+import WidgetKit
 
-struct SiteListProvider<T: HomeWidgetData>: IntentTimelineProvider {
+struct SiteListProvider<T: HomeWidgetData>: AppIntentTimelineProvider {
 
     let service: StatsWidgetsService
     let placeholderContent: T
@@ -17,7 +16,7 @@ struct SiteListProvider<T: HomeWidgetData>: IntentTimelineProvider {
     let minElapsedTimeToRefresh = 1
 
     private var defaultSiteID: Int? {
-        UserDefaults(suiteName: BuildSettings.current.appGroupName)?.object(forKey: WidgetStatsConfiguration.userDefaultsSiteIdKey) as? Int
+        WidgetStatsConfiguration.defaultSiteID(appGroup: BuildSettings.current.appGroupName)
     }
 
     private let widgetDataLoader = WidgetDataReader<T>()
@@ -26,54 +25,50 @@ struct SiteListProvider<T: HomeWidgetData>: IntentTimelineProvider {
         StatsWidgetEntry.siteSelected(placeholderContent, context)
     }
 
-    func getSnapshot(for configuration: SelectSiteIntent, in context: Context, completion: @escaping (StatsWidgetEntry) -> Void) {
+    func snapshot(for configuration: SelectSiteIntent, in context: Context) async -> StatsWidgetEntry {
         switch widgetDataLoader.widgetData(for: configuration, defaultSiteID: defaultSiteID) {
         case .success(let widgetData):
-            completion(.siteSelected(widgetData, context))
+            return .siteSelected(widgetData, context)
         case .failure:
-            completion(.siteSelected(placeholderContent, context))
+            return .siteSelected(placeholderContent, context)
         }
     }
 
-    func getTimeline(for configuration: SelectSiteIntent, in context: Context, completion: @escaping (Timeline<StatsWidgetEntry>) -> Void) {
-        switch widgetDataLoader.widgetData(
-            for: configuration,
-            defaultSiteID: defaultSiteID
-        ) {
+    func timeline(for configuration: SelectSiteIntent, in context: Context) async -> Timeline<StatsWidgetEntry> {
+        switch widgetDataLoader.widgetData(for: configuration, defaultSiteID: defaultSiteID) {
         case .success(let widgetData):
             let date = Date()
             let nextRefreshDate = Calendar.current.date(byAdding: .minute, value: refreshInterval, to: date) ?? date
-            let elapsedTime = abs(Calendar.current.dateComponents([.minute], from: widgetData.date, to: date).minute ?? 0)
+            let elapsedTime = abs(
+                Calendar.current.dateComponents([.minute], from: widgetData.date, to: date).minute ?? 0
+            )
 
-            let privateCompletion = { (timelineEntry: StatsWidgetEntry) in
-                let timeline = Timeline(entries: [timelineEntry], policy: .after(nextRefreshDate))
-                completion(timeline)
-            }
             // if cached data are "too old", refresh them from the backend, otherwise keep them
             guard elapsedTime > minElapsedTimeToRefresh else {
-                privateCompletion(.siteSelected(widgetData, context))
-                return
+                return Timeline(entries: [.siteSelected(widgetData, context)], policy: .after(nextRefreshDate))
             }
 
-            service.fetchStats(for: widgetData) { result in
-                switch result {
-                case .failure(let error):
-                    DDLogError("StatsWidgets: failed to fetch remote stats. Returned error: \(error.localizedDescription)")
-                    privateCompletion(.siteSelected(widgetData, context))
-                case .success(let newWidgetData):
-                    privateCompletion(.siteSelected(newWidgetData, context))
-                }
+            let entry: StatsWidgetEntry
+            do {
+                let newWidgetData = try await service.fetchStats(for: widgetData)
+                entry = .siteSelected(newWidgetData, context)
+            } catch {
+                DDLogError(
+                    "StatsWidgets: failed to fetch remote stats. Returned error: \(error.localizedDescription)"
+                )
+                entry = .siteSelected(widgetData, context)
             }
+            return Timeline(entries: [entry], policy: .after(nextRefreshDate))
         case .failure(let error):
             switch error {
             case .noData:
-                completion(Timeline(entries: [.noData(widgetKind)], policy: .never))
+                return Timeline(entries: [.noData(widgetKind)], policy: .never)
             case .noSite:
-                completion(Timeline(entries: [.noSite(widgetKind)], policy: .never))
+                return Timeline(entries: [.noSite(widgetKind)], policy: .never)
             case .loggedOut:
-                completion(Timeline(entries: [.loggedOut(widgetKind)], policy: .never))
+                return Timeline(entries: [.loggedOut(widgetKind)], policy: .never)
             case .jetpackFeatureDisabled:
-                completion(Timeline(entries: [.disabled(widgetKind)], policy: .never))
+                return Timeline(entries: [.disabled(widgetKind)], policy: .never)
             }
         }
     }

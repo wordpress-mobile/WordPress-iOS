@@ -1,6 +1,7 @@
+import BuildSettingsKit
+import JetpackStatsWidgetsCore
 import SwiftUI
 import WidgetKit
-import BuildSettingsKit
 
 @main
 struct JetpackStatsWidgets: WidgetBundle {

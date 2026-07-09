@@ -17,7 +17,7 @@ struct LockScreenStatsWidget<T: LockScreenStatsWidgetConfig>: Widget {
     }
 
     var body: some WidgetConfiguration {
-        IntentConfiguration(
+        AppIntentConfiguration(
             kind: config.kind.rawValue,
             intent: SelectSiteIntent.self,
             provider: LockScreenSiteListProvider<T.WidgetData>(
@@ -25,7 +25,7 @@ struct LockScreenStatsWidget<T: LockScreenStatsWidgetConfig>: Widget {
                 placeholderContent: config.placeholderContent
             )
         ) { (entry: LockScreenStatsWidgetEntry) -> LockScreenStatsWidgetsView in
-            return LockScreenStatsWidgetsView(
+            LockScreenStatsWidgetsView(
                 timelineEntry: entry,
                 viewProvider: config.viewProvider
             )
@@ -33,6 +33,6 @@ struct LockScreenStatsWidget<T: LockScreenStatsWidgetConfig>: Widget {
         .configurationDisplayName(config.displayName)
         .description(config.description)
         .supportedFamilies(config.supportFamilies)
-        .iOS17ContentMarginsDisabled() /// Temporarily disable additional iOS17 margins for widgets
+        .iOS17ContentMarginsDisabled() // Temporarily disable additional iOS17 margins for widgets
     }
 }

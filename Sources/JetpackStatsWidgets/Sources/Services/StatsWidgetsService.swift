@@ -28,12 +28,26 @@ class StatsWidgetsService {
 
     private var state: State = .ready
 
-    func fetchStats(
+    enum FetchError: Error {
+        case refreshAlreadyInProgress
+        case unsupportedWidgetData
+    }
+
+    func fetchStats(for widgetData: HomeWidgetData) async throws -> ResultType {
+        try await withCheckedThrowingContinuation { continuation in
+            fetchStats(for: widgetData) { result in
+                continuation.resume(with: result)
+            }
+        }
+    }
+
+    private func fetchStats(
         for widgetData: HomeWidgetData,
         completion: @escaping (Result<ResultType, Error>) -> Void
     ) {
 
         guard !state.isLoading else {
+            completion(.failure(FetchError.refreshAlreadyInProgress))
             return
         }
         state = .loading
@@ -46,6 +60,9 @@ class StatsWidgetsService {
             fetchAllTimeStats(widgetData: widgetData, completion: completion)
         } else if let widgetData = widgetData as? HomeWidgetThisWeekData {
             fetchThisWeekStats(widgetData: widgetData, completion: completion)
+        } else {
+            state = .error
+            completion(.failure(FetchError.unsupportedWidgetData))
         }
     }
 

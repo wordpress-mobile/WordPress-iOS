@@ -1,11 +1,10 @@
-import Foundation
-import CocoaLumberjackSwift
-import WidgetKit
-import SwiftUI
 import BuildSettingsKit
+import CocoaLumberjackSwift
+import Foundation
 import JetpackStatsWidgetsCore
+import WidgetKit
 
-struct LockScreenSiteListProvider<T: HomeWidgetData>: IntentTimelineProvider {
+struct LockScreenSiteListProvider<T: HomeWidgetData>: AppIntentTimelineProvider {
     let service: StatsWidgetsService
     let placeholderContent: T
 
@@ -15,7 +14,7 @@ struct LockScreenSiteListProvider<T: HomeWidgetData>: IntentTimelineProvider {
     let minElapsedTimeToRefresh = 1
 
     private var defaultSiteID: Int? {
-        UserDefaults(suiteName: BuildSettings.current.appGroupName)?.object(forKey: WidgetStatsConfiguration.userDefaultsSiteIdKey) as? Int
+        WidgetStatsConfiguration.defaultSiteID(appGroup: BuildSettings.current.appGroupName)
     }
 
     private let widgetDataLoader = WidgetDataReader<T>()
@@ -24,59 +23,58 @@ struct LockScreenSiteListProvider<T: HomeWidgetData>: IntentTimelineProvider {
         LockScreenStatsWidgetEntry.siteSelected(placeholderContent, context)
     }
 
-    func getSnapshot(for configuration: SelectSiteIntent, in context: Context, completion: @escaping (LockScreenStatsWidgetEntry<T>) -> Void) {
+    func snapshot(for configuration: SelectSiteIntent, in context: Context) async -> LockScreenStatsWidgetEntry<T> {
         switch widgetDataLoader.widgetData(for: configuration, defaultSiteID: defaultSiteID) {
         case .success(let widgetData):
-            completion(.siteSelected(widgetData, context))
+            return .siteSelected(widgetData, context)
         case .failure:
-            completion(.siteSelected(placeholderContent, context))
+            return .siteSelected(placeholderContent, context)
         }
     }
 
-    func getTimeline(for configuration: SelectSiteIntent, in context: Context, completion: @escaping (Timeline<LockScreenStatsWidgetEntry<T>>) -> Void) {
-        switch widgetDataLoader.widgetData(
-            for: configuration,
-            defaultSiteID: defaultSiteID
-        ) {
+    func timeline(
+        for configuration: SelectSiteIntent,
+        in context: Context
+    ) async -> Timeline<LockScreenStatsWidgetEntry<T>> {
+        switch widgetDataLoader.widgetData(for: configuration, defaultSiteID: defaultSiteID) {
         case .success(let widgetData):
             let date = Date()
             let nextRefreshDate = Calendar.current.date(byAdding: .minute, value: refreshInterval, to: date) ?? date
-            let elapsedTime = abs(Calendar.current.dateComponents([.minute], from: widgetData.date, to: date).minute ?? 0)
+            let elapsedTime = abs(
+                Calendar.current.dateComponents([.minute], from: widgetData.date, to: date).minute ?? 0
+            )
 
-            let privateCompletion = { (timelineEntry: LockScreenStatsWidgetEntry<T>) in
-                let timeline = Timeline(entries: [timelineEntry], policy: .after(nextRefreshDate))
-                completion(timeline)
-            }
             // if cached data are "too old", refresh them from the backend, otherwise keep them
             guard elapsedTime > minElapsedTimeToRefresh else {
-                privateCompletion(.siteSelected(widgetData, context))
-                return
+                return Timeline(entries: [.siteSelected(widgetData, context)], policy: .after(nextRefreshDate))
             }
 
-            service.fetchStats(for: widgetData) { result in
-                switch result {
-                case .failure(let error):
-                    DDLogError("LockScreen StatsWidgets: failed to fetch remote stats. Returned error: \(error.localizedDescription)")
-                    privateCompletion(.siteSelected(widgetData, context))
-                case .success(let newWidgetData):
-                    if let newWidgetData = newWidgetData as? T {
-                        privateCompletion(.siteSelected(newWidgetData, context))
-                    } else {
-                        privateCompletion(.siteSelected(widgetData, context))
-                    }
+            let entry: LockScreenStatsWidgetEntry<T>
+            do {
+                let newWidgetData = try await service.fetchStats(for: widgetData)
+                if let newWidgetData = newWidgetData as? T {
+                    entry = .siteSelected(newWidgetData, context)
+                } else {
+                    entry = .siteSelected(widgetData, context)
                 }
+            } catch {
+                DDLogError(
+                    "LockScreen StatsWidgets: failed to fetch remote stats. Returned error: \(error.localizedDescription)"
+                )
+                entry = .siteSelected(widgetData, context)
             }
+            return Timeline(entries: [entry], policy: .after(nextRefreshDate))
         case .failure(let error):
             switch error {
             case .noData:
-                completion(Timeline(entries: [.noData], policy: .never))
+                return Timeline(entries: [.noData], policy: .never)
             case .noSite:
-                completion(Timeline(entries: [.noSite], policy: .never))
+                return Timeline(entries: [.noSite], policy: .never)
             case .loggedOut:
-                completion(Timeline(entries: [.loggedOut], policy: .never))
+                return Timeline(entries: [.loggedOut], policy: .never)
             case .jetpackFeatureDisabled:
                 DDLogError("LockScreen StatsWidgets: lock screen widget should have Jetpack feature disable error")
-                completion(Timeline(entries: [.noData], policy: .never))
+                return Timeline(entries: [.noData], policy: .never)
             }
         }
     }
