@@ -1,5 +1,5 @@
 {
-  "originHash" : "c2e10ed10ee110164398ea3c932567ca4423cd74961173a4a9cdb8702c735787",
+  "originHash" : "e9a0e7ab7d81fc80e7d9edea5811451d65ac1233ae7ae3e7963e34cbd873396e",
   "pins" : [
     {
       "identity" : "alamofire",
@@ -15,8 +15,8 @@
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/Automattic/Automattic-Tracks-iOS",
       "state" : {
-        "revision" : "7442def327dbbc9158c0d780382843e0b7a2e6c9",
-        "version" : "4.1.0"
+        "revision" : "cdc9348b2804af0b70a06d125fd4236d5c6f7f39",
+        "version" : "4.3.1"
       }
     },
     {
@@ -300,8 +300,8 @@
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/jedisct1/swift-sodium",
       "state" : {
-        "revision" : "4f9164a0a2c9a6a7ff53a2833d54a5c79c957342",
-        "version" : "0.9.1"
+        "revision" : "cfd195c76882aa9b997560ca7cb95d72fbf5db00",
+        "version" : "0.11.0"
       }
     },
     {
