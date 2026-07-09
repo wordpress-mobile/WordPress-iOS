@@ -363,6 +363,43 @@ final class UploadSourceMaterializerTests {
         }
     }
 
+    @Test(
+        "remote dispatch keeps output inside parentDir for a traversing suggestedName",
+        arguments: [UTType.jpeg, .gif]
+    )
+    func remoteDispatchContainsTraversingName(contentType: UTType) async throws {
+        let parentDir = try makeTempDir()
+        let sourceFile = parentDir.appendingPathComponent("download.tmp")
+        let bytes =
+            contentType == .gif
+            ? gifFixture
+            : try encodeImage(makeSolidColorImage(size: CGSize(width: 10, height: 10), color: .red), as: .jpeg)
+        try bytes.write(to: sourceFile)
+
+        // `.gif` exercises the passthrough `moveItem` branch; `.jpeg` the
+        // `finalizeImage` write branch. Both build the destination from the
+        // untrusted suggested name via `appendingPathComponent`.
+        let result = try await makeMaterializer(policy())
+            .dispatchRemoteDownload(
+                localFile: sourceFile,
+                contentType: contentType,
+                suggestedName: "../escaped",
+                caption: nil,
+                parentDir: parentDir
+            )
+
+        let parent = parentDir.standardizedFileURL.path
+        // The finalized file must stay INSIDE parentDir: sanitizing the name
+        // neutralizes the `..` before it reaches `appendingPathComponent`.
+        #expect(
+            result.tempFileURL.standardizedFileURL.path.hasPrefix(parent + "/"),
+            "materialized file escaped parentDir: \(result.tempFileURL.standardizedFileURL.path)"
+        )
+        // The documented cleanup target must be parentDir itself, never its
+        // parent, so deleting it can't wipe sibling uploads in the staging root.
+        #expect(result.stagingDirectory.standardizedFileURL.path == parent)
+    }
+
     @Test("remote dispatch image branch rejects non-image bytes")
     func remoteDispatchImageBranchRejectsNonImageBytes() async throws {
         let parentDir = try makeTempDir()

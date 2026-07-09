@@ -16,25 +16,40 @@ import os
 final class UploadFilenameAllocator: Sendable {
     private let usedBasenames = OSAllocatedUnfairLock<Set<String>>(initialState: [])
 
+    /// Upper bound on the name stem, in UTF-8 bytes. Kept well under APFS
+    /// `NAME_MAX` (255 bytes) so the `.<ext>` and any ` (n)` dedup suffix still
+    /// fit without per-candidate length arithmetic. A source name longer than
+    /// this would otherwise make the temp-file write fail with `ENAMETOOLONG`.
+    private static let maxStemBytes = 200
+
     /// The sanitized `preferred` name, or `<fallbackPrefix>-<timestamp>` when
     /// the source has no usable name. Carries no extension and is not yet
     /// deduplicated; pass the result to `basename`.
     func stem(preferred: String?, fallbackPrefix: String, date: Date) -> String {
-        preferred.flatMap(sanitize) ?? "\(fallbackPrefix)-\(timestampedName(date: date))"
+        if let cleaned = preferred.map(sanitize), !cleaned.isEmpty {
+            return cleaned
+        }
+        return "\(fallbackPrefix)-\(timestampedName(date: date))"
     }
 
-    /// A unique `<stem>.<ext>` basename. Names already handed out for the
-    /// lifetime of this allocator are tracked, so a batch with two same-named
-    /// files becomes `name.jpg`, `name (2).jpg`, and so on.
+    /// A unique `<stem>.<ext>` basename, safe to hand to
+    /// `URL.appendingPathComponent`. The stem is sanitized and length-capped
+    /// here (not only in `stem`), so a caller that passes a raw source name
+    /// (`.remoteURL`, `.imagePlayground`) can't smuggle a path separator or an
+    /// over-long name onto disk. Names already handed out for the lifetime of
+    /// this allocator are tracked, so a batch with two same-named files becomes
+    /// `name.jpg`, `name (2).jpg`, and so on.
     func basename(stem: String, ext: String) -> String {
-        usedBasenames.withLock { used in
-            let first = "\(stem).\(ext)"
+        let fitted = truncated(sanitize(stem), toUTF8ByteCount: Self.maxStemBytes)
+        let safeStem = fitted.isEmpty ? "file" : fitted
+        return usedBasenames.withLock { used in
+            let first = "\(safeStem).\(ext)"
             if used.insert(first).inserted {
                 return first
             }
             var n = 2
             while true {
-                let candidate = "\(stem) (\(n)).\(ext)"
+                let candidate = "\(safeStem) (\(n)).\(ext)"
                 if used.insert(candidate).inserted {
                     return candidate
                 }
@@ -59,14 +74,32 @@ final class UploadFilenameAllocator: Sendable {
         Self.timestampFormatter.string(from: date)
     }
 
-    /// Strips path separators and NUL, caps length, and treats an empty result
-    /// as "no usable name" (nil) so the caller falls back to a generated stem.
-    private func sanitize(_ name: String) -> String? {
-        let cleaned =
-            name
+    /// Replaces path separators with `_` and strips NUL so the result is a
+    /// single path component that `appendingPathComponent` can't use to escape
+    /// its parent directory (e.g. `../escaped` becomes `.._escaped`). May be
+    /// empty; `stem` treats that as "no usable name" and `basename` substitutes
+    /// a stub.
+    private func sanitize(_ name: String) -> String {
+        name
             .replacingOccurrences(of: "/", with: "_")
             .replacingOccurrences(of: "\u{0}", with: "")
-        let trimmed = String(cleaned.prefix(256))
-        return trimmed.isEmpty ? nil : trimmed
+    }
+
+    /// Truncates `name` to at most `maxBytes` UTF-8 bytes without splitting a
+    /// grapheme, so the temp-file write can't fail with `ENAMETOOLONG` and the
+    /// result is never cut mid-character.
+    private func truncated(_ name: String, toUTF8ByteCount maxBytes: Int) -> String {
+        guard name.utf8.count > maxBytes else { return name }
+        var result = ""
+        var count = 0
+        for character in name {
+            let size = String(character).utf8.count
+            if count + size > maxBytes {
+                break
+            }
+            result.append(character)
+            count += size
+        }
+        return result
     }
 }

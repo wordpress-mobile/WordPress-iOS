@@ -49,8 +49,7 @@ struct UploadFilenameAllocatorTests {
             ("My Vacation", "My Vacation"), // usable names are kept verbatim
             ("a/b/c", "a_b_c"), // path separators become underscores
             ("///", "___"), // separator-only names sanitize, not fall back
-            ("a\u{0}b", "ab"), // NUL characters are stripped
-            (String(repeating: "a", count: 300), String(repeating: "a", count: 256)) // capped at 256
+            ("a\u{0}b", "ab") // NUL characters are stripped
         ]
     )
     func preferredNameSanitization(preferred: String, expected: String) {
@@ -70,6 +69,50 @@ struct UploadFilenameAllocatorTests {
     func emptyFallsBackToPrefix() {
         let stem = allocator.stem(preferred: "", fallbackPrefix: "Video", date: Date())
         #expect(stem.hasPrefix("Video-"))
+    }
+
+    // MARK: - basename safety
+
+    @Test("basename neutralizes a traversing stem into a single path component")
+    func basenameNeutralizesTraversal() {
+        // The `/` is replaced, so the result can't climb out of its parent dir
+        // via `appendingPathComponent`. `basename` sanitizes even when the
+        // caller (`.remoteURL`, `.imagePlayground`) skipped `stem`.
+        #expect(allocator.basename(stem: "../escaped", ext: "jpg") == ".._escaped.jpg")
+    }
+
+    @Test("basename caps an over-long ASCII stem within NAME_MAX")
+    func basenameCapsLongASCIIStem() {
+        let basename = allocator.basename(stem: String(repeating: "a", count: 400), ext: "jpg")
+        #expect(basename.utf8.count <= 255)
+        #expect(basename.hasSuffix(".jpg"))
+    }
+
+    @Test("basename caps a multibyte stem on a grapheme boundary")
+    func basenameCapsMultibyteStem() {
+        // "あ" is 3 UTF-8 bytes, so a naive byte-slice could split it. The cap
+        // must stay within NAME_MAX and never leave a broken scalar behind.
+        let basename = allocator.basename(stem: String(repeating: "あ", count: 300), ext: "jpg")
+        #expect(basename.utf8.count <= 255)
+        #expect(basename.hasSuffix(".jpg"))
+        // No replacement character: every retained scalar is intact.
+        #expect(!basename.contains("\u{FFFD}"))
+    }
+
+    @Test("a stem that sanitizes to empty falls back to a stub basename")
+    func emptyStemFallsBackToStub() {
+        #expect(allocator.basename(stem: "", ext: "jpg") == "file.jpg")
+        #expect(allocator.basename(stem: "\u{0}", ext: "png") == "file.png")
+    }
+
+    @Test("truncated stems still deduplicate and stay within NAME_MAX")
+    func truncatedStemsDeduplicate() {
+        let stem = String(repeating: "a", count: 400)
+        let first = allocator.basename(stem: stem, ext: "jpg")
+        let second = allocator.basename(stem: stem, ext: "jpg")
+        #expect(first != second)
+        #expect(second.contains(" (2)"))
+        #expect(second.utf8.count <= 255)
     }
 
     // MARK: - end-to-end
