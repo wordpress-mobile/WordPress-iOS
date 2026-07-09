@@ -302,7 +302,7 @@ final class PostSettingsViewModel: NSObject, ObservableObject, PostSettingsViewM
         Task { [weak self] in
             guard let self else { return }
 
-            let service = TagsService(blog: blog)
+            let service = TagsViewModel.makeTagsService(for: blog)
             let resolved = await service.resolveTerms(named: pendingNames)
             for (name, existing) in resolved {
                 if let index = settings.tags.firstIndex(where: { $0.name == name }) {

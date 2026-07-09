@@ -58,7 +58,12 @@ class TagsViewModel: ObservableObject {
     }
 
     convenience init(blog: Blog, selectedTags: [SelectedTerm] = [], mode: TagsViewMode) {
-        self.init(taxonomy: nil, service: TagsService(blog: blog), selectedTerms: selectedTags, mode: mode)
+        self.init(
+            taxonomy: nil,
+            service: TagsViewModel.makeTagsService(for: blog),
+            selectedTerms: selectedTags,
+            mode: mode
+        )
     }
 
     convenience init(
@@ -88,6 +93,24 @@ class TagsViewModel: ObservableObject {
         self.labels = taxonomy.flatMap(TaxonomyLocalizedLabels.from(taxonomy:)) ?? TaxonomyLocalizedLabels.tag
         self.selectedTags = selectedTerms
         self.selectedTagsSet = Set(selectedTerms.map { $0.name.lowercased() })
+    }
+
+    /// Chooses the taxonomy service backing a blog's tags.
+    ///
+    /// Sites with core REST API access (WordPress.com, or self-hosted sites with
+    /// an application password) use `AnyTermService` so tags go through the wp/v2
+    /// REST API. Some hosts block the XML-RPC term methods that `TagsService`
+    /// uses for self-hosted sites, which breaks tags entirely (issue #25758).
+    /// Legacy self-hosted sites without REST access keep using `TagsService`.
+    static func makeTagsService(
+        for blog: Blog,
+        keychain: KeychainAccessible = AppKeychain()
+    ) -> TaxonomyServiceProtocol {
+        if let site = try? WordPressSite(blog: blog, keychain: keychain) {
+            let client = WordPressClientFactory.shared.instance(for: site)
+            return AnyTermService(client: client, endpoint: .tags)
+        }
+        return TagsService(blog: blog)
     }
 
     func onAppear() {

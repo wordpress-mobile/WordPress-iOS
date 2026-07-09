@@ -184,8 +184,16 @@ NS_ASSUME_NONNULL_BEGIN
         if (blog.wordPressComRestApi) {
             return [[TaxonomyServiceRemoteREST alloc] initWithWordPressComRestApi:blog.wordPressComRestApi siteID:blog.dotComID];
         }
-    } else if (blog.xmlrpcApi) {
-        return [[TaxonomyServiceRemoteXMLRPC alloc] initWithApi:blog.xmlrpcApi username:blog.username password:blog.password];
+    } else {
+        // Prefer the core REST API (wp/v2) for self-hosted sites. Some hosts
+        // block the XML-RPC term methods, which breaks categories (#25758).
+        TaxonomyServiceRemoteCoreREST *coreREST = [[TaxonomyServiceRemoteCoreREST alloc] initWithBlog:blog];
+        if (coreREST) {
+            return coreREST;
+        }
+        if (blog.xmlrpcApi) {
+            return [[TaxonomyServiceRemoteXMLRPC alloc] initWithApi:blog.xmlrpcApi username:blog.username password:blog.password];
+        }
     }
     return nil;
 }
