@@ -30,6 +30,7 @@ final class UploadSourceMaterializer: Sendable {
     private let policy: MediaUploadPolicy
     private let temporaryRoot: URL
     private let filenames = UploadFilenameAllocator()
+    private let remoteDownloader = RemoteDownloader()
 
     /// Default staging root for materialized uploads. Rooted in Application
     /// Support (not the system temp dir) so files survive app suspension and a
@@ -506,8 +507,7 @@ final class UploadSourceMaterializer: Sendable {
         // Retaining the original UploadSource on failed entries would
         // let Retry re-run materialization for this case (and every
         // other materialization-failing source).
-        let downloader = RemoteDownloader()
-        let localFile = try await downloader.download(
+        let localFile = try await remoteDownloader.download(
             from: remote.url,
             into: parentDir,
             progress: stageProgress

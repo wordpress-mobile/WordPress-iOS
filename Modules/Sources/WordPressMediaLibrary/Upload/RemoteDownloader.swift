@@ -1,7 +1,9 @@
 import Foundation
 
-/// Single-use downloader for `.remoteURL` materialization. The materializer
-/// constructs one per download and discards it after.
+/// Downloader for `.remoteURL` materialization. Owns a private ephemeral
+/// `URLSession` and is reused across downloads (the materializer holds one
+/// instance), so downloaded media bytes, cookies, and credentials never
+/// touch the app-wide `URLSession.shared` cache and jar.
 ///
 /// Built on the async `URLSession.download(from:delegate:)`, so the runtime
 /// owns the continuation, cancellation, temp-file delivery, and error
@@ -10,7 +12,17 @@ import Foundation
 /// the task's own `Progress` via KVO from `didCreateTask`, the workaround
 /// Apple's URL Loading System team recommends for this case:
 /// https://developer.apple.com/forums/thread/723015
-final class RemoteDownloader {
+final class RemoteDownloader: Sendable {
+
+    private let session: URLSession
+
+    init() {
+        let configuration = URLSessionConfiguration.ephemeral
+        // Media downloads are large and single-use, so keep them out of the
+        // session's in-memory URL cache.
+        configuration.urlCache = nil
+        self.session = URLSession(configuration: configuration)
+    }
 
     /// Downloads `url` into `parentDir` and returns the local file URL. Reports
     /// byte-level progress on `progress` (scaled to its existing
@@ -21,7 +33,7 @@ final class RemoteDownloader {
         let location: URL
         let response: URLResponse
         do {
-            (location, response) = try await URLSession.shared.download(from: url, delegate: delegate)
+            (location, response) = try await session.download(from: url, delegate: delegate)
         } catch {
             if error is CancellationError || (error as? URLError)?.code == .cancelled {
                 throw CancellationError()
