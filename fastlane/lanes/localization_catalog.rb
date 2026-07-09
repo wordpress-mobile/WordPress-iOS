@@ -184,17 +184,23 @@ platform :ios do
     reconciled.count
   end
 
-  # Current English value per key, by syncing the extraction into a throwaway empty catalog (every key is
-  # 'new', so its English is populated straight from source — which is what `sync` won't do for keys that
-  # already exist in the real catalog).
-  def current_english_values(stringsdata_dir)
+  # Syncs the extracted .stringsdata into a fresh throwaway catalog and returns it parsed. A fresh
+  # catalog means every key is 'new', so its English value is populated straight from source — which
+  # is what `sync` won't do for keys that already exist in a persistent catalog.
+  def synced_throwaway_catalog(stringsdata_dir:)
     Dir.mktmpdir do |tmp|
       fresh = File.join(tmp, 'Localizable.xcstrings')
       File.write(fresh, "#{JSON.pretty_generate('sourceLanguage' => 'en', 'strings' => {}, 'version' => '1.0')}\n")
       stringsdata = stringsdata_files(stringsdata_dir)
+      UI.user_error!('xcstringstool produced no .stringsdata') if stringsdata.empty?
       sh('xcrun', 'xcstringstool', 'sync', fresh, *stringsdata.flat_map { |f| ['--stringsdata', f] })
-      english_values(JSON.parse(File.read(fresh)))
+      JSON.parse(File.read(fresh))
     end
+  end
+
+  # Current English value per key, from a throwaway-catalog sync of the extraction.
+  def current_english_values(stringsdata_dir)
+    english_values(synced_throwaway_catalog(stringsdata_dir: stringsdata_dir))
   end
 
   # { key => English value } for every catalog entry that has one (skips key-as-source entries).
@@ -237,21 +243,13 @@ platform :ios do
     PluralStrings.serialize_legacy_strings(entries.sort.to_h) # sorted for stable output
   end
 
-  # { key => { value:, comment: } } from a scoped extraction, via a throwaway catalog (like
-  # current_english_values). Entries without an explicit English value are interpolation-only
+  # { key => { value:, comment: } } from a scoped extraction, via `synced_throwaway_catalog`.
+  # Entries without an explicit English value are interpolation-only
   # resources (e.g. DisplayRepresentation(title: "\(name)")) — not translatable text — and are skipped.
   def app_intents_entries(stringsdata_dir:)
-    Dir.mktmpdir do |tmp|
-      fresh = File.join(tmp, 'Localizable.xcstrings')
-      File.write(fresh, "#{JSON.pretty_generate('sourceLanguage' => 'en', 'strings' => {}, 'version' => '1.0')}\n")
-      stringsdata = stringsdata_files(stringsdata_dir)
-      UI.user_error!('xcstringstool produced no .stringsdata for the App Intents sources') if stringsdata.empty?
-      sh('xcrun', 'xcstringstool', 'sync', fresh, *stringsdata.flat_map { |f| ['--stringsdata', f] })
-
-      JSON.parse(File.read(fresh))['strings'].each_with_object({}) do |(key, entry), acc|
-        value = entry.dig('localizations', 'en', 'stringUnit', 'value')
-        acc[key] = { value: positionalize_untyped_arguments(value), comment: entry['comment'] } unless value.nil?
-      end
+    synced_throwaway_catalog(stringsdata_dir: stringsdata_dir)['strings'].each_with_object({}) do |(key, entry), acc|
+      value = entry.dig('localizations', 'en', 'stringUnit', 'value')
+      acc[key] = { value: positionalize_untyped_arguments(value), comment: entry['comment'] } unless value.nil?
     end
   end
 
