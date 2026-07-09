@@ -7,15 +7,13 @@ import WordPressShared
 import WordPressUI
 
 struct SiteCustomTaxonomiesView: View {
-    let blog: Blog
     let client: WordPressClient
 
     @State private var isLoading: Bool = false
     @State private var taxonomies: [SiteTaxonomy]? = nil
     @State private var error: Error?
 
-    init(blog: Blog, client: WordPressClient) {
-        self.blog = blog
+    init(client: WordPressClient) {
         self.client = client
     }
 
@@ -23,7 +21,7 @@ struct SiteCustomTaxonomiesView: View {
         List {
             ForEach(taxonomies ?? [], id: \.slug) { taxonomy in
                 NavigationLink {
-                    SiteTagsView(viewModel: .init(blog: blog, client: client, taxonomy: taxonomy, mode: .browse))
+                    SiteTagsView(viewModel: .taxonomy(taxonomy, client: client, mode: .browse))
                 } label: {
                     Text(taxonomy.localizedName)
                 }

@@ -193,7 +193,7 @@ class SiteTagsViewController: UIHostingController<SiteTagsView> {
     let viewModel: TagsViewModel
 
     init(blog: Blog) {
-        viewModel = TagsViewModel(blog: blog, mode: .browse)
+        viewModel = TagsViewModel.tags(for: blog, mode: .browse)
         super.init(rootView: .init(viewModel: viewModel))
     }
 

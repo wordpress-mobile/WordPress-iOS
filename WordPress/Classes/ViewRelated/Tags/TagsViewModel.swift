@@ -57,23 +57,32 @@ class TagsViewModel: ObservableObject {
         return false
     }
 
-    convenience init(blog: Blog, selectedTags: [SelectedTerm] = [], mode: TagsViewMode) {
-        self.init(
+    /// Builds a view model for a site's built-in tags. `makeTagsService(for:)`
+    /// picks the backing service so self-hosted sites use REST where they can
+    /// (issue #25758).
+    static func tags(
+        for blog: Blog,
+        selectedTerms: [SelectedTerm] = [],
+        mode: TagsViewMode
+    ) -> TagsViewModel {
+        TagsViewModel(
             taxonomy: nil,
-            service: TagsViewModel.makeTagsService(for: blog),
-            selectedTerms: selectedTags,
+            service: makeTagsService(for: blog),
+            selectedTerms: selectedTerms,
             mode: mode
         )
     }
 
-    convenience init(
-        blog: Blog,
+    /// Builds a view model for a specific site `taxonomy` (e.g. a custom
+    /// taxonomy). Always uses the core REST API, which a custom taxonomy's
+    /// `client` already guarantees is available.
+    static func taxonomy(
+        _ taxonomy: SiteTaxonomy,
         client: WordPressClient,
-        taxonomy: SiteTaxonomy,
         selectedTerms: [SelectedTerm] = [],
         mode: TagsViewMode
-    ) {
-        self.init(
+    ) -> TagsViewModel {
+        TagsViewModel(
             taxonomy: taxonomy,
             service: AnyTermService(client: client, endpoint: taxonomy.endpoint),
             selectedTerms: selectedTerms,
@@ -81,6 +90,8 @@ class TagsViewModel: ObservableObject {
         )
     }
 
+    /// Designated initializer. Inject a `service` directly; production code
+    /// should prefer the `tags(for:)` / `taxonomy(_:client:)` factories.
     init(
         taxonomy: SiteTaxonomy?,
         service: TaxonomyServiceProtocol,
