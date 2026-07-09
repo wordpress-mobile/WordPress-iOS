@@ -96,8 +96,7 @@ JETPACK_METADATA_GLOTPRESS_LOCALE_CODES = %w[ar de es fr he id it ja ko nl pt-br
 MANUALLY_MAINTAINED_STRINGS_FILES = {
   File.join('WordPress', 'Resources', 'en.lproj', 'InfoPlist.strings') => 'infoplist.', # For now WordPress and Jetpack share the same InfoPlist.strings
   File.join('WordPress', 'WordPressDraftActionExtension', 'en.lproj', 'InfoPlist.strings') => 'ios-sharesheet.', # CFBundleDisplayName for the "Save as Draft" share action
-  File.join('WordPress', 'JetpackDraftActionExtension', 'en.lproj', 'InfoPlist.strings') => 'ios-jetpack-sharesheet.', # CFBundleDisplayName for the "Save to Jetpack" share action
-  File.join('WordPress', 'JetpackStatsWidgets', 'en.lproj', 'Localizable.strings') => 'ios-widget.' # Strings for the App Intents UI used when configuring the iOS Widget; resolved at runtime via the prefixed keys in the app's Localizable.strings
+  File.join('WordPress', 'JetpackDraftActionExtension', 'en.lproj', 'InfoPlist.strings') => 'ios-jetpack-sharesheet.' # CFBundleDisplayName for the "Save to Jetpack" share action
 }.freeze
 
 # Remote Swift Packages whose localizable strings we want to extract (they're checked out under Derived Data
@@ -191,6 +190,21 @@ platform :ios do
 
       ios_merge_strings_files(
         paths_to_merge: paths_to_merge,
+        destination: File.join(WORDPRESS_EN_LPROJ, 'Localizable.strings')
+      )
+    end
+
+    # Merge the App Intents strings into the same destination. These are extracted from code by
+    # xcstringstool (genstrings cannot parse LocalizedStringResource) and are transient like the plural
+    # originals above, but deliberately kept separate from the plurals plumbing — and unlike the plural
+    # step this is NOT allowed to fail softly: a silently missing App Intents string would ship
+    # English-only in every locale.
+    Dir.mktmpdir do |app_intents_tmp|
+      app_intents_originals = File.join(app_intents_tmp, 'AppIntents.strings')
+      File.write(app_intents_originals, generate_app_intents_strings_for_glotpress)
+
+      ios_merge_strings_files(
+        paths_to_merge: { app_intents_originals => '' }, # keys are self-qualified with their ios-* prefixes
         destination: File.join(WORDPRESS_EN_LPROJ, 'Localizable.strings')
       )
     end

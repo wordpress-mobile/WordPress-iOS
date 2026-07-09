@@ -4,6 +4,7 @@ require 'json'
 require 'tmpdir'
 require 'fileutils'
 require_relative 'catalog_helper'
+require_relative 'plural_strings_helper'
 
 #################################################
 # Catalog generation (forward / extraction)
@@ -38,6 +39,17 @@ CATALOG_SOURCE_ROOTS = [
 
 # The custom localization routine to additionally extract (same as the genstrings `routines:` today).
 CATALOG_LOCALIZATION_ROUTINE = 'AppLocalizedString'
+
+# App Intents display strings (LocalizedStringResource) can't be parsed by genstrings, so the code
+# freeze extracts them from these dirs with xcstringstool and merges them into the GlotPress upload
+# (see generate_app_intents_strings_for_glotpress). Keys in code are self-qualified with these prefixes.
+APP_INTENTS_STRINGS_ROOTS = [
+  File.join(PROJECT_ROOT_FOLDER, 'Modules', 'Sources', 'JetpackStatsWidgetsCore', 'AppIntents')
+].freeze
+
+APP_INTENTS_KEY_PREFIXES = [
+  'ios-widget.'
+].freeze
 
 platform :ios do
   # Extracts English source strings from code into Localizable.xcstrings (build-free; replaces genstrings).
@@ -199,5 +211,60 @@ platform :ios do
     message = "Generated #{File.basename(path)} with #{extracted_count} keys (#{with_value} carry an explicit English value; the rest are key-as-source)."
     message += " Re-flagged #{reconciled_count} for review (English source changed)." if reconciled_count.positive?
     UI.success(message)
+  end
+
+  # Extracts the App Intents LocalizedStringResource strings (key, English defaultValue, translator
+  # comment) from source and returns them as `.strings` file content for the GlotPress merge. The keys
+  # are already prefixed in code, so the caller merges this with an empty prefix, like the plural
+  # originals. Fails loudly rather than silently shipping an untranslated intent string.
+  # Declared as a lane like generate_plural_strings_for_glotpress: the freeze lane calls it as a
+  # function, and it can be run standalone as a smoke check (prints the count; errors on unprefixed keys).
+  desc 'Generates the App Intents strings content that the code freeze merges into the GlotPress upload'
+  lane :generate_app_intents_strings_for_glotpress do
+    files = catalog_source_files(APP_INTENTS_STRINGS_ROOTS)
+    UI.user_error!('No App Intents source files found — APP_INTENTS_STRINGS_ROOTS out of date?') if files.empty?
+
+    entries = Dir.mktmpdir do |tmp|
+      extract_stringsdata(files: files, output_dir: tmp)
+      app_intents_entries(stringsdata_dir: tmp)
+    end
+    UI.user_error!('No App Intents strings extracted') if entries.empty?
+
+    unprefixed = entries.keys.reject { |key| APP_INTENTS_KEY_PREFIXES.any? { |prefix| key.start_with?(prefix) } }
+    UI.user_error!("App Intents strings without a known prefix (add one, or extend APP_INTENTS_KEY_PREFIXES): #{unprefixed.sort}") unless unprefixed.empty?
+
+    UI.message("Extracted #{entries.count} App Intents strings for the GlotPress upload.")
+    PluralStrings.serialize_legacy_strings(entries.sort.to_h) # sorted for stable output
+  end
+
+  # { key => { value:, comment: } } from a scoped extraction, via a throwaway catalog (like
+  # current_english_values). Entries without an explicit English value are interpolation-only
+  # resources (e.g. DisplayRepresentation(title: "\(name)")) — not translatable text — and are skipped.
+  def app_intents_entries(stringsdata_dir:)
+    Dir.mktmpdir do |tmp|
+      fresh = File.join(tmp, 'Localizable.xcstrings')
+      File.write(fresh, "#{JSON.pretty_generate('sourceLanguage' => 'en', 'strings' => {}, 'version' => '1.0')}\n")
+      stringsdata = stringsdata_files(stringsdata_dir)
+      UI.user_error!('xcstringstool produced no .stringsdata for the App Intents sources') if stringsdata.empty?
+      sh('xcrun', 'xcstringstool', 'sync', fresh, *stringsdata.flat_map { |f| ['--stringsdata', f] })
+
+      JSON.parse(File.read(fresh))['strings'].each_with_object({}) do |(key, entry), acc|
+        value = entry.dig('localizations', 'en', 'stringUnit', 'value')
+        acc[key] = { value: positionalize_untyped_arguments(value), comment: entry['comment'] } unless value.nil?
+      end
+    end
+  end
+
+  # The build-free extraction cannot type interpolations (a defaultValue's `\(…)` segments), so it
+  # emits untyped `%arg` placeholders. Rewrite them as positional printf specifiers (`%1$@`, `%2$@`,
+  # …), which is what GlotPress translators and the runtime's format-style resolution expect. This is
+  # only correct for String-valued interpolations, so App Intents defaultValues must interpolate
+  # preformatted Strings, never raw numbers or dates (see docs/localization.md).
+  def positionalize_untyped_arguments(value)
+    index = 0
+    value.gsub(/%(\d+\$)?arg/) do
+      index += 1
+      "%#{Regexp.last_match(1) || "#{index}$"}@"
+    end
   end
 end

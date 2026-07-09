@@ -11,7 +11,12 @@ import Foundation
 /// later; see `SelectSiteIntent` for the details.
 public struct SiteEntity: AppEntity {
     public static let typeDisplayRepresentation = TypeDisplayRepresentation(
-        name: LocalizedStringResource("ios-widget.ILcGmf", defaultValue: "Site")
+        name: LocalizedStringResource(
+            "ios-widget.ILcGmf",
+            defaultValue: "Site",
+            comment:
+                "This text is used when the user is configuring the iOS widget, as a label for the dropdown to select the site to configure it for"
+        )
     )
 
     public static var defaultQuery: SiteEntityQuery { SiteEntityQuery() }

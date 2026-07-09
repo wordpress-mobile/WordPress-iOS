@@ -8,9 +8,9 @@ import AppIntents
 /// users' widgets to the default site.
 ///
 /// The localization keys are the app-bundle names of the identifiers Xcode generated for the
-/// legacy `.intentdefinition` ("gpCwrM", "ILcGmf"): GlotPress uploads them under the
-/// `ios-widget.` prefix, and the downloaded translations land in the app's
-/// `Localizable.strings` under those prefixed keys.
+/// legacy `.intentdefinition` ("gpCwrM", "ILcGmf"): The code freeze extracts these call sites
+/// into the GlotPress upload (`generate_app_intents_strings_for_glotpress`), and the downloaded
+/// translations land in the app's `Localizable.strings` under the prefixed keys.
 ///
 /// iOS 18 and later resolve the widget configuration UI's strings against the app bundle,
 /// whose GlotPress-managed `Localizable.strings` carries the prefixed keys in every locale
@@ -21,13 +21,25 @@ import AppIntents
 public struct SelectSiteIntent: WidgetConfigurationIntent, CustomIntentMigratedAppIntent {
     public static let intentClassName = "SelectSiteIntent"
 
-    public static let title = LocalizedStringResource("ios-widget.gpCwrM", defaultValue: "Select Site")
+    public static let title = LocalizedStringResource(
+        "ios-widget.gpCwrM",
+        defaultValue: "Select Site",
+        comment:
+            "This text is used when the user is configuring the iOS widget to suggest them to select the site to configure the widget for"
+    )
 
     // The legacy intent was ineligible for Siri suggestions; keep this
     // configuration-only intent out of Shortcuts and Spotlight the same way.
     public static let isDiscoverable = false
 
-    @Parameter(title: LocalizedStringResource("ios-widget.ILcGmf", defaultValue: "Site"))
+    @Parameter(
+        title: LocalizedStringResource(
+            "ios-widget.ILcGmf",
+            defaultValue: "Site",
+            comment:
+                "This text is used when the user is configuring the iOS widget, as a label for the dropdown to select the site to configure it for"
+        )
+    )
     public var site: SiteEntity?
 
     public init() {}
