@@ -64,13 +64,13 @@
 		0CED2ADF2D95BB46003015CF /* RNTAztecView.xcframework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3F60D3912D2C4BA3008ACD86 /* RNTAztecView.xcframework */; };
 		0CED2AE52D95BB46003015CF /* yoga.xcframework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3F60D3932D2C4BA4008ACD86 /* yoga.xcframework */; };
 		1D60589F0D05DD5A006BFB54 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1D30AB110D05D00D00671497 /* Foundation.framework */; };
-		24351254264DCA08009BB2B6 /* Secrets.swift in Sources */ = {isa = PBXBuildFile; fileRef = 24351253264DCA08009BB2B6 /* Secrets.swift */; };
-		24351255264DCA08009BB2B6 /* Secrets.swift in Sources */ = {isa = PBXBuildFile; fileRef = 24351253264DCA08009BB2B6 /* Secrets.swift */; };
+		24351254264DCA08009BB2B6 /* DerivedSecrets.swift in Sources */ = {isa = PBXBuildFile; fileRef = 24351253264DCA08009BB2B6 /* DerivedSecrets.swift */; };
+		24351255264DCA08009BB2B6 /* DerivedSecrets.swift in Sources */ = {isa = PBXBuildFile; fileRef = 24351253264DCA08009BB2B6 /* DerivedSecrets.swift */; };
 		24E55D4E2CC9A5C8008D071D /* ImagePlayground.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 24E55D4D2CC9A5C8008D071D /* ImagePlayground.framework */; };
 		24E55D4F2CC9A5CD008D071D /* ImagePlayground.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 24E55D4D2CC9A5C8008D071D /* ImagePlayground.framework */; };
 		296890780FE971DC00770264 /* Security.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 296890770FE971DC00770264 /* Security.framework */; };
 		374CB16215B93C0800DD0EBC /* AudioToolbox.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 374CB16115B93C0800DD0EBC /* AudioToolbox.framework */; };
-		3F1A64F62DA7A4B300786B92 /* Secrets.swift in Sources */ = {isa = PBXBuildFile; fileRef = 24351253264DCA08009BB2B6 /* Secrets.swift */; };
+		3F1A64F62DA7A4B300786B92 /* DerivedSecrets.swift in Sources */ = {isa = PBXBuildFile; fileRef = 24351253264DCA08009BB2B6 /* DerivedSecrets.swift */; };
 		3F1AFCC22DA3AAEA00786B92 /* WebKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3F1AFCC12DA3AAE900786B92 /* WebKit.framework */; };
 		3F608F7F2D2D1A9E008ACD86 /* Gutenberg.xcframework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3F60D3902D2C4BA3008ACD86 /* Gutenberg.xcframework */; };
 		3F608F802D2D1A9E008ACD86 /* Gutenberg.xcframework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 3F60D3902D2C4BA3008ACD86 /* Gutenberg.xcframework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
@@ -104,13 +104,13 @@
 		4A690C212BA7975500A8E0C5 /* PrivacyInfo.xcprivacy in Resources */ = {isa = PBXBuildFile; fileRef = 4A690C202BA7974E00A8E0C5 /* PrivacyInfo.xcprivacy */; };
 		4A690C222BA7975800A8E0C5 /* PrivacyInfo.xcprivacy in Resources */ = {isa = PBXBuildFile; fileRef = 4A690C202BA7974E00A8E0C5 /* PrivacyInfo.xcprivacy */; };
 		4A8284B02E5FECB00037E180 /* XcodeTarget_WordPressKitTests in Frameworks */ = {isa = PBXBuildFile; productRef = 4A8284AF2E5FECB00037E180 /* XcodeTarget_WordPressKitTests */; };
-		4ABC59742DE52A7D005A6B84 /* Secrets-WordPressDraftActionExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4ABC59732DE52A7D005A6B84 /* Secrets-WordPressDraftActionExtension.swift */; };
-		4ABCAB2A2DE52E80005A6B84 /* Secrets-JetpackDraftActionExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4ABCAB272DE52E6B005A6B84 /* Secrets-JetpackDraftActionExtension.swift */; };
-		4ABCAB2B2DE52E86005A6B84 /* Secrets-JetpackShareExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4ABCAB282DE52E6B005A6B84 /* Secrets-JetpackShareExtension.swift */; };
-		4ABCAB2E2DE53092005A6B84 /* Secrets-JetpackNotificationServiceExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4ABCAB2D2DE53092005A6B84 /* Secrets-JetpackNotificationServiceExtension.swift */; };
-		4ABCAB3A2DE533A5005A6B84 /* Secrets-WordPressNotificationServiceExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4ABCAB392DE533A5005A6B84 /* Secrets-WordPressNotificationServiceExtension.swift */; };
-		4AC9545A2DE51FE40095EA51 /* Secrets-JetpackStatsWidgets.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4AC954592DE51FE40095EA51 /* Secrets-JetpackStatsWidgets.swift */; };
-		4AC9F8182DE528E40095EA51 /* Secrets-WordPressShareExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4AC9F8172DE528E40095EA51 /* Secrets-WordPressShareExtension.swift */; };
+		4ABC59742DE52A7D005A6B84 /* DerivedSecrets.swift in Sources */ = {isa = PBXBuildFile; fileRef = 24351253264DCA08009BB2B6 /* DerivedSecrets.swift */; };
+		4ABCAB2A2DE52E80005A6B84 /* DerivedSecrets.swift in Sources */ = {isa = PBXBuildFile; fileRef = 24351253264DCA08009BB2B6 /* DerivedSecrets.swift */; };
+		4ABCAB2B2DE52E86005A6B84 /* DerivedSecrets.swift in Sources */ = {isa = PBXBuildFile; fileRef = 24351253264DCA08009BB2B6 /* DerivedSecrets.swift */; };
+		4ABCAB2E2DE53092005A6B84 /* DerivedSecrets.swift in Sources */ = {isa = PBXBuildFile; fileRef = 24351253264DCA08009BB2B6 /* DerivedSecrets.swift */; };
+		4ABCAB3A2DE533A5005A6B84 /* DerivedSecrets.swift in Sources */ = {isa = PBXBuildFile; fileRef = 24351253264DCA08009BB2B6 /* DerivedSecrets.swift */; };
+		4AC9545A2DE51FE40095EA51 /* DerivedSecrets.swift in Sources */ = {isa = PBXBuildFile; fileRef = 24351253264DCA08009BB2B6 /* DerivedSecrets.swift */; };
+		4AC9F8182DE528E40095EA51 /* DerivedSecrets.swift in Sources */ = {isa = PBXBuildFile; fileRef = 24351253264DCA08009BB2B6 /* DerivedSecrets.swift */; };
 		5D69DBC4165428CA00A2D1F7 /* n.caf in Resources */ = {isa = PBXBuildFile; fileRef = 5D69DBC3165428CA00A2D1F7 /* n.caf */; };
 		7335AC6021220D550012EF2D /* RemoteNotificationActionParser.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7335AC5F21220D550012EF2D /* RemoteNotificationActionParser.swift */; };
 		7358E6BF210BD318002323EB /* WordPressNotificationServiceExtension.appex in Embed Foundation Extensions */ = {isa = PBXBuildFile; fileRef = 7358E6B8210BD318002323EB /* WordPressNotificationServiceExtension.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
@@ -522,7 +522,7 @@
 		1D6058910D05DD3D006BFB54 /* WordPress.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = WordPress.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		24350E7C264DB76E009BB2B6 /* Jetpack.debug.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = Jetpack.debug.xcconfig; sourceTree = "<group>"; };
 		24351059264DC1E2009BB2B6 /* Jetpack.release.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = Jetpack.release.xcconfig; sourceTree = "<group>"; };
-		24351253264DCA08009BB2B6 /* Secrets.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = Secrets.swift; path = ../Secrets/Secrets.swift; sourceTree = BUILT_PRODUCTS_DIR; };
+		24351253264DCA08009BB2B6 /* DerivedSecrets.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DerivedSecrets.swift; sourceTree = DERIVED_FILE_DIR; };
 		2439B1DB264ECBDF00239130 /* Jetpack.alpha.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = Jetpack.alpha.xcconfig; sourceTree = "<group>"; };
 		24AE9E66264B34E500AC7F15 /* Secrets-example.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Secrets-example.swift"; sourceTree = "<group>"; };
 		24B54FAE2624F8430041B18E /* JetpackRelease-Alpha.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = "JetpackRelease-Alpha.entitlements"; sourceTree = "<group>"; };
@@ -550,13 +550,6 @@
 		4A690C1D2BA796C500A8E0C5 /* PrivacyInfo.xcprivacy */ = {isa = PBXFileReference; lastKnownFileType = text.xml; path = PrivacyInfo.xcprivacy; sourceTree = "<group>"; };
 		4A690C202BA7974E00A8E0C5 /* PrivacyInfo.xcprivacy */ = {isa = PBXFileReference; lastKnownFileType = text.xml; path = PrivacyInfo.xcprivacy; sourceTree = "<group>"; };
 		4A8280FD2E5FE9B60037E180 /* WordPressKitTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = WordPressKitTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
-		4ABC59732DE52A7D005A6B84 /* Secrets-WordPressDraftActionExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = "Secrets-WordPressDraftActionExtension.swift"; path = "../Secrets/Secrets-WordPressDraftActionExtension.swift"; sourceTree = BUILT_PRODUCTS_DIR; };
-		4ABCAB272DE52E6B005A6B84 /* Secrets-JetpackDraftActionExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = "Secrets-JetpackDraftActionExtension.swift"; path = "../Secrets/Secrets-JetpackDraftActionExtension.swift"; sourceTree = BUILT_PRODUCTS_DIR; };
-		4ABCAB282DE52E6B005A6B84 /* Secrets-JetpackShareExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = "Secrets-JetpackShareExtension.swift"; path = "../Secrets/Secrets-JetpackShareExtension.swift"; sourceTree = BUILT_PRODUCTS_DIR; };
-		4ABCAB2D2DE53092005A6B84 /* Secrets-JetpackNotificationServiceExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = "Secrets-JetpackNotificationServiceExtension.swift"; path = "../Secrets/Secrets-JetpackNotificationServiceExtension.swift"; sourceTree = BUILT_PRODUCTS_DIR; };
-		4ABCAB392DE533A5005A6B84 /* Secrets-WordPressNotificationServiceExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = "Secrets-WordPressNotificationServiceExtension.swift"; path = "../Secrets/Secrets-WordPressNotificationServiceExtension.swift"; sourceTree = BUILT_PRODUCTS_DIR; };
-		4AC954592DE51FE40095EA51 /* Secrets-JetpackStatsWidgets.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = "Secrets-JetpackStatsWidgets.swift"; path = "../Secrets/Secrets-JetpackStatsWidgets.swift"; sourceTree = BUILT_PRODUCTS_DIR; };
-		4AC9F8172DE528E40095EA51 /* Secrets-WordPressShareExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = "Secrets-WordPressShareExtension.swift"; path = "../Secrets/Secrets-WordPressShareExtension.swift"; sourceTree = BUILT_PRODUCTS_DIR; };
 		5D69DBC3165428CA00A2D1F7 /* n.caf */ = {isa = PBXFileReference; lastKnownFileType = file; name = n.caf; path = Resources/Sounds/n.caf; sourceTree = "<group>"; };
 		6EDC0E8E105881A800F68A1D /* iTunesArtwork */ = {isa = PBXFileReference; lastKnownFileType = file; path = iTunesArtwork; sourceTree = "<group>"; };
 		7335AC5F21220D550012EF2D /* RemoteNotificationActionParser.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RemoteNotificationActionParser.swift; sourceTree = "<group>"; };
@@ -1221,14 +1214,7 @@
 		24AE9EF5264B3D8E00AC7F15 /* Derived Sources */ = {
 			isa = PBXGroup;
 			children = (
-				24351253264DCA08009BB2B6 /* Secrets.swift */,
-				4AC954592DE51FE40095EA51 /* Secrets-JetpackStatsWidgets.swift */,
-				4ABCAB282DE52E6B005A6B84 /* Secrets-JetpackShareExtension.swift */,
-				4ABCAB272DE52E6B005A6B84 /* Secrets-JetpackDraftActionExtension.swift */,
-				4ABCAB2D2DE53092005A6B84 /* Secrets-JetpackNotificationServiceExtension.swift */,
-				4AC9F8172DE528E40095EA51 /* Secrets-WordPressShareExtension.swift */,
-				4ABC59732DE52A7D005A6B84 /* Secrets-WordPressDraftActionExtension.swift */,
-				4ABCAB392DE533A5005A6B84 /* Secrets-WordPressNotificationServiceExtension.swift */,
+				24351253264DCA08009BB2B6 /* DerivedSecrets.swift */,
 			);
 			name = "Derived Sources";
 			path = Classes;
@@ -2303,7 +2289,7 @@
 			outputFileListPaths = (
 			);
 			outputPaths = (
-				"$(BUILD_DIR)/Secrets/Secrets.swift",
+				"$(DERIVED_FILE_DIR)/DerivedSecrets.swift",
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
@@ -2365,7 +2351,7 @@
 			outputFileListPaths = (
 			);
 			outputPaths = (
-				"${BUILD_DIR}/Secrets/Secrets.swift",
+				"$(DERIVED_FILE_DIR)/DerivedSecrets.swift",
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
@@ -2385,7 +2371,7 @@
 			outputFileListPaths = (
 			);
 			outputPaths = (
-				"$(BUILD_DIR)/Secrets/Secrets.swift",
+				"$(DERIVED_FILE_DIR)/DerivedSecrets.swift",
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
@@ -2405,7 +2391,7 @@
 			outputFileListPaths = (
 			);
 			outputPaths = (
-				"$(BUILD_DIR)/Secrets/Secrets-JetpackStatsWidgets.swift",
+				"$(DERIVED_FILE_DIR)/DerivedSecrets.swift",
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
@@ -2425,7 +2411,7 @@
 			outputFileListPaths = (
 			);
 			outputPaths = (
-				"$(BUILD_DIR)/Secrets/Secrets-WordPressDraftActionExtension.swift",
+				"$(DERIVED_FILE_DIR)/DerivedSecrets.swift",
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
@@ -2445,7 +2431,7 @@
 			outputFileListPaths = (
 			);
 			outputPaths = (
-				"$(BUILD_DIR)/Secrets/Secrets-JetpackShareExtension.swift",
+				"$(DERIVED_FILE_DIR)/DerivedSecrets.swift",
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
@@ -2465,7 +2451,7 @@
 			outputFileListPaths = (
 			);
 			outputPaths = (
-				"$(BUILD_DIR)/Secrets/Secrets-JetpackDraftActionExtension.swift",
+				"$(DERIVED_FILE_DIR)/DerivedSecrets.swift",
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
@@ -2485,7 +2471,7 @@
 			outputFileListPaths = (
 			);
 			outputPaths = (
-				"$(BUILD_DIR)/Secrets/Secrets-JetpackNotificationServiceExtension.swift",
+				"$(DERIVED_FILE_DIR)/DerivedSecrets.swift",
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
@@ -2505,7 +2491,7 @@
 			outputFileListPaths = (
 			);
 			outputPaths = (
-				"$(BUILD_DIR)/Secrets/Secrets-WordPressNotificationServiceExtension.swift",
+				"$(DERIVED_FILE_DIR)/DerivedSecrets.swift",
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
@@ -2525,7 +2511,7 @@
 			outputFileListPaths = (
 			);
 			outputPaths = (
-				"$(BUILD_DIR)/Secrets/Secrets-WordPressShareExtension.swift",
+				"$(DERIVED_FILE_DIR)/DerivedSecrets.swift",
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
@@ -2593,7 +2579,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				4AC9545A2DE51FE40095EA51 /* Secrets-JetpackStatsWidgets.swift in Sources */,
+				4AC9545A2DE51FE40095EA51 /* DerivedSecrets.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -2615,7 +2601,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				3F1A64F62DA7A4B300786B92 /* Secrets.swift in Sources */,
+				3F1A64F62DA7A4B300786B92 /* DerivedSecrets.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -2630,7 +2616,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				24351254264DCA08009BB2B6 /* Secrets.swift in Sources */,
+				24351254264DCA08009BB2B6 /* DerivedSecrets.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -2648,7 +2634,7 @@
 				7335AC6021220D550012EF2D /* RemoteNotificationActionParser.swift in Sources */,
 				73F6DD42212BA54700CE447D /* RichNotificationContentFormatter.swift in Sources */,
 				7396FE66210F730600496D0D /* NotificationService.swift in Sources */,
-				4ABCAB3A2DE533A5005A6B84 /* Secrets-WordPressNotificationServiceExtension.swift in Sources */,
+				4ABCAB3A2DE533A5005A6B84 /* DerivedSecrets.swift in Sources */,
 				73E40D8C21238C520012ABA6 /* Tracks+ServiceExtension.swift in Sources */,
 				73768B6B212B4E4F005136A1 /* UNNotificationContent+RemoteNotification.swift in Sources */,
 				73F6DD45212C714F00CE447D /* RichNotificationViewModel.swift in Sources */,
@@ -2660,7 +2646,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				4ABC59742DE52A7D005A6B84 /* Secrets-WordPressDraftActionExtension.swift in Sources */,
+				4ABC59742DE52A7D005A6B84 /* DerivedSecrets.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -2668,7 +2654,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				4ABCAB2B2DE52E86005A6B84 /* Secrets-JetpackShareExtension.swift in Sources */,
+				4ABCAB2B2DE52E86005A6B84 /* DerivedSecrets.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -2676,7 +2662,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				4ABCAB2A2DE52E80005A6B84 /* Secrets-JetpackDraftActionExtension.swift in Sources */,
+				4ABCAB2A2DE52E80005A6B84 /* DerivedSecrets.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -2685,7 +2671,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				80F6D02328EE866A00953C1A /* RemoteNotificationActionParser.swift in Sources */,
-				4ABCAB2E2DE53092005A6B84 /* Secrets-JetpackNotificationServiceExtension.swift in Sources */,
+				4ABCAB2E2DE53092005A6B84 /* DerivedSecrets.swift in Sources */,
 				80F6D03828EE866A00953C1A /* RichNotificationContentFormatter.swift in Sources */,
 				80F6D03C28EE866A00953C1A /* NotificationService.swift in Sources */,
 				80F6D04628EE866A00953C1A /* Tracks+ServiceExtension.swift in Sources */,
@@ -2699,7 +2685,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				4AC9F8182DE528E40095EA51 /* Secrets-WordPressShareExtension.swift in Sources */,
+				4AC9F8182DE528E40095EA51 /* DerivedSecrets.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -2714,7 +2700,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				24351255264DCA08009BB2B6 /* Secrets.swift in Sources */,
+				24351255264DCA08009BB2B6 /* DerivedSecrets.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
