@@ -78,7 +78,7 @@ extension Xcodeproj {
             return object.path.map { groupURL.appendingPathComponent($0) } ?? groupURL
         case .projectRoot:
             return object.path.map { URL(fileURLWithPath: $0, relativeTo: projectDirectory) } ?? projectDirectory
-        case .buildProductsDir, .devDir, .sdkDir:
+        case .buildProductsDir, .derivedFileDir, .devDir, .sdkDir:
             print("\(self.projectURL.path): warning: Reference \(objectUUID) is relative to \(object.sourceTree.rawValue), which is not supported by the linter")
             return nil
         }
@@ -206,6 +206,7 @@ extension Xcodeproj {
         case group = "<group>"
         case projectRoot = "SOURCE_ROOT"
         case buildProductsDir = "BUILT_PRODUCTS_DIR"
+        case derivedFileDir = "DERIVED_FILE_DIR"
         case devDir = "DEVELOPER_DIR"
         case sdkDir = "SDKROOT"
         var description: String { rawValue }
@@ -321,7 +322,7 @@ do {
     print("Done! \(violationsFound) violation(s) found.")
     exit(violationsFound > 0 ? 1 : 0)
 } catch let error {
-    print("\(projectPath): error: Error while parsing the project file \(projectPath): \(error.localizedDescription)")
+    print("\(projectPath): error: Error while parsing the project file \(projectPath): \(error)")
     exit(2)
 }
 
