@@ -516,7 +516,6 @@ platform :ios do
     distribute_external = distribution_groups.empty? == false
 
     upload_to_testflight(
-      team_id: get_required_env('FASTLANE_ITC_TEAM_ID'),
       api_key: app_store_connect_api_key,
       ipa: ipa_path,
       beta_app_description: File.read(beta_app_description_path),
