@@ -61,7 +61,9 @@ GITHUB_REPO = 'wordpress-mobile/wordpress-iOS'
 DEFAULT_BRANCH = 'trunk'
 PUBLIC_CONFIG_FILE = File.join(PROJECT_ROOT_FOLDER, 'config', 'Version.public.xcconfig')
 ALPHA_CONFIG_FILE = File.join(PROJECT_ROOT_FOLDER, 'config', 'Common.alpha.xcconfig')
+RELEASE_CONFIG_FILE = File.join(PROJECT_ROOT_FOLDER, 'config', 'Common.release.xcconfig')
 INTERNAL_TEAM_ID = XcconfigHelper.fetch(path: ALPHA_CONFIG_FILE, key: 'DEVELOPMENT_TEAM')
+EXTERNAL_TEAM_ID = XcconfigHelper.fetch(path: RELEASE_CONFIG_FILE, key: 'DEVELOPMENT_TEAM')
 ENV['FASTLANE_WWDR_USE_HTTP1_AND_RETRIES'] = 'true'
 
 # Fastlane's `git_branch` action and its relevant helpers use environment variables to modify the output.

@@ -168,7 +168,7 @@ platform :ios do
       output_directory: BUILD_PRODUCTS_PATH,
       output_name: APP_STORE_CONNECT_BUILD_NAME_WORDPRESS,
       derived_data_path: DERIVED_DATA_PATH,
-      export_team_id: get_required_env('EXT_EXPORT_TEAM_ID'),
+      export_team_id: EXTERNAL_TEAM_ID,
       export_options: { **COMMON_EXPORT_OPTIONS, method: 'app-store' }
     )
 
@@ -234,7 +234,7 @@ platform :ios do
       scheme: 'Jetpack',
       workspace: WORKSPACE_PATH,
       clean: true,
-      export_team_id: get_required_env('EXT_EXPORT_TEAM_ID'),
+      export_team_id: EXTERNAL_TEAM_ID,
       output_directory: BUILD_PRODUCTS_PATH,
       output_name: APP_STORE_CONNECT_BUILD_NAME_JETPACK,
       derived_data_path: DERIVED_DATA_PATH,
@@ -283,7 +283,7 @@ platform :ios do
       scheme: 'Reader',
       workspace: WORKSPACE_PATH,
       clean: true,
-      export_team_id: get_required_env('EXT_EXPORT_TEAM_ID'),
+      export_team_id: EXTERNAL_TEAM_ID,
       output_directory: BUILD_PRODUCTS_PATH,
       output_name: APP_STORE_CONNECT_BUILD_NAME_READER,
       derived_data_path: DERIVED_DATA_PATH,
@@ -373,7 +373,7 @@ platform :ios do
       output_directory: BUILD_PRODUCTS_PATH,
       output_name: output_name,
       derived_data_path: DERIVED_DATA_PATH,
-      export_team_id: get_required_env('EXT_EXPORT_TEAM_ID'),
+      export_team_id: EXTERNAL_TEAM_ID,
       xcargs: { VERSION_LONG: build_code },
       export_options: { **COMMON_EXPORT_OPTIONS, method: 'app-store' }
     )
