@@ -131,7 +131,7 @@ def update_code_signing_enterprise(readonly:, app_identifiers:)
   update_code_signing(
     type: 'enterprise',
     # Enterprise builds belong to the "internal" team
-    team_id: get_required_env('INT_EXPORT_TEAM_ID'),
+    team_id: INTERNAL_TEAM_ID,
     readonly: readonly,
     app_identifiers: app_identifiers,
     api_key: nil

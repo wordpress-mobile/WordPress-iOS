@@ -486,7 +486,7 @@ platform :ios do
       output_directory: BUILD_PRODUCTS_PATH,
       output_name: output_app_name,
       derived_data_path: DERIVED_DATA_PATH,
-      export_team_id: ENV.fetch('INT_EXPORT_TEAM_ID', nil),
+      export_team_id: INTERNAL_TEAM_ID,
       export_method: 'enterprise',
       export_options: { **COMMON_EXPORT_OPTIONS, method: 'enterprise' }
     )

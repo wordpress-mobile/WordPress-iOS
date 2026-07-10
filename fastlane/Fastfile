@@ -5,6 +5,8 @@ fastlane_require 'dotenv'
 fastlane_require 'open-uri'
 fastlane_require 'git'
 
+require_relative 'lanes/xcconfig_helper'
+
 UI.user_error!('Please run fastlane via `bundle exec`') unless FastlaneCore::Helper.bundler?
 
 ########################################################################
@@ -58,6 +60,8 @@ Dotenv.load(PROJECT_ENV_FILE_PATH)
 GITHUB_REPO = 'wordpress-mobile/wordpress-iOS'
 DEFAULT_BRANCH = 'trunk'
 PUBLIC_CONFIG_FILE = File.join(PROJECT_ROOT_FOLDER, 'config', 'Version.public.xcconfig')
+ALPHA_CONFIG_FILE = File.join(PROJECT_ROOT_FOLDER, 'config', 'Common.alpha.xcconfig')
+INTERNAL_TEAM_ID = XcconfigHelper.fetch(path: ALPHA_CONFIG_FILE, key: 'DEVELOPMENT_TEAM')
 ENV['FASTLANE_WWDR_USE_HTTP1_AND_RETRIES'] = 'true'
 
 # Fastlane's `git_branch` action and its relevant helpers use environment variables to modify the output.
