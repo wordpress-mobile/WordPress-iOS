@@ -6,8 +6,7 @@
 echo "--- :rubygems: Setting up Gems"
 install_gems
 
-echo "--- :closed_lock_with_key: Installing Secrets"
-bundle exec fastlane run configure_apply
+"$(dirname "${BASH_SOURCE[0]}")/install-secrets.sh"
 
 echo "--- :testflight: Gathering candidates and opening the block step"
 bundle exec fastlane gather_testflight_candidates

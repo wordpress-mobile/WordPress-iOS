@@ -19,8 +19,7 @@ steps:
       echo '--- :ruby: Setup Ruby tools'
       install_gems
 
-      echo '--- :closed_lock_with_key: Access secrets'
-      bundle exec fastlane run configure_apply
+      .buildkite/commands/install-secrets.sh
 
       echo '--- :package: Publish Release'
       bundle exec fastlane publish_release skip_confirm:true

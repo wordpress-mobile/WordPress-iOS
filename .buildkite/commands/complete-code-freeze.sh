@@ -14,8 +14,7 @@ source use-bot-for-git
 
 "$(dirname "${BASH_SOURCE[0]}")/shared-set-up.sh"
 
-echo '--- :closed_lock_with_key: Access secrets'
-bundle exec fastlane run configure_apply
+"$(dirname "${BASH_SOURCE[0]}")/install-secrets.sh"
 
 echo '--- :shipit: Complete code freeze'
 bundle exec fastlane complete_code_freeze skip_confirm:true

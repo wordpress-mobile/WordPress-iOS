@@ -15,8 +15,7 @@ source use-bot-for-git
 echo '--- :ruby: Setup Ruby tools'
 install_gems
 
-echo '--- :closed_lock_with_key: Access secrets'
-bundle exec fastlane run configure_apply
+"$(dirname "${BASH_SOURCE[0]}")/install-secrets.sh"
 
 echo '--- :shipit: Finalize release'
 bundle exec fastlane finalize_release skip_confirm:true
