@@ -62,9 +62,6 @@ class CustomPostTypeService {
                 if case .custom = details.toPostEndpointType(), details.slug != "attachment" {
                     return details
                 }
-                if FeatureFlag.cptPostsAndPages.enabled, [.posts, .pages].contains(details.toPostEndpointType()) {
-                    return details
-                }
                 return nil
             }
             .sorted(using: KeyPathComparator(\.name))
