@@ -107,7 +107,11 @@ extension URLSession {
                     return
                 }
 
-                task.delegate = wpkURLSessionNotifyingDelegate
+                // Background tasks only support the delegate assigned to their session at creation time.
+                if configuration.identifier == nil, let delegate = wpkURLSessionNotifyingDelegate {
+                    task.delegate = delegate
+                }
+
                 task.resume()
                 taskCreated?(task.taskIdentifier)
                 Task { await taskHolder.assign(task) }
