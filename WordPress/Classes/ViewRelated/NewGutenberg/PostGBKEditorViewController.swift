@@ -85,7 +85,8 @@ class PostGBKEditorViewController: UIViewController, GutenbergKit.EditorViewCont
     }
 
     func editorModeToggle() -> UIAction {
-        let title = editorViewController.isCodeEditorEnabled ? PostEditorStrings.visualEditor : PostEditorStrings.codeEditor
+        let title =
+            editorViewController.isCodeEditorEnabled ? PostEditorStrings.visualEditor : PostEditorStrings.codeEditor
         let icon = editorViewController.isCodeEditorEnabled ? "doc.richtext" : "curlybraces"
         return UIAction(title: title, image: UIImage(systemName: icon)) { [weak editorViewController] _ in
             editorViewController?.isCodeEditorEnabled.toggle()
@@ -93,7 +94,9 @@ class PostGBKEditorViewController: UIViewController, GutenbergKit.EditorViewCont
     }
 
     func helpAction() -> UIAction {
-        let helpTitle = JetpackFeaturesRemovalCoordinator.jetpackFeaturesEnabled() ? PostEditorStrings.helpAndSupport : PostEditorStrings.help
+        let helpTitle =
+            JetpackFeaturesRemovalCoordinator.jetpackFeaturesEnabled()
+            ? PostEditorStrings.helpAndSupport : PostEditorStrings.help
         return UIAction(title: helpTitle, image: UIImage(systemName: "questionmark.circle")) { [weak self] _ in
             guard let url = URL(string: "https://wordpress.com/support/wordpress-editor/") else { return }
             self?.present(SFSafariViewController(url: url), animated: true)
@@ -102,7 +105,11 @@ class PostGBKEditorViewController: UIViewController, GutenbergKit.EditorViewCont
 
     func feedbackAction() -> UIAction {
         UIAction(title: PostEditorStrings.sendFeedback, image: UIImage(systemName: "envelope")) { [weak self] _ in
-            self?.present(SubmitFeedbackViewController(source: "gutenberg_kit", feedbackPrefix: "Editor"), animated: true)
+            self?
+                .present(
+                    SubmitFeedbackViewController(source: "gutenberg_kit", feedbackPrefix: "Editor"),
+                    animated: true
+                )
         }
     }
 
@@ -120,11 +127,17 @@ class PostGBKEditorViewController: UIViewController, GutenbergKit.EditorViewCont
         // Do nothing
     }
 
-    func editor(_ viewController: GutenbergKit.EditorViewController, didUpdateContentWithState state: GutenbergKit.EditorState) {
+    func editor(
+        _ viewController: GutenbergKit.EditorViewController,
+        didUpdateContentWithState state: GutenbergKit.EditorState
+    ) {
         // Do nothing
     }
 
-    func editor(_ viewController: GutenbergKit.EditorViewController, didUpdateHistoryState state: GutenbergKit.EditorState) {
+    func editor(
+        _ viewController: GutenbergKit.EditorViewController,
+        didUpdateHistoryState state: GutenbergKit.EditorState
+    ) {
         // Do nothing
     }
 
@@ -132,17 +145,24 @@ class PostGBKEditorViewController: UIViewController, GutenbergKit.EditorViewCont
         // Do nothing
     }
 
-    func editor(_ viewController: GutenbergKit.EditorViewController, didLogException exception: GutenbergKit.GutenbergJSException) {
+    func editor(
+        _ viewController: GutenbergKit.EditorViewController,
+        didLogException exception: GutenbergKit.GutenbergJSException
+    ) {
         DDLogError("GBK editor exception:\n\(exception)")
 
         DispatchQueue.main.async {
-            WordPressAppDelegate.crashLogging?.logJavaScriptException(exception) {
-                // Do nothing
-            }
+            WordPressAppDelegate.crashLogging?
+                .logJavaScriptException(exception) {
+                    // Do nothing
+                }
         }
     }
 
-    func editor(_ viewController: GutenbergKit.EditorViewController, didRequestMediaFromSiteMediaLibrary config: OpenMediaLibraryAction) {
+    func editor(
+        _ viewController: GutenbergKit.EditorViewController,
+        didRequestMediaFromSiteMediaLibrary config: OpenMediaLibraryAction
+    ) {
         // Do nothing
     }
 
@@ -181,9 +201,11 @@ class PostGBKEditorViewController: UIViewController, GutenbergKit.EditorViewCont
         // Do nothing
     }
 
-    func editorDidRequestLatestContent(_ controller: GutenbergKit.EditorViewController) -> (title: String, content: String)? {
+    func editorDidRequestLatestContent(
+        _ controller: GutenbergKit.EditorViewController
+    ) -> (title: String, content: String)? {
         // Do nothing
-        return nil
+        nil
     }
 }
 
@@ -197,9 +219,9 @@ private extension PostGBKEditorViewController {
         view.pinSubviewToAllEdges(editorViewController.view)
         editorViewController.didMove(toParent: self)
 
-#if DEBUG
+        #if DEBUG
         editorViewController.webView.isInspectable = true
-#endif
+        #endif
 
         // Doesn't seem to do anything
         setContentScrollView(editorViewController.webView.scrollView)
@@ -212,7 +234,8 @@ private extension PostGBKEditorViewController {
 
         guard let authenticator = RequestAuthenticator(blog: blog),
             let blogURL = blog.url,
-            let authURL = URL(string: blogURL) else {
+            let authURL = URL(string: blogURL)
+        else {
             return false
         }
 
@@ -230,13 +253,21 @@ private extension PostGBKEditorViewController {
     // MARK: - Keyboard Observers
 
     func setupKeyboardObservers() {
-        keyboardShowObserver = NotificationCenter.default.addObserver(forName: UIResponder.keyboardDidShowNotification, object: nil, queue: .main) { [weak self] notification in
+        keyboardShowObserver = NotificationCenter.default.addObserver(
+            forName: UIResponder.keyboardDidShowNotification,
+            object: nil,
+            queue: .main
+        ) { [weak self] notification in
             if let self, let keyboardRect = notification.userInfo?[UIResponder.keyboardFrameEndUserInfoKey] as? CGRect {
                 self.keyboardFrame = keyboardRect
                 self.updateConstraintsToAvoidKeyboard(frame: keyboardRect)
             }
         }
-        keyboardHideObserver = NotificationCenter.default.addObserver(forName: UIResponder.keyboardDidHideNotification, object: nil, queue: .main) { [weak self] notification in
+        keyboardHideObserver = NotificationCenter.default.addObserver(
+            forName: UIResponder.keyboardDidHideNotification,
+            object: nil,
+            queue: .main
+        ) { [weak self] notification in
             if let self, let keyboardRect = notification.userInfo?[UIResponder.keyboardFrameEndUserInfoKey] as? CGRect {
                 self.keyboardFrame = keyboardRect
                 self.updateConstraintsToAvoidKeyboard(frame: keyboardRect)
@@ -264,8 +295,7 @@ private extension PostGBKEditorViewController {
         // So in those scenarios, we just need to take in account the safe area and ignore the keyboard all together.
         if keyboardFrame.height < minimumKeyboardHeight {
             suggestionViewBottomConstraint.constant = -self.view.safeAreaInsets.bottom
-        }
-        else {
+        } else {
             suggestionViewBottomConstraint.constant = -self.keyboardFrame.height
         }
     }
@@ -329,10 +359,19 @@ private extension PostGBKEditorViewController {
         }
         addChild(suggestionsController)
         view.addSubview(suggestionsController.view)
-        let suggestionsBottomConstraint = suggestionsController.view.bottomAnchor.constraint(equalTo: view.bottomAnchor, constant: 0)
+        let suggestionsBottomConstraint = suggestionsController.view.bottomAnchor.constraint(
+            equalTo: view.bottomAnchor,
+            constant: 0
+        )
         NSLayoutConstraint.activate([
-            suggestionsController.view.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor, constant: 0),
-            suggestionsController.view.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor, constant: 0),
+            suggestionsController.view.leadingAnchor.constraint(
+                equalTo: view.safeAreaLayoutGuide.leadingAnchor,
+                constant: 0
+            ),
+            suggestionsController.view.trailingAnchor.constraint(
+                equalTo: view.safeAreaLayoutGuide.trailingAnchor,
+                constant: 0
+            ),
             suggestionsBottomConstraint,
             suggestionsController.view.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor)
         ])
