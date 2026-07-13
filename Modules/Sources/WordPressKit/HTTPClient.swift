@@ -66,7 +66,7 @@ extension URLSession {
         fulfilling parentProgress: Progress? = nil,
         errorType: E.Type = E.self
     ) async -> WordPressAPIResult<HTTPAPIResponse<Data>, E> {
-        if configuration.identifier != nil {
+        if isBackgroundSession() {
             assert(
                 delegate is BackgroundURLSessionDelegate,
                 "Unexpected `URLSession` delegate type. See the `backgroundSession(configuration:)`"
@@ -121,7 +121,7 @@ extension URLSession {
                 }
 
                 // Background tasks only support the delegate assigned to their session at creation time.
-                if configuration.identifier == nil, let delegate = wpkURLSessionNotifyingDelegate {
+                if !isBackgroundSession(), let delegate = wpkURLSessionNotifyingDelegate {
                     task.delegate = delegate
                 }
 
@@ -157,7 +157,7 @@ extension URLSession {
         //
         // In reality, `callCompletionFromDelegate` and `isBackgroundSession` have the same value.
         let callCompletionFromDelegate = delegate is BackgroundURLSessionDelegate
-        let isBackgroundSession = configuration.identifier != nil
+        let isBackgroundSession = self.isBackgroundSession()
         let task: URLSessionTask
         let body =
             try builder.encodeMultipartForm(request: &request, forceWriteToFile: isBackgroundSession)
@@ -206,6 +206,10 @@ extension URLSession {
         }
 
         return task
+    }
+
+    private func isBackgroundSession() -> Bool {
+        configuration.identifier != nil
     }
 
     private static func parseResponse<E: LocalizedError>(
