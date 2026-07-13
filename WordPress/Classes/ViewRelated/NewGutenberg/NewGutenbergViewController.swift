@@ -257,8 +257,12 @@ class NewGutenbergViewController: PostGBKEditorViewController, PostEditor, Publi
         setNavigationItemsEnabled(true)
     }
 
-    override func editor(_ viewContoller: GutenbergKit.EditorViewController, didEncounterCriticalError error: any Error)
+    override func editor(
+        _ viewContoller: GutenbergKit.EditorViewController,
+        didEncounterCriticalError error: any Error
+    ) // swiftlint:disable:next opening_brace
     {
+        super.editor(viewContoller, didEncounterCriticalError: error)
         onClose?()
     }
 

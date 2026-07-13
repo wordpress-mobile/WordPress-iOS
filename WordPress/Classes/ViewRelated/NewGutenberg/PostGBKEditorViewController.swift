@@ -124,7 +124,44 @@ class PostGBKEditorViewController: UIViewController, GutenbergKit.EditorViewCont
     }
 
     func editor(_ viewContoller: GutenbergKit.EditorViewController, didEncounterCriticalError error: any Error) {
-        // Do nothing
+        trackEditorError(error, event: .gutenbergKitEditorCriticalError)
+    }
+
+    func editor(_ viewController: GutenbergKit.EditorViewController, didFailToLoad error: any Error) {
+        var properties: [String: Any] = [:]
+
+        switch error {
+        case let error as GutenbergKit.EditorHTTPClient.ClientError:
+            switch error {
+            case let .wpError(wpError, requestURL):
+                properties["category"] = "wordpress"
+                properties["request_url"] = requestURL.absoluteString
+                properties["wordpress_error_code"] = wpError.code
+            case let .downloadFailed(statusCode, requestURL),
+                let .unknown(_, statusCode, requestURL):
+                properties["category"] = "http"
+                properties["http_status"] = statusCode
+                properties["request_url"] = requestURL.absoluteString
+            }
+        case is URLError:
+            properties["category"] = "network"
+        default:
+            properties["category"] = "unknown"
+        }
+
+        trackEditorError(error, event: .gutenbergKitEditorLoadFailed, properties: properties)
+    }
+
+    private func trackEditorError(
+        _ error: any Error,
+        event: WPAnalyticsEvent,
+        properties: [String: Any] = [:]
+    ) {
+        let nsError = error as NSError
+        var properties = properties
+        properties["error_domain"] = nsError.domain
+        properties["error_code"] = nsError.code
+        WPAnalytics.track(event, properties: properties, blog: blog)
     }
 
     func editor(
