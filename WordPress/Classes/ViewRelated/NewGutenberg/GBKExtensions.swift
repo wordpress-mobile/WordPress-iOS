@@ -103,6 +103,37 @@ private func getLocalizedString(for value: GutenbergKit.EditorLocalizableString)
             value: "Editor Error",
             comment: "Title shown when the editor encounters an error"
         )
+    case .lockdownModeTitle:
+        NSLocalizedString(
+            "editor.lockdownMode.title",
+            value: "Lockdown Mode Detected",
+            comment: "Title shown when Lockdown Mode may affect the editor"
+        )
+    case .lockdownModeWarning:
+        NSLocalizedString(
+            "editor.lockdownMode.warning",
+            value: "Lockdown Mode is enabled. The editor may not work correctly.",
+            comment: "Warning shown when Lockdown Mode may affect the editor"
+        )
+    case .lockdownModeExcludeHint:
+        NSLocalizedString(
+            "editor.lockdownMode.excludeHint",
+            value:
+                "You can exclude this app from Lockdown Mode in Settings, then re-open the editor to restore full functionality.",
+            comment: "Instructions for excluding the app from Lockdown Mode"
+        )
+    case .lockdownModeLearnMore:
+        NSLocalizedString(
+            "editor.lockdownMode.learnMore",
+            value: "Learn More",
+            comment: "Button title to learn more about Lockdown Mode"
+        )
+    case .lockdownModeDismiss:
+        NSLocalizedString(
+            "editor.lockdownMode.dismiss",
+            value: "Dismiss",
+            comment: "Button title to dismiss the Lockdown Mode warning"
+        )
     }
 }
 
