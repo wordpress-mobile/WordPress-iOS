@@ -17,7 +17,11 @@ import WordPressAPI
         self.client = client
     }
 
-    public func createCategory(_ category: RemotePostCategory, success: ((RemotePostCategory) -> Void)?, failure: ((any Error) -> Void)? = nil) {
+    public func createCategory(
+        _ category: RemotePostCategory,
+        success: ((RemotePostCategory) -> Void)?,
+        failure: ((any Error) -> Void)? = nil
+    ) {
         Task { @MainActor in
             do {
                 let params = TermCreateParams(
@@ -33,7 +37,10 @@ import WordPressAPI
         }
     }
 
-    public func getCategoriesWithSuccess(_ success: @escaping ([RemotePostCategory]) -> Void, failure: ((any Error) -> Void)? = nil) {
+    public func getCategoriesWithSuccess(
+        _ success: @escaping ([RemotePostCategory]) -> Void,
+        failure: ((any Error) -> Void)? = nil
+    ) {
         Task { @MainActor in
             do {
                 let sequence = await client.api.terms.sequenceWithEditContext(
@@ -51,7 +58,11 @@ import WordPressAPI
         }
     }
 
-    public func getCategoriesWith(_ paging: RemoteTaxonomyPaging, success: @escaping ([RemotePostCategory]) -> Void, failure: ((any Error) -> Void)? = nil) {
+    public func getCategoriesWith(
+        _ paging: RemoteTaxonomyPaging,
+        success: @escaping ([RemotePostCategory]) -> Void,
+        failure: ((any Error) -> Void)? = nil
+    ) {
         Task { @MainActor in
             do {
                 let params = TermListParams(
@@ -73,7 +84,11 @@ import WordPressAPI
         }
     }
 
-    public func searchCategories(withName nameQuery: String, success: @escaping ([RemotePostCategory]) -> Void, failure: ((any Error) -> Void)? = nil) {
+    public func searchCategories(
+        withName nameQuery: String,
+        success: @escaping ([RemotePostCategory]) -> Void,
+        failure: ((any Error) -> Void)? = nil
+    ) {
         Task { @MainActor in
             do {
                 let params = TermListParams(search: nameQuery)
@@ -89,7 +104,11 @@ import WordPressAPI
         }
     }
 
-    public func createTag(_ tag: RemotePostTag, success: ((RemotePostTag) -> Void)?, failure: ((any Error) -> Void)? = nil) {
+    public func createTag(
+        _ tag: RemotePostTag,
+        success: ((RemotePostTag) -> Void)?,
+        failure: ((any Error) -> Void)? = nil
+    ) {
         Task { @MainActor in
             do {
                 let params = TermCreateParams(
@@ -109,7 +128,8 @@ import WordPressAPI
         }
     }
 
-    public func update(_ tag: RemotePostTag, success: ((RemotePostTag) -> Void)?, failure: ((any Error) -> Void)? = nil) {
+    public func update(_ tag: RemotePostTag, success: ((RemotePostTag) -> Void)?, failure: ((any Error) -> Void)? = nil)
+    {
         guard let tagID = tag.tagID else {
             failure?(URLError(.unknown))
             return
@@ -151,7 +171,10 @@ import WordPressAPI
         }
     }
 
-    public func getTagsWithSuccess(_ success: @escaping ([RemotePostTag]) -> Void, failure: ((any Error) -> Void)? = nil) {
+    public func getTagsWithSuccess(
+        _ success: @escaping ([RemotePostTag]) -> Void,
+        failure: ((any Error) -> Void)? = nil
+    ) {
         Task { @MainActor in
             do {
                 let response = try await client.api.terms.listWithEditContext(
@@ -166,7 +189,11 @@ import WordPressAPI
         }
     }
 
-    public func getTagsWith(_ paging: RemoteTaxonomyPaging, success: @escaping ([RemotePostTag]) -> Void, failure: ((any Error) -> Void)? = nil) {
+    public func getTagsWith(
+        _ paging: RemoteTaxonomyPaging,
+        success: @escaping ([RemotePostTag]) -> Void,
+        failure: ((any Error) -> Void)? = nil
+    ) {
         Task { @MainActor in
             do {
                 let params = TermListParams(
@@ -188,7 +215,11 @@ import WordPressAPI
         }
     }
 
-    public func searchTags(withName nameQuery: String, success: @escaping ([RemotePostTag]) -> Void, failure: ((any Error) -> Void)? = nil) {
+    public func searchTags(
+        withName nameQuery: String,
+        success: @escaping ([RemotePostTag]) -> Void,
+        failure: ((any Error) -> Void)? = nil
+    ) {
         Task { @MainActor in
             do {
                 let response = try await client.api.terms.listWithEditContext(
