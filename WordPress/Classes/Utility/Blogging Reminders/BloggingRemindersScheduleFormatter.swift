@@ -33,8 +33,10 @@ struct BloggingRemindersScheduleFormatter {
 
     /// Attributed long description string of the current schedule for the specified blog.
     ///
-    func longScheduleDescription(for schedule: BloggingRemindersScheduler.Schedule, time: String) -> NSAttributedString
-    {
+    func longScheduleDescription(
+        for schedule: BloggingRemindersScheduler.Schedule,
+        time: String
+    ) -> NSAttributedString {
         switch schedule {
         case .none:
             return NSAttributedString(string: TextContent.longNoRemindersDescription)
