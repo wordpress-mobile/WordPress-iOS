@@ -282,7 +282,10 @@ extension NotificationDetailsViewController: UITableViewDelegate, UITableViewDat
     }
 
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-        UITableView.automaticDimension
+        if note.isBadge, contentGroup(for: indexPath).kind == .image {
+            return Settings.badgeImageRowHeight
+        }
+        return UITableView.automaticDimension
     }
 
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
@@ -558,7 +561,8 @@ private extension NotificationDetailsViewController {
         }
 
         let mediaURL = imageBlock.media.first?.mediaURL
-        cell.downloadImage(mediaURL)
+        let shouldAnimate = transitionCoordinator?.viewController(forKey: .to) === self
+        cell.downloadImage(mediaURL, animated: shouldAnimate)
 
         if note.isViewMilestone {
             cell.backgroundImage = UIImage(named: Assets.confettiBackground)
@@ -893,6 +897,8 @@ private extension NotificationDetailsViewController {
     enum Settings {
         static let numberOfSections = 1
         static let estimatedRowHeight = CGFloat(44)
+        // A fixed height prevents the initial self-sizing pass from stretching badge images.
+        static let badgeImageRowHeight = CGFloat(210)
     }
 
     enum Assets {
