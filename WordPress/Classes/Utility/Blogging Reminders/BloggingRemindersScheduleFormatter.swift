@@ -166,6 +166,13 @@ private extension BloggingRemindersScheduleFormatter {
             attributedString.addAttributes([.font: newFont], range: range)
         }
 
+        // HTML parsing adds an opaque black foreground color even when the source doesn't specify one.
+        // Remove it so callers can apply dynamic semantic colors.
+        attributedString.removeAttribute(
+            .foregroundColor,
+            range: NSRange(location: 0, length: attributedString.length)
+        )
+
         return attributedString
     }
 
