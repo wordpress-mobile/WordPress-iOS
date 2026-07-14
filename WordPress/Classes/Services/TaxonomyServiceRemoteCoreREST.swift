@@ -128,8 +128,11 @@ import WordPressAPI
         }
     }
 
-    public func update(_ tag: RemotePostTag, success: ((RemotePostTag) -> Void)?, failure: ((any Error) -> Void)? = nil)
-    {
+    public func update(
+        _ tag: RemotePostTag,
+        success: ((RemotePostTag) -> Void)?,
+        failure: ((any Error) -> Void)? = nil
+    ) {
         guard let tagID = tag.tagID else {
             failure?(URLError(.unknown))
             return
