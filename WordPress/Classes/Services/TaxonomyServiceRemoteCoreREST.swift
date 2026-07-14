@@ -43,7 +43,7 @@ import WordPressAPI
     ) {
         Task { @MainActor in
             do {
-                let sequence = await client.api.terms.sequenceWithEditContext(
+                let sequence = await client.api.terms.sequenceWithViewContext(
                     type: .categories,
                     params: TermListParams(perPage: 100)
                 )
@@ -72,7 +72,7 @@ import WordPressAPI
                     order: WpApiParamOrder(paging.order),
                     orderby: WpApiParamTermsOrderBy(paging.orderBy)
                 )
-                let response = try await client.api.terms.listWithEditContext(
+                let response = try await client.api.terms.listWithViewContext(
                     termEndpointType: .categories,
                     params: params
                 )
@@ -92,7 +92,7 @@ import WordPressAPI
         Task { @MainActor in
             do {
                 let params = TermListParams(search: nameQuery)
-                let response = try await client.api.terms.listWithEditContext(
+                let response = try await client.api.terms.listWithViewContext(
                     termEndpointType: .categories,
                     params: params
                 )
@@ -177,7 +177,7 @@ import WordPressAPI
     ) {
         Task { @MainActor in
             do {
-                let response = try await client.api.terms.listWithEditContext(
+                let response = try await client.api.terms.listWithViewContext(
                     termEndpointType: .tags,
                     params: TermListParams()
                 )
@@ -203,7 +203,7 @@ import WordPressAPI
                     order: WpApiParamOrder(paging.order),
                     orderby: WpApiParamTermsOrderBy(paging.orderBy)
                 )
-                let response = try await client.api.terms.listWithEditContext(
+                let response = try await client.api.terms.listWithViewContext(
                     termEndpointType: .tags,
                     params: params
                 )
@@ -222,7 +222,7 @@ import WordPressAPI
     ) {
         Task { @MainActor in
             do {
-                let response = try await client.api.terms.listWithEditContext(
+                let response = try await client.api.terms.listWithViewContext(
                     termEndpointType: .tags,
                     params: TermListParams(search: nameQuery)
                 )
@@ -236,6 +236,13 @@ import WordPressAPI
 }
 
 private extension RemotePostCategory {
+    convenience init(category: AnyTermWithViewContext) {
+        self.init()
+        self.categoryID = NSNumber(value: category.id)
+        self.name = category.name
+        self.parentID = NSNumber(value: category.parent ?? 0)
+    }
+
     convenience init(category: AnyTermWithEditContext) {
         self.init()
         self.categoryID = NSNumber(value: category.id)
@@ -245,6 +252,15 @@ private extension RemotePostCategory {
 }
 
 private extension RemotePostTag {
+    convenience init(tag: AnyTermWithViewContext) {
+        self.init()
+        self.tagID = NSNumber(value: tag.id)
+        self.name = tag.name
+        self.slug = tag.slug
+        self.tagDescription = tag.description
+        self.postCount = NSNumber(value: tag.count)
+    }
+
     convenience init(tag: AnyTermWithEditContext) {
         self.init()
         self.tagID = NSNumber(value: tag.id)
