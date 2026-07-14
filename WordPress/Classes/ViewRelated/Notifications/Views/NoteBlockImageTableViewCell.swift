@@ -30,9 +30,12 @@ class NoteBlockImageTableViewCell: NoteBlockTableViewCell {
 
         imageURL = url
 
-        blockImageView.downloadImage(from: url, success: { [weak blockImageView] _ in
-            blockImageView?.expandSpringAnimation()
-        })
+        blockImageView.downloadImage(
+            from: url,
+            success: { [weak blockImageView] _ in
+                blockImageView?.expandSpringAnimation()
+            }
+        )
     }
 
     // MARK: - View Methods
