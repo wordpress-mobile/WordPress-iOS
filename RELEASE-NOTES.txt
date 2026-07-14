@@ -4,7 +4,7 @@
 * [*] [internal] In-app updates: guard the flexible update notice against double-posting when two update checks race [#25666]
 * [*] [build tooling] Add a String Catalog localization pipeline (plurals + build-free catalog generation) with a CI coverage gate [#25688]
 * [*] [internal] Stats widgets: migrate the site picker from SiriKit to App Intents [#25753]
-
+* [*] Fix Blogging Reminders text color in dark mode [#25780]
 
 27.0
 -----
