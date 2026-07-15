@@ -25,7 +25,8 @@ final class SiteMediaCollectionCellViewModel {
 
     var aspectRatio: CGFloat? {
         guard let width = media.width?.floatValue, width > 0,
-              let height = media.height?.floatValue, height > 0 else {
+            let height = media.height?.floatValue, height > 0
+        else {
             return nil
         }
         return CGFloat(width / height)
@@ -40,36 +41,46 @@ final class SiteMediaCollectionCellViewModel {
         imageTask?.cancel()
     }
 
-    init(media: Media,
-         service: MediaImageService = .shared,
-         coordinator: MediaCoordinator = .shared) {
+    init(
+        media: Media,
+        service: MediaImageService = .shared,
+        coordinator: MediaCoordinator = .shared
+    ) {
         self.mediaID = TaggedManagedObjectID(media)
         self.media = media
         self.mediaType = media.mediaType
         self.service = service
         self.coordinator = coordinator
 
-        observations.append(media.observe(\.remoteStatusNumber, options: [.initial, .new]) { [weak self] _, _ in
-            self?.updateOverlayState()
-        })
+        observations.append(
+            media.observe(\.remoteStatusNumber, options: [.initial, .new]) { [weak self] _, _ in
+                self?.updateOverlayState()
+            }
+        )
 
-        observations.append(media.observe(\.localURL, options: [.new]) { [weak self] _, _ in
-            self?.didUpdateLocalThumbnail()
-        })
+        observations.append(
+            media.observe(\.localURL, options: [.new]) { [weak self] _, _ in
+                self?.didUpdateLocalThumbnail()
+            }
+        )
 
         switch mediaType {
         case .document, .powerpoint, .audio:
-            observations.append(media.observe(\.filename, options: [.initial, .new]) { [weak self] media, _ in
-                self?.documentInfo = SiteMediaDocumentInfoViewModel.make(with: media)
-            })
+            observations.append(
+                media.observe(\.filename, options: [.initial, .new]) { [weak self] media, _ in
+                    self?.documentInfo = SiteMediaDocumentInfoViewModel.make(with: media)
+                }
+            )
         default: break
         }
 
         if mediaType == .video {
-            observations.append(media.observe(\.length, options: [.initial, .new]) { [weak self] media, _ in
-                // Using `rounded()` to match the behavior of the Photos app
-                self?.durationText = makeString(forDuration: media.duration().rounded())
-            })
+            observations.append(
+                media.observe(\.length, options: [.initial, .new]) { [weak self] media, _ in
+                    // Using `rounded()` to match the behavior of the Photos app
+                    self?.durationText = makeString(forDuration: media.duration().rounded())
+                }
+            )
         }
     }
 
@@ -165,7 +176,8 @@ final class SiteMediaCollectionCellViewModel {
         switch media.remoteStatus {
         case .pushing, .processing:
             if let progress = coordinator.progress(for: media) {
-                progressObserver = progress.observe(\Progress.fractionCompleted, options: [.initial, .new]) { [weak self] progress, _ in
+                progressObserver = progress.observe(\Progress.fractionCompleted, options: [.initial, .new]) {
+                    [weak self] progress, _ in
                     self?.didUpdateProgress(progress)
                 }
             } else {
@@ -184,8 +196,8 @@ final class SiteMediaCollectionCellViewModel {
         guard media.remoteStatus == .processing || media.remoteStatus == .pushing else { return }
 
         // It takes a second or two (or more, depending on the file size) to
-            // process the uploaded file after the progress stop reporting updates,
-            // so the app switches to the indeterminate progress indicator.
+        // process the uploaded file after the progress stop reporting updates,
+        // so the app switches to the indeterminate progress indicator.
         if progress.fractionCompleted > 0.99 {
             overlayState = .indeterminate
         } else {
@@ -196,7 +208,8 @@ final class SiteMediaCollectionCellViewModel {
     // MARK: - Accessibility
 
     var accessibilityLabel: String? {
-        let formattedDate = media.creationDate.map(accessibilityDateFormatter.string) ?? Strings.accessibilityUnknownCreationDate
+        let formattedDate =
+            media.creationDate.map(accessibilityDateFormatter.string) ?? Strings.accessibilityUnknownCreationDate
 
         switch mediaType {
         case .image:
@@ -218,12 +231,40 @@ final class SiteMediaCollectionCellViewModel {
 // MARK: - Helpers
 
 private enum Strings {
-    static let accessibilityUnknownCreationDate = NSLocalizedString("siteMedia.accessibilityUnknownCreationDate", value: "Unknown creation date", comment: "Accessibility label to use when creation date from media asset is not know.")
-    static let accessibilityLabelImage = NSLocalizedString("siteMedia.accessibilityLabelImage", value: "Image, %@", comment: "Accessibility label for image thumbnails in the media collection view. The parameter is the creation date of the image.")
-    static let accessibilityLabelVideo = NSLocalizedString("siteMedia.accessibilityLabelVideo", value: "Video, %@", comment: "Accessibility label for video thumbnails in the media collection view. The parameter is the creation date of the video.")
-    static let accessibilityLabelAudio = NSLocalizedString("siteMedia.accessibilityLabelAudio", value: "Audio, %@", comment: "Accessibility label for audio items in the media collection view. The parameter is the creation date of the audio.")
-    static let accessibilityLabelDocument = NSLocalizedString("siteMedia.accessibilityLabelDocument", value: "Document, %@", comment: "Accessibility label for other media items in the media collection view. The parameter is the filename file.")
-    static let accessibilityHint = NSLocalizedString("siteMedia.cellAccessibilityHint", value: "Select media.", comment: "Accessibility hint for actions when displaying media items.")
+    static let accessibilityUnknownCreationDate = NSLocalizedString(
+        "siteMedia.accessibilityUnknownCreationDate",
+        value: "Unknown creation date",
+        comment: "Accessibility label to use when creation date from media asset is not know."
+    )
+    static let accessibilityLabelImage = NSLocalizedString(
+        "siteMedia.accessibilityLabelImage",
+        value: "Image, %@",
+        comment:
+            "Accessibility label for image thumbnails in the media collection view. The parameter is the creation date of the image."
+    )
+    static let accessibilityLabelVideo = NSLocalizedString(
+        "siteMedia.accessibilityLabelVideo",
+        value: "Video, %@",
+        comment:
+            "Accessibility label for video thumbnails in the media collection view. The parameter is the creation date of the video."
+    )
+    static let accessibilityLabelAudio = NSLocalizedString(
+        "siteMedia.accessibilityLabelAudio",
+        value: "Audio, %@",
+        comment:
+            "Accessibility label for audio items in the media collection view. The parameter is the creation date of the audio."
+    )
+    static let accessibilityLabelDocument = NSLocalizedString(
+        "siteMedia.accessibilityLabelDocument",
+        value: "Document, %@",
+        comment:
+            "Accessibility label for other media items in the media collection view. The parameter is the filename file."
+    )
+    static let accessibilityHint = NSLocalizedString(
+        "siteMedia.cellAccessibilityHint",
+        value: "Select media.",
+        comment: "Accessibility hint for actions when displaying media items."
+    )
 }
 
 private let accessibilityDateFormatter: DateFormatter = {
