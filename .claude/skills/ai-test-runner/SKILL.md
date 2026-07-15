@@ -12,287 +12,205 @@ description: >-
 
 # AI Test Runner
 
-Run plain-language test cases against the WordPress or Jetpack iOS app on an
-iOS Simulator. Each test case is a markdown file with Prerequisites, Steps,
-and Expected Outcome. Claude Code navigates the app UI autonomously using
-WebDriverAgent.
+Run plain-language test cases against the WordPress or Jetpack iOS app. Each
+test case is a markdown file with Prerequisites, Steps, and Expected Outcome.
 
-## Phase 1: Gather Inputs
+> [!IMPORTANT]
+> Use the `ios-sim-navigation` skill for all WDA lifecycle operations and app
+> navigation. Its Simulator, port, session, interaction, and cleanup
+> instructions are authoritative. Do not duplicate or override them here.
 
-Before running any tests, ask the user for:
+## Phase 1: Gather inputs
 
-- **App**: WordPress or Jetpack
-- **Test directory**: directory containing test case markdown files
-- **Site URL**: the WordPress site to test against (used for REST API
-  calls and for picking the right site in the app)
-- **Sign-in credentials**: see `docs/simulator-sign-in.md` for the two
-  supported flows. Infer the flow from what the user provides — a username
-  with application password is the self-hosted flow; a WordPress.com
-  bearer token is the WordPress.com flow.
+Before running tests, gather:
+
+- **App**: WordPress or Jetpack.
+- **Simulator UDID**: the exact booted Simulator supplied by the caller.
+- **Test directory**: directory containing test case markdown files.
+- **Site URL**: WordPress site used by the tests.
+- **Sign-in credentials**: use `docs/simulator-sign-in.md`. A username plus
+  application password is self-hosted; a bearer token is WordPress.com.
 
 App bundle IDs:
-- **WordPress**: `org.wordpress`
-- **Jetpack**: `com.automattic.jetpack`
 
-Also resolve the absolute path to the `ios-sim-navigation` skill's
-`scripts/` directory and store it as `<WDA_SCRIPTS_DIR>` for use in
-Phases 3, 5, 6, and 7 — typically
-`<project-root>/.claude/skills/ios-sim-navigation/scripts` on this
-project.
+- WordPress: `org.wordpress`
+- Jetpack: `com.automattic.jetpack`
 
-## Phase 2: Discover Tests
+Resolve the absolute path to `ios-sim-navigation` and its `scripts/` directory.
+Retain them as `<IOS_SIM_NAVIGATION_SKILL>` and `<WDA_SCRIPTS_DIR>`.
 
-1. Use Glob to find all `*.md` files in the directory the user specified.
+## Phase 2: Discover tests
+
+1. Find all `*.md` files in the supplied directory.
 2. Sort them alphabetically by filename.
-3. Print the list of discovered tests to the terminal:
-   ```
-   Discovered N test(s) in <dir>:
-   - view-media-library.md
-   - view-posts-list.md
-   - view-site-settings.md
-   ```
+3. Print the discovered files.
 
-If no `.md` files are found, tell the user and stop.
+If no test files exist, tell the user and stop.
 
 ## Phase 3: Start WDA
 
-1. Run `<WDA_SCRIPTS_DIR>/wda-start.rb` from the project root that
-   should own `.build/WebDriverAgent`. First run takes a couple of
-   minutes; warm runs ~60 s.
+Invoke `ios-sim-navigation` and follow its WDA lifecycle instructions using the
+supplied Simulator UDID. Retain the selected `<PORT>` and the exact tracked
+background-task identifier for the entire suite.
 
-2. Confirm WDA is responding:
-   ```bash
-   curl -sf http://localhost:8100/status >/dev/null
-   ```
+If WDA fails to start or become ready, stop only the retained background task,
+report the failure, and stop the suite.
 
-3. Get the booted simulator UDID for screenshots and per-test relaunches:
-   ```bash
-   xcrun simctl list devices booted -j | jq -r '.devices | to_entries[].value[] | select(.state == "Booted") | .udid'
-   ```
+## Phase 4: Initialize results
 
-If WDA fails to start, doesn't respond, or no simulator is booted, run
-`<WDA_SCRIPTS_DIR>/wda-stop.rb` to clean up any stray `xcodebuild`
-process, tell the user, and stop.
+Create:
 
-## Phase 4: Initialize Results Directory
-
-```
+```text
 <base>/results/<timestamp>-<suite>/
-├── <test-filename>.md                  # per-test files (Phase 6)
+├── <test-filename>.md
 └── screenshots/
-    └── <test-filename>-failure.png     # failures only (Phase 6)
+    └── <test-filename>-failure.png
 ```
 
-1. Compute the timestamp as `YYYY-MM-DD-HHmm` from the current date and time.
-2. Determine the suite name from the test directory's last path component (e.g., `ui-tests`).
-3. Derive the base directory as the **parent** of the test directory (e.g., if the test
-   directory is `ai-tests/ui-tests`, the base directory is `ai-tests/`).
-4. Create the run directory and its screenshots subdirectory in one
-   call: `mkdir -p <base>/results/<timestamp>-<suite>/screenshots`.
-5. Store these paths in context for use in later phases:
-   - `<RESULTS_DIR>` = `<base>/results/<timestamp>-<suite>`
-   - `<SCREENSHOTS_DIR>` = `<RESULTS_DIR>/screenshots`
+1. Compute `<timestamp>` as `YYYY-MM-DD-HHmm`.
+2. Use the test directory's last path component as `<suite>`.
+3. Use the test directory's parent as `<base>`.
+4. Create the run directory and screenshots directory.
+5. Retain `<RESULTS_DIR>` and `<SCREENSHOTS_DIR>`.
 
-## Phase 5: Sign In
+## Phase 5: Sign in
 
-Sign in once. Test relaunches in Phase 6 preserve the signed-in state, so each
-test skips sign-in. This is the only phase that uses `-ui-test-reset-everything`.
-If any step below fails, run `<WDA_SCRIPTS_DIR>/wda-stop.rb` to release the
-simulator, tell the user, and stop.
+Sign in once. Per-test app sessions preserve signed-in state. This is the only
+phase that uses `-ui-test-reset-everything`.
 
-The credentials are launch arguments, and `wda-session.rb` is what gets them
-into the app: it launches the app with the arguments and binds the WDA session
-in one step, so the process you drive actually has the credentials. Don't
-relaunch the app any other way before it's signed in, or the arguments are lost
-and the app drops into a web login that launch arguments can't complete.
-
-1. **Reset to a clean, signed-out state** (kept separate from the credentialed
-   launch, since reset clears `UserDefaults`):
+1. Reset and terminate the app on the supplied Simulator:
 
    ```bash
-   xcrun simctl launch --terminate-running-process <UDID> <APP_BUNDLE_ID> -ui-test-reset-everything
+   xcrun simctl launch --terminate-running-process \
+     <UDID> <APP_BUNDLE_ID> -ui-test-reset-everything
    xcrun simctl terminate <UDID> <APP_BUNDLE_ID>
    ```
 
-2. **Create the credentialed WDA session**, passing each launch-argument token
-   as an `--arg`:
+2. Follow the explicit session workflow in `ios-sim-navigation`, adding the
+   credential launch arguments below to the session command:
 
-   - Self-hosted: `--arg -ui-test-site-url --arg <SITE_URL> --arg -ui-test-site-user --arg <username> --arg -ui-test-site-pass --arg <application-password>`
-   - WordPress.com: `--arg -ui-test-wpcom-token --arg <bearer-token>`
+   - Self-hosted: `--arg -ui-test-site-url --arg <SITE_URL> --arg -ui-test-site-user --arg <USERNAME> --arg -ui-test-site-pass --arg <APPLICATION_PASSWORD>`
+   - WordPress.com: `--arg -ui-test-wpcom-token --arg <BEARER_TOKEN>`
 
-   ```bash
-   ruby <WDA_SCRIPTS_DIR>/wda-session.rb --bundle <APP_BUNDLE_ID> --arg ... --arg ...
-   ```
+   Retain the printed session ID and use it for every sign-in interaction.
 
-   Then poll the accessibility tree (`GET /source`, no session needed) until the
-   welcome screen appears.
+3. Use `ios-sim-navigation` to wait for and drive the matching welcome flow:
 
-3. **Tap through the welcome screen** for the matching flow:
+   - WordPress.com: select **Continue with WordPress.com**.
+   - Self-hosted: select **Enter your existing site address**, enter
+     `<SITE_URL>`, and continue.
 
-   - WordPress.com: tap **"Continue with WordPress.com"**.
-   - Self-hosted: tap **"Enter your existing site address"**, type `<SITE_URL>`,
-     tap **"Continue"**.
+   Never type a username, application password, or bearer token into the UI.
 
-   Never type a username, password, or bearer token — the launch arguments
-   supply those.
+4. Confirm a signed-in screen appears within about 20 seconds. If a web login
+   form or system sign-in dialog appears, the launch credentials did not apply.
+   Retry the reset, explicit session creation, and welcome flow once.
 
-4. **Confirm sign-in, and fail fast if it didn't take.** Poll for a signed-in
-   screen (e.g. My Site) for up to ~20 s. If instead a web login form or a
-   system dialog "<App> Wants to Use <site> to Sign In" appears (the dialog
-   won't show in `GET /source`; check `GET /session/<sid>/alert/text`), the
-   credentials didn't apply. Don't type into the web form or wait on the
-   spinner. Retry once with WDA left running: reset (step 1), recreate the
-   session (step 2), tap through (step 3). If it still hits the web flow, the
-   credentials or `<SITE_URL>` are wrong (often a scheme/host mismatch with the
-   site's canonical URL) — run `wda-stop.rb`, tell the user, and stop.
+5. If the second attempt also reaches web login, stop the retained WDA
+   background task and report that the credentials or canonical site URL are
+   wrong.
 
-5. **Verify the active site matches `<SITE_URL>`.** For self-hosted this is
-   automatic. For WordPress.com, use the site switcher if a different site is
-   currently selected.
+6. Verify that the active site matches `<SITE_URL>`. Use the site switcher for
+   WordPress.com when necessary.
 
-## Phase 6: Run Tests
+## Phase 6: Run tests
 
-Run each test case **sequentially**. Tests share one simulator so they must not
-run in parallel.
+Run tests sequentially because they share one Simulator. Track pass, fail, and
+remaining counts in context.
 
-Track pass/fail/remaining counts in-context (incrementing counters).
+### For each test
 
-### For each test case:
+Derive `<test-filename>` from the markdown filename and dispatch a general
+purpose subagent with this prompt:
 
-#### Step 1: Dispatch subagent
-
-Derive `<test-filename>` as the test file's basename without the `.md`
-extension (e.g. `create-blank-page.md` → `create-blank-page`). Store
-it for use here and in Step 2.
-
-Call the Agent tool with `subagent_type: general-purpose`, `model: "sonnet"`,
-and a prompt constructed from the template below.
-
-Build the prompt by filling in the `<PLACEHOLDERS>` with actual values:
-
-````
-You are running a single test case against an iOS app in a simulator
-using WebDriverAgent (WDA). The app under test is `<APP_BUNDLE_ID>`.
+````text
+You are running one test case against an iOS app through WebDriverAgent.
 
 ## Context
 
-- App Bundle ID: <APP_BUNDLE_ID>
+- App bundle ID: <APP_BUNDLE_ID>
 - Simulator UDID: <UDID>
-- WDA: already running on http://localhost:8100 (do not start or stop it)
-- Test file: <TEST_FILE_PATH> (absolute path)
-- Results directory: <RESULTS_DIR> (absolute path; write your per-test
-  result file here as `<test-filename>.md`)
-- Screenshots directory: <SCREENSHOTS_DIR> (absolute; sibling
-  `screenshots/` of the per-test result file)
+- WDA port: <PORT>
+- WDA server: already running; do not start or stop it
+- ios-sim-navigation skill: <IOS_SIM_NAVIGATION_SKILL>
+- WDA scripts directory: <WDA_SCRIPTS_DIR>
+- Test file: <TEST_FILE_PATH>
+- Results directory: <RESULTS_DIR>
+- Screenshots directory: <SCREENSHOTS_DIR>
 - Site URL: <SITE_URL>
-- Sign-in credentials: <SIGN_IN_CREDENTIALS> (self-hosted: username +
-  application password; WordPress.com: bearer token; see
-  `docs/simulator-sign-in.md`)
-- WDA scripts directory: <WDA_SCRIPTS_DIR> (absolute path; contains
-  `tap.rb`, `wda-start.rb`, `wda-stop.rb`)
+- Sign-in credentials: <SIGN_IN_CREDENTIALS>
 
 ## Instructions
 
-0. **Load WDA guidance.** Invoke the `ios-sim-navigation` skill via the
-   Skill tool before any WDA work. Rewrite any `scripts/tap.rb`
-   reference in that skill as `<WDA_SCRIPTS_DIR>/tap.rb`.
+0. IMPORTANT: Invoke `ios-sim-navigation` before any WDA work and follow it
+   exactly. WDA is already running on the supplied port, so skip only server
+   start and stop. Follow its explicit app-session workflow and use its action
+   commands for all UI interaction.
 
-1. **Read the test file** at `<TEST_FILE_PATH>`. It contains the
-   information needed to execute the test: prerequisites, steps,
-   expected outcome, etc.
+1. Read the test file.
 
-2. **Relaunch the app** for a clean per-test UI state. The app is
-   already signed in — do not pass `-ui-test-reset-everything` and do
-   not re-drive the sign-in flow.
+2. Create a fresh app session on the supplied WDA port using the app bundle ID.
+   Do not reset app data or repeat sign-in. Retain the printed session ID and
+   use it for the entire test.
 
-   ```bash
-   xcrun simctl launch --terminate-running-process <UDID> <APP_BUNDLE_ID>
-   ```
+3. Wait for a signed-in screen. If none appears within 15 seconds, fail with
+   reason `Not signed in after relaunch`.
 
-   Poll the accessibility tree until a signed-in screen (e.g. My Site)
-   appears. If it doesn't appear within 15 s, mark the test as FAIL
-   with reason "Not signed in after relaunch".
+4. Fulfill the test prerequisites. Use REST APIs for data prerequisites and
+   WDA for UI prerequisites. If one cannot be fulfilled, fail with reason
+   `Prerequisite not met: <details>`.
 
-3. **Fulfill prerequisites** from the test file.
+5. Execute the steps and expected outcome. Perform REST cleanup regardless of
+   pass or fail.
 
-   For REST API prerequisites (e.g., creating tags, categories, or posts),
-   make the API calls using the credentials in `<SIGN_IN_CREDENTIALS>`.
-   For UI prerequisites like "Logged in to the app with the test account",
-   the app relaunch in step 2 handles this automatically.
+6. Write `<RESULTS_DIR>/<test-filename>.md`.
 
-   If a prerequisite cannot be fulfilled, mark the test as FAIL with
-   reason "Prerequisite not met: <details>".
+On pass:
 
-4. **Execute the test case** following the steps, expected outcome, and any
-   verification/cleanup sections in the test file. Use WDA for all UI
-   interactions (refer to the ios-sim-navigation skill). Perform any REST API
-   cleanup regardless of pass/fail.
+```text
+### PASS <Test Title>
+Passed.
+```
 
-5. **Write per-test result file** at
-   `<RESULTS_DIR>/<test-filename>.md`:
+On failure, capture a screenshot from the supplied UDID at
+`<SCREENSHOTS_DIR>/<test-filename>-failure.png`, then write:
 
-   On pass — write:
-   ```
-   ### PASS <Test Title>
-   Passed.
-   ```
+```text
+### FAIL <Test Title>
+**Failure reason:** <description>
+**Screenshot:** screenshots/<test-filename>-failure.png
+```
 
-   On fail — take a failure screenshot, save it, then write:
-   ```bash
-   xcrun simctl io <UDID> screenshot <SCREENSHOTS_DIR>/<test-filename>-failure.png
-   ```
-   ```
-   ### FAIL <Test Title>
-   **Failure reason:** <description of what went wrong>
-   **Screenshot:** screenshots/<test-filename>-failure.png
-   ```
-
-The per-test result file is the source of truth for pass/fail. The parent
-orchestrator reads it after this subagent returns, so the heading line
-(`### PASS <title>` or `### FAIL <title>`) must be written correctly.
+The result file is the source of truth. Its first heading must begin with
+`### PASS ` or `### FAIL `.
 ````
 
-#### Step 2: Read the per-test result file
+After the subagent returns:
 
-After the subagent returns, read `<RESULTS_DIR>/<test-filename>.md`:
+1. Read its result file.
+2. Count `### PASS ` as pass and `### FAIL ` as fail.
+3. Count a missing result file as failure.
+4. Print `[current/total] PASS: name` or `[current/total] FAIL: name: reason`.
+5. Continue to the next test after failures.
 
-- A line starting with `### PASS ` means pass.
-- A line starting with `### FAIL ` means fail; the failure reason is on
-  the `**Failure reason:**` line beneath it.
-- If the file is missing, count the test as fail with reason "Subagent
-  did not produce a result file".
+## Phase 7: Cleanup and summary
 
-Update the in-context counters accordingly.
+Stop the exact retained WDA background task according to
+`ios-sim-navigation`. Do not stop other background tasks.
 
-#### Step 3: Print status update
+Print:
 
+```text
+Test run complete.
+Total: N | Passed: P | Failed: F
+Per-test results: <RESULTS_DIR>
 ```
-[2/5] PASS: create-blank-page
-```
-or:
-```
-[2/5] FAIL: create-blank-page — <reason>
-```
 
-## Phase 7: Cleanup and Summary
+If tests failed, list their filenames and result paths.
 
-1. Stop WDA by running `<WDA_SCRIPTS_DIR>/wda-stop.rb`.
+## Important notes
 
-2. Print the final summary to the terminal:
-   ```
-   Test run complete.
-   Total: N | Passed: P | Failed: F
-   Per-test results: <RESULTS_DIR>
-   ```
-   If any tests failed, list the failing filenames under the summary so
-   the user can jump straight to the relevant per-test files and
-   screenshots.
-
-## Important Notes
-
-- Assumes the app is already built and installed on a booted simulator.
-- Continue to the next test even on failure. The suite reports the full
-  pass/fail tally at the end, so a single failure should not stop the run.
-- Each test case runs in its own subagent to keep the main context lean.
-  Per-test result files in `<RESULTS_DIR>` are the durable record of the
-  run.
+- The app is already built and installed on the supplied Simulator.
+- Tests run sequentially.
+- Each test uses a fresh explicit WDA app session but preserves app data.
+- Per-test result files are the durable source of truth.

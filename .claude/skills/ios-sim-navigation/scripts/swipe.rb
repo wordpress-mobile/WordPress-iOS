@@ -1,164 +1,124 @@
 #!/usr/bin/env ruby
-# swipe.rb — Perform a directional or coordinate swipe via WebDriverAgent.
-#
-# One Ruby invocation = one Claude turn. Wraps the W3C pointer-actions
-# JSON body and computes direction-to-coordinates from the simulator's
-# window size automatically. Reuses the session that tap.rb persists at
-# /tmp/wda-<port>.session.
+# Perform a directional or coordinate swipe through an explicit WDA session.
 #
 # Usage:
-#   swipe.rb up                  # vertical swipe up (scrolls content down)
-#   swipe.rb down                # vertical swipe down (scrolls content up)
-#   swipe.rb left
-#   swipe.rb right
-#   swipe.rb back                # edge swipe from left edge → right (back nav fallback)
-#   swipe.rb at X1,Y1,X2,Y2      # explicit coordinates
+#   swipe.rb <up|down|left|right|back> --port PORT --session-id ID
+#   swipe.rb at X1,Y1,X2,Y2 --port PORT --session-id ID
 #
 # Options:
-#   --duration MS  Swipe duration in milliseconds (default 500).
-#                  Bump to 1000 if the gesture lands on a tappable
-#                  item so it isn't misread as a tap.
-#   --port PORT    WDA port (default: 8100, or $WDA_PORT).
+#   --duration MS    Swipe duration (default: 500 milliseconds).
+#   --port PORT      WDA port (required).
+#   --session-id ID  Active WDA session id (required).
 #
-# Vertical swipes use the right-edge x (window_width - 30) so the
-# gesture doesn't land on interactive elements in the center. See
-# SKILL.md "Swipe direction guide" for the underlying math.
-#
-# Exit codes:
-#   0  swipe dispatched
-#   2  WDA error / usage error
+# Exit codes: 0 on success, 2 on WDA or usage error.
 
-require "net/http"
 require "json"
-require "uri"
+require "net/http"
 require "optparse"
+require "uri"
 
-PORT = (ENV["WDA_PORT"] || 8100).to_i
-SESSION_FILE = "/tmp/wda-#{PORT}.session"
-
-def base_url(port = PORT)
+def base_url(port)
   "http://localhost:#{port}"
 end
 
-def http_get(path, port = PORT)
+def http_get(path, port)
   uri = URI("#{base_url(port)}#{path}")
-  res = Net::HTTP.start(uri.host, uri.port) { |h| h.request(Net::HTTP::Get.new(uri)) }
-  [res.code.to_i, res.body]
-rescue Errno::ECONNREFUSED
-  raise "WDA not reachable on port #{port}. Run wda-start.rb first."
+  response = Net::HTTP.start(uri.host, uri.port) { |http| http.request(Net::HTTP::Get.new(uri)) }
+  [response.code.to_i, response.body]
+rescue Errno::ECONNREFUSED, Errno::ECONNRESET
+  raise "WDA not reachable on port #{port}; start it first"
 end
 
-def http_post(path, body, port = PORT)
+def http_post(path, body, port)
   uri = URI("#{base_url(port)}#{path}")
-  req = Net::HTTP::Post.new(uri, "Content-Type" => "application/json")
-  req.body = JSON.dump(body)
-  res = Net::HTTP.start(uri.host, uri.port) { |h| h.request(req) }
-  [res.code.to_i, res.body]
-rescue Errno::ECONNREFUSED
-  raise "WDA not reachable on port #{port}. Run wda-start.rb first."
+  request = Net::HTTP::Post.new(uri, "Content-Type" => "application/json")
+  request.body = JSON.dump(body)
+  response = Net::HTTP.start(uri.host, uri.port) { |http| http.request(request) }
+  [response.code.to_i, response.body]
+rescue Errno::ECONNREFUSED, Errno::ECONNRESET
+  raise "WDA not reachable on port #{port}; start it first"
 end
 
-def active_bundle(port = PORT)
-  code, body = http_get("/wda/activeAppInfo", port)
-  return nil unless code == 200
-  JSON.parse(body).dig("value", "bundleId")
-rescue
-  nil
+def validate_session(port, session_id)
+  code, = http_get("/session/#{session_id}", port)
+  return if code == 200
+
+  raise "session #{session_id} is not active on port #{port}; create a new session explicitly"
 end
 
-def session_id(port = PORT)
-  if File.exist?(SESSION_FILE)
-    sid = JSON.parse(File.read(SESSION_FILE))["session_id"] rescue nil
-    if sid
-      code, _ = http_get("/session/#{sid}", port)
-      return sid if code == 200
-    end
-  end
-
-  caps = { "alwaysMatch" => {} }
-  bundle = active_bundle(port)
-  caps["alwaysMatch"]["bundleId"] = bundle if bundle
-
-  code, body = http_post("/session", { "capabilities" => caps }, port)
-  raise "session create failed: HTTP #{code}: #{body}" unless code.between?(200, 299)
-  sid = JSON.parse(body).dig("value", "sessionId")
-  raise "no sessionId in response: #{body}" unless sid
-  File.write(SESSION_FILE, JSON.dump({ session_id: sid, port: port }))
-  sid
-end
-
-def window_size(port = PORT)
-  sid = session_id(port)
-  code, body = http_get("/session/#{sid}/window/size", port)
+def window_size(port, session_id)
+  code, body = http_get("/session/#{session_id}/window/size", port)
   raise "window/size failed: HTTP #{code}: #{body}" unless code.between?(200, 299)
-  v = JSON.parse(body)["value"]
-  [v["width"].to_f, v["height"].to_f]
+
+  value = JSON.parse(body)["value"]
+  [value["width"].to_f, value["height"].to_f]
 end
 
-def swipe_from_to(x1, y1, x2, y2, duration_ms, port = PORT)
-  sid = session_id(port)
+def swipe_from_to(x1, y1, x2, y2, duration_ms, port, session_id)
   body = {
     "actions" => [{
       "type" => "pointer", "id" => "finger1",
       "parameters" => { "pointerType" => "touch" },
       "actions" => [
-        { "type" => "pointerMove", "duration" => 0,           "x" => x1, "y" => y1 },
+        { "type" => "pointerMove", "duration" => 0, "x" => x1, "y" => y1 },
         { "type" => "pointerDown" },
         { "type" => "pointerMove", "duration" => duration_ms, "x" => x2, "y" => y2 },
         { "type" => "pointerUp" }
       ]
     }]
   }
-  code, resp = http_post("/session/#{sid}/actions", body, port)
-  raise "swipe failed: HTTP #{code}: #{resp}" unless code.between?(200, 299)
+  code, response = http_post("/session/#{session_id}/actions", body, port)
+  raise "swipe failed: HTTP #{code}: #{response}" unless code.between?(200, 299)
 end
 
-# Direction-to-coordinates math from SKILL.md "Swipe direction guide".
-# Returns [x1, y1, x2, y2].
-def coords_for_direction(direction, port = PORT)
-  w, h = window_size(port)
+def coordinates_for(direction, port, session_id)
+  width, height = window_size(port, session_id)
   case direction
-  when "up"    then [w - 30, h * 2 / 3.0, w - 30, h * 1 / 3.0]
-  when "down"  then [w - 30, h * 1 / 3.0, w - 30, h * 2 / 3.0]
-  when "left"  then [w * 3 / 4.0, h / 2.0, w / 4.0,     h / 2.0]
-  when "right" then [w / 4.0,     h / 2.0, w * 3 / 4.0, h / 2.0]
-  when "back"  then [5.0,         h / 2.0, w * 2 / 3.0, h / 2.0]
+  when "up"    then [width - 30, height * 2 / 3.0, width - 30, height * 1 / 3.0]
+  when "down"  then [width - 30, height * 1 / 3.0, width - 30, height * 2 / 3.0]
+  when "left"  then [width * 3 / 4.0, height / 2.0, width / 4.0, height / 2.0]
+  when "right" then [width / 4.0, height / 2.0, width * 3 / 4.0, height / 2.0]
+  when "back"  then [5.0, height / 2.0, width * 2 / 3.0, height / 2.0]
   else raise "unknown direction: #{direction}"
   end
 end
 
-port = PORT
+port = nil
+session_id = nil
 duration_ms = 500
 
 parser = OptionParser.new do |opts|
-  opts.banner = "Usage: swipe.rb <up|down|left|right|back|at> [X1,Y1,X2,Y2] [--duration MS] [--port PORT]"
-  opts.on("--duration MS", Integer) { |v| duration_ms = v }
-  opts.on("--port PORT",   Integer) { |v| port = v }
+  opts.banner = "Usage: swipe.rb <up|down|left|right|back|at> [X1,Y1,X2,Y2] --port PORT --session-id ID [--duration MS]"
+  opts.on("--port PORT", Integer) { |value| port = value }
+  opts.on("--session-id ID") { |value| session_id = value }
+  opts.on("--duration MS", Integer) { |value| duration_ms = value }
 end
 parser.parse!
 
-if ARGV.empty?
-  $stderr.puts parser.help
+if ARGV.empty? || port.nil? || !(1..65_535).cover?(port) || session_id.nil? || session_id.empty?
+  warn parser.help
   exit 2
 end
 
 direction = ARGV[0]
 
 begin
+  validate_session(port, session_id)
+
   if direction == "at"
-    coords = (ARGV[1] || "").split(",").map { |s| Float(s) rescue nil }
-    if coords.size != 4 || coords.any?(&:nil?)
-      $stderr.puts "usage: swipe.rb at X1,Y1,X2,Y2"
+    coordinates = (ARGV[1] || "").split(",").map { |component| Float(component) rescue nil }
+    if coordinates.size != 4 || coordinates.any?(&:nil?)
+      warn "usage: swipe.rb at X1,Y1,X2,Y2 --port PORT --session-id ID"
       exit 2
     end
-    x1, y1, x2, y2 = coords
+    x1, y1, x2, y2 = coordinates
   else
-    x1, y1, x2, y2 = coords_for_direction(direction, port)
+    x1, y1, x2, y2 = coordinates_for(direction, port, session_id)
   end
 
-  swipe_from_to(x1, y1, x2, y2, duration_ms, port)
-  puts "swipe ok #{direction} (%.1f,%.1f → %.1f,%.1f, %dms)" % [x1, y1, x2, y2, duration_ms]
-rescue => e
-  $stderr.puts "error: #{e.message}"
+  swipe_from_to(x1, y1, x2, y2, duration_ms, port, session_id)
+  puts "swipe ok #{direction} (%.1f,%.1f -> %.1f,%.1f, %dms)" % [x1, y1, x2, y2, duration_ms]
+rescue => error
+  warn "error: #{error.message}"
   exit 2
 end
