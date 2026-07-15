@@ -497,6 +497,20 @@ private func makeCacheKey(for mediaID: TaggedManagedObjectID<Media>, size: Media
     "\(mediaID.objectID)-\(size.rawValue)"
 }
 
+extension MediaImageService.Error {
+    /// The HTTP status code, when this failure came from an unacceptable server
+    /// response. Used to skip retrying hard client errors (4xx) that won't recover.
+    var httpStatusCode: Int? {
+        guard case let .thumbnailFetchFailed(_, _, underlying) = self,
+            let downloaderError = underlying as? ImageDownloaderError,
+            case let .unacceptableStatusCode(statusCode) = downloaderError
+        else {
+            return nil
+        }
+        return statusCode
+    }
+}
+
 private extension Blog {
     var isEligibleForPhoton: Bool {
         !((isHostedAtWPcom && (isPrivate || isWPForTeams)) || (!isHostedAtWPcom && isBasicAuthCredentialStored))

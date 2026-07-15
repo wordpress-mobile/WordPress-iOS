@@ -153,9 +153,15 @@ final class SiteMediaCollectionCellViewModel {
                         return
                     }
                     attempt += 1
-                    guard attempt <= retryCount else {
+                    // A fatal client error (e.g. 403 or 404) won't recover, so stop
+                    // retrying it — but 408 (timeout) and 429 (rate limited) are
+                    // transient, so let those keep retrying with backoff.
+                    let statusCode = (error as? MediaImageService.Error)?.httpStatusCode
+                    let isFatalClientError =
+                        statusCode.map { (400..<500).contains($0) && $0 != 408 && $0 != 429 } ?? false
+                    guard !isFatalClientError, attempt <= retryCount else {
                         Loggers.networking.error(
-                            "Failed to load media thumbnail for '\(media.filename ?? "unknown")' after \(retryCount) retries: \(error)"
+                            "Failed to load media thumbnail for '\(media.filename ?? "unknown")' after \(attempt - 1) retries: \(error)"
                         )
                         self?.didFinishLoading(with: nil)
                         return
