@@ -16,6 +16,7 @@ final class SiteMediaCollectionCellViewModel {
     private let mediaType: MediaType
     private let service: MediaImageService
     private let coordinator: MediaCoordinator
+    private let retryCount: Int
 
     private var isVisible = false
     private var isPrefetchingNeeded = false
@@ -41,16 +42,24 @@ final class SiteMediaCollectionCellViewModel {
         imageTask?.cancel()
     }
 
+    /// - parameter retryCount: The number of times to retry loading the
+    ///   thumbnail after a failure (not counting the initial attempt) before
+    ///   giving up. Transient failures — network blips, a CDN 5xx, a truncated
+    ///   response that fails to decode — are common, and without a retry a
+    ///   single failure leaves the cell showing a blank placeholder until it's
+    ///   scrolled off-screen and reconfigured.
     init(
         media: Media,
         service: MediaImageService = .shared,
-        coordinator: MediaCoordinator = .shared
+        coordinator: MediaCoordinator = .shared,
+        retryCount: Int = 3
     ) {
         self.mediaID = TaggedManagedObjectID(media)
         self.media = media
         self.mediaType = media.mediaType
         self.service = service
         self.coordinator = coordinator
+        self.retryCount = retryCount
 
         observations.append(
             media.observe(\.remoteStatusNumber, options: [.initial, .new]) { [weak self] _, _ in
@@ -129,12 +138,32 @@ final class SiteMediaCollectionCellViewModel {
         guard getCachedThubmnail() == nil else {
             return // Already cached  in memory
         }
-        imageTask = Task { @MainActor [service, media, weak self] in
-            do {
-                let image = try await service.image(for: media, size: .small)
-                self?.didFinishLoading(with: image)
-            } catch {
-                self?.didFinishLoading(with: nil)
+        imageTask = Task { @MainActor [service, media, retryCount, weak self] in
+            var attempt = 0
+            while true {
+                do {
+                    let image = try await service.image(for: media, size: .small)
+                    self?.didFinishLoading(with: image)
+                    return
+                } catch {
+                    // A cancelled request (e.g. the cell scrolled off-screen)
+                    // must neither retry nor report a failure.
+                    if Task.isCancelled {
+                        return
+                    }
+                    attempt += 1
+                    guard attempt <= retryCount else {
+                        self?.didFinishLoading(with: nil)
+                        return
+                    }
+                    // Exponential backoff (0.5s, 1s, 2s, …, capped at 8s) so a
+                    // transient failure has time to clear before we try again.
+                    let backoff = min(0.5 * Double(1 << min(attempt - 1, 6)), 8)
+                    try? await Task.sleep(for: .seconds(backoff))
+                    if Task.isCancelled {
+                        return
+                    }
+                }
             }
         }
     }
