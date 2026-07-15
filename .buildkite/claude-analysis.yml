@@ -18,8 +18,8 @@ steps:
       - "/tmp/buildkite_logs_${BUILDKITE_BUILD_ID}.txt"
     plugins:
       - $CLAUDE_PLUGIN:
-          api_key: "$ANTHROPIC_API_KEY"
-          buildkite_api_token: "$BUILDKITE_TOKEN_FOR_CLAUDE"
+          api_key: "$$ANTHROPIC_API_KEY"
+          buildkite_api_token: "$$BUILDKITE_TOKEN_FOR_CLAUDE"
           analysis_level: "build"
           build_log_mode: "failed"
           trigger: "on-failure"
