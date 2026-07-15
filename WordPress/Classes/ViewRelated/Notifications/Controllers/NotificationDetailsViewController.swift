@@ -561,8 +561,7 @@ private extension NotificationDetailsViewController {
         }
 
         let mediaURL = imageBlock.media.first?.mediaURL
-        let shouldAnimate = transitionCoordinator?.viewController(forKey: .to) === self
-        cell.downloadImage(mediaURL, animated: shouldAnimate)
+        cell.downloadImage(mediaURL)
 
         if note.isViewMilestone {
             cell.backgroundImage = UIImage(named: Assets.confettiBackground)
