@@ -70,25 +70,11 @@ To recover, delete all `*.pcm` files in the directory reported by the error and 
 - Before writing code, read and follow the [best practice guidelines](./docs/best-practices.md).
 - Follow Swift API Design Guidelines
 - Use strict access control modifiers where possible
-- Use four spaces (not tabs)
-- Lines should not have trailing whitespace
 - Follow the standard formatting practices enforced by SwiftLint
+- swift-format and SwiftLint can occasionally disagree. Make sure the final code is stable under `xcrun swift format --in-place <path>` and also passes `rake lint[<path>]`. Use `swiftlint:disable` directives as the last resort to solve the conflicts.
 - Don't create `body` for `View` that are too long
 - Use semantics text sizes like `.headline`
 - Use swift-log (see the `WordPress/Classes/System/Logging.swift` file) instead of CocoaLumberjack (`DDLogError`, etc)
-
-## Core Data Concurrency
-
-Don't capture an `NSManagedObject` (e.g. `Blog`, `WPAccount`) across threads — touching its properties off its context's queue violates Core Data's concurrency model.
-
-Store a `TaggedManagedObjectID<Model>` instead, inject a `CoreDataStack` (typically `ContextManager.shared`), and resolve the object inside `coreDataStack.performQuery { context in ... }` (or `performAndSave` for writes):
-
-```swift
-try await coreDataStack.performQuery { [blogID] context in
-    let blog = try context.existingObject(with: blogID)
-    return blog.someValue  // return value types, not the managed object
-}
-```
 
 ## Development Workflow
 - Branch from `trunk` (main branch)

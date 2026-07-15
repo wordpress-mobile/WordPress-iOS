@@ -1,0 +1,17 @@
+{
+  "hooks": {
+    "PostToolUse": [
+      {
+        "matcher": "Edit|Write",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "\"$(git rev-parse --show-toplevel)/Scripts/codex-hooks/swift-format-and-lint.sh\"",
+            "timeout": 60,
+            "statusMessage": "Formatting and linting Swift..."
+          }
+        ]
+      }
+    ]
+  }
+}

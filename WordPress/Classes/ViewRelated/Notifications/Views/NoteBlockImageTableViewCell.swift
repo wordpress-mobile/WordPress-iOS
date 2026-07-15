@@ -21,18 +21,26 @@ class NoteBlockImageTableViewCell: NoteBlockTableViewCell {
 
     /// Downloads a remote image, given it's URL, assuming that we're already not displaying that very same image.
     ///
-    /// - Parameter url: Target image URL.
+    /// - Parameters:
+    ///   - url: Target image URL.
+    ///   - animated: Whether to animate the image after it loads.
     ///
-    @objc func downloadImage(_ url: URL?) {
+    @objc func downloadImage(_ url: URL?, animated: Bool) {
         guard imageURL != url else {
             return
         }
 
         imageURL = url
 
-        blockImageView.downloadImage(from: url, success: { [weak blockImageView] _ in
-            blockImageView?.expandSpringAnimation()
-        })
+        blockImageView.downloadImage(
+            from: url,
+            success: { [weak blockImageView] _ in
+                guard animated else {
+                    return
+                }
+                blockImageView?.expandSpringAnimation()
+            }
+        )
     }
 
     // MARK: - View Methods
