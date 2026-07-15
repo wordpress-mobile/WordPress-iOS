@@ -94,11 +94,11 @@ class NotificationDetailsViewController: UIViewController, NoResultsViewHost {
     private var confettiWasShown = false
 
     lazy var coordinator: ContentCoordinator = {
-        return DefaultContentCoordinator(controller: self, context: mainContext)
+        DefaultContentCoordinator(controller: self, context: mainContext)
     }()
 
     lazy var router: NotificationContentRouter = {
-        return makeRouter()
+        makeRouter()
     }()
 
     /// Whenever the user performs a destructive action, the Deletion Request Callback will be called,
@@ -176,7 +176,7 @@ class NotificationDetailsViewController: UIViewController, NoResultsViewHost {
     }
 
     private func makeRouter() -> NotificationContentRouter {
-        return NotificationContentRouter(activity: note, coordinator: coordinator)
+        NotificationContentRouter(activity: note, coordinator: coordinator)
     }
 
     fileprivate func markAsReadIfNeeded() {
@@ -220,8 +220,14 @@ class NotificationDetailsViewController: UIViewController, NoResultsViewHost {
         previousNavigationButton.isEnabled = shouldEnablePreviousButton
         nextNavigationButton.isEnabled = shouldEnableNextButton
 
-        previousNavigationButton.accessibilityLabel = NSLocalizedString("Previous notification", comment: "Accessibility label for the previous notification button")
-        nextNavigationButton.accessibilityLabel = NSLocalizedString("Next notification", comment: "Accessibility label for the next notification button")
+        previousNavigationButton.accessibilityLabel = NSLocalizedString(
+            "Previous notification",
+            comment: "Accessibility label for the previous notification button"
+        )
+        nextNavigationButton.accessibilityLabel = NSLocalizedString(
+            "Next notification",
+            comment: "Accessibility label for the next notification button"
+        )
     }
 }
 
@@ -229,17 +235,20 @@ class NotificationDetailsViewController: UIViewController, NoResultsViewHost {
 //
 extension NotificationDetailsViewController: UITableViewDelegate, UITableViewDataSource {
     func numberOfSections(in tableView: UITableView) -> Int {
-        return Settings.numberOfSections
+        Settings.numberOfSections
     }
 
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return note.headerAndBodyContentGroups.count
+        note.headerAndBodyContentGroups.count
     }
 
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let group = contentGroup(for: indexPath)
         let reuseIdentifier = reuseIdentifierForGroup(group)
-        guard let cell = tableView.dequeueReusableCell(withIdentifier: reuseIdentifier, for: indexPath) as? NoteBlockTableViewCell else {
+        guard
+            let cell = tableView.dequeueReusableCell(withIdentifier: reuseIdentifier, for: indexPath)
+                as? NoteBlockTableViewCell
+        else {
             DDLogError("Failed dequeueing NoteBlockTableViewCell.")
             return UITableViewCell()
         }
@@ -273,6 +282,9 @@ extension NotificationDetailsViewController: UITableViewDelegate, UITableViewDat
     }
 
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
+        if note.isBadge, contentGroup(for: indexPath).kind == .image {
+            return Settings.badgeImageRowHeight
+        }
         return UITableView.automaticDimension
     }
 
@@ -305,15 +317,27 @@ extension NotificationDetailsViewController: UITableViewDelegate, UITableViewDat
 extension NotificationDetailsViewController {
     func setupNavigationBar() {
         // Don't show the notification title in the next-view's back button
-        let backButton = UIBarButtonItem(title: String(),
-                                         style: .plain,
-                                         target: nil,
-                                         action: nil)
+        let backButton = UIBarButtonItem(
+            title: String(),
+            style: .plain,
+            target: nil,
+            action: nil
+        )
 
         navigationItem.backBarButtonItem = backButton
 
-        nextNavigationButton = UIBarButtonItem(image: UIImage(systemName: "chevron.up"), style: .plain, target: self, action: #selector(nextNotificationWasPressed))
-        previousNavigationButton = UIBarButtonItem(image: UIImage(systemName: "chevron.down"), style: .plain, target: self, action: #selector(previousNotificationWasPressed))
+        nextNavigationButton = UIBarButtonItem(
+            image: UIImage(systemName: "chevron.up"),
+            style: .plain,
+            target: self,
+            action: #selector(nextNotificationWasPressed)
+        )
+        previousNavigationButton = UIBarButtonItem(
+            image: UIImage(systemName: "chevron.down"),
+            style: .plain,
+            target: self,
+            action: #selector(previousNotificationWasPressed)
+        )
 
         enableNavigationRightBarButtonItems()
     }
@@ -326,7 +350,10 @@ extension NotificationDetailsViewController {
         tableView.separatorStyle = .none
         tableView.keyboardDismissMode = .interactive
         tableView.accessibilityIdentifier = .notificationDetailsTableAccessibilityId
-        tableView.accessibilityLabel = NSLocalizedString("Notification Details Table", comment: "Notifications Details Accessibility Identifier")
+        tableView.accessibilityLabel = NSLocalizedString(
+            "Notification Details Table",
+            comment: "Notifications Details Accessibility Identifier"
+        )
         tableView.backgroundColor = .systemBackground
     }
 
@@ -346,8 +373,10 @@ extension NotificationDetailsViewController {
             tableView.register(nib, forCellReuseIdentifier: cellClass.reuseIdentifier())
         }
 
-        tableView.register(LikeUserTableViewCell.defaultNib,
-                           forCellReuseIdentifier: LikeUserTableViewCell.defaultReuseID)
+        tableView.register(
+            LikeUserTableViewCell.defaultNib,
+            forCellReuseIdentifier: LikeUserTableViewCell.defaultReuseID
+        )
     }
 
     /// Configure the delegate and data source for the table view based on notification type.
@@ -355,7 +384,8 @@ extension NotificationDetailsViewController {
     /// since notification kind may change.
     func setupTableDelegates() {
         if note.kind == .like || note.kind == .commentLike,
-           let likesListController = LikesListController(tableView: tableView, notification: note, delegate: self) {
+            let likesListController = LikesListController(tableView: tableView, notification: note, delegate: self)
+        {
             tableView.delegate = likesListController
             tableView.dataSource = likesListController
             self.likesListController = likesListController
@@ -370,7 +400,12 @@ extension NotificationDetailsViewController {
 
     func setupNotificationListeners() {
         let nc = NotificationCenter.default
-        nc.addObserver(self, selector: #selector(notificationWasUpdated), name: .NSManagedObjectContextObjectsDidChange, object: note.managedObjectContext)
+        nc.addObserver(
+            self,
+            selector: #selector(notificationWasUpdated),
+            name: .NSManagedObjectContextObjectsDidChange,
+            object: note.managedObjectContext
+        )
     }
 
     func tearDownNotificationListeners() {
@@ -467,8 +502,9 @@ private extension NotificationDetailsViewController {
         cell.attributedHeaderDetails = nil
 
         guard let gravatarBlock: NotificationTextContent = blockGroup.blockOfKind(.image),
-            let snippetBlock: NotificationTextContent = blockGroup.blockOfKind(.text) else {
-                return
+            let snippetBlock: NotificationTextContent = blockGroup.blockOfKind(.text)
+        else {
+            return
         }
 
         cell.attributedHeaderTitle = formatter.render(content: gravatarBlock, with: HeaderContentStyles())
@@ -525,14 +561,20 @@ private extension NotificationDetailsViewController {
         }
 
         let mediaURL = imageBlock.media.first?.mediaURL
-        cell.downloadImage(mediaURL)
+        let shouldAnimate = transitionCoordinator?.viewController(forKey: .to) === self
+        cell.downloadImage(mediaURL, animated: shouldAnimate)
 
         if note.isViewMilestone {
             cell.backgroundImage = UIImage(named: Assets.confettiBackground)
         }
     }
 
-    func setupTextCell(_ cell: NoteBlockTextTableViewCell, blockGroup: FormattableContentGroup, at indexPath: IndexPath) {
+    func setupTextCell(
+        _ cell: NoteBlockTextTableViewCell,
+        blockGroup: FormattableContentGroup,
+        at indexPath: IndexPath
+    ) // swiftlint:disable:next opening_brace
+    {
         guard let textBlock = blockGroup.blocks.first as? NotificationTextContent else {
             assertionFailure("Missing Text Block for Notification \(note.notificationId)")
             return
@@ -547,7 +589,10 @@ private extension NotificationDetailsViewController {
 
         if note.isBadge {
             let isFirstTextGroup = indexPath.row == indexOfFirstContentGroup(ofKind: .text)
-            text = formatter.render(content: textBlock, with: BadgeContentStyles(cachingKey: "Badge-\(indexPath)", isTitle: isFirstTextGroup))
+            text = formatter.render(
+                content: textBlock,
+                with: BadgeContentStyles(cachingKey: "Badge-\(indexPath)", isTitle: isFirstTextGroup)
+            )
             cell.isTitle = isFirstTextGroup
         } else {
             text = formatter.render(content: textBlock, with: RichTextContentStyles(key: "Rich-Text-\(indexPath)"))
@@ -575,7 +620,8 @@ private extension NotificationDetailsViewController {
         cell.title = textBlock.text
 
         if let linkRange = textBlock.ranges.map({ $0 as? LinkContentRange }).first,
-           let url = linkRange?.url {
+            let url = linkRange?.url
+        {
             cell.action = { [weak self] in
                 guard let `self` = self, self.isViewOnScreen() else {
                     return
@@ -591,9 +637,9 @@ private extension NotificationDetailsViewController {
 //
 extension NotificationDetailsViewController {
     @objc func notificationWasUpdated(_ notification: Foundation.Notification) {
-        let updated = notification.userInfo?[NSUpdatedObjectsKey]   as? Set<NSManagedObject> ?? Set()
+        let updated = notification.userInfo?[NSUpdatedObjectsKey] as? Set<NSManagedObject> ?? Set()
         let refreshed = notification.userInfo?[NSRefreshedObjectsKey] as? Set<NSManagedObject> ?? Set()
-        let deleted = notification.userInfo?[NSDeletedObjectsKey]   as? Set<NSManagedObject> ?? Set()
+        let deleted = notification.userInfo?[NSDeletedObjectsKey] as? Set<NSManagedObject> ?? Set()
 
         // Reload the table, if *our* notification got updated + Mark as Read since it's already onscreen!
         if updated.contains(note) || refreshed.contains(note) {
@@ -654,11 +700,11 @@ private extension NotificationDetailsViewController {
 private extension NotificationDetailsViewController {
 
     func contentGroup(for indexPath: IndexPath) -> FormattableContentGroup {
-        return note.headerAndBodyContentGroups[indexPath.row]
+        note.headerAndBodyContentGroups[indexPath.row]
     }
 
     func indexOfFirstContentGroup(ofKind kind: FormattableContentGroup.Kind) -> Int? {
-        return note.headerAndBodyContentGroups.firstIndex(where: { $0.kind == kind })
+        note.headerAndBodyContentGroups.firstIndex(where: { $0.kind == kind })
     }
 }
 
@@ -686,9 +732,14 @@ private extension NotificationDetailsViewController {
             // Workaround: Performing the reload call, multiple times, without the .BeginFromCurrentState might
             // lead to a state in which the cell remains not visible.
             //
-            UIView.animate(withDuration: ContentMedia.duration, delay: ContentMedia.delay, options: ContentMedia.options, animations: { [weak self] in
-                self?.tableView.reloadRows(at: [indexPath], with: .fade)
-                })
+            UIView.animate(
+                withDuration: ContentMedia.duration,
+                delay: ContentMedia.delay,
+                options: ContentMedia.options,
+                animations: { [weak self] in
+                    self?.tableView.reloadRows(at: [indexPath], with: .fade)
+                }
+            )
         }
 
         mediaDownloader.downloadMedia(urls: urls, maximumWidth: maxMediaEmbedWidth, completion: completion)
@@ -723,9 +774,10 @@ private extension NotificationDetailsViewController {
 
     func showConfettiIfNeeded() {
         guard note.isViewMilestone,
-              !confettiWasShown,
-              let window = view.window,
-              let frame = navigationController?.view.frame else {
+            !confettiWasShown,
+            let window = view.window,
+            let frame = navigationController?.view.frame
+        else {
             return
         }
         // This method will remove any existing `ConfettiView` before adding a new one
@@ -778,7 +830,8 @@ extension NotificationDetailsViewController {
     }
 
     private func showCommentDetails(with note: WordPressData.Notification) {
-        guard let commentDetailViewController = notificationCommentDetailCoordinator?.createViewController(with: note) else {
+        guard let commentDetailViewController = notificationCommentDetailCoordinator?.createViewController(with: note)
+        else {
             DDLogError("Notification Details: failed creating Comment Detail view.")
             return
         }
@@ -792,11 +845,11 @@ extension NotificationDetailsViewController {
     }
 
     var shouldEnablePreviousButton: Bool {
-        return dataSource?.notification(preceding: note) != nil
+        dataSource?.notification(preceding: note) != nil
     }
 
     var shouldEnableNextButton: Bool {
-        return dataSource?.notification(succeeding: note) != nil
+        dataSource?.notification(succeeding: note) != nil
     }
 }
 
@@ -814,10 +867,12 @@ extension NotificationDetailsViewController: LikesListControllerDelegate {
 
     func showErrorView(title: String, subtitle: String?) {
         hideNoResults()
-        configureAndDisplayNoResults(on: tableView,
-                                     title: title,
-                                     subtitle: subtitle,
-                                     image: "wp-illustration-notifications")
+        configureAndDisplayNoResults(
+            on: tableView,
+            title: title,
+            subtitle: subtitle,
+            image: "wp-illustration-notifications"
+        )
     }
 }
 
@@ -825,11 +880,11 @@ extension NotificationDetailsViewController: LikesListControllerDelegate {
 //
 private extension NotificationDetailsViewController {
     var mainContext: NSManagedObjectContext {
-        return ContextManager.shared.mainContext
+        ContextManager.shared.mainContext
     }
 
     var actionsService: NotificationActionsService {
-        return NotificationActionsService(coreDataStack: ContextManager.shared)
+        NotificationActionsService(coreDataStack: ContextManager.shared)
     }
 
     enum ContentMedia {
@@ -842,6 +897,8 @@ private extension NotificationDetailsViewController {
     enum Settings {
         static let numberOfSections = 1
         static let estimatedRowHeight = CGFloat(44)
+        // A fixed height prevents the initial self-sizing pass from stretching badge images.
+        static let badgeImageRowHeight = CGFloat(210)
     }
 
     enum Assets {
