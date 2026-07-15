@@ -844,7 +844,14 @@ extension NotificationsViewController {
             navigationController?.pushViewController(controller, animated: true)
         } else if isSidebarModeEnabled {
             if let splitViewController {
-                splitViewController.setViewController(controller, for: .secondary)
+                // Give the details controller its own navigation stack. Content taps inside
+                // the notification (opening a post, comment, profile, etc.) push onto
+                // `controller.navigationController`; without this wrapper that is `nil` in the
+                // `.secondary` column and the taps silently do nothing. The column is expected
+                // to hold a `UINavigationController` — see `ReaderPresenter` and
+                // `SplitViewRootPresenter+Site`.
+                let navigationVC = UINavigationController(rootViewController: controller)
+                splitViewController.setViewController(navigationVC, for: .secondary)
             } else {
                 navigationController?.pushViewController(controller, animated: true)
             }
