@@ -1,3 +1,4 @@
+import Logging
 import UIKit
 import WordPressData
 
@@ -153,6 +154,9 @@ final class SiteMediaCollectionCellViewModel {
                     }
                     attempt += 1
                     guard attempt <= retryCount else {
+                        Loggers.networking.error(
+                            "Failed to load media thumbnail for '\(media.filename ?? "unknown")' after \(retryCount) retries: \(error)"
+                        )
                         self?.didFinishLoading(with: nil)
                         return
                     }
