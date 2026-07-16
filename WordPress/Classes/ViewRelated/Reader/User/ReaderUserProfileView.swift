@@ -1,4 +1,5 @@
 import SwiftUI
+import UIKit
 import WordPressData
 import WordPressUI
 
@@ -65,6 +66,27 @@ struct ReaderUserProfileViewModel {
         self.avatarURL = post.avatarURLForDisplay()
         self.name = post.authorForDisplay() ?? ""
         self.siteURL = post.blogURL.flatMap(URL.init(string:))
+    }
+
+    init(profile: ReaderUserProfile) {
+        self.avatarURL = profile.avatarURL
+        self.name = profile.displayName
+        self.siteURL = profile.siteURL
+    }
+}
+
+enum ReaderUserProfilePresenter {
+    static func present(_ viewModel: ReaderUserProfileViewModel, from presentingViewController: UIViewController) {
+        let profileViewController = UIHostingController(rootView: ReaderUserProfileView(viewModel: viewModel))
+        let navigationController = UINavigationController(rootViewController: profileViewController)
+        profileViewController.navigationItem.leftBarButtonItem = UIBarButtonItem(
+            systemItem: .close,
+            primaryAction: .init { [weak profileViewController] _ in
+                profileViewController?.presentingViewController?.dismiss(animated: true)
+            }
+        )
+        navigationController.sheetPresentationController?.detents = [.medium()]
+        presentingViewController.present(navigationController, animated: true)
     }
 }
 
