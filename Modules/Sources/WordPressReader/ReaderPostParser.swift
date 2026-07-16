@@ -102,7 +102,8 @@ public enum ReaderPostParser {
             let href = try? anchor.attr("href"),
             !href.isEmpty,
             let url = URL(string: href),
-            url.scheme != nil
+            let scheme = url.scheme?.lowercased(),
+            scheme == "http" || scheme == "https"
         else {
             return nil
         }
