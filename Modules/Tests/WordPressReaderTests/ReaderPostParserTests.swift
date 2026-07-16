@@ -298,6 +298,31 @@ struct ReaderPostParserTests {
         #expect(mention.url.absoluteString == "https://example.wordpress.com/mentions/example-user/")
     }
 
+    @Test func parseMentionOnlyAcceptsHTTPURLs() {
+        let html = """
+            <a href="http://example.wordpress.com/mentions/http/"
+               data-type="fragment-mention" data-username="http">@http</a>
+            <a href="HTTPS://example.wordpress.com/mentions/https/"
+               data-type="fragment-mention" data-username="https">@https</a>
+            <a href="ftp://example.com/mentions/ftp/"
+               data-type="fragment-mention" data-username="ftp">@ftp</a>
+            <a href="mailto:person@example.com"
+               data-type="fragment-mention" data-username="email">@email</a>
+            <a href="custom:person"
+               data-type="fragment-mention" data-username="custom">@custom</a>
+            """
+
+        let mentions = ReaderPostParser.parse(html)
+            .compactMap { element -> ReaderPostParser.Mention? in
+                guard case .mention(let mention) = element else {
+                    return nil
+                }
+                return mention
+            }
+
+        #expect(mentions.map(\.handle) == ["http", "https"])
+    }
+
     @Test func ignoreLinksWithoutCompleteMentionMetadata() {
         let html = """
             <p>@plain-text</p>
