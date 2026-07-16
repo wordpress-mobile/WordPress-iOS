@@ -17,12 +17,25 @@ struct DebugSessionEnvelope: Codable, Equatable {
     let ciphertext: Data
 }
 
-/// Seals a WordPress.com session to a receiver's advertised X25519 public key, so the token — a
-/// full-access bearer credential — is never readable in flight, even over plaintext HTTP on a
-/// shared network. Only the receiver, holding the matching private key, can open the envelope.
+/// First message the sender sends: "I have a WordPress.com session to share." It carries only the
+/// protocol version — deliberately *no* key material. It's what triggers the receiver to mint a
+/// fresh key and show its QR; the receiver's real public key never travels the network, only the
+/// on-screen QR (see the security note on `DebugSessionTransferReceiver`).
+struct DebugSessionTransferIntent: Codable, Equatable {
+    let protocolVersion: String
+}
+
+/// Seals a WordPress.com session to the receiver's per-transfer X25519 public key — the one it shows
+/// in its QR — so the token, a full-access bearer credential, is never readable in flight even over
+/// plaintext TCP on a shared network. Only the receiver, holding the matching private key, can open
+/// the envelope.
 ///
 /// Scheme: ephemeral-static ECDH (X25519) → HKDF-SHA256 → AES-GCM. The sender's per-message
 /// ephemeral key gives forward secrecy; the AES-GCM tag makes tampering detectable.
+///
+/// This is the *confidentiality* half of the design (it defeats a passive sniffer). The *authenticity*
+/// half — that the sender sealed to the genuine receiver and not an impostor — comes from the key
+/// being read off the receiver's screen rather than the network (see `DebugSessionTransferReceiver`).
 enum DebugSessionTransferCrypto {
     enum Failure: Error { case sealingFailed }
 
@@ -72,7 +85,7 @@ enum DebugSessionTransferCrypto {
         )
     }
 
-    /// URL-safe (base64url, unpadded) encoding of a public key, for the QR / deep link / TXT record.
+    /// URL-safe (base64url, unpadded) encoding of the receiver's public key, for the QR it shows.
     static func encodePublicKey(_ data: Data) -> String {
         data.base64EncodedString()
             .replacingOccurrences(of: "+", with: "-")
@@ -84,13 +97,5 @@ enum DebugSessionTransferCrypto {
         var base64 = string.replacingOccurrences(of: "-", with: "+").replacingOccurrences(of: "_", with: "/")
         while base64.count % 4 != 0 { base64 += "=" }
         return Data(base64Encoded: base64)
-    }
-
-    /// Short, human-comparable fingerprint of a public key (e.g. `5359-5691`), shown on the receiver
-    /// and echoed by the sender so the developer can confirm they're paired with the right device.
-    static func fingerprint(of publicKey: Data) -> String {
-        let hex = SHA256.hash(data: publicKey).prefix(4).map { String(format: "%02X", $0) }.joined()
-        let mid = hex.index(hex.startIndex, offsetBy: 4)
-        return "\(hex[..<mid])-\(hex[mid...])"
     }
 }

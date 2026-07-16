@@ -2,9 +2,10 @@ import Foundation
 import Network
 
 /// Length-prefixed message framing over a raw TCP `NWConnection`: a big-endian `UInt32` byte count
-/// followed by that many bytes. The transfer is entirely app-to-app now, so this replaces HTTP —
-/// each side sends exactly one framed message (sender: the sealed envelope; receiver: a small JSON
-/// status) and closes.
+/// followed by that many bytes. The transfer is entirely app-to-app, so this replaces HTTP. A single
+/// transfer is a short sequence of framed messages on one connection — sender: `intent`, then (after
+/// the user scans the receiver's QR) the sealed envelope; receiver: a small JSON status — each read
+/// one at a time with `readMessage`.
 enum DebugSessionTransferFraming {
     /// Envelopes are a few hundred bytes; cap well above that to reject a bogus/hostile length.
     static let maxMessageBytes = 64 * 1024

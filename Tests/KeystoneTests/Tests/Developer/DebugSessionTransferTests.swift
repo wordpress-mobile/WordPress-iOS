@@ -80,13 +80,10 @@ struct DebugSessionTransferCryptoTests {
         #expect(DebugSessionTransferCrypto.decodePublicKey("!! not base64 !!") == nil)
     }
 
-    @Test func fingerprintIsStableAndFormatted() {
-        let key = makeReceiverKey().publicKey.rawRepresentation
-        let fingerprint = DebugSessionTransferCrypto.fingerprint(of: key)
-
-        #expect(fingerprint == DebugSessionTransferCrypto.fingerprint(of: key))
-        #expect(fingerprint.count == 9) // XXXX-XXXX
-        #expect(fingerprint.contains("-"))
+    @Test func intentEncodesAndDecodesAsJSON() throws {
+        let intent = DebugSessionTransferIntent(protocolVersion: "2")
+        let data = try JSONEncoder().encode(intent)
+        #expect(try JSONDecoder().decode(DebugSessionTransferIntent.self, from: data) == intent)
     }
 }
 
@@ -94,13 +91,12 @@ struct DebugSessionTransferCryptoTests {
 struct DebugSessionReceiverInfoTests {
     private func makeInfo() -> DebugSessionReceiverInfo {
         DebugSessionReceiverInfo(
-            protocolVersion: "1",
+            protocolVersion: "2",
             name: "media-test",
             model: "iPhone 15 Pro",
             isSimulator: true,
             app: "jetpack",
-            isSignedIn: false,
-            publicKey: Curve25519.KeyAgreement.PrivateKey().publicKey.rawRepresentation
+            isSignedIn: false
         )
     }
 
@@ -109,23 +105,26 @@ struct DebugSessionReceiverInfoTests {
         #expect(DebugSessionReceiverInfo(txtDictionary: info.txtDictionary) == info)
     }
 
-    @Test func parsingFailsWithoutAPublicKey() {
+    @Test func txtDictionaryCarriesNoKeyMaterial() {
+        // The receiver's public key must never be advertised — it lives only in the on-screen QR.
+        #expect(!makeInfo().txtDictionary.keys.contains("pk"))
+    }
+
+    @Test func parsingFailsWithoutAVersion() {
         var txt = makeInfo().txtDictionary
-        txt.removeValue(forKey: DebugSessionReceiverInfo.Key.publicKey)
+        txt.removeValue(forKey: DebugSessionReceiverInfo.Key.version)
         #expect(DebugSessionReceiverInfo(txtDictionary: txt) == nil)
     }
 
     @Test func platformAndSignedInDecodeToBooleans() throws {
-        let key = Curve25519.KeyAgreement.PrivateKey().publicKey.rawRepresentation
         let info = try #require(
             DebugSessionReceiverInfo(txtDictionary: [
-                DebugSessionReceiverInfo.Key.publicKey: DebugSessionTransferCrypto.encodePublicKey(key),
+                DebugSessionReceiverInfo.Key.version: "2",
                 DebugSessionReceiverInfo.Key.platform: "device",
                 DebugSessionReceiverInfo.Key.signedIn: "1"
             ])
         )
         #expect(info.isSimulator == false)
         #expect(info.isSignedIn == true)
-        #expect(info.publicKey == key)
     }
 }

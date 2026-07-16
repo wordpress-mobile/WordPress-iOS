@@ -21,10 +21,10 @@ On the **Simulator** (the receiver): just launch the app and leave it on the log
 
 On the **signed-in device** (the sender), either:
 
-- Open **Me ▸ App Settings ▸ Debug ▸ Session Transfer ▸ Send Session**, pick the Simulator from the list, and confirm the sheet; or
-- Turn on **Session Transfer ▸ Offer to log in nearby devices**. The app then watches for nearby devices asking to sign in while it's in the foreground and pops the confirmation automatically.
+- Open **Me ▸ App Settings ▸ Debug ▸ Session Transfer ▸ Send Session** and tap the Simulator in the list; or
+- Turn on **Session Transfer ▸ Offer to log in nearby devices** and tap **Continue** on the prompt when it appears. The app watches for nearby devices asking to sign in while it's in the foreground.
 
-Either way the session is sealed to a per-session public key the receiver advertises, so the bearer token is never readable in flight, and the sender only ever connects to a Bonjour-discovered device on the local network. The Simulator signs in and lands on the app.
+Either way the Simulator then shows a **QR code** and the sender opens the camera — point it at the QR to finish. The session is sealed to the key in that QR, which the receiver only ever shows on its screen (never over the network), so the token is unreadable in flight and can't be captured by an impostor advertising a fake receiver on the same Wi-Fi. The Simulator signs in and lands on the app.
 
 ## Self-hosted site
 

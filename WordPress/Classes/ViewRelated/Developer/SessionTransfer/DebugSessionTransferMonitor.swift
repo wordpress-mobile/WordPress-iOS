@@ -119,10 +119,15 @@ final class DebugSessionTransferMonitor {
         offeredReceiverIDs.insert(receiver.id)
 
         let view = DebugSessionTransferConsentView(
-            receiver: receiver,
-            onSend: { [weak self] in
-                self?.presentedController?.dismiss(animated: true)
-                Task { await DebugSessionTransferSendService.send(to: receiver) }
+            deviceName: receiver.info.name,
+            onContinue: { [weak self] in
+                // Start the flow only after the offer sheet is fully dismissed, so the scanner it
+                // presents lands on a clean topmost view controller rather than over (and then torn
+                // down with) the dismissing sheet.
+                self?.presentedController?
+                    .dismiss(animated: true) {
+                        DebugSessionTransferSendFlow.start(to: receiver)
+                    }
             },
             onClose: { [weak self] in
                 self?.presentedController?.dismiss(animated: true)

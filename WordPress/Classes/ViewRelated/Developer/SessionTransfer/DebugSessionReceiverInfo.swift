@@ -2,7 +2,13 @@ import Foundation
 
 /// The metadata a receiver advertises in its Bonjour TXT record, and which a sender parses back to
 /// populate its discovery list. Round-trips through the TXT key-value dictionary (`txtDictionary` /
-/// `init?(txtDictionary:)`), so the receiver and the (future) browser share one definition.
+/// `init?(txtDictionary:)`), so the receiver and the browser share one definition.
+///
+/// Deliberately carries **no key material** — the receiver's public key is shown only in its QR, on
+/// its own screen, and never travels the network. That's what makes an impostor receiver useless:
+/// the sender seals to the key it read off the physical screen, so a spoofed advertisement (the name
+/// here is attacker-controllable) can't get the token. See the security note on
+/// `DebugSessionTransferReceiver`.
 struct DebugSessionReceiverInfo: Equatable {
     var protocolVersion: String
     var name: String
@@ -10,7 +16,6 @@ struct DebugSessionReceiverInfo: Equatable {
     var isSimulator: Bool
     var app: String
     var isSignedIn: Bool
-    var publicKey: Data
 
     enum Key {
         static let version = "v"
@@ -19,7 +24,6 @@ struct DebugSessionReceiverInfo: Equatable {
         static let platform = "platform"
         static let app = "app"
         static let signedIn = "signedIn"
-        static let publicKey = "pk"
     }
 
     var txtDictionary: [String: String] {
@@ -29,8 +33,7 @@ struct DebugSessionReceiverInfo: Equatable {
             Key.model: model,
             Key.platform: isSimulator ? "simulator" : "device",
             Key.app: app,
-            Key.signedIn: isSignedIn ? "1" : "0",
-            Key.publicKey: DebugSessionTransferCrypto.encodePublicKey(publicKey)
+            Key.signedIn: isSignedIn ? "1" : "0"
         ]
     }
 
@@ -40,8 +43,7 @@ struct DebugSessionReceiverInfo: Equatable {
         model: String,
         isSimulator: Bool,
         app: String,
-        isSignedIn: Bool,
-        publicKey: Data
+        isSignedIn: Bool
     ) {
         self.protocolVersion = protocolVersion
         self.name = name
@@ -49,19 +51,15 @@ struct DebugSessionReceiverInfo: Equatable {
         self.isSimulator = isSimulator
         self.app = app
         self.isSignedIn = isSignedIn
-        self.publicKey = publicKey
     }
 
-    /// Parses a receiver's advertised TXT record. Returns `nil` when the public key — the one field
-    /// a sender can't proceed without — is missing or malformed.
+    /// Parses a receiver's advertised TXT record. Returns `nil` when the protocol version — the one
+    /// field a sender needs in order to know it can talk to this receiver — is missing.
     init?(txtDictionary txt: [String: String]) {
-        guard let publicKeyToken = txt[Key.publicKey],
-            let publicKey = DebugSessionTransferCrypto.decodePublicKey(publicKeyToken)
-        else {
+        guard let protocolVersion = txt[Key.version] else {
             return nil
         }
-        self.publicKey = publicKey
-        self.protocolVersion = txt[Key.version] ?? ""
+        self.protocolVersion = protocolVersion
         self.name = txt[Key.name] ?? ""
         self.model = txt[Key.model] ?? ""
         self.isSimulator = txt[Key.platform] == "simulator"

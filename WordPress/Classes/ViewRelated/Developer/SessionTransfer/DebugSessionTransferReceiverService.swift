@@ -1,9 +1,12 @@
 import BuildSettingsKit
+import SwiftUI
 import UIKit
+import WordPressUI
 
 /// Runs a headless `DebugSessionTransferReceiver` while the app is showing the login screen, so a
 /// signed-out instance — most usefully a fresh Simulator — automatically advertises for a session and
-/// can be signed in from a nearby device without opening a debug screen.
+/// can be signed in from a nearby device without opening a debug screen. When a sender signals intent,
+/// it presents the receiver's challenge QR over the login screen for the sender to scan.
 ///
 /// Scoped deliberately: the receiver only runs while the login prologue / WP.com login is on screen
 /// (driven by `RootViewCoordinator`) and the app is in the foreground. It stops the moment the app UI
@@ -14,6 +17,7 @@ final class DebugSessionTransferReceiverService {
     static let shared = DebugSessionTransferReceiverService()
 
     private var receiver: DebugSessionTransferReceiver?
+    private weak var challengeController: UIViewController?
     private var isLoginScreenVisible = false
     private var isForeground = false
     private var lifecycleStarted = false
@@ -72,7 +76,15 @@ final class DebugSessionTransferReceiverService {
 
     private func startReceiver() {
         guard receiver == nil else { return }
-        let receiver = DebugSessionTransferReceiver()
+        // The receiver hops to the main thread before calling these, so `assumeIsolated` is safe.
+        let receiver = DebugSessionTransferReceiver(
+            onChallenge: { [weak self] publicKey in
+                MainActor.assumeIsolated { self?.presentChallenge(publicKey: publicKey) }
+            },
+            onResolve: { [weak self] in
+                MainActor.assumeIsolated { self?.dismissChallenge() }
+            }
+        )
         self.receiver = receiver
         receiver.start()
     }
@@ -80,5 +92,39 @@ final class DebugSessionTransferReceiverService {
     private func stopReceiver() {
         receiver?.stop()
         receiver = nil
+        dismissChallenge()
+    }
+
+    // MARK: - Challenge QR
+
+    private func presentChallenge(publicKey: Data) {
+        guard challengeController == nil,
+            let presenter = WordPressAppDelegate.shared?.window?.topmostPresentedViewController
+        else {
+            return
+        }
+        let view = DebugSessionTransferChallengeView(
+            publicKey: publicKey,
+            onCancel: { [weak self] in self?.cancelChallenge() }
+        )
+        let controller = UIHostingController(rootView: view)
+        if let sheet = controller.sheetPresentationController {
+            sheet.detents = [.medium()]
+            sheet.prefersGrabberVisible = false
+        }
+        challengeController = controller
+        presenter.present(controller, animated: true)
+    }
+
+    private func dismissChallenge() {
+        challengeController?.dismiss(animated: true)
+        challengeController = nil
+    }
+
+    /// The user dismissed the QR: abandon the in-flight transfer by recycling the receiver, then keep
+    /// listening for the next one (if we should still be advertising).
+    private func cancelChallenge() {
+        stopReceiver()
+        updateActivation()
     }
 }

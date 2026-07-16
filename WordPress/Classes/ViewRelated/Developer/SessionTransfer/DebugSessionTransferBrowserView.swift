@@ -1,10 +1,10 @@
 import SwiftUI
 
-/// Debug-only screen that browses for session-transfer receivers on the local network and, after an
-/// explicit confirmation, logs the selected device into this device's WordPress.com account.
+/// Debug-only screen that browses for session-transfer receivers on the local network. Tapping one
+/// starts the send flow: it signals intent, opens the camera to scan that device's QR, then seals and
+/// sends this device's WordPress.com session to the scanned key.
 struct DebugSessionTransferBrowserView: View {
     @StateObject private var browser = DebugSessionTransferBrowser()
-    @State private var pendingConsent: DebugSessionTransferBrowser.DiscoveredReceiver?
 
     var body: some View {
         List {
@@ -19,7 +19,7 @@ struct DebugSessionTransferBrowserView: View {
                 Section {
                     ForEach(browser.receivers) { receiver in
                         Button {
-                            pendingConsent = receiver
+                            DebugSessionTransferSendFlow.start(to: receiver)
                         } label: {
                             row(for: receiver)
                         }
@@ -36,18 +36,6 @@ struct DebugSessionTransferBrowserView: View {
         .navigationBarTitleDisplayMode(.inline)
         .onAppear { browser.start() }
         .onDisappear { browser.stop() }
-        .sheet(item: $pendingConsent) { receiver in
-            DebugSessionTransferConsentView(
-                receiver: receiver,
-                onSend: {
-                    pendingConsent = nil
-                    Task { await DebugSessionTransferSendService.send(to: receiver) }
-                },
-                onClose: { pendingConsent = nil }
-            )
-            .presentationDetents([.medium])
-            .presentationDragIndicator(.hidden)
-        }
     }
 
     private func row(for receiver: DebugSessionTransferBrowser.DiscoveredReceiver) -> some View {
@@ -93,7 +81,8 @@ private enum Strings {
     )
     static let footer = NSLocalizedString(
         "debugMenu.sessionTransfer.send.footer",
-        value: "Devices with Receive Session open on the same Wi-Fi appear here.",
+        value:
+            "Devices sitting on the login screen on the same Wi-Fi appear here. Tap one to scan its code and sign it in.",
         comment: "Explanation below the list of discovered receivers"
     )
     static let simulator = NSLocalizedString(

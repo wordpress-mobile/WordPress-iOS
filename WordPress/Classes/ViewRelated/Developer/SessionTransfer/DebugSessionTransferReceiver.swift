@@ -10,36 +10,62 @@ import WordPressData
 /// network, so an app instance — most usefully one running in the iOS Simulator — can be signed in
 /// without repeating the web OAuth flow.
 ///
-/// The receiver binds a TCP listener. In the Simulator that socket lives on the host Mac, so it is
-/// reachable from a physical device on the same Wi-Fi via the Mac's LAN address, and it advertises
-/// itself over Bonjour. It publishes a per-session X25519 public key in the Bonjour TXT record; the
-/// sender seals the session to that key, so the bearer token is never readable in flight even though
-/// the transport is plaintext TCP.
+/// The receiver binds a TCP listener and advertises `_wpcom-login._tcp` over Bonjour (headless,
+/// carrying no key). In the Simulator that socket lives on the host Mac, so it is reachable from a
+/// physical device on the same Wi-Fi via the Mac's LAN address. It runs while the app is on the
+/// login screen, driven by `DebugSessionTransferReceiverService`.
 ///
-/// It runs headless, started and stopped by `DebugSessionTransferReceiverService` while the app is on
-/// the login screen. The wire protocol is a single length-prefixed message each way (see
-/// `DebugSessionTransferFraming`): the sender sends the sealed `DebugSessionEnvelope`, the receiver
-/// replies with a small JSON status.
+/// ## Security model
+///
+/// The handshake is designed so that the only way to hand this device a session is to physically
+/// scan the QR it draws:
+///
+///   1. The sender signals `intent` (no key material).
+///   2. On intent, the receiver mints a **fresh** X25519 key pair and shows the *public* half as a QR
+///      **on its own screen** (`onChallenge`). The public key never travels the network — not over
+///      Bonjour, not over this connection.
+///   3. The sender scans that QR, seals the session to the scanned key, and sends the envelope.
+///   4. The receiver opens it with the matching private key and signs in.
+///
+/// Because the public key exists only on the glass, a sender that never scanned it has nothing to
+/// seal to and cannot produce anything this private key will open — that defeats both an impostor
+/// *receiver* (a spoofed Bonjour advertisement, whose name is attacker-controllable) and an impostor
+/// *sender* (a remote attacker trying to push a session). And because the key is fresh **per QR**,
+/// successful decryption is itself proof the sender scanned *this* QR, and replay is impossible: an
+/// envelope sealed to an earlier QR's key is undecryptable garbage to the current one. The AES-GCM
+/// encryption (see `DebugSessionTransferCrypto`) separately keeps a passive sniffer from reading the
+/// token. What this does *not* defend: someone who can physically see your screen and shoulder-surf
+/// the QR — a person standing next to you.
 final class DebugSessionTransferReceiver {
     /// Bonjour service type the receiver advertises so a sender can discover it on the local network.
     /// Must be listed in `NSBonjourServices` in the app's Info.plist.
     static let bonjourServiceType = "_wpcom-login._tcp"
 
-    /// Version of the transfer protocol, advertised so a sender can reject incompatible receivers.
-    static let protocolVersion = "1"
-
-    /// Per-session key agreement pair. A sender seals the session to `publicKey`; only this instance
-    /// holds the private half, so nobody else — including a network sniffer — can read the token.
-    private let privateKey = Curve25519.KeyAgreement.PrivateKey()
-
-    private var publicKey: Data { privateKey.publicKey.rawRepresentation }
+    /// Version of the transfer protocol, advertised so a sender can reject an incompatible receiver.
+    static let protocolVersion = "2"
 
     private let signIn: (String) async throws -> String?
+    /// Called on the main thread with a freshly minted public key when a sender signals intent — the
+    /// service renders it as a QR on screen. `onResolve` is called (main thread) when the exchange
+    /// finishes, fails, or times out, so the service can take the QR back down.
+    private let onChallenge: (Data) -> Void
+    private let onResolve: () -> Void
+
     private let queue = DispatchQueue(label: "org.wordpress.debug-session-transfer.receiver")
     private var listener: NWListener?
 
-    init(signIn: @escaping (String) async throws -> String? = DebugSessionTransferReceiver.defaultSignIn) {
+    /// How long to keep a challenge (and its QR) alive waiting for the sealed envelope before giving
+    /// up — long enough for the user to grant camera access and line up the scan.
+    private static let challengeTimeout: TimeInterval = 120
+
+    init(
+        signIn: @escaping (String) async throws -> String? = DebugSessionTransferReceiver.defaultSignIn,
+        onChallenge: @escaping (Data) -> Void = { _ in },
+        onResolve: @escaping () -> Void = {}
+    ) {
         self.signIn = signIn
+        self.onChallenge = onChallenge
+        self.onResolve = onResolve
     }
 
     // MARK: - Advertised identity
@@ -66,8 +92,8 @@ final class DebugSessionTransferReceiver {
     }
 
     /// Metadata advertised alongside the service (see `DebugSessionReceiverInfo`): protocol version,
-    /// device identity, which app, whether it's already signed in (so a sender can warn before
-    /// replacing an account), and the public key to seal the session to.
+    /// device identity, which app, and whether it's already signed in (so a sender can warn before
+    /// replacing an account). Deliberately no key — that only ever appears in the QR.
     private func advertisedInfo() -> DebugSessionReceiverInfo {
         DebugSessionReceiverInfo(
             protocolVersion: Self.protocolVersion,
@@ -75,8 +101,7 @@ final class DebugSessionTransferReceiver {
             model: Self.deviceModel,
             isSimulator: Self.isSimulator,
             app: AppConfiguration.isJetpack ? "jetpack" : "wordpress",
-            isSignedIn: AccountHelper.isDotcomAvailable(),
-            publicKey: publicKey
+            isSignedIn: AccountHelper.isDotcomAvailable()
         )
     }
 
@@ -126,28 +151,79 @@ final class DebugSessionTransferReceiver {
 
     private func accept(_ connection: NWConnection) {
         connection.start(queue: queue)
+        // Message 1: the sender's intent. It carries no key — it only asks us to reveal our QR.
         DebugSessionTransferFraming.readMessage(from: connection) { [weak self] result in
             switch result {
-            case .success(let message):
-                self?.handle(message: message, on: connection)
+            case .success(let data):
+                self?.handleIntent(data, on: connection)
             case .failure:
                 connection.cancel()
             }
         }
     }
 
-    private func handle(message: Data, on connection: NWConnection) {
-        guard let envelope = try? JSONDecoder().decode(DebugSessionEnvelope.self, from: message),
-            let session = try? DebugSessionTransferCrypto.open(envelope, with: privateKey)
+    private func handleIntent(_ data: Data, on connection: NWConnection) {
+        guard let intent = try? JSONDecoder().decode(DebugSessionTransferIntent.self, from: data),
+            intent.protocolVersion == Self.protocolVersion
         else {
-            respond(["error": "invalid_payload"], on: connection)
+            respond(["error": "unsupported"], on: connection)
             return
         }
 
-        // Acknowledge delivery immediately, then sign in independently. Signing in fetches account
-        // details and syncs blogs, which can take longer than the sender's timeout — and delivery is
-        // all the sender is waiting on.
+        // ── SECURITY (load-bearing) ─────────────────────────────────────────────────────────────
+        // Mint a FRESH key pair for THIS transfer and hand only the public half to the on-screen QR.
+        //
+        //   * The public key never touches the network — not Bonjour, not this connection. It exists
+        //     only on our screen, so a sender that didn't physically scan our QR has nothing to seal
+        //     to and can't produce anything `privateKey` will open. Authenticity comes from the key
+        //     being read off the glass, not asserted over the wire — which is what makes both an
+        //     impostor receiver and an impostor sender useless.
+        //   * A fresh key *per QR* makes successful decryption below proof that the sender scanned
+        //     *this* QR, and makes replay impossible: an envelope sealed to a previous QR's key is
+        //     undecryptable garbage to this one.
+        //
+        // Do NOT hoist this key to a stored property or reuse it across transfers — the guarantee
+        // depends on it being minted fresh, here, every time.
+        let privateKey = Curve25519.KeyAgreement.PrivateKey()
+        let publicKey = privateKey.publicKey.rawRepresentation
+        DispatchQueue.main.async { self.onChallenge(publicKey) }
+
+        // Give up if the sealed envelope doesn't arrive — the sender abandoning the scan usually
+        // closes the connection (surfacing as a read failure below), but this covers a silent drop.
+        queue.asyncAfter(deadline: .now() + Self.challengeTimeout) { [weak connection] in
+            connection?.cancel()
+        }
+
+        // Message 2: the sealed session, which the sender can only produce after scanning the QR.
+        DebugSessionTransferFraming.readMessage(from: connection) { [weak self] result in
+            switch result {
+            case .success(let data):
+                self?.handleEnvelope(data, on: connection, privateKey: privateKey)
+            case .failure:
+                self?.resolve()
+                connection.cancel()
+            }
+        }
+    }
+
+    private func handleEnvelope(
+        _ data: Data,
+        on connection: NWConnection,
+        privateKey: Curve25519.KeyAgreement.PrivateKey
+    ) {
+        guard let envelope = try? JSONDecoder().decode(DebugSessionEnvelope.self, from: data),
+            let session = try? DebugSessionTransferCrypto.open(envelope, with: privateKey)
+        else {
+            // Undecryptable: sealed to a different key (so not a response to our QR) or corrupt.
+            respond(["error": "invalid_payload"], on: connection)
+            resolve()
+            return
+        }
+
+        // Decryption succeeded ⇒ this envelope was sealed to the key we just drew ⇒ the sender scanned
+        // our QR. Acknowledge delivery, take the QR down, stop listening, and sign in.
         respond(["status": "signed_in"], on: connection)
+        resolve()
         stop()
 
         Task {
@@ -155,8 +231,7 @@ final class DebugSessionTransferReceiver {
                 _ = try await self.signIn(session.token)
                 // Swap the window root from the login prologue to the signed-in app. Creating the
                 // account isn't enough on its own — without this the app stays on the login screen.
-                // Mirrors what `WordPressAuthenticationManager` does after the normal OAuth flow;
-                // `showUI()` shows the app now that `AccountHelper.isLoggedIn` is true.
+                // Mirrors what `WordPressAuthenticationManager` does after the normal OAuth flow.
                 DispatchQueue.main.async {
                     WordPressAppDelegate.shared?.windowManager.showUI()
                 }
@@ -164,6 +239,11 @@ final class DebugSessionTransferReceiver {
                 Loggers.networking.error("Session transfer sign-in failed: \(error)")
             }
         }
+    }
+
+    /// Takes the challenge QR back down (idempotent — safe to call from any terminal path).
+    private func resolve() {
+        DispatchQueue.main.async { self.onResolve() }
     }
 
     private func respond(_ status: [String: String], on connection: NWConnection) {
