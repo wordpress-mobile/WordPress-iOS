@@ -42,9 +42,6 @@ final class DebugSessionTransferReceiver: ObservableObject {
 
     private var publicKey: Data { privateKey.publicKey.rawRepresentation }
 
-    /// URL-safe encoding of the public key, carried in the QR / deep link and the Bonjour TXT record.
-    var publicKeyToken: String { DebugSessionTransferCrypto.encodePublicKey(publicKey) }
-
     /// Short public-key fingerprint, shown so a sender can confirm it's paired with this device.
     var fingerprint: String { DebugSessionTransferCrypto.fingerprint(of: publicKey) }
 

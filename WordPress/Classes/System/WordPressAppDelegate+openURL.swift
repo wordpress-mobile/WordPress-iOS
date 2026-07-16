@@ -1,9 +1,7 @@
 import AutomatticTracks
 import BuildSettingsKit
-import SwiftUI
 import WordPressData
 import WordPressShared
-import WordPressUI
 
 @objc extension WordPressAppDelegate {
     /// Routes an inbound URL (custom scheme deep links, magic-login, migration, OAuth).
@@ -58,10 +56,6 @@ import WordPressUI
             return handleViewStats(url: url)
         case "debugging":
             return handleDebugging(url: url)
-        case "send-session":
-            return handleSendSession(url: url)
-        case "receive-session":
-            return handleReceiveSession(url: url)
         default:
             return false
         }
@@ -132,65 +126,6 @@ import WordPressUI
             WordPressAppDelegate.crashLogging?.crash()
         }
 
-        return true
-    }
-
-    /// Handle a `send-session` deep link (produced by scanning a receiver's QR code) by asking the
-    /// developer to confirm, then POSTing this device's session to the receiver. Internal builds
-    /// only, and only for local-network destinations, so a crafted link can't exfiltrate the token
-    /// to a public host.
-    private func handleSendSession(url: URL) -> Bool {
-        guard BuildConfiguration.current.isInternal else {
-            return false
-        }
-        guard let presenter = window?.topmostPresentedViewController else {
-            return false
-        }
-
-        // With host/port/pk (from a QR / deep link) confirm and send directly; without them, open
-        // the browser to pick a receiver discovered over Bonjour.
-        if let params = url.queryItems,
-            let host = params.value(of: "host"),
-            let portString = params.value(of: "port"),
-            let port = UInt16(portString),
-            let publicKeyToken = params.value(of: "pk"),
-            let publicKey = DebugSessionTransferCrypto.decodePublicKey(publicKeyToken),
-            DebugSessionTransferSender.isLocalHost(host)
-        {
-            DebugSessionTransferSendFlow.present(from: presenter, host: host, port: port, publicKey: publicKey)
-        } else {
-            let hostingController = UIHostingController(rootView: DebugSessionTransferBrowserView())
-            let navigationController = UINavigationController(rootViewController: hostingController)
-            hostingController.navigationItem.leftBarButtonItem = UIBarButtonItem(
-                systemItem: .close,
-                primaryAction: UIAction { [weak navigationController] _ in
-                    navigationController?.dismiss(animated: true)
-                }
-            )
-            presenter.present(navigationController, animated: true)
-        }
-        return true
-    }
-
-    /// Open the receiver screen from a `receive-session` deep link — handy for launching the
-    /// listener without navigating the debug menu (e.g. via `simctl openurl`). Internal builds only.
-    private func handleReceiveSession(url: URL) -> Bool {
-        guard BuildConfiguration.current.isInternal else {
-            return false
-        }
-        guard let presenter = window?.topmostPresentedViewController else {
-            return false
-        }
-
-        let hostingController = UIHostingController(rootView: DebugSessionTransferReceiverView())
-        let navigationController = UINavigationController(rootViewController: hostingController)
-        hostingController.navigationItem.leftBarButtonItem = UIBarButtonItem(
-            systemItem: .close,
-            primaryAction: UIAction { [weak navigationController] _ in
-                navigationController?.dismiss(animated: true)
-            }
-        )
-        presenter.present(navigationController, animated: true)
         return true
     }
 

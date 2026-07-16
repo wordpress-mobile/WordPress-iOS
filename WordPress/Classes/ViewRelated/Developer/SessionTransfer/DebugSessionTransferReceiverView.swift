@@ -1,5 +1,3 @@
-import BuildSettingsKit
-import CoreImage.CIFilterBuiltins
 import SwiftUI
 import UIKit
 
@@ -67,22 +65,6 @@ struct DebugSessionTransferReceiverView: View {
             } footer: {
                 Text(Strings.instructions)
             }
-
-            if let qr = qrImage(for: sendSessionURL(address: address, port: port)) {
-                Section {
-                    HStack {
-                        Spacer()
-                        Image(uiImage: qr)
-                            .interpolation(.none)
-                            .resizable()
-                            .scaledToFit()
-                            .frame(width: 220, height: 220)
-                        Spacer()
-                    }
-                } header: {
-                    Text(Strings.scanHeader)
-                }
-            }
         } else {
             Section {
                 Label(Strings.noAddress, systemImage: "wifi.slash")
@@ -91,24 +73,6 @@ struct DebugSessionTransferReceiverView: View {
                 Text(Strings.waiting)
             }
         }
-    }
-
-    /// The `send-session` deep link the receiver's QR encodes. Scanning it on the signed-in device
-    /// opens the app (via the app's URL scheme) to a confirmation prompt that seals the session to
-    /// this receiver's public key (`pk`) before sending it.
-    private func sendSessionURL(address: String, port: UInt16) -> String {
-        "\(BuildSettings.current.appURLScheme)://send-session?host=\(address)&port=\(port)&pk=\(receiver.publicKeyToken)"
-    }
-
-    /// A QR code encoding `string`, for the other device's camera to scan.
-    private func qrImage(for string: String) -> UIImage? {
-        let filter = CIFilter.qrCodeGenerator()
-        filter.message = Data(string.utf8)
-        filter.correctionLevel = "M"
-        guard let output = filter.outputImage else { return nil }
-        let scaled = output.transformed(by: CGAffineTransform(scaleX: 10, y: 10))
-        guard let cgImage = CIContext().createCGImage(scaled, from: scaled.extent) else { return nil }
-        return UIImage(cgImage: cgImage)
     }
 }
 
@@ -148,11 +112,6 @@ private enum Strings {
         value:
             "Send your WordPress.com session here from a signed-in device on the same Wi-Fi.",
         comment: "Instructions explaining how to push a session to this device"
-    )
-    static let scanHeader = NSLocalizedString(
-        "debugMenu.sessionTransfer.receive.scanHeader",
-        value: "Scan to connect",
-        comment: "Header above a QR code the other device scans to reach this device"
     )
     static let signingIn = NSLocalizedString(
         "debugMenu.sessionTransfer.receive.signingIn",

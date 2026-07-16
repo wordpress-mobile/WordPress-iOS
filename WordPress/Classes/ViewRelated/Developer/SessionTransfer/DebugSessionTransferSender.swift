@@ -8,8 +8,6 @@ import Network
 /// Mac's LAN address. Debug/internal builds only.
 enum DebugSessionTransferSender {
     enum SendError: Error, LocalizedError {
-        case invalidHost
-        case notLocalHost
         case invalidResponse
         case timedOut
         case rejected(String)
@@ -17,18 +15,6 @@ enum DebugSessionTransferSender {
 
         var errorDescription: String? {
             switch self {
-            case .invalidHost:
-                return NSLocalizedString(
-                    "debugMenu.sessionTransfer.send.error.invalidHost",
-                    value: "Invalid address.",
-                    comment: "Error shown when the session transfer destination address is malformed"
-                )
-            case .notLocalHost:
-                return NSLocalizedString(
-                    "debugMenu.sessionTransfer.send.error.notLocalHost",
-                    value: "Sessions can only be sent to a device on your local network.",
-                    comment: "Error shown when refusing to send a session to a non-local address"
-                )
             case .invalidResponse:
                 return NSLocalizedString(
                     "debugMenu.sessionTransfer.send.error.invalidResponse",
@@ -49,17 +35,8 @@ enum DebugSessionTransferSender {
         }
     }
 
-    /// Sends the sealed envelope to a receiver at `host:port` (the deep-link path). Guards that the
-    /// destination is local so a crafted link can't exfiltrate the token to a public host.
-    static func send(_ envelope: DebugSessionEnvelope, toHost host: String, port: UInt16) async throws {
-        guard isLocalHost(host) else { throw SendError.notLocalHost }
-        guard let nwPort = NWEndpoint.Port(rawValue: port) else { throw SendError.invalidHost }
-        try await send(envelope, to: .hostPort(host: NWEndpoint.Host(host), port: nwPort))
-    }
-
-    /// Opens a raw TCP connection to `endpoint` — a Bonjour service (from the browser) or a host and
-    /// port (from the deep link) — sends the sealed envelope as one length-prefixed message, and
-    /// awaits the receiver's status reply.
+    /// Opens a raw TCP connection to the receiver's Bonjour `endpoint` (from the browser), sends the
+    /// sealed envelope as one length-prefixed message, and awaits the receiver's status reply.
     ///
     /// Plain TCP over `NWConnection`: the envelope is already encrypted to the receiver's public
     /// key, so there's nothing for a sniffer to read, and Network.framework isn't subject to ATS.
@@ -113,23 +90,6 @@ enum DebugSessionTransferSender {
         }
         guard response?["status"] == "signed_in" else {
             throw SendError.invalidResponse
-        }
-    }
-
-    /// Whether `host` is an IPv4 address on the local network (private, loopback, or link-local),
-    /// or a `.local`/`localhost` name. Guards against a crafted deep link exfiltrating the token to
-    /// a public server.
-    static func isLocalHost(_ host: String) -> Bool {
-        if host == "localhost" || host.hasSuffix(".local") { return true }
-        let octets = host.split(separator: ".", omittingEmptySubsequences: false).compactMap { UInt8($0) }
-        guard octets.count == 4 else { return false }
-        switch (octets[0], octets[1]) {
-        case (10, _), (127, _), (192, 168):
-            return true
-        case (169, 254), (172, 16...31):
-            return true
-        default:
-            return false
         }
     }
 }
