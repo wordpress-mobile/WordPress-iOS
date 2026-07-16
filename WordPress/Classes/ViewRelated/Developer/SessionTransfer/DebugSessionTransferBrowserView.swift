@@ -38,18 +38,14 @@ struct DebugSessionTransferBrowserView: View {
         .navigationBarTitleDisplayMode(.inline)
         .onAppear { browser.start() }
         .onDisappear { browser.stop() }
-        .alert(Strings.consentTitle, isPresented: consentPresented, presenting: pendingConsent) { receiver in
-            Button(Strings.allow) {
+        .sheet(item: $pendingConsent) { receiver in
+            ConsentSheet(receiver: receiver) {
+                pendingConsent = nil
                 Task { await send(to: receiver) }
             }
-            Button(SharedStrings.Button.cancel, role: .cancel) {}
-        } message: { receiver in
-            Text(String(format: Strings.consentMessage, receiver.info.name))
+            .presentationDetents([.medium])
+            .presentationDragIndicator(.hidden)
         }
-    }
-
-    private var consentPresented: Binding<Bool> {
-        Binding(get: { pendingConsent != nil }, set: { if !$0 { pendingConsent = nil } })
     }
 
     private func row(for receiver: DebugSessionTransferBrowser.DiscoveredReceiver) -> some View {
@@ -97,6 +93,75 @@ struct DebugSessionTransferBrowserView: View {
     }
 }
 
+/// Confirmation shown before a session leaves this device, styled after the system "Share Wi-Fi
+/// Password" sheet. It names the destination device and shows the receiver's key fingerprint so it
+/// can be compared against the one on the receiver's screen before sending — a manual check that the
+/// session is being sealed to the intended device and not an impostor advertising the same name.
+private struct ConsentSheet: View {
+    let receiver: DebugSessionTransferBrowser.DiscoveredReceiver
+    let onSend: () -> Void
+
+    @Environment(\.dismiss) private var dismiss
+
+    private var fingerprint: String {
+        DebugSessionTransferCrypto.fingerprint(of: receiver.info.publicKey)
+    }
+
+    var body: some View {
+        VStack(spacing: 0) {
+            HStack {
+                Spacer()
+                Button {
+                    dismiss()
+                } label: {
+                    Image(systemName: "xmark.circle.fill")
+                        .font(.title2)
+                        .symbolRenderingMode(.hierarchical)
+                        .foregroundStyle(.secondary)
+                }
+                .accessibilityLabel(SharedStrings.Button.close)
+            }
+
+            Text(Strings.sheetTitle)
+                .font(.title.weight(.bold))
+                .multilineTextAlignment(.center)
+
+            Text(String(format: Strings.sheetBody, receiver.info.name))
+                .multilineTextAlignment(.center)
+                .foregroundStyle(.secondary)
+                .padding(.top, 8)
+
+            Spacer(minLength: 20)
+
+            Image(systemName: "person.badge.key.fill")
+                .font(.system(size: 52))
+                .foregroundStyle(.blue)
+
+            VStack(spacing: 2) {
+                Text(Strings.verification)
+                    .font(.footnote)
+                    .foregroundStyle(.secondary)
+                Text(fingerprint)
+                    .font(.system(.title3, design: .monospaced).weight(.semibold))
+                    .textSelection(.enabled)
+            }
+            .padding(.top, 20)
+
+            Spacer(minLength: 20)
+
+            Button(action: onSend) {
+                Text(Strings.send)
+                    .font(.headline)
+                    .frame(maxWidth: .infinity)
+            }
+            .buttonStyle(.borderedProminent)
+            .controlSize(.large)
+            .tint(.blue)
+        }
+        .padding(24)
+    }
+}
+
 private enum Strings {
     static let title = NSLocalizedString(
         "debugMenu.sessionTransfer.send.title",
@@ -128,20 +193,25 @@ private enum Strings {
         value: "Signed in",
         comment: "Badge shown when a receiver already has an account (sending will replace it)"
     )
-    static let consentTitle = NSLocalizedString(
-        "debugMenu.sessionTransfer.send.consentTitle",
-        value: "Allow Login?",
-        comment: "Title of the confirmation before logging another device into this account"
+    static let sheetTitle = NSLocalizedString(
+        "debugMenu.sessionTransfer.send.sheetTitle",
+        value: "WordPress.com Session",
+        comment: "Title of the sheet shown before sending a WordPress.com session to another device"
     )
-    static let consentMessage = NSLocalizedString(
-        "debugMenu.sessionTransfer.send.consentBody",
-        value: "Device “%@” is asking to log in to your WordPress.com account.",
-        comment: "Confirmation body; %@ is the requesting device's name"
+    static let sheetBody = NSLocalizedString(
+        "debugMenu.sessionTransfer.send.sheetBody",
+        value: "Do you want to log “%@” in to your WordPress.com account?",
+        comment: "Body of the send confirmation sheet; %@ is the destination device's name"
     )
-    static let allow = NSLocalizedString(
-        "debugMenu.sessionTransfer.send.allow",
-        value: "Allow",
-        comment: "Button that confirms logging the other device into this account"
+    static let verification = NSLocalizedString(
+        "debugMenu.sessionTransfer.send.verification",
+        value: "Verification",
+        comment: "Label above the key fingerprint the user compares against the receiver's screen"
+    )
+    static let send = NSLocalizedString(
+        "debugMenu.sessionTransfer.send.confirm",
+        value: "Send Session",
+        comment: "Button that confirms sending the session to log the other device in"
     )
     static let sending = NSLocalizedString(
         "debugMenu.sessionTransfer.send.sending",
