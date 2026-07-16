@@ -229,6 +229,11 @@ public class WordPressAppDelegate: UIResponder, UIApplicationDelegate {
         setupNoticePresenter()
         AppTips.initialize()
 
+        // Begin observing the foreground lifecycle so the app can offer to log a nearby device in.
+        // Internal builds only, and it does not browse (so no Local Network prompt appears) until the
+        // debug setting turns it on.
+        DebugSessionTransferMonitor.shared.start()
+
         // This was necessary to properly load fonts for the Stories editor. I believe external libraries may require this call to access fonts.
         let fonts = Bundle.main.urls(forResourcesWithExtension: "ttf", subdirectory: nil)
         fonts?
