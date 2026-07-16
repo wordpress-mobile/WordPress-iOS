@@ -28,10 +28,12 @@ struct DebugSessionTransferChallengeView: View {
             Text(Strings.title)
                 .font(.title.weight(.bold))
                 .multilineTextAlignment(.center)
+                .fixedSize(horizontal: false, vertical: true)
 
             Text(Strings.subtitle)
                 .multilineTextAlignment(.center)
                 .foregroundStyle(.secondary)
+                .fixedSize(horizontal: false, vertical: true)
                 .padding(.top, 8)
 
             Spacer(minLength: 24)

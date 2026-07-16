@@ -37,9 +37,12 @@ final class DebugSessionTransferMonitor {
     /// time.
     private var presentedReceiverID: String?
     private weak var presentedController: UIViewController?
-    /// Receivers already offered during this browse session, so a steady advertisement doesn't
-    /// re-prompt after the user dismisses it.
-    private var offeredReceiverIDs: Set<String> = []
+    /// When each receiver was last offered, so a steady advertisement doesn't re-prompt and a device
+    /// isn't offered again for a while after the user has already dealt with it.
+    private var lastOfferedAt: [String: Date] = [:]
+
+    /// How long to wait before offering the same device again.
+    private static let reofferInterval: TimeInterval = 5 * 60
 
     private init() {}
 
@@ -95,20 +98,37 @@ final class DebugSessionTransferMonitor {
         guard receiversObserver != nil else { return }
         browser.stop()
         receiversObserver = nil
-        offeredReceiverIDs.removeAll()
+        lastOfferedAt.removeAll()
     }
 
     private func offerHelp(for receivers: [DebugSessionTransferBrowser.DiscoveredReceiver]) {
-        // Forget devices that have gone away, so they can prompt again if they return.
-        offeredReceiverIDs.formIntersection(receivers.map(\.id))
+        let currentIDs = Set(receivers.map(\.id))
+
+        // Take down a lingering offer whose device has gone away — e.g. it just signed in, or the
+        // user handled it another way. This is the "hide it after sharing" behaviour.
+        if let presentedReceiverID, !currentIDs.contains(presentedReceiverID) {
+            dismissOffer()
+        }
 
         guard presentedReceiverID == nil,
             AccountHelper.isLoggedIn,
-            let receiver = receivers.first(where: { !offeredReceiverIDs.contains($0.id) })
+            let receiver = receivers.first(where: { canOffer($0.id) })
         else {
             return
         }
         present(receiver)
+    }
+
+    /// Whether enough time has passed since this device was last offered to prompt for it again.
+    private func canOffer(_ id: String) -> Bool {
+        guard let last = lastOfferedAt[id] else { return true }
+        return Date().timeIntervalSince(last) >= Self.reofferInterval
+    }
+
+    private func dismissOffer() {
+        presentedController?.dismiss(animated: true)
+        presentedController = nil
+        presentedReceiverID = nil
     }
 
     private func present(_ receiver: DebugSessionTransferBrowser.DiscoveredReceiver) {
@@ -116,7 +136,7 @@ final class DebugSessionTransferMonitor {
             return
         }
         presentedReceiverID = receiver.id
-        offeredReceiverIDs.insert(receiver.id)
+        lastOfferedAt[receiver.id] = Date()
 
         let view = DebugSessionTransferConsentView(
             deviceName: receiver.info.name,

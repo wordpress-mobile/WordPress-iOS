@@ -81,8 +81,8 @@ final class DebugSessionTransferReceiverService {
             onChallenge: { [weak self] publicKey in
                 MainActor.assumeIsolated { self?.presentChallenge(publicKey: publicKey) }
             },
-            onResolve: { [weak self] in
-                MainActor.assumeIsolated { self?.dismissChallenge() }
+            onResolve: { [weak self] signedIn in
+                MainActor.assumeIsolated { self?.challengeResolved(signedIn: signedIn) }
             }
         )
         self.receiver = receiver
@@ -108,8 +108,10 @@ final class DebugSessionTransferReceiverService {
             onCancel: { [weak self] in self?.cancelChallenge() }
         )
         let controller = UIHostingController(rootView: view)
+        // `.large` so the title, subtitle, and QR all fit without the sheet compressing (and clipping)
+        // the text.
         if let sheet = controller.sheetPresentationController {
-            sheet.detents = [.medium()]
+            sheet.detents = [.large()]
             sheet.prefersGrabberVisible = false
         }
         challengeController = controller
@@ -119,6 +121,18 @@ final class DebugSessionTransferReceiverService {
     private func dismissChallenge() {
         challengeController?.dismiss(animated: true)
         challengeController = nil
+    }
+
+    /// The receiver finished a challenge. Take the QR down; if the pairing was abandoned (not signed
+    /// in), recycle the receiver to resume advertising — it stopped advertising when the QR went up.
+    /// Deferred so we don't tear the receiver down from inside its own callback.
+    private func challengeResolved(signedIn: Bool) {
+        dismissChallenge()
+        guard !signedIn else { return }
+        Task { @MainActor in
+            self.stopReceiver()
+            self.updateActivation()
+        }
     }
 
     /// The user dismissed the QR: abandon the in-flight transfer by recycling the receiver, then keep

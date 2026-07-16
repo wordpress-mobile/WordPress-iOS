@@ -2,6 +2,7 @@ import CryptoKit
 import Foundation
 import Logging
 import Network
+import SVProgressHUD
 import UIDeviceIdentifier
 import UIKit
 import WordPressData
@@ -49,7 +50,9 @@ final class DebugSessionTransferReceiver {
     /// service renders it as a QR on screen. `onResolve` is called (main thread) when the exchange
     /// finishes, fails, or times out, so the service can take the QR back down.
     private let onChallenge: (Data) -> Void
-    private let onResolve: () -> Void
+    /// `signedIn` is true when the transfer completed and we're signing in (the login screen is about
+    /// to go away), false when the pairing was abandoned and the caller should resume advertising.
+    private let onResolve: (Bool) -> Void
 
     private let queue = DispatchQueue(label: "org.wordpress.debug-session-transfer.receiver")
     private var listener: NWListener?
@@ -61,7 +64,7 @@ final class DebugSessionTransferReceiver {
     init(
         signIn: @escaping (String) async throws -> String? = DebugSessionTransferReceiver.defaultSignIn,
         onChallenge: @escaping (Data) -> Void = { _ in },
-        onResolve: @escaping () -> Void = {}
+        onResolve: @escaping (Bool) -> Void = { _ in }
     ) {
         self.signIn = signIn
         self.onChallenge = onChallenge
@@ -188,6 +191,12 @@ final class DebugSessionTransferReceiver {
         let publicKey = privateKey.publicKey.rawRepresentation
         DispatchQueue.main.async { self.onChallenge(publicKey) }
 
+        // Commit to this one pairing: stop advertising (and accepting new connections) so a second
+        // sender can't discover us or start a competing exchange while this QR is up. This connection
+        // is already accepted, so it stays alive to receive the envelope. If the pairing is abandoned,
+        // `onResolve(false)` tells the service to resume advertising.
+        stop()
+
         // Give up if the sealed envelope doesn't arrive — the sender abandoning the scan usually
         // closes the connection (surfacing as a read failure below), but this covers a silent drop.
         queue.asyncAfter(deadline: .now() + Self.challengeTimeout) { [weak connection] in
@@ -200,7 +209,7 @@ final class DebugSessionTransferReceiver {
             case .success(let data):
                 self?.handleEnvelope(data, on: connection, privateKey: privateKey)
             case .failure:
-                self?.resolve()
+                self?.resolve(signedIn: false)
                 connection.cancel()
             }
         }
@@ -216,15 +225,21 @@ final class DebugSessionTransferReceiver {
         else {
             // Undecryptable: sealed to a different key (so not a response to our QR) or corrupt.
             respond(["error": "invalid_payload"], on: connection)
-            resolve()
+            resolve(signedIn: false)
             return
         }
 
         // Decryption succeeded ⇒ this envelope was sealed to the key we just drew ⇒ the sender scanned
-        // our QR. Acknowledge delivery, take the QR down, stop listening, and sign in.
+        // our QR. Acknowledge delivery, take the QR down, and sign in. (Advertising already stopped when
+        // the QR went up.)
         respond(["status": "signed_in"], on: connection)
-        resolve()
-        stop()
+        resolve(signedIn: true)
+
+        // Show the same progress HUD the web sign-in shows while it fetches account details and syncs
+        // blogs, so the device isn't blank between "received" and landing on the app.
+        DispatchQueue.main.async {
+            SVProgressHUD.show()
+        }
 
         Task {
             do {
@@ -233,17 +248,26 @@ final class DebugSessionTransferReceiver {
                 // account isn't enough on its own — without this the app stays on the login screen.
                 // Mirrors what `WordPressAuthenticationManager` does after the normal OAuth flow.
                 DispatchQueue.main.async {
+                    SVProgressHUD.dismiss()
                     WordPressAppDelegate.shared?.windowManager.showUI()
                 }
             } catch {
                 Loggers.networking.error("Session transfer sign-in failed: \(error)")
+                DispatchQueue.main.async {
+                    SVProgressHUD.showError(withStatus: error.localizedDescription)
+                }
+                // The token was valid enough to decrypt but sign-in failed (e.g. revoked, offline).
+                // Resume advertising so the device can be signed in again without a screen bounce.
+                self.resolve(signedIn: false)
             }
         }
     }
 
-    /// Takes the challenge QR back down (idempotent — safe to call from any terminal path).
-    private func resolve() {
-        DispatchQueue.main.async { self.onResolve() }
+    /// Takes the challenge QR back down (idempotent — safe to call from any terminal path). `signedIn`
+    /// tells the service whether the pairing succeeded (leave advertising off — we're signing in) or
+    /// was abandoned (resume advertising).
+    private func resolve(signedIn: Bool) {
+        DispatchQueue.main.async { self.onResolve(signedIn) }
     }
 
     private func respond(_ status: [String: String], on connection: NWConnection) {
