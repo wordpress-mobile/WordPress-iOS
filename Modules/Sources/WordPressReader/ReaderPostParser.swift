@@ -4,6 +4,12 @@ import SwiftSoup
 public enum ReaderPostParser {
     public enum InteractiveElement: Sendable {
         case gallery(Gallery)
+        case mention(Mention)
+    }
+
+    public struct Mention: Sendable {
+        public let handle: String
+        public let url: URL
     }
 
     public struct Gallery: Sendable {
@@ -53,13 +59,17 @@ public enum ReaderPostParser {
         public let width: Int
     }
 
-    /// Parses post HTML and returns interactive elements (galleries).
+    /// Parses post HTML and returns interactive elements.
     public static func parse(_ html: String) -> [InteractiveElement] {
         guard let document = try? SwiftSoup.parse(html) else {
             return []
         }
 
         var elements: [InteractiveElement] = []
+
+        if let anchors = try? document.select("a[data-type=fragment-mention][data-username][href]") {
+            elements.append(contentsOf: anchors.compactMap(parseMention(from:)).map(InteractiveElement.mention))
+        }
 
         // Supported gallery selectors (order matters for specificity)
         let selectors = [
@@ -84,6 +94,20 @@ public enum ReaderPostParser {
         }
 
         return elements
+    }
+
+    private static func parseMention(from anchor: Element) -> Mention? {
+        guard let handle = try? anchor.attr("data-username").trimmingCharacters(in: .whitespacesAndNewlines),
+            !handle.isEmpty,
+            let href = try? anchor.attr("href"),
+            !href.isEmpty,
+            let url = URL(string: href),
+            url.scheme != nil
+        else {
+            return nil
+        }
+
+        return Mention(handle: handle, url: url)
     }
 
     private static func parseImages(from container: Element) -> [GalleryImage] {

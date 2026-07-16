@@ -58,6 +58,8 @@ class ReaderDetailCoordinator {
         return ReaderPostParser.parse(content)
     }()
 
+    private var mentionProfiles: [String: ReaderUserProfile] = [:]
+
     private var likesAvatarURLs: [String]?
 
     /// An authenticator to ensure any request made to WP sites is properly authenticated
@@ -91,6 +93,9 @@ class ReaderDetailCoordinator {
 
     /// Reader Link Router
     private let readerLinkRouter: UniversalLinkRouter
+
+    /// Reader User Profile Service
+    private let readerUserProfileService: ReaderUserProfileService
 
     /// Reader View
     private weak var view: ReaderDetailView?
@@ -132,6 +137,7 @@ class ReaderDetailCoordinator {
         commentService: CommentService = CommentService(coreDataStack: ContextManager.shared),
         sharingController: PostSharingController = PostSharingController(),
         readerLinkRouter: UniversalLinkRouter = UniversalLinkRouter(routes: UniversalLinkRouter.readerRoutes),
+        readerUserProfileService: ReaderUserProfileService? = nil,
         view: ReaderDetailView
     ) {
         self.coreDataStack = coreDataStack
@@ -141,6 +147,9 @@ class ReaderDetailCoordinator {
         self.commentService = commentService
         self.sharingController = sharingController
         self.readerLinkRouter = readerLinkRouter
+        self.readerUserProfileService =
+            readerUserProfileService
+            ?? WordPressComReaderUserProfileService(coreDataStack: coreDataStack)
         self.view = view
     }
 
@@ -199,6 +208,34 @@ class ReaderDetailCoordinator {
                 DDLogError("Error fetching Likes for post detail: \(String(describing: error?.localizedDescription))")
             }
         )
+    }
+
+    @MainActor
+    func resolveMentionProfiles(for post: ReaderPost) async {
+        guard post.isWPCom, let content = post.content else {
+            return
+        }
+
+        let mentions = ReaderPostParser.parse(content)
+            .compactMap { element -> ReaderPostParser.Mention? in
+                guard case .mention(let mention) = element else {
+                    return nil
+                }
+                return mention
+            }
+
+        var requestedHandles = Set<String>()
+        // Posts typically have few mentions, so resolving them sequentially keeps this simple without meaningful delay.
+        for mention in mentions {
+            let key = Self.normalizedMentionHandle(mention.handle)
+            guard mentionProfiles[key] == nil, requestedHandles.insert(key).inserted else {
+                continue
+            }
+
+            if let profile = await readerUserProfileService.fetchProfile(handle: mention.handle) {
+                mentionProfiles[key] = profile
+            }
+        }
     }
 
     private func startObservingLikes() {
@@ -333,6 +370,26 @@ class ReaderDetailCoordinator {
             }
         }
         return nil
+    }
+
+    private func findMention(matching url: URL) -> ReaderPostParser.Mention? {
+        let urlString = url.absoluteString
+        for element in interactiveElements {
+            if case .mention(let mention) = element, mention.url.absoluteString == urlString {
+                return mention
+            }
+        }
+        return nil
+    }
+
+    private func presentMentionProfile(_ profile: ReaderUserProfile) {
+        guard let viewController else {
+            return
+        }
+        ReaderUserProfilePresenter.present(
+            ReaderUserProfileViewModel(profile: profile),
+            from: viewController
+        )
     }
 
     private func presentGallery(_ gallery: ReaderPostParser.Gallery, startingAt index: Int) {
@@ -560,6 +617,13 @@ class ReaderDetailCoordinator {
             permaLinkURL?.isHostAndPathEqual(to: url) == true || ReaderWebView.baseURL.isHostAndPathEqual(to: url)
         if let hash = URLComponents(url: url, resolvingAgainstBaseURL: true)?.fragment, isInDocumentAnchor {
             view?.scroll(to: hash)
+        } else if let mention = findMention(matching: url) {
+            if let profile = mentionProfiles[Self.normalizedMentionHandle(mention.handle)] {
+                presentMentionProfile(profile)
+            } else {
+                WPAnalytics.trackReader(.readerArticleLinkTapped)
+                presentWebViewController(url)
+            }
         } else if let (gallery, index) = findGallery(containing: url) {
             presentGallery(gallery, startingAt: index)
         } else if url.pathExtension.contains("gif") || url.pathExtension.contains("jpg")
@@ -577,6 +641,10 @@ class ReaderDetailCoordinator {
 
             presentWebViewController(url)
         }
+    }
+
+    private static func normalizedMentionHandle(_ handle: String) -> String {
+        handle.lowercased()
     }
 
     /// Called after the webView fully loads

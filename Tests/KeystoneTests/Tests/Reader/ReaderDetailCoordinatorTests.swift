@@ -133,6 +133,37 @@ class ReaderDetailCoordinatorTests: CoreDataTestCase {
         XCTAssertTrue(presentedViewController is WebKitViewController)
     }
 
+    @MainActor
+    func testResolveMentionProfilesDeduplicatesHandles() async {
+        let post = makeMentionPost()
+        let profileService = ReaderUserProfileServiceMock()
+        let coordinator = ReaderDetailCoordinator(
+            readerUserProfileService: profileService,
+            view: ReaderDetailViewMock()
+        )
+        coordinator.post = post
+
+        await coordinator.resolveMentionProfiles(for: post)
+
+        XCTAssertEqual(profileService.requestedHandles, ["example-user"])
+    }
+
+    @MainActor
+    func testResolveMentionProfilesSkipsNonWordPressComPost() async {
+        let post = makeMentionPost()
+        post.isWPCom = false
+        let profileService = ReaderUserProfileServiceMock()
+        let coordinator = ReaderDetailCoordinator(
+            readerUserProfileService: profileService,
+            view: ReaderDetailViewMock()
+        )
+        coordinator.post = post
+
+        await coordinator.resolveMentionProfiles(for: post)
+
+        XCTAssertTrue(profileService.requestedHandles.isEmpty)
+    }
+
     /// Tell the view to scroll when URL is a hash link
     ///
     func testScrollWhenUrlIsHash() {
@@ -159,6 +190,24 @@ class ReaderDetailCoordinatorTests: CoreDataTestCase {
 
     func makeReaderPost() -> ReaderPost {
         ReaderPostBuilder(mainContext).build()
+    }
+
+    private var mentionURL: URL {
+        URL(string: "https://example.wordpress.com/mentions/example-user/")!
+    }
+
+    private func makeMentionPost() -> ReaderPost {
+        let post = makeReaderPost()
+        post.isWPCom = true
+        post.content = """
+            <a href="\(mentionURL.absoluteString)"
+               data-type="fragment-mention"
+               data-username="example-user">@example-user</a>
+            <a href="\(mentionURL.absoluteString)"
+               data-type="fragment-mention"
+               data-username="example-user">@example-user</a>
+            """
+        return post
     }
 }
 
@@ -200,6 +249,15 @@ private class ReaderPostServiceMock: ReaderPostService {
         }
 
         success(returnPost)
+    }
+}
+
+private final class ReaderUserProfileServiceMock: ReaderUserProfileService {
+    private(set) var requestedHandles: [String] = []
+
+    func fetchProfile(handle: String) async -> ReaderUserProfile? {
+        requestedHandles.append(handle)
+        return nil
     }
 }
 

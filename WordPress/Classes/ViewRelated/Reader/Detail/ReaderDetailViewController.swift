@@ -262,6 +262,10 @@ class ReaderDetailViewController: UIViewController, ReaderDetailView {
     }
 
     func render(_ post: ReaderPost) {
+        Task { @MainActor [weak coordinator] in
+            await coordinator?.resolveMentionProfiles(for: post)
+        }
+
         configureDiscoverAttribution(post)
 
         toolbar.configure(for: post, in: self)

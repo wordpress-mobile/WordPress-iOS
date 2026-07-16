@@ -277,4 +277,78 @@ struct ReaderPostParserTests {
         let elements = ReaderPostParser.parse(html)
         #expect(elements.isEmpty)
     }
+
+    // MARK: - Mentions
+
+    @Test func parseMention() {
+        let html = """
+            <a href="https://example.wordpress.com/mentions/example-user/"
+               data-type="fragment-mention"
+               data-username="example-user">@example-user</a>
+            """
+
+        let elements = ReaderPostParser.parse(html)
+
+        guard case .mention(let mention) = elements.first else {
+            Issue.record("Expected mention element")
+            return
+        }
+        #expect(elements.count == 1)
+        #expect(mention.handle == "example-user")
+        #expect(mention.url.absoluteString == "https://example.wordpress.com/mentions/example-user/")
+    }
+
+    @Test func ignoreLinksWithoutCompleteMentionMetadata() {
+        let html = """
+            <p>@plain-text</p>
+            <a href="https://example.wordpress.com/mentions/url-only/">@url-only</a>
+            <a href="https://example.wordpress.com/mentions/wrong-type/"
+               data-type="other"
+               data-username="wrong-type">@wrong-type</a>
+            <a href="https://example.wordpress.com/mentions/empty-handle/"
+               data-type="fragment-mention"
+               data-username=" ">@empty-handle</a>
+            <a data-type="fragment-mention" data-username="missing-href">@missing-href</a>
+            <a href="relative-url"
+               data-type="fragment-mention"
+               data-username="relative-url">@relative-url</a>
+            """
+
+        #expect(ReaderPostParser.parse(html).isEmpty)
+    }
+
+    @Test func parseDuplicateMentionsAndMentionInsideGallery() {
+        let html = """
+            <a href="https://example.wordpress.com/mentions/person/"
+               data-type="fragment-mention"
+               data-username="person">@person</a>
+            <figure class="wp-block-gallery">
+                <figure class="wp-block-image">
+                    <img src="https://example.com/photo.jpg" />
+                    <figcaption>
+                        <a href="https://example.wordpress.com/mentions/person/"
+                           data-type="fragment-mention"
+                           data-username="person">@person</a>
+                    </figcaption>
+                </figure>
+            </figure>
+            """
+
+        let elements = ReaderPostParser.parse(html)
+        let mentions = elements.compactMap { element -> ReaderPostParser.Mention? in
+            guard case .mention(let mention) = element else {
+                return nil
+            }
+            return mention
+        }
+        let galleries = elements.compactMap { element -> ReaderPostParser.Gallery? in
+            guard case .gallery(let gallery) = element else {
+                return nil
+            }
+            return gallery
+        }
+
+        #expect(mentions.count == 2)
+        #expect(galleries.count == 1)
+    }
 }
