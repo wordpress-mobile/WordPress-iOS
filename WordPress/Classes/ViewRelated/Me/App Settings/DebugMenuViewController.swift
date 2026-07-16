@@ -22,6 +22,7 @@ struct DebugMenuView: View {
         List {
             Section { main }
             Section(Strings.sectionSettings) { settings }
+            Section(Strings.sectionSessionTransfer) { sessionTransfer }
             Section(Strings.sectionTipKit) { tipKit }
             Section(Strings.sectionWebView) { webView }
             Section(Strings.sectionLogging) { logging }
@@ -83,6 +84,19 @@ struct DebugMenuView: View {
         }
         NavigationLink(Strings.readerCssTitle) {
             readerSettings
+        }
+    }
+
+    @ViewBuilder private var sessionTransfer: some View {
+        NavigationLink {
+            DebugSessionTransferReceiverView()
+        } label: {
+            DebugMenuRow(systemImage: "arrow.down.circle.fill", color: .blue, title: Strings.receiveSession)
+        }
+        NavigationLink {
+            DebugSessionTransferBrowserView()
+        } label: {
+            DebugMenuRow(systemImage: "arrow.up.circle.fill", color: .indigo, title: Strings.sendSession)
         }
     }
 
@@ -301,6 +315,9 @@ private enum Strings {
     static let sectionLogging = NSLocalizedString("debugMenu.section.logging", value: "Logging", comment: "Debug Menu section title")
     static let sectionTipKit = NSLocalizedString("debugMenu.section.tipKit", value: "TipKit", comment: "Debug Menu section title")
     static let sectionWebView = NSLocalizedString("debugMenu.section.webView", value: "Web View", comment: "Debug Menu section title")
+    static let sectionSessionTransfer = NSLocalizedString("debugMenu.section.sessionTransfer", value: "Session Transfer", comment: "Debug Menu section title")
+    static let receiveSession = NSLocalizedString("debugMenu.sessionTransfer.receiveRow", value: "Receive Session", comment: "Debug menu item to receive a WordPress.com session from another device")
+    static let sendSession = NSLocalizedString("debugMenu.sessionTransfer.sendRow", value: "Send Session", comment: "Debug menu item to log a nearby device into this WordPress.com account")
     static let sandboxStoreCookieSecretRow = NSLocalizedString("Sandbox Store", comment: "Title of a row displayed on the debug screen used to configure the sandbox store use in the App.")
     static let sendTestCrash = NSLocalizedString("Send Test Crash", comment: "Title of a row displayed on the debug screen used to crash the app and send a crash report to the crash logging provider to ensure everything is working correctly")
     static let sendLogMessage = NSLocalizedString("Send Log Message", comment: "Title of a row displayed on the debug screen used to send a pretend error message to the crash logging provider to ensure everything is working correctly")
