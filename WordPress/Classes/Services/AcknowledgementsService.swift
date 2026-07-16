@@ -24,7 +24,7 @@ actor AcknowledgementsService: AcknowledgementsListViewModel.DataProvider {
         let identity: String
         let license: String
         let name: String
-        let revision: String
+        let revision: String?
         let version: String?
 
         var formattedLicense: String {
