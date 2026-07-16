@@ -86,7 +86,11 @@ class ReaderDetailCoordinatorTests: CoreDataTestCase {
         let serviceMock = ReaderPostServiceMock()
         let viewMock = ReaderDetailViewMock()
         let postSharingControllerMock = PostSharingControllerMock()
-        let coordinator = ReaderDetailCoordinator(readerPostService: serviceMock, sharingController: postSharingControllerMock, view: viewMock)
+        let coordinator = ReaderDetailCoordinator(
+            readerPostService: serviceMock,
+            sharingController: postSharingControllerMock,
+            view: viewMock
+        )
         coordinator.post = post
 
         coordinator.share(fromView: button)
@@ -175,7 +179,13 @@ private class ReaderPostServiceMock: ReaderPostService {
         super.init(coreDataStack: ContextManager.forTesting())
     }
 
-    override func fetchPost(_ postID: UInt, forSite siteID: UInt, isFeed: Bool, success: ((ReaderPost?) -> Void)!, failure: ((Error?) -> Void)!) {
+    override func fetchPost(
+        _ postID: UInt,
+        forSite siteID: UInt,
+        isFeed: Bool,
+        success: ((ReaderPost?) -> Void)!,
+        failure: ((Error?) -> Void)!
+    ) {
         didCallFetchPostWithPostID = postID
         didCallFetchPostWithSiteID = siteID
         didCallFetchPostWithIsFeed = isFeed
@@ -208,7 +218,7 @@ private class ReaderDetailViewMock: UIViewController, ReaderDetailView {
         }
 
         get {
-            return _navigationController
+            _navigationController
         }
     }
 
@@ -232,15 +242,19 @@ private class ReaderDetailViewMock: UIViewController, ReaderDetailView {
         didCallScrollToWith = to
     }
 
-    func updateHeader() { }
+    func updateHeader() {}
 
     func updateLikesView(with viewModel: ReaderDetailLikesViewModel) {}
 
-    func updateComments(_ comments: [Comment], totalComments: Int) { }
+    func updateComments(_ comments: [Comment], totalComments: Int) {}
 
-    func renderRelatedPosts(_ posts: [RemoteReaderSimplePost]) { }
+    func renderRelatedPosts(_ posts: [RemoteReaderSimplePost]) {}
 
-    override func present(_ viewControllerToPresent: UIViewController, animated flag: Bool, completion: (() -> Void)? = nil) {
+    override func present(
+        _ viewControllerToPresent: UIViewController,
+        animated flag: Bool,
+        completion: (() -> Void)? = nil
+    ) {
         didCallPresentWith = viewControllerToPresent
     }
 }
@@ -250,7 +264,11 @@ private class PostSharingControllerMock: PostSharingController {
     var didCallShareReaderPostWithView: UIPopoverPresentationControllerSourceItem?
     var didCallShareReaderPostWithViewController: UIViewController?
 
-    override func shareReaderPost(_ post: ReaderPost, fromAnchor anchor: UIPopoverPresentationControllerSourceItem, inViewController viewController: UIViewController) {
+    override func shareReaderPost(
+        _ post: ReaderPost,
+        fromAnchor anchor: UIPopoverPresentationControllerSourceItem,
+        inViewController viewController: UIViewController
+    ) {
         didCallShareReaderPostWith = post
         didCallShareReaderPostWithView = anchor
         didCallShareReaderPostWithViewController = viewController
