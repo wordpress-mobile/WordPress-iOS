@@ -12,29 +12,21 @@ import WordPressData
 ///
 /// The receiver binds a TCP listener. In the Simulator that socket lives on the host Mac, so it is
 /// reachable from a physical device on the same Wi-Fi via the Mac's LAN address, and it advertises
-/// itself over Bonjour. It publishes a per-session X25519 public key (in the Bonjour TXT record and
-/// the on-screen QR); the sender seals the session to that key, so the bearer token is never
-/// readable in flight even though the transport is plaintext TCP.
+/// itself over Bonjour. It publishes a per-session X25519 public key in the Bonjour TXT record; the
+/// sender seals the session to that key, so the bearer token is never readable in flight even though
+/// the transport is plaintext TCP.
 ///
-/// The wire protocol is a single length-prefixed message each way (see `DebugSessionTransferFraming`):
-/// the sender sends the sealed `DebugSessionEnvelope`, the receiver replies with a small JSON status.
-final class DebugSessionTransferReceiver: ObservableObject {
-    enum State: Equatable {
-        case starting
-        case listening(address: String?, port: UInt16)
-        case signingIn
-        case signedIn(username: String?)
-        case failed(String)
-    }
-
-    /// Bonjour service type the receiver advertises so a sender can discover it on the local network
-    /// without scanning the QR code. Must be listed in `NSBonjourServices` in the app's Info.plist.
+/// It runs headless, started and stopped by `DebugSessionTransferReceiverService` while the app is on
+/// the login screen. The wire protocol is a single length-prefixed message each way (see
+/// `DebugSessionTransferFraming`): the sender sends the sealed `DebugSessionEnvelope`, the receiver
+/// replies with a small JSON status.
+final class DebugSessionTransferReceiver {
+    /// Bonjour service type the receiver advertises so a sender can discover it on the local network.
+    /// Must be listed in `NSBonjourServices` in the app's Info.plist.
     static let bonjourServiceType = "_wpcom-login._tcp"
 
     /// Version of the transfer protocol, advertised so a sender can reject incompatible receivers.
     static let protocolVersion = "1"
-
-    @Published private(set) var state: State = .starting
 
     /// Per-session key agreement pair. A sender seals the session to `publicKey`; only this instance
     /// holds the private half, so nobody else — including a network sniffer — can read the token.
@@ -42,14 +34,9 @@ final class DebugSessionTransferReceiver: ObservableObject {
 
     private var publicKey: Data { privateKey.publicKey.rawRepresentation }
 
-    /// Short public-key fingerprint, shown so a sender can confirm it's paired with this device.
-    var fingerprint: String { DebugSessionTransferCrypto.fingerprint(of: publicKey) }
-
     private let signIn: (String) async throws -> String?
     private let queue = DispatchQueue(label: "org.wordpress.debug-session-transfer.receiver")
     private var listener: NWListener?
-    private var listeningAddress: String?
-    private var listeningPort: UInt16 = 0
 
     init(signIn: @escaping (String) async throws -> String? = DebugSessionTransferReceiver.defaultSignIn) {
         self.signIn = signIn
@@ -80,8 +67,7 @@ final class DebugSessionTransferReceiver: ObservableObject {
 
     /// Metadata advertised alongside the service (see `DebugSessionReceiverInfo`): protocol version,
     /// device identity, which app, whether it's already signed in (so a sender can warn before
-    /// replacing an account), and the public key to seal the session to. The pairing secret is
-    /// deliberately *not* here — only the public key is public.
+    /// replacing an account), and the public key to seal the session to.
     private func advertisedInfo() -> DebugSessionReceiverInfo {
         DebugSessionReceiverInfo(
             protocolVersion: Self.protocolVersion,
@@ -98,9 +84,9 @@ final class DebugSessionTransferReceiver: ObservableObject {
         do {
             let listener = try NWListener(using: .tcp)
             self.listener = listener
-            // Advertise over Bonjour so a sender can discover this receiver, in addition to the
-            // on-screen QR. In the Simulator the listener is a host socket, so this registers with
-            // the Mac's mDNSResponder and is advertised on the real LAN.
+            // Advertise over Bonjour so a sender can discover this receiver. In the Simulator the
+            // listener is a host socket, so this registers with the Mac's mDNSResponder and is
+            // advertised on the real LAN.
             listener.service = NWListener.Service(
                 name: Self.deviceName,
                 type: Self.bonjourServiceType,
@@ -114,7 +100,7 @@ final class DebugSessionTransferReceiver: ObservableObject {
             }
             listener.start(queue: queue)
         } catch {
-            setState(.failed(error.localizedDescription))
+            Loggers.networking.error("Session transfer listener failed to start: \(error)")
         }
     }
 
@@ -129,13 +115,10 @@ final class DebugSessionTransferReceiver: ObservableObject {
         switch state {
         case .ready:
             let port = listener?.port?.rawValue ?? 0
-            let address = Self.primaryLANAddress()
-            listeningAddress = address
-            listeningPort = port
-            setState(.listening(address: address, port: port))
+            let address = Self.primaryLANAddress() ?? "?"
+            Loggers.networking.info("Session transfer receiver listening on \(address):\(port)")
         case .failed(let error):
             Loggers.networking.error("Session transfer listener failed: \(error)")
-            setState(.failed(error.localizedDescription))
         default:
             break
         }
@@ -163,26 +146,22 @@ final class DebugSessionTransferReceiver: ObservableObject {
 
         // Acknowledge delivery immediately, then sign in independently. Signing in fetches account
         // details and syncs blogs, which can take longer than the sender's timeout — and delivery is
-        // all the sender is waiting on. The sign-in's own result is shown on this screen.
+        // all the sender is waiting on.
         respond(["status": "signed_in"], on: connection)
         stop()
 
-        setState(.signingIn)
         Task {
             do {
-                let username = try await self.signIn(session.token)
-                self.setState(.signedIn(username: username ?? session.username))
-                // Swap the window root from the login prologue to the signed-in app. The receiver is
-                // presented over the prologue (the app launched signed-out), so creating the account
-                // isn't enough on its own — without this the app stays on the login screen. This mirrors
-                // what `WordPressAuthenticationManager` does after the normal OAuth flow; `showUI()` shows
-                // the app now that `AccountHelper.isLoggedIn` is true.
+                _ = try await self.signIn(session.token)
+                // Swap the window root from the login prologue to the signed-in app. Creating the
+                // account isn't enough on its own — without this the app stays on the login screen.
+                // Mirrors what `WordPressAuthenticationManager` does after the normal OAuth flow;
+                // `showUI()` shows the app now that `AccountHelper.isLoggedIn` is true.
                 DispatchQueue.main.async {
                     WordPressAppDelegate.shared?.windowManager.showUI()
                 }
             } catch {
                 Loggers.networking.error("Session transfer sign-in failed: \(error)")
-                self.setState(.failed(error.localizedDescription))
             }
         }
     }
@@ -198,10 +177,6 @@ final class DebugSessionTransferReceiver: ObservableObject {
             isComplete: true,
             completion: .contentProcessed { _ in }
         )
-    }
-
-    private func setState(_ state: State) {
-        DispatchQueue.main.async { self.state = state }
     }
 
     // MARK: - Sign in

@@ -83,6 +83,7 @@ class RootViewCoordinator {
         self.rootViewPresenter = rootViewPresenter
 
         updatePromptsIfNeeded()
+        DebugSessionTransferReceiverService.shared.setLoginScreenVisible(false)
     }
 
     func showSignInUI(completion: (() -> Void)? = nil) {
@@ -92,6 +93,7 @@ class RootViewCoordinator {
         self.rootViewPresenter = nil
 
         WordPressAppDelegate.shared?.autoSignInUITestSite()
+        DebugSessionTransferReceiverService.shared.setLoginScreenVisible(true)
     }
 
     private func createPresenter(_ appType: AppUIType) -> RootViewPresenter {

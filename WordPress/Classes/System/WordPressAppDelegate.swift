@@ -233,6 +233,9 @@ public class WordPressAppDelegate: UIResponder, UIApplicationDelegate {
         // Internal builds only, and it does not browse (so no Local Network prompt appears) until the
         // debug setting turns it on.
         DebugSessionTransferMonitor.shared.start()
+        // Advertise for a session while the app sits on the login screen, so a signed-out instance
+        // (typically a Simulator) can be signed in from a nearby device. Internal builds only.
+        DebugSessionTransferReceiverService.shared.start()
 
         // This was necessary to properly load fonts for the Stories editor. I believe external libraries may require this call to access fonts.
         let fonts = Bundle.main.urls(forResourcesWithExtension: "ttf", subdirectory: nil)

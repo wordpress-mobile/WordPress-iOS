@@ -102,11 +102,6 @@ struct DebugMenuView: View {
             )
         }
         NavigationLink {
-            DebugSessionTransferReceiverView()
-        } label: {
-            DebugMenuRow(systemImage: "arrow.down.circle.fill", color: .blue, title: Strings.receiveSession)
-        }
-        NavigationLink {
             DebugSessionTransferBrowserView()
         } label: {
             DebugMenuRow(systemImage: "arrow.up.circle.fill", color: .indigo, title: Strings.sendSession)
@@ -360,11 +355,6 @@ private enum Strings {
         "debugMenu.section.sessionTransfer",
         value: "Session Transfer",
         comment: "Debug Menu section title"
-    )
-    static let receiveSession = NSLocalizedString(
-        "debugMenu.sessionTransfer.receiveRow",
-        value: "Receive Session",
-        comment: "Debug menu item to receive a WordPress.com session from another device"
     )
     static let sendSession = NSLocalizedString(
         "debugMenu.sessionTransfer.sendRow",
