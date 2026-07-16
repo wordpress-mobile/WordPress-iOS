@@ -4,19 +4,15 @@ This file provides guidance to AI agents when working with code in this reposito
 
 ## Overview
 
-WordPress for iOS is the official mobile app for WordPress that lets users create, manage, and publish content to their WordPress websites directly from their iPhone or iPad.
+This repository builds the WordPress and Jetpack apps for iOS.
+
+WordPress for iOS is the official WordPress mobile app. It lets users create, manage, and publish content on their WordPress sites from an iPhone or iPad. Jetpack for iOS includes those capabilities along with Jetpack and WordPress.com features.
 
 Minimum requires iOS version is iOS 17. The latest iOS version is iOS 26.
 
 ## Bootstrap
 
-To prepare a fresh clone or worktree to build the app, run:
-
-```sh
-rake dependencies
-```
-
-This is the canonical entry point for getting the repo ready to build.
+Prepare a fresh clone or worktree for building with `rake dependencies`, the repository's canonical bootstrap command.
 
 ## High-Level Architecture
 
@@ -41,20 +37,16 @@ WordPress-iOS uses a modular architecture with the main app and separate Swift p
 - **Dependency Injection**: Constructor injection with protocol-based services
 
 #### Testing Patterns
-- Use Swift Testing for new tests
+- Use Swift Testing for new tests.
+- The WordPress scheme uses `WordPressUnitTests.xctestplan` for the full unit test suite, including tests in the `Modules` Swift package.
+- Add every unit test target to `WordPressUnitTests.xctestplan`.
+- Run the full suite with `xcodebuild -workspace WordPress.xcworkspace -scheme WordPress -testPlan WordPressUnitTests test`. Do not use `swift test`.
+- To verify changes end-to-end on an iOS simulator, follow @docs/simulator-sign-in.md to sign in to the app.
 
 ### Important Considerations
 - **Multi-site Support**: Code must handle both WordPress.com and self-hosted sites
 - **Accessibility**: Use proper accessibility labels and traits
 - **Localization**: follow best practices from @docs/localization.md. For how strings flow through GlotPress and the AI translation tier (the `human ?? AI ?? English` floor), see @docs/localization-pipeline.md.
-
-## Xcode Schemes
-- `WordPress` builds the WordPress iOS app and runs `WordPressUnitTests.xctestplan` — default for builds and the full unit test suite. Use this scheme to run unit tests.
-- `Jetpack` builds the Jetpack iOS app — switch to it for Jetpack-only work.
-
-## Simulator Sign-In
-
-To automatically sign in to the app on an iOS simulator, see @docs/simulator-sign-in.md.
 
 ## Libraries
 
