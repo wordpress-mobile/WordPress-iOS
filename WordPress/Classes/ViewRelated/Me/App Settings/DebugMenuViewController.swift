@@ -30,7 +30,8 @@ struct DebugMenuView: View {
         }
         .toolbar {
             ToolbarItem(placement: .principal) {
-                (Text(Image(systemName: "bolt.fill")).foregroundColor(.yellow) + Text(" " + Strings.title)).font(.headline)
+                (Text(Image(systemName: "bolt.fill")).foregroundColor(.yellow) + Text(" " + Strings.title))
+                    .font(.headline)
             }
         }
         .alert(Strings.webViewDialogTitle, isPresented: $isShowingWebViewURLDialog) {
@@ -88,6 +89,18 @@ struct DebugMenuView: View {
     }
 
     @ViewBuilder private var sessionTransfer: some View {
+        Toggle(
+            isOn: Binding(
+                get: { DebugSessionTransferMonitor.isEnabled },
+                set: { DebugSessionTransferMonitor.isEnabled = $0 }
+            )
+        ) {
+            DebugMenuRow(
+                systemImage: "dot.radiowaves.left.and.right",
+                color: .green,
+                title: Strings.offerNearbyLogins
+            )
+        }
         NavigationLink {
             DebugSessionTransferReceiverView()
         } label: {
@@ -150,7 +163,8 @@ struct DebugMenuView: View {
                         .foregroundStyle(.secondary.opacity(0.5))
                 }
                 .contentShape(Rectangle())
-            }.buttonStyle(.plain)
+            }
+            .buttonStyle(.plain)
         }
         Toggle(Strings.alwaysSendLogs, isOn: $viewModel.isForcedCrashLoggingEnabled)
     }
@@ -209,7 +223,11 @@ struct DebugMenuView: View {
     }
 
     private var readerSettings: some View {
-        let viewController = SettingsTextViewController(text: ReaderCSS().customAddress, placeholder: Strings.readerURLPlaceholder, hint: Strings.readerURLHint)
+        let viewController = SettingsTextViewController(
+            text: ReaderCSS().customAddress,
+            placeholder: Strings.readerURLPlaceholder,
+            hint: Strings.readerURLHint
+        )
         viewController.title = Strings.readerCssTitle
         viewController.onAttributedValueChanged = {
             var reader = ReaderCSS()
@@ -271,21 +289,28 @@ final class DebugMenuViewController: UIHostingController<DebugMenuView> {
 
         assert(window != nil)
 
-        let gesture = UIScreenEdgePanGestureRecognizer(target: DebugMenuViewController.self, action: #selector(showDebugMenu(_:)))
+        let gesture = UIScreenEdgePanGestureRecognizer(
+            target: DebugMenuViewController.self,
+            action: #selector(showDebugMenu(_:))
+        )
         gesture.edges = .right
         window?.addGestureRecognizer(gesture)
     }
 
     @objc private static func showDebugMenu(_ sender: UIScreenEdgePanGestureRecognizer) {
         guard let window = sender.view as? UIWindow,
-              let topViewController = window.topmostPresentedViewController,
-              !((topViewController as? UINavigationController)?.viewControllers.first is DebugMenuViewController) else {
+            let topViewController = window.topmostPresentedViewController,
+            !((topViewController as? UINavigationController)?.viewControllers.first is DebugMenuViewController)
+        else {
             return
         }
         let viewController = DebugMenuViewController()
-        viewController.navigationItem.leftBarButtonItem = UIBarButtonItem(systemItem: .close, primaryAction: .init { [weak topViewController] _ in
-            topViewController?.dismiss(animated: true)
-        })
+        viewController.navigationItem.leftBarButtonItem = UIBarButtonItem(
+            systemItem: .close,
+            primaryAction: .init { [weak topViewController] _ in
+                topViewController?.dismiss(animated: true)
+            }
+        )
 
         let navigation = UINavigationController(rootViewController: viewController)
         topViewController.present(navigation, animated: true)
@@ -311,35 +336,148 @@ private struct Wrapped<T: UIViewController>: UIViewControllerRepresentable {
 
 private enum Strings {
     static let title = NSLocalizedString("debugMenu.title", value: "Developer", comment: "Title for debug menu screen")
-    static let sectionSettings = NSLocalizedString("debugMenu.section.settings", value: "Settings", comment: "Debug Menu section title")
-    static let sectionLogging = NSLocalizedString("debugMenu.section.logging", value: "Logging", comment: "Debug Menu section title")
-    static let sectionTipKit = NSLocalizedString("debugMenu.section.tipKit", value: "TipKit", comment: "Debug Menu section title")
-    static let sectionWebView = NSLocalizedString("debugMenu.section.webView", value: "Web View", comment: "Debug Menu section title")
-    static let sectionSessionTransfer = NSLocalizedString("debugMenu.section.sessionTransfer", value: "Session Transfer", comment: "Debug Menu section title")
-    static let receiveSession = NSLocalizedString("debugMenu.sessionTransfer.receiveRow", value: "Receive Session", comment: "Debug menu item to receive a WordPress.com session from another device")
-    static let sendSession = NSLocalizedString("debugMenu.sessionTransfer.sendRow", value: "Send Session", comment: "Debug menu item to log a nearby device into this WordPress.com account")
-    static let sandboxStoreCookieSecretRow = NSLocalizedString("Sandbox Store", comment: "Title of a row displayed on the debug screen used to configure the sandbox store use in the App.")
-    static let sendTestCrash = NSLocalizedString("Send Test Crash", comment: "Title of a row displayed on the debug screen used to crash the app and send a crash report to the crash logging provider to ensure everything is working correctly")
-    static let sendLogMessage = NSLocalizedString("Send Log Message", comment: "Title of a row displayed on the debug screen used to send a pretend error message to the crash logging provider to ensure everything is working correctly")
-    static let alwaysSendLogs = NSLocalizedString("Always Send Crash Logs", comment: "Title of a row displayed on the debug screen used to indicate whether crash logs should be forced to send, even if they otherwise wouldn't")
-    static let encryptedLogging = NSLocalizedString("Encrypted Logs", comment: "Title of a row displayed on the debug screen used to display a screen that shows a list of encrypted logs")
-    static let readerCssTitle = NSLocalizedString("debugMenu.readerCellTitle", value: "Reader CSS URL", comment: "Title of the screen that allows the user to change the Reader CSS URL for debug builds")
-    static let readerURLPlaceholder = NSLocalizedString("debugMenu.readerDefaultURL", value: "Default URL", comment: "Placeholder for the reader CSS URL")
-    static let readerURLHint = NSLocalizedString("debugMenu.readerHit", value: "Add a custom CSS URL here to be loaded in Reader. If you're running Calypso locally this can be something like: http://192.168.15.23:3000/calypso/reader-mobile.css", comment: "Hint for the reader CSS URL field")
-    static let remoteConfigTitle = NSLocalizedString("debugMenu.remoteConfig.title", value: "Remote Config", comment: "Remote Config debug menu title")
+    static let sectionSettings = NSLocalizedString(
+        "debugMenu.section.settings",
+        value: "Settings",
+        comment: "Debug Menu section title"
+    )
+    static let sectionLogging = NSLocalizedString(
+        "debugMenu.section.logging",
+        value: "Logging",
+        comment: "Debug Menu section title"
+    )
+    static let sectionTipKit = NSLocalizedString(
+        "debugMenu.section.tipKit",
+        value: "TipKit",
+        comment: "Debug Menu section title"
+    )
+    static let sectionWebView = NSLocalizedString(
+        "debugMenu.section.webView",
+        value: "Web View",
+        comment: "Debug Menu section title"
+    )
+    static let sectionSessionTransfer = NSLocalizedString(
+        "debugMenu.section.sessionTransfer",
+        value: "Session Transfer",
+        comment: "Debug Menu section title"
+    )
+    static let receiveSession = NSLocalizedString(
+        "debugMenu.sessionTransfer.receiveRow",
+        value: "Receive Session",
+        comment: "Debug menu item to receive a WordPress.com session from another device"
+    )
+    static let sendSession = NSLocalizedString(
+        "debugMenu.sessionTransfer.sendRow",
+        value: "Send Session",
+        comment: "Debug menu item to log a nearby device into this WordPress.com account"
+    )
+    static let offerNearbyLogins = NSLocalizedString(
+        "debugMenu.sessionTransfer.offerNearbyLoginsRow",
+        value: "Offer to log in nearby devices",
+        comment: "Debug menu toggle to watch the local network for nearby devices asking to sign in"
+    )
+    static let sandboxStoreCookieSecretRow = NSLocalizedString(
+        "Sandbox Store",
+        comment: "Title of a row displayed on the debug screen used to configure the sandbox store use in the App."
+    )
+    static let sendTestCrash = NSLocalizedString(
+        "Send Test Crash",
+        comment:
+            "Title of a row displayed on the debug screen used to crash the app and send a crash report to the crash logging provider to ensure everything is working correctly"
+    )
+    static let sendLogMessage = NSLocalizedString(
+        "Send Log Message",
+        comment:
+            "Title of a row displayed on the debug screen used to send a pretend error message to the crash logging provider to ensure everything is working correctly"
+    )
+    static let alwaysSendLogs = NSLocalizedString(
+        "Always Send Crash Logs",
+        comment:
+            "Title of a row displayed on the debug screen used to indicate whether crash logs should be forced to send, even if they otherwise wouldn't"
+    )
+    static let encryptedLogging = NSLocalizedString(
+        "Encrypted Logs",
+        comment:
+            "Title of a row displayed on the debug screen used to display a screen that shows a list of encrypted logs"
+    )
+    static let readerCssTitle = NSLocalizedString(
+        "debugMenu.readerCellTitle",
+        value: "Reader CSS URL",
+        comment: "Title of the screen that allows the user to change the Reader CSS URL for debug builds"
+    )
+    static let readerURLPlaceholder = NSLocalizedString(
+        "debugMenu.readerDefaultURL",
+        value: "Default URL",
+        comment: "Placeholder for the reader CSS URL"
+    )
+    static let readerURLHint = NSLocalizedString(
+        "debugMenu.readerHit",
+        value:
+            "Add a custom CSS URL here to be loaded in Reader. If you're running Calypso locally this can be something like: http://192.168.15.23:3000/calypso/reader-mobile.css",
+        comment: "Hint for the reader CSS URL field"
+    )
+    static let remoteConfigTitle = NSLocalizedString(
+        "debugMenu.remoteConfig.title",
+        value: "Remote Config",
+        comment: "Remote Config debug menu title"
+    )
     static let analyics = NSLocalizedString("debugMenu.analytics", value: "Analytics", comment: "Debug menu item title")
-    static let featureFlags = NSLocalizedString("debugMenu.featureFlags", value: "Feature Flags", comment: "Feature flags menu item")
-    static let weeklyRoundup = NSLocalizedString("debugMenu.weeklyRoundup", value: "Weekly Roundup", comment: "Weekly Roundup debug menu item")
-    static let booleanUserDefaults = NSLocalizedString("debugMenu.booleanUserDefaults", value: "Boolean User Defaults", comment: "Boolean User Defaults debug menu item")
-    static let webViewRow = NSLocalizedString("debugMenu.webView.row", value: "Browse as loggedin account", comment: "Debug menu item to present an authenticated web view for the currently displayed site")
-    static let unauthenticatedWebViewRow = NSLocalizedString("debugMenu.webView.unauthenticatedRow", value: "Open a web browser", comment: "Debug menu item to present an unauthenticated web view")
-    static let webViewDialogTitle = NSLocalizedString("debugMenu.webView.dialogTitle", value: "Enter URL", comment: "Title for web view URL input dialog")
+    static let featureFlags = NSLocalizedString(
+        "debugMenu.featureFlags",
+        value: "Feature Flags",
+        comment: "Feature flags menu item"
+    )
+    static let weeklyRoundup = NSLocalizedString(
+        "debugMenu.weeklyRoundup",
+        value: "Weekly Roundup",
+        comment: "Weekly Roundup debug menu item"
+    )
+    static let booleanUserDefaults = NSLocalizedString(
+        "debugMenu.booleanUserDefaults",
+        value: "Boolean User Defaults",
+        comment: "Boolean User Defaults debug menu item"
+    )
+    static let webViewRow = NSLocalizedString(
+        "debugMenu.webView.row",
+        value: "Browse as loggedin account",
+        comment: "Debug menu item to present an authenticated web view for the currently displayed site"
+    )
+    static let unauthenticatedWebViewRow = NSLocalizedString(
+        "debugMenu.webView.unauthenticatedRow",
+        value: "Open a web browser",
+        comment: "Debug menu item to present an unauthenticated web view"
+    )
+    static let webViewDialogTitle = NSLocalizedString(
+        "debugMenu.webView.dialogTitle",
+        value: "Enter URL",
+        comment: "Title for web view URL input dialog"
+    )
     static let logs = NSLocalizedString("debugMenu.item.logs", value: "Logs", comment: "Debug Menu item title")
 
-    static let showAllTips = NSLocalizedString("debugMenu.showAllTips", value: "Show All Tips", comment: "Debug Menu action for TipKit")
-    static let hideAllTips = NSLocalizedString("debugMenu.hideAllTips", value: "Hide All Tips", comment: "Debug Menu action for TipKit")
-    static let resetTipKitData = NSLocalizedString("debugMenu.resetTipKitData", value: "Reset Data", comment: "Debug Menu action for TipKit")
+    static let showAllTips = NSLocalizedString(
+        "debugMenu.showAllTips",
+        value: "Show All Tips",
+        comment: "Debug Menu action for TipKit"
+    )
+    static let hideAllTips = NSLocalizedString(
+        "debugMenu.hideAllTips",
+        value: "Hide All Tips",
+        comment: "Debug Menu action for TipKit"
+    )
+    static let resetTipKitData = NSLocalizedString(
+        "debugMenu.resetTipKitData",
+        value: "Reset Data",
+        comment: "Debug Menu action for TipKit"
+    )
 
-    static let sectionCaches = NSLocalizedString("debugMenu.section.caches", value: "Caches", comment: "Debug Menu section title")
-    static let imageCache = NSLocalizedString("debugMenu.caches.imageCache", value: "Image Cache", comment: "Debug Menu label for image cache size")
+    static let sectionCaches = NSLocalizedString(
+        "debugMenu.section.caches",
+        value: "Caches",
+        comment: "Debug Menu section title"
+    )
+    static let imageCache = NSLocalizedString(
+        "debugMenu.caches.imageCache",
+        value: "Image Cache",
+        comment: "Debug Menu label for image cache size"
+    )
 }
