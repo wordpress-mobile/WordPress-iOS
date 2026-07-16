@@ -95,8 +95,9 @@ public enum ReaderPostParser {
 
     private static func parseImage(from img: Element) -> GalleryImage? {
         guard let srcString = try? img.attr("src"),
-              !srcString.isEmpty,
-              let src = URL(string: srcString) else {
+            !srcString.isEmpty,
+            let src = URL(string: srcString)
+        else {
             return nil
         }
 
@@ -141,8 +142,9 @@ public enum ReaderPostParser {
     private static func parseSize(_ value: String) -> CGSize? {
         let parts = value.split(separator: ",")
         guard parts.count == 2,
-              let width = Double(parts[0].trimmingCharacters(in: .whitespaces)),
-              let height = Double(parts[1].trimmingCharacters(in: .whitespaces)) else {
+            let width = Double(parts[0].trimmingCharacters(in: .whitespaces)),
+            let height = Double(parts[1].trimmingCharacters(in: .whitespaces))
+        else {
             return nil
         }
         return CGSize(width: width, height: height)
@@ -150,16 +152,18 @@ public enum ReaderPostParser {
 
     /// Parses srcset string (e.g. "url1 300w, url2 600w") into entries.
     private static func parseSrcset(_ value: String) -> [SrcsetEntry] {
-        value.split(separator: ",").compactMap { entry in
-            let parts = entry.trimmingCharacters(in: .whitespaces).split(separator: " ")
-            guard parts.count == 2,
-                  let url = URL(string: String(parts[0])),
-                  let widthStr = parts[1].dropLast().description.nilIfEmpty,
-                  let width = Int(widthStr) else {
-                return nil
+        value.split(separator: ",")
+            .compactMap { entry in
+                let parts = entry.trimmingCharacters(in: .whitespaces).split(separator: " ")
+                guard parts.count == 2,
+                    let url = URL(string: String(parts[0])),
+                    let widthStr = parts[1].dropLast().description.nilIfEmpty,
+                    let width = Int(widthStr)
+                else {
+                    return nil
+                }
+                return SrcsetEntry(url: url, width: width)
             }
-            return SrcsetEntry(url: url, width: width)
-        }
     }
 }
 

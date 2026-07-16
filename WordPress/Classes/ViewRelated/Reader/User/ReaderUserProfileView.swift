@@ -32,7 +32,11 @@ struct ReaderUserProfileView: View {
 
     private var header: some View {
         VStack(spacing: 12) {
-            AvatarView(style: .single(viewModel.avatarURL), diameter: 72, placeholderImage: Image("gravatar").resizable())
+            AvatarView(
+                style: .single(viewModel.avatarURL),
+                diameter: 72,
+                placeholderImage: Image("gravatar").resizable()
+            )
 
             VStack(alignment: .leading, spacing: 3) {
                 HStack(alignment: .firstTextBaseline, spacing: 8) {

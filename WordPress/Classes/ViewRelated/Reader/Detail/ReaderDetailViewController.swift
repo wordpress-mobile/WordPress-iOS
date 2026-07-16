@@ -104,7 +104,7 @@ class ReaderDetailViewController: UIViewController, ReaderDetailView {
 
     /// The post being shown
     @objc var post: ReaderPost? {
-        return coordinator?.post
+        coordinator?.post
     }
 
     /// The URL to a post can change – we might set it when we instantiate the controller, but then when we fetch the details from the server, we know
@@ -123,7 +123,7 @@ class ReaderDetailViewController: UIViewController, ReaderDetailView {
     }
 
     override var hidesBottomBarWhenPushed: Bool {
-        set { }
+        set {}
         get { true }
     }
 
@@ -206,13 +206,19 @@ class ReaderDetailViewController: UIViewController, ReaderDetailView {
         navigationController?.interactivePopGestureRecognizer?.delegate = self
 
         // When comments are moderated or edited from the Comments view, update the Comments snippet here.
-        NotificationCenter.default.addObserver(self, selector: #selector(fetchComments), name: .ReaderCommentModifiedNotification, object: nil)
+        NotificationCenter.default.addObserver(
+            self,
+            selector: #selector(fetchComments),
+            name: .ReaderCommentModifiedNotification,
+            object: nil
+        )
 
         // In the `scrollViewDidScroll` function, "toolbar hidden" is toggled repeatedly when the scroll view in the
         // middle of scrolling animation. This debouncer is introduced to avoid toggling
         // `navigationController.toolbarHidden`, which causes inifity loops.
         // Sentry issue: https://a8c.sentry.io/issues/6884521550
-        toolbarHiddenDebounceCancellable = toolbarHiddenDebouncer
+        toolbarHiddenDebounceCancellable =
+            toolbarHiddenDebouncer
             .removeDuplicates()
             .debounce(for: .milliseconds(100), scheduler: DispatchQueue.main)
             .sink { [weak self] isHidden in
@@ -268,15 +274,17 @@ class ReaderDetailViewController: UIViewController, ReaderDetailView {
         checkTranslationAvailability()
 
         if let postURLString = post.permaLink,
-           let postURL = URL(string: postURLString) {
+            let postURL = URL(string: postURLString)
+        {
             webView.postURL = postURL
         }
 
         webView.isP2 = post.isP2Type
 
-        coordinator?.storeAuthenticationCookies(in: webView) { [weak self] in
-            self?.showPostContent(post)
-        }
+        coordinator?
+            .storeAuthenticationCookies(in: webView) { [weak self] in
+                self?.showPostContent(post)
+            }
 
         navigateToCommentIfNecessary()
     }
@@ -313,17 +321,22 @@ class ReaderDetailViewController: UIViewController, ReaderDetailView {
 
     private func navigateToCommentIfNecessary() {
         if let post,
-           let commentID = coordinator?.commentID,
-           !hasAutomaticallyTriggeredCommentAction {
+            let commentID = coordinator?.commentID,
+            !hasAutomaticallyTriggeredCommentAction
+        {
             hasAutomaticallyTriggeredCommentAction = true
 
-            ReaderCommentAction().execute(
-                post: post,
-                origin: self,
-                navigateToCommentID: commentID,
-                source: .postDetails,
-                trackingSource: ScreenTrackingSource(ScreenID.Reader.article, component: ElementID.Reader.commentsSection)
-            )
+            ReaderCommentAction()
+                .execute(
+                    post: post,
+                    origin: self,
+                    navigateToCommentID: commentID,
+                    source: .postDetails,
+                    trackingSource: ScreenTrackingSource(
+                        ScreenID.Reader.article,
+                        component: ElementID.Reader.commentsSection
+                    )
+                )
         }
     }
 
@@ -345,7 +358,7 @@ class ReaderDetailViewController: UIViewController, ReaderDetailView {
             } else {
                 NSLayoutConstraint.activate([
                     activityIndicator.centerXAnchor.constraint(equalTo: webView.centerXAnchor),
-                    activityIndicator.topAnchor.constraint(equalTo: webView.topAnchor, constant: 64),
+                    activityIndicator.topAnchor.constraint(equalTo: webView.topAnchor, constant: 64)
                 ])
             }
             activityIndicator.startAnimating()
@@ -401,14 +414,17 @@ class ReaderDetailViewController: UIViewController, ReaderDetailView {
     /// Scroll the content to a given #hash
     ///
     func scroll(to hash: String) {
-        webView.evaluateJavaScript("document.getElementById('\(hash)').offsetTop", completionHandler: { [weak self] height, _ in
-            guard let self, let height = height as? CGFloat else {
-                return
-            }
+        webView.evaluateJavaScript(
+            "document.getElementById('\(hash)').offsetTop",
+            completionHandler: { [weak self] height, _ in
+                guard let self, let height = height as? CGFloat else {
+                    return
+                }
 
-            let y = height + self.webView.frame.origin.y - self.scrollView.adjustedContentInset.top
-            self.scrollView.setContentOffset(CGPoint(x: 0, y: y), animated: true)
-        })
+                let y = height + self.webView.frame.origin.y - self.scrollView.adjustedContentInset.top
+                self.scrollView.setContentOffset(CGPoint(x: 0, y: y), animated: true)
+            }
+        )
     }
 
     func updateHeader() {
@@ -437,7 +453,7 @@ class ReaderDetailViewController: UIViewController, ReaderDetailView {
 
         // Moderated comments could still be cached, so filter out non-approved comments.
         let approvedStatus = Comment.descriptionFor(.approved)
-        let approvedComments = comments.filter({ $0.status == approvedStatus})
+        let approvedComments = comments.filter({ $0.status == approvedStatus })
 
         // Set the delegate here so the table isn't shown until fetching is complete.
         commentsTableView.delegate = commentsTableViewDelegate
@@ -540,7 +556,8 @@ class ReaderDetailViewController: UIViewController, ReaderDetailView {
     private func observeWebViewHeight() {
         scrollObserver = webView.scrollView.observe(\.contentSize, options: .new) { [weak self] _, change in
             guard let self,
-                  let height = change.newValue?.height else {
+                let height = change.newValue?.height
+            else {
                 return
             }
 
@@ -548,19 +565,22 @@ class ReaderDetailViewController: UIViewController, ReaderDetailView {
             /// (except for a few times when it returns a very big weird number)
             /// We use that value so the content is not displayed with weird empty space at the bottom
             ///
-            self.webView.evaluateJavaScript("document.body.scrollHeight", completionHandler: { [weak self] webViewHeight, _ in
-                guard let self else { return }
-                guard let webViewHeight = webViewHeight as? CGFloat else {
-                    self.webViewHeight.constant = height
-                    return
-                }
+            self.webView.evaluateJavaScript(
+                "document.body.scrollHeight",
+                completionHandler: { [weak self] webViewHeight, _ in
+                    guard let self else { return }
+                    guard let webViewHeight = webViewHeight as? CGFloat else {
+                        self.webViewHeight.constant = height
+                        return
+                    }
 
-                /// The display setting's custom size is applied through the HTML's initial-scale property
-                /// in the meta tag. The `scrollHeight` value seems to return the height as if it's at 1.0 scale,
-                /// so we'll need to add the custom scale into account.
-                let scaledWebViewHeight = round(webViewHeight * self.displaySetting.size.scale)
-                self.webViewHeight.constant = min(scaledWebViewHeight, height)
-            })
+                    /// The display setting's custom size is applied through the HTML's initial-scale property
+                    /// in the meta tag. The `scrollHeight` value seems to return the height as if it's at 1.0 scale,
+                    /// so we'll need to add the custom scale into account.
+                    let scaledWebViewHeight = round(webViewHeight * self.displaySetting.size.scale)
+                    self.webViewHeight.constant = min(scaledWebViewHeight, height)
+                }
+            )
         }
     }
 
@@ -664,12 +684,18 @@ class ReaderDetailViewController: UIViewController, ReaderDetailView {
     private func configureCommentsTable() {
         commentsTableView.separatorStyle = .none
         commentsTableView.backgroundColor = .clear
-        commentsTableView.register(ReaderDetailCommentsHeader.defaultNib,
-                                   forHeaderFooterViewReuseIdentifier: ReaderDetailCommentsHeader.defaultReuseID)
-        commentsTableView.register(CommentContentTableViewCell.defaultNib,
-                                   forCellReuseIdentifier: CommentContentTableViewCell.defaultReuseID)
-        commentsTableView.register(ReaderDetailNoCommentCell.defaultNib,
-                                   forCellReuseIdentifier: ReaderDetailNoCommentCell.defaultReuseID)
+        commentsTableView.register(
+            ReaderDetailCommentsHeader.defaultNib,
+            forHeaderFooterViewReuseIdentifier: ReaderDetailCommentsHeader.defaultReuseID
+        )
+        commentsTableView.register(
+            CommentContentTableViewCell.defaultNib,
+            forCellReuseIdentifier: CommentContentTableViewCell.defaultReuseID
+        )
+        commentsTableView.register(
+            ReaderDetailNoCommentCell.defaultNib,
+            forCellReuseIdentifier: ReaderDetailNoCommentCell.defaultReuseID
+        )
     }
 
     // Translation framework doesn't support UIKit, so we have to jump through the hoops.
@@ -767,10 +793,14 @@ class ReaderDetailViewController: UIViewController, ReaderDetailView {
         relatedPostsTableView.separatorStyle = .none
         relatedPostsTableView.backgroundColor = .clear
 
-        relatedPostsTableView.register(ReaderRelatedPostsCell.defaultNib,
-                           forCellReuseIdentifier: ReaderRelatedPostsCell.defaultReuseID)
-        relatedPostsTableView.register(ReaderRelatedPostsSectionHeaderView.defaultNib,
-                           forHeaderFooterViewReuseIdentifier: ReaderRelatedPostsSectionHeaderView.defaultReuseID)
+        relatedPostsTableView.register(
+            ReaderRelatedPostsCell.defaultNib,
+            forCellReuseIdentifier: ReaderRelatedPostsCell.defaultReuseID
+        )
+        relatedPostsTableView.register(
+            ReaderRelatedPostsSectionHeaderView.defaultNib,
+            forHeaderFooterViewReuseIdentifier: ReaderRelatedPostsSectionHeaderView.defaultReuseID
+        )
 
         relatedPostsTableView.dataSource = self
         relatedPostsTableView.delegate = self
@@ -807,15 +837,19 @@ class ReaderDetailViewController: UIViewController, ReaderDetailView {
     }
 
     private func configureNotifications() {
-        NotificationCenter.default.addObserver(self,
-                                               selector: #selector(siteBlocked(_:)),
-                                               name: .ReaderSiteBlocked,
-                                               object: nil)
+        NotificationCenter.default.addObserver(
+            self,
+            selector: #selector(siteBlocked(_:)),
+            name: .ReaderSiteBlocked,
+            object: nil
+        )
 
-        NotificationCenter.default.addObserver(self,
-                                               selector: #selector(userBlocked(_:)),
-                                               name: .ReaderUserBlockingDidEnd,
-                                               object: nil)
+        NotificationCenter.default.addObserver(
+            self,
+            selector: #selector(userBlocked(_:)),
+            name: .ReaderUserBlockingDidEnd,
+            object: nil
+        )
     }
 
     @objc private func userBlocked(_ notification: Foundation.Notification) {
@@ -842,11 +876,14 @@ class ReaderDetailViewController: UIViewController, ReaderDetailView {
     }
 
     @objc func didTapDisplaySettingButton() {
-        let viewController = ReaderDisplaySettingViewController(initialSetting: displaySetting,
-                                                                source: .readerPostNavBar) { [weak self] newSetting in
+        let viewController = ReaderDisplaySettingViewController(
+            initialSetting: displaySetting,
+            source: .readerPostNavBar
+        ) { [weak self] newSetting in
             // no need to refresh if there are no changes to the display setting.
             guard let self,
-                  newSetting != self.displaySetting else {
+                newSetting != self.displaySetting
+            else {
                 return
             }
 
@@ -870,7 +907,11 @@ class ReaderDetailViewController: UIViewController, ReaderDetailView {
     /// - Parameter siteID: a site identification
     /// - Parameter isFeed: a Boolean indicating if the site is an external feed (not hosted at WPcom and not using Jetpack)
     /// - Returns: A `ReaderDetailViewController` instance
-    @objc class func controllerWithPostID(_ postID: NSNumber, siteID: NSNumber, isFeed: Bool = false) -> ReaderDetailViewController {
+    @objc class func controllerWithPostID(
+        _ postID: NSNumber,
+        siteID: NSNumber,
+        isFeed: Bool = false
+    ) -> ReaderDetailViewController {
         let controller = ReaderDetailViewController.loadFromStoryboard()
         let coordinator = ReaderDetailCoordinator(view: controller)
         coordinator.set(postID: postID, siteID: siteID, isFeed: isFeed)
@@ -925,9 +966,10 @@ class ReaderDetailViewController: UIViewController, ReaderDetailView {
     /// - Returns: A `ReaderDetailViewController` instance
     @objc class func controllerWithPost(_ post: ReaderPost) -> ReaderDetailViewController {
         if post.sourceAttributionStyle() == .post,
-           let sourceAttribution = post.sourceAttribution,
-           let postID = sourceAttribution.postID,
-           let blogID = sourceAttribution.blogID {
+            let sourceAttribution = post.sourceAttribution,
+            let postID = sourceAttribution.postID,
+            let blogID = sourceAttribution.blogID
+        {
             return ReaderDetailViewController.controllerWithPostID(postID, siteID: blogID)
         } else if post.isCrossPost, let crossPostMeta = post.crossPostMeta {
             return ReaderDetailViewController.controllerWithPostID(crossPostMeta.postID, siteID: crossPostMeta.siteID)
@@ -950,10 +992,12 @@ class ReaderDetailViewController: UIViewController, ReaderDetailView {
         guard let post else {
             return
         }
-        NotificationCenter.default.addObserver(self,
-                                               selector: #selector(handleObjectsChange(_:)),
-                                               name: NSNotification.Name.NSManagedObjectContextObjectsDidChange,
-                                               object: post.managedObjectContext)
+        NotificationCenter.default.addObserver(
+            self,
+            selector: #selector(handleObjectsChange(_:)),
+            name: NSNotification.Name.NSManagedObjectContextObjectsDidChange,
+            object: post.managedObjectContext
+        )
     }
 
     @objc func handleObjectsChange(_ notification: Foundation.Notification) {
@@ -1010,7 +1054,7 @@ extension ReaderDetailViewController: UIScrollViewDelegate {
 
 extension ReaderDetailViewController: StoryboardLoadable {
     static var defaultStoryboardName: String {
-        return "ReaderDetailViewController"
+        "ReaderDetailViewController"
     }
 }
 
@@ -1019,15 +1063,20 @@ extension ReaderDetailViewController: StoryboardLoadable {
 extension ReaderDetailViewController: UITableViewDataSource, UITableViewDelegate {
 
     func numberOfSections(in tableView: UITableView) -> Int {
-        return relatedPosts.count
+        relatedPosts.count
     }
 
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return relatedPosts[section].posts.count
+        relatedPosts[section].posts.count
     }
 
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        guard let cell = tableView.dequeueReusableCell(withIdentifier: ReaderRelatedPostsCell.defaultReuseID, for: indexPath) as? ReaderRelatedPostsCell else {
+        guard
+            let cell = tableView.dequeueReusableCell(
+                withIdentifier: ReaderRelatedPostsCell.defaultReuseID,
+                for: indexPath
+            ) as? ReaderRelatedPostsCell
+        else {
             fatalError("Expected RelatedPostsTableViewCell with identifier: \(ReaderRelatedPostsCell.defaultReuseID)")
         }
 
@@ -1049,12 +1098,15 @@ extension ReaderDetailViewController: UITableViewDataSource, UITableViewDelegate
     }
 
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-        return UITableView.automaticDimension
+        UITableView.automaticDimension
     }
 
     func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
         guard let title = getSectionTitle(for: relatedPosts[section].postType),
-              let header = tableView.dequeueReusableHeaderFooterView(withIdentifier: ReaderRelatedPostsSectionHeaderView.defaultReuseID) as? ReaderRelatedPostsSectionHeaderView else {
+            let header = tableView.dequeueReusableHeaderFooterView(
+                withIdentifier: ReaderRelatedPostsSectionHeaderView.defaultReuseID
+            ) as? ReaderRelatedPostsSectionHeaderView
+        else {
             return UIView(frame: .zero)
         }
 
@@ -1072,7 +1124,7 @@ extension ReaderDetailViewController: UITableViewDataSource, UITableViewDelegate
     }
 
     func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
-        return ReaderRelatedPostsSectionHeaderView.height
+        ReaderRelatedPostsSectionHeaderView.height
     }
 
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
@@ -1083,7 +1135,11 @@ extension ReaderDetailViewController: UITableViewDataSource, UITableViewDelegate
         guard let controller = ReaderDetailViewController.controllerWithSimplePost(post) else {
             return
         }
-        controller.trackingContext.source = ScreenTrackingSource(ScreenID.Reader.article, component: ElementID.Reader.relatedPosts, position: indexPath.row)
+        controller.trackingContext.source = ScreenTrackingSource(
+            ScreenID.Reader.article,
+            component: ElementID.Reader.relatedPosts,
+            position: indexPath.row
+        )
         navigationController?.pushViewController(controller, animated: true)
     }
 
@@ -1112,8 +1168,11 @@ extension ReaderDetailViewController: ReaderDisplaySettingStoreDelegate {
 
 // MARK: - UIGestureRecognizerDelegate
 extension ReaderDetailViewController: UIGestureRecognizerDelegate {
-    func gestureRecognizer(_ gestureRecognizer: UIGestureRecognizer, shouldBeRequiredToFailBy otherGestureRecognizer: UIGestureRecognizer) -> Bool {
-        return true
+    func gestureRecognizer(
+        _ gestureRecognizer: UIGestureRecognizer,
+        shouldBeRequiredToFailBy otherGestureRecognizer: UIGestureRecognizer
+    ) -> Bool {
+        true
     }
 }
 
@@ -1140,7 +1199,11 @@ extension ReaderDetailViewController: ReaderCardDiscoverAttributionViewDelegate 
 // MARK: - Transitioning Delegate
 
 extension ReaderDetailViewController: UIViewControllerTransitioningDelegate {
-    public func presentationController(forPresented presented: UIViewController, presenting: UIViewController?, source: UIViewController) -> UIPresentationController? {
+    public func presentationController(
+        forPresented presented: UIViewController,
+        presenting: UIViewController?,
+        source: UIViewController
+    ) -> UIPresentationController? {
         guard presented is FancyAlertViewController else {
             return nil
         }
@@ -1160,7 +1223,11 @@ extension ReaderDetailViewController: WKNavigationDelegate {
         hideLoading()
     }
 
-    func webView(_ webView: WKWebView, decidePolicyFor navigationAction: WKNavigationAction, decisionHandler: @escaping (WKNavigationActionPolicy) -> Void) {
+    func webView(
+        _ webView: WKWebView,
+        decidePolicyFor navigationAction: WKNavigationAction,
+        decisionHandler: @escaping (WKNavigationActionPolicy) -> Void
+    ) {
         if navigationAction.navigationType == .linkActivated {
             if let url = navigationAction.request.url {
                 coordinator?.handle(url)
@@ -1205,8 +1272,14 @@ private extension ReaderDetailViewController {
     }
 
     struct LoadingText {
-        static let errorLoadingTitle = NSLocalizedString("Error Loading Post", comment: "Text displayed when load post fails.")
-        static let errorLoadingPostURLButtonTitle = NSLocalizedString("Open in browser", comment: "Button title to load a post in an in-app web view")
+        static let errorLoadingTitle = NSLocalizedString(
+            "Error Loading Post",
+            comment: "Text displayed when load post fails."
+        )
+        static let errorLoadingPostURLButtonTitle = NSLocalizedString(
+            "Open in browser",
+            comment: "Button title to load a post in an in-app web view"
+        )
     }
 }
 
@@ -1225,14 +1298,16 @@ private extension ReaderDetailViewController {
 
     func showTranslationSpinner() {
         guard var items = navigationItem.rightBarButtonItems,
-              !items.contains(translationSpinner) else { return }
+            !items.contains(translationSpinner)
+        else { return }
         items.append(translationSpinner)
         navigationItem.setRightBarButtonItems(items, animated: true)
     }
 
     func hideTranslationSpinner() {
         guard var items = navigationItem.rightBarButtonItems,
-              let index = items.firstIndex(of: translationSpinner) else { return }
+            let index = items.firstIndex(of: translationSpinner)
+        else { return }
         items.remove(at: index)
         navigationItem.setRightBarButtonItems(items, animated: true)
     }
@@ -1276,14 +1351,17 @@ private extension ReaderDetailViewController {
 
     func moreButtonItem(enabled: Bool = true) -> UIBarButtonItem? {
         let button = UIBarButtonItem(image: UIImage(systemName: "ellipsis"), menu: nil)
-        button.menu = UIMenu(options: .displayInline, children: [
-            UIDeferredMenuElement.uncached { [weak self, weak button] callback in
-                guard let self, let button else {
-                    return callback([])
+        button.menu = UIMenu(
+            options: .displayInline,
+            children: [
+                UIDeferredMenuElement.uncached { [weak self, weak button] callback in
+                    guard let self, let button else {
+                        return callback([])
+                    }
+                    callback(self.makeMoreMenu(button))
                 }
-                callback(self.makeMoreMenu(button))
-            }
-        ])
+            ]
+        )
         button.accessibilityLabel = Strings.moreButtonAccessibilityLabel
         button.isEnabled = enabled
         return button
@@ -1298,19 +1376,26 @@ private extension ReaderDetailViewController {
             topic: nil,
             anchor: anchor,
             viewController: self
-        ).makeMenu()
+        )
+        .makeMenu()
 
         if ReaderDisplaySettings.customizationEnabled {
-            elements.append(UIAction(title: Strings.displaySettingsLabel, image: UIImage(systemName: "textformat.size")) { [weak self] _ in
-                self?.didTapDisplaySettingButton()
-            })
+            elements.append(
+                UIAction(title: Strings.displaySettingsLabel, image: UIImage(systemName: "textformat.size")) {
+                    [weak self] _ in
+                    self?.didTapDisplaySettingButton()
+                }
+            )
         }
 
         return elements
     }
 
     func shareButtonItem(enabled: Bool = true) -> UIBarButtonItem? {
-        let button = barButtonItem(with: UIImage(named: "wpl-share") ?? UIImage(), action: #selector(didTapShareButton(_:)))
+        let button = barButtonItem(
+            with: UIImage(named: "wpl-share") ?? UIImage(),
+            action: #selector(didTapShareButton(_:))
+        )
         button.accessibilityLabel = SharedStrings.Button.share
         button.isEnabled = enabled
 
@@ -1347,7 +1432,8 @@ extension ReaderDetailViewController {
         static let displaySettingsLabel = NSLocalizedString(
             "readerDetail.displaySettingButton.displaySettingsLabel",
             value: "Reading Preferences",
-            comment: "Spoken accessibility label for the Reading Preferences menu.")
+            comment: "Spoken accessibility label for the Reading Preferences menu."
+        )
         static let safariButtonAccessibilityLabel = NSLocalizedString(
             "readerDetail.safariButton.accessibilityLabel",
             value: "Open in Safari",
@@ -1380,12 +1466,16 @@ extension ReaderDetailViewController: BorderedButtonTableViewCellDelegate {
             return
         }
 
-        ReaderCommentAction().execute(
-            post: post,
-            origin: self,
-            source: .postDetailsComments,
-            trackingSource: ScreenTrackingSource(ScreenID.Reader.article, component: ElementID.Reader.commentsSection)
-        )
+        ReaderCommentAction()
+            .execute(
+                post: post,
+                origin: self,
+                source: .postDetailsComments,
+                trackingSource: ScreenTrackingSource(
+                    ScreenID.Reader.article,
+                    component: ElementID.Reader.commentsSection
+                )
+            )
     }
 
     func buttonLeaveCommentTapped(replyingTo comment: Comment?) {
