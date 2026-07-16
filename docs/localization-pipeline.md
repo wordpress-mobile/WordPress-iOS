@@ -2,7 +2,7 @@
 
 How user-facing strings get from English source into every shipped locale. This is the **release/tooling** view (the fastlane lanes under `fastlane/lanes/`); for how to *write* localizable strings in app code, see [localization.md](./localization.md).
 
-> The contract for every shipped string is **`human ?? AI ?? English`**: a human (GlotPress) translation if one exists, otherwise a machine translation, otherwise the English source. Nothing ships a broken placeholder — machine output that fails the format-specifier gate falls back to English.
+> The contract for every shipped string is **`human ?? AI ?? English`**: a human (GlotPress) translation if one exists, otherwise a machine translation, otherwise the English source. Nothing ships a broken placeholder — **any** translation, human or machine, that fails the format-specifier gate is rejected and falls through to the next rung.
 
 ## The round trip
 
@@ -45,13 +45,20 @@ The plural reverse-fold (`PluralStrings.fold_translations!`) fills each `(key, l
 
 > **This does not ship machine translations yet.** `Plurals.xcstrings` is built into the app but **not consumed at runtime** — nothing reads the catalog, and nothing references its keys yet; the app still renders plurals the legacy way. The fold *pre-populates* the catalog so it's ready when plurals cut over to it. Until that cutover, the AI plural translations sit in the catalog unused.
 
-## What's deferred: regular strings
+## What's staged, not shipped: regular strings
 
-Regular (non-plural) strings are **not** machine-translated, by design. The app still ships the legacy `WordPress/Resources/<locale>.lproj/Localizable.strings` for them — `Localizable.xcstrings` (`generate_strings_catalog`) is the designated future backing store, but today it's only generated transiently in CI as a coverage check — the file is gitignored, not committed, and nothing ships from it. A machine translation written into the legacy `.strings` would be **live immediately**, and we don't want machine-translated regular strings shipping before the catalog cutover.
+Regular (non-plural) strings still ship the legacy way — from `WordPress/Resources/<locale>.lproj/Localizable.strings`, with no machine translation. A machine translation written there would be **live immediately**, and we don't want machine-translated regular strings shipping before the catalog cutover. `Localizable.xcstrings` (`generate_strings_catalog`) is the designated future backing store; it's gitignored and not a build member, so nothing ships from it.
 
-So regular-string MT waits for the same shape as plurals: once `Localizable.xcstrings` becomes the runtime store, a regular-string **catalog reverse-fold** folds the human translations in and AI-fills the `needs_review` gaps, staged in the catalog (not shipped) until cutover — exactly as the plural fold does today.
+The tooling to **stage** regular-string translations into that catalog now exists, the same shape as the plural fold. `CatalogStrings.fold_translations!` fills each `(key, locale)` cell of `Localizable.xcstrings` as `human ?? AI ?? English` — human ⇒ `translated`, machine / English ⇒ `needs_review` — and is reuse-aware in the same way: a kept machine cell isn't re-translated, and a human translation supersedes it on the next fold. It runs as two manual lanes: `generate_strings_catalog` (extract the English source) and `localize_catalog` (download GlotPress into a throwaway temp dir, fold the humans in, AI-fill the rest, commit the catalog). The download is a fresh temp dir every run, so no stale/partial translation state is ever carried between runs.
 
-When that's built, two facts established here will carry over:
+Two things keep it from shipping anything today, and both set it apart from the plural fold:
+
+- **Manual, not in the release path.** These lanes aren't wired into `download_localized_strings` or any beta/release step — a run extracts strings, calls the API (cost), and commits a large catalog, so it's run on demand. Only the unit tests run in CI.
+- **Staged, not shipped.** `Localizable.xcstrings` still isn't the runtime store, so the folded translations sit in the catalog unused until the cutover — exactly like the plural catalog.
+
+**Keys are immutable.** `generate_strings_catalog` hard-fails if an explicit-key string's English is reworded in place — `xcstringstool sync` would silently keep that key's now-stale translations, and the fold can't tell a translation of the old English from a current one. Rewording requires a **new key**. Key-as-source strings are exempt: rewording one changes the key, which sync handles as new/stale. (Enforcement today fires where the catalog persists; extending it to the transient-catalog CI path is a follow-up — a lint on the committed English `.strings`.)
+
+Two facts the fold relies on, both established by the reverse download:
 
 - **"Undefined by GlotPress" = absent**, not empty. The export omits untranslated strings (`status: current`; verified no empty-valued entries), so absence is the untranslated signal.
 - **Humans always supersede MT**, and machine output never returns to GlotPress — so there's no translation-memory pollution and no manual reconciliation, as long as MT lives in a state-bearing store (the catalog's `needs_review`).
@@ -77,5 +84,5 @@ When that's built, two facts established here will carry over:
 | Brand do-not-translate + per-locale terms | `fastlane/lanes/translation_glossary.rb` |
 | Anthropic SDK glue + Message Batches | `fastlane/lanes/anthropic_batch.rb` |
 | Plural fold (`Localizable.strings` ⇄ `Plurals.xcstrings`) + AI wiring | `fastlane/lanes/plural_strings_helper.rb`, `fastlane/lanes/localization_plurals.rb` |
-| Catalog generation (future regular-string backing store) | `fastlane/lanes/localization_catalog.rb` |
+| Catalog generation + regular-string fold (staged, manual) | `fastlane/lanes/localization_catalog.rb`, `fastlane/lanes/catalog_strings_helper.rb` |
 | Download/upload orchestration | `fastlane/lanes/localization.rb` |

@@ -1,6 +1,7 @@
 # frozen_string_literal: true
 
 require 'json'
+require_relative 'translation_validator'
 
 # Logic for the String Catalog ⇄ GlotPress plural pipeline. Plain Ruby with no fastlane dependencies, so it's
 # unit-testable directly — the lanes in `localization_plurals.rb` call into it.
@@ -162,7 +163,7 @@ module PluralStrings # rubocop:disable Metrics/ModuleLength -- one cohesive pipe
   def plural_variation(entry, slot, ai_translator)
     cats = slot.cats
     english_forms = english_forms_for(entry.plural, cats)
-    human_forms = human_forms_for(entry.key, cats, slot.human)
+    human_forms = human_forms_for(entry.key, cats, slot.human, english_forms, slot.locale)
     kept_ai = kept_ai_forms(slot.existing, cats, human_forms, english_forms)
     anchors = human_forms.merge(kept_ai)
     ai_forms = kept_ai.merge(fresh_ai_forms(ai_translator, entry, slot, english_forms, anchors))
@@ -224,12 +225,23 @@ module PluralStrings # rubocop:disable Metrics/ModuleLength -- one cohesive pipe
 
   # Human (GlotPress) translations present for this key, keyed by CLDR category. These ship as `translated` and
   # double as the AI request's anchors so the machine-filled forms stay consistent with the human's word choice.
-  # A blank-or-whitespace-only value isn't a real translation — it's dropped, so it neither ships as `translated`
-  # nor anchors the request (the category falls through to AI / English instead).
-  def human_forms_for(key, cats, human)
+  # A blank-or-whitespace-only value isn't a real translation, and a placeholder-broken one would crash at
+  # runtime — both are dropped, so such a category neither ships as `translated` nor anchors the request (it
+  # falls through to AI / English instead).
+  def human_forms_for(key, cats, human, english_forms, locale)
     cats.each_with_object({}) do |cat, acc|
       value = human["#{key}#{INFIX}#{cat}"]
-      acc[cat] = value unless value.to_s.strip.empty?
+      next if value.to_s.strip.empty?
+
+      # The same placeholder gate the AI forms pass: a broken human form (a dropped/retyped specifier) must not
+      # ship as `translated` — it would crash at runtime. Reject it (surfacing which category), so the cat falls
+      # through to AI / English and never anchors the request.
+      if TranslationValidator.placeholders_match?(english_forms[cat], value)
+        acc[cat] = value
+      else
+        warn "PluralStrings: rejected #{locale} human translation for #{key.inspect} (#{cat}) — " \
+             "#{TranslationValidator.mismatch_reason(english_forms[cat], value)}; using machine/English instead."
+      end
     end
   end
   private_class_method :human_forms_for

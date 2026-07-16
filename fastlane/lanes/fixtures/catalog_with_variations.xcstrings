@@ -1,0 +1,43 @@
+{
+  "sourceLanguage" : "en",
+  "strings" : {
+    "app.banner.tapToOpen" : {
+      "comment" : "Regular string whose English varies by device — stored under `variations`, with no flat `stringUnit`. The fold must SKIP this, not fall back to translating the key.",
+      "localizations" : {
+        "en" : {
+          "variations" : {
+            "device" : {
+              "ipad" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "Click to open"
+                }
+              },
+              "iphone" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "Tap to open"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "app.button.save" : {
+      "comment" : "A normal flat regular string — the control that must still fold.",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Save"
+          }
+        }
+      }
+    },
+    "%1$@ on %2$@" : {
+
+    }
+  },
+  "version" : "1.0"
+}
