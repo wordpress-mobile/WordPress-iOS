@@ -2317,8 +2317,8 @@
 			inputFileListPaths = (
 			);
 			inputPaths = (
-				"$(SRCROOT)/WordPress.xcworkspace/xcshareddata/swiftpm/Package.resolved",
-				"$(SRCROOT)/Scripts/BuildPhases/GenerateAcknowledgementsBundle.sh",
+				"$(SRCROOT)/../Modules/Package.resolved",
+				"$(SRCROOT)/../Scripts/BuildPhases/GenerateAcknowledgementsBundle.sh",
 			);
 			name = "Build Acknowledgements Bundle";
 			outputFileListPaths = (
@@ -2338,8 +2338,8 @@
 			inputFileListPaths = (
 			);
 			inputPaths = (
-				"$(SRCROOT)/WordPress.xcworkspace/xcshareddata/swiftpm/Package.resolved",
-				"$(SRCROOT)/Scripts/BuildPhases/GenerateAcknowledgementsBundle.sh",
+				"$(SRCROOT)/../Modules/Package.resolved",
+				"$(SRCROOT)/../Scripts/BuildPhases/GenerateAcknowledgementsBundle.sh",
 			);
 			name = "Build Acknowledgements Bundle";
 			outputFileListPaths = (
