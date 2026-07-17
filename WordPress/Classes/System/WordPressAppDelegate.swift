@@ -907,7 +907,7 @@ extension WordPressAppDelegate {
     /// `simctl launch` and no taps on the login screen.
     ///
     /// No-op when the argument is absent or a WordPress.com account is already signed in.
-    func autoSignInUITestWPComAccountIfNeeded() {
+    func autoSignInWPComAccountFromLaunchArgumentIfNeeded() {
         guard WordPressDotComAuthenticator.launchArgumentToken != nil else {
             return
         }
