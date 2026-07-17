@@ -27,6 +27,11 @@ Examples:
   Scripts/sim-signin.sh --wpcom-token <token>                 # Jetpack, booted simulator
   Scripts/sim-signin.sh --app wordpress --wpcom-token <token> # WordPress
   Scripts/sim-signin.sh --reset --wpcom-token <token>         # wipe existing state first
+
+Set the token once and omit it from the command line. Resolution order:
+  1. --wpcom-token (or positional)
+  2. WPCOM_TOKEN environment variable
+  3. ~/.wpcom-token file
 EOF
 }
 
@@ -63,8 +68,17 @@ while [[ $# -gt 0 ]]; do
     esac
 done
 
+# Fall back to a token set once elsewhere, so it needn't be passed every launch:
+# the WPCOM_TOKEN environment variable, then a ~/.wpcom-token file.
 if [[ -z "$token" ]]; then
-    echo "error: missing <bearer-token>" >&2
+    token="${WPCOM_TOKEN:-}"
+fi
+if [[ -z "$token" && -f "$HOME/.wpcom-token" ]]; then
+    token="$(tr -d '[:space:]' < "$HOME/.wpcom-token")"
+fi
+
+if [[ -z "$token" ]]; then
+    echo "error: no token — pass --wpcom-token <token>, set WPCOM_TOKEN, or write ~/.wpcom-token" >&2
     usage >&2
     exit 1
 fi
