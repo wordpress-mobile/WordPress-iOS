@@ -2,8 +2,8 @@
 #
 # Sign an iOS Simulator into WordPress.com with a bearer token, in one command.
 #
-# Wraps `xcrun simctl launch`, passing the `-ui-test-wpcom-token` launch argument the app
-# reads on the login screen to finish WordPress.com sign-in automatically — no taps required.
+# Wraps `xcrun simctl launch`, passing the `-wpcom-token` launch argument the app reads on
+# the login screen to finish WordPress.com sign-in automatically — no taps required.
 # Build and install the app on the simulator first (e.g. from Xcode).
 
 set -euo pipefail
@@ -84,6 +84,6 @@ if [[ "$reset" == true ]]; then
     sleep 2
 fi
 
-xcrun simctl launch --terminate-running-process "$device" "$bundle_id" -ui-test-wpcom-token "$token"
+xcrun simctl launch --terminate-running-process "$device" "$bundle_id" -wpcom-token "$token"
 
 echo "Done. The app signs in automatically from the login screen."
