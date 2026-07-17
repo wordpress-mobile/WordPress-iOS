@@ -11,6 +11,8 @@ class ShareModularViewController: ShareExtensionAbstractViewController {
 
     fileprivate var isPublishingPost: Bool = false
     fileprivate var isFetchingCategories: Bool = false
+    fileprivate var isFetchingSites: Bool = false
+    fileprivate var sitesState: SitesState = .loading
 
     /// StackView container for the tables
     ///
@@ -212,6 +214,7 @@ class ShareModularViewController: ShareExtensionAbstractViewController {
     fileprivate func setupSitesTableView() {
         // Register the cells
         sitesTableView.register(UITableViewCell.self, forCellReuseIdentifier: Constants.sitesReuseIdentifier)
+        sitesTableView.register(UITableViewCell.self, forCellReuseIdentifier: Constants.sitesStatusReuseIdentifier)
         sitesTableView.estimatedRowHeight = Constants.siteRowHeight
 
         // Hide the separators, whenever the table is empty
@@ -265,11 +268,14 @@ extension ShareModularViewController {
     }
 
     @objc func pullToRefresh(sender: UIRefreshControl) {
+        guard !isFetchingSites else {
+            sender.endRefreshing()
+            return
+        }
         ShareExtensionAbstractViewController.clearCache()
         isFetchingCategories = true
         clearCategoriesAndRefreshModulesTable()
-        clearSiteDataAndRefreshSitesTable()
-        reloadSitesIfNeeded()
+        fetchSites()
     }
 
     func showPostTypePicker() {
@@ -364,9 +370,13 @@ extension ShareModularViewController: UITableViewDataSource {
             let cell = tableView.dequeueReusableCell(withIdentifier: Constants.modulesReuseIdentifier)!
             configureModulesCell(cell, indexPath: indexPath)
             return cell
-        } else {
+        } else if sitesState == .loaded {
             let cell = tableView.dequeueReusableCell(withIdentifier: Constants.sitesReuseIdentifier)!
             configureSiteCell(cell, indexPath: indexPath)
+            return cell
+        } else {
+            let cell = tableView.dequeueReusableCell(withIdentifier: Constants.sitesStatusReuseIdentifier)!
+            configureSitesStatusCell(cell)
             return cell
         }
     }
@@ -415,6 +425,18 @@ extension ShareModularViewController: UITableViewDataSource {
 // MARK: - UITableView Delegate Conformance
 
 extension ShareModularViewController: UITableViewDelegate {
+    func tableView(_ tableView: UITableView, willSelectRowAt indexPath: IndexPath) -> IndexPath? {
+        guard tableView == sitesTableView else {
+            return indexPath
+        }
+        switch sitesState {
+        case .loaded where !isFetchingSites, .failed:
+            return indexPath
+        case .loading, .loaded, .empty:
+            return nil
+        }
+    }
+
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         if tableView == sitesTableView {
             selectedSitesTableRowAt(indexPath)
@@ -454,8 +476,13 @@ fileprivate extension ShareModularViewController {
             if isFetchingCategories {
                 cell.isUserInteractionEnabled = false
                 cell.accessoryType = .none
-                cell.accessoryView = categoryActivityIndicator
-                categoryActivityIndicator.startAnimating()
+                if isFetchingSites {
+                    categoryActivityIndicator.stopAnimating()
+                    cell.accessoryView = nil
+                } else {
+                    cell.accessoryView = categoryActivityIndicator
+                    categoryActivityIndicator.startAnimating()
+                }
             } else {
                 switch shareData.categoryCountForSelectedSite {
                 case 0, 1:
@@ -605,6 +632,48 @@ fileprivate extension ShareModularViewController {
 // MARK: - Sites UITableView Helpers
 
 fileprivate extension ShareModularViewController {
+    func configureSitesStatusCell(_ cell: UITableViewCell) {
+        let title: String
+        let isLoading: Bool
+        let isFailure: Bool
+        switch sitesState {
+        case .loading:
+            title = StatusText.loadingTitle
+            isLoading = true
+            isFailure = false
+            cell.selectionStyle = .none
+        case .empty:
+            title = StatusText.noSitesTitle
+            isLoading = false
+            isFailure = false
+            cell.selectionStyle = .none
+        case .failed:
+            title = StatusText.sitesFailureTitle
+            isLoading = false
+            isFailure = true
+            cell.selectionStyle = .default
+        case .loaded:
+            assertionFailure("A status cell should not be shown when sites are loaded")
+            return
+        }
+
+        cell.accessoryType = .none
+        cell.contentConfiguration = UIHostingConfiguration {
+            HStack(spacing: 12) {
+                if isLoading {
+                    ProgressView()
+                }
+                Text(title)
+                    .font(.callout)
+                    .foregroundStyle(.secondary)
+            }
+            .accessibilityElement(children: .ignore)
+            .accessibilityLabel(title)
+            .accessibilityAddTraits(isFailure ? .isButton : .isStaticText)
+        }
+        .margins(.vertical, 12)
+    }
+
     func configureSiteCell(_ cell: UITableViewCell, indexPath: IndexPath) {
         guard let site = siteForRowAtIndexPath(indexPath) else {
             return
@@ -625,10 +694,22 @@ fileprivate extension ShareModularViewController {
     }
 
     var rowCountForSites: Int {
-        sites?.count ?? 0
+        switch sitesState {
+        case .loading, .empty, .failed:
+            return 1
+        case .loaded:
+            return sites?.count ?? 0
+        }
     }
 
     func selectedSitesTableRowAt(_ indexPath: IndexPath) {
+        if sitesState == .failed {
+            retryLoadingSites()
+            return
+        }
+        guard sitesState == .loaded, !isFetchingSites else {
+            return
+        }
         sitesTableView.flashRowAtIndexPath(
             indexPath,
             scrollPosition: .none,
@@ -670,18 +751,29 @@ fileprivate extension ShareModularViewController {
         sites = nil
         sitesTableView.reloadData()
     }
+
+    func retryLoadingSites() {
+        ShareExtensionAbstractViewController.clearCache()
+        sites = nil
+        isFetchingCategories = true
+        clearCategoriesAndRefreshModulesTable()
+        fetchSites()
+    }
 }
 
-// MARK: - No Results Helpers
+// MARK: - Status Helpers
 
 fileprivate extension ShareModularViewController {
 
-    func showLoadingView() {
+    func showSitesLoadingState() {
+        let isRefreshingLoadedSites = sitesState == .loaded && refreshControl.isRefreshing
+        if !isRefreshingLoadedSites {
+            sitesState = .loading
+        }
+        noResultsViewController.removeFromView()
         updatePublishButtonStatus()
-        configureAndDisplayStatus(
-            title: StatusText.loadingTitle,
-            accessoryView: NoResultsViewController.loadingAccessoryView()
-        )
+        refreshModulesTable()
+        sitesTableView.reloadData()
     }
 
     func showPublishingView() {
@@ -699,32 +791,21 @@ fileprivate extension ShareModularViewController {
         }()
 
         updatePublishButtonStatus()
-        configureAndDisplayStatus(title: title, accessoryView: NoResultsViewController.loadingAccessoryView())
+        configureAndDisplayLoadingStatus(title: title)
     }
 
     func showCancellingView() {
         updatePublishButtonStatus()
-        configureAndDisplayStatus(
-            title: StatusText.cancellingTitle,
-            accessoryView: NoResultsViewController.loadingAccessoryView()
-        )
+        configureAndDisplayLoadingStatus(title: StatusText.cancellingTitle)
     }
 
-    func showEmptySitesIfNeeded() {
-        updatePublishButtonStatus()
+    func configureAndDisplayLoadingStatus(title: String) {
         noResultsViewController.removeFromView()
-        refreshControl.endRefreshing()
-
-        guard !hasSites else {
-            return
-        }
-
-        configureAndDisplayStatus(title: StatusText.noSitesTitle)
+        noResultsViewController.configureForLoading(title: title)
+        displayStatusViewController()
     }
 
-    func configureAndDisplayStatus(title: String, accessoryView: UIView? = nil) {
-        noResultsViewController.removeFromView()
-        noResultsViewController.configure(title: title, accessoryView: accessoryView)
+    func displayStatusViewController() {
         addChild(noResultsViewController)
         view.addSubview(noResultsViewController.view)
         noResultsViewController.didMove(toParent: self)
@@ -732,7 +813,7 @@ fileprivate extension ShareModularViewController {
 
     func updatePublishButtonStatus() {
         guard hasSites, shareData.selectedSiteID != nil, shareData.allCategoriesForSelectedSite != nil,
-            isFetchingCategories == false, isPublishingPost == false
+            isFetchingCategories == false, isFetchingSites == false, isPublishingPost == false
         else {
             publishButton.isEnabled = false
             return
@@ -842,28 +923,44 @@ fileprivate extension ShareModularViewController {
 
     func reloadSitesIfNeeded() {
         guard !hasSites else {
+            sitesState = .loaded
             sitesTableView.reloadData()
-            showEmptySitesIfNeeded()
+            updatePublishButtonStatus()
             return
         }
+        fetchSites()
+    }
+
+    func fetchSites() {
+        guard !isFetchingSites else {
+            return
+        }
+        isFetchingSites = true
+        showSitesLoadingState()
         let networkService = AppExtensionsService()
         networkService.fetchSites(onSuccess: { blogs in
             DispatchQueue.main.async {
+                self.isFetchingSites = false
                 self.sites = (blogs) ?? [RemoteBlog]()
+                self.sitesState = self.hasSites ? .loaded : .empty
+                self.refreshControl.endRefreshing()
                 self.sitesTableView.reloadData()
-                self.showEmptySitesIfNeeded()
-                self.fetchCategoriesForSelectedSite()
+                if self.hasSites {
+                    self.fetchCategoriesForSelectedSite()
+                } else {
+                    self.refreshModulesTable(categoriesLoaded: true)
+                }
             }
         }) {
             DispatchQueue.main.async {
+                self.isFetchingSites = false
                 self.sites = [RemoteBlog]()
+                self.sitesState = .failed
+                self.refreshControl.endRefreshing()
                 self.sitesTableView.reloadData()
-                self.showEmptySitesIfNeeded()
                 self.refreshModulesTable(categoriesLoaded: true)
             }
         }
-
-        showLoadingView()
     }
 
     func savePostToRemoteSite() {
@@ -1058,6 +1155,7 @@ fileprivate extension ShareModularViewController {
 fileprivate extension ShareModularViewController {
     struct Constants {
         static let sitesReuseIdentifier = "sitesReuseIdentifier"
+        static let sitesStatusReuseIdentifier = "sitesStatusReuseIdentifier"
         static let modulesReuseIdentifier = String(describing: ShareModularViewController.self)
         static let siteRowHeight = CGFloat(74.0)
         static let defaultRowHeight = CGFloat(44.0)
@@ -1140,9 +1238,20 @@ fileprivate extension ShareModularViewController {
         )
         static let noSitesTitle = AppLocalizedString(
             "No available sites",
-            comment: "A short message that informs the user no sites could be loaded in the share extension."
+            comment: "A short message that informs the user their account has no available sites."
+        )
+        static let sitesFailureTitle = AppLocalizedString(
+            "Couldn't load sites. Tap to retry.",
+            comment: "Error message shown when loading sites failed in the share extension."
         )
     }
+}
+
+fileprivate enum SitesState {
+    case loading
+    case loaded
+    case empty
+    case failed
 }
 
 private enum Strings {
