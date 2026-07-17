@@ -127,6 +127,7 @@ class RootViewCoordinator {
         self.rootViewPresenter = nil
 
         WordPressAppDelegate.shared?.autoSignInUITestSite()
+        WordPressAppDelegate.shared?.autoSignInUITestWPComAccountIfNeeded()
     }
 
     private func createPresenter(_ appType: AppUIType) -> RootViewPresenter {
