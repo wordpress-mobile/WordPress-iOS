@@ -7,9 +7,9 @@ Pass credentials as launch arguments. WordPress.com sign-in then completes autom
 The quickest path is the helper script — it launches the app with the token and, optionally, resets first:
 
 ```bash
-Scripts/sim-signin.sh <bearer-token>             # Jetpack, booted simulator
-Scripts/sim-signin.sh --app wordpress <token>    # WordPress
-Scripts/sim-signin.sh --reset <token>            # wipe existing state first
+Scripts/sim-signin.sh --wpcom-token <token>                 # Jetpack, booted simulator
+Scripts/sim-signin.sh --app wordpress --wpcom-token <token> # WordPress
+Scripts/sim-signin.sh --reset --wpcom-token <token>         # wipe existing state first
 ```
 
 Or launch directly with the bearer token. The app finishes sign-in automatically while it sits on the login screen — no taps required:
