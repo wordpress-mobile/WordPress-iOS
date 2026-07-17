@@ -73,6 +73,21 @@ class CatalogStringsFoldTest < Minitest::Test # rubocop:disable Metrics/ClassLen
     assert_equal({ 'state' => 'translated', 'value' => 'Enregistrer' }, cell(cat, 'a', 'fr'))
   end
 
+  # A human translation that reorders a non-positional source (%@ … %@) via positional specifiers (%2$@ … %1$@)
+  # is valid at runtime — String(format:) honors positional specifiers regardless of the source's shape — and is
+  # the standard iOS reordering pattern for RTL / word-order-differing locales. It must ship as `translated`, NOT
+  # be rejected by the placeholder gate and downgraded to machine/English. This is the user-facing half of the
+  # TranslationValidator regression (see translation_validator_test.rb): 23 key-as-source strings across 34
+  # locales (513 currently-shipping cells) do exactly this, e.g. ar "%@ of %@ used on your site" folds to
+  # "%1$@ من %2$@ على موقعك". With no AI tier here, the rejected human currently degrades to English (needs_review).
+  def test_reordered_human_translation_of_a_non_positional_source_is_kept_as_translated
+    cat = catalog('a' => entry('%@ of %@ used'))
+    capture_stderr { fold(cat, translations: { 'fr' => { 'a' => '%2$@ sur %1$@ utilisés' } }) }
+
+    assert_equal({ 'state' => 'translated', 'value' => '%2$@ sur %1$@ utilisés' }, cell(cat, 'a', 'fr'),
+                 'a reordered human translation must ship as translated, not be downgraded')
+  end
+
   # A whitespace-only GlotPress value is not a real translation: it must not ship as `translated` — the key
   # should still reach the model and land as `needs_review`, same as if GlotPress had no value at all.
   def test_whitespace_only_human_value_is_treated_as_untranslated
