@@ -536,16 +536,22 @@ platform :ios do
       path: lane_context[SharedValues::DSYM_OUTPUT_PATH]
     )
 
+    # Source maps must be uploaded under the SAME release the app embeds at
+    # runtime. Prototype builds set `VERSION_SHORT` to `pr_or_branch` (not the
+    # marketing version), so the Sentry release is
+    # `<app_identifier>@<pr_or_branch>+<build_number>`. Uploading under
+    # `release_version_current` here would not match the runtime event, leaving
+    # frames unsymbolicated.
     upload_gutenberg_sourcemaps(
       sentry_project_slug: sentry_project_slug,
-      release_version: release_version_current,
+      release_version: pr_or_branch,
       build_version: build_number,
       app_identifier: app_identifier
     )
 
     upload_gutenberg_kit_sourcemaps(
       sentry_project_slug: sentry_project_slug,
-      release_version: release_version_current,
+      release_version: pr_or_branch,
       build_version: build_number,
       app_identifier: app_identifier
     )
