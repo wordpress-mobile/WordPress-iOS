@@ -1,17 +1,23 @@
 # Simulator Sign-In
 
-Pass credentials as launch arguments, then tap through the sign-in screen to complete sign-in.
+Pass credentials as launch arguments. WordPress.com sign-in then completes automatically; the self-hosted flow still needs a couple of taps.
 
 ## WordPress.com account
 
-Launch with a bearer token:
+The quickest path is the helper script — it launches the app with the token and, optionally, resets first:
+
+```bash
+Scripts/sim-signin.sh <bearer-token>             # Jetpack, booted simulator
+Scripts/sim-signin.sh --app wordpress <token>    # WordPress
+Scripts/sim-signin.sh --reset <token>            # wipe existing state first
+```
+
+Or launch directly with the bearer token. The app finishes sign-in automatically while it sits on the login screen — no taps required:
 
 ```bash
 xcrun simctl launch --terminate-running-process booted org.wordpress \
   -ui-test-wpcom-token <bearer-token>
 ```
-
-On the sign-in screen, tap **"Continue with WordPress.com"**.
 
 ## Self-hosted site
 

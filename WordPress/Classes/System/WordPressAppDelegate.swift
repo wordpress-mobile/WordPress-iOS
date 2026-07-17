@@ -901,4 +901,29 @@ extension WordPressAppDelegate {
             }
         )
     }
+
+    /// Completes WordPress.com sign-in automatically when a bearer token is supplied via the
+    /// `-ui-test-wpcom-token` launch argument, so a Simulator can be signed in with a single
+    /// `simctl launch` and no taps on the login screen.
+    ///
+    /// No-op when the argument is absent or a WordPress.com account is already signed in.
+    func autoSignInUITestWPComAccountIfNeeded() {
+        guard UserDefaults.standard.string(forKey: "ui-test-wpcom-token") != nil else {
+            return
+        }
+        guard (try? WPAccount.lookupDefaultWordPressComAccount(in: ContextManager.shared.mainContext)) == nil else {
+            return
+        }
+        guard let presenter = window?.topmostPresentedViewController else {
+            return
+        }
+        Task { @MainActor in
+            guard await WordPressDotComAuthenticator().signIn(from: presenter, context: .default) != nil else {
+                return
+            }
+            // Creating the account isn't enough on its own — without this the app stays on the
+            // login screen. Swap the window root to the signed-in app (no epilogue, so no taps).
+            windowManager.showUI()
+        }
+    }
 }
