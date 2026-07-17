@@ -31,7 +31,11 @@ class ShareModularViewController: ShareExtensionAbstractViewController {
     /// Back Bar Button
     ///
     fileprivate lazy var backButton: UIBarButtonItem = {
-        let backTitle = AppLocalizedString("Back", comment: "Back action on share extension site picker screen. Takes the user to the share extension editor screen.")
+        let backTitle = AppLocalizedString(
+            "Back",
+            comment:
+                "Back action on share extension site picker screen. Takes the user to the share extension editor screen."
+        )
         let button = UIBarButtonItem(title: backTitle, style: .plain, target: self, action: #selector(backWasPressed))
         button.accessibilityIdentifier = "Back Button"
         return button
@@ -41,7 +45,12 @@ class ShareModularViewController: ShareExtensionAbstractViewController {
     ///
     fileprivate lazy var cancelButton: UIBarButtonItem = {
         let cancelTitle = AppLocalizedString("Cancel", comment: "Cancel action on the app extension modules screen.")
-        let button = UIBarButtonItem(title: cancelTitle, style: .plain, target: self, action: #selector(cancelWasPressed))
+        let button = UIBarButtonItem(
+            title: cancelTitle,
+            style: .plain,
+            target: self,
+            action: #selector(cancelWasPressed)
+        )
         button.accessibilityIdentifier = "Cancel Button"
         return button
     }()
@@ -51,12 +60,23 @@ class ShareModularViewController: ShareExtensionAbstractViewController {
     fileprivate lazy var publishButton: UIBarButtonItem = {
         let publishTitle: String
         if self.originatingExtension == .share {
-            publishTitle = AppLocalizedString("Publish", comment: "Publish post action on share extension site picker screen.")
+            publishTitle = AppLocalizedString(
+                "Publish",
+                comment: "Publish post action on share extension site picker screen."
+            )
         } else {
-            publishTitle = AppLocalizedString("Save", comment: "Save draft post action on share extension site picker screen.")
+            publishTitle = AppLocalizedString(
+                "Save",
+                comment: "Save draft post action on share extension site picker screen."
+            )
         }
 
-        let button = UIBarButtonItem(title: publishTitle, style: .plain, target: self, action: #selector(publishWasPressed))
+        let button = UIBarButtonItem(
+            title: publishTitle,
+            style: .plain,
+            target: self,
+            action: #selector(publishWasPressed)
+        )
         if self.originatingExtension == .share {
             button.accessibilityIdentifier = "Publish Button"
         } else {
@@ -132,14 +152,17 @@ class ShareModularViewController: ShareExtensionAbstractViewController {
 
                     // Use the filename as the uploadID here.
                     if extractedImage.insertionState == .requiresInsertion {
-                        self.shareData.contentBody = self.shareData.contentBody.stringByAppendingMediaURL(mediaURL: imageURL.absoluteString, uploadID: imageURL.lastPathComponent)
+                        self.shareData.contentBody = self.shareData.contentBody.stringByAppendingMediaURL(
+                            mediaURL: imageURL.absoluteString,
+                            uploadID: imageURL.lastPathComponent
+                        )
                     }
                 })
 
                 // Clear out the extension context after loading it once. We don't need it anymore.
                 self.context = nil
                 self.refreshModulesTable()
-        }
+            }
     }
 
     fileprivate func setupPrimarySiteIfNeeded() {
@@ -291,11 +314,17 @@ extension ShareModularViewController {
         guard let siteID = shareData.selectedSiteID,
             let allSiteCategories = shareData.allCategoriesForSelectedSite,
             isFetchingCategories == false,
-            isPublishingPost == false else {
+            isPublishingPost == false
+        else {
             return
         }
 
-        let categoryInfo = SiteCategories(siteID: siteID, allCategories: allSiteCategories, selectedCategories: shareData.userSelectedCategories, defaultCategoryID: shareData.defaultCategoryID)
+        let categoryInfo = SiteCategories(
+            siteID: siteID,
+            allCategories: allSiteCategories,
+            selectedCategories: shareData.userSelectedCategories,
+            defaultCategoryID: shareData.defaultCategoryID
+        )
         let categoriesPicker = ShareCategoriesPickerViewController(categoryInfo: categoryInfo)
         categoriesPicker.title = Strings.categoryCellTitle
         categoriesPicker.onValueChanged = { [weak self] categoryInfo in
@@ -343,11 +372,11 @@ extension ShareModularViewController: UITableViewDataSource {
     }
 
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-        return UITableView.automaticDimension
+        UITableView.automaticDimension
     }
 
     func tableView(_ tableView: UITableView, estimatedHeightForRowAt indexPath: IndexPath) -> CGFloat {
-        return tableView.estimatedRowHeight
+        tableView.estimatedRowHeight
     }
 
     func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
@@ -444,7 +473,8 @@ fileprivate extension ShareModularViewController {
 
             cell.detailTextLabel?.text = shareData.selectedCategoriesNameString
             if (shareData.userSelectedCategories == nil || shareData.userSelectedCategories?.isEmpty == true)
-                && shareData.defaultCategoryID == Constants.unknownDefaultCategoryID {
+                && shareData.defaultCategoryID == Constants.unknownDefaultCategoryID
+            {
                 cell.detailTextLabel?.textColor = UIAppColor.neutral(.shade30)
             } else {
                 cell.detailTextLabel?.textColor = UIAppColor.neutral(.shade70)
@@ -459,7 +489,10 @@ fileprivate extension ShareModularViewController {
                 cell.detailTextLabel?.text = tags
                 cell.detailTextLabel?.textColor = UIAppColor.neutral(.shade70)
             } else {
-                cell.detailTextLabel?.text = AppLocalizedString("Add tags", comment: "Placeholder text for tags module in share extension.")
+                cell.detailTextLabel?.text = AppLocalizedString(
+                    "Add tags",
+                    comment: "Placeholder text for tags module in share extension."
+                )
                 cell.detailTextLabel?.textColor = UIAppColor.neutral(.shade30)
             }
         case .summary:
@@ -488,26 +521,32 @@ fileprivate extension ShareModularViewController {
     func selectedModulesTableRowAt(_ indexPath: IndexPath) {
         switch ModulesSection(rawValue: indexPath.section)! {
         case .type:
-            modulesTableView.flashRowAtIndexPath(indexPath,
-                                                 scrollPosition: .none,
-                                                 flashLength: Constants.flashAnimationLength,
-                                                 completion: nil)
+            modulesTableView.flashRowAtIndexPath(
+                indexPath,
+                scrollPosition: .none,
+                flashLength: Constants.flashAnimationLength,
+                completion: nil
+            )
             showPostTypePicker()
             return
         case .categories:
             if shareData.categoryCountForSelectedSite > 1 {
-                modulesTableView.flashRowAtIndexPath(indexPath,
-                                                     scrollPosition: .none,
-                                                     flashLength: Constants.flashAnimationLength,
-                                                     completion: nil)
+                modulesTableView.flashRowAtIndexPath(
+                    indexPath,
+                    scrollPosition: .none,
+                    flashLength: Constants.flashAnimationLength,
+                    completion: nil
+                )
                 showCategoriesPicker()
             }
             return
         case .tags:
-            modulesTableView.flashRowAtIndexPath(indexPath,
-                                                 scrollPosition: .none,
-                                                 flashLength: Constants.flashAnimationLength,
-                                                 completion: nil)
+            modulesTableView.flashRowAtIndexPath(
+                indexPath,
+                scrollPosition: .none,
+                flashLength: Constants.flashAnimationLength,
+                completion: nil
+            )
             showTagsPicker()
             return
         case .summary:
@@ -523,9 +562,11 @@ fileprivate extension ShareModularViewController {
             } else if originatingExtension == .saveToDraft && shareData.sharedImageDict.isEmpty {
                 return SummaryText.summaryDraftPostDefault
             } else if originatingExtension == .saveToDraft && !shareData.sharedImageDict.isEmpty {
-                return ShareNoticeText.pluralize(shareData.sharedImageDict.count,
-                                                 singular: SummaryText.summaryDraftPostSingular,
-                                                 plural: SummaryText.summaryDraftPostPlural)
+                return ShareNoticeText.pluralize(
+                    shareData.sharedImageDict.count,
+                    singular: SummaryText.summaryDraftPostSingular,
+                    plural: SummaryText.summaryDraftPostPlural
+                )
             } else {
                 return String()
             }
@@ -535,9 +576,11 @@ fileprivate extension ShareModularViewController {
             } else if originatingExtension == .saveToDraft && shareData.sharedImageDict.isEmpty {
                 return SummaryText.summaryDraftPageDefault
             } else if originatingExtension == .saveToDraft && !shareData.sharedImageDict.isEmpty {
-                return ShareNoticeText.pluralize(shareData.sharedImageDict.count,
-                                                 singular: SummaryText.summaryDraftPageSingular,
-                                                 plural: SummaryText.summaryDraftPagePlural)
+                return ShareNoticeText.pluralize(
+                    shareData.sharedImageDict.count,
+                    singular: SummaryText.summaryDraftPageSingular,
+                    plural: SummaryText.summaryDraftPagePlural
+                )
             } else {
                 return String()
             }
@@ -571,7 +614,8 @@ fileprivate extension ShareModularViewController {
 
         cell.contentConfiguration = UIHostingConfiguration {
             ShareSiteCellView(site: site)
-        }.margins(.vertical, 12)
+        }
+        .margins(.vertical, 12)
 
         if site.blogID.intValue == shareData.selectedSiteID {
             cell.accessoryType = .checkmark
@@ -581,15 +625,21 @@ fileprivate extension ShareModularViewController {
     }
 
     var rowCountForSites: Int {
-        return sites?.count ?? 0
+        sites?.count ?? 0
     }
 
     func selectedSitesTableRowAt(_ indexPath: IndexPath) {
-        sitesTableView.flashRowAtIndexPath(indexPath, scrollPosition: .none, flashLength: Constants.flashAnimationLength, completion: nil)
+        sitesTableView.flashRowAtIndexPath(
+            indexPath,
+            scrollPosition: .none,
+            flashLength: Constants.flashAnimationLength,
+            completion: nil
+        )
 
         guard let cell = sitesTableView.cellForRow(at: indexPath),
             let site = siteForRowAtIndexPath(indexPath),
-            site.blogID.intValue != shareData.selectedSiteID else {
+            site.blogID.intValue != shareData.selectedSiteID
+        else {
             return
         }
 
@@ -610,7 +660,7 @@ fileprivate extension ShareModularViewController {
     }
 
     func clearAllSelectedSiteRows() {
-        for row in 0 ..< rowCountForSites {
+        for row in 0..<rowCountForSites {
             let cell = sitesTableView.cellForRow(at: IndexPath(row: row, section: 0))
             cell?.accessoryType = .none
         }
@@ -628,7 +678,10 @@ fileprivate extension ShareModularViewController {
 
     func showLoadingView() {
         updatePublishButtonStatus()
-        configureAndDisplayStatus(title: StatusText.loadingTitle, accessoryView: NoResultsViewController.loadingAccessoryView())
+        configureAndDisplayStatus(
+            title: StatusText.loadingTitle,
+            accessoryView: NoResultsViewController.loadingAccessoryView()
+        )
     }
 
     func showPublishingView() {
@@ -651,7 +704,10 @@ fileprivate extension ShareModularViewController {
 
     func showCancellingView() {
         updatePublishButtonStatus()
-        configureAndDisplayStatus(title: StatusText.cancellingTitle, accessoryView: NoResultsViewController.loadingAccessoryView())
+        configureAndDisplayStatus(
+            title: StatusText.cancellingTitle,
+            accessoryView: NoResultsViewController.loadingAccessoryView()
+        )
     }
 
     func showEmptySitesIfNeeded() {
@@ -676,7 +732,8 @@ fileprivate extension ShareModularViewController {
 
     func updatePublishButtonStatus() {
         guard hasSites, shareData.selectedSiteID != nil, shareData.allCategoriesForSelectedSite != nil,
-            isFetchingCategories == false, isPublishingPost == false else {
+            isFetchingCategories == false, isPublishingPost == false
+        else {
             publishButton.isEnabled = false
             return
         }
@@ -694,50 +751,74 @@ fileprivate extension ShareModularViewController {
 
         isFetchingCategories = true
         clearCategoriesAndRefreshModulesTable()
-        if let cachedCategories = ShareExtensionAbstractViewController.cachedCategoriesForSite(NSNumber(value: siteID)), !cachedCategories.isEmpty {
+        if let cachedCategories = ShareExtensionAbstractViewController.cachedCategoriesForSite(NSNumber(value: siteID)),
+            !cachedCategories.isEmpty
+        {
             shareData.allCategoriesForSelectedSite = cachedCategories
-            self.fetchDefaultCategoryForSelectedSite(onSuccess: { defaultCategoryID in
-                self.loadDefaultCategory(defaultCategoryID, from: cachedCategories)
-            }, onFailure: {
-                self.loadDefaultCategory(Constants.unknownDefaultCategoryID, from: cachedCategories)
-            })
+            self.fetchDefaultCategoryForSelectedSite(
+                onSuccess: { defaultCategoryID in
+                    self.loadDefaultCategory(defaultCategoryID, from: cachedCategories)
+                },
+                onFailure: {
+                    self.loadDefaultCategory(Constants.unknownDefaultCategoryID, from: cachedCategories)
+                }
+            )
         } else {
             let networkService = AppExtensionsService()
-            networkService.fetchCategoriesForSite(siteID, onSuccess: { categories in
-                ShareExtensionAbstractViewController.storeCategories(categories, for: NSNumber(value: siteID))
-                self.shareData.allCategoriesForSelectedSite = categories
-                self.fetchDefaultCategoryForSelectedSite(onSuccess: { defaultCategoryID in
-                    self.loadDefaultCategory(defaultCategoryID, from: categories)
-                }, onFailure: {
-                    self.loadDefaultCategory(Constants.unknownDefaultCategoryID, from: categories)
-                })
-            }, onFailure: { error in
-                let error = self.createErrorWithDescription("Could not successfully fetch categories for site: \(siteID). Error: \(String(describing: error))")
-                self.tracks.trackExtensionError(error)
-                self.loadDefaultCategory(Constants.unknownDefaultCategoryID, from: [])
-            })
+            networkService.fetchCategoriesForSite(
+                siteID,
+                onSuccess: { categories in
+                    ShareExtensionAbstractViewController.storeCategories(categories, for: NSNumber(value: siteID))
+                    self.shareData.allCategoriesForSelectedSite = categories
+                    self.fetchDefaultCategoryForSelectedSite(
+                        onSuccess: { defaultCategoryID in
+                            self.loadDefaultCategory(defaultCategoryID, from: categories)
+                        },
+                        onFailure: {
+                            self.loadDefaultCategory(Constants.unknownDefaultCategoryID, from: categories)
+                        }
+                    )
+                },
+                onFailure: { error in
+                    let error = self.createErrorWithDescription(
+                        "Could not successfully fetch categories for site: \(siteID). Error: \(String(describing: error))"
+                    )
+                    self.tracks.trackExtensionError(error)
+                    self.loadDefaultCategory(Constants.unknownDefaultCategoryID, from: [])
+                }
+            )
         }
     }
 
-    func fetchDefaultCategoryForSelectedSite (onSuccess: @escaping (NSNumber) -> (), onFailure: @escaping () -> ()) {
+    func fetchDefaultCategoryForSelectedSite(onSuccess: @escaping (NSNumber) -> (), onFailure: @escaping () -> ()) {
         guard let _ = oauth2Token, let siteID = shareData.selectedSiteID else {
             return
         }
 
-        if let cachedDefaultCategoryID = ShareExtensionAbstractViewController.cachedDefaultCategoryIDForSite(NSNumber(value: siteID)) {
+        if let cachedDefaultCategoryID = ShareExtensionAbstractViewController.cachedDefaultCategoryIDForSite(
+            NSNumber(value: siteID)
+        ) {
             onSuccess(cachedDefaultCategoryID)
         } else {
             let networkService = AppExtensionsService()
-            networkService.fetchSettingsForSite(siteID, onSuccess: { settings in
-                guard let settings, let defaultCategoryID = settings.defaultCategoryID else {
-                    onFailure()
-                    return
+            networkService.fetchSettingsForSite(
+                siteID,
+                onSuccess: { settings in
+                    guard let settings, let defaultCategoryID = settings.defaultCategoryID else {
+                        onFailure()
+                        return
+                    }
+                    ShareExtensionAbstractViewController.storeDefaultCategoryID(
+                        defaultCategoryID,
+                        for: NSNumber(value: siteID)
+                    )
+                    onSuccess(defaultCategoryID)
                 }
-                ShareExtensionAbstractViewController.storeDefaultCategoryID(defaultCategoryID, for: NSNumber(value: siteID))
-                onSuccess(defaultCategoryID)
-            }) { error in
+            ) { error in
                 // The current user probably does not have permissions to access site settings OR needs to be VPNed.
-                let error = self.createErrorWithDescription("Could not successfully fetch the settings for site: \(siteID). Error: \(String(describing: error))")
+                let error = self.createErrorWithDescription(
+                    "Could not successfully fetch the settings for site: \(siteID). Error: \(String(describing: error))"
+                )
                 self.tracks.trackExtensionError(error)
                 onFailure()
             }
@@ -746,7 +827,10 @@ fileprivate extension ShareModularViewController {
 
     func loadDefaultCategory(_ defaultCategoryID: NSNumber, from categories: [RemotePostCategory]) {
         if defaultCategoryID == Constants.unknownDefaultCategoryID {
-            self.shareData.setDefaultCategory(categoryID: defaultCategoryID, categoryName: Constants.unknownDefaultCategoryName)
+            self.shareData.setDefaultCategory(
+                categoryID: defaultCategoryID,
+                categoryName: Constants.unknownDefaultCategoryName
+            )
         } else {
             let defaultCategoryArray = categories.filter { $0.categoryID == defaultCategoryID }
             if !defaultCategoryArray.isEmpty, let defaultCategory = defaultCategoryArray.first {
@@ -829,15 +913,18 @@ fileprivate extension ShareModularViewController {
         let service = AppExtensionsService()
 
         prepareForPublishing()
-        service.saveAndUploadPost(shareData: shareData,
-                                  siteID: siteID,
-                                  onComplete: {
-                                    self.dismiss()
-                                  }, onFailure: {
-                                    let error = self.createErrorWithDescription("Failed to save and upload post with no media.")
-                                    self.tracks.trackExtensionError(error)
-                                    self.showRetryAlert()
-                                  })
+        service.saveAndUploadPost(
+            shareData: shareData,
+            siteID: siteID,
+            onComplete: {
+                self.dismiss()
+            },
+            onFailure: {
+                let error = self.createErrorWithDescription("Failed to save and upload post with no media.")
+                self.tracks.trackExtensionError(error)
+                self.showRetryAlert()
+            }
+        )
     }
 
     func uploadPostAndMedia(siteID: Int, localImageURLs: [URL]) {
@@ -856,16 +943,19 @@ fileprivate extension ShareModularViewController {
         }
 
         prepareForPublishing()
-        service.saveAndUploadPostWithMedia(shareData: shareData,
-                                           siteID: siteID,
-                                           localMediaFileURLs: localImageURLs,
-                                           requestEnqueued: {
-                                            self.dismiss()
-                                           }, onFailure: {
-                                            let error = self.createErrorWithDescription("Failed to save and upload post with media.")
-                                            self.tracks.trackExtensionError(error)
-                                            self.showRetryAlert()
-                                           })
+        service.saveAndUploadPostWithMedia(
+            shareData: shareData,
+            siteID: siteID,
+            localMediaFileURLs: localImageURLs,
+            requestEnqueued: {
+                self.dismiss()
+            },
+            onFailure: {
+                let error = self.createErrorWithDescription("Failed to save and upload post with media.")
+                self.tracks.trackExtensionError(error)
+                self.showRetryAlert()
+            }
+        )
     }
 
     func showRetryAlert() {
@@ -909,7 +999,10 @@ fileprivate extension ShareModularViewController {
 
     func showPermissionsAlert() {
         let title = AppLocalizedString("Sharing Error", comment: "Share extension error dialog title.")
-        let message = AppLocalizedString("Your account does not have permission to upload media to this site. The Site Administrator can change these permissions.", comment: "Share extension error dialog text.")
+        let message = AppLocalizedString(
+            "Your account does not have permission to upload media to this site. The Site Administrator can change these permissions.",
+            comment: "Share extension error dialog text."
+        )
         let dismiss = AppLocalizedString("Return to post", comment: "Share extension error dialog cancel button text")
 
         let alertController = UIAlertController(title: title, message: message, preferredStyle: .alert)
@@ -970,28 +1063,85 @@ fileprivate extension ShareModularViewController {
         static let defaultRowHeight = CGFloat(44.0)
         static let flashAnimationLength = 0.2
         static let unknownDefaultCategoryID = NSNumber(value: -1)
-        static let unknownDefaultCategoryName = AppLocalizedString("Default", comment: "Placeholder text displayed in the share extension's summary view. It lets the user know the default category will be used on their post.")
+        static let unknownDefaultCategoryName = AppLocalizedString(
+            "Default",
+            comment:
+                "Placeholder text displayed in the share extension's summary view. It lets the user know the default category will be used on their post."
+        )
     }
 
     struct SummaryText {
-        static let summaryPostPublishing = AppLocalizedString("Publish post on:", comment: "Text displayed in the share extension's summary view. It describes the publish post action.")
-        static let summaryDraftPostDefault = AppLocalizedString("Save draft post on:", comment: "Text displayed in the share extension's summary view that describes the save draft post action.")
-        static let summaryDraftPostSingular = AppLocalizedString("Save 1 photo as a draft post on:", comment: "Text displayed in the share extension's summary view that describes the action of saving a single photo in a draft post.")
-        static let summaryDraftPostPlural = AppLocalizedString("Save %ld photos as a draft post on:", comment: "Text displayed in the share extension's summary view that describes the action of saving multiple photos in a draft post.")
-        static let summaryPagePublishing = AppLocalizedString("Publish page on:", comment: "Text displayed in the share extension's summary view. It describes the publish page action.")
-        static let summaryDraftPageDefault = AppLocalizedString("Save draft page on:", comment: "Text displayed in the share extension's summary view that describes the save draft page action.")
-        static let summaryDraftPageSingular = AppLocalizedString("Save 1 photo as a draft page on:", comment: "Text displayed in the share extension's summary view that describes the action of saving a single photo in a draft page.")
-        static let summaryDraftPagePlural = AppLocalizedString("Save %ld photos as a draft page on:", comment: "Text displayed in the share extension's summary view that describes the action of saving multiple photos in a draft page.")
+        static let summaryPostPublishing = AppLocalizedString(
+            "Publish post on:",
+            comment: "Text displayed in the share extension's summary view. It describes the publish post action."
+        )
+        static let summaryDraftPostDefault = AppLocalizedString(
+            "Save draft post on:",
+            comment: "Text displayed in the share extension's summary view that describes the save draft post action."
+        )
+        static let summaryDraftPostSingular = AppLocalizedString(
+            "Save 1 photo as a draft post on:",
+            comment:
+                "Text displayed in the share extension's summary view that describes the action of saving a single photo in a draft post."
+        )
+        static let summaryDraftPostPlural = AppLocalizedString(
+            "Save %ld photos as a draft post on:",
+            comment:
+                "Text displayed in the share extension's summary view that describes the action of saving multiple photos in a draft post."
+        )
+        static let summaryPagePublishing = AppLocalizedString(
+            "Publish page on:",
+            comment: "Text displayed in the share extension's summary view. It describes the publish page action."
+        )
+        static let summaryDraftPageDefault = AppLocalizedString(
+            "Save draft page on:",
+            comment: "Text displayed in the share extension's summary view that describes the save draft page action."
+        )
+        static let summaryDraftPageSingular = AppLocalizedString(
+            "Save 1 photo as a draft page on:",
+            comment:
+                "Text displayed in the share extension's summary view that describes the action of saving a single photo in a draft page."
+        )
+        static let summaryDraftPagePlural = AppLocalizedString(
+            "Save %ld photos as a draft page on:",
+            comment:
+                "Text displayed in the share extension's summary view that describes the action of saving multiple photos in a draft page."
+        )
     }
 
     struct StatusText {
-        static let loadingTitle = AppLocalizedString("Fetching sites...", comment: "A short message to inform the user data for their sites are being fetched.")
-        static let publishingPostTitle = AppLocalizedString("Publishing post...", comment: "A short message that informs the user a post is being published to the server from the share extension.")
-        static let savingPostTitle = AppLocalizedString("Saving post…", comment: "A short message that informs the user a draft post is being saved to the server from the share extension.")
-        static let publishingPageTitle = AppLocalizedString("Publishing page...", comment: "A short message that informs the user a page is being published to the server from the share extension.")
-        static let savingPageTitle = AppLocalizedString("Saving page…", comment: "A short message that informs the user a draft page is being saved to the server from the share extension.")
-        static let cancellingTitle = AppLocalizedString("Canceling...", comment: "A short message that informs the user the share extension is being canceled.")
-        static let noSitesTitle = AppLocalizedString("No available sites", comment: "A short message that informs the user no sites could be loaded in the share extension.")
+        static let loadingTitle = AppLocalizedString(
+            "Fetching sites...",
+            comment: "A short message to inform the user data for their sites are being fetched."
+        )
+        static let publishingPostTitle = AppLocalizedString(
+            "Publishing post...",
+            comment:
+                "A short message that informs the user a post is being published to the server from the share extension."
+        )
+        static let savingPostTitle = AppLocalizedString(
+            "Saving post…",
+            comment:
+                "A short message that informs the user a draft post is being saved to the server from the share extension."
+        )
+        static let publishingPageTitle = AppLocalizedString(
+            "Publishing page...",
+            comment:
+                "A short message that informs the user a page is being published to the server from the share extension."
+        )
+        static let savingPageTitle = AppLocalizedString(
+            "Saving page…",
+            comment:
+                "A short message that informs the user a draft page is being saved to the server from the share extension."
+        )
+        static let cancellingTitle = AppLocalizedString(
+            "Canceling...",
+            comment: "A short message that informs the user the share extension is being canceled."
+        )
+        static let noSitesTitle = AppLocalizedString(
+            "No available sites",
+            comment: "A short message that informs the user no sites could be loaded in the share extension."
+        )
     }
 }
 
