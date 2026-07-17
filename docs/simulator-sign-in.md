@@ -12,6 +12,8 @@ Scripts/sim-signin.sh --app wordpress --wpcom-token <token> # WordPress
 Scripts/sim-signin.sh --reset --wpcom-token <token>         # wipe existing state first
 ```
 
+To set the token once and drop it from the command line, export `WPCOM_TOKEN` (e.g. in `~/.zshrc`) or write it to `~/.wpcom-token`; the script uses either when `--wpcom-token` is omitted.
+
 Or launch directly with the bearer token. The app finishes sign-in automatically while it sits on the login screen — no taps required:
 
 ```bash
