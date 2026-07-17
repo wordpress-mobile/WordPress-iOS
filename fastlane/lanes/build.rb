@@ -687,15 +687,15 @@ platform :ios do
   # no maps to fetch, so a missing artifact is logged and skipped rather than
   # failing the build.
   def upload_gutenberg_kit_sourcemaps(sentry_project_slug:, release_version:, build_version:, app_identifier:)
-    version = gutenberg_kit_resolved_version
-    if version.nil?
+    path_segment = gutenberg_kit_sourcemaps_path_segment
+    if path_segment.nil?
       UI.important('Could not determine the resolved GutenbergKit version; skipping GutenbergKit source-map upload.')
       return
     end
 
     Dir.mktmpdir('gutenberg-kit-sourcemaps') do |sourcemaps_folder|
-      unless download_gutenberg_kit_sourcemaps(version: version, destination: sourcemaps_folder)
-        UI.important("No GutenbergKit source maps published for version #{version}; skipping upload.")
+      unless download_gutenberg_kit_sourcemaps(path_segment: path_segment, destination: sourcemaps_folder)
+        UI.important("No GutenbergKit source maps published for '#{path_segment}'; skipping upload.")
         next
       end
 
@@ -717,9 +717,12 @@ platform :ios do
     end
   end
 
-  # Read the exact GutenbergKit version SwiftPM resolved for this checkout from
-  # `Modules/Package.resolved`. Returns nil if the file or pin can't be found.
-  def gutenberg_kit_resolved_version
+  # Derive the CDN path segment under which GutenbergKit published its source
+  # maps for the version SwiftPM resolved in `Modules/Package.resolved`. Returns:
+  # - `<version>` for a release pin (e.g. `0.18.0`), matching `gutenbergkit/0.18.0/`
+  # - `pr-builds/<N>` for a `pr-build/<N>` branch pin, matching `gutenbergkit/pr-builds/<N>/`
+  # - nil if the file or GutenbergKit pin can't be found.
+  def gutenberg_kit_sourcemaps_path_segment
     resolved_path = File.join(PROJECT_ROOT_FOLDER, GUTENBERG_KIT_PACKAGE_RESOLVED_PATH)
     unless File.exist?(resolved_path)
       UI.important("#{GUTENBERG_KIT_PACKAGE_RESOLVED_PATH} not found; cannot resolve GutenbergKit version.")
@@ -727,18 +730,31 @@ platform :ios do
     end
 
     pins = JSON.parse(File.read(resolved_path)).fetch('pins', [])
-    gutenberg_kit = pins.find { |pin| pin['identity'] == 'gutenbergkit' }
-    gutenberg_kit&.dig('state', 'version')
+    state = pins.find { |pin| pin['identity'] == 'gutenbergkit' }&.fetch('state', nil)
+    sourcemaps_path_segment_for_pin_state(state)
   rescue JSON::ParserError => e
     UI.important("Failed to parse #{GUTENBERG_KIT_PACKAGE_RESOLVED_PATH}: #{e.message}")
     nil
   end
 
-  # Download and unzip the GutenbergKit source maps for `version` into
-  # `destination`. Returns true on success, false if the artifact doesn't exist
-  # (e.g. a version published before this feature) or the download/unzip fails.
-  def download_gutenberg_kit_sourcemaps(version:, destination:)
-    url = "#{GUTENBERG_KIT_SOURCEMAPS_CDN_BASE}/#{version}/GutenbergKitSourceMaps.zip"
+  # Map a resolved SwiftPM pin `state` to its published source-map path segment:
+  # a released `version` verbatim, or `pr-builds/<N>` for a `pr-build/<N>` branch
+  # pin (see GutenbergKit's `publish_pr_xcframework`). Returns nil for anything
+  # else (a bare revision or an unrelated branch has no published maps).
+  def sourcemaps_path_segment_for_pin_state(state)
+    return nil if state.nil?
+    return state['version'] unless state['version'].nil?
+
+    match = state['branch']&.match(%r{\Apr-build/(\d+)\z})
+    match ? "pr-builds/#{match[1]}" : nil
+  end
+
+  # Download and unzip the GutenbergKit source maps for `path_segment` (a version
+  # or `pr-builds/<N>`) into `destination`. Returns true on success, false if the
+  # artifact doesn't exist (e.g. a version published before this feature) or the
+  # download/unzip fails.
+  def download_gutenberg_kit_sourcemaps(path_segment:, destination:)
+    url = "#{GUTENBERG_KIT_SOURCEMAPS_CDN_BASE}/#{path_segment}/GutenbergKitSourceMaps.zip"
     zip_path = File.join(destination, 'GutenbergKitSourceMaps.zip')
 
     UI.message("Downloading GutenbergKit source maps: #{url}")
@@ -754,7 +770,7 @@ platform :ios do
     FileUtils.rm_f(zip_path)
     true
   rescue StandardError => e
-    UI.important("Failed to download or unzip GutenbergKit source maps for #{version}: #{e.message}")
+    UI.important("Failed to download or unzip GutenbergKit source maps for '#{path_segment}': #{e.message}")
     false
   end
 
