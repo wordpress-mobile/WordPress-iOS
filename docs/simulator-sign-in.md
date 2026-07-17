@@ -16,8 +16,10 @@ Or launch directly with the bearer token. The app finishes sign-in automatically
 
 ```bash
 xcrun simctl launch --terminate-running-process booted org.wordpress \
-  -ui-test-wpcom-token <bearer-token>
+  -wpcom-token <bearer-token>
 ```
+
+The legacy `-ui-test-wpcom-token` argument is still accepted for backward compatibility.
 
 ## Self-hosted site
 
