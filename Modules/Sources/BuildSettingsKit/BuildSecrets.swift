@@ -24,6 +24,7 @@ public struct BuildSecrets: Sendable {
 
     public let oauth: OAuth
     public let zendesk: Zendesk
+    /// See [DocsBot: Embeddable Chat Widget](https://docsbot.ai/documentation/developer/embeddable-chat-widget)
     public let docsBotId: String
     public let encryptedLogsKey: String
     public let debuggingKey: String
