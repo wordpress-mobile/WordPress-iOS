@@ -76,30 +76,38 @@ module TranslationValidator
   def signature(str)
     positional = {}
     sequential = []
-    each_specifier(str.to_s) do |match|
-      next if match[:conv] == '%' # literal %% — not an argument
-
-      # Dynamic field width/precision each consume their OWN int argument, bound sequentially before the value
-      # (`%*d` reads a width int then the value; `%.*f` a precision int then the value). Count them, so `%d` and
-      # `%*d` — which are NOT interchangeable — no longer reduce to the same signature.
-      sequential << ':int' if match[:width] == '*'
-      sequential << ':int' if match[:precision] == '*'
-
-      token = "#{match[:length]}:#{TYPE_CLASS.fetch(match[:conv], match[:conv])}"
-      if match[:position]
-        index = match[:position].to_i
-        # A positional index MAY be referenced more than once, but only with a consistent type (`%1$d … %1$d` is
-        # legal — it reads argument 1 twice). Two DIFFERENT types at one index is malformed: it passes an int to a
-        # `%@` conversion (or vice versa) at runtime. Record the conflict as a distinct token that can never equal a
-        # well-formed source's single type, rather than silently overwriting last-wins.
-        existing = positional[index]
-        positional[index] = existing && existing != token ? "conflict(#{[existing, token].sort.join(', ')})" : token
-      else
-        sequential << token
-      end
-    end
+    each_specifier(str.to_s) { |match| record_specifier(match, positional, sequential) }
     Signature.new(positional, sequential)
   end
+
+  # Fold one matched specifier into the running positional/sequential views (mutated in place). `%%` is a literal
+  # percent, consuming no argument. Dynamic field width/precision each consume their OWN int argument, bound
+  # sequentially before the value (`%*d` = width int then value; `%.*f` = precision int then value), so counting
+  # them keeps `%d` and `%*d` — which are NOT interchangeable — from reducing to the same signature.
+  def record_specifier(match, positional, sequential)
+    return if match[:conv] == '%'
+
+    sequential << ':int' if match[:width] == '*'
+    sequential << ':int' if match[:precision] == '*'
+
+    token = "#{match[:length]}:#{TYPE_CLASS.fetch(match[:conv], match[:conv])}"
+    if match[:position]
+      add_positional(positional, match[:position].to_i, token)
+    else
+      sequential << token
+    end
+  end
+  private_class_method :record_specifier
+
+  # Record a positional specifier's type at its index. A positional index MAY be referenced more than once, but only
+  # with a CONSISTENT type (`%1$d … %1$d` is legal — it reads argument 1 twice). Two different types at one index is
+  # malformed — it passes an int to a `%@` conversion (or vice versa) at runtime — so store the conflict as a
+  # distinct token that can never equal a well-formed source's single type, rather than overwriting last-wins.
+  def add_positional(positional, index, token)
+    existing = positional[index]
+    positional[index] = existing && existing != token ? "conflict(#{[existing, token].sort.join(', ')})" : token
+  end
+  private_class_method :add_positional
 
   # A purely-sequential signature rewritten with the implicit 1..N indices its bare specifiers already
   # carry (`%@ %d` binds argument 1 then 2, so it becomes `{1 => object, 2 => int}`). This is what lets a
