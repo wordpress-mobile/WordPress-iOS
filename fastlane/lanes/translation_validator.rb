@@ -3,10 +3,11 @@
 # Format-specifier safety gate for machine-translated strings.
 #
 # The one correctness invariant for a translated `.strings` / `.xcstrings` value: it must preserve the
-# source's printf / NSString format ARGUMENTS exactly — same count, same types, and (for positional
-# `%1$@` specifiers) the same index→type mapping. The surrounding prose is free to change; the argument
-# contract is not. Break it and the app reads the wrong vararg off the stack — a crash or garbage at
-# runtime, in a locale the author can't read and CI can't catch.
+# source's printf / NSString format ARGUMENTS exactly — same count, same types, and the same index→type
+# mapping (bare specifiers are numbered by appearance order, so a translation may reorder them with
+# explicit `%2$@ … %1$@` specifiers — the standard iOS mechanism). The surrounding prose is free to
+# change; the argument contract is not. Break it and the app reads the wrong vararg off the stack — a
+# crash or garbage at runtime, in a locale the author can't read and CI can't catch.
 #
 # This is deliberately plain Ruby with no dependencies, so it can gate EVERY machine translation before it
 # is written and be unit-tested directly. It's the floor under the `human ?? AI ?? English` resolution in
@@ -60,8 +61,8 @@ module TranslationValidator
   # nil when the contract is preserved; otherwise a short human-readable reason (for logging which AI cells
   # were rejected and why).
   def mismatch_reason(source, candidate)
-    src = signature(source)
-    cand = signature(candidate)
+    src = implied_positional(signature(source))
+    cand = implied_positional(signature(candidate))
 
     if src.positional != cand.positional
       "positional placeholders differ (source: #{describe_positional(src.positional)}; " \
@@ -87,6 +88,25 @@ module TranslationValidator
     end
     Signature.new(positional, sequential)
   end
+
+  # A purely-sequential signature rewritten with the implicit 1..N indices its bare specifiers already
+  # carry (`%@ %d` binds argument 1 then 2, so it becomes `{1 => object, 2 => int}`). This is what lets a
+  # translation reorder a NON-positional source via explicit positional specifiers: once both sides are
+  # expressed as index→type maps, `%@ - %@` and `%2$@ - %1$@` compare equal — the reorder is honored at
+  # runtime by `String(format:)` regardless of the source's shape. A genuine sequential flip still fails,
+  # because `%@: %d` → `{1 => object, 2 => int}` and `%d : %@` → `{1 => int, 2 => object}` disagree on
+  # which index owns which type. A signature that already uses positional specifiers is returned
+  # unchanged; so is one that MIXES bare and positional specifiers (malformed per Apple's docs), so a
+  # mixed string still requires an exact structural match and can't accidentally validate against a clean
+  # map.
+  def implied_positional(sig)
+    return sig unless sig.positional.empty? && !sig.sequential.empty?
+
+    positional = {}
+    sig.sequential.each_with_index { |token, i| positional[i + 1] = token }
+    Signature.new(positional, [])
+  end
+  private_class_method :implied_positional
 
   # Yields each format-specifier MatchData in appearance order. Scans forward from the end of each match, so
   # adjacent specifiers (`%d%@`) and specifiers embedded in text are all found.
