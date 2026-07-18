@@ -46,3 +46,15 @@ class CatalogHelperRewordedKeysTest < Minitest::Test
     assert_equal %w[b c], reworded(strings, { 'a' => 'One', 'b' => 'TWO', 'c' => 'THREE' }).sort
   end
 end
+
+# Failing test: gap surfaced by the pipeline-breaker audit (currently RED). `canonical` replaces every format
+# specifier with a single sentinel regardless of type/index, so two keys that differ ONLY in argument type collapse
+# to the same coverage cell. That masks a genuinely-dropped key: if the build-free extraction loses "%d days"
+# (e.g. a same-basename .stringsdata overwrite — the exact regression this gate exists to catch), the surviving
+# "%@ days" makes coverage_gap report no gap even though an int-vs-object contract was lost.
+class CatalogHelperCoverageGapTest < Minitest::Test
+  def test_distinct_type_sibling_keys_are_not_conflated
+    # "%d days" (int) and "%@ days" (object) are real, distinct en.lproj keys; dropping either is a real hole.
+    assert_equal ['%d days'], CatalogHelper.coverage_gap(['%d days', '%@ days'], ['%@ days'])
+  end
+end
