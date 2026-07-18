@@ -35,6 +35,7 @@ extension BuildSettings {
         mobileAnnounceAppID = bundle.infoValue(forKey: "WPMobileAnnounceAppID")
         authKeychainServiceName = bundle.infoValue(forKey: "WPAuthKeychainServiceName")
         sentryDSN = bundle.infoValue(forKey: "WPSentryDSN")
+        docsBotId = bundle.infoValue(forKey: "WPDocsBotId")
     }
 }
 

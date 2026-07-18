@@ -656,6 +656,8 @@
 	<string>jetpack.public-api.wordpress.com</string>
 	<key>WPBuildConfiguration</key>
 	<string>${WP_BUILD_CONFIGURATION}</string>
+	<key>WPDocsBotId</key>
+	<string>TqTdebbGjJeUjrmBIFjh/YbAMwiheXLs2Ue5j7elH</string>
 	<key>WPEventNamePrefix</key>
 	<string>jpios</string>
 	<key>WPExplatPlatform</key>

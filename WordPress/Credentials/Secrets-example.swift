@@ -15,5 +15,4 @@ class ApiCredentials: NSObject {
     // Other Services
     static let encryptedLogKey = ""
     static let debuggingKey = ""
-    static let docsBotId = ""
 }

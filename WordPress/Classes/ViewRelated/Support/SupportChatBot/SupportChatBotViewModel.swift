@@ -11,7 +11,7 @@ struct SupportChatBotViewModel {
 
     init(
         zendeskUtils: ZendeskUtilsProtocol = ZendeskUtils.sharedInstance,
-        docsBotId: String = BuildSettings.current.secrets.docsBotId
+        docsBotId: String = BuildSettings.current.docsBotId
     ) {
         self.zendeskUtils = zendeskUtils
         self.docsBotId = docsBotId

@@ -19,6 +19,8 @@
 	<string>reader.public-api.wordpress.com</string>
 	<key>WPBuildConfiguration</key>
 	<string>${WP_BUILD_CONFIGURATION}</string>
+	<key>WPDocsBotId</key>
+	<string></string>
 	<key>WPEventNamePrefix</key>
 	<string>jpios</string>
 	<key>WPExplatPlatform</key>
