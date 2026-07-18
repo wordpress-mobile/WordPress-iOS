@@ -6,9 +6,9 @@
 require 'minitest/autorun'
 require_relative 'catalog_helper'
 
-# Exercises the reword detector: an explicit-key string whose stored English differs from a fresh extraction is
-# flagged; key-as-source, variations/plural, unchanged, and removed keys are not.
-class CatalogHelperRewordedKeysTest < Minitest::Test
+# Exercises the reword detector (an explicit-key string whose stored English differs from a fresh extraction is
+# flagged; key-as-source, variations/plural, unchanged, and removed keys are not) and the coverage compare.
+class CatalogHelperTest < Minitest::Test
   def en(value)
     { 'localizations' => { 'en' => { 'stringUnit' => { 'state' => 'translated', 'value' => value } } } }
   end
@@ -44,5 +44,13 @@ class CatalogHelperRewordedKeysTest < Minitest::Test
   def test_reports_every_reworded_key
     strings = { 'a' => en('One'), 'b' => en('Two'), 'c' => en('Three') }
     assert_equal %w[b c], reworded(strings, { 'a' => 'One', 'b' => 'TWO', 'c' => 'THREE' }).sort
+  end
+
+  # coverage_gap must not conflate keys that differ only in argument TYPE. `canonical` used to replace every format
+  # specifier with one sentinel regardless of type/index, so if the build-free extraction loses "%d days" (e.g. a
+  # same-basename .stringsdata overwrite — the exact regression this gate exists to catch), the surviving "%@ days"
+  # masked it. "%d days" (int) and "%@ days" (object) are real, distinct en.lproj keys; dropping either is a hole.
+  def test_coverage_gap_does_not_conflate_distinct_type_sibling_keys
+    assert_equal ['%d days'], CatalogHelper.coverage_gap(['%d days', '%@ days'], ['%@ days'])
   end
 end

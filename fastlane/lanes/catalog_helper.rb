@@ -24,9 +24,13 @@ module CatalogHelper
     reference.reject { |key| catalog_canonical.include?(canonical(key)) }
   end
 
-  # Collapse format specifiers to a single token so source-form (%li) and normalized (%1$li) compare equal.
+  # Strip the positional index from each format specifier so a source-form specifier (%li) and its normalized form
+  # (%1$li) compare equal, while specifiers of a DIFFERENT argument type stay distinct. The positional `N$` prefix
+  # is the only thing that differs between the two extraction paths (genstrings vs xcstringstool) for the same
+  # source literal; collapsing every specifier to one token — as this did before — conflated `%d days` with
+  # `%@ days` and masked a genuinely-dropped key behind a same-prose sibling of a different type.
   def canonical(key)
-    key.gsub(FORMAT_SPECIFIER, "\u0001")
+    key.gsub(FORMAT_SPECIFIER) { |specifier| specifier.sub(/\A%\d+\$/, '%') }
   end
 
   # --- immutable-key enforcement -------------------------------------------------------------------------
