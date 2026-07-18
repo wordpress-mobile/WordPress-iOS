@@ -81,7 +81,13 @@ module TranslationValidator
 
       token = "#{match[:length]}:#{TYPE_CLASS.fetch(match[:conv], match[:conv])}"
       if match[:position]
-        positional[match[:position].to_i] = token
+        index = match[:position].to_i
+        # A positional index MAY be referenced more than once, but only with a consistent type (`%1$d … %1$d` is
+        # legal — it reads argument 1 twice). Two DIFFERENT types at one index is malformed: it passes an int to a
+        # `%@` conversion (or vice versa) at runtime. Record the conflict as a distinct token that can never equal a
+        # well-formed source's single type, rather than silently overwriting last-wins.
+        existing = positional[index]
+        positional[index] = existing && existing != token ? "conflict(#{[existing, token].sort.join(', ')})" : token
       else
         sequential << token
       end
