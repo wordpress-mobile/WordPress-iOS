@@ -24,8 +24,8 @@ module TranslationValidator
     %                                    # leading percent
     (?:(?<position>\d+)\$)?              # optional positional index: 1$, 2$, …
     [\#0\-+']*                           # flags (NOT space — see note above)
-    (?:\d+|\*)?                          # field width
-    (?:\.(?:\d+|\*))?                    # precision
+    (?<width>\d+|\*)?                    # field width (`*` = a dynamic-width int argument)
+    (?:\.(?<precision>\d+|\*))?          # precision (`*` = a dynamic-precision int argument)
     (?<length>hh|h|ll|l|L|q|z|t|j)?      # length modifier
     (?<conv>[@dDiuUxXoOfFeEgGaAcCsSpn%]) # conversion
   /x
@@ -78,6 +78,12 @@ module TranslationValidator
     sequential = []
     each_specifier(str.to_s) do |match|
       next if match[:conv] == '%' # literal %% — not an argument
+
+      # Dynamic field width/precision each consume their OWN int argument, bound sequentially before the value
+      # (`%*d` reads a width int then the value; `%.*f` a precision int then the value). Count them, so `%d` and
+      # `%*d` — which are NOT interchangeable — no longer reduce to the same signature.
+      sequential << ':int' if match[:width] == '*'
+      sequential << ':int' if match[:precision] == '*'
 
       token = "#{match[:length]}:#{TYPE_CLASS.fetch(match[:conv], match[:conv])}"
       if match[:position]
