@@ -10,7 +10,6 @@ extension ApiCredentials {
                 url: zendeskUrl,
                 clientId: zendeskClientId
             ),
-            sentryDSN: sentryDSN,
             docsBotId: docsBotId,
             encryptedLogsKey: encryptedLogKey,
             debuggingKey: debuggingKey

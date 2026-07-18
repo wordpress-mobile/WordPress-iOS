@@ -595,6 +595,8 @@
 	<string>wordpress.org/news/</string>
 	<key>WPPushNotificationAppID</key>
 	<string>${WP_PUSH_NOTIFICATION_APP_ID}</string>
+	<key>WPSentryDSN</key>
+	<string>https://484d81126ac9483da3756876e80148ab@o248881.ingest.sentry.io/1438083</string>
 	<key>WPZendeskSourcePlatform</key>
 	<string>mobile_-_ios</string>
 </dict>

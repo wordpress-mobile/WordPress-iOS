@@ -38,6 +38,8 @@ public struct BuildSettings: Sendable {
     public var zendeskSourcePlatform: String
     public var mobileAnnounceAppID: String
     public var authKeychainServiceName: String
+    /// See [Sentry: DSN utilization](https://docs.sentry.io/concepts/key-terms/dsn-explainer/#dsn-utilization)
+    public var sentryDSN: String
 
     public struct ProductAboutDetails: Sendable {
         public var blogURL: URL

@@ -20,7 +20,8 @@ extension BuildSettings {
         ),
         zendeskSourcePlatform: "zen",
         mobileAnnounceAppID: "1234567890",
-        authKeychainServiceName: "public-api.wordpress.com"
+        authKeychainServiceName: "public-api.wordpress.com",
+        sentryDSN: ""
     )
 }
 

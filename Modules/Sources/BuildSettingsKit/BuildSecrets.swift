@@ -24,7 +24,6 @@ public struct BuildSecrets: Sendable {
 
     public let oauth: OAuth
     public let zendesk: Zendesk
-    public let sentryDSN: String
     public let docsBotId: String
     public let encryptedLogsKey: String
     public let debuggingKey: String
@@ -32,14 +31,12 @@ public struct BuildSecrets: Sendable {
     public init(
         oauth: OAuth,
         zendesk: Zendesk,
-        sentryDSN: String,
         docsBotId: String,
         encryptedLogsKey: String,
         debuggingKey: String
     ) {
         self.oauth = oauth
         self.zendesk = zendesk
-        self.sentryDSN = sentryDSN
         self.docsBotId = docsBotId
         self.encryptedLogsKey = encryptedLogsKey
         self.debuggingKey = debuggingKey
@@ -51,7 +48,6 @@ extension BuildSecrets {
     public static let dummy = BuildSecrets(
         oauth: .init(client: "", secret: ""),
         zendesk: .init(appId: "", url: "", clientId: ""),
-        sentryDSN: "",
         docsBotId: "",
         encryptedLogsKey: "",
         debuggingKey: ""

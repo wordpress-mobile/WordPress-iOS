@@ -33,6 +33,8 @@
 	<string>jetpack.com/blog</string>
 	<key>WPPushNotificationAppID</key>
 	<string>${WP_PUSH_NOTIFICATION_APP_ID}</string>
+	<key>WPSentryDSN</key>
+	<string>https://2a7b5c4f9d325dd2b93f0abff78cb9c1@o248881.ingest.us.sentry.io/4509160620621824</string>
 	<key>WPZendeskSourcePlatform</key>
 	<string>mobile_-_jp_ios</string>
 </dict>

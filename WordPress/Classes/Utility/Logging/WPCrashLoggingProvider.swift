@@ -45,7 +45,7 @@ struct WPCrashLoggingDataProvider: CrashLoggingDataProvider {
 
     init(
         contextManager: ContextManager = .shared,
-        sentryDSN: String = BuildSettings.current.secrets.sentryDSN
+        sentryDSN: String = BuildSettings.current.sentryDSN
     ) {
         self.contextManager = contextManager
         self.sentryDSN = sentryDSN
