@@ -662,4 +662,5 @@ private extension NewGutenbergViewController {
 
 // Extend Gutenberg JavaScript exception struct to conform the protocol defined in the Crash Logging service
 extension GutenbergJSException.StacktraceLine: @retroactive AutomatticTracks.JSStacktraceLine {}
+extension GutenbergJSException.DebugImage: @retroactive AutomatticTracks.JSDebugImage {}
 extension GutenbergJSException: @retroactive AutomatticTracks.JSException {}
