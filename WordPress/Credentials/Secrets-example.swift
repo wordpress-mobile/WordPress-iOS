@@ -7,11 +7,6 @@ class ApiCredentials: NSObject {
     static let client = "0"
     static let secret = "your-secret-here"
 
-    // Google Login
-    static let googleLoginClientId = ""
-    static let googleLoginSchemeId = ""
-    static let googleLoginServerClientId = ""
-
     // ZenDesk
     static let zendeskAppId = ""
     static let zendeskUrl = ""
