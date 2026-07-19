@@ -174,6 +174,20 @@ import WordPressShared
         displayTitleViewOnly = false
     }
 
+    /// Configures the view for an in-progress operation without replacing it with the no-connection presentation.
+    public func configureForLoading(title: String) {
+        titleText = title
+        subtitleText = nil
+        attributedSubtitleText = nil
+        configureAttributedSubtitle = nil
+        attributedTitleText = nil
+        buttonText = nil
+        imageName = nil
+        subtitleImageName = nil
+        accessorySubview = Self.loadingAccessoryView()
+        displayTitleViewOnly = false
+    }
+
     /// Public method to show the title specifically formatted for no search results.
     /// When the view is configured, it will display just a label with specific constraints.
     ///

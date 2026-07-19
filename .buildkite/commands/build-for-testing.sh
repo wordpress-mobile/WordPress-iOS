@@ -16,10 +16,6 @@ fi
 
 "$(dirname "${BASH_SOURCE[0]}")/shared-set-up.sh"
 
-echo "--- :writing_hand: Copy Files"
-mkdir -pv ~/.configure/wordpress-ios/secrets
-cp -v fastlane/env/project.env-example ~/.configure/wordpress-ios/secrets/project.env
-
 echo "--- :closed_lock_with_key: Installing Secrets"
 bundle exec fastlane run configure_apply
 

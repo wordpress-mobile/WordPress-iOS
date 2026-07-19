@@ -131,7 +131,7 @@ def update_code_signing_enterprise(readonly:, app_identifiers:)
   update_code_signing(
     type: 'enterprise',
     # Enterprise builds belong to the "internal" team
-    team_id: get_required_env('INT_EXPORT_TEAM_ID'),
+    team_id: INTERNAL_TEAM_ID,
     readonly: readonly,
     app_identifiers: app_identifiers,
     api_key: nil
@@ -142,7 +142,7 @@ def update_code_signing_app_store(readonly:, app_identifiers:)
   update_code_signing(
     type: 'appstore',
     # App Store builds belong to the "external" team
-    team_id: get_required_env('EXT_EXPORT_TEAM_ID'),
+    team_id: EXTERNAL_TEAM_ID,
     readonly: readonly,
     app_identifiers: app_identifiers,
     api_key: app_store_connect_api_key

@@ -1,98 +1,47 @@
 #!/usr/bin/env ruby
-# type.rb — Focus a text field and type into it via WebDriverAgent.
-#
-# One Ruby invocation = one Claude turn. Collapses the four-step
-# "tap field / wait for keyboard / send keys / read value back" loop
-# into a single call. Reuses the session that tap.rb persists at
-# /tmp/wda-<port>.session (bound to the foreground app's bundleId).
+# Focus a text field and type through an explicit WDA session.
 #
 # Usage:
-#   type.rb aid <field-aid>      --text "Hello world"
-#   type.rb text "<field-label>" --text "Hello world"
-#
-# Options:
-#   --text TXT              Text to send. Required.
-#   --no-verify             Skip the post-type readback. By default the
-#                           script reads the field's `value` (or `label`
-#                           as fallback) and exits 1 if it doesn't
-#                           contain TXT — catching dropped keypresses
-#                           without an extra tool call.
-#   --keyboard-timeout SEC  Max seconds to wait for the keyboard to
-#                           appear after tapping the field (default 3.0).
-#   --no-focus              Skip the tap + keyboard wait. Use when the
-#                           field is already focused (e.g. a fresh post
-#                           editor that auto-focuses its title).
-#   --port PORT             WDA port (default: 8100, or $WDA_PORT).
-#
-# Why a single string and not per-character: WDA's /wda/keys accepts
-# an array whose entries are sent as keystrokes. A single entry like
-# `"hello"` types the whole word. Per-character arrays are only useful
-# when you need to mix in control codes (e.g. `""` for Ctrl+A
-# inside a clear-field sequence).
+#   type.rb aid FIELD_ID --text TXT --port PORT --session-id ID
+#   type.rb text "Field label" --text TXT --port PORT --session-id ID
 #
 # Exit codes:
-#   0  field tapped (if needed), keyboard up, text sent
-#      (and field value/label contains TXT unless --no-verify)
-#   1  field not found, keyboard didn't appear, or verify mismatch
-#   2  WDA error / usage error
+#   0  Text sent and optionally verified
+#   1  Field not found, keyboard absent, or verification failed
+#   2  WDA or usage error
 
-require "net/http"
 require "json"
-require "uri"
+require "net/http"
 require "optparse"
+require "uri"
 
-PORT = (ENV["WDA_PORT"] || 8100).to_i
-SESSION_FILE = "/tmp/wda-#{PORT}.session"
-
-def base_url(port = PORT)
+def base_url(port)
   "http://localhost:#{port}"
 end
 
-def http_get(path, port = PORT)
+def http_get(path, port)
   uri = URI("#{base_url(port)}#{path}")
-  res = Net::HTTP.start(uri.host, uri.port) { |h| h.request(Net::HTTP::Get.new(uri)) }
-  [res.code.to_i, res.body]
-rescue Errno::ECONNREFUSED
-  raise "WDA not reachable on port #{port}. Run wda-start.rb first."
+  response = Net::HTTP.start(uri.host, uri.port) { |http| http.request(Net::HTTP::Get.new(uri)) }
+  [response.code.to_i, response.body]
+rescue Errno::ECONNREFUSED, Errno::ECONNRESET
+  raise "WDA not reachable on port #{port}; start it first"
 end
 
-def http_post(path, body, port = PORT)
+def http_post(path, body, port)
   uri = URI("#{base_url(port)}#{path}")
-  req = Net::HTTP::Post.new(uri, "Content-Type" => "application/json")
-  req.body = JSON.dump(body)
-  res = Net::HTTP.start(uri.host, uri.port) { |h| h.request(req) }
-  [res.code.to_i, res.body]
-rescue Errno::ECONNREFUSED
-  raise "WDA not reachable on port #{port}. Run wda-start.rb first."
+  request = Net::HTTP::Post.new(uri, "Content-Type" => "application/json")
+  request.body = JSON.dump(body)
+  response = Net::HTTP.start(uri.host, uri.port) { |http| http.request(request) }
+  [response.code.to_i, response.body]
+rescue Errno::ECONNREFUSED, Errno::ECONNRESET
+  raise "WDA not reachable on port #{port}; start it first"
 end
 
-def active_bundle(port = PORT)
-  code, body = http_get("/wda/activeAppInfo", port)
-  return nil unless code == 200
-  JSON.parse(body).dig("value", "bundleId")
-rescue
-  nil
-end
+def validate_session(port, session_id)
+  code, = http_get("/session/#{session_id}", port)
+  return if code == 200
 
-def session_id(port = PORT)
-  if File.exist?(SESSION_FILE)
-    sid = JSON.parse(File.read(SESSION_FILE))["session_id"] rescue nil
-    if sid
-      code, _ = http_get("/session/#{sid}", port)
-      return sid if code == 200
-    end
-  end
-
-  caps = { "alwaysMatch" => {} }
-  bundle = active_bundle(port)
-  caps["alwaysMatch"]["bundleId"] = bundle if bundle
-
-  code, body = http_post("/session", { "capabilities" => caps }, port)
-  raise "session create failed: HTTP #{code}: #{body}" unless code.between?(200, 299)
-  sid = JSON.parse(body).dig("value", "sessionId")
-  raise "no sessionId in response: #{body}" unless sid
-  File.write(SESSION_FILE, JSON.dump({ session_id: sid, port: port }))
-  sid
+  raise "session #{session_id} is not active on port #{port}; create a new session explicitly"
 end
 
 def locator_for(strategy, value)
@@ -107,28 +56,32 @@ def locator_for(strategy, value)
   end
 end
 
-def find_first(strategy, value, port = PORT)
-  using, val = locator_for(strategy, value)
-  sid = session_id(port)
-  code, body = http_post("/session/#{sid}/elements", { "using" => using, "value" => val }, port)
+def find_first(strategy, value, port, session_id)
+  using, locator = locator_for(strategy, value)
+  code, body = http_post(
+    "/session/#{session_id}/elements",
+    { "using" => using, "value" => locator },
+    port
+  )
   return nil if code == 404
   raise "find failed: HTTP #{code}: #{body}" unless code.between?(200, 299)
+
   matches = JSON.parse(body)["value"] || []
   return nil if matches.empty?
-  m = matches.first
-  m["ELEMENT"] || m["element-6066-11e4-a52e-4f735466cecf"] || m.values.first
+
+  match = matches.first
+  match["ELEMENT"] || match["element-6066-11e4-a52e-4f735466cecf"] || match.values.first
 end
 
-def element_center(eid, port = PORT)
-  sid = session_id(port)
-  code, body = http_get("/session/#{sid}/element/#{eid}/rect", port)
+def element_center(element_id, port, session_id)
+  code, body = http_get("/session/#{session_id}/element/#{element_id}/rect", port)
   raise "rect failed: HTTP #{code}: #{body}" unless code.between?(200, 299)
+
   rect = JSON.parse(body)["value"]
   [rect["x"] + rect["width"] / 2.0, rect["y"] + rect["height"] / 2.0]
 end
 
-def tap_at(x, y, port = PORT)
-  sid = session_id(port)
+def tap_at(x, y, port, session_id)
   body = {
     "actions" => [{
       "type" => "pointer", "id" => "finger1",
@@ -140,17 +93,15 @@ def tap_at(x, y, port = PORT)
       ]
     }]
   }
-  code, resp = http_post("/session/#{sid}/actions", body, port)
-  raise "tap failed: HTTP #{code}: #{resp}" unless code.between?(200, 299)
+  code, response = http_post("/session/#{session_id}/actions", body, port)
+  raise "tap failed: HTTP #{code}: #{response}" unless code.between?(200, 299)
 end
 
-# Poll /elements for XCUIElementTypeKeyboard. The cheap check from SKILL.md.
-def wait_for_keyboard(timeout, port = PORT)
-  sid = session_id(port)
+def wait_for_keyboard(timeout, port, session_id)
   deadline = Time.now + timeout
   loop do
     code, body = http_post(
-      "/session/#{sid}/elements",
+      "/session/#{session_id}/elements",
       { "using" => "class name", "value" => "XCUIElementTypeKeyboard" },
       port
     )
@@ -159,89 +110,94 @@ def wait_for_keyboard(timeout, port = PORT)
       return true unless matches.empty?
     end
     return false if Time.now >= deadline
+
     sleep 0.1
   end
 end
 
-def send_keys(text, port = PORT)
-  sid = session_id(port)
-  code, resp = http_post("/session/#{sid}/wda/keys", { "value" => [text] }, port)
-  raise "send_keys failed: HTTP #{code}: #{resp}" unless code.between?(200, 299)
+def send_keys(text, port, session_id)
+  code, response = http_post(
+    "/session/#{session_id}/wda/keys",
+    { "value" => [text] },
+    port
+  )
+  raise "send_keys failed: HTTP #{code}: #{response}" unless code.between?(200, 299)
 end
 
-# Try the `value` attribute first; fall back to `label` if `value` is nil.
-# Many SwiftUI / UIKit text-input controls expose the typed text via the
-# enclosing element's `label` ("Post title. Hello world") even when that
-# element's `value` is nil because the text lives on a descendant TextView.
-def element_observed_text(eid, port = PORT)
-  sid = session_id(port)
-  ["value", "label"].each do |attr|
-    code, body = http_get("/session/#{sid}/element/#{eid}/attribute/#{attr}", port)
+def element_observed_text(element_id, port, session_id)
+  ["value", "label"].each do |attribute|
+    code, body = http_get(
+      "/session/#{session_id}/element/#{element_id}/attribute/#{attribute}",
+      port
+    )
     next unless code.between?(200, 299)
+
     observed = JSON.parse(body)["value"]
     return observed if observed && !observed.to_s.empty?
   end
   nil
 end
 
-port = PORT
+port = nil
+session_id = nil
 text_to_send = nil
 verify = true
 keyboard_timeout = 3.0
 no_focus = false
 
 parser = OptionParser.new do |opts|
-  opts.banner = "Usage: type.rb <aid|text> <field-locator> --text TXT [--no-verify] [--no-focus] [--keyboard-timeout SEC] [--port PORT]"
-  opts.on("--text TXT")             { |v| text_to_send = v }
-  opts.on("--no-verify")            { verify = false }
-  opts.on("--no-focus")             { no_focus = true }
-  opts.on("--keyboard-timeout SEC", Float) { |v| keyboard_timeout = v }
-  opts.on("--port PORT", Integer)   { |v| port = v }
+  opts.banner = "Usage: type.rb <aid|text> <field-locator> --text TXT --port PORT --session-id ID [--no-verify] [--no-focus] [--keyboard-timeout SEC]"
+  opts.on("--port PORT", Integer) { |value| port = value }
+  opts.on("--session-id ID") { |value| session_id = value }
+  opts.on("--text TXT") { |value| text_to_send = value }
+  opts.on("--no-verify") { verify = false }
+  opts.on("--no-focus") { no_focus = true }
+  opts.on("--keyboard-timeout SEC", Float) { |value| keyboard_timeout = value }
 end
 parser.parse!
 
-if ARGV.size < 2 || text_to_send.nil?
-  $stderr.puts parser.help
+if ARGV.size < 2 || port.nil? || !(1..65_535).cover?(port) || session_id.nil? || session_id.empty? || text_to_send.nil?
+  warn parser.help
   exit 2
 end
 
 strategy = ARGV[0]
 locator_value = ARGV[1..].join(" ")
-
 unless %w[aid text].include?(strategy)
-  $stderr.puts "unknown strategy: #{strategy} (use aid or text)"
+  warn "unknown strategy: #{strategy} (use aid or text)"
   exit 2
 end
 
 begin
-  eid = find_first(strategy, locator_value, port)
-  unless eid
-    $stderr.puts "no match for #{strategy}: #{locator_value}"
+  validate_session(port, session_id)
+  element_id = find_first(strategy, locator_value, port, session_id)
+  unless element_id
+    warn "no match for #{strategy}: #{locator_value}"
     exit 1
   end
 
   unless no_focus
-    x, y = element_center(eid, port)
-    tap_at(x, y, port)
-    unless wait_for_keyboard(keyboard_timeout, port)
-      $stderr.puts "keyboard didn't appear within #{keyboard_timeout}s after tapping #{strategy}=#{locator_value}"
+    x, y = element_center(element_id, port, session_id)
+    tap_at(x, y, port, session_id)
+    unless wait_for_keyboard(keyboard_timeout, port, session_id)
+      warn "keyboard didn't appear within #{keyboard_timeout}s after tapping #{strategy}=#{locator_value}"
       exit 1
     end
   end
 
-  send_keys(text_to_send, port)
+  send_keys(text_to_send, port, session_id)
 
   if verify
-    observed = element_observed_text(eid, port)
+    observed = element_observed_text(element_id, port, session_id)
     if observed.nil? || !observed.to_s.include?(text_to_send)
-      $stderr.puts "verify failed: expected to contain #{text_to_send.inspect}, got #{observed.inspect}"
+      warn "verify failed: expected to contain #{text_to_send.inspect}, got #{observed.inspect}"
       exit 1
     end
     puts "type ok #{strategy}=#{locator_value} verified=#{observed.inspect}"
   else
     puts "type ok #{strategy}=#{locator_value} sent #{text_to_send.inspect}"
   end
-rescue => e
-  $stderr.puts "error: #{e.message}"
+rescue => error
+  warn "error: #{error.message}"
   exit 2
 end

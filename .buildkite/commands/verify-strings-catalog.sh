@@ -11,10 +11,6 @@ fi
 echo "--- :rubygems: Setting up Gems"
 install_gems
 
-echo "--- :writing_hand: Copy Files"
-mkdir -pv ~/.configure/wordpress-ios/secrets
-cp -v fastlane/env/project.env-example ~/.configure/wordpress-ios/secrets/project.env
-
 echo "--- :package: Generate Localizable.xcstrings from source"
 bundle exec fastlane ios generate_strings_catalog
 

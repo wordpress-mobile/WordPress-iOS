@@ -54,8 +54,10 @@
                             </subviews>
                             <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                             <constraints>
-                                <constraint firstItem="E9E-nc-B5q" firstAttribute="centerY" secondItem="YW9-Vf-agq" secondAttribute="centerY" constant="-30" id="6F9-GB-T7g"/>
+                                <constraint firstItem="E9E-nc-B5q" firstAttribute="centerY" secondItem="YW9-Vf-agq" secondAttribute="centerY" priority="750" constant="-30" id="6F9-GB-T7g"/>
+                                <constraint firstItem="E9E-nc-B5q" firstAttribute="top" relation="greaterThanOrEqual" secondItem="YW9-Vf-agq" secondAttribute="top" id="8Wg-3z-qm9"/>
                                 <constraint firstAttribute="trailing" secondItem="E9E-nc-B5q" secondAttribute="trailing" id="R9d-dB-5aM"/>
+                                <constraint firstItem="E9E-nc-B5q" firstAttribute="bottom" relation="lessThanOrEqual" secondItem="YW9-Vf-agq" secondAttribute="bottom" id="fgj-rQ-NGq"/>
                                 <constraint firstItem="E9E-nc-B5q" firstAttribute="leading" secondItem="YW9-Vf-agq" secondAttribute="leading" id="zRY-V6-1C5"/>
                             </constraints>
                         </view>
@@ -104,6 +106,7 @@
                         <constraint firstItem="0z0-r0-F4b" firstAttribute="top" secondItem="YW9-Vf-agq" secondAttribute="bottom" constant="10" id="Oaw-5C-0IF"/>
                         <constraint firstItem="TsX-gV-qHT" firstAttribute="top" secondItem="0z0-r0-F4b" secondAttribute="bottom" constant="10" id="QHF-Rw-hb6"/>
                         <constraint firstAttribute="height" relation="lessThanOrEqual" constant="700" id="S2r-1H-icd"/>
+                        <constraint firstAttribute="height" relation="greaterThanOrEqual" constant="526.5" id="TBU-31-x8E"/>
                         <constraint firstItem="50P-8O-Ctu" firstAttribute="trailing" secondItem="cpw-1P-GER" secondAttribute="trailing" id="U4u-i6-vOY"/>
                         <constraint firstAttribute="bottom" secondItem="TsX-gV-qHT" secondAttribute="bottom" id="aEv-ar-Qze"/>
                         <constraint firstItem="cpw-1P-GER" firstAttribute="top" secondItem="jle-rd-niA" secondAttribute="top" id="aF7-Fq-GRg"/>
@@ -121,9 +124,9 @@
             <color key="backgroundColor" systemColor="systemBackgroundColor"/>
             <constraints>
                 <constraint firstItem="tzQ-KK-xbd" firstAttribute="trailing" secondItem="jle-rd-niA" secondAttribute="trailing" priority="750" constant="20" id="BCH-Wh-F3W"/>
-                <constraint firstItem="jle-rd-niA" firstAttribute="centerY" secondItem="Mlb-pH-BGO" secondAttribute="centerY" id="ehw-ke-eyA"/>
-                <constraint firstItem="jle-rd-niA" firstAttribute="top" secondItem="tzQ-KK-xbd" secondAttribute="top" priority="750" constant="40" id="fgC-Is-f0Z"/>
-                <constraint firstItem="tzQ-KK-xbd" firstAttribute="bottom" secondItem="jle-rd-niA" secondAttribute="bottom" priority="750" constant="24" id="qpa-o5-LFK"/>
+                <constraint firstItem="jle-rd-niA" firstAttribute="centerY" secondItem="Mlb-pH-BGO" secondAttribute="centerY" priority="750" id="ehw-ke-eyA"/>
+                <constraint firstItem="jle-rd-niA" firstAttribute="top" secondItem="tzQ-KK-xbd" secondAttribute="top" constant="40" id="fgC-Is-f0Z"/>
+                <constraint firstItem="tzQ-KK-xbd" firstAttribute="bottom" relation="greaterThanOrEqual" secondItem="jle-rd-niA" secondAttribute="bottom" constant="24" id="qpa-o5-LFK"/>
                 <constraint firstItem="jle-rd-niA" firstAttribute="centerX" secondItem="Mlb-pH-BGO" secondAttribute="centerX" id="xiI-Qn-cUe"/>
                 <constraint firstItem="jle-rd-niA" firstAttribute="leading" secondItem="tzQ-KK-xbd" secondAttribute="leading" priority="750" constant="20" id="ybI-h9-jCY"/>
             </constraints>
