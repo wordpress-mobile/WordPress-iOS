@@ -49,8 +49,8 @@ function ensure_is_in_input_files_list() {
   fi
 }
 
-WORDPRESS_SECRETS_FILE="${SECRETS_ROOT}/WordPress-Secrets.swift"
-ensure_is_in_input_files_list $WORDPRESS_SECRETS_FILE
+SECRETS_FILE="${SECRETS_ROOT}/Secrets.swift"
+ensure_is_in_input_files_list $SECRETS_FILE
 
 LOCAL_SECRETS_FILE="${SRCROOT}/Credentials/Secrets.swift"
 EXAMPLE_SECRETS_FILE="${SRCROOT}/Credentials/Secrets-example.swift"
@@ -61,9 +61,9 @@ SECRETS_DESTINATION_FILE="${SCRIPT_OUTPUT_FILE_0}"
 mkdir -p "$(dirname "$SECRETS_DESTINATION_FILE")"
 
 # WordPress, Jetpack, and Reader use all the same secrets at this time.
-if [ -f "$WORDPRESS_SECRETS_FILE" ]; then
+if [ -f "$SECRETS_FILE" ]; then
     echo "Applying Production Secrets"
-    cp -v "$WORDPRESS_SECRETS_FILE" "${SECRETS_DESTINATION_FILE}"
+    cp -v "$SECRETS_FILE" "${SECRETS_DESTINATION_FILE}"
     exit 0
 fi
 

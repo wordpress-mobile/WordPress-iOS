@@ -5,7 +5,7 @@
   "files_to_copy": [
     {
       "file": "iOS/WPiOS/Secrets.swift",
-      "destination": "~/.configure/wordpress-ios/secrets/WordPress-Secrets.swift",
+      "destination": "~/.configure/wordpress-ios/secrets/Secrets.swift",
       "encrypt": true
     }
   ],
