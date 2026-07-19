@@ -34,8 +34,7 @@ extension BuildSettings {
         zendeskSourcePlatform = bundle.infoValue(forKey: "WPZendeskSourcePlatform")
         mobileAnnounceAppID = bundle.infoValue(forKey: "WPMobileAnnounceAppID")
         authKeychainServiceName = bundle.infoValue(forKey: "WPAuthKeychainServiceName")
-        // Keep the scheme out of the plist: `INFOPLIST_PREPROCESS` runs it through the C
-        // preprocessor, where `//` starts a comment and would truncate the value.
+        // The plist does not carry the URL scheme because the C preprocessor treats the `//` as a comment resulting in a truncated value.
         sentryDSN = "https://" + bundle.infoValue(forKey: "WPSentryDSN")
         docsBotId = bundle.infoValue(forKey: "WPDocsBotId")
     }
