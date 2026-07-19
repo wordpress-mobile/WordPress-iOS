@@ -93,8 +93,9 @@ class TagsViewModel: ObservableObject {
     func onAppear() {
         guard response == nil else { return }
         Task {
-            async let _ = await loadInitialTags()
-            async let _ = await resolvePendingSelectedTerms()
+            async let initialTags: Void = loadInitialTags()
+            async let pendingSelectedTerms: Void = resolvePendingSelectedTerms()
+            _ = await (initialTags, pendingSelectedTerms)
         }
     }
 

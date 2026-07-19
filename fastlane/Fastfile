@@ -5,6 +5,8 @@ fastlane_require 'dotenv'
 fastlane_require 'open-uri'
 fastlane_require 'git'
 
+require_relative 'lanes/xcconfig_helper'
+
 UI.user_error!('Please run fastlane via `bundle exec`') unless FastlaneCore::Helper.bundler?
 
 ########################################################################
@@ -27,8 +29,6 @@ BETA_APP_DESCRIPTION_PATH_READER = File.join(PROJECT_ROOT_FOLDER, 'fastlane', 'r
 # Env file paths to load
 ENV_FILE_NAME = '.wpios-env.default'
 USER_ENV_FILE_PATH = File.join(Dir.home, ENV_FILE_NAME)
-SECRETS_DIR = File.join(Dir.home, '.configure', 'wordpress-ios', 'secrets')
-PROJECT_ENV_FILE_PATH = File.join(SECRETS_DIR, 'project.env')
 
 WORDPRESS_BUNDLE_IDENTIFIER = 'org.wordpress'
 WORDPRESS_EXTENSIONS_BUNDLE_IDENTIFIERS = %w[
@@ -54,10 +54,13 @@ ALL_READER_BUNDLE_IDENTIFIERS = [READER_BUNDLE_IDENTIFIER].freeze
 
 # Environment Variables — used by lanes but also potentially actions
 Dotenv.load(USER_ENV_FILE_PATH)
-Dotenv.load(PROJECT_ENV_FILE_PATH)
 GITHUB_REPO = 'wordpress-mobile/wordpress-iOS'
 DEFAULT_BRANCH = 'trunk'
 PUBLIC_CONFIG_FILE = File.join(PROJECT_ROOT_FOLDER, 'config', 'Version.public.xcconfig')
+ALPHA_CONFIG_FILE = File.join(PROJECT_ROOT_FOLDER, 'config', 'Common.alpha.xcconfig')
+RELEASE_CONFIG_FILE = File.join(PROJECT_ROOT_FOLDER, 'config', 'Common.release.xcconfig')
+INTERNAL_TEAM_ID = XcconfigHelper.fetch(path: ALPHA_CONFIG_FILE, key: 'DEVELOPMENT_TEAM')
+EXTERNAL_TEAM_ID = XcconfigHelper.fetch(path: RELEASE_CONFIG_FILE, key: 'DEVELOPMENT_TEAM')
 ENV['FASTLANE_WWDR_USE_HTTP1_AND_RETRIES'] = 'true'
 
 # Fastlane's `git_branch` action and its relevant helpers use environment variables to modify the output.
@@ -196,10 +199,6 @@ before_all do |lane|
   unless is_ci || File.file?(USER_ENV_FILE_PATH)
     example_path = 'fastlane/env/user.env-example '
     UI.user_error! "#{ENV_FILE_NAME} not found: Please copy #{example_path} to #{USER_ENV_FILE_PATH} and fill in the values."
-  end
-
-  unless File.file?(PROJECT_ENV_FILE_PATH)
-    UI.user_error!("project.env not found at #{PROJECT_ENV_FILE_PATH}: Make sure your configuration is up to date with `rake dependencies`")
   end
 end
 

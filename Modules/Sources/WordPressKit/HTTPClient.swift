@@ -66,13 +66,22 @@ extension URLSession {
         fulfilling parentProgress: Progress? = nil,
         errorType: E.Type = E.self
     ) async -> WordPressAPIResult<HTTPAPIResponse<Data>, E> {
-        if configuration.identifier != nil {
-            assert(delegate is BackgroundURLSessionDelegate, "Unexpected `URLSession` delegate type. See the `backgroundSession(configuration:)`")
+        if isBackgroundSession() {
+            assert(
+                delegate is BackgroundURLSessionDelegate,
+                "Unexpected `URLSession` delegate type. See the `backgroundSession(configuration:)`"
+            )
         }
 
         if let parentProgress {
-            assert(parentProgress.completedUnitCount == 0 && parentProgress.totalUnitCount > 0, "Invalid parent progress")
-            assert(parentProgress.cancellationHandler == nil, "The progress instance's cancellationHandler property must be nil")
+            assert(
+                parentProgress.completedUnitCount == 0 && parentProgress.totalUnitCount > 0,
+                "Invalid parent progress"
+            )
+            assert(
+                parentProgress.cancellationHandler == nil,
+                "The progress instance's cancellationHandler property must be nil"
+            )
         }
 
         let taskHolder = TaskHolder()
@@ -83,7 +92,11 @@ extension URLSession {
                         guard let task = await taskHolder.task as? URLSessionDataTask else { return }
 
                         if let data {
-                            (wpkURLSessionNotifyingDelegate as? URLSessionDataDelegate)?.urlSession?(self, dataTask: task, didReceive: data)
+                            (wpkURLSessionNotifyingDelegate as? URLSessionDataDelegate)?.urlSession?(
+                                self,
+                                dataTask: task,
+                                didReceive: data
+                            )
                         }
                         wpkURLSessionNotifyingDelegate?.urlSession?(self, task: task, didCompleteWithError: error)
                     }
@@ -107,7 +120,11 @@ extension URLSession {
                     return
                 }
 
-                task.delegate = wpkURLSessionNotifyingDelegate
+                // Background tasks only support the delegate assigned to their session at creation time.
+                if !isBackgroundSession(), let delegate = wpkURLSessionNotifyingDelegate {
+                    task.delegate = delegate
+                }
+
                 task.resume()
                 taskCreated?(task.taskIdentifier)
                 Task { await taskHolder.assign(task) }
@@ -140,9 +157,10 @@ extension URLSession {
         //
         // In reality, `callCompletionFromDelegate` and `isBackgroundSession` have the same value.
         let callCompletionFromDelegate = delegate is BackgroundURLSessionDelegate
-        let isBackgroundSession = configuration.identifier != nil
+        let isBackgroundSession = self.isBackgroundSession()
         let task: URLSessionTask
-        let body = try builder.encodeMultipartForm(request: &request, forceWriteToFile: isBackgroundSession)
+        let body =
+            try builder.encodeMultipartForm(request: &request, forceWriteToFile: isBackgroundSession)
             ?? builder.encodeXMLRPC(request: &request, forceWriteToFile: isBackgroundSession)
         var completion = originalCompletion
         if let body {
@@ -179,12 +197,19 @@ extension URLSession {
         }
 
         if callCompletionFromDelegate {
-            assert(delegate is BackgroundURLSessionDelegate, "Unexpected `URLSession` delegate type. See the `backgroundSession(configuration:)`")
+            assert(
+                delegate is BackgroundURLSessionDelegate,
+                "Unexpected `URLSession` delegate type. See the `backgroundSession(configuration:)`"
+            )
 
             set(completion: completion, forTaskWithIdentifier: task.taskIdentifier)
         }
 
         return task
+    }
+
+    private func isBackgroundSession() -> Bool {
+        configuration.identifier != nil
     }
 
     private static func parseResponse<E: LocalizedError>(
@@ -226,7 +251,9 @@ extension WordPressAPIResult {
             do {
                 return try .success(transform(success))
             } catch {
-                return .failure(.unparsableResponse(response: success.response, body: success.body, underlyingError: error))
+                return .failure(
+                    .unparsableResponse(response: success.response, body: success.body, underlyingError: error)
+                )
             }
         }
     }
@@ -248,7 +275,8 @@ extension WordPressAPIResult {
                 do {
                     return try WordPressAPIError<E>.endpointError(transform(response, body))
                 } catch {
-                    return WordPressAPIError<E>.unparsableResponse(response: response, body: body, underlyingError: error)
+                    return WordPressAPIError<E>
+                        .unparsableResponse(response: response, body: body, underlyingError: error)
                 }
             }
             return error

@@ -208,7 +208,6 @@ def promote_existing_build_to_groups(app:, app_version:, build_code:, changelog:
 
   upload_to_testflight(
     api_key: app_store_connect_api_key,
-    team_id: get_required_env('FASTLANE_ITC_TEAM_ID'),
     app_identifier: app[:identifier],
     app_platform: 'ios',
     app_version: app_version,
