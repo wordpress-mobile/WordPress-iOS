@@ -42,6 +42,20 @@
     XCTAssertTrue([post.siteID isKindOfClass:[NSNumber class]]);
 }
 
+- (void)testThatRemotePostMappingPreservesNumericSiteID
+{
+    NSDictionary *jsonPost = @{
+        @"ID": @1147,
+        @"site_ID": @237072388
+    };
+
+    RemotePost *post = [PostServiceRemoteREST remotePostFromJSONDictionary:jsonPost];
+
+    XCTAssertEqualObjects(post.postID, @1147);
+    XCTAssertEqualObjects(post.siteID, @237072388);
+    XCTAssertTrue([post.siteID isKindOfClass:[NSNumber class]]);
+}
+
 #pragma mark - Getting posts by ID
 
 - (void)testThatGetPostWithIDWorks
