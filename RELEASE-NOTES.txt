@@ -5,6 +5,7 @@
 * [*] [build tooling] Add a String Catalog localization pipeline (plurals + build-free catalog generation) with a CI coverage gate [#25688]
 * [*] [internal] Stats widgets: migrate the site picker from SiriKit to App Intents [#25753]
 * [*] Fix Blogging Reminders text color in dark mode [#25780]
+* [*] Share extensions: Fix the site picker showing an error while sites are still loading [#25798]
 
 27.0
 -----
