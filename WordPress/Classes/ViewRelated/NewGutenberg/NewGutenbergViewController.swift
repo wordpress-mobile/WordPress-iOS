@@ -32,7 +32,7 @@ class NewGutenbergViewController: PostGBKEditorViewController, PostEditor, Publi
     let navigationBarManager: PostEditorNavigationBarManager
 
     lazy var mediaPickerHelper: GutenbergMediaPickerHelper = {
-        return GutenbergMediaPickerHelper(context: self, post: post)
+        GutenbergMediaPickerHelper(context: self, post: post)
     }()
 
     lazy var featuredImageHelper = NewGutenbergFeaturedImageHelper(post: post)
@@ -40,7 +40,7 @@ class NewGutenbergViewController: PostGBKEditorViewController, PostEditor, Publi
     // MARK: - PostEditor
 
     private(set) lazy var postEditorStateContext: PostEditorStateContext = {
-        return PostEditorStateContext(post: post, delegate: self)
+        PostEditorStateContext(post: post, delegate: self)
     }()
 
     var analyticsEditorSource: String { Analytics.editorSource }
@@ -59,7 +59,7 @@ class NewGutenbergViewController: PostGBKEditorViewController, PostEditor, Publi
     // MARK: - Private variables
 
     // TODO: reimplemet
-//    internal private(set) var contentInfo: ContentInfo?
+    //    internal private(set) var contentInfo: ContentInfo?
     private var isNavigationEnabled = true {
         didSet { updateHistoryButtons() }
     }
@@ -107,14 +107,15 @@ class NewGutenbergViewController: PostGBKEditorViewController, PostEditor, Publi
         let postType: PostTypeDetails = post is Page ? .page : .post
         let postStatus = post.status?.rawValue ?? "draft"
 
-        super.init(
-            postId: post.postID?.intValue,
-            postType: postType,
-            title: post.postTitle ?? "",
-            content: post.content ?? "",
-            status: postStatus,
-            blog: post.blog
-        )
+        super
+            .init(
+                postId: post.postID?.intValue,
+                postType: postType,
+                title: post.postTitle ?? "",
+                content: post.content ?? "",
+                status: postStatus,
+                blog: post.blog
+            )
 
         self.navigationBarManager.delegate = self
     }
@@ -133,11 +134,11 @@ class NewGutenbergViewController: PostGBKEditorViewController, PostEditor, Publi
         createRevisionOfPost(loadAutosaveRevision: false)
 
         // TODO: reimplement
-//        service?.syncJetpackSettingsForBlog(post.blog, success: { [weak self] in
-////            self?.gutenberg.updateCapabilities()
-//        }, failure: { (error) in
-//            DDLogError("Error syncing JETPACK: \(String(describing: error))")
-//        })
+        //        service?.syncJetpackSettingsForBlog(post.blog, success: { [weak self] in
+        ////            self?.gutenberg.updateCapabilities()
+        //        }, failure: { (error) in
+        //            DDLogError("Error syncing JETPACK: \(String(describing: error))")
+        //        })
 
         onViewDidLoad()
     }
@@ -155,7 +156,7 @@ class NewGutenbergViewController: PostGBKEditorViewController, PostEditor, Publi
 
         edgesForExtendedLayout = []
         // TODO: make it work
-//        configureDefaultNavigationBarAppearance()
+        //        configureDefaultNavigationBarAppearance()
 
         navigationBarManager.moreButton.menu = makeMoreMenu()
         navigationBarManager.moreButton.showsMenuAsPrimaryAction = true
@@ -206,8 +207,9 @@ class NewGutenbergViewController: PostGBKEditorViewController, PostEditor, Publi
         DDLogDebug("gutenbergkit-measure_get-latest-content: \(duration)")
 
         if let title = editorData?.title,
-           let content = editorData?.content,
-           editorData?.changed == true {
+            let content = editorData?.content,
+            editorData?.changed == true
+        {
             post.postTitle = title
             post.content = content
             post.managedObjectContext.map(ContextManager.shared.save)
@@ -220,14 +222,14 @@ class NewGutenbergViewController: PostGBKEditorViewController, PostEditor, Publi
         // TODO: We should have a unified way to do this
     }
 
-/*
- Fix issue: Non-'@objc' instance method 'editorDidLoad' declared in 'PostGBKEditorViewController' cannot be overridden from extension
+    /*
+     Fix issue: Non-'@objc' instance method 'editorDidLoad' declared in 'PostGBKEditorViewController' cannot be overridden from extension
 
- Add the extension back if needed.
-}
+     Add the extension back if needed.
+    }
 
-extension NewGutenbergViewController: GutenbergKit.EditorViewControllerDelegate {
- */
+    extension NewGutenbergViewController: GutenbergKit.EditorViewControllerDelegate {
+     */
 
     override func editorDidLoad(_ viewContoller: GutenbergKit.EditorViewController) {
         if !editorSession.started {
@@ -239,7 +241,10 @@ extension NewGutenbergViewController: GutenbergKit.EditorViewControllerDelegate 
         }
     }
 
-    override func editor(_ viewController: GutenbergKit.EditorViewController, didUpdateHistoryState state: GutenbergKit.EditorState) {
+    override func editor(
+        _ viewController: GutenbergKit.EditorViewController,
+        didUpdateHistoryState state: GutenbergKit.EditorState
+    ) {
         gutenbergDidRequestToggleRedoButton(!state.hasRedo)
         gutenbergDidRequestToggleUndoButton(!state.hasUndo)
     }
@@ -252,11 +257,19 @@ extension NewGutenbergViewController: GutenbergKit.EditorViewControllerDelegate 
         setNavigationItemsEnabled(true)
     }
 
-    override func editor(_ viewContoller: GutenbergKit.EditorViewController, didEncounterCriticalError error: any Error) {
+    override func editor(
+        _ viewContoller: GutenbergKit.EditorViewController,
+        didEncounterCriticalError error: any Error
+    ) // swiftlint:disable:next opening_brace
+    {
+        super.editor(viewContoller, didEncounterCriticalError: error)
         onClose?()
     }
 
-    override func editor(_ viewController: GutenbergKit.EditorViewController, didUpdateContentWithState state: GutenbergKit.EditorState) {
+    override func editor(
+        _ viewController: GutenbergKit.EditorViewController,
+        didUpdateContentWithState state: GutenbergKit.EditorState
+    ) {
         editorContentWasUpdated()
         autosaver.contentDidChange()
     }
@@ -274,7 +287,10 @@ extension NewGutenbergViewController: GutenbergKit.EditorViewControllerDelegate 
 
     // MARK: - Media Picker Helpers
 
-    override func editor(_ viewController: GutenbergKit.EditorViewController, didRequestMediaFromSiteMediaLibrary config: OpenMediaLibraryAction) {
+    override func editor(
+        _ viewController: GutenbergKit.EditorViewController,
+        didRequestMediaFromSiteMediaLibrary config: OpenMediaLibraryAction
+    ) {
         let flags = mediaFilterFlags(using: config.allowedTypes ?? [])
 
         let initialSelectionArray: [Int]
@@ -287,7 +303,11 @@ extension NewGutenbergViewController: GutenbergKit.EditorViewControllerDelegate 
             initialSelectionArray = []
         }
 
-        mediaPickerHelper.presentSiteMediaPicker(filter: flags, allowMultipleSelection: config.multiple, initialSelection: initialSelectionArray) { [weak self] assets in
+        mediaPickerHelper.presentSiteMediaPicker(
+            filter: flags,
+            allowMultipleSelection: config.multiple,
+            initialSelection: initialSelectionArray
+        ) { [weak self] assets in
             guard let self, let media = assets as? [Media], !media.isEmpty else {
                 return
             }
@@ -296,7 +316,15 @@ extension NewGutenbergViewController: GutenbergKit.EditorViewControllerDelegate 
                 if let videopressGUID = item.videopressGUID {
                     metadata["videopressGUID"] = videopressGUID
                 }
-                return MediaInfo(id: item.mediaID?.int32Value, url: item.remoteURL, type: item.mediaTypeString, caption: item.caption, title: item.filename, alt: item.alt, metadata: [:])
+                return MediaInfo(
+                    id: item.mediaID?.int32Value,
+                    url: item.remoteURL,
+                    type: item.mediaTypeString,
+                    caption: item.caption,
+                    title: item.filename,
+                    alt: item.alt,
+                    metadata: [:]
+                )
             }
             if let jsonString = convertMediaInfoArrayToJSONString(mediaInfos) {
                 // Escape the string for JavaScript
@@ -306,10 +334,12 @@ extension NewGutenbergViewController: GutenbergKit.EditorViewControllerDelegate 
         }
     }
 
-    override func editorDidRequestLatestContent(_ controller: GutenbergKit.EditorViewController) -> (title: String, content: String)? {
+    override func editorDidRequestLatestContent(
+        _ controller: GutenbergKit.EditorViewController
+    ) -> (title: String, content: String)? {
         // Return the current post title and content from Core Data.
         // This is the authoritative source, updated via autosave.
-        return (post.postTitle ?? "", post.content ?? "")
+        (post.postTitle ?? "", post.content ?? "")
     }
 
     private func convertMediaInfoArrayToJSONString(_ mediaInfoArray: [MediaInfo]) -> String? {
@@ -352,15 +382,15 @@ extension NewGutenbergViewController: GutenbergKit.EditorViewControllerDelegate 
 extension NewGutenbergViewController: PostEditorNavigationBarManagerDelegate {
 
     var publishButtonText: String {
-        return postEditorStateContext.publishButtonText
+        postEditorStateContext.publishButtonText
     }
 
     var isPublishButtonEnabled: Bool {
-         return postEditorStateContext.isPublishButtonEnabled
+        postEditorStateContext.isPublishButtonEnabled
     }
 
     var uploadingButtonSize: CGSize {
-        return AztecPostViewController.Constants.uploadingButtonSize
+        AztecPostViewController.Constants.uploadingButtonSize
     }
 
     func navigationBarManager(_ manager: PostEditorNavigationBarManager, closeWasPressed sender: UIButton) {
@@ -405,21 +435,28 @@ extension NewGutenbergViewController: PostEditorNavigationBarManagerDelegate {
     }
 
     func makeMoreMenu() -> UIMenu {
-        UIMenu(title: "", image: nil, identifier: nil, options: [], children: [
-            UIDeferredMenuElement.uncached { [weak self] callback in
-                // Common actions at the top so they are always in the same
-                // relative place.
-                callback(self?.makeMoreMenuMainSections() ?? [])
-            },
-            UIDeferredMenuElement.uncached { [weak self] callback in
-                // Dynamic actions at the bottom. The actions are loaded asynchronously
-                // because they need the latest post content from the editor
-                // to display the correct state.
-                self?.performAfterUpdatingContent {
-                    callback(self?.makeMoreMenuAsyncSections() ?? [])
+        UIMenu(
+            title: "",
+            image: nil,
+            identifier: nil,
+            options: [],
+            children: [
+                UIDeferredMenuElement.uncached { [weak self] callback in
+                    // Common actions at the top so they are always in the same
+                    // relative place.
+                    callback(self?.makeMoreMenuMainSections() ?? [])
+                },
+                UIDeferredMenuElement.uncached { [weak self] callback in
+                    // Dynamic actions at the bottom. The actions are loaded asynchronously
+                    // because they need the latest post content from the editor
+                    // to display the correct state.
+                    self?
+                        .performAfterUpdatingContent {
+                            callback(self?.makeMoreMenuAsyncSections() ?? [])
+                        }
                 }
-            }
-        ])
+            ]
+        )
     }
 }
 
@@ -452,60 +489,60 @@ extension NewGutenbergViewController {
 
 // MARK: - GutenbergBridgeDataSource
 
-extension NewGutenbergViewController/*: GutenbergBridgeDataSource*/ {
+extension NewGutenbergViewController /*: GutenbergBridgeDataSource*/ {
     // TODO: reimplement
-//    func gutenbergCapabilities() -> [Capabilities: Bool] {
-//        let isFreeWPCom = post.blog.isHostedAtWPcom && !post.blog.hasPaidPlan
-//        let isWPComSite = post.blog.isHostedAtWPcom || post.blog.isAtomic()
-//
-//        // Disable Jetpack-powered editor features in WordPress app based on Features Removal coordination
-//        if !JetpackFeaturesRemovalCoordinator.jetpackFeaturesEnabled() {
-//            return [
-//                .mentions: false,
-//                .xposts: false,
-//                .contactInfoBlock: false,
-//                .layoutGridBlock: false,
-//                .tiledGalleryBlock: false,
-//                .videoPressBlock: false,
-//                .videoPressV5Support: false,
-//                .unsupportedBlockEditor: false,
-//                .canEnableUnsupportedBlockEditor: false,
-//                .isAudioBlockMediaUploadEnabled: !isFreeWPCom,
-//                .reusableBlock: false,
-//                .shouldUseFastImage: !post.blog.isPrivate,
-//                .facebookEmbed: false,
-//                .instagramEmbed: false,
-//                .loomEmbed: false,
-//                .smartframeEmbed: false,
-//                .supportSection: false,
-//                .onlyCoreBlocks: true
-//            ]
-//        }
-//
-//        return [
-//            .mentions: SuggestionService.shared.shouldShowSuggestions(for: post.blog),
-//            .xposts: SiteSuggestionService.shared.shouldShowSuggestions(for: post.blog),
-//            .contactInfoBlock: post.blog.supports(.contactInfo),
-//            .layoutGridBlock: post.blog.supports(.layoutGrid),
-//            .tiledGalleryBlock: post.blog.supports(.tiledGallery),
-//            .videoPressBlock: post.blog.supports(.videoPress),
-//            .videoPressV5Support:
-//                post.blog.supports(.videoPressV5),
-//            .unsupportedBlockEditor: isUnsupportedBlockEditorEnabled,
-//            .canEnableUnsupportedBlockEditor: (post.blog.jetpack?.isConnected ?? false) && !isJetpackSSOEnabled,
-//            .isAudioBlockMediaUploadEnabled: !isFreeWPCom,
-//            // Only enable reusable block in WP.com sites until the issue
-//            // (https://github.com/wordpress-mobile/gutenberg-mobile/issues/3457) in self-hosted sites is fixed
-//            .reusableBlock: isWPComSite,
-//            .shouldUseFastImage: !post.blog.isPrivate,
-//            // Jetpack embeds
-//            .facebookEmbed: post.blog.supports(.facebookEmbed),
-//            .instagramEmbed: post.blog.supports(.instagramEmbed),
-//            .loomEmbed: post.blog.supports(.loomEmbed),
-//            .smartframeEmbed: post.blog.supports(.smartframeEmbed),
-//            .supportSection: true
-//        ]
-//    }
+    //    func gutenbergCapabilities() -> [Capabilities: Bool] {
+    //        let isFreeWPCom = post.blog.isHostedAtWPcom && !post.blog.hasPaidPlan
+    //        let isWPComSite = post.blog.isHostedAtWPcom || post.blog.isAtomic()
+    //
+    //        // Disable Jetpack-powered editor features in WordPress app based on Features Removal coordination
+    //        if !JetpackFeaturesRemovalCoordinator.jetpackFeaturesEnabled() {
+    //            return [
+    //                .mentions: false,
+    //                .xposts: false,
+    //                .contactInfoBlock: false,
+    //                .layoutGridBlock: false,
+    //                .tiledGalleryBlock: false,
+    //                .videoPressBlock: false,
+    //                .videoPressV5Support: false,
+    //                .unsupportedBlockEditor: false,
+    //                .canEnableUnsupportedBlockEditor: false,
+    //                .isAudioBlockMediaUploadEnabled: !isFreeWPCom,
+    //                .reusableBlock: false,
+    //                .shouldUseFastImage: !post.blog.isPrivate,
+    //                .facebookEmbed: false,
+    //                .instagramEmbed: false,
+    //                .loomEmbed: false,
+    //                .smartframeEmbed: false,
+    //                .supportSection: false,
+    //                .onlyCoreBlocks: true
+    //            ]
+    //        }
+    //
+    //        return [
+    //            .mentions: SuggestionService.shared.shouldShowSuggestions(for: post.blog),
+    //            .xposts: SiteSuggestionService.shared.shouldShowSuggestions(for: post.blog),
+    //            .contactInfoBlock: post.blog.supports(.contactInfo),
+    //            .layoutGridBlock: post.blog.supports(.layoutGrid),
+    //            .tiledGalleryBlock: post.blog.supports(.tiledGallery),
+    //            .videoPressBlock: post.blog.supports(.videoPress),
+    //            .videoPressV5Support:
+    //                post.blog.supports(.videoPressV5),
+    //            .unsupportedBlockEditor: isUnsupportedBlockEditorEnabled,
+    //            .canEnableUnsupportedBlockEditor: (post.blog.jetpack?.isConnected ?? false) && !isJetpackSSOEnabled,
+    //            .isAudioBlockMediaUploadEnabled: !isFreeWPCom,
+    //            // Only enable reusable block in WP.com sites until the issue
+    //            // (https://github.com/wordpress-mobile/gutenberg-mobile/issues/3457) in self-hosted sites is fixed
+    //            .reusableBlock: isWPComSite,
+    //            .shouldUseFastImage: !post.blog.isPrivate,
+    //            // Jetpack embeds
+    //            .facebookEmbed: post.blog.supports(.facebookEmbed),
+    //            .instagramEmbed: post.blog.supports(.instagramEmbed),
+    //            .loomEmbed: post.blog.supports(.loomEmbed),
+    //            .smartframeEmbed: post.blog.supports(.smartframeEmbed),
+    //            .supportSection: true
+    //        ]
+    //    }
 
     private var isJetpackSSOEnabled: Bool {
         let blog = post.blog
@@ -546,8 +583,8 @@ extension NewGutenbergViewController {
     }
 
     private func makeMoreMenuMainSections() -> [UIMenuElement] {
-        return  [
-            UIMenu(title: "", subtitle: "", options: .displayInline, children: makeMoreMenuActions()),
+        [
+            UIMenu(title: "", subtitle: "", options: .displayInline, children: makeMoreMenuActions())
         ]
     }
 
@@ -565,9 +602,15 @@ extension NewGutenbergViewController {
     private func makeMoreMenuSecondaryActions() -> [UIAction] {
         var actions: [UIAction] = []
         if post.getOriginal().isStatus(in: [.draft, .pending]) {
-            actions.append(UIAction(title: Strings.saveDraft, image: UIImage(systemName: "doc"), attributes: (editorHasChanges && editorHasContent) ? [] : [.disabled]) { [weak self] _ in
-                self?.buttonSaveDraftTapped()
-            })
+            actions.append(
+                UIAction(
+                    title: Strings.saveDraft,
+                    image: UIImage(systemName: "doc"),
+                    attributes: (editorHasChanges && editorHasContent) ? [] : [.disabled]
+                ) { [weak self] _ in
+                    self?.buttonSaveDraftTapped()
+                }
+            )
         }
         return actions
     }
@@ -577,21 +620,30 @@ extension NewGutenbergViewController {
 
         actions.append(editorModeToggle())
 
-        actions.append(UIAction(title: Strings.preview, image: UIImage(systemName: "safari")) { [weak self] _ in
-            self?.displayPreview()
-        })
+        actions.append(
+            UIAction(title: Strings.preview, image: UIImage(systemName: "safari")) { [weak self] _ in
+                self?.displayPreview()
+            }
+        )
 
         let revisionCount = (post.revisions ?? []).count
         if revisionCount > 0 {
-            actions.append(UIAction(title: Strings.revisions + " (\(revisionCount))", image: UIImage(systemName: "clock.arrow.circlepath")) { [weak self] _ in
-                self?.displayRevisionsList()
-            })
+            actions.append(
+                UIAction(
+                    title: Strings.revisions + " (\(revisionCount))",
+                    image: UIImage(systemName: "clock.arrow.circlepath")
+                ) { [weak self] _ in
+                    self?.displayRevisionsList()
+                }
+            )
         }
 
         let settingsTitle = self.post is Page ? Strings.pageSettings : PostEditorStrings.postSettings
-        actions.append(UIAction(title: settingsTitle, image: UIImage(systemName: "gearshape")) { [weak self] _ in
-            self?.displayPostSettings()
-        })
+        actions.append(
+            UIAction(title: settingsTitle, image: UIImage(systemName: "gearshape")) { [weak self] _ in
+                self?.displayPostSettings()
+            }
+        )
 
         actions.append(helpAction())
         actions.append(feedbackAction())
@@ -600,10 +652,10 @@ extension NewGutenbergViewController {
 
     // TODO: reimplemnet
     private func makeContextStructureString() -> String? {
-//        guard mode == .richText, let contentInfo = contentInfo else {
-            return nil
-//        }
-//        return String(format: Strings.contentStructure, contentInfo.blockCount, contentInfo.wordCount, contentInfo.characterCount)
+        //        guard mode == .richText, let contentInfo = contentInfo else {
+        nil
+        //        }
+        //        return String(format: Strings.contentStructure, contentInfo.blockCount, contentInfo.wordCount, contentInfo.characterCount)
     }
 }
 
@@ -613,10 +665,19 @@ extension NewGutenbergViewController {
     // - warning: deprecated (kahu-offline-mode)
     struct MoreSheetAlert {
         static let htmlTitle = NSLocalizedString("Switch to HTML Mode", comment: "Switches the Editor to HTML Mode")
-        static let richTitle = NSLocalizedString("Switch to Visual Mode", comment: "Switches the Editor to Rich Text Mode")
+        static let richTitle = NSLocalizedString(
+            "Switch to Visual Mode",
+            comment: "Switches the Editor to Rich Text Mode"
+        )
         static let previewTitle = NSLocalizedString("Preview", comment: "Displays the Post Preview Interface")
-        static let historyTitle = NSLocalizedString("History", comment: "Displays the History screen from the editor's alert sheet")
-        static let pageSettingsTitle = NSLocalizedString("Page Settings", comment: "Name of the button to open the page settings")
+        static let historyTitle = NSLocalizedString(
+            "History",
+            comment: "Displays the History screen from the editor's alert sheet"
+        )
+        static let pageSettingsTitle = NSLocalizedString(
+            "Page Settings",
+            comment: "Name of the button to open the page settings"
+        )
         static let keepEditingTitle = NSLocalizedString("Keep Editing", comment: "Goes back to editing the post.")
         static let accessibilityIdentifier = "MoreSheetAccessibilityIdentifier"
         static let editorHelpAndSupportTitle = NSLocalizedString("Help & Support", comment: "Open editor help options")
@@ -625,11 +686,32 @@ extension NewGutenbergViewController {
 }
 
 private enum Strings {
-    static let preview = NSLocalizedString("postEditor.moreMenu.preview", value: "Preview", comment: "Post Editor / Button in the 'More' menu")
-    static let revisions = NSLocalizedString("postEditor.moreMenu.revisions", value: "Revisions", comment: "Post Editor / Button in the 'More' menu")
-    static let pageSettings = NSLocalizedString("postEditor.moreMenu.pageSettings", value: "Page Settings", comment: "Post Editor / Button in the 'More' menu")
-    static let saveDraft = NSLocalizedString("postEditor.moreMenu.saveDraft", value: "Save Draft", comment: "Post Editor / Button in the 'More' menu")
-    static let contentStructure = NSLocalizedString("postEditor.moreMenu.contentStructure", value: "Blocks: %li, Words: %li, Characters: %li", comment: "Post Editor / 'More' menu details labels with 'Blocks', 'Words' and 'Characters' counts as parameters (in that order)")
+    static let preview = NSLocalizedString(
+        "postEditor.moreMenu.preview",
+        value: "Preview",
+        comment: "Post Editor / Button in the 'More' menu"
+    )
+    static let revisions = NSLocalizedString(
+        "postEditor.moreMenu.revisions",
+        value: "Revisions",
+        comment: "Post Editor / Button in the 'More' menu"
+    )
+    static let pageSettings = NSLocalizedString(
+        "postEditor.moreMenu.pageSettings",
+        value: "Page Settings",
+        comment: "Post Editor / Button in the 'More' menu"
+    )
+    static let saveDraft = NSLocalizedString(
+        "postEditor.moreMenu.saveDraft",
+        value: "Save Draft",
+        comment: "Post Editor / Button in the 'More' menu"
+    )
+    static let contentStructure = NSLocalizedString(
+        "postEditor.moreMenu.contentStructure",
+        value: "Blocks: %li, Words: %li, Characters: %li",
+        comment:
+            "Post Editor / 'More' menu details labels with 'Blocks', 'Words' and 'Characters' counts as parameters (in that order)"
+    )
 }
 
 // MARK: - Constants
@@ -643,9 +725,18 @@ private extension NewGutenbergViewController {
 private extension NewGutenbergViewController {
 
     struct EmptyPostActionSheet {
-        static let titlePost = NSLocalizedString("Can't publish an empty post", comment: "Alert message that is shown when trying to publish empty post")
-        static let titlePage = NSLocalizedString("Can't publish an empty page", comment: "Alert message that is shown when trying to publish empty page")
-        static let message = NSLocalizedString("Please add some content before trying to publish.", comment: "Suggestion to add content before trying to publish post or page")
+        static let titlePost = NSLocalizedString(
+            "Can't publish an empty post",
+            comment: "Alert message that is shown when trying to publish empty post"
+        )
+        static let titlePage = NSLocalizedString(
+            "Can't publish an empty page",
+            comment: "Alert message that is shown when trying to publish empty page"
+        )
+        static let message = NSLocalizedString(
+            "Please add some content before trying to publish.",
+            comment: "Suggestion to add content before trying to publish post or page"
+        )
     }
 
     struct MediaAttachmentActionSheet {

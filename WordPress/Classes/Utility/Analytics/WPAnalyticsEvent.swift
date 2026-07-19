@@ -59,6 +59,8 @@ import WordPressShared
     case gutenbergEditorHelpShown
     case gutenbergEditorBlockInserted
     case gutenbergEditorBlockMoved
+    case gutenbergKitEditorCriticalError
+    case gutenbergKitEditorLoadFailed
 
     // Notifications Permissions
     case pushNotificationsPrimerSeen
@@ -797,6 +799,10 @@ import WordPressShared
             return "editor_block_inserted"
         case .gutenbergEditorBlockMoved:
             return "editor_block_moved"
+        case .gutenbergKitEditorCriticalError:
+            return "gutenberg_kit_editor_critical_error"
+        case .gutenbergKitEditorLoadFailed:
+            return "gutenberg_kit_editor_load_failed"
         // Notifications permissions
         case .pushNotificationsPrimerSeen:
             return "notifications_primer_seen"
