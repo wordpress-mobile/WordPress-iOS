@@ -63,7 +63,7 @@ let package = Package(
         .package(url: "https://github.com/wordpress-mobile/GutenbergKit", from: "0.17.2"),
         .package(
             url: "https://github.com/automattic/wordpress-rs",
-            exact: "0.4.0"
+            exact: "0.6.0"
         ),
         .package(
             url: "https://github.com/Automattic/color-studio",
