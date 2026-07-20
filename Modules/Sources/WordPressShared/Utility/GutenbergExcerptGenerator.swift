@@ -15,7 +15,7 @@ public struct GutenbergExcerptGenerator {
 
         // Extract content while convering  <br>, <br/>, <br /> to newlines first
         let rawText = String(content[pOpen.upperBound..<pEnd.lowerBound])
-            .replacingOccurrences(of: "(<br\\s*/?>)+", with: " ", options: [.regularExpression, .caseInsensitive])
+            .replacingOccurrences(of: "(<br\\b[^>]*>)+", with: " ", options: [.regularExpression, .caseInsensitive])
 
         let range = NSRange(rawText.startIndex..., in: rawText)
         let text = (regex?.stringByReplacingMatches(in: rawText, options: [], range: range, withTemplate: "") ?? rawText)

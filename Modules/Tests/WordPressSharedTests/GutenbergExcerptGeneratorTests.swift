@@ -52,4 +52,11 @@ struct GutenbergPostExcerptGeneratorTests {
         let summary = GutenbergExcerptGenerator.firstParagraph(from: content, maxLength: 150)
         #expect(summary == "Real paragraph.")
     }
+
+    @Test func convertsAttributedBreakTagsToSpaces() {
+        let content = #"<p>foo<br class="clear">bar<br clear="all">baz<br />qux</p>"#
+
+        let summary = GutenbergExcerptGenerator.firstParagraph(from: content, maxLength: 150)
+        #expect(summary == "foo bar baz qux")
+    }
 }
