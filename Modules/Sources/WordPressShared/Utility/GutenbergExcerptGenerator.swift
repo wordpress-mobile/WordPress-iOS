@@ -13,7 +13,7 @@ public struct GutenbergExcerptGenerator {
             return ""
         }
 
-        // Extract content while convering  <br>, <br/>, <br /> to newlines first
+        // Convert <br> runs to spaces so words don't run together.
         let rawText = String(content[pOpen.upperBound..<pEnd.lowerBound])
             .replacingOccurrences(of: "(<br\\b[^>]*>)+", with: " ", options: [.regularExpression, .caseInsensitive])
 
