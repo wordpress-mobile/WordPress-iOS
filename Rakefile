@@ -14,7 +14,7 @@ PROJECT_DIR = __dir__
 abort('Project directory contains one or more spaces – unable to continue.') if PROJECT_DIR.include?(' ')
 
 desc 'Install required dependencies'
-task dependencies: %w[dependencies:check assets:check dependencies:gutenberg_xcframeworks]
+task dependencies: %w[dependencies:check dependencies:gutenberg_xcframeworks]
 
 namespace :dependencies do
   task check: %w[ruby:check bundler:check bundle:check credentials:apply]
@@ -97,19 +97,6 @@ bundle exec fastlane run configure_apply force:true
   desc 'Download and extract Gutenberg xcframeworks'
   task :gutenberg_xcframeworks do
     sh("#{PROJECT_DIR}/Scripts/download-gutenberg-xcframeworks.sh")
-  end
-end
-
-namespace :assets do
-  task :check do
-    next unless Dir['WordPress/Resources/AppImages.xcassets/AppIcon-Internal.appiconset/*.png'].empty?
-
-    Dir.mktmpdir do |tmpdir|
-      puts 'Generate internal icon set'
-      if system("export PROJECT_DIR=#{Dir.pwd}/WordPress && export TEMP_DIR=#{tmpdir} && ./Scripts/BuildPhases/AddVersionToIcons.sh >/dev/null 2>&1") != 0
-        system("cp #{Dir.pwd}/WordPress/Resources/AppImages.xcassets/AppIcon.appiconset/*.png #{Dir.pwd}/WordPress/Resources/AppImages.xcassets/AppIcon-Internal.appiconset/")
-      end
-    end
   end
 end
 
