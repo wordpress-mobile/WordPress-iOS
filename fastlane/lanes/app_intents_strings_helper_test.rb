@@ -1,14 +1,8 @@
 # frozen_string_literal: true
 
-# Pure-Ruby unit suite for AppIntentsStrings.positionalize_untyped_arguments — the rewrite that turns the
-# build-free extraction's untyped `%arg` placeholders into the positional printf specifiers GlotPress and the
-# runtime expect. Run directly: `ruby fastlane/lanes/app_intents_strings_helper_test.rb`. No bundle / network.
 require 'minitest/autorun'
 require_relative 'app_intents_strings_helper'
 
-# Pins the current behaviour of the placeholder rewrite, including the mixed-form numbering bug documented on
-# the method. The `test_known_bug_*` cases assert what the code does today, NOT what it should do — they exist
-# so a fix flips them deliberately rather than silently.
 class AppIntentsStringsHelperTest < Minitest::Test
   def positionalize(value)
     AppIntentsStrings.positionalize_untyped_arguments(value)
