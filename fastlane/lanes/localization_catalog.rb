@@ -3,6 +3,7 @@
 require 'json'
 require 'tmpdir'
 require 'fileutils'
+require_relative 'app_intents_strings_helper'
 require_relative 'catalog_helper'
 require_relative 'plural_strings_helper'
 
@@ -249,20 +250,7 @@ platform :ios do
   def app_intents_entries(stringsdata_dir:)
     synced_throwaway_catalog(stringsdata_dir: stringsdata_dir)['strings'].each_with_object({}) do |(key, entry), acc|
       value = entry.dig('localizations', 'en', 'stringUnit', 'value')
-      acc[key] = { value: positionalize_untyped_arguments(value), comment: entry['comment'] } unless value.nil?
-    end
-  end
-
-  # The build-free extraction cannot type interpolations (a defaultValue's `\(…)` segments), so it
-  # emits untyped `%arg` placeholders. Rewrite them as positional printf specifiers (`%1$@`, `%2$@`,
-  # …), which is what GlotPress translators and the runtime's format-style resolution expect. This is
-  # only correct for String-valued interpolations, so App Intents defaultValues must interpolate
-  # preformatted Strings, never raw numbers or dates (see docs/localization.md).
-  def positionalize_untyped_arguments(value)
-    index = 0
-    value.gsub(/%(\d+\$)?arg/) do
-      index += 1
-      "%#{Regexp.last_match(1) || "#{index}$"}@"
+      acc[key] = { value: AppIntentsStrings.positionalize_untyped_arguments(value), comment: entry['comment'] } unless value.nil?
     end
   end
 end
