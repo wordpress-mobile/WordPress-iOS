@@ -14,6 +14,11 @@ public struct GutenbergExcerptGenerator {
     /// Matches any remaining HTML tag or shortcode.
     private static let tagOrShortcodeRegex = try? NSRegularExpression(pattern: "<[^>]+>|\\[[^\\]]+\\]", options: [])
 
+    /// Whitespace collapsed into single spaces. Excludes U+00A0 (non-breaking
+    /// space) so an intentional `&nbsp;` survives into the excerpt.
+    private static let collapsibleWhitespace = CharacterSet.whitespacesAndNewlines
+        .subtracting(CharacterSet(charactersIn: "\u{00A0}"))
+
     public static func firstParagraph(from content: String, maxLength: Int = 150) -> String {
         // Find the first real `<p>` element and its matching `</p>`.
         guard let paragraphTag = firstMatch(of: openingParagraphRegex, in: content),
@@ -32,7 +37,7 @@ public struct GutenbergExcerptGenerator {
         // yielding single-line plain text.
         let text = stripped
             .stringByDecodingXMLCharacters()
-            .components(separatedBy: CharacterSet.whitespacesAndNewlines)
+            .components(separatedBy: collapsibleWhitespace)
             .filter { !$0.isEmpty }
             .joined(separator: " ")
 
