@@ -11,9 +11,8 @@ module AppIntentsStrings
   # only correct for String-valued interpolations, so App Intents defaultValues must interpolate
   # preformatted Strings, never raw numbers or dates (see docs/localization.md).
   #
-  # Known limitation: the counter advances on every placeholder, including ones that already carry an
-  # explicit position, so a value mixing the two forms ("%2$arg and %arg") renumbers onto a duplicate
-  # index. Pinned by `test_known_bug_*` in the adjacent suite; no current call site mixes the forms.
+  # Two bugs, red in the adjacent suite: the counter advances on placeholders that already carry an explicit
+  # position, and an escaped percent before "arg" is consumed as a placeholder.
   def positionalize_untyped_arguments(value)
     index = 0
     value.gsub(/%(\d+\$)?arg/) do

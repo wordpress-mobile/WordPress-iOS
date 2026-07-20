@@ -42,21 +42,20 @@ class AppIntentsStringsHelperTest < Minitest::Test
     assert_equal 'Largest argument', positionalize('Largest argument')
   end
 
-  def test_known_bug_mixed_forms_renumber_onto_a_duplicate_index
-    # The counter advances on the explicit `%2$arg` too, so the following untyped placeholder is numbered 2
-    # as well: two placeholders collapse onto one argument. Should be '%2$@ and %1$@'.
-    assert_equal '%2$@ and %2$@', positionalize('%2$arg and %arg')
-  end
-
-  def test_mixed_forms_are_correct_only_when_the_explicit_position_matches_the_counter
-    # Same code path as the case above, but here the explicit `1$` happens to equal the counter, so the
-    # output is right by coincidence — which is why the bug is easy to miss.
+  def test_mixed_forms_are_correct_when_the_explicit_position_matches_the_counter
     assert_equal '%1$@ and %2$@', positionalize('%1$arg and %arg')
   end
 
-  def test_known_bug_an_escaped_percent_before_arg_is_read_as_a_placeholder
-    # `%%` is a literal percent, so "100%arg" is prose, not an interpolation — but the regex matches the
-    # second `%` and swallows the word. Should be '100%%arg'.
-    assert_equal '100%%1$@', positionalize('100%%arg')
+  # FAILING. Asserted as an invariant, not an exact string: which index the untyped placeholder should take
+  # is the fixer's call, that it must not duplicate an explicit one is not.
+  def test_no_two_placeholders_resolve_to_the_same_argument
+    indices = positionalize('%2$arg and %arg').scan(/%(\d+)\$@/).flatten
+
+    assert_equal indices.uniq, indices
+  end
+
+  # FAILING. `%%` is a literal percent, so "100%arg" is prose, not an interpolation.
+  def test_an_escaped_percent_before_arg_is_not_a_placeholder
+    assert_equal '100%%arg', positionalize('100%%arg')
   end
 end
