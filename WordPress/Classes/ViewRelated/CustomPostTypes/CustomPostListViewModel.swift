@@ -692,14 +692,7 @@ struct CustomPostCollectionDisplayPost: Equatable {
         self.date = entity.dateGmt
         self.modifiedDate = entity.modifiedGmt
         self.title = entity.title?.raw
-        let contentPreview =
-            GutenbergExcerptGenerator
-            .firstParagraph(from: entity.content.rendered)
-            .replacingOccurrences(
-                of: "[\n]{2,}",
-                with: "\n",
-                options: .regularExpression
-            )
+        let contentPreview = GutenbergExcerptGenerator.firstParagraph(from: entity.content.rendered)
         self.content = contentPreview.isEmpty ? entity.excerpt?.raw : contentPreview
         if let authorId = entity.author {
             self.authorName = blog.getAuthorWith(id: NSNumber(value: authorId))?.displayName

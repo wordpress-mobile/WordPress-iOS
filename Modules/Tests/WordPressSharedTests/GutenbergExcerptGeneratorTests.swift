@@ -59,4 +59,11 @@ struct GutenbergPostExcerptGeneratorTests {
         let summary = GutenbergExcerptGenerator.firstParagraph(from: content, maxLength: 150)
         #expect(summary == "foo bar baz qux")
     }
+
+    @Test func collapsesWhitespaceAroundBreakTags() {
+        let content = "<p>Hello <br> world<br>  <br>again</p>"
+
+        let summary = GutenbergExcerptGenerator.firstParagraph(from: content, maxLength: 150)
+        #expect(summary == "Hello world again")
+    }
 }

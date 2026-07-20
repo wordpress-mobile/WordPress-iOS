@@ -20,7 +20,9 @@ public struct GutenbergExcerptGenerator {
         let range = NSRange(rawText.startIndex..., in: rawText)
         let text = (regex?.stringByReplacingMatches(in: rawText, options: [], range: range, withTemplate: "") ?? rawText)
             .stringByDecodingXMLCharacters()
-            .trimmingCharacters(in: .whitespacesAndNewlines)
+            .components(separatedBy: CharacterSet.whitespacesAndNewlines)
+            .filter { !$0.isEmpty }
+            .joined(separator: " ")
 
         // Truncate if needed
         if text.count <= maxLength {
