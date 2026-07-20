@@ -16,8 +16,6 @@ extension NSString {
 
     @objc
     public func wpkit_makePlainText() -> String {
-        self.strippingHTML()
-            .stringByDecodingXMLCharacters()
-            .trimmingCharacters(in: .whitespacesAndNewlines)
+        makePlainText()
     }
 }
