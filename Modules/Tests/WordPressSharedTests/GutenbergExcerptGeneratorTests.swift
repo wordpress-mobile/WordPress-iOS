@@ -38,4 +38,18 @@ struct GutenbergPostExcerptGeneratorTests {
         let summary = GutenbergExcerptGenerator.firstParagraph(from: content, maxLength: 150)
         #expect(summary == "Yes, look behind in remembrance and with gratitude.")
     }
+
+    @Test func ignoresLeadingCodeBlock() {
+        let content = #"<pre class="wp-block-code"><code>let x = 1</code></pre><p>Actual paragraph.</p>"#
+
+        let summary = GutenbergExcerptGenerator.firstParagraph(from: content, maxLength: 150)
+        #expect(summary == "Actual paragraph.")
+    }
+
+    @Test func ignoresLeadingVerseBlock() {
+        let content = #"<pre class="wp-block-verse">Roses are red</pre><p>Real paragraph.</p>"#
+
+        let summary = GutenbergExcerptGenerator.firstParagraph(from: content, maxLength: 150)
+        #expect(summary == "Real paragraph.")
+    }
 }

@@ -7,15 +7,14 @@ public struct GutenbergExcerptGenerator {
     private static let regex = try? NSRegularExpression(pattern: "<[^>]+>|\\[[^\\]]+\\]", options: [])
 
     public static func firstParagraph(from content: String, maxLength: Int = 150) -> String {
-        // Find first <p> tag content
-        guard let pStart = content.range(of: "<p", options: .caseInsensitive),
-              let pEnd = content.range(of: "</p>", options: .caseInsensitive, range: pStart.upperBound..<content.endIndex),
-              let tagEnd = content.range(of: ">", range: pStart.upperBound..<pEnd.lowerBound) else {
+        // Find the first real <p> tag (not <pre>, <param>, etc.) and its </p>.
+        guard let pOpen = content.range(of: "<p(\\s[^>]*)?>", options: [.regularExpression, .caseInsensitive]),
+              let pEnd = content.range(of: "</p>", options: .caseInsensitive, range: pOpen.upperBound..<content.endIndex) else {
             return ""
         }
 
         // Extract content while convering  <br>, <br/>, <br /> to newlines first
-        let rawText = String(content[tagEnd.upperBound..<pEnd.lowerBound])
+        let rawText = String(content[pOpen.upperBound..<pEnd.lowerBound])
             .replacingOccurrences(of: "(<br\\s*/?>)+", with: " ", options: [.regularExpression, .caseInsensitive])
 
         let range = NSRange(rawText.startIndex..., in: rawText)
