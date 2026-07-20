@@ -4,6 +4,7 @@
 #import "RemotePostTerm.h"
 #import "FilePart.h"
 #import "NSString+Helpers.h"
+#import "NSString+WPKitNumericValueHack.h"
 
 @import WordPressShared;
 @import WordPressKitModels;
@@ -396,7 +397,8 @@ static NSString * const RemoteOptionValueOrderByPostID = @"ID";
 + (RemotePost *)remotePostFromJSONDictionary:(NSDictionary *)jsonPost {
     RemotePost *post = [RemotePost new];
     post.postID = jsonPost[@"ID"];
-    post.siteID = jsonPost[@"site_ID"];
+    // Create and update responses return site_ID as a string, while read responses return a number.
+    post.siteID = [jsonPost[@"site_ID"] wpkit_numericValue];
     if (jsonPost[@"author"] != [NSNull null]) {
         NSDictionary *authorDictionary = jsonPost[@"author"];
         post.authorAvatarURL = authorDictionary[@"avatar_URL"];

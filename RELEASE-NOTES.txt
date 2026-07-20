@@ -6,6 +6,7 @@
 * [*] [internal] Stats widgets: migrate the site picker from SiriKit to App Intents [#25753]
 * [*] Fix Blogging Reminders text color in dark mode [#25780]
 * [*] Share extensions: Fix the site picker showing an error while sites are still loading [#25798]
+* [*] Share Extension: Fix a crash after uploading a post to WordPress.com [#25773]
 
 27.0
 -----
