@@ -3,7 +3,6 @@
 require 'minitest/autorun'
 require_relative 'app_intents_strings_helper'
 
-# The two cases marked FAILING are red until the rewrite is fixed.
 class AppIntentsStringsHelperTest < Minitest::Test
   def positionalize(value)
     AppIntentsStrings.positionalize_untyped_arguments(value)

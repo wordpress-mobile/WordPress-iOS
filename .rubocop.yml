@@ -27,6 +27,10 @@ Layout/EmptyLines:
 Style/AsciiComments:
   Exclude: *xfiles
 
+Style/Documentation:
+  Exclude:
+    - '**/*_test.rb'
+
 Naming/FileName:
   Exclude:
     - fastlane/Matchfile
