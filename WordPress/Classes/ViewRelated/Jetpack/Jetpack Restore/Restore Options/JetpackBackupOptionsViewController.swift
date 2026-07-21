@@ -4,6 +4,7 @@ import WordPressFlux
 import WordPressKit
 import WordPressUI
 import WordPressShared
+import WordPressSharedUI
 
 class JetpackBackupOptionsViewController: BaseRestoreOptionsViewController {
 

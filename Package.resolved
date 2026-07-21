@@ -1,5 +1,5 @@
 {
-  "originHash" : "fd8a7ab3bef43022c77af71fe6bacc3b1428759cb2570767081d8589b3eeef5f",
+  "originHash" : "1fa6b7db24b2ec6a10248579ee2dadf37ae0054677173f7033ee0281c95f6d19",
   "pins" : [
     {
       "identity" : "nsobject-safeexpectations",
@@ -11,12 +11,21 @@
       }
     },
     {
-      "identity" : "reachability",
+      "identity" : "swift-log",
       "kind" : "remoteSourceControl",
-      "location" : "https://github.com/Automattic/Reachability",
+      "location" : "https://github.com/apple/swift-log.git",
       "state" : {
-        "branch" : "framework-support-via-spm",
-        "revision" : "5552d6a2ceeb40ad6aa1a288ea7bbd544fb68d6f"
+        "revision" : "a878e7f8f46cfc0e1125e565b5c08e7d5272dc9a",
+        "version" : "1.14.0"
+      }
+    },
+    {
+      "identity" : "swiftsoup",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/scinfu/SwiftSoup",
+      "state" : {
+        "revision" : "3c2c7e1e72b8abd96eafbae80323c5c1e5317437",
+        "version" : "2.7.5"
       }
     },
     {
@@ -24,8 +33,8 @@
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/Automattic/wordpress-rs",
       "state" : {
-        "branch" : "alpha-20260226",
-        "revision" : "9d28dfbf4d1041ea06d9d81241cabaa9a37db600"
+        "revision" : "2525759228b0b5ba0379671354399cf8ede8d0a3",
+        "version" : "0.6.0"
       }
     },
     {

@@ -2,6 +2,7 @@ import Logging
 import UIKit
 @preconcurrency import WebKit
 import WordPressShared
+import WordPressSharedUI
 
 /// A minimal `WKWebView` host for the Publicize OAuth kick-off flow.
 ///

@@ -2,6 +2,7 @@ import UIKit
 import WordPressFlux
 import WordPressKit
 import WordPressShared
+import WordPressSharedUI
 import WordPressUI
 
 class JetpackRestoreWarningViewController: UIViewController {

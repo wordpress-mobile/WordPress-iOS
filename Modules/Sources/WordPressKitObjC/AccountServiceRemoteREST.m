@@ -1,6 +1,7 @@
 #import "AccountServiceRemoteREST.h"
 
 @import WordPressShared;
+@import WordPressSharedObjC;
 @import WordPressKitModels;
 @import NSObject_SafeExpectations;
 

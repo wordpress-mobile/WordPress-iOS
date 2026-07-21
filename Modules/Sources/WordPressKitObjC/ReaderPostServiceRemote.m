@@ -7,6 +7,7 @@
 #import "WordPressComRestApiErrorDomain.h"
 
 @import WordPressShared;
+@import WordPressSharedObjC;
 @import NSObject_SafeExpectations;
 
 NSString * const PostRESTKeyPosts = @"posts";

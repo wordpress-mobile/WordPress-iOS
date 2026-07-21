@@ -2,6 +2,7 @@
 #import "RemoteMedia.h"
 
 @import WordPressShared;
+@import WordPressSharedObjC;
 @import NSObject_SafeExpectations;
 
 @implementation MediaServiceRemoteXMLRPC
