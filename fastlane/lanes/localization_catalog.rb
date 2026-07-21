@@ -98,9 +98,19 @@ platform :ios do
   # Localizable.strings), so this only pre-populates it for the cutover — it changes nothing users see.
   #
   # MANUAL ONLY — not wired into download_localized_strings or any CI step: it downloads from GlotPress, calls the
-  # translation API (cost), and commits a large catalog. Set ANTHROPIC_API_KEY for the AI rung.
+  # translation API (cost), and commits a large catalog. Requires ANTHROPIC_API_KEY; keyless runs are refused.
   desc 'Download GlotPress translations + AI-fill into the existing Localizable.xcstrings (run generate_strings_catalog first)'
   lane :localize_catalog do |options|
+    # Abort a keyless run: with no AI tier every gap folds to an English placeholder, so the lane would commit a
+    # dense, near-zero-value catalog. Fail fast instead of staging it. (fold_translations! stays nil-tolerant for
+    # tests and a possible future human-only flag; only the lane is gated.)
+    if ENV['ANTHROPIC_API_KEY'].to_s.empty?
+      UI.user_error!(
+        'localize_catalog requires ANTHROPIC_API_KEY (the AI fill tier). Without it every gap folds to an ' \
+        'English placeholder and the lane commits a dense, near-zero-value catalog. Run generate_strings_catalog ' \
+        'for English-only extraction instead.'
+      )
+    end
     UI.user_error!("#{LOCALIZABLE_CATALOG} not found — run generate_strings_catalog first") unless File.exist?(LOCALIZABLE_CATALOG)
     locales = catalog_target_locales(options[:locales])
 
