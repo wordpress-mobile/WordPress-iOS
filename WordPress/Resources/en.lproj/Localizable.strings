@@ -101,9 +101,6 @@
 /* Accessibility label for value in trillions. Ex: 66.6 trillion. */
 "%@ trillion" = "%@ trillion";
 
-/* Let's the user know that a third party sharing service was reconnected. The %@ is a placeholder for the service name. */
-"%@ was reconnected." = "%@ was reconnected.";
-
 /* Accessibility value for a Stats' Posting Activity Month if the user selected a day with posts. The first parameter is day (e.g. November 2019). The second parameter is the number of posts. */
 "%@. %d posts." = "%1$@. %2$d posts.";
 
@@ -656,9 +653,6 @@
 /* Shown to the user in settings when they haven't yet allowed or denied push notifications */
 "Allow push notifications" = "Allow push notifications";
 
-/* No comment provided by engineer. */
-"Allow this connection to be used by all admins and users of your site." = "Allow this connection to be used by all admins and users of your site.";
-
 /* Suggests the user allow push notifications. Appears within app settings. */
 "Allow WordPress to send you push notifications" = "Allow WordPress to send you push notifications";
 
@@ -972,9 +966,6 @@
    Art site intent topic */
 "Art" = "Art";
 
-/* Message shown to users who have an old publicize connection to a facebook profile. */
-"As of August 1, 2018, Facebook no longer allows direct sharing of posts to Facebook Profiles. Connections to Facebook Pages remain unchanged." = "As of August 1, 2018, Facebook no longer allows direct sharing of posts to Facebook Profiles. Connections to Facebook Pages remain unchanged.";
-
 /* Alert option to embed a doc link into a blog post. */
 "Attach File as Link" = "Attach File as Link";
 
@@ -1055,9 +1046,6 @@
 
 /* Whether a plugin has enabled automatic updates */
 "Autoupdates" = "Autoupdates";
-
-/* No comment provided by engineer. */
-"Available to all users" = "Available to all users";
 
 /* Alert message when something goes wrong with the selected image. */
 "avatarMenu.failedToSetAvatarAlertMessage" = "Unable to load the image. Please choose a different one or try again later.";
@@ -1471,9 +1459,7 @@
    Menus: Cancel button title for canceling an edited menu item.
    Title of a button that dismisses the permissions alert
    Title. Title of a cancel button. Tapping disnisses an alert.
-   Verb. A button title.
    Verb. A button title. Tapping cancels an action.
-   Verb. Tapping cancels the publicize account selection.
    Verb. Title for Jetpack Restore cancel button. */
 "Cancel" = "Cancel";
 
@@ -1518,9 +1504,6 @@
 
 /* No comment provided by engineer. */
 "Change block position" = "Change block position";
-
-/* Message to show when Publicize globally shared setting failed */
-"Change failed" = "Change failed";
 
 /* Account Settings Change password label
    Main title */
@@ -2182,51 +2165,11 @@ Example: Reply to Pamela Nguyen */
 /* Title of Delete Site confirmation alert */
 "Confirm Delete Site" = "Confirm Delete Site";
 
-/* Instructional text about the Sharing feature. */
-"Confirm this is the account you would like to authorize. Note that your posts will be automatically shared to this account." = "Confirm this is the account you would like to authorize. Note that your posts will be automatically shared to this account.";
-
 /* Alert text field placeholder. */
 "Confirm username" = "Confirm username";
 
 /* Title of domain name purchase success screen */
 "Congratulations on your purchase!" = "Congratulations on your purchase!";
-
-/* Verb. Tapping connects an account to Publicize.
-   Verb. Text label. Allows the user to connect to a third-party sharing service like Facebook or Twitter. */
-"Connect" = "Connect";
-
-/* Verb. Text label. Allows the user to connect to a third-party sharing service like Facebook or Twitter. */
-"Connect Another Account" = "Connect Another Account";
-
-/* Instructional text appearing below a `Connect` button. The `%@` is a placeholder for the name of a third-party sharing service. */
-"Connect to automatically share your blog posts to %@" = "Connect to automatically share your blog posts to %@";
-
-/* No comment provided by engineer. */
-"Connect your favorite social media services to automatically share new posts with friends." = "Connect your favorite social media services to automatically share new posts with friends.";
-
-/* Adjective. The title of a list of third-part sharing service account names. */
-"Connected" = "Connected";
-
-/* Noun. Title. Title for the list of accounts for third party sharing services. */
-"Connected Accounts" = "Connected Accounts";
-
-/* Connecting is a verb. Title of Publicize account selection. The %@ is a placeholder for the service's name
-   Connecting is a verb. Title of Publicize account selection. The %@ is a placeholder for the service's name. */
-"Connecting %@" = "Connecting %@";
-
-/* Informs the user of consequences of chooseing a new account to connect to publicize.  The %@ characters are placeholders for account names. */
-"Connecting %@ will replace the existing connection to %@." = "Connecting %1$@ will replace the existing connection to %2$@.";
-
-/* Verb. Text label. Allows the user to connect to a third-party sharing service like Facebook or Twitter. */
-"Connecting..." = "Connecting...";
-
-/* Message to show when Publicize authorization is canceled
-   Message to show when Publicize connection is canceled by the user. */
-"Connection canceled" = "Connection canceled";
-
-/* Message to show when Publicize authorization failed
-   Message to show when Publicize connect failed */
-"Connection failed" = "Connection failed";
 
 /* Button label for contacting support
    Button title that opens the support page
@@ -2354,6 +2297,9 @@ Example: Reply to Pamela Nguyen */
 
 /* Content show when the dashboard fails to load */
 "Couldn't load data. Please refresh again later." = "Couldn't load data. Please refresh again later.";
+
+/* Error message shown when loading sites failed in the share extension. */
+"Couldn't load sites. Tap to retry." = "Couldn't load sites. Tap to retry.";
 
 /* Error message when tag loading failed */
 "Couldn't load tags. Tap to retry." = "Couldn't load tags. Tap to retry.";
@@ -2507,6 +2453,15 @@ Example: Reply to Pamela Nguyen */
 /* Customize Insights button title */
 "customizeInsightsCell.tryItButton.title" = "Try it now";
 
+/* Success notice shown after a new draft custom post is created on the server. */
+"customPost.notice.draftSaved" = "Draft saved";
+
+/* Success notice shown after a custom post is published on the server. */
+"customPost.notice.postPublished" = "Post published";
+
+/* Success notice shown after an existing custom post is updated on the server. */
+"customPost.notice.postUpdated" = "Post updated";
+
 /* Error message shown when the post was modified by another user while editing */
 "customPostEditor.error.conflict.message" = "The post you are trying to save has been changed in the meantime.";
 
@@ -2656,15 +2611,6 @@ Example: Reply to Pamela Nguyen */
 
 /* Personialize home screen button title */
 "dasboard.personalizeHomeButton" = "Personalize your home screen";
-
-/* Title for a menu action in the context menu on the Jetpack Social dashboard card. */
-"dashboard.card.social.menu.hide" = "Hide this";
-
-/* Title for the Jetpack Social dashboard card when the user has no social connections. */
-"dashboard.card.social.noconnections.title" = "Share across your social networks";
-
-/* Title for the Jetpack Social dashboard card when the user has no social shares left. */
-"dashboard.card.social.noshares.title" = "You’re out of shares!";
 
 /* Button to dismiss the extensive logging alert */
 "dashboard.extensiveLogging.alert.dismiss" = "Dismiss";
@@ -2952,19 +2898,11 @@ Example: Reply to Pamela Nguyen */
 /* Menus alert button title to discard changes. */
 "Discard Changes" = "Discard Changes";
 
-/* Title for button that disconnects Jetpack from the site
-   Verb. Text label. Tapping disconnects a third-party sharing service from the user's blog.
-   Verb. Title of a button. Tapping disconnects a third-party sharing service from the user's blog. */
+/* Title for button that disconnects Jetpack from the site */
 "Disconnect" = "Disconnect";
-
-/* Message to show when Publicize disconnect failed */
-"Disconnect failed" = "Disconnect failed";
 
 /* Disconnect from WordPress.com button */
 "Disconnect from WordPress.com" = "Disconnect from WordPress.com";
-
-/* Explanatory text for the user. The `%@` is a placeholder for the name of a third-party sharing service. */
-"Disconnecting this account means published posts will no longer be automatically shared to %@" = "Disconnecting this account means published posts will no longer be automatically shared to %@";
 
 /* Label for selecting the Blog Discussion Settings section
    Title for the Discussion Settings Screen */
@@ -3376,6 +3314,21 @@ Example: Reply to Pamela Nguyen */
 /* Text shown while the editor is loading */
 "editor.loading.title" = "Loading Editor";
 
+/* Button title to dismiss the Lockdown Mode warning */
+"editor.lockdownMode.dismiss" = "Dismiss";
+
+/* Instructions for excluding the app from Lockdown Mode */
+"editor.lockdownMode.excludeHint" = "You can exclude this app from Lockdown Mode in Settings, then re-open the editor to restore full functionality.";
+
+/* Button title to learn more about Lockdown Mode */
+"editor.lockdownMode.learnMore" = "Learn More";
+
+/* Title shown when Lockdown Mode may affect the editor */
+"editor.lockdownMode.title" = "Lockdown Mode Detected";
+
+/* Warning shown when Lockdown Mode may affect the editor */
+"editor.lockdownMode.warning" = "Lockdown Mode is enabled. The editor may not work correctly.";
+
 /* Error message when media insertion fails */
 "editor.media.failedToInsert" = "Failed to insert media";
 
@@ -3476,8 +3429,7 @@ Example: Reply to Pamela Nguyen */
 /* Shared empty state view */
 "emptyStateView.noSearchResult.title" = "No Results";
 
-/* Button title for the enable site notifications action.
-   Title of button to enable publicize. */
+/* Button title for the enable site notifications action. */
 "Enable" = "Enable";
 
 /* Describes a switch component that toggles in-app notifications for a followed post. */
@@ -3488,9 +3440,6 @@ Example: Reply to Pamela Nguyen */
 
 /* Title of the view, asking the user if they want to enable notifications. */
 "Enable Notifications?" = "Enable Notifications?";
-
-/* Text shown when the site doesn't have the Publicize module enabled. */
-"Enable Publicize" = "Enable Publicize";
 
 /* Title for the button that will enable the site stats module. */
 "Enable Site Stats" = "Enable Site Stats";
@@ -4205,9 +4154,6 @@ Example: Reply to Pamela Nguyen */
 /* Explain what is the purpose of the tagline */
 "In a few words, explain what this site is about." = "In a few words, explain what this site is about.";
 
-/* Title of button to enable publicize. */
-"In order to share your published posts to your social media you need to enable the Publicize module." = "In order to share your published posts to your social media you need to enable the Publicize module.";
-
 /* The app successfully disabled notifications for the subscription */
 "In-app notifications disabled" = "In-app notifications disabled";
 
@@ -4518,15 +4464,8 @@ Example: Reply to Pamela Nguyen */
 /* Description that explains how we will fix the threat */
 "Jetpack Scan will update to a newer version." = "Jetpack Scan will update to a newer version.";
 
-/* Message to show when Publicize connection synchronization failed */
-"Jetpack Social connection synchronization failed" = "Jetpack Social connection synchronization failed";
-
-/* Insights 'Jetpack Social Connections' header
-   Section title for Publicize services in Sharing screen */
+/* Insights 'Jetpack Social Connections' header */
 "Jetpack Social Connections" = "Jetpack Social Connections";
-
-/* Message to show when Publicize service synchronization failed */
-"Jetpack Social service synchronization failed" = "Jetpack Social service synchronization failed";
 
 /* Confirmation message presented before fixing all the threats, displays the number of threats to be fixed */
 "Jetpack will be fixing all the detected active threats." = "Jetpack will be fixing all the detected active threats.";
@@ -5750,13 +5689,9 @@ If you don't add your own text here, we'll use the post's title as the message."
 /* Insights latest post summary header */
 "Latest Post Summary" = "Latest Post Summary";
 
-/* A button title.
-   Link to cookie policy
+/* Link to cookie policy
    Menu title to show the prompts feature introduction modal. */
 "Learn more" = "Learn more";
-
-/* Title of a button. Tapping allows the user to learn more about the specific error. */
-"Learn More" = "Learn More";
 
 /* Writing, Date and Time Settings: Learn more about date and time settings footer text */
 "Learn more about date and time formatting." = "Learn more about date and time formatting.";
@@ -5993,7 +5928,6 @@ If you don't add your own text here, we'll use the post's title as the message."
 
 /* Button leading to a screen where users can manage their installed plugins
    Screen title, where users can see all their installed plugins.
-   Verb. Text label. Tapping displays a screen where the user can configure 'share' buttons for third-party services.
    Verb. Title of the screen for managing sharing buttons and settings related to sharing. */
 "Manage" = "Manage";
 
@@ -6155,6 +6089,21 @@ If you don't add your own text here, we'll use the post's title as the message."
 /* Accessibility label for add button to add items to the user's media library */
 "mediaLibrary.addButtonAccessibilityLabel" = "Add";
 
+/* Add-menu item that opens the system file picker. */
+"mediaLibrary.addMenu.chooseFile" = "Choose File";
+
+/* Add-menu item that opens the system photo library picker. */
+"mediaLibrary.addMenu.photoLibrary" = "Photo Library";
+
+/* Add-menu item that opens the camera in photo mode. */
+"mediaLibrary.addMenu.takePhoto" = "Take Photo";
+
+/* Add-menu item that opens the camera in video mode. */
+"mediaLibrary.addMenu.takeVideo" = "Take Video";
+
+/* Accessibility label for the toolbar + button that opens the Add menu. */
+"mediaLibrary.addMenu.title" = "Add";
+
 /* Button name in the more menu */
 "mediaLibrary.aspectRatioGrid" = "Aspect Ratio Grid";
 
@@ -6200,6 +6149,9 @@ If you don't add your own text here, we'll use the post's title as the message."
 /* Button label to retry loading after an error */
 "mediaLibrary.error.retry" = "Try again";
 
+/* Fallback filename stem for external media when the picker provides no usable name */
+"mediaLibrary.externalMedia.defaultStem" = "External Media";
+
 /* Title of the no-filter option in the Media Library filter menu */
 "mediaLibrary.filter.all" = "All";
 
@@ -6235,6 +6187,9 @@ If you don't add your own text here, we'll use the post's title as the message."
 
 /* Menu option to switch the grid into square (default) mode */
 "mediaLibrary.gridMode.square" = "Square Grid";
+
+/* Failed-row label when a remote media download (e.g. Stock Photos) failed before upload. %1$@ is the underlying error description. */
+"mediaLibrary.materializer.remoteDownloadFailed" = "Couldn't download the selected media: %1$@";
 
 /* User action to delete un-uploaded media. */
 "mediaLibrary.retryOptionsAlert.delete" = "Delete";
@@ -6325,6 +6280,87 @@ If you don't add your own text here, we'll use the post's title as the message."
 
 /* Bottom toolbar title in the selection mode */
 "mediaLibrary.toolbarSelectItemsPrompt" = "Select Items";
+
+/* Banner shown when only failed uploads remain. %1$d is the count. */
+"mediaLibrary.upload.banner.failedOnly" = "%1$d uploads failed";
+
+/* Banner shown when a single failed upload remains. %1$d is the count (1). */
+"mediaLibrary.upload.banner.failedOnly.single" = "%1$d upload failed";
+
+/* Banner shown when both pending and failed uploads exist. %1$d pending, %2$d failed. */
+"mediaLibrary.upload.banner.mixed" = "Uploading %1$d · %2$d failed";
+
+/* Banner shown above the grid while uploads are in flight. %1$d is the count. */
+"mediaLibrary.upload.banner.uploadingOnly" = "Uploading %1$d items";
+
+/* Banner shown above the grid while a single upload is in flight. %1$d is the count (1). */
+"mediaLibrary.upload.banner.uploadingOnly.single" = "Uploading %1$d item";
+
+/* Error shown when a picked file's type is not in the blog's allowed list. */
+"mediaLibrary.upload.error.disallowedType" = "This file type isn't allowed for upload on your site.";
+
+/* Error shown when a picked video exceeds the duration cap configured for the blog. */
+"mediaLibrary.upload.error.durationCap" = "This video is longer than your site allows.";
+
+/* Error shown when a picked file no longer exists on disk. */
+"mediaLibrary.upload.error.fileNotFound" = "The selected file could not be found.";
+
+/* Error shown when HEIC-to-JPEG conversion fails before upload. */
+"mediaLibrary.upload.error.heicConversion" = "Couldn't convert the photo for upload.";
+
+/* Error shown when iOS denies access to a file picked via Files. */
+"mediaLibrary.upload.error.securityScopedAccess" = "Couldn't access the selected file.";
+
+/* Error shown when no UTType can be derived from the picker output. */
+"mediaLibrary.upload.error.unknownContentType" = "Couldn't determine the file type.";
+
+/* Error shown when AVAssetExportSession fails before upload. %1$@ is the underlying error description. */
+"mediaLibrary.upload.error.videoExport" = "Couldn't prepare the video for upload: %1$@";
+
+/* Error shown when no AVAssetExportSession can be created for the configured export preset. */
+"mediaLibrary.upload.error.videoExport.noExporter" = "No exporter is available for the selected video quality.";
+
+/* Display name used for camera-captured photos in the Uploads queue. */
+"mediaLibrary.upload.fallback.cameraImage" = "Camera photo";
+
+/* Display name used for camera-captured videos in the Uploads queue. */
+"mediaLibrary.upload.fallback.cameraVideo" = "Camera video";
+
+/* Display name used when a picked photo has no source filename. */
+"mediaLibrary.upload.fallback.photo" = "Photo";
+
+/* Cancel-the-alert button on the bulk-cancel confirmation dialog. Keeps uploads running. */
+"mediaLibrary.uploads.alert.keepUploading" = "Keep uploading";
+
+/* Empty-state label shown on the Uploads screen after the last item resolves. */
+"mediaLibrary.uploads.allDone" = "All uploaded";
+
+/* Bulk action: cancel every in-flight upload. */
+"mediaLibrary.uploads.bulk.cancelAll" = "Cancel all uploading";
+
+/* Destructive button title in the confirmation alert for canceling every in-flight upload. */
+"mediaLibrary.uploads.bulk.cancelAll.confirm" = "Cancel uploads";
+
+/* Body of the confirmation alert shown before canceling every in-flight upload. */
+"mediaLibrary.uploads.bulk.cancelAll.message" = "All in-progress uploads will be cancelled. This can't be undone.";
+
+/* Bulk action: dismiss every failed upload. */
+"mediaLibrary.uploads.bulk.dismissAll" = "Dismiss all failed";
+
+/* Bulk action: retry every failed upload. */
+"mediaLibrary.uploads.bulk.retryAll" = "Retry all failed";
+
+/* Button to dismiss the modally-presented Uploads queue screen. */
+"mediaLibrary.uploads.close" = "Close";
+
+/* Per-row action: remove a failed upload from the queue. */
+"mediaLibrary.uploads.dismiss" = "Dismiss";
+
+/* Per-row action: retry a failed upload. */
+"mediaLibrary.uploads.retry" = "Retry";
+
+/* Navigation title for the Uploads queue screen. */
+"mediaLibrary.uploads.title" = "Uploads";
 
 /* A name of the action in the context menu */
 "mediaPicker.imagePlayground" = "Image Playground";
@@ -6884,9 +6920,6 @@ If you don't add your own text here, we'll use the post's title as the message."
 /* Empty state message (People Management). %@ can be 'users' or 'followers' */
 "No %@ yet" = "No %@ yet";
 
-/* Title of an error message. There were no third-party service accounts found to setup sharing. */
-"No Accounts Found" = "No Accounts Found";
-
 /* No comment provided by engineer. */
 "No application can handle this request." = "No application can handle this request.";
 
@@ -6896,7 +6929,7 @@ If you don't add your own text here, we'll use the post's title as the message."
 /* Advises the user that no Domain suggestions could be found for the search query. */
 "No available addresses matching your search" = "No available addresses matching your search";
 
-/* A short message that informs the user no sites could be loaded in the share extension. */
+/* A short message that informs the user their account has no available sites. */
 "No available sites" = "No available sites";
 
 /* No comment provided by engineer. */
@@ -6915,9 +6948,6 @@ If you don't add your own text here, we'll use the post's title as the message."
 /* Displayed during Site Creation, when searching for Verticals and the network is unavailable.
    Title for the error view when there's no connection */
 "No connection" = "No connection";
-
-/* Message to show when Keyring connection synchronization succeeded but no matching connections were found. %@ is a service name like Facebook or Twitter */
-"No connections found for %@" = "No connections found for %@";
 
 /* No comment provided by engineer. */
 "No custom placeholder set" = "No custom placeholder set";
@@ -7064,9 +7094,6 @@ If you don't add your own text here, we'll use the post's title as the message."
 
 /* Title of unanswered Blogging Prompts filter. */
 "Not Answered" = "Not Answered";
-
-/* Error title for alert, shown to a user who is trying to share to Facebook but does not have any available Facebook Pages. */
-"Not Connected" = "Not Connected";
 
 /* Error message to show to users when trying to upload a media object with file size is larger than the available site disk quota */
 "Not enough space to upload" = "Not enough space to upload";
@@ -8389,15 +8416,6 @@ If you don't add your own text here, we'll use the post's title as the message."
 /* Placeholder for the slug field */
 "postSettings.slug.placeholder" = "Enter slug";
 
-/* Title for the button to subscribe to Jetpack Social on the remaining shares view */
-"postsettings.social.remainingshares.subscribe" = "Subscribe now to share more";
-
-/* The second half of the remaining social shares a user has. This is only displayed when there is no social limit warning. */
-"postsettings.social.remainingshares.text.part" = " in the next 30 days";
-
-/* Beginning text of the remaining social shares a user has left. %1$d is their current remaining shares. This text is combined with ' in the next 30 days' if there is no warning displayed. */
-"postsettings.social.shares.text.format" = "%1$d social shares remaining";
-
 /* Label for the preview button in Post Settings */
 "postSettings.socialSharing.header" = "Social Sharing";
 
@@ -8551,9 +8569,6 @@ If you don't add your own text here, we'll use the post's title as the message."
 /* Title for the discard changes confirmation dialog */
 "prepublishing.discardChanges.title" = "Discard Changes?";
 
-/* Label for a cell in the pre-publishing sheet */
-"prepublishing.jetpackSocial" = "Jetpack Social";
-
 /* Details for a publish button state in the pre-publishing sheet; count as a parameter */
 "prepublishing.mediaUploadFailedDetails" = "%@ items failed to upload";
 
@@ -8581,69 +8596,8 @@ If you don't add your own text here, we'll use the post's title as the message."
 /* Primary button label in the pre-publishing shee */
 "prepublishing.schedule" = "Schedule";
 
-/* The primary label for the auto-sharing row on the pre-publishing sheet.
-Indicates the number of social accounts that will be sharing the blog post.
-%1$d is a placeholder for the number of social network accounts that will be auto-shared.
-Example: Sharing to 3 accounts */
-"prepublishing.social.label.multipleConnections" = "Sharing to %1$d accounts";
-
-/* The primary label for the auto-sharing row on the pre-publishing sheet.
-Indicates the blog post will not be shared to any social accounts. */
-"prepublishing.social.label.notSharing" = "Not sharing to social";
-
-/* The primary label for the auto-sharing row on the pre-publishing sheet.
-Indicates the number of social accounts that will be sharing the blog post.
-This string is displayed when some of the social accounts are turned off for auto-sharing.
-%1$d is a placeholder for the number of social media accounts that will be sharing the blog post.
-%2$d is a placeholder for the total number of social media accounts connected to the user's blog.
-Example: Sharing to 2 of 3 accounts */
-"prepublishing.social.label.partialConnections" = "Sharing to %1$d of %2$d accounts";
-
-/* The primary label for the auto-sharing row on the pre-publishing sheet.
-Indicates the blog post will be shared to a social media account.
-%1$@ is a placeholder for the account name.
-Example: Sharing to @wordpress */
-"prepublishing.social.label.singleConnection" = "Sharing to %1$@";
-
-/* A subtext that's shown below the primary label in the auto-sharing row on the pre-publishing sheet.
-Informs the remaining limit for post auto-sharing.
-%1$d is a placeholder for the remaining shares.
-Example: 27 social shares remaining */
-"prepublishing.social.remainingShares.format" = "%1$d social shares remaining";
-
-/* a VoiceOver description for the warning icon to hint that the remaining shares are low. */
-"prepublishing.social.warningIcon.accessibilityHint" = "Warning";
-
-/* A hint shown below the text field when editing the sharing message from the pre-publishing flow. */
-"prepublishing.socialAccounts.editMessage.hint" = "Customize the message you want to share.
-If you don't add your own text here, we'll use the post's title as the message.";
-
-/* The navigation title for a screen that edits the sharing message for the post. */
-"prepublishing.socialAccounts.editMessage.navigationTitle" = "Customize message";
-
-/* The label for a call-to-action button in the social accounts' footer section. */
-"prepublishing.socialAccounts.footer.button.text" = "Subscribe to share more";
-
-/* Text shown below the list of social accounts to indicate how many social shares available for the site.
-Note that the '30 days' part is intended to be a static value.
-%1$d is a placeholder for the amount of remaining shares.
-Example: 27 social shares remaining in the next 30 days */
-"prepublishing.socialAccounts.footer.remainingShares.text" = "%1$d social shares remaining in the next 30 days";
-
-/* a VoiceOver description for the warning icon to hint that the remaining shares are low. */
-"prepublishing.socialAccounts.footer.warningIcon.accessibilityHint" = "Warning";
-
-/* Table section title */
-"prepublishing.socialAccounts.message.label" = "Message";
-
 /* Placeholder text for the message field in Social Sharing */
 "prepublishing.socialAccounts.messagePlaceholder" = "Write a brief message to share on social media alognside the post";
-
-/* The navigation title for the pre-publishing social accounts screen. */
-"prepublishing.socialAccounts.navigationTitle" = "Social";
-
-/* Table section title */
-"prepublishing.socialAccounts.servicesSectionTitle" = "Services";
 
 /* Label for a cell in the pre-publishing sheet */
 "prepublishing.tags" = "Tags";
@@ -9495,12 +9449,6 @@ Example: given a notice format "Following %@" and empty site name, this will be 
 /* Invite Person: Email or Username Edition Title */
 "Recipient" = "Recipient";
 
-/* Verb. Text label. Tapping attempts to reconnect a third-party sharing service to the user's blog. */
-"Reconnect" = "Reconnect";
-
-/* Message shwon to confirm a publicize connection has been successfully reconnected. */
-"Reconnected" = "Reconnected";
-
 /* Action button to redo last change */
 "Redo" = "Redo";
 
@@ -9945,9 +9893,6 @@ Example: given a notice format "Following %@" and empty site name, this will be 
 /* Register Domain - Address information field placeholder for State */
 "Select State" = "Select State";
 
-/* Instructional text about the Sharing feature. */
-"Select the account you would like to authorize. Note that your posts will be automatically shared to the selected account." = "Select the account you would like to authorize. Note that your posts will be automatically shared to the selected account.";
-
 /* Prompt shown on the Blogging Reminders Settings screen. */
 "Select the days you want to blog on" = "Select the days you want to blog on";
 
@@ -10036,7 +9981,6 @@ Example: given a notice format "Following %@" and empty site name, this will be 
 "Setting up theme" = "Setting up theme";
 
 /* Link to plugin's Settings
-   Section title
    Title for screen that allows configuration of your blog/site settings.
    Title for the Jetpack Security Settings Screen */
 "Settings" = "Settings";
@@ -10067,9 +10011,6 @@ Example: given a notice format "Following %@" and empty site name, this will be 
 
 /* Title for the button that will share the link for the downlodable backup file */
 "Share link" = "Share link";
-
-/* Title. `The `%@` is a placeholder for the service name. */
-"Share post to %@" = "Share post to %@";
 
 /* Title for a button that recommends the app to others */
 "Share Reader with a friend" = "Share Reader with a friend";
@@ -10189,12 +10130,10 @@ Example: given a notice format "Following %@" and empty site name, this will be 
 /* Share extension error dialog title. */
 "shareModularViewController.retryAlert.title" = "Sharing Error";
 
-/* Noun. Name of the Social Sharing feature
-   Title for blog detail sharing screen. */
+/* Noun. Name of the Social Sharing feature */
 "Sharing" = "Sharing";
 
-/* Section title for the sharing buttons section in the Sharing screen
-   Title of a list of buttons used for sharing content to other services. */
+/* Title of a list of buttons used for sharing content to other services. */
 "Sharing Buttons" = "Sharing Buttons";
 
 /* Share extension dialog title - displayed when user is missing a login token. */
@@ -10677,42 +10616,6 @@ Example: given a notice format "Following %@" and empty site name, this will be 
 /* Label for social followers */
 "Social" = "Social";
 
-/* Body text for the Jetpack Social no connection view */
-"social.noconnection.body" = "Increase your traffic by auto-sharing your posts with your friends on social media.";
-
-/* Title for the connect button to add social sharing for the Jetpack Social no connection view */
-"social.noconnection.connectAccounts" = "Connect accounts";
-
-/* Accessibility label for the social media icons in the Jetpack Social no connection view */
-"social.noconnection.icons.accessibility.label" = "Social media icons";
-
-/* Title for the not now button to hide the Jetpack Social no connection view */
-"social.noconnection.notnow" = "Not now";
-
-/* Plural body text for the Jetpack Social no shares dashboard card. %1$d is the number of social accounts the user has. */
-"social.noshares.body.plural" = "Your posts won’t be shared to your %1$d social accounts.";
-
-/* Singular body text for the Jetpack Social no shares dashboard card. */
-"social.noshares.body.singular" = "Your posts won’t be shared to your social account.";
-
-/* Accessibility label for the social media icons in the Jetpack Social no shares dashboard card */
-"social.noshares.icons.accessibility.label" = "Social media icons";
-
-/* Title for the button to subscribe to Jetpack Social on the no shares dashboard card */
-"social.noshares.subscribe" = "Subscribe to share more";
-
-/* Section title for the disabled Twitter service in the Social screen */
-"social.section.disabledTwitter.header" = "Twitter Auto-Sharing Is No Longer Available";
-
-/* Text for a hyperlink that allows the user to learn more about the Twitter deprecation. */
-"social.twitterDeprecation.link" = "Find out more";
-
-/* A smallprint that hints the reason behind why Twitter is deprecated. */
-"social.twitterDeprecation.text" = "Twitter auto-sharing is no longer available due to Twitter's changes in terms and pricing.";
-
-/* The number of connected accounts on a third party sharing service connected to the user's blog. The '%d' is a placeholder for the number of accounts. */
-"socialSharing.connectionDetails.nAccount" = "%d accounts";
-
 /* No comment provided by engineer. */
 "Some blocks have additional settings. Tap the settings icon on the bottom right of the block to view more options." = "Some blocks have additional settings. Tap the settings icon on the bottom right of the block to view more options.";
 
@@ -10785,9 +10688,6 @@ Example: given a notice format "Following %@" and empty site name, this will be 
 
 /* A short error message letting the user know the requested reader content could not be loaded. */
 "Sorry. The content could not be loaded." = "Sorry. The content could not be loaded.";
-
-/* An error message shown if a third-party social service does not specify any accounts that an be used with publicize sharing. */
-"Sorry. The social service did not tell us which account could be used for sharing." = "Sorry. The social service did not tell us which account could be used for sharing.";
 
 /* A short error message leting the user know the requested search could not be performed. */
 "Sorry. Your search results could not be loaded." = "Sorry. Your search results could not be loaded.";
@@ -11659,9 +11559,6 @@ Example: given a notice format "Following %@" and empty site name, this will be 
 /* No comment provided by engineer. */
 "The editor has encountered an unexpected error" = "The editor has encountered an unexpected error";
 
-/* Error message shown to a user who is trying to share to Facebook but does not have any available Facebook Pages. */
-"The Facebook connection cannot find any Pages. Publicize cannot connect to Facebook Profiles, only published Pages." = "The Facebook connection cannot find any Pages. Publicize cannot connect to Facebook Profiles, only published Pages.";
-
 /* Title for a threat that includes the file name of the file */
 "The file %1$@ contains a malicious code pattern" = "The file %1$@ contains a malicious code pattern";
 
@@ -11691,9 +11588,6 @@ Example: given a notice format "Following %@" and empty site name, this will be 
 
 /* Message shown when an image or video failed to load while trying to add it to the Media library. */
 "The media could not be added to the Media Library." = "The media could not be added to the Media Library.";
-
-/* Error shown when a module can not be enabled */
-"The module couldn't be activated." = "The module couldn't be activated.";
 
 /* Text above the selection of the number of posts to show per blog page */
 "The number of posts to show per page." = "The number of posts to show per page.";
@@ -11776,9 +11670,6 @@ Example: given a notice format "Following %@" and empty site name, this will be 
 
 /* Displayed when there's a pending Email Change. The variable is the new email address. */
 "There is a pending change of your email to %@. Please check your inbox for a confirmation link." = "There is a pending change of your email to %@. Please check your inbox for a confirmation link.";
-
-/* Informs the user about an issue connecting to the third-party sharing service. The `%@` is a placeholder for the service name. */
-"There is an issue connecting to %@. Reconnect to continue publicizing." = "There is an issue connecting to %@. Reconnect to continue publicizing.";
 
 /* Displayed during Site Creation, when searching for Verticals and the server returns an error.
    The Jetpack view title used when an error occurred
@@ -12633,9 +12524,6 @@ Example: given a notice format "Following %@" and empty site name, this will be 
 /* Hint displayed when we fail to fetch the status of the restore in progress. */
 "We couldn’t find the status to say how long your restore will take." = "We couldn’t find the status to say how long your restore will take.";
 
-/* Message to show when Keyring connection synchronization failed. %@ is a service name like Facebook or Twitter */
-"We had trouble loading connections for %@" = "We had trouble loading connections for %@";
-
 /* Error message displayed when a refresh failed */
 "We had trouble loading data" = "We had trouble loading data";
 
@@ -12782,6 +12670,114 @@ Example: given a notice format "Following %@" and empty site name, this will be 
 
 /* Text rendered at the bottom of the Discussion Blocklist Keys editor */
 "When a comment contains any of these words in its content, name, URL, e-mail, or IP, it will be marked as spam. You can enter partial words, so \"press\" will match \"WordPress\"." = "When a comment contains any of these words in its content, name, URL, e-mail, or IP, it will be marked as spam. You can enter partial words, so \"press\" will match \"WordPress\".";
+
+/* Title of best views ever label in all time widget */
+"widget.alltime.bestviews.label" = "Best views ever";
+
+/* Title of the label which displays the number of the most daily views the site has ever had. Keep the translation as short as possible. */
+"widget.alltime.bestviewsshort.label" = "Most Views";
+
+/* Title of the no data view in all time widget */
+"widget.alltime.nodata.view.title" = "Unable to load all time stats.";
+
+/* Title of the no site view in all time widget */
+"widget.alltime.nosite.view.title" = "Create or add a site to see all time stats.";
+
+/* Title of posts label in all time widget */
+"widget.alltime.posts.label" = "Posts";
+
+/* Description of all time widget in the preview */
+"widget.alltime.preview.description" = "Stay up to date with all time activity on your WordPress site.";
+
+/* Title of all time widget */
+"widget.alltime.title" = "All Time";
+
+/* Title of the unconfigured view in all time widget */
+"widget.alltime.unconfigured.view.title" = "Log in to WordPress to see all time stats.";
+
+/* Preview title of all-time posts and most views widget */
+"widget.allTimePostViews.previewTitle" = "All-Time Posts & Most Views";
+
+/* Preview title of all-time views widget */
+"widget.allTimeViews.previewTitle" = "All-Time Views";
+
+/* Preview title of all-time views and visitors widget */
+"widget.allTimeViewsVisitors.previewTitle" = "All-Time Views & Visitors";
+
+/* Title of the unconfigured view in all time widget */
+"widget.jetpack.alltime.unconfigured.view.title" = "Log in to Jetpack to see all time stats.";
+
+/* Title of the unconfigured view in this week widget */
+"widget.jetpack.thisweek.unconfigured.view.title" = "Log in to Jetpack to see this week's stats.";
+
+/* Title of the unconfigured view in today widget */
+"widget.jetpack.today.unconfigured.view.title" = "Log in to Jetpack to see today's stats.";
+
+/* Title of the one-liner information consist of views field and all time date range in lock screen all time views widget */
+"widget.lockscreen.alltimeview.label" = "All-Time Views";
+
+/* Title of the one-liner information consist of views field and today date range in lock screen today views widget */
+"widget.lockscreen.todayview.label" = "Views Today";
+
+/* Title of the no data view in this week widget */
+"widget.thisweek.nodata.view.title" = "Unable to load this week's stats.";
+
+/* Title of the no site view in this week widget */
+"widget.thisweek.nosite.view.title" = "Create or add a site to see this week's stats.";
+
+/* Description of all time widget in the preview */
+"widget.thisweek.preview.description" = "Stay up to date with this week activity on your WordPress site.";
+
+/* Title of this week widget */
+"widget.thisweek.title" = "This Week";
+
+/* Title of the unconfigured view in this week widget */
+"widget.thisweek.unconfigured.view.title" = "Log in to WordPress to see this week's stats.";
+
+/* Title of comments label in today widget */
+"widget.today.comments.label" = "Comments";
+
+/* Title of the disabled view in today widget */
+"widget.today.disabled.view.title" = "Stats have moved to the Jetpack app. Switching is free and only takes a minute.";
+
+/* Title of likes label in today widget */
+"widget.today.likes.label" = "Likes";
+
+/* Fallback title of the no data view in the stats widget */
+"widget.today.nodata.view.fallbackTitle" = "Unable to load site stats.";
+
+/* Title of the no data view in today widget */
+"widget.today.nodata.view.title" = "Unable to load today's stats.";
+
+/* Title of the no site view in today widget */
+"widget.today.nosite.view.title" = "Create or add a site to see today's stats.";
+
+/* Description of today widget in the preview */
+"widget.today.preview.description" = "Stay up to date with today's activity on your WordPress site.";
+
+/* Title of today widget */
+"widget.today.title" = "Today";
+
+/* Title of the unconfigured view in today widget */
+"widget.today.unconfigured.view.title" = "Log in to WordPress to see today's stats.";
+
+/* Error message to show if a widget view is unavailable */
+"widget.today.view.unavailable.title" = "View is unavailable";
+
+/* Title of views label in today widget */
+"widget.today.views.label" = "Views";
+
+/* Title of visitors label in today widget */
+"widget.today.visitors.label" = "Visitors";
+
+/* Preview title of today's likes and commnets widget */
+"widget.todayLikesComments.previewTitle" = "Today's Likes & Comments";
+
+/* Preview title of today's views widget */
+"widget.todayViews.previewTitle" = "Today's Views";
+
+/* Preview title of today's views and visitors widget */
+"widget.todayViewsVisitors.previewTitle" = "Today's Views & Visitors";
 
 /* No comment provided by engineer. */
 "Width Settings" = "Width Settings";
@@ -13105,8 +13101,7 @@ from anywhere.";
 "You received *50 likes* on your site today" = "You received *50 likes* on your site today";
 
 /* Informs that the user has replied to this comment.
-   Notification text - below a comment notification detail
-   Text to look for */
+   Notification text - below a comment notification detail */
 "You replied to this comment." = "You replied to this comment.";
 
 /* Error messaged show when a mobile plugin is redirecting traffict to their site, DudaMobile in particular */
@@ -13268,23 +13263,59 @@ from anywhere.";
 /* Name of the "Save as Draft" action as it should appear in the iOS Share Sheet when sharing content from other apps to Jetpack. Must be less than 16 characters long. Typically the same text as CFBundleDisplayName, but could be shorter if needed. */
 "ios-jetpack-sharesheet.CFBundleName" = "Save as Draft";
 
-/* MARK: - Sites.strings */
+/* MARK: - Localizable.strings */
 
-/* This text is used when the user is configuring the iOS widget and selecting which WordPress site they want the widget to be for */
-"ios-widget.BOl9KQ" = "There are ${count} options matching ‘${site}’.";
+/* Source strings for the stats widget configuration UI, uploaded to GlotPress under the
+   "ios-widget.ios-widget." prefix (see MANUALLY_MAINTAINED_STRINGS_FILES in fastlane/lanes/localization.rb).
+   The keys are the identifiers Xcode generated for the legacy Sites.intentdefinition; they are
+   kept so the existing GlotPress translations keep matching after the migration to App Intents.
 
-/* This text is used when the user is configuring the iOS widget, as a label for the dropdown to select the site to configure it for */
-"ios-widget.ILcGmf" = "Site";
-
-/* This text is used when the user is configuring the iOS widget, as the title for the modal when selecting the site to configure it for */
-"ios-widget.cyajMn" = "Site";
+   This file is not shipped in any bundle. At runtime the prefixed keys are resolved from the
+   app's Localizable.strings (iOS 26) or from the static copies in
+   Sources/JetpackStatsWidgets/Resources/<locale>.lproj/Localizable.strings (iOS 17). */
 
 /* This text is used when the user is configuring the iOS widget to suggest them to select the site to configure the widget for */
 "ios-widget.gpCwrM" = "Select Site";
 
-/* This text is required by Apple to be part of the translations but is not shown to the users. You can use the English version verbatim without translation for this entry. */
-"ios-widget.tVvJ9c" = "Select Site Intent";
+/* This text is used when the user is configuring the iOS widget, as a label for the dropdown to select the site to configure it for */
+"ios-widget.ILcGmf" = "Site";
 
-/* This text is used when configuring the iOS widget and confirming the WordPress site the user wants the widget to be for */
-"ios-widget.s4dJhx" = "Just to confirm, you wanted ‘${site}’?";
+/* MARK: - Plurals.strings */
+
+/* Number of blogging reminders per week. %1$d is the count. Plural category: zero. */
+"blogging.reminders.weeklyCount|==|plural.zero" = "%1$d times a week";
+
+/* Number of blogging reminders per week. %1$d is the count. Plural category: one. */
+"blogging.reminders.weeklyCount|==|plural.one" = "%1$d time a week";
+
+/* Number of blogging reminders per week. %1$d is the count. Plural category: two. */
+"blogging.reminders.weeklyCount|==|plural.two" = "%1$d times a week";
+
+/* Number of blogging reminders per week. %1$d is the count. Plural category: few. */
+"blogging.reminders.weeklyCount|==|plural.few" = "%1$d times a week";
+
+/* Number of blogging reminders per week. %1$d is the count. Plural category: many. */
+"blogging.reminders.weeklyCount|==|plural.many" = "%1$d times a week";
+
+/* Number of blogging reminders per week. %1$d is the count. Plural category: other. */
+"blogging.reminders.weeklyCount|==|plural.other" = "%1$d times a week";
+
+/* Number of words in the editor. %1$ld is the count. Plural category: zero. */
+"editor.textCounter.wordCount|==|plural.zero" = "%1$ld words";
+
+/* Number of words in the editor. %1$ld is the count. Plural category: one. */
+"editor.textCounter.wordCount|==|plural.one" = "%1$ld word";
+
+/* Number of words in the editor. %1$ld is the count. Plural category: two. */
+"editor.textCounter.wordCount|==|plural.two" = "%1$ld words";
+
+/* Number of words in the editor. %1$ld is the count. Plural category: few. */
+"editor.textCounter.wordCount|==|plural.few" = "%1$ld words";
+
+/* Number of words in the editor. %1$ld is the count. Plural category: many. */
+"editor.textCounter.wordCount|==|plural.many" = "%1$ld words";
+
+/* Number of words in the editor. %1$ld is the count. Plural category: other. */
+"editor.textCounter.wordCount|==|plural.other" = "%1$ld words";
+
 
