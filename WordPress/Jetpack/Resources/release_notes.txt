@@ -1,3 +1,8 @@
-We removed the Free GIF Library as a media source, since the Tenor service it runs on will shut down on June 30. We’re sad about it, too.
-
-If you have a self-hosted site, you’ll now sign in to the app using an application password. If you don’t have one, we’ll automatically create one for you so it’s ready when you need it.
+* [*] [internal] Experimental Gutenberg editor: add Lockdown Mode detection [#25776]
+* [*] [internal] In-app updates: guard the flexible update notice against double-posting when two update checks race [#25666]
+* [*] [build tooling] Add a String Catalog localization pipeline (plurals + build-free catalog generation) with a CI coverage gate [#25688]
+* [*] [internal] Stats widgets: migrate the site picker from SiriKit to App Intents [#25753]
+* [*] Fix categories and tags not working on self-hosted sites with XML-RPC disabled [#25767]
+* [*] Fix Blogging Reminders text color in dark mode [#25780]
+* [*] Share extensions: Fix the site picker showing an error while sites are still loading [#25798]
+* [*] Share Extension: Fix a crash after uploading a post to WordPress.com [#25773]
