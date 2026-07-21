@@ -12,14 +12,14 @@ struct PostTagsView: View {
     @State private var isKeyboardPresented = false
 
     init(blog: Blog, selectedTags: [TagsViewModel.SelectedTerm], onSelectionChanged: @escaping ([TagsViewModel.SelectedTerm]) -> Void) {
-        let viewModel = TagsViewModel(blog: blog, selectedTags: selectedTags, mode: .selection(onSelectedTagsChanged: { tags in
+        let viewModel = TagsViewModel.tags(for: blog, selectedTerms: selectedTags, mode: .selection(onSelectedTagsChanged: { tags in
             onSelectionChanged(tags)
         }))
         self._viewModel = StateObject(wrappedValue: viewModel)
     }
 
-    init(blog: Blog, client: WordPressClient, taxonomy: SiteTaxonomy, selectedTerms: [TagsViewModel.SelectedTerm] = [], onSelectionChanged: @escaping ([TagsViewModel.SelectedTerm]) -> Void) {
-        let viewModel = TagsViewModel(blog: blog, client: client, taxonomy: taxonomy, selectedTerms: selectedTerms, mode: .selection(onSelectedTagsChanged: { tags in
+    init(client: WordPressClient, taxonomy: SiteTaxonomy, selectedTerms: [TagsViewModel.SelectedTerm] = [], onSelectionChanged: @escaping ([TagsViewModel.SelectedTerm]) -> Void) {
+        let viewModel = TagsViewModel.taxonomy(taxonomy, client: client, selectedTerms: selectedTerms, mode: .selection(onSelectedTagsChanged: { tags in
             onSelectionChanged(tags)
         }))
         self._viewModel = StateObject(wrappedValue: viewModel)

@@ -243,7 +243,6 @@ struct PostSettingsFormContentView<ViewModel: PostSettingsViewModelProtocol>: Vi
             ForEach(viewModel.customTaxonomies, id: \.slug) { taxonomy in
                 NavigationLink {
                     PostTagsView(
-                        blog: viewModel.blog,
                         client: client,
                         taxonomy: taxonomy,
                         selectedTerms: viewModel.settings.getTerms(forTaxonomySlug: taxonomy.slug)

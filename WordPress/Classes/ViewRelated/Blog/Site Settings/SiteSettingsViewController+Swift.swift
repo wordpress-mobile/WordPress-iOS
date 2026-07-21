@@ -62,7 +62,7 @@ extension SiteSettingsViewController {
     @objc public func showCustomTaxonomies() {
         let viewController: UIViewController
         if let client = try? WordPressClientFactory.shared.instance(for: .init(blog: blog)) {
-            let rootView = SiteCustomTaxonomiesView(blog: self.blog, client: client)
+            let rootView = SiteCustomTaxonomiesView(client: client)
             viewController = UIHostingController(rootView: rootView)
         } else {
             let feature = NSLocalizedString(
@@ -76,7 +76,7 @@ extension SiteSettingsViewController {
                 source: "taxonomies",
                 presentingViewController: self
             ) { client in
-                SiteCustomTaxonomiesView(blog: self.blog, client: client)
+                SiteCustomTaxonomiesView(client: client)
             }
             viewController = UIHostingController(rootView: rootView)
         }
