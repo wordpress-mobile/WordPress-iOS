@@ -1,3 +1,7 @@
+27.2
+-----
+
+
 27.1
 -----
 * [*] [internal] Experimental Gutenberg editor: add Lockdown Mode detection [#25776]
