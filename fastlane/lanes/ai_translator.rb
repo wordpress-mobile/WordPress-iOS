@@ -160,6 +160,11 @@ class AITranslator # rubocop:disable Metrics/ClassLength -- mostly static locali
   # strings already sorted by key so each batch naturally groups one feature (reader.*, editor.*) — better
   # terminology consistency within a batch.
   #
+  # A batch spanning many keys is many sequential requests. If one FAILS mid-run (network / rate limit / SDK
+  # error), the batches that already succeeded are KEPT and the run stops — the remaining strings fall back to
+  # English and are retried on the next run, rather than the whole locale's completed (and billed) work being
+  # discarded. Stopping (vs. continuing) avoids hammering the API when the failure is systemic.
+  #
   # @param strings [Array<Hash>] each { key:, source:, comment: } (string or symbol keys both accepted).
   # @param locale [String] target lproj code.
   # @param batch_size [Integer] strings per request.
@@ -167,9 +172,14 @@ class AITranslator # rubocop:disable Metrics/ClassLength -- mostly static locali
     items = batchable_items(strings)
     return {} if items.empty?
 
-    items.each_slice(batch_size).with_object({}) do |chunk, out|
-      out.merge!(translate_batch(chunk, locale))
+    translated = {}
+    items.each_slice(batch_size).with_index do |chunk, index|
+      translated.merge!(translate_batch(chunk, locale))
+    rescue StandardError => e
+      warn_batch_failure(locale: locale, index: index, kept: translated.size, error: e)
+      break
     end
+    translated
   end
 
   # Builds Message Batch jobs for many strings across many locales (the async / cheaper bulk path). Returns
@@ -295,6 +305,14 @@ class AITranslator # rubocop:disable Metrics/ClassLength -- mostly static locali
 
   def to_string_keys(hash)
     (hash || {}).each_with_object({}) { |(key, value), acc| acc[key.to_s] = value }
+  end
+
+  # A batch request failed mid-run. Keep the batches that already succeeded and STOP rather than hammer the rest:
+  # the untranslated strings fall back to English and are retried next run (the fold's reuse-awareness means the
+  # kept ones aren't re-billed). Surfaced on stderr — this class is deliberately fastlane-free, so no UI here.
+  def warn_batch_failure(locale:, index:, kept:, error:)
+    warn "AITranslator: batch #{index + 1} for '#{locale}' failed (#{error.message}); " \
+         "kept #{kept} translation(s), the rest fall back to English (retry next run)."
   end
 
   # One batched request: number the chunk, ask for a JSON {number => translation}, keep the validated ones.

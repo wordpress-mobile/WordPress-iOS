@@ -3,7 +3,9 @@
 require 'json'
 require 'tmpdir'
 require 'fileutils'
+require 'open3'
 require_relative 'catalog_helper'
+require_relative 'catalog_strings_helper'
 
 #################################################
 # Catalog generation (forward / extraction)
@@ -54,8 +56,8 @@ platform :ios do
     Dir.mktmpdir do |stringsdata_dir|
       extract_stringsdata(files: files, output_dir: stringsdata_dir, swiftui: swiftui)
       synced = sync_localizable_catalog(stringsdata_dir: stringsdata_dir)
-      reconciled = reconcile_changed_sources(stringsdata_dir: stringsdata_dir)
-      report_catalog(LOCALIZABLE_CATALOG, extracted_count: synced, reconciled_count: reconciled)
+      enforce_immutable_source_keys(stringsdata_dir: stringsdata_dir)
+      report_catalog(LOCALIZABLE_CATALOG, extracted_count: synced)
     end
   end
 
@@ -80,6 +82,57 @@ platform :ios do
         UI.user_error!("#{gap.count} string(s) found by genstrings are missing from Localizable.xcstrings.")
       end
     end
+  end
+
+  # LOCALIZE (download + fold + AI-fill) — pull the current GlotPress translations for the given locales and fold
+  # them into the EXISTING Localizable.xcstrings (human => translated), then AI-fill the cells they leave empty
+  # (=> needs_review). The download goes into a throwaway temp dir each run, so no stale or partial translation
+  # state is ever carried between runs and the fold always reflects current GlotPress. Run generate_strings_catalog
+  # (the code scan) first — it stays a separate lane so you can refresh the catalog without touching the AI. Scope
+  # a cheap run with `locales:fr`; default is all ship locales.
+  #
+  # Uploading the AI drafts back to GlotPress as needs-review (the eventual "step 4") is a separate step, not
+  # done here — it builds on the existing GlotPress import integration (cf. gp_update_metadata_source).
+  #
+  # STAGED, NOT SHIPPED: Localizable.xcstrings isn't the runtime store yet (the app still ships
+  # Localizable.strings), so this only pre-populates it for the cutover — it changes nothing users see.
+  #
+  # MANUAL ONLY — not wired into download_localized_strings or any CI step: it downloads from GlotPress, calls the
+  # translation API (cost), and commits a large catalog. Requires ANTHROPIC_API_KEY; keyless runs are refused.
+  desc 'Download GlotPress translations + AI-fill into the existing Localizable.xcstrings (run generate_strings_catalog first)'
+  lane :localize_catalog do |options|
+    # Abort a keyless run: with no AI tier every gap folds to an English placeholder, so the lane would commit a
+    # dense, near-zero-value catalog. Fail fast instead of staging it. (fold_translations! stays nil-tolerant for
+    # tests and a possible future human-only flag; only the lane is gated.)
+    if ENV['ANTHROPIC_API_KEY'].to_s.empty?
+      UI.user_error!(
+        'localize_catalog requires ANTHROPIC_API_KEY (the AI fill tier). Without it every gap folds to an ' \
+        'English placeholder and the lane commits a dense, near-zero-value catalog. Run generate_strings_catalog ' \
+        'for English-only extraction instead.'
+      )
+    end
+    UI.user_error!("#{LOCALIZABLE_CATALOG} not found — run generate_strings_catalog first") unless File.exist?(LOCALIZABLE_CATALOG)
+    locales = catalog_target_locales(options[:locales])
+
+    # Download the current GlotPress translations (throwaway dir — no state carried between runs), fold them in
+    # (=> translated), then AI-fill the cells they leave empty.
+    catalog = JSON.parse(File.read(LOCALIZABLE_CATALOG))
+    translations = download_catalog_translations(locales)
+    UI.important('GlotPress returned no translations for the requested locale(s) — folding AI + English only.') if translations.empty?
+    written = CatalogStrings.fold_translations!(
+      catalog,
+      translations_by_locale: translations,
+      locales: locales.values.uniq,
+      ai_translator: catalog_ai_translator
+    )
+    File.write(LOCALIZABLE_CATALOG, "#{JSON.pretty_generate(catalog)}\n")
+    UI.success("Built #{File.basename(LOCALIZABLE_CATALOG)}: folded #{written} cell(s) across #{locales.values.uniq.size} locale(s).")
+    report_localized_catalog(catalog, locales.values.uniq)
+
+    # force: the catalog is .gitignore'd (shelved until the runtime cutover), so a plain `git add` refuses it —
+    # this staging lane deliberately commits it anyway. Once tracked, the ignore no longer applies.
+    git_add(path: LOCALIZABLE_CATALOG, shell_escape: false, force: true)
+    git_commit(path: [LOCALIZABLE_CATALOG], message: 'Update Localizable.xcstrings translations (staged)', allow_nothing_to_commit: true)
   end
 
   #################################################
@@ -107,6 +160,15 @@ platform :ios do
       File.basename(path) == 'AppLocalizedString.swift'
   end
 
+  # Run `xcstringstool <args>` quietly via argv (no shell, so source paths with spaces are safe), capturing
+  # output and surfacing it only on failure. Used instead of fastlane's `sh` for these bulk calls: each passes
+  # hundreds of file paths (or a `--stringsdata` pair per file), so `sh` would echo a massive command line AND
+  # print a "Step: shell command" banner per call. Open3 keeps the run silent and banner-free.
+  def run_xcstringstool(*args)
+    output, status = Open3.capture2e('xcrun', 'xcstringstool', *args)
+    UI.user_error!("xcstringstool #{args.first} failed:\n#{output}") unless status.success?
+  end
+
   # xcstringstool extract -> one .stringsdata per source file (basename-disambiguated). Chunked to stay under
   # the OS argument limit; each chunk gets its own output subdir (see below), which sync then consumes together.
   # `--SwiftUI-Text` (extract `Text("literal")`) is OFF by default and gated behind `swiftui:`. The app has
@@ -125,10 +187,12 @@ platform :ios do
     # source basename and only disambiguates collisions WITHIN a single invocation — so two same-named files
     # in different chunks (e.g. the two NSDate+Helpers.swift / SupportDataProvider.swift) would otherwise
     # overwrite each other in a shared dir and silently drop strings.
-    files.each_slice(400).with_index do |chunk, index|
+    batches = files.each_slice(400).to_a
+    batches.each_with_index do |chunk, index|
       chunk_dir = File.join(output_dir, "chunk-#{index}")
       FileUtils.mkdir_p(chunk_dir)
-      sh('xcrun', 'xcstringstool', 'extract', *chunk, *flags, '--output-directory', chunk_dir)
+      UI.message("Extracting strings… (batch #{index + 1}/#{batches.size})")
+      run_xcstringstool('extract', *chunk, *flags, '--output-directory', chunk_dir)
     end
   end
 
@@ -145,12 +209,14 @@ platform :ios do
     stringsdata = stringsdata_files(stringsdata_dir)
     UI.user_error!('xcstringstool produced no .stringsdata') if stringsdata.empty?
 
-    sh('xcrun', 'xcstringstool', 'sync', LOCALIZABLE_CATALOG, *stringsdata.flat_map { |f| ['--stringsdata', f] })
+    UI.message("Syncing #{stringsdata.count} extracted file(s) into #{File.basename(LOCALIZABLE_CATALOG)}…")
+    run_xcstringstool('sync', LOCALIZABLE_CATALOG, *stringsdata.flat_map { |f| ['--stringsdata', f] })
     JSON.parse(File.read(LOCALIZABLE_CATALOG))['strings'].count
   end
 
   # Create the catalog as an empty shell if it doesn't exist yet; leave an existing one untouched so its
-  # translations survive across runs — that persistence is what makes reconcile_changed_sources meaningful.
+  # translations survive across runs — that persistence is what lets the fold reuse machine cells and lets
+  # immutable-key enforcement compare the source against the previously-stored English.
   def ensure_catalog_exists(path)
     FileUtils.mkdir_p(File.dirname(path))
     return if File.exist?(path)
@@ -158,18 +224,21 @@ platform :ios do
     File.write(path, "#{JSON.pretty_generate('sourceLanguage' => 'en', 'strings' => {}, 'version' => '1.0')}\n")
   end
 
-  # `xcstringstool sync` leaves an existing key's English value (and its translations) untouched when the
-  # source text changes (verified). Re-derive the current English from a fresh extraction and, where it
-  # differs from the catalog, update the English and flip that key's translations to `needs_review`.
-  def reconcile_changed_sources(stringsdata_dir:)
+  # Localization keys are IMMUTABLE. `xcstringstool sync` silently keeps an existing key's translations when its
+  # English is reworded in place (verified) — which would ship stale translations of the OLD text — so any
+  # reworded (explicit-key) string is a hard error here: rewording requires a NEW key. Key-as-source strings are
+  # exempt (rewording one changes the key, which sync handles as new/stale). See CatalogHelper.reworded_keys.
+  def enforce_immutable_source_keys(stringsdata_dir:)
     current_en = current_english_values(stringsdata_dir)
     catalog = JSON.parse(File.read(LOCALIZABLE_CATALOG))
-    reconciled = CatalogHelper.reconcile_source_changes!(catalog, current_en)
-    unless reconciled.empty?
-      File.write(LOCALIZABLE_CATALOG, "#{JSON.pretty_generate(catalog)}\n")
-      UI.important("Re-flagged #{reconciled.count} key(s) as needs_review — English source changed.")
-    end
-    reconciled.count
+    reworded = CatalogHelper.reworded_keys(catalog, current_en)
+    return if reworded.empty?
+
+    UI.user_error!(
+      "Localization keys are immutable, but #{reworded.count} changed their English in place: #{reworded.join(', ')}. " \
+      "Rewording requires a new key (rename it) so translations don't go stale — mint a new key for the new text, " \
+      'or revert the English change.'
+    )
   end
 
   # Current English value per key, by syncing the extraction into a throwaway empty catalog (every key is
@@ -180,7 +249,7 @@ platform :ios do
       fresh = File.join(tmp, 'Localizable.xcstrings')
       File.write(fresh, "#{JSON.pretty_generate('sourceLanguage' => 'en', 'strings' => {}, 'version' => '1.0')}\n")
       stringsdata = stringsdata_files(stringsdata_dir)
-      sh('xcrun', 'xcstringstool', 'sync', fresh, *stringsdata.flat_map { |f| ['--stringsdata', f] })
+      run_xcstringstool('sync', fresh, *stringsdata.flat_map { |f| ['--stringsdata', f] })
       english_values(JSON.parse(File.read(fresh)))
     end
   end
@@ -193,11 +262,80 @@ platform :ios do
     end
   end
 
-  def report_catalog(path, extracted_count:, reconciled_count:)
+  def report_catalog(path, extracted_count:)
     catalog = JSON.parse(File.read(path))
     with_value = catalog['strings'].count { |_, v| v.dig('localizations', 'en', 'stringUnit', 'value') }
-    message = "Generated #{File.basename(path)} with #{extracted_count} keys (#{with_value} carry an explicit English value; the rest are key-as-source)."
-    message += " Re-flagged #{reconciled_count} for review (English source changed)." if reconciled_count.positive?
-    UI.success(message)
+    UI.success("Generated #{File.basename(path)} with #{extracted_count} keys (#{with_value} carry an explicit English value; the rest are key-as-source).")
+  end
+
+  # Print a per-locale summary of the fold so a run can be eyeballed straight from the log (see
+  # CatalogStrings.summarize / .summary_lines for the counts and sample formatting).
+  def report_localized_catalog(catalog, locales)
+    CatalogStrings.summary_lines(CatalogStrings.summarize(catalog, locales: locales)).each { |line| UI.message(line) }
+  end
+
+  # The { glotpress => lproj } locale map to operate on: all ship locales, or the subset named in `locales:`
+  # (a comma-separated list of lproj codes, e.g. `locales:fr,de`) for a cheap scoped run. Resolution is pure
+  # (CatalogStrings.select_locales); the lane only turns its result into user-facing errors/warnings.
+  def catalog_target_locales(spec)
+    selected, unknown = CatalogStrings.select_locales(spec, GLOTPRESS_TO_LPROJ_APP_LOCALE_CODES).values_at(:selected, :unknown)
+    UI.user_error!("No known ship locales among #{spec.inspect} (use lproj codes, e.g. fr,de,pt-BR)") if selected.empty?
+    UI.important("Ignoring unrecognized locale(s): #{unknown.join(', ')} (use lproj codes, e.g. fr,de,pt-BR)") unless unknown.empty?
+    selected
+  end
+
+  # Download the current GlotPress translations for `locales` ({ glotpress => lproj }) into a throwaway dir and
+  # return them as { lproj => { key => human value } } for the fold. A fresh temp dir per run means no stale or
+  # partial translation state is ever carried between runs — the fold always reflects current GlotPress, and its
+  # scope can't silently diverge from what's folded. Never touches the tracked `WordPress/Resources/*.lproj` tree
+  # (download_localized_strings owns the shipping `.strings`); the catalog flow only consumes translations.
+  def download_catalog_translations(locales)
+    Dir.mktmpdir do |dir|
+      ios_download_strings_files_from_glotpress(
+        project_url: GLOTPRESS_APP_STRINGS_PROJECT_URL,
+        locales: locales,
+        download_dir: dir
+      )
+      catalog_translations_by_locale(dir)
+    end
+  end
+
+  # { lproj => { key => human value } } from the downloaded translation `.strings`. The flat plural keys present
+  # in these files aren't catalog keys, so the fold ignores them (they belong to Plurals.xcstrings).
+  def catalog_translations_by_locale(dir)
+    Dir.glob(File.join(dir, '*.lproj', 'Localizable.strings')).each_with_object({}) do |path, acc|
+      locale = File.basename(File.dirname(path), '.lproj')
+      acc[locale] = Fastlane::Helper::Ios::L10nHelper.read_strings_file_as_hash(path: path)
+    end
+  end
+
+  # The AI tier for the catalog fold, or nil when ANTHROPIC_API_KEY isn't set (the fold then fills only human +
+  # English). Returns `call(entries, locale) => { key => translation }` via AITranslator#translate_all.
+  #
+  # Wrapped to DEGRADE, not crash — three non-fatal paths. A batch failing mid-locale is handled inside
+  # translate_all: it keeps the batches that already succeeded, warns to stderr, and returns the partial result
+  # (the unfilled cells fall back to English and retry next run), so the fold still proceeds and commits. The
+  # lambda's own rescue is only a backstop for anything that escapes translate_all (e.g. a failure before the
+  # batch loop starts) — it logs and returns {}, dropping that whole locale to English. A setup error — the gem
+  # missing (LoadError) or the client failing to construct (any StandardError, e.g. a malformed
+  # ANTHROPIC_BASE_URL) — logs and returns nil, disabling the AI tier for this run while the human/English fold
+  # still proceeds and commits (rather than dropping the whole localize_catalog lane).
+  def catalog_ai_translator
+    if ENV['ANTHROPIC_API_KEY'].to_s.empty?
+      UI.important('ANTHROPIC_API_KEY not set — folding human + English only; undefined cells stay English (needs_review).')
+      return nil
+    end
+
+    require_relative 'ai_translator'
+    translator = AITranslator.with_anthropic
+    lambda do |entries, locale|
+      translator.translate_all(entries, locale: locale)
+    rescue StandardError => e
+      UI.error("AI catalog translation failed for #{locale} (#{e.message}); leaving its undefined cells to English.")
+      {}
+    end
+  rescue LoadError, StandardError => e
+    UI.important("AI translation tier unavailable (#{e.message}); folding human + English only.")
+    nil
   end
 end

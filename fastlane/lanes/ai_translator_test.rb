@@ -4,6 +4,7 @@
 # Uses a canned-reply lambda for `complete:`, so it exercises all of the prompt-building / validation logic
 # without the `anthropic` gem or the network.
 require 'minitest/autorun'
+require 'stringio'
 require_relative 'ai_translator'
 
 # Exercises prompt-building and the validator gate via a canned-reply `complete:` lambda (no gem / network).
@@ -15,6 +16,16 @@ class AITranslatorTest < Minitest::Test # rubocop:disable Metrics/ClassLength --
       reply
     end
     AITranslator.new(complete: complete)
+  end
+
+  # Runs the block with $stderr captured, returning what it wrote (the class surfaces batch failures via warn).
+  def capture_stderr
+    original = $stderr
+    $stderr = StringIO.new
+    yield
+    $stderr.string
+  ensure
+    $stderr = original
   end
 
   def test_returns_cleaned_translation
@@ -180,6 +191,37 @@ class AITranslatorTest < Minitest::Test # rubocop:disable Metrics/ClassLength --
   def test_translate_all_bad_json_batch_falls_back
     out = translator(reply: 'not json at all').translate_all([{ key: 'a', source: 'One' }], locale: 'fr')
     assert_empty out
+  end
+
+  def test_translate_all_keeps_completed_batches_when_a_later_batch_fails
+    calls = 0
+    complete = lambda do |**|
+      calls += 1
+      raise 'rate limited' if calls == 2 # the second batch fails mid-run
+
+      '{"1":"x","2":"y"}'
+    end
+    out = nil
+    warnings = capture_stderr do
+      out = AITranslator.new(complete: complete).translate_all(
+        [{ key: 'a', source: 'One' }, { key: 'b', source: 'Two' },
+         { key: 'c', source: 'Three' }, { key: 'd', source: 'Four' },
+         { key: 'e', source: 'Five' }, { key: 'f', source: 'Six' }],
+        locale: 'fr', batch_size: 2
+      )
+    end
+
+    assert_equal 2, calls, 'must stop after the failing batch, not hammer the remaining ones'
+    assert_equal({ 'a' => 'x', 'b' => 'y' }, out, 'the first completed batch is kept, not discarded')
+    assert_match(/batch 2 for 'fr' failed \(rate limited\)/, warnings)
+  end
+
+  def test_translate_all_returns_empty_without_raising_when_the_first_batch_fails
+    complete = ->(**) { raise 'network down' }
+    out = nil
+    capture_stderr { out = AITranslator.new(complete: complete).translate_all([{ key: 'a', source: 'One' }], locale: 'fr') }
+
+    assert_empty out, 'a total failure degrades to English (empty), and must not propagate the exception'
   end
 
   def test_translate_all_empty_input_makes_no_call

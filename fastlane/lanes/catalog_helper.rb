@@ -24,75 +24,38 @@ module CatalogHelper
     reference.reject { |key| catalog_canonical.include?(canonical(key)) }
   end
 
-  # Collapse format specifiers to a single token so source-form (%li) and normalized (%1$li) compare equal.
+  # Strip the positional index from each format specifier so a source-form specifier (%li) and its normalized form
+  # (%1$li) compare equal, while specifiers of a DIFFERENT argument type stay distinct. The positional `N$` prefix
+  # is the only thing that differs between the two extraction paths (genstrings vs xcstringstool) for the same
+  # source literal; collapsing every specifier to one token — as this did before — conflated `%d days` with
+  # `%@ days` and masked a genuinely-dropped key behind a same-prose sibling of a different type.
   def canonical(key)
-    key.gsub(FORMAT_SPECIFIER, "\u0001")
+    key.gsub(FORMAT_SPECIFIER) { |specifier| specifier.sub(/\A%\d+\$/, '%') }
   end
 
-  # --- needs_review reconciliation ----------------------------------------------------------------------
+  # --- immutable-key enforcement -------------------------------------------------------------------------
 
-
-  # `xcstringstool sync` does NOT reconcile an existing key whose English source VALUE changed: it leaves
-  # both the stored English value and the affected translations untouched (verified — source "Settings" →
-  # "Preferences" left en="Settings" and fr="translated"). The in-Xcode build does this reconciliation; the
-  # standalone CLI does not. This closes that gap: where the freshly-extracted English differs from what the
-  # catalog stores, it updates the English value and flips that key's translations from `translated` to
-  # `needs_review` (so the AI/human pipeline re-checks them).
+  # `xcstringstool sync` does NOT touch an existing key whose English source VALUE changed in place: it leaves
+  # both the stored English and the affected translations as-is (verified — source "Settings" → "Preferences"
+  # left en="Settings" and fr="translated"). The in-Xcode build reconciles this; the standalone CLI doesn't.
   #
-  # Out of scope here (handled elsewhere): English-as-key strings — editing their text changes the KEY, which
-  # sync already handles as new/stale; and plural entries, whose English is itself a plural variation, so
-  # `reconcile_entry!` bails (no flat English `stringUnit`) — those live in the separate plurals catalog.
-  # Translation-side device/width variations of a regular string ARE reconciled (see `string_units`).
+  # Localization keys are IMMUTABLE, so an in-place reword is a rule violation, not something to reconcile:
+  # rewording must mint a NEW key, otherwise the old key silently keeps translations of the OLD English — a
+  # stale translation the fold can't distinguish from a current one. This reports the offending keys so the
+  # lane can hard-fail (rename the key, or revert the English change).
   #
-  # @param catalog [Hash] parsed `.xcstrings`, mutated in place
+  # Naturally scoped to explicit-key strings: a key-as-source string has no stored `en` value (its key IS its
+  # English), and rewording one changes the KEY — sync handles that as new/stale, not a value change — so it
+  # never appears here. Plurals don't either (their English is a plural variation, not a flat `stringUnit`).
+  #
+  # @param catalog [Hash] parsed `.xcstrings`
   # @param current_en [Hash{String=>String}] key => freshly-extracted English value
-  # @return [Array<String>] keys that were reconciled (English updated + translations re-flagged)
-  def reconcile_source_changes!(catalog, current_en)
+  # @return [Array<String>] keys whose stored English no longer matches the source (empty ⇒ nothing reworded)
+  def reworded_keys(catalog, current_en)
     (catalog['strings'] || {}).filter_map do |key, entry|
-      key if reconcile_entry!(entry, current_en[key])
+      stored = entry.dig('localizations', 'en', 'stringUnit', 'value')
+      fresh = current_en[key]
+      key if stored && fresh && stored != fresh
     end
-  end
-
-  # Reconcile one entry against its freshly-extracted English value. Returns the entry (truthy) if it
-  # changed, nil otherwise — matching the Ruby bang-method convention (cf. String#gsub!).
-  def reconcile_entry!(entry, new_value)
-    return if new_value.nil?
-
-    english = entry.dig('localizations', 'en', 'stringUnit')
-    return if english.nil? || english['value'] == new_value
-
-    english['value'] = new_value
-    flag_translations_for_review!(entry['localizations'])
-    entry
-  end
-
-  def flag_translations_for_review!(localizations)
-    localizations.each do |locale, body|
-      next if locale == 'en' || body.nil?
-
-      string_units(body).each do |unit|
-        unit['state'] = 'needs_review' if unit['state'] == 'translated'
-      end
-    end
-  end
-
-  # All stringUnits in a localization body, whether stored flat (`stringUnit`) or nested under one or more
-  # `variations` (a regular string's translation can be varied by device/width, and variations can nest).
-  # Returns the unit hashes themselves so a caller can flip their `state` in place — a single top-level
-  # `body['stringUnit']` lookup would miss the varied leaves entirely.
-  def string_units(node)
-    return [] unless node.is_a?(Hash)
-
-    units = []
-    units << node['stringUnit'] if node['stringUnit'].is_a?(Hash)
-    variations = node['variations']
-    if variations.is_a?(Hash)
-      variations.each_value do |cases|
-        next unless cases.is_a?(Hash)
-
-        cases.each_value { |child| units.concat(string_units(child)) }
-      end
-    end
-    units
   end
 end

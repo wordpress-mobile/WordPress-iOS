@@ -4,6 +4,7 @@
 # translations back into the String Catalog with the `human ?? AI ?? English` floor. Run directly:
 # `ruby fastlane/lanes/plural_strings_helper_test.rb`. No bundle / network (the AI tier is a stub lambda).
 require 'minitest/autorun'
+require 'stringio'
 require_relative 'plural_strings_helper'
 
 # Exercises provenance (human => translated; AI / English fallback => needs_review) and the form-set contract:
@@ -51,6 +52,16 @@ class PluralStringsFoldTest < Minitest::Test # rubocop:disable Metrics/ClassLeng
     PluralStrings.fold_translations!(cat, categories_by_locale: categories_by_locale, translations_by_locale: translations_by_locale, ai_translator: ai_translator)
   end
 
+  # Runs the block with $stderr captured, returning what it wrote (the fold surfaces rejected humans via warn).
+  def capture_stderr
+    original = $stderr
+    $stderr = StringIO.new
+    yield
+    $stderr.string
+  ensure
+    $stderr = original
+  end
+
   # Polish needs four categories but only `one` is human-translated — the setup the form-set contract is about.
   # Folds with the supplied AI reply and returns [catalog, recorded_calls].
   def fold_polish(reply:)
@@ -74,6 +85,26 @@ class PluralStringsFoldTest < Minitest::Test # rubocop:disable Metrics/ClassLeng
     assert_equal 1, written
     assert_equal unit('translated', '%lld article'), cell('one', catalog: cat, locale: 'fr')
     assert_equal unit('translated', '%lld articles'), cell('other', catalog: cat, locale: 'fr')
+  end
+
+  # A human form that drops/retypes a specifier would crash at runtime. It must be REJECTED (same gate the AI
+  # forms pass) and surfaced, then fall through to the model — never shipping as `translated` and never anchoring
+  # the request. A valid sibling human form in the same set still ships.
+  def test_placeholder_broken_human_form_is_rejected_and_surfaced_not_shipped
+    cat = catalog
+    calls = []
+    ai = recording_translator(reply: { 'one' => '%lld article' }, calls: calls)
+    warnings = capture_stderr do
+      fold(cat, categories_by_locale: { 'fr' => %w[one other] },
+                translations_by_locale: { 'fr' => { "#{KEY}#{INFIX}one" => 'article', # %lld dropped -> rejected
+                                                    "#{KEY}#{INFIX}other" => '%lld articles' } }, # valid human
+                ai_translator: ai)
+    end
+
+    assert_equal unit('needs_review', '%lld article'), cell('one', catalog: cat, locale: 'fr'), 'a broken human form falls through to AI'
+    assert_equal unit('translated', '%lld articles'), cell('other', catalog: cat, locale: 'fr'), 'the valid human form still ships'
+    assert_equal({ 'other' => '%lld articles' }, calls.first[:anchors], 'a rejected human form must not anchor the request')
+    assert_match(/rejected fr human translation for "#{KEY}" \(one\)/, warnings)
   end
 
   def test_english_fallback_when_no_human_and_no_ai
