@@ -41,7 +41,12 @@ extension RootViewPresenter {
     }
 
     /// - parameter blog: Blog to a add a page to. Uses the current or last blog if not provided
-    func showPageEditor(blog: Blog? = nil, title: String? = nil, content: String? = nil, source: String = "create_button") {
+    func showPageEditor(
+        blog: Blog? = nil,
+        title: String? = nil,
+        content: String? = nil,
+        source: String = "create_button"
+    ) {
 
         // If we are already showing a view controller, dismiss and show the editor afterward
         guard rootViewController.presentedViewController == nil else {
@@ -58,10 +63,13 @@ extension RootViewPresenter {
             return
         }
 
-        WPAnalytics.track(WPAnalyticsEvent.editorCreatedPage,
-                          properties: [WPAppAnalyticsKeyTapSource: source],
-                          blog: blog)
-        PageCoordinator.showLayoutPickerIfNeeded(from: rootViewController, forBlog: blog) { [weak self] selectedLayout in
+        WPAnalytics.track(
+            WPAnalyticsEvent.editorCreatedPage,
+            properties: [WPAppAnalyticsKeyTapSource: source],
+            blog: blog
+        )
+        PageCoordinator.showLayoutPickerIfNeeded(from: rootViewController, forBlog: blog) {
+            [weak self] selectedLayout in
             self?.showEditor(blog: blog, title: selectedLayout?.title, content: selectedLayout?.content)
         }
     }

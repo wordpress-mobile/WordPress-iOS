@@ -20,7 +20,12 @@ struct PinnedPostTypeView: View {
     @State private var isLoading = true
     @State private var error: Error?
 
-    init(blog: Blog, service: CustomPostTypeService, postType: PinnedPostType, presentingViewController: UIViewController? = nil) {
+    init(
+        blog: Blog,
+        service: CustomPostTypeService,
+        postType: PinnedPostType,
+        presentingViewController: UIViewController? = nil
+    ) {
         self.blog = blog
         self.customPostTypeService = service
         self.postType = postType
@@ -31,7 +36,13 @@ struct PinnedPostTypeView: View {
     var body: some View {
         Group {
             if let details, let wpService = customPostTypeService.wpService {
-                CustomPostTabView(client: customPostTypeService.client, service: wpService, details: details, blog: blog, presentingViewController: presentingViewController)
+                CustomPostTabView(
+                    client: customPostTypeService.client,
+                    service: wpService,
+                    details: details,
+                    blog: blog,
+                    presentingViewController: presentingViewController
+                )
             } else if isLoading {
                 ProgressView()
                     .progressViewStyle(.circular)
