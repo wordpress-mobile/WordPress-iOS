@@ -118,57 +118,6 @@ enum Strings {
         comment: "Accessibility label for a cell whose underlying media couldn't be loaded"
     )
 
-    // MARK: - Upload error messages
-
-    static let uploadErrorSecurityScopedAccess = NSLocalizedString(
-        "mediaLibrary.upload.error.securityScopedAccess",
-        value: "Couldn't access the selected file.",
-        comment: "Error shown when iOS denies access to a file picked via Files."
-    )
-    static let uploadErrorFileNotFound = NSLocalizedString(
-        "mediaLibrary.upload.error.fileNotFound",
-        value: "The selected file could not be found.",
-        comment: "Error shown when a picked file no longer exists on disk."
-    )
-    static let uploadErrorDurationCap = NSLocalizedString(
-        "mediaLibrary.upload.error.durationCap",
-        value: "This video is longer than your site allows.",
-        comment: "Error shown when a picked video exceeds the duration cap configured for the blog."
-    )
-    static let uploadErrorDisallowedType = NSLocalizedString(
-        "mediaLibrary.upload.error.disallowedType",
-        value: "This file type isn't allowed for upload on your site.",
-        comment: "Error shown when a picked file's type is not in the blog's allowed list."
-    )
-    static let uploadErrorHEICConversion = NSLocalizedString(
-        "mediaLibrary.upload.error.heicConversion",
-        value: "Couldn't convert the photo for upload.",
-        comment: "Error shown when HEIC-to-JPEG conversion fails before upload."
-    )
-    static let uploadErrorVideoExport = NSLocalizedString(
-        "mediaLibrary.upload.error.videoExport",
-        value: "Couldn't prepare the video for upload: %1$@",
-        comment:
-            "Error shown when AVAssetExportSession fails before upload. %1$@ is the underlying error description."
-    )
-    static let uploadErrorVideoExportNoExporter = NSLocalizedString(
-        "mediaLibrary.upload.error.videoExport.noExporter",
-        value: "No exporter is available for the selected video quality.",
-        comment:
-            "Error shown when no AVAssetExportSession can be created for the configured export preset."
-    )
-    static let uploadErrorUnknownContentType = NSLocalizedString(
-        "mediaLibrary.upload.error.unknownContentType",
-        value: "Couldn't determine the file type.",
-        comment: "Error shown when no UTType can be derived from the picker output."
-    )
-    static let materializerErrorRemoteDownloadFailed = NSLocalizedString(
-        "mediaLibrary.materializer.remoteDownloadFailed",
-        value: "Couldn't download the selected media: %1$@",
-        comment:
-            "Failed-row label when a remote media download (e.g. Stock Photos) failed before upload. %1$@ is the underlying error description."
-    )
-
     // MARK: - Upload fallback display names
 
     static let uploadFallbackPhotoName = NSLocalizedString(
