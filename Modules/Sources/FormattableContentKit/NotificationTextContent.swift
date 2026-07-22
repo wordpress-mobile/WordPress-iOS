@@ -1,4 +1,5 @@
 import Foundation
+import WordPressShared
 
 extension FormattableContentKind {
     public static let image = FormattableContentKind("image")

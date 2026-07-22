@@ -1,4 +1,5 @@
 import Foundation
+import WordPressShared
 
 /// Styles definition to be applied to a single FormattableContent entity.
 public protocol FormattableContentStyles {

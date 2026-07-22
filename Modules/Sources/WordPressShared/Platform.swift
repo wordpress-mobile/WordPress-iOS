@@ -3,10 +3,8 @@ import UIKit
 
 /// The platform's color type: `UIColor` on UIKit platforms, `NSColor` on AppKit.
 ///
-/// FormattableContentKit's model and protocol layer is cross-platform; this alias
-/// lets the notification-styling protocols name a color without hard-importing UIKit,
-/// so the module builds on macOS. Colors are only ever materialized at render time,
-/// which happens on iOS.
+/// A thin bridge so cross-platform modules can name a color in a signature without
+/// importing UIKit. The concrete color is only ever materialized at the UI layer.
 public typealias PlatformColor = UIColor
 
 /// The platform's image type: `UIImage` on UIKit platforms, `NSImage` on AppKit.

@@ -1,4 +1,4 @@
-import Foundation
+import WordPressShared
 
 /// Abstracts the logic behind contextual actions that can be applied to FormattableContent.
 ///
