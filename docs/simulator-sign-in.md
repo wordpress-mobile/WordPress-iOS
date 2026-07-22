@@ -12,7 +12,7 @@ Scripts/sim-signin.sh --app wordpress --wpcom-token <token> # WordPress
 Scripts/sim-signin.sh --reset --wpcom-token <token>         # wipe existing state first
 ```
 
-There's also a `make` shortcut that forwards to the script: `make sim-login DEVICE=<udid>`, with optional `APP=wordpress`, `RESET=1`, or `ARGS="…"` for any other flags.
+With no `--device`, the script targets the running simulator (and prompts if more than one is booted). There's also a `make` shortcut that forwards to it: `make sim-login`, with optional `DEVICE=<udid>`, `APP=wordpress`, `RESET=1`, or `ARGS="…"` for any other flags.
 
 To set the token once and drop it from the command line, export `WPCOM_TOKEN` (e.g. in `~/.zshrc`) or write it to `~/.wpcom-token`; the script uses either when `--wpcom-token` is omitted.
 
