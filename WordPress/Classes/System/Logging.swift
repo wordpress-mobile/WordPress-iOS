@@ -6,6 +6,8 @@ struct Loggers {
 
     static let app = Logger(label: subsystem)
 
+    static let login = Logger(label: subsystem + ".login")
+
     /// Logs the HTTP network messages.
     static let networking = Logger(label: subsystem + ".network")
 }
