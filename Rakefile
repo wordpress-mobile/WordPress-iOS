@@ -198,7 +198,6 @@ namespace :init do
     dependencies
     install:tools:check_developer
     credentials:setup
-    gpg_key:setup
   ]
 end
 
@@ -328,7 +327,6 @@ namespace :install do
       developer_tools = { 'convert' => 'imagemagick',
                           'gs' => 'ghostscript',
                           'sentry-cli' => 'getsentry/tools/sentry-cli',
-                          'gpg' => 'gpg',
                           'git-crypt' => 'git-crypt' }
 
       # Check for tool, install if not installed
@@ -421,99 +419,6 @@ namespace :credentials do
     File.open('WordPress/Credentials/Secrets.swift', 'w') do |file|
       file.puts replaced_text
     end
-  end
-end
-
-namespace :gpg_key do
-  # automate the process of creatong a GPG key
-  task setup: %w[gpg_key:check gpg_key:prompt gpg_key:finish]
-
-  # confirm that GPG tools is installed
-  task :check do
-    puts 'Checking system for GPG Tools'
-    if command?('gpg')
-      puts 'GPG Tools found'
-    else
-      Rake::Task['gpg_key:install'].invoke
-    end
-  end
-
-  # install GPG Tools
-  task :install do
-    puts 'GPG Tools not found.  Installing GPG Tools'
-    sh 'brew install gpg'
-  end
-
-  # Ask developer if they need to create a new key.
-  # If yes, begin process of creating key, if no move on
-  task :prompt do
-    next unless create_gpg_key?
-
-    if create_default_key?
-      display_default_config_helpers
-      Rake::Task['gpg_key:generate_default'].invoke
-    else
-      Rake::Task['gpg_key:generate_custom'].invoke
-    end
-  end
-
-  # Generate new GPG key
-  task :generate_custom do
-    puts ''
-    puts 'Begin Generating Custom GPG Keys'
-    puts '====================================================================================='
-
-    sh 'gpg --full-generate-key', verbose: false
-  end
-
-  # Generate new default GPG key
-  task :generate_default do
-    puts ''
-    puts 'Begin Generating Default GPG Keys'
-    puts '====================================================================================='
-
-    sh 'gpg --generate-key', verbose: false
-  end
-
-  # prompt developer to send GPG key to Platform
-  task :finish do
-    puts '====================================================================================='
-    puts 'Key Generation Complete!'
-    puts 'Please send your GPG public key to Platform 9-3/4'
-    puts 'You can contact them in the Slack channel #platform9'
-    puts '====================================================================================='
-  end
-
-  # ask user if they want to create a key, loop till given a valid answer
-  def create_gpg_key?
-    puts '====================================================================================='
-    puts 'To access production credentials for the WordPress app you will need to a GPG Key'
-    puts 'Do you need to generate a new GPG Key?'
-    puts "Press 'Y' to create a new key.  Press 'N' to skip"
-
-    display_prompt_response?
-  end
-
-  # ask user if they want to create a key,  loop till given a valid answer
-  def create_default_key?
-    puts '====================================================================================='
-    puts 'You can choose to setup with a default or custom key pair setup'
-    puts 'Default setup - Type: RSA to RSA, RSA length: 2048, Valid for: does not expire'
-    puts 'Would you like to continue with the default setup?'
-    puts '====================================================================================='
-    puts "Press 'Y' for Yes.  Press 'N' for custom configuration"
-
-    display_prompt_response?
-  end
-
-  # display prompt for developer to aid in setting up default key
-  def display_default_config_helpers
-    puts ''
-    puts ''
-    puts '====================================================================================='
-    puts 'You will need to enter the following info to create your key'
-    puts 'Please enter your real name, email address, and a password for your key when prompted'
-    puts '====================================================================================='
   end
 end
 
