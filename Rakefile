@@ -77,20 +77,18 @@ namespace :dependencies do
 
   namespace :credentials do
     task :apply do
-      next unless Dir.exist?(File.join(Dir.home, '.mobile-secrets/.git')) || ENV.key?('CONFIGURE_ENCRYPTION_KEY')
+      # External contributors build with their own credentials and never install the tool.
+      unless command?('a8c-secrets')
+        puts 'Skipping secrets decryption: `a8c-secrets` is not installed. Internal contributors, see https://github.com/Automattic/a8c-secrets.'
+        next
+      end
 
-      # The string is indented all the way to the left to avoid padding when printed in the terminal
-      command = %(
-FASTLANE_SKIP_UPDATE_CHECK=1 \
-FASTLANE_HIDE_CHANGELOG=1 \
-FASTLANE_HIDE_PLUGINS_TABLE=1 \
-FASTLANE_ENV_PRINTER=1 \
-FASTLANE_SKIP_ACTION_SUMMARY=1 \
-FASTLANE_HIDE_TIMESTAMP=1 \
-bundle exec fastlane run configure_apply force:true
-      )
+      sh('a8c-secrets', 'decrypt') do |ok, _res|
+        next if ok
 
-      sh(command)
+        # Not fatal: the build phase falls back to the example secrets and errors on its own for Release builds.
+        puts 'Failed to decrypt secrets. See https://github.com/Automattic/a8c-secrets for setup and troubleshooting.'
+      end
     end
   end
 
