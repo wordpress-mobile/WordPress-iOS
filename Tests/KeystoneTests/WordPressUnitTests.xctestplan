@@ -121,6 +121,13 @@
     {
       "target" : {
         "containerPath" : "container:..\/Modules",
+        "identifier" : "MediaTransformerTests",
+        "name" : "MediaTransformerTests"
+      }
+    },
+    {
+      "target" : {
+        "containerPath" : "container:..\/Modules",
         "identifier" : "WordPressDataTests",
         "name" : "WordPressDataTests"
       }

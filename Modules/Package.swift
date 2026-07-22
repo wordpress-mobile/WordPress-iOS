@@ -28,7 +28,8 @@ let package = Package(
         .library(name: "WordPressCoreProtocols", targets: ["WordPressCoreProtocols"]),
         .library(name: "WordPressKit", targets: ["WordPressKit"]),
         .library(name: "WordPressData", targets: ["WordPressData"]),
-        .library(name: "WordPressMediaLibrary", targets: ["WordPressMediaLibrary"])
+        .library(name: "WordPressMediaLibrary", targets: ["WordPressMediaLibrary"]),
+        .library(name: "MediaTransformer", targets: ["MediaTransformer"])
     ],
     dependencies: [
         .package(url: "https://github.com/airbnb/lottie-ios", from: "4.4.0"),
@@ -161,6 +162,15 @@ let package = Package(
                 .target(name: "WordPressMediaLibrary"),
                 .product(name: "WordPressAPI", package: "wordpress-rs")
             ]
+        ),
+        // The image/video upload transform engine. A leaf module (only system
+        // frameworks), so the root `Package.swift` cross-platform harness can
+        // build and `swift test` it standalone — no Xcode, no wordpress-rs.
+        .target(name: "MediaTransformer"),
+        .testTarget(
+            name: "MediaTransformerTests",
+            dependencies: ["MediaTransformer"],
+            resources: [.process("Resources")]
         ),
         .target(
             name: "ShareExtensionCore",
