@@ -1,4 +1,9 @@
 import Foundation
+#if canImport(AppKit)
+import AppKit
+#elseif canImport(UIKit)
+import UIKit
+#endif
 
 public struct SiteDesignRequest {
     public enum TemplateGroup: String {
@@ -14,13 +19,21 @@ public struct SiteDesignRequest {
         parameters = [
             "preview_width": "\(thumbnailSize.width)" as AnyObject,
             "preview_height": "\(thumbnailSize.height)" as AnyObject,
-            "scale": UIScreen.main.nativeScale as AnyObject
+            "scale": Self.screenScale as AnyObject
         ]
         if !groups.isEmpty {
             let groups = groups.map { $0.rawValue }
             parameters["group"] = groups.joined(separator: ",") as AnyObject
         }
         self.parameters = parameters
+    }
+
+    private static var screenScale: CGFloat {
+        #if canImport(UIKit)
+        return UIScreen.main.nativeScale
+        #else
+        return 1.0
+        #endif
     }
 }
 

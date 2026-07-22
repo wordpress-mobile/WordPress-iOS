@@ -1,6 +1,7 @@
 import UIKit
 @preconcurrency import WebKit
 import WordPressShared
+import WordPressSharedUI
 import WordPressUI
 
 protocol WebKitAuthenticatable {

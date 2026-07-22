@@ -1,4 +1,5 @@
 import WordPressShared
+import WordPressSharedUI
 
 public class SnippetsContentStyles: FormattableContentStyles {
     public var attributes: [NSAttributedString.Key: Any] {

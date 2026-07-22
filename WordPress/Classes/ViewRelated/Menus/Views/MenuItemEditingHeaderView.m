@@ -5,6 +5,8 @@
 @import WordPressData;
 
 @import WordPressShared;
+@import WordPressSharedObjCUI;
+@import WordPressSharedUI;
 
 @interface MenuItemEditingHeaderView () <UITextFieldDelegate>
 

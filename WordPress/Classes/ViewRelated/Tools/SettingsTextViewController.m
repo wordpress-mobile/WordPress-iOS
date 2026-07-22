@@ -1,6 +1,7 @@
 #import "SettingsTextViewController.h"
 #import "WordPress-Swift.h"
 @import WordPressShared;
+@import WordPressSharedObjCUI;
 
 #pragma mark - Constants
 

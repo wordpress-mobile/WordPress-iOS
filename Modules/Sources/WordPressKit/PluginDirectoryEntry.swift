@@ -1,5 +1,10 @@
 import Foundation
 import WordPressShared
+#if canImport(AppKit)
+import AppKit
+#elseif canImport(UIKit)
+import UIKit
+#endif
 
 public struct PluginDirectoryEntry {
     public let name: String
@@ -19,28 +24,28 @@ public struct PluginDirectoryEntry {
     let changelogHTML: String?
 
     public var descriptionText: NSAttributedString? {
-        return extractHTMLText(self.descriptionHTML)
+        extractHTMLText(self.descriptionHTML)
     }
     public var installationText: NSAttributedString? {
-        return extractHTMLText(self.installationHTML)
+        extractHTMLText(self.installationHTML)
     }
     public var faqText: NSAttributedString? {
-        return extractHTMLText(self.faqHTML)
+        extractHTMLText(self.faqHTML)
     }
     public var changelogText: NSAttributedString? {
-        return extractHTMLText(self.changelogHTML)
+        extractHTMLText(self.changelogHTML)
     }
 
     let rating: Double
     public var starRating: Double {
-        return (rating / 10).rounded() / 2
+        (rating / 10).rounded() / 2
         // rounded to nearest half.
     }
 }
 
 extension PluginDirectoryEntry: Equatable {
-    public static func ==(lhs: PluginDirectoryEntry, rhs: PluginDirectoryEntry) -> Bool {
-        return lhs.name == rhs.name
+    public static func == (lhs: PluginDirectoryEntry, rhs: PluginDirectoryEntry) -> Bool {
+        lhs.name == rhs.name
             && lhs.slug == rhs.slug
             && lhs.version == rhs.version
             && lhs.lastUpdated == rhs.lastUpdated
@@ -85,9 +90,10 @@ extension PluginDirectoryEntry: Codable {
         rating = try container.decode(Double.self, forKey: .rating)
 
         let icons = try? container.decodeIfPresent([String: String].self, forKey: .icons)
-        icon = icons?["2x"].flatMap({ s -> URL? in
-            URL(string: s)
-        })
+        icon = icons?["2x"]
+            .flatMap({ s -> URL? in
+                URL(string: s)
+            })
 
         // If there's no hi-res version of the banner, the API returns `high: false`, instead of something more logical,
         // like an empty string or `null`, hence the dance below.
@@ -136,13 +142,16 @@ extension PluginDirectoryEntry: Codable {
             try container.encode(author, forKey: .author)
         }
 
-        let sections: [String: String] = [SectionKeys.changelog: changelogHTML,
-                                          SectionKeys.description: descriptionHTML,
-                                          SectionKeys.faq: faqHTML,
-                                          SectionKeys.installation: installationHTML].reduce(into: [:]) {
-                                            if let value = $1.value {
-                                                $0[$1.key.rawValue] = value
-                                            }
+        let sections: [String: String] = [
+            SectionKeys.changelog: changelogHTML,
+            SectionKeys.description: descriptionHTML,
+            SectionKeys.faq: faqHTML,
+            SectionKeys.installation: installationHTML
+        ]
+        .reduce(into: [:]) {
+            if let value = $1.value {
+                $0[$1.key.rawValue] = value
+            }
         }
 
         try container.encode(sections, forKey: .sections)
@@ -157,8 +166,9 @@ extension PluginDirectoryEntry: Codable {
         guard let name = responseObject["name"] as? String,
             let slug = responseObject["slug"] as? String,
             let authorString = responseObject["author"] as? String,
-            let rating = responseObject["rating"] as? Double else {
-                throw PluginServiceRemote.ResponseError.decodingFailure
+            let rating = responseObject["rating"] as? Double
+        else {
+            throw PluginServiceRemote.ResponseError.decodingFailure
         }
 
         self.name = name
@@ -199,9 +209,12 @@ internal func extractAuthor(_ author: String) -> Author {
     // user-facing name, let's just employ honest to god XMLParser and be done with it.
     // (h/t @koke for suggesting and writing the XMLParser approach)
 
-    guard let data = author
-        .replacingOccurrences(of: "&", with: "&amp;") // can't have naked "&" in XML, but they're valid in URLs.
-        .data(using: .utf8) else {
+    guard
+        let data =
+            author
+            .replacingOccurrences(of: "&", with: "&amp;") // can't have naked "&" in XML, but they're valid in URLs.
+            .data(using: .utf8)
+    else {
         return (author, nil)
     }
 
@@ -212,7 +225,8 @@ internal func extractAuthor(_ author: String) -> Author {
 
     guard parser.parse() else {
         if let url = URL(string: author),
-            url.scheme != nil {
+            url.scheme != nil
+        {
             return (author, url)
         } else {
             return (author, nil)
@@ -225,8 +239,13 @@ internal func extractAuthor(_ author: String) -> Author {
 internal func extractHTMLText(_ text: String?) -> NSAttributedString? {
     guard Thread.isMainThread,
         let data = text?.data(using: .utf16),
-        let attributedString = try? NSAttributedString(data: data, options: [.documentType: NSAttributedString.DocumentType.html], documentAttributes: nil) else {
-            return nil
+        let attributedString = try? NSAttributedString(
+            data: data,
+            options: [.documentType: NSAttributedString.DocumentType.html],
+            documentAttributes: nil
+        )
+    else {
+        return nil
     }
 
     return attributedString
@@ -243,7 +262,8 @@ internal func trimTags(_ htmlString: String?) -> String? {
         let closingTag = "/\(tag)>"
 
         if let openingRange = html.range(of: openingTag),
-           let closingRange = html.range(of: closingTag) {
+            let closingRange = html.range(of: closingTag)
+        {
 
             let rangeToRemove = openingRange.lowerBound..<closingRange.upperBound
             html.removeSubrange(rangeToRemove)
@@ -266,23 +286,30 @@ internal func trimChangelog(_ changelog: String?) -> String? {
         return log
     }
 
-    let rangeAfterFirstOccurence = firstOccurence.upperBound ..< log.endIndex
+    let rangeAfterFirstOccurence = firstOccurence.upperBound..<log.endIndex
     guard let secondOccurence = log.range(of: "<h4>", range: rangeAfterFirstOccurence) else {
         // Same as above. If the data doesn't the format we're expecting, bail.
         return log
     }
 
-    return String(log[log.startIndex ..< secondOccurence.lowerBound])
+    return String(log[log.startIndex..<secondOccurence.lowerBound])
 }
 
 private final class AuthorParser: NSObject, XMLParserDelegate {
     var author = ""
     var url: URL?
 
-    func parser(_ parser: XMLParser, didStartElement elementName: String, namespaceURI: String?, qualifiedName qName: String?, attributes attributeDict: [String: String] = [:]) {
+    func parser(
+        _ parser: XMLParser,
+        didStartElement elementName: String,
+        namespaceURI: String?,
+        qualifiedName qName: String?,
+        attributes attributeDict: [String: String] = [:]
+    ) {
         guard elementName == "a",
-            let href = attributeDict["href"] else {
-                return
+            let href = attributeDict["href"]
+        else {
+            return
         }
         url = URL(string: href)
     }

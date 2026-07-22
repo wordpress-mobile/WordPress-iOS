@@ -80,6 +80,13 @@ steps:
   - group: "🔬 Unit Tests"
     key: unit_tests_group
     steps:
+      - label: "🔬 :swift: Swift Package Tests"
+        command: .buildkite/commands/run-swift-package-tests.sh
+        plugins: [$CI_TOOLKIT_PLUGIN]
+        notify:
+          - github_commit_status:
+              context: "Swift Package Tests"
+
       - label: "🔬 :wordpress: Unit Tests"
         command: ".buildkite/commands/run-unit-tests.sh"
         depends_on: "build_wordpress"

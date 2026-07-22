@@ -4,6 +4,7 @@ import WordPressFlux
 import WordPressShared
 import WidgetKit
 import JetpackStatsWidgetsCore
+import WordPressSharedUI
 
 enum InsightAction: Action {
 

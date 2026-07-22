@@ -6,6 +6,7 @@
 #import "WPKitLogging.h"
 
 @import WordPressShared;
+@import WordPressSharedObjC;
 @import NSObject_SafeExpectations;
 
 NS_ASSUME_NONNULL_BEGIN

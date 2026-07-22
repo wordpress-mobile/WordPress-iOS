@@ -1,6 +1,7 @@
 import Foundation
 import UIKit
-import WordPressSharedObjC
+import WordPressShared
+import WordPressSharedObjCUI
 
 /// WPStyleGuide Extension to use serif fonts.
 ///

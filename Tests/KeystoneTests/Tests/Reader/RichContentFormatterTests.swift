@@ -2,6 +2,7 @@ import Foundation
 import UIKit
 import XCTest
 import WordPressShared
+import WordPressSharedUI
 @testable import WordPress
 
 class RichContentFormatterTests: XCTestCase {

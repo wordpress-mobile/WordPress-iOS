@@ -1,4 +1,7 @@
 import Foundation
+#if canImport(UIKit)
+import UIKit
+#endif
 
 fileprivate struct Unit {
     let abbreviationFormat: String
@@ -136,8 +139,10 @@ extension Double {
         roundedNum = self < 0 ? -roundedNum : roundedNum
         let formattedValue = roundedNum.formatWithFractions()
 
-        let formattedString = String.localizedStringWithFormat(unit.abbreviationFormat, formattedValue)
+        var formattedString = String.localizedStringWithFormat(unit.abbreviationFormat, formattedValue)
+        #if canImport(UIKit)
         formattedString.accessibilityLabel = String.localizedStringWithFormat(unit.accessibilityLabelFormat, formattedValue)
+        #endif
 
         return formattedString
     }

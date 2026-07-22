@@ -1,5 +1,4 @@
 import Foundation
-import UIKit
 import WordPressAPI
 
 public actor PluginService: PluginServiceProtocol {

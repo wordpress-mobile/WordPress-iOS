@@ -2,6 +2,7 @@
 #import "WordPress-Swift.h"
 @import Gridicons;
 @import WordPressShared;
+@import WordPressSharedObjCUI;
 
 @interface MenuItemEditingFooterView ()
 

@@ -1,6 +1,7 @@
 import AutomatticTracks
 import Foundation
 import WordPressShared
+import WordPressSharedUI
 
 class AuthenticationService {
 

@@ -5,6 +5,7 @@
 @import WordPressData;
 
 @import WordPressShared;
+@import WordPressSharedObjCUI;
 @import Gridicons;
 
 @interface MenuItemSourceHeaderView ()

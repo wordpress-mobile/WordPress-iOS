@@ -1,5 +1,5 @@
 #import <XCTest/XCTest.h>
-#import "PhotonImageURLHelper.h"
+@import WordPressSharedObjCUI;
 
 @interface PhotonImageURLHelperTest : XCTestCase
 

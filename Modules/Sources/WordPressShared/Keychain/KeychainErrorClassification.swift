@@ -28,7 +28,7 @@ public func isRealKeychainFailure(_ error: Error) -> Bool {
     return code != errSecItemNotFound
 }
 
-private let keychainLogger = Logger(label: (Bundle.main.bundleIdentifier!) + ".keychain")
+private let keychainLogger = Logger(label: (Bundle.main.bundleIdentifier ?? "org.wordpress") + ".keychain")
 
 /// Logs a real keychain failure. An entitlement mismatch is fatal: it means
 /// the access group is unreachable for the entire build (a provisioning or

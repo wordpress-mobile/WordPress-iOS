@@ -4,6 +4,7 @@ import WordPressKit
 import WordPressShared
 import WidgetKit
 import JetpackStatsWidgetsCore
+import WordPressSharedUI
 
 enum PeriodType: CaseIterable {
     case timeIntervalsSummary

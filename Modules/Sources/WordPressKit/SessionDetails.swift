@@ -25,7 +25,8 @@ extension SessionDetails: Encodable {
         self.buildNumber = bundle.infoDictionary?["CFBundleVersion"] as? String ?? "Unknown"
         self.marketingVersion = bundle.infoDictionary?["CFBundleShortVersionString"] as? String ?? "Unknown"
         self.identifier = bundle.bundleIdentifier ?? "Unknown"
-        self.osVersion = UIDevice.current.systemVersion
+        let version = ProcessInfo.processInfo.operatingSystemVersion
+        self.osVersion = "\(version.majorVersion).\(version.minorVersion).\(version.patchVersion)"
     }
 
     func dictionaryRepresentation() throws -> [String: AnyObject]? {

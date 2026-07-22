@@ -1,5 +1,4 @@
 import Foundation
-import MobileCoreServices
 import UniformTypeIdentifiers
 
 public extension URL {

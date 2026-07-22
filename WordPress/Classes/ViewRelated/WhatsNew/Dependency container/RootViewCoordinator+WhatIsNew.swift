@@ -1,6 +1,7 @@
 import WordPressData
 import WordPressKit
 import WordPressShared
+import WordPressSharedUI
 
 /// dependency container for the What's New / Feature Announcements scene
 extension RootViewCoordinator {

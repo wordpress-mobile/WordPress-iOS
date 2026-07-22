@@ -2,6 +2,7 @@
 #import "MenuItemCheckButtonView.h"
 #import "WordPress-Swift.h"
 @import WordPressShared;
+@import WordPressSharedObjCUI;
 
 static CGFloat const LinkTextBarHeight = 48.0;
 

@@ -1,5 +1,6 @@
 #import "SettingTableViewCell.h"
 #import "WordPress-Swift.h"
+@import WordPressSharedObjCUI;
 NSString * const SettingsTableViewCellReuseIdentifier = @"org.wordpress.SettingTableViewCell";
 
 @implementation SettingTableViewCell

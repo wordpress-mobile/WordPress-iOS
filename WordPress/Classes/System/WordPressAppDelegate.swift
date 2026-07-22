@@ -20,6 +20,7 @@ import WordPressUI
 import ZendeskCoreSDK
 import Support
 import WordPressAPIInternal
+import WordPressSharedUI
 
 public class WordPressAppDelegate: UIResponder, UIApplicationDelegate {
 

@@ -1,3 +1,4 @@
+#if os(iOS)
 import AppIntents
 
 /// The widget configuration intent that lets the user pick which site a stats widget shows.
@@ -34,3 +35,4 @@ public struct SelectSiteIntent: WidgetConfigurationIntent, CustomIntentMigratedA
 
     public init() {}
 }
+#endif

@@ -1,6 +1,7 @@
 import WordPressData
 import WordPressKit
 import WordPressShared
+import WordPressSharedUI
 
 // MARK: - SiteAddressService
 

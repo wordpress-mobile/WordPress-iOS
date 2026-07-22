@@ -9,6 +9,7 @@
 #import "WordPress-Swift.h"
 @import WordPressData;
 @import WordPressShared;
+@import WordPressSharedObjC;
 
 static CGFloat const ScrollViewOffsetAdjustmentPadding = 10.0;
 

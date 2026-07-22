@@ -1,4 +1,7 @@
 import Foundation
+#if canImport(UIKit)
+import UIKit
+#endif
 
 /// This ServiceRemote encapsulates all of the interaction with the Gravatar endpoint.
 ///
@@ -71,6 +74,7 @@ open class GravatarServiceRemote {
         task.resume()
     }
 
+    #if canImport(UIKit)
     /// This method hits the Gravatar Endpoint, and uploads a new image, to be used as profile.
     ///
     /// - Parameters:
@@ -104,6 +108,7 @@ open class GravatarServiceRemote {
 
         task.resume()
     }
+    #endif
 
     // MARK: - Private Helpers
 

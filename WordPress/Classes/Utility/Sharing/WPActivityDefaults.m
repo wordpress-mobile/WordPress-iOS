@@ -2,6 +2,7 @@
 #import "SafariActivity.h"
 
 @import WordPressShared;
+@import WordPressSharedObjC;
 
 @implementation WPActivityDefaults
 

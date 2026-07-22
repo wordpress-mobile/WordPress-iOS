@@ -11,6 +11,8 @@
 @import WordPressData;
 @import WordPressKit;
 @import WordPressShared;
+@import WordPressSharedObjC;
+@import WordPressSharedUI;
 @import NSURL_IDN;
 
 NS_ENUM(NSInteger, SiteSettingsAccount) {

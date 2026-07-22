@@ -10,6 +10,7 @@
 @import Gridicons;
 @import WordPressData;
 @import WordPressShared;
+@import WordPressSharedObjCUI;
 @import WordPressUI;
 
 static NSString * const WPTabBarButtonClassname = @"UITabBarButton";

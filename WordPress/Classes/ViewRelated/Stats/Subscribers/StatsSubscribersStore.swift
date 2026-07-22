@@ -2,6 +2,7 @@ import Foundation
 import Combine
 import WordPressKit
 import WordPressShared
+import WordPressSharedUI
 
 protocol StatsSubscribersStoreProtocol {
     var emailsSummary: CurrentValueSubject<StatsSubscribersStore.State<StatsEmailsSummaryData>, Never> { get }

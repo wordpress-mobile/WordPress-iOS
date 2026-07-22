@@ -1,6 +1,7 @@
 import Foundation
 import UIKit
-import WordPressSharedObjC
+import WordPressShared
+import WordPressSharedObjCUI
 
 /// Contains methods for formatting post or comment content for display.
 ///

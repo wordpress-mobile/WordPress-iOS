@@ -6,6 +6,8 @@
 @import WordPressKit;
 @import WordPressKitModels;
 @import WordPressShared;
+@import WordPressSharedObjC;
+@import WordPressSharedUI;
 
 NSString * const ReaderTopicFreshlyPressedPathCommponent = @"freshly-pressed";
 static NSString * const ReaderTopicCurrentTopicPathKey = @"ReaderTopicCurrentTopicPathKey";

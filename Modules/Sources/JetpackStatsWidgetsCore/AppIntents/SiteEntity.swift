@@ -1,3 +1,4 @@
+#if os(iOS)
 import AppIntents
 import Foundation
 
@@ -42,3 +43,4 @@ public struct SiteEntity: AppEntity {
         self.domain = nil
     }
 }
+#endif

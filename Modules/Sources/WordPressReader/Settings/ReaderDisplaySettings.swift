@@ -1,5 +1,6 @@
 import UIKit
 import WordPressShared
+import WordPressSharedUI
 
 public struct ReaderDisplaySettings: Codable, Equatable, Hashable, Sendable {
 

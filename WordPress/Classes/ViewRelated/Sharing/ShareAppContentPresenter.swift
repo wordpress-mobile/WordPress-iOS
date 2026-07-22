@@ -1,6 +1,7 @@
 import WordPressData
 import WordPressKit
 import WordPressShared
+import WordPressSharedUI
 
 /// Encapsulates the logic required to fetch, prepare, and present the contents for sharing the app to others.
 ///

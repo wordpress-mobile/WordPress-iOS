@@ -55,23 +55,23 @@ open class NotificationSettingsServiceRemote: ServiceRemoteWordPressComREST {
     /// - Parameters:
     ///     - token: The token of the device to be registered.
     ///     - pushNotificationAppId: The app id to be registered.
+    ///     - deviceInformation: Metadata about the device being registered.
     ///     - success: Optional closure to be called on success.
     ///     - failure: Optional closure to be called on failure.
     ///
-    @objc open func registerDeviceForPushNotifications(_ token: String, pushNotificationAppId: String, success: ((_ deviceId: String) -> Void)?, failure: ((NSError) -> Void)?) {
+    open func registerDeviceForPushNotifications(_ token: String, pushNotificationAppId: String, deviceInformation: some DeviceInformationProvider, success: ((_ deviceId: String) -> Void)?, failure: ((NSError) -> Void)?) {
         let endpoint = "devices/new"
         let requestUrl = path(forEndpoint: endpoint, withVersion: ._1_1)
 
-        let device = UIDevice.current
         let parameters = [
             "device_token": token,
             "device_family": "apple",
             "app_secret_key": pushNotificationAppId,
-            "device_name": device.name,
-            "device_model": device.platform,
-            "os_version": device.systemVersion,
+            "device_name": deviceInformation.name,
+            "device_model": deviceInformation.hardwarePlatform,
+            "os_version": deviceInformation.systemVersion,
             "app_version": Bundle.main.wpkit_bundleVersion(),
-            "device_uuid": device.identifierForVendor?.uuidString
+            "device_uuid": deviceInformation.identifierForVendor?.uuidString
         ]
 
         wordPressComRESTAPI.post(requestUrl,

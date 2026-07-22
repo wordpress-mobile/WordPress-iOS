@@ -2,6 +2,7 @@ import Foundation
 import Aztec
 import Gridicons
 import WordPressShared
+import WordPressSharedUI
 
 // MARK: - Header and List presentation extensions
 //

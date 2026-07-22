@@ -1,4 +1,6 @@
 import Foundation
+import UIKit
+import WordPressShared
 
 var currentReachabilityAlert: ReachabilityAlert?
 

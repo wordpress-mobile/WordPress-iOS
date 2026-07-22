@@ -148,6 +148,7 @@ class NotificationSettingsService {
         notificationsServiceRemote?.registerDeviceForPushNotifications(
             token,
             pushNotificationAppId: BuildSettings.current.pushNotificationAppID,
+            deviceInformation: UIDevice.current,
             success: success,
             failure: failure
         )

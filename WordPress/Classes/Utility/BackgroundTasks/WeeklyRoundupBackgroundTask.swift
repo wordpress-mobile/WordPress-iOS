@@ -3,6 +3,7 @@ import Foundation
 import WordPressData
 import WordPressShared
 import WordPressKit
+import WordPressSharedUI
 
 /// The main data provider for Weekly Roundup information.
 ///
