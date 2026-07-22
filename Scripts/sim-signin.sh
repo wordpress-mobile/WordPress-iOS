@@ -19,7 +19,7 @@ Usage:
 Options:
   -t, --wpcom-token <token>      WordPress.com bearer token (or pass it positionally)
   -a, --app <jetpack|wordpress>  App to sign in (default: jetpack)
-  -d, --device <udid|booted>     Target simulator (default: booted)
+  -d, --device <udid|name>       Target simulator (default: the running one; prompts if several)
   -r, --reset                    Wipe existing app data before signing in
   -h, --help                     Show this help
 
@@ -36,7 +36,7 @@ EOF
 }
 
 app="jetpack"
-device="booted"
+device=""
 reset=false
 token=""
 
@@ -54,6 +54,51 @@ require_value() {
         echo "error: $1 requires a value" >&2
         exit 1
     fi
+}
+
+resolve_device() {
+    # Set `device` to a booted simulator: the only one if just one is booted, otherwise
+    # prompt to choose. Errors if none are booted. Called only when --device was omitted.
+    local udids=() names=() line udid name
+    while IFS= read -r line; do
+        udid=$(printf '%s\n' "$line" | grep -oiE '[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}' | head -1)
+        [[ -z "$udid" ]] && continue
+        name=$(printf '%s\n' "$line" | sed -E 's/^[[:space:]]*//; s/[[:space:]]*\([0-9A-Fa-f-]{36}\).*$//')
+        udids+=("$udid")
+        names+=("$name")
+    done < <(xcrun simctl list devices booted | grep -F "(Booted)")
+
+    local n=${#udids[@]}
+    if [[ "$n" -eq 0 ]]; then
+        echo "error: no booted simulator. Boot one (open Simulator, or 'xcrun simctl boot <udid>'), or pass --device <udid>." >&2
+        exit 1
+    fi
+    if [[ "$n" -eq 1 ]]; then
+        device="${udids[0]}"
+        echo "Using the only booted simulator: ${names[0]} (${device})"
+        return
+    fi
+
+    echo "Multiple simulators are booted — choose one:" >&2
+    local i
+    for (( i = 0; i < n; i++ )); do
+        printf "  %2d) %s (%s)\n" "$(( i + 1 ))" "${names[i]}" "${udids[i]}" >&2
+    done
+    local sel
+    while true; do
+        printf "Select a simulator [1-%d]: " "$n" >&2
+        if ! read -r sel; then
+            echo >&2
+            echo "error: no selection made; re-run with --device <udid>." >&2
+            exit 1
+        fi
+        if [[ "$sel" =~ ^[0-9]+$ ]] && [[ "$sel" -ge 1 ]] && [[ "$sel" -le "$n" ]]; then
+            device="${udids[sel - 1]}"
+            echo "Using ${names[sel - 1]} (${device})"
+            return
+        fi
+        echo "  not a valid choice: '$sel'" >&2
+    done
 }
 
 while [[ $# -gt 0 ]]; do
@@ -88,6 +133,11 @@ case "$app" in
     wordpress) bundle_id="org.wordpress" ;;
     *) echo "error: unknown app '$app' (expected 'jetpack' or 'wordpress')" >&2; exit 1 ;;
 esac
+
+# When no --device was given, target the running simulator (prompting if several are booted).
+if [[ -z "$device" ]]; then
+    resolve_device
+fi
 
 echo "Signing $app ($bundle_id) into WordPress.com on simulator '$device'…"
 
