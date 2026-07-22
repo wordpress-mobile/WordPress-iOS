@@ -92,7 +92,7 @@ final class MockWordPressClientAPI: WordPressClientAPI, @unchecked Sendable {
 
 // MARK: - Mock Executors
 
-final class MockApiRootRequestExecutor: ApiRootRequestExecutor {
+final class MockApiRootRequestExecutor: ApiRootRequestExecutor, @unchecked Sendable {
     private var routes: Set<String>
 
     init(routes: Set<String>) {
@@ -112,7 +112,7 @@ final class MockApiRootRequestExecutor: ApiRootRequestExecutor {
     }
 }
 
-final class MockUsersRequestExecutor: UsersRequestExecutor {
+final class MockUsersRequestExecutor: UsersRequestExecutor, @unchecked Sendable {
     override init(noHandle: UsersRequestExecutor.NoHandle) {
         super.init(noHandle: noHandle)
     }
@@ -148,7 +148,7 @@ final class MockUsersRequestExecutor: UsersRequestExecutor {
     }
 }
 
-final class MockThemesRequestExecutor: ThemesRequestExecutor {
+final class MockThemesRequestExecutor: ThemesRequestExecutor, @unchecked Sendable {
     private var isBlockTheme: Bool
 
     init(isBlockTheme: Bool) {
@@ -191,7 +191,7 @@ final class MockThemesRequestExecutor: ThemesRequestExecutor {
     }
 }
 
-final class MockSiteSettingsRequestExecutor: SiteSettingsRequestExecutor {
+final class MockSiteSettingsRequestExecutor: SiteSettingsRequestExecutor, @unchecked Sendable {
     override init(noHandle: SiteSettingsRequestExecutor.NoHandle) {
         super.init(noHandle: noHandle)
     }
@@ -235,7 +235,7 @@ final class MockSiteSettingsRequestExecutor: SiteSettingsRequestExecutor {
     }
 }
 
-final class MockWpApiDetails: WpApiDetails {
+final class MockWpApiDetails: WpApiDetails, @unchecked Sendable {
     private var routes: Set<String>
 
     init(routes: Set<String>) {
