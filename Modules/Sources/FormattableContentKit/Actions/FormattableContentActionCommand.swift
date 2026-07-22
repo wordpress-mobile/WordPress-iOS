@@ -14,12 +14,12 @@ public protocol FormattableContentActionCommand: CustomStringConvertible {
 
 extension FormattableContentActionCommand {
     public static func commandIdentifier() -> Identifier {
-        return Identifier(value: String(describing: self))
+        Identifier(value: String(describing: self))
     }
 }
 
 extension FormattableContentActionCommand {
     public var description: String {
-        return identifier.description
+        identifier.description
     }
 }

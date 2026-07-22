@@ -17,7 +17,7 @@ public protocol FormattableMediaContent {
 
 extension FormattableMediaContent where Self: FormattableContent {
     public var imageUrls: [URL] {
-        return media.compactMap {
+        media.compactMap {
             guard $0.kind == .image && $0.mediaURL != nil else {
                 return nil
             }
@@ -55,7 +55,7 @@ public class NotificationTextContent: FormattableTextContent, FormattableMediaCo
     public let meta: [String: AnyObject]?
 
     public override var text: String? {
-        return textOverride ?? super.text
+        textOverride ?? super.text
     }
 
     public override var kind: FormattableContentKind {
@@ -64,15 +64,21 @@ public class NotificationTextContent: FormattableTextContent, FormattableMediaCo
         }
 
         if let meta,
-           let buttonValue = meta[Constants.MetaKeys.Button] as? Bool,
-           buttonValue == true {
+            let buttonValue = meta[Constants.MetaKeys.Button] as? Bool,
+            buttonValue == true
+        {
             return .button
         }
 
         return super.kind
     }
 
-    init(dictionary: [String: AnyObject], actions commandActions: [FormattableContentAction], ranges: [FormattableContentRange], parent note: Notifiable) {
+    init(
+        dictionary: [String: AnyObject],
+        actions commandActions: [FormattableContentAction],
+        ranges: [FormattableContentRange],
+        parent note: Notifiable
+    ) {
         let rawMedia = dictionary[Constants.BlockKeys.Media] as? [[String: AnyObject]]
         let text = dictionary[Constants.BlockKeys.Text] as? String ?? ""
 
