@@ -1,6 +1,6 @@
 import Foundation
 import XCTest
-@testable import FormattableContentKit
+import WordPressShared
 
 // MARK: - Scanner+QuotedTextTests
 //

@@ -1,4 +1,5 @@
 import Foundation
+import WordPressShared
 
 extension NSAttributedString {
     /// This helper method returns a new NSAttributedString instance, with all of the the leading / trailing newLines
