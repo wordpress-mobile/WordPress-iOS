@@ -1,3 +1,4 @@
+#if canImport(UIKit)
 import WordPressShared
 import WordPressSharedUI
 
@@ -26,3 +27,4 @@ public class SnippetsContentStyles: FormattableContentStyles {
         self.key = key
     }
 }
+#endif

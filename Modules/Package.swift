@@ -105,11 +105,27 @@ let package = Package(
             name: "FormattableContentKit",
             dependencies: [
                 "WordPressShared",
-                "WordPressSharedUI",
-                "WordPressUI",
+                // UIKit-only styling deps. The files that use them (WPStyleGuide+Notifications
+                // and the concrete *ContentStyles) are gated with `#if canImport(UIKit)`, so we
+                // drop these edges on macOS to keep the model/protocol layer cross-platform.
+                .target(
+                    name: "WordPressSharedUI",
+                    condition: .when(platforms: [.iOS, .macCatalyst, .tvOS, .watchOS, .visionOS])
+                ),
+                .target(
+                    name: "WordPressUI",
+                    condition: .when(platforms: [.iOS, .macCatalyst, .tvOS, .watchOS, .visionOS])
+                ),
                 // TODO: Remove — It's here just for a NSMutableParagraphStyle init helper
-                "WordPressKit",
-                .product(name: "Gridicons", package: "Gridicons-iOS")
+                .target(
+                    name: "WordPressKit",
+                    condition: .when(platforms: [.iOS, .macCatalyst, .tvOS, .watchOS, .visionOS])
+                ),
+                .product(
+                    name: "Gridicons",
+                    package: "Gridicons-iOS",
+                    condition: .when(platforms: [.iOS, .macCatalyst, .tvOS, .watchOS, .visionOS])
+                )
             ],
             // Set to v5 to avoid @Sendable warnings and errors
             swiftSettings: [.swiftLanguageMode(.v5)]

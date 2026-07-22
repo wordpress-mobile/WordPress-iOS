@@ -1,5 +1,4 @@
 import Foundation
-import UIKit
 
 extension FormattableContentKind {
     public static let image = FormattableContentKind("image")
@@ -13,7 +12,7 @@ public protocol FormattableMediaContent {
     var media: [FormattableMediaItem] { get }
     var imageUrls: [URL] { get }
 
-    func buildRangesToImagesMap(_ mediaMap: [URL: UIImage]) -> [NSValue: UIImage]?
+    func buildRangesToImagesMap(_ mediaMap: [URL: PlatformImage]) -> [NSValue: PlatformImage]?
 }
 
 extension FormattableMediaContent where Self: FormattableContent {
@@ -27,12 +26,12 @@ extension FormattableMediaContent where Self: FormattableContent {
         }
     }
 
-    public func buildRangesToImagesMap(_ mediaMap: [URL: UIImage]) -> [NSValue: UIImage]? {
+    public func buildRangesToImagesMap(_ mediaMap: [URL: PlatformImage]) -> [NSValue: PlatformImage]? {
         guard textOverride == nil else {
             return nil
         }
 
-        var ranges = [NSValue: UIImage]()
+        var ranges = [NSValue: PlatformImage]()
 
         for theMedia in media {
             guard let mediaURL = theMedia.mediaURL else {

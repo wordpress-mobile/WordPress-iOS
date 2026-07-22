@@ -1,4 +1,4 @@
-import UIKit
+import Foundation
 
 /// Styles definition to be applied to a single FormattableContent entity.
 public protocol FormattableContentStyles {
@@ -9,7 +9,7 @@ public protocol FormattableContentStyles {
     /// Styles definition for a specific set of ranges identified by their kind or nil to not apply any.
     var rangeStylesMap: [FormattableRangeKind: [NSAttributedString.Key: Any]]? { get }
     /// Color for text that represent a link or nil to not apply any.
-    var linksColor: UIColor? { get }
+    var linksColor: PlatformColor? { get }
     /// Key to be used for caching the resulting attributed string. It needs to be unique.
     var key: String { get }
 }

@@ -1,3 +1,4 @@
+#if canImport(UIKit)
 // FIXME: This does not belong here, see https://github.com/wordpress-mobile/WordPress-iOS/pull/24297
 import Foundation
 import Gridicons
@@ -314,3 +315,4 @@ extension UIFont {
         return UIFont(descriptor: descriptor, size: 0)
     }
 }
+#endif
