@@ -44,6 +44,13 @@
     {
       "target" : {
         "containerPath" : "container:..\/Modules",
+        "identifier" : "GutenbergProcessorsTests",
+        "name" : "GutenbergProcessorsTests"
+      }
+    },
+    {
+      "target" : {
+        "containerPath" : "container:..\/Modules",
         "identifier" : "WordPressSharedTests",
         "name" : "WordPressSharedTests"
       }

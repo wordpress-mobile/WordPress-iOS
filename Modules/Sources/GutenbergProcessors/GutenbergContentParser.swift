@@ -10,9 +10,9 @@ public class GutenbergParsedBlock {
 
     public var attributes: [String: Any] {
         get {
-            guard let data = self.attributesData.data(using: .utf8 ),
-                  let jsonObject = try? JSONSerialization.jsonObject(with: data, options: .allowFragments),
-                  let attributes = jsonObject as? [String: Any]
+            guard let data = self.attributesData.data(using: .utf8),
+                let jsonObject = try? JSONSerialization.jsonObject(with: data, options: .allowFragments),
+                let attributes = jsonObject as? [String: Any]
             else {
                 return [:]
             }
@@ -21,7 +21,8 @@ public class GutenbergParsedBlock {
 
         set(newValue) {
             guard let data = try? JSONSerialization.data(withJSONObject: newValue, options: .sortedKeys),
-                  let attributes = String(data: data, encoding: .utf8) else {
+                let attributes = String(data: data, encoding: .utf8)
+            else {
                 return
             }
             self.attributesData = attributes
@@ -44,8 +45,7 @@ public class GutenbergParsedBlock {
         if let separatorRange = data.range(of: " ") {
             self.name = String(data[data.startIndex..<separatorRange.lowerBound])
             self.attributesData = String(data[separatorRange.upperBound..<data.endIndex])
-        }
-        else {
+        } else {
             self.name = data
             self.attributesData = ""
         }
@@ -114,7 +114,8 @@ public class GutenbergContentParser {
     private let htmlDocument: Document?
 
     public init(for content: String) {
-        self.htmlDocument = try? SwiftSoup.parseBodyFragment(content).outputSettings(OutputSettings().prettyPrint(pretty: false))
+        self.htmlDocument = try? SwiftSoup.parseBodyFragment(content)
+            .outputSettings(OutputSettings().prettyPrint(pretty: false))
         self.blocks = []
 
         guard let htmlContent = self.htmlDocument?.body() else {
@@ -124,37 +125,53 @@ public class GutenbergContentParser {
     }
 
     public func html() -> String {
-        return (try? self.htmlDocument?.body()?.html()) ?? ""
+        guard let body = self.htmlDocument?.body() else {
+            return ""
+        }
+        // SwiftSoup 2.12+ serializes unchanged nodes from a cached copy of the
+        // original source, so the attribute mutations the processors make on
+        // nested elements aren't reflected in the output. Replacing each
+        // top-level element with a copy marks its subtree dirty and forces a
+        // re-render, while the surrounding comment and text nodes (the Gutenberg
+        // block delimiters) are emitted from their original bytes.
+        for element in body.children().array() {
+            guard let clone = try? element.copy() as? Element else {
+                continue
+            }
+            try? element.replaceWith(clone)
+        }
+        return (try? body.html()) ?? ""
     }
 
     private func traverseChildNodes(element: Element, parentBlock: GutenbergParsedBlock? = nil) {
         var currentBlock: GutenbergParsedBlock?
-        element.getChildNodes().forEach { node in
-            switch node {
-            // Convert comment tag into block
-            case let comment as SwiftSoup.Comment:
-                guard let block = GutenbergParsedBlock(comment: comment, parentBlock: parentBlock) else {
-                    return
-                }
+        element.getChildNodes()
+            .forEach { node in
+                switch node {
+                // Convert comment tag into block
+                case let comment as SwiftSoup.Comment:
+                    guard let block = GutenbergParsedBlock(comment: comment, parentBlock: parentBlock) else {
+                        return
+                    }
 
-                // Identify close tag
-                if let currrentBlock = currentBlock, block.name == "/\(currrentBlock.name)" {
-                    currentBlock = nil
-                    return
-                }
+                    // Identify close tag
+                    if let currrentBlock = currentBlock, block.name == "/\(currrentBlock.name)" {
+                        currentBlock = nil
+                        return
+                    }
 
-                self.blocks.append(block)
-                currentBlock = block
-            // Insert HTML elements into block being processed
-            case let element as SwiftSoup.Element:
-                if let currentBlock {
-                    currentBlock.elements.add(element)
+                    self.blocks.append(block)
+                    currentBlock = block
+                // Insert HTML elements into block being processed
+                case let element as SwiftSoup.Element:
+                    if let currentBlock {
+                        currentBlock.elements.add(element)
+                    }
+                    if element.childNodeSize() > 0 {
+                        traverseChildNodes(element: element, parentBlock: currentBlock ?? parentBlock)
+                    }
+                default: break
                 }
-                if element.childNodeSize() > 0 {
-                    traverseChildNodes(element: element, parentBlock: currentBlock ?? parentBlock)
-                }
-            default: break
             }
-        }
     }
 }

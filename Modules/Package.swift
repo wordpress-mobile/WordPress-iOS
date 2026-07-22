@@ -12,6 +12,7 @@ let package = Package(
         .library(name: "AsyncImageKit", targets: ["AsyncImageKit"]),
         .library(name: "DesignSystem", targets: ["DesignSystem"]),
         .library(name: "FormattableContentKit", targets: ["FormattableContentKit"]),
+        .library(name: "GutenbergProcessors", targets: ["GutenbergProcessors"]),
         .library(name: "JetpackStats", targets: ["JetpackStats"]),
         .library(name: "JetpackSocial", targets: ["JetpackSocial"]),
         .library(name: "JetpackStatsWidgetsCore", targets: ["JetpackStatsWidgetsCore"]),
@@ -46,7 +47,7 @@ let package = Package(
         .package(url: "https://github.com/erikdoe/ocmock", revision: "2c0bfd373289f4a7716db5d6db471640f91a6507"),
         .package(url: "https://github.com/johnxnguyen/Down", branch: "master"),
         .package(url: "https://github.com/kaishin/Gifu", from: "3.4.1"),
-        .package(url: "https://github.com/scinfu/SwiftSoup", exact: "2.7.5"),
+        .package(url: "https://github.com/scinfu/SwiftSoup", exact: "2.13.6"),
         .package(url: "https://github.com/squarefrog/UIDeviceIdentifier", from: "2.3.0"),
         // We can remove the SVProgressHUD fork once this PR is merged: https://github.com/SVProgressHUD/SVProgressHUD/pull/1131
         .package(url: "https://github.com/automattic/SVProgressHUD", branch: "master"),
@@ -335,6 +336,11 @@ let package = Package(
             ]
         ),
         .target(
+            name: "GutenbergProcessors",
+            dependencies: [.product(name: "SwiftSoup", package: "SwiftSoup")],
+            swiftSettings: [.swiftLanguageMode(.v5)]
+        ),
+        .target(
             name: "WordPressReader",
             dependencies: [
                 "AsyncImageKit",
@@ -400,6 +406,14 @@ let package = Package(
         ),
         .testTarget(name: "WordPressCoreTests", dependencies: [.target(name: "WordPressCore")]),
         .testTarget(name: "WordPressIntelligenceTests", dependencies: [.target(name: "WordPressIntelligence")]),
+        .testTarget(
+            name: "GutenbergProcessorsTests",
+            dependencies: [
+                .target(name: "GutenbergProcessors"),
+                .product(name: "SwiftSoup", package: "SwiftSoup")
+            ],
+            swiftSettings: [.swiftLanguageMode(.v5)]
+        ),
         .testTarget(name: "WordPressReaderTests", dependencies: [.target(name: "WordPressReader")]),
         .testTarget(
             name: "JetpackSocialTests",
@@ -484,6 +498,7 @@ enum XcodeSupport {
             "DesignSystem",
             "BuildSettingsKit",
             "FormattableContentKit",
+            "GutenbergProcessors",
             "JetpackSocial",
             "JetpackStats",
             "JetpackStatsWidgetsCore",

@@ -1,7 +1,7 @@
 import Foundation
 import SwiftSoup
 
-class GutenbergGalleryUploadProcessor: GutenbergProcessor {
+public class GutenbergGalleryUploadProcessor: GutenbergProcessor {
 
     let mediaUploadID: Int32
     let remoteURLString: String
@@ -12,7 +12,7 @@ class GutenbergGalleryUploadProcessor: GutenbergProcessor {
 
     static let imgClassIDPrefixAttribute = "wp-image-"
 
-    init(mediaUploadID: Int32, serverMediaID: Int, remoteURLString: String, mediaLink: String) {
+    public init(mediaUploadID: Int32, serverMediaID: Int, remoteURLString: String, mediaLink: String) {
         self.mediaUploadID = mediaUploadID
         self.serverMediaID = serverMediaID
         self.remoteURLString = remoteURLString
@@ -139,7 +139,7 @@ class GutenbergGalleryUploadProcessor: GutenbergProcessor {
         }
     }
 
-    func process(_ blocks: [GutenbergParsedBlock]) {
+    public func process(_ blocks: [GutenbergParsedBlock]) {
         processGalleryBlocks(blocks)
     }
 }
