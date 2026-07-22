@@ -10,7 +10,7 @@ extension Int {
     /// - Precondition: divisor must be > 0
     /// - returns: an Int rounded to the nearest integer that's a multiple of the argument.
     ///
-    func round(_ divisor: UInt) -> Int {
+    public func round(_ divisor: UInt) -> Int {
         assert(divisor > 0)
         if self == 0 || divisor == 0 {
             return self
@@ -30,39 +30,39 @@ extension Comparable {
     ///     - max if self > max
     ///     - otherwise it returns self
     ///
-    func clamp(min minValue: Self, max maxValue: Self) -> Self {
+    public func clamp(min minValue: Self, max maxValue: Self) -> Self {
         return Swift.min(Swift.max(self, minValue), maxValue)
     }
 }
 
 extension CGSize {
-    func clamp(min minValue: CGSize, max maxValue: CGSize) -> CGSize {
+    public func clamp(min minValue: CGSize, max maxValue: CGSize) -> CGSize {
         let width = self.width.clamp(min: minValue.width, max: maxValue.width)
         let height = self.height.clamp(min: minValue.height, max: maxValue.height)
         return CGSize(width: width, height: height)
     }
 
-    func clamp(min minValue: CGFloat, max maxValue: CGFloat) -> CGSize {
+    public func clamp(min minValue: CGFloat, max maxValue: CGFloat) -> CGSize {
         let minSize = CGSize(width: minValue, height: minValue)
         let maxSize = CGSize(width: maxValue, height: maxValue)
         return clamp(min: minSize, max: maxSize)
     }
 
-    func clamp(min minValue: Int, max maxValue: Int) -> CGSize {
+    public func clamp(min minValue: Int, max maxValue: Int) -> CGSize {
         return clamp(min: CGFloat(minValue), max: CGFloat(maxValue))
     }
 
-    func scaled(by scale: CGFloat) -> CGSize {
+    public func scaled(by scale: CGFloat) -> CGSize {
         CGSize(width: width * scale, height: height * scale)
     }
 
-    func rounded() -> CGSize {
+    public func rounded() -> CGSize {
         CGSize(width: width.rounded(), height: height.rounded())
     }
 }
 
 extension CGFloat {
-    func zeroIfNaN() -> CGFloat {
+    public func zeroIfNaN() -> CGFloat {
         return self.isNaN ? 0.0 : self
     }
 }

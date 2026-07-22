@@ -1,4 +1,5 @@
 import Foundation
+import WordPressShared
 
 /// Data Source for Stock Photos
 final class StockPhotosDataSource: ExternalMediaDataSource {

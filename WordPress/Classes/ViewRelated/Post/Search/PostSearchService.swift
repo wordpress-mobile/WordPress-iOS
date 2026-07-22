@@ -1,4 +1,5 @@
 import CoreData
+import WordPressShared
 import Foundation
 import WordPressData
 

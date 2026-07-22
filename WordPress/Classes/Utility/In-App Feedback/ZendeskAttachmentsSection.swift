@@ -1,4 +1,5 @@
 import SwiftUI
+import WordPressShared
 import Photos
 import PhotosUI
 import SupportProvidersSDK
