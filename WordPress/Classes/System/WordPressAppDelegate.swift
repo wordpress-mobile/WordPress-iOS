@@ -63,6 +63,10 @@ public class WordPressAppDelegate: UIResponder, UIApplicationDelegate {
     private let remoteFeatureFlagStore = RemoteFeatureFlagStore()
     private let remoteConfigStore = RemoteConfigStore()
 
+    /// Limits the `-wpcom-token` launch-argument sign-in to a single attempt per process,
+    /// so signing out (which returns to the login screen) doesn't immediately re-sign in.
+    private var didAttemptLaunchArgumentSignIn = false
+
     private var mainContext: NSManagedObjectContext {
         ContextManager.shared.mainContext
     }
@@ -906,9 +910,15 @@ extension WordPressAppDelegate {
     /// `-wpcom-token` launch argument, so a Simulator can be signed in with a single
     /// `simctl launch` and no taps on the login screen.
     ///
-    /// No-op when the argument is absent or a WordPress.com account is already signed in.
+    /// No-op when the argument is absent, a WordPress.com account is already signed in, or a
+    /// launch-argument sign-in was already attempted this process. The last case matters because
+    /// signing out returns to the login screen — without it, the still-present token would
+    /// immediately sign the account back in.
     func autoSignInWPComAccountFromLaunchArgumentIfNeeded() {
         guard WordPressDotComAuthenticator.launchArgumentToken != nil else {
+            return
+        }
+        guard !didAttemptLaunchArgumentSignIn else {
             return
         }
         guard (try? WPAccount.lookupDefaultWordPressComAccount(in: ContextManager.shared.mainContext)) == nil else {
@@ -917,6 +927,7 @@ extension WordPressAppDelegate {
         guard let presenter = window?.topmostPresentedViewController else {
             return
         }
+        didAttemptLaunchArgumentSignIn = true
         Task { @MainActor in
             guard await WordPressDotComAuthenticator().signIn(from: presenter, context: .default) != nil else {
                 return
