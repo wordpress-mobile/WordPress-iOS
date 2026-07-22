@@ -5,7 +5,8 @@ import PackageDescription
 let package = Package(
     name: "Modules",
     platforms: [
-        .iOS(.v17)
+        .iOS(.v17),
+        .macOS(.v14)
     ],
     products: XcodeSupport.products + [
         .library(name: "AsyncImageKit", targets: ["AsyncImageKit"]),
@@ -248,7 +249,11 @@ let package = Package(
                 .product(name: "SwiftSoup", package: "SwiftSoup"),
                 .target(name: "SFHFKeychainUtils"),
                 .target(name: "WordPressSharedObjC"),
-                .target(name: "WordPressSharedObjCUI")
+                // UIKit-only; drop on macOS so WordPressShared builds cross-platform.
+                .target(
+                    name: "WordPressSharedObjCUI",
+                    condition: .when(platforms: [.iOS, .macCatalyst, .tvOS, .watchOS, .visionOS])
+                )
             ],
             resources: [.process("Resources")],
             swiftSettings: [.swiftLanguageMode(.v5)]

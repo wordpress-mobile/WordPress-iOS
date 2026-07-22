@@ -1,3 +1,4 @@
+#if os(iOS)
 import AppIntents
 import BuildSettingsKit
 import Foundation
@@ -54,3 +55,4 @@ public struct SiteEntityQuery: EntityQuery {
             }
     }
 }
+#endif
