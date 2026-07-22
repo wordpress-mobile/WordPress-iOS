@@ -1,7 +1,6 @@
 import CoreData
 import WordPressKit
 import WordPressShared
-import WordPressSharedUI
 
 public enum SiteVisibility: Int {
     case `private` = -1

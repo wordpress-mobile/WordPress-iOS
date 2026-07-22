@@ -1,7 +1,8 @@
 import Foundation
+
+#if canImport(UIKit)
 import UIKit
-import WebKit
-import WordPressShared
+#endif
 
 @objc
 public class WPUserAgent: NSObject {
@@ -66,20 +67,29 @@ public class WPUserAgent: NSObject {
         // ## iPad Pro (iOS 17.0.1)
         // Mozilla/5.0 (iPad; CPU OS 17_0_1 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Mobile/15E148
         //
-        // Based on the WebKit implementation[^1], most of the components are hardcoded, and there are only a couple of dynamic components:
-        // 1. Device model. i.e. iPhone/iPad
-        // 2. OS name and version. i.e. iPhone OS 17_2
+        // Based on the WebKit implementation[^1], most of the components are hardcoded. The only
+        // component that still varies at runtime is the device model (iPhone vs. iPad).
+        //
+        // The OS version used to be dynamic too, but as of iOS/iPadOS 26 WebKit freezes it at the last
+        // pre-26 value ("18_6") and never advances it — an anti-fingerprinting measure, mirroring what
+        // macOS Safari has long done (frozen at "10_15_7"). Reading the live `UIDevice.systemVersion`
+        // would emit a version no real `WKWebView` sends, so we pin it to the frozen constant to match
+        // what devices actually report.[^3]
         //
         // Please note the "Mobile/15E148" part is WKWebView's default and hardcoded "application name"[^2].
         //
         // [^1]: https://github.com/WebKit/WebKit/blob/5fbb03ee1c6210c79779d6fa1a9e7290daa746d1/Source/WebCore/platform/ios/UserAgentIOS.mm#L88-L113
         // [^2]: https://github.com/WebKit/WebKit/blob/492140d27dbe/Source/WebKit/UIProcess/API/Cocoa/WKWebViewConfiguration.mm#L612
+        // [^3]: https://nielsleenheer.com/articles/2025/the-user-agent-string-of-safari-on-ios-26-and-macos-26/
 
+        #if canImport(UIKit)
         let device = UIDevice.current
 
         let deviceModel = device.model // Example: "iPhone"
         var osName = device.systemName // Example: "iPhone OS"
-        let osVersion = device.systemVersion.replacingOccurrences(of: ".", with: "_") // Example: "17_2"
+
+        // Frozen since iOS/iPadOS 26 (see the note above); real WKWebViews no longer emit the live OS version.
+        let osVersion = "18_6"
 
         // WKWebView on iPad uses a static user agent.
         // https://github.com/WebKit/WebKit/blob/6a053cfb431bd70d5017ba881a39f004e52effc2/Source/WebCore/platform/ios/UserAgentIOS.mm#L97
@@ -92,7 +102,14 @@ public class WPUserAgent: NSObject {
             osName = "iPhone OS"
         }
 
-        return "Mozilla/5.0 (\(deviceModel); CPU \(osName) \(osVersion) like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Mobile/15E148"
+        return
+            "Mozilla/5.0 (\(deviceModel); CPU \(osName) \(osVersion) like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Mobile/15E148"
+        #else
+        // `UIDevice` is unavailable on platforms without UIKit (e.g. macOS in cross-platform builds).
+        // The user agent is only consumed at runtime on iOS; this keeps `WPUserAgent` buildable elsewhere.
+        // macOS Safari has frozen its OS version at "10_15_7" for years, so match that.
+        return "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/605.1.15 (KHTML, like Gecko)"
+        #endif
     }
 }
 

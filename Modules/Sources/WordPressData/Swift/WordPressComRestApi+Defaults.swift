@@ -2,7 +2,6 @@ import Foundation
 import CoreData
 import WordPressKit
 import WordPressShared
-import WordPressSharedUI
 
 extension WordPressComRestApi {
     @objc public static func defaultApi(oAuthToken: String? = nil,
