@@ -32,6 +32,7 @@ Set the token once and omit it from the command line. Resolution order:
   1. --wpcom-token (or positional)
   2. WPCOM_TOKEN environment variable
   3. ~/.wpcom-token file
+  4. otherwise the script prompts you to paste one
 EOF
 }
 
@@ -122,8 +123,18 @@ if [[ -z "$token" && -f "$HOME/.wpcom-token" ]]; then
     token="$(tr -d '[:space:]' < "$HOME/.wpcom-token")"
 fi
 
+# Nothing found anywhere — prompt for one. Input is hidden, since it's a secret.
 if [[ -z "$token" ]]; then
-    echo "error: no token — pass --wpcom-token <token>, set WPCOM_TOKEN, or write ~/.wpcom-token" >&2
+    printf "No WordPress.com token found (--wpcom-token / WPCOM_TOKEN / ~/.wpcom-token).\n" >&2
+    printf "Paste a bearer token (hidden), or press Return to cancel: " >&2
+    read -rs token || true
+    printf "\n" >&2
+    token="$(printf '%s' "$token" | tr -d '[:space:]')"
+    [[ -n "$token" ]] && printf "Token received (%s chars).\n" "${#token}" >&2
+fi
+
+if [[ -z "$token" ]]; then
+    echo "error: no token — pass --wpcom-token <token>, set WPCOM_TOKEN, write ~/.wpcom-token, or paste one when prompted" >&2
     usage >&2
     exit 1
 fi
