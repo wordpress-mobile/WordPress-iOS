@@ -1,4 +1,3 @@
-import UIKit
 import AsyncImageKit
 import WordPressData
 

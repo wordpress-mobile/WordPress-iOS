@@ -1,4 +1,4 @@
-import UIKit
+import Foundation
 import XCTest
 import OHHTTPStubs
 import OHHTTPStubsSwift
