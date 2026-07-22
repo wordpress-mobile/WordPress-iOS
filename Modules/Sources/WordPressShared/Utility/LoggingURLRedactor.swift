@@ -1,8 +1,8 @@
 import Foundation
 
-struct LoggingURLRedactor {
+public struct LoggingURLRedactor {
 
-    static func redactedURL(_ url: URL) -> URL {
+    public static func redactedURL(_ url: URL) -> URL {
 
         if isAuthURL(url) {
             return redactParameter(named: "token", in: url)

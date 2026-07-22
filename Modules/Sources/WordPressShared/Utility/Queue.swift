@@ -6,21 +6,23 @@ import Foundation
 public struct Queue<Element> {
     private var elements = [Element]()
 
+    public init() {}
+
     /// Push `element` onto the back of the queue
     ///
-    mutating func push(_ element: Element) {
+    public mutating func push(_ element: Element) {
         elements.insert(element, at: elements.startIndex)
     }
 
     /// Remove and return the item at the front of the queue
     ///
-    mutating func pop() -> Element? {
-        return elements.popLast()
+    public mutating func pop() -> Element? {
+        elements.popLast()
     }
 
     /// Removes all elements; If `where` is given, only the elements matching the
     /// predicate will be removed.
-    mutating func removeAll(where shouldBeRemoved: ((Element) -> Bool)? = nil) {
+    public mutating func removeAll(where shouldBeRemoved: ((Element) -> Bool)? = nil) {
         if let shouldBeRemoved {
             elements.removeAll(where: shouldBeRemoved)
         } else {

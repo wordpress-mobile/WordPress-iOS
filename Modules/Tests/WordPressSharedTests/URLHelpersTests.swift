@@ -1,5 +1,5 @@
 import XCTest
-import WordPress
+import WordPressShared
 
 class URLHelpersTests: XCTestCase {
 

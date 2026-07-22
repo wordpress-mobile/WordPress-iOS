@@ -1,10 +1,10 @@
-enum DashboardDynamicCardAnalyticsEvent: Hashable {
+public enum DashboardDynamicCardAnalyticsEvent: Hashable {
 
     case cardShown(id: String)
     case cardTapped(id: String, url: String?)
     case cardCtaTapped(id: String, url: String?)
 
-    var name: String {
+    public var name: String {
         switch self {
         case .cardShown: return "dynamic_dashboard_card_shown"
         case .cardTapped: return "dynamic_dashboard_card_tapped"
@@ -12,7 +12,7 @@ enum DashboardDynamicCardAnalyticsEvent: Hashable {
         }
     }
 
-    var properties: [String: String] {
+    public var properties: [String: String] {
         switch self {
         case .cardShown(let id):
             return [Keys.id: id]

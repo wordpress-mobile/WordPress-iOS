@@ -1,4 +1,5 @@
 import AVFoundation
+import WordPressShared
 import UIKit
 import QuartzCore
 import WordPressKit

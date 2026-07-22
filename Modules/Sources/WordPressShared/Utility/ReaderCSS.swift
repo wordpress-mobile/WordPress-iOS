@@ -1,10 +1,9 @@
 import Foundation
-import WordPressShared
 
 /// A struct that returns the Reader CSS URL
 /// If you need to fix an issue in the CSS, see pbArwn-GU-p2
 ///
-struct ReaderCSS {
+public struct ReaderCSS {
     private let store: KeyValueDatabase
 
     private let now: Int
@@ -14,7 +13,7 @@ struct ReaderCSS {
     private let expirationDays: Int = 5
 
     private var expirationDaysInSeconds: Int {
-        return expirationDays * 60 * 60 * 24
+        expirationDays * 60 * 60 * 24
     }
 
     static let updatedKey = "ReaderCSSLastUpdated"
@@ -22,9 +21,9 @@ struct ReaderCSS {
     /// Returns a custom Reader CSS URL
     /// This value can be changed under Settings > Debug
     ///
-    var customAddress: String? {
+    public var customAddress: String? {
         get {
-            return store.object(forKey: "reader-css-url") as? String
+            store.object(forKey: "reader-css-url") as? String
         }
         set {
             store.set(newValue, forKey: "reader-css-url")
@@ -34,9 +33,10 @@ struct ReaderCSS {
     /// Returns the Reader CSS appending a timestamp
     /// We force it to update based on the `expirationDays` property
     ///
-    var address: String {
+    public var address: String {
         guard let lastUpdated = store.object(forKey: type(of: self).updatedKey) as? Int,
-              now - lastUpdated < expirationDaysInSeconds || !isInternetReachable() else {
+            now - lastUpdated < expirationDaysInSeconds || !isInternetReachable()
+        else {
             saveCurrentDate()
             return url(appendingTimestamp: now)
         }
@@ -44,9 +44,11 @@ struct ReaderCSS {
         return url(appendingTimestamp: lastUpdated)
     }
 
-    init(now: Int = Int(Date().timeIntervalSince1970),
-         store: KeyValueDatabase = UserPersistentStoreFactory.instance(),
-         isInternetReachable: @escaping () -> Bool = ReachabilityUtils.isInternetReachable) {
+    public init(
+        now: Int = Int(Date().timeIntervalSince1970),
+        store: KeyValueDatabase = UserPersistentStoreFactory.instance(),
+        isInternetReachable: @escaping () -> Bool = ReachabilityUtils.isInternetReachable
+    ) {
         self.store = store
         self.now = now
         self.isInternetReachable = isInternetReachable

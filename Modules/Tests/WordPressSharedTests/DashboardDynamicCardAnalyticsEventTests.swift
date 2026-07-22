@@ -1,4 +1,4 @@
-@testable import WordPress
+@testable import WordPressShared
 import XCTest
 
 final class DashboardDynamicCardAnalyticsEventTests: XCTestCase {

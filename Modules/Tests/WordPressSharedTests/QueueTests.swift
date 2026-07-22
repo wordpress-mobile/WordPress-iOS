@@ -1,5 +1,5 @@
 import XCTest
-@testable import WordPress
+@testable import WordPressShared
 
 class QueueTests: XCTestCase {
     private var queue = Queue<Int>()

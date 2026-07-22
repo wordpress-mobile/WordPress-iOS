@@ -1,5 +1,5 @@
 import XCTest
-@testable import WordPress
+@testable import WordPressShared
 
 class QRLoginURLParserTests: XCTestCase {
     /// Test to make sure isValidHost returns true when passed a valid URL host

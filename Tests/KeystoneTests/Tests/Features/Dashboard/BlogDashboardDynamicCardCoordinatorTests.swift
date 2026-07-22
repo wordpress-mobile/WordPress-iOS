@@ -1,4 +1,5 @@
 @testable import WordPress
+import WordPressShared
 import XCTest
 
 final class BlogDashboardDynamicCardCoordinatorTests: XCTestCase {
