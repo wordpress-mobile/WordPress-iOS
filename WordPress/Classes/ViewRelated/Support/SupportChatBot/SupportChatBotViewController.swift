@@ -71,7 +71,7 @@ final class SupportChatBotViewController: UIViewController {
     }
 
     /// Creating DocsBotAI JavaScript code so we could tweak configuration from within Swift code
-    /// https://docsbot.ai/docs/embeddable-chat-widget
+    /// https://docsbot.ai/documentation/developer/embeddable-chat-widget
     private func createDocsBotInitCode() -> String {
         """
         (function() {

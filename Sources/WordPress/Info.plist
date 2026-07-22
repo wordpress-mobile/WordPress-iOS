@@ -481,16 +481,6 @@
 				<string>wordpressnotificationmigration</string>
 			</array>
 		</dict>
-		<dict>
-			<key>CFBundleTypeRole</key>
-			<string>Editor</string>
-			<key>CFBundleURLName</key>
-			<string>GoogleSignIn</string>
-			<key>CFBundleURLSchemes</key>
-			<array>
-				<string>com.googleusercontent.apps.108380595987-ujhrhknecrqli756i72gkcs4aaia6nhb</string>
-			</array>
-		</dict>
 	</array>
 	<key>CFBundleVersion</key>
 	<string>${VERSION_LONG}</string>
@@ -591,6 +581,8 @@
 	<string>public-api.wordpress.com</string>
 	<key>WPBuildConfiguration</key>
 	<string>${WP_BUILD_CONFIGURATION}</string>
+	<key>WPDocsBotId</key>
+	<string></string>
 	<key>WPEventNamePrefix</key>
 	<string>wpios</string>
 	<key>WPExplatPlatform</key>
@@ -605,6 +597,8 @@
 	<string>wordpress.org/news/</string>
 	<key>WPPushNotificationAppID</key>
 	<string>${WP_PUSH_NOTIFICATION_APP_ID}</string>
+	<key>WPSentryNoSchemeDSN</key>
+	<string>484d81126ac9483da3756876e80148ab@o248881.ingest.sentry.io/1438083</string>
 	<key>WPZendeskSourcePlatform</key>
 	<string>mobile_-_ios</string>
 </dict>

@@ -38,6 +38,12 @@ public struct BuildSettings: Sendable {
     public var zendeskSourcePlatform: String
     public var mobileAnnounceAppID: String
     public var authKeychainServiceName: String
+    /// See [Sentry: DSN utilization](https://docs.sentry.io/concepts/key-terms/dsn-explainer/#dsn-utilization)
+    public var sentryDSN: String
+    /// Empty outside Jetpack, the only app that presents the support chat bot.
+    ///
+    /// See [DocsBot: Embeddable Chat Widget](https://docsbot.ai/documentation/developer/embeddable-chat-widget)
+    public var docsBotId: String
 
     public struct ProductAboutDetails: Sendable {
         public var blogURL: URL

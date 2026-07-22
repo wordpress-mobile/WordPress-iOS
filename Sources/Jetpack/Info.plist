@@ -555,16 +555,6 @@
 				<string>jetpacknotificationmigration</string>
 			</array>
 		</dict>
-		<dict>
-			<key>CFBundleTypeRole</key>
-			<string>Editor</string>
-			<key>CFBundleURLName</key>
-			<string>GoogleSignIn</string>
-			<key>CFBundleURLSchemes</key>
-			<array>
-				<string>com.googleusercontent.apps.108380595987-qmh1rvuqi418cs6otokppnemo48288c9</string>
-			</array>
-		</dict>
 	</array>
 	<key>CFBundleVersion</key>
 	<string>$(CURRENT_PROJECT_VERSION)</string>
@@ -666,6 +656,8 @@
 	<string>jetpack.public-api.wordpress.com</string>
 	<key>WPBuildConfiguration</key>
 	<string>${WP_BUILD_CONFIGURATION}</string>
+	<key>WPDocsBotId</key>
+	<string>TqTdebbGjJeUjrmBIFjh/YbAMwiheXLs2Ue5j7elH</string>
 	<key>WPEventNamePrefix</key>
 	<string>jpios</string>
 	<key>WPExplatPlatform</key>
@@ -680,6 +672,8 @@
 	<string>jetpack.com/blog</string>
 	<key>WPPushNotificationAppID</key>
 	<string>${WP_PUSH_NOTIFICATION_APP_ID}</string>
+	<key>WPSentryNoSchemeDSN</key>
+	<string>ed059b31605743eb8cfb5034bc4a195c@o248881.ingest.sentry.io/5716771</string>
 	<key>WPZendeskSourcePlatform</key>
 	<string>mobile_-_jp_ios</string>
 </dict>

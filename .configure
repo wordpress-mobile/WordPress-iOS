@@ -5,27 +5,7 @@
   "files_to_copy": [
     {
       "file": "iOS/WPiOS/Secrets.swift",
-      "destination": "~/.configure/wordpress-ios/secrets/WordPress-Secrets.swift",
-      "encrypt": true
-    },
-    {
-      "file": "iOS/WPiOS/Secrets-Internal.swift",
-      "destination": "~/.configure/wordpress-ios/secrets/WordPress-Secrets-Internal.swift",
-      "encrypt": true
-    },
-    {
-      "file": "iOS/WPiOS/Secrets-Alpha.swift",
-      "destination": "~/.configure/wordpress-ios/secrets/WordPress-Secrets-Alpha.swift",
-      "encrypt": true
-    },
-    {
-      "file": "iOS/JPiOS/Jetpack-Secrets.swift",
-      "destination": "~/.configure/wordpress-ios/secrets/Jetpack-Secrets.swift",
-      "encrypt": true
-    },
-    {
-      "file": "iOS/Reader/Reader-Secrets.swift",
-      "destination": "~/.configure/wordpress-ios/secrets/Reader-Secrets.swift",
+      "destination": "~/.configure/wordpress-ios/secrets/Secrets.swift",
       "encrypt": true
     }
   ],

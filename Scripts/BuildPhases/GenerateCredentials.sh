@@ -1,4 +1,6 @@
-#!/bin/bash -euo pipefail
+#!/usr/bin/env bash
+
+set -euo pipefail
 
 # The Secrets File Sources
 SECRETS_ROOT="${HOME}/.configure/wordpress-ios/secrets"
@@ -47,13 +49,8 @@ function ensure_is_in_input_files_list() {
   fi
 }
 
-WORDPRESS_SECRETS_FILE="${SECRETS_ROOT}/WordPress-Secrets.swift"
-ensure_is_in_input_files_list $WORDPRESS_SECRETS_FILE
-JETPACK_SECRETS_FILE="${SECRETS_ROOT}/Jetpack-Secrets.swift"
-ensure_is_in_input_files_list $JETPACK_SECRETS_FILE
-
-READER_SECRETS_FILE="${SECRETS_ROOT}/Reader-Secrets.swift"
-ensure_is_in_input_files_list $READER_SECRETS_FILE
+SECRETS_FILE="${SECRETS_ROOT}/Secrets.swift"
+ensure_is_in_input_files_list $SECRETS_FILE
 
 LOCAL_SECRETS_FILE="${SRCROOT}/Credentials/Secrets.swift"
 EXAMPLE_SECRETS_FILE="${SRCROOT}/Credentials/Secrets-example.swift"
@@ -63,26 +60,10 @@ ensure_is_in_input_files_list $EXAMPLE_SECRETS_FILE
 SECRETS_DESTINATION_FILE="${SCRIPT_OUTPUT_FILE_0}"
 mkdir -p "$(dirname "$SECRETS_DESTINATION_FILE")"
 
-WORDPRESS_TARGETS=("WordPress" "WordPressShareExtension" "WordPressDraftActionExtension" "WordPressNotificationServiceExtension")
-# If the WordPress Production Secrets are available for WordPress, use them
-if [ -f "$WORDPRESS_SECRETS_FILE" ] && [[ " ${WORDPRESS_TARGETS[*]} " == *" $TARGET_NAME "* ]]; then
+# WordPress, Jetpack, and Reader use all the same secrets at this time.
+if [ -f "$SECRETS_FILE" ]; then
     echo "Applying Production Secrets"
-    cp -v "$WORDPRESS_SECRETS_FILE" "${SECRETS_DESTINATION_FILE}"
-    exit 0
-fi
-
-JETPACK_TARGETS=("Jetpack" "JetpackStatsWidgets" "JetpackShareExtension" "JetpackDraftActionExtension" "JetpackNotificationServiceExtension")
-# If the Jetpack Secrets are available and if we're building Jetpack use them
-if [ -f "$JETPACK_SECRETS_FILE" ] && [[ " ${JETPACK_TARGETS[*]} " == *" $TARGET_NAME "* ]]; then
-    echo "Applying Jetpack Secrets"
-    cp -v "$JETPACK_SECRETS_FILE" "${SECRETS_DESTINATION_FILE}"
-    exit 0
-fi
-
-# If the Reader Secrets are available and if we're building Reader use them
-if [ -f "$READER_SECRETS_FILE" ] && [ "${TARGET_NAME}" == "Reader" ]; then
-    echo "Applying Reader Secrets"
-    cp -v "$READER_SECRETS_FILE" "${SECRETS_DESTINATION_FILE}"
+    cp -v "$SECRETS_FILE" "${SECRETS_DESTINATION_FILE}"
     exit 0
 fi
 
