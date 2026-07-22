@@ -1,18 +1,9 @@
-import XCTest
+import Foundation
+import Testing
 
 @testable import WordPressShared
 
-class StringHelperTests: XCTestCase {
-
-    override func setUp() {
-        super.setUp()
-        // Put setup code here. This method is called before the invocation of each test method in the class.
-    }
-
-    override func tearDown() {
-        // Put teardown code here. This method is called after the invocation of each test method in the class.
-        super.tearDown()
-    }
+struct StringHelperTests {
 
     // Note:
     // Specially extra aligned for my RWC friends. With love.
@@ -23,16 +14,16 @@ class StringHelperTests: XCTestCase {
     let text = " Lorem Ipsum Matarem Les Idiotum Sarasum Zorrentum Modus Operandum "
     let anchor = "<a href=\"%@\">%@</a>"
 
-    func testLinkifyingPlainLinks() {
+    @Test func testLinkifyingPlainLinks() {
         var count = 0
         for link in links {
             let linkified = String(format: anchor, link, linkText[count])
-            XCTAssertEqual(link.stringWithAnchoredLinks(), linkified, "Oh noes!")
+            #expect(link.stringWithAnchoredLinks() == linkified, "Oh noes!")
             count += 1
         }
     }
 
-    func testLinkifyingLinksWithinText() {
+    @Test func testLinkifyingLinksWithinText() {
         var plain = String()
         var linkified = String()
 
@@ -43,41 +34,41 @@ class StringHelperTests: XCTestCase {
             count += 1
         }
 
-        XCTAssertEqual(plain.stringWithAnchoredLinks(), linkified, "Oh noes!")
+        #expect(plain.stringWithAnchoredLinks() == linkified, "Oh noes!")
     }
 
-    func testLinkifyingPlainText() {
-        XCTAssertEqual(text.stringWithAnchoredLinks(), text, "Oh noes!")
+    @Test func testLinkifyingPlainText() {
+        #expect(text.stringWithAnchoredLinks() == text, "Oh noes!")
     }
 
-    func testTrim() {
+    @Test func testTrim() {
         let trimmedString = "string string"
         let sourceString = "   \(trimmedString)   "
-        XCTAssert(trimmedString == sourceString.trim())
+        #expect(trimmedString == sourceString.trim())
     }
 
-    func testRemovePrefix() {
+    @Test func testRemovePrefix() {
         let string = "X-Post: This is a test"
-        XCTAssertEqual("This is a test", string.removingPrefix("X-Post: "))
-        XCTAssertEqual(string, string.removingPrefix("Something Else"))
+        #expect("This is a test" == string.removingPrefix("X-Post: "))
+        #expect(string == string.removingPrefix("Something Else"))
     }
 
-    func testRemoveSuffix() {
+    @Test func testRemoveSuffix() {
         let string = "http://example.com/"
-        XCTAssertEqual("http://example.com", string.removingSuffix("/"))
-        XCTAssertEqual("http://example", string.removingSuffix(".com/"))
-        XCTAssertEqual(string, string.removingSuffix(".org/"))
+        #expect("http://example.com" == string.removingSuffix("/"))
+        #expect("http://example" == string.removingSuffix(".com/"))
+        #expect(string == string.removingSuffix(".org/"))
     }
 
-    func testRemovePrefixPattern() {
+    @Test func testRemovePrefixPattern() {
         let string = "X-Post: This is a test"
-        XCTAssertEqual("This is a test", try! string.removingPrefix(pattern: "X-.*?: +"))
-        XCTAssertEqual(string, try! string.removingPrefix(pattern: "Th.* "))
+        #expect("This is a test" == (try! string.removingPrefix(pattern: "X-.*?: +")))
+        #expect(string == (try! string.removingPrefix(pattern: "Th.* ")))
     }
 
-    func testRemoveSuffixPattern() {
+    @Test func testRemoveSuffixPattern() {
         let string = "X-Post: This is a test"
-        XCTAssertEqual("X-Post: This is", try! string.removingSuffix(pattern: "( a)? +test"))
-        XCTAssertEqual(string, try! string.removingSuffix(pattern: "Th.* "))
+        #expect("X-Post: This is" == (try! string.removingSuffix(pattern: "( a)? +test")))
+        #expect(string == (try! string.removingSuffix(pattern: "Th.* ")))
     }
 }

@@ -1,77 +1,69 @@
-import XCTest
+import Testing
 import WordPressShared
 
-final class StringRankedSearchTests: XCTestCase {
-    func testScoreInRange() {
+struct StringRankedSearchTests {
+    @Test func testScoreInRange() {
         // High confidence
-        XCTAssertInRange(0.8...1.0, score("Appleseed", "Appleseed"))
-        XCTAssertInRange(0.8...1.0, score("John Appleseed", "Appleseed"))
-        XCTAssertInRange(0.8...1.0, score("John Appleseed", "John"))
-        XCTAssertInRange(0.8...1.0, score("John Appleseed", "App"))
-        XCTAssertInRange(0.8...1.0, score("John O'Appleseed", "App"))
-        XCTAssertInRange(0.8...1.0, score("john-appleseed", "j-a"))
-        XCTAssertInRange(0.8...1.0, score("#john-appleseed", "john"))
-        XCTAssertInRange(0.8...1.0, score("John Appleseed", "Apseed"))
+        expectInRange(0.8...1.0, score("Appleseed", "Appleseed"))
+        expectInRange(0.8...1.0, score("John Appleseed", "Appleseed"))
+        expectInRange(0.8...1.0, score("John Appleseed", "John"))
+        expectInRange(0.8...1.0, score("John Appleseed", "App"))
+        expectInRange(0.8...1.0, score("John O'Appleseed", "App"))
+        expectInRange(0.8...1.0, score("john-appleseed", "j-a"))
+        expectInRange(0.8...1.0, score("#john-appleseed", "john"))
+        expectInRange(0.8...1.0, score("John Appleseed", "Apseed"))
 
         // Medium confidence
-        XCTAssertInRange(0.5...0.8, score("John Appleseed", "A"))
-        XCTAssertInRange(0.5...0.8, score("John Appleseed", "Ap"))
-        XCTAssertInRange(0.5...0.8, score("John Appleseed", "ohn"))
-        XCTAssertInRange(0.5...0.8, score("#john-appleseed", "j-a"))
-        XCTAssertInRange(0.5...0.8, score("John Appleseed", "applex"))
+        expectInRange(0.5...0.8, score("John Appleseed", "A"))
+        expectInRange(0.5...0.8, score("John Appleseed", "Ap"))
+        expectInRange(0.5...0.8, score("John Appleseed", "ohn"))
+        expectInRange(0.5...0.8, score("#john-appleseed", "j-a"))
+        expectInRange(0.5...0.8, score("John Appleseed", "applex"))
 
         // Low confidence
-        XCTAssertInRange(0.2...0.5, score("John Appleseed", "Ae"))
-        XCTAssertInRange(0.2...0.5, score("John Appleseed", "Jn"))
+        expectInRange(0.2...0.5, score("John Appleseed", "Ae"))
+        expectInRange(0.2...0.5, score("John Appleseed", "Jn"))
 
         // Very low confidence
-        XCTAssertInRange(0.0...0.2, score("John Appleseed", "o"))
-        XCTAssertInRange(0.0...0.2, score("John Appleseed", "X"))
-        XCTAssertInRange(0.0...0.2, score("John Appleseed", "x"))
-        XCTAssertInRange(0.0...0.2, score("John Appleseed", "applexx"))
+        expectInRange(0.0...0.2, score("John Appleseed", "o"))
+        expectInRange(0.0...0.2, score("John Appleseed", "X"))
+        expectInRange(0.0...0.2, score("John Appleseed", "x"))
+        expectInRange(0.0...0.2, score("John Appleseed", "applexx"))
     }
 
-    func testBonuses() {
+    @Test func testBonuses() {
         // Bonus for the number of the matching words in the input.
-        XCTAssertLessThan(score("John Appleseed", "App"), score("Appleseed", "App"))
+        #expect(score("John Appleseed", "App") < score("Appleseed", "App"))
 
         // Bonus for distance between matches
-        XCTAssertLessThan(score("John Xxxx Appleseed", "John Appleseed"), score("John Appleseed Xxxx", "John Appleseed"))
+        #expect(score("John Xxxx Appleseed", "John Appleseed") < score("John Appleseed Xxxx", "John Appleseed"))
 
         // Bonus for distance between matches
-        XCTAssertLessThan(score("John Xxxx Appleseed", "John Appleseed"), score("John Appleseed Xxxx", "John Appleseed"))
+        #expect(score("John Xxxx Appleseed", "John Appleseed") < score("John Appleseed Xxxx", "John Appleseed"))
 
         // Bonus for distance between matches
-        XCTAssertLessThan(score("John Xxxx Appleseed", "John Appleseed"), score("Xxxx John Appleseed", "John Appleseed"))
+        #expect(score("John Xxxx Appleseed", "John Appleseed") < score("Xxxx John Appleseed", "John Appleseed"))
 
         // Bonus for more characters in a row
-        XCTAssertLessThan(score("Apxplesee", "App"), score("Appleseed", "App"))
+        #expect(score("Apxplesee", "App") < score("Appleseed", "App"))
 
         // Bonus for more characters in a row is higher than the penalty for a number of matches
-        XCTAssertLessThan(score("Apxplesee", "App"), score("John Appleseed", "App"))
+        #expect(score("Apxplesee", "App") < score("John Appleseed", "App"))
 
         // Bonus for more characters in a row is higher than the penalty for mismatches case.
-        XCTAssertLessThan(score("Apxplesee", "App"), score("appleseed", "App"))
+        #expect(score("Apxplesee", "App") < score("appleseed", "App"))
 
         // The diacritics are considered a match
-        XCTAssertLessThan(score("Kxhu", "Kahu"), score("Kāhu", "Kahu"))
+        #expect(score("Kxhu", "Kahu") < score("Kāhu", "Kahu"))
 
         // Bonus for exact match diacritics are present
-        XCTAssertLessThan(score("Kāhu", "Kahu"), score("Kahu", "Kahu"))
+        #expect(score("Kāhu", "Kahu") < score("Kahu", "Kahu"))
 
         // Bonus for exact match diacritics are present
-        XCTAssertLessThan(score("Kāhu", "Kahu"), score("Kāhu", "Kāhu"))
+        #expect(score("Kāhu", "Kahu") < score("Kāhu", "Kāhu"))
 
         // Bonus for number length match
-        XCTAssertLessThan(score("john-appleseed-xxxx", "project"), score("john-appleseed", "project"))
-    }
-
-    func xtestPerformance() throws {
-        measure {
-            for _ in 0..<10000 {
-                _ = score("John Appleseed", "John")
-            }
-        }
+        #expect(score("john-appleseed-xxxx", "project") < score("john-appleseed", "project"))
     }
 }
 
@@ -79,6 +71,10 @@ private func score(_ lhs: String, _ rhs: String) -> Double {
     StringRankedSearch(searchTerm: rhs).score(for: lhs)
 }
 
-private func XCTAssertInRange<T: Comparable>(_ range: some RangeExpression<T>, _ value: T, file: StaticString = #filePath, line: UInt = #line) {
-    XCTAssert(range.contains(value), "(\"\(value)\") is not in (\"\(range)\")", file: file, line: line)
+private func expectInRange<T: Comparable>(
+    _ range: some RangeExpression<T>,
+    _ value: T,
+    sourceLocation: SourceLocation = #_sourceLocation
+) {
+    #expect(range.contains(value), "(\"\(value)\") is not in (\"\(range)\")", sourceLocation: sourceLocation)
 }

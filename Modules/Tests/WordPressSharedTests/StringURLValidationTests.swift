@@ -1,11 +1,11 @@
-import XCTest
+import Testing
 @testable import WordPressShared
 
-class StringURLValidationTests: XCTestCase {
+struct StringURLValidationTests {
 
     // MARK: - Invalid URLs
 
-    func testInvalidURLs() {
+    @Test func testInvalidURLs() {
         let urls = [
             "invalidurl",
             "123123",
@@ -13,7 +13,7 @@ class StringURLValidationTests: XCTestCase {
 
         for url in urls {
             guard !url.isValidURL() else {
-                XCTFail("\(url) is valid (expected invalid).")
+                Issue.record("\(url) is valid (expected invalid).")
                 continue
             }
         }
@@ -21,7 +21,7 @@ class StringURLValidationTests: XCTestCase {
 
     // MARK: - Valid URLs
 
-    func testValidURLs() {
+    @Test func testValidURLs() {
         let urls = [
             "https://cheese-pc",
             "https://localhost",
@@ -30,7 +30,7 @@ class StringURLValidationTests: XCTestCase {
 
         for url in urls {
             guard url.isValidURL() else {
-                XCTFail("\(url) is invalid (expected valid).")
+                Issue.record("\(url) is invalid (expected valid).")
                 continue
             }
         }
