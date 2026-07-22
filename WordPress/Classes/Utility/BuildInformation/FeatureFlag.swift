@@ -124,7 +124,7 @@ extension FeatureFlag {
         case .nativeBlockInserter: "Native Block Inserter"
         case .statsAds: "Stats Ads Tab"
         case .mediaLibraryV2: "Media Library v2"
-        case .gbkMediaUploadOptimization: "Optimize Experimental Block Editor Uploads"
+        case .gbkMediaUploadOptimization: "NBE Media Upload Optimization"
         }
     }
 }

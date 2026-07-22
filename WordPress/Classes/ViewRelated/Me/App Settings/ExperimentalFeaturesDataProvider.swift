@@ -9,6 +9,7 @@ class ExperimentalFeaturesDataProvider: ExperimentalFeaturesViewModel.DataProvid
         FeatureFlag.intelligence,
         FeatureFlag.newStats,
         RemoteFeatureFlag.newGutenberg,
+        FeatureFlag.gbkMediaUploadOptimization,
         FeatureFlag.newSupport,
     ]
 
