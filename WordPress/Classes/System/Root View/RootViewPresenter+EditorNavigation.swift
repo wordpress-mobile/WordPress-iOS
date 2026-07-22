@@ -1,4 +1,5 @@
 import Foundation
+import SwiftUI
 import WordPressData
 import WordPressShared
 
@@ -40,6 +41,16 @@ extension RootViewPresenter {
         rootViewController.present(editor, animated: false)
     }
 
+    func showCoreRESTPostEditor(blog: Blog) {
+        if rootViewController.presentedViewController != nil {
+            rootViewController.dismiss(animated: false)
+        }
+
+        let properties = [WPAppAnalyticsKeyTapSource: "create_button", WPAppAnalyticsKeyPostType: "post"]
+        WPAppAnalytics.track(.editorCreatedPost, properties: properties, blog: blog)
+        presentCoreRESTEditor(blog: blog, postType: .posts)
+    }
+
     /// - parameter blog: Blog to a add a page to. Uses the current or last blog if not provided
     func showPageEditor(
         blog: Blog? = nil,
@@ -72,6 +83,45 @@ extension RootViewPresenter {
             [weak self] selectedLayout in
             self?.showEditor(blog: blog, title: selectedLayout?.title, content: selectedLayout?.content)
         }
+    }
+
+    func showCoreRESTPageEditor(blog: Blog, source: String = "create_button") {
+        guard rootViewController.presentedViewController == nil else {
+            rootViewController.dismiss(animated: true) { [weak self] in
+                self?.showCoreRESTPageEditor(blog: blog, source: source)
+            }
+            return
+        }
+        WPAnalytics.track(
+            WPAnalyticsEvent.editorCreatedPage,
+            properties: [WPAppAnalyticsKeyTapSource: source],
+            blog: blog
+        )
+        PageCoordinator.showLayoutPickerIfNeeded(from: rootViewController, forBlog: blog) {
+            [weak self] selectedLayout in
+            let initialContent = selectedLayout.map {
+                EditorContent(title: $0.title ?? "", content: $0.content)
+            }
+            self?.presentCoreRESTEditor(blog: blog, postType: .pages, initialContent: initialContent)
+        }
+    }
+
+    private func presentCoreRESTEditor(
+        blog: Blog,
+        postType: PinnedPostType,
+        initialContent: EditorContent? = nil
+    ) {
+        let controller = UIHostingController(rootView: AnyView(EmptyView()))
+        controller.rootView = AnyView(
+            CoreRESTPostEditorRoute(
+                blog: blog,
+                postType: postType,
+                initialContent: initialContent,
+                presentingViewController: controller
+            )
+        )
+        controller.modalPresentationStyle = .fullScreen
+        rootViewController.present(controller, animated: true)
     }
 
     private func showEditor(blog: Blog, title: String?, content: String?) {

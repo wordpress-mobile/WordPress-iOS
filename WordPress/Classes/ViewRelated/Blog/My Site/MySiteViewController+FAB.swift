@@ -1,19 +1,35 @@
 import UIKit
 import SwiftUI
+import WordPressData
 import WordPressShared
 
 extension MySiteViewController {
+
+    static func shouldUseCoreRESTEditor(for blog: Blog?) -> Bool {
+        guard let blog else { return false }
+        return blog.isSelfHosted && blog.isXMLRPCDisabled
+    }
 
     /// Make a create button coordinator with
     /// - Returns: CreateButtonCoordinator with new post, page, and story actions.
     @objc func makeCreateButtonCoordinator() -> CreateButtonCoordinator {
 
-        let newPage = {
-            RootViewCoordinator.sharedPresenter.showPageEditor()
+        let newPage = { [weak self] in
+            let presenter = RootViewCoordinator.sharedPresenter
+            if let blog = self?.blog, Self.shouldUseCoreRESTEditor(for: blog) {
+                presenter.showCoreRESTPageEditor(blog: blog)
+            } else {
+                presenter.showPageEditor()
+            }
         }
 
-        let newPost = {
-            RootViewCoordinator.sharedPresenter.showPostEditor()
+        let newPost = { [weak self] in
+            let presenter = RootViewCoordinator.sharedPresenter
+            if let blog = self?.blog, Self.shouldUseCoreRESTEditor(for: blog) {
+                presenter.showCoreRESTPostEditor(blog: blog)
+            } else {
+                presenter.showPostEditor()
+            }
         }
 
         let source = "my_site"
