@@ -23,7 +23,7 @@ public actor UserService: UserServiceProtocol {
     }
 
     public func fetchUsers() async throws {
-        let sequence = await client.api.users.sequenceWithEditContext(params: .init(perPage: 100))
+        let sequence = client.api.users.sequenceWithEditContext(params: .init(perPage: 100))
         var started = false
         for try await users in sequence {
             if !started {
