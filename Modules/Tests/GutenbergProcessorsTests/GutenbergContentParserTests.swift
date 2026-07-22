@@ -1,8 +1,8 @@
-import XCTest
+import Testing
 @testable import GutenbergProcessors
 import SwiftSoup
 
-class GutenbergContentParserTests: XCTestCase {
+struct GutenbergContentParserTests {
     let singleBlock = """
         <!-- wp:block {"id":1} -->
         <div class="wp-block"><p>Hello world!</p></div>
@@ -33,7 +33,7 @@ class GutenbergContentParserTests: XCTestCase {
         <!-- /wp:parent-block -->
         """
 
-    func testParserSingleBlock() {
+    @Test func testParserSingleBlock() {
         let parser = GutenbergContentParser(for: singleBlock)
         let blocks = parser.blocks
 
@@ -41,21 +41,21 @@ class GutenbergContentParserTests: XCTestCase {
             <div class="wp-block"><p>Hello world!</p></div>
             """
 
-        XCTAssertEqual(blocks.count, 1, "Should return one block")
+        #expect(blocks.count == 1, "Should return one block")
 
-        XCTAssertEqual(blocks[0].name, "wp:block", "Name should match block's name")
-        XCTAssertEqual(blocks[0].content, expectedBlockContent, "Content should match block's content")
-        XCTAssertEqual(blocks[0].attributes.count, 1, "Attributes should contain one item")
-        XCTAssertEqual(blocks[0].attributes["id"] as? Int, 1, "Id attribute matches block's attribute")
-        XCTAssertEqual(blocks[0].blocks.count, 0, "Shouldn't contain nested blocks")
+        #expect(blocks[0].name == "wp:block", "Name should match block's name")
+        #expect(blocks[0].content == expectedBlockContent, "Content should match block's content")
+        #expect(blocks[0].attributes.count == 1, "Attributes should contain one item")
+        #expect((blocks[0].attributes["id"] as? Int) == 1, "Id attribute matches block's attribute")
+        #expect(blocks[0].blocks.isEmpty, "Shouldn't contain nested blocks")
     }
 
-    func testParserSingleBlockToHTML() {
+    @Test func testParserSingleBlockToHTML() {
         let parser = GutenbergContentParser(for: singleBlock)
-        XCTAssertEqual(parser.html(), singleBlock, "Parsed content should match the original HTML")
+        #expect(parser.html() == singleBlock, "Parsed content should match the original HTML")
     }
 
-    func testParserNestedBlock() {
+    @Test func testParserNestedBlock() {
         let parser = GutenbergContentParser(for: nestedBlock)
         let blocks = parser.blocks
 
@@ -91,47 +91,45 @@ class GutenbergContentParserTests: XCTestCase {
         let nestedBlock1 = parentBlock.blocks[0]
         let nestedBlock2 = parentBlock.blocks[1]
 
-        XCTAssertEqual(blocks.count, 3, "Should return parent block and nested blocks")
-        XCTAssertEqual(blocks[1].content, nestedBlock1.content, "Nested block is present at root level")
-        XCTAssertEqual(blocks[2].content, nestedBlock2.content, "Nested block is present at root level")
+        #expect(blocks.count == 3, "Should return parent block and nested blocks")
+        #expect(blocks[1].content == nestedBlock1.content, "Nested block is present at root level")
+        #expect(blocks[2].content == nestedBlock2.content, "Nested block is present at root level")
 
-        XCTAssertEqual(parentBlock.name, "wp:parent-block", "Name should match block's name")
-        XCTAssertEqual(parentBlock.content, expectedParentBlockContent, "Content should match block's content")
-        XCTAssertEqual(parentBlock.attributes.count, 1, "Attributes should contain one item")
-        XCTAssertEqual(parentBlock.attributes["name"] as? String, "parent", "Name attribute matches block's attribute")
-        XCTAssertEqual(parentBlock.blocks.count, 2, "Should contain nested blocks")
+        #expect(parentBlock.name == "wp:parent-block", "Name should match block's name")
+        #expect(parentBlock.content == expectedParentBlockContent, "Content should match block's content")
+        #expect(parentBlock.attributes.count == 1, "Attributes should contain one item")
+        #expect((parentBlock.attributes["name"] as? String) == "parent", "Name attribute matches block's attribute")
+        #expect(parentBlock.blocks.count == 2, "Should contain nested blocks")
 
-        XCTAssertEqual(nestedBlock1.name, "wp:nested-block", "Name should match block's name")
-        XCTAssertEqual(nestedBlock1.content, expectedNestedBlock1Content, "Content should match block's content")
-        XCTAssertEqual(nestedBlock1.attributes.count, 2, "Attributes should contain two items")
-        XCTAssertEqual(nestedBlock1.attributes["id"] as? Int, 1, "Id attribute matches block's attribute")
-        XCTAssertEqual(nestedBlock1.attributes["name"] as? String, "block1", "Name attribute matches block's attribute")
-        XCTAssertEqual(nestedBlock1.blocks.count, 0, "Shouldn't contain nested blocks")
-        XCTAssertEqual(
-            nestedBlock1.parentBlock?.content,
-            parentBlock.content,
+        #expect(nestedBlock1.name == "wp:nested-block", "Name should match block's name")
+        #expect(nestedBlock1.content == expectedNestedBlock1Content, "Content should match block's content")
+        #expect(nestedBlock1.attributes.count == 2, "Attributes should contain two items")
+        #expect((nestedBlock1.attributes["id"] as? Int) == 1, "Id attribute matches block's attribute")
+        #expect((nestedBlock1.attributes["name"] as? String) == "block1", "Name attribute matches block's attribute")
+        #expect(nestedBlock1.blocks.isEmpty, "Shouldn't contain nested blocks")
+        #expect(
+            nestedBlock1.parentBlock?.content == parentBlock.content,
             "Should have a parent block and matches parent's content"
         )
 
-        XCTAssertEqual(nestedBlock2.name, "wp:nested-block", "Name should match block's name")
-        XCTAssertEqual(nestedBlock2.content, expectedNestedBlock2Content, "Content should match block's content")
-        XCTAssertEqual(nestedBlock2.attributes.count, 2, "Attributes should contain two items")
-        XCTAssertEqual(nestedBlock2.attributes["id"] as? Int, 2, "Id attribute matches block's attribute")
-        XCTAssertEqual(nestedBlock2.attributes["name"] as? String, "block2", "Name attribute matches block's attribute")
-        XCTAssertEqual(nestedBlock2.blocks.count, 0, "Shouldn't contain nested blocks")
-        XCTAssertEqual(
-            nestedBlock2.parentBlock?.content,
-            parentBlock.content,
+        #expect(nestedBlock2.name == "wp:nested-block", "Name should match block's name")
+        #expect(nestedBlock2.content == expectedNestedBlock2Content, "Content should match block's content")
+        #expect(nestedBlock2.attributes.count == 2, "Attributes should contain two items")
+        #expect((nestedBlock2.attributes["id"] as? Int) == 2, "Id attribute matches block's attribute")
+        #expect((nestedBlock2.attributes["name"] as? String) == "block2", "Name attribute matches block's attribute")
+        #expect(nestedBlock2.blocks.isEmpty, "Shouldn't contain nested blocks")
+        #expect(
+            nestedBlock2.parentBlock?.content == parentBlock.content,
             "Should have a parent block and matches parent's content"
         )
     }
 
-    func testParserNestedBlockToHTML() {
+    @Test func testParserNestedBlockToHTML() {
         let parser = GutenbergContentParser(for: nestedBlock)
-        XCTAssertEqual(parser.html(), nestedBlock, "Parsed content should match the original HTML")
+        #expect(parser.html() == nestedBlock, "Parsed content should match the original HTML")
     }
 
-    func testParserModifyAttributes() {
+    @Test func testParserModifyAttributes() {
         let parser = GutenbergContentParser(for: nestedBlock)
         let blocks = parser.blocks
         let parentBlock = blocks[0]
@@ -162,10 +160,10 @@ class GutenbergContentParserTests: XCTestCase {
             <!-- /wp:parent-block -->
             """
 
-        XCTAssertEqual(parser.html(), expectedResult, "Parsed content should contain the modifications")
+        #expect(parser.html() == expectedResult, "Parsed content should contain the modifications")
     }
 
-    func testParserModifyHTML() {
+    @Test func testParserModifyHTML() {
         let parser = GutenbergContentParser(for: nestedBlock)
         let blocks = parser.blocks
         let parentBlock = blocks[0]
@@ -195,12 +193,12 @@ class GutenbergContentParserTests: XCTestCase {
             <!-- /wp:parent-block -->
             """
 
-        XCTAssertEqual(parser.html(), expectedResult, "Parsed content should contain the modifications")
+        #expect(parser.html() == expectedResult, "Parsed content should contain the modifications")
     }
 
     // MARK: - Serialization contract
 
-    func testVoidElementsAreSelfClosed() {
+    @Test func testVoidElementsAreSelfClosed() {
         let input = """
             <!-- wp:x -->
             <div><hr><input type="text" required></div>
@@ -211,57 +209,57 @@ class GutenbergContentParserTests: XCTestCase {
             <div><hr /><input type="text" required /></div>
             <!-- /wp:x -->
             """
-        XCTAssertEqual(GutenbergContentParser(for: input).html(), expected)
+        #expect(GutenbergContentParser(for: input).html() == expected)
     }
 
-    func testEntitiesArePreserved() {
+    @Test func testEntitiesArePreserved() {
         let content = """
             <!-- wp:x -->
             <a href="?a=1&amp;b=2">Fish &amp; chips</a>
             <!-- /wp:x -->
             """
-        XCTAssertEqual(GutenbergContentParser(for: content).html(), content)
+        #expect(GutenbergContentParser(for: content).html() == content)
     }
 
-    func testRawTextElementsAreNotEscaped() {
+    @Test func testRawTextElementsAreNotEscaped() {
         // Regressing here would corrupt Custom HTML / embedded scripts.
         let content = """
             <!-- wp:html -->
             <script>if (1 < 2 && 3 > 2) { doThing(); }</script>
             <!-- /wp:html -->
             """
-        XCTAssertTrue(GutenbergContentParser(for: content).html().contains("1 < 2 && 3 > 2"))
+        #expect(GutenbergContentParser(for: content).html().contains("1 < 2 && 3 > 2"))
     }
 
-    func testPreformattedWhitespaceIsPreserved() {
+    @Test func testPreformattedWhitespaceIsPreserved() {
         let content = """
             <!-- wp:preformatted -->
             <pre>line one
               indented	tabbed</pre>
             <!-- /wp:preformatted -->
             """
-        XCTAssertEqual(GutenbergContentParser(for: content).html(), content)
+        #expect(GutenbergContentParser(for: content).html() == content)
     }
 
-    func testUnicodeIsPreserved() {
+    @Test func testUnicodeIsPreserved() {
         let content = """
             <!-- wp:x -->
             <p>café ☕ 日本語 — Alşksdf</p>
             <!-- /wp:x -->
             """
-        XCTAssertEqual(GutenbergContentParser(for: content).html(), content)
+        #expect(GutenbergContentParser(for: content).html() == content)
     }
 
-    func testContentWithoutBlockCommentsIsPassedThrough() {
+    @Test func testContentWithoutBlockCommentsIsPassedThrough() {
         let content = "<p>hello world</p>"
-        XCTAssertEqual(GutenbergContentParser(for: content).html(), content)
+        #expect(GutenbergContentParser(for: content).html() == content)
     }
 
-    func testEmptyContentProducesEmptyOutput() {
-        XCTAssertTrue(GutenbergContentParser(for: "").html().isEmpty)
+    @Test func testEmptyContentProducesEmptyOutput() {
+        #expect(GutenbergContentParser(for: "").html().isEmpty)
     }
 
-    func testMultipleSiblingBlocksArePreserved() {
+    @Test func testMultipleSiblingBlocksArePreserved() {
         let content = """
             <!-- wp:a -->
             <p>one</p>
@@ -270,17 +268,17 @@ class GutenbergContentParserTests: XCTestCase {
             <p>two</p>
             <!-- /wp:b -->
             """
-        XCTAssertEqual(GutenbergContentParser(for: content).html(), content)
+        #expect(GutenbergContentParser(for: content).html() == content)
     }
 
-    func testHTMLIsIdempotent() {
+    @Test func testHTMLIsIdempotent() {
         let parser = GutenbergContentParser(for: singleBlock)
-        XCTAssertEqual(parser.html(), parser.html())
+        #expect(parser.html() == parser.html())
     }
 
     // MARK: - Mutation propagation (SwiftSoup 2.12+ serialization-cache regression)
 
-    func testModifyNestedElementAttribute() throws {
+    @Test func testModifyNestedElementAttribute() throws {
         // The mutated <img> is nested inside <figure>; unlike a top-level element,
         // its change is dropped by SwiftSoup 2.12+ unless html() re-renders it.
         let parser = GutenbergContentParser(
@@ -290,15 +288,15 @@ class GutenbergContentParserTests: XCTestCase {
                 <!-- /wp:image -->
                 """
         )
-        let image = try XCTUnwrap(parser.blocks.first?.elements.select("img").first())
+        let image = try #require(parser.blocks.first?.elements.select("img").first())
         try image.attr("src", "https://example.com/new.jpg")
 
         let output = parser.html()
-        XCTAssertTrue(output.contains("src=\"https://example.com/new.jpg\""))
-        XCTAssertFalse(output.contains("local://old.jpg"))
+        #expect(output.contains("src=\"https://example.com/new.jpg\""))
+        #expect(!(output.contains("local://old.jpg")))
     }
 
-    func testModifyDeeplyNestedElement() throws {
+    @Test func testModifyDeeplyNestedElement() throws {
         let parser = GutenbergContentParser(
             for: """
                 <!-- wp:gallery -->
@@ -306,15 +304,15 @@ class GutenbergContentParserTests: XCTestCase {
                 <!-- /wp:gallery -->
                 """
         )
-        let image = try XCTUnwrap(parser.blocks.first?.elements.select("img").first())
+        let image = try #require(parser.blocks.first?.elements.select("img").first())
         try image.attr("src", "https://example.com/deep.jpg")
 
-        XCTAssertTrue(parser.html().contains("https://example.com/deep.jpg"))
+        #expect(parser.html().contains("https://example.com/deep.jpg"))
     }
 
     // MARK: - Attribute parsing
 
-    func testMissingAttributesParseToEmptyDictionary() throws {
+    @Test func testMissingAttributesParseToEmptyDictionary() throws {
         let parser = GutenbergContentParser(
             for: """
                 <!-- wp:spacer -->
@@ -322,10 +320,10 @@ class GutenbergContentParserTests: XCTestCase {
                 <!-- /wp:spacer -->
                 """
         )
-        XCTAssertTrue(try XCTUnwrap(parser.blocks.first).attributes.isEmpty)
+        #expect(try #require(parser.blocks.first).attributes.isEmpty)
     }
 
-    func testMalformedAttributesParseToEmptyDictionary() throws {
+    @Test func testMalformedAttributesParseToEmptyDictionary() throws {
         let parser = GutenbergContentParser(
             for: """
                 <!-- wp:x {not valid json} -->
@@ -333,10 +331,10 @@ class GutenbergContentParserTests: XCTestCase {
                 <!-- /wp:x -->
                 """
         )
-        XCTAssertTrue(try XCTUnwrap(parser.blocks.first).attributes.isEmpty)
+        #expect(try #require(parser.blocks.first).attributes.isEmpty)
     }
 
-    func testWrittenAttributesEscapeSlashesAndSortKeys() throws {
+    @Test func testWrittenAttributesEscapeSlashesAndSortKeys() throws {
         let parser = GutenbergContentParser(
             for: """
                 <!-- wp:file -->
@@ -344,8 +342,8 @@ class GutenbergContentParserTests: XCTestCase {
                 <!-- /wp:file -->
                 """
         )
-        try XCTUnwrap(parser.blocks.first).attributes = ["id": 100, "href": "https://example.com/f.pdf"]
+        try #require(parser.blocks.first).attributes = ["id": 100, "href": "https://example.com/f.pdf"]
         // JSONSerialization `.sortedKeys` orders "href" before "id" and escapes slashes.
-        XCTAssertTrue(parser.html().contains(#"{"href":"https:\/\/example.com\/f.pdf","id":100}"#))
+        #expect(parser.html().contains(#"{"href":"https:\/\/example.com\/f.pdf","id":100}"#))
     }
 }
