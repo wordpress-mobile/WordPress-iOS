@@ -23,6 +23,17 @@
         }
       }
     },
+    "ios-appintents.openError.postNotFound" : {
+      "comment" : "Error shown by Siri or the Shortcuts app when the post an App Intent should act on no longer exists.",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "The post could not be found."
+          }
+        }
+      }
+    },
     "ios-appintents.openError.siteNotFound" : {
       "comment" : "Error shown by Siri or the Shortcuts app when the site an App Intent should act on no longer exists.",
       "localizations" : {
@@ -56,6 +67,39 @@
         }
       }
     },
+    "ios-appintents.openPost.description" : {
+      "comment" : "Description of the App Intent that opens one of the user's posts or pages. Shown in the Shortcuts app.",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Opens one of your posts or pages in the app."
+          }
+        }
+      }
+    },
+    "ios-appintents.openPost.postParameter" : {
+      "comment" : "Label of the post parameter of the Open Post App Intent. Shown in the Shortcuts app.",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Post"
+          }
+        }
+      }
+    },
+    "ios-appintents.openPost.title" : {
+      "comment" : "Title of the App Intent that opens one of the user's posts or pages. Shown in the Shortcuts app and Spotlight.",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Open Post"
+          }
+        }
+      }
+    },
     "ios-appintents.openReader.description" : {
       "comment" : "Description of the App Intent that opens the Reader tab. Shown in the Shortcuts app.",
       "localizations" : {
@@ -63,6 +107,39 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Opens the Reader to browse blogs you follow."
+          }
+        }
+      }
+    },
+    "ios-appintents.openReaderPost.description" : {
+      "comment" : "Description of the App Intent that opens a Reader post. Shown in the Shortcuts app.",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Opens a post from your Reader in the app."
+          }
+        }
+      }
+    },
+    "ios-appintents.openReaderPost.postParameter" : {
+      "comment" : "Label of the post parameter of the Open Reader Post App Intent. Shown in the Shortcuts app.",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Post"
+          }
+        }
+      }
+    },
+    "ios-appintents.openReaderPost.title" : {
+      "comment" : "Title of the App Intent that opens a Reader post. Shown in the Shortcuts app and Spotlight.",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Open Reader Post"
           }
         }
       }
@@ -85,6 +162,50 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Open Stats"
+          }
+        }
+      }
+    },
+    "ios-appintents.postEntity.placeholderTitle" : {
+      "comment" : "Generic title shown in the Shortcuts app for a post in a saved shortcut that is no longer cached on this device.",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Post"
+          }
+        }
+      }
+    },
+    "ios-appintents.postEntity.typeName" : {
+      "comment" : "Type name of the post entity in the Shortcuts app, e.g. shown when picking a post.",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Post"
+          }
+        }
+      }
+    },
+    "ios-appintents.readerPostEntity.placeholderTitle" : {
+      "comment" : "Generic title shown in the Shortcuts app for a Reader post in a saved shortcut that is no longer cached on this device.",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Reader Post"
+          }
+        }
+      }
+    },
+    "ios-appintents.readerPostEntity.typeName" : {
+      "comment" : "Type name of the Reader post entity in the Shortcuts app, e.g. shown when picking a post.",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Reader Post"
           }
         }
       }
