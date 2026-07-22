@@ -188,6 +188,149 @@
         }
       }
     },
+    "ios-appintents.publishError.dateMustBeInFuture" : {
+      "comment" : "Error shown by Siri or the Shortcuts app when the chosen schedule date is not in the future.",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "The publish date must be in the future."
+          }
+        }
+      }
+    },
+    "ios-appintents.publishError.hasUnsavedChanges" : {
+      "comment" : "Error shown by Siri or the Shortcuts app when the post has local changes that must be resolved in the app before publishing.",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "The post has unsaved changes. Open it in the app to publish it."
+          }
+        }
+      }
+    },
+    "ios-appintents.publishError.isPage" : {
+      "comment" : "Error shown by Siri or the Shortcuts app when the selected item is a page, which publish App Intents do not support.",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Publishing pages is not supported."
+          }
+        }
+      }
+    },
+    "ios-appintents.publishError.notPublishable" : {
+      "comment" : "Error shown by Siri or the Shortcuts app when the post is not in a publishable state.",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "The post is already published or cannot be published."
+          }
+        }
+      }
+    },
+    "ios-appintents.publishError.postNotFound" : {
+      "comment" : "Error shown by Siri or the Shortcuts app when the post a publish or schedule App Intent should act on no longer exists.",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "The post could not be found."
+          }
+        }
+      }
+    },
+    "ios-appintents.publishError.publishingNotAllowed" : {
+      "comment" : "Error shown by Siri or the Shortcuts app when the signed-in user lacks the capability to publish posts on the site.",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "You don't have permission to publish posts on this site."
+          }
+        }
+      }
+    },
+    "ios-appintents.publishPost.confirmationDialog" : {
+      "comment" : "Confirmation dialog shown by Siri or the Shortcuts app before publishing. %1$@ is the post title.",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Publish “%1$@”?"
+          }
+        }
+      }
+    },
+    "ios-appintents.publishPost.description" : {
+      "comment" : "Description of the App Intent that publishes a post. Shown in the Shortcuts app.",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Publishes one of your draft, pending, or scheduled posts."
+          }
+        }
+      }
+    },
+    "ios-appintents.publishPost.postParameter" : {
+      "comment" : "Label of the post parameter of the Publish Post App Intent. Shown in the Shortcuts app.",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Post"
+          }
+        }
+      }
+    },
+    "ios-appintents.publishPost.publishedDialog" : {
+      "comment" : "Dialog shown by Siri or the Shortcuts app after a post was published. %1$@ is the post title.",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Published “%1$@”."
+          }
+        }
+      }
+    },
+    "ios-appintents.publishPost.scheduledDialog" : {
+      "comment" : "Dialog shown by Siri or the Shortcuts app when publishing a post scheduled it instead because its publish date is in the future. %1$@ is the post title, %2$@ the formatted publish date.",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Scheduled “%1$@” for %2$@."
+          }
+        }
+      }
+    },
+    "ios-appintents.publishPost.shortTitle" : {
+      "comment" : "Short title of the Publish Post shortcut tile in Spotlight and the Shortcuts app.",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Publish Post"
+          }
+        }
+      }
+    },
+    "ios-appintents.publishPost.title" : {
+      "comment" : "Title of the App Intent that publishes a post. Shown in the Shortcuts app and Spotlight.",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Publish Post"
+          }
+        }
+      }
+    },
     "ios-appintents.readerPostEntity.placeholderTitle" : {
       "comment" : "Generic title shown in the Shortcuts app for a Reader post in a saved shortcut that is no longer cached on this device.",
       "localizations" : {
@@ -206,6 +349,83 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Reader Post"
+          }
+        }
+      }
+    },
+    "ios-appintents.schedulePost.confirmationDialog" : {
+      "comment" : "Confirmation dialog shown by Siri or the Shortcuts app before scheduling. %1$@ is the post title, %2$@ the formatted publish date.",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Schedule “%1$@” for %2$@?"
+          }
+        }
+      }
+    },
+    "ios-appintents.schedulePost.description" : {
+      "comment" : "Description of the App Intent that schedules a post. Shown in the Shortcuts app.",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Schedules one of your draft, pending, or scheduled posts to publish at a future date."
+          }
+        }
+      }
+    },
+    "ios-appintents.schedulePost.postParameter" : {
+      "comment" : "Label of the post parameter of the Schedule Post App Intent. Shown in the Shortcuts app.",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Post"
+          }
+        }
+      }
+    },
+    "ios-appintents.schedulePost.publishedDialog" : {
+      "comment" : "Dialog shown by Siri or the Shortcuts app when scheduling published the post immediately because its date was no longer in the future. %1$@ is the post title.",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Published “%1$@”."
+          }
+        }
+      }
+    },
+    "ios-appintents.schedulePost.scheduledDialog" : {
+      "comment" : "Dialog shown by Siri or the Shortcuts app after a post was scheduled. %1$@ is the post title, %2$@ the formatted publish date.",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Scheduled “%1$@” for %2$@."
+          }
+        }
+      }
+    },
+    "ios-appintents.schedulePost.shortTitle" : {
+      "comment" : "Short title of the Schedule Post shortcut tile in Spotlight and the Shortcuts app.",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Schedule Post"
+          }
+        }
+      }
+    },
+    "ios-appintents.schedulePost.title" : {
+      "comment" : "Title of the App Intent that schedules a post. Shown in the Shortcuts app and Spotlight.",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Schedule Post"
           }
         }
       }
