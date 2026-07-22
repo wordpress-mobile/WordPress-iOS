@@ -1,6 +1,6 @@
 import Foundation
 import XCTest
-@testable import WordPress
+import WordPressShared
 
 // MARK: - NSAttributedString Unit Tests
 //
