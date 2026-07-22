@@ -4,17 +4,22 @@ Pass credentials as launch arguments. WordPress.com sign-in then completes autom
 
 ## WordPress.com account
 
-The quickest path is the helper script — it launches the app with the token and, optionally, resets first:
+The quickest path is **`make sim-login`** — it signs the running simulator into WordPress.com, prompting you to choose when more than one simulator is booted, and to paste a token if none is configured:
 
 ```bash
-Scripts/sim-signin.sh --wpcom-token <token>                 # Jetpack, booted simulator
-Scripts/sim-signin.sh --app wordpress --wpcom-token <token> # WordPress
-Scripts/sim-signin.sh --reset --wpcom-token <token>         # wipe existing state first
+make sim-login                # sign the running simulator into Jetpack
+make sim-login APP=wordpress  # WordPress instead of Jetpack
+make sim-login RESET=1        # wipe existing app state first
+make sim-login DEVICE=<udid>  # target a specific simulator
 ```
 
-With no `--device`, the script targets the running simulator (and prompts if more than one is booted). There's also a `make` shortcut that forwards to it: `make sim-login`, with optional `DEVICE=<udid>`, `APP=wordpress`, `RESET=1`, or `ARGS="…"` for any other flags.
+`make sim-login` forwards to `Scripts/sim-signin.sh`, which you can run directly with the same options as flags — `--app`, `--device`, `--reset`, `--wpcom-token` (or pass `ARGS="…"` through `make` for any flag without a dedicated variable):
 
-To set the token once and drop it from the command line, export `WPCOM_TOKEN` (e.g. in `~/.zshrc`) or write it to `~/.wpcom-token`; the script uses either when `--wpcom-token` is omitted. If none is set, it prompts you to paste one and offers to save it to `~/.wpcom-token` for next time.
+```bash
+Scripts/sim-signin.sh --app wordpress --reset
+```
+
+The token is resolved from `--wpcom-token`, then `WPCOM_TOKEN`, then `~/.wpcom-token`; if none is set it prompts you to paste one and offers to save it to `~/.wpcom-token` for next time. Set it once — export `WPCOM_TOKEN` in `~/.zshrc`, or write `~/.wpcom-token` — to skip the token entirely.
 
 Or launch directly with the bearer token. The app finishes sign-in automatically while it sits on the login screen — no taps required:
 
