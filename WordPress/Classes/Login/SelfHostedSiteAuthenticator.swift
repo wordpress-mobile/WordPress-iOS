@@ -145,7 +145,7 @@ struct SelfHostedSiteAuthenticator {
     }
 
     private func trackTypedError(_ error: SelfHostedSiteAuthenticator.SignInError, url: String) {
-        DDLogError("Unable to login to \(url): \(error.localizedDescription)")
+        Loggers.login.error("Unable to login to \(url): \(error.localizedDescription)")
 
         WPAnalytics.track(
             .applicationPasswordLogin,
@@ -167,6 +167,7 @@ struct SelfHostedSiteAuthenticator {
         do {
             details = try await internalClient.details(ofSite: site)
         } catch {
+            logFailure("Failed to discover the self-hosted site, so sign-in cannot continue.", error: error)
             trackTypedError(.authentication(error), url: site)
             throw .authentication(error)
         }
@@ -354,11 +355,19 @@ struct SelfHostedSiteAuthenticator {
         context: SignInContext
     ) async throws(SignInError) -> TaggedManagedObjectID<Blog> {
         // We still need to set the `Blog.xmlrpc`, because it's used all across the app.
-        let xmlrpc =
-            (try? await discoverXMLRPCEndpoint(site: credentials.siteUrl))
-            ?? URL(string: credentials.siteUrl)?.appending(component: "xmlrpc.php")
-        guard let xmlrpc else {
-            throw .xmlrpcEndpointNotFound
+        let xmlrpc: URL
+        do {
+            xmlrpc = try await discoverXMLRPCEndpoint(site: credentials.siteUrl)
+        } catch {
+            guard let fallback = URL(string: credentials.siteUrl)?.appending(component: "xmlrpc.php") else {
+                logFailure("Failed to find the site's XML-RPC endpoint, so sign-in cannot continue.", error: error)
+                throw .xmlrpcEndpointNotFound
+            }
+            logFailure(
+                "Failed to find the site's XML-RPC endpoint. Sign-in will use the default endpoint.",
+                error: error
+            )
+            xmlrpc = fallback
         }
 
         let api = WordPressAPI(
@@ -378,15 +387,33 @@ struct SelfHostedSiteAuthenticator {
         do {
             // site settings is only available to admin users. Ignore errors for now,
             // since we need to allow other users to sign in to the app too.
-            async let siteSettings_ = try? api.siteSettings.retrieveWithViewContext().data
+            async let siteSettings_: SiteSettingsWithViewContext? = {
+                do {
+                    return try await api.siteSettings.retrieveWithViewContext().data
+                } catch {
+                    logFailure("Failed to load the site's settings. Sign-in will continue without them.", error: error)
+                    return nil
+                }
+            }()
             async let isAdmin_ = api.users.retrieveMeWithEditContext().data.roles.contains(.administrator)
             async let jetpackSite_ = fetchJetpackSite(apiRootURL: apiRootURL, credentials: credentials)
             async let jetpackConnection_ = fetchJetpackConnectionData(apiRootURL: apiRootURL, credentials: credentials)
-            async let xmlrpcOptions_ = try? loadSiteOptions(xmlrpc: xmlrpc, details: credentials)
+            async let xmlrpcOptions_: [AnyHashable: Any]? = {
+                do {
+                    return try await loadSiteOptions(xmlrpc: xmlrpc, details: credentials)
+                } catch {
+                    logFailure(
+                        "Failed to load the site's XML-RPC options. Sign-in will continue without them.",
+                        error: error
+                    )
+                    return nil
+                }
+            }()
 
             (siteSettings, isAdmin, jetpackSite, jetpackConnection, xmlrpcOptions) =
                 try await (siteSettings_, isAdmin_, jetpackSite_, jetpackConnection_, xmlrpcOptions_)
         } catch {
+            logFailure("Failed to load the current user, so sign-in cannot continue.", error: error)
             throw .loadingSiteInfoFailure(error)
         }
 
@@ -466,20 +493,44 @@ struct SelfHostedSiteAuthenticator {
         siteRequest.setValue("Basic \(auth)", forHTTPHeaderField: "Authorization")
 
         // Ignoring the error cases, because the site may not connected to WP.com.
-        guard let (data, response) = try? await URLSession.shared.data(for: siteRequest),
-            (response as? HTTPURLResponse)?.statusCode == 200
-        else { return nil }
+        let data: Data
+        let response: URLResponse
+        do {
+            (data, response) = try await URLSession.shared.data(for: siteRequest)
+        } catch {
+            logFailure("Failed to load the Jetpack site information. Sign-in will continue without it.", error: error)
+            return nil
+        }
+
+        guard let response = response as? HTTPURLResponse else {
+            Loggers.login.error(
+                "The Jetpack site request returned an invalid response. Sign-in will continue without it."
+            )
+            return nil
+        }
+        guard response.statusCode == 200 else {
+            Loggers.login.error(
+                "The Jetpack site request returned HTTP status \(response.statusCode). Sign-in will continue without it."
+            )
+            return nil
+        }
 
         do {
             let result = try JSONDecoder().decode(SiteRequestResponse.self, from: data)
             let site = try JSONSerialization.jsonObject(with: Data(result.data.utf8))
-            if result.code == "success", let site = site as? NSDictionary {
-                return RemoteBlog(jsonDictionary: site)
-            } else {
+            guard result.code == "success" else {
+                Loggers.login.error(
+                    "The Jetpack site request failed with error code \(result.code). Sign-in will continue without it."
+                )
                 return nil
             }
+            guard let site = site as? NSDictionary else {
+                Loggers.login.error("The Jetpack site response could not be decoded. Sign-in will continue without it.")
+                return nil
+            }
+            return RemoteBlog(jsonDictionary: site)
         } catch {
-            DDLogError("Failed to parse jetpack site response: \(error)")
+            logFailure("Failed to decode the Jetpack site response. Sign-in will continue without it.", error: error)
             return nil
         }
     }
@@ -498,7 +549,15 @@ struct SelfHostedSiteAuthenticator {
             apiUrlResolver: WpOrgSiteApiUrlResolver(apiRootUrl: try! ParsedUrl.from(url: apiRootURL)),
             delegate: delegate
         )
-        return try? await client.connection().connectionData().data
+        do {
+            return try await client.connection().connectionData().data
+        } catch {
+            logFailure(
+                "Failed to load the Jetpack connection information. Sign-in will continue without it.",
+                error: error
+            )
+            return nil
+        }
     }
 
     private func parseCredentialsFromLaunchArguments() -> WpApiApplicationPasswordDetails? {
@@ -511,6 +570,107 @@ struct SelfHostedSiteAuthenticator {
         }
 
         return .init(siteUrl: siteURL, userLogin: user, password: pass)
+    }
+}
+
+private extension SelfHostedSiteAuthenticator {
+    func logFailure(_ message: String, error: Error) {
+        Loggers.login.error("\(message)")
+        log(error: error)
+    }
+
+    func log(error: Error) {
+        switch error {
+        case let error as AutoDiscoveryAttemptFailure:
+            log(error: error)
+        case let error as WpApiError:
+            log(error: error)
+        case let error as RequestExecutionError:
+            log(error: error)
+        case is DecodingError:
+            Loggers.login.error("The self-hosted response could not be decoded.")
+        case let error as URLError:
+            Loggers.login.error(
+                "The self-hosted request failed with a URL error. The error code was url_error_\(error.errorCode)."
+            )
+        case let error as WordPressOrgXMLRPCValidatorError:
+            Loggers.login.error(
+                "The site's XML-RPC endpoint could not be validated. The error code was validator_\(error.rawValue)."
+            )
+        case let error as WordPressOrgXMLRPCApiError:
+            Loggers.login.error("The site's XML-RPC request failed. The error code was api_\(error.rawValue).")
+        default:
+            let error = error as NSError
+            Loggers.login.error(
+                "The self-hosted request failed with an unexpected error. The error domain was \(error.domain), and the error code was \(error.code)."
+            )
+        }
+    }
+
+    func log(error: AutoDiscoveryAttemptFailure) {
+        switch error {
+        case .ParseSiteUrl:
+            Loggers.login.error("The site URL could not be parsed.")
+        case .FindApiRoot(_, .fetchHomepage(let error)),
+            .FetchAndParseApiRoot(_, _, .fetchApiRoot(let error)):
+            log(error: error)
+        case .FindApiRoot(_, .probablyNotAWordPressSite):
+            Loggers.login.error("The site does not appear to be a WordPress site.")
+        case .FindApiRoot(_, .restApiDisabled):
+            Loggers.login.error("The site's REST API is disabled.")
+        case .FetchAndParseApiRoot(_, _, .parseApiRoot):
+            Loggers.login.error("The site's REST API response could not be decoded.")
+        case .FetchAndParseApiRoot(_, _, .wpError(let errorCode, _, let statusCode)):
+            Loggers.login.error(
+                "The WordPress REST API request failed. The HTTP status code was \(statusCode). The error code was \(errorCode)."
+            )
+        case .FetchAndParseApiRoot(_, _, .applicationPasswordsNotSupported):
+            Loggers.login.error("The site does not support application passwords.")
+        }
+    }
+
+    func log(error: WpApiError) {
+        switch error {
+        case .InvalidHttpStatusCode(let statusCode, _, _):
+            Loggers.login.error(
+                "The self-hosted request returned an unexpected HTTP status. The HTTP status code was \(statusCode)."
+            )
+        case .RequestExecutionFailed(let statusCode, _, let reason, _, _):
+            logRequestExecutionFailure(statusCode: statusCode, reason: reason)
+        case .MediaFileNotFound:
+            Loggers.login.error("The requested media file was not found.")
+        case .ResponseParsingError:
+            Loggers.login.error("The WordPress REST API response could not be decoded.")
+        case .SiteUrlParsingError:
+            Loggers.login.error("The site URL could not be parsed.")
+        case .UnknownError(let statusCode, _, _, _):
+            Loggers.login.error(
+                "The self-hosted request failed with an unknown HTTP error. The HTTP status code was \(statusCode)."
+            )
+        case .WpError(let errorCode, _, let statusCode, _, _, _):
+            Loggers.login.error(
+                "The WordPress REST API request failed. The HTTP status code was \(statusCode). The error code was \(errorCode)."
+            )
+        }
+    }
+
+    func log(error: RequestExecutionError) {
+        switch error {
+        case .RequestExecutionFailed(let statusCode, _, let reason, _, _):
+            logRequestExecutionFailure(statusCode: statusCode, reason: reason)
+        case .MediaFileNotFound:
+            Loggers.login.error("The requested media file was not found.")
+        }
+    }
+
+    func logRequestExecutionFailure(statusCode: UInt32?, reason: RequestExecutionErrorReason) {
+        if let statusCode {
+            Loggers.login.error(
+                "The self-hosted request could not be completed. The HTTP status code was \(statusCode). The error was \(reason)."
+            )
+        } else {
+            Loggers.login.error("The self-hosted request could not be completed. The error was \(reason).")
+        }
     }
 }
 
