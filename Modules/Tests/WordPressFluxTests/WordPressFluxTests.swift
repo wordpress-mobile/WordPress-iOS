@@ -1,6 +1,9 @@
 import Testing
 import WordPressFlux
 
+// WordPressFlux's `Dispatcher` asserts it is only called from the main thread.
+// XCTest ran test methods on the main thread; Swift Testing runs them off the
+// main thread, so the suite is pinned to `@MainActor`.
 @MainActor
 struct WordPressFluxTests {
     @Test func testStoreReceivesActions() {
