@@ -46,6 +46,15 @@ let package = Package(
                 "WPUserAgentTests.swift"
             ],
             swiftSettings: [.swiftLanguageMode(.v5)]
+        ),
+        // The image/video upload transform engine. A leaf module (system
+        // frameworks only), so `swift test` here exercises it on the macOS host
+        // — no Xcode, no simulator, no wordpress-rs.
+        .testTarget(
+            name: "MediaTransformerTests",
+            dependencies: [.product(name: "MediaTransformer", package: "Modules")],
+            path: "Modules/Tests/MediaTransformerTests",
+            resources: [.process("Resources")]
         )
     ]
 )
