@@ -20,6 +20,15 @@ class WPWPUserAgentTests {
     }
 
     @Test
+    func userAgentFreezesOSVersion() {
+        // As of iOS/iPadOS 26, WebKit freezes the WKWebView user agent's OS version at "18_6".
+        // `webViewUserAgent` pins to that constant so it matches what real web views emit rather
+        // than reading the live `UIDevice.systemVersion` (which no WKWebView reports anymore).
+        let userAgent = WPUserAgent.defaultUserAgent(userDefaults: .standard)
+        #expect(userAgent.contains(" 18_6 like Mac OS X"))
+    }
+
+    @Test
     func wordPressUserAgentValue() throws {
         let userDefaults = UserDefaults.standard
         let appVersion = try #require(Bundle.main.infoDictionary?["CFBundleShortVersionString"] as? String)
