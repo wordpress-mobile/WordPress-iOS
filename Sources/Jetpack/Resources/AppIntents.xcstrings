@@ -1,0 +1,94 @@
+{
+  "sourceLanguage" : "en",
+  "strings" : {
+    "ios-appintents.newPost.description" : {
+      "comment" : "Description of the App Intent that opens the post editor. Shown in the Shortcuts app.",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Opens the editor to write a new post."
+          }
+        }
+      }
+    },
+    "ios-appintents.openError.notLoggedIn" : {
+      "comment" : "Error shown by Siri or the Shortcuts app when an App Intent runs while no account is signed in.",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Sign in to the app first to use this action."
+          }
+        }
+      }
+    },
+    "ios-appintents.openError.siteNotFound" : {
+      "comment" : "Error shown by Siri or the Shortcuts app when the site an App Intent should act on no longer exists.",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "The site could not be found."
+          }
+        }
+      }
+    },
+    "ios-appintents.openNotifications.description" : {
+      "comment" : "Description of the App Intent that opens the Notifications tab. Shown in the Shortcuts app.",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Opens your notifications."
+          }
+        }
+      }
+    },
+    "ios-appintents.openNotifications.title" : {
+      "comment" : "Title of the App Intent that opens the Notifications tab. Shown in the Shortcuts app and Spotlight.",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Open Notifications"
+          }
+        }
+      }
+    },
+    "ios-appintents.openReader.description" : {
+      "comment" : "Description of the App Intent that opens the Reader tab. Shown in the Shortcuts app.",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Opens the Reader to browse blogs you follow."
+          }
+        }
+      }
+    },
+    "ios-appintents.openStats.description" : {
+      "comment" : "Description of the App Intent that opens Stats for a site. Shown in the Shortcuts app.",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Opens the stats for one of your sites."
+          }
+        }
+      }
+    },
+    "ios-appintents.openStats.title" : {
+      "comment" : "Title of the App Intent that opens Stats for a site. Shown in the Shortcuts app and Spotlight.",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Open Stats"
+          }
+        }
+      }
+    }
+  },
+  "version" : "1.0"
+}
