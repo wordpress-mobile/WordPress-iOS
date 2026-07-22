@@ -1,7 +1,6 @@
 import WordPressKit
 import CoreData
 import WordPressShared
-import WordPressSharedUI
 
 extension WPAccount {
 

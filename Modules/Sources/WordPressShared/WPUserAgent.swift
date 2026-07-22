@@ -1,7 +1,8 @@
 import Foundation
+
+#if canImport(UIKit)
 import UIKit
-import WebKit
-import WordPressShared
+#endif
 
 @objc
 public class WPUserAgent: NSObject {
@@ -75,6 +76,7 @@ public class WPUserAgent: NSObject {
         // [^1]: https://github.com/WebKit/WebKit/blob/5fbb03ee1c6210c79779d6fa1a9e7290daa746d1/Source/WebCore/platform/ios/UserAgentIOS.mm#L88-L113
         // [^2]: https://github.com/WebKit/WebKit/blob/492140d27dbe/Source/WebKit/UIProcess/API/Cocoa/WKWebViewConfiguration.mm#L612
 
+        #if canImport(UIKit)
         let device = UIDevice.current
 
         let deviceModel = device.model // Example: "iPhone"
@@ -92,7 +94,15 @@ public class WPUserAgent: NSObject {
             osName = "iPhone OS"
         }
 
-        return "Mozilla/5.0 (\(deviceModel); CPU \(osName) \(osVersion) like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Mobile/15E148"
+        return
+            "Mozilla/5.0 (\(deviceModel); CPU \(osName) \(osVersion) like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Mobile/15E148"
+        #else
+        // `UIDevice` is unavailable on platforms without UIKit (e.g. macOS in cross-platform builds).
+        // The user agent is only consumed at runtime on iOS; this keeps `WPUserAgent` buildable elsewhere.
+        let version = ProcessInfo.processInfo.operatingSystemVersion
+        let osVersion = "\(version.majorVersion)_\(version.minorVersion)_\(version.patchVersion)"
+        return "Mozilla/5.0 (Macintosh; Intel Mac OS X \(osVersion)) AppleWebKit/605.1.15 (KHTML, like Gecko)"
+        #endif
     }
 }
 

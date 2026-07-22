@@ -1,6 +1,5 @@
 import Foundation
 import WordPressShared
-import WordPressSharedUI
 import WordPressKit
 
 private func apiBase(blog: Blog) -> URL? {
