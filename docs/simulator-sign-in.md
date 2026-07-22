@@ -9,17 +9,19 @@ The quickest path is **`make sim-login`** — it signs the running simulator int
 ```bash
 make sim-login                # sign the running simulator into Jetpack
 make sim-login APP=wordpress  # WordPress instead of Jetpack
-make sim-login RESET=1        # wipe existing app state first
+make sim-login RESET=1        # reinstall the app first (clean slate)
 make sim-login DEVICE=<udid>  # target a specific simulator
 ```
 
-`make sim-login` forwards to `Scripts/sim-signin.sh`, which you can run directly with the same options as flags — `--app`, `--device`, `--reset`, `--wpcom-token` (or pass `ARGS="…"` through `make` for any flag without a dedicated variable):
+`make sim-login` forwards to `Scripts/sim-signin.sh`, which you can run directly with the same options as flags — `--app`, `--device`, `--reset`:
 
 ```bash
 Scripts/sim-signin.sh --app wordpress --reset
 ```
 
-The token is resolved from `--wpcom-token`, then `WPCOM_TOKEN`, then `~/.wpcom-token`; if none is set it prompts you to paste one and offers to save it to `~/.wpcom-token` for next time. Set it once — export `WPCOM_TOKEN` in `~/.zshrc`, or write `~/.wpcom-token` — to skip the token entirely.
+`--reset` uninstalls and reinstalls the app for a clean slate — more thorough than the in-app data wipe (it also clears caches and cookies) and race-free (the reinstall is synchronous). The app must already be installed.
+
+The token is resolved from `WPCOM_TOKEN`, then `~/.wpcom-token`; if none is set the script prompts you to paste one (hidden) and offers to save it to `~/.wpcom-token` for next time. There's deliberately no command-line token flag — a token passed as an argument would be saved in your shell history. Set it once (export `WPCOM_TOKEN` in `~/.zshrc`, or write `~/.wpcom-token`) and you never pass it again.
 
 Or launch directly with the bearer token. The app finishes sign-in automatically while it sits on the login screen — no taps required:
 
@@ -29,6 +31,8 @@ xcrun simctl launch --terminate-running-process booted org.wordpress \
 ```
 
 The legacy `-ui-test-wpcom-token` argument is still accepted for backward compatibility.
+
+This raw form also saves the token in your shell history — `make sim-login` avoids that, since you never type the token. (Either way the token appears briefly in `ps` while `simctl launch` runs; that's inherent to passing it as a launch argument.)
 
 ## Self-hosted site
 
