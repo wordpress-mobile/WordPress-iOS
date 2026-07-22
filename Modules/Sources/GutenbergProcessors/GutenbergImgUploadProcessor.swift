@@ -1,13 +1,13 @@
 import Foundation
 
-class GutenbergImgUploadProcessor: GutenbergProcessor {
+public class GutenbergImgUploadProcessor: GutenbergProcessor {
 
     let mediaUploadID: Int32
     let remoteURLString: String
     let serverMediaID: Int
     static let imgClassIDPrefixAttribute = "wp-image-"
 
-    init(mediaUploadID: Int32, serverMediaID: Int, remoteURLString: String) {
+    public init(mediaUploadID: Int32, serverMediaID: Int, remoteURLString: String) {
         self.mediaUploadID = mediaUploadID
         self.serverMediaID = serverMediaID
         self.remoteURLString = remoteURLString
@@ -63,7 +63,7 @@ class GutenbergImgUploadProcessor: GutenbergProcessor {
         }
     }
 
-    func process(_ blocks: [GutenbergParsedBlock]) {
+    public func process(_ blocks: [GutenbergParsedBlock]) {
         processImageBlocks(blocks)
         processMediaTextBlocks(blocks)
     }

@@ -3,6 +3,7 @@ import Aztec
 import AztecExtensions
 import Combine
 import Foundation
+import GutenbergProcessors
 import WordPressData
 import WordPressKit
 import WordPressFlux

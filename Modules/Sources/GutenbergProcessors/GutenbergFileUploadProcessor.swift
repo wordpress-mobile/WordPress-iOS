@@ -1,6 +1,6 @@
 import Foundation
 
-class GutenbergFileUploadProcessor: GutenbergProcessor {
+public class GutenbergFileUploadProcessor: GutenbergProcessor {
     private struct FileBlockKeys {
         static var name = "wp:file"
         static var id = "id"
@@ -11,7 +11,7 @@ class GutenbergFileUploadProcessor: GutenbergProcessor {
     let remoteURLString: String
     let serverMediaID: Int
 
-    init(mediaUploadID: Int32, serverMediaID: Int, remoteURLString: String) {
+    public init(mediaUploadID: Int32, serverMediaID: Int, remoteURLString: String) {
         self.mediaUploadID = mediaUploadID
         self.serverMediaID = serverMediaID
         self.remoteURLString = remoteURLString
@@ -34,7 +34,7 @@ class GutenbergFileUploadProcessor: GutenbergProcessor {
         }
     }
 
-    func process(_ blocks: [GutenbergParsedBlock]) {
+    public func process(_ blocks: [GutenbergParsedBlock]) {
         processFileBlocks(blocks)
     }
 }

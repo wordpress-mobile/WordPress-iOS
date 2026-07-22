@@ -12,6 +12,7 @@ let package = Package(
         .library(name: "AsyncImageKit", targets: ["AsyncImageKit"]),
         .library(name: "DesignSystem", targets: ["DesignSystem"]),
         .library(name: "FormattableContentKit", targets: ["FormattableContentKit"]),
+        .library(name: "GutenbergProcessors", targets: ["GutenbergProcessors"]),
         .library(name: "JetpackStats", targets: ["JetpackStats"]),
         .library(name: "JetpackSocial", targets: ["JetpackSocial"]),
         .library(name: "JetpackStatsWidgetsCore", targets: ["JetpackStatsWidgetsCore"]),
@@ -335,6 +336,11 @@ let package = Package(
             ]
         ),
         .target(
+            name: "GutenbergProcessors",
+            dependencies: [.product(name: "SwiftSoup", package: "SwiftSoup")],
+            swiftSettings: [.swiftLanguageMode(.v5)]
+        ),
+        .target(
             name: "WordPressReader",
             dependencies: [
                 "AsyncImageKit",
@@ -400,6 +406,14 @@ let package = Package(
         ),
         .testTarget(name: "WordPressCoreTests", dependencies: [.target(name: "WordPressCore")]),
         .testTarget(name: "WordPressIntelligenceTests", dependencies: [.target(name: "WordPressIntelligence")]),
+        .testTarget(
+            name: "GutenbergProcessorsTests",
+            dependencies: [
+                .target(name: "GutenbergProcessors"),
+                .product(name: "SwiftSoup", package: "SwiftSoup")
+            ],
+            swiftSettings: [.swiftLanguageMode(.v5)]
+        ),
         .testTarget(name: "WordPressReaderTests", dependencies: [.target(name: "WordPressReader")]),
         .testTarget(
             name: "JetpackSocialTests",
@@ -484,6 +498,7 @@ enum XcodeSupport {
             "DesignSystem",
             "BuildSettingsKit",
             "FormattableContentKit",
+            "GutenbergProcessors",
             "JetpackSocial",
             "JetpackStats",
             "JetpackStatsWidgetsCore",

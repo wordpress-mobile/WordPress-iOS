@@ -13,7 +13,8 @@ let package = Package(
         .iOS(.v17)
     ],
     dependencies: [
-        .package(path: "Modules")
+        .package(path: "Modules"),
+        .package(url: "https://github.com/scinfu/SwiftSoup", exact: "2.13.6")
     ],
     targets: [
         .testTarget(
@@ -45,6 +46,15 @@ let package = Package(
                 "RichContentFormatterTests.swift",
                 "WPUserAgentTests.swift"
             ],
+            swiftSettings: [.swiftLanguageMode(.v5)]
+        ),
+        .testTarget(
+            name: "GutenbergProcessorsTests",
+            dependencies: [
+                .product(name: "GutenbergProcessors", package: "Modules"),
+                .product(name: "SwiftSoup", package: "SwiftSoup")
+            ],
+            path: "Modules/Tests/GutenbergProcessorsTests",
             swiftSettings: [.swiftLanguageMode(.v5)]
         )
     ]

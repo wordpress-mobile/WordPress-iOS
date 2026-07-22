@@ -1,5 +1,5 @@
 import XCTest
-@testable import WordPress
+@testable import GutenbergProcessors
 
 class GutenbergRefactoredGalleryUploadProcessorTests: XCTestCase {
     struct ImageUploadJob {
