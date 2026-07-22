@@ -130,7 +130,21 @@ if [[ -z "$token" ]]; then
     read -rs token || true
     printf "\n" >&2
     token="$(printf '%s' "$token" | tr -d '[:space:]')"
-    [[ -n "$token" ]] && printf "Token received (%s chars).\n" "${#token}" >&2
+    if [[ -n "$token" ]]; then
+        printf "Token received (%s chars).\n" "${#token}" >&2
+        printf "Save it to ~/.wpcom-token for next time? [y/N] " >&2
+        read -r save_reply || true
+        if [[ "$save_reply" =~ ^[Yy]$ ]]; then
+            token_file="$HOME/.wpcom-token"
+            # umask keeps the new file owner-only; chmod covers an existing, looser file.
+            if (umask 077; printf '%s\n' "$token" > "$token_file"); then
+                chmod 600 "$token_file" 2>/dev/null || true
+                printf "Saved to %s (mode 600).\n" "$token_file" >&2
+            else
+                printf "warning: could not write %s; continuing without saving.\n" "$token_file" >&2
+            fi
+        fi
+    fi
 fi
 
 if [[ -z "$token" ]]; then
