@@ -25,6 +25,7 @@ public enum FeatureFlag: Int, CaseIterable {
     case nativeBlockInserter
     case statsAds
     case mediaLibraryV2
+    case gbkMediaUploadOptimization
 
     /// Returns a boolean indicating if the feature is enabled.
     ///
@@ -80,6 +81,8 @@ public enum FeatureFlag: Int, CaseIterable {
             return BuildConfiguration.current == .debug
         case .mediaLibraryV2:
             return BuildConfiguration.current == .debug
+        case .gbkMediaUploadOptimization:
+            return true
         }
     }
 
@@ -121,6 +124,7 @@ extension FeatureFlag {
         case .nativeBlockInserter: "Native Block Inserter"
         case .statsAds: "Stats Ads Tab"
         case .mediaLibraryV2: "Media Library v2"
+        case .gbkMediaUploadOptimization: "Optimize Experimental Block Editor Uploads"
         }
     }
 }
