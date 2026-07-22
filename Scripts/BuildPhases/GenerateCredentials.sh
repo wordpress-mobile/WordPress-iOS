@@ -3,7 +3,7 @@
 set -euo pipefail
 
 # The Secrets File Sources
-SECRETS_ROOT="${HOME}/.configure/wordpress-ios/secrets"
+SECRETS_ROOT="${HOME}/.a8c-secrets/wordpress-ios@github.com@wordpress-mobile"
 
 # To help the Xcode build system optimize the build, we want to ensure each of
 # the secrets we want to copy is defined as an input file for the run script
@@ -86,7 +86,7 @@ fi
 # resort, unless building for Release.
 
 COULD_NOT_FIND_SECRET_MSG="Could not find secrets file at ${SECRETS_DESTINATION_FILE}. This is likely due to the source secrets being missing from ${SECRETS_ROOT}"
-INTERNAL_CONTRIBUTOR_MSG="If you are an internal contributor, run \`bundle exec fastlane run configure_apply\` to update your secrets and try again"
+INTERNAL_CONTRIBUTOR_MSG="If you are an internal contributor, run \`bundle exec fastlane configure_secrets\` to update your secrets and try again"
 EXTERNAL_CONTRIBUTOR_MSG="If you are an external contributor, run \`bundle exec rake init:oss\` to set up and use your own credentials"
 
 case $CONFIGURATION in
