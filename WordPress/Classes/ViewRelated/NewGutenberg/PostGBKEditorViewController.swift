@@ -16,6 +16,9 @@ class PostGBKEditorViewController: UIViewController, GutenbergKit.EditorViewCont
 
     private lazy var mediaPickerHelper = GutenbergMediaPickerHelper(context: self, blog: blog)
 
+    /// Retains the media upload processor, which the editor holds weakly.
+    private let mediaUploadProcessor: GBKMediaUploadProcessor
+
     private var keyboardShowObserver: Any?
     private var keyboardHideObserver: Any?
     private var keyboardFrame = CGRect.zero
@@ -55,10 +58,14 @@ class PostGBKEditorViewController: UIViewController, GutenbergKit.EditorViewCont
             dependencies: cachedDependencies,
             mediaPicker: MediaPickerController(blog: blog)
         )
+        self.mediaUploadProcessor = GBKMediaUploadProcessor(blog: blog)
 
         super.init(nibName: nil, bundle: nil)
 
         self.editorViewController.delegate = self
+        if FeatureFlag.gbkMediaUploadOptimization.enabled {
+            self.editorViewController.mediaUploadDelegate = mediaUploadProcessor
+        }
     }
 
     required init?(coder aDecoder: NSCoder) {
