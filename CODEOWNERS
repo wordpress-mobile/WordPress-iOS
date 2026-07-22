@@ -24,4 +24,4 @@ Dangerfile*           @wordpress-mobile/apps-infra-tooling
 .xcode-version        @wordpress-mobile/apps-infra-tooling
 
 # Secrets
-.configure-files/     @wordpress-mobile/apps-infra-tooling
+.a8c-secrets/         @wordpress-mobile/apps-infra-tooling
