@@ -13,26 +13,26 @@ usage() {
 Sign an iOS Simulator into WordPress.com with a bearer token, in one command.
 
 Usage:
-  Scripts/sim-signin.sh [options] --wpcom-token <token>
-  Scripts/sim-signin.sh [options] <token>
+  Scripts/sim-signin.sh [options]
 
 Options:
-  -t, --wpcom-token <token>      WordPress.com bearer token (or pass it positionally)
   -a, --app <jetpack|wordpress>  App to sign in (default: jetpack)
   -d, --device <udid|name>       Target simulator (default: the running one; prompts if several)
-  -r, --reset                    Wipe existing app data before signing in
+  -r, --reset                    Uninstall and reinstall the app first, for a clean slate
   -h, --help                     Show this help
 
 Examples:
-  Scripts/sim-signin.sh --wpcom-token <token>                 # Jetpack, booted simulator
-  Scripts/sim-signin.sh --app wordpress --wpcom-token <token> # WordPress
-  Scripts/sim-signin.sh --reset --wpcom-token <token>         # wipe existing state first
+  Scripts/sim-signin.sh                  # Jetpack, booted simulator
+  Scripts/sim-signin.sh --app wordpress  # WordPress
+  Scripts/sim-signin.sh --reset          # reinstall for a clean slate first
 
-Set the token once and omit it from the command line. Resolution order:
-  1. --wpcom-token (or positional)
-  2. WPCOM_TOKEN environment variable
-  3. ~/.wpcom-token file
-  4. otherwise the script prompts you to paste one
+The WordPress.com bearer token is read from (in order):
+  1. WPCOM_TOKEN environment variable
+  2. ~/.wpcom-token file
+  3. otherwise the script prompts you to paste one (and offers to save it to ~/.wpcom-token)
+
+It is deliberately NOT accepted as a command-line flag: a token passed on the command line
+would be saved in your shell history. Set WPCOM_TOKEN or write ~/.wpcom-token once.
 EOF
 }
 
@@ -40,14 +40,6 @@ app="jetpack"
 device=""
 reset=false
 token=""
-
-set_token() {
-    if [[ -n "$token" ]]; then
-        echo "error: token already set (got '$1')" >&2
-        exit 1
-    fi
-    token="$1"
-}
 
 require_value() {
     # $1 = option name, $2 = remaining argument count ($#)
@@ -62,7 +54,9 @@ resolve_device() {
     # prompt to choose. Errors if none are booted. Called only when --device was omitted.
     local udids=() names=() line udid name
     while IFS= read -r line; do
-        udid=$(printf '%s\n' "$line" | grep -oiE '[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}' | head -1)
+        # `|| true` so a UUID-less line (or a SIGPIPE from `head` under `pipefail`) doesn't
+        # trip `set -e` and abort the whole script before the `continue` below can skip it.
+        udid=$(printf '%s\n' "$line" | grep -oiE '[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}' | head -1 || true)
         [[ -z "$udid" ]] && continue
         name=$(printf '%s\n' "$line" | sed -E 's/^[[:space:]]*//; s/[[:space:]]*\([0-9A-Fa-f-]{36}\).*$//')
         udids+=("$udid")
@@ -102,20 +96,42 @@ resolve_device() {
     done
 }
 
+reset_app() {
+    # A clean slate: uninstall the app (which removes its entire data container — Core Data,
+    # UserDefaults, caches, cookies) and reinstall the same bundle. Unlike the in-app
+    # `-ui-test-reset-everything` wipe, `simctl install` is synchronous, so there's no window to
+    # race before the sign-in launch, and it clears more than just Core Data + UserDefaults.
+    local app_bundle bundle_name
+    app_bundle=$(xcrun simctl get_app_container "$device" "$bundle_id" app 2>/dev/null || true)
+    if [[ -z "$app_bundle" || ! -d "$app_bundle" ]]; then
+        echo "error: can't reset — $app ($bundle_id) isn't installed on '$device'. Build and install it first (e.g. from Xcode)." >&2
+        exit 1
+    fi
+    bundle_name=$(basename "$app_bundle")
+
+    # Uninstall deletes the installed bundle in place, so stage a copy to reinstall from.
+    # `reset_staging` is intentionally global so the EXIT trap can clean it up at script exit.
+    reset_staging=$(mktemp -d)
+    trap 'rm -rf "$reset_staging"' EXIT
+    cp -R "$app_bundle" "$reset_staging/$bundle_name"
+
+    echo "Resetting $app (uninstall + reinstall for a clean slate)…"
+    xcrun simctl uninstall "$device" "$bundle_id"
+    xcrun simctl install "$device" "$reset_staging/$bundle_name"
+}
+
 while [[ $# -gt 0 ]]; do
     case "$1" in
-        -t|--wpcom-token) require_value "$1" "$#"; set_token "$2"; shift 2 ;;
         -a|--app) require_value "$1" "$#"; app="$2"; shift 2 ;;
         -d|--device) require_value "$1" "$#"; device="$2"; shift 2 ;;
         -r|--reset) reset=true; shift ;;
         -h|--help) usage; exit 0 ;;
-        -*) echo "error: unknown option '$1'" >&2; usage >&2; exit 1 ;;
-        *) set_token "$1"; shift ;;
+        *) echo "error: unknown argument '$1'" >&2; usage >&2; exit 1 ;;
     esac
 done
 
-# Fall back to a token set once elsewhere, so it needn't be passed every launch:
-# the WPCOM_TOKEN environment variable, then a ~/.wpcom-token file.
+# The token is read from the WPCOM_TOKEN environment variable, then a ~/.wpcom-token file.
+# It is intentionally not a command-line argument, to keep it out of shell history.
 if [[ -z "$token" ]]; then
     token="${WPCOM_TOKEN:-}"
 fi
@@ -125,7 +141,7 @@ fi
 
 # Nothing found anywhere — prompt for one. Input is hidden, since it's a secret.
 if [[ -z "$token" ]]; then
-    printf "No WordPress.com token found (--wpcom-token / WPCOM_TOKEN / ~/.wpcom-token).\n" >&2
+    printf "No WordPress.com token found (WPCOM_TOKEN / ~/.wpcom-token).\n" >&2
     printf "Paste a bearer token (hidden), or press Return to cancel: " >&2
     read -rs token || true
     printf "\n" >&2
@@ -148,7 +164,7 @@ if [[ -z "$token" ]]; then
 fi
 
 if [[ -z "$token" ]]; then
-    echo "error: no token — pass --wpcom-token <token>, set WPCOM_TOKEN, write ~/.wpcom-token, or paste one when prompted" >&2
+    echo "error: no token — set WPCOM_TOKEN, write ~/.wpcom-token, or paste one when prompted" >&2
     usage >&2
     exit 1
 fi
@@ -167,10 +183,7 @@ fi
 echo "Signing $app ($bundle_id) into WordPress.com on simulator '$device'…"
 
 if [[ "$reset" == true ]]; then
-    echo "Resetting app data…"
-    xcrun simctl launch --terminate-running-process "$device" "$bundle_id" -ui-test-reset-everything
-    # Give the app a moment to wipe Core Data + UserDefaults before relaunching.
-    sleep 2
+    reset_app
 fi
 
 xcrun simctl launch --terminate-running-process "$device" "$bundle_id" -wpcom-token "$token"
