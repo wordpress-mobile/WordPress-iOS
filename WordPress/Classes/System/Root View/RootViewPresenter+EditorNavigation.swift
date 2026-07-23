@@ -75,37 +75,4 @@ extension RootViewPresenter {
             }
         }
     }
-
-    // These forwarding overloads keep existing creation callers source-compatible while
-    // they move to the semantic APIs in follow-up changes.
-    func showPostEditor(
-        animated: Bool = true,
-        blog: Blog? = nil,
-        completion afterDismiss: (() -> Void)? = nil
-    ) {
-        showNewPostEditor(
-            blog: blog,
-            context: NewPostEditorContext(
-                analytics: .editorCreatedPost(source: "create_button", postType: "post"),
-                animated: animated,
-                afterDismiss: afterDismiss
-            )
-        )
-    }
-
-    func showPageEditor(
-        blog: Blog? = nil,
-        title: String? = nil,
-        content: String? = nil,
-        source: String = "create_button"
-    ) {
-        showNewPageEditor(
-            blog: blog,
-            context: NewPostEditorContext(
-                title: title,
-                content: content,
-                analytics: .editorCreatedPage(source: source)
-            )
-        )
-    }
 }
