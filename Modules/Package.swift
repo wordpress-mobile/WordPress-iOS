@@ -340,7 +340,6 @@ let package = Package(
                 "WordPressShared",
                 "WordPressSharedUI",
                 "WordPressKit",
-                "WordPressUI",
                 .product(name: "CocoaLumberjack", package: "CocoaLumberjack"),
                 .product(name: "CocoaLumberjackSwift", package: "CocoaLumberjack"),
                 .product(name: "Gravatar", package: "Gravatar-SDK-iOS"),
