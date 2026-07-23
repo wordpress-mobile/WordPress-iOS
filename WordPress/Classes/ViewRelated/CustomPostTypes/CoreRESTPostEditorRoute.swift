@@ -6,18 +6,27 @@ struct CoreRESTPostEditorRoute: View {
     let blog: Blog
     let postType: PinnedPostType
     let initialContent: EditorContent?
-    let presentingViewController: UIViewController
+    weak var presentingViewController: UIViewController?
 
     @Environment(\.dismiss) private var dismiss
 
     var body: some View {
         NavigationStack {
-            ApplicationPasswordRequiredView(
-                blog: blog,
-                localizedFeatureName: Strings.featureName,
-                source: "block_editor",
-                presentingViewController: presentingViewController
-            ) { client in
+            if let presentingViewController {
+                content(presentingViewController: presentingViewController)
+            }
+        }
+    }
+
+    @ViewBuilder
+    private func content(presentingViewController: UIViewController) -> some View {
+        ApplicationPasswordRequiredView(
+            blog: blog,
+            localizedFeatureName: Strings.featureName,
+            source: "block_editor",
+            presentingViewController: presentingViewController
+        ) { [weak presentingViewController] client in
+            if let presentingViewController {
                 PinnedPostTypeView<AnyView>(
                     blog: blog,
                     service: CustomPostTypeService(client: client, blog: blog),
@@ -38,11 +47,11 @@ struct CoreRESTPostEditorRoute: View {
                     )
                 }
             }
-            .toolbar {
-                ToolbarItem(placement: .cancellationAction) {
-                    Button(SharedStrings.Button.close) {
-                        dismiss()
-                    }
+        }
+        .toolbar {
+            ToolbarItem(placement: .cancellationAction) {
+                Button(SharedStrings.Button.close) {
+                    dismiss()
                 }
             }
         }
