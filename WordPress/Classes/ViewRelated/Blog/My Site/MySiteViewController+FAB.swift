@@ -55,18 +55,14 @@ extension MySiteViewController {
         let viewModel = VoiceToContentViewModel(blog: blog) { [weak self] transcription in
             guard let self else { return }
             self.dismiss(animated: true) {
-                let presenter = RootViewCoordinator.sharedPresenter
-                let post = blog.createDraftPost()
-                post.voiceContent = transcription
-                WPAppAnalytics.track(
-                    .editorCreatedPost,
-                    properties: [
-                        WPAppAnalyticsKeyTapSource: "create_button",
-                        WPAppAnalyticsKeyPostType: "post"
-                    ],
-                    blog: blog
+                PostEditorRouter.showNewPost(
+                    for: blog,
+                    from: self,
+                    context: NewPostEditorContext(
+                        voiceContent: transcription,
+                        analytics: .editorCreatedPost(source: "create_button", postType: "post")
+                    )
                 )
-                presenter.showPostEditor(post: post)
             }
         }
         let view = VoiceToContentView(viewModel: viewModel)

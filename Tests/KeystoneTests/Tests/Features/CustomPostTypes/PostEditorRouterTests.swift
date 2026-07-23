@@ -42,6 +42,13 @@ struct PostEditorRouterTests {
         )
     }
 
+    @Test("uses voice output instead of seeded content")
+    func usesVoiceContent() throws {
+        let context = NewPostEditorContext(content: "old", voiceContent: "voice blocks")
+
+        #expect(try context.makeEditorContent().content == "voice blocks")
+    }
+
     @Test("preserves initial media order as Core REST blocks")
     func preservesMediaOrder() throws {
         let contextManager = ContextManager.forTesting()
@@ -63,6 +70,29 @@ struct PostEditorRouterTests {
         #expect(firstRange.lowerBound < secondRange.lowerBound)
         #expect(html.contains("<!-- wp:image"))
         #expect(html.contains("<!-- wp:video"))
+    }
+
+    @Test("maps audio and PowerPoint media to Core REST blocks")
+    func mapsRemainingMediaTypes() throws {
+        let contextManager = ContextManager.forTesting()
+        let audio = MediaBuilder(contextManager.mainContext).build()
+        audio.mediaID = 3
+        audio.mediaType = .audio
+        audio.remoteURL = "https://example.com/episode.mp3"
+        let presentation = MediaBuilder(contextManager.mainContext).build()
+        presentation.mediaID = 4
+        presentation.mediaType = .powerpoint
+        presentation.filename = "Slides.pptx"
+        presentation.remoteURL = "https://example.com/slides.pptx"
+
+        let html = try NewPostEditorContext(initialMedia: [audio, presentation])
+            .makeEditorContent()
+            .content
+
+        #expect(html.contains("<!-- wp:audio"))
+        #expect(html.contains(#"<audio controls src="https://example.com/episode.mp3"></audio>"#))
+        #expect(html.contains("<!-- wp:file"))
+        #expect(html.contains(#"<a href="https://example.com/slides.pptx">Slides.pptx</a>"#))
     }
 
     @Test("throws for invalid uploaded Core REST media")
