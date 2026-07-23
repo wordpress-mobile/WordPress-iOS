@@ -338,7 +338,6 @@ let package = Package(
                 "FormattableContentKit",
                 "SFHFKeychainUtils",
                 "WordPressShared",
-                "WordPressSharedUI",
                 "WordPressKit",
                 .product(name: "CocoaLumberjack", package: "CocoaLumberjack"),
                 .product(name: "CocoaLumberjackSwift", package: "CocoaLumberjack"),

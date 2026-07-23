@@ -1,7 +1,6 @@
 import CoreData
 import WordPressKit
 import WordPressShared
-import WordPressSharedUI
 
 extension ReaderPost {
     /// Finds an existing `ReaderPost` matching the given `globalID` and `topic`,
