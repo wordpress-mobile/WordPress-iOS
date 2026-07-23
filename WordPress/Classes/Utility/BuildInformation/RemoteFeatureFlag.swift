@@ -203,7 +203,7 @@ public enum RemoteFeatureFlag: Int, CaseIterable {
         case .dotComWebLogin:
             return "Log in to WordPress.com from web browser"
         case .newGutenberg:
-            return "New Block Editor (NBE)"
+            return "Experimental Block Editor"
         case .newGutenbergPlugins:
             return "Experimental Block Editor Plugins"
         case .statsAds:
