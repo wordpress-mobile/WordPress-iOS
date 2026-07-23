@@ -1,7 +1,5 @@
-* [*] [internal] Experimental Gutenberg editor: add Lockdown Mode detection [#25776]
-* [*] [internal] In-app updates: guard the flexible update notice against double-posting when two update checks race [#25666]
-* [*] [build tooling] Add a String Catalog localization pipeline (plurals + build-free catalog generation) with a CI coverage gate [#25688]
-* [*] Fix categories and tags not working on self-hosted sites with XML-RPC disabled [#25767]
-* [*] Fix Blogging Reminders text color in dark mode [#25780]
-* [*] Share extensions: Fix the site picker showing an error while sites are still loading [#25798]
-* [*] Share Extension: Fix a crash after uploading a post to WordPress.com [#25773]
+We squashed a few bugs.
+
+- Categories and tags now work properly on self-hosted sites.
+- Text on the Blogging Reminders screen is visible in dark mode. No more hide-and-seek.
+- You’ll no longer see an error when choosing a site from a share sheet action while your sites are still loading. We also updated the site picker design to match other areas of the app, because it was keeping us up at night.
