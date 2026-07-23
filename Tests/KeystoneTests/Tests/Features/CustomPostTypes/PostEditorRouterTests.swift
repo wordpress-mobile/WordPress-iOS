@@ -1,0 +1,187 @@
+import Foundation
+import Testing
+
+@testable import WordPress
+@testable import WordPressData
+
+@MainActor
+struct PostEditorRouterTests {
+    @Test("selects Core REST for sites using Custom Post Types views")
+    func selectsCoreREST() {
+        let contextManager = ContextManager.forTesting()
+        let blog = BlogBuilder(contextManager.mainContext).build()
+        blog.isXMLRPCDisabled = true
+        #expect(PostEditorRouter.destination(for: blog) == .coreREST)
+    }
+
+    @Test("selects legacy for other sites")
+    func selectsLegacy() {
+        let contextManager = ContextManager.forTesting()
+        let blog = BlogBuilder(contextManager.mainContext).build()
+        blog.isXMLRPCDisabled = false
+        #expect(PostEditorRouter.destination(for: blog) == .legacy)
+    }
+
+    @Test("converts title content and tags for Core REST")
+    func convertsCoreRESTValues() throws {
+        let contextManager = ContextManager.forTesting()
+        let blog = BlogBuilder(contextManager.mainContext).build()
+        let context = NewPostEditorContext(
+            title: "Title",
+            content: "<!-- wp:paragraph --><p>Body</p><!-- /wp:paragraph -->",
+            tags: "swift, ios"
+        )
+
+        #expect(try context.makeEditorContent().title == "Title")
+        #expect(try context.makeEditorContent().content.contains("Body"))
+        #expect(
+            context.makePostSettings(for: blog).tags == [
+                PostSettings.Term(id: 0, name: "swift"),
+                PostSettings.Term(id: 0, name: "ios")
+            ]
+        )
+    }
+
+    @Test("preserves initial media order as Core REST blocks")
+    func preservesMediaOrder() throws {
+        let contextManager = ContextManager.forTesting()
+        let first = MediaBuilder(contextManager.mainContext).build()
+        first.mediaID = 1
+        first.mediaType = .image
+        first.remoteURL = "https://example.com/one.jpg"
+        let second = MediaBuilder(contextManager.mainContext).build()
+        second.mediaID = 2
+        second.mediaType = .video
+        second.remoteURL = "https://example.com/two.mp4"
+
+        let html = try NewPostEditorContext(initialMedia: [first, second])
+            .makeEditorContent()
+            .content
+        let firstRange = try #require(html.range(of: "one.jpg"))
+        let secondRange = try #require(html.range(of: "two.mp4"))
+
+        #expect(firstRange.lowerBound < secondRange.lowerBound)
+        #expect(html.contains("<!-- wp:image"))
+        #expect(html.contains("<!-- wp:video"))
+    }
+
+    @Test("throws for invalid uploaded Core REST media")
+    func rejectsInvalidMedia() {
+        let contextManager = ContextManager.forTesting()
+        let media = MediaBuilder(contextManager.mainContext).build()
+        media.mediaID = 1
+        media.mediaType = .image
+
+        var didThrow = false
+        do {
+            _ = try NewPostEditorContext(initialMedia: [media]).makeEditorContent()
+        } catch {
+            didThrow = true
+        }
+
+        #expect(didThrow)
+    }
+
+    @Test("throws for an empty Core REST media URL")
+    func rejectsEmptyMediaURL() {
+        let contextManager = ContextManager.forTesting()
+        let media = MediaBuilder(contextManager.mainContext).build()
+        media.mediaID = 1
+        media.mediaType = .image
+        media.remoteURL = ""
+
+        #expect(throws: (any Error).self) {
+            try NewPostEditorContext(initialMedia: [media]).makeEditorContent()
+        }
+    }
+
+    @Test("throws for a relative Core REST media URL")
+    func rejectsRelativeMediaURL() {
+        let contextManager = ContextManager.forTesting()
+        let media = MediaBuilder(contextManager.mainContext).build()
+        media.mediaID = 1
+        media.mediaType = .image
+        media.remoteURL = "uploads/image.jpg"
+
+        #expect(throws: (any Error).self) {
+            try NewPostEditorContext(initialMedia: [media]).makeEditorContent()
+        }
+    }
+
+    @Test("serializes the normalized Core REST media URL")
+    func serializesNormalizedMediaURL() throws {
+        let contextManager = ContextManager.forTesting()
+        let media = MediaBuilder(contextManager.mainContext).build()
+        media.mediaID = 3
+        media.mediaType = .document
+        media.filename = "July Summary.pdf"
+        media.remoteURL = "https://example.com/July Summary.pdf?download=1&source=app"
+
+        let html = try NewPostEditorContext(initialMedia: [media])
+            .makeEditorContent()
+            .content
+
+        #expect(
+            html.contains(
+                #"<!-- wp:file {"id":3,"href":"https://example.com/July%20Summary.pdf?download=1&source=app"} -->"#
+            )
+        )
+        #expect(
+            html.contains(
+                #"<a href="https://example.com/July%20Summary.pdf?download=1&amp;source=app">July Summary.pdf</a>"#
+            )
+        )
+    }
+
+    @Test("preserves blogging prompt identity in Core REST settings")
+    func preservesBloggingPromptMetadata() throws {
+        let contextManager = ContextManager.forTesting()
+        let blog = BlogBuilder(contextManager.mainContext).build()
+        let prompt = try #require(BloggingPrompt.newObject(in: contextManager.mainContext))
+        prompt.promptID = 42
+        prompt.text = "What did you learn today?"
+        prompt.additionalPostTags = ["learning", "daily"]
+        let context = NewPostEditorContext(prompt: prompt)
+
+        let settings = context.makePostSettings(for: blog)
+        #expect(settings.bloggingPromptID == "42")
+        #expect(
+            settings.makeCreateParameters().meta?
+                .valueForKey(
+                    key: "_jetpack_blogging_prompt_key"
+                ) == .string("42")
+        )
+        #expect(try context.makeEditorContent().content.contains(prompt.text))
+        #expect(
+            settings.tags.map(\.name) == [
+                "dailyprompt", "dailyprompt-42", "learning", "daily"
+            ]
+        )
+    }
+
+    @Test("runs the Core REST dismissal callback once after view disappearance")
+    func callsCoreRESTDismissalOnceAfterViewDisappears() {
+        var callbackCount = 0
+        let controller = CoreRESTPostEditorHostingController {
+            callbackCount += 1
+        }
+
+        #expect(callbackCount == 0)
+        controller.viewDidDisappear(false)
+        controller.viewDidDisappear(false)
+        #expect(callbackCount == 1)
+    }
+
+    @Test("applies values through the legacy adapter")
+    func appliesLegacyPostValues() {
+        let contextManager = ContextManager.forTesting()
+        let blog = BlogBuilder(contextManager.mainContext).build()
+        let context = NewPostEditorContext(title: "Title", content: "Body", tags: "swift")
+        let post = blog.createDraftPost()
+        context.applyLegacyValues(to: post)
+
+        #expect(post.postTitle == "Title")
+        #expect(post.content == "Body")
+        #expect(post.tags == "swift")
+    }
+}
