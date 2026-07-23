@@ -1,4 +1,5 @@
 import SwiftUI
+import WordPressShared
 import UIKit
 import WordPressData
 import WordPressKit

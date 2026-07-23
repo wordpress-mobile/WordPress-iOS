@@ -1,4 +1,5 @@
 import Foundation
+import WordPressShared
 import MobileCoreServices
 import UniformTypeIdentifiers
 import WordPressData

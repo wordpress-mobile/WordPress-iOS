@@ -1,4 +1,5 @@
 import UIKit
+import WordPressShared
 
 struct BloggingRemindersScheduleFormatter {
     private let calendar: Calendar

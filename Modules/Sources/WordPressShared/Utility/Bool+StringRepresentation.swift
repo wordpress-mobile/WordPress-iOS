@@ -1,7 +1,7 @@
 import Foundation
 
 extension Bool {
-    var stringLiteral: String {
+    public var stringLiteral: String {
         self ? "true" : "false"
     }
 }

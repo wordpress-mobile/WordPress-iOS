@@ -1,4 +1,5 @@
 import Foundation
+import WordPressShared
 import CoreGraphics
 import UIKit
 import MobileCoreServices
