@@ -1,24 +1,29 @@
 import Foundation
 
-struct QRLoginToken: Equatable {
-    let token: String
-    let data: String
+public struct QRLoginToken: Equatable {
+    public let token: String
+    public let data: String
 
-    static func == (lhs: Self, rhs: Self) -> Bool {
-        return lhs.token == rhs.token && lhs.data == rhs.data
+    public init(token: String, data: String) {
+        self.token = token
+        self.data = data
+    }
+
+    public static func == (lhs: Self, rhs: Self) -> Bool {
+        lhs.token == rhs.token && lhs.data == rhs.data
     }
 }
 
-struct QRLoginURLParser {
+public struct QRLoginURLParser {
     private let urlString: String
 
-    init(urlString: String) {
+    public init(urlString: String) {
         self.urlString = urlString
     }
 
     /// Attempts to retrieve the QR Login token information from the incoming urlString
     /// - Returns: QRLoginToken or nil if the parsing fails for any reason
-    func parse() -> QRLoginToken? {
+    public func parse() -> QRLoginToken? {
         // Early validation, making sure this is a valid URL from a valid host
         guard let url = URL(string: urlString), Self.isValidHost(url: url) else {
             return nil
@@ -39,7 +44,7 @@ struct QRLoginURLParser {
     }
 
     /// Validates that the input URL is coming from a valid host
-    static func isValidHost(url: URL) -> Bool {
+    public static func isValidHost(url: URL) -> Bool {
         guard let host = url.host else {
             return false
         }

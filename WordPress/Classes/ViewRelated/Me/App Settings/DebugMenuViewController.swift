@@ -1,4 +1,5 @@
 import UIKit
+import WordPressShared
 import AsyncImageKit
 import AutomatticTracks
 import BuildSettingsKit

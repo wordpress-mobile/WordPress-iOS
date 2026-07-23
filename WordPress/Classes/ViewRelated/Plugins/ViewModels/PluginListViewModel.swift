@@ -1,4 +1,5 @@
 import WordPressKit
+import WordPressShared
 import WordPressFlux
 import WordPressUI
 

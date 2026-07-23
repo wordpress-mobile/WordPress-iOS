@@ -1,4 +1,5 @@
 import Foundation
+import WordPressShared
 import WordPressData
 import WordPressKit
 

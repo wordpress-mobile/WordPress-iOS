@@ -1,5 +1,5 @@
 import XCTest
-import WordPress
+@testable import WordPressShared
 
 class ArrayTests: XCTestCase {
     func testRepeatLast() {

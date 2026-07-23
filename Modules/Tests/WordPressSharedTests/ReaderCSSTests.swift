@@ -1,7 +1,6 @@
-import WordPressShared
 import XCTest
 
-@testable import WordPress
+@testable import WordPressShared
 
 class ReaderCSSTests: XCTestCase {
     // MARK: - When online

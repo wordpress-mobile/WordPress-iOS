@@ -1,4 +1,5 @@
 import XCTest
+import WordPressShared
 import OHHTTPStubs
 import OHHTTPStubsSwift
 import AsyncImageKit

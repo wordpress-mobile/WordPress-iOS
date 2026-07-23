@@ -1,4 +1,5 @@
 import Foundation
+import WordPressShared
 import UIKit
 import Combine
 import AsyncImageKit
