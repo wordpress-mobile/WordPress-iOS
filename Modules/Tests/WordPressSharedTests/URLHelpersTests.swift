@@ -1,23 +1,24 @@
-import XCTest
+import Foundation
+import Testing
 import WordPressShared
 
-class URLHelpersTests: XCTestCase {
+struct URLHelpersTests {
 
-    func testAddCacheBusterToExistingQueryParameters() async throws {
+    @Test func testAddCacheBusterToExistingQueryParameters() async throws {
         try await doTest("https://gravatar.com/avatar/1234?s=80")
     }
 
-    func testAddCacheBusterToCanonicalURL() async throws {
+    @Test func testAddCacheBusterToCanonicalURL() async throws {
         try await doTest("https://gravatar.com")
     }
 
     func doTest(_ urlString: String) async throws {
-        let url = try XCTUnwrap(URL(string: urlString))
+        let url = try #require(URL(string: urlString))
         let newURL = url.appendingGravatarCacheBusterParam()
-        XCTAssertNotEqual(url.absoluteString, newURL.absoluteString)
+        #expect(url.absoluteString != newURL.absoluteString)
 
         let components = URLComponents(url: newURL, resolvingAgainstBaseURL: false)
         let cacheBusterQueryItem = components?.queryItems?.first(where: { $0.name == "_" })
-        XCTAssertNotNil(cacheBusterQueryItem?.value)
+        #expect(cacheBusterQueryItem?.value != nil)
     }
 }

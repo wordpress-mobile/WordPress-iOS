@@ -1,7 +1,7 @@
-import XCTest
+import Testing
 @testable import WordPressShared
 
-final class SiteCreationHeaderDataTests: XCTestCase {
+struct SiteCreationHeaderDataTests {
     private struct Constants {
         static let title = "🌈"
         static let subtitle = "🦄"
@@ -9,21 +9,15 @@ final class SiteCreationHeaderDataTests: XCTestCase {
 
     private var data: SiteCreationHeaderData?
 
-    override func setUp() {
-        super.setUp()
+    init() {
         data = SiteCreationHeaderData(title: Constants.title, subtitle: Constants.subtitle)
     }
 
-    override func tearDown() {
-        data = nil
-        super.tearDown()
+    @Test func testTitleRemainsConstant() {
+        #expect(data?.title == Constants.title)
     }
 
-    func testTitleRemainsConstant() {
-        XCTAssertEqual(data?.title, Constants.title)
-    }
-
-    func testSubtitleRemainsConstant() {
-        XCTAssertEqual(data?.subtitle, Constants.subtitle)
+    @Test func testSubtitleRemainsConstant() {
+        #expect(data?.subtitle == Constants.subtitle)
     }
 }

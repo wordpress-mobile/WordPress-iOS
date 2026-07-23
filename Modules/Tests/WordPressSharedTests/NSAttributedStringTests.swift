@@ -1,25 +1,25 @@
 import Foundation
-import XCTest
+import Testing
 import WordPressShared
 
 // MARK: - NSAttributedString Unit Tests
 //
-open class NSAttributedStringTests: XCTestCase {
+struct NSAttributedStringTests {
     /// Verifies that `trimNewLines` effectively nukes leading newline characters.
     ///
-    func testTrimNewlinesEffectivelyNukesLeadingNewlines() {
+    @Test func testTrimNewlinesEffectivelyNukesLeadingNewlines() {
         let expected = "Lord Yosemite SHOULD be a Game of Thrones Character"
         let input = NSAttributedString(string: "\n\n\n\(expected)")
 
-        XCTAssertEqual(input.trimNewlines().string, expected)
+        #expect(input.trimNewlines().string == expected)
     }
 
     /// Verifies that `trimNewLines` effectively nukes trailing newline characters.
     ///
-    func testTrimNewlinesEffectivelyNukesTrailingNewlines() {
+    @Test func testTrimNewlinesEffectivelyNukesTrailingNewlines() {
         let expected = "Lord Yosemite SHOULD be a Game of Thrones Character"
         let input = NSAttributedString(string: "\(expected)\n\n\n")
 
-        XCTAssertEqual(input.trimNewlines().string, expected)
+        #expect(input.trimNewlines().string == expected)
     }
 }
