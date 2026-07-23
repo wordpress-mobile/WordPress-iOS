@@ -242,6 +242,8 @@ extension BlogDetailHeaderView {
             }
             configuration.contentInsets = isSidebarModeEnabled ? .zero : NSDirectionalEdgeInsets(top: 1, leading: 0, bottom: 1, trailing: 0)
             configuration.titleLineBreakMode = .byTruncatingTail
+            configuration.cornerStyle = .fixed
+            configuration.background.cornerRadius = 0
             button.configuration = configuration
 
             button.accessibilityHint = NSLocalizedString("Tap to change the site's title", comment: "Accessibility hint for button used to change site title")
