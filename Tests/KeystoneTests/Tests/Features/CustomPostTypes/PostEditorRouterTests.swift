@@ -133,8 +133,8 @@ struct PostEditorRouterTests {
         )
     }
 
-    @Test("preserves blogging prompt identity in Core REST settings")
-    func preservesBloggingPromptMetadata() throws {
+    @Test("preserves blogging prompts through both editor adapters")
+    func preservesBloggingPrompt() throws {
         let contextManager = ContextManager.forTesting()
         let blog = BlogBuilder(contextManager.mainContext).build()
         let prompt = try #require(BloggingPrompt.newObject(in: contextManager.mainContext))
@@ -157,6 +157,12 @@ struct PostEditorRouterTests {
                 "dailyprompt", "dailyprompt-42", "learning", "daily"
             ]
         )
+
+        let post = blog.createDraftPost()
+        context.applyLegacyValues(to: post)
+        #expect(post.bloggingPromptID == "42")
+        #expect(post.content?.contains(prompt.text) == true)
+        #expect(post.tags == "dailyprompt, dailyprompt-42, learning, daily")
     }
 
     @Test("builds Core REST editor session attribution without a post")

@@ -516,10 +516,15 @@ private extension DashboardPromptsCardCell {
         }
         WPAnalytics.track(.promptsDashboardCardAnswerPrompt)
 
-        let editor = EditPostViewController(blog: blog, prompt: prompt)
-        editor.modalPresentationStyle = .fullScreen
-        editor.entryPoint = .bloggingPromptsDashboardCard
-        presenterViewController?.present(editor, animated: true)
+        guard let presenterViewController else { return }
+        PostEditorRouter.showNewPost(
+            for: blog,
+            from: presenterViewController,
+            context: NewPostEditorContext(
+                prompt: prompt,
+                entryPoint: .bloggingPromptsDashboardCard
+            )
+        )
     }
 
     // MARK: Context menu actions

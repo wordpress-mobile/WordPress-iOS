@@ -234,10 +234,15 @@ private extension CreateButtonCoordinator {
             WPAnalytics.track(.promptsBottomSheetAnswerPrompt)
             self?.viewController?
                 .dismiss(animated: true) {
-                    let editor = EditPostViewController(blog: blog, prompt: prompt)
-                    editor.modalPresentationStyle = .fullScreen
-                    editor.entryPoint = .bloggingPromptsActionSheetHeader
-                    self?.viewController?.present(editor, animated: true)
+                    guard let viewController = self?.viewController else { return }
+                    PostEditorRouter.showNewPost(
+                        for: blog,
+                        from: viewController,
+                        context: NewPostEditorContext(
+                            prompt: prompt,
+                            entryPoint: .bloggingPromptsActionSheetHeader
+                        )
+                    )
                 }
         }
 

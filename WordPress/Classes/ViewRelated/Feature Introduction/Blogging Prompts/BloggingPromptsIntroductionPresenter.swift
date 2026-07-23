@@ -95,15 +95,18 @@ private extension BloggingPromptsIntroductionPresenter {
                 return
             }
 
-            let editor = EditPostViewController(blog: blog, prompt: prompt)
-            editor.modalPresentationStyle = .fullScreen
-            editor.entryPoint = .bloggingPromptsFeatureIntroduction
-
             self?.navigationController
                 .dismiss(
                     animated: true,
                     completion: { [weak self] in
-                        presentingViewController.present(editor, animated: false)
+                        PostEditorRouter.showNewPost(
+                            for: blog,
+                            from: presentingViewController,
+                            context: NewPostEditorContext(
+                                prompt: prompt,
+                                entryPoint: .bloggingPromptsFeatureIntroduction
+                            )
+                        )
                         self?.trackPostEditorShown(blog)
                     }
                 )

@@ -62,11 +62,16 @@ import WordPressData
                 return
             }
 
-            // Present the post creation flow.
-            let editor = EditPostViewController(blog: blog, prompt: prompt)
-            editor.modalPresentationStyle = .fullScreen
-            editor.entryPoint = source.editorEntryPoint
-            viewController.present(editor, animated: true)
+            MainActor.assumeIsolated {
+                PostEditorRouter.showNewPost(
+                    for: blog,
+                    from: viewController,
+                    context: NewPostEditorContext(
+                        prompt: prompt,
+                        entryPoint: source.editorEntryPoint
+                    )
+                )
+            }
             completion?()
         }
     }

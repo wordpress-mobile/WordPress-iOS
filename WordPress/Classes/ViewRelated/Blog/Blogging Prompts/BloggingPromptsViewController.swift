@@ -194,10 +194,14 @@ extension BloggingPromptsViewController: UITableViewDataSource, UITableViewDeleg
             return
         }
 
-        let editor = EditPostViewController(blog: blog, prompt: prompt)
-        editor.modalPresentationStyle = .fullScreen
-        editor.entryPoint = .bloggingPromptsListView
-        present(editor, animated: true)
+        PostEditorRouter.showNewPost(
+            for: blog,
+            from: self,
+            context: NewPostEditorContext(
+                prompt: prompt,
+                entryPoint: .bloggingPromptsListView
+            )
+        )
     }
 }
 
