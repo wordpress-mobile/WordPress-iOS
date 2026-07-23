@@ -7,6 +7,7 @@ struct CoreRESTPostEditorRoute: View {
     let postType: PinnedPostType
     let initialSettings: PostSettings?
     let initialContent: EditorContent?
+    let entryPoint: PostEditorEntryPoint
     weak var presentingViewController: UIViewController?
 
     @Environment(\.dismiss) private var dismiss
@@ -42,7 +43,8 @@ struct CoreRESTPostEditorRoute: View {
                             details: resolved.details,
                             blog: blog,
                             initialSettings: initialSettings,
-                            initialContent: initialContent
+                            initialContent: initialContent,
+                            entryPoint: entryPoint
                         )
                         .toolbar(.hidden, for: .navigationBar)
                     )

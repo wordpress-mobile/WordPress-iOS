@@ -159,6 +159,28 @@ struct PostEditorRouterTests {
         )
     }
 
+    @Test("builds Core REST editor session attribution without a post")
+    func buildsCoreRESTEditorSessionAttribution() {
+        let contextManager = ContextManager.forTesting()
+        let blog = BlogBuilder(contextManager.mainContext).build()
+        blog.dotComID = 42
+        let entryPoint = PostEditorEntryPoint.bloggingPromptsDashboardCard
+
+        let session = PostEditorAnalyticsSession(
+            editor: .gutenbergKit,
+            blog: blog,
+            postType: "post",
+            contentType: .new,
+            entryPoint: entryPoint
+        )
+
+        #expect(session.blogID == 42)
+        #expect(session.postType == "post")
+        #expect(session.contentType == PostEditorAnalyticsSession.ContentType.new.rawValue)
+        #expect(session.entryPoint == entryPoint)
+        #expect(session.started == false)
+    }
+
     @Test("runs the Core REST dismissal callback once after view disappearance")
     func callsCoreRESTDismissalOnceAfterViewDisappears() {
         var callbackCount = 0

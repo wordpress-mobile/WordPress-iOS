@@ -191,26 +191,39 @@ enum PostEditorRouter {
         context: NewPostEditorContext,
         from presenter: UIViewController
     ) {
-        let initialContent: EditorContent
+        let controller = CoreRESTPostEditorHostingController(onDismiss: context.afterDismiss)
+        let route: CoreRESTPostEditorRoute
         do {
-            initialContent = try context.makeEditorContent()
+            route = try makeCoreRESTRoute(
+                blog: blog,
+                postType: postType,
+                context: context,
+                presentingViewController: controller
+            )
         } catch {
             Notice(error: error).post()
             return
         }
 
-        let controller = CoreRESTPostEditorHostingController(onDismiss: context.afterDismiss)
-        controller.rootView = AnyView(
-            CoreRESTPostEditorRoute(
-                blog: blog,
-                postType: postType,
-                initialSettings: context.makePostSettings(for: blog),
-                initialContent: initialContent,
-                presentingViewController: controller
-            )
-        )
+        controller.rootView = AnyView(route)
         controller.modalPresentationStyle = .fullScreen
         presenter.present(controller, animated: context.animated)
+    }
+
+    static func makeCoreRESTRoute(
+        blog: Blog,
+        postType: PinnedPostType,
+        context: NewPostEditorContext,
+        presentingViewController: UIViewController
+    ) throws -> CoreRESTPostEditorRoute {
+        CoreRESTPostEditorRoute(
+            blog: blog,
+            postType: postType,
+            initialSettings: context.makePostSettings(for: blog),
+            initialContent: try context.makeEditorContent(),
+            entryPoint: context.entryPoint,
+            presentingViewController: presentingViewController
+        )
     }
 }
 
