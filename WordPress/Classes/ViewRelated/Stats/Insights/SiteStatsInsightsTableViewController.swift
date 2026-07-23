@@ -377,9 +377,14 @@ extension SiteStatsInsightsTableViewController: SiteStatsInsightsDelegate {
     }
 
     func showCreatePost() {
-        RootViewCoordinator.sharedPresenter.showPostEditor { [weak self] in
-            self?.refreshInsights()
-        }
+        RootViewCoordinator.sharedPresenter.showNewPostEditor(
+            context: NewPostEditorContext(
+                analytics: .editorCreatedPost(source: "create_button", postType: "post"),
+                afterDismiss: { [weak self] in
+                    self?.refreshInsights()
+                }
+            )
+        )
     }
 
     func showShareForPost(postID: NSNumber, fromView: UIView) {
