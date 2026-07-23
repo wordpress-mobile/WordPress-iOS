@@ -18,7 +18,6 @@
 11. Tap the "Publish" button in the top-right corner.
 12. If a pre-publish confirmation appears, confirm by tapping "Publish" again.
 13. Verify the post-publish confirmation screen shows the correct post title.
-14. Dismiss the confirmation screen by tapping "Done".
 
 ## Verification (REST API)
 - Use the WordPress REST API to search for a post titled "Category tag post" with status "publish".

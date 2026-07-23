@@ -13,7 +13,6 @@
 7. Set the date to a future date (e.g., one day from now).
 8. Confirm the date selection.
 9. Tap "Schedule" to schedule the post.
-10. Dismiss the confirmation screen by tapping "Done".
 
 ## Verification (REST API)
 - Use the WordPress REST API to search for a post titled "Scheduled post title" with status "future".
