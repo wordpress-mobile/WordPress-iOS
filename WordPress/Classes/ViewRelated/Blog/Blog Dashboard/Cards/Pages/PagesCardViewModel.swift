@@ -115,18 +115,28 @@ class PagesCardViewModel: NSObject {
         guard let viewController = view?.parentViewController else {
             return
         }
+        trackCreateSectionTapped()
+        var context = NewPostEditorContext(
+            analytics: .editorCreatedPage(source: Constants.analyticsPageCreationSource),
+            animated: false
+        )
+        context.trackAnalytics(for: blog)
+        context.analytics = .none
         PageCoordinator.showLayoutPickerIfNeeded(from: viewController, forBlog: blog) { [weak self] selectedLayout in
             guard let blog = self?.blog else {
                 return
             }
-            let editorViewController = EditPageViewController(
-                blog: blog,
-                postTitle: selectedLayout?.title,
-                content: selectedLayout?.content
-            )
-            viewController.present(editorViewController, animated: false)
+            var context = context
+            context.title = selectedLayout?.title
+            context.content = selectedLayout?.content
+            MainActor.assumeIsolated {
+                PostEditorRouter.showNewPage(
+                    for: blog,
+                    from: viewController,
+                    context: context
+                )
+            }
         }
-        trackCreateSectionTapped()
     }
 
     func trackPageTapped() {
@@ -135,12 +145,6 @@ class PagesCardViewModel: NSObject {
 
     private func trackCreateSectionTapped() {
         trackCardItemTapped(itemType: Constants.analyticsCreationItemType)
-
-        WPAnalytics.track(
-            WPAnalyticsEvent.editorCreatedPage,
-            properties: [WPAppAnalyticsKeyTapSource: Constants.analyticsPageCreationSource],
-            blog: blog
-        )
     }
 
     private func trackCardItemTapped(itemType: String) {
