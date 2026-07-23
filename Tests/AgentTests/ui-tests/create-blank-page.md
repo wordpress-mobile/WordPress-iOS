@@ -11,7 +11,6 @@
 5. Enter "Blank page title" as the page title.
 6. Tap the "Publish" button in the top-right corner.
 7. If a pre-publish confirmation appears, confirm by tapping "Publish" again.
-8. Dismiss the post-publish confirmation screen by tapping "Done".
 
 ## Verification (REST API)
 - Use the WordPress REST API to search for a page titled "Blank page title" with status "publish".

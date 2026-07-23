@@ -12,7 +12,6 @@
 6. Type "Lorem ipsum dolor sit amet, consectetur adipiscing elit." as the paragraph content.
 7. Tap the "Publish" button in the top-right corner.
 8. If a pre-publish confirmation appears, confirm by tapping "Publish" again.
-9. Dismiss the post-publish confirmation screen by tapping "Done".
 
 ## Verification (REST API)
 - Use the WordPress REST API to search for a post titled "Rich post title" with status "publish".
