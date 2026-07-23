@@ -7,31 +7,44 @@ import WordPressAPI
 import WordPressAPIInternal
 import WordPressUI
 
-struct PinnedPostTypeView: View {
+// TODO: Rename PinnedPostTypeView to reflect its broader role as a post type resolver.
+struct PinnedPostTypeView<Content: View>: View {
+    struct Resolved {
+        let wpService: WpService
+        let details: PostTypeDetailsWithEditContext
+    }
+
     let blog: Blog
     let customPostTypeService: CustomPostTypeService
     let postType: PinnedPostType
     weak var presentingViewController: UIViewController?
+    let content: (Resolved) -> Content
 
     @SiteStorage private var pinnedTypes: [PinnedPostType]
 
-    @State private var service: WpService?
-    @State private var details: PostTypeDetailsWithEditContext?
+    @State private var resolved: Resolved?
     @State private var isLoading = true
     @State private var error: Error?
 
-    init(blog: Blog, service: CustomPostTypeService, postType: PinnedPostType, presentingViewController: UIViewController? = nil) {
+    init(
+        blog: Blog,
+        service: CustomPostTypeService,
+        postType: PinnedPostType,
+        presentingViewController: UIViewController? = nil,
+        @ViewBuilder content: @escaping (Resolved) -> Content
+    ) {
         self.blog = blog
         self.customPostTypeService = service
         self.postType = postType
         self.presentingViewController = presentingViewController
+        self.content = content
         _pinnedTypes = .pinnedPostTypes(for: TaggedManagedObjectID(blog))
     }
 
     var body: some View {
         Group {
-            if let details, let wpService = customPostTypeService.wpService {
-                CustomPostTabView(client: customPostTypeService.client, service: wpService, details: details, blog: blog, presentingViewController: presentingViewController)
+            if let resolved {
+                content(resolved)
             } else if isLoading {
                 ProgressView()
                     .progressViewStyle(.circular)
@@ -55,10 +68,10 @@ struct PinnedPostTypeView: View {
     private func resolve() async {
         defer { isLoading = false }
         do {
-            service = try await customPostTypeService.client.service
+            let wpService = try await customPostTypeService.client.service
 
             if let details = try await customPostTypeService.resolvePostType(slug: postType.slug) {
-                self.details = details
+                resolved = Resolved(wpService: wpService, details: details)
             } else {
                 pinnedTypes.removeAll { $0.slug == postType.slug }
                 self.error = PostTypeNotFoundError(name: postType.name)
@@ -74,6 +87,13 @@ struct PinnedPostType: Codable, Hashable {
     let slug: String
     let name: String
     let icon: String?
+}
+
+extension PinnedPostType {
+    // TODO: Ideally use the post type details directly instead of PinnedPostType,
+    // once the CPT infrastructure is more mature.
+    static let posts = PinnedPostType(slug: "post", name: "Posts", icon: nil)
+    static let pages = PinnedPostType(slug: "page", name: "Pages", icon: nil)
 }
 
 extension SiteStorage where Value == [PinnedPostType] {
