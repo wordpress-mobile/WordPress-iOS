@@ -63,9 +63,7 @@ class PostGBKEditorViewController: UIViewController, GutenbergKit.EditorViewCont
         super.init(nibName: nil, bundle: nil)
 
         self.editorViewController.delegate = self
-        if FeatureFlag.gbkMediaUploadOptimization.enabled {
-            self.editorViewController.mediaUploadDelegate = mediaUploadProcessor
-        }
+        self.editorViewController.mediaUploadDelegate = mediaUploadProcessor
     }
 
     required init?(coder aDecoder: NSCoder) {
