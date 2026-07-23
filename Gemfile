@@ -3,7 +3,7 @@
 source 'https://rubygems.org'
 
 # Official Anthropic SDK — backs the AI translation tier of the localization pipeline (fastlane/lanes/ai_translator.rb).
-gem 'anthropic', '~> 1.57'
+gem 'anthropic', '~> 1.58'
 gem 'danger-dangermattic', '~> 1.4'
 gem 'dotenv'
 # 2.223.1 includes a fix for an ASC-interfacing issue
