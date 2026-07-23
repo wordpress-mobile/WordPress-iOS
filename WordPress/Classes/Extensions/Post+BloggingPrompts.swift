@@ -28,23 +28,23 @@ extension Post {
     }
 
     private func promptContent(withPromptText promptText: String) -> String {
-        return pullquoteBlock(promptText: promptText) + Strings.emptyParagraphBlock
+        pullquoteBlock(promptText: promptText) + Strings.emptyParagraphBlock
     }
 
     private func pullquoteBlock(promptText: String) -> String {
-        return """
-            <!-- wp:pullquote -->
-            <figure class="wp-block-pullquote"><blockquote><p>\(promptText)</p></blockquote></figure>
-            <!-- /wp:pullquote -->
-            """
+        """
+        <!-- wp:pullquote -->
+        <figure class="wp-block-pullquote"><blockquote><p>\(promptText)</p></blockquote></figure>
+        <!-- /wp:pullquote -->
+        """
     }
 
     enum Strings {
         static let promptTag = "dailyprompt"
         fileprivate static let emptyParagraphBlock = """
-        <!-- wp:paragraph -->
-        <p></p>
-        <!-- /wp:paragraph -->
-        """
+            <!-- wp:paragraph -->
+            <p></p>
+            <!-- /wp:paragraph -->
+            """
     }
 }
