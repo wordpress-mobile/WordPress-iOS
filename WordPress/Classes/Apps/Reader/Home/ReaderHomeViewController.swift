@@ -49,9 +49,11 @@ final class ReaderHomeViewController: ReaderStreamViewController {
     }
 
     private func showCreatePostScreen(blog: Blog) {
-        let editorVC = EditPostViewController(blog: blog)
-        editorVC.entryPoint = .dashboard
-        present(editorVC, animated: true)
+        PostEditorRouter.showNewPost(
+            for: blog,
+            from: self,
+            context: NewPostEditorContext(entryPoint: .dashboard)
+        )
     }
 }
 

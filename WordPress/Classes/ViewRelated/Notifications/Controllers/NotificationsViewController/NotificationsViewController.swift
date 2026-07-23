@@ -1681,7 +1681,7 @@ private extension NotificationsViewController {
                             .notificationsTappedNewPost,
                             withProperties: [Stats.sourceKey: Stats.sourceValue]
                         )
-                        RootViewCoordinator.sharedPresenter.showPostEditor()
+                        RootViewCoordinator.sharedPresenter.showNewPostEditor()
                     }
                 }
             }

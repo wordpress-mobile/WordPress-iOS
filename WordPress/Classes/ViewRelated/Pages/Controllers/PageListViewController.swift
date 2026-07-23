@@ -435,27 +435,31 @@ final class PageListViewController: AbstractPostListViewController {
     // MARK: - Post Actions
 
     override func createPost() {
-        WPAppAnalytics.track(
-            .editorCreatedPost,
-            properties: [
-                WPAppAnalyticsKeyTapSource: Constant.Events.source,
-                WPAppAnalyticsKeyPostType: Constant.Events.pagePostType
-            ],
-            blog: blog
+        var context = NewPostEditorContext(
+            entryPoint: .pagesList,
+            analytics: .editorCreatedPost(
+                source: Constant.Events.source,
+                postType: Constant.Events.pagePostType
+            ),
+            animated: false
         )
+        context.trackAnalytics(for: blog)
+        context.analytics = .none
 
         PageCoordinator.showLayoutPickerIfNeeded(from: self, forBlog: blog) { [weak self] selectedLayout in
-            self?.createPage(selectedLayout)
+            self?.createPage(selectedLayout, context: context)
         }
     }
 
-    private func createPage(_ starterLayout: PageTemplateLayout?) {
-        let editorViewController = EditPageViewController(
-            blog: blog,
-            postTitle: starterLayout?.title,
-            content: starterLayout?.content
+    private func createPage(_ starterLayout: PageTemplateLayout?, context: NewPostEditorContext) {
+        var context = context
+        context.title = starterLayout?.title
+        context.content = starterLayout?.content
+        PostEditorRouter.showNewPage(
+            for: blog,
+            from: self,
+            context: context
         )
-        present(editorViewController, animated: false)
     }
 
     // MARK: - Cell Action Handling

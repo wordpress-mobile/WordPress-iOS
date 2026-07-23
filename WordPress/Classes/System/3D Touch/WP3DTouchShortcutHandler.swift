@@ -25,7 +25,12 @@ open class WP3DTouchShortcutHandler: NSObject {
             return true
         case ShortcutIdentifier.NewPost.type:
             WPAnalytics.track(.shortcutNewPost)
-            rootViewPresenter.showPostEditor(animated: false)
+            rootViewPresenter.showNewPostEditor(
+                context: NewPostEditorContext(
+                    analytics: .editorCreatedPost(source: "create_button", postType: "post"),
+                    animated: false
+                )
+            )
             return true
         case ShortcutIdentifier.Stats.type:
             WPAnalytics.track(.shortcutStats)

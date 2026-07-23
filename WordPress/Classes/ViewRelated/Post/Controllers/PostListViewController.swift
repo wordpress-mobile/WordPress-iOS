@@ -208,14 +208,13 @@ final class PostListViewController: AbstractPostListViewController, InteractiveP
     // MARK: - Post Actions
 
     override func createPost() {
-        let editor = EditPostViewController(blog: blog)
-        editor.modalPresentationStyle = .fullScreen
-        editor.entryPoint = .postsList
-        present(editor, animated: false, completion: nil)
-        WPAppAnalytics.track(
-            .editorCreatedPost,
-            properties: [WPAppAnalyticsKeyTapSource: "posts_view", WPAppAnalyticsKeyPostType: "post"],
-            blog: blog
+        PostEditorRouter.showNewPost(
+            for: blog,
+            from: self,
+            context: NewPostEditorContext(
+                entryPoint: .postsList,
+                analytics: .editorCreatedPost(source: "posts_view", postType: "post")
+            )
         )
     }
 
