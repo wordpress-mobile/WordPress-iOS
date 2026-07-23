@@ -50,17 +50,17 @@ import Foundation
 
         content = RegEx.styleTags.stringByReplacingMatches(in: content,
                                                            options: .reportCompletion,
-                                                           range: NSRange(location: 0, length: content.count),
+                                                           range: NSRange(location: 0, length: content.utf16.count),
                                                            withTemplate: "")
 
         content = RegEx.scriptTags.stringByReplacingMatches(in: content,
                                                             options: .reportCompletion,
-                                                            range: NSRange(location: 0, length: content.count),
+                                                            range: NSRange(location: 0, length: content.utf16.count),
                                                             withTemplate: "")
 
         content = RegEx.gutenbergComments.stringByReplacingMatches(in: content,
                                                                    options: .reportCompletion,
-                                                                   range: NSRange(location: 0, length: content.count),
+                                                                   range: NSRange(location: 0, length: content.utf16.count),
                                                                    withTemplate: "")
 
         return content
@@ -84,23 +84,23 @@ import Foundation
         // Convert div tags to p tags
         content = RegEx.divTagsStart.stringByReplacingMatches(in: content,
                                                               options: .reportCompletion,
-                                                              range: NSRange(location: 0, length: content.count),
+                                                              range: NSRange(location: 0, length: content.utf16.count),
                                                               withTemplate: openPTag)
 
         content = RegEx.divTagsEnd.stringByReplacingMatches(in: content,
                                                             options: .reportCompletion,
-                                                            range: NSRange(location: 0, length: content.count),
+                                                            range: NSRange(location: 0, length: content.utf16.count),
                                                             withTemplate: closePTag)
 
         // Remove duplicate/redundant p tags.
         content = RegEx.pTagsStart.stringByReplacingMatches(in: content,
                                                             options: .reportCompletion,
-                                                            range: NSRange(location: 0, length: content.count),
+                                                            range: NSRange(location: 0, length: content.utf16.count),
                                                             withTemplate: openPTag)
 
         content = RegEx.pTagsEnd.stringByReplacingMatches(in: content,
                                                           options: .reportCompletion,
-                                                          range: NSRange(location: 0, length: content.count),
+                                                          range: NSRange(location: 0, length: content.utf16.count),
                                                           withTemplate: closePTag)
 
         content = filterNewLines(content)
@@ -114,11 +114,11 @@ import Foundation
         var ranges = [NSRange]()
         // We don't want to remove new lines from preformatted tag blocks,
         // so get the ranges of such blocks.
-        let matches = RegEx.preTags.matches(in: content, options: .reportCompletion, range: NSRange(location: 0, length: content.count))
+        let matches = RegEx.preTags.matches(in: content, options: .reportCompletion, range: NSRange(location: 0, length: content.utf16.count))
         if matches.isEmpty {
 
             // No blocks found, so we'll parse the whole string.
-            ranges.append(NSRange(location: 0, length: content.count))
+            ranges.append(NSRange(location: 0, length: content.utf16.count))
         } else {
 
             // One or more preformatted blocks found, we don't want to remove new lines
@@ -133,7 +133,7 @@ import Foundation
                 location = match.range.location + match.range.length
             }
 
-            length = content.count - location
+            length = content.utf16.count - location
             ranges.append(NSRange(location: location, length: length))
         }
 
@@ -163,7 +163,7 @@ import Foundation
 
         content = RegEx.styleAttr.stringByReplacingMatches(in: content,
                                                            options: .reportCompletion,
-                                                           range: NSRange(location: 0, length: content.count),
+                                                           range: NSRange(location: 0, length: content.utf16.count),
                                                            withTemplate: "")
 
         return content
@@ -206,10 +206,9 @@ import Foundation
         }
 
         var content = string.trim()
-        let matches = RegEx.trailingBRTags.matches(in: content, options: .reportCompletion, range: NSRange(location: 0, length: content.count))
-        if let match = matches.first {
-            let index = content.index(content.startIndex, offsetBy: match.range.location)
-            content = String(content.prefix(upTo: index))
+        let matches = RegEx.trailingBRTags.matches(in: content, options: .reportCompletion, range: NSRange(location: 0, length: content.utf16.count))
+        if let match = matches.first, let matchRange = Range(match.range, in: content) {
+            content = String(content[..<matchRange.lowerBound])
         }
 
         return content

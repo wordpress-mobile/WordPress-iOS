@@ -65,4 +65,114 @@ class RichContentFormatterTests: XCTestCase {
         let sanitizedStr3 = RichContentFormatter.formatVideoTags(str3) as NSString
         XCTAssert(!sanitizedStr3.contains("controls controls"))
     }
+
+    // MARK: - Multi-code-unit input
+    //
+    // The bug sized each search range from the grapheme count (`content.count`) rather than the
+    // UTF-16 length. A cluster that is one grapheme but several UTF-16 units — emoji, a ZWJ
+    // sequence, a flag, a keycap, a skin-tone modifier, or a decomposed accent — therefore leaves
+    // a token near the end of the string just past the range, so the search never reaches it.
+    // Each test drives one such spot; the exact-output check also confirms the cluster is intact.
+
+    func testRegionalFlagStyleBlockSurvivesInTail() {
+        // A <style> block after a flag emoji is stripped; the neighbouring <b> stays.
+        let out = RichContentFormatter.removeForbiddenTags("🇺🇸<b>hi</b><style>zz</style>")
+        XCTAssertEqual(out, "🇺🇸<b>hi</b>")
+    }
+
+    func testZWJFamilyScriptTagSurvivesInTail() {
+        // A <script> after a family emoji — one grapheme but 11 UTF-16 units, the widest gap here.
+        let out = RichContentFormatter.removeForbiddenTags("👨‍👩‍👧‍👦<script>x</script>")
+        XCTAssertEqual(out, "👨‍👩‍👧‍👦")
+    }
+
+    func testKeycapGutenbergCommentSurvivesInTail() {
+        // A Gutenberg block comment after a keycap emoji is stripped.
+        let out = RichContentFormatter.removeForbiddenTags("1️⃣<p><!-- wp:paragraph --></p>")
+        XCTAssertEqual(out, "1️⃣")
+    }
+
+    func testSkinToneDivStartNotConvertedInTail() {
+        // <div> is converted to <p> even after a skin-tone emoji.
+        let out = RichContentFormatter.normalizeParagraphs("👍🏽<div>")
+        XCTAssertEqual(out, "👍🏽<p>")
+    }
+
+    func testNFDCombiningDivEndNotConvertedInTail() {
+        // </div> is converted to </p> after a decomposed "é" (e + a combining accent). A composed
+        // "é" is a single UTF-16 unit and would not reach past the range, so the decomposition matters.
+        let out = RichContentFormatter.normalizeParagraphs("cafe\u{301}</div>")
+        XCTAssertEqual(out, "cafe\u{301}</p>")
+    }
+
+    func testNormalizeParagraphsMergesTrailingDoubleOpenParagraph() {
+        // A redundant <p><p> is collapsed to a single <p>.
+        let out = RichContentFormatter.normalizeParagraphs("😀<p><p>")
+        XCTAssertEqual(out, "😀<p>")
+    }
+
+    func testNormalizeParagraphsMergesTrailingDoubleCloseParagraph() {
+        // A redundant </p></p> is collapsed to a single </p>.
+        let out = RichContentFormatter.normalizeParagraphs("😀</p></p>")
+        XCTAssertEqual(out, "😀</p>")
+    }
+
+    func testFilterNewLinesNoPreFallbackRemovesNewlinePastWideCluster() {
+        // A newline outside any <pre> block is removed.
+        let out = RichContentFormatter.filterNewLines("👨‍👩‍👧‍👦\nA")
+        XCTAssertEqual(out, "👨‍👩‍👧‍👦A")
+    }
+
+    func testFilterNewLinesElseBranchPreservesTrailingNewlineAfterWideCluster() {
+        // With a <pre> block present, a newline that follows it (outside the block) is still removed.
+        let out = RichContentFormatter.filterNewLines("<pre>\n</pre>👨‍👩‍👧‍👦\nZ")
+        XCTAssertEqual(out, "<pre>\n</pre>👨‍👩‍👧‍👦Z")
+    }
+
+    func testFilterNewLinesMultiPreInverseRanges() {
+        // Across several <pre> blocks: newlines inside them are kept, newlines outside are removed.
+        let out = RichContentFormatter.filterNewLines("👨‍👩‍👧‍👦\n<pre>a\nb</pre>\n😀\n<pre>c\nd</pre>\n🇺🇸\n")
+        XCTAssertEqual(out, "👨‍👩‍👧‍👦<pre>a\nb</pre>😀<pre>c\nd</pre>🇺🇸")
+    }
+
+    func testZWJFamilyStyleAttrSurvivesInTruncatedTail() {
+        // An inline style attribute after a family emoji is stripped.
+        let out = RichContentFormatter.removeInlineStyles("👨‍👩‍👧‍👦<div style=\"x\">")
+        XCTAssertEqual(out, "👨‍👩‍👧‍👦<div>")
+    }
+
+    func testZWJFamilyTrailingBreakSurvivesAndCutsCleanly() {
+        // A trailing <br> after a family emoji is removed, and the emoji before it stays intact.
+        let out = RichContentFormatter.removeTrailingBreakTags("👨‍👩‍👧‍👦text<br>")
+        XCTAssertEqual(out, "👨‍👩‍👧‍👦text")
+    }
+
+    func testTrailingBreakOnlyFinalRemovedEmojiIntact() {
+        // Only the trailing <br> is removed; an earlier <br> in the middle of the text stays.
+        let out = RichContentFormatter.removeTrailingBreakTags("😀<br>text<br>")
+        XCTAssertEqual(out, "😀<br>text")
+    }
+
+    func testForbiddenCleanMultibyteUnchanged() {
+        // Content with no tags to strip passes through unchanged.
+        let out = RichContentFormatter.removeForbiddenTags("Hello 👨‍👩‍👧‍👦 world 😀!")
+        XCTAssertEqual(out, "Hello 👨‍👩‍👧‍👦 world 😀!")
+    }
+
+    // MARK: - Boundary + selectivity (not new fix sites)
+
+    func testBoundaryStraddleOffByOne() {
+        // One emoji makes the range exactly one UTF-16 unit short, and the token's closing ">"
+        // is exactly that dropped unit — pins the off-by-one where the wide-gap cases have slack.
+        let out = RichContentFormatter.removeForbiddenTags("text<script>😀</script>")
+        XCTAssertEqual(out, "text")
+    }
+
+    func testStripsTagInRangeAndInTailNotJustEverything() {
+        // The first style attribute is always in range; the ZWJ family pushes the second into the
+        // truncated tail. The fix strips both; the bug strips only the first — so the range, not a
+        // blanket "strip everything", decides which tags go.
+        let out = RichContentFormatter.removeInlineStyles("<a style=\"one\">👨‍👩‍👧‍👦<b style=\"two\">")
+        XCTAssertEqual(out, "<a>👨‍👩‍👧‍👦<b>")
+    }
 }
