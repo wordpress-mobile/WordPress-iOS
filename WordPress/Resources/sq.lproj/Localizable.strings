@@ -114,9 +114,6 @@
 /* Accessibility label for value in trillions. Ex: 66.6 trillion. */
 "%@ trillion" = "%@ trilion";
 
-/* Let's the user know that a third party sharing service was reconnected. The %@ is a placeholder for the service name. */
-"%@ was reconnected." = "%@ u rilidh.";
-
 /* Accessibility value for a Stats' Posting Activity Month if the user selected a day with posts. The first parameter is day (e.g. November 2019). The second parameter is the number of posts. */
 "%@. %d posts." = "%1$@. %2$d postime.";
 
@@ -546,9 +543,6 @@ translators: %s: Block name e.g. \"Image block\" */
 /* Shown to the user in settings when they haven't yet allowed or denied push notifications */
 "Allow push notifications" = "Lejo njoftime <em>push<\/em>";
 
-/* No comment provided by engineer. */
-"Allow this connection to be used by all admins and users of your site." = "Lejoje këtë lidhje që të përdoret nga krejt përgjegjësit dhe përdoruesit e sajtit tuaj.";
-
 /* Allowlisted IP Addresses Title */
 "Allowlisted IP Addresses" = "Adresa IP të shënuara si të lejuara";
 
@@ -715,9 +709,6 @@ translators: %s: Block name e.g. \"Image block\" */
    Art site intent topic */
 "Art" = "Art";
 
-/* Message shown to users who have an old publicize connection to a facebook profile. */
-"As of August 1, 2018, Facebook no longer allows direct sharing of posts to Facebook Profiles. Connections to Facebook Pages remain unchanged." = "Nga 1 Gusht, 2018, Facebook-u nuk lejon më ndarje të drejtpërdrejtë të postimeve në Profile Facebook. Lidhjet te Faqe Facebook mbeten të pandryshuara.";
-
 /* Alert option to embed a doc link into a blog post. */
 "Attach File as Link" = "Bashkëngjite Kartelën si Lidhje";
 
@@ -783,9 +774,6 @@ translators: %s: Block name e.g. \"Image block\" */
 
 /* Whether a plugin has enabled automatic updates */
 "Autoupdates" = "Vetëpërditësime";
-
-/* No comment provided by engineer. */
-"Available to all users" = "E passhme për krejt përdoruesit";
 
 /* 'This Year' label for average comments per post. */
 "Avg Comments \/ Post" = "Mesatare Komentesh \/ Postim";
@@ -1022,9 +1010,7 @@ translators: %s: Block name e.g. \"Image block\" */
    Menus: Cancel button title for canceling an edited menu item.
    Title of a button that dismisses the permissions alert
    Title. Title of a cancel button. Tapping disnisses an alert.
-   Verb. A button title.
    Verb. A button title. Tapping cancels an action.
-   Verb. Tapping cancels the publicize account selection.
    Verb. Title for Jetpack Restore cancel button. */
 "Cancel" = "Anuloje";
 
@@ -1073,9 +1059,6 @@ translators: %s: Block name e.g. \"Image block\" */
 
 /* No comment provided by engineer. */
 "Change block position" = "Ndryshoni pozicion blloku";
-
-/* Message to show when Publicize globally shared setting failed */
-"Change failed" = "Ndryshimi dështoi";
 
 /* Accessibility hint for web preview device switching button */
 "Change the device type used for preview" = "Ndryshoni llojin e pajisjes së përdorur për paraparje";
@@ -1336,51 +1319,11 @@ translators: %s: Block name e.g. \"Image block\" */
 /* Title of Delete Site confirmation alert */
 "Confirm Delete Site" = "Ripohoni Fshirje Sajti";
 
-/* Instructional text about the Sharing feature. */
-"Confirm this is the account you would like to authorize. Note that your posts will be automatically shared to this account." = "Ripohoni se kjo është llogaria që do të donit të autorizonit. Mbani shënim që postimet tuaja do të ndahen vetvetiu me këtë llogari.";
-
 /* Alert text field placeholder. */
 "Confirm username" = "Ripohoni emër përdoruesi";
 
 /* Title of domain name purchase success screen */
 "Congratulations on your purchase!" = "Përgëzime për blerjen tuaj!";
-
-/* Verb. Tapping connects an account to Publicize.
-   Verb. Text label. Allows the user to connect to a third-party sharing service like Facebook or Twitter. */
-"Connect" = "Lidhe";
-
-/* Verb. Text label. Allows the user to connect to a third-party sharing service like Facebook or Twitter. */
-"Connect Another Account" = "Lidhni Një Llogari Tjetër";
-
-/* Instructional text appearing below a `Connect` button. The `%@` is a placeholder for the name of a third-party sharing service. */
-"Connect to automatically share your blog posts to %@" = "Lidheni, që postimet e blogut tuaj të ndahen vetvetiu në %@";
-
-/* No comment provided by engineer. */
-"Connect your favorite social media services to automatically share new posts with friends." = "Lidhni shërbimet tuaja të parapëlqyera shoqërore për media, që postimet e reja të ndahen vetvetiu me miqtë tuaj.";
-
-/* Adjective. The title of a list of third-part sharing service account names. */
-"Connected" = "I lidhur";
-
-/* Noun. Title. Title for the list of accounts for third party sharing services. */
-"Connected Accounts" = "Llogari të Lidhura";
-
-/* Connecting is a verb. Title of Publicize account selection. The %@ is a placeholder for the service's name
-   Connecting is a verb. Title of Publicize account selection. The %@ is a placeholder for the service's name. */
-"Connecting %@" = "Po bëhet lidhja me %@";
-
-/* Informs the user of consequences of chooseing a new account to connect to publicize.  The %@ characters are placeholders for account names. */
-"Connecting %@ will replace the existing connection to %@." = "Lidhja e %1$@ do të zëvendësojë lidhjen ekzistuese me %2$@.";
-
-/* Verb. Text label. Allows the user to connect to a third-party sharing service like Facebook or Twitter. */
-"Connecting..." = "Po bëhet lidhja…";
-
-/* Message to show when Publicize authorization is canceled
-   Message to show when Publicize connection is canceled by the user. */
-"Connection canceled" = "Lidhja u anulua";
-
-/* Message to show when Publicize authorization failed
-   Message to show when Publicize connect failed */
-"Connection failed" = "Lidhja dështoi";
 
 /* Button label for contacting support
    Button title that opens the support page
@@ -1742,19 +1685,11 @@ translators: %s: Block name e.g. \"Image block\" */
 /* Menus alert button title to continue selecting a menu and discarding current changes. */
 "Discard and Select Menu" = "Hidheni Tej dhe Përzgjidhni Menu";
 
-/* Title for button that disconnects Jetpack from the site
-   Verb. Text label. Tapping disconnects a third-party sharing service from the user's blog.
-   Verb. Title of a button. Tapping disconnects a third-party sharing service from the user's blog. */
+/* Title for button that disconnects Jetpack from the site */
 "Disconnect" = "Shkëpute";
-
-/* Message to show when Publicize disconnect failed */
-"Disconnect failed" = "Shkëputja dështoi";
 
 /* Disconnect from WordPress.com button */
 "Disconnect from WordPress.com" = "Shkëputu nga WordPress.com";
-
-/* Explanatory text for the user. The `%@` is a placeholder for the name of a third-party sharing service. */
-"Disconnecting this account means published posts will no longer be automatically shared to %@" = "Shkëputja e kësaj llogarie do të thotë që postimet e botuara s’do të ndahen më vetvetiu me të tjerët në %@";
 
 /* Label for selecting the Blog Discussion Settings section
    Title for the Discussion Settings Screen */
@@ -2053,8 +1988,7 @@ translators: %s: Block name e.g. \"Image block\" */
 /* Message to show to user when he tries to add a self-hosted site that is an empty URL. */
 "Empty URL" = "URL e Zbrazët";
 
-/* Button title for the enable site notifications action.
-   Title of button to enable publicize. */
+/* Button title for the enable site notifications action. */
 "Enable" = "Aktivizoje";
 
 /* Title of button that enables push notifications when tapped */
@@ -2062,9 +1996,6 @@ translators: %s: Block name e.g. \"Image block\" */
 
 /* Title of the view, asking the user if they want to enable notifications. */
 "Enable Notifications?" = "Të Aktivizohen Njoftimet?";
-
-/* Text shown when the site doesn't have the Publicize module enabled. */
-"Enable Publicize" = "Aktivizoni Publicize-in";
 
 /* Title for the button that will enable the site stats module. */
 "Enable Site Stats" = "Aktivizoni Statistika Sajti";
@@ -2629,9 +2560,6 @@ translators: %s: Block name e.g. \"Image block\" */
 /* Explain what is the purpose of the tagline */
 "In a few words, explain what this site is about." = "Shpjegoni, me pak fjalë, se për çfarë është ky sajt.";
 
-/* Title of button to enable publicize. */
-"In order to share your published posts to your social media you need to enable the Publicize module." = "Që të mund të ndahen me të tjerë postimet tuaja të botuara në median tuaj shoqërore duhet të aktivizoni modulin Publicize.";
-
 /* The app successfully disabled notifications for the subscription */
 "In-app notifications disabled" = "Njoftime brenda aplikacionit të çaktivizuara";
 
@@ -2849,15 +2777,8 @@ translators: %s: Block name e.g. \"Image block\" */
 /* Description that explains how we will fix the threat */
 "Jetpack Scan will update to a newer version." = "Jetpack Scan-i do të përditësohet me një version më të ri.";
 
-/* Insights 'Jetpack Social Connections' header
-   Section title for Publicize services in Sharing screen */
+/* Insights 'Jetpack Social Connections' header */
 "Jetpack Social Connections" = "Lidhje Jetpack Social";
-
-/* Message to show when Publicize connection synchronization failed */
-"Jetpack Social connection synchronization failed" = "Njëkohësimi i lidhjes për Jetpack Social dështoi";
-
-/* Message to show when Publicize service synchronization failed */
-"Jetpack Social service synchronization failed" = "Njëkohësimi me shërbimin Jetpack Social dështoi";
 
 /* The default Jetpack view message used when an error occurred */
 "Jetpack could not be installed at this time." = "Jetpack-u s’u instalua dot këtë herë.";
@@ -2929,11 +2850,7 @@ translators: %s: Block name e.g. \"Image block\" */
 /* Insights latest post summary header */
 "Latest Post Summary" = "Përmbledhje Postimesh Më të Reja";
 
-/* Title of a button. Tapping allows the user to learn more about the specific error. */
-"Learn More" = "Mësoni Më Tepër";
-
-/* A button title.
-   Link to cookie policy
+/* Link to cookie policy
    Menu title to show the prompts feature introduction modal. */
 "Learn more" = "Mësoni më tepër";
 
@@ -3148,7 +3065,6 @@ translators: %s: Block name e.g. \"Image block\" */
 
 /* Button leading to a screen where users can manage their installed plugins
    Screen title, where users can see all their installed plugins.
-   Verb. Text label. Tapping displays a screen where the user can configure 'share' buttons for third-party services.
    Verb. Title of the screen for managing sharing buttons and settings related to sharing. */
 "Manage" = "Administroni";
 
@@ -3470,9 +3386,6 @@ translators: %s: Select control button label e.g. \"Button width\" */
 /* Empty state message (People Management). %@ can be 'users' or 'followers' */
 "No %@ yet" = "Ende pa %@";
 
-/* Title of an error message. There were no third-party service accounts found to setup sharing. */
-"No Accounts Found" = "S’u Gjetën Llogari";
-
 /* Title of error prompt when no internet connection is available. */
 "No Connection" = "Pa lidhje";
 
@@ -3500,7 +3413,7 @@ translators: %s: Select control button label e.g. \"Button width\" */
 /* Advises the user that no Domain suggestions could be found for the search query. */
 "No available addresses matching your search" = "S’ka adresa me përputhje me kërkimin tuaj";
 
-/* A short message that informs the user no sites could be loaded in the share extension. */
+/* A short message that informs the user their account has no available sites. */
 "No available sites" = "S’ka sajte të gatshme";
 
 /* No comment provided by engineer. */
@@ -3516,9 +3429,6 @@ translators: %s: Select control button label e.g. \"Button width\" */
 /* Displayed during Site Creation, when searching for Verticals and the network is unavailable.
    Title for the error view when there's no connection */
 "No connection" = "S'ka lidhje";
-
-/* Message to show when Keyring connection synchronization succeeded but no matching connections were found. %@ is a service name like Facebook or Twitter */
-"No connections found for %@" = "S’u gjetën lidhje për %@";
 
 /* No comment provided by engineer. */
 "No custom placeholder set" = "S’është caktuar vendmbajtëse vetjake";
@@ -3638,9 +3548,6 @@ translators: %s: Select control button label e.g. \"Button width\" */
 
 /* Title of unanswered Blogging Prompts filter. */
 "Not Answered" = "Pa Përgjigje";
-
-/* Error title for alert, shown to a user who is trying to share to Facebook but does not have any available Facebook Pages. */
-"Not Connected" = "I Palidhur";
 
 /* Nicer dialog answer for \"No\".
    Title of a button that cancels enabling notifications when tapped */
@@ -4298,12 +4205,6 @@ translators: %s: Select control button label e.g. \"Button width\" */
 /* Invite Person: Email or Username Edition Title */
 "Recipient" = "Marrës";
 
-/* Verb. Text label. Tapping attempts to reconnect a third-party sharing service to the user's blog. */
-"Reconnect" = "Rilidhu";
-
-/* Message shwon to confirm a publicize connection has been successfully reconnected. */
-"Reconnected" = "I rilidhur";
-
 /* Action button to redo last change */
 "Redo" = "Ribëje";
 
@@ -4673,9 +4574,6 @@ translators: %s: Select control button label e.g. \"Button width\" */
 /* Accessibility label for selecting paragraph style button on formatting toolbar. */
 "Select paragraph style" = "Përzgjidhni stil paragrafi";
 
-/* Instructional text about the Sharing feature. */
-"Select the account you would like to authorize. Note that your posts will be automatically shared to the selected account." = "Përzgjidhni llogarinë që do të donit të autorizonit. Mbani shënim që postimet tuaja do të ndahen vetvetiu me këtë llogari.";
-
 /* Prompt shown on the Blogging Reminders Settings screen. */
 "Select the days you want to blog on" = "Përzgjidhni ditët në të cilat doni të shkruani në blog";
 
@@ -4765,7 +4663,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 "Setting up theme" = "Ujdisje teme";
 
 /* Link to plugin's Settings
-   Section title
    Title for screen that allows configuration of your blog/site settings.
    Title for the Jetpack Security Settings Screen */
 "Settings" = "Rregullime";
@@ -4803,9 +4700,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Title for the button that will share the link for the downlodable backup file */
 "Share link" = "Ndajeni lidhjen me të tjerët";
 
-/* Title. `The `%@` is a placeholder for the service name. */
-"Share post to %@" = "Ndajeni postimin me të tjerë në %@";
-
 /* Title for button allowing users to share information about the app with friends, such as via Messages */
 "Share with Friends" = "Ndajeni me Shokët";
 
@@ -4813,12 +4707,10 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
    Share Extension Content Body Text Placeholder */
 "Share your story here..." = "Ndajeni shembullin tuaj me të tjerët…";
 
-/* Noun. Name of the Social Sharing feature
-   Title for blog detail sharing screen. */
+/* Noun. Name of the Social Sharing feature */
 "Sharing" = "Ndarje Me të Tjerët";
 
-/* Section title for the sharing buttons section in the Sharing screen
-   Title of a list of buttons used for sharing content to other services. */
+/* Title of a list of buttons used for sharing content to other services. */
 "Sharing Buttons" = "Butona Ndarjesh Me të Tjerët";
 
 /* Share extension error dialog title. */
@@ -5004,9 +4896,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* A short error message letting the user know the requested reader content could not be loaded. */
 "Sorry. The content could not be loaded." = "Na ndjeni. Lënda s’u ngarkua dot.";
-
-/* An error message shown if a third-party social service does not specify any accounts that an be used with publicize sharing. */
-"Sorry. The social service did not tell us which account could be used for sharing." = "Na ndjeni. Shërbimi shoqëror nuk na tregoi cila llogari të përdoret për ndarje me të tjerët.";
 
 /* A short error message leting the user know the requested search could not be performed. */
 "Sorry. Your search results could not be loaded." = "Na ndjeni. Përfundimet e kërkimit tuaj s’u ngarkuan dot.";
@@ -5316,9 +5205,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* No comment provided by engineer. */
 "That username is not allowed." = "Ai emër përdoruesi s’lejohet.";
 
-/* Error message shown to a user who is trying to share to Facebook but does not have any available Facebook Pages. */
-"The Facebook connection cannot find any Pages. Publicize cannot connect to Facebook Profiles, only published Pages." = "Lidhja Facebook s’gjen dot ndonjë Faqe. Publicize s’mund të lidhet me Profile Facebook, vetëm me Faqe të botuara.";
-
 /* Error message shown when a media upload fails because the user isn't connected to the Internet. */
 "The Internet connection appears to be offline." = "Lidhja Internet duket se është jashtë linje.";
 
@@ -5375,9 +5261,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Message shown when an image or video failed to load while trying to add it to the Media library. */
 "The media could not be added to the Media Library." = "Media s’u shtua dot te Mediateka.";
-
-/* Error shown when a module can not be enabled */
-"The module couldn't be activated." = "Moduli s’u aktivizua dot.";
 
 /* Text above the selection of the number of posts to show per blog page */
 "The number of posts to show per page." = "Numër postimesh për t’u shfaqur për faqe.";
@@ -5448,9 +5331,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Displayed when there's a pending Email Change. The variable is the new email address. */
 "There is a pending change of your email to %@. Please check your inbox for a confirmation link." = "Ka pezull një ndryshim të email-it tuaj te %@. Ju lutemi, shihni për një lidhje ripohimi, te email-et që ju vijnë.";
-
-/* Informs the user about an issue connecting to the third-party sharing service. The `%@` is a placeholder for the service name. */
-"There is an issue connecting to %@. Reconnect to continue publicizing." = "Pati një problem me lidhjen te %@. Rilidhuni që të vazhdohet publicizimi.";
 
 /* Displayed during Site Creation, when searching for Verticals and the server returns an error.
    The Jetpack view title used when an error occurred
@@ -6175,9 +6055,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Hint displayed when we fail to fetch the status of the restore in progress. */
 "We couldn’t find the status to say how long your restore will take." = "S’e gjetëm dot gjendjen, që të themi se sa do të zgjasë rikthimi juaj.";
 
-/* Message to show when Keyring connection synchronization failed. %@ is a service name like Facebook or Twitter */
-"We had trouble loading connections for %@" = "Patëm probleme me ngarkimin e lidhjeve për %@";
-
 /* Error message displayed when a refresh failed */
 "We had trouble loading data" = "Patëm probleme në ngarkim të dhënash";
 
@@ -6529,8 +6406,7 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 "You received *50 likes* on your site today" = "Sot në sajtin tuaj patët *50 pëlqime*";
 
 /* Informs that the user has replied to this comment.
-   Notification text - below a comment notification detail
-   Text to look for */
+   Notification text - below a comment notification detail */
 "You replied to this comment." = "Iu përgjigjët këtij komenti.";
 
 /* Error messaged show when a mobile plugin is redirecting traffict to their site, DudaMobile in particular */
@@ -7601,15 +7477,6 @@ Example: Reply to Pamela Nguyen */
 /* Personialize home screen button title */
 "dasboard.personalizeHomeButton" = "Personalizoni skenën tuaj të kreut";
 
-/* Title for a menu action in the context menu on the Jetpack Social dashboard card. */
-"dashboard.card.social.menu.hide" = "Fshihe këtë";
-
-/* Title for the Jetpack Social dashboard card when the user has no social connections. */
-"dashboard.card.social.noconnections.title" = "Ndani me të tjerët nëpër rrjetet tuaja shoqërore";
-
-/* Title for the Jetpack Social dashboard card when the user has no social shares left. */
-"dashboard.card.social.noshares.title" = "Ju janë mbaruar ndarjet!";
-
 /* Button to dismiss the extensive logging alert */
 "dashboard.extensiveLogging.alert.dismiss" = "Hidhe tej";
 
@@ -8244,23 +8111,11 @@ Example: Reply to Pamela Nguyen */
 /* Name of the "Save as Draft" action as it should appear in the iOS Share Sheet when sharing content from other apps to WordPress. Must be less than 16 characters long. Typically the same text as CFBundleDisplayName, but could be shorter if needed. */
 "ios-sharesheet.CFBundleName" = "Ruaje si Skicë";
 
-/* This text is used when the user is configuring the iOS widget and selecting which WordPress site they want the widget to be for */
-"ios-widget.BOl9KQ" = "Ka ${count} mundësi me përputhje me ‘${site}’.";
-
 /* This text is used when the user is configuring the iOS widget, as a label for the dropdown to select the site to configure it for */
 "ios-widget.ILcGmf" = "Sajt";
 
-/* This text is used when the user is configuring the iOS widget, as the title for the modal when selecting the site to configure it for */
-"ios-widget.cyajMn" = "Sajt";
-
 /* This text is used when the user is configuring the iOS widget to suggest them to select the site to configure the widget for */
 "ios-widget.gpCwrM" = "Përzgjidhni Sajt";
-
-/* This text is used when configuring the iOS widget and confirming the WordPress site the user wants the widget to be for */
-"ios-widget.s4dJhx" = "Sa për ripohim, donit ‘${site}’?";
-
-/* This text is required by Apple to be part of the translations but is not shown to the users. You can use the English version verbatim without translation for this entry. */
-"ios-widget.tVvJ9c" = "Përzgjidhni Synim Sajti";
 
 /* Title of a badge indicating when a feature in plural form will be removed. First argument is the feature name. Second argument is the number of days/weeks it will be removed in. Ex: Notifications are moving in 2 weeks */
 "jetpack.branding.badge_banner.moving_in.plural" = "%1$@ po kalohen në %2$@";
@@ -10711,15 +10566,6 @@ Example: Reply to Pamela Nguyen */
 /* Menu option for filtering posts by me */
 "postsList.postsByMe" = "Postime nga unë";
 
-/* Title for the button to subscribe to Jetpack Social on the remaining shares view */
-"postsettings.social.remainingshares.subscribe" = "Pajtohuni që tani, që të ndani më tepër me të tjerët";
-
-/* The second half of the remaining social shares a user has. This is only displayed when there is no social limit warning. */
-"postsettings.social.remainingshares.text.part" = " në 30 ditët pasuese";
-
-/* Beginning text of the remaining social shares a user has left. %1$d is their current remaining shares. This text is combined with ' in the next 30 days' if there is no warning displayed. */
-"postsettings.social.shares.text.format" = "Edhe %1$d ndarje me të tjerë në rrjete shoqërorë";
-
 /* Label for a cell in the pre-publishing sheet */
 "prepublishing.categories" = "Kategori";
 
@@ -10731,9 +10577,6 @@ Example: Reply to Pamela Nguyen */
 
 /* Title for the discard changes confirmation dialog */
 "prepublishing.discardChanges.title" = "Të Hidhen Tej Ndryshimet?";
-
-/* Label for a cell in the pre-publishing sheet */
-"prepublishing.jetpackSocial" = "Jetpack Social";
 
 /* Details for a publish button state in the pre-publishing sheet; count as a parameter */
 "prepublishing.mediaUploadFailedDetails" = "S’u arrit të ngarkohen %@ objekte";
@@ -10762,65 +10605,8 @@ Example: Reply to Pamela Nguyen */
 /* Primary button label in the pre-publishing shee */
 "prepublishing.schedule" = "Vëreni në plan";
 
-/* The primary label for the auto-sharing row on the pre-publishing sheet.
-Indicates the number of social accounts that will be sharing the blog post.
-%1$d is a placeholder for the number of social network accounts that will be auto-shared.
-Example: Sharing to 3 accounts */
-"prepublishing.social.label.multipleConnections" = "Po ndahet me %1$d llogari";
-
-/* The primary label for the auto-sharing row on the pre-publishing sheet.
-Indicates the blog post will not be shared to any social accounts. */
-"prepublishing.social.label.notSharing" = "Pa ndarje në shoqërorë";
-
-/* The primary label for the auto-sharing row on the pre-publishing sheet.
-Indicates the number of social accounts that will be sharing the blog post.
-This string is displayed when some of the social accounts are turned off for auto-sharing.
-%1$d is a placeholder for the number of social media accounts that will be sharing the blog post.
-%2$d is a placeholder for the total number of social media accounts connected to the user's blog.
-Example: Sharing to 2 of 3 accounts */
-"prepublishing.social.label.partialConnections" = "Po ndahet në %1$d nga %2$d llogari";
-
-/* The primary label for the auto-sharing row on the pre-publishing sheet.
-Indicates the blog post will be shared to a social media account.
-%1$@ is a placeholder for the account name.
-Example: Sharing to @wordpress */
-"prepublishing.social.label.singleConnection" = "Po ndahet në %1$@";
-
-/* A subtext that's shown below the primary label in the auto-sharing row on the pre-publishing sheet.
-Informs the remaining limit for post auto-sharing.
-%1$d is a placeholder for the remaining shares.
-Example: 27 social shares remaining */
-"prepublishing.social.remainingShares.format" = "Edhe %1$d ndarje në shoqërorë";
-
-/* a VoiceOver description for the warning icon to hint that the remaining shares are low. */
-"prepublishing.social.warningIcon.accessibilityHint" = "Kujdes";
-
-/* The navigation title for a screen that edits the sharing message for the post. */
-"prepublishing.socialAccounts.editMessage.navigationTitle" = "Përshtateni mesazhin";
-
-/* The label for a call-to-action button in the social accounts' footer section. */
-"prepublishing.socialAccounts.footer.button.text" = "Pajtohuni që tani, që të ndani më tepër me të tjerët";
-
-/* Text shown below the list of social accounts to indicate how many social shares available for the site.
-Note that the '30 days' part is intended to be a static value.
-%1$d is a placeholder for the amount of remaining shares.
-Example: 27 social shares remaining in the next 30 days */
-"prepublishing.socialAccounts.footer.remainingShares.text" = "Edhe %1$d ndarje në shoqërorë për 30 ditët pasuese";
-
-/* a VoiceOver description for the warning icon to hint that the remaining shares are low. */
-"prepublishing.socialAccounts.footer.warningIcon.accessibilityHint" = "Kujdes";
-
-/* Table section title */
-"prepublishing.socialAccounts.message.label" = "Mesazh";
-
 /* Placeholder text for the message field in Social Sharing */
 "prepublishing.socialAccounts.messagePlaceholder" = "Shkruani një mesazh të shkurtër për ta ndarë me të tjerë në media shoqërore në krah të postimit";
-
-/* The navigation title for the pre-publishing social accounts screen. */
-"prepublishing.socialAccounts.navigationTitle" = "Shoqërore";
-
-/* Table section title */
-"prepublishing.socialAccounts.servicesSectionTitle" = "Shërbime";
 
 /* Label for a cell in the pre-publishing sheet */
 "prepublishing.tags" = "Etiketa";
@@ -12010,42 +11796,6 @@ Example: given a notice format "Following %@" and empty site name, this will be 
 /* Label for the blogging reminders setting */
 "sitesettings.reminders.title" = "Kujtues";
 
-/* Body text for the Jetpack Social no connection view */
-"social.noconnection.body" = "Shtoni trafikun tuaj, duke ndarë automatikisht postimet tuaja me shokët në tuaja në media shoqërore.";
-
-/* Title for the connect button to add social sharing for the Jetpack Social no connection view */
-"social.noconnection.connectAccounts" = "Lidhni llogari";
-
-/* Accessibility label for the social media icons in the Jetpack Social no connection view */
-"social.noconnection.icons.accessibility.label" = "Ikona mediash shoqërore";
-
-/* Title for the not now button to hide the Jetpack Social no connection view */
-"social.noconnection.notnow" = "Jo tani";
-
-/* Plural body text for the Jetpack Social no shares dashboard card. %1$d is the number of social accounts the user has. */
-"social.noshares.body.plural" = "Postimet tuaja s’do të ndahen me të tjerë në %1$d llogari tuajat në shoqërorë.";
-
-/* Singular body text for the Jetpack Social no shares dashboard card. */
-"social.noshares.body.singular" = "Postimet tuaja s’do të ndahen me të tjerë në llogarinë tuaj në shoqërorë.";
-
-/* Accessibility label for the social media icons in the Jetpack Social no shares dashboard card */
-"social.noshares.icons.accessibility.label" = "Ikona mediash shoqërore";
-
-/* Title for the button to subscribe to Jetpack Social on the no shares dashboard card */
-"social.noshares.subscribe" = "Pajtohuni që tani, që të ndani më tepër me të tjerët";
-
-/* Section title for the disabled Twitter service in the Social screen */
-"social.section.disabledTwitter.header" = "Ndarja e Automatizuar Me të Tjerë Që Nga Twitter S’mund të Përdoret Më";
-
-/* Text for a hyperlink that allows the user to learn more about the Twitter deprecation. */
-"social.twitterDeprecation.link" = "Mësoni më tepër";
-
-/* A smallprint that hints the reason behind why Twitter is deprecated. */
-"social.twitterDeprecation.text" = "Ndarja e automatizuar me të tjerë që nga Twitter s’mund të përdoret më, për shkak ndryshimesh në kushte dhe çmime nga ana e Twitter-it.";
-
-/* The number of connected accounts on a third party sharing service connected to the user's blog. The '%d' is a placeholder for the number of accounts. */
-"socialSharing.connectionDetails.nAccount" = "%d llogari";
-
 /* Title of Ads stats tab. */
 "stats.dashboard.tab.ads" = "Reklama";
 
@@ -12740,6 +12490,114 @@ Example: given a notice format "Following %@" and empty site name, this will be 
 
 /* A title for the filter on the PHP logs screen */
 "webServerLogs.filterStatus" = "Gjendje";
+
+/* Preview title of all-time posts and most views widget */
+"widget.allTimePostViews.previewTitle" = "Postime & Më të Parët e Krejt Kohës";
+
+/* Preview title of all-time views widget */
+"widget.allTimeViews.previewTitle" = "Parje Gjatë Krejt Kohës";
+
+/* Preview title of all-time views and visitors widget */
+"widget.allTimeViewsVisitors.previewTitle" = "Parje & Vizitorë Gjatë Gjithë Kohës";
+
+/* Title of best views ever label in all time widget */
+"widget.alltime.bestviews.label" = "Parjet më të mira ndonjëherë";
+
+/* Title of the label which displays the number of the most daily views the site has ever had. Keep the translation as short as possible. */
+"widget.alltime.bestviewsshort.label" = "Shumica e Parjeve";
+
+/* Title of the no data view in all time widget */
+"widget.alltime.nodata.view.title" = "S’arrihet të ngarkohen statistika të krejt kohës.";
+
+/* Title of the no site view in all time widget */
+"widget.alltime.nosite.view.title" = "Që të shihni statistika të krejt kohës, krijoni, ose shtoni një sajt.";
+
+/* Title of posts label in all time widget */
+"widget.alltime.posts.label" = "Postime";
+
+/* Description of all time widget in the preview */
+"widget.alltime.preview.description" = "Jini i përditësuar me veprimtarinë gjithë kohën në sajtin tuaj WordPress.";
+
+/* Title of all time widget */
+"widget.alltime.title" = "Tërë Kohën";
+
+/* Title of the unconfigured view in all time widget */
+"widget.alltime.unconfigured.view.title" = "Bëni hyrjen në WordPress, që të shihni statistikat për krejt kohën.";
+
+/* Title of the unconfigured view in all time widget */
+"widget.jetpack.alltime.unconfigured.view.title" = "Që të shihni statistikat për krejt kohën, hyni në llogarinë tuaj Jetpcak.";
+
+/* Title of the unconfigured view in this week widget */
+"widget.jetpack.thisweek.unconfigured.view.title" = "Që të shihni statistikat e kësaj jave, hyni në llogarinë tuaj Jetpcak.";
+
+/* Title of the unconfigured view in today widget */
+"widget.jetpack.today.unconfigured.view.title" = "Që të shihni statistikat për sot, hyni në llogarinë tuaj Jetpack.";
+
+/* Title of the one-liner information consist of views field and all time date range in lock screen all time views widget */
+"widget.lockscreen.alltimeview.label" = "Parje Gjatë Krejt Kohës";
+
+/* Title of the one-liner information consist of views field and today date range in lock screen today views widget */
+"widget.lockscreen.todayview.label" = "Parje Sot";
+
+/* Title of the no data view in this week widget */
+"widget.thisweek.nodata.view.title" = "S’arrihet të ngarkohen statistika të kësaj jave.";
+
+/* Title of the no site view in this week widget */
+"widget.thisweek.nosite.view.title" = "Që të shihni statistika të kësaj jave, krijoni, ose shtoni një sajt.";
+
+/* Description of all time widget in the preview */
+"widget.thisweek.preview.description" = "Jini i përditësuar me veprimtarinë e kësaj jave në sajtin tuaj WordPress.";
+
+/* Title of this week widget */
+"widget.thisweek.title" = "Këtë Javë";
+
+/* Title of the unconfigured view in this week widget */
+"widget.thisweek.unconfigured.view.title" = "Bëni hyrjen në WordPress, që të shihni statistikat e kësaj jave.";
+
+/* Title of comments label in today widget */
+"widget.today.comments.label" = "Komente";
+
+/* Title of the disabled view in today widget */
+"widget.today.disabled.view.title" = "Statistikat kanë kaluar te aplikacioni Jetpack. Kalimi në të është falas dhe ha vetëm një minutë.";
+
+/* Title of likes label in today widget */
+"widget.today.likes.label" = "Pëlqime";
+
+/* Fallback title of the no data view in the stats widget */
+"widget.today.nodata.view.fallbackTitle" = "S’arrihen të ngarkohen statistika sajti.";
+
+/* Title of the no data view in today widget */
+"widget.today.nodata.view.title" = "S’arrihen të ngarkohen statistika të sotme.";
+
+/* Title of the no site view in today widget */
+"widget.today.nosite.view.title" = "Që të shihni statistika të sotmet, krijoni, ose shtoni një sajt.";
+
+/* Description of today widget in the preview */
+"widget.today.preview.description" = "Jini i përditësuar me veprimtarinë e sotme në sajtin tuaj WordPress.";
+
+/* Title of today widget */
+"widget.today.title" = "Sot";
+
+/* Title of the unconfigured view in today widget */
+"widget.today.unconfigured.view.title" = "Që të shihni statistikat për sot, bëni hyrjen te WordPress-i.";
+
+/* Error message to show if a widget view is unavailable */
+"widget.today.view.unavailable.title" = "Parje jo e passhme";
+
+/* Title of views label in today widget */
+"widget.today.views.label" = "Parje";
+
+/* Title of visitors label in today widget */
+"widget.today.visitors.label" = "Vizitorë";
+
+/* Preview title of today's likes and commnets widget */
+"widget.todayLikesComments.previewTitle" = "Pëlqime & Komente Sot";
+
+/* Preview title of today's views widget */
+"widget.todayViews.previewTitle" = "Parje Sot";
+
+/* Preview title of today's views and visitors widget */
+"widget.todayViewsVisitors.previewTitle" = "Parje & Vizitorë Sot";
 
 /* Second part of delete screen title stating [the site] will be unavailable in the future. */
 "will be unavailable in the future." = "s’do të jetë më i passhëm në të ardhmen.";

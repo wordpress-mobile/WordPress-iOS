@@ -105,9 +105,7 @@
    Menus: Cancel button title for canceling an edited menu item.
    Title of a button that dismisses the permissions alert
    Title. Title of a cancel button. Tapping disnisses an alert.
-   Verb. A button title.
    Verb. A button title. Tapping cancels an action.
-   Verb. Tapping cancels the publicize account selection.
    Verb. Title for Jetpack Restore cancel button. */
 "Cancel" = "Otkaži";
 
@@ -258,11 +256,7 @@
 /* Large image size. Should be the same as in core WP. */
 "Large" = "Veliko";
 
-/* Title of a button. Tapping allows the user to learn more about the specific error. */
-"Learn More" = "Saznaj Više";
-
-/* A button title.
-   Link to cookie policy
+/* Link to cookie policy
    Menu title to show the prompts feature introduction modal. */
 "Learn more" = "Saznaj više";
 
@@ -295,7 +289,6 @@
 
 /* Button leading to a screen where users can manage their installed plugins
    Screen title, where users can see all their installed plugins.
-   Verb. Text label. Tapping displays a screen where the user can configure 'share' buttons for third-party services.
    Verb. Title of the screen for managing sharing buttons and settings related to sharing. */
 "Manage" = "Upravljanje";
 
@@ -342,9 +335,6 @@
 
 /* Message for a notice informing the user their scan completed and no threats were found */
 "No threats found" = "Nisu pronađene prijetnje";
-
-/* Error title for alert, shown to a user who is trying to share to Facebook but does not have any available Facebook Pages. */
-"Not Connected" = "Nepovezano";
 
 /* Name of the Notifications feature.
    Notifications 3D Touch Shortcut
@@ -486,7 +476,6 @@
 "Search blocks" = "Pretraži blokove";
 
 /* Link to plugin's Settings
-   Section title
    Title for screen that allows configuration of your blog/site settings.
    Title for the Jetpack Security Settings Screen */
 "Settings" = "Postavke";
@@ -689,6 +678,21 @@
 /* This text is used when the user is configuring the iOS widget to suggest them to select the site to configure the widget for */
 "ios-widget.gpCwrM" = "Select Site";
 
-/* This text is required by Apple to be part of the translations but is not shown to the users. You can use the English version verbatim without translation for this entry. */
-"ios-widget.tVvJ9c" = "Select Site Intent";
+/* Title of posts label in all time widget */
+"widget.alltime.posts.label" = "Postovi";
+
+/* Title of comments label in today widget */
+"widget.today.comments.label" = "Komentari";
+
+/* Title of likes label in today widget */
+"widget.today.likes.label" = "Likes";
+
+/* Title of today widget */
+"widget.today.title" = "Danas";
+
+/* Title of views label in today widget */
+"widget.today.views.label" = "Pregledi";
+
+/* Title of visitors label in today widget */
+"widget.today.visitors.label" = "Posjetitelji";
 

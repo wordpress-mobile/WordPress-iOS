@@ -270,9 +270,6 @@
 /* Whether a plugin has enabled automatic updates */
 "Autoupdates" = "Actualizações automáticas";
 
-/* No comment provided by engineer. */
-"Available to all users" = "Disponível para todos os utilizadores";
-
 /* Back action on share extension site picker screen. Takes the user to the share extension editor screen.
    Back button title.
    Dismiss view
@@ -341,9 +338,7 @@
    Menus: Cancel button title for canceling an edited menu item.
    Title of a button that dismisses the permissions alert
    Title. Title of a cancel button. Tapping disnisses an alert.
-   Verb. A button title.
    Verb. A button title. Tapping cancels an action.
-   Verb. Tapping cancels the publicize account selection.
    Verb. Title for Jetpack Restore cancel button. */
 "Cancel" = "Cancelar";
 
@@ -373,9 +368,6 @@
 
 /* Popup title for wrong SSL certificate. */
 "Certificate error" = "Erro de certificado";
-
-/* Message to show when Publicize globally shared setting failed */
-"Change failed" = "Falhou ao alterar";
 
 /* Title of alert when getting purchases fails */
 "Check Purchases Error" = "Erro ao verificar compras";
@@ -455,36 +447,6 @@
 
 /* Title of Delete Site confirmation alert */
 "Confirm Delete Site" = "Confirmar eliminação de site";
-
-/* Verb. Tapping connects an account to Publicize.
-   Verb. Text label. Allows the user to connect to a third-party sharing service like Facebook or Twitter. */
-"Connect" = "Ligar";
-
-/* Verb. Text label. Allows the user to connect to a third-party sharing service like Facebook or Twitter. */
-"Connect Another Account" = "Ligar outra conta";
-
-/* Instructional text appearing below a `Connect` button. The `%@` is a placeholder for the name of a third-party sharing service. */
-"Connect to automatically share your blog posts to %@" = "Ligar para partilhar automaticamente novos conteúdos em %@";
-
-/* No comment provided by engineer. */
-"Connect your favorite social media services to automatically share new posts with friends." = "Ligue as suas redes sociais favoritas para partilhar automaticamente novos conteúdos com os seus amigos.";
-
-/* Adjective. The title of a list of third-part sharing service account names. */
-"Connected" = "Ligado";
-
-/* Noun. Title. Title for the list of accounts for third party sharing services. */
-"Connected Accounts" = "Contas ligadas";
-
-/* Connecting is a verb. Title of Publicize account selection. The %@ is a placeholder for the service's name
-   Connecting is a verb. Title of Publicize account selection. The %@ is a placeholder for the service's name. */
-"Connecting %@" = "A ligar %@";
-
-/* Verb. Text label. Allows the user to connect to a third-party sharing service like Facebook or Twitter. */
-"Connecting..." = "A ligar...";
-
-/* Message to show when Publicize authorization failed
-   Message to show when Publicize connect failed */
-"Connection failed" = "A ligação falhou";
 
 /* Button label for contacting support
    Button title that opens the support page
@@ -625,13 +587,8 @@
 /* Menus alert button title to continue selecting a menu and discarding current changes. */
 "Discard and Select Menu" = "Descartar e seleccionar menu";
 
-/* Title for button that disconnects Jetpack from the site
-   Verb. Text label. Tapping disconnects a third-party sharing service from the user's blog.
-   Verb. Title of a button. Tapping disconnects a third-party sharing service from the user's blog. */
+/* Title for button that disconnects Jetpack from the site */
 "Disconnect" = "Desligar";
-
-/* Message to show when Publicize disconnect failed */
-"Disconnect failed" = "Falhou ao desligar";
 
 /* Disconnect from WordPress.com button */
 "Disconnect from WordPress.com" = "Desligar do WordPress.com";
@@ -979,11 +936,7 @@
 /* Insights latest post summary header */
 "Latest Post Summary" = "Resumo do último conteúdo";
 
-/* Title of a button. Tapping allows the user to learn more about the specific error. */
-"Learn More" = "Saber mais";
-
-/* A button title.
-   Link to cookie policy
+/* Link to cookie policy
    Menu title to show the prompts feature introduction modal. */
 "Learn more" = "Ver mais";
 
@@ -1086,7 +1039,6 @@
 
 /* Button leading to a screen where users can manage their installed plugins
    Screen title, where users can see all their installed plugins.
-   Verb. Text label. Tapping displays a screen where the user can configure 'share' buttons for third-party services.
    Verb. Title of the screen for managing sharing buttons and settings related to sharing. */
 "Manage" = "Gerir";
 
@@ -1253,9 +1205,6 @@
    No comment will be autoapproved
    No size class defined for the image. Should be the same as in core WP. */
 "None" = "Nenhum";
-
-/* Error title for alert, shown to a user who is trying to share to Facebook but does not have any available Facebook Pages. */
-"Not Connected" = "Não ligado";
 
 /* Nicer dialog answer for \"No\".
    Title of a button that cancels enabling notifications when tapped */
@@ -1712,7 +1661,6 @@
 "Service" = "Serviço";
 
 /* Link to plugin's Settings
-   Section title
    Title for screen that allows configuration of your blog/site settings.
    Title for the Jetpack Security Settings Screen */
 "Settings" = "Opções";
@@ -1724,12 +1672,10 @@
    Share Extension Content Body Text Placeholder */
 "Share your story here..." = "Partilhe aqui a sua história...";
 
-/* Noun. Name of the Social Sharing feature
-   Title for blog detail sharing screen. */
+/* Noun. Name of the Social Sharing feature */
 "Sharing" = "Partilha";
 
-/* Section title for the sharing buttons section in the Sharing screen
-   Title of a list of buttons used for sharing content to other services. */
+/* Title of a list of buttons used for sharing content to other services. */
 "Sharing Buttons" = "Botões de partilha";
 
 /* Title for the `show like button` setting */
@@ -2339,14 +2285,29 @@
 /* This text is used when the user is configuring the iOS widget to suggest them to select the site to configure the widget for */
 "ios-widget.gpCwrM" = "Select Site";
 
-/* This text is required by Apple to be part of the translations but is not shown to the users. You can use the English version verbatim without translation for this entry. */
-"ios-widget.tVvJ9c" = "Select Site Intent";
-
 /* Later today */
 "later today" = "mais logo";
 
 /* Used when the response doesn't have a valid url to display */
 "unknown url" = "URL desconhecido";
+
+/* Title of posts label in all time widget */
+"widget.alltime.posts.label" = "Conteúdos";
+
+/* Title of comments label in today widget */
+"widget.today.comments.label" = "Comentários";
+
+/* Title of likes label in today widget */
+"widget.today.likes.label" = "Gostos";
+
+/* Title of today widget */
+"widget.today.title" = "Hoje";
+
+/* Title of views label in today widget */
+"widget.today.views.label" = "Visualizações";
+
+/* Title of visitors label in today widget */
+"widget.today.visitors.label" = "Visitantes";
 
 /* Second part of delete screen title stating [the site] will be unavailable in the future. */
 "will be unavailable in the future." = "irá estar indisponível de futuro.";

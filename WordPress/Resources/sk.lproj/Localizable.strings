@@ -37,9 +37,6 @@
 /* Number of Links */
 "%@ links" = "%@ odkazov";
 
-/* Let's the user know that a third party sharing service was reconnected. The %@ is a placeholder for the service name. */
-"%@ was reconnected." = "%@ bol znova pripojený.";
-
 /* Number of posts displayed in Posting Activity when a day is selected. %d will contain the actual number (singular). */
 "%d Post" = "%d článok";
 
@@ -230,9 +227,6 @@
 /* Shown to the user in settings when they haven't yet allowed or denied push notifications */
 "Allow push notifications" = "Povoliť push upozornenia";
 
-/* No comment provided by engineer. */
-"Allow this connection to be used by all admins and users of your site." = "Povoliť toto pripojenie používať všetkým administrátorom a používateľom Vašej webovej stránke.";
-
 /* Allowlisted IP Addresses Title */
 "Allowlisted IP Addresses" = "Zoznam povolených IP adries";
 
@@ -321,9 +315,6 @@
 /* Text for the alert to confirm a plugin removal. %1$@ is the plugin name. */
 "Are you sure you want to remove %1$@?" = "Určite chcete odstrániť %1$@?";
 
-/* Message shown to users who have an old publicize connection to a facebook profile. */
-"As of August 1, 2018, Facebook no longer allows direct sharing of posts to Facebook Profiles. Connections to Facebook Pages remain unchanged." = "Od 1. augusta 2018 spoločnosť Facebook už neumožňuje priame zdieľanie príspevkov na profily služby Facebook. Pripojenia na stránky Facebooku zostávajú nezmenené.";
-
 /* Alert option to embed a doc link into a blog post. */
 "Attach File as Link" = "Pridať súbor ako odkaz";
 
@@ -368,9 +359,6 @@
 
 /* Whether a plugin has enabled automatic updates */
 "Autoupdates" = "Automatické aktualizácie";
-
-/* No comment provided by engineer. */
-"Available to all users" = "Dostupné pre všetkých používateľov";
 
 /* Back action on share extension site picker screen. Takes the user to the share extension editor screen.
    Back button title.
@@ -450,9 +438,7 @@
    Menus: Cancel button title for canceling an edited menu item.
    Title of a button that dismisses the permissions alert
    Title. Title of a cancel button. Tapping disnisses an alert.
-   Verb. A button title.
    Verb. A button title. Tapping cancels an action.
-   Verb. Tapping cancels the publicize account selection.
    Verb. Title for Jetpack Restore cancel button. */
 "Cancel" = "Zrušiť";
 
@@ -489,9 +475,6 @@
 /* Account Settings Change password label
    Main title */
 "Change Password" = "Zmeniť heslo";
-
-/* Message to show when Publicize globally shared setting failed */
-"Change failed" = "Zmena sa nepodarila";
 
 /* Instructions for editing the sharing label. */
 "Change the text of the sharing buttons' label. This text won't appear until you add at least one sharing button." = "Zmeniť text popisu u tlačidla pre zdieľanie. Tento text sa nezobrazuje, pokiaľ nieje vytvorené aspoň jedno tlačidlo.";
@@ -589,46 +572,6 @@
 
 /* Title of Delete Site confirmation alert */
 "Confirm Delete Site" = "Potvrdiť zmazanie stránky";
-
-/* Instructional text about the Sharing feature. */
-"Confirm this is the account you would like to authorize. Note that your posts will be automatically shared to this account." = "Potvrďte, že ide o účet, ktorý chcete autorizovať. Upozorňujeme, že vaše príspevky sa automaticky zdieľajú s týmto účtom.";
-
-/* Verb. Tapping connects an account to Publicize.
-   Verb. Text label. Allows the user to connect to a third-party sharing service like Facebook or Twitter. */
-"Connect" = "Pripojiť";
-
-/* Verb. Text label. Allows the user to connect to a third-party sharing service like Facebook or Twitter. */
-"Connect Another Account" = "Pripojiť iný účet";
-
-/* Instructional text appearing below a `Connect` button. The `%@` is a placeholder for the name of a third-party sharing service. */
-"Connect to automatically share your blog posts to %@" = "Pripojte pre automatické zdieľanie vašich blogových článkov s %@";
-
-/* No comment provided by engineer. */
-"Connect your favorite social media services to automatically share new posts with friends." = "Pripojte vaše obľúbené služby sociálnych sietí pre automatické zdieľanie nových článkov s priateľmi.";
-
-/* Adjective. The title of a list of third-part sharing service account names. */
-"Connected" = "Pripojené";
-
-/* Noun. Title. Title for the list of accounts for third party sharing services. */
-"Connected Accounts" = "Prepojené účty";
-
-/* Connecting is a verb. Title of Publicize account selection. The %@ is a placeholder for the service's name
-   Connecting is a verb. Title of Publicize account selection. The %@ is a placeholder for the service's name. */
-"Connecting %@" = "Pripájam %@";
-
-/* Informs the user of consequences of chooseing a new account to connect to publicize.  The %@ characters are placeholders for account names. */
-"Connecting %@ will replace the existing connection to %@." = "Pripojovanie k %1$@ nahradí aktuálne spojenie k %2$@.";
-
-/* Verb. Text label. Allows the user to connect to a third-party sharing service like Facebook or Twitter. */
-"Connecting..." = "Pripájam...";
-
-/* Message to show when Publicize authorization is canceled
-   Message to show when Publicize connection is canceled by the user. */
-"Connection canceled" = "Pripojenie prerušené";
-
-/* Message to show when Publicize authorization failed
-   Message to show when Publicize connect failed */
-"Connection failed" = "Pripojenie zlyhalo";
 
 /* Button label for contacting support
    Button title that opens the support page
@@ -805,19 +748,11 @@
 /* Menus alert button title to continue selecting a menu and discarding current changes. */
 "Discard and Select Menu" = "Zahodiť a vybrať menu";
 
-/* Title for button that disconnects Jetpack from the site
-   Verb. Text label. Tapping disconnects a third-party sharing service from the user's blog.
-   Verb. Title of a button. Tapping disconnects a third-party sharing service from the user's blog. */
+/* Title for button that disconnects Jetpack from the site */
 "Disconnect" = "Odpojiť";
-
-/* Message to show when Publicize disconnect failed */
-"Disconnect failed" = "Odpojenie zlyhalo";
 
 /* Disconnect from WordPress.com button */
 "Disconnect from WordPress.com" = "Odpojiť z WordPress.com";
-
-/* Explanatory text for the user. The `%@` is a placeholder for the name of a third-party sharing service. */
-"Disconnecting this account means published posts will no longer be automatically shared to %@" = "Odpojenie tohto účtu znamená, že zverejnené články viac nebudú automaticky zdieľané s %@";
 
 /* Label for selecting the Blog Discussion Settings section
    Title for the Discussion Settings Screen */
@@ -921,8 +856,7 @@
 /* Message to show to user when he tries to add a self-hosted site that is an empty URL. */
 "Empty URL" = "Prázdny URL odkaz";
 
-/* Button title for the enable site notifications action.
-   Title of button to enable publicize. */
+/* Button title for the enable site notifications action. */
 "Enable" = "Povoliť";
 
 /* Enter a custom value */
@@ -1309,11 +1243,7 @@
 /* Insights latest post summary header */
 "Latest Post Summary" = "Zhrnutie najnovších článkov";
 
-/* Title of a button. Tapping allows the user to learn more about the specific error. */
-"Learn More" = "Zistiť viac";
-
-/* A button title.
-   Link to cookie policy
+/* Link to cookie policy
    Menu title to show the prompts feature introduction modal. */
 "Learn more" = "Zistiť viac";
 
@@ -1440,7 +1370,6 @@
 
 /* Button leading to a screen where users can manage their installed plugins
    Screen title, where users can see all their installed plugins.
-   Verb. Text label. Tapping displays a screen where the user can configure 'share' buttons for third-party services.
    Verb. Title of the screen for managing sharing buttons and settings related to sharing. */
 "Manage" = "Spravovať";
 
@@ -1611,9 +1540,6 @@
 /* Empty state message (People Management). %@ can be 'users' or 'followers' */
 "No %@ yet" = "Nie %@ ešte ";
 
-/* Title of an error message. There were no third-party service accounts found to setup sharing. */
-"No Accounts Found" = "Neboli nájdené žiadne účty";
-
 /* Title of error prompt when no internet connection is available. */
 "No Connection" = "Žiadne pripojenie";
 
@@ -1629,7 +1555,7 @@
 /* Label used for posts without a title in spotlight search. */
 "No Title" = "Bez názvu";
 
-/* A short message that informs the user no sites could be loaded in the share extension. */
+/* A short message that informs the user their account has no available sites. */
 "No available sites" = "Webové stránky nie sú dostupné";
 
 /* An option in a list. Automatically approve no comments. */
@@ -1642,9 +1568,6 @@
 /* Displayed during Site Creation, when searching for Verticals and the network is unavailable.
    Title for the error view when there's no connection */
 "No connection" = "Žiadne spojenie";
-
-/* Message to show when Keyring connection synchronization succeeded but no matching connections were found. %@ is a service name like Facebook or Twitter */
-"No connections found for %@" = "Nenašlo sa spojenie pre %@";
 
 /* Displayed in the Notifications Tab as a title, when the Likes Filter shows no notifications */
 "No likes yet" = "Zatiaľ žiadne lajky";
@@ -1699,9 +1622,6 @@
    No comment will be autoapproved
    No size class defined for the image. Should be the same as in core WP. */
 "None" = "Žiadne";
-
-/* Error title for alert, shown to a user who is trying to share to Facebook but does not have any available Facebook Pages. */
-"Not Connected" = "Nepripojené";
 
 /* Nicer dialog answer for \"No\".
    Title of a button that cancels enabling notifications when tapped */
@@ -2068,12 +1988,6 @@
 /* Invite Person: Email or Username Edition Title */
 "Recipient" = "Príjemca";
 
-/* Verb. Text label. Tapping attempts to reconnect a third-party sharing service to the user's blog. */
-"Reconnect" = "Znova pripojiť";
-
-/* Message shwon to confirm a publicize connection has been successfully reconnected. */
-"Reconnected" = "Znovu pripojené";
-
 /* Label for link title in Referrers stat. */
 "Referrer" = "Odkazujúci";
 
@@ -2249,9 +2163,6 @@
 /* Accessibility label for selecting paragraph style button on formatting toolbar. */
 "Select paragraph style" = "Vyberte štýl odseku";
 
-/* Instructional text about the Sharing feature. */
-"Select the account you would like to authorize. Note that your posts will be automatically shared to the selected account." = "Vyberte účet, ktorý chcete povoliť. Všimnite si, že vaše príspevky budú automaticky zdieľané na vybraný účet.";
-
 /* Voiceover hint for a button that allows the user to filter posts by author. */
 "Select to change the current author filter." = "Vybrať zmenu aktuálneho autora filtra.";
 
@@ -2295,7 +2206,6 @@
 "Set up Jetpack" = "Nastaviť Jetpack";
 
 /* Link to plugin's Settings
-   Section title
    Title for screen that allows configuration of your blog/site settings.
    Title for the Jetpack Security Settings Screen */
 "Settings" = "Nastavenia";
@@ -2319,12 +2229,10 @@
    Share Extension Content Body Text Placeholder */
 "Share your story here..." = "Podeľte sa o svoj príbeh...";
 
-/* Noun. Name of the Social Sharing feature
-   Title for blog detail sharing screen. */
+/* Noun. Name of the Social Sharing feature */
 "Sharing" = "Zdieľanie";
 
-/* Section title for the sharing buttons section in the Sharing screen
-   Title of a list of buttons used for sharing content to other services. */
+/* Title of a list of buttons used for sharing content to other services. */
 "Sharing Buttons" = "Tlačidla pre zdieľanie";
 
 /* Share extension error dialog title. */
@@ -2447,9 +2355,6 @@
 
 /* A short error message letting the user know the requested reader content could not be loaded. */
 "Sorry. The content could not be loaded." = "Ľutujeme. Stránku sa nepodarilo načítať.";
-
-/* An error message shown if a third-party social service does not specify any accounts that an be used with publicize sharing. */
-"Sorry. The social service did not tell us which account could be used for sharing." = "Prepáčte. Sociálna služba nám neuviedla, ktorý účet sa dá použiť na zdieľanie.";
 
 /* A short error message leting the user know the requested search could not be performed. */
 "Sorry. Your search results could not be loaded." = "Prepáčte. Výsledky vyhľadávania sa nedajú načítať.";
@@ -2674,9 +2579,6 @@
 
 /* Displayed when there's a pending Email Change. The variable is the new email address. */
 "There is a pending change of your email to %@. Please check your inbox for a confirmation link." = "Existuje čakajúca zmena e-mailu na %@. Skontrolujte vašu schránku a vyhľadajte potvrdzovací odkaz.";
-
-/* Informs the user about an issue connecting to the third-party sharing service. The `%@` is a placeholder for the service name. */
-"There is an issue connecting to %@. Reconnect to continue publicizing." = "Vyskytol sa problém pripojenia k %@. Znovu pripojiť a pokračovať vo zverejnení.";
 
 /* Displayed during Site Creation, when searching for Verticals and the server returns an error.
    The Jetpack view title used when an error occurred
@@ -3037,9 +2939,6 @@
 /* Error message displayed when a refresh is taking longer than usual. The refresh hasn't failed and it might still succeed */
 "We are having trouble loading data" = "Máme problémy s načítaním dát";
 
-/* Message to show when Keyring connection synchronization failed. %@ is a service name like Facebook or Twitter */
-"We had trouble loading connections for %@" = "Máme problém s načítavaním pripojenia pre %@";
-
 /* Error message displayed when a refresh failed */
 "We had trouble loading data" = "Mali sme problémy s načítaním dát";
 
@@ -3215,8 +3114,7 @@
 "You must be signed in to a WordPress.com account to perform this action." = "Na to, aby ste mohli vykonať túto akciu musíte byť prihlásený cez účet WordPress.com.";
 
 /* Informs that the user has replied to this comment.
-   Notification text - below a comment notification detail
-   Text to look for */
+   Notification text - below a comment notification detail */
 "You replied to this comment." = "Odpovedali ste na tento komentár.";
 
 /* Error messaged show when a mobile plugin is redirecting traffict to their site, DudaMobile in particular */
@@ -3267,9 +3165,6 @@
 /* This text is used when the user is configuring the iOS widget to suggest them to select the site to configure the widget for */
 "ios-widget.gpCwrM" = "Select Site";
 
-/* This text is required by Apple to be part of the translations but is not shown to the users. You can use the English version verbatim without translation for this entry. */
-"ios-widget.tVvJ9c" = "Select Site Intent";
-
 /* Later today */
 "later today" = "neskôr dnes";
 
@@ -3278,6 +3173,24 @@
 
 /* Used when the response doesn't have a valid url to display */
 "unknown url" = "neznáma url adresa";
+
+/* Title of posts label in all time widget */
+"widget.alltime.posts.label" = "Články";
+
+/* Title of comments label in today widget */
+"widget.today.comments.label" = "Komentáre";
+
+/* Title of likes label in today widget */
+"widget.today.likes.label" = "Likes";
+
+/* Title of today widget */
+"widget.today.title" = "Dnes";
+
+/* Title of views label in today widget */
+"widget.today.views.label" = "Zobrazenia";
+
+/* Title of visitors label in today widget */
+"widget.today.visitors.label" = "Návštevníci";
 
 /* Second part of delete screen title stating [the site] will be unavailable in the future. */
 "will be unavailable in the future." = "v budúcnosti nebude k dispozícii.";
