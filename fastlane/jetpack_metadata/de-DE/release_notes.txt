@@ -1,3 +1,0 @@
-Wir haben die kostenlose GIF-Bibliothek als Medienquelle entfernt, da der Tenor-Dienst, auf dem sie ausgeführt wird, am 30. Juni beendet wird. Wir sind auch traurig darüber.
-
-Wenn du eine selbst gehostete Website hast, meldest du dich jetzt mit einem Anwendungspasswort bei der App an. Wenn du noch keins hast, erstellen wir automatisch eins für dich, damit es bereit ist, wenn du es brauchst.
