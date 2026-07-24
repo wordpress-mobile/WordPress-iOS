@@ -1,10 +1,7 @@
 #!/usr/bin/env bash
 set -euo pipefail
 
-SCRIPT_DIR="$(cd "$(dirname "$0")" && pwd)"
-REPO_ROOT="$(cd "$SCRIPT_DIR/../.." && pwd)"
-DEFAULT_LOCAL_GEM_PATH="$(cd "$REPO_ROOT/.." && pwd)/simulator-llm-pilot"
-DEFAULT_SIMULATOR_LLM_PILOT_REF="68e1e9e5e0d11a9b68ad1ed28b7d456a3da775a2"
+DEFAULT_SIMULATOR_LLM_PILOT_REF="08b5f1d2f7a618eb4614fe06f356c5022c2792fa"
 
 SIMULATOR_LLM_PILOT_REPO_URL="${SIMULATOR_LLM_PILOT_REPO_URL:-https://github.com/Automattic/simulator-llm-pilot.git}"
 SIMULATOR_LLM_PILOT_REF="${SIMULATOR_LLM_PILOT_REF:-$DEFAULT_SIMULATOR_LLM_PILOT_REF}"
@@ -14,9 +11,6 @@ build_dir="$(mktemp -d)"
 trap 'rm -rf "$build_dir"' EXIT
 
 source_path="${SIMULATOR_LLM_PILOT_SOURCE_PATH}"
-if [[ -z "$source_path" && -f "${DEFAULT_LOCAL_GEM_PATH}/simulator-llm-pilot.gemspec" ]]; then
-  source_path="${DEFAULT_LOCAL_GEM_PATH}"
-fi
 
 if [[ -n "$source_path" ]]; then
   echo "Using local simulator-llm-pilot source at ${source_path}"

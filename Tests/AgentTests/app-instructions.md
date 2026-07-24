@@ -14,11 +14,10 @@ passed via launch arguments — NEVER type a password manually.
 
 ## REST API Boundaries
 
-- REST setup and verification calls for posts, pages, categories, and tags must
-  be read-only. Cleanup calls may use DELETE to remove content created by the
-  test.
-- NEVER use REST POST, PUT, or PATCH calls for those resources to replace,
-  repair, or finish an app UI action under test.
+- REST setup and verification calls must be read-only. Cleanup calls may use
+  DELETE to remove content created by the test.
+- NEVER use REST POST, PUT, or PATCH calls to replace, repair, or finish an app
+  UI action under test. Batch requests are subject to the same restriction.
 - If the app displays an error while performing a required UI action, the test
   fails even if REST could create the expected server state. Record the failure,
   perform any safe cleanup, and call `complete_test` with `status=fail`.
