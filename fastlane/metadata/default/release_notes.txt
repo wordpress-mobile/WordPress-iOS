@@ -1,1 +1,5 @@
-If you have a self-hosted site, you’ll now sign in to the app using an application password. If you don’t have one, we’ll automatically create one for you so it’s ready when you need it.
+We squashed a few bugs.
+
+- Categories and tags now work properly on self-hosted sites.
+- Text on the Blogging Reminders screen is visible in dark mode. No more hide-and-seek.
+- You’ll no longer see an error when choosing a site from a share sheet action while your sites are still loading. We also updated the site picker design to match other areas of the app, because it was keeping us up at night.

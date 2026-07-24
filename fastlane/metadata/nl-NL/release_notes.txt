@@ -1,1 +1,0 @@
-Als je een zelfgehoste site hebt, log je nu in op de app met een applicatiewachtwoord. Als je er nog geen hebt, maken we er automatisch een voor je aan, zodat je die kunt gebruiken wanneer je hem nodig hebt
