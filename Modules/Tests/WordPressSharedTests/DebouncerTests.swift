@@ -19,8 +19,10 @@ struct DebouncerTests {
         }
         debouncer.call()
 
-        // Keep the debouncer alive while we pump the run loop; releasing it early
-        // would fire the callback immediately via `deinit`.
+        // `Debouncer` schedules its callback on a `Timer`, which fires only while its run loop is
+        // running. XCTest's `wait(for:)` ran that run loop for us; Swift Testing's async waiting
+        // doesn't, so we run it ourselves until the timer fires. `withExtendedLifetime` keeps the
+        // debouncer alive across the wait — releasing it early fires the callback from `deinit`.
         withExtendedLifetime(debouncer) {
             let deadline = Date().addingTimeInterval(testTimeout)
             while actualDelay == nil && Date() < deadline {
@@ -59,6 +61,8 @@ struct DebouncerTests {
         debouncer.call()
         debouncer.cancel()
 
+        // Run the run loop for the full delay so a still-scheduled Timer would fire;
+        // a cancelled debouncer must not (see testDebouncerRunsNormally).
         withExtendedLifetime(debouncer) {
             let deadline = Date().addingTimeInterval(testTimeout)
             while Date() < deadline {
@@ -84,6 +88,7 @@ struct DebouncerTests {
             actualDelay = Date().timeIntervalSince(startDate)
         }
 
+        // Run the run loop until the Timer fires, as in testDebouncerRunsNormally.
         withExtendedLifetime(debouncer) {
             let deadline = Date().addingTimeInterval(testTimeout)
             while actualDelay == nil && Date() < deadline {
