@@ -126,11 +126,11 @@ assert_equal \
   "accepts the explicitly configured XML-RPC endpoint response"
 
 MOCK_XMLRPC_BODY_FILE="$disabled_response"
-MOCK_XMLRPC_CURL_OUTPUT='200 https://example.com/xmlrpc.php 0 text/xml; charset=UTF-8'
-if preflight_xmlrpc_availability "https://example.com" "unavailable" "429" >/dev/null 2>&1; then
-  echo "FAIL: XML-RPC preflight accepts a response that differs from the configured endpoint status" >&2
-  exit 1
-fi
+MOCK_XMLRPC_CURL_OUTPUT='405 https://example.com/xmlrpc.php 0 text/xml; charset=UTF-8'
+assert_equal \
+  "OK: XML-RPC is unavailable" \
+  "$(preflight_xmlrpc_availability "https://example.com" "unavailable" "429")" \
+  "accepts a verified XML-RPC fault when the configured edge response is absent"
 
 if preflight_xmlrpc_availability "https://example.com" "available" "429" >/dev/null 2>&1; then
   echo "FAIL: XML-RPC preflight accepts conflicting availability and endpoint expectations" >&2

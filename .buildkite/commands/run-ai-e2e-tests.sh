@@ -30,7 +30,7 @@
 #                                  (default: unavailable; use any explicitly
 #                                  for exploratory runs)
 #   SIMULATOR_LLM_PILOT_EXPECT_XMLRPC_ENDPOINT_HTTP_STATUS
-#                                  Optional exact HTTP response required from
+#                                  Optional known HTTP response accepted from
 #                                  the XML-RPC endpoint (currently only 429)
 
 set -euo pipefail
@@ -268,18 +268,10 @@ preflight_xmlrpc_availability() {
     return 1
   fi
 
-  # The nightly host currently returns 429 from its edge before WordPress
-  # handles XML-RPC. Treat this as an exact endpoint-response contract, not as
-  # general evidence that WordPress has disabled XML-RPC.
-  if [[ -n "$expected_endpoint_http_status" ]]; then
-    if [[ "$http_status" != "$expected_endpoint_http_status" ]]; then
-      echo "Error: XML-RPC endpoint response drifted." >&2
-      echo "Expected HTTP status: ${expected_endpoint_http_status}" >&2
-      echo "Actual HTTP status: ${http_status}" >&2
-      echo "URL: ${xmlrpc_url}" >&2
-      return 1
-    fi
-
+  # The nightly host can return 429 from its edge before WordPress handles
+  # XML-RPC. Accept only that explicitly configured response; other responses
+  # still have to satisfy the locale-independent XML-RPC fault detector below.
+  if [[ -n "$expected_endpoint_http_status" && "$http_status" == "$expected_endpoint_http_status" ]]; then
     echo "OK: XML-RPC endpoint returned configured HTTP ${http_status}"
     return 0
   fi
