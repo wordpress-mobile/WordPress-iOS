@@ -1,12 +1,12 @@
 import Foundation
-import XCTest
+import Testing
 import WordPressShared
 
 // MARK: - Scanner+QuotedTextTests
 //
-class ScannerTests: XCTestCase {
+struct ScannerTests {
 
-    func testScannerCorrectlyReturnsSingleQuotes() {
+    @Test func testScannerCorrectlyReturnsSingleQuotes() {
         // Given
         let inputString = #"Lorem "ipsum" dolor sit amet elit"#
 
@@ -15,10 +15,10 @@ class ScannerTests: XCTestCase {
         let quotes = scanner.scanQuotedText()
 
         // Then
-        XCTAssertEqual(quotes, ["ipsum"])
+        #expect(quotes == ["ipsum"])
     }
 
-    func testScannerCorrectlyReturnsMultipleQuotes() {
+    @Test func testScannerCorrectlyReturnsMultipleQuotes() {
         // Given
         let inputString = #"Lorem "ipsum" dolor sit "amet" elit"#
 
@@ -27,10 +27,10 @@ class ScannerTests: XCTestCase {
         let quotes = scanner.scanQuotedText()
 
         // Then
-        XCTAssertEqual(quotes, ["ipsum", "amet"])
+        #expect(quotes == ["ipsum", "amet"])
     }
 
-    func testScannerReturnsOnlyClosedQuotes() {
+    @Test func testScannerReturnsOnlyClosedQuotes() {
         // Given
         let inputString = #""Lorem" ipsum dolor sit "amet elit"#
 
@@ -39,10 +39,10 @@ class ScannerTests: XCTestCase {
         let quotes = scanner.scanQuotedText()
 
         // Then
-        XCTAssertEqual(quotes, ["Lorem"])
+        #expect(quotes == ["Lorem"])
     }
 
-    func testScannerReturnsOnlyNonEmptyQuotes() {
+    @Test func testScannerReturnsOnlyNonEmptyQuotes() {
         // Given
         let inputString = #"Lorem "ipsum" "" dolor "sit" """"amet "elit""#
 
@@ -51,10 +51,10 @@ class ScannerTests: XCTestCase {
         let quotes = scanner.scanQuotedText()
 
         // Then
-        XCTAssertEqual(quotes, ["ipsum", "sit", "elit"])
+        #expect(quotes == ["ipsum", "sit", "elit"])
     }
 
-    func testScannerReturnsEmptyArrayForNoResults() {
+    @Test func testScannerReturnsEmptyArrayForNoResults() {
         // Given
         let inputString = #"Lorem ipsum dolor sit amet elit"#
 
@@ -63,6 +63,6 @@ class ScannerTests: XCTestCase {
         let quotes = scanner.scanQuotedText()
 
         // Then
-        XCTAssertEqual(quotes, [])
+        #expect(quotes == [])
     }
 }

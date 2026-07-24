@@ -1,7 +1,7 @@
-import XCTest
+import Testing
 @testable import GutenbergProcessors
 
-class GutenbergFileUploadProcessorTests: XCTestCase {
+struct GutenbergFileUploadProcessorTests {
 
     let postContent = """
 <!-- wp:file {"id":-1626352752,"href":"file://file.pdf"} -->
@@ -15,7 +15,7 @@ class GutenbergFileUploadProcessorTests: XCTestCase {
 <!-- /wp:file -->
 """
 
-    func testFileBlockProcessor() {
+    @Test func testFileBlockProcessor() {
         let gutenbergMediaUploadID = Int32(-1626352752)
         let mediaID = 100
         let remoteURLStr = "http://www.wordpress.com/file.pdf"
@@ -25,6 +25,6 @@ class GutenbergFileUploadProcessorTests: XCTestCase {
         let parser = GutenbergContentParser(for: postContent)
         gutenbergFilePostUploadProcessor.process(parser.blocks)
 
-        XCTAssertEqual(parser.html(), postResultContent, "Post content should be updated correctly")
+        #expect(parser.html() == postResultContent, "Post content should be updated correctly")
     }
 }

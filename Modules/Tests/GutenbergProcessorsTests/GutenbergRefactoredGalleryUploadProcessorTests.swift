@@ -1,7 +1,7 @@
-import XCTest
+import Testing
 @testable import GutenbergProcessors
 
-class GutenbergRefactoredGalleryUploadProcessorTests: XCTestCase {
+struct GutenbergRefactoredGalleryUploadProcessorTests {
     struct ImageUploadJob {
         let localId: Int32
         let remoteId: Int
@@ -73,7 +73,7 @@ class GutenbergRefactoredGalleryUploadProcessorTests: XCTestCase {
     """
     }
 
-    func testRefactoredGalleryImageBlockProcessor() {
+    @Test func testRefactoredGalleryImageBlockProcessor() {
         let job = ImageUploadJob(localId: -123456789, remoteId: 123456789, localUrl: "file:///usr/temp/123.jpg", remoteURL: "https://files.wordpress.com/123.jpg", mediaLink: "https://files.wordpress.com/?p=123")
 
         let gutenbergImgPostUploadProcessor = GutenbergImgUploadProcessor(mediaUploadID: job.localId, serverMediaID: job.remoteId, remoteURLString: job.remoteURL)
@@ -87,10 +87,10 @@ class GutenbergRefactoredGalleryUploadProcessorTests: XCTestCase {
         let parser = GutenbergContentParser(for: refactoredGalleryContent)
         gutenbergImgPostUploadProcessor.process(parser.blocks)
 
-        XCTAssertEqual(parser.html(), refactoredGalleryResultContent, "Post content should be updated correctly")
+        #expect(parser.html() == refactoredGalleryResultContent, "Post content should be updated correctly")
     }
 
-    func testRefactoredGalleryBlockProcessor() {
+    @Test func testRefactoredGalleryBlockProcessor() {
         let mediaJobs = [
             ImageUploadJob(localId: -1, remoteId: 1, localUrl: "file:///usr/temp/1.jpg", remoteURL: "https://files.wordpress.com/1.jpg", mediaLink: "https://files.wordpress.com/?p=1"),
             ImageUploadJob(localId: -2, remoteId: 2, localUrl: "file:///usr/temp/2.jpg", remoteURL: "https://files.wordpress.com/2.jpg", mediaLink: "https://files.wordpress.com/?p=2"),
@@ -116,10 +116,10 @@ class GutenbergRefactoredGalleryUploadProcessorTests: XCTestCase {
             imageProcessor.process(blocks)
         }
 
-        XCTAssertEqual(parser.html(), galleryResultBlockContent, "Post content should be updated correctly")
+        #expect(parser.html() == galleryResultBlockContent, "Post content should be updated correctly")
     }
 
-    func testMixedOldRefactoredGalleryBlockProcessor() {
+    @Test func testMixedOldRefactoredGalleryBlockProcessor() {
         let mediaJobs = [
             ImageUploadJob(localId: -708, remoteId: 708, localUrl: "file:///usr/temp/image708.jpg", remoteURL: "https://files.wordpress.com/708.jpg", mediaLink: "https://files.wordpress.com/?p=708"),
             ImageUploadJob(localId: -1, remoteId: 1, localUrl: "file:///usr/temp/1.jpg", remoteURL: "https://files.wordpress.com/1.jpg", mediaLink: "https://files.wordpress.com/?p=1")
@@ -141,6 +141,6 @@ class GutenbergRefactoredGalleryUploadProcessorTests: XCTestCase {
             imageProcessor.process(blocks)
         }
 
-        XCTAssertEqual(parser.html(), postResultContent, "Post content should be updated correctly")
+        #expect(parser.html() == postResultContent, "Post content should be updated correctly")
     }
 }

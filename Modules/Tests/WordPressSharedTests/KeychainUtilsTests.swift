@@ -1,17 +1,15 @@
 import SFHFKeychainUtils
-import XCTest
+import Testing
 @testable import WordPressShared
 
-class KeychainUtilsTests: XCTestCase {
+struct KeychainUtilsTests {
 
-    override func setUp() {
-        super.setUp()
-
+    init() {
         SFHFKeychainUtilsMock.configure(with: [:])
     }
 
     @available(*, deprecated, message: "Exercises the deprecated KeychainUtils.copyKeychain")
-    func testCopyingPasswordsBetweenKeychains() {
+    @Test func testCopyingPasswordsBetweenKeychains() {
         let service = "service"
         let username = "username"
         let password = "password"
@@ -22,7 +20,7 @@ class KeychainUtilsTests: XCTestCase {
         try? subject.copyKeychain(from: nil, to: sharedGroup, updateExisting: true)
 
         let sharedPassword = try? SFHFKeychainUtilsMock.getPasswordForUsername(username, andServiceName: service, accessGroup: sharedGroup)
-        XCTAssertEqual(sharedPassword, password)
+        #expect(sharedPassword == password)
     }
 }
 

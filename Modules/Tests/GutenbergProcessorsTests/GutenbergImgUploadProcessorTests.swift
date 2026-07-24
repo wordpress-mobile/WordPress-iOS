@@ -1,7 +1,7 @@
-import XCTest
+import Testing
 @testable import GutenbergProcessors
 
-class GutenbergImgUploadProcessorTests: XCTestCase {
+struct GutenbergImgUploadProcessorTests {
 
     let postContent = """
 <!-- wp:image {"id":-181231834} -->
@@ -15,7 +15,7 @@ class GutenbergImgUploadProcessorTests: XCTestCase {
 <!-- /wp:image -->
 """
 
-    func testImgBlockProcessor() {
+    @Test func testImgBlockProcessor() {
         let gutenbergMediaUploadID = Int32(-181231834)
         let mediaID = 100
         let remoteURLStr = "http://www.wordpress.com/logo.jpg"
@@ -25,7 +25,7 @@ class GutenbergImgUploadProcessorTests: XCTestCase {
         let parser = GutenbergContentParser(for: postContent)
         gutenbergImgPostUploadProcessor.process(parser.blocks)
 
-        XCTAssertEqual(parser.html(), postResultContent, "Post content should be updated correctly")
+        #expect(parser.html() == postResultContent, "Post content should be updated correctly")
     }
 
     let postMediaBlockContent = """
@@ -44,7 +44,7 @@ class GutenbergImgUploadProcessorTests: XCTestCase {
     <!-- /wp:media-text -->
     """
 
-    func testMediaTextBlockProcessor() {
+    @Test func testMediaTextBlockProcessor() {
         let gutenbergMediaUploadID = Int32(-181231834)
         let mediaID = 100
         let remoteURLStr = "http://www.wordpress.com/logo.jpg"
@@ -54,6 +54,6 @@ class GutenbergImgUploadProcessorTests: XCTestCase {
         let parser = GutenbergContentParser(for: postMediaBlockContent)
         gutenbergImgPostUploadProcessor.process(parser.blocks)
 
-        XCTAssertEqual(parser.html(), postMediaBlockResultContent, "Post content should be updated correctly")
+        #expect(parser.html() == postMediaBlockResultContent, "Post content should be updated correctly")
     }
 }

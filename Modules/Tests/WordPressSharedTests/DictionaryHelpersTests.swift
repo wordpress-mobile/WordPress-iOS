@@ -1,27 +1,27 @@
 import Foundation
-import XCTest
+import Testing
 @testable import WordPressShared
 
 // MARK: - DictionaryHelpersTests
 //
-class DictionaryHelpersTests: XCTestCase {
-    func testValueAsStringReturnsTheExpectedStringWhenTheValueIsEffectivelyAsString() {
+struct DictionaryHelpersTests {
+    @Test func testValueAsStringReturnsTheExpectedStringWhenTheValueIsEffectivelyAsString() {
         let dictionary = [
             "key": "value!"
         ]
 
         let retrieved = dictionary.valueAsString(forKey: "key")
-        XCTAssertNotNil(retrieved)
-        XCTAssertEqual(retrieved, "value!")
+        #expect(retrieved != nil)
+        #expect(retrieved == "value!")
     }
 
-    func testValueAsStringReturnsTheExpectedStringWhenTheValueIsNumeric() {
+    @Test func testValueAsStringReturnsTheExpectedStringWhenTheValueIsNumeric() {
         let dictionary = [
             "key": 1234
         ]
 
         let retrieved = dictionary.valueAsString(forKey: "key")
-        XCTAssertNotNil(retrieved)
-        XCTAssertEqual(retrieved, "1234")
+        #expect(retrieved != nil)
+        #expect(retrieved == "1234")
     }
 }

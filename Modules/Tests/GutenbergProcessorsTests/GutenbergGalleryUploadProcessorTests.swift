@@ -1,7 +1,7 @@
-import XCTest
+import Testing
 @testable import GutenbergProcessors
 
-class GutenbergGalleryUploadProcessorTests: XCTestCase {
+struct GutenbergGalleryUploadProcessorTests {
 
     let idVariations = [
         """
@@ -101,7 +101,7 @@ class GutenbergGalleryUploadProcessorTests: XCTestCase {
         let mediaLink: String
     }
 
-    func testGutenbergGalleryBlockProcessor() {
+    @Test func testGutenbergGalleryBlockProcessor() {
         let mediaJobs = [
             ImageUploadJob(uploadID: -708, serverID: 708, serverURL: "https://files.wordpress.com/708.jpg", mediaLink: "https://files.wordpress.com/?p=708"),
             ImageUploadJob(uploadID: -415, serverID: 415, serverURL: "https://files.wordpress.com/415.jpg", mediaLink: "https://files.wordpress.com/?p=415"),
@@ -115,7 +115,7 @@ class GutenbergGalleryUploadProcessorTests: XCTestCase {
                 processor.process(parser.blocks)
             }
 
-            XCTAssertEqual(parser.html(), postResultContent, "Post content should be updated correctly")
+            #expect(parser.html() == postResultContent, "Post content should be updated correctly")
         }
     }
 }

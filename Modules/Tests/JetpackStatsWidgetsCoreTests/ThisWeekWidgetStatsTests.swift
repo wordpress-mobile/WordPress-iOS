@@ -1,8 +1,9 @@
-import XCTest
+import Foundation
+import Testing
 import JetpackStatsWidgetsCore
 
-final class ThisWeekWidgetStatsTests: XCTestCase {
-    func testDaysFromSummaryData_moreSummaryData() {
+struct ThisWeekWidgetStatsTests {
+    @Test func testDaysFromSummaryData_moreSummaryData() {
         var summaryData: [ThisWeekWidgetStats.Input] = []
 
         // Given there's summary data for more than max days to display
@@ -13,10 +14,10 @@ final class ThisWeekWidgetStatsTests: XCTestCase {
         // Then the method should not crash
         // and return maxDaysToDisplay number of days
         let days = ThisWeekWidgetStats.daysFrom(summaryData: summaryData)
-        XCTAssertEqual(days.count, ThisWeekWidgetStats.maxDaysToDisplay)
+        #expect(days.count == ThisWeekWidgetStats.maxDaysToDisplay)
     }
 
-    func testDaysFromSummaryData_lessSummaryData() {
+    @Test func testDaysFromSummaryData_lessSummaryData() {
         var summaryData: [ThisWeekWidgetStats.Input] = []
 
         // Given there's summary data for less than max days to display
@@ -27,6 +28,6 @@ final class ThisWeekWidgetStatsTests: XCTestCase {
         // Then the method should not crash
         // and have expected number of This Week data
         let days = ThisWeekWidgetStats.daysFrom(summaryData: summaryData)
-        XCTAssertEqual(days.count, ThisWeekWidgetStats.maxDaysToDisplay - 2)
+        #expect(days.count == ThisWeekWidgetStats.maxDaysToDisplay - 2)
     }
 }

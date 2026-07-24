@@ -1,25 +1,26 @@
-import XCTest
+import Foundation
+import Testing
 import WordPressShared
 
-class AsyncOperationTests: XCTestCase {
+struct AsyncOperationTests {
     let operation = AsyncOperation()
 
-    func testIsAsynchronous() {
-        XCTAssertTrue(operation.isAsynchronous)
+    @Test func testIsAsynchronous() {
+        #expect(operation.isAsynchronous)
     }
 
-    func testDefaultState() {
-        XCTAssertTrue(operation.state == AsyncOperation.State.isReady)
+    @Test func testDefaultState() {
+        #expect(operation.state == AsyncOperation.State.isReady)
     }
 
-    func testIsExecutingState() {
+    @Test func testIsExecutingState() {
         operation.start()
-        XCTAssertTrue(operation.isExecuting)
+        #expect(operation.isExecuting)
     }
 
-    func testIsFinishedState() {
+    @Test func testIsFinishedState() {
         operation.cancel()
         operation.start()
-        XCTAssertTrue(operation.isFinished)
+        #expect(operation.isFinished)
     }
 }

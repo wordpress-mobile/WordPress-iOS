@@ -1,8 +1,12 @@
-import XCTest
+import Testing
 import WordPressFlux
 
-class WordPressFluxTests: XCTestCase {
-    func testStoreReceivesActions() {
+// WordPressFlux's `Dispatcher` asserts it is only called from the main thread.
+// XCTest ran test methods on the main thread; Swift Testing runs them off the
+// main thread, so the suite is pinned to `@MainActor`.
+@MainActor
+struct WordPressFluxTests {
+    @Test func testStoreReceivesActions() {
         struct TestAction: Action {}
         class TestStore: Store {
             var receivedActions = [Action]()
@@ -14,12 +18,12 @@ class WordPressFluxTests: XCTestCase {
 
         let dispatcher = ActionDispatcher()
         let store = TestStore(dispatcher: dispatcher)
-        XCTAssertEqual(store.receivedActions.count, 0, "Store shouldn't have received any actions yet")
+        #expect(store.receivedActions.isEmpty, "Store shouldn't have received any actions yet")
         ActionDispatcher.dispatch(TestAction(), dispatcher: dispatcher)
-        XCTAssertEqual(store.receivedActions.count, 1, "Store shouldn't have received one action")
+        #expect(store.receivedActions.count == 1, "Store shouldn't have received one action")
     }
 
-    func testStoreEmitsChanges() {
+    @Test func testStoreEmitsChanges() {
         class TestStore: Store {
             func test() {
                 emitChange()
@@ -31,17 +35,17 @@ class WordPressFluxTests: XCTestCase {
         var receipt: Receipt? = store.onChange {
             changeCount += 1
         }
-        XCTAssertNotNil(receipt, "We should have a receipt now")
+        #expect(receipt != nil, "We should have a receipt now")
         store.test()
-        XCTAssertEqual(changeCount, 1, "Store should have emitted one change event")
+        #expect(changeCount == 1, "Store should have emitted one change event")
         store.test()
-        XCTAssertEqual(changeCount, 2, "Store should have emitted two change events")
+        #expect(changeCount == 2, "Store should have emitted two change events")
         receipt = nil
         store.test()
-        XCTAssertEqual(changeCount, 2, "We should not receive any more events after releasing the receipt")
+        #expect(changeCount == 2, "We should not receive any more events after releasing the receipt")
     }
 
-    func testStatefulStoreEmitsChanges() {
+    @Test func testStatefulStoreEmitsChanges() {
         class TestStore: StatefulStore<Int> {
             init() {
                 super.init(initialState: 1)
@@ -60,18 +64,18 @@ class WordPressFluxTests: XCTestCase {
         }))
         var stateChangeCount = 0
         receipts.append(store.onStateChange({ old, new in
-            XCTAssertEqual(new, old * 2, "New state should be double than old")
+            #expect(new == old * 2, "New state should be double than old")
             stateChangeCount += 1
         }))
 
-        XCTAssertEqual(store.state, 1, "Initial state should be 1")
+        #expect(store.state == 1, "Initial state should be 1")
         store.test()
-        XCTAssertEqual(store.state, 2, "Second state should be 2")
-        XCTAssertEqual(changeCount, 1, "Store should have emitted one change event")
-        XCTAssertEqual(stateChangeCount, 1, "Store should have emitted one state change event")
+        #expect(store.state == 2, "Second state should be 2")
+        #expect(changeCount == 1, "Store should have emitted one change event")
+        #expect(stateChangeCount == 1, "Store should have emitted one state change event")
     }
 
-    func testStatefulStoreWithoutTransaction() {
+    @Test func testStatefulStoreWithoutTransaction() {
         class TestStore: StatefulStore<Int> {
             init() {
                 super.init(initialState: 1)
@@ -91,18 +95,18 @@ class WordPressFluxTests: XCTestCase {
         }))
         var stateChangeCount = 0
         receipts.append(store.onStateChange({ old, new in
-            XCTAssertEqual(new, old * 2, "New state should be double than old")
+            #expect(new == old * 2, "New state should be double than old")
             stateChangeCount += 1
         }))
 
-        XCTAssertEqual(store.state, 1, "Initial state should be 1")
+        #expect(store.state == 1, "Initial state should be 1")
         store.test()
-        XCTAssertEqual(store.state, 4, "Second state should be 4")
-        XCTAssertEqual(changeCount, 2, "Store should have emitted one change event")
-        XCTAssertEqual(stateChangeCount, 2, "Store should have emitted one state change event")
+        #expect(store.state == 4, "Second state should be 4")
+        #expect(changeCount == 2, "Store should have emitted one change event")
+        #expect(stateChangeCount == 2, "Store should have emitted one state change event")
     }
 
-    func testStatefulStoreWithTransaction() {
+    @Test func testStatefulStoreWithTransaction() {
         class TestStore: StatefulStore<Int> {
             init() {
                 super.init(initialState: 1)
@@ -124,18 +128,18 @@ class WordPressFluxTests: XCTestCase {
         }))
         var stateChangeCount = 0
         receipts.append(store.onStateChange({ old, new in
-            XCTAssertEqual(new, old * 4, "New state should be 4x the old one")
+            #expect(new == old * 4, "New state should be 4x the old one")
             stateChangeCount += 1
         }))
 
-        XCTAssertEqual(store.state, 1, "Initial state should be 1")
+        #expect(store.state == 1, "Initial state should be 1")
         store.test()
-        XCTAssertEqual(store.state, 4, "Second state should be 4")
-        XCTAssertEqual(changeCount, 1, "Store should have emitted one change event")
-        XCTAssertEqual(stateChangeCount, 1, "Store should have emitted one state change event")
+        #expect(store.state == 4, "Second state should be 4")
+        #expect(changeCount == 1, "Store should have emitted one change event")
+        #expect(stateChangeCount == 1, "Store should have emitted one state change event")
     }
 
-    func testQueryStore() {
+    @Test func testQueryStore() {
         struct TestQuery {
             let id: Int
         }
@@ -155,7 +159,7 @@ class WordPressFluxTests: XCTestCase {
         let store = TestStore()
         var receipts = [Receipt]()
         receipts.append(store.query(TestQuery(id: 1)))
-        XCTAssertEqual(store.activeQueries.count, 1, "Store should have one active query")
-        XCTAssertEqual(store.queriesChangedCount, 1, "Store should have processed one queriesChanged event")
+        #expect(store.activeQueries.count == 1, "Store should have one active query")
+        #expect(store.queriesChangedCount == 1, "Store should have processed one queriesChanged event")
     }
 }

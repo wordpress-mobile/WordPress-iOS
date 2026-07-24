@@ -1,83 +1,83 @@
-import XCTest
+import Testing
 @testable import WordPressShared
 
-class ArrayTests: XCTestCase {
-    func testRepeatLast() {
+struct ArrayTests {
+    @Test func testRepeatLast() {
         let array = [1, 2, 3]
         let repeated = Array(array.repeatingLast().prefix(5))
         let expected = [1, 2, 3, 3, 3]
-        XCTAssertEqual(expected, repeated)
+        #expect(expected == repeated)
     }
 
-    func testRepeatLastWithEmptyArray() {
+    @Test func testRepeatLastWithEmptyArray() {
         let array = [Int]()
         let repeated = Array(array.repeatingLast().prefix(5))
         let expected = [Int]()
-        XCTAssertEqual(expected, repeated)
+        #expect(expected == repeated)
     }
 
-    func testDifferentIndicesReturnsEmptyWithSameArray() {
+    @Test func testDifferentIndicesReturnsEmptyWithSameArray() {
         let test = [1, 2, 3]
         let result = test.differentIndices(test)
-        XCTAssert(result.isEmpty)
+        #expect(result.isEmpty)
     }
 
-    func testDifferentIndicesReturnsDifferencesWhenOtherSmaller() {
+    @Test func testDifferentIndicesReturnsDifferencesWhenOtherSmaller() {
         let test = [1, 2, 3]
         let other = [1]
         let result = test.differentIndices(other)
-        XCTAssertEqual(result, [1, 2])
+        #expect(result == [1, 2])
     }
 
-    func testDifferentIndicesReturnsDifferencesWhenOtherLarger() {
+    @Test func testDifferentIndicesReturnsDifferencesWhenOtherLarger() {
         let test = [1, 2, 3]
         let other = [1, 0, 3, 4]
         let result = test.differentIndices(other)
-        XCTAssertEqual(result, [1])
+        #expect(result == [1])
     }
 
-    func testSortedGroupEmptyArray() {
+    @Test func testSortedGroupEmptyArray() {
         let test = [TestElement]()
         let result = test.sortedGroup(keyPath: \TestElement.key)
-        XCTAssertEqual(result.count, 0)
+        #expect(result.isEmpty)
     }
 
-    func testSortedGroupCase1() {
+    @Test func testSortedGroupCase1() {
         let test: [TestElement] = [TestElement(key: "a", value: 1), TestElement(key: "a", value: 2)]
         let result = test.sortedGroup(keyPath: \TestElement.key)
-        XCTAssertEqual(result[0].0, test[0].key)
-        XCTAssertEqual(result[0].1[0], test[0])
-        XCTAssertEqual(result[0].1[1], test[1])
+        #expect(result[0].0 == test[0].key)
+        #expect(result[0].1[0] == test[0])
+        #expect(result[0].1[1] == test[1])
     }
 
-    func testSortedGroupCase2() {
+    @Test func testSortedGroupCase2() {
         let test: [TestElement] = [TestElement(key: "a", value: 1), TestElement(key: "b", value: 1)]
         let result = test.sortedGroup(keyPath: \TestElement.key)
-        XCTAssertEqual(result[0].0, test[0].key)
-        XCTAssertEqual(result[1].0, test[1].key)
-        XCTAssertEqual(result[0].1[0], test[0])
-        XCTAssertEqual(result[1].1[0], test[1])
+        #expect(result[0].0 == test[0].key)
+        #expect(result[1].0 == test[1].key)
+        #expect(result[0].1[0] == test[0])
+        #expect(result[1].1[0] == test[1])
     }
 
-    func testSortedGroupCase3() {
+    @Test func testSortedGroupCase3() {
         let test: [TestElement] = [TestElement(key: "a", value: 1), TestElement(key: "b", value: 1),
                                    TestElement(key: "b", value: 2), TestElement(key: "c", value: 1)]
         let result = test.sortedGroup(keyPath: \TestElement.key)
-        XCTAssertEqual(result[0].0, test[0].key)
-        XCTAssertEqual(result[1].0, test[1].key)
-        XCTAssertEqual(result[2].0, test[3].key)
-        XCTAssertEqual(result[0].1[0], test[0])
-        XCTAssertEqual(result[1].1[0], test[1])
-        XCTAssertEqual(result[1].1[1], test[2])
-        XCTAssertEqual(result[2].1[0], test[3])
+        #expect(result[0].0 == test[0].key)
+        #expect(result[1].0 == test[1].key)
+        #expect(result[2].0 == test[3].key)
+        #expect(result[0].1[0] == test[0])
+        #expect(result[1].1[0] == test[1])
+        #expect(result[1].1[1] == test[2])
+        #expect(result[2].1[0] == test[3])
     }
 
-    func testUniqueRemovesDuplicates() {
+    @Test func testUniqueRemovesDuplicates() {
         let test = ["🦄", "🦄", "🌈"]
 
         let result = test.unique
 
-        XCTAssertTrue(result.count == 2 && result.contains("🦄") && result.contains("🌈"))
+        #expect(result.count == 2 && result.contains("🦄") && result.contains("🌈"))
     }
 }
 

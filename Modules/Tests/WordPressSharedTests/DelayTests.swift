@@ -1,23 +1,23 @@
-import XCTest
+import Testing
 @testable import WordPressShared
 
-class DelayTests: XCTestCase {
-    func testIncrementalDelay() {
+struct DelayTests {
+    @Test func testIncrementalDelay() {
         var delay = IncrementalDelay([1, 5, 20, 60])
-        XCTAssertEqual(1, delay.current)
+        #expect(1 == delay.current)
         delay.increment()
-        XCTAssertEqual(5, delay.current)
+        #expect(5 == delay.current)
         delay.increment()
-        XCTAssertEqual(20, delay.current)
+        #expect(20 == delay.current)
         delay.increment()
-        XCTAssertEqual(60, delay.current)
+        #expect(60 == delay.current)
         delay.increment()
-        XCTAssertEqual(60, delay.current)
+        #expect(60 == delay.current)
         delay.reset()
-        XCTAssertEqual(1, delay.current)
+        #expect(1 == delay.current)
         delay.increment()
-        XCTAssertEqual(5, delay.current)
+        #expect(5 == delay.current)
         delay.reset()
-        XCTAssertEqual(1, delay.current)
+        #expect(1 == delay.current)
     }
 }

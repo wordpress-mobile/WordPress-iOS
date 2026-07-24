@@ -1,7 +1,7 @@
-import XCTest
+import Testing
 @testable import WordPressShared
 
-class LazyTests: XCTestCase {
+final class LazyTests {
     @Lazy
     var container = Container()
 
@@ -15,30 +15,28 @@ class LazyTests: XCTestCase {
         }
     }
 
-    override func tearDown() {
-        super.tearDown()
-
+    deinit {
         Container.initCallCount = 0
     }
 
-    func testLazyProperty() {
-        XCTAssertEqual(Container.initCallCount, 0, "Has to be created lazily")
+    @Test func testLazyProperty() {
+        #expect(Container.initCallCount == 0, "Has to be created lazily")
 
         // Accessing value without triggering init
-        XCTAssertNil($container.value)
-        XCTAssertEqual(Container.initCallCount, 0, "Accessing the projected value should not trigger init")
+        #expect($container.value == nil)
+        #expect(Container.initCallCount == 0, "Accessing the projected value should not trigger init")
 
         // Accessing value while initializing it lazily
-        XCTAssertEqual(container.name, "hello")
-        XCTAssertNotNil($container.value)
-        XCTAssertEqual(Container.initCallCount, 1)
+        #expect(container.name == "hello")
+        #expect($container.value != nil)
+        #expect(Container.initCallCount == 1)
 
         // Using the cached value
         container.name = "here goes nothing"
-        XCTAssertEqual(Container.initCallCount, 1, "Lazily created value is retained")
+        #expect(Container.initCallCount == 1, "Lazily created value is retained")
 
         // Resetting the value
         $container.reset()
-        XCTAssertNil($container.value)
+        #expect($container.value == nil)
     }
 }

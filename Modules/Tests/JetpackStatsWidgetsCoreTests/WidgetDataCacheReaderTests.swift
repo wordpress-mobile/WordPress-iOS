@@ -1,12 +1,13 @@
+import Foundation
 import JetpackStatsWidgetsCore
-import XCTest
+import Testing
 
-final class WidgetDataCacheReaderTests: XCTestCase {
+struct WidgetDataCacheReaderTests {
 
     typealias Result = Swift.Result<HomeWidgetDataDouble, WidgetDataReadError>
 
     /// When the cache has data for the requested site, it returns it regardless of whether the user is logged in
-    func testWidgetDataForKnownSiteIdentifier() {
+    @Test func testWidgetDataForKnownSiteIdentifier() {
         let data = HomeWidgetDataDouble(siteID: 1)
         let sut = WidgetDataCacheReaderDouble(dataToReturn: data)
 
@@ -30,7 +31,7 @@ final class WidgetDataCacheReaderTests: XCTestCase {
 
     /// When the requested site id is not in the cache but the default site is,
     /// it returns it regardless of the user logged in status
-    func testWidgetDataForNilSiteIdentifierWithDataForDefaultSite() {
+    @Test func testWidgetDataForNilSiteIdentifierWithDataForDefaultSite() {
         let id = 1
         let data = HomeWidgetDataDouble(siteID: id)
         let sut = WidgetDataCacheReaderDouble(dataToReturn: data)
@@ -47,7 +48,7 @@ final class WidgetDataCacheReaderTests: XCTestCase {
 
     /// When the requested site id is nil but the cache has data for the default site,
     /// it returns it data for the default site, regardless of the user logged in status
-    func testWidgetDataForMissingSiteIdentifierWithDataForDefaultSite() {
+    @Test func testWidgetDataForMissingSiteIdentifierWithDataForDefaultSite() {
         let id = 1
         let data = HomeWidgetDataDouble(siteID: id)
         let sut = WidgetDataCacheReaderDouble(dataToReturn: data)
@@ -63,7 +64,7 @@ final class WidgetDataCacheReaderTests: XCTestCase {
     }
 
     /// When the cache has no data and the user is logged out, it always returns a failure with the "logged out" error
-    func testWidgetDataWithNoDataAndUserLoggedOut() {
+    @Test func testWidgetDataWithNoDataAndUserLoggedOut() {
         let sut = WidgetDataCacheReaderDouble(dataToReturn: nil)
 
         assert(
@@ -85,7 +86,7 @@ final class WidgetDataCacheReaderTests: XCTestCase {
     }
 
     /// When the cache has no data and the user is logged in, it always returns a failure with the "no site" error
-    func testWidgetDataWithNoDataAndUserLoggedIn() {
+    @Test func testWidgetDataWithNoDataAndUserLoggedIn() {
         let sut = WidgetDataCacheReaderDouble(dataToReturn: nil)
 
         assert(
@@ -108,7 +109,7 @@ final class WidgetDataCacheReaderTests: XCTestCase {
 
     /// When the cache has data that doesn't match the input parameters, and the user is logged in,
     /// it returns the site with the lower id
-    func testWidgetDataFallbackWhenLoggedIn() {
+    @Test func testWidgetDataFallbackWhenLoggedIn() {
         let data = HomeWidgetDataDouble(siteID: 0)
         let sut = WidgetDataCacheReaderDouble(
             dataToReturn: [
@@ -139,7 +140,7 @@ final class WidgetDataCacheReaderTests: XCTestCase {
 
     /// When the cache has data that doesn't match the input parameters, and the user is logged out,
     /// it returns the "logged out" error
-    func testWidgetDataFallbackWhenLoggedOut() {
+    @Test func testWidgetDataFallbackWhenLoggedOut() {
         let sut = WidgetDataCacheReaderDouble(
             dataToReturn: [
                 HomeWidgetDataDouble(siteID: 2),
@@ -167,16 +168,16 @@ final class WidgetDataCacheReaderTests: XCTestCase {
 
     // MARK: -
 
-    func assert(result actual: Result, equals expected: Result, line: UInt = #line) {
+    func assert(result actual: Result, equals expected: Result, sourceLocation: SourceLocation = #_sourceLocation) {
         switch (actual, expected) {
         case (.success(let actualData), .success(let expectedData)):
-            XCTAssertEqual(actualData, expectedData, line: line)
+            #expect(actualData == expectedData, sourceLocation: sourceLocation)
         case (.failure(let actualError), .failure(let expectedError)):
-            XCTAssertEqual(actualError, expectedError, line: line)
+            #expect(actualError == expectedError, sourceLocation: sourceLocation)
         case (.success(let data), .failure):
-            XCTFail("Expected to fail but succeeded with \(data)", line: line)
+            Issue.record("Expected to fail but succeeded with \(data)", sourceLocation: sourceLocation)
         case (.failure(let error), .success):
-            XCTFail("Expected to succeed but failed with \(error)", line: line)
+            Issue.record("Expected to succeed but failed with \(error)", sourceLocation: sourceLocation)
         }
     }
 }

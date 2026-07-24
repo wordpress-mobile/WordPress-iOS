@@ -1,36 +1,30 @@
-import XCTest
+import Testing
 @testable import WordPressShared
 
-class QueueTests: XCTestCase {
+final class QueueTests {
     private var queue = Queue<Int>()
 
-    override func setUp() {
-        super.setUp()
-
-        queue = Queue<Int>()
-    }
-
-    func testNewQueueIsEmpty() {
+    @Test func testNewQueueIsEmpty() {
         let item = queue.pop()
-        XCTAssertNil(item)
+        #expect(item == nil)
     }
 
-    func testSingleItemAddedToQueue() {
+    @Test func testSingleItemAddedToQueue() {
         queue.push(1)
         let item = queue.pop()
-        XCTAssertEqual(item, 1)
+        #expect(item == 1)
     }
 
-    func testSingleItemRemovedFromQueue() {
+    @Test func testSingleItemRemovedFromQueue() {
         queue.push(1)
 
         let item = queue.pop()
         let nothing = queue.pop()
-        XCTAssertNotNil(item)
-        XCTAssertNil(nothing)
+        #expect(item != nil)
+        #expect(nothing == nil)
     }
 
-    func testMultipleItemsReturnedInFIFOOrder() {
+    @Test func testMultipleItemsReturnedInFIFOOrder() {
         queue.push(1)
         queue.push(2)
         queue.push(3)
@@ -44,14 +38,14 @@ class QueueTests: XCTestCase {
         let item4 = queue.pop()
         let item5 = queue.pop()
 
-        XCTAssertEqual(item1, 1)
-        XCTAssertEqual(item2, 2)
-        XCTAssertEqual(item3, 3)
-        XCTAssertEqual(item4, 4)
-        XCTAssertNil(item5)
+        #expect(item1 == 1)
+        #expect(item2 == 2)
+        #expect(item3 == 3)
+        #expect(item4 == 4)
+        #expect(item5 == nil)
     }
 
-    func testRemoveAllEmptiesTheQueue() {
+    @Test func testRemoveAllEmptiesTheQueue() {
         // Given
         queue.push(1)
         queue.push(2)
@@ -61,10 +55,10 @@ class QueueTests: XCTestCase {
         queue.removeAll()
 
         // Then
-        XCTAssertNil(queue.pop())
+        #expect(queue.pop() == nil)
     }
 
-    func testRemoveAllRemovesElementsMatchingThePredicate() {
+    @Test func testRemoveAllRemovesElementsMatchingThePredicate() {
         // Given
         queue.push(1)
         queue.push(2)
@@ -74,7 +68,7 @@ class QueueTests: XCTestCase {
         queue.removeAll { $0 >= 2 }
 
         // Then
-        XCTAssertEqual(queue.pop(), 1)
-        XCTAssertNil(queue.pop())
+        #expect(queue.pop() == 1)
+        #expect(queue.pop() == nil)
     }
 }

@@ -1,9 +1,9 @@
 @testable import WordPressShared
-import XCTest
+import Testing
 
-final class DashboardDynamicCardAnalyticsEventTests: XCTestCase {
+struct DashboardDynamicCardAnalyticsEventTests {
 
-    func testNamesAndProperties() {
+    @Test func testNamesAndProperties() {
         // Given
         let (id, url) = ("123", "https://wordpress.com")
 
@@ -13,11 +13,11 @@ final class DashboardDynamicCardAnalyticsEventTests: XCTestCase {
         let cardCTATappedEvent = DashboardDynamicCardAnalyticsEvent.cardCtaTapped(id: id, url: url)
 
         // Then
-        XCTAssertEqual(cardShownEvent.name, "dynamic_dashboard_card_shown")
-        XCTAssertEqual(cardTappedEvent.name, "dynamic_dashboard_card_tapped")
-        XCTAssertEqual(cardCTATappedEvent.name, "dynamic_dashboard_card_cta_tapped")
-        XCTAssertEqual(cardShownEvent.properties, ["id": id])
-        XCTAssertEqual(cardTappedEvent.properties, ["id": id, "url": url])
-        XCTAssertEqual(cardCTATappedEvent.properties, ["id": id, "url": url])
+        #expect(cardShownEvent.name == "dynamic_dashboard_card_shown")
+        #expect(cardTappedEvent.name == "dynamic_dashboard_card_tapped")
+        #expect(cardCTATappedEvent.name == "dynamic_dashboard_card_cta_tapped")
+        #expect(cardShownEvent.properties == ["id": id])
+        #expect(cardTappedEvent.properties == ["id": id, "url": url])
+        #expect(cardCTATappedEvent.properties == ["id": id, "url": url])
     }
 }
