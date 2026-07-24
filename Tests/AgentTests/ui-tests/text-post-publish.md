@@ -2,6 +2,7 @@
 
 ## Prerequisites
 - Logged in to the app with the test account.
+- XML-RPC is disabled on the test site. The app should use the Core REST editor.
 
 ## Steps
 1. Navigate to the "My Site" tab.
@@ -12,6 +13,7 @@
 6. Type "Lorem ipsum dolor sit amet, consectetur adipiscing elit." as the paragraph content.
 7. Tap the "Publish" button in the top-right corner.
 8. If a pre-publish confirmation appears, confirm by tapping "Publish" again.
+9. Confirm publishing completes without an error alert. Do not require a separate post-publish confirmation screen.
 
 ## Verification (REST API)
 - Use the WordPress REST API to search for a post titled "Rich post title" with status "publish".
@@ -21,6 +23,6 @@
 - Use the WordPress REST API to trash the post created during this test.
 
 ## Expected Outcome
-- The post "Rich post title" is published successfully and a confirmation screen is shown.
+- The post "Rich post title" is published through the app without an XML-RPC or other publishing error.
 - The REST API confirms a published post with the title "Rich post title" exists.
 - The post is trashed via the REST API.

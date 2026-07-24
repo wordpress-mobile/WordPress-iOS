@@ -2,6 +2,7 @@
 
 ## Prerequisites
 - Logged in to the app with the test account.
+- XML-RPC is disabled on the test site. The app should use the Core REST editor.
 
 ## Steps
 1. Navigate to the "My Site" tab.
@@ -11,6 +12,7 @@
 5. Enter "Blank page title" as the page title.
 6. Tap the "Publish" button in the top-right corner.
 7. If a pre-publish confirmation appears, confirm by tapping "Publish" again.
+8. Confirm publishing completes without an error alert. Do not require a separate post-publish confirmation screen.
 
 ## Verification (REST API)
 - Use the WordPress REST API to search for a page titled "Blank page title" with status "publish".
@@ -20,6 +22,6 @@
 - Use the WordPress REST API to trash the page created during this test.
 
 ## Expected Outcome
-- The page "Blank page title" is published successfully and a confirmation screen is shown.
+- The page "Blank page title" is published through the app without an XML-RPC or other publishing error.
 - The REST API confirms a published page with the title "Blank page title" exists.
 - The page is trashed via the REST API.
