@@ -1,1 +1,0 @@
-Om du har en webbplats på egen server loggar du nu in på appen med ett applikationslösenord. Om du inte har en, skapar vi automatiskt en åt dig så att den är redo när du behöver den.
